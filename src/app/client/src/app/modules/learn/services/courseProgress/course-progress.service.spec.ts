@@ -10,8 +10,10 @@ import { ContentService, CoreModule } from '@sunbird/core';
 import { CourseProgressService } from './course-progress.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {Response} from './course-progress.service.spec.data';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('CourseProgressService', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],

@@ -1,0 +1,27 @@
+@import './mixins/mixins';
+
+.state-selection {
+  &__section {
+    padding-bottom: calculateRem(8px);
+
+    &:not(:first-child) {
+      margin-top: calculateRem(8px);
+    }
+
+    .header {
+      color: var(--primary-color);
+      padding: 0px calculateRem(8px);
+    }
+
+    .item {
+      padding: calculateRem(4px) calculateRem(8px);
+      display: block;
+      cursor: pointer;
+
+      &:hover,
+      &.active {
+        background-color: var(--primary-100);
+      }
+    }
+  }
+}

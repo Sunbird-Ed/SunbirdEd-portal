@@ -80,6 +80,10 @@ export class WorkspacesidebarComponent implements OnInit {
   * allContentRole  access roles
   */
  collaboratingRole: Array<string>;
+ /**
+  * roles for which training sub-tab to be shown
+  */
+ trainingRole: Array<string>;
 
    /**
    * reference of Router.

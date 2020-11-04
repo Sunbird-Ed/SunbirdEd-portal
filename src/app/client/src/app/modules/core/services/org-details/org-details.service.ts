@@ -1,5 +1,5 @@
-import {throwError, of, Observable, BehaviorSubject} from 'rxjs';
-import { mergeMap, map, catchError, skipWhile } from 'rxjs/operators';
+import {throwError, of, Observable, BehaviorSubject } from 'rxjs';
+import { mergeMap, map, catchError, skipWhile, shareReplay, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { ConfigService, ServerResponse, ToasterService, ResourceService, BrowserCacheTtlService } from '@sunbird/shared';
 import { Router } from '@angular/router';
@@ -28,6 +28,8 @@ export class OrgDetailsService {
   public readonly orgDetails$: Observable<any> = this._orgDetails$.asObservable()
   .pipe(skipWhile(data => data === undefined || data === null));
 
+  private _custodianOrg$: Observable<any> = this.getCustodianOrg().pipe(shareReplay(1));
+
   constructor(public configService: ConfigService, private cacheService: CacheService,
     private browserCacheTtlService: BrowserCacheTtlService,
     public contentService: ContentService, public router: Router, public toasterService: ToasterService,
@@ -36,7 +38,7 @@ export class OrgDetailsService {
 
   getOrgDetails(slug?: string): Observable<ServerResponse> {
     const option = {
-      url: this.configService.urlConFig.URLS.ADMIN.ORG_SEARCH,
+      url: this.configService.urlConFig.URLS.ADMIN.ORG_SEARCH, // commonly used search request, cached at proxy
       data: {
         request: {
           filters: {
@@ -92,7 +94,7 @@ export class OrgDetailsService {
 
   searchOrg() {
     const option = {
-      url: this.configService.urlConFig.URLS.ADMIN.ORG_SEARCH,
+      url: this.configService.urlConFig.URLS.ADMIN.ORG_SEARCH, // commonly used search request, cached at proxy
       data: {
         request: {
           filters: {
@@ -114,6 +116,21 @@ export class OrgDetailsService {
     }
   }
 
+
+  searchOrgDetails(request) {
+    const option = {
+      url: this.configService.urlConFig.URLS.ADMIN.ORG_SEARCH,
+      data: {
+        request: request
+      }
+    };
+    return this.publicDataService.post(option).pipe(mergeMap((data: ServerResponse) => {
+      if (_.get(data, 'result.response.count') > 0) {
+        return of(_.get(data, 'result.response'));
+      }
+    }));
+  }
+
   setOrgDetails(data) {
     this.cacheService.set('orgDetails', data, {
       maxAge: this.browserCacheTtlService.browserCacheTtl
@@ -128,16 +145,10 @@ export class OrgDetailsService {
   }
 
   public getCustodianOrgDetails() {
-    if (this.custodianOrgDetails) {
-      return of(this.custodianOrgDetails);
-    }
-    return this.getCustodianOrg().pipe(map(custodianOrgDetails => {
-      this.custodianOrgDetails = custodianOrgDetails;
-      return custodianOrgDetails;
-    }));
+    return this._custodianOrg$;
   }
 
-  getCustodianOrg() {
+  private getCustodianOrg() {
     const systemSetting = {
       url: this.configService.urlConFig.URLS.SYSTEM_SETTING.CUSTODIAN_ORG,
     };
@@ -200,7 +211,7 @@ export class OrgDetailsService {
 
   fetchOrgs(filters) {
     const option = {
-      url: this.configService.urlConFig.URLS.ADMIN.ORG_SEARCH,
+      url: this.configService.urlConFig.URLS.ADMIN.ORG_EXT_SEARCH,
       data: {
         request: filters
       }

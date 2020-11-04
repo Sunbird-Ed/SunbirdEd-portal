@@ -122,7 +122,6 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   }
 
   ngAfterViewInit() {
-    this.initializeDropdown();
     this.generateImpressionEvent();
   }
 
@@ -159,9 +158,6 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   }
 
   ngAfterViewChecked() {
-    if (!this.showPreview && this.prevShowPreview) {
-      this.initializeDropdown();
-    }
     this.prevShowPreview = this.showPreview;
   }
 
@@ -265,7 +261,6 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
   deleteSolution() {
     if (this.selectedSolutionType === 'video') {
       this.mediaArr = _.filter(this.mediaArr, (item: any) => item.id !== this.editorState.solutions);
-      console.log(this.mediaArr);
     }
     this.showSolutionDropDown = true;
     this.selectedSolutionType = '';
@@ -273,10 +268,6 @@ export class QuestionCreationComponent implements OnInit, AfterViewInit, OnChang
     this.editorState.solutions = '';
     this.videoThumbnail = '';
     this.showSolution = false;
-  }
-
-  initializeDropdown() {
-    (<any>$('.ui.checkbox')).checkbox();
   }
 
   handleReviewrStatus(event) {

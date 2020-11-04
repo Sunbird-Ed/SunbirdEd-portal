@@ -9,6 +9,8 @@ import { BatchService } from '../../services';
 import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import * as moment from 'moment';
+import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
+
 @Component({
   selector: 'app-update-batch',
   templateUrl: './update-batch.component.html',
@@ -92,6 +94,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   public unsubscribe = new Subject<void>();
 
   public courseCreator = false;
+  public courseDetails;
 
   updateBatchInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
@@ -109,7 +112,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     resourceService: ResourceService, userService: UserService,
     batchService: BatchService,
     toasterService: ToasterService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService,  private lazzyLoadScriptService: LazzyLoadScriptService) {
     this.resourceService = resourceService;
     this.router = route;
     this.activatedRoute = activatedRoute;
@@ -137,6 +140,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         this.batchService.getCourseHierarchy(this.courseId).subscribe((courseDetails) => {
           if (courseDetails.createdBy === this.userService.userid) {
             this.courseCreator = true;
+            this.courseDetails = courseDetails;
           }
         });
         this.showUpdateModal = true;
@@ -163,11 +167,11 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
   private fetchBatchDetails() {
+    const participants = {};
     return combineLatest(
       this.batchService.getUserList(),
       this.batchService.getUpdateBatchDetails(this.batchId),
-      this.batchService.getParticipantList({'request': {'batch': {'batchId': this.batchId}}}),
-      (userDetails, batchDetails, participants) => ({userDetails, batchDetails, participants})
+      (userDetails, batchDetails) => ({userDetails, batchDetails, participants})
     );
   }
   /**
@@ -229,9 +233,6 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       this.batchService.getUserList(request).pipe(takeUntil(this.unsubscribe))
         .subscribe((res) => {
           this.processParticipantDetails(res);
-          const userList = this.sortUsers(res);
-          this.participantList = userList.participantList;
-          this.mentorList = userList.mentorList;
         }, (err) => {
           if (err.error && err.error.params.errmsg) {
             this.toasterService.error(err.error.params.errmsg);
@@ -293,7 +294,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   private initDropDown() {
     const count = this.batchDetails.participants ? this.batchDetails.participants.length : 0;
-    setTimeout(() => {
+    this.lazzyLoadScriptService.loadScript('semanticDropdown.js').subscribe(() => {
       $('#participant').dropdown({
         forceSelection: false,
         fullTextSearch: true,
@@ -316,7 +317,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       $('#mentors input.search').on('keyup', (e) => {
         this.getUserListWithQuery($('#mentors input.search').val(), 'mentor');
       });
-    }, 0);
+    });
   }
   private getUserListWithQuery(query, type) {
     if (this.userSearchTime) {

@@ -16,6 +16,8 @@ import { fakeBatchDetails } from './enroll-batch.component.spec.data';
 import { TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { By } from '@angular/platform-browser';
+import { configureTestSuite } from '@sunbird/test-util';
+
 describe('EnrollBatchComponent', () => {
   let component: EnrollBatchComponent;
   let fixture: ComponentFixture<EnrollBatchComponent>;
@@ -25,6 +27,7 @@ describe('EnrollBatchComponent', () => {
   let router: Router;
   const fakeActivatedRoute = {
     params: of({ 'batchId': '01278712683697766417' }),
+    queryParams: of({ 'autoEnroll': false }),
     snapshot: {
       params: [
         {
@@ -32,10 +35,7 @@ describe('EnrollBatchComponent', () => {
         }
       ],
       data: {
-        telemetry: {
-          env: 'workspace', pageid: 'workspace-course-batch', subtype: 'scroll', type: 'list',
-          object: { type: 'batch', ver: '1.0' }
-        }
+        telemetry: { env: 'Course', pageid: 'batch-enroll', type: 'view', object: { ver: '1.0', type: 'batch' } }
       }
     }
   };
@@ -57,10 +57,10 @@ describe('EnrollBatchComponent', () => {
       }
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [],
+      declarations: [EnrollBatchComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [SharedModule.forRoot(), TelemetryModule.forRoot(), CoreModule, SuiModule, LearnModule, RouterTestingModule,
         DashboardModule, HttpClientTestingModule],
@@ -123,13 +123,15 @@ describe('EnrollBatchComponent', () => {
   });
 
   it('should enroll to course on click of enroll button', () => {
-    const enrollButton = fixture.debugElement.query(By.css('#enrollToCourse'));
     spyOn(courseBatchService, 'getEnrollToBatchDetails').and.callFake(() => of(fakeBatchDetails));
     const courseBatchServiceSpy = spyOn(courseBatchService, 'enrollToCourse').and.callFake(() => of(''));
-    spyOnProperty(component.userService, 'userid').and.returnValue('d0d8a341-9637-484c-b871-0c27015af238');
+    spyOnProperty(component.userService, 'userid', 'get').and.returnValue('d0d8a341-9637-484c-b871-0c27015af238');
     const fetchEnrolledCourseDataSpy = spyOn(component, 'fetchEnrolledCourseData');
     const telemetryLogEvent = spyOn(component, 'telemetryLogEvents');
     component.ngOnInit();
+    component.modalVisibility = true;
+    fixture.detectChanges();
+    const enrollButton = fixture.debugElement.query(By.css('#enrollToCourse'));
     enrollButton.triggerEventHandler('click', null);
     expect(component.disableSubmitBtn).toBe(true);
     expect(courseBatchServiceSpy).toHaveBeenCalled();
@@ -146,13 +148,15 @@ describe('EnrollBatchComponent', () => {
   });
 
   it('should handle error occured during enrolling to course', () => {
-    const enrollButton = fixture.debugElement.query(By.css('#enrollToCourse'));
     spyOn(courseBatchService, 'getEnrollToBatchDetails').and.callFake(() => of(fakeBatchDetails));
     const courseBatchServiceSpy = spyOn(courseBatchService, 'enrollToCourse').and.callFake(() => throwError(''));
-    spyOnProperty(component.userService, 'userid').and.returnValue('d0d8a341-9637-484c-b871-0c27015af238');
+    spyOnProperty(component.userService, 'userid', 'get').and.returnValue('d0d8a341-9637-484c-b871-0c27015af238');
     const toasterSpy = spyOn(toasterService, 'error');
     const telemetryLogEvent = spyOn(component, 'telemetryLogEvents');
     component.ngOnInit();
+    component.modalVisibility = true;
+    fixture.detectChanges();
+    const enrollButton = fixture.debugElement.query(By.css('#enrollToCourse'));
     enrollButton.triggerEventHandler('click', null);
     expect(courseBatchServiceSpy).toHaveBeenCalled();
     expect(courseBatchServiceSpy).toHaveBeenCalledWith({
@@ -168,6 +172,30 @@ describe('EnrollBatchComponent', () => {
     expect(toasterSpy).toHaveBeenCalledWith(fakeResourceService.messages.emsg.m0001);
   });
 
+  it('should auto enroll to course', () => {
+    spyOn(courseBatchService, 'getEnrollToBatchDetails').and.callFake(() => of(fakeBatchDetails));
+    const courseBatchServiceSpy = spyOn(courseBatchService, 'enrollToCourse').and.callFake(() => of(''));
+    spyOnProperty(component.userService, 'userid', 'get').and.returnValue('d0d8a341-9637-484c-b871-0c27015af238');
+    const fetchEnrolledCourseDataSpy = spyOn(component, 'fetchEnrolledCourseData');
+    const telemetryLogEvent = spyOn(component, 'telemetryLogEvents');
+    TestBed.get(ActivatedRoute).queryParams = of({ autoEnroll: true });
+    component.ngOnInit();
+    fixture.detectChanges();
+    component.enrollToCourse();
+    expect(component.disableSubmitBtn).toBe(true);
+    expect(courseBatchServiceSpy).toHaveBeenCalled();
+    expect(courseBatchServiceSpy).toHaveBeenCalledWith({
+      'request': {
+        'courseId': 'do_2127871108662804481320',
+        'userId': 'd0d8a341-9637-484c-b871-0c27015af238',
+        'batchId': '01278712683697766417'
+      }
+    });
+    expect(component.disableSubmitBtn).toBe(true);
+    expect(fetchEnrolledCourseDataSpy).toHaveBeenCalled();
+    expect(telemetryLogEvent).toHaveBeenCalled();
+  });
+
   it('should fetch enrolled course data', fakeAsync(() => {
     spyOn(coursesService, 'getEnrolledCourses').and.returnValue(of(''));
     const routerSpy = spyOn(router, 'navigate').and.returnValue(new Promise((resolve, reject) => { }));
@@ -180,4 +208,15 @@ describe('EnrollBatchComponent', () => {
     expect(toasterSpy).toHaveBeenCalled();
     expect(toasterSpy).toHaveBeenCalledWith(fakeResourceService.messages.smsg.m0036);
   }));
+
+  it('should send audit event on course enrolled', () => {
+    component.batchDetails = {
+      identifier: '01278712683697766417',
+      courseId: 'do_2127871108662804481320',
+    };
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'audit');
+    component.logAuditEvent();
+    expect(telemetryService.audit).toHaveBeenCalled();
+  });
 });

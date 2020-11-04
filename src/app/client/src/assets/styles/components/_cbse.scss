@@ -1,59 +1,15 @@
 @import "../variables";
 @import "../mixins/mixins";
 
-// question list styles
-.questionTab.button {
-  border-bottom: 1px solid #cecece;
-}
-
-.questionTab.segment {
-  label {
-    font-size: 12px;
-    font-weight: normal;
-  }
-  &:hover, &.active {
-    background-color: #EDF4F9;
-    color: #024f9d;
-    label {
-      font-weight: 700;
-    }
-  }
-}
-
-.questionsMenu {
-  overflow-y: auto;
-  max-height: 500px;
-}
-
-.emptyList {
-  border: none;
-}
-
-i.icon {
-  &.trash {
-    color: var(--red-100);
-  }
-  &.expand {
-    color: var(--primary-color);
-  }
-}
-
 
 // mcq preview layout styles
-.sb-question-outerframe {
-  height: 100%;
-  height: 392px;
-  max-width: 800px;
-  border: 10px solid var(--black);
-  margin: 0 auto;
-  position: relative;
-}
+
 .sb-question-dsp-container {
   .sb-editor-image {
-    height: 392px;
-    max-width: 800px;
-    border: 10px solid var(--black);
-    border-radius: 15px;
+    height: calculateRem(392px);
+    max-width: calculateRem(800px);
+    border: calculateRem(10px) solid var(--black);
+    border-radius: calculateRem(15px);
     margin: 0 auto;
     position: relative;
     .phone-sensors {
@@ -71,40 +27,35 @@ i.icon {
       .sensor {
         width: $base-block-space;
         height: $base-block-space;
-        background: #252525;
+        background: var(--rc-252525);
         border-radius: 50%;
       }
       .speaker {
         width: ($base-block-space - 3);
-        height: 74px;
-        background: #252525;
+        height: calculateRem(74px);
+        background: var(--rc-252525);
         border-radius: ($base-block-space + 2);
         margin: ($base-block-space + 2) 0 ($base-block-space + 2) 1px;
       }
       .sensor {
         width: $base-block-space;
         height: $base-block-space;
-        background: #252525;
+        background: var(--rc-252525);
         border-radius: 50%;
       }
     }
   }
 
   .sb-question-dsp-body {
-    // max-width: 800px;
-    // max-height: 392px;
-    // margin: 0 auto;
-    // overflow: hidden;
     border-radius: ($base-block-space - 4);
-    //height: calc(100% - 48px);
     height: 100vh;
 
     .question-bg {
-      background-image: linear-gradient(-90deg, lightblue, var(--white));
+      background-image: linear-gradient(-90deg, var(--rc-add8e6), var(--white));
     }
 
     .answer-bg {
-      background-image: linear-gradient(-90deg, #fcf2d6, var(--white));
+      background-image: linear-gradient(-90deg, var(--rc-fcf2d6), var(--white));
     }
 
     .question-menu {
@@ -121,7 +72,7 @@ i.icon {
         background-color: var(--gray);
       }
       .sb-btn-arrows {
-        min-width: 50px;
+        min-width: calculateRem(50px);
         .icon {
           margin: 0;
         }
@@ -137,7 +88,7 @@ i.icon {
     .sb-mark {
       font-size: $font-size-sm;
       padding-right: $base-block-space;
-      color: var(--blue);
+      color: var(--primary-400);
     }
     &.sb-learning-outcome-header {
       align-items: center;
@@ -145,14 +96,9 @@ i.icon {
   }
 
   .sb-question-content {
-    // width: 100%;
-    // min-height: 72px;
-    // max-height: calc(370px - 87px);
-    //overflow-y: auto;
     height: 100%;
 
     .page-section {
-      //min-height: calc(372px - 48px);
       height: 100%;
       padding: ($base-block-space * 3);
 
@@ -164,13 +110,12 @@ i.icon {
     .sb-question-content-card {
       background: var(--white);
       border-radius: $base-block-space;
-      min-height: 72px;
+      min-height: calculateRem(72px);
       font-weight: inherit;
       line-height: normal;
-      box-shadow: 2px 5px 7px 0 rgba(0, 0, 0, 0.2);
-      border: 0.5px solid var(--gray-0);
+      box-shadow: calculateRem(2px) calculateRem(5px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.2);
+      border: calculateRem(0.5px) solid var(--gray-0);
       padding: ($base-block-space * 2);
-      // overflow: auto;
     }
 
     .sb-question-content-card p svg {
@@ -181,7 +126,7 @@ i.icon {
     .sb-question {
       margin-right: auto;
       font-size: $font-size-sm;
-      color: var(--blue);
+      color: var(--primary-400);
       margin-bottom: ($base-block-space * 2);
     }
 
@@ -227,7 +172,7 @@ i.icon {
           overflow-y: auto;
 
           .sb-question-content-card {
-            min-height: 60px;
+            min-height: calculateRem(60px);
             line-height: ($base-block-space * 3) - 3;
             margin: ($base-block-space * 2) ($base-block-space * 3);
 
@@ -262,7 +207,7 @@ i.icon {
             }
           }
           .sb-question-content-card {
-            min-height: 60px;
+            min-height: calculateRem(60px);
             margin: ($base-block-space * 2) ($base-block-space * 3);
             margin-top: 0;
             .sb-question-content-focus-spot-group {
@@ -296,13 +241,9 @@ i.icon {
     .mcq-grid {
       display: flex;
       flex-wrap: wrap;
-      max-width: 1440px;
-      /* margin: 0 auto; */
-      /* align-items: stretch; */
+      max-width: calculateRem(1440px);
       position: relative;
-      // border-radius: 8px; // have to enable for mobile bg
       height: 100%;
-      // height: 100vh;
       overflow: hidden;
 
       .mcq-title {
@@ -314,11 +255,10 @@ i.icon {
         padding: ($base-block-space) ($base-block-space * 3);
         background: var(--white);
         font-weight: 700;
-        //   max-height: 76px;
-        height: 76px;
+        height: calculateRem(76px);
         overflow: hidden;
         z-index: 999;
-        box-shadow: 2px 5px 7px 0 rgba(0, 0, 0, 0.2);
+        box-shadow: calculateRem(2px) calculateRem(5px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.2);
         border-radius: 0;
 
         p svg {
@@ -334,19 +274,17 @@ i.icon {
         justify-content: space-around;
         padding: ($base-block-space * 3);
         padding-top: 100px;
-        // max-height: calc(436px - 64px);
         height: 100vh;
         overflow-y: auto;
-        //   min-height: calc(436px - 64px);
-        background-image: linear-gradient(-90deg, lightblue, #afd9e7);
+        background-image: linear-gradient(-90deg, var(--rc-add8e6), var(--rc-afd9e7));
 
         .mcq-option {
           margin-bottom: ($base-block-space * 2);
           height: auto;
-          box-shadow: 2px 5px 7px 0 rgba(0, 0, 0, 0.2);
+          box-shadow: calculateRem(2px) calculateRem(5px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.2);
           background: var(--white);
           border-radius: $base-block-space;
-          line-height: 20px;
+          line-height: calculateRem(20px);
           padding: $base-block-space;
 
           p {
@@ -361,7 +299,7 @@ i.icon {
         right: ($base-block-space - 4);
         z-index: 999;
         cursor: pointer;
-        background: #024a93;
+        background: var(--primary-color);
         color: var(--white);
         width: ($base-block-space * 4);
         height: ($base-block-space * 4);
@@ -379,7 +317,6 @@ i.icon {
     .mcq-split {
       .mcq-title {
         flex-basis: 30%;
-        //background: none;
         position: initial;
         max-height: 100vh;
         overflow-y: auto;
@@ -453,15 +390,11 @@ i.icon {
     }
   }
 
-  // .mcq-vertical .mcq-options .mcq-option, .mcq-horizontal .mcq-options .mcq-option, .mcq-grid .mcq-options .mcq-option {
-  //   max-height: 80%;
-  //   overflow-y: auto;
-  // }
   .mcq-checkbox-answer {
     background: var(--gray-0);
     padding: ($base-block-space * 2);
     display: flex;
-    border: 1px solid #c4c4c4;
+    border: calculateRem(1px) solid var(--rc-c4c4c4);
     border-top: none;
 
     label {
@@ -473,22 +406,13 @@ i.icon {
 }
 
 .sb-card {
-  // .sb-card-metas .sb-card-image {
-  //   width: 120px;
-  //   height: 96px;
-
-  //   img {
-  //     width: auto;
-  //     height: auto;
-  //   }
-  // }
 
   .sb-card-content-list {
     font-size: $font-size-sm;
     color: var(--gray-800);
 
     .sb-card-circular-list {
-      padding: 0 15px;
+      padding: 0 calculateRem(15px);
       .sb-circular-list-item {
         list-style-type: decimal;
         font-size: 0.9286rem;
@@ -524,15 +448,15 @@ i.icon {
   &.ui.styled.accordion {	
     background: inherit;	
     .active.title {	
-      border: 1px solid $primary-200;	
+      border: calculateRem(1px) solid $primary-200; 
       border-bottom: none;	
-      background-color: #F3F8FF;	
+      background-color: var(--rc-F3F8FF);	
       font-weight: $font-weight-bold;	
       border-bottom-left-radius: 0;	
       border-bottom-right-radius: 0;	
       font-size: $font-size-sm;	
       .chevron-icon {	
-        background: #D9E4F2;	
+        background: var(--rc-D9E4F2);	
         border-left: none;	
       }	
       .chapter-status {	
@@ -542,33 +466,33 @@ i.icon {
     .title {	
       margin-top: $base-block-space;	
       background: $gray-0;	
-      border: 1px solid $gray-100;	
-      border-radius: 4px;	
+      border: calculateRem(1px) solid $gray-100;	
+      border-radius: calculateRem(4px);	
       font-size: $font-size-sm;	
       .chevron-icon {	
         background: $gray-0;	
-        border-left: 1px solid $gray-100;	
-      }	
+        border-left: calculateRem(1px) solid $gray-100;	
+      } 
       .chapter-status {	
-        height: $base-block-space;	
-        width: $base-block-space;	
+        height: calculateRem(8px);	
+        width: calculateRem(8px);	
         border-radius: 50%;	
-        background: $gray-100;	
+        background: var(--gray-100);	
       }	
     }	
     .sb-chapterlist-child {	
       .active.title {	
-        border-top: 1px solid $primary-200;	
+        border-top: calculateRem(1px) solid $primary-200;	
         border-radius: 0;	
         .chapter-status {	
-          background: #88B7E6;	
+          background: var(--rc-88B7E6);	
         }	
       }	
       .title {	
         margin-top: 0;	
-        border-radius: 0px 0px 4px 4px;	
+        border-radius: 0px 0px calculateRem(4px) calculateRem(4px);	
         border: none;	
-        border-top: 1px solid $gray-100;	
+        border-top: calculateRem(1px) solid $gray-100;  
       }	
       .content {	
         border: none;	
@@ -578,34 +502,34 @@ i.icon {
       }	
     }	
     .content {	
-      border: 1px solid $primary-200;	
+      border: calculateRem(1px) solid $primary-200; 
       border-top: none;	
-      border-bottom-left-radius: 4px;	
-      border-bottom-right-radius: 4px;	
+      border-bottom-left-radius: calculateRem(4px);	
+      border-bottom-right-radius: calculateRem(4px);	
       background: $white-color;	
     }	
     .chevron-icon {	
-      height: 56px;	
-      width: 56px;	
-      margin: -16px -16px -16px 16px;	
+      height: calculateRem(56px);	
+      width: calculateRem(56px);	
+      margin: calculateRem(-16px) calculateRem(-16px) calculateRem(-16px) calculateRem(16px);	
       display: flex;	
       align-items: center;	
       justify-content: center;	
-      border-top-right-radius: 4px;	
-      border-bottom-right-radius: 4px;	
+      border-top-right-radius: calculateRem(4px);	
+      border-bottom-right-radius: calculateRem(4px);	
     }	
     .chevron.down.icon {	
       height: auto;	
     }	
     .accordion {	
       .active.title {	
-        border: 1px solid $primary-200;	
+        border: calculateRem(1px) solid $primary-200;	
         border-bottom: none;	
-        background-color: #F3F8FF;	
+        background-color: var( --rc-F3F8FF);	
         font-weight: $font-weight-bold;	
       }	
       .content {	
-        border: 1px solid $primary-200;	
+        border: calculateRem(1px) solid $primary-200; 
         border-top: none;	
       }	
     }	

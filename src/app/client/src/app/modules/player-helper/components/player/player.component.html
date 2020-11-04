@@ -1,4 +1,28 @@
-<iframe #contentIframe id="contentPlayer" class="contentViewerIframeShadow" name="contentPlayer"></iframe>
-<app-content-rating #modal *ngIf="contentRatingModal &&  playerOption?.showContentRating && playerConfig"
-    [contentData]="playerConfig.metadata"></app-content-rating>
+<!-- Mobile browser player-->
+<div *ngIf="isMobileOrTab" >
+    <div data-ratio="16:9" class="player-thumbnail" appTelemetryInteract [telemetryInteractObject]="telemetryObject" [telemetryInteractEdata]="loadPlayerInteractEdata"
+    [ngStyle]="{'background': 'url(' + playerOverlayImage + ') center/cover no-repeat '}" *ngIf="showPlayIcon" id="contentPlayer" (click)="enablePlayer(false)">
+    <img class="play-icon" src="assets/images/play_circle.svg">
+  </div>
+  <div id="playerFullscreen" *ngIf="!showPlayIcon" > 
+    <img appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeButtonInteractEdata" (click)="closeFullscreen()" class="close-button" src="assets/images/close-Black.svg" alt="">
+    <iframe #contentIframe id="contentPlayer" class="contentViewerIframeShadow" name="contentPlayer"></iframe>
+  </div>
+</div>
+<!-- Portal player-->
+<div *ngIf="!isMobileOrTab">
+  <div class="d-flex flex-w-wrap sb-bg-color-white" [ngClass]="{'content-full-video': isFullScreenView}">
+    <div class="video-close-btn" (click)="closeContentFullScreen()" *ngIf="isFullScreenView">
+        <svg class="icon icon-svg--white">
+          <use xlink:href="assets/images/sprite.svg#close-button"></use>
+        </svg>
+    </div>
+  </div>
+    <!-- <div > -->
+    <iframe #contentIframe id="contentPlayer" class="contentViewerIframeShadow" [ngClass]="{'player-fullscreen': isFullScreenView}" name="contentPlayer"></iframe>
+</div>
+
+    <!--Rating popup -->
+<app-content-rating #modal *ngIf="contentRatingModal && playerConfig"
+    [contentData]="playerConfig.metadata" (closeModal)="closeModal()"></app-content-rating>
 <!-- <button class="sb-btn sb-btn-primary sb-btn-normal pull-right view-fullscreen"[ngClass]="{'d-none': !viewFullscreenBtn}" (click)="viewInFullscreen()" appTelemetryInteract [telemetryInteractEdata]="viewFullScreenIntractEdata" [telemetryInteractObject]="viewFullScreenIntractObject"> <i class="expand icon"></i> View Full Screen</button> -->

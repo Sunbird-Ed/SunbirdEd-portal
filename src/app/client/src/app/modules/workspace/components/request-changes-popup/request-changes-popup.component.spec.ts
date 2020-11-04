@@ -13,6 +13,8 @@ import { RequestChangesPopupComponent } from './request-changes-popup.component'
 import { WorkSpaceService } from './../../services';
 import { mockRes } from './request-change-pop.component.spec.data';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
+import { configureTestSuite } from '@sunbird/test-util';
+
 describe('RequestChangesPopupComponent', () => {
   let component: RequestChangesPopupComponent;
   let fixture: ComponentFixture<RequestChangesPopupComponent>;
@@ -81,6 +83,7 @@ describe('RequestChangesPopupComponent', () => {
   const navigationHelperServiceStub = {
     getPreviousUrl: () => ({})
 };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, SharedModule.forRoot(), CoreModule],

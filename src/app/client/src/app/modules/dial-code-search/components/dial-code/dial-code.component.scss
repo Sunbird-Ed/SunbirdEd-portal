@@ -1,52 +1,56 @@
+@import "variables";
+
+@import "./mixins/mixins";
+
 /*get dial code page responsive css*/
 .ui.footer.segment {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: white;
-    z-index: 989898;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: var(--white);
+  z-index: 989898;
 }
 .bars.icon.tablet.sunbird-hamburger-menu {
-    cursor: pointer;
-    position: absolute;
-    margin: 0;
-    padding-top: 0.5em;
-    opacity: .7;
-    -webkit-transition: opacity .1s ease;
-    transition: opacity .1s ease;
+  cursor: pointer;
+  position: absolute;
+  margin: 0;
+  padding-top: 0.5em;
+  opacity: 0.7;
+  -webkit-transition: opacity 0.1s ease;
+  transition: opacity 0.1s ease;
 }
 .get-page-background {
-  background: linear-gradient(-90deg, #5C8DB7, #91AECC);
+  background: linear-gradient(-90deg, var(--rc-5c8db7), var(--rc-91aecc));
   height: 100vh;
 }
 .dailcode-page-background {
-  background: #f9f9f9;
+  background: var(--rc-f9f9f9);
   height: 100vh;
 }
 .bars.icon.mobile.sunbird-hamburger-menu {
-    cursor: pointer;
-    position: absolute;
-    margin: 0;
-    padding-top: 1.5em; 
+  cursor: pointer;
+  position: absolute;
+  margin: 0;
+  padding-top: 1.5em;
 }
 .dial-section-header {
   margin-top: 3em;
 }
 .dail-section-meta {
-  color: white;
+  color: var(--white);
 }
 .ui.header.dial-section-header-text {
-  color:#fff;
+  color: var(--white);
 }
 .ui.header .sub.header.dial-section-subheader-text {
-  color: #fff;
-  font-size: 1rem;
+  color: var(--white);
+  font-size: calculateRem(16px);
 }
 .dial-section-input {
   margin-top: 10em;
 }
 .mobile-popup-dimmer {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(var(--rc-rgba-black), 0.5);
   display: none;
   position: fixed;
   top: 0;
@@ -64,141 +68,159 @@
     right: 0;
     transition: 0.75s ease;
     .download-mobile-app {
-      border-radius: 20px 20px 0 0;
+      border-radius: calculateRem(20px) calculateRem(20px) 0 0;
       position: absolute;
-      bottom: -20px;
-      padding: 32px 12px 0 12px;
-      background: #333333;
-      box-shadow: 0 20px 20px 10px rgba(0, 0, 0, 0.2);
-      max-width: 250px;
+      bottom: 0 !important;
+      padding: calculateRem(32px) calculateRem(12px) 0 calculateRem(12px);
+      background: var(--gray-800);
+      box-shadow: 0 calculateRem(20px) calculateRem(20px) calculateRem(10px) rgba(var(--rc-rgba-black), 0.2);
+      max-width: calculateRem(250px);
       right: 0;
       left: 0;
       margin: 0 auto;
-      transition: .75s ease-in-out;
-      img {
-        width: 120px;
-       }
-       .download-mobile-app-logo {
-        background: white;
-        color: black;
-        border-radius: 8px 8px 0 0;
-       }
-       .download-mobile-app-logo {
-        p {
-          font-size: 12px;
-          line-height: 16px;
-         }
-         label {
-          font-size: 12px;
-         }
-       }
-       label {
-        font-weight: bold;
-       }
-       .close-mobile-div {
+      transition: 0.75s ease-in-out;
+      .mobile-app-popup-close {
         position: absolute;
-        top: -10px;
-        right: -10px;
-        height: 30px;
-        width: 30px;
+        top: calculateRem(-15px);
+        right: calculateRem(15px);
+        width: calculateRem(25px);
+        height: calculateRem(25px);
+        background: var(--white);
+        margin: 0;
+        border-radius: calculateRem(25px);
+        z-index: 9999;
+        text-align: center;
+        cursor: pointer;
+        .icon {
+          margin: 0 !important;
+          color: var(--gray-400);
+        }
+      }
+      img {
+        width: calculateRem(120px);
+      }
+      .download-mobile-app-logo {
+        background: var(--white);
+        color: var(--black);
+        border-radius: calculateRem(8px) calculateRem(8px) 0 0;
+      }
+      .download-mobile-app-logo {
+        p {
+          font-size: calculateRem(12px);
+          line-height: calculateRem(16px);
+        }
+        label {
+          font-size: calculateRem(12px);
+        }
+      }
+      label {
+        font-weight: bold;
+      }
+      .close-mobile-div {
+        position: absolute;
+        top: calculateRem(-10px);
+        right: calculateRem(-10px);
+        height: calculateRem(30px);
+        width: calculateRem(30px);
         justify-content: center;
         align-items: center;
-        background: white;
+        background: var(--white);
         border-radius: 50%;
-        color: black;
-        border: 2px solid black;
+        color: var(--black);
+        border: calculateRem(2px) solid var(--black);
         padding: 0;
         margin: 0;
         outline: 0;
-       }
-       .close-mobile-div:hover, .download-mobile-app .close-mobile-div:focus {
-        background: white;
-       }
-       .close {
+      }
+      .close-mobile-div:hover,
+      .download-mobile-app .close-mobile-div:focus {
+        background: var(--white);
+      }
+      .close {
         line-height: normal;
-        margin: 0 0 2px 0 !important;
-       }
-       .mobile-circles {
+        margin: 0 0 calculateRem(2px) 0 !important;
+      }
+      .mobile-circles {
         position: absolute;
-        top: 10px;
+        top: calculateRem(10px);
         display: flex;
         align-items: center;
-        margin: 0 20px;
-       }
-       .mobile-circles .border-round {
-        background: #666666;
+        margin: 0 calculateRem(20px);
+      }
+      .mobile-circles .border-round {
+        background: var(--gray-400);
         border: none;
-       }
-       
-       .mobile-circles .border-r50 {
+      }
+
+      .mobile-circles .border-r50 {
         border-radius: 50%;
-       }
-       
-       .mobile-circles  .big-box {
-        height: 14px;
-        width: 14px;
-       }
-       
-       .mobile-circles  .oval-box {
-        height: 6px;
-        width: 76px;
-        border-radius: 3px;
-        margin-left: 10px;
-       }
-       
-       .mobile-circles .small-box {
-        height: 8px;
-        width: 8px;
-       }
-     }
-   }
- }
+      }
+
+      .mobile-circles .big-box {
+        height: calculateRem(14px);
+        width: calculateRem(14px);
+      }
+
+      .mobile-circles .oval-box {
+        height: calculateRem(6px);
+        width: calculateRem(76px);
+        border-radius: calculateRem(3px);
+        margin-left: calculateRem(10px);
+      }
+
+      .mobile-circles .small-box {
+        height: calculateRem(8px);
+        width: calculateRem(8px);
+      }
+    }
+  }
+}
 
 .bottom-0 {
   bottom: 0;
 }
-.dial-code-section-result{
+.dial-code-section-result {
   align-items: center !important;
-  .header{
+  .header {
     display: inline-flex;
     align-items: center;
   }
-  .header-label{
-    font-size: 12px;
+  .header-label {
+    font-size: calculateRem(12px);
   }
 }
-@media screen and  (min-width: 240px) and (max-width: 768px) {
+@media screen and (min-width: 240px) and (max-width: 768px) {
   .dial-section-input {
     margin-top: 2em;
   }
 }
-@media screen and  (min-width: 320px) and (max-width: 768px) {
+@media screen and (min-width: 320px) and (max-width: 768px) {
   .ui.header.dial-section-header-text {
     padding-top: 4em !important;
   }
 }
 .dial-code-section-bg {
-  //background: #fff;
+  //background: var(--white);
 }
 @media only screen and (max-width: 767px) {
-  .ui.container.public-responvive-container {    
-    margin-right: 0 !important; 
-  } 
+  .ui.container.public-responvive-container {
+    margin-right: 0 !important;
+  }
 }
 @media only screen and (min-width: 768px) {
   .closeBtn-dial-code {
-    float:right;
+    float: right;
   }
 }
-@media screen and  (min-width: 320px) and (max-width: 768px) {
+@media screen and (min-width: 320px) and (max-width: 768px) {
   .ui.small.header.popUp-dial-code-header {
     font-size: 1.2em;
   }
 }
-.menu-public-header{
-  border-top: 2px solid rgba(0,0,0,.13);
+.menu-public-header {
+  border-top: calculateRem(2px) solid rgba(var(--rc-rgba-black), 0.13);
 }
-@media screen and  (min-width: 240px) and (max-width: 767px) {
+@media screen and (min-width: 240px) and (max-width: 767px) {
   .mobile-popup-dimmer {
     display: block;
     .mobile-app-popup {
@@ -209,19 +231,73 @@
         margin: 0 auto;
         right: 0;
         left: 0;
-        box-shadow: 0 0 20px 10px rgba(0,0,0,.2);
-        height: 175px;
+        box-shadow: 0 0 calculateRem(20px) calculateRem(10px) rgba(var(--rc-rgba-black), 0.2);
+        height: calculateRem(185px);
         p {
           display: block !important;
         }
         .close-mobile-div {
           display: flex;
         }
-        .download-mobile-app-logo{
-          height: 145px;
+        .download-mobile-app-logo {
+          height: calculateRem(160px);
           overflow: hidden;
         }
       }
     }
   }
+}
+.sb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(252px, 1fr));
+  grid-gap: 1rem;
+  grid-row-gap: 1.5rem;
+  &--item {
+  }
+}
+
+.section-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  @include margin(1rem 0 0 0);
+  padding: 0px 0;
+  align-items: center;
+
+  .title {
+    font-family: inherit;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    flex: 1;
+    height: calculateRem(24px);
+    color: var(--primary-color);
+    font-size: calculateRem(18px);
+    font-weight: bold;
+    text-transform: capitalize;
+    line-height: calculateRem(26px);
+    display: flex;
+    align-items: center;
+
+    .badge {
+      display: inline-block;
+      background: var(--rc-d4d3d3);
+      color: var(--gray-800);
+      text-align: center;
+      padding: calculateRem(0px) calculateRem(12px);
+      border-radius: calculateRem(4px);
+      height: calculateRem(24px);
+      line-height: calculateRem(24px);
+      font-size: calculateRem(16px);
+      font-weight: normal;
+      margin-left: calculateRem(8px);
+    }
+  }
+}
+.sb-placeholder {
+  justify-content: center !important;
 }

@@ -1,12 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { configureTestSuite } from '@sunbird/test-util';
 import { ErrorPageComponent } from './error-page.component';
 import { RouterTestingModule } from '@angular/router/testing';
 
 describe('ErrorPageComponent', () => {
   let component: ErrorPageComponent;
   let fixture: ComponentFixture<ErrorPageComponent>;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ErrorPageComponent ],

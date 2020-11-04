@@ -360,10 +360,6 @@ export const Response = {
             'id': 'FLAG_REVIEWER'
           },
           {
-            'name': 'Announcement Sender',
-            'id': 'ANNOUNCEMENT_SENDER'
-          },
-          {
             'name': 'Flag Reviewer',
             'id': 'FLAG_REVIEWER '
           },

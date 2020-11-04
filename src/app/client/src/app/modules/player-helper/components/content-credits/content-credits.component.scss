@@ -1,14 +1,17 @@
+@import 'variables';
+@import "./mixins/mixins";
+
 .ui.popup::after {
-   background-color: #007AFF !important;
-   background:#007AFF !important
+   background-color: var(--rc-007AFF) !important;
+   background:var(--rc-007AFF) !important
 }
 .gray-shade {
-   margin: 10px -16px 0px -16px;
-   background: #f2f2f2;
-   padding-left: 16px;
+   margin: calculateRem(10px) calculateRem(-16px) 0px calculateRem(-16px);
+   background: var(--gray-0);
+   padding-left: calculateRem(16px);
    font: caption;
-   font-size: 15px;
+   font-size: calculateRem(15px);
    font-weight: bold;
-   padding-top: 5px;
-   padding-bottom: 7px;
+   padding-top: calculateRem(5px);
+   padding-bottom: calculateRem(7px);
 }

@@ -8,6 +8,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ResourceService, ConfigService, BrowserCacheTtlService } from '../../services';
 import { CacheService } from 'ng2-cache-service';
 import { Response } from './browser-compatibility.component.spec.data';
+import { configureTestSuite } from '@sunbird/test-util';
+import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 
 describe('BrowserCompatibilityComponent', () => {
   let component: BrowserCompatibilityComponent;
@@ -15,10 +17,16 @@ describe('BrowserCompatibilityComponent', () => {
   const mockDeviceDetector = {
     browser: 'chrome'
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SuiModule, HttpClientTestingModule],
+      imports: [SuiModule, TranslateModule.forRoot({
+         loader: {
+            provide: TranslateLoader,
+            useClass: TranslateFakeLoader
+         }
+      }),
+      HttpClientTestingModule],
       declarations: [BrowserCompatibilityComponent, CdnprefixPipe],
       providers: [ResourceService, DeviceDetectorService, ConfigService, CacheService, BrowserCacheTtlService]
     })

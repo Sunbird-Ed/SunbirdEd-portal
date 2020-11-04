@@ -1,8 +1,12 @@
 node_modules
+dist-cdn
+app_dist
+metadata.json
 dist
 coverage
 documentation
 thirdparty
+content-plugins
 mochawesome-report
 /.tmp
 /.sass-cache
@@ -12,5 +16,5 @@ mochawesome-report
 /src/app/.nyc_output
 /src/app/coverage
 .idea
-
-
+/src/app/helpers/devConfig.js
+/.vscode/launch.json

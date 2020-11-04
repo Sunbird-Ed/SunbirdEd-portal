@@ -9,6 +9,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import {CourseConsumptionService, CourseProgressService, CourseBatchService} from '@sunbird/learn';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { configureTestSuite } from '@sunbird/test-util';
+import { TelemetryService, TelemetryModule } from '@sunbird/telemetry';
 
 const resourceServiceMockData = {
   messages : {
@@ -29,7 +31,8 @@ const resourceServiceMockData = {
 class ActivatedRouteStub {
   snapshot = {
     params: {},
-    firstChild: { params : {}}
+    firstChild: { params : {}},
+    data: { telemetry: { env: 'explore', pageid: 'explore-course-toc', type: 'view'} },
   };
 }
 class MockRouter {
@@ -45,9 +48,10 @@ describe('PublicCourseConsumptionPageComponent', () => {
   let component: PublicCourseConsumptionPageComponent;
   let fixture: ComponentFixture<PublicCourseConsumptionPageComponent>;
   let activatedRouteStub, courseService, toasterService, courseConsumptionService, navigationHelperService;
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],
       declarations: [ PublicCourseConsumptionPageComponent ],
       providers: [{ provide: ActivatedRoute, useClass: ActivatedRouteStub },
         { provide: ResourceService, useValue: resourceServiceMockData },
@@ -95,5 +99,20 @@ describe('PublicCourseConsumptionPageComponent', () => {
     component.onShareLink();
     expect(component.sharelinkModal).toBe(true);
     expect(component.shareLink).toContain('explore-course/course/do_212347136096788480178');
+  });
+
+  it('should call closeSharePopup', () => {
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact');
+    component.closeSharePopup('do_121214221212');
+    expect(component.sharelinkModal).toBe(false);
+    expect(telemetryService.interact).toHaveBeenCalled();
+  });
+
+  it('should call logTelemetry', () => {
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact');
+    component.logTelemetry('do_121214221212');
+    expect(telemetryService.interact).toHaveBeenCalled();
   });
 });

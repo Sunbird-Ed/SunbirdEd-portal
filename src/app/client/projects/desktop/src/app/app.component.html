@@ -1,8 +1,0 @@
-<app-onboarding *ngIf="showOnboardingPopup"></app-onboarding>
-<div *ngIf="initApp && !showOnboardingPopup" class="footer-fix"
-    [ngClass]="{'loggedInUser': userService.loggedIn, 'guestUser': !userService.loggedIn}">
-    <app-desktop-header></app-desktop-header>
-    <app-desktop-app-update></app-desktop-app-update>
-    <router-outlet></router-outlet>
-</div>
-<app-footer *ngIf="!hideHeaderNFooter && !showOnboardingPopup"></app-footer>

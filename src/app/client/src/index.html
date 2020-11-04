@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr" data-theme="Default"  section-theme="learn" layout="">
 
 <head>
   <meta charset="utf-8">
   <title></title>
-  <base href="/">
+  <base href="/<%=slug%>">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon">
 </head>
@@ -12,6 +12,9 @@
 <body>
   <% if (userId) { %>
   <input type="hidden" id="userId" value="<%=userId%>" />
+  <% } %>
+  <% if (userSid) { %>
+  <input type="hidden" id="userSid" value="<%=userSid%>" />
   <% } %>
   <% if (sessionId) { %>
   <input type="hidden" id="sessionId" value="<%=sessionId%>" />
@@ -105,7 +108,46 @@
   <% if (deviceApi) { %>
     <input type="hidden" id="deviceApi" value="<%=deviceApi%>" />
   <% } %>
+  <% if (slugForProminentFilter) { %>
+    <input type="hidden" id="slugForProminentFilter" value="<%=slugForProminentFilter%>" />
+  <% } %>
+  <% if (collectionEditorURL) { %>
+    <input type="hidden" id="collectionEditorURL" value="<%=collectionEditorURL%>" />
+  <% } %>
+  <% if (contentEditorURL) { %>
+    <input type="hidden" id="contentEditorURL" value="<%=contentEditorURL%>" />
+  <% } %>
+  <% if (genericEditorURL) { %>
+    <input type="hidden" id="genericEditorURL" value="<%=genericEditorURL%>" />
+  <% } %>
+  <% if (botConfigured) { %>
+    <input type="hidden" id="isBotConfigured" value="<%=botConfigured%>" />
+  <% } %>
+  <% if (botServiceURL) { %>
+    <input type="hidden" id="botServiceURL" value="<%=botServiceURL%>" />
+  <% } %>
+  <% if (superAdminSlug) { %>
+    <input type="hidden" id="superAdminSlug" value="<%=superAdminSlug%>" />
+  <% } %>
+  <% if (p1reCaptchaEnabled == "true" || p1reCaptchaEnabled == true) { %>
+    <input type="hidden" id="p1reCaptchaEnabled" value="true" />
+  <% } else { %>
+      <input type="hidden" id="p1reCaptchaEnabled" value="false" />
+  <% } %> 
+  <% if (p2reCaptchaEnabled == "true" || p2reCaptchaEnabled == true) { %>
+    <input type="hidden" id="p2reCaptchaEnabled" value="true" />
+  <% } else { %>
+    <input type="hidden" id="p2reCaptchaEnabled" value="false" />
+  <% } %>
+  <% if (p3reCaptchaEnabled == "true" || p3reCaptchaEnabled == true) { %>
+    <input type="hidden" id="p3reCaptchaEnabled" value="true>" />
+  <% } else { %>
+    <input type="hidden" id="p3reCaptchaEnabled" value="false" />
+  <% } %>
+    <input type="hidden" id="enableSSO" value="<%=enableSSO%>" />
+  <% if (reportsListVersion) { %>
+  <input type="hidden" id="reportsListVersion" value="<%=reportsListVersion%>" />
+  <% } %>
   <app-root></app-root>
 </body>
-
 </html>

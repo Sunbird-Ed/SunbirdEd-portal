@@ -11,6 +11,8 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import {CourseConsumptionService, CourseProgressService, CourseBatchService} from '../../../services';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { configureTestSuite } from '@sunbird/test-util';
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 
 const enrolledCourse = {
   courseSuccessEnroll: {
@@ -65,15 +67,15 @@ describe('CourseConsumptionPageComponent', () => {
   let fixture: ComponentFixture<CourseConsumptionPageComponent>;
   let activatedRouteStub, courseService, toasterService, courseConsumptionService, courseBatchService, learnerService,
   navigationHelperService;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule, TelemetryModule.forRoot()],
       declarations: [ CourseConsumptionPageComponent ],
       providers: [{ provide: ActivatedRoute, useClass: ActivatedRouteStub },
         { provide: ResourceService, useValue: resourceServiceMockData },
         CourseConsumptionService,  { provide: Router, useClass: MockRouter },
-        CourseProgressService, CourseBatchService],
+        CourseProgressService, CourseBatchService, TelemetryService],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));
@@ -169,5 +171,19 @@ describe('CourseConsumptionPageComponent', () => {
     spyOn(component.unsubscribe$, 'complete');
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
+  });
+  it('should navigate to enroll course page if batch and autoEnroll available in queryParams', () => {
+    activatedRouteStub.snapshot.firstChild.params = {courseId: 'do_212347136096788480178', batchId: ''};
+    activatedRouteStub.snapshot.queryParams = {batch: 'do_112498388508524544160', autoEnroll: 'true'};
+    spyOn(learnerService, 'get').and.returnValue(of({}));
+    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
+    spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(of(enrolledBatch));
+    courseService.initialize();
+    component.ngOnInit();
+    const routedURL = ['learn/course/do_212347136096788480178/enroll/batch/do_112498388508524544160'];
+    const reqParams = {
+      queryParams: { autoEnroll: 'true' }
+    };
+    expect(component.router.navigate).toHaveBeenCalledWith(routedURL, reqParams);
   });
 });

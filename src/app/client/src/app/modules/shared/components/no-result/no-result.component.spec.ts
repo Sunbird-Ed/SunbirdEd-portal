@@ -3,6 +3,7 @@ import { NoResultComponent } from './no-result.component';
 import { SharedModule } from '@sunbird/shared';
 import { ResourceService } from '../../services/index';
 import { of } from 'rxjs';
+import { configureTestSuite } from '@sunbird/test-util';
 
 const data = {'message': 'messages.stmsg.m0007 ', 'messageText': 'messages.stmsg.m0006'};
 describe('NoResultComponent', () => {
@@ -15,6 +16,7 @@ describe('NoResultComponent', () => {
     },
     languageSelected$: of({})
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ SharedModule.forRoot() ],

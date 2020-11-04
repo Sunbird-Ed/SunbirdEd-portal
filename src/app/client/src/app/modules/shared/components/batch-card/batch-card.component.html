@@ -1,4 +1,4 @@
-<div class="ui link cards mb-24">
+<div class="link cards sb-card mb-24 mt-0">
   <div class="ui fluid card mouse-pointer">
     <div class="image" (click)="onAction(batch)" 
     appTelemetryInteract [telemetryInteractObject]="{id:batch.identifier,type:'CourseBatch',ver:'1.0'}" [telemetryInteractEdata]="{id:'batchId',type:'click',pageid:'course-batch'}">
@@ -20,6 +20,9 @@
       </i>
       <span *ngIf="batch.courseAdditionalInfo && batch.courseAdditionalInfo.courseName" class="batch-card-ellipsis batch-course-name w-200 fs-0-92" suiPopup popupText="{{batch.courseAdditionalInfo.courseName}}">
         {{resourceService.frmelmnts.lbl.courseName}}: {{batch.courseAdditionalInfo.courseName}}
+      </span>
+      <span *ngIf="batch?.courseDetails" class="batch-card-ellipsis batch-course-name w-100 fs-0-92" suiPopup popupText="{{batch?.courseDetails?.name}}">
+        {{batch?.courseDetails?.name}}
       </span>
     </div>
   </div>

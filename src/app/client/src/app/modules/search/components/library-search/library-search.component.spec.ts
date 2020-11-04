@@ -11,6 +11,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './library-search.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('LibrarySearchComponent', () => {
   let component: LibrarySearchComponent;
@@ -18,6 +19,7 @@ describe('LibrarySearchComponent', () => {
   let toasterService, userService, searchService, activatedRoute;
   const mockSearchData: any = Response.successData;
   let sendSearchResult = true;
+  let sendFormResult = true;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
     url = jasmine.createSpy('url');
@@ -30,7 +32,8 @@ describe('LibrarySearchComponent', () => {
     },
     frmelmnts: {
       lbl: {}
-    }
+    },
+    languageSelected$: of({})
   };
   class FakeActivatedRoute {
     queryParamsMock = new BehaviorSubject<any>({ subject: ['English'] });
@@ -46,6 +49,7 @@ describe('LibrarySearchComponent', () => {
     public changeQueryParams(queryParams) { this.queryParamsMock.next(queryParams); }
     public changeParams(params) { this.paramsMock.next(params); }
   }
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
@@ -65,6 +69,13 @@ describe('LibrarySearchComponent', () => {
     searchService = TestBed.get(SearchService);
     activatedRoute = TestBed.get(ActivatedRoute);
     sendSearchResult = true;
+    sendFormResult = true;
+    spyOn(searchService, 'getContentTypes').and.callFake((options) => {
+      if (sendFormResult) {
+        return of(Response.formData);
+      }
+      return throwError({});
+    });
     spyOn(searchService, 'contentSearch').and.callFake((options) => {
       if (sendSearchResult) {
         return of(mockSearchData);
@@ -93,7 +104,7 @@ describe('LibrarySearchComponent', () => {
     tick(100);
     expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
-    expect(component.contentList.length).toEqual(1);
+    expect(component.contentList.length).toEqual(2);
   }));
   it('should fetch content only once for when component displays content for the first time', fakeAsync(() => {
     component.ngOnInit();
@@ -101,7 +112,7 @@ describe('LibrarySearchComponent', () => {
     tick(100);
     expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
-    expect(component.contentList.length).toEqual(1);
+    expect(component.contentList.length).toEqual(2);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
   }));
   it('should fetch content once when queryParam changes after initial content has been displayed', fakeAsync(() => {
@@ -111,7 +122,7 @@ describe('LibrarySearchComponent', () => {
     expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
     activatedRoute.changeQueryParams({board: ['NCRT']});
     tick(100);
-    expect(component.contentList.length).toEqual(1);
+    expect(component.contentList.length).toEqual(2);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(2);
   }));
   it('should fetch content once when param changes after initial content has been displayed', fakeAsync(() => {
@@ -121,7 +132,7 @@ describe('LibrarySearchComponent', () => {
     expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
     activatedRoute.changeParams({pageNumber: 2});
     tick(100);
-    expect(component.contentList.length).toEqual(1);
+    expect(component.contentList.length).toEqual(2);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(2);
   }));
   it('should fetch content once when both queryParam and params changes after initial content has been displayed', fakeAsync(() => {
@@ -132,7 +143,7 @@ describe('LibrarySearchComponent', () => {
     activatedRoute.changeQueryParams({board: ['NCRT']});
     activatedRoute.changeParams({pageNumber: 2});
     tick(100);
-    expect(component.contentList.length).toEqual(1);
+    expect(component.contentList.length).toEqual(2);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(2);
   }));
   it('should trow error when fetching content fails even after getting hashTagId and filter data', fakeAsync(() => {
@@ -152,4 +163,29 @@ describe('LibrarySearchComponent', () => {
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
+
+  it('getOrderedData() should return empty[]', () => {
+    const contents: [] = component.getOrderedData([]);
+    expect(contents.length).toEqual(0);
+   });
+
+   it('getOrderedData() should return ordered empty[]', () => {
+    component.frameworkData = {board: ['Test 2']};
+    const contents: object[] = component.getOrderedData(Response.successData.result.content);
+    expect(contents.length).toEqual(2);
+    expect(contents[0]['board']).toEqual('Test 2');
+    expect(contents[1]['board']).toEqual('Test 1');
+   });
+
+  it('Should call searchservice -contenttypes and get error', fakeAsync(() => {
+    sendFormResult = false;
+    spyOn(toasterService, 'error').and.callFake(() => { });
+    component.ngOnInit();
+    component.getFilters([{ code: 'board', range: [{ index: 0, name: 'NCRT' }, { index: 1, name: 'CBSC' }] }]);
+    tick(100);
+    expect(component.dataDrivenFilters).toEqual({ board: 'NCRT' });
+    expect(component.showLoader).toBeFalsy();
+    expect(component.contentList.length).toEqual(2);
+    expect(toasterService.error).toHaveBeenCalled();
+  }));
 });

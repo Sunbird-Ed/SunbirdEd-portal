@@ -4,12 +4,17 @@ import { IdentifyAccountComponent } from './identify-account.component';
 import { CoreModule } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SharedModule, ResourceService } from '@sunbird/shared';
-import { TelemetryModule } from '@sunbird/telemetry';
+import {SharedModule, ResourceService, RecaptchaService, ToasterService} from '@sunbird/shared';
+import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { identifyAcountMockResponse } from './identify-account.component.spec.data';
+import { RecaptchaModule } from 'ng-recaptcha';
+import { By } from '@angular/platform-browser';
+import { RecaptchaComponent } from 'ng-recaptcha';
+import { configureTestSuite } from '@sunbird/test-util';
+
 describe('IdentifyAccountComponent', () => {
   let component: IdentifyAccountComponent;
   let fixture: ComponentFixture<IdentifyAccountComponent>;
@@ -53,12 +58,14 @@ describe('IdentifyAccountComponent', () => {
       this.queryParamsMock = params;
     }
   }
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [IdentifyAccountComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), FormsModule, ReactiveFormsModule, CoreModule, SharedModule.forRoot()],
-      providers: [RecoverAccountService,
+      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), FormsModule, ReactiveFormsModule, CoreModule,
+        SharedModule.forRoot(), RecaptchaModule],
+      providers: [RecoverAccountService, RecaptchaService, TelemetryService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         { provide: ResourceService, useValue: resourceServiceMockData }
@@ -67,8 +74,10 @@ describe('IdentifyAccountComponent', () => {
   }));
 
   beforeEach(() => {
+    spyOn(document, 'getElementById').and.returnValue({ value: '1234' });
     fixture = TestBed.createComponent(IdentifyAccountComponent);
     component = fixture.componentInstance;
+    component.isP1CaptchaEnabled = 'true';
     fixture.detectChanges();
   });
 
@@ -78,37 +87,62 @@ describe('IdentifyAccountComponent', () => {
 
   it('should move forward to the next step', () => {
     const recoverAccountService = TestBed.get(RecoverAccountService);
+    const telemetryService = TestBed.get(TelemetryService);
+    const recaptchaService = TestBed.get(RecaptchaService);
+    spyOn(recaptchaService, 'validateRecaptcha').and.returnValue(of(identifyAcountMockResponse.recaptchaResponse));
     spyOn(recoverAccountService, 'fuzzyUserSearch').and.returnValue(of(identifyAcountMockResponse.fuzzySuccessResponseWithCount));
     spyOn(component, 'navigateToNextStep').and.callThrough();
-    component.handleNext();
+    component.handleNext('mockcaptchaResponse');
     expect(component.navigateToNextStep).toHaveBeenCalledWith(identifyAcountMockResponse.fuzzySuccessResponseWithCount);
   });
 
   it('should not move forward to the next step', () => {
     const recoverAccountService = TestBed.get(RecoverAccountService);
+    const recaptchaService = TestBed.get(RecaptchaService);
     spyOn(recoverAccountService, 'fuzzyUserSearch').and.returnValue(of(identifyAcountMockResponse.fuzzySuccessResponseWithoutCount));
-    component.handleNext();
+    spyOn(recaptchaService, 'validateRecaptcha').and.returnValue(of(identifyAcountMockResponse.recaptchaResponse));
+    component.handleNext('mockcaptchaResponse');
     expect(component.identiferStatus).toBe('NOT_MATCHED');
     expect(component.nameNotExist).toBe(true);
   });
 
+  xit('should fail recaptcha validation failed', () => {
+    const recoverAccountService = TestBed.get(RecoverAccountService);
+    const recaptchaService = TestBed.get(RecaptchaService);
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'generateErrorEvent');
+    spyOn(recoverAccountService, 'fuzzyUserSearch').and.returnValue(of(identifyAcountMockResponse.fuzzySuccessResponseWithoutCount));
+    spyOn(recaptchaService, 'validateRecaptcha').and.returnValue(throwError(identifyAcountMockResponse.recaptchaErrorResponse));
+    component.handleNext('mockcaptchaResponse');
+    expect(telemetryService.generateErrorEvent).toHaveBeenCalledWith(identifyAcountMockResponse.telemetryLogError);
+  });
+
   it('should throw error if form fields are partially matched', () => {
     const recoverAccountService = TestBed.get(RecoverAccountService);
+    const recaptchaService = TestBed.get(RecaptchaService);
     spyOn(recoverAccountService, 'fuzzyUserSearch').and.callFake(() =>
       throwError(identifyAcountMockResponse.fuzzySearchErrorResponsePartial));
     spyOn(component, 'handleError').and.callThrough();
-    component.handleNext();
+    spyOn(recaptchaService, 'validateRecaptcha').and.returnValue(of(identifyAcountMockResponse.recaptchaResponse));
+    component.handleNext('mockcaptchaResponse');
     expect(component.identiferStatus).toBe('MATCHED');
     expect(component.handleError).toHaveBeenCalledWith(identifyAcountMockResponse.fuzzySearchErrorResponsePartial);
   });
 
   it('should throw error if form fields are not matched', () => {
     const recoverAccountService = TestBed.get(RecoverAccountService);
+    const recaptchaService = TestBed.get(RecaptchaService);
     spyOn(recoverAccountService, 'fuzzyUserSearch').and.callFake(() =>
       throwError(identifyAcountMockResponse.fuzzySearchErrorResponse));
-    component.handleNext();
+    spyOn(recaptchaService, 'validateRecaptcha').and.returnValue(of(identifyAcountMockResponse.recaptchaResponse));
+    component.handleNext('mockcaptchaResponse');
     expect(component.identiferStatus).toBe('NOT_MATCHED');
     expect(component.nameNotExist).toBe(true);
+  });
+
+  it('should load re-captcha when googleCaptchaSiteKey is provided', () => {
+    const recapta = fixture.debugElement.query(By.directive(RecaptchaComponent));
+    expect(recapta).toBeTruthy();
   });
 
 });

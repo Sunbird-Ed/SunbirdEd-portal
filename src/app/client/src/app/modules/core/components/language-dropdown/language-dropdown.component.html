@@ -1,8 +1,17 @@
-<div class="d-flex flex-ai-center language-selector" [class.sb-offline-language-selector]="isOffline">
-  <div class="computer only" *ngIf="!isOffline">{{resourceService.frmelmnts?.btn?.selectLanguage}} :&nbsp;</div>
-  <sui-select class="ui dropdown fsmall" (contextmenu)="false" [class.sb-color-primary]="isOffline" [(ngModel)]="selectedLanguage" (ngModelChange)="onLanguageChange($event)" labelField="label" valueField="value">
+
+<div *ngIf="!isLayoutAvailable()" class="d-flex flex-ai-center language-selector">
+  <div class="computer only fsmall">{{resourceService.frmelmnts?.btn?.selectLanguage}} :&nbsp;</div>
+  <sui-select class="ui dropdown fsmall" (contextmenu)="false" [(ngModel)]="selectedLanguage" (ngModelChange)="onLanguageChange($event)" labelField="label" valueField="value">
     <sui-select-option *ngFor="let option of languageRange" appTelemetryInteract
       [telemetryInteractEdata]="getTelemetryInteractEdata(option.value)" [value]="option">
     </sui-select-option>
   </sui-select>
 </div>
+
+
+ <!-- language dropdown -->
+ <sui-select *ngIf="isLayoutAvailable()" class="selection sbt-dropdown sbt-dropdown--md sbt-green sbt-dropdown-language sbt-dropdown-tick"[(ngModel)]="selectedLanguage" (ngModelChange)="onLanguageChange($event)" labelField="label" valueField="value">
+  <sui-select-option *ngFor="let option of languageRange" appTelemetryInteract
+    [telemetryInteractEdata]="getTelemetryInteractEdata(option.value)" [value]="option">
+  </sui-select-option>
+</sui-select>

@@ -1,0 +1,49 @@
+<app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration">
+
+</app-landing-section>
+
+<div [ngClass]="layoutConfiguration ? 'sbt-container relative9':''">
+  <div class="sb-pageSection my-24 ui container"
+    [appTelemetryImpression]="getTelemetryImpression({type: 'page-request'})">
+
+    <ng-container *ngIf="(reportsList$ | async ) as reportsList else loading">
+
+      <div class="sb-pageSection-content">
+
+        <ng-container *ngIf="reportsList.count > 0 else noResult">
+
+          <sui-tabset>
+            <div class="ui top attached tabular menu report-menu">
+              <a class="item" suiTabHeader="1"><i class="icon chart line alternate"></i> Reports</a>
+              <a *ngIf="reportService?.isUserReportAdmin()" class="item" suiTabHeader="2"><i
+                  class="icon download alternate"></i>Datasets</a>
+            </div>
+            <div class="ui bottom attached segment" suiTabContent="1">
+              <div class="ui bottom attached small p-0 b-0 no-bg py-24"
+                [appTelemetryImpression]="getTelemetryImpression({type: 'page-loaded', cdata: [{id: '' + reportsList.reportsArr.count, type: 'CountReports'}]})">
+                <table #all_reports class="sb-table sb-table-hover sb-table-striped sb-table-sortable width-100">
+                </table>
+              </div>
+            </div>
+
+            <div *ngIf="reportService?.isUserReportAdmin()" class="ui bottom attached segment" suiTabContent="2">
+              <div class="ui bottom attached small p-0 b-0 no-bg py-24"
+                [appTelemetryImpression]="getTelemetryImpression({type: 'page-loaded', cdata: [{id: '' + reportsList.datasetsArr.count, type: 'CountDatasets'}]})">
+                <table #all_datasets class="sb-table sb-table-hover sb-table-striped sb-table-sortable width-100">
+                </table>
+              </div>
+            </div>
+          </sui-tabset>
+        </ng-container>
+
+        <ng-template #noResult>
+          <app-no-result [data]="{messageText: noResultFoundError}"></app-no-result>
+        </ng-template>
+      </div>
+    </ng-container>
+
+    <ng-template #loading>
+      <app-loader></app-loader>
+    </ng-template>
+  </div>
+</div>

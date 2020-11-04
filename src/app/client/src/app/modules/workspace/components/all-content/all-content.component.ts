@@ -5,15 +5,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService, ISort } from '@sunbird/core';
 import {
-  ServerResponse, PaginationService, ConfigService, ToasterService,
+  ServerResponse, PaginationService, ConfigService, ToasterService, IPagination,
   ResourceService, ILoaderMessage, INoResultMessage, IContents, NavigationHelperService
 } from '@sunbird/shared';
 import { Ibatch, IStatusOption } from './../../interfaces/';
 import { WorkSpaceService } from '../../services';
-import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
+import { debounceTime, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-all-content',
@@ -199,13 +199,10 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
     this.redirectUrl = this.config.appConfig.allmycontent.inPageredirectUrl;
     observableCombineLatest(
       this.activatedRoute.params,
-      this.activatedRoute.queryParams,
-      (params: any, queryParams: any) => {
-        return {
-          params: params,
-          queryParams: queryParams
-        };
-      })
+      this.activatedRoute.queryParams).pipe(
+        debounceTime(10),
+        map(([params, queryParams]) => ({ params, queryParams })
+      ))
       .subscribe(bothParams => {
         if (bothParams.params.pageNumber) {
           this.pageNumber = Number(bothParams.params.pageNumber);
@@ -234,13 +231,12 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
       filters: {
         status: bothParams.queryParams.status ? bothParams.queryParams.status : preStatus,
         createdBy: this.userService.userid,
-        contentType: this.config.appConfig.WORKSPACE.contentType,
+        contentType: _.get(bothParams, 'queryParams.contentType') || this.config.appConfig.WORKSPACE.contentType,
         objectType: this.config.appConfig.WORKSPACE.objectType,
         board: bothParams.queryParams.board,
         subject: bothParams.queryParams.subject,
         medium: bothParams.queryParams.medium,
-        gradeLevel: bothParams.queryParams.gradeLevel,
-        resourceType: bothParams.queryParams.resourceType
+        gradeLevel: bothParams.queryParams.gradeLevel
       },
       limit: limit,
       offset: (pageNumber - 1) * (limit),
@@ -260,7 +256,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
           this.noResult = true;
           this.showLoader = false;
           this.noResultMessage = {
-            'messageText': 'messages.stmsg.m0126'
+            'messageText': 'messages.stmsg.m0006'
           };
         }
       },

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LayoutService } from '@sunbird/shared';
 
 @Component({
   selector: 'app-landing-page',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LandingPageComponent implements OnInit {
 
-  constructor() { }
+  layoutConfiguration;
+
+  constructor(public layoutService: LayoutService) { }
 
   ngOnInit() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
   }
 
 }

@@ -6,8 +6,10 @@ import { LearnerService, CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { mockResponse } from './content-badge.service.spec.data';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ContentBadgeService', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [CoreModule, SharedModule.forRoot(), HttpClientTestingModule],

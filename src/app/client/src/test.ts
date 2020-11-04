@@ -6,6 +6,7 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting
 } from '@angular/platform-browser-dynamic/testing';
+import { CsModule } from '@project-sunbird/client-services';
 
 declare const __karma__: any;
 declare const require: any;
@@ -19,7 +20,44 @@ getTestBed().initTestEnvironment(
 
 // then we find all the tests.
 const filterRegExp = (tags) ? new RegExp(tags, 'g') : /\.spec\.ts$/,
-    context = require.context('./', true, /\.spec\.ts$/),
-    specFiles = context.keys().filter(path => filterRegExp.test(path));
+  context = require.context('./app/', true, /\.spec\.ts$/),
+  specFiles = context.keys().filter(path => filterRegExp.test(path));
 // and load the modules.
 specFiles.map(context);
+
+if (!CsModule.instance.isInitialised) {
+  // Singleton initialised or not
+  CsModule.instance.init({
+    core: {
+      httpAdapter: 'HttpClientBrowserAdapter',
+      global: {
+        channelId: 'channelId', // required
+        producerId: 'ntp.sunbird.portal', // required
+        deviceId: 'e6733e8f13baae78077f91d3810fd8285' // required
+      },
+      api: {
+        host: document.location.origin, // default host
+        authentication: {
+          // userToken: string; // optional
+          // bearerToken: string; // optional
+        }
+      }
+    },
+    services: {
+      groupServiceConfig: {
+        apiPath: '/learner/group/v1',
+        dataApiPath: '/learner/data/v1/group',
+      },
+      userServiceConfig: {
+        apiPath: '/learner/user/v2',
+      },
+      formServiceConfig: {
+        apiPath: '/learner/data/v1/form',
+      },
+      courseServiceConfig: {
+        apiPath: '/learner/course/v1',
+        certRegistrationApiPath: '/learner/certreg/v2/certs'
+      }
+    }
+  });
+}

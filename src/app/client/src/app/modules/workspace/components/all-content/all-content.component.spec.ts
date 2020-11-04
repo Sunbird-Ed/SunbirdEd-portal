@@ -4,7 +4,7 @@ import { AllContentComponent } from './all-content.component';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService , DateFilterXtimeAgoPipe} from '@sunbird/shared';
+import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService } from '@sunbird/shared';
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
@@ -12,6 +12,10 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { Response } from './all-content.component.spec.data';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
+import { CoreModule } from '@sunbird/core';
+import { DateFilterXtimeAgoPipe } from './../../pipes';
+import { configureTestSuite } from '@sunbird/test-util';
+
 describe('AllContentComponent', () => {
   let component: AllContentComponent;
   let fixture: ComponentFixture<AllContentComponent>;
@@ -53,10 +57,11 @@ describe('AllContentComponent', () => {
     }
   };
   const bothParams = { 'params': { 'pageNumber': '1' }, 'queryParams': { 'sort_by': 'Updated On' } };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AllContentComponent],
-      imports: [HttpClientTestingModule, SharedModule.forRoot()],
+      declarations: [AllContentComponent, DateFilterXtimeAgoPipe],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ResourceService, ToasterService,

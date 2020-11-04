@@ -10,7 +10,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { serverRes } from './public-content-player.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { ContentManagerService } from '@sunbird/offline';
+import { configureTestSuite } from '@sunbird/test-util';
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
   events = observableOf({ id: 1, url: '/play', urlAfterRedirects: '/play' });
@@ -51,13 +51,14 @@ const resourceServiceMockData = {
 describe('PublicContentPlayerComponent', () => {
   let component: PublicContentPlayerComponent;
   let fixture: ComponentFixture<PublicContentPlayerComponent>;
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [CoreModule, SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule,
       TelemetryModule.forRoot()],
       declarations: [PublicContentPlayerComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [PublicPlayerService, ContentManagerService,
+      providers: [PublicPlayerService,
         ToasterService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: Router, useClass: RouterStub }]
@@ -136,5 +137,30 @@ describe('PublicContentPlayerComponent', () => {
         { textbook: fakeActivatedRoute.snapshot.queryParams.l1Parent }
     });
 
+  }));
+
+  it('should detect the device and rotate to landscape', () => {
+    component.isSingleContent = true;
+    component.isMobileOrTab = true;
+    component.deviceDetector();
+    expect(component.loadLandscapePlayer).toBe(false);
+  });
+
+  it('should detect the device and rotate to landscape if not a single content', () => {
+    component.isSingleContent = false;
+    component.isMobileOrTab = true;
+    component.deviceDetector();
+    expect(component.loadLandscapePlayer).toBe(true);
+  });
+
+  it('should call deviceDetector', fakeAsync(() => {
+    component.dialCode = 'ABC123';
+    spyOn(component, 'deviceDetector');
+    setTimeout(()  => {
+      component.ngAfterViewInit();
+    }, 100);
+    tick(101);
+    expect(component.telemetryCdata).toEqual([{ 'type': 'DialCode', 'id': 'ABC123'}]);
+    expect(component.deviceDetector).toHaveBeenCalled();
   }));
 });

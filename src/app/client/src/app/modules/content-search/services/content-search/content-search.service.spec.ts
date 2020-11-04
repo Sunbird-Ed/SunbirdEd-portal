@@ -4,8 +4,10 @@ import { ContentSearchService } from './content-search.service';
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterModule, ActivatedRoute } from '@angular/router';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ContentSearchService', () => {
+  configureTestSuite();
   beforeEach(() =>  TestBed.configureTestingModule({
     imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterModule.forRoot([])],
   }));

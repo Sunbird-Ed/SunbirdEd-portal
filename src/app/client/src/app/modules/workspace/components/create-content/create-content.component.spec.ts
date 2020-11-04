@@ -9,6 +9,7 @@ import * as mockData from './create-content.component.spec.data';
 const testData = mockData.mockRes;
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
+import { configureTestSuite } from '@sunbird/test-util';
 describe('CreateContentComponent', () => {
   let component: CreateContentComponent;
   let fixture: ComponentFixture<CreateContentComponent>;
@@ -27,7 +28,7 @@ describe('CreateContentComponent', () => {
       }
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, SharedModule.forRoot(), HttpClientTestingModule, CoreModule, TelemetryModule],
@@ -46,18 +47,18 @@ describe('CreateContentComponent', () => {
 
   it('should set the role for content creation', () => {
     component.textBookRole = testData.workSpaceRole.textBookRole;
-    component.courseRole = testData.workSpaceRole.courseRole;
     component.lessonRole = testData.workSpaceRole.lessonRole;
     component.collectionRole = testData.workSpaceRole.collectionRole;
     component.lessonplanRole = testData.workSpaceRole.lessonplanRole;
     component.contentUploadRole = testData.workSpaceRole.lessonplanRole;
+    component.courseRole = testData.workSpaceRole.courseRole;
     component.ngOnInit();
     expect(component.textBookRole).toBeDefined();
-    expect(component.courseRole).toBeDefined();
     expect(component.lessonRole).toBeDefined();
     expect(component.collectionRole).toBeDefined();
     expect(component.lessonplanRole).toBeDefined();
     expect(component.contentUploadRole).toBeDefined();
+    expect(component.courseRole).toBeDefined();
     expect(component).toBeTruthy();
   });
 });

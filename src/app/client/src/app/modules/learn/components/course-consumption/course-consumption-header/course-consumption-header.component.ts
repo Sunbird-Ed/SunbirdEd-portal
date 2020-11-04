@@ -3,15 +3,17 @@ import { combineLatest as observableCombineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { CourseConsumptionService, CourseProgressService } from './../../../services';
-import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import { CoursesService, PermissionService, CopyContentService } from '@sunbird/core';
+import { CoursesService, PermissionService, CopyContentService, UserService } from '@sunbird/core';
 import {
   ResourceService, ToasterService, ContentData, ContentUtilsServiceService, ITelemetryShare,
   ExternalUrlPreviewService
 } from '@sunbird/shared';
-import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-import * as moment from 'moment';
+import { IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
+import * as dayjs from 'dayjs';
+import { GroupsService } from '../../../../groups/services/groups/groups.service';
+import { NavigationHelperService } from '@sunbird/shared';
 @Component({
   selector: 'app-course-consumption-header',
   templateUrl: './course-consumption-header.component.html',
@@ -33,12 +35,13 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
    * to show loader while copying content
    */
   showCopyLoader = false;
-  onPageLoadResume = true;
+  onPageLoadResume = false;
   courseInteractObject: IInteractEventObject;
-  resumeIntractEdata: IInteractEventEdata;
   @Input() courseHierarchy: any;
   @Input() enrolledBatchInfo: any;
-  enrolledCourse: boolean;
+  @Input() groupId: string;
+  @Input() showAddGroup = false;
+  enrolledCourse = false;
   batchId: any;
   dashboardPermission = ['COURSE_MENTOR'];
   courseId: string;
@@ -50,15 +53,31 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   public unsubscribe = new Subject<void>();
   batchEndDate: any;
   public interval: any;
+  telemetryCdata: Array<{}>;
+  enableProgress = false;
+  courseMentor = false;
+
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
     public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
     private courseProgressService: CourseProgressService, public contentUtilsServiceService: ContentUtilsServiceService,
-    public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService) {
+    public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService, private userService: UserService,
+    private telemetryService: TelemetryService, private groupService: GroupsService,
+    private navigationHelperService: NavigationHelperService) { }
 
+  showJoinModal(event) {
+    this.courseConsumptionService.showJoinCourseModal.emit(event);
   }
 
   ngOnInit() {
+    if (!this.courseConsumptionService.getCoursePagePreviousUrl) {
+      this.courseConsumptionService.setCoursePagePreviousUrl();
+    }
+    if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
+      this.courseMentor = true;
+    } else {
+      this.courseMentor = false;
+    }
     observableCombineLatest(this.activatedRoute.firstChild.params, this.activatedRoute.firstChild.queryParams,
       (params, queryParams) => {
         return { ...params, ...queryParams };
@@ -67,11 +86,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         this.batchId = params.batchId;
         this.courseStatus = params.courseStatus;
         this.contentId = params.contentId;
-        this.resumeIntractEdata = {
-          id: 'course-resume',
-          type: 'click',
-          pageid: 'course-consumption'
-        };
         this.courseInteractObject = {
           id: this.courseHierarchy.identifier,
           type: 'Course',
@@ -82,47 +96,58 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         }
         if (this.batchId) {
           this.enrolledCourse = true;
+          this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
         }
       });
-      this.interval = setInterval(() => {
-        if (document.getElementById('closebutton')) {
-          this.showResumeCourse = true;
-        } else {
-          this.showResumeCourse = false;
-        }
-      }, 500);
+    this.interval = setInterval(() => {
+      if (document.getElementById('closebutton')) {
+        this.showResumeCourse = true;
+      } else {
+        this.showResumeCourse = false;
+      }
+    }, 500);
   }
   ngAfterViewInit() {
     this.courseProgressService.courseProgressData.pipe(
       takeUntil(this.unsubscribe))
       .subscribe((courseProgressData) => {
-        this.enrolledCourse = true;
-        this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
-        this.lastPlayedContentId = courseProgressData.lastPlayedContentId;
-        if (!this.flaggedCourse && this.onPageLoadResume &&
-          !this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
-          this.onPageLoadResume = false;
-          this.showResumeCourse = false;
-          this.resumeCourse();
-        } else if (!this.flaggedCourse && this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
-          this.onPageLoadResume = false;
-          this.showResumeCourse = false;
-        } else {
-          this.onPageLoadResume = false;
+        if (this.batchId) {
+          this.enrolledCourse = true;
+          this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
+          this.lastPlayedContentId = courseProgressData.lastPlayedContentId;
+          if (!this.flaggedCourse && this.onPageLoadResume &&
+            !this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
+            this.onPageLoadResume = false;
+            this.showResumeCourse = false;
+            this.resumeCourse();
+          } else if (!this.flaggedCourse && this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
+            this.onPageLoadResume = false;
+            this.showResumeCourse = false;
+          } else {
+            this.onPageLoadResume = false;
+          }
         }
       });
+
+      this.courseConsumptionService.updateContentConsumedStatus.emit(
+        {
+          courseId: this.courseId,
+          batchId: this.batchId,
+          courseHierarchy: this.courseHierarchy
+         });
   }
 
   showDashboard() {
-    this.router.navigate(['learn/course', this.courseId, 'dashboard']);
+    this.router.navigate(['learn/course', this.courseId, 'dashboard', 'batches']);
+  }
+
+  // To close the dashboard
+  closeDashboard() {
+    this.router.navigate(['learn/course', this.courseId]);
   }
 
   resumeCourse(showExtUrlMsg?: boolean) {
-    const navigationExtras: NavigationExtras = {
-      queryParams: { 'contentId': this.lastPlayedContentId },
-      relativeTo: this.activatedRoute
-    };
-    this.router.navigate([this.courseId, 'batch', this.batchId], navigationExtras);
+    this.courseConsumptionService.launchPlayer.emit();
     this.coursesService.setExtContentMsg(showExtUrlMsg);
   }
 
@@ -164,9 +189,95 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.unsubscribe.complete();
   }
   getBatchStatus() {
-   if (this.enrolledBatchInfo.endDate) {
-    this.batchEndDate = moment(this.enrolledBatchInfo.endDate).format('YYYY-MM-DD');
+   /* istanbul ignore else */
+   if (_.get(this.enrolledBatchInfo, 'endDate')) {
+    this.batchEndDate = dayjs(this.enrolledBatchInfo.endDate).format('YYYY-MM-DD');
    }
-   return (this.enrolledBatchInfo.status === 2 && this.progress <= 100);
+   return (_.get(this.enrolledBatchInfo, 'status') === 2 && this.progress <= 100);
+  }
+
+  closeSharePopup(id) {
+    this.sharelinkModal = false;
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
+        cdata: this.telemetryCdata
+      },
+      edata: {
+        id: id,
+        type: 'click',
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'course-details',
+      },
+      object: {
+        id: _.get(this.courseHierarchy, 'identifier'),
+        type: _.get(this.courseHierarchy, 'contentType') || 'Course',
+        ver: `${_.get(this.courseHierarchy, 'pkgVersion')}` || `1.0`,
+        rollup: {l1: this.courseId}
+      }
+    };
+    this.telemetryService.interact(interactData);
+  }
+
+  logTelemetry(id, content?: {}) {
+    if (this.batchId) {
+      this.telemetryCdata = [{ id: this.batchId, type: 'courseBatch' }];
+    }
+    const objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, _.get(content, 'identifier'));
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'Course',
+        cdata: this.telemetryCdata || []
+      },
+      edata: {
+        id: id,
+        type: 'click',
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'course-consumption',
+      },
+      object: {
+        id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,
+        type: content ? _.get(content, 'contentType') : 'Course',
+        ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
+        rollup: this.courseConsumptionService.getRollUp(objectRollUp) || {}
+      }
+    };
+    this.telemetryService.interact(interactData);
+  }
+
+  addActivityToGroup() {
+    const isActivityAdded = _.find(_.get(this.groupService, 'groupData.activities'), {id: this.courseId});
+    if (_.get(this.groupService, 'groupData.isAdmin') && _.isEmpty(isActivityAdded)) {
+      const request = {
+        activities: [{ id: this.courseId, type: 'Course' }]
+      };
+      this.groupService.addActivities(this.groupId, request).subscribe(response => {
+        this.goBack();
+        this.toasterService.success(this.resourceService.messages.imsg.activityAddedSuccess);
+      }, error => {
+        this.goBack();
+        this.toasterService.error(this.resourceService.messages.stmsg.activityAddFail);
+      });
+    } else {
+      this.goBack();
+      isActivityAdded ? this.toasterService.error(this.resourceService.messages.emsg.activityAddedToGroup) :
+      this.toasterService.error(this.resourceService.messages.emsg.noAdminRole);
+    }
+  }
+
+  goBack() {
+    const previousPageUrl: any = this.courseConsumptionService.getCoursePagePreviousUrl;
+    this.courseConsumptionService.coursePagePreviousUrl = '';
+    if (!previousPageUrl) {
+      this.router.navigate(['/learn']);
+      return;
+    }
+    if (previousPageUrl.url.indexOf('/my-groups/') >= 0) {
+      this.navigationHelperService.goBack();
+    } else {
+      if (previousPageUrl.queryParams) {
+        this.router.navigate([previousPageUrl.url], {queryParams: previousPageUrl.queryParams});
+      } else {
+        this.router.navigate([previousPageUrl.url]);
+      }
+    }
   }
 }

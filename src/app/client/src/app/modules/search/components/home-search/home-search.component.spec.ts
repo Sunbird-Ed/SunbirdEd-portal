@@ -11,6 +11,7 @@ import { Response } from './home-search.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('HomeSearchComponent', () => {
   let component: HomeSearchComponent;
@@ -19,6 +20,7 @@ describe('HomeSearchComponent', () => {
   const mockSearchData: any = Response.successData;
   let sendEnrolledCourses = true;
   let sendSearchResult = true;
+  let sendFormResult = true;
   let sendFormApi = true;
 
   class RouterStub {
@@ -51,6 +53,7 @@ describe('HomeSearchComponent', () => {
     public changeQueryParams(queryParams) { this.queryParamsMock.next(queryParams); }
     public changeParams(params) { this.paramsMock.next(params); }
   }
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
@@ -73,6 +76,7 @@ describe('HomeSearchComponent', () => {
     coursesService = TestBed.get(CoursesService);
     sendEnrolledCourses = true;
     sendSearchResult = true;
+    sendFormResult = true;
     sendFormApi = true;
     toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error').and.callFake(() => {});
@@ -82,7 +86,13 @@ describe('HomeSearchComponent', () => {
       }
       return throwError({});
     });
-    spyOn(searchService, 'compositeSearch').and.callFake((options) => {
+    spyOn(searchService, 'getContentTypes').and.callFake((options) => {
+      if (sendFormResult) {
+        return of(Response.formData);
+      }
+      return throwError({});
+    });
+    spyOn(searchService, 'contentSearch').and.callFake((options) => {
       if (sendSearchResult) {
         return of(mockSearchData);
       }
@@ -129,41 +139,41 @@ describe('HomeSearchComponent', () => {
     expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
     expect(component.showLoader).toBeFalsy();
     expect(component.contentList.length).toEqual(1);
-    expect(searchService.compositeSearch).toHaveBeenCalledTimes(1);
+    expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
   }));
   it('should fetch content once when queryParam changes after initial content has been displayed', fakeAsync(() => {
     coursesService.initialize();
     component.ngOnInit();
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     tick(100);
-    expect(searchService.compositeSearch).toHaveBeenCalledTimes(1);
+    expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
     activatedRoute.changeQueryParams({board: ['NCRT']});
     tick(100);
     expect(component.contentList.length).toEqual(1);
-    expect(searchService.compositeSearch).toHaveBeenCalledTimes(2);
+    expect(searchService.contentSearch).toHaveBeenCalledTimes(2);
   }));
   it('should fetch content once when param changes after initial content has been displayed', fakeAsync(() => {
     coursesService.initialize();
     component.ngOnInit();
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     tick(100);
-    expect(searchService.compositeSearch).toHaveBeenCalledTimes(1);
+    expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
     activatedRoute.changeParams({pageNumber: 2});
     tick(100);
     expect(component.contentList.length).toEqual(1);
-    expect(searchService.compositeSearch).toHaveBeenCalledTimes(2);
+    expect(searchService.contentSearch).toHaveBeenCalledTimes(2);
   }));
   it('should fetch content once when both queryParam and params changes after initial content has been displayed', fakeAsync(() => {
     coursesService.initialize();
     component.ngOnInit();
     component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     tick(100);
-    expect(searchService.compositeSearch).toHaveBeenCalledTimes(1);
+    expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
     activatedRoute.changeQueryParams({board: ['NCRT']});
     activatedRoute.changeParams({pageNumber: 2});
     tick(100);
     expect(component.contentList.length).toEqual(1);
-    expect(searchService.compositeSearch).toHaveBeenCalledTimes(2);
+    expect(searchService.contentSearch).toHaveBeenCalledTimes(2);
   }));
   it('should trow error when fetching content fails even after getting hashTagId and filter data', fakeAsync(() => {
     coursesService.initialize();
@@ -183,4 +193,23 @@ describe('HomeSearchComponent', () => {
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
+  it('should redo layout on render', () => {
+    component.layoutConfiguration = {};
+    component.ngOnInit();
+    component.redoLayout();
+    component.layoutConfiguration = null;
+    component.ngOnInit();
+    component.redoLayout();
+  });
+  it('Should call searchservice -contenttypes and get error', fakeAsync(() => {
+    coursesService.initialize();
+    sendSearchResult = false;
+    component.ngOnInit();
+    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    tick(100);
+    expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
+    expect(component.showLoader).toBeFalsy();
+    expect(component.contentList.length).toEqual(0);
+    expect(toasterService.error).toHaveBeenCalled();
+  }));
 });

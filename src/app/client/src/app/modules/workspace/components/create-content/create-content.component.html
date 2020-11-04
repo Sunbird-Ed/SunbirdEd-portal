@@ -16,7 +16,7 @@
           </div>
           <div class="three wide column" *ngIf='permissionService.permissionAvailable' appPermission
             [permission]='courseRole'>
-            <div class="ui link card" routerLink="course" appTelemetryInteract
+            <div class="ui link card" routerLink="course" [queryParams]="{showFrameworkSelection: true}" appTelemetryInteract
               [telemetryInteractEdata]="{id:'createCourse',type:'click',pageid:'create-course'}">
               <div class="content">
                 <div class="textcontent">
@@ -78,6 +78,19 @@
                 <div class="textcontent">
                   <i class='my-icon upload icon'></i>
                   <span class="my-text">{{resourceService?.frmelmnts?.lbl?.contentupload}}</span>
+                </div>
+              </div>
+            </div>
+            <p class="workspaceinstuction">{{resourceService?.frmelmnts?.lbl?.contentuploaddescription}}</p>
+          </div>
+          <div class="three wide column" *ngIf='permissionService.permissionAvailable' appPermission
+            [permission]='contentUploadRole'>
+            <div class="ui link card" routerLink="../edit/editorforlargecontent/" appTelemetryInteract
+              [telemetryInteractEdata]="{id:'uploadContent',type:'click',pageid:'upload-content'}">
+              <div class="content">
+                <div class="textcontent">
+                  <i class='my-icon upload icon'></i>
+                  <span class="my-text">{{resourceService?.frmelmnts?.lbl?.contentuploadlarge}}</span>
                 </div>
               </div>
             </div>

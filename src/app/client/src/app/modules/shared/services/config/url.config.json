@@ -1,20 +1,46 @@
 {
   "params": {
     "userReadParam": {
-      "fields": "organisations,roles,locations"
+      "fields": "organisations,roles,locations,declarations"
     },
+    "LibrarySearchField": [
+      "name",
+      "appIcon",
+      "mimeType",
+      "gradeLevel",
+      "medium",
+      "board",
+      "subject",
+      "resourceType",
+      "contentType",
+      "organisation"
+    ],
+    "CourseSearchField": [
+      "name",
+      "appIcon",
+      "medium",
+      "subject",
+      "resourceType",
+      "contentType",
+      "organisation",
+      "topic",
+      "mimeType"
+    ],
     "programSearch": {
       "fields": "rootOrgId,rootOrgName"
     },
-    "contentGet": "identifier,copyrightYear,creator,body,editorState,templateId,template,gradeLevel,status,concepts,versionKey,name,appIcon,contentType,owner,domain,code,visibility,createdBy,description,language,mediaType,osId,languageCode,audience,ageGroup,attributions,artifactUrl,mimeType,medium,year,publisher,subject,author,flagReasons,flaggedBy,flags,createdOn,lastUpdatedOn,board,keywords,resourceType,framework,license,badgeAssertions,pkgVersion,contentCredits,attributions,channel,contributors,creators,streamingUrl,originData,copyright,questions,totalQuestions,totalScore,itemSetPreviewUrl",
+    "contentGet": "ageGroup,appIcon,artifactUrl,attributions,attributions,audience,author,badgeAssertions,board,body,channel,code,concepts,contentCredits,contentType,contributors,copyright,copyrightYear,createdBy,createdOn,creator,creators,description,displayScore,domain,editorState,flagReasons,flaggedBy,flags,framework,gradeLevel,identifier,itemSetPreviewUrl,keywords,language,languageCode,lastUpdatedOn,license,mediaType,medium,mimeType,name,originData,osId,owner,pkgVersion,publisher,questions,resourceType,scoreDisplayConfig,status,streamingUrl,subject,template,templateId,totalQuestions,totalScore,versionKey,visibility,year",
     "enrolledCourses": {
-      "fields": "contentType,topic,name,channel",
+      "fields": "contentType,topic,name,channel,mimeType,appIcon,gradeLevel,resourceType,identifier,medium,pkgVersion,board,subject",
       "batchDetails": "name,endDate,startDate,status,enrollmentType,createdBy,certificates"
     }
   },
   "URLS": {
     "LEARNER_PREFIX": "/learner/",
+    "DEVICE_PREFIX": "/device/",
+    "CERT_REG_PREFIX": "/certreg/",
     "CONTENT_PREFIX": "/content/",
+    "REPORT_PREFIX": "/report",
     "ELECTRON_DIALOG_PREFIX": "/dialog/",
     "PUBLIC_PREFIX": "/api/",
     "ACTION_PREFIX": "/action/",
@@ -24,10 +50,25 @@
     "RESOURCEBUNDLES_PREFIX": "resourcebundles/v1",
     "DEVICE_REGISTER": "v3/device/register/",
     "PAGE_PREFIX": "data/v1/page/assemble",
+    "DIAL_ASSEMBLE_PREFIX": "data/v1/dial/assemble",
+    "REPORT": {
+      "READ": "/get",
+      "LIST": "/list",
+      "UPDATE": "/update",
+      "PUBLISH": "/publish",
+      "RETIRE": "/retire",
+      "SUMMARY": {
+        "PREFIX": "/summary",
+        "CREATE": "/summary/create"
+      }
+    },
+    "DATASET": {
+      "READ": "/dataset/get"
+    },
     "RESOURCEBUNDLES": {
       "ENG": "/read"
     },
-    "REVIEW_COMMENT":{
+    "REVIEW_COMMENT": {
       "READ": "review/comment/v1/read/comment",
       "DELETE": "review/comment/v1/delete/comment",
       "CREATE": "review/comment/v1/create/comment"
@@ -36,7 +77,7 @@
       "SIGNUP": "user/v1/create",
       "TNC_ACCEPT": "user/v1/tnc/accept",
       "UPDATE_USER_PROFILE": "user/v1/update",
-      "GET_PROFILE": "user/v2/read/",
+      "GET_PROFILE": "user/v3/read/",
       "TENANT_LOGO": "get/tenant/logo",
       "SKILLS": "data/v1/skills",
       "ENDORSE_SKILLS": "user/v1/skill/endorse/add",
@@ -50,21 +91,37 @@
       "LOCATION_SEARCH": "data/v1/location/search",
       "TYPE": "user/v1/type/list",
       "VALIDATE_CERTIFICATE": "certreg/v1/certs/validate",
-      "DOWNLOAD_CERTIFICATE": "user/v1/certs/download",
+      "DOWNLOAD_CERTIFICATE": "certreg/v1/certs/download",
       "GET_USER_FEED": "user/v1/feed",
       "USER_MIGRATE": "user/v1/migrate",
-      "TNC_ACCEPT_LOGIN": "user/v2/accept/tnc"
+      "TNC_ACCEPT_LOGIN": "user/v2/accept/tnc",
+      "SIGN_UP_V4": "user/v4/create",
+      "SEARCH_USER": "user/v1/search",
+      "SWITCH_USER": "user/v1/switch",
+      "END_SESSION": "endSession",
+      "GET_MANAGED_USER": "user/v1/managed",
+      "USER_EXISTS_GET_USER_BY_KEY": "isUserExists/user/v1/get",
+      "USER_DECLARATION": "user/v1/declarations"
+    },
+    "CERTIFICATE": {
+      "FETCH_CERTIFICATES": "v1/certs/search",
+      "FETCH_USER": "v1/user/search",
+      "REISSUE_CERTIFICATE": "v1/cert/reissue",
+      "ADD_CERTIFICATE" : "v1/add/template"
     },
     "COMPOSITE": {
       "SEARCH": "composite/v1/search"
     },
-    "SYSTEM_SETTING":{
-      "CUSTODIAN_ORG":"data/v1/system/settings/get/custodianOrgId",
-      "COMMING_SOON_MESSAGE":"data/v1/system/settings/get/contentComingSoonMsg",
-      "TNC_CONFIG": "data/v1/system/settings/get/tncConfig"
+    "SYSTEM_SETTING": {
+      "CUSTODIAN_ORG": "data/v1/system/settings/get/custodianOrgId",
+      "COMMING_SOON_MESSAGE": "data/v1/system/settings/get/contentComingSoonMsg",
+      "TNC_CONFIG": "data/v1/system/settings/get/tncConfig",
+      "SSO_COURSE_SECTION": "data/v1/system/settings/get/ssoCourseSection",
+      "TENANT_CONFIG": "data/v1/system/settings/get",
+      "GOOGLE_RECAPTCHA": "data/v1/system/settings/get/googleReCaptcha"
     },
-    "COURSE_FRAMEWORK":{
-      "COURSE_FRAMEWORKID":"data/v1/system/settings/get/courseFrameworkId"
+    "COURSE_FRAMEWORK": {
+      "COURSE_FRAMEWORKID": "data/v1/system/settings/get/courseFrameworkId"
     },
     "COURSE": {
       "SEARCH": "course/v1/search",
@@ -74,7 +131,9 @@
       "GET_ENROLLED_COURSES": "course/v1/user/enrollment/list",
       "ENROLL_USER_COURSE": "course/v1/enrol",
       "RECOMMENDED_COURSE": "recommended/courses",
-      "UNENROLL_USER_COURSE":"course/v1/unenrol"
+      "UNENROLL_USER_COURSE": "course/v1/unenrol",
+      "GET_QR_CODE_FILE": "course/v1/qrcode/download",
+      "GET_REPORTS_METADATA": "course-reports/metadata"
     },
     "CONTENT": {
       "SEARCH": "content/v1/search",
@@ -94,25 +153,19 @@
       "UPDATE": "content/v3/update",
       "REVIEW": "content/v3/review",
       "HIERARCHY_ADD": "content/v3/hierarchy/add",
-      "HIERARCHY_REMOVE": "content/v3/hierarchy/remove"
+      "HIERARCHY_REMOVE": "content/v3/hierarchy/remove",
+      "COPY_AS_COURSE": "course/v1/create"
     },
     "DASHBOARD": {
       "ORG_CREATION": "dashboard/v1/creation/org",
       "ORG_CONSUMPTION": "dashboard/v1/consumption/org",
       "COURSE_PROGRESS": "dashboard/v1/progress/course",
       "COURSE_CONSUMPTION": "dashboard/v1/consumption/course",
-      "COURSE_PROGRESS_V2":"dashboard/v2/progress/course"
+      "COURSE_PROGRESS_V2": "dashboard/v2/progress/course"
     },
-    "DEVICE": {	
-      "REGISTER": "v3/device/register/",	
-      "PROFILE": "v3/device/profile/"	
-    },
-    "NOTES": {
-      "SEARCH": "notes/v1/search",
-      "CREATE": "notes/v1/create",
-      "UPDATE": "notes/v1/update",
-      "GET": "notes/v1/read",
-      "DELETE": "notes/v1/delete"
+    "DEVICE": {
+      "REGISTER": "register/",
+      "PROFILE": "profile/"
     },
     "ROLES": {
       "READ": "data/v1/role/read"
@@ -129,6 +182,7 @@
     "ADMIN": {
       "USER_SEARCH": "user/v1/search",
       "ORG_SEARCH": "org/v1/search",
+      "ORG_EXT_SEARCH": "org/v1/ext/search",
       "BULK": {
         "USERS_UPLOAD": "user/v2/upload",
         "ORGANIZATIONS_UPLOAD": "org/v1/upload",
@@ -183,19 +237,22 @@
     },
     "OTP": {
       "GENERATE": "otp/v1/generate",
-      "VERIFY": "otp/v1/verify"
+      "VERIFY": "otp/v1/verify",
+      "ANONYMOUS": {
+        "GENERATE": "anonymous/otp/v1/generate"
+      }
     },
     "OFFLINE": {
       "DOWNLOAD": "content/v1/download",
       "DOWNLOAD_LIST": "content/v1/download/list",
       "EXPORT": "content/v1/export",
-      "UPDATE":"content/v1/update",
+      "UPDATE": "content/v1/update",
       "APP_UPDATE": "desktop/v1/update",
-      "RESUME_IMPORT":"content/v1/import/resume",
-      "CANCEL_IMPORT":"content/v1/import/cancel",
-      "PAUSE_IMPORT":"content/v1/import/pause",
-      "RETRY_IMPORT":"content/v1/import/retry",
-      "REPORT_OTHER_ISSUE":"help/v1/report/issue",
+      "RESUME_IMPORT": "content/v1/import/resume",
+      "CANCEL_IMPORT": "content/v1/import/cancel",
+      "PAUSE_IMPORT": "content/v1/import/pause",
+      "RETRY_IMPORT": "content/v1/import/retry",
+      "REPORT_OTHER_ISSUE": "help/v1/report/issue",
       "READ_FAQ": "faqs/v1/read",
       "CREATE_USER": "desktop/user/v1/create",
       "UPDATE_USER": "desktop/user/v1/update",
@@ -204,13 +261,18 @@
       "LOCATION_READ": "data/v1/location/read",
       "APP_INFO": "app/v1/info",
       "SYSTEM_INFO": "desktop/v1/system-info",
-      "RESUME_DOWNLOAD":"content/v1/download/resume",
-      "CANCEL_DOWNLOAD":"content/v1/download/cancel",
-      "PAUSE_DOWNLOAD":"content/v1/download/pause",
-      "RETRY_DOWNLOAD":"content/v1/download/retry",
-      "DELETE_CONTENT":"content/v1/delete",
+      "RESUME_DOWNLOAD": "content/v1/download/resume",
+      "CANCEL_DOWNLOAD": "content/v1/download/cancel",
+      "PAUSE_DOWNLOAD": "content/v1/download/pause",
+      "RETRY_DOWNLOAD": "content/v1/download/retry",
+      "DELETE_CONTENT": "content/v1/delete",
       "TELEMTRY_INFO": "telemetry/v1/info",
-      "EXPORT_TELEMETRY": "telemetry/v1/export"
+      "EXPORT_TELEMETRY": "telemetry/v1/export",
+      "IMPORT_TELEMETRY": "telemetry/v1/import",
+      "IMPORT_TELEMETRY_LIST": "telemetry/v1/list",
+      "TELEMTRY_CONFIG": "telemetry/v1/config",
+      "TELEMETRY_IMPORT_RETRY": "telemetry/v1/import/retry",
+      "TELEMETRY_SYNC": "desktop/v1/sync"
     },
     "ACCOUNT_RECOVERY": {
       "FUZZY_SEARCH": "user/v1/fuzzy/search",
@@ -219,20 +281,21 @@
     "ELECTRON_DIALOG": {
       "CONTENT_IMPORT": "content/import",
       "CONTENT_EXPORT": "content/export",
-      "TELEMETRY_EXPORT": "telemetry/export"
+      "TELEMETRY_EXPORT": "telemetry/export",
+      "TELEMETRY_IMPORT": "telemetry/import"
     },
-    "CONTRIBUTION_PROGRAMS":{
+    "CONTRIBUTION_PROGRAMS": {
       "SEARCH": "program/v1/search"
     },
-    "ASSESSMENT": {	
-      "CREATE": "assessment/v3/items/create",	
-      "READ": "assessment/v3/items/read",	
+    "ASSESSMENT": {
+      "CREATE": "assessment/v3/items/create",
+      "READ": "assessment/v3/items/read",
       "UPDATE": "assessment/v3/items/update",
       "RETIRE": "assessment/v3/itemsets/retire"
-    },	
-    "ASSET": {	
-      "CREATE": "content/v3/create",	
-      "UPDATE": "content/v3/upload"	
+    },
+    "ASSET": {
+      "CREATE": "content/v3/create",
+      "UPDATE": "content/v3/upload"
     },
     "ITEMSET": {
       "CREATE": "itemset/v3/create",
@@ -240,6 +303,12 @@
       "READ": "itemset/v3/read",
       "RETIRE": "itemset/v3/retire",
       "REVIEW": "itemset/v3/review"
+    },
+    "RECAPTCHA": {
+      "VALIDATE": "/validate/recaptcha"
+    },
+    "TENANT_PREFERENCE" : {
+      "READ": "org/v2/preferences/read"
     }
   }
 }

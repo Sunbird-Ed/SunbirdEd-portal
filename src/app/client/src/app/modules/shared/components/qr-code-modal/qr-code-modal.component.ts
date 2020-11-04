@@ -2,15 +2,13 @@ import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/cor
 import { Router } from '@angular/router';
 import { ResourceService } from '../../services';
 import * as _ from 'lodash-es';
-import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-import { environment } from '@sunbird/environment';
+import { IInteractEventEdata } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-qr-code-modal',
   templateUrl: './qr-code-modal.component.html'
 })
 export class QrCodeModalComponent implements OnInit {
-  isOffline: boolean = environment.isOffline;
   @ViewChild('modal') modal;
   @Output() closeQrModal = new EventEmitter<any>();
   instance: string;
@@ -27,7 +25,7 @@ export class QrCodeModalComponent implements OnInit {
     this.closeDialCodeInteractEdata = {
       id: 'close-dial-code',
       type: 'click',
-      pageid: this.isOffline ? 'dial-code' : 'explore'
+      pageid: 'explore'
     };
   }
 
@@ -36,6 +34,7 @@ export class QrCodeModalComponent implements OnInit {
     if (!_.isEmpty(dialCode)) {
       this.setsubmitDialCodeInteractEdata(dialCodeVal);
       this.modal.approve();
+      sessionStorage.removeItem('l1parent');  // l1parent value is removed (SB-19982)
       this.router.navigate(['/get/dial/', dialCode]);
     }
   }

@@ -8,8 +8,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { serverRes } from './public-player.service.spec.data';
 import { UUID } from 'angular2-uuid';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('PublicPlayerService', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot(), RouterTestingModule],

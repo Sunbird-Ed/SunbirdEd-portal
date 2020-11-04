@@ -13,6 +13,7 @@ import { UserUploadComponent } from './user-upload.component';
 import { mockRes } from './user-upload.component.spec.data';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
 xdescribe('UserUploadComponent', () => {
   let component: UserUploadComponent;
   let fixture: ComponentFixture<UserUploadComponent>;
@@ -68,7 +69,7 @@ xdescribe('UserUploadComponent', () => {
       }
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UserUploadComponent],

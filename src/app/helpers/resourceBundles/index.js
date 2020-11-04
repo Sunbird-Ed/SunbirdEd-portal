@@ -81,5 +81,19 @@ module.exports = function (express) {
       }
     }
   })
+  router.get('/readLang/:lang?', compression(), (requestObj, responseObj, next) => {
+    var lang = requestObj.params['lang'] || envHelper.sunbird_default_language
+    console.log(lang);
+    try {
+      var bundles = JSON.parse(fs.readFileSync(path.join(__dirname, '/./../../resourcebundles/json/', lang + '.json')))
+      sendSuccessResponse(responseObj, 'api.resoucebundles.read', bundles, HttpStatus.OK)
+    } catch (err) {
+      if (err.code === 'ENOENT') {
+        sendErrorResponse(responseObj, 'api.resoucebundles.read', '', 404)
+      } else {
+        sendErrorResponse(responseObj, 'api.resoucebundles.read', '', 500)
+      }
+    }
+  })
   return router
 }

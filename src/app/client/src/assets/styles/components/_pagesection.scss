@@ -2,13 +2,13 @@
   .sb-pageSection-header {
     display: flex;
     align-items: center;
-    @include margin($sb-page-section-header-content-space);
+    margin : calculateRem(16px) 0 calculateRem(16px) 0;
     &.sb-pageSection-header-compact{
-      @include margin($sb-page-section-header-content-space-compact);
+     margin: 0 0 calculateRem(8px) 0 ;
     }
   }
   .sb-pageSection-title {
-    font-size: $h5-font-size;
+    font-size: calculateRem(16px);
     display: inline;
     font-weight: 600;
     line-height: normal;
@@ -20,12 +20,10 @@
     }
   }
   .sb-pageSection-footer {
-    color: $sb-page-sections-divider-color;
+    color: var(--gray-0);
   }
   .sb-cls-btn{
-    padding: $base-block-space;
-    // height: auto;
-    // cursor: pointer;
+    padding: calculateRem(8px);
     i.icon{
       margin-right: 0 !important;
     }

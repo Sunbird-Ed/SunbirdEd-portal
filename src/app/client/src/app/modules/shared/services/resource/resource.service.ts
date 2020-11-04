@@ -8,9 +8,10 @@ import { ConfigService } from './../config/config.service';
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UUID } from 'angular2-uuid';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import { CacheService } from 'ng2-cache-service';
 import * as _ from 'lodash-es';
+import { TranslateService, TranslateStore } from '@ngx-translate/core';
 /**
  * Service to fetch resource bundle
  */
@@ -43,13 +44,16 @@ export class ResourceService {
   // Observable navItem stream
   languageSelected$ = this._languageSelected.asObservable();
 
+  public RESOURCE_CONSUMPTION_ROOT = 'result.consumption.';
+
   /**
    * constructor
    * @param {ConfigService} config ConfigService reference
    * @param {HttpClient} http LearnerService reference
    */
-  constructor(config: ConfigService, http: HttpClient, private _cacheService: CacheService,
-    private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService) {
+  constructor(config: ConfigService, http: HttpClient,
+    private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
+    private translateService: TranslateService) {
     if (!ResourceService.singletonInstance) {
       this.http = http;
       this.config = config;
@@ -64,18 +68,13 @@ export class ResourceService {
   }
   public initialize() {
     const range  = {value: 'en', label: 'English', dir: 'ltr'};
-    this.getResource(this._cacheService.get('portalLanguage') || 'en', range);
+    this.getResource(this.cacheService.get('portalLanguage') || 'en', range);
+    this.translateService.setDefaultLang('en');
   }
   /**
    * method to fetch resource bundle
   */
   public getResource(language = 'en', range: any = {}): void {
-    const resourcebundles: any | null = this.cacheService.get('resourcebundles' + language);
-    if (resourcebundles) {
-      this.messages = resourcebundles.messages;
-      this.frmelmnts = resourcebundles.frmelmnts;
-      this.getLanguageChange(range);
-    } else {
       const option = {
         url: this.config.urlConFig.URLS.RESOURCEBUNDLES.ENG + '/' + language
       };
@@ -83,18 +82,13 @@ export class ResourceService {
         (data: ServerResponse) => {
           this.messages = _.merge({},  data.result.creation.messages, data.result.consumption.messages);
           this.frmelmnts = _.merge({}, data.result.creation.frmelmnts, data.result.consumption.frmelmnts);
-          this.cacheService.set('resourcebundles' + language, {
-            messages: this.messages,
-            frmelmnts: this.frmelmnts
-          }, {
-              maxAge: this.browserCacheTtlService.browserCacheTtl
-            });
           this.getLanguageChange(range);
         },
         (err: ServerResponse) => {
         }
       );
-    }
+      
+      this.translateService.use(language);
   }
   get(requestParam: RequestParam): Observable<any> {
     const httpOptions: HttpOptions = {
@@ -109,7 +103,12 @@ export class ResourceService {
         return observableOf(data);
       }));
   }
+  /**
+   * @description - Function to generate HTTP headers for API request
+   * @returns HttpOptions
+   */
   private getHeader(): HttpOptions['headers'] {
+    const _uuid = UUID.UUID();
     return {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -117,8 +116,9 @@ export class ResourceService {
       'X-Device-ID': 'X-Device-ID',
       'X-Org-code': '',
       'X-Source': 'web',
-      'ts': moment().format(),
-      'X-msgid': UUID.UUID()
+      'ts': dayjs().format(),
+      'X-msgid': _uuid,
+      'X-Request-ID': _uuid
     };
   }
   /**
@@ -129,6 +129,7 @@ export class ResourceService {
   }
 
   getLanguageChange(language) {
+    this.translateService.use(language.value);
     this._languageSelected.next(language);
   }
 }

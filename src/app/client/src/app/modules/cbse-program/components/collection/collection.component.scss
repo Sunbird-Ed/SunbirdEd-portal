@@ -1,23 +1,26 @@
 @import "variables";
 @import "mixins/mixins";
+
 // State Selection and Board Medium Selection CSS starts here
 .state-medium-container {
   position: relative;
-  height: 64px;
+  height: calculateRem(64px);
   z-index: 2;
   background: var(--white);
   &__dropdown {
     z-index: 1;
+    width: 100%;
+    max-width: calculateRem(210px);
   }
   &__separator {
-    border-left: 1px solid var(--gray-200);
-    height: ($base-block-space * 3);
-    margin: auto $base-block-space*2;
+    border-left: calculateRem(1px) solid var(--gray-200);
+    height: calculateRem(24px);
+    margin: auto calculateRem(16px);
   }
   &__medium {
     overflow-x: auto;
     overflow-y: hidden;
-    height: 64px;
+    height: calculateRem(64px);
   }
 }
 .ui.selection.dropdown.state-selection {
@@ -27,9 +30,9 @@
   align-items: center;
   border: 1px solid var(--primary-400);
   &:hover {
-    color: var(--blue);
+    color: var(--primary-400);
     box-sizing: border-box;
-    border-radius: 2px;
+    border-radius: calculateRem(2px);
   }
 }
 :host ::ng-deep {
@@ -37,7 +40,7 @@
     &.ui.selection.dropdown {
       &:hover,
       &.active {
-        background-color: #e5edf5;
+        background-color: var(--rc-E5EDF5)
       }
       &.active .menu {
         border-color: var(--primary-400);
@@ -54,17 +57,17 @@
 .sb-medium {
   width: 100%;
   &__pills-container {
-    min-height: 64px;
+    min-height: calculateRem(64px);
     .pill {
-      border: 1px solid var(--green);
-      color: var(--green);
+      border: calculateRem(1px) solid  var(--secondary-color);
+      color:  var(--secondary-color);
       cursor: pointer;
       &:hover {
-        background-color: var(--green);
+        background-color:  var(--secondary-color);
         color: var(--white);
       }
       &.active {
-        background-color: var(--green);
+        background-color:  var(--secondary-color);
         color: var(--white);
         cursor: pointer;
       }
@@ -73,16 +76,16 @@
   &__sb-pills-content {
     display: inline-flex;
     align-items: center;
-    padding: ($base-block-space * 2) 0;
+    padding: calculateRem(16px) 0;
     .pill {
       background-color: var(--white);
       white-space: nowrap;
       -webkit-appearance: none;
       text-overflow: ellipsis;
-      min-height: ($base-block-space * 4);
-      margin: 0px ($base-block-space/2) 0px ($base-block-space/2);
-      padding: ($base-block-space / 2) ($base-block-space);
-      border-radius: 2px;
+      min-height: calculateRem(32px);
+      margin: 0px calculateRem(4px) 0px calculateRem(4px);
+      padding: calculateRem(4px) calculateRem(8px);
+      border-radius: calculateRem(2px);
       text-transform: capitalize;
       text-decoration: none;
       text-align: center;
@@ -98,26 +101,26 @@
 }
 // State Selection and Board Medium Selection CSS ends here
 .sb-class {
-  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
-  background-color: #f2f2f2;
+  box-shadow: 0 calculateRem(2px) calculateRem(8px) 0 rgba(var(--rc-rgba-black), 0.2);
+  background-color: var(--gray-0);
   &__pills-container {
-    padding: $base-block-space 0;
+    padding: calculateRem(8px) 0;
   }
   &__pill {
     background-color: var(--white);
     white-space: nowrap;
     -webkit-appearance: none;
     text-overflow: ellipsis;
-    margin-right: $base-block-space;
+    margin-right: calculateRem(8px);
     text-transform: capitalize;
     text-decoration: none;
     text-align: center;
     display: inline-flex;
     align-items: center;
-    border-radius: ($base-block-space * 2);
-    padding: ($base-block-space / 2) ($base-block-space * 2);
+    border-radius: calculateRem(16px);
+    padding: calculateRem(4px) calculateRem(16px);
     color: var(--primary-400);
-    min-height: ($base-block-space * 4);
+    min-height: calculateRem(32px);
     font-size:calculateRem(14px);
     cursor: pointer;
     &:hover {
@@ -129,7 +132,7 @@
       color: var(--white);
     }
     &[aria-selected="true"] {
-      color: #111;
+      color: var(--black);
     }
   }
 }
@@ -139,11 +142,11 @@
   grid-gap: 1rem;
 }
 .sbcard {
-  width: 292px;
+  width: calculateRem(292px);
   max-width: 100%;
-  border-radius: 2px;
-  background-color: #ffffff;
-  // box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.16);
+  border-radius: calculateRem(2px);
+  background-color:var(--white);
+  // box-shadow: 0 2px 7px 0 rgba(var(--rc-rgba-black), 0.16);
   display: flex;
   flex-direction: column;
   cursor: pointer;
@@ -154,68 +157,68 @@
   }
   &:hover {
     transform: translate(0,-3px);
-    box-shadow: 0 2px 7px 0 rgba(0,0,0,.16);
+    box-shadow: 0 calculateRem(2px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.16);
   }
   @include respond-above(sm) {
-    border-radius: 2px;
-    // box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.16);
+    border-radius: calculateRem(2px);
+    // box-shadow: 0 2px 7px 0 rgba(var(--rc-rgba-black), 0.16);
     border-bottom: 0px solid $gray-0;
   }
   &__main_area {
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 8px;
-    height: 88px;
+    padding: calculateRem(8px);
+    height: calculateRem(88px);
   }
   .sbcard__img {  
     height: 100%;
     overflow: hidden;
-    margin-right: 8px;
-    flex: 0 0 72px;
+    margin-right: calculateRem(8px);
+    flex: 0 0 calculateRem(72px);
     img {
       width: 100%;
       height: 100%;
     }
     &--full-width {
-      flex: 0 0 80px;
+      flex: 0 0 calculateRem(80px);
     }
   }
   &__info {}
   &__title {
-    font-size: 14px;
-    margin-bottom: 4px;
+    font-size: calculateRem(14px);
+    margin-bottom: calculateRem(4px);
     line-height: normal;
   }
   &__meta1 {
-    color: #333;
-    font-size: 12px;
+    color:  var(--gray-800);
+    font-size: calculateRem(12px);
     display: inline-flex;
     align-items: center;
   }
   .dot-divider {
-    width: 4px;
-    height: 4px;
+    width: calculateRem(4px);
+    height: calculateRem(4px);
     border-radius: 100%;
-    background-color: #d8d8d8;
+    background-color: var(--rc-d8d8d8);
     display: inline-block;
-    margin: 0px 8px;
+    margin: 0px calculateRem(8px);
   }
   &__moreinfo {
-    border-top: 1px solid #e9e5e5;
-    border-radius: 0 0 2px 2px;
-    background-color: #fafafa;
+    border-top: calculateRem(1px) solid var(--rc-e9e5e5);
+    border-radius: 0 0 calculateRem(2px) calculateRem(2px);
+    background-color: var(--rc-FAFAFA);
     display: flex;
     flex-direction: row;
     align-items: stretch;
     justify-content: space-between;
-    padding: 8px;
-    min-height: 56px;
+    padding: calculateRem(8px);
+    min-height: calculateRem(56px);
   }
   &__meta2 {
-    color: #666666;
-    font-size: 12px;
-    line-height: 14px;
+    color:var(--gray-400);
+    font-size: calculateRem(12px);
+    line-height: calculateRem(14px);
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -233,29 +236,29 @@
   &__badge {
     display: flex;
     img {
-      width: 16px;
+      width: calculateRem(16px);
     }
   }
   &__type {
-    margin-left: 24px;
-    background: #999;
+    margin-left: calculateRem(24px);
+    background: var(--gray-200);
     position: relative;
-    height: 20px;
-    padding: 0 8px 0px 4px;
-    color: #fff;
-    margin-right: -8px;
-    font-size: 11px;
+    height: calculateRem(20px);
+    padding: 0 calculateRem(8px) 0px calculateRem(4px);
+    color: var(--white);
+    margin-right: calculateRem(-8px);
+    font-size: calculateRem(11px);
     display: flex;
     align-items: center;
     &:before {
       content: "";
       width: 0;
       height: 0;
-      border-width: 10px 5px;
+      border-width: calculateRem(10px) calculateRem(5px);
       border-style: solid;
-      border-color: #999 #999 #999 transparent;
+      border-color: var(--gray-200) var(--gray-200) var(--gray-200) transparent;
       position: absolute;
-      left: -10px;
+      left: calculateRem(-10px);
     }
   }
 }
@@ -266,15 +269,15 @@
 }
 // Overridden CSS
 .sb-btn-white {
-  box-shadow: 0 -1px 4px 0 rgba(0, 0, 0, 0.1), 0 3px 4px 0 rgba(0, 0, 0, 0.2);
-  border: 0px solid #ddd;
+  box-shadow: 0 calculateRem(-1px) calculateRem(4px) 0 rgba(var(--rc-rgba-black), 0.1), 0 calculateRem(3px) calculateRem(4px) 0 rgba(var(--rc-rgba-black), 0.2);
+  border: 0px solid var(--rc-dddddd);
 }
 .sb-pageSection-count {
-  background: #999;
+  background: var(--gray-200);
 }
 .copy-book {
-  width: 16px;
-  height: 16px;
+  width: calculateRem(16px);
+  height: calculateRem(16px);
   img {
     width: 100%;
     height: 100%;
@@ -294,15 +297,15 @@
 }
 
 .selected-board {
-  min-width: 88px;
-  border: 1px solid #024f9d;
-  border-radius: 3px;
-  min-height: 32px;
-  color: #024f9d;
-  font-size: 12px;
+  min-width: calculateRem(88px);
+  border: calculateRem(1px) solid var(--primary-400);
+  border-radius: calculateRem(3px);
+  min-height: calculateRem(32px);
+  color: var(--primary-400);
+  font-size: calculateRem(12px);
   display: flex;
   align-items: center;
-  padding: 8px;
+  padding: calculateRem(8px);
   cursor: pointer;
   justify-content: center;
 }

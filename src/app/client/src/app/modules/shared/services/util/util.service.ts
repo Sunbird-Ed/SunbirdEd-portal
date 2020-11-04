@@ -20,6 +20,13 @@ export class UtilService {
     }
     return UtilService.singletonInstance;
   }
+  public sortChildrenWithIndex(tree) {
+    if (!_.get(tree, 'children.length')) {
+        return tree;
+    }
+    tree.children = _.sortBy(tree.children.map(childNode => this.sortChildrenWithIndex(childNode)), ['index']);
+    return tree;
+  }
   getDataForCard(data, staticData, dynamicFields, metaData) {
     const list: Array<ICard> = [];
     _.forEach(data, (item, key) => {
@@ -290,4 +297,50 @@ export class UtilService {
       throw new Error('ERROR_PARSING_STRING');
     }
   }
+
+
+  /**
+   * Redirects to login page wth error message
+   */
+  redirectToLogin(errorMessage) {
+    window.location.href = '/redirect/login?error_message=' + errorMessage;
+  }
+
+  redirect(redirectUrl) {
+    window.location.href = redirectUrl;
+  }
+
+  processData(sections, keys) {
+    const facetObj = {};
+    _.forEach(sections, (section) => {
+      if (section && section.facets) {
+        _.forEach(section.facets, (facet) => {
+          if (_.indexOf(keys, facet.name) > -1) {
+            if (facetObj[facet.name]) {
+              facetObj[facet.name].push(...facet.values);
+            } else {
+              facetObj[facet.name] = [];
+              facetObj[facet.name].push(...facet.values);
+            }
+          }
+        });
+      }
+    });
+    return facetObj;
+  }
+
+  removeDuplicateData(data, key) {
+    return _.uniqBy(data, key);
+  }
+
+  removeDuplicate(dataToProcess) {
+    const processedData = {};
+    let uniqueKey: string;
+    _.forEach(dataToProcess, (data, key) => {
+      uniqueKey = key === 'channel' ? 'identifier' : 'name';
+      processedData[key] = _.uniqBy(data, uniqueKey);
+    });
+    return processedData;
+  }
+
 }

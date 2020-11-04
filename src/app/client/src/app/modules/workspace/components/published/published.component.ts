@@ -1,16 +1,17 @@
+import { debounceTime, map } from 'rxjs/operators';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService, CoursesService } from '@sunbird/core';
 import {
-  ServerResponse, ConfigService, PaginationService,
+  ServerResponse, ConfigService, PaginationService, IPagination,
   IContents, ToasterService, ResourceService, ILoaderMessage, INoResultMessage,
   NavigationHelperService
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
-import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput } from '@sunbird/telemetry';
+import {combineLatest } from 'rxjs';
 
 /**
  * Interface for passing the configuartion for modal
@@ -123,6 +124,9 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
 	 * inviewLogs
 	*/
   inviewLogs = [];
+  queryParams: object;
+  query: string;
+  sort: object;
 
   /**
     * Constructor to create injected service(s) object
@@ -154,16 +158,33 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
   }
 
   ngOnInit() {
-    this.activatedRoute.params.subscribe(params => {
-      this.pageNumber = Number(params.pageNumber);
-      this.fetchPublishedContent(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
-    });
-    this.isPublishedCourse();
+    combineLatest(
+      this.activatedRoute.params,
+      this.activatedRoute.queryParams).pipe(
+        debounceTime(100),
+        map(([params, queryParams]) => ({ params, queryParams })
+      ))
+      .subscribe(bothParams => {
+        if (bothParams.params.pageNumber) {
+          this.pageNumber = Number(bothParams.params.pageNumber);
+        }
+        this.queryParams = bothParams.queryParams;
+        this.query = this.queryParams['query'];
+        this.fetchPublishedContent(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber, bothParams);
+      });
+      this.isPublishedCourse();
   }
   isPublishedCourse() {
-    const searchParams = { status: ['Live'], contentType: ['Course'], params: { lastUpdatedOn: 'desc' } };
-    const inputParams = { params: '' };
-      this.searchService.searchContentByUserId(searchParams, inputParams).subscribe((data: ServerResponse) => {
+    const searchParams = {
+      filters: {
+        status: ['Live'],
+        createdBy: this.userService.userid,
+        contentType: ['Course'],
+        objectType: this.config.appConfig.WORKSPACE.objectType,
+      },
+      sort_by: { lastUpdatedOn: 'desc' }
+    };
+      this.searchService.compositeSearch(searchParams).subscribe((data: ServerResponse) => {
        if (data.result.content.length > 0) {
          this.showCourseQRCodeBtn = true;
        }
@@ -183,20 +204,38 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
   /**
     * This method sets the make an api call to get all Published content with page No and offset
     */
-  fetchPublishedContent(limit: number, pageNumber: number) {
+  fetchPublishedContent(limit: number, pageNumber: number, bothParams?: object) {
     this.showLoader = true;
     this.pageNumber = pageNumber;
     this.pageLimit = limit;
+    this.publishedContent = [];
+    this.totalCount = 0;
+    this.noResult = false;
+    if (bothParams['queryParams'].sort_by) {
+      const sort_by = bothParams['queryParams'].sort_by;
+      const sortType = bothParams['queryParams'].sortType;
+      this.sort = {
+        [sort_by]: _.toString(sortType)
+      };
+    } else {
+      this.sort = { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn };
+    }
     const searchParams = {
       filters: {
         status: ['Live'],
         createdBy: this.userService.userid,
-        contentType: this.config.appConfig.WORKSPACE.contentType,
         objectType: this.config.appConfig.WORKSPACE.objectType,
+        contentType: _.get(bothParams, 'queryParams.contentType') || this.config.appConfig.WORKSPACE.contentType,
+        mimeType: this.config.appConfig.WORKSPACE.mimeType,
+        board: bothParams['queryParams'].board,
+        subject: bothParams['queryParams'].subject,
+        medium: bothParams['queryParams'].medium,
+        gradeLevel: bothParams['queryParams'].gradeLevel
       },
       limit: this.pageLimit,
       offset: (this.pageNumber - 1) * (this.pageLimit),
-      sort_by: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
+      query: _.toString(bothParams['queryParams'].query),
+      sort_by: this.sort
     };
     this.loaderMessage = {
       'loaderMessage': this.resourceService.messages.stmsg.m0021,
@@ -295,7 +334,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
       return;
     }
     this.pageNumber = page;
-    this.route.navigate(['workspace/content/published', this.pageNumber]);
+    this.route.navigate(['workspace/content/published', this.pageNumber], { queryParams: this.queryParams });
   }
 
   ngAfterViewInit () {

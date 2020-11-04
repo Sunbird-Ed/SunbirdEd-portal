@@ -188,7 +188,7 @@ export class UserUploadComponent implements OnInit {
   public openImageBrowser(inputbtn: any) {
     this.bulkUploadError = false;
     this.bulkUploadErrorMessage = '';
-    inputbtn.click();
+    // inputbtn.click();
   }
 
   public redirect() {

@@ -6,7 +6,7 @@ import { ContentService } from './../content/content.service';
 import { UserService } from './../user/user.service';
 import { Injectable } from '@angular/core';
 import {
-  ConfigService, IUserData, ServerResponse,
+  ConfigService, IUserData, ServerResponse, UtilService,
   ContentDetails, PlayerConfig, ContentData, NavigationHelperService
 } from '@sunbird/shared';
 import { CollectionHierarchyAPI } from '../../interfaces';
@@ -31,7 +31,7 @@ export class PlayerService {
   previewCdnUrl: string;
   constructor(public userService: UserService, public contentService: ContentService,
     public configService: ConfigService, public router: Router, public navigationHelperService: NavigationHelperService,
-    public publicDataService: PublicDataService) {
+    public publicDataService: PublicDataService, private utilService: UtilService) {
       this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
       ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
   }
@@ -154,11 +154,13 @@ export class PlayerService {
       param: option.params
     };
     return this.publicDataService.get(req).pipe(map((response: ServerResponse) => {
+      if (response.result.content) {
+        response.result.content = this.utilService.sortChildrenWithIndex(response.result.content);
+      }
       this.collectionData = response.result.content;
       return response;
     }));
   }
-
   updateContentBodyForReviewer(data) {
     // data object is body of the content after JSON.parse()
     let parsedData;
@@ -200,7 +202,8 @@ export class PlayerService {
   playContent(content) {
     this.navigationHelperService.storeResourceCloseUrl();
     setTimeout(() => { // setTimeOut is used to trigger telemetry interact event as changeDetectorRef.detectChanges() not working.
-      if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+      if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection ||
+        _.get(content, 'metaData.mimeType') === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
         if (content.contentType !== this.configService.appConfig.PLAYER_CONFIG.contentType.Course) {
           this.router.navigate(['/resources/play/collection', content.identifier], {queryParams: {contentType: content.contentType}});
         } else if (content.batchId) {

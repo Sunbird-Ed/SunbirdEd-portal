@@ -1,0 +1,92 @@
+@import "variables";
+@import "mixins/mixins";
+
+.sb-graph-section{
+    border: calculateRem(1px) solid  var(--rc-dddddd);
+    padding: calculateRem(24px);
+    margin-top: calculateRem(24px);
+    background: var(--white);
+    box-shadow: 0 calculateRem(2px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.16);
+    border-radius: calculateRem(4px);
+    .sb-table-fixed .sb-table tbody td, .sb-table-fixed .sb-table-body td {
+        text-overflow: initial;
+        overflow: initial;
+        white-space: unset;
+    }
+}
+.sb-btn-normal i::after {
+    content: "\f019";
+    font-size: calculateRem(13px);
+    color: var(--white);
+}
+.no-bg {
+    background:none;
+}
+
+.dashboard-body-scroll{
+    display: flex;
+    align-items: flex-start;
+}
+
+
+.hawkeye-label {
+    line-height: normal;
+    border-radius: calculateRem(32px);
+    vertical-align: middle;
+}
+
+.sb-btn-normal i::after {
+    content: "" !important;
+    font-size: 0.8125rem;
+    color: var(--white);
+}
+.sb-sideview-tab-container{
+    background: inherit;
+}
+
+.content-header {
+    background: var(--rc-FAFAFA);
+    min-height: calculateRem(14px);
+      &__content{
+          display:flex;
+          align-items: center;
+          justify-content: space-between;
+          @include respond-below(sm) {
+            display: block;
+          }
+      }
+      &__title {
+          color: var(--primary-400);
+          font-size: calculateRem(18px);
+      }
+      
+      &__info {
+          color: var(--gray-800);
+          font-size: calculateRem(14px);
+      }
+      
+      .dot-divider {
+          width: ($base-block-space / 2);
+          height: ($base-block-space / 2);
+          border-radius: 100%;
+          background-color: var(--gray-800);
+          display: inline-block;
+          margin: 0px $base-block-space;
+      }
+    
+    @include respond-below(sm) {
+      &__buttons {
+        margin-top: calculateRem(8px);
+      }
+    }
+  }
+
+::ng-deep{
+    .sb-hawkeye-modal.sb-modal {
+        .ui.modal{
+            margin: 0 auto 0 !important;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    }
+}

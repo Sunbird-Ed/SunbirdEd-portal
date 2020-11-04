@@ -728,3 +728,19 @@ export const collectionTree = {
         'c_Sunbird_Dev_private_batch_count': 2,
         'board': 'CBSE'
     };
+
+export const telemetryErrorData = {
+    'context': {
+        'env': 'get'
+    },
+    'object': {
+        'id': undefined,
+        'type': '',
+        'ver': '1.0'
+    },
+    'edata': {
+        'err': '',
+        'errtype': 'SYSTEM',
+        'stacktrace': '{"message":"contentType field not available","type":"edit","pageid":"get","subtype":"paginate"}'
+    }
+};

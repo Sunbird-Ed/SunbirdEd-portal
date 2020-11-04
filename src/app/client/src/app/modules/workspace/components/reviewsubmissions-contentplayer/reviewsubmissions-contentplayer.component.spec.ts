@@ -10,7 +10,7 @@ import * as mockData from './reviewsubmissions-contentplayer.component.spec.data
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { TelemetryService } from '@sunbird/telemetry';
-
+import { configureTestSuite } from '@sunbird/test-util';
 
 const testData = mockData.mockRes;
 describe('ReviewsubmissionsContentplayerComponent', () => {
@@ -33,6 +33,7 @@ describe('ReviewsubmissionsContentplayerComponent', () => {
     },
     languageSelected$: observableOf({})
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],

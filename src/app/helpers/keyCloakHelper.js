@@ -9,11 +9,6 @@ const userHelper = require('./userHelper.js')
 let memoryStore = null;
 const logger = require('sb_logger_util_v2');
 
-if (envHelper.PORTAL_SESSION_STORE_TYPE === 'in-memory') {
-  memoryStore = new session.MemoryStore()
-} else {
-  memoryStore = cassandraUtils.getCassandraStoreInstance()
-}
 const getKeyCloakClient = (config, store) => {
   const keycloak = new Keycloak({ store: store || memoryStore }, config);
   keycloak.authenticated = authenticated;
@@ -41,17 +36,13 @@ const authenticated = function (request, next) {
   postLoginRequest.push(function (callback) {
     permissionsHelper.getCurrentUserRoles(request, callback)
   });
-  console.log('value of updateLoginTimeEnabled-->', envHelper.sunbird_portal_updateLoginTimeEnabled);
-  console.log('if condition value-->' + JSON.parse(envHelper.sunbird_portal_updateLoginTimeEnabled || 'false'));
   if (JSON.parse(envHelper.sunbird_portal_updateLoginTimeEnabled || 'false')) {
     postLoginRequest.push(function (callback) {
       userHelper.updateLoginTime(request, callback)
     });
   }
-  postLoginRequest.push(function (callback) {
-    telemetryHelper.logSessionStart(request, callback)
-  });
   async.series(postLoginRequest, function (err, results) {
+    telemetryHelper.logSessionStart(request);
     if (err) {
       logger.error({msg: 'error loggin in user', error: err});
       next(err, null);
@@ -61,6 +52,24 @@ const authenticated = function (request, next) {
     }
   })
 }
+
+const memoryType = envHelper.PORTAL_SESSION_STORE_TYPE;
+switch (memoryType) {
+  case 'in-memory':
+    memoryStore = new session.MemoryStore()
+    break;
+  case 'cassandra':
+    memoryStore = cassandraUtils.getCassandraStoreInstance();
+    break;
+  case 'redis':
+    const redisUtils = require('./redisUtil');
+    memoryStore = redisUtils.getRedisStoreInstance(session)
+    break;
+  default:
+    memoryStore = cassandraUtils.getCassandraStoreInstance()
+    break;
+}
+
 module.exports = {
   getKeyCloakClient,
   memoryStore

@@ -1,0 +1,31 @@
+@import "variables";
+@import "mixins/mixins";
+@import "pages/sbt-filter";
+
+:host ::ng-deep {
+  .ui.selection.sbt-dropdown.dropdown .menu>div .item {
+    color: var(--sbt-theme-purple-selectbox);
+    padding: 0.75rem 1.25rem !important;
+    font-size: 0.86rem;
+    position: relative;
+    cursor: pointer;
+    display: block;
+    border: none;
+    height: auto;
+    text-align: left;
+    border-top: none;
+    line-height: 1em;
+    text-transform: none;
+    box-shadow: none;
+    -webkit-touch-callout: none;
+  }
+  .ui.dropdown .menu div .active.item{
+      font-weight: 700 !important;
+  }
+  .ui.dropdown .menu>div .item:hover {
+    background: rgba(var(--rc-rgba-black), 0.05);
+  }
+  .ui.dropdown .menu div .selected.item, .ui.dropdown.selected{
+    font-weight: 700 !important;
+  }
+}

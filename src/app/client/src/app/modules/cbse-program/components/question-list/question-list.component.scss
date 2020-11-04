@@ -1,51 +1,57 @@
 @import "variables";
 @import 'mixins/mixins';
+
 .questionTab.button {
-    border-bottom: calculateRem(1px) solid #cecece;
+    border-bottom: calculateRem(1px) solid var(--rc-cecece);
 }
 
 .questionsMenu {
     overflow-y: auto;
-    max-height: 500px;
+    max-height: calculateRem(500px);
 }
 
 .emptyList {
     border: none;
 }
 
-i.icon.trash {
-    color: #FF6979;
-}
+i.icon {
+    &.trash {
+      color: var(--red-100);
+    }
+    &.expand {
+      color: var(--primary-color);
+    }
+  }
 
 .question-list {
     &__item {
-        border-bottom: calculateRem(1px) solid rgba(2, 79, 157, 0.09);
+        border-bottom: calculateRem(1px) solid rgba(var(--rc-rgba-primary), 0.09);
         label {
             font-weight: normal;
             font-size: calculateRem(12px);
         }
         &.active,
         &:hover {
-            background: #F3F8FF;
+            background: var(--rc-F3F8FF);
         }
         &.active {
             label {
                 font-weight: 700;
-                color: #024f9d;
+                color: var(--primary-color);
             }
         }
     }
 }
 
 .ckeditor-container {
-    border-left: calculateRem(1px) solid rgba(2, 79, 157, 0.09);
+    border-left: calculateRem(1px) solid rgba(var(--rc-rgba-primary), 0.09);
 }
 
 .practical-header {
     height: calculateRem(98px);
-    background: rgba(41, 114, 164, 0.05);
+    background: rgba(var(--rc-rgba-primary-300), 0.09);
     &__title {
-        max-width: 680px;
+        max-width: calculateRem(680px);
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -55,9 +61,9 @@ i.icon.trash {
             .sb-btn-file {
                 border-top: calculateRem(1px) solid var(--primary-200);
                 border-bottom: calculateRem(1px) solid var(--primary-200);
-                border-left: calculateRem(1px) solid #ddd;
-                border-right: calculateRem(1px) solid #ddd;
-                background: #E0F1FD;
+                border-left: calculateRem(1px) solid var(--rc-dddddd);
+                border-right: calculateRem(1px) solid var(--rc-dddddd);
+                background: var(--rc-E0F1FD);
                 color: var(--primary-400);
             }
             .sb-btn-submit {
@@ -78,16 +84,16 @@ i.icon.trash {
 
 .sb-field-group.textbook-edit {
     width: 100%;
-    max-width: 756px;
+    max-width: calculateRem(756px);
     textarea {
         height: calculateRem(56px);
         resize: none;
     }
     .characters-left {
         position: absolute;
-        bottom: $base-block-space;
-        right: $base-block-space;
-        color: $gray-400;
+        bottom: calculateRem(8px);
+        right: calculateRem(8px);
+        color: var(--gray-400);
         font-size: $font-size-xs;
     }
 }
@@ -110,11 +116,24 @@ i.icon.trash {
 
 .sb-btn-radius{
     border-radius:2rem;
-    box-shadow: 0 4px 4px 0 #C8D6EA;
+    box-shadow: 0 calculateRem(4px) calculateRem(4px) 0 var(--rc-C8D6EA);
 }
 
 .ckeditor-tool{
     &__answer{
-      border-bottom: 0.5px solid #e2e3e5;
+      border-bottom: calculateRem(0.5px) solid var(--rc-e2e3e5);
  }
 }
+  .questionTab.segment {
+    label {
+      font-size: calculateRem(12px);
+      font-weight: normal;
+    }
+    &:hover, &.active {
+      background-color: var(--primary-100);
+      color: var(--primary-100);
+      label {
+        font-weight: 700;
+      }
+    }
+  }

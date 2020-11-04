@@ -7,7 +7,7 @@ import {
   BatchListComponent, BatchPageSectionComponent, UpdateBatchComponent,
   UpforreviewContentplayerComponent, ReviewsubmissionsContentplayerComponent,
   FlagConentplayerComponent, PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
-  AllContentComponent, FlagReviewerComponent, CollaboratingOnComponent} from './components';
+  AllContentComponent, FlagReviewerComponent, CollaboratingOnComponent } from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 const telemetryEnv = 'workspace';
 const objectType = 'workspace';
@@ -49,7 +49,7 @@ const routes: Routes = [
             path: 'course', component: DataDrivenComponent,
             data: {
               telemetry: {
-                env: telemetryEnv, pageid: 'worksapce-create-course', subtype: 'paginate', uri: '/workspace/content/create/course',
+                env: telemetryEnv, pageid: 'workspace-create-course', subtype: 'paginate', uri: '/workspace/content/create/course',
                 type: 'view', mode: 'create', object: { type: objectType, ver: '1.0' }
               }, breadcrumbs: [{ label: 'Home', url: '/home' },
               { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
@@ -113,6 +113,10 @@ const routes: Routes = [
       {
         path: 'edit/generic/:contentId/:state/:framework/:contentStatus', component: GenericEditorComponent,
         canActivate: [AuthGuard], data: { roles: 'workspace' }
+      },
+      {
+        path: 'edit/editorforlargecontent', component: GenericEditorComponent,
+        canActivate: [AuthGuard], data: { roles: 'workspace' , isLargeFileUpload: true }
       },
       {
         path: 'edit/collection/:contentId/:type/:state/:framework',

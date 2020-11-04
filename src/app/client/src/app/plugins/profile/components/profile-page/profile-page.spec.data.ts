@@ -199,18 +199,18 @@ export const Response = {
                 ],
                 'approvedBy': null,
                 'channel': null,
-                'locationIds': [ ],
+                'locationIds': [],
                 'updatedDate': null,
                 'userId': '95e4942d-cbe8-477d-aebd-ad8e6de4bfc8',
                 'approvaldate': null,
                 'isDeleted': false,
                 'hashTagId': '0123653943740170242',
                 'isRejected': null,
-                'locations': [ ],
+                'locations': [],
                 'id': '01236538964903526421',
                 'position': 'ASD',
                 'isApproved': null,
-                'orgjoindate': '2017-10-31 10:47:05:089+0000',
+                'orgjoindate': '2018-10-31 10:47:05:089+0000',
                 'orgLeftDate': null
             }
         ],
@@ -271,7 +271,23 @@ export const Response = {
         'lastLoginTime': 1541747671701,
         'createdDate': '2017-10-31 10:47:05:083+0000',
         'createdBy': '5d7eb482-c2b8-4432-bf38-cc58f3c23b45',
-        'location': 'Bangalore'
+        'location': 'Bangalore',
+        'declarations': [
+            {
+                'persona': 'volunteer',
+                'errorType': null,
+                'orgId': '013016492159606784174',
+                'status': 'PENDING',
+                'info': {
+                    'declared-email': 'dev-user-10@yopmail.com',
+                    'declared-ext-id': 'EKL12345',
+                    'declared-phone': '8867003222',
+                    'declared-school-name': 'Ekstep dev school',
+                    'declared-school-udise-code': '12312312311',
+                    'type': 'Kendria Vidhyalaya 1'
+                }
+            }
+        ],
     },
     success: {
         'id': 'api.v1.search',
@@ -421,10 +437,248 @@ export const Response = {
         }, 'responseCode': 'OK',
         'result': {
             'courses': [
-                 {
+                {
                     'active': 'true', 'courseId': 'do_2123412199319552001265', 'courseName': '27-sept', 'status': 2,
                     'description': 'test', 'leafNodesCount': '0', 'progress': '0', 'userId': 'd5efd1ab-3cad-4034-8143-32c480f5cc9e'
-            }]
+                }]
         }
     },
+    othersCertificateData: {
+        'id': 'certs.v1.registry.search',
+        'ver': 'v1',
+        'ts': '1586785495276',
+        'params': null,
+        'responseCode': 'OK',
+        'result': {
+            'response': {
+                'content': [
+                    {
+                        '_source': {
+                            'data': {
+                                'badge': {
+                                    'name': 'Sunbird installation',
+                                    'issuer': {
+                                        'context': 'http://localhost:8080/_schemas/context.json',
+                                        'name': 'NIIT',
+                                    }
+                                },
+                                'issuedOn': '2019-08-31T12:52:25Z'
+                            },
+                            'jsonUrl': null,
+                            'isRevoked': false,
+                            'createdAt': 1586777261613,
+                            'pdfUrl': 'https://staging.ntp.net.in/certs/0125450863553740809/6854486a-29f8-4c53-8c2d-00e2f2506124.pdf',
+                            'id': 'id5dd24',
+                            'updatedAt': null
+                        },
+                        '_id': 'id5dd24',
+                        '_score': 8.958797
+                    }
+                ],
+                'count': 1
+            }
+        }
+    },
+    frameworkUpdateData: {
+        'gradeLevel': [
+            'Class 5'
+        ],
+        'subject': [
+            'English'
+        ],
+        'id': 'as_k-12',
+        'medium': [
+            'English'
+        ],
+        'board': [
+            'State (Assam)'
+        ]
+    },
+    userProfile: {
+        'identifier': '3730d46a-2f28-4b98-b39a-1b4bd440025f',
+        'thumbnail': null,
+        'profileVisibility': {
+            'lastName': 'public',
+        },
+        'updatedBy': '3730d46a-2f28-4b98-b39a-1b4bd440025f',
+        'externalIds': [],
+        'registryId': null,
+        'roleList': [
+            {
+                'name': 'Book Creator',
+                'id': 'BOOK_CREATOR'
+            }
+        ],
+        'rootOrgId': '0126632859575746566',
+        'organisations': [
+            {
+                'updatedBy': null,
+                'approvedBy': null,
+            }
+        ],
+        'maskedEmail': 'am********@tarento.com',
+        'tempPassword': null,
+        'email': 'am********@tarento.com',
+        'rootOrg': {
+            'dateTime': null,
+            'status': 1
+        },
+        'userName': 'amitkumar2045',
+        'userId': '3730d46a-2f28-4b98-b39a-1b4bd440025f',
+        'promptTnC': false,
+        'emailVerified': true,
+        'framework': {
+            'gradeLevel': [
+                'Class 5'
+            ],
+            'subject': [
+                'English'
+            ],
+            'id': [
+                'as_k-12'
+            ],
+            'medium': [
+                'Hindi'
+            ],
+            'board': [
+                'State (Assam)'
+            ]
+        }
+    },
+    tenantsList: [
+        {
+            'code': 'tenants',
+            'name': 'tenants',
+            'label': 'Tenants',
+            'range': [
+                {
+                    'label': 'Andhra Pradesh',
+                    'value': '01232241426855526450',
+                    'index': 1
+                },
+                {
+                    'label': 'CBSE',
+                    'value': '013016492159606784174',
+                    'index': 3
+                }
+            ]
+        }
+    ],
+    teacherDetailForm: [
+        {
+            'code': 'type',
+            'dataType': 'text',
+            'name': 'type',
+            'label': 'NCERT type',
+            'index': 1
+        },
+        {
+            'code': 'declared-phone',
+            'dataType': 'number',
+            'name': 'phone',
+            'label': 'Mobile Number',
+            'index': 2
+        },
+        {
+            'code': 'declared-email',
+            'dataType': 'text',
+            'name': 'email',
+            'label': 'Email Address',
+            'index': 3
+        },
+        {
+            'code': 'declared-school-name',
+            'dataType': 'text',
+            'name': 'school',
+            'label': 'Andhra pradesh School name',
+            'index': 4
+        },
+        {
+            'code': 'declared-school-udise-code',
+            'dataType': 'text',
+            'name': 'udiseId',
+            'label': 'Andhra pradesh UDISE ID',
+            'index': 5
+        },
+        {
+            'code': 'declared-ext-id',
+            'dataType': 'text',
+            'name': 'teacherId',
+            'label': 'Andhra pradesh teacher ID',
+            'index': 6
+        },
+        {
+            'code': 'tnc',
+            'dataType': 'text',
+            'name': 'tnc',
+            'description': '',
+            'index': 7
+        }
+    ],
+    finalDeclarationObjStructure: [
+        {
+            'label': 'NCERT type',
+            'value': 'Kendria Vidhyalaya 1',
+            'code': 'type',
+            'index': 1
+        },
+        {
+            'label': 'Mobile Number',
+            'value': '8867003222',
+            'code': 'declared-phone',
+            'index': 2
+        },
+        {
+            'label': 'Email Address',
+            'value': 'dev-user-10@yopmail.com',
+            'code': 'declared-email',
+            'index': 3
+        },
+        {
+            'label': 'Andhra pradesh School name',
+            'value': 'Ekstep dev school',
+            'code': 'declared-school-name',
+            'index': 4
+        },
+        {
+            'label': 'Andhra pradesh UDISE ID',
+            'value': '12312312311',
+            'code': 'declared-school-udise-code',
+            'index': 5
+        },
+        {
+            'label': 'Andhra pradesh teacher ID',
+            'value': 'EKL12345',
+            'code': 'declared-ext-id',
+            'index': 6
+        }
+    ],
+    svgCertificates: [
+        {
+            'identifier': '0fd2008f-b2a1-479f-ac98-0b5dfa9707e9',
+            'lastIssuedOn': '2020-08-20T06:26:01.423+0000',
+            'name': 'Course completion certificate prad',
+            'token': 'Y7N6F7'
+        }
+    ],
+    pdfCertificate: [
+        {
+            'id': '1d716558-b278-45e1-9c61-cf68b9f4a7ef',
+            'lastIssuedOn': '2020-07-15T05:37:21.874+0000',
+            'name': 'Course merit certificate',
+            'token': 'H3R7P4',
+            'url': 'https://staging.ntp.net.in/certs/0124784842112040965_0130645322226647040/3feb12d0-c65d-11ea-a42f-51f91f72670a.pdf'
+        }
+    ],
+    v1DownloadCertResponse: {
+        'id': 'api.certs.registry.download',
+        'ver': 'v1',
+        'ts': '1598879763488',
+        'params': null,
+        'responseCode': 'OK',
+        'result': {
+            'signedUrl': 'https://dikshastagingprivate.blob.core.windows.net/ntp-staging-e-credentials/0124784842112040965_0130645322226647040/3feb12d0-c65d-11ea-a42f-51f91f72670a.pdf?sv=2017-04-17&se=2020-08-31T13%3A26%3A03Z&sr=b&sp=r&sig=FA0x70%2B4HpfsT35jwdE5mgF/KXM0tfRbnCITt8797CQ%3D'
+        }
+    }
+
 };

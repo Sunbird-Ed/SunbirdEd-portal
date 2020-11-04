@@ -1,5 +1,6 @@
 'use strict'
-const express = require('express')
+const express = require('express');
+const gracefulShutdown = require('http-graceful-shutdown');
 const proxy = require('express-http-proxy')
 const session = require('express-session')
 const path = require('path')
@@ -46,17 +47,22 @@ const app = express()
 
 app.use(cookieParser())
 app.use(helmet())
-app.use(session({
-  secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
-  resave: false,
-  saveUninitialized: false,
-  store: memoryStore
-}))
 
-app.use(keycloak.middleware({ admin: '/callback', logout: '/logout' }))
-
-app.use('/announcement/v1', bodyParser.urlencoded({ extended: false }),
-  bodyParser.json({ limit: '10mb' }), require('./helpers/announcement')(keycloak)) // announcement api routes
+app.all([
+  '/learner/*', '/content/*', '/user/*', '/merge/*', '/action/*', '/courseReports/*', '/course-reports/*', '/admin-reports/*',
+  '/certreg/*', '/device/*', '/google/*', '/report/*', '/reports/*', '/v2/user/*', '/v1/sso/*', '/migrate/*', '/plugins/*', '/content-plugins/*',
+  '/content-editor/telemetry', '/collection-editor/telemetry', '/v1/user/*', '/sessionExpired', '/logoff', '/logout', '/assets/public/*', '/endSession',
+  '/sso/sign-in/*'
+],
+  session({
+    secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
+    resave: false,
+    cookie: {
+      maxAge: envHelper.sunbird_session_ttl 
+    },
+    saveUninitialized: false,
+    store: memoryStore
+  }), keycloak.middleware({ admin: '/callback', logout: '/logout' }));
 
 app.all('/logoff', endSession, (req, res) => {
   res.cookie('connect.sid', '', { expires: new Date() }); res.redirect('/logout')
@@ -70,13 +76,25 @@ app.all('/sessionExpired', endSession, (req, res) => {
   res.redirect(logoutUrl);
 })
 
+app.get('/endSession', endSession, (req, res) => {
+  delete req.session.userId;
+  res.cookie('connect.sid', '', { expires: new Date() });
+  res.status(200)
+  res.end()
+});
+
+// device routes
+require('./routes/deviceRoutes.js')(app);
+require('./routes/googleRoutes.js')(app);
+
 app.get('/health', healthService.createAndValidateRequestBody, healthService.checkHealth) // health check api
 
 app.get('/service/health', healthService.createAndValidateRequestBody, healthService.checkSunbirdPortalHealth)
 
 app.get("/latex/convert", latexService.convert);
 app.post("/latex/convert", bodyParser.json({ limit: '1mb' }), latexService.convert);
-app.post('/user/v2/accept/tnc', bodyParser.json({limit: '1mb'}), userService.acceptTnc);
+app.post('/user/v2/accept/tnc', bodyParser.json({ limit: '1mb' }), userService.acceptTnc);
+app.get('/user/v1/switch/:userId', bodyParser.json({ limit: '1mb' }), keycloak.protect(), userService.switchUser);
 
 require('./routes/desktopAppRoutes.js')(app) // desktop app routes
 
@@ -95,9 +113,12 @@ app.all(['/content-editor/telemetry', '/collection-editor/telemetry'], bodyParse
 
 require('./routes/learnerRoutes.js')(app) // learner api routes
 
+//cert-reg routes
+require('./routes/certRegRoutes.js')(app);
+
 app.all(['/content/data/v1/telemetry', '/action/data/v3/telemetry'], proxy(envHelper.TELEMETRY_SERVICE_LOCAL_URL, {
   limit: '50mb',
-  proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+  proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(envHelper.TELEMETRY_SERVICE_LOCAL_URL),
   proxyReqPathResolver: req => require('url').parse(envHelper.TELEMETRY_SERVICE_LOCAL_URL + telemetryEventConfig.endpoint).path
 }))
 
@@ -160,6 +181,7 @@ function runApp() {
       envHelper.defaultChannelId = _.get(channelData, 'result.response.content[0].hashTagId'); // needs to be added in envVariable file
       logger.info({ msg: `app running on port ${envHelper.PORTAL_PORT}` })
     })
+    handleShutDowns();
     portal.server.keepAliveTimeout = 60000 * 5;
   })
 }
@@ -198,4 +220,22 @@ process.on('uncaughtException', (err) => {
   console.log('Uncaught Exception', err)
   process.exit(1);
 });
+
+function handleShutDowns() {
+
+  const cleanup = signal => new Promise(async (resolve, reject) => { // close db connections
+    await frameworkAPI.closeCassandraConnections();
+    logger.info({ msg: `Closed db connection after ${signal} signal.` })
+    resolve();
+  });
+
+  gracefulShutdown(portal.server, {
+    signals: 'SIGINT SIGTERM',
+    timeout: 60 * 1000, // forcefully shutdown if not closed gracefully after 1 min
+    onShutdown: cleanup,
+    finally: () => logger.info({ msg: 'Server gracefully shut down.'}),
+    development: process.env.sunbird_environment === 'local' ? true : false, // in dev mode skip graceful shutdown 
+  });
+}
+
 exports.close = () => portal.server.close()

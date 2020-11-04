@@ -1,12 +1,13 @@
 @import "variables";
+@import "mixins/mixins";
 
 .review-comments-box {
     max-height: calc(100% - 4px);
     position: absolute;
-    top: 15px;
-    bottom: 18px;
-    left: 15px;
-    right: 15px;	
+    top: calculateRem(15px);
+    bottom: calculateRem(18px);
+    left: calculateRem(15px);
+    right: calculateRem(15px);	
 }
 .ui.dimmer{
     z-index: inherit;
@@ -17,32 +18,32 @@
     overflow-y: auto;
 }
 .reply-box{
-    height: 60px !important;
-    max-height: 60px !important;
-    min-height: 10px !important;
+    height: calculateRem(60px) !important;
+    max-height: calculateRem(60px) !important;
+    min-height: calculateRem(10px) !important;
     resize: none !important;
     padding-right: 2.67142857em !important;
-    border: 1px solid #9B9B9B !important;
-    border-radius: 4px !important;
+    border: calculateRem(1px) solid var(--rc-9b9b9b) !important;
+    border-radius: calculateRem(4px) !important;
 }
 .icon.sb-icon-send:before {
-    font-size: 18px;
+    font-size: calculateRem(18px);
     width: 1.671429em;
 }
 .sb-icon-comment:before {
-    font-size: 72px;
-    width: 72px;
+    font-size: calculateRem(72px);
+    width: calculateRem(72px);
     color: $secondary-color;
 }
 .icon.sb-icon-reviewer:before {
-    font-size: 30px;
-    color: $primary-color;
+    font-size: calculateRem(30px);
+    color: var(--primary-color);
 }
 textarea:focus+i.icon.sb-icon-send:before {
-    color: $primary-color;
+    color: var(--primary-color);
 }
 .ui.form textarea:focus {
-    border-color:$primary-color !important;
+    border-color:var(--primary-color) !important;
 }
 .comment:after {
     content: ""; 

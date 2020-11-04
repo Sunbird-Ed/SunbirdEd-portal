@@ -1,6 +1,9 @@
+@import 'variables';
+@import "./mixins/mixins";
+
   .btn-group {
     text-align: right;
-    margin-bottom: 8px;
+    margin-bottom: calculateRem(8px);
   }
   .btn-group button:first-child {
     border-right: none;
@@ -12,35 +15,35 @@
     margin-right: 0;
   }
   .btn-group button.active {
-    background: #024a93;
-    color: #ffffff;
+    background: var(--primary-color);
+    color: var(--white);
   }
 
   .custom-image img {
-    border: 1px dotted;
-    padding: 7px;
-    margin: 6px;
+    border: calculateRem(1px) dotted;
+    padding:calculateRem(7px);
+    margin: calculateRem(6px);
     cursor: pointer;
   }
 
   .resource-image {
-    height: 180px !important;
+    height: calculateRem(180px) !important;
   }
 
   .asset_container {
     overflow-y: auto;
     overflow-x: hidden;
-    min-height: 300px !important;
-    max-height: 300px !important;
-    padding: 5px;
+    min-height: calculateRem(300px) !important;
+    max-height: calculateRem(300px) !important;
+    padding: calculateRem(5px);
   }
 
   .insert-image-btn {
     position: absolute;
     z-index: 1;
-    left: 363px;
+    left: calculateRem(363px);
     background-color: transparent;
-    padding: 13px !important;
+    padding: calculateRem(14px) !important;
   }
 
   .insert-image-btn>.icon {
@@ -53,6 +56,6 @@
 
   .submit-btn {
     margin-left: auto;
-    padding-right: 16px;
-    margin-bottom: 16px;
+    padding-right: calculateRem(16px);
+    margin-bottom: calculateRem(16px);
   }

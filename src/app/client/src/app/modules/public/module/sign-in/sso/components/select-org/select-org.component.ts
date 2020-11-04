@@ -17,6 +17,9 @@ export class SelectOrgComponent implements OnInit, AfterViewInit {
   public tenantInfo: any = {};
   public disableSubmitBtn = true;
   public submitOrgInteractEdata;
+  enableSSO = (<HTMLInputElement>document.getElementById('enableSSO'))
+    ? (<HTMLInputElement>document.getElementById('enableSSO')).value || 'true' : 'true';
+
   constructor(private formService: FormService, public activatedRoute: ActivatedRoute, private tenantService: TenantService,
     public resourceService: ResourceService, public navigationhelperService: NavigationHelperService) { }
 

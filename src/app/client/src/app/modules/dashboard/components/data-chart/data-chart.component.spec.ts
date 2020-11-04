@@ -1,3 +1,5 @@
+import { DashboardModule } from '@sunbird/dashboard';
+import { CoreModule } from '@sunbird/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule } from '@sunbird/shared';
@@ -11,19 +13,26 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { By } from '@angular/platform-browser';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ReportService } from '../../services';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('DataChartComponent', () => {
     let component: DataChartComponent;
     let fixture: ComponentFixture<DataChartComponent>;
-
+    configureTestSuite();
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [DataChartComponent],
+            declarations: [],
+            schemas: [NO_ERRORS_SCHEMA],
             imports: [ChartsModule, SuiModule, ReactiveFormsModule, SharedModule.forRoot(), HttpClientTestingModule,
-                NgxDaterangepickerMd.forRoot(), TelemetryModule.forRoot(), RouterTestingModule],
-            providers: [{
+                NgxDaterangepickerMd.forRoot(), TelemetryModule.forRoot(), RouterTestingModule, CoreModule, DashboardModule],
+            providers: [ReportService, {
                 provide: ActivatedRoute, useValue: {
                     snapshot: {
+                        params: {
+                            reportId: '123'
+                        },
                         data: {
                             telemetry: { env: 'dashboard', pageid: 'org-admin-dashboard', type: 'view' }
                         }
@@ -65,20 +74,21 @@ describe('DataChartComponent', () => {
         expect(component.filters).toBe(mockChartData.chartConfig.filters);
         expect(spy).toHaveBeenCalled();
         expect(component.chartLabels).toEqual([
-            'class 2',
-            'class 3',
-            'class 4',
-            'class 5',
-            'class 6',
-            'class 7',
-            'class 8',
-            'class 9',
-            'class 10',
-            'class 1'
+            'Class 1',
+            'Class 2',
+            'Class 3',
+            'Class 4',
+            'Class 5',
+            'Class 6',
+            'Class 7',
+            'Class 8',
+            'Class 9',
+            'Class 10'
         ]);
         expect(component.datasets).toEqual([{
             label: 'Total number of QR codes',
             data: [
+                115,
                 1158,
                 3532,
                 980,
@@ -87,10 +97,10 @@ describe('DataChartComponent', () => {
                 737,
                 208,
                 819,
-                750,
-                115
+                750
             ],
-            hidden: false
+            hidden: false,
+            fill: true
         }]);
 
         expect(component.resultStatistics).toEqual({
@@ -114,14 +124,14 @@ describe('DataChartComponent', () => {
         expect(component.filtersFormGroup.controls).toBeTruthy();
     });
 
-    it('should should change selected filters value whenever any filter is changed', fakeAsync(() => {
+    it('should change selected filters value whenever any filter is changed', fakeAsync(() => {
         const spy = spyOn(component, 'getDataSetValue').and.callThrough();
         component.ngOnInit();
-        component.filtersFormGroup.get('Grade').setValue(['class 2']);
+        component.filtersFormGroup.get('Grade').setValue(['Class 2']);
         component.filtersFormGroup.get('Medium').setValue(['telugu']);
         tick(1000);
         expect(component.selectedFilters).toEqual({
-            'Grade': ['class 2'],
+            'Grade': ['Class 2'],
             'Medium': ['telugu']
         });
         expect(spy).toHaveBeenCalled();
@@ -145,11 +155,12 @@ describe('DataChartComponent', () => {
             'Number of QR codes with no linked content': '60'
         }]);
         expect(component.noResultsFound).toBe(false);
-        expect(component.chartLabels).toEqual(['class 2']);
+        expect(component.chartLabels).toEqual(['Class 2']);
         expect(component.datasets).toEqual([{
             label: 'Total number of QR codes',
             data: [135],
-            hidden: false
+            hidden: false,
+            fill: true
         }]);
     }));
 
@@ -173,5 +184,90 @@ describe('DataChartComponent', () => {
         tick(1000);
         expect(component.filtersFormGroup.get('Grade').value).toEqual(['08-01-2019', '09-01-2019', '10-01-2019']);
     }));
+
+    describe('checkForStacking function', () => {
+
+        let mockchartOptions;
+
+        beforeEach(() => {
+            mockchartOptions = {
+                scales: {
+                    xAxes: [{
+                        stacked: true
+                    }],
+                    yAxes: [{
+                        stacked: true
+                    }]
+                }
+            };
+            component.chartOptions = mockchartOptions;
+        });
+
+        it('should return false is stacking is not enabled in bar chart ', () => {
+            component.chartType = 'bar';
+            component.chartOptions.scales.xAxes = [{}];
+            const result = component.checkForStacking();
+            expect(result).toBeDefined();
+            expect(result).toBeFalsy();
+
+        });
+
+        it('should return true is stacking is enabled in bar chart ', () => {
+            component.chartType = 'bar';
+            const result = component.checkForStacking();
+            expect(result).toBeDefined();
+            expect(result).toBeTruthy();
+        });
+
+        it('should return true is stacking is enabled for y axis in line chart', () => {
+            component.chartType = 'line';
+            const result = component.checkForStacking();
+            expect(result).toBeDefined();
+            expect(result).toBeTruthy();
+        });
+
+        it('should return false for all charts except bar or line', () => {
+            component.chartType = 'pie';
+            const result = component.checkForStacking();
+            expect(result).toBeDefined();
+            expect(result).toBeFalsy();
+        });
+    });
+
+    it('should set labels from datasets', () => {
+        component['setChartLabels']({ name: 2 });
+        expect(component.chartLabels).toEqual(['Name']);
+    });
+
+    it('should set labels from if present in the config (hard coded labels)', () => {
+        component.chartConfig.labels = ['test'];
+        component['setChartLabels']({ name: 2 });
+        expect(component.chartLabels).toEqual(['Test']);
+    });
+
+    it('should fill chart data with goal value', () => {
+        const input = [1, 2, 3];
+        const goalValue = 22;
+        const result = component['getGoalsDataset'](input, goalValue);
+        expect(result).toBeDefined();
+        expect(result).toEqual([22, 22, 22]);
+    });
+
+    it('should sort data in ascending order based on key', () => {
+        const inputData = [{ slug: 'ap' }, { slug: 'rj' }, { slug: 'gj' }];
+        const key = 'slug';
+        const result = component['sortData'](inputData, key);
+        expect(result).toBeDefined();
+        expect(result).toEqual([{ slug: 'ap' }, { slug: 'gj' }, { slug: 'rj' }]);
+    });
+
+    it('should sort data in ascending order based on Date key', () => {
+        const inputData = [{ slug: 'ap', date: '01-01-2018' }, { slug: 'rj', date: '01-02-2018' }, { slug: 'gj', date: '01-01-2017' }];
+        const key = 'date';
+        const result = component['sortData'](inputData, key);
+        expect(result).toBeDefined();
+        expect(result).toEqual([{ slug: 'gj', date: '01-01-2017' }, { slug: 'ap', date: '01-01-2018' },
+        { slug: 'rj', date: '01-02-2018' }]);
+    });
 
 });

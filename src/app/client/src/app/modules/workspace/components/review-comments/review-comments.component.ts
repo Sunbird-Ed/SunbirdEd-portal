@@ -63,7 +63,6 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
         (error) => this.toasterService.error(this.resourceService.messages.emsg.m0011));
   }
   ngOnChanges() {
-    console.log('stageId changed', this.stageId);
     if (!this.stageId) {
       this.disableTextArea = true;
     } else {

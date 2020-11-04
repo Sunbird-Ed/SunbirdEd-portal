@@ -1,20 +1,18 @@
-@import "radiobutton";
 // Checkbox
 $sb-checkbox-primary-background: $primary-color;
-$sb-checkbox-secondary-background: $secondary-100;
-$sb-checkbox-warning-background: $tertiary-100;
-$sb-checkbox-error-background: $red-100;
 $sb-radio-btn-primary-border: $primary-color;
-$sb-radio-btn-secondary-border: $secondary-100;
-$sb-radio-btn-warning-border: $tertiary-100;
-$sb-radio-btn-error-border: $red-100;
 $sb-checkbox-border-width: calculateRem(1px);
-$sb-checkbox-background-color: $secondary-100;
 $sb-checkbox-label-font-size: 0.8571rem;
 $sb-checkbox-border-radius: calculateRem(4px);
 $sb-checkbox-after-checked-color: $white-color;
 $sb-checkbox-before-checked-background-color: $white-color;
+
+// Radio buttons
+$sb-radio-btn-border: calculateRem(1px); //width of the border
+$sb-radio-btn-border-radius: 100%;
+$sb-radio-btn-disabled-opacity: 0.5;
 $sb-radio-btn-border-color: $primary-300;
+$sb-radio-btn-border-disabled-color: $gray-100;
 
 .sb-checkbox,
 .sb-radio-btn-checkbox {
@@ -24,19 +22,25 @@ $sb-radio-btn-border-color: $primary-300;
   backface-visibility: hidden;
   outline: 0;
   font-style: normal;
-  line-height: ($base-block-space * 2);
-  min-height: ($base-block-space * 2);
-  min-width: ($base-block-space * 2);
+  line-height: calculateRem(16px);
+  min-height: calculateRem(16px);
+  min-width: calculateRem(16px);
 
   label {
     cursor: pointer;
     position: relative;
     display: block;
-    padding-left: ($base-block-space * 3);
+    padding-left: calculateRem(24px);
     outline: 0;
     font-size: $sb-checkbox-label-font-size;
     font-weight: normal;
     margin-right: $base-block-space;
+    html[dir='rtl'] & {
+      padding-right: calculateRem(24px);
+      padding-left: 0;
+      margin-left: $base-block-space;
+      margin-right: 0;
+    }
   }
 
   label:before {
@@ -44,8 +48,12 @@ $sb-radio-btn-border-color: $primary-300;
     position: absolute;
     top: 0;
     left: 0;
-    width: ($base-block-space * 2);
-    height: ($base-block-space * 2);
+    html[dir='rtl'] & {
+      right: 0;
+      left:inherit;
+      }
+    width: calculateRem(16px);
+    height: calculateRem(16px);
     background: $sb-checkbox-before-checked-background-color;
     transition: border .1s ease, opacity .1s ease, transform .1s ease, box-shadow .1s ease, -webkit-transform .1s cubic-bezier(0.25, 0.1, 0.43, 0.82);
     border: $sb-checkbox-border-width solid $sb-radio-btn-border-color;
@@ -57,10 +65,14 @@ $sb-radio-btn-border-color: $primary-300;
     position: absolute;
     top: 0;
     left: 0;
+    html[dir='rtl'] & {
+    right: 0;
+    left:inherit;
+    }
     opacity: 0;
     z-index: 3;
-    width: $base-block-space * 2;
-    height: $base-block-space * 2;
+    width: calculateRem(16px);
+    height: calculateRem(16px);
   }
 
   [disabled="disabled"]+label,
@@ -83,28 +95,21 @@ $sb-radio-btn-border-color: $primary-300;
       background-color: $sb-checkbox-primary-background;
       border-color: $sb-radio-btn-primary-border;
     }
-  }
-
-  &.sb-checkbox-secondary {
-    input:checked~label:before {
-      background-color: $sb-checkbox-secondary-background;
-      border-color: $sb-radio-btn-secondary-border;
+    &.sb-checkbox-rightaligned {
+      input:checked~label {
+        color: $primary-color;
+      }
+      label {
+        padding: 0 calculateRem(24px) 0 0;
+        margin-right: 0;
+      }
+      label:before, input:checked~label:before, input:checked~label:after {
+        left: unset;
+        right: 0;
+      }
     }
   }
 
-  &.sb-checkbox-warning {
-    input:checked~label:before {
-      background-color: $sb-checkbox-warning-background;
-      border-color: $sb-radio-btn-warning-border;
-    }
-  }
-
-  &.sb-checkbox-error {
-    input:checked~label:before {
-      background-color: $sb-checkbox-error-background;
-      border-color: $sb-radio-btn-error-border;
-    }
-  }
 
   input:checked~label:before {
     background-color: $sb-checkbox-primary-background;
@@ -120,11 +125,14 @@ $sb-radio-btn-border-color: $primary-300;
     font-size: $sb-checkbox-label-font-size;
     top: 0;
     left: 0;
-    width: ($base-block-space * 2);
-    height: ($base-block-space * 2);
+    html[dir='rtl'] & {
+      right: 0;
+      left:inherit;
+      }
+    width: calculateRem(16px);
+    height: calculateRem(16px);
     text-align: center;
     opacity: 0;
-    // background-color: $sb-checkbox-background-color;
     color: $sb-checkbox-after-checked-color;
     transition: border .1s ease, opacity .1s ease, transform .1s ease, box-shadow .1s ease, -webkit-transform .1s ease;
   }
@@ -151,7 +159,7 @@ $sb-radio-btn-border-color: $primary-300;
 
   &.sb-radio-btn-primary {
     label:before {
-      border: 1px solid $sb-radio-btn-primary-border;
+      border: calculateRem(1px) solid $sb-radio-btn-primary-border;
     }
 
     input:checked~label:after {
@@ -159,36 +167,6 @@ $sb-radio-btn-border-color: $primary-300;
     }
   }
 
-  &.sb-radio-btn-secondary {
-    label:before {
-      border: 1px solid $sb-radio-btn-secondary-border;
-    }
-
-    input:checked~label:after {
-      background-color: $sb-checkbox-secondary-background;
-    }
-  }
-
-  &.sb-radio-btn-warning {
-    label:before {
-      border: 1px solid $sb-radio-btn-warning-border;
-    }
-
-    input:checked~label:after {
-      background-color: $sb-checkbox-warning-background;
-    }
-
-  }
-
-  &.sb-radio-btn-error {
-    label:before {
-      border: 1px solid $sb-radio-btn-error-border;
-    }
-
-    input:checked~label:after {
-      background: $sb-checkbox-error-background;
-    }
-  }
 
   label:before {
     border-radius: 50%;
@@ -211,60 +189,14 @@ $sb-radio-btn-border-color: $primary-300;
   }
 }
 
-.sb-chapterlist-modal {
-
-  .sb-checkbox label,
-  .sb-radio-btn-checkbox label {
-    padding-left: 0;
-    padding-right: 24px;
-    margin-bottom: 0;
-  }
-
-  .sb-checkbox label:before {
-    left: unset;
-    right: 0;
-  }
-
-  .sb-radio-btn-checkbox label {
-    &:before {
-      left: unset;
-      right: 0;
-    }
-
-    &:after {
-      left: unset;
-      right: 4px;
-    }
-  }
-
-  .chapter-lists--item {
-    .sb-radio-btn-checkbox label {
-
-      &::before,
-      &::after {
-        top: 50%;
-        transform: translateY(-50%);
-      }
-
-      &::before {
-        right: 16px;
-      }
-
-      &::after {
-        right: 20px;
-      }
-    }
-  }
-}
-
 .ui.checkbox {
-  font-size:14px;
+  font-size:calculateRem(14px);
 }
 
 [dir="rtl"] {
   .sb-radio-btn-checkbox label {
     padding-left: 0;
-    padding-right: ($base-block-space * 3);
+    padding-right: calculateRem(24px);
 
     &::before {
       left: unset;
@@ -273,7 +205,7 @@ $sb-radio-btn-border-color: $primary-300;
     
     &::after {
       left: unset;
-      right: 4px;
+      right: calculateRem(4px);
     }
   }
 }

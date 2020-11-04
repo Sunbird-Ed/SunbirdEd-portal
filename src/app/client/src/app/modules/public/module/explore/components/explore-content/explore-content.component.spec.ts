@@ -11,7 +11,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './explore-content.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { ContentManagerService } from '@sunbird/offline';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ExploreContentComponent', () => {
   let component: ExploreContentComponent;
@@ -20,6 +20,7 @@ describe('ExploreContentComponent', () => {
   const mockSearchData: any = Response.successData;
   let sendOrgDetails = true;
   let sendSearchResult = true;
+  let sendFormResult = true;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
     url = jasmine.createSpy('url');
@@ -41,7 +42,8 @@ describe('ExploreContentComponent', () => {
     },
     frmelmnts: {
       lbl: {}
-    }
+    },
+    languageSelected$: of({})
   };
   class FakeActivatedRoute {
     queryParamsMock = new BehaviorSubject<any>({ subject: ['English'] });
@@ -57,11 +59,12 @@ describe('ExploreContentComponent', () => {
     public changeQueryParams(queryParams) { this.queryParamsMock.next(queryParams); }
     public changeParams(params) { this.paramsMock.next(params); }
   }
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
       declarations: [ExploreContentComponent],
-      providers: [PublicPlayerService, ContentManagerService, { provide: ResourceService, useValue: resourceBundle },
+      providers: [PublicPlayerService, { provide: ResourceService, useValue: resourceBundle },
       { provide: Router, useClass: RouterStub },
       { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
@@ -78,9 +81,16 @@ describe('ExploreContentComponent', () => {
     activatedRoute = TestBed.get(ActivatedRoute);
     sendOrgDetails = true;
     sendSearchResult = true;
+    sendFormResult = true;
     spyOn(orgDetailsService, 'getOrgDetails').and.callFake((options) => {
       if (sendOrgDetails) {
         return of({hashTagId: '123'});
+      }
+      return throwError({});
+    });
+    spyOn(searchService, 'getContentTypes').and.callFake((options) => {
+      if (sendFormResult) {
+        return of(Response.formData);
       }
       return throwError({});
     });
@@ -187,13 +197,6 @@ describe('ExploreContentComponent', () => {
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
 
-  it('showDownloadLoader to be true' , () => {
-    spyOn(component, 'startDownload');
-    component.isOffline = true;
-    expect(component.showDownloadLoader).toBeFalsy();
-    component.playContent(Response.download_event);
-    expect(component.showDownloadLoader).toBeTruthy();
-  });
 
   it('should call updateDownloadStatus when updateCardData is called' , () => {
     const playerService = TestBed.get(PublicPlayerService);
@@ -202,26 +205,23 @@ describe('ExploreContentComponent', () => {
     component.updateCardData(Response.download_list);
     expect(playerService.updateDownloadStatus).toHaveBeenCalled();
   });
-
-  it('should call content manager service on when startDownload()', () => {
-    const contentManagerService = TestBed.get(ContentManagerService);
-    const resourceService = TestBed.get(ResourceService);
-    resourceService.messages = resourceBundle.messages;
-    spyOn(contentManagerService, 'startDownload').and.returnValue(of(Response.download_success));
-    component.startDownload(Response.result.result.content);
-    expect(contentManagerService.startDownload).toHaveBeenCalled();
+  it('should redo layout on render', () => {
+    component.layoutConfiguration = {};
+    component.ngOnInit();
+    component.redoLayout();
+    component.layoutConfiguration = null;
+    component.redoLayout();
   });
-
-  it('startDownload should fail', () => {
-    const contentManagerService = TestBed.get(ContentManagerService);
-    const resourceService = TestBed.get(ResourceService);
-    toasterService = TestBed.get(ToasterService);
-    resourceService.messages = resourceBundle.messages;
-    component.contentList = Response.successData.result.content;
-    spyOn(contentManagerService, 'startDownload').and.returnValue(throwError(Response.download_error));
-    component.startDownload(Response.result.result.content);
-    expect(contentManagerService.startDownload).toHaveBeenCalled();
-    expect(component.showDownloadLoader).toBeFalsy();
-  });
-
+  it('Should call searchservice -contenttypes and get error', fakeAsync(() => {
+    sendFormResult = false;
+    spyOn(toasterService, 'error').and.callFake(() => {});
+    component.ngOnInit();
+    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    tick(100);
+    expect(component.hashTagId).toEqual('123');
+    expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
+    expect(component.showLoader).toBeFalsy();
+    expect(component.contentList.length).toEqual(1);
+    expect(toasterService.error).toHaveBeenCalled();
+  }));
 });

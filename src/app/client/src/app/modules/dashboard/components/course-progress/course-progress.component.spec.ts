@@ -16,13 +16,12 @@ import {
   SharedModule, ResourceService, ConfigService, PaginationService,
   ToasterService, ServerResponse
 } from '@sunbird/shared';
-import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
 import { CourseProgressService, UsageService } from './../../services';
 import { FormsModule } from '@angular/forms';
 import * as testData from './course-progress.component.spec.data';
 import { OrderModule } from 'ngx-order-pipe';
-import { TelemetryModule } from '@sunbird/telemetry';
-
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
 describe('CourseProgressComponent', () => {
   let component: CourseProgressComponent;
   let fixture: ComponentFixture<CourseProgressComponent>;
@@ -55,6 +54,7 @@ describe('CourseProgressComponent', () => {
 
   const fakeActivatedRoute = {
     'params': observableOf({ contentId: 'do_112470675618004992181', courseId: 'do_112470675618004992181' }),
+    'parent': {params: observableOf({ contentId: 'do_112470675618004992181', courseId: 'do_112470675618004992181' })},
     'queryParams': observableOf({ batchIdentifier: '0124963192947507200', timePeriod: '7d' }),
     snapshot: {
       'params': { contentId: 'do_112470675618004992181', courseId: 'do_112470675618004992181' },
@@ -66,13 +66,13 @@ describe('CourseProgressComponent', () => {
       }
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule.forRoot(), OrderModule,
         CoreModule, DashboardModule, TelemetryModule.forRoot()],
       declarations: [],
-      providers: [CourseProgressService, UsageService,
+      providers: [CourseProgressService, UsageService, TelemetryService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }],
@@ -140,26 +140,6 @@ describe('CourseProgressComponent', () => {
     component.setTimePeriod('7d');
     expect(component.queryParams.timePeriod).toEqual('7d');
   }));
-
-  it('spy on populateCourseDashboardData()', inject([UserService, CourseProgressService],
-    (userService, courseService) => {
-      userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
-      fixture.detectChanges();
-      spyOn(courseService, 'getDashboardData').and.returnValue(observableOf(testData.mockUserData.populateCourseDashboardDataRes));
-      component.populateCourseDashboardData(testData.mockUserData.getBatchResZero.result.response);
-      expect(component.dashboarData).toBeDefined();
-      expect(component.showLoader).toEqual(false);
-    }));
-
-  it('spy on populateCourseDashboardData() with error', inject([UserService, CourseProgressService, ResourceService, ToasterService],
-    (userService, courseService, resourceService, toasterService) => {
-      userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
-      fixture.detectChanges();
-      spyOn(courseService, 'getDashboardData').and.callFake(() => observableThrowError(testData.mockUserData.dashboardError));
-      spyOn(toasterService, 'error').and.callThrough();
-      component.populateCourseDashboardData(testData.mockUserData.getBatchResZero.result.response);
-      expect(toasterService.error).toHaveBeenCalledWith(testData.mockUserData.dashboardError.error.params.errmsg);
-    }));
 
   it('spy on downloadDashboardData()', inject([UserService, CourseProgressService, ResourceService, ToasterService],
     (userService, courseService, resourceService, toasterService) => {
@@ -235,6 +215,16 @@ describe('CourseProgressComponent', () => {
     expect(toasterService.error).toHaveBeenCalled();
   }));
 
+  it('should get last updatedOn date for score report and progress report', fakeAsync(() => {
+    const courseProgressService = TestBed.get(CourseProgressService);
+    spyOn(courseProgressService, 'getReportsMetaData').and.returnValue(observableOf(testData.mockUserData.reportsLastUpdatedDateMock));
+    component.getReportUpdatedOnDate('0124963192947507200');
+    // tslint:disable-next-line: max-line-length
+    expect(component.scoreReportUpdatedOn).toEqual(null);
+    // tslint:disable-next-line: max-line-length
+    expect(component.progressReportUpdatedOn).toEqual(testData.mockUserData.reportsLastUpdatedDateMock.result['course-progress-reports'].lastModified);
+  }));
+
   xit('should download assessment report on click of score report', fakeAsync(inject([ToasterService], (toasterService) => {
     component.queryParams = { batchIdentifier: '0124963192947507200' };
     const courseProgressService = TestBed.get(CourseProgressService);
@@ -251,4 +241,27 @@ describe('CourseProgressComponent', () => {
     expect(window.open).toHaveBeenCalledWith(testData.mockUserData.assessmentReportDownloadMock.result.reports.assessmentReportUrl,
       '_blank');
   })));
+
+  it('should set completedCount and participantCount as 0 to the currentBatch if it is empty in the currentBatch', () => {
+    component.currentBatch = testData.mockUserData.currentBatchDataBefore;
+    component.setCounts(component.currentBatch);
+    expect(component.currentBatch['completedCount']).toEqual(0);
+    expect(component.currentBatch['participantCount']).toEqual(0);
+  });
+
+  it(`should set completedCount and participantCount to the currentBatch with the existing values
+  if it is not empty in the currentBatch`, () => {
+    component.currentBatch = testData.mockUserData.currentBatchDataWithCount;
+    component.setCounts(component.currentBatch);
+    expect(component.currentBatch['completedCount']).toEqual(testData.mockUserData.currentBatchDataWithCount.completedCount);
+    expect(component.currentBatch['participantCount']).toEqual(testData.mockUserData.currentBatchDataWithCount.participantCount);
+  });
+
+  it ( 'should set filterText', () => {
+     fakeActivatedRoute.queryParams.subscribe(data => {
+      component.queryParams = data;
+    });
+    component.setFilterDescription();
+    expect(component.filterText).toEqual('Stats for last 7 days');
+  });
 });

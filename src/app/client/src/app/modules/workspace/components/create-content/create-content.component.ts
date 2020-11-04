@@ -14,10 +14,6 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
  */
   textBookRole: Array<string>;
   /**
-   * courseRole  access roles
-  */
-  courseRole: Array<string>;
-  /**
     * lessonRole   access roles
   */
   lessonRole: Array<string>;
@@ -34,6 +30,10 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
   */
   contentUploadRole: Array<string>;
   /**
+   * courseRole  access roles
+  */
+  courseRole: Array<string>;
+ /**
    * assesment access role
    */
   assessmentRole: Array<string>;
@@ -77,12 +77,12 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.frameworkService.initialize();
     this.textBookRole = this.configService.rolesConfig.workSpaceRole.textBookRole;
-    this.courseRole = this.configService.rolesConfig.workSpaceRole.courseRole;
     this.lessonRole = this.configService.rolesConfig.workSpaceRole.lessonRole;
     this.collectionRole = this.configService.rolesConfig.workSpaceRole.collectionRole;
     this.lessonplanRole = this.configService.rolesConfig.workSpaceRole.lessonplanRole;
     this.contentUploadRole = this.configService.rolesConfig.workSpaceRole.contentUploadRole;
     this.assessmentRole = this.configService.rolesConfig.workSpaceRole.assessmentRole;
+    this.courseRole = this.configService.rolesConfig.workSpaceRole.courseRole;
   }
 
   ngAfterViewInit () {

@@ -18,6 +18,8 @@ import { UserService, SearchService, ContentService, LearnerService } from '@sun
 // Test data
 import * as mockData from './organization.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { CoreModule } from '@sunbird/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 const testData = mockData.mockRes;
 describe('OrganisationComponent', () => {
@@ -43,11 +45,11 @@ describe('OrganisationComponent', () => {
   const creationDataset = 'creation';
   const consumptionDataset = 'consumption';
   const dashboardBaseUrl = 'dashBoard/organization';
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [OrganisationComponent],
-      imports: [HttpClientModule, FormsModule, SuiModule, ChartsModule, SharedModule.forRoot(), TelemetryModule.forRoot()],
+      imports: [HttpClientModule, FormsModule, SuiModule, ChartsModule, CoreModule, SharedModule.forRoot(), TelemetryModule.forRoot()],
       providers: [LearnerService,
         LineChartService,
         OrganisationService,

@@ -4,9 +4,11 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { ConfigService, ServerResponse, ToasterService, ResourceService } from '@sunbird/shared';
 import { ContentService, UserService, CoursesService } from '@sunbird/core';
 import * as _ from 'lodash-es';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class CourseProgressService {
   /**
  * Reference of content service.
@@ -41,11 +43,6 @@ export class CourseProgressService {
   */
   public getContentState(req) {
     const courseId_batchId = req.courseId + '_' + req.batchId;
-    const courseProgress = this.courseProgress[courseId_batchId];
-    if (courseProgress) {
-      this.courseProgressData.emit(courseProgress);
-      return observableOf(courseProgress);
-    } else {
       const channelOptions = {
         url: this.configService.urlConFig.URLS.COURSE.USER_CONTENT_STATE_READ,
         data: {
@@ -65,8 +62,6 @@ export class CourseProgressService {
         this.courseProgressData.emit({ lastPlayedContentId: req.contentIds[0] });
         return err;
       }));
-
-    }
   }
 
   private processContent(req, res, courseId_batchId) {
@@ -137,14 +132,13 @@ export class CourseProgressService {
         return this.updateContentStateToServer(courseProgress.content[index]).pipe(
           map((res: any) => {
             this.courseProgress[courseId_batchId].content[index].status = req.status;
-            this.courseProgress[courseId_batchId].content[index].lastAccessTime = moment(new Date()).format('YYYY-MM-DD HH:mm:ss:SSSZZ');
+            this.courseProgress[courseId_batchId].content[index].lastAccessTime = dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss:SSSZZ');
             this.calculateProgress(courseId_batchId);
             this.courseProgressData.emit(this.courseProgress[courseId_batchId]);
             this.coursesService.updateCourseProgress(req.courseId, req.batchId, this.courseProgress[courseId_batchId].completedCount);
             return this.courseProgress[courseId_batchId];
           }));
       } else {
-        console.log('contentId/courseId not matched or status is 2', req);
         return observableOf(this.courseProgress[courseId_batchId]);
       }
     } else {
@@ -160,7 +154,7 @@ export class CourseProgressService {
       batchId: data.batchId,
       status: data.status,
       courseId: data.courseId,
-      lastAccessTime: moment(new Date()).format('YYYY-MM-DD HH:mm:ss:SSSZZ')
+      lastAccessTime: dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss:SSSZZ')
     };
     const channelOptions = {
       url: this.configService.urlConFig.URLS.COURSE.USER_CONTENT_STATE_UPDATE,

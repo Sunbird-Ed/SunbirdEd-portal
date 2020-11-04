@@ -1,37 +1,37 @@
 @import "variables";
-@import "./mixins/mixins";
+@import "mixins/mixins";
 
 .sb-prominent-filter-field {
   .form-control {
     min-width: 100%;
     width: 100%;
-    height: 32px;
-    font-size: 12px;
-    border: 1px solid #999;
-    border-radius: 3px;
-    padding: 8px;
+    height: calculateRem(32px);
+    font-size: calculateRem(12px);
+    border: calculateRem(1px) solid var(--gray-200);
+    border-radius: calculateRem(3px);
+    padding: calculateRem(8px);
 
     &:focus {
-      border: 1px solid #ddd;
-      border-radius: 3px;
+      border: calculateRem(1px) solid var(--rc-dddddd);
+      border-radius: calculateRem(3px);
     }
 
     &::placeholder {
-      color: #212121;
+      color: var(--black);
       opacity: 1;
     }
 
     &:-ms-input-placeholder {
-      color: #212121;
+      color: var(--black);
     }
 
     &::-ms-input-placeholder {
-      color: #212121;
+      color: var(--black);
     }
   }
 
   .md-drppicker .ranges ul li {
-    margin-bottom: 8px;
+    margin-bottom: calculateRem(8px);
   }
 
   //   ngx-daterangepicker-material{
@@ -44,7 +44,7 @@
 }
 
 .graph-statistics {
-  border-bottom: 1px solid #ddd;
+  border-bottom: calculateRem(1px) solid var(--rc-dddddd);
 }
 
 .sb-prominent-filter
@@ -58,21 +58,21 @@
 .reset-filter-section {
   position: absolute;
   right: 0;
-  top: 2px;
+  top: calculateRem(2px);
   align-items: center;
 
   .selection {
-    padding: 8px;
+    padding: calculateRem(8px);
   }
 }
 
 .sb-filter-label {
-  border-bottom: 1px solid #ddd;
+  border-bottom: calculateRem(1px) solid var(--rc-dddddd);
   width: 100%;
 
   .sb-label-value {
-    margin-bottom: 4px;
-    margin-right: 4px;
+    margin-bottom: calculateRem(4px);
+    margin-right: calculateRem(4px);
   }
 }
 
@@ -84,14 +84,14 @@
 
   .ui.toggle.checkbox .box:before,
   .ui.toggle.checkbox label:before {
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(var(--rc-rgba-black), 0.2);
   }
 
   .ui.toggle.checkbox .box:after,
   .ui.toggle.checkbox label:after {
     width: 1.5rem;
     height: 1.2rem;
-    top: 2px;
+    top: calculateRem(2px);
   }
 
   .ui.toggle.checkbox input ~ .box:after,
@@ -107,12 +107,12 @@
   .ui.styled.accordion,
   .ui.styled.accordion .accordion {
     box-shadow: none;
-    border-bottom: 1px solid #ddd;
+    border-bottom: calculateRem(1px) solid var(--rc-dddddd);
   }
 
   .graph-filters {
     .ui.form {
-      min-height: 36px;
+      min-height: calculateRem(36px);
     }
 
     .ui.styled.accordion .accordion .title,
@@ -129,7 +129,7 @@
     .ui.styled.accordion,
     .ui.styled.accordion .accordion {
       box-shadow: none;
-      border-bottom: 1px solid #ddd;
+      border-bottom: calculateRem(1px) solid var(--rc-dddddd);
     }
   }
 }
@@ -137,17 +137,17 @@
 .sb-prominent-filter-field {
   ::ng-deep {
     .md-drppicker {
-      padding: 16px 8px;
+      padding: calculateRem(16px) calculateRem(8px);
 
       .ranges ul li {
-        margin-bottom: 8px;
+        margin-bottom: calculateRem(8px);
       }
 
       .btn {
         background-color: var(--primary-400);
-        margin-right: 16px;
-        line-height: 32px;
-        margin-right: 16px;
+        margin-right: calculateRem(16px);
+        line-height: calculateRem(32px);
+        margin-right: calculateRem(16px);
       }
 
       .buttons {
@@ -162,7 +162,7 @@
     sui-accordion {
       sui-accordion-panel {
         .title {
-          padding-top: 8px !important;
+          padding-top: calculateRem(8px) !important;
         }
       }
     }
@@ -170,58 +170,58 @@
 }
 
 .sb-last-update-status {
-  color: #999;
-  font-size: 14px;
+  color: var(--gray-200);
+  font-size: calculateRem(14px);
   font-weight: bold;
 }
 
 .dashboard-graph-statistics {
-  border-bottom: 1px solid #ddd;
+  border-bottom: calculateRem(1px) solid var(--rc-dddddd);
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 24px;
+  grid-gap: calculateRem(24px);
   .graph-stat-block {
     flex: 1;
-    border-right: 1px solid #d4d8da !important;
+    border-right: calculateRem(1px) solid var(--rc-d4d8da) !important;
     .graph-stat-label {
-      font-size: 18px;
+      font-size: calculateRem(18px);
     }
     .graph-stat-value {
       font-weight: bold;
-      font-size: 40px;
+      font-size: calculateRem(40px);
     }
     .graph-stat-info {
-      color: #999999;
-      font-size: 18px;
+      color: var(--gray-200);
+      font-size: calculateRem(18px);
     }
     &:nth-child(3n + 3) {
-      border-right: 0px solid #d4d8da !important;
+      border-right: 0px solid var(--rc-d4d8da) !important;
     }
   }
 }
 .dashboard-iframe {
   width: 100%;
-  height: 700px;
+  height: calculateRem(700px);
 }
 
 .sb-last-update-status {
-  color: #999;
-  font-size: 14px;
+  color: var(--gray-200);
+  font-size: calculateRem(14px);
   font-weight: bold;
 }
 
 @include respond-below(md) {
   .dashboard-graph-statistics {
-    border-bottom: 1px solid #ddd;
+    border-bottom: calculateRem(1px) solid var(--rc-dddddd);
     .graph-stat-block {
       .graph-stat-label {
-        font-size: 14px;
+        font-size: calculateRem(14px);
       }
       .graph-stat-value {
-        font-size: 28px;
+        font-size: calculateRem(28px);
       }
       .graph-stat-info {
-        font-size: 14px;
+        font-size: calculateRem(14px);
       }
     }
   }

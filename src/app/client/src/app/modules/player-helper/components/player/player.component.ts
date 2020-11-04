@@ -1,17 +1,25 @@
 import { ConfigService, NavigationHelperService } from '@sunbird/shared';
-import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter,
+OnChanges, HostListener, OnInit } from '@angular/core';
 import * as _ from 'lodash-es';
 import { PlayerConfig } from '@sunbird/shared';
-import { environment } from '@sunbird/environment';
 import { Router } from '@angular/router';
 import { ToasterService, ResourceService } from '@sunbird/shared';
 const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub', 'video/webm', 'video/mp4', 'application/pdf'];
 import { Subject } from 'rxjs';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { IInteractEventEdata } from '@sunbird/telemetry';
+import { UserService } from '../../../core/services';
+import { OnDestroy } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
+
 @Component({
   selector: 'app-player',
-  templateUrl: './player.component.html'
+  templateUrl: './player.component.html',
+  styleUrls: ['./player.component.scss']
 })
-export class PlayerComponent implements AfterViewInit, OnChanges {
+export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   @Input() playerConfig: PlayerConfig;
   @Output() assessmentEvents = new EventEmitter<any>();
   @Output() questionScoreSubmitEvents = new EventEmitter<any>();
@@ -19,7 +27,7 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
   @Output() sceneChangeEvent = new EventEmitter<any>();
   @Input() contentProgressEvents$: Subject<any>;
-
+  playerLoaded = false;
   buildNumber: string;
   @Input() playerOption: any;
   contentRatingModal = false;
@@ -28,18 +36,93 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
   CONSTANT = {
     ACCESSEVENT: 'renderer:question:submitscore'
   };
+
+  @Input() overlayImagePath: string;
+  @Input() isSingleContent: boolean;
+  @Input() telemetryObject: {};
+  @Input() pageId: string;
+  @Output() closePlayerEvent = new EventEmitter<any>();
+  @Output() ratingPopupClose = new EventEmitter<any>();
+  isMobileOrTab: boolean;
+  showPlayIcon = true;
+  closeButtonInteractEdata: IInteractEventEdata;
+  loadPlayerInteractEdata: IInteractEventEdata;
+  playerOverlayImage: string;
+  isFullScreenView = false;
+  public unsubscribe = new Subject<void>();
+
   /**
  * Dom element reference of contentRatingModal
  */
   @ViewChild('modal') modal;
+
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
+    this.closeContentFullScreen();
+  }
+
   constructor(public configService: ConfigService, public router: Router, private toasterService: ToasterService,
-    public resourceService: ResourceService, public navigationHelperService: NavigationHelperService) {
+    public resourceService: ResourceService, public navigationHelperService: NavigationHelperService,
+    private deviceDetectorService: DeviceDetectorService, private userService: UserService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
     this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
       ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
     this.isCdnWorking = (<HTMLInputElement>document.getElementById('cdnWorking'))
       ? (<HTMLInputElement>document.getElementById('cdnWorking')).value : 'no';
+  }
+
+  @HostListener('window:orientationchange', ['$event'])
+  public handleOrientationChange() {
+    const screenType = _.get(screen, 'orientation.type');
+      if ( screenType === 'portrait-primary' || screenType === 'portrait-secondary' ) {
+        this.closeFullscreen();
+      }
+  }
+
+  ngOnInit() {
+    // If `sessionStorage` has UTM data; append the UTM data to context.cdata
+    if (this.playerConfig && sessionStorage.getItem('UTM')) {
+      let utmData;
+      try {
+        utmData = JSON.parse(sessionStorage.getItem('UTM'));
+      } catch (error) {
+        throw new Error('JSON Parse Error => UTM data');
+      }
+      if (utmData && _.get(this.playerConfig, 'context.cdata')) {
+        this.playerConfig.context.cdata = _.union(this.playerConfig.context.cdata, utmData);
+      }
+      if (utmData && !_.get(this.playerConfig, 'context.cdata')) {
+        this.playerConfig.context['cdata'] = [];
+        this.playerConfig.context.cdata = _.union(this.playerConfig.context.cdata, utmData);
+      }
+    }
+    // Check for loggedIn user; and append user data to context object
+    // User data (`firstName` and `lastName`) is used to show at the end of quiz
+    if (this.playerConfig) {
+      this.playerConfig.context['userData'] = { firstName: 'anonymous', lastName: 'anonymous' };
+      if (this.userService.loggedIn) {
+        this.userService.userData$.subscribe((user: any) => {
+          if (user && !user.err) {
+            const userProfile = user.userProfile;
+            this.playerConfig.context['userData'] = {
+              firstName: userProfile.firstName ? userProfile.firstName : '',
+              lastName: userProfile.lastName ? userProfile.lastName : ''
+            };
+          }
+        });
+      }
+    }
+    this.isMobileOrTab = this.deviceDetectorService.isMobile() || this.deviceDetectorService.isTablet();
+    if (this.isSingleContent === false) {
+      this.showPlayIcon = false;
+    }
+    this.setTelemetryData();
+    this.navigationHelperService.contentFullScreenEvent.
+    pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
+      this.isFullScreenView = isFullScreen;
+      this.loadPlayer();
+    });
   }
   /**
    * loadPlayer method will be called
@@ -50,10 +133,16 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
     }
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes) {
     this.contentRatingModal = false;
     if (this.playerConfig) {
-      this.loadPlayer();
+      this.playerOverlayImage = this.overlayImagePath ? this.overlayImagePath : _.get(this.playerConfig, 'metadata.appIcon');
+      if (this.playerLoaded) {
+        const playerElement = this.contentIframe.nativeElement;	
+        playerElement.contentWindow.initializePreview(this.playerConfig);	
+      } else {
+        this.loadPlayer();
+      }
     }
   }
   loadCdnPlayer() {
@@ -65,10 +154,12 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
         try {
           this.adjustPlayerHeight();
           playerElement.contentWindow.initializePreview(this.playerConfig);
-          playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
-          window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
+          if (!this.playerLoaded) {
+            playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
+            window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
+            this.playerLoaded = true;
+          }
         } catch (err) {
-          console.log('loading cdn player failed', err);
           this.loadDefaultPlayer();
         }
       };
@@ -83,10 +174,12 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
         try {
           this.adjustPlayerHeight();
           playerElement.contentWindow.initializePreview(this.playerConfig);
-          playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
-          window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
+          if (!this.playerLoaded) {
+            playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
+            window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
+            this.playerLoaded = true;
+          }
         } catch (err) {
-          console.log('loading default player failed', err);
           const prevUrls = this.navigationHelperService.history;
           if (this.isCdnWorking.toLowerCase() === 'yes' && prevUrls[prevUrls.length - 2]) {
             history.back();
@@ -100,19 +193,9 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
    * Emits event when content starts playing and end event when content was played/read completely
    */
   loadPlayer() {
-    if (_.includes(this.router.url, 'browse') && environment.isOffline) {
-      this.loadDefaultPlayer(`${this.configService.appConfig.PLAYER_CONFIG.localBaseUrl}webview=true`);
-      return;
-    } else if (environment.isOffline) {
-      if (_.get(this.playerConfig, 'metadata.artifactUrl')
-      && _.includes(OFFLINE_ARTIFACT_MIME_TYPES, this.playerConfig.metadata.mimeType)) {
-        const artifactFileName = this.playerConfig.metadata.artifactUrl.split('/');
-        this.playerConfig.metadata.artifactUrl = artifactFileName[artifactFileName.length - 1];
-      }
-      this.loadDefaultPlayer(this.configService.appConfig.PLAYER_CONFIG.localBaseUrl);
-      return;
+    if (this.isMobileOrTab) {
+      this.rotatePlayer();
     }
-
     if (this.previewCdnUrl !== '' && (this.isCdnWorking).toLowerCase() === 'yes') {
       this.loadCdnPlayer();
       return;
@@ -125,7 +208,10 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
   adjustPlayerHeight() {
     const playerWidth = $('#contentPlayer').width();
     if (playerWidth) {
-      const height = playerWidth * (9 / 16);
+      let height = playerWidth * (9 / 16);
+      if (_.get(screen, 'orientation.type') === 'landscape-primary' && this.isMobileOrTab) {
+        height = window.innerHeight;
+      }
       $('#contentPlayer').css('height', height + 'px');
     }
   }
@@ -160,13 +246,96 @@ export class PlayerComponent implements AfterViewInit, OnChanges {
     let contentProgress;
     const playerSummary: Array<any> = _.get(event, 'detail.telemetryData.edata.summary');
     if (playerSummary) {
-      contentProgress = _.find(event.detail.telemetryData.edata.summary, 'progress');
+      const contentMimeType = this.playerConfig.metadata.mimeType;
+      contentProgress = CsContentProgressCalculator.calculate(playerSummary, contentMimeType);
     }
-    if (event.detail.telemetryData.eid === 'END' && contentProgress.progress === 100) {
-      this.contentRatingModal = true;
+    if (event.detail.telemetryData.eid === 'END' && contentProgress === 100) {
+      this.contentRatingModal = !this.isFullScreenView;
       if (this.modal) {
         this.modal.showContentRatingModal = true;
       }
     }
+  }
+
+  /**
+   * this method will handle play button click and turn the player into landscape
+   */
+  enablePlayer(mode: boolean) {
+    this.showPlayIcon = mode;
+    this.loadPlayer();
+  }
+
+  /** this method checks for the browser capability to be fullscreen via if-else ladder
+   * if match found, it will turn the player along will be close button into fullscreen and then
+   * rotate it to landscape mode
+   */
+  rotatePlayer() {
+    setTimeout(() => {
+      const playVideo: any = document.querySelector('#playerFullscreen');
+      try {
+        if (playVideo.requestFullscreen) {
+          playVideo.requestFullscreen();
+        } else if (playVideo.mozRequestFullScreen) { /* Firefox */
+          playVideo.mozRequestFullScreen();
+        } else if (playVideo.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+          playVideo.webkitRequestFullscreen();
+        } else if (playVideo.msRequestFullscreen) { /* IE/Edge */
+          playVideo.msRequestFullscreen();
+        }
+        screen.orientation.lock('landscape');
+      } catch (error) {}
+    });
+  }
+
+  /** when user clicks on close button
+   * this method will let the player to exit from fullscreen mode and
+   * 1. video thumbnail will be shown for single content
+   * 2. content-details page will be shown ( for multi-result dial-code search flow)
+   */
+  closeFullscreen() {
+    /** to exit the fullscreen mode */
+    if (document['exitFullscreen']) {
+      document['exitFullscreen']();
+    } else if (document['mozCancelFullScreen']) { /* Firefox */
+      document['mozCancelFullScreen']();
+    } else if (document['webkitExitFullscreen']) { /* Chrome, Safari and Opera */
+      document['webkitExitFullscreen']();
+    } else if (document['msExitFullscreen']) { /* IE/Edge */
+      document['msExitFullscreen']();
+    }
+     /** to change the view of the content-details page */
+    this.showPlayIcon = true;
+    this.closePlayerEvent.emit();
+  }
+
+  setTelemetryData() {
+    this.closeButtonInteractEdata = {
+      id: 'player-close-button',
+      type: 'click',
+      pageid: this.pageId
+    };
+
+    this.loadPlayerInteractEdata = {
+      id: 'play-button',
+      type: 'click',
+      pageid: this.pageId
+    };
+  }
+
+  closeContentFullScreen() {
+    this.navigationHelperService.emitFullScreenEvent(false);
+    this.loadPlayer();
+  }
+
+  closeModal() {
+    this.ratingPopupClose.emit({});
+  }
+
+  ngOnDestroy() {
+    if (_.get(this.contentIframe, 'nativeElement')) {
+      this.contentIframe.nativeElement.remove();
+    }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

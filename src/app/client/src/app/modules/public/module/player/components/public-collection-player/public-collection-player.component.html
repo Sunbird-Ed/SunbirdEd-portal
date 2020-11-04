@@ -1,127 +1,82 @@
-<div class="ui container mt-24" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
-  <div class="ui stackable grid" *ngIf="(popupControlService.checkPopupStatus | async) else loading">
+<app-landing-section [textToDisplay]="" 
+[layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
+<div [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
+  <div *ngIf="!showLoader" [appTelemetryImpression]="telemetryContentImpression" class="relative9">
+    <!--CC-Player Back button -->
+    <div class="sb-bg-white relative position cc-player__btn-back ">
+      <div class="ui container py-8 px-0">
+        <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0"
+          (click)="closeCollectionPlayer()">
+          <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+              <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+            </svg></i>
+          {{resourceService?.frmelmnts?.btn?.back}}
+        </button>
+      </div>
+    </div>
 
-    <!--Content Section-->
-    <div class="twelve wide column" [appTelemetryImpression]="telemetryContentImpression" id="app-player-collection-renderer" *ngIf="showPlayer && playerContent">
-
-      <!--Content Title-->
-      <div class="sb-pageSection">
-        <div class="sb-pageSection-header">
-          <h1 class="sb-pageSection-title m-0 mr-8">
-            {{playerContent.name}}
-          </h1>
-          <div class="ml-auto d-flex flex-ai-center">
-            <div *ngIf="isOffline" class="mr-16">
-                <app-content-download [contentData]="playerContent" [collectionId]="collectionId"></app-content-download>
+    <!--CC-Player Content Header -->
+    <div class="content-header cc-player__content-header" *ngIf="collectionData">
+        <div class="ui container py-16">
+          <div class="content-header__content">
+            <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
+              <div class="content-header__title font-weight-bold ellipsis text-left">{{collectionData.name}}</div>
+              <div class="d-flex flex-ai-center content-header__info mt-4" *ngIf="collectionTreeNodes">
+                <span *ngIf="collectionTreeNodes?.data?.subject">{{collectionTreeNodes?.data?.subject}}</span>
+                <span class="dot-divider" *ngIf="collectionTreeNodes?.data?.gradeLevel"></span>
+                <span *ngIf="collectionTreeNodes?.data?.gradeLevel">{{collectionTreeNodes?.data?.gradeLevel}}</span>
+              </div>
             </div>
-            <button class="sb-btn sb-btn-xs sb-btn-error" type="button" (click)="closeContentPlayer()"
-              appTelemetryInteract [telemetryInteractCdata]="telemetryCdata"
-              [telemetryInteractObject]="playerTelemetryInteractObject"
-              [telemetryInteractEdata]="closePlayerInteractEdata">
-              {{resourceService.frmelmnts.btn.close}}
-              <i class="ui remove icon"></i>
-            </button>
+            <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
+              <button type="button" (click)="onShareLink();sharelinkModal=true;" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
+                <i class="blue share alternate icon"></i> {{resourceService?.frmelmnts?.lbl?.share}}
+              </button>
+            </div>
           </div>
         </div>
       </div>
-      <!--/Content Title-->
-
-      <!--Content Player-->
-      <app-player class="content-player" [playerOption] ="playerOption" [playerConfig]="playerConfig | async"></app-player>
-      <!--/Content Player-->
-
-      <!--Content Navigation-->
-      <div class="ui twelve column grid mt-24">
-        <div class="one wide tablet only one wide computer only column"></div>
-        <div class="six wide mobile only six wide tablet only three wide computer only column">
-          <button 
-            class="ui blue button left floated fluid tocbutton toc-left-nav-btn-content" 
-            (click)="navigateToContent(prevPlaylistItem)"
-            [disabled]="prevPlaylistItem === undefined">
-            <span class="header">{{resourceService.frmelmnts.btn.previous}}</span>
-            <br>
-            <span class="font-white description text-ellipsis">{{prevPlaylistItem?.title || resourceService.messages.stmsg.m0120}}</span>
-          </button>
+    <!-- CC-Player Video -->
+    <div class="ui container sb-toc-view-container">
+      <div class="cc-player sb-g">
+        <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12 cc-player__video sb-toc-player-column"
+          [appTelemetryImpression]="telemetryImpression" *ngIf="collectionData" [ngClass]="{'toggleInMobile': !isMobile}">
+          <app-contentplayer-page [playerConfig]="playerConfig | async" [tocPage]="true"
+            [contentDetails]="activeContent" [isContentPresent]="isContentPresent" [objectRollUp]="objectRollUp">
+          </app-contentplayer-page>
+        </section>
+        <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 cc-player__list mb-16" [ngClass]="{'toggleInMobile': isMobile}">
+        <div class="toc-box-shadow mb-2">
+          <!-- <div class="sbselectpopover sbselectpopover--bg-white d-flex flex-ai-center sb-bg-color-white p-16"
+            (click)="showChapter()">
+            <h6 class="sb-color-primary font-weight-normal">Select Chapter</h6>
+            <i class="icon-svg icon-svg--sm icon-arrow-round-right ml-auto opacity50"><svg class="icon icon-svg--primary">
+                <use xlink:href="assets/common-consumption/images/sprite.svg#arrow-round-right"></use>
+              </svg></i>
+          </div> -->
+          <sb-library-filters [hidden]="isSelectChapter" [tocList]="mimeTypeFilters" [layout]="'round-with-icon'"
+            (selectedMimeType)="selectedFilter($event)">
+          </sb-library-filters>
         </div>
-        <div class="four wide tablet only four wide computer only column"></div>
-        <div class="six wide mobile only six wide tablet only three wide computer only column pr-0">
-          <button 
-            class="ui blue button right floated fluid toc-right-nav-btn-content"
-            (click)="navigateToContent(nextPlaylistItem)"
-            [disabled]="nextPlaylistItem === undefined"
-            >
-            <span class="header">{{resourceService.frmelmnts.btn.next}}</span>
-            <br>
-            <span class="font-white description text-ellipsis">{{nextPlaylistItem?.title || resourceService.messages.stmsg.m0120}}</span>
-          </button>
-        </div>
-      </div>
-      <!--/Content Navigation-->
-    </div>
-    <!--/Content Section-->
-
-    <!--Loader if collection data not ready-->
-    <div class="twelve wide column" *ngIf="loader" >
-      <app-loader [data]="loaderMessage"></app-loader>
-    </div>
-    <!--/Loader if collection data not ready-->
-
-    <!--Collections-->
-    <div class="twelve wide column" *ngIf="!loader" [appTelemetryImpression]="telemetryImpression">
-
-      <!--Collection Title-->
-      <div class="sb-pageSection">
-        <div class="sb-pageSection-header">
-          <h1 class="sb-pageSection-title m-0 mr-5">
-            {{collectionTitle}}
-          </h1>
-          <div class="ml-auto d-flex flex-ai-center">
-            <div *ngIf="isOffline" class="mr-16">
-                <app-content-download [contentData]="collectionData"></app-content-download>
-                </div>
-            <button class="sb-btn sb-btn-xs sb-btn-error " type="button" (click)="closeCollectionPlayer()"
-              appTelemetryInteract [telemetryInteractCdata]="telemetryCdata"
-              [telemetryInteractObject]="playerTelemetryInteractObject"
-              [telemetryInteractEdata]="closeCollectionPlayerInteractEdata">
-              {{resourceService.frmelmnts.btn.close}}
-              <i class="ui remove icon"></i>
-            </button>
+        <div class="main-side-toc-content">
+          <div [hidden]="isSelectChapter" class="side-toc-content">
+            <sb-toc-item [activeMimeTypeFilter]="activeMimeTypeFilter" [tocData]="collectionData"
+              (tocCardClick)="tocCardClickHandler($event)" [activeContent]="activeContent"
+              (noContent)="showNoContent($event)"  appTelemetryInteract [telemetryInteractEdata]="tocTelemetryInteractEdata"></sb-toc-item>
           </div>
-
+          <div [hidden]="!isSelectChapter">
+            <span>
+              <app-content-chapterlist [activeContent]="activeContent" [contentDetails]="collectionData"
+                (tocChapterClick)="tocChapterClickHandler($event)"></app-content-chapterlist>
+            </span>
+          </div>
         </div>
+          <div>
+            <app-content-licence [content]="collectionData"></app-content-licence>
+          </div>
+        </section>
       </div>
-      <!--/Collection Title-->
-
-      <!--Badges-->
-      <app-content-badge [data]="badgeData" ></app-content-badge>
-      <!--Badges-->
-      
-      <!--Collection Tree-->
-      <app-collection-tree 
-        *ngIf="collectionTreeNodes.data && collectionTreeNodes.data.children && collectionTreeNodes.data.children.length >0 ; else dataCommingSoon" 
-        (contentSelect)="OnPlayContent($event)" 
-        [nodes]="collectionTreeNodes" 
-        [options]="collectionTreeOptions"
-      >
-      </app-collection-tree>
-      <!--/Collection Tree-->
-
-      <!--Content Coming soon-->
-      <ng-template #dataCommingSoon>
-        <app-comming-soon [contentOrgId]="collectionTreeNodes.data.channel"></app-comming-soon>
-      </ng-template>
-      <!--/Content Coming soon-->
     </div>
-    <!--/Collections-->
-
-    <!--Collection metadata-->
-    <div class="twelve wide column" *ngIf="!showPlayer">
-      <app-collection-player-metadata [metaData]="collectionData"></app-collection-player-metadata>
-    </div>
-    <!--/Collection metadata-->
-
+    <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
+    </app-share-link>
   </div>
-  <ng-template #loading>
-    <app-loader></app-loader>
-  </ng-template>
 </div>

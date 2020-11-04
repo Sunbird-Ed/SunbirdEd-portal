@@ -7,6 +7,7 @@ import { ResourceService, ConfigService, SharedModule } from '@sunbird/shared';
 import { HttpClientModule } from '@angular/common/http';
 import { QrCodeModalComponent } from './qr-code-modal.component';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('QrCodeModalComponent', () => {
   let component: QrCodeModalComponent;
@@ -23,6 +24,7 @@ describe('QrCodeModalComponent', () => {
       }
     }
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, RouterTestingModule, HttpClientModule, TelemetryModule.forRoot(), SharedModule.forRoot()],

@@ -3,7 +3,7 @@ import { Observable, of } from 'rxjs';
 import { ResourceService, ConfigService, ServerResponse, NavigationHelperService } from '@sunbird/shared';
 import { ProgramsService, PublicDataService } from '@sunbird/core';
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { map, catchError, retry } from 'rxjs/operators';
+import { map, catchError, retry, tap, mergeMap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { ActivatedRoute, Router } from '@angular/router';
 @Component({
@@ -27,29 +27,49 @@ export class ListAllProgramsComponent implements OnInit, AfterViewInit {
 
   /**
    * fetch the list of programs.
+   * @description
+   * 1. Fetch programs list
+   * 2. Identify program(s) which does not have `rootOrgName`
+   * 3. Fetch `rootOrgName` based on their `rootOrgId`
+   * 4. Map `rootOrgName` for programs
    */
   private getProgramsList() {
+    const rootOrgIds = new Array();
     return this.programsService.programsList$.pipe(
-      map(programs => {
-        _.forEach(programs, async (program) => {
-          if (!_.get(program, 'rootOrgName')) {
-            program['rootOrgName'] = await this.getRootOrgName(_.get(program, 'rootOrgId')).toPromise();
+      mergeMap(programs  => {
+        _.forEach(programs, (program) => {
+          if (!_.get(program, 'rootOrgName') && rootOrgIds.indexOf(program.rootOrgId) === -1) {
+            rootOrgIds.push(program.rootOrgId);
           }
         });
-        return programs;
+        return this.getRootOrgName(rootOrgIds).pipe(map(data => {
+          _.forEach(programs, (program) => {
+            if (!_.get(program, 'rootOrgName')) {
+              program['rootOrgName'] = data[program.rootOrgId];
+            }
+          });
+          return programs;
+        }));
       })
     );
   }
 
   /**
    * returns the orgName for the provided rootOrgId.
-   * @param rootOrgId
+   * @param  {Array} rootOrgId : Array of Root Org Id(s)
+   * @returns Observable       : Object consisting of orgId and orgName as key value pair respectively
    */
-  private getRootOrgName(rootOrgId): Observable<string> {
+  private getRootOrgName(rootOrgId): Observable<{}> {
+    const orgMapping = new Object();
     return this.getOrgDetails(rootOrgId).pipe(
       map(orgDetailsApiResponse => {
         const orgDetails = _.get(orgDetailsApiResponse, 'result.response.content');
-        return _.join(_.map(orgDetails, 'orgName'), ',');
+        if (orgDetails.length > 0) {
+          _.forEach(orgDetails, (org) => {
+            orgMapping[org.id] = org.orgName;
+          });
+        }
+        return orgMapping;
       }),
       retry(1),
       catchError(err => {
@@ -60,15 +80,16 @@ export class ListAllProgramsComponent implements OnInit, AfterViewInit {
 
   /**
    * makes api call to get orgDetails.
-   * @param rootOrgId
+   * @param  {Array} rootOrgId : Array of Root Org Id(s)
+   * @returns Observable       : Server response
    */
   private getOrgDetails(rootOrgId): Observable<ServerResponse> {
     const option = {
-      url: this.config.urlConFig.URLS.ADMIN.ORG_SEARCH,
+      url: this.config.urlConFig.URLS.ADMIN.ORG_EXT_SEARCH,
       data: {
         request: {
           filters: {
-            id: [rootOrgId],
+            id: rootOrgId,
           }
         }
       }

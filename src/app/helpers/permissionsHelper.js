@@ -1,13 +1,20 @@
-const request = require('request')
-const _ = require('lodash')
-const dateFormat = require('dateformat')
-const uuidv1 = require('uuid/v1')
-const envHelper = require('./environmentVariablesHelper.js')
-const learnerURL = envHelper.LEARNER_URL
-const enablePermissionCheck = envHelper.ENABLE_PERMISSION_CHECK
-const apiAuthToken = envHelper.PORTAL_API_AUTH_TOKEN
-const telemetryHelper = require('./telemetryHelper')
-const logger = require('sb_logger_util_v2');
+/**
+ * @file
+ * @description - Permission helper handler
+ * @version 1.0
+ */
+
+const _                     = require('lodash');
+const request               = require('request');
+const uuidv1                = require('uuid/v1');
+const dateFormat            = require('dateformat');
+const logger                = require('sb_logger_util_v2');
+const envHelper             = require('./environmentVariablesHelper.js');
+const telemetryHelper       = require('./telemetryHelper');
+const learnerURL            = envHelper.LEARNER_URL;
+const enablePermissionCheck = envHelper.ENABLE_PERMISSION_CHECK;
+const apiAuthToken          = envHelper.PORTAL_API_AUTH_TOKEN;
+
 let PERMISSIONS_HELPER = {
   ROLES_URLS: {
     'course/create': ['CONTENT_CREATOR', 'CONTENT_CREATION', 'CONTENT_REVIEWER'],
@@ -88,10 +95,23 @@ let PERMISSIONS_HELPER = {
     })
   },
 
+  /**
+   * @param  {Object} reqObj          - Request object
+   * @param  {Object} body            - User read API response object
+   * @description setUserSessionData  - Set user session details
+   */
   setUserSessionData (reqObj, body) {
     try {
       if (body.responseCode === 'OK') {
-        reqObj.session.userId = body.result.response.identifier
+        reqObj.session.userId = body.result.response.identifier;
+        if (body.result.response.managedBy) {
+          reqObj.session.userSid = uuidv1();
+        } else {
+          reqObj.session.userSid = reqObj.sessionID;
+        }
+        if (body.result.response.managedToken) {
+          reqObj.session.managedToken = body.result.response.managedToken
+        }
         reqObj.session.roles = body.result.response.roles
         if (body.result.response.organisations) {
           _.forEach(body.result.response.organisations, function (org) {
@@ -111,18 +131,33 @@ let PERMISSIONS_HELPER = {
           reqObj.session.rootOrghashTagId = body.result.response.rootOrg.hashTagId
           reqObj.session.rootOrg = body.result.response.rootOrg
         }
+        // For bulk upload user(s); `PUBLIC` role added.
+        if (!_.includes(reqObj.session.roles, 'PUBLIC')) {
+          reqObj.session.roles.push('PUBLIC');
+        }
       }
     } catch (e) {
-      logger.error({msg: 'error while saving user session data', err: e})
+      logger.error({msg: 'setUserSessionData :: Error while saving user session data', err: e});
       console.log(e)
     }
   },
 
-  getCurrentUserRoles: function (reqObj, callback) {
-    var userId = reqObj.session.userId
+  /**
+   * @param  {Object} reqObj          - Request object
+   * @param  {Callback} callback      - Callback
+   * @param  {String} userIdentifier  - User identifier
+   * @param  {Boolean} isManagedUser  - Flag to indicate isManagedUser
+   * @description getCurrentUserRoles - Function to get user roles
+   */
+  getCurrentUserRoles: function (reqObj, callback, userIdentifier, isManagedUser) {
+    var userId = userIdentifier || reqObj.session.userId;
+    var url = learnerURL + 'user/v1/read/' + userId;
+    if (isManagedUser) {
+      url = url + '?withTokens=true'
+    }
     var options = {
       method: 'GET',
-      url: learnerURL + 'user/v1/read/' + userId,
+      url: url,
       headers: {
         'x-msgid': uuidv1(),
         'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),
@@ -133,25 +168,31 @@ let PERMISSIONS_HELPER = {
       },
       json: true
     }
-    const telemetryData = {reqObj: reqObj,
+    const telemetryData = {
+      reqObj: reqObj,
       options: options,
       uri: 'user/v1/read',
       type: 'user',
       id: userId,
-      userId: userId}
-    // telemetryHelper.logAPICallEvent(telemetryData)
-
+      userId: userId
+    };
     request(options, function (error, response, body) {
-      logger.info({msg: 'user/v1/read api response', error, requestOptions: options});
       telemetryData.statusCode = _.get(response, 'statusCode');
       reqObj.session.roles = [];
       reqObj.session.orgs = [];
       if (error) {
-        logger.error({msg: 'error while user/v1/read', error});
+        logger.error({ msg: 'error while user/v1/read', error });
         callback(error, null)
-      } else if (!error && body) {
+      } else if (!error && body && body.responseCode === 'OK') {
         module.exports.setUserSessionData(reqObj, body);
-        logger.info({msg: 'getCurrentUserRoles session obj', session: reqObj.session});
+        let _sessionLog = {
+          userId: reqObj.session.userId || null,
+          rootOrgId: reqObj.session.rootOrgId || null,
+          roles: reqObj.session.roles || null,
+          userSid: reqObj.session.userSid || null,
+          orgs: reqObj.session.orgs || null
+        };
+        logger.info({ msg: 'getCurrentUserRoles :: Session data set success', session: _sessionLog });
         reqObj.session.save(function (error) {
           if (error) {
             callback(error, null)
@@ -159,12 +200,21 @@ let PERMISSIONS_HELPER = {
             callback(null, body)
           }
         });
+      } else if (body.responseCode !== 'OK') {
+        logger.error({ msg: 'getCurrentUserRoles :: Error while reading user/v1/read', body });
+        callback(body, null);
       } else {
-        logger.error({msg: 'error while user/v1/read', error});
+        logger.error({ msg: 'getCurrentUserRoles error while user/v1/read', error });
         callback(error, null)
       }
     })
   },
+  
+  /**
+   * @deprecated
+   * @since - release-3.2.0
+   * @todo - deprecate related methods `checkURLMatch`
+   */
   checkPermission: function () {
     return function (req, res, next) {
       if (enablePermissionCheck && req.session['roles'] && req.session['roles'].length) {

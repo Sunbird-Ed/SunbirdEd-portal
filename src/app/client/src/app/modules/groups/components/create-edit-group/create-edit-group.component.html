@@ -1,0 +1,63 @@
+
+
+
+<!-- add create group form -->
+<sui-modal 
+  [mustScroll]="true" 
+  [isClosable]="true" 
+  [transitionDuration]="0"
+  [size]="'small'" 
+  class="sb-modal" 
+  appBodyScroll 
+  #createGroupModal 
+  (dismissed)="closeModal();addTelemetry('close-group-form')"
+  >
+  <div class="sb-modal-header" *ngIf="groupId">{{resourceService?.frmelmnts?.lbl?.editGroup}}</div>
+  <div class="sb-modal-header" *ngIf="!groupId">{{ resourceService?.frmelmnts?.lbl?.createGroup }}</div>
+  <div class="sb-modal-content o-y-visible">
+    <form class="sb-form" [formGroup]="groupForm">
+      <div class="sb-field mb-16">
+        <label>{{ resourceService?.frmelmnts?.lbl?.groupName }} <span class="sb-color-warning">*</span> </label>
+        <input class="sb-form-control" type="text" autofocus placeholder="{{ resourceService?.frmelmnts?.lbl?.enterGroupName }}" formControlName="name" [ngClass]="{'is-invalid' : isFieldValid('name')}" maxlength="50">
+        <small class="mt-4 pull-right sb-color-grey fxsmall"> {{50 - groupForm?.value?.name?.length}} {{resourceService?.frmelmnts?.lbl?.characterleft}}</small>
+        <small class="message sb-color-error font-weight-bold" *ngIf="isFieldValid('name')">{{ resourceService?.frmelmnts?.lbl?.groupNameRequired }}</small>
+      </div>
+      <div class="sb-field mb-16">
+        <label>{{resourceService?.frmelmnts?.lbl?.description}}</label>
+        <textarea class="sb-form-control" rows="5" type="text" placeholder="Description" formControlName="description" [ngClass]="{'is-invalid' : isFieldValid('description')}" maxlength="150"
+        placeholder="{{resourceService?.frmelmnts?.lbl?.groupDescription}}"
+        ></textarea>
+        <small class="mt-4 pull-right sb-color-grey fxsmall">{{150 - groupForm?.value?.description?.length}} {{resourceService?.frmelmnts?.lbl?.characterleft}}</small>
+      </div>
+      <div class="sb-field mt-24 mb-8" *ngIf="!groupId">
+      <label class="d-flex flex-ai-center">
+        <input type="checkbox" aria-labelledby="terms and agreement" role="checkbox" class="mr-8 cursor-pointer" formControlName="groupToc"
+        [ngClass]="{'is-invalid' : isFieldValid('groupToc')}">
+        <span class="font-weight-normal fnormal">{{resourceService?.frmelmnts?.lbl?.agreeGroupToc | interpolate:'{instance}': instance }} <a href="{{url}}/term-of-use.html#groupGuidelines" target="_blank" class="sb-color-primary">{{resourceService?.frmelmnts?.lbl?.groupGuidelines}}</a></span>
+      </label>
+      <small class="line-height-normal d-block message sb-color-error font-weight-bold mt-8 pl-20" *ngIf="isFieldValid('groupToc')">{{resourceService?.frmelmnts?.lbl?.groupToc | interpolate:'{instance}': instance}}</small>
+    </div>
+    </form>
+  
+
+  </div>
+  <div class="sb-modal-actions">
+    <button *ngIf="!groupId" class="sb-btn sb-btn-primary sb-btn-normal flex-ai-jc-center mb-8" type="button"
+    [disabled]="!groupForm.valid || disableBtn" [ngClass]="{'sb-btn-disabled': !groupForm.valid || disableBtn}"
+    (click)="onSubmitForm();addTelemetry('submit-group-form')">
+    <i class="icon-svg icon-svg--xs icon-groups mr-4"><svg class="icon icon-svg--white">
+      <use xlink:href="./assets/images/sprite.svg#groups"></use>
+    </svg></i>
+      {{ resourceService?.frmelmnts?.lbl?.createGroup }}
+    </button>
+    <button *ngIf="groupId" class="sb-btn sb-btn-primary sb-btn-normal flex-ai-jc-center" type="button"
+    [disabled]="!groupForm.valid || disableBtn" [ngClass]="{'sb-btn-disabled': !groupForm.valid}"
+    (click)="updateGroup();addTelemetry('update-group-form')">
+      {{resourceService?.frmelmnts?.btn?.submit}}
+    </button>
+    <button *ngIf="groupId" class="sb-btn sb-btn-outline-primary sb-btn-normal flex-ai-jc-center" type="button"
+    (click)="reset();addTelemetry('reset-group-form')">
+      {{resourceService?.frmelmnts?.btn?.reset}}
+    </button>
+  </div>
+</sui-modal>

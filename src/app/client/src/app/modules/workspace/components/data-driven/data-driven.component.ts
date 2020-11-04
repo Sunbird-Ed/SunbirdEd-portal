@@ -10,14 +10,15 @@ import { SearchService, UserService, FrameworkService, FormService } from '@sunb
 import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
 import { DefaultTemplateComponent } from '../content-creation-default-template/content-creation-default-template.component';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventInput, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { WorkSpace } from '../../classes/workspace';
 import { WorkSpaceService } from '../../services';
 import { combineLatest, Subscription, Subject, of, throwError } from 'rxjs';
 import { takeUntil, first, mergeMap, map, tap , filter, catchError} from 'rxjs/operators';
 @Component({
   selector: 'app-data-driven',
-  templateUrl: './data-driven.component.html'
+  templateUrl: './data-driven.component.html',
+  styleUrls: ['./data-driven.component.scss']
 })
 export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('formData') formData: DefaultTemplateComponent;
@@ -51,10 +52,6 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
  * userForm name creation
  */
   public creationForm: FormGroup;
-  /**
- * userProfile is of type userprofile interface
- */
-  public userProfile: IUserProfile;
   /**
 * Contains config service reference
 */
@@ -108,6 +105,14 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
 	*/
   telemetryImpression: IImpressionEventInput;
 
+  public showFrameworkSelection: boolean;
+
+  public frameworkCardData = [];
+
+  public selectedCard: any;
+
+  public enableCreateButton = false;
+
   public unsubscribe = new Subject<void>();
   constructor(
     public searchService: SearchService,
@@ -123,7 +128,8 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     formService: FormService,
     private _cacheService: CacheService,
     public navigationHelperService: NavigationHelperService,
-    public browserCacheTtlService: BrowserCacheTtlService
+    public browserCacheTtlService: BrowserCacheTtlService,
+    public telemetryService: TelemetryService
   ) {
     super(searchService, workSpaceService, userService);
     this.activatedRoute = activatedRoute;
@@ -144,34 +150,27 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
    this.description = this.configService.appConfig.contentDescription[this.contentType] ?
    this.configService.appConfig.contentDescription[this.contentType] : 'Untitled';
   }
-
-
   ngOnInit() {
-
-    this.checkForPreviousRouteForRedirect();
-    if (_.lowerCase(this.contentType) === 'course') {
-      this.getCourseFrameworkId().pipe(takeUntil(this.unsubscribe)).subscribe(data => {
-        this.framework = data;
+    this.activatedRoute.queryParams.subscribe(queryParams => {
+      this.showFrameworkSelection = _.get(queryParams, 'showFrameworkSelection');
+    });
+    this.userService.userOrgDetails$.subscribe(() => { // wait for user organization details
+      this.checkForPreviousRouteForRedirect();
+      if (this.showFrameworkSelection) {
+        this.frameworkService.getChannel(this.userService.hashTagId).pipe(takeUntil(this.unsubscribe)).subscribe(data => {
+          this.setFrameworkData(data);
+        }, err => {
+          this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        });
+      } else {
+        /**
+       * fetchFrameworkMetaData is called to config the form data and framework data
+       */
         this.fetchFrameworkMetaData();
-      }, err => {
-        this.toasterService.error(this.resourceService.messages.emsg.m0005);
-       });
-    } else {
-      /**
-     * fetchFrameworkMetaData is called to config the form data and framework data
-     */
-      this.fetchFrameworkMetaData();
-    }
-    /***
- * Call User service to get user data
- */
-    this.userService.userData$.subscribe(
-      (user: IUserData) => {
-        if (user && !user.err) {
-          this.userProfile = user.userProfile;
-        }
-      });
+      }
+    });
   }
+
   ngOnDestroy() {
     if (this.modal && this.modal.deny) {
       this.modal.deny();
@@ -254,9 +253,9 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     const requestData = _.cloneDeep(data);
     requestData.name = data.name ? data.name : this.name,
       requestData.description = data.description ? data.description : this.description,
-      requestData.createdBy = this.userProfile.id,
-      requestData.organisation = _.uniq(this.userProfile.organisationNames),
-      requestData.createdFor = this.userProfile.organisationIds,
+      requestData.createdBy = this.userService.userProfile.id,
+      requestData.organisation = _.uniq(this.userService.orgNames),
+      requestData.createdFor = this.userService.userProfile.organisationIds,
       requestData.contentType = this.configService.appConfig.contentCreateTypeForEditors[this.contentType],
       requestData.framework = this.framework;
     if (this.contentType === 'studymaterial' && data.contentType) {
@@ -275,10 +274,10 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     } else if (this.resourceType) {
       requestData.resourceType = this.resourceType;
     }
-    if (!_.isEmpty(this.userProfile.lastName)) {
-      requestData.creator = this.userProfile.firstName + ' ' + this.userProfile.lastName;
+    if (!_.isEmpty(this.userService.userProfile.lastName)) {
+      requestData.creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
     } else {
-      requestData.creator = this.userProfile.firstName;
+      requestData.creator = this.userService.userProfile.firstName;
     }
     return requestData;
   }
@@ -311,17 +310,18 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
       const type = this.configService.appConfig.contentCreateTypeForEditors[this.contentType];
       this.router.navigate(['/workspace/content/edit/collection', content.identifier, type, state, framework, 'Draft']);
     }
+    this.logTelemetry(content.identifier);
   }
 
   /**
     * Issue #SB-1448,  If previous url is not from create page, redirect current page to 'workspace/content/create'
   */
-  checkForPreviousRouteForRedirect() {
-    const previousUrlObj = this.navigationHelperService.getPreviousUrl();
+ checkForPreviousRouteForRedirect() {
+  const previousUrlObj = this.navigationHelperService.getPreviousUrl();
     if (previousUrlObj && previousUrlObj.url && (previousUrlObj.url !== '/workspace/content/create')) {
       this.redirect();
     }
-  }
+}
 
   redirect() {
     this.router.navigate(['/workspace/content/create']);
@@ -343,22 +343,80 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
       };
     });
   }
+
   /**
-  * fetchCourseFrameworkId (i.e TPD)
-  */
-  getCourseFrameworkId() {
-    const framework = this._cacheService.get('course' + 'framework');
-    if (framework) {
-      return of(framework);
-    } else {
-     return this.frameworkService.getCourseFramework()
-        .pipe(map((data) => {
-          const frameWork = _.get(data.result.response , 'value');
-          this._cacheService.set('course' + 'framework', frameWork, { maxAge: this.browserCacheTtlService.browserCacheTtl });
-          return frameWork;
-        }), catchError((error) => {
-          return of(false);
-        }));
+   * @since - #SH-403
+   * @param  {} channelData
+   * @description - It sets the card data and its associated framework
+   */
+  setFrameworkData(channelData) {
+    this.frameworkCardData = [{
+      title: 'Curriculum courses',
+      description: `Create courses for concepts from the syllabus, across grades and subjects. For example, courses on fractions, photosynthesis, reading comprehension, etc.`,
+      framework: _.get(channelData, 'result.channel.defaultFramework')
+    },
+    {
+      title: 'Generic courses',
+      description: `Create courses that help develop professional skills. For example, courses on classroom management, pedagogy, ICT, Leadership, etc.`,
+      framework: _.get(channelData, 'result.channel.defaultCourseFramework')
     }
+    ];
+  }
+
+  /**
+   * @since - #SH-403
+   * @param  {} cardData
+   * @description - 1. It selects a card from the framework selection popup
+   *                shown while creating any resource (only course as of now)
+   *                2. It also logs interact telemetry on card click.
+   */
+  selectFramework(cardData) {
+    this.enableCreateButton = true;
+    this.selectedCard = cardData;
+    this.framework = _.get(cardData, 'framework');
+    const telemetryInteractData = {
+      context: {
+        env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env'),
+        cdata: [{
+          type: 'framework',
+          id: this.framework
+        }]
+      },
+      edata: {
+        id: _.get(cardData, 'title'),
+        type: 'click',
+        pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid')
+      }
+    };
+    this.telemetryService.interact(telemetryInteractData);
+  }
+
+  /**
+   * @since - #SH-403
+   * @param  {string} contentId
+   * @description - it triggers an interact event when Start creating button is clicked.
+   */
+  logTelemetry(contentId) {
+    const telemetryData = {
+      context: {
+        env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env'),
+        cdata: [{
+          type: 'framework',
+          id: this.framework
+        }]
+      },
+      edata: {
+        id: 'start-creating-' + this.contentType,
+        type: 'click',
+        pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid')
+      },
+      object: {
+        id: contentId,
+        type: this.contentType,
+        ver: '1.0',
+        rollup: {},
+      }
+    };
+    this.telemetryService.interact(telemetryData);
   }
 }

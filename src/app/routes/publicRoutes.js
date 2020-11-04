@@ -12,7 +12,7 @@ module.exports = function (app) {
         return require('url').parse(contentProxyUrl + req.originalUrl).path
     }
 
-    app.use('/api/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
+    app.use('/api/*', proxy(contentProxyUrl, {
         proxyReqPathResolver: proxyReqPathResolverMethod
     }))
 }

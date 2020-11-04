@@ -3,24 +3,28 @@ import { OtpPopupComponent } from './otp-popup.component';
 import { SuiModule } from 'ng2-semantic-ui';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ResourceService, SharedModule } from '@sunbird/shared';
+import {ResourceService, SharedModule, ToasterService} from '@sunbird/shared';
 import { CoreModule, TenantService, OtpService, UserService } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { testData } from './otp-popup.component.spec.data';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('OtpPopupComponent', () => {
   let component: OtpPopupComponent;
   let fixture: ComponentFixture<OtpPopupComponent>;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), CoreModule, FormsModule, ReactiveFormsModule,
         HttpClientTestingModule, SuiModule, TelemetryModule.forRoot() , RouterTestingModule],
       declarations: [OtpPopupComponent],
-      providers: [ResourceService, TenantService, OtpService , UserService],
+      providers: [{
+        provide: ResourceService,
+        useValue: testData.resourceBundle
+      }, ToasterService, TenantService, OtpService, UserService],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -69,6 +73,18 @@ describe('OtpPopupComponent', () => {
     spyOn(otpService, 'verifyOTP').and.returnValue(observableThrowError(testData.verifyOtpError));
     component.verifyOTP();
     expect(component.enableSubmitBtn).toBeTruthy();
+  });
+
+  it('call verifyOTP and get error', () => {
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callFake(() => {
+    });
+    component.otpData = {'wrongOtpMessage': 'test'};
+    component.ngOnInit();
+    const otpService = TestBed.get(OtpService);
+    spyOn(otpService, 'verifyOTP').and.returnValue(observableThrowError(testData.noAttemptLeft));
+    component.verifyOTP();
+    expect(toasterService.error).toHaveBeenCalledWith(testData.resourceBundle.messages.emsg.m0050);
   });
 
   it('call resendOTP and get success', () => {

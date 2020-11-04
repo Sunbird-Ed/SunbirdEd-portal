@@ -4,9 +4,11 @@ import { TestBed, inject } from '@angular/core/testing';
 import { ProfileService } from '@sunbird/profile';
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CoreModule, LearnerService, UserService } from '@sunbird/core';
+import { CoreModule, LearnerService, UserService, FormService } from '@sunbird/core';
 import { mockRes } from './profile.service.spec.data';
+import { configureTestSuite } from '@sunbird/test-util';
 describe('ProfileService', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot()],
@@ -80,4 +82,50 @@ describe('ProfileService', () => {
       expect(apiResponse.result.response).toBe('SUCCESS');
     });
   });
+  it('should call declarations method', () => {
+    const learnerService = TestBed.get(LearnerService);
+    const profileService = TestBed.get(ProfileService);
+    const userService = TestBed.get(UserService);
+    spyOn(learnerService, 'patch').and.returnValue(observableOf(mockRes.successData));
+    spyOn(userService, 'getUserProfile').and.callThrough();
+    const request = {
+      profileSummary: 'summary'
+    };
+    profileService.declarations(request).subscribe(apiResponse => {
+      userService.getUserProfile();
+      expect(apiResponse.responseCode).toBe('OK');
+      expect(apiResponse.result.response).toBe('SUCCESS');
+    });
+  });
+
+  it('should call getPersonas method', () => {
+    const formService = TestBed.get(FormService);
+    const profileService = TestBed.get(ProfileService);
+    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockRes.successData));
+    profileService.getPersonas().subscribe(apiResponse => {
+      expect(apiResponse.responseCode).toBe('OK');
+      expect(apiResponse.result.response).toBe('SUCCESS');
+    });
+  });
+
+  it('should call getTenants method', () => {
+    const formService = TestBed.get(FormService);
+    const profileService = TestBed.get(ProfileService);
+    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockRes.successData));
+    profileService.getTenants().subscribe(apiResponse => {
+      expect(apiResponse.responseCode).toBe('OK');
+      expect(apiResponse.result.response).toBe('SUCCESS');
+    });
+  });
+
+  it('should call getTeacherDetailForm method', () => {
+    const formService = TestBed.get(FormService);
+    const profileService = TestBed.get(ProfileService);
+    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockRes.successData));
+    profileService.getTeacherDetailForm('submit').subscribe(apiResponse => {
+      expect(apiResponse.responseCode).toBe('OK');
+      expect(apiResponse.result.response).toBe('SUCCESS');
+    });
+  });
+
 });

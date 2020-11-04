@@ -7,11 +7,12 @@ import { mockRes } from './profile-badge.component.spec.data';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule } from '@sunbird/shared';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ProfileBadgeComponent', () => {
   let component: ProfileBadgeComponent;
   let fixture: ComponentFixture<ProfileBadgeComponent>;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), HttpClientTestingModule, CoreModule],

@@ -5,7 +5,7 @@ import { ResourceService, ToasterService, ConfigService, NavigationHelperService
 import { CourseBatchService } from './../../../services';
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { TelemetryService, IImpressionEventInput,  IInteractEventObject, IInteractEventEdata  } from '@sunbird/telemetry';
+import { TelemetryService, IImpressionEventInput, IInteractEventObject, IInteractEventEdata, IAuditEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 
@@ -28,6 +28,7 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 	 * telemetryImpression object for update batch page
 	*/
   telemetryImpression: IImpressionEventInput;
+  public modalVisibility = true;
   constructor(public router: Router, public activatedRoute: ActivatedRoute, public courseBatchService: CourseBatchService,
     public resourceService: ResourceService, public toasterService: ToasterService, public userService: UserService,
     public configService: ConfigService, public coursesService: CoursesService,
@@ -45,6 +46,14 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
           if (this.batchDetails.enrollmentType !== 'open') {
             this.toasterService.error(this.resourceService.messages.fmsg.m0082);
             this.redirect();
+          }
+          if (this.activatedRoute.queryParams) {
+            this.activatedRoute.queryParams.subscribe((queryParams) => {
+              if (queryParams.autoEnroll) {
+                this.modalVisibility = false;
+                this.enrollToCourse(this.batchId);
+              }
+            });
           }
         }, (err) => {
           this.toasterService.error(this.resourceService.messages.fmsg.m0054);
@@ -84,6 +93,7 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   enrollToCourse(batchId?: any) {
     this.setTelemetryData();
+    this.logAuditEvent();
     const request = {
       request: {
         courseId: this.batchDetails.courseId,
@@ -99,6 +109,7 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         this.fetchEnrolledCourseData();
         this.telemetryLogEvents(true);
       }, (err) => {
+        this.modalVisibility = true;
         this.disableSubmitBtn = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0001);
         this.telemetryLogEvents(false);
@@ -120,7 +131,7 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         });
     }, 2000);
   }
-  ngAfterViewInit () {
+  ngAfterViewInit() {
     setTimeout(() => {
       this.telemetryImpression = {
         context: {
@@ -146,6 +157,31 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       type: 'click',
       pageid: 'course-consumption'
     };
-    this.telemetryCdata = [{ 'type': 'batch', 'id': this.batchDetails.identifier}];
+    this.telemetryCdata = [{ 'type': 'batch', 'id': this.batchDetails.identifier }];
+  }
+
+  logAuditEvent() {
+    const auditEventInput: IAuditEventInput = {
+      'context': {
+        'env': this.activatedRoute.snapshot.data.telemetry.env,
+        'cdata': [
+          { id: this.batchDetails.courseId, type: 'CourseId' },
+          { id: this.userService.userid, type: 'UserId' },
+          { id: this.batchDetails.identifier, type: 'BatchId' },
+        ]
+      },
+      'object': {
+        'id': this.batchDetails.identifier,
+        'type': this.activatedRoute.snapshot.data.telemetry.object.type,
+        'ver': this.activatedRoute.snapshot.data.telemetry.object.ver
+      },
+      'edata': {
+        props: ['courseId', 'userId', 'batchId'],
+        state: '',
+        prevstate: ''
+      }
+    };
+
+    this.telemetryService.audit(auditEventInput);
   }
 }

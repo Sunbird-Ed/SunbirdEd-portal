@@ -1,17 +1,13 @@
 @import "variables";
+@import "mixins/mixins";
+@import 'components/metadata';
 
 .sb-table .sb-table-body td {
-    padding: 16px 24px;
+    padding: calculateRem(16px) calculateRem(24px);
     text-align: center;
     &:first-child {
         text-align: left;
     }
-}
-
-
-
-.sb-table .sb-table-header.heading-large tr th {
-    text-align: center;
 }
 
 // ::ng-deep {
@@ -34,12 +30,12 @@
 
 
   &--item {
-    border-bottom: 1px solid $gray-100;
+    border-bottom:calculateRem(1px) solid var(--gray-100);
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    padding: $base-block-space $base-block-space*2 $base-block-space $base-block-space*5;
+    padding:calculateRem(8px) calculateRem(16px) calculateRem(8px) calculateRem(40px);
     border-radius: 0;
     font-size: $font-size-sm;
 
@@ -49,7 +45,7 @@
 
     &:hover {
       cursor: pointer;
-      background-color: $primary-0;
+      background-color: var(--primary-0);
     }
   }
 
@@ -70,7 +66,7 @@
   }
 
   &.active {
-    border: 3px solid $primary-color;
+    border: calculateRem(3px) solid var(--primary-color);
 
     .selected-icon {
       display: inline-block;
@@ -78,14 +74,14 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: $white-color;
+      background: var(--white);
       border-radius: 50%;
-      height: 18px;
-      width: 18px;
+      height: calculateRem(18px);
+      width: calculateRem(18px);
 
       i.icon {
-        color: $primary-color;
-        font-size: $base-block-space*3;
+        color: var(--primary-color);
+        font-size: calculateRem(24px);
         margin: 0;
         position: absolute;
         top: 50%;
@@ -99,7 +95,7 @@
 
 .sb-cbse-homepage-container {
   .chapter-dotted-menu {
-    padding-bottom: 6px;
+    padding-bottom: calculateRem(6px);
   }
 
   i.circle.icon {
@@ -115,7 +111,7 @@
     padding: 0;
     .sb-radio-btn-checkbox {
       label {
-        padding: $base-block-space*2 $base-block-space*2 $base-block-space*2 $base-block-space*5;
+        padding: calculateRem(16px) calculateRem(16px) calculateRem(16px) calculateRem(40px);
       }
     }
   }
@@ -126,34 +122,34 @@
 //Common contribution card section
 .common-contribution-card {
   box-sizing: border-box;
-  border: 0.5px solid rgba(123, 134, 244, 0.39);
-  border-radius: ($base-block-space / 2);
+  border: calculateRem(0.5px) solid rgba(var(--rc-rgba-7b86f4), 0.39);
+  border-radius: calculateRem(4px);
   background-color: var(--white);
   box-shadow: none;
 
   .content {
     img {
-      width: 64px;
-      height: 64px;
+      width: calculateRem(64px);
+      height: calculateRem(64px);
     }
 
     .content-title {
       font-size: $font-size-sm;
       color: var(--gray);
       vertical-align: middle;
-      line-height: ($base-block-space * 2);
+      line-height: calculateRem(16px);
     }
 
     .icon {
       display: none;
-      height: ($base-block-space * 2) + 2;
+      height: calculateRem(18px);
       position: absolute;
-      right: $base-block-space;
-      top: $base-block-space;
+      right: calculateRem(8px);
+      top: calculateRem(8px);
       margin: 0;
-      width: ($base-block-space * 2) + 2;
-      font-size: ($base-block-space * 2) + 2;
-      color: $secondary-200;
+      width: calculateRem(18px);
+      font-size: calculateRem(18px);
+      color: var(--secondary-200);
     }
 
     &:hover {
@@ -168,29 +164,29 @@
     z-index: 5;
     background: var(--white);
     transform: translateY(-3px);
-    box-shadow: 0 2px 8px 0 rgba(123, 134, 244, 0.31);
-    border: 0.5px solid rgba(208, 208, 208, 0.48);
+    box-shadow: 0 calculateRem(2px) calculateRem(8px) 0 rgba(var(--rc-rgba-7b86f4), 0.31);
+    border: calculateRem(0.5px) solid rgba(var(--rc-rgba-d0d0d0), 0.48);
   }
 }
 
 .ui.error.reject {
-  background-color: #F5F9FC;
+  background-color: var(--rc-F5F9FC);
   color: var(--gray);
-  border: 1px dashed $primary-200;
+  border: calculateRem(1px) dashed var(--primary-200);
   box-shadow: none !important;
 
   li {
     font-size: $font-size-sm;
-    line-height: ($base-block-space * 2) + 4;
+    line-height: calculateRem(20px);
   }
 }
 
 //Meta Data
 .sb-meta-data-container.sb-meta-data-column {
-  width: 330px;
+  width: calculateRem(330px);
 
   .sb-meta-data {
-    padding-right: $base-block-space*3;
+    padding-right: calculateRem(24px);
     flex-basis: auto;
     margin: 0;
   
@@ -199,8 +195,8 @@
     }
   
     dt {
-      font-size: 20px;
-      color: $gray-800;
+      font-size: calculateRem(20px);
+      color: var(--gray-800);
       // margin-bottom: $base-block-space;
     }
   
@@ -208,22 +204,22 @@
   
       dt,
       dd {
-        color: $secondary-200;
+        color: var(--secondary-200);
       }
     }
   
     dd {
-      font-size: 10px;
+      font-size: calculateRem(10px);
     }
   }
 }
 
 .chapterlist-header {
-  height: 120px;
+  height: calculateRem(120px);
 
   &__image {
-    width: $base-block-space*8;
-    height: $base-block-space*8;
+    width: calculateRem(64px);
+    height: calculateRem(64px);
 
     img {
       width: 100%;
@@ -233,13 +229,13 @@
 }
 
 .dot-separator {
-  margin: 0 8px;
-  background: #999;
-  height: 5px;
-  width: 5px;
+  margin: 0 calculateRem(8px);
+  background: var(--gray-200);
+  height: calculateRem(5px);
+  width: calculateRem(5px);
   border-radius: 50%;
 }
 
 .sb-textbook-allchapters {
-  min-width: 240px
+  min-width: calculateRem(240px);
 }

@@ -1,26 +1,34 @@
+/* Search Component */
+$sb-search-box-shadow-color: var(--primary-300);
+$sb-search-input-font-size: $font-size-sm;
+$sb-search-border-color: var(--primary-300);
+$sb-search-btn-bg: var(--primary-100);
+$sb-search-btn-font-size: $font-size-sm;
+$sb-search-close-btn-bg: var(--blue);
+$sb-search-close-btn-color: var(--white);
 .sb-search-box {
   display: flex;
   align-items: center;
-  border: 1px solid $primary-300;
-  border-radius: 3px;
+  border: calculateRem(1px) solid var(--primary-300);
+  border-radius: calculateRem(3px);
   max-width: 100%;
   width:100%;
 
   @include respond-above(sm) {
     &.large {
-      max-width: 492px;
+      max-width: calculateRem(492px);
     }
     &.medium {
-      max-width: 392px;
+      max-width: calculateRem(392px);
     }
     &.small {
-      max-width: 282px;
+      max-width: calculateRem(282px);
     }
   }
 
   &:focus-within {
-    box-shadow: 0px 0px 2px 1px $sb-search-box-shadow-color;
-    border-radius: 3px;
+    box-shadow: 0px 0px calculateRem(2px) calculateRem(1px) $sb-search-box-shadow-color;
+    border-radius: calculateRem(3px);
   }
 
   &.no-btn {
@@ -28,9 +36,9 @@
       width: 100%;
     }
     .sb-search-input {
-      border-radius: 3px;
+      border-radius: calculateRem(3px);
       border: 0;
-      padding-right:8px;
+      padding-right: calculateRem(8px);
     }
     .sb-btn {
         display: none;
@@ -43,7 +51,7 @@
           pointer-events: none;
       }
      &:focus-within {
-         box-shadow: 0px 0px 2px 1px $primary-300;
+         box-shadow: 0px 0px calculateRem(2px) calculateRem(1px) var(--primary-300);
       }
   }
   .input-div {
@@ -53,23 +61,24 @@
   .sb-search-input {
     width: 100%;
     font-size: $sb-search-input-font-size;
-    min-height: $base-block-space * 4;
+    min-height: calculateRem(32px);
     border: 0;
-    border-right: 0.5px solid $sb-search-border-color;
+    border-right: calculateRem(0.5px) solid $sb-search-border-color;
     outline: 0;
     border-radius: 0px;
-    padding: calculateRem(4px) calculateRem(4px) calculateRem(4px) ($base-block-space * 4);
-    border-radius: 3px 0 0 3px;
+    padding: calculateRem(4px) calculateRem(4px) calculateRem(4px) calculateRem(32px);
+    border-radius: calculateRem(3px) 0 0 calculateRem(3px);
     line-height: normal;
     background: $white;
+    color: $gray-200;
   }
   .sb-btn {
     background: $sb-search-btn-bg;
     border: 0;
     min-width: auto;
     white-space: nowrap;
-    border-radius: 0 3px 3px 0;
-    color: $blue;
+    border-radius: 0 calculateRem(3px) calculateRem(3px) 0;
+    color: var(--primary-400);
     font-size: $sb-search-btn-font-size;
     font-weight: bold;
     margin: 0 !important;
@@ -78,41 +87,41 @@
   .icon {
     position: absolute;
     margin: 0;
-    height: $base-block-space * 2;
-    width: $base-block-space * 2;
+    height: calculateRem(16px);
+    width: calculateRem(16px);
     line-height: normal;
 
     &.search {
-      top: $base-block-space;
-      left: $base-block-space;
+      top: calculateRem(8px);
+      left: calculateRem(8px);
     }
     &.close {
-      top: $base-block-space;
-      right: $base-block-space;
+      top: calculateRem(8px);
+      right: calculateRem(8px);
       cursor: pointer;
       background: $sb-search-close-btn-bg;
       color: $sb-search-close-btn-color;
       border-radius: 50%;
       font-size: $font-size-sm;
-      padding: 2px 0 0 1px;
+      padding: calculateRem(2px) 0 0 calculateRem(1px);
     }
   }
 
   .sb-loader {
     position: absolute;
-    top: $base-block-space;
-    right: $base-block-space * 4;
+    top: calculateRem(8px);
+    right: calculateRem(32px);
     left: unset;
     transform: none;
-    width: $base-block-space * 2;
-    height: $base-block-space * 2;
+    width: calculateRem(16px);
+    height: calculateRem(16px);
 
     &:after {
       top: unset;
       left: unset;
       transform: none;
-      width: $base-block-space * 2;
-      height: $base-block-space * 2;
+      width: calculateRem(16px);
+      height: calculateRem(16px);
     }
   }
 }
@@ -121,31 +130,29 @@
   .sb-search-box {
     .sb-search-input {
       border-radius: 0 calculateRem(3px) calculateRem(3px) 0;
-      border-left: 0.5px solid $sb-search-border-color;
+      border-left: calculateRem(0.5px) solid $sb-search-border-color;
       border-right:0px;
-      padding:  calculateRem(4px) ($base-block-space * 4) calculateRem(4px) calculateRem(4px);
+      padding:  calculateRem(4px) calculateRem(32px) calculateRem(4px) calculateRem(4px);
     }
     .sb-btn {
       border-radius: calculateRem(3px) 0 0 calculateRem(3px);
     }
     .icon {  
       &.search {
-        right: $base-block-space;
+        right: calculateRem(8px);
       }
       &.close {
-        top: $base-block-space;
-        left: $base-block-space;
+        top: calculateRem(8px);
+        left: calculateRem(8px);
         right: unset;
       }
     }
     .sb-loader {
-      left: $base-block-space * 4;
+      left: calculateRem(32px);
       right: unset;
     }
   }
 }
-
-
 
 input:-internal-autofill-previewed, 
 input:-internal-autofill-selected, 
@@ -153,5 +160,177 @@ textarea:-internal-autofill-previewed,
 textarea:-internal-autofill-selected, 
 select:-internal-autofill-previewed, 
 select:-internal-autofill-selected {
-  background-color: $white !important;
+  background-color: var(--white) !important;
+}
+
+
+/* new search */
+.sbt-search-box {
+  display: flex;
+  align-items: center;
+  border-radius: calculateRem(28px);
+  margin:-1.5rem calculateRem(0px) calculateRem(16px);
+  @include respond-above(sm) {
+    margin:0 calculateRem(24px);
+  }
+  // max-width: 100%;
+  width: 100%;
+  box-shadow: var(--sbt-box-shadow-6px);
+
+  @include respond-above(sm) {
+    &.large {
+      max-width: calculateRem(492px);
+    }
+
+    &.medium {
+      max-width: calculateRem(392px);
+    }
+
+    &.small {
+      max-width: calculateRem(282px);
+    }
+  }
+
+  &:focus-within {
+    box-shadow: none;
+    border-radius:inherit;
+  }
+
+  &.no-btn {
+    .input-div {
+      width: 100%;
+    }
+
+    .sb-search-input {
+      border-radius: calculateRem(3px);
+      border: 0;
+      padding-right: calculateRem(8px);
+    }
+
+    .sb-btn {
+      display: none;
+    }
+  }
+
+  &.disabled {
+    opacity: 0.3;
+    cursor: pointer;
+
+    button,
+    input,
+    .icon {
+      pointer-events: none;
+    }
+
+    &:focus-within {
+      box-shadow: 0px 0px calculateRem(2px) calculateRem(1px) var(--primary-300);
+    }
+  }
+
+  .input-div {
+    flex: 2 1 auto;
+  }
+
+  .sb-search-input {
+    width: 100%;
+    font-size: var(--font-size-sm);
+    min-height: calculateRem(48px);
+    border: 0;
+    outline: 0;
+    padding: calculateRem(4px) calculateRem(88px) calculateRem(4px) calculateRem(40px);
+    border-radius:calculateRem(28px);
+    line-height: normal;
+    background: var(--white);
+    color: var(--gray-200);
+    html[dir="rtl"] & {
+      padding: calculateRem(4px) calculateRem(40px) calculateRem(4px) calculateRem(88px);
+    } 
+    &:hover {
+      box-shadow: var(--sbt-box-shadow-6px);
+    }
+    &:focus {
+      outline:0px;
+    }
+  }
+
+  .sb-btn {
+    background: var(--gray-800);
+    border: 0;
+    min-width: auto;
+    white-space: nowrap;
+    border-radius: calculateRem(28px);
+    color: var(--white);
+    font-size: $font-size-sm;
+    margin: 0 !important;
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: none !important;
+    html[dir="rtl"] & {
+      left: 8px;
+    right: inherit;
+    }
+  }
+  .sb-btn-md {
+    height: calculateRem(40px);
+  }
+  .icon {
+    position: absolute;
+    margin: 0;
+    height: calculateRem(16px);
+    width: calculateRem(16px);
+    line-height: normal;
+
+    &.search {
+      top: 50%;
+      left: calculateRem(12px);
+      transform: translateY(-50%);
+      z-index: 5;
+      html[dir="rtl"] & {
+        right: calculateRem(12px);
+        left:unset;
+      }
+    }
+    &.close {
+      html[dir='rtl'] & {
+        top: calculateRem(8px);
+        left: calculateRem(8px);
+        right: unset;
+      }
+    }
+
+  }
+
+  &.close {
+    top: calculateRem(8px);
+    right: calculateRem(8px);
+    cursor: pointer;
+    background: var(--primary-color);
+    color: var(--white);
+    border-radius: 50%;
+    font-size: var(--font-size-sm);
+    padding: calculateRem(2px) 0 0 calculateRem(1px);
+  }
+}
+
+.sbt-loader {
+  position: absolute;
+  top: calculateRem(8px);
+  right: calculateRem(32px);
+  left: unset;
+  transform: none;
+  width: calculateRem(16px);
+  height: calculateRem(16px);
+  html[dir="rtl"] & {
+    left: calculateRem(32px);
+    right: unset;
+  }
+  &:after {
+    top: unset;
+    left: unset;
+    transform: none;
+    width: calculateRem(16px);
+    height: calculateRem(16px);
+  }
 }

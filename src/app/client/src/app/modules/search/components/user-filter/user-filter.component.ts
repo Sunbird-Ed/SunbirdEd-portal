@@ -163,10 +163,8 @@ export class UserFilterComponent implements OnInit {
   }
 
   getRoles() {
-    return this.permissionService.permissionAvailable$.pipe(map((res) => {
-      if (res === 'success') {
-        this.allRoles = this.permissionService.allRoles;
-      }
+    return this.permissionService.availableRoles$.pipe(map((res) => {
+      this.allRoles = this.permissionService.allRoles;
       this.allRoles = _.filter(this.allRoles, (role) => {
         return role.role !== 'ORG_ADMIN' && role.role !== 'SYSTEM_ADMINISTRATION' && role.role !== 'ADMIN';
       });

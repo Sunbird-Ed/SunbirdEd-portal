@@ -7,7 +7,7 @@ import { UserService, TenantService, FrameworkService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '@sunbird/environment';
 import { EditorService, WorkSpaceService } from '../../../services';
-import { tap, delay, map, first } from 'rxjs/operators';
+import { tap, delay, map, first, mergeMap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 jQuery.fn.iziModal = iziModal;
 
@@ -32,6 +32,9 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   public queryParams: object;
   public contentDetails: any;
   public videoMaxSize: any;
+  public isLargeFileUpload = false;
+  genericEditorURL: string = (<HTMLInputElement>document.getElementById('genericEditorURL')) ?
+  (<HTMLInputElement>document.getElementById('genericEditorURL')).value : '';
 
   constructor(private userService: UserService, public _zone: NgZone, private activatedRoute: ActivatedRoute,
     private tenantService: TenantService, private telemetryService: TelemetryService, private router: Router,
@@ -52,6 +55,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     this.userProfile = this.userService.userProfile;
     this.routeParams = this.activatedRoute.snapshot.params;
     this.queryParams = this.activatedRoute.snapshot.queryParams;
+    this.isLargeFileUpload = _.get(this.activatedRoute, 'snapshot.data.isLargeFileUpload');
     this.disableBrowserBackButton();
     this.getDetails().pipe(first(),
       tap(data => {
@@ -86,12 +90,12 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
     if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
       return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
-      this.editorService.getOwnershipType(), this.lockContent()).
+      this.editorService.getOwnershipType(), this.lockContent(), this.userService.userOrgDetails$).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
         collectionDetails: data[1], ownershipType: data[2] })));
     } else {
       return combineLatest(this.tenantService.tenantData$, this.getContentDetails(),
-      this.editorService.getOwnershipType()).
+      this.editorService.getOwnershipType(), this.userService.userOrgDetails$).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
         collectionDetails: data[1], ownershipType: data[2] })));
     }
@@ -116,19 +120,42 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   }
   private getContentDetails() {
     if (this.routeParams.contentId) {
-    return this.editorService.getContent(this.routeParams.contentId).
-      pipe(map((data) => {
-        if (data) {
+      const options: any = { params: { mode: 'edit' } };
+      return this.editorService.getContent(this.routeParams.contentId, options).
+        pipe(mergeMap((data) => {
           this.contentDetails = data.result.content;
-          return of(data);
-        } else  {
-          return throwError(data);
-        }
-      }));
+          if (this.validateRequest()) {
+            return of(data);
+          } else {
+            return throwError('NO_PERMISSION');
+          }
+        }));
     } else {
       return of({});
     }
   }
+
+  /**
+   * checks the permission using state, status and userId
+   */
+  private validateRequest() {
+    const validStatus = _.indexOf(this.configService.editorConfig.GENERIC_EDITOR.contentStatus, this.contentDetails.status) > -1;
+    const validState = _.indexOf(this.configService.editorConfig.GENERIC_EDITOR.contentState, this.routeParams.state) > -1;
+    if (_.indexOf(this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.genericMimeType, this.contentDetails.mimeType) > -1 && validStatus) {
+      if (validState && this.contentDetails.createdBy !== this.userService.userid) {
+        return true;
+      } else if (validState && this.contentDetails.createdBy === this.userService.userid) {
+        return true;
+      } else if (validState && _.includes(this.contentDetails.collaborators, this.userService.userid)) {
+        return true;
+      } else if (this.contentDetails.createdBy === this.userService.userid) {
+        return true;
+      }
+      return false;
+    }
+    return false;
+  }
+
   /**
    *Launch Generic Editor in the modal
    */
@@ -136,7 +163,7 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
     jQuery('#genericEditor').iziModal({
       title: '',
       iframe: true,
-      iframeURL: '/thirdparty/editors/generic-editor/index.html?' + this.buildNumber,
+      iframeURL: this.genericEditorURL + '?' + this.buildNumber,
       navigateArrows: false,
       fullscreen: true,
       openFullscreen: true,
@@ -179,6 +206,11 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
       ownershipType: this.ownershipType,
       timeDiff: this.userService.getServerTimeDiff
     };
+    if (this.isLargeFileUpload || (_.get(this.contentDetails, 'contentDisposition') === 'online-only')) {
+      window.context['uploadInfo'] = {
+        isLargeFileUpload: true
+      };
+    }
   }
   private setWindowConfig() {
     window.config = _.cloneDeep(this.configService.editorConfig.GENERIC_EDITOR.WINDOW_CONFIG); // cloneDeep to preserve default config

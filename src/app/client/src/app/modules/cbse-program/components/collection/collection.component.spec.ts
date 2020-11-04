@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ConfigService, ResourceService, ToasterService, UtilService, BrowserCacheTtlService } from '@sunbird/shared';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CollectionComponent} from '../index';
+import { CollectionComponent} from './collection.component';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ContentService } from '@sunbird/core';
@@ -12,6 +12,9 @@ import { collectionComponentInput, collectionWithCard, searchCollectionResponse}
 import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
+import { CoreModule } from '@sunbird/core';
+import { configureTestSuite } from '@sunbird/test-util';
+import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 
 const ContentServiceStub = {
   post() {
@@ -42,11 +45,17 @@ describe('CollectionComponent', () => {
   let component: CollectionComponent;
   let fixture: ComponentFixture<CollectionComponent>;
 
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ CollectionComponent ],
-      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), RouterTestingModule],
+      imports: [HttpClientTestingModule,
+               TranslateModule.forRoot({
+                  loader: {
+                    provide: TranslateLoader,
+                    useClass: TranslateFakeLoader
+                  }
+                }),CoreModule, TelemetryModule.forRoot(), RouterTestingModule],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         ConfigService,

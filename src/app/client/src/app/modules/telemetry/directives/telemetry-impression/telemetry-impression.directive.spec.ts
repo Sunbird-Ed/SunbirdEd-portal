@@ -4,7 +4,9 @@ import { TelemetryImpressionDirective } from './telemetry-impression.directive';
 import { TelemetryService, TELEMETRY_PROVIDER } from '../../services';
 import {TestBed, ComponentFixture} from '@angular/core/testing';
 import {eventData} from './telemetry-impression.directive.spec.data';
+import { configureTestSuite } from '@sunbird/test-util';
 describe('TelemetryImpressionDirective', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TelemetryImpressionDirective],

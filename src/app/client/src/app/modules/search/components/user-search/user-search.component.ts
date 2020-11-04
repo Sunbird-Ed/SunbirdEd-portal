@@ -1,21 +1,23 @@
 
-import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
-import { ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-NavigationHelperService} from '@sunbird/shared';
+import {combineLatest as observableCombineLatest, Observable, Subject} from 'rxjs';
+import {
+  ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
+  NavigationHelperService, IPagination, LayoutService
+} from '@sunbird/shared';
 import { SearchService, UserService, PermissionService } from '@sunbird/core';
-import { Component, OnInit, NgZone, AfterViewInit } from '@angular/core';
+import {Component, OnInit, NgZone, AfterViewInit, OnDestroy} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
 import { UserSearchService } from './../../services';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { ProfileService } from '@sunbird/profile';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-search',
   templateUrl: './user-search.component.html'
 })
-export class UserSearchComponent implements OnInit, AfterViewInit {
+export class UserSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   private searchService: SearchService;
   private resourceService: ResourceService;
   /**
@@ -121,6 +123,9 @@ export class UserSearchComponent implements OnInit, AfterViewInit {
     showLabels: true,
     headers: []
   };
+  layoutConfiguration: any;
+  public unsubscribe$ = new Subject<void>();
+
   /**
      * Constructor to create injected service(s) object
      * Default method of Draft Component class
@@ -135,7 +140,7 @@ export class UserSearchComponent implements OnInit, AfterViewInit {
     resourceService: ResourceService, toasterService: ToasterService,
     config: ConfigService, user: UserService, userSearchService: UserSearchService,
     public permissionService: PermissionService, public profileService: ProfileService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
     this.searchService = searchService;
     this.route = route;
     this.activatedRoute = activatedRoute;
@@ -281,7 +286,17 @@ export class UserSearchComponent implements OnInit, AfterViewInit {
     });
   }
 
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+      if (layoutConfig != null) {
+        this.layoutConfiguration = layoutConfig.layout;
+      }
+    });
+  }
+
   ngOnInit() {
+    this.initLayout();
     this.user.userData$.subscribe(userdata => {
       if (userdata && !userdata.err) {
         this.userProfile = userdata.userProfile;
@@ -300,13 +315,11 @@ export class UserSearchComponent implements OnInit, AfterViewInit {
             this.queryParams = { ...bothParams.queryParams };
             this.selectedRoles = [];
             if (this.queryParams.Roles) {
-              this.permissionService.permissionAvailable$.subscribe(params => {
-                if (params === 'success') {
-                  _.forEach(this.permissionService.allRoles, (role) => {
-                    if (this.queryParams.Roles.includes(role.roleName)) { this.selectedRoles.push(role.role); }
-                  });
-                  this.populateUserSearch();
-                }
+              this.permissionService.availableRoles$.subscribe(params => {
+                _.forEach(this.permissionService.allRoles, (role) => {
+                  if (this.queryParams.Roles.includes(role.roleName)) { this.selectedRoles.push(role.role); }
+                });
+                this.populateUserSearch();
               });
             } else {
               this.populateUserSearch();
@@ -383,4 +396,10 @@ export class UserSearchComponent implements OnInit, AfterViewInit {
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
 }

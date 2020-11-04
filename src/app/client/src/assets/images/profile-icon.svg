@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="88px" height="88px" viewBox="0 0 88 88" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 63.1 (101010) - https://sketch.com -->
+    <title>2FDBCA2F-9798-49F5-A522-E3C6B4364A96</title>
+    <desc>Created with sketchtool.</desc>
+    <defs><path d="M44,6 C23.024,6 6,23.024 6,44 C6,64.976 23.024,82 44,82 C64.976,82 82,64.976 82,44 C82,23.024 64.976,6 44,6 L44,6 Z M44.5,17 C50.8633333,17 56,22.1366667 56,28.5 C56,34.8633333 50.8633333,40 44.5,40 C38.1366667,40 33,34.8633333 33,28.5 C33,22.1366667 38.1366667,17 44.5,17 L44.5,17 Z M44,71 C34.4166667,71 25.945,66.1238095 21,58.7333333 C21.115,51.152381 36.3333333,47 44,47 C51.6283333,47 66.885,51.152381 67,58.7333333 C62.055,66.1238095 53.5833333,71 44,71 L44,71 Z" id="path-1"></path>
+    </defs>
+    <g id="Profile" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Linked-Profile---Add-User-LIUP-profile-03" transform="translate(-676.000000, -202.000000)">
+            <g id="Group-2" transform="translate(676.000000, 202.000000)">
+                <circle id="Oval-2" fill="#E5EDF5" cx="44" cy="44" r="44"></circle>
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <use id="Mask" fill="#92B4D5" xlink:href="#path-1"></use>
+            </g>
+        </g>
+    </g>
+</svg>

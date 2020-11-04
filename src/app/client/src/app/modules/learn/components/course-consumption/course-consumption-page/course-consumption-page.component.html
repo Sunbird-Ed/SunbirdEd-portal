@@ -1,4 +1,6 @@
-<app-course-consumption-header *ngIf="!showLoader && !showError" [courseHierarchy]="courseHierarchy" [enrolledBatchInfo]="enrolledBatchInfo"></app-course-consumption-header>
+<app-landing-section [textToDisplay]="" 
+[layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
+<app-course-consumption-header *ngIf="!showLoader && !showError && showAddGroup !== null" [courseHierarchy]="courseHierarchy" [enrolledBatchInfo]="enrolledBatchInfo" [groupId]="groupId" [showAddGroup]="showAddGroup"></app-course-consumption-header>
 <router-outlet *ngIf="!showLoader && !showError"></router-outlet>
 <div *ngIf="showLoader" class="ui container">
     <div class="ui grid">

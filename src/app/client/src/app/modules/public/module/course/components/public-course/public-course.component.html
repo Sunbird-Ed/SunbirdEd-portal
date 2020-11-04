@@ -1,13 +1,23 @@
-<div [appTelemetryImpression]="telemetryImpression">
-  <app-prominent-filter [formAction]="'filter'" [frameworkName]="frameWorkName" [pageId]="'explore-page'"
-    *ngIf="initFilters" [filterEnv]="filterType" [ignoreQuery]="['key']" [accordionDefaultOpen]=true
-    [isShowFilterLabel]=true [showSearchedParam]=true [isShowFilterLabel]=true [hashTagId]="hashTagId"
-    (prominentFilter)="getFilters($event)"></app-prominent-filter>
-  <div class="ui container mt-24">
-    <div class="ui grid">
+<app-landing-section [textToDisplay]="pageTitleSrc" [svgToDisplay]="svgToDisplay" 
+[layoutConfiguration]="layoutConfiguration"></app-landing-section>
+<div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
+<div [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'" [appTelemetryImpression]="telemetryImpression">
+  <div [ngClass]="FIRST_PANEL_LAYOUT">
+    <app-global-search-filter [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true'
+                              *ngIf="initFilters" (filterChange)="getFilters($event)">
+    </app-global-search-filter>
+
+  </div>
+    <div [ngClass]="SECOND_PANEL_LAYOUT">
+  <div [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
+    <div class="ui grid relative9">
+      <app-global-search-selected-filter [facets]="facets" [selectedFilters]="selectedFilters"
+                                         *ngIf="initFilters && facets && layoutConfiguration"
+                                         (filterChange)="getFilters($event)"></app-global-search-selected-filter>
+
       <div class="twelve wide column" *ngFor="let section of pageSections;let last = last"
         [ngClass]="{'last mb-0':last}">
-        <app-page-section (visits)="prepareVisits($event)" (playEvent)="playContent($event)" [section]="section"
+        <app-page-section (visits)="prepareVisits($event)" [layoutConfiguration]="layoutConfiguration" (playEvent)="playContent($event)" [section]="section"
           (viewAll)="viewAll($event)"></app-page-section>
       </div>
       <div class="twelve wide column" *ngIf="showLoader">
@@ -18,6 +28,8 @@
       </div>
     </div>
   </div>
+</div>
+</div>
 </div>
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
   appBodyScroll (dismissed)="showLoginModal = false" #modal *ngIf="showLoginModal">

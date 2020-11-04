@@ -5,7 +5,9 @@ import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { SearchParam, LearnerService, UserService, ContentService, SearchService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class CourseBatchService {
   private _enrollToBatchDetails: any;
   private _updateBatchDetails: any;
@@ -162,5 +164,25 @@ export class CourseBatchService {
         return data.result.response;
       }));
     }
+  }
+  getcertificateDescription(enrolledBatchInfo) {
+    let certificateDescription = {isCertificate: false,description: ''};
+    const certificateTemplate = _.get(enrolledBatchInfo, 'cert_templates');
+    if(certificateTemplate && Object.keys(certificateTemplate).length !== 0) {
+      const templateKey = Object.keys(certificateTemplate);
+      const description = certificateTemplate[templateKey[0]].description
+      if(description){
+        certificateDescription = {
+          isCertificate: true,
+          description: description
+        };
+      }else{
+        certificateDescription = {
+          isCertificate: true,
+          description: ''
+        };
+      }
+    }
+    return certificateDescription;
   }
 }

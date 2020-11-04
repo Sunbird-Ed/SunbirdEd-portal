@@ -3,20 +3,22 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService, PlayerService, CopyContentService, PermissionService } from '@sunbird/core';
 import * as _ from 'lodash-es';
-import { INoteData } from '@sunbird/notes';
 import {
   ConfigService, IUserData, ResourceService, ToasterService, WindowScrollService, NavigationHelperService,
-  PlayerConfig, ContentData, ContentUtilsServiceService, ITelemetryShare
+  PlayerConfig, ContentData, ContentUtilsServiceService, ITelemetryShare, LayoutService
 } from '@sunbird/shared';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { PopupControlService } from '../../../../../../service/popup-control.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 /**
  *Component to play content
  */
 @Component({
   selector: 'app-content-player',
-  templateUrl: './content-player.component.html'
+  templateUrl: './content-player.component.html',
+  styleUrls: ['./content-player.component.scss']
 })
 export class ContentPlayerComponent implements OnInit, AfterViewInit {
   /**
@@ -77,10 +79,6 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
    * To show/hide the note popup editor
    */
   showNoteEditor = false;
-  /**
-   * This variable holds the details of the note created
-   */
-  createNoteData: INoteData;
 
   /**
    * Page Load Time, used this data in impression telemetry
@@ -91,12 +89,18 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
 
   closeUrl: any;
   playerOption: any;
+  showLoader = true;
+  isFullScreenView = false;
+  layoutConfiguration;
+  public unsubscribe = new Subject<void>();
+
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
     public toasterService: ToasterService, public windowScrollService: WindowScrollService, public playerService: PlayerService,
     public copyContentService: CopyContentService, public permissionService: PermissionService,
     public contentUtilsServiceService: ContentUtilsServiceService, public popupControlService: PopupControlService,
-    private configService: ConfigService, public navigationhelperService: NavigationHelperService) {
+    private configService: ConfigService, public navigationhelperService: NavigationHelperService,
+    public layoutService: LayoutService) {
       this.playerOption = {
         showContentRating: true
       };
@@ -106,16 +110,28 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
    * @memberof ContentPlayerComponent
    */
   ngOnInit() {
+    this.initLayout();
     this.activatedRoute.params.subscribe((params) => {
+      this.showPlayer = false; // show loader when till content data is fetched
       this.contentId = params.contentId;
       this.contentStatus = params.contentStatus;
-      this.userService.userData$.subscribe(
-        (user: IUserData) => {
-          if (user && !user.err) {
-            this.getContent();
-          }
-        });
+      this.getContent();
     });
+
+    this.navigationHelperService.contentFullScreenEvent.
+    pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
+      this.isFullScreenView = isFullScreen;
+    });
+  }
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.scrollTop();
+    this.layoutService.switchableLayout().
+        pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig => {
+        if (layoutConfig != null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        }
+      });
   }
   setTelemetryData() {
     this.telemetryImpression = {
@@ -166,7 +182,9 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
     }
     this.playerService.getContent(this.contentId, option).subscribe(
       (response) => {
+        this.showLoader = false;
         if (response.result.content.status === 'Live' || response.result.content.status === 'Unlisted') {
+          this.showPlayer = true;
           const contentDetails = {
             contentId: this.contentId,
             contentData: response.result.content
@@ -179,7 +197,6 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
             }, 5000);
           }
           this.setTelemetryData();
-          this.showPlayer = true;
           this.windowScrollService.smoothScroll('content-player');
           // this.breadcrumbsService.setBreadcrumbs([{ label: this.contentData.name, url: '' }]);
           this.badgeData = _.get(response, 'result.content.badgeAssertions');
@@ -212,7 +229,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
 
     } finally {
       setTimeout(() => {
-        this.navigationHelperService.navigateToResource('/explore');
+        this.navigationHelperService.navigateToPreviousUrl('/resources');
       }, 100);
     }
   }
@@ -232,9 +249,6 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
         this.showCopyLoader = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0008);
       });
-  }
-  createEventEmitter(data) {
-    this.createNoteData = data;
   }
   onShareLink() {
     this.shareLink = this.contentUtilsServiceService.getPublicShareUrl(this.contentId, this.contentData.mimeType);

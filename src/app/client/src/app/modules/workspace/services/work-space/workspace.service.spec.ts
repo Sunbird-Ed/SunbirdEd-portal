@@ -9,6 +9,7 @@ import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import * as mockData from './workspace.service.spec.data';
+import { configureTestSuite } from '@sunbird/test-util';
 const testData = mockData.mockRes;
 
 describe('WorkSpaceService', () => {
@@ -18,6 +19,7 @@ describe('WorkSpaceService', () => {
   const fakeActivatedRoute = {
     'params': observableOf({ pageNumber: '1' }),
   };
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, HttpClientModule, CoreModule, SharedModule.forRoot()],

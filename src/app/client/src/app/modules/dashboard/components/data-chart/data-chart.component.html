@@ -1,12 +1,16 @@
-<div class="graph-filters">
-  <form [formGroup]="filtersFormGroup" class="ui form" *ngIf="showChart">
-    <div class="d-flex flex-w-wrap reset-filter-section" *ngIf="showFilters">
+<div class="graph-filters" #chartRootElement>
+  <form [formGroup]="filtersFormGroup" class="ui form" *ngIf="showChart && showFilters"
+    [ngClass]="{'hide': hideElements}">
+    <div class="d-flex flex-w-wrap reset-filter-section">
       <div *ngIf="showGraphStats" class="d-flex flex-ai-center">{{resourceService?.frmelmnts?.lbl?.graphStat }}:
         <sui-checkbox class="toggle ml-8" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
           [telemetryInteractEdata]="setTelemetryInteractEdata('graph-statistics')"
           [telemetryInteractCdata]="telemetryCdata" (checkChange)="showStats = $event; "></sui-checkbox>
       </div>
       <div class="mr-8" *ngIf="chartType === 'bar' || chartType === 'line'">
+        <button (click)="addChartSummary()" *ngIf="chartConfig.id && isUserReportAdmin" type="button"
+          class="mr-8 sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn"><i class="add icon"></i>Add
+          {{ resourceService?.frmelmnts?.lbl?.chartSummary}}</button>
         <sui-select class="selection" [placeholder]="'Select ChartType'"
           (selectedOptionChange)="changeChartType($event)">
           <sui-select-option appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
@@ -24,7 +28,7 @@
         </button>
       </div>
     </div>
-    <sui-accordion class="styled fluid" [closeOthers]="false" *ngIf="showFilters">
+    <sui-accordion class="styled fluid" [closeOthers]="false">
       <sui-accordion-panel [isOpen]="true">
         <div title>
           <i class="dropdown icon"></i>
@@ -41,7 +45,8 @@
                     [placeholder]="filter.displayName" [formControlName]="filter.reference">
                     <sui-select-option appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
                       [telemetryInteractEdata]="setTelemetryInteractEdata(filter.reference + '-filter')"
-                      [telemetryInteractCdata]="telemetryCdata" *ngFor="let option of filter.options" [value]="option">
+                      [telemetryInteractCdata]="telemetryCdata" *ngFor="let option of filter.options"
+                      [value]="option | titlecase">
                     </sui-select-option>
                   </sui-multi-select>
                 </div>
@@ -86,6 +91,15 @@
       </span>
     </div>
   </div>
+  <div *ngIf="!showFilters && isUserReportAdmin && chartConfig.id" [ngClass]="{'hide': hideElements}"
+    class="d-flex flex-jc-flex-end  mt-8 mr-8 sb-last-update-status">
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractCdata]="[{id: chartConfig?.id, type: 'Chart'}]"
+      [telemetryInteractEdata]="{id: 'report-chart', type: 'chart-summary', pageid: activatedRoute.snapshot.data.telemetry.pageid}"
+      (click)="addChartSummary()" type="button"
+      class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn"><i class="add icon"></i>Add
+      {{ resourceService?.frmelmnts?.lbl?.chartSummary}}</button>
+  </div>
   <div class="dashboard-graph-statistics py-24" *ngIf="bigNumberCharts.length">
     <div class="graph-stat-block" *ngFor="let bigNumberChart of bigNumberCharts">
       <div class="graph-stat-label">{{bigNumberChart?.header}}</div>
@@ -93,15 +107,18 @@
       <div class="graph-stat-info"> {{bigNumberChart?.footer}} </div>
     </div>
   </div>
-  <div class="d-flex flex-jc-flex-end  mt-8 mr-8 sb-last-update-status" *ngIf="showLastUpdatedOn">
+  <div class="d-flex flex-jc-flex-end  mt-8 mr-8 sb-last-update-status" *ngIf="showLastUpdatedOn && lastUpdatedOn">
     <span class="font-italic">{{resourceService?.frmelmnts?.lbl?.lastUpdatedOn}}&nbsp;: </span> &nbsp; {{lastUpdatedOn}}
   </div>
   <ng-container *ngIf="showChart && !iframeDetails">
-    <canvas baseChart [datasets]="datasets" [labels]="chartLabels" [options]="chartOptions" [chartType]="chartType"
-      [legend]="legend" [colors]="chartColors"></canvas>
+    <canvas #chartCanvas baseChart [datasets]="datasets" [labels]="chartLabels" [options]="chartOptions"
+      [chartType]="chartType" [legend]="legend" [colors]="chartColors"></canvas>
   </ng-container>
   <ng-container *ngIf="iframeDetails">
     <iframe frameborder="0" class="dashboard-iframe" [src]="getIframeURL()">
     </iframe>
   </ng-container>
+  <div class="my-16" *ngIf="chartSummary$ | async as summary">
+    <app-report-summary *ngIf="summary.length" [inputData]="summary"></app-report-summary>
+  </div>
 </div>

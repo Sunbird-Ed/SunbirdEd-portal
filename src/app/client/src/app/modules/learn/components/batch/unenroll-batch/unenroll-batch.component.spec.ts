@@ -16,6 +16,8 @@ import { of, throwError } from 'rxjs';
 import * as _ from 'lodash-es';
 import { fakeOpenBatchDetails } from './unenroll-batch.component.spec.data';
 import { By } from '@angular/platform-browser';
+import { configureTestSuite } from '@sunbird/test-util';
+
 describe('UnEnrollBatchComponent', () => {
   let component: UnEnrollBatchComponent;
   let fixture: ComponentFixture<UnEnrollBatchComponent>;
@@ -55,9 +57,10 @@ describe('UnEnrollBatchComponent', () => {
       }
     }
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [],
+      declarations: [UnEnrollBatchComponent],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [SharedModule.forRoot(), TelemetryModule.forRoot(), CoreModule, SuiModule, LearnModule, RouterTestingModule,
         DashboardModule, HttpClientTestingModule],
@@ -127,7 +130,7 @@ describe('UnEnrollBatchComponent', () => {
     const toasterSpy = spyOn(toasterService, 'success');
     const courseBatchServiceSpy = spyOn(courseBatchService, 'unenrollFromCourse').and.returnValue(of({}));
     spyOn(courseBatchService, 'getEnrollToBatchDetails').and.callFake(() => of(fakeOpenBatchDetails));
-    spyOnProperty(component.userService, 'userid').and.returnValue('d0d8a341-9637-484c-b871-0c27015af238');
+    spyOnProperty(component.userService, 'userid', 'get').and.returnValue('d0d8a341-9637-484c-b871-0c27015af238');
     const goBackToCoursePageSpy = spyOn(component, 'goBackToCoursePage');
     component.ngOnInit();
     fixture.detectChanges();

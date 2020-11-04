@@ -374,6 +374,45 @@ export const mockUserData = {
       'result': {
          'signedUrl': 'https://ntpstaging.blob.core.windows.net/reports/course-progress-reports/report-0129399366092881925.csv'
        }
+   },
+   reportsLastUpdatedDateMock: {
+      'id': 'api.report',
+      'ver': '1.0',
+      'ts': '2020-04-13 18:57:58:092+0530',
+      'params': {
+          'resmsgid': '9705ccc0-7d8a-11ea-9082-5d763a6be3a2',
+          'msgid': null,
+          'status': 'success',
+          'err': null,
+          'errmsg': null
+      },
+      'responseCode': 'OK',
+      'result': {
+          'course-progress-reports': {
+              'lastModified': 'Mon, 13 Apr 2020 06:37:06 GMT'
+          },
+          'assessment-reports': {
+            'msg': 'NotFound',
+            'statusCode': 404,
+            'filename': 'assessment-reports/report-01299166246978355236.csv',
+            'reportname': 'assessment-reports'
+          }
+      }
+   },
+   currentBatchDataBefore: {
+      'identifier': '0130597187015311369',
+      'endDate': '2020-09-30',
+      'enrollmentEndDate': '2020-07-30',
+      'startDate': '2020-07-08',
+      'status': 1
+    },
+    currentBatchDataWithCount: {
+      'identifier': '0130597187015311369',
+      'endDate': '2020-09-30',
+      'enrollmentEndDate': '2020-07-30',
+      'startDate': '2020-07-08',
+      'status': 1,
+      'completedCount': 4,
+      'participantCount': 2
     }
-
 };

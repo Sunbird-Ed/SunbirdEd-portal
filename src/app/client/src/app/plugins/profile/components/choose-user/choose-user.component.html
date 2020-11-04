@@ -1,0 +1,30 @@
+<div class="user-profile-box my-32 p-0">
+  <div class="d-flex flex-jc-space-between px-16 pt-16">
+    <div class="user-profile-box__title">
+      {{resourceService.frmelmnts?.lbl?.useInstanceAs | interpolate:'{instance}': instance}}
+    </div>
+  </div>
+  <div class="px-16">
+    <button (click)="navigateToCreateUser()" type="submit"
+            class="sb-btn sb-btn-sm sb-btn-outline-secondary sb-left-icon-btn w-100 mt-16 mb-24">
+      <i class="chevron plus icon"></i> {{resourceService.frmelmnts?.lbl?.addUser}}
+    </button>
+  </div>
+  <div class="px-16 mb-16 member-list-container">
+    <sb-member-list [layoutConfig]=memberCardConfig
+                    [memberList]="userList"
+                    [isMenu]="false"
+                    (cardClick)="selectUser($event)">
+    </sb-member-list>
+  </div>
+  <div class="user-profile-box__actions pb-16 px-16">
+    <button type="submit" class="sb-btn sb-btn-normal" (click)="switchUser()"
+            [disabled]="!selectedUser"
+            appTelemetryInteract [telemetryInteractEdata]="submitInteractEdata"
+            [ngClass]="{'sb-btn-disabled': !selectedUser, 'sb-btn-primary': selectedUser}">
+      {{resourceService.frmelmnts?.lbl?.switchUser}}
+    </button>
+    <button type="submit" (click)="closeSwitchUser()"
+            class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">{{resourceService.frmelmnts?.btn?.cancel}}</button>
+  </div>
+</div>

@@ -6,6 +6,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { OfflineBannerComponent } from './offline-banner.component';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
+import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 
 describe('OfflineBannerComponent', () => {
   let component: OfflineBannerComponent;
@@ -24,10 +26,15 @@ describe('OfflineBannerComponent', () => {
       }
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, TelemetryModule.forRoot()],
+      imports: [HttpClientTestingModule, TranslateModule.forRoot({
+         loader: {
+            provide: TranslateLoader,
+            useClass: TranslateFakeLoader
+         }
+      }),TelemetryModule.forRoot()],
       declarations: [OfflineBannerComponent, InterpolatePipe],
       providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, DeviceDetectorService,
         { provide: Router, useClass: RouterStub },

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { ResourceService, ServerResponse } from '@sunbird/shared';
+import {ResourceService, ServerResponse, UtilService, ConfigService, ToasterService} from '@sunbird/shared';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import * as _ from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -15,22 +15,33 @@ import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
 export class OtpPopupComponent implements OnInit, OnDestroy {
 
   @Input() otpData: any;
+  @Input() redirectToLogin: boolean;
   @Output() redirectToParent = new EventEmitter();
   @Output() verificationSuccess = new EventEmitter();
+  @Output() closeContactForm = new EventEmitter();
   public unsubscribe = new Subject<void>();
   otpForm: FormGroup;
   enableSubmitBtn = false;
   errorMessage: string;
   infoMessage: string;
   disableResendButton = false;
+  enableResendButton = false;
   tenantDataSubscription: Subscription;
+  resendOTPbtn;
+  counter;
+  resendOtpCounter = 0;
+  maxResendTry = 4;
   logo: string;
   tenantName: string;
   submitInteractEdata: IInteractEventEdata;
   resendOtpInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
+  remainingAttempt: 'string';
   constructor(public resourceService: ResourceService, public tenantService: TenantService,
-    public deviceDetectorService: DeviceDetectorService, public otpService: OtpService , public userService: UserService) { }
+              public deviceDetectorService: DeviceDetectorService, public otpService: OtpService, public userService: UserService,
+              public utilService: UtilService, public configService: ConfigService,
+              public toasterService: ToasterService) {
+  }
 
   ngOnInit() {
     this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(
@@ -45,9 +56,28 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
     this.otpForm = new FormGroup({
       otp: new FormControl('', [Validators.required])
     });
+   this.resendOtpEnablePostTimer();
     this.enableSubmitButton();
     this.setInteractEventData();
   }
+
+  resendOtpEnablePostTimer() {
+    this.counter = 20;
+    this.disableResendButton = false;
+    this.enableResendButton = false;
+    setTimeout(() => {
+      this.enableResendButton = true;
+    }, 22000);
+    const interval = setInterval(() => {
+      this.resendOTPbtn = this.resourceService.frmelmnts.lbl.resendOTP + ' (' + this.counter + ')';
+      this.counter--;
+      if (this.counter < 0) {
+        this.resendOTPbtn = this.resourceService.frmelmnts.lbl.resendOTP;
+        clearInterval(interval);
+      }
+    }, 1000);
+  }
+
 
   verifyOTP() {
     const wrongOTPMessage = this.otpData.type === 'phone' ? this.resourceService.frmelmnts.lbl.wrongPhoneOTP :
@@ -73,16 +103,36 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
         this.verificationSuccess.emit(emitData);
       },
       (err) => {
-        this.otpForm.controls['otp'].setValue('');
-        this.enableSubmitBtn = true;
-        this.infoMessage = '';
-        this.errorMessage = _.get(err, 'error.params.status') === 'ERROR_INVALID_OTP' ?
-          wrongOTPMessage : wrongOTPMessage;
+        if (_.get(err, 'error.result.remainingAttempt') === 0) {
+          if (this.redirectToLogin) {
+            this.utilService.redirectToLogin(this.resourceService.messages.emsg.m0050);
+          } else {
+            this.toasterService.error(this.resourceService.messages.emsg.m0050);
+            this.closeContactForm.emit('true');
+          }
+        } else {
+          this.otpForm.controls['otp'].setValue('');
+          this.enableSubmitBtn = true;
+          this.infoMessage = '';
+          this.remainingAttempt = _.get(err, 'error.result.remainingAttempt') || 1;
+          this.errorMessage =
+            _.get(err, 'error.params.status') === this.configService.constants.HTTP_STATUS_CODES.OTP_VERIFICATION_FAILED ?
+              _.get(this.resourceService, 'messages.imsg.m0086') : wrongOTPMessage;
+        }
       }
     );
   }
 
   resendOTP() {
+    this.disableResendButton = false;
+    this.enableResendButton = false;
+    this.resendOtpCounter = this.resendOtpCounter + 1 ;
+    if (this.resendOtpCounter >= this.maxResendTry) {
+      this.disableResendButton = false;
+      this.infoMessage = '';
+      this.errorMessage = this.resourceService.frmelmnts.lbl.OTPresendMaxretryreached;
+      return false;
+    }
     this.otpForm.controls['otp'].setValue('');
     const request = {
       'request': {
@@ -92,6 +142,7 @@ export class OtpPopupComponent implements OnInit, OnDestroy {
     };
     this.otpService.generateOTP(request).subscribe(
       (data: ServerResponse) => {
+        this.resendOtpEnablePostTimer();
         this.errorMessage = '';
         this.infoMessage = this.resourceService.frmelmnts.lbl.resentOTP;
       },

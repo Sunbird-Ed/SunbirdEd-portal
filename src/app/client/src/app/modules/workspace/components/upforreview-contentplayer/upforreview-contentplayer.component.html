@@ -1,83 +1,85 @@
-<div class="ui container mt-24">
-  <div class="ui stackable grid">
-    <div class="twele wide column">
-      <div class="row" *ngIf="showLoader">
-        <app-loader [data]="loaderMessage"></app-loader>
-      </div>
+<app-landing-section [noTitle]= "true"
+[layoutConfiguration]="layoutConfiguration"></app-landing-section>
+<div [ngClass]="layoutConfiguration ? 'sbt-center-container mt-24 relative9': 'ui container mt-24'">
+    <div [ngClass]="layoutConfiguration ? '' :'ui stackable grid'">
+      <div class="twele wide column">
+        <div class="row" *ngIf="showLoader">
+          <app-loader [data]="loaderMessage"></app-loader>
+        </div>
 
-      <div *ngIf="!showLoader && contentData">
-        <div class="sb-pageSection">
-          <div class="sb-pageSection-header">
-            <h1 class="sb-pageSection-title m-0 mr-8"> {{contentData.name}} </h1>
-            <button class="sb-btn sb-btn-normal sb-btn-error ml-auto mouse-pointer" appTelemetryInteract
-              [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeInteractEdata"
-              (click)="close()"> Close
-              <i class="ui remove icon"></i>
-            </button>
+        <div *ngIf="!showLoader && contentData">
+          <div class="sb-pageSection">
+            <div class="sb-pageSection-header">
+              <h1 class="sb-pageSection-title m-0 mr-8"> {{contentData.name}} </h1>
+              <button class="sb-btn sb-btn-normal sb-btn-error ml-auto mouse-pointer" appTelemetryInteract
+                [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeInteractEdata"
+                (click)="close()"> Close
+                <i class="ui remove icon"></i>
+              </button>
+            </div>
+          </div>
+
+
+          <div class="ui grid">
+            <div [ngClass]="showCommentBoxClass">
+              <app-player class="content-player" [playerConfig]="playerConfig"
+                (contentProgressEvent)="contentProgressEvent($event)" (sceneChangeEvent)="handleSceneChangeEvent($event)">
+              </app-player>
+            </div>
+            <div class="four wide column"
+              *ngIf="contentData.mimeType === 'application/vnd.ekstep.ecml-archive' && stageId">
+              <app-review-comments [contentData]="contentData" [playerLoaded]="playerLoaded" [stageId]="stageId"
+                (reviewCommentEvent)="handleReviewCommentEvent($event)"></app-review-comments>
+            </div>
           </div>
         </div>
 
-
-        <div class="ui grid">
-          <div [ngClass]="showCommentBoxClass">
-            <app-player class="content-player" [playerConfig]="playerConfig"
-              (contentProgressEvent)="contentProgressEvent($event)" (sceneChangeEvent)="handleSceneChangeEvent($event)">
-            </app-player>
-          </div>
-          <div class="four wide column"
-            *ngIf="contentData.mimeType === 'application/vnd.ekstep.ecml-archive' && stageId">
-            <app-review-comments [contentData]="contentData" [playerLoaded]="playerLoaded" [stageId]="stageId"
-              (reviewCommentEvent)="handleReviewCommentEvent($event)"></app-review-comments>
-          </div>
-        </div>
-      </div>
-
-      <div class="row d-flex" *ngIf="!showLoader">
-        <div class="my-24 videosegment ui clearing segment ml-auto">
-          <div
-            *ngIf="permissionService.permissionAvailable && contentData && 
-                 (contentData.status === 'Review' || contentData.status === 'FlagReview') && userId !== contentData.createdBy"
-            appPermission [permission]="['CONTENT_REVIEWER', 'CONTENT_REVIEW','BOOK_REVIEWER','FLAG_REVIEWER']">
-            <button (click)="checkComments()" class="ui right floated sb-btn sb-btn-primary sb-btn-normal mr-8"
-              appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-              [telemetryInteractEdata]="publishInteractEdata">
-              {{resourceService?.frmelmnts?.btn?.publish}}
-            </button>
-            <button [routerLink]="['requestchanges']" class="ui right floated sb-btn sb-btn-primary sb-btn-normal"
-              appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-              [telemetryInteractEdata]="requestForChangesInteractEdata">
-              {{resourceService?.frmelmnts?.btn?.requestChanges}}
-            </button>
+        <div class="row d-flex" *ngIf="!showLoader">
+          <div class="my-24 videosegment ui clearing segment ml-auto">
+            <div
+              *ngIf="permissionService.permissionAvailable && contentData && 
+                  (contentData.status === 'Review' || contentData.status === 'FlagReview') && userId !== contentData.createdBy"
+              appPermission [permission]="['CONTENT_REVIEWER', 'CONTENT_REVIEW','BOOK_REVIEWER','FLAG_REVIEWER']">
+              <button (click)="checkComments()" class="ui right floated sb-btn sb-btn-primary sb-btn-normal mr-8"
+                appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+                [telemetryInteractEdata]="publishInteractEdata">
+                {{resourceService?.frmelmnts?.btn?.publish}}
+              </button>
+              <button [routerLink]="['requestchanges']" class="ui right floated sb-btn sb-btn-primary sb-btn-normal"
+                appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+                [telemetryInteractEdata]="requestForChangesInteractEdata">
+                {{resourceService?.frmelmnts?.btn?.requestChanges}}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="ui grid" *ngIf="!showLoader && contentData">
-        <div class="eight wide column">
-          <app-content-player-metadata [contentData]="contentData"></app-content-player-metadata>
+        <div class="ui grid" *ngIf="!showLoader && contentData">
+          <div class="eight wide column">
+            <app-content-player-metadata [contentData]="contentData"></app-content-player-metadata>
+          </div>
+          <div class="four wide column">
+          </div>
         </div>
-        <div class="four wide column">
-        </div>
-      </div>
 
-      <div *ngIf="showError">
-        <div class="ui active dimmer inverted">
-          <div class="content">
-            <div class="center">
-              <h2 class="ui header red">
-                {{errorMessage}}
-              </h2>
-              <span>
-                <button class="ui button" (click)="tryAgain()">{{resourceService.frmelmnts.btn.tryagain}}</button>
-              </span>
-              <span>
-                <button class="ui red button" (click)="close()">{{resourceService.frmelmnts.btn.close}}</button>
-              </span>
+        <div *ngIf="showError">
+          <div class="ui active dimmer inverted">
+            <div class="content">
+              <div class="center">
+                <h2 class="ui header red">
+                  {{errorMessage}}
+                </h2>
+                <span>
+                  <button class="ui button" (click)="tryAgain()">{{resourceService.frmelmnts.btn.tryagain}}</button>
+                </span>
+                <span>
+                  <button class="ui red button" (click)="close()">{{resourceService.frmelmnts.btn.close}}</button>
+                </span>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 </div>
 <!-- publish warning modal -->
 

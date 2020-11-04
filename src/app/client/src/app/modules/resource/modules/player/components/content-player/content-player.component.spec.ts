@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable } from 'rxjs';
+import {throwError as observableThrowError, of as observableOf,  Observable, of } from 'rxjs';
 import { mockUserData } from './../../../../../core/services/user/user.mock.spec.data';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -9,6 +9,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ContentPlayerComponent } from './content-player.component';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { configureTestSuite } from '@sunbird/test-util';
 const serverRes = {
   id : 'api.content.read',
   ver: '1.0',
@@ -61,7 +62,7 @@ const fakeActivatedRoute = {
 describe('ContentPlayerComponent', () => {
   let component: ContentPlayerComponent;
   let fixture: ComponentFixture<ContentPlayerComponent>;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [CoreModule, SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
@@ -148,4 +149,27 @@ describe('ContentPlayerComponent', () => {
     component.printPdf('www.samplepdf.com');
     expect(window.open).toHaveBeenCalledWith('www.samplepdf.com', '_blank');
   });
+
+  it('should make isFullScreenView to TRUE', () => {
+    component.isFullScreenView = false;
+    expect(component.isFullScreenView).toBeFalsy();
+    spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of (true));
+    component.ngOnInit();
+    component.navigationHelperService.contentFullScreenEvent.subscribe(response => {
+      expect(response).toBeTruthy();
+      expect(component.isFullScreenView).toBeTruthy();
+    });
+  });
+
+  it('should make isFullScreenView to FALSE', () => {
+    component.isFullScreenView = true;
+    expect(component.isFullScreenView).toBeTruthy();
+    spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of (false));
+    component.ngOnInit();
+    component.navigationHelperService.contentFullScreenEvent.subscribe(response => {
+      expect(response).toBeFalsy();
+      expect(component.isFullScreenView).toBeFalsy();
+    });
+  });
+
 });

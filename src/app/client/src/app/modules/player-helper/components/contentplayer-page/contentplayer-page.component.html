@@ -1,0 +1,11 @@
+<div *ngIf="tocPage" class="toc-content text-left" [appTelemetryImpression]="telemetryImpression">
+    <!-- <app-player class="content-player" [playerOption] ="playerOption" [playerConfig]="playerConfig"></app-player> -->
+    <app-content-player [playerConfig]="playerConfig" [contentData]="contentDetails" [isContentPresent]="true"
+        [isContentDeleted]="false" [contentProgressEvents$]="contentProgressEvents$"
+        (assessmentEvents)="onAssessmentEvents($event)"
+        (questionScoreSubmitEvents)="onQuestionScoreSubmitEvents($event)"></app-content-player>
+
+    <div class="mt-8">
+        <app-credits-and-licence *ngIf="contentDetails" [contentData]="contentDetails"></app-credits-and-licence>
+    </div>
+</div>

@@ -1,0 +1,45 @@
+/* user create and choose user page UI styles */
+
+.user-profile-box {
+  margin: calculateRem(32px) auto;
+  max-width: 480px;
+  width: calc(100% - 32px);
+  background: var(--white);
+  border-radius: calculateRem(8px);
+
+  &__title {
+    font-weight: bold;
+    color: var(--primary-color);
+    font-size: calculateRem(16px);
+  }
+
+  &__actions {
+    border-top: calculateRem(1px) solid var(--rc-dddddd);
+    padding: calculateRem(16px) 0px 0px 0px;
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
+  .ui.stackable.grid>.wide.column {
+    padding: 0rem !important;
+  }
+
+  .field-focus {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+
+  .orange-border {
+    border-color: var(--red-100) !important;
+  }
+
+  .orange.text {
+    color: var(--red-100);
+  }
+
+  .member-list-container {
+    max-height: calculateRem(320px);
+    overflow-y: auto;
+  }
+}

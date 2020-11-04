@@ -3,7 +3,7 @@ import { PageApiService, OrgDetailsService, FormService, UserService } from '@su
 import { Component, OnInit, OnDestroy, EventEmitter, HostListener, AfterViewInit } from '@angular/core';
 import {
   ResourceService, ToasterService, INoResultMessage, ConfigService, UtilService, ICaraouselData, BrowserCacheTtlService, ServerResponse,
-  NavigationHelperService
+  NavigationHelperService, LayoutService, COLUMN_TYPE
 } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -35,6 +35,19 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
   public initFilters = false;
   public loaderMessage;
   public pageSections: Array<ICaraouselData> = [];
+  public toUseFrameWorkData = false;
+  layoutConfiguration: any;
+  FIRST_PANEL_LAYOUT;
+  SECOND_PANEL_LAYOUT;
+  pageTitle;
+  pageTitleSrc;
+  svgToDisplay;
+  formData: any;
+  public facets;
+  public facetsList: any;
+  public selectedFilters;
+  public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
+  (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -47,19 +60,25 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
     public router: Router, private utilService: UtilService, private orgDetailsService: OrgDetailsService,
     private publicPlayerService: PublicPlayerService, private cacheService: CacheService,
     private browserCacheTtlService: BrowserCacheTtlService, private userService: UserService, public formService: FormService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
     this.router.onSameUrlNavigation = 'reload';
     this.filterType = this.configService.appConfig.exploreCourse.filterType;
     this.setTelemetryData();
   }
 
   ngOnInit() {
+   this.initLayout();
     combineLatest(
-      this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug),
-      this.getFrameWork()
+      this.orgDetailsService.getOrgDetails(this.userService.slug),
+      this.getFrameWork(),
+      this.getFormData()
     ).pipe(
       mergeMap((data: any) => {
         this.hashTagId = data[0].hashTagId;
+        // TODO change the slug to 'Igot'
+        if (this.userService.slug === this.slugForProminentFilter) {
+          this.toUseFrameWorkData = true;
+        }
         if (data[1]) {
           this.initFilters = true;
           this.frameWorkName = data[1];
@@ -79,9 +98,71 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     );
   }
+
+  getFormData() {
+    const formServiceInputParams = {
+      formType: 'contentcategory',
+      formAction: 'menubar',
+      contentType: 'global'
+    };
+    return this.formService.getFormConfig(formServiceInputParams).pipe(map((data: any) => {
+      _.forEach(data, (value, key) => {
+        if (_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') === value.contentType) {
+          this.pageTitle = _.get(this.resourceService, value.title);
+          this.pageTitleSrc = this.resourceService.RESOURCE_CONSUMPTION_ROOT+value.title;
+          this.svgToDisplay = _.get(value, 'theme.imageName');
+        } else if (Object.keys(_.get(this.activatedRoute, 'snapshot.queryParams')).length === 0) {
+          if (value.contentType === 'course') {
+            this.pageTitle = _.get(this.resourceService, value.title);
+            this.svgToDisplay = _.get(value, 'theme.imageName');
+          }
+        }
+      });
+      this.formData = data;
+      return data;
+    }), catchError((error) => {
+      return of(false);
+    }));
+  }
+    initLayout() {
+      this.layoutConfiguration = this.layoutService.initlayoutConfig();
+      this.redoLayout();
+      this.layoutService.switchableLayout().
+          pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+          if (layoutConfig != null) {
+            this.layoutConfiguration = layoutConfig.layout;
+          }
+          this.redoLayout();
+        });
+    }
+    redoLayout() {
+        if (this.layoutConfiguration != null) {
+          this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
+          this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
+        } else {
+          this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
+          this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
+        }
+    }
+
   public getFilters(filters) {
+    const filterData = filters && filters.filters || {};
+    if (filterData.channel && this.facets) {
+      const channelIds = [];
+      const facetsData = _.find(this.facets, {'name': 'channel'});
+      _.forEach(filterData.channel, (value, index) => {
+        const data = _.find(facetsData.values, {'identifier': value});
+        if (data) {
+          channelIds.push(data.name);
+        }
+      });
+      if (channelIds && Array.isArray(channelIds) && channelIds.length > 0) {
+        filterData.channel = channelIds;
+      }
+    }
+    this.selectedFilters = filterData;
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
-        if (element.code === 'board') {
+        if (element && element.code === 'board') {
           collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
         }
         return collector;
@@ -89,10 +170,6 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
     this.dataDrivenFilterEvent.emit(defaultFilters);
   }
   private getFrameWork() {
-    const framework = this.cacheService.get('framework' + 'search');
-    if (framework) {
-      return of(framework);
-    } else {
       const formServiceInputParams = {
         formType: 'framework',
         formAction: 'search',
@@ -101,12 +178,10 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       return this.formService.getFormConfig(formServiceInputParams, this.hashTagId)
         .pipe(map((data: ServerResponse) => {
             const frameWork = _.find(data, 'framework').framework;
-            this.cacheService.set('framework' + 'search', frameWork, { maxAge: this.browserCacheTtlService.browserCacheTtl});
             return frameWork;
         }), catchError((error) => {
           return of(false);
         }));
-    }
   }
   private fetchContentOnParamChange() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
@@ -121,42 +196,11 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
         this.fetchPageData();
       });
   }
-  private fetchPageData() {
-    const filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
-      if ( key === 'appliedFilters') {
-        return false;
-      }
-      return value.length;
-    });
-    // filters.board = _.get(this.queryParams, 'board') || this.dataDrivenFilters.board;
-    const option = {
-      source: 'web',
-      name: 'AnonymousCourse',
-      filters: filters,
-      // softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 },
-      // mode: 'soft',
-      // exists: [],
-      params : this.configService.appConfig.ExplorePage.contentApiQueryParams
-    };
-    this.pageApiService.getPageData(option).pipe(takeUntil(this.unsubscribe$))
-      .subscribe(data => {
-        this.showLoader = false;
-        this.carouselMasterData = this.prepareCarouselData(_.get(data, 'sections'));
-        if (!this.carouselMasterData.length) {
-          return; // no page section
-        }
-        if (this.carouselMasterData.length >= 2) {
-          this.pageSections = [this.carouselMasterData[0], this.carouselMasterData[1]];
-        } else if (this.carouselMasterData.length >= 1) {
-          this.pageSections = [this.carouselMasterData[0]];
-        }
-      }, err => {
-        this.showLoader = false;
-        this.carouselMasterData = [];
-        this.pageSections = [];
-        this.toasterService.error(this.resourceService.messages.fmsg.m0004);
-    });
+
+  public getPageData(data) {
+    return _.find(this.formData, (o) => o.contentType === data);
   }
+
   private prepareCarouselData(sections = []) {
     const { constantData, metaData, dynamicFields, slickSize } = this.configService.appConfig.CoursePage;
       const carouselData = _.reduce(sections, (collector, element) => {
@@ -187,6 +231,74 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
   public playContent(event) {
     this.publicPlayerService.playExploreCourse(event.data.metaData.identifier);
   }
+
+  processOrgData(channels) {
+    const rootOrgIds = [];
+    _.forEach(channels, (channelData) => {
+      if (channelData.name) {
+        rootOrgIds.push(channelData.name);
+      }
+    });
+    return rootOrgIds;
+  }
+
+  private fetchPageData() {
+    const currentPageData = this.getPageData(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'course');
+    const filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
+      if (key === 'appliedFilters' || key === 'selectedTab') {
+        return false;
+      }
+      return value.length;
+    });
+    // filters.board = _.get(this.queryParams, 'board') || this.dataDrivenFilters.board;
+    const option = {
+      source: 'web',
+      name: 'Course',
+      organisationId: this.hashTagId || '*',
+      filters: filters,
+      fields: _.get(currentPageData, 'search.fields') || this.configService.urlConFig.params.CourseSearchField,
+      facets: _.get(currentPageData, 'search.facets') || ['channel', 'gradeLevel', 'subject', 'medium'],
+      // softConstraints: { badgeAssertions: 98, board: 99,  channel: 100 },
+      // mode: 'soft',
+      // exists: [],
+      params: this.configService.appConfig.ExplorePage.contentApiQueryParams
+    };
+    this.pageApiService.getPageData(option).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      let facetsList: any = this.utilService.processData(_.get(data, 'sections'), option.facets);
+      const rootOrgIds = this.processOrgData(facetsList.channel);
+      this.orgDetailsService.searchOrgDetails({
+        filters: {isRootOrg: true, rootOrgId: rootOrgIds},
+        fields: ['slug', 'identifier', 'orgName']
+      }).subscribe((orgDetails) => {
+        this.showLoader = false;
+        this.carouselMasterData = this.prepareCarouselData(_.get(data, 'sections'));
+        facetsList.channel = _.get(orgDetails, 'content');
+        facetsList = this.utilService.removeDuplicate(facetsList);
+        this.facets = this.updateFacetsData(facetsList);
+        this.getFilters({filters: this.selectedFilters});
+        this.initFilters = true;
+        if (!this.carouselMasterData.length) {
+          return; // no page section
+        }
+        if (this.carouselMasterData.length >= 2) {
+          this.pageSections = [this.carouselMasterData[0], this.carouselMasterData[1]];
+        } else if (this.carouselMasterData.length >= 1) {
+          this.pageSections = [this.carouselMasterData[0]];
+        }
+      }, err => {
+        this.showLoader = false;
+        this.carouselMasterData = [];
+        this.pageSections = [];
+        this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+      });
+    }, err => {
+      this.showLoader = false;
+      this.carouselMasterData = [];
+      this.pageSections = [];
+      this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+    });
+  }
+
   public viewAll(event) {
     const searchQuery = JSON.parse(event.searchQuery);
     const searchQueryParams: any = {};
@@ -198,6 +310,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
     searchQueryParams.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
+    searchQueryParams['exists'] = _.get(searchQuery, 'request.exists');
     // searchQuery.request.filters.channel = this.hashTagId;
     // searchQuery.request.filters.board = this.dataDrivenFilters.board;
     this.cacheService.set('viewAllQuery', searchQueryParams);
@@ -223,7 +336,7 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.router.url,
+        uri: this.userService.slug ? '/' + this.userService.slug + this.router.url : this.router.url,
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
         duration: this.navigationhelperService.getPageLoadTime()
       }
@@ -239,5 +352,91 @@ export class PublicCourseComponent implements OnInit, OnDestroy, AfterViewInit {
       'message': 'messages.stmsg.m0007',
       'messageText': 'messages.stmsg.m0006'
     };
+  }
+
+  updateFacetsData(facets) {
+    const facetsData = [];
+    _.forEach(facets, (facet, key) => {
+      switch (key) {
+        case 'board':
+          const boardData = {
+            index: '1',
+            label: _.get(this.resourceService, 'frmelmnts.lbl.boards'),
+            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectBoard'),
+            values: facet,
+            name: key
+          };
+          facetsData.push(boardData);
+          break;
+        case 'medium':
+          const mediumData = {
+            index: '2',
+            label: _.get(this.resourceService, 'frmelmnts.lbl.medium'),
+            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectMedium'),
+            values: facet,
+            name: key
+          };
+          facetsData.push(mediumData);
+          break;
+        case 'gradeLevel':
+          const gradeLevelData = {
+            index: '3',
+            label: _.get(this.resourceService, 'frmelmnts.lbl.class'),
+            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectClass'),
+            values: facet,
+            name: key
+          };
+          facetsData.push(gradeLevelData);
+          break;
+        case 'subject':
+          const subjectData = {
+            index: '4',
+            label: _.get(this.resourceService, 'frmelmnts.lbl.subject'),
+            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectSubject'),
+            values: facet,
+            name: key
+          };
+          facetsData.push(subjectData);
+          break;
+        case 'publisher':
+          const publisherData = {
+            index: '5',
+            label: _.get(this.resourceService, 'frmelmnts.lbl.publisher'),
+            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectPublisher'),
+            values: facet,
+            name: key
+          };
+          facetsData.push(publisherData);
+          break;
+        case 'contentType':
+          const contentTypeData = {
+            index: '6',
+            label: _.get(this.resourceService, 'frmelmnts.lbl.contentType'),
+            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.selectContentType'),
+            values: facet,
+            name: key
+          };
+          facetsData.push(contentTypeData);
+          break;
+        case 'channel':
+          const channelLists = [];
+          _.forEach(facet, (channelList) => {
+            if (channelList.orgName) {
+              channelList.name = channelList.orgName;
+            }
+            channelLists.push(channelList);
+          });
+          const channelData = {
+            index: '1',
+            label: _.get(this.resourceService, 'frmelmnts.lbl.orgname'),
+            placeholder: _.get(this.resourceService, 'frmelmnts.lbl.orgname'),
+            values: channelLists,
+            name: key
+          };
+          facetsData.push(channelData);
+          break;
+      }
+    });
+    return facetsData;
   }
 }

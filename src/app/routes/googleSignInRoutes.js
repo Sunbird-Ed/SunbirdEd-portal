@@ -5,6 +5,14 @@ const googleDid = '2c010e13a76145d864e459f75a176171';
 const logger = require('sb_logger_util_v2')
 const utils = require('../helpers/utilityService');
 const GOOGLE_SIGN_IN_DELAY = 3000;
+const uuid = require('uuid/v1')
+const REQUIRED_STATE_FIELD = ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type', 'version', 'merge_account_process'];
+/**
+ * keycloack adds this string to track auth redirection and 
+ * with this it triggers auth code verification to get token and create session
+ * google flow this is not required
+ */
+const KEYCLOACK_AUTH_CALLBACK_STRING = 'auth_callback=1'; 
 
 module.exports = (app) => {
 
@@ -14,8 +22,10 @@ module.exports = (app) => {
       res.redirect('/library')
       return
     }
-    const state = JSON.stringify(req.query);
-    logger.info({msg: 'query params state' + state});
+    const googleSignInData = _.pick(req.query, REQUIRED_STATE_FIELD)
+    googleSignInData.redirect_uri = Buffer.from(googleSignInData.redirect_uri).toString('base64');
+    const state = JSON.stringify(googleSignInData);
+    logger.info({msg: 'query params state', googleSignInData});
     let googleAuthUrl = googleOauth.generateAuthUrl(req) + '&state=' + state
     logger.info({msg: 'redirect google to' + JSON.stringify(googleAuthUrl)});
     res.redirect(googleAuthUrl)
@@ -34,10 +44,12 @@ module.exports = (app) => {
    * 7. If any error in the flow, redirect to error_callback with all query param.
    */
   app.get('/google/auth/callback', async (req, res) => {
-    logger.info({msg: 'google auth callback called'});
-    const reqQuery = _.pick(JSON.parse(req.query.state), ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type', 'version', 'merge_account_process']);
-    let googleProfile, isUserExist, newUserDetails, keyCloakToken, redirectUrl, errType;
+    logger.info({msg: 'google auth callback called' });
+    let googleProfile, isUserExist, newUserDetails, keyCloakToken, redirectUrl, errType, reqQuery = {};
     try {
+      errType = 'BASE64_STATE_DECODE';
+      reqQuery = _.pick(JSON.parse(req.query.state), REQUIRED_STATE_FIELD);
+      reqQuery.redirect_uri = Buffer.from(reqQuery.redirect_uri, 'base64').toString('ascii');
       if (!reqQuery.client_id || !reqQuery.redirect_uri || !reqQuery.error_callback) {
         errType = 'MISSING_QUERY_PARAMS';
         throw 'some of the query params are missing';
@@ -58,9 +70,9 @@ module.exports = (app) => {
       keyCloakToken = await createSession(googleProfile.emailId, reqQuery, req, res).catch(handleCreateSessionError);
       logger.info({msg: 'keyCloakToken fetched' + JSON.stringify(keyCloakToken)});
       errType = 'UNHANDLED_ERROR';
-      redirectUrl = reqQuery.redirect_uri.split('?')[0];
-      if (reqQuery.client_id === 'android') {
-        redirectUrl = redirectUrl + getQueryParams(keyCloakToken);
+      redirectUrl = reqQuery.redirect_uri.replace(KEYCLOACK_AUTH_CALLBACK_STRING, ''); // to avoid 401 auth errors from keycloak
+      if (reqQuery.client_id === 'android' || reqQuery.client_id === 'nodebb' || reqQuery.client_id === 'nodebb-local') {
+        redirectUrl = reqQuery.redirect_uri.split('?')[0] + getQueryParams(keyCloakToken);
       }
       logger.info({msg: 'redirect url ' + redirectUrl});
       logger.info({msg:'google sign in success',additionalInfo: {googleProfile, isUserExist, newUserDetails, redirectUrl}});
@@ -70,6 +82,7 @@ module.exports = (app) => {
         queryObj.error_message = getErrorMessage(error);
         redirectUrl = reqQuery.error_callback + getQueryParams(queryObj);
       }
+      console.log({msg:'google sign in failed', error: error, additionalInfo: {errType, googleProfile, isUserExist, newUserDetails, redirectUrl}});
       logger.error({msg:'google sign in failed', error: error, additionalInfo: {errType, googleProfile, isUserExist, newUserDetails, redirectUrl}})
       logErrorEvent(req, errType, error);
     } finally {

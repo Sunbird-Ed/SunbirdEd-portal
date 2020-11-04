@@ -1,0 +1,16 @@
+<div class="ui message fsmall p-24 my-24">
+  <div class="mb-16" *ngFor="let summary of inputData">
+    <div class="header" *ngIf="summary?.label">
+      {{summary?.label}}
+    </div>
+    <div class="ui unordered list" *ngIf="summary?.text">
+      <div class="d-flex flex-jc-flex-end  mt-8 mr-8 sb-last-update-status">
+        <span class="font-italic">{{summary?.label | titlecase}} {{resourceService?.frmelmnts?.lbl?.lastUpdatedOn}}: &nbsp;</span>
+        {{summary?.createdOn | date: 'medium'}}
+      </div>
+      <ng-container *ngFor="let body of summary.text">
+        <div class="item" [innerHTML]="reportService.transformHTML(body)"></div>
+      </ng-container>
+    </div>
+  </div>
+</div>

@@ -18,6 +18,8 @@ import { CoreModule, OrgDetailsService, } from '@sunbird/core';
 import { TelemetryService, TelemetryModule } from '@sunbird/telemetry';
 import { By } from '@angular/platform-browser';
 import { FormBuilder } from '@angular/forms';
+import { configureTestSuite } from '@sunbird/test-util';
+
 describe('UserEditComponent', () => {
   let component: UserEditComponent;
   let fixture: ComponentFixture<UserEditComponent>;
@@ -36,7 +38,7 @@ describe('UserEditComponent', () => {
       }
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, ReactiveFormsModule, FormsModule, SharedModule.forRoot(), CoreModule,

@@ -9,13 +9,15 @@
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
+    "skipLibCheck": true,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es5",
     "typeRoots": [
-      "node_modules/@types"
+      "./node_modules/@types"
     ],
+    "removeComments": true,
     "lib": [
       "es2017",
       "dom"

@@ -7,9 +7,10 @@ import { SharedModule } from '@sunbird/shared';
 import { BadgingModule } from '@sunbird/badge';
 import { CoreModule } from '@sunbird/core';
 import { PlayerHelperModule } from '@sunbird/player-helper';
-import { NotesModule } from '@sunbird/notes';
 import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule } from '@angular/forms';
+import { CommonConsumptionModule} from '@project-sunbird/common-consumption';
+
 
 @NgModule({
     imports: [
@@ -22,7 +23,7 @@ import { FormsModule } from '@angular/forms';
         BadgingModule,
         CoreModule,
         PlayerHelperModule,
-        NotesModule
+        CommonConsumptionModule
     ],
     providers: [],
     declarations: [CollectionPlayerComponent, ContentPlayerComponent]

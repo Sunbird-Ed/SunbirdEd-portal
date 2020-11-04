@@ -17,12 +17,6 @@
       "@sunbird/dashboard": [
         "app/modules/dashboard"
       ],
-      "@sunbird/announcement": [
-        "app/modules/announcement"
-      ],
-      "@sunbird/notes": [
-        "app/modules/notes"
-      ],
       "@sunbird/admin": [
         "app/modules/admin"
       ],
@@ -68,17 +62,24 @@
       "@sunbird/player-helper": [
         "app/modules/player-helper"
       ],
-      "@sunbird/offline" : [
-        "./../projects/desktop/src/app/modules/offline"
-      ],
       "@sunbird/content-search": [
         "app/modules/content-search"
-      ]
+      ],
+      "CsLibInitializer": [
+        "app/service/CsLibInitializer/cs-lib-initializer.service.ts"
+      ],
+      "LazzyLoadScriptService": [
+        "app/service/LazzyLoadScript/lazzy-load-script.service.ts"
+      ],
+      "@sunbird/groups": [
+        "app/modules/groups"
+      ],
     },
     "module": "es2015",
     "types": []
   },
   "exclude": [
+    "app/testUtil/**/*.*",
     "test.ts",
     "**/*.spec.ts",
     "**/*.spec.data.ts"

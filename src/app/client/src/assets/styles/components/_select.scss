@@ -1,64 +1,122 @@
-.ui.selection.dropdown:focus,
-.ui.multiple.dropdown:focus,
-.ui.selection.dropdown:focus .menu {
-    border-color: #96C8DA;
+
+.ui.dropdown {
+  &.selection {
+    border-radius: calculateRem(3px);
+      min-height: calculateRem(32px);
+      padding: calculateRem(4px) calculateRem(8px);
+      font-size: calculateRem(12px);
+    &.active:hover {
+      border-color: var(--primary-300);
+    }
+    .menu {
+      width: calc(100%);
+    }
+    > {
+      .dropdown.icon,
+      .search.icon {
+        margin: -.8571429em;
+      }
+    }
+    &.state-selection {
+      &.active:hover {
+        .menu {
+          border-color: var(--primary-color);
+        }
+      }
+      .menu {
+        top: calc(100% + 4px);
+        border-color: var(--primary-color);
+        border-radius: calculateRem(2px);
+        border-top-width: calculateRem(0.5px) !important;
+        @include respond-below(sm) {
+          max-height:calculateRem(320px);
+        }
+        &::-webkit-scrollbar-thumb {
+          background: var(--rc-E5EDF5);
+        }
+        &::-webkit-scrollbar-track {
+          background: var(--white);
+          border-top: calculateRem(.5px) solid var(--primary-color);
+        }
+        >.item {
+          &.active {
+            color: var(--primary-color);
+            background-color: var(--rc-E5EDF5);
+          }
+          padding: calculateRem(4px) calculateRem(8px) !important;
+        }
+      }
+    }
+  }
+  &.multiple {
+    border-color: var(--gray-200);
+    label {
+      font-size: calculateRem(12px);
+      margin: 0 calculateRem(4px) calculateRem(8px) calculateRem(4px);
+    }
+    >.text {
+      margin: 0.23238095em 0 0.23238095em 0.64285714em;
+      font-size: calculateRem(12px);
+    }
+  }
+  &.selection:focus,
+  &.multiple:focus,
+  &.selection:focus .menu {
+    border-color: var(--rc-96C8DA);
+  }
+  &:not(.button) {
+    &.default>.text,
+    >.default.text {
+      color: var(--gray-800);
+    }
+  }
+  .menu {
+    >.item {
+      font-size: 0.86rem;
+    }
+  }
+}
+.sb-form {
+  .ui.selection.dropdown.fields-dropdown {
+    min-height: 2rem !important;
+    &:focus {
+      border: calculateRem(1px) solid var(--rc-0076FE);
+      color: var(--rc-0076FE) !important;
+      ~label {
+        border: 0px;
+        color: var(--rc-0076FE);
+        font-weight: normal;
+      }
+    }
+    option {
+      background: var(--white);
+      color: var(--black);
+    }
+  }
 }
 
-.ui.selection.active.dropdown:hover {
-    border-color: $sb-dropdown-border-hover;
+.sb-field {
+  .ui.sb-form-control.dropdown>.dropdown.icon {
+    float: right;
+  }
 }
-
-.ui.multiple.dropdown {
-    border-color: $sb-dropdown-border-color;
+.multi-select-dropdown i.icon {
+  font-size: 1.3em;
 }
-
 .ui.selection.dropdown .menu>.item.active,
 .prominent-filter .ui.selection.dropdown .menu>.item.active {
-    color: $sb-dropdown-active-item;
+  color: var(--gray-800);
+}
+@include respond-above (md) {
+  .ui.selection.dropdown.state-selection .menu {
+    max-height: calculateRem(368px);
+  }
 }
 
-.multi-select-dropdown i.icon {
-    font-size: $sb-multi-select-dropdown-icon-font-size;
-}
 
-.ui.selection.dropdown {
-    border-radius: $sb-dropdown-border-radius;
-    min-height: $sb-selection-dropdown-min-height;
-    padding: $sb-selection-dropdown-padding;
-    //line-height: $sb-selection-line-height;
-    font-size: 12px;
-}
 
-.ui.multiple.dropdown .label {
-    font-size: $sb-dropdown-label-font-size;
-    font-size:$sb-multiple-dropdown-label-font-size;
-    margin: 0 ($base-block-space/4) ($base-block-space/2) ($base-block-space/4);
-}
 
-.ui.selection.dropdown>.dropdown.icon,
-.ui.selection.dropdown>.search.icon {
-    margin: -.8571429em;
-}
 
-.ui.multiple.dropdown>.text {
-    margin: $sb-multiple-dropdown-text-margin;
-    font-size: $sb-multiple-dropdown-text-font-size;
-}
 
-.ui.selection.dropdown .menu {
-   // min-width: calc(100% + 1px);
-    width: calc(100%);
-}
 
-.ui.default.dropdown:not(.button)>.text, .ui.dropdown:not(.button)>.default.text {
-    color: #333;
-}
 
-.ui.dropdown .menu>.item {
-    font-size:0.86rem;
-}
-
-.ui.selection.dropdown.state-selection .menu > .item.active {
-    color: #024f9d;
-    background-color: #E5EDF5;
-}

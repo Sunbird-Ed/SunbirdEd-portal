@@ -1,0 +1,11 @@
+<div class="content-video">
+  <section class="content-video__player" id="player-area-height">
+    <div class="aspectratio" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio [ngClass]="{'player-fullscreen': isFullScreenView}">
+      <app-player class="content-player" [playerOption]="playerOption" [playerConfig]="playerConfig"
+        [contentProgressEvents$]="contentProgressEvents$" (assessmentEvents)="onAssessmentEvents($event)"
+        (questionScoreSubmitEvents)="onQuestionScoreSubmitEvents($event)"></app-player>
+    </div>
+    <app-content-actions *ngIf="contentData" [contentData]="contentData" [objectRollUp]="objectRollUp">
+    </app-content-actions>
+  </section>
+</div>

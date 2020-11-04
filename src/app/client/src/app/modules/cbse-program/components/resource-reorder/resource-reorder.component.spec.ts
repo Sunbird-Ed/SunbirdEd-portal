@@ -16,6 +16,9 @@ import { ProgramTelemetryService } from '../../../program/services';
 import { of as observableOf, throwError as observableError } from 'rxjs';
 import { ActionService } from '@sunbird/core';
 import { RouterModule } from '@angular/router';
+import { CoreModule } from '@sunbird/core';
+import { configureTestSuite } from '@sunbird/test-util';
+
 describe('ResourceReorderComponent', () => {
   let component: ResourceReorderComponent;
   let fixture: ComponentFixture<ResourceReorderComponent>;
@@ -23,9 +26,11 @@ describe('ResourceReorderComponent', () => {
   let errorInitiate;
   const errorInitiate1 = false;
   const hierarchyServiceStub: any = {};
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SuiModule, SuiTabsModule, FormsModule, HttpClientTestingModule, RouterModule.forRoot([]), TelemetryModule.forRoot()],
+      imports: [SuiModule, SuiTabsModule, CoreModule,
+        FormsModule, HttpClientTestingModule, RouterModule.forRoot([]), TelemetryModule.forRoot()],
       declarations: [ ResourceReorderComponent ],
       providers: [ProgramTelemetryService, ConfigService, UtilService, ToasterService, TelemetryService,
                        ResourceService, CacheService, BrowserCacheTtlService,

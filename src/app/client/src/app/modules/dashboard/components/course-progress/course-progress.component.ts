@@ -7,12 +7,11 @@ import * as _ from 'lodash-es';
 import { UserService } from '@sunbird/core';
 import {
   ResourceService, ToasterService, ServerResponse, PaginationService, ConfigService,
-  NavigationHelperService
+  NavigationHelperService, IPagination
 } from '@sunbird/shared';
 import { CourseProgressService, UsageService } from './../../services';
 import { ICourseProgressData, IBatchListData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
-import { IPagination } from '@sunbird/announcement';
 /**
  * This component shows the course progress dashboard
  */
@@ -154,6 +153,15 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     */
   public config: ConfigService;
   /**
+    * To display score report updated date
+    */
+  public scoreReportUpdatedOn;
+  /**
+    * To display progress report updated date
+    */
+  public progressReportUpdatedOn;
+
+  /**
 	 * telemetryImpression object for course progress page
 	*/
   telemetryImpression: IImpressionEventInput;
@@ -161,9 +169,6 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   subscription: Subscription;
   /**
 	 * Constructor to create injected service(s) object
-	 *
-	 * Default method of AnnouncementService class
-	 *
    * @param {UserService} user Reference of UserService
    * @param {Router} route Reference of Router
    * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
@@ -225,6 +230,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
           this.queryParams.batchIdentifier = this.batchlist[0].id;
           this.selectedOption = this.batchlist[0].id;
           this.currentBatch = this.batchlist[0];
+          this.setBatchId(this.currentBatch);
           this.populateCourseDashboardData(this.batchlist[0]);
         } else {
           this.showWarningDiv = true;
@@ -243,11 +249,14 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
 	* @param {string} batchId batch identifier
   */
   setBatchId(batch?: any): void {
+    this.showWarningDiv = false;
     this.queryParams.batchIdentifier = batch.id;
     this.queryParams.pageNumber = this.pageNumber;
     this.searchText = '';
     this.currentBatch = batch;
+    this.setCounts(this.currentBatch);
     this.populateCourseDashboardData(batch);
+    this.getReportUpdatedOnDate(_.get(this.currentBatch, 'identifier'));
   }
 
   /**
@@ -285,7 +294,9 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   /**
   * To method fetches the dashboard data with specific batch id and timeperiod
   */
+ // TODO: This function will be removed. API got deprecated.
   populateCourseDashboardData(batch?: any): void {
+    return ;
     if (!batch && this.currentBatch) {
       batch = this.currentBatch;
     }
@@ -308,11 +319,16 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       takeUntil(this.unsubscribe))
       .subscribe(
         (apiResponse: ServerResponse) => {
+          if (!apiResponse.result.count && _.get(apiResponse, 'result.data.length')) {
+            apiResponse.result.count = _.get(apiResponse, 'result.data.length');
+          } else {
+            apiResponse.result.count = 0;
+          }
           this.showLoader = false;
           this.dashboarData = apiResponse.result;
           this.showDownloadLink = apiResponse.result.showDownloadLink ? apiResponse.result.showDownloadLink : false;
-          this.dashboarData.count = _.get(batch, 'participantCount');
-          this.totalCount = _.get(batch, 'participantCount');
+          this.dashboarData.count = _.get(batch, 'participantCount') || _.get(apiResponse, 'result.data.length');
+          this.totalCount = _.get(batch, 'participantCount') || _.get(apiResponse, 'result.data.length');
           if (this.totalCount >= 10000) {
             this.pager = this.paginationService.getPager(10000, this.pageNumber, this.config.appConfig.DASHBOARD.PAGE_LIMIT);
           } else {
@@ -419,6 +435,25 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         this.populateCourseDashboardData();
       });
   }
+  getReportUpdatedOnDate(batchIdentifier: string) {
+    const batchId = batchIdentifier;
+    const reportParams = {
+      'course-progress-reports': `course-progress-reports/report-${batchId}.csv`,
+      'assessment-reports': `assessment-reports/report-${batchId}.csv`
+    };
+    const requestParams = {
+      params: {
+        fileNames: JSON.stringify(reportParams)
+      },
+      telemetryData: this.activatedRoute
+    };
+    this.courseProgressService.getReportsMetaData(requestParams).subscribe((response) => {
+      if (_.get(response, 'responseCode') === 'OK') {
+        this.progressReportUpdatedOn =  _.get(response, 'result.course-progress-reports.lastModified') || null;
+        this.scoreReportUpdatedOn = _.get(response, 'result.assessment-reports.lastModified') || null;
+      }
+    });
+  }
   /**
   * To method subscribes the user data to get the user id.
   * It also subscribes the activated route params to get the
@@ -428,10 +463,11 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.userDataSubscription = this.user.userData$.pipe(first()).subscribe(userdata => {
       if (userdata && !userdata.err) {
         this.userId = userdata.userProfile.userId;
-        this.paramSubcription = combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams,
-          (params: any, queryParams: any) => {
+        this.paramSubcription = combineLatest(this.activatedRoute.parent.params ,
+          this.activatedRoute.params, this.activatedRoute.queryParams,
+          (parentParams: any, params: any, queryParams: any) => {
             return {
-              params: params,
+              params: parentParams || params,
               queryParams: queryParams
             };
           })
@@ -469,6 +505,16 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       };
     });
   }
+
+  /**
+   * @since - #SH-601
+   * @param  {} currentBatch
+   * @description - This will set completedCount and participantCount to the currentBatch object;
+   */
+    setCounts(currentBatch) {
+      this.currentBatch['completedCount'] = _.get(currentBatch, 'completedCount') ? _.get(currentBatch, 'completedCount') : 0;
+      this.currentBatch['participantCount'] = _.get(currentBatch, 'participantCount') ? _.get(currentBatch, 'participantCount') : 0;
+    }
 
   ngOnDestroy() {
     if (this.userDataSubscription) {

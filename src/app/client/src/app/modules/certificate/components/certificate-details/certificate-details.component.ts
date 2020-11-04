@@ -1,17 +1,18 @@
 import { PublicPlayerService } from '@sunbird/public';
-import { CertificateService, UserService } from '@sunbird/core';
+import {CertificateService, UserService, TenantService} from '@sunbird/core';
 import { ServerResponse, ResourceService, ConfigService, PlayerConfig, IUserData } from '@sunbird/shared';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import { IImpressionEventInput } from '@sunbird/telemetry';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-certificate-details',
   templateUrl: './certificate-details.component.html'
 })
-export class CertificateDetailsComponent implements OnInit {
+export class CertificateDetailsComponent implements OnInit , OnDestroy {
   loader: boolean;
   viewCertificate: boolean;
   error = false;
@@ -25,6 +26,9 @@ export class CertificateDetailsComponent implements OnInit {
   playerConfig: PlayerConfig;
   contentId: string;
   showVideoThumbnail = true;
+  logo: string;
+  tenantName: string;
+  tenantDataSubscription: Subscription;
 
   /** To store the certificate details data */
   recipient: string;
@@ -41,12 +45,19 @@ export class CertificateDetailsComponent implements OnInit {
     public userService: UserService,
     public playerService: PublicPlayerService,
     public router: Router,
+    public tenantService: TenantService
   ) { }
 
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance);
     this.pageId = this.activatedRoute.snapshot.data.telemetry.pageid;
     this.setTelemetryData();
+    this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(data => {
+      if (data && !data.err && data.tenantData) {
+        this.logo = data.tenantData.logo;
+        this.tenantName = data.tenantData.titleName;
+      }
+    });
   }
 
   /** It will call the validate cert. api and course_details api (after taking courseId) */
@@ -61,13 +72,18 @@ export class CertificateDetailsComponent implements OnInit {
     };
     this.certificateService.validateCertificate(request).subscribe(
       (data: ServerResponse) => {
-        this.getCourseVideoUrl(_.get(data, 'result.response.courseId'));
+        if (_.get(data, 'result.response.related.certVideoUrl')) {
+          this.watchVideoLink = _.get(data, 'result.response.related.certVideoUrl');
+          this.processVideoUrl(this.watchVideoLink);
+        } else {
+          this.getCourseVideoUrl(_.get(data, 'result.response.related.courseId'));
+        }
         const certData = _.get(data, 'result.response.json');
         this.loader = false;
         this.viewCertificate = true;
         this.recipient = _.get(certData, 'recipient.name');
         this.courseName = _.get(certData, 'badge.name');
-        this.issuedOn = moment(new Date(_.get(certData, 'issuedOn'))).format('DD MMM YYYY');
+        this.issuedOn = dayjs(new Date(_.get(certData, 'issuedOn'))).format('DD MMM YYYY');
       },
       (err) => {
         this.wrongCertificateCode = true;
@@ -128,16 +144,20 @@ export class CertificateDetailsComponent implements OnInit {
     this.playerService.getCollectionHierarchy(courseId).subscribe(
       (response: ServerResponse) => {
         this.watchVideoLink = _.get(response, 'result.content.certVideoUrl');
-        if (this.watchVideoLink) {
-          const splitedData = this.watchVideoLink.split('/');
-          splitedData.forEach((value) => {
-            if (value.includes('do_')) {
-              this.contentId = value;
-            }
-          });
-        }
+        this.processVideoUrl(this.watchVideoLink);
       }, (error) => {
       });
+  }
+
+  processVideoUrl(url: string) {
+    if (url) {
+      const splitedData = url.split('/');
+      splitedData.forEach((value) => {
+        if (value.includes('do_')) {
+          this.contentId = value;
+        }
+      });
+    }
   }
 
   /** to play content on the certificate details page */
@@ -155,4 +175,11 @@ export class CertificateDetailsComponent implements OnInit {
       (err) => {
       });
   }
+
+  ngOnDestroy() {
+    if (this.tenantDataSubscription) {
+      this.tenantDataSubscription.unsubscribe();
+    }
+  }
+
 }

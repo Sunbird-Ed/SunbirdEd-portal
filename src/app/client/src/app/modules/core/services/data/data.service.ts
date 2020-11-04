@@ -5,8 +5,8 @@ import { ServerResponse, RequestParam, HttpOptions } from '@sunbird/shared';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
-import * as moment from 'moment';
 import * as _ from 'lodash-es';
+import * as dayjs from 'dayjs';
 
 /**
  * Service to provide base CRUD methods to make api request.
@@ -173,12 +173,14 @@ export class DataService {
    * for preparing headers
    */
   private getHeader(headers?: HttpOptions['headers']): HttpOptions['headers'] {
+    const _uuid = UUID.UUID();
     const default_headers = {
       'Accept': 'application/json',
       // 'X-Consumer-ID': 'X-Consumer-ID',
       'X-Source': 'web',
-      'ts': moment().format(),
-      'X-msgid': UUID.UUID()
+      'ts': dayjs().format(),
+      'X-msgid': _uuid,
+      'X-Request-ID': _uuid
     };
     try {
       this.deviceId = (<HTMLInputElement>document.getElementById('deviceId')).value;

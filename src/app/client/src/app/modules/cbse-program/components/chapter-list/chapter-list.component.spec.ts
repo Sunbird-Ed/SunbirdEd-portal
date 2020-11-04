@@ -4,7 +4,7 @@ import { ChapterListComponent } from './chapter-list.component';
 import { RecursiveTreeComponent } from '../recursive-tree/recursive-tree.component';
 import { ResourceTemplateComponent } from '../resource-template/resource-template.component';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { ToasterService, SharedModule, ResourceService} from '@sunbird/shared';
+import { ToasterService, SharedModule, ResourceService, RecaptchaService} from '@sunbird/shared';
 import { CoreModule, ActionService, UserService, PublicDataService } from '@sunbird/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of as observableOf, throwError as observableError, of } from 'rxjs';
@@ -20,7 +20,8 @@ import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { DynamicModule } from 'ng-dynamic-component';
-
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ChapterListComponent', () => {
   let component: ChapterListComponent;
@@ -85,17 +86,17 @@ describe('ChapterListComponent', () => {
     }
   };
   const compState = 'chapterListComponent';
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot(), CoreModule, RouterTestingModule, TelemetryModule.forRoot(), SuiModule,
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule, TelemetryModule.forRoot(), SuiModule,
         SuiTabsModule, FormsModule, DynamicModule],
       declarations: [ChapterListComponent, RecursiveTreeComponent, ResourceTemplateComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [CollectionHierarchyService, ResourceService,
              { provide: ActionService, useValue: actionServiceStub }, { provide: UserService, useValue: UserServiceStub },
       { provide: PublicDataService, useValue: PublicDataServiceStub }, ToasterService,
-      { provide: ActivatedRoute, useValue: activatedRouteStub}, ProgramStageService]
+      { provide: ActivatedRoute, useValue: activatedRouteStub}, ProgramStageService, RecaptchaService]
     })
     .compileComponents();
   }));

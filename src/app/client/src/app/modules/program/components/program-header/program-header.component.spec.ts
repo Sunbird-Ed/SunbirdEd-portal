@@ -5,10 +5,11 @@ import { ProgramHeaderComponent } from './program-header.component';
 import { ProgramStageService, ProgramTelemetryService } from '../../services';
 import { ToasterService, ConfigService } from '@sunbird/shared';
 import { mockRes } from './program-header.component.spec.data';
-import { of } from 'rxjs';
+import { configureTestSuite } from '@sunbird/test-util';
 import * as _ from 'lodash-es';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
+import { CoreModule } from '@sunbird/core';
 
 const fakeActivatedRoute = {
   snapshot: {
@@ -68,10 +69,10 @@ describe('ProgramHeaderComponent', () => {
     }
   };
   // let serviceSpy: jasmine.SpyObj<ProgramStageService>;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [TelemetryModule, HttpClientTestingModule],
+      imports: [TelemetryModule, HttpClientTestingModule, CoreModule],
       declarations: [ ProgramHeaderComponent ],
       providers: [ ProgramStageService, ToasterService, TelemetryService, ConfigService,
         { provide: ProgramTelemetryService, useValue: programTelemetryServiceStub},

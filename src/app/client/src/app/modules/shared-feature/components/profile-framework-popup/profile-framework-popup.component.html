@@ -21,18 +21,22 @@
         <div class="required sb-field-form-group" *ngIf="field.code === 'board' && allowedFields.includes(field.code)">
           <label>{{field.label}}</label>
           <div class="sb-field">
-            <sui-select id={{field.code}} [isSearchable]="false" class="selection" [(ngModel)]="selectedOption[field.code]"
+            <sui-select id={{field.code}} [isSearchable]="false" class="selection sb-form-control" [(ngModel)]="selectedOption[field.code]"
               [options]="options" (ngModelChange)="handleFieldChange($event, field)" name={{field.code}}>
-              <sui-select-option *ngFor="let option of field.range" [value]="option.name"></sui-select-option>
+              <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option.name"></sui-select-option>
             </sui-select>
           </div>
         </div>
         <div class="sb-field-form-group mt-8" *ngIf="field.code !== 'board' && allowedFields.includes(field.code)" [ngClass]="field.code === 'subject' ? '' : 'required'">
           <label>{{field.label}}</label>
           <div class="sb-field">
-            <sui-multi-select id={{field.code}} [isSearchable]="false" class="selection" [(ngModel)]="selectedOption[field.code]"
-              [options]="options" (ngModelChange)="handleFieldChange($event, field)" name={{field.code}} #multiSelect>
+            <sui-multi-select id={{field.code}} [isSearchable]="false" class="selection sb-form-control" [(ngModel)]="selectedOption[field.code]"
+              [options]="options" (ngModelChange)="handleFieldChange($event, field)" name={{field.code}} #multiSelect *ngIf="field.code === 'gradeLevel'">
               <sui-select-option *ngFor="let option of field.range" [value]="option.name"></sui-select-option>
+            </sui-multi-select>
+            <sui-multi-select id={{field.code}} [isSearchable]="false" class="selection sb-form-control" [(ngModel)]="selectedOption[field.code]"
+              [options]="options" (ngModelChange)="handleFieldChange($event, field)" name={{field.code}} #multiSelect *ngIf="field.code !== 'gradeLevel'">
+              <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option.name"></sui-select-option>
             </sui-multi-select>
           </div>
         </div>

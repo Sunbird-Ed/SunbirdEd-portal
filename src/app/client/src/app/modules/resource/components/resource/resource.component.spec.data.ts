@@ -1,5 +1,326 @@
 export const Response = {
-    successData: {
+  formData: [
+    {
+      'index': 1,
+      'title': 'frmelmnts.tab.courses',
+      'desc': 'frmelmnts.tab.courses',
+      'menuType': 'Content',
+      'contentType': 'course',
+      'isEnabled': true,
+      'theme': {
+        'baseColor': '',
+        'textColor': '',
+        'supportingColor': '',
+        'className': 'courses',
+        'imageName': 'courses-banner-img.svg'
+      },
+      'anonumousUserRoute': {
+        'route': '/explore-course',
+        'queryParam': 'course'
+      },
+      'loggedInUserRoute': {
+        'route': '/learn',
+        'queryParam': 'course'
+      },
+      'search': {
+        'facets': [
+          'topic',
+          'purpose',
+          'medium',
+          'gradeLevel',
+          'subject',
+          'channel'
+        ],
+        'fields': [
+          
+        ],
+        'filters': {
+          'contentType': [
+            'Course'
+          ]
+        }
+      }
+    },
+    {
+      'index': 0,
+      'title': 'frmelmnts.lbl.textbooks',
+      'desc': 'frmelmnts.lbl.textbooks',
+      'menuType': 'Content',
+      'contentType': 'textbook',
+      'isEnabled': true,
+      'theme': {
+        'baseColor': '',
+        'textColor': '',
+        'supportingColor': '',
+        'className': 'textbooks',
+        'imageName': 'textbooks-banner-img.svg'
+      },
+      'anonumousUserRoute': {
+        'route': '/explore',
+        'queryParam': 'textbook'
+      },
+      'loggedInUserRoute': {
+        'route': '/resources',
+        'queryParam': 'textbook'
+      },
+      'search': {
+        'facets': [
+          'board',
+          'gradeLevel',
+          'subject',
+          'medium',
+          'contentType',
+          'concepts'
+        ],
+        'fields': [
+          'name',
+          'appIcon',
+          'mimeType',
+          'gradeLevel',
+          'identifier',
+          'medium',
+          'pkgVersion',
+          'board',
+          'subject',
+          'resourceType',
+          'contentType',
+          'channel',
+          'organisation'
+        ],
+        'filters': {
+          'contentType': [
+            'TextBook'
+          ]
+        }
+      }
+    },
+    {
+      'index': 2,
+      'title': 'frmelmnts.lbl.tvProgram',
+      'desc': 'frmelmnts.lbl.tvProgram',
+      'menuType': 'Content',
+      'contentType': 'tvProgram',
+      'isEnabled': true,
+      'theme': {
+        'baseColor': '',
+        'textColor': '',
+        'supportingColor': '',
+        'className': 'tv',
+        'imageName': 'tv-banner-img.svg'
+      },
+      'anonumousUserRoute': {
+        'route': '/explore',
+        'queryParam': 'tvProgram'
+      },
+      'loggedInUserRoute': {
+        'route': '/resources',
+        'queryParam': 'tvProgram'
+      },
+      'search': {
+        'facets': [
+          'board',
+          'gradeLevel',
+          'medium',
+          'subject'
+        ],
+        'fields': [
+          'name',
+          'appIcon',
+          'mimeType',
+          'gradeLevel',
+          'identifier',
+          'medium',
+          'pkgVersion',
+          'board',
+          'subject',
+          'resourceType',
+          'contentType',
+          'channel',
+          'organisation'
+        ],
+        'filters': {
+          'contentType': [
+            'TVEpisode'
+          ]
+        }
+      }
+    },
+    {
+      'index': 3,
+      'title': 'frmelmnts.tab.all',
+      'desc': 'frmelmnts.tab.all',
+      'menuType': 'Content',
+      'contentType': 'all',
+      'isEnabled': true,
+      'theme': {
+        'baseColor': '',
+        'textColor': '',
+        'supportingColor': '',
+        'className': 'all',
+        'imageName': 'all-banner-img.svg'
+      },
+      'anonumousUserRoute': {
+        'route': '/explore',
+        'queryParam': 'all'
+      },
+      'loggedInUserRoute': {
+        'route': '/resources',
+        'queryParam': 'all'
+      },
+      'search': {
+        'facets': [
+          'board',
+          'gradeLevel',
+          'subject',
+          'medium',
+          'contentType'
+        ],
+        'fields': [
+          'name',
+          'appIcon',
+          'mimeType',
+          'gradeLevel',
+          'identifier',
+          'medium',
+          'pkgVersion',
+          'board',
+          'subject',
+          'resourceType',
+          'contentType',
+          'channel',
+          'organisation'
+        ],
+        'filters': {
+          'contentType': [
+            'Collection',
+            'TextBook',
+            'LessonPlan',
+            'Resource',
+            'SelfAssess',
+            'PracticeResource',
+            'LearningOutcomeDefinition',
+            'ExplanationResource',
+            'CurriculumCourse',
+            'Course'
+          ]
+        }
+      }
+    }
+  ],
+  mockCurrentPageData: {
+    'index': 0,
+    'title': 'frmelmnts.lbl.textbooks',
+    'desc': 'frmelmnts.lbl.textbooks',
+    'menuType': 'Content',
+    'contentType': 'textbook',
+    'isEnabled': true,
+    'theme': {
+      'baseColor': '',
+      'textColor': '',
+      'supportingColor': ''
+    },
+    'search': {
+      'facets': ['board', 'gradeLevel', 'subject', 'medium', 'contentType', 'concepts'],
+      'fields': ['name', 'appIcon', 'mimeType', 'gradeLevel', 'identifier', 'medium',
+        'pkgVersion', 'board',
+        'subject', 'resourceType', 'contentType', 'channel', 'organisation'],
+      'filters': {
+        'contentType': [
+          'TextBook'
+        ]
+      }
+    },
+    anonumousUserRoute: {
+      route: '/explore',
+      queryParam: 'textbook'
+    },
+    loggedInUserRoute: {
+      route: '/resources',
+      queryParam: 'textbook'
+    }
+  },
+  mockCustodianOrgApiResponse: {
+    'id': 'api.system.settings.get.custodianOrgId',
+    'ver': 'v1',
+    'ts': '2019-12-17 06:36:24:161+0000',
+    'params': {
+      'resmsgid': null,
+      'msgid': null,
+      'err': null,
+      'status': 'success',
+      'errmsg': null
+    },
+    'responseCode': 'OK',
+    'result': {
+      'response': {
+        'id': 'custodianOrgId',
+        'field': 'custodianOrgId',
+        'value': 'ORG_001'
+      }
+    }
+  },
+  searchSuccessData: {
+    'id': 'api.content.search',
+    'responseCode': 'OK',
+    'result': {
+      'count': 2,
+      'content': [
+        {
+          'identifier': 'do_31276382509332070415396',
+          'subject': [
+            'Mathematics',
+            'Kannada',
+            'English'
+          ],
+          'channel': '01248978648941363234',
+          'organisation': [
+            'Karnataka'
+          ],
+          'mimeType': 'application/vnd.ekstep.content-collection',
+          'medium': [
+            'Kannada'
+          ],
+          'pkgVersion': 2,
+          'objectType': 'Content',
+          'appIcon': 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_31276382509332070415396/artifact/dsert-econtent-logo_priority-1_1525849772226.thumb.png',
+          'gradeLevel': [
+            'Class 9'
+          ],
+          'name': '9 ಗಣಿತ ಭಾಗ 1',
+          'contentType': 'TextBook',
+          'board': 'State (Karnataka)',
+          'resourceType': 'Book',
+          'orgDetails': {}
+        },
+        {
+          'identifier': 'do_31276382859401625615400',
+          'subject': [
+            'Mathematics'
+          ],
+          'channel': '01248978648941363234',
+          'organisation': [
+            'Karnataka'
+          ],
+          'mimeType': 'application/vnd.ekstep.content-collection',
+          'medium': [
+            'Kannada'
+          ],
+          'pkgVersion': 3,
+          'objectType': 'Content',
+          'appIcon': 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_31276382859401625615400/artifact/dsert-econtent-logo_priority-1_1525846239148.thumb.png',
+          'gradeLevel': [
+            'Class 9'
+          ],
+          'name': '9 ಗಣಿತ ಭಾಗ 2',
+          'contentType': 'TextBook',
+          'board': 'State (Karnataka)',
+          'resourceType': 'Book',
+          'orgDetails': {}
+        }
+      ]
+    }
+  },
+  successData: {
        ' id': 'api.page.assemble',
        ' params': {
             'err': null,

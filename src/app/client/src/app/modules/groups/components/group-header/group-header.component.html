@@ -1,0 +1,70 @@
+<app-back-button></app-back-button>
+
+<div class="content-header">
+  <div class="ui container py-16">
+    <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
+      <div class="flex-basis-1 mr-32">
+        <div class="content-header__title font-weight-bold sb__ellipsis sb__ellipsis--one d-flex">
+          <div>{{groupData?.name}}</div>
+        </div>
+        <div class="d-flex flex-ai-center content-header__info">
+          <div>{{resourceService?.frmelmnts?.lbl?.groupCreatedBy | interpolate:'{name}': creator}}</div>
+        </div>
+      </div>
+      <div class="d-flex flex-ai-center flex-w-wrap content-header__buttons">
+        <button class="sb-btn sb-btn-normal sb-btn-link-primary min-w-auto p-0 px-8" type="button"
+          (click)="toggleFtuModal(true);addTelemetry('member-ftu-popup')">
+          <i class="icon-svg icon-svg--sm icon-info" aria-hidden="true">
+            <svg class="icon icon-svg--primary">
+              <use xlink:href="./assets/images/sprite.svg#info"></use>
+            </svg>
+          </i>
+        </button>
+        <div class="kabab-menu" id="group-actions" (click)="dropdownMenu();addTelemetry('kebab-menu')"></div>
+        <div class="kabab-menu-dropdown-content" [hidden]="dropdownContent">
+
+          <div *ngIf="groupData?.isAdmin" class="d-flex flex-ai-center list p-8 w-100"
+            (click)="editGroup();addTelemetry('edit-group')">{{resourceService?.frmelmnts?.lbl?.editGroup}}
+          </div>
+
+          <div *ngIf="groupData?.isCreator" class="d-flex flex-ai-center list sb-color-error p-8 w-100"
+            (click)="toggleModal(true);addTelemetry('delete-group')">{{resourceService?.frmelmnts?.lbl?.deleteGroup}}
+          </div>
+
+          <div *ngIf="!groupData?.isCreator" class="d-flex flex-ai-center list sb-color-error p-8 w-100"
+            (click)="showLeaveGroupModal=true;dropdownMenu()">{{resourceService?.frmelmnts?.lbl?.leaveGroup}}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal sb-error"
+  appBodyScroll (dismissed)="toggleModal(false);addTelemetry('close-delete-popup')" #modal *ngIf="showModal">
+  <div class="sb-modal-header">
+    {{resourceService?.frmelmnts?.lbl?.deleteGroup}} ?
+  </div>
+  <div class="sb-modal-content">
+    <p> {{resourceService?.messages?.imsg?.m0082 | interpolate:'{group name}': groupData?.name}} ?</p>
+  </div>
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-outline-error"
+      (click)="deleteGroup();addTelemetry('confirm-delete-group')">{{resourceService?.frmelmnts?.btn?.delete}}</button>
+    <button class="sb-btn sb-btn-normal sb-btn-error"
+      (click)="toggleModal(false);addTelemetry('cancel-delete-group')">{{resourceService?.frmelmnts?.btn?.no}}</button>
+  </div>
+</sui-modal>
+
+<app-ftu-popup *ngIf="showMemberPopup" [showMemberPopup]="showMemberPopup" (close)="toggleFtuModal(false)">
+</app-ftu-popup>
+
+<app-member-actions *ngIf="showLeaveGroupModal" [action]="'leaveFromGroup'" [groupName]="groupData?.name"
+  (modalClose)="showLeaveGroupModal=false" (actionConfirm)="leaveGroup()"></app-member-actions>
+
+<sui-dimmer class="page" *ngIf="showLoader" [isDimmed]="showLoader">
+  <div class="ui text loader">
+    <h2>{{resourceService?.messages?.fmsg?.m0087}}</h2>
+  </div>
+</sui-dimmer>

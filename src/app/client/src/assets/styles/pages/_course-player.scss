@@ -1,0 +1,48 @@
+
+// Course Player & Public course player cards styles
+
+.course-player {
+
+    &--header,
+    &--card {
+      margin-bottom: $base-block-space*3;
+    }
+  
+    &--content {
+      margin-bottom: $base-block-space*2;
+    }
+  }
+  
+  @include respond-above(sm) {
+    .course-player {
+      display: grid;
+      grid-template-areas:
+        'head card'
+        'content card';
+      grid-template-columns: 1fr 340px;
+      grid-gap: $base-block-space*3;
+  
+      &--header {
+        grid-area: head;
+      }
+  
+      &--content {
+        grid-area: content;
+        grid-row: 2 / 5;
+      }
+  
+      &--card {
+        grid-area: card;
+      }
+  
+      &--metadata {
+        grid-column: 2;
+      }
+  
+      &--header,
+      &--card,
+      &--content {
+        margin-bottom: 0;
+      }
+    }
+  }

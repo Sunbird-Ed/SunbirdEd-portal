@@ -8,10 +8,11 @@ import { NgInviewModule } from 'angular-inport';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
   SuiRatingModule, SuiCollapseModule, SuiDimmerModule } from 'ng2-semantic-ui';
-import { GetComponent, DialCodeComponent, DialCodeCardComponent, OfflineDialCodeCardComponent } from './components';
+import { GetComponent, DialCodeComponent, DialCodeCardComponent } from './components';
 import { FormsModule } from '@angular/forms';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { PlayerHelperModule } from '@sunbird/player-helper';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 
 @NgModule({
   imports: [
@@ -26,8 +27,9 @@ import { PlayerHelperModule } from '@sunbird/player-helper';
     FormsModule,
     InfiniteScrollModule,
     PlayerHelperModule,
-    SharedFeatureModule
+    SharedFeatureModule,
+    CommonConsumptionModule
   ],
-  declarations: [ GetComponent, DialCodeComponent, DialCodeCardComponent, OfflineDialCodeCardComponent]
+  declarations: [ GetComponent, DialCodeComponent, DialCodeCardComponent]
 })
 export class DialCodeSearchModule { }

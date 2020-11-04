@@ -1,28 +1,21 @@
+@import "variables";
+@import 'mixins/mixins';
+
 .sb-table .sb-table-body td {
-    padding: 16px 24px;
+    padding: calculateRem(16px) calculateRem(24px);
     text-align: center;
     &:first-child {
         text-align: left;
     }
-    height: 12px;
+    height: calculateRem(12px);
 }
-
-.sb-table .sb-table-header.heading-large tr th {
-    text-align: center;
-    height: 20px;
-}
-
-.topicSection{
-    border-right: 1px solid #dedede;
-}
-   
+  
  .selectionField{
     float: right;
-    margin-bottom: 10px;
-    margin-top: 15px;
-    margin-right: 13px;
+    margin-bottom: calculateRem(10px);
+    margin-top: calculateRem(16px);
+    margin-right: calculateRem(14px);
 }    
-
 
 .sb-card .sb-card-body{
     height: auto;

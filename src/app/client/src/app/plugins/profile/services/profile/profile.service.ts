@@ -1,14 +1,14 @@
 
 import {mergeMap, map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { UserService, PermissionService, LearnerService } from '@sunbird/core';
+import { UserService, PermissionService, LearnerService, FormService } from '@sunbird/core';
 import { ResourceService, ConfigService, IUserProfile, IUserData, ServerResponse } from '@sunbird/shared';
 @Injectable({
   providedIn: 'root'
 })
 export class ProfileService {
   constructor(private learnerService: LearnerService,
-    public userService: UserService, public configService: ConfigService) { }
+    public userService: UserService, public configService: ConfigService, public formService: FormService) { }
   /**
    * This method is used to update profile picture of the user
    */
@@ -125,4 +125,61 @@ export class ProfileService {
     };
     return this.learnerService.post(options);
   }
+  /**
+   * This method invokes learner service to create/update user self declaration
+   */
+  public declarations(request) {
+    const options = {
+      url: this.configService.urlConFig.URLS.USER.USER_DECLARATION,
+      data: {
+        params: {},
+        request: request
+      }
+    };
+    return this.learnerService.patch(options).pipe(map(
+      (res: ServerResponse) => {
+        setTimeout(() => {
+          this.userService.getUserProfile();
+        }, this.configService.appConfig.timeOutConfig.setTime);
+        return res;
+      }
+    ));
+  }
+
+  getPersonas(orgId?: string) {
+    const formServiceInputParams = {
+      formType: 'user',
+      formAction: 'list',
+      contentType: 'personas',
+      component: 'portal'
+    };
+    return this.formService.getFormConfig(formServiceInputParams, orgId).pipe(map((response) => {
+      return response;
+    }));
+  }
+
+  getTenants(orgId?: string) {
+    const formServiceInputParams = {
+      formType: 'user',
+      formAction: 'list',
+      contentType: 'tenantList',
+      component: 'portal'
+    };
+    return this.formService.getFormConfig(formServiceInputParams, orgId).pipe(map((response) => {
+      return response;
+    }));
+  }
+
+  getTeacherDetailForm(action: string, orgId?: string) {
+    const formServiceInputParams = {
+      formType: 'user',
+      formAction: action,
+      contentType: 'teacherDetails',
+      component: 'portal'
+    };
+    return this.formService.getFormConfig(formServiceInputParams, orgId).pipe(map((response) => {
+      return response;
+    }));
+  }
+
 }

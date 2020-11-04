@@ -1,0 +1,64 @@
+<sui-accordion class="styled fluid sb-accordion">
+  <sui-accordion-panel [isOpen]="false">
+    <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
+      <span>{{resourceService?.frmelmnts?.lbl?.creditsLicenceInfo}}</span>
+      <i class="chevron down icon"></i>
+    </div>
+    <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-8">
+      <div class="pb-24" *ngIf="courseHierarchy?.author">
+        <div class="content-metadeta__title  fsmall font-weight-bold mb-8 sb-color-gray-800">
+          {{resourceService?.frmelmnts?.lbl?.author}}</div>
+        <div class="content-metadeta__text  fnormal sb-color-gray-400">{{courseHierarchy?.author}}</div>
+      </div>
+      <div class="pb-24" *ngIf="courseHierarchy?.creator">
+        <div class="content-metadeta__title  fsmall font-weight-bold mb-8 sb-color-gray-800">
+          {{resourceService?.frmelmnts?.lbl?.courseCreatedBy}}</div>
+        <div class="content-metadeta__text  fnormal sb-color-gray-400">{{courseHierarchy?.creator}}</div>
+      </div>
+      <div class="pb-24">
+        <div class="content-metadeta__title  fsmall font-weight-bold mb-8 sb-color-gray-800">{{resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance}}</div>
+        <div class="content-metadeta__text  fnormal sb-color-gray-400">{{courseHierarchy?.organisation?.join(', ')}}
+        </div>
+        <div *ngIf="courseHierarchy?.orgDetails?.email" class="content-metadeta__text  fnormal sb-color-gray-400"><a
+            href="mailto:{{courseHierarchy?.orgDetails?.email}}?subject={{courseHierarchy?.name}}">
+            {{courseHierarchy?.orgDetails?.email}}
+          </a></div>
+      </div>
+
+      <div class="pb-24" *ngIf="courseHierarchy?.createdOn">
+        <div class="content-metadeta__title  fsmall font-weight-bold mb-8 sb-color-gray-800">
+          {{resourceService?.frmelmnts?.lbl?.coursecreatedon}}</div>
+        <div class="content-metadeta__text  fnormal sb-color-gray-400">{{courseHierarchy?.createdOn | dateFormat}}</div>
+      </div>
+
+      <div class="pb-24" *ngIf="courseHierarchy?.lastUpdatedOn">
+        <div class="content-metadeta__title  fsmall font-weight-bold mb-8 sb-color-gray-800">
+          {{resourceService?.frmelmnts?.lbl?.updatedon}}</div>
+        <div class="content-metadeta__text  fnormal sb-color-gray-400">{{courseHierarchy?.lastUpdatedOn | dateFormat}}
+        </div>
+      </div>
+
+      <div class="pb-24" *ngIf="showCredits">
+        <div class="content-metadeta__text  fnormal sb-color-primary">
+          <a (click)="showContentCreditsModal = true" title="{{resourceService?.frmelmnts?.lbl?.courseCredits}}"
+            class="cursor-pointer">
+            {{resourceService?.frmelmnts?.lbl?.courseCredits}}
+          </a>
+        </div>
+      </div>
+
+      <div class="">
+        <div class="content-metadeta__title font-weight-bold fsmall mb-8 sb-color-gray-800">
+          {{resourceService?.frmelmnts?.lbl?.licenseTerms}}</div>
+        <div class="content-metadeta__text  fnormal sb-color-gray-400">{{courseHierarchy?.license}}</div>
+        <span class="licenseTag">
+          {{resourceService?.frmelmnts?.lbl?.forDetails}} - <a [href]="courseHierarchy?.licenseDetails?.url"
+            target="_blank">{{courseHierarchy?.licenseDetails?.url}}</a>
+        </span>
+      </div>
+    </div>
+  </sui-accordion-panel>
+</sui-accordion>
+
+<app-content-credits [contentData]="courseHierarchy" *ngIf="showContentCreditsModal"
+  (close)="showContentCreditsModal = false"></app-content-credits>

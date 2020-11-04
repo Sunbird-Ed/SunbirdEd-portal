@@ -33,6 +33,13 @@ export interface IInteractEventEdata {
   'target'?: string;
   'plugin'?: string;
 }
+
+export interface IAuditEventEData {
+  'props': string[];
+  'state': string;
+  'prevstate': string;
+  'type'?: string;
+}
 export interface IShareEventData {
   'type': string;
   'dir': string;
@@ -63,8 +70,9 @@ export interface IExDataEventData {
 }
 
 export interface IFeedBackEventData {
+  'commentid'?: string;
+  'commenttxt'?: string;
   'rating'?: number;
-  'comments'?: string;
 }
 export interface ITelemetryContextData {
   'channel': string;
@@ -151,6 +159,20 @@ export interface IInteractEventObject {
   'type'?: string;
   'ver'?: string;
   'rollup'?: {};
+}
+
+export interface IAuditEventInput {
+  'context': {
+    'env': string;
+    'cdata': Array<object>;
+  };
+  'object'?: {
+    'id': string;
+    'type': string;
+    'ver'?: string;
+    'rollup'?: {};
+  };
+  'edata': IAuditEventEData;
 }
 export interface ILogEventInput {
   'context': {

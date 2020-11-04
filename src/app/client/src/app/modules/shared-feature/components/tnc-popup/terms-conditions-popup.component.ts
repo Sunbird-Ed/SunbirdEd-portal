@@ -74,6 +74,9 @@ export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
         version: this.userProfile.tncLatestVersion
       }
     };
+    if (this.userService.userProfile.managedBy) {
+      requestBody.request['userId'] = this.userService.userid;
+    }
     this.disableContinueBtn = true;
     this.userService.acceptTermsAndConditions(requestBody).subscribe(res => {
       this.onClose();

@@ -1,9 +1,9 @@
 import {
   PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-  ICard, ILoaderMessage, UtilService, BrowserCacheTtlService, NavigationHelperService
+  ICard, ILoaderMessage, UtilService, BrowserCacheTtlService, NavigationHelperService, IPagination,
+  LayoutService, COLUMN_TYPE
 } from '@sunbird/shared';
-import { SearchService, PlayerService, CoursesService, UserService, FormService, ISort } from '@sunbird/core';
-import { IPagination } from '@sunbird/announcement';
+import { SearchService, PlayerService, CoursesService, UserService, ISort } from '@sunbird/core';
 import { combineLatest, Subject } from 'rxjs';
 import { Component, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -41,15 +41,20 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   public filterIntractEdata;
   public showBatchInfo = false;
   public selectedCourseBatches: any;
+  public selectedFilters;
   sortingOptions: Array<ISort>;
-
+  layoutConfiguration: any;
+  FIRST_PANEL_LAYOUT;
+  SECOND_PANEL_LAYOUT;
+  public globalSearchFacets: Array<string>;
+  public allTabData;
   constructor(public searchService: SearchService, public router: Router,
     public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
     public resourceService: ResourceService, public toasterService: ToasterService, public changeDetectorRef: ChangeDetectorRef,
     public configService: ConfigService, public utilService: UtilService, public coursesService: CoursesService,
     private playerService: PlayerService, public userService: UserService, public cacheService: CacheService,
-    public formService: FormService, public browserCacheTtlService: BrowserCacheTtlService,
-    public navigationhelperService: NavigationHelperService) {
+    public browserCacheTtlService: BrowserCacheTtlService,
+    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
     this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
     this.filterType = this.configService.appConfig.home.filterType;
     // this.redirectUrl = this.configService.appConfig.courses.searchPageredirectUrl;
@@ -57,7 +62,17 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.setTelemetryData();
   }
   ngOnInit() {
+    this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
+      this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
+      this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
+      this.setNoResultMessage();
+      this.initFilters = true;
+    }, error => {
+      this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
+      this.navigationhelperService.goBack();
+    });
     this.initFilters = true;
+    this.initLayout();
     combineLatest(this.fetchEnrolledCoursesSection(), this.dataDrivenFilterEvent).pipe(first()).
     subscribe((data: Array<any>) => {
       this.enrolledSection = data[0];
@@ -68,6 +83,26 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       error => {
         this.toasterService.error(this.resourceService.messages.fmsg.m0002);
     });
+  }
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.redoLayout();
+    this.layoutService.switchableLayout().
+        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+        if (layoutConfig != null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        }
+        this.redoLayout();
+      });
+  }
+  redoLayout() {
+      if (this.layoutConfiguration != null) {
+        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
+        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
+      } else {
+        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
+        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
+      }
   }
   private fetchContentOnParamChange() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
@@ -89,37 +124,39 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   private fetchContents() {
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
-    filters = _.omit(filters, ['key', 'sort_by', 'sortType']);
-    filters.contentType = filters.contentType || ['Course', ...this.configService.appConfig.CommonSearch.contentType];
+    filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters', 'selectedTab']);
+    filters.contentType = filters.contentType || _.get(this.allTabData, 'search.filters.contentType');
     const option = {
-        filters: filters,
-        limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
-        offset: (this.paginationDetails.currentPage - 1 ) * (this.configService.appConfig.SEARCH.PAGE_LIMIT),
-        query: this.queryParams.key,
-        sort_by: {[this.queryParams.sort_by]: this.queryParams.sortType},
-        facets: this.facets,
-        params: this.configService.appConfig.Course.contentApiQueryParams
+      filters: filters,
+      fields: _.get(this.allTabData, 'search.fields'),
+      limit: _.get(this.allTabData, 'search.limit'),
+      offset: (this.paginationDetails.currentPage - 1) * (this.configService.appConfig.SEARCH.PAGE_LIMIT),
+      query: this.queryParams.key,
+      sort_by: { [this.queryParams.sort_by]: this.queryParams.sortType },
+      facets: this.globalSearchFacets,
+      params: this.configService.appConfig.Course.contentApiQueryParams
     };
-    this.searchService.compositeSearch(option)
-    .subscribe(data => {
+    this.searchService.contentSearch(option)
+      .subscribe(data => {
         this.showLoader = false;
+        this.facets = this.searchService.updateFacetsData(_.get(data, 'result.facets'));
         this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
         this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
-            this.configService.appConfig.SEARCH.PAGE_LIMIT);
+          this.configService.appConfig.SEARCH.PAGE_LIMIT);
         const { constantData, metaData, dynamicFields } = this.configService.appConfig.HomeSearch;
         this.contentList = _.map(data.result.content, (content: any) =>
           this.utilService.processContent(content, constantData, dynamicFields, metaData));
-    }, err => {
+      }, err => {
         this.showLoader = false;
         this.contentList = [];
         this.facetsList = [];
         this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
-            this.configService.appConfig.SEARCH.PAGE_LIMIT);
+          this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.toasterService.error(this.resourceService.messages.fmsg.m0051);
-    });
+      });
   }
   public getFilters(filters) {
-    this.facets = filters.map(element => element.code);
+    this.selectedFilters = filters.filters;
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
         if (element.code === 'board') {
           collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';

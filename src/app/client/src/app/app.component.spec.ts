@@ -1,7 +1,9 @@
 
 import { Observable, of } from 'rxjs';
-import { ConfigService, ToasterService, ResourceService, SharedModule, NavigationHelperService,
-  BrowserCacheTtlService } from '@sunbird/shared';
+import {
+  ConfigService, ToasterService, ResourceService, SharedModule, NavigationHelperService,
+  BrowserCacheTtlService, LayoutService
+} from '@sunbird/shared';
 import { UserService, LearnerService, CoursesService, PermissionService, TenantService,
   PublicDataService, SearchService, ContentService, CoreModule, OrgDetailsService, DeviceRegisterService
 } from '@sunbird/core';
@@ -16,8 +18,9 @@ import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
 import { CacheService } from 'ng2-cache-service';
 import { animate, AnimationBuilder, AnimationMetadata, AnimationPlayer, style } from '@angular/animations';
-
+import { configureTestSuite } from '@sunbird/test-util';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 class RouterStub {
   public navigationEnd = new NavigationEnd(0, '/explore', '/explore');
@@ -44,10 +47,11 @@ describe('AppComponent', () => {
   let userService;
   let timerCallback;
   let resourceService;
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule,
-        RouterTestingModule],
+        RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         AppComponent
       ],
@@ -128,19 +132,6 @@ afterEach(() => {
     };
     expect(telemetryService.initialize).toHaveBeenCalledWith(jasmine.objectContaining({userOrgDetails: config.userOrgDetails}));
   });
-  it('should not call register Device api for login Session', () => {
-    const learnerService = TestBed.get(LearnerService);
-    const publicDataService = TestBed.get(PublicDataService);
-    const tenantService = TestBed.get(TenantService);
-    const deviceRegisterService = TestBed.get(DeviceRegisterService);
-    userService._authenticated = true;
-    spyOn(deviceRegisterService, 'initialize');
-    spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
-    spyOn(publicDataService, 'post').and.returnValue(of({result: { response: { content: 'data'} } }));
-    spyOn(learnerService, 'getWithHeaders').and.returnValue(of(mockData.success));
-    component.ngOnInit();
-    expect(deviceRegisterService.initialize).toHaveBeenCalledTimes(0);
-  });
 const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654', rootOrgId: '1235654'}] }}};
   it('should config telemetry service for Anonymous Session', () => {
     const orgDetailsService = TestBed.get(OrgDetailsService);
@@ -176,18 +167,6 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     };
     expect(telemetryService.initialize).toHaveBeenCalledWith(jasmine.objectContaining({userOrgDetails: config.userOrgDetails}));
   });
-  it('should not call register Device api for Anonymous Session', () => {
-    const orgDetailsService = TestBed.get(OrgDetailsService);
-    const publicDataService = TestBed.get(PublicDataService);
-    const tenantService = TestBed.get(TenantService);
-    const deviceRegisterService = TestBed.get(DeviceRegisterService);
-    spyOn(deviceRegisterService, 'initialize');
-    spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
-    spyOn(publicDataService, 'post').and.returnValue(of({}));
-    orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
-    component.ngOnInit();
-    expect(deviceRegisterService.initialize).toHaveBeenCalledTimes(0);
-  });
 
   it('Should subscribe to tenant service and retrieve title and favicon details', () => {
     const orgDetailsService = TestBed.get(OrgDetailsService);
@@ -222,5 +201,78 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     spyOn(learnerService, 'getWithHeaders').and.returnValue(of(mockData.success));
     component.ngOnInit();
     expect(component.showFrameWorkPopUp).toBeTruthy();
+  });
+
+  it('Should return proper object by calling make UTM session', () => {
+    telemetryService = TestBed.get(TelemetryService);
+    telemetryService.makeUTMSession({'channel': 'sunbird', 'utm_medium': 'sunbird', 'utm_source': 'sunbird',
+    'utm_campaign': 'sunbird', 'utm_term': 'sunbird', 'utm_content': 'sunbird'});
+    spyOn(telemetryService, 'makeUTMSession');
+    expect(sessionStorage.getItem('UTM')).toBeDefined();
+    const utm = sessionStorage.getItem('UTM') ? JSON.parse(sessionStorage.getItem('UTM').toString()) : [];
+    expect(utm[0]['type']).toBe('Source');
+    expect(utm[1]['type']).toBe('UtmMedium');
+    expect(utm[2]['type']).toBe('UtmSource');
+    expect(utm[4]['type']).toBe('UtmTerm');
+    expect(utm[5]['type']).toBe('UtmContent');
+  });
+
+  it('should not get user feed api data', () => {
+    const orgDetailsService = TestBed.get(OrgDetailsService);
+    userService._authenticated = true;
+    spyOn(userService, 'getFeedData');
+    spyOn(orgDetailsService, 'getCustodianOrgDetails').and.returnValue(of({result: {response: {content: 'data'}}}));
+    component.getUserFeedData();
+    expect(userService.getFeedData).not.toHaveBeenCalled();
+  });
+
+  it('should close joy theme popup and trigger furthur popup flow', () => {
+    spyOn(component, 'checkTncAndFrameWorkSelected');
+    component.onCloseJoyThemePopup();
+    expect(component.showJoyThemePopUp).toBe(false);
+    expect(component.checkTncAndFrameWorkSelected).toHaveBeenCalled();
+  });
+
+
+  it('should show joy theme popup first time', () => {
+    spyOn(localStorage, 'getItem').and.returnValue(null);
+    component.joyThemePopup();
+    expect(component.showJoyThemePopUp).toBe(true);
+  });
+
+  it('should show tnc popup second time', () => {
+    spyOn(localStorage, 'getItem').and.returnValue('true');
+    spyOn(component, 'checkTncAndFrameWorkSelected');
+    component.joyThemePopup();
+    expect(component.checkTncAndFrameWorkSelected).toHaveBeenCalled();
+  });
+
+  it('should close joy theme popup and trigger furthur popup flow', () => {
+    spyOn(component, 'checkTncAndFrameWorkSelected');
+    component.onCloseJoyThemePopup();
+    expect(component.showJoyThemePopUp).toBe(false);
+    expect(component.checkTncAndFrameWorkSelected).toHaveBeenCalled();
+  });
+  it('should unsubscribe from all observable subscriptions', () => {
+    spyOn(component.unsubscribe$, 'next');
+    spyOn(component.unsubscribe$, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.next).toHaveBeenCalled();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
+  });
+
+  it('Should subscribe to layout service and retrieve layout config', () => {
+    const orgDetailsService = TestBed.get(OrgDetailsService);
+    const publicDataService = TestBed.get(PublicDataService);
+    const tenantService = TestBed.get(TenantService);
+    const layoutService = TestBed.get(LayoutService);
+    spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
+    spyOn(layoutService, 'switchableLayout').and.returnValue(of({layout: 'new layout'}));
+    spyOn(publicDataService, 'post').and.returnValue(of({}));
+    orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
+    component.ngOnInit();
+    expect(document.title).toEqual(mockData.tenantResponse.result.titleName);
+    expect(component.layoutConfiguration).toEqual('new layout');
+    expect(document.querySelector).toHaveBeenCalledWith('link[rel*=\'icon\']');
   });
 });

@@ -17,19 +17,22 @@ jobs:
       - checkout:
           path: ~/portal
       - run:
+          name: Installing npm
+          command: 'npm i npm@latest -g'
+      - run:
           name: Installing angular cli
-          command: 'npm install -g @angular/cli@6.0.8'
+          command: 'npm install -g @angular/cli@6.0.8 --no-progress'
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
           name: Installing npm deps
-          command: 'npm install'
-      - save_cache: # special step to save the dependency cache
-          key: dependency-cache-{{ checksum "package.json" }}
-          paths: ./node_modules
+          command: 'npm install --no-progress'
+      - save_cache: # special step to save the dependency cache	
+          key: dependency-cache-{{ checksum "package.json" }}	
+          paths: ./node_modules    
       - run:
           name: ng lint and building
-          command: 'mkdir -p /tmp/logs && ng lint && ng build --prod | tee /tmp/logs/build.log'
+          command: 'mkdir -p /tmp/logs && ng build --prod --optimization=false --buildOptimizer=false | tee /tmp/logs/build.log'
       - run:
           name: Executing test cases
           command: 'npm run test-coverage | tee /tmp/logs/test_cases.log'

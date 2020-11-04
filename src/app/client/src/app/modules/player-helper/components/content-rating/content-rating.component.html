@@ -3,7 +3,7 @@
   [isClosable]="false" 
  [transitionDuration]="0"
  [size]="'normal'" 
- class="sb-modal"
+ class="sb-modal sb-rating-modal"
 appBodyScroll 
 (dismissed)="dismissModal()" 
 #modal  *ngIf="showContentRatingModal"
@@ -16,17 +16,40 @@ appBodyScroll
   <!--/Header-->
 
   <!--Content-->
-  <div class="sb-modal-content d-flex flex-ai-center">
-    <div class="field">
+  <div class="sb-modal-content p-0">
+    <div class="field px-16 py-24">
       <sui-rating (valueChange)="ratingChange($event)" [maximum]="5"  class="sb-rating ui huge star rating"></sui-rating>
-      <div class="fs-1 my-10"> {{resourceService?.frmelmnts?.lbl?.helpUsRatingContent}}</div>
+      <div class="fs-0-92 mt-8"> {{startext}}</div>
+    </div>
+    <div class="sb-content-rating-container px-16 py-24" *ngIf="enableSubmitBtn">
+      <div class="sb-content-rating">
+
+        <div class="rating-header pb-24 fs-0-92">
+          {{feedbackObj[contentRating]['question']}}
+        </div>
+        <div class="rating-checkbox">
+          <!-- <div class="sb-checkbox sb-checkbox-primary"  *ngFor="let feedback of feedbackObj[contentRating]['options']">
+            <input type="checkbox" role="checkbox" [(ngModel)]="feedback.checked" (click)="changeOptions(feedback)">
+            <label [class.options-content-checked]="feedback.checked">{{feedback['value']}}</label>
+          </div> -->
+          <div class="sb-checkbox sb-checkbox-primary sb-checkbox-rightaligned" *ngFor="let feedback of feedbackObj[contentRating]['options']">
+            <input type="checkbox" id="{{feedback['value']}}" [(ngModel)]="feedback.checked" (click)="changeOptions(feedback)">
+            <label for="{{feedback['value']}}" class="fsmall mb-16">{{feedback['value']}}</label>
+          </div>
+          <div *ngIf="showTextarea">
+            <textarea rows="5" maxlength="1000" class="sb-form-control" [(ngModel)]="feedbackText"></textarea>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
+
   <!--/Content-->
 
   <!--Actions-->
   <div class="sb-modal-actions">
-    <button [disabled]="!enableSubmitBtn" (click)="submit()"class="sb-btn sb-btn-normal sb-btn-primary">
+    <button (click)="submit()"class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="!enableSubmitBtn" [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}">
       {{resourceService?.frmelmnts.btn.submit}}
     </button>
   </div>

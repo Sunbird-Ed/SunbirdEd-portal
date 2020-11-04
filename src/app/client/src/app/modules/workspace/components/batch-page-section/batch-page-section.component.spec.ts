@@ -17,6 +17,7 @@ import * as _ from 'lodash-es';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { PageApiService } from '@sunbird/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('BatchPageSectionComponent', () => {
   let component: BatchPageSectionComponent;
@@ -67,6 +68,7 @@ describe('BatchPageSectionComponent', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [BatchPageSectionComponent],
@@ -92,6 +94,8 @@ describe('BatchPageSectionComponent', () => {
 
   it('should call get page api and return result', inject([], () => {
     const userService = TestBed.get(UserService);
+    const searchService = TestBed.get(SearchService);
+    spyOn(searchService, 'contentSearch').and.returnValue(observableOf(testData.courseDetails));
     pageApiService = TestBed.get(PageApiService);
     const batchService = TestBed.get(BatchService);
     const learnerService = TestBed.get(LearnerService);
@@ -122,6 +126,13 @@ describe('BatchPageSectionComponent', () => {
     component.viewAll({searchQuery: searchQuery, name: 'Ongoingbatches'});
     expect(router.navigate).toHaveBeenCalledWith(['/workspace/batches/view-all/Ongoingbatches', 1],
         {queryParams: { status: '1', defaultSortBy: '{"createdDate":"desc"}', exists: undefined }});
+  }));
+
+  it('should call prepareCarouselData', inject([], () => {
+    const searchService = TestBed.get(SearchService);
+    spyOn(searchService, 'contentSearch').and.returnValue(observableOf(testData.courseDetails));
+    component.prepareCarouselData(testData.sectionData);
+    expect(component.batchList).toEqual(testData.updatedBatchList);
   }));
 
 });

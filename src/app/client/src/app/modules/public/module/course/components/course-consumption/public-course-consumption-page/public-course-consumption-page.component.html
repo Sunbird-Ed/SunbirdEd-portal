@@ -1,24 +1,59 @@
-<div class="ui container mt-24" *ngIf="!showLoader && !showError">
-    <div class="twelve wide column">
-        <div class="sb-pageSection">
-            <div class="sb-pageSection-header sb-pageSection-header-compact">
-                <h1 class="sb-pageSection-title">{{courseHierarchy.name}}</h1>
+<!-- Back Button Previous Module & Next Module button -->
+<div class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9">
+    <div class="ui container">
+        <div class="py-8 d-flex flex-ai-center">
+            <!-- /* Back button */ -->
+            <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto" (click)="redirectToExplore()">
+                <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+                        <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+                    </svg></i>
+                {{resourceService?.frmelmnts?.btn?.back}}
+            </button>
+        </div>
+    </div>
+</div>
+<!-- Textbook details with continue playing and join course button -->
+<div class="cc-player__content-header textbook-container relative9" *ngIf="!showLoader && !showError">
+    <div class="ui container">
+        <div class="textbook py-16 sb-g">
+            <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
+                <!-- Textbook details -->
+                <div class="textbook__details d-flex flex-ai-center">
+                    <!-- Textbook image -->
+                    <div class="textbook__bookimg">
+                        <img src="{{courseHierarchy?.appIcon}}" alt="textbook">
+                    </div>
+                    <div class="ml-8 textbook__heading">
+                        <!-- Textbook title -->
+                        <h5 class="textbook__title sb-color-primary font-weight-bold mb-0">{{courseHierarchy?.name}}
+                        </h5>
+                        <!-- Textbook Rating with share icon -->
+                        <div class="textbook__rating d-flex flex-ai-center">
+                            <sui-rating class="ui star rating" [isReadonly]="true"
+                                [ngModel]="courseHierarchy.me_averageRating || 0" [maximum]="5"></sui-rating>
+
+                            <button (click)="onShareLink()"
+                                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix">
+                                <i class="icon-svg icon-svg--xs icon-share mr-8"><svg class="icon icon-svg--primary">
+                                    <use xlink:href="assets/images/sprite.svg#share"></use>
+                                  </svg></i>
+                                {{resourceService?.frmelmnts?.lbl?.share}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="sb-pageSection-content d-flex flex-ai-center">
-                <sui-rating 
-                    class="ui star rating mr-16" 
-                    [isReadonly]="true" 
-                    [ngModel]="courseHierarchy.me_averageRating || 0" [maximum]="5"
-                ></sui-rating>
-                <a (click)="onShareLink()" class="cursor-pointer btn-bg p-8 d-inline-block font-weight-bold">
-                    <i class="blue share alternate icon"></i>
-                    {{resourceService?.frmelmnts?.lbl?.share}}
-                </a>
+
+            <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4 certified-course">
+                <div class="certified-course__btn" *ngIf="!enrolledCourse && !courseMentor">
+                    <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
+                        (click)="showJoinModal(true); logTelemetry('join-course', courseHierarchy);">{{resourceService?.frmelmnts?.lbl?.enrollcourse}}</button>
+                </div>
             </div>
         </div>
     </div>
-    <div class="ui divider"></div>
 </div>
+
 <router-outlet *ngIf="!showLoader && !showError"></router-outlet>
 <div *ngIf="showLoader" class="ui container">
     <div class="ui grid">
@@ -27,5 +62,7 @@
         </div>
     </div>
 </div>
-<app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
+
+<app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal"
+    (close)="closeSharePopup('close-share-link-popup')">
 </app-share-link>

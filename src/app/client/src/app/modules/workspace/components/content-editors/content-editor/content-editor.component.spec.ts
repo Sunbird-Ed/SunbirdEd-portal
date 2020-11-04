@@ -11,6 +11,11 @@ import { mockRes } from './content-editor.component.spec.data';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WorkSpaceService } from '../../../services';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
+
+document.body.innerHTML = document.body.innerHTML +
+  '<input id="contentEditorURL" value="https://dev.sunbirded.org/content-editor/index.html"'
+  + ' type="hidden" />';
 
 const mockResourceService = { messages: { emsg: { m0004: '1000' } } };
 const mockActivatedRoute = {
@@ -26,10 +31,13 @@ class RouterStub {
 class NavigationHelperServiceStub {
   public navigateToWorkSpace() {}
 }
-const mockUserService = { userProfile: { userId: '68777b59-b28b-4aee-88d6-50d46e4c35090'} };
+const mockUserService = {
+  userOrgDetails$ : observableOf({}),
+  userProfile: { userId: '68777b59-b28b-4aee-88d6-50d46e4c35090'} };
 describe('ContentEditorComponent', () => {
   let component: ContentEditorComponent;
   let fixture: ComponentFixture<ContentEditorComponent>;
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ContentEditorComponent],

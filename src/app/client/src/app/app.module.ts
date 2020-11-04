@@ -1,10 +1,8 @@
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
-  SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
+import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
+import { SuiModalModule } from 'ng2-semantic-ui';
 import { CommonModule } from '@angular/common';
 import { CoreModule, SessionExpiryInterceptor } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
@@ -17,6 +15,15 @@ import { CacheStorageAbstract } from 'ng2-cache-service/dist/src/services/storag
 import { CacheSessionStorage } from 'ng2-cache-service/dist/src/services/storage/session-storage/cache-session-storage.service';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { PluginModules } from './framework.config';
+import {ChatLibModule, ChatLibService} from 'sunbird-chatbot-client';
+import { RouteReuseStrategy } from '@angular/router';
+import { CustomRouteReuseStrategy } from './service/CustomRouteReuseStrategy/CustomRouteReuseStrategy';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateStore } from "@ngx-translate/core";
+
+
 @NgModule({
   declarations: [
     AppComponent
@@ -26,26 +33,42 @@ import { PluginModules } from './framework.config';
     CoreModule,
     CommonModule,
     HttpClientModule,
-    SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
-    SuiRatingModule, SuiCollapseModule,
+    SuiModalModule,
     SharedModule.forRoot(),
     WebExtensionModule.forRoot(),
     TelemetryModule.forRoot(),
+    TranslateModule.forRoot({
+      loader: {
+          provide: TranslateLoader,
+          useFactory: HttpLoaderFactory,
+          deps: [HttpClient]
+      }
+    }),
     DeviceDetectorModule.forRoot(),
+    ChatLibModule,
     SharedFeatureModule,
     ...PluginModules,
+     // ngx-translate and the loader module
+     HttpClientModule,
     AppRoutingModule // don't add any module below this because it contains wildcard route
   ],
   entryComponents: [AppComponent],
   bootstrap: [AppComponent],
   providers: [
     CacheService,
+    ChatLibService,
+    TranslateStore,
     { provide: CacheStorageAbstract, useClass: CacheSessionStorage },
-    { provide: HTTP_INTERCEPTORS, useClass: SessionExpiryInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: SessionExpiryInterceptor, multi: true },
+    { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy },
   ]
 })
 export class AppModule {
   constructor(bootstrapFramework: BootstrapFramework) {
     bootstrapFramework.initialize(WebExtensionsConfig);
   }
+}
+// required for AOT compilation
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, "/resourcebundles/v1/readLang/"," ");
 }

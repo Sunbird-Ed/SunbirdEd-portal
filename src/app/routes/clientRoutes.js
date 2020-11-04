@@ -13,6 +13,9 @@ oneDayMS = 86400000,
 pathMap = {},
 cdnIndexFileExist = fs.existsSync(path.join(__dirname, '../dist', 'index_cdn.ejs')),
 proxyUtils = require('../proxy/proxyUtils.js')
+const CONSTANTS = require('../helpers/constants');
+const { memoryStore } = require('../helpers/keyCloakHelper')
+const session = require('express-session');
 
 logger.info({msg:`CDN index file exist: ${cdnIndexFileExist}`});
 
@@ -88,31 +91,71 @@ module.exports = (app, keycloak) => {
 
   app.all('/play/quiz/*', playContent);
 
-  app.all(['/', '/get', '/:slug/get', '/:slug/get/dial/:dialCode',  '/get/dial/:dialCode', '/explore',
-    '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/explore-course', '/explore-course/*',
-    '/:slug/explore-course', '/:slug/explore-course/*', '/:slug/signup', '/signup', '/:slug/sign-in/*',
-    '/sign-in/*', '/download/*', '/:slug/download/*', '/certs/*', '/recover/*'], redirectTologgedInPage, indexPage(false))
+  app.all('/get/dial/:dialCode',(req,res,next) => {
+      if (_.get(req, 'query.channel')) {
+          getdial(req,res);
+      } else {
+        next();
+      }
+  });
 
-  app.all(['*/dial/:dialCode', '/dial/:dialCode'], (req, res) => res.redirect('/get/dial/' + req.params.dialCode + '?source=scan'))
+  app.all(['/announcement', '/announcement/*', '/search', '/search/*',
+  '/orgType', '/orgType/*', '/dashBoard', '/dashBoard/*',
+  '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources',
+  '/resources/*', '/myActivity', '/myActivity/*', '/org/*', '/manage', '/contribute','/contribute/*','/groups','/groups/*', '/my-groups','/my-groups/*','/certs/configure/*'], 
+  session({
+    secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
+    resave: false,
+    cookie: {
+      maxAge: envHelper.sunbird_session_ttl 
+    },
+    saveUninitialized: false,
+    store: memoryStore
+  }), keycloak.middleware({ admin: '/callback', logout: '/logout' }), keycloak.protect(), indexPage(true));
+
+  // all public route should also have same route prefixed with slug
+  app.all(['/', '/get', '/:slug/get', '/:slug/get/dial/:dialCode',  '/get/dial/:dialCode', '/explore',
+    '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/:slug/play/*',  '/explore-course', '/explore-course/*',
+    '/:slug/explore-course', '/:slug/explore-course/*', '/:slug/signup', '/signup', '/:slug/sign-in/*',
+    '/sign-in/*', '/download/*', '/accountMerge/*','/:slug/accountMerge/*', '/:slug/download/*', '/certs/*', '/:slug/certs/*', '/recover/*', '/:slug/recover/*', '/explore-groups'], 
+    session({
+      secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
+      resave: false,
+      cookie: {
+        maxAge: envHelper.sunbird_session_ttl 
+      },
+      saveUninitialized: false,
+      store: memoryStore
+    }),
+    keycloak.middleware({ admin: '/callback', logout: '/logout' }),
+    redirectTologgedInPage, indexPage(false))
+
+  app.all(['*/dial/:dialCode', '/dial/:dialCode'], (req, res) => {
+    if (_.get(req, 'query.channel')) {
+      res.redirect(`/${_.get(req, 'query.channel')}/get/dial/${req.params.dialCode}?source=scan`);
+    } else {
+      res.redirect('/get/dial/' + req.params.dialCode + '?source=scan')
+    }
+  })
 
   app.all('/app', (req, res) => res.redirect(envHelper.ANDROID_APP_URL))
 
-  app.all(['/announcement', '/announcement/*', '/search', '/search/*',
-    '/orgType', '/orgType/*', '/dashBoard', '/dashBoard/*',
-    '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources',
-    '/resources/*', '/myActivity', '/myActivity/*', '/org/*', '/manage', '/contribute','/contribute/*'], keycloak.protect(), indexPage(true))
-
   app.all('/:tenantName', renderTenantPage)
+
+  app.all('/redirect/login', redirectToLogin)
 }
 
 function getLocals(req) {
+  const slug = req.params.slug;
   var locals = {}
   if(req.includeUserDetail){
     locals.userId = _.get(req, 'session.userId') ? req.session.userId : null
     locals.sessionId = _.get(req, 'sessionID') && _.get(req, 'session.userId') ? req.sessionID : null
+    locals.userSid = _.get(req, 'session.userSid') || locals.sessionId || null;
   } else {
     locals.userId = null
     locals.sessionId = null
+    locals.userSid = null;
   }
   locals.cdnUrl = envHelper.PORTAL_CDN_URL
   locals.theme = envHelper.sunbird_theme
@@ -140,8 +183,21 @@ function getLocals(req) {
   locals.offlineDesktopAppSupportedLanguage = envHelper.sunbird_portal_offline_supported_languages,
   locals.offlineDesktopAppDownloadUrl = envHelper.SUNBIRD_PORTAL_BASE_URL
   locals.logFingerprintDetails = envHelper.LOG_FINGERPRINT_DETAILS,
+  locals.slugForProminentFilter = envHelper.sunbird_portal_slugForProminentFilter,
   locals.deviceId = '';
   locals.deviceProfileApi = envHelper.DEVICE_PROFILE_API;
+  locals.slug = slug ? slug : '';
+  locals.collectionEditorURL = envHelper.CONTENT_EDITORS_URL.COLLECTION_EDITOR;
+  locals.contentEditorURL = envHelper.CONTENT_EDITORS_URL.CONTENT_EDITOR;
+  locals.genericEditorURL = envHelper.CONTENT_EDITORS_URL.GENERIC_EDITOR;
+  locals.botConfigured = envHelper.sunbird_bot_configured;
+  locals.botServiceURL = envHelper.sunbird_bot_service_URL;
+  locals.superAdminSlug = envHelper.sunbird_super_admin_slug;
+  locals.p1reCaptchaEnabled = envHelper.sunbird_p1_reCaptcha_enabled;
+  locals.p2reCaptchaEnabled = envHelper.sunbird_p2_reCaptcha_enabled;
+  locals.p3reCaptchaEnabled = envHelper.sunbird_p3_reCaptcha_enabled;
+  locals.enableSSO = envHelper.sunbird_enable_sso;
+  locals.reportsListVersion = envHelper.reportsListVersion;
   return locals
 }
 
@@ -231,6 +287,11 @@ const redirectTologgedInPage = (req, res) => {
 			const routes = _.get(redirectRoutes, req.originalUrl);
 			res.redirect(routes)
 		} else {
+      const urlWithOutSlug = req.params.slug ? req.originalUrl.replace('/' + req.params.slug, '') : req.originalUrl;
+      const courseUrl = urlWithOutSlug.includes('/explore-course/course/');
+      if (courseUrl) {
+        return res.redirect(urlWithOutSlug.replace('/explore-course/course/', '/learn/course/'));
+      }
 			if (_.get(redirectRoutes, `/${req.originalUrl.split('/')[1]}`)) {
 				const routes = _.get(redirectRoutes, `/${req.originalUrl.split('/')[1]}`);
 				res.redirect(routes)
@@ -250,6 +311,22 @@ const redirectTologgedInPage = (req, res) => {
 const playContent = (req, res) => {
   if (req.path.includes('/play/quiz') && fs.existsSync(path.join(__dirname, '../tenant/quiz/', 'index.html'))){
     res.sendFile(path.join(__dirname, '../tenant/quiz/', 'index.html'));
+  } else {
+    renderDefaultIndexPage(req, res);
+  }
+}
+
+const redirectToLogin = (req, res) => {
+  const redirectUrl = req.query.redirectUri || '/resources';
+  const url = `${envHelper.PORTAL_AUTH_SERVER_URL}/realms/${envHelper.PORTAL_REALM}/protocol/openid-connect/auth`;
+  const query = `?client_id=portal&state=3c9a2d1b-ede9-4e6d-a496-068a490172ee&redirect_uri=https://${req.get('host')}/${redirectUrl}&scope=openid&version=${CONSTANTS.KEYCLOAK.VERSION}&response_type=code&error_message=${req.query.error_message}`;
+  res.redirect(url + query);
+};
+
+
+const getdial = (req,res) => {
+  if (fs.existsSync(path.join(__dirname, '../tenant/course/', 'index.html'))) {
+    res.sendFile(path.join(__dirname, '../tenant/course/', 'index.html'));
   } else {
     renderDefaultIndexPage(req, res);
   }

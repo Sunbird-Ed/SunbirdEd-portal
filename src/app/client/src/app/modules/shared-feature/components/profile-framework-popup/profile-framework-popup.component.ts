@@ -63,7 +63,9 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   private getFormOptionsForCustodianOrg() {
     return this.getCustodianOrgData().pipe(mergeMap((data) => {
       this.custodianOrgBoard = data;
-      const board = _.cloneDeep(this.custodianOrgBoard);
+      const boardObj = _.cloneDeep(this.custodianOrgBoard);
+      boardObj.range = _.sortBy(boardObj.range, 'index');
+      const board = boardObj;
       if (_.get(this.selectedOption, 'board[0]')) { // update mode, get 1st board framework and update all fields
         this.selectedOption.board = _.get(this.selectedOption, 'board[0]');
         this.frameWorkId = _.get(_.find(this.custOrgFrameworks, { 'name': this.selectedOption.board }), 'identifier');
@@ -188,6 +190,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   private getCustodianOrgData() {
     return this.channelService.getFrameWork(this.userService.hashTagId).pipe(map((channelData: any) => {
       this.custOrgFrameworks =  _.get(channelData, 'result.channel.frameworks') || [];
+      this.custOrgFrameworks = _.sortBy(this.custOrgFrameworks, 'index');
       return {
           range: this.custOrgFrameworks,
           label: 'Board',
@@ -232,7 +235,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     }
   }
   private isCustodianOrgUser() {
-    return this.orgDetailsService.getCustodianOrg().pipe(map((custodianOrg) => {
+    return this.orgDetailsService.getCustodianOrgDetails().pipe(map((custodianOrg) => {
       if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value')) {
         return true;
       }

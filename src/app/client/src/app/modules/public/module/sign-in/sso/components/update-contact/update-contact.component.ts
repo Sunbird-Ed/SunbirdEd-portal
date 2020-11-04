@@ -1,6 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { TenantService, UserService, OtpService, OrgDetailsService } from '@sunbird/core';
+import { TenantService, UserService, OtpService, OrgDetailsService, TncService } from '@sunbird/core';
 import { first, delay } from 'rxjs/operators';
 import {
   ResourceService, ToasterService, NavigationHelperService,
@@ -11,6 +11,7 @@ import {SignupService} from '../../../../signup/services';
 import { map } from 'rxjs/operators';
 import { combineLatest, of } from 'rxjs';
 import { TelemetryService } from '@sunbird/telemetry';
+import { RecaptchaComponent } from 'ng-recaptcha';
 
 @Component({
   templateUrl: './update-contact.component.html',
@@ -18,6 +19,7 @@ import { TelemetryService } from '@sunbird/telemetry';
 })
 export class UpdateContactComponent implements OnInit, AfterViewInit {
   @ViewChild('contactDetailsForm') private contactDetailsForm;
+  @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
   public telemetryImpression;
   public tenantInfo: any = {};
   public showOtpComp = false;
@@ -43,17 +45,27 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
   termsAndConditionLink: string;
   instance: string;
   showTncPopup = false;
+  googleCaptchaSiteKey: string;
+  isP1CaptchaEnabled: any;
+  captchaValidationFailed = false;
 
 
   constructor(public activatedRoute: ActivatedRoute, private tenantService: TenantService, public resourceService: ResourceService,
               public userService: UserService, public otpService: OtpService, public toasterService: ToasterService,
               public navigationHelperService: NavigationHelperService, private orgDetailsService: OrgDetailsService,
               public utilService: UtilService, public signupService: SignupService,
-              public telemetryService: TelemetryService) {
+              public telemetryService: TelemetryService, public tncService: TncService) {
   }
 
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
+    this.isP1CaptchaEnabled = (<HTMLInputElement>document.getElementById('p1reCaptchaEnabled'))
+      ? (<HTMLInputElement>document.getElementById('p1reCaptchaEnabled')).value : 'true';
+    try {
+      this.googleCaptchaSiteKey = (<HTMLInputElement>document.getElementById('googleCaptchaSiteKey')).value;
+    } catch (error) {
+      this.googleCaptchaSiteKey = '';
+    }
     this.fetchTncConfiguration();
     this.setTenantInfo();
   }
@@ -112,7 +124,7 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
    * Fetches tnc related configuration
    */
   fetchTncConfiguration() {
-    this.signupService.getTncConfig().subscribe((data: ServerResponse) => {
+    this.tncService.getTncConfig().subscribe((data: ServerResponse) => {
       this.telemetryLogEvents('fetch-terms-condition', true);
         const response = _.get(data, 'result.response.value');
         if (response) {
@@ -148,13 +160,14 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
       }
     });
   }
-  private checkUserExist() {
-    const uri = this.contactForm.type + '/' + this.contactForm.value;
-    combineLatest(this.userService.getUserByKey(uri), this.getCustodianOrgDetails())
+  private checkUserExist(captchaResponse?) {
+    const uri = this.contactForm.type + '/' + this.contactForm.value + '?captchaResponse=' + captchaResponse;
+    combineLatest(this.userService.getUserByKey(uri), this.orgDetailsService.getCustodianOrgDetails())
     .pipe(map(data => ({
       userDetails: data[0], custOrgDetails: data[1]
     })))
     .subscribe(({userDetails, custOrgDetails}) => {
+        this.resetGoogleCaptcha();
         if (_.get(userDetails, 'result.response.rootOrgId') === _.get(custOrgDetails, 'result.response.value')) {
           this.userDetails = userDetails.result.response;
           this.disableSubmitBtn = false;
@@ -174,24 +187,20 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
           this.disableSubmitBtn = true;
           return;
         }
+        if (_.get(err, 'error.params.status') && err.error.params.status === 'I\'m a teapot') {
+          this.disableSubmitBtn = true;
+          this.captchaValidationFailed = true;
+          return;
+        }
         this.generateOtp();
         this.disableSubmitBtn = false;
         this.userExist = false;
         this.userBlocked = false;
     });
   }
-  private getCustodianOrgDetails() {
-    if (this.custodianOrgDetails) {
-      return of(this.custodianOrgDetails);
-    }
-    return this.orgDetailsService.getCustodianOrg().pipe(map((custodianOrgDetails) => {
-      this.custodianOrgDetails = custodianOrgDetails;
-      return custodianOrgDetails;
-    }));
-  }
 
-  public onFormUpdate() {
-    this.checkUserExist();
+  public onFormUpdate(captchaResponse?) {
+    this.checkUserExist(captchaResponse);
     const cData = {
       env: 'sso-signup',
       cdata: []
@@ -304,5 +313,38 @@ export class UpdateContactComponent implements OnInit, AfterViewInit {
 
   showAndHidePopup(mode: boolean) {
     this.showTncPopup = mode;
+  }
+
+  /**
+   * @param  {string} captchaResponse - reCaptcha token
+   * @description - Callback function for reCaptcha response
+   * @since - release-3.1.0
+   */
+  resolved(captchaResponse: string) {
+    if (captchaResponse) {
+      this.onFormUpdate(captchaResponse);
+    }
+  }
+
+  /**
+   * @description - Function to reset reCaptcha
+   * @since - release-3.1.0
+   */
+  resetGoogleCaptcha() {
+    const element: HTMLElement = document.getElementById('resetGoogleCaptcha') as HTMLElement;
+    element.click();
+  }
+
+  /**
+   * @description - Function to be called on form submit
+   * @since - release-3.1.0
+   */
+  submitForm() {
+    if (this.isP1CaptchaEnabled === 'true') {
+      this.resetGoogleCaptcha();
+      this.captchaRef.execute();
+    } else {
+      this.onFormUpdate();
+    }
   }
 }

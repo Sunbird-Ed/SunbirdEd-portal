@@ -3,7 +3,7 @@ import { OrgDetailsService, FrameworkService, ChannelService } from '@sunbird/co
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { skipWhile, mergeMap, first, map } from 'rxjs/operators';
 import * as _ from 'lodash-es';
-
+const requiredCategories = {categories: 'board,gradeLevel,medium,class'};
 @Injectable({ providedIn: 'root' })
 export class ContentSearchService {
   private channelId: string;
@@ -17,7 +17,8 @@ export class ContentSearchService {
     board: [],
     medium: [],
     gradeLevel: [],
-    subject: []
+    subject: [],
+    publisher: []
   };
   get filters() {
     return _.cloneDeep(this._filters);
@@ -52,7 +53,10 @@ export class ContentSearchService {
       } else {
         this._frameworkId = _.get(channelDetails, 'result.channel.defaultFramework');
       }
-      return this.frameworkService.getFrameworkCategories(this._frameworkId);
+      if (_.get(channelDetails, 'result.channel.publisher')) {
+        this._filters.publisher = JSON.parse(_.get(channelDetails, 'result.channel.publisher'));
+      }
+      return this.frameworkService.getSelectedFrameworkCategories(this._frameworkId, requiredCategories);
     }), map(frameworkDetails => {
       const frameworkCategories: any[] = _.get(frameworkDetails, 'result.framework.categories');
       frameworkCategories.forEach(category => {
@@ -72,7 +76,7 @@ export class ContentSearchService {
     const selectedBoard = this._filters.board.find((board) => board.name === boardName)
       || this._filters.board.find((board) => board.name === this.defaultBoard) || this._filters.board[0];
     this._frameworkId = this._frameworkId = _.get(selectedBoard, 'identifier');
-    return this.frameworkService.getFrameworkCategories(this._frameworkId).pipe(map(frameworkDetails => {
+    return this.frameworkService.getSelectedFrameworkCategories(this._frameworkId, requiredCategories).pipe(map(frameworkDetails => {
       const frameworkCategories: any[] = _.get(frameworkDetails, 'result.framework.categories');
       frameworkCategories.forEach(category => {
         if (['medium', 'gradeLevel', 'subject'].includes(category.code)) {

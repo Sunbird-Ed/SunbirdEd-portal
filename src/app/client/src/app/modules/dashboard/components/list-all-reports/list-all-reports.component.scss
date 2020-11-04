@@ -1,0 +1,22 @@
+@import "variables";
+@import "mixins/mixins";
+
+.sbgrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(292px, 1fr));
+    grid-gap: 1rem;
+  }
+
+  @media screen and (max-width: 1024px) {
+    .sb__DesktopOnly {
+      display: none;
+    }
+  } 
+
+  :host{
+    .ui.tabular.menu.report-menu .item{
+      width: 50%;
+      display: flex;
+      justify-content: center;
+    }
+  }

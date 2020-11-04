@@ -1,7 +1,7 @@
 import { async, TestBed, inject, ComponentFixture } from '@angular/core/testing';
 import { SharedModule } from '@sunbird/shared';
 import { FrameworkService, UserService, ExtPluginService } from '@sunbird/core';
-
+import { configureTestSuite } from '@sunbird/test-util';
 import { DynamicModule } from 'ng-dynamic-component';
 import { ProgramComponent } from './program.component';
 import * as _ from 'lodash-es';
@@ -89,7 +89,7 @@ describe('ProgramComponent On Bording test', () => {
       }
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [

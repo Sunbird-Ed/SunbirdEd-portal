@@ -5,10 +5,12 @@ import {RouterTestingModule} from '@angular/router/testing';
 import { SharedModule, ConfigService} from '@sunbird/shared';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
+import { configureTestSuite } from '@sunbird/test-util';
+
 describe('WorkspacesidebarComponent', () => {
   let component: WorkspacesidebarComponent;
   let fixture: ComponentFixture<WorkspacesidebarComponent>;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ WorkspacesidebarComponent ],
@@ -36,6 +38,7 @@ describe('WorkspacesidebarComponent', () => {
     component.createRole =  configService.rolesConfig.workSpaceRole.createRole;
     component.allContentRole = configService.rolesConfig.workSpaceRole.allContentRole;
     component.collaboratingRole = configService.rolesConfig.workSpaceRole.collaboratingRole;
+    component.trainingRole = configService.rolesConfig.workSpaceRole.trainingRole;
     component.ngOnInit();
     expect(component.draftRole).toBeDefined();
     expect(component.inreviewRole).toBeDefined();
@@ -47,5 +50,6 @@ describe('WorkspacesidebarComponent', () => {
     expect(component.createRole).toBeDefined();
     expect(component.allContentRole).toBeDefined();
     expect(component.collaboratingRole).toBeDefined();
+    expect(component.trainingRole).toBeDefined();
   });
 });

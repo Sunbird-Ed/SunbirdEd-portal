@@ -37,11 +37,20 @@ node('build-slave') {
                 echo "build_tag: " + build_tag
 
                 stage('Build') {
-                    sh("./build.sh ${build_tag} ${env.NODE_NAME} ${hub_org} ${params.sunbird_content_editor_artifact_url} ${params.sunbird_collection_editor_artifact_url} ${params.sunbird_generic_editor_artifact_url}")
+                    sh("bash ./build.sh  ${build_tag} ${env.NODE_NAME} ${hub_org} ${params.buildDockerImage} ${params.buildCdnAssests} ${params.cdnUrl}")
                 }
 
                 stage('ArchiveArtifacts') {
                     archiveArtifacts "metadata.json"
+                    if (params.buildCdnAssests == 'true') {
+                        sh """
+                        rm -rf cdn_assets
+                        mkdir cdn_assets
+                        cp -r src/app/dist-cdn/* cdn_assets/
+                        zip -Jr cdn_assets.zip cdn_assets
+                        """
+                        archiveArtifacts "src/app/dist-cdn/index_cdn.ejs, cdn_assets.zip"
+                    }
                     currentBuild.description = "${build_tag}"
                 }
             }

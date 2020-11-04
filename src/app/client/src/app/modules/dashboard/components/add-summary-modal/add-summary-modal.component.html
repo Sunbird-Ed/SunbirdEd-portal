@@ -1,0 +1,23 @@
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'large'"
+  class="sb-modal sb-modal-addsummary" appBodyScroll (dismissed)="closeModal()" #modal>
+  <div class="sb-modal-header">
+    {{input?.title}}
+  </div>
+  <div class="sb-modal-content o-x-hide">
+    <div class="sb-field-group" [formGroup]="summaryFormGroup">
+      <div class="sb-field relative" #editor>
+        <textarea #editor required name="moretext" class="sb-form-control" [placeholder]="input?.title" rows="5"
+          style="resize: none;"></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="sb-modal-actions">
+    <button (click)="handleSubmitButton()" [disabled]="!summaryFormGroup.valid"
+      class="sb-btn sb-btn-normal sb-btn-primary" #submitButton>
+      Submit
+    </button>
+    <button (click)="resetForm()" class="sb-btn sb-btn-normal sb-btn-outline-primary">
+      Reset
+    </button>
+  </div>
+</sui-modal>
