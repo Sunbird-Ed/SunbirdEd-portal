@@ -121,7 +121,7 @@ describe('PublicBatchDetailsComponent', () => {
       component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
       component.ngOnInit();
       component.enrollBatch(component.batchList[0].identifier);
-      expect(route.navigate).toHaveBeenCalledWith([component.baseUrl]);
+    expect(route.navigate).toHaveBeenCalledWith([component.baseUrl], { queryParams: { textbook: undefined } });
   });
 
   it('should log telemetry event when user close login popup', () => {

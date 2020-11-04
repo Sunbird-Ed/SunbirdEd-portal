@@ -155,7 +155,7 @@ describe('BatchDetailsComponent', () => {
     component.enrollBatch({identifier: '123'});
     const routeQueryParams = {
       relativeTo: component.activatedRoute,
-      queryParams: { autoEnroll: true }
+      queryParams: { autoEnroll: true , textbook: undefined}
     };
     expect(route.navigate).toHaveBeenCalledWith(['enroll/batch', '123'], routeQueryParams);
   });
