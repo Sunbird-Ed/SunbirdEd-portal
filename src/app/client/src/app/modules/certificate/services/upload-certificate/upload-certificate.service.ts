@@ -61,7 +61,7 @@ export class UploadCertificateService {
       'request': {
           'filters': {
               'certType': 'cert template',
-              'channel': 'in.ekstep' // this.userService.channel
+              'channel': this.userService.channel
           },
           'fields': ['indentifier', 'name', 'code', 'certType', 'data', 'issuer', 'signatoryList', 'artifactUrl', 'primaryCategory', 'channel'],
           'limit': 100

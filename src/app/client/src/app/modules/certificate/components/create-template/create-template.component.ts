@@ -317,7 +317,10 @@ urltoFile(url, filename, mimeType) {
         'name': _.get(this.createTemplateForm, 'value.authoritySignature_1'),
       });
     }
-
+    const issuer = {
+      'name': _.get(this.createTemplateForm, 'value.stateName'),
+      'url': _.get(this.images, 'LOGO1.url')
+  };
     const cert_obj = {
       'artifactUrl' : _.get(data, 'result.artifactUrl'),
       'name' : _.get(this.createTemplateForm, 'value.certificateTitle'),
@@ -327,11 +330,8 @@ urltoFile(url, filename, mimeType) {
         'signatoryList': signatoryList,
         'artifactUrl' : _.get(data, 'result.artifactUrl'),
       },
-      'issuer' : {
-        'name': _.get(this.createTemplateForm, 'value.stateName'),
-        'url': _.get(this.images, 'LOGO1.url')
-    },
-      'signatoryList' : signatoryList
+      'issuer' : JSON.stringify(issuer),
+      'signatoryList' : JSON.stringify(signatoryList)
     };
 
     this.uploadCertificateService.certificate.next(cert_obj);
