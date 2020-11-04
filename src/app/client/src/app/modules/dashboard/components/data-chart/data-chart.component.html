@@ -9,6 +9,9 @@
       </div>
       <div class="mr-8" *ngIf="chartType === 'bar' || chartType === 'line'">
         <button (click)="addChartSummary()" *ngIf="chartConfig.id && isUserReportAdmin" type="button"
+          appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+          [telemetryInteractCdata]="[{id: chartConfig?.id, type: 'Chart'}]"
+          [telemetryInteractEdata]="{id: 'report-chart', type: 'chart-summary', pageid: activatedRoute.snapshot.data.telemetry.pageid}"
           class="mr-8 sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn"><i class="add icon"></i>Add
           {{ resourceService?.frmelmnts?.lbl?.chartSummary}}</button>
         <sui-select class="selection" [placeholder]="'Select ChartType'"

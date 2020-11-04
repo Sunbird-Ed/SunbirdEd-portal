@@ -3,9 +3,9 @@ import { takeUntil, first, share } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { CourseBatchService, CourseProgressService, CourseConsumptionService } from './../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter, ViewChild } from '@angular/core';
 import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
-import { PermissionService, UserService } from '@sunbird/core';
+import { PermissionService, UserService, GeneraliseLabelService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { TelemetryService } from '@sunbird/telemetry';
 import { Subject } from 'rxjs';
@@ -48,11 +48,21 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   telemetryCdata: Array<{}> = [];
   @Output() allBatchDetails = new EventEmitter();
   allowBatchCreation: boolean;
+  @ViewChild('batchListModal') batchListModal;
+  isTrackable = false;
+  courseCreator = false;
+  viewBatch = false;
+  showCreateBatchBtn = false;
+  allowCertCreation = false;
+  ongoingAndUpcomingBatchList = [];
+  batchMessage = '';
+  showMessageModal = false;
 
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
     public userService: UserService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
     public router: Router, public activatedRoute: ActivatedRoute, public courseProgressService: CourseProgressService,
-    public courseConsumptionService: CourseConsumptionService, public telemetryService: TelemetryService) {
+    public courseConsumptionService: CourseConsumptionService, public telemetryService: TelemetryService,
+    public generaliseLabelService: GeneraliseLabelService) {
     this.batchStatus = this.statusOptions[0].value;
   }
   isUnenrollDisabled() {
@@ -77,17 +87,12 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.courseConsumptionService.showJoinCourseModal
+    this.showCreateBatch();
+      this.courseConsumptionService.showJoinCourseModal
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((data) => {
         this.getJoinCourseBatchDetails();
       });
-
-    if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
-      this.courseMentor = true;
-    } else {
-      this.courseMentor = false;
-    }
     if (this.enrolledCourse === true) {
       this.getEnrolledCourseBatchDetails();
     } else {
@@ -98,7 +103,6 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         this.getAllBatchDetails();
       });
-    this.showCreateBatch();
   }
   getAllBatchDetails() {
     this.showBatchList = false;
@@ -106,8 +110,8 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     this.batchList = [];
     const searchParams: any = {
       filters: {
-        status: this.batchStatus.toString(),
-        courseId: this.courseId
+        courseId: this.courseId,
+        status: ['0', '1']
       },
       offset: 0,
       sort_by: { createdDate: 'desc' }
@@ -115,7 +119,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     const searchParamsCreator =  _.cloneDeep(searchParams);
     const searchParamsMentor =  _.cloneDeep(searchParams);
 
-    if (this.courseMentor) {
+    if (this.courseConsumptionService.canViewDashboard(this.courseHierarchy)) {
       searchParamsCreator.filters.createdBy = this.userService.userid;
       searchParamsMentor.filters.mentors = [this.userService.userid];
       combineLatest(
@@ -123,7 +127,9 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
         this.courseBatchService.getAllBatchDetails(searchParamsMentor),
       ).pipe(takeUntil(this.unsubscribe))
        .subscribe((data) => {
-           this.batchList = _.union(data[0].result.response.content, data[1].result.response.content);
+          this.ongoingAndUpcomingBatchList = _.union(data[0].result.response.content, data[1].result.response.content);
+          this.courseConsumptionService.emitBatchList(this.ongoingAndUpcomingBatchList);
+          this.getSelectedBatches();
            if (this.batchList.length > 0) {
              this.fetchUserDetails();
            } else {
@@ -153,6 +159,12 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
      }
   }
 
+  getSelectedBatches () {
+    this.batchList = _.filter(this.ongoingAndUpcomingBatchList, batch => {
+      return (_.isEqual(batch.status, this.batchStatus));
+    });
+    this.showCreateBatchBtn = this.ongoingAndUpcomingBatchList.length <= 0;
+  }
   getJoinCourseBatchDetails() {
     this.showAllBatchList = false;
     this.showAllBatchError = false;
@@ -179,7 +191,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
             this.showAllBatchError = true;
           } else {
             this.showAllBatchList = true;
-            this.showJoinModal = true;
+            this.showJoinModal = !(this.allowBatchCreation || this.permissionService.checkRolesPermissions(['COURSE_MENTOR']));
           }
         }, (err) => {
           this.showAllBatchError = true;
@@ -240,9 +252,17 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   }
   enrollBatch(batch) {
     this.showJoinModal = false;
-    this.courseBatchService.setEnrollToBatchDetails(batch);
-    this.router.navigate(['enroll/batch', batch.identifier], { relativeTo: this.activatedRoute, queryParams: { autoEnroll: true } });
+    const batchStartDate = new Date(batch['startDate']);
+    const currentdate = new Date();
+    if (currentdate < batchStartDate) {
+      this.showMessageModal = true;
+      this.batchMessage = (this.resourceService.messages.emsg.m009).replace('{startDate}', batch.startDate);
+    } else {
+      this.courseBatchService.setEnrollToBatchDetails(batch);
+      this.router.navigate(['enroll/batch', batch.identifier], { relativeTo: this.activatedRoute, queryParams: { autoEnroll: true } });
+    }
   }
+
   unenrollBatch(batch) {
     // this.courseBatchService.setEnrollToBatchDetails(batch);
     this.router.navigate(['unenroll/batch', batch.identifier], { relativeTo: this.activatedRoute });
@@ -259,6 +279,9 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this.batchListModal && this.batchListModal.deny) {
+      this.batchListModal.deny();
+    }
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
@@ -269,10 +292,10 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
    * @returns - boolean
    */
   showCreateBatch() {
-    const isCourseCreator = (_.get(this.courseHierarchy, 'createdBy') === this.userService.userid) ? true : false;
-    const isPermissionAvailable = (this.permissionService.checkRolesPermissions(['COURSE_MENTOR']) &&
-    this.permissionService.checkRolesPermissions(['CONTENT_CREATOR'])) ? true : false;
-    this.allowBatchCreation =  (isCourseCreator && isPermissionAvailable);
+    this.isTrackable = this.courseConsumptionService.isTrackableCollection(this.courseHierarchy);
+    this.allowBatchCreation = this.courseConsumptionService.canCreateBatch(this.courseHierarchy);
+    this.viewBatch = this.courseConsumptionService.canViewDashboard(this.courseHierarchy);
+    this.allowCertCreation = this.courseConsumptionService.canAddCertificates(this.courseHierarchy);
   }
 
   logTelemetry(id, content?: {}, batchId?) {

@@ -136,10 +136,19 @@ export class ExploreComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     const currentPageData = this.getPageData(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook');
     this.selectedFilters = _.pick(filters, ['board', 'medium', 'gradeLevel', 'channel']);
+    // if (localStorage.getItem('userType') && currentPageData.contentType !== 'all') {
+    //   const userType = localStorage.getItem('userType');
+    //   const userTypeMapping = this.configService.appConfig.userTypeMapping;
+    //   _.map(userTypeMapping, (value, key) => {
+    //     if (userType === key) {
+    //       this.selectedFilters['audience'] = value;
+    //     }
+    //   });
+    // }
     this.apiContentList = [];
     this.pageSections = [];
     this.pageTitleSrc = this.resourceService.RESOURCE_CONSUMPTION_ROOT+_.get(currentPageData, 'title');
-    this.pageTitle = _.get(this.resourceService, _.get(currentPageData, 'title'));;
+    this.pageTitle = _.get(this.resourceService, _.get(currentPageData, 'title'));
     this.svgToDisplay = _.get(currentPageData, 'theme.imageName');
     this.fetchContents(currentPageData);
   }

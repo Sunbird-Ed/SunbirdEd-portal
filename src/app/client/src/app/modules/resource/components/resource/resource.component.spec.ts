@@ -2,7 +2,7 @@ import { SlickModule } from 'ngx-slick';
 import {BehaviorSubject, of as observableOf, of} from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
-import {CoreModule, CoursesService, PlayerService, FormService, SearchService, OrgDetailsService} from '@sunbird/core';
+import {CoreModule, CoursesService, PlayerService, FormService, SearchService, OrgDetailsService, UserService} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import * as _ from 'lodash-es';
@@ -61,7 +61,7 @@ describe('ResourceComponent', () => {
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(), SlickModule],
       declarations: [ResourceComponent],
       providers: [OrgDetailsService, SearchService, { provide: ResourceService, useValue: resourceBundle },
-        FormService,
+        FormService, UserService,
       { provide: Router, useClass: RouterStub },
       { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
@@ -189,5 +189,62 @@ describe('ResourceComponent', () => {
     spyOn(component, 'getPageData').and.callThrough();
     component.getPageData('textbook');
     expect(component.getPageData).toHaveBeenCalledWith('textbook');
+  });
+  xit('should call the getFilter Method and set audience type as filters', () => {
+    const data = {
+      filters: {},
+      status: 'NotFetching'
+    };
+    spyOn(localStorage, 'getItem').and.returnValue('teacher');
+    component.formData = Response.formData;
+    component.getFilters(data);
+    expect(component.selectedFilters).toEqual({audience: [ 'Teacher' ]});
+  });
+
+  it('should call getChannelId for non custodian org', () => {
+    const userService = TestBed.get(UserService);
+    userService._hashTagId = '321';
+    const orgDetailsService = TestBed.get(OrgDetailsService);
+    spyOn(orgDetailsService, 'getCustodianOrgDetails').and.callFake(() => observableOf({result: {response: {content: 'data'}}}));
+    component['getChannelId']().subscribe((result) => {
+      expect(result).toEqual({ channelId: '321', custodianOrg: false });
+    });
+  });
+
+  it('should call getChannelId for custodian org', () => {
+    const userService = TestBed.get(UserService);
+    userService._hashTagId = '321';
+    const orgDetailsService = TestBed.get(OrgDetailsService);
+    spyOn(orgDetailsService, 'getCustodianOrgDetails').and.callFake(() => observableOf({result: {response: {value: '321'}}}));
+    component['getChannelId']().subscribe((result) => {
+      expect(result).toEqual({ channelId: '321', custodianOrg: true });
+    });
+  });
+  it('should generate visit telemetry impression event', () => {
+    const event = {
+      data: {
+        metaData: {
+          identifier: 'do_21307528604532736012398',
+          contentType: 'textbook'
+        },
+        section: 'Featured courses'
+      }
+    };
+    component['setTelemetryData']();
+    component['prepareVisits'](event);
+    expect(component.telemetryImpression).toBeDefined();
+  });
+  it('should call play content method', () => {
+    const plauerService = TestBed.get(PlayerService);
+    spyOn(plauerService, 'playContent').and.callThrough();
+    const event = {
+      data: {
+        metaData: {
+          identifier: 'do_21307528604532736012398'
+        }
+      }
+    };
+    component.playContent(event, 'textbook');
+    expect(plauerService.playContent).toHaveBeenCalled();
   });
 });

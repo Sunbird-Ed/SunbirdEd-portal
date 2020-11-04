@@ -6,7 +6,7 @@ const {parseJson} = require('../helpers/utilityService');
 const request = require('request-promise');
 const envHelper = require('./../helpers/environmentVariablesHelper.js');
 const authorizationToken = envHelper.PORTAL_API_AUTH_TOKEN;
-const logger = require('sb_logger_util_v2');
+const { logger } = require('@project-sunbird/logger');
 const ROUTES = require('../constants/routesConstants')
 const CONTROLLER = require('../controllers/accountMergeController')
 
@@ -54,7 +54,7 @@ module.exports = (app) => {
           }
         });
       } else {
-        logger.debug({
+        logger.debug(req.context, {
           msg: 'user/session/save user session saved successfully',
           error: JSON.stringify(result),
           additionalInfo: {

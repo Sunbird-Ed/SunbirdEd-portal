@@ -1,3 +1,4 @@
+
 <div class="ui grid">
   <div class="one wide column"></div>
   <div class="ten wide column uzindex">
@@ -19,8 +20,9 @@
           </h5>
         </div>
       </div>
-
+      <div class="aspectratio sbt-shadow-radius" data-ratio="16:9" #aspectRatio>
       <app-player class="content-player" [playerConfig]="playerConfig"></app-player>
+    </div>
     </div>
     <div class="ui grid" *ngIf="!showLoader && contentData">
       <div class="eight wide column">

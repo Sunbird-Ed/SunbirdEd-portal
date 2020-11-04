@@ -1,6 +1,6 @@
 <!-- Join Course Table -->
-<sui-modal *ngIf="showJoinModal && !courseMentor" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
-  [size]="'normal'" class="sb-modal" appBodyScroll (dismissed)="showJoinModal = !showJoinModal" #modal>
+<sui-modal *ngIf="showJoinModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'normal'" class="sb-modal" appBodyScroll (dismissed)="showJoinModal = !showJoinModal" #batchListModal>
   <div class="sb-modal-header font-weight-normal">
     {{resourceService?.frmelmnts?.lbl?.selectBatch}}
   </div>
@@ -17,7 +17,7 @@
           {{userNames[batch.createdBy].lastName}}</div>
         <button class="sb-btn sb-btn-outline-secondary sb-btn-normal"
           (click)="enrollBatch(batch); logTelemetry('enroll-batch', courseHierarchy, batch?.identifier)"
-          *ngIf="!courseMentor">{{resourceService?.frmelmnts?.lbl?.join}}</button>
+         >{{resourceService?.frmelmnts?.lbl?.join}}</button>
       </div>
     </div>
   </div>
@@ -27,7 +27,7 @@
 </sui-modal>
 
 <!-- create batch -->
-<sui-accordion class="styled fluid sb-accordion mb-16" *ngIf="courseMentor">
+<sui-accordion class="styled fluid sb-accordion mb-16 sb-new-theme-accordion" *ngIf="isTrackable && viewBatch">
   <sui-accordion-panel [isOpen]="true">
     <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
       <span>{{resourceService?.frmelmnts?.lbl?.batches}}</span>
@@ -37,7 +37,7 @@
       <div class="batch-details">
         <div class="mb-16" *ngIf="showBatchList">
           <div class="batch-details__dropdown">
-            <sui-select (selectedOptionChange)="getAllBatchDetails()" class="selection mb-16" [(ngModel)]="batchStatus"
+            <sui-select (selectedOptionChange)="getSelectedBatches()" class="selection mb-16" [(ngModel)]="batchStatus"
               [options]="statusOptions" valueField="value" labelField="name" #batchStatusSelect>
               <sui-select-option *ngFor="let option of batchStatusSelect?.filteredOptions" [value]="option">
               </sui-select-option>
@@ -62,8 +62,7 @@
                             </div> -->
 
               <div class="batch-details__edit d-flex flex-ai-center py-8">
-                <!-- TODO: To be changed on the hot-fix:-->
-                <div *ngIf="false">
+                <div *ngIf="allowBatchCreation && allowCertCreation">
                   <div *ngIf="!(batch.hasOwnProperty('cert_templates'))" class="sb-color-primary fnormal font-weight-bold">
                     <a href="javascript:void(0)" (click)="navigateToConfigureCertificate('add', batch?.identifier); logTelemetry('add-certificate')">{{resourceService?.frmelmnts?.cert?.lbl?.addCert}}</a>
                   </div>
@@ -76,8 +75,6 @@
                   {{resourceService?.frmelmnts?.lbl?.edit}}
                 </button>
               </div>
-
-
 
 
               <div class="batch-details__created mt-8 fsmall" *ngIf="userNames[batch.createdBy]">
@@ -100,7 +97,7 @@
         <div *ngIf="showError">
           <div class="sb-no-batch-found">{{resourceService.messages.stmsg.m0081}}</div>
         </div>
-        <div class="batch-deatils__button text-right">
+        <div class="batch-deatils__button text-right" *ngIf="isTrackable && showCreateBatchBtn">
           <button class="sb-btn sb-btn-primary sb-btn-normal width-100"
             (click)="createBatch(); logTelemetry('create-batch', courseHierarchy);"
             *ngIf="allowBatchCreation">{{resourceService.frmelmnts.lbl.createbatch}}</button>
@@ -111,7 +108,7 @@
 </sui-accordion>
 
 <!-- Leave batch card -->
-<sui-accordion class="styled fluid sb-accordion mb-16" *ngIf="enrolledCourse && enrolledBatchInfo && !courseMentor">
+<sui-accordion class="styled fluid sb-accordion mb-16 sb-new-theme-accordion" *ngIf="enrolledCourse && enrolledBatchInfo && !viewBatch">
   <sui-accordion-panel [isOpen]="false">
     <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
       <span>{{resourceService.frmelmnts.lbl.batchdetails}}</span>
@@ -133,7 +130,7 @@
             [ngClass]="{'sb-btn-disabled': isUnenrollbtnDisabled,'sb-btn-outline-primary': !isUnenrollbtnDisabled}"
             class="sb-btn sb-btn-outline-primary sb-btn-normal"
             (click)="unenrollBatch(enrolledBatchInfo); logTelemetry('unenroll-batch', courseHierarchy);"
-            [disabled]="isUnenrollbtnDisabled">{{resourceService.frmelmnts.btn.unenroll}}</button>
+            [disabled]="isUnenrollbtnDisabled">{{generaliseLabelService?.frmelmnts?.btn?.unenroll}}</button>
         </div>
         <div class="batch-details__created mt-8 fsmall">
           <span class="right floated" *ngIf="enrolledBatchInfo?.participantCount>=0">
@@ -147,3 +144,20 @@
     </div>
   </sui-accordion-panel>
 </sui-accordion>
+
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
+  appBodyScroll (dismissed)="showMessageModal = false;"
+  *ngIf="showMessageModal" #joinTrainingModal>
+  <!--Header-->
+  <div class="sb-modal-header">
+    {{generaliseLabelService?.frmelmnts?.btn?.enroll}}
+  </div>
+  <!--/Header-->
+  <!--Content-->
+  <div class="sb-modal-content">
+    <div class="ui center aligned segment">
+      <p>{{batchMessage}}</p>
+    </div>
+  </div>
+  <!--/Content-->
+</sui-modal>

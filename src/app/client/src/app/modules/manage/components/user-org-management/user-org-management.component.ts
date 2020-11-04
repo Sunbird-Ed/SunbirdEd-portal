@@ -9,7 +9,7 @@ import {first, takeUntil} from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import * as $ from 'jquery';
 import 'datatables.net';
-import * as moment from 'moment';
+import * as dayjs from 'dayjs';
 import {Subject} from 'rxjs';
 
 @Component({
@@ -366,10 +366,10 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
           {
             'targets': 0,
             'render': (data) => {
-              const date = moment(data, 'DD-MM-YYYY');
+              const date = dayjs(data, 'DD-MM-YYYY');
               if (date.isValid()) {
                 return `<td><span style="display:none">
-                            ${moment(data, 'DD-MM-YYYY').format('YYYYMMDD')}</span> ${data}</td>`;
+                            ${dayjs(data, 'DD-MM-YYYY').format('YYYYMMDD')}</span> ${data}</td>`;
               }
               return data;
             },
@@ -407,10 +407,10 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
           {
             'targets': 0,
             'render': (data) => {
-              const date = moment(data, 'DD-MM-YYYY');
+              const date = dayjs(data, 'DD-MM-YYYY');
               if (date.isValid()) {
                 return `<td><span style="display:none">
-                            ${moment(data, 'DD-MM-YYYY').format('YYYYMMDD')}</span> ${data}</td>`;
+                            ${dayjs(data, 'DD-MM-YYYY').format('YYYYMMDD')}</span> ${data}</td>`;
               }
               return data;
             },
@@ -450,7 +450,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
 
   public downloadCSVFile(slug, status, fileName: any) {
     const slugName = status ? slug + '__' + status : slug;
-    const downloadFileName = status ? status + '_' + moment().format('DDMMYYYY') + '.csv' : undefined;
+    const downloadFileName = status ? status + '_' + dayjs().format('DDMMYYYY') + '.csv' : undefined;
     this.manageService.getData(slugName, fileName, downloadFileName)
       .subscribe(
         response => {

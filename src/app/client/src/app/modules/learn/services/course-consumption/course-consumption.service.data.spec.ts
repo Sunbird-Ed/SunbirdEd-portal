@@ -782,7 +782,11 @@ export const courseConsumptionServiceMockData = {
     'variants': '{"online":{"ecarUrl":"https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1130272760292638721197/test_curriculumcourse_1590243685852_do_1130272760292638721197_1.0_online.ecar","size":8533.0},"spine":{"ecarUrl":"https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1130272760292638721197/test_curriculumcourse_1590243684943_do_1130272760292638721197_1.0_spine.ecar","size":130702.0}}',
     'index': 1,
     'pkgVersion': 1,
-    'idealScreenDensity': 'hdpi'
+    'idealScreenDensity': 'hdpi',
+    'trackable': {
+      'enabled': 'Yes',
+    },
+    createdBy: '9ad90eb4-b8d2-4e99-805f'
   },
   parseChildrenResult: [
     'do_11287204084174028818',

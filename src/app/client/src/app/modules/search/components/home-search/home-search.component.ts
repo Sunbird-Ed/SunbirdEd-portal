@@ -48,6 +48,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   SECOND_PANEL_LAYOUT;
   public globalSearchFacets: Array<string>;
   public allTabData;
+  public allMimeType;
   constructor(public searchService: SearchService, public router: Router,
     public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
     public resourceService: ResourceService, public toasterService: ToasterService, public changeDetectorRef: ChangeDetectorRef,
@@ -123,9 +124,21 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
   private fetchContents() {
+    const selectedMediaType = _.isArray(_.get(this.queryParams, 'mediaType')) ? _.get(this.queryParams, 'mediaType')[0] :
+      _.get(this.queryParams, 'mediaType');
+    const mimeType = _.find(_.get(this.allTabData, 'search.filters.mimeType'), (o) => {
+      return o.name === (selectedMediaType || 'all');
+    });
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
-    filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters', 'selectedTab']);
+    filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters', 'selectedTab', 'mediaType']);
     filters.contentType = filters.contentType || _.get(this.allTabData, 'search.filters.contentType');
+    filters.mimeType = _.get(mimeType, 'values');
+
+    // Replacing cbse/ncert value with cbse
+    if (_.toLower(_.get(filters, 'board[0]')) === 'cbse/ncert' || _.toLower(_.get(filters, 'board')) === 'cbse/ncert') {
+      filters.board = ['cbse'];
+    }
+
     const option = {
       filters: filters,
       fields: _.get(this.allTabData, 'search.fields'),

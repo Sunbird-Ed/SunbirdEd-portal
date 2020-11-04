@@ -10,7 +10,7 @@ import {
   ICollectionTreeOptions, NavigationHelperService, ResourceService,  ExternalUrlPreviewService, ConfigService,
   ContentUtilsServiceService, UtilService, ITelemetryShare, LayoutService
 } from '@sunbird/shared';
-import { CollectionHierarchyAPI, ContentService, UserService } from '@sunbird/core';
+import { CollectionHierarchyAPI, ContentService, UserService, GeneraliseLabelService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput,
   TelemetryService } from '@sunbird/telemetry';
@@ -121,7 +121,7 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     public toasterService: ToasterService, private contentUtilsService: ContentUtilsServiceService,
     public popupControlService: PopupControlService,
     public utilService: UtilService, public userService: UserService,
-    public telemetryService: TelemetryService,
+    public telemetryService: TelemetryService, public generaliseLabelService: GeneraliseLabelService,
     public layoutService: LayoutService) {
     this.contentService = contentService;
     this.playerService = playerService;
@@ -359,6 +359,12 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
     }
   }
 
+  getGeneraliseResourceBundle(data) {
+    this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
+      this.generaliseLabelService.initialize(data, item.value);
+    });
+  }
+
   private getContent(): void {
     this.subsrciption = this.route.params.pipe(
       filter(params => params.collectionId !== this.collectionId),
@@ -372,6 +378,8 @@ export class PublicCollectionPlayerComponent implements OnInit, OnDestroy, After
       }))
       .subscribe((data) => {
         this.collectionTreeNodes = data;
+        this.layoutService.updateSelectedContentType.emit(_.get(data, 'data.contentType'));
+        this.getGeneraliseResourceBundle(data.data);
         this.showLoader = false;
         this.route.queryParams.subscribe((queryParams) => {
           this.queryParams = { ...queryParams};

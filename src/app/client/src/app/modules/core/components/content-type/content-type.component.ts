@@ -27,6 +27,10 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getContentTypes();
+    this.layoutService.updateSelectedContentType
+    .subscribe((data) => {
+      this.updateSelectedContentType(data);
+    });
   }
 
 
@@ -92,6 +96,14 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : 'textbook';
     } else {
       this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : null;
+    }
+  }
+  updateSelectedContentType(contentType) {
+    const ct = this.contentTypes.find((cty: any) => cty.contentType === contentType.toLowerCase());
+    if (ct) {
+      this.selectedContentType = ct.contentType;
+    } else {
+      this.selectedContentType = 'all';
     }
   }
 

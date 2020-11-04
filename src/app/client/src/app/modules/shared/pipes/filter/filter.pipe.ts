@@ -9,14 +9,21 @@ export class FilterPipe implements PipeTransform {
     if (!items) { return []; }
     if (!searchText) { return items; }
     searchText = searchText.toLowerCase();
-    const filterItem = [];
-    _.forEach(items, (item) => {
-      _.forEach(item, (subValue, subKey) => {
-        if (searchKeys.includes(subKey) && subValue && subValue.toLowerCase().includes(searchText)) {
-          filterItem.push(item);
-        }
+    if(searchKeys && searchKeys.length !== 0){
+      const filterItem = [];
+      _.forEach(items, (item) => {
+        _.forEach(item, (subValue, subKey) => {
+          if (searchKeys.includes(subKey) && subValue && subValue.toLowerCase().includes(searchText)) {
+            filterItem.push(item);
+          }
+        });
       });
+      return _.uniq(filterItem);
+    }else{
+      return items.filter(function(item){
+        return JSON.stringify(item).toLowerCase().includes(searchText);
     });
-    return _.uniq(filterItem);
+    }
+
   }
 }

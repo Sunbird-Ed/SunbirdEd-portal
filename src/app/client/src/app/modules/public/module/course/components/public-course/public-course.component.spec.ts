@@ -229,7 +229,7 @@ describe('PublicCourseComponent', () => {
 
   it('should call play content method', () => {
     const publicPlayerService = TestBed.get(PublicPlayerService);
-    spyOn(publicPlayerService, 'playExploreCourse').and.callThrough();
+    spyOn(publicPlayerService, 'playContent').and.callThrough();
     const event = {
       data: {
         metaData: {
@@ -238,7 +238,7 @@ describe('PublicCourseComponent', () => {
       }
     };
     component.playContent(event);
-    expect(publicPlayerService.playExploreCourse).toHaveBeenCalled();
+    expect(publicPlayerService.playContent).toHaveBeenCalled();
   });
 
   it('should generate visit telemetry impression event', () => {
@@ -253,6 +253,21 @@ describe('PublicCourseComponent', () => {
     };
     component.prepareVisits(event);
     expect(component.telemetryImpression).toBeDefined();
+  });
+
+
+  it('should add audience type in fetch page data request body', () => {
+    spyOn(localStorage, 'getItem').and.returnValue('teacher');
+    component.queryParams = {sort_by: 'name', sortType: 'desc'};
+    component['fetchPageData']();
+    const option = {
+      source: 'web', name: 'Course', organisationId: '*',
+      filters: { sort_by: 'name', sortType: 'desc' },
+      fields: [ 'name', 'appIcon', 'medium', 'subject', 'resourceType', 'contentType', 'organisation', 'topic', 'mimeType', 'trackable' ],
+      params: { orgdetails: 'orgName,email' },
+      facets: [ 'channel', 'gradeLevel', 'subject', 'medium' ]
+    };
+    expect(pageApiService.getPageData).toHaveBeenCalledWith(option);
   });
 
 });

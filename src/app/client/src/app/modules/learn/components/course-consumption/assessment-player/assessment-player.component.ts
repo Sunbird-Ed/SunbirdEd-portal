@@ -3,7 +3,7 @@ import { TelemetryService, IAuditEventInput, IImpressionEventInput } from '@sunb
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption';
-import { UserService } from '@sunbird/core';
+import { UserService, GeneraliseLabelService } from '@sunbird/core';
 import { AssessmentScoreService, CourseBatchService, CourseConsumptionService } from '@sunbird/learn';
 import { PublicPlayerService } from '@sunbird/public';
 import { ConfigService, ResourceService, ToasterService, NavigationHelperService,
@@ -60,6 +60,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   consumedContents = 0;
   layoutConfiguration;
   isCourseCompletionPopupShown = false;
+  previousContent = null;
 
   constructor(
     public resourceService: ResourceService,
@@ -76,7 +77,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     private router: Router,
     private contentUtilsServiceService: ContentUtilsServiceService,
     private telemetryService: TelemetryService,
-    private layoutService: LayoutService
+    private layoutService: LayoutService,
+    public generaliseLabelService: GeneraliseLabelService
   ) {
     this.playerOption = {
       showContentRating: true
@@ -84,6 +86,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   navigateToPlayerPage(collectionUnit: {}, event?) {
+    this.previousContent = null;
       const navigationExtras: NavigationExtras = {
         queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.parentCourse.name }
       };
@@ -133,6 +136,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
+    this.previousContent = null;
     const paramas = {};
     if (!this.isCourseCompletionPopupShown) {
       paramas['showCourseCompleteMessage'] = true;
@@ -165,6 +169,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
               this.nextModule = _.get(module, 'next');
               this.prevModule = _.get(module, 'prev');
               this.getCourseCompletionStatus();
+              this.layoutService.updateSelectedContentType.emit(data.courseHierarchy.contentType);
               if (!this.isParentCourse && data.courseHierarchy.children) {
                 this.courseHierarchy = data.courseHierarchy.children.find(item => item.identifier === this.collectionId);
               } else {
@@ -186,6 +191,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.unsubscribe))
             .subscribe((data) => {
               this.courseHierarchy = data.result.content;
+              this.layoutService.updateSelectedContentType.emit(this.courseHierarchy.contentType);
               if (this.courseHierarchy.mimeType !== 'application/vnd.ekstep.content-collection') {
                 this.activeContent = this.courseHierarchy;
                 this.initPlayer(_.get(this.activeContent, 'identifier'));
@@ -242,6 +248,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     };
   }
   setActiveContent(selectedContent: string, isSingleContent?: boolean) {
+    this.previousContent = _.cloneDeep(this.activeContent);
     if (_.get(this.courseHierarchy, 'children')) {
       const flattenDeepContents = this.courseConsumptionService.flattenDeep(this.courseHierarchy.children);
 
@@ -298,6 +305,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   onTocCardClick(event: any, id) {
+    this.previousContent = _.cloneDeep(this.activeContent);
     /* istanbul ignore else */
     if (_.get(event, 'data')) {
       this.activeContent = event.data;
@@ -318,6 +326,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       }, err => console.error(err, 'content read api failed'));
   }
 
+  public getCurrentContent() {
+   return this.previousContent ? this.previousContent : this.activeContent;
+  }
   public contentProgressEvent(event) {
     /* istanbul ignore else */
     if (!this.batchId || _.get(this.enrolledBatchInfo, 'status') !== 1) {
@@ -329,13 +340,12 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     if (eid === 'END' && !this.validEndEvent(event)) {
       return;
     }
-
     const request: any = {
       userId: this.userService.userid,
       contentId: _.cloneDeep(_.get(telObject, 'object.id')) || _.get(this.activeContent, 'identifier'),
       courseId: this.courseId,
       batchId: this.batchId,
-      status: (eid === 'END' && this.activeContent.contentType !== 'SelfAssess' && this.courseProgress === 100) ? 2 : 1,
+      status: (eid === 'END' && (_.get(this.getCurrentContent, 'contentType') !== 'SelfAssess') && this.courseProgress === 100) ? 2 : 1,
       progress: this.courseProgress
     };
 
@@ -389,7 +399,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
    */
   private validEndEvent(event) {
     const playerSummary: Array<any> = _.get(event, 'detail.telemetryData.edata.summary');
-    const contentMimeType = this.activeContent.mimeType;
+    const contentMimeType = _.get(this.previousContent, 'mimeType') ? _.get(this.previousContent, 'mimeType') : _.get(this.activeContent, 'mimeType');
     this.courseProgress = CsContentProgressCalculator.calculate(playerSummary, contentMimeType);
     return this.courseProgress;
   }

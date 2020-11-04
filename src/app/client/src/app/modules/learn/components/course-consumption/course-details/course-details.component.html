@@ -1,7 +1,7 @@
 <div class="training-info" *ngIf="courseHierarchy">
-  <h4 class="font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseDetails}}</h4>
+  <h4 class="font-weight-bold">{{generaliseLabelService?.frmelmnts?.lbl?.courseDetails}}</h4>
   <div class="training-relevant my-16">
-    <h6 class="mt-0 mb-8 fsmall training-relevant__heading">{{resourceService?.frmelmnts?.lbl?.courseRelevantFor}}</h6>
+    <h6 class="mt-0 mb-8 fsmall training-relevant__heading">{{generaliseLabelService?.frmelmnts?.lbl?.courseRelevantFor}}</h6>
     <div class="training-relevant__class mb-4 sb-color-gray-400 fnormal" *ngIf="courseHierarchy?.gradeLevel">
       <span>{{resourceService?.frmelmnts?.lbl?.class}}:&nbsp;</span><span>{{ courseHierarchy?.gradeLevel?.join(', ')}}</span>
     </div>

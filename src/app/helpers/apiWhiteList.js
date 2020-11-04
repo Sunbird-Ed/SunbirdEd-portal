@@ -9,7 +9,7 @@ const _                 = require('lodash');
 const uuidv1            = require('uuid/v1');
 const dateFormat        = require('dateformat');
 const { pathToRegexp }  = require("path-to-regexp");
-const logger            = require('sb_logger_util_v2');
+const logger            = require('@project-sunbird/logger');
 
 const API_LIST          = require('./whitelistApis');
 const utils             = require('./utilityService');
@@ -69,12 +69,12 @@ const urlChecks = {
    * @since - release-3.1.0
    */
   ROLE_CHECK: (resolve, reject, req, rolesForURL, REQ_URL) => {
-    logger.info({
-      msg: 'whitelist middleware for URL [ ' + REQ_URL + ' ]',
-      originalUrl: req.path,
-      reqRoles: req.session['roles'] ? req.session['roles'] : 'no roles in session',
-      rulesForURL: rolesForURL
-    });
+    // logger.info({
+    //   msg: 'whitelist middleware for URL [ ' + REQ_URL + ' ]',
+    //   originalUrl: req.path,
+    //   reqRoles: req.session['roles'] ? req.session['roles'] : 'no roles in session',
+    //   rulesForURL: rolesForURL
+    // });
     if (_.includes(rolesForURL, 'ALL') && req.session['roles'].length > 0) {
       resolve();
     } else if (_.intersection(rolesForURL, req.session['roles']).length > 0) {

@@ -114,9 +114,9 @@ export class AddMemberComponent implements OnInit, OnDestroy {
       this.groupsService.getUserData((this.memberId).trim(), {token: this.captchaResponse})
       .pipe(takeUntil(this.unsubscribe$)).subscribe(member => {
         this.verifiedMember = this.groupsService.addFields(member);
-        if (member.exists && !this.isExistingMember()) {
+        if (member.exists) {
           this.showLoader = false;
-          this.isVerifiedUser = true;
+          this.isVerifiedUser = !this.isExistingMember();
           this.captchaRef.reset();
         } else {
           this.showInvalidUser();
@@ -151,7 +151,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
       this.groupsService.addMemberById(groupId, member).pipe(takeUntil(this.unsubscribe$)).subscribe(response => {
         this.getUpdatedGroupData();
         this.disableBtn = false;
-        const value = _.isEmpty(response.errors) ? this.toasterService.success((this.resourceService.messages.smsg.m004).replace('{memberName}',
+        const value = _.isEmpty(response.error) ? this.toasterService.success((this.resourceService.messages.smsg.m004).replace('{memberName}',
           this.verifiedMember['title'])) : this.showErrorMsg(response);
           this.memberId = '';
           this.reset();
@@ -166,7 +166,10 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   }
 
   showErrorMsg(response?) {
-    this.toasterService.error((this.resourceService.messages.emsg.m006).replace('{name}', _.get(response, 'errors') || this.verifiedMember['title']));
+    _.get(response, 'error.members[0].errorCode') === 'EXCEEDED_MEMBER_MAX_LIMIT' ?
+    this.toasterService.error(this.resourceService.messages.groups.emsg.m002) :
+    this.toasterService.error((this.resourceService.messages.emsg.m006).replace('{name}', _.get(response, 'errors')
+    || _.get(this.verifiedMember, 'title')));
   }
 
   getUpdatedGroupData() {
@@ -187,9 +190,9 @@ export class AddMemberComponent implements OnInit, OnDestroy {
     this.showModal = visibility;
   }
 
-  addTelemetry (id, memberId?) {
+  addTelemetry (id, memberId?, extra?) {
     const cdata = memberId ? [{id: this.memberId, type: 'member'}] : [];
-    this.groupService.addTelemetry(id, this.activatedRoute.snapshot, cdata);
+    this.groupService.addTelemetry(id, this.activatedRoute.snapshot, cdata, _.get(this.groupData, 'id') , extra);
   }
 
 

@@ -170,7 +170,7 @@
           <div class="mb-15 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.board)">
             <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.boards}} :</span>
             <span class="fmedium font-w-bold pl-4"
-              *ngIf="userProfile.framework">{{convertToString(userProfile.framework.board)}}</span>
+              *ngIf="userProfile.framework">{{convertToString(userProfile.framework.board) | interpolate: 'CBSE': 'CBSE/NCERT'}}</span>
           </div>
           <div class="mb-15 d-flex flex-jc-center" *ngIf="convertToString(userProfile.framework.medium)">
             <span class="fmedium white-space-nowrap">{{resourceService.frmelmnts.lbl.medium}} :</span>
@@ -232,27 +232,12 @@
   <div class="flex-ai-jc-center flex-dc text-center school-id-section">
     <div class="self-declared-title">{{resourceService.frmelmnts?.lbl?.selfDeclaredInfo}}</div>
       <div>
-        {{resourceService?.frmelmnts?.lbl?.iam}} {{ declarationDetails?.persona }} {{resourceService?.frmelmnts?.lbl?.with}} <span>{{ tenantInfo.label }}</span>
+        {{resourceService?.frmelmnts?.lbl?.iam}} {{ declarationDetails?.persona }} {{resourceService?.frmelmnts?.lbl?.with}} <span>{{ tenantInfo?.label }}</span>
       </div>
 
       <div *ngFor="let item of selfDeclaredInfo">
         <div class="fnormal white-space-nowrap">{{ item.label }}:</div>
         <div class="fnormal font-w-bold mt-4 mb-8">{{ item.code === 'declared-phone' ? '+91' : '' }} {{ item.value }}</div>
-      </div>
-      
-      <div class="my-8">
-        <div class="fnormal white-space-nowrap">{{resourceService.frmelmnts?.lbl?.status}}:</div>
-        <div class="fnormal font-w-bold mt-4 mb-8">{{declarationDetails.status || 'PENDING'}}</div>
-          <div class="sb-toaster sb-toast-danger sb-toast-normal" *ngIf="declarationDetails.status === 'ERROR'">
-            <div class="sb-toast-body mr-0">
-              <div class="sb-toast-texts w-100 text-center">
-                <div class="sb-toast-title">{{resourceService.frmelmnts?.scttl?.error | uppercase }}</div>
-                <ul class="error-lists p-0 my-8" *ngIf="selfDeclaredErrorTypes.length > 0">
-                  <li class="error-list mb-4" *ngFor="let errorType of selfDeclaredErrorTypes">{{ errorType }}</li>
-                </ul>
-              </div>
-            </div>
-          </div>
       </div>
       <div class="my-8">
         <button appTelemetryInteract
@@ -295,7 +280,7 @@
       <!-- tarainings attended computer view strats-->
       <div class="container my-16 sb-certificate-trained" *ngIf="attendedTraining && attendedTraining.length">
           <div class="list-heading">
-            <label class="mb-0">{{resourceService?.frmelmnts?.lbl?.courses}}({{attendedTraining.length}})&#x200E;</label>
+            <label class="mb-0">{{resourceService?.frmelmnts?.lbl?.myLearning}}({{attendedTraining.length}})&#x200E;</label>
             <span class="fsmall mt-4 font-weight-bold">&nbsp;({{resourceService?.frmelmnts?.lbl?.refreshedDaily}})</span>
           </div>
           <div class="list-item-parent" *ngFor="let data of attendedTraining | slice:0:courseLimit">
@@ -339,9 +324,9 @@
           <div class="list-heading">
             <label class="mb-0">{{resourceService.frmelmnts?.lbl?.learnerPassbook }}&#x200E;</label>
           </div>
-          <div class="list-item-parent" *ngFor="let data of otherCertificates | slice:0:courseLimit">
+          <div class="list-item-parent" *ngFor="let data of otherCertificates | slice:0:otherCertificateLimit">
             <div class="list-items" *ngIf="data.issuingAuthority">
-              <label class="list-items__item mr-auto mb-0 text-left">{{data.certName}}</label>
+              <label class="list-items__item mr-auto mb-0 text-left">{{data.courseName}}</label>
               <label class="list-items__item mr-auto mb-0 text-left">{{data.issuingAuthority}}</label>
               <label class="list-items__item list-date" *ngIf="data.issuedOn">{{data.issuedOn | date :'dd MMMM yyy' }}</label>
               <div class="list-items__item" *ngIf="data?.certificates?.length">
@@ -357,12 +342,12 @@
           </div>
           <div class="flex-ai-jc-center sb-ct-list" *ngIf="otherCertificates.length > 3 ">
             <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
-              [telemetryInteractEdata]="{id:'view-more' , type:'click' , pageid:'profile-read'}" *ngIf="showMoreTrainings"
-              (click)="toggleCourse(true, otherCertificates.length)">{{resourceService.frmelmnts.lbl.viewmore}}<i
+              [telemetryInteractEdata]="{id:'view-more' , type:'click' , pageid:'profile-read'}" *ngIf="showMoreCertificates"
+              (click)="toggleOtherCertific(true)">{{resourceService.frmelmnts.lbl.viewmore}}<i
                 class="chevron down icon"></i></button>
             <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
               [telemetryInteractEdata]="{id:'view-less' , type:'click' , pageid:'profile-read'}"
-              (click)="toggleCourse(false, otherCertificates.length)" *ngIf="!showMoreTrainings">{{resourceService.frmelmnts.lbl.viewless}}<i
+              (click)="toggleOtherCertific(false)" *ngIf="!showMoreCertificates">{{resourceService.frmelmnts.lbl.viewless}}<i
                 class="chevron up icon"></i></button>
           </div>
         </div>

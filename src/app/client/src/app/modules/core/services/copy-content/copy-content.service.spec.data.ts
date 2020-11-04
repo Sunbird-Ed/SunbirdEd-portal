@@ -24,7 +24,8 @@ export const mockRes = {
     'audience': ['Learner'], 'visibility': 'Default', 'libraries': [], 'mediaType': 'content',
     'ageGroup': ['6-7', '8-10'], 'osId': 'org.ekstep.quiz.app', 'languageCode': 'en', 'userId': 's', 'userName': 'sourav',
     'versionKey': '1497009185536', 'tags': ['elephant'], 'concepts': [], 'createdBy': 'EkStep',
-    'name': 'Elephant and the Monkey', 'me_averageRating': 'd', 'publisher': 'EkStep', 'usedByContent': [], 'status': 'Live', 'path': ''
+    'name': 'Elephant and the Monkey', 'me_averageRating': 'd', 'publisher': 'EkStep', 'usedByContent': [], 'status': 'Live', 'path': '',
+    'primaryCategory': 'Learning Resource'
   },
   userData: {
     'firstName': 'Sourav',

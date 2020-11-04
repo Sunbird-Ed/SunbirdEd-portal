@@ -4,7 +4,7 @@
       <div class="ui grid stackable">
         <div class="four wide column footerMenu mr-auto">
           <!-- default links if tenant settings is not available -->
-          <ul class="p-0 m-0" *ngIf="!(tenantFooter | keyvalue)?.length">
+          <!-- <ul class="p-0 m-0" *ngIf="!(tenantFooter | keyvalue)?.length">
             <li class="mb-16">
               <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')"
                 href="{{defaultFooterConfig.helpCenterLink}}">
@@ -20,23 +20,23 @@
                 {{defaultFooterConfig.helpDeskEmail}}
               </a>
             </li>
-          </ul>
+          </ul> -->
   
-          <ul class="p-0 m-0" *ngIf="(tenantFooter | keyvalue)?.length">
+          <!-- <ul class="p-0 m-0" *ngIf="(tenantFooter | keyvalue)?.length">
             <li class="mb-16" *ngIf="tenantFooter?.helpCenterLink">
               <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')"
                 href="{{tenantFooter?.helpCenterLink}}">
                 {{resourceService.frmelmnts?.lnk?.footerHelpCenter}}
               </a>
             </li>
-<!--            <li *ngIf="tenantFooter?.helpDeskEmail">
+           <li *ngIf="tenantFooter?.helpDeskEmail">
               <label class="d-block mb-0">
                 {{resourceService.frmelmnts?.lnk?.footerContact}}
               </label>
               <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('fresh-desk')" class="d-block mb-0"
                 href="mailto:{{tenantFooter?.helpDeskEmail}}">{{tenantFooter?.helpDeskEmail}}</a>
-            </li>-->
-          </ul>
+            </li>
+          </ul>-->
           
        
         </div>
@@ -85,7 +85,7 @@
         <div class="ui grid stackable px-72">
           <div class="six wide column contantDetails px-0">
             <div class="footerMenu text-left">
-              <ul class="p-0 m-0" *ngIf="!(tenantFooter | keyvalue)?.length">
+              <!-- <ul class="p-0 m-0" *ngIf="!(tenantFooter | keyvalue)?.length">
                 <li class="help-center">
                   <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')"
                     href="{{defaultFooterConfig.helpCenterLink}}">
@@ -100,24 +100,24 @@
                     class="d-block mb-0" href="mailto:{{defaultFooterConfig.helpDeskEmail}}">
                     {{defaultFooterConfig.helpDeskEmail}}
                   </a>
-                </li>
-              </ul>
-              <ul class="p-0 m-0" *ngIf="(tenantFooter | keyvalue)?.length">
+                </li> 
+              </ul>-->
+              <!-- <ul class="p-0 m-0" *ngIf="(tenantFooter | keyvalue)?.length">
                 <li class="mb-16 help-cente" *ngIf="tenantFooter?.helpCenterLink">
                   <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')"
                     href="{{tenantFooter?.helpCenterLink}}">
                     {{resourceService.frmelmnts?.lnk?.footerHelpCenter}}
                   </a>
                 </li>
-<!--                <li class="contact-info" *ngIf="tenantFooter?.helpDeskEmail">
+               <li class="contact-info" *ngIf="tenantFooter?.helpDeskEmail">
                   <label class="d-block contact-info-title mb-0">
                     {{resourceService.frmelmnts?.lnk?.footerContact}}
                   </label>
                   <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('fresh-desk')"
                     class="d-block mb-0"
                     href="mailto:{{tenantFooter?.helpDeskEmail}}">{{tenantFooter?.helpDeskEmail}}</a>
-                </li>-->
-              </ul>
+                </li>
+              </ul> -->
             </div>
             <div>
             <label class="d-block footer-terms-info text-left font-weight-normal">

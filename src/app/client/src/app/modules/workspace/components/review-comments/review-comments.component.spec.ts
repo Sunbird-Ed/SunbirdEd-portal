@@ -34,7 +34,8 @@ const contentData = {
   code: 'code',
   framework: 'framework',
   userId: 'userid',
-  userName: 'userName'
+  userName: 'userName',
+  primaryCategory: 'Learning Resource'
 };
 const mockResourceBundle = {
   'messages': {

@@ -170,13 +170,20 @@ export class ReportService {
   public prepareChartData(chartsArray: Array<any>, data: { result: any, id: string, lastModifiedOn: undefined | string }[],
     downloadUrl: IDataSource[], reportLevelDataSourceId: string): Array<{}> {
     return _.map(chartsArray, chart => {
+      const { chartType, dataSource = null, mapData = {} } = chart;
       const chartObj: any = {};
       chartObj.chartConfig = chart;
       chartObj.downloadUrl = downloadUrl;
-      chartObj.chartData = _.get(chart, 'dataSource') ? this.getChartData(data, chart) :
+      chartObj.chartData = dataSource ? this.getChartData(data, chart) :
         _.get(this.getDataSourceById(data, reportLevelDataSourceId || 'default'), 'data');
       chartObj.lastUpdatedOn = _.get(data, 'metadata.lastUpdatedOn') ||
-        this.getLatestLastModifiedOnDate(data, _.get(chart, 'dataSource') || { ids: [reportLevelDataSourceId || 'default'] });
+        this.getLatestLastModifiedOnDate(data, dataSource || { ids: [reportLevelDataSourceId || 'default'] });
+      if (chartType && _.toLower(chartType) === 'map') {
+        chartObj.mapData = {
+          ...mapData,
+          reportData: chartObj.chartData
+        };
+      }
       return chartObj;
     });
   }

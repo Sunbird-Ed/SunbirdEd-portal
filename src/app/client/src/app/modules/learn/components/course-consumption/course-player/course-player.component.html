@@ -3,14 +3,14 @@
   <div class="ui container relative9" [appTelemetryImpression]="telemetryCourseImpression">
     <div class="sb-course-details sb-g sb-g--gap24 py-16 text-left cc-player">
       <div class="sb-course-details__training sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
-
+        {{ generaliseLabelService?.frmelmnts?.lbl?.LastUpdatedOn }}
         <!-- Course details for mobile view -->
         <!-- <div class="sb-bg-color-white p-8 mb-16 mobile only"
           *ngIf="enrolledBatchInfo?.cert_templates; else noMobileCertificate">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span
-              class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseContainCertificate}}</span>
+              class="fnormal sb-color-primary ml-16 font-weight-bold">{{generaliseLabelService?.frmelmnts?.lbl?.courseContainCertificate}}</span>
           </div>
         </div>
 
@@ -19,7 +19,7 @@
             <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
               <img src="assets/images/certificate-icon.png" alt="Certificate">
               <span
-                class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
+                class="fnormal sb-color-primary ml-16 font-weight-bold">{{generaliseLabelService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
             </div>
           </div>
         </ng-template> -->
@@ -27,7 +27,7 @@
         <div *ngIf="isEnrolledCourseUpdated" class="mobile only">
           <div class="sb-no-course-found my-16 d-flex flex-ai-center">
             <div><img src="assets/images/alert.svg" width="20px" height="20px"></div>
-            <div class="ml-8">{{ resourceService?.frmelmnts?.lbl?.courseLastUpdatedOn }} {{ courseHierarchy?.lastUpdatedOn | date:'dd/MM/yyyy'  }}</div>
+            <div class="ml-8">{{ generaliseLabelService?.frmelmnts?.lbl?.courseLastUpdatedOn }} {{ courseHierarchy?.lastUpdatedOn | date:'dd/MM/yyyy'  }}</div>
           </div>
         </div>
 
@@ -35,7 +35,7 @@
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span
-              class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
+              class="fnormal sb-color-primary ml-16 font-weight-bold">{{generaliseLabelService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
           </div>
         </div>
 
@@ -43,10 +43,9 @@
         <app-course-details [courseHierarchy]="courseHierarchy" *ngIf="!enrolledCourse"></app-course-details>
 
         <div class="training-modules my-16">
-
           <div class="training-modules__title d-flex flex-ai-center mb-16">
             <h4 class="sb-pageSection-title sb-pageSection-title-light">
-              {{resourceService?.frmelmnts?.lbl?.coursestructure}}</h4>
+              {{generaliseLabelService?.frmelmnts?.lbl?.coursestructure}}</h4>
             <button *ngIf="!isExpandedAll"
               class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto d-flex flex-ai-center"
               (click)="isExpandedAll = true; logTelemetry('expand-all', courseHierarchy);"><img
@@ -118,7 +117,7 @@
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span
-              class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseContainCertificate}}</span>
+              class="fnormal sb-color-primary ml-16 font-weight-bold">{{generaliseLabelService?.frmelmnts?.lbl?.courseContainCertificate}}</span>
           </div>
         </div>
 
@@ -127,7 +126,7 @@
             <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
               <img src="assets/images/certificate-icon.png" alt="Certificate">
               <span
-                class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
+                class="fnormal sb-color-primary ml-16 font-weight-bold">{{generaliseLabelService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
             </div>
           </div>
         </ng-template> -->
@@ -135,29 +134,29 @@
         <div *ngIf="isEnrolledCourseUpdated" class="computer only">
           <div class="sb-no-course-found my-16 d-flex flex-ai-center">
             <div><img src="assets/images/alert.svg" width="20px" height="20px"></div>
-            <div class="ml-8">{{ resourceService?.frmelmnts?.lbl?.courseLastUpdatedOn }} {{ courseHierarchy?.lastUpdatedOn | date:'dd/MM/yyyy'  }}</div>
+            <div class="ml-8">{{ generaliseLabelService?.frmelmnts?.lbl?.courseLastUpdatedOn }} {{ courseHierarchy?.lastUpdatedOn | date:'dd/MM/yyyy'  }}</div>
           </div>
         </div>
 
-        <div class="sb-bg-color-white p-8 mb-16 computer only  sbt-certified-course" *ngIf="enrolledCourse && !enrolledBatchInfo?.cert_templates">
+        <div class="sb-bg-color-white p-8 mb-16 computer only  sbt-certified-course" *ngIf="enrolledCourse && certificateDescription && !certificateDescription?.isCertificate">
           <div class="certified-course__certificate d-inline-flex flex-ai-center py-8 px-16 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
             <span
-              class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
+              class="fnormal sb-color-primary ml-16 font-weight-bold">{{generaliseLabelService?.frmelmnts?.lbl?.courseDontContainCertificate}}</span>
           </div>
         </div>
 
         <div class="sb-bg-color-white p-8 mb-16 computer only" *ngIf="enrolledCourse && certificateDescription && certificateDescription?.description">
           <div class="certified-course__certificate d-inline-flex flex-ai-center p-8 width-100">
             <img src="assets/images/certificate-icon.png" alt="Certificate">
-            <span class="fnormal sb-color-primary ml-16 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.courseContainCertificate}}</span>
+            <span class="fnormal sb-color-primary ml-16 font-weight-bold">{{generaliseLabelService?.frmelmnts?.lbl?.courseContainCertificate}}</span>
           </div>
           <p class="fsmall px-4 pt-8"> {{certificateDescription?.description}} </p>
       </div>
 
       <!-- 2. Course Progress bar -->
         <div class="sb-bg-color-white certified-course__progress p-16 mb-16" *ngIf="enrolledCourse && !addToGroup && !courseMentor">
-          <div class="fsmall">{{resourceService?.frmelmnts?.lbl?.courseProgress}}</div>
+          <div class="fsmall">{{generaliseLabelService?.frmelmnts?.lbl?.courseProgress}}</div>
           <div class="sb-color-primary fnormal font-weight-bold mt-8">{{progress}}%
             {{resourceService?.frmelmnts?.lbl?.completed}}</div>
           <sui-progress [value]="progress" [maximum]="100" class="mb-0 mr-0 mt-8 tiny"></sui-progress>
@@ -171,8 +170,13 @@
           [enrolledCourse]="enrolledCourse" [enrolledBatchInfo]="enrolledBatchInfo" [courseHierarchy]="courseHierarchy"
           [courseProgressData]="courseProgressData" (allBatchDetails)="getAllBatchDetails($event)"></app-batch-details>
 
+        <!-- Consent to share PII  -->
+        <div class="mb-16" *ngIf="showDataSettingSection">
+          <app-consent-pii [collection]="courseHierarchy"></app-consent-pii>
+        </div>
+
         <!-- Credits & License information -->
-        <div *ngIf="enrolledCourse || hasPreviewPermission" class="course-player--metadata text-left">
+        <div class="course-player--metadata text-left">
           <app-course-info [courseHierarchy]="courseHierarchy"></app-course-info>
         </div>
 
@@ -187,13 +191,13 @@
   *ngIf="showJoinTrainingModal" #joinTrainingModal>
   <!--Header-->
   <div class="sb-modal-header">
-    {{resourceService?.frmelmnts?.btn?.enroll}}
+    {{generaliseLabelService?.frmelmnts?.btn?.enroll}}
   </div>
   <!--/Header-->
   <!--Content-->
   <div class="sb-modal-content">
     <div class="ui center aligned segment">
-      <p>{{resourceService?.frmelmnts?.lbl?.joinTrainingToAcessContent}}</p>
+      <p>{{batchMessage}}</p>
     </div>
   </div>
   <!--/Content-->

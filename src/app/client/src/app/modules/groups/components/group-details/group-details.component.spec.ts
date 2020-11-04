@@ -12,6 +12,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { APP_BASE_HREF } from '@angular/common';
 import { of } from 'rxjs';
 import { impressionObj, fakeActivatedRoute } from './../../services/groups/groups.service.spec.data';
+import { GroupDetailsData } from './group-details.component.spec.data';
+import * as _ from 'lodash-es';
 
 describe('GroupDetailsComponent', () => {
   let component: GroupDetailsComponent;
@@ -72,8 +74,14 @@ describe('GroupDetailsComponent', () => {
 
   it('should get group data', () => {
     const groupService = TestBed.get(GroupsService);
+    component['groupId'] = '123';
     spyOn(groupService, 'getGroupById').and.returnValue(of({id: '123', name: 'groupName', members: [], createdBy: '1'}));
+    spyOn(groupService, 'groupContentsByActivityType').and.returnValue({showList:  true});
     component.getGroupData();
+    expect(groupService.getGroupById).toHaveBeenCalledWith('123', true, true, true);
+    expect(groupService.groupContentsByActivityType).toHaveBeenCalledWith(false,
+    {id: '123', name: 'groupName', members: [], createdBy: '1', isCreator: false, isAdmin: false, initial: 'g'});
+    expect(component.showActivityList).toBeTruthy();
     expect(component.groupData).toEqual({id: '123', name: 'groupName', members: [], createdBy: '1',
     isCreator: false, isAdmin: false, initial: 'g'});
   });
@@ -90,15 +98,16 @@ describe('GroupDetailsComponent', () => {
   });
 
   it('should call handleNextClick', () => {
+    component.groupData = GroupDetailsData.groupData;
     const router = TestBed.get(Router);
-    spyOn(component, 'toggleActivityModal');
-    component.addActivityModal = {
-      deny: jasmine.createSpy('deny')
-    };
-    component.handleNextClick({});
-    expect(component.toggleActivityModal).toHaveBeenCalled();
-    expect(component.addActivityModal.deny).toHaveBeenCalled();
-    expect(router.navigate).toHaveBeenCalled();
+    component.navigateToAddActivity();
+    expect(router.navigate).toHaveBeenCalledWith(['add-activity-content-types'], {
+      relativeTo: fakeActivatedRoute,
+      queryParams: {
+        groupName: _.get(component.groupData, 'name'),
+        createdBy: _.capitalize(_.get(_.find(component.groupData['members'], { userId: component.groupData['createdBy'] }), 'name'))
+      }
+    });
   });
 
   it('should ngOnDestroy', () => {
@@ -118,5 +127,11 @@ describe('GroupDetailsComponent', () => {
     component.ngOnInit();
     expect(component.telemetryImpression).toEqual(impressionObj);
     expect(component['groupService'].getImpressionObject).toHaveBeenCalled();
+  });
+
+  it('show change dropdownMenuContent', () => {
+    component.showMemberPopup = false;
+    component.toggleFtuModal(true);
+    expect(component.showMemberPopup).toBeTruthy();
   });
 });

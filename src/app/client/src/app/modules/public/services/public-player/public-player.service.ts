@@ -146,15 +146,15 @@ export class PublicPlayerService {
   }
 
   public playContent(event) {
-    const metaData = event.data || event.data.metaData;
+    const metaData =  event.data.metaData || event.data;
     this.navigationHelperService.storeResourceCloseUrl();
     setTimeout(() => {
       if (metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-        if (metaData.contentType === 'Course') {
-          this.router.navigate(['learn/course', metaData.identifier]);
+        if (!metaData.trackable && metaData.contentType !== 'Course') {
+          this.handleNavigation(metaData, false);
         } else {
-          this.router.navigate(['play/collection', metaData.identifier],
-          {queryParams: {contentType: metaData.contentType}});
+          const isTrackable = metaData.trackable && metaData.trackable.enabled === 'No' ? false : true;
+          this.handleNavigation(metaData, isTrackable);
         }
       } else {
         this.router.navigate(['play/content', metaData.identifier],
@@ -162,17 +162,15 @@ export class PublicPlayerService {
       }
     }, 0);
   }
-
-  public playExploreCourse(courseId) {
-    this.navigationHelperService.storeResourceCloseUrl();
-    setTimeout(() => {
-      if (this.userService.loggedIn) {
-        this.router.navigate(['learn/course', courseId]);
-      } else {
-        this.router.navigate(['explore-course/course', courseId]);
-      }
-    }, 0);
+  handleNavigation(content, isTrackable) {
+    if (isTrackable) {
+      this.router.navigate(['explore-course/course', content.identifier]);
+    } else {
+      this.router.navigate(['play/collection', content.identifier],
+      {queryParams: {contentType: content.contentType}});
+    }
   }
+
   updateDownloadStatus(downloadListdata, content) {
     const status = {
       inProgress: this.resourceService.messages.stmsg.m0140,

@@ -412,7 +412,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   playContent(event) {
 
     if (!this.userService.loggedIn && event.data.contentType === 'Course') {
-      this.publicPlayerService.playExploreCourse(event.data.metaData.identifier);
+      this.publicPlayerService.playContent(event);
     } else {
       const url = this.router.url.split('/');
       if (url[1] === 'learn' || url[1] === 'resources') {

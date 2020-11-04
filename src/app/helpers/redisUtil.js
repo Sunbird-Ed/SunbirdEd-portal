@@ -7,7 +7,7 @@
  */
 
 const redis       = require('redis');
-const logger      = require('sb_logger_util_v2');
+const { logger } = require('@project-sunbird/logger');
 const envHelper   = require('./environmentVariablesHelper.js');
 if (!envHelper.PORTAL_REDIS_URL || !envHelper.PORTAL_REDIS_PORT) throw new Error('Redis Host and PORT configuration required.');
 const redisClient = redis.createClient({

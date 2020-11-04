@@ -66,6 +66,11 @@ a {
   font-size: 1.5rem !important;
 }
 
+.summary-text {
+  font-style: italic;
+  color:var(--gray-200);  word-break: break-word;
+} 
+
 .progress-content {
   margin-top: calculateRem(36px);
 
@@ -107,4 +112,10 @@ a {
     overflow: auto;
   }
 
+}
+
+.update-text {
+  font-style: italic;
+  justify-content: flex-end;
+  color:var(--gray-200);
 }

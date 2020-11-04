@@ -17,6 +17,7 @@ import { FormService } from './../form/form.service';
   providedIn: 'root'
 })
 export class SearchService {
+  public mimeTypeList;
   /**
    * Contains searched content list
    */
@@ -453,7 +454,10 @@ export class SearchService {
       formAction: 'menubar',
       contentType: 'global'
     };
+
     return this.formService.getFormConfig(formServiceInputParams, '*').pipe(map((response) => {
+      const allTabData = _.find(response, (o) => o.title === 'frmelmnts.tab.all');
+      this.mimeTypeList = _.map(_.get(allTabData, 'search.filters.mimeType'), 'name');
       return response;
     }));
   }
@@ -465,6 +469,10 @@ export class SearchService {
           facet['index'] = '1';
           facet['label'] = this.resourceService.frmelmnts.lbl.boards;
           facet['placeholder'] = this.resourceService.frmelmnts.lbl.selectBoard;
+          // Replacing cbse value with cbse/ncert
+          _.map(facet['values'], val => {
+            if (_.toLower(val.name) === 'cbse') { val.name = 'CBSE/NCERT'; }
+          });
           break;
         case 'medium':
           facet['index'] = '2';
@@ -491,8 +499,19 @@ export class SearchService {
           facet['label'] = this.resourceService.frmelmnts.lbl.contentType;
           facet['placeholder'] = this.resourceService.frmelmnts.lbl.selectContentType;
           break;
+        case 'mimeType':
+          facet['index'] = '7';
+          facet['name'] = 'mediaType';
+          facet['label'] = this.resourceService.frmelmnts.lbl.mediaType;
+          facet['mimeTypeList'] = this.mimeTypeList;
+          break;
       }
       return facet;
     });
+  }
+
+  isContentTrackable(content, type) {
+    return (_.lowerCase(_.get(content, 'trackable.enabled')) === 'yes'
+    || (_.lowerCase(type) === _.lowerCase(this.config.appConfig.contentType.Course)));
   }
 }

@@ -6,7 +6,7 @@ import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { GroupsService } from '../../services';
-import { IGroupMemberConfig, IGroupCard, ADD_ACTIVITY_TO_GROUP, COURSES, IGroupMember } from '../../interfaces';
+import { IGroupMemberConfig, IGroupCard, IGroupMember, ADD_ACTIVITY_CONTENT_TYPES } from '../../interfaces';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 @Component({
   selector: 'app-group-details',
@@ -26,6 +26,8 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   isLoader = true;
   isAdmin = false;
   layoutConfiguration: any;
+  activityList;
+  showMemberPopup = false;
 
   config: IGroupMemberConfig = {
     showMemberCount: true,
@@ -67,7 +69,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
 
   getGroupData() {
     this.isLoader = true;
-    this.groupService.getGroupById(this.groupId, true, true).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
+    this.groupService.getGroupById(this.groupId, true, true, true).pipe(takeUntil(this.unsubscribe$)).subscribe(groupData => {
       const user = _.find(_.get(groupData, 'members'), (m) => _.get(m, 'userId') === this.userService.userid);
         if (!user || _.get(groupData, 'status') === 'inactive') {
           this.groupService.goBack();
@@ -77,6 +79,9 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
         this.members = this.groupService.addFieldsToMember(this.groupData.members);
         this.isAdmin = this.groupService.isCurrentUserAdmin;
         this.isLoader = false;
+        const response = this.groupService.groupContentsByActivityType(false, groupData);
+        this.showActivityList = response.showList;
+        this.activityList = response.activities;
     }, err => {
       this.isLoader = false;
       this.groupService.goBack();
@@ -92,15 +97,23 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     this.showFilters = true;
   }
 
-  handleNextClick(event) {
-    this.toggleActivityModal(false);
-    this.addActivityModal.deny();
-    this.router.navigate([`${ADD_ACTIVITY_TO_GROUP}/${COURSES}`, 1], { relativeTo: this.activatedRoute });
+  navigateToAddActivity() {
+   this.router.navigate([`${ADD_ACTIVITY_CONTENT_TYPES}`], {
+     relativeTo: this.activatedRoute,
+     queryParams: {
+       groupName: _.get(this.groupData, 'name'),
+       createdBy: _.capitalize(_.get(_.find(this.groupData['members'], {userId: this.groupData['createdBy']}), 'name'))
+     }
+    });
   }
 
 
   addTelemetry (id) {
     this.groupService.addTelemetry(id, this.activatedRoute.snapshot, []);
+  }
+
+  toggleFtuModal(visibility: boolean = false) {
+    this.showMemberPopup = visibility;
   }
 
   ngOnDestroy() {

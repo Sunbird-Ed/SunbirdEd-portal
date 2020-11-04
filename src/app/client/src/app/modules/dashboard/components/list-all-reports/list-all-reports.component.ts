@@ -55,7 +55,9 @@ export class ListAllReportsComponent implements OnInit {
         this.noResultFoundError = _.get(err, 'messageText') || 'messages.stmsg.m0006';
         return of({
           table: {},
-          count: 0
+          count: 0,
+          reportsArr: [],
+          datasetsArr: []
         });
       })
     );
@@ -204,7 +206,7 @@ export class ListAllReportsComponent implements OnInit {
           }
         },
         {
-          title: 'Last Updated Date', data: 'reportgenerateddate',
+          title: 'Last Published Date', data: 'updatedon',
           render: (value) => {
             const date = moment(value);
             if (date.isValid()) {

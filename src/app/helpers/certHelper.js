@@ -1,7 +1,7 @@
 const { HTTPService } = require('@project-sunbird/ext-framework-server/services');
 const envHelper = require('./environmentVariablesHelper.js')
 const certRegURL = envHelper.LEARNER_URL
-const logger = require('sb_logger_util_v2')
+const { logger } = require('@project-sunbird/logger');
 const _ = require('lodash');
 const { logError } = require('./utilityService.js');
 
@@ -39,12 +39,15 @@ const getUserCertificates = async (req, userData, courseId, currentUser) => {
     }
   }
 
-  let district = await getDistrictName(req, requestParams);
+  let district;
+  if (!_.isEmpty(_.get(userData, 'locationIds'))) {
+  district = await getDistrictName(req, requestParams);
 
   if (_.isEmpty(district) && _.get(userData, 'locationIds') && _.get(userData, 'locationIds').length > 1) {
     requestParams.request.filters.id = _.get(userData, 'locationIds[1]');
     district = await getDistrictName(req, requestParams);
   }
+}
 
   const courseData = await getUserEnrolledCourses(req, courseId, _.get(userData, 'identifier'))
   const resObj = {

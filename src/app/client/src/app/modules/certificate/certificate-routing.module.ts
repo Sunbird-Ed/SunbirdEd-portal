@@ -10,7 +10,7 @@ const routes: Routes = [
       telemetry: {
         env: 'certs', pageid: 'certificate-configuration', type: 'view', subtype: 'paginate', ver: '1.0'
       },
-      roles: 'courseBatchRoles',
+      roles: 'createBatchRole',
       hideHeaderNFooter: false
     }
   },

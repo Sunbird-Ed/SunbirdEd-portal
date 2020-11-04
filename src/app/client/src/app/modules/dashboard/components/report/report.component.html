@@ -24,7 +24,7 @@
               <app-no-result [data]="noResultMessage"></app-no-result>
             </div>
             <div *ngIf="!noResult" [appTelemetryImpression]="getTelemetryImpressionObj({type: 'page-loaded'})">
-              <div id="report-header">
+              <div id="report-header" class="report__header">
 
                 <div class="textbook-container cc-player__content-header relative9 reports-content-header">
                   <div class="ui container py-16">
@@ -89,7 +89,7 @@
                 </div>
 
                 <div class="ui container py-16 d-flex">
-                  <p class="m-0 w-50" *ngIf="currentReport?.reportMetaData?.description"
+                  <p class="m-0 w-50" *ngIf="report?.description || currentReport?.reportMetaData?.description"
                     [innerHTML]="reportService.transformHTML(report?.description || currentReport.reportMetaData.description)">
                   </p>
                   <div class="ml-auto d-flex flex-jc-flex-end sb-last-update-status fnormal sb-color-gray-400"
@@ -224,10 +224,17 @@
                       <div class="ui bottom attached segment p-0 b-0 no-bg my-24" suiTabContent="graph">
                         <div class="sb-graph-section p-24 my-24"
                           *ngFor="let chart of currentReport.charts; let i = index; let l = last;">
-                          <app-data-chart [telemetryInteractObject]="setTelemetryInteractObject()" [chartInfo]="chart"
+
+                          <app-map *ngIf="chart?.chartConfig?.chartType === 'map'" [mapData]="chart?.mapData"
+                            [options]="chart?.chartConfig?.options">
+                          </app-map>
+
+                          <app-data-chart *ngIf="chart?.chartConfig?.chartType !== 'map'"
+                            [telemetryInteractObject]="setTelemetryInteractObject()" [chartInfo]="chart"
                             [hideElements]="hideElements" [isUserReportAdmin]="isUserReportAdmin"
                             (openAddSummaryModal)="openAddSummaryModal($event)" [hash]="hash">
                           </app-data-chart>
+
                         </div>
                         <div class="ui warning message" *ngIf="!currentReport.charts.length">
                           {{resourceService?.frmelmnts?.lbl?.graphNotAvailable}}
@@ -246,7 +253,7 @@
                       </ng-container>
                     </sui-tabset>
                   </div>
-                  <div id="report-summary" class="my-16"
+                  <div class="report__summary" id="report-summary" class="my-16"
                     *ngIf="currentReportSummary && currentReportSummary.length && type === 0">
                     <app-report-summary [inputData]="currentReportSummary"></app-report-summary>
                   </div>

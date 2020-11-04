@@ -11,7 +11,7 @@
   margin: 0 auto;
   z-index: 9;
   @include respond-below(xs){
-    bottom: 222.516px;
+    bottom: calculateRem(121px);
   }
   .download-mobile-app-logo {
     background: $white;

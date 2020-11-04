@@ -11,7 +11,7 @@
 >
   <!--Header-->
   <div class="sb-modal-header" *ngIf="userDetails">
-    {{resourceService.frmelmnts?.lbl?.setRole}} {{userDetails.firstName}} 
+    {{resourceService.frmelmnts?.lbl?.setRole | translate}} {{userDetails.firstName}} 
     {{userDetails.lastName}}
   </div>
   <!--/Header-->
@@ -27,56 +27,56 @@
   <div class="sb-modal-content" *ngIf="!showMainLoader">
     <div class="ui grid">
       <div class="ten wide column mb-30">
-        <span class="ui header">{{resourceService.frmelmnts?.lbl?.editUserDetails}}</span>
+        <span class="ui header">{{resourceService.frmelmnts?.lbl?.editUserDetails | translate}}</span>
       </div>
     </div>
     <form class="ui form" [formGroup]="userDetailsForm" *ngIf="userDetails">
       <div class="field">
-        <label>{{resourceService.frmelmnts?.lbl?.role}}</label>
+        <label>{{resourceService.frmelmnts?.lbl?.role | translate}}</label>
       </div>
       <div class="field">
         <sui-multi-select [isSearchable]="false" class="selection" (selectedOptionsChange)="enableSubmitBtn = true;" formControlName="role" [options]="allRoles" labelField="roleName"
-          valueField="role" name="role" placeholder="{{resourceService?.frmelmnts?.btn?.selrole}}" #allroles>
+          valueField="role" name="role" placeholder="{{resourceService?.frmelmnts?.btn?.selrole | translate}}" #allroles>
           <sui-select-option *ngFor="let role of allroles.filteredOptions" [value]="role"></sui-select-option>
         </sui-multi-select>
       </div>
 
       <div class="field">
-        <label>{{resourceService.frmelmnts?.lbl?.district}}</label>
+        <label>{{resourceService.frmelmnts?.lbl?.district | translate}}</label>
       </div>
       <div class="field">
         <sui-select [isSearchable]="true" class="selection" (selectedOptionChange)="enableSubmitBtn = true;" formControlName="district" [options]="allDistricts" labelField="name"
-          valueField="code" name="district" placeholder="{{resourceService?.frmelmnts?.lbl?.selectDistrict}}" #districtDiv>
+          valueField="code" name="district" placeholder="{{resourceService?.frmelmnts?.lbl?.selectDistrict | translate}}" #districtDiv>
           <sui-select-option *ngFor="let district of districtDiv.filteredOptions | slice:0:100" [value]="district"></sui-select-option>
         </sui-select>
       </div>
 
       <div class="field">
-        <label>{{resourceService.frmelmnts?.lbl?.block}}</label>
+        <label>{{resourceService.frmelmnts?.lbl?.block | translate}}</label>
       </div>
       <div class="field">
         <div class="ui segment" *ngIf="blockLoader">
           <div class="ui active inverted dimmer">
-            <div class="ui mini text loader">{{resourceService.frmelmnts?.lbl?.fetchingBlocks}}</div>
+            <div class="ui mini text loader">{{resourceService.frmelmnts?.lbl?.fetchingBlocks | translate}}</div>
           </div>
         </div>
         <sui-select *ngIf="!blockLoader" [isSearchable]="true" class="selection" (selectedOptionChange)="enableSubmitBtn = true;" formControlName="block" [options]="allBlocks" labelField="name"
-          valueField="code" name="block" placeholder="{{resourceService.frmelmnts?.lbl?.selectBlock}}" #blockDiv>
+          valueField="code" name="block" placeholder="{{resourceService.frmelmnts?.lbl?.selectBlock | translate}}" #blockDiv>
           <sui-select-option *ngFor="let block of blockDiv.filteredOptions | slice:0:100" [value]="block"></sui-select-option>
         </sui-select>
       </div>
 
       <div class="field">
-        <label>{{resourceService.frmelmnts?.lbl?.school}}</label>
+        <label>{{resourceService.frmelmnts?.lbl?.school | translate}}</label>
       </div>
       <div class="field">
         <div class="ui segment" *ngIf="schoolLoader">
           <div class="ui active inverted dimmer">
-            <div class="ui mini text loader">{{resourceService.frmelmnts?.lbl?.fetchingSchools}}</div>
+            <div class="ui mini text loader">{{resourceService.frmelmnts?.lbl?.fetchingSchools | translate}}</div>
           </div>
         </div>
         <sui-select *ngIf="!schoolLoader" [isSearchable]="true" class="selection" (selectedOptionChange)="enableSubmitBtn = true;" formControlName="school" [options]="allSchools"
-          labelField="orgName" valueField="identifier" name="school" placeholder="{{resourceService.frmelmnts?.lbl?.selectSchool}}" #schoolDiv>
+          labelField="orgName" valueField="identifier" name="school" placeholder="{{resourceService.frmelmnts?.lbl?.selectSchool | translate}}" #schoolDiv>
           <sui-select-option *ngFor="let school of schoolDiv.filteredOptions | slice:0:100" [value]="school"></sui-select-option>
         </sui-select>
       </div>
@@ -93,7 +93,7 @@
       (click)="onSubmitForm()"
       class="sb-btn sb-btn-normal sb-btn-primary"
     >
-      {{resourceService.frmelmnts?.btn?.save}}
+      {{resourceService.frmelmnts?.btn?.save | translate}}
     </button>
   </div>
   <!--/Actions-->

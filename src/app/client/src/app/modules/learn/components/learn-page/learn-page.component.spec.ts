@@ -285,6 +285,17 @@ it('should redo layout on render', () => {
     expect(component.enrolledSection.name).toEqual(resourceBundle.frmelmnts.lbl.mytrainings);
   });
 
+  it('should add audience type in fetch page data request body', () => {
+    const searchQueryParams = {'source': 'web', 'name': 'Course', 'organisationId': '0124784842112040965', 'filters': {}};
+    spyOn(localStorage, 'getItem').and.returnValue('teacher');
+    component.queryParams = {sort_by: 'name', sortType: 'desc'};
+    coursesService.initialize();
+    component.ngOnInit();
+    component['fetchPageData'](searchQueryParams);
+    expect(pageApiService.getPageData).toHaveBeenCalledWith(
+      {'source': 'web', 'name': 'Course', 'organisationId': '0124784842112040965', 'sort_by': {'name': 'desc'}, 'filters': {}}
+      );
+  });
   it('should get processed facets data', () => {
     const facetsData = component.updateFacetsData(Response.facetsList);
     expect(facetsData).toEqual(Response.updatedFacetsList);
@@ -305,6 +316,17 @@ it('should redo layout on render', () => {
     component.getFilters(Response.getFiltersInput);
     expect(component.selectedFilters).toEqual(Response.getFiltersOutput);
     expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalled();
+  });
+
+  it('should set trackable data in metadata of enrolledCourse', () => {
+    Response.enrolledCourses[0].content['trackable'] =  {
+      'enable': 'Yes',
+      'autoBatch': 'Yes'
+    };
+    coursesService.initialize();
+    component.ngOnInit();
+    component.redoLayout();
+    expect(component.enrolledSection.name).toEqual(resourceBundle.frmelmnts.lbl.mytrainings);
   });
 
 });

@@ -1,11 +1,11 @@
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
     appBodyScroll (dismissed)="closeLoginModal()" #modal *ngIf="showLoginModal">
     <div class="sb-modal-header">
-        {{resourceService.frmelmnts?.lbl?.accessCourse}}
+        {{generaliseLabelService?.frmelmnts?.lbl?.accessCourse}}
     </div>
     <div class="sb-modal-content sb-join-modal-content">
         <div class="fsmall px-0 py-8">
-            {{resourceService.frmelmnts?.lbl?.accessToLogin}}
+            {{generaliseLabelService?.frmelmnts?.lbl?.accessToLogin}}
         </div>
     </div>
     <div class="sb-modal-actions">

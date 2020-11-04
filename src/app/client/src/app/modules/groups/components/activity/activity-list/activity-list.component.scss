@@ -40,3 +40,34 @@
     }
   }
 }
+
+:host {
+  .header {
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    align-items: center;
+    [dir=ltr] &,
+    [dir=rtl] & {
+      margin: 1.5rem 0 1rem;
+    }
+    .title {
+      font-family: inherit;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      flex: 1;
+      height: 1.5rem;
+      color: var(--primary-color);
+      font-size: 1.125rem;
+      font-weight: 700;
+      text-transform: capitalize;
+      line-height: 1.625rem;
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
+.hideActivityType {
+  display: none;
+}

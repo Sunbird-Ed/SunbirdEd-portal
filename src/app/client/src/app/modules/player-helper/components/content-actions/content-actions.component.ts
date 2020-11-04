@@ -2,7 +2,7 @@ import { TelemetryService } from '@sunbird/telemetry';
 import { actionButtons } from './actionButtons';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ResourceService, ToasterService, ContentUtilsServiceService, ITelemetryShare, NavigationHelperService } from '@sunbird/shared';
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import * as _ from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -12,7 +12,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
   templateUrl: './content-actions.component.html',
   styleUrls: ['./content-actions.component.scss']
 })
-export class ContentActionsComponent implements OnInit, OnChanges {
+export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
   @Input() contentData;
   actionButtons = actionButtons;
   contentRatingModal = false;
@@ -31,6 +31,7 @@ export class ContentActionsComponent implements OnInit, OnChanges {
   sharelinkModal = false;
   shareLink: string;
   mimeType: string;
+  subscription;
   constructor(
     public router: Router,
     public activatedRoute: ActivatedRoute,
@@ -43,6 +44,10 @@ export class ContentActionsComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
+    // Replacing cbse/ncert value with cbse
+    if (_.toLower(_.get(this.contentData, 'board')) === 'cbse') {
+      this.contentData.board = 'CBSE/NCERT';
+    }
     this.activatedRoute.params.subscribe((params) => {
       this.collectionId = params.collectionId;
     });
@@ -54,28 +59,24 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     this.collectionId = _.get(this.activatedRoute, 'snapshot.params.collectionId');
     this.mimeType = _.get(this.contentData, 'mimeType');
     this.contentPrintable();
+    this.subscription = this.contentUtilsServiceService.contentShareEvent.subscribe((data) => {
+      if (data === 'open') {
+        this.shareContent(this.contentData);
+      }
+    });
   }
   ngOnChanges(changes: SimpleChanges) {
     // console.log(changes.contentData);
     this.contentPrintable();
   }
-    onActionButtonClick(event, content) {
+  onActionButtonClick(event, content) {
       switch (event.data.name.toUpperCase()) {
         case 'RATE':
           this.contentRatingModal = true;
           this.logTelemetry('rate-content', content);
           break;
         case 'SHARE':
-          this.sharelinkModal = true;
-          const param = {
-            identifier: _.get(content, 'identifier'),
-            type: _.get(content, 'contentType'),
-          };
-          this.setTelemetryShareData(param);
-          this.shareLink = this.collectionId && _.get(content, 'identifier') ?
-            this.contentUtilsServiceService.getPublicShareUrl(_.get(content, 'identifier'), _.get(content, 'mimeType'), this.collectionId) :
-            this.contentUtilsServiceService.getPublicShareUrl(_.get(content, 'identifier'), _.get(content, 'mimeType'));
-          this.logTelemetry('share-content', content);
+          this.shareContent(content);
           break;
         case 'PRINT':
           this.printPdf(content);
@@ -86,7 +87,21 @@ export class ContentActionsComponent implements OnInit, OnChanges {
           this.logTelemetry('fullscreen-content', content);
           break;
       }
-    }
+  }
+
+  shareContent(content) {
+    this.sharelinkModal = true;
+          const param = {
+            identifier: _.get(content, 'identifier'),
+            type: _.get(content, 'contentType'),
+          };
+          this.setTelemetryShareData(param);
+          this.shareLink = this.collectionId && _.get(content, 'identifier') ?
+            this.contentUtilsServiceService.getPublicShareUrl(_.get(content, 'identifier'), _.get(content, 'mimeType'), this.collectionId) :
+            this.contentUtilsServiceService.getPublicShareUrl(_.get(content, 'identifier'), _.get(content, 'mimeType'));
+          this.logTelemetry('share-content', content);
+  }
+
   printPdf(content: any) {
     const pdfUrl = _.get(content, 'itemSetPreviewUrl');
     window.open(pdfUrl, '_blank');
@@ -133,4 +148,9 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     });
   }
 
+    ngOnDestroy() {
+      if (this.subscription.unsubscribe) {
+        this.subscription.unsubscribe();
+      }
+    }
   }

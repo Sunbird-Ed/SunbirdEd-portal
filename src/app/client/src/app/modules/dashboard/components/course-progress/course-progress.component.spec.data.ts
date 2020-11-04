@@ -1,4 +1,38 @@
 export const mockUserData = {
+  reportTypes: [
+    {
+      "title": " Course progress exhaust",
+      "dataset": "progress-exhaust",
+      "lang_key": "frmelmnts.lbl.progressExhaustReport",
+      "encrypt": "false"
+    },
+    {
+      "title": "User profile exhaust",
+      "dataset": "userinfo-exhaust",
+      "lang_key": "frmelmnts.lbl.userExhaustReport",
+      "encrypt": "true"
+    },
+    {
+      "title": "Question set report",
+      "dataset": "response-exhaust",
+      "lang_key": "frmelmnts.lbl.qsResponseReport",
+      "encrypt": "false"
+    }
+  ], 
+  reportTypesMentor: [
+    {
+      "title": " Course progress exhaust",
+      "dataset": "progress-exhaust",
+      "lang_key": "frmelmnts.lbl.progressExhaustReport",
+      "encrypt": "false"
+    },
+    {
+      "title": "Question set report",
+      "dataset": "response-exhaust",
+      "lang_key": "frmelmnts.lbl.qsResponseReport",
+      "encrypt": "false"
+    }
+  ],
    frombeginng: {
       'id': 'api.dashboard.progress.course',
       'ver': 'v1',

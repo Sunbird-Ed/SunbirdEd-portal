@@ -264,7 +264,17 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.queryParams.sort_by) {
       option.sort_by = { [this.queryParams.sort_by]: this.queryParams.sortType };
     }
-    this.pageApiService.getPageData(option).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+    // if (localStorage.getItem('userType')) {
+    //   const userType = localStorage.getItem('userType');
+    //   const userTypeMapping = this.configService.appConfig.userTypeMapping;
+    //   _.map(userTypeMapping, (value, key) => {
+    //     if (userType === key) {
+    //       option.filters['audience'] = value;
+    //     }
+    //   });
+    // }
+    this.pageApiService.getPageData(option).pipe(takeUntil(this.unsubscribe$))
+      .subscribe(data => {
       let facetsList: any = this.utilService.processData(_.get(data, 'sections'), option.facets);
       const rootOrgIds = this.processOrgData(facetsList.channel);
       this.orgDetailsService.searchOrgDetails({
@@ -376,6 +386,10 @@ export class LearnPageComponent implements OnInit, OnDestroy, AfterViewInit {
         const formatedContent = this.utilService.processContent(content, constantData, dynamicFields, metaData);
         formatedContent.metaData.mimeType = 'application/vnd.ekstep.content-collection'; // to route to course page
         formatedContent.metaData.contentType = 'Course'; // to route to course page
+        const trackableObj = _.get(content, 'content.trackable');
+        if (trackableObj) {
+          formatedContent.metaData.trackable = trackableObj;
+        }
         return formatedContent;
       });
       enrolledSection.count = enrolledSection.contents.length;

@@ -26,24 +26,23 @@
             </div>
           </div>
         </div>
-        <!-- TODO: TO be removed on the hot-fix:
         <div class="sb-field-group">
           <div class="four wide column">
             <div>
-              <label class="required">Issue Certificate</label>
+              <label class="required">{{resourceService?.frmelmnts?.cert?.lbl?.issueCertificate}}</label>
               <div class="d-flex py-8 flex-w-wrap">
                 <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
                   <input (change)="handleInputChange('yes')" formControlName="issueCertificate" value="yes" type="radio" id="yes">
-                  <label for="yes">Yes</label>
+                  <label for="yes">{{resourceService?.frmelmnts?.btn?.yes}}</label>
                 </div>
                 <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
                   <input (change)="handleInputChange('no')" formControlName="issueCertificate" value="no" type="radio" id="no">
-                  <label for="no">No</label>
+                  <label for="no">{{resourceService?.frmelmnts?.btn?.no}}</label>
                 </div>
               </div>
             </div>
           </div>
-        </div> -->
+        </div>
       </div>
 
       <div class="ui stackable grid mt-0">
@@ -144,6 +143,17 @@
           </div>
         </div>
       </div>
+
+      <div class="sb-field mt-24 mb-8" >
+        <label class="d-flex flex-ai-center">
+          <input type="checkbox" formControlName="tncCheck" aria-labelledby="terms and agreement" role="checkbox" class="mr-8 cursor-pointer">
+          <span class="font-weight-normal fnormal">
+            {{resourceService?.frmelmnts?.lbl?.agreeCourseToc  | interpolate:'{instance}': instance }}<a href="{{url}}/term-of-use.html#courseGuidelines" target="_blank" class="sb-color-primary">{{resourceService?.frmelmnts?.lbl?.courseGuidelines}}</a></span>
+        </label>
+        <small class="line-height-normal d-block message sb-color-error font-weight-bold mt-8 pl-20"
+         *ngIf="!createBatchForm.get('tncCheck').valid && this.createBatchForm.get('tncCheck').dirty">{{resourceService?.frmelmnts?.lbl?.courseToc}}</small>
+      </div>
+
     </form>
   </div>
   <!--/Content-->

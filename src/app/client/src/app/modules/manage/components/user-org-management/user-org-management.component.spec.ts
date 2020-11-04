@@ -308,4 +308,85 @@ describe('UserOrgManagementComponent', () => {
     expect(toasterService.success).toHaveBeenCalled();
     expect(component.showUploadUserModal).toBeFalsy();
   });
+
+  it('should call geoTableView and update geoTabledata array', () => {
+    component.geoButtonText = resourceMockData.frmelmnts.btn.viewdetails;
+    component.geoSummary = [
+      {
+        index: '0',
+        districtName: 'District 1',
+        blocks: 'Block 1',
+        schools: 'School 1'
+      },
+      {
+        index: '1',
+        districtName: 'District 2',
+        blocks: 'Block 2',
+        schools: 'School 2'
+      }
+    ];
+    spyOn(component, 'renderGeoDetails').and.callThrough();
+    component.geoTableView();
+    expect(component.geoButtonText).toEqual('View less');
+    expect(component.geoTabledata.length).toEqual(2);
+    expect(component.renderGeoDetails).toHaveBeenCalled();
+  });
+
+  it('should call geoTableView and set appropriate button text', () => {
+    component.geoButtonText = resourceMockData.frmelmnts.btn.viewless;
+    component.geoTableView();
+    expect(component.geoButtonText).toEqual('View Details');
+  });
+
+  it('should call teachersTableView and update userTabledata  array', () => {
+    component.teachersButtonText = resourceMockData.frmelmnts.btn.viewdetails;
+    component.validatedUserSummary = [
+      {
+        index: '0',
+        districtName: 'District 1',
+        blocks: 'Block 1',
+        schools: 'School 1',
+        registered: true
+      },
+      {
+        index: '1',
+        districtName: 'District 2',
+        blocks: 'Block 2',
+        schools: 'School 2',
+        registered: true
+      }
+    ];
+    spyOn(component, 'renderUserDetails').and.callThrough();
+    component.teachersTableView();
+    expect(component.teachersButtonText).toEqual('View less');
+    expect(component.userTabledata.length).toEqual(2);
+    expect(component.renderUserDetails).toHaveBeenCalled();
+  });
+
+  it('should call teachersTableView and set appropriate button text', () => {
+    component.teachersButtonText = resourceMockData.frmelmnts.btn.viewless;
+    component.teachersTableView();
+    expect(component.teachersButtonText).toEqual('View Details');
+  });
+
+  it('should open modal', () => {
+    component.openModal();
+    expect(component.showModal).toBeFalsy();
+    fixture.detectChanges();
+    fixture.whenStable().then(() =>{ 
+      expect(component.showModal).toBeTruthy();
+    })
+  });
+
+  it('should download csv file', () => {
+    const manageService = TestBed.get(ManageService);
+    spyOn(manageService, 'getData').and.returnValue(of({
+      result: {
+        signedUrl: 'blob.com/signedURL'
+      }
+    }));
+    spyOn(window, 'open').and.callThrough();
+    component.downloadCSVFile('validated', 'valid', 'downloadedCSVFIle');
+    expect(window.open).toHaveBeenCalled();
+  });
 });

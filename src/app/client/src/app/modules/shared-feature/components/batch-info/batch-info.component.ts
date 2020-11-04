@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input, ViewChild, OnDestroy } from '@angular/core';
 import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
-import { PlayerService, LearnerService, UserService, CoursesService } from '@sunbird/core';
+import { PlayerService, LearnerService, UserService, CoursesService, GeneraliseLabelService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { Router } from '@angular/router';
 import { takeUntil, mergeMap, tap, delay } from 'rxjs/operators';
@@ -28,7 +28,7 @@ export class BatchInfoComponent implements OnInit, OnDestroy {
 
   constructor(public resourceService: ResourceService, public playerService: PlayerService, public configService: ConfigService,
     public learnerService: LearnerService, public userService: UserService, public toasterService: ToasterService,
-    public coursesService: CoursesService, public router: Router) {
+    public coursesService: CoursesService, public router: Router, public generaliseLabelService: GeneraliseLabelService) {
       this.resumeInteractEdata = {
         id: 'resume',
         type: 'click',

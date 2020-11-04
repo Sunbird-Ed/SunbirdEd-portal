@@ -1,10 +1,10 @@
 import { TelemetryModule } from '@sunbird/telemetry';
 
-import {of as observableOf, throwError } from 'rxjs';
+import {of as observableOf, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CollectionPlayerComponent } from './collection-player.component';
-import { PlayerService, CoreModule, CopyContentService, UserService } from '@sunbird/core';
+import { PlayerService, CoreModule, CopyContentService, UserService, GeneraliseLabelService } from '@sunbird/core';
 import { ActivatedRoute } from '@angular/router';
 import { WindowScrollService, SharedModule, ResourceService, NavigationHelperService, ToasterService } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui';
@@ -19,7 +19,7 @@ describe('CollectionPlayerComponent', () => {
   let fixture: ComponentFixture<CollectionPlayerComponent>;
   const collectionId = 'do_112270591840509952140';
   const contentId = 'domain_44689';
-
+  let generaliseLabelService;
   const fakeActivatedRoute = {
     params: observableOf({ collectionId: collectionId }),
     queryParams: observableOf({ contentId: contentId }),
@@ -51,7 +51,8 @@ describe('CollectionPlayerComponent', () => {
         'interactive': 'interactive',
         'docs': 'docs'
       }
-    }
+    },
+    languageSelected$: of({})
   };
   configureTestSuite();
   beforeEach(async(() => {
@@ -79,6 +80,8 @@ describe('CollectionPlayerComponent', () => {
       type: 'click',
       pageid: 'collection-player'
     };
+    generaliseLabelService = TestBed.get(GeneraliseLabelService);
+    spyOn(generaliseLabelService, 'initialize').and.returnValue('');
   });
 
   afterEach(() => {

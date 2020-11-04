@@ -1,9 +1,20 @@
 'use strict'
+const { enableLogger } = require('@project-sunbird/logger');
+const envHelper = require('./helpers/environmentVariablesHelper.js');
+const path = require('path');
+enableLogger({
+  logBasePath: path.join(__dirname, 'logs'),
+  logLevel: envHelper.sunbird_portal_log_level,
+  context: {src: 'sunbird-portal'},
+  adopterConfig: {
+    adopter: 'winston'
+  }
+});
+const { logger, enableDebugMode } = require('@project-sunbird/logger');
 const express = require('express');
 const gracefulShutdown = require('http-graceful-shutdown');
 const proxy = require('express-http-proxy')
 const session = require('express-session')
-const path = require('path')
 const bodyParser = require('body-parser')
 const helmet = require('helmet')
 const uuid = require('uuid/v1')
@@ -12,7 +23,6 @@ const _ = require('lodash')
 const trampolineServiceHelper = require('./helpers/trampolineServiceHelper.js')
 const telemetryHelper = require('./helpers/telemetryHelper.js')
 const tenantHelper = require('./helpers/tenantHelper.js')
-const envHelper = require('./helpers/environmentVariablesHelper.js')
 const proxyUtils = require('./proxy/proxyUtils.js')
 const healthService = require('./helpers/healthCheckService.js')
 const latexService = require('./helpers/latexService.js')
@@ -26,28 +36,37 @@ const userService = require('./helpers/userService');
 const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 const { frameworkAPI } = require('@project-sunbird/ext-framework-server/api');
 const frameworkConfig = require('./framework.config.js');
-const cookieParser = require('cookie-parser')
-const logger = require('sb_logger_util_v2');
+const cookieParser = require('cookie-parser');
+const morgan = require('morgan');
+const kidTokenPublicKeyBasePath = envHelper.sunbird_kid_public_key_base_path;
+const { loadTokenPublicKeys } = require('sb_api_interceptor');
+const { getGeneralisedResourcesBundles } = require('./helpers/resourceBundleHelper.js')
+
 let keycloak = getKeyCloakClient({
   'realm': envHelper.PORTAL_REALM,
   'auth-server-url': envHelper.PORTAL_AUTH_SERVER_URL,
   'ssl-required': 'none',
   'resource': envHelper.PORTAL_AUTH_SERVER_CLIENT,
   'public-client': true
-})
-const logLevel = envHelper.sunbird_portal_log_level;
-
-logger.init({
-  logLevel
-})
-
-logger.debug({ msg: `logger initialized with LEVEL= ${logLevel}` })
-
+});
+const addLogContext = (req, res, next) => {
+  req.context = {
+    reqId: req.get('X-Request-ID'),
+    deviceId: req.get('X-Device-ID'),
+    appId: req.get('X-App-Id'),
+    appVersion: req.get('X-App-Version'),
+    sessionId: req.get('X-Session-ID'),
+    userId: req.get('X-User-ID'),
+    isDebugEnabled: req.get('X-Debug-Enable')
+  }
+  next()
+}
+logger.info({ msg: `logger initialized with LEVEL= ${envHelper.sunbird_portal_log_level}` })
 const app = express()
 
 app.use(cookieParser())
 app.use(helmet())
-
+app.use(addLogContext)
 app.all([
   '/learner/*', '/content/*', '/user/*', '/merge/*', '/action/*', '/courseReports/*', '/course-reports/*', '/admin-reports/*',
   '/certreg/*', '/device/*', '/google/*', '/report/*', '/reports/*', '/v2/user/*', '/v1/sso/*', '/migrate/*', '/plugins/*', '/content-plugins/*',
@@ -67,6 +86,55 @@ app.all([
 app.all('/logoff', endSession, (req, res) => {
   res.cookie('connect.sid', '', { expires: new Date() }); res.redirect('/logout')
 })
+
+const morganConfig = (tokens, req, res) => {
+  const tokensList = [
+    tokens.url(req, res),
+    tokens.method(req, res),
+    "context: " + JSON.stringify(req.context),
+    tokens.status(req, res),
+  ];
+  if(req.context.isDebugEnabled){ // add more info when log level is debug
+    tokensList.push(
+      tokens.res(req, res, 'content-length'), '-',
+      tokens['response-time'](req, res), 'ms',
+      "requestBody:", req.body ? JSON.stringify(req.body) : "empty",
+      "responseBody:", res.body
+    )
+  }
+  return tokensList.join(' ');
+}
+
+const captureResBodyForLogging = (req, res, next) => {
+  if(req.context.isDebugEnabled){ // store body only in debug mode
+    const _resWrite = res.write;
+    const _resEnd = res.end;
+    let chunks = [];
+    res.write = (chunk) => {
+      chunks.push(Buffer.from(chunk));
+      _resWrite.apply(res, chunk);
+    };
+    let ended = false;
+    res.end =  (chunk, encoding) => {
+      if (chunk) chunks.push(Buffer.from(chunk));
+      res.body = Buffer.concat(chunks).toString('utf8');
+      _resEnd.call(res, chunk, encoding);
+    };
+  }
+  next();
+}
+
+app.use(['/api/*', '/user/*', '/merge/*', '/device/*', '/google/*', '/v2/user/*', '/v1/sso/*', '/migrate/*', '/v1/user/*' , '/logoff', '/logout', '/sso/sign-in/*'],
+  captureResBodyForLogging, 
+  morgan(morganConfig)); // , { skip: (req, res) => !(logger.level === "debug") })); // skip logging if logger level is not debug
+
+app.get('/enableDebugMode', (req, res, next) => {
+  const logLevel = req.query.logLevel || "debug";
+  const timeInterval = req.query.timeInterval ? parseInt(req.query.timeInterval) : 1000 * 60 * 10;
+  console.log("enable debug mode called", logLevel, timeInterval);
+  enableDebugMode(timeInterval, logLevel)
+  res.send('debug enabled');
+});
 
 app.all('/sessionExpired', endSession, (req, res) => {
   const redirectUri = req.get('referer') || `${_.get(envHelper, 'SUNBIRD_PORTAL_BASE_URL')}/profile`;
@@ -134,6 +202,8 @@ require('./proxy/localProxy.js')(app) // Local proxy for content and learner ser
 
 app.all('/v1/user/session/create', (req, res) => trampolineServiceHelper.handleRequest(req, res, keycloak))
 
+app.get('/getGeneralisedResourcesBundles/:lang/:fileName', proxyUtils.addCorsHeaders, getGeneralisedResourcesBundles);
+
 app.get('/v1/user/session/start/:deviceId', (req, res) => {
   if (req.session.logSession === false) {
     req.session.deviceId = req.params.deviceId
@@ -171,8 +241,8 @@ if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
   start service Eg: sunbird_environment = dev, sunbird_instance = sunbird`})
   process.exit(1)
 }
-function runApp() {
-
+async function runApp() {
+  await loadTokenPublicKeys(path.join(__dirname, kidTokenPublicKeyBasePath));
   app.all('*', (req, res) => res.redirect('/')) // redirect to home if nothing found
   // start server after building the configuration data and fetch default channel id
 

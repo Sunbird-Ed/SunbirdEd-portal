@@ -21,6 +21,7 @@ import {CommonConsumptionModule} from '@project-sunbird/common-consumption';
 import { CertificateDirectivesModule } from 'sb-svg2pdf';
 import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
+import { CommonFormElementsModule } from 'common-form-elements';
 
 export const csCourseServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
   if (!CsModule.instance.isInitialised) {
@@ -45,7 +46,8 @@ export const csCourseServiceFactory = (csLibInitializerService: CsLibInitializer
     SharedFeatureModule,
     ContentSearchModule,
     CommonConsumptionModule,
-    CertificateDirectivesModule
+    CertificateDirectivesModule,
+    CommonFormElementsModule
   ],
   declarations: [ProfilePageComponent, ProfileBadgeComponent, UpdateContactDetailsComponent, UpdateUserDetailsComponent,
    AccountRecoveryInfoComponent,

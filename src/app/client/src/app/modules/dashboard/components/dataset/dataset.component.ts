@@ -25,12 +25,12 @@ export class DatasetComponent implements OnInit, OnDestroy {
   public showLoader = false;
 
   public get pickerMaxDate() {
-    return dayjs().toDate();
+    return dayjs().subtract(1, 'day').toDate();
   }
 
   public get pickerMinDate() {
     if (get(this.dataset, 'dataAvailableFrom')) {
-      return dayjs(this.dataset.dataAvailableFrom);
+      return dayjs(this.dataset.dataAvailableFrom).toDate();
     }
     return dayjs().subtract(6, 'month').toDate();
   }
@@ -40,7 +40,7 @@ export class DatasetComponent implements OnInit, OnDestroy {
   data: any;
   options: any = { maxLines: 1000, printMargin: false };
 
-  private customTimePicker = new BehaviorSubject({ from: dayjs().subtract(6, 'day').toDate(), to: dayjs().toDate() });
+  private customTimePicker = new BehaviorSubject({ from: dayjs().subtract(7, 'day').toDate(), to: dayjs().subtract(1, 'day').toDate() });
 
   @ViewChild('datasets') set initTable(element: ElementRef | null) {
     if (!element) { return; }
@@ -57,8 +57,8 @@ export class DatasetComponent implements OnInit, OnDestroy {
 
   private prepareForm() {
     this.timeRangePicker = this.formBuilder.group({
-      from: [dayjs().subtract(6, 'day').toDate()],
-      to: [dayjs().toDate()]
+      from: [dayjs().subtract(7, 'day').toDate()],
+      to: [dayjs().subtract(1, 'day').toDate()]
     });
     this.subscribeToTimePicker();
   }
@@ -113,7 +113,7 @@ export class DatasetComponent implements OnInit, OnDestroy {
     this.customTimePicker.next(this.timeRangePicker.value);
   }
 
-  private getDataset({ from = dayjs().subtract(6, 'day'), to = dayjs() }) {
+  private getDataset({ from = dayjs().subtract(7, 'day'), to = dayjs().subtract(1, 'day') }) {
     const dateRange = this.getDateRange(from, to);
     const { hash } = this.activatedRoute.snapshot.params;
     return this.datasetService.getDataSet({
@@ -135,7 +135,7 @@ export class DatasetComponent implements OnInit, OnDestroy {
           });
         }),
         catchError(err => {
-          return of({});
+          return of([]);
         })
       );
   }
@@ -215,7 +215,7 @@ export class DatasetComponent implements OnInit, OnDestroy {
             const downloadFormat = this.dataset.downloadFormats || ['json', 'csv'];
             const html = `<div>
             ${downloadFormat.map(format => {
-              return `<button filetype="${format}" class="sb-btn sb-btn-primary sb-left-icon-btn sb-btn-normal ${!row[format].length ? 'sb-btn-disabled' : ''}">
+              return `<button filetype="${format}" class="sb-btn sb-btn-primary sb-left-icon-btn sb-btn-normal ${row[format] && !row[format].length ? 'sb-btn-disabled' : ''}">
               <i class="download icon"></i>${format.toUpperCase()}</button>`;
             })}
              </div>`;

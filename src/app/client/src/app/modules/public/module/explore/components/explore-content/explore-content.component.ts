@@ -52,6 +52,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   SECOND_PANEL_LAYOUT;
   public totalCount;
   public searchAll;
+  public allMimeType;
   constructor(public searchService: SearchService, public router: Router,
     public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
     public resourceService: ResourceService, public toasterService: ToasterService,
@@ -147,12 +148,24 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       });
   }
   private fetchContents() {
+    const selectedMediaType = _.isArray(_.get(this.queryParams, 'mediaType')) ? _.get(this.queryParams, 'mediaType')[0] :
+      _.get(this.queryParams, 'mediaType');
+    const mimeType = _.find(_.get(this.allTabData, 'search.filters.mimeType'), (o) => {
+      return o.name === (selectedMediaType || 'all');
+    });
     const pageType = _.get(this.queryParams, 'pageTitle');
-    const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab']);
+    const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType']);
     if (!filters.channel) {
       filters.channel = this.hashTagId;
     }
     filters.contentType = filters.contentType || _.get(this.allTabData, 'search.filters.contentType');
+    filters.mimeType = _.get(mimeType, 'values');
+
+    // Replacing cbse/ncert value with cbse
+    if (_.toLower(_.get(filters, 'board[0]')) === 'cbse/ncert' || _.toLower(_.get(filters, 'board')) === 'cbse/ncert') {
+      filters.board = ['cbse'];
+    }
+
     _.forEach(this.formData, (form, key) => {
       const pageTitle = _.get(this.resourceService, form.title);
       if (pageTitle === pageType) {
@@ -236,13 +249,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     };
   }
   public playContent(event) {
-
-    if (!this.userService.loggedIn && event.data.contentType === 'Course') {
-      this.showLoginModal = true;
-      this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.identifier;
-    } else {
-      this.publicPlayerService.playContent(event);
-    }
+    this.publicPlayerService.playContent(event);
   }
   public inView(event) {
     _.forEach(event.inview, (elem, key) => {

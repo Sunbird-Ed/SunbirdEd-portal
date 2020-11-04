@@ -7,7 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {SharedModule, ResourceService, UtilService, ToasterService} from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { configureTestSuite } from '@sunbird/test-util';
 import { RecaptchaModule } from 'ng-recaptcha';
@@ -93,4 +93,65 @@ describe('VerifyAccountIdentifierComponent', () => {
     expect(toasterService.error).toHaveBeenCalledWith('otp attempt left 1');
   });
 
+  it('should call handleVerifyOtp', () => {
+    const recoverAccountService = TestBed.get(RecoverAccountService);
+    spyOn(recoverAccountService, 'verifyOTP').and.returnValue(of([{}]));
+    spyOn(component, 'resetPassword').and.callFake(() => {})
+    component.initializeForm();
+    component.form.patchValue({otp: 123456});
+    component.handleVerifyOtp();
+    expect(component.resetPassword).toHaveBeenCalled();
+    expect(component.disableFormSubmit).toBeTruthy();
+  })
+    it('should call handleResendOtp', () => {
+      spyOn(component, 'resendOtpEnablePostTimer')
+      component.resendOtpCounter = 1;
+      component.maxResendTry = 1;
+     const result = component.handleResendOtp();
+      expect(component.disableResendOtp).toBeFalsy()
+      expect(component.resendOtpCounter).toBe(2);
+      expect(result).toBeFalsy();
+    });
+  
+    it('should call handleResendOtp error case', () => {
+      const recoverAccountService = TestBed.get(RecoverAccountService);
+      const toasterService = TestBed.get(ToasterService);
+      spyOn(toasterService, 'success').and.callFake(() => {
+      });
+      spyOn(component, 'resendOtpEnablePostTimer');
+      spyOn(recoverAccountService, 'generateOTP').and.returnValue(of([{}]));
+      component.resendOtpCounter = 1;
+      component.maxResendTry = 3;
+       component.handleResendOtp();
+      expect(component.disableResendOtp).toBeFalsy()
+      expect(component.resendOtpCounter).toBe(2);
+      expect(toasterService.success).toHaveBeenCalledWith('OTP sent successfully.');
+    });
+    it('should call submitSelection', () => {
+      component.isP2CaptchaEnabled = 'false';
+      spyOn(component, 'handleResendOtp').and.callThrough();
+      component.submitResendOTP();
+      expect(component.handleResendOtp).toHaveBeenCalled();
+    });
+  
+     it('should call resetPassword error case', () => {
+      const recoverAccountService = TestBed.get(RecoverAccountService);
+      spyOn(component, 'handleError').and.callFake(()=> {})
+      spyOn(recoverAccountService, 'resetPassword').and.returnValue(throwError('error'));
+      component.resetPassword();
+      expect(component.handleError).toHaveBeenCalledWith('error')
+  
+     });
+     it('should call resetPassword', () => {
+      const recoverAccountService = TestBed.get(RecoverAccountService);
+      const response = {
+        result : {
+          remainingAttempt : 1
+        }
+      }
+      spyOn(component, 'handleError').and.callFake(()=> {})
+      spyOn(recoverAccountService, 'resetPassword').and.returnValue(of(response));
+      component.resetPassword();
+      expect(component.handleError).toHaveBeenCalledWith(response)
+     });
 });

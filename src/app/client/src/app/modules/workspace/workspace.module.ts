@@ -17,7 +17,7 @@ import {
   UpforreviewContentplayerComponent, FlagConentplayerComponent, ReviewsubmissionsContentplayerComponent,
   PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
   AllContentComponent, FlagReviewerComponent, CollaboratingOnComponent,
-  CollaborationContentFilterComponent, WorkspaceContentFilterComponent
+  CollaborationContentFilterComponent, WorkspaceContentFilterComponent, AllTextbooksComponent
 } from './components';
 import { DateFilterXtimeAgoPipe } from './pipes';
 import { NgInviewModule } from 'angular-inport';
@@ -56,6 +56,7 @@ import { ContentSearchModule } from '@sunbird/content-search';
     RequestChangesPopupComponent,
     LimitedPublishedComponent,
     AllContentComponent,
+    AllTextbooksComponent,
     FlagReviewerComponent,
     CollaboratingOnComponent,
     CollaborationContentFilterComponent,
