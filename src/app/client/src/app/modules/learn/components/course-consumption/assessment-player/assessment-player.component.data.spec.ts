@@ -974,7 +974,7 @@ export const assessmentPlayerMockData = {
     'createdOn': '2020-05-23T14:20:56.732+0000',
     'channel': '013016492159606784174',
     'lastUpdatedOn': '2020-05-23T14:21:24.225+0000',
-    'identifier': 'do_1130272760359485441199',
+    'identifier': 'do_11287204084174028818',
     'ownershipType': [
       'createdBy'
     ],

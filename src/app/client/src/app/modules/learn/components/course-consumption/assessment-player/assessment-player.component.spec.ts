@@ -468,8 +468,15 @@ describe('AssessmentPlayerComponent', () => {
     expect(component['setActiveContent']).toHaveBeenCalledWith('do_11287204084174028818', true);
   });
 
+  it('should call calculateProgress for single content and isUnitCompleted=true', () => {
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchyNochildren;
+    fixture.detectChanges();
+    component.calculateProgress(true);
+    expect(component.isUnitCompleted).toEqual(true);
+  });
   it('should call calculateProgress for single content', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchyNochildren;
+    component.courseHierarchy.identifier = 'do_1130272760292638721197';
     fixture.detectChanges();
     component.calculateProgress();
     expect(component.isUnitCompleted).toEqual(false);
