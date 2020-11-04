@@ -510,7 +510,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       this.publicPlayerService.playContent(event);
     } else {
       const { section, data } = event;
-      const { metaData } = data;
+      const metaData = this.isPageAssemble ? _.get(data, 'metaData') : data;
       if (section === this.resourceService.frmelmnts.lbl.mytrainings) { // play course if course is in My course section
         return this.playerService.playContent(metaData);
       }
