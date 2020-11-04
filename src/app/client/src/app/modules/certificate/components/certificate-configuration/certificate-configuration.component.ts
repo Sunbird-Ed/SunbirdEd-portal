@@ -52,6 +52,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   certEditable = true;
   config: { select: IConfigLabels, preview: IConfigLabels, remove: IConfigLabels };
   certificate: any;
+  newTemplateIdentifier: any;
 
   constructor(
     private certificateService: CertificateService,
@@ -86,9 +87,8 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     this.uploadCertificateService.certificate.subscribe(res => {
       if (res) {
         this.currentState = 'certRules';
-        this.selectedTemplate = res;
         this.showPreviewModal = false;
-        this.certTemplateList.unshift(res);
+        this.newTemplateIdentifier = _.get(res , 'identifier');
       }
     });
     this.navigationHelperService.setNavigationUrl();
@@ -167,13 +167,17 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
    */
   getTemplateList() {
     const request = {
-      request: {
-        orgId: _.get(this.userService, 'userProfile.rootOrgId'),
-        key: 'certList'
+      'request': {
+          'filters': {
+              'certType': 'cert template layout',
+              'channel': this.userService.channel,
+              'mediaType': 'image'
+          },
+          'fields': ['indentifier', 'name', 'code', 'certType', 'data', 'issuer', 'signatoryList', 'artifactUrl', 'primaryCategory', 'channel'],
+          'limit': 100
       }
-    };
-
-    return this.uploadCertificateService.getCertificates().pipe(
+  };
+    return this.certRegService.getCertLayouts(request).pipe(
       tap((certTemplateData) => {
         const templatList = _.get(certTemplateData, 'result.content');
         templatList.forEach(templat => {
@@ -315,6 +319,9 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   processCertificateDetails(certTemplateDetails) {
     const templateData = _.pick(_.get(certTemplateDetails, Object.keys(certTemplateDetails)), ['criteria', 'previewUrl', 'artifactUrl', 'identifier', 'data']);
     this.templateIdentifier = _.get(templateData, 'identifier');
+    if (!_.isEmpty(this.newTemplateIdentifier)) {
+      this.templateIdentifier = this.newTemplateIdentifier;
+    }
     this.previewUrl = _.get(templateData, 'previewUrl');
     this.setCertEditable();
     this.processCriteria(_.get(templateData, 'criteria'));
@@ -419,7 +426,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       this.userPreference.reset();
       this.selectedTemplate = {};
     } else {
-      var cert_templates = _.get(this.batchDetails, 'cert_templates');
+      const cert_templates = _.get(this.batchDetails, 'cert_templates');
       this.processCertificateDetails(cert_templates);
     }
   }

@@ -57,8 +57,25 @@ export class CertConfigModel {
 
     }
 
-    prepareCreateAssetRequest(rawFormValues) {
+    prepareCreateAssetRequest(rawFormValues, channel, images) {
         console.log(rawFormValues);
+
+    const signatoryList = [{
+       'image': _.get(images, 'SIGN1.url'),
+       'name': _.get(rawFormValues , 'authoritySignature_0'),
+     }];
+
+    if (!_.isEmpty(images['SIGN'])) {
+      signatoryList.push({
+        'image': _.get(images , 'SIGN2.url'),
+        'name': _.get(rawFormValues , 'authoritySignature_1'),
+      });
+    }
+    const issuer = {
+      'name': _.get(rawFormValues , 'stateName'),
+      'url': _.get(images, 'LOGO1.url')
+    };
+
         const requestBody = {
             'request': {
                 'asset': {
@@ -68,18 +85,11 @@ export class CertConfigModel {
                     'license': 'CC BY 4.0',
                     'primaryCategory': 'Certificate Template',
                     // 'contentType': 'Asset',
-                    'issuer': {
-                        'name': _.get(rawFormValues, 'stateName'),
-                        'url': 'https://gcert.gujarat.gov.in/gcert/'
-                    },
-                    'signatoryList': [
-                        {
-                            'image': 'https://cdn.pixabay.com/photo/2014/11/09/08/06/signature-523237__340.jpg',
-                            'name': _.get(rawFormValues, 'authoritySignature'),
-                            'id': 'CEO',
-                            'designation': 'CEO'
-                        }
-                    ]
+                    'mediaType': 'image',
+                    'certType': 'cert template layout',
+                    'channel': channel,
+                    'issuer': issuer,
+                    'signatoryList': signatoryList
                 }
             }
         };
