@@ -337,6 +337,12 @@ describe('AssessmentPlayerComponent', () => {
   it('should call calculateProgress', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     component.contentStatus = assessmentPlayerMockData.contentStatus;
+    component.calculateProgress(true);
+    expect(component.courseHierarchy).toBeDefined();
+  });
+  it('should call calculateProgress to be called with no parameter', () => {
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    component.contentStatus = assessmentPlayerMockData.contentStatus;
     component.calculateProgress();
     expect(component.courseHierarchy).toBeDefined();
   });
