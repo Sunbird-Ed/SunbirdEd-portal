@@ -469,8 +469,8 @@ describe('AssessmentPlayerComponent', () => {
   });
 
   it('should call calculateProgress for single content', () => {
-    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
-    component.courseHierarchy.children = null;
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchyNochildren;
+    fixture.detectChanges();
     component.calculateProgress();
     expect(component.isUnitCompleted).toEqual(false);
   });
