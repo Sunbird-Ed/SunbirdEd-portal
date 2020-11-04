@@ -467,4 +467,12 @@ describe('AssessmentPlayerComponent', () => {
     component['subscribeToQueryParam']();
     expect(component['setActiveContent']).toHaveBeenCalledWith('do_11287204084174028818', true);
   });
+
+  it('should call calculateProgress for single content', () => {
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    component.courseHierarchy.children = null;
+    component.calculateProgress();
+    expect(component.isUnitCompleted).toEqual(false);
+  });
+
 });
