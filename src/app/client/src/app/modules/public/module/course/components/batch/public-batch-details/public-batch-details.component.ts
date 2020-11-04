@@ -151,4 +151,9 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
+
+  setUrlToCourse() {
+    const queryParam = this.tocId ? `?textbook=${this.tocId}` : '';
+    window.location.href = this.baseUrl + queryParam;
+  }
 }
