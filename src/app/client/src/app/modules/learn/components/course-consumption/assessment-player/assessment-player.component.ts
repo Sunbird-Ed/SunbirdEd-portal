@@ -462,10 +462,12 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       });
     } else {
       this.isUnitCompleted = false;
-      const contentState = this.contentStatus.filter(({ contentId, status }) =>
-        this.courseHierarchy.identifier === contentId && status === 2);
-      if (contentState.length > 0) {
-        this.isUnitCompleted = true;
+      if (this.contentStatus && this.contentStatus.length) {
+        const contentState = this.contentStatus.filter(({ contentId, status }) =>
+          this.courseHierarchy.identifier === contentId && status === 2);
+        if (contentState.length > 0) {
+          this.isUnitCompleted = true;
+        }
       }
       if (isLogAuditEvent && this.isUnitCompleted) {
         this.logAuditEvent(true);

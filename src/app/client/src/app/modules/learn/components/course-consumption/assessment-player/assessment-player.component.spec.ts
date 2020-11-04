@@ -65,6 +65,7 @@ describe('AssessmentPlayerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AssessmentPlayerComponent);
     component = fixture.componentInstance;
+    component.contentStatus = assessmentPlayerMockData.contentStatus;
     fixture.detectChanges();
   });
 
@@ -80,7 +81,7 @@ describe('AssessmentPlayerComponent', () => {
 
   it('should go to courseDetails page', () => {
     spyOn(component['router'], 'navigate');
-    component.isCourseCompletionPopupShown = true;
+    component.isCourseCompletionPopupShown = false;
     component.goBack();
     expect(component['router'].navigate).toHaveBeenCalled();
     expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course', '12312433456', 'batch', '12312433'], {queryParams: {}});
@@ -89,8 +90,9 @@ describe('AssessmentPlayerComponent', () => {
   it('should go back with showCourseCompleteMessage=true if course completion popup is not shown', () => {
     spyOn(component['router'], 'navigate');
     component.goBack();
-    const paramas = { showCourseCompleteMessage: true };
-    expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course', '12312433456', 'batch', '12312433'], {queryParams: paramas});
+    const paramas = {};
+    expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course', '12312433456', 'batch', '12312433'],
+     {queryParams: paramas});
   });
 
   it('should call subscribeToQueryParam', () => {
@@ -222,6 +224,7 @@ describe('AssessmentPlayerComponent', () => {
   it('should call contentProgressEvent', () => {
     component.batchId = '121787782323';
     component.enrolledBatchInfo = { status: 1 };
+    component.isUnitCompleted = false;
     spyOn<any>(component, 'validEndEvent').and.returnValue(false);
     const event = { detail: { telemetryData: { eid: 'END' } } };
     const resp = component.contentProgressEvent(event);
@@ -286,6 +289,7 @@ describe('AssessmentPlayerComponent', () => {
   it('should call onAssessmentEvents', () => {
     component.batchId = '0130272832104038409';
     component.enrolledBatchInfo = { status: 2 };
+    component.contentStatus = assessmentPlayerMockData.contentStatus;
     const assessmentScoreService = TestBed.get(AssessmentScoreService);
     spyOn(assessmentScoreService, 'receiveTelemetryEvents').and.stub();
     spyOn(component, 'calculateProgress').and.stub();
