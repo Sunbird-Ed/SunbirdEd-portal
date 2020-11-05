@@ -113,7 +113,7 @@
       ]
     },
     "dynamicFields": {
-      "ribbon.right.name": "contentType",
+      "ribbon.right.name": "primaryCategory",
       "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
     },
     "PAGE_LIMIT": 20
@@ -151,7 +151,7 @@
         ]
       },
       "dynamicFields": {
-        "ribbon.right.name": "contentType"
+        "ribbon.right.name": "primaryCategory"
       }
     },
     "enrolledCourses": {
@@ -451,7 +451,7 @@
         ]
       },
       "dynamicFields": {
-        "ribbon.right.name": "contentType",
+        "ribbon.right.name": "primaryCategory",
         "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
       }
     },
@@ -480,7 +480,7 @@
       "dynamicFields": {
         "maxCount": "leafNodesCount",
         "progress": "progress",
-        "ribbon.right.name": "content.contentType"
+        "ribbon.right.name": "content.primaryCategory"
       }
     }
   },
@@ -513,7 +513,7 @@
       ]
     },
     "dynamicFields": {
-      "ribbon.right.name": "resourceType",
+      "ribbon.right.name": "primaryCategory",
       "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
     }
   },
@@ -558,7 +558,7 @@
       ]
     },
     "dynamicFields": {
-      "ribbon.right.name": "resourceType",
+      "ribbon.right.name": "primaryCategory",
       "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
     }
   },
@@ -590,7 +590,7 @@
       ]
     },
     "dynamicFields": {
-      "ribbon.right.name": "contentType",
+      "ribbon.right.name": "primaryCategory",
       "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
     }
   },
@@ -635,7 +635,7 @@
       ]
     },
     "dynamicFields": {
-      "ribbon.right.name": "resourceType",
+      "ribbon.right.name": "primaryCategory",
       "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
     }
   },
@@ -659,7 +659,7 @@
       ]
     },
     "dynamicFields": {
-      "ribbon.right.name": "resourceType",
+      "ribbon.right.name": "primaryCategory",
       "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
     }
   },
@@ -729,7 +729,7 @@
       ]
     },
     "dynamicFields": {
-      "ribbon.right.name": "contentType",
+      "ribbon.right.name": "primaryCategory",
       "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
     }
   }, 
@@ -1011,7 +1011,7 @@
         ]
       },
       "dynamicFields": {
-        "ribbon.right.name": "contentType"
+        "ribbon.right.name": "primaryCategory"
       }
     },
     "Flagged": {
@@ -1044,7 +1044,7 @@
         ]
       },
       "dynamicFields": {
-        "ribbon.right.name": "contentType"
+        "ribbon.right.name": "primaryCategory"
       }
     },
     "ReviewSubmission": {
@@ -1077,7 +1077,7 @@
         ]
       },
       "dynamicFields": {
-        "ribbon.right.name": "contentType"
+        "ribbon.right.name": "primaryCategory"
       }
     },
     "LimitedPublishing": {
@@ -1120,7 +1120,7 @@
         ]
       },
       "dynamicFields": {
-        "ribbon.right.name": "contentType"
+        "ribbon.right.name": "primaryCategory"
       }
     }
   },
