@@ -138,7 +138,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   goBack() {
     this.previousContent = null;
     const paramas = {};
-    if (this.isCourseCompletionPopupShown) {
+    if (!this.isCourseCompletionPopupShown) {
       paramas['showCourseCompleteMessage'] = true;
     }
     this.router.navigate(['/learn/course', this.courseId, 'batch', this.batchId], {queryParams: paramas});

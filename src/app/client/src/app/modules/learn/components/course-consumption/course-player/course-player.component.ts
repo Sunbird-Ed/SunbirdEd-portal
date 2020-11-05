@@ -300,7 +300,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.courseProgressService.getContentState(req)
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(res => {
-        this.progressToDisplay = Math.floor((res.completedCount / this.contentIds.length) * 100);
+        this.progressToDisplay = Math.floor((res.completedCount / this.courseHierarchy.leafNodesCount) * 100);
         this.contentStatus = res.content || [];
         this.calculateProgress();
       },
