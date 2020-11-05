@@ -160,6 +160,7 @@ describe('CoursePlayerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CoursePlayerComponent);
     component = fixture.componentInstance;
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     contentUtilsServiceService = TestBed.get(ContentUtilsServiceService);
     const generaliseLabelService = TestBed.get(GeneraliseLabelService);
     generaliseLabelService.frmelmnts = resourceServiceMockData.frmelmnts;

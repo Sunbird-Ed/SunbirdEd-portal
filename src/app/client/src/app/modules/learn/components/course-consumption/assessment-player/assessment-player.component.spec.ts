@@ -81,7 +81,7 @@ describe('AssessmentPlayerComponent', () => {
 
   it('should go to courseDetails page', () => {
     spyOn(component['router'], 'navigate');
-    component.isCourseCompletionPopupShown = false;
+    component.isCourseCompletionPopupShown = true;
     component.goBack();
     expect(component['router'].navigate).toHaveBeenCalled();
     expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course', '12312433456', 'batch', '12312433'], {queryParams: {}});
@@ -90,7 +90,7 @@ describe('AssessmentPlayerComponent', () => {
   it('should go back with showCourseCompleteMessage=true if course completion popup is not shown', () => {
     spyOn(component['router'], 'navigate');
     component.goBack();
-    const paramas = {};
+    const paramas = {showCourseCompleteMessage: true};
     expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course', '12312433456', 'batch', '12312433'],
      {queryParams: paramas});
   });
