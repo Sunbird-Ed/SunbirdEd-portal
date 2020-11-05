@@ -1176,7 +1176,7 @@ html[layout='joy'][dir='rtl'] {
 
 html[layout='joy'] {
     .certificate-bg {
-      background: #F2F2EA !important;
+      background: var(--sbt-body-bg) !important;
       border-radius: calculateRem(24px) !important;
     }
   .sb-browse-btn{
