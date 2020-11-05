@@ -144,7 +144,7 @@ class RouterStub {
       authoritySignature2: new FormControl('Sudip Mukherjee'),
       allowPermission: new FormControl(true)
     });
-    component.selectedCertificate = {issue: `{name: 'test}`};
+    component.selectedCertificate = {issuer: `{name: 'test}`};
     spyOn(component, 'uploadTemplate');
     spyOn(component, 'previewCertificate').and.stub();
     spyOn(new CertConfigModel(), 'prepareCreateAssetRequest').and.stub();
@@ -167,7 +167,7 @@ class RouterStub {
       allowPermission: new FormControl(true)
     });
     spyOn(component, 'uploadTemplate');
-    component.selectedCertificate = {issue: `{name: 'test}`};
+    component.selectedCertificate = {issuer: `{name: 'test}`};
     spyOn(component, 'previewCertificate').and.stub();
     spyOn(toasterService, 'error').and.stub();
     spyOn(new CertConfigModel(), 'prepareCreateAssetRequest').and.stub();
