@@ -5,10 +5,14 @@ html[layout='joy'] {
   --sbt-container-w:calc(100% - 8%);
 }
 .sbt-container {
+  @include respond-above(sm){
   padding: 0 4%;
+  }
 }
 .sbt-header-tool-bar {
+  @include respond-above(sm){
     background: none !important;
+  }
 }
 .sbt-header-menu-bar {
     @include respond-above(sm) {
@@ -16,10 +20,13 @@ html[layout='joy'] {
     }
 }
 .sbt-header-menu-extension {
-    padding: calculateRem(16px) calculateRem(16px) calculateRem(16px) calculateRem(32px);
+    @include respond-above(sm){
+      padding: calculateRem(16px) calculateRem(16px) calculateRem(16px) calculateRem(32px);
     border-radius: calculateRem(40px) calculateRem(40px) 0px 0px;
+    }
   }
   .sbt-header-menu {
+    z-index: 3;
     @include respond-above(sm) {
       position: relative !important;
       left: inherit !important;
@@ -77,15 +84,22 @@ app-landing-section div.sbt-fluid-header-bg {
   }
   .sbt-page-content {
     .second_panel_layout {
+      @include respond-above(sm) {
       margin-top:calculateRem(-116px);
+      }
     }
   }
 
   img.sbt-page-header-img {
-    position: absolute;
-    top: calculateRem(-76px);
-    right: calculateRem(64px);
-    z-index: 2;
+    right: 1rem;
+    bottom:0px;
+    @include respond-above(sm) {
+      position: absolute;
+      top: calculateRem(-76px);
+      right: calculateRem(16px);
+      z-index: 2;
+    }
+   
   
     html[dir="rtl"] & {
       left: calculateRem(64px);
@@ -129,31 +143,42 @@ html[layout='joy'] {
   .content-header__content {
     padding: 0px 1.5rem 1.5rem 1.5rem !important;
   }
-}
 
-.sb-bg-color-white.back-btn-container.cc-player__btn-back {
-  & > .ui.container {
-    padding-top: 0px;
-  }
-}
-.textbook-container.cc-player__content-header {
-  & > .ui.container {
-    border-radius: 0rem 0rem 0px 0px;
-    padding-top:0px;
-    .textbook.py-16.sb-g.cc-player {
-      padding:1rem 1rem;
+  .sb-bg-color-white.back-btn-container.cc-player__btn-back {
+    & > .ui.container {
+      padding-top: 0px;
     }
   }
+  .textbook-container.cc-player__content-header {
+    & > .ui.container {
+      border-radius: 0rem 0rem 0px 0px;
+      padding-top:0px;
+      .textbook.py-16.sb-g.cc-player {
+        padding:1rem 1rem;
+      }
+    }
+  }
+
+  .course-consumption-container {
+      background: var(--sbt-body-bg2);
+      width: 100% !important;
+      padding: 0 4%;
+      border-radius: 2.5rem 0 2.5rem 2.5rem;
+      margin: 0;
+  }
+  .cc-player__content-header.textbook-container .textbook.py-16{
+    padding-top: 0rem !important;
+    padding-bottom: 0rem !important;
+  }
+    .new-layout-footer {
+      padding-top: calculateRem(0px);
+      background: var(--sbt-body-bg); //var(--sbt-body-bg2);
+    }
+    
+    .sbt-theme-right-flower,.sbt-theme-bg-img {
+      z-index: 1;
+    }
+
+   
+//end
 }
-
-
-
-.new-layout-footer {
-  padding-top: calculateRem(0px);
-  background: var(--sbt-body-bg); //var(--sbt-body-bg2);
-}
-
-.sbt-theme-right-flower,.sbt-theme-bg-img {
-  z-index: 1;
-}
-
