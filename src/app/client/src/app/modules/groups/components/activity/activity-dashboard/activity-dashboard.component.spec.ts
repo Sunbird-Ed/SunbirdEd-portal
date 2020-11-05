@@ -9,7 +9,7 @@ import { of, BehaviorSubject, throwError } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GroupsService } from '../../../services/groups/groups.service';
 import { configureTestSuite } from '@sunbird/test-util';
-import { courseHierarchy, nestedCourse, activityData, groupData } from './activity-dashboard.component.spec.data';
+import { courseHierarchy, nestedCourse, activityData, groupData, content } from './activity-dashboard.component.spec.data';
 
 describe('ActivityDashboardComponent', () => {
   let component: ActivityDashboardComponent;
@@ -205,6 +205,31 @@ describe('ActivityDashboardComponent', () => {
     spyOn(component, 'navigateBack');
     component.checkForNestedCourses(activityData);
     component['playerService'].getCollectionHierarchy('do_21307962614412902412404', {}).subscribe(data => {
+    }, err => {
+      expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0051);
+      expect(component.navigateBack).toHaveBeenCalled();
+    });
+  });
+
+  it ('should call getContent()', () => {
+    spyOn(component['playerService'], 'getContent').and.returnValue(of (content));
+    spyOn(component, 'updateArray');
+    component.activityId = 'do_2127638382202880001645';
+    component.groupData = { activities: [] };
+    component.getContent(activityData);
+    component['playerService'].getContent('do_2127638382202880001645', {}).subscribe(data => {
+      expect(component.updateArray).toHaveBeenCalledWith(content.result.content);
+      expect(component.showLoader).toBeFalsy();
+    });
+  });
+
+  it ('should throw error in getContent()', () => {
+    spyOn(component['playerService'], 'getContent').and.returnValue(throwError ({}));
+    component.activityId = 'do_2127638382202880001645';
+    spyOn(component['toasterService'], 'error');
+    spyOn(component, 'navigateBack');
+    component.getContent(activityData);
+    component['playerService'].getContent('do_2127638382202880001645', {}).subscribe(data => {
     }, err => {
       expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0051);
       expect(component.navigateBack).toHaveBeenCalled();
