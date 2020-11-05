@@ -298,6 +298,9 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     this.allowCertCreation = this.courseConsumptionService.canAddCertificates(this.courseHierarchy);
   }
 
+  isCertAdded(batch) {
+   return _.isEmpty(_.get(batch, 'cert_templates')) ? false : true;
+  }
   logTelemetry(id, content?: {}, batchId?) {
     if (batchId || this.batchId) {
       this.telemetryCdata = [{ id: batchId || this.batchId, type: 'courseBatch' }];
