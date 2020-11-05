@@ -56,21 +56,10 @@ export class UploadCertificateService {
    * To get the asset images (State logos and Signs)
    * to get the particular asset we need to pass asset naem as query
    */
-  getCertificates() {
-    const body = {
-      'request': {
-          'filters': {
-              'certType': 'cert template',
-              'channel': 'in.ekstep' // this.userService.channel
-          },
-          'fields': ['indentifier', 'name', 'code', 'certType', 'data', 'issuer', 'signatoryList', 'artifactUrl', 'primaryCategory', 'channel'],
-          'limit': 100
-      }
-  };
-
+  getCertificates(request) {
     const option = {
       url: this.configService.urlConFig.URLS.CONTENT.SEARCH,
-      data: body
+      data: request
     };
     return this.publicDataService.post(option);
   }

@@ -143,7 +143,7 @@ describe('UploadCertificateService', () => {
       'request': {
           'filters': {
               'certType': 'cert template',
-              'channel': 'in.ekstep'
+              'channel': '12345'
           },
           'fields': ['indentifier', 'name', 'code', 'certType', 'data', 'issuer', 'signatoryList', 'artifactUrl', 'primaryCategory', 'channel'],
           'limit': 100
@@ -151,8 +151,10 @@ describe('UploadCertificateService', () => {
   };
     const service = TestBed.get(UploadCertificateService);
     const publicDataService = TestBed.get(PublicDataService);
+    const userService = TestBed.get(UserService);
+    spyOnProperty(userService, 'channel').and.returnValue('12345');
     spyOn(publicDataService, 'post').and.returnValue(of({}));
-    service.getCertificates();
+    service.getCertificates(body);
     const data = {
       url: 'content/v1/search',
       data: body
