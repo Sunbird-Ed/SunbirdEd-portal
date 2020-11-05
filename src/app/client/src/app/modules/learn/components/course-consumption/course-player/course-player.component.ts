@@ -77,6 +77,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   popupMode: string;
   createdBatchId: string;
   courseMentor = false;
+  progressToDisplay = 0;
   public todayDate = dayjs(new Date()).format('YYYY-MM-DD');
   public batchMessage: any;
   showDataSettingSection = false;
@@ -299,6 +300,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.courseProgressService.getContentState(req)
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(res => {
+        this.progressToDisplay = Math.floor((res.completedCount / this.contentIds.length) * 100);
         this.contentStatus = res.content || [];
         this.calculateProgress();
       },
