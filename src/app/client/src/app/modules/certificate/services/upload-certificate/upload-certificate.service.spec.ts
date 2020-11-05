@@ -154,7 +154,7 @@ describe('UploadCertificateService', () => {
     const userService = TestBed.get(UserService);
     spyOnProperty(userService, 'channel').and.returnValue('12345');
     spyOn(publicDataService, 'post').and.returnValue(of({}));
-    service.getCertificates();
+    service.getCertificates(body);
     const data = {
       url: 'content/v1/search',
       data: body
