@@ -5,9 +5,6 @@ export class CertConfigModel {
         MY_STATE_TEACHER : 'My state teacher',
         ALL: 'All'
     };
-    issuer: any;
-    signatureList = [];
-
     constructor() {
     }
 
