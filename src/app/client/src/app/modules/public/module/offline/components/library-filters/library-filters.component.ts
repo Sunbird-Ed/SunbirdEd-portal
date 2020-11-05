@@ -75,8 +75,8 @@ export class LibraryFiltersComponent implements OnInit, OnDestroy {
         this.boards = _.get(orgDetails, 'result.channel.frameworks');
         this.boards =  this.frameworkService.getSortedFilters(this.boards, 'board');
         if (this.boards) {
-          const defaultBoard = this.boards.find((board) => board.name === this.userDetails.framework.board);
-
+          // const defaultBoard = this.boards.find((board) => board.name === this.userDetails.framework.board);
+          const defaultBoard = this.boards[0];
           if (_.get(this.selectedFilters, 'board[0]')) {
             const offlineBoard = this.boards.find((board) => board.name === this.selectedFilters.board[0]);
 
@@ -110,7 +110,7 @@ export class LibraryFiltersComponent implements OnInit, OnDestroy {
 
   setFilters(showDefault?) {
     this.resetFilters();
-    const framework = this.userDetails.framework;
+    // const framework = this.userDetails.framework;
 
     this.frameworkCategories.forEach(element => {
       switch (element.code) {
@@ -119,9 +119,12 @@ export class LibraryFiltersComponent implements OnInit, OnDestroy {
           this.mediums = sortedMediumData.map(medium => medium.name);
           let mediumIndex;
 
-          if (showDefault) {
-            mediumIndex = this.mediums.findIndex(medium => framework.medium.includes(medium));
-          } else if (_.get(this.selectedFilters, 'medium[0]')) {
+          // if (showDefault) {
+          //   mediumIndex = this.mediums.findIndex(medium => framework.medium.includes(medium));
+          // } else if (_.get(this.selectedFilters, 'medium[0]')) {
+          //   mediumIndex = this.mediums.findIndex((medium) => medium === this.selectedFilters.medium[0]);
+          // }
+          if (_.get(this.selectedFilters, 'medium[0]')) {
             mediumIndex = this.mediums.findIndex((medium) => medium === this.selectedFilters.medium[0]);
           }
 
@@ -135,9 +138,14 @@ export class LibraryFiltersComponent implements OnInit, OnDestroy {
           this.classes = sortedClassData.map(gradeLevel => gradeLevel.name);
           let classIndex;
 
-          if (showDefault) {
-            classIndex = this.classes.findIndex(value => framework.gradeLevel.includes(value));
-          } else if (_.get(this.selectedFilters, 'gradeLevel[0]')) {
+          // if (showDefault) {
+          //   classIndex = this.classes.findIndex(value => framework.gradeLevel.includes(value));
+          // } else if (_.get(this.selectedFilters, 'gradeLevel[0]')) {
+          //   classIndex = this.classes.findIndex((classElement) =>
+          //     classElement === this.selectedFilters.gradeLevel[0]);
+          // }
+
+          if (_.get(this.selectedFilters, 'gradeLevel[0]')) {
             classIndex = this.classes.findIndex((classElement) =>
               classElement === this.selectedFilters.gradeLevel[0]);
           }

@@ -53,8 +53,6 @@ import { NgInviewModule } from 'angular-inport';
         LoadContentComponent,
         InfoCardComponent,
     ],
-    entryComponents: [
-    ],
     exports: [LibraryFiltersComponent, NoContentComponent, ConnectionStatusComponent, InfoCardComponent]
 })
 export class OfflineModule { }
