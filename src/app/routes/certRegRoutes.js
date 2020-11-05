@@ -198,29 +198,4 @@ module.exports = function (app) {
         }
       },
     }))
-
-  app.all('/certreg/composite/v1/search',
-    proxy(certRegURL, {
-      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(certRegURL),
-      proxyReqPathResolver: function (req) {
-        let urlParam = req.originalUrl.replace('/certreg/', '');
-        let query = require('url').parse(req.url).query;
-        if (query) {
-          return require('url').parse(certRegURL + urlParam + '?' + query).path
-        } else {
-          return require('url').parse(certRegURL + urlParam).path
-        }
-      },
-      userResDecorator:  (proxyRes, proxyResData, req, res) => {
-        try {
-          logger.info({msg: 'Getting the certificate template layouts'});
-          const data = JSON.parse(proxyResData.toString('utf8'));
-          if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
-          else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
-        } catch (err) {
-          logError(req, err, 'Error while getting the template layouts');
-          return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
-        }
-      },
-    }))
 };

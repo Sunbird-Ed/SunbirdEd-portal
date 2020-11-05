@@ -5,6 +5,9 @@ export class CertConfigModel {
         MY_STATE_TEACHER : 'My state teacher',
         ALL: 'All'
     };
+    issuer: any;
+    signatureList = [];
+
     constructor() {
     }
 
@@ -57,25 +60,18 @@ export class CertConfigModel {
 
     }
 
-    prepareCreateAssetRequest(rawFormValues, channel, images) {
-        console.log(rawFormValues);
+    prepareCreateAssetRequest(rawFormValues, channel, certificate, images) {
+        const signatoryList = [{
+        'image': _.get(images, 'SIGN1.url'),
+        'name': _.get(rawFormValues , 'authoritySignature_0'),
+        }];
 
-    const signatoryList = [{
-       'image': _.get(images, 'SIGN1.url'),
-       'name': _.get(rawFormValues , 'authoritySignature_0'),
-     }];
-
-    if (!_.isEmpty(images['SIGN'])) {
-      signatoryList.push({
-        'image': _.get(images , 'SIGN2.url'),
-        'name': _.get(rawFormValues , 'authoritySignature_1'),
-      });
-    }
-    const issuer = {
-      'name': _.get(rawFormValues , 'stateName'),
-      'url': _.get(images, 'LOGO1.url')
-    };
-
+        if (!_.isEmpty(images['SIGN'])) {
+        signatoryList.push({
+            'image': _.get(images , 'SIGN2.url'),
+            'name': _.get(rawFormValues , 'authoritySignature_1'),
+        });
+        }
         const requestBody = {
             'request': {
                 'asset': {
@@ -86,9 +82,9 @@ export class CertConfigModel {
                     'primaryCategory': 'Certificate Template',
                     // 'contentType': 'Asset',
                     'mediaType': 'image',
-                    'certType': 'cert template layout',
+                    'certType': 'cert template',
                     'channel': channel,
-                    'issuer': issuer,
+                    'issuer': JSON.parse(certificate.issuer),
                     'signatoryList': signatoryList
                 }
             }

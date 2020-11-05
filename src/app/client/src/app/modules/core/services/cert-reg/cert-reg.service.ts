@@ -103,12 +103,4 @@ export class CertRegService extends DataService {
     }
     return false;
   }
-
-  public getCertLayouts(request) {
-    const options = {
-      url: `${this.config.urlConFig.URLS.COMPOSITE.SEARCH}`,
-      data: request,
-    };
-    return this.post(options);
-  }
 }

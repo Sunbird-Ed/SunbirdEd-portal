@@ -169,7 +169,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     const request = {
       'request': {
           'filters': {
-              'certType': 'cert template layout',
+              'certType': 'cert template',
               'channel': this.userService.channel,
               'mediaType': 'image'
           },
@@ -177,17 +177,13 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
           'limit': 100
       }
   };
-    return this.certRegService.getCertLayouts(request).pipe(
+    return this.uploadCertificateService.getCertificates(request).pipe(
       tap((certTemplateData) => {
         const templatList = _.get(certTemplateData, 'result.content');
-        templatList.forEach(templat => {
-          this.certTemplateList.push(templat);
-          if (this.templateIdentifier && (templat.identifier === this.templateIdentifier)) {
-            this.selectedTemplate = templat;
-            _.remove(this.certTemplateList, (cert) => _.get(cert, 'identifier') === _.get(templat, 'identifier'));
-            this.certTemplateList.unshift(templat);
-          }
-        });
+        this.certTemplateList = templatList;
+        this.selectedTemplate = templatList.find(templat => this.templateIdentifier && (templat.identifier === this.templateIdentifier));
+        _.remove(this.certTemplateList, (cert) => _.get(cert, 'identifier') === _.get(this.selectedTemplate , 'identifier'));
+        this.certTemplateList.unshift(this.selectedTemplate);
       }),
       catchError(error => {
         return of({});
@@ -496,7 +492,9 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       }
     });
   }
-
+  removeSelectedCertificate() {
+    this.selectedTemplate = null;
+  }
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();

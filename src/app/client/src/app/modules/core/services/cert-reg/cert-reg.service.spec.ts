@@ -121,23 +121,4 @@ describe('CertRegService', () => {
     /** Assert */
     expect(certRegService.checkCriteria).toBeTruthy();
   });
-
-  it('should get the certificate default layouts', () => {
-    const certRegService: CertRegService = TestBed.get(CertRegService);
-    spyOn(certRegService, 'post').and.returnValue(observableOf(mockResponseData.certificatesData));
-    const request = {
-      'request': {
-          'filters': {
-              'certType': 'cert template layout',
-              'channel': '12345',
-              'mediaType': 'image'
-          },
-          'fields': ['indentifier', 'name', 'code', 'certType', 'data', 'issuer', 'signatoryList', 'artifactUrl', 'primaryCategory', 'channel'],
-          'limit': 100
-      }
-  };
-    certRegService.getCertLayouts(request);
-    const options = { url: 'composite/v1/search', data: request };
-    expect(certRegService.post).toHaveBeenCalledWith(options);
-  });
 });

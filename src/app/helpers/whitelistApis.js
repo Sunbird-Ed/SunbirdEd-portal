@@ -615,11 +615,6 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
 
-    '/certreg/composite/v1/search': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
-    },
-
     //certreg reg apis
     '/certreg/v1/user/search': {
       checksNeeded: ['ROLE_CHECK'],

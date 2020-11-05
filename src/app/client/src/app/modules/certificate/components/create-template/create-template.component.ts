@@ -32,11 +32,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
   certSigns: any = [];
   logoType;
   // api call
-  defaultCertificates = [
-    { artifactUrl: 'assets/images/template-1.svg', identifier: 0 },
-    { artifactUrl: 'assets/images/template-2.svg', identifier: 1 },
-    { artifactUrl: 'assets/images/template-3.svg', identifier: 2 },
-    { artifactUrl: 'assets/images/template-4.svg', identifier: 3 }];
+  defaultCertificates = [];
   selectedCertificate: any = {};
   logoHtml;
   svgData;
@@ -90,11 +86,11 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
               'channel': this.userService.channel,
               'mediaType': 'image'
           },
-          'fields': ['indentifier', 'name', 'code', 'certType', 'data', 'issuer', 'signatoryList', 'artifactUrl', 'primaryCategory', 'channel'],
+          'fields': ['identifier', 'name', 'code', 'certType', 'data', 'issuer', 'signatoryList', 'artifactUrl', 'primaryCategory', 'channel'],
           'limit': 100
       }
   };
-    this.certRegService.getCertLayouts(request).subscribe(res => {
+    this.uploadCertificateService.getCertificates(request).subscribe(res => {
       this.defaultCertificates = _.get(res, 'result.content');
       this.selectedCertificate = _.clone(this.defaultCertificates[0]);
       this.getSVGTemplate();
@@ -142,7 +138,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     // TODO: Need to remove this method call;
     this.previewCertificate();
     const channel =  this.userService.channel;
-    const request = this.certConfigModalInstance.prepareCreateAssetRequest(_.get(this.createTemplateForm, 'value'), channel, this.images);
+    const request = this.certConfigModalInstance.prepareCreateAssetRequest(_.get(this.createTemplateForm, 'value'), channel,this.selectedCertificate, this.images);
     this.disableCreateTemplate = true;
     this.uploadCertificateService.createCertTemplate(request).subscribe(response => {
       console.log('create response', response);
