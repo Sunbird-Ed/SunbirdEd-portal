@@ -592,7 +592,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     let collection = _.assign({}, this.collectionData);
     collection = this.utilService.reduceTreeProps(collection,
       ['mimeType', 'visibility', 'identifier', 'selected', 'name', 'contentType', 'children',
-    'primaryCategory', 'additionalCategory', 'parent']
+      'primaryCategory', 'additionalCategory', 'parent', 'code', 'framework', 'description']
       );
     this.userService.userOrgDetails$.subscribe(() => {
       this.showCopyLoader = true;
