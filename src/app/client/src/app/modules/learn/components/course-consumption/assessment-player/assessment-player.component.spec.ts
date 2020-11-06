@@ -83,14 +83,14 @@ describe('AssessmentPlayerComponent', () => {
     component.isCourseCompletionPopupShown = true;
     component.goBack();
     expect(component['router'].navigate).toHaveBeenCalled();
-    expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course', '12312433456', 'batch', '12312433'], { queryParams: { textbook: undefined } });
+    expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course', '12312433456', 'batch', '12312433'], {queryParams: {}});
   });
 
   it('should go back with showCourseCompleteMessage=true if course completion popup is not shown', () => {
     spyOn(component['router'], 'navigate');
     component.goBack();
-    const paramas = { showCourseCompleteMessage: true, textbook: undefined };
-    expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course', '12312433456', 'batch', '12312433'], { queryParams: paramas });
+    const paramas = { showCourseCompleteMessage: true };
+    expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course', '12312433456', 'batch', '12312433'], {queryParams: paramas});
   });
 
   it('should call subscribeToQueryParam', () => {
