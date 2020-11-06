@@ -130,7 +130,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
         if (this.activatedRoute.snapshot.queryParams.showCourseCompleteMessage === 'true') {
           this.showCourseCompleteMessage = this.progress >= 100 ? true : false;
-          this.router.navigate(['.'], { relativeTo: this.activatedRoute, queryParams: {textbook: this.tocId}, replaceUrl: true });
+          const queryParams = this.tocId ? { textbook: this.tocId } : {};
+          this.router.navigate(['.'], { relativeTo: this.activatedRoute, queryParams, replaceUrl: true });
         }
       });
     this.courseConsumptionService.updateContentConsumedStatus
@@ -422,10 +423,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   navigateToPlayerPage(collectionUnit: any, event?) {
     if ((this.enrolledCourse && this.batchId) || this.hasPreviewPermission) {
       const navigationExtras: NavigationExtras = {
-        queryParams: {
-          batchId: this.batchId, courseId: this.courseId, courseName: this.courseHierarchy.name, textbook: this.tocId
-        }
+        queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.courseHierarchy.name }
       };
+      if (this.tocId) {
+        navigationExtras.queryParams['textbook'] = this.tocId;
+      }
 
       if (event && !_.isEmpty(event.event)) {
         navigationExtras.queryParams.selectedContent = event.data.identifier;

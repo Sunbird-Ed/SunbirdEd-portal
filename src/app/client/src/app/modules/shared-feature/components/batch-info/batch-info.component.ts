@@ -104,8 +104,9 @@ export class BatchInfoComponent implements OnInit, OnDestroy {
       delay(2000), // wait for data to sync
       mergeMap(data => this.coursesService.getEnrolledCourses()), // fetch enrolled course
     ).subscribe(data => {
-      this.router.navigate(['/learn/course', event.courseId, 'batch', event.identifier],
-        { queryParams: { textbook: _.get(this.activatedRoute, 'snapshot.queryParams.textbook') } });
+      const textbook = _.get(this.activatedRoute, 'snapshot.queryParams.textbook');
+      const queryParams = textbook ? { textbook } : {};
+      this.router.navigate(['/learn/course', event.courseId, 'batch', event.identifier], { queryParams });
     }, (err) => {
       this.disableEnrollBtn = false;
       this.toasterService.error(this.resourceService.messages.emsg.m0001);

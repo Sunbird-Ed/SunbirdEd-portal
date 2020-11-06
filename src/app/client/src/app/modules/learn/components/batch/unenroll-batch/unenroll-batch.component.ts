@@ -28,7 +28,6 @@ export class UnEnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit 
 	 * telemetryImpression object for update batch page
 	*/
   telemetryImpression: IImpressionEventInput;
-  tocId;
   constructor(public router: Router, public activatedRoute: ActivatedRoute, public courseBatchService: CourseBatchService,
     public resourceService: ResourceService, public toasterService: ToasterService, public userService: UserService,
     public configService: ConfigService, public coursesService: CoursesService,
@@ -110,7 +109,8 @@ export class UnEnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit 
   }
   goBackToCoursePage() {
     const textbook = _.get(this.activatedRoute, 'snapshot.queryParams.textbook');
-    this.router.navigate(['/learn/course', this.batchDetails.courseId], { queryParams: { textbook } }).then(() => {
+    const queryParams = textbook ? { textbook } : {};
+    this.router.navigate(['/learn/course', this.batchDetails.courseId], { queryParams }).then(() => {
       window.location.reload();
     });
   }
