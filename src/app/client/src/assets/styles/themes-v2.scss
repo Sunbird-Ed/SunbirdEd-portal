@@ -113,6 +113,11 @@ html[layout='joy'] {
   //   border-radius: 2.5rem 2.5rem 0px 0px;
   //   padding-top: 32px;
   // }
+
+  .ui.container.course-consumption-container .cc-player {
+    width: 100%;
+  }
+
   .ui.container.sb-toc-view-container, .content-header.cc-player__content-header ~ .ui.container {
     background: var(--sbt-body-bg2);
     border-radius: 2.5rem 0px 0px 0px;

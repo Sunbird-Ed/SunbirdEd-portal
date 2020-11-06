@@ -1,6 +1,6 @@
 <!-- Accordion and batch card section start -->
 <div *ngIf="!loader" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
-  <div class="ui container relative9" [appTelemetryImpression]="telemetryCourseImpression">
+  <div class="ui container relative9 course-consumption-container" [appTelemetryImpression]="telemetryCourseImpression">
     <div class="sb-course-details sb-g sb-g--gap24 py-16 text-left cc-player">
       <div class="sb-course-details__training sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
         {{ generaliseLabelService?.frmelmnts?.lbl?.LastUpdatedOn }}
