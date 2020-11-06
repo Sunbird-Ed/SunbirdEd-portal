@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter, Input, ViewChild, OnDestroy } 
 import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
 import { PlayerService, LearnerService, UserService, CoursesService, GeneraliseLabelService } from '@sunbird/core';
 import * as _ from 'lodash-es';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil, mergeMap, tap, delay } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import * as dayjs from 'dayjs';
@@ -28,7 +28,8 @@ export class BatchInfoComponent implements OnInit, OnDestroy {
 
   constructor(public resourceService: ResourceService, public playerService: PlayerService, public configService: ConfigService,
     public learnerService: LearnerService, public userService: UserService, public toasterService: ToasterService,
-    public coursesService: CoursesService, public router: Router, public generaliseLabelService: GeneraliseLabelService) {
+    public coursesService: CoursesService, public router: Router, public generaliseLabelService: GeneraliseLabelService,
+    public activatedRoute: ActivatedRoute) {
       this.resumeInteractEdata = {
         id: 'resume',
         type: 'click',
@@ -103,7 +104,8 @@ export class BatchInfoComponent implements OnInit, OnDestroy {
       delay(2000), // wait for data to sync
       mergeMap(data => this.coursesService.getEnrolledCourses()), // fetch enrolled course
     ).subscribe(data => {
-      this.router.navigate(['/learn/course', event.courseId, 'batch', event.identifier]);
+      this.router.navigate(['/learn/course', event.courseId, 'batch', event.identifier],
+        { queryParams: { textbook: _.get(this.activatedRoute, 'snapshot.queryParams.textbook') } });
     }, (err) => {
       this.disableEnrollBtn = false;
       this.toasterService.error(this.resourceService.messages.emsg.m0001);

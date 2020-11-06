@@ -274,7 +274,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
 
   unenrollBatch(batch) {
     // this.courseBatchService.setEnrollToBatchDetails(batch);
-    this.router.navigate(['unenroll/batch', batch.identifier], { relativeTo: this.activatedRoute });
+    this.router.navigate(['unenroll/batch', batch.identifier], { relativeTo: this.activatedRoute, queryParams: { textbook: this.tocId } });
   }
 
   navigateToConfigureCertificate(mode: string, batchId) {
