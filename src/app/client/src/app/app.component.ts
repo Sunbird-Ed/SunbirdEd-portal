@@ -408,15 +408,7 @@ export class AppComponent implements OnInit, OnDestroy {
         _.has(this.userService.userProfile, 'tncLatestVersion') && this.userService.userProfile.promptTnC === true) {
         this.showTermsAndCondPopUp = true;
       } else {
-        this.orgDetailsService.getCustodianOrgDetails().subscribe((custodianOrg) => {
-          if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') !== _.get(custodianOrg, 'result.response.value')) {
-            // Check for non custodian user and show global consent pop up
-            this.consentConfig = { tncLink: '', tncText: this.resourceService.frmelmnts.lbl.nonCustodianTC };
-            this.showGlobalConsentPopUpSection = true;
-          } else {
-            this.checkFrameworkSelected();
-          }
-        });
+       this.checkFrameworkSelected();
      }
   }
   public getOrgDetails() {
@@ -462,15 +454,7 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   public onAcceptTnc() {
     this.showTermsAndCondPopUp = false;
-    this.orgDetailsService.getCustodianOrgDetails().subscribe((custodianOrg) => {
-      if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') !== _.get(custodianOrg, 'result.response.value')) {
-        // Check for non custodian user and show global consent pop up
-        this.consentConfig = { tncLink: '', tncText: this.resourceService.frmelmnts.lbl.nonCustodianTC };
-        this.showGlobalConsentPopUpSection = true;
-      } else {
-        this.checkFrameworkSelected();
-      }
-    });
+    this.checkFrameworkSelected();
   }
 
   public closeConsentPopUp() {
