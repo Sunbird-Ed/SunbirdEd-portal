@@ -23,14 +23,14 @@
               </label>
               <div class="d-flex flex-jc-space-between flex-dc">
                 <div class="w-100 relative">
-                  <input type="id" name="id" class="sb-form-control" [ngClass]="{'is-invalid': isInvalidUser}" placeholder="Enter user ID" [(ngModel)]="memberId" (ngModelChange)="reset()">
+                  <input type="id" name="id" class="sb-form-control" [ngClass]="{'is-invalid': isInvalidUser}" placeholder="{{resourceService?.frmelmnts?.lbl?.enterInstanceId | interpolate:'{instance}': instance}}" [(ngModel)]="memberId" (ngModelChange)="reset()">
                   <i class="icon close icon-input-close" (click)="resetValue(memberId);"></i>
                 </div>
                 <small class="message sb-color-error font-weight-bold mt-8" *ngIf="isInvalidUser">{{resourceService?.messages?.emsg?.m004  | interpolate:'{instance}': instance}}</small>
               </div>
             </div>
             <re-captcha class="recaptcha" *ngIf="isCaptchEnabled" #captchaRef="reCaptcha" (resolved)="$event && captchaResolved($event)" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
-            <button type="button" class="sb-btn sb-btn-normal" [ngClass]="{'sb-btn-primary': memberId?.trim(), 'sb-btn-disabled': !memberId?.trim()}" [disabled]="!memberId?.trim()" (click)="onVerifyMember();addTelemetry('verify-member', memberId)">{{resourceService?.frmelmnts?.btn?.verify}}</button>
+            <button type="button" class="sb-btn sb-btn-normal sb-btn-nolayer" [ngClass]="{'sb-btn-primary': memberId?.trim(), 'sb-btn-disabled': !memberId?.trim()}" [disabled]="!memberId?.trim()" (click)="onVerifyMember();addTelemetry('verify-member', memberId)">{{resourceService?.frmelmnts?.btn?.verify}}</button>
           </div>
         </div>
 
@@ -45,7 +45,7 @@
                 [indexOfMember]="verifiedMember?.indexOfMember" [initial]="verifiedMember?.initial">
               </sb-member-card>
           </div>
-          <button type="button" class="sb-btn sb-btn-primary sb-btn-normal" [disabled]= "disableBtn" (click)="addMemberToGroup();addTelemetry('add-user-to-group', memberId)"
+          <button type="button" class="sb-btn sb-btn-primary sb-btn-normal sb-btn-nolayer" [disabled]= "disableBtn" (click)="addMemberToGroup();addTelemetry('add-user-to-group', memberId)"
           [ngClass]="{'sb-btn-disabled': disableBtn}">
             <img src="./assets/images/ic_person_add.svg" width="16px" class="mr-4"> {{resourceService?.frmelmnts?.lbl?.AddtoGroup}}
           </button>
