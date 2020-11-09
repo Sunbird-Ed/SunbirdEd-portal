@@ -10,7 +10,7 @@
     </div>
     <div class="sb-modal-actions">
         <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-            [telemetryInteractEdata]="signInInteractEdata" (click)="setTelemetryData()" href={{baseUrl}}
+            [telemetryInteractEdata]="signInInteractEdata" (click)="setTelemetryData(); setUrlToCourse();"
             class="sb-btn sb-btn-normal sb-btn-primary">
             {{resourceService.frmelmnts?.btn?.login}}
         </a>

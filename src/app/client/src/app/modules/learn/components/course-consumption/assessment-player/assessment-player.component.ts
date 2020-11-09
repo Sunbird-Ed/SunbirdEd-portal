@@ -141,6 +141,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     if (!this.isCourseCompletionPopupShown) {
       paramas['showCourseCompleteMessage'] = true;
     }
+    if (_.get(this.activatedRoute, 'snapshot.queryParams.textbook')) {
+      paramas['textbook'] = _.get(this.activatedRoute, 'snapshot.queryParams.textbook');
+    }
     this.router.navigate(['/learn/course', this.courseId, 'batch', this.batchId], {queryParams: paramas});
   }
 

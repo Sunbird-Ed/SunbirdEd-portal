@@ -88,7 +88,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   playerServiceReference: any;
   TocCardType = TocCardType;
   PlatformType = PlatformType;
-  private tocId;
 
   constructor(public route: ActivatedRoute, public playerService: PlayerService,
     private windowScrollService: WindowScrollService, public router: Router, public navigationHelperService: NavigationHelperService,
@@ -116,7 +115,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     this.playerServiceReference = this.userService.loggedIn ? this.playerService : this.publicPlayerService;
     this.initLayout();
     this.dialCode = _.get(this.route, 'snapshot.queryParams.dialCode');
-    this.tocId = _.get(this.route, 'snapshot.params.collectionId');
     this.contentType = _.get(this.route, 'snapshot.queryParams.contentType');
     this.contentData = this.getContent();
   }
@@ -409,12 +407,15 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   closeCollectionPlayer() {
     if (this.dialCode) {
       this.router.navigate(['/get/dial/', this.dialCode]);
-    } else if (this.tocId) {
-      const navigateUrl = this.userService.loggedIn ? '/search/Library' : '/explore';
-      this.router.navigate([navigateUrl, 1], { queryParams: { key: this.tocId } });
     } else {
-      const url = this.userService.loggedIn ? '/resources' : '/explore';
-      this.navigationHelperService.navigateToPreviousUrl(url);
+      const { url, queryParams: { textbook = null } = {} } = this.navigationHelperService.getPreviousUrl();
+      if (url && ['/explore-course', '/learn'].some(val => url.startsWith(val)) && textbook) {
+        const navigateUrl = this.userService.loggedIn ? '/search/Library' : '/explore';
+        this.router.navigate([navigateUrl, 1], { queryParams: { key: textbook } });
+      } else {
+        let url = this.userService.loggedIn ? '/resources' : '/explore';
+        this.navigationHelperService.navigateToPreviousUrl(url);
+      }
     }
   }
 
@@ -457,14 +458,14 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
           this.coursesService.findEnrolledCourses(event.data.identifier);
 
         if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
-          this.playerService.playContent(event.data, {textbook: this.collectionData.identifier});
+          this.playerService.playContent(event.data, { textbook: this.collectionData.identifier });
         } else if (onGoingBatchCount === 1) { // play course if only one open batch is present
           event.data.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
-          this.playerService.playContent(event.data, {textbook: this.collectionData.identifier});
+          this.playerService.playContent(event.data, { textbook: this.collectionData.identifier });
         }
 
       } else {
-        this.publicPlayerService.playContent(event, {textbook: this.collectionData.identifier});
+        this.publicPlayerService.playContent(event, { textbook: this.collectionData.identifier });
       }
     } else {
       this.callinitPlayer(event);
@@ -592,8 +593,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     let collection = _.assign({}, this.collectionData);
     collection = this.utilService.reduceTreeProps(collection,
       ['mimeType', 'visibility', 'identifier', 'selected', 'name', 'contentType', 'children',
-    'primaryCategory', 'additionalCategory', 'parent']
-      );
+        'primaryCategory', 'additionalCategory', 'parent', 'code', 'framework', 'description']
+    );
     this.userService.userOrgDetails$.subscribe(() => {
       this.showCopyLoader = true;
       this.copyContentService.copyAsCourse(collection).subscribe((response) => {
