@@ -9,6 +9,8 @@ import { concatMap, debounceTime, delay, map, takeUntil, tap } from 'rxjs/operat
 import { GroupsService } from './../../../services';
 import { IActivity } from './../activity-list/activity-list.component';
 import { PublicPlayerService } from '@sunbird/public';
+import * as dayjs from 'dayjs';
+import { ExportToCsv } from 'export-to-csv';
 
 @Component({
   selector: 'app-activity-dashboard',
@@ -38,6 +40,8 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
   nestedCourses = [];
   selectedCourse;
   dropdownContent = true;
+  public csvExporter: any;
+
   constructor(
     public resourceService: ResourceService,
     private activatedRoute: ActivatedRoute,
@@ -175,8 +179,8 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
     this.activity = _.get(activityData, 'activityInfo');
   }
 
-  addTelemetry(id, cdata, extra?) {
-    this.groupService.addTelemetry({id, extra}, this.activatedRoute.snapshot, cdata, this.groupId);
+  addTelemetry(id, cdata, extra?, obj?) {
+    this.groupService.addTelemetry({id, extra}, this.activatedRoute.snapshot, cdata, this.groupId, obj);
   }
 
   checkForNestedCourses(activityData) {
@@ -200,8 +204,13 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
   }
 
   updateArray(course) {
-    this.nestedCourses.push({identifier: _.get(course, 'identifier'),
-    name: _.get(course, 'name'), leafNodesCount: _.get(course, 'leafNodesCount') || 0});
+    this.nestedCourses.push({
+    identifier: _.get(course, 'identifier'),
+    name: _.get(course, 'name'),
+    leafNodesCount: _.get(course, 'leafNodesCount') || 0,
+    pkgVersion: _.get(course, 'pkgVersion') ? `${_.get(course, 'pkgVersion')}` : '1.0',
+    primaryCategory: _.get(course, 'primaryCategory')
+  });
     this.selectedCourse = this.nestedCourses[0];
   }
 
@@ -245,6 +254,34 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
 
   showActivityType() {
     return _.lowerCase(_.get(this.queryParams, 'title'));
+  }
+
+  downloadCSVFile() {
+    this.addTelemetry('download-csv', [], {},
+    {id: _.get(this.selectedCourse, 'identifier'), type: _.get(this.selectedCourse, 'primaryCategory'), ver: _.get(this.selectedCourse, 'pkgVersion')});
+
+    const data = _.map(this.memberListToShow, member => {
+      const name = _.get(member, 'title');
+      return {
+        courseName: _.get(this.selectedCourse, 'name'),
+        memberName: name.replace('(You)', ''),
+        progress: _.get(member, 'progress') + '%'
+      };
+    });
+
+    const options = {
+      filename: `${_.snakeCase(_.get(this.selectedCourse, 'name'))}_${dayjs().format('YYYY_MM_DD_HH_mm')}`,
+      fieldSeparator: ',',
+      quoteStrings: '"',
+      decimalSeparator: '.',
+      showLabels: true,
+      showTitle: false,
+      useTextFile: false,
+      useBom: true,
+      useKeysAsHeaders: true
+    };
+    this.csvExporter = new ExportToCsv(options);
+    this.csvExporter.generateCsv(data);
   }
 
   ngOnDestroy() {

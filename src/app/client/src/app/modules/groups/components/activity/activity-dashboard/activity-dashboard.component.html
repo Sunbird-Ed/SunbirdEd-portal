@@ -65,7 +65,14 @@
           <button class="sb-btn sb-btn-normal" type="button">{{ resourceService?.frmelmnts?.lbl?.search }}</button>
         </div>
       </div>
-        <div class="mr-8 pt-16 pr-16 fxsmall text-right" *ngIf="isContentTrackable(activity, activity?.contentType)">{{ resourceService?.frmelmnts?.lbl?.LastUpdated }}: {{memberListUpdatedOn | date:'MMM d, y, h:mm a'}}</div>      <div class="px-24">
+      <div class="d-flex flex-ai-center px-16 py-8 flex-jc-space-between" *ngIf="isContentTrackable(activity, activity?.contentType)">
+        <div class="cursor-pointer" (click)="downloadCSVFile()">
+          <i class="download icon sb-color-primary"></i>
+          <span class="download-text">{{resourceService?.frmelmnts?.lbl?.downloadAsCSV </span>
+          </div>
+        <span class="fxsmall"> {{ resourceService?.frmelmnts?.lbl?.LastUpdated }}: {{memberListUpdatedOn | date:'MMM d, y, h:mm a'}} </span>
+      </div>
+        <div class="px-24">
       </div>
       <div class="d-flex flex-dc p-16">
         <div *ngFor="let member of memberListToShow" class="relative">
