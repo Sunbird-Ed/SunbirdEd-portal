@@ -156,7 +156,7 @@ describe('UploadCertificateService', () => {
     spyOn(publicDataService, 'post').and.returnValue(of({}));
     service.getCertificates(body);
     const data = {
-      url: 'content/v1/search',
+      url: 'composite/v1/search',
       data: body
     };
     expect(publicDataService.post).toHaveBeenCalledWith(data);
