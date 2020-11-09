@@ -559,10 +559,10 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@^3.4.3":
-  version "3.4.4"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.4.4.tgz#9a68a8225e32205a4705b702dcfc432f2d321746"
-  integrity sha512-DpOmM88dXmRbW7n5yZuwURsvEwjs9gUpafcMtbUchClX+MEwhSehB8i+Le16+Aa7fyClL6BK2DyPMVoEuTF3Uw==
+"@project-sunbird/client-services@^3.4.7":
+  version "3.4.7"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.4.7.tgz#b8bc2687e0d54b7a6573fd3033b567fa65932e17"
+  integrity sha512-Hey59x3ltWgoFZKvUqhZiy9TDz7LnRs1MVwklv5nSYsQsvBk76k1Voh61sxYLHidqr4BLw2F/1QhGhfdcijjaw==
   dependencies:
     "@project-sunbird/telemetry-sdk" "0.0.26"
     class-transformer "^0.3.1"
@@ -571,10 +571,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption@^3.4.3":
-  version "3.4.3"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.4.3.tgz#43600d8e727c92d42b4524ff2af0a8a65dede7b7"
-  integrity sha512-livhqSSynHL6tsbk/FbaM66YfId5ZJai4Qc+ly/KgDvViVYC4S2ASzGEMc1adtU37fktoh0wPI2/qfrWX7yi8Q==
+"@project-sunbird/common-consumption@^3.4.4":
+  version "3.4.5"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.4.5.tgz#5870c8fe9d7918aafe87877e9049544784d27970"
+  integrity sha512-P+5qMab7wkcLpUA+NkkTMQY033WV999wPZL8dH4Yip/IVUkEuXpByPIXEm+wA+UWsHaWKvKKy56VZ85vrPGblw==
   dependencies:
     tslib "^1.9.0"
 
@@ -4132,6 +4132,11 @@ fileset@^2.0.3:
     glob "^7.0.3"
     minimatch "^3.0.3"
 
+filesize@^4.0.0:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/filesize/-/filesize-4.2.1.tgz#ab1cb2069db5d415911c1a13e144c0e743bc89bc"
+  integrity sha512-bP82Hi8VRZX/TUBKfE24iiUGsB/sfm2WUrwTQyAzQrhO3V9IhcBBNBXMyzLY5orACxRyYJ3d2HeRVX+eFv4lmA==
+
 fill-range@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/fill-range/-/fill-range-4.0.0.tgz#d544811d428f98eb06a63dc402d2403c328c38f7"
@@ -7274,6 +7279,13 @@ ngx-device-detector@1.3.5:
   resolved "https://registry.yarnpkg.com/ngx-device-detector/-/ngx-device-detector-1.3.5.tgz#febd134cc58c2a61e83bec5491d1e2f429bfde67"
   integrity sha512-u/h/HGVTqOxweLSKQmXoOLHsYldSDAQePrMC6sa3WGAECoAR6S7W1QuwdNN1cj7NBdfY0wxar9MQ3MV7DiFfkg==
 
+ngx-filesize@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/ngx-filesize/-/ngx-filesize-1.1.4.tgz#acd690ec20c7942254b3315fefabdcc65397645f"
+  integrity sha512-eqh9UCLX/lIsnc+IrdVL7bqmF945oBzEtaESM8jFHTriwZTD6dFd3gM53cdE4gFdARxNnHkzdE+eoxGehFP94A==
+  dependencies:
+    filesize "^4.0.0"
+
 ngx-infinite-scroll@^8.0.2:
   version "8.0.2"
   resolved "https://registry.yarnpkg.com/ngx-infinite-scroll/-/ngx-infinite-scroll-8.0.2.tgz#ab527962f179b00f7b57c37cc0c8aba1bf88b131"
@@ -10099,14 +10111,6 @@ sunbird-chatbot-client@0.0.6:
   resolved "https://registry.yarnpkg.com/sunbird-chatbot-client/-/sunbird-chatbot-client-0.0.6.tgz#0b8a38e73ce3e1cb7f2f1cf89ec2ba4b2f73aecf"
   integrity sha512-Wonibbu+QapWD0YqEweu0+3BhgbWb4+S7bsFZTcJRnqcPeFFm6gIH0CKc07BPJlS6i9BPR70NIgM8NidWbV7QQ==
   dependencies:
-    tslib "^1.9.0"
-
-sunbird-pdf-player@0.0.15:
-  version "0.0.15"
-  resolved "https://registry.yarnpkg.com/sunbird-pdf-player/-/sunbird-pdf-player-0.0.15.tgz#51d2562e0b64b87cf88ebdcc4e8a2af8d5c6f785"
-  integrity sha512-qWHNnqEhF440xBFlC+E8GmAg6NyLQjfLrq3Dqj3uvc8KrP6ddphfPsS9kyXg5kknqplbafk2PYsfJGlLtDV+Iw==
-  dependencies:
-    ngx-extended-pdf-viewer "^4.1.2"
     tslib "^1.9.0"
 
 supports-color@^2.0.0:
