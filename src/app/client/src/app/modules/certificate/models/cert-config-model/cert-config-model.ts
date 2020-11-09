@@ -69,6 +69,10 @@ export class CertConfigModel {
             'name': _.get(rawFormValues , 'authoritySignature_1'),
         });
         }
+        let issuer = _.get(certificate, 'issuer');
+        if (typeof issuer === 'string') {
+            issuer = JSON.parse(issuer);
+        }
         const requestBody = {
             'request': {
                 'asset': {
@@ -81,7 +85,7 @@ export class CertConfigModel {
                     'mediaType': 'image',
                     'certType': 'cert template',
                     'channel': channel,
-                    'issuer': JSON.parse(certificate.issuer),
+                    'issuer': issuer,
                     'signatoryList': signatoryList
                 }
             }

@@ -95,7 +95,7 @@ export class UploadCertificateService {
       url: this.configService.urlConFig.URLS.CONTENT.CREATE,
       data: body
     };
-    return this.publicDataService.post(option);
+    return this.contentService.post(option);
   }
 
   /**
@@ -108,7 +108,7 @@ export class UploadCertificateService {
       url: `${this.configService.urlConFig.URLS.CERTIFICATE.UPLOAD_CERT_TEMPLATE}/${identifier}`,
       data: formData
     };
-    return this.publicDataService.post(option);
+    return this.contentService.post(option);
   }
 
   getSvg(path): Promise<any> {
