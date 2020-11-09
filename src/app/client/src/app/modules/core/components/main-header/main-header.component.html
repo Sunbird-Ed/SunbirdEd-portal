@@ -362,6 +362,12 @@
               </svg></i>
               <span>{{resourceService?.frmelmnts?.lbl?.manageLocation}}</span>
             </li>
+            <li class="list-item" (click)="toggleSideMenu(false);" routerLink="/desktop/telemetry">
+              <i class="icon-svg icon-svg--sm icon-manage mr-8"><svg class="icon icon-svg--primary">
+                <use xlink:href="./assets/images/sprite.svg#manage"></use>
+              </svg></i>
+              <span>{{resourceService?.frmelmnts?.lbl?.desktop?.syncTelemetry}}</span>
+            </li>
             <li class="list-item" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata"
              (click)="toggleSideMenu(false);navigate('/faq')">
               <i class="icon-svg icon-svg--sm icon-help mr-8"><svg class="icon icon-svg--primary">

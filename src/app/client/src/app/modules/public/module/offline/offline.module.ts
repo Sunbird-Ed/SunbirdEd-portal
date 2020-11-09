@@ -11,7 +11,8 @@ import { OfflineRoutingModule } from './offline-routing.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import {
     LibraryComponent, LibraryFiltersComponent,
-    LoadContentComponent, NoContentComponent, ConnectionStatusComponent, InfoCardComponent
+    LoadContentComponent, NoContentComponent, ConnectionStatusComponent, InfoCardComponent,
+    TelemetryComponent, TelemetryImportComponent
 } from './components';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { FileSizeModule } from 'ngx-filesize';
@@ -21,6 +22,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { NgInviewModule } from 'angular-inport';
+
 @NgModule({
     imports: [
         CommonModule,
@@ -52,6 +54,8 @@ import { NgInviewModule } from 'angular-inport';
         NoContentComponent,
         LoadContentComponent,
         InfoCardComponent,
+        TelemetryComponent,
+        TelemetryImportComponent
     ],
     exports: [LibraryFiltersComponent, NoContentComponent, ConnectionStatusComponent, InfoCardComponent]
 })
