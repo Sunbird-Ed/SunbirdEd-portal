@@ -407,10 +407,7 @@ export class AppComponent implements OnInit, OnDestroy {
       if (_.has(this.userService.userProfile, 'promptTnC') && _.has(this.userService.userProfile, 'tncLatestVersion') &&
         _.has(this.userService.userProfile, 'tncLatestVersion') && this.userService.userProfile.promptTnC === true) {
         this.showTermsAndCondPopUp = true;
-      } else if (!this.userService.isCustodianUser) {
-       this.consentConfig = { tncLink: '', tncText: this.resourceService.frmelmnts.lbl.nonCustodianTC };
-       this.showGlobalConsentPopUpSection = true;
-     } else {
+      } else {
        this.checkFrameworkSelected();
      }
   }
