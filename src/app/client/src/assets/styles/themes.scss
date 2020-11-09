@@ -1188,4 +1188,7 @@ html[layout='joy'] {
     }
   }
 
-
+  html[layout='joy'] .sb-btn-nolayer {
+    height: 2.0rem !important;
+    box-shadow: none;
+}

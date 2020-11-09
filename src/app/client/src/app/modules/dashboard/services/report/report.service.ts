@@ -18,6 +18,8 @@ export class ReportService {
 
   private _superAdminSlug: string;
 
+  private cachedMapping = {};
+
   constructor(private sanitizer: DomSanitizer, private usageService: UsageService, private userService: UserService,
     private configService: ConfigService, private baseReportService: BaseReportService, private permissionService: PermissionService,
     private courseProgressService: CourseProgressService, private searchService: SearchService,
@@ -378,61 +380,73 @@ export class ReportService {
       $slug: {
         value: _.get(this.userService, 'userProfile.rootOrg.slug'),
         masterData: () => {
-          const req = {
-            filters: { isRootOrg: true },
-            fields: ['id', 'channel', 'slug', 'orgName'],
-            pageNumber: 1,
-            limit: 10000
-          };
-          return this.searchService.orgSearch(req).pipe(
-            map(res => _.map(_.get(res, 'result.response.content'), 'slug')),
-            shareReplay(1)
-          );
+          if (!this.cachedMapping.hasOwnProperty('$slug')) {
+            const req = {
+              filters: { isRootOrg: true },
+              fields: ['id', 'channel', 'slug', 'orgName'],
+              pageNumber: 1,
+              limit: 10000
+            };
+            this.cachedMapping['$slug'] = this.searchService.orgSearch(req).pipe(
+              map(res => _.map(_.get(res, 'result.response.content'), 'slug')),
+              shareReplay(1)
+            );
+          }
+          return this.cachedMapping['$slug'];
         }
       },
       $board: {
         value: _.get(this.userService, 'userProfile.framework.board[0]'),
         masterData: () => {
-          return this.frameworkService.getChannel(_.get(this.userService, 'hashTagId'))
-            .pipe(
-              mergeMap(channel => this.frameworkService.getFrameworkCategories(_.get(channel, 'result.channel.defaultFramework'))
-                .pipe(
-                  map(framework => {
-                    const frameworkData = _.get(framework, 'result.framework');
-                    const boardCategory = _.find(frameworkData.categories, ['code', 'board']);
-                    if (!boardCategory) { return of([]); }
-                    return _.map(boardCategory.terms, 'name');
-                  }),
-                  shareReplay(1),
-                )),
-              catchError(err => of([]))
-            );
+          if (!this.cachedMapping.hasOwnProperty('$board')) {
+            this.cachedMapping['$board'] = this.frameworkService.getChannel(_.get(this.userService, 'hashTagId'))
+              .pipe(
+                mergeMap(channel => this.frameworkService.getFrameworkCategories(_.get(channel, 'result.channel.defaultFramework'))
+                  .pipe(
+                    map(framework => {
+                      const frameworkData = _.get(framework, 'result.framework');
+                      const boardCategory = _.find(frameworkData.categories, ['code', 'board']);
+                      if (!boardCategory) { return of([]); }
+                      return _.map(boardCategory.terms, 'name');
+                    }),
+                    shareReplay(1),
+                  )),
+                catchError(err => of([]))
+              );
+          }
+          return this.cachedMapping['$board'];
         }
       },
       $state: {
         value: _.get(_.find(_.get(this.userService, 'userProfile.userLocations'), ['type', 'state']), 'name'),
         masterData: () => {
-          const requestData = { 'filters': { 'type': 'state' } };
-          return this.profileService.getUserLocation(requestData).pipe(
-            map(apiResponse => _.map(_.get(apiResponse, 'result.response'), state => _.get(state, 'name'))),
-            shareReplay(1),
-            catchError(err => of([]))
-          );
+          if (!this.cachedMapping.hasOwnProperty('$state')) {
+            const requestData = { 'filters': { 'type': 'state' } };
+            this.cachedMapping['$state'] = this.profileService.getUserLocation(requestData).pipe(
+              map(apiResponse => _.map(_.get(apiResponse, 'result.response'), state => _.get(state, 'name'))),
+              shareReplay(1),
+              catchError(err => of([]))
+            );
+          }
+          return this.cachedMapping['$state'];
         }
       },
       $channel: {
         value: _.get(this.userService, 'userProfile.rootOrg.hashTagId'),
         masterData: () => {
-          const req = {
-            filters: { isRootOrg: true },
-            fields: ['id', 'channel', 'slug', 'orgName'],
-            pageNumber: 1,
-            limit: 10000
-          };
-          return this.searchService.orgSearch(req).pipe(
-            map(res => _.map(_.get(res, 'result.response.content'), 'id')),
-            shareReplay(1)
-          );
+          if (!this.cachedMapping.hasOwnProperty('$channel')) {
+            const req = {
+              filters: { isRootOrg: true },
+              fields: ['id', 'channel', 'slug', 'orgName'],
+              pageNumber: 1,
+              limit: 10000
+            };
+            this.cachedMapping['$channel'] = this.searchService.orgSearch(req).pipe(
+              map(res => _.map(_.get(res, 'result.response.content'), 'id')),
+              shareReplay(1)
+            );
+          }
+          return this.cachedMapping['$channel'];
         }
       }
     };
