@@ -10,9 +10,8 @@ import { SharedModule } from '@sunbird/shared';
 import { OfflineRoutingModule } from './offline-routing.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import {
-    LibraryComponent, LibraryFiltersComponent,
-    LoadContentComponent, NoContentComponent, ConnectionStatusComponent, InfoCardComponent,
-    TelemetryComponent, TelemetryImportComponent
+    LibraryComponent, LibraryFiltersComponent, ContentManagerComponent, ContentManagerInfoPopUpComponent,
+    LoadContentComponent, NoContentComponent, ConnectionStatusComponent, InfoCardComponent, TelemetryComponent, TelemetryImportComponent
 } from './components';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { FileSizeModule } from 'ngx-filesize';
@@ -22,7 +21,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { NgInviewModule } from 'angular-inport';
-
+import { ContentSearchModule } from '@sunbird/content-search';
 @NgModule({
     imports: [
         CommonModule,
@@ -44,7 +43,8 @@ import { NgInviewModule } from 'angular-inport';
         SuiDimmerModule,
         NgInviewModule,
         SuiCollapseModule,
-        SuiDropdownModule
+        SuiDropdownModule,
+        ContentSearchModule,
     ],
     providers: [DeviceDetectorService, ContentManagerService],
     declarations: [
@@ -55,7 +55,12 @@ import { NgInviewModule } from 'angular-inport';
         LoadContentComponent,
         InfoCardComponent,
         TelemetryComponent,
-        TelemetryImportComponent
+        TelemetryImportComponent,
+        ContentManagerInfoPopUpComponent,
+        ContentManagerComponent,
+    ],
+    entryComponents: [
+        ContentManagerComponent,
     ],
     exports: [LibraryFiltersComponent, NoContentComponent, ConnectionStatusComponent, InfoCardComponent]
 })

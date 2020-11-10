@@ -1,0 +1,23 @@
+@import "variables";
+@import "mixins/mixins";
+
+.warning-ecar-list {
+    width: 100%;
+    line-height: normal;
+    border-top: calculateRem(1px) solid #ddd;
+    font-size:calculateRem(14px);
+}
+.sb-modal-content .warning-ecar-list:last-of-type{
+    border-bottom: calculateRem(1px) solid #ddd;
+}
+.import-content{
+    color:var(--tertiary-100); 
+}
+.custom-height {
+    max-height: calculateRem(320px);
+    overflow-y: auto;
+    width: 100%;
+} 
+.min-width-18 {
+    min-width: 18em !important;
+}

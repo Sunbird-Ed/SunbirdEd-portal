@@ -5,7 +5,8 @@ import { tap, catchError, filter, takeUntil } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 
 import {
-    OfflineCardService, ResourceService, ToasterService, ConfigService, UtilService, ICaraouselData, NavigationHelperService, ILanguage
+    OfflineCardService, ResourceService, ToasterService, ConfigService, UtilService, ICaraouselData, 
+    NavigationHelperService, ILanguage,  LayoutService, COLUMN_TYPE
 } from '@sunbird/shared';
 import { SearchService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
@@ -62,6 +63,13 @@ export class LibraryComponent implements OnInit, OnDestroy {
     public cardInteractCdata: any;
     public contentData: any;
 
+    layoutConfiguration: any;
+    FIRST_PANEL_LAYOUT;
+    SECOND_PANEL_LAYOUT;
+    pageTitle;
+    svgToDisplay;
+    pageTitleSrc;
+
     @HostListener('window:scroll', []) onScroll(): void {
         if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
             && this.pageSections.length < this.carouselMasterData.length) {
@@ -83,11 +91,35 @@ export class LibraryComponent implements OnInit, OnDestroy {
         public telemetryService: TelemetryService,
         public contentManagerService: ContentManagerService,
         private offlineCardService: OfflineCardService,
-        private systemInfoService: SystemInfoService
+        private systemInfoService: SystemInfoService,
+        public layoutService: LayoutService
     ) {
      }
 
+    redoLayout() {
+        if (this.layoutConfiguration != null) {
+            this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
+            this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
+        } else {
+            this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
+            this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
+        }
+    }
+
+    initLayout() {
+        this.layoutConfiguration = this.layoutService.initlayoutConfig();
+        this.redoLayout();
+        this.layoutService.switchableLayout().
+            pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+            if (layoutConfig != null) {
+            this.layoutConfiguration = layoutConfig.layout;
+            }
+            this.redoLayout();
+        });
+    }
+
     ngOnInit() {
+        this.initLayout();
         this.isBrowse = Boolean(this.router.url.includes('browse'));
         this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
             this.infoData = {
