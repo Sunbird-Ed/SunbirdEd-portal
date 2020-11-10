@@ -68,7 +68,7 @@
       <div class="d-flex flex-ai-center px-16 py-8 flex-jc-space-between" *ngIf="isContentTrackable(activity, activity?.contentType)">
         <div class="cursor-pointer" (click)="downloadCSVFile()">
           <i class="download icon sb-color-primary"></i>
-          <span class="download-text">{{resourceService?.frmelmnts?.lbl?.downloadAsCSV </span>
+          <span class="download-text">{{resourceService?.frmelmnts?.lbl?.downloadAsCSV}}</span>
           </div>
         <span class="fxsmall"> {{ resourceService?.frmelmnts?.lbl?.LastUpdated }}: {{memberListUpdatedOn | date:'MMM d, y, h:mm a'}} </span>
       </div>

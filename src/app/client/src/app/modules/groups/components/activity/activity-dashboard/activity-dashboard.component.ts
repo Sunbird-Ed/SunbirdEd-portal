@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService, SearchService } from '@sunbird/core';
-import { ResourceService, ToasterService, LayoutService } from '@sunbird/shared';
+import { ResourceService, ToasterService, LayoutService, UtilService } from '@sunbird/shared';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { combineLatest, Subject } from 'rxjs';
@@ -9,8 +9,6 @@ import { concatMap, debounceTime, delay, map, takeUntil, tap } from 'rxjs/operat
 import { GroupsService } from './../../../services';
 import { IActivity } from './../activity-list/activity-list.component';
 import { PublicPlayerService } from '@sunbird/public';
-import * as dayjs from 'dayjs';
-import { ExportToCsv } from 'export-to-csv';
 
 @Component({
   selector: 'app-activity-dashboard',
@@ -52,6 +50,7 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
     private layoutService: LayoutService,
     private playerService: PublicPlayerService,
     private searchService: SearchService,
+    private utilService: UtilService
   ) { }
 
   ngOnInit() {
@@ -268,20 +267,7 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
         progress: _.get(member, 'progress') + '%'
       };
     });
-
-    const options = {
-      filename: `${_.snakeCase(_.get(this.selectedCourse, 'name'))}_${dayjs().format('YYYY_MM_DD_HH_mm')}`,
-      fieldSeparator: ',',
-      quoteStrings: '"',
-      decimalSeparator: '.',
-      showLabels: true,
-      showTitle: false,
-      useTextFile: false,
-      useBom: true,
-      useKeysAsHeaders: true
-    };
-    this.csvExporter = new ExportToCsv(options);
-    this.csvExporter.generateCsv(data);
+    this.utilService.downloadCSV(this.selectedCourse, data);
   }
 
   ngOnDestroy() {
