@@ -182,8 +182,10 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
         const templatList = _.get(certTemplateData, 'result.content');
         this.certTemplateList = templatList;
         this.selectedTemplate = templatList.find(templat => this.templateIdentifier && (templat.identifier === this.templateIdentifier));
-        _.remove(this.certTemplateList, (cert) => _.get(cert, 'identifier') === _.get(this.selectedTemplate , 'identifier'));
-        this.certTemplateList.unshift(this.selectedTemplate);
+        if (this.selectedTemplate) {
+          _.remove(this.certTemplateList, (cert) => _.get(cert, 'identifier') === _.get(this.selectedTemplate , 'identifier'));
+          this.certTemplateList.unshift(this.selectedTemplate);
+        }
       }),
       catchError(error => {
         return of({});
