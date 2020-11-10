@@ -65,3 +65,23 @@
     margin-top: calculateRem(8px);
   }
 }
+
+// profile certificate modal styles
+.profile-section-content{
+  margin: 0 calculateRem(48px);
+  @include respond-below(sm) {
+    margin: 0;
+  }
+  .profile-info{
+    span{
+      &:first-child{
+        font-size: calculateRem(12px);
+      }
+      color: var(--gray);
+      font-size: calculateRem(20px);
+    }
+  }
+  .profile-info-para{
+    font-size: calculateRem(14px);
+  }
+}
