@@ -152,8 +152,11 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   resumeCourse(showExtUrlMsg?: boolean) {
-    if (false) {
-      this.showChangeUserNamePopup = true;
+    const IsStoredLocally = localStorage.getItem('isCertificateNameUpdated');
+    const isSsoUser = true;
+
+    if (!IsStoredLocally && isSsoUser) {
+      this.courseConsumptionService.showChangeUserNamePopup = true;
     } else {
       this.courseConsumptionService.launchPlayer.emit();
       this.coursesService.setExtContentMsg(showExtUrlMsg);
