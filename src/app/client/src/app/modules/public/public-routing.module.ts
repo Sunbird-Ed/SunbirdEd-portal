@@ -10,7 +10,7 @@ const routes: Routes = [
     data: { telemetry: { env: 'public', pageid: 'landing-page', type: 'edit', subtype: 'paginate' } }
   },
   {
-    path: 'mydownloads', loadChildren: './module/offline/offline.module#OfflineModule'
+    path: 'desktop', loadChildren: './module/offline/offline.module#OfflineModule'
   },
   {
     path: 'explore', loadChildren: './module/explore/explore.module#ExploreModule'

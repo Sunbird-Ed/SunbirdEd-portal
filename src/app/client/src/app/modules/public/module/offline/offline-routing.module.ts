@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { LibraryComponent } from './components';
+import { LibraryComponent, TelemetryComponent } from './components';
 
 const routes: Routes = [
     {
@@ -9,6 +9,20 @@ const routes: Routes = [
                 env: 'library', pageid: 'library', type: 'view'
             },
             softConstraints: { badgeAssertions: 98, board: 99, channel: 100 }
+        }
+    },
+    {
+        path: 'mydownloads', component: LibraryComponent, data: {
+            telemetry: {
+                env: 'library', pageid: 'library', type: 'view'
+            },
+            softConstraints: { badgeAssertions: 98, board: 99, channel: 100 }
+        }
+    }, {
+        path: 'telemetry', component: TelemetryComponent, data: {
+            telemetry: {
+                env: 'telemetry', pageid: 'telemetry', type: 'view'
+            }
         }
     }
 ];
