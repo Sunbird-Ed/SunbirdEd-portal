@@ -20,6 +20,7 @@ export class GlobalConsentPiiComponent implements OnInit {
   @Input() type;
   @Input() showConsentPopup;
   @Input() consentConfig;
+  @Input() isglobalConsent;
   @ViewChild('profileDetailsModal') profileDetailsModal;
   @Output() close = new EventEmitter<any>();
   consentPii = 'Yes';
@@ -52,7 +53,7 @@ export class GlobalConsentPiiComponent implements OnInit {
     this.usersProfile = _.cloneDeep(this.userService.userProfile);
     this.getUserInformation();
     this.getUserConsent();
-    if (this.showConsentPopup) {
+    if (this.isglobalConsent) {
       this.showSettingsPage = false;
     } else {
       this.showSettingsPage = true;

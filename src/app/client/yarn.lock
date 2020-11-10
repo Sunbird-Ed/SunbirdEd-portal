@@ -559,10 +559,10 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@^3.4.7":
-  version "3.4.7"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.4.7.tgz#b8bc2687e0d54b7a6573fd3033b567fa65932e17"
-  integrity sha512-Hey59x3ltWgoFZKvUqhZiy9TDz7LnRs1MVwklv5nSYsQsvBk76k1Voh61sxYLHidqr4BLw2F/1QhGhfdcijjaw==
+"@project-sunbird/client-services@^3.4.9":
+  version "3.4.9"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.4.9.tgz#299d2e685869704eb7aa8c7118184a71f01a3400"
+  integrity sha512-r6pNfEZMICJyy6ZKPRTflOwPQLm2tMqqSkB0nip//KqG5TyoSaiPzAs8RPbJaC2HW7CPChxLQDAcmN0pGO0yLw==
   dependencies:
     "@project-sunbird/telemetry-sdk" "0.0.26"
     class-transformer "^0.3.1"
@@ -571,10 +571,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption@^3.4.4":
-  version "3.4.5"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.4.5.tgz#5870c8fe9d7918aafe87877e9049544784d27970"
-  integrity sha512-P+5qMab7wkcLpUA+NkkTMQY033WV999wPZL8dH4Yip/IVUkEuXpByPIXEm+wA+UWsHaWKvKKy56VZ85vrPGblw==
+"@project-sunbird/common-consumption@^3.4.6":
+  version "3.4.6"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.4.6.tgz#e1963d57764af82f6f6f97f019c81b4d58a22204"
+  integrity sha512-Sf9jEdSxijbF0bY0WyZF/83LG1YxLAjDfin9BGumtt4pt8mmdaKj0mMqHcho1xtaTk4EBWIOgRS8Jt5Ms2rb5g==
   dependencies:
     tslib "^1.9.0"
 
