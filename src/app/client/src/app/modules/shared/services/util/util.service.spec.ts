@@ -16,6 +16,8 @@ import {TestBed, inject } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import { UtilService } from './util.service';
 import { ResourceService } from '../resource/resource.service';
+import { ExportToCsv } from 'export-to-csv';
+import * as _ from 'lodash-es';
 
 const resourceBundle = {
   messages: {
@@ -298,6 +300,18 @@ describe('UtilService', () => {
     const content = service.reduceTreeProps(requiredProperties, ['mimeType', 'visibility', 'identifier', 'selected', 'name', 'contentType', 'children',
     'primaryCategory', 'additionalCategory', 'parent']);
     expect(content).toEqual(requiredProperties);
+  }));
+
+  it ('should create instance of ExportToCsv', inject([UtilService], (service: UtilService)  => {
+    const data = [{
+      identifier: '87cb1e5b-16cf-4160-9a2c-7384da0ae97f',
+      indexOfMember: 0,
+      initial: 'C',
+      progress: '0',
+      title: 'Content Creactor(You)'
+    }];
+    service.downloadCSV(contentList[0], data);
+    expect(service['csvExporter'] instanceof ExportToCsv).toBeTruthy();
   }));
 
 });
