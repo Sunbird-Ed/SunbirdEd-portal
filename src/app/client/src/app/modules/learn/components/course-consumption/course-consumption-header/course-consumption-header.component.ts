@@ -22,6 +22,7 @@ import { NavigationHelperService } from '@sunbird/shared';
 export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   sharelinkModal: boolean;
+  showChangeUserNamePopup: boolean;
   /**
    * contains link that can be shared
    */
@@ -151,8 +152,12 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   resumeCourse(showExtUrlMsg?: boolean) {
-    this.courseConsumptionService.launchPlayer.emit();
-    this.coursesService.setExtContentMsg(showExtUrlMsg);
+    if (false) {
+      this.showChangeUserNamePopup = true;
+    } else {
+      this.courseConsumptionService.launchPlayer.emit();
+      this.coursesService.setExtContentMsg(showExtUrlMsg);
+    }
   }
 
   flagCourse() {
