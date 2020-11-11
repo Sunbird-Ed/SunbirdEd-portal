@@ -4,6 +4,8 @@ import * as _ from 'lodash-es';
 import { ICard, ILanguage } from '@sunbird/shared';
 import { Subject } from 'rxjs';
 import { ResourceService } from '../resource/resource.service';
+import * as dayjs from 'dayjs';
+import { ExportToCsv } from 'export-to-csv';
   // Dependency injection creates new instance each time if used in router sub-modules
 @Injectable()
 export class UtilService {
@@ -14,6 +16,7 @@ export class UtilService {
   public languageChange = new EventEmitter<ILanguage>();
   public hideHeaderTabs = new EventEmitter<boolean>();
   public searchKeyword = new EventEmitter<string>();
+  private csvExporter: any;
 
   constructor(private resourceService: ResourceService) {
     if (!UtilService.singletonInstance) {
@@ -62,7 +65,8 @@ export class UtilService {
       hoverData: data.hoverData,
       board: data.board || '',
       identifier: data.identifier,
-      mimeType: data.mimeType
+      mimeType: data.mimeType,
+      primaryCategory: data.primaryCategory
 
     };
     if (data.desktopAppMetadata) {
@@ -374,5 +378,21 @@ export class UtilService {
       }
     });
     return treeModel.model;
+  }
+
+  downloadCSV(collection, data) {
+      const options = {
+        filename: `${_.snakeCase(_.get(collection, 'name'))}_${dayjs().format('YYYY_MM_DD_HH_mm')}`,
+        fieldSeparator: ',',
+        quoteStrings: '"',
+        decimalSeparator: '.',
+        showLabels: true,
+        showTitle: false,
+        useTextFile: false,
+        useBom: true,
+        useKeysAsHeaders: true
+      };
+      this.csvExporter = new ExportToCsv(options);
+      this.csvExporter.generateCsv(data);
   }
 }

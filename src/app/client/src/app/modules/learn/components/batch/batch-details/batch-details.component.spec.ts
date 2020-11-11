@@ -155,7 +155,7 @@ describe('BatchDetailsComponent', () => {
     component.enrollBatch({identifier: '123'});
     const routeQueryParams = {
       relativeTo: component.activatedRoute,
-      queryParams: { autoEnroll: true }
+      queryParams: { autoEnroll: true , textbook: undefined}
     };
     expect(route.navigate).toHaveBeenCalledWith(['enroll/batch', '123'], routeQueryParams);
   });
@@ -318,7 +318,7 @@ describe('BatchDetailsComponent', () => {
     component.batchStatus = 1;
     component.getSelectedBatches();
     expect(component.batchList.length).toEqual(2);
-    expect(component.hideCreateBatch).toEqual(true);
+    expect(component.showCreateBatchBtn).toEqual(false);
   });
 
   it('should disable "createbatch" for upcoming batchList', () => {

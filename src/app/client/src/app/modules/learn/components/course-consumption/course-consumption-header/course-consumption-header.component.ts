@@ -14,6 +14,8 @@ import { IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
 import * as dayjs from 'dayjs';
 import { GroupsService } from '../../../../groups/services/groups/groups.service';
 import { NavigationHelperService } from '@sunbird/shared';
+import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
+
 @Component({
   selector: 'app-course-consumption-header',
   templateUrl: './course-consumption-header.component.html',
@@ -22,6 +24,7 @@ import { NavigationHelperService } from '@sunbird/shared';
 export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   sharelinkModal: boolean;
+  showChangeUserNamePopup: boolean;
   /**
    * contains link that can be shared
    */
@@ -151,8 +154,12 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   resumeCourse(showExtUrlMsg?: boolean) {
-    this.courseConsumptionService.launchPlayer.emit();
-    this.coursesService.setExtContentMsg(showExtUrlMsg);
+    if (false) {
+      this.showChangeUserNamePopup = true;
+    } else {
+      this.courseConsumptionService.launchPlayer.emit();
+      this.coursesService.setExtContentMsg(showExtUrlMsg);
+    }
   }
 
   flagCourse() {
@@ -191,6 +198,9 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     clearInterval(this.interval);
     this.unsubscribe.next();
     this.unsubscribe.complete();
+    if (CsGroupAddableBloc.instance.initialised) {
+      CsGroupAddableBloc.instance.dispose();
+    }
   }
   getBatchStatus() {
    /* istanbul ignore else */
