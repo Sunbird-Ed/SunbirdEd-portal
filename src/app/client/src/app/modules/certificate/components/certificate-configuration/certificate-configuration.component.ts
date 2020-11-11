@@ -201,12 +201,8 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     return this.certificateService.getBatchDetails(batchId).pipe(
       tap(batchDetails => {
         this.batchDetails = _.get(batchDetails, 'result.response');
-        // deleting the empty cert_templates object
-        if (_.isEmpty(this.batchDetails.cert_templates)) {
-          delete(this.batchDetails.cert_templates);
-        }
-
-        if (!_.get(this.batchDetails, 'cert_templates')) {
+        const cert_templates = _.get(this.batchDetails, 'cert_templates');
+        if (_.isEmpty(cert_templates)) {
           this.getCertConfigFields();
         } else {
           // Certifciate has attached to a batch
