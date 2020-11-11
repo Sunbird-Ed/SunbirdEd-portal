@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { filter, first, takeUntil } from 'rxjs/operators';
 import {
   UserService,
@@ -24,6 +25,7 @@ import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
 import { Subject, zip, forkJoin } from 'rxjs';
 import { EXPLORE_GROUPS, MY_GROUPS } from '../../../public/module/group/components/routerLinks';
+import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 
 declare var jQuery: any;
 type reportsListVersionType = 'v1' | 'v2';
@@ -151,7 +153,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     private telemetryService: TelemetryService, private programsService: ProgramsService,
     private courseService: CoursesService, private utilService: UtilService, public layoutService: LayoutService,
     public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef,
-    public navigationHelperService: NavigationHelperService, private deviceRegisterService: DeviceRegisterService) {
+    public navigationHelperService: NavigationHelperService,
+    private deviceRegisterService: DeviceRegisterService, private http: HttpClient, private sanitizer: DomSanitizer,) {
     try {
       this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
       this.reportsListVersion = (<HTMLInputElement>document.getElementById('reportsListVersion')).value as reportsListVersionType;
@@ -625,12 +628,20 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       }
       this.deviceProfile = _.get(deviceProfile, 'result');
       this.showLocationPopup = true;
-    }, (err) => { 
+    }, (err) => {
       this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
     });
   }
 
   locationSubmit() {
     this.showLocationPopup = false;
+  }
+
+  openWorkspace() {
+    const userName = _.get(this.userService.userProfile, 'userName');
+    this.userService.getUserSessionId(userName).subscribe((data: any) => {
+      const workspaceUrl = `${environment.vdnWorkspace}/v1/sso/login${data.id}&returnTo=/sourcing`;
+      window.open(workspaceUrl);
+    });
   }
 }

@@ -426,4 +426,8 @@ export class UserService {
     };
     return this.learnerService.getWithHeaders(option);
   }
+
+  getUserSessionId(userName) {
+    return this.http.get(`/get/user/sessionId?userName=` + userName);
+  }
 }

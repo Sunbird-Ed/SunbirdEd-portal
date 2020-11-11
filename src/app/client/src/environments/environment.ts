@@ -6,5 +6,6 @@
 export const environment = {
   env: 'dev',
   production: false,
+  vdnWorkspace: 'https://dock.sunbirded.org',
   enableTelemetryValidation: true
 };

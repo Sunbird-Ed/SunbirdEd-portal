@@ -299,7 +299,7 @@
           <li class="list-item" [class.active]="router.isActive('/workspace')" appTelemetryInteract
             [telemetryInteractEdata]="workspaceMenuIntractEdata" (click)="toggleSideMenu(false)"
             *ngIf='isLayoutAvailable() && permissionService.permissionAvailable' appPermission
-            [permission]='workSpaceRole' [routerLink]="[navigateToWorkspace()]" tabindex="0">
+            [permission]='workSpaceRole' (click)="openWorkspace()" tabindex="0">
             <i class="icon-svg icon-svg--sm icon-workspace mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#workspace"></use>
               </svg></i>

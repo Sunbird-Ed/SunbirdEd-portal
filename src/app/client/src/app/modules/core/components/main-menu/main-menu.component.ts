@@ -8,6 +8,9 @@ import { CacheService } from 'ng2-cache-service';
 import { first, filter, tap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { merge } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '@sunbird/environment';
+
 declare var jQuery: any;
 
 /**
@@ -74,7 +77,8 @@ export class MainMenuComponent implements OnInit {
   */
   constructor(resourceService: ResourceService, userService: UserService, router: Router, public activatedRoute: ActivatedRoute,
     permissionService: PermissionService, config: ConfigService, private cacheService: CacheService,
-    private programsService: ProgramsService, public layoutService: LayoutService, public telemetryService: TelemetryService) {
+    private programsService: ProgramsService, public layoutService: LayoutService,
+    public telemetryService: TelemetryService, private http: HttpClient) {
     this.resourceService = resourceService;
     this.userService = userService;
     this.permissionService = permissionService;
@@ -231,5 +235,13 @@ export class MainMenuComponent implements OnInit {
       }
     };
     this.telemetryService.interact(interactData);
+  }
+
+  openWorkspace() {
+    const userName = _.get(this.userService.userProfile, 'userName');
+    this.userService.getUserSessionId(userName).subscribe((data: any) => {
+      const workspaceUrl = `${environment.vdnWorkspace}/v1/sso/login${data.id}&returnTo=/sourcing`;
+      window.open(workspaceUrl);
+    });
   }
 }
