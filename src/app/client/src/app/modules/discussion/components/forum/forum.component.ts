@@ -32,7 +32,7 @@ export class ForumComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(){
-    document.body.className = "o-y-hide";
+    document.body.className = "o-y-auto";
   }
 
   getDiscussionUrl() {
