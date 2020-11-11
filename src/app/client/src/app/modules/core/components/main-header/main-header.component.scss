@@ -330,3 +330,13 @@ __textbooks {
   }
 
 }
+
+.notification-bell{
+  box-shadow: var(--sbt-box-shadow-6px);
+  border-radius: 50%;
+  background-color: var(--white);
+  img{
+    width: 2rem;
+    margin: 0.5rem;
+  }
+}

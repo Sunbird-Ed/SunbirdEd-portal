@@ -144,6 +144,32 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   locationTenantInfo: any = {};
   deviceProfile: any;
   isCustodianUser: boolean;
+  showNotificationModel = false;
+  notificationList = [
+    {
+      id: 'id_00000',
+      isRead: false,
+      displayTime: 789789,
+      actionData: {
+        appIcon: 'assets/common-consumption/images/book.png',
+        richText: '1 Sample description about the notification paragraph 1',
+        title: '1 Some title which is lengthy so it can overflow 1',
+        deepLink: 'http://staging.ntp.net.in/'
+      }
+    },
+    {
+      id: 'id_11111',
+      isRead: true,
+      displayTime: 789789,
+      actionData: {
+        appIcon: 'assets/common-consumption/images/book.png',
+        richText: '2 Sample description about the notification paragraph 2',
+        title: '2 Some title which is lengthy so it can overflow 2',
+        deepLink: 'http://staging.ntp.net.in/'
+      }
+    }
+  ];
+
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
     public orgDetailsService: OrgDetailsService, public formService: FormService,
@@ -632,5 +658,9 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
 
   locationSubmit() {
     this.showLocationPopup = false;
+  }
+
+  toggleInAppNotifications() {
+    this.showNotificationModel = !this.showNotificationModel;
   }
 }

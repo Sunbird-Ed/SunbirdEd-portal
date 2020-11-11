@@ -169,6 +169,27 @@
             <app-language-dropdown [layoutConfiguration]="layoutConfiguration" [languageRange]='languages'
               *ngIf="languages && showLanguageDropdown()">
             </app-language-dropdown>
+            <!-- Notification dropdown -->
+            <a class="profile-avtar p-0 ml-16" tabindex="0">
+              <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
+                <div class="notification-bell" name="Guest" *ngIf='!userProfile' (click)="toggleInAppNotifications()">
+                  <img src="./assets/images/notification.svg" alt="In App Notification">
+                </div>
+              </div>
+            </a>
+            <sui-modal
+              [mustScroll]="true" 
+              [isClosable]="true"
+              [transitionDuration]="0"
+              [size]="'small'"
+              class="sb-modal"
+              appBodyScroll
+              (dismissed)="showNotificationModel=false" 
+              *ngIf="showNotificationModel">
+              <div>
+                <sb-in-app-notification [notificationList]="notificationList"></sb-in-app-notification>
+              </div>
+            </sui-modal>
             <!--Avtar Dropdown-->
             <a class="profile-avtar p-0 ml-16" tabindex="0">
               <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
