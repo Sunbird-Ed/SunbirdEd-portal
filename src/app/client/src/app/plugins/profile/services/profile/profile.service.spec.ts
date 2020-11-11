@@ -37,26 +37,6 @@ describe('ProfileService', () => {
       expect(apiResponse.result.response).toBe('SUCCESS');
     });
   });
-  it('should call uploadMedia method', () => {
-    const learnerService = TestBed.get(LearnerService);
-    const profileService = TestBed.get(ProfileService);
-    spyOn(learnerService, 'post').and.returnValue(observableOf(mockRes.successData));
-    const request = new FormData;
-    profileService.uploadMedia(request).subscribe(apiResponse => {
-      expect(apiResponse.responseCode).toBe('OK');
-      expect(apiResponse.result.response).toBe('SUCCESS');
-    });
-  });
-  it('should call updateAvatar method', () => {
-    const learnerService = TestBed.get(LearnerService);
-    const profileService = TestBed.get(ProfileService);
-    spyOn(learnerService, 'post').and.returnValue(observableOf(mockRes.successData));
-    const request = new FormData;
-    profileService.updateAvatar(request).subscribe(apiResponse => {
-      expect(apiResponse.responseCode).toBe('OK');
-      expect(apiResponse.result.response).toBe('SUCCESS');
-    });
-  });
   it('should call updateProfile method', () => {
     const learnerService = TestBed.get(LearnerService);
     const profileService = TestBed.get(ProfileService);

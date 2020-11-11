@@ -54,6 +54,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
   public allTabData;
   public selectedFilters;
   public ADD_ACTIVITY_TO_GROUP = ADD_ACTIVITY_TO_GROUP;
+  private csGroupAddableBloc: CsGroupAddableBloc;
 
 
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
@@ -77,9 +78,14 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     private groupsService: GroupsService,
     public layoutService: LayoutService,
     public courseConsumptionService: CourseConsumptionService
-  ) { }
+  ) {
+    this.csGroupAddableBloc = CsGroupAddableBloc.instance;
+    }
 
   ngOnInit() {
+    if (!this.csGroupAddableBloc.initialised) {
+      this.csGroupAddableBloc.init();
+    }
     CsGroupAddableBloc.instance.state$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       this.groupAddableBlocData = data;
     });
@@ -200,15 +206,17 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
 
   private fetchContents() {
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
-    filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
-    filters.contentType = [_.get(this.groupAddableBlocData, 'params.contentType')];
+    const searchQuery = _.get(this.groupAddableBlocData, 'params.searchQuery.request.filters');
+    const user = _.omit(_.get(this.userService.userProfile, 'framework'), 'id');
+    filters = {...filters, ...searchQuery, ...user};
     const option: any = {
-      filters: filters,
+      filters: _.omit(filters, 'key'),
       fields: _.get(this.allTabData, 'search.fields'),
       limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
       pageNumber: this.paginationDetails.currentPage,
       facets: this.globalSearchFacets,
-      params: this.configService.appConfig.Course.contentApiQueryParams
+      params: this.configService.appConfig.Course.contentApiQueryParams,
+      mode: 'soft'
     };
 
     if (_.get(this.queryParams, 'sort_by')) {
@@ -224,7 +232,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     if (this.frameWorkName) {
       option.params.framework = this.frameWorkName;
     }
-    this.searchService.contentSearch(option)
+    this.searchService.contentSearch(option, false)
       .subscribe(data => {
         this.showLoader = false;
         this.facets = this.searchService.updateFacetsData(_.get(data, 'result.facets'));
@@ -279,6 +287,8 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
   }
 
   addActivity(activityCard) {
+    this.groupAddableBlocData.pageIds = [_.get(activityCard, 'primaryCategory').toLowerCase(), ADD_ACTIVITY_TO_GROUP];
+    this.csGroupAddableBloc.updateState(this.groupAddableBlocData);
     const cdata = [{ id: _.get(activityCard, 'identifier'), type: _.get(activityCard, 'contentType') }];
     this.addTelemetry('activity-course-card', cdata);
     const isTrackable = this.courseConsumptionService.isTrackableCollection(activityCard);
@@ -298,7 +308,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
   }
 
   addTelemetry(id, cdata, extra?) {
-    this.groupsService.addTelemetry(id, this.activatedRoute.snapshot, cdata, this.groupId, extra);
+    this.groupsService.addTelemetry({id, extra}, this.activatedRoute.snapshot, cdata || [], this.groupId);
   }
 
   private setNoResultMessage() {

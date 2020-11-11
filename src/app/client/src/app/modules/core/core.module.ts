@@ -20,7 +20,7 @@ import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { TelemetryModule } from '@sunbird/telemetry';
 import {CommonConsumptionModule} from '@project-sunbird/common-consumption';
 import { ContentTypeComponent } from './components/content-type/content-type.component';
-
+import { LocationModule } from '../location/location.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -33,7 +33,8 @@ import { ContentTypeComponent } from './components/content-type/content-type.com
     WebExtensionModule,
     TelemetryModule,
     AvatarModule,
-    CommonConsumptionModule
+    CommonConsumptionModule,
+    LocationModule
   ],
   declarations: [MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent, PermissionDirective,
     BodyScrollDirective,

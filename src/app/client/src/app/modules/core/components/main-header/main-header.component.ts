@@ -5,7 +5,7 @@ import {
   TenantService,
   OrgDetailsService,
   FormService,
-  ManagedUserService, ProgramsService, CoursesService
+  ManagedUserService, ProgramsService, CoursesService, DeviceRegisterService
 } from './../../services';
 import { Component, OnInit, ChangeDetectorRef, Input, OnDestroy } from '@angular/core';
 import {
@@ -22,7 +22,7 @@ import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata, TelemetryService } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
-import { Subject, zip } from 'rxjs';
+import { Subject, zip, forkJoin } from 'rxjs';
 import { EXPLORE_GROUPS, MY_GROUPS } from '../../../public/module/group/components/routerLinks';
 
 declare var jQuery: any;
@@ -140,7 +140,10 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
    */
   workSpaceRole: Array<string>;
   reportsListVersion: reportsListVersionType;
-
+  showLocationPopup: boolean = false;
+  locationTenantInfo: any = {};
+  deviceProfile: any;
+  isCustodianUser: boolean;
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
     public orgDetailsService: OrgDetailsService, public formService: FormService,
@@ -148,7 +151,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     private telemetryService: TelemetryService, private programsService: ProgramsService,
     private courseService: CoursesService, private utilService: UtilService, public layoutService: LayoutService,
     public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef,
-    public navigationHelperService: NavigationHelperService) {
+    public navigationHelperService: NavigationHelperService, private deviceRegisterService: DeviceRegisterService) {
     try {
       this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
       this.reportsListVersion = (<HTMLInputElement>document.getElementById('reportsListVersion')).value as reportsListVersionType;
@@ -596,5 +599,38 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       }
     };
     this.telemetryService.interact(interactData);
+  }
+
+  manageLocation() {
+    this.showLocationPopup = false;
+    this.tenantService.tenantData$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      /* istanbul ignore else*/
+      if (_.get(data, 'tenantData')) {
+        this.locationTenantInfo = data.tenantData;
+        this.locationTenantInfo.titleName = data.tenantData.titleName || this.resourceService.instance;
+      }
+    });
+    const deviceRegister = this.deviceRegisterService.fetchDeviceProfile();
+    const custodianOrgDetails = this.orgDetailsService.getCustodianOrgDetails();
+    forkJoin([deviceRegister, custodianOrgDetails]).subscribe((res) => {
+      const deviceProfile = res[0];
+      this.deviceProfile = deviceProfile;
+      if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(res[1], 'result.response.value')) {
+        // non state user
+        this.isCustodianUser = true;
+        this.deviceProfile = deviceProfile;
+      } else {
+        // state user
+        this.isCustodianUser = false;
+      }
+      this.deviceProfile = _.get(deviceProfile, 'result');
+      this.showLocationPopup = true;
+    }, (err) => { 
+      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+    });
+  }
+
+  locationSubmit() {
+    this.showLocationPopup = false;
   }
 }

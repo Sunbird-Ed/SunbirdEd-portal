@@ -14,6 +14,8 @@ import { IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
 import * as dayjs from 'dayjs';
 import { GroupsService } from '../../../../groups/services/groups/groups.service';
 import { NavigationHelperService } from '@sunbird/shared';
+import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
+
 @Component({
   selector: 'app-course-consumption-header',
   templateUrl: './course-consumption-header.component.html',
@@ -60,7 +62,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   forumId;
   isTrackable = false;
   viewDashboard = false;
-  constructor(private activatedRoute: ActivatedRoute, public courseConsumptionService: CourseConsumptionService,
+  tocId;
+  constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
     public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
     private courseProgressService: CourseProgressService, public contentUtilsServiceService: ContentUtilsServiceService,
@@ -88,6 +91,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         this.batchId = params.batchId;
         this.courseStatus = params.courseStatus;
         this.contentId = params.contentId;
+        this.tocId = params.textbook;
         this.courseInteractObject = {
           id: this.courseHierarchy.identifier,
           type: 'Course',
@@ -189,6 +193,9 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     clearInterval(this.interval);
     this.unsubscribe.next();
     this.unsubscribe.complete();
+    if (CsGroupAddableBloc.instance.initialised) {
+      CsGroupAddableBloc.instance.dispose();
+    }
   }
   getBatchStatus() {
    /* istanbul ignore else */
@@ -264,17 +271,16 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
       this.toasterService.error(this.resourceService.messages.emsg.noAdminRole);
     }
   }
-
-
   openDiscussionForum() {
     this.router.navigate(['/discussions'], {queryParams: {forumId: this.forumId} });
   }
-
-
-  goBack() {
+  async goBack() {
     const previousPageUrl: any = this.courseConsumptionService.getCoursePagePreviousUrl;
     this.courseConsumptionService.coursePagePreviousUrl = '';
-    if (!previousPageUrl) {
+    if (this.tocId) {
+      const navigateUrl = this.userService.loggedIn ? '/resources/play/collection' : '/play/collection';
+      this.router.navigate([navigateUrl, this.tocId], { queryParams: { textbook: this.tocId } });
+    } else if (!previousPageUrl) {
       this.router.navigate(['/learn']);
       return;
     }

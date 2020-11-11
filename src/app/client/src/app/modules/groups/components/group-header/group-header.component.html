@@ -23,17 +23,43 @@
         <div class="kabab-menu" id="group-actions" (click)="dropdownMenu();addTelemetry('kebab-menu')"></div>
         <div class="kabab-menu-dropdown-content" [hidden]="dropdownContent">
 
-          <div *ngIf="groupData?.isAdmin" class="d-flex flex-ai-center list p-8 w-100"
-            (click)="editGroup();addTelemetry('edit-group')">{{resourceService?.frmelmnts?.lbl?.editGroup}}
+
+          <!-- dropdownContent btn Labels -->
+          <!-- admin -->
+          <div *ngIf="groupData?.isAdmin">
+                  <!-- when group is active -->
+              <div *ngIf="groupData?.active">
+                    <div class="d-flex flex-ai-center list p-8 w-100" (click)="editGroup();addTelemetry('edit-group')">
+                      {{resourceService?.frmelmnts?.lbl?.editGroup}}
+                    </div>
+                    <div class="d-flex flex-ai-center list p-8 w-100 fnormal" (click)="toggleModal(true, 'deActivate')">
+                      {{resourceService?.frmelmnts?.btn?.deactivategrp}}
+                    </div>
+              </div>
+
+                  <!-- when group is suspended -->
+              <div *ngIf="!groupData?.active">
+                    <div class="d-flex flex-ai-center list p-8 w-100 fnormal" (click)="toggleModal(true, 'activate');">
+                      {{resourceService?.frmelmnts.lbl.activategrp}}
+                    </div>
+              </div>
+          </div>
+          
+            <!-- member -->
+          <div *ngIf="!groupData?.isCreator">
+                    <div class="d-flex flex-ai-center list sb-color-error p-8 w-100" (click)="showLeaveGroupModal=true;dropdownMenu()">
+                        {{resourceService?.frmelmnts?.lbl?.leaveGroup}}
+                    </div>
           </div>
 
-          <div *ngIf="groupData?.isCreator" class="d-flex flex-ai-center list sb-color-error p-8 w-100"
-            (click)="toggleModal(true);addTelemetry('delete-group')">{{resourceService?.frmelmnts?.lbl?.deleteGroup}}
+                    <!-- creator -->
+          <div *ngIf="groupData?.isCreator">
+                      <div class="d-flex flex-ai-center list sb-color-error p-8 w-100"
+                        (click)="toggleModal(true, 'delete');">{{resourceService?.frmelmnts?.lbl?.deleteGroup}}
+                      </div>
           </div>
 
-          <div *ngIf="!groupData?.isCreator" class="d-flex flex-ai-center list sb-color-error p-8 w-100"
-            (click)="showLeaveGroupModal=true;dropdownMenu()">{{resourceService?.frmelmnts?.lbl?.leaveGroup}}
-          </div>
+          <!-- end dropdownContent btn Labels -->
 
         </div>
       </div>
@@ -41,21 +67,7 @@
   </div>
 </div>
 
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal sb-error"
-  appBodyScroll (dismissed)="toggleModal(false);addTelemetry('close-delete-popup')" #modal *ngIf="showModal">
-  <div class="sb-modal-header">
-    {{resourceService?.frmelmnts?.lbl?.deleteGroup}} ?
-  </div>
-  <div class="sb-modal-content">
-    <p> {{resourceService?.messages?.imsg?.m0082 | interpolate:'{group name}': groupData?.name}} ?</p>
-  </div>
-  <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-outline-error"
-      (click)="deleteGroup();addTelemetry('confirm-delete-group')">{{resourceService?.frmelmnts?.btn?.delete}}</button>
-    <button class="sb-btn sb-btn-normal sb-btn-error"
-      (click)="toggleModal(false);addTelemetry('cancel-delete-group')">{{resourceService?.frmelmnts?.btn?.no}}</button>
-  </div>
-</sui-modal>
+<app-modal *ngIf="showModal" [title]="title" [msg]="msg" [name]="name" (handleEvent)="handleEvent($event)"></app-modal>
 
 
 <app-member-actions *ngIf="showLeaveGroupModal" [action]="'leaveFromGroup'" [groupName]="groupData?.name"

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { CollectionPlayerComponent, ContentPlayerComponent } from './components';
+import { ContentPlayerComponent, CollectionPlayerComponent } from '@sunbird/shared-feature';
 const telemetryEnv = 'library';
 
 const routes: Routes = [

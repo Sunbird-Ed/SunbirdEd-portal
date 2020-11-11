@@ -9,7 +9,7 @@ import { of, BehaviorSubject, throwError } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GroupsService } from '../../../services/groups/groups.service';
 import { configureTestSuite } from '@sunbird/test-util';
-import { courseHierarchy, nestedCourse, activityData, groupData } from './activity-dashboard.component.spec.data';
+import { courseHierarchy, nestedCourse, activityData, groupData, content } from './activity-dashboard.component.spec.data';
 
 describe('ActivityDashboardComponent', () => {
   let component: ActivityDashboardComponent;
@@ -157,9 +157,11 @@ describe('ActivityDashboardComponent', () => {
 
   it('should call addTelemetry', () => {
     const groupService = TestBed.get(GroupsService);
+    component.groupId = '123';
     spyOn(groupService, 'addTelemetry');
     component.addTelemetry('activity-dashboard-member-search', [], { query: 'test' });
-    expect(groupService.addTelemetry).toHaveBeenCalled();
+    expect(groupService.addTelemetry).toHaveBeenCalledWith({id: 'activity-dashboard-member-search', extra: { query: 'test' }},
+    { params: {}, data: { telemetry: {} }}, [], '123');
   });
 
   it('should sort and return members', () => {
@@ -203,6 +205,31 @@ describe('ActivityDashboardComponent', () => {
     spyOn(component, 'navigateBack');
     component.checkForNestedCourses(activityData);
     component['playerService'].getCollectionHierarchy('do_21307962614412902412404', {}).subscribe(data => {
+    }, err => {
+      expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0051);
+      expect(component.navigateBack).toHaveBeenCalled();
+    });
+  });
+
+  it ('should call getContent()', () => {
+    spyOn(component['playerService'], 'getContent').and.returnValue(of (content));
+    spyOn(component, 'updateArray');
+    component.activityId = 'do_2127638382202880001645';
+    component.groupData = { activities: [] };
+    component.getContent(activityData);
+    component['playerService'].getContent('do_2127638382202880001645', {}).subscribe(data => {
+      expect(component.updateArray).toHaveBeenCalledWith(content.result.content);
+      expect(component.showLoader).toBeFalsy();
+    });
+  });
+
+  it ('should throw error in getContent()', () => {
+    spyOn(component['playerService'], 'getContent').and.returnValue(throwError ({}));
+    component.activityId = 'do_2127638382202880001645';
+    spyOn(component['toasterService'], 'error');
+    spyOn(component, 'navigateBack');
+    component.getContent(activityData);
+    component['playerService'].getContent('do_2127638382202880001645', {}).subscribe(data => {
     }, err => {
       expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0051);
       expect(component.navigateBack).toHaveBeenCalled();
@@ -292,11 +319,11 @@ describe('ActivityDashboardComponent', () => {
     expect(component['searchService'].isContentTrackable).toHaveBeenCalledWith({identifier: '123', trackable: {enabled: 'no'}}, 'resource');
   });
 
-  it ('should ', fakeAsync(()  => {
-    activatedRoute.changeQueryParams({ title: 'Course' });
+  it ('should return "courses"', fakeAsync(()  => {
+    activatedRoute.changeQueryParams({ title: 'courses' });
     tick(100);
     const value = component.showActivityType();
-    expect(value).toEqual(('Course').toLocaleLowerCase());
+    expect(value).toEqual((resourceBundle.frmelmnts.lbl.ACTIVITY_COURSE_TITLE).toLowerCase());
   }));
 
 });

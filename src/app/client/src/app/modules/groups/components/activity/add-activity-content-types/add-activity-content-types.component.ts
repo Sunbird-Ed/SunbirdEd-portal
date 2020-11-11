@@ -62,7 +62,7 @@ export class AddActivityContentTypesComponent implements OnInit, AfterViewInit, 
       this.showLoader = false;
       this.supportedActivityList = _.get(data, 'data.fields');
       this.supportedActivityList.forEach(activity => {
-        activity = this.groupService.getSelectedLanguageStrings(activity);
+        activity['title'] =  this.groupService.getSelectedLanguageStrings(activity);
       });
     }, (error) => {
       this.showLoader = false;
@@ -75,7 +75,7 @@ export class AddActivityContentTypesComponent implements OnInit, AfterViewInit, 
       pageIds: [cardData.activityType.toLowerCase(), ADD_ACTIVITY_TO_GROUP],
       groupId: _.get(this.groupService, 'groupData.id'),
       params: {
-        searchQuery: cardData.searchQuery,
+        searchQuery: JSON.parse(cardData.searchQuery),
         groupData: _.get(this.groupService, 'groupData'),
         contentType: cardData.activityType
       }

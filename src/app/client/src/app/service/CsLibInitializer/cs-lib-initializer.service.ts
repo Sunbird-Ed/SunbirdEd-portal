@@ -35,6 +35,7 @@ export class CsLibInitializerService {
               groupServiceConfig: {
                 apiPath: '/learner/group/v1',
                 dataApiPath: '/learner/data/v1/group',
+                updateGroupGuidelinesApiPath: '/learner/group/membership/v1'
               },
               userServiceConfig: {
                 apiPath: '/learner/user/v2',

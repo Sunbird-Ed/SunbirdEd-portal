@@ -1,7 +1,6 @@
 import { ResourceService } from '@sunbird/shared';
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import * as _ from 'lodash-es';
 import { GroupsService } from '../../services';
 @Component({
   selector: 'app-ftu-popup',
@@ -51,7 +50,7 @@ export class FtuPopupComponent implements OnInit {
   }
 
   addTelemetry (id) {
-    this.groupService.addTelemetry(id, this.activatedRoute.snapshot, []);
+    this.groupService.addTelemetry({id}, this.activatedRoute.snapshot, []);
   }
 
 

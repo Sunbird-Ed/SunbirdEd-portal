@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService, SearchService } from '@sunbird/core';
-import { ResourceService, ToasterService, LayoutService } from '@sunbird/shared';
+import { ResourceService, ToasterService, LayoutService, ConfigService } from '@sunbird/shared';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { combineLatest, Subject } from 'rxjs';
@@ -48,6 +48,7 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
     private layoutService: LayoutService,
     private playerService: PublicPlayerService,
     private searchService: SearchService,
+    private configService: ConfigService
   ) { }
 
   ngOnInit() {
@@ -78,7 +79,7 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
         this.queryParams = { ...queryParams };
         this.groupId = params.groupId;
         this.activityId = params.activityId;
-        const type = _.get(this.queryParams, 'contentType') || 'Course';
+        const type = _.get(this.queryParams, 'primaryCategory') || 'Course';
         this.fetchActivity(type);
       });
   }
@@ -101,7 +102,11 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
         return this.groupService.getActivity(this.groupId, activityData, res);
     })).subscribe(data => {
         this.getActivityInfo();
-        this.checkForNestedCourses(data);
+        if (_.get(this.queryParams, 'mimeType') === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+          this.checkForNestedCourses(data);
+        } else {
+          this.getContent(data);
+        }
     }, err => {
       console.error('Error', err);
       this.navigateBack();
@@ -176,7 +181,7 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
   }
 
   addTelemetry(id, cdata, extra?) {
-    this.groupService.addTelemetry(id, this.activatedRoute.snapshot, cdata, this.groupId, extra);
+    this.groupService.addTelemetry({id, extra}, this.activatedRoute.snapshot, cdata, this.groupId);
   }
 
   checkForNestedCourses(activityData) {
@@ -196,6 +201,20 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
   }, err => {
     this.toasterService.error(this.resourceService.messages.fmsg.m0051);
     this.navigateBack();
+    });
+  }
+
+  getContent(activityData) {
+    this.playerService.getContent(this.activityId, {})
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((data) => {
+      const courseHierarchy = data.result.content;
+      this.updateArray(courseHierarchy);
+      this.processData(activityData);
+      this.showLoader = false;
+    }, err => {
+      this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+      this.navigateBack();
     });
   }
 

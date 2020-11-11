@@ -45,7 +45,7 @@
                 [indexOfMember]="verifiedMember?.indexOfMember" [initial]="verifiedMember?.initial">
               </sb-member-card>
           </div>
-          <button type="button" class="sb-btn sb-btn-primary sb-btn-normal" [disabled]= "disableBtn" (click)="addMemberToGroup();addTelemetry('add-user-to-group', memberId, {member_count: this.membersList.length})"
+          <button type="button" class="sb-btn sb-btn-primary sb-btn-normal" [disabled]= "disableBtn" (click)="addMemberToGroup();addTelemetry('add-user-to-group', memberId)"
           [ngClass]="{'sb-btn-disabled': disableBtn}">
             <img src="./assets/images/ic_person_add.svg" width="16px" class="mr-4"> {{resourceService?.frmelmnts?.lbl?.AddtoGroup}}
           </button>

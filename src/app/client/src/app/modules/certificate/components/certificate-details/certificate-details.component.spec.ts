@@ -98,6 +98,19 @@ describe('CertificateDetailsComponent', () => {
     expect(component.contentId).toBe('do_112831862871203840114');
   });
 
+  it('should get key up event - getCodeLength', () => {
+    const event = {target: {value: 'key-up'}};
+    spyOn(component, 'getCodeLength');
+    component.getCodeLength(event);
+    expect(component.getCodeLength).toHaveBeenCalled();
+  });
+
+  it('should back to course return to course', () => {
+    spyOn(component, 'navigateToCoursesPage');
+    component.navigateToCoursesPage();
+    expect(component.navigateToCoursesPage).toHaveBeenCalled();
+  });
+
   it('should play the content', () => {
     component.showVideoThumbnail = false;
     const playerService = TestBed.get(PublicPlayerService);

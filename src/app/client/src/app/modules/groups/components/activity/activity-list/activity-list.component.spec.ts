@@ -110,6 +110,7 @@ describe('ActivityListComponent', () => {
       subject: 'Social Science',
       contentType: 'Course'
     }};
+    component.groupData.active = true;
     component.openActivity(event, 'ACTIVITY_COURSE_TITLE');
     expect(component['playerService'].playContent).toHaveBeenCalledWith(event.data);
     expect(component.addTelemetry).toHaveBeenCalled();
@@ -124,15 +125,17 @@ describe('ActivityListComponent', () => {
       appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_3129265279296552961416/artifact/book_2_1491393340123.thumb_1577945304197.png',
       organisation: ['Pre-prod Custodian Organization'],
       subject: 'Social Science',
-      contentType: 'Course'
+      primaryCategory: 'Course',
+      mimeType: 'collection'
     }};
     component.groupData.isAdmin = true;
+    component.groupData.active = true;
     const activatedRoute = TestBed.get(ActivatedRoute);
     activatedRoute.changeQueryParams({ contentType: 'Course',
     title: 'ACTIVITY_COURSE_TITLE'});
     tick(100);
-    const option = {relativeTo: component['activateRoute'], queryParams: { contentType: 'Course',
-    title: 'ACTIVITY_COURSE_TITLE'}};
+    const option = {relativeTo: component['activateRoute'], queryParams: { primaryCategory: 'Course',
+    title: 'ACTIVITY_COURSE_TITLE', mimeType: 'collection'}};
     component.openActivity(event, 'ACTIVITY_COURSE_TITLE');
     expect(router.navigate).toHaveBeenCalledWith(['activity-details', 'do_123523212190'], option);
     expect(component.addTelemetry).toHaveBeenCalled();
@@ -150,7 +153,8 @@ describe('ActivityListComponent', () => {
         appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_3130298331259453441627/artifact/jefp1cc.thumb.jpg',
         organisation: ['Prod Custodian Organization'],
         subject: 'Social Science',
-        type: 'Course'
+        type: 'Course',
+        primaryCategory: 'Course'
       }
     };
 
@@ -159,7 +163,8 @@ describe('ActivityListComponent', () => {
     component.getMenuData(eventData);
     expect(component.selectedActivity).toEqual(eventData.data);
     expect(component.showMenu).toBe(true);
-    expect(component.addTelemetry).toHaveBeenCalledWith('activity-kebab-menu-open');
+    expect(component.addTelemetry).toHaveBeenCalledWith('activity-kebab-menu-open',
+    [], {}, {id: 'do_1235232121343', type: 'Course', ver: '1.0' });
     expect(component['groupService'].emitMenuVisibility).toHaveBeenCalledWith('activity');
   });
 
@@ -219,7 +224,7 @@ describe('ActivityListComponent', () => {
   });
 
   it('should return TRUE (when type is COURSE)', () => {
-    const value = component.isCourse('Course');
+    const value = component.isCourse('ACTIVITY_COURSE_TITLE');
     expect(value).toBe(true);
   });
 

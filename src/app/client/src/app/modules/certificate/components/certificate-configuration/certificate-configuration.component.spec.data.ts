@@ -135,7 +135,7 @@ export const response = {
         'cert_templates': {
           'template_21': {
             'identifier': 'mock_cert_identifier',
-            'previewUrl': 'https://cert.svg',
+            'data' : `{'artifactUrl': 'https://cert.svg',}`,
             'criteria': {
               'user': {
                 'rootOrgId': '0124784842112040965'

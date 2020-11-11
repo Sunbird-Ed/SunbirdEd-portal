@@ -18,7 +18,6 @@ const ROLE = {
   BOOK_REVIEWER: 'BOOK_REVIEWER',
   FLAG_REVIEWER: 'FLAG_REVIEWER',
   PUBLIC: 'PUBLIC',
-  ORG_ADMIN: 'ORG_ADMIN',
   ALL: 'ALL'  // Use when user does not have PUBLIC role (Case: User bulk upload)
 };
 
@@ -72,16 +71,28 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
-    '/content/content/v1/create': {
+ 
+    '/content/v1/upload': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [
-        ROLE.CONTENT_CREATOR,
-        ROLE.BOOK_CREATOR,
-        ROLE.CONTENT_REVIEWER,
-        ROLE.BOOK_REVIEWER
-      ]
+      ROLE_CHECK: [ROLE.PUBLIC]
     },
-    '/content/v1/media/upload': {
+
+    '/content/v1/create': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+
+    '/content/asset/v1/create': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+
+    '/content/asset/v1/upload/:id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+
+    '/content/content/v1/create': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.CONTENT_CREATOR,
@@ -251,6 +262,10 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
+    '/learner/data/v1/system/settings/list': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
 
     //Course related APIs
     '/learner/course/v1/hierarchy/:do_id': {
@@ -408,6 +423,11 @@ const API_LIST = {
     '/learner/user/v3/read/:userId': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL]
+      // OWNER_CHECK: {
+      //   checks: [
+      //     { entity: '__adminCheck__userId', params: [] }
+      //   ]
+      // }
     },
     '/learner/user/v1/declarations': {
       checksNeeded: ['ROLE_CHECK'],
@@ -543,10 +563,6 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
-    '/learner/content/v1/media/upload': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
-    },
     '/learner/role/read': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
@@ -582,11 +598,19 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
+    '/learner/group/v1/delete': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
     '/learner/user/v2/exists/:key/:value': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/data/v1/group/activity/agg': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/learner/group/membership/v1/update': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
@@ -601,6 +625,10 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR]
     },
     '/certreg/v1/add/template': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR]
+    },
+    '/certreg/v1/template/add': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR]
     },
@@ -623,7 +651,8 @@ const API_LIST = {
     '/learner/user/v1/exists/phone/:phoneNumber',
     '/learner/group/v1/read/:groupId',
     '/learner/user/v2/exists/:key/:value',
-    '/learner/certreg/v2/certs/download/:id'
+    '/learner/certreg/v2/certs/download/:id',
+    '/content/asset/v1/upload/:id'
   ]
 };
 module.exports = API_LIST;

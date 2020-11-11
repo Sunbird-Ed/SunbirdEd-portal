@@ -42,7 +42,7 @@ export class GeneraliseLabelService {
     const resourceBundle = _.get(this._gLables, fileName);
     if (!resourceBundle) {
       this.fetchGeneraliseLables(lang, fileName).subscribe(apiResponse => {
-          const resourceData = JSON.parse(apiResponse.result);
+        const resourceData = typeof (apiResponse.result) === 'string' ? JSON.parse(apiResponse.result) : apiResponse.result;
           this._gLables[fileName] = resourceData;
           this.setLabels(resourceData);
         }, err => {
@@ -58,8 +58,8 @@ export class GeneraliseLabelService {
     const rbtype =  this.contentTypeLblKey;
     const labelsObj = _.get(labels, `${rbtype}.${trkStr}`);
     const defaulLabels = _.get(labels, `dflt.${trkStr}`);
-    const msgLbl = _.merge({}, _.get(defaulLabels, 'messages'), labelsObj.messages);
-    const frmelmntsLbl = _.merge({}, _.get(defaulLabels, 'frmelmnts'), labelsObj.frmelmnts);
+    const msgLbl = _.merge({}, _.get(defaulLabels, 'messages'), labelsObj && labelsObj.messages);
+    const frmelmntsLbl = _.merge({}, _.get(defaulLabels, 'frmelmnts'), labelsObj && labelsObj.frmelmnts);
     this.messages =  labelsObj ? msgLbl : this.resourceService.messages;
     this.frmelmnts = labelsObj ? frmelmntsLbl : this.resourceService.frmelmnts;
   }

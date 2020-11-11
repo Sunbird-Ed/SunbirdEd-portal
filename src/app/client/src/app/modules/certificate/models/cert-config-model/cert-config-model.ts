@@ -56,4 +56,40 @@ export class CertConfigModel {
         return processedDropdownValues;
 
     }
+
+    prepareCreateAssetRequest(rawFormValues, channel, certificate, images) {
+        const signatoryList = [{
+        'image': _.get(images, 'SIGN1.url'),
+        'name': _.get(rawFormValues , 'authoritySignature_0'),
+        }];
+
+        if (!_.isEmpty(images['SIGN'])) {
+        signatoryList.push({
+            'image': _.get(images , 'SIGN2.url'),
+            'name': _.get(rawFormValues , 'authoritySignature_1'),
+        });
+        }
+        let issuer = _.get(certificate, 'issuer');
+        if (typeof issuer === 'string') {
+            issuer = JSON.parse(issuer);
+        }
+        const requestBody = {
+            'request': {
+                'asset': {
+                    'name': _.get(rawFormValues, 'certificateTitle'),
+                    'code': _.get(rawFormValues, 'certificateTitle'),
+                    'mimeType': 'application/vnd.ekstep.content-archive',
+                    'license': 'CC BY 4.0',
+                    'primaryCategory': 'Certificate Template',
+                    // 'contentType': 'Asset',
+                    'mediaType': 'image',
+                    'certType': 'cert template',
+                    'channel': channel,
+                    'issuer': issuer,
+                    'signatoryList': signatoryList
+                }
+            }
+        };
+        return requestBody;
+    }
 }

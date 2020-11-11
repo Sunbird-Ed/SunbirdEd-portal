@@ -167,7 +167,37 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     };
     expect(telemetryService.initialize).toHaveBeenCalledWith(jasmine.objectContaining({userOrgDetails: config.userOrgDetails}));
   });
-
+  it('Should call beforeunloadHandler method', () => {
+    const event = {};
+    spyOn(component, 'beforeunloadHandler');
+    component.beforeunloadHandler(event);
+    expect(component.beforeunloadHandler).toHaveBeenCalledWith(event);
+  });
+  it('Should call handleLogin method', () => {
+    spyOn(component, 'handleLogin');
+    component.handleLogin();
+    expect(component.handleLogin).toHaveBeenCalled();
+  });
+  it('Check if bot diplayed for route ', () => {
+    spyOn(component, 'isBotdisplayforRoute');
+    component.isBotdisplayforRoute();
+    expect(component.isBotdisplayforRoute).toHaveBeenCalled();
+  });
+  it('Set theme color ', () => {
+    spyOn(component, 'storeThemeColour');
+    component.storeThemeColour('#ffff');
+    expect(component.storeThemeColour).toHaveBeenCalled();
+  });
+  it('Check location pop up is required ', () => {
+    spyOn(component, 'isLocationStatusRequired');
+    component.isLocationStatusRequired();
+    expect(component.isLocationStatusRequired).toHaveBeenCalled();
+  });
+  it('Check location status pop up is required ', () => {
+    spyOn(component, 'checkLocationStatus');
+    component.checkLocationStatus();
+    expect(component.checkLocationStatus).toHaveBeenCalled();
+  });
   it('Should subscribe to tenant service and retrieve title and favicon details', () => {
     const orgDetailsService = TestBed.get(OrgDetailsService);
     const publicDataService = TestBed.get(PublicDataService);
@@ -176,6 +206,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     spyOn(publicDataService, 'post').and.returnValue(of({}));
     orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
     component.ngOnInit();
+    component.ngAfterViewInit();
     expect(document.title).toEqual(mockData.tenantResponse.result.titleName);
     expect(document.querySelector).toHaveBeenCalledWith('link[rel*=\'icon\']');
   });
@@ -224,6 +255,21 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     spyOn(orgDetailsService, 'getCustodianOrgDetails').and.returnValue(of({result: {response: {content: 'data'}}}));
     component.getUserFeedData();
     expect(userService.getFeedData).not.toHaveBeenCalled();
+  });
+  it('Check logExData called ', () => {
+    spyOn(component, 'logExData');
+    component.logExData('IMPRESSION', {});
+    expect(component.logExData).toHaveBeenCalled();
+  });
+  it('Check onLocationSubmit called ', () => {
+    spyOn(component, 'onLocationSubmit');
+    component.onLocationSubmit();
+    expect(component.onLocationSubmit).toHaveBeenCalled();
+  });
+  it('Check interpolateInstance called ', () => {
+    spyOn(component, 'interpolateInstance');
+    component.interpolateInstance('check the data');
+    expect(component.interpolateInstance).toHaveBeenCalled();
   });
 
   it('should close joy theme popup and trigger furthur popup flow', () => {

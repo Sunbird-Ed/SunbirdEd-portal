@@ -48,6 +48,11 @@ export class AppComponent implements OnInit, OnDestroy {
    * this variable is used to show the terms and conditions popup
    */
   public showTermsAndCondPopUp = false;
+
+  /**
+   * this variable is used to show the global consent pop up
+   */
+  public showGlobalConsentPopUpSection = false;
   /**
    * Used to config telemetry service and device register api. Possible values
    * 1. org hashtag for Anonymous user
@@ -67,6 +72,7 @@ export class AppComponent implements OnInit, OnDestroy {
   showAppPopUp = false;
   viewinBrowser = false;
   sessionExpired = false;
+  isglobalConsent = true;
   instance: string;
   resourceDataSubscription: any;
   private fingerprintInfo: any;
@@ -80,8 +86,10 @@ export class AppComponent implements OnInit, OnDestroy {
   usersProfile: any;
   isLocationConfirmed = true;
   userFeed: any;
+  isFullScreenView;
   showUserVerificationPopup = false;
   feedCategory = 'OrgMigrationAction';
+  globalConsent = 'global-consent';
   labels: {};
   showUserTypePopup = false;
   deviceId: string;
@@ -96,6 +104,7 @@ export class AppComponent implements OnInit, OnDestroy {
   title =  _.get(this.resourceService, 'frmelmnts.btn.botTitle') ? _.get(this.resourceService, 'frmelmnts.btn.botTitle') : 'Ask Tara';
   showJoyThemePopUp = false;
   public unsubscribe$ = new Subject<void>();
+  consentConfig: { tncLink: string; tncText: any; };
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -170,6 +179,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.checkFullScreenView();
     this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
       if (layoutConfig != null) {
         this.layoutConfiguration = layoutConfig.layout;
@@ -237,7 +247,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.generaliseLabelService.getGeneraliseResourceBundle();
   }
 
-  
+
   onCloseJoyThemePopup() {
     this.showJoyThemePopUp = false;
     this.checkTncAndFrameWorkSelected();
@@ -246,6 +256,12 @@ export class AppComponent implements OnInit, OnDestroy {
   isBotdisplayforRoute () {
     const url = this.router.url;
     return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in'));
+  }
+
+  checkFullScreenView() {
+    this.navigationHelperService.contentFullScreenEvent.pipe(takeUntil(this.unsubscribe$)).subscribe(isFullScreen => {
+      this.isFullScreenView = isFullScreen;
+    });
   }
 
   storeThemeColour(value) {
@@ -388,12 +404,24 @@ export class AppComponent implements OnInit, OnDestroy {
    * checks if user has accepted the tnc and show tnc popup.
    */
   public checkTncAndFrameWorkSelected() {
-      if (_.has(this.userService.userProfile, 'promptTnC') && _.has(this.userService.userProfile, 'tncLatestVersion') &&
-        _.has(this.userService.userProfile, 'tncLatestVersion') && this.userService.userProfile.promptTnC === true) {
-        this.showTermsAndCondPopUp = true;
+    if (_.has(this.userService.userProfile, 'promptTnC') && _.has(this.userService.userProfile, 'tncLatestVersion') &&
+      _.has(this.userService.userProfile, 'tncLatestVersion') && this.userService.userProfile.promptTnC === true) {
+      this.showTermsAndCondPopUp = true;
+    } else {
+      if (this.userService.loggedIn) {
+        this.orgDetailsService.getCustodianOrgDetails().subscribe((custodianOrg) => {
+          if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') !== _.get(custodianOrg, 'result.response.value')) {
+            // Check for non custodian user and show global consent pop up
+            this.consentConfig = { tncLink: '', tncText: this.resourceService.frmelmnts.lbl.nonCustodianTC };
+            this.showGlobalConsentPopUpSection = true;
+          } else {
+            this.checkFrameworkSelected();
+          }
+        });
       } else {
         this.checkFrameworkSelected();
       }
+    }
   }
   public getOrgDetails() {
     const slug = this.userService.slug;
@@ -438,6 +466,23 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   public onAcceptTnc() {
     this.showTermsAndCondPopUp = false;
+    if (this.userService.loggedIn) {
+      this.orgDetailsService.getCustodianOrgDetails().subscribe((custodianOrg) => {
+        if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') !== _.get(custodianOrg, 'result.response.value')) {
+          // Check for non custodian user and show global consent pop up
+          this.consentConfig = { tncLink: '', tncText: this.resourceService.frmelmnts.lbl.nonCustodianTC };
+          this.showGlobalConsentPopUpSection = true;
+        } else {
+          this.checkFrameworkSelected();
+        }
+      });
+    } else {
+      this.checkFrameworkSelected();
+    }
+  }
+
+  public closeConsentPopUp() {
+    this.showGlobalConsentPopUpSection = false;
     this.checkFrameworkSelected();
   }
 

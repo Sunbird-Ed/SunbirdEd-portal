@@ -160,7 +160,7 @@ describe('AddActivityContentTypesComponent', () => {
       pageIds: ['course', 'add-activity-to-group'],
       groupId: AddActivityContentTypesData.groupData.id,
       params: {
-        searchQuery: cardData.searchQuery,
+        searchQuery: JSON.parse(cardData.searchQuery),
         groupData: AddActivityContentTypesData.groupData,
         contentType: cardData.activityType
       }

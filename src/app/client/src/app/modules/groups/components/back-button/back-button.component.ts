@@ -2,8 +2,6 @@ import { ResourceService } from '@sunbird/shared';
 import { Component } from '@angular/core';
 import { GroupsService } from '../../services';
 import { ActivatedRoute } from '@angular/router';
-import * as _ from 'lodash-es';
-import { MY_GROUPS } from '../../interfaces';
 
 @Component({
   selector: 'app-back-button',
@@ -16,7 +14,7 @@ export class BackButtonComponent {
     private groupService: GroupsService, private activatedRoute: ActivatedRoute) { }
 
   goBack() {
-    this.groupService.addTelemetry('back-button', this.activatedRoute.snapshot, []);
+    this.groupService.addTelemetry({id: 'back-button'}, this.activatedRoute.snapshot, []);
     this.groupService.goBack();
   }
 }

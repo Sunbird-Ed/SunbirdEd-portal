@@ -54,15 +54,6 @@
                 </svg></i>
                 {{resourceService?.frmelmnts?.lbl?.copy}}
               </button>
-              <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix" 
-              appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
-              [telemetryInteractEdata]="{id:'discussion' , type: 'click' , pageid:'course-consumption'}" 
-              [telemetryInteractCdata]="[{id: courseHierarchy?.identifier, type: 'Course'}]"
-              (click)="openDiscussionForum()"
-              title="Forum" *ngIf="forumId && (enrolledCourse || (courseConsumptionService?.userCreatedAnyBatch | async))">
-              <img src="assets/images/forum.svg" width="16px" class="mr-8">
-                Forum
-            </button>
             </div>
           </div>
         </div>
@@ -80,7 +71,7 @@
       <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4 certified-course">
         <div class="certified-course__btn" *ngIf="showAddGroup">
           <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
-          appAddToGroup [identifier]="courseHierarchy?.identifier" [pageId]="courseHierarchy?.contentType.toLowerCase()">
+          appAddToGroup [identifier]="courseHierarchy?.identifier" [pageId]="courseHierarchy?.primaryCategory.toLowerCase()">
           {{resourceService?.frmelmnts?.lbl?.AddtoGroup}}</button>
         </div>
         <!-- join course, start learning, continue learning, view dashboard buttons -->  

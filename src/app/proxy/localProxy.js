@@ -44,7 +44,6 @@ var learnerServiceApi = {
   'course/v1/enrol': 'v1/course/enrol',
   'course/v1/unenrol': 'v1/course/unenrol',
   'recommended/courses': 'v1/recommended/courses',
-  'content/v1/media/upload': 'v1/file/upload',
   'dashboard/v1/creation/org': 'v1/dashboard/creation/org',
   'dashboard/v1/consumption/org': 'v1/dashboard/consumption/org',
   'dashboard/v1/progress/course': 'v1/dashboard/progress/course',

@@ -193,3 +193,21 @@ export const activityData = {
 };
 
 export const groupData = { activities: [{ id: 'do_1234', activityInfo: { name: 'activity1' } }, { id: 'do_0903232', activityInfo: { name: 'activity2' } }] };
+export const content = {
+  result: {
+    content: {
+      'ownershipType': [
+        'createdBy'
+      ],
+      'previewUrl': 'https://www.youtube.com/watch?v=kPJwSgHDSgY',
+      'keywords': [
+        'vrevre'
+      ],
+      'mimeType': 'video/x-youtube',
+      'contentType': 'Resource',
+      'identifier': 'do_2127638382202880001645',
+      'name': 'Content_91',
+      'resourceType': 'Learn'
+    }
+  }
+};

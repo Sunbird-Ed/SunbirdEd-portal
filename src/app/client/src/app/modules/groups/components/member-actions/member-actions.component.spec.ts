@@ -1,3 +1,4 @@
+import { GroupMemberRole, GroupEntityStatus } from '@project-sunbird/client-services/models/group';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { SharedModule, ResourceService } from '@sunbird/shared';
@@ -42,7 +43,9 @@ describe('MemberActionsComponent', () => {
     component = fixture.componentInstance;
     component.member = {
       identifier: '1', title: 'user', initial: 'u',
-      isAdmin: true, isMenu: false, indexOfMember: 1, isCreator: true, userId: '1', role: 'admin', name: 'user'
+      isAdmin: true, isMenu: false, indexOfMember: 1, isCreator: true, userId: '1', name: 'user',
+      role: GroupMemberRole.ADMIN, id: '1',
+      groupId: '', status: GroupEntityStatus.ACTIVE
     };
     fixture.detectChanges();
   });
@@ -87,8 +90,9 @@ describe('MemberActionsComponent', () => {
       indexOfMember: 5,
       isCreator: false,
       userId: '2',
-      role: 'member',
-      name: 'Paul Walker'
+      name: 'Paul Walker',
+      role: GroupMemberRole.MEMBER, id: '1',
+      groupId: '', status: GroupEntityStatus.ACTIVE
     };
     component.performAction();
     expect(component.actionConfirm.emit).toHaveBeenCalled();

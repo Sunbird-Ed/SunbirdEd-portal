@@ -4,6 +4,9 @@
     [buttonLabel]="resourceService.frmelmnts.btn.submit" (submit)="updateFrameWork($event)"></app-popup>
   <app-tnc-popup (close)="onAcceptTnc()" #termsAndCondPopUp *ngIf="showTermsAndCondPopUp">
   </app-tnc-popup>
+  <div class="mb-16" *ngIf="showGlobalConsentPopUpSection">
+    <app-global-consent-pii [type]="globalConsent" [isglobalConsent]="isglobalConsent" (close)="closeConsentPopUp()" [consentConfig]="consentConfig"></app-global-consent-pii>
+  </div>
   <app-validate-teacher-identifier-popup *ngIf="showUserVerificationPopup && labels" [labels]="labels" [userFeedData]="userFeed"> </app-validate-teacher-identifier-popup>
   <app-user-onboarding (close)="onLocationSubmit()" *ngIf="showUserTypePopup || !isLocationConfirmed"
 [isCustodianOrgUser]="isCustodianOrgUser" [deviceProfile]="deviceProfile"></app-user-onboarding>
@@ -18,7 +21,7 @@
   <app-joy-theme-popup [hidden]="!showJoyThemePopUp"
                        (closeJoyThemePopup)="onCloseJoyThemePopup()"></app-joy-theme-popup>
 </div>
-<div *ngIf= "isBotEnabled === 'true'" [ngClass]="{'hideBot': isBotdisplayforRoute()}">
+<div *ngIf= "isBotEnabled === 'true'" [ngClass]="{'hideBot': isBotdisplayforRoute(), 'hideBot': isFullScreenView}">
   <lib-chat-window [inputValues]="botObject"></lib-chat-window>
 </div>
 <app-footer [layoutConfiguration]="layoutConfiguration" *ngIf="!hideHeaderNFooter"></app-footer>

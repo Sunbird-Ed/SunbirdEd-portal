@@ -6,7 +6,11 @@ import {
   processData,
   processedOutputData,
   duplicateData,
-  nonDuplicateData
+  nonDuplicateData,
+  courseSectionFacetData,
+  parsedCourseFacetData,
+  courseFilters,
+  requiredProperties
 } from './util.service.spec.data';
 import {TestBed, inject } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -283,6 +287,17 @@ describe('UtilService', () => {
   it('should return process unique data and return non unique data', inject([UtilService], (service: UtilService) => {
     const data = service.removeDuplicate(duplicateData);
     expect(data).toEqual(nonDuplicateData);
+  }));
+
+  it('should return processed course facet data', inject([UtilService], (service: UtilService) => {
+    const data = service.processCourseFacetData(courseSectionFacetData, courseSectionFacetData.keys);
+    expect(data).toEqual(parsedCourseFacetData);
+  }));
+
+  it ('should return only required properties', inject([UtilService], (service: UtilService) => {
+    const content = service.reduceTreeProps(requiredProperties, ['mimeType', 'visibility', 'identifier', 'selected', 'name', 'contentType', 'children',
+    'primaryCategory', 'additionalCategory', 'parent']);
+    expect(content).toEqual(requiredProperties);
   }));
 
 });

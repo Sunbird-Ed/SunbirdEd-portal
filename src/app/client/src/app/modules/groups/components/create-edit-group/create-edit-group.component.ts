@@ -5,7 +5,6 @@ import { Subject } from 'rxjs';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { GroupsService } from '../../services';
-import { IGroup } from '../../interfaces';
 import * as _ from 'lodash-es';
 @Component({
   selector: 'app-create-edit-group',
@@ -57,8 +56,9 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
 
   onSubmitForm() {
     this.disableBtn = true;
+    this.addTelemetry('submit-group-form');
     if (this.groupForm.valid) {
-      const request: IGroup = _.omit(this.groupForm.value, 'groupToc');
+      const request = _.omit(this.groupForm.value, 'groupToc');
       request.name = _.trim(request.name);
       request.description = _.trim(request.description);
       this.groupService.createGroup(request).pipe(takeUntil(this.unsubscribe$)).subscribe(group => {
@@ -68,12 +68,17 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
         this.groupService.emitCloseForm();
         this.disableBtn = false;
         this.closeModal();
-      }, err => {
+    }, err => {
         this.disableBtn = false;
         const errMsg: string = _.get(err, 'response.body.params.err') || _.get(err, 'params.err');
-        (errMsg === 'EXCEEDED_GROUP_MAX_LIMIT') ?
-       this.toasterService.error(this.resourceService.messages.groups.emsg.m001)
-        : this.toasterService.error(this.resourceService.messages.emsg.m001);
+
+        if (errMsg === 'EXCEEDED_GROUP_MAX_LIMIT') {
+          this.toasterService.error(this.resourceService.messages.groups.emsg.m001);
+          this.addTelemetry('exceeded-group-max-limit', {group_count: this.groupService.groupListCount});
+        } else {
+          this.toasterService.error(this.resourceService.messages.emsg.m001);
+        }
+
         Object.keys(this.groupForm.controls).forEach(field => {
           const control = this.groupForm.get(field);
           control.markAsTouched({ onlySelf: true });
@@ -132,7 +137,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
   }
 
   addTelemetry (id, extra?) {
-    this.groupService.addTelemetry(id, this.activatedRoute.snapshot, [], this.groupId, extra);
+    this.groupService.addTelemetry({id, extra}, this.activatedRoute.snapshot, [], this.groupId);
   }
 
   ngOnDestroy() {
