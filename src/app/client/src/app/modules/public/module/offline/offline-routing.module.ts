@@ -4,14 +4,6 @@ import { LibraryComponent, TelemetryComponent } from './components';
 
 const routes: Routes = [
     {
-        path: '', component: LibraryComponent, data: {
-            telemetry: {
-                env: 'library', pageid: 'library', type: 'view'
-            },
-            softConstraints: { badgeAssertions: 98, board: 99, channel: 100 }
-        }
-    },
-    {
         path: 'mydownloads', component: LibraryComponent, data: {
             telemetry: {
                 env: 'library', pageid: 'library', type: 'view'
