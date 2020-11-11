@@ -12,6 +12,13 @@
         </div>
     </div>
 </div>
+
+<div *ngIf="!layoutConfiguration">
+old layout
+</div>
+<div *ngIf="layoutConfiguration">
+new layout
+</div>
 <!-- Textbook details with continue playing and join course button -->
 <div class="cc-player__content-header textbook-container relative9" *ngIf="!showLoader && !showError">
     <div class="ui container">

@@ -77,3 +77,32 @@
     }
   }
 }
+
+
+
+.sb-page-back-panel{
+  &__header {
+      width: 100%;
+      border-radius: calculateRem(40px) calculateRem(40px) 0 0 !important;
+      background-color: #FFD954 !important;
+      &__content{
+          display:flex;
+          align-items: center;
+          justify-content: space-between;
+          @include respond-below(sm) {
+            display: block;
+          } 
+          .class-badges{
+              border-radius: calculateRem(12px);
+              background-color: #F3F3E5;
+              padding: calculateRem(4px) calculateRem(8px);
+              color: var( --secondary-color);
+          }  
+          &__buttons {
+          @include respond-below(sm) {
+                margin-top: calculateRem(8px);
+              }
+            }
+      }
+  }
+}

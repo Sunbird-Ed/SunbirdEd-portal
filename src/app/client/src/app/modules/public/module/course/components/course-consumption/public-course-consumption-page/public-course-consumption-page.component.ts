@@ -18,6 +18,7 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
   public courseId: string;
   public showLoader = true;
   public showError = false;
+  layoutConfiguration: any;
   public courseHierarchy: any;
   sharelinkModal: boolean;
   shareLink: string;

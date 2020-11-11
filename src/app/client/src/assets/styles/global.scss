@@ -403,7 +403,7 @@ app-workspace {
 }
 
 .sbt-page-content-area {
-  background: none;
+  background: var(--sbt-body-bg2);
   border-radius: calculateRem(40px) 0 0 calculateRem(40px);
   height:100%;
   padding:calculateRem(16px) calculateRem(24px) calculateRem(24px) calculateRem(24px);
@@ -414,7 +414,6 @@ app-workspace {
   }
 
   @include respond-above(sm) {
-    background: var(--sbt-body-bg2);
     padding:calculateRem(16px) calculateRem(8px) calculateRem(24px) calculateRem(24px);
   }
 

@@ -1,5 +1,5 @@
 <div *ngIf="!loader">
-  <div class="ui container" [appTelemetryImpression]="telemetryCourseImpression">
+  <div class="ui container"  [ngClass]="layoutConfiguration ? 'sbt-theme-bg':''" [appTelemetryImpression]="telemetryCourseImpression">
     <div class="sb-course-details sb-g sb-g--gap24 py-16 text-left course-consumption-container">
       <div class="sb-course-details__training sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
         <!-- Course details -->

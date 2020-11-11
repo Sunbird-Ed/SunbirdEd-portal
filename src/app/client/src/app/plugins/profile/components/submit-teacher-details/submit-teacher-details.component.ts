@@ -372,7 +372,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   }
 
   getTeacherDetailsForm() {
-    this.profileService.getSelfDeclarationForm().pipe(takeUntil(this.unsubscribe)).subscribe(formConfig => {
+    this.profileService.getSelfDeclarationForm(this.selectedTenant).pipe(takeUntil(this.unsubscribe)).subscribe(formConfig => {
       console.log('formConfig', formConfig);
       this.initializeFormData(formConfig);
     }, error => {

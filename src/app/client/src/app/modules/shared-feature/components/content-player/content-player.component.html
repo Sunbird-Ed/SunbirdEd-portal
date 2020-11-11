@@ -2,6 +2,12 @@
 [layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
 <div class="relative9" [style.display]="!showLoader ? 'block' : 'none'" *ngIf="contentData">
 
+  <div *ngIf="!layoutConfiguration">
+    old layout
+    </div>
+    <div *ngIf="layoutConfiguration">
+      New layout
+      </div>
   <!--CC-Player Content Header -->
   <div class="content-header cc-player__content-header d-flex flex-ai-center relative position cc-player__border-fix" [ngClass]="{'header-block': isFullScreenView}">
     <div class="ui container py-16">

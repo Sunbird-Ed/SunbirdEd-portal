@@ -29,6 +29,22 @@ module.exports = (app) => {
             }
         })
     )
+
+    app.all('/content/asset/v1/upload/:id',
+    proxyUtils.verifyToken(),
+    isAPIWhitelisted.isAllowed(),
+    proxy(contentURL, {
+        limit: reqDataLimitOfContentUpload,
+        proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentURL),
+        proxyReqPathResolver: (req) => {
+            logger.info({
+                msg: '/content/asset/v1/upload/:id called'
+            });
+            return require('url').parse(contentURL + req.originalUrl.replace('/content/', '')).path
+        }
+    })
+)
+
     app.all('/content/*',
             // Generate telemetry for content service
             telemetryHelper.generateTelemetryForContentService,
