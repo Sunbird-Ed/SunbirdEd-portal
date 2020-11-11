@@ -65,6 +65,7 @@ describe('AssessmentPlayerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AssessmentPlayerComponent);
     component = fixture.componentInstance;
+    component.contentStatus = assessmentPlayerMockData.contentStatus;
     fixture.detectChanges();
   });
 
@@ -89,8 +90,9 @@ describe('AssessmentPlayerComponent', () => {
   it('should go back with showCourseCompleteMessage=true if course completion popup is not shown', () => {
     spyOn(component['router'], 'navigate');
     component.goBack();
-    const paramas = { showCourseCompleteMessage: true };
-    expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course', '12312433456', 'batch', '12312433'], {queryParams: paramas});
+    const paramas = {showCourseCompleteMessage: true};
+    expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course', '12312433456', 'batch', '12312433'],
+     {queryParams: paramas});
   });
 
   it('should call subscribeToQueryParam', () => {
@@ -222,6 +224,7 @@ describe('AssessmentPlayerComponent', () => {
   it('should call contentProgressEvent', () => {
     component.batchId = '121787782323';
     component.enrolledBatchInfo = { status: 1 };
+    component.isUnitCompleted = false;
     spyOn<any>(component, 'validEndEvent').and.returnValue(false);
     const event = { detail: { telemetryData: { eid: 'END' } } };
     const resp = component.contentProgressEvent(event);
@@ -286,6 +289,7 @@ describe('AssessmentPlayerComponent', () => {
   it('should call onAssessmentEvents', () => {
     component.batchId = '0130272832104038409';
     component.enrolledBatchInfo = { status: 2 };
+    component.contentStatus = assessmentPlayerMockData.contentStatus;
     const assessmentScoreService = TestBed.get(AssessmentScoreService);
     spyOn(assessmentScoreService, 'receiveTelemetryEvents').and.stub();
     spyOn(component, 'calculateProgress').and.stub();
@@ -331,6 +335,12 @@ describe('AssessmentPlayerComponent', () => {
   });
 
   it('should call calculateProgress', () => {
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    component.contentStatus = assessmentPlayerMockData.contentStatus;
+    component.calculateProgress(true);
+    expect(component.courseHierarchy).toBeDefined();
+  });
+  it('should call calculateProgress to be called with no parameter', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     component.contentStatus = assessmentPlayerMockData.contentStatus;
     component.calculateProgress();
@@ -463,4 +473,19 @@ describe('AssessmentPlayerComponent', () => {
     component['subscribeToQueryParam']();
     expect(component['setActiveContent']).toHaveBeenCalledWith('do_11287204084174028818', true);
   });
+
+  it('should call calculateProgress for single content and isUnitCompleted=true', () => {
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchyNochildren;
+    fixture.detectChanges();
+    component.calculateProgress(true);
+    expect(component.isUnitCompleted).toEqual(true);
+  });
+  it('should call calculateProgress for single content', () => {
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchyNochildren;
+    component.courseHierarchy.identifier = 'do_1130272760292638721197';
+    fixture.detectChanges();
+    component.calculateProgress();
+    expect(component.isUnitCompleted).toEqual(false);
+  });
+
 });

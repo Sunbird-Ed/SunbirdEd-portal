@@ -230,7 +230,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
         .subscribe(res => {
           /* istanbul ignore else */
           if (_.get(res, 'content.length')) {
-            this.isCourseCompleted = _.every(res.content, ['status', 2]);
+            this.isCourseCompleted = (res.totalCount === res.completedCount);
             this.showCourseCompleteMessage = this.isCourseCompleted && showPopup;
             this.isCourseCompletionPopupShown = this.isCourseCompleted;
           }
@@ -460,6 +460,18 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
           this.logAuditEvent(true);
         }
       });
+    } else {
+      this.isUnitCompleted = false;
+      if (this.contentStatus && this.contentStatus.length) {
+        const contentState = this.contentStatus.filter(({ contentId, status }) =>
+          this.courseHierarchy.identifier === contentId && status === 2);
+        if (contentState.length > 0) {
+          this.isUnitCompleted = true;
+        }
+      }
+      if (isLogAuditEvent && this.isUnitCompleted) {
+        this.logAuditEvent(true);
+      }
     }
   }
 
