@@ -25,7 +25,6 @@ import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
 import { Subject, zip, forkJoin } from 'rxjs';
 import { EXPLORE_GROUPS, MY_GROUPS } from '../../../public/module/group/components/routerLinks';
-import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 
 declare var jQuery: any;
 type reportsListVersionType = 'v1' | 'v2';
@@ -154,7 +153,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     private courseService: CoursesService, private utilService: UtilService, public layoutService: LayoutService,
     public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef,
     public navigationHelperService: NavigationHelperService,
-    private deviceRegisterService: DeviceRegisterService, private http: HttpClient, private sanitizer: DomSanitizer,) {
+    private deviceRegisterService: DeviceRegisterService, private http: HttpClient) {
     try {
       this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
       this.reportsListVersion = (<HTMLInputElement>document.getElementById('reportsListVersion')).value as reportsListVersionType;
