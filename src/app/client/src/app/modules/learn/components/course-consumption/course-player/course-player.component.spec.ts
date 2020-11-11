@@ -160,6 +160,7 @@ describe('CoursePlayerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CoursePlayerComponent);
     component = fixture.componentInstance;
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     contentUtilsServiceService = TestBed.get(ContentUtilsServiceService);
     const generaliseLabelService = TestBed.get(GeneraliseLabelService);
     generaliseLabelService.frmelmnts = resourceServiceMockData.frmelmnts;
@@ -538,8 +539,9 @@ describe('CoursePlayerComponent', () => {
 
   it('should call parseChildContent', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    fixture.detectChanges();
     component['parseChildContent']();
-    expect(component.contentIds.length).toBeTruthy();
+    expect(component.contentIds.length).toBeGreaterThan(0);
   });
 
   it('should subscribe to updateContentConsumedStatus', () => {
@@ -634,6 +636,7 @@ describe('CoursePlayerComponent', () => {
 
   it('should call collapsedChange', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
+    fixture.detectChanges();
     component.collapsedChange(false, 0);
     expect(component.courseHierarchy.children[0].collapsed).toBeFalsy();
   });

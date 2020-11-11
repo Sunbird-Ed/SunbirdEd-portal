@@ -60,7 +60,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   consumedContents = 0;
   layoutConfiguration;
   isCourseCompletionPopupShown = false;
-  previousContent = {};
+  previousContent = null;
 
   constructor(
     public resourceService: ResourceService,
@@ -86,7 +86,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   navigateToPlayerPage(collectionUnit: {}, event?) {
-    this.previousContent = {};
+    this.previousContent = null;
       const navigationExtras: NavigationExtras = {
         queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.parentCourse.name }
       };
@@ -136,7 +136,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    this.previousContent = {};
+    this.previousContent = null;
     const paramas = {};
     if (!this.isCourseCompletionPopupShown) {
       paramas['showCourseCompleteMessage'] = true;
@@ -233,7 +233,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
         .subscribe(res => {
           /* istanbul ignore else */
           if (_.get(res, 'content.length')) {
-            this.isCourseCompleted = _.every(res.content, ['status', 2]);
+            this.isCourseCompleted = (res.totalCount === res.completedCount);
             this.showCourseCompleteMessage = this.isCourseCompleted && showPopup;
             this.isCourseCompletionPopupShown = this.isCourseCompleted;
           }
@@ -329,6 +329,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       }, err => console.error(err, 'content read api failed'));
   }
 
+  public getCurrentContent() {
+   return this.previousContent ? this.previousContent : this.activeContent;
+  }
   public contentProgressEvent(event) {
     /* istanbul ignore else */
     if (!this.batchId || _.get(this.enrolledBatchInfo, 'status') !== 1) {
@@ -340,13 +343,12 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     if (eid === 'END' && !this.validEndEvent(event)) {
       return;
     }
-
     const request: any = {
       userId: this.userService.userid,
       contentId: _.cloneDeep(_.get(telObject, 'object.id')) || _.get(this.activeContent, 'identifier'),
       courseId: this.courseId,
       batchId: this.batchId,
-      status: (eid === 'END' && this.activeContent.contentType !== 'SelfAssess' && this.courseProgress === 100) ? 2 : 1,
+      status: (eid === 'END' && (_.get(this.getCurrentContent, 'contentType') !== 'SelfAssess') && this.courseProgress === 100) ? 2 : 1,
       progress: this.courseProgress
     };
 
@@ -461,6 +463,18 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
           this.logAuditEvent(true);
         }
       });
+    } else {
+      this.isUnitCompleted = false;
+      if (this.contentStatus && this.contentStatus.length) {
+        const contentState = this.contentStatus.filter(({ contentId, status }) =>
+          this.courseHierarchy.identifier === contentId && status === 2);
+        if (contentState.length > 0) {
+          this.isUnitCompleted = true;
+        }
+      }
+      if (isLogAuditEvent && this.isUnitCompleted) {
+        this.logAuditEvent(true);
+      }
     }
   }
 
