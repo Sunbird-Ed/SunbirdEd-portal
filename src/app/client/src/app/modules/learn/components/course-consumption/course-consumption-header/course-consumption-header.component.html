@@ -1,124 +1,263 @@
+<!-- Old layout -->
+<div *ngIf="!layoutConfiguration">
 
-<!-- Back Button -->
-<div class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9">
-  <div class="ui container">
-    <div class="py-8 d-flex flex-ai-center">
-      <!-- /* Back button */ -->
-      <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto" (click)="goBack()">
-        <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
-            <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
-          </svg></i>
-        {{resourceService?.frmelmnts?.btn?.back}}
-      </button>
+  <!-- Back Button -->
+  <div class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9">
+    <div class="ui container">
+      <div class="py-8 d-flex flex-ai-center">
+        <!-- /* Back button */ -->
+        <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto"
+          (click)="goBack()">
+          <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+              <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+            </svg></i>
+          {{resourceService?.frmelmnts?.btn?.back}}
+        </button>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- Textbook details with continue playing and join course button routerLink="/registration" -->
-<div class="textbook-container cc-player__content-header relative9">
-  <div class="ui container">
-    <div class="textbook py-16 sb-g cc-player">
-      <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
-        <!-- Textbook details -->
-        <div class="textbook__details d-flex flex-ai-center">
-          <!-- Textbook image -->
-          <div class="textbook__bookimg">
-            <img src="{{courseHierarchy?.appIcon}}" alt="textbook">
-          </div>
-          <div class="ml-8 textbook__heading">
-            <!-- Textbook title -->
-            <h5 class="textbook__title sb-color-primary font-weight-bold mb-0">{{courseHierarchy?.name}}
-            </h5>
-            <!-- Textbook Rating with share icon -->
-            <div class="textbook__rating d-flex flex-ai-center">
+  <!-- Textbook details with continue playing and join course button routerLink="/registration" -->
+  <div class="textbook-container cc-player__content-header relative9">
+    <div class="ui container">
+      <div class="textbook py-16 sb-g cc-player">
+        <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
+          <!-- Textbook details -->
+          <div class="textbook__details d-flex flex-ai-center">
+            <!-- Textbook image -->
+            <div class="textbook__bookimg">
+              <img src="{{courseHierarchy?.appIcon}}" alt="textbook">
+            </div>
+            <div class="ml-8 textbook__heading">
+              <!-- Textbook title -->
+              <h5 class="textbook__title sb-color-primary font-weight-bold mb-0">{{courseHierarchy?.name}}
+              </h5>
+              <!-- Textbook Rating with share icon -->
+              <div class="textbook__rating d-flex flex-ai-center">
 
-              <sui-rating *ngIf="courseStatus !== 'Unlisted'" class="star mini" [isReadonly]="true"
-                [ngModel]="courseHierarchy.me_averageRating || 0" [maximum]="5"></sui-rating>
+                <sui-rating *ngIf="courseStatus !== 'Unlisted'" class="star mini" [isReadonly]="true"
+                  [ngModel]="courseHierarchy.me_averageRating || 0" [maximum]="5"></sui-rating>
 
-              <button (click)="onShareLink();sharelinkModal=true;"
-                class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix">
-                <i class="icon-svg icon-svg--xs icon-share mr-8"><svg class="icon icon-svg--primary">
-                  <use xlink:href="assets/images/sprite.svg#share"></use>
-                </svg></i>
-                {{resourceService?.frmelmnts?.lbl?.share}}
-              </button>
+                <button (click)="onShareLink();sharelinkModal=true;"
+                  class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix">
+                  <i class="icon-svg icon-svg--xs icon-share mr-8"><svg class="icon icon-svg--primary">
+                      <use xlink:href="assets/images/sprite.svg#share"></use>
+                    </svg></i>
+                  {{resourceService?.frmelmnts?.lbl?.share}}
+                </button>
 
-              <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix"
-                *ngIf="permissionService.permissionAvailable && courseStatus !== 'Unlisted'" appPermission
-                appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
-                [telemetryInteractEdata]="{id:'copyContent' , type: 'click' , pageid:'course-consumption'}"
-                [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" (click)="copyContent(courseHierarchy)"
-                title="{{resourceService?.frmelmnts?.lbl?.copy}}">
-                <i class="icon-svg icon-svg--xs icon-edit mr-8"><svg class="icon icon-svg--primary">
-                  <use xlink:href="assets/images/sprite.svg#copy-alternate"></use>
-                </svg></i>
-                {{resourceService?.frmelmnts?.lbl?.copy}}
-              </button>
+                <button
+                  class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix"
+                  *ngIf="permissionService.permissionAvailable && courseStatus !== 'Unlisted'" appPermission
+                  appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
+                  [telemetryInteractEdata]="{id:'copyContent' , type: 'click' , pageid:'course-consumption'}"
+                  [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" (click)="copyContent(courseHierarchy)"
+                  title="{{resourceService?.frmelmnts?.lbl?.copy}}">
+                  <i class="icon-svg icon-svg--xs icon-edit mr-8"><svg class="icon icon-svg--primary">
+                      <use xlink:href="assets/images/sprite.svg#copy-alternate"></use>
+                    </svg></i>
+                  {{resourceService?.frmelmnts?.lbl?.copy}}
+                </button>
+              </div>
             </div>
           </div>
+
+          <!-- Info displaying if course is flagged -->
+          <h6 class="ui small negative message" *ngIf="courseHierarchy.status === 'Flagged'">
+            {{resourceService?.messages?.imsg?.m0001}}</h6>
+
+          <!-- Info displaying if batch has expired -->
+          <h6 class="ui small info message" *ngIf="enrolledCourse && getBatchStatus() && batchEndDate">
+            {{resourceService?.frmelmnts?.lbl?.expiredBatchWarning | interpolate:'{EndDate}':batchEndDate}}</h6>
+
         </div>
 
-        <!-- Info displaying if course is flagged -->
-        <h6 class="ui small negative message" *ngIf="courseHierarchy.status === 'Flagged'">
-          {{resourceService?.messages?.imsg?.m0001}}</h6>
-
-        <!-- Info displaying if batch has expired -->
-        <h6 class="ui small info message" *ngIf="enrolledCourse && getBatchStatus() && batchEndDate">
-          {{resourceService?.frmelmnts?.lbl?.expiredBatchWarning | interpolate:'{EndDate}':batchEndDate}}</h6>
-
-      </div>
-
-      <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4 certified-course">
-        <div class="certified-course__btn" *ngIf="showAddGroup">
-          <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
-          appAddToGroup [identifier]="courseHierarchy?.identifier" [pageId]="courseHierarchy?.contentType.toLowerCase()">
-          {{resourceService?.frmelmnts?.lbl?.AddtoGroup}}</button>
-        </div>
-        <!-- join course, start learning, continue learning, view dashboard buttons -->  
-        <div *ngIf="!showAddGroup && isTrackable">
-          <div class="certified-course__btn" *ngIf="!enrolledCourse && !viewDashboard">
-            <button  [disabled]="!(courseConsumptionService.enableCourseEntrollment | async)"  [ngClass]="{'sb-btn-disabled': !(courseConsumptionService.enableCourseEntrollment | async)}" class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
-              (click)="showJoinModal(true); this.logTelemetry('join-course', courseHierarchy)">{{generaliseLabelService?.frmelmnts?.btn?.enroll}}</button>
+        <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4 certified-course">
+          <div class="certified-course__btn" *ngIf="showAddGroup">
+            <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn" appAddToGroup
+              [identifier]="courseHierarchy?.identifier" [pageId]="courseHierarchy?.contentType.toLowerCase()">
+              {{resourceService?.frmelmnts?.lbl?.AddtoGroup}}</button>
           </div>
+          <!-- join course, start learning, continue learning, view dashboard buttons -->
+          <div *ngIf="!showAddGroup && isTrackable">
+            <div class="certified-course__btn" *ngIf="!enrolledCourse && !viewDashboard">
+              <button [disabled]="!(courseConsumptionService.enableCourseEntrollment | async)"
+                [ngClass]="{'sb-btn-disabled': !(courseConsumptionService.enableCourseEntrollment | async)}"
+                class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
+                (click)="showJoinModal(true); this.logTelemetry('join-course', courseHierarchy)">{{generaliseLabelService?.frmelmnts?.btn?.enroll}}</button>
+            </div>
 
-          <div class="certified-course__btn" *ngIf="enrolledCourse && progress===0 && !viewDashboard">
-            <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn" [disabled]="showResumeCourse"
-              (click)="resumeCourse(true); this.logTelemetry('course-start', courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.startLearning}}</button>
+            <div class="certified-course__btn" *ngIf="enrolledCourse && progress===0 && !viewDashboard">
+              <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
+                [disabled]="showResumeCourse"
+                (click)="resumeCourse(true); this.logTelemetry('course-start', courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.startLearning}}</button>
+            </div>
+
+            <div class="certified-course__btn" *ngIf="enrolledCourse && progress>0 && !viewDashboard">
+              <button class="sb-btn sb-btn-secondary sb-btn-normal textbook__addbtn ml-8 sb-btn-icon-fix"
+                [disabled]="showResumeCourse"
+                (click)="resumeCourse(true); this.logTelemetry('course-resume', courseHierarchy)">
+                <i class="icon-svg icon-svg--xs icon-play mr-8"><svg class="icon icon-svg--primary">
+                    <use xlink:href="assets/images/sprite.svg#play-continue"></use>
+                  </svg></i>{{resourceService?.frmelmnts?.btn?.continueLearning}}</button>
+            </div>
+            <div class="ml-auto text-right mt-8"
+              *ngIf="!enrolledCourse && viewDashboard && !router.url.includes('/dashboard')">
+              <button appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
+                [telemetryInteractEdata]="{id:'viewCourseDashboard' , type: 'click' , pageid:'course-consumption'}"
+                class="sb-btn sb-btn-secondary sb-btn-normal" (click)="showDashboard()">
+                {{generaliseLabelService?.frmelmnts?.btn?.viewCourseStatsDashboard}}
+              </button>
+            </div>
+
+            <div class="ml-auto text-right mt-8"
+              *ngIf="permissionService?.permissionAvailable && !enrolledCourse && viewDashboard && router.url.includes('/dashboard')"
+              appPermission [permission]="dashboardPermission">
+              <button appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
+                [telemetryInteractEdata]="{id:'close-course-dashboard' , type: 'click' , pageid:'course-consumption'}"
+                class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="closeDashboard()">
+                Close dashboard
+              </button>
+            </div>
+
           </div>
-
-        <div class="certified-course__btn" *ngIf="enrolledCourse && progress>0 && !viewDashboard">
-          <button class="sb-btn sb-btn-secondary sb-btn-normal textbook__addbtn ml-8 sb-btn-icon-fix"
-            [disabled]="showResumeCourse" (click)="resumeCourse(true); this.logTelemetry('course-resume', courseHierarchy)">
-            <i class="icon-svg icon-svg--xs icon-play mr-8"><svg class="icon icon-svg--primary">
-              <use xlink:href="assets/images/sprite.svg#play-continue"></use>
-            </svg></i>{{resourceService?.frmelmnts?.btn?.continueLearning}}</button>
-        </div>
-          <div class="ml-auto text-right mt-8" *ngIf="!enrolledCourse && viewDashboard && !router.url.includes('/dashboard')">
-            <button appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
-              [telemetryInteractEdata]="{id:'viewCourseDashboard' , type: 'click' , pageid:'course-consumption'}"
-              class="sb-btn sb-btn-secondary sb-btn-normal" (click)="showDashboard()">
-              {{generaliseLabelService?.frmelmnts?.btn?.viewCourseStatsDashboard}}
-            </button>
-          </div>
-
-          <div class="ml-auto text-right mt-8" *ngIf="permissionService?.permissionAvailable && !enrolledCourse && viewDashboard && router.url.includes('/dashboard')"
-          appPermission [permission]="dashboardPermission">
-          <button appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
-            [telemetryInteractEdata]="{id:'close-course-dashboard' , type: 'click' , pageid:'course-consumption'}"
-            class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="closeDashboard()">
-            Close dashboard
-          </button>
-        </div>
-
         </div>
       </div>
     </div>
   </div>
+
+  <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
+    <div class="ui text centered inline loader mt-40">{{resourceService.frmelmnts.lbl.copycontent}}</div>
+  </div>
+  <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal"
+    (close)="closeSharePopup('close-share-link-popup')">
+  </app-share-link>
 </div>
 
-<div class="ui active inverted dimmer" *ngIf="showCopyLoader">
-  <div class="ui text centered inline loader mt-40">{{resourceService.frmelmnts.lbl.copycontent}}</div>
+<!-- New layout -->
+<div *ngIf="layoutConfiguration" class="sbt-container mt-40">
+
+  <!-- Textbook details with continue playing and join course button routerLink="/registration" -->
+  <div class="sb-page-back-panel relative9">
+    <div class="sb-page-back-panel__header content-header p-16">
+      <div class="ui container sb-page-back-panel__header__content">
+        <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
+          <!-- Textbook details -->
+          <div class="d-flex flex-ai-center">
+            <!-- /* Back button */ -->
+            <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn sb-btn-round mr-16"
+              (click)="goBack()">
+              <i class="icon-svg icon-svg--xxs icon-back"><svg class="icon icon-svg--primary">
+                  <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+                </svg></i>
+              <span>{{resourceService?.frmelmnts?.btn?.back}}</span>
+            </button>
+            <!-- Textbook image -->
+            <div class="textbook__bookimg">
+              <img src="{{courseHierarchy?.appIcon}}" alt="textbook">
+            </div>
+            <div class="ml-8 textbook__heading">
+              <!-- Textbook title -->
+              <h5 class="textbook__title sb-color-primary font-weight-bold mb-0">{{courseHierarchy?.name}}
+              </h5>
+              <!-- Textbook Rating with share icon -->
+              <div class="textbook__rating d-flex flex-ai-center">
+
+                <sui-rating *ngIf="courseStatus !== 'Unlisted'" class="star mini" [isReadonly]="true"
+                  [ngModel]="courseHierarchy.me_averageRating || 0" [maximum]="5"></sui-rating>
+
+                <button (click)="onShareLink();sharelinkModal=true;"
+                  class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix">
+                  <i class="icon-svg icon-svg--xs icon-share mr-8"><svg class="icon icon-svg--primary">
+                      <use xlink:href="assets/images/sprite.svg#share"></use>
+                    </svg></i>
+                  {{resourceService?.frmelmnts?.lbl?.share}}
+                </button>
+
+                <button
+                  class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix"
+                  *ngIf="permissionService.permissionAvailable && courseStatus !== 'Unlisted'" appPermission
+                  appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
+                  [telemetryInteractEdata]="{id:'copyContent' , type: 'click' , pageid:'course-consumption'}"
+                  [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" (click)="copyContent(courseHierarchy)"
+                  title="{{resourceService?.frmelmnts?.lbl?.copy}}">
+                  <i class="icon-svg icon-svg--xs icon-edit mr-8"><svg class="icon icon-svg--primary">
+                      <use xlink:href="assets/images/sprite.svg#copy-alternate"></use>
+                    </svg></i>
+                  {{resourceService?.frmelmnts?.lbl?.copy}}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Info displaying if course is flagged -->
+          <h6 class="ui small negative message" *ngIf="courseHierarchy.status === 'Flagged'">
+            {{resourceService?.messages?.imsg?.m0001}}</h6>
+
+          <!-- Info displaying if batch has expired -->
+          <h6 class="ui small info message" *ngIf="enrolledCourse && getBatchStatus() && batchEndDate">
+            {{resourceService?.frmelmnts?.lbl?.expiredBatchWarning | interpolate:'{EndDate}':batchEndDate}}</h6>
+
+        </div>
+
+        <div class="d-flex flex-ai-end flex-w-wrap sb-page-back-panel__header__buttons sm-mt-16">
+          <div class="certified-course__btn" *ngIf="showAddGroup">
+            <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn" appAddToGroup
+              [identifier]="courseHierarchy?.identifier" [pageId]="courseHierarchy?.contentType.toLowerCase()">
+              {{resourceService?.frmelmnts?.lbl?.AddtoGroup}}</button>
+          </div>
+          <!-- join course, start learning, continue learning, view dashboard buttons -->
+          <div *ngIf="!showAddGroup && isTrackable">
+            <div class="certified-course__btn" *ngIf="!enrolledCourse && !viewDashboard">
+              <button [disabled]="!(courseConsumptionService.enableCourseEntrollment | async)"
+                [ngClass]="{'sb-btn-disabled': !(courseConsumptionService.enableCourseEntrollment | async)}"
+                class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
+                (click)="showJoinModal(true); this.logTelemetry('join-course', courseHierarchy)">{{generaliseLabelService?.frmelmnts?.btn?.enroll}}</button>
+            </div>
+
+            <div class="certified-course__btn" *ngIf="enrolledCourse && progress===0 && !viewDashboard">
+              <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
+                [disabled]="showResumeCourse"
+                (click)="resumeCourse(true); this.logTelemetry('course-start', courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.startLearning}}</button>
+            </div>
+
+            <div class="certified-course__btn" *ngIf="enrolledCourse && progress>0 && !viewDashboard">
+              <button class="sb-btn sb-btn-secondary sb-btn-normal textbook__addbtn ml-8 sb-btn-icon-fix"
+                [disabled]="showResumeCourse"
+                (click)="resumeCourse(true); this.logTelemetry('course-resume', courseHierarchy)">
+                <i class="icon-svg icon-svg--xs icon-play mr-8"><svg class="icon icon-svg--primary">
+                    <use xlink:href="assets/images/sprite.svg#play-continue"></use>
+                  </svg></i>{{resourceService?.frmelmnts?.btn?.continueLearning}}</button>
+            </div>
+            <div class="ml-auto text-right mt-8"
+              *ngIf="!enrolledCourse && viewDashboard && !router.url.includes('/dashboard')">
+              <button appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
+                [telemetryInteractEdata]="{id:'viewCourseDashboard' , type: 'click' , pageid:'course-consumption'}"
+                class="sb-btn sb-btn-secondary sb-btn-normal" (click)="showDashboard()">
+                {{generaliseLabelService?.frmelmnts?.btn?.viewCourseStatsDashboard}}
+              </button>
+            </div>
+
+            <div class="ml-auto text-right mt-8"
+              *ngIf="permissionService?.permissionAvailable && !enrolledCourse && viewDashboard && router.url.includes('/dashboard')"
+              appPermission [permission]="dashboardPermission">
+              <button appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
+                [telemetryInteractEdata]="{id:'close-course-dashboard' , type: 'click' , pageid:'course-consumption'}"
+                class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="closeDashboard()">
+                Close dashboard
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
+    <div class="ui text centered inline loader mt-40">{{resourceService.frmelmnts.lbl.copycontent}}</div>
+  </div>
+  <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal"
+    (close)="closeSharePopup('close-share-link-popup')">
+  </app-share-link>
 </div>
-<app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal"
-  (close)="closeSharePopup('close-share-link-popup')">
-</app-share-link>

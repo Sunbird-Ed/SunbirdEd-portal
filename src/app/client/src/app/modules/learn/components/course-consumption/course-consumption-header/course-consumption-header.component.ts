@@ -8,7 +8,7 @@ import * as _ from 'lodash-es';
 import { CoursesService, PermissionService, CopyContentService, UserService, GeneraliseLabelService } from '@sunbird/core';
 import {
   ResourceService, ToasterService, ContentData, ContentUtilsServiceService, ITelemetryShare,
-  ExternalUrlPreviewService
+  ExternalUrlPreviewService, LayoutService, COLUMN_TYPE
 } from '@sunbird/shared';
 import { IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
 import * as dayjs from 'dayjs';
@@ -61,19 +61,24 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   isTrackable = false;
   viewDashboard = false;
   tocId;
+  layoutConfiguration: any;
+  FIRST_PANEL_LAYOUT: string;
+  SECOND_PANEL_LAYOUT: string;
+
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
     public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
     private courseProgressService: CourseProgressService, public contentUtilsServiceService: ContentUtilsServiceService,
     public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService, private userService: UserService,
     private telemetryService: TelemetryService, private groupService: GroupsService,
-    private navigationHelperService: NavigationHelperService, public generaliseLabelService: GeneraliseLabelService) { }
+    private navigationHelperService: NavigationHelperService, public generaliseLabelService: GeneraliseLabelService, public layoutService: LayoutService) { }
 
   showJoinModal(event) {
     this.courseConsumptionService.showJoinCourseModal.emit(event);
   }
 
   ngOnInit() {
+    this.initLayout();
     this.forumId = _.get(this.courseHierarchy, 'forumId') || _.get(this.courseHierarchy, 'metaData.forumId');
     if (!this.courseConsumptionService.getCoursePagePreviousUrl) {
       this.courseConsumptionService.setCoursePagePreviousUrl();
@@ -287,6 +292,28 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
       } else {
         this.router.navigate([previousPageUrl.url]);
       }
+    }
+  }
+
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.redoLayout();
+    this.layoutService.switchableLayout().
+    pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig => {
+    if (layoutConfig != null) {
+      this.layoutConfiguration = layoutConfig.layout;
+    }
+    this.redoLayout();
+   });
+  }
+
+  redoLayout() {
+    if (this.layoutConfiguration) {
+      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true) + ' ' + 'first_panel_layout';
+        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true) + ' ' + 'second_panel_layout';
+    } else {
+      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
+      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
     }
   }
 }

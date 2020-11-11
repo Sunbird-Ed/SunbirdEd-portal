@@ -296,6 +296,45 @@ html[layout='joy'] {
     }
   }
 
+  .sb-new-theme-backbtn {
+    display: flex;
+    align-items: center;
+    margin: 0 4%;
+    margin-top: 40px;
+    border-radius: 2.5rem 2.5rem 0 0 !important;
+    background-color: #FFD954 !important;
+    padding: 16px;
+
+    .back-btn-container.cc-player__btn-back {
+      width: auto;
+      background: transparent !important;
+      margin: 0 16px 0 0 !important;
+      border-radius: 0 !important;
+
+      .ui.container {
+        border-radius: 0;
+        background: inherit !important;
+      }
+    }
+
+    .textbook-container.cc-player__content-header {
+      width: 100%;
+      margin: 0 !important;
+
+      .ui.container {
+        padding: 0;
+        
+        .textbook {
+          display: flex;
+          align-items: center;
+          .certified-course {
+            margin-left: auto;
+          }
+        }
+      }
+    }
+  }
+
   //end
 }
 

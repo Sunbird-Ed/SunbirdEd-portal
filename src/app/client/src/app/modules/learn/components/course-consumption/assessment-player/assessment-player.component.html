@@ -2,73 +2,76 @@
 [layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
 <div *ngIf="!showLoader" [appTelemetryImpression]="telemetryPlayerPageImpression" class="text-left relative9">
 
-  <!-- Header: Back Button Previous Module & Next Module button -->
-  <div class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9">
-    <div class="ui container">
-      <div class="py-8 d-flex flex-ai-center">
-        <!-- Back button -->
-        <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto"
-          (click)="goBack(); logTelemetry('back-track', courseHierarchy)">
-          <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
-              <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
-            </svg></i>
-          {{resourceService?.frmelmnts?.btn?.back}}
-        </button>
-        <div class="d-flex flex-ai-center">
-          <!-- Previous module button -->
-          <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-left-icon-btn" *ngIf="prevModule"
-            (click)="navigateToPlayerPage(prevModule); logTelemetry('previous-module', prevModule, true);">
-            <i class="icon-svg icon-svg--xxs icon-back mr-4 rotate-90"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>{{generaliseLabelService?.frmelmnts?.lbl?.prevModule}}
+  <div class="sb-new-theme-backbtn">
+
+    <!-- Header: Back Button Previous Module & Next Module button -->
+    <div class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9">
+      <div class="ui container">
+        <div class="py-8 d-flex flex-ai-center">
+          <!-- Back button -->
+          <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto"
+            (click)="goBack(); logTelemetry('back-track', courseHierarchy)">
+            <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+                <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+              </svg></i>
+            {{resourceService?.frmelmnts?.btn?.back}}
           </button>
-          <!-- Previous Module button -->
-          <div class="modulebtn-divider" *ngIf="prevModule && nextModule"></div>
-          <!-- Next Module button -->
-          <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-right-icon-btn" *ngIf="nextModule"
-            (click)="navigateToPlayerPage(nextModule); logTelemetry('next-module', nextModule, true)">
-            {{generaliseLabelService?.frmelmnts?.lbl?.nextModule}}<i class="icon-svg icon-svg--xxs icon-back ml-4 rotate90"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>
-          </button>
-          <!-- Next Module button -->
+          <div class="d-flex flex-ai-center">
+            <!-- Previous module button -->
+            <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-left-icon-btn" *ngIf="prevModule"
+              (click)="navigateToPlayerPage(prevModule); logTelemetry('previous-module', prevModule, true);">
+              <i class="icon-svg icon-svg--xxs icon-back mr-4 rotate-90"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>{{generaliseLabelService?.frmelmnts?.lbl?.prevModule}}
+            </button>
+            <!-- Previous Module button -->
+            <div class="modulebtn-divider" *ngIf="prevModule && nextModule"></div>
+            <!-- Next Module button -->
+            <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-right-icon-btn" *ngIf="nextModule"
+              (click)="navigateToPlayerPage(nextModule); logTelemetry('next-module', nextModule, true)">
+              {{generaliseLabelService?.frmelmnts?.lbl?.nextModule}}<i class="icon-svg icon-svg--xxs icon-back ml-4 rotate90"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>
+            </button>
+            <!-- Next Module button -->
+          </div>
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="textbook-container cc-player__content-header relative9" [ngClass]="{'header-block': isFullScreenView}">
-    <div class="ui container">
-      <div class="textbook py-16 sb-g">
-        <div class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12">
-          <!-- Textbook details -->
-          <div class="textbook__details d-flex flex-ai-center">
-            <!-- Textbook image -->
-            <div class="textbook__heading">
-              <!-- Textbook title -->
-              <h5 class="textbook__title sb-color-primary font-weight-bold mb-0">{{courseHierarchy?.name | titlecase}}
-              </h5>
-              <!-- Textbook Rating with share icon -->
-              <div class="textbook__rating mt-4">
-                <button (click)="onShareLink();shareLinkModal=true;"
-                  class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn">
-                  <i class="icon-svg icon-svg--xxs icon-share mr-4"><svg class="icon icon-svg--primary">
-                    <use xlink:href="assets/images/sprite.svg#share"></use>
-                  </svg></i>
-                  {{resourceService?.frmelmnts?.lbl?.share}}
-                </button>
+  
+    <div class="textbook-container cc-player__content-header relative9" [ngClass]="{'header-block': isFullScreenView}">
+      <div class="ui container">
+        <div class="textbook py-16 sb-g">
+          <div class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12">
+            <!-- Textbook details -->
+            <div class="textbook__details d-flex flex-ai-center">
+              <!-- Textbook image -->
+              <div class="textbook__heading">
+                <!-- Textbook title -->
+                <h5 class="textbook__title sb-color-primary font-weight-bold mb-0">{{courseHierarchy?.name | titlecase}}
+                </h5>
+                <!-- Textbook Rating with share icon -->
+                <div class="textbook__rating mt-4">
+                  <button (click)="onShareLink();shareLinkModal=true;"
+                    class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn">
+                    <i class="icon-svg icon-svg--xxs icon-share mr-4"><svg class="icon icon-svg--primary">
+                      <use xlink:href="assets/images/sprite.svg#share"></use>
+                    </svg></i>
+                    {{resourceService?.frmelmnts?.lbl?.share}}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-
-        <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 certified-course">
-          <!-- Module Progress bar -->
-          <div class="certified-course__progress" *ngIf="totalContents > 0 && !isUnitCompleted">
-            <div class="fsmall">{{generaliseLabelService?.frmelmnts?.lbl?.moduleProgress}}</div>         
-            <div class="sb-color-primary fnormal font-weight-bold mt-4">{{consumedContents}}/{{totalContents}} {{resourceService?.frmelmnts?.lbl?.completed}}</div>
-            <sui-progress [value]="consumedContents" [maximum]="totalContents" class="mb-0 mr-0 mt-8 tiny"></sui-progress>
-          </div>
-
-          <div class="module-complete-content d-flex flex-ai-center py-8 px-16" *ngIf="isUnitCompleted">
-            <div class="mr-16 complete-content-image"><img src="./assets/images/badge-complete.svg" alt=""></div>
-            <label class="font-weight-bold mb-0 sb-color-secondary fnormal">{{generaliseLabelService?.frmelmnts?.lbl?.moduleFinish}}</label>
+  
+          <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 certified-course">
+            <!-- Module Progress bar -->
+            <div class="certified-course__progress" *ngIf="totalContents > 0 && !isUnitCompleted">
+              <div class="fsmall">{{generaliseLabelService?.frmelmnts?.lbl?.moduleProgress}}</div>         
+              <div class="sb-color-primary fnormal font-weight-bold mt-4">{{consumedContents}}/{{totalContents}} {{resourceService?.frmelmnts?.lbl?.completed}}</div>
+              <sui-progress [value]="consumedContents" [maximum]="totalContents" class="mb-0 mr-0 mt-8 tiny"></sui-progress>
+            </div>
+  
+            <div class="module-complete-content d-flex flex-ai-center py-8 px-16" *ngIf="isUnitCompleted">
+              <div class="mr-16 complete-content-image"><img src="./assets/images/badge-complete.svg" alt=""></div>
+              <label class="font-weight-bold mb-0 sb-color-secondary fnormal">{{generaliseLabelService?.frmelmnts?.lbl?.moduleFinish}}</label>
+            </div>
           </div>
         </div>
       </div>
