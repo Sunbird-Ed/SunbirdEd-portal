@@ -125,7 +125,8 @@ describe('ActivityListComponent', () => {
       appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_3129265279296552961416/artifact/book_2_1491393340123.thumb_1577945304197.png',
       organisation: ['Pre-prod Custodian Organization'],
       subject: 'Social Science',
-      contentType: 'Course'
+      primaryCategory: 'Course',
+      mimeType: 'collection'
     }};
     component.groupData.isAdmin = true;
     component.groupData.active = true;
@@ -133,8 +134,8 @@ describe('ActivityListComponent', () => {
     activatedRoute.changeQueryParams({ contentType: 'Course',
     title: 'ACTIVITY_COURSE_TITLE'});
     tick(100);
-    const option = {relativeTo: component['activateRoute'], queryParams: { contentType: 'Course',
-    title: 'ACTIVITY_COURSE_TITLE'}};
+    const option = {relativeTo: component['activateRoute'], queryParams: { primaryCategory: 'Course',
+    title: 'ACTIVITY_COURSE_TITLE', mimeType: 'collection'}};
     component.openActivity(event, 'ACTIVITY_COURSE_TITLE');
     expect(router.navigate).toHaveBeenCalledWith(['activity-details', 'do_123523212190'], option);
     expect(component.addTelemetry).toHaveBeenCalled();

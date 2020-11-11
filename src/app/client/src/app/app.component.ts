@@ -72,7 +72,7 @@ export class AppComponent implements OnInit, OnDestroy {
   showAppPopUp = false;
   viewinBrowser = false;
   sessionExpired = false;
-  showConsentPopup = true;
+  isglobalConsent = true;
   instance: string;
   resourceDataSubscription: any;
   private fingerprintInfo: any;
@@ -404,16 +404,24 @@ export class AppComponent implements OnInit, OnDestroy {
    * checks if user has accepted the tnc and show tnc popup.
    */
   public checkTncAndFrameWorkSelected() {
-      if (_.has(this.userService.userProfile, 'promptTnC') && _.has(this.userService.userProfile, 'tncLatestVersion') &&
-        _.has(this.userService.userProfile, 'tncLatestVersion') && this.userService.userProfile.promptTnC === true) {
-        this.showTermsAndCondPopUp = true;
-      } else if (_.has(this.userService.userProfile, 'promptTnC') &&  _.has(this.userService.userProfile, 'tncLatestVersion')
-      && _.get(this.userService, 'userProfile.promptTnC') && !this.userService.isCustodianUser) {
-       this.consentConfig = { tncLink: '', tncText: this.resourceService.frmelmnts.lbl.nonCustodianTC };
-       this.showGlobalConsentPopUpSection = true;
-     } else {
-       this.checkFrameworkSelected();
-     }
+    if (_.has(this.userService.userProfile, 'promptTnC') && _.has(this.userService.userProfile, 'tncLatestVersion') &&
+      _.has(this.userService.userProfile, 'tncLatestVersion') && this.userService.userProfile.promptTnC === true) {
+      this.showTermsAndCondPopUp = true;
+    } else {
+      if (this.userService.loggedIn) {
+        this.orgDetailsService.getCustodianOrgDetails().subscribe((custodianOrg) => {
+          if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') !== _.get(custodianOrg, 'result.response.value')) {
+            // Check for non custodian user and show global consent pop up
+            this.consentConfig = { tncLink: '', tncText: this.resourceService.frmelmnts.lbl.nonCustodianTC };
+            this.showGlobalConsentPopUpSection = true;
+          } else {
+            this.checkFrameworkSelected();
+          }
+        });
+      } else {
+        this.checkFrameworkSelected();
+      }
+    }
   }
   public getOrgDetails() {
     const slug = this.userService.slug;
@@ -458,10 +466,16 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   public onAcceptTnc() {
     this.showTermsAndCondPopUp = false;
-    // Check for non custodian user and show global consent pop up
-    if (!this.userService.isCustodianUser) {
-      this.consentConfig = { tncLink: '', tncText: this.resourceService.frmelmnts.lbl.nonCustodianTC };
-      this.showGlobalConsentPopUpSection = true;
+    if (this.userService.loggedIn) {
+      this.orgDetailsService.getCustodianOrgDetails().subscribe((custodianOrg) => {
+        if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') !== _.get(custodianOrg, 'result.response.value')) {
+          // Check for non custodian user and show global consent pop up
+          this.consentConfig = { tncLink: '', tncText: this.resourceService.frmelmnts.lbl.nonCustodianTC };
+          this.showGlobalConsentPopUpSection = true;
+        } else {
+          this.checkFrameworkSelected();
+        }
+      });
     } else {
       this.checkFrameworkSelected();
     }

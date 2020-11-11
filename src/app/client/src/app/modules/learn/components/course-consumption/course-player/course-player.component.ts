@@ -85,6 +85,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
   @ViewChild('joinTrainingModal') joinTrainingModal;
   showJoinModal = false;
+  tocId;
   constructor(
     public activatedRoute: ActivatedRoute,
     private configService: ConfigService,
@@ -129,7 +130,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
         if (this.activatedRoute.snapshot.queryParams.showCourseCompleteMessage === 'true') {
           this.showCourseCompleteMessage = this.progress >= 100 ? true : false;
-          this.router.navigate(['.'], { relativeTo: this.activatedRoute, queryParams: {}, replaceUrl: true });
+          const queryParams = this.tocId ? { textbook: this.tocId } : {};
+          this.router.navigate(['.'], { relativeTo: this.activatedRoute, queryParams, replaceUrl: true });
         }
       });
     this.courseConsumptionService.updateContentConsumedStatus
@@ -157,6 +159,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribe))
     .subscribe(response => {
       this.addToGroup = Boolean(response.groupId);
+      this.tocId = response.textbook || undefined;
     });
 
     this.courseConsumptionService.updateContentState
@@ -422,6 +425,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       const navigationExtras: NavigationExtras = {
         queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.courseHierarchy.name }
       };
+      if (this.tocId) {
+        navigationExtras.queryParams['textbook'] = this.tocId;
+      }
 
       if (event && !_.isEmpty(event.event)) {
         navigationExtras.queryParams.selectedContent = event.data.identifier;
