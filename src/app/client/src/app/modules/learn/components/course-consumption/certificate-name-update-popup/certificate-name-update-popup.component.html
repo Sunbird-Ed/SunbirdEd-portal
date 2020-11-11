@@ -1,0 +1,39 @@
+<sui-modal class="sb-modal sb-success" (dismissed)="modal.deny(); courseConsumptionService.showChangeUserNamePopup = false;" #modal
+*ngIf="courseConsumptionService.showChangeUserNamePopup">
+    <!--Header-->
+    <div class="sb-modal-header">
+      <span>Profile name confirmation</span>
+    </div>
+    <!--/Header-->
+
+    <!--Content-->
+    <div class="sb-modal-content">
+      <div class="d-flex flex-jc-center">
+        <img src="./assets/images/profile-certificate.svg" alt="">
+      </div>
+      <div class="pt-16 profile-section-content">
+        <div class="profile-info d-flex flex-dc">
+          <span class="text-center">Profile name:</span>
+          <span *ngIf="!isNameEditable" class="text-center font-weight-bold pt-8">{{userService._userProfile.firstName}} <img src="./assets/images/edit-icon.svg" alt="edit-icon" class="cursor-pointer" (click)="isNameEditable = true"></span>
+          <span *ngIf="isNameEditable" class="text-center pt-8"><input [(ngModel)]="userService._userProfile.firstName" (blur)="isNameEditable = false"/></span>
+        </div>
+        <div class="profile-info-para mt-16 text-center">
+          <p>
+            This will be your DIKSHA profile name in the course certificates, please make sure your name is correct. 
+          </p>
+          <p class="mb-0 fnormal font-weight-normal">
+            <input class="mr-8 cursor-pointer" type="checkbox" [(ngModel)]="certificateNameChecked" value="true" (click)="onClickCheckbox(certificateNameChecked)"> I understand, don't show this message again
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/Content-->
+
+    <!--Actions-->
+    <div class="sb-modal-actions text-center">
+      <button [ngClass]="certificateNameChecked ? '' : 'disabled'" [disabled]="!disableContinueBtn" (click)="updateProfileName()" class="sb-btn sb-btn-normal sb-btn-primary" type="button"> {{resourceService.frmelmnts.lbl.continue}} </button>
+    </div>
+    <!-- pass "sb-btn-disabled" class for button disabled -->
+    <!--/Actions-->
+
+</sui-modal>
