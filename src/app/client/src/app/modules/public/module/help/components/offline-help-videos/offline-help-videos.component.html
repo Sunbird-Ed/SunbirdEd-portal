@@ -1,0 +1,43 @@
+<div class="sb-g content-video">
+  <div class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-xl-9 content-video__player" id="player-area-height">
+    <!-- video placeholder -->
+    <div class="aspectratio" data-ratio="16:9" id="content-video-aspect-ratio" #aspectRatio>
+      <div>
+        <video id="video" autoplay width="560" height="349" controls class="sb-offline-video-player"
+          src="{{activeVideoObject.url}}">
+        </video>
+      </div>
+    </div>
+    <!-- video meta data holder -->
+    <div class="d-flex flex-w-wrap content-video__player__details sb-bg-color-white" #playerInfo>
+      <h6 class="content-video__player__title ml-8 mr-auto sb__ellipsis sb__ellipsis--two">
+        {{activeVideoObject.name}}&lrm;</h6>
+      <!-- <div class="d-flex flex-w-wrap content-video__player__tools">
+        <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-sm sb-btn-square"><i
+            class="icon download alternate"></i><span>Download</span></button>
+      </div> -->
+    </div>
+  </div>
+
+  <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-xl-3 content-video__content" [style.height.px]="videoContainerHeight">
+    <!-- card component -->
+    <div *ngFor="let video of slideData" class="sbcard sbcard--recently-viewed mb-8"
+      [ngClass]="{active:activeVideoObject.id === video.id }" (click)="changeVideoAttributes(video)"
+      appTelemetryInteract [telemetryInteractEdata]="setInteractData(video)">
+      <div class="sbcard__main-area">
+        <!-- card img -->
+        <div class="sbcard__img">
+          <div class="img-container">
+            <!-- <img src="./assets/images/book.png" alt=""> -->
+            <img class="thumbnail" src="{{video.thumbnail}}" alt="">
+          </div>
+        </div>
+        <!-- card mobile view details -->
+        <div class="sbcard__info text-left">
+          <h4 class="sbcard__title sb__ellipsis sb__ellipsis--two" title="{{ video.name }}">{{ video.name }}&lrm;</h4>
+          <div class="d-block sb-color-primary fs-0-785">{{resourceService?.frmelmnts?.lbl?.playVideo}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
