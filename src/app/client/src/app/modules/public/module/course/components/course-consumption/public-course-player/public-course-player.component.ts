@@ -22,6 +22,7 @@ import { ITelemetryShare, ContentUtilsServiceService } from '@sunbird/shared';
 export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterViewInit {
   private courseId: string;
   collectionTreeNodes: any;
+  layoutConfiguration: any;
   loader = true;
   showError = false;
   courseHierarchy: any;

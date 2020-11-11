@@ -676,10 +676,13 @@ html[layout='joy'] {
     border-radius: var(--sbt-bradius-24);
     overflow: hidden;
   }
-
+  .fixed-container {
+    border-radius: 1.5rem;
+    overflow: hidden;
+  }
   .contentViewerIframeShadow {
     border-radius: var(--sbt-bradius-24) var(--sbt-bradius-24) 0px 0px;
-
+    background: var(--sbt-compt-bg);
     &.player-fullscreen {
       border-radius: initial;
     }

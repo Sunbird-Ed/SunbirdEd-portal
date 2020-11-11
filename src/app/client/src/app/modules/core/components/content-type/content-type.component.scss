@@ -39,6 +39,9 @@
     cursor: pointer;
     white-space: nowrap;
     color: var(--gray-800);
+    @include respond-below(sm){
+      margin-right: calculateRem(16px);
+    }
     @include respond-above(md){
       min-width: calculateRem(180px);
     }
