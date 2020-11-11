@@ -16,6 +16,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { PopupControlService } from '../../../../service/popup-control.service';
 import { PublicPlayerService } from '@sunbird/public';
 import { TocCardType, PlatformType } from '@project-sunbird/common-consumption';
+import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 
 @Component({
   selector: 'app-collection-player',
@@ -177,6 +178,9 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     }
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+    if (CsGroupAddableBloc.instance.initialised) {
+      CsGroupAddableBloc.instance.dispose();
+    }
   }
 
   private initPlayer(id: string): void {

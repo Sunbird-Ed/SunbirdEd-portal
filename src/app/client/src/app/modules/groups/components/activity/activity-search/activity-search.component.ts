@@ -54,6 +54,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
   public allTabData;
   public selectedFilters;
   public ADD_ACTIVITY_TO_GROUP = ADD_ACTIVITY_TO_GROUP;
+  private csGroupAddableBloc: CsGroupAddableBloc;
 
 
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
@@ -77,9 +78,14 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     private groupsService: GroupsService,
     public layoutService: LayoutService,
     public courseConsumptionService: CourseConsumptionService
-  ) { }
+  ) {
+    this.csGroupAddableBloc = CsGroupAddableBloc.instance;
+    }
 
   ngOnInit() {
+    if (!this.csGroupAddableBloc.initialised) {
+      this.csGroupAddableBloc.init();
+    }
     CsGroupAddableBloc.instance.state$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       this.groupAddableBlocData = data;
     });
@@ -281,6 +287,8 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
   }
 
   addActivity(activityCard) {
+    this.groupAddableBlocData.pageIds = [_.get(activityCard, 'primaryCategory').toLowerCase(), ADD_ACTIVITY_TO_GROUP];
+    this.csGroupAddableBloc.updateState(this.groupAddableBlocData);
     const cdata = [{ id: _.get(activityCard, 'identifier'), type: _.get(activityCard, 'contentType') }];
     this.addTelemetry('activity-course-card', cdata);
     const isTrackable = this.courseConsumptionService.isTrackableCollection(activityCard);

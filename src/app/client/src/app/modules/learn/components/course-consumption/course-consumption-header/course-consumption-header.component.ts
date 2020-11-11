@@ -14,6 +14,8 @@ import { IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
 import * as dayjs from 'dayjs';
 import { GroupsService } from '../../../../groups/services/groups/groups.service';
 import { NavigationHelperService } from '@sunbird/shared';
+import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
+
 @Component({
   selector: 'app-course-consumption-header',
   templateUrl: './course-consumption-header.component.html',
@@ -191,6 +193,9 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     clearInterval(this.interval);
     this.unsubscribe.next();
     this.unsubscribe.complete();
+    if (CsGroupAddableBloc.instance.initialised) {
+      CsGroupAddableBloc.instance.dispose();
+    }
   }
   getBatchStatus() {
    /* istanbul ignore else */
