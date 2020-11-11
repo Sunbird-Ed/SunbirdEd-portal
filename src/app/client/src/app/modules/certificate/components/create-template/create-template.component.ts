@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import * as _ from 'lodash-es';
 import { UploadCertificateService } from '../../services/upload-certificate/upload-certificate.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { UserService } from '@sunbird/core';
+import { UserService, CertRegService } from '@sunbird/core';
 import { ToasterService, ResourceService, NavigationHelperService } from '@sunbird/shared';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CertConfigModel } from './../../models/cert-config-model/cert-config-model';
@@ -32,12 +32,8 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
   certSigns: any = [];
   logoType;
   // api call
-  defaultCertificates = [
-    { artifactUrl: 'assets/images/template-1.svg', identifier: 0 },
-    { artifactUrl: 'assets/images/template-2.svg', identifier: 1 },
-    { artifactUrl: 'assets/images/template-3.svg', identifier: 2 },
-    { artifactUrl: 'assets/images/template-4.svg', identifier: 3 }];
-  selectedCertificate: any;
+  defaultCertificates = [];
+  selectedCertificate: any = {};
   logoHtml;
   svgData;
   center = 275;
@@ -66,6 +62,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     public userService: UserService,
     private sanitizer: DomSanitizer,
     private activatedRoute: ActivatedRoute,
+    private certRegService: CertRegService,
     public toasterService: ToasterService,
     public resourceService: ResourceService,
     public navigationHelperService: NavigationHelperService) {
@@ -78,13 +75,25 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     });
     this.navigationHelperService.setNavigationUrl();
     this.initializeFormFields();
-    this.selectedCertificate = _.clone(this.defaultCertificates[0]);
-    this.getSVGTemplate();
-    this.uploadCertificateService.getCertificates().subscribe(res => {
-      console.log(res);
-      // this.defaultCertificates = _.get(res, 'result.content');
-      // this.selectedCertificate = _.clone(this.defaultCertificates[0]);
-      // this.getSVGTemplate();
+    this.getDefaultTemplates();
+  }
+
+  getDefaultTemplates() {
+    const request = {
+      'request': {
+          'filters': {
+              'certType': 'cert template layout',
+              'channel': this.userService.channel,
+              'mediaType': 'image'
+          },
+          'fields': ['identifier', 'name', 'code', 'certType', 'data', 'issuer', 'signatoryList', 'artifactUrl', 'primaryCategory', 'channel'],
+          'limit': 100
+      }
+  };
+    this.uploadCertificateService.getCertificates(request).subscribe(res => {
+      this.defaultCertificates = _.get(res, 'result.content');
+      this.selectedCertificate = _.clone(this.defaultCertificates[0]);
+      this.getSVGTemplate();
     });
   }
 
@@ -128,7 +137,8 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
   createCertTemplate() {
     // TODO: Need to remove this method call;
     this.previewCertificate();
-    const request = this.certConfigModalInstance.prepareCreateAssetRequest(_.get(this.createTemplateForm, 'value'));
+    const channel =  this.userService.channel;
+    const request = this.certConfigModalInstance.prepareCreateAssetRequest(_.get(this.createTemplateForm, 'value'), channel,this.selectedCertificate, this.images);
     this.disableCreateTemplate = true;
     this.uploadCertificateService.createCertTemplate(request).subscribe(response => {
       console.log('create response', response);
@@ -142,8 +152,9 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
 
   uploadTemplate(base64Url, identifier) {
     this.uploadCertificateService.storeAsset(base64Url, identifier).subscribe(response => {
-      this.toasterService.success('Template created successfully');
-      this.useTemplate(response);
+      this.toasterService.success(_.get(this.resourceService, 'frmelmnts.cert.lbl.certAddSuccess'));
+      const templateIdentifier = {'identifier': _.get(response , 'result.identifier')};
+      this.uploadCertificateService.certificate.next(templateIdentifier);
       this.navigationHelperService.navigateToLastUrl();
     }, error => {
       this.toasterService.error('Something went wrong, please try again later');
@@ -303,38 +314,6 @@ urltoFile(url, filename, mimeType) {
     div.appendChild(ev.cloneNode(true));
     const b64 = 'data:image/svg+xml;base64,' + window.btoa(div.innerHTML);
     return b64;
-  }
-
-  useTemplate(data) {
-   const signatoryList = [{
-       'image': _.get(this.images, 'SIGN1.url'),
-       'name': _.get(this.createTemplateForm, 'value.authoritySignature_0'),
-     }];
-
-    if (!_.isEmpty(this.images['SIGN'])) {
-      signatoryList.push({
-        'image': _.get(this.images, 'SIGN2.url'),
-        'name': _.get(this.createTemplateForm, 'value.authoritySignature_1'),
-      });
-    }
-
-    const cert_obj = {
-      'artifactUrl' : _.get(data, 'result.artifactUrl'),
-      'name' : _.get(this.createTemplateForm, 'value.certificateTitle'),
-      'identifier' : _.get(this.queryParams, 'courseId'),
-      'data' : {
-        'title': _.get(this.createTemplateForm, 'value.certificateTitle'),
-        'signatoryList': signatoryList,
-        'artifactUrl' : _.get(data, 'result.artifactUrl'),
-      },
-      'issuer' : {
-        'name': _.get(this.createTemplateForm, 'value.stateName'),
-        'url': _.get(this.images, 'LOGO1.url')
-    },
-      'signatoryList' : signatoryList
-    };
-
-    this.uploadCertificateService.certificate.next(cert_obj);
   }
 
   back() {

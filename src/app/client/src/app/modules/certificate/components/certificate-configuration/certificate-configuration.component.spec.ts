@@ -149,8 +149,12 @@ describe('CertificateConfigurationComponent', () => {
     /** Act */
     buttonEle.click();
 
+    const router = TestBed.get(Router);
+    component.navigateToCreateTemplate();
+    expect(router.navigate).toHaveBeenCalledWith(['/learn/course/do_456789']);
+
     /** Assert */
-    expect(navigationHelperService.navigateToLastUrl).toHaveBeenCalled();
+    // expect(navigationHelperService.navigateToLastUrl).toHaveBeenCalled();
   });
 
   it('should call all the necessary method to get the required page data ready', () => {
@@ -390,7 +394,7 @@ describe('CertificateConfigurationComponent', () => {
 
   it('should attach the certificate on "update certificate" button click if template change not detected', () => {
     /** Arrange */
-    component.selectedTemplate = {name: 'SOME_IDENTIFIER'};
+    component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
     component.templateIdentifier = 'SOME_IDENTIFIER';
     spyOn(component, 'attachCertificateToBatch').and.stub();
 
@@ -404,6 +408,7 @@ describe('CertificateConfigurationComponent', () => {
   it('should send interact telemetry on click of add certificate to the batch', () => {
     /** Arrange */
     component.configurationMode = 'add';
+    component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
     spyOn(component, 'sendInteractData').and.stub();
 
     /** Act */
@@ -419,6 +424,7 @@ describe('CertificateConfigurationComponent', () => {
     /** Arrange */
     component.configurationMode = 'edit';
     spyOn(component, 'sendInteractData').and.stub();
+    component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
 
     /** Act */
     component.attachCertificateToBatch();
@@ -433,6 +439,8 @@ describe('CertificateConfigurationComponent', () => {
     /** Arrange */
     component.configurationMode = 'edit';
     component.isTemplateChanged = true;
+    component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
+
     const certRegService = TestBed.get(CertRegService);
     const certificateService  = TestBed.get(CertificateService);
     spyOn(component, 'sendInteractData').and.stub();
@@ -451,6 +459,8 @@ describe('CertificateConfigurationComponent', () => {
     /** Arrange */
     component.configurationMode = 'add';
     component.isTemplateChanged = true;
+    component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
+
     const certRegService = TestBed.get(CertRegService);
     const certificateService  = TestBed.get(CertificateService);
     const toasterService = TestBed.get(ToasterService);
@@ -471,6 +481,8 @@ describe('CertificateConfigurationComponent', () => {
     /** Arrange */
     component.configurationMode = 'edit';
     component.isTemplateChanged = true;
+    component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
+
     const certRegService = TestBed.get(CertRegService);
     const certificateService  = TestBed.get(CertificateService);
     const toasterService = TestBed.get(ToasterService);
@@ -491,6 +503,8 @@ describe('CertificateConfigurationComponent', () => {
     /** Arrange */
     component.configurationMode = 'edit';
     component.isTemplateChanged = true;
+    component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
+
     const certRegService = TestBed.get(CertRegService);
     const certificateService  = TestBed.get(CertificateService);
     spyOn(component, 'sendInteractData').and.stub();
@@ -510,6 +524,8 @@ describe('CertificateConfigurationComponent', () => {
     /** Arrange */
     component.configurationMode = 'edit';
     component.isTemplateChanged = true;
+    component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
+
     const certRegService = TestBed.get(CertRegService);
     const certificateService  = TestBed.get(CertificateService);
     spyOn(component, 'sendInteractData').and.stub();
@@ -530,6 +546,8 @@ describe('CertificateConfigurationComponent', () => {
     /** Arrange */
     component.configurationMode = 'edit';
     component.isTemplateChanged = true;
+    component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
+
     const certRegService = TestBed.get(CertRegService);
     const certificateService  = TestBed.get(CertificateService);
     const toasterService = TestBed.get(ToasterService);
@@ -548,6 +566,8 @@ describe('CertificateConfigurationComponent', () => {
     /** Arrange */
     component.configurationMode = 'add';
     component.isTemplateChanged = true;
+    component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
+
     const certRegService = TestBed.get(CertRegService);
     const toasterService = TestBed.get(ToasterService);
     spyOn(component, 'sendInteractData').and.stub();
@@ -564,6 +584,8 @@ describe('CertificateConfigurationComponent', () => {
     /** Arrange */
     component.configurationMode = 'edt';
     component.isTemplateChanged = true;
+    component.selectedTemplate = {name: 'SOME_IDENTIFIER', 'issuer': '{}', 'signatoryList': '{}'};
+
     const certRegService = TestBed.get(CertRegService);
     const toasterService = TestBed.get(ToasterService);
     spyOn(component, 'sendInteractData').and.stub();

@@ -9,6 +9,7 @@ import * as _ from 'lodash-es';
 import * as TreeModel from 'tree-model';
 import { NavigationExtras, Router } from '@angular/router';
 import { NavigationHelperService } from '@sunbird/shared';
+import * as dayjs from 'dayjs';
 
 @Injectable({
   providedIn: 'root'
@@ -117,7 +118,8 @@ getContentRollUp(tree, identifier) {
 getAllOpenBatches(contents) {
   let openBatchCount = 0;
   _.map(_.get(contents, 'content'), content => {
-    if (content.enrollmentType === 'open') {
+    if (content.enrollmentType === 'open' &&
+    (!(content.enrollmentEndDate && dayjs(content.enrollmentEndDate).isBefore(dayjs(new Date()).format('YYYY-MM-DD'))))) {
       openBatchCount++;
     }
   });

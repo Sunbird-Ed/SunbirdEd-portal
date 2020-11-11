@@ -72,7 +72,8 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.unsubscribe.complete();
   }
   redirect() {
-    this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent });
+    const queryParams = this.tocId ? { textbook: this.tocId } : {};
+    this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent, queryParams });
   }
   telemetryLogEvents(status: boolean) {
     let level = 'ERROR';

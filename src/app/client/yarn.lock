@@ -559,10 +559,10 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@^3.4.3":
-  version "3.4.4"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.4.4.tgz#9a68a8225e32205a4705b702dcfc432f2d321746"
-  integrity sha512-DpOmM88dXmRbW7n5yZuwURsvEwjs9gUpafcMtbUchClX+MEwhSehB8i+Le16+Aa7fyClL6BK2DyPMVoEuTF3Uw==
+"@project-sunbird/client-services@^3.4.9":
+  version "3.4.9"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.4.9.tgz#299d2e685869704eb7aa8c7118184a71f01a3400"
+  integrity sha512-r6pNfEZMICJyy6ZKPRTflOwPQLm2tMqqSkB0nip//KqG5TyoSaiPzAs8RPbJaC2HW7CPChxLQDAcmN0pGO0yLw==
   dependencies:
     "@project-sunbird/telemetry-sdk" "0.0.26"
     class-transformer "^0.3.1"
@@ -571,10 +571,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption@^3.4.3":
-  version "3.4.3"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.4.3.tgz#43600d8e727c92d42b4524ff2af0a8a65dede7b7"
-  integrity sha512-livhqSSynHL6tsbk/FbaM66YfId5ZJai4Qc+ly/KgDvViVYC4S2ASzGEMc1adtU37fktoh0wPI2/qfrWX7yi8Q==
+"@project-sunbird/common-consumption@^3.4.6":
+  version "3.4.6"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.4.6.tgz#e1963d57764af82f6f6f97f019c81b4d58a22204"
+  integrity sha512-Sf9jEdSxijbF0bY0WyZF/83LG1YxLAjDfin9BGumtt4pt8mmdaKj0mMqHcho1xtaTk4EBWIOgRS8Jt5Ms2rb5g==
   dependencies:
     tslib "^1.9.0"
 
@@ -10099,14 +10099,6 @@ sunbird-chatbot-client@0.0.6:
   resolved "https://registry.yarnpkg.com/sunbird-chatbot-client/-/sunbird-chatbot-client-0.0.6.tgz#0b8a38e73ce3e1cb7f2f1cf89ec2ba4b2f73aecf"
   integrity sha512-Wonibbu+QapWD0YqEweu0+3BhgbWb4+S7bsFZTcJRnqcPeFFm6gIH0CKc07BPJlS6i9BPR70NIgM8NidWbV7QQ==
   dependencies:
-    tslib "^1.9.0"
-
-sunbird-pdf-player@0.0.15:
-  version "0.0.15"
-  resolved "https://registry.yarnpkg.com/sunbird-pdf-player/-/sunbird-pdf-player-0.0.15.tgz#51d2562e0b64b87cf88ebdcc4e8a2af8d5c6f785"
-  integrity sha512-qWHNnqEhF440xBFlC+E8GmAg6NyLQjfLrq3Dqj3uvc8KrP6ddphfPsS9kyXg5kknqplbafk2PYsfJGlLtDV+Iw==
-  dependencies:
-    ngx-extended-pdf-viewer "^4.1.2"
     tslib "^1.9.0"
 
 supports-color@^2.0.0:

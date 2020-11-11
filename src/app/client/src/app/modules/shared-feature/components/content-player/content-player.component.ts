@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService, PlayerService, CopyContentService, PermissionService } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -12,14 +12,14 @@ import { PopupControlService } from '../../../../service/popup-control.service';
 import { takeUntil, mergeMap } from 'rxjs/operators';
 import { Subject, of, throwError } from 'rxjs';
 import { PublicPlayerService } from '@sunbird/public';
-
+import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 @Component({
   selector: 'app-content-player',
   templateUrl: './content-player.component.html',
   styleUrls: ['./content-player.component.scss']
 })
 
-export class ContentPlayerComponent implements OnInit, AfterViewInit {
+export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy {
   telemetryImpression: IImpressionEventInput;
   objectInteract: IInteractEventObject;
   copyContentInteractEdata: IInteractEventEdata;
@@ -206,5 +206,10 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
       type: param.contentType,
       ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
     }];
+  }
+  ngOnDestroy() {
+    if (CsGroupAddableBloc.instance.initialised) {
+      CsGroupAddableBloc.instance.dispose();
+    }
   }
 }

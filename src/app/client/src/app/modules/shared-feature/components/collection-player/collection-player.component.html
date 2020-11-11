@@ -81,7 +81,7 @@
             <div class="certified-course__btn">
               <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn" appAddToGroup
                 [identifier]="collectionData?.identifier"
-                [pageId]="collectionData?.contentType.toLowerCase()">{{resourceService?.frmelmnts?.lbl?.AddtoGroup}}
+                [pageId]="collectionData?.primaryCategory.toLowerCase()">{{resourceService?.frmelmnts?.lbl?.AddtoGroup}}
               </button>
             </div>
 
