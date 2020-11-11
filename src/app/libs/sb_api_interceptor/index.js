@@ -52,11 +52,12 @@ ApiInterceptor.prototype.validateToken = function (token, cb) {
         issuer: this.validIssuers ? this.validIssuers : ""
     };
     jwt.verify(token, publicKey, verificationOption, (err, payload) => {
-        console.info("verifying token using public key");
         if(err){
             console.error("invalid signature - 401", err);
             return cb("INVALID_SIGNATURE");
         }
+
+        console.info("Offline token verification is success");
 		cb(null, { token, userId: payload.sub }) 
     });
 };
