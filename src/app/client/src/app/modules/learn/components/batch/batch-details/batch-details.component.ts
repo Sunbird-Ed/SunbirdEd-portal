@@ -52,7 +52,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   isTrackable = false;
   courseCreator = false;
   viewBatch = false;
-  hideCreateBatch = false;
+  showCreateBatchBtn = false;
   allowCertCreation = false;
   ongoingAndUpcomingBatchList = [];
   batchMessage = '';
@@ -165,9 +165,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     this.batchList = _.filter(this.ongoingAndUpcomingBatchList, batch => {
       return (_.isEqual(batch.status, this.batchStatus));
     });
-    const currentDate = new Date();
-    const batchEndDate = new Date(_.get(_.first(this.ongoingAndUpcomingBatchList), 'endDate'));
-    this.hideCreateBatch = this.ongoingAndUpcomingBatchList.length > 0 ? (_.isEmpty(batchEndDate) || (currentDate <= batchEndDate)) : false;
+    this.showCreateBatchBtn = this.ongoingAndUpcomingBatchList.length <= 0;
   }
   getJoinCourseBatchDetails() {
     this.showAllBatchList = false;
@@ -274,7 +272,8 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
 
   unenrollBatch(batch) {
     // this.courseBatchService.setEnrollToBatchDetails(batch);
-    this.router.navigate(['unenroll/batch', batch.identifier], { relativeTo: this.activatedRoute });
+    const queryParams = this.tocId ? { textbook: this.tocId } : {};
+    this.router.navigate(['unenroll/batch', batch.identifier], { relativeTo: this.activatedRoute, queryParams });
   }
 
   navigateToConfigureCertificate(mode: string, batchId) {
@@ -307,6 +306,9 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     this.allowCertCreation = this.courseConsumptionService.canAddCertificates(this.courseHierarchy);
   }
 
+  isCertAdded(batch) {
+   return _.isEmpty(_.get(batch, 'cert_templates')) ? false : true;
+  }
   logTelemetry(id, content?: {}, batchId?) {
     if (batchId || this.batchId) {
       this.telemetryCdata = [{ id: batchId || this.batchId, type: 'courseBatch' }];

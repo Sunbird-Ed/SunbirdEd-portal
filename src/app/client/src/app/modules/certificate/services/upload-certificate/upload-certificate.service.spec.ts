@@ -62,14 +62,14 @@ describe('UploadCertificateService', () => {
     const formData = new FormData();
     formData.append('file', 'SVG_BYTE_ARRAY');
     const service = TestBed.get(UploadCertificateService);
-    const publicDataService = TestBed.get(PublicDataService);
-    spyOn(publicDataService, 'post').and.returnValue(of({}));
+    const contentService = TestBed.get(ContentService);
+    spyOn(contentService, 'post').and.returnValue(of({}));
     service.storeAsset('SVG_BYTE_ARRAY', 'SOME_IDENTIFIER');
     const data = {
       url: 'asset/v1/upload/SOME_IDENTIFIER',
       data: formData
     };
-    expect(publicDataService.post).toHaveBeenCalledWith(data);
+    expect(contentService.post).toHaveBeenCalledWith(data);
   });
 
   it('should get the asset data', () => {
@@ -121,8 +121,8 @@ describe('UploadCertificateService', () => {
     };
     const service = TestBed.get(UploadCertificateService);
     const userService = TestBed.get(UserService);
-    const publicDataService = TestBed.get(PublicDataService);
-    spyOn(publicDataService, 'post').and.returnValue(of({}));
+    const contentService = TestBed.get(ContentService);
+    spyOn(contentService, 'post').and.returnValue(of({}));
     spyOnProperty(userService, 'channel').and.returnValue('in.ekstep');
     service.createAsset( {
       assetCaption: 'picture1',
@@ -133,7 +133,7 @@ describe('UploadCertificateService', () => {
       url: 'content/v1/create',
       data: body
     };
-    expect(publicDataService.post).toHaveBeenCalledWith(data);
+    expect(contentService.post).toHaveBeenCalledWith(data);
 
   });
 
@@ -143,21 +143,23 @@ describe('UploadCertificateService', () => {
       'request': {
           'filters': {
               'certType': 'cert template',
-              'channel': 'in.ekstep'
+              'channel': '12345'
           },
           'fields': ['indentifier', 'name', 'code', 'certType', 'data', 'issuer', 'signatoryList', 'artifactUrl', 'primaryCategory', 'channel'],
           'limit': 100
       }
   };
     const service = TestBed.get(UploadCertificateService);
-    const publicDataService = TestBed.get(PublicDataService);
-    spyOn(publicDataService, 'post').and.returnValue(of({}));
-    service.getCertificates();
+    const contentService = TestBed.get(ContentService);
+    spyOn(contentService, 'post').and.returnValue(of({}));
+    const userService = TestBed.get(UserService);
+    spyOnProperty(userService, 'channel').and.returnValue('12345');
+    service.getCertificates(body);
     const data = {
-      url: 'content/v1/search',
+      url: 'composite/v1/search',
       data: body
     };
-    expect(publicDataService.post).toHaveBeenCalledWith(data);
+    expect(contentService.post).toHaveBeenCalledWith(data);
 
   });
 });

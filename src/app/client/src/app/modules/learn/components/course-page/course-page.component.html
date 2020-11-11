@@ -18,7 +18,7 @@
 
           <div class="twelve wide column relative9" *ngIf="enrolledSection?.contents?.length && isUserLoggedIn()">
             <app-page-section [hideProgress]="true"
-              (visits)="prepareVisits($event)" [section]="enrolledSection" (playEvent)="playContent($event)"
+              (visits)="prepareVisits($event)" [section]="enrolledSection" (playEvent)="playContent($event, 'My courses')"
               (viewAll)="viewAll($event)"></app-page-section>
           </div>
 
