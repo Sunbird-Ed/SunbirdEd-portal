@@ -6,10 +6,10 @@
           <span class="sb-bordered-list-item-title-extra ml-16">{{resourceService?.frmelmnts?.lbl?.desktop?.TotalSize}}
             {{importedFilesSize | filesize }}</span></div>
   
-        <div class="sb-btn sb-btn-normal sb-bulk-upload-btn sb-btn-outline-primary" (click)="openImportTelemetryDialog()">
+        <button class="sb-btn sb-btn-normal sb-bulk-upload-btn sb-btn-outline-primary" (click)="openImportTelemetryDialog()">
           <img src="assets/images/plus-icon.svg" width="12px" height="12px" class="mr-8">
           {{resourceService?.frmelmnts?.lbl?.desktop?.importNewFile}}
-        </div>
+        </button>
   
       </div>
     </li>

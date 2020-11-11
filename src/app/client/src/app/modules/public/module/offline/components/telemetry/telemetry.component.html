@@ -1,4 +1,5 @@
-<div class="ui container maxw800" [appTelemetryImpression]="telemetryImpression">
+<div class="sb-single-resource">
+  <div class="ui container" [appTelemetryImpression]="telemetryImpression">
     <div class="my-16">
       <div class="sb-bg-color-white py-16">
         <div class="d-flex profile-telemetry-title sb-bg-color-white px-16 pb-8">
@@ -32,7 +33,7 @@
                 'h:mm a'}}</dd>
             </dl>
           </div>
-          <div class="share-tele-btn ml-16">
+          <div class="share-tele-btn">
   
             <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal
               my-8" (click)="exportTelemetry()" [disabled]="disableExport" *ngIf="telemetryInfo?.totalSize">
@@ -64,3 +65,4 @@
     </div>
     <app-telemetry-import> </app-telemetry-import>
   </div>
+</div>

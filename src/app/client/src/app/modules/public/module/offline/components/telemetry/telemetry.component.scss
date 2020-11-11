@@ -15,16 +15,16 @@
 
 .share-tele-btn {
   margin: 0px;
+  margin-left: calculateRem(16px);
+  @include respond-below(sm){
+    margin-left: calculateRem(0px);
+  }
 }
 
 .sb-checkbox label,
 .sb-radio-btn-checkbox label {
   color: var(--primary-color);
   font-weight: normal;
-}
-
-.maxw800 {
-  max-width: calculateRem(800px) !important;
 }
 
 .profile-description {
@@ -34,4 +34,14 @@
 
 .profile-description-title {
   color: var(--primary-color) !important;
+}
+
+.sb-single-resource {
+	width: 100%;
+	height: 100%;
+	max-width: calculateRem(720px);
+	margin: 0 auto;
+	@include respond-above(lg) {
+		max-width: calculateRem(960px);
+  }
 }
