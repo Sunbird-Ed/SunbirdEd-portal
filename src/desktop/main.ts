@@ -308,7 +308,7 @@ async function initLogger() {
   enableLogger({
     logBasePath: path.join(getFilesPath(), 'logs'),
     logLevel: logLevel,
-    context: {src: 'desktop', did: deviceId},
+    context: {src: 'desktop', did: deviceId, appVersion: app.getVersion()},
     adopterConfig: {
       adopter: 'winston'
     }
@@ -425,6 +425,10 @@ async function createWindow() {
       win.maximize();
       EventManager.emit("app:initialized", {})
       win.webContents.on('crashed', onMainWindowCrashed)
+      win.webContents.on('console-message', (event, level, message, line, sourceId) => {
+        const levelMap = new Map([[0, 'debug'],[1, 'info'],[2, 'warn'], [3, 'error']])
+        logger[levelMap.get(level)](message, sourceId, line);
+      });
     });
     // create admin for the database
     bootstrapDependencies()
