@@ -19,7 +19,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of as observableOf, throwError } from 'rxjs';
 import { SharedModule } from '@sunbird/shared';
 import { ConnectionService, SystemInfoService} from '../../services';
-
+import { configureTestSuite } from '@sunbird/test-util';
+import {APP_BASE_HREF} from '@angular/common';
 describe('LibraryComponent', () => {
   let component: LibraryComponent;
   let fixture: ComponentFixture<LibraryComponent>;
@@ -57,7 +58,7 @@ describe('LibraryComponent', () => {
       }
     };
   }
-
+configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -85,7 +86,7 @@ describe('LibraryComponent', () => {
         ConnectionService,
         SystemInfoService,
         { provide: ResourceService, useValue: resourceBundle },
-        OrgDetailsService],
+        OrgDetailsService, {provide: APP_BASE_HREF, useValue: '/'}],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));

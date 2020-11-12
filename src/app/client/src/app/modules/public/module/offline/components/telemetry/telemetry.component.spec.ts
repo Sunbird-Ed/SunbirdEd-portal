@@ -2,11 +2,10 @@ import { telemetry } from './telemetry.component.spec.data';
 import { of, throwError } from 'rxjs';
 import { ActivatedRoute, Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SharedModule, ResourceService , ToasterService} from '@sunbird/shared';
+import { SharedModule, ResourceService , ToasterService, ConnectionService} from '@sunbird/shared';
 import { FileSizeModule } from 'ngx-filesize';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ConnectionService } from '@sunbird/offline';
 import { TelemetryComponent } from './telemetry.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
