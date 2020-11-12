@@ -1,0 +1,11 @@
+{
+    "id": "org.ekstep.nextnavigation",
+    "ver": "1.0",
+    "shortId": "org.eskstep.nextnavigation",
+    "author": "Akash Gupta",
+    "description": "",
+    "publishedDate": "",
+    "renderer": {
+        "main": "renderer/plugin.js"
+    }   
+}

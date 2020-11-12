@@ -1,0 +1,34 @@
+@import "variables";
+@import "mixins/mixins";
+
+.sb-bulk-upload-btn{
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+      .sb-btn-upload{
+        position: absolute;
+        opacity: 0;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        height: 100%;
+        cursor: pointer;
+      }
+  }
+  
+.sb-upload-file {
+          height: ($base-block-space * 7);
+          width:  ($base-block-space * 7);
+          background: var(--gray-400);
+          margin-top: auto;
+          margin-bottom: auto;
+      }
+
+      .file-import-text{
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline;
+      }
