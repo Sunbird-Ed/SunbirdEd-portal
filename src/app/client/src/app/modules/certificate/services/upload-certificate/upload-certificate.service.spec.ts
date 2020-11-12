@@ -150,16 +150,16 @@ describe('UploadCertificateService', () => {
       }
   };
     const service = TestBed.get(UploadCertificateService);
-    const publicDataService = TestBed.get(PublicDataService);
+    const contentService = TestBed.get(ContentService);
+    spyOn(contentService, 'post').and.returnValue(of({}));
     const userService = TestBed.get(UserService);
     spyOnProperty(userService, 'channel').and.returnValue('12345');
-    spyOn(publicDataService, 'post').and.returnValue(of({}));
     service.getCertificates(body);
     const data = {
-      url: 'content/v1/search',
+      url: 'composite/v1/search',
       data: body
     };
-    expect(publicDataService.post).toHaveBeenCalledWith(data);
+    expect(contentService.post).toHaveBeenCalledWith(data);
 
   });
 });

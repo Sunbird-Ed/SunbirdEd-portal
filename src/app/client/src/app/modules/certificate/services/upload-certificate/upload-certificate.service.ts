@@ -58,10 +58,10 @@ export class UploadCertificateService {
    */
   getCertificates(request) {
     const option = {
-      url: this.configService.urlConFig.URLS.CONTENT.SEARCH,
+      url: this.configService.urlConFig.URLS.COMPOSITE.SEARCH,
       data: request
     };
-    return this.publicDataService.post(option);
+    return this.contentService.post(option);
   }
 
   /**
