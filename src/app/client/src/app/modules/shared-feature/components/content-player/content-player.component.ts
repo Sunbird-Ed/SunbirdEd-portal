@@ -42,6 +42,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy 
   public dialCode: string;
   public unsubscribe$ = new Subject<void>();
   public objectRollup = {};
+  isGroupAdmin: boolean;
 
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
@@ -69,6 +70,10 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy 
         };
       }
       this.getContent();
+      CsGroupAddableBloc.instance.state$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+        this.isGroupAdmin = !_.isEmpty(_.get(this.activatedRoute.snapshot, 'queryParams.groupId'))
+        && _.get(data.params, 'groupData.isAdmin');
+      });
     });
 
     this.navigationHelperService.contentFullScreenEvent.
@@ -208,8 +213,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy 
     }];
   }
   ngOnDestroy() {
-    if (CsGroupAddableBloc.instance.initialised) {
-      CsGroupAddableBloc.instance.dispose();
-    }
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
