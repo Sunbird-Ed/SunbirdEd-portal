@@ -140,12 +140,15 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
 
   acceptGroupTnc() {
     const request = {
-      members: [{
-        userId: this.userService.userid,
-        visited: true,
+      userId: this.userService.userid,
+      groups: [{
+        groupId: _.get(this.selectedGroup, 'id'),
+        visited: true
       }]
     };
-    this.groupService.updateMembers(_.get(this.selectedGroup, 'id'), request).subscribe(data => {
+
+    this.groupService.updateGroupGuidelines(request)
+    .subscribe(data => {
       this.showTncModal = false;
       this.navigate({data: this.selectedGroup});
     }, err => {

@@ -89,6 +89,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   playerServiceReference: any;
   TocCardType = TocCardType;
   PlatformType = PlatformType;
+  isGroupAdmin: boolean;
 
   constructor(public route: ActivatedRoute, public playerService: PlayerService,
     private windowScrollService: WindowScrollService, public router: Router, public navigationHelperService: NavigationHelperService,
@@ -118,6 +119,10 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     this.dialCode = _.get(this.route, 'snapshot.queryParams.dialCode');
     this.contentType = _.get(this.route, 'snapshot.queryParams.contentType');
     this.contentData = this.getContent();
+    CsGroupAddableBloc.instance.state$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      this.isGroupAdmin = !_.isEmpty(_.get(this.route.snapshot, 'queryParams.groupId')) && _.get(data.params, 'groupData.isAdmin');
+    });
+
   }
 
   initLayout() {
@@ -178,9 +183,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     }
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
-    if (CsGroupAddableBloc.instance.initialised) {
-      CsGroupAddableBloc.instance.dispose();
-    }
   }
 
   private initPlayer(id: string): void {
