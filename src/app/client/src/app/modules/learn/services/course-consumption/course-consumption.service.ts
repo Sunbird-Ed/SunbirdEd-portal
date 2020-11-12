@@ -21,7 +21,6 @@ export class CourseConsumptionService {
   launchPlayer = new EventEmitter<any>();
   updateContentState = new EventEmitter<any>();
   showJoinCourseModal = new EventEmitter<any>();
-  showChangeUserNamePopup = false;
   enableCourseEntrollment = new EventEmitter();
   coursePagePreviousUrl: any;
   userCreatedAnyBatch = new EventEmitter();
