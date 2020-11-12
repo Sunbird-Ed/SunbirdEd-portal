@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { CourseConsumptionService } from './../../../services';
+import { Component, Input, OnInit } from '@angular/core';
 import { ToasterService, ResourceService} from '@sunbird/shared';
 import { UserService, LearnerService } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -11,6 +10,7 @@ import { ProfileService } from '@sunbird/profile';
   styleUrls: ['./certificate-name-update-popup.component.scss']
 })
 export class CertificateNameUpdatePopupComponent implements OnInit {
+  @Input() showProfileUpdatePopup;
 
   disableContinueBtn = false;
   isNameEditable = false;
@@ -18,7 +18,6 @@ export class CertificateNameUpdatePopupComponent implements OnInit {
 
   constructor( public userService: UserService,
     public resourceService: ResourceService,
-    private courseConsumptionService: CourseConsumptionService,
     private toasterService: ToasterService,
     public learnerService: LearnerService,
     private profileService: ProfileService) { }
@@ -39,7 +38,7 @@ export class CertificateNameUpdatePopupComponent implements OnInit {
     localStorage.setItem('isCertificateNameUpdated', 'true');
 
     this.profileService.updateProfile(data).subscribe(res => {
-      this.courseConsumptionService.showChangeUserNamePopup = false;
+      this.showProfileUpdatePopup = false;
     }, err => {
       this.disableContinueBtn = false;
       this.toasterService.error(this.resourceService.messages.fmsg.m0085);
