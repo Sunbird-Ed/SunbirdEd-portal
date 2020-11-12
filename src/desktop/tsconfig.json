@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "moduleResolution": "node",
+    "declaration": true,
+    "module": "commonjs",
+    "outDir": "./",
+    "target": "es6",
+    "baseUrl": ".",
+    "paths": {
+      "OpenRAP/dist/api": ["OpenRAP/dist/api"],
+      "OpenRAP/dist/api/index": ["OpenRAP/dist/api/index"],
+    }
+  },
+  "exclude": ["node_modules", "*/**/*.spec.ts", "*.spec.ts", "temp", "client", "resourcebundles", "test", "OpenRAP"]
+}

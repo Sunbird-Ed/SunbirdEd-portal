@@ -1,0 +1,18 @@
+{
+    "id": "org.ekstep.overlay",
+    "ver": "1.0",
+    "shortId": "org.ekstep.overlay",
+    "author": "Vinu Kumar V S",
+    "description": "",
+    "publishedDate": "",
+    "renderer": {
+        "main": "renderer/plugin.js"
+    },
+    "dependencies": [
+        {"plugin": "org.ekstep.genie", "ver": "1.0", "scope": "renderer" },
+        {"plugin": "org.ekstep.nextnavigation", "ver": "1.0", "scope": "renderer" },
+        {"plugin": "org.ekstep.previousnavigation", "ver": "1.0", "scope": "renderer" },
+        {"plugin": "org.ekstep.userswitcher", "ver": "1.0", "scope": "renderer" }
+    ]   
+
+}

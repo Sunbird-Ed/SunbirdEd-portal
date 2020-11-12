@@ -4132,6 +4132,11 @@ fileset@^2.0.3:
     glob "^7.0.3"
     minimatch "^3.0.3"
 
+filesize@^4.0.0:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/filesize/-/filesize-4.2.1.tgz#ab1cb2069db5d415911c1a13e144c0e743bc89bc"
+  integrity sha512-bP82Hi8VRZX/TUBKfE24iiUGsB/sfm2WUrwTQyAzQrhO3V9IhcBBNBXMyzLY5orACxRyYJ3d2HeRVX+eFv4lmA==
+
 fill-range@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/fill-range/-/fill-range-4.0.0.tgz#d544811d428f98eb06a63dc402d2403c328c38f7"
@@ -7273,6 +7278,13 @@ ngx-device-detector@1.3.5:
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/ngx-device-detector/-/ngx-device-detector-1.3.5.tgz#febd134cc58c2a61e83bec5491d1e2f429bfde67"
   integrity sha512-u/h/HGVTqOxweLSKQmXoOLHsYldSDAQePrMC6sa3WGAECoAR6S7W1QuwdNN1cj7NBdfY0wxar9MQ3MV7DiFfkg==
+
+ngx-filesize@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/ngx-filesize/-/ngx-filesize-1.1.4.tgz#acd690ec20c7942254b3315fefabdcc65397645f"
+  integrity sha512-eqh9UCLX/lIsnc+IrdVL7bqmF945oBzEtaESM8jFHTriwZTD6dFd3gM53cdE4gFdARxNnHkzdE+eoxGehFP94A==
+  dependencies:
+    filesize "^4.0.0"
 
 ngx-infinite-scroll@^8.0.2:
   version "8.0.2"
