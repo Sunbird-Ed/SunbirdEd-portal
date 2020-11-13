@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { ResourceService } from '../resource/resource.service';
 import * as dayjs from 'dayjs';
 import { ExportToCsv } from 'export-to-csv';
+import { environment } from '@sunbird/environment';
   // Dependency injection creates new instance each time if used in router sub-modules
 @Injectable()
 export class UtilService {
@@ -17,13 +18,21 @@ export class UtilService {
   public hideHeaderTabs = new EventEmitter<boolean>();
   public searchKeyword = new EventEmitter<string>();
   private csvExporter: any;
+  private _isDesktopApp = false;
 
   constructor(private resourceService: ResourceService) {
     if (!UtilService.singletonInstance) {
       UtilService.singletonInstance = this;
     }
+    this._isDesktopApp = environment.isDesktopApp;
     return UtilService.singletonInstance;
+
   }
+
+  get isDesktopApp() {
+    return this._isDesktopApp;
+  }
+
   public sortChildrenWithIndex(tree) {
     if (!_.get(tree, 'children.length')) {
         return tree;
