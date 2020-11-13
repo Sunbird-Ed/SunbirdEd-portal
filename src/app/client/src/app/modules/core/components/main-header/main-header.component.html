@@ -141,17 +141,27 @@
                 src="{{tenantInfo.logo}}">
             </a>
             <!--/Logo-->
-            <!--Avtar Dropdown-->
-            <a class="profile-avtar p-0" tabindex="0">
-              <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
-                <div class="sbt-guest-profile" name="Guest" *ngIf='!userProfile' (click)="toggleSideMenu(true)"><img
-                    src="./assets/images/profile-icon.svg" alt="Guest User" width="48"></div>
-                <ngx-avatar *ngIf='userProfile' (click)="toggleSideMenu(true)" [style]="SbtavtarDesktopStyle" [size]="48"
-                  initialsSize="1" name="{{userProfile?.firstName}}">
-                </ngx-avatar>
-              </div>
-            </a>
-            <!--/Avtar Dropdown-->
+            <div class="d-flex flex-ai-center sb-responsive-header">
+                <!-- Notification dropdown -->
+                <a class="profile-avtar p-0 ml-16" tabindex="0">
+                  <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
+                    <div class="notification-bell d-flex flex-ai-center flex-jc-center" name="Guest" *ngIf='!userProfile' (click)="toggleInAppNotifications()">
+                      <img src="./assets/images/notification.svg" alt="In App Notification">
+                    </div>
+                  </div>
+                </a>
+              <!--Avtar Dropdown-->
+              <a class="profile-avtar p-0" tabindex="0">
+                <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
+                  <div class="sbt-guest-profile" name="Guest" *ngIf='!userProfile' (click)="toggleSideMenu(true)"><img
+                      src="./assets/images/profile-icon.svg" alt="Guest User" width="48"></div>
+                  <ngx-avatar *ngIf='userProfile' (click)="toggleSideMenu(true)" [style]="SbtavtarDesktopStyle" [size]="48"
+                    initialsSize="1" name="{{userProfile?.firstName}}">
+                  </ngx-avatar>
+                </div>
+              </a>
+              <!--/Avtar Dropdown-->
+            </div>
           </div>
 
         </div>
@@ -172,7 +182,7 @@
             <!-- Notification dropdown -->
             <a class="profile-avtar p-0 ml-16" tabindex="0">
               <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
-                <div class="notification-bell" name="Guest" *ngIf='!userProfile' (click)="toggleInAppNotifications()">
+                <div class="notification-bell d-flex flex-ai-center flex-jc-center" name="Guest" *ngIf='!userProfile' (click)="toggleInAppNotifications()">
                   <img src="./assets/images/notification.svg" alt="In App Notification">
                 </div>
               </div>
@@ -182,7 +192,7 @@
               [isClosable]="true"
               [transitionDuration]="0"
               [size]="'small'"
-              class="sb-modal"
+              class="sb-modal sb-notification-modal"
               appBodyScroll
               (dismissed)="showNotificationModel=false" 
               *ngIf="showNotificationModel">

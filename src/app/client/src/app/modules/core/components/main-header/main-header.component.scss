@@ -321,7 +321,7 @@ __textbooks {
 }
 
 .sbt-logo {
-  height: 80px;
+  height: calculateRem(80px);
   display:flex;
   align-items: center;
   img {
@@ -335,8 +335,9 @@ __textbooks {
   box-shadow: var(--sbt-box-shadow-6px);
   border-radius: 50%;
   background-color: var(--white);
+  width: calculateRem(40px);
+  height: calculateRem(40px);
   img{
-    width: 2rem;
-    margin: 0.5rem;
+    width: 1.5rem;
   }
 }
