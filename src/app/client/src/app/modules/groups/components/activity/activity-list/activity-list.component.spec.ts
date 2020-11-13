@@ -169,17 +169,49 @@ describe('ActivityListComponent', () => {
   });
 
   it('should call toggleModal', () => {
+    const eventData = {
+      event: {
+        stopImmediatePropagation: jasmine.createSpy('stopImmediatePropagation')
+      },
+      data: {
+        name: 'Footprints without Feet - English Supplementary Reader',
+        identifier: 'do_1235232121343',
+        appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_3130298331259453441627/artifact/jefp1cc.thumb.jpg',
+        organisation: ['Prod Custodian Organization'],
+        subject: 'Social Science',
+        type: 'Course',
+        primaryCategory: 'Course'
+      }
+    };
+    component.selectedActivity = eventData.data;
     spyOn(component, 'addTelemetry');
     component.toggleModal(true);
     expect(component.showModal).toEqual(true);
-    expect(component.addTelemetry).toHaveBeenCalledWith('remove-activity-kebab-menu-btn');
+    expect(component.addTelemetry).toHaveBeenCalledWith('remove-activity-kebab-menu-btn', [], {},
+    {id: 'do_1235232121343', type: 'Course', ver: '1.0'});
   });
 
   it('should call toggleModal', () => {
+    const eventData = {
+      event: {
+        stopImmediatePropagation: jasmine.createSpy('stopImmediatePropagation')
+      },
+      data: {
+        name: 'Footprints without Feet - English Supplementary Reader',
+        identifier: 'do_1235232121343',
+        appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_3130298331259453441627/artifact/jefp1cc.thumb.jpg',
+        organisation: ['Prod Custodian Organization'],
+        subject: 'Social Science',
+        type: 'Course',
+        primaryCategory: 'Course'
+      }
+    };
+    component.selectedActivity = eventData.data;
     spyOn(component, 'addTelemetry');
     component.toggleModal();
     expect(component.showModal).toEqual(false);
-    expect(component.addTelemetry).toHaveBeenCalledWith('close-remove-activity-popup');
+    expect(component.addTelemetry).toHaveBeenCalledWith('close-remove-activity-popup',[], {},
+    {id: 'do_1235232121343', type: 'Course', ver: '1.0'});
   });
 
   it('should throw error on removeActivity', () => {
