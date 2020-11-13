@@ -74,7 +74,7 @@ export class BrowseImagePopupComponent implements OnInit {
     if (imageProperties && isSizeMatched && isTypeMatched && isDimensionMatched) {
       this.fileObj = ev.target.files[0];
       const fileName = _.get(this.fileObj, 'name').split('.')[0];
-      const userName = `${_.get(this.userService, 'userProfile.firstName')} ${_.get(this.userService, 'userProfile.lastName')}`;
+      const userName = `${_.get(this.userService, 'userProfile.firstName') || ''} ${_.get(this.userService, 'userProfile.lastName') || ''}`;
       this.uploadForm.patchValue({
         'assetCaption': fileName,
         'creator': userName,
