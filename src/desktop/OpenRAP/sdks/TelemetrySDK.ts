@@ -3,7 +3,7 @@ import { TelemetryExport } from './../services/telemetry/TelemetryExport';
 import { Inject } from "typescript-ioc";
 import SettingSDK from './SettingSDK';
 import * as _ from "lodash";
-import { EventManager } from "@project-sunbird/ext-framework-server/managers/EventManager";
+import { EventManager } from "./../managers/EventManager";
 
 export default class TelemetrySDK {
   @Inject private telemetryInstance: TelemetryInstance;

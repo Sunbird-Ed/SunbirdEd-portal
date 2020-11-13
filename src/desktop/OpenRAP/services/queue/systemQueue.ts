@@ -9,7 +9,7 @@ import { Subject, Observer, asyncScheduler, Observable } from "rxjs";
 import { throttleTime, mergeMap } from "rxjs/operators";
 import { TelemetryInstance } from './../telemetry/telemetryInstance';
 export { ISystemQueue } from './IQueue';
-import { EventManager } from "@project-sunbird/ext-framework-server/managers/EventManager";
+import { EventManager } from "./../../managers/EventManager";
 const DEFAULT_CONCURRENCY = {
   "openrap-sunbirded-plugin_IMPORT": 1,
   "openrap-sunbirded-plugin_DOWNLOAD": 1,
