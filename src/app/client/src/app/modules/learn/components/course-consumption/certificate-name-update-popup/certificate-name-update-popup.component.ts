@@ -14,6 +14,7 @@ export class CertificateNameUpdatePopupComponent implements OnInit {
 
   disableContinueBtn = false;
   isNameEditable = false;
+  instance: string;
   public learner: LearnerService;
 
   constructor( public userService: UserService,
@@ -23,6 +24,7 @@ export class CertificateNameUpdatePopupComponent implements OnInit {
     private profileService: ProfileService) { }
 
   ngOnInit() {
+    this.instance = _.upperCase(this.resourceService.instance);
   }
 
   onClickCheckbox(tncChecked) {

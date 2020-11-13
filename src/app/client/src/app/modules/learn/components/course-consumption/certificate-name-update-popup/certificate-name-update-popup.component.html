@@ -24,7 +24,7 @@
         </div>
         <div class="profile-info-para mt-12 text-center">
           <p class="mb-8">
-            {{resourceService?.frmelmnts?.lbl?.nameUpdateConfirmation}}
+            {{resourceService?.frmelmnts?.lbl?.nameUpdateConfirmation | interpolate:'{instance}': instance}}
           </p>
           <p class="mb-0 fnormal font-weight-normal">
             <input class="mr-8 cursor-pointer" type="checkbox" [(ngModel)]="certificateNameChecked" value="true" (click)="onClickCheckbox(certificateNameChecked)"> {{resourceService?.frmelmnts?.lbl?.certificateNameUpdate}}
