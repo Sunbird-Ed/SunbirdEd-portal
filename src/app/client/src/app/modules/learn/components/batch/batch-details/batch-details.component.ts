@@ -107,6 +107,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
       });
   }
   getAllBatchDetails() {
+    this.showCreateBatchBtn = false;
     this.showBatchList = false;
     this.showError = false;
     this.batchList = [];
