@@ -35,7 +35,7 @@ const routes: Routes = [
       {
         path: EDIT_GROUP, component: CreateEditGroupComponent,
         data: {
-          telemetry: { env: telemetryEnv, pageid: CREATE_GROUP, type: type, subtype: subtype },
+          telemetry: { env: telemetryEnv, pageid: EDIT_GROUP, type: type, subtype: subtype },
         },
       },
     ],
