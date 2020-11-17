@@ -17,7 +17,7 @@
           <div class="d-flex flex-jc-space-between flex-ai-center">
             <div class="w-100">
               <label for="id" class="d-inline-flex flex-ai-center flex-jc-space-between w-100"><span> {{resourceService?.frmelmnts?.lbl?.instanceId | interpolate:'{instance}': instance}}*</span>
-                  <span class="cursor-pointer"><i class="icon-svg icon-svg--xs icon-info ml-4" (click)="toggleModal(true);addTelemetry('member-ftu-popup')"><svg class="icon icon-svg--primary">
+                  <span class="cursor-pointer"><i class="icon-svg icon-svg--xs icon-info ml-4" (click)="toggleModal(true);setInteractData('member-ftu-popup')"><svg class="icon icon-svg--primary">
                     <use xlink:href="./assets/images/sprite.svg#info"></use>
                   </svg></i></span>
               </label>
@@ -30,7 +30,7 @@
               </div>
             </div>
             <re-captcha class="recaptcha" *ngIf="isCaptchEnabled" #captchaRef="reCaptcha" (resolved)="$event && captchaResolved($event)" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
-            <button type="button" class="sb-btn sb-btn-normal sb-btn-nolayer" [ngClass]="{'sb-btn-primary': memberId?.trim(), 'sb-btn-disabled': !memberId?.trim()}" [disabled]="!memberId?.trim()" (click)="onVerifyMember();addTelemetry('verify-member', {searchQuery: memberId})">{{resourceService?.frmelmnts?.btn?.verify}}</button>
+            <button type="button" class="sb-btn sb-btn-normal sb-btn-nolayer" [ngClass]="{'sb-btn-primary': memberId?.trim(), 'sb-btn-disabled': !memberId?.trim()}" [disabled]="!memberId?.trim()" (click)="onVerifyMember();setInteractData('verify-member', {searchQuery: memberId})">{{resourceService?.frmelmnts?.btn?.verify}}</button>
           </div>
         </div>
 
