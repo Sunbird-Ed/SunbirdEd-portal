@@ -25,6 +25,7 @@ import { CourseBatchService } from './../../../services';
 export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   sharelinkModal: boolean;
+  certificateNameChecked = false;
   showProfileUpdatePopup = false;
   /**
    * contains link that can be shared
