@@ -15,5 +15,8 @@
       "@project-sunbird/OpenRAP/*": ["OpenRAP/dist/*"]
     }
   },
-  "exclude": ["node_modules", "*/**/*.spec.ts", "*.spec.ts", "temp", "client", "resourcebundles", "test", "OpenRAP"]
+  "include": ["modules", "main.ts"],
+  "exclude": ["node_modules", "*/**/*.spec.ts", "*.spec.ts", 
+    "temp", "client", "public", "openrap-sunbird-plugin",
+     "resourcebundles", "test", "OpenRAP", "modules/test_data/*.ts"]
 }

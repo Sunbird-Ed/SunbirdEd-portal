@@ -1,7 +1,7 @@
 import { HTTPService } from "@project-sunbird/OpenRAP/services/httpService";
 import { logger } from "@project-sunbird/logger";
 import * as _ from "lodash";
-import { containerAPI } from "OpenRAP/dist/api";
+import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import * as path from "path";
 import { Inject } from "typescript-ioc";
 import DatabaseSDK from "../sdk/database/index";

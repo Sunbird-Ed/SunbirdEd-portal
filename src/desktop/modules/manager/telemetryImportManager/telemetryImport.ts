@@ -3,12 +3,12 @@ import { ErrorObj, ITelemetrySkipped } from "./ITelemetryImport";
 import { Inject } from "typescript-ioc";
 import * as path from "path";
 import { logger } from "@project-sunbird/logger";
-import { containerAPI, ISystemQueue, ITaskExecuter } from "OpenRAP/dist/api";
+import { containerAPI, ISystemQueue, ITaskExecuter } from "@project-sunbird/OpenRAP/api";
 import { manifest } from "../../manifest";
 import * as  _ from "lodash";
 import { Observer } from "rxjs";
 import TelemetryHelper from "../../helper/telemetryHelper";
-import { NetworkQueue } from "OpenRAP/dist/services/queue";
+import { NetworkQueue } from "@project-sunbird/OpenRAP/services/queue";
 
 import { ClassLogger} from "@project-sunbird/logger/decorator";
 /*@ClassLogger({

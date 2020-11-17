@@ -1,6 +1,6 @@
 import * as  _ from "lodash";
-import * as  StreamZip from "node-stream-zip";
-import { ISystemQueue } from "OpenRAP/dist/api";
+import  StreamZip from "node-stream-zip";
+import { ISystemQueue } from "@project-sunbird/OpenRAP/api";
 import { ErrorObj, getErrorObj } from "./ITelemetryImport";
 
 let zipHandler;

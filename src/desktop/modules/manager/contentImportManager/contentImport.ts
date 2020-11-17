@@ -5,7 +5,7 @@ import { Inject } from "typescript-ioc";
 import * as path from "path";
 import DatabaseSDK from "../../sdk/database";
 import { logger } from "@project-sunbird/logger";
-import { containerAPI, ISystemQueue, ITaskExecuter } from "OpenRAP/dist/api";
+import { containerAPI, ISystemQueue, ITaskExecuter } from "@project-sunbird/OpenRAP/api";
 import { manifest } from "../../manifest";
 import { IAddedUsingType } from "../../controllers/content/IContent";
 import * as  _ from "lodash";

@@ -4,7 +4,9 @@
 import { logger } from '@project-sunbird/logger';
 import * as _ from 'lodash';
 const path = require('path');
+const fs = require('fs');
 const PouchDataBase = require('pouchdb');
+PouchDataBase.plugin(require('pouchdb-find'));
 /**
 * This SDK helps in performing operations with database and to create them
 * 
@@ -12,19 +14,40 @@ const PouchDataBase = require('pouchdb');
 export default class DatabaseSDK {
 
     private pluginId: string;
-    private url: string;
-    private dbInstances: object;
 
 
-    initialize(pluginId: string, url?: string) {
+    async initialize(pluginId: string) {
         this.pluginId = pluginId;
-        this.url = url;
     }
 
+    async initializeAndCreateIndex(pluginId: string) {
+        this.pluginId = pluginId;
+        await this.createIndex();
+    }
+
+    async createIndex() {
+        try {
+            const databases = JSON.parse(fs.readFileSync(path.join(__dirname, 'schema_1.0.json'),
+                { encoding: 'utf8' }));
+            for (const db of databases) {
+                let dbInstance = this.getConnection(db.name);
+                if (!_.isEmpty(db['indexes'])) {
+                    for (let index of db.indexes) {
+                        await dbInstance.createIndex(index).catch((err) => {
+                            if (err) logger.error(`While creating the index for db ${db.name} `, err)
+                        });
+                    }
+                }
+            }
+
+        } catch (error) {
+            logger.error(`while creating the indexes`, error);
+        }
+    }
     getConnection(database: string) {
         return new PouchDataBase(path.join(process.env.DATABASE_PATH, database));
     }
-    
+
     get(database: string, Id: string) {
         logger.debug(`Getting the document: ${Id} in Database: ${_.upperCase(database)}`)
         let db = this.getConnection(database);

@@ -1,6 +1,6 @@
 import { logger } from "@project-sunbird/logger";
 import * as  _ from "lodash";
-import { containerAPI } from "OpenRAP/dist/api";
+import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import * as os from "os";
 import * as path from "path";
 import * as express from "express";

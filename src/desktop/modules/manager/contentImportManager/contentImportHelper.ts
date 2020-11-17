@@ -4,7 +4,7 @@ import * as  fs from "fs";
 import * as  _ from "lodash";
 import * as path from "path";
 import { manifest } from "../../manifest";
-import { containerAPI, ISystemQueue } from "OpenRAP/dist/api";
+import { containerAPI, ISystemQueue } from "@project-sunbird/OpenRAP/api";
 import config from "../../config";
 import { Subject } from "rxjs";
 import { throttleTime } from "rxjs/operators";

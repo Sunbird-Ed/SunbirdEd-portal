@@ -1,7 +1,7 @@
 import { logger } from "@project-sunbird/logger";
 import * as _ from "lodash";
 import StreamZip from "node-stream-zip";
-import { containerAPI, ISystemQueue, ITaskExecuter } from "OpenRAP/dist/api";
+import { containerAPI, ISystemQueue, ITaskExecuter } from "@project-sunbird/OpenRAP/api";
 import * as path from "path";
 import { Observer } from "rxjs";
 import { Inject } from "typescript-ioc";

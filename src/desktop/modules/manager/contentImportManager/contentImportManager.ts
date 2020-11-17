@@ -5,7 +5,7 @@ import * as path from "path";
 import { handelError, IContentImportData, ImportSteps } from "./IContentImport";
 import DatabaseSDK from "../../sdk/database";
 import { logger } from "@project-sunbird/logger";
-import { containerAPI, ISystemQueueInstance, ISystemQueue, SystemQueueReq, SystemQueueStatus } from "OpenRAP/dist/api";
+import { containerAPI, ISystemQueueInstance, ISystemQueue, SystemQueueReq, SystemQueueStatus } from "@project-sunbird/OpenRAP/api";
 import { manifest } from "../../manifest";
 import TelemetryHelper from "../../helper/telemetryHelper";
 import { ImportContent } from "./contentImport";

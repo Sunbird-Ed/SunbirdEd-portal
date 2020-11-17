@@ -1,7 +1,7 @@
 import { logger } from "@project-sunbird/logger";
 import * as _ from "lodash";
-import { containerAPI, ISystemQueueInstance } from "OpenRAP/dist/api";
-import { NetworkQueue } from "OpenRAP/dist/services/queue";
+import { containerAPI, ISystemQueueInstance } from "@project-sunbird/OpenRAP/api";
+import { NetworkQueue } from "@project-sunbird/OpenRAP/services/queue";
 import { Inject } from "typescript-ioc";
 import DatabaseSDK from "../sdk/database/index";
 import { ImportTelemetry } from "../manager/telemetryImportManager/telemetryImport";

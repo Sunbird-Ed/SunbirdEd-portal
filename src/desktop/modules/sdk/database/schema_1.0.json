@@ -1,7 +1,5 @@
-{
-    "type": "pouchdb",
-    "config": {},
-    "databases": [
+
+[
         {
             "name": "content",
             "indexes": [
@@ -103,4 +101,3 @@
             "name": "location"
         }
     ]
-}

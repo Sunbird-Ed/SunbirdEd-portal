@@ -4,7 +4,7 @@ import { AutoWired, Inject, Singleton } from "typescript-ioc";
 import * as path from "path";
 import DatabaseSDK from "../../sdk/database";
 import { logger } from "@project-sunbird/logger";
-import { containerAPI, ISystemQueueInstance, ISystemQueue, SystemQueueReq, SystemQueueStatus } from "OpenRAP/dist/api";
+import { containerAPI, ISystemQueueInstance, ISystemQueue, SystemQueueReq, SystemQueueStatus } from "@project-sunbird/OpenRAP/api";
 import { manifest } from "../../manifest";
 import { ContentDownloader } from "./ContentDownloader";
 import { HTTPService } from "@project-sunbird/OpenRAP/services/httpService";

@@ -3,7 +3,7 @@ import DatabaseSDK from "../sdk/database/index";
 import { logger } from "@project-sunbird/logger";
 const Hashids = require('hashids/cjs')
 import * as _ from "lodash";
-import { containerAPI } from "OpenRAP/dist/api";
+import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import * as path from "path";
 import { Inject } from "typescript-ioc";
 import * as uuid from "uuid";

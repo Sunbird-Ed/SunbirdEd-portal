@@ -1,5 +1,5 @@
 import * as _ from "lodash";
-import { containerAPI } from "OpenRAP/dist/api";
+import { containerAPI } from "@project-sunbird/OpenRAP/api";
 const telemetryInstance = containerAPI.getTelemetrySDKInstance().getInstance();
 
 import { ClassLogger } from "@project-sunbird/logger/decorator";

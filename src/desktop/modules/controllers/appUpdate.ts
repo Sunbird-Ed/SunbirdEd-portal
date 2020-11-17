@@ -1,7 +1,7 @@
 import { HTTPService } from "@project-sunbird/OpenRAP/services/httpService";
 import { logger } from "@project-sunbird/logger";
 import * as _ from "lodash";
-import { containerAPI } from "OpenRAP/dist/api";
+import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import * as os from "os";
 import config from "../config";
 import Response from "../utils/response";

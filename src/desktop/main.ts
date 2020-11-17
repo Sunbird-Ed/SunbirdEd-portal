@@ -6,8 +6,6 @@ import * as fse from "fs-extra";
 import  { Server }   from './modules/server'
 const startTime = Date.now();
 let envs: any = {};
-//initialize the environment variables
-console.log('===============> initialize env called', process.env.DATABASE_PATH);
 const getFilesPath = () => {
   return app.isPackaged
     ? path.join(app.getPath("userData"), "." + envs["APP_NAME"])
@@ -236,7 +234,6 @@ const setAvailablePort = async () => {
 // start the express app to load in the main window
 const startApp = async () => {
   return new Promise((resolve, reject) => {
-    console.log("process.env: ", process.env.APP_BASE_URL)
     new Server(expressApp)
     expressApp.listen(process.env.APPLICATION_PORT, () => {
         logger.info("app is started on port " + process.env.APPLICATION_PORT);
@@ -356,7 +353,7 @@ async function createWindow() {
       win.removeMenu();
     }
     if (!app.isPackaged) {
-      reloadUIOnFileChange();
+      // reloadUIOnFileChange();
     }
       win.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
         options.show = false;
@@ -508,3 +505,12 @@ const checkForOpenFile = (files?: string[]) => {
     );
   }
 };
+
+process
+  .on("unhandledRejection", (reason, p) => {
+    logger.error(reason, "Unhandled Rejection at Promise", p);
+  })
+  .on("uncaughtException", err => {
+    logger.error(err, "Uncaught Exception thrown");
+    process.exit(1);
+  });

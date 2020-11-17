@@ -5,7 +5,7 @@ import * as path from "path";
 import * as fse from "fs-extra";
 import { manifest } from "../../manifest";
 import * as uuid from "uuid";
-import { containerAPI } from "OpenRAP/dist/api";
+import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import { logger } from "@project-sunbird/logger";
 const fileSDK = containerAPI.getFileSDKInstance(manifest.id);
 
