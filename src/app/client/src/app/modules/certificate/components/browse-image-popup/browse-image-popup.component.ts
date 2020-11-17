@@ -17,12 +17,13 @@ export class BrowseImagePopupComponent implements OnInit {
   @Input() logoType;
   @Output() assetData = new EventEmitter();
   @Output() close = new EventEmitter();
-  showUploadUserModal;
+  @Input() showUploadUserModal;
   imageName;
   imagesList = [];
   uploadForm: FormGroup;
   fileObj: any;
   selectedLogo: any;
+  sign = 'SIGN';
   imageDimensions = {
     'LOGO': { type: 'PNG', dimensions: '88px X 88px' },
     'SIGN': { type: 'PNG', dimensions: '112px X 46px' }
@@ -122,6 +123,7 @@ export class BrowseImagePopupComponent implements OnInit {
   }
 
   upload() {
+    if (this.logoType.type !== this.sign) {
     this.uploadCertificateService.createAsset(this.uploadForm.value, this.logoType.type).subscribe(res => {
       if (res && res.result) {
         this.uploadBlob(res);
@@ -129,6 +131,9 @@ export class BrowseImagePopupComponent implements OnInit {
     }, error => {
       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
     });
+  } else {
+    this.getImageURLs();
+  }
   }
 
   /**
@@ -185,14 +190,20 @@ export class BrowseImagePopupComponent implements OnInit {
     this.selectedLogo = logo;
   }
   back() {
-    this.showUploadUserModal = false;
-    this.showSelectImageModal = true;
-    this.uploadForm.reset();
-    // this.close.emit();
-    this.selectedLogo = null;
+    if (this.logoType.type === this.sign) {
+      this.claseModel();
+    } else {
+      this.showUploadUserModal = false;
+      this.showSelectImageModal = true;
+      this.uploadForm.reset();
+      // this.close.emit();
+      this.selectedLogo = null;
+    }
+
   }
 
   claseModel() {
+    this.uploadForm.reset();
     this.showUploadUserModal = false;
     this.showSelectImageModal = false;
     this.selectedLogo = null;
