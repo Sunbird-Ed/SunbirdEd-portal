@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, Output, OnInit, ViewChild, EventEmitter } from '@angular/core';
 import { ToasterService, ResourceService} from '@sunbird/shared';
 import { UserService, LearnerService } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -10,7 +10,8 @@ import { ProfileService } from '@sunbird/profile';
   styleUrls: ['./certificate-name-update-popup.component.scss']
 })
 export class CertificateNameUpdatePopupComponent implements OnInit {
-  @Input() showProfileUpdatePopup;
+  @ViewChild('modal') modal;
+  @Output() close = new EventEmitter();
 
   disableContinueBtn = false;
   isNameEditable = false;
@@ -31,6 +32,11 @@ export class CertificateNameUpdatePopupComponent implements OnInit {
     this.disableContinueBtn = !tncChecked;
   }
 
+  closePopup() {
+    this.modal.deny();
+    this.close.emit();
+  }
+
   /**
    * This method used to submit profile Update
    */
@@ -40,7 +46,7 @@ export class CertificateNameUpdatePopupComponent implements OnInit {
     localStorage.setItem('isCertificateNameUpdated', 'true');
 
     this.profileService.updateProfile(data).subscribe(res => {
-      this.showProfileUpdatePopup = false;
+      this.closePopup();
     }, err => {
       this.disableContinueBtn = false;
       this.toasterService.error(this.resourceService.messages.fmsg.m0085);

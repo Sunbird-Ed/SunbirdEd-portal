@@ -25,8 +25,7 @@ import { CourseBatchService } from './../../../services';
 export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   sharelinkModal: boolean;
-  showChangeUserNamePopup: boolean;
-  showProfileUpdatePopup: boolean;
+  showProfileUpdatePopup = false;
   /**
    * contains link that can be shared
    */
@@ -77,6 +76,10 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
 
   showJoinModal(event) {
     this.courseConsumptionService.showJoinCourseModal.emit(event);
+  }
+
+  showProfileModal(event) {
+    this.courseConsumptionService.showProfileUpdateModal.emit(event);
   }
 
   ngOnInit() {
@@ -157,10 +160,9 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   resumeCourse(showExtUrlMsg?: boolean) {
-    const IsStoredLocally = localStorage.getItem('isCertificateNameUpdated');
+    const IsStoredLocally = localStorage.getItem('isCertificateNameUpdated') || 'false' ;
     const certificateDescription = this.courseBatchService.getcertificateDescription(this.enrolledBatchInfo);
-
-    if (IsStoredLocally === 'false' && certificateDescription && certificateDescription.isCertificate) {
+    if (IsStoredLocally !== 'true' && certificateDescription && certificateDescription.isCertificate) {
       this.showProfileUpdatePopup = true;
     } else {
       this.courseConsumptionService.launchPlayer.emit();

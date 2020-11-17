@@ -82,7 +82,6 @@ describe('CertificateNameUpdatePopupComponent', () => {
     spyOn(profileService, 'updateProfile').and.returnValue(of({}));
     component.updateProfileName();
     expect(profileService.updateProfile).toHaveBeenCalledWith({ firstName: 'Gourav' });
-    expect(component.showProfileUpdatePopup).toEqual(false);
   });
 
   it('should enabled disabled continue button on error of profile update call', () => {

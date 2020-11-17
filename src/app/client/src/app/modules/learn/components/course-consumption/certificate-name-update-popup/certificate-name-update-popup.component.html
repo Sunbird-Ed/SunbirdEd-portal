@@ -1,5 +1,4 @@
-<sui-modal class="sb-modal" (dismissed)="modal.deny(); showProfileUpdatePopup = false;" #modal
-*ngIf="showProfileUpdatePopup">
+<sui-modal class="sb-modal" (dismissed)="closePopup();" #modal>
     <!--Header-->
     <div class="sb-modal-header">
       <span>{{resourceService?.frmelmnts?.lbl?.profileNameConfirmations}}</span>
