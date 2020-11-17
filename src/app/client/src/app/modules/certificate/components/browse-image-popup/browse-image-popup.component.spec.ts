@@ -165,6 +165,16 @@ describe('BrowseImagePopupComponent', () => {
     expect(component.selectedLogo).toEqual(null);
   });
 
+  it('should go back', () => {
+    spyOn(component, 'closeModel');
+    component.logoType  = {
+      'type' : 'SIGN'
+    };
+    component.sign = 'SIGN';
+    component.back();
+    expect(component.closeModel).toHaveBeenCalled();
+  });
+
   it('should close the modal', () => {
     component.closeModel();
     expect(component.showUploadUserModal).toEqual(false);

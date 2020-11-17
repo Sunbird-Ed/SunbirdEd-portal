@@ -81,8 +81,6 @@ export class BrowseImagePopupComponent implements OnInit {
         'creator': userName,
         'creatorId': _.get(this.userService, 'userProfile.id')
       });
-    } else {
-      console.log('*********Error: Image requirments are not matched*******************');
     }
   }
 

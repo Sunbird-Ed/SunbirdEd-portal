@@ -115,8 +115,8 @@ class RouterStub {
     component.createTemplateForm = new FormGroup({
       certificateTitle: new FormControl('Completion certificate'),
       stateName: new FormControl('Gujrat'),
-      authoritySignature: new FormControl('vinu kumar'),
-      authoritySignature2: new FormControl('Sudip Mukherjee'),
+      authoritySignature_0: new FormControl('vinu kumar'),
+      authoritySignature_1: new FormControl('Sudip Mukherjee'),
       allowPermission: new FormControl(true)
     });
     component.images.LOGO1.url = 'http://test.com/';
@@ -129,8 +129,8 @@ class RouterStub {
     component.createTemplateForm = new FormGroup({
       certificateTitle: new FormControl(''),
       stateName: new FormControl(''),
-      authoritySignature: new FormControl(''),
-      authoritySignature2: new FormControl(''),
+      authoritySignature_0: new FormControl(''),
+      authoritySignature_1: new FormControl(''),
       allowPermission: new FormControl('')
     });
     component.validateForm();
@@ -142,8 +142,8 @@ class RouterStub {
     component.createTemplateForm = new FormGroup({
       certificateTitle: new FormControl('Completion certificate'),
       stateName: new FormControl('Gujrat'),
-      authoritySignature: new FormControl('vinu kumar'),
-      authoritySignature2: new FormControl('Sudip Mukherjee'),
+      authoritySignature_0: new FormControl('vinu kumar'),
+      authoritySignature_1: new FormControl('Sudip Mukherjee'),
       allowPermission: new FormControl(true)
     });
     component.images.LOGO1.url = 'http://test.com/';
@@ -166,8 +166,8 @@ class RouterStub {
     component.createTemplateForm = new FormGroup({
       certificateTitle: new FormControl('Completion certificate'),
       stateName: new FormControl('Gujrat'),
-      authoritySignature: new FormControl('vinu kumar'),
-      authoritySignature2: new FormControl('Sudip Mukherjee'),
+      authoritySignature_0: new FormControl('vinu kumar'),
+      authoritySignature_1: new FormControl('Sudip Mukherjee'),
       allowPermission: new FormControl(true)
     });
     component.images.LOGO1.url = 'http://test.com/';
@@ -214,13 +214,13 @@ class RouterStub {
     expect(_.isEmpty(component.images['LOGO1'])).toBeTruthy();
   });
 
-  // it('should call openSateLogos', () => {
-  //   const data = {type: 'LOGO', index: 0,  key: 'LOGO1'};
-  //   component.browseImage = new BrowseImagePopupComponent();
-  //   component.openSateLogos(data);
-  //   expect(component.logoType).toEqual(data);
-  //   expect(component.showSelectImageModal ).toBeTruthy();
-  // });
+  it('should call openSignLogos', () => {
+    const data = {type: 'SIGN', index: 0,  key: 'SIGN1'};
+    component.openSignLogos(data);
+    expect(component.logoType).toEqual(data);
+    expect(component.showSelectImageModal ).toBeFalsy();
+    expect(component.showUploadUserModal).toBeTruthy();
+  });
 
   it('should call chooseCertificate', () => {
     spyOn(component, 'getSVGTemplate').and.stub();
@@ -301,6 +301,31 @@ class RouterStub {
     expect(component.images['LOGO1']).toEqual(data);
   });
 
+  it('should call getDefaultTemplates', () => {
+  const uploadService = TestBed.get(UploadCertificateService);
+  spyOn(uploadService, 'getCertificates').and.returnValue(of(MockData.defaultCerts));
+  spyOn(component, 'getSVGTemplate').and.stub();
+  component.getDefaultTemplates();
+  expect(component.getSVGTemplate).toHaveBeenCalled();
+  });
+
+  it('should make input as touched', () => {
+    component.createTemplateForm = new FormGroup({
+      certificateTitle: new FormControl(),
+      stateName: new FormControl(),
+      authoritySignature_0: new FormControl(),
+      authoritySignature_1: new FormControl(),
+      allowPermission: new FormControl()
+    });
+    component.images.LOGO1.url = 'http://test.com/';
+    component.images.SIGN1.url = 'http://test.com/';
+    component.createCertTemplate();
+    expect(component.createTemplateForm.controls.certificateTitle.touched).toEqual(true);
+    expect(component.createTemplateForm.controls.stateName.touched).toEqual(true);
+    expect(component.createTemplateForm.controls.authoritySignature_0.touched).toEqual(true);
+
+
+  });
   // it('should remove the selected logo', () => {
   //   component.certLogos = [
   //     {
