@@ -78,10 +78,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.courseConsumptionService.showJoinCourseModal.emit(event);
   }
 
-  showProfileModal(event) {
-    this.courseConsumptionService.showProfileUpdateModal.emit(event);
-  }
-
   ngOnInit() {
     this.forumId = _.get(this.courseHierarchy, 'forumId') || _.get(this.courseHierarchy, 'metaData.forumId');
     if (!this.courseConsumptionService.getCoursePagePreviousUrl) {
