@@ -11,3 +11,15 @@
     width: 1.5rem;
   }
 }
+.notification-count{
+  font-size: calculateRem(11px);
+  color: var(--white);
+  position: absolute;
+  width: calculateRem(18px);
+  height: calculateRem(18px);
+  border-radius: 50%;
+  background: var(--orange);
+  top: calculateRem(5px);
+  left: calculateRem(2px);
+  text-align: center;
+}

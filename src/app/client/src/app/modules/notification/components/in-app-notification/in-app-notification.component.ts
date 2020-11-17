@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 // import { csUserServiceFactory } from '../../notification.module';
@@ -14,7 +14,7 @@ export class InAppNotificationComponent implements OnInit {
 
   showNotificationModel = false;
   notificationList$: any;
-
+  @Input() layoutConfiguration: any;
   constructor(private notificationService: NotificationService, private router: Router) {
     // this.notificationList$ = this.notificationService.fetchInAppNotifications();
     this.notificationList$ = [

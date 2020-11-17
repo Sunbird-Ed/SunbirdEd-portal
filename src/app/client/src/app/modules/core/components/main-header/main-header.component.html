@@ -27,6 +27,9 @@
           <app-main-menu [layoutConfiguration]="layoutConfiguration" class="d-flex computer only ml-auto">
           </app-main-menu>
           <!--/Main Menu-->
+          <a class="profile-avtar p-0 mx-16">
+            <app-in-app-notification *ngIf="userService?.loggedIn" [layoutConfiguration]="layoutConfiguration"></app-in-app-notification>
+          </a>
           <!--Avtar Dropdown-->
           <a class="profile-avtar p-0" tabindex="0">
             <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
@@ -142,8 +145,10 @@
             </a>
             <!--/Logo-->
             <div class="d-flex flex-ai-center sb-responsive-header">
-                <!-- Notification dropdown -->
-                <app-in-app-notification *ngIf="userService?.loggedIn"></app-in-app-notification>
+              <!-- Notification dropdown -->
+              <a class="profile-avtar p-0" tabindex="0">
+                <app-in-app-notification *ngIf="userService?.loggedIn" [layoutConfiguration]="layoutConfiguration"></app-in-app-notification>
+              </a>
               <!--Avtar Dropdown-->
               <a class="profile-avtar p-0" tabindex="0">
                 <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
@@ -174,7 +179,9 @@
               *ngIf="languages && showLanguageDropdown()">
             </app-language-dropdown>
             <!-- Notification dropdown -->
-            <app-in-app-notification *ngIf="userService?.loggedIn"></app-in-app-notification>
+            <a class="profile-avtar p-0 ml-16" tabindex="0">
+              <app-in-app-notification *ngIf="userService?.loggedIn" [layoutConfiguration]="layoutConfiguration"></app-in-app-notification>
+            </a>
             <!--Avtar Dropdown-->
             <a class="profile-avtar p-0 ml-16" tabindex="0">
               <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
