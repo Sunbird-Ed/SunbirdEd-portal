@@ -14,6 +14,7 @@ export class CertificateNameUpdatePopupComponent implements OnInit {
   @Output() close = new EventEmitter();
 
   disableContinueBtn = false;
+  certificateNameChecked = false;
   isNameEditable = false;
   instance: string;
   public learner: LearnerService;
