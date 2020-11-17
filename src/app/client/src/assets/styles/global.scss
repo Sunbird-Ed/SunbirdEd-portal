@@ -672,6 +672,7 @@ html.PlayerMediaQueryClass {
     padding: calculateRem(24px) calculateRem(16px);
     max-height: 85%;
     overflow-y: auto;
+    background: var(--white);
     html[dir="rtl"] & {
       right: auto;
       left: calculateRem(70px);

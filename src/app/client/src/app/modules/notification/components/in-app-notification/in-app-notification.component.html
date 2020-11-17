@@ -1,10 +1,9 @@
-<a class="profile-avtar p-0 ml-16" tabindex="0">
-  <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
-    <div class="notification-bell d-flex flex-ai-center flex-jc-center" name="Guest" *ngIf='!userProfile' (click)="toggleInAppNotifications()">
-      <img src="./assets/images/notification.svg" alt="In App Notification">
-    </div>
+<div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
+  <div class="notification-bell d-flex flex-ai-center flex-jc-center" name="Guest" *ngIf='!userProfile' (click)="toggleInAppNotifications()">
+    <img src="./assets/images/notification.svg" alt="In App Notification">
   </div>
-</a>
+  <div class="notification-count">2</div>
+</div>
 <sui-modal
   [mustScroll]="true" 
   [isClosable]="true"
