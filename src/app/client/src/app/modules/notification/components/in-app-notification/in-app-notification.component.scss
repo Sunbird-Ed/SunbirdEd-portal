@@ -1,0 +1,13 @@
+@import "variables";
+@import "mixins/mixins";
+
+.notification-bell{
+  box-shadow: var(--sbt-box-shadow-6px);
+  border-radius: 50%;
+  background-color: var(--white);
+  width: calculateRem(40px);
+  height: calculateRem(40px);
+  img{
+    width: 1.5rem;
+  }
+}
