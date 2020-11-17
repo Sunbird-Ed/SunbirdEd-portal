@@ -154,6 +154,7 @@ describe('BrowseImagePopupComponent', () => {
 
   it('should go back', () => {
     spyOn(component.uploadForm, 'reset');
+    component.logoType.type = 'Logo';
     component.back();
     expect(component.showUploadUserModal).toEqual(false);
     expect(component.showSelectImageModal).toEqual(true);
@@ -162,7 +163,7 @@ describe('BrowseImagePopupComponent', () => {
   });
 
   it('should close the modal', () => {
-    component.claseModel();
+    component.closeModel();
     expect(component.showUploadUserModal).toEqual(false);
     expect(component.showSelectImageModal).toEqual(false);
     expect(component.selectedLogo).toEqual(null);

@@ -112,6 +112,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
   }
 
   validateForm() {
+    // TODO: Form validation need to improve
     const logo = _.get(this.images, 'LOGO1.url');
     const sign = _.get(this.images, 'SIGN1.url');
     if (this.createTemplateForm.status === 'VALID' && _.get(this.createTemplateForm, 'value.allowPermission')
@@ -139,6 +140,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
 
   createCertTemplate() {
     this.validateForm();
+    // TODO: form validation need to improve 
     if (this.disableCreateTemplate) {
       this.createTemplateForm.controls.certificateTitle.markAsTouched();
       this.createTemplateForm.controls.stateName.markAsTouched();

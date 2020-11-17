@@ -1,5 +1,5 @@
 <sui-modal *ngIf="showSelectImageModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
-  [size]="'large'" class="sb-modal sb-imagemodal" appBodyScroll (dismissed)="claseModel()" #modal>
+  [size]="'large'" class="sb-modal sb-imagemodal" appBodyScroll (dismissed)="closeModel()" #modal>
   <div class="d-flex flex-ai-center sb-modal-header">
     <img src="assets/images/image.svg" width="24px" height="20px" class="mr-8">
     {{resourceService.frmelmnts?.lbl?.selectImage}}
@@ -89,7 +89,7 @@
 
   <div class="sb-modal-actions d-flex flex-jc-space-between flex-ai-center">
     <div class="d-flex flex-ai-center relative">
-      <button class="sb-btn sb-btn-normal sb-btn-error mr-4" (click)="claseModel()">
+      <button class="sb-btn sb-btn-normal sb-btn-error mr-4" (click)="closeModel()">
         {{resourceService?.frmelmnts?.btn?.cancel}}
       </button>
       <div class="or-toggle">
@@ -107,7 +107,7 @@
 
 <!--  upload modal -->
 <sui-modal *ngIf="showUploadUserModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'large'"
-  class="sb-modal sb-uploadmodal" appBodyScroll (dismissed)="claseModel()" #modal>
+  class="sb-modal sb-uploadmodal" appBodyScroll (dismissed)="closeModel()" #modal>
   <div class="d-flex flex-ai-center sb-modal-header">
     <img src="assets/images/upload.svg" width="24px" height="20px" class="mr-8">
     {{resourceService.frmelmnts?.lbl?.uploadAndUse}}

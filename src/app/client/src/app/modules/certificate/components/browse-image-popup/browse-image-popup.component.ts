@@ -17,7 +17,7 @@ export class BrowseImagePopupComponent implements OnInit {
   @Input() logoType;
   @Output() assetData = new EventEmitter();
   @Output() close = new EventEmitter();
-  @Input() showUploadUserModal;
+  @Input() showUploadUserModal = false;
   imageName;
   imagesList = [];
   uploadForm: FormGroup;
@@ -123,17 +123,18 @@ export class BrowseImagePopupComponent implements OnInit {
   }
 
   upload() {
+    // TODO: have to make more dynamic (use input variable autoUpload)
     if (this.logoType.type !== this.sign) {
-    this.uploadCertificateService.createAsset(this.uploadForm.value, this.logoType.type).subscribe(res => {
-      if (res && res.result) {
-        this.uploadBlob(res);
-      }
-    }, error => {
-      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    });
-  } else {
-    this.getImageURLs();
-  }
+      this.uploadCertificateService.createAsset(this.uploadForm.value, this.logoType.type).subscribe(res => {
+        if (res && res.result) {
+          this.uploadBlob(res);
+        }
+      }, error => {
+        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+      });
+    } else {
+      this.getImageURLs();
+    }
   }
 
   /**
@@ -155,7 +156,7 @@ export class BrowseImagePopupComponent implements OnInit {
         };
         this.assetData.emit(image);
         this.uploadForm.reset();
-        this.claseModel();
+        this.closeModel();
       };
     }
   }
@@ -176,11 +177,11 @@ export class BrowseImagePopupComponent implements OnInit {
           };
           this.assetData.emit(image);
           this.uploadForm.reset();
-          this.claseModel();
+          this.closeModel();
         }
       }, error => {
         this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-        this.claseModel();
+        this.closeModel();
         this.uploadForm.reset();
       });
     }
@@ -191,7 +192,7 @@ export class BrowseImagePopupComponent implements OnInit {
   }
   back() {
     if (this.logoType.type === this.sign) {
-      this.claseModel();
+      this.closeModel();
     } else {
       this.showUploadUserModal = false;
       this.showSelectImageModal = true;
@@ -202,7 +203,7 @@ export class BrowseImagePopupComponent implements OnInit {
 
   }
 
-  claseModel() {
+  closeModel() {
     this.uploadForm.reset();
     this.showUploadUserModal = false;
     this.showSelectImageModal = false;
@@ -220,6 +221,6 @@ export class BrowseImagePopupComponent implements OnInit {
     };
     this.assetData.emit(image);
     this.selectedLogo = null;
-    this.claseModel();
+    this.closeModel();
   }
 }
