@@ -154,7 +154,10 @@ describe('BrowseImagePopupComponent', () => {
 
   it('should go back', () => {
     spyOn(component.uploadForm, 'reset');
-    component.logoType.type = 'Logo';
+    component.logoType  = {
+      'type' : 'LOGO'
+    };
+    component.sign = 'SIGN';
     component.back();
     expect(component.showUploadUserModal).toEqual(false);
     expect(component.showSelectImageModal).toEqual(true);
