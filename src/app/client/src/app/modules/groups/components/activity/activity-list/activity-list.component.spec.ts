@@ -101,6 +101,7 @@ describe('ActivityListComponent', () => {
   it('should call openActivity for Admin', () => {
     spyOn(component, 'addTelemetry');
     spyOn(component['playerService'], 'playContent');
+    component.groupData = {id: '123'};
     const event = {
       data: {
       name: 'Class 5 English',
@@ -108,16 +109,17 @@ describe('ActivityListComponent', () => {
       appIcon: 'https://ntpproductionall.blob.core.windows.net/ntp-content-production/content/do_3129265279296552961416/artifact/book_2_1491393340123.thumb_1577945304197.png',
       organisation: ['Pre-prod Custodian Organization'],
       subject: 'Social Science',
-      contentType: 'Course'
+      contentType: 'Course',
     }};
     component.groupData.active = true;
     component.openActivity(event, 'ACTIVITY_COURSE_TITLE');
-    expect(component['playerService'].playContent).toHaveBeenCalledWith(event.data);
+    expect(component['playerService'].playContent).toHaveBeenCalledWith(event.data, {groupId: '123'});
     expect(component.addTelemetry).toHaveBeenCalled();
   });
 
   it('should call openActivity for group member', fakeAsync(() => {
     spyOn(component, 'addTelemetry');
+    component.groupData = {id: '123'};
     const event = {
       data: {
       name: 'Class 5 English',
@@ -135,7 +137,7 @@ describe('ActivityListComponent', () => {
     title: 'ACTIVITY_COURSE_TITLE'});
     tick(100);
     const option = {relativeTo: component['activateRoute'], queryParams: { primaryCategory: 'Course',
-    title: 'ACTIVITY_COURSE_TITLE', mimeType: 'collection'}};
+    title: 'ACTIVITY_COURSE_TITLE', mimeType: 'collection', groupId: '123'}};
     component.openActivity(event, 'ACTIVITY_COURSE_TITLE');
     expect(router.navigate).toHaveBeenCalledWith(['activity-details', 'do_123523212190'], option);
     expect(component.addTelemetry).toHaveBeenCalled();
