@@ -119,6 +119,8 @@ class RouterStub {
       authoritySignature2: new FormControl('Sudip Mukherjee'),
       allowPermission: new FormControl(true)
     });
+    component.images.LOGO1.url = 'http://test.com/';
+    component.images.SIGN1.url = 'http://test.com/';
     component.validateForm();
     expect(component.disableCreateTemplate).toEqual(false);
   });
@@ -144,6 +146,8 @@ class RouterStub {
       authoritySignature2: new FormControl('Sudip Mukherjee'),
       allowPermission: new FormControl(true)
     });
+    component.images.LOGO1.url = 'http://test.com/';
+    component.images.SIGN1.url = 'http://test.com/';
     component.selectedCertificate = {issuer: `{}`};
     spyOn(component, 'uploadTemplate');
     spyOn(component, 'previewCertificate').and.stub();
@@ -166,6 +170,8 @@ class RouterStub {
       authoritySignature2: new FormControl('Sudip Mukherjee'),
       allowPermission: new FormControl(true)
     });
+    component.images.LOGO1.url = 'http://test.com/';
+    component.images.SIGN1.url = 'http://test.com/';
     spyOn(component, 'uploadTemplate');
     component.selectedCertificate = {issuer: `{}`};
     spyOn(component, 'previewCertificate').and.stub();
