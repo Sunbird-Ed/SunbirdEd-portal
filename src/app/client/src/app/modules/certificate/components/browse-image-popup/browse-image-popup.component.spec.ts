@@ -120,7 +120,7 @@ describe('BrowseImagePopupComponent', () => {
     expect( component.uploadForm.reset).toHaveBeenCalled();
     expect( component.uploadForm.patchValue).toHaveBeenCalledWith({
       assetCaption: 'file1',
-      creator: 'undefined undefined',
+      creator: ' ',
       creatorId: undefined
     });
   });
