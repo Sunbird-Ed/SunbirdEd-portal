@@ -2,7 +2,7 @@ import { telemetry } from './telemetry-actions.service.spec.data';
 import { of, throwError } from 'rxjs';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CoreModule, PublicDataService } from '@sunbird/core';
+import { PublicDataService } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { TestBed } from '@angular/core/testing';
 
@@ -11,7 +11,7 @@ import { TelemetryActionsService } from './telemetry-actions.service';
 describe('TelemetryActionsService', () => {
   beforeEach(() => TestBed.configureTestingModule({
     imports: [SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule],
-    providers: [PublicDataService]
+    providers: []
   }));
 
   it('should be created', () => {
