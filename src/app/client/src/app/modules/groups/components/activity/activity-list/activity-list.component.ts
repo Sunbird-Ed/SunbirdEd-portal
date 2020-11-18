@@ -82,11 +82,11 @@ export class ActivityListComponent implements OnInit, OnDestroy {
       }
       this.addTelemetry('activity-card', [{id: _.get(event, 'data.identifier'), type: _.get(event, 'data.resourceType')}]);
       const options = { relativeTo: this.activateRoute, queryParams: { primaryCategory: _.get(event, 'data.primaryCategory'),
-      title: activityType, mimeType: _.get(event, 'data.mimeType')}};
+      title: activityType, mimeType: _.get(event, 'data.mimeType'), groupId: _.get(this.groupData, 'id')}};
       if (_.get(this.groupData, 'isAdmin')) {
         this.router.navigate([`${ACTIVITY_DETAILS}`, _.get(event, 'data.identifier')], options);
       } else {
-        this.playerService.playContent(_.get(event, 'data'));
+        this.playerService.playContent(_.get(event, 'data'), {groupId: _.get(this.groupData, 'id')});
       }
 
   }
@@ -105,12 +105,17 @@ export class ActivityListComponent implements OnInit, OnDestroy {
   }
 
   toggleModal(show = false) {
-    show ? this.addTelemetry('remove-activity-kebab-menu-btn') : this.addTelemetry('close-remove-activity-popup');
+    const activity = {id: _.get(this.selectedActivity, 'identifier'), type: _.get(this.selectedActivity, 'primaryCategory'),
+    ver: _.get(this.selectedActivity, 'pkgVersion') ? `${_.get(this.selectedActivity, 'pkgVersion')}` : '1.0'}
+    show ? this.addTelemetry('remove-activity-kebab-menu-btn', [], {}, activity) :
+    this.addTelemetry('close-remove-activity-popup', [], {}, activity);
     this.showModal = show;
   }
 
   removeActivity() {
-    this.addTelemetry('confirm-remove-activity-button');
+    this.addTelemetry('confirm-remove-activity-button', [], {},
+    {id: _.get(this.selectedActivity, 'identifier'), type: _.get(this.selectedActivity, 'primaryCategory'),
+    ver: _.get(this.selectedActivity, 'pkgVersion') ? `${_.get(this.selectedActivity, 'pkgVersion')}` : '1.0'});
     const activityIds = [this.selectedActivity.identifier];
     this.showLoader = true;
     this.groupService.removeActivities(this.groupData.id, { activityIds })
