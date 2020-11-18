@@ -5,7 +5,7 @@ import { Inject } from "typescript-ioc";
 import SystemSDK from "./SystemSDK";
 import NetworkSDK from "./NetworkSDK";
 import DeviceSDK from './DeviceSDK';
-import { HTTPService } from "@project-sunbird/ext-framework-server/services";
+import { HTTPService } from "../services/httpService";
 const FormData = require('form-data');
 import { ClassLogger } from '@project-sunbird/logger/decorator';
 
