@@ -7,7 +7,7 @@ import { WindowScrollService, SharedModule, ResourceService, NavigationHelperSer
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CollectionHierarchyGetMockResponse, collectionTree } from './collection-player.component.spec.data';
+import { CollectionHierarchyGetMockResponse, collectionTree, requiredProperties } from './collection-player.component.spec.data';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { configureTestSuite } from '@sunbird/test-util';
 import { PublicPlayerService } from '@sunbird/public';
@@ -236,5 +236,32 @@ describe('CollectionPlayerComponent', () => {
     spyOn(navigationHelperService, 'navigateToPreviousUrl');
     component.closeCollectionPlayer();
     expect(navigationHelperService.navigateToPreviousUrl).toHaveBeenCalledWith('/explore');
+  });
+
+  it ('should return only required properties', () => {
+    component.collectionData = collectionTree;
+
+    spyOn(component.userService, 'userOrgDetails$').and.returnValue(of( {}));
+    spyOn(component['utilService'], 'reduceTreeProps').and.returnValue(of(requiredProperties));
+    spyOn(component['toasterService'], 'success');
+    spyOn(component.copyContentService, 'copyAsCourse').and.returnValue(of(
+        {
+          'result': {
+            'identifier': 'do_2131423481877217281310',
+            'versionKey': '1604290550260',
+            'course_id': 'do_2131423481877217281310'
+          }
+        }
+    ));
+    component.createCourse();
+
+    component.userService.userOrgDetails$.subscribe(data => {
+      expect(component.showCopyLoader).toBeTruthy();
+      const collection: any = requiredProperties;
+      component.copyContentService.copyAsCourse(collection).subscribe((response) => {
+        expect(component.showCopyLoader).toBeFalsy();
+        expect(component['toasterService'].success).toHaveBeenCalledWith(resourceBundle.messages.smsg.m0042);
+      });
+    });
   });
 });

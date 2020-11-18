@@ -8,7 +8,7 @@ import * as _ from 'lodash-es';
 import {
   WindowScrollService, ILoaderMessage, PlayerConfig, ICollectionTreeOptions, NavigationHelperService,
   ToasterService, ResourceService, ContentData, ContentUtilsServiceService, ITelemetryShare, ConfigService,
-  ExternalUrlPreviewService, LayoutService
+  ExternalUrlPreviewService, LayoutService, UtilService
 } from '@sunbird/shared';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput } from '@sunbird/telemetry';
 import * as TreeModel from 'tree-model';
@@ -16,6 +16,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { PopupControlService } from '../../../../service/popup-control.service';
 import { PublicPlayerService } from '@sunbird/public';
 import { TocCardType, PlatformType } from '@project-sunbird/common-consumption';
+import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 
 @Component({
   selector: 'app-collection-player',
@@ -88,7 +89,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   playerServiceReference: any;
   TocCardType = TocCardType;
   PlatformType = PlatformType;
-  private tocId;
+  isGroupAdmin: boolean;
 
   constructor(public route: ActivatedRoute, public playerService: PlayerService,
     private windowScrollService: WindowScrollService, public router: Router, public navigationHelperService: NavigationHelperService,
@@ -98,7 +99,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     public popupControlService: PopupControlService, public navigationhelperService: NavigationHelperService,
     public externalUrlPreviewService: ExternalUrlPreviewService, public userService: UserService,
     public layoutService: LayoutService, public generaliseLabelService: GeneraliseLabelService,
-    public publicPlayerService: PublicPlayerService, public coursesService: CoursesService) {
+    public publicPlayerService: PublicPlayerService, public coursesService: CoursesService,
+    private utilService: UtilService) {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
     this.playerOption = { showContentRating: true };
@@ -115,9 +117,12 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     this.playerServiceReference = this.userService.loggedIn ? this.playerService : this.publicPlayerService;
     this.initLayout();
     this.dialCode = _.get(this.route, 'snapshot.queryParams.dialCode');
-    this.tocId = _.get(this.route, 'snapshot.params.collectionId');
     this.contentType = _.get(this.route, 'snapshot.queryParams.contentType');
     this.contentData = this.getContent();
+    CsGroupAddableBloc.instance.state$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      this.isGroupAdmin = !_.isEmpty(_.get(this.route.snapshot, 'queryParams.groupId')) && _.get(data.params, 'groupData.isAdmin');
+    });
+
   }
 
   initLayout() {
@@ -408,12 +413,15 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   closeCollectionPlayer() {
     if (this.dialCode) {
       this.router.navigate(['/get/dial/', this.dialCode]);
-    } else if (this.tocId) {
-      const navigateUrl = this.userService.loggedIn ? '/search/Library' : '/explore';
-      this.router.navigate([navigateUrl, 1], { queryParams: { key: this.tocId } });
     } else {
-      const url = this.userService.loggedIn ? '/resources' : '/explore';
-      this.navigationHelperService.navigateToPreviousUrl(url);
+      const { url, queryParams: { textbook = null } = {} } = this.navigationHelperService.getPreviousUrl();
+      if (url && ['/explore-course', '/learn'].some(val => url.startsWith(val)) && textbook) {
+        const navigateUrl = this.userService.loggedIn ? '/search/Library' : '/explore';
+        this.router.navigate([navigateUrl, 1], { queryParams: { key: textbook } });
+      } else {
+        let url = this.userService.loggedIn ? '/resources' : '/explore';
+        this.navigationHelperService.navigateToPreviousUrl(url);
+      }
     }
   }
 
@@ -456,14 +464,14 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
           this.coursesService.findEnrolledCourses(event.data.identifier);
 
         if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
-          this.playerService.playContent(event.data, {textbook: this.collectionData.identifier});
+          this.playerService.playContent(event.data, { textbook: this.collectionData.identifier });
         } else if (onGoingBatchCount === 1) { // play course if only one open batch is present
           event.data.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
-          this.playerService.playContent(event.data, {textbook: this.collectionData.identifier});
+          this.playerService.playContent(event.data, { textbook: this.collectionData.identifier });
         }
 
       } else {
-        this.publicPlayerService.playContent(event, {textbook: this.collectionData.identifier});
+        this.publicPlayerService.playContent(event, { textbook: this.collectionData.identifier });
       }
     } else {
       this.callinitPlayer(event);
@@ -588,9 +596,14 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
    * @description - This method handles the creation of course from a textbook (entire or selected units)
    */
   createCourse() {
+    let collection = _.assign({}, this.collectionData);
+    collection = this.utilService.reduceTreeProps(collection,
+      ['mimeType', 'visibility', 'identifier', 'selected', 'name', 'contentType', 'children',
+        'primaryCategory', 'additionalCategory', 'parent', 'code', 'framework', 'description']
+    );
     this.userService.userOrgDetails$.subscribe(() => {
       this.showCopyLoader = true;
-      this.copyContentService.copyAsCourse(this.collectionData).subscribe((response) => {
+      this.copyContentService.copyAsCourse(collection).subscribe((response) => {
         this.toasterService.success(this.resourceService.messages.smsg.m0042);
         this.showCopyLoader = false;
       }, (err) => {

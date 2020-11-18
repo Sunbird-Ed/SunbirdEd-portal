@@ -57,8 +57,20 @@ export class CertConfigModel {
 
     }
 
-    prepareCreateAssetRequest(rawFormValues) {
-        console.log(rawFormValues);
+    prepareCreateAssetRequest(rawFormValues, channel, certificate, images) {
+        const sign_1 = this.splitName(_.get(images, 'SIGN1.url'), rawFormValues, 'authoritySignature_0');
+        const signatoryList = [];
+        signatoryList.push(sign_1);
+
+        if (!_.isEmpty(images['SIGN2']) && _.get(images, 'SIGN2.name')) {
+            const sign_2 = this.splitName(_.get(images, 'SIGN2.url'), rawFormValues, 'authoritySignature_1');
+            signatoryList.push(sign_2);
+        }
+
+        let issuer = _.get(certificate, 'issuer');
+        if (typeof issuer === 'string') {
+            issuer = JSON.parse(issuer);
+        }
         const requestBody = {
             'request': {
                 'asset': {
@@ -68,21 +80,28 @@ export class CertConfigModel {
                     'license': 'CC BY 4.0',
                     'primaryCategory': 'Certificate Template',
                     // 'contentType': 'Asset',
-                    'issuer': {
-                        'name': _.get(rawFormValues, 'stateName'),
-                        'url': 'https://gcert.gujarat.gov.in/gcert/'
-                    },
-                    'signatoryList': [
-                        {
-                            'image': 'https://cdn.pixabay.com/photo/2014/11/09/08/06/signature-523237__340.jpg',
-                            'name': _.get(rawFormValues, 'authoritySignature'),
-                            'id': 'CEO',
-                            'designation': 'CEO'
-                        }
-                    ]
+                    'mediaType': 'image',
+                    'certType': 'cert template',
+                    'channel': channel,
+                    'issuer': issuer,
+                    'signatoryList': signatoryList
                 }
             }
         };
         return requestBody;
     }
+
+    splitName(imageUrl, sign, key) {
+        const name = _.get(sign , key);
+        const signValues = name.split(',');
+        const designation = signValues[1] || 'CEO';
+        const signatoryList = {
+            name: name,
+            image: imageUrl,
+            designation: designation,
+            id: `${designation}/CEO`
+        };
+        return signatoryList;
+    }
+
 }

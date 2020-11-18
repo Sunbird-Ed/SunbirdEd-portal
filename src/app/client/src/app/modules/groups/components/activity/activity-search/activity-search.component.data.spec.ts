@@ -38,6 +38,7 @@ export const activitySearchMockData = {
       'board': '',
       'identifier': 'LP_FT_9158412',
       'mimeType': 'application/vnd.ekstep.ecml-archive',
+      'primaryCategory': 'Explanation content',
       'action': {
         'onImage': {
           'eventName': 'onImage'
@@ -63,6 +64,7 @@ export const activitySearchMockData = {
       'contentType': 'Course',
       'topic': '',
       'subTopic': '',
+      'primaryCategory': 'Course',
       'metaData': {
         'identifier': 'LP_FT_9158412',
         'mimeType': 'application/vnd.ekstep.ecml-archive',
@@ -106,6 +108,7 @@ export const activitySearchMockData = {
       'board': '',
       'identifier': 'LP_FT_9158412',
       'mimeType': 'application/vnd.ekstep.content-collection',
+      'primaryCategory': 'eTextbook',
       'action': {
         'onImage': {
           'eventName': 'onImage'

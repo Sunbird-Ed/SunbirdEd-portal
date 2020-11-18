@@ -14,15 +14,15 @@ module.exports = function (app) {
         return require('url').parse(contentProxyUrl + req.originalUrl).path
     }
 
-    app.all('/api/content/v1/search', proxyObj());
+    // app.all('/api/content/v1/search', proxyObj());
 
-    app.all('/api/content/v1/create', proxyObj());
+    // app.all('/api/content/v1/create', proxyObj());
 
-    app.all('/api/content/v1/upload/:id', proxyObj());
+    // app.all('/api/content/v1/upload/:id', proxyObj());
 
-    app.all('/api/content/v1/read/:id', proxyObj());
+    // app.all('/api/content/v1/read/:id', proxyObj());
 
-    app.all('/api/asset/v1/upload/:id', proxyObj());
+    // app.all('/api/asset/v1/upload/:id', proxyObj());
 
     app.use('/api/*', proxy(contentProxyUrl, {
         proxyReqPathResolver: proxyReqPathResolverMethod

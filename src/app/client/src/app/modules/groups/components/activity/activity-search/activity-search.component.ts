@@ -54,6 +54,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
   public allTabData;
   public selectedFilters;
   public ADD_ACTIVITY_TO_GROUP = ADD_ACTIVITY_TO_GROUP;
+  private csGroupAddableBloc: CsGroupAddableBloc;
 
 
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
@@ -77,7 +78,9 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     private groupsService: GroupsService,
     public layoutService: LayoutService,
     public courseConsumptionService: CourseConsumptionService
-  ) { }
+  ) {
+    this.csGroupAddableBloc = CsGroupAddableBloc.instance;
+    }
 
   ngOnInit() {
     CsGroupAddableBloc.instance.state$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
@@ -281,6 +284,8 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
   }
 
   addActivity(activityCard) {
+    this.groupAddableBlocData.pageIds = [_.get(activityCard, 'primaryCategory').toLowerCase(), ADD_ACTIVITY_TO_GROUP];
+    this.csGroupAddableBloc.updateState(this.groupAddableBlocData);
     const cdata = [{ id: _.get(activityCard, 'identifier'), type: _.get(activityCard, 'contentType') }];
     this.addTelemetry('activity-course-card', cdata);
     const isTrackable = this.courseConsumptionService.isTrackableCollection(activityCard);
@@ -292,10 +297,12 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
 
     } else if (contentMimeType === 'application/vnd.ekstep.content-collection' && !isTrackable) {
 
-      this.router.navigate(['/resources/play/collection', _.get(activityCard, 'identifier')]);
+      this.router.navigate(['/resources/play/collection', _.get(activityCard, 'identifier')],
+      { queryParams: { groupId: _.get(this.groupData, 'id') } });
 
     } else {
-      this.router.navigate(['/resources/play/content', _.get(activityCard, 'identifier')]);
+      this.router.navigate(['/resources/play/content', _.get(activityCard, 'identifier')],
+      { queryParams: { groupId: _.get(this.groupData, 'id') } });
     }
   }
 

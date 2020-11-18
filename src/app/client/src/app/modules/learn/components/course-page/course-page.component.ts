@@ -505,12 +505,16 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
-  public playContent(event) {
+  public playContent(event, sectionType?) {
     if (!this.isUserLoggedIn()) {
       this.publicPlayerService.playContent(event);
     } else {
+      if (sectionType) {
+        event.section = this.resourceService.frmelmnts.lbl.mytrainings;
+        event.data.identifier = _.get(event, 'data.metaData.courseId');
+      }
       const { section, data } = event;
-      const { metaData } = data;
+      const metaData = this.isPageAssemble ? _.get(data, 'metaData') : data;
       if (section === this.resourceService.frmelmnts.lbl.mytrainings) { // play course if course is in My course section
         return this.playerService.playContent(metaData);
       }

@@ -37,6 +37,7 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
   enrollBatchIntractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
   enrollToBatch: any;
+  tocId = '';
   constructor(private browserCacheTtlService: BrowserCacheTtlService, private cacheService: CacheService,
     public resourceService: ResourceService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
     public router: Router, public userService: UserService, public telemetryService: TelemetryService,
@@ -46,6 +47,7 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.tocId = _.get(this.activatedRoute, 'snapshot.queryParams.textbook');
     this.courseConsumptionService.showJoinCourseModal
     .pipe(takeUntil(this.unsubscribe))
     .subscribe((data) => {
@@ -124,7 +126,7 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
         this.showLoginModal = true;
         this.enrollToBatch = batchId;
     } else {
-      this.router.navigate([this.baseUrl]);
+      this.router.navigate([this.baseUrl], { queryParams: { textbook: this.tocId || undefined } });
     }
   }
   setTelemetryData() {
@@ -148,5 +150,10 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
+  }
+
+  setUrlToCourse() {
+    const queryParam = this.tocId ? `?textbook=${this.tocId}` : '';
+    window.location.href = this.baseUrl + queryParam;
   }
 }

@@ -27,7 +27,7 @@
       <button class="sb-btn sb-btn-normal width-100 mr-4 sb-btn-outline-primary row" tabindex="0" [ngClass]="{'sb-btn-disabled': !disableResendOtp}"
         appTelemetryInteract [telemetryInteractCdata]="telemetryCdata" [disabled]="!disableResendOtp" [telemetryInteractEdata]="{id: 'resend-otp', type: 'click', pageid: 'verify-identifier', extra: { form: recoverAccountService.selectedAccountIdentifier} }"
         (click)="submitResendOTP()">
-        <div class="d-flex">
+        <div class="d-flex flex-jc-center">
           <span>{{resourceService?.frmelmnts?.lbl?.resendOTP}}</span> &nbsp;
           <span *ngIf="counter>0">( {{counter}} )</span>
         </div>

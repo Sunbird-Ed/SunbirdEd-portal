@@ -1,3 +1,4 @@
+import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -97,7 +98,8 @@ describe('ActivitySearchComponent', () => {
     });
     spyOn(component['frameworkService'], 'channelData$').and.returnValue(of({ channelData: { defaultFramework: '123456' } }));
     fixture.detectChanges();
-
+    component['csGroupAddableBloc'] = CsGroupAddableBloc.instance;
+    component.groupAddableBlocData = {};
   });
 
   it('should create', () => {
@@ -106,8 +108,11 @@ describe('ActivitySearchComponent', () => {
 
   it('should call ngOnInit', () => {
     spyOn(component, 'getFrameworkId');
+    spyOn(component['csGroupAddableBloc'], 'init');
     component.ngOnInit();
     expect(component.getFrameworkId).toHaveBeenCalled();
+    expect(component['csGroupAddableBloc'] instanceof CsGroupAddableBloc).toBeTruthy();
+    expect(component['csGroupAddableBloc'].init).not.toHaveBeenCalled();
   });
 
   it('should call toggleFilter', () => {
@@ -208,16 +213,19 @@ describe('ActivitySearchComponent', () => {
     component.groupData = { id: 'adfddf-sdsds-wewew-sds' };
     component.addActivity(event);
     expect(component.addTelemetry).toHaveBeenCalled();
-    expect(router.navigate).toHaveBeenCalledWith(['/resources/play/content', event.identifier]);
+    expect(router.navigate).toHaveBeenCalledWith(['/resources/play/content', event.identifier],
+    {queryParams: {groupId: 'adfddf-sdsds-wewew-sds'}});
   });
 
   it('should navigate to resource page if contentType is trackable and mime type is collection', () => {
     spyOn(component, 'addTelemetry');
+    spyOn(component['csGroupAddableBloc'], 'updateState');
     const router = TestBed.get(Router);
     const event = activitySearchMockData.eventDataForCourse;
     component.groupData = { id: 'adfddf-sdsds-wewew-sds' };
     component.addActivity(event);
     expect(component.addTelemetry).toHaveBeenCalled();
+    expect(component['csGroupAddableBloc'].updateState).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalledWith(['/learn/course', event.identifier], {queryParams: {
       groupId: component.groupData.id
     }});
@@ -230,7 +238,8 @@ describe('ActivitySearchComponent', () => {
     component.groupData = { id: 'adfddf-sdsds-wewew-sds' };
     component.addActivity(event);
     expect(component.addTelemetry).toHaveBeenCalled();
-    expect(router.navigate).toHaveBeenCalledWith(['/resources/play/collection', event.identifier]);
+    expect(router.navigate).toHaveBeenCalledWith(['/resources/play/collection', event.identifier],
+    {queryParams: {groupId: 'adfddf-sdsds-wewew-sds'}});
   });
 
   it('should navigate to content details page on click of "View activity" from hover card', () => {
