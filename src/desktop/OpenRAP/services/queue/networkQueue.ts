@@ -1,12 +1,12 @@
 import { Queue, QUEUE_TYPE } from './queue';
 import { logger } from "@project-sunbird/logger";
 import { Inject, Singleton } from "typescript-ioc";
-import { HTTPService } from "@project-sunbird/ext-framework-server/services";
+import { HTTPService } from "./../httpService";
 import { TelemetryInstance } from './../telemetry/telemetryInstance';
 import * as _ from "lodash";
 import uuid = require("uuid");
 import NetworkSDK from "./../../sdks/NetworkSDK";
-import { EventManager } from "@project-sunbird/ext-framework-server/managers/EventManager";
+import { EventManager } from "./../../managers/EventManager";
 import { retry, mergeMap, catchError } from 'rxjs/operators';
 import { of, throwError } from 'rxjs';
 import SystemSDK from "../../sdks/SystemSDK";
