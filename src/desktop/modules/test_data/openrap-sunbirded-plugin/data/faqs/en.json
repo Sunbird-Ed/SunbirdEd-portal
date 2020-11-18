@@ -1,0 +1,11 @@
+{
+    "faqs": [
+        {
+            "topic": "Offline content for en",
+            "description": "test data"
+        }
+    ],
+    "constants": {
+        "testConst": "testConst offline"
+    }
+}

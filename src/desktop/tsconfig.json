@@ -7,13 +7,16 @@
     "moduleResolution": "node",
     "declaration": true,
     "module": "commonjs",
-    "outDir": "./",
+    "outDir": "./app_dist",
     "target": "es6",
-    "baseUrl": ".",
+    "baseUrl": "./",
+    "allowJs": true,
     "paths": {
-      "OpenRAP/dist/api": ["OpenRAP/dist/api"],
-      "OpenRAP/dist/api/index": ["OpenRAP/dist/api/index"],
+      "@project-sunbird/OpenRAP/*": ["OpenRAP/dist/*"]
     }
   },
-  "exclude": ["node_modules", "*/**/*.spec.ts", "*.spec.ts", "temp", "client", "resourcebundles", "test", "OpenRAP"]
+  "include": ["modules", "main.ts"],
+  "exclude": ["node_modules", "*/**/*.spec.ts", "*.spec.ts", 
+    "temp", "client", "public", "openrap-sunbird-plugin",
+     "resourcebundles", "test", "OpenRAP", "modules/test_data/*.ts"]
 }
