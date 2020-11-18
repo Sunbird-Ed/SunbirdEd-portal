@@ -64,7 +64,7 @@ export class CertConfigModel {
         'designation' : this.splitName(_.get(rawFormValues , 'authoritySignature_0'))
         }];
 
-        if (!_.isEmpty(images['SIGN'])) {
+        if (!_.isEmpty(images['SIGN2']) && _.get(images, 'SIGN2.name')) {
         signatoryList.push({
             'image': _.get(images , 'SIGN2.url'),
             'name': _.get(rawFormValues , 'authoritySignature_1'),
@@ -98,7 +98,7 @@ export class CertConfigModel {
     splitName(name) {
         if (name) {
             const flag = name.includes(',');
-            return flag ? _.split(name, ',')[1] : name;
+            return flag ? _.trim(_.split(name, ',')[1]) : name;
         }
     }
 
