@@ -270,8 +270,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.questionScoreSubmitEvents.emit(event);
     }
   }
-  pdfEventHandler(event) {
-    if (event.edata.type === 'SHARE') {
+  eventHandler(event) {
+    if (_.get(event, 'edata.type') === 'SHARE') {
       this.contentUtilsServiceService.contentShareEvent.emit('open');
       this.mobileViewDisplay = 'none';
     }

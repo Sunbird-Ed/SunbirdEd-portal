@@ -29,12 +29,14 @@
         </svg>
     </div>
   </div>
-    <!-- <div > -->
-      <div id="pdfPlayer" class="contentViewerIframeShadow" [ngClass]="{'player-fullscreen content-full-video': isFullScreenView}">
-        <sunbird-pdf-player 
-        [playerConfig]="playerConfig" (playerEvent)="pdfEventHandler($event)"
-        (telemetryEvent)="generateContentReadEvent($event, true)"
-        ></sunbird-pdf-player>
+      <div class="contentViewerIframeShadow" [ngClass]="{'player-fullscreen content-full-video': isFullScreenView}">
+        <sunbird-pdf-player *ngIf="playerConfig.metadata.mimeType === 'application/pdf'" [playerConfig]="playerConfig"
+          (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)">
+        </sunbird-pdf-player>
+
+        <sunbird-video-player *ngIf="playerConfig.metadata.mimeType === 'video/mp4'" [playerConfig]="playerConfig"
+          (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)">
+        </sunbird-video-player>
       </div>
 </div>
 
@@ -47,10 +49,12 @@
 
 <div id="playerFullscreen" *ngIf="!showPlayIcon" class="player-fullscreen" [ngStyle]="{'display': mobileViewDisplay}"> 
   <img appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeButtonInteractEdata" (click)="closeFullscreen()" class="close-button" src="assets/images/close-Black.svg" alt="">
-  <sunbird-pdf-player 
-  [playerConfig]="playerConfig" (playerEvent)="pdfEventHandler($event)"
-  (telemetryEvent)="generateContentReadEvent($event, true)"
-  ></sunbird-pdf-player>
+  <sunbird-pdf-player *ngIf="playerConfig.metadata.mimeType === 'application/pdf'" [playerConfig]="playerConfig"
+    (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></sunbird-pdf-player>
+
+  <sunbird-video-player *ngIf="playerConfig.metadata.mimeType === 'video/mp4'" [playerConfig]="playerConfig"
+    (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)">
+  </sunbird-video-player>
 </div>
 </div>
 
