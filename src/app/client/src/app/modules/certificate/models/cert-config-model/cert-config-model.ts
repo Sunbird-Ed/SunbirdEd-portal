@@ -58,21 +58,15 @@ export class CertConfigModel {
     }
 
     prepareCreateAssetRequest(rawFormValues, channel, certificate, images) {
-        const signatoryList = [{
-        'image': _.get(images, 'SIGN1.url'),
-        'name': _.get(rawFormValues , 'authoritySignature_0'),
-        'designation' : this.splitName(_.get(rawFormValues , 'authoritySignature_0')) || 'CEO',
-        'id' : `${this.splitName(_.get(rawFormValues , 'authoritySignature_0'))}/CEO`
-        }];
+        const sign_1 = this.splitName(_.get(images, 'SIGN1.url'), rawFormValues, 'authoritySignature_0');
+        const signatoryList = [];
+        signatoryList.push(sign_1);
 
         if (!_.isEmpty(images['SIGN2']) && _.get(images, 'SIGN2.name')) {
-        signatoryList.push({
-            'image': _.get(images , 'SIGN2.url'),
-            'name': _.get(rawFormValues , 'authoritySignature_1'),
-            'designation' : this.splitName(_.get(rawFormValues , 'authoritySignature_1')) || 'CEO',
-            'id' : `${this.splitName(_.get(rawFormValues , 'authoritySignature_1'))}/CEO`
-        });
+            const sign_2 = this.splitName(_.get(images, 'SIGN2.url'), rawFormValues, 'authoritySignature_1');
+            signatoryList.push(sign_2);
         }
+
         let issuer = _.get(certificate, 'issuer');
         if (typeof issuer === 'string') {
             issuer = JSON.parse(issuer);
@@ -97,11 +91,17 @@ export class CertConfigModel {
         return requestBody;
     }
 
-    splitName(name) {
-        if (name) {
-            const flag = name.includes(',');
-            return flag ? _.trim(_.split(name, ',')[1]) : name;
-        }
+    splitName(imageUrl, sign, key) {
+        const name = _.get(sign , key);
+        const signValues = name.split(',');
+        const designation = signValues[1] || 'CEO';
+        const signatoryList = {
+            name: name,
+            image: imageUrl,
+            designation: designation,
+            id: `${designation}/CEO`
+        };
+        return signatoryList;
     }
 
 }
