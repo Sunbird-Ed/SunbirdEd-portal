@@ -7,7 +7,9 @@ import { ToasterService, ResourceService } from '@sunbird/shared';
 describe('ConnectionService', () => {
   const resourceMockData = {
     messages: {
-      fmsg: { m0097: 'Something went wrong' }
+      fmsg: { m0097: 'Something went wrong' },
+      stmsg: { desktop: { onlineStatus: 'You are online' } },
+      emsg: { desktop: { onlineStatus: 'You are offline' } }
     }
   };
   beforeEach(() => TestBed.configureTestingModule({
