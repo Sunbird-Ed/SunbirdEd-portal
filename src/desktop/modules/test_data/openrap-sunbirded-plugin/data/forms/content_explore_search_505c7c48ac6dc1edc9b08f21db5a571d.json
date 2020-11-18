@@ -1,0 +1,123 @@
+{
+    "id": "api.form.read",
+    "params": {
+        "resmsgid": "ffd49c3b-0f41-4afb-a3b7-5febe961c69b",
+        "msgid": "0dda8bfc-fba3-4e83-8b7a-fec7d2189922",
+        "status": "successful"
+    },
+    "responseCode": "OK",
+    "result": {
+        "form": {
+            "type": "content",
+            "subtype": "explore",
+            "action": "search",
+            "component": "*",
+            "framework": "*",
+            "data": {
+                "templateName": "defaultTemplate",
+                "action": "search",
+                "fields": [
+                    {
+                        "code": "board",
+                        "dataType": "text",
+                        "name": "Board/Syllabus",
+                        "label": "Board/Syllabus",
+                        "description": "Education Board/Syllabus",
+                        "editable": true,
+                        "inputType": "select",
+                        "required": false,
+                        "displayProperty": "Editable",
+                        "visible": true,
+                        "renderingHints": {
+                            "semanticColumnWidth": "three"
+                        },
+                        "index": 1
+                    },
+                    {
+                        "code": "medium",
+                        "dataType": "text",
+                        "name": "Medium",
+                        "label": "Medium",
+                        "description": "Medium of instruction",
+                        "editable": true,
+                        "inputType": "select",
+                        "required": false,
+                        "displayProperty": "Editable",
+                        "visible": true,
+                        "renderingHints": {
+                            "semanticColumnWidth": "three"
+                        },
+                        "index": 2
+                    },
+                    {
+                        "code": "gradeLevel",
+                        "dataType": "text",
+                        "name": "Class",
+                        "label": "Class",
+                        "description": "Grade",
+                        "editable": true,
+                        "inputType": "select",
+                        "required": false,
+                        "displayProperty": "Editable",
+                        "visible": true,
+                        "renderingHints": {
+                            "semanticColumnWidth": "three"
+                        },
+                        "index": 3
+                    },
+                    {
+                        "code": "subject",
+                        "dataType": "text",
+                        "name": "Subject",
+                        "label": "Subject",
+                        "description": "Subject of the Content to use to teach",
+                        "editable": true,
+                        "inputType": "select",
+                        "required": false,
+                        "displayProperty": "Editable",
+                        "visible": true,
+                        "renderingHints": {
+                            "semanticColumnWidth": "three"
+                        },
+                        "index": 4
+                    },
+                    {
+                        "code": "contentType",
+                        "dataType": "text",
+                        "name": "Content Types",
+                        "label": "Content Types",
+                        "description": "Content Types",
+                        "editable": true,
+                        "inputType": "select",
+                        "required": false,
+                        "displayProperty": "Editable",
+                        "visible": true,
+                        "range": [
+                            {
+                                "name": "TextBook"
+                            },
+                            {
+                                "name": "Collection"
+                            },
+                            {
+                                "name": "LessonPlan"
+                            },
+                            {
+                                "name": "Resource"
+                            }
+                        ],
+                        "renderingHints": {
+                            "semanticColumnWidth": "four"
+                        },
+                        "index": 5
+                    }
+                ]
+            },
+            "created_on": "2018-10-25T20:24:32.694Z",
+            "last_modified_on": "2018-12-28T09:11:12.965Z",
+            "rootOrgId": "*"
+        }
+    },
+    "ts": "2019-04-05T11:50:33.975Z",
+    "ver": "1.0"
+}

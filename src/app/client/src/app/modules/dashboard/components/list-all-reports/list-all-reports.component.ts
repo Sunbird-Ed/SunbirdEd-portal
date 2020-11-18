@@ -206,7 +206,7 @@ export class ListAllReportsComponent implements OnInit {
           }
         },
         {
-          title: 'Last Updated Date', data: 'reportgenerateddate',
+          title: 'Last Published Date', data: 'updatedon',
           render: (value) => {
             const date = moment(value);
             if (date.isValid()) {

@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService, PlayerService, CopyContentService, PermissionService } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -12,14 +12,14 @@ import { PopupControlService } from '../../../../service/popup-control.service';
 import { takeUntil, mergeMap } from 'rxjs/operators';
 import { Subject, of, throwError } from 'rxjs';
 import { PublicPlayerService } from '@sunbird/public';
-
+import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 @Component({
   selector: 'app-content-player',
   templateUrl: './content-player.component.html',
   styleUrls: ['./content-player.component.scss']
 })
 
-export class ContentPlayerComponent implements OnInit, AfterViewInit {
+export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy {
   telemetryImpression: IImpressionEventInput;
   objectInteract: IInteractEventObject;
   copyContentInteractEdata: IInteractEventEdata;
@@ -42,6 +42,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
   public dialCode: string;
   public unsubscribe$ = new Subject<void>();
   public objectRollup = {};
+  groupId: string;
 
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
@@ -68,6 +69,9 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
           l1: _.get(this.activatedRoute, 'snapshot.queryParams.l1Parent')
         };
       }
+      CsGroupAddableBloc.instance.state$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+        this.groupId = _.get(data, 'groupId') || _.get(this.activatedRoute.snapshot, 'queryParams.groupId');
+      });
       this.getContent();
     });
 
@@ -91,7 +95,8 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
   setTelemetryData() {
     this.telemetryImpression = {
       context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: this.groupId ? [{id: this.groupId, type: 'Group'}] : [],
       },
       object: {
         id: this.contentId,
@@ -206,5 +211,10 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit {
       type: param.contentType,
       ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
     }];
+  }
+  ngOnDestroy() {
+    if (CsGroupAddableBloc.instance.initialised) {
+      CsGroupAddableBloc.instance.dispose();
+    }
   }
 }

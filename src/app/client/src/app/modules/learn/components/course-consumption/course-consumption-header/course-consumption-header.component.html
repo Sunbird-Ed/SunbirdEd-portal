@@ -71,7 +71,7 @@
       <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4 certified-course">
         <div class="certified-course__btn" *ngIf="showAddGroup">
           <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
-          appAddToGroup [identifier]="courseHierarchy?.identifier" [pageId]="courseHierarchy?.contentType.toLowerCase()">
+          appAddToGroup [identifier]="courseHierarchy?.identifier" [pageId]="courseHierarchy?.primaryCategory.toLowerCase()">
           {{resourceService?.frmelmnts?.lbl?.AddtoGroup}}</button>
         </div>
         <!-- join course, start learning, continue learning, view dashboard buttons -->  
@@ -120,45 +120,7 @@
   <div class="ui text centered inline loader mt-40">{{resourceService.frmelmnts.lbl.copycontent}}</div>
 </div>
 
-<sui-modal appBodyScroll class="sb-modal" (dismissed)="modal.deny(); showChangeUserNamePopup = false;" #modal
-  *ngIf="showChangeUserNamePopup">
-
-    <!--Header-->
-    <div class="sb-modal-header">
-      <span>Profile name confirmation</span>
-    </div>
-    <!--/Header-->
-
-    <!--Content-->
-    <div class="sb-modal-content">
-      <div class="d-flex flex-jc-center">
-        <img src="./assets/images/profile-certificate.svg" alt="">
-      </div>
-      <div class="pt-16 profile-section-content">
-        <div class="profile-info d-flex flex-dc">
-          <span class="text-center">Profile name:</span>
-          <span class="text-center font-weight-bold pt-8">Sharan 1991 <img src="./assets/images/edit-icon.svg" alt="edit-icon" class="cursor-pointer"></span>
-        </div>
-        <div class="profile-info-para mt-16 text-center">
-          <p>
-            This will be your DIKSHA profile name in the course certificates, please make sure your name is correct. 
-          </p>
-          <p class="mb-0 fnormal font-weight-normal">
-            <input class="mr-8 cursor-pointer" type="checkbox"> I understand, don't show this message again
-          </p>
-        </div>
-      </div>
-    </div>
-    <!--/Content-->
-
-    <!--Actions-->
-    <div class="sb-modal-actions text-center">
-      <button class="sb-btn sb-btn-normal sb-btn-primary" type="button"> {{resourceService.frmelmnts.lbl.continue}} </button>
-    </div>
-    <!-- pass "sb-btn-disabled" class for button disabled -->
-    <!--/Actions-->
-
-</sui-modal>
+<app-certificate-name-update-popup [showProfileUpdatePopup]="showProfileUpdatePopup"></app-certificate-name-update-popup>
 
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal"
   (close)="closeSharePopup('close-share-link-popup')">

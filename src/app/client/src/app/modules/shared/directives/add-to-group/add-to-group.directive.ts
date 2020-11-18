@@ -53,6 +53,7 @@ export class AddToGroupDirective implements OnInit {
     (this.ref.nativeElement as HTMLButtonElement).style.display = 'none';
     if (CsGroupAddableBloc.instance.initialised) {
       CsGroupAddableBloc.instance.state$.pipe(
+        takeUntil(this.unsubscribe$),
         filter((state) => state && state.pageIds.includes(this.pageId))
       ).subscribe(data => {
         (this.ref.nativeElement as HTMLButtonElement).style.display = data ? 'block' : 'none';
@@ -97,7 +98,12 @@ export class AddToGroupDirective implements OnInit {
         cdata: [
         {
           type: 'Group',
-          id: _.get(this.activatedRoute.snapshot, 'params.groupId') || _.get(this.activatedRoute.snapshot, 'queryParams.groupId')
+          id: _.get(this.activatedRoute.snapshot, 'params.groupId') || _.get(this.activatedRoute.snapshot, 'queryParams.groupId') ||
+          _.get(this.groupAddableBlocData, 'groupId')
+        },
+        {
+          type: 'Activity',
+          id: this.identifier,
         }
       ]
       },

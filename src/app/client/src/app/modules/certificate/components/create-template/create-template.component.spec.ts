@@ -22,6 +22,12 @@ describe('CreateTemplateComponent', () => {
 
   const resourceBundle = {
     frmelmnts: {
+      cert : {
+        lbl :
+        {
+          certAddSuccess : 'Template created successfully'
+        }
+      }
   },
   messages: {
 
@@ -138,6 +144,7 @@ class RouterStub {
       authoritySignature2: new FormControl('Sudip Mukherjee'),
       allowPermission: new FormControl(true)
     });
+    component.selectedCertificate = {issuer: `{}`};
     spyOn(component, 'uploadTemplate');
     spyOn(component, 'previewCertificate').and.stub();
     spyOn(new CertConfigModel(), 'prepareCreateAssetRequest').and.stub();
@@ -160,6 +167,7 @@ class RouterStub {
       allowPermission: new FormControl(true)
     });
     spyOn(component, 'uploadTemplate');
+    component.selectedCertificate = {issuer: `{}`};
     spyOn(component, 'previewCertificate').and.stub();
     spyOn(toasterService, 'error').and.stub();
     spyOn(new CertConfigModel(), 'prepareCreateAssetRequest').and.stub();

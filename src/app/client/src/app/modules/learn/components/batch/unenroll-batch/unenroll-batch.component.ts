@@ -108,7 +108,9 @@ export class UnEnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit 
       });
   }
   goBackToCoursePage() {
-    this.router.navigate(['/learn/course', this.batchDetails.courseId]).then(() => {
+    const textbook = _.get(this.activatedRoute, 'snapshot.queryParams.textbook');
+    const queryParams = textbook ? { textbook } : {};
+    this.router.navigate(['/learn/course', this.batchDetails.courseId], { queryParams }).then(() => {
       window.location.reload();
     });
   }

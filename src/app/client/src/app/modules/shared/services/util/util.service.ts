@@ -65,7 +65,8 @@ export class UtilService {
       hoverData: data.hoverData,
       board: data.board || '',
       identifier: data.identifier,
-      mimeType: data.mimeType
+      mimeType: data.mimeType,
+      primaryCategory: data.primaryCategory
 
     };
     if (data.desktopAppMetadata) {

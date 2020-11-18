@@ -1,0 +1,11 @@
+{
+    "id": "org.sunbird.iframeEvent",
+    "ver": "1.0",
+    "author": "Manjunath Davanam",
+    "type": "widget",
+    "title": "eventreader",
+    "description": "Reading Telemetry event from the canvas",
+    "renderer": {
+        "main": "renderer/plugin.js"
+    }
+}

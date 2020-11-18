@@ -228,7 +228,7 @@
           {{resourceService.frmelmnts?.lbl?.useInstanceAs | interpolate:'{instance}': instance}}
         </div>
 
-        <div (click)="toggleSideMenu(false);navigate('/profile/create-managed-user')" class="add-user mb-16"
+        <div appOnlineOnly (click)="toggleSideMenu(false);navigate('/profile/create-managed-user')" class="add-user mb-16"
           *ngIf="totalUsersCount <1">
           <div class="add-user__icon">
             <img src="assets/images/user-circle.svg" alt="Add user">
@@ -300,7 +300,7 @@
             {{resourceService.frmelmnts?.lbl?.manage}}
           </li>
 
-          <li class="list-item" (click)="toggleSideMenu(false)"
+          <li class="list-item" appOnlineOnly (click)="toggleSideMenu(false)"
             [class.active]="router.isActive(routerLinks?.groups)" *ngIf="!router.isActive('', true)"
             [routerLink]="[navigateToGroups()]" appTelemetryInteract [telemetryInteractEdata]="myGroupIntractEData">
             <i class="icon-svg icon-svg--sm icon-groups mr-8"><svg class="icon icon-svg--primary">
@@ -353,7 +353,7 @@
                                 (closeSideMenu)="toggleSideMenu(false)"></app-content-type>
             </div>
 
-            <li class="list-item" (click)="toggleSideMenu(false)" [class.active]="router.isActive(routerLinks?.explore)"
+            <li appOnlineOnly class="list-item" appOnlineOnly (click)="toggleSideMenu(false)" [class.active]="router.isActive(routerLinks?.explore)"
               *ngIf="!router.isActive('', true)" [routerLink]="[navigateToGroups()]" appTelemetryInteract
               [telemetryInteractEdata]="myGroupIntractEData">
               <i class="icon-svg icon-svg--sm icon-groups mr-8"><svg class="icon icon-svg--primary">
@@ -369,11 +369,17 @@
               <span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToJoyLayout}}</span>
               <span class="group__type mx-8">New</span>
             </li>
-            <li class="list-item" (click)="toggleSideMenu(false);manageLocation()">
+            <li class="list-item" (click)="toggleSideMenu(false);manageLocation()"s>
               <i class="icon-svg icon-svg--sm icon-manage mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#manage"></use>
               </svg></i>
               <span>{{resourceService?.frmelmnts?.lbl?.manageLocation}}</span>
+            </li>
+            <li class="list-item" (click)="toggleSideMenu(false);" routerLink="/desktop/telemetry">
+              <i class="icon-svg icon-svg--sm icon-manage mr-8"><svg class="icon icon-svg--primary">
+                <use xlink:href="./assets/images/sprite.svg#manage"></use>
+              </svg></i>
+              <span>{{resourceService?.frmelmnts?.lbl?.desktop?.syncTelemetry}}</span>
             </li>
             <li class="list-item" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata"
              (click)="toggleSideMenu(false);navigate('/faq')">
@@ -384,7 +390,7 @@
           </li>
             <li class="list-item p-0" (click)="toggleSideMenu(false)" appTelemetryInteract
               [telemetryInteractEdata]="signInIntractEdata">
-              <a href={{hrefPath}} class="d-flex flex-ai-center list-item-a">
+              <a appOnlineOnly href={{hrefPath}} class="d-flex flex-ai-center list-item-a">
                 <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
                     <use xlink:href="./assets/images/sprite.svg#login"></use>
                   </svg></i>

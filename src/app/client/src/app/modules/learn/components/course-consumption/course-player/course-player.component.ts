@@ -56,7 +56,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public collectionTreeOptions: ICollectionTreeOptions;
   public unsubscribe = new Subject<void>();
   public showJoinTrainingModal = false;
-  telemetryCdata: Array<{}>;
+  telemetryCdata: Array<{}> = [];
   pageId: string;
   cardType: TocCardType = TocCardType.COURSE;
   hasPreviewPermission = false;
@@ -79,12 +79,15 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   popupMode: string;
   createdBatchId: string;
   courseMentor = false;
+  progressToDisplay = 0;
   public todayDate = dayjs(new Date()).format('YYYY-MM-DD');
   public batchMessage: any;
   showDataSettingSection = false;
 
   @ViewChild('joinTrainingModal') joinTrainingModal;
   showJoinModal = false;
+  tocId;
+  groupId;
   constructor(
     public activatedRoute: ActivatedRoute,
     private configService: ConfigService,
@@ -129,7 +132,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
         if (this.activatedRoute.snapshot.queryParams.showCourseCompleteMessage === 'true') {
           this.showCourseCompleteMessage = this.progress >= 100 ? true : false;
-          this.router.navigate(['.'], { relativeTo: this.activatedRoute, queryParams: {}, replaceUrl: true });
+          const queryParams = this.tocId ? { textbook: this.tocId } : {};
+          this.router.navigate(['.'], { relativeTo: this.activatedRoute, queryParams, replaceUrl: true });
         }
       });
     this.courseConsumptionService.updateContentConsumedStatus
@@ -157,6 +161,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribe))
     .subscribe(response => {
       this.addToGroup = Boolean(response.groupId);
+      this.groupId = _.get(response, 'groupId');
+      this.tocId = response.textbook || undefined;
     });
 
     this.courseConsumptionService.updateContentState
@@ -306,6 +312,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.courseProgressService.getContentState(req)
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(res => {
+        this.progressToDisplay = Math.floor((res.completedCount / this.courseHierarchy.leafNodesCount) * 100);
         this.contentStatus = res.content || [];
         this.calculateProgress();
       },
@@ -320,17 +327,26 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     /* istanbul ignore else */
     if (!this.addToGroup) {
       this.logTelemetry(id, event.data);
-      /* istanbul ignore else */
+    } else {
+      this.logTelemetry('play-content-group', event.data);
+    }
+
+          /* istanbul ignore else */
       if (!_.isEmpty(event.event)) {
         this.navigateToPlayerPage(collectionUnit, event);
       }
-    }
   }
 
   private setTelemetryStartEndData() {
     this.telemetryCdata = [{ 'type': 'Course', 'id': this.courseId }];
     if (this.batchId) {
       this.telemetryCdata.push({ id: this.batchId, type: 'CourseBatch' });
+    }
+    if (this.groupId && !_.find(this.telemetryCdata, {id: this.groupId})) {
+      this.telemetryCdata.push({
+        id: this.groupId,
+        type: 'Group'
+      });
     }
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
     this.telemetryCourseStart = {
@@ -381,6 +397,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   private setTelemetryCourseImpression() {
+    if (this.groupId && !_.find(this.telemetryCdata, {id: this.groupId})) {
+      this.telemetryCdata.push({
+        id: this.groupId,
+        type: 'Group'
+      });
+    }
     this.telemetryCourseImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env,
@@ -422,6 +444,13 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       const navigationExtras: NavigationExtras = {
         queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.courseHierarchy.name }
       };
+      if (this.tocId) {
+        navigationExtras.queryParams['textbook'] = this.tocId;
+      }
+
+      if (this.groupId) {
+        navigationExtras.queryParams['groupId'] = this.groupId;
+      }
 
       if (event && !_.isEmpty(event.event)) {
         navigationExtras.queryParams.selectedContent = event.data.identifier;
@@ -535,7 +564,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       },
       edata: {
         id: id,
-        type: 'click',
+        type: 'CLICK',
         pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'course-details',
       },
       object: {
@@ -545,8 +574,15 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         rollup: this.courseConsumptionService.getRollUp(objectRollUp) || {}
       }
     };
+    if (this.groupId && !_.find(this.telemetryCdata, {id: this.groupId})) {
+      interactData.context.cdata.push({
+        id: this.groupId,
+        type: 'Group'
+      });
+    }
     this.telemetryService.interact(interactData);
   }
+
 
   getAllBatchDetails(event) {
     this.courseConsumptionService.getAllOpenBatches(event);
@@ -585,6 +621,13 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         rollup: { l1: this.courseId }
       }
     };
+
+    if (this.groupId && !_.find(this.telemetryCdata, {id: this.groupId})) {
+      interactData.context.cdata.push({
+        id: this.groupId,
+        type: 'Group'
+      });
+    }
     this.telemetryService.interact(interactData);
   }
 
