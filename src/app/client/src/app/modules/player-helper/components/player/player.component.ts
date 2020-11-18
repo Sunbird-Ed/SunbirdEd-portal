@@ -52,6 +52,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   public unsubscribe = new Subject<void>();
   public showNewPlayer = false;
   mobileViewDisplay = 'block';
+  newPlayerMimeTypes = ['video/mp4', 'application/pdf'];
 
   /**
  * Dom element reference of contentRatingModal
@@ -144,8 +145,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     if (this.playerConfig) {
       this.playerOverlayImage = this.overlayImagePath ? this.overlayImagePath : _.get(this.playerConfig, 'metadata.appIcon');
       if (this.playerLoaded) {
-        if (this.playerConfig.metadata.mimeType === 'application/pdf') {
-          this.loadPDFPlayer();
+        if (_.includes(this.newPlayerMimeTypes, this.playerConfig.metadata.mimeType)) {
+          this.getPlayerVersions();
         } else {
           const playerElement = this.contentIframe.nativeElement;
           playerElement.contentWindow.initializePreview(this.playerConfig);
@@ -198,24 +199,24 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       };
     }, 0);
   }
-  /**
-   * Initializes player with given config and emits player telemetry events
-   * Emits event when content starts playing and end event when content was played/read completely
-   */
-  loadPDFPlayer() {
+
+  getPlayerVersions() {
     const formReadInputParams = {
       formType: 'content',
       formAction: 'play',
-      contentType: 'pdf'
+      contentType: 'player'
     };
     this.formService.getFormConfig(formReadInputParams).subscribe(
       (data: any) => {
-       if (_.get(data, 'version') === 2) {
-          this.playerLoaded = false;
-          this.loadNewPlayer();
-       } else {
-         this.loadOldPlayer();
-       }
+        const playerType = ['video-player', 'pdf-player'];
+        _.forEach(data, (value) => {
+          if (_.includes(playerType, _.get(value, 'type')) && _.get(value, 'version') === 2) {
+            this.playerLoaded = false;
+            this.loadNewPlayer();
+         } else {
+           this.loadOldPlayer();
+         }
+        });
       },
       (error) => {
         this.loadOldPlayer();
@@ -224,8 +225,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   loadPlayer() {
-    if (this.playerConfig.metadata.mimeType === 'application/pdf') {
-      this.loadPDFPlayer();
+    if (_.includes(this.newPlayerMimeTypes, this.playerConfig.metadata.mimeType)) {
+      this.getPlayerVersions();
     } else {
       this.loadOldPlayer();
     }
