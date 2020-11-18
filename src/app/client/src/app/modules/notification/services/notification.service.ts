@@ -15,7 +15,7 @@ export class NotificationService {
   };
   constructor(
     @Inject('CS_USER_SERVICE') private csUserService: CsUserService,
-    public userService: UserService,
+    private userService: UserService,
     private toasterService: ToasterService
   ) { }
 
@@ -29,13 +29,9 @@ export class NotificationService {
     ).toPromise().then();
   }
 
-  deleteNotification(notificationId) {
-    this.csUserService.deleteUserFeedEntry(
+  async deleteNotification(notificationId) {
+    await this.csUserService.deleteUserFeedEntry(
       this.userService.userid, notificationId, UserFeedCategory.NOTIFICATION, this.config
-    ).toPromise()
-      .then()
-      .catch(e => {
-        this.toasterService.error('Something went wrong, please try again later');
-      });
+    ).toPromise();
   }
 }

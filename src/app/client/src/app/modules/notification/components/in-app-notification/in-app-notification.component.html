@@ -1,8 +1,8 @@
-<div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
+<div *ngIf="notificationCount" class="ui dropdown right top pointing" id="dropdown-menu-list-header">
   <div class="notification-bell d-flex flex-ai-center flex-jc-center" name="Guest" *ngIf='!userProfile' (click)="toggleInAppNotifications()">
     <img src="./assets/images/notification.svg" alt="In App Notification">
   </div>
-  <div class="notification-count">2</div>
+  <div class="notification-count">{{notificationCount}}</div>
 </div>
 <sui-modal
   [mustScroll]="true" 
@@ -15,7 +15,7 @@
   *ngIf="showNotificationModel">
   <div>
     <sb-in-app-notification
-    [notificationList]="notificationList$"
+    [notificationList]="notificationList"
     (notificationClick)="notificationHandler($event)"
     (deleteNotificationClick)="deleteNotificationHandler($event)"
     (clearAllClick)="clearAllNotifationsHandler($event)"
