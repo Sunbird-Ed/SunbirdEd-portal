@@ -26,7 +26,7 @@ describe('CertificateNameUpdatePopupComponent', () => {
       }
   },
   messages: {
-    fmsg: { m0085: 'profile update error' }
+    fmsg: { m0085: 'profile update error.' }
   }
 };
 
