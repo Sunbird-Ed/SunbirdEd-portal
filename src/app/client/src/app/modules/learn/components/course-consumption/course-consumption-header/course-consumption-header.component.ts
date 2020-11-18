@@ -26,6 +26,10 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
 
   sharelinkModal: boolean;
   showProfileUpdatePopup = false;
+  profileInfo: {
+    firstName: string,
+    lastName: string
+  };
   /**
    * contains link that can be shared
    */
@@ -85,6 +89,11 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     }
     this.isTrackable = this.courseConsumptionService.isTrackableCollection(this.courseHierarchy);
     this.viewDashboard = this.courseConsumptionService.canViewDashboard(this.courseHierarchy);
+
+    this.profileInfo = {
+      firstName: this.userService.userProfile.firstName,
+      lastName: this.userService.userProfile.lastName
+    };
 
     observableCombineLatest(this.activatedRoute.firstChild.params, this.activatedRoute.firstChild.queryParams,
       (params, queryParams) => {

@@ -10,12 +10,14 @@ import { ProfileService } from '@sunbird/profile';
   styleUrls: ['./certificate-name-update-popup.component.scss']
 })
 export class CertificateNameUpdatePopupComponent implements OnInit {
+  @Input() showProfileUpdatePopup;
+  @Input() profileInfo;
   @ViewChild('modal') modal;
   @Output() close = new EventEmitter();
 
   disableContinueBtn = false;
-  certificateNameChecked = false;
   isNameEditable = false;
+  isLastNameEditable = false;
   instance: string;
   public learner: LearnerService;
 
@@ -31,6 +33,8 @@ export class CertificateNameUpdatePopupComponent implements OnInit {
 
   onClickCheckbox(tncChecked) {
     this.disableContinueBtn = !tncChecked;
+    this.isNameEditable = false;
+    this.isLastNameEditable = false;
   }
 
   closePopup() {
@@ -42,7 +46,10 @@ export class CertificateNameUpdatePopupComponent implements OnInit {
    * This method used to submit profile Update
    */
   updateProfileName() {
-    const data = { firstName: _.trim(this.userService.userProfile.firstName) };
+    const data = {
+      firstName: _.trim(this.profileInfo.firstName),
+      lastName: _.trim(this.profileInfo.lastName)
+    };
     this.disableContinueBtn = true;
     localStorage.setItem('isCertificateNameUpdated', 'true');
 
