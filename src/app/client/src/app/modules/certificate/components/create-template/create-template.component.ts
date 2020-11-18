@@ -167,8 +167,10 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     this.uploadCertificateService.storeAsset(base64Url, identifier).subscribe(response => {
       this.toasterService.success(_.get(this.resourceService, 'frmelmnts.cert.lbl.certAddSuccess'));
       const templateIdentifier = {'identifier': _.get(response , 'result.identifier')};
-      this.uploadCertificateService.certificate.next(templateIdentifier);
-      this.navigationHelperService.navigateToLastUrl();
+      setTimeout(() => {
+        this.uploadCertificateService.certificate.next(templateIdentifier);
+        this.navigationHelperService.navigateToLastUrl();
+      }, 3000);
     }, error => {
       this.toasterService.error('Something went wrong, please try again later');
       console.log('error', error);
