@@ -549,10 +549,10 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@^3.4.3":
-  version "3.4.4"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.4.4.tgz#9a68a8225e32205a4705b702dcfc432f2d321746"
-  integrity sha512-DpOmM88dXmRbW7n5yZuwURsvEwjs9gUpafcMtbUchClX+MEwhSehB8i+Le16+Aa7fyClL6BK2DyPMVoEuTF3Uw==
+"@project-sunbird/client-services@^3.4.7":
+  version "3.4.10"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.4.10.tgz#000a9b707c9b43eb8aefdfe845cbd8342cd20e26"
+  integrity sha512-mL37wqzAOI01kJHA9pCAnh6yzCQsKVpRwE/qspYi5VclRvLV2hCjBdCLmVexFT8+D52k2W8wvwA5jr4nWzwnww==
   dependencies:
     "@project-sunbird/telemetry-sdk" "0.0.26"
     class-transformer "^0.3.1"
@@ -561,10 +561,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption@^3.4.3":
-  version "3.4.3"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.4.3.tgz#43600d8e727c92d42b4524ff2af0a8a65dede7b7"
-  integrity sha512-livhqSSynHL6tsbk/FbaM66YfId5ZJai4Qc+ly/KgDvViVYC4S2ASzGEMc1adtU37fktoh0wPI2/qfrWX7yi8Q==
+"@project-sunbird/common-consumption@^3.4.4":
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.5.0.tgz#2d8cbc34f7f90d0d427747ac01c37ac205df869d"
+  integrity sha512-jn30W2QqnH7aK84bX8RdPZCHyRZnAt9PuT2FOFgxh9f7/wDxdVu/RIJFr4IG1EjYsuh117CXr6fv1rn2QgzaKw==
   dependencies:
     tslib "^1.9.0"
 
@@ -573,18 +573,18 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.6.tgz#15a88937fb643d5eb33a81c8d28ece00b56d5aa0"
   integrity sha512-rK87rHdagadIS7UrWju7HDolIfWlO5CbK+tIJrEApO+QPMi+k8KuWoLc8MxEprrsJxUt6r44O4uGiO0hgI5plA==
 
-"@project-sunbird/sunbird-pdf-player@0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-pdf-player/-/sunbird-pdf-player-0.0.4.tgz#b666c31b9394ed565b267859c0e3ff2edb514cf3"
-  integrity sha512-fesH1ocxX8RTqpzZF1u/4JDGRnYRqSlU80SvInhRpfa2FOBvLNVtIJnuJtv7YdMvsCJp4UOUtg+mIZjkbayggw==
+"@project-sunbird/sunbird-pdf-player@0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-pdf-player/-/sunbird-pdf-player-0.0.8.tgz#3571cca2506daad854cfc5b40b688596f093c620"
+  integrity sha512-/XqbemozSMc6sjGxxYK3ZGMNf26Tepum3UGQITEc60IIDvZe2sC0+NDgRaC14HYXUAA2FLXmbQAEESpnqVB0Zw==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk" "0.0.4"
+    "@project-sunbird/sunbird-player-sdk" "0.0.6"
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-player-sdk@0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk/-/sunbird-player-sdk-0.0.4.tgz#5447b8adbc69258837534c2d5ca662787d0d46a4"
-  integrity sha512-inZPdtvODs1RGwxL/PmqsDLVD9/bPQo1+seVya2BnkLbHId+bT491WQXNEsP3Iu3VchmKGD17QqkXOenlOSABw==
+"@project-sunbird/sunbird-player-sdk@0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk/-/sunbird-player-sdk-0.0.6.tgz#3826401d755fac17033f5e8ab9370e9c4656701a"
+  integrity sha512-I14SHg+uD+b9GLZ/88OfHXndmf6259/eLtYRiiKqqqbwIidEVfRJ8QxkBocgick+4FzzPoL4A/6IWagE5RAFgA==
   dependencies:
     tslib "^1.9.0"
 
