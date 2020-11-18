@@ -181,10 +181,11 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       tap((certTemplateData) => {
         const templatList = _.get(certTemplateData, 'result.content');
         this.certTemplateList = templatList;
-        this.selectedTemplate = templatList.find(templat => this.templateIdentifier && (templat.identifier === this.templateIdentifier));
-        if (this.selectedTemplate) {
-          _.remove(this.certTemplateList, (cert) => _.get(cert, 'identifier') === _.get(this.selectedTemplate , 'identifier'));
-          this.certTemplateList.unshift(this.selectedTemplate);
+        const templateData = templatList.find(templat => this.templateIdentifier && (templat.identifier === this.templateIdentifier));
+        if (templateData) {
+          _.remove(this.certTemplateList, (cert) => _.get(cert, 'identifier') === _.get(templateData , 'identifier'));
+          this.certTemplateList.unshift(templateData);
+          this.selectedTemplate = templateData;
         }
       }),
       catchError(error => {
@@ -317,6 +318,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   processCertificateDetails(certTemplateDetails) {
     const templateData = _.pick(_.get(certTemplateDetails, Object.keys(certTemplateDetails)), ['criteria', 'previewUrl', 'artifactUrl', 'identifier', 'data']);
     this.templateIdentifier = _.get(templateData, 'identifier');
+    this.selectedTemplate = {'name' : _.get(templateData, 'identifier'), 'previewUrl': _.get(templateData, 'previewUrl')};
     if (!_.isEmpty(this.newTemplateIdentifier)) {
       this.templateIdentifier = this.newTemplateIdentifier;
     }
