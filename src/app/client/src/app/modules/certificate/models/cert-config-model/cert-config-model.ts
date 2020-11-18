@@ -61,12 +61,14 @@ export class CertConfigModel {
         const signatoryList = [{
         'image': _.get(images, 'SIGN1.url'),
         'name': _.get(rawFormValues , 'authoritySignature_0'),
+        'designation' : this.splitName(_.get(rawFormValues , 'authoritySignature_0'))
         }];
 
         if (!_.isEmpty(images['SIGN'])) {
         signatoryList.push({
             'image': _.get(images , 'SIGN2.url'),
             'name': _.get(rawFormValues , 'authoritySignature_1'),
+            'designation' : this.splitName(_.get(rawFormValues , 'authoritySignature_1'))
         });
         }
         let issuer = _.get(certificate, 'issuer');
@@ -92,4 +94,12 @@ export class CertConfigModel {
         };
         return requestBody;
     }
+
+    splitName(name) {
+        if (name) {
+            const flag = name.includes(',');
+            return flag ? _.split(name, ',')[1] : name;
+        }
+    }
+
 }
