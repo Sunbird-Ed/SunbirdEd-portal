@@ -81,6 +81,8 @@ export class BrowseImagePopupComponent implements OnInit {
         'creator': userName,
         'creatorId': _.get(this.userService, 'userProfile.id')
       });
+    } else {
+        alert(_.get(this.resourceService, 'frmelmnts.cert.lbl.imageErrorMsg'));
     }
   }
 
