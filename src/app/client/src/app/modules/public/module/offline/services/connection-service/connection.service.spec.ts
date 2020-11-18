@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { ConnectionService } from './connection.service';
-import { of as observableOf } from 'rxjs';
+import { of as observableOf, of } from 'rxjs';
 import { ToasterService, ResourceService } from '@sunbird/shared';
 
 describe('ConnectionService', () => {
@@ -34,5 +34,23 @@ describe('ConnectionService', () => {
     service.monitor().subscribe(connectionMonitor => {
       expect(connectionMonitor).toBe(mockConnectionStatus);
     });
+  });
+
+  it('should call monitor', () => {
+    const service: ConnectionService = TestBed.get(ConnectionService);
+    service['connectionMonitor'] = of(true);
+    const monitor = service.monitor();
+    monitor.subscribe((data) => {
+      expect(data).toBe(true);
+    });
+  });
+
+  it('should call notifyNetworkChange', () => {
+    const service: ConnectionService = TestBed.get(ConnectionService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'info');
+    service['connectionMonitor'] = of(true);
+    service.notifyNetworkChange();
+    expect(toasterService.info).toHaveBeenCalledWith('You are online');
   });
 });
