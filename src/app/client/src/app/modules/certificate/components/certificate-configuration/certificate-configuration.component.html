@@ -206,15 +206,15 @@
             <div class="select-template-container mb-16">
                <div class="d-flex flex-ai-center text-left flex-jc-space-between">
                <label class="certificates-label">{{resourceService?.frmelmnts?.cert?.lbl?.templates}}</label>
-               <button class="add-new-template-btn sb-btn sb-btn-normal sb-btn-outline-primary sb-left-icon-btn font-weight-bold" type="button"
+               <!-- <button class="add-new-template-btn sb-btn sb-btn-normal sb-btn-outline-primary sb-left-icon-btn font-weight-bold" type="button"
                (click)="navigateToCreateTemplate()">
-                <i class="plus alternate outline icon"></i>{{resourceService?.frmelmnts?.cert?.btn?.createtemp}}</button>
+                <i class="plus alternate outline icon"></i>{{resourceService?.frmelmnts?.cert?.btn?.createtemp}}</button> -->
               </div>
               <div class="d-flex flex-ai-center text-left flex-jc-space-between">
                 <label class="font-weight-normal fsmall">Choose and select from available templates</label>
-                <button (click)="refreshData()" class="sb-btn sb-btn-normal sb-btn-outline-primary my-16">
+                <!-- <button (click)="refreshData()" class="sb-btn sb-btn-normal sb-btn-outline-primary my-16">
                   {{resourceService?.frmelmnts?.cert?.btn?.refresh}}
-                </button>
+                </button> -->
             </div>
                <div *ngIf="certTemplateList" class="certificate-scrollbar">
                 <div *ngFor="let template of certTemplateList">
