@@ -114,6 +114,9 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         this.showResumeCourse = false;
       }
     }, 500);
+    this.courseConsumptionService.userCreatedAnyBatch.subscribe((visibility: boolean) => {
+      this.viewDashboard = this.viewDashboard && visibility;
+    });
   }
   ngAfterViewInit() {
     this.courseProgressService.courseProgressData.pipe(

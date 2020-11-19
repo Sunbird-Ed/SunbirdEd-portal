@@ -28,12 +28,6 @@ export class DashboardSidebarComponent implements OnInit {
       this.setTelemetryData();
     }
 
-    canReissueCert() {
-    return (this.courseConsumptionService.canCreateBatch(this.courseHierarchy) ||
-      (this.courseConsumptionService.canViewDashboard(this.courseHierarchy)
-        && this.courseConsumptionService.isMentorOfAnyBatch));
-    }
-
     setTelemetryData() {
       this.courseStatsEdata = {
         id: 'course-dashboard',
