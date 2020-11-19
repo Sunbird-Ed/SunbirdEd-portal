@@ -1,4 +1,4 @@
-import {of as observableOf, throwError as observableThrowError} from 'rxjs';
+import {of as observableOf, of, throwError as observableThrowError} from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockUserData } from './../../services/user/user.mock.spec.data';
 import {async, ComponentFixture, TestBed, tick} from '@angular/core/testing';
@@ -55,6 +55,12 @@ describe('MainHeaderComponent', () => {
     }
   };
   configureTestSuite();
+  const MockCSService = {
+    getUserFeed() { return of({}); },
+    updateUserFeedEntry() { return of({}); },
+    deleteUserFeedEntry() { return of({}); }
+  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule,
@@ -65,7 +71,7 @@ describe('MainHeaderComponent', () => {
         PermissionService, ManagedUserService, UtilService, LayoutService, NavigationHelperService,
         {provide: ResourceService, useValue: resourceBundle},
         UserService, ConfigService, AnimationBuilder,
-        LearnerService, CoursesService]
+        LearnerService, CoursesService, { provide: 'CS_USER_SERVICE', useValue: MockCSService }]
     })
       .compileComponents();
   }));
