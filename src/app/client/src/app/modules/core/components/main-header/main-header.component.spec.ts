@@ -50,7 +50,14 @@ describe('MainHeaderComponent', () => {
         useInstanceAs: 'user {instance}',
         addUser: 'Add user',
         switchUser: 'switchUser',
-        cancel: 'cancel'
+        cancel: 'cancel',
+        notification: 'Notification',
+        newNotification: 'New Notification'
+      },
+      btn: {
+        clear: 'Clear',
+        seeMore: 'See more',
+        seeLess: 'See less'
       }
     }
   };

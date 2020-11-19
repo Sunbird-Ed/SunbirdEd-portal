@@ -1,8 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { NotificationService } from '../../services/notification.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NotificationService } from '../../services/notification/notification.service';
 import * as _ from 'lodash-es';
 import { UserFeedStatus } from '@project-sunbird/client-services/models';
+import { NotificationViewConfig } from '@project-sunbird/common-consumption';
+import { ResourceService } from '@sunbird/shared';
+import { TelemetryService } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-in-app-notification',
@@ -15,25 +18,38 @@ export class InAppNotificationComponent implements OnInit {
   notificationList = [];
   notificationCount = 0;
   @Input() layoutConfiguration: any;
-
-  constructor(private notificationService: NotificationService, private router: Router) { }
+  inAppNotificationConfig: NotificationViewConfig;
+  constructor(
+    private notificationService: NotificationService,
+    private router: Router,
+    private resourceService: ResourceService,
+    private telemetryService: TelemetryService,
+    private activatedRoute: ActivatedRoute
+  ) {
+    this.inAppNotificationConfig = {
+      title: this.resourceService.frmelmnts.lbl.notification,
+      subTitle: this.resourceService.frmelmnts.lbl.newNotification,
+      clearText: this.resourceService.frmelmnts.btn.clear,
+      moreText: this.resourceService.frmelmnts.btn.seeMore,
+      lessText: this.resourceService.frmelmnts.btn.seeLess,
+      minNotificationViewCount: 5
+    };
+  }
 
   ngOnInit() {
     this.fetchNotificationList();
   }
 
   async fetchNotificationList() {
-    const notificationData = await this.notificationService.fetchInAppNotifications().toPromise();
-    if (notificationData) {
-      this.notificationList = notificationData.sort(((a, b) => {
-        return (new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime());
-      }));
-      this.notificationCount = 0;
-      notificationData.forEach(e => this.notificationCount += (e.status === UserFeedStatus.UNREAD) ? 1 : 0);
-    }
+    const notificationData = await this.notificationService.fetchInAppNotifications();
+    this.notificationCount = 0;
+    this.notificationList = notificationData;
+    this.notificationList.forEach(e => this.notificationCount += (e.status === UserFeedStatus.UNREAD) ? 1 : 0);
+    this.inAppNotificationConfig['subTitle'] = `${this.notificationCount} ${this.resourceService.frmelmnts.lbl.newNotification}`;
   }
 
   toggleInAppNotifications() {
+    this.generateInteractEvent('show-in-app-notifications');
     this.showNotificationModel = !this.showNotificationModel;
   }
 
@@ -42,45 +58,61 @@ export class InAppNotificationComponent implements OnInit {
       return false;
     }
     const notificationDetails = event.data;
-    this.markNotificationAsRead(notificationDetails);
 
     const navigationLink = _.get(event, 'data.data.contentURL') || _.get(event, 'data.data.deepLink');
     if (navigationLink) {
       this.showNotificationModel = false;
-      await this.fetchNotificationList();
-      const path = navigationLink.replace((new URL(navigationLink)).origin , '');
+      const path = navigationLink.replace((new URL(navigationLink)).origin, '');
       this.router.navigateByUrl(path);
+
+      await this.markNotificationAsRead(notificationDetails);
+      this.fetchNotificationList();
     }
   }
 
-  markNotificationAsRead(notificationDetails) {
+  async markNotificationAsRead(notificationDetails) {
     if (notificationDetails.id) {
-      this.notificationService.updateNotificationRead(notificationDetails.id);
+      this.generateInteractEvent('notification-read', { id: notificationDetails.id, type: 'notificationId' });
+      await this.notificationService.updateNotificationRead(notificationDetails.id);
     }
   }
 
-  deleteNotificationHandler(event) {
-    if (!event || !event.data) {
-      return false;
-    }
-    const notificationDetails = event.data;
+  async deleteNotificationHandler(event) {
+    const notificationDetails = _.get(event, 'data');
     if (notificationDetails.id) {
-      this.notificationService.deleteNotification(notificationDetails.id);
+      this.generateInteractEvent('delete-notification', { id: notificationDetails.id, type: 'notificationId' });
+      await this.notificationService.deleteNotification(notificationDetails.id);
     }
     this.fetchNotificationList();
   }
 
-  clearAllNotifationsHandler(event) {
-    const notificationArray = _.get(event, 'data.length');
-    if (notificationArray) {
-      notificationArray.forEach(async notification => {
-        if (notification.id) {
-          await this.notificationService.deleteNotification(notification.id);
-        }
-      });
+  async clearAllNotifationsHandler(event) {
+    this.generateInteractEvent('clear-all-notification');
+    const notificationArray = _.get(event, 'data');
+    if (_.get(notificationArray, 'length')) {
+      if (await this.notificationService.deleteAllNotifications(notificationArray)) {
+        this.showNotificationModel = false;
+        setTimeout(() => {
+          this.fetchNotificationList();
+        }, 1000);
+      }
     }
-    this.fetchNotificationList();
-    this.showNotificationModel = false;
+  }
+
+  generateInteractEvent(id, notificatioData?) {
+    const data = {
+      context: {
+        env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env') || 'main-header',
+        cdata: notificatioData ? [notificatioData] : []
+      },
+      edata: {
+        id,
+        type: 'click',
+        pageid: 'in-app-notification',
+      }
+    };
+
+    this.telemetryService.interact(data);
   }
 
 }
