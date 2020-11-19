@@ -53,6 +53,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   config: { select: IConfigLabels, preview: IConfigLabels, remove: IConfigLabels };
   certificate: any;
   newTemplateIdentifier: any;
+  showAlertModal = false;
 
   constructor(
     private certificateService: CertificateService,
@@ -86,6 +87,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     this.currentState = this.screenStates.default;
     this.uploadCertificateService.certificate.subscribe(res => {
       if (res) {
+        this.showAlertModal = true;
         this.currentState = 'certRules';
         this.showPreviewModal = false;
         this.newTemplateIdentifier = _.get(res , 'identifier');
@@ -194,6 +196,12 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     );
   }
 
+  refreshData() {
+    this.getTemplateList().subscribe(response => {
+    }, (error) => {
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
+    });
+  }
   /**
    * @param  {string} batchId
    * @description - It will fetch the batch details.
