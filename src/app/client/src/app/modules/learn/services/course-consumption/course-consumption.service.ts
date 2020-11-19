@@ -23,7 +23,8 @@ export class CourseConsumptionService {
   showJoinCourseModal = new EventEmitter<any>();
   enableCourseEntrollment = new EventEmitter();
   coursePagePreviousUrl: any;
-  userCreatedAnyBatch = new EventEmitter();
+  public _userCreatedAnyBatch = false;
+  public userCreatedAnyBatch = new EventEmitter();
 
   constructor(private playerService: PlayerService, private courseProgressService: CourseProgressService,
     private toasterService: ToasterService, private resourceService: ResourceService, private router: Router,
@@ -185,6 +186,11 @@ getAllOpenBatches(contents) {
           }
       });
       const visibility: boolean = mentorBatches ? mentorBatches.length > 0 : false;
+      this._userCreatedAnyBatch = visibility;
       this.userCreatedAnyBatch.emit(visibility);
+  }
+
+  get isUserCreatedAnyBatch() {
+    return this._userCreatedAnyBatch;
   }
 }
