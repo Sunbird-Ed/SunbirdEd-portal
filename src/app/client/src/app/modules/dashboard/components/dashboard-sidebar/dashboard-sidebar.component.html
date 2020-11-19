@@ -3,7 +3,7 @@
     <div class="sidebar py-24">
       <!-- <a [routerLink]="['course-stats']" routerLinkActive="active" appTelemetryInteract  [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="courseStatsEdata" >{{resourceService?.frmelmnts?.lbl?.dashBoardTitle}}</a> -->
       <a [routerLink]="['batches']" routerLinkActive="active" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="courseBatchesEdata">{{resourceService?.frmelmnts?.lbl?.batches}}</a>
-      <a [routerLink]="['certificates']" *ngIf="canReissueCert()" [class.active]="router.url.includes('/dashboard/certificates')" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="courseCertificatesEdata" >{{resourceService?.frmelmnts?.lbl?.certificates}}</a>
+      <a [routerLink]="['certificates']" *ngIf="canReissueCert() && (courseConsumptionService?.isUserCreatedAnyBatch)" [class.active]="router.url.includes('/dashboard/certificates')" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="courseCertificatesEdata" >{{resourceService?.frmelmnts?.lbl?.certificates}}</a>
     </div>
   </div>
   <div class="eight wide column">

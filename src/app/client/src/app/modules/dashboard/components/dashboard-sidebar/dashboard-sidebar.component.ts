@@ -20,7 +20,7 @@ export class DashboardSidebarComponent implements OnInit {
 
   constructor(public resourceService: ResourceService, public router: Router,
     private activatedRoute: ActivatedRoute, public permissionService: PermissionService,
-    private courseConsumptionService: CourseConsumptionService) {
+    public courseConsumptionService: CourseConsumptionService) {
       this.courseHierarchy = this.courseConsumptionService.courseHierarchy;
     }
 
@@ -29,7 +29,7 @@ export class DashboardSidebarComponent implements OnInit {
     }
 
     canReissueCert() {
-      return this.courseConsumptionService.canCreateBatch(this.courseHierarchy);
+      return this.courseConsumptionService.canViewDashboard(this.courseHierarchy);
     }
 
     setTelemetryData() {
