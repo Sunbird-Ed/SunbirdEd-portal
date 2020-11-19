@@ -73,7 +73,13 @@ describe('ProfilePageComponent', () => {
       'emsg': {
         'm0012': 'Profile update failed. Try again later',
         'm0076': 'No data available to download'
+      },
+      profile: {
+        smsg: {
+          m0041: 'UserName copied'
+        }
       }
+
     },
     languageSelected$: observableOf({})
   };
@@ -477,4 +483,11 @@ describe('ProfilePageComponent', () => {
     component.downloadPdfCertificate({});
     expect(toasterService.error).toHaveBeenCalledWith('No data available to download');
   });
+
+  it('should show success toast message on copy of instanceId', () => {
+    spyOn(component.toasterService, 'success');
+    component.copyToClipboard('user');
+    expect(component.toasterService.success).toHaveBeenCalledWith(resourceBundle.messages.profile.smsg.m0041);
+  });
+
 });

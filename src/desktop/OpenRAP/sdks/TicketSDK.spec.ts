@@ -1,5 +1,5 @@
 import { TicketSDK } from './TicketSDK';
-import { HTTPService } from "@project-sunbird/ext-framework-server/services";
+import { HTTPService } from "../services/httpService";
 import { of, throwError } from 'rxjs';
 import { networkError, helpDeskError, helpDeskSuccess, ticketReq, mandatoryFieldError } from './TicketSDK.spec.data';
 const chai = require('chai'), spies = require('chai-spies');
