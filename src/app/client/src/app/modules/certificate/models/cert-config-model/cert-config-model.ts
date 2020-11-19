@@ -58,17 +58,15 @@ export class CertConfigModel {
     }
 
     prepareCreateAssetRequest(rawFormValues, channel, certificate, images) {
-        const signatoryList = [{
-        'image': _.get(images, 'SIGN1.url'),
-        'name': _.get(rawFormValues , 'authoritySignature_0'),
-        }];
+        const sign_1 = this.splitName(_.get(images, 'SIGN1.url'), rawFormValues, 'authoritySignature_0');
+        const signatoryList = [];
+        signatoryList.push(sign_1);
 
-        if (!_.isEmpty(images['SIGN'])) {
-        signatoryList.push({
-            'image': _.get(images , 'SIGN2.url'),
-            'name': _.get(rawFormValues , 'authoritySignature_1'),
-        });
+        if (!_.isEmpty(images['SIGN2']) && _.get(images, 'SIGN2.name')) {
+            const sign_2 = this.splitName(_.get(images, 'SIGN2.url'), rawFormValues, 'authoritySignature_1');
+            signatoryList.push(sign_2);
         }
+
         let issuer = _.get(certificate, 'issuer');
         if (typeof issuer === 'string') {
             issuer = JSON.parse(issuer);
@@ -92,4 +90,18 @@ export class CertConfigModel {
         };
         return requestBody;
     }
+
+    splitName(imageUrl, sign, key) {
+        const name = _.get(sign , key);
+        const signValues = name.split(',');
+        const designation = signValues[1] || 'CEO';
+        const signatoryList = {
+            name: name,
+            image: imageUrl,
+            designation: designation,
+            id: `${designation}/CEO`
+        };
+        return signatoryList;
+    }
+
 }
