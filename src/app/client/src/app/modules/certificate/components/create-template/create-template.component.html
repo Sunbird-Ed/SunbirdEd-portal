@@ -29,7 +29,7 @@
             <div class='ui stackable grid mt-0'>
               <div class="twelve wide column">
                   <div class="sb-field mb-0">
-                    <label>{{resourceService?.frmelmnts?.cert?.lbl?.certtitle}}</label>
+                    <label>{{resourceService?.frmelmnts?.cert?.lbl?.certtitle}}<span class="asterik">*</span></label>
                     <input formControlName="certificateTitle" [ngClass]="(createTemplateForm.controls.certificateTitle.touched && createTemplateForm.controls.certificateTitle.invalid) ? 'is-invalid' : 'is-valid'" class="sb-form-control" [placeholder]="resourceService?.frmelmnts?.cert?.prmpt?.certtitle">
                   </div>
                   <small class="pl-4 fsmall">
@@ -126,7 +126,7 @@
                   <div class="sb-field mb-0">
                     <input formControlName="authoritySignature_1"
                     [ngClass]="(createTemplateForm.controls.authoritySignature_1.touched && createTemplateForm.controls.authoritySignature_1.invalid) ? 'is-invalid' : 'is-valid'"
-                    class="sb-form-control is-valid" [placeholder]="resourceService?.frmelmnts?.cert?.lbl?.designation">
+                    class="sb-form-control" [placeholder]="resourceService?.frmelmnts?.cert?.lbl?.designation">
                   </div>
                   <small class="pl-4 fsmall">
                     {{resourceService?.frmelmnts?.cert?.inlntxt?.signdet}}
