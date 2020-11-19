@@ -72,16 +72,4 @@ describe('DashboardSidebarComponent', () => {
     expect(component.courseBatchesEdata.id).toEqual('course-batches');
     expect(component.courseCertificatesEdata.id).toEqual('course-reissue-cert');
   });
-
-  it ('should enable reissueCert', () => {
-    spyOn(component['courseConsumptionService'], 'canCreateBatch').and.returnValue(true);
-    const canReissue = component.canReissueCert();
-    expect(canReissue).toBeTruthy();
-  });
-
-  it ('should disable reissueCert', () => {
-    spyOn(component['courseConsumptionService'], 'canCreateBatch').and.returnValue(false);
-    const canReissue = component.canReissueCert();
-    expect(canReissue).toBeFalsy();
-  });
 });
