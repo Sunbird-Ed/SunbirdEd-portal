@@ -90,10 +90,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.isTrackable = this.courseConsumptionService.isTrackableCollection(this.courseHierarchy);
     this.viewDashboard = this.courseConsumptionService.canViewDashboard(this.courseHierarchy);
 
-    this.profileInfo = {
-      firstName: this.userService.userProfile.firstName,
-      lastName: this.userService.userProfile.lastName
-    };
+    this.profileInfo = this.userService.userProfile;
 
     observableCombineLatest(this.activatedRoute.firstChild.params, this.activatedRoute.firstChild.queryParams,
       (params, queryParams) => {
