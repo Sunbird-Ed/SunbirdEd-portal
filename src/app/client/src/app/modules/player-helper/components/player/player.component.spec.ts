@@ -69,6 +69,15 @@ describe('PlayerComponent', () => {
     };
   });
 
+  it('should call loadPlayer and call getPlayerVersions', () => {
+    component.newPlayerMimeTypes = ['video/mp4', 'application/pdf'];
+    component.playerConfig = { config: {}, data: {}, context: {}, metadata: { mimeType: 'application/pdf'}};
+    component.isMobileOrTab = true;
+    spyOn(component, 'getPlayerVersions');
+    component.loadPlayer();
+    expect(component.getPlayerVersions).toHaveBeenCalled();
+  });
+
   it('should emit "START"', fakeAsync(() => {
     let contentProgressEvent;
     component.contentProgressEvents$.subscribe((data) => {
