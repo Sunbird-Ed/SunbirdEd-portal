@@ -81,7 +81,7 @@ describe('BatchDetailsComponent', () => {
       filters: {
         courseId: component.courseId,
         enrollmentType: 'open',
-        status: ['0', '1']
+        status: ['0', '1', '2']
       },
       offset: 0,
       sort_by: { createdDate: 'desc' }
@@ -129,7 +129,7 @@ describe('BatchDetailsComponent', () => {
       filters: {
         courseId: component.courseId,
         createdBy: component.userService.userid,
-        status: ['0', '1']
+        status: ['0', '1', '2']
       },
       offset: 0,
       sort_by: { createdDate: 'desc' }
