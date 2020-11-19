@@ -18,6 +18,7 @@ export class CertificateNameUpdatePopupComponent implements OnInit {
   disableContinueBtn = false;
   isNameEditable = false;
   isLastNameEditable = false;
+  certificateNameChecked = false;
   instance: string;
   public learner: LearnerService;
 
