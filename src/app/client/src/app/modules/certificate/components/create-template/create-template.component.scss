@@ -17,6 +17,7 @@
     margin-top: .1875rem;
     transition: box-shadow .3s ease-out,transform .3s ease-out,opacity .2s ease-out;
     transition-delay: .1s;
+    flex: none;
     &.active {
       border: 2px solid var(--primary-300);
       transform: scale(1.03, 1.03);
@@ -60,10 +61,16 @@
       background: var(--white);
      &__description{
       width: 100%;
-      min-height: 418px;
+      min-height: 360px;
+      height: auto;
       text-align: center;
       border-style: dashed;
       border-color: var(--gray-100);
+      embed {
+        background:var(--white);
+        width: 100%;
+        height:100%;
+      }
       .title{
         font-size: 1.125rem;
         color: var(--gray-100);
@@ -124,3 +131,17 @@ font-size: calculateRem(20px);
 }
 
 
+.cert-img-sb-card__content embed {
+  background: var(--white);
+  width: 100%;
+  height: 100%;
+}
+
+.cert-flex-container {
+  width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    gap:16px;
+}

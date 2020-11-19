@@ -322,7 +322,7 @@ urltoFile(url, filename, mimeType) {
 
   getImagePath() {
     if (this.selectedCertificate) {
-      return this.selectedCertificate.artifactUrl;
+      return this.sanitizer.bypassSecurityTrustResourceUrl(this.selectedCertificate.artifactUrl);
     }
   }
   getBase64Data(ev) {
@@ -335,4 +335,13 @@ urltoFile(url, filename, mimeType) {
   back() {
     this.navigationHelperService.navigateToLastUrl();
   }
+
+  getSafeUrl(url) {
+    if (url) {
+      return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    }
+    return '';
+  }
+
 }
+

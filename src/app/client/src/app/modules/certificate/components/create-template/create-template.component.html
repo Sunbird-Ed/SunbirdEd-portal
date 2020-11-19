@@ -161,7 +161,7 @@
               <div class="cert-select-card">
                 <div class="d-flex flex-ai-center flex-dc cert-select-card__content">
                   <div class="d-flex flex-ai-center flex-jc-center cert-select-card__content__description">
-                    <img [src]="getImagePath()" class="w-100">
+                    <embed [src]="getImagePath()" type="image/svg+xml" />
                   </div>
                 </div>
               </div>
@@ -170,10 +170,10 @@
           <div class="ui stackable grid mt-0">
             <div class="twelve wide column">
               <label>{{resourceService?.frmelmnts?.cert?.lbl?.layout}}</label>
-              <div class="d-flex">
-                <div *ngFor="let certificate of defaultCertificates" class="cert-img-sb-card active mr-16">
+              <div class="d-flex cert-flex-container">
+                <div *ngFor="let certificate of defaultCertificates" class="cert-img-sb-card active">
                   <div class="cert-img-sb-card__content">
-                    <img (click)="chooseCertificate(certificate)" [src]="certificate?.artifactUrl"  />
+                    <embed (click)="chooseCertificate(certificate)" [src]="getSafeUrl(certificate?.artifactUrl)" type="image/svg+xml" />
                     <div *ngIf="selectedCertificate?.identifier === certificate?.identifier" class="selected-mark"><img src="assets/images/checkbox-icon.svg"></div>
                   </div>
                 </div>
