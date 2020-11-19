@@ -52,7 +52,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   public unsubscribe = new Subject<void>();
   public showNewPlayer = false;
   mobileViewDisplay = 'block';
-  newPlayerMimeTypes = ['video/mp4', 'application/pdf'];
+  newPlayerMimeTypes = ['video/avi', 'video/mpeg', 'video/quicktime', 'video/3gpp', 'video/mp4', 'video/ogg', 'video/webm',
+  'application/pdf'];
 
   /**
  * Dom element reference of contentRatingModal

@@ -29,12 +29,13 @@
         </svg>
     </div>
   </div>
+
       <div class="contentViewerIframeShadow" [ngClass]="{'player-fullscreen content-full-video': isFullScreenView}">
         <sunbird-pdf-player *ngIf="playerConfig.metadata.mimeType === 'application/pdf'" [playerConfig]="playerConfig"
           (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)">
         </sunbird-pdf-player>
 
-        <sunbird-video-player *ngIf="playerConfig.metadata.mimeType === 'video/mp4'" [playerConfig]="playerConfig"
+        <sunbird-video-player *ngIf="newPlayerMimeTypes.includes(playerConfig.metadata.mimeType) && playerConfig.metadata.mimeType !== 'application/pdf'" [playerConfig]="playerConfig"
           (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)">
         </sunbird-video-player>
       </div>
@@ -52,7 +53,7 @@
   <sunbird-pdf-player *ngIf="playerConfig.metadata.mimeType === 'application/pdf'" [playerConfig]="playerConfig"
     (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></sunbird-pdf-player>
 
-  <sunbird-video-player *ngIf="playerConfig.metadata.mimeType === 'video/mp4'" [playerConfig]="playerConfig"
+  <sunbird-video-player *ngIf="newPlayerMimeTypes.includes(playerConfig.metadata.mimeType) && playerConfig.metadata.mimeType !== 'application/pdf'" [playerConfig]="playerConfig"
     (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)">
   </sunbird-video-player>
 </div>
