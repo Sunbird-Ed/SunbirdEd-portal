@@ -30,7 +30,15 @@
     <div class="mt-8 mb-16 d-flex flex-jc-center">
       <div class="fnormal">{{resourceService?.frmelmnts?.lbl?.instacnceId | interpolate:'{instance}': instance}} :</div>
       <div class="fnormal ml-5" id="copyUser">{{userProfile.userName}}</div>
-      <i class="copy icon blue cursor-pointer" (click)="copyToClipboard(userProfile.userName)"><span class="px-8">{{resourceService?.frmelmnts.lbl.copy}}</span></i>
+      <div class="ml-8 cursor-pointer" (click)="copyToClipboard(userProfile.userName)">
+        <i class="icon-svg icon-svg--xs icon-edit">
+          <svg class="icon icon-svg--primary">
+          <use xlink:href="assets/images/sprite.svg#copy-alternate"></use>
+        </svg>
+        </i>
+       <span class="sb-color-primary"> {{resourceService?.frmelmnts?.lbl?.copy}}</span>
+      </div>
+
     </div>
     <div class="mb-15 text-center profile-label-container" *ngIf="roles && roles.length > 0">
       <span class="ui dodger-blue basic label mr-15 mt-5"
