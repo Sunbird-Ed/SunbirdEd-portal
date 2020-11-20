@@ -1,7 +1,7 @@
 export const response = {
   userMockData: {
     'firstName': 'Gourav',
-    'lastName': 'User',
+    'lastName': 'More',
     'loginId': 'ntptest102',
     'regOrgId': '0123653943740170242',
     'roles': [

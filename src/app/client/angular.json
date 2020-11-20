@@ -128,6 +128,23 @@
                 }
               ]
             },
+            "desktop-production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": false,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.desktop.prod.ts"
+                }
+              ]
+            },
             "desktop-staging": {
               "optimization": true,
               "outputHashing": "all",
