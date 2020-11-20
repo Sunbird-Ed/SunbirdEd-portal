@@ -53,6 +53,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   config: { select: IConfigLabels, preview: IConfigLabels, remove: IConfigLabels };
   certificate: any;
   newTemplateIdentifier: any;
+  showAlertModal = false;
 
   constructor(
     private certificateService: CertificateService,
@@ -86,6 +87,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     this.currentState = this.screenStates.default;
     this.uploadCertificateService.certificate.subscribe(res => {
       if (res) {
+        this.showAlertModal = true;
         this.currentState = 'certRules';
         this.showPreviewModal = false;
         this.newTemplateIdentifier = _.get(res , 'identifier');
@@ -194,6 +196,12 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     );
   }
 
+  refreshData() {
+    this.getTemplateList().subscribe(response => {
+    }, (error) => {
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
+    });
+  }
   /**
    * @param  {string} batchId
    * @description - It will fetch the batch details.
@@ -272,11 +280,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
           'batchId': _.get(this.queryParams, 'batchId'),
           'template': {
             'identifier': _.get(this.selectedTemplate, 'identifier'),
-            'criteria': {
-              'enrollment': {
-                'status': 2
-              }
-            },
+            'criteria': this.getCriteria(this.userPreference.value),
             'name': _.get(this.selectedTemplate, 'name'),
             'issuer': JSON.parse(_.get(this.selectedTemplate, 'issuer')),
             'data': JSON.stringify(_.get(this.selectedTemplate, 'data')),
@@ -290,7 +294,6 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     if (this.isTemplateChanged) {
       request['request']['oldTemplateId'] = this.templateIdentifier;
     }
-
     this.certRegService.addCertificateTemplate(request).subscribe(data => {
       this.isTemplateChanged = false;
       if (this.configurationMode === 'add') {
@@ -306,7 +309,6 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
       });
     }, error => {
-
       if (this.configurationMode === 'add') {
         this.toasterService.error(this.resourceService.frmelmnts.cert.lbl.certAddError);
       } else {
