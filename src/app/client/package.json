@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng build --deployUrl dist/ && mv ../dist/index.html ../dist/index.ejs",
-    "start-desktop": "cp src/desktop-index.html src/index.html && ng build --output-path=../../desktop/public/portal --watch=true && mv ../../desktop/public/portal/index.html ../../desktop/public/portal/index.ejs",
+    "start-desktop": "ng build --output-path=../../desktop/public/portal --watch=true && mv ../../desktop/public/portal/index.html ../../desktop/public/portal/index.ejs",
     "proxy": "ng serve --proxy-config proxy.config.js",
     "build": "node --max_old_space_size=8096 ./node_modules/@angular/cli/bin/ng build --prod --progress=false --outputPath=./../app_dist/dist --deployUrl dist/",
     "post-build": "gulp post:build",
@@ -17,8 +17,7 @@
     "test-coverage": "ng test src --code-coverage=true --watch=false --sourceMap=false",
     "build-cdn": "node --max_old_space_size=8096 ./node_modules/@angular/cli/bin/ng build --prod --progress=false --outputPath=./../dist-cdn",
     "inject-cdn-fallback": "gulp inject:cdnFallBack:script",
-    "with-stats": "node --max_old_space_size=8096 node_modules/.bin/ng build --prod --stats-json",
-    "offline-dev": "ng build --configuration=desktop-staging --outputPath=<output_path>"
+    "with-stats": "node --max_old_space_size=8096 node_modules/.bin/ng build --prod --stats-json"
   },
   "nodemonConfig": {
     "ext": "png,jpeg,js,ts,html,json,css,scss"

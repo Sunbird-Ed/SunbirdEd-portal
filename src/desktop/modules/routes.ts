@@ -107,5 +107,7 @@ export class Router {
     desktopRoutes(app, proxyUrl);
     telemetryRoutes(app)
     playerProxyRoutes(app, proxyUrl);
+
+    app.all("*", (req, res) => res.redirect("/"));
   }
 }
