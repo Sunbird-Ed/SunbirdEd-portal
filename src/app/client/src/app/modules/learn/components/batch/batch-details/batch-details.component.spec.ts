@@ -86,6 +86,7 @@ describe('BatchDetailsComponent', () => {
       offset: 0,
       sort_by: { createdDate: 'desc' }
     };
+
     expect(component.courseMentor).toBeFalsy();
     expect(component.batchList).toBeDefined();
     expect(component.userList).toBeDefined();
