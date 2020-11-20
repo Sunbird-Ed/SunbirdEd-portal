@@ -31,11 +31,11 @@
   </div>
 
       <div class="contentViewerIframeShadow" [ngClass]="{'player-fullscreen content-full-video': isFullScreenView}">
-        <sunbird-pdf-player *ngIf="playerConfig.metadata.mimeType === 'application/pdf'" [playerConfig]="playerConfig"
+        <sunbird-pdf-player *ngIf="playerType === 'pdf-player'" [playerConfig]="playerConfig"
           (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)">
         </sunbird-pdf-player>
 
-        <sunbird-video-player *ngIf="newPlayerMimeTypes.includes(playerConfig.metadata.mimeType) && playerConfig.metadata.mimeType !== 'application/pdf'" [playerConfig]="playerConfig"
+        <sunbird-video-player *ngIf="playerType === 'video-player'" [playerConfig]="playerConfig"
           (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)">
         </sunbird-video-player>
       </div>
@@ -50,10 +50,10 @@
 
 <div id="playerFullscreen" *ngIf="!showPlayIcon" class="player-fullscreen" [ngStyle]="{'display': mobileViewDisplay}"> 
   <img appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeButtonInteractEdata" (click)="closeFullscreen()" class="close-button" src="assets/images/close-Black.svg" alt="">
-  <sunbird-pdf-player *ngIf="playerConfig.metadata.mimeType === 'application/pdf'" [playerConfig]="playerConfig"
+  <sunbird-pdf-player *ngIf="playerType === 'pdf-player'" [playerConfig]="playerConfig"
     (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></sunbird-pdf-player>
 
-  <sunbird-video-player *ngIf="newPlayerMimeTypes.includes(playerConfig.metadata.mimeType) && playerConfig.metadata.mimeType !== 'application/pdf'" [playerConfig]="playerConfig"
+  <sunbird-video-player *ngIf="playerType === 'video-player'" [playerConfig]="playerConfig"
     (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)">
   </sunbird-video-player>
 </div>

@@ -52,7 +52,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   public unsubscribe = new Subject<void>();
   public showNewPlayer = false;
   mobileViewDisplay = 'block';
-  newPlayerMimeTypes = ['video/mp4', 'video/webm', 'application/pdf'];
+  playerType: string;
 
   /**
  * Dom element reference of contentRatingModal
@@ -146,16 +146,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.cdr.detectChanges();
     if (this.playerConfig) {
       this.playerOverlayImage = this.overlayImagePath ? this.overlayImagePath : _.get(this.playerConfig, 'metadata.appIcon');
-      if (this.playerLoaded) {
-        if (_.includes(this.newPlayerMimeTypes, this.playerConfig.metadata.mimeType)) {
-          this.getPlayerVersions();
-        } else {
-          const playerElement = this.contentIframe.nativeElement;
-          playerElement.contentWindow.initializePreview(this.playerConfig);
-        }
-      } else {
-        this.loadPlayer();
-      }
+      this.loadPlayer();
     }
   }
   loadCdnPlayer() {
@@ -202,7 +193,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }, 0);
   }
 
-  getPlayerVersions() {
+  loadPlayer() {
+    this.playerType = null;
     const formReadInputParams = {
       formType: 'content',
       formAction: 'play',
@@ -210,28 +202,25 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     };
     this.formService.getFormConfig(formReadInputParams).subscribe(
       (data: any) => {
-        const playerType = ['video-player', 'pdf-player'];
+        let isNewPlayer = false;
         _.forEach(data, (value) => {
-          if (_.includes(playerType, _.get(value, 'type')) && _.get(value, 'version') === 2) {
-            this.playerLoaded = false;
-            this.loadNewPlayer();
-         } else {
-           this.loadOldPlayer();
-         }
+          if (_.includes(_.get(value, 'mimeType'), this.playerConfig.metadata.mimeType) && _.get(value, 'version') === 2) {
+            this.playerType = _.get(value, 'type');
+            isNewPlayer = true;
+          }
         });
+
+        if (isNewPlayer) {
+          this.playerLoaded = false;
+          this.loadNewPlayer();
+        } else {
+          this.loadOldPlayer();
+        }
       },
       (error) => {
         this.loadOldPlayer();
       }
     );
-  }
-
-  loadPlayer() {
-    if (_.includes(this.newPlayerMimeTypes, this.playerConfig.metadata.mimeType)) {
-      this.getPlayerVersions();
-    } else {
-      this.loadOldPlayer();
-    }
   }
 
   loadOldPlayer() {
