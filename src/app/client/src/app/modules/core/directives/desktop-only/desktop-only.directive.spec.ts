@@ -33,9 +33,4 @@ describe('DesktopOnlyDirective', () => {
     expect(component).toBeDefined();
     expect(directive['hasView']).toBe(false);
   });
-  xit('should create an instance', () => {
-    const directive = new DesktopOnlyDirective(TemplateRef as any, ViewContainerRef as any);
-    directive.ngOnInit();
-    expect(directive).toBeTruthy();
-  });
 });
