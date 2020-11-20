@@ -618,7 +618,7 @@ const API_LIST = {
     //certreg reg apis
     '/certreg/v1/user/search': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.COURSE_MENTOR]
+      ROLE_CHECK: [ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR]
     },
     '/certreg/v1/cert/reissue': {
       checksNeeded: ['ROLE_CHECK'],
