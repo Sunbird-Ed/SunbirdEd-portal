@@ -321,12 +321,11 @@ __textbooks {
 }
 
 .sbt-logo {
-  height: 80px;
+  height: calculateRem(80px);
   display:flex;
   align-items: center;
   img {
     min-height: 65%;
     height: 80%;
   }
-
 }
