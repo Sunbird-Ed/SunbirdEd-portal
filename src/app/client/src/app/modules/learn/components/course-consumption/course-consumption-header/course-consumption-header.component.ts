@@ -15,6 +15,7 @@ import * as dayjs from 'dayjs';
 import { GroupsService } from '../../../../groups/services/groups/groups.service';
 import { NavigationHelperService } from '@sunbird/shared';
 import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
+import { CourseBatchService } from './../../../services';
 
 @Component({
   selector: 'app-course-consumption-header',
@@ -24,7 +25,11 @@ import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   sharelinkModal: boolean;
-  showChangeUserNamePopup: boolean;
+  showProfileUpdatePopup = false;
+  profileInfo: {
+    firstName: string,
+    lastName: string
+  };
   /**
    * contains link that can be shared
    */
@@ -70,7 +75,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     private courseProgressService: CourseProgressService, public contentUtilsServiceService: ContentUtilsServiceService,
     public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService, private userService: UserService,
     private telemetryService: TelemetryService, private groupService: GroupsService,
-    private navigationHelperService: NavigationHelperService, public generaliseLabelService: GeneraliseLabelService) { }
+    private navigationHelperService: NavigationHelperService, public generaliseLabelService: GeneraliseLabelService,
+    public courseBatchService: CourseBatchService) { }
 
   showJoinModal(event) {
     this.courseConsumptionService.showJoinCourseModal.emit(event);
@@ -83,6 +89,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     }
     this.isTrackable = this.courseConsumptionService.isTrackableCollection(this.courseHierarchy);
     this.viewDashboard = this.courseConsumptionService.canViewDashboard(this.courseHierarchy);
+
+    this.profileInfo = this.userService.userProfile;
 
     observableCombineLatest(this.activatedRoute.firstChild.params, this.activatedRoute.firstChild.queryParams,
       (params, queryParams) => {
@@ -154,8 +162,10 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   resumeCourse(showExtUrlMsg?: boolean) {
-    if (false) {
-      this.showChangeUserNamePopup = true;
+    const IsStoredLocally = localStorage.getItem('isCertificateNameUpdated') || 'false' ;
+    const certificateDescription = this.courseBatchService.getcertificateDescription(this.enrolledBatchInfo);
+    if (IsStoredLocally !== 'true' && certificateDescription && certificateDescription.isCertificate) {
+      this.showProfileUpdatePopup = true;
     } else {
       this.courseConsumptionService.launchPlayer.emit();
       this.coursesService.setExtContentMsg(showExtUrlMsg);

@@ -94,7 +94,7 @@ export class AddActivityContentTypesComponent implements OnInit, AfterViewInit, 
         }]
       },
       edata: {
-        id: _.get(interactData, 'id'),
+        id: _.kebabCase(_.get(interactData, 'id')),
         type: 'CLICK',
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid
       }
