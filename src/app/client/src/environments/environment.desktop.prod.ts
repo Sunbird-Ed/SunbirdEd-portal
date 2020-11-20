@@ -1,6 +1,6 @@
 export const environment = {
-  env: 'staging',
+  env: 'desktop-prod',
   production: true,
   enableTelemetryValidation: true,
-  isDesktopApp: false
+  isDesktopApp: true
 };
