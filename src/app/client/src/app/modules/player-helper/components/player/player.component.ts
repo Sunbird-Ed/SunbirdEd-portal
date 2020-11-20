@@ -279,6 +279,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   generateContentReadEvent(event: any, newPlayerEvent?) {
+    if (!event) {
+      return;
+    }
     if (newPlayerEvent) {
       event = { detail: {telemetryData: event}};
     }
