@@ -140,7 +140,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
 
   createCertTemplate() {
     this.validateForm();
-    // TODO: form validation need to improve 
+    // TODO: form validation need to improve
     if (this.disableCreateTemplate) {
       this.createTemplateForm.controls.certificateTitle.markAsTouched();
       this.createTemplateForm.controls.stateName.markAsTouched();
@@ -149,17 +149,19 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
       this.createTemplateForm.controls.allowPermission.markAsTouched();
     } else {
       this.previewCertificate();
-      const channel = this.userService.channel;
-      const request = this.certConfigModalInstance.prepareCreateAssetRequest(_.get(this.createTemplateForm, 'value'), channel, this.selectedCertificate, this.images);
-      this.disableCreateTemplate = true;
-      this.uploadCertificateService.createCertTemplate(request).subscribe(response => {
-        console.log('create response', response);
-        const assetId = _.get(response, 'result.identifier');
-        console.log('this.finalSVGurl', this.finalSVGurl);
-        this.uploadTemplate(this.finalSVGurl, assetId);
-      }, error => {
-        this.toasterService.error('Something went wrong, please try again later');
-      });
+      setTimeout(() => {
+        const channel = this.userService.channel;
+        const request = this.certConfigModalInstance.prepareCreateAssetRequest(_.get(this.createTemplateForm, 'value'), channel, this.selectedCertificate, this.images);
+        this.disableCreateTemplate = true;
+        this.uploadCertificateService.createCertTemplate(request).subscribe(response => {
+          console.log('create response', response);
+          const assetId = _.get(response, 'result.identifier');
+          console.log('this.finalSVGurl', this.finalSVGurl);
+          this.uploadTemplate(this.finalSVGurl, assetId);
+        }, error => {
+          this.toasterService.error('Something went wrong, please try again later');
+        });
+      }, 1000);
     }
   }
 
@@ -239,7 +241,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     certTitle[0].innerHTML = this.createTemplateForm.controls.certificateTitle.value;
     const stateTitle = this.svgData.getElementsByClassName(this.classNames.STATE_TITLE);
     stateTitle[0].innerHTML = this.createTemplateForm.controls.stateName.value;
-    this.classNames.DESIGNATIONS.forEach((id, index) => {
+    this.classNames.DESIGNATIONS_NAMES.forEach((id, index) => {
       const designation_html = this.svgData.getElementById(id);
       if (designation_html) {
         const title = this.createTemplateForm.get(`authoritySignature_${index}`).value;
@@ -333,6 +335,7 @@ urltoFile(url, filename, mimeType) {
   }
 
   back() {
+    this.uploadCertificateService.certificate.next({});
     this.navigationHelperService.navigateToLastUrl();
   }
 }

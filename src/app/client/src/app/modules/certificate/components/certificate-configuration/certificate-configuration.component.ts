@@ -86,11 +86,13 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     this.initializeLabels();
     this.currentState = this.screenStates.default;
     this.uploadCertificateService.certificate.subscribe(res => {
-      if (res) {
+      if (res && !_.isEmpty(res)) {
         this.showAlertModal = true;
         this.currentState = 'certRules';
         this.showPreviewModal = false;
         this.newTemplateIdentifier = _.get(res , 'identifier');
+      } else if ( res !== null && _.isEmpty(res)) {
+        this.currentState = 'certRules';
       }
     });
     this.navigationHelperService.setNavigationUrl();
@@ -323,6 +325,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     this.selectedTemplate = {'name' : _.get(templateData, 'identifier'), 'previewUrl': _.get(templateData, 'previewUrl')};
     if (!_.isEmpty(this.newTemplateIdentifier)) {
       this.templateIdentifier = this.newTemplateIdentifier;
+      this.selectedTemplate = null;
     }
     this.previewUrl = _.get(templateData, 'previewUrl');
     this.setCertEditable();
