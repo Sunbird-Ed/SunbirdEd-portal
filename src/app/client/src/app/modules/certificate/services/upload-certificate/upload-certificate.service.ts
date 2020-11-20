@@ -37,8 +37,7 @@ export class UploadCertificateService {
           'status': ['Live']
         },
         'limit': 50,
-        'offset': 0,
-        'lastUpdatedOn': 'desc'
+        'offset': 0
       }
     };
     if (!type) {
