@@ -1,6 +1,6 @@
 import { ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter,
-OnChanges, HostListener, OnInit } from '@angular/core';
+OnChanges, HostListener, OnInit, ChangeDetectorRef } from '@angular/core';
 import * as _ from 'lodash-es';
 import { PlayerConfig } from '@sunbird/shared';
 import { Router } from '@angular/router';
@@ -66,7 +66,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   constructor(public configService: ConfigService, public router: Router, private toasterService: ToasterService,
     public resourceService: ResourceService, public navigationHelperService: NavigationHelperService,
     private deviceDetectorService: DeviceDetectorService, private userService: UserService, public formService: FormService
-    , public contentUtilsServiceService: ContentUtilsServiceService, private contentService: ContentService) {
+    , public contentUtilsServiceService: ContentUtilsServiceService, private contentService: ContentService,
+    private cdr: ChangeDetectorRef) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
     this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
@@ -141,6 +142,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   ngOnChanges(changes) {
     this.contentRatingModal = false;
     this.showNewPlayer = false;
+    this.cdr.detectChanges();
     if (this.playerConfig) {
       this.playerOverlayImage = this.overlayImagePath ? this.overlayImagePath : _.get(this.playerConfig, 'metadata.appIcon');
       if (this.playerLoaded) {
