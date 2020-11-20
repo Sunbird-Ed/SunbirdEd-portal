@@ -19,7 +19,7 @@ export class NotificationService {
 
   async fetchInAppNotifications() {
     try {
-      const notificationData = await this.csUserService.getUserFeed(this.userService.userid, this.config).toPromise()
+      const notificationData = await this.csUserService.getUserFeed(this.userService.userid, this.config).toPromise();
       return notificationData
         .filter(e => e.category === UserFeedCategory.NOTIFICATION)
         .sort(((a, b) => (new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime())));
