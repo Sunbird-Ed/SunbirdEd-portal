@@ -81,11 +81,12 @@ describe('BatchDetailsComponent', () => {
       filters: {
         courseId: component.courseId,
         enrollmentType: 'open',
-        status: ['0', '1', '2']
+        status: ['0', '1']
       },
       offset: 0,
       sort_by: { createdDate: 'desc' }
     };
+
     expect(component.courseMentor).toBeFalsy();
     expect(component.batchList).toBeDefined();
     expect(component.userList).toBeDefined();
