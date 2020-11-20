@@ -14,11 +14,13 @@ import { TelemetryService } from '@sunbird/telemetry';
 })
 export class InAppNotificationComponent implements OnInit {
 
+  @Input() layoutConfiguration: any;
+
   showNotificationModel = false;
   notificationList = [];
   notificationCount = 0;
-  @Input() layoutConfiguration: any;
   inAppNotificationConfig: NotificationViewConfig;
+
   constructor(
     private notificationService: NotificationService,
     private router: Router,
@@ -111,7 +113,6 @@ export class InAppNotificationComponent implements OnInit {
         pageid: 'in-app-notification',
       }
     };
-
     this.telemetryService.interact(data);
   }
 
