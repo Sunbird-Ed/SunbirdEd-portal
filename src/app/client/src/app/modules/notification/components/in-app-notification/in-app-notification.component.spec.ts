@@ -12,7 +12,7 @@ import { of as observableOf } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { notificationList } from './in-app-notification.component.spec.data';
+import { notificationList, notificationData } from './in-app-notification.component.spec.data';
 
 describe('InAppNotificationComponent', () => {
   let component: InAppNotificationComponent;
@@ -33,7 +33,7 @@ describe('InAppNotificationComponent', () => {
   };
 
   class RouterStub {
-    navigate = jasmine.createSpy('navigate');
+    navigateByUrl = jasmine.createSpy('navigate');
   }
 
   const fakeActivatedRoute = {};
@@ -144,5 +144,124 @@ describe('InAppNotificationComponent', () => {
     });
 
   });
+
+  describe('toggleInAppNotifications', () => {
+
+    it('should toggle ', () => {
+      // arrange
+      component.showNotificationModel = true;
+      spyOn(component, 'generateInteractEvent');
+      // act
+      component.toggleInAppNotifications();
+      // assert
+      expect(component.generateInteractEvent).toHaveBeenCalled();
+      expect(component.showNotificationModel).toBeFalsy();
+    });
+
+  });
+
+  describe('markNotificationAsRead', async () => {
+    it('should mark the notification as read status', async () => {
+      // arrange
+      spyOn(component, 'generateInteractEvent');
+      const notificationService: NotificationService = TestBed.get(NotificationService);
+      spyOn(notificationService, 'updateNotificationRead').and.returnValue(notificationList);
+      // act
+      await component.markNotificationAsRead(notificationData);
+      // assert
+      expect(component.generateInteractEvent).toHaveBeenCalledWith('notification-read',
+        { id: notificationData.id, type: 'notificationId' });
+      expect(notificationService.updateNotificationRead).toHaveBeenCalledWith(notificationData.id);
+    });
+  });
+
+  describe('notificationHandler', async () => {
+    it('should return null if the event data is null', async () => {
+      //  arrange
+      const event = {};
+      // act
+      const resp = await component.notificationHandler(event);
+      // assert
+      expect(resp).toBeFalsy();
+    });
+
+    it('should navigate to the url linked with notification', async () => {
+      //  arrange
+      const event = {
+        data: {
+          id: 'notification_id',
+          data: {
+            deepLink: 'https://url.com/resource/course'
+          }
+        }
+      };
+      const router = TestBed.get(Router);
+      spyOn(component, 'markNotificationAsRead');
+      spyOn(component, 'fetchNotificationList');
+      // act
+      await component.notificationHandler(event);
+      // assert
+      expect(component.showNotificationModel).toBeFalsy();
+      expect(router.navigateByUrl).toHaveBeenCalledWith('/resource/course');
+      expect(component.markNotificationAsRead).toHaveBeenCalledWith(event.data);
+      expect(component.fetchNotificationList).toHaveBeenCalled();
+    });
+  });
+
+  describe('deleteNotificationHandler', async () => {
+    it('should delete the notification', async () => {
+      //  arrange
+      const event = {
+        data: {
+          id: 'notification_id'
+        }
+      };
+      const notificationService: NotificationService = TestBed.get(NotificationService);
+      spyOn(notificationService, 'deleteNotification');
+      spyOn(component, 'generateInteractEvent');
+      spyOn(component, 'fetchNotificationList');
+      // act
+      await component.deleteNotificationHandler(event);
+      // assert
+      expect(component.showNotificationModel).toBeFalsy();
+      expect(component.generateInteractEvent).toHaveBeenCalledWith('delete-notification',
+        { id: event.data.id, type: 'notificationId' });
+      expect(notificationService.deleteNotification).toHaveBeenCalledWith(event.data.id);
+      expect(component.fetchNotificationList).toHaveBeenCalled();
+    });
+  });
+
+  describe('clearAllNotifationsHandler', async () => {
+    it('should delete all the notification', async () => {
+      //  arrange
+      const event = {
+        data: notificationList
+      };
+      const notificationService: NotificationService = TestBed.get(NotificationService);
+      spyOn(notificationService, 'deleteAllNotifications').and.returnValue(true);
+      spyOn(component, 'generateInteractEvent');
+      spyOn(component, 'fetchNotificationList');
+      // act
+      await component.clearAllNotifationsHandler(event);
+      // assert
+      expect(component.generateInteractEvent).toHaveBeenCalledWith('clear-all-notification');
+      expect(component.showNotificationModel).toBeFalsy();
+      expect(notificationService.deleteAllNotifications).toHaveBeenCalledWith(event.data);
+    });
+
+    it('should skip clear all notifications if there are no notifications', async () => {
+      //  arrange
+      const event = {
+        data: []
+      };
+      const notificationService: NotificationService = TestBed.get(NotificationService);
+      spyOn(component, 'generateInteractEvent');
+      // act
+      await component.clearAllNotifationsHandler(event);
+      // assert
+      expect(component.generateInteractEvent).toHaveBeenCalledWith('clear-all-notification');
+    });
+  });
+
 
 });
