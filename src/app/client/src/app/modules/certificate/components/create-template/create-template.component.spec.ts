@@ -1,5 +1,5 @@
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { CreateTemplateComponent } from './create-template.component';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -137,7 +137,7 @@ class RouterStub {
     expect(component.disableCreateTemplate).toEqual(true);
   });
 
-  it('should create the certificate template with all the form values', () => {
+  it('should create the certificate template with all the form values', fakeAsync(() => {
     const uploadCertService = TestBed.get(UploadCertificateService);
     component.createTemplateForm = new FormGroup({
       certificateTitle: new FormControl('Completion certificate'),
@@ -155,13 +155,12 @@ class RouterStub {
     spyOn(uploadCertService, 'createCertTemplate').and.returnValue(of(MockData.create));
 
     component.createCertTemplate();
-setTimeout(() => {
+    tick(1000);
   expect(component.disableCreateTemplate).toEqual(true);
     expect(component.uploadTemplate).toHaveBeenCalledWith(component.finalSVGurl, MockData.create.result.identifier);
-}, 1000)
-  });
+  }));
 
-  it('should not create the certificate template with all the form values', () => {
+  it('should not create the certificate template with all the form values', fakeAsync(() => {
     const uploadCertService = TestBed.get(UploadCertificateService);
     const toasterService = TestBed.get(ToasterService);
     component.createTemplateForm = new FormGroup({
@@ -180,10 +179,9 @@ setTimeout(() => {
     spyOn(new CertConfigModel(), 'prepareCreateAssetRequest').and.stub();
     spyOn(uploadCertService, 'createCertTemplate').and.callFake(() => throwError({}));
     component.createCertTemplate();
-    setTimeout(() => {
-      // expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, please try again later');
-    }, 1000);
-  });
+    tick(1000);
+    expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, please try again later');
+  }));
 
   it('should upload the final certificate svg image', () => {
     const uploadCertService = TestBed.get(UploadCertificateService);
@@ -193,7 +191,7 @@ setTimeout(() => {
     spyOn(navigationHelperService, 'navigateToLastUrl').and.stub();
     spyOn(uploadCertService, 'storeAsset').and.returnValue(of({}));
     component.uploadTemplate(MockData.imageUrlData.id, 'SOME_DO_ID');
-    // expect(toasterService.success).toHaveBeenCalledWith('Template created successfully');
+    expect(toasterService.success).toHaveBeenCalledWith('Template created successfully');
     expect(navigationHelperService.navigateToLastUrl).toHaveBeenCalled();
   });
 
@@ -203,7 +201,7 @@ setTimeout(() => {
     spyOn(toasterService, 'error').and.stub();
     spyOn(uploadCertService, 'storeAsset').and.callFake(() => throwError({}));
     component.uploadTemplate(MockData.imageUrlData.id, 'SOME_DO_ID');
-    // expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, please try again later');
+    expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, please try again later');
   });
 
   it('should close the browse', () => {
@@ -330,7 +328,6 @@ setTimeout(() => {
     expect(component.createTemplateForm.controls.certificateTitle.touched).toEqual(true);
     expect(component.createTemplateForm.controls.stateName.touched).toEqual(true);
     expect(component.createTemplateForm.controls.authoritySignature_0.touched).toEqual(true);
-    // expect(component.createTemplateForm.controls.authoritySignature_1.touched).toEqual(true);
 
   });
   // it('should remove the selected logo', () => {
