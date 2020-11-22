@@ -91,8 +91,6 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
         this.currentState = 'certRules';
         this.showPreviewModal = false;
         this.newTemplateIdentifier = _.get(res , 'identifier');
-      } else if ( res !== null && _.isEmpty(res)) {
-        this.currentState = 'certRules';
       }
     });
     this.navigationHelperService.setNavigationUrl();
