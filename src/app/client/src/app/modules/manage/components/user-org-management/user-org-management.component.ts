@@ -11,6 +11,7 @@ import * as $ from 'jquery';
 import 'datatables.net';
 import * as dayjs from 'dayjs';
 import {Subject} from 'rxjs';
+import { TncService } from '@sunbird/core';
 
 @Component({
   selector: 'app-user-org-management',
@@ -84,10 +85,11 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
   public telemetryInteractObject: IInteractEventObject;
   public showUploadUserModal = false;
   public disableBtn = true;
+  public instance: string;
 
   constructor(activatedRoute: ActivatedRoute, public navigationhelperService: NavigationHelperService,
     userService: UserService, manageService: ManageService, private toasterService: ToasterService, resourceService: ResourceService,
-              public layoutService: LayoutService, public telemetryService: TelemetryService) {
+              public layoutService: LayoutService, public telemetryService: TelemetryService, public tncService: TncService) {
     this.userService = userService;
     this.manageService = manageService;
     this.activatedRoute = activatedRoute;
@@ -101,6 +103,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
 
   ngOnInit(): void {
     this.initLayout();
+    this.instance = _.upperCase(this.resourceService.instance);
     this.uploadButton = this.resourceService.frmelmnts.btn.selectCsvFile
     this.geoButtonText = this.resourceService.frmelmnts.btn.viewdetails;
     this.teachersButtonText = this.resourceService.frmelmnts.btn.viewdetails;
@@ -477,6 +480,15 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
           this.toasterService.error(this.resourceService.messages.emsg.m0076);
         }
       );
+  }
+
+  openAdminPolicyPopup() {
+    this.tncService.getTncList().subscribe(data => {
+      const adminTncData = _.get(data, 'result.response.value');
+      if (_.get(adminTncData, 'latestVersion')) {
+        const adminTncUrl = _.get(adminTncData[adminTncData.latestVersion], 'url');
+      }
+    });
   }
 
   ngOnDestroy() {

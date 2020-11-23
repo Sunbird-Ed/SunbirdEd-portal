@@ -21,6 +21,11 @@
       <button type="button" (click) = "openModel()" class="sb-btn sb-btn-outline-primary sb-btn-normal" appTelemetryInteract 
       [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="openUploadModalInteractEdata">{{resourceService.frmelmnts?.lbl?.uploadValidationStatus}}</button>
     </div>
+    <div>
+      <label class="d-flex flex-ai-center">
+        <span class="font-weight-normal fnormal">{{resourceService?.frmelmnts?.lbl?.adminManageTnc | interpolate:'{instance}': instance }} <a class="sb-color-primary" (click)=openAdminPolicyPopup()>{{resourceService?.frmelmnts?.lbl?.adminPolicy}}</a></span>
+      </label>
+    </div>
   </div>
   <div class="ui container">
     <h4 class="sb-manage-section-title py-16 m-0">User & Org Management</h4>
