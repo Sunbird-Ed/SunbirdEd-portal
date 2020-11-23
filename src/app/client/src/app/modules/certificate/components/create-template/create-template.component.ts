@@ -335,7 +335,7 @@ urltoFile(url, filename, mimeType) {
   }
 
   back() {
-    this.uploadCertificateService.certificate.next({});
+    this.uploadCertificateService.certificate.next(null);
     this.navigationHelperService.navigateToLastUrl();
   }
 }

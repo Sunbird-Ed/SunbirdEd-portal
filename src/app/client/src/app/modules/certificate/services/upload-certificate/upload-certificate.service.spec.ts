@@ -82,6 +82,9 @@ describe('UploadCertificateService', () => {
           'status': ['Live'],
           'channel': '12345'
         },
+        'sort_by': {
+          'lastUpdatedOn': 'desc'
+        },
         'limit': 50,
         'offset': 0
       }
@@ -144,6 +147,9 @@ describe('UploadCertificateService', () => {
           'filters': {
               'certType': 'cert template',
               'channel': '12345'
+          },
+          'sort_by': {
+            'lastUpdatedOn': 'desc'
           },
           'fields': ['indentifier', 'name', 'code', 'certType', 'data', 'issuer', 'signatoryList', 'artifactUrl', 'primaryCategory', 'channel'],
           'limit': 100

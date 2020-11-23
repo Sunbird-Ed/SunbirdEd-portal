@@ -36,6 +36,9 @@ export class UploadCertificateService {
           'compatibilityLevel': { 'min': 1, 'max': 2 },
           'status': ['Live']
         },
+        'sort_by': {
+          'lastUpdatedOn': 'desc'
+        },
         'limit': 50,
         'offset': 0
       }

@@ -175,6 +175,9 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
               'channel': this.userService.channel,
               'mediaType': 'image'
           },
+          'sort_by': {
+            'lastUpdatedOn': 'desc'
+          },
           'fields': ['indentifier', 'name', 'code', 'certType', 'data', 'issuer', 'signatoryList', 'artifactUrl', 'primaryCategory', 'channel'],
           'limit': 100
       }
@@ -505,5 +508,6 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+    this.uploadCertificateService.certificate.next(null);
   }
 }
