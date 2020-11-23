@@ -32,7 +32,8 @@ export class GroupsService {
   public showActivateModal = new EventEmitter();
   public updateEvent = new EventEmitter();
   public _groupListCount: number;
-  public emitNotAcceptedGroupsTnc = new EventEmitter();
+  private _systemTncList;
+  private _userData;
 
   constructor(
     private csLibInitializerService: CsLibInitializerService,
@@ -50,6 +51,7 @@ export class GroupsService {
     }
     this.groupCservice = CsModule.instance.groupService;
     this.userCservice = CsModule.instance.userService;
+    this._userData = this.userService.userProfile;
   }
 
   addFieldsToMember(members): IGroupMember[] {
@@ -334,21 +336,27 @@ getActivity(groupId, activity, mergeGroup) {
   }
 
   isUserAcceptedTnc() {
+      const userTncAccepted = _.get(this._userData, 'allTncAccepted');
+      return this._userData ? (!_.isEmpty(userTncAccepted) && !_.isEmpty(_.get(userTncAccepted, 'groupsTnc'))) : true;
+  }
 
-    combineLatest(this.userService.getUserData(this.userService.userid), this.tncService.getTncList())
-      .subscribe(([userData, systemList]) => {
-        const groupsTnc = _.find(_.get(systemList, 'result.response'), { id: 'groupsTnc' });
-        groupsTnc.value = typeof groupsTnc.value === 'string' ? JSON.parse(groupsTnc.value) : groupsTnc.value;
+  set systemsList (list) {
+    const groupsTnc = _.find(list, { id: 'groupsTnc' });
+    groupsTnc.value = (typeof groupsTnc.value === 'string') ? JSON.parse(groupsTnc.value) : groupsTnc.value;
 
-        const userTncAccepted = _.get(userData, 'result.response.allTncAccepted');
-        const isTncAccepted = (!_.isEmpty(userTncAccepted) && !_.isEmpty(_.get(userTncAccepted, 'groupsTnc')) &&
-          (_.get(userTncAccepted, 'groupsTnc.version') >= _.get(groupsTnc, 'value.latestVersion')));
+    this._systemTncList = groupsTnc;
+  }
 
-        this.emitNotAcceptedGroupsTnc.emit({ tnc: groupsTnc, accepted: isTncAccepted });
+  get latestTnc() {
+    return this._systemTncList;
+  }
 
-      }, err => {
-        console.log('Error: ', err);
-      });
+  set userData(user) {
+    this._userData = user;
+  }
+
+  isTncUpdated() {
+    return _.get(this._userData, 'allTncAccepted.groupsTnc.version') < _.get(this._systemTncList, 'value.latestVersion');
   }
 
   updateGroupGuidelines(request: CsGroupUpdateGroupGuidelinesRequest) {

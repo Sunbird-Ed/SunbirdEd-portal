@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GroupsService } from '../../../services/groups/groups.service';
 import { configureTestSuite } from '@sunbird/test-util';
 import { courseHierarchy, nestedCourse, activityData, groupData, content } from './activity-dashboard.component.spec.data';
+import * as _ from 'lodash-es';
 
 describe('ActivityDashboardComponent', () => {
   let component: ActivityDashboardComponent;
@@ -159,9 +160,9 @@ describe('ActivityDashboardComponent', () => {
     const groupService = TestBed.get(GroupsService);
     component.groupId = '123';
     spyOn(groupService, 'addTelemetry');
-    component.addTelemetry('activity-dashboard-member-search', [], { query: 'test' });
+    component.addTelemetry('activity-dashboard-member-search', [], { query: 'test' }, {});
     expect(groupService.addTelemetry).toHaveBeenCalledWith({id: 'activity-dashboard-member-search', extra: { query: 'test' }},
-    { params: {}, data: { telemetry: {} }}, [], '123');
+    { params: {}, data: { telemetry: {} }}, [], '123', {});
   });
 
   it('should sort and return members', () => {
@@ -324,6 +325,22 @@ describe('ActivityDashboardComponent', () => {
     tick(100);
     const value = component.showActivityType();
     expect(value).toEqual((resourceBundle.frmelmnts.lbl.ACTIVITY_COURSE_TITLE).toLowerCase());
+  }));
+
+  it ('should call utilService.downloadCsv', fakeAsync(()  => {
+    component.memberListToShow = [{
+      identifier: '87cb1e5b-16cf-4160-9a2c-7384da0ae97f',
+      indexOfMember: 0,
+      initial: 'C',
+      progress: '0',
+      title: 'Content Creactor(You)'
+    }];
+    component.selectedCourse = courseHierarchy.result.content;
+    spyOn(component, 'addTelemetry');
+    spyOn(component['utilService'], 'downloadCSV');
+    component.downloadCSVFile();
+    expect(component['utilService'].downloadCSV).toHaveBeenCalledWith(courseHierarchy.result.content,
+      [{courseName: 'ParentCourse', memberName: 'Content Creactor', progress: '0%'}]);
   }));
 
 });

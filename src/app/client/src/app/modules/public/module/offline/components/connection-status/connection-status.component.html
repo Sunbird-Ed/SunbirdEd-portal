@@ -1,0 +1,30 @@
+<div class="status-container d-flex flex-dc flex-jc-center p-24 sb-bg-color-white" *ngIf="!isConnected">
+  <div class="d-flex flex-dc flex-jc-center text-center flex-ai-center">
+    <div class="status-container__icon">
+      <img src="../../../../../assets/images/offline-icon.svg" width="37px" height="37px">
+    </div>
+    <div class="fs-1 status-container__title">{{resourceService?.frmelmnts?.lbl?.offline}}</div>
+    <div class="mt-8 text-center status-container__para">{{resourceService?.frmelmnts?.lbl?.import}}</div>
+  </div>
+  <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mt-16 w-100"
+    (click)="handleImportContentDialog()" appTelemetryInteract [telemetryInteractEdata]="importTelemetryInteractEdata">
+    {{resourceService?.frmelmnts?.btn?.loadContent}}
+  </button>
+</div>
+
+<div class="status-container flex-dc d-flex flex-jc-center p-24 sb-bg-color-white" *ngIf="isConnected">
+  <div class="d-flex flex-dc flex-jc-center text-center flex-ai-center">
+    <div class="status-container__icon">
+      <img src="../../../../../assets/images/Online.svg" width="37px" height="37px">
+    </div>
+    <div class="fs-1 status-container__title">{{resourceService?.frmelmnts?.lbl?.online}}</div>
+    <div class="mt-8 text-center status-container__para">{{resourceService?.frmelmnts.lbl.downloadBooks}}</div>
+
+  </div>
+  <button type="button" class="sb-btn sb-btn-outline-secondary sb-btn-normal mt-16 w-100" [routerLink]="'browse'"
+    *ngIf="!router.url.includes('browse')" appTelemetryInteract [telemetryInteractEdata]="browseTelemetryInteractEdata">
+    {{resourceService?.frmelmnts?.btn?.browse}}
+  </button>
+</div>
+
+<app-load-content *ngIf="showLoadContentModal"  (close)="handleImportContentDialog()"></app-load-content>

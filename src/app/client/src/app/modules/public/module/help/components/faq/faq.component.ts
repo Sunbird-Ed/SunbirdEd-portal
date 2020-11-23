@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CacheService } from 'ng2-cache-service';
-import { UtilService, ResourceService, LayoutService, NavigationHelperService, ToasterService } from '@sunbird/shared';
-import { TenantService } from '@sunbird/core';
+import { UtilService, ResourceService, LayoutService, NavigationHelperService, ToasterService, ConfigService } from '@sunbird/shared';
+import { TenantService, PublicDataService } from '@sunbird/core';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -28,15 +28,18 @@ export class FaqComponent implements OnInit {
   unsubscribe$ = new Subject<void>();
   public telemetryImpression: IImpressionEventInput;
   defaultToEnglish = false;
+  isDesktopApp = false;
 
   constructor(private http: HttpClient, private _cacheService: CacheService, private utilService: UtilService,
     public tenantService: TenantService, public resourceService: ResourceService, public activatedRoute: ActivatedRoute,
     private layoutService: LayoutService, public navigationHelperService: NavigationHelperService, private location: Location,
     private router: Router, private telemetryService: TelemetryService,
-    private faqService: FaqService, private toasterService: ToasterService) {
+    private faqService: FaqService, private toasterService: ToasterService,
+    private configService: ConfigService, private publicDataService: PublicDataService) {
   }
 
   ngOnInit() {
+    this.isDesktopApp = this.utilService.isDesktopApp;
     this.setTelemetryImpression();
     this.initLayout();
     this.instance = _.upperCase(this.resourceService.instance);
@@ -49,14 +52,18 @@ export class FaqComponent implements OnInit {
     };
     this.selectedLanguage = this._cacheService.get('portalLanguage') || 'en';
 
-    this.faqService.getFaqJSON()
-      .pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-        this.faqBaseUrl = _.get(data, 'result.response.value');
-        this.getFaqJson();
-      }, (err) => {
-        this.showLoader = false;
-        this.toasterService.error(this.resourceService.messages.emsg.m0005);
-      });
+    if (this.isDesktopApp) {
+      this.getDesktopFAQ(this.selectedLanguage);
+    } else {
+      this.faqService.getFaqJSON()
+        .pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+          this.faqBaseUrl = _.get(data, 'result.response.value');
+          this.getFaqJson();
+        }, (err) => {
+          this.showLoader = false;
+          this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        });
+    }
 
     this.utilService.languageChange.subscribe((langData) => {
       this.showLoader = true;
@@ -83,6 +90,28 @@ export class FaqComponent implements OnInit {
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
       }
     });
+  }
+
+  private getDesktopFAQ(languageCode = 'en') {
+    const requestParams = {
+      url: `${this.configService.urlConFig.URLS.OFFLINE.READ_FAQ}/${languageCode}`
+    };
+    this.publicDataService.get(requestParams).pipe(takeUntil(this.unsubscribe$))
+      .subscribe((response) => {
+        this.showLoader = false;
+        this.faqList = _.get(response, 'result.faqs');
+        this.defaultToEnglish = false;
+      }, (error) => {
+        if (_.get(error, 'status') === 404 && !this.defaultToEnglish) {
+          this.selectedLanguage = 'en';
+          this.defaultToEnglish = true;
+          this.getDesktopFAQ();
+        } else {
+          this.showLoader = false;
+          console.log(`Received Error while fetching faqs ${JSON.stringify(error.error)}`);
+          this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        }
+      });
   }
 
   setTelemetryImpression() {

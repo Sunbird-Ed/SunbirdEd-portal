@@ -43,6 +43,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy 
   public unsubscribe$ = new Subject<void>();
   public objectRollup = {};
   isGroupAdmin: boolean;
+  groupId: string;
 
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
@@ -69,6 +70,9 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy 
           l1: _.get(this.activatedRoute, 'snapshot.queryParams.l1Parent')
         };
       }
+      CsGroupAddableBloc.instance.state$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+        this.groupId = _.get(data, 'groupId') || _.get(this.activatedRoute.snapshot, 'queryParams.groupId');
+      });
       this.getContent();
       CsGroupAddableBloc.instance.state$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
         this.isGroupAdmin = !_.isEmpty(_.get(this.activatedRoute.snapshot, 'queryParams.groupId'))
@@ -96,7 +100,8 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy 
   setTelemetryData() {
     this.telemetryImpression = {
       context: {
-        env: this.activatedRoute.snapshot.data.telemetry.env
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: this.groupId ? [{id: this.groupId, type: 'Group'}] : [],
       },
       object: {
         id: this.contentId,

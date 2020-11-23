@@ -52,6 +52,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   public unsubscribe = new Subject<void>();
   public showNewPlayer = false;
   mobileViewDisplay = 'block';
+  playerType: string;
 
   /**
  * Dom element reference of contentRatingModal
@@ -145,16 +146,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.cdr.detectChanges();
     if (this.playerConfig) {
       this.playerOverlayImage = this.overlayImagePath ? this.overlayImagePath : _.get(this.playerConfig, 'metadata.appIcon');
-      if (this.playerLoaded) {
-        if (this.playerConfig.metadata.mimeType === 'application/pdf') {
-          this.loadPDFPlayer();
-        } else {
-          const playerElement = this.contentIframe.nativeElement;
-          playerElement.contentWindow.initializePreview(this.playerConfig);
-        }
-      } else {
-        this.loadPlayer();
-      }
+      this.loadPlayer();
     }
   }
   loadCdnPlayer() {
@@ -200,37 +192,35 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       };
     }, 0);
   }
-  /**
-   * Initializes player with given config and emits player telemetry events
-   * Emits event when content starts playing and end event when content was played/read completely
-   */
-  loadPDFPlayer() {
+
+  loadPlayer() {
+    this.playerType = null;
     const formReadInputParams = {
       formType: 'content',
       formAction: 'play',
-      contentType: 'pdf'
+      contentType: 'player'
     };
     this.formService.getFormConfig(formReadInputParams).subscribe(
       (data: any) => {
-       if (_.get(data, 'version') === 2) {
+        let isNewPlayer = false;
+        _.forEach(data, (value) => {
+          if (_.includes(_.get(value, 'mimeType'), this.playerConfig.metadata.mimeType) && _.get(value, 'version') === 2) {
+            this.playerType = _.get(value, 'type');
+            isNewPlayer = true;
+          }
+        });
+
+        if (isNewPlayer) {
           this.playerLoaded = false;
           this.loadNewPlayer();
-       } else {
-         this.loadOldPlayer();
-       }
+        } else {
+          this.loadOldPlayer();
+        }
       },
       (error) => {
         this.loadOldPlayer();
       }
     );
-  }
-
-  loadPlayer() {
-    if (this.playerConfig.metadata.mimeType === 'application/pdf') {
-      this.loadPDFPlayer();
-    } else {
-      this.loadOldPlayer();
-    }
   }
 
   loadOldPlayer() {
@@ -271,8 +261,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.questionScoreSubmitEvents.emit(event);
     }
   }
-  pdfEventHandler(event) {
-    if (event.edata.type === 'SHARE') {
+  eventHandler(event) {
+    if (_.get(event, 'edata.type') === 'SHARE') {
       this.contentUtilsServiceService.contentShareEvent.emit('open');
       this.mobileViewDisplay = 'none';
     }

@@ -200,7 +200,12 @@ describe('AddToGroupDirective', () => {
         cdata: [{
           type: 'Group',
           id: '123'
-        }]
+        },
+        {
+          type: 'Activity',
+          id: 'do_12345',
+        }
+      ]
       },
       edata: {
         id: 'add-to-group-button',

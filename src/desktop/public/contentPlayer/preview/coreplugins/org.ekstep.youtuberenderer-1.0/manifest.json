@@ -1,0 +1,11 @@
+{
+    "id": "org.ekstep.youtuberenderer",
+    "ver": "1.0",
+    "shortId": "org.eskstep.youtuberenderer",
+    "author": "Kartheek Palla",
+    "description": "",
+    "publishedDate": "",
+    "renderer": {
+        "main": "renderer/plugin.js"
+    }
+}

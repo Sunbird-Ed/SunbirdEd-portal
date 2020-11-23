@@ -10,7 +10,7 @@ import { SharedModule } from '@sunbird/shared';
 import { APP_BASE_HREF } from '@angular/common';
 import { configureTestSuite } from '@sunbird/test-util';
 import { GroupMemberRole, CsGroup, GroupEntityStatus } from '@project-sunbird/client-services/models/group';
-import { groupData, modifiedActivities } from './groups.service.spec.data';
+import { groupData, modifiedActivities, list, modified } from './groups.service.spec.data';
 
 describe('GroupsService', () => {
   configureTestSuite();
@@ -248,44 +248,46 @@ describe('GroupsService', () => {
     expect(isGroupActive).toEqual(true);
   });
 
-  it('should emit "emitNotAcceptedGroupsTnc" ', () => {
+  it ('should return "TRUE if user accepted TNC"', () => {
     const service = TestBed.get(GroupsService);
-    const parsedData =  {
-      id: 'groupsTnc',
-      field: 'groupsTnc',
-      value: '{\"latestVersion\":\"3.4.0\",\"3.4.0\":{\"url\":\"https:/terms-of-use.html#groupGuidelines\"}}'
-    };
-    const groupsTnc = {result: {response: [ parsedData ] }};
-    parsedData.value = typeof parsedData.value === 'string' ? JSON.parse(parsedData.value) : parsedData.value;
+    service['_userData'] = {allTncAccepted: {groupsTnc: {version: '1.0'}}};
+    const accepted = service.isUserAcceptedTnc();
+    expect(accepted).toEqual(true);
+  });
 
-    spyOn(service['tncService'], 'getTncList').and.returnValue(of (groupsTnc));
-    spyOn(service['userService'], 'getUserData').and.returnValue(of ({
-      result: {
-        response: {
-          allTncAccepted: {
-            groupsTnc: {
-              tncAcceptedOn: '2020-10-19 09:28:36:077+0000',
-              version: '3.4.0'
-            }
-          }
-        }
-      }
-    }));
+  it ('should return "FALSE if user NOT accepted TNC"', () => {
+    const service = TestBed.get(GroupsService);
+    service['_userData'] = {allTncAccepted: {}};
+    const accepted = service.isUserAcceptedTnc();
+    expect(accepted).toEqual(false);
+  });
 
-    spyOn(service.emitNotAcceptedGroupsTnc, 'emit').and.callThrough();
+  it ('should set _systemTncList', () => {
+    const service = TestBed.get(GroupsService);
+    service.systemsList = list;
+    expect(service['_systemTncList']).toEqual(modified);
+    expect(service.latestTnc).toEqual(modified);
+  });
 
-    service.isUserAcceptedTnc();
+  it ('should set UserData', () => {
+    const service = TestBed.get(GroupsService);
+    service.userData = {allTncAccepted: {}};
+    expect(service['_userData']).toEqual({allTncAccepted: {}});
+  });
 
-    expect(service['tncService'].getTncList).toHaveBeenCalled();
+  it ('should return "TRUE if TNC updated "', () => {
+    const service = TestBed.get(GroupsService);
+    service.userData = {allTncAccepted: {groupsTnc: {version: '3.3.0'}}};
+    service['_systemTncList'] = modified;
+    const accepted = service.isTncUpdated();
+    expect(accepted).toEqual(true);
+  });
 
-    combineLatest(
-    service['userService'].getUserData('123'),
-    service['tncService'].getTncList()
-    ) .subscribe(data => {
-      expect(service.emitNotAcceptedGroupsTnc.emit).toHaveBeenCalledWith(
-        {tnc: parsedData, accepted: true}
-      );
-    });
+  it ('should return "FALSE if TNC Not updated "', () => {
+    const service = TestBed.get(GroupsService);
+    service.userData = {allTncAccepted: {groupsTnc: {version: '3.4.0'}}};
+    const accepted = service.isTncUpdated();
+    expect(accepted).toEqual(false);
   });
 
 });

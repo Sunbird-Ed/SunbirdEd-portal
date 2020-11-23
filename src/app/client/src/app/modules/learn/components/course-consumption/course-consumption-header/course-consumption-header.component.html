@@ -119,6 +119,9 @@
 <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
   <div class="ui text centered inline loader mt-40">{{resourceService.frmelmnts.lbl.copycontent}}</div>
 </div>
+
+<app-certificate-name-update-popup *ngIf="showProfileUpdatePopup" [profileInfo]="profileInfo" (close)="showProfileUpdatePopup = false"></app-certificate-name-update-popup>
+
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal"
   (close)="closeSharePopup('close-share-link-popup')">
 </app-share-link>
