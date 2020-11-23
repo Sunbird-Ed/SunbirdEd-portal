@@ -1,6 +1,6 @@
 import { ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter,
-OnChanges, HostListener, OnInit } from '@angular/core';
+OnChanges, HostListener, OnInit, ChangeDetectorRef } from '@angular/core';
 import * as _ from 'lodash-es';
 import { PlayerConfig } from '@sunbird/shared';
 import { Router } from '@angular/router';
@@ -52,6 +52,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   public unsubscribe = new Subject<void>();
   public showNewPlayer = false;
   mobileViewDisplay = 'block';
+  playerType: string;
 
   /**
  * Dom element reference of contentRatingModal
@@ -66,7 +67,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   constructor(public configService: ConfigService, public router: Router, private toasterService: ToasterService,
     public resourceService: ResourceService, public navigationHelperService: NavigationHelperService,
     private deviceDetectorService: DeviceDetectorService, private userService: UserService, public formService: FormService
-    , public contentUtilsServiceService: ContentUtilsServiceService, private contentService: ContentService) {
+    , public contentUtilsServiceService: ContentUtilsServiceService, private contentService: ContentService,
+    private cdr: ChangeDetectorRef) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
     this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
@@ -141,18 +143,10 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   ngOnChanges(changes) {
     this.contentRatingModal = false;
     this.showNewPlayer = false;
+    this.cdr.detectChanges();
     if (this.playerConfig) {
       this.playerOverlayImage = this.overlayImagePath ? this.overlayImagePath : _.get(this.playerConfig, 'metadata.appIcon');
-      if (this.playerLoaded) {
-        if (this.playerConfig.metadata.mimeType === 'application/pdf') {
-          this.loadPDFPlayer();
-        } else {
-          const playerElement = this.contentIframe.nativeElement;
-          playerElement.contentWindow.initializePreview(this.playerConfig);
-        }
-      } else {
-        this.loadPlayer();
-      }
+      this.loadPlayer();
     }
   }
   loadCdnPlayer() {
@@ -198,37 +192,35 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       };
     }, 0);
   }
-  /**
-   * Initializes player with given config and emits player telemetry events
-   * Emits event when content starts playing and end event when content was played/read completely
-   */
-  loadPDFPlayer() {
+
+  loadPlayer() {
+    this.playerType = null;
     const formReadInputParams = {
       formType: 'content',
       formAction: 'play',
-      contentType: 'pdf'
+      contentType: 'player'
     };
     this.formService.getFormConfig(formReadInputParams).subscribe(
       (data: any) => {
-       if (_.get(data, 'version') === 2) {
+        let isNewPlayer = false;
+        _.forEach(data, (value) => {
+          if (_.includes(_.get(value, 'mimeType'), this.playerConfig.metadata.mimeType) && _.get(value, 'version') === 2) {
+            this.playerType = _.get(value, 'type');
+            isNewPlayer = true;
+          }
+        });
+
+        if (isNewPlayer) {
           this.playerLoaded = false;
           this.loadNewPlayer();
-       } else {
-         this.loadOldPlayer();
-       }
+        } else {
+          this.loadOldPlayer();
+        }
       },
       (error) => {
         this.loadOldPlayer();
       }
     );
-  }
-
-  loadPlayer() {
-    if (this.playerConfig.metadata.mimeType === 'application/pdf') {
-      this.loadPDFPlayer();
-    } else {
-      this.loadOldPlayer();
-    }
   }
 
   loadOldPlayer() {
@@ -269,14 +261,17 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.questionScoreSubmitEvents.emit(event);
     }
   }
-  pdfEventHandler(event) {
-    if (event.edata.type === 'SHARE') {
+  eventHandler(event) {
+    if (_.get(event, 'edata.type') === 'SHARE') {
       this.contentUtilsServiceService.contentShareEvent.emit('open');
       this.mobileViewDisplay = 'none';
     }
   }
 
   generateContentReadEvent(event: any, newPlayerEvent?) {
+    if (!event) {
+      return;
+    }
     if (newPlayerEvent) {
       event = { detail: {telemetryData: event}};
     }

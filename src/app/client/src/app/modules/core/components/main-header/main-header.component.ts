@@ -144,6 +144,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   locationTenantInfo: any = {};
   deviceProfile: any;
   isCustodianUser: boolean;
+
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
     public orgDetailsService: OrgDetailsService, public formService: FormService,
@@ -633,4 +634,5 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   locationSubmit() {
     this.showLocationPopup = false;
   }
+
 }
