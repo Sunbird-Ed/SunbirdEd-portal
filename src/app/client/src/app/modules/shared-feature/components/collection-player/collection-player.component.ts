@@ -247,7 +247,12 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       relativeTo: this.route
     };
     if (id) {
-      this.queryParams.contentId = id;
+      if (this.queryParams){
+        this.queryParams['contentId'] = id;
+      } else {
+        this.queryParams = {};
+        this.queryParams['contentId'] = id;
+      }
       navigationExtras.queryParams = this.queryParams;
     } else
       if (content) {
@@ -340,6 +345,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
             const content = this.findContentById(data, this.contentId);
             this.selectedContent = content;
             if (content) {
+              this.activeContent = _.get(content, 'model');
               this.objectRollUp = this.contentUtilsServiceService.getContentRollup(content);
               this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') });
             } else {
