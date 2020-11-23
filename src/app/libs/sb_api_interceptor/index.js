@@ -70,7 +70,7 @@ function loadTokenPublicKeys(basePath){
               console.info("Defaulting to Keycloak validation");
               return resolve(err);
             }
-            filenames = filenames.filter(isHiddenFileOrDir => !(/(^|\/)\.[^\/\.]/g).test(isHiddenFileOrDir))
+            filenames = filenames.filter(isHiddenFileOrDir => !(/(\/|^|.)\.[^\/\.]/g).test(isHiddenFileOrDir))
             let fileCount = filenames.length;
             filenames.forEach(function(filename) {
               fs.readFile(basePath + filename, 'utf-8', function(err, content) {
