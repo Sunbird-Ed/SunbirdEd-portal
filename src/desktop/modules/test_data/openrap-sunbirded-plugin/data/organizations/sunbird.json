@@ -1,0 +1,58 @@
+{
+    "id": "api.org.search",
+    "ver": "v1",
+    "ts": "2019-04-05 11:50:16:911+0000",
+    "params": {
+        "resmsgid": null,
+        "msgid": "923049c0-2967-4b30-9f2a-0cc822c2f18b",
+        "err": null,
+        "status": "success",
+        "errmsg": null
+    },
+    "responseCode": "OK",
+    "result": {
+        "response": {
+            "count": 1,
+            "content": [
+                {
+                    "dateTime": null,
+                    "preferredLanguage": null,
+                    "approvedBy": null,
+                    "channel": "ROOT_ORG",
+                    "description": "This is test organization",
+                    "updatedDate": "2017-08-25 06:56:00:887+0000",
+                    "addressId": null,
+                    "provider": null,
+                    "locationId": null,
+                    "orgCode": "sunbird",
+                    "theme": null,
+                    "id": "ORG_001",
+                    "communityId": null,
+                    "isApproved": null,
+                    "email": null,
+                    "slug": "sunbird",
+                    "identifier": "ORG_001",
+                    "thumbnail": null,
+                    "orgName": "SUNBIRD",
+                    "updatedBy": "user1",
+                    "locationIds": [],
+                    "externalId": null,
+                    "isRootOrg": true,
+                    "rootOrgId": null,
+                    "approvedDate": null,
+                    "imgUrl": null,
+                    "homeUrl": null,
+                    "orgTypeId": null,
+                    "isDefault": true,
+                    "contactDetail": null,
+                    "createdDate": null,
+                    "createdBy": null,
+                    "parentOrgId": null,
+                    "hashTagId": "505c7c48ac6dc1edc9b08f21db5a571d",
+                    "noOfMembers": 1,
+                    "status": 1
+                }
+            ]
+        }
+    }
+}

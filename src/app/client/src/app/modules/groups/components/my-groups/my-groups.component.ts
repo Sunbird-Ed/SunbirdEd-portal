@@ -1,12 +1,12 @@
-import { UserService } from '@sunbird/core';
+import { UserService, TncService } from '@sunbird/core';
 import { IGroupCard, GROUP_DETAILS, MY_GROUPS, CREATE_GROUP, acceptTnc } from './../../interfaces';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
 import { GroupsService } from '../../services';
 import { ResourceService, LayoutService, ToasterService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
-import { Subject, combineLatest } from 'rxjs';
-import { takeUntil, delay } from 'rxjs/operators';
+import { Subject, combineLatest, of, BehaviorSubject } from 'rxjs';
+import { takeUntil, delay, map, switchMap } from 'rxjs/operators';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { CsGroupSearchCriteria } from '@project-sunbird/client-services/services/group/interface';
 
@@ -26,8 +26,8 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
   showTncModal = false;
   selectedType: acceptTnc = acceptTnc.ALL;
   selectedGroup: {};
-  latestTnc: {};
   isTncAccepted = true;
+  isContentLoaded = new EventEmitter();
 
   constructor(public groupService: GroupsService,
     public router: Router,
@@ -35,25 +35,20 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private activatedRoute: ActivatedRoute,
     private layoutService: LayoutService,
-    private toasterService: ToasterService
+    private toasterService: ToasterService,
+    private tncService: TncService
     ) { }
 
   ngOnInit() {
-    this.groupService.isUserAcceptedTnc();
-    this.initLayout();
     this.showModal = !localStorage.getItem('login_ftu_groups');
+    this.initLayout();
     this.getMyGroupList();
+    this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url);
     this.groupService.closeForm.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       this.getMyGroupList();
     });
-    this.groupService.emitNotAcceptedGroupsTnc.pipe(delay(600)).subscribe((data) => {
-      this.latestTnc = _.get(data, 'tnc');
-      if (this.groupsList.length > 0) {
-        this.showTncModal = !_.get(data, 'accepted');
-      }
-    });
-    this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url);
   }
+
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().
@@ -63,7 +58,6 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
     }
    });
   }
-
 
   getMyGroupList() {
     this.isLoader = true;
@@ -79,9 +73,29 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
           this.groupsList.push(group);
         }
       });
+      this.checkUserAcceptedTnc();
     }, (err) => {
       this.isLoader = false;
       this.groupsList = [];
+    });
+  }
+
+  checkUserAcceptedTnc() {
+    const accepted = this.groupService.isUserAcceptedTnc();
+    if (accepted) {
+      this.getLatestTnc(accepted);
+    } else {
+      this.showTncModal = this.groupsList.length > 0;
+      const data = this.showTncModal ? this.getLatestTnc() : '';
+    }
+  }
+
+  getLatestTnc(accepted?) {
+    this.tncService.getTncList().subscribe(data => {
+      this.groupService.systemsList = _.get(data, 'result.response');
+      if (accepted) {
+        this.showTncModal =  this.groupService.isTncUpdated() ? this.groupsList.length > 0 : false;
+      }
     });
   }
 
@@ -90,14 +104,13 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
   }
 
   public navigateToDetailPage(event) {
+
+    (_.get(event, 'data.status') === 'suspended') ?
+    this.addTelemetry('suspended-group-card', _.get(event, 'data.id')) : this.addTelemetry('group-card', _.get(event, 'data.id'));
+
     this.selectedType = acceptTnc.GROUP;
     this.selectedGroup = event.data;
-    this.showTncModal = this.isTncAccepted ? _.get(event, 'data.visited') === false : !_.has(_.get(event, 'data'), 'visited');
-    if (_.get(event, 'data.status') === 'suspended') {
-      this.addTelemetry('suspended-group-card', _.get(event, 'data.id'));
-    } else {
-      this.addTelemetry('group-card', _.get(event, 'data.id'));
-    }
+    this.showTncModal = _.get(event, 'data.visited') === false;
 
     if (!this.showTncModal) {
       this.navigate(event);
@@ -117,19 +130,22 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
     localStorage.setItem('login_ftu_groups', 'login_user');
   }
 
-  addTelemetry (id, groupId?) {
+  addTelemetry (id, groupId?, extra?) {
     const selectedGroup = _.find(this.groupsList, {id: groupId});
     const obj = selectedGroup ? {id: groupId, type: 'group', ver: '1.0'} : {};
-    this.groupService.addTelemetry({id, extra: {status: _.get(selectedGroup, 'status')}}, this.activatedRoute.snapshot, [], groupId, obj);
+    const extras = extra ? extra : {status: _.get(selectedGroup, 'status')};
+    this.groupService.addTelemetry({id, extra: extras}, this.activatedRoute.snapshot, [], groupId, obj);
   }
 
   handleGroupTnc(event?: {type: string}) {
     if (event) {
       switch (event.type) {
         case acceptTnc.ALL:
+          this.addTelemetry('accept-all-group-tnc', _.get(this.selectedGroup, 'id'));
           this.acceptAllGroupsTnc();
           break;
         case acceptTnc.GROUP:
+          this.addTelemetry('accept-group-tnc', _.get(this.selectedGroup, 'id'));
           this.acceptGroupTnc();
           break;
       }
@@ -150,6 +166,9 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
     this.groupService.updateGroupGuidelines(request)
     .subscribe(data => {
       this.showTncModal = false;
+      this.addTelemetry('success-accept-group-tnc', _.get(this.selectedGroup, 'id'),
+      { status: _.get(this.selectedGroup, 'status'), tncver: _.get(this.groupService.latestTnc, 'value.latestVersion')}
+      );
       this.navigate({data: this.selectedGroup});
     }, err => {
       this.showTncModal = false;
@@ -165,10 +184,15 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
       };
     });
 
+    const groupUpdateRequest = {
+      userId: this.userService.userid,
+      groups: groupIds
+    };
+
     const userProfileUpdateRequest = {
       request: {
-        tncType: _.get(this.latestTnc, 'field'),
-        version:  _.get(this.latestTnc, 'value.latestVersion')
+        tncType: _.get(this.groupService.latestTnc, 'field'),
+        version:  _.get(this.groupService.latestTnc, 'value.latestVersion')
       }
     };
 
@@ -176,15 +200,15 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
       userProfileUpdateRequest.request['userId'] = this.userService.userid;
     }
 
-    const groupUpdateRequest = {
-      userId: this.userService.userid,
-      groups: groupIds
-    };
-
-    combineLatest(
-    this.groupService.updateGroupGuidelines(groupUpdateRequest),
-    this.userService.acceptTermsAndConditions(userProfileUpdateRequest)
-    ).subscribe(() => {
+    this.userService.acceptTermsAndConditions(userProfileUpdateRequest).pipe(
+      takeUntil(this.unsubscribe$),
+      map((data) => {
+        return this.groupService.updateGroupGuidelines(groupUpdateRequest);
+      }),
+    ).subscribe((result) => {
+      this.addTelemetry('success-accept-all-group-tnc', _.get(this.selectedGroup, 'id'),
+      { status: _.get(this.selectedGroup, 'status'), tncver: _.get(this.groupService.latestTnc, 'value.latestVersion') }
+      );
       this.toasterService.success(this.resourceService.frmelmnts.msg.guidelinesacceptsuccess);
       this.showTncModal = false;
       this.isTncAccepted = true;
@@ -193,14 +217,16 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
       }
     }, (err) => {
       this.toasterService.error(this.resourceService.frmelmnts.msg.guidelinesacceptfailed);
-      this.showTncModal = false;
+      this.showTncModal = true;
       this.isTncAccepted = false;
     });
   }
 
   reload() {
-    this.groupService.isUserAcceptedTnc();
-    this.groupService.emitCloseForm();
+    this.userService.getUserData(this.userService.userid).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      this.groupService.userData = _.get(data, 'result.response');
+      this.getMyGroupList();
+    });
   }
 
   ngOnDestroy() {

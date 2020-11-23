@@ -1,0 +1,48 @@
+<div class="font-lato gc-ep-cont" ng-app="sunbird-endpage" ng-controller="endPageController"     id='endpage' ng-show="showEndPage">
+  <div class="ps-wrapper">
+    <div class="ps-content">
+      <div class="ps-body">
+        <div class="ps-nav left contentButton" ng-class="previousContent[content.identifier] ? 'buttonVisible' : 'buttonHide'" ng-click="contentLaunch('previous',content.identifier)">
+          <a class="ps-nav-header textdeco-none">
+            <img ng-src="{{leftArrowIcon}}" alt="prev" class="ps-arrow">
+            <div class="ps-nav-wrappe ps-text-right">
+              <p class="ps-nav-subtitle">Go to</p>
+              <h2 class="ps-nav-title">Previous</h2>
+            </div>
+          </a>
+          <div class="ps-nav-body ps-text-right">
+            <p class="ps-chapter-text chapter-section multiline-ellipsis ellipsis-three-line" >{{ previousContent[content.identifier].content.contentData.name.length > 40 ? previousContent[content.identifier].content.contentData.name.substring(0,40)+"..." : previousContent[content.identifier].content.contentData.name}}</p>
+          </div>
+        </div>
+          <div class="assessment-content assessment-score-content">
+            <div class="assessment-content-title" ng-if="displayScore">Your score is {{userScore}}/{{totalScore}}</div>
+            <div class="assessment-content-description">
+              <div ng-if="displayScore" class="text-center">
+                You can redo the assessment to improve your score.
+              </div>
+              <div ng-if="!displayScore" class="text-center">
+                  Your responses have been recorded.
+                </div>
+            </div>
+            <div class="assessment-action-buttons mt-24">
+              <button class="sb-btn sb-btn-normal sb-btn-outline-primary sb-btn-responsive mr-24" ng-click="replayContent()"> Redo
+              </button>
+              <button class="sb-btn sb-btn-primary sb-btn-normal sb-btn-responsive" ng-show="isCordova" ng-click="openGenie()">Exit </button>
+            </div>
+          </div>
+        <div class="ps-nav right contentButton" ng-class="nextContent[content.identifier] ? 'buttonVisible' : 'buttonHide'" ng-click="contentLaunch('next',content.identifier)">
+          <a class="ps-nav-header textdeco-none">
+            <div class="ps-nav-wrapper">
+              <p class="ps-nav-subtitle">Go to</p>
+              <h2 class="ps-nav-title">Next</h2>
+            </div>
+            <img ng-src="{{rightArrowIcon}}" alt="prev" class="ps-arrow">
+          </a>
+          <div class="ps-nav-body ps-text-left">
+            <p class="ps-chapter-text chapter-section multiline-ellipsis ellipsis-three-line">{{ nextContent[content.identifier].content.contentData.name.length > 40 ? nextContent[content.identifier].content.contentData.name.substring(0,40)+"..." : nextContent[content.identifier].content.contentData.name}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

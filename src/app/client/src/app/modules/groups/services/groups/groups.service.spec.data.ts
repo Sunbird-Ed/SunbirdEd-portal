@@ -167,3 +167,18 @@ export const modifiedActivities = {
     }
   ]
 };
+export const list = [{
+  id: 'groupsTnc',
+  field: 'groupsTnc',
+  value: '{\"latestVersion\":\"3.4.0\",\"3.4.0\":{\"url\":\"https:/terms-of-use.html#groupGuidelines\"}}'
+}];
+export const modified = {
+  field: 'groupsTnc',
+  id: 'groupsTnc',
+  value: {
+    latestVersion: '3.4.0',
+    '3.4.0': {
+      url: 'https:/terms-of-use.html#groupGuidelines'
+    }
+  }
+};

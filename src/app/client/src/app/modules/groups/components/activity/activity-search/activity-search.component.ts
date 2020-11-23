@@ -286,7 +286,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
   addActivity(activityCard) {
     this.groupAddableBlocData.pageIds = [_.get(activityCard, 'primaryCategory').toLowerCase(), ADD_ACTIVITY_TO_GROUP];
     this.csGroupAddableBloc.updateState(this.groupAddableBlocData);
-    const cdata = [{ id: _.get(activityCard, 'identifier'), type: _.get(activityCard, 'contentType') }];
+    const cdata = [{ id: _.get(activityCard, 'identifier'), type: _.get(activityCard, 'primaryCategory') }];
     this.addTelemetry('activity-course-card', cdata);
     const isTrackable = this.courseConsumptionService.isTrackableCollection(activityCard);
     const contentMimeType = _.get(activityCard, 'mimeType');
@@ -298,11 +298,11 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     } else if (contentMimeType === 'application/vnd.ekstep.content-collection' && !isTrackable) {
 
       this.router.navigate(['/resources/play/collection', _.get(activityCard, 'identifier')],
-      { queryParams: { groupId: _.get(this.groupData, 'id') } });
+      {queryParams: {contentType: _.get(activityCard, 'primaryCategory'), groupId: _.get(this.groupData, 'id')}});
 
     } else {
       this.router.navigate(['/resources/play/content', _.get(activityCard, 'identifier')],
-      { queryParams: { groupId: _.get(this.groupData, 'id') } });
+      {queryParams: {contentType: _.get(activityCard, 'primaryCategory'), groupId: _.get(this.groupData, 'id')}});
     }
   }
 

@@ -109,4 +109,9 @@ export class FrameworkService {
     // }
   }
 
+  getSortedFilters(filters, type) {
+    return (type === 'gradeLevel' || _.lowerCase(type) === 'class') ?
+   _.sortBy(filters, ['index', 'name']) : _.sortBy(filters, 'name');
+ }
+
 }
