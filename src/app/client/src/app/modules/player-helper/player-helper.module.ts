@@ -15,6 +15,7 @@ import { CoreModule } from '@sunbird/core';
 import { FormsModule } from '@angular/forms';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import {SunbirdPdfPlayerModule} from '@project-sunbird/sunbird-pdf-player';
+import { SunbirdVideoPlayerModule } from '@project-sunbird/sunbird-video-player';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import {SunbirdPdfPlayerModule} from '@project-sunbird/sunbird-pdf-player';
     CoreModule,
     FormsModule,
     CommonConsumptionModule,
-    SunbirdPdfPlayerModule
+    SunbirdPdfPlayerModule,
+    SunbirdVideoPlayerModule
   ],
   declarations: [ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
     CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent,
