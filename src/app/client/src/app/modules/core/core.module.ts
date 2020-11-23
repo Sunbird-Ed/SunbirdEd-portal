@@ -21,7 +21,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { ContentTypeComponent } from './components/content-type/content-type.component';
 import { LocationModule } from '../location/location.module';
-
+import { NotificationModule } from '../notification/notification.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -35,7 +35,8 @@ import { LocationModule } from '../location/location.module';
     TelemetryModule,
     AvatarModule,
     CommonConsumptionModule,
-    LocationModule
+    LocationModule,
+    NotificationModule
   ],
   declarations: [MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent, PermissionDirective,
     BodyScrollDirective, OnlineOnlyDirective,

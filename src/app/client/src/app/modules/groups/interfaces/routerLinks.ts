@@ -11,3 +11,4 @@ export const COURSES = 'courses';
 export const CREATE_GROUP  = 'group/create';
 export const EDIT_GROUP  = 'edit';
 export const ADD_ACTIVITY_CONTENT_TYPES = 'add-activity-content-types';
+export const NOTIFICATION = 'notification';
