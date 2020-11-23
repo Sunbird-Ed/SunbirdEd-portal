@@ -78,7 +78,7 @@
               {{generaliseLabelService?.frmelmnts?.btn?.create}}
             </button>
 
-            <div class="certified-course__btn">
+            <div class="certified-course__btn" *ngIf="isGroupAdmin">
               <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn" appAddToGroup
                 [identifier]="collectionData?.identifier"
                 [pageId]="collectionData?.primaryCategory.toLowerCase()">{{resourceService?.frmelmnts?.lbl?.AddtoGroup}}

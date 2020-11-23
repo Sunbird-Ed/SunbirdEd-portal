@@ -107,13 +107,14 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
       });
   }
   getAllBatchDetails() {
+    this.showCreateBatchBtn = false;
     this.showBatchList = false;
     this.showError = false;
     this.batchList = [];
     const searchParams: any = {
       filters: {
         courseId: this.courseId,
-        status: ['0', '1']
+        status: ['0', '1', '2']
       },
       offset: 0,
       sort_by: { createdDate: 'desc' }
@@ -129,8 +130,14 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
         this.courseBatchService.getAllBatchDetails(searchParamsMentor),
       ).pipe(takeUntil(this.unsubscribe))
        .subscribe((data) => {
-          this.ongoingAndUpcomingBatchList = _.union(data[0].result.response.content, data[1].result.response.content);
-          this.courseConsumptionService.emitBatchList(this.ongoingAndUpcomingBatchList);
+          const batchList = _.union(data[0].result.response.content, data[1].result.response.content);
+          this.courseConsumptionService.emitBatchList(batchList);
+          const batches = _.map(batchList, batch => {
+              if (batch.status !== 2) {
+                return batch;
+              }
+          });
+          this.ongoingAndUpcomingBatchList = _.compact(batches);
           this.getSelectedBatches();
            if (this.batchList.length > 0) {
              this.fetchUserDetails();

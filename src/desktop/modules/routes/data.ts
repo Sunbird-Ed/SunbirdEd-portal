@@ -150,12 +150,12 @@ export default (app, proxyURL) => {
 
     const location = new Location(manifest);
     app.post(
-        "/api/data/v1/location/search", location.proxyToAPI.bind(location), location.search.bind(location),
+        "/learner/data/v1/location/search", location.proxyToAPI.bind(location), location.search.bind(location),
     );
     app.post(
-        "/api/data/v1/location/save", location.saveLocation.bind(location),
+        "/learner/data/v1/location/save", location.saveLocation.bind(location),
     );
-    app.get("/api/data/v1/location/read", location.get.bind(location));
+    app.get("/learner/data/v1/location/read", location.get.bind(location));
 
     app.get("/learner/data/v1/system/settings/get/custodianOrgId", (req, res) => {
         const resObj = {
