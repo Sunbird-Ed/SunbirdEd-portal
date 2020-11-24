@@ -80,6 +80,7 @@ describe('UploadCertificateService', () => {
           'contentType': ['Asset'],
           'compatibilityLevel': { 'min': 1, 'max': 2 },
           'status': ['Live'],
+          'primaryCategory': 'Asset',
           'channel': '12345'
         },
         'sort_by': {
