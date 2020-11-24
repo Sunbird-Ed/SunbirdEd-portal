@@ -344,7 +344,7 @@ describe('ExplorePageComponent', () => {
     });
   });
 
-  it('should fetch contents', done => {
+  xit('should fetch contents', done => {
     component['fetchContents']().subscribe(res => {
       expect(component.showLoader).toBeFalsy();
       expect(component.apiContentList).toBeDefined();
