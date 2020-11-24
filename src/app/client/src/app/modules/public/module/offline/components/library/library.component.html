@@ -11,7 +11,7 @@
     <div [ngClass]="SECOND_PANEL_LAYOUT">
       <div [appTelemetryImpression]="telemetryImpression"
         [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
-        <div *ngIf="(isBrowse && isConnected) || !isBrowse">
+        <div>
             <div class="ui container">
                 <div class="ui stackable grid m-0">
                     <div class="nine wide column p-0">
