@@ -242,7 +242,7 @@ export class ExportContent {
       id: "content.archive",
       ver: manifestJson.pkgVersion || "1.0",
       ts: new Date(),
-      params: { resmsgid: uuid() },
+      params: { resmsgid: uuid.v1() },
       archive: {
         count: _.get(manifestJson, "archive.items.length") || 1,
         ttl: 24,
