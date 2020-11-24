@@ -36,6 +36,7 @@ ApiInterceptor.prototype.validateToken = function (token, cb) {
         return cb("INVALID_JWT");
     }
     var publicKey = kidToPublicKeyMap[decoded.header.kid];
+    console.log("Kid: ", decoded.header.kid);
 
     // Converting single line public key to PEM format. 
     // JWT.verify methos is expecting the publick key in pem format only
