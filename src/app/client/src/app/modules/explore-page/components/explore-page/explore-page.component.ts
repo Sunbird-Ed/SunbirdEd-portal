@@ -175,15 +175,15 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         if (!filters || status === 'FETCHING') { return; }
         const currentPageData = this.getPageData(get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook');
         this.selectedFilters = pick(filters, ['board', 'medium', 'gradeLevel', 'channel']);
-        if (localStorage.getItem('userType') && currentPageData.contentType !== 'all') {
-            const userType = localStorage.getItem('userType');
-            const userTypeMapping = this.configService.appConfig.userTypeMapping;
-            _map(userTypeMapping, (value, key) => {
-                if (userType === key) {
-                    this.selectedFilters['audience'] = value;
-                }
-            });
-        }
+        // if (localStorage.getItem('userType') && currentPageData.contentType !== 'all') {
+        //     const userType = localStorage.getItem('userType');
+        //     const userTypeMapping = this.configService.appConfig.userTypeMapping;
+        //     _map(userTypeMapping, (value, key) => {
+        //         if (userType === key) {
+        //             this.selectedFilters['audience'] = value;
+        //         }
+        //     });
+        // }
         this.apiContentList = [];
         this.pageSections = [];
         this.pageTitleSrc = get(this.resourceService, 'RESOURCE_CONSUMPTION_ROOT') + get(currentPageData, 'title');
@@ -197,9 +197,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             .pipe(
                 skipWhile(data => data === undefined || data === null),
                 switchMap(currentPageData => {
-                    const { fields, filters: { primaryCategory } } = currentPageData.search;
+                    const { fields, filters } = currentPageData.search;
                     const request = {
-                        filters: this.selectedFilters,
+                        filters: {...this.selectedFilters, ...filters},
                         fields,
                         isCustodianOrg: this.custodianOrg,
                         channelId: this.channelId,
@@ -209,7 +209,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     if (!this.isUserLoggedIn() && get(this.selectedFilters, 'channel') && get(this.selectedFilters, 'channel.length') > 0) {
                         request.channelId = this.selectedFilters['channel'];
                     }
-                    const option = this.searchService.getSearchRequest(request, primaryCategory);
+                    const option = this.searchService.getSearchRequest(request, get(filters, 'primaryCategory'));
                     return this.searchService.contentSearch(option)
                         .pipe(
                             map((response) => {
