@@ -393,6 +393,12 @@ describe('ExplorePageComponent', () => {
     component.downloadContent('123');
     expect(component.showDownloadLoader).toBeFalsy();
   });
+  it('should call download content from popup ', () => {
+    spyOn(component, 'downloadContent');
+    component.callDownload();
+    expect(component.showDownloadLoader).toBeTruthy();
+    expect(component.downloadContent).toHaveBeenCalled();
+  });
 
   it('should call download content with error ', () => {
     const contentManagerService = TestBed.get(ContentManagerService);
@@ -400,13 +406,6 @@ describe('ExplorePageComponent', () => {
     component.ngOnInit();
     component.downloadContent('123');
     expect(component.showDownloadLoader).toBeFalsy();
-  });
-
-  it('should call download content from popup ', () => {
-    spyOn(component, 'downloadContent');
-    component.callDownload();
-    expect(component.showDownloadLoader).toBeTruthy();
-    expect(component.downloadContent).toHaveBeenCalled();
   });
 
 });
