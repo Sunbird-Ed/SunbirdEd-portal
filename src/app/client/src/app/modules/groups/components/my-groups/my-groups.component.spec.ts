@@ -147,24 +147,24 @@ describe('MyGroupsComponent', () => {
     expect(component.showTncModal).toBeFalsy();
   });
 
-  it('should call updateMembers', () => {
-    spyOn(component, 'navigate');
-    spyOn(component['groupService'], 'updateMembers').and.returnValue(of ({}));
-    spyOnProperty(component['userService'], 'userid').and.returnValue('123');
+  it('should call updateGroupGuidelines', () => {
+    component.selectedGroup = {id: '1'};
     const request = {
-      members: [
+      userId: '123',
+      groups: [
         {
-          userId: '123',
+          groupId: '1',
           visited: true
         }
       ]
     };
-    component.selectedGroup = {id: '1'};
+    spyOn(component, 'navigate');
+    spyOn(component['groupService'], 'updateGroupGuidelines').and.returnValue(of ({}));
+    spyOnProperty(component['userService'], 'userid').and.returnValue('123');
     component.acceptGroupTnc();
     expect(component.showTncModal).toBeFalsy();
-    expect(component['groupService'].updateMembers).toHaveBeenCalledWith('1', request);
-
-    component['groupService'].updateMembers('1', request).subscribe(data => {
+    expect(component['groupService'].updateGroupGuidelines).toHaveBeenCalledWith(request);
+    component['groupService'].updateGroupGuidelines(request).subscribe(data => {
       expect(component.navigate).toHaveBeenCalledWith({data: {id: '1'}});
     });
   });

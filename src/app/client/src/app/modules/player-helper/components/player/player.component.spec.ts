@@ -5,8 +5,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
 import { SharedModule } from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
-import { of, Subject } from 'rxjs';
-import { UserService } from '../../../core/services';
+import { of, Subject, throwError } from 'rxjs';
+import { UserService, FormService } from '../../../core/services';
 import { PlayerComponent } from './player.component';
 
 const startEvent = {
@@ -47,7 +47,7 @@ describe('PlayerComponent', () => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
       declarations: [PlayerComponent],
-      providers: [{ provide: UserService, useValue: {} }, CsContentProgressCalculator],
+      providers: [{ provide: UserService, useValue: {} }, CsContentProgressCalculator, FormService],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -297,8 +297,10 @@ describe('PlayerComponent', () => {
   });
 
   it('should call loadPlayer', () => {
+    const formService = TestBed.get(FormService);
     component.isMobileOrTab = true;
     component.playerConfig = playerConfig;
+    spyOn(formService, 'getFormConfig').and.returnValue(throwError({}));
     spyOn(component, 'rotatePlayer');
     spyOn<any>(component, 'loadDefaultPlayer');
     component.loadPlayer();
@@ -307,10 +309,12 @@ describe('PlayerComponent', () => {
   });
 
   it('should call loadPlayer with CDN url', () => {
+    const formService = TestBed.get(FormService);
     component.playerConfig = playerConfig;
     component.isMobileOrTab = false;
     component.previewCdnUrl = 'some_url';
     component.isCdnWorking = 'YES';
+    spyOn(formService, 'getFormConfig').and.returnValue(throwError({}));
     spyOn(component, 'loadCdnPlayer');
     component.loadPlayer();
     expect(component.loadCdnPlayer).toHaveBeenCalled();

@@ -23,7 +23,7 @@ export class CourseConsumptionService {
   showJoinCourseModal = new EventEmitter<any>();
   enableCourseEntrollment = new EventEmitter();
   coursePagePreviousUrl: any;
-  userCreatedAnyBatch = new EventEmitter();
+  userCreatedAnyBatch = new EventEmitter<boolean>();
 
   constructor(private playerService: PlayerService, private courseProgressService: CourseProgressService,
     private toasterService: ToasterService, private resourceService: ResourceService, private router: Router,

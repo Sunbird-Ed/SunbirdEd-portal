@@ -50,7 +50,7 @@ export class ImportContent implements ITaskExecuter {
     this.contentImportData = contentImportData;
     this.observer = observer;
     this.contentFolderPath = await this.contentLocation.get();
-    this.workerProcessRef = childProcess.fork(path.join(__dirname, "contentImportHelper"));
+    this.workerProcessRef = childProcess.fork(path.join(__dirname, "contentImportHelper"), [], { execArgv: ['-r', 'ts-node/register', '-r', 'tsconfig-paths/register'] });
     this.handleChildProcessMessage();
     this.handleWorkerCloseEvents();
     switch (this.contentImportData.metaData.step) {

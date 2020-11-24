@@ -13,7 +13,6 @@ export default (app, contentFilesPath, ecarsFolderPath ) => {
     app.use("/contentPlayer/preview", express.static(path.join(__dirname, "..", "..", "public", "contentPlayer", "preview")));
     app.use("/content", express.static(fileSDK.getAbsPath(contentFilesPath)));
     app.use( "/ecars", express.static(fileSDK.getAbsPath(ecarsFolderPath)));
-    app.use(express.static(path.join(__dirname, "..", "..", "public", "portal")));
     app.use("/sunbird-plugins", express.static(path.join(__dirname, "..", "..", "public", "sunbird-plugins")));
     app.all(
         [
@@ -35,16 +34,17 @@ export default (app, contentFilesPath, ecarsFolderPath ) => {
           "/profile/*",
         ],
         async (req, res) => {
-          const locals = await getLocals(manifest);
-          _.forIn(locals, (value, key) => {
-            res.locals[key] = value;
-          });
-          res.render(
-            path.join(__dirname, "..", "..", "public", "portal", "index.ejs"),
-          );
+            const locals = await getLocals(manifest);
+            _.forIn(locals, (value, key) => {
+              res.locals[key] = value;
+            });
+            res.render(
+              path.join(__dirname, "..", "..", "public", "portal", "index.ejs"),
+            );
         },
       );
-}
+      app.use(express.static(path.join(__dirname, "..", "..", "public", "portal")));
+    }
 
   const getLocals = async (manifest) => {
     const deviceId = await containerAPI
@@ -84,5 +84,20 @@ export default (app, contentFilesPath, ecarsFolderPath ) => {
     locals.deviceProfileApi = "/api/v3/device/profile";
     locals.deviceApi = `${process.env.APP_BASE_URL}/api/`;
     locals.baseUrl = process.env.APP_BASE_URL;
+
+    locals.slug = null;
+    locals.userSid = null;
+    locals.slugForProminentFilter = null;
+    locals.collectionEditorURL = null;
+    locals.contentEditorURL = null;
+    locals.genericEditorURL = null;
+    locals.botConfigured = null;
+    locals.botServiceURL = null;
+    locals.superAdminSlug = null;
+    locals.p1reCaptchaEnabled = null;
+    locals.p2reCaptchaEnabled = null;
+    locals.p3reCaptchaEnabled = null;
+    locals.enableSSO = null;
+    locals.reportsListVersion = null;
     return locals;
   }
