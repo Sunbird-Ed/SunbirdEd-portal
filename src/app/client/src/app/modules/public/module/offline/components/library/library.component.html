@@ -5,6 +5,36 @@
   <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'"
     [appTelemetryImpression]="telemetryImpression">
     <div [ngClass]="FIRST_PANEL_LAYOUT">
+      <div class="sb-desktop-filter-section" [ngClass]="FIRST_PANEL_LAYOUT">
+        <div *ngIf="layoutConfiguration">
+          <!--Online/Offline-->
+        <div class="status-container p-8 mr-16 mb-16">
+          <div class="d-flex flex-ai-center flex-jc-center">
+            <div class="status-container__icon mr-8">
+              <img height="37px" src="../../../../../assets/images/Online.svg" width="24px">
+            </div>
+            <div class="fnormal status-container__title">You are online</div>
+          </div>
+         </div>
+  
+        <!-- <div class="status-container p-8 mr-16 mb-16">
+          <div class="d-flex flex-ai-center flex-jc-center">
+            <div class="status-container__icon mr-8">
+              <img height="37px" src="../../../../../assets/images/Offline.svg" width="24px">
+            </div>
+            <div class="fnormal status-container__title">Your are Offline</div>
+          </div>
+         </div> -->
+         
+        <!--/Online/Offline-->
+        <!--Load content-->
+        <div class="load-content-section mr-16 p-24 mb-24">
+          <div class="load-content-title d-flex">Import books to access while offline</div>
+          <button class="sb-btn sb-btn-secondary sb-btn-normal my-8 w-100 fs-1" type="button"> Load content </button>
+        </div>
+         <!--Load content-->
+      </div>
+      
       <app-search-filter [layoutConfiguration]="layoutConfiguration" [isOpen]='true'
         (filterChange)="onFilterChange($event)" [pageId]="'my-download-page'" [defaultFilters]="selectedFilters">
       </app-search-filter>
