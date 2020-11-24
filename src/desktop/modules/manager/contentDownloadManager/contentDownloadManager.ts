@@ -10,8 +10,6 @@ import { ContentDownloader } from "./ContentDownloader";
 import { HTTPService } from "@project-sunbird/OpenRAP/services/httpService";
 import Response from "../../utils/response";
 import uuid = require("uuid");
-const ContentReadUrl = `${process.env.APP_BASE_URL}/api/content/v1/read`;
-const ContentSearchUrl = `${process.env.APP_BASE_URL}/api/content/v1/search`;
 const DefaultRequestOptions = { headers: { "Content-Type": "application/json" } };
 import HardDiskInfo from "../../utils/hardDiskInfo";
 
@@ -26,6 +24,8 @@ export class ContentDownloadManager {
   @Inject private dbSDK: DatabaseSDK;
   private systemQueue: ISystemQueueInstance;
   private systemSDK;
+  private ContentReadUrl = `${process.env.APP_BASE_URL}/api/content/v1/read/`;
+  private ContentSearchUrl = `${process.env.APP_BASE_URL}/api/content/v1/search`;
   public async initialize() {
     this.systemQueue = containerAPI.getSystemQueueInstance(manifest.id);
     this.systemQueue.register(ContentDownloader.taskType, ContentDownloader);
@@ -38,7 +38,7 @@ export class ContentDownloadManager {
     let parentId = _.get(req.body, "request.parentId");
     try {
       const dbContentDetails = await this.dbSDK.get("content", contentId);
-      const apiContentResponse = await HTTPService.get(`${ContentReadUrl}/${contentId}`, {}).toPromise();
+      const apiContentResponse = await HTTPService.get(`${this.ContentReadUrl}/${contentId}`, {}).toPromise();
       const apiContentDetail = apiContentResponse.data.result.content;
       if(apiContentDetail.pkgVersion <= dbContentDetails.pkgVersion){
         logger.debug(`${reqId} Content update not available for contentId: ${contentId} with parentId: ${parentId}`, apiContentDetail.pkgVersion, dbContentDetails.pkgVersion);
@@ -130,7 +130,7 @@ export class ContentDownloadManager {
     const contentId = req.params.id;
     const reqId = req.headers["X-msgid"];
     try {
-      const contentResponse = await HTTPService.get(`${ContentReadUrl}/${contentId}`, {}).toPromise();
+      const contentResponse = await HTTPService.get(`${this.ContentReadUrl}/${contentId}`, {}).toPromise();
       const contentDetail = contentResponse.data.result.content;
       let contentSize = contentDetail.size;
       let contentToBeDownloadedCount = 1;
@@ -264,7 +264,7 @@ export class ContentDownloadManager {
         limit: childNodes.length,
       },
     };
-    return HTTPService.post(ContentSearchUrl, requestBody, DefaultRequestOptions).toPromise()
+    return HTTPService.post(this.ContentSearchUrl, requestBody, DefaultRequestOptions).toPromise()
       .then((response) => _.get(response, "data.result.content") || []);
   }
   private getContentChildNodeDetailsFromDb(childNodes) {
