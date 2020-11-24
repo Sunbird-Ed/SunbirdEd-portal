@@ -86,6 +86,10 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
   public showUploadUserModal = false;
   public disableBtn = true;
   public instance: string;
+  public adminTncUrl: string;
+  public adminTncVersion: string;
+  public showAdminTnC = false;
+  public showTncPopup = false;
 
   constructor(activatedRoute: ActivatedRoute, public navigationhelperService: NavigationHelperService,
     userService: UserService, manageService: ManageService, private toasterService: ToasterService, resourceService: ResourceService,
@@ -132,6 +136,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
         this.getUserDetail();
       }
     });
+    this.getAdminPolicyTnC();
   }
 
   initLayout() {
@@ -482,13 +487,22 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
       );
   }
 
-  openAdminPolicyPopup() {
-    this.tncService.getTncList().subscribe(data => {
-      const adminTncData = _.get(data, 'result.response.value');
+  getAdminPolicyTnC() {
+    this.tncService.getAdminTnc().subscribe(data => {
+      const adminTncData = JSON.parse(_.get(data, 'result.response.value'));
       if (_.get(adminTncData, 'latestVersion')) {
-        const adminTncUrl = _.get(adminTncData[adminTncData.latestVersion], 'url');
+        this.adminTncVersion = _.get(adminTncData, 'latestVersion');
+        this.showAdminTnC = true;
+        this.adminTncUrl = _.get(_.get(adminTncData, _.get(adminTncData, 'latestVersion')), 'url');
       }
     });
+  }
+  openAdminPolicyPopup(closePopup?: boolean) {
+    if (closePopup) {
+      this.showTncPopup = false;
+    } else {
+      this.showTncPopup = true;
+    }
   }
 
   ngOnDestroy() {
