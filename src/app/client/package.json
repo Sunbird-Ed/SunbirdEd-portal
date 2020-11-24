@@ -54,7 +54,7 @@
     "@project-sunbird/common-consumption": "^3.5.0",
     "@project-sunbird/sb-styles": "0.0.6",
     "@project-sunbird/sunbird-pdf-player": "0.0.4",
-    "@project-sunbird/sunbird-video-player": "0.0.3",
+    "@project-sunbird/sunbird-video-player": "0.0.4",
     "@project-sunbird/telemetry-sdk": "0.0.26",
     "@project-sunbird/web-extensions": "^0.0.2",
     "@swimlane/ngx-datatable": "14.0.0",
