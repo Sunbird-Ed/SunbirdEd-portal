@@ -1,13 +1,12 @@
-<app-landing-section 
+<app-landing-section [textToDisplay]="pageTitleSrc" [svgToDisplay]="svgToDisplay"
   [layoutConfiguration]="layoutConfiguration"></app-landing-section>
-
 <div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
-  <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'"
-    [appTelemetryImpression]="telemetryImpression">
+  <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'" [appTelemetryImpression]="telemetryImpression">
+
     <div [ngClass]="FIRST_PANEL_LAYOUT">
-      <app-search-filter [layoutConfiguration]="layoutConfiguration" [isOpen]='true'
-        (filterChange)="onFilterChange($event)" [pageId]="'my-download-page'" [defaultFilters]="selectedFilters">
-      </app-search-filter>
+      <app-global-search-filter [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true'
+      *ngIf="initFilters" (filterChange)="getFilters($event)">
+      </app-global-search-filter>
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT">
       <div [appTelemetryImpression]="telemetryImpression"
