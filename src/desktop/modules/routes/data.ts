@@ -52,7 +52,7 @@ export default (app, proxyURL) => {
         (req, res, next) => {
             logger.debug(`Received API call to read formdata`);
             logger.debug(`ReqId = "${req.headers["X-msgid"]}": Check proxy`);
-            if (enableProxy(req)) {
+            if (false) {
                 logger.info(`Proxy is Enabled `);
                 next();
             } else {
@@ -213,7 +213,7 @@ const enableProxy = (req) => {
     if (req.get("referer")) {
         const refererUrl = new url.URL(req.get("referer"));
         const pathName = refererUrl.pathname;
-        flag = _.startsWith(pathName, "/browse");
+        flag = !_.startsWith(pathName, "/mydownloads");
     }
     return flag;
 };
