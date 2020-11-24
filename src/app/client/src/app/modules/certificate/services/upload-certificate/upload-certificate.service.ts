@@ -34,7 +34,8 @@ export class UploadCertificateService {
           'mediaType': ['image'],
           'contentType': ['Asset'],
           'compatibilityLevel': { 'min': 1, 'max': 2 },
-          'status': ['Live']
+          'status': ['Live'],
+          'primaryCategory': 'Asset'
         },
         'sort_by': {
           'lastUpdatedOn': 'desc'
