@@ -6,6 +6,7 @@
     "ng": "ng",
     "start": "ng build --deployUrl dist/ && mv ../dist/index.html ../dist/index.ejs",
     "start-desktop": "ng build --output-path=../../desktop/public/portal --watch=true && mv ../../desktop/public/portal/index.html ../../desktop/public/portal/index.ejs",
+    "prod-desktop": "node --max_old_space_size=8096 ./node_modules/@angular/cli/bin/ng build --prod --output-path=../../desktop/public/portal && mv ../../desktop/public/portal/index.html ../../desktop/public/portal/index.ejs",
     "proxy": "ng serve --proxy-config proxy.config.js",
     "build": "node --max_old_space_size=8096 ./node_modules/@angular/cli/bin/ng build --prod --progress=false --outputPath=./../app_dist/dist --deployUrl dist/",
     "post-build": "gulp post:build",

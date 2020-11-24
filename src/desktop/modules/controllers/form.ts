@@ -1,15 +1,12 @@
-import DatabaseSDK from "../sdk/database/index";
-
 import { logger } from "@project-sunbird/logger";
-const Hashids = require('hashids/cjs')
-import * as _ from "lodash";
 import { containerAPI } from "@project-sunbird/OpenRAP/api";
+import * as _ from "lodash";
 import * as path from "path";
 import { Inject } from "typescript-ioc";
-import * as uuid from "uuid";
+import DatabaseSDK from "../sdk/database/index";
 import Response from "../utils/response";
+const Hashids = require('hashids/cjs')
 
-import { ClassLogger } from "@project-sunbird/logger/decorator";
 
 /*@ClassLogger({
   logLevel: "debug",
@@ -28,9 +25,9 @@ export class Form {
   public async insert() {
 
     try {
-      const files =  await this.fileSDK.readdir(path.join("data", "forms"));
+      const files = await this.fileSDK.readdir(path.join("data", "forms"));
       const formsFilesBasePath = this.fileSDK.getAbsPath(path.join("data", "forms"));
-      let formsList =  await this.databaseSdk.list("form", {startkey: "_design0"});
+      let formsList = await this.databaseSdk.list("form", { startkey: "_design0" });
       formsList = _.get(formsList, "rows");
       const formsListLength = formsList ? formsList.length : 0;
       const formDocs = [];
@@ -45,7 +42,7 @@ export class Form {
         const id = hash.encode(1).toLowerCase();
         let isInserted: any = false;
         if (formsListLength > 0) {
-           isInserted = _.find(formsList, {id});
+          isInserted = _.find(formsList, { id });
         }
         if (!isInserted) {
           logger.info(`${id} is not inserted`);
