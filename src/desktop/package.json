@@ -8,7 +8,7 @@
         "build": "gulp build",
         "build-copy-clean": "gulp build:copy-clean",
         "test": "rm -rf database && mocha -r ts-node/register test/test.spec.ts --exit",
-        "start": "cross-env NODE_ENV=development electron --no-sandbox -r ts-node/register -r tsconfig-paths/register ./main.ts",
+        "start": "cross-env NODE_ENV=development electron --no-sandbox -r ts-node/register ./main.ts",
         "dev": "npm run build-ts && npm run start",
         "debug": "npm run build-ts && electron . --inspect",
         "dist": "gulp  dist",
@@ -67,8 +67,8 @@
         "email": "support@sunbird.org"
     },
     "dependencies": {
+        "@project-sunbird/OpenRAP": "file:OpenRAP/dist/project-sunbird-OpenRAP-1.0.2.tgz",
         "@project-sunbird/logger": "0.0.10",
-        "async": "^2.6.3",
         "body-parser": "^1.19.0",
         "busboy": "^0.3.0",
         "cheerio": "^1.0.0-rc.3",
@@ -83,7 +83,6 @@
         "jsonwebtoken": "^8.5.1",
         "lodash": "^4.17.15",
         "node-stream-zip": "^1.8.2",
-        "openrap-sunbirded-plugin": "0.0.81",
         "portscanner": "^2.2.0",
         "pouchdb": "^7.2.2",
         "pouchdb-find": "^7.2.2",
@@ -95,6 +94,7 @@
         "web-resource-inliner": "^4.3.4"
     },
     "devDependencies": {
+        "axios": "^0.21.0",
         "@types/cheerio": "^0.22.22",
         "@types/express-http-proxy": "^1.6.1",
         "@types/lodash": "^4.14.123",
@@ -111,7 +111,6 @@
         "grunt": "^1.0.4",
         "gulp": "^4.0.2",
         "mocha": "^7.1.1",
-        "nodegit": "^0.26.3",
         "properties": "^1.2.1",
         "spectron": "^10.0.0",
         "ts-node": "^8.10.2",

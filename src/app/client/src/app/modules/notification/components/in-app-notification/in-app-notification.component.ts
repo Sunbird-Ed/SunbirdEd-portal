@@ -59,17 +59,27 @@ export class InAppNotificationComponent implements OnInit {
     if (!event || !event.data) {
       return false;
     }
-    const notificationDetails = event.data;
+    const path = this.getNavigationPath(event);
+
+    if (path) {
+      this.showNotificationModel = false;
+      this.router.navigate([path]);
+      await this.markNotificationAsRead(event.data);
+      this.fetchNotificationList();
+    }
+  }
+
+  getNavigationPath(event) {
+    if (_.get(event, 'data.data.actionType') === 'certificateUpdate') {
+      return '/profile';
+    }
 
     const navigationLink = _.get(event, 'data.data.contentURL') || _.get(event, 'data.data.deepLink');
     if (navigationLink) {
-      this.showNotificationModel = false;
-      const path = navigationLink.replace((new URL(navigationLink)).origin, '');
-      this.router.navigateByUrl(path);
-
-      await this.markNotificationAsRead(notificationDetails);
-      this.fetchNotificationList();
+      return navigationLink.replace((new URL(navigationLink)).origin, '');
     }
+
+    return '';
   }
 
   async markNotificationAsRead(notificationDetails) {
