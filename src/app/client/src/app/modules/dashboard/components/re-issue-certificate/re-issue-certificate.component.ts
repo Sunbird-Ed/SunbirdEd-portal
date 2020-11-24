@@ -108,14 +108,8 @@ export class ReIssueCertificateComponent implements OnInit, OnDestroy {
   }
 
   toggleModal(visibility = false, batch?: {}) {
-      if (batch) {
-      this.showModal = !_.isEqual(_.get(batch, 'createdBy'), this.userService.userid)
-      ? (this.showErrorMsg(this.resourceService.messages.dashboard.emsg.m004), false) : visibility;
-      this.userBatch = batch;
-    } else {
-      this.showModal = visibility;
-      this.userBatch = this.userBatch;
-    }
+    this.showModal = visibility;
+    this.userBatch  = !_.isEmpty(batch) ? batch : this.userBatch;
   }
 
     // To set telemetry impression

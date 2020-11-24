@@ -1762,5 +1762,62 @@ export const RESPONSE = {
         }
       }
     }
-  ]
+  ],
+  hoverActionsData: {
+    'event': {
+        'isTrusted': true
+    },
+    'content': {
+        'name': '10sep book UT',
+        'image': 'https://ntpstagingall.blob8521957.thumb.jpg',
+        'description': 'Enter description for TextBook',
+        'rating': '0',
+        'subject': 'English',
+        'medium': 'Assamese',
+        'orgDetails': {},
+        'gradeLevel': 'Class 5',
+        'contentType': 'TextBook',
+        'topic': '',
+        'subTopic': '',
+        'metaData': {
+            'identifier': 'do_2128458518662184961150',
+            'mimeType': 'application/vnd.ekstep.content-collection',
+            'framework': 'as_k-12',
+            'contentType': 'TextBook'
+        },
+        'completionPercentage': 0,
+        'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':1,\'application/vnd.ekstep.ecml-archive\':1}',
+        'cardImg': 'https://ntpstagingall.blob8521957.thumb.jpg',
+        'resourceType': 'Book',
+        'organisation': ['Chhattisgarh', 'Chhattisgarh'],
+        'hoverData': {
+            'note': '',
+            'actions': [{
+                'type': 'download',
+                'label': 'Download',
+                'disabled': false
+            }, {
+                'type': 'open',
+                'label': 'Open'
+            }]
+        },
+        'board': 'State (Assam)',
+        'identifier': 'do_2128458518662184961150',
+        'mimeType': 'application/vnd.ekstep.content-collection',
+        'action': {
+            'onImage': {
+                'eventName': 'onImage'
+            }
+        },
+        'ribbon': {
+            'left': {
+                'class': 'ui circular label  card-badges-image'
+            },
+            'right': {
+                'name': 'Book',
+                'class': 'ui black right ribbon label'
+            }
+        }
+    }
+  },
 };

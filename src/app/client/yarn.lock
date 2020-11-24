@@ -578,10 +578,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption@^3.5.0":
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.5.0.tgz#2d8cbc34f7f90d0d427747ac01c37ac205df869d"
-  integrity sha512-jn30W2QqnH7aK84bX8RdPZCHyRZnAt9PuT2FOFgxh9f7/wDxdVu/RIJFr4IG1EjYsuh117CXr6fv1rn2QgzaKw==
+"@project-sunbird/common-consumption@^3.5.1":
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.5.1.tgz#2a2128adb968adf5530428bf8774c88f120b53b7"
+  integrity sha512-ZOfA5yoTZf6TcgJ4yzI4M4ORVf3dTp/xp6/IL7y2d1T8qutkJbBolFKuw8PRoQbAZdu9MYIxWPOw5zrQuYS/IA==
   dependencies:
     tslib "^1.9.0"
 
@@ -612,10 +612,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-video-player@0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player/-/sunbird-video-player-0.0.2.tgz#8c0c7650538f78322e91424e99c59f9d5a61f64e"
-  integrity sha512-nFu4YNO3oqDBvTZBcXVy3a9LYlc/DIc7k1JJuON8+tJ7489HM8e9gmk/jbl8dTSSfQbtGObj5b6KnN77hRMeUg==
+"@project-sunbird/sunbird-video-player@0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player/-/sunbird-video-player-0.0.4.tgz#539147ca61077ad8077ffac50959fd07dd8cfad1"
+  integrity sha512-S3my4JThJali9wTrObatqDxCCqIteCuBD5w9SCkf2F9OfhhsyJJcDstMl2+eKGa9LsvyGaI51Va0ix6YyCaTvQ==
   dependencies:
     "@project-sunbird/sunbird-player-sdk" "0.0.7"
     tslib "^1.9.0"

@@ -28,7 +28,8 @@ describe('PublicPlayerService', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot(), RouterTestingModule],
       providers: [PublicPlayerService, NavigationHelperService, { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        { provide: Router, useClass: RouterStub}, PublicDataService]
+        { provide: Router, useClass: RouterStub}, PublicDataService,
+        { provide: ResourceService, useValue:  serverRes.resourceServiceMockData}]
     });
   });
 
