@@ -9,7 +9,7 @@ import { ExportContent } from "../../manager/contentExportManager";
 import { ContentImportManager } from "../../manager/contentImportManager";
 import DatabaseSDK from "../../sdk/database";
 import Response from "../../utils/response";
-import { containerAPI, ISystemQueueInstance } from "./../../../OpenRAP/dist/api";
+import { containerAPI, ISystemQueueInstance } from "@project-sunbird/OpenRAP/api";
 const sessionStartTime = Date.now();
 const ContentSearchUrl = `${process.env.APP_BASE_URL}/api/content/v1/search`;
 const DefaultRequestOptions = { headers: { "Content-Type": "application/json" } };
