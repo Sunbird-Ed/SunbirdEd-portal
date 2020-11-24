@@ -89,7 +89,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
           'fields': ['identifier', 'name', 'code', 'certType', 'data', 'issuer', 'signatoryList', 'artifactUrl', 'primaryCategory', 'channel'],
           'limit': 100
       }
-  };
+    };
     this.uploadCertificateService.getCertificates(request).subscribe(res => {
       this.defaultCertificates = _.get(res, 'result.content');
       this.selectedCertificate = _.clone(this.defaultCertificates[0]);
@@ -112,7 +112,11 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
   }
 
   validateForm() {
-    if (this.createTemplateForm.status === 'VALID' && _.get(this.createTemplateForm, 'value.allowPermission')) {
+    // TODO: Form validation need to improve
+    const logo = _.get(this.images, 'LOGO1.url');
+    const sign = _.get(this.images, 'SIGN1.url');
+    if (this.createTemplateForm.status === 'VALID' && _.get(this.createTemplateForm, 'value.allowPermission')
+      && logo && sign) {
       this.disableCreateTemplate = false;
     } else {
       this.disableCreateTemplate = true;
@@ -135,19 +139,28 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
   }
 
   createCertTemplate() {
-    // TODO: Need to remove this method call;
-    this.previewCertificate();
-    const channel =  this.userService.channel;
-    const request = this.certConfigModalInstance.prepareCreateAssetRequest(_.get(this.createTemplateForm, 'value'), channel,this.selectedCertificate, this.images);
-    this.disableCreateTemplate = true;
-    this.uploadCertificateService.createCertTemplate(request).subscribe(response => {
-      console.log('create response', response);
-      const assetId = _.get(response, 'result.identifier');
-      console.log('this.finalSVGurl', this.finalSVGurl);
-      this.uploadTemplate(this.finalSVGurl, assetId);
-    }, error => {
-      this.toasterService.error('Something went wrong, please try again later');
-    });
+    this.validateForm();
+    // TODO: form validation need to improve 
+    if (this.disableCreateTemplate) {
+      this.createTemplateForm.controls.certificateTitle.markAsTouched();
+      this.createTemplateForm.controls.stateName.markAsTouched();
+      this.createTemplateForm.controls.authoritySignature_0.markAsTouched();
+      this.createTemplateForm.controls.authoritySignature_1.markAsTouched();
+      this.createTemplateForm.controls.allowPermission.markAsTouched();
+    } else {
+      this.previewCertificate();
+      const channel = this.userService.channel;
+      const request = this.certConfigModalInstance.prepareCreateAssetRequest(_.get(this.createTemplateForm, 'value'), channel, this.selectedCertificate, this.images);
+      this.disableCreateTemplate = true;
+      this.uploadCertificateService.createCertTemplate(request).subscribe(response => {
+        console.log('create response', response);
+        const assetId = _.get(response, 'result.identifier');
+        console.log('this.finalSVGurl', this.finalSVGurl);
+        this.uploadTemplate(this.finalSVGurl, assetId);
+      }, error => {
+        this.toasterService.error('Something went wrong, please try again later');
+      });
+    }
   }
 
   uploadTemplate(base64Url, identifier) {
@@ -168,6 +181,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
       this.createTemplateForm.get('authoritySignature_1').updateValueAndValidity();
     }
     this.images[data.key] = data;
+    this.validateForm();
   }
 
   close() {
@@ -181,6 +195,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
       this.createTemplateForm.get('authoritySignature_1').updateValueAndValidity();
     }
     this.images[key] = {};
+    this.validateForm();
   }
 
   openSateLogos(type) {
@@ -191,8 +206,9 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
 
   openSignLogos(type) {
     this.logoType = type;
-    this.showSelectImageModal = true;
-    this.browseImage.getAssetList();
+    this.showSelectImageModal = false;
+    this.showUploadUserModal = true;
+    // this.browseImage.getAssetList();
   }
 
   chooseCertificate(certificate) {

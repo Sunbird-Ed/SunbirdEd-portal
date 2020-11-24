@@ -483,6 +483,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public closeConsentPopUp() {
     this.showGlobalConsentPopUpSection = false;
+    this.isglobalConsent = false;
+    this.globalConsent = '';
     this.checkFrameworkSelected();
   }
 

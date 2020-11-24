@@ -83,9 +83,6 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     }
 
   ngOnInit() {
-    if (!this.csGroupAddableBloc.initialised) {
-      this.csGroupAddableBloc.init();
-    }
     CsGroupAddableBloc.instance.state$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       this.groupAddableBlocData = data;
     });
@@ -301,11 +298,11 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     } else if (contentMimeType === 'application/vnd.ekstep.content-collection' && !isTrackable) {
 
       this.router.navigate(['/resources/play/collection', _.get(activityCard, 'identifier')],
-      {queryParams: {contentType: _.get(activityCard, 'primaryCategory')}});
+      {queryParams: {contentType: _.get(activityCard, 'primaryCategory'), groupId: _.get(this.groupData, 'id')}});
 
     } else {
       this.router.navigate(['/resources/play/content', _.get(activityCard, 'identifier')],
-      {queryParams: {contentType: _.get(activityCard, 'primaryCategory')}});
+      {queryParams: {contentType: _.get(activityCard, 'primaryCategory'), groupId: _.get(this.groupData, 'id')}});
     }
   }
 

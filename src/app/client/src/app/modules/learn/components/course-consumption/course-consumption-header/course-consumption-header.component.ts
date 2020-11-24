@@ -69,6 +69,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   isTrackable = false;
   viewDashboard = false;
   tocId;
+  isGroupAdmin: boolean;
+
   constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
     public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
@@ -121,6 +123,9 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         this.showResumeCourse = false;
       }
     }, 500);
+    this.courseConsumptionService.userCreatedAnyBatch.subscribe((visibility: boolean) => {
+      this.viewDashboard = this.viewDashboard && visibility;
+    });
   }
   ngAfterViewInit() {
     this.courseProgressService.courseProgressData.pipe(
@@ -208,9 +213,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     clearInterval(this.interval);
     this.unsubscribe.next();
     this.unsubscribe.complete();
-    if (CsGroupAddableBloc.instance.initialised) {
-      CsGroupAddableBloc.instance.dispose();
-    }
   }
   getBatchStatus() {
    /* istanbul ignore else */
@@ -267,25 +269,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.telemetryService.interact(interactData);
   }
 
-  addActivityToGroup() {
-    const isActivityAdded = _.find(_.get(this.groupService, 'groupData.activities'), {id: this.courseId});
-    if (_.get(this.groupService, 'groupData.isAdmin') && _.isEmpty(isActivityAdded)) {
-      const request = {
-        activities: [{ id: this.courseId, type: 'Course' }]
-      };
-      this.groupService.addActivities(this.groupId, request).subscribe(response => {
-        this.goBack();
-        this.toasterService.success(this.resourceService.messages.imsg.activityAddedSuccess);
-      }, error => {
-        this.goBack();
-        this.toasterService.error(this.resourceService.messages.stmsg.activityAddFail);
-      });
-    } else {
-      this.goBack();
-      isActivityAdded ? this.toasterService.error(this.resourceService.messages.emsg.activityAddedToGroup) :
-      this.toasterService.error(this.resourceService.messages.emsg.noAdminRole);
-    }
-  }
   openDiscussionForum() {
     this.router.navigate(['/discussions'], {queryParams: {forumId: this.forumId} });
   }

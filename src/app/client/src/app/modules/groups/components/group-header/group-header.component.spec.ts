@@ -26,7 +26,7 @@ describe('GroupHeaderComponent', () => {
     messages: {
       smsg: { m002: '' },
       emsg: { m003: '' },
-      imsg: { m0082: 'Deleting {group name} will permanently remove the group from the application' }
+      imsg: { m0082: 'Deleting {groupName} will permanently remove the group from the application' }
     },
     frmelmnts: {
       lbl: {
@@ -134,7 +134,7 @@ describe('GroupHeaderComponent', () => {
     expect(component.showModal).toBeTruthy();
     expect(component.name).toBe('delete');
     expect(component.assignModalStrings).toHaveBeenCalledWith(resourceBundle.frmelmnts.lbl.deleteGroup,
-      resourceBundle.messages.imsg.m0082, '{group name}');
+      resourceBundle.messages.imsg.m0082, '{groupName}');
   });
 
   it('should assign modalTitle and msg as deactivate strings when name = "activate" ', () => {

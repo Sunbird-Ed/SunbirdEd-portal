@@ -156,12 +156,15 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
 
   acceptGroupTnc() {
     const request = {
-      members: [{
-        userId: this.userService.userid,
-        visited: true,
+      userId: this.userService.userid,
+      groups: [{
+        groupId: _.get(this.selectedGroup, 'id'),
+        visited: true
       }]
     };
-    this.groupService.updateMembers(_.get(this.selectedGroup, 'id'), request).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+
+    this.groupService.updateGroupGuidelines(request)
+    .subscribe(data => {
       this.showTncModal = false;
       this.addTelemetry('success-accept-group-tnc', _.get(this.selectedGroup, 'id'),
       { status: _.get(this.selectedGroup, 'status'), tncver: _.get(this.groupService.latestTnc, 'value.latestVersion')}
