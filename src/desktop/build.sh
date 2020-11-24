@@ -4,7 +4,7 @@ cd ../app/client
 npm set progress=false
 npm install  -g yarn
 yarn install
-# npm run start-desktop
+npm run prod-desktop
 cd ..
 yarn install
 npm run  resource-bundles
