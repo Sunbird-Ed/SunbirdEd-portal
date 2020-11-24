@@ -13,12 +13,12 @@
       <div class="profile-section-content">
         <div class="profile-info d-flex flex-dc">
           <span class="text-center d-flex flex-ai-center flex-jc-center">{{resourceService?.frmelmnts?.lbl?.firstName}}:
-            <span *ngIf="!isNameEditable" class="font-weight-bold pt-8 ml-8">{{profileInfo.firstName }}  <img src="./assets/images/edit-icon.svg" alt="edit-icon" class="cursor-pointer ml-8" (click)="isNameEditable = true"></span>
-            <span *ngIf="isNameEditable" class="pt-8"><input class="sb-form-control ml-8" [(ngModel)]="profileInfo.firstName" (blur)="isNameEditable = false"/></span>
+            <span *ngIf="!isNameEditable" class="font-weight-bold pt-8 ml-8">{{profileInfo.firstName }}  <img src="./assets/images/edit-icon.svg" alt="edit-icon" class="cursor-pointer ml-8" (click)="allowToEdit('firstName')"></span>
+            <span *ngIf="isNameEditable" class="pt-8"><input autofocus class="sb-form-control ml-8" [(ngModel)]="profileInfo.firstName" (blur)="isNameEditable = false" #crtFirstName /></span>
           </span>
           <span class="text-center d-flex flex-ai-center flex-jc-center">{{resourceService?.frmelmnts?.lbl?.lastName}}:
-            <span *ngIf="!isLastNameEditable" class="font-weight-bold pt-8 ml-8">{{profileInfo.lastName }}  <img src="./assets/images/edit-icon.svg" alt="edit-icon" class="cursor-pointer ml-8" (click)="isLastNameEditable = true"></span>
-            <span *ngIf="isLastNameEditable" class="pt-8"><input class="sb-form-control ml-8" [(ngModel)]="profileInfo.lastName" (blur)="isLastNameEditable = false"/></span>
+            <span *ngIf="!isLastNameEditable" class="font-weight-bold pt-8 ml-8">{{profileInfo.lastName }}  <img src="./assets/images/edit-icon.svg" alt="edit-icon" class="cursor-pointer ml-8" (click)="allowToEdit('lastName')"></span>
+            <span *ngIf="isLastNameEditable" class="pt-8"><input autofocus class="sb-form-control ml-8" [(ngModel)]="profileInfo.lastName" (blur)="isLastNameEditable = false" #crtLastName /></span>
           </span>
         </div>
         <div class="profile-info-para mt-12 text-center">

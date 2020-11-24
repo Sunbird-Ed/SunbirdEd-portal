@@ -14,10 +14,10 @@ import * as fs from "fs";
 import FileSDK from "../sdks/FileSDK";
 import uuid = require("uuid");
 import { TelemetryInstance } from "../services/telemetry/telemetryInstance";
-import { HTTPService } from "@project-sunbird/ext-framework-server/services";
+import { HTTPService } from "../services/httpService";
 import SettingSDK from "../sdks/SettingSDK";
 import { NetworkQueue, NETWORK_SUBTYPE } from '../services/queue/networkQueue';
-import { EventManager } from "@project-sunbird/ext-framework-server/managers/EventManager";
+import { EventManager } from "./EventManager";
 
 @Singleton
 export class TelemetryManager {
