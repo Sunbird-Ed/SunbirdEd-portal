@@ -39,6 +39,7 @@ export class FaqComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isDesktopApp = this.utilService.isDesktopApp;
     this.setTelemetryImpression();
     this.initLayout();
     this.instance = _.upperCase(this.resourceService.instance);

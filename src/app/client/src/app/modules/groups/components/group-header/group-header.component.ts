@@ -87,7 +87,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
     switch (name) {
       case actions.DELETE:
         this.addTelemetry('delete-group', {status: _.get(this.groupData, 'status')});
-        this.assignModalStrings(this.resourceService.frmelmnts.lbl.deleteGroup, this.resourceService.messages.imsg.m0082, '{group name}');
+        this.assignModalStrings(this.resourceService.frmelmnts.lbl.deleteGroup, this.resourceService.messages.imsg.m0082, '{groupName}');
         break;
       case actions.DEACTIVATE:
         this.addTelemetry('deactivate-group', {status: _.get(this.groupData, 'status')});

@@ -17,12 +17,13 @@ export class BrowseImagePopupComponent implements OnInit {
   @Input() logoType;
   @Output() assetData = new EventEmitter();
   @Output() close = new EventEmitter();
-  showUploadUserModal;
+  @Input() showUploadUserModal = false;
   imageName;
   imagesList = [];
   uploadForm: FormGroup;
   fileObj: any;
   selectedLogo: any;
+  sign = 'SIGN';
   imageDimensions = {
     'LOGO': { type: 'PNG', dimensions: '88px X 88px' },
     'SIGN': { type: 'PNG', dimensions: '112px X 46px' }
@@ -74,14 +75,12 @@ export class BrowseImagePopupComponent implements OnInit {
     if (imageProperties && isSizeMatched && isTypeMatched && isDimensionMatched) {
       this.fileObj = ev.target.files[0];
       const fileName = _.get(this.fileObj, 'name').split('.')[0];
-      const userName = `${_.get(this.userService, 'userProfile.firstName')} ${_.get(this.userService, 'userProfile.lastName')}`;
+      const userName = `${_.get(this.userService, 'userProfile.firstName') || ''} ${_.get(this.userService, 'userProfile.lastName') || ''}`;
       this.uploadForm.patchValue({
         'assetCaption': fileName,
         'creator': userName,
         'creatorId': _.get(this.userService, 'userProfile.id')
       });
-    } else {
-      console.log('*********Error: Image requirments are not matched*******************');
     }
   }
 
@@ -122,13 +121,18 @@ export class BrowseImagePopupComponent implements OnInit {
   }
 
   upload() {
-    this.uploadCertificateService.createAsset(this.uploadForm.value, this.logoType.type).subscribe(res => {
-      if (res && res.result) {
-        this.uploadBlob(res);
-      }
-    }, error => {
-      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    });
+    // TODO: have to make more dynamic (use input variable autoUpload)
+    if (this.logoType.type !== this.sign) {
+      this.uploadCertificateService.createAsset(this.uploadForm.value, this.logoType.type).subscribe(res => {
+        if (res && res.result) {
+          this.uploadBlob(res);
+        }
+      }, error => {
+        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+      });
+    } else {
+      this.getImageURLs();
+    }
   }
 
   /**
@@ -150,7 +154,7 @@ export class BrowseImagePopupComponent implements OnInit {
         };
         this.assetData.emit(image);
         this.uploadForm.reset();
-        this.claseModel();
+        this.closeModel();
       };
     }
   }
@@ -171,11 +175,11 @@ export class BrowseImagePopupComponent implements OnInit {
           };
           this.assetData.emit(image);
           this.uploadForm.reset();
-          this.claseModel();
+          this.closeModel();
         }
       }, error => {
         this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-        this.claseModel();
+        this.closeModel();
         this.uploadForm.reset();
       });
     }
@@ -185,14 +189,20 @@ export class BrowseImagePopupComponent implements OnInit {
     this.selectedLogo = logo;
   }
   back() {
-    this.showUploadUserModal = false;
-    this.showSelectImageModal = true;
-    this.uploadForm.reset();
-    // this.close.emit();
-    this.selectedLogo = null;
+    if (this.logoType.type === this.sign) {
+      this.closeModel();
+    } else {
+      this.showUploadUserModal = false;
+      this.showSelectImageModal = true;
+      this.uploadForm.reset();
+      // this.close.emit();
+      this.selectedLogo = null;
+    }
+
   }
 
-  claseModel() {
+  closeModel() {
+    this.uploadForm.reset();
     this.showUploadUserModal = false;
     this.showSelectImageModal = false;
     this.selectedLogo = null;
@@ -209,6 +219,6 @@ export class BrowseImagePopupComponent implements OnInit {
     };
     this.assetData.emit(image);
     this.selectedLogo = null;
-    this.claseModel();
+    this.closeModel();
   }
 }

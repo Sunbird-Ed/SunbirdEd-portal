@@ -1,7 +1,7 @@
 import { of as observableOf, throwError } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ContentManagerComponent } from './content-manager.component';
-import { ContentManagerService, ConnectionService, ElectronDialogService } from '../../services';
+import { ContentManagerService, ElectronDialogService } from '../../services';
 import { SuiModalModule, SuiProgressModule, SuiAccordionModule } from 'ng2-semantic-ui';
 import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -17,7 +17,6 @@ import { ActivatedRoute } from '@angular/router';
 describe('ContentManagerComponent', () => {
   let component: ContentManagerComponent;
   let fixture: ComponentFixture<ContentManagerComponent>;
-  let connectionService: ConnectionService;
   let contentManagerService: ContentManagerService;
 
   const resourceMockData = {
@@ -46,7 +45,7 @@ describe('ContentManagerComponent', () => {
         RouterTestingModule, FileSizeModule, OrderModule, TelemetryModule],
       declarations: [ContentManagerComponent],
       providers: [
-        ContentManagerService, ConnectionService, TelemetryService, ToasterService, ElectronDialogService,
+        ContentManagerService, TelemetryService, ToasterService, ElectronDialogService,
         { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry },
         { provide: ResourceService, useValue: resourceMockData },
         { provide: ActivatedRoute, useClass: FakeActivatedRoute }
@@ -59,7 +58,6 @@ describe('ContentManagerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ContentManagerComponent);
     component = fixture.componentInstance;
-    connectionService = TestBed.get(ConnectionService);
     contentManagerService = TestBed.get(ContentManagerService);
     fixture.detectChanges();
   });

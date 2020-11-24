@@ -27,6 +27,9 @@
           <app-main-menu [layoutConfiguration]="layoutConfiguration" class="d-flex computer only ml-auto">
           </app-main-menu>
           <!--/Main Menu-->
+          <a class="profile-avtar p-0 mx-16">
+            <app-in-app-notification *ngIf="userService?.loggedIn" [layoutConfiguration]="layoutConfiguration"></app-in-app-notification>
+          </a>
           <!--Avtar Dropdown-->
           <a class="profile-avtar p-0" tabindex="0">
             <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
@@ -141,17 +144,23 @@
                 src="{{tenantInfo.logo}}">
             </a>
             <!--/Logo-->
-            <!--Avtar Dropdown-->
-            <a class="profile-avtar p-0" tabindex="0">
-              <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
-                <div class="sbt-guest-profile" name="Guest" *ngIf='!userProfile' (click)="toggleSideMenu(true)"><img
-                    src="./assets/images/profile-icon.svg" alt="Guest User" width="48"></div>
-                <ngx-avatar *ngIf='userProfile' (click)="toggleSideMenu(true)" [style]="SbtavtarDesktopStyle" [size]="48"
-                  initialsSize="1" name="{{userProfile?.firstName}}">
-                </ngx-avatar>
-              </div>
-            </a>
-            <!--/Avtar Dropdown-->
+            <div class="d-flex flex-ai-center sb-responsive-header">
+              <!-- Notification dropdown -->
+              <a class="profile-avtar p-0" tabindex="0">
+                <app-in-app-notification *ngIf="userService?.loggedIn" [layoutConfiguration]="layoutConfiguration"></app-in-app-notification>
+              </a>
+              <!--Avtar Dropdown-->
+              <a class="profile-avtar p-0" tabindex="0">
+                <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
+                  <div class="sbt-guest-profile" name="Guest" *ngIf='!userProfile' (click)="toggleSideMenu(true)"><img
+                      src="./assets/images/profile-icon.svg" alt="Guest User" width="48"></div>
+                  <ngx-avatar *ngIf='userProfile' (click)="toggleSideMenu(true)" [style]="SbtavtarDesktopStyle" [size]="48"
+                    initialsSize="1" name="{{userProfile?.firstName}}">
+                  </ngx-avatar>
+                </div>
+              </a>
+              <!--/Avtar Dropdown-->
+            </div>
           </div>
 
         </div>
@@ -169,6 +178,10 @@
             <app-language-dropdown [layoutConfiguration]="layoutConfiguration" [languageRange]='languages'
               *ngIf="languages && showLanguageDropdown()">
             </app-language-dropdown>
+            <!-- Notification dropdown -->
+            <a class="profile-avtar p-0 ml-16" tabindex="0">
+              <app-in-app-notification *ngIf="userService?.loggedIn" [layoutConfiguration]="layoutConfiguration"></app-in-app-notification>
+            </a>
             <!--Avtar Dropdown-->
             <a class="profile-avtar p-0 ml-16" tabindex="0">
               <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
@@ -362,7 +375,7 @@
               </svg></i>
               <span>{{resourceService?.frmelmnts?.lbl?.manageLocation}}</span>
             </li>
-            <li class="list-item" (click)="toggleSideMenu(false);" routerLink="/desktop/telemetry">
+            <li class="list-item" (click)="toggleSideMenu(false);" routerLink="/desktop/telemetry" *appDesktopOnly>
               <i class="icon-svg icon-svg--sm icon-manage mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#manage"></use>
               </svg></i>

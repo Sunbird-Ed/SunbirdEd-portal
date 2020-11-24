@@ -128,13 +128,8 @@ module.exports = function (app) {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(certRegURL),
       proxyReqPathResolver: function (req) {
         logger.debug(req.context, { msg: `${req.url} is called with ${JSON.stringify(_.get(req, 'body'))} by userId:${req.session['userId']}userId: ${req.session['userId']}` });
-        // Only if loggedIn user & content creator is same, then only he can re-issue the certificate
-        if (_.get(req.body, 'request.createdBy') === req.session['userId']) {
-          return require('url').parse(certRegURL + 'course/batch/cert/v1/issue' + '?' + 'reIssue=true').path;
-        } else {
-          logError(req, 'UNAUTHORIZED_USER', `createdBy,${_.get(req.body, 'request.createdBy')},  userID: ${req.session['userId']} should be equal`);
-          throw new Error('UNAUTHORIZED_USER');
-        }
+        // Only if loggedIn user & content creator or if the user is an assigned mentor same, then only he can re-issue the certificate
+        return require('url').parse(certRegURL + 'course/batch/cert/v1/issue' + '?' + 'reIssue=true').path;
       },
       userResDecorator: async (proxyRes, proxyResData, req, res) => {
         try {

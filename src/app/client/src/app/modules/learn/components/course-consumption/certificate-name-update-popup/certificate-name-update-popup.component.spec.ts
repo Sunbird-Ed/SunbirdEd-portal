@@ -21,11 +21,12 @@ describe('CertificateNameUpdatePopupComponent', () => {
   const resourceBundle = {
     frmelmnts: {
       lbl: {
-        Select: 'Select',
+        firstName: 'Gourav',
+        LastName: 'More'
       }
   },
   messages: {
-    fmsg: { m0085: 'profile update error' }
+    fmsg: { m0085: 'profile update error.' }
   }
 };
 
@@ -58,6 +59,10 @@ describe('CertificateNameUpdatePopupComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CertificateNameUpdatePopupComponent);
     component = fixture.componentInstance;
+    component.profileInfo = {
+      firstName: 'Gourav',
+      lastName: 'More'
+    };
     fixture.detectChanges();
   });
 
@@ -81,8 +86,7 @@ describe('CertificateNameUpdatePopupComponent', () => {
     const profileService = TestBed.get(ProfileService);
     spyOn(profileService, 'updateProfile').and.returnValue(of({}));
     component.updateProfileName();
-    expect(profileService.updateProfile).toHaveBeenCalledWith({ firstName: 'Gourav' });
-    expect(component.showProfileUpdatePopup).toEqual(false);
+    expect(profileService.updateProfile).toHaveBeenCalledWith({firstName: 'Gourav', lastName: 'More'});
   });
 
   it('should enabled disabled continue button on error of profile update call', () => {

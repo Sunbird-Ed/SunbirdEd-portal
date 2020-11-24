@@ -459,4 +459,11 @@ describe('CoursePageComponent', () => {
         expect(component['fetchCourses']).toHaveBeenCalled();
         done();
     });
+
+    it('should merge two filter object', done => {
+        const filters = { gradeLevel: ['Class 1'] };
+        const res = component.getSearchFilters(filters);
+        expect(res).toBeDefined();
+        done();
+    });
 });
