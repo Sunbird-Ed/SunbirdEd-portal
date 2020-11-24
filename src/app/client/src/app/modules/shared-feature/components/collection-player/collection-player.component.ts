@@ -90,6 +90,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   playerServiceReference: any;
   TocCardType = TocCardType;
   PlatformType = PlatformType;
+  isGroupAdmin: boolean;
   groupId: string;
 
   constructor(public route: ActivatedRoute, public playerService: PlayerService,
@@ -121,6 +122,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     this.contentType = _.get(this.route, 'snapshot.queryParams.contentType') || 'Collection';
     this.contentData = this.getContent();
     CsGroupAddableBloc.instance.state$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      this.isGroupAdmin = !_.isEmpty(_.get(this.route.snapshot, 'queryParams.groupId')) && _.get(data.params, 'groupData.isAdmin');
       this.groupId = _.get(data, 'groupId') || _.get(this.route.snapshot, 'queryParams.groupId');
     });
 
@@ -188,9 +190,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     }
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
-    if (CsGroupAddableBloc.instance.initialised) {
-      CsGroupAddableBloc.instance.dispose();
-    }
   }
 
   private initPlayer(id: string): void {
