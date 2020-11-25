@@ -11,9 +11,13 @@ export default (app, contentFilesPath, ecarsFolderPath ) => {
     app.use( "/contentPlayer/preview", express.static(fileSDK.getAbsPath(contentFilesPath)));
     app.use("/contentPlayer/preview/content/*/content-plugins", express.static(fileSDK.getAbsPath(contentFilesPath)));
     app.use("/contentPlayer/preview", express.static(path.join(__dirname, "..", "..", "public", "contentPlayer", "preview")));
+    app.use(express.static(path.join(__dirname, "..", "..", "public", "contentPlayer", "preview")));
     app.use("/content", express.static(fileSDK.getAbsPath(contentFilesPath)));
+    app.use(express.static(fileSDK.getAbsPath(contentFilesPath)));
     app.use( "/ecars", express.static(fileSDK.getAbsPath(ecarsFolderPath)));
+    app.use(express.static(fileSDK.getAbsPath(ecarsFolderPath)));
     app.use("/sunbird-plugins", express.static(path.join(__dirname, "..", "..", "public", "sunbird-plugins")));
+    app.use(express.static(path.join(__dirname, "..", "..", "public", "sunbird-plugins")));
     app.all(
         [
           "/",

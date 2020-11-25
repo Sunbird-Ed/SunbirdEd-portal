@@ -169,7 +169,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   resumeCourse(showExtUrlMsg?: boolean) {
     const IsStoredLocally = localStorage.getItem('isCertificateNameUpdated') || 'false' ;
     const certificateDescription = this.courseBatchService.getcertificateDescription(this.enrolledBatchInfo);
-    if (IsStoredLocally !== 'true' && certificateDescription && certificateDescription.isCertificate) {
+    if (IsStoredLocally !== 'true' && certificateDescription && certificateDescription.isCertificate && this.progress < 100) {
       this.showProfileUpdatePopup = true;
     } else {
       this.courseConsumptionService.launchPlayer.emit();
