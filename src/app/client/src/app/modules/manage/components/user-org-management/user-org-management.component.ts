@@ -125,6 +125,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
     this.userService.userData$.pipe(first()).subscribe(async (user) => {
       if (user && user.userProfile) {
         this.userProfile = user.userProfile;
+        this.getAdminPolicyTnC();
         this.fetchDeclaredUserDetails();
         this.slug = await _.get(this.userService, 'userProfile.rootOrg.slug');
         if (user.userProfile && user.userProfile['rootOrg'] && !user.userProfile['rootOrg']['isSSOEnabled']) {
@@ -136,7 +137,6 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
         this.getUserDetail();
       }
     });
-    this.getAdminPolicyTnC();
   }
 
   initLayout() {
@@ -494,8 +494,18 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
         this.adminTncVersion = _.get(adminTncData, 'latestVersion');
         this.showAdminTnC = true;
         this.adminTncUrl = _.get(_.get(adminTncData, _.get(adminTncData, 'latestVersion')), 'url');
+        this.showAdminTncForFirstUser();
       }
     });
+  }
+  showAdminTncForFirstUser() {
+    const adminTncObj = _.get(this.userProfile, 'allTncAccepted.orgAdminTnc');
+    if ( !adminTncObj) {
+      this.showTncPopup = true;
+    } else {
+      this.showTncPopup = false;
+    }
+
   }
   openAdminPolicyPopup(closePopup?: boolean) {
     if (closePopup) {
