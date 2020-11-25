@@ -1,0 +1,37 @@
+{
+    "id": "api.channel.read",
+    "ver": "1.0",
+    "ts": "2019-04-05T11:50:17.081Z",
+    "params": {
+        "resmsgid": "fb17fe90-5798-11e9-b459-5d42edc15023",
+        "msgid": "fb15b4a0-5798-11e9-a170-d947db5fb896",
+        "status": "successful",
+        "err": null,
+        "errmsg": null
+    },
+    "responseCode": "OK",
+    "result": {
+        "channel": {
+            "identifier": "505c7c48ac6dc1edc9b08f21db5a571d",
+            "code": "505c7c48ac6dc1edc9b08f21db5a571d",
+            "consumerId": "0aa13c48-dda0-4259-9007-c795dacd7b9c",
+            "channel": "test",
+            "description": "This is test channel",
+            "suggested_frameworks": [
+                {
+                    "identifier": "test_k-12",
+                    "code": "test_k-12",
+                    "name": "Test Framework",
+                    "objectType": "Framework"
+                }
+            ],
+            "createdOn": "2018-02-12T11:38:44.292+0000",
+            "versionKey": "1518435524292",
+            "appId": "sunbird_portal",
+            "name": "sunbird",
+            "lastUpdatedOn": "2018-02-12T11:38:44.292+0000",
+            "defaultFramework": "TEST",
+            "status": "Live"
+        }
+    }
+}

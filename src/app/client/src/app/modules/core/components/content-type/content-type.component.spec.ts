@@ -1,14 +1,15 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {FormService, UserService} from '@sunbird/core';
-import {ContentTypeComponent} from './content-type.component';
-import {ResourceService, ConfigService, BrowserCacheTtlService, LayoutService} from '@sunbird/shared';
-import {Router, ActivatedRoute} from '@angular/router';
-import {of as observableOf, of} from 'rxjs';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {CacheService} from 'ng2-cache-service';
-import {APP_BASE_HREF} from '@angular/common';
-import {mockData} from './content-type.component.spec.data';
-import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
+import { APP_BASE_HREF } from '@angular/common';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CoreModule, FormService, UserService } from '@sunbird/core';
+import { BrowserCacheTtlService, ConfigService, LayoutService, ResourceService } from '@sunbird/shared';
+import { TelemetryModule } from '@sunbird/telemetry';
+import { CacheService } from 'ng2-cache-service';
+import { of as observableOf } from 'rxjs';
+import { ContentTypeComponent } from './content-type.component';
+import { mockData } from './content-type.component.spec.data';
+import { OnlineOnlyDirective } from '../../directives/online-only/online-only.directive';
 
 describe('ContentTypeComponent', () => {
   let component: ContentTypeComponent;
@@ -16,7 +17,7 @@ describe('ContentTypeComponent', () => {
 
   const fakeActivatedRoute = {
     snapshot: {
-      root: {firstChild: {params: {slug: 'sunbird'}}},
+      root: { firstChild: { params: { slug: 'sunbird' } } },
       queryParams: {}
     }
   };
@@ -36,11 +37,11 @@ describe('ContentTypeComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, TelemetryModule.forRoot()],
-      declarations: [ContentTypeComponent],
-      providers: [{provide: ResourceService, useValue: resourceBundle}, CacheService,
-        {provide: ActivatedRoute, useValue: fakeActivatedRoute}, LayoutService,
-        {provide: APP_BASE_HREF, useValue: '/'}, BrowserCacheTtlService,
-        FormService, ConfigService, {provide: Router, useClass: RouterStub}],
+      declarations: [ContentTypeComponent, OnlineOnlyDirective],
+      providers: [{ provide: ResourceService, useValue: resourceBundle }, CacheService,
+      { provide: ActivatedRoute, useValue: fakeActivatedRoute }, LayoutService,
+      { provide: APP_BASE_HREF, useValue: '/' }, BrowserCacheTtlService,
+        FormService, ConfigService, { provide: Router, useClass: RouterStub }],
     })
       .compileComponents();
   }));
@@ -59,7 +60,7 @@ describe('ContentTypeComponent', () => {
   });
 
   it('should fetch title', () => {
-    const title = component.getTitle({title: 'frmelmnts.lbl.textbook'});
+    const title = component.getTitle({ title: 'frmelmnts.lbl.textbook' });
     expect(title).toEqual('textbook');
   });
 
@@ -75,11 +76,11 @@ describe('ContentTypeComponent', () => {
     const router = TestBed.get(Router);
     userService._authenticated = true;
     component.showContentType({
-      loggedInUserRoute: {route: '/course', queryParam: 'course'},
+      loggedInUserRoute: { route: '/course', queryParam: 'course' },
       contentType: 'course'
     });
     expect(router.navigate).toHaveBeenCalledWith(
-      ['/course'], {queryParams: {selectedTab: 'course'}});
+      ['/course'], { queryParams: { selectedTab: 'course' } });
   });
 
   it('should inint the component', () => {
@@ -95,11 +96,11 @@ describe('ContentTypeComponent', () => {
     const router = TestBed.get(Router);
     userService._authenticated = false;
     component.showContentType({
-      anonumousUserRoute: {route: '/explore-course', queryParam: 'course'},
+      anonumousUserRoute: { route: '/explore-course', queryParam: 'course' },
       contentType: 'course'
     });
     expect(router.navigate).toHaveBeenCalledWith(
-      ['/explore-course'], {queryParams: {selectedTab: 'course'}});
+      ['/explore-course'], { queryParams: { selectedTab: 'course' } });
   });
 
   it('should get Icon', () => {
@@ -131,7 +132,7 @@ describe('ContentTypeComponent', () => {
   });
 
   it('should set selected content type as url has selectedTab as query', () => {
-    component.setSelectedContentType('/profile', {selectedTab: 'textbook'}, {});
+    component.setSelectedContentType('/profile', { selectedTab: 'textbook' }, {});
     expect(component.selectedContentType).toBe('textbook');
   });
 
@@ -141,7 +142,7 @@ describe('ContentTypeComponent', () => {
   });
 
   it('should set selected content type for play when content type is textbook', () => {
-    component.setSelectedContentType('/play', {contentType: 'TextBook'}, {});
+    component.setSelectedContentType('/play', { contentType: 'TextBook' }, {});
     expect(component.selectedContentType).toBe('textbook');
   });
 
@@ -166,7 +167,7 @@ describe('ContentTypeComponent', () => {
   });
 
   it('should set selected content type for resources page when selected tab is tv', () => {
-    component.setSelectedContentType('/resources', {selectedTab: 'tv'}, {});
+    component.setSelectedContentType('/resources', { selectedTab: 'tv' }, {});
     expect(component.selectedContentType).toBe('tv');
   });
   it('should fetch title for non logged in user', () => {
@@ -174,22 +175,22 @@ describe('ContentTypeComponent', () => {
     const router = TestBed.get(Router);
     userService._authenticated = false;
     component.showContentType({
-      anonumousUserRoute: {route: '/explore', queryParam: 'textbook'},
+      anonumousUserRoute: { route: '/explore', queryParam: 'textbook' },
       contentType: 'textbook'
     });
     expect(router.navigate).toHaveBeenCalledWith(
-      ['/explore'], {queryParams: {selectedTab: 'textbook'}});
+      ['/explore'], { queryParams: { selectedTab: 'textbook' } });
   });
   it('should fetch title for logged in user', () => {
     const userService = TestBed.get(UserService);
     const router = TestBed.get(Router);
     userService._authenticated = true;
     component.showContentType({
-      loggedInUserRoute: {route: '/resource', queryParam: 'textbook'},
+      loggedInUserRoute: { route: '/resource', queryParam: 'textbook' },
       contentType: 'textbook'
     });
     expect(router.navigate).toHaveBeenCalledWith(
-      ['/resource'], {queryParams: {selectedTab: 'textbook'}});
+      ['/resource'], { queryParams: { selectedTab: 'textbook' } });
   });
   it('should set selected conent type when updateSelectedContentType trigger', () => {
     const layoutService = TestBed.get(LayoutService);

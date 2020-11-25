@@ -1,10 +1,11 @@
 {
-  "name": "OpenRAP",
+  "name": "@project-sunbird/OpenRAP",
   "version": "1.0.2",
   "description": "OpenRAP Software",
   "main": "dist/main.js",
   "scripts": {
     "build": "rimraf dist && tsc && cpy package.json ./dist && cpy  ./db/ ./dist/db/",
+    "pack": "npm run build && cd dist && npm pack",
     "test": "rimraf test_data && mkdirp test_data && nyc --reporter=lcov --reporter=html --reporter=text mocha --exit -r ts-node/register **/**/*.spec.ts **/*.spec.ts *.spec.ts",
     "dev-build": "rimraf dist && tsc && cpy package.json ./dist && cpy  ./db/ ./dist/db/ && gulp"
   },
@@ -38,6 +39,7 @@
   "dependencies": {
     "@project-sunbird/telemetry-sdk": "0.0.26",
     "archiver": "^3.0.0",
+    "axios": "^0.21.0",
     "body-parser": "^1.18.2",
     "chokidar": "^3.0.0",
     "decompress-zip": "^0.2.2",
@@ -46,11 +48,14 @@
     "fs-extra": "^7.0.1",
     "getmac": "^1.4.6",
     "hashids": "^1.2.2",
+    "i": "^0.3.6",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.11",
     "mitt": "^2.1.0",
+    "npm": "^6.14.8",
     "pouchdb": "^7.1.1",
     "pouchdb-find": "^7.1.1",
+    "rxjs": "^6.2.1",
     "su-downloader3": "^1.0.8",
     "systeminformation": "^4.14.17",
     "typescript-ioc": "^3.0.4"
@@ -77,7 +82,7 @@
     "rimraf": "^2.6.3",
     "sinon": "^9.0.1",
     "ts-node": "^8.1.0",
-    "typescript": "^2.8.4",
+    "typescript": "^3.9.7",
     "uuid": "^3.3.2"
   },
   "peerDependencies": {

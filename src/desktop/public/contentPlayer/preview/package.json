@@ -17,13 +17,12 @@
     "fetchSpec": "2.9.2"
   },
   "_requiredBy": [
-    "#USER",
-    "/"
+    "#USER"
   ],
   "_resolved": "https://registry.npmjs.org/@project-sunbird/content-player/-/content-player-2.9.2.tgz",
   "_shasum": "e5c2cf3f52491181e15dca0077e7e52a409a35a2",
   "_spec": "@project-sunbird/content-player@2.9.2",
-  "_where": "/Users/swethaaggidevara/workspace/offline/sunbird-desktop-app/src",
+  "_where": "C:\\Users\\ASUS\\Documents\\GitHub\\SunbirdEd-portal\\src\\desktop",
   "author": {
     "name": "Manjunath Davanam",
     "email": "manjunathd@ilimi.in"

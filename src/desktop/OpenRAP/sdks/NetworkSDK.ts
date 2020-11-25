@@ -1,4 +1,4 @@
-import { EventManager } from "@project-sunbird/ext-framework-server/managers/EventManager";
+import { EventManager } from "./../managers/EventManager";
 import { Singleton } from "typescript-ioc";
 import * as dns from "dns";
 import { TelemetryInstance } from "./../services/telemetry/telemetryInstance";

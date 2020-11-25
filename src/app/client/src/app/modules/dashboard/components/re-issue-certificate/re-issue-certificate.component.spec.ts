@@ -299,19 +299,17 @@ describe('ReIssueCertificateComponent', () => {
 
   it('should check who is created and assign showmodal value', () => {
     component['userService'].setUserId('user1');
-    spyOn(component['toasterService'], 'error');
     component.toggleModal(true, {
       batch: 'batch 1',
       name: '123',
       createdBy: 'user2'
     });
-    expect(component.showModal).toBeFalsy();
+    expect(component.showModal).toBeTruthy();
     expect(component.userBatch).toEqual({
       batch: 'batch 1',
       name: '123',
       createdBy: 'user2'
     });
-    expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.dashboard.emsg.m004);
   });
 
   it('should assign telemetryImpression', () => {

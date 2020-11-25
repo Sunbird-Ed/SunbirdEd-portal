@@ -79,7 +79,8 @@ export class GlobalConsentPiiComponent implements OnInit {
   }
 
   getUserInformation() {
-    this.userInformation['name'] = this.usersProfile.lastName ? `${this.usersProfile.firstName} ${this.usersProfile.lastName}` : this.usersProfile.firstName;
+    this.userInformation['name'] = this.usersProfile.lastName ?
+     `${this.usersProfile.firstName} ${this.usersProfile.lastName}` : this.usersProfile.firstName;
     this.userInformation['userid'] = this.usersProfile.userId;
     this.userInformation['emailId'] = this.usersProfile.email;
     this.userInformation['phone'] = this.usersProfile.phone;
@@ -176,6 +177,11 @@ export class GlobalConsentPiiComponent implements OnInit {
     this.csUserService.getConsent(request, { apiPath: '/learner/user/v1' })
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(res => {
+        if (this.type === 'global-consent') {
+          this.showConsentPopup = false;
+          this.type = '';
+          this.isglobalConsent = false;
+        }
         this.isDataShareOn = _.get(res, 'consents[0].status') === ConsentStatus.ACTIVE;
         this.consentPii = this.isDataShareOn ? 'No' : 'Yes';
         this.lastUpdatedOn = _.get(res, 'consents[0].lastUpdatedOn') || '';

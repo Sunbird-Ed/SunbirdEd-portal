@@ -193,7 +193,7 @@ describe('CollectionPlayerComponent', () => {
 
   it('should call setTelemetryInteractData', () => {
     component.setTelemetryInteractData();
-    expect(component.tocTelemetryInteractEdata).toEqual({ id: 'library-toc', type: 'click', pageid: 'get' });
+    expect(component.tocTelemetryInteractEdata).toEqual({ id: 'library-toc', type: 'CLICK', pageid: 'get' });
   });
 
   it('should call tocCardClickHandler', () => {

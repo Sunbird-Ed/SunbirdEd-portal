@@ -89,7 +89,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   }
 
   resetValue(memberId?) {
-    this.addTelemetry('reset-userId', memberId);
+    this.setInteractData('reset-userId', {searchQuery: memberId});
     this.memberId = '';
     this.groupsService.emitShowLoader(false);
     this.reset();
@@ -144,6 +144,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   }
 
   addMemberToGroup() {
+    this.setInteractData('add-user-to-group', {}, {id: _.get(this.verifiedMember, 'id'),  type: 'Member'});
     this.groupsService.emitShowLoader(true);
     this.disableBtn = true;
     if (!this.isExistingMember()) {
@@ -170,7 +171,8 @@ export class AddMemberComponent implements OnInit, OnDestroy {
 
     if (_.get(response, 'error.members[0].errorCode') === 'EXCEEDED_MEMBER_MAX_LIMIT') {
       this.toasterService.error(this.resourceService.messages.groups.emsg.m002);
-      this.addTelemetry('exceeded-member-max-limit', this.memberId, {member_count: this.membersList.length});
+      this.setInteractData('exceeded-member-max-limit', {searchQuery: this.memberId,
+        member_count: this.membersList.length});
     } else {
       this.toasterService.error((this.resourceService.messages.emsg.m006).replace('{name}', _.get(response, 'errors')
       || _.get(this.verifiedMember, 'title')));
@@ -195,9 +197,33 @@ export class AddMemberComponent implements OnInit, OnDestroy {
     this.showModal = visibility;
   }
 
-  addTelemetry (id, memberId?, extra?) {
-    const cdata = memberId ? [{id: this.memberId, type: 'member'}] : [];
-    this.groupService.addTelemetry({id, extra}, this.activatedRoute.snapshot, cdata, _.get(this.groupData, 'id'));
+  setInteractData (id, extra?, Cdata?) {
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env'),
+        cdata: [
+          {
+            id: _.get(this.groupData, 'id'),
+            type: 'Group'
+          }
+        ]
+      },
+      edata: {
+        id: id,
+        type: 'CLICK',
+        pageid:  _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid')
+      },
+      object: {}
+    };
+
+    if (extra) {
+      interactData.edata['extra'] = extra;
+    }
+    if (Cdata) {
+      interactData.context.cdata.push(Cdata);
+    }
+
+    this.telemetryService.interact(interactData);
   }
 
 

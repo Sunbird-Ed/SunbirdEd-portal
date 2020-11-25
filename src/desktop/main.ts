@@ -1,14 +1,11 @@
-import 'module-alias/register';
 import { app, BrowserWindow, dialog, crashReporter } from "electron";
 import * as _ from "lodash";
 import * as path from "path";
 import * as fs from "fs";
 import * as fse from "fs-extra";
-import { frameworkConfig } from "./framework.config";
+import  { Server }   from './modules/server'
 const startTime = Date.now();
 let envs: any = {};
-//initialize the environment variables
-console.log('===============> initialize env called', process.env.DATABASE_PATH);
 const getFilesPath = () => {
   return app.isPackaged
     ? path.join(app.getPath("userData"), "." + envs["APP_NAME"])
@@ -18,7 +15,7 @@ const getFilesPath = () => {
 const initializeEnv = () => {
   let rootOrgId, hashTagId;
   if(app.isPackaged) {
-    envs = JSON.parse(new Buffer("ENV_STRING_TO_REPLACE", 'base64').toString('ascii')) // deployment step will replace the base64 string 
+    envs = JSON.parse(Buffer.from("ENV_STRING_TO_REPLACE", 'base64').toString('ascii')) // deployment step will replace the base64 string 
     rootOrgId = "ROOT_ORG_ID";
     hashTagId = "HASH_TAG_ID";
   } else {
@@ -29,7 +26,7 @@ const initializeEnv = () => {
       fs.readFileSync(
         path.join(
           __dirname,
-          frameworkConfig.plugins[0].id,
+          'openrap-sunbirded-plugin',
           "data",
           "organizations",
           `${envs["CHANNEL"]}.json`
@@ -55,16 +52,15 @@ const initializeEnv = () => {
   }
 };
 initializeEnv();
-import { containerAPI } from "OpenRAP/dist/api/index";
+import { containerAPI } from "@project-sunbird/OpenRAP/api/index";
 import { logger,logLevels, enableLogger } from '@project-sunbird/logger';
-import { frameworkAPI } from "@project-sunbird/ext-framework-server/api";
-import { EventManager } from "@project-sunbird/ext-framework-server/managers/EventManager";
+import { EventManager } from "@project-sunbird/OpenRAP/managers/EventManager";
 import express from "express";
 import portscanner from "portscanner";
 import * as bodyParser from "body-parser";
 import { Subject } from "rxjs";
 import { debounceTime } from "rxjs/operators";
-import { HTTPService } from "@project-sunbird/ext-framework-server/services";
+import { HTTPService } from "@project-sunbird/OpenRAP/services/httpService";
 import * as os from "os";
 const windowIcon = path.join(__dirname, "build", "icons", "png", "512x512.png");
 // Keep a global reference of the window object, if you don't, the window will
@@ -226,61 +222,24 @@ const setDeviceId = async () => {
 }
 const copyPluginsMetaData = async () => {
   if (app.isPackaged) {
-    for (const plugin of frameworkConfig.plugins) {
         await fse.copy(
-          path.join(__dirname, plugin.id),
-          path.join(getFilesPath(), plugin.id)
+          path.join(__dirname, 'openrap-sunbirded-plugin'),
+          path.join(getFilesPath(), 'openrap-sunbirded-plugin')
         );
-    }
   }
 };
-// get available port from range(9000-9100) and sets it to run th app
 const setAvailablePort = async () => {
-  let port = await portscanner.findAPortNotInUse(9000, 9100);
-  process.env.APPLICATION_PORT = port;
-};
-// Initialize ext framework
-const framework = async () => {
-  const subApp = express();
-  subApp.use(bodyParser.json({ limit: "100mb" }));
-  expressApp.use("/", subApp);
-  return new Promise((resolve, reject) => {
-    frameworkConfig.db.pouchdb.path = process.env.DATABASE_PATH;
-    frameworkConfig["logBasePath"] = getFilesPath();
-    console.log("frameworkConfig", frameworkConfig);
-    frameworkAPI
-      .bootstrap(frameworkConfig, subApp)
-      .then(() => {
-        resolve();
-      })
-      .catch((error: any) => {
-        console.error(error);
-        resolve();
-      });
-  });
+  process.env.APPLICATION_PORT = await portscanner.findAPortNotInUse(9000, 9100);
 };
 // start the express app to load in the main window
 const startApp = async () => {
   return new Promise((resolve, reject) => {
-    expressApp.listen(process.env.APPLICATION_PORT, (error: any) => {
-      if (error) {
-        logger.error('Error while starting app', error);
-        reject(error);
-      } else {
+    new Server(expressApp)
+    expressApp.listen(process.env.APPLICATION_PORT, () => {
         logger.info("app is started on port " + process.env.APPLICATION_PORT);
         resolve();
-      }
+      })
     });
-  });
-};
-// this will check whether all the plugins are initialized using event from each plugin which should emit '<pluginId>:initialized' event
-const checkPluginsInitialized = () => {
-  //TODO: for now we are checking one plugin need to change once plugin count increases
-  return new Promise(resolve => {
-    EventManager.subscribe("openrap-sunbirded-plugin:initialized", () => {
-      resolve();
-    });
-  });
 };
 // start loading all the dependencies
 const bootstrapDependencies = async () => {
@@ -290,13 +249,11 @@ const bootstrapDependencies = async () => {
   console.log("============> copy plugin done");
   await setAvailablePort();
   console.log("============> set avail port");
-  await Promise.all([framework(), checkPluginsInitialized()]);
-  console.log("============> framework done");
   await containerAPI.bootstrap();
   console.log("============> containerAPI bootstrap done");
   await startApp();
   //to handle the unexpected navigation to unknown route
-  expressApp.all("*", (req, res) => res.redirect("/"));
+  // expressApp.all("*", (req, res) => res.redirect("/"));
 };
 async function initLogger() {
   await setDeviceId();
@@ -548,3 +505,12 @@ const checkForOpenFile = (files?: string[]) => {
     );
   }
 };
+
+process
+  .on("unhandledRejection", (reason, p) => {
+    logger.error(reason, "Unhandled Rejection at Promise", p);
+  })
+  .on("uncaughtException", err => {
+    logger.error(err, "Uncaught Exception thrown");
+    process.exit(1);
+  });

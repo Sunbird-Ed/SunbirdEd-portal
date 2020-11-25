@@ -3,7 +3,7 @@ import SettingSDK from './SettingSDK';
 import * as _ from "lodash";
 import { logger } from "@project-sunbird/logger";
 import SystemSDK from "./SystemSDK";
-import { HTTPService } from "@project-sunbird/ext-framework-server/services";
+import { HTTPService } from "./../services/httpService";
 import uuid = require("uuid");
 import axios from "axios";
 import jwt from "jsonwebtoken";

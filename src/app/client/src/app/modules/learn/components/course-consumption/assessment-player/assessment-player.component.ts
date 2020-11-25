@@ -61,6 +61,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   layoutConfiguration;
   isCourseCompletionPopupShown = false;
   previousContent = null;
+  groupId;
 
   constructor(
     public resourceService: ResourceService,
@@ -157,11 +158,19 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
         this.batchId = queryParams.batchId;
         this.courseId = queryParams.courseId;
         this.courseName = queryParams.courseName;
+        this.groupId = _.get(queryParams, 'groupId');
         const selectedContent = queryParams.selectedContent;
         let isSingleContent = this.collectionId === selectedContent;
         this.isParentCourse = this.collectionId === this.courseId;
         if (this.batchId) {
           this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
+          if (this.groupId) {
+            this.telemetryCdata.push({
+              id: this.groupId,
+              type: 'Group'
+            });
+          }
+
           this.getCollectionInfo(this.courseId)
             .pipe(takeUntil(this.unsubscribe))
             .subscribe((data) => {
@@ -190,6 +199,10 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
               this.goBack();
             });
         } else {
+          this.telemetryCdata = [{
+            id: this.groupId,
+            type: 'Group'
+          }];
           this.playerService.getCollectionHierarchy(this.collectionId, {})
             .pipe(takeUntil(this.unsubscribe))
             .subscribe((data) => {

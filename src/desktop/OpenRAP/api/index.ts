@@ -17,11 +17,10 @@ import { DownloadSDK } from "./../sdks/DownloadSDK";
 import DeviceSDK from "./../sdks/DeviceSDK";
 import { SystemQueue, TaskExecuter, SystemQueueReq, SystemQueueQuery, ISystemQueue, NetworkQueue, NetworkQueueReq } from './../services/queue';
 export { ITaskExecuter, SystemQueueQuery, ISystemQueue, SystemQueueReq, SystemQueueStatus, NetworkQueueReq } from "./../services/queue";
-import { EventManager } from "@project-sunbird/ext-framework-server/managers/EventManager";
+import { EventManager } from "./../managers/EventManager";
 import { INetworkQueueQuery } from './../services/queue/IQueue';
 import { PerfLogger, IPerfLog } from './../services/perfLogger';
 export * from './../services/perfLogger/IPerfLog'
-import { ClassLogger } from '@project-sunbird/logger/decorator';
 
 /* @ClassLogger({
   logLevel: "debug",
