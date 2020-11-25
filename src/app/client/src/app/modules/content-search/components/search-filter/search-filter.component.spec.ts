@@ -10,7 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { response } from './search-filter.component.spec.data';
-import { BehaviorSubject, throwError, of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { CoreModule } from '@sunbird/core';
 import { configureTestSuite } from '@sunbird/test-util';
 import { ContentSearchService } from './../../services';
@@ -21,7 +21,14 @@ import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-tran
 describe('SearchFilterComponent', () => {
     let component: SearchFilterComponent;
     let fixture: ComponentFixture<SearchFilterComponent>;
+    let contentSearchService: ContentSearchService;
     const resourceBundle = {
+        'frmelmnts': {
+            'lbl': {
+                'medium': '',
+                'filters': ''
+            }
+        },
         'messages': {
             'stmsg': {
                 'm0007': 'Search for something else',
@@ -51,13 +58,13 @@ describe('SearchFilterComponent', () => {
             declarations: [SearchFilterComponent],
             imports: [CoreModule, CommonConsumptionModule, TelemetryModule.forRoot(),
                 TranslateModule.forRoot({
-                     loader: {
-                        provide: TranslateLoader,
-                        useClass: TranslateFakeLoader
-                     }
-                  }),
-                SuiModule, HttpClientModule, SharedModule.forRoot(), RouterModule.forRoot([]),SharedModule.forRoot()],
-            providers: [ ContentSearchService,
+                    loader: {
+                        provide: TranslateLoader,
+                        useClass: TranslateFakeLoader
+                    }
+                }),
+                SuiModule, HttpClientModule, SharedModule.forRoot(), RouterModule.forRoot([]), SharedModule.forRoot()],
+            providers: [ContentSearchService,
                 { provide: ActivatedRoute, useClass: FakeActivatedRoute },
                 { provide: ResourceService, useValue: resourceBundle },
                 CacheService,
@@ -80,31 +87,68 @@ describe('SearchFilterComponent', () => {
         component.layoutConfiguration = {};
         fixture.detectChanges();
     });
+
+    beforeEach(() => {
+        contentSearchService = TestBed.get(ContentSearchService);
+        spyOn(contentSearchService, 'fetchFilter').and.returnValue(observableOf(response.filterValue));
+
+    })
+
     it('should create', () => {
         expect(component).toBeTruthy();
     });
     it('should call selectedGroupOption with board data', () => {
         const contentSearchService = TestBed.get(ContentSearchService);
-        spyOn(contentSearchService, 'fetchFilter').and.returnValue(observableOf(response.filterValue));
         const inputData = { 'label': 'Board', 'value': 'board', 'selectedOption': 'AP Board' };
         component.selectedGroupOption(inputData);
-        expect(component.type).toBe('Board');
         expect(component.selectedBoard).toBe(inputData);
-        expect(component.selectedChannel).toBeUndefined();
-    });
-    xit('should call selectedGroupOption with publisher data', () => {
-        const inputData = { 'label': 'Publisher', 'value': 'channel', 'selectedOption': 'NCERT' };
-        component.selectedGroupOption(inputData);
-        expect(component.type).toBe('Publisher');
-        expect(component.selectedChannel).toBe(inputData);
     });
     it('should check for layout option', () => {
         component.isLayoutAvailable();
         expect(component).toBeTruthy();
     });
-    it('should call getBoardInteractEdata', () => {
-        const returnData = component.getBoardInteractEdata();
-        expect(returnData).toEqual({ 'id': 'apply-filter', 'type': 'click',
-        'pageid': 'resource-search', 'extra': { 'filters': { 'medium': [], 'gradeLevel': [], 'board': [], 'selectedTab': 'textbook' } } });
+    it('should call interactEdata', () => {
+        const returnData = component.getInteractEdata();
+        expect(returnData).toEqual({
+            'id': 'apply-filter', 'type': 'click',
+            'pageid': 'resource-search', 'extra': { 'filters': { board: [], selectedTab: 'textbook', audience: ['other', 'student', 'teacher'] } }
+        });
     });
+    it('should update selectedFilters from queryParams', done => {
+        component['fetchSelectedFilterOptions']()
+            .subscribe(res => {
+                expect(res).toBeDefined();
+                expect(component['filters']).toBeDefined();
+
+                done()
+            }, err => {
+                console.error(err);
+                done();
+            });
+
+    })
+
+    it('should handle filter change event - add new filter', done => {
+        component.selectedFilters = {};
+        const spy = spyOn<any>(component, 'pushNewFilter').and.callThrough();
+        component['handleFilterChange']().subscribe(res => {
+            expect(spy).toHaveBeenCalledWith({ type: 'gradeLevel', index: 0 })
+            expect(component.selectedFilters['gradeLevel']).toBeDefined();
+            expect(res).toBeDefined();
+            done();
+        })
+        component.filterChangeEvent.next({ event: { data: { index: 0 } }, type: 'gradeLevel' });
+    })
+
+    it('should handle filter change event - remove existing filter', done => {
+        const spy = spyOn<any>(component, 'popFilter').and.callThrough();
+        component['selectedFilters'] = { gradeLevel: [0] }
+        component['handleFilterChange']().subscribe(res => {
+            expect(spy).toHaveBeenCalled()
+            expect(component.selectedFilters['gradeLevel']).toBeDefined();
+            done();
+        })
+        component.filterChangeEvent.next({ event: { data: { index: 0 } }, type: 'gradeLevel' });
+    })
+
 });
