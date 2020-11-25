@@ -500,7 +500,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
   }
   showAdminTncForFirstUser() {
     const adminTncObj = _.get(this.userProfile, 'allTncAccepted.orgAdminTnc');
-    if ( !adminTncObj) {
+    if (!adminTncObj) {
       this.showTncPopup = true;
     } else {
       this.showTncPopup = false;
