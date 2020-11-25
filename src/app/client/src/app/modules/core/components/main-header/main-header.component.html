@@ -353,7 +353,7 @@
                                 (closeSideMenu)="toggleSideMenu(false)"></app-content-type>
             </div>
 
-            <li appOnlineOnly class="list-item" appOnlineOnly (click)="toggleSideMenu(false)" [class.active]="router.isActive(routerLinks?.explore)"
+            <li appOnlineOnly class="list-item" (click)="toggleSideMenu(false)" [class.active]="router.isActive(routerLinks?.explore)"
               *ngIf="!router.isActive('', true)" [routerLink]="[navigateToGroups()]" appTelemetryInteract
               [telemetryInteractEdata]="myGroupIntractEData">
               <i class="icon-svg icon-svg--sm icon-groups mr-8"><svg class="icon icon-svg--primary">

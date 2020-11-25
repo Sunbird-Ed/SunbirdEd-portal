@@ -1,7 +1,12 @@
 <ng-container *ngIf="!isLayoutAvailable()">
   <div class="item py-8 pr-8 computer only">
     <ng-container *ngFor="let contentType of contentTypes">
-      <a *ngIf="contentType.isEnabled" (click)="showContentType(contentType)" [appOnlineOnly]="contentType?.isOnlineOnly"
+      <a *ngIf="contentType.isEnabled && contentType?.isOnlineOnly" (click)="showContentType(contentType)" appOnlineOnly
+         [ngClass]="{'active': selectedContentType === contentType.contentType}"
+         class="item {{'item--' + getIcon(contentType)}}">
+        {{getTitle(contentType)}}
+      </a>
+      <a *ngIf="contentType.isEnabled && !contentType?.isOnlineOnly" (click)="showContentType(contentType)"
          [ngClass]="{'active': selectedContentType === contentType.contentType}"
          class="item {{'item--' + getIcon(contentType)}}">
         {{getTitle(contentType)}}
@@ -12,7 +17,12 @@
     <ng-container *ngFor="let contentType of contentTypes">
       <div class="profile__actions">
         <ul class="profile__actions__list pl-0">
-          <li *ngIf="contentType.isEnabled" (click)="showContentType(contentType);closeSideMenu.emit()" [appOnlineOnly]="contentType?.isOnlineOnly"
+          <li *ngIf="contentType.isEnabled && contentType?.isOnlineOnly" (click)="showContentType(contentType);closeSideMenu.emit()" appOnlineOnly
+              [ngClass]="{'active': selectedContentType === contentType.contentType}"
+              class="list-item {{'item--' + getIcon(contentType)}}">
+            {{getTitle(contentType)}}
+          </li>
+          <li *ngIf="contentType.isEnabled && !contentType?.isOnlineOnly" (click)="showContentType(contentType);closeSideMenu.emit()"
               [ngClass]="{'active': selectedContentType === contentType.contentType}"
               class="list-item {{'item--' + getIcon(contentType)}}">
             {{getTitle(contentType)}}
@@ -27,9 +37,15 @@
 <ng-container *ngIf="isLayoutAvailable()">
   <div class="sb-linkmenu m-0 d-flex flex-ai-center">
     <ng-container *ngFor="let contentType of contentTypes">
-      <a *ngIf="contentType.isEnabled" (click)="showContentType(contentType)" [appOnlineOnly]="contentType?.isOnlineOnly"
+      <a *ngIf="contentType.isEnabled && contentType?.isOnlineOnly" (click)="showContentType(contentType)" appOnlineOnly
          [ngClass]="{'active': selectedContentType === contentType.contentType}"
          class="item {{'item--' + getIcon(contentType)}}">
+        <span [ngClass]="'sb-icon sb-icon--sm mr-8 sb-icon__'+ getIcon(contentType)"></span>
+        {{getTitle(contentType)}}
+      </a>
+      <a *ngIf="contentType.isEnabled && !contentType?.isOnlineOnly" (click)="showContentType(contentType)"
+        [ngClass]="{'active': selectedContentType === contentType.contentType}"
+        class="item {{'item--' + getIcon(contentType)}}">
         <span [ngClass]="'sb-icon sb-icon--sm mr-8 sb-icon__'+ getIcon(contentType)"></span>
         {{getTitle(contentType)}}
       </a>
