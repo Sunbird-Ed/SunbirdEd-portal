@@ -175,7 +175,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     })
   }
   private pushNewFilter({ type, index = null, updatedValues = [] }) {
-    if (index) {
+    if (index != null) {
       this.selectedFilters[type] = [index, ...(this.selectedFilters.hasOwnProperty(type) ? this.selectedFilters[type] : [])];
     }
     else {
