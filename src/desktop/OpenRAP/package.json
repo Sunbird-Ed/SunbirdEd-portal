@@ -1,10 +1,11 @@
 {
-  "name": "OpenRAP",
+  "name": "@project-sunbird/OpenRAP",
   "version": "1.0.2",
   "description": "OpenRAP Software",
   "main": "dist/main.js",
   "scripts": {
     "build": "rimraf dist && tsc && cpy package.json ./dist && cpy  ./db/ ./dist/db/",
+    "pack": "npm run build && cd dist && npm pack",
     "test": "rimraf test_data && mkdirp test_data && nyc --reporter=lcov --reporter=html --reporter=text mocha --exit -r ts-node/register **/**/*.spec.ts **/*.spec.ts *.spec.ts",
     "dev-build": "rimraf dist && tsc && cpy package.json ./dist && cpy  ./db/ ./dist/db/ && gulp"
   },
@@ -81,7 +82,7 @@
     "rimraf": "^2.6.3",
     "sinon": "^9.0.1",
     "ts-node": "^8.1.0",
-    "typescript": "^2.8.4",
+    "typescript": "^3.9.7",
     "uuid": "^3.3.2"
   },
   "peerDependencies": {
