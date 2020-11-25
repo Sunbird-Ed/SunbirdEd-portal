@@ -1184,4 +1184,9 @@ html[layout='joy'] {
   .sb-desktop-content-manager.ui.styled.accordion .content{
     border-radius: 0;
   }
+  .sb-desktop-library-card .sb--card .card-hover{
+    top: initial;
+    height: 5rem;
+    opacity: 1;
+  }
 }

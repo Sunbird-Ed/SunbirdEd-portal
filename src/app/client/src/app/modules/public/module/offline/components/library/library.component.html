@@ -69,6 +69,7 @@
                       </button>
                     </div>
                     <!-- dir="ltr" has to be changed once URdu language selection to dir="rtl" and in app.config.json "rtl=true" through event-->
+                   <div class="sb-desktop-library-card">
                     <ngx-slick [dir]="languageDirection" class="carousel" #slickModal="slick-modal"
                       [config]="slideConfig">
                       <div ngxSlickItem *ngFor="let content of section?.contents" class="sbcardwidth slide mr-16">
@@ -84,15 +85,18 @@
                       </div>
                     </ngx-slick>
                   </div>
+                  </div>
                   <div class="twelve wide column"
                     *ngIf="(pageSections?.length === 1 && !isBrowse && !showLoader && !showSectionLoader)">
                     <app-no-content [filters]="modifiedFilters" [isContentPresent]="false"></app-no-content>
                   </div>
                   <!-- END OF RECENTLY VIEWED CONTENT-->
+                  <div class="sb-desktop-library-card">
                   <sb-library-cards-grid *ngIf="section?.name !== 'Recently Added'" [layoutConfig]="layoutConfiguration"
                     [type]="'infinite_card_grid_with_hover'" [title]="section?.name" [contentList]="section?.contents"
                     [maxCardCount]="3" (hoverActionClick)="hoverActionClicked($event)">
                   </sb-library-cards-grid>
+                  </div>
                 </section>
 
                 <div *ngIf="showSectionLoader">

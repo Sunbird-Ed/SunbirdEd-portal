@@ -5,7 +5,7 @@
 <div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-mygroups relative9' : ''">
 <div class="flex-dc mt-48 sb-group-container sb-group-container--sm" *ngIf="!groupsList.length && !isLoader">
   <div class="d-flex flex-dc flex-ai-center flex-jc-center">
-    <img src="./assets/images/mygroups.svg" width="220">
+    <img alt="{{resourceService?.frmelmnts?.lbl?.createGroupDes}}" src="./assets/images/mygroups.svg" width="220">
     <div class="my-24 fs-1 text-center">
       {{resourceService?.frmelmnts?.lbl?.createGroupDes}}
      </div>
