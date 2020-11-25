@@ -712,3 +712,10 @@ html.PlayerMediaQueryClass {
     }
   }
 }
+.sb-desktop-filter-section{
+  .sbt-filter{
+    @include respond-above(md){
+      margin-top: 0 !important;
+    }
+  }
+}

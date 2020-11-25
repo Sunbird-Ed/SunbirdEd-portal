@@ -1,4 +1,4 @@
-import { Component, Input, Output, OnInit, ViewChild, EventEmitter } from '@angular/core';
+import { Component, Input, Output, OnInit, ViewChild, EventEmitter, ElementRef } from '@angular/core';
 import { ToasterService, ResourceService} from '@sunbird/shared';
 import { UserService, LearnerService } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -14,6 +14,9 @@ export class CertificateNameUpdatePopupComponent implements OnInit {
   @Input() profileInfo;
   @ViewChild('modal') modal;
   @Output() close = new EventEmitter();
+  @ViewChild('crtFirstName') fNameInputEl: ElementRef;
+  @ViewChild('crtLastName') lNameInputEl: ElementRef;
+
 
   disableContinueBtn = false;
   isNameEditable = false;
@@ -41,6 +44,20 @@ export class CertificateNameUpdatePopupComponent implements OnInit {
   closePopup() {
     this.modal.deny();
     this.close.emit();
+  }
+
+  allowToEdit(inputType) {
+    if (inputType === 'firstName') {
+      this.isNameEditable = true;
+      setTimeout(() => {
+        this.fNameInputEl.nativeElement.focus();
+      }, 100);
+    } else if (inputType === 'lastName') {
+      this.isLastNameEditable = true;
+      setTimeout(() => {
+        this.lNameInputEl.nativeElement.focus();
+      }, 100);
+    }
   }
 
   /**
