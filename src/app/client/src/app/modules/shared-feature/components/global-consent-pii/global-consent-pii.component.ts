@@ -21,6 +21,7 @@ export class GlobalConsentPiiComponent implements OnInit {
   @Input() showConsentPopup;
   @Input() consentConfig;
   @Input() isglobalConsent;
+  @Input() profileInfo;
   @ViewChild('profileDetailsModal') profileDetailsModal;
   @Output() close = new EventEmitter<any>();
   consentPii = 'Yes';
@@ -80,6 +81,11 @@ export class GlobalConsentPiiComponent implements OnInit {
 
   getUserInformation() {
     this.userInformation['name'] = this.usersProfile.lastName ?
+    `${this.usersProfile.firstName} ${this.usersProfile.lastName}` : this.usersProfile.firstName;
+    this.userInformation['userid'] = this.usersProfile.userId;
+    this.userInformation['emailId'] = this.usersProfile.email;
+    this.userInformation['phone'] = this.usersProfile.phone;
+    this.userInformation['name'] = this.usersProfile.lastName ?
      `${this.usersProfile.firstName} ${this.usersProfile.lastName}` : this.usersProfile.firstName;
     this.userInformation['userid'] = this.usersProfile.userId;
     this.userInformation['emailId'] = this.usersProfile.email;
@@ -118,6 +124,10 @@ export class GlobalConsentPiiComponent implements OnInit {
             break;
         }
       }
+    }
+
+    if (this.profileInfo) {
+      this.userInformation = _.assign(this.userInformation, this.profileInfo);
     }
   }
 
