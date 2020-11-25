@@ -81,11 +81,6 @@ export class GlobalConsentPiiComponent implements OnInit {
 
   getUserInformation() {
     this.userInformation['name'] = this.usersProfile.lastName ?
-    `${this.usersProfile.firstName} ${this.usersProfile.lastName}` : this.usersProfile.firstName;
-    this.userInformation['userid'] = this.usersProfile.userId;
-    this.userInformation['emailId'] = this.usersProfile.email;
-    this.userInformation['phone'] = this.usersProfile.phone;
-    this.userInformation['name'] = this.usersProfile.lastName ?
      `${this.usersProfile.firstName} ${this.usersProfile.lastName}` : this.usersProfile.firstName;
     this.userInformation['userid'] = this.usersProfile.userId;
     this.userInformation['emailId'] = this.usersProfile.email;
