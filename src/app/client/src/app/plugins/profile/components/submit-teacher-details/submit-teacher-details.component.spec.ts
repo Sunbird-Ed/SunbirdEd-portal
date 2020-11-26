@@ -499,6 +499,7 @@ describe('SubmitTeacherDetailsComponent', () => {
     component.declaredLatestFormValue = mockRes.declaredLatestFormValue;
     component.tenantPersonaLatestFormValue = mockRes.tenantPersonaLatestFormValue;
     spyOn<any>(component, 'getDeclarationReqObject');
+    spyOn(component, 'getProfileInfo');
     spyOn(component, 'updateProfile');
     component.submit();
     expect(component['getDeclarationReqObject']).toHaveBeenCalled();
@@ -510,6 +511,7 @@ describe('SubmitTeacherDetailsComponent', () => {
     component.declaredLatestFormValue = mockRes.declaredLatestFormValue;
     component.tenantPersonaLatestFormValue = mockRes.tenantPersonaLatestFormValue;
     spyOn<any>(component, 'getDeclarationReqObject');
+    spyOn(component, 'getProfileInfo');
     spyOn(component, 'updateProfile');
     component.submit();
     expect(component['getDeclarationReqObject']).toHaveBeenCalled();
@@ -533,5 +535,15 @@ describe('SubmitTeacherDetailsComponent', () => {
     expect(component.unsubscribe.complete).toHaveBeenCalled();
     expect(component.unsubscribe.next).toHaveBeenCalled();
     expect(component.modal.deny).toHaveBeenCalled();
+  });
+
+  it('should get the updated profile info', () => {
+    component.declaredLatestFormValue = mockRes.declaredLatestFormValue;
+    component.tenantPersonaLatestFormValue = mockRes.tenantPersonaLatestFormValue;
+    spyOn<any>(component, 'getDeclarationReqObject');
+    spyOn(component, 'getProfileInfo');
+    spyOn(component, 'updateProfile');
+    component.submit();
+    expect(component.getProfileInfo).toHaveBeenCalled();
   });
 });

@@ -47,6 +47,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     languageDirection = 'ltr';
     isFilterChanged = false;
     showModal = false;
+    showLoadContentModal = false;
     downloadIdentifier: string;
     readonly MINIMUM_REQUIRED_RAM = 100;
     readonly MAXIMUM_CPU_LOAD = 90;
