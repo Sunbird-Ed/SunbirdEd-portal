@@ -49,6 +49,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     showModal = false;
     downloadIdentifier: string;
     contentDownloadStatus = {};
+    appliedFilters = {};
+    showAppliedFiltersSection: boolean = false;
 
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
@@ -171,10 +173,12 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     public getFilters({ filters, status }) {
+        this.showAppliedFiltersSection = Object.keys(omit(this.activatedRoute.snapshot.queryParams, 'selectedTab')).length ? true : false;
         this.showLoader = true;
         if (!filters || status === 'FETCHING') { return; }
         const currentPageData = this.getPageData(get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook');
-        this.selectedFilters = pick(filters, ['board', 'medium', 'gradeLevel', 'channel', 'subject', 'audience']);
+        const selectedFilters = this.appliedFilters = pick(filters, ['board', 'medium', 'gradeLevel', 'channel', 'subject', 'audience', 'publisher']);
+        this.selectedFilters = omit(selectedFilters, ['publisher'])
         if (has(filters, 'audience') || (localStorage.getItem('userType') && currentPageData.contentType !== 'all')) {
             const userTypes = get(filters, 'audience') || [localStorage.getItem('userType')];
             const userTypeMapping = get(this.configService, 'appConfig.userTypeMapping');
