@@ -12,6 +12,7 @@ import { Response } from './explore-content.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
+import { ContentManagerService } from '../../../offline/services';
 
 describe('ExploreContentComponent', () => {
   let component: ExploreContentComponent;
@@ -65,7 +66,7 @@ describe('ExploreContentComponent', () => {
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
       declarations: [ExploreContentComponent],
       providers: [PublicPlayerService, { provide: ResourceService, useValue: resourceBundle },
-      { provide: Router, useClass: RouterStub },
+      { provide: Router, useClass: RouterStub }, ContentManagerService,
       { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
@@ -224,4 +225,58 @@ describe('ExploreContentComponent', () => {
     expect(component.contentList.length).toEqual(1);
     expect(toasterService.error).toHaveBeenCalled();
   }));
+
+  it('should call hoverActionClicked for DOWNLOAD ', () => {
+    Response.hoverActionsData['hover'] = {
+      'type': 'download',
+      'label': 'Download',
+      'disabled': false
+    };
+    Response.hoverActionsData['data'] = Response.hoverActionsData.content;
+    spyOn(component, 'logTelemetry');
+    spyOn(component, 'downloadContent').and.callThrough();
+    component.hoverActionClicked(Response.hoverActionsData);
+    expect(component.downloadContent).toHaveBeenCalledWith(component.downloadIdentifier);
+    expect(component.logTelemetry).toHaveBeenCalledWith(component.contentData, 'download-collection');
+    expect(component.showModal).toBeFalsy();
+    expect(component.contentData).toBeDefined();
+  });
+
+  it('should call hoverActionClicked for Open ', () => {
+    Response.hoverActionsData['hover'] = {
+      'type': 'Open',
+      'label': 'OPEN',
+      'disabled': false
+    };
+    Response.hoverActionsData['data'] = Response.hoverActionsData.content;
+    const route = TestBed.get(Router);
+    route.url = '/explore-page?selectedTab=explore-page';
+    spyOn(component, 'logTelemetry').and.callThrough();
+    spyOn(component, 'playContent');
+    component.hoverActionClicked(Response.hoverActionsData);
+    expect(component.playContent).toHaveBeenCalledWith(Response.hoverActionsData);
+    expect(component.logTelemetry).toHaveBeenCalledWith(component.contentData, 'play-content');
+    expect(component.contentData).toBeDefined();
+  });
+
+  it('should call download content with success ', () => {
+    const contentManagerService = TestBed.get(ContentManagerService);
+    spyOn(contentManagerService, 'startDownload').and.returnValue(of({}));
+    component.downloadContent('123');
+    expect(component.showDownloadLoader).toBeFalsy();
+  });
+  it('should call download content from popup ', () => {
+    spyOn(component, 'downloadContent');
+    component.callDownload();
+    expect(component.showDownloadLoader).toBeTruthy();
+    expect(component.downloadContent).toHaveBeenCalled();
+  });
+
+  it('should call download content with error ', () => {
+    const contentManagerService = TestBed.get(ContentManagerService);
+    spyOn(contentManagerService, 'startDownload').and.returnValue(throwError({error: {params: {err: 'ERROR'}}}));
+    component.ngOnInit();
+    component.downloadContent('123');
+    expect(component.showDownloadLoader).toBeFalsy();
+  });
 });
