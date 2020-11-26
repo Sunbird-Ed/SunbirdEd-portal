@@ -27,30 +27,69 @@
                     [telemetryInteractEdata]="getInteractEdata()"></sb-library-filters>
             </div>
         </div>
-        <div class="sb-class-bar sb-bg-color-gray-0" *ngIf="allValues?.subject?.length">
+
+        <div class="sb-bg-color-white">
             <div class="ui container">
-                <sb-library-filters [list]="allValues['subject']" [layout]="filterLayout.ROUND"
-                    [selectedItems]="selectedFilters['subject']"
-                    (selectedFilter)="filterChangeEvent.next({ event: $event, type: 'subject'})" appTelemetryInteract
-                    [telemetryInteractEdata]="getInteractEdata()"></sb-library-filters>
+                <div class="d-flex state-medium-container flex-ai-center">
+
+                    <div *ngIf="allValues?.subject?.length" class="state-medium-container__dropdown">
+                        <div class="sb-field mb-0">
+                            <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['subject']"
+                                (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'subject'})"
+                                defaultSelectionText={{resourceService?.frmelmnts?.lbl?.subject}}
+                                zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
+                                class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg sbt-dropdown-tick">
+                                <div class="sbt-dropdown-section">
+                                    <sui-select-option *ngFor="let dropdownValue of allValues['subject']"
+                                        [value]="dropdownValue">
+                                    </sui-select-option>
+                                </div>
+                            </sui-multi-select>
+                        </div>
+                    </div>
+
+                    <div *ngIf="allValues?.publisher?.length" class="state-medium-container__separator"> </div>
+
+                    <div *ngIf="allValues?.publisher?.length" class="state-medium-container__dropdown">
+                        <div class="sb-field mb-0">
+                            <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['publisher']"
+                                (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'publisher'})"
+                                defaultSelectionText={{resourceService?.frmelmnts?.lbl?.publishedBy}}
+                                zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
+                                class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg sbt-dropdown-tick">
+                                <div class="sbt-dropdown-section">
+                                    <sui-select-option *ngFor="let dropdownValue of allValues['publisher']"
+                                        [value]="dropdownValue">
+                                    </sui-select-option>
+                                </div>
+                            </sui-multi-select>
+                        </div>
+                    </div>
+
+                    <div *ngIf="allValues?.audience?.length" class="state-medium-container__separator"> </div>
+
+
+                    <div *ngIf="allValues?.audience?.length" class="state-medium-container__dropdown">
+                        <div class="sb-field mb-0">
+                            <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['audience']"
+                                (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'audience'})"
+                                defaultSelectionText={{resourceService?.frmelmnts?.lbl?.meantFor}}
+                                zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
+                                class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg sbt-dropdown-tick">
+                                <div class="sbt-dropdown-section">
+                                    <sui-select-option *ngFor="let dropdownValue of allValues['audience']"
+                                        [value]="dropdownValue">
+                                    </sui-select-option>
+                                </div>
+                            </sui-multi-select>
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
         </div>
-        <div class="sb-class-bar sb-bg-color-gray-0" *ngIf="allValues?.publisher?.length">
-            <div class="ui container">
-                <sb-library-filters [list]="allValues['publisher']" [layout]="filterLayout.ROUND"
-                    [selectedItems]="selectedFilters['publisher']"
-                    (selectedFilter)="filterChangeEvent.next({ event: $event, type: 'publisher'})" appTelemetryInteract
-                    [telemetryInteractEdata]="getInteractEdata()"></sb-library-filters>
-            </div>
-        </div>
-        <div class="sb-class-bar sb-bg-color-gray-0" *ngIf="allValues?.audience?.length">
-            <div class="ui container">
-                <sb-library-filters [list]="allValues['audience']" [layout]="filterLayout.ROUND"
-                    [selectedItems]="selectedFilters['audience']"
-                    (selectedFilter)="filterChangeEvent.next({ event: $event, type: 'audience'})" appTelemetryInteract
-                    [telemetryInteractEdata]="getInteractEdata()"></sb-library-filters>
-            </div>
-        </div>
+
     </div>
 </ng-container>
 
@@ -95,13 +134,13 @@
                             <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['medium']"
                                 (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'medium'})"
                                 defaultSelectionText="Medium" zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
-                                class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg ">
+                                class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg sbt-dropdown-tick">
                                 <div class="sbt-dropdown-section">
                                     <sui-select-option *ngFor="let dropdownValue of allValues['medium']"
                                         [value]="dropdownValue">
                                     </sui-select-option>
                                 </div>
-                            </sui-multi-select> 
+                            </sui-multi-select>
                         </div>
 
                         <div class="sbt-class-bar text-left" *ngIf="allValues?.gradeLevel?.length">
@@ -118,45 +157,47 @@
                                 class="fnormal font-weight-bold d-flex">{{resourceService.frmelmnts?.lbl?.subject | translate}}</label>
                             <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['subject']"
                                 (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'subject'})"
-                                defaultSelectionText="Subject"
+                                defaultSelectionText={{resourceService?.frmelmnts?.lbl?.subject}}
                                 zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
-                                class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg ">
+                                class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg sbt-dropdown-tick">
                                 <div class="sbt-dropdown-section">
                                     <sui-select-option *ngFor="let dropdownValue of allValues['subject']"
                                         [value]="dropdownValue">
                                     </sui-select-option>
                                 </div>
-                            </sui-multi-select> 
+                            </sui-multi-select>
                         </div>
 
                         <div class="sb-field w-100" *ngIf="allValues?.publisher?.length">
-                            <label class="fnormal font-weight-bold d-flex">Publisher</label>
+                            <label
+                                class="fnormal font-weight-bold d-flex">{{resourceService.frmelmnts?.lbl?.publishedBy | translate}}</label>
                             <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['publisher']"
                                 (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'publisher'})"
-                                defaultSelectionText="Published By"
+                                defaultSelectionText={{resourceService?.frmelmnts?.lbl?.publishedBy}}
                                 zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
-                                class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg ">
+                                class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg sbt-dropdown-tick">
                                 <div class="sbt-dropdown-section">
                                     <sui-select-option *ngFor="let dropdownValue of allValues['publisher']"
                                         [value]="dropdownValue">
                                     </sui-select-option>
                                 </div>
-                            </sui-multi-select> 
+                            </sui-multi-select>
                         </div>
 
                         <div class="sb-field  w-100" *ngIf="allValues?.audience?.length">
-                            <label class="fnormal font-weight-bold d-flex">Meant For</label>
+                            <label
+                                class="fnormal font-weight-bold d-flex">{{resourceService.frmelmnts?.lbl?.meantFor | translate}}</label>
                             <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['audience']"
                                 (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'audience'})"
-                                defaultSelectionText="Meant For"
+                                defaultSelectionText={{resourceService?.frmelmnts?.lbl?.meantFor}}
                                 zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
-                                class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg">
+                                class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg sbt-dropdown-tick">
                                 <div class="sbt-dropdown-section">
                                     <sui-select-option *ngFor="let dropdownValue of allValues['audience']"
                                         [value]="dropdownValue">
                                     </sui-select-option>
                                 </div>
-                            </sui-multi-select> 
+                            </sui-multi-select>
                         </div>
                     </div>
                 </div>
