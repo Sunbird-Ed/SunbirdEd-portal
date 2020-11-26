@@ -11,6 +11,9 @@ import desktopRoutes from './routes/desktop';
 import playerProxyRoutes from './routes/playerProxy';
 import staticRoutes from './routes/static';
 import telemetryRoutes from './routes/telemetry';
+import Device from './controllers/device';
+import { manifest } from "./manifest";
+import Response from './utils/response';
 const proxy = require('express-http-proxy');
 
 export class Router {
@@ -101,6 +104,29 @@ export class Router {
           return `/api/v3/device/profile/:id`;
         },
       }));
+    
+    app.post(`/device/register/:id`, async(req, res, next) => {
+      logger.debug(`Received API call to update device profile`, req.params.id);
+      const locationData = _.get(req, "body.request.userDeclaredLocation");
+      if (locationData && _.isObject(locationData.state) || !_.isObject(locationData.city)) {
+        const deviceProfile = new Device(manifest);
+        deviceProfile.updateDeviceProfile(req.body.request);
+        next();
+      } else {
+        logger.error(
+          `ReqId = "${req.headers[
+          "X-msgid"
+          ]}": Received error while saving in location database and err.message: Invalid location Data`,
+      );
+        const status = 500;
+        res.status(status);
+        return res.send(Response.error('analytics.device-register', status));
+      }
+    },proxy(proxyUrl, {
+      proxyReqPathResolver(req) {
+        return `/device/register/:id`;
+      },
+    }));
       
     contentRoutes(app, proxyUrl, this.contentDownloadManager)
     dataRoutes(app, proxyUrl);
