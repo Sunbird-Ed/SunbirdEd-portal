@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NoResultComponent, SearchFilterComponent, PageSectionComponent, ProminentFilterComponent,
-  TopicPickerComponent, DataDrivenFilterComponent, ViewAllComponent, GlobalSearchFilterComponent, GlobalSearchSelectedFilterComponent } from './components';
+  TopicPickerComponent, DataDrivenFilterComponent, ViewAllComponent, GlobalSearchFilterComponent, GlobalSearchSelectedFilterComponent, SelectedFiltersComponent } from './components';
 import { SharedModule } from '@sunbird/shared';
 import {
   SuiModalModule, SuiProgressModule, SuiAccordionModule,
@@ -18,7 +18,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [NoResultComponent, SearchFilterComponent, PageSectionComponent, ProminentFilterComponent,
-    TopicPickerComponent, DataDrivenFilterComponent, ViewAllComponent, GlobalSearchFilterComponent, GlobalSearchSelectedFilterComponent],
+    TopicPickerComponent, DataDrivenFilterComponent, ViewAllComponent, GlobalSearchFilterComponent, GlobalSearchSelectedFilterComponent, SelectedFiltersComponent],
   imports: [
     SharedFeatureModule,
     RouterModule,
@@ -34,6 +34,6 @@ import { TranslateModule } from '@ngx-translate/core';
   SuiTabsModule, SuiSelectModule, SuiDimmerModule, SuiCollapseModule, SuiDropdownModule
   ],
   exports: [NoResultComponent, SearchFilterComponent, PageSectionComponent, ProminentFilterComponent,
-    TopicPickerComponent, DataDrivenFilterComponent, ViewAllComponent, GlobalSearchFilterComponent, GlobalSearchSelectedFilterComponent]
+    TopicPickerComponent, DataDrivenFilterComponent, ViewAllComponent, GlobalSearchFilterComponent, GlobalSearchSelectedFilterComponent, SelectedFiltersComponent]
 })
 export class ContentSearchModule { }

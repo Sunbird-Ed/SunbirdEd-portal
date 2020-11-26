@@ -1,0 +1,22 @@
+<div class="sbt-applied-filters-titlefle text-left mt-24" *ngIf="(selectedFilters | json) != '{}'">
+  {{ resourceService?.frmelmnts?.lbl?.appliedFilters}}</div>
+<div class="d-flex flex-ai-center mb-24 flex-w-wrap">
+
+  <ng-container *ngFor="let filter of filters">
+    <div class="d-flex flex-ai-center pr-8" *ngIf="filter?.value?.length">
+      <div>
+        <label class="text-capitalize">{{filter?.key}} :&nbsp;</label>
+        
+        <ng-container *ngFor="let item of filter?.value | slice:0:5">
+          <a class="ui label mt-8 mr-8 py-0 sbt-label-green text-capitalize" *ngIf="item">
+            {{item}}
+            <i class="delete icon" (click)="removeSelection({type: filter?.key, value: item})"></i>
+          </a>
+        </ng-container>
+        <a class="ui label mt-8 mr-8 py-0 sbt-label-green text-capitalize" *ngIf="filter?.value?.length > 5">
+          ...
+        </a>
+      </div>
+    </div>
+  </ng-container>
+</div>
