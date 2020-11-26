@@ -701,3 +701,21 @@ html.PlayerMediaQueryClass {
     }
   }
 }
+.item.sb-btn-disabled{
+  opacity: 0.5;
+  &:hover{
+    color: var(--gray-200)!important;
+    cursor: initial !important;
+    .sb-icon{
+      background-color: var(--primary-400);
+      opacity: 0.5;
+    }
+  }
+}
+.sb-desktop-filter-section{
+  .sbt-filter{
+    @include respond-above(md){
+      margin-top: 0 !important;
+    }
+  }
+}
