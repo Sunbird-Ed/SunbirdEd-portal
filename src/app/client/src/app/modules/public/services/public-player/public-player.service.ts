@@ -96,6 +96,7 @@ export class PublicPlayerService {
     const deviceId = (<HTMLInputElement>document.getElementById('deviceId'));
     configuration.context.did = deviceId ? deviceId.value : '';
     configuration.metadata = contentDetails.contentData;
+    configuration.config = { sideMenu: { showShare: true, showDownload: true, showReplay: true, showExit: false } };
     configuration.context.contextRollup = this.getRollUpData([_.get(this.orgDetailsService.orgDetails, 'hashTagId')]);
     configuration.data = contentDetails.contentData.mimeType !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent ?
       {} : contentDetails.contentData.body;

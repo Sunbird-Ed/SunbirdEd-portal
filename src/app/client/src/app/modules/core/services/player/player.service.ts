@@ -127,6 +127,7 @@ export class PlayerService {
     }
     configuration.context.pdata.id = this.userService.appId;
     configuration.metadata = contentDetails.contentData;
+    configuration.config = { sideMenu: { showShare: true, showDownload: true, showReplay: true, showExit: false } };
     configuration.data = contentDetails.contentData.mimeType !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent ?
       {} : contentDetails.contentData.body;
     configuration.config.enableTelemetryValidation = environment.enableTelemetryValidation; // telemetry validation
