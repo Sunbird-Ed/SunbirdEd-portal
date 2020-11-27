@@ -3,6 +3,7 @@ import { ToasterService, ResourceService} from '@sunbird/shared';
 import { UserService, LearnerService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
+import { IInteractEventObject } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-certificate-name-update-popup',
@@ -24,6 +25,7 @@ export class CertificateNameUpdatePopupComponent implements OnInit {
   certificateNameChecked = false;
   instance: string;
   public learner: LearnerService;
+  courseInteractObject: IInteractEventObject;
 
   constructor( public userService: UserService,
     public resourceService: ResourceService,
@@ -69,7 +71,7 @@ export class CertificateNameUpdatePopupComponent implements OnInit {
       lastName: _.trim(this.profileInfo.lastName)
     };
     this.disableContinueBtn = true;
-    localStorage.setItem('isCertificateNameUpdated', 'true');
+    localStorage.setItem('isCertificateNameUpdated_' + this.profileInfo.id, 'true');
 
     this.profileService.updateProfile(data).subscribe(res => {
       this.closePopup();
