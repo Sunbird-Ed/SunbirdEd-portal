@@ -29,7 +29,6 @@
   },
   "private": true,
   "dependencies": {
-    "video.js": "7.5.5",
     "@angular-devkit/build-angular": "0.13.9",
     "@angular/animations": "^7.2.10",
     "@angular/cli": "7.3.6",
@@ -108,9 +107,11 @@
     "ngx-slick": "0.2.1",
     "rxjs": "^6.5.5",
     "sb-svg2pdf": "0.0.7",
+    "sb-theme": "^1.0.5",
     "slick-carousel": "^1.8.1",
     "sunbird-chatbot-client": "0.0.6",
     "tree-model": "^1.0.7",
+    "video.js": "7.5.5",
     "zone.js": "^0.10.3"
   },
   "devDependencies": {
