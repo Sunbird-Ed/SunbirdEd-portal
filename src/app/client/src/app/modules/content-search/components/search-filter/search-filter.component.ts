@@ -214,8 +214,9 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     })
   }
   private updateRoute(resetFilters?: boolean) {
+    const selectedTab = _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook';
     this.router.navigate([], {
-      queryParams: resetFilters ? {} : this.getSelectedFilter(),
+      queryParams: resetFilters ? { selectedTab } : this.getSelectedFilter(),
       relativeTo: this.activatedRoute.parent
     });
   }

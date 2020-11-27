@@ -34,7 +34,7 @@ org.ekstep.contentrenderer.baseLauncher.extend({
         iframe.type = 'text/html';
         iframe.width = "100%";
         iframe.height = "100%";
-        iframe.src = origin + '/content/preview/youtube.html?origin=' + origin + '&id='+youtubeId;
+        iframe.src = origin + '/contentPlayer/preview/youtube.html?origin=' + origin + '&id='+youtubeId;
         iframe.id = "org.ekstep.youtuberenderer";
         iframe.setAttribute("allowfullscreen",'')
         console.log(iframe.src);
