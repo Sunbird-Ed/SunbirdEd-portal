@@ -810,7 +810,6 @@
         "sideMenu": {
           "showShare": true,
           "showDownload": true,
-          "showReplay": true,
           "showExit": false
         }
       }
