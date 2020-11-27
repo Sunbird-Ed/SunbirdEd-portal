@@ -28,7 +28,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   showProfileUpdatePopup = false;
   profileInfo: {
     firstName: string,
-    lastName: string
+    lastName: string,
+    id: string
   };
   /**
    * contains link that can be shared
@@ -167,7 +168,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   resumeCourse(showExtUrlMsg?: boolean) {
-    const IsStoredLocally = localStorage.getItem('isCertificateNameUpdated') || 'false' ;
+    const IsStoredLocally = localStorage.getItem('isCertificateNameUpdated_' + this.profileInfo.id) || 'false' ;
     const certificateDescription = this.courseBatchService.getcertificateDescription(this.enrolledBatchInfo);
     if (IsStoredLocally !== 'true' && certificateDescription && certificateDescription.isCertificate && this.progress < 100) {
       this.showProfileUpdatePopup = true;
