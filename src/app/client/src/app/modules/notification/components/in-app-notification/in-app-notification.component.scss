@@ -23,3 +23,7 @@
   left: calculateRem(2px);
   text-align: center;
 }
+.notification-disable{
+  opacity: 0.5;
+  pointer-events: none;
+}
