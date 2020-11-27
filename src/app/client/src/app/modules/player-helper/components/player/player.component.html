@@ -11,25 +11,9 @@
 </div>
 <!-- Portal player-->
 <div class="h-100" *ngIf="!isMobileOrTab && !showNewPlayer">
-  <div class="d-flex flex-w-wrap sb-bg-color-white" [ngClass]="{'content-full-video': isFullScreenView}">
-    <div class="video-close-btn" (click)="closeContentFullScreen()" *ngIf="isFullScreenView">
-        <svg class="icon icon-svg--white">
-          <use xlink:href="assets/images/sprite.svg#close-button"></use>
-        </svg>
-    </div>
-  </div>
-    <!-- <div > -->
     <iframe #contentIframe id="contentPlayer" class="contentViewerIframeShadow" [ngClass]="{'player-fullscreen': isFullScreenView}" name="contentPlayer"></iframe>
 </div>
 <div *ngIf="!isMobileOrTab && showNewPlayer" class="w-100 h-100">
-  <div class="d-flex flex-w-wrap sb-bg-color-white" [ngClass]="{'content-full-video': isFullScreenView}">
-    <div class="video-close-btn" (click)="closeContentFullScreen()" *ngIf="isFullScreenView">
-        <svg class="icon icon-svg--white">
-          <use xlink:href="assets/images/sprite.svg#close-button"></use>
-        </svg>
-    </div>
-  </div>
-
       <div class="contentViewerIframeShadow" [ngClass]="{'player-fullscreen content-full-video': isFullScreenView}">
         <sunbird-pdf-player *ngIf="playerType === 'pdf-player'" [playerConfig]="playerConfig"
           (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)">
@@ -49,7 +33,6 @@
 </div>
 
 <div id="playerFullscreen" *ngIf="!showPlayIcon" class="player-fullscreen" [ngStyle]="{'display': mobileViewDisplay}"> 
-  <img appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeButtonInteractEdata" (click)="closeFullscreen()" class="close-button" src="assets/images/close-Black.svg" alt="">
   <sunbird-pdf-player *ngIf="playerType === 'pdf-player'" [playerConfig]="playerConfig"
     (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></sunbird-pdf-player>
 
