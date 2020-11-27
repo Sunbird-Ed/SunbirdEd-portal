@@ -1,8 +1,9 @@
-import { Component, Input, Output, OnInit, ViewChild, EventEmitter } from '@angular/core';
+import { Component, Input, Output, OnInit, ViewChild, EventEmitter, ElementRef } from '@angular/core';
 import { ToasterService, ResourceService} from '@sunbird/shared';
 import { UserService, LearnerService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
+import { IInteractEventObject } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-certificate-name-update-popup',
@@ -14,6 +15,9 @@ export class CertificateNameUpdatePopupComponent implements OnInit {
   @Input() profileInfo;
   @ViewChild('modal') modal;
   @Output() close = new EventEmitter();
+  @ViewChild('crtFirstName') fNameInputEl: ElementRef;
+  @ViewChild('crtLastName') lNameInputEl: ElementRef;
+
 
   disableContinueBtn = false;
   isNameEditable = false;
@@ -21,6 +25,7 @@ export class CertificateNameUpdatePopupComponent implements OnInit {
   certificateNameChecked = false;
   instance: string;
   public learner: LearnerService;
+  courseInteractObject: IInteractEventObject;
 
   constructor( public userService: UserService,
     public resourceService: ResourceService,
@@ -43,6 +48,20 @@ export class CertificateNameUpdatePopupComponent implements OnInit {
     this.close.emit();
   }
 
+  allowToEdit(inputType) {
+    if (inputType === 'firstName') {
+      this.isNameEditable = true;
+      setTimeout(() => {
+        this.fNameInputEl.nativeElement.focus();
+      }, 100);
+    } else if (inputType === 'lastName') {
+      this.isLastNameEditable = true;
+      setTimeout(() => {
+        this.lNameInputEl.nativeElement.focus();
+      }, 100);
+    }
+  }
+
   /**
    * This method used to submit profile Update
    */
@@ -52,7 +71,7 @@ export class CertificateNameUpdatePopupComponent implements OnInit {
       lastName: _.trim(this.profileInfo.lastName)
     };
     this.disableContinueBtn = true;
-    localStorage.setItem('isCertificateNameUpdated', 'true');
+    localStorage.setItem('isCertificateNameUpdated_' + this.profileInfo.id, 'true');
 
     this.profileService.updateProfile(data).subscribe(res => {
       this.closePopup();

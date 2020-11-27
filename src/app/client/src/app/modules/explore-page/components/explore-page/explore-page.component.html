@@ -11,6 +11,11 @@
     <div [ngClass]="SECOND_PANEL_LAYOUT" *ngIf="subscription$ | async">
       <div [appTelemetryImpression]="telemetryImpression"
         [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
+
+        <div class="ui grid relative9" *ngIf="showAppliedFiltersSection">
+          <app-selected-filters [selectedFilters]="appliedFilters"></app-selected-filters>
+        </div>
+
         <div *ngIf="false" [ngClass]="{'relative9': isUserLoggedIn()}">
           <div class="sb-bg-color-white py-16 mb-24">
             <h4 class="sb-categories-title text-left">{{resourceService?.frmelmnts?.lbl?.courses}}</h4>

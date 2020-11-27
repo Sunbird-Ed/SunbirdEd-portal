@@ -9,7 +9,6 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class OnlineOnlyDirective implements OnInit, OnDestroy {
   @Input() showWarningMessage = false;
-  @Input() appOnlineOnly = true;
 
   public unsubscribe$ = new Subject<void>();
   private isConnected = true;
@@ -22,11 +21,12 @@ export class OnlineOnlyDirective implements OnInit, OnDestroy {
   ) { }
 
   @HostListener('click', ['$event']) onClick($event) {
-    if (!this.isConnected && this.appOnlineOnly) {
+    if (!this.isConnected) {
       $event.preventDefault();
       $event.stopPropagation();
       if (this.showWarningMessage) {
         this.showAlertMessage();
+        this.disableElement();
       }
     }
   }
@@ -35,7 +35,7 @@ export class OnlineOnlyDirective implements OnInit, OnDestroy {
     this.connectionService.monitor()
       .pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
         this.isConnected = isConnected;
-        if (!isConnected && this.appOnlineOnly) {
+        if (!isConnected) {
           this.disableElement();
         } else {
           this.enableElement();

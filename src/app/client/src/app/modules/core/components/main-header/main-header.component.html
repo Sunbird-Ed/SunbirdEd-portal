@@ -9,13 +9,31 @@
     <!--Header White Section-->
     <div class="ui container sb-header-ui-container">
       <div class="ui grid padded width-100">
-        <div class="five wide column p-0">
+        <div class="five wide column p-0 d-flex flex-ai-center">
           <!--Logo-->
           <a class="d-flex logo" tabindex="0" title="{{tenantInfo.titleName}}" role="banner">
             <img (click)="navigateToHome()" class="cursor-pointer" alt={{tenantInfo.titleName}}
               src="{{tenantInfo.logo}}">
           </a>
           <!--/Logo-->
+
+           <!--Online/Offline-->
+         <div *appDesktopOnly>
+          <div class="d-flex flex-ai-center flex-jc-center ml-48" *ngIf="isConnected">
+            <div class="status-container__icon mr-8">
+              <img height="37px" src="assets/images/Online.svg" width="24px">
+            </div>
+            <div class="fnormal status-container__title">{{resourceService?.messages?.stmsg?.desktop?.onlineStatus}}</div>
+          </div>
+          <div class="d-flex flex-ai-center flex-jc-center ml-48" *ngIf="!isConnected">
+            <div class="status-container__icon mr-8">
+              <img height="37px" src="assets/images/Offline.svg" width="24px">
+            </div>
+            <div class="fnormal status-container__title">{{resourceService?.frmelmnts.lbl.offline}}</div>
+          </div>
+         </div>
+          <!--/Online/Offline-->
+         
         </div>
         <div class="seven wide column p-0 d-flex flex-jc-flex-end flex-ai-center">
           <!--Hamburger Icon-->
@@ -71,10 +89,16 @@
           <!--/Divider-->
           <!--Search Box-->
           <!--Logged in Pages-->
-          <app-search [layoutConfiguration]="layoutConfiguration" class="sb-search-box b-0 mr-auto"
+          <app-search [layoutConfiguration]="layoutConfiguration" class="sb-search-box b-0"
             *ngIf="!showExploreComponent && !hideHeader"
-            [ngClass]="{'ml-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}">
+            [ngClass]="{'ml-auto mr-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}">
           </app-search>
+          <!--Load content -->
+          <div class="computer only d-flex" *appDesktopOnly>
+            <span class="search-qrcode-divider"></span>
+            <button class="ui button qr-code-btn d-flex flex-ai-center sb-load-content-btn" type="button"> {{resourceService?.frmelmnts?.btn?.loadContent}} </button>
+          </div>
+           <!--/Load content -->
           <!--/Logged in Pages-->
           <!--Explore Pages-->
           <div class="sb-search-box b-0 mr-auto" *ngIf="showExploreComponent && !hideHeader"
@@ -108,6 +132,7 @@
     <div class="py-8 px-16 mobile only"
       *ngIf="(showExploreHeader || userService.loggedIn && !showOfflineHelpCentre) && !contributeTabActive">
       <div class="ui mobile-view container d-flex flex-jc-space-between mx-0">
+       <div class="mr-auto d-flex">
         <!--QR Button-->
         <button class="ui button qr-code-btn d-flex flex-ai-center" appTelemetryInteract
           [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrmodal = true;">
@@ -119,6 +144,12 @@
           </span>
         </button>
         <!--/QR Button-->
+      <!--load content button-->
+      <div *appDesktopOnly>
+        <button class="ui button qr-code-btn d-flex flex-ai-center sb-load-content-btn ml-16" type="button"> {{resourceService?.frmelmnts?.btn?.loadContent}} </button>
+      </div>
+      <!--/load content button-->
+       </div>
         <!--Language Dropdown-->
         <app-language-dropdown [layoutConfiguration]="layoutConfiguration" [languageRange]='languages'
           class="mobile only" *ngIf="languages && !router.isActive('workspace', false)">
@@ -359,7 +390,7 @@
                                 (closeSideMenu)="toggleSideMenu(false)"></app-content-type>
             </div>
 
-            <li appOnlineOnly class="list-item" appOnlineOnly (click)="toggleSideMenu(false)" [class.active]="router.isActive(routerLinks?.explore)"
+            <li appOnlineOnly class="list-item" (click)="toggleSideMenu(false)" [class.active]="router.isActive(routerLinks?.explore)"
               *ngIf="!router.isActive('', true)" [routerLink]="[navigateToGroups()]" appTelemetryInteract
               [telemetryInteractEdata]="myGroupIntractEData">
               <i class="icon-svg icon-svg--sm icon-groups mr-8"><svg class="icon icon-svg--primary">

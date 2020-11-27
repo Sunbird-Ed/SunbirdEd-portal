@@ -6,12 +6,15 @@
     <div class="d-flex flex-ai-center pr-8">
       <div *ngIf="selectedFilters[facet.name] && selectedFilters[facet.name].length > 0">
         <label>{{facet.label}} :&nbsp;</label>
-        <ng-container *ngFor="let item of selectedFilters[facet.name]">
+        <ng-container *ngFor="let item of selectedFilters[facet.name] | slice: 0:5">
           <a class="ui label mt-8 mr-8 py-0 sbt-label-green text-capitalize" *ngIf="item && item.length > 0">
             {{item}}
             <i class="delete icon" (click)="removeFilterSelection({type: facet.name, value: item})"></i>
           </a>
         </ng-container>
+        <a class="ui label mt-8 mr-8 py-0 sbt-label-green text-capitalize" *ngIf="selectedFilters[facet.name]?.length > 5">
+          ...
+        </a>
       </div>
     </div>
     </ng-container>

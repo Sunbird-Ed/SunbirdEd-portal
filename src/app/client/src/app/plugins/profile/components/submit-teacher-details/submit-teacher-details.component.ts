@@ -69,6 +69,11 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   isDeclarationFormValid = false;
   isTenantPersonaFormValid = false;
   otpConfirm;
+  globalConsent = 'global-consent';
+  isglobalConsent = true;
+  consentConfig: { tncLink: string; tncText: any; };
+  showGlobalConsentPopUpSection = false;
+  profileInfo: {};
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -86,6 +91,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
+    this.consentConfig = { tncLink: '', tncText: this.resourceService.frmelmnts.lbl.nonCustodianTC };
     this.fetchTncData();
     const queryParams = this.activatedRoute.snapshot.queryParams;
     this.formAction = queryParams.formaction;
@@ -529,12 +535,18 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     };
   }
 
+  closeConsentPopUp() {
+    this.showGlobalConsentPopUpSection = false;
+    this.isglobalConsent = false;
+    this.globalConsent = '';
+  }
+
   async submit() {
+    this.showGlobalConsentPopUpSection = true;
     if (!this.declaredLatestFormValue || !this.tenantPersonaLatestFormValue) {
       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0051'));
       return;
     }
-
     const formValue = this.declaredLatestFormValue.children.externalIds;
     const declarations = [];
     const declaredDetails = this.declaredLatestFormValue.children && this.declaredLatestFormValue.children.externalIds;
@@ -551,7 +563,33 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     declarations.push(this.getDeclarationReqObject(operation, declaredDetails, this.tenantPersonaLatestFormValue));
 
     const data = { declarations };
+    this.getProfileInfo(declarations);
     this.updateProfile(data);
+  }
+
+  getProfileInfo(declarations) {
+    this.profileInfo = {
+      emailId: '',
+      phone: '',
+      schoolId: '',
+      schoolName: ''
+    };
+    for (const [key, value] of Object.entries(declarations[0].info)) {
+      switch (key) {
+        case 'declared-email':
+          this.profileInfo['emailId'] = value;
+          break;
+        case 'declared-phone':
+          this.profileInfo['phone'] = value;
+          break;
+        case 'declared-school-udise-code':
+          this.profileInfo['schoolId'] = value;
+          break;
+        case 'declared-school-name':
+          this.profileInfo['schoolName'] = value;
+          break;
+      }
+    }
   }
 
   private getDeclarationReqObject(operation, declaredDetails, tenantPersonaDetails) {
