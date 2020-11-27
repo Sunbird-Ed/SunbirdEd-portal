@@ -47,6 +47,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     languageDirection = 'ltr';
     isFilterChanged = false;
     showModal = false;
+    showLoadContentModal = false;
     downloadIdentifier: string;
     readonly MINIMUM_REQUIRED_RAM = 100;
     readonly MAXIMUM_CPU_LOAD = 90;
@@ -163,13 +164,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.fetchCurrentPageData();
         this.initLayout();
         this.getOrgDetails();
-
-        this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
-            this.infoData = {
-                msg: this.resourceService.frmelmnts.lbl.allDownloads,
-                linkName: this.resourceService.frmelmnts.btn.myLibrary
-            };
-        });
         this.setTelemetryData();
         this.contentManagerService.contentDownloadStatus$.subscribe( contentDownloadStatus => {
             this.contentDownloadStatus = contentDownloadStatus;
@@ -244,7 +238,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.pageSections = [];
     }
 
-    constructSearchRequest(addFilters, isFacetsRequired?) {
+    constructSearchRequest() {
 
         const selectedMediaType = _.isArray(_.get(this.queryParams, 'mediaType')) ? _.get(this.queryParams, 'mediaType')[0] :
         _.get(this.queryParams, 'mediaType');
@@ -254,9 +248,11 @@ export class LibraryComponent implements OnInit, OnDestroy {
         const pageType = _.get(this.queryParams, 'pageTitle');
         const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType']);
         if (!filters.channel) {
-        filters.channel = this.hashTagId;
+            filters.channel = this.hashTagId;
         }
-        filters.primaryCategory = filters.primaryCategory || _.get(this.currentPageData, 'search.filters.primaryCategory');
+        if (filters.primaryCategory) {
+            filters.primaryCategory = filters.primaryCategory;
+        }
         filters.mimeType = _.get(mimeType, 'values');
 
         // Replacing cbse/ncert value with cbse
@@ -275,12 +271,11 @@ export class LibraryComponent implements OnInit, OnDestroy {
         delete softConstraints['board'];
         }
         const option: any = {
-        filters: filters,
-        fields: _.get(this.currentPageData, 'search.fields'),
-        mode: 'soft',
-        softConstraints: softConstraints,
-        facets: this.globalSearchFacets,
-        params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
+            filters: filters,
+            fields: _.get(this.currentPageData, 'search.fields'),
+            softConstraints: softConstraints,
+            facets: this.globalSearchFacets,
+            params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
         };
         if (this.queryParams.softConstraints) {
             try {
@@ -294,76 +289,67 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
     fetchContents(isFilterChange?: boolean) {
         const shouldGetAllDownloads = !(isFilterChange);
-        // First call - Search content with selected filters and API should call always.
-        // Second call - Search content without selected filters and API should not call in browse page
-        combineLatest(this.searchContent(true, true), this.searchContent(false, shouldGetAllDownloads))
-            .pipe(takeUntil(this.unsubscribe$))
-            .subscribe(
-                ([searchRes, allDownloadsRes]) => {
-
-                    if (searchRes) {
-                        const facets = this.searchService.updateFacetsData(_.get(searchRes, 'result.facets'));
-                        this.facets = facets.filter(facet => facet.values.length > 0);
-                        const filteredContents = _.omit(_.groupBy(searchRes['result'].content, 'subject'), ['undefined']);
-                        // Check for multiple subjects
-                        for (const [key, value] of Object.entries(filteredContents)) {
-                            const isMultipleSubjects = key.split(',').length > 1;
-                            if (isMultipleSubjects) {
-                                const subjects = key.split(',');
-                                subjects.forEach((subject) => {
-                                    if (filteredContents[subject]) {
-                                        filteredContents[subject] = _.uniqBy(filteredContents[subject].concat(value), 'identifier');
-                                    } else {
-                                        filteredContents[subject] = value;
-                                    }
-                                });
-                                delete filteredContents[key];
+        const option = this.constructSearchRequest();
+        this.searchService.contentSearch(option).subscribe(searchRes => {
+            if (searchRes) {
+                const facets = this.searchService.updateFacetsData(_.get(searchRes, 'result.facets'));
+                this.facets = facets.filter(facet => facet.values.length > 0);
+                const filteredContents = _.omit(_.groupBy(searchRes['result'].content, 'subject'), ['undefined']);
+                const otherContents = _.filter(searchRes['result'].content, (content) => !content.subject );
+                // Check for multiple subjects
+                for (const [key, value] of Object.entries(filteredContents)) {
+                    const isMultipleSubjects = key.split(',').length > 1;
+                    if (isMultipleSubjects) {
+                        const subjects = key.split(',');
+                        subjects.forEach((subject) => {
+                            if (filteredContents[subject]) {
+                                filteredContents[subject] = _.uniqBy(filteredContents[subject].concat(value), 'identifier');
+                            } else {
+                                filteredContents[subject] = value;
                             }
-                        }
-
-                        if (!shouldGetAllDownloads && this.sections[0]) {
-                            this.sections.splice(1, this.sections.length);
-                        } else {
-                            this.sections = [];
-                        }
-                        if (allDownloadsRes) {
-                            this.sections.push({
-                                contents: _.orderBy(_.get(allDownloadsRes, 'result.content'), ['desktopAppMetadata.updatedOn'], ['desc']),
-                                name: 'Recently Added'
-                            });
-                        }
-
-                        const contents = []; // to sort the contents/textbooks other than downloads
-                        for (const section in filteredContents) {
-                            if (section) {
-                                contents.push({
-                                    name: section,
-                                    contents: filteredContents[section].sort((a, b) => a.name.localeCompare(b.name))
-                                });
-                            }
-                        }
-
-                        // should not affect the download contents order(should be top)
-                        contents.sort((a, b) => a.name.localeCompare(b.name));
-                        this.sections.push(...contents);
-
-                        this.carouselMasterData = this.prepareCarouselData(this.sections);
-                        this.hideLoader();
-                        if (!this.carouselMasterData.length) {
-                            return; // no page section
-                        }
-                        this.pageSections = _.cloneDeep(this.carouselMasterData);
-                        this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
-                            this.addHoverData();
                         });
-                    } else {
-                        this.hideLoader();
-                        this.carouselMasterData = [];
-                        this.pageSections = [];
-                        this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+                        delete filteredContents[key];
                     }
                 }
-            );
+
+                if (!shouldGetAllDownloads && this.sections[0]) {
+                    this.sections.splice(1, this.sections.length);
+                } else {
+                    this.sections = [];
+                }
+                const contents = []; // to sort the contents/textbooks other than downloads
+                for (const section in filteredContents) {
+                    if (section) {
+                        contents.push({
+                            name: section,
+                            contents: filteredContents[section].sort((a, b) => a.name.localeCompare(b.name))
+                        });
+                    }
+                }
+                // should not affect the download contents order(should be top)
+                contents.sort((a, b) => a.name.localeCompare(b.name));
+                contents.push({
+                    name: this.resourceService.frmelmnts.lbl.other,
+                    contents: otherContents.sort((a, b) => a.name.localeCompare(b.name))
+                });
+                this.sections.push(...contents);
+
+                this.carouselMasterData = this.prepareCarouselData(this.sections);
+                this.hideLoader();
+                if (!this.carouselMasterData.length) {
+                    return; // no page section
+                }
+                this.pageSections = _.cloneDeep(this.carouselMasterData);
+                this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
+                    this.addHoverData();
+                });
+            } else {
+                this.hideLoader();
+                this.carouselMasterData = [];
+                this.pageSections = [];
+                this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+            }
+        });
     }
 
     hideLoader() {
@@ -396,32 +382,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
             return collector;
         }, []);
         return carouselData;
-    }
-
-    searchContent(addFilter: boolean, shouldCallAPI: boolean) {
-        if (!shouldCallAPI) {
-            return of(undefined);
-        }
-
-        const params = _.cloneDeep(this.configService.appConfig.ExplorePage.contentApiQueryParams);
-        params.online = false;
-        const option = addFilter ? this.constructSearchRequest(addFilter, true) : { params };
-        return this.searchService.contentSearch(option).pipe(
-            tap(data => {
-            }), catchError(error => {
-                return of(undefined);
-            }));
-    }
-
-    onViewAllClick(event) {
-        const queryParams = {
-            channel: this.hashTagId,
-            apiQuery: JSON.stringify(this.constructSearchRequest(false, true))
-        };
-
-        this.router.navigate(['view-all'], {
-            queryParams: queryParams
-        });
     }
 
     setTelemetryData() {

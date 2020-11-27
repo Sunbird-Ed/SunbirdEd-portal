@@ -6,7 +6,7 @@ import {
     ResourceService, ToasterService, ConfigService, NavigationHelperService, LayoutService, COLUMN_TYPE, UtilService,
     OfflineCardService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
-import { cloneDeep, get, find, map as _map, pick, omit, groupBy, sortBy, replace, uniqBy, forEach, each, isNumber, toString } from 'lodash-es';
+import { cloneDeep, get, find, map as _map, pick, omit, groupBy, sortBy, replace, uniqBy, forEach, has, uniq, flatten, each, isNumber, toString } from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { map, tap, switchMap, skipWhile, takeUntil } from 'rxjs/operators';
 import { ContentSearchService } from '@sunbird/content-search';
@@ -49,6 +49,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     showModal = false;
     downloadIdentifier: string;
     contentDownloadStatus = {};
+    appliedFilters = {};
+    showAppliedFiltersSection: boolean = false;
 
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
@@ -73,7 +75,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private initConfiguration() {
         const { userProfile: { framework = null } = {} } = this.userService;
-        const userFramework = (this.isUserLoggedIn() && framework && pick(framework, ['medium', 'gradeLevel', 'board'])) || {};
+        const userFramework = (this.isUserLoggedIn() && framework && pick(framework, ['medium', 'gradeLevel', 'board', 'subject'])) || {};
         this.defaultFilters = {
             board: [DEFAULT_FRAMEWORK], gradeLevel: this.isUserLoggedIn() ? [] : ['Class 10'], medium: [],
             ...userFramework
@@ -171,19 +173,17 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     public getFilters({ filters, status }) {
+        this.showAppliedFiltersSection = Object.keys(omit(this.activatedRoute.snapshot.queryParams, 'selectedTab')).length ? true : false;
         this.showLoader = true;
         if (!filters || status === 'FETCHING') { return; }
         const currentPageData = this.getPageData(get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook');
-        this.selectedFilters = pick(filters, ['board', 'medium', 'gradeLevel', 'channel']);
-        // if (localStorage.getItem('userType') && currentPageData.contentType !== 'all') {
-        //     const userType = localStorage.getItem('userType');
-        //     const userTypeMapping = this.configService.appConfig.userTypeMapping;
-        //     _map(userTypeMapping, (value, key) => {
-        //         if (userType === key) {
-        //             this.selectedFilters['audience'] = value;
-        //         }
-        //     });
-        // }
+        const selectedFilters = this.appliedFilters = pick(filters, ['board', 'medium', 'gradeLevel', 'channel', 'subject', 'audience', 'publisher']);
+        this.selectedFilters = omit(selectedFilters, ['publisher'])
+        if (has(filters, 'audience') || (localStorage.getItem('userType') && currentPageData.contentType !== 'all')) {
+            const userTypes = get(filters, 'audience') || [localStorage.getItem('userType')];
+            const userTypeMapping = get(this.configService, 'appConfig.userTypeMapping');
+            this.selectedFilters['audience'] = uniq(flatten(_map(userTypes, userType => userTypeMapping[userType])));
+        }
         this.apiContentList = [];
         this.pageSections = [];
         this.pageTitleSrc = get(this.resourceService, 'RESOURCE_CONSUMPTION_ROOT') + get(currentPageData, 'title');

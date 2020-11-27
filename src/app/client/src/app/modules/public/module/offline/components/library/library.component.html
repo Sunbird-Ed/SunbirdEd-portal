@@ -32,7 +32,7 @@
           <!--Load content-->
           <div class="load-content-section mr-16 p-24 mb-24" *appDesktopOnly>
             <div class="load-content-title d-flex">{{resourceService?.frmelmnts?.lbl?.import}}</div>
-            <button class="sb-btn sb-btn-secondary sb-btn-normal my-8 w-100 fs-1" type="button">
+            <button class="sb-btn sb-btn-secondary sb-btn-normal my-8 w-100 fs-1" type="button" (click)="showLoadContentModal = true">
               {{resourceService?.frmelmnts?.btn?.loadContent}} </button>
           </div>
           <!--Load content-->
@@ -52,63 +52,22 @@
                 <div *ngIf="showLoader">
                   <app-loader [data]='loaderMessage'></app-loader>
                 </div>
-                <div class="nine wide column" *ngIf="carouselMasterData?.length === 0 && !showLoader">
-                  <app-no-content [filters]="modifiedFilters"></app-no-content>
-                </div>
                 <section *ngFor="let section of pageSections; let index=index;">
-                  <!-- START OF RECENTLY VIEWED CONTENT-->
-                  <div *ngIf="index === 0 && section?.name === 'Recently Added' && !showLoader">
-                    <div class="header">
-                      <h3 class="title">
-                        {{resourceService?.frmelmnts?.lbl?.desktop?.allDownloads}}
-                      </h3>
-                      <button class="sb-btn sb-btn-xs sb-btn-outline-secondary sb-btn-white" appTelemetryInteract
-                        [telemetryInteractEdata]="viewAllInteractEdata" (click)="onViewAllClick($event)"
-                        *ngIf="section?.contents?.length > slideConfig?.slidesToShow">
-                        {{resourceService?.frmelmnts?.lnk?.viewall}}
-                      </button>
-                    </div>
-                    <!-- dir="ltr" has to be changed once URdu language selection to dir="rtl" and in app.config.json "rtl=true" through event-->
-                   <div class="sb-desktop-library-card">
-                    <ngx-slick [dir]="languageDirection" class="carousel" #slickModal="slick-modal"
-                      [config]="slideConfig">
-                      <div ngxSlickItem *ngFor="let content of section?.contents" class="sbcardwidth slide mr-16">
-                        <sb-library-card [layoutConfig]="layoutConfiguration" [content]="content"
-                          [type]="'recently_viewed'" [cardImg]="content?.cardImg || 'assets/images/book.png'"
-                          [hover-template]="hoverTemplate">
-                          <ng-template #hoverTemplate let-hoverData="hoverData" let-content="content">
-                            <sb-card-hover class="card-hover" [content]="content" [hoverData]="hoverData"
-                              (hoverActionClick)="hoverActionClicked($event)">
-                            </sb-card-hover>
-                          </ng-template>
-                        </sb-library-card>
-                      </div>
-                    </ngx-slick>
-                  </div>
-                  </div>
-                  <div class="twelve wide column"
-                    *ngIf="(pageSections?.length === 1 && !isBrowse && !showLoader && !showSectionLoader)">
-                    <app-no-content [filters]="modifiedFilters" [isContentPresent]="false"></app-no-content>
-                  </div>
-                  <!-- END OF RECENTLY VIEWED CONTENT-->
                   <div class="sb-desktop-library-card">
-                  <sb-library-cards-grid *ngIf="section?.name !== 'Recently Added'" [layoutConfig]="layoutConfiguration"
-                    [type]="'infinite_card_grid_with_hover'" [title]="section?.name" [contentList]="section?.contents"
-                    [maxCardCount]="3" (hoverActionClick)="hoverActionClicked($event)">
-                  </sb-library-cards-grid>
+                    <sb-library-cards-grid *ngIf="section?.name !== 'Recently Added'" [layoutConfig]="layoutConfiguration"
+                      [type]="'infinite_card_grid_with_hover'" [title]="section?.name" [contentList]="section?.contents"
+                      [maxCardCount]="3" (hoverActionClick)="hoverActionClicked($event)">
+                    </sb-library-cards-grid>
                   </div>
                 </section>
+                <div class="twelve wide column" *ngIf="!pageSections?.length">
+                    <app-no-content [filters]="modifiedFilters" [isContentPresent]="false"></app-no-content>
+                </div>
 
                 <div *ngIf="showSectionLoader">
                   <app-loader [data]='loaderMessage'></app-loader>
                 </div>
               </div>
-              <!-- <div class="three wide column p-0 pl-16">
-                        <div class="sb-sticky-right-panel">
-                            <app-connection-status></app-connection-status>
-                            <app-info-card [text]="infoData" [showMinRamWarning]="showMinimumRAMWarning" [showCpuLoadWarning]="showCpuLoadWarning"(navigate)="navigateToMyDownloads()"></app-info-card>
-                        </div>
-                    </div> -->
             </div>
           </div>
         </div>
@@ -117,6 +76,7 @@
   </div>
 </div>
 
+<app-load-content *ngIf="showLoadContentModal" (close)="showLoadContentModal = false"></app-load-content>
 
 <!-- Show Modal if content has any YouTube data-->
 <sui-modal *ngIf="showModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
