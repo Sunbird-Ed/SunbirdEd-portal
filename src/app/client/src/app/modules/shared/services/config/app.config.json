@@ -806,7 +806,13 @@
             "ver": 1.1,
             "type": "plugin"
           }
-        ]
+        ],
+        "sideMenu": {
+          "showShare": true,
+          "showDownload": true,
+          "showReplay": true,
+          "showExit": false
+        }
       }
     },
     "contentType": {
