@@ -148,8 +148,9 @@ configureTestSuite();
     spyOn(searchService, 'contentSearch').and.callFake((options) => {
       if (sendSearchResult) {
         return of(response.successData);
+      } else {
+        return of(undefined);
       }
-      return throwError({});
     });
     fixture.detectChanges();
   });
@@ -205,12 +206,11 @@ configureTestSuite();
     component.formData = [response.formData[0]];
     const activatedRoute = TestBed.get(ActivatedRoute);
     activatedRoute.changeQueryParams({board: ['State (Andhra Pradesh)'], medium: ['English'], gradeLevel: ['Class 10']});
-    const result = component.constructSearchRequest(true);
+    const result = component.constructSearchRequest();
     expect(result).toEqual(response.constructSearchRequestWithFilter);
   });
 
   it('should call fetchContents and return value', () => {
-    spyOn(component, 'searchContent').and.returnValue(observableOf(response.searchResult));
     spyOn(component, 'addHoverData');
     component.fetchContents();
     expect(component.showLoader).toBeFalsy();
@@ -218,7 +218,7 @@ configureTestSuite();
   });
 
   it('should call fetchContents and return undefined', () => {
-    spyOn(component, 'searchContent').and.returnValue(observableOf(undefined));
+    sendSearchResult = false;
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error');
     component.fetchContents();
@@ -228,22 +228,8 @@ configureTestSuite();
     expect(toasterService.error).toHaveBeenCalled();
   });
 
-  it('should call onViewAllClick', () => {
-    component.hashTagId = 'asasa12121';
-    const queryParams = {
-      channel: 'asasa12121',
-      apiQuery: JSON.stringify({})
-    };
-    const router = TestBed.get(Router);
-    spyOn(component, 'constructSearchRequest').and.returnValue({});
-    component.onViewAllClick({});
-    expect(router.navigate).toHaveBeenCalledWith(['view-all'], { queryParams });
-    expect(component.constructSearchRequest).toHaveBeenCalledWith(false, true);
-  });
-
   it('should call fetchContents and all downloads should be at the top(At the zero index)', () => {
     fixture.detectChanges();
-   spyOn(component, 'searchContent').and.returnValue(observableOf(response.searchResult2));
    fixture.whenStable().then(() => {
     component.fetchContents();
     expect(component.sections[0].name).toEqual(response.testSectionName[0].name);
@@ -253,7 +239,6 @@ configureTestSuite();
 
   it('should call fetchContents and sort the sections list', () => {
     fixture.detectChanges();
-   spyOn(component, 'searchContent').and.returnValue(observableOf(response.searchResult2));
    fixture.whenStable().then(() => {
     component.fetchContents();
     expect(component.sections[1].name).toEqual(response.testSectionName[1].name);
@@ -262,7 +247,6 @@ configureTestSuite();
   });
   it('should call fetchContents and sort the sections Contents list', () => {
     fixture.detectChanges();
-   spyOn(component, 'searchContent').and.returnValue(observableOf(response.searchResult2));
    fixture.whenStable().then(() => {
     component.fetchContents();
     expect(component.sections[1].contents[0].name).toEqual(response.testSectionName[1].contents[0].name);

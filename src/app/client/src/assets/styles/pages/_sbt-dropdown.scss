@@ -704,4 +704,25 @@
   margin: 0;
   font-weight: bold;
 }
-
+.ui.selection.state-selection.dropdown.sbt-dropdown-tick,
+.sb-field .ui.selection.state-selection.dropdown.sbt-dropdown-tick {
+  .menu {
+    >.item, .state-selection__section .item {
+      &.active::after {
+        content: '';
+        display: inline-block;
+        transform: rotate(45deg);
+        height: calculateRem(12px);
+        width: calculateRem(6px);
+        position: absolute;
+        right: calculateRem(24px);
+        border-bottom: calculateRem(2px) solid var(--black);
+        border-right: calculateRem(2px) solid var(--black);
+        html[dir="rtl"] & {
+          left: calculateRem(24px);
+          right: inherit;
+        }
+      }
+    }
+  }
+}

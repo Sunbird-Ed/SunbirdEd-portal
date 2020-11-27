@@ -81,9 +81,9 @@
   }
   &.player-fullscreen {
     width: 100%;
-    height: calc(100vh - 104px) !important;
+    height: calc(100vh - 4rem) !important;
     position:fixed;
-    top:calculateRem(50px);
+    top:calculateRem(0px);//50px
     left:0;
     bottom:0; 
     right:0;
@@ -94,6 +94,7 @@
    }
    &.player-fullscreen iframe, &.player-fullscreen video {
     width: 100%;
-    height: calc(100vh - 104px) !important;
+    height: calc(100vh - 4rem) !important;
+    background:var(--white);
  }
 }
