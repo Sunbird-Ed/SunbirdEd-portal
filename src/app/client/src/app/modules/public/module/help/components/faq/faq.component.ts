@@ -68,7 +68,12 @@ export class FaqComponent implements OnInit {
     this.utilService.languageChange.subscribe((langData) => {
       this.showLoader = true;
       this.selectedLanguage = _.get(langData, 'value') || 'en';
-      this.getFaqJson();
+
+      if (this.isDesktopApp) {
+        this.getDesktopFAQ(this.selectedLanguage);
+      } else {
+        this.getFaqJson();
+      }
     });
   }
 
