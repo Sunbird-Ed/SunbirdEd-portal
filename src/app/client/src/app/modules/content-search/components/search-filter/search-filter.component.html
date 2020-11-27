@@ -30,16 +30,16 @@
 
         <div class="sb-bg-color-white">
             <div class="ui container">
-                <div class="d-flex state-medium-container flex-ai-center">
-
+                <div class="d-flex flex-ai-center">
                     <div *ngIf="allValues?.subject?.length" class="state-medium-container__dropdown">
                         <div class="sb-field mb-0">
                             <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['subject']"
                                 (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'subject'})"
                                 defaultSelectionText={{resourceService?.frmelmnts?.lbl?.subject}}
                                 zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
-                                class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg sbt-dropdown-tick">
-                                <div class="sbt-dropdown-section">
+                                class="selection sbt-dropdown-tick"
+                                [ngClass]="!layoutConfiguration ? 'state-selection' : 'sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg'">
+                                <div [ngClass]="!layoutConfiguration ? 'state-selection__section' : 'sbt-dropdown-section'">
                                     <sui-select-option *ngFor="let dropdownValue of allValues['subject']"
                                         [value]="dropdownValue">
                                     </sui-select-option>
@@ -56,8 +56,9 @@
                                 (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'publisher'})"
                                 defaultSelectionText={{resourceService?.frmelmnts?.lbl?.publishedBy}}
                                 zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
-                                class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg sbt-dropdown-tick">
-                                <div class="sbt-dropdown-section">
+                                class="selection sbt-dropdown-tick"
+                                [ngClass]="!layoutConfiguration ? 'state-selection' : 'sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg'">
+                                <div [ngClass]="!layoutConfiguration ? 'state-selection__section' : 'sbt-dropdown-section'">
                                     <sui-select-option *ngFor="let dropdownValue of allValues['publisher']"
                                         [value]="dropdownValue">
                                     </sui-select-option>
@@ -75,8 +76,9 @@
                                 (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'audience'})"
                                 defaultSelectionText={{resourceService?.frmelmnts?.lbl?.meantFor}}
                                 zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
-                                class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg sbt-dropdown-tick">
-                                <div class="sbt-dropdown-section">
+                                class="selection sbt-dropdown-tick"
+                                [ngClass]="!layoutConfiguration ? 'state-selection' : 'sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg'">
+                                <div [ngClass]="!layoutConfiguration ? 'state-selection__section' : 'sbt-dropdown-section'">
                                     <sui-select-option *ngFor="let dropdownValue of allValues['audience']"
                                         [value]="dropdownValue">
                                     </sui-select-option>
@@ -134,8 +136,9 @@
                             <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['medium']"
                                 (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'medium'})"
                                 defaultSelectionText="Medium" zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
-                                class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg sbt-dropdown-tick">
-                                <div class="sbt-dropdown-section">
+                                class="selection sbt-dropdown-tick"
+                                [ngClass]="!layoutConfiguration ? 'state-selection' : 'sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg'">
+                                <div [ngClass]="!layoutConfiguration ? 'state-selection__section' : 'sbt-dropdown-section'">
                                     <sui-select-option *ngFor="let dropdownValue of allValues['medium']"
                                         [value]="dropdownValue">
                                     </sui-select-option>
@@ -159,8 +162,9 @@
                                 (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'subject'})"
                                 defaultSelectionText={{resourceService?.frmelmnts?.lbl?.subject}}
                                 zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
-                                class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg sbt-dropdown-tick">
-                                <div class="sbt-dropdown-section">
+                                class="selection sbt-dropdown-tick"
+                                [ngClass]="!layoutConfiguration ? 'state-selection' : 'sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg'">
+                                <div [ngClass]="!layoutConfiguration ? 'state-selection__section' : 'sbt-dropdown-section'">
                                     <sui-select-option *ngFor="let dropdownValue of allValues['subject']"
                                         [value]="dropdownValue">
                                     </sui-select-option>
@@ -175,8 +179,9 @@
                                 (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'publisher'})"
                                 defaultSelectionText={{resourceService?.frmelmnts?.lbl?.publishedBy}}
                                 zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
-                                class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg sbt-dropdown-tick">
-                                <div class="sbt-dropdown-section">
+                                class="selection sbt-dropdown-tick"
+                                [ngClass]="!layoutConfiguration ? 'state-selection' : 'sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg'">
+                                <div [ngClass]="!layoutConfiguration ? 'state-selection__section' : 'sbt-dropdown-section'">
                                     <sui-select-option *ngFor="let dropdownValue of allValues['publisher']"
                                         [value]="dropdownValue">
                                     </sui-select-option>
@@ -191,8 +196,9 @@
                                 (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'audience'})"
                                 defaultSelectionText={{resourceService?.frmelmnts?.lbl?.meantFor}}
                                 zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
-                                class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg sbt-dropdown-tick">
-                                <div class="sbt-dropdown-section">
+                                class="selection sbt-dropdown-tick"
+                                [ngClass]="!layoutConfiguration ? 'state-selection' : 'sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg'">
+                                <div [ngClass]="!layoutConfiguration ? 'state-selection__section' : 'sbt-dropdown-section'">
                                     <sui-select-option *ngFor="let dropdownValue of allValues['audience']"
                                         [value]="dropdownValue">
                                     </sui-select-option>

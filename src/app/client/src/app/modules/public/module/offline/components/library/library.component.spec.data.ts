@@ -73,10 +73,6 @@ export const response = {
             'gradeLevel': [ 'Class 10' ],
             'board': [ 'State (Andhra Pradesh)' ],
             'channel': '01231711180382208027',
-            'primaryCategory': [
-                'Digital Textbook',
-                'eTextbook'
-            ],
             'mimeType':['application/vnd.ekstep.ecml-archive','application/vnd.ekstep.html-archive','audio/x-wav','audio/wav']
         },
         'fields': [
@@ -96,7 +92,6 @@ export const response = {
             'organisation',
             'trackable'
         ],
-        'mode': 'soft',
         'softConstraints': {
             'badgeAssertions': 98,
             'board': 99,
