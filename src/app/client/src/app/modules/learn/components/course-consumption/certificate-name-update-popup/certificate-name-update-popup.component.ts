@@ -71,7 +71,7 @@ export class CertificateNameUpdatePopupComponent implements OnInit {
       lastName: _.trim(this.profileInfo.lastName)
     };
     this.disableContinueBtn = true;
-    localStorage.setItem('isCertificateNameUpdated', 'true');
+    localStorage.setItem('isCertificateNameUpdated_' + this.profileInfo.id, 'true');
 
     this.profileService.updateProfile(data).subscribe(res => {
       this.closePopup();
