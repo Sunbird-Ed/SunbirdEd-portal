@@ -93,7 +93,7 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
           id: _.get(this.activatedRoute.snapshot.params, 'contentId') ||  _.get(this.activatedRoute.snapshot.params, 'collectionId') ||
           _.get(this.activatedRoute.snapshot.params, 'courseId'),
           type: _.get(this.contentData , 'contentType'),
-          ver: this.contentData ? _.get(this.contentData , 'pkgVersion').toString() : '1.0'
+          ver: _.get(this.contentData , 'pkgVersion') ? _.get(this.contentData , 'pkgVersion').toString() : '1.0'
         },
         edata: { }
       };
