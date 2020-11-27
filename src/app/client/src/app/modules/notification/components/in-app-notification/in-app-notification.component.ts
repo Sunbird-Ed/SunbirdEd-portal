@@ -24,7 +24,7 @@ export class InAppNotificationComponent implements OnInit {
   constructor(
     private notificationService: NotificationService,
     private router: Router,
-    private resourceService: ResourceService,
+    public resourceService: ResourceService,
     private telemetryService: TelemetryService,
     private activatedRoute: ActivatedRoute
   ) {
@@ -51,6 +51,9 @@ export class InAppNotificationComponent implements OnInit {
   }
 
   toggleInAppNotifications() {
+    if (!this.showNotificationModel && !this.notificationList.length) {
+      return;
+    }
     this.generateInteractEvent('show-in-app-notifications');
     this.showNotificationModel = !this.showNotificationModel;
   }
