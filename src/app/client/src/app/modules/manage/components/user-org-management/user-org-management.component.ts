@@ -83,7 +83,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
   public userValidationUploadInteractEdata: IInteractEventEdata;
   public openUploadModalInteractEdata: IInteractEventEdata;
   public telemetryInteractObject: IInteractEventObject;
-  public adminPolicyDetailsInteractEdata: IInteractEventObject;
+  public adminPolicyDetailsInteractEdata: IInteractEventEdata;
   public showUploadUserModal = false;
   public disableBtn = true;
   public instance: string;
