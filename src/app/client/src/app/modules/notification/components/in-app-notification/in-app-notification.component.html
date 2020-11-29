@@ -1,5 +1,5 @@
-<div *ngIf="notificationList?.length" class="ui dropdown right top pointing" id="dropdown-menu-list-header" (click)="toggleInAppNotifications()">
-  <div class="notification-bell d-flex flex-ai-center flex-jc-center" name="Guest" *ngIf='!userProfile'>
+<div class="ui dropdown right top pointing" [ngClass]="{'notification-disable': !notificationList?.length}" id="dropdown-menu-list-header" (click)="toggleInAppNotifications()">
+  <div class="notification-bell d-flex flex-ai-center flex-jc-center" name="Guest">
     <img src="./assets/images/notification.svg" alt="In App Notification">
   </div>
   <div class="notification-count" *ngIf="notificationCount">{{notificationCount}}</div>
