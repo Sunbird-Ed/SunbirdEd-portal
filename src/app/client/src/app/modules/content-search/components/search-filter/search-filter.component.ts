@@ -135,7 +135,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
             const index = _.get(event, 'data.index');
             const selectedIndices = _.get(this.selectedFilters, type) || [];
             if (_.includes(selectedIndices, index)) {
-              this.popFilter({ type, index })
+              if(_.get(selectedIndices, 'length') > 1) this.popFilter({ type, index });
             } else {
               this.pushNewFilter({ type, index });
             }
@@ -189,7 +189,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       indices = _.filter(_.map(defaultValues, defaultValue => _.findIndex(this.allValues[type] || [], val => val === defaultValue)), index => index !== -1);
     }
     if (['audience', 'publisher', 'subject'].includes(type) && !indices.length) {
-      indices = _.map(this.allValues[type] || [], (value, index) => index);
+      return [];
     }
     return indices.length ? indices : [0];
   }

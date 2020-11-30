@@ -130,20 +130,13 @@
                                 (selectedValue)="selectedGroupOption($event);"></app-select-option-group>
                         </div>
 
-                        <div class="sb-field w-100" *ngIf="allValues?.medium?.length">
-                            <label
-                                class="fnormal font-weight-bold d-flex">{{resourceService.frmelmnts?.lbl?.medium | translate}}</label>
-                            <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['medium']"
-                                (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'medium'})"
-                                defaultSelectionText="Medium" zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
-                                class="selection sbt-dropdown-tick"
-                                [ngClass]="!layoutConfiguration ? 'state-selection' : 'sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg'">
-                                <div [ngClass]="!layoutConfiguration ? 'state-selection__section' : 'sbt-dropdown-section'">
-                                    <sui-select-option *ngFor="let dropdownValue of allValues['medium']"
-                                        [value]="dropdownValue">
-                                    </sui-select-option>
-                                </div>
-                            </sui-multi-select>
+                        <div class="sbt-class-bar text-left" *ngIf="allValues?.medium?.length">
+                            <label class="fmedium">{{resourceService.frmelmnts?.lbl?.medium | translate}}</label>
+                            <sb-library-filters appTelemetryInteract [telemetryInteractEdata]="getInteractEdata()"
+                                [list]="allValues['medium']" [layout]="filterLayout.ROUND"
+                                [selectedItems]="selectedFilters['medium']"
+                                (selectedFilter)="filterChangeEvent.next({ event: $event, type: 'medium'})">
+                            </sb-library-filters>
                         </div>
 
                         <div class="sbt-class-bar text-left" *ngIf="allValues?.gradeLevel?.length">
