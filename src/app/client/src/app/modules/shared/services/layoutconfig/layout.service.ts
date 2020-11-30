@@ -25,6 +25,7 @@ export class LayoutService {
   constructor(private configService: ConfigService) { }
 
   layoutConfig: any;
+  acessibleLayoutEnabled:boolean;
 
   initlayoutConfig() {
     if (this.layoutConfig != null) {
@@ -87,13 +88,26 @@ export class LayoutService {
     if (this.layoutConfig) {
       this.layoutConfig = null;
       document.documentElement.setAttribute('layout', '');
+      this.acessibleLayoutEnabled=false;
       localStorage.setItem('layoutType', 'default');
+      localStorage.setItem('accessable-theme', '');
     } else {
       this.layoutConfig = this.configService.appConfig.layoutConfiguration;
       document.documentElement.setAttribute('layout', 'joy');
       localStorage.setItem('layoutType', 'joy');
     }
     this.setLayoutConfig(this.layoutConfig);
+  }
+ switchToAccessibleLayout() {
+   if (this.acessibleLayoutEnabled) {
+    this.acessibleLayoutEnabled=false;
+    document.documentElement.setAttribute('accessable-theme', '');
+    localStorage.setItem('accessable-theme', '');
+   } else {
+    this.acessibleLayoutEnabled=true;
+    document.documentElement.setAttribute('accessable-theme', 'accessible');
+    localStorage.setItem('accessable-theme', 'accessible');
+   }
   }
 
   scrollTop() {
