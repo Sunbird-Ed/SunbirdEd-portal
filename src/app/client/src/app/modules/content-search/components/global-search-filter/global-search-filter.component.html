@@ -33,7 +33,7 @@
                   <label class="w-100">
                   <sui-multi-select *ngIf="facet.name !== 'mediaType'" [hasLabels]="false" defaultSelectionText={{facet.label}}
                     zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} labelField="name" valueField="name"
-                    class="ui selection dropdown multiple selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg w-100 mb-16"
+                    class="ui selection dropdown sbt-dropdown-tick multiple selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg w-100 mb-16"
                     [(ngModel)]="selectedFilters[facet.name]"
                     (ngModelChange)="onChange(facet)">
                     <div *ngIf="facet.name !== 'gradeLevel' else gradeLevel">
@@ -100,7 +100,7 @@
                 <!-- <label class="fnormal font-weight-bold d-flex">{{facet.label}} </label> -->
                 <sui-multi-select *ngIf="facet.name !== 'mediaType'" [hasLabels]="false" defaultSelectionText={{facet.label}}
                   zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} labelField="name" valueField="name"
-                  class="ui selection dropdown multiple" [(ngModel)]="selectedFilters[facet.name]"
+                  class="ui selection dropdown sbt-dropdown-tick multiple" [(ngModel)]="selectedFilters[facet.name]"
                   (ngModelChange)="onChange(facet)">
                   <div *ngIf="facet.name !== 'gradeLevel' else gradeLevel">
                     <sui-select-option class="text-capitalize"

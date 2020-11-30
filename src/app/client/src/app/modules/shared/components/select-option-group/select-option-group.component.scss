@@ -17,10 +17,16 @@
       padding: calculateRem(4px) calculateRem(8px);
       display: block;
       cursor: pointer;
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
 
       &:hover,
       &.active {
         background-color: var(--primary-100);
+        width: 100% !important;
+        padding-right: calculateRem(24px);
       }
     }
   }
