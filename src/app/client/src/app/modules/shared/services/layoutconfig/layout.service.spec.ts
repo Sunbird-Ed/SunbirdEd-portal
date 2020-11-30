@@ -34,6 +34,21 @@ describe('LayoutService', () => {
     service.initiateSwitchLayout();
     expect(service.layoutConfig).toEqual(configService.appConfig.layoutConfiguration);
   });
+  it('should switchLayout to accessibleLayout', () => {
+    const service: LayoutService = TestBed.get(LayoutService);
+    const configService = TestBed.get(ConfigService);
+    service.layoutConfig = null;
+    service.switchToAccessibleLayout();
+    expect(service.layoutConfig).toEqual(configService.appConfig.layoutConfiguration);
+  });
+  it('should switchLayout to accessibleLayout', () => {
+    const service: LayoutService = TestBed.get(LayoutService);
+    service.acessibleLayoutEnabled=true;
+    const configService = TestBed.get(ConfigService);
+    service.layoutConfig = null;
+    service.switchToAccessibleLayout();
+    expect(service.layoutConfig).toEqual(configService.appConfig.layoutConfiguration);
+  });
 
   it('should switchLayout to old UI', () => {
     const service: LayoutService = TestBed.get(LayoutService);
