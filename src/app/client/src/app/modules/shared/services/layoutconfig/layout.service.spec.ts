@@ -56,5 +56,5 @@ describe('LayoutService', () => {
     service.layoutConfig = configService.appConfig.layoutConfiguration;
     service.initiateSwitchLayout();
     expect(service.layoutConfig).toBe(null);
-  });
+  })
 });
