@@ -1,4 +1,4 @@
-import { ConfigService, NavigationHelperService } from '@sunbird/shared';
+import { ConfigService, NavigationHelperService, UtilService } from '@sunbird/shared';
 import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter,
 OnChanges, HostListener, OnInit, ChangeDetectorRef } from '@angular/core';
 import * as _ from 'lodash-es';
@@ -14,6 +14,7 @@ import { OnDestroy } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
 import { ContentService } from '@sunbird/core';
+import { PublicPlayerService } from '@sunbird/public';
 
 @Component({
   selector: 'app-player',
@@ -41,8 +42,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   @Input() isSingleContent: boolean;
   @Input() telemetryObject: {};
   @Input() pageId: string;
+  @Input() contentData;
+  @Input() isContentDeleted: Subject<any>;
   @Output() closePlayerEvent = new EventEmitter<any>();
   @Output() ratingPopupClose = new EventEmitter<any>();
+  contentDeleted = false;
   isMobileOrTab: boolean;
   showPlayIcon = true;
   closeButtonInteractEdata: IInteractEventEdata;
@@ -68,7 +72,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     public resourceService: ResourceService, public navigationHelperService: NavigationHelperService,
     private deviceDetectorService: DeviceDetectorService, private userService: UserService, public formService: FormService
     , public contentUtilsServiceService: ContentUtilsServiceService, private contentService: ContentService,
-    private cdr: ChangeDetectorRef) {
+    private cdr: ChangeDetectorRef, public playerService: PublicPlayerService, private utilService: UtilService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
     this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
@@ -225,6 +229,21 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   loadOldPlayer() {
     this.showNewPlayer = false;
+    if (this.utilService.isDesktopApp) {
+      const downloadStatus = _.has(this.playerConfig, 'metadata.desktopAppMetadata') ?
+      _.has(this.playerConfig, 'metadata.desktopAppMetadata.isAvailable') : false;
+
+      if (downloadStatus) {
+        this.playerConfig.data = '';
+        if (_.get(this.playerConfig, 'metadata.artifactUrl')
+          && _.includes(OFFLINE_ARTIFACT_MIME_TYPES, this.playerConfig.metadata.mimeType)) {
+          const artifactFileName = this.playerConfig.metadata.artifactUrl.split('/');
+          this.playerConfig.metadata.artifactUrl = artifactFileName[artifactFileName.length - 1];
+        }
+      }
+      this.loadDefaultPlayer(this.configService.appConfig.PLAYER_CONFIG.localBaseUrl);
+      return;
+    }
     if (this.isMobileOrTab) {
       this.rotatePlayer();
     }
@@ -232,8 +251,10 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.loadCdnPlayer();
       return;
     }
+
     this.loadDefaultPlayer();
   }
+
   loadNewPlayer() {
     this.addUserDataToContext();
     if (this.isMobileOrTab) {

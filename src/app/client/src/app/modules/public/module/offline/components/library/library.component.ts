@@ -1,18 +1,16 @@
 import { Component, OnInit, EventEmitter, HostListener, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
 import { combineLatest, Subject, of } from 'rxjs';
-import { tap, catchError, filter, takeUntil } from 'rxjs/operators';
+import { tap, catchError, filter, takeUntil, first, debounceTime, delay } from 'rxjs/operators';
 import * as _ from 'lodash-es';
-
 import {
     OfflineCardService, ResourceService, ToasterService, ConfigService, UtilService, ICaraouselData, 
     NavigationHelperService, ILanguage,  LayoutService, COLUMN_TYPE
 } from '@sunbird/shared';
-import { SearchService } from '@sunbird/core';
+import { SearchService, UserService, OrgDetailsService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { ConnectionService, ContentManagerService, SystemInfoService } from '../../services';
-
 @Component({
     selector: 'app-library',
     templateUrl: './library.component.html',
@@ -42,7 +40,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
     isConnected = navigator.onLine;
     slideConfig = this.configService.appConfig.AllDownloadsSection.slideConfig;
-    isBrowse = false;
     showExportLoader = false;
     showDownloadLoader = false;
     contentName: string;
@@ -50,6 +47,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     languageDirection = 'ltr';
     isFilterChanged = false;
     showModal = false;
+    showLoadContentModal = false;
     downloadIdentifier: string;
     readonly MINIMUM_REQUIRED_RAM = 100;
     readonly MAXIMUM_CPU_LOAD = 90;
@@ -69,6 +67,13 @@ export class LibraryComponent implements OnInit, OnDestroy {
     pageTitle;
     svgToDisplay;
     pageTitleSrc;
+    facets;
+    currentPageData;
+    public channelId: string;
+    public custodianOrg = true;
+    public defaultFilters;
+    public formData;
+    public globalSearchFacets: Array<string>;
 
     @HostListener('window:scroll', []) onScroll(): void {
         if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -92,7 +97,9 @@ export class LibraryComponent implements OnInit, OnDestroy {
         public contentManagerService: ContentManagerService,
         private offlineCardService: OfflineCardService,
         private systemInfoService: SystemInfoService,
-        public layoutService: LayoutService
+        public layoutService: LayoutService,
+        public userService: UserService,
+        private orgDetailsService: OrgDetailsService
     ) {
      }
 
@@ -118,16 +125,45 @@ export class LibraryComponent implements OnInit, OnDestroy {
         });
     }
 
-    ngOnInit() {
-        this.initLayout();
-        this.isBrowse = Boolean(this.router.url.includes('browse'));
-        this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
-            this.infoData = {
-                msg: this.resourceService.frmelmnts.lbl.allDownloads,
-                linkName: this.resourceService.frmelmnts.btn.myLibrary
-            };
+    fetchCurrentPageData() {
+        this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
+            this.currentPageData = _.find(formData, (o) => o.title === 'frmelmnts.lbl.desktop.mylibrary');
+            const { contentType, title, theme: { imageName = null } = {} } = this.currentPageData;
+            this.pageTitle = _.get(this.resourceService, title);
+            this.pageTitleSrc = _.get(this.resourceService, 'RESOURCE_CONSUMPTION_ROOT') + title;
+            this.formData = formData;
+            this.svgToDisplay = imageName;
+            this.globalSearchFacets = _.get(this.currentPageData, 'search.facets');
+        }, error => {
+            this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
+            this.navigationHelperService.goBack();
         });
-        this.getSelectedFilters();
+    }
+
+    getOrgDetails() {
+        this.orgDetailsService.getOrgDetails(this.userService.slug).pipe(
+            tap((orgDetails: any) => {
+                this.hashTagId = orgDetails.hashTagId;
+                this.initFilters = true;
+                return this.dataDrivenFilterEvent;
+            }), first()
+            ).subscribe((filters: any) => {
+                this.dataDrivenFilters = filters;
+                this.fetchContentOnParamChange();
+            },
+            error => {
+                this.router.navigate(['']);
+            }
+        );
+    }
+
+    ngOnInit() {
+        this.activatedRoute.queryParams.pipe(takeUntil(this.unsubscribe$)).subscribe(queryParams => {
+            this.queryParams = { ...queryParams };
+        });
+        this.fetchCurrentPageData();
+        this.initLayout();
+        this.getOrgDetails();
         this.setTelemetryData();
         this.contentManagerService.contentDownloadStatus$.subscribe( contentDownloadStatus => {
             this.contentDownloadStatus = contentDownloadStatus;
@@ -145,10 +181,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
             this.showMinimumRAMWarning = false;
         });
 
-        if (!this.isBrowse) {
-            this.navigationHelperService.clearHistory();
-        }
-
         this.connectionService.monitor()
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe(isConnected => {
@@ -158,7 +190,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.contentManagerService.completeEvent
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe((data) => {
-                if (this.router.url === '/') {
+                const url = this.router.url.split('?');
+                if (url[0] === '/mydownloads') {
                     this.fetchContents(false);
                 }
             });
@@ -176,151 +209,144 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.utilService.clearSearchQuery();
     }
 
-    getSelectedFilters() {
-        this.selectedFilters = this.publicPlayerService.libraryFilters;
-        this.modifiedFilters = this.selectedFilters;
+    fetchContentOnParamChange() {
+        combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
+          .pipe(debounceTime(5),
+            delay(10),
+            tap(data => this.setTelemetryData()),
+            takeUntil(this.unsubscribe$)
+          ).subscribe(() => {
+            this.showLoader = true;
+            this.fetchContents();
+        });
     }
 
     ngOnDestroy() {
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
     }
-
-    onFilterChange(event) {
-        this.dataDrivenFilters = _.cloneDeep(event.filters);
-        this.publicPlayerService.libraryFilters = event.filters;
-        this.hashTagId = event.channelId;
-        this.modifiedFilters = event.filters;
-
-        if (this.isBrowse) {
-            this.showLoader = true;
-            this.resetSections();
-            this.fetchContents();
-        } else {
-            this.fetchContents(this.isFilterChanged);
-            if (!this.isFilterChanged) {
-                this.isFilterChanged = true;
-                this.showLoader = false;
-                this.resetSections();
-            } else {
-                this.showLoader = false;
-                this.showSectionLoader = true;
-                this.pageSections.splice(1, this.sections.length);
-            }
-        }
-    }
-
-    resetSections() {
+    public getFilters(filters) {
+        this.selectedFilters = filters.filters;
+        const defaultFilters = _.reduce(filters, (collector: any, element) => {
+          if (element.code === 'board') {
+            collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
+          }
+          return collector;
+        }, {});
+        this.dataDrivenFilterEvent.emit(defaultFilters);
         this.carouselMasterData = [];
         this.pageSections = [];
     }
 
-    constructSearchRequest(addFilters, isFacetsRequired?) {
-        let filters = _.pickBy(this.dataDrivenFilters, (value: Array<string> | string) => value && value.length);
-        filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
-        const softConstraintData: any = {
-            filters: {
-                channel: this.hashTagId
-            },
-            softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints'),
-            mode: 'soft'
-        };
-        if (this.dataDrivenFilters.board) {
-            softConstraintData.board = this.dataDrivenFilters.board;
+    constructSearchRequest() {
+
+        const selectedMediaType = _.isArray(_.get(this.queryParams, 'mediaType')) ? _.get(this.queryParams, 'mediaType')[0] :
+        _.get(this.queryParams, 'mediaType');
+        const mimeType = _.find(_.get(this.currentPageData, 'search.filters.mimeType'), (o) => {
+        return o.name === (selectedMediaType || 'all');
+        });
+        const pageType = _.get(this.queryParams, 'pageTitle');
+        const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType']);
+        if (!filters.channel) {
+            filters.channel = this.hashTagId;
         }
-        const facets = ['board', 'medium', 'gradeLevel', 'subject'];
-        const manipulatedData = this.utilService.manipulateSoftConstraint(_.get(this.dataDrivenFilters, 'appliedFilters'),
-            softConstraintData);
-        const option = {
-            filters: {},
-            mode: _.get(manipulatedData, 'mode'),
-            params: _.cloneDeep(this.configService.appConfig.ExplorePage.contentApiQueryParams),
-        };
-        if (isFacetsRequired) {
-            option['facets']  = facets;
-        }
-        if (addFilters) {
-            option.filters = _.get(this.dataDrivenFilters, 'appliedFilters') ? filters : manipulatedData.filters;
-            option.filters['contentType'] = filters.contentType || ['TextBook'];
-        }
-        if (manipulatedData.filters) {
-            option['softConstraints'] = _.get(manipulatedData, 'softConstraints');
+        filters.mimeType = _.get(mimeType, 'values');
+
+        // Replacing cbse/ncert value with cbse
+        if (_.toLower(_.get(filters, 'board[0]')) === 'cbse/ncert' || _.toLower(_.get(filters, 'board')) === 'cbse/ncert') {
+        filters.board = ['cbse'];
         }
 
-        option.params.online = Boolean(this.isBrowse);
+        _.forEach(this.formData, (form, key) => {
+        const pageTitle = _.get(this.resourceService, form.title);
+        if (pageTitle === pageType) {
+            filters.contentType = _.get(form, 'search.filters.contentType');
+        }
+        });
+        const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
+        if (this.queryParams.key) {
+        delete softConstraints['board'];
+        }
+        const option: any = {
+            filters: filters,
+            fields: _.get(this.currentPageData, 'search.fields'),
+            softConstraints: softConstraints,
+            facets: this.globalSearchFacets,
+            params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
+        };
+        if (this.queryParams.softConstraints) {
+            try {
+                option.softConstraints = JSON.parse(this.queryParams.softConstraints);
+            } catch {
+
+            }
+        }
         return option;
     }
 
     fetchContents(isFilterChange?: boolean) {
-        const shouldGetAllDownloads = !(this.isBrowse || isFilterChange);
-        // First call - Search content with selected filters and API should call always.
-        // Second call - Search content without selected filters and API should not call in browse page
-        combineLatest(this.searchContent(true, true), this.searchContent(false, shouldGetAllDownloads))
-            .pipe(takeUntil(this.unsubscribe$))
-            .subscribe(
-                ([searchRes, allDownloadsRes]) => {
-
-                    if (searchRes) {
-                        const filteredContents = _.omit(_.groupBy(searchRes['result'].content, 'subject'), ['undefined']);
-                        // Check for multiple subjects
-                        for (const [key, value] of Object.entries(filteredContents)) {
-                            const isMultipleSubjects = key.split(',').length > 1;
-                            if (isMultipleSubjects) {
-                                const subjects = key.split(',');
-                                subjects.forEach((subject) => {
-                                    if (filteredContents[subject]) {
-                                        filteredContents[subject] = _.uniqBy(filteredContents[subject].concat(value), 'identifier');
-                                    } else {
-                                        filteredContents[subject] = value;
-                                    }
-                                });
-                                delete filteredContents[key];
+        const shouldGetAllDownloads = !(isFilterChange);
+        const option = this.constructSearchRequest();
+        this.searchService.contentSearch(option).subscribe(searchRes => {
+            if (searchRes) {
+                const facets = this.searchService.updateFacetsData(_.get(searchRes, 'result.facets'));
+                this.facets = facets.filter(facet => facet.values.length > 0);
+                const filteredContents = _.omit(_.groupBy(searchRes['result'].content, 'subject'), ['undefined']);
+                const otherContents = _.filter(searchRes['result'].content, (content) => !content.subject );
+                // Check for multiple subjects
+                for (const [key, value] of Object.entries(filteredContents)) {
+                    const isMultipleSubjects = key.split(',').length > 1;
+                    if (isMultipleSubjects) {
+                        const subjects = key.split(',');
+                        subjects.forEach((subject) => {
+                            if (filteredContents[subject]) {
+                                filteredContents[subject] = _.uniqBy(filteredContents[subject].concat(value), 'identifier');
+                            } else {
+                                filteredContents[subject] = value;
                             }
-                        }
-
-                        if (!shouldGetAllDownloads && this.sections[0] && !this.isBrowse) {
-                            this.sections.splice(1, this.sections.length);
-                        } else {
-                            this.sections = [];
-                        }
-                        if (allDownloadsRes) {
-                            this.sections.push({
-                                contents: _.orderBy(_.get(allDownloadsRes, 'result.content'), ['desktopAppMetadata.updatedOn'], ['desc']),
-                                name: 'Recently Added'
-                            });
-                        }
-
-                        const contents = []; // to sort the contents/textbooks other than downloads
-                        for (const section in filteredContents) {
-                            if (section) {
-                                contents.push({
-                                    name: section,
-                                    contents: filteredContents[section].sort((a, b) => a.name.localeCompare(b.name))
-                                });
-                            }
-                        }
-
-                        // should not affect the download contents order(should be top)
-                        contents.sort((a, b) => a.name.localeCompare(b.name));
-                        this.sections.push(...contents);
-
-                        this.carouselMasterData = this.prepareCarouselData(this.sections);
-                        this.hideLoader();
-                        if (!this.carouselMasterData.length) {
-                            return; // no page section
-                        }
-                        this.pageSections = _.cloneDeep(this.carouselMasterData);
-                        this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
-                            this.addHoverData();
                         });
-                    } else {
-                        this.hideLoader();
-                        this.carouselMasterData = [];
-                        this.pageSections = [];
-                        this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+                        delete filteredContents[key];
                     }
                 }
-            );
+
+                if (!shouldGetAllDownloads && this.sections[0]) {
+                    this.sections.splice(1, this.sections.length);
+                } else {
+                    this.sections = [];
+                }
+                const contents = []; // to sort the contents/textbooks other than downloads
+                for (const section in filteredContents) {
+                    if (section) {
+                        contents.push({
+                            name: section,
+                            contents: filteredContents[section].sort((a, b) => a.name.localeCompare(b.name))
+                        });
+                    }
+                }
+                // should not affect the download contents order(should be top)
+                contents.sort((a, b) => a.name.localeCompare(b.name));
+                contents.push({
+                    name: this.resourceService.frmelmnts.lbl.other,
+                    contents: otherContents.sort((a, b) => a.name.localeCompare(b.name))
+                });
+                this.sections.push(...contents);
+
+                this.carouselMasterData = this.prepareCarouselData(this.sections);
+                this.hideLoader();
+                if (!this.carouselMasterData.length) {
+                    return; // no page section
+                }
+                this.pageSections = _.cloneDeep(this.carouselMasterData);
+                this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
+                    this.addHoverData();
+                });
+            } else {
+                this.hideLoader();
+                this.carouselMasterData = [];
+                this.pageSections = [];
+                this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+            }
+        });
     }
 
     hideLoader() {
@@ -335,7 +361,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
                    contents['downloadStatus'] = this.contentDownloadStatus[contents.identifier];
                }
             });
-            this.pageSections[pageSection] = this.utilService.addHoverData(pageSection.contents, this.isBrowse);
+            this.pageSections[pageSection] = this.utilService.addHoverData(pageSection.contents, false);
         });
     }
 
@@ -353,32 +379,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
             return collector;
         }, []);
         return carouselData;
-    }
-
-    searchContent(addFilter: boolean, shouldCallAPI: boolean) {
-        if (!shouldCallAPI) {
-            return of(undefined);
-        }
-
-        const params = _.cloneDeep(this.configService.appConfig.ExplorePage.contentApiQueryParams);
-        params.online = false;
-        const option = addFilter ? this.constructSearchRequest(addFilter) : { params };
-        return this.searchService.contentSearch(option).pipe(
-            tap(data => {
-            }), catchError(error => {
-                return of(undefined);
-            }));
-    }
-
-    onViewAllClick(event) {
-        const queryParams = {
-            channel: this.hashTagId,
-            apiQuery: JSON.stringify(this.constructSearchRequest(false, true))
-        };
-
-        this.router.navigate(['view-all'], {
-            queryParams: queryParams
-        });
     }
 
     setTelemetryData() {
@@ -422,7 +422,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     logTelemetry(content, actionId) {
         const telemetryInteractObject = {
             id: content.metaData.identifier || content.metaData.courseId,
-            type: content.metaData.contentType || 'Course',
+            type: content.metaData.contentType || 'TextBook',
             ver: content.metaData.pkgVersion ? content.metaData.pkgVersion.toString() : '1.0'
         };
 
@@ -459,17 +459,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
                 this.playContent(event);
                 this.logTelemetry(this.contentData, 'play-content');
                 break;
-            case 'DOWNLOAD':
-                this.downloadIdentifier = _.get(event, 'content.metaData.identifier');
-                this.showModal = this.offlineCardService.isYoutubeContent(this.contentData);
-                if (!this.showModal) {
-                    this.showDownloadLoader = true;
-                    this.downloadContent(this.downloadIdentifier);
-                }
-                telemetryButtonId = this.contentData.mimeType ===
-                    'application/vnd.ekstep.content-collection' ? 'download-collection' : 'download-content';
-                this.logTelemetry(this.contentData, telemetryButtonId);
-                break;
             case 'SAVE':
                 this.showExportLoader = true;
                 this.exportContent(_.get(event, 'content.metaData.identifier'));
@@ -480,46 +469,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
         }
     }
 
-    callDownload() {
-        this.showDownloadLoader = true;
-        this.downloadContent(this.downloadIdentifier);
-    }
-
     playContent(event: any) {
-        if (this.isBrowse) {
-            this.publicPlayerService.playContentForOfflineBrowse(event);
-        } else {
-            this.publicPlayerService.playContent(event);
-        }
-    }
-
-    downloadContent(contentId) {
-        this.contentManagerService.downloadContentId = contentId;
-        this.contentManagerService.downloadContentData = this.contentData;
-        this.contentManagerService.failedContentName = this.contentName;
-        this.contentManagerService.startDownload({})
-            .pipe(takeUntil(this.unsubscribe$))
-            .subscribe(data => {
-                this.downloadIdentifier = '';
-                this.contentManagerService.downloadContentId = '';
-                this.contentManagerService.downloadContentData = {};
-                this.contentManagerService.failedContentName = '';
-                this.showDownloadLoader = false;
-            }, error => {
-                this.downloadIdentifier = '';
-                this.contentManagerService.downloadContentId = '';
-                this.contentManagerService.downloadContentData = {};
-                this.contentManagerService.failedContentName = '';
-                this.showDownloadLoader = false;
-                _.each(this.pageSections, (pageSection) => {
-                    _.each(pageSection.contents, (pageData) => {
-                        pageData['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
-                    });
-                });
-                if (!(error.error.params.err === 'LOW_DISK_SPACE')) {
-                this.toasterService.error(this.resourceService.messages.fmsg.m0090);
-                  }
-            });
+        this.publicPlayerService.playContent(event);
     }
 
     exportContent(contentId) {

@@ -148,8 +148,7 @@ export default (app, proxyURL, contentDownloadManager) => {
           logger.debug(`ReqId = "${req.headers["X-msgid"]}": Check proxy`);
   
           const online = Boolean(_.get(req, "query.online") && req.query.online.toLowerCase() === "true");
-  
-          if (online) {
+          if (enableProxy(req)) {
             logger.info(`Proxy is Enabled `);
             logger.debug(
               `ReqId = "${req.headers["X-msgid"]}": Update requestbody`,
@@ -263,7 +262,7 @@ const enableProxy = (req) => {
     if (req.get("referer")) {
         const refererUrl = new url.URL(req.get("referer"));
         const pathName = refererUrl.pathname;
-        flag = _.startsWith(pathName, "/browse");
+        flag = !_.startsWith(pathName, "/mydownloads");
     }
     return flag;
 };

@@ -578,10 +578,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption@^3.5.0":
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.5.0.tgz#2d8cbc34f7f90d0d427747ac01c37ac205df869d"
-  integrity sha512-jn30W2QqnH7aK84bX8RdPZCHyRZnAt9PuT2FOFgxh9f7/wDxdVu/RIJFr4IG1EjYsuh117CXr6fv1rn2QgzaKw==
+"@project-sunbird/common-consumption@^3.5.1":
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.5.1.tgz#2a2128adb968adf5530428bf8774c88f120b53b7"
+  integrity sha512-ZOfA5yoTZf6TcgJ4yzI4M4ORVf3dTp/xp6/IL7y2d1T8qutkJbBolFKuw8PRoQbAZdu9MYIxWPOw5zrQuYS/IA==
   dependencies:
     tslib "^1.9.0"
 
@@ -590,18 +590,18 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.6.tgz#15a88937fb643d5eb33a81c8d28ece00b56d5aa0"
   integrity sha512-rK87rHdagadIS7UrWju7HDolIfWlO5CbK+tIJrEApO+QPMi+k8KuWoLc8MxEprrsJxUt6r44O4uGiO0hgI5plA==
 
-"@project-sunbird/sunbird-pdf-player@0.0.8":
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-pdf-player/-/sunbird-pdf-player-0.0.8.tgz#3571cca2506daad854cfc5b40b688596f093c620"
-  integrity sha512-/XqbemozSMc6sjGxxYK3ZGMNf26Tepum3UGQITEc60IIDvZe2sC0+NDgRaC14HYXUAA2FLXmbQAEESpnqVB0Zw==
+"@project-sunbird/sunbird-pdf-player@0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-pdf-player/-/sunbird-pdf-player-0.0.4.tgz#b666c31b9394ed565b267859c0e3ff2edb514cf3"
+  integrity sha512-fesH1ocxX8RTqpzZF1u/4JDGRnYRqSlU80SvInhRpfa2FOBvLNVtIJnuJtv7YdMvsCJp4UOUtg+mIZjkbayggw==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk" "0.0.6"
+    "@project-sunbird/sunbird-player-sdk" "0.0.4"
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-player-sdk@0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk/-/sunbird-player-sdk-0.0.6.tgz#3826401d755fac17033f5e8ab9370e9c4656701a"
-  integrity sha512-I14SHg+uD+b9GLZ/88OfHXndmf6259/eLtYRiiKqqqbwIidEVfRJ8QxkBocgick+4FzzPoL4A/6IWagE5RAFgA==
+"@project-sunbird/sunbird-player-sdk@0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk/-/sunbird-player-sdk-0.0.4.tgz#5447b8adbc69258837534c2d5ca662787d0d46a4"
+  integrity sha512-inZPdtvODs1RGwxL/PmqsDLVD9/bPQo1+seVya2BnkLbHId+bT491WQXNEsP3Iu3VchmKGD17QqkXOenlOSABw==
   dependencies:
     tslib "^1.9.0"
 
@@ -612,10 +612,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-video-player@0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player/-/sunbird-video-player-0.0.4.tgz#539147ca61077ad8077ffac50959fd07dd8cfad1"
-  integrity sha512-S3my4JThJali9wTrObatqDxCCqIteCuBD5w9SCkf2F9OfhhsyJJcDstMl2+eKGa9LsvyGaI51Va0ix6YyCaTvQ==
+"@project-sunbird/sunbird-video-player@0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player/-/sunbird-video-player-0.0.6.tgz#26ee9d58213abfd7bca898cb15ec2d1aa25c6d18"
+  integrity sha512-m3D9wLiD27rfF36gXEORt/aDhxWU6vSCpIYbv6CJa414jr9RY0g3LIVVJwGIHZcj0dGFE3PdLwDWyaFAO93+Qg==
   dependencies:
     "@project-sunbird/sunbird-player-sdk" "0.0.7"
     tslib "^1.9.0"
@@ -9380,10 +9380,10 @@ sax@>=0.6.0, sax@^1.1.4:
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
 
-sb-svg2pdf@0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/sb-svg2pdf/-/sb-svg2pdf-0.0.7.tgz#cfaeaa4f90280dd5440378a5b96e31d9db259b55"
-  integrity sha512-m6rnyxMmr2khEEjNX3MmRN2NSRvQPhnBc3ZR+sSawlgJrA4iTwWtg6iZtT8OJnUVPcPNT4OGrRHmM9BHGN36Lg==
+sb-svg2pdf@0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/sb-svg2pdf/-/sb-svg2pdf-0.0.9.tgz#c92bd6d9182cb72c45446379a8474e982de0fad8"
+  integrity sha512-BKxj5D+67MzRZjdZkRtpO+AJ+Qk7OV5XY1SeUsdLkPnAttzv9zX/OtRRKSPHHjsP3vhIkCA9WhWdp0fjIvumXg==
   dependencies:
     tslib "^1.9.0"
 

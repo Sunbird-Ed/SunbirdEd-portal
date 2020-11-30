@@ -10,6 +10,7 @@ import { ManageRoutingModule } from './manage-routing.module';
 import { ManageService } from './services/manage/manage.service';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
+import { SharedFeatureModule } from '@sunbird/shared-feature';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { NgInviewModule } from 'angular-inport';
   imports: [
     CommonModule,
     SharedModule,
+    SharedFeatureModule,
     SuiModalModule,
     HttpClientModule,
     TelemetryModule,

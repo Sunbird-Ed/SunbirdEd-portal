@@ -5,7 +5,8 @@ import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef, OnDestroy }
 import { CourseConsumptionService, CourseProgressService } from './../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import { CoursesService, PermissionService, CopyContentService, UserService, GeneraliseLabelService } from '@sunbird/core';
+import { CoursesService, PermissionService, CopyContentService,
+  OrgDetailsService, UserService, GeneraliseLabelService } from '@sunbird/core';
 import {
   ResourceService, ToasterService, ContentData, ContentUtilsServiceService, ITelemetryShare,
   ExternalUrlPreviewService
@@ -28,7 +29,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   showProfileUpdatePopup = false;
   profileInfo: {
     firstName: string,
-    lastName: string
+    lastName: string,
+    id: string
   };
   /**
    * contains link that can be shared
@@ -63,6 +65,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   public interval: any;
   telemetryCdata: Array<{}>;
   enableProgress = false;
+  isCustodianOrgUser = false;
   // courseMentor = false;
   // courseCreator = false;
   forumId;
@@ -77,7 +80,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     private courseProgressService: CourseProgressService, public contentUtilsServiceService: ContentUtilsServiceService,
     public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService, private userService: UserService,
     private telemetryService: TelemetryService, private groupService: GroupsService,
-    private navigationHelperService: NavigationHelperService, public generaliseLabelService: GeneraliseLabelService,
+    private navigationHelperService: NavigationHelperService, public orgDetailsService: OrgDetailsService,
+    public generaliseLabelService: GeneraliseLabelService,
     public courseBatchService: CourseBatchService) { }
 
   showJoinModal(event) {
@@ -85,6 +89,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   ngOnInit() {
+    this.getCustodianOrgUser();
     this.forumId = _.get(this.courseHierarchy, 'forumId') || _.get(this.courseHierarchy, 'metaData.forumId');
     if (!this.courseConsumptionService.getCoursePagePreviousUrl) {
       this.courseConsumptionService.setCoursePagePreviousUrl();
@@ -167,9 +172,13 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   resumeCourse(showExtUrlMsg?: boolean) {
-    const IsStoredLocally = localStorage.getItem('isCertificateNameUpdated') || 'false' ;
+    const IsStoredLocally = localStorage.getItem('isCertificateNameUpdated_' + this.profileInfo.id) || 'false' ;
     const certificateDescription = this.courseBatchService.getcertificateDescription(this.enrolledBatchInfo);
-    if (IsStoredLocally !== 'true' && certificateDescription && certificateDescription.isCertificate) {
+    if (IsStoredLocally !== 'true'
+    &&
+    certificateDescription &&
+    certificateDescription.isCertificate
+    && this.isCustodianOrgUser && this.progress < 100) {
       this.showProfileUpdatePopup = true;
     } else {
       this.courseConsumptionService.launchPlayer.emit();
@@ -243,7 +252,15 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     };
     this.telemetryService.interact(interactData);
   }
-
+  private getCustodianOrgUser() {
+    this.orgDetailsService.getCustodianOrgDetails().subscribe(custodianOrg => {
+      if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value')) {
+        this.isCustodianOrgUser = true;
+      } else {
+        this.isCustodianOrgUser = false;
+      }
+    });
+  }
   logTelemetry(id, content?: {}) {
     if (this.batchId) {
       this.telemetryCdata = [{ id: this.batchId, type: 'courseBatch' }];

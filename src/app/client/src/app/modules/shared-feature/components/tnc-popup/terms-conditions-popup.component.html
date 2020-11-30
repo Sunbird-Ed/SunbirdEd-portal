@@ -19,7 +19,7 @@
       <iframe id="serviceFrameSend" [src]="tncLatestVersionUrl" width="100%" height="200px" class="toc-page" frameborder="0"
         (load)="showLoader = false"></iframe>
     </form>
-    <label *ngIf="!tncUrl" class="d-flex flex-jc-center flex-ai-center mt-16 mb-0">
+    <label *ngIf="!tncUrl || showAcceptTnc" class="d-flex flex-jc-center flex-ai-center mt-16 mb-0">
       <input type="checkbox" aria-labelledby="terms and agreement" role="checkbox" [(ngModel)]="tncChecked" value="true" (click)="onClickCheckbox(tncChecked)" class="mr-10 cursor-pointer"><span> {{resourceService?.frmelmnts?.lbl?.termsAndCondAgree}}</span>
     </label>
   </div>
@@ -28,8 +28,8 @@
 
   <!--Actions-->
   <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-primary" [ngClass]="tncChecked ? '' : 'disabled'"
-      [disabled]="!disableContinueBtn" (click)="onSubmitTnc()" *ngIf="!tncUrl">
+    <button class="sb-btn sb-btn-normal sb-btn-primary" [ngClass]="tncChecked ? '' : 'sb-btn-disabled'"
+      [disabled]="!disableContinueBtn" (click)="onSubmitTnc()" *ngIf="!tncUrl || showAcceptTnc">
       {{resourceService?.frmelmnts?.lbl?.continue}}
     </button>
   </div>

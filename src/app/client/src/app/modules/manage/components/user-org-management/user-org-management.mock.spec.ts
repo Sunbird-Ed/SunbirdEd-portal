@@ -112,6 +112,34 @@ export const mockRes = {
         }
         }
     },
+    tncConfig: {
+        'id': 'api',
+        'params': {
+          'status': 'success',
+        },
+        'responseCode': 'OK',
+        'result': {
+          'response': {
+            'id': 'orgAdminTnc',
+            'field': 'orgAdminTnc',
+            'value': '{"latestVersion":"v4","v4":{"url":"http://test.com/tnc.html"}}'
+          }
+        }
+      },
+      tncConfigObj: {
+        'id': 'api',
+        'params': {
+          'status': 'success',
+        },
+        'responseCode': 'OK',
+        'result': {
+          'response': {
+            'id': 'orgAdminTnc',
+            'field': 'orgAdminTnc',
+            'value': '{"abc":"abc"}'
+          }
+        }
+      },
     noErrorMessage: {message: `Something went wrong,\n please try again later...`},
     toasterMessage: {
         mandatoryParameters: 'Mandatory parameter diksha uuid is missing',
