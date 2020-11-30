@@ -26,3 +26,4 @@ export * from './cert-reg/cert-reg.service';
 export * from './tnc/tnc.service';
 export * from './managed-user/managed-user.service';
 export * from './generalisedLable/generaliseLable.service';
+export * from './discussionsForum/discussionsForum.service';

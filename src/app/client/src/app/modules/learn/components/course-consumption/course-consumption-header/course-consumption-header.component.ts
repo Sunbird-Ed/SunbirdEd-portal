@@ -82,6 +82,9 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
 
   showJoinModal(event) {
     this.courseConsumptionService.showJoinCourseModal.emit(event);
+    this.courseBatchService.createUser().subscribe(res => {
+      console.log(res);
+    });
   }
 
   ngOnInit() {

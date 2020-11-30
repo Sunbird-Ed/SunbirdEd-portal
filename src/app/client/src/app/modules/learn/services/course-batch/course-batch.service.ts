@@ -2,7 +2,7 @@ import { of as observableOf, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Injectable, Input, EventEmitter } from '@angular/core';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
-import { SearchParam, LearnerService, UserService, ContentService, SearchService } from '@sunbird/core';
+import { SearchParam, LearnerService, UserService, ContentService, SearchService, DiscussionsForumService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 
 @Injectable({
@@ -14,11 +14,21 @@ export class CourseBatchService {
   public updateEvent = new EventEmitter();
   private _enrolledBatchDetails: any;
   private defaultUserList: any;
-  constructor(public searchService: SearchService, public userService: UserService, public content: ContentService,
+  constructor(public searchService: SearchService, public discussionsForumService: DiscussionsForumService, public userService: UserService, public content: ContentService,
     public configService: ConfigService,
     public learnerService: LearnerService) { }
   getAllBatchDetails(searchParams) {
     return this.batchSearch(searchParams);
+  }
+
+  createUser() {
+    // TODO : sunbird user ID in nodebb
+    const userName = this.userService.userProfile.userId;
+    const option = {
+      url: `v2/users`,
+      data:  {username: userName}
+    };
+    return this.discussionsForumService.post(option);
   }
   batchSearch(requestParam: SearchParam): Observable<ServerResponse> {
     const option = {
