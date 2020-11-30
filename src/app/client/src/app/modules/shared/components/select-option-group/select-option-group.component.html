@@ -12,7 +12,8 @@
 <ng-container *ngIf="layoutConfiguration">
   <div class="sb-field mb-8 w-100">
     <label class="fnormal font-weight-bold d-flex">{{title}}</label>
-    <sui-select class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg sbt-dropdown-tick " [(ngModel)]="preSelectedValue">
+  <label class="w-100">
+    <sui-select class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg " [(ngModel)]="preSelectedValue">
       <div class="sbt-dropdown-section" *ngIf="showHeader">
         <div *ngFor="let group of optionData">
           <!-- <div class="header">{{group.label}}</div> -->
@@ -28,5 +29,6 @@
         </div>
       </div>
     </sui-select>
+  </label>
   </div>
 </ng-container>

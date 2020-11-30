@@ -151,7 +151,8 @@
                         <div class="sb-field w-100" *ngIf="allValues?.subject?.length">
                             <label
                                 class="fnormal font-weight-bold d-flex">{{resourceService.frmelmnts?.lbl?.subject | translate}}</label>
-                            <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['subject']"
+                                <label class="w-100">
+                                <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['subject']"
                                 (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'subject'})"
                                 defaultSelectionText={{resourceService?.frmelmnts?.lbl?.subject}}
                                 zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
@@ -162,13 +163,14 @@
                                         [value]="dropdownValue">
                                     </sui-select-option>
                                 </div>
-                            </sui-multi-select>
+                            </sui-multi-select></label>
                         </div>
 
                         <div class="sb-field w-100" *ngIf="allValues?.publisher?.length">
                             <label
                                 class="fnormal font-weight-bold d-flex">{{resourceService.frmelmnts?.lbl?.publishedBy | translate}}</label>
-                            <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['publisher']"
+                                <label class="w-100">
+                                <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['publisher']"
                                 (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'publisher'})"
                                 defaultSelectionText={{resourceService?.frmelmnts?.lbl?.publishedBy}}
                                 zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
@@ -179,13 +181,14 @@
                                         [value]="dropdownValue">
                                     </sui-select-option>
                                 </div>
-                            </sui-multi-select>
+                            </sui-multi-select></label>
                         </div>
 
                         <div class="sb-field  w-100" *ngIf="allValues?.audience?.length">
                             <label
                                 class="fnormal font-weight-bold d-flex">{{resourceService.frmelmnts?.lbl?.meantFor | translate}}</label>
-                            <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['audience']"
+                                <label class="w-100">
+                                <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['audience']"
                                 (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'audience'})"
                                 defaultSelectionText={{resourceService?.frmelmnts?.lbl?.meantFor}}
                                 zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
@@ -196,7 +199,7 @@
                                         [value]="dropdownValue">
                                     </sui-select-option>
                                 </div>
-                            </sui-multi-select>
+                            </sui-multi-select></label>
                         </div>
                     </div>
                 </div>
