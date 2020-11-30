@@ -583,10 +583,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.6.tgz#15a88937fb643d5eb33a81c8d28ece00b56d5aa0"
   integrity sha512-rK87rHdagadIS7UrWju7HDolIfWlO5CbK+tIJrEApO+QPMi+k8KuWoLc8MxEprrsJxUt6r44O4uGiO0hgI5plA==
 
-"@project-sunbird/sunbird-pdf-player@0.0.8":
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-pdf-player/-/sunbird-pdf-player-0.0.8.tgz#3571cca2506daad854cfc5b40b688596f093c620"
-  integrity sha512-/XqbemozSMc6sjGxxYK3ZGMNf26Tepum3UGQITEc60IIDvZe2sC0+NDgRaC14HYXUAA2FLXmbQAEESpnqVB0Zw==
+"@project-sunbird/sunbird-pdf-player@0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-pdf-player/-/sunbird-pdf-player-0.0.12.tgz#f553bc1db919dc3f798d20b0a97a82fd0b104927"
+  integrity sha512-JTpv5IboSkoG3HaiR74Fxw3oXrBORBitESvCflr+umQThVcUmN0ukSYVXcgCUz9j3DqJ5eGyBwo0zP9nTKRZwQ==
   dependencies:
     "@project-sunbird/sunbird-player-sdk" "0.0.6"
     tslib "^1.9.0"
