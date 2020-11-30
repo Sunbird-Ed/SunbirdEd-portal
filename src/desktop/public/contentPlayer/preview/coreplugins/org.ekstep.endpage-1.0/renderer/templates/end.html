@@ -1,0 +1,94 @@
+
+<div class="font-lato gc-ep-cont" ng-controller="endPageController" id='endpage' ng-show="showEndPage">
+    <image class="gc-ep-cont-background" ng-src="{{imageBasePath}}background_1.png" />
+    <genie class="gc-ep-home"></genie>
+    <div class="gc-ep-content">
+        <p class="gc-ep-cong gc-text-elipsis">{{AppLables.congratulations}}</p>
+        <p class="icon-font gc-ep-title gc-text-elipsis" ng-if="content.name">{{content.name}}</p>
+        <p class="gc-content-owner gc-text-elipsis" ng-if="content.owner">{{ AppLables.author }}: {{content.owner}}</p>
+    </div>
+    <center class="gc-ep-credits" ng-hide="content.imageCredits == null && content.voiceCredits == null && content.soundCredits == null ">
+        <input class="gc-btn-credits btn-normal" type="button" ng-click="showCredits()" />
+    </center>
+    <div class="gc-ep-content-holder">
+        <div class="gc-ep-assessment-cont">
+            <div class="gc-ep-rating-cont">
+                <div class="gc-ep-rating" ng-if="!showFeedbackPopup">
+                    <p>{{AppLables.scores}}</p>
+                    <star-rating empty-rating="icn_credit_star.png" selected-rating="filled_star.png" rating="userRating" read-only="false" max-rating="5" click="showFeedback(param)"></star-rating>
+                </div>
+            </div>
+            <div class="gc-ep-time-score" ng-show="showFeedbackArea">
+                <div ng-class="showScore ? 'gc-ep-time ' : 'gc-ep-time-mid '" id="timeSpentArea">
+                    <image ng-class="showScore ? 'img-float-left':'img-float-mid' " ng-src="{{imageBasePath}}icn_watch.png" style="position:relative;" />
+                    <p class="gc-white-text gc-ep-white-title">{{totalTimeSpent}}</p>
+                </div>
+                <div class="gc-ep-score" ng-show="showScore">
+                    <image ng-src="{{imageBasePath}}icn_trophy.png" />
+                    <p class="gc-white-text gc-ep-white-title">{{totalScore}}</p>
+                </div>
+            </div>
+            <div class="gc-ep-footer">
+                <div ng-click="replayContent()" class="gc-ep-footer-icons gc-ep-replay">
+                    <img class="replay" ng-src="{{imageBasePath}}icn_replay.png" />
+                    <p>{{AppLables.replay}}</p>
+                </div>
+                <div ng-if="showUser" ng-click="ep_openUserSwitchingModal()" class="gc-ep-footer-icons gc-ep-userSwitch">
+                    <img class="user" ng-src="{{currentUser.profileImage}}" />
+                    <p><b>{{currentUser.handle}}</b>
+                        <br/> <small> {{AppLables.change}} </small></p>
+                </div>
+            </div>
+        </div>
+        <div class="gc-ep-related-cont" ng-controller="RelatedContentCtrl">
+            <div class="gc-ep-next">
+                <p class="gc-ep-related-cont-next gc-text-elipsis">{{ AppLables.nextContent }}</p>
+            </div>
+            <div id="endPageLoader" class="gc-ep-loader">
+                <div style="margin-top: 20%;">
+                    <ion-spinner icon="bubbles"></ion-spinner>
+                </div>
+            </div>
+            <div class="gc-related-cont" ng-show="showRelatedContent">
+                <div class="gc-related-list" ng-repeat="story in relatedContents" ng-click="playRelatedContent(story, $index);">
+                    <div class="gc-related-item">
+                        <p class="gc-text-elipsis gc-related-cont-title">{{story.name}}</p>
+                        <div class="gc-rel-content-img">
+                            <img class="img-center" fallback-src="{{imageBasePath}}icn_default-content.png" ng-src="{{story.appIcon}}" />
+                            <div class="gc-repeat-content">
+                                <img ng-src="assets/icons/icn_play.png" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <popup id="creditsPopup" ng-show = 'CreditPopup' popup-body="creditsBody"></popup>
+    <div id="gcFbPopup" class="popup" ng-if="showFeedbackPopup">
+        <div class="popup-overlay" ng-click="hideFeedback()"></div>
+        <div class="gc-popup-new gc-fc-popup">
+            <div class="gc-popup-title-new">{{AppLables.feedback}}</div>
+            <div class="gc-popup-body-new">
+                <div class="gc-feedback-popup">
+                    <div star-rating empty-rating="star_inactive.png" selected-rating="star_active.png" rating="popUserRating" read-only="false" max-rating="5" click="updatePopUserRating(param)"></div>
+                    <div class="gc-fd-comments">
+                        <div class="gc-fd-title">
+                            <p>{{AppLables.comment}}</p>
+                        </div>
+                        <textarea class="gc-fd-text" ng-keyup="commentLength()" id="commentText"></textarea>
+                        <div class="gc-fd-commentInfo">
+                            <p>{{stringLeft}}</p>
+                        </div>
+                    </div>
+                    <div ng-class="enableFeedBackButton  ? 'gc-fd-footer icon-opacity' : 'gc-fd-footer'">
+                        <input class="btn-black" type="button" value="{{AppLables.submit}}" ng-click="submitFeedback()">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="end-license">
+        <b>License: {{licenseAttribute}}</b>
+    </div>
+</div>

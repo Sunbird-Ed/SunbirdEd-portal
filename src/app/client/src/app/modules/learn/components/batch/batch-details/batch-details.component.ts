@@ -114,7 +114,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     const searchParams: any = {
       filters: {
         courseId: this.courseId,
-        status: ['0', '1', '2']
+        status: ['0', '1']
       },
       offset: 0,
       sort_by: { createdDate: 'desc' }
@@ -123,6 +123,8 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     const searchParamsMentor =  _.cloneDeep(searchParams);
 
     if (this.courseConsumptionService.canViewDashboard(this.courseHierarchy)) {
+      searchParamsCreator.filters.status = ['0', '1', '2'];
+      searchParamsMentor.filters.status = ['0', '1', '2'];
       searchParamsCreator.filters.createdBy = this.userService.userid;
       searchParamsMentor.filters.mentors = [this.userService.userid];
       combineLatest(

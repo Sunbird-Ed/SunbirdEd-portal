@@ -1,0 +1,47 @@
+<sui-modal class="sb-modal" (dismissed)="closePopup();" #modal>
+    <!--Header-->
+    <div class="sb-modal-header">
+      <span>{{resourceService?.frmelmnts?.lbl?.profileNameConfirmations}}</span>
+    </div>
+    <!--/Header-->
+
+    <!--Content-->
+    <div class="sb-modal-content">
+      <div class="d-flex flex-jc-center">
+        <img src="./assets/images/profile-certificate.svg" alt="">
+      </div>
+      <div class="profile-section-content">
+        <div class="profile-info d-flex flex-dc">
+          <span class="text-center d-flex flex-ai-center flex-jc-center">{{resourceService?.frmelmnts?.lbl?.firstName}}:
+            <span *ngIf="!isNameEditable" class="font-weight-bold pt-8 ml-8">{{profileInfo.firstName }}  <img src="./assets/images/edit-icon.svg" alt="edit-icon" class="cursor-pointer ml-8" (click)="allowToEdit('firstName')" appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
+              [telemetryInteractEdata]="{id:'certificatefNameChangeEdit' , type: 'click' , pageid:'course-consumption'}"></span>
+            <span *ngIf="isNameEditable" class="pt-8"><input class="sb-form-control ml-8" [(ngModel)]="profileInfo.firstName" (blur)="isNameEditable = false" #crtFirstName /></span>
+          </span>
+          <span class="text-center d-flex flex-ai-center flex-jc-center">{{resourceService?.frmelmnts?.lbl?.lastName}}-
+            <span *ngIf="!isLastNameEditable" class="font-weight-bold pt-8 ml-8">{{profileInfo.lastName }}  <img src="./assets/images/edit-icon.svg" alt="edit-icon" class="cursor-pointer ml-8" (click)="allowToEdit('lastName')" appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
+              [telemetryInteractEdata]="{id:'certificatelNameChangeEdit' , type: 'click' , pageid:'course-consumption'}"></span>
+            <span *ngIf="isLastNameEditable" class="pt-8"><input class="sb-form-control ml-8" [(ngModel)]="profileInfo.lastName" (blur)="isLastNameEditable = false" #crtLastName /></span>
+          </span>
+        </div>
+        <div class="profile-info-para mt-12 text-center">
+          <p class="mb-8">
+            {{resourceService?.frmelmnts?.lbl?.nameUpdateConfirmation | interpolate:'{instance}': instance}}
+          </p>
+          <p class="mb-0 fnormal font-weight-normal">
+            <input class="mr-8 cursor-pointer" type="checkbox" [(ngModel)]="certificateNameChecked" value="true" (click)="onClickCheckbox(certificateNameChecked)" appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
+            [telemetryInteractEdata]="{id:'certificateNameUpdateConfirmation' , type: 'click' , pageid:'course-consumption'}"> {{resourceService?.frmelmnts?.lbl?.certificateNameUpdate}}
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/Content-->
+
+    <!--Actions-->
+    <div class="sb-modal-actions text-center">
+      <button appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
+      [telemetryInteractEdata]="{id:'viewCertificateNameChangedPopupSubmit' , type: 'click' , pageid:'course-consumption'}" [ngClass]="certificateNameChecked ? '' : 'sb-btn-disabled'" [disabled]="!disableContinueBtn" (click)="updateProfileName()" class="sb-btn sb-btn-normal sb-btn-primary" type="button"> {{resourceService.frmelmnts.lbl.continue}} </button>
+    </div>
+    <!-- pass "sb-btn-disabled" class for button disabled -->
+    <!--/Actions-->
+
+</sui-modal>

@@ -1,0 +1,14 @@
+{
+    "id": "org.ekstep.userswitcher",
+    "ver": "1.0",
+    "shortId": "org.ekstep.userswitcher",
+    "author": "Akash Gupta",
+    "description": "",
+    "publishedDate": "",
+    "renderer": {
+        "main": "renderer/plugin.js",
+        "views": [
+            { "template": "./templates/user-switch-popup.html", "controller": "./controller/userSwitcher.js" }
+        ]
+    }
+}

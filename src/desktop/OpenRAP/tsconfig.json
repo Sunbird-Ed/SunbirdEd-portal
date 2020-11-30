@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "declaration": true,
+    "module": "commonjs",
+    "outDir": "./dist",
+    "lib": ["es2016", "DOM", "esnext.asynciterable", "esnext"],
+    "target": "es6"
+  },
+  "exclude": ["node_modules", "*/**/*.spec.ts", "*.spec.ts", "dist"]
+}

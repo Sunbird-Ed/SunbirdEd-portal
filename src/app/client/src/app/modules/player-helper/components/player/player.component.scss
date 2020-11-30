@@ -67,7 +67,7 @@
 
 .player-fullscreen {
     position:fixed;
-    top:calculateRem(50px);
+    top:calculateRem(0px);
     left:0;
     bottom:0; 
     right:0;
@@ -76,7 +76,8 @@
     padding:0; 
     overflow:hidden; 
     z-index:9999;
-    height: calc(100% - 104px) !important;
+    height: calc(100% - 4rem) !important;
+    background:var(--white);
 } 
 
 .contentViewerIframeShadow {
@@ -98,4 +99,12 @@
     width: 100%;
     height: 100% !important;
   }
+  .video-js{height:100% !important;}
+  html[layout='joy'] .content-video__player__details {
+    border-radius: 0px !important;
+  }
+  .video-js {
+    padding-top:inherit !important;
+  }
 }
+

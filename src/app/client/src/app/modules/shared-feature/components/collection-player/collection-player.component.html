@@ -81,7 +81,7 @@
             <div class="certified-course__btn" *ngIf="isGroupAdmin">
               <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn" appAddToGroup
                 [identifier]="collectionData?.identifier"
-                [pageId]="collectionData?.primaryCategory.toLowerCase()">{{resourceService?.frmelmnts?.lbl?.AddtoGroup}}
+                [pageId]="collectionData?.primaryCategory?.toLowerCase()">{{resourceService?.frmelmnts?.lbl?.AddtoGroup}}
               </button>
             </div>
 
@@ -128,7 +128,7 @@
               [activeMimeTypeFilter]="activeMimeTypeFilter" [tocData]="collectionData"
               (tocCardClick)="tocCardClickHandler($event)" [activeContent]="activeContent"
               (noContent)="showNoContent($event)" (selectedItem)="handleSelectedItem($event)" appTelemetryInteract
-              [telemetryInteractEdata]="tocTelemetryInteractEdata" [platform]="PlatformType.PORTAL"
+              [telemetryInteractEdata]="tocTelemetryInteractEdata" [telemetryInteractCdata]="tocTelemetryInteractCdata"[platform]="PlatformType.PORTAL"
               [type]="TocCardType.TRACKABLE" [trackableDefaultImage]="'assets/images/mask-image/courses.svg'"></sb-toc-item>
           </div>
           <div [hidden]="!isSelectChapter">

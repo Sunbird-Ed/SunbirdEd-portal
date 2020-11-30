@@ -5,7 +5,8 @@ import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef, OnDestroy }
 import { CourseConsumptionService, CourseProgressService } from './../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import { CoursesService, PermissionService, CopyContentService, UserService, GeneraliseLabelService } from '@sunbird/core';
+import { CoursesService, PermissionService, CopyContentService,
+  OrgDetailsService, UserService, GeneraliseLabelService } from '@sunbird/core';
 import {
   ResourceService, ToasterService, ContentData, ContentUtilsServiceService, ITelemetryShare,
   ExternalUrlPreviewService
@@ -15,6 +16,7 @@ import * as dayjs from 'dayjs';
 import { GroupsService } from '../../../../groups/services/groups/groups.service';
 import { NavigationHelperService } from '@sunbird/shared';
 import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
+import { CourseBatchService } from './../../../services';
 
 @Component({
   selector: 'app-course-consumption-header',
@@ -24,6 +26,12 @@ import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   sharelinkModal: boolean;
+  showProfileUpdatePopup = false;
+  profileInfo: {
+    firstName: string,
+    lastName: string,
+    id: string
+  };
   /**
    * contains link that can be shared
    */
@@ -57,6 +65,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   public interval: any;
   telemetryCdata: Array<{}>;
   enableProgress = false;
+  isCustodianOrgUser = false;
   // courseMentor = false;
   // courseCreator = false;
   forumId;
@@ -71,19 +80,24 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     private courseProgressService: CourseProgressService, public contentUtilsServiceService: ContentUtilsServiceService,
     public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService, private userService: UserService,
     private telemetryService: TelemetryService, private groupService: GroupsService,
-    private navigationHelperService: NavigationHelperService, public generaliseLabelService: GeneraliseLabelService) { }
+    private navigationHelperService: NavigationHelperService, public orgDetailsService: OrgDetailsService,
+    public generaliseLabelService: GeneraliseLabelService,
+    public courseBatchService: CourseBatchService) { }
 
   showJoinModal(event) {
     this.courseConsumptionService.showJoinCourseModal.emit(event);
   }
 
   ngOnInit() {
+    this.getCustodianOrgUser();
     this.forumId = _.get(this.courseHierarchy, 'forumId') || _.get(this.courseHierarchy, 'metaData.forumId');
     if (!this.courseConsumptionService.getCoursePagePreviousUrl) {
       this.courseConsumptionService.setCoursePagePreviousUrl();
     }
     this.isTrackable = this.courseConsumptionService.isTrackableCollection(this.courseHierarchy);
     this.viewDashboard = this.courseConsumptionService.canViewDashboard(this.courseHierarchy);
+
+    this.profileInfo = this.userService.userProfile;
 
     observableCombineLatest(this.activatedRoute.firstChild.params, this.activatedRoute.firstChild.queryParams,
       (params, queryParams) => {
@@ -158,8 +172,18 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   resumeCourse(showExtUrlMsg?: boolean) {
-    this.courseConsumptionService.launchPlayer.emit();
-    this.coursesService.setExtContentMsg(showExtUrlMsg);
+    const IsStoredLocally = localStorage.getItem('isCertificateNameUpdated_' + this.profileInfo.id) || 'false' ;
+    const certificateDescription = this.courseBatchService.getcertificateDescription(this.enrolledBatchInfo);
+    if (IsStoredLocally !== 'true'
+    &&
+    certificateDescription &&
+    certificateDescription.isCertificate
+    && this.isCustodianOrgUser && this.progress < 100) {
+      this.showProfileUpdatePopup = true;
+    } else {
+      this.courseConsumptionService.launchPlayer.emit();
+      this.coursesService.setExtContentMsg(showExtUrlMsg);
+    }
   }
 
   flagCourse() {
@@ -228,7 +252,15 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     };
     this.telemetryService.interact(interactData);
   }
-
+  private getCustodianOrgUser() {
+    this.orgDetailsService.getCustodianOrgDetails().subscribe(custodianOrg => {
+      if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value')) {
+        this.isCustodianOrgUser = true;
+      } else {
+        this.isCustodianOrgUser = false;
+      }
+    });
+  }
   logTelemetry(id, content?: {}) {
     if (this.batchId) {
       this.telemetryCdata = [{ id: this.batchId, type: 'courseBatch' }];

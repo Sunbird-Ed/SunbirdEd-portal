@@ -247,9 +247,9 @@ describe('AddMemberComponent', () => {
   });
 
   it('should call addTelemetry', () => {
-    component.addTelemetry('ftu-popup');
-    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith({id: 'ftu-popup', extra: undefined},
-    fakeActivatedRouteWithGroupId.snapshot, [], '123');
+    spyOn(component, 'setInteractData');
+    component.setInteractData('ftu-popup');
+    expect(component.setInteractData).toHaveBeenCalledWith('ftu-popup');
   });
 
   it('should load re-captcha when recaptcha is enable from system setting', () => {

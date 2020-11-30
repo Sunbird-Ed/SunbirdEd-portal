@@ -66,7 +66,7 @@
             <span>| &copy; {{date | date:'yyyy'}}, {{instance}}</span>
           </label>
           <label class="sb-footer-license">
-            <span><img src="/assets/images/CCby.svg">&nbsp;&nbsp;{{resourceService.frmelmnts?.lbl?.CCbyLicense}}</span>
+            <span><img alt="{{resourceService.frmelmnts?.lbl?.CCbyLicense}}" src="/assets/images/CCby.svg">&nbsp;&nbsp;{{resourceService.frmelmnts?.lbl?.CCbyLicense}}</span>
           </label>
         </div>
       </div>
@@ -126,7 +126,7 @@
               <span>| &copy; {{date | date:'yyyy'}}, {{instance}}</span>
             </label>
             <label class="d-block text-left fsmall">
-              <span>{{resourceService.frmelmnts?.lbl?.CCbyLicense}}&nbsp;&nbsp;<img src="/assets/images/CCby.svg"></span>
+              <span>{{resourceService.frmelmnts?.lbl?.CCbyLicense}}&nbsp;&nbsp;<img alt="{{resourceService.frmelmnts?.lbl?.CCbyLicense}}" src="/assets/images/CCby.svg"></span>
             </label>
           </div>
           </div>
@@ -145,3 +145,5 @@
     </div>
   </footer>
   </div>
+
+  <extension-point *appDesktopOnly [name]="'content-manager'"></extension-point>

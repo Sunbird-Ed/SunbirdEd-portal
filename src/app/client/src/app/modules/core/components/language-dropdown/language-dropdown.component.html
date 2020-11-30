@@ -10,8 +10,9 @@
 
 
  <!-- language dropdown -->
+ <label>
  <sui-select *ngIf="isLayoutAvailable()" class="selection sbt-dropdown sbt-dropdown--md sbt-green sbt-dropdown-language sbt-dropdown-tick"[(ngModel)]="selectedLanguage" (ngModelChange)="onLanguageChange($event)" labelField="label" valueField="value">
   <sui-select-option *ngFor="let option of languageRange" appTelemetryInteract
     [telemetryInteractEdata]="getTelemetryInteractEdata(option.value)" [value]="option">
   </sui-select-option>
-</sui-select>
+</sui-select></label>

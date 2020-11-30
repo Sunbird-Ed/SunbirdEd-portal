@@ -4,6 +4,9 @@ import * as _ from 'lodash-es';
 import { ICard, ILanguage } from '@sunbird/shared';
 import { Subject } from 'rxjs';
 import { ResourceService } from '../resource/resource.service';
+import * as dayjs from 'dayjs';
+import { ExportToCsv } from 'export-to-csv';
+import { environment } from '@sunbird/environment';
   // Dependency injection creates new instance each time if used in router sub-modules
 @Injectable()
 export class UtilService {
@@ -14,13 +17,22 @@ export class UtilService {
   public languageChange = new EventEmitter<ILanguage>();
   public hideHeaderTabs = new EventEmitter<boolean>();
   public searchKeyword = new EventEmitter<string>();
+  private csvExporter: any;
+  private _isDesktopApp = false;
 
   constructor(private resourceService: ResourceService) {
     if (!UtilService.singletonInstance) {
       UtilService.singletonInstance = this;
     }
+    this._isDesktopApp = environment.isDesktopApp;
     return UtilService.singletonInstance;
+
   }
+
+  get isDesktopApp() {
+    return this._isDesktopApp;
+  }
+
   public sortChildrenWithIndex(tree) {
     if (!_.get(tree, 'children.length')) {
         return tree;
@@ -253,17 +265,18 @@ export class UtilService {
     _.each(contentList, (value) => {
       const contentStatus = status[_.get(value, 'downloadStatus')];
       value['hoverData'] = {
-        note: isOnlineSearch ? (contentStatus ? (contentStatus === 'DOWNLOADED' ?  status.goToMyDownloads : '')
+        note: isOnlineSearch ? (contentStatus ? (_.upperCase(contentStatus) === 'DOWNLOADED' ?  status.goToMyDownloads : '')
         : this.isAvailable(value) ? status.goToMyDownloads : '') : '',
         actions: [
           {
-            type: isOnlineSearch ? 'download' : (contentStatus  ? (contentStatus !== 'DOWNLOADED' ? 'download' : 'save') : 'save') ,
+            type: isOnlineSearch ? 'download' : (contentStatus  ? (_.upperCase(contentStatus) !== 'DOWNLOADED' ? 'download' : 'save') : 'save') ,
             label: isOnlineSearch ? (contentStatus ? _.capitalize(contentStatus) :
             this.isAvailable(value) ? _.capitalize(status.COMPLETED) : _.capitalize(status.CANCELED)) :
-            (contentStatus ? (contentStatus === 'DOWNLOADED' ? status.saveToPenDrive : _.capitalize(contentStatus)) :
+            (contentStatus ? (_.upperCase(contentStatus) === 'DOWNLOADED' ? status.saveToPenDrive : _.capitalize(contentStatus)) :
             this.isAvailable(value) ? status.saveToPenDrive : _.capitalize(status.CANCELED)),
-            disabled: isOnlineSearch ? contentStatus ? _.includes(['DOWNLOADED', 'DOWNLOADING', 'PAUSED'], contentStatus) :
-            this.isAvailable(value) : contentStatus ? _.includes(['DOWNLOADING', 'PAUSED'], contentStatus) : !this.isAvailable(value)
+            disabled: isOnlineSearch ? (contentStatus ? _.includes(['Downloaded', 'Downloading', 'Paused'], _.capitalize(contentStatus)) :
+            this.isAvailable(value)) : contentStatus ? _.includes(['Downloading', 'Paused'],
+            _.capitalize(contentStatus)) : !this.isAvailable(value)
           },
           {
             type: 'open',
@@ -375,5 +388,21 @@ export class UtilService {
       }
     });
     return treeModel.model;
+  }
+
+  downloadCSV(collection, data) {
+      const options = {
+        filename: `${_.snakeCase(_.get(collection, 'name'))}_${dayjs().format('YYYY_MM_DD_HH_mm')}`,
+        fieldSeparator: ',',
+        quoteStrings: '"',
+        decimalSeparator: '.',
+        showLabels: true,
+        showTitle: false,
+        useTextFile: false,
+        useBom: true,
+        useKeysAsHeaders: true
+      };
+      this.csvExporter = new ExportToCsv(options);
+      this.csvExporter.generateCsv(data);
   }
 }

@@ -81,11 +81,12 @@ describe('BatchDetailsComponent', () => {
       filters: {
         courseId: component.courseId,
         enrollmentType: 'open',
-        status: ['0', '1', '2']
+        status: ['0', '1']
       },
       offset: 0,
       sort_by: { createdDate: 'desc' }
     };
+
     expect(component.courseMentor).toBeFalsy();
     expect(component.batchList).toBeDefined();
     expect(component.userList).toBeDefined();
@@ -310,7 +311,7 @@ describe('BatchDetailsComponent', () => {
     spyOn(component, 'enrollBatch').and.stub();
     spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(of(allBatchDetailsWithFeactureBatch));
     component.getJoinCourseBatchDetails();
-    expect(component.enrollBatch).toHaveBeenCalledWith(batchList);
+    expect(component.enrollBatch).not.toHaveBeenCalledWith(batchList);
   });
 
   it('should disable "createbatch" for ongoing batchList', () => {

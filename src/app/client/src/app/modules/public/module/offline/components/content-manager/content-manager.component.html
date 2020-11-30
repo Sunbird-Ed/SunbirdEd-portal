@@ -1,0 +1,153 @@
+<sui-accordion class="styled fluid sb-single-pannel-accordion sb-content-manager-panel sb-desktop-content-manager"
+  [ngClass]="{'sb-single-pannel-accordion-fixed': isOpen === true}" *ngIf="contentResponse?.length">
+  <sui-accordion-panel [(isOpen)]="isOpen" (click)="getContentList()">
+    <div title class="p-0">
+      <div class="sb-single-pannel-accordion-heading" appTelemetryInteract
+        [telemetryInteractEdata]="getTelemetryInteractData()">
+        <span>{{resourceService?.frmelmnts?.lbl?.contentManager}}</span>
+        <i class="chevron up icon d-flex flex-ai-center"></i>
+      </div>
+    </div>
+
+    <div content *ngIf="contentResponse">
+      <div class="sb-single-pannel-accordion-list-item flex-ai-center text-left"
+        *ngFor="let data of contentResponse | orderBy:'createdOn': true">
+        <i class="check circle icon success-icon mr-8 fs-1-429" *ngIf="data.status === 'completed'"></i>
+        <div class="download-details-container" [ngClass]="{'cursor-pointer': data.status === 'completed'}"
+          (click)="openContent(data.contentId, data.mimeType, data.status)">
+          <div class="d-flex flex-ai-center flex-w-wrap">
+            <div class="download-text mr-auto">{{data.name}}</div>
+
+            <!-- Buttons -->
+            <button *ngIf="cancelId !== data.id && (data.status === 'pausing' || data.status === 'inProgress')"
+              type="button" class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8"
+              (click)="contentManagerActions(data.addedUsing, 'Pause', data.id); updateLocalStatus(data, 'pausing');"
+              [disabled]="data.status === 'pausing'" appTelemetryInteract
+              [telemetryInteractEdata]="getButtonsInteractData('pause', data.downloadedSize)"
+              [telemetryInteractCdata]="[{ 'type': data.addedUsing, 'id': data.id }]"
+              [telemetryInteractObject]="{id:data.contentId, type: 'Content', ver:data.pkgVersion ? data.pkgVersion : ''}">
+              {{resourceService?.frmelmnts?.btn?.pause}}
+            </button>
+
+            <button
+              *ngIf="cancelId !== data.id && (data.status === 'paused' || data.status === 'resume' || data.status === 'resuming')"
+              type="button" class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8"
+              (click)="contentManagerActions(data.addedUsing, 'Resume', data.id); updateLocalStatus(data, 'resuming');"
+              [disabled]="data.status === 'resuming'  || data.status === 'resume'" appTelemetryInteract
+              [telemetryInteractEdata]="getButtonsInteractData('resume', data.downloadedSize)"
+              [telemetryInteractCdata]="[{ 'type': data.addedUsing, 'id': data.id }]"
+              [telemetryInteractObject]="{id:data.contentId, type: 'Content', ver:data.pkgVersion ? data.pkgVersion : ''}">
+              {{resourceService?.frmelmnts?.btn?.resume}}
+            </button>
+
+            <button
+              *ngIf="(data.status === 'inProgress' || data.status === 'inQueue' || data.status === 'paused') && cancelId !== data.id"
+              type="button" class="sb-btn sb-btn-xs sb-btn-outline-error ml-8" (click)="cancelId = data.id;"
+              [disabled]="data.status === 'canceling'" appTelemetryInteract
+              [telemetryInteractEdata]="getButtonsInteractData('cancel', data.downloadedSize)"
+              [telemetryInteractCdata]="[{ 'type': data.addedUsing, 'id': data.id }]"
+              [telemetryInteractObject]="{id:data.contentId, type: 'Content', ver:data.pkgVersion ? data.pkgVersion : ''}">
+              {{resourceService?.frmelmnts?.btn?.cancel}}
+            </button>
+
+            <button *ngIf="data.status === 'failed' || data.status === 'retrying'"
+              type="button" class="sb-btn sb-btn-xs sb-btn-outline-warning ml-8"
+              (click)="contentManagerActions(data.addedUsing, 'Retry', data.id); updateLocalStatus(data, 'retrying');"
+              [disabled]="data.status === 'retrying'" appTelemetryInteract
+              [telemetryInteractEdata]="getButtonsInteractData('retry', data.downloadedSize)"
+              [telemetryInteractCdata]="[{ 'type': data.addedUsing, 'id': data.id }]"
+              [telemetryInteractObject]="{id:data.contentId, type: 'Content', ver:data.pkgVersion ? data.pkgVersion : ''}">
+              {{resourceService?.frmelmnts?.btn?.retry}}
+            </button>
+
+            <!-- Buttons -->
+          </div>
+
+          <!-- File details -->
+          <div class="info-text" *ngIf="data.totalSize && data.status !== 'inProgress'">{{data.totalSize | filesize}}
+          </div>
+
+          <div *ngIf="data.addedUsing === 'download' && data.status === 'inProgress'" class="info-text">
+            {{resourceService?.frmelmnts?.lbl?.downloading}}
+            {{data.downloadedSize | filesize}}/{{data.totalSize | filesize}}</div>
+
+          <div *ngIf="data.addedUsing === 'import' && data.status === 'inProgress'" class="info-text">
+            {{resourceService?.frmelmnts?.lbl?.uploading}}</div>
+          <!-- File details -->
+
+          <!-- Progress bar -->
+          <sui-progress *ngIf="data.status === 'inProgress' && data.addedUsing === 'download'"
+            [value]="getContentPercentage(data.downloadedSize, data.totalSize)" [maximum]="100" class="my-0 mr-0">
+          </sui-progress>
+          <sui-progress *ngIf="data.status === 'inProgress' && data.addedUsing === 'import'"
+            [value]="data.downloadedSize" [maximum]="100" class="my-0 mr-0"></sui-progress>
+          <!-- Progress bar -->
+
+          <!-- Content status -->
+          <div *ngIf="data.status === 'paused' && data.addedUsing === 'import'" class="fs-0-785 sb-color-primary">
+            {{resourceService?.frmelmnts?.lbl?.uploadPaused}} </div>
+
+          <div *ngIf="data.status === 'retrying' && data.addedUsing === 'download'" class="fs-0-785 sb-color-primary">
+            {{resourceService?.frmelmnts?.btn?.resuming}} </div>
+
+          <div *ngIf="data.status === 'paused' && data.addedUsing === 'download'" class="fs-0-785 sb-color-primary">
+            {{resourceService?.frmelmnts?.lbl?.downloadPaused}} </div>
+
+          <div *ngIf="(data.status === 'resuming' || data.status === 'resume')" class="fs-0-785 sb-color-primary">
+            {{resourceService?.frmelmnts?.btn?.resuming}} </div>
+
+          <div *ngIf="data.status === 'pausing'" class="fs-0-785 sb-color-primary">
+            {{resourceService?.frmelmnts?.btn?.pausing}} </div>
+
+          <div *ngIf="data.status === 'canceling'" class="fs-0-785 sb-color-primary">
+            {{resourceService?.frmelmnts?.btn?.canceling}} </div>
+          <div *ngIf="data.status === 'completed'" class="fs-0-785 sb-color-success">
+            {{resourceService?.frmelmnts?.btn?.completed}} </div>
+          <div *ngIf="data.status === 'extract'" class="fs-0-785 sb-color-success">
+              {{resourceService?.frmelmnts?.desktop?.lbl?.completing}} </div>
+          <div *ngIf="data.addedUsing === 'download' && data.status === 'failed'" class="fs-0-785 sb-color-error">
+            {{resourceService?.frmelmnts?.lbl?.downloadFailed}} </div>
+
+          <div *ngIf="data.addedUsing === 'import' && data.status === 'failed'" class="fs-0-785 sb-color-error">
+            {{resourceService?.frmelmnts?.lbl?.uploadFailed}} </div>
+
+          <div *ngIf="data.addedUsing === 'import' && data.status === 'inQueue'" class="fs-0-785 sb-color-warning">
+            {{resourceService?.frmelmnts?.lbl?.waitingForUpload}} </div>
+
+          <div *ngIf="data.addedUsing === 'download' && data.status === 'inQueue'" class="fs-0-785 sb-color-warning">
+            {{resourceService?.frmelmnts?.lbl?.waitingForDownload}} </div>
+          <!-- Content status -->
+
+          <!-- Cancel confirmation message -->
+          <div class="d-flex flex-ai-center mt-8 ml-0"
+            *ngIf="cancelId === data.id && (data.status !== 'completed' && data.status !== 'failed')">
+            <div *ngIf="data.addedUsing === 'import'" class="fs-1 font-weight-bold sb-color-error mr-auto">
+              {{resourceService?.frmelmnts?.lbl?.cancelUpload}}
+            </div>
+            <div *ngIf="data.addedUsing === 'download'" class="fs-1 font-weight-bold sb-color-error mr-auto">
+              {{resourceService?.frmelmnts?.lbl?.cancelDownload}}
+            </div>
+            <button
+              (click)="contentManagerActions(data.addedUsing, 'Cancel', data.id); updateLocalStatus(data, 'canceling'); cancelId = '';"
+              class="sb-btn sb-btn-xs sb-btn-outline-primary ml-8" type="button" appTelemetryInteract
+              [telemetryInteractEdata]="getButtonsInteractData('confirm-cancel', getContentPercentage(data.downloadedSize, data.totalSize))"
+              [telemetryInteractCdata]="[{ 'type': data.addedUsing, 'id': data.id }]"
+              [telemetryInteractObject]="{id:data.contentId, type: 'Content', ver:data.pkgVersion ? data.pkgVersion : ''}">
+              {{resourceService?.frmelmnts?.btn?.yes}} </button>
+            <button (click)="cancelId = '';" class="sb-btn sb-btn-xs sb-btn-outline-error ml-8" type="button"
+              appTelemetryInteract
+              [telemetryInteractEdata]="getButtonsInteractData('deny-cancel', getContentPercentage(data.downloadedSize, data.totalSize))"
+              [telemetryInteractCdata]="[{ 'type': data.addedUsing, 'id': data.id }]"
+              [telemetryInteractObject]="{id:data.contentId, type: 'Content', ver:data.pkgVersion ? data.pkgVersion : ''}">
+              {{resourceService?.frmelmnts?.btn?.no}} </button>
+          </div>
+          <!-- Cancel confirmation message -->
+        </div>
+      </div>
+    </div>
+  </sui-accordion-panel>
+</sui-accordion>
+
+<app-content-manager-info-pop-up *ngIf="unHandledFailedList?.length" [showContentChangeWarning]="isWindows"
+  [failedList]="unHandledFailedList" [drives]="drives" (dismissed)="closeModal($event)">
+</app-content-manager-info-pop-up>
