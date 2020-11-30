@@ -70,7 +70,7 @@ app.use(addLogContext)
 app.all([
   '/learner/*', '/content/*', '/user/*', '/merge/*', '/action/*', '/courseReports/*', '/course-reports/*', '/admin-reports/*',
   '/certreg/*', '/device/*', '/google/*', '/report/*', '/reports/*', '/v2/user/*', '/v1/sso/*', '/migrate/*', '/plugins/*', '/content-plugins/*',
-  '/content-editor/telemetry', '/collection-editor/telemetry', '/v1/user/*', '/sessionExpired', '/logoff', '/logout', '/assets/public/*', '/endSession',
+  '/content-editor/telemetry','/discussionForum/*', '/collection-editor/telemetry', '/v1/user/*', '/sessionExpired', '/logoff', '/logout', '/assets/public/*', '/endSession',
   '/sso/sign-in/*'
 ],
   session({
@@ -177,6 +177,9 @@ require('./routes/accountMergeRoute.js')(app, keycloak) // refresh token routes
 require('./routes/clientRoutes.js')(app, keycloak) // client app routes
 
 require('./routes/reportRoutes.js')(app, keycloak) // report routes
+
+require('./routes/discussionsForum.js')(app, keycloak) // report routes
+
 
 app.all(['/content-editor/telemetry', '/collection-editor/telemetry'], bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '50mb' }), keycloak.protect(), telemetryHelper.logSessionEvents)
