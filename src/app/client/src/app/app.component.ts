@@ -120,11 +120,11 @@ export class AppComponent implements OnInit, OnDestroy {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
     const layoutType = localStorage.getItem('layoutType') || '';
-    if (layoutType === 'joy') {
+    if (layoutType === '' || layoutType === 'joy') {
       this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
       document.documentElement.setAttribute('layout', 'joy');
     } else {
-      document.documentElement.setAttribute('layout', '');
+      document.documentElement.setAttribute('layout', 'old');
     }
   }
   /**
