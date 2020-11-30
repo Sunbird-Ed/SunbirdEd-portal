@@ -432,7 +432,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
   }
 
   contentClick(content) {
-    if (_.size(content.lockInfo)) {
+    if (_.size(content.lockInfo) && this.userService.userid !== content.lockInfo.createdBy) {
         this.lockPopupData = content;
         this.showLockedContentModal = true;
     } else {
