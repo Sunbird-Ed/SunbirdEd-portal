@@ -25,13 +25,12 @@ node() {
                 echo "artifact_version: "+ artifact_version
             }
         }
-
         stage('Build') {
             sh """
             cd src/desktop/
             docker run -d --name offline_build -w /offline node:12-stretch sleep infinity
             docker cp . offline_build:/offline/
-            docker exec offline_build bash -x build.sh
+            docker exec offline_build bash -x /offline/build.sh
             docker cp offline_build:/offline/app_dist.tar.gz .
             docker rm offline_build --force
             """
