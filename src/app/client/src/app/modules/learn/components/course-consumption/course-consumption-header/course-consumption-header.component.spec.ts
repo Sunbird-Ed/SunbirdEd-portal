@@ -73,6 +73,11 @@ describe('CourseConsumptionHeaderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CourseConsumptionHeaderComponent);
     component = fixture.componentInstance;
+    component.profileInfo = {
+      firstName: 'Gourav',
+      lastName: 'More',
+      id: '1234567890'
+    }
   });
 
   it(`should enable resume button if course is not flagged, batch status is not "0" and courseProgressData obtained from courseProgressService`, () => {
