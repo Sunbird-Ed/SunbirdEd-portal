@@ -372,10 +372,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
    * 2. content-details page will be shown ( for multi-result dial-code search flow)
    */
   closeFullscreen() {
-    if (this.showRatingModalAfterClose && this.modal) {
-      this.contentRatingModal = true;
-      this.modal.showContentRatingModal = true;
-    }
     /** to exit the fullscreen mode */
     if (document['exitFullscreen']) {
       document['exitFullscreen']();
@@ -385,6 +381,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       document['webkitExitFullscreen']();
     } else if (document['msExitFullscreen']) { /* IE/Edge */
       document['msExitFullscreen']();
+    }
+
+    if (this.showRatingModalAfterClose && this.modal) {
+      this.contentRatingModal = true;
+      this.modal.showContentRatingModal = true;
     }
      /** to change the view of the content-details page */
     this.showPlayIcon = true;
