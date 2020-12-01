@@ -74,7 +74,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
           { queryParams: { ...this.activatedRoute.snapshot.queryParams, selectedTab: data.loggedInUserRoute.queryParam } });
       }
     } else {
-      if (data.contentType === 'course') {
+      if (data.contentType === 'course' || data.contentType === 'mydownloads') {
         this.router.navigate([data.anonumousUserRoute.route],
           { queryParams: { selectedTab: data.anonumousUserRoute.queryParam } });
       } else {

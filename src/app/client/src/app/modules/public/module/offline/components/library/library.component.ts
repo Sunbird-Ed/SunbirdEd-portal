@@ -130,8 +130,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
             this.currentPageData = _.find(formData, (o) => o.title === 'frmelmnts.lbl.desktop.mylibrary');
             const { contentType, title, theme: { imageName = null } = {} } = this.currentPageData;
             this.pageTitle = _.get(this.resourceService, title);
+            this.pageTitleSrc = _.get(this.resourceService, 'RESOURCE_CONSUMPTION_ROOT') + title;
             this.formData = formData;
-            this.pageTitleSrc = title;
             this.svgToDisplay = imageName;
             this.globalSearchFacets = _.get(this.currentPageData, 'search.facets');
         }, error => {
@@ -249,9 +249,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
         const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType']);
         if (!filters.channel) {
             filters.channel = this.hashTagId;
-        }
-        if (filters.primaryCategory) {
-            filters.primaryCategory = filters.primaryCategory;
         }
         filters.mimeType = _.get(mimeType, 'values');
 

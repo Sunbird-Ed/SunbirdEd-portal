@@ -2,7 +2,6 @@ import { Component, Output, EventEmitter, Input, OnInit, OnDestroy, ChangeDetect
 import * as _ from 'lodash-es';
 import { LibraryFiltersLayout } from '@project-sunbird/common-consumption';
 import { ResourceService, LayoutService, ConfigService } from '@sunbird/shared';
-import { IInteractEventEdata } from '@sunbird/telemetry';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject, merge } from 'rxjs';
 import { debounceTime, map, tap, switchMap, takeUntil } from 'rxjs/operators';
@@ -135,7 +134,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
             const index = _.get(event, 'data.index');
             const selectedIndices = _.get(this.selectedFilters, type) || [];
             if (_.includes(selectedIndices, index)) {
-              this.popFilter({ type, index })
+              if(_.get(selectedIndices, 'length') > 1) this.popFilter({ type, index });
             } else {
               this.pushNewFilter({ type, index });
             }
@@ -189,7 +188,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       indices = _.filter(_.map(defaultValues, defaultValue => _.findIndex(this.allValues[type] || [], val => val === defaultValue)), index => index !== -1);
     }
     if (['audience', 'publisher', 'subject'].includes(type) && !indices.length) {
-      indices = _.map(this.allValues[type] || [], (value, index) => index);
+      return [];
     }
     return indices.length ? indices : [0];
   }
@@ -235,6 +234,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     }
     filters['board'] = _.get(this.selectedBoard, 'selectedOption') ? [this.selectedBoard.selectedOption] : [];
     filters['selectedTab'] = _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook';
+    delete filters.publisher;
     return filters;
   }
   private emitFilterChangeEvent(skipUrlUpdate = false) {
@@ -244,16 +244,15 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       this.updateRoute();
     }
   }
-  public getInteractEdata(): IInteractEventEdata {
-    const interactEventEData = {
-      id: 'apply-filter',
+  public getInteractEdata() {
+    return {
+      id: 'reset-filter',
       type: 'click',
       pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid'),
       extra: {
         filters: this.getSelectedFilter() || {}
       }
     };
-    return interactEventEData;
   }
   ngOnDestroy() {
     this.unsubscribe$.next();

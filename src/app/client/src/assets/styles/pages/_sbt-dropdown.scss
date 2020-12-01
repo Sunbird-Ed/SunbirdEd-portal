@@ -31,7 +31,7 @@
         height: calculateRem(12px);
         width: calculateRem(6px);
         position: absolute;
-        right: calculateRem(24px);
+        right: calculateRem(16px);
         border-bottom: calculateRem(2px) solid var(--black);
         border-right: calculateRem(2px) solid var(--black);
         html[dir="rtl"] & {
@@ -715,7 +715,7 @@
         height: calculateRem(12px);
         width: calculateRem(6px);
         position: absolute;
-        right: calculateRem(24px);
+        right: calculateRem(16px);
         border-bottom: calculateRem(2px) solid var(--black);
         border-right: calculateRem(2px) solid var(--black);
         html[dir="rtl"] & {

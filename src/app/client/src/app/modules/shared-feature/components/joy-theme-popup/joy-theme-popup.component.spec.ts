@@ -52,7 +52,7 @@ describe('JoyThemePopupComponent', () => {
     spyOn(layoutService, 'initiateSwitchLayout');
     spyOn(localStorage, 'setItem');
     spyOn(component.closeJoyThemePopup, 'emit');
-    component.switchToNewLayout();
+    component.switchToNewLayout(true);
     expect(component.closeJoyThemePopup.emit).toHaveBeenCalled();
     expect(localStorage.setItem).toHaveBeenCalledWith('joyThemePopup', 'true');
     expect(layoutService.initiateSwitchLayout).not.toHaveBeenCalled();
@@ -64,7 +64,7 @@ describe('JoyThemePopupComponent', () => {
     spyOn(layoutService, 'initiateSwitchLayout');
     spyOn(localStorage, 'setItem');
     spyOn(component.closeJoyThemePopup, 'emit');
-    component.switchToNewLayout();
+    component.switchToNewLayout(true);
     expect(component.closeJoyThemePopup.emit).toHaveBeenCalled();
     expect(localStorage.setItem).toHaveBeenCalledWith('joyThemePopup', 'true');
     expect(layoutService.initiateSwitchLayout).toHaveBeenCalled();

@@ -56,9 +56,12 @@ export class JoyThemePopupComponent implements OnInit {
   }
 
 
-  switchToNewLayout() {
+  switchToNewLayout(isNewTheme) {
     const layoutConfig = this.layoutService.getLayoutConfig();
     if (!layoutConfig) {
+      this.layoutService.initiateSwitchLayout();
+    }
+    if (!isNewTheme) {
       this.layoutService.initiateSwitchLayout();
     }
     this.closePopup();

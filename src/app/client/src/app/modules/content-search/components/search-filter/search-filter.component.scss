@@ -95,11 +95,16 @@
 .state-selection__section
  .item:hover, .state-selection__section .item.active {
   background-color: var(--primary-100);
+  width: 100% !important;
+  padding-right: calculateRem(24px);
 }
 .state-selection__section .item {
   padding: 0.25rem 0.5rem;
   display: block;
   cursor: pointer;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .ui.selection.dropdown .menu {
