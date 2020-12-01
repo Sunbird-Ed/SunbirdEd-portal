@@ -3,7 +3,6 @@ const fse = require("fs-extra")
 
 Promise.all([
 fse.copy('./loading', './app_dist/loading'),
-fse.copy('./openrap-sunbirded-plugin', './app_dist/openrap-sunbirded-plugin'),
 fse.copy('./scripts', './app_dist/scripts'),
 fse.copy('./public', './app_dist/public'),
 fse.copyFile('./package.json', './app_dist/package.json'),
