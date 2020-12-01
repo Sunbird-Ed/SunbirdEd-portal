@@ -51,7 +51,7 @@ ApiInterceptor.prototype.validateToken = function (token, cb) {
         ignoreExpiration: false, // verify expiry time also
         // ignoreNotBefore: false, // verify not before also
         issuer: this.validIssuers ? this.validIssuers : "",
-        algorithm: 'RS256'
+        algorithms: ['RS256']
     };
     jwt.verify(token, publicKey, verificationOption, (err, payload) => {
         if(err){
