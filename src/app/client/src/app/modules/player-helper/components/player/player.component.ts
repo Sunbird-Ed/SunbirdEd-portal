@@ -33,6 +33,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   buildNumber: string;
   @Input() playerOption: any;
   contentRatingModal = false;
+  showRatingModalAfterClose = false;
   previewCdnUrl: string;
   isCdnWorking: string;
   CONSTANT = {
@@ -328,6 +329,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
     if (event.detail.telemetryData.eid === 'END' && contentProgress === 100) {
       this.contentRatingModal = !this.isFullScreenView;
+      this.showRatingModalAfterClose = true;
       if (this.modal) {
         this.modal.showContentRatingModal = true;
       }
@@ -370,6 +372,10 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
    * 2. content-details page will be shown ( for multi-result dial-code search flow)
    */
   closeFullscreen() {
+    if (this.showRatingModalAfterClose && this.modal) {
+      this.contentRatingModal = true;
+      this.modal.showContentRatingModal = true;
+    }
     /** to exit the fullscreen mode */
     if (document['exitFullscreen']) {
       document['exitFullscreen']();
