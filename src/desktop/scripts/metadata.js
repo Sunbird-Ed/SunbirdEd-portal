@@ -59,9 +59,9 @@ const getChannels = async () => {
 const getOrgs = async () => {
     const envs = await fse.readJSON(path.join(__dirname, '..', 'env.json'))
     const instance = await getInstance()
-    let { data } = await instance.post("/api/org/v1/search", { "request": { "filters": { "isRootOrg": true, "slug": envs.CHANNEL } } })
+    let { data } = await instance.post("/api/org/v1/search", {"request":{"filters":{"isRootOrg":true,"slug": envs.CHANNEL}}})
     // inject the Channel to env.json
-
+     
     envs.CHANNEL = data.result.response.content[0].slug;
     console.log(`Root org is ${envs.CHANNEL}`)
     rootOrgHashTagId = data.result.response.content[0].hashTagId;

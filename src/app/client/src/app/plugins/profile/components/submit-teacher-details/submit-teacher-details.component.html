@@ -65,3 +65,7 @@
     (closeContactForm)="onOtpPopupClose()" (redirectToParent)="onOtpVerificationError($event)">
   </app-otp-popup>
 </sui-modal>
+
+<div class="mb-16" *ngIf="showGlobalConsentPopUpSection">
+  <app-global-consent-pii [type]="globalConsent" [profileInfo]="profileInfo" [isglobalConsent]="isglobalConsent" (close)="closeConsentPopUp()" [consentConfig]="consentConfig"></app-global-consent-pii>
+</div>
