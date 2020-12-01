@@ -364,18 +364,18 @@
             <span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToJoyLayout}}</span>
             <span class="group__type mx-8">New</span>
           </li>
+          <li class="list-item" (click)="toggleSideMenu(false);switchToAccessibleLayout()">
+            <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
+              <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
+            </svg></i>
+            {{resourceService?.frmelmnts?.lbl?.accessible}}
+          </li>
           <li class="list-item" appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
             (click)="toggleSideMenu(false);logout()">
             <i class="icon-svg icon-svg--sm icon-logout mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#logout"></use>
               </svg></i>
             {{resourceService.frmelmnts?.lnk?.logout}}
-          </li>
-          <li class="list-item" (click)="toggleSideMenu(false);switchToAccessibleLayout()">
-            <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
-              <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
-            </svg></i>
-            accessible
           </li>
         </ul>
       </div>
@@ -425,6 +425,12 @@
               </svg></i>
             {{resourceService?.frmelmnts?.tab?.help}}
           </li>
+            <li class="list-item" (click)="toggleSideMenu(false);switchToAccessibleLayout()">
+              <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
+                <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
+              </svg></i>
+              {{resourceService?.frmelmnts?.lbl?.accessible}}
+            </li>
             <li class="list-item p-0" (click)="toggleSideMenu(false)" appTelemetryInteract
               [telemetryInteractEdata]="signInIntractEdata">
               <a appOnlineOnly href={{hrefPath}} class="d-flex flex-ai-center list-item-a">
@@ -433,20 +439,6 @@
                   </svg></i>
                 {{resourceService.frmelmnts?.btn?.login}}
               </a>
-            </li>
-            <li class="list-item" (click)="toggleSideMenu(false);switchLayout()">
-              <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
-                <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
-              </svg></i>
-              <span *ngIf="layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToOldLayout}}</span>
-              <span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToJoyLayout}}</span>
-              <span class="group__type mx-8">New</span>
-            </li>
-            <li class="list-item" (click)="toggleSideMenu(false);switchToAccessibleLayout()">
-              <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
-                <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
-              </svg></i>
-              accessible
             </li>
           </ul>
         </div>
