@@ -189,7 +189,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       delete softConstraints['board'];
     }
     const option: any = {
-      filters: filters,
+      filters: _.omitBy(filters || {}, value => _.isArray(value) ? (!_.get(value, 'length') ? true : false) : false),
       fields: _.get(this.allTabData, 'search.fields'),
       limit: _.get(this.allTabData, 'search.limit'),
       pageNumber: this.paginationDetails.currentPage,
