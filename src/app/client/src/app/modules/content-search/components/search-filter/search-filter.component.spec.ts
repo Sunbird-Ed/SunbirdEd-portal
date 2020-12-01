@@ -110,7 +110,7 @@ describe('SearchFilterComponent', () => {
     it('should call interactEdata', () => {
         const returnData = component.getInteractEdata();
         expect(returnData).toEqual({
-            'id': 'apply-filter', 'type': 'click',
+            'id': 'reset-filter', 'type': 'click',
             'pageid': 'resource-search', 'extra': { 'filters': { board: [], selectedTab: 'textbook', audience: [] } }
         });
     });
