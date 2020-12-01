@@ -334,6 +334,15 @@ describe('MainHeaderComponent', () => {
     expect(telemetryService.interact).toHaveBeenCalledWith(mockData.telemetryEventClassic);
   });
 
+  it('should switch layout and generate telemetry for classic', () => {
+    const layoutService = TestBed.get(LayoutService);
+    component.layoutConfiguration = null;
+    spyOn(layoutService, 'switchToAccessibleLayout').and.callFake(() => {
+    });
+    component.switchToAccessibleLayout();
+    expect(layoutService).toBeTruthy();
+  });
+
   it('should switch layout and generate telemetry for joy', () => {
     const layoutService = TestBed.get(LayoutService);
     const telemetryService = TestBed.get(TelemetryService);

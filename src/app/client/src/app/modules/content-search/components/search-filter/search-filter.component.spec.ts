@@ -111,7 +111,7 @@ describe('SearchFilterComponent', () => {
         const returnData = component.getInteractEdata();
         expect(returnData).toEqual({
             'id': 'apply-filter', 'type': 'click',
-            'pageid': 'resource-search', 'extra': { 'filters': { board: [], selectedTab: 'textbook', audience: ['other', 'student', 'teacher'] } }
+            'pageid': 'resource-search', 'extra': { 'filters': { board: [], selectedTab: 'textbook', audience: [] } }
         });
     });
     it('should update selectedFilters from queryParams', done => {
@@ -142,9 +142,20 @@ describe('SearchFilterComponent', () => {
 
     it('should handle filter change event - remove existing filter', done => {
         const spy = spyOn<any>(component, 'popFilter').and.callThrough();
-        component['selectedFilters'] = { gradeLevel: [0] }
+        component['selectedFilters'] = { gradeLevel: [0, 1] }
         component['handleFilterChange']().subscribe(res => {
             expect(spy).toHaveBeenCalled()
+            expect(component.selectedFilters['gradeLevel']).toBeDefined();
+            done();
+        })
+        component.filterChangeEvent.next({ event: { data: { index: 0 } }, type: 'gradeLevel' });
+    })
+
+    it('should handle filter change event - should not remove last existing filter', done => {
+        const spy = spyOn<any>(component, 'popFilter').and.callThrough();
+        component['selectedFilters'] = { gradeLevel: [0] }
+        component['handleFilterChange']().subscribe(res => {
+            expect(spy).not.toHaveBeenCalled()
             expect(component.selectedFilters['gradeLevel']).toBeDefined();
             done();
         })

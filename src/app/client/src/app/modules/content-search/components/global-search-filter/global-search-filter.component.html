@@ -30,9 +30,10 @@
               <div *ngIf="refresh">
                 <div *ngFor="let facet of facets | sortBy:'index':'asc'">
                   <label class="fnormal font-weight-bold d-flex">{{facet.label | translate}} </label>
+                  <label class="w-100">
                   <sui-multi-select *ngIf="facet.name !== 'mediaType'" [hasLabels]="false" defaultSelectionText={{facet.label}}
                     zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} labelField="name" valueField="name"
-                    class="ui selection dropdown multiple selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg w-100 mb-16"
+                    class="ui selection dropdown sbt-dropdown-tick multiple selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg w-100 mb-16"
                     [(ngModel)]="selectedFilters[facet.name]"
                     (ngModelChange)="onChange(facet)">
                     <div *ngIf="facet.name !== 'gradeLevel' else gradeLevel">
@@ -46,6 +47,7 @@
                       </sui-select-option>
                     </ng-template>
                   </sui-multi-select>
+                </label>
                   <div *ngIf="facet.name === 'mediaType'" class="sbt-class-bar text-left">
                     <sb-library-filters [list]="facet.mimeTypeList" [layout]="filterLayout.ROUND"
                       [selectedItems]="[facet.mimeTypeList.indexOf(selectedMediaType) !== -1 ? facet.mimeTypeList.indexOf(selectedMediaType): selectedMediaTypeIndex]"
@@ -98,7 +100,7 @@
                 <!-- <label class="fnormal font-weight-bold d-flex">{{facet.label}} </label> -->
                 <sui-multi-select *ngIf="facet.name !== 'mediaType'" [hasLabels]="false" defaultSelectionText={{facet.label}}
                   zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} labelField="name" valueField="name"
-                  class="ui selection dropdown multiple" [(ngModel)]="selectedFilters[facet.name]"
+                  class="ui selection dropdown sbt-dropdown-tick multiple" [(ngModel)]="selectedFilters[facet.name]"
                   (ngModelChange)="onChange(facet)">
                   <div *ngIf="facet.name !== 'gradeLevel' else gradeLevel">
                     <sui-select-option class="text-capitalize"
