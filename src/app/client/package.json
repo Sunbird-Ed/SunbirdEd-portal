@@ -53,7 +53,7 @@
     "@project-sunbird/client-services": "^3.4.9",
     "@project-sunbird/common-consumption": "^3.5.1",
     "@project-sunbird/sb-styles": "0.0.6",
-    "@project-sunbird/sunbird-pdf-player": "0.0.4",
+    "@project-sunbird/sunbird-pdf-player": "0.0.11",
     "@project-sunbird/sunbird-video-player": "0.0.6",
     "@project-sunbird/telemetry-sdk": "0.0.26",
     "@project-sunbird/web-extensions": "^0.0.2",
