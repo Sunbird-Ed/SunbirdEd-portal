@@ -109,14 +109,6 @@ describe('FaqComponent', () => {
     expect(component.showLoader).toBeFalsy();
   });
 
-  it('call ngOnInit for desktopApp', () => {
-    const utilService = TestBed.get(UtilService);
-    utilService.changePlatform();
-    spyOn<any>(component, 'getDesktopFAQ');
-    component.ngOnInit();
-    expect(component['getDesktopFAQ']).toHaveBeenCalled();
-  });
-
   it('should call ngOnInit and get 404 for getting faq json file', () => {
     const faqService = TestBed.get(FaqService);
     spyOn(component, 'setTelemetryImpression');
@@ -157,6 +149,14 @@ describe('FaqComponent', () => {
     expect(component.showLoader).toBe(false);
     expect(component.faqList).toEqual({});
     expect(component.defaultToEnglish).toBe(false);
+  });
+
+  it('call ngOnInit for desktopApp', () => {
+    const utilService = TestBed.get(UtilService);
+    utilService.changePlatform();
+    spyOn<any>(component, 'getDesktopFAQ');
+    component.ngOnInit();
+    expect(component['getDesktopFAQ']).toHaveBeenCalled();
   });
 
 });
