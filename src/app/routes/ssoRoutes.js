@@ -424,8 +424,7 @@ module.exports = (app) => {
   });
 
   app.all('/learner/get/user/sessionId', (req, res) => {
-      const userName = req.session.userName;
-      res.send({id: getEncyptedQueryParams({userName})})
+      res.send({id: getEncyptedQueryParams({userName: req.session.userName})})
   })
 
   app.all('/migrate/account/login/callback', async (req, res) => {
