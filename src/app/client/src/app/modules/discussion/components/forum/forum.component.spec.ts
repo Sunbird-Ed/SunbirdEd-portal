@@ -8,7 +8,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ForumComponent } from './forum.component';
 import { configureTestSuite } from '@sunbird/test-util';
-import { APP_BASE_HREF, Location, LocationStrategy } from '@angular/common';
+import { APP_BASE_HREF, Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
 
@@ -58,7 +58,7 @@ describe('ForumComponent', () => {
     spyOn(component['learnerService'], 'get').and.returnValue(of ( {id: 'iv: 133 ? id: 12333'}));
 
     component.getDiscussionUrl();
-    component['learnerService'].get(`/get/user/sessionId?userName=` + '123').subscribe((data: {id: string}) => {
+    component['learnerService'].get({url: `/get/user/sessionId`}).subscribe((data: {id: string}) => {
       const url = sanitizer.bypassSecurityTrustResourceUrl(
         `discussions/auth/sunbird-oidc/callback${data.id}&returnTo=/category/${fakeActivatedRoute.snapshot.queryParams.forumId}`
       );
