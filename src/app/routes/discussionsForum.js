@@ -9,6 +9,10 @@ const dateFormat = require('dateformat')
 
 
 module.exports = function (app) {
+
+    app.get(`${BASE_REPORT_URL}/forumId`, proxyUtils.verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/forum`, proxyUtils.verifyToken(), proxyObject());
+
     app.get(`${BASE_REPORT_URL}/tags`, proxyUtils.verifyToken(), proxyObject());
     app.get(`${BASE_REPORT_URL}/categories`, proxyUtils.verifyToken(), proxyObject());
     app.get(`${BASE_REPORT_URL}/notifications`, proxyUtils.verifyToken(), proxyObject());
@@ -144,7 +148,6 @@ function proxyObject() {
     return proxy(discussions_middleware, {
         proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(discussions_middleware),
         proxyReqPathResolver: function (req) {
-            console.log('*****************Email working*****************');
             let urlParam = req.originalUrl.replace('/discussionForum', '');
             let query = require('url').parse(req.url).query;
             if (query) {
