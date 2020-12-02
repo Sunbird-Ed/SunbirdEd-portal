@@ -2,7 +2,6 @@
 cd /offline/src/desktop
 rm -rf app_dist
 cd ../app/client
-npm set progress=false
 yarn install
 npm run prod-desktop
 cd ..
