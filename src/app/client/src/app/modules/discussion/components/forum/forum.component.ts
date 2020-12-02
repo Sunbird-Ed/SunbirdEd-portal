@@ -1,10 +1,12 @@
-import { ConfigService } from '@sunbird/shared';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
-import { LearnerService, UserService } from '@sunbird/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UserService } from '@sunbird/core';
 import { Component, OnInit, OnDestroy, HostListener, ViewChild, AfterViewInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import * as _ from 'lodash-es';
+import * as  iziModal from 'izimodal/js/iziModal';
 import { Location } from '@angular/common';
+jQuery.fn.iziModal = iziModal;
 
 @Component({
   selector: 'app-forum',
@@ -16,10 +18,9 @@ export class ForumComponent implements OnInit, OnDestroy, AfterViewInit {
 
   discussionUrl: SafeResourceUrl;
   @ViewChild('modal')modal;
-  constructor(
+  constructor(private userService: UserService, private http: HttpClient,
     public sanitizer: DomSanitizer, private activatedRoute: ActivatedRoute,
-    private location: Location, private config: ConfigService,
-    private learnerService: LearnerService, private userService: UserService) { }
+    private location: Location) { }
 
   @HostListener('window:popstate', ['$event'])
   onPopState(event) {
@@ -30,15 +31,13 @@ export class ForumComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getDiscussionUrl();
   }
 
-  ngAfterViewInit() {
-    document.body.className = 'o-y-auto';
+  ngAfterViewInit(){
+    document.body.className = "o-y-auto";
   }
 
   getDiscussionUrl() {
-    const option = {
-      url: `${this.config.urlConFig.URLS.USER.GET_SESSION}/${this.userService.userid}`
-    };
-    this.learnerService.get(option).subscribe((data: any) => {
+    const userName = _.get(this.userService.userProfile, 'userName');
+    this.http.get(`/get/user/sessionId?userName=` + userName).subscribe((data: any) => {
       this.discussionUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
         `discussions/auth/sunbird-oidc/callback${data.id}&returnTo=/category/${_.get(this.activatedRoute.snapshot, 'queryParams.forumId')}`
       );

@@ -8,7 +8,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ForumComponent } from './forum.component';
 import { configureTestSuite } from '@sunbird/test-util';
-import { APP_BASE_HREF, Location } from '@angular/common';
+import { APP_BASE_HREF, Location, LocationStrategy } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
 
@@ -55,10 +55,11 @@ describe('ForumComponent', () => {
 
   it('should assign discussionUrl = "discussionUrl"', () => {
     const sanitizer = TestBed.get(DomSanitizer);
-    spyOn(component['learnerService'], 'get').and.returnValue(of ( {id: 'iv: 133 ? id: 12333'}));
-    spyOnProperty(component['userService'], 'userProfile').and.returnValue( {userid: '123'});
+    spyOnProperty(component['userService'], 'userProfile').and.returnValue( {userName: '123'});
+    spyOn(component['http'], 'get').and.returnValue(of ( {id: 'iv: 133 ? id: 12333'}));
+
     component.getDiscussionUrl();
-    component['learnerService'].get({url: `/get/user/sessionId/123`}).subscribe((data: {id: string}) => {
+    component['http'].get(`/get/user/sessionId?userName=` + '123').subscribe((data: {id: string}) => {
       const url = sanitizer.bypassSecurityTrustResourceUrl(
         `discussions/auth/sunbird-oidc/callback${data.id}&returnTo=/category/${fakeActivatedRoute.snapshot.queryParams.forumId}`
       );
