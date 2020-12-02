@@ -106,7 +106,7 @@
     "ngx-order-pipe": "^2.0.4",
     "ngx-slick": "0.2.1",
     "rxjs": "^6.5.5",
-    "sb-svg2pdf": "0.0.7",
+    "sb-svg2pdf": "0.0.9",
     "sb-theme": "^1.0.5",
     "slick-carousel": "^1.8.1",
     "sunbird-chatbot-client": "0.0.6",
