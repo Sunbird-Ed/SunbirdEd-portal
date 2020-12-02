@@ -632,6 +632,11 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR]
     },
+
+    // get user session
+    '/get/user/sessionId': {
+      checksNeeded: []
+    }
   },
   URL_PATTERN: [
     '/content/content/v1/read/:do_id',
