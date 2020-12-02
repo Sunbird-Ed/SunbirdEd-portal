@@ -22,7 +22,6 @@ export class FaqComponent implements OnInit {
   selectedLanguage: string;
   showLoader = true;
   instance: string;
-  tenantFooter: any;
   defaultFooterConfig: any;
   layoutConfiguration: any;
   unsubscribe$ = new Subject<void>();
@@ -43,9 +42,6 @@ export class FaqComponent implements OnInit {
     this.setTelemetryImpression();
     this.initLayout();
     this.instance = _.upperCase(this.resourceService.instance);
-    this.tenantService.tenantSettings$.subscribe((data) => {
-      this.tenantFooter = data;
-    });
     this.defaultFooterConfig = {
       helpCenterLink: `/help/faqs/user/index.html`,
       helpDeskEmail: `support@${_.lowerCase(this.instance)}-ncte.freshdesk.com`
