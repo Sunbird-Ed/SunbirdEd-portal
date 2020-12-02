@@ -10,7 +10,11 @@ const NodeRSA = require('node-rsa');
 const fs = require('fs');
 const kidToPublicKeyMap = {};
 const Token = require('keycloak-auth-utils/lib/token.js');
+const CONSTANTS = {
+    logPrefix: "Offline token -"
+}
 let useKidBasedValidation = false;
+
 function ApiInterceptor(keyclock_config, cache_config, validIssuers) {
 	this.config = keyclock_config;
 	this.keyCloakConfig = new keyCloakAuthUtils.Config(this.config);
@@ -30,36 +34,38 @@ ApiInterceptor.prototype.validateToken = function (token, cb) {
         .then(userData => cb(null, { token, userId: userData.content.sub }))
         .catch(err => cb(err, null));
     }
-	const decoded = jwt.decode(token, {complete: true});
+    const decoded = jwt.decode(token, {complete: true});
     if(!decoded){
-        console.error("invalid jwt token - 401");
+        console.error(`${ CONSTANTS.logPrefix } invalid jwt token - 401.`);
         return cb("INVALID_JWT");
     }
-    var publicKey = kidToPublicKeyMap[decoded.header.kid];
-    console.log("Kid: ", decoded.header.kid);
-
+    var kid = decoded.header.kid;
+    var publicKey = kidToPublicKeyMap[kid];
+	
     // Converting single line public key to PEM format. 
     // JWT.verify methos is expecting the publick key in pem format only
     var key = new NodeRSA(publicKey, 'public');
-    publicKey = key.exportKey('public');
-
-    if(!publicKey){
-        console.error("invalid kid - 401");
+    try {
+        publicKey = key.exportKey('public');        
+    } catch (error) {
+        console.error(`${ CONSTANTS.logPrefix } invalid kid - 401. kid: ${ kid }`);
         return cb("INVALID_KID");
     }
+
     const verificationOption = {
         ignoreExpiration: false, // verify expiry time also
         // ignoreNotBefore: false, // verify not before also
         issuer: this.validIssuers ? this.validIssuers : "",
         algorithms: ['RS256']
     };
+
     jwt.verify(token, publicKey, verificationOption, (err, payload) => {
         if(err){
-            console.error("invalid signature - 401", err);
+            console.error(`${ CONSTANTS.logPrefix } invalid signature - 401. kid: ${ kid }`, err);
             return cb("INVALID_SIGNATURE");
         }
 
-        console.info("Offline token verification is success");
+        console.info(`${ CONSTANTS.logPrefix } verification is success. kid: ${ kid }`);
 		cb(null, { token, userId: payload.sub }) 
     });
 };
@@ -78,10 +84,11 @@ function loadTokenPublicKeys(basePath){
               fs.readFile(basePath + filename, 'utf-8', function(err, content) {
                 fileCount--;
                 if (err) {
-                    console.error("error while reading content at: " + basePath + filename, err);
+                    console.error(`${ CONSTANTS.logPrefix } error while reading content at: ${ basePath} ${ filename}`, err);
                     return reject(err);
                 }
                 kidToPublicKeyMap[filename] = content;
+                console.log(`${ CONSTANTS.logPrefix } loaded kid: ${ filename }`);
                 if (fileCount === 0) {
                     console.info("loaded all public key for authentication");
                     useKidBasedValidation = true;
