@@ -127,15 +127,6 @@ describe('FaqComponent', () => {
     expect(component.selectedLanguage).toEqual('en');
   });
 
-  it('should call getDesktopFAQ on success', () => {
-    const publicDataService = TestBed.get(PublicDataService);
-    spyOn(publicDataService, 'get').and.returnValue(of({ result: { faqs: {} } }));
-    component['getDesktopFAQ']('hi');
-    expect(component.showLoader).toBe(false);
-    expect(component.faqList).toEqual({});
-    expect(component.defaultToEnglish).toBe(false);
-  });
-
   it('should call goBack', () => {
     spyOn(location, 'back');
     component.goBack();
@@ -158,4 +149,14 @@ describe('FaqComponent', () => {
     component.setTelemetryImpression();
     expect(component.telemetryImpression).toBeDefined();
   });
+
+  it('should call getDesktopFAQ on success', () => {
+    const publicDataService = TestBed.get(PublicDataService);
+    spyOn(publicDataService, 'get').and.returnValue(of({ result: { faqs: {} } }));
+    component['getDesktopFAQ']('hi');
+    expect(component.showLoader).toBe(false);
+    expect(component.faqList).toEqual({});
+    expect(component.defaultToEnglish).toBe(false);
+  });
+
 });
