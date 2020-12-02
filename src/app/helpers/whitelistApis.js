@@ -634,7 +634,7 @@ const API_LIST = {
     },
 
     // get user session
-    '/get/user/sessionId': {
+    '/learner/get/user/sessionId/:userId': {
       checksNeeded: []
     }
   },
@@ -657,7 +657,8 @@ const API_LIST = {
     '/learner/group/v1/read/:groupId',
     '/learner/user/v2/exists/:key/:value',
     '/learner/certreg/v2/certs/download/:id',
-    '/content/asset/v1/upload/:id'
+    '/content/asset/v1/upload/:id',
+    '/learner/get/user/sessionId/:userId'
   ]
 };
 module.exports = API_LIST;

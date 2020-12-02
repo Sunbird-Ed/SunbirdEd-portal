@@ -56,9 +56,9 @@ describe('ForumComponent', () => {
   it('should assign discussionUrl = "discussionUrl"', () => {
     const sanitizer = TestBed.get(DomSanitizer);
     spyOn(component['learnerService'], 'get').and.returnValue(of ( {id: 'iv: 133 ? id: 12333'}));
-
+    spyOnProperty(component['userService'], 'userProfile').and.returnValue( {userid: '123'});
     component.getDiscussionUrl();
-    component['learnerService'].get({url: `/get/user/sessionId`}).subscribe((data: {id: string}) => {
+    component['learnerService'].get({url: `/get/user/sessionId/123`}).subscribe((data: {id: string}) => {
       const url = sanitizer.bypassSecurityTrustResourceUrl(
         `discussions/auth/sunbird-oidc/callback${data.id}&returnTo=/category/${fakeActivatedRoute.snapshot.queryParams.forumId}`
       );

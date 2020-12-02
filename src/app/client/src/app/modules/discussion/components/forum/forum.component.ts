@@ -1,12 +1,10 @@
 import { ConfigService } from '@sunbird/shared';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { LearnerService } from '@sunbird/core';
+import { LearnerService, UserService } from '@sunbird/core';
 import { Component, OnInit, OnDestroy, HostListener, ViewChild, AfterViewInit } from '@angular/core';
 import * as _ from 'lodash-es';
-import * as  iziModal from 'izimodal/js/iziModal';
 import { Location } from '@angular/common';
-jQuery.fn.iziModal = iziModal;
 
 @Component({
   selector: 'app-forum',
@@ -21,7 +19,7 @@ export class ForumComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     public sanitizer: DomSanitizer, private activatedRoute: ActivatedRoute,
     private location: Location, private config: ConfigService,
-    private learnerService: LearnerService) { }
+    private learnerService: LearnerService, private userService: UserService) { }
 
   @HostListener('window:popstate', ['$event'])
   onPopState(event) {
@@ -38,7 +36,7 @@ export class ForumComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getDiscussionUrl() {
     const option = {
-      url: this.config.urlConFig.URLS.USER.GET_SESSION
+      url: `${this.config.urlConFig.URLS.USER.GET_SESSION}/${this.userService.userid}`
     };
     this.learnerService.get(option).subscribe((data: any) => {
       this.discussionUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
