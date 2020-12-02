@@ -33,6 +33,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   buildNumber: string;
   @Input() playerOption: any;
   contentRatingModal = false;
+  showRatingModalAfterClose = false;
   previewCdnUrl: string;
   isCdnWorking: string;
   CONSTANT = {
@@ -328,6 +329,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
     if (event.detail.telemetryData.eid === 'END' && contentProgress === 100) {
       this.contentRatingModal = !this.isFullScreenView;
+      this.showRatingModalAfterClose = true;
       if (this.modal) {
         this.modal.showContentRatingModal = true;
       }
@@ -379,6 +381,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       document['webkitExitFullscreen']();
     } else if (document['msExitFullscreen']) { /* IE/Edge */
       document['msExitFullscreen']();
+    }
+
+    if (this.showRatingModalAfterClose && this.modal) {
+      this.contentRatingModal = true;
+      this.modal.showContentRatingModal = true;
     }
      /** to change the view of the content-details page */
     this.showPlayIcon = true;
