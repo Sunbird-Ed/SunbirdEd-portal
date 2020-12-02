@@ -31,7 +31,7 @@ node() {
             docker run -d --name offline_build -w /offline node:12-stretch sleep infinity
             docker cp .. offline_build:/offline/
             docker exec offline_build bash -x /offline/src/desktop/build.sh
-            docker cp offline_build:/offline/src/desktop/app_dist.tar.gz .
+            docker cp offline_build:/offline/src/desktop/app_dist.tar.gz ../../
             docker rm offline_build --force
             """
         }
