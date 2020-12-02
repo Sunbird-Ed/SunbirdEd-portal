@@ -119,12 +119,6 @@ describe('FaqComponent', () => {
     expect(component.selectedLanguage).toEqual('en');
   });
 
-  it('should call goBack', () => {
-    spyOn(location, 'back');
-    component.goBack();
-    expect(location.back).toHaveBeenCalled();
-  });
-
   it('should call setTelemetryInteractEdata', () => {
     const resp = component.setTelemetryInteractEdata('help-center');
     expect(resp).toEqual({ id: 'help-center', type: 'click', pageid: 'faq' });
@@ -157,6 +151,12 @@ describe('FaqComponent', () => {
     spyOn<any>(component, 'getDesktopFAQ');
     component.ngOnInit();
     expect(component['getDesktopFAQ']).toHaveBeenCalled();
+  });
+
+  it('should call goBack', () => {
+    spyOn(location, 'back');
+    component.goBack();
+    expect(location.back).toHaveBeenCalled();
   });
 
 });
