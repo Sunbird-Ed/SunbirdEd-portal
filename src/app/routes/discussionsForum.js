@@ -1,5 +1,5 @@
 const proxyUtils = require('../proxy/proxyUtils.js');
-const BASE_REPORT_URL = "/discussionForum";
+const BASE_REPORT_URL = "/discussion";
 const proxy = require('express-http-proxy');
 const { discussions_middleware } = require('../helpers/environmentVariablesHelper.js');
 const jwt = require('jsonwebtoken');
@@ -148,7 +148,7 @@ function proxyObject() {
     return proxy(discussions_middleware, {
         proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(discussions_middleware),
         proxyReqPathResolver: function (req) {
-            let urlParam = req.originalUrl.replace('/discussionForum', '');
+            let urlParam = req.originalUrl;
             let query = require('url').parse(req.url).query;
             if (query) {
                 return require('url').parse(discussions_middleware + urlParam + '?' + query).path

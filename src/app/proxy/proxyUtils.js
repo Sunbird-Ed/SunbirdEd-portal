@@ -11,7 +11,7 @@ const http = require('http');
 const https = require('https');
 const httpAgent = new http.Agent({ keepAlive: true, });
 const httpsAgent = new https.Agent({ keepAlive: true, });
-const discussionUrl = '/discussionForum';
+const discussionUrl = '/discussion';
 const keyCloakConfig = {
   'authServerUrl': envHelper.PORTAL_AUTH_SERVER_URL,
   'realm': envHelper.KEY_CLOAK_REALM,
