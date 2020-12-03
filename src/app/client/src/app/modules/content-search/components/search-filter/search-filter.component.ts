@@ -23,7 +23,8 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   public optionData: any[] = [];
   public selectedBoard: { label: string, value: string, selectedOption: string };
   public selectedOption: { label: string, value: string, selectedOption: string };
-  public optionLabel = { Publisher: this.resourceService.RESOURCE_CONSUMPTION_ROOT + 'frmelmnts.lbl.publisher', Board: this.resourceService.RESOURCE_CONSUMPTION_ROOT + 'frmelmnts.lbl.boards' };
+  public optionLabel = { Publisher: this.resourceService.RESOURCE_CONSUMPTION_ROOT +
+    'frmelmnts.lbl.publisher', Board: this.resourceService.RESOURCE_CONSUMPTION_ROOT + 'frmelmnts.lbl.boards' };
   public boards: any[] = [];
   filterChangeEvent = new Subject();
   @Input() isOpen;
@@ -31,12 +32,15 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   @Input() pageId = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');
   @Output() filterChange: EventEmitter<{ status: string, filters?: any }> = new EventEmitter();
   @Input() layoutConfiguration;
+  @Input() pageData;
   selectedFilters = {};
   allValues = {};
   selectedNgModels = {};
 
-  constructor(public resourceService: ResourceService, private router: Router, private contentSearchService: ContentSearchService,
-    private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef, public layoutService: LayoutService, private configService: ConfigService) {
+  constructor(public resourceService: ResourceService, private router: Router,
+     private contentSearchService: ContentSearchService,
+    private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef,
+     public layoutService: LayoutService, private configService: ConfigService) {
   }
 
   get audienceTypeMapping() {
@@ -44,6 +48,9 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   }
   get audienceList() {
     return _.map(this.audienceTypeMapping, (value, key) => ({ name: key }));
+  }
+  get filterData() {
+    return _.get(this.pageData, 'search.facets') || ['medium', 'gradeLevel', 'board', 'channel', 'subject', 'audience', 'publisher'];
   }
   public getChannelId(index) {
     const { publisher: publishers = [] } = this.filters || {};
@@ -56,7 +63,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
           queryParams => {
             const queryFilters: Record<string, string[]> = {};
             _.forIn(queryParams, (value, key) => {
-              if (['medium', 'gradeLevel', 'board', 'channel', 'subject', 'audience', 'publisher'].includes(key)) {
+              if (this.filterData.includes(key)) {
                 queryFilters[key] = _.isArray(value) ? value : [value];
               }
             });
@@ -64,7 +71,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
             return queryFilters;
           }
         )
-      )
+      );
   }
   private checkForWindowSize() {
     if (window.innerWidth <= 992) {
@@ -78,7 +85,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     const sortedFilters = _.cloneDeep(filters);
     _.forEach(sortedFilters, (values, key) => {
       sortedFilters[key] = _.includes(omitKeys, key) ? values : _.sortBy(values, [filterBy]);
-    })
+    });
     return sortedFilters;
   }
   private fetchFilters() {
@@ -89,7 +96,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
           const boardName = _.get(queryParams, 'board[0]') || _.get(this.boards, '[0]');
           return this.getFramework({ boardName });
         })
-      )
+      );
   }
   ngOnInit() {
     this.checkForWindowSize();
@@ -108,22 +115,23 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
               this.filters = { ...this.filters, ...this.sortFilters({ filters }) };
               this.updateRoute();
             })
-          )
+          );
       })
-    )
+    );
   }
   private fetchSelectedFilterOptions() {
     return this.fetchFilters()
       .pipe(
         tap(filters => {
           filters['audience'] = this.audienceList;
+          filters = _.pick(filters || {}, this.filterData);
           this.filters = filters = this.sortFilters({ filters });
           this.updateBoardList();
           this.updateFiltersList({ filters: _.omit(filters, 'board') });
           this.emitFilterChangeEvent(true);
           this.hardRefreshFilter();
         })
-      )
+      );
   }
   private handleFilterChange() {
     return this.filterChangeEvent
@@ -134,15 +142,18 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
             const index = _.get(event, 'data.index');
             const selectedIndices = _.get(this.selectedFilters, type) || [];
             if (_.includes(selectedIndices, index)) {
-              if(_.get(selectedIndices, 'length') > 1) this.popFilter({ type, index });
+              if (_.get(selectedIndices, 'length') > 1) {
+                this.popFilter({ type, index });
+              }
             } else {
               this.pushNewFilter({ type, index });
             }
           } else {
-            this.pushNewFilter({ type, updatedValues: _.map(event || [], selectedValue => _.findIndex(this.allValues[type], val => val === selectedValue)) });
+            this.pushNewFilter({ type, updatedValues: _.map(event || [],
+              selectedValue => _.findIndex(this.allValues[type], val => val === selectedValue)) });
           }
           this.emitFilterChangeEvent();
-        }))
+        }));
   }
 
   private updateBoardList() {
@@ -169,15 +180,14 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   }
   private popFilter({ type, index }) {
     const selectedIndices = _.get(this.selectedFilters, type) || [];
-    _.remove(selectedIndices, function (currentIndex) {
+    _.remove(selectedIndices,  (currentIndex) => {
       return currentIndex === index;
-    })
+    });
   }
   private pushNewFilter({ type, index = null, updatedValues = [] }) {
     if (index != null) {
       this.selectedFilters[type] = [index, ...(this.selectedFilters.hasOwnProperty(type) ? this.selectedFilters[type] : [])];
-    }
-    else {
+    } else {
       this.selectedFilters[type] = updatedValues;
     }
   }
@@ -185,7 +195,8 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     const defaultValues = _.get(this.defaultFilters, type) || [];
     let indices = [];
     if (_.get(defaultValues, 'length')) {
-      indices = _.filter(_.map(defaultValues, defaultValue => _.findIndex(this.allValues[type] || [], val => val === defaultValue)), index => index !== -1);
+      indices = _.filter(_.map(defaultValues, defaultValue => _.findIndex(this.allValues[type] || [],
+        val => val === defaultValue)), index => index !== -1);
     }
     if (['audience', 'publisher', 'subject'].includes(type) && !indices.length) {
       return [];
@@ -202,7 +213,8 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
         let selectedIndices;
         const filterValuesFromQueryParams = this.queryFilters[filterKey] || [];
         if (_.get(filterValuesFromQueryParams, 'length')) {
-          const indices = _.filter(_.map(filterValuesFromQueryParams, queryParamValue => values.findIndex((val) => val === queryParamValue)), index => index !== -1);
+          const indices = _.filter(_.map(filterValuesFromQueryParams, queryParamValue => values.findIndex((val) =>
+          val === queryParamValue)), index => index !== -1);
           selectedIndices = _.get(indices, 'length') ? indices : this.getIndicesFromDefaultFilters({ type: filterKey });
         } else {
           selectedIndices = this.getIndicesFromDefaultFilters({ type: filterKey });
@@ -210,7 +222,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
         this.selectedFilters[filterKey] = selectedIndices;
         this.selectedNgModels[filterKey] = _.map(selectedIndices, index => this.allValues[filterKey][index]);
       }
-    })
+    });
   }
   private updateRoute(resetFilters?: boolean) {
     const selectedTab = _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook';
