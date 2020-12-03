@@ -48,7 +48,6 @@ describe('ReviewsubmissionsContentplayerComponent', () => {
   }));
 
   beforeEach(() => {
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
     fixture = TestBed.createComponent(ReviewsubmissionsContentplayerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -43,7 +43,6 @@ export class ForumComponent implements OnInit, OnDestroy, AfterViewInit {
         `discussions/auth/sunbird-oidc/callback${data.id}&returnTo=/category/${_.get(this.activatedRoute.snapshot, 'queryParams.forumId')}`
       );
     });
-
   }
 
   navigateToPreviousPage() {
