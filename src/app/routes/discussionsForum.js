@@ -41,14 +41,14 @@ module.exports = function (app) {
     // post apis
     app.get(`${BASE_REPORT_URL}/recent/posts/:day`, proxyUtils.verifyToken(), proxyObject());
 
-    // all admin apis
-    app.get(`${BASE_REPORT_URL}/user/admin/watched`, proxyUtils.verifyToken(), proxyObject());
-    app.get(`${BASE_REPORT_URL}/user/admin/info`, proxyUtils.verifyToken(), proxyObject());
-    app.get(`${BASE_REPORT_URL}/user/admin/bookmarks`, proxyUtils.verifyToken(), proxyObject());
-    app.get(`${BASE_REPORT_URL}/user/admin/posts`, proxyUtils.verifyToken(), proxyObject());
-    app.get(`${BASE_REPORT_URL}/user/admin/groups`, proxyUtils.verifyToken(), proxyObject());
-    app.get(`${BASE_REPORT_URL}/user/admin/upvoted`, proxyUtils.verifyToken(), proxyObject());
-    app.get(`${BASE_REPORT_URL}/user/admin/downvoted`, proxyUtils.verifyToken(), proxyObject());
+    // all admin apis : Not require for now
+    // app.get(`${BASE_REPORT_URL}/user/admin/watched`, proxyUtils.verifyToken(), proxyObject());
+    // app.get(`${BASE_REPORT_URL}/user/admin/info`, proxyUtils.verifyToken(), proxyObject());
+    // app.get(`${BASE_REPORT_URL}/user/admin/bookmarks`, proxyUtils.verifyToken(), proxyObject());
+    // app.get(`${BASE_REPORT_URL}/user/admin/posts`, proxyUtils.verifyToken(), proxyObject());
+    // app.get(`${BASE_REPORT_URL}/user/admin/groups`, proxyUtils.verifyToken(), proxyObject());
+    // app.get(`${BASE_REPORT_URL}/user/admin/upvoted`, proxyUtils.verifyToken(), proxyObject());
+    // app.get(`${BASE_REPORT_URL}/user/admin/downvoted`, proxyUtils.verifyToken(), proxyObject());
 
     // topics apis 
     app.post(`${BASE_REPORT_URL}/v2/topics`, proxyUtils.verifyToken(), proxyObject());
@@ -91,10 +91,10 @@ module.exports = function (app) {
     app.post(`${BASE_REPORT_URL}/v2/posts/:pid/bookmark`, proxyUtils.verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v2/posts/:pid/bookmark`, proxyUtils.verifyToken(), proxyObject());
 
-    // util apis 
-    app.post(`${BASE_REPORT_URL}/v2/util/upload`, proxyUtils.verifyToken(), proxyObject());
-    app.post(`${BASE_REPORT_URL}/v2/util/maintenance`, proxyUtils.verifyToken(), proxyObject());
-    app.delete(`${BASE_REPORT_URL}/v2/util/maintenance`, proxyUtils.verifyToken(), proxyObject());
+    // util apis : not require for now
+    // app.post(`${BASE_REPORT_URL}/v2/util/upload`, proxyUtils.verifyToken(), proxyObject());
+    // app.post(`${BASE_REPORT_URL}/v2/util/maintenance`, proxyUtils.verifyToken(), proxyObject());
+    // app.delete(`${BASE_REPORT_URL}/v2/util/maintenance`, proxyUtils.verifyToken(), proxyObject());
 
     // user api
     app.post(`${BASE_REPORT_URL}/v2/users`, proxyUtils.verifyToken(), bodyParser.json({ limit: '10mb' }), checkEmail(), proxyObject());
@@ -105,7 +105,7 @@ module.exports = function (app) {
     app.delete(`${BASE_REPORT_URL}/v2/users/:uid/follow`, proxyUtils.verifyToken(), proxyObject());
     app.post(`${BASE_REPORT_URL}/v2/users/:uid/chats`, proxyUtils.verifyToken(), proxyObject());
     app.put(`${BASE_REPORT_URL}/v2/users/:uid/ban`, proxyUtils.verifyToken(), proxyObject());
-    app.delete(`${BASE_REPORT_URL}/v2/users/:uid/ban`, proxyUtils.verifyToken(), proxyObject());
+    // app.delete(`${BASE_REPORT_URL}/v2/users/:uid/ban`, proxyUtils.verifyToken(), proxyObject()); // not require for now
     app.get(`${BASE_REPORT_URL}/v2/users/:uid/tokens`, proxyUtils.verifyToken(), proxyObject());
     app.post(`${BASE_REPORT_URL}/v2/users/:uid/tokens`, proxyUtils.verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v2/users/:uid/tokens/:token`, proxyUtils.verifyToken(), proxyObject());
