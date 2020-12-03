@@ -161,7 +161,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         if (Object.keys(this.queryParams).length > 0) {
             filters = _.omit(filters, _.difference(this.globalSearchFacets, _.keysIn(this.queryParams)));
         }
-        filters.primaryCategory = filters.primaryCategory || _.get(this.allTabData, 'search.filters.primaryCategory');
+        filters.primaryCategory = (_.get(filters, 'primaryCategory.length') && filters.primaryCategory) || _.get(this.allTabData, 'search.filters.primaryCategory');
         filters.mimeType = _.get(mimeType, 'values');
 
         // Replacing cbse/ncert value with cbse
@@ -171,7 +171,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
 
         const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
         const option: any = {
-            filters: filters,
+            filters: _.omitBy(filters || {}, value => _.isArray(value) ? (!_.get(value, 'length') ? true : false) : false),
             fields: _.get(this.allTabData, 'search.fields'),
             limit: _.get(this.allTabData, 'search.limit'),
             pageNumber: this.paginationDetails.currentPage,

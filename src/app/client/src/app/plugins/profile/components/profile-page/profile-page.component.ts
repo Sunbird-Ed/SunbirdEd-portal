@@ -523,6 +523,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     textElement.select();
     document.execCommand('copy');
     document.body.removeChild(textElement);
-    this.toasterService.success(this.resourceService.messages.profile.smsg.m0041);
+    this.toasterService.success((this.resourceService.messages.profile.smsg.m0041).replace('{instance}', this.instance));
   }
 }
