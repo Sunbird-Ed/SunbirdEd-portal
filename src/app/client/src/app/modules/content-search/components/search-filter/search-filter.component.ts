@@ -234,7 +234,6 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     }
     filters['board'] = _.get(this.selectedBoard, 'selectedOption') ? [this.selectedBoard.selectedOption] : [];
     filters['selectedTab'] = _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook';
-    delete filters.publisher;
     return filters;
   }
   private emitFilterChangeEvent(skipUrlUpdate = false) {
