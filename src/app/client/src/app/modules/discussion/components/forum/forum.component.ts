@@ -32,7 +32,7 @@ export class ForumComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(){
-    document.body.className = "o-y-auto";
+    document.body.className = 'o-y-auto';
   }
 
   getDiscussionUrl() {
@@ -42,13 +42,7 @@ export class ForumComponent implements OnInit, OnDestroy, AfterViewInit {
         `discussions/auth/sunbird-oidc/callback${data.id}&returnTo=/category/${_.get(this.activatedRoute.snapshot, 'queryParams.forumId')}`
       );
     });
-    // this.http.get(`http://localhost:3002/discussionHub/user/username/${userName}1234`).subscribe(user => {
-    //   console.log(user);
-    // }, (error) => {
-    //   this.http.post('http://localhost:3002/discussionHub/v2/users', {username: userName}).subscribe(res => {
-    //     console.log(res);
-    //   });
-    // });
+
   }
 
   navigateToPreviousPage() {
