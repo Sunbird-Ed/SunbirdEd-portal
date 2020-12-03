@@ -170,7 +170,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     if (!filters.channel) {
       filters.channel = this.hashTagId;
     }
-    filters.primaryCategory = filters.primaryCategory || _.get(this.allTabData, 'search.filters.primaryCategory');
+    filters.primaryCategory = (_.get(filters, 'primaryCategory.length') && filters.primaryCategory) || _.get(this.allTabData, 'search.filters.primaryCategory');
     filters.mimeType = _.get(mimeType, 'values');
 
     // Replacing cbse/ncert value with cbse
