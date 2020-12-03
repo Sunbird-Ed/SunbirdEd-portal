@@ -15,7 +15,6 @@ module.exports = function (app) {
     app.post(`${BASE_REPORT_URL}/forum`, proxyUtils.verifyToken(), proxyObject());
 
     app.get(`${BASE_REPORT_URL}/tags`, proxyUtils.verifyToken(), proxyObject());
-    app.get(`${BASE_REPORT_URL}/categories`, proxyUtils.verifyToken(), proxyObject());
     app.get(`${BASE_REPORT_URL}/notifications`, proxyUtils.verifyToken(), proxyObject());
 
     // categories apis
