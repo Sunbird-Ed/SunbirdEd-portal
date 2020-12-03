@@ -1,7 +1,6 @@
 const envHelper = require('./../helpers/environmentVariablesHelper.js')
 const appId = envHelper.APPID
 const sunbirdApiAuthToken = envHelper.PORTAL_API_AUTH_TOKEN
-const discussionForumToken = envHelper.discussion_forum_token;
 const dateFormat = require('dateformat')
 const uuidv1 = require('uuid/v1')
 const _ = require('lodash')
@@ -11,7 +10,6 @@ const http = require('http');
 const https = require('https');
 const httpAgent = new http.Agent({ keepAlive: true, });
 const httpsAgent = new https.Agent({ keepAlive: true, });
-const discussionUrl = '/discussion';
 const keyCloakConfig = {
   'authServerUrl': envHelper.PORTAL_AUTH_SERVER_URL,
   'realm': envHelper.KEY_CLOAK_REALM,
@@ -52,9 +50,6 @@ const decorateRequestHeaders = function (upstreamUrl = "") {
       proxyReqOpts.headers['x-authenticated-user-token'] = srcReq.kauth.grant.access_token.token
     }
     proxyReqOpts.headers.Authorization = 'Bearer ' + sunbirdApiAuthToken;
-    if (srcReq.url.includes(discussionUrl)) {
-      proxyReqOpts.headers.Authorization = 'Bearer ' + discussionForumToken;
-    }
     proxyReqOpts.rejectUnauthorized = false
     proxyReqOpts.agent = upstreamUrl.startsWith('https') ? httpsAgent : httpAgent;
     proxyReqOpts.headers['connection'] = 'keep-alive';

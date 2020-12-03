@@ -1,11 +1,12 @@
 const proxyUtils = require('../proxy/proxyUtils.js');
 const BASE_REPORT_URL = "/discussion";
 const proxy = require('express-http-proxy');
-const { discussions_middleware } = require('../helpers/environmentVariablesHelper.js');
+const { discussions_middleware, discussion_forum_token } = require('../helpers/environmentVariablesHelper.js');
 const jwt = require('jsonwebtoken');
 const _ = require('lodash')
 const bodyParser = require('body-parser');
 const dateFormat = require('dateformat')
+const { logger } = require('@project-sunbird/logger');
 
 
 module.exports = function (app) {
@@ -114,17 +115,17 @@ module.exports = function (app) {
 
 function checkEmail() {
     return function (req, res, next) {
-            console.log(req.session['keycloak-token'])
-            const token = JSON.parse(req.session['keycloak-token'])
+            const token = JSON.parse(req.session['keycloak-token']);
             const jwtPayload = jwt.decode(token['access_token'], { complete: true });
-            console.log(jwtPayload)
             const email = jwtPayload.payload.email;
-            if (email) {
-                console.log("email found", email)
+            const userName = jwtPayload.payload. preferred_username;
+            const userName_body = req.body.username;
+            if (email && userName === userName_body) {
+                logger.info("email found", email)
                 req.body['email'] = email;
                 next();
             } else {
-                console.log("email not found")
+                logger.info({message: "email not found"})
                 res.status(500)
                 res.send({
                   'id': 'api.error',
@@ -148,6 +149,7 @@ function proxyObject() {
     return proxy(discussions_middleware, {
         proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(discussions_middleware),
         proxyReqPathResolver: function (req) {
+            req.headers.Authorization = `Bearer ${discussion_forum_token}`;
             let urlParam = req.originalUrl;
             let query = require('url').parse(req.url).query;
             if (query) {
