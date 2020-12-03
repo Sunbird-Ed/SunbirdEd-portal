@@ -632,6 +632,11 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR]
     },
+
+    // get user session
+    '/learner/get/user/sessionId/:userId': {
+      checksNeeded: []
+    }
   },
   URL_PATTERN: [
     '/content/content/v1/read/:do_id',
@@ -652,7 +657,8 @@ const API_LIST = {
     '/learner/group/v1/read/:groupId',
     '/learner/user/v2/exists/:key/:value',
     '/learner/certreg/v2/certs/download/:id',
-    '/content/asset/v1/upload/:id'
+    '/content/asset/v1/upload/:id',
+    '/learner/get/user/sessionId/:userId'
   ]
 };
 module.exports = API_LIST;
