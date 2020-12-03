@@ -383,9 +383,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       document['msExitFullscreen']();
     }
 
-    if (this.showRatingModalAfterClose && this.modal) {
+    if (this.showRatingModalAfterClose) {
       this.contentRatingModal = true;
-      this.modal.showContentRatingModal = true;
+      if (this.modal) {
+        this.modal.showContentRatingModal = true;
+      }
     }
      /** to change the view of the content-details page */
     this.showPlayIcon = true;
