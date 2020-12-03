@@ -11,11 +11,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { UserOrgManagementComponent } from './user-org-management.component';
 import { throwError as observableThrowError, of as observableOf, of } from 'rxjs';
 import { mockManageData } from './user-org-management.mock.spec';
-import { CoreModule } from '@sunbird/core';
+import { CoreModule, TncService } from '@sunbird/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { configureTestSuite } from '@sunbird/test-util';
 import { mockRes } from './user-org-management.mock.spec';
-import {  TelemetryService } from '@sunbird/telemetry';
 
 
 const fakeActivatedRoute = {
@@ -95,6 +94,7 @@ describe('UserOrgManagementComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         UserService,
+        TncService,
         ManageService,
         ToasterService,
         NavigationHelperService,
@@ -373,9 +373,9 @@ describe('UserOrgManagementComponent', () => {
     component.openModal();
     expect(component.showModal).toBeFalsy();
     fixture.detectChanges();
-    fixture.whenStable().then(() =>{ 
+    fixture.whenStable().then(() => {
       expect(component.showModal).toBeTruthy();
-    })
+    });
   });
 
   it('should download csv file', () => {
@@ -388,5 +388,17 @@ describe('UserOrgManagementComponent', () => {
     spyOn(window, 'open').and.callThrough();
     component.downloadCSVFile('validated', 'valid', 'downloadedCSVFIle');
     expect(window.open).toHaveBeenCalled();
+  });
+  it('should call the getAdminPolicyTnC method', () => {
+    const tncService = TestBed.get(TncService);
+    spyOn(tncService, 'getAdminTnc').and.returnValue(observableOf(mockRes.tncConfig));
+    component.getAdminPolicyTnC();
+    expect(component.showAdminTnC ).toBeTruthy();
+  });
+  it('should call the getAdminPolicyTnC method with out data', () => {
+    const tncService = TestBed.get(TncService);
+    spyOn(tncService, 'getAdminTnc').and.returnValue(observableOf(mockRes.tncConfigObj));
+    component.getAdminPolicyTnC();
+    expect(component.showAdminTnC ).toBeFalsy();
   });
 });

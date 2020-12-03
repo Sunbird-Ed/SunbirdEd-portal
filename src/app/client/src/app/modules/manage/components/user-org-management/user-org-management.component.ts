@@ -11,6 +11,7 @@ import * as $ from 'jquery';
 import 'datatables.net';
 import * as dayjs from 'dayjs';
 import {Subject} from 'rxjs';
+import { TncService } from '@sunbird/core';
 
 @Component({
   selector: 'app-user-org-management',
@@ -82,12 +83,18 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
   public userValidationUploadInteractEdata: IInteractEventEdata;
   public openUploadModalInteractEdata: IInteractEventEdata;
   public telemetryInteractObject: IInteractEventObject;
+  public adminPolicyDetailsInteractEdata: IInteractEventEdata;
   public showUploadUserModal = false;
   public disableBtn = true;
+  public instance: string;
+  public adminTncUrl: string;
+  public adminTncVersion: string;
+  public showAdminTnC = false;
+  public showTncPopup = false;
 
   constructor(activatedRoute: ActivatedRoute, public navigationhelperService: NavigationHelperService,
     userService: UserService, manageService: ManageService, private toasterService: ToasterService, resourceService: ResourceService,
-              public layoutService: LayoutService, public telemetryService: TelemetryService) {
+              public layoutService: LayoutService, public telemetryService: TelemetryService, public tncService: TncService) {
     this.userService = userService;
     this.manageService = manageService;
     this.activatedRoute = activatedRoute;
@@ -101,6 +108,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
 
   ngOnInit(): void {
     this.initLayout();
+    this.instance = _.upperCase(this.resourceService.instance);
     this.uploadButton = this.resourceService.frmelmnts.btn.selectCsvFile
     this.geoButtonText = this.resourceService.frmelmnts.btn.viewdetails;
     this.teachersButtonText = this.resourceService.frmelmnts.btn.viewdetails;
@@ -118,6 +126,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
     this.userService.userData$.pipe(first()).subscribe(async (user) => {
       if (user && user.userProfile) {
         this.userProfile = user.userProfile;
+        this.getAdminPolicyTnC();
         this.fetchDeclaredUserDetails();
         this.slug = await _.get(this.userService, 'userProfile.rootOrg.slug');
         if (user.userProfile && user.userProfile['rootOrg'] && !user.userProfile['rootOrg']['isSSOEnabled']) {
@@ -269,6 +278,11 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
       };
       this.openUploadModalInteractEdata = {
         id: 'open-upload-validation-status-modal',
+        type: 'click',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      };
+      this.adminPolicyDetailsInteractEdata = {
+        id: 'admin-policy-tnc-popup',
         type: 'click',
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid
       };
@@ -477,6 +491,34 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
           this.toasterService.error(this.resourceService.messages.emsg.m0076);
         }
       );
+  }
+
+  getAdminPolicyTnC() {
+    this.tncService.getAdminTnc().subscribe(data => {
+      const adminTncData = JSON.parse(_.get(data, 'result.response.value'));
+      if (_.get(adminTncData, 'latestVersion')) {
+        this.adminTncVersion = _.get(adminTncData, 'latestVersion');
+        this.showAdminTnC = true;
+        this.adminTncUrl = _.get(_.get(adminTncData, _.get(adminTncData, 'latestVersion')), 'url');
+        this.showAdminTncForFirstUser();
+      }
+    });
+  }
+  showAdminTncForFirstUser() {
+    const adminTncObj = _.get(this.userProfile, 'allTncAccepted.orgAdminTnc');
+    if (!adminTncObj) {
+      this.showTncPopup = true;
+    } else {
+      this.showTncPopup = false;
+    }
+
+  }
+  openAdminPolicyPopup(closePopup?: boolean) {
+    if (closePopup) {
+      this.showTncPopup = false;
+    } else {
+      this.showTncPopup = true;
+    }
   }
 
   ngOnDestroy() {

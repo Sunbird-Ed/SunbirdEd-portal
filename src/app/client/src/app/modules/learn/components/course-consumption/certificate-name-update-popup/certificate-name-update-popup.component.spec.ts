@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { CertificateNameUpdatePopupComponent } from './certificate-name-update-popup.component';
 import { configureTestSuite } from '@sunbird/test-util';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -12,6 +12,7 @@ import { CoreModule, UserService } from '@sunbird/core';
 import { ProfileService } from '@sunbird/profile';
 import { response as CertMockResponse } from './certificate-name-update-popup.component.spec.data';
 import { of as observableOf, throwError as observableThrowError, of } from 'rxjs';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('CertificateNameUpdatePopupComponent', () => {
   let component: CertificateNameUpdatePopupComponent;
@@ -39,7 +40,9 @@ describe('CertificateNameUpdatePopupComponent', () => {
         ReactiveFormsModule,
         SharedModule,
         SuiModule,
-        CoreModule
+        CoreModule,
+        RouterTestingModule,
+        TelemetryModule
       ],
       providers: [
         BrowserCacheTtlService,
@@ -49,6 +52,7 @@ describe('CertificateNameUpdatePopupComponent', () => {
         CacheService,
         UserService,
         ProfileService,
+        TelemetryService,
         {provide: ResourceService, useValue: resourceBundle},
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],

@@ -1,3 +1,4 @@
+@import '../../../node_modules/sb-theme/themes/theme.scss';
 html.transition,
 html.transition *,
 html.transition *:before,
@@ -1162,4 +1163,31 @@ html[layout='joy'] {
   html[layout='joy'] .sb-btn-nolayer {
     height: 2.0rem !important;
     box-shadow: none;
+}
+html[layout='joy'] {
+  .sb-desktop-content-manager{
+    .sb-single-pannel-accordion-heading{
+      border-radius: var(--sbt-bradius-24) var(--sbt-bradius-24) 0 0;
+      background-color: #5630DC;
+    }
+  }
+  .ui.styled.accordion.sb-single-pannel-accordion.sb-desktop-content-manager{
+    box-shadow: none;
+    background: none;
+    border-radius: var(--sbt-bradius-24) var(--sbt-bradius-24) 0 0;
+    background-color: var(--white);
+    box-shadow: calculateRem(5px) calculateRem(5px) calculateRem(2px) 0 rgba(0,0,0,0.1) !important;
+  }
+  .sb-desktop-content-manager.ui.styled.accordion .accordion{
+    box-shadow: calculateRem(5px) calculateRem(5px) calculateRem(2px) 0 rgba(0,0,0,0.1);
+    border-radius: var(--sbt-bradius-24) var(--sbt-bradius-24) 0 0;
+  }
+  .sb-desktop-content-manager.ui.styled.accordion .content{
+    border-radius: 0;
+  }
+  .sb-desktop-library-card .sb--card .card-hover{
+    top: initial;
+    height: 5rem;
+    opacity: 1;
+  }
 }

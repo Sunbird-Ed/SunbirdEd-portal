@@ -287,8 +287,9 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private fetchCourses(currentPageData) {
     const _pageData = this.getPageData(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'course');
-    let _filters = _.get(_pageData, 'search.filters');
-    _filters['audience'] = localStorage.getItem('userType') === 'other' ? ['Student', 'Teacher'] : [_.capitalize(localStorage.getItem('userType'))];
+    // let _filters = _.get(_pageData, 'search.filters');
+    // _filters['audience'] = localStorage.getItem('userType') === 'other' ?
+    // ['Student', 'Teacher'] : [_.capitalize(localStorage.getItem('userType'))];
     // Courses are displayed based on subject and sorted alphabetically. Executed iff `isPageAssemble` flag is set to `false`.
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
       if (key === 'appliedFilters' || key === 'selectedTab') {
@@ -445,7 +446,8 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       'status': ['Live'],
       'batches.enrollmentType': 'open',
       'batches.status': 1,
-      'audience': localStorage.getItem('userType') === 'other' ? ['Student', 'Teacher'] : [_.capitalize(localStorage.getItem('userType'))]
+      // 'audience': localStorage.getItem('userType') === 'other' ?
+      // ['Student', 'Teacher'] : [_.capitalize(localStorage.getItem('userType'))]
     };
     return _.merge(filters, filterObj);
   }

@@ -353,7 +353,7 @@ async function createWindow() {
       win.removeMenu();
     }
     if (!app.isPackaged) {
-      // reloadUIOnFileChange();
+      reloadUIOnFileChange();
     }
       win.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
         options.show = false;

@@ -33,7 +33,7 @@ describe('InAppNotificationComponent', () => {
   };
 
   class RouterStub {
-    navigateByUrl = jasmine.createSpy('navigate');
+    navigate = jasmine.createSpy('navigate');
   }
 
   const fakeActivatedRoute = {};
@@ -202,9 +202,48 @@ describe('InAppNotificationComponent', () => {
       await component.notificationHandler(event);
       // assert
       expect(component.showNotificationModel).toBeFalsy();
-      expect(router.navigateByUrl).toHaveBeenCalledWith('/resource/course');
+      expect(router.navigate).toHaveBeenCalledWith(['/resource/course']);
       expect(component.markNotificationAsRead).toHaveBeenCalledWith(event.data);
       expect(component.fetchNotificationList).toHaveBeenCalled();
+    });
+
+    it('should navigate to the profiles page if course certificate notification is clicked', async () => {
+      //  arrange
+      const event = {
+        data: {
+          id: 'notification_id',
+          data: {
+            actionType: 'certificateUpdate'
+          }
+        }
+      };
+      const router = TestBed.get(Router);
+      spyOn(component, 'markNotificationAsRead');
+      spyOn(component, 'fetchNotificationList');
+      // act
+      await component.notificationHandler(event);
+      // assert
+      expect(component.showNotificationModel).toBeFalsy();
+      expect(router.navigate).toHaveBeenCalledWith(['/profile']);
+      expect(component.markNotificationAsRead).toHaveBeenCalledWith(event.data);
+      expect(component.fetchNotificationList).toHaveBeenCalled();
+    });
+
+    it('should skip navigation if deeplink or course certificate is not available', async () => {
+      //  arrange
+      const event = {
+        data: {
+          id: 'notification_id',
+          data: {
+          }
+        }
+      };
+      spyOn(component, 'markNotificationAsRead');
+      spyOn(component, 'fetchNotificationList');
+      // act
+      await component.notificationHandler(event);
+      // assert
+      expect(component.showNotificationModel).toBeFalsy();
     });
   });
 

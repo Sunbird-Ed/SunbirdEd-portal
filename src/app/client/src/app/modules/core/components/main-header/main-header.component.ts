@@ -24,6 +24,7 @@ import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
 import { Subject, zip, forkJoin } from 'rxjs';
 import { EXPLORE_GROUPS, MY_GROUPS } from '../../../public/module/group/components/routerLinks';
+import { ConnectionService } from '@sunbird/shared';
 
 declare var jQuery: any;
 type reportsListVersionType = 'v1' | 'v2';
@@ -144,7 +145,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   locationTenantInfo: any = {};
   deviceProfile: any;
   isCustodianUser: boolean;
-
+  isConnected = false;
+  
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
     public orgDetailsService: OrgDetailsService, public formService: FormService,
@@ -152,7 +154,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     private telemetryService: TelemetryService, private programsService: ProgramsService,
     private courseService: CoursesService, private utilService: UtilService, public layoutService: LayoutService,
     public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef,
-    public navigationHelperService: NavigationHelperService, private deviceRegisterService: DeviceRegisterService) {
+    public navigationHelperService: NavigationHelperService, private deviceRegisterService: DeviceRegisterService,
+    private connectionService: ConnectionService) {
     try {
       this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
       this.reportsListVersion = (<HTMLInputElement>document.getElementById('reportsListVersion')).value as reportsListVersionType;
@@ -498,6 +501,10 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.connectionService.monitor()
+    .pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
+      this.isConnected = isConnected;
+    });
     this.checkFullScreenView();
     try {
       this.helpLinkVisibility = (<HTMLInputElement>document.getElementById('helpLinkVisibility')).value;
@@ -584,6 +591,10 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   switchLayout() {
     this.layoutService.initiateSwitchLayout();
     this.generateInteractTelemetry();
+  }
+  switchToAccessibleLayout(){
+    this.layoutService.switchToAccessibleLayout();
+    // this.generateInteractTelemetry();
   }
 
   generateInteractTelemetry() {

@@ -21,6 +21,12 @@
       <button type="button" (click) = "openModel()" class="sb-btn sb-btn-outline-primary sb-btn-normal" appTelemetryInteract 
       [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="openUploadModalInteractEdata">{{resourceService.frmelmnts?.lbl?.uploadValidationStatus}}</button>
     </div>
+    <div class="d-flex flex-ai-center ml-8 py-8" *ngIf="showAdminTnC">
+      <label class="d-flex flex-ai-center">
+        <span class="font-weight-normal fnormal">{{resourceService?.frmelmnts?.imsg?.admintnc | interpolate:'{instance}': instance }} <a class="sb-color-primary" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" 
+          [telemetryInteractEdata]="adminPolicyDetailsInteractEdata" (click)=openAdminPolicyPopup()>{{resourceService?.frmelmnts?.lnk?.adminPolicy}}</a></span>
+      </label>
+    </div>
   </div>
   <div class="ui container">
     <h4 class="sb-manage-section-title py-16 m-0">User & Org Management</h4>
@@ -161,3 +167,7 @@
   </button>
 </div>
 </sui-modal>
+
+
+<app-tnc-popup (close)="openAdminPolicyPopup(true)" [showAcceptTnc]="showTncPopup" [adminTncVersion]="adminTncVersion" [tncUrl]="adminTncUrl" #termsAndCondPopUp *ngIf="showTncPopup">
+</app-tnc-popup>
