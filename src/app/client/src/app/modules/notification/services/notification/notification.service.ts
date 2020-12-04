@@ -3,6 +3,7 @@ import { CsUserServiceConfig } from '@project-sunbird/client-services';
 import { UserFeedCategory, UserFeedStatus } from '@project-sunbird/client-services/models';
 import { CsUserService } from '@project-sunbird/client-services/services/user/interface';
 import { ToasterService } from '@sunbird/shared';
+import { Subject } from 'rxjs';
 import { UserService } from '../../../core/services/user/user.service';
 
 @Injectable()
@@ -11,6 +12,8 @@ export class NotificationService {
   private config: CsUserServiceConfig = {
     apiPath: '/learner/user/v1'
   };
+  refreshNotification$ = new Subject();
+
   constructor(
     @Inject('CS_USER_SERVICE') private csUserService: CsUserService,
     private userService: UserService,
