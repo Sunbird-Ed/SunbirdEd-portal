@@ -38,6 +38,7 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
   nestedCourses = [];
   selectedCourse;
   dropdownContent = true;
+  parentId: string;
   public csvExporter: any;
 
   constructor(
@@ -192,6 +193,7 @@ export class ActivityDashboardComponent implements OnInit, OnDestroy {
   .pipe(takeUntil(this.unsubscribe$))
   .subscribe((data) => {
     const courseHierarchy = data.result.content;
+    this.parentId = _.get(courseHierarchy, 'identifier');
     this.updateArray(courseHierarchy);
     const childCourses = this.flattenDeep(courseHierarchy.children).filter(c => c.contentType === 'Course');
     if (childCourses.length > 0) {

@@ -19,7 +19,7 @@ describe('ReviewsubmissionsContentplayerComponent', () => {
   const resourceBundle = {
     messages: {
       imsg: { m0027: 'Something went wrong' },
-      stmsg: { m0025: 'error' },
+      stmsg: { m0025: 'error', m0009: '' },
       fmsg: { m0025: 'error', m0015: 'error' }
     },
     frmelmnts: {
