@@ -13,7 +13,7 @@ import { TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 
 const testData = mockData.mockRes;
-xdescribe('ReviewsubmissionsContentplayerComponent', () => {
+describe('ReviewsubmissionsContentplayerComponent', () => {
   let component: ReviewsubmissionsContentplayerComponent;
   let fixture: ComponentFixture<ReviewsubmissionsContentplayerComponent>;
   const resourceBundle = {
