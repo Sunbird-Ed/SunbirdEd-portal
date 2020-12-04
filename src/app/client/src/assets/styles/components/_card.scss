@@ -310,3 +310,8 @@ app-card[lang="ur"] {
     }
   }
 }
+
+.sb--card.sb--card--theme2 .sb--card__meta1 .data_1, .sb--card.sb--card--theme2 .sb--card__meta1 .data_2{
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

@@ -166,11 +166,11 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       return o.name === (selectedMediaType || 'all');
     });
     const pageType = _.get(this.queryParams, 'pageTitle');
-    const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType']);
+    const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType', 'utm_source']);
     if (!filters.channel) {
       filters.channel = this.hashTagId;
     }
-    filters.primaryCategory = filters.primaryCategory || _.get(this.allTabData, 'search.filters.primaryCategory');
+    filters.primaryCategory = (_.get(filters, 'primaryCategory.length') && filters.primaryCategory) || _.get(this.allTabData, 'search.filters.primaryCategory');
     filters.mimeType = _.get(mimeType, 'values');
 
     // Replacing cbse/ncert value with cbse
@@ -189,7 +189,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       delete softConstraints['board'];
     }
     const option: any = {
-      filters: filters,
+      filters: _.omitBy(filters || {}, value => _.isArray(value) ? (!_.get(value, 'length') ? true : false) : false),
       fields: _.get(this.allTabData, 'search.fields'),
       limit: _.get(this.allTabData, 'search.limit'),
       pageNumber: this.paginationDetails.currentPage,

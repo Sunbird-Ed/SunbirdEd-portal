@@ -121,18 +121,17 @@ export class AppComponent implements OnInit, OnDestroy {
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
     const layoutType = localStorage.getItem('layoutType') || '';
     const layoutTypeAccessablethm = localStorage.getItem('accessable-theme') || '';
-    if (layoutType === 'joy') {
+    if (layoutType === '' || layoutType === 'joy') {
       this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
       document.documentElement.setAttribute('layout', 'joy');
-      if (layoutTypeAccessablethm === 'accessable-theme') {
+      if (layoutTypeAccessablethm === 'accessible') {
         document.documentElement.setAttribute('accessable-theme', 'accessible');
       } else {
         document.documentElement.setAttribute('accessable-theme', '');
       }
     } else {
-      document.documentElement.setAttribute('layout', '');
+      document.documentElement.setAttribute('layout', 'old');
     }
-    
   }
   /**
    * dispatch telemetry window unload event before browser closes

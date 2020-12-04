@@ -23,21 +23,21 @@
       </div>
       <form [formGroup]="accountRecoveryForm" class="sb-form">
       <div class="sb-field" *ngIf="contactType === 'emailId'">
-        <input class="sb-form-control" formControlName="email" name="email" id="email" type="email">
-        <span class="sb-color-error fxsmall mt-8" *ngIf="accountRecoveryForm.controls.email.dirty && accountRecoveryForm.controls['email'].errors">
+        <input class="sb-form-control mb-8" formControlName="email" name="email" id="email" type="email">
+        <span class="sb-color-error fnormal mt-8" *ngIf="accountRecoveryForm.controls.email.dirty && accountRecoveryForm.controls['email'].errors">
          {{resourceService?.frmelmnts?.lbl?.validEmail}}
         </span>
-        <span *ngIf="duplicateRecoveryId" class="sb-color-error fxsmall mt-8">
+        <span *ngIf="duplicateRecoveryId" class="sb-color-error fnormal mt-8">
           {{resourceService?.frmelmnts?.lbl?.duplicateEmailAddress}}
         </span>
       </div>
 
       <div class="sb-field" *ngIf="contactType === 'phoneNo'">
-        <input maxlength="10" class="sb-form-control" formControlName="phone" type="tel">
-        <span class="sb-color-error fxsmall mt-8"  *ngIf="accountRecoveryForm.controls.phone.dirty && accountRecoveryForm.controls['phone'].errors">
+        <input maxlength="10" class="sb-form-control mb-8" formControlName="phone" type="number">
+        <span class="sb-color-error fnormal mt-8"  *ngIf="accountRecoveryForm.controls.phone.dirty && accountRecoveryForm.controls['phone'].errors">
          {{resourceService?.frmelmnts?.prmpt?.enterphoneno}}
         </span>
-        <span *ngIf="duplicateRecoveryId" class="sb-color-error fxsmall mt-8">
+        <span *ngIf="duplicateRecoveryId" class="sb-color-error fnormal mt-8">
           {{resourceService?.frmelmnts?.lbl?.duplicatePhoneNumber}}
         </span>
       </div>
