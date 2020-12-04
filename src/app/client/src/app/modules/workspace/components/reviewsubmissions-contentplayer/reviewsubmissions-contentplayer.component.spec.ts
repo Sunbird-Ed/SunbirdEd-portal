@@ -13,7 +13,7 @@ import { TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 
 const testData = mockData.mockRes;
-describe('ReviewsubmissionsContentplayerComponent', () => {
+xdescribe('ReviewsubmissionsContentplayerComponent', () => {
   let component: ReviewsubmissionsContentplayerComponent;
   let fixture: ComponentFixture<ReviewsubmissionsContentplayerComponent>;
   const resourceBundle = {
@@ -53,7 +53,7 @@ describe('ReviewsubmissionsContentplayerComponent', () => {
     fixture.detectChanges();
   });
 
-  xit('should throw error if content api throws error', () => {
+  it('should throw error if content api throws error', () => {
     const playerService = TestBed.get(PlayerService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceBundle.messages;

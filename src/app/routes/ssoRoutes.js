@@ -423,7 +423,7 @@ module.exports = (app) => {
     }
   });
 
-  app.get('/learner/get/user/sessionId/:userId', (req, res) => {
+  app.all('/learner/get/user/sessionId/:userId', (req, res) => {
       if (req.session.userId === req.params.userId) {
         res.send({id: getEncyptedQueryParams({userName: req.session.userName})})
       } else {
