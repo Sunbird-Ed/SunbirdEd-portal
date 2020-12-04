@@ -181,6 +181,15 @@ describe('ContentTypeComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(
       ['/explore'], { queryParams: { selectedTab: 'textbook' } });
   });
+  it('should set conent type as all when updateSelectedContentType trigger with unknown content type', () => {
+    const layoutService = TestBed.get(LayoutService);
+    component.contentTypes = mockData.formData;
+    spyOn(component, 'updateSelectedContentType').and.callThrough();
+    component.ngOnInit();
+    layoutService.updateSelectedContentType.emit('LessionPlan');
+    expect(component.updateSelectedContentType).toHaveBeenCalled();
+    expect(component.selectedContentType).toEqual('all');
+  });
   it('should fetch title for logged in user', () => {
     const userService = TestBed.get(UserService);
     const router = TestBed.get(Router);
@@ -200,15 +209,6 @@ describe('ContentTypeComponent', () => {
     layoutService.updateSelectedContentType.emit('TextBook');
     expect(component.updateSelectedContentType).toHaveBeenCalled();
     expect(component.selectedContentType).toEqual('textbook');
-  });
-  it('should set conent type as all when updateSelectedContentType trigger with unknown content type', () => {
-    const layoutService = TestBed.get(LayoutService);
-    component.contentTypes = mockData.formData;
-    spyOn(component, 'updateSelectedContentType').and.callThrough();
-    component.ngOnInit();
-    layoutService.updateSelectedContentType.emit('LessionPlan');
-    expect(component.updateSelectedContentType).toHaveBeenCalled();
-    expect(component.selectedContentType).toEqual('all');
   });
 
 
