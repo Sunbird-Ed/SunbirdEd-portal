@@ -5,7 +5,7 @@
     [appTelemetryImpression]="telemetryImpression">
     <div [ngClass]="FIRST_PANEL_LAYOUT">
       <app-search-filter [layoutConfiguration]="layoutConfiguration" [isOpen]='true' *ngIf="initFilter"
-        (filterChange)="getFilters($event)" [pageId]="isUserLoggedIn() ? 'resource-page' : 'explore-page'" [defaultFilters]="defaultFilters">
+        (filterChange)="getFilters($event)" [pageData]="pageData" [pageId]="isUserLoggedIn() ? 'resource-page' : 'explore-page'" [defaultFilters]="defaultFilters">
       </app-search-filter>
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT" *ngIf="subscription$ | async">
