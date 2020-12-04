@@ -1130,6 +1130,11 @@ html[layout='joy'] {
       }
     }
   }
+
+  .batchlist-header {
+    margin-bottom: calculateRem(16px);
+  }
+
 }
 
 .data-labels{
