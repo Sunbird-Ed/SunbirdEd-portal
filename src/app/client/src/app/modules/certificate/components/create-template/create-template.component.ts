@@ -128,7 +128,6 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     this.uploadCertificateService.getSvg(this.selectedCertificate.artifactUrl).then(res => {
       const svgFile = res;
       this.logoHtml = this.sanitizer.bypassSecurityTrustHtml(svgFile);
-      console.log(this.convertHtml(this.logoHtml));
       this.previewCertificate();
     });
   }
@@ -154,9 +153,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
         const request = this.certConfigModalInstance.prepareCreateAssetRequest(_.get(this.createTemplateForm, 'value'), channel, this.selectedCertificate, this.images);
         this.disableCreateTemplate = true;
         this.uploadCertificateService.createCertTemplate(request).subscribe(response => {
-          console.log('create response', response);
           const assetId = _.get(response, 'result.identifier');
-          console.log('this.finalSVGurl', this.finalSVGurl);
           this.uploadTemplate(this.finalSVGurl, assetId);
         }, error => {
           this.toasterService.error('Something went wrong, please try again later');
@@ -227,7 +224,6 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
   }
 
   previewCertificate() {
-    console.log(this.images);
     this.svgData = this.convertHtml(this.logoHtml);
     const stateLogos = this.svgData.getElementsByClassName(this.classNames.STATE_LOGOS);
     const digitalSigns = this.classNames.SIGN_LOGO.map(id => this.svgData.getElementById(id));
@@ -269,14 +265,12 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
       for (let i = 0; i < logosArray.length; i++) {
         const logo = logosArray[i];
         if (logo) {
-          console.log(stateLogos[i]);
           const res = await this.toDataURL(logo);
 
           if (res && !_.isEmpty(stateLogos) && stateLogos[i]) {
             stateLogos[i].setAttribute('xlink:href', res['url']);
           }
           if (i === (logosArray.length - 1)) {
-            console.log('resolve');
             resolve();
           }
         }
