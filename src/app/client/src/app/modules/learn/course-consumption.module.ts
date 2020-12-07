@@ -24,6 +24,7 @@ import { CertificateNameUpdatePopupComponent } from './components/course-consump
 import { CourseDetailsComponent } from './components/course-consumption/course-details/course-details.component';
 import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
+import { NotificationModule } from '../notification/notification.module';
 
 export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
   if (!CsModule.instance.isInitialised) {
@@ -43,7 +44,8 @@ export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerSe
     CoreModule,
     TelemetryModule,
     PlayerHelperModule,
-    CommonConsumptionModule
+    CommonConsumptionModule,
+    NotificationModule
   ],
   providers: [{ provide: 'CS_USER_SERVICE', useFactory: csUserServiceFactory, deps: [CsLibInitializerService] }],
   declarations: [CoursePlayerComponent, CourseConsumptionHeaderComponent, AssessmentPlayerComponent,

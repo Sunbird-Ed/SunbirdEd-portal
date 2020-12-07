@@ -39,6 +39,7 @@
   },
   "URLS": {
     "LEARNER_PREFIX": "/learner/",
+    "DISCUSSIONS_FORUM_PREFIX": "/discussion/",
     "DEVICE_PREFIX": "/device/",
     "CERT_REG_PREFIX": "/certreg/",
     "CONTENT_PREFIX": "/content/",

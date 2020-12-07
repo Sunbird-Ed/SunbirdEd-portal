@@ -47,11 +47,13 @@ export class OnlineOnlyDirective implements OnInit, OnDestroy {
     this.renderer.removeAttribute(this.el.nativeElement, 'disabled');
     this.renderer.removeClass(this.el.nativeElement, 'sb-btn-disabled');
     this.renderer.removeClass(this.el.nativeElement, 'disabled');
+    this.renderer.removeClass(this.el.nativeElement, 'pointer-events-disabled');
   }
   private disableElement() {
     this.renderer.setAttribute(this.el.nativeElement, 'disabled', 'true');
     this.renderer.addClass(this.el.nativeElement, 'sb-btn-disabled');
     this.renderer.addClass(this.el.nativeElement, 'disabled');
+    this.renderer.addClass(this.el.nativeElement, 'pointer-events-disabled');
   }
 
   private showAlertMessage() {
