@@ -91,7 +91,8 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
-    this.consentConfig = { tncLink: '', tncText: this.resourceService.frmelmnts.lbl.nonCustodianTC };
+    this.consentConfig = { tncLink: this.resourceService.frmelmnts.lbl.tncLabelLink,
+       tncText: this.resourceService.frmelmnts.lbl.nonCustodianTC };
     this.fetchTncData();
     const queryParams = this.activatedRoute.snapshot.queryParams;
     this.formAction = queryParams.formaction;
