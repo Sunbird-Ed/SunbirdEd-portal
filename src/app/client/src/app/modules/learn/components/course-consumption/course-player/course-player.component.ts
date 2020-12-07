@@ -17,6 +17,7 @@ import { CourseBatchService, CourseConsumptionService, CourseProgressService } f
 import { ContentUtilsServiceService } from '@sunbird/shared';
 import { MimeTypeMasterData } from '@project-sunbird/common-consumption/lib/pipes-module/mime-type';
 import * as dayjs from 'dayjs';
+import { NotificationService } from '../../../../notification/services/notification/notification.service';
 
 @Component({
   selector: 'app-course-player',
@@ -108,7 +109,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     public telemetryService: TelemetryService,
     private contentUtilsServiceService: ContentUtilsServiceService,
     public layoutService: LayoutService,
-    public generaliseLabelService: GeneraliseLabelService
+    public generaliseLabelService: GeneraliseLabelService,
+    private notificationService: NotificationService
   ) {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
@@ -132,6 +134,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
         if (this.activatedRoute.snapshot.queryParams.showCourseCompleteMessage === 'true') {
           this.showCourseCompleteMessage = this.progress >= 100 ? true : false;
+          if (this.showCourseCompleteMessage) {
+            this.notificationService.refreshNotification$.next(true);
+          }
           const queryParams = this.tocId ? { textbook: this.tocId } : {};
           this.router.navigate(['.'], { relativeTo: this.activatedRoute, queryParams, replaceUrl: true });
         }
