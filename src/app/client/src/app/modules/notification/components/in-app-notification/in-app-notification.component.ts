@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '../../services/notification/notification.service';
 import * as _ from 'lodash-es';
@@ -12,7 +12,7 @@ import { TelemetryService } from '@sunbird/telemetry';
   templateUrl: './in-app-notification.component.html',
   styleUrls: ['./in-app-notification.component.scss']
 })
-export class InAppNotificationComponent implements OnInit {
+export class InAppNotificationComponent implements OnInit, OnDestroy {
 
   @Input() layoutConfiguration: any;
 
@@ -24,7 +24,7 @@ export class InAppNotificationComponent implements OnInit {
   constructor(
     private notificationService: NotificationService,
     private router: Router,
-    private resourceService: ResourceService,
+    public resourceService: ResourceService,
     private telemetryService: TelemetryService,
     private activatedRoute: ActivatedRoute
   ) {
@@ -40,6 +40,11 @@ export class InAppNotificationComponent implements OnInit {
 
   ngOnInit() {
     this.fetchNotificationList();
+    this.notificationService.refreshNotification$.subscribe(refresh => {
+      if (refresh) {
+        this.fetchNotificationList();
+      }
+    });
   }
 
   async fetchNotificationList() {
@@ -51,6 +56,9 @@ export class InAppNotificationComponent implements OnInit {
   }
 
   toggleInAppNotifications() {
+    if (!this.showNotificationModel && !this.notificationList.length) {
+      return;
+    }
     this.generateInteractEvent('show-in-app-notifications');
     this.showNotificationModel = !this.showNotificationModel;
   }
@@ -124,6 +132,10 @@ export class InAppNotificationComponent implements OnInit {
       }
     };
     this.telemetryService.interact(data);
+  }
+
+  ngOnDestroy() {
+    this.notificationService.refreshNotification$.unsubscribe();
   }
 
 }

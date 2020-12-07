@@ -39,6 +39,7 @@
   },
   "URLS": {
     "LEARNER_PREFIX": "/learner/",
+    "DISCUSSIONS_FORUM_PREFIX": "/discussion/",
     "DEVICE_PREFIX": "/device/",
     "CERT_REG_PREFIX": "/certreg/",
     "CONTENT_PREFIX": "/content/",
@@ -108,7 +109,8 @@
       "END_SESSION": "endSession",
       "GET_MANAGED_USER": "user/v1/managed",
       "USER_EXISTS_GET_USER_BY_KEY": "isUserExists/user/v1/get",
-      "USER_DECLARATION": "user/v1/declarations"
+      "USER_DECLARATION": "user/v1/declarations",
+      "GET_SESSION": "get/user/sessionId"
     },
     "CERTIFICATE": {
       "FETCH_CERTIFICATES": "v1/certs/search",

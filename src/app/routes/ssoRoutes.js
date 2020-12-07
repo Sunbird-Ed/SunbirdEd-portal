@@ -423,8 +423,13 @@ module.exports = (app) => {
     }
   });
 
-  app.all('/get/user/sessionId', (req, res) => {
-      res.send({id: getEncyptedQueryParams({userName: req.query.userName})})
+  app.all('/learner/get/user/sessionId/:userId', (req, res) => {
+      if (req.session.userId === req.params.userId) {
+        res.send({id: getEncyptedQueryParams({userName: req.session.userName})})
+      } else {
+        throw 'unhandled exception while getting sessionID';
+      }
+
   })
 
   app.all('/migrate/account/login/callback', async (req, res) => {
