@@ -1,7 +1,7 @@
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { CreateTemplateComponent } from './create-template.component';
-import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserCacheTtlService, ConfigService, NavigationHelperService, ToasterService, UtilService, ResourceService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
@@ -137,7 +137,7 @@ class RouterStub {
     expect(component.disableCreateTemplate).toEqual(true);
   });
 
-  it('should create the certificate template with all the form values', () => {
+  it('should create the certificate template with all the form values', fakeAsync(() => {
     const uploadCertService = TestBed.get(UploadCertificateService);
     component.createTemplateForm = new FormGroup({
       certificateTitle: new FormControl('Completion certificate'),
@@ -155,12 +155,12 @@ class RouterStub {
     spyOn(uploadCertService, 'createCertTemplate').and.returnValue(of(MockData.create));
 
     component.createCertTemplate();
-
-    expect(component.disableCreateTemplate).toEqual(true);
+    tick(1000);
+  expect(component.disableCreateTemplate).toEqual(true);
     expect(component.uploadTemplate).toHaveBeenCalledWith(component.finalSVGurl, MockData.create.result.identifier);
-  });
+  }));
 
-  it('should not create the certificate template with all the form values', () => {
+  it('should not create the certificate template with all the form values', fakeAsync(() => {
     const uploadCertService = TestBed.get(UploadCertificateService);
     const toasterService = TestBed.get(ToasterService);
     component.createTemplateForm = new FormGroup({
@@ -179,8 +179,9 @@ class RouterStub {
     spyOn(new CertConfigModel(), 'prepareCreateAssetRequest').and.stub();
     spyOn(uploadCertService, 'createCertTemplate').and.callFake(() => throwError({}));
     component.createCertTemplate();
+    tick(1000);
     expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, please try again later');
-  });
+  }));
 
   it('should upload the final certificate svg image', () => {
     const uploadCertService = TestBed.get(UploadCertificateService);
@@ -269,6 +270,9 @@ class RouterStub {
   });
 
   it('should call updateStateLogos', () => {
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.stub();
+    component.svgData = new DOMParser().parseFromString(MockData.svgData.data, 'text/html');
     component.images = MockData.imagesArray;
     const image = `<image></image>`;
     spyOn(component, 'editSVG').and.returnValue(new Promise((resolve) => resolve()));
@@ -310,20 +314,20 @@ class RouterStub {
   });
 
   it('should make input as touched', () => {
+    component.svgData = new DOMParser().parseFromString(MockData.svgData.data, 'text/html');
     component.createTemplateForm = new FormGroup({
-      certificateTitle: new FormControl(),
-      stateName: new FormControl(),
-      authoritySignature_0: new FormControl(),
-      authoritySignature_1: new FormControl(),
-      allowPermission: new FormControl()
+      certificateTitle: new FormControl(Validators.required),
+      stateName: new FormControl(Validators.required),
+      authoritySignature_0: new FormControl(Validators.required),
+      authoritySignature_1: new FormControl(Validators.required),
+      allowPermission: new FormControl(Validators.requiredTrue)
     });
-    component.images.LOGO1.url = 'http://test.com/';
-    component.images.SIGN1.url = 'http://test.com/';
+    component.images.LOGO1.url = null;
+    component.images.SIGN1.url = null;
     component.createCertTemplate();
     expect(component.createTemplateForm.controls.certificateTitle.touched).toEqual(true);
     expect(component.createTemplateForm.controls.stateName.touched).toEqual(true);
     expect(component.createTemplateForm.controls.authoritySignature_0.touched).toEqual(true);
-
 
   });
   // it('should remove the selected logo', () => {

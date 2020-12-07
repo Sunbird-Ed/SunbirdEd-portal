@@ -1,4 +1,4 @@
-<div class="ui dropdown right top pointing" [ngClass]="{'notification-disable': !notificationList?.length}" id="dropdown-menu-list-header" (click)="toggleInAppNotifications()">
+<div class="ui dropdown right top pointing" [ngClass]="{'notification-disable': !notificationList?.length}" id="dropdown-menu-list-header" (click)="toggleInAppNotifications()" title="{{notificationList?.length ? '' : resourceService.frmelmnts?.lbl?.noNotificationsToDisplay}}">
   <div class="notification-bell d-flex flex-ai-center flex-jc-center" name="Guest">
     <img src="./assets/images/notification.svg" alt="In App Notification">
   </div>
