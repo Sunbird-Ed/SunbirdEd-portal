@@ -2953,5 +2953,36 @@ export const MockData = {
           type: 'LOGO',
           url: 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11293020669537484811928/artifact/001_1578394365141.png'
         }
-    }
+    },
+
+    defaultCerts: {
+      'id': 'api.v1.search',
+      'ver': '1.0',
+      'ts':'2020-11-17T12:45:38.555Z',
+      'params': {
+         'resmsgid':'cb64b4b0-28d2-11eb-9350-33ea90097228',
+         'msgid':'66dcf0d4-6d02-9890-04a8-1138550f4326',
+         'status':'successful',
+         'err':null,
+         'errmsg':null
+      },
+      'responseCode':'OK',
+      'result':{
+         'count':16,
+         'content':[
+            {
+               'identifier':'do_1131445527870996481800',
+               'certType':'cert template layout',
+               'code':'AWS',
+               'primaryCategory':'Certificate Template',
+               'channel':'b00bc992ef25f1a9a8d63291e20efc8d',
+               'name':'AWS',
+               'artifactUrl':'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_1131445527870996481800/artifact/template-2.svg',
+               'issuer':'{"name":"AP","url":"https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11312763976015872012/artifact/apgov.png"}',
+               'objectType':'Content',
+               'signatoryList':'[{"image":"https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11313535908904960014/artifact/vector_signature-com.png","name":"CEO"}]'
+            }
+         ]
+      }
+   }
 };

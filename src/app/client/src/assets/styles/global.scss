@@ -663,3 +663,62 @@ app-workspace {
 html.PlayerMediaQueryClass {
   font-size: calc(12px + (32 - 12) * ((100vw - 320px) / (1920 - 320)));
 }
+.sb-notification-modal{
+  .ui.modal{
+    left: auto;
+    right: calculateRem(70px);
+    top: calculateRem(25px);
+    border-radius: calculateRem(16px) !important;
+    padding: calculateRem(24px) calculateRem(16px);
+    max-height: 85%;
+    overflow-y: auto;
+    background: var(--white);
+    html[dir="rtl"] & {
+      right: auto;
+      left: calculateRem(70px);
+    }
+    @include respond-below(sm) {
+      transform: translate(0,0) !important;
+      right: 0;
+      top: calculateRem(90px);
+      left: 0;
+      html[dir="rtl"] & {
+        right: auto;
+        left: calculateRem(60px);
+      }
+    }
+    .close.icon{
+      display: none;
+    }
+  }
+}
+.sb-responsive-header{
+  .notification-bell{
+    margin-right: calculateRem(16px);
+    html[dir="rtl"] & {
+      margin-right: 0;
+      margin-left: calculateRem(16px);
+    }
+  }
+}
+.item.sb-btn-disabled{
+  opacity: 0.5;
+  &:hover{
+    color: var(--gray-200)!important;
+    cursor: initial !important;
+    .sb-icon{
+      background-color: var(--primary-400);
+      opacity: 0.5;
+    }
+  }
+}
+.sb-desktop-filter-section{
+  .sbt-filter{
+    @include respond-above(md){
+      margin-top: 0 !important;
+    }
+  }
+}
+.pointer-events-disabled {
+  pointer-events: none;
+}

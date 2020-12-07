@@ -33,6 +33,11 @@
                 "glob": "**/*",
                 "input": "./node_modules/@project-sunbird/sunbird-pdf-player/lib/assets/",
                 "output": "/assets/"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/@project-sunbird/sunbird-video-player/lib/assets/",
+                "output": "/assets/"
               }
             ],
             "styles": [
@@ -41,7 +46,8 @@
               "node_modules/font-awesome/css/font-awesome.css",
               "./node_modules/@project-sunbird/sb-styles/assets/_styles.scss",
               "./node_modules/leaflet/dist/leaflet.css",
-              "src/assets/styles/styles.scss"
+              "src/assets/styles/styles.scss",
+              "node_modules/video.js/dist/video-js.min.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -119,6 +125,40 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.staging.ts"
+                }
+              ]
+            },
+            "desktop-production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": false,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.desktop.prod.ts"
+                }
+              ]
+            },
+            "desktop-staging": {
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "extractCss": false,
+              "namedChunks": true,
+              "aot": false,
+              "extractLicenses": false,
+              "vendorChunk": false,
+              "buildOptimizer": false,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.desktop.staging.ts"
                 }
               ]
             }

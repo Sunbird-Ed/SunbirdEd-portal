@@ -185,7 +185,7 @@
               <div class="certificate-edit-sbcard">
                 <div class="d-flex flex-dc p-16 certificate-edit-sbcard-content">
                   <div class="certificate-frame">
-                    <div><img [src]="selectedTemplate?.artifactUrl"></div>
+                    <div><img src="{{selectedTemplate?.artifactUrl || selectedTemplate?.previewUrl}}"></div>
                   </div>
                   <div class="d-flex flex-ai-center flex-jc-space-between w-100 pt-16">
                     <div class="d-flex flex-ai-center ml-auto d-flex">
@@ -204,13 +204,18 @@
         <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-3">
           <div class="select-template-content sb-bg-color-white p-24 certificate-bg">
             <div class="select-template-container mb-16">
-               <div class="d-flex flex-dc text-left mr-16">
+               <div class="d-flex flex-ai-center text-left flex-jc-space-between">
                <label class="certificates-label">{{resourceService?.frmelmnts?.cert?.lbl?.templates}}</label>
-               <label class="font-weight-normal my-16 fsmall">Choose and select from available templates</label>
-              </div>
                <button class="add-new-template-btn sb-btn sb-btn-normal sb-btn-outline-primary sb-left-icon-btn font-weight-bold" type="button"
                (click)="navigateToCreateTemplate()">
-                <i class="plus alternate outline icon"></i>Create template</button>
+                <i class="plus alternate outline icon"></i>{{resourceService?.frmelmnts?.cert?.btn?.createtemp}}</button>
+              </div>
+              <div class="d-flex flex-ai-center text-left flex-jc-space-between">
+                <label class="font-weight-normal fsmall">{{resourceService?.frmelmnts?.cert?.lbl?.certNote}}</label>
+                <button (click)="refreshData()" class="sb-btn sb-btn-normal sb-btn-outline-primary my-16">
+                  {{resourceService?.frmelmnts?.cert?.btn?.refresh}}
+                </button>
+            </div>
                <div *ngIf="certTemplateList" class="certificate-scrollbar">
                 <div *ngFor="let template of certTemplateList">
                   <sb-certificate-actions [preview]="config?.preview"
@@ -271,5 +276,18 @@
     <button (click)="closeTemplateDetectModal()" class="sb-btn sb-btn-normal sb-btn-outline-primary">
       {{resourceService?.frmelmnts?.btn?.cancel}}
     </button>
+  </div>
+</sui-modal>
+
+
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
+  appBodyScroll (dismissed)="showAlertModal = false" #modal *ngIf="showAlertModal">
+  <div class="sb-modal-header">
+    {{resourceService?.frmelmnts?.cert?.lbl?.alertHeader}}
+  </div>
+  <div class="sb-modal-content">
+    <div class="ui center aligned segment text-left">
+      <p>{{resourceService?.frmelmnts?.cert?.lbl?.alertMessageForCert}}</p>
+    </div>
   </div>
 </sui-modal>

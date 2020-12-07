@@ -1,4 +1,4 @@
-import {of as observableOf, throwError as observableThrowError} from 'rxjs';
+import {of as observableOf, of, throwError as observableThrowError} from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockUserData } from './../../services/user/user.mock.spec.data';
 import {async, ComponentFixture, TestBed, tick} from '@angular/core/testing';
@@ -50,11 +50,24 @@ describe('MainHeaderComponent', () => {
         useInstanceAs: 'user {instance}',
         addUser: 'Add user',
         switchUser: 'switchUser',
-        cancel: 'cancel'
+        cancel: 'cancel',
+        notification: 'Notification',
+        newNotification: 'New Notification'
+      },
+      btn: {
+        clear: 'Clear',
+        seeMore: 'See more',
+        seeLess: 'See less'
       }
     }
   };
   configureTestSuite();
+  const MockCSService = {
+    getUserFeed() { return of({}); },
+    updateUserFeedEntry() { return of({}); },
+    deleteUserFeedEntry() { return of({}); }
+  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule,
@@ -65,7 +78,7 @@ describe('MainHeaderComponent', () => {
         PermissionService, ManagedUserService, UtilService, LayoutService, NavigationHelperService,
         {provide: ResourceService, useValue: resourceBundle},
         UserService, ConfigService, AnimationBuilder,
-        LearnerService, CoursesService]
+        LearnerService, CoursesService, { provide: 'CS_USER_SERVICE', useValue: MockCSService }]
     })
       .compileComponents();
   }));
@@ -319,6 +332,15 @@ describe('MainHeaderComponent', () => {
     });
     component.switchLayout();
     expect(telemetryService.interact).toHaveBeenCalledWith(mockData.telemetryEventClassic);
+  });
+
+  it('should switch layout and generate telemetry for classic', () => {
+    const layoutService = TestBed.get(LayoutService);
+    component.layoutConfiguration = null;
+    spyOn(layoutService, 'switchToAccessibleLayout').and.callFake(() => {
+    });
+    component.switchToAccessibleLayout();
+    expect(layoutService).toBeTruthy();
   });
 
   it('should switch layout and generate telemetry for joy', () => {

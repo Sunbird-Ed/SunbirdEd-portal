@@ -27,7 +27,7 @@ export class UploadCertificateService {
    * To get the asset images (State logos and Signs)
    * to get the particular asset we need to pass asset naem as query
    */
-  getAssetData(query?) {
+  getAssetData(query?, type?) {
     const body = {
       'request': {
         'filters': {
@@ -35,12 +35,18 @@ export class UploadCertificateService {
           'contentType': ['Asset'],
           'compatibilityLevel': { 'min': 1, 'max': 2 },
           'status': ['Live'],
-          'channel': this.userService.channel
+          'primaryCategory': 'Asset'
+        },
+        'sort_by': {
+          'lastUpdatedOn': 'desc'
         },
         'limit': 50,
         'offset': 0
       }
     };
+    if (!type) {
+      body['request']['filters']['channel'] = this.userService.channel;
+    }
     if (query) {
       body['request']['query'] = query;
     }

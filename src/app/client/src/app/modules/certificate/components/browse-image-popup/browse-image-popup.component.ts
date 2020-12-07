@@ -17,16 +17,18 @@ export class BrowseImagePopupComponent implements OnInit {
   @Input() logoType;
   @Output() assetData = new EventEmitter();
   @Output() close = new EventEmitter();
-  showUploadUserModal;
+  @Input() showUploadUserModal = false;
   imageName;
   imagesList = [];
   uploadForm: FormGroup;
   fileObj: any;
   selectedLogo: any;
+  sign = 'SIGN';
   imageDimensions = {
     'LOGO': { type: 'PNG', dimensions: '88px X 88px' },
     'SIGN': { type: 'PNG', dimensions: '112px X 46px' }
   };
+  allImagesList = [];
 
   constructor(public uploadCertificateService: UploadCertificateService,
     public toasterService: ToasterService,
@@ -46,6 +48,7 @@ export class BrowseImagePopupComponent implements OnInit {
 
   getAssetList() {
     this.imageName = '';
+    this.selectedLogo = null;
     this.uploadCertificateService.getAssetData().subscribe(res => {
       this.imagesList = res.result.content;
     }, error => {
@@ -53,10 +56,14 @@ export class BrowseImagePopupComponent implements OnInit {
     });
   }
 
-  searchImage() {
-    this.uploadCertificateService.getAssetData(this.imageName).subscribe(res => {
+  searchImage(type?) {
+    this.uploadCertificateService.getAssetData(this.imageName, type).subscribe(res => {
       if (res && res.result) {
-        this.imagesList = res.result.content;
+        if (!type) {
+          this.imagesList = res.result.content;
+        } else {
+          this.allImagesList = res.result.content;
+        }
       }
     }, error => {
       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
@@ -65,7 +72,7 @@ export class BrowseImagePopupComponent implements OnInit {
 
   async fileChange(ev) {
     this.uploadForm.reset();
-    const imageProperties = await this.getImageProperties(ev);
+    const imageProperties = await this.getImageProperties(ev.target.files[0]);
     console.log(imageProperties);
     const isDimensionMatched = this.dimentionCheck(imageProperties);
     const isTypeMatched = _.get(imageProperties, 'type').includes('png');
@@ -74,15 +81,26 @@ export class BrowseImagePopupComponent implements OnInit {
     if (imageProperties && isSizeMatched && isTypeMatched && isDimensionMatched) {
       this.fileObj = ev.target.files[0];
       const fileName = _.get(this.fileObj, 'name').split('.')[0];
-      const userName = `${_.get(this.userService, 'userProfile.firstName')} ${_.get(this.userService, 'userProfile.lastName')}`;
+      const userName = `${_.get(this.userService, 'userProfile.firstName') || ''} ${_.get(this.userService, 'userProfile.lastName') || ''}`;
       this.uploadForm.patchValue({
         'assetCaption': fileName,
         'creator': userName,
         'creatorId': _.get(this.userService, 'userProfile.id')
       });
     } else {
-      console.log('*********Error: Image requirments are not matched*******************');
+      this.toasterService.error(_.get(this.resourceService, 'frmelmnts.cert.lbl.imageErrorMsg'));
+
     }
+  }
+
+  getAllImages() {
+    this.imageName = '';
+    this.selectedLogo = null;
+    this.uploadCertificateService.getAssetData(null, 'all').subscribe(res => {
+      this.allImagesList = res.result.content;
+    }, error => {
+      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+    });
   }
 
   dimentionCheck(image) {
@@ -99,16 +117,20 @@ export class BrowseImagePopupComponent implements OnInit {
   getImageProperties(ev) {
     return new Promise((resolve, reject) => {
       let imageData;
-      const file = ev.target.files[0];
+      const file = ev;
       const img = new Image();
-      img.src = window.URL.createObjectURL(file);
+      if (file.url) {
+        img.src = file.url;
+      } else {
+        img.src = window.URL.createObjectURL(file);
+      }
       img.onload = () => {
         const width = img.naturalWidth;
         const height = img.naturalHeight;
         imageData = {
           'height': height,
           'width': width,
-          'size': _.toNumber((file.size / (1024 * 1024)).toFixed(2)), // file.size,
+          'size': _.toNumber((file.size / (1024 * 1024)).toFixed(2)),
           'type': file.type
         };
         resolve(imageData);
@@ -122,13 +144,18 @@ export class BrowseImagePopupComponent implements OnInit {
   }
 
   upload() {
-    this.uploadCertificateService.createAsset(this.uploadForm.value, this.logoType.type).subscribe(res => {
-      if (res && res.result) {
-        this.uploadBlob(res);
-      }
-    }, error => {
-      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    });
+    // TODO: have to make more dynamic (use input variable autoUpload)
+    if (this.logoType.type !== this.sign) {
+      this.uploadCertificateService.createAsset(this.uploadForm.value, this.logoType.type).subscribe(res => {
+        if (res && res.result) {
+          this.uploadBlob(res);
+        }
+      }, error => {
+        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+      });
+    } else {
+      this.getImageURLs();
+    }
   }
 
   /**
@@ -150,7 +177,7 @@ export class BrowseImagePopupComponent implements OnInit {
         };
         this.assetData.emit(image);
         this.uploadForm.reset();
-        this.claseModel();
+        this.closeModel();
       };
     }
   }
@@ -171,28 +198,49 @@ export class BrowseImagePopupComponent implements OnInit {
           };
           this.assetData.emit(image);
           this.uploadForm.reset();
-          this.claseModel();
+          this.closeModel();
         }
       }, error => {
         this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-        this.claseModel();
+        this.closeModel();
         this.uploadForm.reset();
       });
     }
   }
 
-  selectLogo(logo) {
-    this.selectedLogo = logo;
+  async selectLogo(logo) {
+    const file = {
+      url: logo.artifactUrl,
+      type: logo.mimeType,
+      size: logo.size
+    };
+    const imageProperties = await this.getImageProperties(file);
+    console.log(imageProperties);
+    const isDimensionMatched = this.dimentionCheck(imageProperties);
+    const isTypeMatched = _.get(imageProperties, 'type').includes('png');
+    const isSizeMatched = _.get(imageProperties, 'size') < 1;
+    console.log(isDimensionMatched, isTypeMatched, isSizeMatched);
+    if (imageProperties && isSizeMatched && isTypeMatched && isDimensionMatched) {
+      this.selectedLogo = logo;
+    } else {
+      this.toasterService.error(_.get(this.resourceService, 'frmelmnts.cert.lbl.imageErrorMsg'));
+    }
   }
   back() {
-    this.showUploadUserModal = false;
-    this.showSelectImageModal = true;
-    this.uploadForm.reset();
-    // this.close.emit();
-    this.selectedLogo = null;
+    if (this.logoType.type === this.sign) {
+      this.closeModel();
+    } else {
+      this.showUploadUserModal = false;
+      this.showSelectImageModal = true;
+      this.uploadForm.reset();
+      // this.close.emit();
+      this.selectedLogo = null;
+    }
+
   }
 
-  claseModel() {
+  closeModel() {
+    this.uploadForm.reset();
     this.showUploadUserModal = false;
     this.showSelectImageModal = false;
     this.selectedLogo = null;
@@ -209,6 +257,6 @@ export class BrowseImagePopupComponent implements OnInit {
     };
     this.assetData.emit(image);
     this.selectedLogo = null;
-    this.claseModel();
+    this.closeModel();
   }
 }

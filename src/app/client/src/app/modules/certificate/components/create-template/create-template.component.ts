@@ -89,7 +89,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
           'fields': ['identifier', 'name', 'code', 'certType', 'data', 'issuer', 'signatoryList', 'artifactUrl', 'primaryCategory', 'channel'],
           'limit': 100
       }
-  };
+    };
     this.uploadCertificateService.getCertificates(request).subscribe(res => {
       this.defaultCertificates = _.get(res, 'result.content');
       this.selectedCertificate = _.clone(this.defaultCertificates[0]);
@@ -112,7 +112,11 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
   }
 
   validateForm() {
-    if (this.createTemplateForm.status === 'VALID' && _.get(this.createTemplateForm, 'value.allowPermission')) {
+    // TODO: Form validation need to improve
+    const logo = _.get(this.images, 'LOGO1.url');
+    const sign = _.get(this.images, 'SIGN1.url');
+    if (this.createTemplateForm.status === 'VALID' && _.get(this.createTemplateForm, 'value.allowPermission')
+      && logo && sign) {
       this.disableCreateTemplate = false;
     } else {
       this.disableCreateTemplate = true;
@@ -124,7 +128,6 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     this.uploadCertificateService.getSvg(this.selectedCertificate.artifactUrl).then(res => {
       const svgFile = res;
       this.logoHtml = this.sanitizer.bypassSecurityTrustHtml(svgFile);
-      console.log(this.convertHtml(this.logoHtml));
       this.previewCertificate();
     });
   }
@@ -135,19 +138,28 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
   }
 
   createCertTemplate() {
-    // TODO: Need to remove this method call;
-    this.previewCertificate();
-    const channel =  this.userService.channel;
-    const request = this.certConfigModalInstance.prepareCreateAssetRequest(_.get(this.createTemplateForm, 'value'), channel,this.selectedCertificate, this.images);
-    this.disableCreateTemplate = true;
-    this.uploadCertificateService.createCertTemplate(request).subscribe(response => {
-      console.log('create response', response);
-      const assetId = _.get(response, 'result.identifier');
-      console.log('this.finalSVGurl', this.finalSVGurl);
-      this.uploadTemplate(this.finalSVGurl, assetId);
-    }, error => {
-      this.toasterService.error('Something went wrong, please try again later');
-    });
+    this.validateForm();
+    // TODO: form validation need to improve
+    if (this.disableCreateTemplate) {
+      this.createTemplateForm.controls.certificateTitle.markAsTouched();
+      this.createTemplateForm.controls.stateName.markAsTouched();
+      this.createTemplateForm.controls.authoritySignature_0.markAsTouched();
+      this.createTemplateForm.controls.authoritySignature_1.markAsTouched();
+      this.createTemplateForm.controls.allowPermission.markAsTouched();
+    } else {
+      this.previewCertificate();
+      setTimeout(() => {
+        const channel = this.userService.channel;
+        const request = this.certConfigModalInstance.prepareCreateAssetRequest(_.get(this.createTemplateForm, 'value'), channel, this.selectedCertificate, this.images);
+        this.disableCreateTemplate = true;
+        this.uploadCertificateService.createCertTemplate(request).subscribe(response => {
+          const assetId = _.get(response, 'result.identifier');
+          this.uploadTemplate(this.finalSVGurl, assetId);
+        }, error => {
+          this.toasterService.error('Something went wrong, please try again later');
+        });
+      }, 1000);
+    }
   }
 
   uploadTemplate(base64Url, identifier) {
@@ -168,6 +180,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
       this.createTemplateForm.get('authoritySignature_1').updateValueAndValidity();
     }
     this.images[data.key] = data;
+    this.validateForm();
   }
 
   close() {
@@ -181,6 +194,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
       this.createTemplateForm.get('authoritySignature_1').updateValueAndValidity();
     }
     this.images[key] = {};
+    this.validateForm();
   }
 
   openSateLogos(type) {
@@ -191,8 +205,9 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
 
   openSignLogos(type) {
     this.logoType = type;
-    this.showSelectImageModal = true;
-    this.browseImage.getAssetList();
+    this.showSelectImageModal = false;
+    this.showUploadUserModal = true;
+    // this.browseImage.getAssetList();
   }
 
   chooseCertificate(certificate) {
@@ -209,7 +224,6 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
   }
 
   previewCertificate() {
-    console.log(this.images);
     this.svgData = this.convertHtml(this.logoHtml);
     const stateLogos = this.svgData.getElementsByClassName(this.classNames.STATE_LOGOS);
     const digitalSigns = this.classNames.SIGN_LOGO.map(id => this.svgData.getElementById(id));
@@ -223,7 +237,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     certTitle[0].innerHTML = this.createTemplateForm.controls.certificateTitle.value;
     const stateTitle = this.svgData.getElementsByClassName(this.classNames.STATE_TITLE);
     stateTitle[0].innerHTML = this.createTemplateForm.controls.stateName.value;
-    this.classNames.DESIGNATIONS.forEach((id, index) => {
+    this.classNames.DESIGNATIONS_NAMES.forEach((id, index) => {
       const designation_html = this.svgData.getElementById(id);
       if (designation_html) {
         const title = this.createTemplateForm.get(`authoritySignature_${index}`).value;
@@ -251,14 +265,12 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
       for (let i = 0; i < logosArray.length; i++) {
         const logo = logosArray[i];
         if (logo) {
-          console.log(stateLogos[i]);
           const res = await this.toDataURL(logo);
 
           if (res && !_.isEmpty(stateLogos) && stateLogos[i]) {
             stateLogos[i].setAttribute('xlink:href', res['url']);
           }
           if (i === (logosArray.length - 1)) {
-            console.log('resolve');
             resolve();
           }
         }
@@ -317,6 +329,7 @@ urltoFile(url, filename, mimeType) {
   }
 
   back() {
+    this.uploadCertificateService.certificate.next(null);
     this.navigationHelperService.navigateToLastUrl();
   }
 }

@@ -10,6 +10,9 @@ const routes: Routes = [
     data: { telemetry: { env: 'public', pageid: 'landing-page', type: 'edit', subtype: 'paginate' } }
   },
   {
+    path: 'desktop', loadChildren: './module/offline/offline.module#OfflineModule'
+  },
+  {
     path: 'explore', loadChildren: './module/explore/explore.module#ExploreModule'
   },
   {
@@ -31,8 +34,9 @@ const routes: Routes = [
    path: 'download/desktopapp', component: OfflineApplicationDownloadComponent
    },
    {
-    path: 'faq', loadChildren: './module/help/help.module#HelpModule'
-  }];
+      path: 'faq', loadChildren: './module/help/help.module#HelpModule'
+    }
+];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]

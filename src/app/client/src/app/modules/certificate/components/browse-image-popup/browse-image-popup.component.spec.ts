@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule } from '@sunbird/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import * as _ from 'lodash-es';
 import { BrowseImagePopupComponent } from './browse-image-popup.component';
 import { SuiModule } from 'ng2-semantic-ui';
@@ -114,13 +114,13 @@ describe('BrowseImagePopupComponent', () => {
     spyOn(component.uploadForm, 'reset');
     spyOn(component.uploadForm, 'patchValue');
     component.fileChange(ev);
-    expect(component.getImageProperties).toHaveBeenCalledWith(ev);
+    expect(component.getImageProperties).toHaveBeenCalledWith(ev.target.files[0]);
     expect(component.uploadForm.reset).toHaveBeenCalled();
     expect(await component.dimentionCheck).toHaveBeenCalledWith(ev.target.files[0]);
     expect( component.uploadForm.reset).toHaveBeenCalled();
     expect( component.uploadForm.patchValue).toHaveBeenCalledWith({
       assetCaption: 'file1',
-      creator: 'undefined undefined',
+      creator: ' ',
       creatorId: undefined
     });
   });
@@ -142,18 +142,33 @@ describe('BrowseImagePopupComponent', () => {
     const value = component.dimentionCheck('');
     expect(value).toBeFalsy();
   });
- 
-  it('should select the logo', () => {
+
+  it('should select the logo', fakeAsync(() => {
+    spyOn(component, 'dimentionCheck').and.returnValue(true);
     const logo = {
       artifactUrl: 'SOME_URL',
-      name: 'SOME_NAME'
+      name: 'SOME_NAME',
+      type: 'image/png',
+      size: 0.01
     };
+    const imageDImensions = {
+      'height': 88,
+      'width': 88,
+      'size': 0.01,
+      'type': 'image/png'
+    };
+    spyOn(component, 'getImageProperties').and.returnValue(new Promise((resolve) => resolve(imageDImensions)));
     component.selectLogo(logo);
+    tick(500);
     expect(component.selectedLogo).toEqual(logo);
-  });
+  }));
 
   it('should go back', () => {
     spyOn(component.uploadForm, 'reset');
+    component.logoType  = {
+      'type' : 'LOGO'
+    };
+    component.sign = 'SIGN';
     component.back();
     expect(component.showUploadUserModal).toEqual(false);
     expect(component.showSelectImageModal).toEqual(true);
@@ -161,8 +176,18 @@ describe('BrowseImagePopupComponent', () => {
     expect(component.selectedLogo).toEqual(null);
   });
 
+  it('should go back', () => {
+    spyOn(component, 'closeModel');
+    component.logoType  = {
+      'type' : 'SIGN'
+    };
+    component.sign = 'SIGN';
+    component.back();
+    expect(component.closeModel).toHaveBeenCalled();
+  });
+
   it('should close the modal', () => {
-    component.claseModel();
+    component.closeModel();
     expect(component.showUploadUserModal).toEqual(false);
     expect(component.showSelectImageModal).toEqual(false);
     expect(component.selectedLogo).toEqual(null);

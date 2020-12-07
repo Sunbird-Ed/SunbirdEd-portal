@@ -514,4 +514,15 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       });
     });
   }
+
+  copyToClipboard(userName) {
+    const textElement = document.createElement('textarea');
+    textElement.style.position = 'fixed';
+    textElement.value = userName;
+    document.body.appendChild(textElement);
+    textElement.select();
+    document.execCommand('copy');
+    document.body.removeChild(textElement);
+    this.toasterService.success((this.resourceService.messages.profile.smsg.m0041).replace('{instance}', this.instance));
+  }
 }

@@ -1,0 +1,22 @@
+{
+    "id": "org.ekstep.pdfrenderer",
+    "ver": "1.0",
+    "shortId": "org.eskstep.pdfrenderer",
+    "author": "Kiran Puppala",
+    "description": "",
+    "publishedDate": "",
+    "renderer": {
+        "main": "renderer/plugin.js",
+        "dependencies": [
+            {"type": "js", "src": "renderer/libs/pdf.js"},
+            {"type": "js", "src": "renderer/libs/compatibility.js"},
+            {"type": "css", "src": "renderer/libs/pdf.css"},
+            {"type": "js", "src": "renderer/libs/hammer.js"},
+            {"type": "js", "src": "renderer/libs/pdf_viewer.js"}
+        ]
+    },
+    "dependencies": [
+        
+    ] 
+
+}

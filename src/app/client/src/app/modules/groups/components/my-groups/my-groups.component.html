@@ -5,7 +5,7 @@
 <div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-mygroups relative9' : ''">
 <div class="flex-dc mt-48 sb-group-container sb-group-container--sm" *ngIf="!groupsList.length && !isLoader">
   <div class="d-flex flex-dc flex-ai-center flex-jc-center">
-    <img src="./assets/images/mygroups.svg" width="220">
+    <img alt="{{resourceService?.frmelmnts?.lbl?.createGroupDes}}" src="./assets/images/mygroups.svg" width="220">
     <div class="my-24 fs-1 text-center">
       {{resourceService?.frmelmnts?.lbl?.createGroupDes}}
      </div>
@@ -34,7 +34,7 @@
             </svg></i>
             {{ resourceService?.frmelmnts?.lbl?.createGroup }}
           </button>
-          <button class="sb-btn sb-btn-normal sb-btn-link-primary min-w-auto p-0 px-8" type="button" (click)="showFtuPopup();addTelemetry('ftu-info')">
+          <button class="sb-btn sb-btn-normal sb-btn-link-primary min-w-auto p-0 px-8" aria-label="showFtuPopup" type="button" (click)="showFtuPopup();addTelemetry('ftu-info')">
             <i class="icon-svg icon-svg--sm icon-info"><svg class="icon icon-svg--primary">
               <use xlink:href="./assets/images/sprite.svg#info"></use>
             </svg></i>

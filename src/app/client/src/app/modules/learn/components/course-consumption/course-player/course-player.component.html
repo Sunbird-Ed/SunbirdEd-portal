@@ -166,13 +166,13 @@
         </div>
 
         <!-- 3. Join batch, leave batch and show batch popup-->
-        <app-batch-details *ngIf="courseStatus !== 'Unlisted' && !addToGroup" [courseId]="courseId" [batchId]="batchId"
+        <app-batch-details *ngIf="courseStatus !== 'Unlisted'" [courseId]="courseId" [batchId]="batchId"
           [enrolledCourse]="enrolledCourse" [enrolledBatchInfo]="enrolledBatchInfo" [courseHierarchy]="courseHierarchy"
           [courseProgressData]="courseProgressData" (allBatchDetails)="getAllBatchDetails($event)"></app-batch-details>
 
         <!-- Consent to share PII  -->
         <div class="mb-16" *ngIf="showDataSettingSection">
-          <app-global-consent-pii [collection]="courseHierarchy" [type]="courseConsent" [consentConfig]="consentConfig"></app-global-consent-pii>
+          <app-global-consent-pii [collection]="courseHierarchy" [isglobalConsent]="false" [type]="courseConsent" [consentConfig]="consentConfig"></app-global-consent-pii>
         </div>
 
         <!-- Credits & License information -->

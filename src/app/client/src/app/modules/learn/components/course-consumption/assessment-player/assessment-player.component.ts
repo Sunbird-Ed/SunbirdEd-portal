@@ -13,6 +13,8 @@ import { combineLatest, Observable, Subject } from 'rxjs';
 import { first, map, takeUntil } from 'rxjs/operators';
 import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
 import * as TreeModel from 'tree-model';
+import { NotificationService } from '../../../../notification/services/notification/notification.service';
+
 const ACCESSEVENT = 'renderer:question:submitscore';
 
 @Component({
@@ -61,6 +63,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   layoutConfiguration;
   isCourseCompletionPopupShown = false;
   previousContent = null;
+  groupId;
 
   constructor(
     public resourceService: ResourceService,
@@ -78,7 +81,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     private contentUtilsServiceService: ContentUtilsServiceService,
     private telemetryService: TelemetryService,
     private layoutService: LayoutService,
-    public generaliseLabelService: GeneraliseLabelService
+    public generaliseLabelService: GeneraliseLabelService,
+    private notificationService: NotificationService
   ) {
     this.playerOption = {
       showContentRating: true
@@ -157,11 +161,19 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
         this.batchId = queryParams.batchId;
         this.courseId = queryParams.courseId;
         this.courseName = queryParams.courseName;
+        this.groupId = _.get(queryParams, 'groupId');
         const selectedContent = queryParams.selectedContent;
         let isSingleContent = this.collectionId === selectedContent;
         this.isParentCourse = this.collectionId === this.courseId;
         if (this.batchId) {
           this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
+          if (this.groupId) {
+            this.telemetryCdata.push({
+              id: this.groupId,
+              type: 'Group'
+            });
+          }
+
           this.getCollectionInfo(this.courseId)
             .pipe(takeUntil(this.unsubscribe))
             .subscribe((data) => {
@@ -190,6 +202,10 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
               this.goBack();
             });
         } else {
+          this.telemetryCdata = [{
+            id: this.groupId,
+            type: 'Group'
+          }];
           this.playerService.getCollectionHierarchy(this.collectionId, {})
             .pipe(takeUntil(this.unsubscribe))
             .subscribe((data) => {
@@ -235,6 +251,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
           if (_.get(res, 'content.length')) {
             this.isCourseCompleted = (res.totalCount === res.completedCount);
             this.showCourseCompleteMessage = this.isCourseCompleted && showPopup;
+            if (this.showCourseCompleteMessage) {
+              this.notificationService.refreshNotification$.next(true);
+            }
             this.isCourseCompletionPopupShown = this.isCourseCompleted;
           }
 

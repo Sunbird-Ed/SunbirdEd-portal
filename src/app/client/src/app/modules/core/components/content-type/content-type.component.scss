@@ -217,4 +217,8 @@
     -webkit-mask-image: url(/assets/images/mask-image/all.svg);
     mask-image: url(/assets/images/mask-image/all.svg);
   }
+  &__myDownloads   {
+    -webkit-mask-image: url(/assets/images/mask-image/download.svg);
+    mask-image: url(/assets/images/mask-image/download.svg);
+  }
 }

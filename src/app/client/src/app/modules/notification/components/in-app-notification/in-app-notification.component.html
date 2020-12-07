@@ -1,0 +1,25 @@
+<div class="ui dropdown right top pointing" [ngClass]="{'notification-disable': !notificationList?.length}" id="dropdown-menu-list-header" (click)="toggleInAppNotifications()" title="{{notificationList?.length ? '' : resourceService.frmelmnts?.lbl?.noNotificationsToDisplay}}">
+  <div class="notification-bell d-flex flex-ai-center flex-jc-center" name="Guest">
+    <img src="./assets/images/notification.svg" alt="In App Notification">
+  </div>
+  <div class="notification-count" *ngIf="notificationCount">{{notificationCount}}</div>
+</div>
+<sui-modal
+  [mustScroll]="true" 
+  [isClosable]="true"
+  [transitionDuration]="0"
+  [size]="'small'"
+  class="sb-modal sb-notification-modal"
+  appBodyScroll
+  (dismissed)="showNotificationModel=false" 
+  *ngIf="showNotificationModel">
+  <div>
+    <sb-in-app-notification
+    [notificationList]="notificationList"
+    [inAppNotificationConfig]="inAppNotificationConfig"
+    (notificationClick)="notificationHandler($event)"
+    (deleteNotificationClick)="deleteNotificationHandler($event)"
+    (clearAllClick)="clearAllNotifationsHandler($event)"
+    ></sb-in-app-notification>
+  </div>
+</sui-modal>

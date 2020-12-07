@@ -292,7 +292,8 @@ describe('CoursePageComponent', () => {
         const option = {
             source: 'web', name: 'Course', organisationId: '*',
             filters: { sort_by: 'name', sortType: 'desc', audience: ['Teacher'] },
-            fields: ['name', 'appIcon', 'medium', 'subject', 'resourceType', 'contentType', 'organisation', 'topic', 'mimeType', 'trackable'],
+            fields: ['name', 'appIcon', 'medium', 'subject',
+             'resourceType', 'contentType', 'organisation', 'topic', 'mimeType', 'trackable'],
             params: { orgdetails: 'orgName,email' },
             facets: ['channel', 'gradeLevel', 'subject', 'medium']
         };
@@ -457,6 +458,13 @@ describe('CoursePageComponent', () => {
         component.isPageAssemble = false;
         component['fetchPageData'](Response.buildOptionRespForFetchCourse);
         expect(component['fetchCourses']).toHaveBeenCalled();
+        done();
+    });
+
+    it('should merge two filter object', done => {
+        const filters = { gradeLevel: ['Class 1'] };
+        const res = component.getSearchFilters(filters);
+        expect(res).toBeDefined();
         done();
     });
 });

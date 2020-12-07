@@ -1,0 +1,57 @@
+{
+    "id": "api.form.read",
+    "params": {
+        "resmsgid": "7b29a4d9-2658-496a-a862-12e53fc5c7a1",
+        "msgid": "e78b516a-8114-4c43-ba74-e198db90682a",
+        "status": "successful"
+    },
+    "responseCode": "OK",
+    "result": {
+        "form": {
+            "type": "content",
+            "subtype": "resourcebundle",
+            "action": "search",
+            "component": "*",
+            "framework": "*",
+            "data": {
+                "templateName": "defaultTemplate",
+                "action": "search",
+                "fields": [
+                    {
+                        "code": "portalLanguage",
+                        "dataType": "text",
+                        "name": "Portal Language",
+                        "label": "Portal Language",
+                        "description": "Language that should be displayed on portal (Like English, Hindi etc)",
+                        "editable": true,
+                        "inputType": "select",
+                        "required": false,
+                        "displayProperty": "Editable",
+                        "visible": true,
+                        "renderingHints": {
+                            "semanticColumnWidth": "four"
+                        },
+                        "range": [
+                            {
+                                "value": "en",
+                                "label": "English",
+                                "dir": "ltr"
+                            },
+                            {
+                                "value": "hi",
+                                "label": "हिंदी",
+                                "dir": "ltr"
+                            }
+                        ],
+                        "index": 1
+                    }
+                ]
+            },
+            "created_on": "2019-02-26T07:18:28.612Z",
+            "last_modified_on": "2019-02-26T07:18:20.704Z",
+            "rootOrgId": "*"
+        }
+    },
+    "ts": "2019-04-05T11:50:33.781Z",
+    "ver": "1.0"
+}

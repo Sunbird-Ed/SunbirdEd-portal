@@ -40,6 +40,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   cancelInteractEdata: IInteractEventEdata;
   createCourseInteractEdata: IInteractEventEdata;
   tocTelemetryInteractEdata: IInteractEventEdata;
+  tocTelemetryInteractCdata;
   showPlayer: Boolean = false;
   collectionId: string;
   collectionStatus: string;
@@ -89,6 +90,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   playerServiceReference: any;
   TocCardType = TocCardType;
   PlatformType = PlatformType;
+  isGroupAdmin: boolean;
+  groupId: string;
 
   constructor(public route: ActivatedRoute, public playerService: PlayerService,
     private windowScrollService: WindowScrollService, public router: Router, public navigationHelperService: NavigationHelperService,
@@ -116,8 +119,13 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     this.playerServiceReference = this.userService.loggedIn ? this.playerService : this.publicPlayerService;
     this.initLayout();
     this.dialCode = _.get(this.route, 'snapshot.queryParams.dialCode');
-    this.contentType = _.get(this.route, 'snapshot.queryParams.contentType');
+    this.contentType = _.get(this.route, 'snapshot.queryParams.contentType') || 'Collection';
     this.contentData = this.getContent();
+    CsGroupAddableBloc.instance.state$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      this.isGroupAdmin = !_.isEmpty(_.get(this.route.snapshot, 'queryParams.groupId')) && _.get(data.params, 'groupData.isAdmin');
+      this.groupId = _.get(data, 'groupId') || _.get(this.route.snapshot, 'queryParams.groupId');
+    });
+
   }
 
   initLayout() {
@@ -150,11 +158,15 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
 
   ngAfterViewInit() {
     setTimeout(() => {
+      const CData: Array<{}> = this.dialCode ? [{ id: this.route.snapshot.params.collectionId, type: this.contentType },
+      { id: this.dialCode, type: 'dialCode' }] : [{ id: this.route.snapshot.params.collectionId, type: this.contentType }];
+      if (this.groupId) {
+        CData.push({ id: this.groupId, type: 'Group' });
+      }
       this.telemetryImpression = {
         context: {
           env: this.route.snapshot.data.telemetry.env,
-          cdata: this.dialCode ? [{ id: this.route.snapshot.params.collectionId, type: this.contentType },
-          { id: this.dialCode, type: 'dialCode' }] : [{ id: this.route.snapshot.params.collectionId, type: this.contentType }]
+          cdata: CData
         },
         object: {
           id: this.collectionId,
@@ -178,18 +190,21 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     }
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
-    if (CsGroupAddableBloc.instance.initialised) {
-      CsGroupAddableBloc.instance.dispose();
-    }
   }
 
   private initPlayer(id: string): void {
     this.playerConfig = this.getPlayerConfig(id).pipe(map((content) => {
+
+      const CData: Array<{}> = this.dialCode ? [{ id: this.dialCode, type: 'dialCode' }] : [];
+        if (this.groupId) {
+          CData.push({ id: this.groupId, type: 'Group' });
+        }
+
       content.context.objectRollup = this.objectRollUp;
       this.telemetryContentImpression = {
         context: {
           env: this.route.snapshot.data.telemetry.env,
-          cdata: this.dialCode ? [{ id: this.dialCode, type: 'dialCode' }] : []
+          cdata: CData
         },
         edata: {
           type: this.route.snapshot.data.telemetry.env,
@@ -245,7 +260,12 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       relativeTo: this.route
     };
     if (id) {
-      this.queryParams.contentId = id;
+      if (this.queryParams){
+        this.queryParams['contentId'] = id;
+      } else {
+        this.queryParams = {};
+        this.queryParams['contentId'] = id;
+      }
       navigationExtras.queryParams = this.queryParams;
     } else
       if (content) {
@@ -322,6 +342,9 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
         if (this.dialCode) {
           this.telemetryCdata.push({ id: this.dialCode, type: 'dialCode' });
         }
+        if (this.groupId) {
+          this.telemetryCdata.push({ id: this.groupId, type: 'Group'});
+        }
         this.collectionStatus = params.collectionStatus;
         return this.getCollectionHierarchy(params.collectionId);
       }))
@@ -338,6 +361,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
             const content = this.findContentById(data, this.contentId);
             this.selectedContent = content;
             if (content) {
+              this.activeContent = _.get(content, 'model');
               this.objectRollUp = this.contentUtilsServiceService.getContentRollup(content);
               this.OnPlayContent({ title: _.get(content, 'model.name'), id: _.get(content, 'model.identifier') });
             } else {
@@ -449,9 +473,14 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   setTelemetryInteractData() {
     this.tocTelemetryInteractEdata = {
       id: 'library-toc',
-      type: 'click',
+      type: 'CLICK',
       pageid: this.route.snapshot.data.telemetry.pageid
     };
+
+    if (this.groupId) {
+      this.tocTelemetryInteractEdata.id = 'group-library-toc';
+      this.tocTelemetryInteractCdata = [{id: this.groupId, type: 'Group'}]
+    }
   }
 
   tocCardClickHandler(event) {
@@ -544,6 +573,9 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   private setTelemetryStartEndData() {
+    if (this.groupId && !_.find(this.telemetryCdata, {id: this.groupId})) {
+      this.telemetryCdata.push({ id: this.groupId, type: 'Group'});
+    }
     const deviceInfo = this.deviceDetectorService.getDeviceInfo();
     setTimeout(() => {
       this.telemetryCourseStart = {

@@ -74,7 +74,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
           { queryParams: { ...this.activatedRoute.snapshot.queryParams, selectedTab: data.loggedInUserRoute.queryParam } });
       }
     } else {
-      if (data.contentType === 'course') {
+      if (data.contentType === 'course' || data.contentType === 'mydownloads') {
         this.router.navigate([data.anonumousUserRoute.route],
           { queryParams: { selectedTab: data.anonumousUserRoute.queryParam } });
       } else {
@@ -94,6 +94,8 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       this.selectedContentType = null;
     } else if (url.indexOf('resources') >= 0 || url.indexOf('explore') >= 0) {
       this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : 'textbook';
+    } else if (url.indexOf('mydownloads') >= 0) {
+      this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : 'mydownloads';
     } else {
       this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : null;
     }

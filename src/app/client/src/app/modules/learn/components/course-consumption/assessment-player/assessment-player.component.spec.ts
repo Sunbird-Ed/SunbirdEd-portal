@@ -16,6 +16,7 @@ import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 import { SuiModule } from 'ng2-semantic-ui';
 import { of, throwError } from 'rxjs';
+import { NotificationService } from '../../../../notification/services/notification/notification.service';
 import { AssessmentScoreService } from '../../../services/assessment/assessment-score.service';
 import { CourseConsumptionService } from '../../../services/course-consumption/course-consumption.service';
 import { AssessmentPlayerComponent } from './assessment-player.component';
@@ -37,6 +38,13 @@ describe('AssessmentPlayerComponent', () => {
     queryParams: of({ batchId: '12312433', courseId: '12312433456', selectedContent: assessmentPlayerMockData.activeContent.identifier }),
     snapshot: { data: { telemetry: { env: 'course', type: '', pageid: 'course-read', object: { ver: '1.0', type: 'batch' } } } }
   };
+
+  const MockCSService = {
+    getUserFeed() { return of({}); },
+    updateUserFeedEntry() { return of({}); },
+    deleteUserFeedEntry() { return of({}); }
+  };
+
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -55,7 +63,9 @@ describe('AssessmentPlayerComponent', () => {
         UserService, CsContentProgressCalculator, NavigationHelperService,
         { provide: ResourceService, useValue: resourceMockData },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        ContentUtilsServiceService
+        ContentUtilsServiceService,
+        NotificationService,
+        { provide: 'CS_USER_SERVICE', useValue: MockCSService },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

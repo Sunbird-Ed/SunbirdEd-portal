@@ -806,7 +806,12 @@
             "ver": 1.1,
             "type": "plugin"
           }
-        ]
+        ],
+        "sideMenu": {
+          "showShare": true,
+          "showDownload": true,
+          "showExit": false
+        }
       }
     },
     "contentType": {
@@ -864,7 +869,8 @@
       "Learning Resource",
       "Practice Question Set",
       "eTextbook",
-      "Teacher Resource"
+      "Teacher Resource",
+      "Course Assessment"
     ],
     "adminHandledContentType" :[
       "TextBook"
