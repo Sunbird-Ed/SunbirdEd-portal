@@ -16,6 +16,7 @@ const testData = mockData.mockRes;
 describe('ReviewsubmissionsContentplayerComponent', () => {
   let component: ReviewsubmissionsContentplayerComponent;
   let fixture: ComponentFixture<ReviewsubmissionsContentplayerComponent>;
+  let originalTimeout;
   const resourceBundle = {
     messages: {
       imsg: { m0027: 'Something went wrong' },
@@ -52,6 +53,14 @@ describe('ReviewsubmissionsContentplayerComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
+  beforeEach(() => {
+    originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000000;
+});
+
+afterEach(() =>  {
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+});
 
   it('should throw error if content api throws error', () => {
     const playerService = TestBed.get(PlayerService);
