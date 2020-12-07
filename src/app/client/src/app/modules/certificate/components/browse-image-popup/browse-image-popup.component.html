@@ -7,18 +7,18 @@
   <div class="sb-modal-content">
     <div class="image-tabs px-8">
       <input class="image-input" id="tab1" type="radio" name="tabs" checked>
-      <label for="tab1" class="image-label">{{resourceService.frmelmnts?.lbl?.myImages}}</label>
+      <label for="tab1" (click)="getAssetList()" class="image-label">{{resourceService.frmelmnts?.lbl?.myImages}}</label>
 
       <input class="image-input" id="tab2" type="radio" name="tabs">
-      <label for="tab2" class="image-label">{{resourceService.frmelmnts?.lbl?.allImages}}</label>
+      <label (click)="getAllImages()" for="tab2" class="image-label">{{resourceService.frmelmnts?.lbl?.allImages}}</label>
 
       <section id="content1">
         <div class="twelve wide column">
           <div class="sb-search-box mb-16">
             <div class="input-div relative">
               <input class="sb-search-input" [(ngModel)]="imageName" (keyup.enter)="searchImage()" type="text"
-                placeholder="Search Image..." />
-              <i class="close icon"></i>
+                [placeholder]="resourceService?.frmelmnts?.cert?.prmpt?.searchImage" />
+              <i  (click)="getAssetList()"  class="close icon"></i>
               <i class="search icon"></i>
             </div>
           </div>
@@ -40,45 +40,19 @@
         <div class="twelve wide column">
           <div class="sb-search-box mb-16">
             <div class="input-div relative">
-              <input class="sb-search-input" type="text" placeholder="Search Image..." />
-              <i class="close icon"></i>
+              <input class="sb-search-input" [(ngModel)]="imageName" (keyup.enter)="searchImage('all')" type="text" [placeholder]="resourceService?.frmelmnts?.cert?.prmpt?.searchImage" />
+              <i (click)="getAllImages()" class="close icon"></i>
               <i class="search icon"></i>
             </div>
           </div>
           <div class="ui grid m-0">
-            <div class="three wide column p-8">
-              <div class="ui card text-center common-contribution-card">
+            <div class="three wide column p-8" *ngFor="let image of allImagesList">
+              <div class="ui card text-center common-contribution-card active">
                 <div class="content">
-                  <img src="assets/images/book.png" rel="placeholder">
+                  <img [src]="image?.artifactUrl" (click)="selectLogo(image)" rel="placeholder">
                 </div>
-              </div>
-            </div>
-            <div class="three wide column p-8">
-              <div class="ui card text-center common-contribution-card">
-                <div class="content">
-                  <img src="assets/images/book.png" rel="placeholder">
-                </div>
-              </div>
-            </div>
-            <div class="three wide column p-8">
-              <div class="ui card text-center common-contribution-card">
-                <div class="content">
-                  <img src="" rel="placeholder">
-                </div>
-              </div>
-            </div>
-            <div class="three wide column p-8">
-              <div class="ui card text-center common-contribution-card">
-                <div class="content">
-                  <img src="assets/images/book.png" rel="placeholder">
-                </div>
-              </div>
-            </div>
-            <div class="three wide column p-8">
-              <div class="ui card text-center common-contribution-card">
-                <div class="content">
-                  <img src="assets/images/book.png" rel="placeholder">
-                </div>
+                <div *ngIf="image?.versionKey === selectedLogo?.versionKey" class="selected-mark"><img
+                    src="assets/images/checkbox-icon.svg" width="24px" height="24px"></div>
               </div>
             </div>
           </div>
