@@ -11,6 +11,7 @@ cd ../desktop/OpenRAP
 yarn install
 npm run pack
 cd ..
+yarn --update-checksums
 yarn install
 npm run build-ts
 node scripts/copy.js
