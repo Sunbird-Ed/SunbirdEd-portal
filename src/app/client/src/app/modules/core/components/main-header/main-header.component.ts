@@ -5,7 +5,7 @@ import {
   TenantService,
   OrgDetailsService,
   FormService,
-  ManagedUserService, ProgramsService, CoursesService, DeviceRegisterService
+  ManagedUserService, ProgramsService, CoursesService, DeviceRegisterService, ElectronService
 } from './../../services';
 import { Component, OnInit, ChangeDetectorRef, Input, OnDestroy } from '@angular/core';
 import {
@@ -146,7 +146,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   deviceProfile: any;
   isCustodianUser: boolean;
   isConnected = false;
-  
+  isDesktopApp = false;
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
     public orgDetailsService: OrgDetailsService, public formService: FormService,
@@ -155,7 +155,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     private courseService: CoursesService, private utilService: UtilService, public layoutService: LayoutService,
     public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef,
     public navigationHelperService: NavigationHelperService, private deviceRegisterService: DeviceRegisterService,
-    private connectionService: ConnectionService) {
+    private connectionService: ConnectionService, public electronService: ElectronService) {
     try {
       this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
       this.reportsListVersion = (<HTMLInputElement>document.getElementById('reportsListVersion')).value as reportsListVersionType;
@@ -501,6 +501,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.isDesktopApp = this.utilService.isDesktopApp;
     this.connectionService.monitor()
     .pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
       this.isConnected = isConnected;
@@ -644,6 +645,12 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
 
   locationSubmit() {
     this.showLocationPopup = false;
+  }
+
+  doLogin() {
+    this.electronService.get({ url: this.config.urlConFig.URLS.OFFLINE.LOGIN}).subscribe((data) => {
+      console.log(data);
+    });
   }
 
 }
