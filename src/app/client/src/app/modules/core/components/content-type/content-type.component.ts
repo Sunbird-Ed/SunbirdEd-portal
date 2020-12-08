@@ -1,7 +1,7 @@
 import {Component, Input, OnDestroy, OnInit, Output, EventEmitter} from '@angular/core';
 import {FormService, UserService} from './../../services';
 import * as _ from 'lodash-es';
-import {LayoutService, ResourceService, UtilService } from '@sunbird/shared';
+import { LayoutService, ResourceService, UtilService } from '@sunbird/shared';
 import {Router, ActivatedRoute} from '@angular/router';
 import {combineLatest, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
@@ -18,6 +18,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
   @Input() layoutConfiguration;
   contentTypes;
   selectedContentType;
+  isDesktopApp = false;
   public unsubscribe$ = new Subject<void>();
 
   constructor(public formService: FormService, public resourceService: ResourceService,
@@ -28,6 +29,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getContentTypes();
+    this.isDesktopApp = this.utilService.isDesktopApp;
     this.layoutService.updateSelectedContentType
     .subscribe((data) => {
       this.updateSelectedContentType(data);
