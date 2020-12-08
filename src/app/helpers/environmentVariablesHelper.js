@@ -12,7 +12,7 @@ let envVariables = {
 
   // discussion forum 
   discussion_forum_token: env.discussion_forum_token || 'a4838b88-6a04-4293-a504-245862cad404',
-  discussions_middleware: env.discussions_middleware || 'http://disussionsmw-service:3002/discussion',
+  discussions_middleware: env.discussions_middleware || 'http://disussionsmw-service:3002',
 
   // Application Start-up - Hosts and PORT Configuration
   PORTAL_PORT: env.sunbird_port || 3000,
