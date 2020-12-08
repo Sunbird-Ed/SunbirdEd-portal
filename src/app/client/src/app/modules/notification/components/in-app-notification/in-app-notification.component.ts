@@ -78,11 +78,11 @@ export class InAppNotificationComponent implements OnInit, OnDestroy {
   }
 
   getNavigationPath(event) {
-    if (_.get(event, 'data.data.actionType') === 'certificateUpdate') {
+    if (_.get(event, 'data.data.actionData.actionType') === 'certificateUpdate') {
       return '/profile';
     }
 
-    const navigationLink = _.get(event, 'data.data.contentURL') || _.get(event, 'data.data.deepLink');
+    const navigationLink = _.get(event, 'data.data.actionData.contentURL') || _.get(event, 'data.data.actionData.deepLink');
     if (navigationLink) {
       return navigationLink.replace((new URL(navigationLink)).origin, '');
     }
