@@ -85,11 +85,11 @@ export class OrgDetailsService {
   }
   setOrgDetailsToRequestHeaders() {
     this.learnerService.rootOrgId = this.orgDetails.rootOrgId;
-    this.learnerService.channelId = this.orgDetails.channel;
+    this.learnerService.channelId = this.orgDetails.hashTagId;
     this.contentService.rootOrgId = this.orgDetails.rootOrgId;
-    this.contentService.channelId = this.orgDetails.channel;
+    this.contentService.channelId = this.orgDetails.hashTagId;
     this.publicDataService.rootOrgId = this.orgDetails.rootOrgId;
-    this.publicDataService.channelId = this.orgDetails.channel;
+    this.publicDataService.channelId = this.orgDetails.hashTagId;
   }
 
   searchOrg() {
