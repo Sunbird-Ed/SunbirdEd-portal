@@ -111,7 +111,7 @@ function checkCassandraDBHealth (callback) {
 function contentServiceHealthCheck (callback) {
   var options = {
     method: 'GET',
-    url: envHelper.CONTENT_URL + 'service/health',
+  url: envHelper.sunbird_content_service_upstream_url + 'service/health',
     headers: {
       'Content-Type': 'application/json'
     }
