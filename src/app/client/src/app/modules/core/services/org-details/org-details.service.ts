@@ -219,6 +219,15 @@ export class OrgDetailsService {
 
     return this.publicDataService.post(option);
   }
+  processOrgData(channels) {
+    const rootOrgIds = [];
+    _.forEach(channels, (channelData) => {
+      if (channelData.name) {
+        rootOrgIds.push(channelData.name);
+      }
+    });
+    return rootOrgIds;
+  }
 }
 
 
