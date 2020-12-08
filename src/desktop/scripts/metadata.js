@@ -84,7 +84,7 @@ const getForms = async () => {
         {
             "type": "contentcategory",
             "action": "menubar",
-            "subtype": "global"
+            "subType": "global"
         },
         {
             "type": "framework",
@@ -236,6 +236,7 @@ const getMetaData = async () => {
 }
 
 const copyAssetsAndUpdateFiles = async () => {
+    console.log(`Running env ${process.env.offline_target_env}`);
     const appConfig = await fse.readJSON(path.join(__dirname, '..', 'env.json'))
     let packageJSON = await fse.readJSON(path.join(__dirname, '..', "package.json"));
     packageJSON.name = appConfig.APP_NAME;
