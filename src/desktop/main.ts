@@ -66,6 +66,7 @@ const windowIcon = path.join(__dirname, "build", "icons", "png", "512x512.png");
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win: any;
+let loginWindow: any;
 let appBaseUrl;
 let deviceId: string;
 const expressApp = express();
@@ -200,6 +201,41 @@ expressApp.use("/dialog/content/suggestLocation", async (req, res) => {
       });
   }
 });
+
+expressApp.use("/dialog/login", async (req, res) => {
+  openLoginWindow();
+  res.send({ message: "SUCCESS", responseCode: "OK" })
+});
+
+const openLoginWindow = async () => {
+  loginWindow = new BrowserWindow({ 
+    parent: win, 
+    closable: true, 
+    titleBarStyle: "hidden",
+    show: false,
+    minWidth: 700,
+    minHeight: 500,
+    webPreferences: {
+      nodeIntegration: false,
+      enableRemoteModule: false
+    },
+    icon: windowIcon
+  });
+  const loginURL = `${process.env.AUTH_KC_URL}/auth?client_id=${process.env.AUTH_CLIENT_ID}&redirect_uri=${process.env.AUTH_REDIRECT_URI}&scope=${process.env.AUTH_KC_SCOPE}&response_type=code&version=4`;
+  loginWindow.loadURL(loginURL);
+  loginWindow.setAlwaysOnTop(true);
+  loginWindow.webContents.once("dom-ready", () => {
+    loginWindow.show();
+    loginWindow.maximize();
+    loginWindow.webContents.on('did-navigate', (event, url) => {
+      if(url.includes('oauth2callback')) {
+        let code = url.split("code=")[1];
+        generateUserSession(code);
+      }
+    });
+  });
+}
+
 
 const showFileExplorer = async () => {
   const {filePaths} = await dialog.showOpenDialog({
@@ -512,6 +548,27 @@ const checkForOpenFile = (files?: string[]) => {
       `Got request to open the  ecars : ${JSON.stringify(openFileContents)}`
     );
   }
+};
+
+const generateUserSession = async (code: string) => {
+  if(_.isEmpty(code)){
+    logger.error('User login failed');
+    return;
+  }
+  await HTTPService.get(`${appBaseUrl}/api/auth/resolvePasswordSession/${code}`, {})
+    .toPromise()
+    .then(data => {
+      logger.info("Login successful successfully");
+    })
+    .catch(error =>
+      logger.error(
+        "User token generation failed",
+        _.get(error, 'response.data') || error.message
+      )
+    ).finally(() => {
+      loginWindow.close();
+      loginWindow = null;
+    })
 };
 
 process
