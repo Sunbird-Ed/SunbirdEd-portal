@@ -241,6 +241,12 @@ const startApp = async () => {
       })
     });
 };
+
+const waitForDBToLoad = () => {
+  new Promise((resolve, reject) => {
+    EventManager.subscribe("openrap-sunbirded-plugin:initialized", resolve)
+  })
+}
 // start loading all the dependencies
 const bootstrapDependencies = async () => {
   console.log("============> bootstrap started");
@@ -252,8 +258,10 @@ const bootstrapDependencies = async () => {
   await containerAPI.bootstrap();
   console.log("============> containerAPI bootstrap done");
   await startApp();
+  await waitForDBToLoad()
+  console.log("============> App startup done");
   //to handle the unexpected navigation to unknown route
-  // expressApp.all("*", (req, res) => res.redirect("/"));
+  //  expressApp.all("*", (req, res) => res.redirect("/"));
 };
 async function initLogger() {
   await setDeviceId();
