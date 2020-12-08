@@ -86,7 +86,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     this.initializeLabels();
     this.currentState = this.screenStates.default;
     this.uploadCertificateService.certificate.subscribe(res => {
-      if (res) {
+      if (res && !_.isEmpty(res)) {
         this.showAlertModal = true;
         this.currentState = 'certRules';
         this.showPreviewModal = false;
@@ -174,6 +174,9 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
               'certType': 'cert template',
               'channel': this.userService.channel,
               'mediaType': 'image'
+          },
+          'sort_by': {
+            'lastUpdatedOn': 'desc'
           },
           'fields': ['indentifier', 'name', 'code', 'certType', 'data', 'issuer', 'signatoryList', 'artifactUrl', 'primaryCategory', 'channel'],
           'limit': 100
@@ -323,6 +326,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     this.selectedTemplate = {'name' : _.get(templateData, 'identifier'), 'previewUrl': _.get(templateData, 'previewUrl')};
     if (!_.isEmpty(this.newTemplateIdentifier)) {
       this.templateIdentifier = this.newTemplateIdentifier;
+      this.selectedTemplate = null;
     }
     this.previewUrl = _.get(templateData, 'previewUrl');
     this.setCertEditable();
@@ -504,5 +508,6 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+    this.uploadCertificateService.certificate.next(null);
   }
 }

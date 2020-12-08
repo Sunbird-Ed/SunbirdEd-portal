@@ -171,7 +171,7 @@ export default class DeviceSDK {
             logger.info("Received token from V2 API");  
             return Promise.resolve(this.apiKey);
         }  catch (err) {
-            logger.error(`Error while fetching V2 auth token with response code ${err.response.status} ||  ${err}`);
+            logger.error(`Error while fetching V2 auth token with response code ${err}`);
             if (err && err.response && err.response.status === 447) {
                 const responseHeaders = err.response.headers;
                 const fallBackUrl = responseHeaders ? responseHeaders['location'] : this.deviceRegistryV1APIPath;
