@@ -86,8 +86,11 @@ describe('ContentTypeComponent', () => {
   it('should inint the component', () => {
     const formService = TestBed.get(FormService);
     spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockData.formData));
+    const utilService = TestBed.get(UtilService);
+    utilService._isDesktopApp = false;
     component.ngOnInit();
-    expect(component.contentTypes).toEqual(mockData.formData);
+    const mockForm = mockData.formData.filter(data => !data.isDesktopOnly);
+    expect(component.contentTypes).toEqual(mockForm);
     expect(component.selectedContentType).toBe('textbook');
   });
 
@@ -209,6 +212,16 @@ describe('ContentTypeComponent', () => {
     layoutService.updateSelectedContentType.emit('TextBook');
     expect(component.updateSelectedContentType).toHaveBeenCalled();
     expect(component.selectedContentType).toEqual('textbook');
+  });
+
+  it('should show mydownloads tab for desktop app', () => {
+    const formService = TestBed.get(FormService);
+    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockData.formData));
+    const utilService = TestBed.get(UtilService);
+    utilService._isDesktopApp = true;
+    component.ngOnInit();
+    expect(component.contentTypes).toEqual(mockData.formData);
+    expect(component.selectedContentType).toBe('textbook');
   });
 
 
