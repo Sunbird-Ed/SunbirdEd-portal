@@ -99,42 +99,42 @@ describe('SearchService', () => {
         const facets = [{name: 'board'}];
         const lbl = undefined;
         const obj = searchService.updateFacetsData(facets)
-        expect(obj).toEqual([{name: 'board', index: '1', label: lbl, placeholder: lbl}]);
+        expect(obj).toEqual([{name: 'board', index: '2', label: lbl, placeholder: lbl}]);
        });
        it('should call the updateFacetsData with facets value medium', () => {
         const searchService = TestBed.get(SearchService);
         const facets = [{name: 'medium'}];
         const lbl = undefined;
         const obj = searchService.updateFacetsData(facets)
-        expect(obj).toEqual([{name: 'medium', index: '2', label: lbl, placeholder: lbl}]);
+        expect(obj).toEqual([{name: 'medium', index: '3', label: lbl, placeholder: lbl}]);
        });
        it('should call the updateFacetsData with facets value gradeLevel', () => {
         const searchService = TestBed.get(SearchService);
         const facets = [{name: 'gradeLevel'}];
         const lbl = undefined;
         const obj = searchService.updateFacetsData(facets)
-        expect(obj).toEqual([{name: 'gradeLevel', index: '3', label: lbl, placeholder: lbl}]);
+        expect(obj).toEqual([{name: 'gradeLevel', index: '4', label: lbl, placeholder: lbl}]);
        });
        it('should call the updateFacetsData with facets value subject', () => {
         const searchService = TestBed.get(SearchService);
         const facets = [{name: 'subject'}];
         const lbl = undefined;
         const obj = searchService.updateFacetsData(facets)
-        expect(obj).toEqual([{name: 'subject', index: '4', label: lbl, placeholder: lbl}]);
+        expect(obj).toEqual([{name: 'subject', index: '5', label: lbl, placeholder: lbl}]);
        });
        it('should call the updateFacetsData with facets value publisher', () => {
         const searchService = TestBed.get(SearchService);
         const facets = [{name: 'publisher'}];
         const lbl = undefined;
         const obj = searchService.updateFacetsData(facets)
-        expect(obj).toEqual([{name: 'publisher', index: '5', label: lbl, placeholder: lbl}]);
+        expect(obj).toEqual([{name: 'publisher', index: '6', label: lbl, placeholder: lbl}]);
        });
        it('should call the updateFacetsData with facets value contentType', () => {
         const searchService = TestBed.get(SearchService);
         const facets = [{name: 'primaryCategory'}];
         const lbl = undefined;
         const obj = searchService.updateFacetsData(facets);
-        expect(obj).toEqual([{name: 'primaryCategory', index: '6', label: lbl, placeholder: lbl}]);
+        expect(obj).toEqual([{name: 'primaryCategory', index: '7', label: lbl, placeholder: lbl}]);
        });
        it('should call the getSubjectsStyles', () => {
         const searchService = TestBed.get(SearchService);

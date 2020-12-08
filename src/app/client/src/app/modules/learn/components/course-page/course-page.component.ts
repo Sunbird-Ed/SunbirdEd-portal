@@ -531,9 +531,9 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       }
       const { section, data } = event;
       const metaData = this.isPageAssemble ? _.get(data, 'metaData') : data;
-      if (section === this.resourceService.frmelmnts.lbl.mytrainings) { // play course if course is in My course section
-        return this.playerService.playContent(metaData);
-      }
+      // if (section === this.resourceService.frmelmnts.lbl.mytrainings) { // play course if course is in My course section
+      //   return this.playerService.playContent(metaData);
+      // }
 
       const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } =
         this.coursesService.findEnrolledCourses(metaData.identifier);

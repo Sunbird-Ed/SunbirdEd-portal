@@ -3,13 +3,13 @@ import {
   ICard, ILoaderMessage, UtilService, BrowserCacheTtlService, NavigationHelperService, IPagination,
   LayoutService, COLUMN_TYPE
 } from '@sunbird/shared';
-import { SearchService, PlayerService, CoursesService, UserService, ISort } from '@sunbird/core';
-import { combineLatest, Subject } from 'rxjs';
+import { SearchService, PlayerService, CoursesService, UserService, ISort, OrgDetailsService } from '@sunbird/core';
+import { combineLatest, Subject, of } from 'rxjs';
 import { Component, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { takeUntil, map, delay, first, debounceTime, tap } from 'rxjs/operators';
+import { takeUntil, map, delay, first, debounceTime, tap, mergeMap } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 
 @Component({
@@ -54,7 +54,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     public resourceService: ResourceService, public toasterService: ToasterService, public changeDetectorRef: ChangeDetectorRef,
     public configService: ConfigService, public utilService: UtilService, public coursesService: CoursesService,
     private playerService: PlayerService, public userService: UserService, public cacheService: CacheService,
-    public browserCacheTtlService: BrowserCacheTtlService,
+    public browserCacheTtlService: BrowserCacheTtlService, public orgDetailsService: OrgDetailsService,
     public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
     this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
     this.filterType = this.configService.appConfig.home.filterType;
@@ -75,21 +75,21 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.initFilters = true;
     this.initLayout();
     combineLatest(this.fetchEnrolledCoursesSection(), this.dataDrivenFilterEvent).pipe(first()).
-    subscribe((data: Array<any>) => {
-      this.enrolledSection = data[0];
+      subscribe((data: Array<any>) => {
+        this.enrolledSection = data[0];
         this.dataDrivenFilters = data[1];
         this.fetchContentOnParamChange();
         this.setNoResultMessage();
       },
-      error => {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0002);
-    });
+        error => {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0002);
+        });
   }
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.redoLayout();
     this.layoutService.switchableLayout().
-        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+      pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
         if (layoutConfig != null) {
           this.layoutConfiguration = layoutConfig.layout;
         }
@@ -97,26 +97,26 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
   redoLayout() {
-      if (this.layoutConfiguration != null) {
-        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
-        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
-      } else {
-        this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
-        this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
-      }
+    if (this.layoutConfiguration != null) {
+      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
+      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
+    } else {
+      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
+      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
+    }
   }
   private fetchContentOnParamChange() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
-    .pipe(debounceTime(5),
-        tap(data => this.inView({inview: []})), // trigger pageexit if last filter resulted 0 contents
+      .pipe(debounceTime(5),
+        tap(data => this.inView({ inview: [] })), // trigger pageexit if last filter resulted 0 contents
         delay(10), // to trigger pageexit telemetry event
         tap(data => {
           this.showLoader = true;
           this.setTelemetryData();
         }),
-        map((result) => ({params: { pageNumber: Number(result[0].pageNumber)}, queryParams: result[1]})),
+        map((result) => ({ params: { pageNumber: Number(result[0].pageNumber) }, queryParams: result[1] })),
         takeUntil(this.unsubscribe$))
-      .subscribe(({params, queryParams}) => {
+      .subscribe(({ params, queryParams }) => {
         this.queryParams = { ...queryParams };
         this.paginationDetails.currentPage = params.pageNumber;
         this.contentList = [];
@@ -150,6 +150,24 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       params: this.configService.appConfig.Course.contentApiQueryParams
     };
     this.searchService.contentSearch(option)
+      .pipe(
+        mergeMap(data => {
+          const channelFacet = _.find(_.get(data, 'result.facets') || [], facet => _.get(facet, 'name') === 'channel')
+          if (channelFacet) {
+            const rootOrgIds = this.orgDetailsService.processOrgData(_.get(channelFacet, 'values'));
+            return this.orgDetailsService.searchOrgDetails({
+              filters: { isRootOrg: true, rootOrgId: rootOrgIds },
+              fields: ['slug', 'identifier', 'orgName']
+            }).pipe(
+              mergeMap(orgDetails => {
+                channelFacet.values = _.get(orgDetails, 'content');
+                return of(data);
+              })
+            )
+          }
+          return of(data);
+        })
+      )
       .subscribe(data => {
         this.showLoader = false;
         this.facets = this.searchService.updateFacetsData(_.get(data, 'result.facets'));
@@ -169,17 +187,31 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
   public getFilters(filters) {
-    this.selectedFilters = filters.filters;
-    const defaultFilters = _.reduce(filters, (collector: any, element) => {
-        if (element.code === 'board') {
-          collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
+    const filterData = filters && filters.filters || {};
+    if (filterData.channel && this.facets) {
+      const channelIds = [];
+      const facetsData = _.find(this.facets, { 'name': 'channel' });
+      _.forEach(filterData.channel, (value, index) => {
+        const data = _.find(facetsData.values, { 'identifier': value });
+        if (data) {
+          channelIds.push(data.name);
         }
-        return collector;
-      }, {});
+      });
+      if (channelIds && Array.isArray(channelIds) && channelIds.length > 0) {
+        filterData.channel = channelIds;
+      }
+    }
+    this.selectedFilters = filterData;
+    const defaultFilters = _.reduce(filters, (collector: any, element) => {
+      if (element.code === 'board') {
+        collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
+      }
+      return collector;
+    }, {});
     this.dataDrivenFilterEvent.emit(defaultFilters);
   }
   private fetchEnrolledCoursesSection() {
-    return this.coursesService.enrolledCourseData$.pipe(map(({enrolledCourses, err}) => {
+    return this.coursesService.enrolledCourseData$.pipe(map(({ enrolledCourses, err }) => {
       const enrolledSection = {
         name: this.resourceService.frmelmnts.lbl.mytrainings,
         length: 0,
@@ -196,7 +228,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   public navigateToPage(page: number): void {
     if (page < 1 || page > this.paginationDetails.totalPages) {
-        return;
+      return;
     }
     const url = this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString());
     this.router.navigate([url], { queryParams: this.queryParams });
@@ -209,7 +241,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   public playContent({ data }) {
     const { metaData } = data;
     this.changeDetectorRef.detectChanges();
-    const {onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch} = this.coursesService.findEnrolledCourses(metaData.identifier);
+    const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } = this.coursesService.findEnrolledCourses(metaData.identifier);
 
     if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
       return this.playerService.playContent(metaData);
@@ -224,14 +256,14 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   public inView(event) {
     _.forEach(event.inview, (elem, key) => {
-        const obj = _.find(this.inViewLogs, { objid: elem.data.metaData.identifier});
-        if (!obj) {
-            this.inViewLogs.push({
-                objid: elem.data.metaData.identifier,
-                objtype: elem.data.metaData.contentType || 'content',
-                index: elem.id
-            });
-        }
+      const obj = _.find(this.inViewLogs, { objid: elem.data.metaData.identifier });
+      if (!obj) {
+        this.inViewLogs.push({
+          objid: elem.data.metaData.identifier,
+          objtype: elem.data.metaData.contentType || 'content',
+          index: elem.id
+        });
+      }
     });
     if (this.telemetryImpression) {
       this.telemetryImpression.edata.visits = this.inViewLogs;
@@ -257,7 +289,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       pageid: 'home-search'
     };
   }
-  ngAfterViewInit () {
+  ngAfterViewInit() {
     setTimeout(() => {
       this.telemetryImpression = {
         context: {
@@ -278,9 +310,9 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.unsubscribe$.complete();
   }
   private setNoResultMessage() {
-      this.noResultMessage = {
-        'message': 'messages.stmsg.m0007',
-        'messageText': 'messages.stmsg.m0006'
-      };
+    this.noResultMessage = {
+      'message': 'messages.stmsg.m0007',
+      'messageText': 'messages.stmsg.m0006'
+    };
   }
 }
