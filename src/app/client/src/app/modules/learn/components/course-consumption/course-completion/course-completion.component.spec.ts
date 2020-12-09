@@ -10,7 +10,6 @@ import { CourseCompletionComponent } from './course-completion.component';
 describe('CourseCompletionComponent', () => {
   let component: CourseCompletionComponent;
   let fixture: ComponentFixture<CourseCompletionComponent>;
-  jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
   const fakeActivatedRoute = {
     snapshot: { data: { telemetry: { env: 'Course', pageid: 'course-player' } } }
   };

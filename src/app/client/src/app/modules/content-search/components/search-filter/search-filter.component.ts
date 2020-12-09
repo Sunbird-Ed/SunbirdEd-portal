@@ -231,7 +231,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       relativeTo: this.activatedRoute.parent
     });
   }
-  selectedGroupOption(data) {
+    selectedGroupOption(data) {
     this.selectedOption = data;
     this.selectedBoard = data;
     this.filterChange.emit({ status: 'FETCHING' });

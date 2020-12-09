@@ -71,7 +71,7 @@ describe('OfflineApplicationDownloadComponent', () => {
    spyOn(component , 'setTelemetryData');
     setTimeout(()  => {
       component.ngAfterViewInit();
-    }, 100);
+    }, 10);
     jasmine.clock().tick(101);
     expect(component.setTelemetryData).toHaveBeenCalled();
   });

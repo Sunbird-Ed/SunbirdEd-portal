@@ -20,7 +20,6 @@ describe('CoursePlayerComponent', () => {
   let component: CoursePlayerComponent;
   let fixture: ComponentFixture<CoursePlayerComponent>;
   let contentUtilsServiceService;
-  jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
     url = jasmine.createSpy('url');

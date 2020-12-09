@@ -29,12 +29,12 @@ describe('NoResultComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(NoResultComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
   });
   it('should take input for showing the no result message  ', () => {
      component.data = data;
      component.message = data.message;
      component.messageText = data.messageText;
      component.ngOnInit();
-     fixture.detectChanges();
   });
 });

@@ -42,8 +42,7 @@ describe('PlayerComponent', () => {
   let component: PlayerComponent;
   let fixture: ComponentFixture<PlayerComponent>;
   let userService;
-  configureTestSuite();
-  beforeEach(async(() => {
+  configureTestSuite( () => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
       declarations: [PlayerComponent],
@@ -51,7 +50,10 @@ describe('PlayerComponent', () => {
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
-  }));
+  });
+  // beforeEach(async(() => {
+   
+  // }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PlayerComponent);

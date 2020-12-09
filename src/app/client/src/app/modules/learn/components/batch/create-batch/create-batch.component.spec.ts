@@ -66,8 +66,6 @@ describe('CreateBatchComponent', () => {
   let fixture: ComponentFixture<CreateBatchComponent>;
   configureTestSuite();
   beforeEach(async(() => {
-    originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     TestBed.configureTestingModule({
       declarations: [CreateBatchComponent],
       schemas: [NO_ERRORS_SCHEMA],
@@ -84,9 +82,7 @@ describe('CreateBatchComponent', () => {
     component = fixture.componentInstance;
     spyOn(component, 'checkIssueCertificate').and.stub();
   });
-  afterEach(() => {
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
-  });
+  
   it('should fetch batch details and show update Form model', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
@@ -189,7 +185,7 @@ describe('CreateBatchComponent', () => {
       expect(courseBatchService.updateEvent.emit).toHaveBeenCalled();
       expect(router.navigate).toHaveBeenCalled();
       done();
-    }, 1100);
+    });
   });
 
   it('should call getUserOtherDetail, both email and phone', () => {
@@ -226,7 +222,7 @@ describe('CreateBatchComponent', () => {
     setTimeout(() => {
       expect(component['getUserList']).toHaveBeenCalledWith('query', 'type');
       done();
-    }, 1100);
+    });
   });
 
   it('should call addParticipantToBatch', () => {

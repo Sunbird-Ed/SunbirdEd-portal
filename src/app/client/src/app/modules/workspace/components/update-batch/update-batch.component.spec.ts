@@ -259,7 +259,7 @@ describe('UpdateBatchComponent', () => {
       expect(batchService.updateEvent.emit).toHaveBeenCalledWith({ event: 'update' });
       expect(router.navigate).toHaveBeenCalled();
       done();
-    }, 1100);
+    });
   });
 
   it('should call getUserListWithQuery', (done) => {
@@ -272,7 +272,7 @@ describe('UpdateBatchComponent', () => {
     setTimeout(() => {
       expect(component['getUserList']).toHaveBeenCalledWith('query', 'type');
       done();
-    }, 1100);
+    });
   });
 
   it('should call updateParticipantsToBatch', () => {
