@@ -157,4 +157,17 @@ describe('MainFooterComponent', () => {
     expect(component.unsubscribe$.next).toHaveBeenCalled();
   });
 
+    it('should open system browser for desktop app', () => {
+        component.isDesktopApp = true;
+        spyOn(window, 'open');
+        component.redirect('http://google.com');
+        expect(window.open).toHaveBeenCalled();
+    });
+
+    it('should open link', () => {
+        component.isDesktopApp = false;
+        component.redirect('http://google.com');
+        expect(window.location.href).toBeDefined();
+    });
+
 });
