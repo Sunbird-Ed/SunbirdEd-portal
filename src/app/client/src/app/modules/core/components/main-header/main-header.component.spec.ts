@@ -20,7 +20,7 @@ import {
   PermissionService,
   TenantService,
   CoreModule,
-  ManagedUserService, CoursesService
+  ManagedUserService, CoursesService, ElectronService
 } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {AnimationBuilder} from '@angular/animations';
@@ -77,7 +77,7 @@ describe('MainHeaderComponent', () => {
       providers: [ToasterService, TenantService, CacheService, BrowserCacheTtlService,
         PermissionService, ManagedUserService, UtilService, LayoutService, NavigationHelperService,
         {provide: ResourceService, useValue: resourceBundle},
-        UserService, ConfigService, AnimationBuilder,
+        UserService, ConfigService, AnimationBuilder, ElectronService,
         LearnerService, CoursesService, { provide: 'CS_USER_SERVICE', useValue: MockCSService }]
     })
       .compileComponents();
@@ -354,4 +354,12 @@ describe('MainHeaderComponent', () => {
     component.switchLayout();
     expect(telemetryService.interact).toHaveBeenCalledWith(mockData.telemetryEventJoy);
   });
+
+  it('should call login method for desktop app', () => {
+    const electronService = TestBed.get(ElectronService);
+    spyOn(electronService, 'get').and.returnValue(observableOf({status: 'success'}));
+    component.doLogin();
+    expect(electronService.get).toHaveBeenCalled();
+  });
+
 });

@@ -191,7 +191,9 @@ describe('InAppNotificationComponent', () => {
         data: {
           id: 'notification_id',
           data: {
-            deepLink: 'https://url.com/resource/course'
+            actionData: {
+              deepLink: 'https://url.com/resource/course'
+            }
           }
         }
       };
@@ -213,7 +215,9 @@ describe('InAppNotificationComponent', () => {
         data: {
           id: 'notification_id',
           data: {
-            actionType: 'certificateUpdate'
+            actionData: {
+              actionType: 'certificateUpdate'
+            }
           }
         }
       };

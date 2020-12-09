@@ -6,7 +6,7 @@
          class="item {{'item--' + getIcon(contentType)}}">
         {{getTitle(contentType)}}
       </a>
-      <a *ngIf="contentType.isEnabled && !contentType?.isOnlineOnly" (click)="showContentType(contentType)"
+      <a *ngIf="contentType.isEnabled && !contentType?.isOnlineOnly && isDesktopApp" (click)="showContentType(contentType)"
          [ngClass]="{'active': selectedContentType === contentType.contentType}"
          class="item {{'item--' + getIcon(contentType)}}">
         {{getTitle(contentType)}}
@@ -22,7 +22,7 @@
               class="list-item {{'item--' + getIcon(contentType)}}">
             {{getTitle(contentType)}}
           </li>
-          <li *ngIf="contentType.isEnabled && !contentType?.isOnlineOnly" (click)="showContentType(contentType);closeSideMenu.emit()"
+          <li *ngIf="contentType.isEnabled && !contentType?.isOnlineOnly && isDesktopApp" (click)="showContentType(contentType);closeSideMenu.emit()"
               [ngClass]="{'active': selectedContentType === contentType.contentType}"
               class="list-item {{'item--' + getIcon(contentType)}}">
             {{getTitle(contentType)}}
@@ -43,7 +43,7 @@
         <span [ngClass]="'sb-icon sb-icon--sm mr-8 sb-icon__'+ getIcon(contentType)"></span>
         {{getTitle(contentType)}}
       </a>
-      <a *ngIf="contentType.isEnabled && !contentType?.isOnlineOnly" (click)="showContentType(contentType)"
+      <a *ngIf="contentType.isEnabled && !contentType?.isOnlineOnly && isDesktopApp" (click)="showContentType(contentType)"
         [ngClass]="{'active': selectedContentType === contentType.contentType}"
         class="item {{'item--' + getIcon(contentType)}}">
         <span [ngClass]="'sb-icon sb-icon--sm mr-8 sb-icon__'+ getIcon(contentType)"></span>
