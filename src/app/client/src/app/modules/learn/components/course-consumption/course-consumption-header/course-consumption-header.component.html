@@ -62,8 +62,8 @@
                [telemetryInteractCdata]="[{id: courseHierarchy?.identifier, type: 'Course'}]"	
                (click)="openDiscussionForum()" *ngIf="forumId && (enrolledCourse || (courseConsumptionService?.userCreatedAnyBatch | async))"	
                title="Forum">	
-                 <img src="assets/images/forum.svg" width="16px" class="mr-8">	
-                 Forum	
+                  <img src="assets/images/forum.svg" width="16px" class="mr-8">	
+                  {{resourceService?.frmelmnts?.lbl?.discussionForum}}	
                </button>
             </div>
           </div>
