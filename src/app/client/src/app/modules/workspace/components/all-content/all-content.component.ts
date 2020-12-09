@@ -432,7 +432,17 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
   }
 
   contentClick(content) {
-    if (_.size(content.lockInfo)) {
+    if(content.originData){
+      var neww = JSON.parse(content.originData);
+      }
+      if(content.originData){
+        if((neww.copyType === 'shallow')){
+          const errMsg =  (this.resourceService.messages.emsg.m1414).replace('{instance}', neww.organisation[0]);
+          this.toasterService.error(errMsg);
+          return;
+        }
+      }
+      else if (_.size(content.lockInfo)) {
         this.lockPopupData = content;
         this.showLockedContentModal = true;
     } else {
