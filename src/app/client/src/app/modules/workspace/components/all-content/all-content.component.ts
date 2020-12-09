@@ -432,9 +432,9 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
   }
 
   contentClick(content) {
-      if(content.originData){
+      if (content.originData) {
         const neww = JSON.parse(content.originData);
-        if(neww.copyType === 'shallow'){
+        if (neww.copyType === 'shallow') {
           const errMsg =  (this.resourceService.messages.emsg.m1414).replace('{instance}', neww.organisation[0]);
           this.toasterService.error(errMsg);
           return;
