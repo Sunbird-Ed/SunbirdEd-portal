@@ -11,6 +11,7 @@ import desktopRoutes from './routes/desktop';
 import playerProxyRoutes from './routes/playerProxy';
 import staticRoutes from './routes/static';
 import telemetryRoutes from './routes/telemetry';
+import authRoutes from './routes/auth';
 import Device from './controllers/device';
 import { manifest } from "./manifest";
 import Response from './utils/response';
@@ -128,6 +129,7 @@ export class Router {
       },
     }));
       
+    authRoutes(app, proxyUrl);
     contentRoutes(app, proxyUrl, this.contentDownloadManager)
     dataRoutes(app, proxyUrl);
     desktopRoutes(app, proxyUrl);
