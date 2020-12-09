@@ -84,7 +84,7 @@ const getForms = async () => {
         {
             "type": "contentcategory",
             "action": "menubar",
-            "subType": "global"
+            "subtype": "global"
         },
         {
             "type": "framework",
