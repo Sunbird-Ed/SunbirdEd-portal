@@ -159,10 +159,10 @@ const getForms = async () => {
     ]
     const instance = await getInstance();
     for (const { type, subtype, action } of forms) {
-        let response = await instance.post(`/api/data/v1/form/read`, { "request": { "type": type, "action": action, "subtype": subtype } })
+        let response = await instance.post(`/api/data/v1/form/read`, { "request": { "type": type, "action": action, "subType": subtype } })
             .catch(err => console.log(`error while getting form ${type} ${subtype} ${action}`, err.response.status, err.response.data))
         if (!response) {
-            response = await instance.post(`/api/data/v1/form/read`, { "request": { "type": type, "action": action, "subType": subtype } })
+            response = await instance.post(`/api/data/v1/form/read`, { "request": { "type": type, "action": action, "subtype": subtype } })
                 .catch(err => console.log(`error while getting form ${type} ${subtype} ${action}`, err.response.status, err.response.data))
         }
         if (response && response.data) {
