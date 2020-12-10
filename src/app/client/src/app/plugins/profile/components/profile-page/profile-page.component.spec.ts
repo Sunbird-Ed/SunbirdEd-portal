@@ -25,6 +25,9 @@ describe('ProfilePageComponent', () => {
         }
       }
     };
+    getCurrentNavigation = () => {
+      return { state: {} }; 
+    }
   }
   const env = 'profile';
   class ActivatedRouteStub {
