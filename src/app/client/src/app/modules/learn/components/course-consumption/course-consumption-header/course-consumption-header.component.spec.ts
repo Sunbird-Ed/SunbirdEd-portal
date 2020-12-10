@@ -75,7 +75,7 @@ describe('CourseConsumptionHeaderComponent', () => {
     component = fixture.componentInstance;
     component.profileInfo = {
       firstName: 'Gourav',
-      lastName: 'More',
+      lastName: 'More1',
       id: '1234567890'
     }
   });

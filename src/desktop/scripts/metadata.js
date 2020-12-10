@@ -59,9 +59,9 @@ const getChannels = async () => {
 const getOrgs = async () => {
     const envs = await fse.readJSON(path.join(__dirname, '..', 'env.json'))
     const instance = await getInstance()
-    let { data } = await instance.post("/api/org/v1/search", {"request":{"filters":{"isRootOrg":true,"slug": envs.CHANNEL}}})
+    let { data } = await instance.post("/api/org/v1/search", { "request": { "filters": { "isRootOrg": true, "slug": envs.CHANNEL } } })
     // inject the Channel to env.json
-     
+
     envs.CHANNEL = data.result.response.content[0].slug;
     console.log(`Root org is ${envs.CHANNEL}`)
     rootOrgHashTagId = data.result.response.content[0].hashTagId;
@@ -159,8 +159,12 @@ const getForms = async () => {
     ]
     const instance = await getInstance();
     for (const { type, subtype, action } of forms) {
-        const response = await instance.post(`/api/data/v1/form/read`, { "request": { "type": type, "action": action, "subType": subtype } })
+        let response = await instance.post(`/api/data/v1/form/read`, { "request": { "type": type, "action": action, "subType": subtype } })
             .catch(err => console.log(`error while getting form ${type} ${subtype} ${action}`, err.response.status, err.response.data))
+        if (!response) {
+            response = await instance.post(`/api/data/v1/form/read`, { "request": { "type": type, "action": action, "subtype": subtype } })
+                .catch(err => console.log(`error while getting form ${type} ${subtype} ${action}`, err.response.status, err.response.data))
+        }
         if (response && response.data) {
             const formFile = path.join(baseDirPath, 'forms', `${type}_${subtype}_${action}.json`)
             await fse.createFile(formFile)
@@ -236,6 +240,7 @@ const getMetaData = async () => {
 }
 
 const copyAssetsAndUpdateFiles = async () => {
+    console.log(`Running env ${process.env.offline_target_env}`);
     const appConfig = await fse.readJSON(path.join(__dirname, '..', 'env.json'))
     let packageJSON = await fse.readJSON(path.join(__dirname, '..', "package.json"));
     packageJSON.name = appConfig.APP_NAME;
