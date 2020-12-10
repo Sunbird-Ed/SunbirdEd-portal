@@ -129,13 +129,6 @@ describe('MainFooterComponent', () => {
         component.redoLayout();
         expect(component).toBeTruthy();
     });
-    it('should open system browser for desktop app', () => {
-        component.isDesktopApp = true;
-        spyOn(window, 'open');
-        component.redirect('http://google.com');
-        expect(window.open).toHaveBeenCalled();
-    });
-
   it('should make isFullScreenView to FALSE', () => {
     component.isFullScreenView = true;
     const navigationHelperService = TestBed.get(NavigationHelperService);
