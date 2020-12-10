@@ -36,6 +36,7 @@ export class Server {
     perfLoggerInit();
     this.initialize(app)
       .then(() => {
+        logger.info(`${manifest.id}:initialized successfully`);
         EventManager.emit(`${manifest.id}:initialized`, {});
       })
       .catch(err => {

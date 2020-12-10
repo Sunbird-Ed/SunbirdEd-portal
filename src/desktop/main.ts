@@ -83,14 +83,16 @@ const reloadUIOnFileChange = () => {
       "portal file changed- reloading screen with current url",
       currentURL
     );
-    fs.rename(
-      path.join("public", "portal", "index.html"),
-      path.join("public", "portal", "index.ejs"),
-      err => {
-        if (err) console.log("ERROR: " + err);
-        win.reload();
-      }
-    );
+    if(fs.existsSync(path.join("public", "portal", "index.html"))) {
+      fs.rename(
+        path.join("public", "portal", "index.html"),
+        path.join("public", "portal", "index.ejs"),
+        err => {
+          if (err) console.log("ERROR: " + err);
+          win.reload();
+        }
+      );
+    }
   });
   fileSDK
     .watch([path.join("public", "portal")])
@@ -279,14 +281,14 @@ const startApp = async () => {
 };
 
 const waitForDBToLoad = () => {
-  new Promise((resolve, reject) => {
+  return (new Promise((resolve, reject) => {
     EventManager.subscribe("openrap-sunbirded-plugin:initialized", resolve)
-  })
+  }))
 }
 // start loading all the dependencies
 const bootstrapDependencies = async () => {
   console.log("============> bootstrap started");
-  await startCrashReporter();
+  await startCrashReporter().catch(error => logger.error("unable to start crash reporter", error));
   await copyPluginsMetaData();
   console.log("============> copy plugin done");
   await setAvailablePort();
@@ -294,7 +296,7 @@ const bootstrapDependencies = async () => {
   await containerAPI.bootstrap();
   console.log("============> containerAPI bootstrap done");
   await startApp();
-  await waitForDBToLoad()
+  await waitForDBToLoad();
   console.log("============> App startup done");
   //to handle the unexpected navigation to unknown route
   //  expressApp.all("*", (req, res) => res.redirect("/"));
@@ -406,7 +408,11 @@ async function createWindow() {
     win.webContents.once("dom-ready", () => {
     let perfLogger = containerAPI.getPerfLoggerInstance();
     const startUpDuration = (Date.now() - startTime) / 1000  
-    logger.info(`App took ${startUpDuration} sec to start`);
+    if(startUpDuration > 10) {
+      logger.error(`App took ${startUpDuration} sec to start`);
+    } else {
+      logger.info(`App took ${startUpDuration} sec to start`);
+    }
     perfLogger.log({
       type: 'APP_STARTUP',
       time: startUpDuration,
