@@ -148,7 +148,8 @@ export class WorkSpaceService {
         name: item.name,
         image: item.appIcon,
         description: item.description,
-        lockInfo: item.lockInfo
+        lockInfo: item.lockInfo,
+        originData : item.originData
       };
       _.forIn(staticData, (value, key1) => {
         card[key1] = value;
