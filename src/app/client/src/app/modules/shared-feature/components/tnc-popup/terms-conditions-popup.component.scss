@@ -1,7 +1,12 @@
 
 @import "mixins/mixins";
 
-
+.terms-and-cond-form{
+  height: calc(100vh - 350px);
+ iframe{
+   height: 100%;
+ }
+}
 @include respond-below(sm) {
 
   ::ng-deep {
@@ -20,11 +25,6 @@
             overflow: hidden;
           }
         }
-
-        .ui.form.terms-and-cond-form {
-          height: calc(100% - 112px);
-        }
-
         .toc-page { 
           height: 100%;
         }
