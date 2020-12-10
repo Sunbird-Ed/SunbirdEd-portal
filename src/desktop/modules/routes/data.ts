@@ -5,7 +5,6 @@ import config from "./../config";
 import { Channel } from "./../controllers/channel";
 import Content from "./../controllers/content/content";
 import { Faqs } from "./../controllers/faqs";
-import { Form } from "./../controllers/form";
 import { Framework } from "./../controllers/framework";
 import { Location } from "./../controllers/location";
 import { Organization } from "./../controllers/organization";
@@ -46,26 +45,7 @@ export default (app, proxyURL) => {
         }),
     );
 
-    const form = new Form(manifest);
-    app.post(
-        "/api/data/v1/form/read",
-        (req, res, next) => {
-            logger.debug(`Received API call to read formdata`);
-            logger.debug(`ReqId = "${req.headers["X-msgid"]}": Check proxy`);
-            if (false) {
-                logger.info(`Proxy is Enabled `);
-                next();
-            } else {
-                logger.debug(`ReqId = "${req.headers["X-msgid"]}": Search form data`);
-                return form.search(req, res);
-            }
-        },
-        proxy(proxyURL, {
-            proxyReqPathResolver(req) {
-                return `/api/data/v1/form/read`;
-            },
-        }),
-    );
+    
 
     const channel = new Channel(manifest);
     app.get(

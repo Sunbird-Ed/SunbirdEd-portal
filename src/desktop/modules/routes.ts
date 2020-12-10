@@ -7,6 +7,7 @@ import * as uuid from "uuid";
 import { ContentDownloadManager } from "./manager/contentDownloadManager";
 import contentRoutes from './routes/content';
 import dataRoutes from './routes/data';
+import formRoutes from './routes/forms';
 import desktopRoutes from './routes/desktop';
 import playerProxyRoutes from './routes/playerProxy';
 import staticRoutes from './routes/static';
@@ -132,6 +133,7 @@ export class Router {
     authRoutes(app, proxyUrl);
     contentRoutes(app, proxyUrl, this.contentDownloadManager)
     dataRoutes(app, proxyUrl);
+    formRoutes(app, proxyUrl);
     desktopRoutes(app, proxyUrl);
     telemetryRoutes(app)
     playerProxyRoutes(app, proxyUrl);
