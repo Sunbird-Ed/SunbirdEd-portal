@@ -314,7 +314,7 @@ describe('InAppNotificationComponent', () => {
       // act
       await component.handleShowMore(event);
       // assert
-      expect(component.generateInteractEvent).toHaveBeenCalledWith('show-more');
+      expect(component.generateInteractEvent).toHaveBeenCalledWith('see-more');
     });
 
     it('should not generate telemetry event on showmore event is false', async () => {
@@ -324,7 +324,7 @@ describe('InAppNotificationComponent', () => {
       // act
       await component.handleShowMore(event);
       // assert
-      expect(component.generateInteractEvent).not.toHaveBeenCalledWith('show-more');
+      expect(component.generateInteractEvent).not.toHaveBeenCalledWith('see-more');
     });
   });
 
@@ -336,7 +336,7 @@ describe('InAppNotificationComponent', () => {
       // act
       await component.handleShowLess(event);
       // assert
-      expect(component.generateInteractEvent).toHaveBeenCalledWith('show-less');
+      expect(component.generateInteractEvent).toHaveBeenCalledWith('see-less');
     });
 
     it('should not generate telemetry event on showless event is false', async () => {
@@ -346,7 +346,7 @@ describe('InAppNotificationComponent', () => {
       // act
       await component.handleShowLess(event);
       // assert
-      expect(component.generateInteractEvent).not.toHaveBeenCalledWith('show-less');
+      expect(component.generateInteractEvent).not.toHaveBeenCalledWith('see-less');
     });
   });
 
