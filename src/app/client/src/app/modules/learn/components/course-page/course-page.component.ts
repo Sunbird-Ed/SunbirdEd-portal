@@ -313,6 +313,10 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(
         map((response) => {
           this._courseSearchResponse = response;
+          // For content(s) without subject name(s); map it to 'Others'
+          _.forEach(_.get(response, 'result.content'), function (content) {
+            if (!_.get(content, 'subject') || !_.size(_.get(content, 'subject'))) content['subject'] = ['Others'];
+          });
           const filteredContents = _.omit(_.groupBy(_.get(response, 'result.content'), 'subject'), ['undefined']);
           for (const [key, value] of Object.entries(filteredContents)) {
             const isMultipleSubjects = key.split(',').length > 1;
