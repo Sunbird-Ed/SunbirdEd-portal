@@ -10,7 +10,7 @@ import {
   Input,
   OnDestroy
 } from '@angular/core';
-import { ResourceService, ConfigService, LayoutService, COLUMN_TYPE, NavigationHelperService} from '@sunbird/shared';
+import { ResourceService, ConfigService, LayoutService, COLUMN_TYPE, NavigationHelperService, UtilService } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { combineLatest as observableCombineLatest, Subject } from 'rxjs';
@@ -47,11 +47,12 @@ export class MainFooterComponent implements OnInit, AfterViewInit, OnDestroy {
   FIRST_PANEL_LAYOUT: string;
   SECOND_PANEL_LAYOUT: string;
   isFullScreenView;
+  isDesktopApp = false;
 
   constructor(resourceService: ResourceService, public router: Router, public activatedRoute: ActivatedRoute,
     public configService: ConfigService, private renderer: Renderer2, private cdr: ChangeDetectorRef, public userService: UserService,
       public tenantService: TenantService, public layoutService: LayoutService,
-      public navigationHelperService: NavigationHelperService
+      public navigationHelperService: NavigationHelperService, private utilService: UtilService
     ) {
     this.resourceService = resourceService;
   }
@@ -59,6 +60,7 @@ export class MainFooterComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     this.initlayout();
     this.checkFullScreenView();
+    this.isDesktopApp = this.utilService.isDesktopApp;
     this.instance = _.upperCase(this.resourceService.instance);
     this.tenantService.tenantSettings$.subscribe((data) => {
       this.tenantFooter = data;
@@ -157,7 +159,11 @@ export class MainFooterComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   redirect(url) {
-    window.location.href = url;
+    if (this.isDesktopApp) {
+      window.open(url, '_blank');
+    } else {
+      window.location.href = url;
+    }
   }
 
   ngOnDestroy() {
