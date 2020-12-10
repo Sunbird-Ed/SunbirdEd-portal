@@ -279,19 +279,6 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
             pageid: 'library-search'
         };
     }
-    public playContent(event) {
-        const { data: { identifier } } = event;
-        const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } = this.coursesService.findEnrolledCourses(identifier);
-        if (!expiredBatchCount && !onGoingBatchCount) {
-            return this.playerService.playContent(event.data);
-        }
-        if (onGoingBatchCount === 1) {
-            event.data.batchId = _.get(openBatch, 'ongoing.length') ? _.get(openBatch, 'ongoing[0].batchId') : _.get(inviteOnlyBatch, 'ongoing[0].batchId');
-            return this.playerService.playContent(event.data);
-        }
-        this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: identifier };
-        this.showBatchInfo = true;
-    }
     public inView(event) {
         _.forEach(event.inview, (elem, key) => {
             const obj = _.find(this.inViewLogs, { objid: elem.data.identifier });
@@ -308,6 +295,19 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         this.telemetryImpression.edata.subtype = 'pageexit';
         this.telemetryImpression = Object.assign({}, this.telemetryImpression);
         }
+    }
+    public playContent(event) {
+        const { data: { identifier } } = event;
+        const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } = this.coursesService.findEnrolledCourses(identifier);
+        if (!expiredBatchCount && !onGoingBatchCount) {
+            return this.playerService.playContent(event.data);
+        }
+        if (onGoingBatchCount === 1) {
+            event.data.batchId = _.get(openBatch, 'ongoing.length') ? _.get(openBatch, 'ongoing[0].batchId') : _.get(inviteOnlyBatch, 'ongoing[0].batchId');
+            return this.playerService.playContent(event.data);
+        }
+        this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: identifier };
+        this.showBatchInfo = true;
     }
     ngAfterViewInit () {
         setTimeout(() => {
