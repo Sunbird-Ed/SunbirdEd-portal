@@ -8,6 +8,7 @@ import * as uuid from "uuid";
 import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import { logger } from "@project-sunbird/logger";
 const fileSDK = containerAPI.getFileSDKInstance(manifest.id);
+import ContentLocation from "../../controllers/contentLocation";
 
 import { ClassLogger } from "@project-sunbird/logger/decorator";
 // @ClassLogger({
@@ -15,7 +16,7 @@ import { ClassLogger } from "@project-sunbird/logger/decorator";
 //   logTime: true,
 // })
 export class ExportContent {
-  private contentBaseFolder = fileSDK.getAbsPath("content");
+  private contentBaseFolder;
   private parentArchive;
   private parentManifest;
   private ecarName;
@@ -25,6 +26,8 @@ export class ExportContent {
   private settingSDK = containerAPI.getSettingSDKInstance(manifest.id);
   constructor(private destFolder, private dbParentNode, private dbChildNodes) { }
   public async export(cb) {
+    const contentLocation = new ContentLocation(manifest.id);
+    this.contentBaseFolder = await contentLocation.get();
     this.cb = cb;
     try {
       this.parentArchive = fileSDK.archiver();
