@@ -113,6 +113,9 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
   }
 
   processFormData(formData) {
+    if (!this.utilService.isDesktopApp) {
+      formData = formData.filter(data => !data.isDesktopOnly);
+    }
     this.contentTypes = _.sortBy(formData, 'index');
     this.selectedContentType = this.activatedRoute.snapshot.queryParams.selectedTab || 'textbook';
   }

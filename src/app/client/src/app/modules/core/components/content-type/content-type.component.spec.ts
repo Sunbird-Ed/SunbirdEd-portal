@@ -86,8 +86,11 @@ describe('ContentTypeComponent', () => {
   it('should inint the component', () => {
     const formService = TestBed.get(FormService);
     spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockData.formData));
+    const utilService = TestBed.get(UtilService);
+    utilService._isDesktopApp = false;
     component.ngOnInit();
-    expect(component.contentTypes).toEqual(mockData.formData);
+    const mockForm = mockData.formData.filter(data => !data.isDesktopOnly);
+    expect(component.contentTypes).toEqual(mockForm);
     expect(component.selectedContentType).toBe('textbook');
   });
 
@@ -181,6 +184,15 @@ describe('ContentTypeComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(
       ['/explore'], { queryParams: { selectedTab: 'textbook' } });
   });
+  it('should set conent type as all when updateSelectedContentType trigger with unknown content type', () => {
+    const layoutService = TestBed.get(LayoutService);
+    component.contentTypes = mockData.formData;
+    spyOn(component, 'updateSelectedContentType').and.callThrough();
+    component.ngOnInit();
+    layoutService.updateSelectedContentType.emit('LessionPlan');
+    expect(component.updateSelectedContentType).toHaveBeenCalled();
+    expect(component.selectedContentType).toEqual('all');
+  });
   it('should fetch title for logged in user', () => {
     const userService = TestBed.get(UserService);
     const router = TestBed.get(Router);
@@ -201,14 +213,15 @@ describe('ContentTypeComponent', () => {
     expect(component.updateSelectedContentType).toHaveBeenCalled();
     expect(component.selectedContentType).toEqual('textbook');
   });
-  it('should set conent type as all when updateSelectedContentType trigger with unknown content type', () => {
-    const layoutService = TestBed.get(LayoutService);
-    component.contentTypes = mockData.formData;
-    spyOn(component, 'updateSelectedContentType').and.callThrough();
+
+  it('should show mydownloads tab for desktop app', () => {
+    const formService = TestBed.get(FormService);
+    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockData.formData));
+    const utilService = TestBed.get(UtilService);
+    utilService._isDesktopApp = true;
     component.ngOnInit();
-    layoutService.updateSelectedContentType.emit('LessionPlan');
-    expect(component.updateSelectedContentType).toHaveBeenCalled();
-    expect(component.selectedContentType).toEqual('all');
+    expect(component.contentTypes).toEqual(mockData.formData);
+    expect(component.selectedContentType).toBe('textbook');
   });
 
 

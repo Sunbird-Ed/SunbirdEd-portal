@@ -578,10 +578,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption@^3.5.1":
-  version "3.5.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.5.1.tgz#2a2128adb968adf5530428bf8774c88f120b53b7"
-  integrity sha512-ZOfA5yoTZf6TcgJ4yzI4M4ORVf3dTp/xp6/IL7y2d1T8qutkJbBolFKuw8PRoQbAZdu9MYIxWPOw5zrQuYS/IA==
+"@project-sunbird/common-consumption@^3.5.2":
+  version "3.5.3"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption/-/common-consumption-3.5.3.tgz#b4ff072a91047aaebc00b41065255530aba9a3be"
+  integrity sha512-TWScIhl5AjfMlm+45kLVadveE1Wfy2dzI0Kj8/TujtqtGDfB2hLRogoWcCoCz3Z/CPlJpF1o5zOtEt85Ej5m3w==
   dependencies:
     tslib "^1.9.0"
 
@@ -598,10 +598,10 @@
     "@project-sunbird/sunbird-player-sdk" "0.0.9"
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-player-sdk@0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk/-/sunbird-player-sdk-0.0.7.tgz#f4e40966e6ad3257159c1cf541305dcba3147ea3"
-  integrity sha512-Q9iC5vpR+dtWYG1Ye/VhieM/XEbsozxmI3sf4hK9r1rK0DsvX2sduu8JT65BJf/ruaFauOBexVOM9d9rfajeBQ==
+"@project-sunbird/sunbird-player-sdk@0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk/-/sunbird-player-sdk-0.0.11.tgz#dadd73154625e9b3266762e6abe46df31bcd37a0"
+  integrity sha512-sabbNAU9F/KO5+LHdTpEx+WW/leQ2wPqT6tU7dghgB2sgiMqpwHs303JVxSOSt5Q4MhDnRaq2WmuV1ooxR0HoQ==
   dependencies:
     tslib "^1.9.0"
 
@@ -612,12 +612,12 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-video-player@0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player/-/sunbird-video-player-0.0.6.tgz#26ee9d58213abfd7bca898cb15ec2d1aa25c6d18"
-  integrity sha512-m3D9wLiD27rfF36gXEORt/aDhxWU6vSCpIYbv6CJa414jr9RY0g3LIVVJwGIHZcj0dGFE3PdLwDWyaFAO93+Qg==
+"@project-sunbird/sunbird-video-player@0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player/-/sunbird-video-player-0.0.11.tgz#cf44cdf04abb5cb0077c54f13c5b53857beeefad"
+  integrity sha512-Wl9lvKVD89Ira8hSUFD87urJwbizJgHPnS9pYJdA8A2tFt2cmQadchF+XnfgqqAq9KffulmqIgMpZsP+C1QNnQ==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk" "0.0.7"
+    "@project-sunbird/sunbird-player-sdk" "0.0.11"
     tslib "^1.9.0"
 
 "@project-sunbird/telemetry-sdk@0.0.26":
