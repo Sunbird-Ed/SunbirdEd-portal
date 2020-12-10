@@ -1,4 +1,4 @@
-import { app, BrowserWindow, dialog, crashReporter } from "electron";
+import { app, BrowserWindow, dialog, crashReporter, shell } from "electron";
 import * as _ from "lodash";
 import * as path from "path";
 import * as fs from "fs";
@@ -391,7 +391,8 @@ async function createWindow() {
       minHeight: 500,
       webPreferences: {
         nodeIntegration: false,
-        enableRemoteModule: false
+        enableRemoteModule: false,
+        nativeWindowOpen: true
       },
       icon: windowIcon
     });
@@ -401,8 +402,14 @@ async function createWindow() {
     if (!app.isPackaged) {
       reloadUIOnFileChange();
     }
-      win.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
-        options.show = false;
+      win.webContents.on('new-window', async(event, url, frameName, disposition, options, additionalFeatures) => {
+        event.preventDefault();
+        try {
+          if (!['https:', 'http:'].includes(new URL(url).protocol)) return;
+          await shell.openExternal(url);
+        } catch(error) {
+          logger.error("Error while opening link",error);
+        }
       })
     
     win.webContents.once("dom-ready", () => {
