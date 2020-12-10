@@ -68,8 +68,7 @@
           </div>
 
           <div *ngIf="data.addedUsing === 'download' && data.status === 'inProgress'" class="info-text">
-            {{resourceService?.frmelmnts?.lbl?.downloading}}
-            {{data.downloadedSize | filesize}}/{{data.totalSize | filesize}}</div>
+            {{resourceService?.frmelmnts?.lbl?.downloading}}&nbsp;{{data.totalSize | filesize}}</div>
 
           <div *ngIf="data.addedUsing === 'import' && data.status === 'inProgress'" class="info-text">
             {{resourceService?.frmelmnts?.lbl?.uploading}}</div>

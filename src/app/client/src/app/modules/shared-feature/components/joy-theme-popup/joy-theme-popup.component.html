@@ -28,12 +28,12 @@
     <div class="d-flex flex-dc joy-modal-footer">
       <p class="sb-group-container__description mt-16 fnormal text-left"><span class="sb-color-warning">*</span> {{resourceService.frmelmnts?.lbl?.goBackToClassicTheme | interpolate:'{instance}': instance }}</p>
       <div class="text-right">
-      <button class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" appTelemetryInteract [telemetryInteractEdata]="joyThemeIntractEdata"
-              (click)="switchToNewLayout()"> {{resourceService.frmelmnts?.lbl?.tryNewTheme}}
+      <button class="sb-btn sb-btn-outline-primary sb-btn-normal" appTelemetryInteract [telemetryInteractEdata]="oldThemeIntractEdata"
+      (click)="switchToNewLayout(false)">{{resourceService?.frmelmnts?.lbl?.noThankYou}}!
       </button>
-       <button class="sb-btn sb-btn-primary sb-btn-normal" appTelemetryInteract [telemetryInteractEdata]="oldThemeIntractEdata"
-      (click)="closePopup()">{{resourceService?.frmelmnts?.lbl?.noThankYou}}!
-</button>
+      <button class="sb-btn  sb-btn-primary sb-btn-normal mr-8" appTelemetryInteract [telemetryInteractEdata]="joyThemeIntractEdata"
+              (click)="switchToNewLayout(true)"> {{resourceService.frmelmnts?.lbl?.tryNewTheme}}
+      </button>
 </div>
     </div>
   </div>
