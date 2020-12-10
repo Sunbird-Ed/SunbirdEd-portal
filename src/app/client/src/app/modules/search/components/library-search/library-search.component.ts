@@ -2,7 +2,7 @@ import {
     PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
     ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination, LayoutService, COLUMN_TYPE
 } from '@sunbird/shared';
-import { SearchService, PlayerService, UserService, FrameworkService, OrgDetailsService } from '@sunbird/core';
+import { SearchService, PlayerService, UserService, FrameworkService, OrgDetailsService, CoursesService } from '@sunbird/core';
 import { combineLatest, Subject, of } from 'rxjs';
 import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -51,12 +51,14 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     public totalCount;
     public searchAll;
     public allMimeType;
+    showBatchInfo: boolean;
+    selectedCourseBatches: { onGoingBatchCount: any; expiredBatchCount: any; openBatch: any; inviteOnlyBatch: any; courseId: any; };
     constructor(public searchService: SearchService, public router: Router, private playerService: PlayerService,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
         public resourceService: ResourceService, public toasterService: ToasterService,
         public configService: ConfigService, public utilService: UtilService,
         public navigationHelperService: NavigationHelperService, public userService: UserService,
-        public cacheService: CacheService, public frameworkService: FrameworkService,
+        public cacheService: CacheService, public frameworkService: FrameworkService, private coursesService: CoursesService,
         public navigationhelperService: NavigationHelperService, public layoutService: LayoutService,  public orgDetailsService: OrgDetailsService) {
         this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.filterType = this.configService.appConfig.library.filterType;
@@ -277,9 +279,6 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
             pageid: 'library-search'
         };
     }
-    public playContent(event) {
-        this.playerService.playContent(event.data);
-    }
     public inView(event) {
         _.forEach(event.inview, (elem, key) => {
             const obj = _.find(this.inViewLogs, { objid: elem.data.identifier });
@@ -296,6 +295,19 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         this.telemetryImpression.edata.subtype = 'pageexit';
         this.telemetryImpression = Object.assign({}, this.telemetryImpression);
         }
+    }
+    public playContent(event) {
+        const { data: { identifier } } = event;
+        const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } = this.coursesService.findEnrolledCourses(identifier);
+        if (!expiredBatchCount && !onGoingBatchCount) {
+            return this.playerService.playContent(event.data);
+        }
+        if (onGoingBatchCount === 1) {
+            event.data.batchId = _.get(openBatch, 'ongoing.length') ? _.get(openBatch, 'ongoing[0].batchId') : _.get(inviteOnlyBatch, 'ongoing[0].batchId');
+            return this.playerService.playContent(event.data);
+        }
+        this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: identifier };
+        this.showBatchInfo = true;
     }
     ngAfterViewInit () {
         setTimeout(() => {
