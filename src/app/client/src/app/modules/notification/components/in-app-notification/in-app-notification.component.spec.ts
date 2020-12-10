@@ -204,7 +204,7 @@ describe('InAppNotificationComponent', () => {
       await component.notificationHandler(event);
       // assert
       expect(component.showNotificationModel).toBeFalsy();
-      expect(router.navigate).toHaveBeenCalledWith(['/resource/course']);
+      expect(router.navigate).toHaveBeenCalledWith(['/resource/course'], {});
       expect(component.markNotificationAsRead).toHaveBeenCalledWith(event.data);
       expect(component.fetchNotificationList).toHaveBeenCalled();
     });
@@ -228,7 +228,7 @@ describe('InAppNotificationComponent', () => {
       await component.notificationHandler(event);
       // assert
       expect(component.showNotificationModel).toBeFalsy();
-      expect(router.navigate).toHaveBeenCalledWith(['/profile']);
+      expect(router.navigate).toHaveBeenCalledWith(['/profile'], { state: { scrollToId: 'learner-passbook' } });
       expect(component.markNotificationAsRead).toHaveBeenCalledWith(event.data);
       expect(component.fetchNotificationList).toHaveBeenCalled();
     });

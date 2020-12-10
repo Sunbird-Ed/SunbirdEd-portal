@@ -55,7 +55,7 @@ describe('ReviewsubmissionsContentplayerComponent', () => {
   });
   beforeEach(() => {
     originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000000;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000000;
 });
 
 afterEach(() =>  {

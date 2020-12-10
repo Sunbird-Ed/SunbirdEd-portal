@@ -612,10 +612,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-video-player@0.0.10":
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player/-/sunbird-video-player-0.0.10.tgz#8a679e2ef8c01b0b57e43c7325dae9f824e9b234"
-  integrity sha512-lBFyesYyJdPAERDjCET4sdMHmoidRKg9UomHY3UQf+eCS9cHzaAz+PgKL9g7vD5OKjTcHPNEcgDDEPGLpSnNAQ==
+"@project-sunbird/sunbird-video-player@0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player/-/sunbird-video-player-0.0.12.tgz#5c8ff864628f3d55e7b56605dacaa0af16fc1333"
+  integrity sha512-7dlqkP0AeKv+3iTIulrB0vV5V9v2EWDjEEubZg+zqHbQjoxf7o591WLlGNThOgDeXshVZGL4vyp2RcZ94a6F+A==
   dependencies:
     "@project-sunbird/sunbird-player-sdk" "0.0.11"
     tslib "^1.9.0"
