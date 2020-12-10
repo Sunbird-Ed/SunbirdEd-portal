@@ -14,6 +14,7 @@ import Tenant from "./../controllers/tenant";
 import { manifest } from "./../manifest";
 const proxy = require('express-http-proxy');
 import Response from "./../utils/response";
+import { GeneraliseResourceHelper } from "../helper/generaliseResourceHelper";
 
 export default (app, proxyURL) => {
     const content = new Content(manifest);
@@ -204,7 +205,9 @@ export default (app, proxyURL) => {
                 });
             },
         }));
-
+    
+    const grb = new GeneraliseResourceHelper();
+    app.get('/getGeneralisedResourcesBundles/:lang/:fileName', grb.getGeneralisedResourcesBundles.bind(grb)); 
 }
 
 const enableProxy = (req) => {
