@@ -93,15 +93,9 @@
             *ngIf="!showExploreComponent && !hideHeader"
             [ngClass]="{'ml-auto mr-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}">
           </app-search>
-          <!--Load content -->
-          <div class="computer only d-flex" *appDesktopOnly>
-            <span class="search-qrcode-divider"></span>
-            <button class="ui button qr-code-btn d-flex flex-ai-center sb-load-content-btn" type="button"> {{resourceService?.frmelmnts?.btn?.loadContent}} </button>
-          </div>
-           <!--/Load content -->
           <!--/Logged in Pages-->
           <!--Explore Pages-->
-          <div class="sb-search-box b-0 mr-auto" *ngIf="showExploreComponent && !hideHeader"
+          <div class="sb-search-box b-0" *ngIf="showExploreComponent && !hideHeader"
             [ngClass]="{'ml-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}">
             <div class="input-div relative">
               <!-- <i class="search icon"></i> -->
@@ -119,6 +113,12 @@
           </div>
           <!--/Explore Pages-->
           <!--/Search Box-->
+           <!--Load content -->
+           <div class="computer only d-flex" *appDesktopOnly>
+            <span class="search-qrcode-divider"></span>
+            <button class="ui button qr-code-btn d-flex flex-ai-center sb-load-content-btn" type="button"> {{resourceService?.frmelmnts?.btn?.loadContent}} </button>
+          </div>
+           <!--/Load content -->
           <!--Language Dropdown-->
           <app-language-dropdown [layoutConfiguration]="layoutConfiguration" [languageRange]='languages'
             class="computer only ml-auto" *ngIf="languages && showLanguageDropdown()">

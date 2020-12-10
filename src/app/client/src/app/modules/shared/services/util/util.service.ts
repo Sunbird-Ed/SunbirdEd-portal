@@ -284,6 +284,10 @@ export class UtilService {
           }
         ]
       };
+
+      if (_.toUpper(_.get(value, 'trackable.enabled')) === 'YES') {
+        value['hoverData'].actions.shift();
+      }
     });
 
     return contentList;
