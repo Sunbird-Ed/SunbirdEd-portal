@@ -165,6 +165,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.initLayout();
         this.getOrgDetails();
         this.setTelemetryData();
+        this.listenLanguageChange();
         this.contentManagerService.contentDownloadStatus$.subscribe( contentDownloadStatus => {
             this.contentDownloadStatus = contentDownloadStatus;
             this.updateCardData();
@@ -207,6 +208,14 @@ export class LibraryComponent implements OnInit, OnDestroy {
             });
 
         this.utilService.clearSearchQuery();
+    }
+
+    private listenLanguageChange() {
+        this.utilService.languageChange.pipe(takeUntil(this.unsubscribe$)).subscribe((langData) => {
+            if (_.get(this.pageSections, 'length')) {
+                this.addHoverData();
+            }
+        });
     }
 
     fetchContentOnParamChange() {

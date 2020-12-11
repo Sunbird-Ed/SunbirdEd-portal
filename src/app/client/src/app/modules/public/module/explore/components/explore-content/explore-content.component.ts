@@ -73,6 +73,9 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   }
   ngOnInit() {
     this.isDesktopApp = this.utilService.isDesktopApp;
+    if (this.isDesktopApp) {
+      this.listenLanguageChange();
+    }
     this.activatedRoute.queryParams.pipe(takeUntil(this.unsubscribe$)).subscribe(queryParams => {
         this.queryParams = { ...queryParams };
     });
@@ -112,6 +115,13 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     this.contentManagerService.contentDownloadStatus$.subscribe( contentDownloadStatus => {
       this.contentDownloadStatus = contentDownloadStatus;
   });
+  }
+  private listenLanguageChange() {
+    this.utilService.languageChange.pipe(takeUntil(this.unsubscribe$)).subscribe((langData) => {
+      if (_.get(this.contentList, 'length')) {
+        this.addHoverData();
+      }
+    });
   }
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
