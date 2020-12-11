@@ -8,9 +8,11 @@
         <app-network-status></app-network-status>
         <app-load-offline-content></app-load-offline-content>
       </ng-container>
-      <app-global-search-filter [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true'
-        *ngIf="initFilters" (filterChange)="getFilters($event)">
-      </app-global-search-filter>
+      <div [ngClass]="isDesktopApp ? 'sb-desktop-filter-section' : ''">
+        <app-global-search-filter [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true'
+          *ngIf="initFilters" (filterChange)="getFilters($event)">
+        </app-global-search-filter>
+      </div>
 
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT" class="w-100">
