@@ -287,6 +287,13 @@ describe('ExploreContentComponent', () => {
     expect(component.showDownloadLoader).toBeFalsy();
   });
 
+  it('should call playContent', () => {
+    const publicPlayerService = TestBed.get(PublicPlayerService);
+    spyOn(publicPlayerService, 'playContent');
+    component.playContent({});
+    expect(publicPlayerService.playContent).toHaveBeenCalled();
+  });
+
   it('should set no Result message', () => {
     component.queryParams = { key: 'test' };
     component['setNoResultMessage']();
@@ -306,12 +313,5 @@ describe('ExploreContentComponent', () => {
     component['listenLanguageChange']();
     expect(component.addHoverData).toHaveBeenCalled();
     expect(component['setNoResultMessage']).toHaveBeenCalled();
-  });
-
-  it('should call playContent', () => {
-    const publicPlayerService = TestBed.get(PublicPlayerService);
-    spyOn(publicPlayerService, 'playContent');
-    component.playContent({});
-    expect(publicPlayerService.playContent).toHaveBeenCalled();
   });
 });
