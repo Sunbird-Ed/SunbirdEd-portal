@@ -113,7 +113,6 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       this.contentDownloadStatus = contentDownloadStatus;
   });
   }
-
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.redoLayout();
