@@ -425,7 +425,13 @@
               </svg></i>
             {{resourceService?.frmelmnts?.tab?.help}}
           </li>
-            <li class="list-item" (click)="toggleSideMenu(false);switchToAccessibleLayout()">
+            <li *ngIf="!isDesktopApp" class="list-item" (click)="toggleSideMenu(false);switchToAccessibleLayout()">
+              <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
+                <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
+              </svg></i>
+              {{resourceService?.frmelmnts?.lbl?.accessible}}
+            </li>
+            <li *ngIf="isDesktopApp" class="list-item" (click)="toggleSideMenu(false);switchToAccessibleLayout()" appOnlineOnly>
               <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
               </svg></i>
