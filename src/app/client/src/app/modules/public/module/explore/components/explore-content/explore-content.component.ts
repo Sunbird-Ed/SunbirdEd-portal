@@ -73,9 +73,6 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   }
   ngOnInit() {
     this.isDesktopApp = this.utilService.isDesktopApp;
-    if (this.isDesktopApp) {
-      this.listenLanguageChange();
-    }
     this.activatedRoute.queryParams.pipe(takeUntil(this.unsubscribe$)).subscribe(queryParams => {
         this.queryParams = { ...queryParams };
     });
@@ -83,7 +80,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
       this.formData = formData;
       this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
-      this.setNoResultMessage();
+      this.listenLanguageChange();
       this.initFilters = true;
     }, error => {
       this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
@@ -116,13 +113,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       this.contentDownloadStatus = contentDownloadStatus;
   });
   }
-  private listenLanguageChange() {
-    this.utilService.languageChange.pipe(takeUntil(this.unsubscribe$)).subscribe((langData) => {
-      if (_.get(this.contentList, 'length')) {
-        this.addHoverData();
-      }
-    });
-  }
+
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.redoLayout();
@@ -309,22 +300,29 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
+  private listenLanguageChange() {
+    this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe((languageData) => {
+      this.setNoResultMessage();
+      if (_.get(this.contentList, 'length') && this.isDesktopApp) {
+        this.addHoverData();
+      }
+    });
+  }
+
   private setNoResultMessage() {
-    this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$))
-      .subscribe(item => {
-        let title = this.resourceService.frmelmnts.lbl.noBookfoundTitle;
-        if(this.queryParams.key) {
-          const title_part1 = _.replace(this.resourceService.frmelmnts.lbl.desktop.yourSearch, '{key}', this.queryParams.key);
-          const title_part2 = this.resourceService.frmelmnts.lbl.desktop.notMatchContent;
-          title = title_part1 + ' ' + title_part2;
-        }
-        this.noResultMessage = {
-          'title': title,
-          'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
-          'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
-          'showExploreContentButton': false
-        };
-      });
+    let title = this.resourceService.frmelmnts.lbl.noBookfoundTitle;
+    if (this.queryParams.key) {
+      const title_part1 = _.replace(this.resourceService.frmelmnts.lbl.desktop.yourSearch, '{key}', this.queryParams.key);
+      const title_part2 = this.resourceService.frmelmnts.lbl.desktop.notMatchContent;
+      title = title_part1 + ' ' + title_part2;
+    }
+    this.noResultMessage = {
+      'title': title,
+      'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
+      'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
+      'showExploreContentButton': false
+    };
   }
 
   updateCardData(downloadListdata) {
