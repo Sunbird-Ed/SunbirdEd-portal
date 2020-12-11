@@ -306,5 +306,49 @@ describe('InAppNotificationComponent', () => {
     });
   });
 
+  describe('handleShowMore', async () => {
+    it('should generate telemetry event on showmore event is true', async () => {
+      //  arrange
+      const event = true;
+      spyOn(component, 'generateInteractEvent');
+      // act
+      await component.handleShowMore(event);
+      // assert
+      expect(component.generateInteractEvent).toHaveBeenCalledWith('see-more');
+    });
+
+    it('should not generate telemetry event on showmore event is false', async () => {
+      //  arrange
+      const event = false;
+      spyOn(component, 'generateInteractEvent');
+      // act
+      await component.handleShowMore(event);
+      // assert
+      expect(component.generateInteractEvent).not.toHaveBeenCalledWith('see-more');
+    });
+  });
+
+  describe('handleShowLess', async () => {
+    it('should generate telemetry event on showless event is true', async () => {
+      //  arrange
+      const event = true;
+      spyOn(component, 'generateInteractEvent');
+      // act
+      await component.handleShowLess(event);
+      // assert
+      expect(component.generateInteractEvent).toHaveBeenCalledWith('see-less');
+    });
+
+    it('should not generate telemetry event on showless event is false', async () => {
+      //  arrange
+      const event = false;
+      spyOn(component, 'generateInteractEvent');
+      // act
+      await component.handleShowLess(event);
+      // assert
+      expect(component.generateInteractEvent).not.toHaveBeenCalledWith('see-less');
+    });
+  });
+
 
 });
