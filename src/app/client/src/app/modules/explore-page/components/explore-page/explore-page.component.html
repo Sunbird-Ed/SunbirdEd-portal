@@ -4,9 +4,17 @@
   <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'"
     [appTelemetryImpression]="telemetryImpression">
     <div [ngClass]="FIRST_PANEL_LAYOUT">
-      <app-search-filter [layoutConfiguration]="layoutConfiguration" [isOpen]='true' *ngIf="initFilter"
-        (filterChange)="getFilters($event)" [pageData]="pageData" [pageId]="isUserLoggedIn() ? 'resource-page' : 'explore-page'" [defaultFilters]="defaultFilters">
-      </app-search-filter>
+        <div *ngIf="layoutConfiguration">
+          <div *ngIf="isDesktopApp">
+            <app-network-status></app-network-status>
+            <app-load-offline-content></app-load-offline-content>
+          </div>
+        </div>
+      <div [ngClass]="isDesktopApp ? 'sb-desktop-filter-section' : ''">
+        <app-search-filter [layoutConfiguration]="layoutConfiguration" [isOpen]='true' *ngIf="initFilter"
+          (filterChange)="getFilters($event)" [pageData]="pageData" [pageId]="isUserLoggedIn() ? 'resource-page' : 'explore-page'" [defaultFilters]="defaultFilters">
+        </app-search-filter>
+      </div>
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT" *ngIf="subscription$ | async">
       <div [appTelemetryImpression]="telemetryImpression"
@@ -33,10 +41,13 @@
               [title]="section.name" [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3"
               (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)">
             </sb-library-cards-grid>
-            <sb-library-cards-grid *ngIf="isDesktopApp" [layoutConfig]="layoutConfiguration" [type]="'infinite_card_grid_with_hover'" 
-            [title]="section?.name" [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3" 
-            (hoverActionClick)="hoverActionClicked($event)" (viewMoreClick)="viewAll(section)">
-            </sb-library-cards-grid>
+            <div class="sb-desktop-library-card">
+              <sb-library-cards-grid *ngIf="isDesktopApp" [layoutConfig]="layoutConfiguration" [type]="'infinite_card_grid_with_hover'" 
+              [title]="section?.name" [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3" 
+              (hoverActionClick)="hoverActionClicked($event)" (viewMoreClick)="viewAll(section)">
+              </sb-library-cards-grid>
+            </div>
+            
           </div>
           <div *ngIf="showLoader">
             <sb-library-cards-grid [layoutConfig]="layoutConfiguration" *ngFor="let i of numberOfSections"

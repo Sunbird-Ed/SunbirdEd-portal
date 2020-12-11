@@ -1,18 +1,18 @@
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { ElectronService } from '../../../core/services/electron/electron.service';
 import { Component, OnInit, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
-import { ElectronDialogService } from './../../services';
-import { ResourceService, ConnectionService } from '@sunbird/shared';
+import { ResourceService, ConnectionService, ConfigService } from '../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata } from '@sunbird/telemetry';
-
 @Component({
-  selector: 'app-load-content',
-  templateUrl: './load-content.component.html',
-  styleUrls: ['./load-content.component.scss']
+  selector: 'app-load-offline-content',
+  templateUrl: './load-offline-content.component.html',
+  styleUrls: ['./load-offline-content.component.scss']
 })
-export class LoadContentComponent implements OnInit, OnDestroy {
+export class LoadOfflineContentComponent implements OnInit, OnDestroy  {
+  showLoadContentModal: any;
   @ViewChild('modal') modal;
   isConnected;
   selectedValue;
@@ -28,8 +28,9 @@ export class LoadContentComponent implements OnInit, OnDestroy {
     public router: Router,
     private connectionService: ConnectionService,
     public resourceService: ResourceService,
-    private electronDialogService: ElectronDialogService,
-    public activatedRoute: ActivatedRoute
+    public activatedRoute: ActivatedRoute,
+    public configService: ConfigService,
+    public electronService: ElectronService
   ) { }
 
   ngOnInit() {
@@ -43,7 +44,11 @@ export class LoadContentComponent implements OnInit, OnDestroy {
   }
 
   openImportContentDialog() {
-    this.electronDialogService.showContentImportDialog();
+    this.electronService.get({url : this.configService.urlConFig.URLS.ELECTRON_DIALOG.CONTENT_IMPORT}).subscribe(response => {
+      console.log('import dialog box opened', response);
+    }, error => {
+      console.log('error while showing import dialog box');
+    });
   }
 
   onChange(event) {
@@ -78,6 +83,11 @@ export class LoadContentComponent implements OnInit, OnDestroy {
       pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid')
     };
   }
+
+  handleImportContentDialog() {
+    this.showLoadContentModal = !this.showLoadContentModal;
+  }
+
 
   ngOnDestroy() {
     this.unsubscribe$.next();

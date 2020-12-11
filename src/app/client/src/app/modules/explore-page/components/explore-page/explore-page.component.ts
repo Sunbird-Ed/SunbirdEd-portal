@@ -50,6 +50,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     showModal = false;
     downloadIdentifier: string;
     contentDownloadStatus = {};
+    isConnected = true;
 
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
