@@ -135,6 +135,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
             this.formData = formData;
             this.svgToDisplay = imageName;
             this.globalSearchFacets = _.get(this.currentPageData, 'search.facets');
+            this.getOrgDetails();
         }, error => {
             this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
             this.navigationHelperService.goBack();
@@ -165,7 +166,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
         });
         this.fetchCurrentPageData();
         this.initLayout();
-        this.getOrgDetails();
         this.setTelemetryData();
         this.contentManagerService.contentDownloadStatus$.subscribe( contentDownloadStatus => {
             this.contentDownloadStatus = contentDownloadStatus;
