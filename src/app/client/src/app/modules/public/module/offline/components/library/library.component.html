@@ -6,36 +6,10 @@
     <div [ngClass]="FIRST_PANEL_LAYOUT">
       <div class="sb-desktop-filter-section">
         <div *ngIf="layoutConfiguration">
-          <!--Online/Offline-->
-          <div *appDesktopOnly>
-            <div class="status-container p-8 mr-16 mb-16" *ngIf="isConnected">
-              <div class="d-flex flex-ai-center flex-jc-center">
-                <div class="status-container__icon mr-8">
-                  <img height="37px" src="assets/images/Online.svg" width="24px">
-                </div>
-                <div class="fnormal status-container__title">{{resourceService?.messages?.stmsg?.desktop?.onlineStatus}}
-                </div>
-              </div>
-            </div>
-
-            <div class="status-container p-8 mr-16 mb-16" *ngIf="!isConnected">
-              <div class="d-flex flex-ai-center flex-jc-center">
-                <div class="status-container__icon mr-8">
-                  <img height="37px" src="assets/images/Offline.svg" width="24px">
-                </div>
-                <div class="fnormal status-container__title">{{resourceService?.frmelmnts.lbl.offline}}</div>
-              </div>
-            </div>
+          <div *ngIf="isDesktopApp">
+            <app-network-status></app-network-status>
+            <app-load-offline-content></app-load-offline-content>
           </div>
-
-          <!--/Online/Offline-->
-          <!--Load content-->
-          <div class="load-content-section mr-16 p-24 mb-24" *appDesktopOnly>
-            <div class="load-content-title d-flex">{{resourceService?.frmelmnts?.lbl?.import}}</div>
-            <button class="sb-btn sb-btn-secondary sb-btn-normal my-8 w-100 fs-1" type="button" (click)="showLoadContentModal = true">
-              {{resourceService?.frmelmnts?.btn?.loadContent}} </button>
-          </div>
-          <!--Load content-->
         </div>
         <app-global-search-filter [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true'
           *ngIf="initFilters" (filterChange)="getFilters($event)">
@@ -61,7 +35,7 @@
                   </div>
                 </section>
                 <div class="twelve wide column" *ngIf="!pageSections?.length">
-                    <app-no-content [filters]="modifiedFilters" [isContentPresent]="false"></app-no-content>
+                    <app-no-result-found [title]="resourceService?.messages?.stmsg?.m0030"></app-no-result-found>
                 </div>
 
                 <div *ngIf="showSectionLoader">

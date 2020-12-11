@@ -4,6 +4,10 @@
   <div [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'"
     [appTelemetryImpression]="telemetryImpression" *ngIf="subscription$| async">
     <div [ngClass]="FIRST_PANEL_LAYOUT">
+      <ng-container *ngIf="isDesktopApp">
+        <app-network-status></app-network-status>
+        <app-load-offline-content></app-load-offline-content>
+      </ng-container>
       <app-global-search-filter [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true'
         *ngIf="initFilters" (filterChange)="getFilters($event)">
       </app-global-search-filter>

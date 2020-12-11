@@ -4,6 +4,10 @@
   <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'"
     [appTelemetryImpression]="telemetryImpression">
     <div [ngClass]="FIRST_PANEL_LAYOUT">
+      <div *ngIf="layoutConfiguration">
+        <app-network-status></app-network-status>
+        <app-load-offline-content></app-load-offline-content>
+      </div>
       <app-search-filter [layoutConfiguration]="layoutConfiguration" [isOpen]='true' *ngIf="initFilter"
         (filterChange)="getFilters($event)" [pageData]="pageData" [pageId]="isUserLoggedIn() ? 'resource-page' : 'explore-page'" [defaultFilters]="defaultFilters">
       </app-search-filter>
