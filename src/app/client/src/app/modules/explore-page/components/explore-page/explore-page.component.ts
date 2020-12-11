@@ -11,6 +11,7 @@ import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@s
 import { map, tap, switchMap, skipWhile, takeUntil } from 'rxjs/operators';
 import { ContentSearchService } from '@sunbird/content-search';
 import { ContentManagerService } from '../../../public/module/offline/services';
+import * as _ from 'lodash-es';
 const DEFAULT_FRAMEWORK = 'CBSE';
 @Component({
     selector: 'app-explore-page-component',
@@ -91,6 +92,14 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         return this.formService.getFormConfig(input);
     }
 
+    private listenLanguageChange() {
+        this.utilService.languageChange.pipe(takeUntil(this.unsubscribe$)).subscribe((langData) => {
+            if (_.get(this.pageSections, 'length')) {
+                this.addHoverData();
+            }
+        });
+    }
+
     private fetchChannelData() {
         return forkJoin(this.getChannelId(), this.getFormConfig())
             .pipe(
@@ -112,6 +121,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngOnInit() {
         this.isDesktopApp = this.utilService.isDesktopApp;
+        if (this.isDesktopApp) {
+            this.listenLanguageChange();
+        }
         this.initConfiguration();
         this.subscription$ = merge(this.fetchChannelData(), this.initLayout(), this.setNoResultMessage(), this.fetchContents())
             .pipe(
