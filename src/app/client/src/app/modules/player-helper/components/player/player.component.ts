@@ -58,7 +58,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   public showNewPlayer = false;
   mobileViewDisplay = 'block';
   playerType: string;
-  hideContentManagerOnFullscreen = new EventEmitter<any>();
 
   /**
  * Dom element reference of contentRatingModal
