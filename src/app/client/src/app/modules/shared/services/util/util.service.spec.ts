@@ -327,7 +327,7 @@ describe('UtilService', () => {
   it('should call getAppBaseUrl', inject([UtilService], (service: UtilService)  => {
     const dummyElement = document.createElement('input');
     dummyElement.value = 'http://localhost:3000';
-    document.getElementById = jasmine.createSpy('HTML Element').and.returnValue(dummyElement);
+    spyOn(document, 'getElementById').and.returnValue(dummyElement);
     const origin = service.getAppBaseUrl();
     expect(origin).toEqual('http://localhost:3000');
   }));
