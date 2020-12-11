@@ -409,4 +409,10 @@ export class UtilService {
       this.csvExporter = new ExportToCsv(options);
       this.csvExporter.generateCsv(data);
   }
+
+  getAppBaseUrl() {
+    let origin = (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl'))
+    ? (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl')).value : document.location.origin;
+    return origin;
+  }
 }

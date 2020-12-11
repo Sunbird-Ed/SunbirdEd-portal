@@ -1,6 +1,7 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { ISharelink } from './../../interfaces';
 import { ConfigService } from './../config/config.service';
+import { environment } from '@sunbird/environment';
 import * as _ from 'lodash-es';
 
 @Injectable()
@@ -16,7 +17,13 @@ export class ContentUtilsServiceService {
   */
   contentShare: ISharelink;
   constructor(public configService: ConfigService) {
+    const isDesktopApp = environment.isDesktopApp;
     this.baseUrl = document.location.origin + '/';
+    if (isDesktopApp) {
+      let origin = (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl'))
+        ? (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl')).value : document.location.origin;
+      this.baseUrl = origin + '/';
+    }
   }
   /**
    * getBase64Url
