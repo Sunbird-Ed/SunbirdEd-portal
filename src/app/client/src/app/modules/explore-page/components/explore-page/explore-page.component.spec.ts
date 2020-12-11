@@ -16,7 +16,6 @@ import { ContentSearchService } from '@sunbird/content-search';
 import { configureTestSuite } from '@sunbird/test-util';
 import { ContentManagerService } from '../../../public/module/offline/services';
 
-
 describe('ExplorePageComponent', () => {
   let component: ExplorePageComponent;
   let fixture: ComponentFixture<ExplorePageComponent>;
@@ -404,6 +403,16 @@ describe('ExplorePageComponent', () => {
     component.ngOnInit();
     component.downloadContent('123');
     expect(component.showDownloadLoader).toBeFalsy();
+  });
+
+  it('should call listenLanguageChange', () => {
+    component.isDesktopApp = true;
+    component.pageSections = [{ name: 'test' }];
+    spyOn(component, 'addHoverData');
+    spyOn<any>(component, 'setNoResultMessage');
+    component['listenLanguageChange']();
+    expect(component.addHoverData).toHaveBeenCalled();
+    expect(component['setNoResultMessage']).toHaveBeenCalled();
   });
 
 });
