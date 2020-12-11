@@ -158,7 +158,7 @@ const getForms = async () => {
         },
         {
             "type": "content",
-            "subType": "player",
+            "subtype": "player",
             "action": "play"
         }
     ]
@@ -289,9 +289,9 @@ const copyAssetsAndUpdateFiles = async () => {
 }
 
 const init = async () => {
-    await fse.copyFile(path.join(__dirname, `..`, `..`, `desktop-assets/${process.env.offline_target_env}/appConfig.json`), `env.json`)
+    // await fse.copyFile(path.join(__dirname, `..`, `..`, `desktop-assets/${process.env.offline_target_env}/appConfig.json`), `env.json`)
     await getMetaData();
-    await copyAssetsAndUpdateFiles();
+    // await copyAssetsAndUpdateFiles();
 }
 
 init();
