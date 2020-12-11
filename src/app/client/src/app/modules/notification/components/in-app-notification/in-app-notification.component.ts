@@ -143,4 +143,16 @@ export class InAppNotificationComponent implements OnInit, OnDestroy {
     this.notificationService.refreshNotification$.unsubscribe();
   }
 
+  handleShowMore(event) {
+    if (event) {
+      this.generateInteractEvent('see-more');
+    }
+  }
+
+  handleShowLess(event) {
+    if (event) {
+      this.generateInteractEvent('see-less');
+    }
+  }
+
 }
