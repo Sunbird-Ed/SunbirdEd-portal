@@ -1,14 +1,13 @@
 import { takeUntil, filter } from 'rxjs/operators';
 import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { TelemetryService, IImpressionEventInput } from '@sunbird/telemetry';
-import { ResourceService, ToasterService } from '@sunbird/shared';
+import { ResourceService, ToasterService, ConnectionService } from '@sunbird/shared';
 import { TelemetryActionsService } from './../../../offline/services';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { ITelemetryInfo } from '../../interfaces';
 import { debounceTime } from 'rxjs/operators';
-import { ConnectionService } from '../../services';
 @Component({
   selector: 'app-telemetry',
   templateUrl: './telemetry.component.html',
