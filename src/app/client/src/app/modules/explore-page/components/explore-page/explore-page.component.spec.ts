@@ -321,16 +321,14 @@ describe('ExplorePageComponent', () => {
     expect(component.selectedFilters).toEqual({ audience: ['Teacher'] });
   });
 
-  it('should set no Result message', done => {
-    component['setNoResultMessage']().subscribe(res => {
+  it('should set no Result message', () => {
+    component['setNoResultMessage']();
       expect(component.noResultMessage).toEqual({
         title: 'Board is adding content',
         subTitle: 'Your board is yet to add more content. Click the button below to explore other content on {instance}',
         buttonText: 'Explore more content',
         showExploreContentButton: true
       });
-      done();
-    });
   });
 
   it('should init layout and call redoLayout method', done => {
