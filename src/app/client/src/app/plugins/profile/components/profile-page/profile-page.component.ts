@@ -85,6 +85,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   tenantInfo;
   selfDeclaredInfo = [];
   selfDeclaredErrorTypes = [];
+  scrollToId;
 
   constructor(@Inject('CS_COURSE_SERVICE') private courseCService: CsCourseService, private cacheService: CacheService, 
   public resourceService: ResourceService, public coursesService: CoursesService,
@@ -94,6 +95,11 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public navigationhelperService: NavigationHelperService, public certRegService: CertRegService,
     private telemetryService: TelemetryService, public layoutService: LayoutService,
     private certDownloadAsPdf: CertificateDownloadAsPdfService) {
+    this.getNavParams();
+  }
+
+  getNavParams() {
+    this.scrollToId = _.get(this.router.getCurrentNavigation(), 'extras.state.scrollToId');
   }
 
   ngOnInit() {
@@ -247,6 +253,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         return certObj;
       });
+      if (this.otherCertificates && this.otherCertificates.length && this.scrollToId) {
+        this.triggerAutoScroll();
+      }
     });
   }
 
@@ -525,4 +534,19 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     document.body.removeChild(textElement);
     this.toasterService.success((this.resourceService.messages.profile.smsg.m0041).replace('{instance}', this.instance));
   }
+
+  triggerAutoScroll() {
+    setTimeout(() => {
+      const element = document.getElementById(this.scrollToId);
+      if (!element) { return; }
+      var elementPosition = element.getBoundingClientRect().top;
+      var offsetPosition = elementPosition - 144;
+
+      window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+      });
+    });
+  }
+
 }
