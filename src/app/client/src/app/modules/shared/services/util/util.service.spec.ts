@@ -326,15 +326,15 @@ describe('UtilService', () => {
   }));
 
   it('should call getAppBaseUrl', inject([UtilService], (service: UtilService)  => {
-    const origin = service.getAppBaseUrl();
-    expect(origin).toEqual('http://localhost:9876');
-  }));
-
-  it('should call getAppBaseUrl', inject([UtilService], (service: UtilService)  => {
     const dummyElement = document.createElement('input');
     dummyElement.value = 'http://localhost:3000';
     spyOn(document, 'getElementById').and.returnValue(dummyElement);
     const origin = service.getAppBaseUrl();
     expect(origin).toEqual('http://localhost:3000');
+  }));
+
+  it('should call getAppBaseUrl', inject([UtilService], (service: UtilService)  => {
+    const origin = service.getAppBaseUrl();
+    expect(origin).toEqual('http://localhost:9876');
   }));
 });
