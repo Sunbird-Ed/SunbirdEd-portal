@@ -366,6 +366,16 @@ describe('ExplorePageComponent', () => {
     expect(component.showModal).toBeFalsy();
     expect(component.contentData).toBeDefined();
   });
+  it('should call listenLanguageChange', () => {
+    component.isDesktopApp = true;
+    component.pageSections = [{ name: 'test' }];
+    spyOn(component, 'addHoverData');
+    spyOn<any>(component, 'setNoResultMessage');
+    component['listenLanguageChange']();
+    expect(component.addHoverData).toHaveBeenCalled();
+    expect(component['setNoResultMessage']).toHaveBeenCalled();
+  });
+
 
   it('should call hoverActionClicked for Open ', () => {
     RESPONSE.hoverActionsData['hover'] = {
@@ -404,15 +414,4 @@ describe('ExplorePageComponent', () => {
     component.downloadContent('123');
     expect(component.showDownloadLoader).toBeFalsy();
   });
-
-  it('should call listenLanguageChange', () => {
-    component.isDesktopApp = true;
-    component.pageSections = [{ name: 'test' }];
-    spyOn(component, 'addHoverData');
-    spyOn<any>(component, 'setNoResultMessage');
-    component['listenLanguageChange']();
-    expect(component.addHoverData).toHaveBeenCalled();
-    expect(component['setNoResultMessage']).toHaveBeenCalled();
-  });
-
 });
