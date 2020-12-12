@@ -411,8 +411,8 @@ export class UtilService {
   }
 
   getAppBaseUrl() {
-    let origin = (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl'))
-    ? (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl')).value : document.location.origin;
+    let origin = (<HTMLInputElement>document.getElementById('baseUrl'))
+    ? (<HTMLInputElement>document.getElementById('baseUrl')).value : document.location.origin;
     return origin;
   }
 }

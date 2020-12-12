@@ -88,7 +88,6 @@ export default (app, contentFilesPath, ecarsFolderPath ) => {
     locals.deviceProfileApi = "/api/v3/device/profile";
     locals.deviceApi = `${process.env.APP_BASE_URL}/api/`;
     locals.baseUrl = process.env.APP_BASE_URL;
-    locals.offlineDesktopAppDownloadUrl = process.env.APP_BASE_URL;
 
     locals.slug = null;
     locals.userSid = null;

@@ -20,8 +20,8 @@ export class ContentUtilsServiceService {
     const isDesktopApp = environment.isDesktopApp;
     this.baseUrl = document.location.origin + '/';
     if (isDesktopApp) {
-      let origin = (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl'))
-        ? (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl')).value : document.location.origin;
+      let origin = (<HTMLInputElement>document.getElementById('baseUrl'))
+        ? (<HTMLInputElement>document.getElementById('baseUrl')).value : document.location.origin;
       this.baseUrl = origin + '/';
     }
   }

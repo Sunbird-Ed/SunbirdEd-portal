@@ -60,6 +60,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
             && this.pageSections.length < this.apiContentList.length) {
             this.pageSections.push(this.apiContentList[this.pageSections.length]);
+            this.addHoverData();
         }
     }
 
