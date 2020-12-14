@@ -3,7 +3,7 @@ import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { ActivatedRoute } from '@angular/router';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
-import {ResourceService, ConfigService, SharedModule, NavigationHelperService, UtilService} from '@sunbird/shared';
+import { ResourceService, ConfigService, SharedModule, NavigationHelperService, UtilService } from '@sunbird/shared';
 import { MainFooterComponent } from './main-footer.component';
 import { CacheService } from 'ng2-cache-service';
 import { of } from 'rxjs';
@@ -92,7 +92,7 @@ describe('MainFooterComponent', () => {
         spyOnProperty(userService, 'slug', 'get').and.returnValue('sunbird');
         component.redirectToMobileApp();
         expect(spy).toHaveBeenCalledWith('https://play.google.com/store/apps/details?id=in.gov.diksha.app&referrer=utm_source=' +
-        TestBed.get(ResourceService).instance + '-sunbird&utm_medium=paytm&utm_campaign=dial&utm_term=EJ23P');
+            TestBed.get(ResourceService).instance + '-sunbird&utm_medium=paytm&utm_campaign=dial&utm_term=EJ23P');
 
     });
 
@@ -104,7 +104,7 @@ describe('MainFooterComponent', () => {
         const spy = spyOn(component, 'redirect');
         component.redirectToMobileApp();
         expect(spy).toHaveBeenCalledWith('https://play.google.com/store/apps/details?id=in.gov.diksha.app&referrer=utm_source=' +
-        TestBed.get(ResourceService).instance + '-sunbird&utm_medium=get&utm_campaign=redirection');
+            TestBed.get(ResourceService).instance + '-sunbird&utm_medium=get&utm_campaign=redirection');
     });
 
     it('should redirect to diksha app without UTM params if not avaiable', () => {
@@ -114,7 +114,7 @@ describe('MainFooterComponent', () => {
         spyOnProperty(userService, 'slug', 'get').and.returnValue('sunbird');
         component.redirectToMobileApp();
         expect(spy).toHaveBeenCalledWith('https://play.google.com/store/apps/details?id=in.gov.diksha.app&referrer=utm_source=' +
-        TestBed.get(ResourceService).instance + '-sunbird&utm_medium=');
+            TestBed.get(ResourceService).instance + '-sunbird&utm_medium=');
     });
 
     it('should redirect to diksha app without UTM params if not avaiable', () => {
@@ -129,31 +129,48 @@ describe('MainFooterComponent', () => {
         component.redoLayout();
         expect(component).toBeTruthy();
     });
-  it('should make isFullScreenView to FALSE', () => {
-    component.isFullScreenView = true;
-    const navigationHelperService = TestBed.get(NavigationHelperService);
-    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(of({data: false}));
-    component.ngOnInit();
-    navigationHelperService.emitFullScreenEvent(false);
-    expect(component.isFullScreenView).toBe(false);
-  });
+    it('should make isFullScreenView to FALSE', () => {
+        component.isFullScreenView = true;
+        const navigationHelperService = TestBed.get(NavigationHelperService);
+        const utilService = TestBed.get(UtilService);
+        utilService._isDesktopApp = true;
+        spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(of({ data: false }));
+        spyOn(component, 'getBaseUrl');
+        component.ngOnInit();
+        navigationHelperService.emitFullScreenEvent(false);
+        expect(component.isFullScreenView).toBe(false);
+        expect(component.getBaseUrl).toHaveBeenCalled();
+    });
 
-  it('should make isFullScreenView to TRUE', () => {
-    component.isFullScreenView = false;
-    const navigationHelperService = TestBed.get(NavigationHelperService);
-    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(of({data: true}));
-    component.ngOnInit();
-    navigationHelperService.emitFullScreenEvent(true);
-    expect(component.isFullScreenView).toBe(true);
-  });
+    it('should make isFullScreenView to TRUE', () => {
+        component.isFullScreenView = false;
+        const navigationHelperService = TestBed.get(NavigationHelperService);
+        spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(of({ data: true }));
+        component.ngOnInit();
+        navigationHelperService.emitFullScreenEvent(true);
+        expect(component.isFullScreenView).toBe(true);
+    });
 
-  it('should unsubscribe from all observable subscriptions', () => {
-    component.ngOnInit();
-    spyOn(component.unsubscribe$, 'complete');
-    spyOn(component.unsubscribe$, 'next');
-    component.ngOnDestroy();
-    expect(component.unsubscribe$.complete).toHaveBeenCalled();
-    expect(component.unsubscribe$.next).toHaveBeenCalled();
-  });
+    it('should unsubscribe from all observable subscriptions', () => {
+        component.ngOnInit();
+        spyOn(component.unsubscribe$, 'complete');
+        spyOn(component.unsubscribe$, 'next');
+        component.ngOnDestroy();
+        expect(component.unsubscribe$.complete).toHaveBeenCalled();
+        expect(component.unsubscribe$.next).toHaveBeenCalled();
+    });
+
+    it('should call getBaseUrl', () => {
+        const utilService = TestBed.get(UtilService);
+        spyOn(utilService, 'getAppBaseUrl');
+        component.getBaseUrl();
+        expect(utilService.getAppBaseUrl).toHaveBeenCalled();
+    });
+
+    it('should call checkRouterPath', () => {
+        component.checkRouterPath();
+        expect(component.showDownloadmanager).toBeDefined();
+    });
+
 
 });

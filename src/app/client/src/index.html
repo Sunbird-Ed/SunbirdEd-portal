@@ -148,6 +148,9 @@
   <% if (reportsListVersion) { %>
   <input type="hidden" id="reportsListVersion" value="<%=reportsListVersion%>" />
   <% } %>
+  <% if (baseUrl) { %>
+    <input type="hidden" id="baseUrl" value="<%=baseUrl%>" />
+  <% } %>
   <app-root></app-root>
 </body>
 </html>
