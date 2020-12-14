@@ -315,6 +315,10 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(
         map((response) => {
           this._courseSearchResponse = response;
+          // For content(s) without subject name(s); map it to 'Others'
+          _.forEach(_.get(response, 'result.content'), function (content) {
+            if (!_.get(content, 'subject') || !_.size(_.get(content, 'subject'))) content['subject'] = ['Others'];
+          });
           const filteredContents = _.omit(_.groupBy(_.get(response, 'result.content'), 'subject'), ['undefined']);
           for (const [key, value] of Object.entries(filteredContents)) {
             const isMultipleSubjects = key.split(',').length > 1;
@@ -533,9 +537,9 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       }
       const { section, data } = event;
       const metaData = this.isPageAssemble ? _.get(data, 'metaData') : data;
-      if (section === this.resourceService.frmelmnts.lbl.mytrainings) { // play course if course is in My course section
-        return this.playerService.playContent(metaData);
-      }
+      // if (section === this.resourceService.frmelmnts.lbl.mytrainings) { // play course if course is in My course section
+      //   return this.playerService.playContent(metaData);
+      // }
 
       const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } =
         this.coursesService.findEnrolledCourses(metaData.identifier);
