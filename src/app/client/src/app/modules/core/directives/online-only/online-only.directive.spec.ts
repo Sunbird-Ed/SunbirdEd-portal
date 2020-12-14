@@ -2,6 +2,7 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { OnlineOnlyDirective } from './online-only.directive';
 import { Component, HostListener, ElementRef, Renderer2 } from '@angular/core';
 import { ToasterService, ResourceService, ConnectionService } from '@sunbird/shared';
+import { Router } from '@angular/router';
 
 // Simple test component that will not in the actual app
 @Component({
@@ -20,6 +21,9 @@ class TestComponent {
 }
 
 describe('OnlineOnlyDirective', () => {
+  class RouterStub {
+    navigate = jasmine.createSpy('navigate');
+  }
   const resourceMockData = {
     messages: {
       fmsg: { m0097: 'Something went wrong' },
@@ -36,7 +40,8 @@ describe('OnlineOnlyDirective', () => {
         TestComponent,
         OnlineOnlyDirective
       ],
-      providers: [ToasterService, { provide: ResourceService, useValue: resourceMockData }]
+      providers: [ToasterService, { provide: ResourceService, useValue: resourceMockData },
+        { provide: Router, useClass: RouterStub }]
     });
 
     fixture = TestBed.createComponent(TestComponent);

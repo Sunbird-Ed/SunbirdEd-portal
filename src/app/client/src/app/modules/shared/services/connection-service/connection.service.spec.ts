@@ -3,8 +3,13 @@ import { TestBed } from '@angular/core/testing';
 import { ConnectionService } from './connection.service';
 import { of as observableOf, of } from 'rxjs';
 import { ToasterService, ResourceService } from '@sunbird/shared';
+import { Router } from '@angular/router';
 
 describe('ConnectionService', () => {
+  class RouterStub {
+    navigate = jasmine.createSpy('navigate');
+    url = 'explore-course/course/do_213129030425993216112'
+  }
   const resourceMockData = {
     messages: {
       fmsg: { m0097: 'Something went wrong' },
@@ -13,7 +18,8 @@ describe('ConnectionService', () => {
     }
   };
   beforeEach(() => TestBed.configureTestingModule({
-    providers: [ToasterService, { provide: ResourceService, useValue: resourceMockData }]
+    providers: [ToasterService, { provide: ResourceService, useValue: resourceMockData },
+      { provide: Router, useClass: RouterStub }]
   }));
 
   it('to make the connection status true', () => {
@@ -53,4 +59,15 @@ describe('ConnectionService', () => {
     service.notifyNetworkChange();
     expect(toasterService.info).toHaveBeenCalledWith('You are online');
   });
+
+  it('should navigate to my download page if network is not available', () => {
+    const service: ConnectionService = TestBed.get(ConnectionService);
+    const router = TestBed.get(Router);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'info');
+    service['connectionMonitor'] = of(false);
+    service.notifyNetworkChange();
+    expect(router.navigate).toHaveBeenCalledWith(['mydownloads'], {queryParams: { selectedTab: 'mydownloads' }});
+  });
+
 });
