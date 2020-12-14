@@ -322,12 +322,12 @@ describe('ExplorePageComponent', () => {
 
   it('should set no Result message', () => {
     component['setNoResultMessage']();
-      expect(component.noResultMessage).toEqual({
-        title: 'Board is adding content',
-        subTitle: 'Your board is yet to add more content. Click the button below to explore other content on {instance}',
-        buttonText: 'Explore more content',
-        showExploreContentButton: true
-      });
+    expect(component.noResultMessage).toEqual({
+      title: 'Board is adding content',
+      subTitle: 'Your board is yet to add more content. Click the button below to explore other content on {instance}',
+      buttonText: 'Explore more content',
+      showExploreContentButton: true
+    });
   });
 
   it('should init layout and call redoLayout method', done => {
@@ -409,9 +409,26 @@ describe('ExplorePageComponent', () => {
 
   it('should call download content with error ', () => {
     const contentManagerService = TestBed.get(ContentManagerService);
-    spyOn(contentManagerService, 'startDownload').and.returnValue(throwError({error: {params: {err: 'ERROR'}}}));
+    spyOn(contentManagerService, 'startDownload').and.returnValue(throwError({ error: { params: { err: 'ERROR' } } }));
     component.ngOnInit();
     component.downloadContent('123');
     expect(component.showDownloadLoader).toBeFalsy();
+  });
+
+  it('should update cards on scroll', () => {
+    component.pageSections.length = 5;
+    component.apiContentList.length = 50;
+    spyOn(component, 'addHoverData');
+    const scrollEvent = document.createEvent('CustomEvent'); // MUST be 'CustomEvent'
+    scrollEvent.initCustomEvent('scroll', false, false, null);
+
+    const expectedLeft = 123;
+    const expectedTop = 6000;
+
+    document.body.style.minHeight = '9000px';
+    document.body.style.minWidth = '9000px';
+    scrollTo(expectedLeft, expectedTop);
+    dispatchEvent(scrollEvent);
+    expect(component.addHoverData).toHaveBeenCalled();
   });
 });

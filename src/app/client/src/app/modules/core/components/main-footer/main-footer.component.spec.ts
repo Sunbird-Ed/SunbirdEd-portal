@@ -132,10 +132,14 @@ describe('MainFooterComponent', () => {
   it('should make isFullScreenView to FALSE', () => {
     component.isFullScreenView = true;
     const navigationHelperService = TestBed.get(NavigationHelperService);
+    const utilService = TestBed.get(UtilService);
+    utilService._isDesktopApp = true;
     spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(of({data: false}));
+    spyOn(component, 'getBaseUrl');
     component.ngOnInit();
     navigationHelperService.emitFullScreenEvent(false);
     expect(component.isFullScreenView).toBe(false);
+    expect(component.getBaseUrl).toHaveBeenCalled();
   });
 
   it('should make isFullScreenView to TRUE', () => {
@@ -156,4 +160,10 @@ describe('MainFooterComponent', () => {
     expect(component.unsubscribe$.next).toHaveBeenCalled();
   });
 
+  it('should call getBaseUrl', () => {
+      const utilService = TestBed.get(UtilService);
+      spyOn(utilService, 'getAppBaseUrl');
+      component.getBaseUrl();
+      expect(utilService.getAppBaseUrl).toHaveBeenCalled();
+  });
 });
