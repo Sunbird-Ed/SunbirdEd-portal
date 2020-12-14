@@ -1,7 +1,7 @@
 import { SlickModule } from 'ngx-slick';
 import { BehaviorSubject, throwError, of, of as observableOf } from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
-import { ResourceService, ToasterService, SharedModule, LayoutService } from '@sunbird/shared';
+import { ResourceService, ToasterService, SharedModule, LayoutService, UtilService } from '@sunbird/shared';
 import { SearchService, OrgDetailsService, CoreModule, UserService, FormService, CoursesService, PlayerService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PublicPlayerService } from '@sunbird/public';
@@ -29,13 +29,6 @@ describe('ExplorePageComponent', () => {
   }
   const resourceBundle = {
     'messages': {
-      'fmsg': {
-        'm0027': 'Something went wrong',
-        'm0090': 'Could not download. Try again later',
-        'm0091': 'Could not copy content. Try again later',
-        'm0004': 'Could not fetch data, try again later...',
-        'm0051': 'Something went wrong, try again later'
-      },
       'stmsg': {
         'm0009': 'error',
         'm0140': 'DOWNLOADING',
@@ -43,6 +36,13 @@ describe('ExplorePageComponent', () => {
         'm0139': 'DOWNLOADED',
       },
       'emsg': {},
+      'fmsg': {
+        'm0027': 'Something went wrong',
+        'm0090': 'Could not download. Try again later',
+        'm0091': 'Could not copy content. Try again later',
+        'm0004': 'Could not fetch data, try again later...',
+        'm0051': 'Something went wrong, try again later'
+      }
     },
     frmelmnts: {
       lbl: {
@@ -54,8 +54,8 @@ describe('ExplorePageComponent', () => {
         noContentfoundSubTitle: 'Your board is yet to add more content. Click the button below to explore other content on {instance}',
         noContentfoundButtonText: 'Explore more content',
         desktop: {
-          yourSearch: '',
-          notMatchContent: ''
+          yourSearch: 'Your search for - "{key}"',
+          notMatchContent: 'did not match any content'
         }
       },
 
@@ -74,6 +74,7 @@ describe('ExplorePageComponent', () => {
       queryParams: {}
     };
     public changeQueryParams(queryParams) { this.queryParamsMock.next(queryParams); }
+    public changeSnapshotQueryParams(queryParams) { this.snapshot.queryParams = queryParams; }
   }
   configureTestSuite();
   beforeEach(async(() => {
@@ -330,6 +331,18 @@ describe('ExplorePageComponent', () => {
     });
   });
 
+  it('should set no Result message ', () => {
+    const activatedRoute = TestBed.get(ActivatedRoute);
+    activatedRoute.changeSnapshotQueryParams({ subject: ['English'], key: 'test', selectedTab: 'all' });
+    component['setNoResultMessage']();
+    expect(component.noResultMessage).toEqual({
+      title: 'Your search for - "test" did not match any content',
+      subTitle: 'Board is adding courses',
+      buttonText: 'Board is adding courses',
+      showExploreContentButton: true
+    });
+  });
+
   it('should init layout and call redoLayout method', done => {
     const layoutService = TestBed.get(LayoutService);
     spyOn(layoutService, 'switchableLayout').and.returnValue(of({ layout: {} }));
@@ -413,6 +426,33 @@ describe('ExplorePageComponent', () => {
     component.ngOnInit();
     component.downloadContent('123');
     expect(component.showDownloadLoader).toBeFalsy();
+  });
+
+  it('should call addHoverData', () => {
+    component.contentDownloadStatus = { 'do_id': true };
+    component.pageSections = [{ name: 'English', contents: [{ identifier: 'do_id' }] }];
+    const utilService = TestBed.get(UtilService);
+    spyOn(utilService, 'addHoverData');
+    component.addHoverData();
+    expect(utilService.addHoverData).toHaveBeenCalled();
+  });
+
+  it('should call setTelemetryData', () => {
+    component['setTelemetryData']();
+    expect(component.exploreMoreButtonEdata).toBeDefined();
+    expect(component.telemetryImpression).toBeDefined();
+  });
+
+  it('should called ngAfterViewInit', fakeAsync(() => {
+    spyOn<any>(component, 'setTelemetryData');
+    component.ngAfterViewInit();
+    tick(1);
+    expect(component['setTelemetryData']).toHaveBeenCalled();
+  }));
+
+  it('should return slideConfig', () => {
+    const response = component.slideConfig;
+    expect(response).toBeDefined();
   });
 
   it('should update cards on scroll', () => {
