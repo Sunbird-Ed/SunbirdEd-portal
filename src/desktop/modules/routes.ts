@@ -8,6 +8,9 @@ import { ContentDownloadManager } from "./manager/contentDownloadManager";
 import contentRoutes from './routes/content';
 import dataRoutes from './routes/data';
 import formRoutes from './routes/forms';
+import orgRoutes from './routes/organization'
+import channelRoutes  from './routes/channel';
+import frameworkRoutes from './routes/framework'
 import desktopRoutes from './routes/desktop';
 import playerProxyRoutes from './routes/playerProxy';
 import staticRoutes from './routes/static';
@@ -134,6 +137,9 @@ export class Router {
     contentRoutes(app, proxyUrl, this.contentDownloadManager)
     dataRoutes(app, proxyUrl);
     formRoutes(app, proxyUrl);
+    orgRoutes(app, proxyUrl);
+    channelRoutes(app, proxyUrl);
+    frameworkRoutes(app, proxyUrl);
     desktopRoutes(app, proxyUrl);
     telemetryRoutes(app)
     playerProxyRoutes(app, proxyUrl);

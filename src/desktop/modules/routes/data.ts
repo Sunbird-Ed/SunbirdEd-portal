@@ -2,12 +2,9 @@ import { logger } from "@project-sunbird/logger";
 import * as _ from "lodash";
 import * as url from "url";
 import config from "./../config";
-import { Channel } from "./../controllers/channel";
 import Content from "./../controllers/content/content";
 import { Faqs } from "./../controllers/faqs";
-import { Framework } from "./../controllers/framework";
 import { Location } from "./../controllers/location";
-import { Organization } from "./../controllers/organization";
 import { ResourceBundle } from "./../controllers/resourceBundle";
 import Tenant from "./../controllers/tenant";
 import { manifest } from "./../manifest";
@@ -20,86 +17,11 @@ export default (app, proxyURL) => {
     app.get(["/resourcebundles/v1/read/:id", "/resourcebundles/v1/readLang/:id"], (req, res) => {
         resourcebundle.get(req, res);
     });
-
-    const organization = new Organization(manifest);
-    app.post(
-        "/api/org/v1/search",
-        (req, res, next) => {
-            logger.debug(`Received API call to search organisations`);
-
-            logger.debug(`ReqId = "${req.headers["X-msgid"]}": Check proxy`);
-            if (enableProxy(req)) {
-                logger.info(`Proxy is Enabled `);
-                next();
-            } else {
-                logger.debug(
-                    `ReqId = "${req.headers["X-msgid"]}": Search organisations`,
-                );
-                return organization.search(req, res);
-            }
-        },
-        proxy(proxyURL, {
-            proxyReqPathResolver(req) {
-                return `/api/org/v1/search`;
-            },
-        }),
-    );
-
-    
-
-    const channel = new Channel(manifest);
-    app.get(
-        "/api/channel/v1/read/:id",
-        (req, res, next) => {
-            logger.debug(
-                `Received API call to get channel data for channel with Id: ${req.params.id}`,
-            );
-
-            logger.debug(`ReqId = "${req.headers["X-msgid"]}": Check proxy`);
-            if (enableProxy(req)) {
-                logger.info(`Proxy is Enabled `);
-                next();
-            } else {
-                logger.debug(
-                    `ReqId = "${req.headers["X-msgid"]}": Get channel data for channel with Id:${req.params.id}`,
-                );
-                return channel.get(req, res);
-            }
-        },
-        proxy(proxyURL, {
-            proxyReqPathResolver(req) {
-                return `/api/channel/v1/read/${req.params.id}`;
-            },
-        }),
-    );
+   
 
     const faqs = new Faqs(manifest);
     app.get("/api/faqs/v1/read/:language", faqs.read.bind(faqs));
-    const framework = new Framework(manifest);
-    app.get(
-        "/api/framework/v1/read/:id",
-        (req, res, next) => {
-            logger.debug(
-                `Received API call to get framework data for framework with Id: ${req.params.id}`,
-            );
-
-            logger.debug(`ReqId = "${req.headers["X-msgid"]}": Check proxy`);
-            if (enableProxy(req)) {
-                logger.info(`Proxy is Enabled `);
-                next();
-            } else {
-                logger.debug(
-                    `ReqId = "${req.headers["X-msgid"]}": Get Framework data for Framework with Id:${req.params.id}`,
-                );
-                return framework.get(req, res);
-            }
-        },
-        proxy(proxyURL, {
-            proxyReqPathResolver(req) {
-                return `/api/framework/v1/read/${req.params.id}`;
-            },
-        }),
-    );
+    
 
     const tenant = new Tenant();
     app.get(
