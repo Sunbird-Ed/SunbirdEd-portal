@@ -12,7 +12,7 @@ var exec = require('child_process').exec;
 // const project = envHelper.PHRASE_APP.phrase_project;
 // const locale = envHelper.PHRASE_APP.phrase_locale;
 // const fileformat = envHelper.PHRASE_APP.phrase_fileformat;
-// const merge = true;
+// const merge = true; 
 
 const rbPatah = path.join(__dirname, '/./../../node_modules/sunbird-localization/index.js');
 const resBundlesArr = [
