@@ -5,15 +5,19 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { NetworkStatusComponent } from './network-status.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
+import { Router } from '@angular/router';
 
 describe('NetworkStatusComponent', () => {
   let component: NetworkStatusComponent;
   let fixture: ComponentFixture<NetworkStatusComponent>;
+  class RouterStub {
+    navigate = jasmine.createSpy('navigate');
+  }
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot()],
-      providers: [ResourceService, ConnectionService]
+      providers: [ResourceService, ConnectionService, { provide: Router, useClass: RouterStub }]
     })
       .compileComponents();
   }));
