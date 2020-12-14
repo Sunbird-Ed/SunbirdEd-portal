@@ -1,17 +1,19 @@
-import { TelemetryModule } from '@sunbird/telemetry';
-import { of as observableOf, of } from 'rxjs';
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
+import { of as observableOf, of, throwError } from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { CollectionPlayerComponent } from './collection-player.component';
 import { CoreModule, CopyContentService, GeneraliseLabelService } from '@sunbird/core';
-import { WindowScrollService, SharedModule, ResourceService, NavigationHelperService, ContentUtilsServiceService } from '@sunbird/shared';
+import { WindowScrollService, SharedModule, ResourceService, NavigationHelperService, ContentUtilsServiceService,
+  ConnectionService, OfflineCardService, UtilService } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CollectionHierarchyGetMockResponse, collectionTree, requiredProperties } from './collection-player.component.spec.data';
+import { CollectionHierarchyGetMockResponse, collectionTree, requiredProperties, contentHeaderData } from './collection-player.component.spec.data';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { configureTestSuite } from '@sunbird/test-util';
 import { PublicPlayerService } from '@sunbird/public';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ContentManagerService } from '../../../public/module/offline/services';
 
 describe('CollectionPlayerComponent', () => {
   let component: CollectionPlayerComponent;
@@ -38,14 +40,31 @@ describe('CollectionPlayerComponent', () => {
   const resourceBundle = {
     'messages': {
       'stmsg': {
-        'm0118': 'No content to play'
+        'm0118': 'No content to play',
+        'm0138': 'FAILED',
+        'm0140': 'DOWNLOADING',
+        'desktop': {
+            'deleteTextbookSuccessMessage': 'Textbook deleted successfully'
+          }
+      },
+      'etmsg': {
+        'desktop': {
+          'deleteTextbookErrorMessage': 'Unable to delete textbook. Please try again..',
+        }
       },
       'smsg': {
-        'm0042': 'Content successfully copied'
+        'm0042': 'Content successfully copied',
+        'm0056': 'You should be online to update the content',
+        'm0059': 'Content successfully copied'
       },
       'emsg': {
         'm0008': 'Could not copy content. Try again later'
-      }
+      },
+      'fmsg': {
+        'm0096': 'Could not Update. Try again later',
+        'm0091': 'Could not copy content. Try again later',
+        'm0090': 'Could not download. Try again later'
+      },
     },
     'frmelmnts': {
       'btn': {
@@ -263,5 +282,114 @@ describe('CollectionPlayerComponent', () => {
         expect(component['toasterService'].success).toHaveBeenCalledWith(resourceBundle.messages.smsg.m0042);
       });
     });
+  });
+
+  it('should init content manager and connection service for desktop only', () => {
+    component.collectionData = contentHeaderData.collectionData.result.content;
+    component.contentDownloadStatus =  { [contentHeaderData.collectionData.result.content.identifier]: 'COMPLETED'};
+    const utilService = TestBed.get(UtilService);
+    utilService._isDesktopApp = true;
+    const contentManagerService = TestBed.get(ContentManagerService);
+    spyOn(contentManagerService, 'contentDownloadStatus').and.returnValue(of([{}]))
+    spyOn(component, 'checkDownloadStatus');
+    component.ngOnInit();
+    expect(component.checkDownloadStatus).toHaveBeenCalled();
+  });
+
+  it('should check collection status', () => {
+    component.collectionData = contentHeaderData.collectionData.result.content;
+    component.contentDownloadStatus =  { [contentHeaderData.collectionData.result.content.identifier]: 'COMPLETED'};
+    spyOn(component, 'checkDownloadStatus').and.callThrough();
+    const status = component.checkStatus('DOWNLOADED');
+    expect(status).toBeTruthy();
+  });
+  it('should check checkDownloadStatus', () => {
+    const playerService = TestBed.get(PublicPlayerService);
+    component.collectionData = contentHeaderData.collectionData.result.content;
+    component.contentDownloadStatus =  { [contentHeaderData.collectionData.result.content.identifier]: 'COMPLETED'};
+    component.checkDownloadStatus();
+    expect(component.collectionData).toEqual(contentHeaderData.collectionData.result.content);
+    expect(component.collectionData['downloadStatus']).toEqual('DOWNLOADED');
+  });
+  it('should call updateCollection and successfuly update collection ', () => {
+    component.collectionData = contentHeaderData.collectionData;
+    const contentService = TestBed.get(ContentManagerService);
+    spyOn(contentService, 'updateContent').and.returnValue(of(contentHeaderData.updateCollection.success));
+    component.updateCollection(contentHeaderData.collectionData);
+    expect(component.showUpdate).toBeFalsy();
+  });
+  it('should call updateCollection and error while updating collection ', () => {
+    component.collectionData = contentHeaderData.collectionData;
+    const contentService = TestBed.get(ContentManagerService);
+    spyOn(contentService, 'updateContent').and.returnValue(throwError(contentHeaderData.updateCollection.error));
+    component.updateCollection(contentHeaderData.collectionData);
+    expect(component.isConnected).toBeTruthy();
+    expect(component.showUpdate).toBeTruthy();
+    expect(component.toasterService.error(resourceBundle.messages.fmsg.m0096));
+  });
+  it('should call exportCollection and successfuly export collection ', () => {
+    component.collectionData = contentHeaderData.collectionData;
+    component.showExportLoader = true;
+    const contentService = TestBed.get(ContentManagerService);
+    spyOn(contentService, 'exportContent').and.returnValue(of(contentHeaderData.exportCollection.success));
+    component.exportCollection(contentHeaderData.collectionData);
+    expect(component.showExportLoader).toBeFalsy();
+    expect(component.toasterService.success(resourceBundle.messages.smsg.m0059));
+  });
+
+  it('should call exportCollection and error while  exporting collection ', () => {
+    component.collectionData = contentHeaderData.collectionData;
+    component.showExportLoader = true;
+    const contentService = TestBed.get(ContentManagerService);
+    spyOn(contentService, 'exportContent').and.returnValue(throwError(contentHeaderData.exportCollection.error));
+    component.exportCollection(contentHeaderData.collectionData);
+    expect(component.showExportLoader).toBeFalsy();
+    expect(component.toasterService.error(resourceBundle.messages.fmsg.m0091));
+  });
+  it('should check isYoutubeContentPresent', () => {
+    const offlineCardService = TestBed.get(OfflineCardService);
+    component.collectionData = contentHeaderData.collectionData;
+    spyOn(offlineCardService, 'isYoutubeContent').and.returnValue(false);
+    spyOn(component, 'downloadCollection').and.returnValue(contentHeaderData.collectionData);
+    component.isYoutubeContentPresent(contentHeaderData.collectionData);
+    expect(component.showModal).toBeFalsy();
+    expect(component.downloadCollection).toHaveBeenCalledWith(contentHeaderData.collectionData);
+  });
+  it('should call downloadCollection and successfuly collection downloaded', () => {
+    component.contentManagerService.downloadContentId = contentHeaderData.collectionData.result.content.identifier;
+    component.collectionData = contentHeaderData.collectionData;
+    component.disableDelete = false;
+    const contentService = TestBed.get(ContentManagerService);
+    spyOn(contentService, 'startDownload').and.returnValue(of(contentHeaderData.downloadCollection.success));
+    component.downloadCollection(contentHeaderData.collectionData);
+    expect(component.contentManagerService.downloadContentId).toEqual('');
+  });
+
+  it('should call downloadCollection and error while downloading collection', () => {
+    component.contentManagerService.downloadContentId = contentHeaderData.collectionData.result.content.identifier;
+    component.collectionData = contentHeaderData.collectionData;
+    component.disableDelete = false;
+    const contentService = TestBed.get(ContentManagerService);
+    spyOn(contentService, 'startDownload').and.returnValue(throwError(contentHeaderData.downloadCollection.downloadError));
+    component.downloadCollection(contentHeaderData.collectionData);
+    expect(component.contentManagerService.downloadContentId).toEqual('');
+    expect(component.contentManagerService.failedContentName).toEqual('');
+    expect(component.toasterService.error(resourceBundle.messages.fmsg.m0090));
+  });
+  it('should call delete collection and successfuly delete collection ', () => {
+    component.collectionData = contentHeaderData.collectionData;
+    const contentService = TestBed.get(ContentManagerService);
+    spyOn(contentService, 'deleteContent').and.returnValue(of(contentHeaderData.deleteCollection.success));
+    component.deleteCollection(contentHeaderData.collectionData);
+    expect(component.toasterService.success(resourceBundle.messages.stmsg.desktop.deleteTextbookSuccessMessage));
+  });
+  it('should call delete collection and error while deleting collection ', () => {
+    component.collectionData = contentHeaderData.collectionData;
+    component.disableDelete = true;
+    const contentService = TestBed.get(ContentManagerService);
+    spyOn(contentService, 'deleteContent').and.returnValue(throwError(contentHeaderData.deleteCollection.error));
+    component.deleteCollection(contentHeaderData.collectionData);
+    expect(component.disableDelete).toBeFalsy();
+    expect(component.toasterService.error(resourceBundle.messages.etmsg.desktop.deleteTextbookErrorMessage));
   });
 });
