@@ -31,6 +31,8 @@ import { TranslateModule, TranslateStore } from '@ngx-translate/core';
 import { AddToGroupDirective } from './directives/add-to-group/add-to-group.directive';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import {TitleCasePipe} from '@angular/common';
+import { NetworkStatusComponent } from './components/network-status/network-status.component';
+import { LoadOfflineContentComponent } from './components/load-offline-content/load-offline-content.component';
 
 @NgModule({
   imports: [
@@ -47,7 +49,7 @@ import {TitleCasePipe} from '@angular/common';
     InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
     ConfirmPopupComponent, AddToGroupDirective, SelectOptionGroupComponent, AppLandingSectionComponent, MarkdownDirective,
-    SbDatatableComponent,OnDemandReportsComponent,SbDataTablePipe],
+    SbDatatableComponent,OnDemandReportsComponent,SbDataTablePipe, NetworkStatusComponent, LoadOfflineContentComponent],
   exports: [AppLoaderComponent, DateFormatPipe, TranslateModule,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
@@ -55,7 +57,7 @@ import {TitleCasePipe} from '@angular/common';
     ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent,
     CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
     MarkdownDirective, AddToGroupDirective, SbDatatableComponent, OnDemandReportsComponent, NgxDatatableModule,SbDataTablePipe, 
-    InterpolatePipe]
+    InterpolatePipe,NetworkStatusComponent,LoadOfflineContentComponent]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {

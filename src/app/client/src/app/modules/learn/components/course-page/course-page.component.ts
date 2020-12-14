@@ -72,6 +72,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
   });
   _courseSearchResponse: any;
   isPageAssemble: boolean = true;
+  isDesktopApp: boolean = false;
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -146,6 +147,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.initialize();
     this.subscription$ = this.mergeObservables();
+    this.isDesktopApp = this.utilService.isDesktopApp;
   }
 
   private mergeObservables() {

@@ -3,7 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
-import { SharedModule } from '@sunbird/shared';
+import { SharedModule, NavigationHelperService, UtilService } from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
 import { of, Subject, throwError } from 'rxjs';
 import { UserService, FormService } from '../../../core/services';
@@ -226,13 +226,12 @@ describe('PlayerComponent', () => {
 
   it('should make isFullScreenView to TRUE', () => {
     component.isFullScreenView = false;
+    const navigationHelperService = TestBed.get(NavigationHelperService);
     expect(component.isFullScreenView).toBeFalsy();
     spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of(true));
     component.ngOnInit();
-    component.navigationHelperService.contentFullScreenEvent.subscribe(response => {
-      expect(response).toBeTruthy();
-      expect(component.isFullScreenView).toBeTruthy();
-    });
+    navigationHelperService.contentFullScreenEvent.emit(true);
+    expect(component.isFullScreenView).toBeTruthy();
   });
 
   it('should call addUserDataToContext', () => {
@@ -245,13 +244,12 @@ describe('PlayerComponent', () => {
 
   it('should make isFullScreenView to FALSE', () => {
     component.isFullScreenView = true;
+    const navigationHelperService = TestBed.get(NavigationHelperService);
     expect(component.isFullScreenView).toBeTruthy();
     spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of(false));
     component.ngOnInit();
-    component.navigationHelperService.contentFullScreenEvent.subscribe(response => {
-      expect(response).toBeFalsy();
-      expect(component.isFullScreenView).toBeFalsy();
-    });
+    navigationHelperService.contentFullScreenEvent.emit(false);
+    expect(component.isFullScreenView).toBeFalsy();
   });
 
 
@@ -332,5 +330,30 @@ describe('PlayerComponent', () => {
     component.onPopState({});
     expect(component.closeContentFullScreen).toHaveBeenCalled();
   });
+
+  it('should hide content manger while fullscreen mode for desktop', () => {
+    component.isFullScreenView = false;
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    const utilService = TestBed.get(UtilService);
+    utilService._isDesktopApp = true;
+    spyOn(navigationHelperService, 'handleContentManagerOnFullscreen');
+    component.ngOnInit();
+    navigationHelperService.contentFullScreenEvent.emit(true);
+    expect(component.isFullScreenView).toBeTruthy();
+    expect(navigationHelperService.handleContentManagerOnFullscreen).toHaveBeenCalledWith(true);
+  });
+
+  it('should show content manger when exit from fullscreen mode for desktop', () => {
+    component.isFullScreenView = false;
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'handleContentManagerOnFullscreen');
+    const utilService = TestBed.get(UtilService);
+    utilService._isDesktopApp = true;
+    component.ngOnInit();
+    navigationHelperService.contentFullScreenEvent.emit(false);
+    expect(component.isFullScreenView).toBeFalsy();
+    expect(navigationHelperService.handleContentManagerOnFullscreen).toHaveBeenCalledWith(false);
+  });
+
 });
 

@@ -184,7 +184,20 @@ export default (app, proxyURL) => {
                 });
             },
         }));
-
+    
+    app.get(
+        "/getGeneralisedResourcesBundles/:lang/:fileName",
+        (req, res, next) => {
+            logger.debug(`Received API call to read generalise resourse bundle`);
+            logger.debug(`ReqId = "${req.headers["X-msgid"]}": Check proxy`);
+            next();
+        },
+        proxy(proxyURL, {
+            proxyReqPathResolver(req) {
+                return `/getGeneralisedResourcesBundles/${req.params.lang}/${req.params.fileName}`;
+            },
+        }),
+    );
 }
 
 const enableProxy = (req) => {
