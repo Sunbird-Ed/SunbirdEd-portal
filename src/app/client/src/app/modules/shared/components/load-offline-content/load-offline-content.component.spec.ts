@@ -5,13 +5,14 @@ import { SharedModule, ResourceService, ConnectionService } from '@sunbird/share
 import { SuiModalModule } from 'ng2-semantic-ui';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import * as _ from 'lodash-es';
-import { LoadContentComponent } from './load-content.component';
+import { LoadOfflineContentComponent } from './load-offline-content.component';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { ElectronDialogService } from '../../services';
+import { ElectronService } from '../../../core/services/electron/electron.service';
+import { configureTestSuite } from '@sunbird/test-util';
 
-describe('LoadContentComponent', () => {
-  let component: LoadContentComponent;
-  let fixture: ComponentFixture<LoadContentComponent>;
+describe('LoadOfflineContentComponent', () => {
+  let component: LoadOfflineContentComponent;
+  let fixture: ComponentFixture<LoadOfflineContentComponent>;
   class FakeActivatedRoute {
     snapshot = {
       data: {
@@ -34,9 +35,10 @@ describe('LoadContentComponent', () => {
     },
     instance: 'tenant'
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LoadContentComponent ],
+      declarations: [],
       imports: [ SuiModalModule, SharedModule.forRoot(), TelemetryModule.forRoot(), RouterModule.forRoot([]),
     HttpClientTestingModule ],
     providers: [ { provide: ActivatedRoute, useClass: FakeActivatedRoute },
@@ -46,7 +48,7 @@ describe('LoadContentComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LoadContentComponent);
+    fixture = TestBed.createComponent(LoadOfflineContentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -67,15 +69,22 @@ describe('LoadContentComponent', () => {
     expect(component.continueTelemetryInteractEdata.id).toEqual('load-content-from-browse');
   });
 
+  it('should show content import model', () => {
+    component.handleImportContentDialog();
+    expect(component.showLoadContentModal).toBeTruthy();
+  });
 
   it('should call showContentImportDialog', () => {
-    const electronDialogService = TestBed.get(ElectronDialogService);
-    spyOn(electronDialogService, 'showContentImportDialog');
+    component.showLoadContentModal = true;
+    const electronDialogService = TestBed.get(ElectronService);
+    spyOn(electronDialogService, 'get').and.returnValue(of({status: 'success'}));
     component.openImportContentDialog();
-    expect(electronDialogService.showContentImportDialog).toHaveBeenCalled();
+    expect(electronDialogService.get).toHaveBeenCalled();
   });
 
   it('should call addFontWeight on changeofevent ', () => {
+    component.showLoadContentModal = true;
+    fixture.detectChanges();
     spyOn(component, 'addFontWeight');
     spyOn(component, 'setTelemetryData');
     component.onChange('import');
@@ -87,10 +96,11 @@ describe('LoadContentComponent', () => {
 
   it('should call addFontWeight on changeofevent ', () => {
     spyOn(component, 'openImportContentDialog');
+    component.showLoadContentModal = true;
+    fixture.detectChanges();
     component.selectedValue = 'import';
     component.navigate();
     expect(component.openImportContentDialog).toHaveBeenCalled();
-
   });
 
 

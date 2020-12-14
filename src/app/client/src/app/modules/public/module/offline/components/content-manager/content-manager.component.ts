@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
+import { ResourceService, ToasterService, ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { timer, Subject, combineLatest } from 'rxjs';
 import { switchMap, map, filter, takeUntil } from 'rxjs/operators';
 import * as _ from 'lodash-es';
@@ -32,6 +32,7 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
   isWindows = false;
   suggestedDrive: string;
   drives: [];
+  visibility = true;
 
   constructor(public contentManagerService: ContentManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,
@@ -39,7 +40,8 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
     public configService: ConfigService,
     public activatedRoute: ActivatedRoute,
     public router: Router,
-    private telemetryService: TelemetryService
+    private telemetryService: TelemetryService, 
+    public navigationHelperService: NavigationHelperService
     ) {
     this.getList();
     document.addEventListener('content:import', (event) => {
@@ -75,7 +77,11 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
         if (popupInfo.isWindows && popupInfo.drives) {
           this.drives = popupInfo.drives;
         }
+      });
 
+    this.navigationHelperService.handleCMvisibility.
+      pipe(takeUntil(this.unsubscribe$)).subscribe(hideCM => {
+        this.visibility = !hideCM;
       });
   }
 
