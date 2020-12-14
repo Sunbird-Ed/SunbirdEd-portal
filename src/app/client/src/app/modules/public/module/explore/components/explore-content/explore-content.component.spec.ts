@@ -279,6 +279,17 @@ describe('ExploreContentComponent', () => {
     expect(component.downloadContent).toHaveBeenCalled();
   });
 
+  it('should set no Result message', () => {
+    component.queryParams = { key: 'test' };
+    component['setNoResultMessage']();
+    expect(component.noResultMessage).toEqual({
+      title: 'Your search for - "test" did not match any content',
+      subTitle: 'Your board is yet to add more books. Tap the button to see more books and content on {instance}',
+      buttonText: 'See more books and contents',
+      showExploreContentButton: false
+    });
+  });
+
   it('should call download content with error ', () => {
     const contentManagerService = TestBed.get(ContentManagerService);
     spyOn(contentManagerService, 'startDownload').and.returnValue(throwError({ error: { params: { err: 'ERROR' } } }));
@@ -292,17 +303,6 @@ describe('ExploreContentComponent', () => {
     spyOn(publicPlayerService, 'playContent');
     component.playContent({});
     expect(publicPlayerService.playContent).toHaveBeenCalled();
-  });
-
-  it('should set no Result message', () => {
-    component.queryParams = { key: 'test' };
-    component['setNoResultMessage']();
-    expect(component.noResultMessage).toEqual({
-      title: 'Your search for - "test" did not match any content',
-      subTitle: 'Your board is yet to add more books. Tap the button to see more books and content on {instance}',
-      buttonText: 'See more books and contents',
-      showExploreContentButton: false
-    });
   });
 
   it('should call listenLanguageChange', () => {
