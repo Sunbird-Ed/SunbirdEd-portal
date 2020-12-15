@@ -89,7 +89,10 @@
                             </sui-multi-select>
                         </div>
                     </div>
-
+                    <button (click)="resetFilters()" appTelemetryInteract
+                        [telemetryInteractEdata]="getInteractEdata()"
+                        class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto">{{resourceService.frmelmnts?.btn?.reset | translate}}
+                    </button>
                 </div>
 
             </div>
