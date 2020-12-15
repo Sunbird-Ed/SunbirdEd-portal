@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { ConnectionService } from './connection.service';
 import { of as observableOf, of } from 'rxjs';
-import { ToasterService, ResourceService } from '@sunbird/shared';
+import { ToasterService, ResourceService, UtilService } from '@sunbird/shared';
 import { Router } from '@angular/router';
 
 describe('ConnectionService', () => {
@@ -19,7 +19,7 @@ describe('ConnectionService', () => {
   };
   beforeEach(() => TestBed.configureTestingModule({
     providers: [ToasterService, { provide: ResourceService, useValue: resourceMockData },
-      { provide: Router, useClass: RouterStub }]
+      { provide: Router, useClass: RouterStub }, UtilService]
   }));
 
   it('to make the connection status true', () => {
@@ -54,6 +54,8 @@ describe('ConnectionService', () => {
   it('should call notifyNetworkChange', () => {
     const service: ConnectionService = TestBed.get(ConnectionService);
     const toasterService = TestBed.get(ToasterService);
+    const utilService = TestBed.get(UtilService);
+    utilService._isDesktopApp = true;
     spyOn(toasterService, 'info');
     service['connectionMonitor'] = of(true);
     service.notifyNetworkChange();
