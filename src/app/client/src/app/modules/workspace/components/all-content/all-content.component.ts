@@ -438,7 +438,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
           const errMsg =  (this.resourceService.messages.emsg.m1414).replace('{instance}', originData.organisation[0]);
           this.toasterService.error(errMsg);
           return;
-        }
+        } this.deepcopy(content);
       }
       else if (_.size(content.lockInfo) && this.userService.userid !== content.lockInfo.createdBy) {
         this.lockPopupData = content;
@@ -454,6 +454,23 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
         this.workSpaceService.navigateToContent(content, this.state);
       }
     }
+  }
+ 
+  deepcopy(content){
+    if (_.size(content.lockInfo) && this.userService.userid !== content.lockInfo.createdBy) {
+      this.lockPopupData = content;
+      this.showLockedContentModal = true;
+    } else {
+    const status = content.status.toLowerCase();
+    if (status === 'processing') {
+      return;
+    }
+    if (status === 'draft') { // only draft state contents need to be locked
+      this.workSpaceService.navigateToContent(content, this.state);
+    } else {
+      this.workSpaceService.navigateToContent(content, this.state);
+    }
+   }
   }
 
   public onCloseLockInfoPopup () {

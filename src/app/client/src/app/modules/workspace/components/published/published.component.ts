@@ -316,7 +316,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
         const errMsg =  (this.resourceService.messages.emsg.m1414).replace('{instance}', originData.organisation[0]);
           this.toasterService.error(errMsg);
         return;
-      }
+      } this.deepcopy(param);
     }
     else if (param.action.eventName === 'delete') {
       this.currentContentId = param.data.metaData.identifier;
@@ -333,6 +333,21 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
     }
   }
 
+  deepcopy(param){
+    if (param.action.eventName === 'delete') {
+      this.currentContentId = param.data.metaData.identifier;
+      const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);
+      config.isClosable = false;
+      config.size = 'small';
+      config.transitionDuration = 0;
+      config.mustScroll = true;
+      this.modalService
+        .open(config);
+      this.showCollectionLoader = false;
+    } else {
+      this.workSpaceService.navigateToContent(param.data.metaData, this.state);
+    }
+  }
   /**
   * This method checks whether deleting content is linked to any collections, if linked to collection displays collection list pop modal.
   */
