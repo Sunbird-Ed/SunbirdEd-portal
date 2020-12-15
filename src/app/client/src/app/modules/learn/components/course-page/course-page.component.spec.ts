@@ -442,7 +442,7 @@ describe('CoursePageComponent', () => {
                 expect(component.facets).toBeDefined();
                 expect(component.initFilters).toBeTruthy();
                 expect(component.carouselMasterData).toBeDefined();
-                expect(component.carouselMasterData.length).toEqual(2);
+                expect(component.carouselMasterData.length).toEqual(3);
                 done();
             });
     });
