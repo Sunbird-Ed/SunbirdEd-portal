@@ -138,8 +138,8 @@ export class CoursesService {
       if (cur.courseId !== courseId) { // course donst match return
         return acc;
       }
-      if (cur.batch.enrollmentType === 'invite-only') { // invite-only batch
-        if (cur.batch.status === 2) { // && (!acc.invite.ended || latestCourse(acc.invite.ended.enrolledDate, cur.enrolledDate))
+      if (_.get(cur, 'batch.enrollmentType') === 'invite-only') { // invite-only batch
+        if (_.get(cur, 'batch.status') === 2) { // && (!acc.invite.ended || latestCourse(acc.invite.ended.enrolledDate, cur.enrolledDate))
           acc.inviteOnlyBatch.expired.push(cur);
           acc.expiredBatchCount = acc.expiredBatchCount + 1;
         } else {
@@ -147,7 +147,7 @@ export class CoursesService {
           acc.inviteOnlyBatch.ongoing.push(cur);
         }
       } else {
-        if (cur.batch.status === 2) {
+        if (_.get(cur, 'batch.status') === 2) {
           acc.expiredBatchCount = acc.expiredBatchCount + 1;
           acc.openBatch.expired.push(cur);
         } else {
