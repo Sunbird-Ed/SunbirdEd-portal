@@ -314,4 +314,27 @@ describe('UtilService', () => {
     expect(service['csvExporter'] instanceof ExportToCsv).toBeTruthy();
   }));
 
+  it('should call isDesktopApp', inject([UtilService], (service: UtilService)  => {
+    service['_isDesktopApp'] = true;
+    expect(service.isDesktopApp).toBe(true);
+  }));
+
+  it('should call clearSearchQuery', inject([UtilService], (service: UtilService)  => {
+    spyOn(service['searchQuery'], 'next');
+    service.clearSearchQuery();
+    expect(service['searchQuery'].next).toHaveBeenCalled();
+  }));
+
+  it('should call getAppBaseUrl', inject([UtilService], (service: UtilService)  => {
+    const dummyElement = document.createElement('input');
+    dummyElement.value = 'http://localhost:3000';
+    spyOn(document, 'getElementById').and.returnValue(dummyElement);
+    const origin = service.getAppBaseUrl();
+    expect(origin).toEqual('http://localhost:3000');
+  }));
+
+  it('should call getAppBaseUrl', inject([UtilService], (service: UtilService)  => {
+    const origin = service.getAppBaseUrl();
+    expect(origin).toEqual('http://localhost:9876');
+  }));
 });

@@ -116,7 +116,7 @@
            <!--Load content -->
            <div class="computer only d-flex" *appDesktopOnly>
             <span class="search-qrcode-divider"></span>
-            <button class="ui button qr-code-btn d-flex flex-ai-center sb-load-content-btn" type="button"> {{resourceService?.frmelmnts?.btn?.loadContent}} </button>
+            <button class="ui button qr-code-btn d-flex flex-ai-center sb-load-content-btn" type="button" (click)="showLoadContentModal=true" > {{resourceService?.frmelmnts?.btn?.loadContent}} </button>
           </div>
            <!--/Load content -->
           <!--Language Dropdown-->
@@ -468,3 +468,6 @@
 [isCustodianOrgUser]="isCustodianUser" [deviceProfile]="deviceProfile" (close)="locationSubmit()">
 </app-onboarding-location>
 <!-- Manage location for an anonymous user -->
+
+
+<app-load-offline-content [hideLoadButton]="true" (close)="showLoadContentModal=false"  *ngIf="showLoadContentModal"></app-load-offline-content>

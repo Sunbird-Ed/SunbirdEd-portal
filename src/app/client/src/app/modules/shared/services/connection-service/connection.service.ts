@@ -4,6 +4,7 @@ import { ToasterService } from '../../services/toaster/toaster.service';
 import * as _ from 'lodash-es';
 import { Observable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ export class ConnectionService {
 
   private connectionMonitor: Observable<boolean>;
 
-  constructor(private toastService: ToasterService, private resourceService: ResourceService) {
+  constructor(private toastService: ToasterService, private resourceService: ResourceService,
+    public router: Router) {
     this.connectionMonitor = new Observable((observer) => {
       observer.next(navigator.onLine);
       window.addEventListener('offline', (e) => {
@@ -30,6 +32,9 @@ export class ConnectionService {
     this.connectionMonitor.pipe(debounceTime(5000)).subscribe((status: boolean) => {
       const message = status ? _.get(this.resourceService, 'messages.stmsg.desktop.onlineStatus') : _.get(this.resourceService, 'messages.emsg.desktop.offlineStatus');
       this.toastService.info(message);
+      if (!status && this.router.url.indexOf('mydownloads') <= 0) {
+        this.router.navigate(['mydownloads'], { queryParams: { selectedTab: 'mydownloads' } });
+      }
     });
   }
 
