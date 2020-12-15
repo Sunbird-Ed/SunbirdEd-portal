@@ -17,6 +17,7 @@ export class BatchInfoComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal;
   @Input() enrolledBatchInfo: any;
   @Output() modelClose = new EventEmitter;
+  @Output() routeChanged = new EventEmitter();
   public userDetails = {};
   public hasOngoingBatches = false;
   public enrolledBatches: Array<any> = [];
@@ -106,7 +107,9 @@ export class BatchInfoComponent implements OnInit, OnDestroy {
     ).subscribe(data => {
       const textbook = _.get(this.activatedRoute, 'snapshot.queryParams.textbook');
       const queryParams = textbook ? { textbook } : {};
-      this.router.navigate(['/learn/course', event.courseId, 'batch', event.identifier], { queryParams });
+      this.router.navigate(['/learn/course', event.courseId, 'batch', event.identifier], { queryParams }).then(res => {
+        this.routeChanged.emit();
+      });
     }, (err) => {
       this.disableEnrollBtn = false;
       this.toasterService.error(this.resourceService.messages.emsg.m0001);

@@ -189,4 +189,10 @@ describe('CourseConsumptionPageComponent', () => {
     };
     expect(component.router.navigate).toHaveBeenCalledWith(routedURL, reqParams);
   });
+  it('should refresh component with updated batch details when user selects another batch', () => {
+    const spy = spyOn<any>(component['fetchEnrolledCourses$'], 'next');
+    component.refreshComponent();
+    expect(spy).toHaveBeenCalled();
+    expect(component.showBatchInfo).toBeFalsy();
+  });
 });
