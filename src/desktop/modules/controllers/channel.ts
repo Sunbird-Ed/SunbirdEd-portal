@@ -88,4 +88,10 @@ export class Channel {
         }
       });
   }
+
+  public upsert(channelResponse) {
+    const doc = _.get(channelResponse, "result.channel");
+    const id = doc.identifier
+    this.databaseSdk.upsert("channel", id, doc);
+  }
 }
