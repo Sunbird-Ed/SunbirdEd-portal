@@ -64,6 +64,13 @@ export class CourseProgressService {
       }));
   }
 
+  public getContentProgressState(req, res) {
+    const courseId_batchId = req.courseId + '_' + req.batchId;
+    this.processContent(req, res, courseId_batchId);
+    this.courseProgressData.emit(this.courseProgress[courseId_batchId]);
+    return this.courseProgress[courseId_batchId];
+  }
+
   private processContent(req, res, courseId_batchId) {
     this.courseProgress[courseId_batchId] = {
       progress: 0,
@@ -72,9 +79,9 @@ export class CourseProgressService {
       content: []
     };
     const resContentIds = [];
-    if (res.result.contentList.length > 0) {
+    if (res.length > 0) {
       _.forEach(_.uniq(req.contentIds), (contentId) => {
-        const content = _.find(res.result.contentList, { 'contentId': contentId });
+        const content = _.find(res, { 'contentId': contentId });
         if (content) {
           this.courseProgress[courseId_batchId].content.push(content);
           resContentIds.push(content.contentId);

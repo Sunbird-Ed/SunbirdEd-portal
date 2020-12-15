@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption';
 import { CoursesService, PermissionService, UserService, GeneraliseLabelService } from '@sunbird/core';
@@ -18,6 +18,7 @@ import { ContentUtilsServiceService } from '@sunbird/shared';
 import { MimeTypeMasterData } from '@project-sunbird/common-consumption/lib/pipes-module/mime-type';
 import * as dayjs from 'dayjs';
 import { NotificationService } from '../../../../notification/services/notification/notification.service';
+import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 
 @Component({
   selector: 'app-course-player',
@@ -84,7 +85,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public todayDate = dayjs(new Date()).format('YYYY-MM-DD');
   public batchMessage: any;
   showDataSettingSection = false;
-
+  assessmentMaxAttempts: number = 3;
   @ViewChild('joinTrainingModal') joinTrainingModal;
   showJoinModal = false;
   tocId;
@@ -110,7 +111,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     private contentUtilsServiceService: ContentUtilsServiceService,
     public layoutService: LayoutService,
     public generaliseLabelService: GeneraliseLabelService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    @Inject('CS_COURSE_SERVICE') private CsCourseService: CsCourseService
   ) {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
@@ -308,17 +310,20 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   private getContentState() {
-    const req = {
+    let fieldsArray: Array<string> = ['progress', 'score'];
+    const req:any = {
       userId: this.userService.userid,
       courseId: this.courseId,
       contentIds: this.contentIds,
-      batchId: this.batchId
+      batchId: this.batchId,
+      fields: fieldsArray
     };
-    this.courseProgressService.getContentState(req)
+    this.CsCourseService.getContentState(req, { apiPath: '/content/course/v1' })
       .pipe(takeUntil(this.unsubscribe))
-      .subscribe(res => {
-        this.progressToDisplay = Math.floor((res.completedCount / this.courseHierarchy.leafNodesCount) * 100);
-        this.contentStatus = res.content || [];
+      .subscribe((res) => {
+        const _parsedResponse = this.courseProgressService.getContentProgressState(req, res);
+        this.progressToDisplay = Math.floor((_parsedResponse.completedCount / this.courseHierarchy.leafNodesCount) * 100);
+        this.contentStatus = _parsedResponse.content || [];
         this.calculateProgress();
       },
         err => console.log(err, 'content read api failed'));

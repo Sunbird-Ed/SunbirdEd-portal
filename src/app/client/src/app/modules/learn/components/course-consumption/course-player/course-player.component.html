@@ -83,7 +83,8 @@
                           *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection' && !item?.children?.length">
                           <div class="child-content-padding">
                             <sb-toc-card [content]="item" (tocCardClick)="navigateToContent($event, item, 'toc-card')"
-                              [type]="cardType" [contentStatus]="contentStatus">
+                              [type]="cardType" [contentStatus]="contentStatus"
+                              [maxAttempts]="assessmentMaxAttempts" [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
                             </sb-toc-card>
                           </div>
                         </div>
@@ -91,7 +92,8 @@
                           <div *ngFor="let child of item?.children">
                               <sb-toc-child-item [childData]="child" class="sb-toc-child-item"
                                 (tocCardClick)="navigateToContent($event, item, 'child-item')"
-                                [contentStatus]="contentStatus" [type]="cardType">
+                                [contentStatus]="contentStatus" [type]="cardType"
+                                [maxAttempts]="assessmentMaxAttempts" [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
                               </sb-toc-child-item>
                           </div>
                         </div>

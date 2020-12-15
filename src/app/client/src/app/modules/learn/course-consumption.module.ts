@@ -32,6 +32,13 @@ export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerSe
   }
   return CsModule.instance.userService;
 };
+export const csCourseServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
+  if (!CsModule.instance.isInitialised) {
+    csLibInitializerService.initializeCs();
+  }
+  return CsModule.instance.courseService;
+};
+
 @NgModule({
   imports: [
     CommonModule,
@@ -47,7 +54,10 @@ export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerSe
     CommonConsumptionModule,
     NotificationModule
   ],
-  providers: [{ provide: 'CS_USER_SERVICE', useFactory: csUserServiceFactory, deps: [CsLibInitializerService] }],
+  providers: [
+    { provide: 'CS_USER_SERVICE', useFactory: csUserServiceFactory, deps: [CsLibInitializerService] },
+    { provide: 'CS_COURSE_SERVICE', useFactory: csCourseServiceFactory, deps: [CsLibInitializerService] }
+  ],
   declarations: [CoursePlayerComponent, CourseConsumptionHeaderComponent, AssessmentPlayerComponent,
     CourseConsumptionPageComponent, BatchDetailsComponent, CurriculumCardComponent, UnEnrollBatchComponent,
     AssessmentPlayerComponent, CourseCompletionComponent, CourseDetailsComponent, CertificateNameUpdatePopupComponent]
