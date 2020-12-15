@@ -83,7 +83,14 @@ export class BatchInfoComponent implements OnInit, OnDestroy {
   public handleEnrollmentEndDate(batchDetails) {
     const enrollmentEndDate = dayjs(_.get(batchDetails, 'enrollmentEndDate')).format('YYYY-MM-DD');
     const systemDate = dayjs();
-    return enrollmentEndDate ? dayjs(enrollmentEndDate).isBefore(systemDate) : false;
+    const disableEnrollBtn = enrollmentEndDate ? dayjs(enrollmentEndDate).isBefore(systemDate) : false;
+    return disableEnrollBtn;
+  }
+  public handleStartDate(batchDetails) {
+    const batchStartDate = dayjs(_.get(batchDetails, 'startDate')).format('YYYY-MM-DD');
+    const systemDate = dayjs();
+    const isJoinNotEnabled = batchStartDate ? dayjs(batchStartDate).isAfter(systemDate) : false;
+    return isJoinNotEnabled;
   }
   public handleEnrollEvent(event) {
     this.disableEnrollBtn = true;

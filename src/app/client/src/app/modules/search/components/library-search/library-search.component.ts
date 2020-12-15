@@ -2,13 +2,13 @@ import {
     PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
     ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination, LayoutService, COLUMN_TYPE
 } from '@sunbird/shared';
-import { SearchService, PlayerService, UserService, FrameworkService } from '@sunbird/core';
-import { combineLatest, Subject } from 'rxjs';
+import { SearchService, PlayerService, UserService, FrameworkService, OrgDetailsService, CoursesService } from '@sunbird/core';
+import { combineLatest, Subject, of } from 'rxjs';
 import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { takeUntil, map, first, debounceTime, tap, delay } from 'rxjs/operators';
+import { takeUntil, map, first, debounceTime, tap, delay, mergeMap } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 
 const DEFAULT_FRAMEWORK = 'CBSE';
@@ -51,13 +51,15 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     public totalCount;
     public searchAll;
     public allMimeType;
+    showBatchInfo: boolean;
+    selectedCourseBatches: { onGoingBatchCount: any; expiredBatchCount: any; openBatch: any; inviteOnlyBatch: any; courseId: any; };
     constructor(public searchService: SearchService, public router: Router, private playerService: PlayerService,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
         public resourceService: ResourceService, public toasterService: ToasterService,
         public configService: ConfigService, public utilService: UtilService,
         public navigationHelperService: NavigationHelperService, public userService: UserService,
-        public cacheService: CacheService, public frameworkService: FrameworkService,
-        public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
+        public cacheService: CacheService, public frameworkService: FrameworkService, private coursesService: CoursesService,
+        public navigationhelperService: NavigationHelperService, public layoutService: LayoutService,  public orgDetailsService: OrgDetailsService) {
         this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.filterType = this.configService.appConfig.library.filterType;
         this.redirectUrl = this.configService.appConfig.library.searchPageredirectUrl;
@@ -117,7 +119,21 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         }
     }
     public getFilters(filters) {
-        this.selectedFilters = filters.filters;
+        const filterData = filters && filters.filters || {};
+        if (filterData.channel && this.facets) {
+          const channelIds = [];
+          const facetsData = _.find(this.facets, { 'name': 'channel' });
+          _.forEach(filterData.channel, (value, index) => {
+            const data = _.find(facetsData.values, { 'identifier': value });
+            if (data) {
+              channelIds.push(data.name);
+            }
+          });
+          if (channelIds && Array.isArray(channelIds) && channelIds.length > 0) {
+            filterData.channel = channelIds;
+          }
+        }
+        this.selectedFilters = filterData;
         const defaultFilters = _.reduce(filters, (collector: any, element) => {
             if (element.code === 'board') {
                 collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
@@ -185,6 +201,24 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
             option.params.framework = this.frameworkId;
         }
         this.searchService.contentSearch(option)
+        .pipe(
+            mergeMap(data => {
+              const channelFacet = _.find(_.get(data, 'result.facets') || [], facet => _.get(facet, 'name') === 'channel')
+              if(channelFacet){
+                const rootOrgIds =  this.processOrgData(_.get(channelFacet, 'values'));
+                return this.orgDetailsService.searchOrgDetails({
+                  filters: { isRootOrg: true, rootOrgId: rootOrgIds },
+                  fields: ['slug', 'identifier', 'orgName']
+                }).pipe(
+                  mergeMap(orgDetails => {
+                    channelFacet.values = _.get(orgDetails, 'content');
+                    return of(data);
+                  })
+                ) 
+              }
+              return of(data);
+            })
+          )
             .subscribe(data => {
                 this.showLoader = false;
                 this.facets = this.searchService.updateFacetsData(_.get(data, 'result.facets'));
@@ -245,9 +279,6 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
             pageid: 'library-search'
         };
     }
-    public playContent(event) {
-        this.playerService.playContent(event.data);
-    }
     public inView(event) {
         _.forEach(event.inview, (elem, key) => {
             const obj = _.find(this.inViewLogs, { objid: elem.data.identifier });
@@ -264,6 +295,19 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         this.telemetryImpression.edata.subtype = 'pageexit';
         this.telemetryImpression = Object.assign({}, this.telemetryImpression);
         }
+    }
+    public playContent(event) {
+        const { data: { identifier } } = event;
+        const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } = this.coursesService.findEnrolledCourses(identifier);
+        if (!expiredBatchCount && !onGoingBatchCount) {
+            return this.playerService.playContent(event.data);
+        }
+        if (onGoingBatchCount === 1) {
+            event.data.batchId = _.get(openBatch, 'ongoing.length') ? _.get(openBatch, 'ongoing[0].batchId') : _.get(inviteOnlyBatch, 'ongoing[0].batchId');
+            return this.playerService.playContent(event.data);
+        }
+        this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: identifier };
+        this.showBatchInfo = true;
     }
     ngAfterViewInit () {
         setTimeout(() => {
@@ -301,5 +345,14 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
               'showExploreContentButton': false
             };
           });
+      }
+      processOrgData(channels) {
+        const rootOrgIds = [];
+        _.forEach(channels, (channelData) => {
+          if (channelData.name) {
+            rootOrgIds.push(channelData.name);
+          }
+        });
+        return rootOrgIds;
       }
 }

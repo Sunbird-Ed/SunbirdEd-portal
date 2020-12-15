@@ -121,8 +121,11 @@
             </div>
             <div>
             <label class="d-block footer-terms-info text-left font-weight-normal">
-              <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"
+              <a *ngIf="!isDesktopApp" appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"
                 href="/term-of-use.html">{{resourceService.frmelmnts?.lnk?.footerTnC}}</a>
+              <span>| &copy; {{date | date:'yyyy'}}, {{instance}}</span>
+              <a *ngIf="isDesktopApp" appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"
+                href="{{appBaseUrl}}/term-of-use.html" target="_blank">{{resourceService.frmelmnts?.lnk?.footerTnC}}</a>
               <span>| &copy; {{date | date:'yyyy'}}, {{instance}}</span>
             </label>
             <label class="d-block text-left fsmall">
@@ -133,7 +136,7 @@
           <div class="six wide column p-0 d-flex sbt-footer-download-app">
             <div class="sbt-footer-bg relative">
               <img class="sbt-footer-bg-img cursor-pointer" src="/assets/images/footer-flower-set.svg" alt="">
-              <label class="d-block text-center font-weight-bold sbt-footer-title">Download DIKSHA</label>
+              <label class="d-block text-center font-weight-bold sbt-footer-title">{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile | interpolate:'{instance}':  instance}}</label>
               <a class="d-block app-download" (click)="redirectToMobileApp()">
                 <img class="playStore-img cursor-pointer" src="/assets/images/google_playstore.png"
                   alt="{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile | interpolate:'{instance}':  instance}}">

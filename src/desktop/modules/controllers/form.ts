@@ -71,7 +71,6 @@ export class Form {
       subtype: requestObj.subType,
       action: requestObj.action,
     };
-    // TODO: Need tp handle all the cases with rootOrg and framework and component
     // requestObj.rootOrgId = requestObj.rootOrgId || '*';
     // requestObj.component = requestObj.component || '*';
     // requestObj.framework = requestObj.framework || '*';
@@ -114,5 +113,16 @@ export class Form {
           return res.send(Response.error("api.form.read", status));
         }
       });
+  }
+
+  upsert(formResp: any) {
+    const doc = _.get(formResp, "result.form");
+    doc.rootOrgId = doc.rootOrgId || "*";
+    doc.component = doc.component || "*";
+    doc.framework = doc.framework || "*";
+    const idText = `${doc.type}_${doc.subtype}_${doc.action}_${doc.rootOrgId}_${doc.framework}_${doc.component}`;
+    const hash = new Hashids(idText, 10);
+    const id = hash.encode(1).toLowerCase();
+    this.databaseSdk.upsert("form", id, doc);
   }
 }
