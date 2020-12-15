@@ -28,6 +28,7 @@ export class FaqComponent implements OnInit {
   public telemetryImpression: IImpressionEventInput;
   defaultToEnglish = false;
   isDesktopApp = false;
+  helpCenterLink = '/help/faqs/user/index.html';
 
   constructor(private http: HttpClient, private _cacheService: CacheService, private utilService: UtilService,
     public tenantService: TenantService, public resourceService: ResourceService, public activatedRoute: ActivatedRoute,
@@ -43,12 +44,15 @@ export class FaqComponent implements OnInit {
     this.initLayout();
     this.instance = _.upperCase(this.resourceService.instance);
     this.defaultFooterConfig = {
-      helpCenterLink: `/help/faqs/user/index.html`,
+      helpCenterLink: this.helpCenterLink,
       helpDeskEmail: `support@${_.lowerCase(this.instance)}-ncte.freshdesk.com`
     };
+
     this.selectedLanguage = this._cacheService.get('portalLanguage') || 'en';
 
     if (this.isDesktopApp) {
+      const baseUrl = this.utilService.getAppBaseUrl();
+      this.defaultFooterConfig.helpCenterLink = `${baseUrl}${this.helpCenterLink}`;
       this.getDesktopFAQ(this.selectedLanguage);
     } else {
       this.faqService.getFaqJSON()

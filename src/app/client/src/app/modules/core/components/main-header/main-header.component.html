@@ -93,15 +93,9 @@
             *ngIf="!showExploreComponent && !hideHeader"
             [ngClass]="{'ml-auto mr-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}">
           </app-search>
-          <!--Load content -->
-          <div class="computer only d-flex" *appDesktopOnly>
-            <span class="search-qrcode-divider"></span>
-            <button class="ui button qr-code-btn d-flex flex-ai-center sb-load-content-btn" type="button"> {{resourceService?.frmelmnts?.btn?.loadContent}} </button>
-          </div>
-           <!--/Load content -->
           <!--/Logged in Pages-->
           <!--Explore Pages-->
-          <div class="sb-search-box b-0 mr-auto" *ngIf="showExploreComponent && !hideHeader"
+          <div class="sb-search-box b-0" *ngIf="showExploreComponent && !hideHeader"
             [ngClass]="{'ml-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}">
             <div class="input-div relative">
               <!-- <i class="search icon"></i> -->
@@ -119,6 +113,12 @@
           </div>
           <!--/Explore Pages-->
           <!--/Search Box-->
+           <!--Load content -->
+           <div class="computer only d-flex" *appDesktopOnly>
+            <span class="search-qrcode-divider"></span>
+            <button class="ui button qr-code-btn d-flex flex-ai-center sb-load-content-btn" type="button" (click)="showLoadContentModal=true" > {{resourceService?.frmelmnts?.btn?.loadContent}} </button>
+          </div>
+           <!--/Load content -->
           <!--Language Dropdown-->
           <app-language-dropdown [layoutConfiguration]="layoutConfiguration" [languageRange]='languages'
             class="computer only ml-auto" *ngIf="languages && showLanguageDropdown()">
@@ -425,7 +425,13 @@
               </svg></i>
             {{resourceService?.frmelmnts?.tab?.help}}
           </li>
-            <li class="list-item" (click)="toggleSideMenu(false);switchToAccessibleLayout()">
+            <li *ngIf="!isDesktopApp" class="list-item" (click)="toggleSideMenu(false);switchToAccessibleLayout()">
+              <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
+                <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
+              </svg></i>
+              {{resourceService?.frmelmnts?.lbl?.accessible}}
+            </li>
+            <li *ngIf="isDesktopApp" class="list-item" (click)="toggleSideMenu(false);switchToAccessibleLayout()" appOnlineOnly>
               <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
               </svg></i>
@@ -462,3 +468,6 @@
 [isCustodianOrgUser]="isCustodianUser" [deviceProfile]="deviceProfile" (close)="locationSubmit()">
 </app-onboarding-location>
 <!-- Manage location for an anonymous user -->
+
+
+<app-load-offline-content [hideLoadButton]="true" (close)="showLoadContentModal=false"  *ngIf="showLoadContentModal"></app-load-offline-content>

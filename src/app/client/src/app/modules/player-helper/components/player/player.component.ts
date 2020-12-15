@@ -126,6 +126,10 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       } else {
         root.classList.remove('PlayerMediaQueryClass');
       }
+      if (this.utilService.isDesktopApp) {
+        const hideCM = isFullScreen ? true : false;
+        this.navigationHelperService.handleContentManagerOnFullscreen(hideCM);
+      }
       this.loadPlayer();
     });
 

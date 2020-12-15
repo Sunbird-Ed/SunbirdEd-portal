@@ -11,6 +11,7 @@ import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@s
 import { map, tap, switchMap, skipWhile, takeUntil } from 'rxjs/operators';
 import { ContentSearchService } from '@sunbird/content-search';
 import { ContentManagerService } from '../../../public/module/offline/services';
+import * as _ from 'lodash-es';
 const DEFAULT_FRAMEWORK = 'CBSE';
 @Component({
     selector: 'app-explore-page-component',
@@ -49,6 +50,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     showModal = false;
     downloadIdentifier: string;
     contentDownloadStatus = {};
+    isConnected = true;
 
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
@@ -58,6 +60,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
             && this.pageSections.length < this.apiContentList.length) {
             this.pageSections.push(this.apiContentList[this.pageSections.length]);
+            this.addHoverData();
         }
     }
 
@@ -113,10 +116,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     ngOnInit() {
         this.isDesktopApp = this.utilService.isDesktopApp;
         this.initConfiguration();
-        this.subscription$ = merge(this.fetchChannelData(), this.initLayout(), this.setNoResultMessage(), this.fetchContents())
+        this.subscription$ = merge(this.fetchChannelData(), this.initLayout(), this.fetchContents())
             .pipe(
                 takeUntil(this.unsubscribe$)
             );
+        this.listenLanguageChange();
         this.contentManagerService.contentDownloadStatus$.subscribe( contentDownloadStatus => {
             this.contentDownloadStatus = contentDownloadStatus;
         });
@@ -323,24 +327,29 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         };
     }
 
+    private listenLanguageChange() {
+        this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe((languageData) => {
+            this.setNoResultMessage();
+            if (_.get(this.pageSections, 'length') && this.isDesktopApp) {
+                this.addHoverData();
+            }
+        });
+    }
+
     private setNoResultMessage() {
-        return this.resourceService.languageSelected$.pipe(
-            tap(item => {
-                const { key = null, selectedTab = null } = this.activatedRoute.snapshot.queryParams;
-                let { noBookfoundTitle: title, noBookfoundTitle: subTitle, noBookfoundTitle: buttonText, noContentfoundTitle, noContentfoundSubTitle, noContentfoundButtonText,
-                    desktop: { yourSearch = '', notMatchContent = '' } = {} } = get(this.resourceService, 'frmelmnts.lbl');
-                if (key) {
-                    const title_part1 = replace(yourSearch, '{key}', key);
-                    const title_part2 = notMatchContent;
-                    title = title_part1 + ' ' + title_part2;
-                } else if (selectedTab !== 'textbook') {
-                    title = noContentfoundTitle;
-                    subTitle = noContentfoundSubTitle;
-                    buttonText = noContentfoundButtonText;
-                }
-                this.noResultMessage = { title, subTitle, buttonText, showExploreContentButton: true };
-            })
-        );
+        const { key = null, selectedTab = null } = this.activatedRoute.snapshot.queryParams;
+        let { noBookfoundTitle: title, noBookfoundTitle: subTitle, noBookfoundTitle: buttonText, noContentfoundTitle, noContentfoundSubTitle, noContentfoundButtonText,
+            desktop: { yourSearch = '', notMatchContent = '' } = {} } = get(this.resourceService, 'frmelmnts.lbl');
+        if (key) {
+            const title_part1 = replace(yourSearch, '{key}', key);
+            const title_part2 = notMatchContent;
+            title = title_part1 + ' ' + title_part2;
+        } else if (selectedTab !== 'textbook') {
+            title = noContentfoundTitle;
+            subTitle = noContentfoundSubTitle;
+            buttonText = noContentfoundButtonText;
+        }
+        this.noResultMessage = { title, subTitle, buttonText, showExploreContentButton: true };
     }
 
     public navigateToExploreContent() {

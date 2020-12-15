@@ -203,20 +203,20 @@ export class UtilService {
     });
     return formInputData;
   }
-  getPlayerDownloadStatus(status, content, currentRoute) {
+  getPlayerDownloadStatus(status, content, currentRoute?) {
     if (content) {
-    const downloadStatus = content['downloadStatus'];
-    const addedUsing  = _.get(content, 'desktopAppMetadata.addedUsing');
-    if (addedUsing && addedUsing === 'import' && !downloadStatus) {
-      return this.isDownloaded(content, status);
+      const downloadStatus = content['downloadStatus'];
+      const addedUsing  = _.get(content, 'desktopAppMetadata.addedUsing');
+      if (addedUsing && addedUsing === 'import' && !downloadStatus) {
+        return this.isDownloaded(content, status);
     } else {
-      const contentStatus = ['DOWNLOAD', 'FAILED', 'CANCELED'];
-        if (status === 'DOWNLOAD') {
-        return  downloadStatus ? _.includes(contentStatus, downloadStatus) : this.isDownloaded(content, status);
-        } else {
-         return downloadStatus ? downloadStatus === status : this.isDownloaded(content, status);
-        }
-    }
+        const contentStatus = ['DOWNLOAD', 'FAILED', 'CANCELED'];
+          if (status === 'DOWNLOAD') {
+          return  downloadStatus ? _.includes(contentStatus, downloadStatus) : this.isDownloaded(content, status);
+          } else {
+           return downloadStatus ? downloadStatus === status : this.isDownloaded(content, status);
+          }
+      }
     }
   }
 
@@ -284,6 +284,10 @@ export class UtilService {
           }
         ]
       };
+
+      if (_.toUpper(_.get(value, 'trackable.enabled')) === 'YES') {
+        value['hoverData'].actions.shift();
+      }
     });
 
     return contentList;
@@ -404,5 +408,11 @@ export class UtilService {
       };
       this.csvExporter = new ExportToCsv(options);
       this.csvExporter.generateCsv(data);
+  }
+
+  getAppBaseUrl() {
+    let origin = (<HTMLInputElement>document.getElementById('baseUrl'))
+    ? (<HTMLInputElement>document.getElementById('baseUrl')).value : document.location.origin;
+    return origin;
   }
 }

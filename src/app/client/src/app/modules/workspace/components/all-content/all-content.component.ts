@@ -447,7 +447,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
       }
     }
   }
-
+  
   public onCloseLockInfoPopup () {
     this.showLockedContentModal = false;
   }

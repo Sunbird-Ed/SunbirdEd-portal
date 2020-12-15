@@ -1,10 +1,9 @@
 import { ExploreContentComponent } from './explore-content.component';
-import { BehaviorSubject, throwError, of} from 'rxjs';
+import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
-import { SearchService, OrgDetailsService, CoreModule, UserService} from '@sunbird/core';
+import { SearchService, OrgDetailsService, CoreModule, UserService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { PublicPlayerService } from './../../../../services';
 import { SuiModule } from 'ng2-semantic-ui';
 import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -13,6 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 import { ContentManagerService } from '../../../offline/services';
+import { PublicPlayerService } from '@sunbird/public';
 
 describe('ExploreContentComponent', () => {
   let component: ExploreContentComponent;
@@ -42,7 +42,14 @@ describe('ExploreContentComponent', () => {
       'emsg': {},
     },
     frmelmnts: {
-      lbl: {}
+      lbl: {
+        'noBookfoundSubTitle': 'Your board is yet to add more books. Tap the button to see more books and content on {instance}',
+        'noBookfoundButtonText': 'See more books and contents',
+        'desktop': {
+          'yourSearch': 'Your search for - "{key}"',
+          'notMatchContent': 'did not match any content'
+        }
+      }
     },
     languageSelected$: of({})
   };
@@ -52,9 +59,9 @@ describe('ExploreContentComponent', () => {
     get params() { return this.paramsMock.asObservable(); }
     get queryParams() { return this.queryParamsMock.asObservable(); }
     snapshot = {
-      params: {slug: 'ap'},
+      params: { slug: 'ap' },
       data: {
-        telemetry: { env: 'resource', pageid: 'resource-search', type: 'view', subtype: 'paginate'}
+        telemetry: { env: 'resource', pageid: 'resource-search', type: 'view', subtype: 'paginate' }
       }
     };
     public changeQueryParams(queryParams) { this.queryParamsMock.next(queryParams); }
@@ -66,8 +73,8 @@ describe('ExploreContentComponent', () => {
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot()],
       declarations: [ExploreContentComponent],
       providers: [PublicPlayerService, { provide: ResourceService, useValue: resourceBundle },
-      { provide: Router, useClass: RouterStub }, ContentManagerService,
-      { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
+        { provide: Router, useClass: RouterStub }, ContentManagerService,
+        { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));
@@ -85,7 +92,7 @@ describe('ExploreContentComponent', () => {
     sendFormResult = true;
     spyOn(orgDetailsService, 'getOrgDetails').and.callFake((options) => {
       if (sendOrgDetails) {
-        return of({hashTagId: '123'});
+        return of({ hashTagId: '123' });
       }
       return throwError({});
     });
@@ -104,8 +111,8 @@ describe('ExploreContentComponent', () => {
   });
   it('should emit filter data when getFilters is called with data', () => {
     spyOn(component.dataDrivenFilterEvent, 'emit');
-    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
-    expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({ board: 'NCRT'});
+    component.getFilters([{ code: 'board', range: [{ index: 0, name: 'NCRT' }, { index: 1, name: 'CBSC' }] }]);
+    expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({ board: 'NCRT' });
   });
   it('should emit filter data when getFilters is called with no data', () => {
     spyOn(component.dataDrivenFilterEvent, 'emit');
@@ -114,9 +121,9 @@ describe('ExploreContentComponent', () => {
   });
   it('should fetch hashTagId from API and filter details from data driven filter component', () => {
     component.ngOnInit();
-    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    component.getFilters([{ code: 'board', range: [{ index: 0, name: 'NCRT' }, { index: 1, name: 'CBSC' }] }]);
     expect(component.hashTagId).toEqual('123');
-    expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
+    expect(component.dataDrivenFilters).toEqual({ board: 'NCRT' });
   });
   it('should navigate to landing page if fetching org details fails and data driven filter dint returned data', () => {
     sendOrgDetails = false;
@@ -131,62 +138,62 @@ describe('ExploreContentComponent', () => {
   });
   it('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', fakeAsync(() => {
     component.ngOnInit();
-    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    component.getFilters([{ code: 'board', range: [{ index: 0, name: 'NCRT' }, { index: 1, name: 'CBSC' }] }]);
     tick(100);
     expect(component.hashTagId).toEqual('123');
-    expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
+    expect(component.dataDrivenFilters).toEqual({ board: 'NCRT' });
     expect(component.showLoader).toBeFalsy();
     expect(component.contentList.length).toEqual(1);
   }));
   it('should fetch content only once for when component displays content for the first time', fakeAsync(() => {
     component.ngOnInit();
-    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    component.getFilters([{ code: 'board', range: [{ index: 0, name: 'NCRT' }, { index: 1, name: 'CBSC' }] }]);
     tick(100);
     expect(component.hashTagId).toEqual('123');
-    expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
+    expect(component.dataDrivenFilters).toEqual({ board: 'NCRT' });
     expect(component.showLoader).toBeFalsy();
     expect(component.contentList.length).toEqual(1);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
   }));
   it('should fetch content once when queryParam changes after initial content has been displayed', fakeAsync(() => {
     component.ngOnInit();
-    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    component.getFilters([{ code: 'board', range: [{ index: 0, name: 'NCRT' }, { index: 1, name: 'CBSC' }] }]);
     tick(100);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
-    activatedRoute.changeQueryParams({board: ['NCRT']});
+    activatedRoute.changeQueryParams({ board: ['NCRT'] });
     tick(100);
     expect(component.contentList.length).toEqual(1);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(2);
   }));
   it('should fetch content once when param changes after initial content has been displayed', fakeAsync(() => {
     component.ngOnInit();
-    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    component.getFilters([{ code: 'board', range: [{ index: 0, name: 'NCRT' }, { index: 1, name: 'CBSC' }] }]);
     tick(100);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
-    activatedRoute.changeParams({pageNumber: 2});
+    activatedRoute.changeParams({ pageNumber: 2 });
     tick(100);
     expect(component.contentList.length).toEqual(1);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(2);
   }));
   it('should fetch content once when both queryParam and params changes after initial content has been displayed', fakeAsync(() => {
     component.ngOnInit();
-    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    component.getFilters([{ code: 'board', range: [{ index: 0, name: 'NCRT' }, { index: 1, name: 'CBSC' }] }]);
     tick(100);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
-    activatedRoute.changeQueryParams({board: ['NCRT']});
-    activatedRoute.changeParams({pageNumber: 2});
+    activatedRoute.changeQueryParams({ board: ['NCRT'] });
+    activatedRoute.changeParams({ pageNumber: 2 });
     tick(100);
     expect(component.contentList.length).toEqual(1);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(2);
   }));
   it('should trow error when fetching content fails even after getting hashTagId and filter data', fakeAsync(() => {
     sendSearchResult = false;
-    spyOn(toasterService, 'error').and.callFake(() => {});
+    spyOn(toasterService, 'error').and.callFake(() => { });
     component.ngOnInit();
-    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    component.getFilters([{ code: 'board', range: [{ index: 0, name: 'NCRT' }, { index: 1, name: 'CBSC' }] }]);
     tick(100);
     expect(component.hashTagId).toEqual('123');
-    expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
+    expect(component.dataDrivenFilters).toEqual({ board: 'NCRT' });
     expect(component.showLoader).toBeFalsy();
     expect(component.contentList.length).toEqual(0);
     expect(toasterService.error).toHaveBeenCalled();
@@ -199,7 +206,7 @@ describe('ExploreContentComponent', () => {
   });
 
 
-  it('should call updateDownloadStatus when updateCardData is called' , () => {
+  it('should call updateDownloadStatus when updateCardData is called', () => {
     const playerService = TestBed.get(PublicPlayerService);
     spyOn(playerService, 'updateDownloadStatus');
     component.contentList = Response.successData.result.content;
@@ -215,12 +222,12 @@ describe('ExploreContentComponent', () => {
   });
   it('Should call searchservice -contenttypes and get error', fakeAsync(() => {
     sendFormResult = false;
-    spyOn(toasterService, 'error').and.callFake(() => {});
+    spyOn(toasterService, 'error').and.callFake(() => { });
     component.ngOnInit();
-    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    component.getFilters([{ code: 'board', range: [{ index: 0, name: 'NCRT' }, { index: 1, name: 'CBSC' }] }]);
     tick(100);
     expect(component.hashTagId).toEqual('123');
-    expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
+    expect(component.dataDrivenFilters).toEqual({ board: 'NCRT' });
     expect(component.showLoader).toBeFalsy();
     expect(component.contentList.length).toEqual(1);
     expect(toasterService.error).toHaveBeenCalled();
@@ -272,11 +279,39 @@ describe('ExploreContentComponent', () => {
     expect(component.downloadContent).toHaveBeenCalled();
   });
 
+  it('should set no Result message', () => {
+    component.queryParams = { key: 'test' };
+    component['setNoResultMessage']();
+    expect(component.noResultMessage).toEqual({
+      title: 'Your search for - "test" did not match any content',
+      subTitle: 'Your board is yet to add more books. Tap the button to see more books and content on {instance}',
+      buttonText: 'See more books and contents',
+      showExploreContentButton: false
+    });
+  });
+
   it('should call download content with error ', () => {
     const contentManagerService = TestBed.get(ContentManagerService);
-    spyOn(contentManagerService, 'startDownload').and.returnValue(throwError({error: {params: {err: 'ERROR'}}}));
+    spyOn(contentManagerService, 'startDownload').and.returnValue(throwError({ error: { params: { err: 'ERROR' } } }));
     component.ngOnInit();
     component.downloadContent('123');
     expect(component.showDownloadLoader).toBeFalsy();
+  });
+
+  it('should call playContent', () => {
+    const publicPlayerService = TestBed.get(PublicPlayerService);
+    spyOn(publicPlayerService, 'playContent');
+    component.playContent({});
+    expect(publicPlayerService.playContent).toHaveBeenCalled();
+  });
+
+  it('should call listenLanguageChange', () => {
+    component.isDesktopApp = true;
+    component.contentList = [{ name: 'test' }];
+    spyOn(component, 'addHoverData');
+    spyOn<any>(component, 'setNoResultMessage');
+    component['listenLanguageChange']();
+    expect(component.addHoverData).toHaveBeenCalled();
+    expect(component['setNoResultMessage']).toHaveBeenCalled();
   });
 });

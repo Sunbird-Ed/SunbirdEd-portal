@@ -204,7 +204,7 @@ describe('InAppNotificationComponent', () => {
       await component.notificationHandler(event);
       // assert
       expect(component.showNotificationModel).toBeFalsy();
-      expect(router.navigate).toHaveBeenCalledWith(['/resource/course']);
+      expect(router.navigate).toHaveBeenCalledWith(['/resource/course'], {});
       expect(component.markNotificationAsRead).toHaveBeenCalledWith(event.data);
       expect(component.fetchNotificationList).toHaveBeenCalled();
     });
@@ -228,7 +228,7 @@ describe('InAppNotificationComponent', () => {
       await component.notificationHandler(event);
       // assert
       expect(component.showNotificationModel).toBeFalsy();
-      expect(router.navigate).toHaveBeenCalledWith(['/profile']);
+      expect(router.navigate).toHaveBeenCalledWith(['/profile'], { state: { scrollToId: 'learner-passbook' } });
       expect(component.markNotificationAsRead).toHaveBeenCalledWith(event.data);
       expect(component.fetchNotificationList).toHaveBeenCalled();
     });
@@ -303,6 +303,50 @@ describe('InAppNotificationComponent', () => {
       await component.clearAllNotifationsHandler(event);
       // assert
       expect(component.generateInteractEvent).toHaveBeenCalledWith('clear-all-notification');
+    });
+  });
+
+  describe('handleShowMore', async () => {
+    it('should generate telemetry event on showmore event is true', async () => {
+      //  arrange
+      const event = true;
+      spyOn(component, 'generateInteractEvent');
+      // act
+      await component.handleShowMore(event);
+      // assert
+      expect(component.generateInteractEvent).toHaveBeenCalledWith('see-more');
+    });
+
+    it('should not generate telemetry event on showmore event is false', async () => {
+      //  arrange
+      const event = false;
+      spyOn(component, 'generateInteractEvent');
+      // act
+      await component.handleShowMore(event);
+      // assert
+      expect(component.generateInteractEvent).not.toHaveBeenCalledWith('see-more');
+    });
+  });
+
+  describe('handleShowLess', async () => {
+    it('should generate telemetry event on showless event is true', async () => {
+      //  arrange
+      const event = true;
+      spyOn(component, 'generateInteractEvent');
+      // act
+      await component.handleShowLess(event);
+      // assert
+      expect(component.generateInteractEvent).toHaveBeenCalledWith('see-less');
+    });
+
+    it('should not generate telemetry event on showless event is false', async () => {
+      //  arrange
+      const event = false;
+      spyOn(component, 'generateInteractEvent');
+      // act
+      await component.handleShowLess(event);
+      // assert
+      expect(component.generateInteractEvent).not.toHaveBeenCalledWith('see-less');
     });
   });
 

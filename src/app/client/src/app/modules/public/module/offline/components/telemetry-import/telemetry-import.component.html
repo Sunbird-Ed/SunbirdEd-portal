@@ -1,5 +1,5 @@
 <ul class="sb-bordered-list my-16">
-    <li class="sb-bordered-list-item m-0">
+    <li class="sb-bordered-list-item m-0 relative9">
       <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
         <div class="sb-bordered-list-item-title">{{resourceService?.frmelmnts?.lbl?.desktop?.filesImported}}
           ({{importFilesList?.length}})&lrm;
@@ -13,7 +13,7 @@
   
       </div>
     </li>
-    <li class="sb-bordered-list-item m-0" *ngFor="let items of importFilesList">
+    <li class="sb-bordered-list-item m-0 relative9" *ngFor="let items of importFilesList">
       <div class="d-flex flex-ai-center flex-jc-space-between">
         <div class="sb-bordered-list-item-heading file-import-text" title="{{items.name}}">{{items.name}}
         </div>
