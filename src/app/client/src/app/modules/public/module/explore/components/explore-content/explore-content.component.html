@@ -2,10 +2,12 @@
 <div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
   <div [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'">
     <div [ngClass]="FIRST_PANEL_LAYOUT">
+      <div *ngIf="layoutConfiguration">
         <ng-container *ngIf="isDesktopApp">
           <app-network-status></app-network-status>
           <app-load-offline-content></app-load-offline-content>
         </ng-container>
+      </div>
         <div [ngClass]="isDesktopApp ? 'sb-desktop-filter-section' : ''">
           <ng-container>
           <app-global-search-filter [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true'
