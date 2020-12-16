@@ -39,6 +39,21 @@
   }
 }
 
+.sb-global-filter-section {
+  @include respond-below(sm) {
+    padding-bottom: calculateRem(16px);
+    .state-medium-container__dropdown {
+      width: 100%;
+      .sb-field {
+        width: 100%;
+      }
+    }
+    .state-medium-container__separator {
+      display: none;
+    }
+  }
+}
+
 // state dropdown css
 .ui.selection.dropdown .menu>.item {
   font-size: calculateRem(12px);
