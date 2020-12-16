@@ -170,7 +170,7 @@
           <div class="ui stackable grid mt-0">
             <div class="twelve wide column">
               <label>{{resourceService?.frmelmnts?.cert?.lbl?.layout}}</label>
-              <div class="d-flex flex-w-wrap">
+              <div class ="d-flex flex-w-wrap">
                 <div *ngFor="let certificate of defaultCertificates" class="cert-img-sb-card active mr-16 mb-16">
                   <div class="cert-img-sb-card__content">
                     <img (click)="chooseCertificate(certificate)" [src]="certificate?.artifactUrl"  />
