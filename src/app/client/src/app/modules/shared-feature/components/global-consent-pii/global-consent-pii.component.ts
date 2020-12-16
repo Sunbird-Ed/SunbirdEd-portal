@@ -162,7 +162,6 @@ export class GlobalConsentPiiComponent implements OnInit {
 
   showAndHidePopup(mode: boolean) {
     this.showTncPopup = mode;
-    this.close.emit();
     this.popupControlService.changePopupStatus(true);
   }
 
