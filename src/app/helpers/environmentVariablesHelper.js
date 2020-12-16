@@ -11,8 +11,8 @@ let envVariables = {
   DEFAULT_CHANNEL: env.sunbird_default_channel,
 
   // discussion forum 
-  discussion_forum_token: env.discussion_forum_token || '9c1adb65-14a9-421d-be75-6006f49c85b6',
-  discussions_middleware: env.discussions_middleware || 'http://discussionsmw-service:3002',
+  discussion_forum_token: env.discussion_forum_token,
+  discussions_middleware: env.discussions_middleware,
 
   // Application Start-up - Hosts and PORT Configuration
   PORTAL_PORT: env.sunbird_port || 3000,
