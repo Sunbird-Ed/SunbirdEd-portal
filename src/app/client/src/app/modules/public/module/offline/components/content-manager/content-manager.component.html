@@ -1,5 +1,5 @@
 <sui-accordion class="styled fluid sb-single-pannel-accordion sb-content-manager-panel sb-desktop-content-manager"
-  [ngClass]="{'sb-single-pannel-accordion-fixed': isOpen === true}" *ngIf="contentResponse?.length">
+  [ngClass]="{'sb-single-pannel-accordion-fixed': isOpen === true, 'hide': visibility === false}" *ngIf="contentResponse?.length">
   <sui-accordion-panel [(isOpen)]="isOpen" (click)="getContentList()">
     <div title class="p-0">
       <div class="sb-single-pannel-accordion-heading" appTelemetryInteract
@@ -68,8 +68,7 @@
           </div>
 
           <div *ngIf="data.addedUsing === 'download' && data.status === 'inProgress'" class="info-text">
-            {{resourceService?.frmelmnts?.lbl?.downloading}}
-            {{data.downloadedSize | filesize}}/{{data.totalSize | filesize}}</div>
+            {{resourceService?.frmelmnts?.lbl?.downloading}}&nbsp;{{data.totalSize | filesize}}</div>
 
           <div *ngIf="data.addedUsing === 'import' && data.status === 'inProgress'" class="info-text">
             {{resourceService?.frmelmnts?.lbl?.uploading}}</div>

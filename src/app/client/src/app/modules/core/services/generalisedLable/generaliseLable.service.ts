@@ -23,7 +23,7 @@ export class GeneraliseLabelService {
 
   public getGeneraliseResourceBundle() {
     const formServiceInputParams = {
-        formType: 'generaliseResourceBundles',
+        formType: 'generaliseresourcebundles',
         formAction: 'list',
         contentType: 'global',
         component: 'portal'

@@ -76,18 +76,3 @@
 .sb--card:hover {
   transform: none !important;
 }
-.status-container{
-    border-radius: calculateRem(24px);
-    background-color: var(--white);
-    position: relative;
-    z-index: 9;
-}
-.load-content-section{
-    border-radius: calculateRem(24px);
-    background-color: var(--white);
-    position: relative;
-    z-index: 9;
-    .load-content-title{
-      font-size: calculateRem(14px);
-    }
-}

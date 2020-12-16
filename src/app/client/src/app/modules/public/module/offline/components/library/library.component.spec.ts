@@ -5,7 +5,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { NavigationStart, RouterModule } from '@angular/router';
 import {
   ResourceService, ToasterService, BrowserCacheTtlService, NavigationHelperService,
-  ConfigService, UtilService, LayoutService
+  ConfigService, UtilService, LayoutService, ConnectionService
 } from '@sunbird/shared';
 import { TenantService, OrgDetailsService, UserService, SearchService } from '@sunbird/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -18,7 +18,7 @@ import { response } from './library.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable, of as observableOf, of, throwError } from 'rxjs';
 import { SharedModule } from '@sunbird/shared';
-import { ConnectionService, SystemInfoService, ContentManagerService} from '../../services';
+import { SystemInfoService, ContentManagerService} from '../../services';
 import { configureTestSuite } from '@sunbird/test-util';
 import {APP_BASE_HREF} from '@angular/common';
 describe('LibraryComponent', () => {

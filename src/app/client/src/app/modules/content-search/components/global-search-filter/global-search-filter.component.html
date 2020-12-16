@@ -30,7 +30,7 @@
               <div *ngIf="refresh">
                 <div *ngFor="let facet of facets | sortBy:'index':'asc'">
                   <label class="fnormal font-weight-bold d-flex">{{facet.label | translate}} </label>
-                  <label class="w-100">
+                  <label class="w-100" *ngIf="facet.name !== 'mediaType'">
                   <sui-multi-select *ngIf="facet.name !== 'mediaType'" [hasLabels]="false" defaultSelectionText={{facet.label}}
                     zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} labelField="name" valueField="name"
                     class="ui selection dropdown sbt-dropdown-tick multiple selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg w-100 mb-16"
