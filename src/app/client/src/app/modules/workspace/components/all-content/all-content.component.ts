@@ -432,15 +432,15 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
   }
 
   contentClick(content) {
-      if (content.originData) {
-        const originData = JSON.parse(content.originData);
-        if (originData.copyType === 'shallow') {
-          const errMsg =  (this.resourceService.messages.emsg.m1414).replace('{instance}', originData.organisation[0]);
-          this.toasterService.error(errMsg);
-          return;
-        } this.deepcopy(content);
+    if (content.originData) {
+      const originData = JSON.parse(content.originData);
+      if (originData.copyType === 'shallow'){
+        const errMsg =  (this.resourceService.messages.emsg.m1414).replace('{instance}', originData.organisation[0]);
+        this.toasterService.error(errMsg);
+        return;
       }
-      else if (_.size(content.lockInfo) && this.userService.userid !== content.lockInfo.createdBy) {
+    }
+    if (_.size(content.lockInfo) && this.userService.userid !== content.lockInfo.createdBy) {
         this.lockPopupData = content;
         this.showLockedContentModal = true;
     } else {
@@ -456,23 +456,6 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
     }
   }
  
-  deepcopy(content){
-    if (_.size(content.lockInfo) && this.userService.userid !== content.lockInfo.createdBy) {
-      this.lockPopupData = content;
-      this.showLockedContentModal = true;
-    } else {
-    const status = content.status.toLowerCase();
-    if (status === 'processing') {
-      return;
-    }
-    if (status === 'draft') { // only draft state contents need to be locked
-      this.workSpaceService.navigateToContent(content, this.state);
-    } else {
-      this.workSpaceService.navigateToContent(content, this.state);
-    }
-   }
-  }
-
   public onCloseLockInfoPopup () {
     this.showLockedContentModal = false;
   }

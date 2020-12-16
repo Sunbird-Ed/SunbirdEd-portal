@@ -308,46 +308,31 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
   /**
     * This method launch the content editior
   */
-  contentClick(param, content) {
-    this.contentMimeType = content.metaData.mimeType;
-     if(param.data && param.data.originData) {
-      const originData = JSON.parse(param.data.originData)
-      if (originData.copyType === 'shallow') {
-        const errMsg =  (this.resourceService.messages.emsg.m1414).replace('{instance}', originData.organisation[0]);
-          this.toasterService.error(errMsg);
-        return;
-      } this.deepcopy(param);
-    }
-    else if (param.action.eventName === 'delete') {
-      this.currentContentId = param.data.metaData.identifier;
-      const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);
-      config.isClosable = false;
-      config.size = 'small';
-      config.transitionDuration = 0;
-      config.mustScroll = true;
-      this.modalService
-        .open(config);
-      this.showCollectionLoader = false;
-    } else {
-      this.workSpaceService.navigateToContent(param.data.metaData, this.state);
-    }
+ contentClick(param, content) {
+  this.contentMimeType = content.metaData.mimeType;
+  if (param.data && param.data.originData) {
+    const originData = JSON.parse(param.data.originData)
+    if (originData.copyType === 'shallow') {
+      const errMsg =  (this.resourceService.messages.emsg.m1414).replace('{instance}', originData.organisation[0]);
+      this.toasterService.error(errMsg);
+      return;
+     }
+   }
+   if (param.action.eventName === 'delete') {
+    this.currentContentId = param.data.metaData.identifier;
+    const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);
+    config.isClosable = false;
+    config.size = 'small';
+    config.transitionDuration = 0;
+    config.mustScroll = true;
+    this.modalService
+      .open(config);
+    this.showCollectionLoader = false;
+   } else {
+    this.workSpaceService.navigateToContent(param.data.metaData, this.state);
+   }
   }
 
-  deepcopy(param){
-    if (param.action.eventName === 'delete') {
-      this.currentContentId = param.data.metaData.identifier;
-      const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);
-      config.isClosable = false;
-      config.size = 'small';
-      config.transitionDuration = 0;
-      config.mustScroll = true;
-      this.modalService
-        .open(config);
-      this.showCollectionLoader = false;
-    } else {
-      this.workSpaceService.navigateToContent(param.data.metaData, this.state);
-    }
-  }
   /**
   * This method checks whether deleting content is linked to any collections, if linked to collection displays collection list pop modal.
   */
