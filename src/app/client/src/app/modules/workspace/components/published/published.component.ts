@@ -332,6 +332,8 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
       this.workSpaceService.navigateToContent(param.data.metaData, this.state);
     }
   }
+
+
   /**
   * This method checks whether deleting content is linked to any collections, if linked to collection displays collection list pop modal.
   */
