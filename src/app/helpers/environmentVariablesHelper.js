@@ -11,7 +11,6 @@ let envVariables = {
   DEFAULT_CHANNEL: env.sunbird_default_channel,
 
   // discussion forum 
-  discussion_forum_token: env.discussion_forum_token,
   discussions_middleware: env.discussions_middleware,
 
   // Application Start-up - Hosts and PORT Configuration
