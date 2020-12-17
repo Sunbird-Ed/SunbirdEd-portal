@@ -214,7 +214,7 @@ expressApp.use("/dialog/login", async (req, res) => {
       res.send({ message: "SUCCESS", responseCode: "OK" })
     })
   }, err => {
-    res.send({ message: "Login failed", responseCode: "OK" })
+    res.status(400).send({ message: "Login failed", responseCode: "LOGIN_FAILED"})
   })
   
 });

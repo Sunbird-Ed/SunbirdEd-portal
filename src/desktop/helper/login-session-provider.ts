@@ -288,7 +288,7 @@ export class LoginSessionProvider {
                 "content-type": "application/json",
             },
         };
-        return await HTTPService.post(`${this.appBaseUrl}/api/user/startSession`, reqBody, appConfig)
+        return await HTTPService.post(`${this.appBaseUrl}/api/user/v1/startSession`, reqBody, appConfig)
             .toPromise()
             .then(async (response: any) => {
                 if (response) {

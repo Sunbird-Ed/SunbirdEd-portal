@@ -12,7 +12,7 @@ export default (app, proxyURL) => {
     );
 
     app.post(
-        "/api/user/startSession", authController.startUserSession.bind(authController),
+        "/api/user/v1/startSession", authController.startUserSession.bind(authController),
     );
     
 }
