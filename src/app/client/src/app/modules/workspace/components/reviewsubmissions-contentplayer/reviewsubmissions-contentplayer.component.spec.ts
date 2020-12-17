@@ -54,7 +54,7 @@ describe('ReviewsubmissionsContentplayerComponent', () => {
     fixture.detectChanges();
   });
 
-  xit('should throw error if content api throws error', fakeAsync(() => {
+  it('should throw error if content api throws error', fakeAsync(() => {
     const playerService = TestBed.get(PlayerService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceBundle.messages;
