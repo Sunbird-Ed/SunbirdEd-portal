@@ -11,5 +11,8 @@ export default (app, proxyURL) => {
         "/api/auth/resolvePasswordSession/:code", authController.resolvePasswordSession.bind(authController),
     );
 
+    app.post(
+        "/api/user/startSession", authController.startUserSession.bind(authController),
+    );
     
 }
