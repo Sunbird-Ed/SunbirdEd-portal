@@ -10,10 +10,10 @@
   </div>
 </div>
 <!-- Portal player-->
-<div class="h-100" *ngIf="!isMobileOrTab && !showNewPlayer">
+<div class="h-100" *ngIf="!isMobileOrTab && !showNewPlayer && !isContentDeleted">
     <iframe #contentIframe id="contentPlayer" class="contentViewerIframeShadow" [ngClass]="{'player-fullscreen': isFullScreenView}" name="contentPlayer"></iframe>
 </div>
-<div *ngIf="!isMobileOrTab && showNewPlayer" class="w-100 h-100">
+<div *ngIf="!isMobileOrTab && showNewPlayer && !isContentDeleted" class="w-100 h-100">
         <div class="contentViewerIframeShadow" [ngClass]="{'player-fullscreen content-full-video': isFullScreenView}">
         <sunbird-pdf-player *ngIf="playerType === 'pdf-player'" [playerConfig]="playerConfig"
           (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)">
@@ -25,6 +25,14 @@
       </div>
 </div>
 
+<!--If Content is deleted-->
+<div class="d-flex flex-dc flex-jc-center text-center flex-ai-center no-content-player" *ngIf="isContentDeleted">
+  <div class="no-content-player__text"></div>
+  <div>
+    <img src="assets/images/shape.svg" width="90px" height="70px">
+  </div>
+  <div class="fnormal">{{resourceService?.messages?.stmsg?.desktop?.deleteMessage}}</div>
+</div>
 
 <div *ngIf="isMobileOrTab && showNewPlayer" class="w-100 h-100">
   <div data-ratio="16:9" class="player-thumbnail" appTelemetryInteract [telemetryInteractObject]="telemetryObject" [telemetryInteractEdata]="loadPlayerInteractEdata"
