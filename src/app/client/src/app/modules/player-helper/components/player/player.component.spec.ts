@@ -39,7 +39,7 @@ const playerConfig = {
   data: {},
   metadata: {}
 };
-fdescribe('PlayerComponent', () => {
+describe('PlayerComponent', () => {
   let component: PlayerComponent;
   let fixture: ComponentFixture<PlayerComponent>;
   let userService;
