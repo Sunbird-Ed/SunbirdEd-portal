@@ -117,11 +117,15 @@ function checkEmail() {
             const token = JSON.parse(req.session['keycloak-token']);
             const jwtPayload = jwt.decode(token['access_token'], { complete: true });
             const email = jwtPayload.payload.email;
-            const userName = jwtPayload.payload. preferred_username;
+            const userId = req.session.userId;
+            const user = req.session.userName;
+            const userName = jwtPayload.payload.preferred_username;
             const userName_body = req.body.username;
             if (email && userName === userName_body) {
                 logger.info("email found", email)
                 req.body['email'] = email;
+                req.body['sbUsername'] = user;
+                req.body['sbIdentifier']  = userId;
                 next();
             } else {
                 logger.info({message: "email not found"})
