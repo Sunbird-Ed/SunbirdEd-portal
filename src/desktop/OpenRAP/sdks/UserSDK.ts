@@ -1,13 +1,12 @@
-import { Singleton } from "typescript-ioc";
-import { logger } from "@project-sunbird/logger";
 import * as _ from "lodash";
-import { Inject } from "typescript-ioc";
-import { DataBaseSDK } from "./DataBaseSDK";
-import { IUser, IFramework } from "./../interfaces";
+import { Inject, Singleton } from "typescript-ioc";
 import uuid from "uuid/v4";
+import { ISignedInUser } from '../interfaces/IUser';
+import { IFramework, IUser } from "./../interfaces";
+import { DataBaseSDK } from "./DataBaseSDK";
+import SettingSDK from './SettingSDK';
 const DEFAULT_USER_NAME = 'guest';
 const USER_DB = 'users';
-import { ClassLogger } from '@project-sunbird/logger/decorator';
 
 /* @ClassLogger({
   logLevel: "debug",
@@ -16,13 +15,13 @@ import { ClassLogger } from '@project-sunbird/logger/decorator';
 @Singleton
 export class UserSDK {
 
-  @Inject
-  private dbSDK: DataBaseSDK;
-  constructor() {}
+  @Inject private dbSDK: DataBaseSDK;
+  @Inject private settingSDK: SettingSDK;
+  constructor() { }
 
-  public async read(name = DEFAULT_USER_NAME): Promise<IUser | UserSDKError>{
+  public async read(name = DEFAULT_USER_NAME): Promise<IUser | UserSDKError> {
     const users: Array<IUser> = await this.findByName(name);
-    if(!users.length){
+    if (!users.length) {
       throw {
         code: "USER_NOT_FOUND",
         status: 404,
@@ -33,8 +32,8 @@ export class UserSDK {
     return users[0];
   }
 
-  public async create(user: IUser): Promise<{_id: string} | UserSDKError>{
-    if(_.isEmpty(_.get(user, 'framework'))){
+  public async create(user: IUser): Promise<{ _id: string } | UserSDKError> {
+    if (_.isEmpty(_.get(user, 'framework'))) {
       throw {
         code: "BAD_REQUEST",
         status: 400,
@@ -44,7 +43,7 @@ export class UserSDK {
     user.formatedName = user.formatedName || DEFAULT_USER_NAME; // user entered name
     user.name = user.formatedName.toLowerCase().trim();
     const userExist = await this.findByName(user.name);
-    if(!_.isEmpty(userExist)){
+    if (!_.isEmpty(userExist)) {
       throw {
         code: "UPDATE_CONFLICT",
         status: 409,
@@ -55,12 +54,12 @@ export class UserSDK {
     user.createdOn = Date.now();
     user.updatedOn = Date.now();
     return this.dbSDK.insertDoc(USER_DB, user, user._id)
-    .then(data => ({_id: data.id}))
-    .catch(err => { throw this.dbSDK.handleError(err); });
+      .then(data => ({ _id: data.id }))
+      .catch(err => { throw this.dbSDK.handleError(err); });
   }
 
-  public async update(user: IUserUpdateReq): Promise<{_id: string} | UserSDKError>{
-    if(!_.get(user, '_id')){
+  public async update(user: IUserUpdateReq): Promise<{ _id: string } | UserSDKError> {
+    if (!_.get(user, '_id')) {
       throw {
         code: "BAD_REQUEST",
         status: 400,
@@ -69,14 +68,83 @@ export class UserSDK {
     }
     user.updatedOn = Date.now();
     return this.dbSDK.updateDoc(USER_DB, user._id, user)
-    .then(data => ({_id: data.id}))
-    .catch(err => { throw this.dbSDK.handleError(err); });
+      .then(data => ({ _id: data.id }))
+      .catch(err => { throw this.dbSDK.handleError(err); });
   }
-  private async findByName(name){
+
+  // Logged in users
+  public async insertLoggedInUser(user: ISignedInUser) {
+    const userExist = await this.findByName(user.userId);
+    if (!_.isEmpty(userExist)) {
+      throw {
+        code: "UPDATE_CONFLICT",
+        status: 409,
+        message: `User already exist with id ${user.userId}`
+      }
+    }
+    user._id = uuid();
+    return this.dbSDK.insertDoc(USER_DB, user, user._id)
+      .catch(err => { throw this.dbSDK.handleError(err); });
+  }
+
+  public async getLoggedInUser(userId: string) {
+    const users = await this.findByUserId(userId);
+    return users[0];
+  }
+
+  public async updateLoggedInUser(user: ISignedInUser) {
+    if (_.get(user, '_id')) {
+      return this.updateDoc(user);
+    } else if (_.get(user, 'userId')) {
+      const userData = await this.findByUserId(user.userId);
+      user._id = _.get(userData, '_id');
+      return this.updateDoc(user);
+    } else {
+      throw {
+        code: "BAD_REQUEST",
+        status: 400,
+        message: `_id is mandatory to update user`
+      }
+    }
+
+  }
+
+  public deleteLoggedInUser(id: string) {
+    if (!id) {
+      throw {
+        code: "BAD_REQUEST",
+        status: 400,
+        message: `_id is mandatory to update user`
+      }
+    }
+    return this.dbSDK.delete(USER_DB, id);
+  }
+
+  public async getUserToken() {
+    return await this.settingSDK.get('oauth_token');
+  }
+
+  public async setUserToken(sessionData: OAuthSession) {
+    await this.settingSDK.put('oauth_token', sessionData);
+  }
+
+  private async findByName(name) {
     const query = {
       selector: { name }
     }
     return this.dbSDK.find(USER_DB, query).then(result => result.docs);
+  }
+
+  private async findByUserId(userId: string) {
+    const query = {
+      selector: { userId }
+    }
+    return this.dbSDK.find(USER_DB, query).then(result => result.docs);
+  }
+
+  private async updateDoc(user: ISignedInUser) {
+    return this.dbSDK.updateDoc(USER_DB, user._id, user)
+      .catch(err => { throw this.dbSDK.handleError(err); });
   }
 
 }
@@ -91,4 +159,10 @@ export interface IUserUpdateReq {
   framework?: IFramework;
   updatedOn?: number;
 }
-export * from './../interfaces/IUser';
+export interface OAuthSession {
+  access_token: string;
+  userId: string;
+  managed_access_token?: string;
+}
+
+export * from './../interfaces';
