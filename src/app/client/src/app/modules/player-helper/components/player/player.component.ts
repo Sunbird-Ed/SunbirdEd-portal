@@ -5,7 +5,7 @@ import * as _ from 'lodash-es';
 import { PlayerConfig } from '@sunbird/shared';
 import { Router } from '@angular/router';
 import { ToasterService, ResourceService, ContentUtilsServiceService } from '@sunbird/shared';
-const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub', 'application/pdf'];
+const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub'];
 import { Subject } from 'rxjs';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { IInteractEventEdata } from '@sunbird/telemetry';
@@ -253,10 +253,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   loadNewPlayer() {
-    const downloadStatus = this.updateMetadataForDesktop();
+    const downloadStatus = Boolean(_.get(this.playerConfig, 'metadata.desktopAppMetadata.isAvailable'));
     if (downloadStatus) {
-      this.playerConfig.metadata.isAvailableLocally = true;
-      this.playerConfig.metadata.baseDir = `${location.origin}/${this.playerConfig.metadata.baseDir}`;
+      this.playerConfig.metadata.artifactUrl = `${location.origin}/${this.playerConfig.metadata.artifactUrl}`;
     }
     this.addUserDataToContext();
     if (this.isMobileOrTab) {
@@ -266,22 +265,19 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.showNewPlayer = true;
   }
 
+  // Update ArtifactUrl for old Player
   updateMetadataForDesktop() {
-    if (this.isDesktopApp) {
-      const downloadStatus = _.has(this.playerConfig, 'metadata.desktopAppMetadata') ?
-        _.has(this.playerConfig, 'metadata.desktopAppMetadata.isAvailable') : false;
-      if (downloadStatus) {
-        this.playerConfig.data = '';
-        if (_.get(this.playerConfig, 'metadata.artifactUrl')
-          && _.includes(OFFLINE_ARTIFACT_MIME_TYPES, this.playerConfig.metadata.mimeType)) {
-          const artifactFileName = this.playerConfig.metadata.artifactUrl.split('/');
-          this.playerConfig.metadata.artifactUrl = artifactFileName[artifactFileName.length - 1];
-        }
-        return true;
+    const downloadStatus = Boolean(_.get(this.playerConfig, 'metadata.desktopAppMetadata.isAvailable'));
+    if (downloadStatus) {
+      this.playerConfig.data = '';
+      if (_.get(this.playerConfig, 'metadata.artifactUrl')
+        && _.includes(OFFLINE_ARTIFACT_MIME_TYPES, this.playerConfig.metadata.mimeType)) {
+        const artifactFileName = this.playerConfig.metadata.artifactUrl.split('/');
+        this.playerConfig.metadata.artifactUrl = artifactFileName[artifactFileName.length - 1];
       }
     }
-    return false;
   }
+
   /**
    * Adjust player height after load
    */

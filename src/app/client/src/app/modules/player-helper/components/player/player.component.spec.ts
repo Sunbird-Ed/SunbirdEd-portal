@@ -363,33 +363,25 @@ describe('PlayerComponent', () => {
   it('should call updateMetadataForDesktop', () => {
     component.isDesktopApp = true;
     component.playerConfig = playerData.playerConfig;
-    const status = component.updateMetadataForDesktop();
-    expect(status).toBe(true);
+    component.updateMetadataForDesktop();
+    expect(component.playerConfig.data).toEqual('');
   });
 
   it('should call updateMetadataForDesktop for pdf content', () => {
     component.isDesktopApp = true;
     component.playerConfig = playerData.playerConfig;
-    component.playerConfig.metadata.mimeType = 'application/pdf';
-    const status = component.updateMetadataForDesktop();
-    expect(status).toBe(true);
-  });
-
-  it('should call not updateMetadata for portal', () => {
-    component.isDesktopApp = false;
-    const status = component.updateMetadataForDesktop();
-    expect(status).toBe(false);
+    component.playerConfig.metadata.mimeType = 'application/epub';
+    component.updateMetadataForDesktop();
+    expect(component.playerConfig.metadata.artifactUrl).toEqual('file_example_mp3_700kb.mp3');
   });
 
   it('should call loadNewPlayer', () => {
-    spyOn(component, 'updateMetadataForDesktop');
     spyOn(component, 'addUserDataToContext');
     spyOn(component, 'rotatePlayer');
     component.isMobileOrTab = true;
     component.isDesktopApp = true;
     component.playerConfig = playerData.playerConfig;
     component.loadNewPlayer();
-    expect(component.updateMetadataForDesktop).toHaveBeenCalled();
     expect(component.addUserDataToContext).toHaveBeenCalled();
     expect(component.isFullScreenView).toBe(true);
     expect(component.rotatePlayer).toHaveBeenCalled();
