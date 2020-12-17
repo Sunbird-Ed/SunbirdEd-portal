@@ -158,7 +158,7 @@ const getForms = async () => {
         },
         {
             "type": "content",
-            "subType": "player",
+            "subtype": "player",
             "action": "play"
         }
     ]
