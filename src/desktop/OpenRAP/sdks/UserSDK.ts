@@ -74,12 +74,12 @@ export class UserSDK {
 
   // Logged in users
   public async insertLoggedInUser(user: ILoggedInUser) {
-    const userExist = await this.findByUserId(user.userId);
+    const userExist = await this.findByUserId(user.id);
     if (!_.isEmpty(userExist)) {
       throw {
         code: "UPDATE_CONFLICT",
         status: 409,
-        message: `User already exist with id ${user.userId}`
+        message: `User already exist with id ${user.id}`
       }
     }
     user._id = uuid();
@@ -145,9 +145,9 @@ export class UserSDK {
     return this.dbSDK.find(USER_DB, query).then(result => result.docs);
   }
 
-  private async findByUserId(userId: string): Promise<ILoggedInUser[]> {
+  private async findByUserId(id: string): Promise<ILoggedInUser[]> {
     const query = {
-      selector: { userId }
+      selector: { id }
     }
     return this.dbSDK.find(USER_DB, query).then(result => result.docs);
   }
