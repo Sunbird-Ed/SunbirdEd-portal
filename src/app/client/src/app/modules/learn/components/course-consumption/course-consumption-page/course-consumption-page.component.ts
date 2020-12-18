@@ -180,6 +180,6 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
 
   refreshComponent(isRouteChanged: boolean) {
     this.showBatchInfo = false;
-    isRouteChanged && this.fetchEnrolledCourses$.next(true);
+    isRouteChanged && this.fetchEnrolledCourses$.next(true); // update component only if batch is changed.
   }
 }
