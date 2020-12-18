@@ -74,7 +74,7 @@ export class UserSDK {
 
   // Logged in users
   public async insertLoggedInUser(user: ILoggedInUser) {
-    const userExist = await this.findByName(user.userId);
+    const userExist = await this.findByUserId(user.userId);
     if (!_.isEmpty(userExist)) {
       throw {
         code: "UPDATE_CONFLICT",
@@ -84,7 +84,6 @@ export class UserSDK {
     }
     user._id = uuid();
     return this.dbSDK.insertDoc(USER_DB, user, user._id)
-      .then(data => ({ _id: data.id }))
       .catch(err => { throw this.dbSDK.handleError(err); });
   }
 
