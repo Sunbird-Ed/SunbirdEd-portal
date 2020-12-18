@@ -163,6 +163,7 @@ function proxyObject() {
         userResDecorator: (proxyRes, proxyResData, req, res) => {
             try {
                 const data = JSON.parse(proxyResData.toString('utf8'));
+                logger.info({message : `Api called and the response ${data}`});
                 if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
                 else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
             } catch (err) {
