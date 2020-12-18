@@ -14,11 +14,12 @@ export interface IFramework {
   subject?: Array<string>
 }
 
-export interface ISignedInUser {
+export interface ILoggedInUser {
   _id?: string;
   id: string;
   userId: string;
   identifier: string;
+  accessToken?: string;
   firstName: string;
   lastName?: string;
   rootOrg: RootOrg;

@@ -1,7 +1,7 @@
 import * as _ from "lodash";
 import { Inject, Singleton } from "typescript-ioc";
 import uuid from "uuid/v4";
-import { ISignedInUser } from '../interfaces/IUser';
+import { ILoggedInUser } from '../interfaces/IUser';
 import { IFramework, IUser } from "./../interfaces";
 import { DataBaseSDK } from "./DataBaseSDK";
 import SettingSDK from './SettingSDK';
@@ -73,7 +73,7 @@ export class UserSDK {
   }
 
   // Logged in users
-  public async insertLoggedInUser(user: ISignedInUser) {
+  public async insertLoggedInUser(user: ILoggedInUser) {
     const userExist = await this.findByName(user.userId);
     if (!_.isEmpty(userExist)) {
       throw {
@@ -84,15 +84,18 @@ export class UserSDK {
     }
     user._id = uuid();
     return this.dbSDK.insertDoc(USER_DB, user, user._id)
+      .then(data => ({ _id: data.id }))
       .catch(err => { throw this.dbSDK.handleError(err); });
   }
 
-  public async getLoggedInUser(userId: string) {
+  public async getLoggedInUser(userId: string): Promise<ILoggedInUser> {
     const users = await this.findByUserId(userId);
-    return users[0];
+    let user = users[0];
+    user = _.omit(user, 'accessToken');
+    return user;
   }
 
-  public async updateLoggedInUser(user: ISignedInUser) {
+  public async updateLoggedInUser(user: ILoggedInUser) {
     if (_.get(user, '_id')) {
       return this.updateDoc(user);
     } else if (_.get(user, 'userId')) {
@@ -121,11 +124,19 @@ export class UserSDK {
   }
 
   public async getUserToken() {
-    return await this.settingSDK.get('oauth_token');
+    const userSession = await this.getUserSession();
+    const userId = _.get(userSession, 'userId');
+    const user = await this.getLoggedInUser(userId);
+    const token = _.get(user, 'accessToken');
+    return token;
   }
 
-  public async setUserToken(sessionData: OAuthSession) {
-    await this.settingSDK.put('oauth_token', sessionData);
+  public async setUserSession(sessionData: IUserSession) {
+    await this.settingSDK.put('userSession', sessionData);
+  }
+
+  public async getUserSession() {
+    return this.settingSDK.get('userSession');
   }
 
   private async findByName(name) {
@@ -135,14 +146,14 @@ export class UserSDK {
     return this.dbSDK.find(USER_DB, query).then(result => result.docs);
   }
 
-  private async findByUserId(userId: string) {
+  private async findByUserId(userId: string): Promise<ILoggedInUser[]> {
     const query = {
       selector: { userId }
     }
     return this.dbSDK.find(USER_DB, query).then(result => result.docs);
   }
 
-  private async updateDoc(user: ISignedInUser) {
+  private async updateDoc(user: ILoggedInUser) {
     return this.dbSDK.updateDoc(USER_DB, user._id, user)
       .catch(err => { throw this.dbSDK.handleError(err); });
   }
@@ -159,10 +170,8 @@ export interface IUserUpdateReq {
   framework?: IFramework;
   updatedOn?: number;
 }
-export interface OAuthSession {
-  access_token: string;
+export interface IUserSession {
   userId: string;
-  managed_access_token?: string;
 }
 
 export * from './../interfaces';
