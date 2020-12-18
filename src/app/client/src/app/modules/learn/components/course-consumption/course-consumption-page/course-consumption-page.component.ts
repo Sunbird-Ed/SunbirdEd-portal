@@ -178,8 +178,8 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  refreshComponent() {
+  refreshComponent(isRouteChanged: boolean) {
     this.showBatchInfo = false;
-    this.fetchEnrolledCourses$.next(true);
+    isRouteChanged && this.fetchEnrolledCourses$.next(true);
   }
 }
