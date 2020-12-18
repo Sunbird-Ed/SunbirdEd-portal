@@ -1,7 +1,7 @@
 import { ADD_ACTIVITY_TO_GROUP } from './../../../interfaces/routerLinks';
 import { CourseConsumptionService } from '@sunbird/learn';
 import { Component, OnInit, EventEmitter, OnDestroy } from '@angular/core';
-import { FrameworkService, SearchService, FormService, UserService } from '@sunbird/core';
+import { FrameworkService, SearchService, FormService, UserService, OrgDetailsService } from '@sunbird/core';
 import {
   ConfigService,
   ResourceService,
@@ -12,7 +12,7 @@ import {
 } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { Subject, of, combineLatest } from 'rxjs';
-import { takeUntil, map, catchError, first, debounceTime, tap, delay } from 'rxjs/operators';
+import { takeUntil, map, catchError, first, debounceTime, tap, delay, mergeMap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IPagination } from '../../../../shared/interfaces/index';
 import { CacheService } from 'ng2-cache-service';
@@ -77,10 +77,11 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     private router: Router,
     private groupsService: GroupsService,
     public layoutService: LayoutService,
-    public courseConsumptionService: CourseConsumptionService
+    public courseConsumptionService: CourseConsumptionService,
+    public orgDetailsService: OrgDetailsService
   ) {
     this.csGroupAddableBloc = CsGroupAddableBloc.instance;
-    }
+  }
 
   ngOnInit() {
     CsGroupAddableBloc.instance.state$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
@@ -89,9 +90,9 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
       this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
       this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
-  }, error => {
+    }, error => {
       this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
-  });
+    });
     this.initLayout();
     this.filterType = this.configService.appConfig.courses.filterType;
     this.groupData = this.groupsService.groupData;
@@ -164,7 +165,21 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
   }
 
   public getFilters(filters) {
-    this.selectedFilters = filters.filters;
+    const filterData = filters && filters.filters || {};
+    if (filterData.channel && this.facets) {
+      const channelIds = [];
+      const facetsData = _.find(this.facets, { 'name': 'channel' });
+      _.forEach(filterData.channel, (value, index) => {
+        const data = _.find(facetsData.values, { 'identifier': value });
+        if (data) {
+          channelIds.push(data.name);
+        }
+      });
+      if (channelIds && Array.isArray(channelIds) && channelIds.length > 0) {
+        filterData.channel = channelIds;
+      }
+    }
+    this.selectedFilters = filterData;
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
 
       /* istanbul ignore else */
@@ -205,7 +220,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
     const searchQuery = _.get(this.groupAddableBlocData, 'params.searchQuery.request.filters');
     const user = _.omit(_.get(this.userService.userProfile, 'framework'), 'id');
-    filters = {...filters, ...searchQuery, ...user};
+    filters = { ...filters, ...searchQuery, ...user };
     const option: any = {
       filters: _.omit(filters, 'key'),
       fields: _.get(this.allTabData, 'search.fields'),
@@ -230,6 +245,24 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
       option.params.framework = this.frameWorkName;
     }
     this.searchService.contentSearch(option, false)
+      .pipe(
+        mergeMap(data => {
+          const channelFacet = _.find(_.get(data, 'result.facets') || [], facet => _.get(facet, 'name') === 'channel')
+          if (channelFacet) {
+            const rootOrgIds = this.orgDetailsService.processOrgData(_.get(channelFacet, 'values'));
+            return this.orgDetailsService.searchOrgDetails({
+              filters: { isRootOrg: true, rootOrgId: rootOrgIds },
+              fields: ['slug', 'identifier', 'orgName']
+            }).pipe(
+              mergeMap(orgDetails => {
+                channelFacet.values = _.get(orgDetails, 'content');
+                return of(data);
+              })
+            )
+          }
+          return of(data);
+        })
+      )
       .subscribe(data => {
         this.showLoader = false;
         this.facets = this.searchService.updateFacetsData(_.get(data, 'result.facets'));
@@ -239,20 +272,20 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
         const { constantData, metaData, dynamicFields } = this.configService.appConfig.CoursePageSection.course;
         this.contentList = _.map(data.result.content, (content: any) =>
           this.utilService.processContent(content, constantData, dynamicFields, metaData));
-          _.each(this.contentList, item => {
-            item.hoverData = {
-              'actions': [
-                {
-                  'type': 'view',
-                  'label': this.resourceService.frmelmnts.lbl.group.viewActivity
-                },
-                {
-                  'type': 'addToGroup',
-                  'label': this.resourceService.frmelmnts.lbl.AddtoGroup
-                }
-              ]
-            };
-          });
+        _.each(this.contentList, item => {
+          item.hoverData = {
+            'actions': [
+              {
+                'type': 'view',
+                'label': this.resourceService.frmelmnts.lbl.group.viewActivity
+              },
+              {
+                'type': 'addToGroup',
+                'label': this.resourceService.frmelmnts.lbl.AddtoGroup
+              }
+            ]
+          };
+        });
 
       }, err => {
         this.showLoader = false;
@@ -307,7 +340,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
   }
 
   addTelemetry(id, cdata, extra?) {
-    this.groupsService.addTelemetry({id, extra}, this.activatedRoute.snapshot, cdata || [], this.groupId);
+    this.groupsService.addTelemetry({ id, extra }, this.activatedRoute.snapshot, cdata || [], this.groupId);
   }
 
   private setNoResultMessage() {
@@ -323,14 +356,14 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
   }
 
   hoverActionClicked(event, appAddToGroupElement: HTMLDivElement) {
-   const mode =  _.get(event, 'hover.type').toLowerCase();
-   switch (mode) {
-    case 'view':
-      this.addActivity(_.get(event, 'content'));
-      break;
-    case 'addtogroup':
-      appAddToGroupElement.click();
-      break;
-   }
+    const mode = _.get(event, 'hover.type').toLowerCase();
+    switch (mode) {
+      case 'view':
+        this.addActivity(_.get(event, 'content'));
+        break;
+      case 'addtogroup':
+        appAddToGroupElement.click();
+        break;
+    }
   }
 }

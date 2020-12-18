@@ -12,6 +12,8 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { batchInfoMockResponse } from './batch-info.component.spec.data';
 import { of, throwError } from 'rxjs';
 import * as _ from 'lodash-es';
+import * as dayjs from 'dayjs';
+
 
 describe('BatchInfoComponent', () => {
   let component: BatchInfoComponent;
@@ -149,5 +151,22 @@ describe('BatchInfoComponent', () => {
     expect(component.unsubscribe.next).toHaveBeenCalled();
     expect(component.unsubscribe.complete).toHaveBeenCalled();
   });
+
+  it('should handle the enrollment end date', () => {
+    let isDisabled = component.handleEnrollmentEndDate({ enrollmentEndDate: dayjs().add(7, 'day') });
+    expect(isDisabled).toBeFalsy();
+
+    isDisabled = component.handleEnrollmentEndDate({ enrollmentEndDate: dayjs().subtract(7, 'day') });
+    expect(isDisabled).toBeTruthy();
+  });
+
+  it('should handle the enrollment start date', () => {
+    let isDisabled = component.handleStartDate({ startDate: dayjs().add(7, 'day') });
+    expect(isDisabled).toBeTruthy();
+
+    isDisabled = component.handleStartDate({ startDate: dayjs().subtract(7, 'day') });
+    expect(isDisabled).toBeFalsy();
+  });
+
 
 });

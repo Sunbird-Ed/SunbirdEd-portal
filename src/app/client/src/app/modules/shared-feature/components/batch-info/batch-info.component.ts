@@ -17,6 +17,7 @@ export class BatchInfoComponent implements OnInit, OnDestroy {
   @ViewChild('modal') modal;
   @Input() enrolledBatchInfo: any;
   @Output() modelClose = new EventEmitter;
+  @Output() routeChanged = new EventEmitter();
   public userDetails = {};
   public hasOngoingBatches = false;
   public enrolledBatches: Array<any> = [];
@@ -82,7 +83,14 @@ export class BatchInfoComponent implements OnInit, OnDestroy {
   public handleEnrollmentEndDate(batchDetails) {
     const enrollmentEndDate = dayjs(_.get(batchDetails, 'enrollmentEndDate')).format('YYYY-MM-DD');
     const systemDate = dayjs();
-    return enrollmentEndDate ? dayjs(enrollmentEndDate).isBefore(systemDate) : false;
+    const disableEnrollBtn = enrollmentEndDate ? dayjs(enrollmentEndDate).isBefore(systemDate) : false;
+    return disableEnrollBtn;
+  }
+  public handleStartDate(batchDetails) {
+    const batchStartDate = dayjs(_.get(batchDetails, 'startDate')).format('YYYY-MM-DD');
+    const systemDate = dayjs();
+    const isJoinNotEnabled = batchStartDate ? dayjs(batchStartDate).isAfter(systemDate) : false;
+    return isJoinNotEnabled;
   }
   public handleEnrollEvent(event) {
     this.disableEnrollBtn = true;
@@ -106,7 +114,9 @@ export class BatchInfoComponent implements OnInit, OnDestroy {
     ).subscribe(data => {
       const textbook = _.get(this.activatedRoute, 'snapshot.queryParams.textbook');
       const queryParams = textbook ? { textbook } : {};
-      this.router.navigate(['/learn/course', event.courseId, 'batch', event.identifier], { queryParams });
+      this.router.navigate(['/learn/course', event.courseId, 'batch', event.identifier], { queryParams }).then(res => {
+        this.routeChanged.emit();
+      });
     }, (err) => {
       this.disableEnrollBtn = false;
       this.toasterService.error(this.resourceService.messages.emsg.m0001);

@@ -1,5 +1,5 @@
-import { combineLatest, Subject, throwError } from 'rxjs';
-import { map, mergeMap, first, takeUntil, delay } from 'rxjs/operators';
+import { combineLatest, Subject, throwError, BehaviorSubject } from 'rxjs';
+import { map, mergeMap, first, takeUntil, delay, switchMap } from 'rxjs/operators';
 import { ResourceService, ToasterService, ConfigService, NavigationHelperService, LayoutService } from '@sunbird/shared';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -22,6 +22,10 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   public groupId: string;
   public showAddGroup = null;
   layoutConfiguration;
+  showBatchInfo: boolean;
+  selectedCourseBatches: { onGoingBatchCount: any; expiredBatchCount: any; openBatch: any; inviteOnlyBatch: any; courseId: any; };
+  obs$;
+  private fetchEnrolledCourses$ = new BehaviorSubject<boolean>(true);
   constructor(private activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, private coursesService: CoursesService,
     public toasterService: ToasterService, public courseBatchService: CourseBatchService,
@@ -31,7 +35,27 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.initLayout();
-    this.coursesService.enrolledCourseData$.pipe(first(),
+    this.fetchEnrolledCourses$.pipe(switchMap(this.handleEnrolledCourses.bind(this)))
+      .subscribe(({ courseHierarchy, enrolledBatchDetails }: any) => {
+        this.enrolledBatchInfo = enrolledBatchDetails;
+        this.courseHierarchy = courseHierarchy;
+        this.layoutService.updateSelectedContentType.emit(courseHierarchy.contentType);
+        this.getGeneraliseResourceBundle();
+        this.checkCourseStatus(courseHierarchy);
+        this.updateBreadCrumbs();
+        this.showLoader = false;
+      }, err => {
+        if (_.get(err, 'error.responseCode') && err.error.responseCode === 'RESOURCE_NOT_FOUND') {
+          this.toasterService.error(this.generaliseLabelService.messages.emsg.m0002);
+        } else {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0003); // fmsg.m0001 for enrolled issue
+        }
+        this.navigationHelperService.navigateToResource('/learn');
+      });
+  }
+
+  private handleEnrolledCourses() {
+    return this.coursesService.enrolledCourseData$.pipe(first(),
       mergeMap(({ enrolledCourses }) => {
         const routeParams: any = { ...this.activatedRoute.snapshot.params, ...this.activatedRoute.snapshot.firstChild.params };
         const queryParams = this.activatedRoute.snapshot.queryParams;
@@ -43,7 +67,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
         } else {
           this.showAddGroup = false;
         }
-        const paramsObj = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
+        const paramsObj = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
         const enrollCourses: any = this.getBatchDetailsFromEnrollList(enrolledCourses, routeParams);
         if (routeParams.batchId && !enrollCourses) { // batch not found in enrolled Batch list
           return throwError('ENROLL_BATCH_NOT_EXIST');
@@ -67,23 +91,8 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
           }
         }
         return this.getDetails(paramsObj);
-      }), delay(200), takeUntil(this.unsubscribe$))
-      .subscribe(({ courseHierarchy, enrolledBatchDetails }: any) => {
-        this.enrolledBatchInfo = enrolledBatchDetails;
-        this.courseHierarchy = courseHierarchy;
-        this.layoutService.updateSelectedContentType.emit(courseHierarchy.contentType);
-        this.getGeneraliseResourceBundle();
-        this.checkCourseStatus(courseHierarchy);
-        this.updateBreadCrumbs();
-        this.showLoader = false;
-      }, (err) => {
-        if (_.get(err, 'error.responseCode') && err.error.responseCode === 'RESOURCE_NOT_FOUND') {
-          this.toasterService.error(this.generaliseLabelService.messages.emsg.m0002);
-        } else {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0003); // fmsg.m0001 for enrolled issue
-        }
-        this.navigationHelperService.navigateToResource('/learn');
-      });
+      }), delay(200),
+      takeUntil(this.unsubscribe$));
   }
 
   getGeneraliseResourceBundle() {
@@ -102,16 +111,26 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
    });
   }
   private getBatchDetailsFromEnrollList(enrolledCourses = [], { courseId, batchId }) {
+    this.showBatchInfo = false;
     const allBatchesOfCourse = _.filter(enrolledCourses, { courseId })
       .sort((cur: any, prev: any) => dayjs(cur.enrolledDate).valueOf() > dayjs(prev.enrolledDate).valueOf() ? -1 : 1);
     const curBatch = _.find(allBatchesOfCourse, { batchId }); // find batch matching route batchId
     if (curBatch) { // activateRoute batch found
       return curBatch;
     }
-    if (allBatchesOfCourse[0]) { // recently enrolled batch found
-      return allBatchesOfCourse[0];
+
+    const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } = this.coursesService.findEnrolledCourses(courseId);
+    if (!expiredBatchCount && !onGoingBatchCount) {
+      return _.get(allBatchesOfCourse, '[0]') || null;
+    } else {
+      if (onGoingBatchCount === 1) {
+        return _.get(openBatch, 'ongoing.length') ? _.get(openBatch, 'ongoing[0]') : _.get(inviteOnlyBatch, 'ongoing[0]');
+      } else {
+        this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId };
+        this.showBatchInfo = true;
+        return _.get(allBatchesOfCourse, '[0]') || null;
+      }
     }
-    return; // no batch found
   }
   private getDetails(queryParams) {
     if (this.batchId) {
@@ -157,5 +176,10 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  refreshComponent() {
+    this.showBatchInfo = false;
+    this.fetchEnrolledCourses$.next(true);
   }
 }

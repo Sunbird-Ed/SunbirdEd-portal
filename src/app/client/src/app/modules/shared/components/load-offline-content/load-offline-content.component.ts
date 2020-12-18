@@ -1,7 +1,7 @@
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { ElectronService } from '../../../core/services/electron/electron.service';
-import { Component, OnInit, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, OnDestroy, Input } from '@angular/core';
 import { ResourceService, ConnectionService, ConfigService } from '../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -12,6 +12,7 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
   styleUrls: ['./load-offline-content.component.scss']
 })
 export class LoadOfflineContentComponent implements OnInit, OnDestroy  {
+  @Input() hideLoadButton = false;
   showLoadContentModal: any;
   @ViewChild('modal') modal;
   isConnected;
@@ -41,6 +42,9 @@ export class LoadOfflineContentComponent implements OnInit, OnDestroy  {
       this.addFontWeight();
       this.setTelemetryData();
     });
+    if (this.hideLoadButton) {
+      this.handleImportContentDialog();
+    }
   }
 
   openImportContentDialog() {

@@ -6,8 +6,11 @@ import { SharedModule, ToasterService, NavigationHelperService, LayoutService } 
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 import { ContentPlayerPageComponent } from './contentplayer-page.component';
+import { resourceData } from './contentplayer-page.component.spec.data';
 import { UtilService } from '../../../shared/services/util/util.service';
-import { of, Observable } from 'rxjs';
+import { of, Observable, throwError } from 'rxjs';
+import { APP_BASE_HREF } from '@angular/common';
+import { PublicPlayerService } from '@sunbird/public';
 
 const fakeActivatedRoute = {
   'params': of({contentId: '123'}),
@@ -42,7 +45,7 @@ describe('ContentPlayerComponent', () => {
       providers: [
         ToasterService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        { provide: Router, useClass: RouterStub },
+        { provide: Router, useClass: RouterStub },{ provide: APP_BASE_HREF, useValue: '/' }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -139,9 +142,30 @@ describe('ContentPlayerComponent', () => {
     expect(component.contentDownloaded.emit).toHaveBeenCalled();
   });
 
+  it('should get content and check conetent is not deleted for desktop app', () => {
+    component.isDesktopApp = true;
+    const playerService = TestBed.get(PublicPlayerService);
+    spyOn(playerService, 'getContent').and.returnValue(of(resourceData.content));
+    spyOn(component, 'getContentConfigDetails');
+    spyOn(component.isContentDeleted, 'next');
+    component.getContent()
+    expect(component.getContentConfigDetails).toHaveBeenCalled();
+    expect(component.isContentDeleted.next).toHaveBeenCalledWith({ value: false });
+  });
+
+  it('should get content and check conetent is deleted for desktop app', () => {
+    component.isDesktopApp = true;
+    const playerService = TestBed.get(PublicPlayerService);
+    spyOn(playerService, 'getContent').and.returnValue(throwError({}));
+    spyOn(component.isContentDeleted, 'next');
+    component.getContent()
+    expect(component.isContentDeleted.next).toHaveBeenCalledWith({ value: true });
+  });
+
   it('should call checkContentDeleted', () => {
     component.contentDetails = { identifier: 'do_123343432', contentType: 'Resource', pkgVersion: 2 };
     component.isConnected = true;
+    component.isDesktopApp = true;
     const router = TestBed.get(Router);
     router.url = 'http://localhost:3000/resources/play/collection/do_11263298042220544013?contentType=TextBook';
     spyOn(component.isContentDeleted, 'next');
@@ -198,4 +222,7 @@ describe('ContentPlayerComponent', () => {
     component.logTelemetry('do_3434223');
     expect(telemetryService.interact).toHaveBeenCalled();
   });
+
+  
+
 });
