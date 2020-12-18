@@ -1,4 +1,4 @@
-import { async, ComponentFixture, flush, TestBed, fakeAsync } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoResultComponent } from './no-result.component';
 import { SharedModule } from '@sunbird/shared';
 import { ResourceService } from '../../services/index';
@@ -29,15 +29,12 @@ describe('NoResultComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(NoResultComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
-  it('should take input for showing the no result message  ', fakeAsync(() => {
+  it('should take input for showing the no result message  ', () => {
      component.data = data;
      component.message = data.message;
      component.messageText = data.messageText;
      component.ngOnInit();
-     flush();
-     expect(component.message).toBe(resourceBundle.messages.stmsg.m0007);
-     expect(component.messageText).toBe(resourceBundle.messages.stmsg.m0006)
-  }));
+     fixture.detectChanges();
+  });
 });
