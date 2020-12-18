@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ContentManagerComponent } from './content-manager.component';
 import { ContentManagerService, ElectronDialogService } from '../../services';
 import { SuiModalModule, SuiProgressModule, SuiAccordionModule } from 'ng2-semantic-ui';
-import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FileSizeModule } from 'ngx-filesize';
 import { OrderModule } from 'ngx-order-pipe';
@@ -408,6 +408,20 @@ describe('ContentManagerComponent', () => {
     spyOn(telemetryService, 'log');
     component.logTelemetry(response.logInputData);
     expect(telemetryService.log).toHaveBeenCalled();
+  });
+
+  it('should hide content manger when player is fullscreen mode for desktop', () => {
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    component.ngOnInit();
+    navigationHelperService.handleCMvisibility.emit(true);
+    expect(component.visibility).toBeFalsy();
+  });
+
+  it('should show content manger when player exit from fullscreen mode for desktop', () => {
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    component.ngOnInit();
+    navigationHelperService.handleCMvisibility.emit(false);
+    expect(component.visibility).toBeTruthy();
   });
 });
 

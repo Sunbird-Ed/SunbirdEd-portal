@@ -39,6 +39,7 @@
   },
   "URLS": {
     "LEARNER_PREFIX": "/learner/",
+    "DISCUSSIONS_FORUM_PREFIX": "/discussion/",
     "DEVICE_PREFIX": "/device/",
     "CERT_REG_PREFIX": "/certreg/",
     "CONTENT_PREFIX": "/content/",
@@ -108,7 +109,8 @@
       "END_SESSION": "endSession",
       "GET_MANAGED_USER": "user/v1/managed",
       "USER_EXISTS_GET_USER_BY_KEY": "isUserExists/user/v1/get",
-      "USER_DECLARATION": "user/v1/declarations"
+      "USER_DECLARATION": "user/v1/declarations",
+      "GET_SESSION": "get/user/sessionId"
     },
     "CERTIFICATE": {
       "FETCH_CERTIFICATES": "v1/certs/search",
@@ -286,7 +288,8 @@
       "IMPORT_TELEMETRY_LIST": "telemetry/v1/list",
       "TELEMTRY_CONFIG": "telemetry/v1/config",
       "TELEMETRY_IMPORT_RETRY": "telemetry/v1/import/retry",
-      "TELEMETRY_SYNC": "desktop/v1/sync"
+      "TELEMETRY_SYNC": "desktop/v1/sync",
+      "LOGIN": "login"
     },
     "ACCOUNT_RECOVERY": {
       "FUZZY_SEARCH": "user/v1/fuzzy/search",

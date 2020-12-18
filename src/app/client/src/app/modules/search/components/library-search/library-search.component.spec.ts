@@ -3,7 +3,7 @@ import { LibrarySearchComponent } from './library-search.component';
 import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
-import { SearchService, CoreModule, UserService} from '@sunbird/core';
+import { SearchService, CoreModule, UserService, CoursesService, PlayerService} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import * as _ from 'lodash-es';
@@ -188,4 +188,43 @@ describe('LibrarySearchComponent', () => {
     expect(component.contentList.length).toEqual(2);
     expect(toasterService.error).toHaveBeenCalled();
   }));
+
+  it('should play content and not show the batch popup', () => {
+    const courseService = TestBed.get(CoursesService);
+    const playerService = TestBed.get(PlayerService)
+    const playContentSpy = spyOn(playerService, 'playContent')
+    spyOn(courseService, 'findEnrolledCourses').and.returnValue({
+      onGoingBatchCount: 0,
+      expiredBatchCount: 0
+    });
+    component.playContent({ data: {} });
+    expect(playContentSpy).toHaveBeenCalled();
+    expect(component.showBatchInfo).toBeFalsy();
+  });
+
+  it('should play content and not show the batch popup when ongoing batch count is 1', () => {
+    const courseService = TestBed.get(CoursesService);
+    const playerService = TestBed.get(PlayerService);
+    const playContentSpy = spyOn(playerService, 'playContent');
+    spyOn(courseService, 'findEnrolledCourses').and.returnValue({
+      onGoingBatchCount: 1,
+      expiredBatchCount: 0
+    });
+    component.playContent({ data: {} });
+    expect(playContentSpy).toHaveBeenCalled();
+    expect(component.showBatchInfo).toBeFalsy();
+  });
+
+  it('should show the batch details popup', () => {
+    const courseService = TestBed.get(CoursesService);
+    const playerService = TestBed.get(PlayerService);
+    const playContentSpy = spyOn(playerService, 'playContent');
+    spyOn(courseService, 'findEnrolledCourses').and.returnValue({
+      onGoingBatchCount: 2,
+      expiredBatchCount: 0
+    });
+    component.playContent({ data: {} });
+    expect(playContentSpy).not.toHaveBeenCalled();
+    expect(component.showBatchInfo).toBeTruthy();
+  });
 });

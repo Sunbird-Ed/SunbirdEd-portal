@@ -292,7 +292,8 @@ describe('CoursePageComponent', () => {
         const option = {
             source: 'web', name: 'Course', organisationId: '*',
             filters: { sort_by: 'name', sortType: 'desc', audience: ['Teacher'] },
-            fields: ['name', 'appIcon', 'medium', 'subject', 'resourceType', 'contentType', 'organisation', 'topic', 'mimeType', 'trackable'],
+            fields: ['name', 'appIcon', 'medium', 'subject',
+             'resourceType', 'contentType', 'organisation', 'topic', 'mimeType', 'trackable'],
             params: { orgdetails: 'orgName,email' },
             facets: ['channel', 'gradeLevel', 'subject', 'medium']
         };
@@ -441,7 +442,7 @@ describe('CoursePageComponent', () => {
                 expect(component.facets).toBeDefined();
                 expect(component.initFilters).toBeTruthy();
                 expect(component.carouselMasterData).toBeDefined();
-                expect(component.carouselMasterData.length).toEqual(2);
+                expect(component.carouselMasterData.length).toEqual(3);
                 done();
             });
     });

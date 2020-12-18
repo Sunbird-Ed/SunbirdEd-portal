@@ -1,9 +1,8 @@
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Component, OnInit, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
-import { ConnectionService } from '../../services';
 import { ElectronDialogService } from './../../services';
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService, ConnectionService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata } from '@sunbird/telemetry';

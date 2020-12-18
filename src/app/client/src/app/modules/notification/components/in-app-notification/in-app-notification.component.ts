@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { NotificationService } from '../../services/notification/notification.service';
 import * as _ from 'lodash-es';
 import { UserFeedStatus } from '@project-sunbird/client-services/models';
@@ -12,7 +12,7 @@ import { TelemetryService } from '@sunbird/telemetry';
   templateUrl: './in-app-notification.component.html',
   styleUrls: ['./in-app-notification.component.scss']
 })
-export class InAppNotificationComponent implements OnInit {
+export class InAppNotificationComponent implements OnInit, OnDestroy {
 
   @Input() layoutConfiguration: any;
 
@@ -24,7 +24,7 @@ export class InAppNotificationComponent implements OnInit {
   constructor(
     private notificationService: NotificationService,
     private router: Router,
-    private resourceService: ResourceService,
+    public resourceService: ResourceService,
     private telemetryService: TelemetryService,
     private activatedRoute: ActivatedRoute
   ) {
@@ -40,6 +40,11 @@ export class InAppNotificationComponent implements OnInit {
 
   ngOnInit() {
     this.fetchNotificationList();
+    this.notificationService.refreshNotification$.subscribe(refresh => {
+      if (refresh) {
+        this.fetchNotificationList();
+      }
+    });
   }
 
   async fetchNotificationList() {
@@ -51,6 +56,9 @@ export class InAppNotificationComponent implements OnInit {
   }
 
   toggleInAppNotifications() {
+    if (!this.showNotificationModel && !this.notificationList.length) {
+      return;
+    }
     this.generateInteractEvent('show-in-app-notifications');
     this.showNotificationModel = !this.showNotificationModel;
   }
@@ -59,27 +67,32 @@ export class InAppNotificationComponent implements OnInit {
     if (!event || !event.data) {
       return false;
     }
-    const path = this.getNavigationPath(event);
+    const navigationDetails = this.getNavigationPath(event);
+    const path = navigationDetails.path || '';
+    const navigationExtras: NavigationExtras = navigationDetails.navigationExtras || {};
 
     if (path) {
       this.showNotificationModel = false;
-      this.router.navigate([path]);
+      this.router.navigate([path], navigationExtras);
       await this.markNotificationAsRead(event.data);
       this.fetchNotificationList();
     }
   }
 
   getNavigationPath(event) {
-    if (_.get(event, 'data.data.actionType') === 'certificateUpdate') {
-      return '/profile';
+    if (_.get(event, 'data.data.actionData.actionType') === 'certificateUpdate') {
+      return {
+        path: '/profile',
+        navigationExtras: { state: { scrollToId: 'learner-passbook' } }
+      }
     }
 
-    const navigationLink = _.get(event, 'data.data.contentURL') || _.get(event, 'data.data.deepLink');
+    const navigationLink = _.get(event, 'data.data.actionData.contentURL') || _.get(event, 'data.data.actionData.deepLink');
     if (navigationLink) {
-      return navigationLink.replace((new URL(navigationLink)).origin, '');
+      return { path: navigationLink.replace((new URL(navigationLink)).origin, '') };
     }
 
-    return '';
+    return {};
   }
 
   async markNotificationAsRead(notificationDetails) {
@@ -124,6 +137,22 @@ export class InAppNotificationComponent implements OnInit {
       }
     };
     this.telemetryService.interact(data);
+  }
+
+  ngOnDestroy() {
+    this.notificationService.refreshNotification$.unsubscribe();
+  }
+
+  handleShowMore(event) {
+    if (event) {
+      this.generateInteractEvent('see-more');
+    }
+  }
+
+  handleShowLess(event) {
+    if (event) {
+      this.generateInteractEvent('see-less');
+    }
   }
 
 }

@@ -28,6 +28,7 @@ export class BrowseImagePopupComponent implements OnInit {
     'LOGO': { type: 'PNG', dimensions: '88px X 88px' },
     'SIGN': { type: 'PNG', dimensions: '112px X 46px' }
   };
+  allImagesList = [];
 
   constructor(public uploadCertificateService: UploadCertificateService,
     public toasterService: ToasterService,
@@ -47,6 +48,7 @@ export class BrowseImagePopupComponent implements OnInit {
 
   getAssetList() {
     this.imageName = '';
+    this.selectedLogo = null;
     this.uploadCertificateService.getAssetData().subscribe(res => {
       this.imagesList = res.result.content;
     }, error => {
@@ -54,10 +56,14 @@ export class BrowseImagePopupComponent implements OnInit {
     });
   }
 
-  searchImage() {
-    this.uploadCertificateService.getAssetData(this.imageName).subscribe(res => {
+  searchImage(type?) {
+    this.uploadCertificateService.getAssetData(this.imageName, type).subscribe(res => {
       if (res && res.result) {
-        this.imagesList = res.result.content;
+        if (!type) {
+          this.imagesList = res.result.content;
+        } else {
+          this.allImagesList = res.result.content;
+        }
       }
     }, error => {
       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
@@ -66,7 +72,7 @@ export class BrowseImagePopupComponent implements OnInit {
 
   async fileChange(ev) {
     this.uploadForm.reset();
-    const imageProperties = await this.getImageProperties(ev);
+    const imageProperties = await this.getImageProperties(ev.target.files[0]);
     console.log(imageProperties);
     const isDimensionMatched = this.dimentionCheck(imageProperties);
     const isTypeMatched = _.get(imageProperties, 'type').includes('png');
@@ -81,7 +87,20 @@ export class BrowseImagePopupComponent implements OnInit {
         'creator': userName,
         'creatorId': _.get(this.userService, 'userProfile.id')
       });
+    } else {
+      this.toasterService.error(_.get(this.resourceService, 'frmelmnts.cert.lbl.imageErrorMsg'));
+
     }
+  }
+
+  getAllImages() {
+    this.imageName = '';
+    this.selectedLogo = null;
+    this.uploadCertificateService.getAssetData(null, 'all').subscribe(res => {
+      this.allImagesList = res.result.content;
+    }, error => {
+      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+    });
   }
 
   dimentionCheck(image) {
@@ -98,16 +117,20 @@ export class BrowseImagePopupComponent implements OnInit {
   getImageProperties(ev) {
     return new Promise((resolve, reject) => {
       let imageData;
-      const file = ev.target.files[0];
+      const file = ev;
       const img = new Image();
-      img.src = window.URL.createObjectURL(file);
+      if (file.url) {
+        img.src = file.url;
+      } else {
+        img.src = window.URL.createObjectURL(file);
+      }
       img.onload = () => {
         const width = img.naturalWidth;
         const height = img.naturalHeight;
         imageData = {
           'height': height,
           'width': width,
-          'size': _.toNumber((file.size / (1024 * 1024)).toFixed(2)), // file.size,
+          'size': _.toNumber((file.size / (1024 * 1024)).toFixed(2)),
           'type': file.type
         };
         resolve(imageData);
@@ -185,8 +208,23 @@ export class BrowseImagePopupComponent implements OnInit {
     }
   }
 
-  selectLogo(logo) {
-    this.selectedLogo = logo;
+  async selectLogo(logo) {
+    const file = {
+      url: logo.artifactUrl,
+      type: logo.mimeType,
+      size: logo.size
+    };
+    const imageProperties = await this.getImageProperties(file);
+    console.log(imageProperties);
+    const isDimensionMatched = this.dimentionCheck(imageProperties);
+    const isTypeMatched = _.get(imageProperties, 'type').includes('png');
+    const isSizeMatched = _.get(imageProperties, 'size') < 1;
+    console.log(isDimensionMatched, isTypeMatched, isSizeMatched);
+    if (imageProperties && isSizeMatched && isTypeMatched && isDimensionMatched) {
+      this.selectedLogo = logo;
+    } else {
+      this.toasterService.error(_.get(this.resourceService, 'frmelmnts.cert.lbl.imageErrorMsg'));
+    }
   }
   back() {
     if (this.logoType.type === this.sign) {
