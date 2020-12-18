@@ -1,6 +1,6 @@
 
 import { of as observableOf, throwError as observableThrowError, Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, flush, flushMicrotasks } from '@angular/core/testing';
 import { ReviewsubmissionsContentplayerComponent } from './reviewsubmissions-contentplayer.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -61,7 +61,7 @@ describe('ReviewsubmissionsContentplayerComponent', () => {
     resourceService.frmelmnts = resourceBundle.frmelmnts;
     spyOn(playerService, 'getContent').and.returnValue(observableThrowError(testData.errorRes));
     component.getContent();
-    flush();
+    flushMicrotasks();
     expect(component.playerConfig).toBeUndefined();
     expect(component.showError).toBeTruthy();
     expect(component.errorMessage).toBe(resourceService.messages.stmsg.m0009);
