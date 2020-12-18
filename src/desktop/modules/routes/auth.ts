@@ -6,11 +6,6 @@ import AuthController from "../controllers/authController";
 export default (app, proxyURL) => {
 
     const authController = new AuthController(manifest);
-
-    app.get(
-        "/api/auth/resolvePasswordSession/:code", authController.resolvePasswordSession.bind(authController),
-    );
-
     app.post(
         "/api/user/v1/startSession", authController.startUserSession.bind(authController),
     );

@@ -9,6 +9,7 @@ import * as jwt from "jsonwebtoken";
 import permissionsHelper from "../helper/permissionsHelper";
 
 import { ClassLogger } from "@project-sunbird/logger/decorator";
+import { ILoggedInUser } from '../../OpenRAP/interfaces/IUser';
 
 // @ClassLogger({
 //     logLevel: "debug",
@@ -17,9 +18,10 @@ import { ClassLogger } from "@project-sunbird/logger/decorator";
 //   })
 export default class AuthController {
     private deviceId;
-
+    private userSDK;
     constructor(manifest) {
         this.getDeviceId(manifest);
+        this.userSDK = containerAPI.getUserSdkInstance();
     }
 
     public async getDeviceId(manifest) {
@@ -39,40 +41,6 @@ export default class AuthController {
         return payload.sub.split(':').length === 3 ? <string>payload.sub.split(':').pop() : payload.sub;
     }
 
-    public async resolvePasswordSession(req, res) {
-        try {
-            const body = new URLSearchParams({
-                redirect_uri: process.env.AUTH_REDIRECT_URI,
-                code: req.params.code,
-                grant_type: process.env.AUTH_GRANT_TYPE,
-                client_id: process.env.AUTH_CLIENT_ID
-            }).toString()
-            const appConfig = {
-                headers: {
-                    "content-type": "application/x-www-form-urlencoded",
-                },
-            };
-            const userToken = await HTTPService.post(`${process.env.AUTH_KC_URL}/token`, body, appConfig)
-            .toPromise();
-            const userId = await this.parseUserIdFromAccessToken(userToken.data.access_token);
-            const userAuthDetails = {
-                access_token: userToken.data.access_token,
-                referesh_token: userToken.data.refresh_token,
-                userId: userId
-            }
-            await permissionsHelper.getCurrentUserRoles(req, userAuthDetails);
-            
-        }catch (err) {
-            logger.error(
-                `While resolvePasswordSession ${err.message} ${err.stack}`,
-            );
-            let status = err.status || 500;
-            res.status(status);
-            return res.send(Response.error('api.user.read', status, err.message));
-        }
-        
-    } 
-  
     public async startUserSession(req, res) {
         try {
             const userToken = req.body.access_token
@@ -81,18 +49,23 @@ export default class AuthController {
                 access_token: userToken,
                 userId: userId
             }
-            // TODO: Fetch user details and store in DB
-            return res.send({status: 'success'});
-            
-        }catch (err) {
-            logger.error(
-                `While startUserSession ${err.message} ${err.stack}`,
-            );
+
+            const user = await permissionsHelper.getUser(userAuthDetails);
+            user.accessToken = userAuthDetails.access_token;
+            await this.saveUserInDB(user);
+            return res.send({ status: 'success' });
+        } catch (err) {
+            logger.error(`While startUserSession ${err.message} ${err.stack}`);
             let status = err.status || 500;
             res.status(status);
             return res.send(Response.error('api.user.read', status, err.message));
         }
-        
-    } 
-  
+    }
+
+    private async saveUserInDB(user: ILoggedInUser) {
+        const response = await this.userSDK.insertLoggedInUser(user);
+        const sessionData = { userId: user.userId };
+        await this.userSDK.setUserSession(sessionData);
+        return response;
+    }
 }
