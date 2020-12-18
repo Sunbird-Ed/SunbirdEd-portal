@@ -73,4 +73,26 @@ export default class AuthController {
         
     } 
   
+    public async startUserSession(req, res) {
+        try {
+            const userToken = req.body.access_token
+            const userId = await this.parseUserIdFromAccessToken(userToken);
+            const userAuthDetails = {
+                access_token: userToken,
+                userId: userId
+            }
+            // TODO: Fetch user details and store in DB
+            return res.send({status: 'success'});
+            
+        }catch (err) {
+            logger.error(
+                `While startUserSession ${err.message} ${err.stack}`,
+            );
+            let status = err.status || 500;
+            res.status(status);
+            return res.send(Response.error('api.user.read', status, err.message));
+        }
+        
+    } 
+  
 }
