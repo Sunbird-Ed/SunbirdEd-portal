@@ -1,10 +1,9 @@
-import * as _ from "lodash";
-import * as request from "request";
-import uuid = require("uuid");
 import { logger } from "@project-sunbird/logger";
-import { HTTPService } from "@project-sunbird/OpenRAP/services/httpService";
-import { response } from "express";
 import { containerAPI } from "@project-sunbird/OpenRAP/api";
+import { HTTPService } from "@project-sunbird/OpenRAP/services/httpService";
+import * as _ from "lodash";
+import { ILoggedInUser } from '../../OpenRAP/interfaces/IUser';
+import uuid = require("uuid");
 
 const PERMISSIONS_HELPER = {
 
@@ -45,16 +44,16 @@ const PERMISSIONS_HELPER = {
         }
       }
     } catch (e) {
-      logger.error({msg: "setUserSessionData :: Error while saving user session data", err: e});
+      logger.error({ msg: "setUserSessionData :: Error while saving user session data", err: e });
     }
   },
 
-  async getCurrentUserRoles(reqObj, userDetail?, isManagedUser?) {
-    const userId = userDetail.userId || reqObj.session.userId;
+  // Fetch user data from server
+  async getUser(userData: { access_token: string, userId: string }, isManagedUser?: boolean): Promise<ILoggedInUser> {
     const apiKey = await containerAPI.getDeviceSdkInstance().getToken().catch((err) => {
       logger.error(`Received error while fetching api key in app update with error: ${err}`);
     });
-    let url = process.env.LEARNER_URL + "user/v1/read/" + userId;
+    let url = `${process.env.APP_BASE_URL}/api/user/v3/read/${userData.userId}`;
     if (isManagedUser) {
       url = url + "?withTokens=true";
     }
@@ -62,27 +61,19 @@ const PERMISSIONS_HELPER = {
       headers: {
         "content-type": "application/json",
         "Authorization": "Bearer " + apiKey,
-        "x-authenticated-user-token": userDetail.access_token
+        "x-authenticated-user-token": userData.access_token
       }
     };
 
-    const response = await HTTPService.get(url, options).toPromise();
-    this.setUserSessionData(reqObj, response);
-    const sessionLog = {
-      userId: reqObj.session.userId || null,
-      rootOrgId: reqObj.session.rootOrgId || null,
-      roles: reqObj.session.roles || null,
-      userSid: reqObj.session.userSid || null,
-      orgs: reqObj.session.orgs || null,
-    };
-    logger.info({ msg: "getCurrentUserRoles :: Session data set success", session: sessionLog });
-    reqObj.session.save((err: any) => {
-      if (err) {
-        return err
-      } else {
-        return response
-      }
-    });
-  },
+    try {
+      const response = await HTTPService.get(url, options).toPromise();
+      const user: ILoggedInUser = _.get(response, 'data.result.response');
+      return user;
+    } catch (error) {
+      logger.error("Error while getting user", error);
+      throw { message: `User read failed with ${error}`, status: error.code || 500 }
+    }
+  }
 };
+
 export default PERMISSIONS_HELPER;
