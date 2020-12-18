@@ -5,7 +5,7 @@ import * as _ from 'lodash-es';
 import { PlayerConfig } from '@sunbird/shared';
 import { Router } from '@angular/router';
 import { ToasterService, ResourceService, ContentUtilsServiceService } from '@sunbird/shared';
-const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub', 'video/webm', 'video/mp4', 'application/pdf'];
+const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub'];
 import { Subject } from 'rxjs';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { IInteractEventEdata } from '@sunbird/telemetry';
@@ -58,6 +58,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   public showNewPlayer = false;
   mobileViewDisplay = 'block';
   playerType: string;
+  isDesktopApp = false;
 
   /**
  * Dom element reference of contentRatingModal
@@ -107,6 +108,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         this.playerConfig.context.cdata = _.union(this.playerConfig.context.cdata, utmData);
       }
     }
+    this.isDesktopApp = this.utilService.isDesktopApp;
     // Check for loggedIn user; and append user data to context object
     // User data (`firstName` and `lastName`) is used to show at the end of quiz
     if (this.playerConfig) {
@@ -126,7 +128,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       } else {
         root.classList.remove('PlayerMediaQueryClass');
       }
-      if (this.utilService.isDesktopApp) {
+      if (this.isDesktopApp) {
         const hideCM = isFullScreen ? true : false;
         this.navigationHelperService.handleContentManagerOnFullscreen(hideCM);
       }
@@ -234,18 +236,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   loadOldPlayer() {
     this.showNewPlayer = false;
-    if (this.utilService.isDesktopApp) {
-      const downloadStatus = _.has(this.playerConfig, 'metadata.desktopAppMetadata') ?
-      _.has(this.playerConfig, 'metadata.desktopAppMetadata.isAvailable') : false;
-
-      if (downloadStatus) {
-        this.playerConfig.data = '';
-        if (_.get(this.playerConfig, 'metadata.artifactUrl')
-          && _.includes(OFFLINE_ARTIFACT_MIME_TYPES, this.playerConfig.metadata.mimeType)) {
-          const artifactFileName = this.playerConfig.metadata.artifactUrl.split('/');
-          this.playerConfig.metadata.artifactUrl = artifactFileName[artifactFileName.length - 1];
-        }
-      }
+    if (this.isDesktopApp) {
+      this.updateMetadataForDesktop();
       this.loadDefaultPlayer(this.configService.appConfig.PLAYER_CONFIG.localBaseUrl);
       return;
     }
@@ -261,6 +253,10 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   loadNewPlayer() {
+    const downloadStatus = Boolean(_.get(this.playerConfig, 'metadata.desktopAppMetadata.isAvailable'));
+    if (downloadStatus) {
+      this.playerConfig.metadata.artifactUrl = `${location.origin}/${this.playerConfig.metadata.artifactUrl}`;
+    }
     this.addUserDataToContext();
     if (this.isMobileOrTab) {
       this.isFullScreenView = true;
@@ -268,6 +264,20 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
     this.showNewPlayer = true;
   }
+
+  // Update ArtifactUrl for old Player
+  updateMetadataForDesktop() {
+    const downloadStatus = Boolean(_.get(this.playerConfig, 'metadata.desktopAppMetadata.isAvailable'));
+    if (downloadStatus) {
+      this.playerConfig.data = '';
+      if (_.get(this.playerConfig, 'metadata.artifactUrl')
+        && _.includes(OFFLINE_ARTIFACT_MIME_TYPES, this.playerConfig.metadata.mimeType)) {
+        const artifactFileName = this.playerConfig.metadata.artifactUrl.split('/');
+        this.playerConfig.metadata.artifactUrl = artifactFileName[artifactFileName.length - 1];
+      }
+    }
+  }
+
   /**
    * Adjust player height after load
    */
