@@ -10,6 +10,7 @@ import Tenant from "./../controllers/tenant";
 import { manifest } from "./../manifest";
 const proxy = require('express-http-proxy');
 import Response from "./../utils/response";
+import { decorateRequestHeaders } from "../helper/proxyUtils";
 
 export default (app, proxyURL) => {
     const content = new Content(manifest);
@@ -70,6 +71,13 @@ export default (app, proxyURL) => {
 
         return res.send(Response.success("api.system.settings.get.custodianOrgId", resObj, req));
     });
+
+    app.get("/learner/data/v1/system/settings/*", proxy(proxyURL, {
+        proxyReqOptDecorator: decorateRequestHeaders(proxyURL),
+        proxyReqPathResolver: (req) => {
+            return require('url').parse(proxyURL + req.originalUrl.replace('/learner/', '/api/')).path
+        }
+    }));
 
     app.post(`/api/data/v1/dial/assemble`,
         (req, res, next) => {
