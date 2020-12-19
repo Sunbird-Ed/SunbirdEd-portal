@@ -61,7 +61,7 @@ describe('ReviewsubmissionsContentplayerComponent', () => {
     resourceService.frmelmnts = resourceBundle.frmelmnts;
     spyOn(playerService, 'getContent').and.returnValue(observableThrowError(testData.errorRes));
     component.getContent();
-    flushMicrotasks();
+    flush();
     expect(component.playerConfig).toBeUndefined();
     expect(component.showError).toBeTruthy();
     expect(component.errorMessage).toBe(resourceService.messages.stmsg.m0009);
@@ -77,7 +77,6 @@ describe('ReviewsubmissionsContentplayerComponent', () => {
     userService._userProfile = { 'organisations': ['01229679766115942443'] };
     component.getContent();
     flush();
-    fixture.detectChanges();
     expect(component.contentData).toBeDefined();
     expect(component.showError).toBeFalsy();
     expect(component.showLoader).toBeFalsy();
