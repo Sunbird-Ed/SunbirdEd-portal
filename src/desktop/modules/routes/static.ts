@@ -48,8 +48,16 @@ export default (app, contentFilesPath, ecarsFolderPath ) => {
             );
         },
       );
-      app.use(express.static(path.join(__dirname, "..", "..", "public", "portal")));
-    }
+    app.use(express.static(path.join(__dirname, "..", "..", "public", "portal")));
+    app.all('/logoff', async (req, res) => {
+      const userSDK: any = containerAPI.getUserSdkInstance();
+      await userSDK.deleteLoggedInUser().catch(error => { logger.debug("User not logged in", error);})
+      await userSDK.setUserSession().catch(error => { logger.debug("User not logged in", error);})
+      res.redirect('/mydownloads?selectedTab=mydownloads')
+    })
+    
+  }
+    
 
   const getLocals = async (manifest) => {
     const deviceId = await containerAPI
