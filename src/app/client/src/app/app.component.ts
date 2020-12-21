@@ -127,9 +127,9 @@ export class AppComponent implements OnInit, OnDestroy {
       if (layoutTypeAccessablethm === 'accessible') {
         document.documentElement.setAttribute('accessable-theme', 'accessible');
       } 
-      // else {
-      //   document.documentElement.setAttribute('accessable-theme', '');
-      // }
+      else {
+        document.documentElement.setAttribute('accessable-theme', 'accessible');
+      }
     } else {
       document.documentElement.setAttribute('layout', 'old');
     }
