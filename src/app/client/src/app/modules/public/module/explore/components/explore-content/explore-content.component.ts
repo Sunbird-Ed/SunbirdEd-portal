@@ -335,8 +335,11 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   private listenLanguageChange() {
     this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe((languageData) => {
       this.setNoResultMessage();
-      if (_.get(this.contentList, 'length') && this.isDesktopApp) {
-        this.addHoverData();
+      if (_.get(this.contentList, 'length') ) {
+        if (this.isDesktopApp) {
+          this.addHoverData();
+        }
+        this.facets = this.searchService.updateFacetsData(this.facets);
       }
     });
   }
