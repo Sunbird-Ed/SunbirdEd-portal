@@ -6,6 +6,7 @@ body {
   height: 100%;
 }
 
+
 body {
   background: var(--sbt-body-bg) !important;
   position: relative;
@@ -721,4 +722,7 @@ html.PlayerMediaQueryClass {
 }
 .pointer-events-disabled {
   pointer-events: none;
+}
+.accessible-menu{
+  display: none !important;
 }
