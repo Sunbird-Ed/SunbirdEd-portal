@@ -169,11 +169,13 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         try {
           this.adjustPlayerHeight();
           playerElement.contentWindow.initializePreview(this.playerConfig);
-          if (!this.playerLoaded) {
-            playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
-            window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
-            this.playerLoaded = true;
+          if (this.playerLoaded) {
+            playerElement.removeEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
+            window.frames['contentPlayer'].removeEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
           }
+          this.playerLoaded = true;
+          playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
+          window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
         } catch (err) {
           this.loadDefaultPlayer();
         }
@@ -189,11 +191,13 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         try {
           this.adjustPlayerHeight();
           playerElement.contentWindow.initializePreview(this.playerConfig);
-          if (!this.playerLoaded) {
-            playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
-            window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
-            this.playerLoaded = true;
+          if (this.playerLoaded) {
+            playerElement.removeEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
+            window.frames['contentPlayer'].removeEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
           }
+          this.playerLoaded = true;
+          playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
+          window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
         } catch (err) {
           const prevUrls = this.navigationHelperService.history;
           if (this.isCdnWorking.toLowerCase() === 'yes' && prevUrls[prevUrls.length - 2]) {
