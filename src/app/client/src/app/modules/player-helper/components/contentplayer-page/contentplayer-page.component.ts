@@ -8,6 +8,7 @@ import { Subject } from 'rxjs';
 import { takeUntil, filter, map } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
+import { PublicPlayerService } from '@sunbird/public';
 
 @Component({
   selector: 'app-contentplayer-page',
@@ -37,6 +38,7 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
   isContentDeleted: Subject<any> = new Subject();
   playerOption: any;
   layoutConfiguration;
+  isDesktopApp = false;
 
   constructor(private activatedRoute: ActivatedRoute,
     private configService: ConfigService,
@@ -46,10 +48,12 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
     public resourceService: ResourceService,
     private utilService: UtilService,
     private telemetryService: TelemetryService,
-    public layoutService: LayoutService
+    public layoutService: LayoutService,
+    private playerService: PublicPlayerService
   ) { }
 
   ngOnInit() {
+    this.isDesktopApp = this.utilService.isDesktopApp;
     this.initLayout();
     this.utilService.emitHideHeaderTabsEvent(true);
     this.contentType = this.activatedRoute.snapshot.queryParams.contentType;
@@ -102,7 +106,23 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
 
   getContent() {
     const options: any = { dialCode: this.dialCode };
-    const params = { params: this.configService.appConfig.PublicPlayer.contentApiQueryParams };
+    if (this.isDesktopApp) {
+      const params = { params: this.configService.appConfig.PublicPlayer.contentApiQueryParams };
+      this.playerService.getContent(this.contentId, params)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(response => {
+          this.contentDetails = _.get(response, 'result.content');
+          const status = !_.has(this.contentDetails, 'desktopAppMetadata.isAvailable') ? false :
+          !_.get(this.contentDetails, 'desktopAppMetadata.isAvailable');
+          this.isContentDeleted.next({value: status});
+          this.getContentConfigDetails(this.contentId, options);
+          this.setTelemetryData();
+        }, error => {
+          this.contentDetails = {};
+          this.isContentDeleted.next({value: true});
+          this.setTelemetryData();
+        });
+    }
   }
 
   getContentConfigDetails(contentId, options) {
@@ -114,7 +134,7 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
   }
 
   checkContentDeleted(event) {
-    if (event && this.isConnected && !this.router.url.includes('browse')) {
+    if (this.isDesktopApp && event) {
       this.isContentDeleted.next({ value: true });
       this.deletedContent.emit(this.contentDetails);
     }

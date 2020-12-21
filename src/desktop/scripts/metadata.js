@@ -155,6 +155,16 @@ const getForms = async () => {
             "type": "content",
             "action": "search",
             "subtype": "explore"
+        },
+        {
+            "type": "content",
+            "subtype": "player",
+            "action": "play"
+        },
+        {
+            "type": "desktopConfig",
+            "subtype": "login",
+            "action": "get"
         }
     ]
     const instance = await getInstance();

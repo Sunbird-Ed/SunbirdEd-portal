@@ -5,12 +5,12 @@ import { tap, catchError, filter, takeUntil, first, debounceTime, delay } from '
 import * as _ from 'lodash-es';
 import {
     OfflineCardService, ResourceService, ToasterService, ConfigService, UtilService, ICaraouselData, 
-    NavigationHelperService, ILanguage,  LayoutService, COLUMN_TYPE
+    NavigationHelperService, ILanguage,  LayoutService, COLUMN_TYPE, ConnectionService
 } from '@sunbird/shared';
 import { SearchService, UserService, OrgDetailsService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
-import { ConnectionService, ContentManagerService, SystemInfoService } from '../../services';
+import { ContentManagerService, SystemInfoService } from '../../services';
 @Component({
     selector: 'app-library',
     templateUrl: './library.component.html',
@@ -53,6 +53,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     readonly MAXIMUM_CPU_LOAD = 90;
     showMinimumRAMWarning = false;
     showCpuLoadWarning = false;
+    isDesktopApp = false;
     contentDownloadStatus = {};
     /* Telemetry */
     public viewAllInteractEdata: IInteractEventEdata;
@@ -134,6 +135,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
             this.formData = formData;
             this.svgToDisplay = imageName;
             this.globalSearchFacets = _.get(this.currentPageData, 'search.facets');
+            this.getOrgDetails();
         }, error => {
             this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
             this.navigationHelperService.goBack();
@@ -158,12 +160,12 @@ export class LibraryComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.isDesktopApp = this.utilService.isDesktopApp;
         this.activatedRoute.queryParams.pipe(takeUntil(this.unsubscribe$)).subscribe(queryParams => {
             this.queryParams = { ...queryParams };
         });
         this.fetchCurrentPageData();
         this.initLayout();
-        this.getOrgDetails();
         this.setTelemetryData();
         this.contentManagerService.contentDownloadStatus$.subscribe( contentDownloadStatus => {
             this.contentDownloadStatus = contentDownloadStatus;

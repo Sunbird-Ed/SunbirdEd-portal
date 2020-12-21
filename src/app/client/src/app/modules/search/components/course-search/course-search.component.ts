@@ -3,7 +3,7 @@ import {
   ICard, ILoaderMessage, UtilService, BrowserCacheTtlService, NavigationHelperService, IPagination,
   LayoutService, COLUMN_TYPE
 } from '@sunbird/shared';
-import { SearchService, PlayerService, CoursesService, UserService, FormService, ISort } from '@sunbird/core';
+import { SearchService, PlayerService, CoursesService, UserService, FormService, ISort, OrgDetailsService } from '@sunbird/core';
 import { combineLatest, Subject, of } from 'rxjs';
 import { Component, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -64,7 +64,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     public configService: ConfigService, public utilService: UtilService, public coursesService: CoursesService,
     private playerService: PlayerService, public userService: UserService, public cacheService: CacheService,
     public formService: FormService, public browserCacheTtlService: BrowserCacheTtlService,
-    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
+    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService, public orgDetailsService: OrgDetailsService) {
     this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
     this.filterType = this.configService.appConfig.courses.filterType;
     this.redirectUrl = this.configService.appConfig.courses.searchPageredirectUrl;
@@ -175,6 +175,24 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       option.params.framework = this.frameWorkName;
     }
     this.searchService.contentSearch(option)
+    .pipe(
+      mergeMap(data => {
+        const channelFacet = _.find(_.get(data, 'result.facets') || [], facet => _.get(facet, 'name') === 'channel')
+        if (channelFacet) {
+          const rootOrgIds = this.orgDetailsService.processOrgData(_.get(channelFacet, 'values'));
+          return this.orgDetailsService.searchOrgDetails({
+            filters: { isRootOrg: true, rootOrgId: rootOrgIds },
+            fields: ['slug', 'identifier', 'orgName']
+          }).pipe(
+            mergeMap(orgDetails => {
+              channelFacet.values = _.get(orgDetails, 'content');
+              return of(data);
+            })
+          )
+        }
+        return of(data);
+      })
+    )
       .subscribe(data => {
         this.showLoader = false;
         this.facets = this.searchService.updateFacetsData(_.get(data, 'result.facets'));
@@ -197,7 +215,21 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
   public getFilters(filters) {
-    this.selectedFilters = filters.filters;
+    const filterData = filters && filters.filters || {};
+    if (filterData.channel && this.facets) {
+      const channelIds = [];
+      const facetsData = _.find(this.facets, { 'name': 'channel' });
+      _.forEach(filterData.channel, (value, index) => {
+        const data = _.find(facetsData.values, { 'identifier': value });
+        if (data) {
+          channelIds.push(data.name);
+        }
+      });
+      if (channelIds && Array.isArray(channelIds) && channelIds.length > 0) {
+        filterData.channel = channelIds;
+      }
+    }
+    this.selectedFilters = filterData;
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
         if (element.code === 'board') {
           collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';

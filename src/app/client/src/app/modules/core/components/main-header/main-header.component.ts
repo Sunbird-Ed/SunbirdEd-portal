@@ -147,6 +147,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   isCustodianUser: boolean;
   isConnected = false;
   isDesktopApp = false;
+  showLoadContentModal = false;
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
     public orgDetailsService: OrgDetailsService, public formService: FormService,

@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { NotificationService } from '../../services/notification/notification.service';
 import * as _ from 'lodash-es';
 import { UserFeedStatus } from '@project-sunbird/client-services/models';
@@ -67,11 +67,13 @@ export class InAppNotificationComponent implements OnInit, OnDestroy {
     if (!event || !event.data) {
       return false;
     }
-    const path = this.getNavigationPath(event);
+    const navigationDetails = this.getNavigationPath(event);
+    const path = navigationDetails.path || '';
+    const navigationExtras: NavigationExtras = navigationDetails.navigationExtras || {};
 
     if (path) {
       this.showNotificationModel = false;
-      this.router.navigate([path]);
+      this.router.navigate([path], navigationExtras);
       await this.markNotificationAsRead(event.data);
       this.fetchNotificationList();
     }
@@ -79,15 +81,18 @@ export class InAppNotificationComponent implements OnInit, OnDestroy {
 
   getNavigationPath(event) {
     if (_.get(event, 'data.data.actionData.actionType') === 'certificateUpdate') {
-      return '/profile';
+      return {
+        path: '/profile',
+        navigationExtras: { state: { scrollToId: 'learner-passbook' } }
+      }
     }
 
     const navigationLink = _.get(event, 'data.data.actionData.contentURL') || _.get(event, 'data.data.actionData.deepLink');
     if (navigationLink) {
-      return navigationLink.replace((new URL(navigationLink)).origin, '');
+      return { path: navigationLink.replace((new URL(navigationLink)).origin, '') };
     }
 
-    return '';
+    return {};
   }
 
   async markNotificationAsRead(notificationDetails) {
@@ -136,6 +141,18 @@ export class InAppNotificationComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.notificationService.refreshNotification$.unsubscribe();
+  }
+
+  handleShowMore(event) {
+    if (event) {
+      this.generateInteractEvent('see-more');
+    }
+  }
+
+  handleShowLess(event) {
+    if (event) {
+      this.generateInteractEvent('see-less');
+    }
   }
 
 }

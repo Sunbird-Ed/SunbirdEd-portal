@@ -37,6 +37,7 @@ export class NavigationHelperService {
    */
   private cacheServiceName = 'previousUrl';
   contentFullScreenEvent = new EventEmitter<any>();
+  handleCMvisibility = new EventEmitter<any>();
   previousNavigationUrl;
 
   constructor(
@@ -209,6 +210,10 @@ export class NavigationHelperService {
 
   emitFullScreenEvent(value) {
     this.contentFullScreenEvent.emit(value);
+  }
+
+  handleContentManagerOnFullscreen(value) {
+    this.handleCMvisibility.emit(value);
   }
 
   setNavigationUrl() {

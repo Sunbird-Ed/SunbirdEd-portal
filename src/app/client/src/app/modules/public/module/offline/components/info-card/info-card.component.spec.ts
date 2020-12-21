@@ -1,12 +1,11 @@
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import { SharedModule } from '@sunbird/shared';
+import { SharedModule, ConnectionService } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InfoCardComponent } from './info-card.component';
-import { ConnectionService } from '../../services';
 import { TelemetryModule } from '@sunbird/telemetry';
 
 describe('InfoCardComponent', () => {

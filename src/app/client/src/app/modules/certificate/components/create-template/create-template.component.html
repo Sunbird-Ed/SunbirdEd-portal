@@ -30,7 +30,7 @@
               <div class="twelve wide column">
                   <div class="sb-field mb-0">
                     <label>{{resourceService?.frmelmnts?.cert?.lbl?.certtitle}}<span class="asterik">*</span></label>
-                    <input formControlName="certificateTitle" [ngClass]="(createTemplateForm.controls.certificateTitle.touched && createTemplateForm.controls.certificateTitle.invalid) ? 'is-invalid' : 'is-valid'" class="sb-form-control" [placeholder]="resourceService?.frmelmnts?.cert?.prmttxt?.certtitle">
+                    <input formControlName="certificateTitle" [ngClass]="(createTemplateForm.controls.certificateTitle.touched && createTemplateForm.controls.certificateTitle.invalid) ? 'is-invalid' : 'is-valid'" class="sb-form-control" [placeholder]="resourceService?.frmelmnts?.cert?.prmpt?.certtitle">
                   </div>
                   <small class="pl-4 fsmall">
                    {{resourceService?.frmelmnts?.cert?.inlntxt?.certtitle}}
@@ -58,7 +58,7 @@
                   </button>
                 </div>
                 <div class="d-flex flex-dc">
-                  <small *ngIf="!(images?.LOGO1?.name)" class="pl-4 py-4 fsmall">{{resourceService?.frmelmnts?.cert?.inlntxt?.imgdimensions}}</small>
+                  <small *ngIf="!(images?.LOGO1?.name)" class="pl-4 py-4 fsmall">{{resourceService?.frmelmnts?.cert?.intxt?.imgdimensions}}</small>
                   <small *ngIf="(images?.LOGO1?.name)" class="pl-4 py-4 fsmall">{{images?.LOGO1?.name}} <span  class="pl-8">
                   <img (click)="removeImage('LOGO1')" src="assets/images/close.svg" width="12px"></span></small>
                 </div>
@@ -71,7 +71,7 @@
                   </button>
                 </div>
                 <div class="d-flex flex-dc">
-                  <small *ngIf="!(images?.LOGO2?.name)"  class="pl-4 py-4 fsmall">{{resourceService?.frmelmnts?.cert?.inlntxt?.imgdimensions}}</small>
+                  <small *ngIf="!(images?.LOGO2?.name)"  class="pl-4 py-4 fsmall">{{resourceService?.frmelmnts?.cert?.intxt?.imgdimensions}}</small>
                   <small *ngIf="(images?.LOGO2?.name)" class="pl-4 py-4 fsmall">{{images?.LOGO2?.name}}<span  class="pl-8">
                   <img (click)="removeImage('LOGO2')" src="assets/images/close.svg" width="12px"></span></small>
                 </div>
@@ -170,13 +170,11 @@
           <div class="ui stackable grid mt-0">
             <div class="twelve wide column">
               <label>{{resourceService?.frmelmnts?.cert?.lbl?.layout}}</label>
-              <div class="d-flex">
-                <div *ngFor="let certificate of defaultCertificates" class="cert-img-sb-card active mr-16">
+              <div class ="d-flex flex-w-wrap">
+                <div *ngFor="let certificate of defaultCertificates" class ="cert-img-sb-card active mr-16">
                   <div class="cert-img-sb-card__content">
                     <img (click)="chooseCertificate(certificate)" [src]="certificate?.artifactUrl"  />
-                    <div *ngIf="selectedCertificate?.identifier === certificate?.identifier" class="selected-mark">
-                      <img src="assets/images/checkbox-icon.svg">
-                    </div>
+                    <div *ngIf="selectedCertificate?.identifier === certificate?.identifier" class="selected-mark"><img src="assets/images/checkbox-icon.svg"></div>
                   </div>
                 </div>
               </div>
