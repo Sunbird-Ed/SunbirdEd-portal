@@ -1,6 +1,6 @@
 
 import { of as observableOf, throwError as observableThrowError, Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, flush, flushMicrotasks } from '@angular/core/testing';
 import { ReviewsubmissionsContentplayerComponent } from './reviewsubmissions-contentplayer.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -53,28 +53,21 @@ describe('ReviewsubmissionsContentplayerComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
-  beforeEach(() => {
-    originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000000;
-});
 
-afterEach(() =>  {
-  jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
-});
-
-  it('should throw error if content api throws error', () => {
+  it('should throw error if content api throws error', fakeAsync(() => {
     const playerService = TestBed.get(PlayerService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceBundle.messages;
     resourceService.frmelmnts = resourceBundle.frmelmnts;
     spyOn(playerService, 'getContent').and.returnValue(observableThrowError(testData.errorRes));
     component.getContent();
+    flush();
     expect(component.playerConfig).toBeUndefined();
     expect(component.showError).toBeTruthy();
     expect(component.errorMessage).toBe(resourceService.messages.stmsg.m0009);
-  });
+  }));
 
-  it('should call  content api and return content data', () => {
+  it('should call  content api and return content data', fakeAsync(() => {
     const playerService = TestBed.get(PlayerService);
     const userService = TestBed.get(UserService);
     const resourceService = TestBed.get(ResourceService);
@@ -83,10 +76,10 @@ afterEach(() =>  {
     spyOn(playerService, 'getContent').and.returnValue(observableOf(testData.sucessRes));
     userService._userProfile = { 'organisations': ['01229679766115942443'] };
     component.getContent();
-    fixture.detectChanges();
+    flush();
     expect(component.contentData).toBeDefined();
     expect(component.showError).toBeFalsy();
     expect(component.showLoader).toBeFalsy();
-  });
+  }));
 
 });

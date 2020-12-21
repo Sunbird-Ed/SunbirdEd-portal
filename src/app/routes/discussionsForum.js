@@ -119,9 +119,13 @@ function checkEmail() {
             const email = jwtPayload.payload.email;
             const userName = jwtPayload.payload. preferred_username;
             const userName_body = req.body.username;
+            const userId = req.session.userId;
+            const user = req.session.userName;
             if (email && userName === userName_body) {
                 logger.info("email found", email)
                 req.body['email'] = email;
+                req.body['sbUsername'] = user;
+                req.body['sbIdentifier']  = userId;
                 next();
             } else {
                 logger.info({message: "email not found"})

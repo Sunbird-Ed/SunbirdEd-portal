@@ -43,7 +43,7 @@
       </div>
     </div>
     <div *ngIf="!hasOngoingBatches && openForEnrollBatches.length" class="ui divider"></div>
-    <div *ngIf="!hasOngoingBatches && openForEnrollBatches.length" class="h4-title font-weight-bold mb-15">{{resourceService.frmelmnts?.lbl?.opndbtch}}</div>
+    <div *ngIf="!hasOngoingBatches && openForEnrollBatches.length" class="h4-title font-weight-bold mb-15">{{resourceService.frmelmnts?.lbl?.opndbtch}} <br> <br> {{resourceService?.frmelmnts?.lbl?.notRecommended}}</div>
     <div *ngIf="!hasOngoingBatches && openForEnrollBatches.length">
       <div *ngFor="let batchDetails of openForEnrollBatches" class="batch-row mb-15">
         <div class="batch-name font-weight-bold d-block mb-15">{{batchDetails.name}}</div>
