@@ -123,6 +123,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.listenLanguageChange();
         this.contentManagerService.contentDownloadStatus$.subscribe( contentDownloadStatus => {
             this.contentDownloadStatus = contentDownloadStatus;
+            this.addHoverData();
         });
     }
 
