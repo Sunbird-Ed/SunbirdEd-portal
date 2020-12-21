@@ -271,7 +271,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             });
             this.pageSections[pageSection] = this.utilService.addHoverData(pageSection.contents, true);
         });
-        console.log("this.pageSections", this.pageSections);
     }
 
     public playContent(event, sectionName?) {
