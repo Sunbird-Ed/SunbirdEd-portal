@@ -1,6 +1,6 @@
 
 import { of as observableOf, throwError as observableThrowError, Observable } from 'rxjs';
-import { async, ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, flush, flushMicrotasks } from '@angular/core/testing';
 import { ReviewsubmissionsContentplayerComponent } from './reviewsubmissions-contentplayer.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -77,7 +77,6 @@ describe('ReviewsubmissionsContentplayerComponent', () => {
     userService._userProfile = { 'organisations': ['01229679766115942443'] };
     component.getContent();
     flush();
-    fixture.detectChanges();
     expect(component.contentData).toBeDefined();
     expect(component.showError).toBeFalsy();
     expect(component.showLoader).toBeFalsy();
