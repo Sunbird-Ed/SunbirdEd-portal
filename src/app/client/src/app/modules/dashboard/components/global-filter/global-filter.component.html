@@ -1,0 +1,48 @@
+<form [formGroup]="filtersFormGroup" class="ui form" >
+<sui-accordion class="styled fluid" [closeOthers]="false">
+  <sui-accordion-panel [isOpen]="true">
+    <div title>
+      <i class="dropdown icon"></i>
+      {{resourceService?.frmelmnts?.lbl?.filters }}
+    </div>
+    <div content>
+
+      <div class="sb-prominent-filter p-0">
+        <div class="sb-prominent-filter-container pt-8 pb-0">
+          <div class="sb-prominent-filter-field" *ngFor="let filter of filters">
+            <label>{{filter.displayName}}</label>
+            <div *ngIf="filter.controlType === 'multi-select'">
+              <sui-multi-select [hasLabels]="false" class="selection sb-select-searchfilter"
+                [placeholder]="filter.displayName" [formControlName]="filter.reference">
+                <sui-select-option appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+                  [telemetryInteractEdata]="setTelemetryInteractEdata(filter.reference + '-filter')"
+                  [telemetryInteractCdata]="telemetryCdata" *ngFor="let option of filter.options"
+                  [value]="option | titlecase">
+                </sui-select-option>
+              </sui-multi-select>
+            </div>
+            <div *ngIf="filter.controlType === 'select'">
+              <sui-select class="selection sb-select-searchfilter" [placeholder]="filter.displayName"
+                [formControlName]="filter.reference">
+                <sui-select-option appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+                  [telemetryInteractEdata]="setTelemetryInteractEdata(filter.reference + '-filter')"
+                  [telemetryInteractCdata]="telemetryCdata" *ngFor="let option of filter.options" [value]="option">
+                </sui-select-option>
+              </sui-select>
+            </div>
+            <div *ngIf="filter.controlType === 'date'">
+              <input appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+                [telemetryInteractEdata]="setTelemetryInteractEdata('date-filter')"
+                [telemetryInteractCdata]="telemetryCdata" #datePickerForFilters class="form-control" type="text"
+                [placeholder]="filter.displayName" ngxDaterangepickerMd [showCustomRangeLabel]="true"
+                [locale]="datePickerConfig" [alwaysShowCalendars]="true" [ranges]="ranges" [linkedCalendars]="true"
+                [minDate]="pickerMinDate" [maxDate]="pickerMaxDate"
+                (change)="getDateRange($event,filter.reference)" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sui-accordion-panel>
+</sui-accordion>
+</form>

@@ -52,6 +52,8 @@ export class ReportComponent implements OnInit {
   public type: ReportType = ReportType.report;
   private reportConfig: object;
   layoutConfiguration: any;
+  public globalSelectedFilters:any;
+  public showChart = true;
 
   private set setMaterializedReportStatus(val: string) {
     this.materializedReport = (val === 'true');
@@ -533,6 +535,14 @@ export class ReportComponent implements OnInit {
           this.layoutConfiguration = layoutConfig.layout;
         }
       });
+  }
+  globalFilter(data: any):void {
+
+    this.showChart=false;
+    console.log("data",data);
+    this.globalSelectedFilters = data;
+    this.showChart=true;
+
   }
 
 }

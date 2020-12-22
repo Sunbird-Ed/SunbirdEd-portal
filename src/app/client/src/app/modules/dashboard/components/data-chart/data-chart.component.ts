@@ -30,6 +30,10 @@ export class DataChartComponent implements OnInit, OnDestroy {
   @Output() openAddSummaryModal = new EventEmitter();
   @Input() hash: string;
   public unsubscribe = new Subject<void>();
+
+  @Input() private globalFilterChanged: EventEmitter<boolean>;
+
+  @Input() globalSelectedFilters:any;
   // contains the chart configuration
   chartConfig: any;
   chartData: any;
@@ -71,10 +75,14 @@ export class DataChartComponent implements OnInit, OnDestroy {
   showChart: Boolean = false;
   chartSummary$: any;
   private _chartSummary: string;
+  
 
   @ViewChild('datePickerForFilters') datepicker: ElementRef;
   @ViewChild('chartRootElement') chartRootElement;
   @ViewChild('chartCanvas') chartCanvas;
+
+
+ 
 
   ranges: any = {
     'Today': [moment(), moment()],
@@ -101,54 +109,54 @@ export class DataChartComponent implements OnInit, OnDestroy {
     this.prepareChart();
     this.setTelemetryCdata();
     if (this.filters) {
-      this.showFilters = false;
-      this.buildFiltersForm();
+      // this.showFilters = false;
+      // this.buildFiltersForm();
     }
   }
 
-  buildFiltersForm() {
-    this.filtersFormGroup = this.fb.group({});
-    if (_.get(this.chartConfig, 'labelsExpr')) {
-      _.forEach(this.filters, filter => {
-        if (filter.controlType === 'date' || /date/i.test(_.get(filter, 'reference'))) {
-          const dateRange = _.uniq(_.map(this.chartData, _.get(filter, 'reference')));
-          this.pickerMinDate = moment(dateRange[0], 'DD-MM-YYYY');
-          this.pickerMaxDate = moment(dateRange[dateRange.length - 1], 'DD-MM-YYYY');
-          this.dateFilterReferenceName = filter.reference;
-        }
-        this.filtersFormGroup.addControl(_.get(filter, 'reference'), this.fb.control(''));
-        filter.options = _.sortBy(_.uniq(_.map(this.chartData, data => data[filter.reference].toLowerCase())));
-      });
-      if (this.filters.length > 0) {
-        this.showFilters = true;
-      }
-      this.filtersSubscription = this.filtersFormGroup.valueChanges
-        .pipe(
-          takeUntil(this.unsubscribe),
-          map(filters => {
-            return _.omitBy(filters, _.isEmpty);
-          }),
-          debounceTime(100),
-          distinctUntilChanged()
-        )
-        .subscribe((filters) => {
-          this.selectedFilters = _.omit(filters, this.dateFilterReferenceName); // to omit date inside labels
-          const res: Array<{}> = _.filter(this.chartData, data => {
-            return _.every(filters, (value, key) => {
-              return _.includes(_.toLower(value), data[key].toLowerCase());
-            });
-          });
-          this.noResultsFound = (res.length > 0) ? false : true;
-          if (this.noResultsFound) {
-            this.toasterService.error(this.resourceService.messages.stmsg.m0008);
-          }
-          this.getDataSetValue(res);
+  // buildFiltersForm() {
+  //   this.filtersFormGroup = this.fb.group({});
+  //   if (_.get(this.chartConfig, 'labelsExpr')) {
+  //     _.forEach(this.filters, filter => {
+  //       if (filter.controlType === 'date' || /date/i.test(_.get(filter, 'reference'))) {
+  //         const dateRange = _.uniq(_.map(this.chartData, _.get(filter, 'reference')));
+  //         this.pickerMinDate = moment(dateRange[0], 'DD-MM-YYYY');
+  //         this.pickerMaxDate = moment(dateRange[dateRange.length - 1], 'DD-MM-YYYY');
+  //         this.dateFilterReferenceName = filter.reference;
+  //       }
+  //       this.filtersFormGroup.addControl(_.get(filter, 'reference'), this.fb.control(''));
+  //       filter.options = _.sortBy(_.uniq(_.map(this.chartData, data => data[filter.reference].toLowerCase())));
+  //     });
+  //     if (this.filters.length > 0) {
+  //       this.showFilters = true;
+  //     }
+  //     this.filtersSubscription = this.filtersFormGroup.valueChanges
+  //       .pipe(
+  //         takeUntil(this.unsubscribe),
+  //         map(filters => {
+  //           return _.omitBy(filters, _.isEmpty);
+  //         }),
+  //         debounceTime(100),
+  //         distinctUntilChanged()
+  //       )
+  //       .subscribe((filters) => {
+  //         this.selectedFilters = _.omit(filters, this.dateFilterReferenceName); // to omit date inside labels
+  //         const res: Array<{}> = _.filter(this.chartData, data => {
+  //           return _.every(filters, (value, key) => {
+  //             return _.includes(_.toLower(value), data[key].toLowerCase());
+  //           });
+  //         });
+  //         this.noResultsFound = (res.length > 0) ? false : true;
+  //         if (this.noResultsFound) {
+  //           this.toasterService.error(this.resourceService.messages.stmsg.m0008);
+  //         }
+  //         this.getDataSetValue(res);
 
-        }, (err) => {
-          console.log(err);
-        });
-    }
-  }
+  //       }, (err) => {
+  //         console.log(err);
+  //       });
+  //   }
+  // }
 
   private calculateBigNumber() {
     const bigNumbersConfig = _.get(this.chartConfig, 'bigNumbers');
@@ -447,6 +455,18 @@ export class DataChartComponent implements OnInit, OnDestroy {
     } else {
       return of([]);
     }
+  }
+  public filterChanged(data: any):void {
+    console.log("-----------------------------------",this.datasets);
+    console.log('Picked date: ', data);
+
+    if(data.chartType){
+      this.chartType = data.chartType;
+    }
+    if( data.datasets){
+      this.datasets = data.datasets;
+    }
+    
   }
 
 }

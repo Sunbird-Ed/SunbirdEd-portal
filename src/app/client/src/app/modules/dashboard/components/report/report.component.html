@@ -257,15 +257,19 @@
                         </div>
                       </div>
 
-                      <div class="ui bottom attached segment p-0 b-0 no-bg my-24" suiTabContent="graph">
+                      <app-global-filter (filterChanged)="globalFilter($event)" [chartData]="currentReport.charts[0].chartData" [filters]="currentReport.reportMetaData.custom_filters" [showFilters]="true"
+                    [telemetryInteractObject]="setTelemetryInteractObject()">
+                      </app-global-filter>
+
+                      <div class="ui bottom attached segment p-0 b-0 no-bg my-24" suiTabContent="graph">  
                         <div class="sb-graph-section p-24 my-24"
                           *ngFor="let chart of currentReport.charts; let i = index; let l = last;">
 
                           <app-map *ngIf="chart?.chartConfig?.chartType === 'map'" [mapData]="chart?.mapData"
                             [options]="chart?.chartConfig?.options">
                           </app-map>
-
-                          <app-data-chart *ngIf="chart?.chartConfig?.chartType !== 'map'"
+                         
+                          <app-data-chart [globalSelectedFilters]="globalSelectedFilters" *ngIf="chart?.chartConfig?.chartType !== 'map' && showChart"
                             [telemetryInteractObject]="setTelemetryInteractObject()" [chartInfo]="chart"
                             [hideElements]="hideElements" [isUserReportAdmin]="isUserReportAdmin"
                             (openAddSummaryModal)="openAddSummaryModal($event)" [hash]="hash">

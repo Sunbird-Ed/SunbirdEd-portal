@@ -18,7 +18,7 @@ import {
   OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent, UsageReportsComponent,
   DataTableComponent, DataChartComponent, ReportComponent, ReportSummaryComponent, ListAllReportsComponent,
   AddSummaryModalComponent, CourseDashboardComponent, ReIssueCertificateComponent, DashboardSidebarComponent,
-  DatasetComponent, MapComponent
+  DatasetComponent, MapComponent,FilterComponent,GlobalFilterComponent
 } from './components';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 // SB core and shared services
@@ -26,6 +26,7 @@ import { SearchService } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { OrderModule } from 'ngx-order-pipe';
 import { AceEditorModule } from 'ng2-ace-editor';
+// import { GlobalFilterComponent } from './components/global-filter/global-filter.component';
 
 
 @NgModule({
@@ -45,7 +46,7 @@ import { AceEditorModule } from 'ng2-ace-editor';
   ],
   declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent,
     DataTableComponent, DataChartComponent, ListAllReportsComponent, ReportSummaryComponent, ReportComponent, AddSummaryModalComponent,
-    CourseDashboardComponent, ReIssueCertificateComponent, DashboardSidebarComponent, DatasetComponent, MapComponent],
+    CourseDashboardComponent, ReIssueCertificateComponent, DashboardSidebarComponent, DatasetComponent, MapComponent,FilterComponent, GlobalFilterComponent],
   exports: [CourseProgressComponent, DataTableComponent],
   providers: [
     RendererService,

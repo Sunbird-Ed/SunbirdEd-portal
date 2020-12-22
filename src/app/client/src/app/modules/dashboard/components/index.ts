@@ -13,3 +13,5 @@ export * from './re-issue-certificate/re-issue-certificate.component';
 export * from './dashboard-sidebar/dashboard-sidebar.component';
 export * from './dataset/dataset.component';
 export * from './map/map.component';
+export * from './filter/filter.component';
+export * from './global-filter/global-filter.component';

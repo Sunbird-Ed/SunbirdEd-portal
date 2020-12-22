@@ -1,0 +1,79 @@
+  <form [formGroup]="filtersFormGroup" class="ui form" *ngIf="showChart && showFilters"
+  [ngClass]="{'hide': hideElements}">
+  <div class="d-flex flex-w-wrap reset-filter-section">
+    <div *ngIf="showGraphStats" class="d-flex flex-ai-center">{{resourceService?.frmelmnts?.lbl?.graphStat }}:
+      <sui-checkbox class="toggle ml-8" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+        [telemetryInteractEdata]="setTelemetryInteractEdata('graph-statistics')"
+        [telemetryInteractCdata]="telemetryCdata" (checkChange)="showStats = $event; "></sui-checkbox>
+    </div>
+    <div class="mr-8" *ngIf="chartType === 'bar' || chartType === 'line'">
+      <button (click)="addChartSummary()" *ngIf="chartConfig.id && isUserReportAdmin" type="button"
+        appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+        [telemetryInteractCdata]="[{id: chartConfig?.id, type: 'Chart'}]"
+        [telemetryInteractEdata]="{id: 'report-chart', type: 'chart-summary', pageid: activatedRoute.snapshot.data.telemetry.pageid}"
+        class="mr-8 sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn"><i class="add icon"></i>Add
+        {{ resourceService?.frmelmnts?.lbl?.chartSummary}}</button>
+      <sui-select class="selection" [placeholder]="'Select ChartType'"
+        (selectedOptionChange)="changeChartType($event)">
+        <sui-select-option appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+          [telemetryInteractEdata]="setTelemetryInteractEdata('chart-type-filter')"
+          [telemetryInteractCdata]="telemetryCdata" *ngFor="let option of availableChartTypeOptions" [value]="option">
+        </sui-select-option>
+      </sui-select>
+    </div>
+    <div class="field">
+      <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+        [telemetryInteractEdata]="setTelemetryInteractEdata('reset-filters')"
+        [telemetryInteractCdata]="telemetryCdata" class="sb-btn sb-btn-outline-primary sb-btn-normal"
+        *ngIf="filters.length" (click)="resetFilter()">
+        {{resourceService?.frmelmnts?.btn?.reset}} {{resourceService?.frmelmnts?.lbl?.filters  }}
+      </button>
+    </div>
+  </div>
+  <sui-accordion class="styled fluid" [closeOthers]="false">
+    <sui-accordion-panel [isOpen]="true">
+      <div title>
+        <i class="dropdown icon"></i>
+        {{resourceService?.frmelmnts?.lbl?.filters }}
+      </div>
+      <div content>
+
+        <div class="sb-prominent-filter p-0">
+          <div class="sb-prominent-filter-container pt-8 pb-0">
+            <div class="sb-prominent-filter-field" *ngFor="let filter of filters">
+              <label>{{filter.displayName}}</label>
+              <div *ngIf="filter.controlType === 'multi-select'">
+                <sui-multi-select [hasLabels]="false" class="selection sb-select-searchfilter"
+                  [placeholder]="filter.displayName" [formControlName]="filter.reference">
+                  <sui-select-option appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+                    [telemetryInteractEdata]="setTelemetryInteractEdata(filter.reference + '-filter')"
+                    [telemetryInteractCdata]="telemetryCdata" *ngFor="let option of filter.options"
+                    [value]="option | titlecase">
+                  </sui-select-option>
+                </sui-multi-select>
+              </div>
+              <div *ngIf="filter.controlType === 'select'">
+                <sui-select class="selection sb-select-searchfilter" [placeholder]="filter.displayName"
+                  [formControlName]="filter.reference">
+                  <sui-select-option appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+                    [telemetryInteractEdata]="setTelemetryInteractEdata(filter.reference + '-filter')"
+                    [telemetryInteractCdata]="telemetryCdata" *ngFor="let option of filter.options" [value]="option">
+                  </sui-select-option>
+                </sui-select>
+              </div>
+              <div *ngIf="filter.controlType === 'date'">
+                <input appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+                  [telemetryInteractEdata]="setTelemetryInteractEdata('date-filter')"
+                  [telemetryInteractCdata]="telemetryCdata" #datePickerForFilters class="form-control" type="text"
+                  [placeholder]="filter.displayName" ngxDaterangepickerMd [showCustomRangeLabel]="true"
+                  [locale]="datePickerConfig" [alwaysShowCalendars]="true" [ranges]="ranges" [linkedCalendars]="true"
+                  [minDate]="pickerMinDate" [maxDate]="pickerMaxDate"
+                  (change)="getDateRange($event,filter.reference)" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sui-accordion-panel>
+  </sui-accordion>
+</form>
