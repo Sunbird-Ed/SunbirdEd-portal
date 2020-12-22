@@ -498,7 +498,7 @@ export class SearchService {
           break;
         case 'audience':
             facet['index'] = '9';
-            facet['label'] =  this.resourceService.frmelmnts.lbl.meantFor;
+            facet['label'] =  this.resourceService.frmelmnts.lbl.userType;
             facet['placeholder'] =  this.resourceService.frmelmnts.lbl.selectMeantFor;
             break;
         case 'channel':
