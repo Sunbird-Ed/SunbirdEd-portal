@@ -182,17 +182,24 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
           'limit': 100
       }
   };
-    return this.uploadCertificateService.getCertificates(request).pipe(
-      tap((certTemplateData) => {
-        const templatList = _.get(certTemplateData, 'result.content');
-        this.certTemplateList = templatList;
-        const templateData = templatList.find(templat => this.templateIdentifier && (templat.identifier === this.templateIdentifier));
-        if (templateData) {
-          _.remove(this.certTemplateList, (cert) => _.get(cert, 'identifier') === _.get(templateData , 'identifier'));
-          this.certTemplateList.unshift(templateData);
-          this.selectedTemplate = templateData;
-        }
-      }),
+  return this.uploadCertificateService.getCertificates(request).pipe(
+    tap((certTemplateData) => {
+      const templatList = _.get(certTemplateData, 'result.content');
+      this.certTemplateList = templatList;
+      // To select the newly created certificate
+      let tempIdToSelect;
+      if (this.newTemplateIdentifier) {
+        tempIdToSelect = this.newTemplateIdentifier;
+      } else {
+        tempIdToSelect = this.templateIdentifier;
+      }
+      const templateData = templatList.find(templat => tempIdToSelect && (templat.identifier === tempIdToSelect));
+      if (templateData) {
+        _.remove(this.certTemplateList, (cert) => _.get(cert, 'identifier') === _.get(templateData , 'identifier'));
+        this.certTemplateList.unshift(templateData);
+        this.selectedTemplate = templateData;
+      }
+    }),
       catchError(error => {
         return of({});
       })
@@ -324,10 +331,10 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     const templateData = _.pick(_.get(certTemplateDetails, Object.keys(certTemplateDetails)), ['criteria', 'previewUrl', 'artifactUrl', 'identifier', 'data']);
     this.templateIdentifier = _.get(templateData, 'identifier');
     this.selectedTemplate = {'name' : _.get(templateData, 'identifier'), 'previewUrl': _.get(templateData, 'previewUrl')};
-    if (!_.isEmpty(this.newTemplateIdentifier)) {
-      this.templateIdentifier = this.newTemplateIdentifier;
-      this.selectedTemplate = null;
-    }
+    // if (!_.isEmpty(this.newTemplateIdentifier)) {
+    //   this.templateIdentifier = this.newTemplateIdentifier;
+    //   this.selectedTemplate = null;
+    // }
     this.previewUrl = _.get(templateData, 'previewUrl');
     this.setCertEditable();
     this.processCriteria(_.get(templateData, 'criteria'));
