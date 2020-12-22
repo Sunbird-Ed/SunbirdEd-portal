@@ -183,26 +183,25 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       }
   };
   return this.uploadCertificateService.getCertificates(request).pipe(
-    tap((certTemplateData) => {
-      const templatList = _.get(certTemplateData, 'result.content');
-      this.certTemplateList = templatList;
-      // To select the newly created certificate
-      let tempIdToSelect;
-      if (this.newTemplateIdentifier) {
-        tempIdToSelect = this.newTemplateIdentifier;
-      } else {
-        tempIdToSelect = this.templateIdentifier;
-      }
-      const templateData = templatList.find(templat => tempIdToSelect && (templat.identifier === tempIdToSelect));
-      if (templateData) {
-        _.remove(this.certTemplateList, (cert) => _.get(cert, 'identifier') === _.get(templateData , 'identifier'));
-        this.certTemplateList.unshift(templateData);
-        this.selectedTemplate = templateData;
-      }
-    }),
-      catchError(error => {
-        return of({});
-      })
+      tap((certTemplateData) => {
+        const templatList = _.get(certTemplateData, 'result.content');
+        this.certTemplateList = templatList;
+        // To select the newly created certificate
+        let tempIdToSelect;
+        if (this.newTemplateIdentifier) {
+          tempIdToSelect = this.newTemplateIdentifier;
+        } else {
+          tempIdToSelect = this.templateIdentifier;
+        }
+        const templateData = templatList.find(templat => tempIdToSelect && (templat.identifier === tempIdToSelect));
+        if (templateData) {
+          _.remove(this.certTemplateList, (cert) => _.get(cert, 'identifier') === _.get(templateData , 'identifier'));
+          this.certTemplateList.unshift(templateData);
+          this.selectedTemplate = templateData;
+        }
+      }), catchError(error => {
+          return of({});
+        })
     );
   }
 
