@@ -26,7 +26,7 @@ import { CsCourseService } from '@project-sunbird/client-services/services/cours
   styleUrls: ['course-player.component.scss']
 })
 export class CoursePlayerComponent implements OnInit, OnDestroy {
-
+  @ViewChild('modal') modal;
   public courseInteractObject: IInteractEventObject;
   public contentInteractObject: IInteractEventObject;
   public closeContentIntractEdata: IInteractEventEdata;
@@ -85,11 +85,13 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public todayDate = dayjs(new Date()).format('YYYY-MM-DD');
   public batchMessage: any;
   showDataSettingSection = false;
-  assessmentMaxAttempts: number = 3;
+  assessmentMaxAttempts: number;
   @ViewChild('joinTrainingModal') joinTrainingModal;
   showJoinModal = false;
   tocId;
   groupId;
+  showLastAttemptsModal: boolean = false;
+  navigateToContentObject: any;
   constructor(
     public activatedRoute: ActivatedRoute,
     private configService: ConfigService,
@@ -116,6 +118,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   ) {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
+    this.assessmentMaxAttempts = this.configService.appConfig.CourseConsumption.selfAssessMaxLimit;
   }
   ngOnInit() {
     if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
@@ -318,15 +321,17 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       batchId: this.batchId,
       fields: fieldsArray
     };
-    this.CsCourseService.getContentState(req, { apiPath: '/content/course/v1' })
+    this.CsCourseService
+      .getContentState(req, { apiPath: '/content/course/v1' })
       .pipe(takeUntil(this.unsubscribe))
       .subscribe((res) => {
         const _parsedResponse = this.courseProgressService.getContentProgressState(req, res);
         this.progressToDisplay = Math.floor((_parsedResponse.completedCount / this.courseHierarchy.leafNodesCount) * 100);
         this.contentStatus = _parsedResponse.content || [];
         this.calculateProgress();
-      },
-        err => console.log(err, 'content read api failed'));
+      }, error => {
+        console.log('Content state read CSL API failed ', error);
+      });
   }
 
   public findContentById(id: string) {
@@ -334,17 +339,32 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   public navigateToContent(event: any, collectionUnit?: any, id?): void {
+    this.navigateToContentObject = {
+      event: event,
+      collectionUnit: collectionUnit,
+      id: id
+    };
+    if (_.get(event, 'event.isDisabled')) {
+      return this.toasterService.error('You have exceeded the maximum number of attempts that can be submitted');
+    } else if (_.get(event, 'event.isLastAttempt')) {
+      this.showLastAttemptsModal = true;
+    } else {
+      this._navigateToContent();
+    }
+  }
+
+  private _navigateToContent() {
     /* istanbul ignore else */
     if (!this.addToGroup) {
-      this.logTelemetry(id, event.data);
+      this.logTelemetry(this.navigateToContentObject.id, this.navigateToContentObject.event.data);
     } else {
-      this.logTelemetry('play-content-group', event.data);
+      this.logTelemetry('play-content-group', this.navigateToContentObject.event.data);
     }
 
-          /* istanbul ignore else */
-      if (!_.isEmpty(event.event)) {
-        this.navigateToPlayerPage(collectionUnit, event);
-      }
+    /* istanbul ignore else */
+    if (!_.isEmpty(this.navigateToContentObject.event.event)) {
+      this.navigateToPlayerPage(this.navigateToContentObject.collectionUnit, event);
+    }
   }
 
   private setTelemetryStartEndData() {
