@@ -265,7 +265,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
           if (maxAttemptsExceeded) {
             this.showMaxAttemptsModal = true;
           } else if (isLastAttempt) {
-            this.toasterService.error('This is the last remaining attempt');
+            this.toasterService.error(this.resourceService.frmelmnts.lbl.selfAssessLastAttempt);
           } else if (_.get(res, 'content.length')) {
             this.isCourseCompleted = (res.totalCount === res.completedCount);
             this.showCourseCompleteMessage = this.isCourseCompleted && showPopup;

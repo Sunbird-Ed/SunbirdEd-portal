@@ -345,7 +345,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       id: id
     };
     if (_.get(event, 'event.isDisabled')) {
-      return this.toasterService.error('You have exceeded the maximum number of attempts that can be submitted');
+      return this.toasterService.error(this.resourceService.frmelmnts.lbl.selfAssessMaxAttempt);
     } else if (_.get(event, 'event.isLastAttempt')) {
       this.showLastAttemptsModal = true;
     } else {

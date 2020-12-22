@@ -722,3 +722,11 @@ html.PlayerMediaQueryClass {
 .pointer-events-disabled {
   pointer-events: none;
 }
+.disabled-toc-card {
+  background-color: var(--primary-100) !important;
+  border: calculateRem(1px) solid var(--primary-300) !important;
+  cursor: not-allowed !important;
+  #circle-with-check-symbol g {
+    fill: red !important;
+  }
+}
