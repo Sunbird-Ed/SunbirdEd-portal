@@ -51,7 +51,7 @@
     "@ngx-translate/http-loader": "^6.0.0",
     "@project-sunbird/ckeditor-build-font": "^1.0.8",
     "@project-sunbird/client-services": "^3.4.9",
-    "@project-sunbird/common-consumption": "^3.6.4",
+    "@project-sunbird/common-consumption": "3.6.6",
     "@project-sunbird/sb-styles": "0.0.6",
     "@project-sunbird/sunbird-pdf-player": "0.0.13",
     "@project-sunbird/sunbird-video-player": "0.0.12",
