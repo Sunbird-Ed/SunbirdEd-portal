@@ -258,8 +258,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   loadNewPlayer() {
     const downloadStatus = Boolean(_.get(this.playerConfig, 'metadata.desktopAppMetadata.isAvailable'));
-    if (downloadStatus) {
-      this.playerConfig.metadata.artifactUrl = `${location.origin}/${this.playerConfig.metadata.artifactUrl}`;
+    const artifactUrl = _.get(this.playerConfig, 'metadata.artifactUrl');
+    if (downloadStatus && artifactUrl && !_.startsWith(artifactUrl, 'http://')) {
+      this.playerConfig.metadata.artifactUrl = `${location.origin}/${artifactUrl}`;
     }
     this.addUserDataToContext();
     if (this.isMobileOrTab) {
