@@ -76,7 +76,7 @@
                         <div class="sb-field mb-0">
                             <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['audience']"
                                 (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'audience'})"
-                                defaultSelectionText={{resourceService?.frmelmnts?.lbl?.meantFor}}
+                                defaultSelectionText={{resourceService?.frmelmnts?.lbl?.userType}}
                                 zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
                                 class="selection sbt-dropdown-tick text-cencapitalize"
                                 [ngClass]="!layoutConfiguration ? 'state-selection' : 'sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg'">
@@ -195,11 +195,11 @@
 
                         <div class="sb-field  w-100" *ngIf="allValues?.audience?.length">
                             <label
-                                class="fnormal font-weight-bold d-flex">{{resourceService.frmelmnts?.lbl?.meantFor | translate}}</label>
+                                class="fnormal font-weight-bold d-flex">{{resourceService.frmelmnts?.lbl?.userType | translate}}</label>
                             <label class="w-100">
                                 <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['audience']"
                                     (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'audience'})"
-                                    defaultSelectionText={{resourceService?.frmelmnts?.lbl?.meantFor}}
+                                    defaultSelectionText={{resourceService?.frmelmnts?.lbl?.userType}}
                                     zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
                                     class="selection sbt-dropdown-tick text-cencapitalize"
                                     [ngClass]="!layoutConfiguration ? 'state-selection' : 'sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg'">
