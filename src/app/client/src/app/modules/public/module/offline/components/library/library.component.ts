@@ -356,6 +356,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
                 this.pageSections = _.cloneDeep(this.carouselMasterData);
                 this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
                     this.addHoverData();
+                    this.facets = this.searchService.updateFacetsData(this.facets);
                 });
             } else {
                 this.hideLoader();
