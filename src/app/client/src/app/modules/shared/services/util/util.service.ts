@@ -258,24 +258,25 @@ export class UtilService {
       INPROGRESS: this.resourceService.messages.stmsg.m0140,
       RESUME: this.resourceService.messages.stmsg.m0140,
       INQUEUE: this.resourceService.messages.stmsg.m0140,
-      goToMyDownloads: this.resourceService.frmelmnts.lbl.goToMyDownloads,
-      saveToPenDrive: this.resourceService.frmelmnts.lbl.saveToPenDrive,
+      GOTOMYDOWNLOADS: this.resourceService.frmelmnts.lbl.goToMyDownloads,
+      SAVETOPENDRIVE: this.resourceService.frmelmnts.lbl.saveToPenDrive,
     };
 
     _.each(contentList, (value) => {
-      const contentStatus = status[_.get(value, 'downloadStatus')];
+      const contentStatus = _.get(value, 'downloadStatus');
       value['hoverData'] = {
-        note: isOnlineSearch ? (contentStatus ? (_.upperCase(contentStatus) === 'DOWNLOADED' ?  status.goToMyDownloads : '')
-        : this.isAvailable(value) ? status.goToMyDownloads : '') : '',
+        note: isOnlineSearch ? (contentStatus ? (_.upperCase(contentStatus) === 'DOWNLOADED' ? 'GOTOMYDOWNLOADS' : '')
+        : this.isAvailable(value) ? 'GOTOMYDOWNLOADS' : '') : '',
         actions: [
           {
-            type: isOnlineSearch ? 'download' : (contentStatus  ? (_.upperCase(contentStatus) !== 'DOWNLOADED' ? 'download' : 'save') : 'save') ,
+            type: isOnlineSearch ? 'download' : (contentStatus ? (_.upperCase(contentStatus) !== 'DOWNLOADED' ? 'download' : 'save') : 'save'),
             label: isOnlineSearch ? (contentStatus ? _.capitalize(contentStatus) :
-            this.isAvailable(value) ? _.capitalize(status.COMPLETED) : _.capitalize(status.CANCELED)) :
-            (contentStatus ? (_.upperCase(contentStatus) === 'DOWNLOADED' ? status.saveToPenDrive : _.capitalize(contentStatus)) :
-            this.isAvailable(value) ? status.saveToPenDrive : _.capitalize(status.CANCELED)),
-            disabled: isOnlineSearch ? (contentStatus ? _.includes(['Downloaded', 'Downloading', 'Paused'], _.capitalize(contentStatus)) :
-            this.isAvailable(value)) : contentStatus ? _.includes(['Downloading', 'Paused'],
+            this.isAvailable(value) ? _.capitalize('COMPLETED') : _.capitalize('CANCELED')) :
+            (contentStatus ? (_.upperCase(contentStatus) === 'DOWNLOADED' ? 'SAVETOPENDRIVE' : _.capitalize(contentStatus)) :
+            this.isAvailable(value) ? 'SAVETOPENDRIVE' : _.capitalize('CANCELED')),
+
+            disabled: isOnlineSearch ? (contentStatus ? _.includes(['Downloaded', 'Completed', 'Downloading', 'Paused', 'Inprogress', 'Resume', 'Inqueue' ], _.capitalize(contentStatus)) :
+            this.isAvailable(value)) : contentStatus ? _.includes(['Downloading', 'Inprogress', 'Resume', 'Inqueue', 'Paused'],
             _.capitalize(contentStatus)) : !this.isAvailable(value)
           },
           {
@@ -285,6 +286,7 @@ export class UtilService {
         ]
       };
 
+      value['hoverData'].actions[0].label = status[_.upperCase(value['hoverData'].actions[0].label)];
       if (_.toUpper(_.get(value, 'trackable.enabled')) === 'YES') {
         value['hoverData'].actions.shift();
       }
