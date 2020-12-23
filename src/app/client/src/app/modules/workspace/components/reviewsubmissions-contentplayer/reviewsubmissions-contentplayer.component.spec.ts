@@ -51,7 +51,7 @@ describe('ReviewsubmissionsContentplayerComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ReviewsubmissionsContentplayerComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+   // fixture.detectChanges();
   });
 
   it('should throw error if content api throws error', fakeAsync(() => {
@@ -81,5 +81,4 @@ describe('ReviewsubmissionsContentplayerComponent', () => {
     expect(component.showError).toBeFalsy();
     expect(component.showLoader).toBeFalsy();
   }));
-
 });
