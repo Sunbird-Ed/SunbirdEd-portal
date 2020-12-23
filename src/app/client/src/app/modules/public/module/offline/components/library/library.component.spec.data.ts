@@ -108,7 +108,8 @@ export const response = {
         ],
         'params': {
             'orgdetails': 'orgName,email'
-        }
+        },
+        'query': undefined
     },
     searchResult: {
         'id': 'api.content.search',

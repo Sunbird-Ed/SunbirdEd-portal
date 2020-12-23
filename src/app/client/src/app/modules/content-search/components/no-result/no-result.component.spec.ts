@@ -57,7 +57,6 @@ describe('NoResultComponent', () => {
   //   expect(component.exploreMoreContent.emit).toHaveBeenCalled();
   // });
   it('should formData', () => {
-    fixture.detectChanges();
     const response = [
       { 'index': 0, 'contentType': 'all', 'title': 'ACTIVITY_COURSE_TITLE', 'desc': 'ACTIVITY_COURSE_DESC', 'activityType': 'Content', 'isEnabled': true, 'filters': { 'contentType': ['course'] } },
       { 'index': 1, 'contentType': 'textbook', 'title': 'ACTIVITY_TEXTBOOK_TITLE', 'desc': 'ACTIVITY_TEXTBOOK_DESC', 'activityType': 'Content', 'isEnabled': false, 'filters': { 'contentType': ['TextBook'] } }
