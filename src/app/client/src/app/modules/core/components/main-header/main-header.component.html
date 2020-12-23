@@ -364,7 +364,7 @@
             <span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToJoyLayout}}</span>
             <span class="group__type mx-8">New</span>
           </li>
-          <li class="list-item accessible-menu" (click)="toggleSideMenu(false);switchToAccessibleLayout()">
+          <li class="list-item hide" (click)="toggleSideMenu(false);switchToAccessibleLayout()">
             <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
               <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
             </svg></i>

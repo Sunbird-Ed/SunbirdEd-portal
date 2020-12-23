@@ -81,5 +81,4 @@ describe('ReviewsubmissionsContentplayerComponent', () => {
     expect(component.showError).toBeFalsy();
     expect(component.showLoader).toBeFalsy();
   }));
-
 });
