@@ -142,6 +142,7 @@ $sb-radio-btn-border-disabled-color: $gray-100;
     opacity: 1;
   }
 
+  
   input:checked~.box:after,
   input:checked~label:after {
     content: "\2713";
