@@ -11,9 +11,9 @@ import { ClassLogger } from "@project-sunbird/logger/decorator";
 export default class Tenant {
   public get(req, res) {
     const resObj = {
-      appLogo: "/appLogo.png",
-      favicon: "/favicon.ico",
-      logo: "/logo.svg",
+      appLogo: "/assets/images/appLogo.png",
+      favicon: "/assets/images/favicon.ico",
+      logo: "/assets/images/logo.svg",
       titleName: process.env.APP_NAME,
     };
     logger.info(`ReqId = "${req.headers["X-msgid"]}": Received Tenant Info`);
