@@ -1,7 +1,7 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { OnlineOnlyDirective } from './online-only.directive';
 import { Component, HostListener, ElementRef, Renderer2 } from '@angular/core';
-import { ToasterService, ResourceService, ConnectionService } from '@sunbird/shared';
+import { ToasterService, ResourceService, ConnectionService, UtilService } from '@sunbird/shared';
 import { Router } from '@angular/router';
 
 // Simple test component that will not in the actual app
@@ -41,7 +41,7 @@ describe('OnlineOnlyDirective', () => {
         OnlineOnlyDirective
       ],
       providers: [ToasterService, { provide: ResourceService, useValue: resourceMockData },
-        { provide: Router, useClass: RouterStub }]
+        { provide: Router, useClass: RouterStub }, UtilService]
     });
 
     fixture = TestBed.createComponent(TestComponent);

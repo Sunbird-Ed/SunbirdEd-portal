@@ -7,6 +7,7 @@
   <base href="/<%=slug%>">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon">
+  
 </head>
 
 <body>
@@ -147,6 +148,9 @@
     <input type="hidden" id="enableSSO" value="<%=enableSSO%>" />
   <% if (reportsListVersion) { %>
   <input type="hidden" id="reportsListVersion" value="<%=reportsListVersion%>" />
+  <% } %>
+  <% if (baseUrl) { %>
+    <input type="hidden" id="baseUrl" value="<%=baseUrl%>" />
   <% } %>
   <app-root></app-root>
 </body>

@@ -113,6 +113,14 @@
                     </sui-select-option>
                   </ng-template>
                 </sui-multi-select>
+                <!-- <div *ngIf="facet.name === 'mediaType'" class="sb-class-bar sb-bg-color-gray-0">
+                  <sb-library-filters [list]="facet.mimeTypeList" [layout]="filterLayout.ROUND"
+                    [selectedItems]="[facet.mimeTypeList.indexOf(selectedMediaType) !== -1 ? facet.mimeTypeList.indexOf(selectedMediaType): selectedMediaTypeIndex]"
+                    (selectedFilter)="filterChangeEvent.next({ event: $event, type: 'mediaType'}); selectedFilters[facet.name]=[$event.data.text]">
+                  </sb-library-filters>
+                </div> -->
+              </div>
+              <div class="d-flex w-100" *ngFor="let facet of facets | sortBy:'index':'asc'">
                 <div *ngIf="facet.name === 'mediaType'" class="sb-class-bar sb-bg-color-gray-0">
                   <sb-library-filters [list]="facet.mimeTypeList" [layout]="filterLayout.ROUND"
                     [selectedItems]="[facet.mimeTypeList.indexOf(selectedMediaType) !== -1 ? facet.mimeTypeList.indexOf(selectedMediaType): selectedMediaTypeIndex]"

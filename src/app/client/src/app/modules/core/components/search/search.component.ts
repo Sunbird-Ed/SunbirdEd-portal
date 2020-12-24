@@ -2,7 +2,7 @@ import { filter } from 'rxjs/operators';
 import { Component, OnInit, ChangeDetectorRef, OnDestroy, Input } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { UserService } from './../../services';
-import { ResourceService, ConfigService, IUserProfile, LayoutService } from '@sunbird/shared';
+import { ResourceService, ConfigService, IUserProfile, LayoutService, UtilService, ConnectionService } from '@sunbird/shared';
 import { Subscription } from 'rxjs';
 import * as _ from 'lodash-es';
 /**
@@ -61,6 +61,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   searchPlaceHolderValue: string;
 
   searchDisplayValueMappers: object;
+  isDesktopApp = false;
+  isConnected = true;
 
   /**
    * reference of UserService service.
@@ -84,8 +86,8 @@ export class SearchComponent implements OnInit, OnDestroy {
      * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
    */
   constructor(route: Router, activatedRoute: ActivatedRoute, userService: UserService,
-    resourceService: ResourceService, config: ConfigService,
-    private cdr: ChangeDetectorRef, public layoutService: LayoutService) {
+    resourceService: ResourceService, config: ConfigService, public utilService: UtilService,
+    private cdr: ChangeDetectorRef, public layoutService: LayoutService, public connectionService: ConnectionService) {
     this.route = route;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
@@ -97,6 +99,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.isDesktopApp = this.utilService.isDesktopApp;
     this.showInput = true;
     this.activatedRoute.queryParams.subscribe(queryParams => {
       this.queryParam = { ...queryParams };
@@ -121,6 +124,9 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.setSearchPlaceHolderValue();
       }
     );
+    this.connectionService.monitor().subscribe(isConnected => {
+        this.isConnected = isConnected;
+    });
   }
 
   /**
@@ -165,12 +171,15 @@ export class SearchComponent implements OnInit, OnDestroy {
     } else {
       redirectUrl = url.substring(0, url.indexOf('explore')) + 'explore';
     }
+    
     if (!_.includes(['Users', 'profile'], this.selectedOption)) {
-      this.queryParam['selectedTab'] = 'all';
+      this.queryParam['selectedTab'] = this.isDesktopApp && !this.isConnected ? 'mydownloads' : 'all';
     }
-    this.route.navigate([redirectUrl, 1], {
-      queryParams: this.queryParam
-    });
+    if(this.isDesktopApp && !this.isConnected) {
+      this.route.navigate(['mydownloads'], { queryParams: this.queryParam });
+    } else {
+      this.route.navigate([redirectUrl, 1], { queryParams: this.queryParam });
+    }
   }
 
   setFilters() {

@@ -8,15 +8,16 @@ import * as _ from 'lodash-es';
 import {
   WindowScrollService, ILoaderMessage, PlayerConfig, ICollectionTreeOptions, NavigationHelperService,
   ToasterService, ResourceService, ContentData, ContentUtilsServiceService, ITelemetryShare, ConfigService,
-  ExternalUrlPreviewService, LayoutService, UtilService
+  ExternalUrlPreviewService, LayoutService, UtilService, ConnectionService, OfflineCardService
 } from '@sunbird/shared';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput } from '@sunbird/telemetry';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput, TelemetryService } from '@sunbird/telemetry';
 import * as TreeModel from 'tree-model';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { PopupControlService } from '../../../../service/popup-control.service';
 import { PublicPlayerService } from '@sunbird/public';
 import { TocCardType, PlatformType } from '@project-sunbird/common-consumption';
 import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
+import { ContentManagerService } from '../../../public/module/offline/services';
 
 @Component({
   selector: 'app-collection-player',
@@ -92,17 +93,28 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   PlatformType = PlatformType;
   isGroupAdmin: boolean;
   groupId: string;
+  isDesktopApp: Boolean = false;
+  isConnected: Boolean = true;
+  contentDownloadStatus = {};
+  showUpdate: Boolean = false;
+  showExportLoader: Boolean = false;
+  showModal: Boolean = false;
+  showDownloadLoader: Boolean = false;
+  disableDelete: Boolean = false;
+  isAvailableLocally = false;
 
   constructor(public route: ActivatedRoute, public playerService: PlayerService,
     private windowScrollService: WindowScrollService, public router: Router, public navigationHelperService: NavigationHelperService,
-    private toasterService: ToasterService, private deviceDetectorService: DeviceDetectorService, private resourceService: ResourceService,
+    public toasterService: ToasterService, private deviceDetectorService: DeviceDetectorService, private resourceService: ResourceService,
     public permissionService: PermissionService, public copyContentService: CopyContentService,
     public contentUtilsServiceService: ContentUtilsServiceService, public configService: ConfigService,
     public popupControlService: PopupControlService, public navigationhelperService: NavigationHelperService,
     public externalUrlPreviewService: ExternalUrlPreviewService, public userService: UserService,
     public layoutService: LayoutService, public generaliseLabelService: GeneraliseLabelService,
     public publicPlayerService: PublicPlayerService, public coursesService: CoursesService,
-    private utilService: UtilService) {
+    private utilService: UtilService, public contentManagerService: ContentManagerService,
+    public connectionService: ConnectionService, private telemetryService: TelemetryService,
+    private offlineCardService: OfflineCardService) {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
     this.playerOption = { showContentRating: true };
@@ -116,6 +128,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   ngOnInit() {
+    this.isDesktopApp = this.utilService.isDesktopApp;
     this.playerServiceReference = this.userService.loggedIn ? this.playerService : this.publicPlayerService;
     this.initLayout();
     this.dialCode = _.get(this.route, 'snapshot.queryParams.dialCode');
@@ -126,6 +139,15 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       this.groupId = _.get(data, 'groupId') || _.get(this.route.snapshot, 'queryParams.groupId');
     });
 
+    if (this.isDesktopApp) {
+      this.contentManagerService.contentDownloadStatus$.pipe(takeUntil(this.unsubscribe$)).subscribe( contentDownloadStatus => {
+        this.contentDownloadStatus = contentDownloadStatus;
+        this.checkDownloadStatus();
+      });
+      this.connectionService.monitor().subscribe(isConnected => {
+        this.isConnected = isConnected;
+      });
+    }
   }
 
   initLayout() {
@@ -351,7 +373,12 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       .subscribe((data) => {
         this.collectionTreeNodes = data;
         this.showLoader = false;
-        this.layoutService.updateSelectedContentType.emit(_.get(data, 'data.contentType'));
+        this.isAvailableLocally = Boolean(_.get(data, 'data.desktopAppMetadata.isAvailable'));
+        if (this.isDesktopApp && this.isAvailableLocally) {
+          this.layoutService.updateSelectedContentType.emit('mydownloads');
+        } else {
+          this.layoutService.updateSelectedContentType.emit(_.get(data, 'data.contentType'));
+        }
         this.getGeneraliseResourceBundle(data.data);
         this.setTelemetryData();
         this.setTelemetryStartEndData();
@@ -428,6 +455,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
         this.mimeType = _.get(response, 'result.content.mimeType');
         this.collectionTitle = _.get(response, 'result.content.name') || 'Untitled Collection';
         this.badgeData = _.get(response, 'result.content.badgeAssertions');
+        this.showUpdate = _.get(this.collectionData, 'desktopAppMetadata.updateAvailable');
         return { data: _.get(response, 'result.content') };
       }));
   }
@@ -451,9 +479,10 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     this.selectedContent = {};
     this.showPlayer = false;
     this.triggerContentImpression = false;
+    const contentType = this.isAvailableLocally ? 'mydownloads' : this.contentType;
     const navigationExtras: NavigationExtras = {
       relativeTo: this.route,
-      queryParams: { contentType: this.contentType }
+      queryParams: { contentType }
     };
     if (this.dialCode) {
       navigationExtras.queryParams['dialCode'] = _.get(this.route, 'snapshot.queryParams.dialCode');
@@ -678,6 +707,122 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     } else if (_.get(event, 'selectAll') === false) {
       this.selectedItems = [];
     }
+  }
+
+  checkStatus(status) {
+    this.checkDownloadStatus();
+    return this.utilService.getPlayerDownloadStatus(status, this.collectionData);
+  }
+
+  checkDownloadStatus() {
+    if (this.collectionData) {
+      const downloadStatus = ['CANCELED', 'CANCEL', 'FAILED', 'DOWNLOAD'];
+      const status = this.contentDownloadStatus[this.collectionData.identifier];
+      this.collectionData['downloadStatus'] = _.isEqual(downloadStatus, status) ? 'DOWNLOAD' :
+      (_.includes(['INPROGRESS', 'RESUME', 'INQUEUE'], status) ? 'DOWNLOADING' : _.isEqual(status, 'COMPLETED') ? 'DOWNLOADED' : status);
+    }
+  }
+
+  updateCollection(collection) {
+    collection['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
+    this.logTelemetry('update-collection');
+    const request = {
+      contentId: collection.identifier
+    };
+    this.contentManagerService.updateContent(request).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      collection['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
+      this.showUpdate = false;
+    }, (err) => {
+      this.showUpdate = true;
+      const errorMessage = !this.isConnected ? _.replace(this.resourceService.messages.smsg.m0056, '{contentName}', collection.name) :
+        this.resourceService.messages.fmsg.m0096;
+      this.toasterService.error(errorMessage);
+    });
+  }
+
+  exportCollection(collection) {
+    this.logTelemetry('export-collection');
+    this.showExportLoader = true;
+    this.contentManagerService.exportContent(collection.identifier)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(data => {
+        this.showExportLoader = false;
+        this.toasterService.success(this.resourceService.messages.smsg.m0059);
+      }, error => {
+        this.showExportLoader = false;
+        if (_.get(error, 'error.responseCode') !== 'NO_DEST_FOLDER') {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+        }
+      });
+  }
+
+  isYoutubeContentPresent(collection) {
+    this.logTelemetry('is-youtube-in-collection');
+    this.showModal = this.offlineCardService.isYoutubeContent(collection);
+    if (!this.showModal) {
+      this.downloadCollection(collection);
+    }
+  }
+
+  downloadCollection(collection) {
+    this.showDownloadLoader = true;
+    this.disableDelete = false;
+    collection['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
+    this.logTelemetry('download-collection');
+    this.contentManagerService.downloadContentId = collection.identifier;
+    this.contentManagerService.downloadContentData = collection;
+    this.contentManagerService.failedContentName = collection.name;
+    this.contentManagerService.startDownload({}).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      this.contentManagerService.downloadContentId = '';
+      this.contentManagerService.downloadContentData = {};
+      this.showDownloadLoader = false;
+      collection['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
+    }, error => {
+      this.disableDelete = true;
+      this.showDownloadLoader = false;
+      this.contentManagerService.downloadContentId = '';
+      this.contentManagerService.downloadContentData = {};
+      this.contentManagerService.failedContentName = '';
+      collection['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
+      if (!(error.error.params.err === 'LOW_DISK_SPACE')) {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+          }
+    });
+  }
+
+  deleteCollection(collectionData) {
+    this.disableDelete = true;
+    this.logTelemetry('delete-collection');
+    const request = {request: {contents: [collectionData.identifier]}};
+    this.contentManagerService.deleteContent(request).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      this.toasterService.success(this.resourceService.messages.stmsg.desktop.deleteTextbookSuccessMessage);
+      collectionData['downloadStatus'] = 'DOWNLOAD';
+      collectionData['desktopAppMetadata.isAvailable'] = false;
+      this.closeCollectionPlayer();
+    }, err => {
+      this.disableDelete = false;
+      this.toasterService.error(this.resourceService.messages.etmsg.desktop.deleteTextbookErrorMessage);
+    });
+  }
+
+  logTelemetry(id) {
+    const interactData = {
+      context: {
+        env: _.get(this.route.snapshot.data.telemetry, 'env') || 'content',
+        cdata: [],
+      },
+      edata: {
+        id: id,
+        type: 'click',
+        pageid: _.get(this.route.snapshot.data.telemetry, 'pageid') || 'play-collection',
+      },
+      object: {
+        id: this.collectionData['identifier'],
+        type: this.collectionData['contentType'],
+        ver: `${this.collectionData['pkgVersion']}` || '1.0',
+      }
+    };
+    this.telemetryService.interact(interactData);
   }
 }
 

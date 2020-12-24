@@ -61,11 +61,11 @@ ApiInterceptor.prototype.validateToken = function (token, cb) {
 
     jwt.verify(token, publicKey, verificationOption, (err, payload) => {
         if(err){
-            console.error(`${ CONSTANTS.logPrefix } invalid signature - 401. kid: ${ kid }`, err);
+            console.error(`${ CONSTANTS.logPrefix } jwt verificate error. kid: ${ kid }`, err);
             return cb("INVALID_SIGNATURE");
         }
 
-        console.info(`${ CONSTANTS.logPrefix } verification is success. kid: ${ kid }`);
+        console.info(`${ CONSTANTS.logPrefix } jwt verification is success. kid: ${ kid }`);
 		cb(null, { token, userId: payload.sub }) 
     });
 };
