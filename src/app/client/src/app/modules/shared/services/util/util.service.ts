@@ -269,10 +269,10 @@ export class UtilService {
         : this.isAvailable(value) ? 'GOTOMYDOWNLOADS' : '') : '',
         actions: [
           {
-            type: isOnlineSearch ? 'download' : (contentStatus ? (_.upperCase(contentStatus) !== 'DOWNLOADED' ? 'download' : 'save') : 'save'),
+            type: isOnlineSearch ? 'download' : (contentStatus ? (!_.includes(['COMPLETED', 'DOWNLOADED'], contentStatus) ? 'download' : 'save') : 'save'),
             label: isOnlineSearch ? (contentStatus ? _.capitalize(contentStatus) :
             this.isAvailable(value) ? _.capitalize('COMPLETED') : _.capitalize('CANCELED')) :
-            (contentStatus ? (_.upperCase(contentStatus) === 'DOWNLOADED' ? 'SAVETOPENDRIVE' : _.capitalize(contentStatus)) :
+            (contentStatus ? (_.includes(['COMPLETED', 'DOWNLOADED'], contentStatus) ? 'SAVETOPENDRIVE' : _.capitalize(contentStatus)) :
             this.isAvailable(value) ? 'SAVETOPENDRIVE' : _.capitalize('CANCELED')),
 
             disabled: isOnlineSearch ? (contentStatus ? _.includes(['Downloaded', 'Completed', 'Downloading', 'Paused', 'Inprogress', 'Resume', 'Inqueue' ], _.capitalize(contentStatus)) :
