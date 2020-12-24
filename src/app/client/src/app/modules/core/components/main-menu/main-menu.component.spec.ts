@@ -10,7 +10,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 import {TelemetryService} from '@sunbird/telemetry';
 import {mockData} from '../main-menu/main-menu.component.spec.data';
 
-fdescribe('MainMenuComponent', () => {
+describe('MainMenuComponent', () => {
   let component: MainMenuComponent;
   let fixture: ComponentFixture<MainMenuComponent>;
   const eventSubject = new ReplaySubject<RouterEvent>(1);
