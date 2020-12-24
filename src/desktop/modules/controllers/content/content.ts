@@ -83,7 +83,7 @@ export default class Content {
                 dbResult.docs.push(obj);
             });
             dbResult.docs = _.uniqBy(dbResult.docs,'identifier');
-        }
+        } 
         return dbResult;
     }
 
