@@ -284,7 +284,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
         delete softConstraints['board'];
         }
         const option: any = {
-            filters: filters,
+            filters: _.omitBy(filters || {}, value => _.isArray(value) ? (!_.get(value, 'length') ? true : false) : false),
             fields: _.get(this.currentPageData, 'search.fields'),
             query: this.queryParams.key,
             softConstraints: softConstraints,
