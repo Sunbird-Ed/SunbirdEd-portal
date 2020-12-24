@@ -62,6 +62,7 @@ describe('ReviewsubmissionsContentplayerComponent', () => {
     spyOn(playerService, 'getContent').and.returnValue(observableThrowError(testData.errorRes));
     component.getContent();
     flush();
+    fixture.detectChanges();
     expect(component.playerConfig).toBeUndefined();
     expect(component.showError).toBeTruthy();
     expect(component.errorMessage).toBe(resourceService.messages.stmsg.m0009);
