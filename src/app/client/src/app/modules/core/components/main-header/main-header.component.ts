@@ -15,7 +15,7 @@ import {
   UtilService,
   ToasterService,
   IUserData, LayoutService,
-  NavigationHelperService
+  NavigationHelperService, ConnectionService
 } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -24,7 +24,6 @@ import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
 import { Subject, zip, forkJoin } from 'rxjs';
 import { EXPLORE_GROUPS, MY_GROUPS } from '../../../public/module/group/components/routerLinks';
-import { ConnectionService } from '@sunbird/shared';
 
 declare var jQuery: any;
 type reportsListVersionType = 'v1' | 'v2';
