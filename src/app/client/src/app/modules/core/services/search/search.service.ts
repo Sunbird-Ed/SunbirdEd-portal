@@ -496,9 +496,14 @@ export class SearchService {
           facet['label'] = this.resourceService.frmelmnts.lbl.mediaType;
           facet['mimeTypeList'] = this.mimeTypeList;
           break;
+        case 'mediaType':
+            facet['index'] = '8';
+            facet['label'] = this.resourceService.frmelmnts.lbl.mediaType;
+            facet['mimeTypeList'] = this.mimeTypeList;
+            break;
         case 'audience':
             facet['index'] = '9';
-            facet['label'] =  this.resourceService.frmelmnts.lbl.meantFor;
+            facet['label'] =  this.resourceService.frmelmnts.lbl.userType;
             facet['placeholder'] =  this.resourceService.frmelmnts.lbl.selectMeantFor;
             break;
         case 'channel':

@@ -76,6 +76,7 @@ export class BatchInfoComponent implements OnInit, OnDestroy {
   }
   public handleResumeEvent(event) {
     this.modal.deny();
+    this.routeChanged.emit(false);
     event.mimeType = 'application/vnd.ekstep.content-collection'; // to route to course page
     event.contentType = 'Course'; // to route to course page
     this.playerService.playContent(event);
@@ -115,7 +116,7 @@ export class BatchInfoComponent implements OnInit, OnDestroy {
       const textbook = _.get(this.activatedRoute, 'snapshot.queryParams.textbook');
       const queryParams = textbook ? { textbook } : {};
       this.router.navigate(['/learn/course', event.courseId, 'batch', event.identifier], { queryParams }).then(res => {
-        this.routeChanged.emit();
+        this.routeChanged.emit(true);
       });
     }, (err) => {
       this.disableEnrollBtn = false;
