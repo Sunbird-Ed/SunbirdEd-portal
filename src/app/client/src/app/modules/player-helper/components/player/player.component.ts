@@ -169,11 +169,13 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         try {
           this.adjustPlayerHeight();
           playerElement.contentWindow.initializePreview(this.playerConfig);
-          if (!this.playerLoaded) {
-            playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
-            window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
-            this.playerLoaded = true;
+          if (this.playerLoaded) {
+            playerElement.removeEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
+            window.frames['contentPlayer'].removeEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
           }
+          this.playerLoaded = true;
+          playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
+          window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
         } catch (err) {
           this.loadDefaultPlayer();
         }
@@ -189,11 +191,13 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         try {
           this.adjustPlayerHeight();
           playerElement.contentWindow.initializePreview(this.playerConfig);
-          if (!this.playerLoaded) {
-            playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
-            window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
-            this.playerLoaded = true;
+          if (this.playerLoaded) {
+            playerElement.removeEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
+            window.frames['contentPlayer'].removeEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
           }
+          this.playerLoaded = true;
+          playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
+          window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
         } catch (err) {
           const prevUrls = this.navigationHelperService.history;
           if (this.isCdnWorking.toLowerCase() === 'yes' && prevUrls[prevUrls.length - 2]) {
@@ -254,8 +258,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   loadNewPlayer() {
     const downloadStatus = Boolean(_.get(this.playerConfig, 'metadata.desktopAppMetadata.isAvailable'));
-    if (downloadStatus) {
-      this.playerConfig.metadata.artifactUrl = `${location.origin}/${this.playerConfig.metadata.artifactUrl}`;
+    const artifactUrl = _.get(this.playerConfig, 'metadata.artifactUrl');
+    if (downloadStatus && artifactUrl && !_.startsWith(artifactUrl, 'http://')) {
+      this.playerConfig.metadata.artifactUrl = `${location.origin}/${artifactUrl}`;
     }
     this.addUserDataToContext();
     if (this.isMobileOrTab) {
