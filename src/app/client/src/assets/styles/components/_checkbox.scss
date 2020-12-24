@@ -144,7 +144,7 @@ $sb-radio-btn-border-disabled-color: $gray-100;
 
   input:checked~.box:after,
   input:checked~label:after {
-    content: '✔';
+    content: "\2713";
     border-radius: $sb-checkbox-border-radius;
     font-weight: normal;
   }
