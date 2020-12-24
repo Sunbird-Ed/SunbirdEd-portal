@@ -81,7 +81,8 @@ export default class Content {
         if(QRresult.length > 0) {
             _.forEach(QRresult, (obj, index) => {
                 dbResult.docs.push(obj);
-            })
+            });
+            dbResult.docs = _.uniqBy(dbResult.docs,'identifier');
         }
         return dbResult;
     }
