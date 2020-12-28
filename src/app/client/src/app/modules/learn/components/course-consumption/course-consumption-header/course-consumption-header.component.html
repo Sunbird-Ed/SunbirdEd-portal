@@ -56,12 +56,12 @@
               </button>
 
                <!-- Discussion Forum -->
+               <!-- TODO: Add the if check for showing the forum icon -->
                <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix" 	
                appTelemetryInteract [telemetryInteractObject]="courseInteractObject"	
                [telemetryInteractEdata]="{id:'discussion' , type: 'click' , pageid:'course-consumption'}" 	
                [telemetryInteractCdata]="[{id: courseHierarchy?.identifier, type: 'Course'}]"	
-               (click)="openDiscussionForum()" *ngIf="forumId && (enrolledCourse || (courseConsumptionService?.userCreatedAnyBatch | async))"	
-               title="Forum">	
+               (click)="openDiscussionForum()" title="Forum">	
                   <img src="assets/images/forum.svg" width="16px" class="mr-8">	
                   {{resourceService?.frmelmnts?.lbl?.discussionForum}}	
                </button>
