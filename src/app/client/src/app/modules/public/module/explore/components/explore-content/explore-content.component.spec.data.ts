@@ -83,6 +83,56 @@ export const Response = {
           'compatibilityLevel': 1,
           'node_id': 96096
         }
+      ],
+      'facets': [
+          {
+            'values': [
+              {
+                'name': 'grade 7',
+                'count': 8
+              },
+              {
+                'name': 'class 2',
+                'count': 85
+              }
+            ],
+            'name': 'gradeLevel'
+          },
+          {
+            'values': [
+              {
+                'name': 'chemistry',
+                'count': 2
+              },
+              {
+                'name': 'marathi',
+                'count': 9
+              }
+            ],
+            'name': 'subject'
+          },
+          {
+            'values': [
+              {
+                'name': 'explanation content',
+                'count': 2
+              },
+              {
+                'name': 'learning resource',
+                'count': 9
+              },
+              {
+                'name': 'course assessment',
+                'count': 2
+              },
+              {
+                'name': 'course',
+                'count': 9
+              }
+            ],
+            'name': 'primaryCategory'
+          }
+          
       ]
     }
   },
@@ -317,7 +367,7 @@ export const Response = {
         ],
         'name': 'board'
       }
-    ],
+  ],
   filters: [
       {
         'code': 'board',
