@@ -167,7 +167,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.fetchCurrentPageData();
         this.initLayout();
         this.setTelemetryData();
-        this.listenLanguageChange();
         this.contentManagerService.contentDownloadStatus$.subscribe( contentDownloadStatus => {
             this.contentDownloadStatus = contentDownloadStatus;
             this.updateCardData();
@@ -212,14 +211,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.utilService.clearSearchQuery();
     }
 
-    private listenLanguageChange() {
-        this.utilService.languageChange.pipe(takeUntil(this.unsubscribe$)).subscribe((langData) => {
-            if (_.get(this.pageSections, 'length')) {
-                this.addHoverData();
-            }
-        });
-    }
-
     fetchContentOnParamChange() {
         combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
           .pipe(debounceTime(5),
@@ -237,12 +228,26 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.unsubscribe$.complete();
     }
     public getFilters(filters) {
-        this.selectedFilters = filters.filters;
+        const filterData = filters && filters.filters || {};
+        if (filterData.channel && this.facets) {
+        const channelIds = [];
+        const facetsData = _.find(this.facets, { 'name': 'channel' });
+        _.forEach(filterData.channel, (value, index) => {
+            const data = _.find(facetsData.values, { 'identifier': value });
+            if (data) {
+            channelIds.push(data.name);
+            }
+        });
+        if (channelIds && Array.isArray(channelIds) && channelIds.length > 0) {
+            filterData.channel = channelIds;
+        }
+        }
+        this.selectedFilters = filterData;
         const defaultFilters = _.reduce(filters, (collector: any, element) => {
-          if (element.code === 'board') {
-            collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
-          }
-          return collector;
+            if (element.code === 'board') {
+                collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
+            }
+            return collector;
         }, {});
         this.dataDrivenFilterEvent.emit(defaultFilters);
         this.carouselMasterData = [];
@@ -281,6 +286,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
         const option: any = {
             filters: filters,
             fields: _.get(this.currentPageData, 'search.fields'),
+            query: this.queryParams.key,
             softConstraints: softConstraints,
             facets: this.globalSearchFacets,
             params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
@@ -350,6 +356,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
                 this.pageSections = _.cloneDeep(this.carouselMasterData);
                 this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
                     this.addHoverData();
+                    this.facets = this.searchService.updateFacetsData(this.facets);
                 });
             } else {
                 this.hideLoader();

@@ -116,7 +116,7 @@
            <!--Load content -->
            <div class="computer only d-flex" *appDesktopOnly>
             <span class="search-qrcode-divider"></span>
-            <button class="ui button qr-code-btn d-flex flex-ai-center sb-load-content-btn" type="button"> {{resourceService?.frmelmnts?.btn?.loadContent}} </button>
+            <button class="ui button qr-code-btn d-flex flex-ai-center sb-load-content-btn" type="button" (click)="showLoadContentModal=true" > {{resourceService?.frmelmnts?.btn?.loadContent}} </button>
           </div>
            <!--/Load content -->
           <!--Language Dropdown-->
@@ -332,7 +332,7 @@
           </li>
 
           <li class="list-item" appOnlineOnly (click)="toggleSideMenu(false)"
-            [class.active]="router.isActive(routerLinks?.groups)" *ngIf="!router.isActive('', true)"
+            [class.active]="router.isActive(routerLinks?.groups)" *ngIf="!router.isActive('', true) && !isDesktopApp"
             [routerLink]="[navigateToGroups()]" appTelemetryInteract [telemetryInteractEdata]="myGroupIntractEData">
             <i class="icon-svg icon-svg--sm icon-groups mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#groups"></use>
@@ -364,7 +364,7 @@
             <span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToJoyLayout}}</span>
             <span class="group__type mx-8">New</span>
           </li>
-          <li class="list-item" (click)="toggleSideMenu(false);switchToAccessibleLayout()">
+          <li class="list-item hide" (click)="toggleSideMenu(false);switchToAccessibleLayout()">
             <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
               <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
             </svg></i>
@@ -391,7 +391,7 @@
             </div>
 
             <li appOnlineOnly class="list-item" (click)="toggleSideMenu(false)" [class.active]="router.isActive(routerLinks?.explore)"
-              *ngIf="!router.isActive('', true)" [routerLink]="[navigateToGroups()]" appTelemetryInteract
+              *ngIf="!router.isActive('', true) && !isDesktopApp" [routerLink]="[navigateToGroups()]" appTelemetryInteract
               [telemetryInteractEdata]="myGroupIntractEData">
               <i class="icon-svg icon-svg--sm icon-groups mr-8"><svg class="icon icon-svg--primary">
                   <use xlink:href="./assets/images/sprite.svg#groups"></use>
@@ -408,13 +408,13 @@
             </li>
             <li class="list-item" (click)="toggleSideMenu(false);manageLocation()">
               <i class="icon-svg icon-svg--sm icon-manage mr-8"><svg class="icon icon-svg--primary">
-                <use xlink:href="./assets/images/sprite.svg#manage"></use>
+                <use xlink:href="./assets/images/sprite.svg#manage-location"></use>
               </svg></i>
               <span>{{resourceService?.frmelmnts?.lbl?.manageLocation}}</span>
             </li>
             <li class="list-item" (click)="toggleSideMenu(false);" routerLink="/desktop/telemetry" *appDesktopOnly>
               <i class="icon-svg icon-svg--sm icon-manage mr-8"><svg class="icon icon-svg--primary">
-                <use xlink:href="./assets/images/sprite.svg#manage"></use>
+                <use xlink:href="./assets/images/sprite.svg#sync"></use>
               </svg></i>
               <span>{{resourceService?.frmelmnts?.lbl?.desktop?.syncTelemetry}}</span>
             </li>
@@ -425,13 +425,13 @@
               </svg></i>
             {{resourceService?.frmelmnts?.tab?.help}}
           </li>
-            <li *ngIf="!isDesktopApp" class="list-item" (click)="toggleSideMenu(false);switchToAccessibleLayout()">
+            <li *ngIf="!isDesktopApp" class="list-item hide" (click)="toggleSideMenu(false);switchToAccessibleLayout()">
               <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
               </svg></i>
               {{resourceService?.frmelmnts?.lbl?.accessible}}
             </li>
-            <li *ngIf="isDesktopApp" class="list-item" (click)="toggleSideMenu(false);switchToAccessibleLayout()" appOnlineOnly>
+            <li *ngIf="isDesktopApp" class="list-item hide" (click)="toggleSideMenu(false);switchToAccessibleLayout()" appOnlineOnly>
               <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
               </svg></i>
@@ -446,7 +446,7 @@
                 {{resourceService.frmelmnts?.btn?.login}}
               </a>
             </li>
-            <li class="list-item p-0" (click)="toggleSideMenu(false)" appTelemetryInteract
+            <li class="list-item p-0 hide" (click)="toggleSideMenu(false)" appTelemetryInteract
               [telemetryInteractEdata]="signInIntractEdata" *appDesktopOnly appOnlineOnly>
               <a appOnlineOnly (click)="doLogin()" class="d-flex flex-ai-center list-item-a">
                 <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
@@ -468,3 +468,6 @@
 [isCustodianOrgUser]="isCustodianUser" [deviceProfile]="deviceProfile" (close)="locationSubmit()">
 </app-onboarding-location>
 <!-- Manage location for an anonymous user -->
+
+
+<app-load-offline-content [hideLoadButton]="true" (close)="showLoadContentModal=false"  *ngIf="showLoadContentModal"></app-load-offline-content>
