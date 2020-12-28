@@ -54,7 +54,7 @@ describe('ReviewsubmissionsContentplayerComponent', () => {
    // fixture.detectChanges();
   });
 
-  xit('should throw error if content api throws error', fakeAsync(() => {
+  it('should throw error if content api throws error', fakeAsync(() => {
     const playerService = TestBed.get(PlayerService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceBundle.messages;
@@ -67,7 +67,7 @@ describe('ReviewsubmissionsContentplayerComponent', () => {
     expect(component.errorMessage).toBe(resourceService.messages.stmsg.m0009);
   }));
 
-  xit('should call  content api and return content data', fakeAsync(() => {
+  it('should call  content api and return content data', fakeAsync(() => {
     const playerService = TestBed.get(PlayerService);
     const userService = TestBed.get(UserService);
     const resourceService = TestBed.get(ResourceService);
