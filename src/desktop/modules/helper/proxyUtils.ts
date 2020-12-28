@@ -5,7 +5,6 @@ const https = require('https');
 const httpAgent = new http.Agent({ keepAlive: true, });
 const httpsAgent = new https.Agent({ keepAlive: true, });
 import { containerAPI } from "@project-sunbird/OpenRAP/api";
-const appId = "1.5";
 
 export const decorateRequestHeaders = function (upstreamUrl = "") {
   return async function (proxyReqOpts, srcReq) {
@@ -26,17 +25,17 @@ export const decorateRequestHeaders = function (upstreamUrl = "") {
       }
     }
     if(!srcReq.get('X-App-Id')){
-      proxyReqOpts.headers['X-App-Id'] = appId
+      proxyReqOpts.headers['X-App-Id'] = process.env.APP_VERSION
     }
     // if (srcReq.session.managedToken) {
     //   proxyReqOpts.headers['x-authenticated-for'] = srcReq.session.managedToken
     // }
-    const userToken: any = await userSDK.getUserToken().catch(error => { logger.debug("User not logged in", error);})
+    const userToken: any = await userSDK.getUserToken().catch(error => { logger.debug("Unable to get the user token", error);})
     if (userToken) {
       proxyReqOpts.headers['x-authenticated-user-token'] = userToken
     }
     const apiKey = await containerAPI.getDeviceSdkInstance().getToken().catch((err) => {
-      logger.error(`Received error while fetching api key in app update with error: ${err}`);
+      logger.error(`Received error while fetching device token with error: ${err}`);
     });
     proxyReqOpts.headers.Authorization = 'Bearer ' + apiKey;
     proxyReqOpts.rejectUnauthorized = false
