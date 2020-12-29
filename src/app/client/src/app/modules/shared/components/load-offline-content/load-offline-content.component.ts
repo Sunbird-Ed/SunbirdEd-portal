@@ -63,6 +63,7 @@ export class LoadOfflineContentComponent implements OnInit, OnDestroy  {
   }
 
   closeModal() {
+    this.showLoadContentModal = false;
     this.close.emit();
     this.modal.deny();
   }
