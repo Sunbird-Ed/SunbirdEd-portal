@@ -30,15 +30,15 @@ describe('AboutUsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AboutUsComponent ],
+      declarations: [AboutUsComponent],
       imports: [SharedModule.forRoot(), TelemetryModule.forRoot(), HttpClientTestingModule, SuiModalModule],
       providers: [DatePipe,
-        {provide: ResourceService, useValue: appInfoResponse.resourceBundle},
-        {provide: ActivatedRoute, useClass: ActivatedRouteStub},
-        {provide: Router, useClass: RouterStub},
-       ]
+        { provide: ResourceService, useValue: appInfoResponse.resourceBundle },
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
+        { provide: Router, useClass: RouterStub },
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -100,15 +100,6 @@ describe('AboutUsComponent', () => {
     expect(component.showModal).toBeTruthy();
   });
 
-  it('should change display modal and message to be termsOfUse', () => {
-    component.termsIframe = {nativeElement: {contentWindow: {document: {title: 'Error'}}}};
-    spyOn(component['toasterService'], 'error');
-    component.isIFrameLoaded();
-    expect(component.showLoader).toBeFalsy();
-    expect(component.showModal).toBeFalsy();
-    expect(component['toasterService'].error).toHaveBeenCalledWith(appInfoResponse.resourceBundle.messages.desktop.emsg.termsOfUse);
-  });
-
   it('should change display modal and message to be noConnectionTerms ', () => {
     spyOn(component['toasterService'], 'error');
     component.isConnected = false;
@@ -118,4 +109,12 @@ describe('AboutUsComponent', () => {
     expect(component['toasterService'].error).toHaveBeenCalledWith(appInfoResponse.resourceBundle.messages.desktop.emsg.noConnectionTerms);
   });
 
+  it('should change display modal and message to be termsOfUse', () => {
+    component.termsIframe = { nativeElement: { contentWindow: { document: { title: 'Error' } } } };
+    spyOn(component['toasterService'], 'error');
+    component.isIFrameLoaded();
+    expect(component.showLoader).toBeFalsy();
+    expect(component.showModal).toBeFalsy();
+    expect(component['toasterService'].error).toHaveBeenCalledWith(appInfoResponse.resourceBundle.messages.desktop.emsg.termsOfUse);
+  });
 });
