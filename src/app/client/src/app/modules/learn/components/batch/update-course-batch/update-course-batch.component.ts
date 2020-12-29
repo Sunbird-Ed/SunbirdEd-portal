@@ -391,7 +391,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     }, 1000);
   }
   private initDropDown() {
-    const count = this.batchDetails.participants ? this.batchDetails.participants.length : 0;
+    const count = _.get(this.batchDetails, 'participants') ? _.get(this.batchDetails, 'participants.length') : 0;
     this.lazzyLoadScriptService.loadScript('semanticDropdown.js').subscribe(() => {
       $('#participant').dropdown({
         forceSelection: false,
