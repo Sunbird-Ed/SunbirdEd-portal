@@ -13,4 +13,11 @@ export default class Device {
     await this.settingSDK.put(`location`, userDeclaredLocation)
       .catch((error) => { logger.error("Error while adding data to setting SDK", error); });
   }
+
+  public async getDeviceProfile() {
+    return await this.settingSDK.get(`location`)
+      .catch((error) => { logger.error("Error while getting location data from setting SDK", error); });
+  }
+
+
 }
