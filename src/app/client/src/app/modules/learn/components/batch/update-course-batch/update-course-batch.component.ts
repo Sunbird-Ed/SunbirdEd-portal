@@ -19,7 +19,14 @@ import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
 })
 export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  @ViewChild('updateBatchModal') private updateBatchModal;
+  private updateBatchModal;
+
+  @ViewChild('updateBatchModal') set setBatchModal(element) {
+    if (element) {
+      this.updateBatchModal = element;
+    }
+    this.initDropDown();
+  };
   /**
   * batchId
   */
@@ -180,7 +187,6 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
         }
         this.initializeUpdateForm();
         this.fetchParticipantDetails();
-        this.initDropDown();
       }, (err) => {
         if (err.error && err.error.params.errmsg) {
           this.toasterService.error(err.error.params.errmsg);
