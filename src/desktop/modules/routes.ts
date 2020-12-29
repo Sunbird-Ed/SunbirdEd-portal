@@ -116,7 +116,7 @@ export class Router {
           // set Default state value if offline location data is not available
           let responseObj = { userDeclaredLocation: {'state': '', 'district': '' }}
           if(locationData) {
-            responseObj.userDeclaredLocation.state = _.get(locationData, 'state'); 
+            responseObj.userDeclaredLocation.state = _.get(locationData, 'state');
             responseObj.userDeclaredLocation.district = _.get(locationData, 'district');
           }
           return res.send(Response.success("offline.device-profile", responseObj, req));
