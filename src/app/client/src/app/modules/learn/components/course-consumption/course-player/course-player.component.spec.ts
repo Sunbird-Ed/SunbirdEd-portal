@@ -33,7 +33,7 @@ describe('CoursePlayerComponent', () => {
       enrollmentEndDate: null,
       enrollmentType: "open",
       name: "SHS cert course 1 - 0825",
-      startDate: "2020-12-25",
+      startDate: "2045-12-25",
       status: 1
     },
     {
@@ -43,7 +43,7 @@ describe('CoursePlayerComponent', () => {
       enrollmentEndDate: null,
       enrollmentType: "open",
       name: "SHS cert course 1 - 0825",
-      startDate: "2020-08-25",
+      startDate: "2045-08-25",
       status: 1
     },
     {
@@ -53,7 +53,7 @@ describe('CoursePlayerComponent', () => {
       enrollmentEndDate: "2020-02-10",
       enrollmentType: "open",
       name: "SHS cert course 1 - 0825",
-      startDate: "2020-01-25",
+      startDate: "2045-01-25",
       status: 1
     }
   ]
@@ -65,7 +65,7 @@ describe('CoursePlayerComponent', () => {
       enrollmentEndDate: null,
       enrollmentType: "open",
       name: "SHS cert course 1 - 0825",
-      startDate: "2020-10-25",
+      startDate: "2045-10-25",
       status: 1
     },
     {
@@ -75,7 +75,7 @@ describe('CoursePlayerComponent', () => {
       enrollmentEndDate: "2020-02-10",
       enrollmentType: "open",
       name: "SHS cert course 1 - 0825",
-      startDate: "2020-01-25",
+      startDate: "2045-01-25",
       status: 1
     }
   ]
