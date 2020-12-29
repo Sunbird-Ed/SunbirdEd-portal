@@ -455,6 +455,13 @@
                 {{resourceService.frmelmnts?.btn?.login}}
               </a>
             </li>
+            <li *appDesktopOnly class="list-item" (click)="toggleSideMenu(false);" appTelemetryInteract 
+            [telemetryInteractEdata]="aboutUsEdata" routerLink="/desktop/about-us">
+              <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
+                <use xlink:href="./assets/images/sprite.svg#profileuser"></use>
+              </svg></i>
+              {{resourceService?.frmelmnts?.lbl?.desktop?.about_us | interpolate:'{instance}': instance}}
+            </li>
 
           </ul>
         </div>

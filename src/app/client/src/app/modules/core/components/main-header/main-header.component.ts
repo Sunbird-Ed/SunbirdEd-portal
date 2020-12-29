@@ -119,6 +119,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   learnMenuIntractEdata: IInteractEventEdata;
   contributeMenuEdata: IInteractEventEdata;
   myGroupIntractEData: IInteractEventEdata;
+  aboutUsEdata: IInteractEventEdata;
   showContributeTab: boolean;
   hideHeader = false;
   ShowStudentDropdown = false;
@@ -375,6 +376,11 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       id: 'groups-tab',
       type: 'click',
       pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') || 'groups'
+    };
+    this.aboutUsEdata = {
+      id: 'about-us-tab',
+      type: 'click',
+      pageid: 'about-us'
     };
   }
 
