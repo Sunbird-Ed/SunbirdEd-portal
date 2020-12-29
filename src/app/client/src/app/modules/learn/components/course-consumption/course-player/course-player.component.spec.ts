@@ -687,7 +687,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.showCourseCompleteMessage).toBeFalsy();
   });
 
-  it('should navigate to cert-configuration page if the event.mode is 'add-certificates'', () => {
+  it('should navigate to cert-configuration page if the event.mode is add-certificates', () => {
     spyOn(component, 'navigateToConfigureCertificate').and.stub();
     spyOn(component, 'logTelemetry').and.stub();
     const eventData = {
@@ -700,7 +700,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.showConfirmationPopup).toBeFalsy();
   });
 
-  it('should only log telemetry if the event.mode is other than 'add-certificates'', () => {
+  it('should only log telemetry if the event.mode is other than add-certificates', () => {
     spyOn(component, 'navigateToConfigureCertificate').and.stub();
     spyOn(component, 'logTelemetry').and.stub();
     const eventData = {
