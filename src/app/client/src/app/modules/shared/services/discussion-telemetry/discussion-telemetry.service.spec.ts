@@ -51,4 +51,5 @@ describe('DiscussionTelemetryService', () => {
       expect(telemetryService.interact).toHaveBeenCalledWith(event);
   }));
 
+
 });
