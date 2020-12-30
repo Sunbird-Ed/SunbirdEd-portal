@@ -64,7 +64,6 @@ import { Subject } from "rxjs";
 import { debounceTime } from "rxjs/operators";
 import { HTTPService } from "@project-sunbird/OpenRAP/services/httpService";
 import * as os from "os";
-import { manifest } from "./modules/manifest";
 const windowIcon = path.join(__dirname, "build", "icons", "png", "512x512.png");
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -77,7 +76,6 @@ expressApp.use(bodyParser.json());
 let fileSDK = containerAPI.getFileSDKInstance("");
 let systemSDK = containerAPI.getSystemSDKInstance();
 let deviceSDK = containerAPI.getDeviceSdkInstance();
-let settingSDK = containerAPI.getSettingSDKInstance(manifest.id);
 deviceSDK.initialize({key: envs.APP_BASE_URL_TOKEN});
 const reloadUIOnFileChange = () => {
   const subject = new Subject<any>();
@@ -271,10 +269,6 @@ const waitForDBToLoad = () => {
 }
 // start loading all the dependencies
 const bootstrapDependencies = async () => {
-  if(process.env.APP_VERSION === '1.5.0') {
-    console.log("============> removing old device_token");
-    await settingSDK.delete('device_token').catch(error => logger.error("Error while deleting device_token from setting", error))
-  }
   console.log("============> bootstrap started");
   await startCrashReporter().catch(error => logger.error("unable to start crash reporter", error));
   await copyPluginsMetaData();
