@@ -81,8 +81,7 @@ export default (app, proxyURL) => {
 
     app.post(`/api/data/v1/dial/assemble`,
         (req, res, next) => {
-            const online = Boolean(_.get(req, "query.online") && req.query.online.toLowerCase() === "true");
-            if (online) {
+            if (enableProxy(req)) {
                 req = updateRequestBody(req);
                 next();
             } else {
