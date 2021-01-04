@@ -34,7 +34,7 @@ export class OnboardingUserSelectionComponent implements OnInit, OnDestroy {
   telemetryImpression: IImpressionEventInput;
   userSelectionInteractEdata: IInteractEventEdata;
 
-  private updateUserSelection$ = new BehaviorSubject<string[]>(undefined);
+  private updateUserSelection$ = new BehaviorSubject<string>(undefined);
   public unsubscribe$ = new Subject<void>();
 
   constructor(
@@ -57,19 +57,23 @@ export class OnboardingUserSelectionComponent implements OnInit, OnDestroy {
 
   private initialize() {
     return merge(this.getFormConfig().pipe(
-      tap(fields => {
-        this.guestList = _.reduce(_.sortBy(fields || [], ['index']), (result, field) => {
-          const { name = null, visibility = true, image = 'guest-img3.svg', searchFilter = [], code = null, label = null, translations = null } = field || {};
-          if (visibility) {
-            result.push({
-              name, searchFilter, code, isActive: false, icon: `assets/images/${image}`,
-              label: _.get(this.resourceService, label || translations)
-            });
-          }
-          return result;
-        }, []);
+      tap((fields: object[]) => {
+        this.guestList = this.prepareGuestList(fields);
       })
     ), this.updateUserSelection()).pipe(takeUntil(this.unsubscribe$));
+  }
+
+  private prepareGuestList(fields = []) {
+    return _.reduce(_.sortBy(fields, ['index']), (result, field) => {
+      const { name = null, visibility = true, image = 'guest-img3.svg', searchFilter = [], code = null, label = null, translations = null } = field || {};
+      if (visibility) {
+        result.push({
+          name, searchFilter, code, isActive: false, icon: `assets/images/${image}`,
+          label: _.get(this.resourceService, label || translations)
+        });
+      }
+      return result;
+    }, []);
   }
 
   private getFormConfig() {
@@ -96,18 +100,18 @@ export class OnboardingUserSelectionComponent implements OnInit, OnDestroy {
           const payload = {
             userId: _.get(this.userService, 'userid'),
             userType: _.capitalize(userType)
-          }
+          };
           return this.profileService.updateProfile(payload)
             .pipe(
               tap(_ => { this.userSelect.emit(true); }),
               retry(5),
               catchError(err => {
-                this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'))
+                this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
                 return empty();
               })
             );
         })
-      )
+      );
   }
 
   ngAfterViewInit() {
@@ -134,9 +138,10 @@ export class OnboardingUserSelectionComponent implements OnInit, OnDestroy {
   }
 
   submit() {
-    localStorage.setItem('userType', this.selectedUserType.code);
+    const { code } = this.selectedUserType;
+    localStorage.setItem('userType', code);
     if (this.userService.loggedIn) {
-      this.updateUserSelection$.next(_.get(this.selectedUserType, 'code'));
+      this.updateUserSelection$.next(code);
     } else {
       this.userSelect.emit(true);
     }
