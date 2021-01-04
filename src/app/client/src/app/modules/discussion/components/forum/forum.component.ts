@@ -5,6 +5,7 @@ import { LearnerService, UserService } from '@sunbird/core';
 import { Component, OnInit, OnDestroy, HostListener, ViewChild, AfterViewInit } from '@angular/core';
 import * as _ from 'lodash-es';
 import { Location } from '@angular/common';
+
 @Component({
   selector: 'app-forum',
   templateUrl: './forum.component.html',
