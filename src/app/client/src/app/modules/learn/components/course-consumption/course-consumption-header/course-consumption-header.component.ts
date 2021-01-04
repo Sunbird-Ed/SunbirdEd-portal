@@ -302,7 +302,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.discussionService.registerUser(data).subscribe((response) => {
       const userName = _.get(response, 'result.userName');
       const result = this.forumIds;
-      this.router.navigate(['/discussions'], {
+      this.router.navigate(['/discussion-forum'], {
         queryParams: {
           categories: JSON.stringify({ result }),
           userName: userName
