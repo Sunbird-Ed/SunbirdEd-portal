@@ -1,7 +1,7 @@
 const proxyUtils = require('../proxy/proxyUtils.js');
 const BASE_REPORT_URL = "/discussion";
 const proxy = require('express-http-proxy');
-const { discussions_middleware, discussion_forum_token } = require('../helpers/environmentVariablesHelper.js');
+const { discussions_middleware } = require('../helpers/environmentVariablesHelper.js');
 const jwt = require('jsonwebtoken');
 const _ = require('lodash')
 const bodyParser = require('body-parser');
@@ -11,14 +11,14 @@ const { logger } = require('@project-sunbird/logger');
 
 module.exports = function (app) {
 
-    app.get(`${BASE_REPORT_URL}/forumId`, proxyUtils.verifyToken(), proxyObject());
-    app.post(`${BASE_REPORT_URL}/forum`, proxyUtils.verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/forum/v2/read`, proxyUtils.verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/forum/v2/create`, proxyUtils.verifyToken(), proxyObject());
 
     app.get(`${BASE_REPORT_URL}/tags`, proxyUtils.verifyToken(), proxyObject());
     app.get(`${BASE_REPORT_URL}/notifications`, proxyUtils.verifyToken(), proxyObject());
 
     // categories apis
-    app.get(`${BASE_REPORT_URL}/category/:category_id/:slug/:topic_index`, proxyUtils.verifyToken(), proxyObject());
+    app.get(`${BASE_REPORT_URL}/category/:category_id`, proxyUtils.verifyToken(), proxyObject());
     app.get(`${BASE_REPORT_URL}/categories`, proxyUtils.verifyToken(), proxyObject());
     app.get(`${BASE_REPORT_URL}/categories/:cid/moderators`, proxyUtils.verifyToken(), proxyObject());
 
@@ -110,6 +110,8 @@ module.exports = function (app) {
     app.delete(`${BASE_REPORT_URL}/v2/users/:uid/tokens/:token`, proxyUtils.verifyToken(), proxyObject());
     app.get(`${BASE_REPORT_URL}/user/username/:username`, proxyUtils.verifyToken(), proxyObject());
 
+    app.post(`${BASE_REPORT_URL}/user/v1/create`, proxyUtils.verifyToken(), proxyObject());
+    app.get(`${BASE_REPORT_URL}/user/uid/:uid`, proxyUtils.verifyToken(), proxyObject());
 }
 
 function checkEmail() {
@@ -152,7 +154,6 @@ function proxyObject() {
     return proxy(discussions_middleware, {
         proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(discussions_middleware),
         proxyReqPathResolver: function (req) {
-            req.headers.Authorization = `Bearer ${discussion_forum_token}`;
             let urlParam = req.originalUrl;
             let query = require('url').parse(req.url).query;
             if (query) {
