@@ -53,6 +53,25 @@ const keycloakMergeGoogleAndroid = getKeyCloakClient({
   }
 })
 
+const keycloakGoogleDesktop = getKeyCloakClient({
+  resource: envHelper.KEYCLOAK_GOOGLE_DESKTOP_CLIENT.clientId,
+  bearerOnly: true,
+  serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
+  realm: envHelper.PORTAL_REALM,
+  credentials: {
+    secret: envHelper.KEYCLOAK_GOOGLE_DESKTOP_CLIENT.secret
+  }
+})
+const keycloakMergeGoogleDesktop = getKeyCloakClient({
+  resource: envHelper.KEYCLOAK_GOOGLE_DESKTOP_CLIENT.clientId,
+  bearerOnly: true,
+  serverUrl: envHelper.PORTAL_MERGE_AUTH_SERVER_URL,
+  realm: envHelper.PORTAL_REALM,
+  credentials: {
+    secret: envHelper.KEYCLOAK_GOOGLE_DESKTOP_CLIENT.secret
+  }
+})
+
 class GoogleOauth {
   createConnection(req) {
     const  { clientId, clientSecret } = GOOGLE_OAUTH_CONFIG;
@@ -128,6 +147,11 @@ const createSession = async (emailId, reqQuery, req, res) => {
     keycloakClient = keycloakGoogleAndroid;
     keycloakMergeClient = keycloakMergeGoogleAndroid;
     scope = 'offline_access';
+  } else if (reqQuery.client_id === 'desktop') {
+    console.log('reqQuery.client_id', reqQuery.client_id);
+    keycloakClient = keycloakGoogleDesktop;
+    keycloakMergeClient = keycloakMergeGoogleDesktop;
+    scope = 'offline_access';
   }
 
   // merge account in progress
@@ -135,7 +159,7 @@ const createSession = async (emailId, reqQuery, req, res) => {
     console.log('merge in progress', emailId, reqQuery.client_id);
     grant = await keycloakMergeClient.grantManager.obtainDirectly(emailId, undefined, undefined, scope);
     console.log('grant received', JSON.stringify(grant.access_token.token));
-    if (reqQuery.client_id !== 'android') {
+    if (!['android', 'desktop'].includes(reqQuery.client_id)) {
       req.session.mergeAccountInfo.mergeFromAccountDetails = {
         sessionToken: grant.access_token.token
       };

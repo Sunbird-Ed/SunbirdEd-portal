@@ -301,7 +301,7 @@ export class LoginSessionProvider {
     }
 
     private async resolveStateSession(captured: {[key: string]: string}) {
-        return await HTTPService.get(`${process.env.APP_BASE_URL}/v1/sso/create/session?id=${captured['id']}`, {})
+        return await HTTPService.get(`${process.env.APP_BASE_URL}/v1/sso/create/session?id=${captured['id']}&clientId=desktop`, {})
             .toPromise()
             .then(async (response: any) => {
                 if (response.data.access_token && response.data.refresh_token) {
