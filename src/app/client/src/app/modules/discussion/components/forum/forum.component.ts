@@ -5,8 +5,6 @@ import { LearnerService, UserService } from '@sunbird/core';
 import { Component, OnInit, OnDestroy, HostListener, ViewChild, AfterViewInit } from '@angular/core';
 import * as _ from 'lodash-es';
 import { Location } from '@angular/common';
-import { DiscussionService } from '../../services';
-
 @Component({
   selector: 'app-forum',
   templateUrl: './forum.component.html',
@@ -20,8 +18,7 @@ export class ForumComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     public sanitizer: DomSanitizer, private activatedRoute: ActivatedRoute,
     private location: Location, private config: ConfigService,
-    private learnerService: LearnerService, private userService: UserService,
-    private discussionService: DiscussionService ) { }
+    private learnerService: LearnerService, private userService: UserService) { }
 
   @HostListener('window:popstate', ['$event'])
   onPopState(event) {
@@ -59,22 +56,6 @@ export class ForumComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnDestroy() {
     this.closeModal();
-  }
-
-  registerUser() {
-    const data = {
-        username: 'sudip',
-        identifier: 1234
-    };
-    this.discussionService.registerUser(data).subscribe((resp) => {
-      this.discussionService.getUserDetails(23).subscribe((userDetails) => {
-        console.log('details', userDetails);
-      }, error => {
-        console.log('error', error);
-      });
-    }, error => {
-      console.log('error', error);
-    });
   }
 
 }
