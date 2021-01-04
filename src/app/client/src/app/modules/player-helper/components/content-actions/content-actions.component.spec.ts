@@ -242,6 +242,13 @@ describe('ContentActionsComponent', () => {
     });
   });
 
+  it('should call log telemetry ', () => {
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact');
+    component.logTelemetry('delete-content',  actionsData.contentData );
+    expect(telemetryService.interact).toHaveBeenCalled();
+  });
+
   it('should listen for content download status and call changeContentstatus', () => {
     component.isDesktopApp = true;
     const contentManagerService = TestBed.get(ContentManagerService);
@@ -253,14 +260,5 @@ describe('ContentActionsComponent', () => {
     component.ngOnInit();
     expect(component.changeContentStatus).toHaveBeenCalled();
   });
-
-  it('should call log telemetry ', () => {
-    const telemetryService = TestBed.get(TelemetryService);
-    spyOn(telemetryService, 'interact');
-    component.logTelemetry('delete-content',  actionsData.contentData );
-    expect(telemetryService.interact).toHaveBeenCalled();
-  });
-
-
 
 });

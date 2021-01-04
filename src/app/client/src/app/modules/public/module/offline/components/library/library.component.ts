@@ -284,7 +284,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
         delete softConstraints['board'];
         }
         const option: any = {
-            filters: filters,
+            filters: _.omitBy(filters || {}, value => _.isArray(value) ? (!_.get(value, 'length') ? true : false) : false),
             fields: _.get(this.currentPageData, 'search.fields'),
             query: this.queryParams.key,
             softConstraints: softConstraints,
@@ -477,6 +477,17 @@ export class LibraryComponent implements OnInit, OnDestroy {
                 this.playContent(event);
                 this.logTelemetry(this.contentData, 'play-content');
                 break;
+            case 'DOWNLOAD':
+                this.downloadIdentifier = _.get(event, 'content.metaData.identifier');
+                this.showModal = this.offlineCardService.isYoutubeContent(this.contentData);
+                if (!this.showModal) {
+                    this.showDownloadLoader = true;
+                    this.downloadContent(this.downloadIdentifier);
+                }
+                telemetryButtonId = this.contentData.mimeType ===
+                    'application/vnd.ekstep.content-collection' ? 'download-collection' : 'download-content';
+                this.logTelemetry(this.contentData, telemetryButtonId);
+                break;
             case 'SAVE':
                 this.showExportLoader = true;
                 this.exportContent(_.get(event, 'content.metaData.identifier'));
@@ -502,6 +513,35 @@ export class LibraryComponent implements OnInit, OnDestroy {
                 if (_.get(error, 'error.responseCode') !== 'NO_DEST_FOLDER') {
                     this.toasterService.error(this.resourceService.messages.fmsg.m0091);
                 }
+            });
+    }
+
+    downloadContent(contentId) {
+        this.contentManagerService.downloadContentId = contentId;
+        this.contentManagerService.downloadContentData = this.contentData;
+        this.contentManagerService.failedContentName = this.contentName;
+        this.contentManagerService.startDownload({})
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe(data => {
+                this.downloadIdentifier = '';
+                this.contentManagerService.downloadContentId = '';
+                this.contentManagerService.downloadContentData = {};
+                this.contentManagerService.failedContentName = '';
+                this.showDownloadLoader = false;
+            }, error => {
+                this.downloadIdentifier = '';
+                this.contentManagerService.downloadContentId = '';
+                this.contentManagerService.downloadContentData = {};
+                this.contentManagerService.failedContentName = '';
+                this.showDownloadLoader = false;
+                _.each(this.pageSections, (pageSection) => {
+                    _.each(pageSection.contents, (pageData) => {
+                        pageData['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
+                    });
+                });
+                if (!(error.error.params.err === 'LOW_DISK_SPACE')) {
+                this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+                  }
             });
     }
 

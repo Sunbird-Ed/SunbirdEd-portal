@@ -31,7 +31,8 @@ export default (app, proxyURL, contentDownloadManager) => {
       },
       proxy(proxyURL, {
         proxyReqPathResolver(req) {
-          return `/api/content/v1/read/${req.params.id}?fields=${req.query.fields}`;
+          const query = require('url').parse(req.url).query;
+          return `/api/content/v1/read/${req.params.id}?${query}`;
         },
         userResDecorator(proxyRes, proxyResData, req) {
           return new Promise(function(resolve) {

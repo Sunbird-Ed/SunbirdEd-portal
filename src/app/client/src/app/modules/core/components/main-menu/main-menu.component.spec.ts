@@ -1,6 +1,6 @@
 import { UserService, LearnerService, ContentService, CoreModule } from '@sunbird/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ResourceService, ConfigService, SharedModule, LayoutService } from '@sunbird/shared';
+import { ResourceService, ConfigService, SharedModule, LayoutService, UtilService } from '@sunbird/shared';
 import { MainMenuComponent } from './main-menu.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 // import { WebExtensionModule } from '@project-sunbird/web-extensions';
@@ -26,7 +26,7 @@ describe('MainMenuComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule, CoreModule, SharedModule.forRoot()],
       providers: [HttpClient, ResourceService, ConfigService, UserService, LayoutService, TelemetryService,
-        LearnerService, ContentService, {provide: ActivatedRoute, useClass: FakeActivatedRoute},
+        LearnerService, ContentService, {provide: ActivatedRoute, useClass: FakeActivatedRoute}, UtilService,
         {provide: Router, useClass: RouterStub}]
     })
       .compileComponents();
