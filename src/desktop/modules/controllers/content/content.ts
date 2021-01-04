@@ -43,7 +43,7 @@ export default class Content {
         this.getDeviceId();
     }
 
-    searchInDB(filters, reqId, sort?) {
+    async searchInDB(filters, reqId, sort?) {
         let modifiedFilters: Object = _.mapValues(filters, (v, k) => {
             if (k !== 'query') return ({ '$in': v })
         });
@@ -73,7 +73,18 @@ export default class Content {
             dbFilters['sort'] = [sort];
         }
         logger.debug(`ReqId = "${reqId}": Find the contents in ContentDb with the given filters`)
-        return this.databaseSdk.find('content', dbFilters);
+        const dbResult = await this.databaseSdk.find('content', dbFilters);
+        let QRresult = [];
+        if (_.get(filters, 'query')) {
+            QRresult  = await this.searchForDialCodeContent(_.get(filters, 'query'));
+        } 
+        if(QRresult.length > 0) {
+            _.forEach(QRresult, (obj, index) => {
+                dbResult.docs.push(obj);
+            });
+            dbResult.docs = _.uniqBy(dbResult.docs,'identifier');
+        } 
+        return dbResult;
     }
 
     get(req: any, res: any): any {
@@ -247,6 +258,25 @@ export default class Content {
             });
     }
 
+    public async searchForDialCodeContent(dialCode: string): Promise<any> {
+        try {
+            logger.debug(
+                `searchDialCode is called for ${dialCode}`
+            );
+            const dialcode = dialCode;
+            logger.info(
+                `ReqId = "getMimeTypeCollections() is calling with ${dialcode} from searchForDialCodeContent() `
+            );
+            return await this.getMimeTypeCollections(dialcode);
+        } catch (err) {
+            logger.error(
+                `ReqId = " Received error while searching QR code content from searchForDialCodeContent - err.message: ${
+                err.message
+                } ${err}`
+            );
+            return [];
+        }
+    }
 
     public async searchDialCode(req: any, res: any): Promise<any> {
         try {

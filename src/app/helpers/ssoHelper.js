@@ -31,6 +31,15 @@ const keycloakTrampolineAndroid = getKeyCloakClient({
     secret: envHelper.KEYCLOAK_TRAMPOLINE_ANDROID_CLIENT.secret
   }
 })
+const keycloakTrampolineDesktop = getKeyCloakClient({
+  resource: envHelper.KEYCLOAK_TRAMPOLINE_DESKTOP_CLIENT.clientId,
+  bearerOnly: true,
+  serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
+  realm: envHelper.PORTAL_REALM,
+  credentials: {
+    secret: envHelper.KEYCLOAK_TRAMPOLINE_DESKTOP_CLIENT.secret
+  }
+})
 const verifySignature = async (token) => {
   let options = {
     method: 'GET',
@@ -172,6 +181,9 @@ const createSession = async (loginId, client_id, req, res) => {
   let scope = 'openid';
   if (client_id === 'android') {
     keycloakClient = keycloakTrampolineAndroid;
+    scope = 'offline_access';
+  } else if (client_id === 'desktop') {
+    keycloakClient = keycloakTrampolineDesktop;
     scope = 'offline_access';
   }
   grant = await keycloakClient.grantManager.obtainDirectly(loginId, undefined, undefined, scope);

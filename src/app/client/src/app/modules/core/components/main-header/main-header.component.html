@@ -446,7 +446,7 @@
                 {{resourceService.frmelmnts?.btn?.login}}
               </a>
             </li>
-            <li class="list-item p-0 hide" (click)="toggleSideMenu(false)" appTelemetryInteract
+            <li class="list-item p-0" (click)="toggleSideMenu(false)" appTelemetryInteract
               [telemetryInteractEdata]="signInIntractEdata" *appDesktopOnly appOnlineOnly>
               <a appOnlineOnly (click)="doLogin()" class="d-flex flex-ai-center list-item-a">
                 <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
@@ -454,6 +454,13 @@
                   </svg></i>
                 {{resourceService.frmelmnts?.btn?.login}}
               </a>
+            </li>
+            <li *appDesktopOnly class="list-item" (click)="toggleSideMenu(false);" appTelemetryInteract 
+            [telemetryInteractEdata]="aboutUsEdata" routerLink="/desktop/about-us">
+              <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
+                <use xlink:href="./assets/images/sprite.svg#profileuser"></use>
+              </svg></i>
+              {{resourceService?.frmelmnts?.lbl?.desktop?.about_us | interpolate:'{instance}': instance}}
             </li>
 
           </ul>
