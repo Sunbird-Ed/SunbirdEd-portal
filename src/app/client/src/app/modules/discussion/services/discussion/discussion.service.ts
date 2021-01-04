@@ -25,4 +25,8 @@ export class DiscussionService {
   getUserDetails(userId) {
     return this.discussionCsService.getUserDetails(userId);
   }
+
+  getForumIds(data) {
+    return this.discussionCsService.getForumIds(data);
+  }
 }

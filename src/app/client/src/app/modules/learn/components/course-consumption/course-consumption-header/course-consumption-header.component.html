@@ -1,3 +1,8 @@
+<!-- Loader -->
+<div class="two wide column" *ngIf="showLoader">
+  <app-loader></app-loader>
+</div>
+<!-- /Loader-->
 
 <!-- Back Button -->
 <div class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9">
@@ -56,8 +61,7 @@
               </button>
 
                <!-- Discussion Forum -->
-               <!-- TODO: Add the if check for showing the forum icon -->
-               <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix" 	
+               <button *ngIf="forumIds.length > 0" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix" 	
                appTelemetryInteract [telemetryInteractObject]="courseInteractObject"	
                [telemetryInteractEdata]="{id:'discussion' , type: 'click' , pageid:'course-consumption'}" 	
                [telemetryInteractCdata]="[{id: courseHierarchy?.identifier, type: 'Course'}]"	

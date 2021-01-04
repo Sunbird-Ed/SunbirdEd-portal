@@ -5,14 +5,16 @@ import { CommonModule } from '@angular/common';
 
 import { DiscussionRoutingModule } from './discussion-routing.module';
 import { ForumComponent } from './components/forum/forum.component';
+import { DiscussionUiModule } from '@project-sunbird/discussions-ui';
 
 @NgModule({
   imports: [
     CommonModule,
-    DiscussionRoutingModule,
-    SuiModalModule
+    SuiModalModule,
+    DiscussionUiModule
   ],
-  declarations: [ForumComponent],
-  providers: [DiscussionService]
+  exports: [ DiscussionUiModule ],
+  declarations: [ ForumComponent ],
+  providers: [ DiscussionService ]
 })
 export class DiscussionModule { }

@@ -1,12 +1,23 @@
-import { TestBed } from '@angular/core/testing';
-
+import { TestBed, inject } from '@angular/core/testing';
 import { DiscussionService } from './discussion.service';
+import { configureTestSuite } from '@sunbird/test-util';
+import { ConfigService } from '@sunbird/shared';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CacheService } from 'ng2-cache-service';
+
+
+
+
 
 describe('DiscussionService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+  configureTestSuite();
+  beforeEach(() => TestBed.configureTestingModule({
+    imports: [ HttpClientTestingModule ],
+    providers: [ ConfigService, CacheService],
+  }));
 
-  it('should be created', () => {
-    const service: DiscussionService = TestBed.get(DiscussionService);
+  it('>>>', () => {
+    const service = TestBed.get(DiscussionService);
     expect(service).toBeTruthy();
   });
 });
