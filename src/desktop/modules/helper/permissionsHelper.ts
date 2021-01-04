@@ -49,11 +49,14 @@ const PERMISSIONS_HELPER = {
   },
 
   // Fetch user data from server
-  async getUser(userData: { access_token: string, userId: string }): Promise<ILoggedInUser> {
+  async getUser(userData: { access_token: string, userId: string }, isManagedUser?: boolean): Promise<ILoggedInUser> {
     const apiKey = await containerAPI.getDeviceSdkInstance().getToken().catch((err) => {
       logger.error(`Received error while fetching api key in getUser with error: ${err}`);
     });
-    let url = `${process.env.APP_BASE_URL}/api/user/v3/read/${userData.userId}`;
+    let url = `${process.env.APP_BASE_URL}/api/user/v3/read/${userData.userId}?fields=organisations,roles,locations,declarations`;
+    if (isManagedUser) {
+      url = url + "?withTokens=true";
+    }
     const options = {
       headers: {
         "content-type": "application/json",
