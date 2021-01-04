@@ -44,4 +44,11 @@ export default class SettingSDK {
     delete setting["_rev"];
     return Promise.resolve(setting);
   };
+
+  delete = async (key: string): Promise<boolean> => {
+    await this.dbSDK.delete(dbName, key).catch(err => {
+      logger.error("Error while deleting the key to the setting database", err);
+    });
+    return true;
+  }
 }

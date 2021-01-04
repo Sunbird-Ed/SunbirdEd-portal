@@ -191,7 +191,7 @@ describe('CourseConsumptionPageComponent', () => {
   });
   it('should refresh component with updated batch details when user selects another batch', () => {
     const spy = spyOn<any>(component['fetchEnrolledCourses$'], 'next');
-    component.refreshComponent();
+    component.refreshComponent(true);
     expect(spy).toHaveBeenCalled();
     expect(component.showBatchInfo).toBeFalsy();
   });

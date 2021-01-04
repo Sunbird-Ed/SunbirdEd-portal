@@ -101,6 +101,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   showModal: Boolean = false;
   showDownloadLoader: Boolean = false;
   disableDelete: Boolean = false;
+  isAvailableLocally = false;
 
   constructor(public route: ActivatedRoute, public playerService: PlayerService,
     private windowScrollService: WindowScrollService, public router: Router, public navigationHelperService: NavigationHelperService,
@@ -372,7 +373,12 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       .subscribe((data) => {
         this.collectionTreeNodes = data;
         this.showLoader = false;
-        this.layoutService.updateSelectedContentType.emit(_.get(data, 'data.contentType'));
+        this.isAvailableLocally = Boolean(_.get(data, 'data.desktopAppMetadata.isAvailable'));
+        if (this.isDesktopApp && this.isAvailableLocally) {
+          this.layoutService.updateSelectedContentType.emit('mydownloads');
+        } else {
+          this.layoutService.updateSelectedContentType.emit(_.get(data, 'data.contentType'));
+        }
         this.getGeneraliseResourceBundle(data.data);
         this.setTelemetryData();
         this.setTelemetryStartEndData();
@@ -473,9 +479,10 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     this.selectedContent = {};
     this.showPlayer = false;
     this.triggerContentImpression = false;
+    const contentType = this.isAvailableLocally ? 'mydownloads' : this.contentType;
     const navigationExtras: NavigationExtras = {
       relativeTo: this.route,
-      queryParams: { contentType: this.contentType }
+      queryParams: { contentType }
     };
     if (this.dialCode) {
       navigationExtras.queryParams['dialCode'] = _.get(this.route, 'snapshot.queryParams.dialCode');
