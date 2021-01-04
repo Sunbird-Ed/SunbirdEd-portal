@@ -1,6 +1,6 @@
 {
     "name": "sunbird",
-    "version": "1.5.0",
+    "version": "1.6.0",
     "description": "sunbird desktop app",
     "main": "main.js",
     "scripts": {
@@ -8,7 +8,7 @@
         "build": "gulp build",
         "build-copy-clean": "gulp build:copy-clean",
         "test": "rm -rf database && mocha -r ts-node/register test/test.spec.ts --exit",
-        "start": "cross-env NODE_ENV=development electron --no-sandbox -r ts-node/register ./main.ts",
+        "start": "cross-env NODE_ENV=development electron --no-sandbox -r ts-node/register ./main.ts --inspect",
         "dev": "npm run build-ts && npm run start",
         "debug": "npm run build-ts && electron . --inspect",
         "dist": "gulp  dist",
