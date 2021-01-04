@@ -14,6 +14,7 @@ import frameworkRoutes from './routes/framework'
 import desktopRoutes from './routes/desktop';
 import playerProxyRoutes from './routes/playerProxy';
 import staticRoutes from './routes/static';
+import courseRoutes from './routes/course';
 import telemetryRoutes from './routes/telemetry';
 import authRoutes from './routes/auth';
 import Device from './controllers/device';
@@ -141,6 +142,7 @@ export class Router {
     channelRoutes(app, proxyUrl);
     frameworkRoutes(app, proxyUrl);
     desktopRoutes(app, proxyUrl);
+    courseRoutes(app, proxyUrl);
     telemetryRoutes(app)
     playerProxyRoutes(app, proxyUrl);
 

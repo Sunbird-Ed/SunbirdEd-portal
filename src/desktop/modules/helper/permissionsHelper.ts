@@ -53,7 +53,7 @@ const PERMISSIONS_HELPER = {
     const apiKey = await containerAPI.getDeviceSdkInstance().getToken().catch((err) => {
       logger.error(`Received error while fetching api key in app update with error: ${err}`);
     });
-    let url = `${process.env.APP_BASE_URL}/api/user/v3/read/${userData.userId}`;
+    let url = `${process.env.APP_BASE_URL}/api/user/v3/read/${userData.userId}?fields=organisations,roles,locations,declarations`;
     if (isManagedUser) {
       url = url + "?withTokens=true";
     }
