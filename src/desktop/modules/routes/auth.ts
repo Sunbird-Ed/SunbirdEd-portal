@@ -20,7 +20,7 @@ export default (app, proxyURL) => {
                 return `${proxyURL}${req.originalUrl.replace('/learner/', '/api/')}`;
             },
             proxyErrorHandler: function (err, res, next) {
-                logger.warn(`While getting form data from online`, err);
+                logger.warn(`While /user/v3/read from online`, err);
                 next();
             },
             userResDecorator: function (proxyRes, proxyResData, req, res) {
@@ -32,7 +32,7 @@ export default (app, proxyURL) => {
                             await userSDK.insertLoggedInUser(userResp);
                         }
                     } catch (error) {
-                        logger.error(`Unable to parse or do DB update of form data after fetching from online`, error)
+                        logger.error(`Unable to parse or do DB update of user data after fetching from online`, error)
                     }
                     resolve(proxyResData);
                 });
@@ -50,6 +50,7 @@ export default (app, proxyURL) => {
         proxy(proxyURL, {
         proxyReqOptDecorator: decorateRequestHeaders(proxyURL),
         proxyReqPathResolver(req) {
+            logger.debug({ msg: `${req.originalUrl}  called` });
             return `${proxyURL}${req.originalUrl.replace('/learner/', '/api/')}`;
         },
         userResDecorator: function (proxyRes, proxyResData, req, res) {
@@ -67,6 +68,7 @@ export default (app, proxyURL) => {
     app.patch(['/learner/user/v1/update', '/learner/user/v1/declarations'], proxy(proxyURL, {
         proxyReqOptDecorator: decorateRequestHeaders(proxyURL),
         proxyReqPathResolver: (req) => {
+            logger.debug({ msg: `${req.originalUrl}  called` });
             return `${proxyURL}${req.originalUrl.replace('/learner/', '/api/')}`;
         },
         userResDecorator: (proxyRes, proxyResData, req, res) => {
@@ -121,6 +123,7 @@ export default (app, proxyURL) => {
     ], proxy(proxyURL, {
         proxyReqOptDecorator: decorateRequestHeaders(proxyURL),
         proxyReqPathResolver(req) {
+            logger.debug({ msg: `${req.originalUrl}  called` });
             return `${proxyURL}${req.originalUrl.replace('/learner/', '/api/')}`;
         },
         userResDecorator: function (proxyRes, proxyResData, req, res) {
