@@ -246,7 +246,7 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
       } else if ( data.name === 'fullscreen') {
         data.disabled = false;
         data.label = 'Full screen';
-      } else if (data.name !== 'rate') {
+      } else if ( !['rate', 'print'].includes(data.name)) {
         const downloaded = _.find(this.actionButtons, {name: 'download'});
         data.label = _.capitalize(data.name);
         data.disabled = !_.isEqual(downloaded.label, 'Downloaded');

@@ -117,15 +117,22 @@ export class UserSDK {
 
   }
 
-  public deleteLoggedInUser(id: string) {
-    if (!id) {
+  public async deleteLoggedInUser(userId: string) {
+    if (!userId) {
+      const userSession = await this.getUserSession();
+      userId = _.get(userSession, 'userId');
+    }
+    const users = await this.findByUserId(userId);
+    if(users.length > 0) {
+      const { _id } = users[0];
+      return this.dbSDK.delete(USER_DB, _id);
+    } else {
       throw {
         code: "BAD_REQUEST",
         status: 400,
         message: `_id is mandatory to update user`
       }
     }
-    return this.dbSDK.delete(USER_DB, id);
   }
 
   public async getUserToken() {
@@ -136,7 +143,7 @@ export class UserSDK {
     return token;
   }
 
-  public async setUserSession(sessionData: IUserSession) {
+  public async setUserSession(sessionData = {}) {
     await this.settingSDK.put('userSession', sessionData);
   }
 

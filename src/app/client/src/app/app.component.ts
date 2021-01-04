@@ -493,6 +493,9 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   public setDeviceId(): Observable<string> {
       return new Observable(observer => this.telemetryService.getDeviceId((deviceId, components, version) => {
+        if (this.utilService.isDesktopApp) {
+         deviceId = (<HTMLInputElement>document.getElementById('deviceId')).value;
+        }
           this.fingerprintInfo = {deviceId, components, version};
           (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
           this.deviceId = deviceId;

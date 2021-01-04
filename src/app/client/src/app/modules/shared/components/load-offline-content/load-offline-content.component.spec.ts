@@ -124,7 +124,7 @@ describe('LoadOfflineContentComponent', () => {
     const router = TestBed.get(Router);
     component.selectedValue = 'browse';
     component.navigate();
-    expect(router.navigate).toHaveBeenCalledWith(['/browse']);
+    expect(router.navigate).toHaveBeenCalledWith(['/explore/1'], {queryParams: {selectedTab: 'all'}});
   });
 
   it('should call handleImportContentDialog', () => {
