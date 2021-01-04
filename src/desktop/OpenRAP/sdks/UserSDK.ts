@@ -87,14 +87,16 @@ export class UserSDK {
       .catch(err => { throw this.dbSDK.handleError(err); });
   }
 
-  public async getLoggedInUser(userId?: string): Promise<ILoggedInUser> {
+  public async getLoggedInUser(userId?: string, withToken?: boolean): Promise<ILoggedInUser> {
     if(!userId) {
       const userSession = await this.getUserSession();
       userId = _.get(userSession, 'userId');
     }
     const users = await this.findByUserId(userId);
     let user = users[0];
-    user = _.omit(user, 'accessToken');
+    if(!withToken) {
+      user = _.omit(user, 'accessToken');
+    }
     return user;
   }
 
@@ -136,7 +138,7 @@ export class UserSDK {
   public async getUserToken() {
     const userSession = await this.getUserSession();
     const userId = _.get(userSession, 'userId');
-    const user = await this.getLoggedInUser(userId);
+    const user = await this.getLoggedInUser(userId, true);
     const token = _.get(user, 'accessToken');
     return token;
   }
