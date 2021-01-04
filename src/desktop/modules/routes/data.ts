@@ -27,28 +27,25 @@ export default (app, proxyURL) => {
     const tenant = new Tenant();
     app.get(
         ["/v1/tenant/info/", "/v1/tenant/info/:id"],
-        (req, res, next) => {
-            logger.debug(
-                `Received API call to get tenant data ${_.upperCase(
-                    _.get(req, "params.id"),
-                )}`,
-            );
-
-            logger.debug(`ReqId = "${req.headers["X-msgid"]}": Check proxy`);
-            if (enableProxy(req)) {
-                logger.info(`Proxy is Enabled `);
-                next();
-            } else {
-                logger.debug(`ReqId = "${req.headers["X-msgid"]}": Get tenant Info`);
-                tenant.get(req, res);
-                return;
-            }
-        },
         proxy(proxyURL, {
             proxyReqPathResolver(req) {
                 return `/v1/tenant/info/`;
             },
+            proxyErrorHandler: function (err, res, next) {
+                logger.warn(`Error While getting tenant info data from online`, err);
+                next();
+            },
+            userResDecorator: function (proxyRes, proxyResData) {
+                return new Promise(function (resolve) {
+                    resolve(proxyResData);
+                });
+            }
         }),
+        (req, res) => {
+            logger.debug(`ReqId = "${req.headers["X-msgid"]}": Get tenant Info from local`);
+            tenant.get(req, res);
+            return; 
+        }
     );
 
     const location = new Location(manifest);
