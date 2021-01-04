@@ -51,7 +51,7 @@ const PERMISSIONS_HELPER = {
   // Fetch user data from server
   async getUser(userData: { access_token: string, userId: string }, isManagedUser?: boolean): Promise<ILoggedInUser> {
     const apiKey = await containerAPI.getDeviceSdkInstance().getToken().catch((err) => {
-      logger.error(`Received error while fetching api key in app update with error: ${err}`);
+      logger.error(`Received error while fetching api key in getUser with error: ${err}`);
     });
     let url = `${process.env.APP_BASE_URL}/api/user/v3/read/${userData.userId}?fields=organisations,roles,locations,declarations`;
     if (isManagedUser) {
@@ -73,7 +73,31 @@ const PERMISSIONS_HELPER = {
       logger.error("Error while getting user", error);
       throw { message: `User read failed with ${error}`, status: error.code || 500 }
     }
-  }
+  },
+  // Fetch user data from server
+  async getManagedUsers(managedByUser: { access_token: string, userId: string }): Promise<ILoggedInUser> {
+    const apiKey = await containerAPI.getDeviceSdkInstance().getToken().catch((err) => {
+      logger.error(`Received error while fetching api key in getManagedUser with error: ${err}`);
+    });
+    let url = `${process.env.APP_BASE_URL}/learner/user/v1/managed/${managedByUser.userId}`;
+    const options = {
+      headers: {
+        "content-type": "application/json",
+        "Authorization": "Bearer " + apiKey,
+        "x-authenticated-user-token": managedByUser.access_token
+      }
+    };
+
+    try {
+      const response = await HTTPService.get(url, options).toPromise();
+      const user: ILoggedInUser = _.get(response, 'data.result.response');
+      return user;
+    } catch (error) {
+      logger.error("Error while getting managed user", error);
+      throw { message: `Managed user read failed with ${error}`, status: error.code || 500 }
+    }
+  },
+
 };
 
 export default PERMISSIONS_HELPER;

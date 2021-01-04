@@ -51,8 +51,21 @@ export default class AuthController {
             }
 
             const user = await permissionsHelper.getUser(userAuthDetails);
+            const managedUsers: any = await permissionsHelper.getManagedUsers(userAuthDetails);
+
+            // Save Logged-in User in DB
             user.accessToken = userAuthDetails.access_token;
             await this.saveUserInDB(user);
+            await this.setUserSession(user);
+
+            // Save managed users in DB
+            if (managedUsers.count) {
+                managedUsers.content.forEach(async (managedUser) => {
+                    managedUser.accessToken = userAuthDetails.access_token;
+                    await this.saveUserInDB(managedUser)
+                });
+            }
+
             return res.send({ status: 'success' });
         } catch (err) {
             logger.error(`While startUserSession ${err.message} ${err.stack}`);
@@ -64,8 +77,11 @@ export default class AuthController {
 
     private async saveUserInDB(user: ILoggedInUser) {
         const response = await this.userSDK.insertLoggedInUser(user);
+        return response;
+    }
+
+    private async setUserSession(user: ILoggedInUser) {
         const sessionData = { userId: user.userId };
         await this.userSDK.setUserSession(sessionData);
-        return response;
     }
 }
