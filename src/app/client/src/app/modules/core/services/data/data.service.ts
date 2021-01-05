@@ -188,8 +188,7 @@ export class DataService {
       'X-Request-ID': _uuid,
       'X-App-Version': this.appVersion,
       'X-Session-ID': DataService.sessionId,
-      'X-Trace-ID': _uuid,
-      'X-Trace-Enabled': true
+      'X-Trace-ID': _uuid
     };
     try {
       this.deviceId = (<HTMLInputElement>document.getElementById('deviceId')).value;

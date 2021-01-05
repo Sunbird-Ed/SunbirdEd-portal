@@ -122,8 +122,7 @@ export class ResourceService {
       'X-msgid': _uuid,
       'X-Request-ID': _uuid,
       'X-Session-Id': 'X-Session-Id',
-      'X-Trace-ID': _uuid,
-      'X-Trace-Enabled': true
+      'X-Trace-ID': _uuid
     };
   }
   /**
