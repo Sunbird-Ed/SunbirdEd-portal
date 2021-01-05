@@ -723,10 +723,10 @@ html.PlayerMediaQueryClass {
   pointer-events: none;
 }
 .disabled-toc-card {
-  background-color: var(--primary-100) !important;
-  border: calculateRem(1px) solid var(--primary-300) !important;
+  background-color: var(--white) !important;
   cursor: not-allowed !important;
-  #circle-with-check-symbol g {
-    fill: red !important;
+  .sbchapter__item__title{
+    opacity: 0.3;
+    color: var(--black) !important;
   }
 }
