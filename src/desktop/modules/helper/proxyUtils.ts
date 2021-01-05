@@ -45,3 +45,23 @@ export const decorateRequestHeaders = function (upstreamUrl = "") {
     return proxyReqOpts;
   }
 }
+
+export const handleSessionExpiry = (proxyRes, proxyResData, req?, res?, data?) => {
+  if ((proxyRes.statusCode === 401)) {
+    return {
+      id: 'app.error',
+      ver: '1.0',
+      params:
+      {
+        'msgid': null,
+        'status': 'failed',
+        'err': 'SESSION_EXPIRED',
+        'errmsg': 'Session Expired'
+      },
+      responseCode: 'SESSION_EXPIRED',
+      result: { }
+    };
+  } else {
+    return proxyResData;
+  }
+}

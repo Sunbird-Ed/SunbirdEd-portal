@@ -1,4 +1,4 @@
-import { BrowserWindow, dialog, session } from "electron";
+import { app, BrowserWindow, dialog, session } from "electron";
 import * as qs from 'qs';
 import * as _ from "lodash";
 import * as path from "path";
@@ -56,6 +56,8 @@ export class LoginSessionProvider {
                 show: false,
                 minWidth: 700,
                 minHeight: 500,
+                minimizable: false,
+                maximizable: false,
                 webPreferences: {
                     nodeIntegration: false,
                     enableRemoteModule: false,
@@ -66,6 +68,9 @@ export class LoginSessionProvider {
             this.loginWindow.setAlwaysOnTop(true);
             this.loginWindow.maximize();
             this.loginWindow.show();
+            if(app.isPackaged){
+                this.loginWindow.removeMenu();
+            }
         }
         this.loginWindow.loadURL(loginURL).then(() => {
             logger.debug(`Login window loaded successfully`);
@@ -301,7 +306,7 @@ export class LoginSessionProvider {
     }
 
     private async resolveStateSession(captured: {[key: string]: string}) {
-        return await HTTPService.get(`${process.env.APP_BASE_URL}/v1/sso/create/session?id=${captured['id']}`, {})
+        return await HTTPService.get(`${process.env.APP_BASE_URL}/v1/sso/create/session?id=${captured['id']}&clientId=desktop`, {})
             .toPromise()
             .then(async (response: any) => {
                 if (response.data.access_token && response.data.refresh_token) {

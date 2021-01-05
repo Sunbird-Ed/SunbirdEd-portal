@@ -57,6 +57,9 @@ if (!CsModule.instance.isInitialised) {
       courseServiceConfig: {
         apiPath: '/learner/course/v1',
         certRegistrationApiPath: '/learner/certreg/v2/certs'
+      },
+      discussionServiceConfig: {
+        apiPath: '/discussion'
       }
     }
   });
