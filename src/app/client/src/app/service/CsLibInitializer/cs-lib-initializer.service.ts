@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';
+import { CsClientStorage } from '@project-sunbird/client-services/core/cs-client-storage';
 import { UserService } from '@sunbird/core';
 import { first } from 'rxjs/operators';
 
@@ -48,7 +49,23 @@ export class CsLibInitializerService {
                 certRegistrationApiPath: '/learner/certreg/v2/certs'
               }
           }
-      });
+      },
+      null,
+      new class implements CsClientStorage {
+        setItem(key: string, value: string): Promise<void> {
+          return new Promise(resolve => {
+            resolve(localStorage.setItem(key, value));
+          });
+        }
+        getItem(key: string): Promise<string | undefined> {
+          return new Promise(resolve => {
+            const value = localStorage.getItem(key);
+            console.log('localStorage.getItem(key)', value);
+            resolve(value);
+          });
+        }
+    }
+      );
     }
   }
   initializeCs() {
