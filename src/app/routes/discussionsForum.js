@@ -11,8 +11,8 @@ const { logger } = require('@project-sunbird/logger');
 
 module.exports = function (app) {
 
-    app.post(`${BASE_REPORT_URL}/forum/v2/read`, proxyUtils.verifyToken(), proxyObject());
-    app.post(`${BASE_REPORT_URL}/forum/v2/create`, proxyUtils.verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/forum/v2/read`,  proxyUtils.verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/forum/v2/create`,  proxyUtils.verifyToken(),  proxyObject());
 
     app.get(`${BASE_REPORT_URL}/tags`, proxyUtils.verifyToken(), proxyObject());
     app.get(`${BASE_REPORT_URL}/notifications`, proxyUtils.verifyToken(), proxyObject());
@@ -110,7 +110,7 @@ module.exports = function (app) {
     app.delete(`${BASE_REPORT_URL}/v2/users/:uid/tokens/:token`, proxyUtils.verifyToken(), proxyObject());
     app.get(`${BASE_REPORT_URL}/user/username/:username`, proxyUtils.verifyToken(), proxyObject());
 
-    app.post(`${BASE_REPORT_URL}/user/v1/create`, proxyUtils.verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/user/v1/create`, proxyUtils.verifyToken(), proxyObjectForCreate());
     app.get(`${BASE_REPORT_URL}/user/uid/:uid`, proxyUtils.verifyToken(), proxyObject());
 }
 
@@ -149,8 +149,38 @@ function checkEmail() {
             }
     }
 }
-
+function addHeaders() {
+    return function (proxyReqOpts, srcReq) { 
+        proxyReqOpts.headers['Authorization'] = 'Bearer ' + srcReq.session['nodebb_authorization_token'];
+        return proxyReqOpts
+    }
+}
 function proxyObject() {
+    return proxy(discussions_middleware, {
+        proxyReqOptDecorator: addHeaders(),
+        proxyReqPathResolver: function (req) {
+            let urlParam = req.originalUrl;
+            let query = require('url').parse(req.url).query;
+            if (query) {
+                return require('url').parse(discussions_middleware + urlParam + '?' + query).path
+            } else {
+                return require('url').parse(discussions_middleware + urlParam).path
+            }
+        },
+        userResDecorator: (proxyRes, proxyResData, req, res) => {
+            try {
+                const data = JSON.parse(proxyResData.toString('utf8'));
+                if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+                else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
+            } catch (err) {
+                logger.error({message: err});
+                return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
+            }
+        }
+    })
+}
+
+function proxyObjectForCreate() {
     return proxy(discussions_middleware, {
         proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(discussions_middleware),
         proxyReqPathResolver: function (req) {
@@ -164,6 +194,11 @@ function proxyObject() {
         },
         userResDecorator: (proxyRes, proxyResData, req, res) => {
             try {
+                const nodebb_auth_token = proxyRes.headers['nodebb_auth_token'];
+                if(nodebb_auth_token) {
+                    req.session['nodebb_authorization_token'] = nodebb_auth_token;
+                    delete req.headers['nodebb_authorization_token'];
+                }
                 const data = JSON.parse(proxyResData.toString('utf8'));
                 if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
                 else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
