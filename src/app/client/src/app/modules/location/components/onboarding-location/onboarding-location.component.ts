@@ -23,7 +23,7 @@ export class OnboardingLocationComponent implements OnInit {
   @Input() isCustodianOrgUser: boolean;
   @Input() tenantInfo: ITenantData;
   @Output() close = new EventEmitter<void>();
-  @ViewChild('onboardingModal') onboardingModal;
+  @ViewChild('onboardingModal', {static: false}) onboardingModal;
 
   userDetailsForm: FormGroup;
   processedDeviceLocation: any = {};

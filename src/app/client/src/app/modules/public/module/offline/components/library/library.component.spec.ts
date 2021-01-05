@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { LibraryComponent } from './library.component';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NavigationStart, RouterModule } from '@angular/router';
 import {

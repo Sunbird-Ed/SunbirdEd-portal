@@ -16,7 +16,7 @@ import { UserService } from '@sunbird/core';
 })
 export class GroupHeaderComponent implements OnInit, OnDestroy {
   dropdownContent = true;
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
   @Input() groupData: IGroupCard;
   @Output() handleFtuModal = new EventEmitter();
   showModal = false;

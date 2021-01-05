@@ -12,7 +12,7 @@ import { GetComponent, DialCodeComponent, DialCodeCardComponent } from './compon
 import { FormsModule } from '@angular/forms';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { PlayerHelperModule } from '@sunbird/player-helper';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
 
 @NgModule({
   imports: [

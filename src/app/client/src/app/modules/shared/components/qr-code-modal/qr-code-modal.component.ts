@@ -9,7 +9,7 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
   templateUrl: './qr-code-modal.component.html'
 })
 export class QrCodeModalComponent implements OnInit {
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
   @Output() closeQrModal = new EventEmitter<any>();
   instance: string;
   public submitDialCodeInteractEdata: IInteractEventEdata;

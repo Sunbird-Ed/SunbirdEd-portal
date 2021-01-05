@@ -14,7 +14,7 @@ import * as dayjs from 'dayjs';
 })
 export class BatchInfoComponent implements OnInit, OnDestroy {
 
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
   @Input() enrolledBatchInfo: any;
   @Output() modelClose = new EventEmitter;
   @Output() routeChanged = new EventEmitter();

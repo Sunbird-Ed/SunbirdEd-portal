@@ -23,7 +23,7 @@ export interface IActivity {
   styleUrls: ['./activity-list.component.scss']
 })
 export class ActivityListComponent implements OnInit, OnDestroy {
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
   @Input() groupData;
   @Input() currentMember;
   numberOfSections = new Array(this.configService.appConfig.SEARCH.PAGE_LIMIT);

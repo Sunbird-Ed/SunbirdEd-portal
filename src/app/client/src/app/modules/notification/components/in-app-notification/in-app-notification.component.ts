@@ -3,7 +3,7 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { NotificationService } from '../../services/notification/notification.service';
 import * as _ from 'lodash-es';
 import { UserFeedStatus } from '@project-sunbird/client-services/models';
-import { NotificationViewConfig } from '@project-sunbird/common-consumption';
+import { NotificationViewConfig } from '@project-sunbird/common-consumption-v8';
 import { ResourceService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
 

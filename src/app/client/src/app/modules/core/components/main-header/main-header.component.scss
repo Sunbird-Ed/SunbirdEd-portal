@@ -140,7 +140,7 @@
   }
 }
 
-.my-avatar /deep/ .avatar-content {
+.my-avatar ::ng-deep .avatar-content {
   background-color: var(--red) !important;
 }
 

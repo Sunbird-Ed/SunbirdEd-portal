@@ -14,7 +14,7 @@ import { PopupControlService } from '../../../../service/popup-control.service';
 })
 
 export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
   @Input() tncUrl: string;
   @Input() showAcceptTnc: boolean;
   @Input() adminTncVersion: any;

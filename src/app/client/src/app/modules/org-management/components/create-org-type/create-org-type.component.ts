@@ -21,7 +21,7 @@ export class CreateOrgTypeComponent implements OnInit, OnDestroy, AfterViewInit 
   public addOrganizationType: IInteractEventEdata;
   public updateOrganizationType: IInteractEventEdata;
   public cancelModal: IInteractEventEdata;
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
   pageId: string;
   /**
   * telemetryImpression

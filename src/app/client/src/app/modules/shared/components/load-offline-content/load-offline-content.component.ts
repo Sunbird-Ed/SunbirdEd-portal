@@ -14,7 +14,7 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
 export class LoadOfflineContentComponent implements OnInit, OnDestroy  {
   @Input() hideLoadButton = false;
   showLoadContentModal: any;
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
   isConnected;
   selectedValue;
   @Output() close = new EventEmitter();

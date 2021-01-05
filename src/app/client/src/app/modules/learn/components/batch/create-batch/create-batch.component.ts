@@ -18,7 +18,7 @@ import { ConfigService } from '@sunbird/shared';
 })
 export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  @ViewChild('createBatchModel') private createBatchModel;
+  @ViewChild('createBatchModel', {static: false}) private createBatchModel;
 
   private userSearchTime: any;
 
