@@ -432,6 +432,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
   }
 
   contentClick(content) {
+<<<<<<< HEAD
     if (content.originData) {
       const originData = JSON.parse(content.originData);
       if (originData.copyType === 'shallow'){
@@ -440,6 +441,8 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
         return;
       }
     }
+=======
+>>>>>>> upstream/release-3.6.0
     if (_.size(content.lockInfo) && this.userService.userid !== content.lockInfo.createdBy) {
         this.lockPopupData = content;
         this.showLockedContentModal = true;

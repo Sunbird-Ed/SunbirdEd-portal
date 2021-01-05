@@ -13,6 +13,7 @@ describe('ContentUtilsService', () => {
 
   it('should be created', inject([ContentUtilsServiceService], (service: ContentUtilsServiceService) => {
     expect(service).toBeDefined();
+    expect(service.baseUrl).toBeDefined();
   }));
   it('should take content share INPUT and return the base64 link ',
   inject([ContentUtilsServiceService], (service: ContentUtilsServiceService) => {

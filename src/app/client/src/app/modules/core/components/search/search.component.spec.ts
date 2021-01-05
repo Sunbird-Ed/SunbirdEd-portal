@@ -125,5 +125,12 @@ describe('SearchComponent', () => {
     component.setSearchPlaceHolderValue();
     expect(component.setSearchPlaceHolderValue).toHaveBeenCalled();
   });
-
+  it('should call onEnter method and redirect to mydownloads page when user is offline', ( ) => {
+    component.isDesktopApp = true;
+    component.isConnected = false;
+    const key = 'hello';
+    component.queryParam['key'] = key;
+    component.onEnter(key);
+    expect(router.navigate).toHaveBeenCalledWith(['mydownloads'], {queryParams:  component.queryParam});
+  });
 });

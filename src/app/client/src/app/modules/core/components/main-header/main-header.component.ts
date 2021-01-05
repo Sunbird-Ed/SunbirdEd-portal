@@ -15,7 +15,7 @@ import {
   UtilService,
   ToasterService,
   IUserData, LayoutService,
-  NavigationHelperService
+  NavigationHelperService, ConnectionService
 } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -24,7 +24,6 @@ import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
 import { Subject, zip, forkJoin } from 'rxjs';
 import { EXPLORE_GROUPS, MY_GROUPS } from '../../../public/module/group/components/routerLinks';
-import { ConnectionService } from '@sunbird/shared';
 
 declare var jQuery: any;
 type reportsListVersionType = 'v1' | 'v2';
@@ -120,6 +119,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   learnMenuIntractEdata: IInteractEventEdata;
   contributeMenuEdata: IInteractEventEdata;
   myGroupIntractEData: IInteractEventEdata;
+  aboutUsEdata: IInteractEventEdata;
   showContributeTab: boolean;
   hideHeader = false;
   ShowStudentDropdown = false;
@@ -147,6 +147,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   isCustodianUser: boolean;
   isConnected = false;
   isDesktopApp = false;
+  showLoadContentModal = false;
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
     public orgDetailsService: OrgDetailsService, public formService: FormService,
@@ -375,6 +376,11 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       id: 'groups-tab',
       type: 'click',
       pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') || 'groups'
+    };
+    this.aboutUsEdata = {
+      id: 'about-us-tab',
+      type: 'click',
+      pageid: 'about-us'
     };
   }
 

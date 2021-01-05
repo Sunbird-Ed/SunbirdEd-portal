@@ -1,5 +1,5 @@
 import { EXPLORE_GROUPS, MY_GROUPS } from '../../../public/module/group/components/routerLinks';
-import { ConfigService, ResourceService, IUserData, IUserProfile, LayoutService } from '@sunbird/shared';
+import { ConfigService, ResourceService, IUserData, IUserProfile, LayoutService, UtilService } from '@sunbird/shared';
 import { Component, OnInit, Input } from '@angular/core';
 import { UserService, PermissionService, ProgramsService } from '../../services';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
@@ -69,11 +69,12 @@ export class MainMenuComponent implements OnInit {
   showContributeTab: boolean;
   hrefPath = '/resources';
   routerLinks = {explore: `/${EXPLORE_GROUPS}`, groups: `/${MY_GROUPS}`};
+  isDesktopApp = false;
   /*
   * constructor
   */
   constructor(resourceService: ResourceService, userService: UserService, router: Router, public activatedRoute: ActivatedRoute,
-    permissionService: PermissionService, config: ConfigService, private cacheService: CacheService,
+    permissionService: PermissionService, config: ConfigService, private cacheService: CacheService, private utilService: UtilService,
     private programsService: ProgramsService, public layoutService: LayoutService, public telemetryService: TelemetryService) {
     this.resourceService = resourceService;
     this.userService = userService;
@@ -100,6 +101,7 @@ export class MainMenuComponent implements OnInit {
       }
   }
   ngOnInit() {
+    this.isDesktopApp = this.utilService.isDesktopApp;
     try {
       this.helpLinkVisibility = (<HTMLInputElement>document.getElementById('helpLinkVisibility')).value;
     } catch (error) {

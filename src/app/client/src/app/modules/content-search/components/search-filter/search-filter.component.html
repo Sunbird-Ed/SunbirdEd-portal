@@ -28,9 +28,9 @@
             </div>
         </div>
 
-        <div class="sb-bg-color-white">
+        <div class="sb-bg-color-white sb-global-filter-section">
             <div class="ui container">
-                <div class="d-flex flex-ai-center">
+                <div class="d-flex flex-ai-center flex-w-wrap">
                     <div *ngIf="allValues?.subject?.length" class="state-medium-container__dropdown">
                         <div class="sb-field mb-0">
                             <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['subject']"
@@ -76,9 +76,9 @@
                         <div class="sb-field mb-0">
                             <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['audience']"
                                 (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'audience'})"
-                                defaultSelectionText={{resourceService?.frmelmnts?.lbl?.meantFor}}
+                                defaultSelectionText={{resourceService?.frmelmnts?.lbl?.userType}}
                                 zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
-                                class="selection sbt-dropdown-tick"
+                                class="selection sbt-dropdown-tick text-cencapitalize"
                                 [ngClass]="!layoutConfiguration ? 'state-selection' : 'sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg'">
                                 <div
                                     [ngClass]="!layoutConfiguration ? 'state-selection__section' : 'sbt-dropdown-section'">
@@ -89,7 +89,10 @@
                             </sui-multi-select>
                         </div>
                     </div>
-
+                    <button (click)="resetFilters()" appTelemetryInteract
+                    [telemetryInteractEdata]="getInteractEdata()"
+                    class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto">{{resourceService.frmelmnts?.btn?.reset | translate}}
+                </button>
                 </div>
 
             </div>
@@ -192,13 +195,13 @@
 
                         <div class="sb-field  w-100" *ngIf="allValues?.audience?.length">
                             <label
-                                class="fnormal font-weight-bold d-flex">{{resourceService.frmelmnts?.lbl?.meantFor | translate}}</label>
+                                class="fnormal font-weight-bold d-flex">{{resourceService.frmelmnts?.lbl?.userType | translate}}</label>
                             <label class="w-100">
                                 <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['audience']"
                                     (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'audience'})"
-                                    defaultSelectionText={{resourceService?.frmelmnts?.lbl?.meantFor}}
+                                    defaultSelectionText={{resourceService?.frmelmnts?.lbl?.userType}}
                                     zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
-                                    class="selection sbt-dropdown-tick"
+                                    class="selection sbt-dropdown-tick text-cencapitalize"
                                     [ngClass]="!layoutConfiguration ? 'state-selection' : 'sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg'">
                                     <div
                                         [ngClass]="!layoutConfiguration ? 'state-selection__section' : 'sbt-dropdown-section'">

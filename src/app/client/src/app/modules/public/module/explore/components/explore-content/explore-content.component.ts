@@ -73,9 +73,6 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   }
   ngOnInit() {
     this.isDesktopApp = this.utilService.isDesktopApp;
-    if (this.isDesktopApp) {
-      this.listenLanguageChange();
-    }
     this.activatedRoute.queryParams.pipe(takeUntil(this.unsubscribe$)).subscribe(queryParams => {
       this.queryParams = { ...queryParams };
     });
@@ -83,7 +80,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
       this.formData = formData;
       this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
-      this.setNoResultMessage();
+      this.listenLanguageChange();
       this.initFilters = true;
     }, error => {
       this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
@@ -114,14 +111,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     this.searchAll = this.resourceService.frmelmnts.lbl.allContent;
     this.contentManagerService.contentDownloadStatus$.subscribe( contentDownloadStatus => {
       this.contentDownloadStatus = contentDownloadStatus;
+      this.addHoverData();
   });
-  }
-  private listenLanguageChange() {
-    this.utilService.languageChange.pipe(takeUntil(this.unsubscribe$)).subscribe((langData) => {
-      if (_.get(this.contentList, 'length')) {
-        this.addHoverData();
-      }
-    });
   }
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -256,6 +247,14 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         this.showLoader = false;
         this.facets = this.searchService.updateFacetsData(_.get(data, 'result.facets'));
         this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
+        if(this.isDesktopApp) {
+          _.forEach(this.facets, (facet, index) => {
+            if(facet.name === 'primaryCategory') {
+              const updatedValues = facet.values.filter(value => !['course assessment', 'course'].includes(value.name));
+              facet.values = updatedValues;
+            }
+          })
+        }
         this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
           this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.contentList = data.result.content || [];
@@ -312,6 +311,10 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     };
   }
   public playContent(event) {
+    if(this.isDesktopApp && _.toUpper(_.get(event, 'content.trackable.enabled')) === 'YES') {
+      this.toasterService.error(this.resourceService.messages.imsg.t0143);
+      return false;
+    }
     this.publicPlayerService.playContent(event);
   }
   public inView(event) {
@@ -341,22 +344,32 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
-  private setNoResultMessage() {
-    this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$))
-      .subscribe(item => {
-        let title = this.resourceService.frmelmnts.lbl.noBookfoundTitle;
-        if (this.queryParams.key) {
-          const title_part1 = _.replace(this.resourceService.frmelmnts.lbl.desktop.yourSearch, '{key}', this.queryParams.key);
-          const title_part2 = this.resourceService.frmelmnts.lbl.desktop.notMatchContent;
-          title = title_part1 + ' ' + title_part2;
+
+  private listenLanguageChange() {
+    this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe((languageData) => {
+      this.setNoResultMessage();
+      if (_.get(this.contentList, 'length') ) {
+        if (this.isDesktopApp) {
+          this.addHoverData();
         }
-        this.noResultMessage = {
-          'title': title,
-          'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
-          'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
-          'showExploreContentButton': false
-        };
-      });
+        this.facets = this.searchService.updateFacetsData(this.facets);
+      }
+    });
+  }
+
+  private setNoResultMessage() {
+    let title = this.resourceService.frmelmnts.lbl.noBookfoundTitle;
+    if (this.queryParams.key) {
+      const title_part1 = _.replace(this.resourceService.frmelmnts.lbl.desktop.yourSearch, '{key}', this.queryParams.key);
+      const title_part2 = this.resourceService.frmelmnts.lbl.desktop.notMatchContent;
+      title = title_part1 + ' ' + title_part2;
+    }
+    this.noResultMessage = {
+      'title': title,
+      'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
+      'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
+      'showExploreContentButton': false
+    };
   }
 
   updateCardData(downloadListdata) {

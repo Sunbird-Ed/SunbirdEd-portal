@@ -7,9 +7,14 @@ import * as uuid from "uuid";
 import { ContentDownloadManager } from "./manager/contentDownloadManager";
 import contentRoutes from './routes/content';
 import dataRoutes from './routes/data';
+import formRoutes from './routes/forms';
+import orgRoutes from './routes/organization'
+import channelRoutes  from './routes/channel';
+import frameworkRoutes from './routes/framework'
 import desktopRoutes from './routes/desktop';
 import playerProxyRoutes from './routes/playerProxy';
 import staticRoutes from './routes/static';
+import courseRoutes from './routes/course';
 import telemetryRoutes from './routes/telemetry';
 import authRoutes from './routes/auth';
 import Device from './controllers/device';
@@ -89,22 +94,35 @@ export class Router {
     // portal static routes
     staticRoutes(app, 'content', 'ecars');
 
-    // api's for portal
-
-    app.get(`/device/profile/:id`,
-      async (req, res, next) => {
-        logger.debug(`Received API call to get device profile`);
-        const apiKey = await containerAPI.getDeviceSdkInstance().getToken().catch((err) => {
-          logger.error(`Received error while fetching api key in device profile with error: ${err}`);
-        });
-        req.headers.Authorization = `Bearer ${apiKey}`;
-        next();
-      },
+    // api's for portal    
+    app.get("/device/profile/:id",
       proxy(proxyUrl, {
-        proxyReqPathResolver(req) {
-          return `/api/v3/device/profile/:id`;
-        },
-      }));
+          proxyReqPathResolver(req) {
+              return `/device/profile/:id`;
+          },
+          proxyErrorHandler: function (err, res, next) {
+              logger.warn(`While getting device profile data from online`, err);
+              next();
+          },
+          userResDecorator: function (proxyRes, proxyResData) {
+              return new Promise(function (resolve) {
+                resolve(proxyResData);
+              });
+          }
+      }),
+      async (req, res) => {
+          logger.debug(`Received API call to get device profile data from offline`);
+          const deviceProfile = new Device(manifest);
+          let locationData: any = await deviceProfile.getDeviceProfile();
+          // set Default state value if offline location data is not available
+          let responseObj = { userDeclaredLocation: {'state': '', 'district': '' }}
+          if(locationData) {
+            responseObj.userDeclaredLocation.state = _.get(locationData, 'state');  
+            responseObj.userDeclaredLocation.district = _.get(locationData, 'district');
+          }
+          return res.send(Response.success("offline.device-profile", responseObj, req));
+      }
+  );
     
     app.post(`/device/register/:id`, async(req, res, next) => {
       logger.debug(`Received API call to update device profile`, req.params.id);
@@ -132,7 +150,12 @@ export class Router {
     authRoutes(app, proxyUrl);
     contentRoutes(app, proxyUrl, this.contentDownloadManager)
     dataRoutes(app, proxyUrl);
+    formRoutes(app, proxyUrl);
+    orgRoutes(app, proxyUrl);
+    channelRoutes(app, proxyUrl);
+    frameworkRoutes(app, proxyUrl);
     desktopRoutes(app, proxyUrl);
+    courseRoutes(app, proxyUrl);
     telemetryRoutes(app)
     playerProxyRoutes(app, proxyUrl);
 
