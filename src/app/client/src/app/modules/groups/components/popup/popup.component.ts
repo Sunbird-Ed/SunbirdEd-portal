@@ -19,8 +19,8 @@ export class PopupComponent {
   @Output() handleGroupTnc = new EventEmitter();
   @Output() handleEvent = new EventEmitter();
 
-  @ViewChild('modal') modal;
-  @ViewChild('tncModal') tncModal;
+  @ViewChild('modal', {static: false}) modal;
+  @ViewChild('tncModal', {static: false}) tncModal;
 
   channel: string;
   acceptTncType = acceptTnc;

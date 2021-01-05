@@ -12,7 +12,7 @@ import { RecaptchaComponent } from 'ng-recaptcha';
   styleUrls: ['./verify-account-identifier.component.scss']
 })
 export class VerifyAccountIdentifierComponent implements OnInit {
-  @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
+  @ViewChild('captchaRef', {static: false}) captchaRef: RecaptchaComponent;
   disableFormSubmit = true;
   disableResendOtp = false;
   form: FormGroup;

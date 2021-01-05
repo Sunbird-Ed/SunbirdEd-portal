@@ -23,7 +23,7 @@ export class OnboardingLocationComponent implements OnInit {
   @Input() isCustodianOrgUser: boolean;
   @Input() tenantInfo: ITenantData;
   @Output() close = new EventEmitter<void>();
-  @ViewChild('onboardingModal') onboardingModal;
+  @ViewChild('onboardingModal', {static: false}) onboardingModal;
 
   userDetailsForm: FormGroup;
   processedDeviceLocation: any = {};
@@ -103,6 +103,8 @@ export class OnboardingLocationComponent implements OnInit {
       locationExist = _.find(this.allStates, (locations) => {
         return locations.name.toLowerCase() === state.toLowerCase() && locations.type === 'state';
       });
+    } else {
+      locationExist = this.allStates.length > 0 ? this.allStates[0] : {};
     }
     return locationExist;
   }

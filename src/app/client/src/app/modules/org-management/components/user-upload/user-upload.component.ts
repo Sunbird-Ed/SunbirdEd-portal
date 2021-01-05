@@ -18,12 +18,12 @@ import * as _ from 'lodash-es';
   templateUrl: './user-upload.component.html'
 })
 export class UserUploadComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('inputbtn') inputbtn: ElementRef;
-  @ViewChild('modal') modal;
+  @ViewChild('inputbtn', {static: false}) inputbtn: ElementRef;
+  @ViewChild('modal', {static: false}) modal;
   /**
   *Element Ref  for copyLinkButton;
   */
- @ViewChild('copyErrorData') copyErrorButton: ElementRef;
+ @ViewChild('copyErrorData', {static: false}) copyErrorButton: ElementRef;
   /**
 * reference for ActivatedRoute
 */

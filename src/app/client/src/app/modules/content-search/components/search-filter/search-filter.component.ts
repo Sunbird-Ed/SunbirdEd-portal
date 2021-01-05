@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter, Input, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import * as _ from 'lodash-es';
-import { LibraryFiltersLayout } from '@project-sunbird/common-consumption';
+import { LibraryFiltersLayout } from '@project-sunbird/common-consumption-v8';
 import { ResourceService, LayoutService, ConfigService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject, merge } from 'rxjs';

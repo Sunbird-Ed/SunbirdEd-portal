@@ -16,7 +16,7 @@ import { PublicPlayerService } from '@sunbird/public';
   styleUrls: ['./activity-dashboard.component.scss']
 })
 export class ActivityDashboardComponent implements OnInit, OnDestroy {
-  @ViewChild('searchInputBox') searchInputBox;
+  @ViewChild('searchInputBox', {static: false}) searchInputBox;
   unsubscribe$ = new Subject<void>();
   showLoader = true;
   queryParams;

@@ -8,7 +8,7 @@ import { ResourceService } from '../../services/index';
 
 export class LockInfoPopupComponent implements OnInit {
 
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
   @Input() content;
   @Output() closeEvent = new EventEmitter<any>();
   /**

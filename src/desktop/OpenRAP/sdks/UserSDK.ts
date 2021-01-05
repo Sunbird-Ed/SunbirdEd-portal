@@ -74,12 +74,12 @@ export class UserSDK {
 
   // Logged in users
   public async insertLoggedInUser(user: ILoggedInUser) {
-    const userExist = await this.findByUserId(user.userId);
+    const userExist = await this.findByUserId(user.id);
     if (!_.isEmpty(userExist)) {
       throw {
         code: "UPDATE_CONFLICT",
         status: 409,
-        message: `User already exist with id ${user.userId}`
+        message: `User already exist with id ${user.id}`
       }
     }
     user._id = uuid();
@@ -87,10 +87,16 @@ export class UserSDK {
       .catch(err => { throw this.dbSDK.handleError(err); });
   }
 
-  public async getLoggedInUser(userId: string): Promise<ILoggedInUser> {
+  public async getLoggedInUser(userId?: string, withToken?: boolean): Promise<ILoggedInUser> {
+    if(!userId) {
+      const userSession = await this.getUserSession();
+      userId = _.get(userSession, 'userId');
+    }
     const users = await this.findByUserId(userId);
     let user = users[0];
-    user = _.omit(user, 'accessToken');
+    if(!withToken) {
+      user = _.omit(user, 'accessToken');
+    }
     return user;
   }
 
@@ -111,26 +117,33 @@ export class UserSDK {
 
   }
 
-  public deleteLoggedInUser(id: string) {
-    if (!id) {
+  public async deleteLoggedInUser(userId: string) {
+    if (!userId) {
+      const userSession = await this.getUserSession();
+      userId = _.get(userSession, 'userId');
+    }
+    const users = await this.findByUserId(userId);
+    if(users.length > 0) {
+      const { _id } = users[0];
+      return this.dbSDK.delete(USER_DB, _id);
+    } else {
       throw {
         code: "BAD_REQUEST",
         status: 400,
         message: `_id is mandatory to update user`
       }
     }
-    return this.dbSDK.delete(USER_DB, id);
   }
 
   public async getUserToken() {
     const userSession = await this.getUserSession();
     const userId = _.get(userSession, 'userId');
-    const user = await this.getLoggedInUser(userId);
+    const user = await this.getLoggedInUser(userId, true);
     const token = _.get(user, 'accessToken');
     return token;
   }
 
-  public async setUserSession(sessionData: IUserSession) {
+  public async setUserSession(sessionData = {}) {
     await this.settingSDK.put('userSession', sessionData);
   }
 
@@ -145,9 +158,9 @@ export class UserSDK {
     return this.dbSDK.find(USER_DB, query).then(result => result.docs);
   }
 
-  private async findByUserId(userId: string): Promise<ILoggedInUser[]> {
+  private async findByUserId(id: string): Promise<ILoggedInUser[]> {
     const query = {
-      selector: { userId }
+      selector: { id }
     }
     return this.dbSDK.find(USER_DB, query).then(result => result.docs);
   }

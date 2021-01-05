@@ -24,7 +24,7 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class MainFooterComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() layoutConfiguration;
-  @ViewChild('footerFix') footerFix: ElementRef;
+  @ViewChild('footerFix', {static: false}) footerFix: ElementRef;
   /**
    * reference of resourceService service.
    */

@@ -18,7 +18,7 @@ import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
 })
 export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  @ViewChild('updateBatchModal') private updateBatchModal;
+  @ViewChild('updateBatchModal', {static: false}) private updateBatchModal;
   /**
   * batchId
   */

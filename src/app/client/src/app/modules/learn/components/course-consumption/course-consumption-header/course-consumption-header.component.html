@@ -1,3 +1,8 @@
+<!-- Loader -->
+<div class="two wide column" *ngIf="showLoader">
+  <app-loader></app-loader>
+</div>
+<!-- /Loader-->
 
 <!-- Back Button -->
 <div class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9">
@@ -56,12 +61,11 @@
               </button>
 
                <!-- Discussion Forum -->
-               <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix" 	
+               <button *ngIf="forumIds.length > 0" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix" 	
                appTelemetryInteract [telemetryInteractObject]="courseInteractObject"	
                [telemetryInteractEdata]="{id:'discussion' , type: 'click' , pageid:'course-consumption'}" 	
                [telemetryInteractCdata]="[{id: courseHierarchy?.identifier, type: 'Course'}]"	
-               (click)="openDiscussionForum()" *ngIf="forumId && (enrolledCourse || (courseConsumptionService?.userCreatedAnyBatch | async))"	
-               title="Forum">	
+               (click)="openDiscussionForum()" title="Forum">	
                   <img src="assets/images/forum.svg" width="16px" class="mr-8">	
                   {{resourceService?.frmelmnts?.lbl?.discussionForum}}	
                </button>

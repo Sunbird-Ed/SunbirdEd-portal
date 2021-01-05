@@ -15,7 +15,7 @@ import { ProfileService } from '@sunbird/profile';
 import {Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin, zip, Subject} from 'rxjs';
 import { first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
-import { DOCUMENT } from '@angular/platform-browser';
+import { DOCUMENT } from '@angular/common';
 import { image } from '../assets/images/tara-bot-icon';
 /**
  * main app component
@@ -26,7 +26,7 @@ import { image } from '../assets/images/tara-bot-icon';
   styles: ['.header-block { display: none;}']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  @ViewChild('frameWorkPopUp') frameWorkPopUp;
+  @ViewChild('frameWorkPopUp', {static: false}) frameWorkPopUp;
   /**
    * user profile details.
    */
@@ -332,7 +332,8 @@ export class AppComponent implements OnInit, OnDestroy {
         if (_.get(res[0], 'tenantData')) {
           const orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
           if (_.get(orgDetailsFromSlug, 'slug') !== this.tenantService.slugForIgot) {
-            this.showUserTypePopup = !localStorage.getItem('userType');
+            const userType = localStorage.getItem('userType');
+            this.showUserTypePopup = _.get(this.userService, 'loggedIn') ? (!_.get(this.userService, 'userProfile.userType') || !userType) : !userType;
           }
         }
       });
@@ -493,6 +494,9 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   public setDeviceId(): Observable<string> {
       return new Observable(observer => this.telemetryService.getDeviceId((deviceId, components, version) => {
+        if (this.utilService.isDesktopApp) {
+         deviceId = (<HTMLInputElement>document.getElementById('deviceId')).value;
+        }
           this.fingerprintInfo = {deviceId, components, version};
           (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
           this.deviceId = deviceId;

@@ -43,7 +43,7 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
 
   @Output() reviewCommentEvent = new EventEmitter();
 
-  @ViewChild('commentInput') commentInput: ElementRef;
+  @ViewChild('commentInput', {static: false}) commentInput: ElementRef;
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
     public userService: UserService, public reviewCommentsService: ReviewCommentsService,
