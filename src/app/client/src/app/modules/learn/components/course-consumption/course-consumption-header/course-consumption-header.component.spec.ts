@@ -10,18 +10,20 @@ import { CourseConsumptionHeaderComponent } from './course-consumption-header.co
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseConsumptionService, CourseProgressService } from '../../../services';
-import { CoreModule, CoursesService, PermissionService, CopyContentService } from '@sunbird/core';
+import { CoreModule, UserService, CoursesService, PermissionService, CopyContentService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ResourceService, ToasterService, ContentData } from '@sunbird/shared';
 import { ContentUtilsServiceService } from '../../../../shared/services/content-utils/content-utils.service';
 import { configureTestSuite } from '@sunbird/test-util';
 import { GroupsService } from '../../../../groups/services/groups/groups.service';
+import { DiscussionService } from './../../../../discussion/services/discussion/discussion.service';
+import { MockResponseData } from './course-consumption-header.spec.data';
 
 const resourceServiceMockData = {
   messages: {
     imsg: { m0027: 'Something went wrong', activityAddedSuccess: 'Activity added successfully' },
     stmsg: { m0009: 'error', activityAddFail: 'Unable to add activity, please try again' },
-    emsg: { m0005: 'error', noAdminRole: `You don't have permission to add activity to the group` },
+    emsg: { m0005: 'Something went wrong, try again later', noAdminRole: `You don't have permission to add activity to the group` },
     smsg: { m0042: ''},
   },
   frmelmnts: {
@@ -64,7 +66,7 @@ describe('CourseConsumptionHeaderComponent', () => {
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],
       providers: [{ provide: ActivatedRoute, useClass: ActivatedRouteStub }, PermissionService,
         CourseConsumptionService, CourseProgressService, { provide: Router, useClass: RouterStub },
-        TelemetryService, CopyContentService ],
+        TelemetryService, CopyContentService, DiscussionService, UserService ],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -302,4 +304,54 @@ describe('CourseConsumptionHeaderComponent', () => {
     expect(component.isTrackable).toBeFalsy();
     expect(component.viewDashboard).toBeFalsy();
   });
+
+  it('it should check for user registration ', () => {
+    /** Arrange */
+    spyOn(component, 'checkUserRegistration').and.stub();
+
+    /** Act */
+    component.openDiscussionForum();
+
+    /** Assert */
+    expect(component.checkUserRegistration).toHaveBeenCalled();
+  });
+
+  it('should fetch all the forumIds attached to a course/batch', () => {
+    /** Arrange */
+    const discussionService = TestBed.get(DiscussionService);
+    const mockRequest = {
+      identifier: ['do_11317805943810457614592'],
+      type: 'course'
+    };
+    spyOn(component, 'prepareRequestBody').and.returnValue(mockRequest);
+    spyOn(discussionService, 'getForumIds').and.returnValue(observableOf(MockResponseData.fetchForumResponse));
+
+    /** Act */
+    component.fetchForumIds();
+
+    /** Assert */
+    expect(component.forumIds).toEqual([16, 1, 8]);
+
+  });
+
+  it('should show error toast if fetch forum id api fails', () => {
+    /** Arrange */
+    const discussionService = TestBed.get(DiscussionService);
+    const toasterService = TestBed.get(ToasterService);
+    const mockRequest = {
+      identifier: ['do_11317805943810457614592'],
+      type: 'course'
+    };
+    spyOn(toasterService, 'error');
+    spyOn(component, 'prepareRequestBody').and.returnValue(mockRequest);
+    spyOn(discussionService, 'getForumIds').and.callFake(() => throwError({}));
+
+    /** Act */
+    component.fetchForumIds();
+
+    /** Assert */
+    expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, try again later');
+
+  });
+
 });
