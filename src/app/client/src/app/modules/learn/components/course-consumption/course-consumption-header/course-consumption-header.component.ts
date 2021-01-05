@@ -310,7 +310,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
       });
     }, error => {
       this.showLoader = false;
-      this.toasterService.error('Something went wrong, try again later.');
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
   }
 
@@ -320,7 +320,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
       this.discussionService.getForumIds(requestBody).subscribe(forumDetails => {
         this.forumIds = _.map(_.get(forumDetails, 'result'), 'cid');
       }, error => {
-        console.log('error', error);
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
       });
     }
   }
