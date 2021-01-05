@@ -53,6 +53,7 @@ const decorateRequestHeaders = function (upstreamUrl = "") {
     proxyReqOpts.rejectUnauthorized = false
     proxyReqOpts.agent = upstreamUrl.startsWith('https') ? httpsAgent : httpAgent;
     proxyReqOpts.headers['connection'] = 'keep-alive';
+    proxyReqOpts.headers['X-Trace-Enabled'] = envHelper.TRACE_ID_ENABLED;
     // var reqBody = srcReq.body ? JSON.stringify(srcReq.body) : "";
     // logger.info({
     //   URL: srcReq.url,
