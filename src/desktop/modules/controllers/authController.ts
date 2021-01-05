@@ -1,15 +1,11 @@
-import { HTTPService } from "@project-sunbird/OpenRAP/services/httpService";
 import { logger } from "@project-sunbird/logger";
-import * as _ from "lodash";
 import { containerAPI } from "@project-sunbird/OpenRAP/api";
-import * as os from "os";
-import config from "../config";
-import Response from "../utils/response";
 import * as jwt from "jsonwebtoken";
-import permissionsHelper from "../helper/permissionsHelper";
-
-import { ClassLogger } from "@project-sunbird/logger/decorator";
 import { ILoggedInUser } from '../../OpenRAP/interfaces/IUser';
+import permissionsHelper from "../helper/permissionsHelper";
+import Response from "../utils/response";
+const uuidv1 = require('uuid/v1');
+
 
 // @ClassLogger({
 //     logLevel: "debug",
@@ -81,7 +77,7 @@ export default class AuthController {
     }
 
     private async setUserSession(user: ILoggedInUser) {
-        const sessionData = { userId: user.userId };
+        const sessionData = { userId: user.userId, sessionId: uuidv1() };
         await this.userSDK.setUserSession(sessionData);
     }
 }
