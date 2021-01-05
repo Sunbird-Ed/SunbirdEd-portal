@@ -147,11 +147,11 @@ export default (app, proxyURL) => {
     }
 
     try {
-      const sessionData = { userId: req.params.userId };
+      const sessionData = { userId: req.params.userId, sessionId: uuidv1() };
       await userSDK.setUserSession(sessionData);
       const result = {
         response: "Success",
-        userSid: uuidv1()
+        userSid: sessionData.sessionId
       }
       res.status(200).send(Response.success("api.user.switch", result, req));
     } catch (error) {
