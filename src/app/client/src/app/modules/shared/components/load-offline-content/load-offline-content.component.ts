@@ -63,12 +63,13 @@ export class LoadOfflineContentComponent implements OnInit, OnDestroy  {
   }
 
   closeModal() {
+    this.showLoadContentModal = false;
     this.close.emit();
     this.modal.deny();
   }
 
   navigate() {
-    this.selectedValue === 'browse' ? this.router.navigate(['/browse']) : this.openImportContentDialog();
+    this.selectedValue === 'browse' ? this.router.navigate(['/explore/1'], { queryParams: { selectedTab: 'all' }}) : this.openImportContentDialog();
     this.modal.deny();
   }
   addFontWeight() {

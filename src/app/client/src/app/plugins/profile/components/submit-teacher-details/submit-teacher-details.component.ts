@@ -1,7 +1,9 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormService, OtpService, TncService, UserService } from '@sunbird/core';
+import { Consent, ConsentStatus } from '@project-sunbird/client-services/models';
+import { CsUserService } from '@project-sunbird/client-services/services/user/interface';
 import {
   IUserData,
   NavigationHelperService,
@@ -76,6 +78,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   profileInfo: {};
 
   constructor(
+    @Inject('CS_USER_SERVICE') private csUserService: CsUserService,
     private activatedRoute: ActivatedRoute,
     private telemetryService: TelemetryService,
     public resourceService: ResourceService,
@@ -343,7 +346,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
 
   tenantPersonaFormValueChanges(event) {
     this.tenantPersonaLatestFormValue = event;
-    if (_.get(event, 'tenant') && _.get(event, 'persona')) {
+    if (_.get(event, 'tenant')) {
       if (!this.selectedTenant || event.tenant !== this.selectedTenant) {
         this.selectedTenant = event.tenant;
         this.getTeacherDetailsForm();
@@ -543,7 +546,6 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   }
 
   async submit() {
-    this.showGlobalConsentPopUpSection = true;
     if (!this.declaredLatestFormValue || !this.tenantPersonaLatestFormValue) {
       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0051'));
       return;
@@ -566,6 +568,31 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     const data = { declarations };
     this.getProfileInfo(declarations);
     this.updateProfile(data);
+    if (this.formAction === 'submit') {
+      this.updateUserConsent(true);
+    }
+  }
+
+  updateUserConsent(isActive: boolean) {
+    alert();
+    const request: Consent = {
+      status: isActive ? ConsentStatus.ACTIVE : ConsentStatus.REVOKED,
+      userId: this.userService.userid,
+      consumerId: '',
+      objectId: '',
+      objectType: ''
+    };
+    request.consumerId = this.userService.channel;
+    request.objectId = this.userService.channel;
+    request.objectType = 'global';
+    this.csUserService.updateConsent(request, { apiPath: '/learner/user/v1' })
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(() => {
+        this.toasterService.success(_.get(this.resourceService, 'messages.smsg.dataSettingSubmitted'));
+      }, error => {
+        this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+        console.error('Error while updating user consent', error);
+      });
   }
 
   getProfileInfo(declarations) {

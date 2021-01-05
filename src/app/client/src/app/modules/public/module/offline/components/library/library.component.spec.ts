@@ -1,30 +1,31 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { LibraryComponent } from './library.component';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
-import { TelemetryModule } from '@sunbird/telemetry';
-import { NavigationStart, RouterModule } from '@angular/router';
-import {
-  ResourceService, ToasterService, BrowserCacheTtlService, NavigationHelperService,
-  ConfigService, UtilService, LayoutService, ConnectionService
-} from '@sunbird/shared';
-import { TenantService, OrgDetailsService, UserService, SearchService } from '@sunbird/core';
+import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, NavigationStart, Router, RouterModule } from '@angular/router';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
+import { OrgDetailsService, SearchService, TenantService, UserService } from '@sunbird/core';
+import { PublicPlayerService } from '@sunbird/public';
+import {
+  BrowserCacheTtlService,
+  ConfigService, ConnectionService, LayoutService, NavigationHelperService, ResourceService,
+  SharedModule, ToasterService,
+  UtilService
+} from '@sunbird/shared';
+import { TelemetryModule } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
 import { CacheService } from 'ng2-cache-service';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SlickModule } from 'ngx-slick';
-import { FormsModule } from '@angular/forms';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { response } from './library.component.spec.data';
-import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable, of as observableOf, of, throwError } from 'rxjs';
-import { SharedModule } from '@sunbird/shared';
-import { SystemInfoService, ContentManagerService} from '../../services';
-import { configureTestSuite } from '@sunbird/test-util';
-import {APP_BASE_HREF} from '@angular/common';
+import { ContentManagerService, SystemInfoService } from '../../services';
+import { LibraryComponent } from './library.component';
+import { response } from './library.component.spec.data';
 describe('LibraryComponent', () => {
   let component: LibraryComponent;
   let fixture: ComponentFixture<LibraryComponent>;
-  let  userService, searchService, orgDetailsService;
+  let userService, searchService, orgDetailsService;
   let sendOrgDetails = true;
   let sendSearchResult = true;
   let sendFormResult = true;
@@ -84,7 +85,7 @@ describe('LibraryComponent', () => {
     public changeQueryParams(queryParams) { this.queryParamsMock.next(queryParams); }
     public changeParams(params) { this.paramsMock.next(params); }
   }
-configureTestSuite();
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -116,7 +117,7 @@ configureTestSuite();
         LayoutService,
         UserService, SearchService,
         { provide: ResourceService, useValue: resourceBundle },
-        OrgDetailsService, {provide: APP_BASE_HREF, useValue: '/'}],
+        OrgDetailsService, { provide: APP_BASE_HREF, useValue: '/' }],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));
@@ -135,7 +136,7 @@ configureTestSuite();
     sendFormResult = true;
     spyOn(orgDetailsService, 'getOrgDetails').and.callFake((options) => {
       if (sendOrgDetails) {
-        return of({hashTagId: '123'});
+        return of({ hashTagId: '123' });
       }
       return throwError({});
     });
@@ -205,7 +206,7 @@ configureTestSuite();
     component.hashTagId = '01231711180382208027';
     component.formData = [response.formData[0]];
     const activatedRoute = TestBed.get(ActivatedRoute);
-    activatedRoute.changeQueryParams({board: ['State (Andhra Pradesh)'], medium: ['English'], gradeLevel: ['Class 10']});
+    activatedRoute.changeQueryParams({ board: ['State (Andhra Pradesh)'], medium: ['English'], gradeLevel: ['Class 10'] });
     const result = component.constructSearchRequest();
     expect(result).toEqual(response.constructSearchRequestWithFilter);
   });
@@ -230,26 +231,26 @@ configureTestSuite();
 
   it('should call fetchContents and all downloads should be at the top(At the zero index)', () => {
     fixture.detectChanges();
-   fixture.whenStable().then(() => {
-    component.fetchContents();
-    expect(component.sections[0].name).toEqual(response.testSectionName[0].name);
+    fixture.whenStable().then(() => {
+      component.fetchContents();
+      expect(component.sections[0].name).toEqual(response.testSectionName[0].name);
     });
     fixture.destroy();
   });
 
   it('should call fetchContents and sort the sections list', () => {
     fixture.detectChanges();
-   fixture.whenStable().then(() => {
-    component.fetchContents();
-    expect(component.sections[1].name).toEqual(response.testSectionName[1].name);
+    fixture.whenStable().then(() => {
+      component.fetchContents();
+      expect(component.sections[1].name).toEqual(response.testSectionName[1].name);
     });
     fixture.destroy();
   });
   it('should call fetchContents and sort the sections Contents list', () => {
     fixture.detectChanges();
-   fixture.whenStable().then(() => {
-    component.fetchContents();
-    expect(component.sections[1].contents[0].name).toEqual(response.testSectionName[1].contents[0].name);
+    fixture.whenStable().then(() => {
+      component.fetchContents();
+      expect(component.sections[1].contents[0].name).toEqual(response.testSectionName[1].contents[0].name);
     });
     fixture.destroy();
   });
@@ -261,14 +262,14 @@ configureTestSuite();
   });
   it('should  showCpuLoadWarning when cpuload is more than 90', () => {
     const systemInfoService1 = TestBed.get(SystemInfoService);
-   spyOn(systemInfoService1, 'getSystemInfo').and.returnValue(observableOf(response.systemInfo));
-   component.ngOnInit();
+    spyOn(systemInfoService1, 'getSystemInfo').and.returnValue(observableOf(response.systemInfo));
+    component.ngOnInit();
     expect(component.showCpuLoadWarning).toBeTruthy();
   });
   it('should handle system info error ', () => {
     const systemInfoService1 = TestBed.get(SystemInfoService);
-   spyOn(systemInfoService1, 'getSystemInfo').and.returnValue(throwError(response.systemInfoError));
-   component.ngOnInit();
+    spyOn(systemInfoService1, 'getSystemInfo').and.returnValue(throwError(response.systemInfoError));
+    component.ngOnInit();
     expect(component.showCpuLoadWarning).toBeFalsy();
   });
 
@@ -299,7 +300,7 @@ configureTestSuite();
     component.layoutConfiguration = null;
     spyOn<any>(component, 'redoLayout').and.callThrough();
     const layoutService = TestBed.get(LayoutService);
-    spyOn(layoutService, 'switchableLayout').and.returnValue(of({ }));
+    spyOn(layoutService, 'switchableLayout').and.returnValue(of({}));
     component.initLayout();
     expect(component['redoLayout']).toHaveBeenCalled();
   });
@@ -322,8 +323,8 @@ configureTestSuite();
 
   it('should emit filter data when getFilters is called with data', () => {
     spyOn(component.dataDrivenFilterEvent, 'emit');
-    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
-    expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({ board: 'NCRT'});
+    component.getFilters([{ code: 'board', range: [{ index: 0, name: 'NCRT' }, { index: 1, name: 'CBSC' }] }]);
+    expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({ board: 'NCRT' });
   });
   it('should emit filter data when getFilters is called with no data', () => {
     spyOn(component.dataDrivenFilterEvent, 'emit');
@@ -340,9 +341,56 @@ configureTestSuite();
 
   it('should call exportContent with error', () => {
     const contentManagerService = TestBed.get(ContentManagerService);
-    spyOn(contentManagerService, 'exportContent').and.returnValue(throwError({error: {responseCode: 'ERROR'}}));
+    spyOn(contentManagerService, 'exportContent').and.returnValue(throwError({ error: { responseCode: 'ERROR' } }));
     component.exportContent('123');
     expect(component.showExportLoader).toBeFalsy();
+  });
+
+  it('should call playContent', () => {
+    const publicPlayerService = TestBed.get(PublicPlayerService);
+    spyOn(publicPlayerService, 'playContent');
+    component.playContent({});
+    expect(publicPlayerService.playContent).toHaveBeenCalled();
+  });
+
+  it('should call hoverActionClicked for DOWNLOAD ', () => {
+    response.hoverActionsData['hover'] = {
+      'type': 'download',
+      'label': 'Download',
+      'disabled': false
+    };
+    response.hoverActionsData['data'] = response.hoverActionsData.content;
+    spyOn(component, 'logTelemetry');
+    spyOn(component, 'downloadContent');
+    component.hoverActionClicked(response.hoverActionsData);
+    expect(component.downloadContent).toHaveBeenCalledWith(component.downloadIdentifier);
+    expect(component.logTelemetry).toHaveBeenCalledWith(component.contentData, 'download-collection');
+    expect(component.showModal).toBeFalsy();
+    expect(component.contentData).toBeDefined();
+  });
+
+  it('should call download content with success ', () => {
+    const contentManagerService = TestBed.get(ContentManagerService);
+    spyOn(contentManagerService, 'startDownload').and.returnValue(of({}));
+    component.downloadContent('123');
+    expect(component.showDownloadLoader).toBeFalsy();
+  });
+
+  it('should call download content with error ', () => {
+    const contentManagerService = TestBed.get(ContentManagerService);
+    const toasterService = TestBed.get(ToasterService);
+    component.pageSections = [];
+    spyOn(toasterService, 'error');
+    spyOn(contentManagerService, 'startDownload').and.returnValue(throwError({ error: { params: { err: 'ERROR' } } }));
+    component.downloadContent('123');
+    expect(component.showDownloadLoader).toBeFalsy();
+    expect(toasterService.error).toHaveBeenCalled();
+  });
+
+  it('should call navigateToMyDownloads', () => {
+    const router = TestBed.get(Router);
+    component.navigateToMyDownloads();
+    expect(router.navigate).toHaveBeenCalledWith(['/']);
   });
 
 });

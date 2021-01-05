@@ -575,7 +575,7 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@^3.4.9":
+"@project-sunbird/client-services@^3.6.8":
   version "3.6.8"
   resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.6.8.tgz#9fc657cb822fdff8f6153104797c97896c906e3d"
   integrity sha512-2GHeHHnvwEp10cN/DptCiH3U1abX/KkBINUBiQ2SrizO78ZeZlwVxWYe3QFhIHK+gVA7T1b8Sefp2HHAgpPRrw==
@@ -590,6 +590,13 @@
   version "3.6.1"
   resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v8/-/common-consumption-v8-3.6.1.tgz#05944a1d80d59fffd919579d15a2e26cfa0b0d0a"
   integrity sha512-5xrGu+E5fDHKLtFJzI/5ZifZ8IUAj6NfmPpSYVMmgJPaw44hbFU+OU5fwKc1UIALsCzJ4hNeRmFkMW0US+6h6A==
+  dependencies:
+    tslib "^1.9.0"
+
+"@project-sunbird/discussions-ui@1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui/-/discussions-ui-1.0.3.tgz#e909430397934074669133b231360b0eaf3fe1ff"
+  integrity sha512-uWFX8my+ctzJOVFKwslr4tIzeNhMBgjv3nuffIMZF/yH543wX8rY9cR3gok+RmmP0/HAwx0uvBqDHOseg6QbAg==
   dependencies:
     tslib "^1.9.0"
 
@@ -4175,7 +4182,7 @@ file-loader@4.0.0:
     loader-utils "^1.2.2"
     schema-utils "^1.0.0"
 
-"file-saver@github:eligrey/FileSaver.js#1.3.8":
+file-saver@eligrey/FileSaver.js#1.3.8:
   version "1.3.8"
   resolved "https://codeload.github.com/eligrey/FileSaver.js/tar.gz/e865e37af9f9947ddcced76b549e27dc45c1cb2e"
 
