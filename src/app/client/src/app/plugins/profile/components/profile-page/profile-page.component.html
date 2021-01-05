@@ -78,11 +78,11 @@
           {{state || resourceService.frmelmnts.lbl.addState}}</div>
       </div>
       <div class="d-flex flex-dc flex-jcc-center flex-ai-center">
-        <button appTelemetryInteract
+        <button appTelemetryInteract appOnlineOnly
           [telemetryInteractEdata]="editProfileInteractEdata"
           class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border my-16 computer only"
           (click)="showEditUserDetailsPopup=true">{{resourceService.frmelmnts.lbl.edit}}</button>
-        <button appTelemetryInteract
+        <button appTelemetryInteract appOnlineOnly
                 [telemetryInteractEdata]="submitTeacherDetailsInteractEdata"
                 *ngIf="!declarationDetails"
                 (click)="navigate('/profile/teacher-declaration','submit')"
@@ -90,7 +90,14 @@
         {{resourceService?.frmelmnts?.lbl?.iAmStateTeacher}} </button>
       </div>
     </div>
-
+    <div class="ui container" *ngIf="!isCustodianOrgUser">
+      <div class="d-flex flex-dc flex-jcc-center flex-ai-center">
+        <button appTelemetryInteract
+          [telemetryInteractEdata]="editProfileInteractEdata"
+          class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border my-16 computer only"
+          (click)="showEditUserDetailsPopup=true">{{resourceService.frmelmnts.lbl.edit}}</button>
+          </div>
+    </div>
     <div class="m-0 pl-0 computer only" *ngIf="nonCustodianUserLocation && !isCustodianOrgUser">
       <div class="mb-0 d-flex mb-5 flex-jc-center" *ngIf="nonCustodianUserLocation.block">
         <div class="fmedium">{{resourceService.frmelmnts.lbl.block}} :</div>
@@ -125,13 +132,13 @@
   <section class="pt-30 pb-30 d-flex flex-jc-center profile-bg-c-3" *ngIf="userProfile.email || userProfile.phone">
     <div class="d-flex flex-dc">
       <div class="d-flex flex-jc-center">
-        <div (click)="showContactPopup=true;contactType='phone'"
+        <div appOnlineOnly (click)="showContactPopup=true;contactType='phone'"
           class="ui semi-circular dodger-blue basic label mb-15 cursor-pointer" *ngIf="userProfile.phone"
           appTelemetryInteract
           [telemetryInteractEdata]="editMobileInteractEdata">
           <i class="phone blue icon mr-5"></i> &#x200E;+91 {{userProfile.phone}}
         </div>
-        <div (click)="showContactPopup=true;contactType='phone'"
+        <div appOnlineOnly (click)="showContactPopup=true;contactType='phone'"
           class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.phone"
           appTelemetryInteract
           [telemetryInteractEdata]="editMobileInteractEdata">
@@ -139,12 +146,12 @@
         </div>
       </div>
      <div class="d-flex flex-jc-center">
-      <div (click)="showContactPopup=true;contactType='email'"
+      <div appOnlineOnly (click)="showContactPopup=true;contactType='email'"
       class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 " *ngIf="userProfile.email" appTelemetryInteract
       [telemetryInteractEdata]="editEmailInteractEdata">
       <i class="mail blue icon mr-5"></i> {{userProfile.email}}
     </div>
-    <div (click)="showContactPopup=true;contactType='email'"
+    <div appOnlineOnly (click)="showContactPopup=true;contactType='email'"
       class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.email"
       appTelemetryInteract
       [telemetryInteractEdata]="editEmailInteractEdata">
@@ -154,14 +161,14 @@
 
       <!-- Add/edit recovery email/phone-->
     <div class="d-flex flex-jc-center">
-      <div *ngIf="userProfile.recoveryEmail || userProfile.recoveryPhone" (click)="showRecoveryId=true; mode='edit'" class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 d-flex" 
+      <div appOnlineOnly *ngIf="userProfile.recoveryEmail || userProfile.recoveryPhone" (click)="showRecoveryId=true; mode='edit'" class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 d-flex" 
       appTelemetryInteract
       [telemetryInteractEdata]="editRecoveryIdInteractEdata">
         <div class="recovery-img mr-5"></div>
         <span *ngIf="userProfile.recoveryEmail">{{userProfile.recoveryEmail}}</span>
         <span *ngIf="userProfile.recoveryPhone">{{userProfile.recoveryPhone}}</span>
        </div>
-       <div *ngIf="!(userProfile.recoveryEmail || userProfile.recoveryPhone)" (click)="showRecoveryId=true; mode='add'" class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal d-flex"
+       <div appOnlineOnly *ngIf="!(userProfile.recoveryEmail || userProfile.recoveryPhone)" (click)="showRecoveryId=true; mode='add'" class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal d-flex"
       appTelemetryInteract
       [telemetryInteractEdata]="addRecoveryIdInteractEdata">
         <div class="recovery-img mr-5"></div>
@@ -198,7 +205,7 @@
           </div>
         </div>
         <button class="sb-btn sb-btn-primary sb-btn-normal my-16 sb-btn-border computer only"
-          appTelemetryInteract
+          appTelemetryInteract appOnlineOnly
           [telemetryInteractEdata]="myFrameworkEditEdata"
           (click)="showEdit = !showEdit">{{resourceService.frmelmnts.lbl.edit}}</button>
       </div>
@@ -230,7 +237,7 @@
       <div class="d-flex flex-ai-center flex-jc-center" appTelemetryInteract
         [telemetryInteractEdata]="myFrameworkEditEdata"
         (click)="showEdit = !showEdit">
-        <button class="sb-btn sb-btn-primary sb-btn-xs mt-30">{{resourceService.frmelmnts.lbl.edit}}</button>
+        <button appOnlineOnly class="sb-btn sb-btn-primary sb-btn-xs mt-30">{{resourceService.frmelmnts.lbl.edit}}</button>
       </div>
     </div>
     <!-- User info mobile view ends-->
@@ -249,7 +256,7 @@
         <div class="fnormal font-w-bold mt-4 mb-8">{{ item.code === 'declared-phone' ? '+91' : '' }} {{ item.value }}</div>
       </div>
       <div class="my-8">
-        <button appTelemetryInteract
+        <button appTelemetryInteract appOnlineOnly
         [telemetryInteractEdata]="updateTeacherDetailsInteractEdata" type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary sb-btn-border"
         (click)="navigate('/profile/teacher-declaration','update')">{{resourceService.frmelmnts?.btn?.update}}</button>
       </div>

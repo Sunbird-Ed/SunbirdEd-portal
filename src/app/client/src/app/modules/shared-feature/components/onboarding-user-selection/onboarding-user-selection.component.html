@@ -10,7 +10,7 @@
           <p class="subtitle">{{resourceService?.frmelmnts?.lbl?.youAre}}</p>
           <div class="sb-onbrd-g-box__guest">
             <div *ngFor="let guest of guestList; let index=index;" class="sb-onbrd-g-box__guest__item"
-              [ngClass]="{'active': guest?.isActive}" (click)="selectUserType(index)">
+              [ngClass]="{'active': guest?.isActive}" (click)="selectUserType(guest)">
               <div class="p-16">
                 <img [src]="guest?.icon" alt="{{guest?.label}}" />
                 <img src="assets/images/round-check2.svg" class="check-icon" alt="check-mark" />
