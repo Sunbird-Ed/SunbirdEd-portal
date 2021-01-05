@@ -261,7 +261,11 @@ module.exports = (app) => {
       errType = 'VERIFY_REQUEST';
       const userData = isValidRequest(req.query.id);
       errType = 'CREATE_SESSION';
-      response = await createSession(userData.userName, 'android', req, res);
+      let clientId = 'android';
+      if(req.query.clientId && req.query.clientId === 'desktop') {
+        clientId = req.query.clientId;
+      }
+      response = await createSession(userData.userName, clientId, req, res);
       logger.info({
         msg: 'sso sign in create session api success',
         additionalInfo: {
@@ -444,6 +448,10 @@ module.exports = (app) => {
       logger.info({msg: 'mobile login success'});
       const query = '?payload=' + req.session.migrateAccountInfo.encryptedData + '&code=' + req.query.code + '&automerge=1';
       res.redirect('/account/migrate/login' + query);
+    } else if (req.session.migrateAccountInfo.client_id === 'desktop') {
+      logger.info({msg: 'desktop login success'});
+      const query = '?payload=' + req.session.migrateAccountInfo.encryptedData + '&code=' + req.query.code + '&automerge=1';
+      res.redirect('/account/migrate/login' + query);
     } else {
       // user logged in from google
       if (_.get(req, 'kauth.grant')) {
@@ -571,8 +579,8 @@ const getEncyptedQueryParams = (data) => {
 
 const ssoValidations = async (req, res) => {
   let stateUserData, stateJwtPayload, errType, response, statusCode;
-  // to support mobile flow
-  if (req.query.client_id === 'android') {
+  // to support mobile/desktop app flow
+  if (req.query.client_id === 'android' || req.query.client_id === 'desktop') {
     console.log('req.query.client_id', req.query.client_id);
     req.session.migrateAccountInfo = {
       encryptedData: parseJson(decodeURIComponent(req.get('x-authenticated-user-data')))
@@ -627,7 +635,7 @@ const ssoValidations = async (req, res) => {
         await acceptTncAndGenerateToken(stateUserData.identifierValue, stateUserData.tncVersion).catch(handleProfileUpdateError);
       }
       redirectUrl = '/accountMerge?status=success&merge_type=auto&redirect_uri=/resources';
-      if (req.query.client_id === 'android') {
+      if (req.query.client_id === 'android' || req.query.client_id === 'desktop') {
         response = {
           "id": "api.user.migrate", "params": {
             "resmsgid": null, "err": null, "status": "success",
@@ -642,7 +650,7 @@ const ssoValidations = async (req, res) => {
     }
   } catch (error) {
     redirectUrl ='/accountMerge?status=error&merge_type=auto&redirect_uri=/resources';
-    if (req.query.client_id === 'android') {
+    if (req.query.client_id === 'android' || req.query.client_id === 'desktop') {
       response = {
         "id": "api.user.migrate", "params": {
           "resmsgid": null, "err": JSON.stringify(error), "status": "error",
@@ -665,7 +673,7 @@ const ssoValidations = async (req, res) => {
   } finally {
     req.session.migrateAccountInfo = null;
     req.session.nonStateUserToken = null;
-    if (req.query.client_id === 'android') {
+    if (req.query.client_id === 'android' || req.query.client_id === 'desktop') {
       res.status(statusCode).send(response)
     } else {
       res.redirect(redirectUrl || errorUrl);

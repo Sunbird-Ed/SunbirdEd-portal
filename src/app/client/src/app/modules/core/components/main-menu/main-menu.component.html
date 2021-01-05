@@ -28,7 +28,7 @@
 			tabindex="0" [routerLink]="'/explore'">
 			{{resourceService.frmelmnts?.lbl?.explore}} {{resourceService.instance}}
 		</button>
-  		<a class="item font-weight-bold sb-color-primary pr-10" href="{{hrefPath}}" appTelemetryInteract
+  		<a class="item font-weight-bold sb-color-primary pr-10" href="{{hrefPath}}" appTelemetryInteract *ngIf="!isDesktopApp"
 			[telemetryInteractEdata]="signInIntractEdata">
 			{{resourceService.frmelmnts?.btn?.login}}
 		</a>

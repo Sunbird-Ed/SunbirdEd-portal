@@ -71,7 +71,7 @@ module.exports = (app) => {
       logger.info({msg: 'keyCloakToken fetched' + JSON.stringify(keyCloakToken)});
       errType = 'UNHANDLED_ERROR';
       redirectUrl = reqQuery.redirect_uri.replace(KEYCLOACK_AUTH_CALLBACK_STRING, ''); // to avoid 401 auth errors from keycloak
-      if (reqQuery.client_id === 'android' || reqQuery.client_id === 'nodebb' || reqQuery.client_id === 'nodebb-local') {
+      if (reqQuery.client_id === 'android' || reqQuery.client_id === 'desktop' || reqQuery.client_id === 'nodebb' || reqQuery.client_id === 'nodebb-local') {
         redirectUrl = reqQuery.redirect_uri.split('?')[0] + getQueryParams(keyCloakToken);
       }
       logger.info({msg: 'redirect url ' + redirectUrl});

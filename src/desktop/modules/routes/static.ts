@@ -3,6 +3,7 @@ const express = require("express");
 import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import { manifest } from "./../manifest";
 import * as path from "path";
+import { logger } from "@project-sunbird/logger";
 
 export default (app, contentFilesPath, ecarsFolderPath ) => {
     const fileSDK = containerAPI.getFileSDKInstance(manifest.id);
@@ -47,16 +48,32 @@ export default (app, contentFilesPath, ecarsFolderPath ) => {
             );
         },
       );
-      app.use(express.static(path.join(__dirname, "..", "..", "public", "portal")));
-    }
+    app.use(express.static(path.join(__dirname, "..", "..", "public", "portal")));
+    app.all('/logoff', async (req, res) => {
+      const userSDK: any = containerAPI.getUserSdkInstance();
+      await userSDK.deleteLoggedInUser().catch(error => { logger.debug("unable to delete logged in user data", error);})
+      await userSDK.setUserSession().catch(error => { logger.debug("unable to clear logged in user session", error);})
+      res.redirect('/mydownloads?selectedTab=mydownloads')
+    })
+    
+  }
+    
 
   const getLocals = async (manifest) => {
     const deviceId = await containerAPI
       .getSystemSDKInstance(manifest.id)
       .getDeviceId();
+    const userSDK = containerAPI.getUserSdkInstance();
+    const loggedInUserSession: any = await userSDK.getUserSession().catch(error => { logger.debug("unable to get the user session data", error);})
     const locals: any = {};
-    locals.userId = null;
-    locals.sessionId = null;
+
+    if (loggedInUserSession) {
+      locals.userId = loggedInUserSession.userId;
+      locals.sessionId = loggedInUserSession.userId;  
+    } else {
+      locals.userId = null;
+      locals.sessionId = null;
+    }
     locals.cdnUrl = "";
     locals.theme = "";
     locals.defaultPortalLanguage = "en";
@@ -68,7 +85,7 @@ export default (app, contentFilesPath, ecarsFolderPath ) => {
     locals.defaultTenantIndexStatus = null;
     locals.extContWhitelistedDomains = null;
     locals.buildNumber = process.env.APP_VERSION;
-    locals.apiCacheTtl = "5";
+    locals.apiCacheTtl = "300";
     locals.cloudStorageUrls = null;
     locals.userUploadRefLink = null;
     locals.googleCaptchaSiteKey = null;
