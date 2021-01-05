@@ -5,6 +5,7 @@ import AuthController from "../controllers/authController";
 import { containerAPI } from '@project-sunbird/OpenRAP/api';
 import { logger } from '@project-sunbird/logger';
 const proxy = require('express-http-proxy');
+const uuidv1 = require('uuid/v1');
 import { decorateRequestHeaders, handleSessionExpiry } from "../helper/proxyUtils";
 
 export default (app, proxyURL) => {
@@ -137,6 +138,27 @@ export default (app, proxyURL) => {
             }
         }
     }));
+
+  app.get('/user/v1/switch/:userId', async (req, res) => {
+    const userSDK = containerAPI.getUserSdkInstance();
+    if (!req.params.userId) {
+      logger.info({ msg: 'switch user rejected missing userID' });
+      res.status(400).send(Response.error("api.user.switch", 400, "failed to switch user", "BAD_REQUEST"));
+    }
+
+    try {
+      const sessionData = { userId: req.params.userId };
+      await userSDK.setUserSession(sessionData);
+      const result = {
+        response: "Success",
+        userSid: uuidv1()
+      }
+      res.status(200).send(Response.success("api.user.switch", result, req));
+    } catch (error) {
+      logger.error({ msg: "Error while switching user", error });
+      res.status(500).send(Response.error("api.user.switch", 500, "failed to switch user"));
+    }
+  });
 
     function proxyObj (){
         return proxy(proxyURL, {
