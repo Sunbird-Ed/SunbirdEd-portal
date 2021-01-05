@@ -1310,7 +1310,8 @@
     "courses": "courses",
     "organization": "organization",
     "externalIdVerification": "externalIdVerification",
-    "assessment": "assessment"
+    "assessment": "assessment",
+    "userType": "userType"
   },
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,

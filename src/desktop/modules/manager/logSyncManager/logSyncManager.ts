@@ -40,7 +40,11 @@ export class LogSyncManager {
   private async launchChildProcess() {
     this.isInProgress = true;
     await this.getDeviceId();
-    this.workerProcessRef = childProcess.fork(path.join(__dirname, "logSyncHelper"), [], { execArgv: ['-r', 'ts-node/register'] });
+    if(process.env.IS_PACKAGED_APP === 'true') {
+      this.workerProcessRef = childProcess.fork(path.join(__dirname, "logSyncHelper"));
+    } else {
+      this.workerProcessRef = childProcess.fork(path.join(__dirname, "logSyncHelper"), [], { execArgv: ['-r', 'ts-node/register'] });
+    }
     this.handleChildProcessMessage();
     this.workerProcessRef.send({
       message: "GET_LOGS",

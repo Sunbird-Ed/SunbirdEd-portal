@@ -97,4 +97,10 @@ export class Organization {
         }
       });
   }
+
+  public upsert(orgResponse) {
+    const doc = _.get(orgResponse, "result.response.content[0]");
+    const id = doc.slug;
+    this.databaseSdk.upsert("organization", id, doc);
+  }
 }

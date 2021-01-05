@@ -146,15 +146,16 @@ export class PublicPlayerService {
   }
 
   public playContent(event, queryParams?) {
+    const isAvailableLocally = Boolean(_.get(event, 'data.desktopAppMetadata.isAvailable'));
     const metaData =  event.data ? (event.data.metaData || event.data) : (event.metaData || event);
     this.navigationHelperService.storeResourceCloseUrl();
     setTimeout(() => {
       if (metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
         if (!metaData.trackable && metaData.contentType !== 'Course') {
-          this.handleNavigation(metaData, false, queryParams);
+          this.handleNavigation(metaData, false, queryParams, isAvailableLocally);
         } else {
           const isTrackable = metaData.trackable && metaData.trackable.enabled === 'No' ? false : true;
-          this.handleNavigation(metaData, isTrackable, queryParams);
+          this.handleNavigation(metaData, isTrackable, queryParams, isAvailableLocally);
         }
       } else {
         this.router.navigate(['play/content', metaData.identifier],
@@ -162,11 +163,14 @@ export class PublicPlayerService {
       }
     }, 0);
   }
-  handleNavigation(content, isTrackable, queryParams?) {
+  handleNavigation(content, isTrackable, queryParams?, isAvailableLocally?) {
     if (isTrackable) {
       this.router.navigate(['explore-course/course', content.identifier], { queryParams });
     } else {
-      queryParams = {...queryParams, contentType: content.contentType}
+      queryParams = { ...queryParams, contentType: content.contentType };
+      if (isAvailableLocally) {
+        queryParams.contentType = 'mydownloads';
+      }
       this.router.navigate(['play/collection', content.identifier],
       {queryParams: queryParams});
     }

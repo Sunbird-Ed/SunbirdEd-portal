@@ -5,3 +5,4 @@ export * from './telemetry/telemetry.component';
 export * from './telemetry-import/telemetry-import.component';
 export * from './content-manager-info-pop-up/content-manager-info-pop-up.component';
 export * from './content-manager/content-manager.component';
+export * from './about-us/about-us.component';

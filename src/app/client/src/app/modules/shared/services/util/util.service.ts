@@ -203,20 +203,20 @@ export class UtilService {
     });
     return formInputData;
   }
-  getPlayerDownloadStatus(status, content, currentRoute) {
+  getPlayerDownloadStatus(status, content, currentRoute?) {
     if (content) {
-    const downloadStatus = content['downloadStatus'];
-    const addedUsing  = _.get(content, 'desktopAppMetadata.addedUsing');
-    if (addedUsing && addedUsing === 'import' && !downloadStatus) {
-      return this.isDownloaded(content, status);
+      const downloadStatus = content['downloadStatus'];
+      const addedUsing  = _.get(content, 'desktopAppMetadata.addedUsing');
+      if (addedUsing && addedUsing === 'import' && !downloadStatus) {
+        return this.isDownloaded(content, status);
     } else {
-      const contentStatus = ['DOWNLOAD', 'FAILED', 'CANCELED'];
-        if (status === 'DOWNLOAD') {
-        return  downloadStatus ? _.includes(contentStatus, downloadStatus) : this.isDownloaded(content, status);
-        } else {
-         return downloadStatus ? downloadStatus === status : this.isDownloaded(content, status);
-        }
-    }
+        const contentStatus = ['DOWNLOAD', 'FAILED', 'CANCELED'];
+          if (status === 'DOWNLOAD') {
+          return  downloadStatus ? _.includes(contentStatus, downloadStatus) : this.isDownloaded(content, status);
+          } else {
+           return downloadStatus ? downloadStatus === status : this.isDownloaded(content, status);
+          }
+      }
     }
   }
 
@@ -258,24 +258,25 @@ export class UtilService {
       INPROGRESS: this.resourceService.messages.stmsg.m0140,
       RESUME: this.resourceService.messages.stmsg.m0140,
       INQUEUE: this.resourceService.messages.stmsg.m0140,
-      goToMyDownloads: this.resourceService.frmelmnts.lbl.goToMyDownloads,
-      saveToPenDrive: this.resourceService.frmelmnts.lbl.saveToPenDrive,
+      GOTOMYDOWNLOADS: this.resourceService.frmelmnts.lbl.goToMyDownloads,
+      SAVETOPENDRIVE: this.resourceService.frmelmnts.lbl.saveToPenDrive,
     };
 
     _.each(contentList, (value) => {
-      const contentStatus = status[_.get(value, 'downloadStatus')];
+      const contentStatus = _.get(value, 'downloadStatus');
       value['hoverData'] = {
-        note: isOnlineSearch ? (contentStatus ? (_.upperCase(contentStatus) === 'DOWNLOADED' ?  status.goToMyDownloads : '')
-        : this.isAvailable(value) ? status.goToMyDownloads : '') : '',
+        note: isOnlineSearch ? (contentStatus ? (_.upperCase(contentStatus) === 'DOWNLOADED' ? 'GOTOMYDOWNLOADS' : '')
+        : this.isAvailable(value) ? 'GOTOMYDOWNLOADS' : '') : '',
         actions: [
           {
-            type: isOnlineSearch ? 'download' : (contentStatus  ? (_.upperCase(contentStatus) !== 'DOWNLOADED' ? 'download' : 'save') : 'save') ,
+            type: isOnlineSearch ? 'download' : (contentStatus ? (!_.includes(['COMPLETED', 'DOWNLOADED'], contentStatus) ? 'download' : 'save') : 'save'),
             label: isOnlineSearch ? (contentStatus ? _.capitalize(contentStatus) :
-            this.isAvailable(value) ? _.capitalize(status.COMPLETED) : _.capitalize(status.CANCELED)) :
-            (contentStatus ? (_.upperCase(contentStatus) === 'DOWNLOADED' ? status.saveToPenDrive : _.capitalize(contentStatus)) :
-            this.isAvailable(value) ? status.saveToPenDrive : _.capitalize(status.CANCELED)),
-            disabled: isOnlineSearch ? (contentStatus ? _.includes(['Downloaded', 'Downloading', 'Paused'], _.capitalize(contentStatus)) :
-            this.isAvailable(value)) : contentStatus ? _.includes(['Downloading', 'Paused'],
+            this.isAvailable(value) ? _.capitalize('COMPLETED') : _.capitalize('CANCELED')) :
+            (contentStatus ? (_.includes(['COMPLETED', 'DOWNLOADED'], contentStatus) ? 'SAVETOPENDRIVE' : _.capitalize(contentStatus)) :
+            this.isAvailable(value) ? 'SAVETOPENDRIVE' : _.capitalize('CANCELED')),
+
+            disabled: isOnlineSearch ? (contentStatus ? _.includes(['Downloaded', 'Completed', 'Downloading', 'Paused', 'Inprogress', 'Resume', 'Inqueue' ], _.capitalize(contentStatus)) :
+            this.isAvailable(value)) : contentStatus ? _.includes(['Downloading', 'Inprogress', 'Resume', 'Inqueue', 'Paused'],
             _.capitalize(contentStatus)) : !this.isAvailable(value)
           },
           {
@@ -285,6 +286,7 @@ export class UtilService {
         ]
       };
 
+      value['hoverData'].actions[0].label = status[_.upperCase(value['hoverData'].actions[0].label)];
       if (_.toUpper(_.get(value, 'trackable.enabled')) === 'YES') {
         value['hoverData'].actions.shift();
       }
@@ -408,5 +410,11 @@ export class UtilService {
       };
       this.csvExporter = new ExportToCsv(options);
       this.csvExporter.generateCsv(data);
+  }
+
+  getAppBaseUrl() {
+    let origin = (<HTMLInputElement>document.getElementById('baseUrl'))
+    ? (<HTMLInputElement>document.getElementById('baseUrl')).value : document.location.origin;
+    return origin;
   }
 }

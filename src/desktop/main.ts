@@ -4,6 +4,7 @@ import * as path from "path";
 import * as fs from "fs";
 import * as fse from "fs-extra";
 import  { Server }   from './modules/server'
+import { LoginSessionProvider } from './helper/login-session-provider'
 const startTime = Date.now();
 let envs: any = {};
 const getFilesPath = () => {
@@ -41,6 +42,7 @@ const initializeEnv = () => {
   process.env.ROOT_ORG_ID = rootOrgId || hashTagId;
   process.env.ROOT_ORG_HASH_TAG_ID = hashTagId;
   process.env.TELEMETRY_VALIDATION = app.isPackaged ? "false" : "true";
+  process.env.IS_PACKAGED_APP = String(app.isPackaged);
   process.env.APP_VERSION = app.getVersion();
   _.forEach(envs, (value, key) => {
     process.env[key] = value;
@@ -205,38 +207,18 @@ expressApp.use("/dialog/content/suggestLocation", async (req, res) => {
 });
 
 expressApp.use("/dialog/login", async (req, res) => {
-  openLoginWindow();
-  res.send({ message: "SUCCESS", responseCode: "OK" })
+  const options = {"request":{"type":"desktopConfig","action":"get","subType":"login"}};
+  HTTPService.post(`${appBaseUrl}/api/data/v1/form/read`, options).toPromise().then(async response => {
+    let loginFormConfig = _.find(response.data.result.form.data.fields, (field) => field.context == 'login');
+    const loginSessionProvider = new LoginSessionProvider(win, loginFormConfig, appBaseUrl);
+    loginSessionProvider.childLoginWindow().then((rs) =>{
+      res.send({ message: "SUCCESS", responseCode: "OK" })
+    })
+  }, err => {
+    res.status(400).send({ message: "Login failed", responseCode: "LOGIN_FAILED"})
+  })
+  
 });
-
-const openLoginWindow = async () => {
-  loginWindow = new BrowserWindow({ 
-    parent: win, 
-    closable: true, 
-    titleBarStyle: "hidden",
-    show: false,
-    minWidth: 700,
-    minHeight: 500,
-    webPreferences: {
-      nodeIntegration: false,
-      enableRemoteModule: false
-    },
-    icon: windowIcon
-  });
-  const loginURL = `${process.env.AUTH_KC_URL}/auth?client_id=${process.env.AUTH_CLIENT_ID}&redirect_uri=${process.env.AUTH_REDIRECT_URI}&scope=${process.env.AUTH_KC_SCOPE}&response_type=code&version=4`;
-  loginWindow.loadURL(loginURL);
-  loginWindow.setAlwaysOnTop(true);
-  loginWindow.webContents.once("dom-ready", () => {
-    loginWindow.show();
-    loginWindow.maximize();
-    loginWindow.webContents.on('did-navigate', (event, url) => {
-      if(url.includes('oauth2callback')) {
-        let code = url.split("code=")[1];
-        generateUserSession(code);
-      }
-    });
-  });
-}
 
 
 const showFileExplorer = async () => {
@@ -561,27 +543,6 @@ const checkForOpenFile = (files?: string[]) => {
       `Got request to open the  ecars : ${JSON.stringify(openFileContents)}`
     );
   }
-};
-
-const generateUserSession = async (code: string) => {
-  if(_.isEmpty(code)){
-    logger.error('User login failed');
-    return;
-  }
-  await HTTPService.get(`${appBaseUrl}/api/auth/resolvePasswordSession/${code}`, {})
-    .toPromise()
-    .then(data => {
-      logger.info("Login successful successfully");
-    })
-    .catch(error =>
-      logger.error(
-        "User token generation failed",
-        _.get(error, 'response.data') || error.message
-      )
-    ).finally(() => {
-      loginWindow.close();
-      loginWindow = null;
-    })
 };
 
 process

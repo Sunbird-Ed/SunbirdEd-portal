@@ -48,6 +48,7 @@ export class MainFooterComponent implements OnInit, AfterViewInit, OnDestroy {
   SECOND_PANEL_LAYOUT: string;
   isFullScreenView;
   isDesktopApp = false;
+  appBaseUrl: string;
 
   constructor(resourceService: ResourceService, public router: Router, public activatedRoute: ActivatedRoute,
     public configService: ConfigService, private renderer: Renderer2, private cdr: ChangeDetectorRef, public userService: UserService,
@@ -61,6 +62,11 @@ export class MainFooterComponent implements OnInit, AfterViewInit, OnDestroy {
     this.initlayout();
     this.checkFullScreenView();
     this.isDesktopApp = this.utilService.isDesktopApp;
+
+    if (this.isDesktopApp) {
+      this.getBaseUrl();
+    }
+
     this.instance = _.upperCase(this.resourceService.instance);
     this.tenantService.tenantSettings$.subscribe((data) => {
       this.tenantFooter = data;
@@ -69,6 +75,10 @@ export class MainFooterComponent implements OnInit, AfterViewInit, OnDestroy {
       helpCenterLink: '/help/getting-started/explore-' + _.lowerCase(this.instance) + '/index.html',
       helpDeskEmail: 'support@' + _.lowerCase(this.instance) + '-ncte.freshdesk.com'
     };
+  }
+
+  getBaseUrl() {
+    this.appBaseUrl = this.utilService.getAppBaseUrl();
   }
 
   checkFullScreenView() {

@@ -66,8 +66,10 @@ export class ManagedUserService {
   public setSwitchUserData(userId, userSid) {
     // @ts-ignore
     document.getElementById('userId').value = userId;
-    // @ts-ignore
-    document.getElementById('userSid').value = userSid;
+    if (document.getElementById('userSid')) {
+      // @ts-ignore
+      document.getElementById('userSid').value = userSid;
+    }
     this.telemetryService.setSessionIdentifier(userSid);
     this.userService.setUserId(userId);
     this.userService.initialize(true);
