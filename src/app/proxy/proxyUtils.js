@@ -53,7 +53,6 @@ const decorateRequestHeaders = function (upstreamUrl = "") {
     proxyReqOpts.rejectUnauthorized = false
     proxyReqOpts.agent = upstreamUrl.startsWith('https') ? httpsAgent : httpAgent;
     proxyReqOpts.headers['connection'] = 'keep-alive';
-    // var reqBody = srcReq.body ? JSON.stringify(srcReq.body) : "";
     // logger.info({
     //   URL: srcReq.url,
     //   body: reqBody.length > 500 ? "" : reqBody,

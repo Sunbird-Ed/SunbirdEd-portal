@@ -90,7 +90,14 @@
         {{resourceService?.frmelmnts?.lbl?.iAmStateTeacher}} </button>
       </div>
     </div>
-
+    <div class="ui container" *ngIf="!isCustodianOrgUser">
+      <div class="d-flex flex-dc flex-jcc-center flex-ai-center">
+        <button appTelemetryInteract
+          [telemetryInteractEdata]="editProfileInteractEdata"
+          class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border my-16 computer only"
+          (click)="showEditUserDetailsPopup=true">{{resourceService.frmelmnts.lbl.edit}}</button>
+          </div>
+    </div>
     <div class="m-0 pl-0 computer only" *ngIf="nonCustodianUserLocation && !isCustodianOrgUser">
       <div class="mb-0 d-flex mb-5 flex-jc-center" *ngIf="nonCustodianUserLocation.block">
         <div class="fmedium">{{resourceService.frmelmnts.lbl.block}} :</div>
