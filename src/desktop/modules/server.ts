@@ -60,6 +60,8 @@ export class Server {
       logger.info(`${manifest.id} not configured for version`, `${process.env.APP_VERSION}`, err);
     });
     if (!response) {
+      logger.debug("removing old device_token");
+      await this.settingSDK.delete('device_token').catch(error => logger.error("Error while deleting device_token from setting", error));
       await this.insertConfig();    // insert meta data for app
       this.settingSDK.put(`${process.env.APP_VERSION}_configured`, { dataInserted: true});
       logger.info(`${manifest.id} configured for version ${process.env.APP_VERSION} and settingSdk updated`);

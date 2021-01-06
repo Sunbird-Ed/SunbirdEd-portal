@@ -36,6 +36,7 @@ let envVariables = {
   sunbird_portal_user_upload_ref_link: env.sunbird_portal_user_upload_ref_link || 'http://www.sunbird.org/features-documentation/register_user',
   ENABLE_PERMISSION_CHECK: env.sunbird_enabless_permission_check || 0,
   CONFIG_SERVICE_ENABLED: env.config_service_enabled || false,
+  TRACE_ID_ENABLED: env.isTraceEnabled || true,
   CRYPTO_ENCRYPTION_KEY: env.crypto_encryption_key || '030702bc8696b8ee2aa71b9f13e4251e',
   LOG_FINGERPRINT_DETAILS: env.sunbird_log_fingerprint_details || 'true',
   REPORT_SERVICE_URL: env.sunbird_report_service_url || 'https://staging.open-sunbird.org/api/data/v1/report-service',
@@ -80,6 +81,19 @@ let envVariables = {
   KEYCLOAK_ANDROID_CLIENT: {
     clientId: env.sunbird_android_keycloak_client_id || 'android',
   },
+
+  KEYCLOAK_GOOGLE_DESKTOP_CLIENT: {
+    clientId: env.sunbird_google_desktop_keycloak_client_id,
+    secret: env.sunbird_google_desktop_keycloak_secret
+  },
+  KEYCLOAK_TRAMPOLINE_DESKTOP_CLIENT: {
+    clientId: env.sunbird_trampoline_desktop_keycloak_client_id,
+    secret: env.sunbird_trampoline_desktop_keycloak_secret
+  },
+  KEYCLOAK_DESKTOP_CLIENT: {
+    clientId: env.sunbird_desktop_keycloak_client_id || 'desktop',
+  },
+
   PORTAL_TRAMPOLINE_CLIENT_ID: env.sunbird_trampoline_client_id || 'trampoline',
   PORTAL_TRAMPOLINE_SECRET: env.sunbird_trampoline_secret,
   PORTAL_AUTOCREATE_TRAMPOLINE_USER: env.sunbird_autocreate_trampoline_user || 'true',

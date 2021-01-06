@@ -42,6 +42,7 @@ const initializeEnv = () => {
   process.env.ROOT_ORG_ID = rootOrgId || hashTagId;
   process.env.ROOT_ORG_HASH_TAG_ID = hashTagId;
   process.env.TELEMETRY_VALIDATION = app.isPackaged ? "false" : "true";
+  process.env.IS_PACKAGED_APP = String(app.isPackaged);
   process.env.APP_VERSION = app.getVersion();
   _.forEach(envs, (value, key) => {
     process.env[key] = value;
