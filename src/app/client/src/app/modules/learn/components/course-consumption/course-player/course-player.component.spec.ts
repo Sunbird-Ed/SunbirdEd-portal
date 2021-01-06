@@ -755,8 +755,6 @@ describe('CoursePlayerComponent', () => {
   });
 
   it('shold call validateBatchDate with future batch', () => {
-    const date = new Date();
-    date.setDate(date.getDate() + 1);
     const batch = [{
       batchId: '0130936282663157765',
       createdFor: ['0124784842112040965'],
