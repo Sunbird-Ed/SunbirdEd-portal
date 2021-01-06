@@ -153,12 +153,8 @@ describe('LoadOfflineContentComponent', () => {
   });
 
   it('should close the open modal', () => {
-    component.modal = { deny: () => { } };
-    spyOn(component.close, 'emit');
-    spyOn(component.modal, 'deny');
     component.closeModal();
-    expect(component.close.emit).toHaveBeenCalled();
-    expect(component.modal.deny).toHaveBeenCalled();
+    expect(component.showLoadContentModal).toBeFalsy();
   });
   it('should unsubscribe from all observable subscriptions', () => {
     component.isConnected = false;
