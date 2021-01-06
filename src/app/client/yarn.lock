@@ -670,10 +670,12 @@
     semver "6.3.0"
     semver-intersect "1.4.0"
 
-"@swimlane/ngx-datatable@14.0.0":
-  version "14.0.0"
-  resolved "https://registry.yarnpkg.com/@swimlane/ngx-datatable/-/ngx-datatable-14.0.0.tgz#6227625e2ce2e9143735d4deeb3ab34b88745c26"
-  integrity sha512-zgRY58MzTpg9Jb575cg0O87mLtXYi6fx7NLRPRHdQ/FqH9mKjZ3i7+OjqtR8/w3KRmFP2Hnkmx52VzldZIKspg==
+"@swimlane/ngx-datatable@16.1.1":
+  version "16.1.1"
+  resolved "https://registry.yarnpkg.com/@swimlane/ngx-datatable/-/ngx-datatable-16.1.1.tgz#1215e81f51400314ba6899f66acdbd4e3bde2915"
+  integrity sha512-h2A9xC/jo314eC/CzA19aoY/YadhdTupolCwpgB9Cbw3sDRi3x/LeGsdLSV0bj3XBKQUB3DA/gPuASKYuhm8iA==
+  dependencies:
+    tslib "^1.9.0"
 
 "@types/chart.js@^2.7.48":
   version "2.9.29"
