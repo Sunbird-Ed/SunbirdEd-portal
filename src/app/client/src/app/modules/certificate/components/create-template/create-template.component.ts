@@ -9,7 +9,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { CertConfigModel } from './../../models/cert-config-model/cert-config-model';
 import { BrowseImagePopupComponent } from '../browse-image-popup/browse-image-popup.component';
 import {ActivatedRoute} from '@angular/router';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 @Component({
   selector: 'app-create-template',
   templateUrl: './create-template.component.html',

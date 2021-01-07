@@ -6,7 +6,7 @@ import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angu
 import { ResourceService, ServerResponse, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { UserService, GeneraliseLabelService } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import { IInteractEventObject, IInteractEventEdata, TelemetryService } from '@sunbird/telemetry';

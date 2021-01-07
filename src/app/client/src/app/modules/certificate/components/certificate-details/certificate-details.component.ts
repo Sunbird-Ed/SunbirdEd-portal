@@ -4,7 +4,7 @@ import { ServerResponse, ResourceService, ConfigService, PlayerConfig, IUserData
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import {Subscription} from 'rxjs';
 

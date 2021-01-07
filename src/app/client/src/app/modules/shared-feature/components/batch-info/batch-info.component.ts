@@ -5,7 +5,7 @@ import * as _ from 'lodash-es';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil, mergeMap, tap, delay } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 
 @Component({
   selector: 'app-batch-info',
