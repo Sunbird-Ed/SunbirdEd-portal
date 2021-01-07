@@ -1,5 +1,5 @@
 import {
-    PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
+    PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage, OfflineCardService,
     ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination, LayoutService, COLUMN_TYPE
 } from '@sunbird/shared';
 import { SearchService, PlayerService, UserService, FrameworkService, OrgDetailsService, CoursesService } from '@sunbird/core';
@@ -7,9 +7,11 @@ import { combineLatest, Subject, of } from 'rxjs';
 import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
-import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { takeUntil, map, first, debounceTime, tap, delay, mergeMap } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
+import { ContentManagerService } from '../../../public/module/offline/services';
+import { PublicPlayerService } from '@sunbird/public';
 
 const DEFAULT_FRAMEWORK = 'CBSE';
 @Component({
@@ -53,25 +55,37 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     public allMimeType;
     showBatchInfo: boolean;
     selectedCourseBatches: { onGoingBatchCount: any; expiredBatchCount: any; openBatch: any; inviteOnlyBatch: any; courseId: any; };
+    downloadIdentifier: string;
+    contentDownloadStatus = {};
+    contentData;
+    showModal = false;
+    isDesktopApp = false;
+    showExportLoader = false;
+    contentName: string;
+    showDownloadLoader = false;
     constructor(public searchService: SearchService, public router: Router, private playerService: PlayerService,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
         public resourceService: ResourceService, public toasterService: ToasterService,
         public configService: ConfigService, public utilService: UtilService,
         public navigationHelperService: NavigationHelperService, public userService: UserService,
         public cacheService: CacheService, public frameworkService: FrameworkService, private coursesService: CoursesService,
-        public navigationhelperService: NavigationHelperService, public layoutService: LayoutService,  public orgDetailsService: OrgDetailsService) {
+        public navigationhelperService: NavigationHelperService, public layoutService: LayoutService,  public orgDetailsService: OrgDetailsService,
+        public contentManagerService: ContentManagerService,  private offlineCardService: OfflineCardService, public telemetryService: TelemetryService,
+        private publicPlayerService: PublicPlayerService) {
         this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.filterType = this.configService.appConfig.library.filterType;
         this.redirectUrl = this.configService.appConfig.library.searchPageredirectUrl;
         this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
     }
     ngOnInit() {
+        this.isDesktopApp = this.utilService.isDesktopApp;
         this.activatedRoute.queryParams.pipe(takeUntil(this.unsubscribe$)).subscribe(queryParams => {
             this.queryParams = { ...queryParams };
         });
         this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
             this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
             this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
+            this.listenLanguageChange();
             this.setNoResultMessage();
             this.initFilters = true;
         }, error => {
@@ -97,6 +111,10 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
                 this.setNoResultMessage();
             });
             this.searchAll = this.resourceService.frmelmnts.lbl.allContent;
+            this.contentManagerService.contentDownloadStatus$.subscribe( contentDownloadStatus => {
+                this.contentDownloadStatus = contentDownloadStatus;
+                this.addHoverData();
+            });
     }
     initLayout() {
         this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -223,9 +241,18 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
                 this.showLoader = false;
                 this.facets = this.searchService.updateFacetsData(_.get(data, 'result.facets'));
                 this.facetsList = this.searchService.processFilterData(this.facets);
+                if(this.isDesktopApp) {
+                    _.forEach(this.facets, (facet, index) => {
+                        if(facet.name === 'primaryCategory') {
+                        const updatedValues = facet.values.filter(value => !['course assessment', 'course'].includes(value.name));
+                        facet.values = updatedValues;
+                        }
+                    })
+                }
                 this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
                     this.configService.appConfig.SEARCH.PAGE_LIMIT);
                 this.contentList = _.get(data, 'result.content') ? this.getOrderedData(_.get(data, 'result.content')) : [];
+                this.addHoverData();
                 this.totalCount = data.result.count;
             }, err => {
                 this.showLoader = false;
@@ -247,6 +274,15 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         });
         orderedData = _.compact(orderedData).concat(contents);
         return orderedData || [];
+    }
+
+    addHoverData() {
+        _.forEach(this.contentList, contents => {
+          if (this.contentDownloadStatus[contents.identifier]) {
+              contents['downloadStatus'] = this.contentDownloadStatus[contents.identifier];
+          }
+       });
+       this.contentList = this.utilService.addHoverData(this.contentList, true);
     }
 
     public navigateToPage(page: number): void {
@@ -298,6 +334,10 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     }
     public playContent(event) {
         const { data: { identifier } } = event;
+        if(this.isDesktopApp && _.toUpper(_.get(event, 'data.trackable.enabled')) === 'YES') {
+            this.toasterService.error(this.resourceService.messages.imsg.t0143);
+            return false;
+          }
         const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } = this.coursesService.findEnrolledCourses(identifier);
         if (!expiredBatchCount && !onGoingBatchCount) {
             return this.playerService.playContent(event.data);
@@ -354,5 +394,108 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
           }
         });
         return rootOrgIds;
+      }
+    
+      hoverActionClicked(event) {
+        event['data'] = event.content;
+        this.contentName = event.content.name;
+        this.contentData = event.data;
+        let telemetryButtonId: any;
+        switch (event.hover.type.toUpperCase()) {
+            case 'OPEN':
+                this.playContent(event);
+                this.logTelemetry(this.contentData, 'play-content');
+                break;
+            case 'DOWNLOAD':
+                this.downloadIdentifier = _.get(event, 'content.identifier');
+                this.showModal = this.offlineCardService.isYoutubeContent(this.contentData);
+                if (!this.showModal) {
+                    this.showDownloadLoader = true;
+                    this.downloadContent(this.downloadIdentifier);
+                }
+                telemetryButtonId = this.contentData.mimeType ===
+                    'application/vnd.ekstep.content-collection' ? 'download-collection' : 'download-content';
+                this.logTelemetry(this.contentData, telemetryButtonId);
+                break;
+        }
+    }
+    
+    callDownload() {
+        this.showDownloadLoader = true;
+        this.downloadContent(this.downloadIdentifier);
+    }
+    
+    downloadContent(contentId) {
+        this.contentManagerService.downloadContentId = contentId;
+        this.contentManagerService.downloadContentData = this.contentData;
+        this.contentManagerService.failedContentName = this.contentName;
+        this.contentManagerService.startDownload({})
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe(data => {
+                this.downloadIdentifier = '';
+                this.contentManagerService.downloadContentId = '';
+                this.contentManagerService.downloadContentData = {};
+                this.contentManagerService.failedContentName = '';
+                this.showDownloadLoader = false;
+            }, error => {
+                this.downloadIdentifier = '';
+                this.contentManagerService.downloadContentId = '';
+                this.contentManagerService.downloadContentData = {};
+                this.contentManagerService.failedContentName = '';
+                this.showDownloadLoader = false;
+                _.each(this.contentList, (content) => {
+                  content['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
+                });
+                if (!(error.error.params.err === 'LOW_DISK_SPACE')) {
+                    this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+                }
+            });
+      }
+    
+      logTelemetry(content, actionId) {
+          const telemetryInteractObject = {
+              id: content.identifier,
+              type: content.contentType,
+              ver: content.pkgVersion ? content.pkgVersion.toString() : '1.0'
+          };
+    
+          const appTelemetryInteractData: any = {
+              context: {
+                  env: _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
+                  _.get(this.activatedRoute, 'snapshot.data.telemetry.env') ||
+                  _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env')
+              },
+              edata: {
+                  id: actionId,
+                  type: 'click',
+                  pageid: this.router.url.split('/')[1] || 'explore-page'
+              }
+          };
+    
+          if (telemetryInteractObject) {
+              if (telemetryInteractObject.ver) {
+                  telemetryInteractObject.ver = _.isNumber(telemetryInteractObject.ver) ?
+                  _.toString(telemetryInteractObject.ver) : telemetryInteractObject.ver;
+              }
+              appTelemetryInteractData.object = telemetryInteractObject;
+          }
+          this.telemetryService.interact(appTelemetryInteractData);
+      }
+      private listenLanguageChange() {
+        this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe((languageData) => {
+          this.setNoResultMessage();
+          if (_.get(this.contentList, 'length') ) {
+            if (this.isDesktopApp) {
+              this.addHoverData();
+            }
+            this.facets = this.searchService.updateFacetsData(this.facets);
+          }
+        });
+      }
+    
+      updateCardData(downloadListdata) {
+        _.each(this.contentList, (contents) => {
+          this.publicPlayerService.updateDownloadStatus(downloadListdata, contents);
+        });
       }
 }

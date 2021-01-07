@@ -312,6 +312,7 @@
                 "learn": "/search/Courses",
                 "Courses": "/search/Courses",
                 "resources": "/search/Library",
+                "mydownloads": "/search/Library",
                 "Library": "/search/Library",
                 "Users": "/search/Users",
                 "profile": "/search/Users"
@@ -320,14 +321,16 @@
                 "home": "All",
                 "learn": "Courses",
                 "resources": "Library",
-                "profile": "Users"
+                "profile": "Users",
+                "mydownloads": "mydownloads"
             },
             "searchEnabled": [
                 "home",
                 "learn",
                 "resources",
                 "profile",
-                "search"
+                "search",
+                "mydownloads"
             ],
             "All": {
                 "DROPDOWN": {
