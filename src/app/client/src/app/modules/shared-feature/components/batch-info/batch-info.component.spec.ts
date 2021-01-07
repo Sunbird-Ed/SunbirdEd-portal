@@ -12,7 +12,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { batchInfoMockResponse } from './batch-info.component.spec.data';
 import { of, throwError } from 'rxjs';
 import * as _ from 'lodash-es';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 
 
 describe('BatchInfoComponent', () => {

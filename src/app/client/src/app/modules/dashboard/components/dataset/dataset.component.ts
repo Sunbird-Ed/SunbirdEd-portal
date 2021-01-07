@@ -6,7 +6,7 @@ import { DatasetService, ReportService } from '../../services';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject, of, zip, Subscription, BehaviorSubject } from 'rxjs';
 import { map, catchError, switchMap, distinctUntilChanged, tap, filter } from 'rxjs/operators';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { get, chunk, map as _map, first, last, partition, forEach, flatMap } from 'lodash-es';
 import * as $ from 'jquery';
 import 'datatables.net';

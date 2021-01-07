@@ -16,7 +16,7 @@ import { PopupControlService } from '../../../../../service/popup-control.servic
 import { CourseBatchService, CourseConsumptionService, CourseProgressService } from './../../../services';
 import { ContentUtilsServiceService } from '@sunbird/shared';
 import { MimeTypeMasterData } from '@project-sunbird/common-consumption-v8/lib/pipes-module/mime-type';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { NotificationService } from '../../../../notification/services/notification/notification.service';
 
 @Component({
