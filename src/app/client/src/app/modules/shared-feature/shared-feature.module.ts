@@ -19,6 +19,7 @@ import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
+import { CommonFormElementsModule } from 'common-form-elements';
 
 export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
   if (!CsModule.instance.isInitialised) {
@@ -39,7 +40,8 @@ export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerSe
     FormsModule,
     ReactiveFormsModule,
     PlayerHelperModule,
-    CommonConsumptionModule
+    CommonConsumptionModule,
+    CommonFormElementsModule
   ],
   providers:  [{ provide: 'CS_USER_SERVICE', useFactory: csUserServiceFactory, deps: [CsLibInitializerService] }],
   declarations: [ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,

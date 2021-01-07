@@ -6,36 +6,20 @@
     </div>
     <div class="sb-onboard__content">
       <p class="subtitle">{{resourceService?.messages?.imsg?.m0075}}</p>
+      <p class="subtitle">DEBUG: {{isLocationFormLoading ? "Loading" : "Loaded"}}</p>
       <div class="schooling-location" *ngIf="deviceProfile" [appTelemetryImpression]="telemetryImpression">
-        <form class="sb-form" [formGroup]="userDetailsForm">
-          <div class="fields-selection">
-            <div class="sb-field field-focus">
-              <select class="ui dropdown selection fields-dropdown" formControlName="state">
-                <option [ngValue]="null" hidden selected>{{resourceService?.frmelmnts?.lbl?.selectState}}</option>
-                <option [ngValue]="option.code" *ngFor="let option of allStates">{{option?.name}}
-                </option>
-              </select>
-              <label class="d-flex font-weight-normal">{{resourceService?.frmelmnts?.lbl?.state}}:</label>
-            </div>
-            <div class="sb-field field-focus onboard-content mt-16">
-              <select class="ui dropdown selection fields-dropdown" formControlName="district"
-                [disabled]="showDistrictDivLoader">
-                <option [ngValue]="null" selected hidden>{{resourceService?.frmelmnts?.lbl?.profile?.selectDistrict}}
-                </option>
-                <option [ngValue]="option.code" *ngFor="let option of allDistricts">{{option?.name}}
-                </option>
-              </select>
-              <label class="d-flex font-weight-normal">{{resourceService?.frmelmnts?.lbl?.district}}:</label>
-            </div>
-          </div>
-          <p class="py-16">{{resourceService?.messages?.imsg?.m0074}}</p>
-        </form>
+        <sb-form *ngIf="locationFormConfig && locationFormConfig.length"
+                 [config]="locationFormConfig"
+                 (initialize)="onFormInitialize($event)"
+                 (valueChanges)="onFormValueChange($event)"
+                 (dataLoadStatus)="onDataLoadStatusChange($event)">
+        </sb-form>
       </div>
     </div>
 
     <div class="sb-onboard__footer">
       <button type="button" class="sb-btn sb-btn-sm sb-btn-primary text-uppercase w-100" type="submit"
-        [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}" [disabled]="!enableSubmitBtn"
+              [ngClass]="{'sb-btn-disabled': formGroup?.invalid || isLocationFormLoading}" [disabled]="formGroup?.invalid || isLocationFormLoading"
         (click)="updateUserLocation()">{{resourceService?.frmelmnts?.btn?.submit}}
         <span class='arrow-icon'>
           <em class="icon-svg icon-svg--xxs icon-back">

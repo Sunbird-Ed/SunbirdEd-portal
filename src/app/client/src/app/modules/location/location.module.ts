@@ -8,6 +8,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 
 import { OnboardingLocationComponent } from './components';
 import { LocationRoutingModule } from './location-routing.module';
+import { CommonFormElementsModule } from 'common-form-elements';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { LocationRoutingModule } from './location-routing.module';
     SuiModalModule,
     SharedModule,
     TelemetryModule,
-    LocationRoutingModule
+    LocationRoutingModule,
+    CommonFormElementsModule
   ],
   exports: [
     OnboardingLocationComponent
