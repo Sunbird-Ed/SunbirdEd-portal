@@ -3,25 +3,28 @@ import { SearchFilterComponent } from './search-filter.component';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SuiModule } from 'ng2-semantic-ui';
-import { ResourceService, ConfigService, BrowserCacheTtlService, ToasterService, SharedModule, LayoutService } from '@sunbird/shared';
+import { ResourceService, BrowserCacheTtlService, ToasterService, SharedModule, LayoutService } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
-import { OrgDetailsService, TenantService, ChannelService } from '@sunbird/core';
-import { HttpClientModule } from '@angular/common/http';
+import { OrgDetailsService, TenantService, ChannelService, FormService } from '@sunbird/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { RouterModule, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { response } from './search-filter.component.spec.data';
 import { BehaviorSubject, of } from 'rxjs';
 import { CoreModule } from '@sunbird/core';
 import { configureTestSuite } from '@sunbird/test-util';
 import { ContentSearchService } from './../../services';
-import { throwError as observableThrowError, of as observableOf } from 'rxjs';
+import { of as observableOf } from 'rxjs';
 import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
+import { APP_BASE_HREF } from '@angular/common';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 
 describe('SearchFilterComponent', () => {
     let component: SearchFilterComponent;
     let fixture: ComponentFixture<SearchFilterComponent>;
     let contentSearchService: ContentSearchService;
+    let formService: FormService;
     const resourceBundle = {
         'frmelmnts': {
             'lbl': {
@@ -63,19 +66,20 @@ describe('SearchFilterComponent', () => {
                         useClass: TranslateFakeLoader
                     }
                 }),
-                SuiModule, HttpClientModule, SharedModule.forRoot(), RouterModule.forRoot([]), SharedModule.forRoot()],
+                SuiModule, SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule, SharedModule.forRoot()],
             providers: [ContentSearchService,
                 { provide: ActivatedRoute, useClass: FakeActivatedRoute },
                 { provide: ResourceService, useValue: resourceBundle },
                 CacheService,
-                ConfigService,
                 OrgDetailsService,
                 CacheService,
                 BrowserCacheTtlService,
                 TenantService,
                 ToasterService,
                 ChannelService,
-                LayoutService
+                LayoutService,
+                FormService,
+                { provide: APP_BASE_HREF, useValue: '/' }
             ],
             schemas: [NO_ERRORS_SCHEMA]
         }).compileComponents();
@@ -90,15 +94,16 @@ describe('SearchFilterComponent', () => {
 
     beforeEach(() => {
         contentSearchService = TestBed.get(ContentSearchService);
+        formService = TestBed.get(FormService);
         spyOn(contentSearchService, 'fetchFilter').and.returnValue(observableOf(response.filterValue));
-
-    })
+        spyOn<any>(formService, 'getFormConfig').and.returnValue(observableOf([]));
+        component.selectedFilters = {};
+    });
 
     it('should create', () => {
         expect(component).toBeTruthy();
     });
     it('should call selectedGroupOption with board data', () => {
-        const contentSearchService = TestBed.get(ContentSearchService);
         const inputData = { 'label': 'Board', 'value': 'board', 'selectedOption': 'AP Board' };
         component.selectedGroupOption(inputData);
         expect(component.selectedBoard).toBe(inputData);
@@ -111,7 +116,7 @@ describe('SearchFilterComponent', () => {
         const returnData = component.getInteractEdata();
         expect(returnData).toEqual({
             'id': 'reset-filter', 'type': 'click',
-            'pageid': 'resource-search', 'extra': { 'filters': { board: [], selectedTab: 'textbook', audience: [] } }
+            'pageid': 'resource-search', 'extra': { 'filters': { board: [], selectedTab: 'textbook'} }
         });
     });
     it('should update selectedFilters from queryParams', done => {
@@ -120,46 +125,46 @@ describe('SearchFilterComponent', () => {
                 expect(res).toBeDefined();
                 expect(component['filters']).toBeDefined();
 
-                done()
+                done();
             }, err => {
                 console.error(err);
                 done();
             });
 
-    })
+    });
 
     it('should handle filter change event - add new filter', done => {
         component.selectedFilters = {};
         const spy = spyOn<any>(component, 'pushNewFilter').and.callThrough();
         component['handleFilterChange']().subscribe(res => {
-            expect(spy).toHaveBeenCalledWith({ type: 'gradeLevel', index: 0 })
+            expect(spy).toHaveBeenCalledWith({ type: 'gradeLevel', index: 0 });
             expect(component.selectedFilters['gradeLevel']).toBeDefined();
             expect(res).toBeDefined();
             done();
-        })
+        });
         component.filterChangeEvent.next({ event: { data: { index: 0 } }, type: 'gradeLevel' });
-    })
+    });
 
     it('should handle filter change event - remove existing filter', done => {
         const spy = spyOn<any>(component, 'popFilter').and.callThrough();
-        component['selectedFilters'] = { gradeLevel: [0, 1] }
+        component.selectedFilters = { gradeLevel: [0, 1] };
         component['handleFilterChange']().subscribe(res => {
-            expect(spy).toHaveBeenCalled()
+            expect(spy).toHaveBeenCalled();
             expect(component.selectedFilters['gradeLevel']).toBeDefined();
             done();
-        })
+        });
         component.filterChangeEvent.next({ event: { data: { index: 0 } }, type: 'gradeLevel' });
-    })
+    });
 
     it('should handle filter change event - should not remove last existing filter', done => {
         const spy = spyOn<any>(component, 'popFilter').and.callThrough();
-        component['selectedFilters'] = { gradeLevel: [0] }
+        component['selectedFilters'] = { gradeLevel: [0] };
         component['handleFilterChange']().subscribe(res => {
-            expect(spy).not.toHaveBeenCalled()
+            expect(spy).not.toHaveBeenCalled();
             expect(component.selectedFilters['gradeLevel']).toBeDefined();
             done();
-        })
+        });
         component.filterChangeEvent.next({ event: { data: { index: 0 } }, type: 'gradeLevel' });
-    })
+    });
 
 });
