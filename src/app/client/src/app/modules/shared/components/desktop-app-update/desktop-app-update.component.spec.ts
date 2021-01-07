@@ -16,7 +16,7 @@ describe('DesktopAppUpdateComponent', () => {
     TestBed.configureTestingModule({
       declarations: [DesktopAppUpdateComponent],
       imports: [SuiModalModule, HttpClientTestingModule, TelemetryModule],
-      providers: [ConfigService, ResourceService, CacheService, BrowserCacheTtlService]
+      providers: [ConfigService, CacheService, BrowserCacheTtlService, { provide: ResourceService, useValue: { instance: 'SUNBIRD' } }]
     })
       .compileComponents();
   }));
