@@ -14,7 +14,7 @@ class Config {
         this.config.CONTENT_SEARCH_FIELDS = "dialcodes,board,medium,gradeLevel,subject,contentType,mimeType,primaryCategory,audience,publisher";
         this.config.CONTENT_SEARCH_LIMIT = 1000;
         this.config.CONTENT_COMPATIBILITY_LEVEL = 4;
-        this.config.LANGUAGES = "English, Hindi";
+        this.config.LANGUAGES = "English, Assamese, Bengali, Gujarati, Hindi, Kannada, Malayalam, Marathi, Oriya, Punjabi, Tamil, Telugu, Urdu ";
     }
 
     /**
