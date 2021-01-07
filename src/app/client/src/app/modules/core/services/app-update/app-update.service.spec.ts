@@ -29,10 +29,19 @@ describe('AppUpdateService', () => {
   it('app-update should throw error', () => {
     const service: AppUpdateService = TestBed.get(AppUpdateService);
     spyOn(service, 'get').and.returnValue(throwError(serverRes.error));
-    service.checkForAppUpdate().subscribe(data => {}, err => {
+    service.checkForAppUpdate().subscribe(data => { }, err => {
       expect(err).toBe(serverRes.error);
     });
     expect(service.get).toHaveBeenCalled();
+  });
+
+  it('should get app info failure case', () => {
+    const service: AppUpdateService = TestBed.get(AppUpdateService);
+    spyOn(service, 'get').and.returnValue(throwError(serverRes.appInfoFailureCase));
+    service.getAppInfo().subscribe(data => { }, err => {
+      expect(err).toEqual(serverRes.appInfoFailureCase);
+    });
+    expect(service.get).toHaveBeenCalledWith({ url: 'app/v1/info' });
   });
 
   it('should get app info data', () => {
@@ -41,17 +50,6 @@ describe('AppUpdateService', () => {
     service.getAppInfo().subscribe(data => {
       expect(data).toEqual(serverRes.appInfoSuccess);
     });
-    expect(service.get).toHaveBeenCalledWith({url: 'app/v1/info'});
+    expect(service.get).toHaveBeenCalledWith({ url: 'app/v1/info' });
   });
-
-  it('should get app info failure case', () => {
-    const service: AppUpdateService = TestBed.get(AppUpdateService);
-    spyOn(service, 'get').and.returnValue(throwError(serverRes.appInfoFailureCase));
-    service.getAppInfo().subscribe(data => {}, err => {
-      expect(err).toEqual(serverRes.appInfoFailureCase);
-    });
-    expect(service.get).toHaveBeenCalledWith({url: 'app/v1/info'});
-  });
-
-
 });
