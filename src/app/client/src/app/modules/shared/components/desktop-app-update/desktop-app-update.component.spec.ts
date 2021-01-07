@@ -48,6 +48,13 @@ describe('DesktopAppUpdateComponent', () => {
     expect(component.setTelemetry).toHaveBeenCalled();
   });
 
+  it('should throw error', () => {
+    const appUpdateService = TestBed.get(AppUpdateService);
+    spyOn(appUpdateService, 'checkForAppUpdate').and.returnValue(throwError(serverRes.error));
+    component.checkForAppUpdate();
+    expect(component.isUpdateAvailable).toBeFalsy();
+  });
+
   it('should call app update service', () => {
     const appUpdateService = TestBed.get(AppUpdateService);
     spyOn(appUpdateService, 'checkForAppUpdate').and.returnValue(observableOf(serverRes.app_not_update));
@@ -57,11 +64,5 @@ describe('DesktopAppUpdateComponent', () => {
     expect(component.downloadUrl).toBeUndefined();
   });
 
-  it('should throw error', () => {
-    const appUpdateService = TestBed.get(AppUpdateService);
-    spyOn(appUpdateService, 'checkForAppUpdate').and.returnValue(throwError(serverRes.error));
-    component.checkForAppUpdate();
-    expect(component.isUpdateAvailable).toBeFalsy();
-  });
 
 });
