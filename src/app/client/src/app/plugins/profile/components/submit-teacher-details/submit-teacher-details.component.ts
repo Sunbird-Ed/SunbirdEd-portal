@@ -574,7 +574,6 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   }
 
   updateUserConsent(isActive: boolean) {
-    alert();
     const request: Consent = {
       status: isActive ? ConsentStatus.ACTIVE : ConsentStatus.REVOKED,
       userId: this.userService.userid,
