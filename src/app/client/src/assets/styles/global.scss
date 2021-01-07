@@ -662,8 +662,9 @@ app-workspace {
 }
 
 html.PlayerMediaQueryClass {
-  font-size: calc(12px + (32 - 12) * ((100vw - 320px) / (1920 - 320)));
+  font-size: calc(12px + (24 - 12) * ((100vw - 320px) / (1920 - 320)));
 }
+
 .sb-notification-modal{
   .ui.modal{
     left: auto;
