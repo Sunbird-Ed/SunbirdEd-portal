@@ -2,11 +2,19 @@
 <div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
   <div [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'">
     <div [ngClass]="FIRST_PANEL_LAYOUT">
-      <ng-container>
-        <app-global-search-filter [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true'
-          *ngIf="initFilters && allTabData" (filterChange)="getFilters($event)">
-        </app-global-search-filter>
-      </ng-container>
+      <div *ngIf="layoutConfiguration">
+        <ng-container *ngIf="isDesktopApp">
+          <app-network-status></app-network-status>
+          <app-load-offline-content></app-load-offline-content>
+        </ng-container>
+      </div>
+      <div [ngClass]="isDesktopApp ? 'sb-desktop-filter-section' : ''">
+        <ng-container>
+          <app-global-search-filter [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true'
+            *ngIf="initFilters && allTabData" (filterChange)="getFilters($event)">
+          </app-global-search-filter>
+        </ng-container>
+      </div>
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT">
       <div [appTelemetryImpression]="telemetryImpression" [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
@@ -31,12 +39,23 @@
               *ngIf="!showLoader && contentList.length" class="sb-grid">
               <div in-view-item [id]="i" [data]="content" class="sb-grid--item"
                 *ngFor="let content of contentList;let i = index;">
-                <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" appTelemetryInteract
-                  [telemetryInteractEdata]="cardIntractEdata"
-                  [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'Content',ver:'1.0'}"
-                  (cardClick)="playContent($event)" [content]="content"
-                  [cardImg]="content?.appIcon || './assets/images/book.png'">
+                <sb-library-card *ngIf="!isDesktopApp;else desktopCard" [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata"
+                [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'content',ver:content.pkgVersion ? content.pkgVersion.toString():'1.0'}"
+                 (cardClick)="playContent($event)" [content]="content" [cardImg]="content?.appIcon || 'assets/images/book.png'">
                 </sb-library-card>
+                <ng-template #desktopCard>
+                  <div class="sb-desktop-library-card">
+                    <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata"
+                    [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'content',ver:content.pkgVersion ? content.pkgVersion.toString():'1.0'}"
+                    [hover-template]="hoverTemplate" [content]="content" [cardImg]="content?.appIcon || 'assets/images/book.png'">
+                      <ng-template #hoverTemplate let-hoverData="hoverData" let-content="content">
+                        <sb-card-hover class="card-hover" [content]="content" [hoverData]="hoverData"
+                          (hoverActionClick)="hoverActionClicked($event)">
+                        </sb-card-hover>
+                      </ng-template>
+                    </sb-library-card>
+                  </div>
+                </ng-template>
               </div>
             </div>
           </div>

@@ -121,6 +121,7 @@ export default (app, proxyURL) => {
         "/learner/otp/v1/verify", 
         "/learner/user/v1/consent/read",
         "/learner/user/v4/create",
+        "/learner/user/v1/tnc/accept"
     ], proxy(proxyURL, {
         proxyReqOptDecorator: decorateRequestHeaders(proxyURL),
         proxyReqPathResolver(req) {

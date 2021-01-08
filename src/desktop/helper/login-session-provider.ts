@@ -58,6 +58,7 @@ export class LoginSessionProvider {
                 minHeight: 500,
                 minimizable: false,
                 maximizable: false,
+                backgroundColor: "#EDF4F9",
                 webPreferences: {
                     nodeIntegration: false,
                     enableRemoteModule: false,
@@ -65,7 +66,6 @@ export class LoginSessionProvider {
                 },
                 icon: windowIcon
             });
-            this.loginWindow.setAlwaysOnTop(true);
             this.loginWindow.maximize();
             this.loginWindow.show();
             if(app.isPackaged){
@@ -106,6 +106,10 @@ export class LoginSessionProvider {
         });
     }
 
+    showLoader() {
+        this.loginWindow.loadURL(`file://${path.join(__dirname, "..", "loading", "loader.html")}`);
+    }
+
     protected buildPasswordSessionProvider(forCase) {
         this.capture({
             host: forCase.when.host,
@@ -114,6 +118,7 @@ export class LoginSessionProvider {
         }).then(async () =>
             await this.success()
         ).then(async (captured) => {
+            this.showLoader();
             logger.debug(`Resolve access token from buildPasswordSessionProvider`);
             const userData = await this.resolvePasswordSession(captured);
             if(userData) {
@@ -130,6 +135,7 @@ export class LoginSessionProvider {
         }).then(async () =>
             await this.success()
         ).then(async (captured) => {
+            this.showLoader();
             logger.debug(`Resolve access token from buildStateSessionProvider`);
             const userData = await this.resolveStateSession(captured);
             if(userData) {
@@ -156,6 +162,7 @@ export class LoginSessionProvider {
                 }
             ]
         }).then(() => {
+            this.showLoader();
             logger.debug(`Reload login winload after reset password success`);
             this.childLoginWindow();
         }); 
@@ -170,6 +177,7 @@ export class LoginSessionProvider {
             this.success()
         ).then((captured) =>
             this.getCaptureExtras().then((extras) => {
+                this.showLoader();
                 logger.debug(`Resolve redirect url from buildGoogleSessionProvider`);
                 const url = `${captured.googleRedirectUrl}?${qs.stringify(extras)}`;
                 this.loginWindow.loadURL(url).then(() =>{
@@ -186,6 +194,7 @@ export class LoginSessionProvider {
                     }).then(async () =>
                         this.success()
                     ).then(async (captured) => {
+                        this.showLoader();
                         logger.debug(`Resolve access token from buildGoogleSessionProvider`);
                         const userData = {
                             access_token: captured.access_token,
@@ -194,6 +203,8 @@ export class LoginSessionProvider {
                         if(userData) {
                             await this.getUsers(userData);
                         }
+                    }).catch(err => { 
+                        this.showLoader();
                     })
                 });
             })

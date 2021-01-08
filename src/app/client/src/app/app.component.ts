@@ -473,7 +473,6 @@ export class AppComponent implements OnInit, OnDestroy {
           // Check for non custodian user and show global consent pop up
           this.consentConfig = { tncLink: '', tncText: this.resourceService.frmelmnts.lbl.nonCustodianTC };
           this.showGlobalConsentPopUpSection = true;
-          this.checkFrameworkSelected();
         } else {
           this.checkFrameworkSelected();
         }
