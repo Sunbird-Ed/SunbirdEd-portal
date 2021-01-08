@@ -7,6 +7,7 @@ import { ResourceService } from '../resource/resource.service';
 import * as dayjs from 'dayjs';
 import { ExportToCsv } from 'export-to-csv';
 import { environment } from '@sunbird/environment';
+import { ToasterService } from '../toaster/toaster.service';
   // Dependency injection creates new instance each time if used in router sub-modules
 @Injectable()
 export class UtilService {
@@ -20,7 +21,7 @@ export class UtilService {
   private csvExporter: any;
   private _isDesktopApp = false;
 
-  constructor(private resourceService: ResourceService) {
+  constructor(private resourceService: ResourceService, private toasterService: ToasterService) {
     if (!UtilService.singletonInstance) {
       UtilService.singletonInstance = this;
     }
@@ -416,5 +417,10 @@ export class UtilService {
     let origin = (<HTMLInputElement>document.getElementById('baseUrl'))
     ? (<HTMLInputElement>document.getElementById('baseUrl')).value : document.location.origin;
     return origin;
+  }
+
+  showSessionExpiredMessage() {
+    const message = _.replace(this.resourceService.frmelmnts.lbl.plslgn, '{instance}', this.resourceService.instance);
+    this.toasterService.warning(message);
   }
 }

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 import { Observable, throwError, of } from 'rxjs';
 import { map, catchError, skipWhile } from 'rxjs/operators';
+import { UtilService } from '@sunbird/shared';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { map, catchError, skipWhile } from 'rxjs/operators';
 export class SessionExpiryInterceptor implements HttpInterceptor {
   static singletonInstance: SessionExpiryInterceptor;
   sessionExpired = false;
-  constructor(public userService: UserService) {
+  constructor(public userService: UserService, private utilService: UtilService) {
     if (!SessionExpiryInterceptor.singletonInstance) {
       SessionExpiryInterceptor.singletonInstance = this;
     }
@@ -20,8 +21,19 @@ export class SessionExpiryInterceptor implements HttpInterceptor {
     if ([401, '401'].includes(event.status) && this.userService.loggedIn
       && (event.error.responseCode === 'SESSION_EXPIRED' || event.error.responseCode === 'UNAUTHORIZED_ACCESS'
       || (event.error.params && event.error.params.err === 'UNAUTHORIZED_USER'))) {
-      this.sessionExpired = true;
-      this.userService.endSession();
+
+      if (!this.utilService.isDesktopApp) {
+        this.sessionExpired = true;
+      }
+
+      this.userService.endSession().subscribe((response) => {
+        if (this.utilService.isDesktopApp) {
+          this.utilService.showSessionExpiredMessage();
+          setTimeout(() => {
+            window.location.href = '/';
+          }, 1000);
+        }
+      });
       return of(undefined); // to help stop event propagation
     } else {
       return throwError(event);

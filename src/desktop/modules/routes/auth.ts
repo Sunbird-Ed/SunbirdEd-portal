@@ -14,7 +14,8 @@ export default (app, proxyURL) => {
     app.post(
         "/api/user/v1/startSession", authController.startUserSession.bind(authController),
     );
-
+    
+    app.get("/endSession", authController.endSession.bind(authController));
     app.get("/learner/user/v3/read/:id", proxy(proxyURL, {
             proxyReqOptDecorator: decorateRequestHeaders(proxyURL),
             proxyReqPathResolver(req) {
@@ -76,7 +77,7 @@ export default (app, proxyURL) => {
             try {
                 logger.info({ msg: `${req.originalUrl} update called` });
                 const data = JSON.parse(proxyResData.toString('utf8'));
-                if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+                if (req.method === 'PATCH' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
                 else return handleSessionExpiry(proxyRes, proxyResData, req, res, data);
             } catch (err) {
                 logger.error({ msg: 'learner route : userResDecorator json parse error:', proxyResData });

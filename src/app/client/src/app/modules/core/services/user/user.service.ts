@@ -380,7 +380,7 @@ export class UserService {
 
   public endSession() {
     const url = this.config.urlConFig.URLS.USER.END_SESSION;
-    this.http.get(url).subscribe();
+    return this.http.get(url);
   }
 
   getUserByKey(key) {
