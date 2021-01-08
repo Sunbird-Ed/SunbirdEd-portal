@@ -31,6 +31,36 @@ module.exports = (app) => {
     res.redirect(googleAuthUrl)
     logImpressionEvent(req);
   });
+
+  app.get('/google/auth/android', async (req, res) => {
+    let errType, newUserDetails = {}
+    const {OAuth2Client} = require('google-auth-library');
+    const CLIENT_ID = '525350998139-cjr1m4a2p1i296p588vff7qau924et79.apps.googleusercontent.com'
+    const client = new OAuth2Client(CLIENT_ID);
+    async function verify() {
+      const ticket = await client.verifyIdToken({
+        idToken: req.get('X-GOOGLE-ID-TOKEN'),
+        audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+        // Or, if multiple clients access the backend:
+        //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+      });
+      const payload = ticket.getPayload();
+      return payload['email'];
+      // If request specified a G Suite domain:
+      // const domain = payload['hd'];
+    }
+     verify().then(async (emailId) => {
+       let isUserExist = await fetchUserByEmailId(emailId, req).catch(handleGetUserByIdError);
+       if (!isUserExist) {
+         logger.info({msg: 'creating new google user'});
+         errType = 'USER_CREATE_API';
+         newUserDetails = await createUserWithMailId(emailId, 'google-auth', req).catch(handleCreateUserError);
+         await utils.delay(GOOGLE_SIGN_IN_DELAY);
+       }
+       const keyCloakToken = await createSession(emailId, {client_id: 'google-auth'}, req, res).catch(handleCreateSessionError);
+       res.send(keyCloakToken);
+     }).catch(console.error);
+  });
   /**
    * steps to be followed in callback url
    * 1. Parse 'state' query param and check mandatory field. If error redirect to '/library'.
