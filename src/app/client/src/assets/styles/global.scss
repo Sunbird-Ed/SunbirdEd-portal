@@ -728,3 +728,6 @@ app-workspace {
 .pointer-events-disabled {
   pointer-events: none;
 }
+.consent-info{
+  font-size: calculateRem(12px);
+}
