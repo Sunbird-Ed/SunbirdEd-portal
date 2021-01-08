@@ -4,6 +4,9 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/c
 import { Observable, throwError, of } from 'rxjs';
 import { map, catchError, skipWhile } from 'rxjs/operators';
 import { UtilService } from '@sunbird/shared';
+import { ResourceService } from '../../shared/services/resource/resource.service';
+import { ToasterService } from '../../shared/services/toaster/toaster.service';
+import * as _ from 'lodash-es';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +14,12 @@ import { UtilService } from '@sunbird/shared';
 export class SessionExpiryInterceptor implements HttpInterceptor {
   static singletonInstance: SessionExpiryInterceptor;
   sessionExpired = false;
-  constructor(public userService: UserService, private utilService: UtilService) {
+  constructor(
+    public userService: UserService,
+    private utilService: UtilService,
+    private resourceService: ResourceService,
+    private toasterService: ToasterService
+  ) {
     if (!SessionExpiryInterceptor.singletonInstance) {
       SessionExpiryInterceptor.singletonInstance = this;
     }
@@ -20,7 +28,7 @@ export class SessionExpiryInterceptor implements HttpInterceptor {
   handleSessionExpiry(event) {
     if ([401, '401'].includes(event.status) && this.userService.loggedIn
       && (event.error.responseCode === 'SESSION_EXPIRED' || event.error.responseCode === 'UNAUTHORIZED_ACCESS'
-      || (event.error.params && event.error.params.err === 'UNAUTHORIZED_USER'))) {
+        || (event.error.params && event.error.params.err === 'UNAUTHORIZED_USER'))) {
 
       if (!this.utilService.isDesktopApp) {
         this.sessionExpired = true;
@@ -28,7 +36,7 @@ export class SessionExpiryInterceptor implements HttpInterceptor {
 
       this.userService.endSession().subscribe((response) => {
         if (this.utilService.isDesktopApp) {
-          this.utilService.showSessionExpiredMessage();
+          this.showSessionExpiredMessage();
           setTimeout(() => {
             window.location.href = '/';
           }, 1000);
@@ -47,6 +55,11 @@ export class SessionExpiryInterceptor implements HttpInterceptor {
         return this.handleSessionExpiry(error); // error case
       }),
       skipWhile(data => data === undefined || data === null)); // stop api call and show login popup
+  }
+
+  showSessionExpiredMessage() {
+    const message = _.replace(this.resourceService.frmelmnts.lbl.plslgn, '{instance}', this.resourceService.instance);
+    this.toasterService.warning(message);
   }
 }
 
