@@ -328,7 +328,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       }
       // TODO: code can be removed in 3.1 release from user-onboarding component as it is handled here.
-      zip(this.tenantService.tenantData$, this.orgDetailsService.orgDetails$).subscribe((res) => {
+      zip(this.tenantService.tenantData$, this.getOrgDetails()).subscribe((res) => {
         if (_.get(res[0], 'tenantData')) {
           const orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
           if (_.get(orgDetailsFromSlug, 'slug') !== this.tenantService.slugForIgot) {
