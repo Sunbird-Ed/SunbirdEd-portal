@@ -1,18 +1,14 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
-import { FormGroup } from '@angular/forms';
 import { DeviceRegisterService, FormService, UserService } from '@sunbird/core';
 import { Router } from '@angular/router';
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
-import { distinctUntilChanged, take } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
 import { PopupControlService } from '../../../../service/popup-control.service';
 import { IDeviceProfile } from '../../interfaces';
 import { ITenantData } from '../../../core/services/tenant/interfaces';
-import { FieldConfig } from 'common-form-elements';
-import { Location as SbLocation } from '@project-sunbird/client-services/models/location';
 import { LocationService } from '@sunbird/location';
-import { SbFormLocationOptionsFactory } from './sb-form-location-options.factory';
+import { SbFormLocationSelectionDelegate } from '../../../location/components/delegate/sb-form-location-selection.delegate';
+import { Location as SbLocation } from '@project-sunbird/client-services/models/location';
 
 @Component({
   selector: 'app-onboarding-location-selection',
@@ -20,32 +16,16 @@ import { SbFormLocationOptionsFactory } from './sb-form-location-options.factory
   styleUrls: ['./onboarding-location-selection.component.scss']
 })
 export class OnboardingLocationSelectionComponent implements OnInit, OnDestroy, AfterViewInit {
-  private static readonly DEFAULT_PROFILE_CONFIG_FORM_REQUEST =
-    { formType: 'profileConfig', contentType: 'default', formAction: 'get' };
-
   @Input() deviceProfile: IDeviceProfile;
-  // TODO: may not be required anymore
   @Input() isCustodianOrgUser: boolean;
 
   @Input() tenantInfo: ITenantData;
   @Output() close = new EventEmitter<void>();
   @ViewChild('onboardingModal') onboardingModal;
 
-  protected formSuggestionsStrategy: 'userLocation' | 'userDeclared' | 'ipLocation';
-  protected formLocationSuggestions: Partial<SbLocation>[] = [];
-  protected formLocationOptionsFactory: SbFormLocationOptionsFactory;
-  protected formValue: {} = {};
-  private stateChangeSubscription?: Subscription;
-
   telemetryImpression: IImpressionEventInput;
 
-  shouldDeviceProfileLocationUpdate = false;
-  shouldUserProfileLocationUpdate = false;
-  // Form Configuration loaded from FormService
-  locationFormConfig: FieldConfig<any>[];
-
-  formGroup?: FormGroup;
-  isLocationFormLoading = false;
+  sbFormLocationSelectionDelegate: SbFormLocationSelectionDelegate;
 
   constructor(
     public resourceService: ResourceService,
@@ -59,23 +39,28 @@ export class OnboardingLocationSelectionComponent implements OnInit, OnDestroy, 
     protected telemetryService: TelemetryService,
     protected formService: FormService
   ) {
-    this.formLocationOptionsFactory = new SbFormLocationOptionsFactory(locationService);
   }
 
-  async ngOnInit() {
-    this.popupControlService.changePopupStatus(false);
-    this.formLocationSuggestions = this.getFormSuggestionsStrategy();
-    await this.loadForm(
-      OnboardingLocationSelectionComponent.DEFAULT_PROFILE_CONFIG_FORM_REQUEST,
-      true
+  ngOnInit() {
+    this.sbFormLocationSelectionDelegate = new SbFormLocationSelectionDelegate(
+      this.deviceProfile,
+      this.userService,
+      this.locationService,
+      this.formService,
+      this.deviceRegisterService,
     );
+
+    this.popupControlService.changePopupStatus(false);
+    this.sbFormLocationSelectionDelegate.init()
+      .catch(() => {
+        this.closeModal();
+        // TODO: edit message
+        this.toasterService.error('Unable to load data');
+      });
   }
 
   ngOnDestroy() {
-    if (this.stateChangeSubscription) {
-      this.stateChangeSubscription.unsubscribe();
-      this.stateChangeSubscription = undefined;
-    }
+    this.sbFormLocationSelectionDelegate.destroy();
   }
 
   ngAfterViewInit() {
@@ -97,217 +82,22 @@ export class OnboardingLocationSelectionComponent implements OnInit, OnDestroy, 
     });
   }
 
-  async onFormInitialize(formGroup: FormGroup) {
-    this.isLocationFormLoading = false;
-    this.formGroup = formGroup;
-  }
-
-  async onFormValueChange(value: any) {
-    if (value['children'] && value['children']['persona']) {
-      this.formValue = value['children']['persona'];
-    }
-  }
-
-  async onDataLoadStatusChange($event) {
-    if ('LOADING' === $event) {
-      this.isLocationFormLoading = true;
-    } else {
-      this.isLocationFormLoading = false;
-
-      // on state load
-      if (!this.stateChangeSubscription) {
-        this.stateChangeSubscription = this.formGroup.get('children.persona.state').valueChanges.pipe(
-          distinctUntilChanged(),
-          take(1)
-        ).subscribe(async (newStateValue) => {
-          // on state change
-          if (!newStateValue) { return; }
-
-          this.locationFormConfig = undefined;
-          this.stateChangeSubscription = undefined;
-
-          this.isLocationFormLoading = true;
-
-          this.loadForm(
-            {
-              ...OnboardingLocationSelectionComponent.DEFAULT_PROFILE_CONFIG_FORM_REQUEST,
-              subType: (newStateValue as SbLocation).id,
-            },
-            false
-          ).catch((e) => {
-            console.error(e);
-            this.loadForm(
-              OnboardingLocationSelectionComponent.DEFAULT_PROFILE_CONFIG_FORM_REQUEST,
-              true
-            );
-          });
-        });
-      }
-    }
-  }
-
-  private async loadForm(
-    formInputParams,
-    initial = false
-  ) {
-    this.isLocationFormLoading = true;
-    const tempLocationFormConfig: FieldConfig<any>[] = await this.formService.getFormConfig(formInputParams)
-      .toPromise()
-      .catch((e) => {
-        console.error(e);
-        this.closeModal();
-        // TODO: check messages
-        this.toasterService.error('Unable to load data');
-        return [];
-      });
-
-    for (const config of tempLocationFormConfig) {
-      if (config.code === 'name' /* TODO: uncomment && !this.shouldDeviceProfileLocationUpdate */) {
-        config.templateOptions.hidden = false;
-      }
-
-      if (config.code === 'persona' /* TODO: uncomment && !this.shouldDeviceProfileLocationUpdate */) {
-        config.templateOptions.hidden = false;
-        // TODO: userType
-        config.default = 'other';
-      }
-
-      if (config.templateOptions['dataSrc'] && config.templateOptions['dataSrc']['marker'] === 'SUPPORTED_PERSONA_LIST') {
-        // TODO: fetch supported userTypes
-        config.templateOptions.options = [
-          { label: 'Leader', value: 'administrator' },
-          { label: 'Teacher', value: 'teacher' },
-          { label: 'Student', value: 'student' },
-          { label: 'Other', value: 'other' },
-        ];
-
-        for (const persona in config.children) {
-          if (!(persona in config.children)) {
-            continue;
-          }
-
-          for (const personaLocationConfig of config.children[persona]) {
-            if (!personaLocationConfig.templateOptions['dataSrc']) {
-              return personaLocationConfig;
-            }
-
-            if (initial) {
-              personaLocationConfig.default = this.formLocationSuggestions.find(l => l.type === personaLocationConfig.code);
-            } else {
-              personaLocationConfig.default = this.formValue[personaLocationConfig.code];
-            }
-
-            switch (personaLocationConfig.templateOptions['dataSrc']['marker']) {
-              case 'STATE_LOCATION_LIST': {
-                personaLocationConfig.templateOptions.options = this.formLocationOptionsFactory.buildStateListClosure(
-                  personaLocationConfig, initial
-                );
-                break;
-              }
-              case 'LOCATION_LIST': {
-                personaLocationConfig.templateOptions.options = this.formLocationOptionsFactory.buildLocationListClosure(
-                  personaLocationConfig, initial
-                );
-                break;
-              }
-            }
-          }
-        }
-      }
-    }
-
-    this.locationFormConfig = tempLocationFormConfig;
-  }
-
-  getFormSuggestionsStrategy(): Partial<SbLocation>[] {
-    let suggestions: Partial<SbLocation>[] = [];
-    const userProfileData = this.userService.userProfile;
-    const isDeviceProfileLocationUpdated = this.deviceProfile && this.deviceProfile.userDeclaredLocation;
-    const isUserProfileLocationUpdated = userProfileData && userProfileData.userLocations &&
-      Array.isArray(userProfileData.userLocations) && userProfileData.userLocations.length >= 1;
-
-    if (this.userService.loggedIn) {
-      /* istanbul ignore else */
-      if (
-        !isUserProfileLocationUpdated
-      ) {
-        /* istanbul ignore else */
-        if (isDeviceProfileLocationUpdated) {
-          // render using userDeclaredLocation
-          // update user profile only
-          this.formSuggestionsStrategy = 'userDeclared';
-          this.shouldUserProfileLocationUpdate = true;
-          this.shouldDeviceProfileLocationUpdate = false;
-
-          suggestions = [
-            { type: 'state', name: this.deviceProfile.userDeclaredLocation.state },
-            { type: 'district', name: this.deviceProfile.userDeclaredLocation.district }
-          ];
-        }
-      }
-
-      /* istanbul ignore else */
-      if (
-        !isDeviceProfileLocationUpdated
-      ) {
-        if (isUserProfileLocationUpdated) {
-          // render using user location
-          // update only device profile
-          this.formSuggestionsStrategy = 'userLocation';
-          this.shouldUserProfileLocationUpdate = false;
-          this.shouldDeviceProfileLocationUpdate = true;
-
-          // TODO: cross-check
-          suggestions = this.userService.userProfile.userLocations;
-        } else {
-          // render using ip
-          // update device location and user location
-          this.formSuggestionsStrategy = 'ipLocation';
-          this.shouldUserProfileLocationUpdate = true;
-          this.shouldDeviceProfileLocationUpdate = true;
-
-          suggestions = [
-            { type: 'state', name: this.deviceProfile.ipLocation.state },
-            { type: 'district', name: this.deviceProfile.ipLocation.district }
-          ];
-        }
-      }
-    } else {
-      if (!isDeviceProfileLocationUpdated) {
-        // render using ip
-        // update device profile only
-        this.formSuggestionsStrategy = 'ipLocation';
-        this.shouldUserProfileLocationUpdate = false;
-        this.shouldDeviceProfileLocationUpdate = true;
-
-        suggestions = [
-          { type: 'state', name: this.deviceProfile.ipLocation.state },
-          { type: 'district', name: this.deviceProfile.ipLocation.district }
-        ];
-      } else {
-        // render using userDeclaredLocation
-        // update user profile only
-        this.formSuggestionsStrategy = 'userDeclared';
-        this.shouldUserProfileLocationUpdate = true;
-        this.shouldDeviceProfileLocationUpdate = false;
-
-        suggestions = [
-          { type: 'state', name: this.deviceProfile.userDeclaredLocation.state },
-          { type: 'district', name: this.deviceProfile.userDeclaredLocation.district }
-        ];
-      }
-    }
-
-    return suggestions;
-  }
-
   closeModal() {
-    this.onboardingModal.deny();
     this.popupControlService.changePopupStatus(true);
     this.close.emit();
   }
 
-  updateUserLocation() {
+  async updateUserLocation() {
+    try {
+      const updatedLocationDetails: SbLocation[] = await this.sbFormLocationSelectionDelegate.updateUserLocation();
+    } catch (e) {
+      // TODO: edit message
+      this.toasterService.error('Unable to load data');
+    } finally {
+      this.closeModal();
+    }
+
+    // TODO: check how telemetry data is populated
     // const locationCodes = [];
     // const locationDetails: any = {};
     // /* istanbul ignore else */
@@ -354,7 +144,7 @@ export class OnboardingLocationSelectionComponent implements OnInit, OnDestroy, 
     // this.updateLocation(data, { state: stateData, district: districtData });
   }
 
-  // // TODO: check request data
+  // // TODO: check how telemetry data is populated
   // updateLocation(data, locationDetails) {
   //   let response1: any;
   //   response1 = this.updateDeviceProfileData(data, locationDetails);
@@ -382,7 +172,7 @@ export class OnboardingLocationSelectionComponent implements OnInit, OnDestroy, 
   //   });
   // }
 
-  // // TODO: check request data
+  // // TODO: check how telemetry data is populated
   // updateDeviceProfileData(data, locationDetails) {
   //   /* istanbul ignore else */
   //   if (!this.shouldDeviceProfileLocationUpdate) {
@@ -394,7 +184,7 @@ export class OnboardingLocationSelectionComponent implements OnInit, OnDestroy, 
   //   });
   // }
 
-  // // TODO: check request data
+  // // TODO: check how telemetry data is populated
   // updateUserProfileData(data) {
   //   /* istanbul ignore else */
   //   if (!this.shouldUserProfileLocationUpdate || !this.isCustodianOrgUser) {

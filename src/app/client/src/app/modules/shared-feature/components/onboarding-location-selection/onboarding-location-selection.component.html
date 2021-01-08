@@ -6,20 +6,20 @@
     </div>
     <div class="sb-onboard__content">
       <p class="subtitle">{{resourceService?.messages?.imsg?.m0075}}</p>
-      <p class="subtitle">DEBUG: {{isLocationFormLoading ? "Loading" : "Loaded"}}</p>
       <div class="schooling-location" *ngIf="deviceProfile" [appTelemetryImpression]="telemetryImpression">
-        <sb-form *ngIf="locationFormConfig && locationFormConfig.length"
-                 [config]="locationFormConfig"
-                 (initialize)="onFormInitialize($event)"
-                 (valueChanges)="onFormValueChange($event)"
-                 (dataLoadStatus)="onDataLoadStatusChange($event)">
+        <sb-form *ngIf="sbFormLocationSelectionDelegate.locationFormConfig && sbFormLocationSelectionDelegate.locationFormConfig.length"
+                 [config]="sbFormLocationSelectionDelegate.locationFormConfig"
+                 (initialize)="sbFormLocationSelectionDelegate.onFormInitialize($event)"
+                 (valueChanges)="sbFormLocationSelectionDelegate.onFormValueChange($event)"
+                 (dataLoadStatus)="sbFormLocationSelectionDelegate.onDataLoadStatusChange($event)">
         </sb-form>
       </div>
     </div>
 
     <div class="sb-onboard__footer">
       <button type="button" class="sb-btn sb-btn-sm sb-btn-primary text-uppercase w-100" type="submit"
-              [ngClass]="{'sb-btn-disabled': formGroup?.invalid || isLocationFormLoading}" [disabled]="formGroup?.invalid || isLocationFormLoading"
+              [class.sb-btn-disabled]="sbFormLocationSelectionDelegate.formGroup?.dirty && sbFormLocationSelectionDelegate.formGroup?.invalid"
+              [disabled]="sbFormLocationSelectionDelegate.formGroup?.dirty && sbFormLocationSelectionDelegate.formGroup?.invalid"
         (click)="updateUserLocation()">{{resourceService?.frmelmnts?.btn?.submit}}
         <span class='arrow-icon'>
           <em class="icon-svg icon-svg--xxs icon-back">
