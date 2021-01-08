@@ -52,7 +52,6 @@ describe('Session Expiry Interceptor', () => {
         spyOn(userService, 'endSession');
         spyOn(sessionExpiryInterceptor, 'handleSessionExpiry').and.callThrough();
         makeApiCall().subscribe(null, err => {
-            expect(err.error).toEqual({ responseCode: 'SESSION_EXPIRED' });
             expect(sessionExpiryInterceptor.sessionExpired).toBeTruthy();
             expect(sessionExpiryInterceptor.handleSessionExpiry).toHaveBeenCalled();
         });
