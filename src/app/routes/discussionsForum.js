@@ -22,6 +22,12 @@ module.exports = function (app) {
     app.get(`${BASE_REPORT_URL}/categories`, proxyUtils.verifyToken(), proxyObject());
     app.get(`${BASE_REPORT_URL}/categories/:cid/moderators`, proxyUtils.verifyToken(), proxyObject());
 
+    app.get(`${BASE_REPORT_URL}/user/:userslug`, proxyUtils.verifyToken(), proxyObject())
+    app.get(`${BASE_REPORT_URL}/user/:userslug/upvoted`, proxyUtils.verifyToken(), proxyObject())
+    app.get(`${BASE_REPORT_URL}/user/:userslug/downvoted`, proxyUtils.verifyToken(), proxyObject())
+    app.get(`${BASE_REPORT_URL}/user/:userslug/bookmarks`, proxyUtils.verifyToken(), proxyObject())
+    app.get(`${BASE_REPORT_URL}/user/:userslug/best`, proxyUtils.verifyToken(), proxyObject())
+
     // topic apis
     app.get(`${BASE_REPORT_URL}/unread`, proxyUtils.verifyToken(), proxyObject());
     app.get(`${BASE_REPORT_URL}/recent`, proxyUtils.verifyToken(), proxyObject());
