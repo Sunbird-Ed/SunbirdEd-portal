@@ -58,6 +58,7 @@
     "@project-sunbird/sunbird-video-player-v8": "0.0.1",
     "@project-sunbird/telemetry-sdk": "0.0.26",
     "@project-sunbird/web-extensions": "^0.0.2",
+    "@project-sunbird/chatbot-client-v8": "2.0.1",
     "@swimlane/ngx-datatable": "16.1.1",
     "@types/jquery": "3.3.31",
     "@types/jquery.fancytree": "2.7.34",
@@ -110,7 +111,6 @@
     "sb-svg2pdf": "0.0.9",
     "sb-theme": "^1.0.14",
     "slick-carousel": "^1.8.1",
-    "sunbird-chatbot-client": "0.0.8",
     "tree-model": "^1.0.7",
     "video.js": "7.5.5",
     "zone.js": "^0.10.3"
