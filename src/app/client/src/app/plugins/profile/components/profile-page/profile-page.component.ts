@@ -86,6 +86,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   selfDeclaredInfo = [];
   selfDeclaredErrorTypes = [];
   scrollToId;
+  isDesktopApp;
 
   constructor(@Inject('CS_COURSE_SERVICE') private courseCService: CsCourseService, private cacheService: CacheService, 
   public resourceService: ResourceService, public coursesService: CoursesService,
@@ -103,6 +104,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    this.isDesktopApp = this.utilService.isDesktopApp;
     this.initLayout();
     this.instance = _.upperFirst(_.toLower(this.resourceService.instance || 'SUNBIRD'));
     this.getCustodianOrgUser();
