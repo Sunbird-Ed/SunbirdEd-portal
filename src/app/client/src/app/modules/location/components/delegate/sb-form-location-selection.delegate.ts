@@ -1,5 +1,5 @@
 import {Location as SbLocation} from '@project-sunbird/client-services/models/location';
-import {FieldConfig} from 'common-form-elements';
+import {FieldConfig, FieldConfigOption} from 'common-form-elements';
 import {FormGroup} from '@angular/forms';
 import {distinctUntilChanged, take} from 'rxjs/operators';
 import {SbFormLocationOptionsFactory} from './sb-form-location-options.factory';
@@ -10,8 +10,10 @@ import {IDeviceProfile} from '@sunbird/shared-feature';
 import * as _ from 'lodash-es';
 
 export class SbFormLocationSelectionDelegate {
-  private static readonly DEFAULT_PROFILE_CONFIG_FORM_REQUEST =
+  private static readonly DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST =
     { formType: 'profileConfig', contentType: 'default', formAction: 'get' };
+  private static readonly SUPPORTED_PERSONA_LIST_FORM_REQUEST =
+    { formType: 'config', formAction: 'get', contentType: 'userType', component: 'portal' };
 
   shouldDeviceProfileLocationUpdate = false;
   shouldUserProfileLocationUpdate = false;
@@ -38,10 +40,21 @@ export class SbFormLocationSelectionDelegate {
 
   async init() {
     this.formLocationSuggestions = this.getFormSuggestionsStrategy();
-    await this.loadForm(
-      SbFormLocationSelectionDelegate.DEFAULT_PROFILE_CONFIG_FORM_REQUEST,
-      true
-    );
+
+    const formInputParams = _.cloneDeep(SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST);
+
+    if (this.userService.loggedIn) {
+      // override contentType to userLocation's state ID if available
+      formInputParams['contentType'] = (() => {
+        const loc: SbLocation = (this.userService.userProfile['userLocations'] || [])
+          .find((l: SbLocation) => l.type === 'state');
+        return (loc && loc.id) ?
+          loc.id :
+          SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST.contentType;
+      })();
+    }
+
+    await this.loadForm(formInputParams, true);
   }
 
   async destroy() {
@@ -84,14 +97,14 @@ export class SbFormLocationSelectionDelegate {
 
           this.loadForm(
             {
-              ...SbFormLocationSelectionDelegate.DEFAULT_PROFILE_CONFIG_FORM_REQUEST,
-              subType: (newStateValue as SbLocation).id,
+              ...SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST,
+              contentType: (newStateValue as SbLocation).id,
             },
             false
           ).catch((e) => {
             console.error(e);
             this.loadForm(
-              SbFormLocationSelectionDelegate.DEFAULT_PROFILE_CONFIG_FORM_REQUEST,
+              SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST,
               true
             );
           });
@@ -161,13 +174,23 @@ export class SbFormLocationSelectionDelegate {
       }
 
       if (config.templateOptions['dataSrc'] && config.templateOptions['dataSrc']['marker'] === 'SUPPORTED_PERSONA_LIST') {
-        // TODO: fetch supported userTypes
-        config.templateOptions.options = [
-          { label: 'Leader', value: 'administrator' },
-          { label: 'Teacher', value: 'teacher' },
-          { label: 'Student', value: 'student' },
-          { label: 'Other', value: 'other' },
-        ];
+        config.templateOptions.options = (
+          await this.formService.getFormConfig(
+            SbFormLocationSelectionDelegate.SUPPORTED_PERSONA_LIST_FORM_REQUEST
+          ).toPromise() as {
+            code: string;
+            name: string;
+            visibility: boolean;
+          }[]
+        ).reduce<FieldConfigOption<string>[]>((acc, persona) => {
+          if (persona.visibility) {
+            acc.push({
+              label: persona.name,
+              value: persona.code
+            });
+          }
+          return acc;
+        }, []);
 
         for (const persona in config.children) {
           if (!(persona in config.children)) {
