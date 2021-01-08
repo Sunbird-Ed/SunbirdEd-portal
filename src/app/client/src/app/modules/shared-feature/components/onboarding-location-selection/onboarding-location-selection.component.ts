@@ -102,6 +102,8 @@ export class OnboardingLocationSelectionComponent implements OnInit {
       locationExist = _.find(this.allStates, (locations) => {
         return locations.name.toLowerCase() === state.toLowerCase() && locations.type === 'state';
       });
+    } else {
+      locationExist = this.allStates.length > 0 ? this.allStates[0] : {};
     }
     return locationExist;
   }
