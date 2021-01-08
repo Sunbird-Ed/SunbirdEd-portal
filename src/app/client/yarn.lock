@@ -567,6 +567,13 @@
   dependencies:
     tslib "^2.0.0"
 
+"@project-sunbird/chatbot-client-v8@2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/chatbot-client-v8/-/chatbot-client-v8-2.0.1.tgz#f0d3f9b721693c9d8e99744259af1f6f215e30ee"
+  integrity sha512-TstcviQAj9Kgn54TZMCBNJBHplIg4yiAv2KjA29zaS7J5NZFi293zhD8gEfUZ4d0PL0siaK5SEdQtVxc2j9itw==
+  dependencies:
+    tslib "^1.9.0"
+
 "@project-sunbird/ckeditor-build-font@^1.0.8":
   version "1.0.8"
   resolved "https://registry.yarnpkg.com/@project-sunbird/ckeditor-build-font/-/ckeditor-build-font-1.0.8.tgz#696216aa58ee2d640cb5250b3ade5a49ad887523"
@@ -10252,13 +10259,6 @@ stylus@0.54.5:
     mkdirp "0.5.x"
     sax "0.5.x"
     source-map "0.1.x"
-
-sunbird-chatbot-client@0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/sunbird-chatbot-client/-/sunbird-chatbot-client-0.0.8.tgz#b8b7d0af60675346316d403a14ab336ea918b85e"
-  integrity sha512-677ihQdfpls3HhYSQcWcOR+VrTQuyvjMUePZxm+mJPrJFb1GAbT4ae6wE0uFHtE02JyzbUyPaez+hpTndkTEqw==
-  dependencies:
-    tslib "^1.9.0"
 
 supports-color@^2.0.0:
   version "2.0.0"
