@@ -1,0 +1,38 @@
+<sui-modal
+  [mustScroll]="true"
+  [isClosable]="true"
+  [transitionDuration]="0"
+  [size]="'normal'"
+  class="sb-modal sb-offline-updates-modal"
+  #modal
+  (dismissed)="modal.deny()"
+  *ngIf="isUpdateAvailable"
+>
+  <div class="sb-modal-header"></div>
+
+  <div class="sb-modal-content pt-0">
+    <div class="sb-offline-updates pb-32">
+      <div class="sb-offline-updates-content text-center">
+        <div class="sb-offline-updates-content-logo">
+          <img src="assets/images/Group16.svg" class="logo" alt="DEV Logo" />
+        </div>
+        <div class="sb-offline-updates-content-desc mb-32">
+          <h3 class="sb-offline-updates-content-title mt-16 mb-8 font-weight-bold">{{resourceService.frmelmnts?.lbl?.appUpdateAvailable}}</h3>
+          <p class="sb-offline-updates-content-para">
+            {{resourceService.frmelmnts?.lbl?.appUpdateDescription}}
+          </p>
+        </div>
+        <div class="sb-offline-label">
+          <div class="d-inline-flex">
+            <span class="sb-label-name mr-8">{{resourceService.frmelmnts?.lbl?.useThis}}</span>
+            <span>
+              <a href="{{downloadUrl}}" target="_blank"  class="sb-color-success" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+              [telemetryInteractEdata]="telemetryInteractEdata">{{ downloadUrl }}</a>
+            </span>
+          </div>
+        </div>
+        <!-- <p class="sb-offline-updates-content-para mt-4">*Requires Windows 64 bit operating system</p> -->
+      </div>
+    </div>
+  </div>
+</sui-modal>

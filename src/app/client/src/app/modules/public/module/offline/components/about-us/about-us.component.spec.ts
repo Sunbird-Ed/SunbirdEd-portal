@@ -7,7 +7,7 @@ import { ResourceService, SharedModule } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SuiModalModule } from 'ng2-semantic-ui';
 import { of } from 'rxjs';
-import { AppUpdateService } from './../../../offline/services';
+import { AppUpdateService } from '../../../../../core/services/app-update/app-update.service';
 import { AboutUsComponent } from './about-us.component';
 import { appInfoResponse } from './about-us.component.spec.data';
 
