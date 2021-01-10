@@ -5,6 +5,7 @@ const https = require('https');
 const httpAgent = new http.Agent({ keepAlive: true, });
 const httpsAgent = new https.Agent({ keepAlive: true, });
 import { containerAPI } from "@project-sunbird/OpenRAP/api";
+import Response from "./../utils/response";
 
 export const decorateRequestHeaders = function (upstreamUrl = "") {
   return async function (proxyReqOpts, srcReq) {
@@ -46,22 +47,36 @@ export const decorateRequestHeaders = function (upstreamUrl = "") {
   }
 }
 
-export const handleSessionExpiry = (proxyRes, proxyResData, req?, res?, data?) => {
+export const handleSessionExpiry = async (proxyRes, proxyResData, req?, res?, data?) => {
   if ((proxyRes.statusCode === 401)) {
-    const response = {
-      id: 'app.error',
-      ver: '1.0',
-      params:
-      {
-        'msgid': null,
-        'status': 'failed',
-        'err': 'SESSION_EXPIRED',
-        'errmsg': 'Session Expired'
-      },
-      responseCode: 'SESSION_EXPIRED',
-      result: { }
-    };
-    return res.status(401).send(response);
+
+    if (_.get(proxyRes, 'statusMessage') === "Unauthorized" || _.get(data, 'message') === "Unauthorized") {
+      try {
+        const apiKey = await containerAPI.getDeviceSdkInstance().getToken().catch((err) => {
+          logger.error(`Received error while fetching device token with error: ${err}`);
+        });
+        // TODO:// forwardRequest
+        
+      } catch(error) {
+        res.status(500).send(Response.error("api.user.switch", 500, "Internal server error"));
+      }
+
+    } else {
+      const response = {
+        id: 'app.error',
+        ver: '1.0',
+        params:
+        {
+          'msgid': null,
+          'status': 'failed',
+          'err': 'SESSION_EXPIRED',
+          'errmsg': 'Session Expired'
+        },
+        responseCode: 'SESSION_EXPIRED',
+        result: {}
+      };
+      return res.status(401).send(response);
+    }
   } else {
     return proxyResData;
   }
