@@ -113,7 +113,8 @@
     "sunbird-chatbot-client": "0.0.8",
     "tree-model": "^1.0.7",
     "video.js": "7.5.5",
-    "zone.js": "^0.10.3"
+    "zone.js": "^0.10.3",
+    "ngx-chips": "2.0.2"
   },
   "devDependencies": {
     "@angular/language-service": "7.2.10",
