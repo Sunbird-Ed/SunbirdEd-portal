@@ -50,9 +50,6 @@ module.exports = function (app) {
     proxyReqPathResolver: proxyReqPathResolverMethod
   }))
 
-  // Log telemetry for action api's
-  app.all('/action/*', isAPIWhitelisted.isAllowed(), telemetryHelper.generateTelemetryForProxy)
-
   app.use('/action/content/v3/unlisted/publish/:contentId',
     bodyParser.json(),
     isAPIWhitelisted.isAllowed(),
@@ -142,9 +139,10 @@ module.exports = function (app) {
       userResDecorator: userResDecorator
     })
   )
-
-  app.use('/action/*',
+  app.all('/action/*',
+  bodyParser.json(),
   isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
   proxy(contentProxyUrl, {
     preserveHostHdr: true,
     limit: reqDataLimitOfContentUpload,
