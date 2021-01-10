@@ -278,8 +278,8 @@ export class UtilService {
             (contentStatus ? (_.includes(['COMPLETED', 'DOWNLOADED'], contentStatus) ? 'SAVETOPENDRIVE' : _.capitalize(contentStatus)) :
             this.isAvailable(value) ? 'SAVETOPENDRIVE' : _.capitalize('CANCELED')),
 
-            disabled: isOnlineSearch ? (contentStatus ? _.includes(['Downloaded', 'Completed', 'Downloading', 'Paused', 'Inprogress', 'Resume', 'Inqueue' ], _.capitalize(contentStatus)) :
-            this.isAvailable(value)) : contentStatus ? _.includes(['Downloading', 'Inprogress', 'Resume', 'Inqueue', 'Paused'],
+            disabled: isOnlineSearch ? (contentStatus ? _.includes(['Downloaded', 'Completed', 'Downloading', 'Paused', 'Inprogress', 'Resume', 'Inqueue'], _.capitalize(contentStatus)) :
+            (_.get(value, 'downloadUrl') ? this.isAvailable(value) : true)) : contentStatus ? _.includes(['Downloading', 'Inprogress', 'Resume', 'Inqueue', 'Paused'],
             _.capitalize(contentStatus)) : !this.isAvailable(value)
           },
           {
