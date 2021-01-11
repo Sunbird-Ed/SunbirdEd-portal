@@ -4,7 +4,7 @@ import {FormGroup} from '@angular/forms';
 import {distinctUntilChanged, take} from 'rxjs/operators';
 import {SbFormLocationOptionsFactory} from './sb-form-location-options.factory';
 import {Subscription} from 'rxjs';
-import {LocationService} from '@sunbird/location';
+import {LocationService} from '../..';
 import {DeviceRegisterService, FormService, UserService} from '@sunbird/core';
 import {IDeviceProfile} from '@sunbird/shared-feature';
 import * as _ from 'lodash-es';
@@ -29,11 +29,11 @@ export class SbFormLocationSelectionDelegate {
   private stateChangeSubscription?: Subscription;
 
   constructor(
-    private deviceProfile: IDeviceProfile,
     private userService: UserService,
     private locationService: LocationService,
     private formService: FormService,
-    private deviceRegisterService: DeviceRegisterService
+    private deviceRegisterService: DeviceRegisterService,
+    private deviceProfile?: IDeviceProfile,
   ) {
     this.formLocationOptionsFactory = new SbFormLocationOptionsFactory(locationService);
   }
@@ -41,20 +41,25 @@ export class SbFormLocationSelectionDelegate {
   async init() {
     this.formLocationSuggestions = this.getFormSuggestionsStrategy();
 
-    const formInputParams = _.cloneDeep(SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST);
-
-    if (this.userService.loggedIn) {
-      // override contentType to userLocation's state ID if available
-      formInputParams['contentType'] = (() => {
-        const loc: SbLocation = (this.userService.userProfile['userLocations'] || [])
-          .find((l: SbLocation) => l.type === 'state');
-        return (loc && loc.id) ?
-          loc.id :
-          SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST.contentType;
-      })();
+    try {
+      // try loading state specific form
+      const formInputParams = _.cloneDeep(SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST);
+      if (this.userService.loggedIn) {
+        // override contentType to userLocation's state ID if available
+        formInputParams['contentType'] = (() => {
+          const loc: SbLocation = (this.userService.userProfile['userLocations'] || [])
+            .find((l: SbLocation) => l.type === 'state');
+          return (loc && loc.id) ?
+            loc.id :
+            SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST.contentType;
+        })();
+      }
+      await this.loadForm(formInputParams, true);
+    } catch (e) {
+      // load default form
+      console.error(e);
+      await this.loadForm(SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST, true);
     }
-
-    await this.loadForm(formInputParams, true);
   }
 
   async destroy() {
@@ -71,6 +76,8 @@ export class SbFormLocationSelectionDelegate {
 
   async onFormValueChange(value: any) {
     if (value['children'] && value['children']['persona']) {
+      this.shouldDeviceProfileLocationUpdate = true;
+      this.shouldUserProfileLocationUpdate = true;
       this.formValue = value['children']['persona'];
     }
   }

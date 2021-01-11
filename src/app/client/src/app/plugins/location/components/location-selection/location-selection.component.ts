@@ -6,20 +6,17 @@ import { LocationService } from '../../services/location/location.service';
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { PopupControlService } from '../../../../service/popup-control.service';
 import { IDeviceProfile } from '../../../../modules/shared-feature/interfaces/deviceProfile';
-import { ITenantData } from '../../../../modules/core/services/tenant/interfaces/tenant';
 import { SbFormLocationSelectionDelegate } from '../delegate/sb-form-location-selection.delegate';
 import { Location as SbLocation } from '@project-sunbird/client-services/models/location';
 
 @Component({
-  selector: 'app-onboarding-location',
-  templateUrl: './onboarding-location.component.html',
-  styleUrls: ['./onboarding-location.component.scss']
+  selector: 'app-location-selection',
+  templateUrl: './location-selection.component.html',
+  styleUrls: ['./location-selection.component.scss']
 })
-export class OnboardingLocationComponent implements OnInit, OnDestroy, AfterViewInit {
+export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewInit {
+  @Input() isClosable = true;
   @Input() deviceProfile: IDeviceProfile;
-  @Input() isCustodianOrgUser: boolean;
-
-  @Input() tenantInfo: ITenantData;
   @Output() close = new EventEmitter<void>();
   @ViewChild('onboardingModal') onboardingModal;
 
@@ -43,11 +40,11 @@ export class OnboardingLocationComponent implements OnInit, OnDestroy, AfterView
 
   ngOnInit() {
     this.sbFormLocationSelectionDelegate = new SbFormLocationSelectionDelegate(
-      this.deviceProfile,
       this.userService,
       this.locationService,
       this.formService,
       this.deviceRegisterService,
+      this.deviceProfile,
     );
 
     this.popupControlService.changePopupStatus(false);

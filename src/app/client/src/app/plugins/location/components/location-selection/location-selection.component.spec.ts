@@ -3,14 +3,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedModule, ResourceService, NavigationHelperService, ToasterService } from '@sunbird/shared';
-import { ConfigService } from '../../../shared/services/config/config.service';
+import { ConfigService } from '../../../../modules/shared/services/config/config.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SuiModule } from 'ng2-semantic-ui';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { onboardingLocationMockData } from './onboarding-location.component.spec.data';
+import { onboardingLocationMockData } from './location-selection.component.spec.data';
 import { UserService, DeviceRegisterService } from '../../../../modules/core/services';
 import { TelemetryService } from '@sunbird/telemetry';
 import { PopupControlService } from '../../../../service/popup-control.service';
@@ -20,11 +20,11 @@ import { CommonModule } from '@angular/common';
 import { of, throwError } from 'rxjs';
 import { configureTestSuite } from '@sunbird/test-util';
 
-import { OnboardingLocationComponent } from './onboarding-location.component';
+import { LocationSelectionComponent } from './location-selection.component';
 
 describe('OnboardingLocationComponent', () => {
-  let component: OnboardingLocationComponent;
-  let fixture: ComponentFixture<OnboardingLocationComponent>;
+  let component: LocationSelectionComponent;
+  let fixture: ComponentFixture<LocationSelectionComponent>;
   let configService;
 
   const resourceMockData = {
@@ -37,7 +37,7 @@ describe('OnboardingLocationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [OnboardingLocationComponent],
+      declarations: [LocationSelectionComponent],
       imports: [
         FormsModule,
         ReactiveFormsModule,
@@ -65,7 +65,7 @@ describe('OnboardingLocationComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OnboardingLocationComponent);
+    fixture = TestBed.createComponent(LocationSelectionComponent);
     component = fixture.componentInstance;
     configService = TestBed.get(ConfigService);
     fixture.detectChanges();

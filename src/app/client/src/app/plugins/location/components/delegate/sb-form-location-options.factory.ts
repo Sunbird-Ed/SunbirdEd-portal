@@ -1,4 +1,4 @@
-import { LocationService } from '@sunbird/location';
+import { LocationService } from '../..';
 import { FieldConfig, FieldConfigOptionsBuilder } from 'common-form-elements';
 import { Location as SbLocation } from '@project-sunbird/client-services/models/location';
 import { FormControl } from '@angular/forms';

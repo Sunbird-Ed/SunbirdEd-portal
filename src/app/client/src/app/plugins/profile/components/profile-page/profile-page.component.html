@@ -1,4 +1,4 @@
-<app-landing-section [textToDisplay]="" 
+<app-landing-section [textToDisplay]=""
 [layoutConfiguration]="{}" [noTitle]="true"></app-landing-section>
 <div [ngClass]="layoutConfiguration ? 'relative9' : ''">
 <div [appTelemetryImpression]="telemetryImpression" *ngIf="userProfile">
@@ -21,11 +21,11 @@
     <div class="profile-user-label font-w-bold d-flex text-center relative position">{{userProfile.firstName | titlecase}} {{userProfile.lastName |
       titlecase}}
       <div class="computer only">
-        <i  *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupPlacement]="'bottom left'" [popupInverted]="true" class="name-info"></i>  
+        <i  *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupPlacement]="'bottom left'" [popupInverted]="true" class="name-info"></i>
     </div>
     <div class="mobile only name-info-mobile">
-        <i *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupPlacement]="'bottom right'" [popupInverted]="true" class="name-info"></i>  
-    </div>  
+        <i *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupPlacement]="'bottom right'" [popupInverted]="true" class="name-info"></i>
+    </div>
     </div>
     <div class="mt-8 mb-16 d-flex flex-jc-center">
       <div class="fnormal">{{resourceService?.frmelmnts?.lbl?.instacnceId | interpolate:'{instance}': instance}} :</div>
@@ -55,14 +55,14 @@
         <i class="chevron up icon"></i>
       </span>
     </div>
-    <div class="fs-1-5 font-w-bold d-flex mb-8 text-center org-info" *ngIf=" orgDetails && orgDetails.orgName">{{orgDetails.orgName}}   
+    <div class="fs-1-5 font-w-bold d-flex mb-8 text-center org-info" *ngIf=" orgDetails && orgDetails.orgName">{{orgDetails.orgName}}
       <div class="computer only">
           <i *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupInverted]="true" [popupPlacement]="'bottom left'" class="name-info"></i>
       </div>
       <div class="mobile only">
           <i *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupInverted]="true" [popupPlacement]="'bottom right'" class="name-info"></i>
       </div>
-      
+
     </div>
 
     <!-- add state and district -->
@@ -161,7 +161,7 @@
 
       <!-- Add/edit recovery email/phone-->
     <div class="d-flex flex-jc-center">
-      <div appOnlineOnly *ngIf="userProfile.recoveryEmail || userProfile.recoveryPhone" (click)="showRecoveryId=true; mode='edit'" class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 d-flex" 
+      <div appOnlineOnly *ngIf="userProfile.recoveryEmail || userProfile.recoveryPhone" (click)="showRecoveryId=true; mode='edit'" class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 d-flex"
       appTelemetryInteract
       [telemetryInteractEdata]="editRecoveryIdInteractEdata">
         <div class="recovery-img mr-5"></div>
@@ -260,7 +260,7 @@
         [telemetryInteractEdata]="updateTeacherDetailsInteractEdata" type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary sb-btn-border"
         (click)="navigate('/profile/teacher-declaration','update')">{{resourceService.frmelmnts?.btn?.update}}</button>
       </div>
-     
+
     </div>
   </section>
   <!-- 4 section end -->
@@ -310,7 +310,7 @@
               <div class="list-items__item" *ngIf="data?.certificates?.length || data?.issuedCertificates?.length">
                 <button appTelemetryInteract
                  [telemetryInteractEdata]="downloadCertificateEData"
-                [telemetryInteractCdata]="[{id: 'course:download:cert', type: 'Feature'},{id: 'SB-14120', type: 'Task'}]" 
+                [telemetryInteractCdata]="[{id: 'course:download:cert', type: 'Feature'},{id: 'SB-14120', type: 'Task'}]"
                 class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn" (click)="downloadCert(data)">
                 <i class="download icon" ></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
               </div>
@@ -318,8 +318,8 @@
                   <span class="bar mr-4"></span>
                   <span class="bar"></span>
               </div>
-              <div class="list-items__item status-progress fsmall font-weight-bold text-right" *ngIf="data.status === 0 || data.status === 1" >{{resourceService?.frmelmnts?.lbl?.ongoing}}</div> 
-              <div class="list-items__item status-completed fsmall font-weight-bold text-right" *ngIf="data.status === 2 " >{{resourceService?.frmelmnts?.lbl?.completed}}</div> 
+              <div class="list-items__item status-progress fsmall font-weight-bold text-right" *ngIf="data.status === 0 || data.status === 1" >{{resourceService?.frmelmnts?.lbl?.ongoing}}</div>
+              <div class="list-items__item status-completed fsmall font-weight-bold text-right" *ngIf="data.status === 2 " >{{resourceService?.frmelmnts?.lbl?.completed}}</div>
             </div>
           </div>
           <div class="flex-ai-jc-center sb-ct-list" *ngIf="attendedTraining.length > 3">
@@ -368,7 +368,7 @@
           </div>
         </div>
         <!-- / certificates-->
-      </div>  
+      </div>
   </div>
 </div>
 </div>
@@ -377,10 +377,14 @@
 </app-popup>
 <app-update-contact-details *ngIf="showContactPopup" (close)="showContactPopup = !showContactPopup"
   [contactType]="contactType"></app-update-contact-details>
-<app-update-user-details (close)="showEditUserDetailsPopup = !showEditUserDetailsPopup" *ngIf="showEditUserDetailsPopup"
-  [userProfile]="userProfile"></app-update-user-details>
+  <app-location-selection
+    (close)="showEditUserDetailsPopup = !showEditUserDetailsPopup"
+    *ngIf="showEditUserDetailsPopup">
+
+    <div slot="popup-sub-header">
+      <p class="subtitle">{{resourceService?.frmelmnts?.lbl?.editPersonalDetails}}&lrm;</p>
+    </div>
+  </app-location-selection>
   <app-account-recovery-info *ngIf="showRecoveryId" [mode]="mode" (close)="showRecoveryId = !showRecoveryId"></app-account-recovery-info>
-  <app-update-user-details (close)="showEditUserDetailsPopup = !showEditUserDetailsPopup;" *ngIf="showEditUserDetailsPopup"
-    [userProfile]="userProfile"></app-update-user-details>
 <router-outlet></router-outlet>
 
