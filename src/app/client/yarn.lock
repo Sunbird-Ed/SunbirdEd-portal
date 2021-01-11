@@ -566,10 +566,10 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@^3.6.9":
-  version "3.6.9"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.6.9.tgz#d8bc1158347039784151731ac7ec1255205ccabb"
-  integrity sha512-60lUYbUkLXEHQBv3fR+UzXAPL7w2eudkCm/5ARdPaH+OBZc0PiWjNneBg6y0TN8aFAQ9lfOp28gJo8WDbX+8ZQ==
+"@project-sunbird/client-services@^3.6.11":
+  version "3.6.12"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.6.12.tgz#74175d53ca4a39e28659a5271f09f5dbe828c1c6"
+  integrity sha512-cBKb/c1YCAv/Vfi1kprYKqKRljP15E9dJcMfDR+3PoXKoLcVn+TRfOtPY0brqc9yPndEsEytxVDcIKg1DWjnRQ==
   dependencies:
     "@project-sunbird/telemetry-sdk" "0.0.26"
     inversify "^5.0.1"
@@ -584,10 +584,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/discussions-ui@1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui/-/discussions-ui-1.0.5.tgz#aa65d019a36c99b82e850ff9efa8a6a4ed6169f4"
-  integrity sha512-YFKoipC1OhYYc+ziCOg13B9hS2VAgBQ0GYSOlE9H6/dedLEXaau7RwG52VaQ9+CIooS2EkXNdYFAtP6zbQ7Fvw==
+"@project-sunbird/discussions-ui-v8@2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.0.1.tgz#fd37662c67f18a3a6ed1f7374a2c6e2375a998d5"
+  integrity sha512-ji00IXiO+wADSiI2ktYkE9lrcgRIw+Ak5rIXc5jH+t0HQ78RyrvmcU0FPTz2tfEvnvyOCYIHZFRi5JCDI4FBAw==
   dependencies:
     tslib "^1.9.0"
 
@@ -7415,6 +7415,13 @@ ng2-charts@2.2.5:
     lodash "^4.17.11"
     tslib "^1.9.0"
 
+ng2-material-dropdown@0.10.1:
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/ng2-material-dropdown/-/ng2-material-dropdown-0.10.1.tgz#0120ce1bbabfb065c62610fe3b572cd09f61b1e1"
+  integrity sha512-dOmk4+T6Rbtk60Un7sxOOFU546z5JEYupSL+RiG0/rN4DmJvxPp297AvA2Qm9LSMNszUZMi55cRzj79zQYu85g==
+  dependencies:
+    tslib "^1.9.0"
+
 "ng2-semantic-ui@github:project-sunbird/ng2-semantic-ui":
   version "0.10.0-alpha.6"
   resolved "https://codeload.github.com/project-sunbird/ng2-semantic-ui/tar.gz/dc28efa5ca6709457fa45aa558d73dd0dcd53ea5"
@@ -7432,6 +7439,14 @@ ngx-avatar@^3.7.0:
   dependencies:
     is-retina "^1.0.3"
     ts-md5 "^1.2.4"
+    tslib "^1.9.0"
+
+ngx-chips@2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/ngx-chips/-/ngx-chips-2.0.2.tgz#bf1342d8d6a741d86e506f7ab51b0d49e9191416"
+  integrity sha512-r3XwfE9VCzdbXso1qWeR5AhWlluljOwef4MdpIIJ9wFVcTAHCAU11wO+K6dUVw7mNWeGOhLCMEmi2+tNrKOCpg==
+  dependencies:
+    ng2-material-dropdown "0.10.1"
     tslib "^1.9.0"
 
 ngx-daterangepicker-material@2.1.3:

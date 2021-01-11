@@ -161,9 +161,13 @@ function checkEmail() {
 // TODO: this token logic we have to add in middleware itself;
 function addHeaders() {
     return function (proxyReqOpts, srcReq) { 
-       let decoratedHeaders =  proxyUtils.decorateRequestHeaders(discussions_middleware)
-       decoratedHeaders.headers['Authorization'] = 'Bearer ' + srcReq.session['nodebb_authorization_token'];
-        return proxyReqOpts;
+    //    let decoratedHeadersFunc =  proxyUtils.decorateRequestHeaders(discussions_middleware);
+    //    var decoratedHeaders = decoratedHeadersFunc(proxyReqOpts, srcReq);
+    //    decoratedHeaders.headers['Authorization'] = 'Bearer xyz';// + srcReq.session['nodebb_authorization_token'];
+        //  return function (proxyReqOpts, srcReq) {
+            proxyReqOpts.headers['Authorization'] = 'Bearer ' + srcReq.session['nodebb_authorization_token'];
+            return proxyReqOpts;
+        //  }
     }
 }
 
