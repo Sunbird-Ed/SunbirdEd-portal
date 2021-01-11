@@ -50,7 +50,7 @@ export const decorateRequestHeaders = function (upstreamUrl = "") {
 export const handleSessionExpiry = async (proxyRes, proxyResData, req?, res?, data?) => {
   if ((proxyRes.statusCode === 401)) {
 
-    if (_.get(proxyRes, 'statusMessage') === "Unauthorized" || _.get(data, 'message') === "Unauthorized") {
+    if (_.lowerCase(_.get(proxyRes, 'statusMessage')) === "unauthorized" || _.lowerCase(_.get(data, 'message')) === "unauthorized") {
       try {
         const apiKey = await containerAPI.getDeviceSdkInstance().getToken().catch((err) => {
           logger.error(`Received error while fetching device token with error: ${err}`);
