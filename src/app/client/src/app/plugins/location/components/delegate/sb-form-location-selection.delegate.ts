@@ -9,6 +9,8 @@ import {DeviceRegisterService, FormService, UserService} from '@sunbird/core';
 import {IDeviceProfile} from '@sunbird/shared-feature';
 import * as _ from 'lodash-es';
 
+type UseCase = 'SIGNEDIN_GUEST' | 'SIGNEDIN' | 'GUEST';
+
 export class SbFormLocationSelectionDelegate {
   private static readonly DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST =
     { formType: 'profileConfig', contentType: 'default', formAction: 'get' };
@@ -157,6 +159,7 @@ export class SbFormLocationSelectionDelegate {
     formInputParams,
     initial = false
   ) {
+    const useCases: UseCase[] = this.userService.loggedIn ? ['SIGNEDIN_GUEST', 'SIGNEDIN'] : ['SIGNEDIN_GUEST', 'GUEST'];
     this.isLocationFormLoading = true;
     const tempLocationFormConfig: FieldConfig<any>[] = await this.formService.getFormConfig(formInputParams)
       .toPromise();
@@ -207,6 +210,11 @@ export class SbFormLocationSelectionDelegate {
           for (const personaLocationConfig of config.children[persona]) {
             if (!personaLocationConfig.templateOptions['dataSrc']) {
               return personaLocationConfig;
+            }
+
+            if (!useCases.includes(_.get(personaLocationConfig, 'templateOptions.dataSrc.params.useCase'))) {
+              personaLocationConfig.templateOptions['hidden'] = true;
+              personaLocationConfig.validations = [];
             }
 
             if (initial) {

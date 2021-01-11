@@ -8,6 +8,10 @@ import { PopupControlService } from '../../../../service/popup-control.service';
 import { IDeviceProfile } from '../../../../modules/shared-feature/interfaces/deviceProfile';
 import { SbFormLocationSelectionDelegate } from '../delegate/sb-form-location-selection.delegate';
 import { Location as SbLocation } from '@project-sunbird/client-services/models/location';
+import { catchError, retry, tap } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
+import * as _ from 'lodash-es';
+import { ProfileService } from '@sunbird/profile';
 
 @Component({
   selector: 'app-location-selection',
@@ -34,7 +38,8 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
     public navigationHelperService: NavigationHelperService,
     public popupControlService: PopupControlService,
     protected telemetryService: TelemetryService,
-    protected formService: FormService
+    protected formService: FormService,
+    private profileService: ProfileService
   ) {
   }
 
@@ -88,6 +93,14 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
   async updateUserLocation() {
     try {
       const updatedLocationDetails: SbLocation[] = await this.sbFormLocationSelectionDelegate.updateUserLocation();
+
+      if (this.userService.loggedIn) {
+        // const payload = {
+        //   userId: _.get(this.userService, 'userid'),
+        //   TODO: userType and firstName
+        // };
+        // await this.profileService.updateProfile(payload).toPromise();
+      }
     } catch (e) {
       // TODO: edit message
       this.toasterService.error('Unable to load data');
