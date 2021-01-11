@@ -29,12 +29,10 @@ export class DataChartComponent implements OnInit, OnDestroy {
   @Input() isUserReportAdmin = false;
   @Output() openAddSummaryModal = new EventEmitter();
   @Input() hash: string;
-  public unsubscribe = new Subject<void>();
-
-  @Input() private globalFilterChanged: EventEmitter<boolean>;
-
   @Input() globalSelectedFilters:any;
-  // contains the chart configuration
+ 
+ public unsubscribe = new Subject<void>(); 
+ // contains the chart configuration
   chartConfig: any;
   chartData: any;
   showStats: Boolean = false;
@@ -75,7 +73,8 @@ export class DataChartComponent implements OnInit, OnDestroy {
   showChart: Boolean = false;
   chartSummary$: any;
   private _chartSummary: string;
-  
+  private _globalFilter; // private property _item
+  resetFilters;
 
   @ViewChild('datePickerForFilters') datepicker: ElementRef;
   @ViewChild('chartRootElement') chartRootElement;
@@ -100,7 +99,9 @@ export class DataChartComponent implements OnInit, OnDestroy {
     this.alwaysShowCalendars = true;
   }
 
+ 
   ngOnInit() {
+
     this.chartConfig = _.get(this.chartInfo, 'chartConfig');
     this.chartData = _.get(this.chartInfo, 'chartData');
     if (_.get(this.chartInfo, 'lastUpdatedOn')) {
@@ -108,55 +109,10 @@ export class DataChartComponent implements OnInit, OnDestroy {
     }
     this.prepareChart();
     this.setTelemetryCdata();
-    if (this.filters) {
-      // this.showFilters = false;
-      // this.buildFiltersForm();
-    }
+
   }
 
-  // buildFiltersForm() {
-  //   this.filtersFormGroup = this.fb.group({});
-  //   if (_.get(this.chartConfig, 'labelsExpr')) {
-  //     _.forEach(this.filters, filter => {
-  //       if (filter.controlType === 'date' || /date/i.test(_.get(filter, 'reference'))) {
-  //         const dateRange = _.uniq(_.map(this.chartData, _.get(filter, 'reference')));
-  //         this.pickerMinDate = moment(dateRange[0], 'DD-MM-YYYY');
-  //         this.pickerMaxDate = moment(dateRange[dateRange.length - 1], 'DD-MM-YYYY');
-  //         this.dateFilterReferenceName = filter.reference;
-  //       }
-  //       this.filtersFormGroup.addControl(_.get(filter, 'reference'), this.fb.control(''));
-  //       filter.options = _.sortBy(_.uniq(_.map(this.chartData, data => data[filter.reference].toLowerCase())));
-  //     });
-  //     if (this.filters.length > 0) {
-  //       this.showFilters = true;
-  //     }
-  //     this.filtersSubscription = this.filtersFormGroup.valueChanges
-  //       .pipe(
-  //         takeUntil(this.unsubscribe),
-  //         map(filters => {
-  //           return _.omitBy(filters, _.isEmpty);
-  //         }),
-  //         debounceTime(100),
-  //         distinctUntilChanged()
-  //       )
-  //       .subscribe((filters) => {
-  //         this.selectedFilters = _.omit(filters, this.dateFilterReferenceName); // to omit date inside labels
-  //         const res: Array<{}> = _.filter(this.chartData, data => {
-  //           return _.every(filters, (value, key) => {
-  //             return _.includes(_.toLower(value), data[key].toLowerCase());
-  //           });
-  //         });
-  //         this.noResultsFound = (res.length > 0) ? false : true;
-  //         if (this.noResultsFound) {
-  //           this.toasterService.error(this.resourceService.messages.stmsg.m0008);
-  //         }
-  //         this.getDataSetValue(res);
-
-  //       }, (err) => {
-  //         console.log(err);
-  //       });
-  //   }
-  // }
+ 
 
   private calculateBigNumber() {
     const bigNumbersConfig = _.get(this.chartConfig, 'bigNumbers');
@@ -253,9 +209,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
       if (_.get(apiResponse, 'responseCode') === 'OK') {
         const chartData = _.get(apiResponse, 'result.data');
         this.getDataSetValue(chartData);
-        // to apply current filters to new updated chart data;
-        const currentFilterValue = _.get(this.filtersFormGroup, 'value');
-        this.filtersFormGroup.patchValue(currentFilterValue);
+        this.resetFilters = true;
       }
     }, err => {
       console.log('failed to update chart data', err);
@@ -354,33 +308,6 @@ export class DataChartComponent implements OnInit, OnDestroy {
     return _.values(data);
   }
 
-
-  getDateRange({ startDate, endDate }, columnRef) {
-    this.selectedStartDate = moment(startDate).subtract(1, 'day');
-    this.selectedEndDate = moment(endDate).add(1, 'day');
-    const dateRange = [];
-    const currDate = moment(this.selectedStartDate).startOf('day');
-    const lastDate = moment(this.selectedEndDate).startOf('day');
-    while (currDate.add(1, 'days').diff(lastDate) < 0) {
-      dateRange.push(currDate.clone().format('DD-MM-YYYY'));
-    }
-    this.filtersFormGroup.get(columnRef).setValue(dateRange);
-  }
-
-  changeChartType(chartType) {
-    this.chartType = _.lowerCase(chartType);
-  }
-
-  resetFilter() {
-    this.filtersFormGroup.reset();
-    if (this.datepicker) {
-      this.datepicker.nativeElement.value = '';
-    }
-    this.showFilters = false;
-    this.cdr.detectChanges(); // to fix change detection issue in sui select
-    this.showFilters = true;
-  }
-
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
@@ -456,19 +383,27 @@ export class DataChartComponent implements OnInit, OnDestroy {
       return of([]);
     }
   }
-  public filterChanged(data: any):void {
-    console.log("-----------------------------------",this.datasets);
-    console.log('Picked date: ', data);
 
-    if(data.chartType){
-      this.chartType = data.chartType;
+   // use getter setter to define the property
+   get globalFilter(): any {
+    return this._globalFilter;
+  }
+
+  @Input()
+  set globalFilter(val: any) {
+    if(val){
+      this.selectedFilters = { filters:val.filters, data:val.chartData }
+      this.chartData = _.get(this.chartInfo, 'chartData');
+      this.getDataSetValue(val.chartData);
+      
+
     }
-    if( data.datasets){
-      this.datasets = data.datasets;
-    }
-    
+  }
+
+  public filterChanged(data: any):void {
+    this.chartType = data.chartType;
+    this.cdr.detectChanges();
+    this.getDataSetValue(data.chartData);
   }
 
 }
-
-

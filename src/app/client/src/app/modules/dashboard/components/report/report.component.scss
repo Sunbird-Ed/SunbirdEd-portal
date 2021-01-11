@@ -4,6 +4,7 @@
 .sb-graph-section{
     position: relative;
     z-index: 1;
+    margin: 15px !important;
     border: calculateRem(1px) solid  var(--rc-dddddd);
     padding: calculateRem(24px);
     margin-top: calculateRem(24px);
@@ -15,6 +16,7 @@
         overflow: initial;
         white-space: unset;
     }
+
 }
 .sb-btn-normal i::after {
     content: "\f019";
@@ -118,3 +120,40 @@
     overflow: auto;
     padding-bottom: calculateRem(2px);
 }
+.sb-graph-section.global-filter {
+    background-color: var(--sbt-compt-bg) !important;
+}
+.global-filter {
+    padding: calculateRem(24px);
+    border-radius: calculateRem(4px);
+    position: initial;
+    padding-bottom: 10px;
+}
+.global-filter {
+    ::ng-deep {
+      .form {
+        .sb-prominent-filter {
+          background: var(--sbt-compt-bg) !important;
+        }
+      }
+    }
+  }
+  .graph-section {
+    padding-bottom: 15px !important;
+    background-color: var(--sbt-compt-bg) !important;
+    border-radius: 24px !important;
+    margin-top: 0px !important;
+  }
+
+  .ui.selection.dropdown {
+    color:#49B1F2 !important;   
+  }
+
+  .report-block {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 15px;
+  }
+  .select-filter-label {
+      padding-left: 15px;
+  }

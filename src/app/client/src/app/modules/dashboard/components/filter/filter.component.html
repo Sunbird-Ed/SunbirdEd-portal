@@ -1,5 +1,5 @@
-  <form [formGroup]="filtersFormGroup" class="ui form" *ngIf="showChart && showFilters"
-  [ngClass]="{'hide': hideElements}">
+  <form [formGroup]="filtersFormGroup" class="ui form"
+  [ngClass]="{'hide': hideElements}" *ngIf="showFilters && !hideElements">
   <div class="d-flex flex-w-wrap reset-filter-section">
     <div *ngIf="showGraphStats" class="d-flex flex-ai-center">{{resourceService?.frmelmnts?.lbl?.graphStat }}:
       <sui-checkbox class="toggle ml-8" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
@@ -7,12 +7,12 @@
         [telemetryInteractCdata]="telemetryCdata" (checkChange)="showStats = $event; "></sui-checkbox>
     </div>
     <div class="mr-8" *ngIf="chartType === 'bar' || chartType === 'line'">
-      <button (click)="addChartSummary()" *ngIf="chartConfig.id && isUserReportAdmin" type="button"
+      <!-- <button (click)="addChartSummary()" *ngIf="chartConfig.id && isUserReportAdmin" type="button"
         appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
         [telemetryInteractCdata]="[{id: chartConfig?.id, type: 'Chart'}]"
         [telemetryInteractEdata]="{id: 'report-chart', type: 'chart-summary', pageid: activatedRoute.snapshot.data.telemetry.pageid}"
         class="mr-8 sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn"><i class="add icon"></i>Add
-        {{ resourceService?.frmelmnts?.lbl?.chartSummary}}</button>
+        {{ resourceService?.frmelmnts?.lbl?.chartSummary}}</button> -->
       <sui-select class="selection" [placeholder]="'Select ChartType'"
         (selectedOptionChange)="changeChartType($event)">
         <sui-select-option appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
@@ -30,14 +30,13 @@
       </button>
     </div>
   </div>
-  <sui-accordion class="styled fluid" [closeOthers]="false">
-    <sui-accordion-panel [isOpen]="true">
-      <div title>
+  <!-- <sui-accordion class="styled fluid" [closeOthers]="false">
+    <sui-accordion-panel [isOpen]="true"> -->
+      <!-- <div title>
         <i class="dropdown icon"></i>
         {{resourceService?.frmelmnts?.lbl?.filters }}
-      </div>
+      </div> -->
       <div content>
-
         <div class="sb-prominent-filter p-0">
           <div class="sb-prominent-filter-container pt-8 pb-0">
             <div class="sb-prominent-filter-field" *ngFor="let filter of filters">
@@ -74,6 +73,15 @@
           </div>
         </div>
       </div>
-    </sui-accordion-panel>
-  </sui-accordion>
+    <!-- </sui-accordion-panel>
+  </sui-accordion> -->
 </form>
+
+<div class="sb-filter-label pt-16 pb-8" *ngIf="selectedFilters">
+  <div *ngFor="let key of loadash.keys(selectedFilters)" class="d-inline-flex flex-w-wrap"><span
+      class="sb-label-name mb-4">{{key}}:</span><span class="sb-label-value"
+      *ngFor="let val of selectedFilters[key]">{{val}}
+      <!-- <i class="close icon mr-0 pl-4"></i> -->
+    </span>
+  </div>
+</div>

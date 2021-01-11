@@ -1417,5 +1417,6 @@
   },
   "assetsPath": {
     "book": "./assets/images/book.png"
-  }
+  },
+  "globalFilters":true
 }

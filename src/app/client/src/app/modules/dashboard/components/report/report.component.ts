@@ -1,7 +1,7 @@
 import { TelemetryService } from '@sunbird/telemetry';
-import { INoResultMessage, ResourceService, ToasterService, NavigationHelperService, LayoutService } from '@sunbird/shared';
+import { INoResultMessage, ResourceService, ToasterService, NavigationHelperService, LayoutService, ConfigService } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit, ViewChildren, QueryList, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { ReportService } from '../../services';
 import * as _ from 'lodash-es';
 import { Observable, throwError, of, forkJoin, Subject, merge, combineLatest } from 'rxjs';
@@ -10,6 +10,7 @@ import { DataChartComponent } from '../data-chart/data-chart.component';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
 import { ISummaryObject } from '../../interfaces';
+
 
 enum ReportType {
   report,
@@ -25,7 +26,7 @@ export class ReportComponent implements OnInit {
 
   public report: any;
   public showSummaryModal = false;
-  public report$;
+  public report$: any;
   public noResultMessage: INoResultMessage;
   public noResult: boolean;
   private downloadUrl: string;
@@ -52,9 +53,16 @@ export class ReportComponent implements OnInit {
   public type: ReportType = ReportType.report;
   private reportConfig: object;
   layoutConfiguration: any;
-  public globalSelectedFilters:any;
+  public globalSelectedFilters: any;
+  public selectedFilters: Object;
   public showChart = true;
+  public charts: any;
+  public currentReport: any;
+  public reportData: any;
 
+  public globalFilterChange: any;
+
+  public reportResult: any;
   private set setMaterializedReportStatus(val: string) {
     this.materializedReport = (val === 'true');
   }
@@ -70,7 +78,10 @@ export class ReportComponent implements OnInit {
   constructor(public reportService: ReportService, private activatedRoute: ActivatedRoute,
     private resourceService: ResourceService, private toasterService: ToasterService,
     private navigationhelperService: NavigationHelperService,
-    private router: Router, private telemetryService: TelemetryService, private layoutService: LayoutService) { }
+    private router: Router, private telemetryService: TelemetryService, private layoutService: LayoutService,
+    private cdr: ChangeDetectorRef,
+    private configService: ConfigService
+  ) { }
 
   ngOnInit() {
     this.initLayout();
@@ -95,6 +106,13 @@ export class ReportComponent implements OnInit {
         );
       })
     );
+
+    this.report$.subscribe(data => {
+      this.currentReport = data;
+      this.reportData = JSON.parse(JSON.stringify(data))
+
+    });
+
     this.mergeClickEventStreams();
   }
 
@@ -146,14 +164,16 @@ export class ReportComponent implements OnInit {
               map((apiResponse) => {
                 const [data, reportSummary] = apiResponse;
                 const result: any = Object.assign({});
-                result['charts'] = (charts && this.reportService.prepareChartData(charts, data, updatedDataSource,
+                this.charts = (charts && this.reportService.prepareChartData(charts, data, updatedDataSource,
                   _.get(reportConfig, 'reportLevelDataSourceId'))) || [];
+                result['charts'] = this.charts;
                 result['tables'] = (tables && this.reportService.prepareTableData(tables, data, _.get(reportConfig, 'downloadUrl'),
                   this.hash)) || [];
                 result['reportMetaData'] = reportConfig;
                 result['reportSummary'] = reportSummary;
                 result['files'] = this.reportService.getParameterizedFiles(files || [], this.hash);
                 result['lastUpdatedOn'] = this.reportService.getFormattedDate(this.reportService.getLatestLastModifiedOnDate(data));
+                this.reportResult = result;
                 return result;
               })
             );
@@ -536,15 +556,35 @@ export class ReportComponent implements OnInit {
         }
       });
   }
-  globalFilter(data: any):void {
 
-    this.showChart=false;
-    console.log("data",data);
+  globalFilter(data: any): void {
+    this.showChart = false;
     this.globalSelectedFilters = data;
-    this.showChart=true;
-
+    this.showChart = true;
   }
 
-}
+  getAllChartData(chartReports) {
+    let chartData = [];
+    if (this.reportData.charts) {
+      this.reportData.charts.map(chartInfo => {
+        chartData.push(...chartInfo.chartData);
+      });
+    }
+    return chartData;
+  }
 
+  public filterChanged(data: any): void {
+    if (this.currentReport && this.currentReport.charts) {
+      this.currentReport.charts.map(element => {
+        element.chartData = data.chartData;
+        return element;
+      });
+    }
+    this.globalFilterChange = {
+      chartData: data.chartData,
+      filters: data.filters
+    }
+    this.cdr.detectChanges();
+  }
+}
 

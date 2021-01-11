@@ -19,7 +19,7 @@
       </div>
       <div class="stackable grid m-0 sb-mid-container-min-height dashboard-body-scroll">
         <div class="sb-sideview-tab-container pb-48 p-0 w-100" *ngIf="showComponent">
-          <ng-container *ngIf="(report$ | async) as currentReport else loading">
+          <ng-container *ngIf="currentReport else loading">
             <div *ngIf="noResult">
               <app-no-result [data]="noResultMessage"></app-no-result>
             </div>
@@ -109,6 +109,9 @@
                   </div>
                   <div id="report-body" class="my-16" *ngIf="type === 0">
                     <sui-tabset>
+                    
+
+
                       <!-- <div class="ui pointing secondary menu d-flex flex-ai-center" *ngIf="!hideElements">
                         <a appTelemetryInteract
                           [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
@@ -145,7 +148,6 @@
                           </sui-select>
                         </div>
                       </div> -->
-
                       <div class="ui pointing secondary menu d-flex flex-ai-center sbt-report-tabs-panel" *ngIf="!hideElements">
                         <a appTelemetryInteract
                           [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
@@ -180,9 +182,11 @@
                             </sui-select-option>
                           </sui-select>
                         </div>
+                        
+                      
                       </div>
 
-                      <div class="ui bottom attached segment p-0 b-0 no-bg my-24" suiTabContent="files">
+                      <div class="ui bottom  p-0 b-0 no-bg my-24" suiTabContent="files">
                         <div class="sb-graph-section p-24 my-24">
                           <table *ngIf="currentReport?.files?.length" id="downloadTable"
                             class="sb-table sb-table-striped sb-table-sortable sb-table-fixed" cellspacing="0">
@@ -257,11 +261,20 @@
                         </div>
                       </div>
 
-                      <app-global-filter (filterChanged)="globalFilter($event)" [chartData]="currentReport.charts[0].chartData" [filters]="currentReport.reportMetaData.custom_filters" [showFilters]="true"
-                    [telemetryInteractObject]="setTelemetryInteractObject()">
-                      </app-global-filter>
+                     <div class="report-block ui bottom attached segment p-0 b-0 no-bg my-24" suiTabContent="graph" >
+                      <div class="" *ngIf="configService.appConfig.globalFilters==true && currentReport?.reportMetaData?.filters">
+                       <p class="select-filter-label"> Select Filters <small> (This will apply for all the chart sections)</small> </p> 
+                      </div>
 
-                      <div class="ui bottom attached segment p-0 b-0 no-bg my-24" suiTabContent="graph">  
+                     
+                      <div  class="ui bottom p-0 b-0 no-bg my-24 graph-section" > 
+                        <div class="global-filter" *ngIf="configService.appConfig.globalFilters==true && currentReport?.reportMetaData?.filters">
+                          <app-filter  [hideElements]="hideElements" [selectedFilter]="selectedFilters" [filters]="currentReport.reportMetaData.filters" (filterChanged)="filterChanged($event)" [chartData]="getAllChartData(currentReport)"
+                                [chartType]="Bar" [telemetryInteractObject]="telemetryInteractObject">
+                          </app-filter>
+                        </div>
+                        <hr>
+                        
                         <div class="sb-graph-section p-24 my-24"
                           *ngFor="let chart of currentReport.charts; let i = index; let l = last;">
 
@@ -269,17 +282,21 @@
                             [options]="chart?.chartConfig?.options">
                           </app-map>
                          
-                          <app-data-chart [globalSelectedFilters]="globalSelectedFilters" *ngIf="chart?.chartConfig?.chartType !== 'map' && showChart"
+                          <app-data-chart [globalFilter]="globalFilterChange" [globalSelectedFilters]="globalSelectedFilters" *ngIf="chart?.chartConfig?.chartType !== 'map' && showChart"
                             [telemetryInteractObject]="setTelemetryInteractObject()" [chartInfo]="chart"
                             [hideElements]="hideElements" [isUserReportAdmin]="isUserReportAdmin"
                             (openAddSummaryModal)="openAddSummaryModal($event)" [hash]="hash">
                           </app-data-chart>
-
                         </div>
+
                         <div class="ui warning message" *ngIf="!currentReport.charts.length">
                           {{resourceService?.frmelmnts?.lbl?.graphNotAvailable}}
                         </div>
+
                       </div>
+                     </div>
+                    
+                      
                       <ng-container *ngFor="let table of currentReport.tables">
                         <div class="ui bottom attached small segment  p-0 b-0 no-bg py-24" [suiTabContent]="table.id">
                           <div *ngIf="table.data">
@@ -293,6 +310,7 @@
                       </ng-container>
                     </sui-tabset>
                   </div>
+                  
                   <div class="report__summary" id="report-summary" class="my-16"
                     *ngIf="currentReportSummary && currentReportSummary.length && type === 0">
                     <app-report-summary [inputData]="currentReportSummary"></app-report-summary>
