@@ -225,6 +225,11 @@ export class ImportContent implements ITaskExecuter {
         // content added with artifact already or added without artifact but ecar has no artifact for this content
         return acc; // then return
       }
+      _.forEach(['subject', 'gradeLevel', 'medium'], (data) => {
+        if(item[data] && _.isString(item[data])) {
+          item[data] = item[data].split(',');
+        }
+      })
       item._id = item.identifier;
       item.baseDir = `content/${item.identifier}`;
       item.desktopAppMetadata = {

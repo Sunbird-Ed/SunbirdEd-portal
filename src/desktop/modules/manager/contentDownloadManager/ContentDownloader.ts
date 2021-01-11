@@ -249,6 +249,11 @@ export class ContentDownloader implements ITaskExecuter {
         metaData.children = this.createHierarchy(_.cloneDeep(_.get(manifestJson, "archive.items")), metaData);
       }
     }
+    _.forEach(['subject', 'gradeLevel', 'medium'], (item) => {
+      if(metaData[item] && _.isString(metaData[item])) {
+        metaData[item] = metaData[item].split(',');
+      }
+    })
     metaData.baseDir = `content/${contentDetails.identifier}`;
     metaData.desktopAppMetadata = {
       "addedUsing": ContentDownloader.taskType,
