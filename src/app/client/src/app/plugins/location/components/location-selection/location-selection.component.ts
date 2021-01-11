@@ -39,7 +39,7 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
     public popupControlService: PopupControlService,
     protected telemetryService: TelemetryService,
     protected formService: FormService,
-    private profileService: ProfileService
+    // private profileService: ProfileService
   ) {
   }
 
@@ -95,10 +95,11 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
       const updatedLocationDetails: SbLocation[] = await this.sbFormLocationSelectionDelegate.updateUserLocation();
 
       if (this.userService.loggedIn) {
-        // const payload = {
-        //   userId: _.get(this.userService, 'userid'),
-        //   TODO: userType and firstName
-        // };
+        const payload = {
+          userId: _.get(this.userService, 'userid'),
+          firstName: this.sbFormLocationSelectionDelegate.formGroup.value['name'],
+          userType: this.sbFormLocationSelectionDelegate.formGroup.value['persona'],
+        };
         // await this.profileService.updateProfile(payload).toPromise();
       }
     } catch (e) {
