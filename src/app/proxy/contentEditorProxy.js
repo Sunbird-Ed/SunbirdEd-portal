@@ -16,7 +16,7 @@ module.exports = function (app) {
   const proxyReqPathResolverMethod = function (req) {
     return require('url').parse(contentProxyUrl + req.originalUrl).path
   }
-  app.use('/plugins/v1/search', proxy(contentServiceBaseUrl, {
+  app.all('/plugins/v1/search', proxy(contentServiceBaseUrl, {
     preserveHostHdr: true,
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentServiceBaseUrl),
     proxyReqPathResolver: function (req) {
@@ -26,31 +26,31 @@ module.exports = function (app) {
     }
   }))
 
-  app.use('/content-plugins/*', proxy(contentProxyUrl, {
+  app.all('/content-plugins/*', proxy(contentProxyUrl, {
     preserveHostHdr: true,
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
     proxyReqPathResolver: proxyReqPathResolverMethod
   }))
 
-  app.use('/plugins/*', proxy(contentProxyUrl, {
+  app.all('/plugins/*', proxy(contentProxyUrl, {
     preserveHostHdr: true,
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
     proxyReqPathResolver: proxyReqPathResolverMethod
   }))
 
-  app.use('/assets/public/*', proxy(contentProxyUrl, {
+  app.all('/assets/public/*', proxy(contentProxyUrl, {
     preserveHostHdr: true,
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
     proxyReqPathResolver: proxyReqPathResolverMethod
   }))
 
-  app.use('/content/preview/*', proxy(contentProxyUrl, {
+  app.all('/content/preview/*', proxy(contentProxyUrl, {
     preserveHostHdr: true,
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
     proxyReqPathResolver: proxyReqPathResolverMethod
   }))
 
-  app.use('/action/content/v3/unlisted/publish/:contentId',
+  app.all('/action/content/v3/unlisted/publish/:contentId',
     bodyParser.json(),
     isAPIWhitelisted.isAllowed(),
     proxy(contentProxyUrl, {
@@ -66,7 +66,7 @@ module.exports = function (app) {
       }
     }))
 
-  app.use('/action/data/v1/page/assemble',
+  app.all('/action/data/v1/page/assemble',
   isAPIWhitelisted.isAllowed(),
   proxy(learnerServiceBaseUrl, {
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerServiceBaseUrl),
@@ -78,7 +78,7 @@ module.exports = function (app) {
   }))
 
 
-  app.use('/action/data/v1/form/read',
+  app.all('/action/data/v1/form/read',
   isAPIWhitelisted.isAllowed(),
   proxy(contentServiceBaseUrl, {
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentServiceBaseUrl),
@@ -102,7 +102,7 @@ module.exports = function (app) {
     };
   }
 
-  app.use('/action/review/comment/*',
+  app.all('/action/review/comment/*',
   isAPIWhitelisted.isAllowed(),
   addCorsHeaders,
   proxy(envHelper.PORTAL_EXT_PLUGIN_URL, {
@@ -112,7 +112,7 @@ module.exports = function (app) {
     userResDecorator: userResDecorator
   }))
 
-  app.use('/action/textbook/v1/toc/*',
+  app.all('/action/textbook/v1/toc/*',
   isAPIWhitelisted.isAllowed(),
   addCorsHeaders,
   proxy(learnerURL, {
@@ -151,7 +151,7 @@ module.exports = function (app) {
     userResDecorator: userResDecorator
   }))
 
-  app.use('/v1/url/fetchmeta', proxy(contentProxyUrl, {
+  app.all('/v1/url/fetchmeta', proxy(contentProxyUrl, {
     proxyReqPathResolver: proxyReqPathResolverMethod
   }))
 }
