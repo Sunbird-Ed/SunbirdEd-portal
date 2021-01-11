@@ -89,7 +89,7 @@ describe('BatchInfoComponent', () => {
   expect(component['learnerService'].post).toHaveBeenCalledWith(option);
   });
 
-  it('should call playcontent()', () => {
+  xit('should call playcontent()', () => {
    spyOn(component.playerService, 'playContent');
    component.handleResumeEvent({});
    expect(component.playerService.playContent).toHaveBeenCalledWith({mimeType: 'application/vnd.ekstep.content-collection', contentType: 'Course'});
