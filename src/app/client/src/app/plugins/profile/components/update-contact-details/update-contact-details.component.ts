@@ -20,7 +20,7 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
   enableSubmitBtn = false;
   showUniqueError = '';
   showForm = true;
-  @ViewChild('contactTypeModal', {static: false}) contactTypeModal;
+  @ViewChild('contactTypeModal', {static: true}) contactTypeModal;
   otpData: any;
   submitInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;

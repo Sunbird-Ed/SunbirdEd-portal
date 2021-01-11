@@ -11,7 +11,7 @@ import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
   templateUrl: './fancy-tree.component.html'
 })
 export class FancyTreeComponent implements AfterViewInit {
-  @ViewChild('fancyTree', {static: false}) public tree: ElementRef;
+  @ViewChild('fancyTree', {static: true}) public tree: ElementRef;
   @Input() public nodes: any;
   @Input() public options: any;
   @Input() public rootNode;

@@ -61,7 +61,7 @@ describe('CreateOrgTypeComponent', () => {
     component = fixture.componentInstance;
   });
 
-  xit('should call add api and get success response', inject([OrgTypeService, RouterNavigationService, ToasterService],
+  it('should call add api and get success response', inject([OrgTypeService, RouterNavigationService, ToasterService],
     (orgTypeService, routerNavigationService, toasterService) => {
       const resourceService = TestBed.get(ResourceService);
       resourceService.messages = mockRes.resourceBundle.messages;
@@ -73,7 +73,7 @@ describe('CreateOrgTypeComponent', () => {
       expect(toasterService.success).toHaveBeenCalledWith(resourceService.messages.smsg.m0035);
     }));
 
-  xit('should call add api and get error response', inject([OrgTypeService, RouterNavigationService, ToasterService],
+  it('should call add api and get error response', inject([OrgTypeService, RouterNavigationService, ToasterService],
     (orgTypeService, routerNavigationService, toasterService) => {
       const resourceService = TestBed.get(ResourceService);
       resourceService.messages = mockRes.resourceBundle.messages;
@@ -98,7 +98,7 @@ describe('CreateOrgTypeComponent', () => {
       expect(toasterService.success).toHaveBeenCalledWith(component.orgName.value + ' ' + resourceService.messages.smsg.m0037);
     }));
 
-  xit('should call update api and get error response', inject([OrgTypeService, RouterNavigationService, ToasterService],
+  it('should call update api and get error response', inject([OrgTypeService, RouterNavigationService, ToasterService],
     (orgTypeService, routerNavigationService, toasterService) => {
       const resourceService = TestBed.get(ResourceService);
       component.orgName = new FormControl('test');
@@ -111,14 +111,14 @@ describe('CreateOrgTypeComponent', () => {
       expect(toasterService.error).toHaveBeenCalledWith(mockRes.orgTypeUpdateError.error.params.errmsg);
     }));
 
-  xit('When page is update', inject([OrgTypeService],
+  it('When page is update', inject([OrgTypeService],
     (orgTypeService) => {
       orgTypeService._orgTypeData$.next({ err: null, orgTypeData: mockRes.getOrgType });
       fixture.detectChanges();
       expect(component.pageId).toEqual('update-organization-type');
     }));
 
-  xit('When page is create', inject([OrgTypeService],
+  it('When page is create', inject([OrgTypeService],
     (orgTypeService) => {
       const activatedRouteStub = TestBed.get(ActivatedRoute);
       activatedRouteStub.changeUrl('create');
@@ -128,7 +128,7 @@ describe('CreateOrgTypeComponent', () => {
       expect(component.pageId).toEqual('create-organization-type');
     }));
 
-    xit('should unsubscribe from all observable subscriptions', () => {
+    it('should unsubscribe from all observable subscriptions', () => {
       component.addOrgType();
       component.updateOrgType();
       component.ngOnInit();

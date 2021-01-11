@@ -90,7 +90,7 @@ describe('ConfirmationPopupComponent', () => {
     expect(component.navigateToAddCertificate).toHaveBeenCalled();
   });
 
-  xit('should close the modal on click of "Add certificate" button', () => {
+  it('should close the modal on click of "Add certificate" button', () => {
     component.confirmationModal = {
       deny: jasmine.createSpy('deny')
     };

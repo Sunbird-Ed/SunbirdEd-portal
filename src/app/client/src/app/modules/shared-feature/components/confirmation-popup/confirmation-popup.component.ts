@@ -6,7 +6,7 @@ import { ResourceService } from '@sunbird/shared';
   styleUrls: ['./confirmation-popup.component.scss']
 })
 export class ConfirmationPopupComponent implements OnInit {
-  @ViewChild('confirmationModal', {static: false}) confirmationModal;
+  @ViewChild('confirmationModal', {static: true}) confirmationModal;
   @Input() popupMode: string;
   @Input() batchId: string;
   @Output() close = new EventEmitter<any>();
