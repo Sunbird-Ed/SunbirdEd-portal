@@ -30,6 +30,11 @@
                 "output": "./assets/common-consumption"
               },
               {
+                "glob": "**/*.*",
+                "input": "./node_modules/@project-sunbird/discussions-ui/assets",
+                "output": "./assets/discussion-ui"
+              },
+              {
                 "glob": "**/*",
                 "input": "./node_modules/@project-sunbird/sunbird-pdf-player/lib/assets/",
                 "output": "/assets/"

@@ -182,8 +182,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.selectedFilters = pick(filters, ['board', 'medium', 'gradeLevel', 'channel', 'subject', 'audience']);
         if (has(filters, 'audience') || (localStorage.getItem('userType') && currentPageData.contentType !== 'all')) {
             const userTypes = get(filters, 'audience') || [localStorage.getItem('userType')];
+            const audienceSearchFilterValue = _.get(filters, 'audienceSearchFilterValue');
             const userTypeMapping = get(this.configService, 'appConfig.userTypeMapping');
-            this.selectedFilters['audience'] = uniq(flatten(_map(userTypes, userType => userTypeMapping[userType])));
+            this.selectedFilters['audience'] = audienceSearchFilterValue || uniq(flatten(_map(userTypes, userType => userTypeMapping[userType])));
         }
         this.apiContentList = [];
         this.pageSections = [];

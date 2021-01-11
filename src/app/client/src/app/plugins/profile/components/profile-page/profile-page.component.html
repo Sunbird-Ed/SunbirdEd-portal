@@ -86,7 +86,7 @@
                 [telemetryInteractEdata]="submitTeacherDetailsInteractEdata"
                 *ngIf="!declarationDetails"
                 (click)="navigate('/profile/teacher-declaration','submit')"
-                class="no-text-transform sb-btn sb-btn-secondary sb-right-icon-btn mx-8 mb-8 px-24" type="submit">
+                class="no-text-transform sb-btn sb-btn-normal sb-btn-secondary sb-right-icon-btn mx-8 mb-8 px-24" type="submit">
         {{resourceService?.frmelmnts?.lbl?.iAmStateTeacher}} </button>
       </div>
     </div>
@@ -248,7 +248,7 @@
   <div class="flex-ai-jc-center flex-dc text-center school-id-section">
     <div class="self-declared-title">{{resourceService.frmelmnts?.lbl?.selfDeclaredInfo}}</div>
       <div>
-        {{resourceService?.frmelmnts?.lbl?.iam}} {{ declarationDetails?.persona }} {{resourceService?.frmelmnts?.lbl?.with}} <span>{{ tenantInfo?.label }}</span>
+        {{resourceService?.frmelmnts?.lbl?.wishToShareDataWith}} : <span>{{ tenantInfo?.label }}</span>
       </div>
 
       <div *ngFor="let item of selfDeclaredInfo">
@@ -271,7 +271,7 @@
   <app-profile-badge *ngIf="userProfile.badgeAssertions && userProfile.badgeAssertions.length > 0"></app-profile-badge>
   <!-- my badges section ends -->
 
-  <div class="pt-30">
+  <div class="pt-30" *ngIf="!isDesktopApp">
     <div [ngClass]="layoutConfiguration ? 'sbt-center-container' : 'ui container'">
       <!--contributions view starts-->
       <div class="fs-1-7 font-w-bold pl-20 mobile only" *ngIf="contributions && contributions.length > 0">

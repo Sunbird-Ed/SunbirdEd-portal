@@ -45,7 +45,7 @@
           <app-main-menu [layoutConfiguration]="layoutConfiguration" class="d-flex computer only ml-auto">
           </app-main-menu>
           <!--/Main Menu-->
-          <a class="profile-avtar p-0 mx-16">
+          <a class="profile-avtar p-0 mx-16" *ngIf="!isDesktopApp">
             <app-in-app-notification *ngIf="userService?.loggedIn" [layoutConfiguration]="layoutConfiguration"></app-in-app-notification>
           </a>
           <!--Avtar Dropdown-->
@@ -177,7 +177,7 @@
             <!--/Logo-->
             <div class="d-flex flex-ai-center sb-responsive-header">
               <!-- Notification dropdown -->
-              <a class="profile-avtar p-0" tabindex="0">
+              <a class="profile-avtar p-0" tabindex="0" *ngIf="!isDesktopApp">
                 <app-in-app-notification *ngIf="userService?.loggedIn" [layoutConfiguration]="layoutConfiguration"></app-in-app-notification>
               </a>
               <!--Avtar Dropdown-->
@@ -210,7 +210,7 @@
               *ngIf="languages && showLanguageDropdown()">
             </app-language-dropdown>
             <!-- Notification dropdown -->
-            <a class="profile-avtar p-0 ml-16" tabindex="0">
+            <a class="profile-avtar p-0 ml-16" tabindex="0" *ngIf="!isDesktopApp">
               <app-in-app-notification *ngIf="userService?.loggedIn" [layoutConfiguration]="layoutConfiguration"></app-in-app-notification>
             </a>
             <!--Avtar Dropdown-->
@@ -316,7 +316,7 @@
             appPermission [permission]='orgSetupRole' routerLink="org/orgType">
             {{resourceService.frmelmnts?.lbl?.orgtypes}}
           </li>
-          <li class="list-item" *ngIf='!isValidCustodianOrgUser'
+          <li class="list-item" *ngIf='!isValidCustodianOrgUser && !isDesktopApp'
             (click)="toggleSideMenu(false);showAccountMergemodal = true;">
             <i class="icon-svg icon-svg--sm icon-mergeaccount mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#mergeaccount"></use>
@@ -332,7 +332,7 @@
           </li>
 
           <li class="list-item" appOnlineOnly (click)="toggleSideMenu(false)"
-            [class.active]="router.isActive(routerLinks?.groups)" *ngIf="!router.isActive('', true)"
+            [class.active]="router.isActive(routerLinks?.groups)" *ngIf="!router.isActive('', true) && !isDesktopApp"
             [routerLink]="[navigateToGroups()]" appTelemetryInteract [telemetryInteractEdata]="myGroupIntractEData">
             <i class="icon-svg icon-svg--sm icon-groups mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#groups"></use>
@@ -376,7 +376,7 @@
             </svg></i>
             {{resourceService?.frmelmnts?.lbl?.accessible}}
           </li>
-          <li class="list-item" appOnlineOnly appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
+          <li class="list-item" appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
             (click)="toggleSideMenu(false);logout()">
             <i class="icon-svg icon-svg--sm icon-logout mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#logout"></use>

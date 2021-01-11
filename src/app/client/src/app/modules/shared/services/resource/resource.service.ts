@@ -121,8 +121,7 @@ export class ResourceService {
       'ts': dayjs().format(),
       'X-msgid': _uuid,
       'X-Request-ID': _uuid,
-      'X-Session-Id': 'X-Session-Id',
-      'X-Trace-ID': _uuid
+      'X-Session-Id': 'X-Session-Id'
     };
   }
   /**
