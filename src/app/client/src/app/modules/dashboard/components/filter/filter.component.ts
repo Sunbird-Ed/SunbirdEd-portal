@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Input, Output, OnDestroy, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { IInteractEventObject } from '@sunbird/telemetry';
-import { ResourceService, ToasterService } from '@sunbird/shared';
+import { ResourceService } from '@sunbird/shared';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import * as _ from 'lodash-es';
 import * as moment from 'moment';
@@ -76,7 +76,6 @@ export class FilterComponent implements OnInit, OnDestroy {
     public resourceService: ResourceService,
     private fb: FormBuilder,
     public activatedRoute: ActivatedRoute,
-    private toasterService: ToasterService,
     private cdr: ChangeDetectorRef
   ) {
 

@@ -262,8 +262,8 @@
                       </div>
 
                      <div class="report-block ui bottom attached segment p-0 b-0 no-bg my-24" suiTabContent="graph" >
-                      <div class="" *ngIf="configService.appConfig.globalFilters==true && currentReport?.reportMetaData?.filters">
-                       <p class="select-filter-label"> Select Filters <small> (This will apply for all the chart sections)</small> </p> 
+                      <div class="" *ngIf="configService.appConfig.globalFilters==true && currentReport?.reportMetaData?.filters && !hideElements">
+                       <p class="select-filter-label" > Select Filters <small> (This will apply for all the chart sections)</small> </p> 
                       </div>
 
                      
@@ -273,7 +273,7 @@
                                 [chartType]="Bar" [telemetryInteractObject]="telemetryInteractObject">
                           </app-filter>
                         </div>
-                        <hr>
+                        <hr *ngIf="!hideElements">
                         
                         <div class="sb-graph-section p-24 my-24"
                           *ngFor="let chart of currentReport.charts; let i = index; let l = last;">
