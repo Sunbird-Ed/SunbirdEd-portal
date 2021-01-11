@@ -131,7 +131,7 @@ export default (app, proxyURL) => {
         userResDecorator: function (proxyRes, proxyResData, req, res) {
             try {
                 const data = JSON.parse(proxyResData.toString('utf8'));
-                if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+                if (req.method === 'POST' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
                 else return handleSessionExpiry(proxyRes, proxyResData, req, res, data);
             } catch (err) {
                 logger.error({ msg: 'learner route : userResDecorator json parse error:', proxyResData, error: JSON.stringify(err) })
