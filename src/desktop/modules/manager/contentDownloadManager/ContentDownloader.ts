@@ -251,7 +251,7 @@ export class ContentDownloader implements ITaskExecuter {
     }
     _.forEach(['subject', 'gradeLevel', 'medium'], (item) => {
       if(metaData[item] && _.isString(metaData[item])) {
-        metaData[item] = metaData[item].split(',');
+        metaData[item] = metaData[item].split(','); 
       }
     })
     
