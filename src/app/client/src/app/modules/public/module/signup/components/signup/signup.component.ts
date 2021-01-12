@@ -24,7 +24,7 @@ import { RecaptchaComponent } from 'ng-recaptcha';
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
+  @ViewChild('captchaRef', {static: false}) captchaRef: RecaptchaComponent;
   public unsubscribe = new Subject<void>();
   signUpForm: FormGroup;
   sbFormBuilder: FormBuilder;

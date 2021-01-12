@@ -25,7 +25,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   @Input() playerConfig: PlayerConfig;
   @Output() assessmentEvents = new EventEmitter<any>();
   @Output() questionScoreSubmitEvents = new EventEmitter<any>();
-  @ViewChild('contentIframe') contentIframe: ElementRef;
+  @ViewChild('contentIframe', {static: false}) contentIframe: ElementRef;
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
   @Output() sceneChangeEvent = new EventEmitter<any>();
   @Input() contentProgressEvents$: Subject<any>;
@@ -63,7 +63,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   /**
  * Dom element reference of contentRatingModal
  */
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
 
   @HostListener('window:popstate', ['$event'])
   onPopState(event) {

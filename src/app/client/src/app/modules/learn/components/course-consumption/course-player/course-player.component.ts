@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { TocCardType } from '@project-sunbird/common-consumption';
+import { TocCardType } from '@project-sunbird/common-consumption-v8';
 import { CoursesService, PermissionService, UserService, GeneraliseLabelService } from '@sunbird/core';
 import {
   ConfigService, ExternalUrlPreviewService, ICollectionTreeOptions, NavigationHelperService,
@@ -15,8 +15,8 @@ import * as TreeModel from 'tree-model';
 import { PopupControlService } from '../../../../../service/popup-control.service';
 import { CourseBatchService, CourseConsumptionService, CourseProgressService } from './../../../services';
 import { ContentUtilsServiceService } from '@sunbird/shared';
-import { MimeTypeMasterData } from '@project-sunbird/common-consumption/lib/pipes-module/mime-type';
-import * as dayjs from 'dayjs';
+import { MimeTypeMasterData } from '@project-sunbird/common-consumption-v8/lib/pipes-module/mime-type';
+import dayjs from 'dayjs';
 import { NotificationService } from '../../../../notification/services/notification/notification.service';
 
 @Component({
@@ -85,7 +85,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public batchMessage: any;
   showDataSettingSection = false;
 
-  @ViewChild('joinTrainingModal') joinTrainingModal;
+  @ViewChild('joinTrainingModal', {static: false}) joinTrainingModal;
   showJoinModal = false;
   tocId;
   groupId;

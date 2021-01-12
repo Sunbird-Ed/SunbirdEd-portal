@@ -32,7 +32,7 @@ export class ReportComponent implements OnInit {
   public reportObj: any;
   public isUserReportAdmin = false;
   @ViewChildren(DataChartComponent) chartsComponentList: QueryList<DataChartComponent>;
-  @ViewChild('reportElement') reportElement;
+  @ViewChild('reportElement', {static: false}) reportElement;
   public hideElements: boolean;
   public reportExportInProgress = false;
   public exportOptions = ['Pdf', 'Img'];

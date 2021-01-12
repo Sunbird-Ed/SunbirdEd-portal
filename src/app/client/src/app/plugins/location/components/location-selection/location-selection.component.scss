@@ -2,6 +2,49 @@
 @import "mixins/mixins";
 
 .sb-onboard {
+  sb-form::ng-deep {
+    .sb-textbox {
+      font-size: 14px;
+    }
+
+    .list-border {
+      padding: 16px !important;
+    }
+
+    ul {
+      padding: 0;
+
+      &[disabled] {
+        opacity: initial !important;
+      }
+    }
+
+    li {
+      margin: 0 !important;
+      padding: 16px !important;
+    }
+
+    li.placeholder {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .sb-modal-dropdown-web {
+      li {
+        margin: 0 !important;
+        padding: 0 !important;
+
+        > div {
+          cursor: pointer;
+          padding: 16px;
+        }
+      }
+    }
+
+    .multi-select-container {
+      margin-top: 8px;
+    }
+  }
 
   &__container {
     width: 100%;
@@ -28,7 +71,7 @@
     text-align: center;
     max-width: calculateRem(328px);
 
-    h1 {
+    &::ng-deep h1 {
       color: var(--primary-400);
       font-size: calculateRem(24px);
       font-weight: bold;
@@ -43,8 +86,6 @@
     width: calculateRem(648px);
     max-width: 100%;
     margin-bottom: auto;
-    overflow: hidden;
-    overflow-y: auto;
   }
 
   &__footer {

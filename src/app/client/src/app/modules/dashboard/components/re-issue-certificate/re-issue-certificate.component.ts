@@ -13,7 +13,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./re-issue-certificate.component.scss']
 })
 export class ReIssueCertificateComponent implements OnInit, OnDestroy {
-  @ViewChild('searchBtn') button;
+  @ViewChild('searchBtn', {static: false}) button;
   @Input() userName;
   courseId: string;
   userData: IUserCertificate;

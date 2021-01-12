@@ -5,7 +5,7 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { debounceTime, map, takeUntil, filter } from 'rxjs/operators';
-import { LibraryFiltersLayout } from '@project-sunbird/common-consumption';
+import { LibraryFiltersLayout } from '@project-sunbird/common-consumption-v8';
 @Component({
   selector: 'app-global-search-filter',
   templateUrl: './global-search-filter.component.html',

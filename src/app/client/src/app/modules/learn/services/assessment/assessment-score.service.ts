@@ -2,7 +2,7 @@ import { CourseProgressService } from '../courseProgress/course-progress.service
 import { Injectable } from '@angular/core';
 import * as _ from 'lodash-es';
 import * as Md5 from 'md5';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { finalize } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
