@@ -583,9 +583,9 @@
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
 "@project-sunbird/client-services@^3.6.11":
-  version "3.6.11"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.6.11.tgz#131f602dac04b4dc57f6f8bd1ee80578b6c926d7"
-  integrity sha512-YstEBbnFyX7/7SQaxRwv4hlvuYHfI1Rr83l6av2ai5OImtieNOYc/dZMQ9dRzfTk+MQ4lH1K7qO6mo8a5ka0sw==
+  version "3.6.12"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.6.12.tgz#74175d53ca4a39e28659a5271f09f5dbe828c1c6"
+  integrity sha512-cBKb/c1YCAv/Vfi1kprYKqKRljP15E9dJcMfDR+3PoXKoLcVn+TRfOtPY0brqc9yPndEsEytxVDcIKg1DWjnRQ==
   dependencies:
     "@project-sunbird/telemetry-sdk" "0.0.26"
     inversify "^5.0.1"
@@ -600,10 +600,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/discussions-ui-v8@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.0.0.tgz#4058b9730d4268e6050105f1d25dcc37291d7a64"
-  integrity sha512-t1AjRXqhSaWlU2a5t/JS/sVF6JNM9neTlpnud4wYXj9KeSWLV4cUr4h4PbYspQlwxdgdw0eKj+cHS4pgBkwIqQ==
+"@project-sunbird/discussions-ui-v8@2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.0.1.tgz#fd37662c67f18a3a6ed1f7374a2c6e2375a998d5"
+  integrity sha512-ji00IXiO+wADSiI2ktYkE9lrcgRIw+Ak5rIXc5jH+t0HQ78RyrvmcU0FPTz2tfEvnvyOCYIHZFRi5JCDI4FBAw==
   dependencies:
     tslib "^1.9.0"
 
