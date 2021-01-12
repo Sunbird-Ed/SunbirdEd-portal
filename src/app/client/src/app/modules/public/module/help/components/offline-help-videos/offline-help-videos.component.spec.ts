@@ -36,7 +36,7 @@ describe('OfflineHelpVideosComponent', () => {
           'copycontent': 'How do I copy content to my pen drive joyful theme',
           'loadcontent': 'How do I load content  to the desktop app joyful theme',
           'playcontent': 'How do I play content joyful theme',
-          'downloadcontent': 'How do I download content from desktop app library joyful theme'  
+          'downloadcontent': 'How do I download content from desktop app library joyful theme' 
         }
       },
       languageSelected$: of({})
