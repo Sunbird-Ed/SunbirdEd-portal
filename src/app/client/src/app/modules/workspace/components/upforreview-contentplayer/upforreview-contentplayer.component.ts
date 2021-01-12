@@ -100,7 +100,7 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
 
   public playerLoaded = false;
 
-  @ViewChild('publishWarningModal') publishWarningModal;
+  @ViewChild('publishWarningModal', {static: false}) publishWarningModal;
 
   showPublishWarningModal = false;
   layoutConfiguration: any;

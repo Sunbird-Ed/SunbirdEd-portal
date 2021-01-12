@@ -19,7 +19,7 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
   @Input() isClosable = true;
   @Input() deviceProfile: IDeviceProfile;
   @Output() close = new EventEmitter<void>();
-  @ViewChild('onboardingModal') onboardingModal;
+  @ViewChild('onboardingModal', { static: true }) onboardingModal;
 
   telemetryImpression: IImpressionEventInput;
 
@@ -101,4 +101,5 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
     } finally {
       this.closeModal();
     }
+  }
 }

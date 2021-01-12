@@ -23,9 +23,9 @@ export interface IConfigLabels {
   styleUrls: ['./certificate-configuration.component.scss']
 })
 export class CertificateConfigurationComponent implements OnInit, OnDestroy {
-  @ViewChild('selectCertType') selectCertType;
-  @ViewChild('selectRecipient') selectRecipient;
-  @ViewChild('templateChangeModal') templateChangeModal;
+  @ViewChild('selectCertType', {static: false}) selectCertType;
+  @ViewChild('selectRecipient', {static: false}) selectRecipient;
+  @ViewChild('templateChangeModal', {static: false}) templateChangeModal;
 
   public unsubscribe$ = new Subject<void>();
   showPreviewModal;

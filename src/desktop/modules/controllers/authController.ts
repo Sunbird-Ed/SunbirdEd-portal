@@ -71,12 +71,12 @@ export default class AuthController {
         }
     }
 
-    private async saveUserInDB(user: ILoggedInUser) {
+    public async saveUserInDB(user: ILoggedInUser) {
         const response = await this.userSDK.insertLoggedInUser(user);
         return response;
     }
 
-    private async setUserSession(user: ILoggedInUser) {
+    public async setUserSession(user: ILoggedInUser) {
         const sessionData = { userId: user.userId, sessionId: uuidv1() };
         await this.userSDK.setUserSession(sessionData);
     }

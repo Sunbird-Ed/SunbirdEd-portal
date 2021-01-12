@@ -15,7 +15,7 @@ import { WorkSpaceService, ReviewCommentsService } from './../../services';
   templateUrl: './published-popup.component.html'
 })
 export class PublishedPopupComponent implements OnInit {
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
   @ViewChildren('inputFields') inputFields;
   /**
    * Total number of items on checklist

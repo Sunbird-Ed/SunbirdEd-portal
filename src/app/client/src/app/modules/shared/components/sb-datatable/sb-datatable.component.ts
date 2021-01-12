@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnChanges,EventEmitter,Output } from '@angular/core';
 import { ExportToCsv } from 'export-to-csv';
 import * as _ from 'lodash-es';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import {ResourceService} from '../../services/resource/resource.service';
 import { Subject } from 'rxjs';
 import { TelemetryService } from '@sunbird/telemetry';
