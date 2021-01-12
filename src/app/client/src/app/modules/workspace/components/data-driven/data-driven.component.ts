@@ -21,8 +21,8 @@ import { takeUntil, first, mergeMap, map, tap , filter, catchError} from 'rxjs/o
   styleUrls: ['./data-driven.component.scss']
 })
 export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('formData') formData: DefaultTemplateComponent;
-  @ViewChild('modal') modal;
+  @ViewChild('formData', {static: false}) formData: DefaultTemplateComponent;
+  @ViewChild('modal', {static: false}) modal;
 
   /**
 	 * This variable hepls to show and hide page loader.
@@ -272,6 +272,9 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     }
     if (requestData.year) {
       requestData.year = requestData.year.toString();
+    }
+    if (requestData.maxAttempts) {
+      requestData.maxAttempts = _.parseInt(requestData.maxAttempts);
     }
     if (this.contentType === 'studymaterial' || this.contentType === 'assessment') {
       requestData.mimeType = this.configService.appConfig.CONTENT_CONST.CREATE_LESSON;

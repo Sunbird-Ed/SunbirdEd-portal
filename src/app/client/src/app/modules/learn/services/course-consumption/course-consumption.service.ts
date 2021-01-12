@@ -9,7 +9,7 @@ import * as _ from 'lodash-es';
 import * as TreeModel from 'tree-model';
 import { NavigationExtras, Router } from '@angular/router';
 import { NavigationHelperService } from '@sunbird/shared';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 
 @Injectable({
   providedIn: 'root'

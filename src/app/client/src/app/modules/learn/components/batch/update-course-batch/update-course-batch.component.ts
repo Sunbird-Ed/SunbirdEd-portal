@@ -10,7 +10,7 @@ import { UserService } from '@sunbird/core';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { IImpressionEventInput, IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
 
 @Component({
@@ -21,7 +21,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
 
   private updateBatchModal;
 
-  @ViewChild('updateBatchModal') set setBatchModal(element) {
+  @ViewChild('updateBatchModal', {static: false}) set setBatchModal(element) {
     if (element) {
       this.updateBatchModal = element;
     }

@@ -1,7 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
 import { ResourceService, ConfigService, ICaraouselData } from '@sunbird/shared';
-import { Component, Input, EventEmitter, Output, OnDestroy, ChangeDetectorRef, OnChanges } from '@angular/core';
-import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
+import { Component, Input, EventEmitter, Output, OnDestroy, ChangeDetectorRef, OnChanges, OnInit } from '@angular/core';
 import * as _ from 'lodash-es';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { Subscription } from 'rxjs';

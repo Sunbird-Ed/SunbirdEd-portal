@@ -26,7 +26,7 @@
               "src/favicon.png",
               {
                 "glob": "**/*.*",
-                "input": "./node_modules/@project-sunbird/common-consumption/assets",
+                "input": "./node_modules/@project-sunbird/common-consumption-v8/assets",
                 "output": "./assets/common-consumption"
               },
               {

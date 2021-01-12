@@ -1,13 +1,13 @@
 import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 // import { UserService, PermissionService, LearnerService, FormService } from '../../../core';
-import { UserService } from '../../../core/services/user/user.service';
-import { LearnerService } from '../../../core/services/learner/learner.service';
-import { FormService } from '../../../core/services/form/form.service';
+import { UserService } from '../../../../modules/core/services/user/user.service';
+import { LearnerService } from '../../../../modules/core/services/learner/learner.service';
+import { FormService } from '../../../../modules/core/services/form/form.service';
 
 // import { ResourceService, ConfigService, IUserProfile, IUserData, ServerResponse } from '@sunbird/shared';
-import { ConfigService } from '../../../shared/services/config/config.service';
-import { ServerResponse } from '../../../shared/interfaces/serverResponse';
+import { ConfigService } from '../../../../modules/shared/services/config/config.service';
+import { ServerResponse } from '../../../../modules/shared/interfaces/serverResponse';
 @Injectable({
   providedIn: 'root'
 })

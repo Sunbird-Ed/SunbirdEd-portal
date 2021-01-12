@@ -15,7 +15,7 @@ import { Location } from '@angular/common';
 export class ForumComponent implements OnInit, OnDestroy, AfterViewInit {
 
   discussionUrl: SafeResourceUrl;
-  @ViewChild('modal')modal;
+  @ViewChild('modal', {static: false})modal;
   constructor(
     public sanitizer: DomSanitizer, private activatedRoute: ActivatedRoute,
     private location: Location, private config: ConfigService,

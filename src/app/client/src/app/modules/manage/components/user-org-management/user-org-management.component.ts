@@ -9,7 +9,7 @@ import {first, takeUntil} from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import * as $ from 'jquery';
 import 'datatables.net';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import {Subject} from 'rxjs';
 import { TncService } from '@sunbird/core';
 
