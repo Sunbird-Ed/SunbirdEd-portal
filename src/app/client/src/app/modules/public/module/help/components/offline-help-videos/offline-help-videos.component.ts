@@ -83,7 +83,7 @@ export class OfflineHelpVideosComponent implements OnInit, OnDestroy {
           id: 'find-content-offline-joyful-theme',
           name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.playcontent),
           thumbnail: 'assets/images/play-icon.svg',
-          url: 'assets/videos/How_do_I_play_content_joyful_theme.mp4'
+          url: 'assets/videos/How_do_I_play_content_joyful_theme.mp4' 
         },
         {
           id: 'copy-content-joyful-theme',
