@@ -600,10 +600,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/discussions-ui-v8@2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.0.1.tgz#fd37662c67f18a3a6ed1f7374a2c6e2375a998d5"
-  integrity sha512-ji00IXiO+wADSiI2ktYkE9lrcgRIw+Ak5rIXc5jH+t0HQ78RyrvmcU0FPTz2tfEvnvyOCYIHZFRi5JCDI4FBAw==
+"@project-sunbird/discussions-ui-v8@2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.0.2.tgz#1b997edcea0da25a84b1a2fb66c54c6b68cbbebd"
+  integrity sha512-BI3RowRTgu6cHzyfzGGhl6bBPCdVjv+4cQio1wwPhlH8nS2jtEvNlvQKnp3EwUl6SHb/pnzqhsuMgacJ3LsY2Q==
   dependencies:
     tslib "^1.9.0"
 
