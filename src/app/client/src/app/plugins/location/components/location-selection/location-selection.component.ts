@@ -11,7 +11,6 @@ import { Location as SbLocation } from '@project-sunbird/client-services/models/
 import { catchError, retry, tap } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
 import * as _ from 'lodash-es';
-import { ProfileService } from '@sunbird/profile';
 
 @Component({
   selector: 'app-location-selection',
@@ -38,12 +37,8 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
     public navigationHelperService: NavigationHelperService,
     public popupControlService: PopupControlService,
     protected telemetryService: TelemetryService,
-    protected formService: FormService,
-    // private profileService: ProfileService
+    protected formService: FormService
   ) {
-  }
-
-  ngOnInit() {
     this.sbFormLocationSelectionDelegate = new SbFormLocationSelectionDelegate(
       this.userService,
       this.locationService,
@@ -51,13 +46,14 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
       this.deviceRegisterService,
       this.deviceProfile,
     );
+  }
 
+  ngOnInit() {
     this.popupControlService.changePopupStatus(false);
     this.sbFormLocationSelectionDelegate.init()
       .catch(() => {
         this.closeModal();
-        // TODO: edit message
-        this.toasterService.error('Unable to load data');
+        this.toasterService.error(this.resourceService.messages.fmsg.m0049);
       });
   }
 
@@ -100,11 +96,10 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
           firstName: this.sbFormLocationSelectionDelegate.formGroup.value['name'],
           userType: this.sbFormLocationSelectionDelegate.formGroup.value['persona'],
         };
-        // await this.profileService.updateProfile(payload).toPromise();
+        await this.locationService.updateProfile(payload).toPromise();
       }
     } catch (e) {
-      // TODO: edit message
-      this.toasterService.error('Unable to load data');
+      this.toasterService.error(this.resourceService.messages.fmsg.m0049);
     } finally {
       this.closeModal();
     }

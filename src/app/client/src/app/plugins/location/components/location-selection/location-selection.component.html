@@ -27,8 +27,8 @@
 
     <div class="sb-onboard__footer">
       <button type="button" class="sb-btn sb-btn-sm sb-btn-primary text-uppercase w-100" type="submit"
-              [class.sb-btn-disabled]="sbFormLocationSelectionDelegate.formGroup?.dirty && sbFormLocationSelectionDelegate.formGroup?.invalid"
-              [disabled]="sbFormLocationSelectionDelegate.formGroup?.dirty && sbFormLocationSelectionDelegate.formGroup?.invalid"
+              [class.sb-btn-disabled]="sbFormLocationSelectionDelegate.formGroup?.invalid"
+              [disabled]="sbFormLocationSelectionDelegate.formGroup?.invalid"
               (click)="updateUserLocation()">{{resourceService?.frmelmnts?.btn?.submit}}
         <span class='arrow-icon'>
           <em class="icon-svg icon-svg--xxs icon-back">
