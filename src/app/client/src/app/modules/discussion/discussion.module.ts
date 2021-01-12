@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 
 import { DiscussionRoutingModule } from './discussion-routing.module';
 import { ForumComponent } from './components/forum/forum.component';
-import { DiscussionUiModule } from '@project-sunbird/discussions-ui';
+import { DiscussionUiModule } from '@project-sunbird/discussions-ui-v8';
 
 @NgModule({
   imports: [
