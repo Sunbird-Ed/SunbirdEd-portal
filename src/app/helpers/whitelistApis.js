@@ -1169,8 +1169,7 @@ const API_LIST = {
     '/action/textbook/v1/toc/upload/:do_id',
     '/action/textbook/v1/toc/download/:do_id',
     '/action/content/v1/collaborator/update/:do_id',
-    '/action/system/v3/content/update/:do_id',
-    '/discussion/user/v1/create'
+    '/action/system/v3/content/update/:do_id'
   ]
 };
 module.exports = API_LIST;
