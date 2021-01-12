@@ -20,7 +20,7 @@ import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
 import { ContentTypeComponent } from './components/content-type/content-type.component';
-import { LocationModule } from '../location/location.module';
+import { LocationModule } from '../../plugins/location/location.module';
 import { NotificationModule } from '../notification/notification.module';
 @NgModule({
   imports: [

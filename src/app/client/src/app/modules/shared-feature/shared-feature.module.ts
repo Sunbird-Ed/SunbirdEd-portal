@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import {
   ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
   OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent, ValidateTeacherIdentifierPopupComponent,
-  UserLocationComponent, UserOnboardingComponent, OnboardingUserSelectionComponent, OnboardingLocationSelectionComponent,
+  UserLocationComponent, UserOnboardingComponent, OnboardingUserSelectionComponent,
   ConfirmationPopupComponent, JoyThemePopupComponent, CertPreviewPopupComponent, ContentPlayerComponent, CollectionPlayerComponent
 } from './components';
 import { SlickModule } from 'ngx-slick';
@@ -19,6 +19,8 @@ import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
+import { CommonFormElementsModule } from 'common-form-elements';
+import { LocationModule } from '../../plugins/location';
 
 export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
   if (!CsModule.instance.isInitialised) {
@@ -39,7 +41,9 @@ export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerSe
     FormsModule,
     ReactiveFormsModule,
     PlayerHelperModule,
-    CommonConsumptionModule
+    CommonConsumptionModule,
+    CommonFormElementsModule,
+    LocationModule
   ],
   providers:  [{ provide: 'CS_USER_SERVICE', useFactory: csUserServiceFactory, deps: [CsLibInitializerService] }],
   declarations: [ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
@@ -47,13 +51,12 @@ export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerSe
     UserLocationComponent,
     UserOnboardingComponent,
     OnboardingUserSelectionComponent,
-    OnboardingLocationSelectionComponent,
     ConfirmationPopupComponent, JoyThemePopupComponent, CertPreviewPopupComponent, ContentPlayerComponent, GlobalConsentPiiComponent,
      CollectionPlayerComponent
   ],
   exports: [ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
     OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent, ValidateTeacherIdentifierPopupComponent,
-    UserLocationComponent, UserOnboardingComponent, OnboardingUserSelectionComponent, OnboardingLocationSelectionComponent,
+    UserLocationComponent, UserOnboardingComponent, OnboardingUserSelectionComponent,
     ConfirmationPopupComponent, JoyThemePopupComponent, CertPreviewPopupComponent,
      ContentPlayerComponent, GlobalConsentPiiComponent, CollectionPlayerComponent]
 })
