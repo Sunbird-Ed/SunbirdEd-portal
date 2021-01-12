@@ -148,7 +148,11 @@ export class UserSDK {
   }
 
   public async getUserSession() {
-    return this.settingSDK.get('userSession');
+    try {
+      return this.settingSDK.get('userSession');
+    } catch (e) {
+      return false;
+    }
   }
 
   private async findByName(name) {
