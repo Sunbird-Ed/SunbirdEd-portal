@@ -1105,6 +1105,18 @@ const API_LIST = {
       ROLE_CHECK: [
         ROLE.ADMIN
       ]
+    },
+    '/v1/tenant/info/:tenantId': {
+      checksNeeded: []
+    },
+    '/v1/user/session/start/:deviceId': {
+      checksNeeded: []
+    },
+    '/content/data/v1/telemetry': {
+      checksNeeded: []
+    },
+    '/getGeneralisedResourcesBundles/:lang/:fileName': {
+      checksNeeded: []
     }
   },
   URL_PATTERN: [
@@ -1154,7 +1166,10 @@ const API_LIST = {
     '/action/textbook/v1/toc/upload/:do_id',
     '/action/textbook/v1/toc/download/:do_id',
     '/action/content/v1/collaborator/update/:do_id',
-    '/action/system/v3/content/update/:do_id'
+    '/action/system/v3/content/update/:do_id',
+    '/v1/tenant/info/:tenantId',
+    '/v1/user/session/start/:deviceId',
+    '/getGeneralisedResourcesBundles/:lang/:fileName'
   ]
 };
 module.exports = API_LIST;
