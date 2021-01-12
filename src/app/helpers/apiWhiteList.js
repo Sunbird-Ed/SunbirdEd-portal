@@ -28,33 +28,57 @@ const ROLE = {
  */
 const isAllowed = () => {
   return function (req, res, next) {
-    let REQ_URL = req.path;
-    // Pattern match for URL
-    _.forEach(API_LIST.URL_PATTERN, (url) => {
-      let regExp = pathToRegexp(url);
-      if (regExp.test(REQ_URL)) {
-        REQ_URL = url;
-        return false;
-      }
-    });
-    // Is API whitelisted ?
-    if (_.get(API_LIST.URL, REQ_URL)) {
-      const URL_RULE_OBJ = _.get(API_LIST.URL, REQ_URL);
-      let checksToExecute = [];
-      // Iterate for checks defined for API and push to array
-      URL_RULE_OBJ.checksNeeded.forEach(CHECK => {
-        checksToExecute.push(new Promise((res, rej) => {
-          if (_.get(URL_RULE_OBJ, CHECK) && typeof urlChecks[CHECK] === 'function') {
-            urlChecks[CHECK](res, rej, req, URL_RULE_OBJ[CHECK], REQ_URL);
-          }
-        }));
-      });
-      executeChecks(req, res, next, checksToExecute);
+    // Ignore static routes
+    if (req.path === '/' || checkIsStaticRoute(req.path)) {
+      console.log('req.path -chk--- ', checkIsStaticRoute(req.path)); // TODO: log!
+      next();
     } else {
-      // If API is not whitelisted
-      respond403(req, res);
+      let REQ_URL = req.path;
+      // Pattern match for URL
+      _.forEach(API_LIST.URL_PATTERN, (url) => {
+        let regExp = pathToRegexp(url);
+        if (regExp.test(REQ_URL)) {
+          REQ_URL = url;
+          return false;
+        }
+      });
+      // Is API whitelisted ?
+      if (_.get(API_LIST.URL, REQ_URL)) {
+        const URL_RULE_OBJ = _.get(API_LIST.URL, REQ_URL);
+        let checksToExecute = [];
+        // Iterate for checks defined for API and push to array
+        URL_RULE_OBJ.checksNeeded.forEach(CHECK => {
+          checksToExecute.push(new Promise((res, rej) => {
+            if (_.get(URL_RULE_OBJ, CHECK) && typeof urlChecks[CHECK] === 'function') {
+              urlChecks[CHECK](res, rej, req, URL_RULE_OBJ[CHECK], REQ_URL);
+            }
+          }));
+        });
+        executeChecks(req, res, next, checksToExecute);
+      } else {
+        // If API is not whitelisted
+        respond403(req, res);
+      }
     }
   }
+};
+
+const checkIsStaticRoute = (REQ_URL) => {
+  const excludePath = [
+    '.js',
+    '.js.map',
+    '.ico',
+    '.ttf',
+    '.woff2',
+    '.woff',
+    '.eot',
+    '.svg',
+    '.html',
+    '/resourcebundles/',
+    '/assets/',
+    '/explore'
+  ];
+  return _.some(excludePath, (path) => _.includes(REQ_URL, path));
 };
 
 /**
@@ -241,6 +265,15 @@ const respond403 = (req, res) => {
   res.end();
 };
 
+const apiWhiteListLogger = () => {
+  return (req, res, next) => {
+    console.log('req.path ------- ', req.path); // TODO: log!
+    console.log('req.path ------- ', req.originalUrl); // TODO: log!
+    next();
+  }
+};
+
 module.exports = {
-  isAllowed
+  isAllowed,
+  apiWhiteListLogger
 };
