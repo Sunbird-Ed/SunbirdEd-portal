@@ -6,12 +6,12 @@ import { SuiModalModule } from 'ng2-semantic-ui';
 import { SharedModule } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 
-import { OnboardingLocationComponent } from './components';
-import { LocationRoutingModule } from './location-routing.module';
+import { LocationSelectionComponent } from './components';
+import { CommonFormElementsModule } from 'common-form-elements';
 
 @NgModule({
   declarations: [
-    OnboardingLocationComponent
+    LocationSelectionComponent
   ],
   imports: [
     CommonModule,
@@ -20,10 +20,10 @@ import { LocationRoutingModule } from './location-routing.module';
     SuiModalModule,
     SharedModule,
     TelemetryModule,
-    LocationRoutingModule
+    CommonFormElementsModule
   ],
   exports: [
-    OnboardingLocationComponent
+    LocationSelectionComponent
   ]
 })
 export class LocationModule { }

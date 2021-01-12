@@ -26,13 +26,13 @@
               "src/favicon.png",
               {
                 "glob": "**/*.*",
-                "input": "./node_modules/@project-sunbird/common-consumption/assets",
+                "input": "./node_modules/@project-sunbird/common-consumption-v8/assets",
                 "output": "./assets/common-consumption"
               },
               {
                 "glob": "**/*.*",
-                "input": "./node_modules/@project-sunbird/discussion-ui/assets",
-                "output": "./discussion-ui/assets"
+                "input": "./node_modules/@project-sunbird/discussions-ui/assets",
+                "output": "./assets/discussion-ui"
               },
               {
                 "glob": "**/*",

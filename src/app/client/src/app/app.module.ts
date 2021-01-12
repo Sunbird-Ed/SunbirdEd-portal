@@ -15,7 +15,7 @@ import { CacheStorageAbstract } from 'ng2-cache-service/dist/src/services/storag
 import { CacheSessionStorage } from 'ng2-cache-service/dist/src/services/storage/session-storage/cache-session-storage.service';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { PluginModules } from './framework.config';
-import {ChatLibModule, ChatLibService} from 'sunbird-chatbot-client';
+import {ChatLibModule, ChatLibService} from '@project-sunbird/chatbot-client-v8';
 import { RouteReuseStrategy } from '@angular/router';
 import { CustomRouteReuseStrategy } from './service/CustomRouteReuseStrategy/CustomRouteReuseStrategy';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

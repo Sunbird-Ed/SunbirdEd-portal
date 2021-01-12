@@ -12,7 +12,7 @@ import * as _ from 'lodash-es';
   styleUrls: ['./create-edit-group.component.scss']
 })
 export class CreateEditGroupComponent implements OnInit, OnDestroy {
-  @ViewChild('createGroupModal') createGroupModal;
+  @ViewChild('createGroupModal', {static: false}) createGroupModal;
   groupForm: FormGroup;
   groupDetails: {};
   groupId: string;

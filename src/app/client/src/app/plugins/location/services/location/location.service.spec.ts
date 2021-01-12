@@ -4,9 +4,9 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CacheService } from 'ng2-cache-service';
 import { APP_BASE_HREF } from '@angular/common';
 
-import { BrowserCacheTtlService } from '../../../shared/services/browser-cache-ttl/browser-cache-ttl.service';
+import { BrowserCacheTtlService } from '../../../../modules/shared/services/browser-cache-ttl/browser-cache-ttl.service';
 
-import { ConfigService } from '../../../shared/services/config/config.service';
+import { ConfigService } from '../../../../modules/shared/services/config/config.service';
 import { LocationService } from './location.service';
 import { configureTestSuite } from '@sunbird/test-util';
 

@@ -26,7 +26,7 @@ export class AboutUsComponent implements OnInit, OnDestroy {
   isConnected;
   loaderMessage: ILoaderMessage = {};
   currentYear;
-  @ViewChild('termsIframe') termsIframe: ElementRef;
+  @ViewChild('termsIframe', {static: false}) termsIframe: ElementRef;
 
   constructor(
     private appUpdateService: AppUpdateService,

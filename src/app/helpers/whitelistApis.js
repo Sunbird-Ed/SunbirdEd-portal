@@ -727,7 +727,9 @@ const API_LIST = {
       ROLE_CHECK: [
         ROLE.CONTENT_CREATOR,
         ROLE.COURSE_CREATOR,
-        ROLE.BOOK_CREATOR
+        ROLE.BOOK_CREATOR,
+        ROLE.CONTENT_REVIEWER,
+        ROLE.BOOK_REVIEWER
       ]
     },
     '/action/content/v3/hierarchy/update': {
@@ -742,7 +744,10 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.CONTENT_REVIEWER,
-        ROLE.BOOK_REVIEWER
+        ROLE.BOOK_REVIEWER,
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
       ]
     },
     '/action/content/v3/publish/:do_id': {
@@ -1105,6 +1110,16 @@ const API_LIST = {
       ROLE_CHECK: [
         ROLE.ADMIN
       ]
+    },
+    // discussion forum apis
+    '/discussion/user/v1/create': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
     }
   },
   URL_PATTERN: [
@@ -1154,7 +1169,8 @@ const API_LIST = {
     '/action/textbook/v1/toc/upload/:do_id',
     '/action/textbook/v1/toc/download/:do_id',
     '/action/content/v1/collaborator/update/:do_id',
-    '/action/system/v3/content/update/:do_id'
+    '/action/system/v3/content/update/:do_id',
+    '/discussion/user/v1/create'
   ]
 };
 module.exports = API_LIST;

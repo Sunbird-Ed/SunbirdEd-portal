@@ -2,7 +2,7 @@ import { LibrarySearchComponent } from './library-search.component';
 
 import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
-import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
+import { ResourceService, ToasterService, SharedModule, UtilService } from '@sunbird/shared';
 import { SearchService, CoreModule, UserService, CoursesService, PlayerService} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
@@ -12,6 +12,8 @@ import { Response } from './library-search.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
+import { ContentManagerService } from '../../../public/module/offline/services';
+import { PublicPlayerService } from '@sunbird/public';
 
 describe('LibrarySearchComponent', () => {
   let component: LibrarySearchComponent;
@@ -26,12 +28,31 @@ describe('LibrarySearchComponent', () => {
   }
   const resourceBundle = {
     'messages': {
-      'fmsg': {},
-      'emsg': {},
-      'stmsg': {}
+      'fmsg': {
+        'm0027': 'Something went wrong',
+        'm0090': 'Could not download. Try again later',
+        'm0091': 'Could not copy content. Try again later'
+      },
+      'stmsg': {
+        'm0009': 'error',
+        'm0140': 'DOWNLOADING',
+        'm0138': 'FAILED',
+        'm0139': 'DOWNLOADED',
+      },
+      'imsg': {
+       't0143': 'This content is not supported yet'
+      },
+      'emsg': {}
     },
     frmelmnts: {
-      lbl: {}
+      lbl: {
+        'noBookfoundSubTitle': 'Your board is yet to add more books. Tap the button to see more books and content on {instance}',
+        'noBookfoundButtonText': 'See more books and contents',
+        'desktop': {
+          'yourSearch': 'Your search for - "{key}"',
+          'notMatchContent': 'did not match any content'
+        }
+      }
     },
     languageSelected$: of({})
   };
@@ -227,4 +248,102 @@ describe('LibrarySearchComponent', () => {
     expect(playContentSpy).not.toHaveBeenCalled();
     expect(component.showBatchInfo).toBeTruthy();
   });
+
+  it('should call hoverActionClicked for DOWNLOAD ', () => {
+    Response.hoverActionsData['hover'] = {
+      'type': 'download',
+      'label': 'Download',
+      'disabled': false
+    };
+    Response.hoverActionsData['data'] = Response.hoverActionsData.content;
+    spyOn(component, 'logTelemetry');
+    spyOn(component, 'downloadContent').and.callThrough();
+    component.hoverActionClicked(Response.hoverActionsData);
+    expect(component.downloadContent).toHaveBeenCalledWith(component.downloadIdentifier);
+    expect(component.logTelemetry).toHaveBeenCalledWith(component.contentData, 'download-collection');
+    expect(component.showModal).toBeFalsy();
+    expect(component.contentData).toBeDefined();
+  });
+
+  it('should call hoverActionClicked for Open ', () => {
+    Response.hoverActionsData['hover'] = {
+      'type': 'Open',
+      'label': 'OPEN',
+      'disabled': false
+    };
+    Response.hoverActionsData['data'] = Response.hoverActionsData.content;
+    const route = TestBed.get(Router);
+    route.url = '/explore-page?selectedTab=explore-page';
+    spyOn(component, 'logTelemetry').and.callThrough();
+    spyOn(component, 'playContent');
+    component.hoverActionClicked(Response.hoverActionsData);
+    expect(component.playContent).toHaveBeenCalledWith(Response.hoverActionsData);
+    expect(component.logTelemetry).toHaveBeenCalledWith(component.contentData, 'play-content');
+    expect(component.contentData).toBeDefined();
+  });
+
+  it('should call download content with success ', () => {
+    const contentManagerService = TestBed.get(ContentManagerService);
+    spyOn(contentManagerService, 'startDownload').and.returnValue(of({}));
+    component.downloadContent('123');
+    expect(component.showDownloadLoader).toBeFalsy();
+  });
+  it('should call download content from popup ', () => {
+    spyOn(component, 'downloadContent');
+    component.callDownload();
+    expect(component.showDownloadLoader).toBeTruthy();
+    expect(component.downloadContent).toHaveBeenCalled();
+  });
+
+  it('should set no Result message', () => {
+    component.queryParams = { key: 'test' };
+    component['setNoResultMessage']();
+    expect(component.noResultMessage).toEqual({
+      title: 'Your search for - "test" did not match any content',
+      subTitle: 'Your board is yet to add more books. Tap the button to see more books and content on {instance}',
+      buttonText: 'See more books and contents',
+      showExploreContentButton: false
+    });
+  });
+
+  it('should call download content with error ', () => {
+    const contentManagerService = TestBed.get(ContentManagerService);
+    spyOn(contentManagerService, 'startDownload').and.returnValue(throwError({ error: { params: { err: 'ERROR' } } }));
+    component.ngOnInit();
+    component.downloadContent('123');
+    expect(component.showDownloadLoader).toBeFalsy();
+  });
+
+  it('should call playContent', () => {
+    const playerService = TestBed.get(PlayerService);
+    spyOn(playerService, 'playContent');
+    component.playContent({data: {identifier: '123'}});
+    expect(playerService.playContent).toHaveBeenCalled();
+  });
+
+  it('should call listenLanguageChange', () => {
+    component.isDesktopApp = true;
+    component.contentList = [{ name: 'test' }];
+    spyOn(component, 'addHoverData');
+    spyOn<any>(component, 'setNoResultMessage');
+    component['listenLanguageChange']();
+    expect(component.addHoverData).toHaveBeenCalled();
+    expect(component['setNoResultMessage']).toHaveBeenCalled();
+  });
+
+  it('should not play content for trackable collection for desktop app', () => {
+    component.isDesktopApp = true;
+    spyOn(toasterService, 'error').and.callFake(() => { });
+    component.playContent({data: {identifier: '123', trackable: {enabled: 'Yes'}}});
+    expect(toasterService.error).toHaveBeenCalled();
+  });
+
+  it('should fetch content and remove course from facets for desktop app', fakeAsync(() => {
+    const utilService = TestBed.get(UtilService);
+    utilService._isDesktopApp = true;
+    component.ngOnInit();
+    component.getFilters([{ code: 'board', range: [{ index: 0, name: 'NCRT' }, { index: 1, name: 'CBSC' }] }]);
+    tick(100);
+    expect(component.contentList.length).toEqual(2);
+  }));
 });

@@ -15,12 +15,12 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class UserUploadComponent implements OnInit {
 
-  @ViewChild('inputbtn') inputbtn: ElementRef;
-  @ViewChild('modal') modal;
+  @ViewChild('inputbtn', {static: false}) inputbtn: ElementRef;
+  @ViewChild('modal', {static: false}) modal;
   /**
   *Element Ref  for copyLinkButton;
   */
-  @ViewChild('copyErrorData') copyErrorButton: ElementRef;
+  @ViewChild('copyErrorData', {static: false}) copyErrorButton: ElementRef;
   /**
   * reference of config service.
   */

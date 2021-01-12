@@ -8,7 +8,7 @@ import { CoreModule } from '@sunbird/core';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule } from '@angular/forms';
-import { CommonConsumptionModule} from '@project-sunbird/common-consumption';
+import { CommonConsumptionModule} from '@project-sunbird/common-consumption-v8';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 
 @NgModule({

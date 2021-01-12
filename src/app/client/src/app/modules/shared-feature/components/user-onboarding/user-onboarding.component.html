@@ -4,8 +4,19 @@
   <app-onboarding-user-selection [tenantInfo]="tenantInfo" *ngIf="stage === Stage.USER_SELECTION" (userSelect)="userTypeSubmit()">
   </app-onboarding-user-selection>
 
-  <app-onboarding-location-selection *ngIf="stage === Stage.LOCATION_SELECTION" [tenantInfo]="tenantInfo"
-    [isCustodianOrgUser]="isCustodianOrgUser" [deviceProfile]="deviceProfile" (close)="locationSubmit()">
-  </app-onboarding-location-selection>
-
+  <app-location-selection *ngIf="stage === Stage.LOCATION_SELECTION"
+                          [deviceProfile]="deviceProfile"
+                          [isClosable]="false"
+                          (close)="locationSubmit()">
+    <div slot="popup-header">
+      <img [src]="tenantInfo?.logo" class="brand-logo" alt="logo" />
+      <h1>{{resourceService?.frmelmnts?.lbl?.welcomeToInstance | interpolate:'{instance}': tenantInfo?.titleName}}</h1>
+    </div>
+    <div slot="popup-sub-header">
+      <p class="subtitle">{{resourceService?.messages?.imsg?.m0075}}</p>
+    </div>
+    <div slot="popup-footer">
+      <p class="py-16">{{resourceService?.messages?.imsg?.m0074}}</p>
+    </div>
+  </app-location-selection>
 </sui-modal>

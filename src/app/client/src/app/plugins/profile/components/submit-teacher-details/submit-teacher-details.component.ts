@@ -26,7 +26,7 @@ import { ProfileService } from './../../services';
 })
 export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
 
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
   showSuccessModal = false;
   userProfile: any;
   formAction: string;
@@ -574,7 +574,6 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
   }
 
   updateUserConsent(isActive: boolean) {
-    alert();
     const request: Consent = {
       status: isActive ? ConsentStatus.ACTIVE : ConsentStatus.REVOKED,
       userId: this.userService.userid,

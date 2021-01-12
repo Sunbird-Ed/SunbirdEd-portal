@@ -8,7 +8,7 @@ import { ConfigService } from './../config/config.service';
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UUID } from 'angular2-uuid';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { CacheService } from 'ng2-cache-service';
 import * as _ from 'lodash-es';
 import { TranslateService, TranslateStore } from '@ngx-translate/core';
