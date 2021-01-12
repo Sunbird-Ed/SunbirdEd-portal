@@ -35,7 +35,7 @@ jobs:
           command: 'mkdir -p /tmp/logs && ng build --prod --optimization=false --buildOptimizer=false | tee /tmp/logs/build.log'
       - run:
           name: Executing test cases
-          command: 'node --max_old_space_size=6144 ./node_modules/@angular/cli/bin/ng test src --code-coverage=true --watch=false | tee /tmp/logs/test_cases.log'
+          command: 'npm run test-coverage | tee /tmp/logs/test_cases.log'
       - run:
           name: install sonar scanner
           command: npm install -g sonarqube-scanner
