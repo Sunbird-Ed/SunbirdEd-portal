@@ -6,7 +6,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { CoursesService, PermissionService, GeneraliseLabelService } from '@sunbird/core';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { GroupsService } from '../../../../groups/services/groups/groups.service';
 @Component({
   templateUrl: './course-consumption-page.component.html'

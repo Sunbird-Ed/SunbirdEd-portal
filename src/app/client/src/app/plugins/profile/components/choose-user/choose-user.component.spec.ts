@@ -10,7 +10,7 @@ import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {ActivatedRoute, Router} from '@angular/router';
 import {of as observableOf, of, throwError as observableThrowError} from 'rxjs';
 import {mockData} from './choose-user.component.spec.data';
-import {CommonConsumptionModule} from '@project-sunbird/common-consumption';
+import {CommonConsumptionModule} from '@project-sunbird/common-consumption-v8';
 import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ChooseUserComponent', () => {

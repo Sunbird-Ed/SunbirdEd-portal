@@ -11,7 +11,7 @@ import { CourseConsumptionService } from '@sunbird/learn';
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import * as TreeModel from 'tree-model';
 import { UserService, GeneraliseLabelService } from '@sunbird/core';
-import { TocCardType } from '@project-sunbird/common-consumption';
+import { TocCardType } from '@project-sunbird/common-consumption-v8';
 import { ITelemetryShare, ContentUtilsServiceService } from '@sunbird/shared';
 
 @Component({
@@ -41,7 +41,7 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
   shareLinkModal = false;
   telemetryShareData: Array<ITelemetryShare>;
   shareLink: string;
-  @ViewChild('joinTrainingModal') joinTrainingModal;
+  @ViewChild('joinTrainingModal', {static: false}) joinTrainingModal;
   isExpandedAll: boolean;
 
   constructor(

@@ -12,7 +12,7 @@ import {
   ExternalUrlPreviewService
 } from '@sunbird/shared';
 import { IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { GroupsService } from '../../../../groups/services/groups/groups.service';
 import { NavigationHelperService } from '@sunbird/shared';
 import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';

@@ -18,7 +18,7 @@ import { GlobalConsentPiiComponent } from './components/global-consent-pii/globa
 import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
 import { PlayerHelperModule } from '@sunbird/player-helper';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
 
 export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
   if (!CsModule.instance.isInitialised) {

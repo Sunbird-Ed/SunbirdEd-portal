@@ -26,7 +26,7 @@ import { ProfileService } from './../../services';
 })
 export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
 
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
   showSuccessModal = false;
   userProfile: any;
   formAction: string;

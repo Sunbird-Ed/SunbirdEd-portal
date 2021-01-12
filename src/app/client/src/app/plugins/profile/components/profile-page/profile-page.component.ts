@@ -33,8 +33,8 @@ import { FieldConfig } from 'common-form-elements';
   providers: [CertificateDownloadAsPdfService]
 })
 export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('profileModal') profileModal;
-  @ViewChild('slickModal') slickModal;
+  @ViewChild('profileModal', {static: false}) profileModal;
+  @ViewChild('slickModal', {static: false}) slickModal;
   userProfile: any;
   contributions = [];
   totalContributions: Number;

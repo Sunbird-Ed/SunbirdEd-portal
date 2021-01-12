@@ -16,7 +16,7 @@ import * as _ from 'lodash-es';
 })
 export class UserEditComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
   userId: string;
   allRoles: Array<RolesAndPermissions>;
   userDetailsForm: FormGroup;

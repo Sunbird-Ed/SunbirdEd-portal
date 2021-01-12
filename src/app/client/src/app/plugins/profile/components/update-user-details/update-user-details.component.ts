@@ -15,7 +15,7 @@ export class UpdateUserDetailsComponent implements OnInit, OnDestroy {
 
   @Output() close = new EventEmitter<any>();
   @Input() userProfile: any;
-  @ViewChild('userDetailsModal') userDetailsModal;
+  @ViewChild('userDetailsModal', {static: true}) userDetailsModal;
   allStates: any;
   allDistricts: any;
   userDetailsForm: FormGroup;

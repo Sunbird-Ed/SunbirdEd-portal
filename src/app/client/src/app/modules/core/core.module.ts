@@ -18,7 +18,7 @@ import { AuthGuard } from './guard/auth-gard.service';
 import { CacheService } from 'ng2-cache-service';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
 import { ContentTypeComponent } from './components/content-type/content-type.component';
 import { LocationModule } from '../location/location.module';
 import { NotificationModule } from '../notification/notification.module';
