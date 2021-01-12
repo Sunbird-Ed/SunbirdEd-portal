@@ -87,7 +87,7 @@ describe('OnboardingUserSelectionComponent', () => {
     component['updateUserSelection']().subscribe(res => {
       expect(spy).toHaveBeenCalledWith({
         userId: '123',
-        userType: 'Student'
+        userType: 'student'
       });
       expect(userSelectSpy).toHaveBeenCalled();
       done();
