@@ -52,9 +52,12 @@ export const handleSessionExpiry = async (proxyRes, proxyResData, req?, res?, da
 
     if (_.lowerCase(_.get(proxyRes, 'statusMessage')) === "unauthorized" || _.lowerCase(_.get(data, 'message')) === "unauthorized") {
       try {
-        const apiKey = await containerAPI.getDeviceSdkInstance().getToken().catch((err) => {
+        await containerAPI.getDeviceSdkInstance().clearToken().catch(error => { logger.debug("Unable to clear the user token", error);})
+        await containerAPI.getDeviceSdkInstance().getToken().catch((err) => {
           logger.error(`Received error while fetching device token with error: ${err}`);
         });
+
+        res.status(401).send({ message: 'Unauthorized' });
         // TODO:// forwardRequest
         
       } catch(error) {
