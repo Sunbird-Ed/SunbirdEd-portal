@@ -26,7 +26,7 @@ export class SbFormLocationOptionsFactory {
             const list = stateLocationList.map((s) => ({ label: s.name, value: s }));
             if (config.default && initial) {
               const option = list.find((o) => o.value.id === config.default.id || o.label === config.default.name);
-              formControl.patchValue(option ? option.value : null);
+              formControl.patchValue(option ? option.value : null, { emitModelToViewChange: false });
               config.default['code'] = option ? option.value['code'] : config.default['code'];
             }
             return list;
@@ -79,7 +79,7 @@ export class SbFormLocationOptionsFactory {
               const list = locationList.map((s) => ({ label: s.name, value: s }));
               if (config.default && initial) {
                 const option = list.find((o) => o.value.id === config.default.id || o.label === config.default.name);
-                formControl.patchValue(option ? option.value : null);
+                formControl.patchValue(option ? option.value : null, { emitModelToViewChange: false });
                 config.default['code'] = option ? option.value['code'] : config.default['code'];
               }
               return list;

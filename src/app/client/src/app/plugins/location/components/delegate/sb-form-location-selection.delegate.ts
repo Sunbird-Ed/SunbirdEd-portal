@@ -40,7 +40,11 @@ export class SbFormLocationSelectionDelegate {
     this.formLocationOptionsFactory = new SbFormLocationOptionsFactory(locationService);
   }
 
-  async init() {
+  async init(deviceProfile?: IDeviceProfile) {
+    if (deviceProfile) {
+      this.deviceProfile = deviceProfile;
+    }
+
     this.formLocationSuggestions = this.getFormSuggestionsStrategy();
 
     try {
@@ -114,7 +118,7 @@ export class SbFormLocationSelectionDelegate {
             console.error(e);
             this.loadForm(
               SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST,
-              true
+              false
             );
           });
         });

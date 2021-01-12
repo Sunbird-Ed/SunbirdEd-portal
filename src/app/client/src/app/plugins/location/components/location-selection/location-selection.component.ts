@@ -41,14 +41,13 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
       this.userService,
       this.locationService,
       this.formService,
-      this.deviceRegisterService,
-      this.deviceProfile,
+      this.deviceRegisterService
     );
   }
 
   ngOnInit() {
     this.popupControlService.changePopupStatus(false);
-    this.sbFormLocationSelectionDelegate.init()
+    this.sbFormLocationSelectionDelegate.init(this.deviceProfile)
       .catch(() => {
         this.closeModal();
         this.toasterService.error(this.resourceService.messages.fmsg.m0049);
