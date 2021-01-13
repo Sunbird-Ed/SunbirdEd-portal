@@ -811,7 +811,9 @@ const API_LIST = {
       ROLE_CHECK: [
         ROLE.CONTENT_CREATOR,
         ROLE.COURSE_CREATOR,
-        ROLE.BOOK_CREATOR
+        ROLE.BOOK_CREATOR,
+        ROLE.CONTENT_REVIEWER,
+        ROLE.BOOK_REVIEWER
       ]
     },
 
@@ -1005,7 +1007,9 @@ const API_LIST = {
       ROLE_CHECK: [
         ROLE.CONTENT_CREATOR,
         ROLE.COURSE_CREATOR,
-        ROLE.BOOK_CREATOR
+        ROLE.BOOK_CREATOR,
+        ROLE.CONTENT_REVIEWER,
+        ROLE.BOOK_REVIEWER
       ]
     },
 
@@ -1107,6 +1111,15 @@ const API_LIST = {
         ROLE.ADMIN
       ]
     },
+    '/signup': {
+      checksNeeded: []
+    },
+    '/collection-editor/telemetry': {
+      checksNeeded: []
+    },
+    '/content-editor/telemetry': {
+      checksNeeded: []
+    },
     '/v1/tenant/info/:tenantId': {
       checksNeeded: []
     },
@@ -1128,15 +1141,225 @@ const API_LIST = {
     '/plugin/v1/form/read': {
       checksNeeded: []
     },
+    '/v1/tenant/info/': {
+      checksNeeded: []
+    },
     // discussion forum apis
     '/discussion/user/v1/create': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC],
-      OWNER_CHECK: {
-        checks: [
-          { entity: '__session__userId', params: [] }
-        ]
-      }
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/forum/v2/read': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/forum/v2/create': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/tags': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/notifications': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/category/:category_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/categories': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/categories/:cid/moderators': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/user/:userslug': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/user/:userslug/upvoted': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/user/:userslug/downvoted': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/user/:userslug/bookmarks': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/user/:userslug/best': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/unread': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/recent': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/popular': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/top': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/topic/:topic_id/:slug': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/unread/total': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/topic/teaser/:topic_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/topic/pagination/:topic_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/groups': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/groups/:slug': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/groups/:slug/members': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/user/:userslug/downvoted': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/recent/posts/:day': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/v2/topics': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/v2/topics/:tid': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/v2/topics/:tid/state': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/v2/topics/:tid/follow': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/v2/topics/:tid/tags': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/v2/topics/:tid/pin': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/v2/categories': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/v2/categories/:cid': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/v2/categories/:cid/state': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/v2/categories/:cid/privileges': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/v2/groups': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/v2/groups/:slug': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/v2/groups/:slug/membership': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/v2/groups/:slug/membership/:uid': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/v2/posts/:pid': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/v2/posts/:pid/state': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/v2/posts/:pid/vote': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/v2/posts/:pid/bookmark': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/v2/users': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/v2/users/:uid': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/v2/users/:uid/password': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/v2/users/:uid/follow': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/v2/users/:uid/chats': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/v2/users/:uid/ban': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/v2/users/:uid/tokens': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/v2/users/:uid/tokens/:token': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/user/username/:username': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/discussion/user/uid/:uid': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
     }
   },
   URL_PATTERN: [
@@ -1189,7 +1412,45 @@ const API_LIST = {
     '/action/system/v3/content/update/:do_id',
     '/v1/tenant/info/:tenantId',
     '/v1/user/session/start/:deviceId',
-    '/getGeneralisedResourcesBundles/:lang/:fileName'
+    '/getGeneralisedResourcesBundles/:lang/:fileName',
+    '/discussion/category/:category_id',
+    '/discussion/categories/:cid/moderators',
+    '/discussion/user/:userslug',
+    '/discussion/user/:userslug/upvoted',
+    '/discussion/user/:userslug/downvoted',
+    '/discussion/user/:userslug/bookmarks',
+    '/discussion/user/:userslug/best',
+    '/discussion/topic/:topic_id/:slug',
+    '/discussion/topic/teaser/:topic_id',
+    '/discussion/topic/pagination/:topic_id',
+    '/discussion/groups/:slug',
+    '/discussion/groups/:slug/members',
+    '/discussion/user/:userslug/downvoted',
+    '/discussion/recent/posts/:day',
+    '/discussion/v2/topics/:tid',
+    '/discussion/v2/topics/:tid/state',
+    '/discussion/v2/topics/:tid/follow',
+    '/discussion/v2/topics/:tid/tags',
+    '/discussion/v2/topics/:tid/pin',
+    '/discussion/v2/categories/:cid',
+    '/discussion/v2/categories/:cid/state',
+    '/discussion/v2/categories/:cid/privileges',
+    '/discussion/v2/groups/:slug',
+    '/discussion/v2/groups/:slug/membership',
+    '/discussion/v2/groups/:slug/membership/:uid',
+    '/discussion/v2/posts/:pid',
+    '/discussion/v2/posts/:pid/state',
+    '/discussion/v2/posts/:pid/vote',
+    '/discussion/v2/posts/:pid/bookmark',
+    '/discussion/v2/users/:uid',
+    '/discussion/v2/users/:uid/password',
+    '/discussion/v2/users/:uid/follow',
+    '/discussion/v2/users/:uid/chats',
+    '/discussion/v2/users/:uid/ban',
+    '/discussion/v2/users/:uid/tokens',
+    '/discussion/v2/users/:uid/tokens/:token',
+    '/discussion/user/username/:username',
+    '/discussion/user/uid/:uid'
   ]
 };
 module.exports = API_LIST;

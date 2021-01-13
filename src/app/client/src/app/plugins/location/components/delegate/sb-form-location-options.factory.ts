@@ -1,10 +1,11 @@
-import { LocationService } from '../..';
 import { FieldConfig, FieldConfigOptionsBuilder } from 'common-form-elements';
 import { Location as SbLocation } from '@project-sunbird/client-services/models/location';
 import { FormControl } from '@angular/forms';
 import { defer, of } from 'rxjs';
 import { distinctUntilChanged, startWith, switchMap, tap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
+
+import { LocationService } from '../../services/location/location.service';
 
 export class SbFormLocationOptionsFactory {
   constructor(
