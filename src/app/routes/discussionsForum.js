@@ -172,6 +172,7 @@ function proxyObject() {
         proxyReqOptDecorator: addHeaders(),
         proxyReqPathResolver: function (req) {
             let urlParam = req.originalUrl;
+            console.log("Request comming from :", urlParam)
             let query = require('url').parse(req.url).query;
             if (query) {
                 return require('url').parse(discussions_middleware + urlParam + '?' + query).path
