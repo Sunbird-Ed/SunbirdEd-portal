@@ -41,6 +41,7 @@ const morgan = require('morgan');
 const kidTokenPublicKeyBasePath = envHelper.sunbird_kid_public_key_base_path;
 const { loadTokenPublicKeys } = require('sb_api_interceptor');
 const { getGeneralisedResourcesBundles } = require('./helpers/resourceBundleHelper.js')
+const { apiWhiteListLogger, isAllowed } = require('./helpers/apiWhiteList');
 
 let keycloak = getKeyCloakClient({
   'realm': envHelper.PORTAL_REALM,
@@ -67,6 +68,13 @@ const app = express()
 app.use(cookieParser())
 app.use(helmet())
 app.use(addLogContext)
+
+// ****** DO NOT MODIFY THIS CODE BLOCK / RE-ORDER ******
+app.all('*', apiWhiteListLogger());
+if (envHelper.PORTAL_API_WHITELIST_CHECK == 'true') {
+  app.all('*', isAllowed());
+}
+// ****** DO NOT MODIFY THIS CODE BLOCK / RE-ORDER ******
 app.all([
   '/learner/*', '/content/*', '/user/*', '/merge/*', '/action/*', '/courseReports/*', '/course-reports/*', '/admin-reports/*',
   '/certreg/*', '/device/*', '/google/*', '/report/*', '/reports/*', '/v2/user/*', '/v1/sso/*', '/migrate/*', '/plugins/*', '/content-plugins/*',
@@ -255,6 +263,7 @@ async function runApp() {
     portal.server = app.listen(envHelper.PORTAL_PORT, () => {
       envHelper.defaultChannelId = _.get(channelData, 'result.response.content[0].hashTagId'); // needs to be added in envVariable file
       logger.info({ msg: `app running on port ${envHelper.PORTAL_PORT}` })
+      logger.info({ msg: `Portal global API Whitelist check is set to - ${envHelper.PORTAL_API_WHITELIST_CHECK}` })
     })
     handleShutDowns();
     portal.server.keepAliveTimeout = 60000 * 5;

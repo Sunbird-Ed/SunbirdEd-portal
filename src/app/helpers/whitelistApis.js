@@ -707,12 +707,8 @@ const API_LIST = {
       ]
     },
     '/action/content/v3/read/:do_id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [
-        ROLE.CONTENT_CREATOR,
-        ROLE.COURSE_CREATOR,
-        ROLE.BOOK_CREATOR
-      ]
+      description: 'API is accessed by non logged in user',
+      checksNeeded: []
     },
     '/action/content/v3/bundle': {
       checksNeeded: ['ROLE_CHECK'],
@@ -800,8 +796,12 @@ const API_LIST = {
       ]
     },
     '/action/content/v3/unlisted/publish/:contentId': {
+      description: 'API is used to share content for Limited Sharing feature',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR,
         ROLE.CONTENT_REVIEWER,
         ROLE.BOOK_REVIEWER
       ]
@@ -1107,6 +1107,27 @@ const API_LIST = {
         ROLE.ADMIN
       ]
     },
+    '/v1/tenant/info/:tenantId': {
+      checksNeeded: []
+    },
+    '/v1/user/session/start/:deviceId': {
+      checksNeeded: []
+    },
+    '/content/data/v1/telemetry': {
+      checksNeeded: []
+    },
+    '/getGeneralisedResourcesBundles/:lang/:fileName': {
+      checksNeeded: []
+    },
+    '/service/health': {
+      checksNeeded: []
+    },
+    '/health': {
+      checksNeeded: []
+    },
+    '/plugin/v1/form/read': {
+      checksNeeded: []
+    },
     // discussion forum apis
     '/discussion/user/v1/create': {
       checksNeeded: ['ROLE_CHECK'],
@@ -1166,7 +1187,9 @@ const API_LIST = {
     '/action/textbook/v1/toc/download/:do_id',
     '/action/content/v1/collaborator/update/:do_id',
     '/action/system/v3/content/update/:do_id',
-    '/discussion/user/v1/create'
+    '/v1/tenant/info/:tenantId',
+    '/v1/user/session/start/:deviceId',
+    '/getGeneralisedResourcesBundles/:lang/:fileName'
   ]
 };
 module.exports = API_LIST;
