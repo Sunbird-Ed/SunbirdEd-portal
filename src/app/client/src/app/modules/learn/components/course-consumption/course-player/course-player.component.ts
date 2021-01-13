@@ -26,7 +26,7 @@ import { CsCourseService } from '@project-sunbird/client-services/services/cours
   styleUrls: ['course-player.component.scss']
 })
 export class CoursePlayerComponent implements OnInit, OnDestroy {
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
   public courseInteractObject: IInteractEventObject;
   public contentInteractObject: IInteractEventObject;
   public closeContentIntractEdata: IInteractEventEdata;

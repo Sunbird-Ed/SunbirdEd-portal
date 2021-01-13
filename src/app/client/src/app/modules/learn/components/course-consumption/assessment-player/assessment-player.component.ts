@@ -23,7 +23,7 @@ const ACCESSEVENT = 'renderer:question:submitscore';
   styleUrls: ['./assessment-player.component.scss']
 })
 export class AssessmentPlayerComponent implements OnInit, OnDestroy {
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
   private unsubscribe = new Subject<void>();
   contentProgressEvents$ = new Subject();
   batchId: string;
