@@ -811,7 +811,9 @@ const API_LIST = {
       ROLE_CHECK: [
         ROLE.CONTENT_CREATOR,
         ROLE.COURSE_CREATOR,
-        ROLE.BOOK_CREATOR
+        ROLE.BOOK_CREATOR,
+        ROLE.CONTENT_REVIEWER,
+        ROLE.BOOK_REVIEWER
       ]
     },
 
@@ -1005,7 +1007,9 @@ const API_LIST = {
       ROLE_CHECK: [
         ROLE.CONTENT_CREATOR,
         ROLE.COURSE_CREATOR,
-        ROLE.BOOK_CREATOR
+        ROLE.BOOK_CREATOR,
+        ROLE.CONTENT_REVIEWER,
+        ROLE.BOOK_REVIEWER
       ]
     },
 
@@ -1106,6 +1110,15 @@ const API_LIST = {
       ROLE_CHECK: [
         ROLE.ADMIN
       ]
+    },
+    '/signup': {
+      checksNeeded: []
+    },
+    '/collection-editor/telemetry': {
+      checksNeeded: []
+    },
+    '/content-editor/telemetry': {
+      checksNeeded: []
     },
     '/v1/tenant/info/:tenantId': {
       checksNeeded: []
