@@ -6,6 +6,7 @@ import { DataBaseSDK } from "../sdks/DataBaseSDK";
 import { Inject, Singleton } from "typescript-ioc";
 import * as _ from "lodash";
 import SystemSDK from "../sdks/SystemSDK";
+import { UserSDK } from "../sdks/UserSDK";
 import { logger } from "@project-sunbird/logger";
 import { ClassLogger } from '@project-sunbird/logger/decorator';
 import * as zlib from "zlib";
@@ -27,6 +28,8 @@ export class TelemetryManager {
   private databaseSdk: DataBaseSDK;
   @Inject
   private systemSDK: SystemSDK;
+  @Inject
+  private userSDK: UserSDK;
   @Inject
   private telemetryInstance: TelemetryInstance;
   private settingSDK = new SettingSDK('openrap-sunbirded-plugin');
@@ -85,6 +88,8 @@ export class TelemetryManager {
 
   async batchJob() {
     try {
+      const loggedInUser = await this.userSDK.getUserSession();
+      const userId = _.get(loggedInUser, 'userId') || '';
       let did = await this.systemSDK.getDeviceId();
       let dbFilters = {
         selector: {},
@@ -100,7 +105,7 @@ export class TelemetryManager {
         let omittedDoc = _.omit(doc, ["_id", "_rev"]);
         //here we consider all the events as anonymous usage and updating the uid and did if
         if (updateDIDFlag) {
-          omittedDoc["actor"]["id"] = did;
+          omittedDoc["actor"]["id"] = userId || did;
           omittedDoc["context"]["did"] = did;
         }
         return omittedDoc;
