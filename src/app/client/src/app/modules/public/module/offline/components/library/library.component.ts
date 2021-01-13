@@ -242,6 +242,13 @@ export class LibraryComponent implements OnInit, OnDestroy {
             filterData.channel = channelIds;
         }
         }
+        const userpref = this.userService.anonymousUserPreference;
+        _.forEach(['board', 'medium', 'gradeLevel'], (item) => {
+            if(!_.has(filterData, item)) {
+                filterData[item] = _.isArray(userpref.framework[item]) ? userpref.framework[item] : _.split(userpref.framework[item], ', ');
+            }
+        });
+
         this.selectedFilters = filterData;
         const defaultFilters = _.reduce(filters, (collector: any, element) => {
             if (element.code === 'board') {
