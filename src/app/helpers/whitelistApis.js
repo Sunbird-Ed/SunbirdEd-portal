@@ -1123,6 +1123,12 @@ const API_LIST = {
     '/getGeneralisedResourcesBundles/:lang/:fileName': {
       checksNeeded: []
     },
+    '/service/health': {
+      checksNeeded: []
+    },
+    '/health': {
+      checksNeeded: []
+    },
     // discussion forum apis
     '/discussion/user/v1/create': {
       checksNeeded: ['ROLE_CHECK'],
