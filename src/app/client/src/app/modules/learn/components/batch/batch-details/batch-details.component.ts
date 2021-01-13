@@ -9,7 +9,7 @@ import { PermissionService, UserService, GeneraliseLabelService } from '@sunbird
 import * as _ from 'lodash-es';
 import { TelemetryService } from '@sunbird/telemetry';
 import { Subject } from 'rxjs';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 
 @Component({
   selector: 'app-batch-details',
@@ -48,7 +48,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   telemetryCdata: Array<{}> = [];
   @Output() allBatchDetails = new EventEmitter();
   allowBatchCreation: boolean;
-  @ViewChild('batchListModal') batchListModal;
+  @ViewChild('batchListModal', {static: false}) batchListModal;
   isTrackable = false;
   courseCreator = false;
   viewBatch = false;

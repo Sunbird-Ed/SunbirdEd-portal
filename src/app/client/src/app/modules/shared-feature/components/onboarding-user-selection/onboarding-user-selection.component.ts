@@ -99,7 +99,7 @@ export class OnboardingUserSelectionComponent implements OnInit, OnDestroy {
         switchMap(userType => {
           const payload = {
             userId: _.get(this.userService, 'userid'),
-            userType: _.capitalize(userType)
+            userType: userType.toLowerCase()
           };
           return this.profileService.updateProfile(payload)
             .pipe(

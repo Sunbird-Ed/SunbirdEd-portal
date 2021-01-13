@@ -130,7 +130,7 @@
   }
 }
 
-.my-avatar.verified /deep/ .avatar-content {
+.my-avatar.verified ::ng-deep .avatar-content {
   border: calculateRem(1px) solid var(--secondary-color) !important;
 }
 

@@ -9,7 +9,7 @@ import { DatasetComponent } from './dataset.component';
 import { CoreModule } from '@sunbird/core';
 import { ReportService, DatasetService } from '../../services';
 import { mockDatasetConfig } from './dataset.component.spec.data';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 
 describe('DatasetComponent', () => {
   let component: DatasetComponent;

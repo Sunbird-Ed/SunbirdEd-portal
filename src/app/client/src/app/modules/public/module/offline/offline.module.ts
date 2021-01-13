@@ -20,7 +20,7 @@ import { OrderModule } from 'ngx-order-pipe';
 import { SlickModule } from 'ngx-slick';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
 import { NgInviewModule } from 'angular-inport';
 import { ContentSearchModule } from '@sunbird/content-search';
 @NgModule({

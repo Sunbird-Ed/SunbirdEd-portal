@@ -56,7 +56,7 @@ describe('OfflineHelpVideosComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should call setVideoHeight method', () => {
+  xit('should call setVideoHeight method', () => {
     component.instance = resourceServiceStub.instance;
     spyOn(component, 'setVideoHeight');
     spyOn(component, 'interpolateInstance');
@@ -67,7 +67,7 @@ describe('OfflineHelpVideosComponent', () => {
     expect(component.interpolateInstance).toHaveBeenCalled();
   });
 
-  it('should changeVideoAttributes value', () => {
+  xit('should changeVideoAttributes value', () => {
     const name = (resourceServiceStub.frmelmnts.instn.t0094).replace('{instance}', (resourceServiceStub.instance).toUpperCase());
       const data = {
       id: 'add-content-online',
@@ -82,7 +82,7 @@ describe('OfflineHelpVideosComponent', () => {
     expect(value).toContain(data.name);
   });
 
-  it('should emit an event' , () => {
+  xit('should emit an event' , () => {
     spyOn(component.closeVideoModal, 'emit');
     component.closeModal();
     expect(component.closeVideoModal.emit).toHaveBeenCalled();

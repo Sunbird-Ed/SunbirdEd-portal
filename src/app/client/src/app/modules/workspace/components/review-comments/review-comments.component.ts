@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 import { takeUntil, map } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 
 @Component({
   selector: 'app-review-comments',
@@ -43,7 +43,7 @@ export class ReviewCommentsComponent implements OnInit, OnChanges, OnDestroy {
 
   @Output() reviewCommentEvent = new EventEmitter();
 
-  @ViewChild('commentInput') commentInput: ElementRef;
+  @ViewChild('commentInput', {static: false}) commentInput: ElementRef;
 
   constructor(public resourceService: ResourceService, public toasterService: ToasterService,
     public userService: UserService, public reviewCommentsService: ReviewCommentsService,

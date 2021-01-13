@@ -26,22 +26,22 @@
               "src/favicon.png",
               {
                 "glob": "**/*.*",
-                "input": "./node_modules/@project-sunbird/common-consumption/assets",
+                "input": "./node_modules/@project-sunbird/common-consumption-v8/assets",
                 "output": "./assets/common-consumption"
               },
               {
                 "glob": "**/*.*",
-                "input": "./node_modules/@project-sunbird/discussions-ui/assets",
+                "input": "./node_modules/@project-sunbird/discussions-ui-v8/assets",
                 "output": "./assets/discussion-ui"
               },
               {
                 "glob": "**/*",
-                "input": "./node_modules/@project-sunbird/sunbird-pdf-player/lib/assets/",
+                "input": "./node_modules/@project-sunbird/sunbird-pdf-player-v8/lib/assets/",
                 "output": "/assets/"
               },
               {
                 "glob": "**/*",
-                "input": "node_modules/@project-sunbird/sunbird-video-player/lib/assets/",
+                "input": "node_modules/@project-sunbird/sunbird-video-player-v8/lib/assets/",
                 "output": "/assets/"
               }
             ],

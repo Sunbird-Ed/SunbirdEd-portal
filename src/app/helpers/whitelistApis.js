@@ -707,12 +707,8 @@ const API_LIST = {
       ]
     },
     '/action/content/v3/read/:do_id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [
-        ROLE.CONTENT_CREATOR,
-        ROLE.COURSE_CREATOR,
-        ROLE.BOOK_CREATOR
-      ]
+      description: 'API is accessed by non logged in user',
+      checksNeeded: []
     },
     '/action/content/v3/bundle': {
       checksNeeded: ['ROLE_CHECK'],
@@ -725,9 +721,7 @@ const API_LIST = {
     '/action/content/v3/hierarchy/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
-        ROLE.CONTENT_CREATOR,
-        ROLE.COURSE_CREATOR,
-        ROLE.BOOK_CREATOR
+        ROLE.PUBLIC
       ]
     },
     '/action/content/v3/hierarchy/update': {
@@ -742,7 +736,10 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.CONTENT_REVIEWER,
-        ROLE.BOOK_REVIEWER
+        ROLE.BOOK_REVIEWER,
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
       ]
     },
     '/action/content/v3/publish/:do_id': {
@@ -799,8 +796,12 @@ const API_LIST = {
       ]
     },
     '/action/content/v3/unlisted/publish/:contentId': {
+      description: 'API is used to share content for Limited Sharing feature',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR,
         ROLE.CONTENT_REVIEWER,
         ROLE.BOOK_REVIEWER
       ]
@@ -1105,6 +1106,37 @@ const API_LIST = {
       ROLE_CHECK: [
         ROLE.ADMIN
       ]
+    },
+    '/v1/tenant/info/:tenantId': {
+      checksNeeded: []
+    },
+    '/v1/user/session/start/:deviceId': {
+      checksNeeded: []
+    },
+    '/content/data/v1/telemetry': {
+      checksNeeded: []
+    },
+    '/getGeneralisedResourcesBundles/:lang/:fileName': {
+      checksNeeded: []
+    },
+    '/service/health': {
+      checksNeeded: []
+    },
+    '/health': {
+      checksNeeded: []
+    },
+    '/plugin/v1/form/read': {
+      checksNeeded: []
+    },
+    // discussion forum apis
+    '/discussion/user/v1/create': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
     }
   },
   URL_PATTERN: [
@@ -1154,7 +1186,10 @@ const API_LIST = {
     '/action/textbook/v1/toc/upload/:do_id',
     '/action/textbook/v1/toc/download/:do_id',
     '/action/content/v1/collaborator/update/:do_id',
-    '/action/system/v3/content/update/:do_id'
+    '/action/system/v3/content/update/:do_id',
+    '/v1/tenant/info/:tenantId',
+    '/v1/user/session/start/:deviceId',
+    '/getGeneralisedResourcesBundles/:lang/:fileName'
   ]
 };
 module.exports = API_LIST;

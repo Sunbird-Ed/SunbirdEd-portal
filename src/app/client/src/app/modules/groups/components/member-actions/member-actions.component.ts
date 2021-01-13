@@ -20,7 +20,7 @@ export interface IMemberActionData {
   styleUrls: ['./member-actions.component.scss']
 })
 export class MemberActionsComponent implements OnDestroy, OnInit {
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
   @Input() action: string;
   @Input() member: IGroupMember;
   @Input() groupName: string;

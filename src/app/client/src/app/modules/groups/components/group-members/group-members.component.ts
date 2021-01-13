@@ -15,7 +15,7 @@ import { GroupsService } from '../../services';
   styleUrls: ['./group-members.component.scss']
 })
 export class GroupMembersComponent implements OnInit, OnDestroy {
-  @ViewChild('searchInputBox') searchInputBox: ElementRef;
+  @ViewChild('searchInputBox', {static: false}) searchInputBox: ElementRef;
   @Input() config: IGroupMemberConfig = {
     showMemberCount: false,
     showSearchBox: false,

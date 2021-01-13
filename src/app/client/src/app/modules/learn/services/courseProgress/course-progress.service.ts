@@ -4,7 +4,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { ConfigService, ServerResponse, ToasterService, ResourceService } from '@sunbird/shared';
 import { ContentService, UserService, CoursesService } from '@sunbird/core';
 import * as _ from 'lodash-es';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 
 @Injectable({
   providedIn: 'root'

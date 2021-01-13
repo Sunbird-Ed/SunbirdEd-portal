@@ -33,7 +33,7 @@
           </div>
          </div>
           <!--/Online/Offline-->
-         
+
         </div>
         <div class="seven wide column p-0 d-flex flex-jc-flex-end flex-ai-center">
           <!--Hamburger Icon-->
@@ -383,7 +383,7 @@
               </svg></i>
             {{resourceService.frmelmnts?.lnk?.logout}}
           </li>
-          <li *appDesktopOnly class="list-item" (click)="toggleSideMenu(false);" appTelemetryInteract 
+          <li *appDesktopOnly class="list-item" (click)="toggleSideMenu(false);" appTelemetryInteract
             [telemetryInteractEdata]="aboutUsEdata" routerLink="/desktop/about-us">
               <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#profileuser"></use>
@@ -468,7 +468,7 @@
                 {{resourceService.frmelmnts?.btn?.login}}
               </a>
             </li>
-            <li *appDesktopOnly class="list-item" (click)="toggleSideMenu(false);" appTelemetryInteract 
+            <li *appDesktopOnly class="list-item" (click)="toggleSideMenu(false);" appTelemetryInteract
             [telemetryInteractEdata]="aboutUsEdata" routerLink="/desktop/about-us">
               <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#profileuser"></use>
@@ -484,9 +484,20 @@
 </div>
 
 <!-- Manage location for an anonymous user -->
-<app-onboarding-location  *ngIf="showLocationPopup" [tenantInfo]="locationTenantInfo"
-[isCustodianOrgUser]="isCustodianUser" [deviceProfile]="deviceProfile" (close)="locationSubmit()">
-</app-onboarding-location>
+<app-location-selection  *ngIf="showLocationPopup"
+                         [deviceProfile]="deviceProfile"
+                         (close)="locationSubmit()">
+  <div slot="popup-header">
+    <img [src]="tenantInfo?.logo" class="brand-logo" alt="logo" />
+    <h1>{{resourceService?.frmelmnts?.lbl?.welcomeToInstance | interpolate:'{instance}': tenantInfo?.titleName}}</h1>
+  </div>
+  <div slot="popup-sub-header">
+    <p class="subtitle">{{resourceService?.messages?.imsg?.m0075}}</p>
+  </div>
+  <div slot="popup-footer">
+    <p class="py-16">{{resourceService?.messages?.imsg?.m0074}}</p>
+  </div>
+</app-location-selection>
 <!-- Manage location for an anonymous user -->
 
 

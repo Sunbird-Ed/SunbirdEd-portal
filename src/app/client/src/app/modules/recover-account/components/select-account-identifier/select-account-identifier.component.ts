@@ -11,7 +11,7 @@ import { RecaptchaComponent } from 'ng-recaptcha';
   styleUrls: ['./select-account-identifier.component.scss']
 })
 export class SelectAccountIdentifierComponent implements OnInit {
-  @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
+  @ViewChild('captchaRef', {static: false}) captchaRef: RecaptchaComponent;
   selectedAccountIdentifier: any = {};
   validIdentifiers = [];
   errorCount = 0;
