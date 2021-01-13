@@ -94,6 +94,7 @@ const checkIsStaticRoute = (REQ_URL) => {
     '.gif',
     '.html',
     '/dist/',
+    '/streaming/',
     '/resourcebundles/',
     '/assets/',
     '/explore',
