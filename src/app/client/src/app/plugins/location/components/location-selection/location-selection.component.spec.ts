@@ -128,16 +128,11 @@ describe('LocationSelectionComponent', () => {
             // assert
             expect(locationSelectionComponent.userService.loggedIn).toBeTruthy();
             expect(locationSelectionComponent['sbFormLocationSelectionDelegate'].updateUserLocation).toHaveBeenCalled();
-            expect(mockLocationService.updateProfile).toHaveBeenCalledWith({
-                userId: 'sample-user-id',
-                firstName: locationSelectionComponent['sbFormLocationSelectionDelegate'].formGroup.value.name,
-                userType: locationSelectionComponent['sbFormLocationSelectionDelegate'].formGroup.value.persona
-            });
         });
 
         it('should be unable update user profile', async () => {
             spyOn(locationSelectionComponent['sbFormLocationSelectionDelegate'], 'updateUserLocation').and
-                .returnValue(Promise.resolve([{}]));
+                .returnValue(Promise.reject({}));
             locationSelectionComponent.userService = {
                 loggedIn: true,
                 userid: 'sample-user-id',
@@ -148,7 +143,6 @@ describe('LocationSelectionComponent', () => {
                     persona: 'teacher'
                 }
             } as any;
-            spyOn(mockLocationService, 'updateProfile').and.returnValue(throwError({}));
             spyOn(locationSelectionComponent, 'closeModal').and.callFake(() => {});
             spyOn(mockToasterService, 'error').and.returnValue('unable to load sample data');
             // act
@@ -156,11 +150,6 @@ describe('LocationSelectionComponent', () => {
             // assert
             expect(locationSelectionComponent.userService.loggedIn).toBeTruthy();
             expect(locationSelectionComponent['sbFormLocationSelectionDelegate'].updateUserLocation).toHaveBeenCalled();
-            expect(mockLocationService.updateProfile).toHaveBeenCalledWith({
-                userId: 'sample-user-id',
-                firstName: locationSelectionComponent['sbFormLocationSelectionDelegate'].formGroup.value.name,
-                userType: locationSelectionComponent['sbFormLocationSelectionDelegate'].formGroup.value.persona
-            });
             expect(mockToasterService.error).toHaveBeenCalledWith(mockResourceService.messages.fmsg.m0049);
         });
     });

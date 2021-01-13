@@ -12,6 +12,9 @@ import {ServerResponse} from '@sunbird/shared';
 describe('SbFormLocationSelectionDelegate', () => {
   let sbFormLocationSelectionDelegate: SbFormLocationSelectionDelegate;
   const mockUserService: Partial<UserService> = {
+    get userid(): string {
+      return '';
+    },
     get userProfile(): any {
       return {};
     },
@@ -202,7 +205,7 @@ describe('SbFormLocationSelectionDelegate', () => {
 
           // assert
           expect(mockFormService.getFormConfig).toHaveBeenCalledWith(jasmine.objectContaining({
-            formType: 'profileConfig', contentType: 'SOME_STATE_ID', formAction: 'get'
+            formType: 'profileConfig', contentType: 'SOME_STATE_CODE', formAction: 'get'
           }));
         });
 
@@ -242,7 +245,7 @@ describe('SbFormLocationSelectionDelegate', () => {
 
           // assert
           expect((mockFormService.getFormConfig as jasmine.Spy).calls.argsFor(0)).toEqual([jasmine.objectContaining({
-            formType: 'profileConfig', contentType: 'SOME_STATE_ID', formAction: 'get'
+            formType: 'profileConfig', contentType: 'SOME_STATE_CODE', formAction: 'get'
           })]);
           expect((mockFormService.getFormConfig as jasmine.Spy).calls.argsFor(1)).toEqual([jasmine.objectContaining({
             formType: 'profileConfig', contentType: 'default', formAction: 'get'
@@ -650,7 +653,7 @@ describe('SbFormLocationSelectionDelegate', () => {
         spyOn(mockFormService, 'getFormConfig').and.callFake((arg) => {
           // assert
           expect(arg).toEqual({
-            formType: 'profileConfig', contentType: 'SOME_SELECTED_STATE_ID', formAction: 'get'
+            formType: 'profileConfig', contentType: 'SOME_SELECTED_STATE_CODE', formAction: 'get'
           });
           done();
           return of([]);
@@ -716,6 +719,7 @@ describe('SbFormLocationSelectionDelegate', () => {
         // arrange
         sbFormLocationSelectionDelegate.shouldDeviceProfileLocationUpdate = false;
         sbFormLocationSelectionDelegate.shouldUserProfileLocationUpdate = true;
+        spyOnProperty(mockUserService, 'userid', 'get').and.returnValue('SOME_USER_ID');
         spyOn(mockLocationService, 'updateProfile').and.callThrough();
 
         // act
@@ -724,6 +728,49 @@ describe('SbFormLocationSelectionDelegate', () => {
 
         // assert
         expect(mockLocationService.updateProfile).toHaveBeenCalledWith({
+          userId: 'SOME_USER_ID',
+          locationCodes: ['SOME_SELECTED_STATE_CODE', 'SOME_SELECTED_DISTRICT_CODE']
+        });
+      });
+
+      it('should update declared location on userProfile along with other selections if selected', async () => {
+        // arrange
+        sbFormsFormGroup = new FormGroup({
+          'name': new FormControl('SOME_ENTERED_NAME'),
+          'persona': new FormControl('SOME_SELECTED_PERSONA'),
+          'children': new FormGroup({
+            'persona': new FormGroup({
+              'subPersona': new FormControl('SOME_SELECTED_SUB_PERSONA'),
+              'state': new FormControl({
+                code: 'SOME_SELECTED_STATE_CODE',
+                name: 'SOME_SELECTED_STATE_NAME',
+                id: 'SOME_SELECTED_STATE_ID',
+                type: 'state'
+              }),
+              'district': new FormControl({
+                code: 'SOME_SELECTED_DISTRICT_CODE',
+                name: 'SOME_SELECTED_DISTRICT_NAME',
+                id: 'SOME_SELECTED_DISTRICT_ID',
+                type: 'district'
+              }),
+            })
+          })
+        });
+        sbFormLocationSelectionDelegate.shouldDeviceProfileLocationUpdate = false;
+        sbFormLocationSelectionDelegate.shouldUserProfileLocationUpdate = true;
+        spyOnProperty(mockUserService, 'userid', 'get').and.returnValue('SOME_USER_ID');
+        spyOn(mockLocationService, 'updateProfile').and.callThrough();
+
+        // act
+        await sbFormLocationSelectionDelegate.onFormInitialize(sbFormsFormGroup);
+        await sbFormLocationSelectionDelegate.updateUserLocation();
+
+        // assert
+        expect(mockLocationService.updateProfile).toHaveBeenCalledWith({
+          firstName: 'SOME_ENTERED_NAME',
+          userType: 'SOME_SELECTED_PERSONA',
+          userSubType: 'SOME_SELECTED_SUB_PERSONA',
+          userId: 'SOME_USER_ID',
           locationCodes: ['SOME_SELECTED_STATE_CODE', 'SOME_SELECTED_DISTRICT_CODE']
         });
       });
