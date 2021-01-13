@@ -1116,6 +1116,492 @@ const API_LIST = {
           { entity: '__session__userId', params: [] }
         ]
       }
+    },
+    '/discussion/forum/v2/read': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/forum/v2/create': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/tags': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/notifications': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/category/:category_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/categories': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/categories/:cid/moderators': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/user/:userslug': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/user/:userslug/upvoted': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/user/:userslug/downvoted': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/user/:userslug/bookmarks': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/user/:userslug/best': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/unread': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/recent': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/popular': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/top': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/topic/:topic_id/:slug': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/unread/total': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/topic/teaser/:topic_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/topic/pagination/:topic_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/groups': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/groups/:slug': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/groups/:slug/members': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/user/:userslug/downvoted': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/recent/posts/:day': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/v2/topics': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/v2/topics/:tid': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/v2/topics/:tid/state': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/v2/topics/:tid/follow': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/v2/topics/:tid/tags': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/v2/topics/:tid/pin': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/v2/categories': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/v2/categories/:cid': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/v2/categories/:cid/state': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/v2/categories/:cid/privileges': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/v2/groups': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/v2/groups/:slug': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/v2/groups/:slug/membership': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/v2/groups/:slug/membership/:uid': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/v2/posts/:pid': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/v2/posts/:pid': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/v2/posts/:pid/state': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/v2/posts/:pid/vote': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/v2/posts/:pid/bookmark': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/v2/users': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/v2/users/:uid': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/v2/users/:uid/password': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/v2/users/:uid/follow': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/v2/users/:uid/chats': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/v2/users/:uid/ban': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/v2/users/:uid/tokens': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/v2/users/:uid/tokens/:token': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/user/username/:username': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
+    },
+    '/discussion/user/uid/:uid': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [] }
+        ]
+      }
     }
   },
   URL_PATTERN: [
@@ -1165,8 +1651,7 @@ const API_LIST = {
     '/action/textbook/v1/toc/upload/:do_id',
     '/action/textbook/v1/toc/download/:do_id',
     '/action/content/v1/collaborator/update/:do_id',
-    '/action/system/v3/content/update/:do_id',
-    '/discussion/user/v1/create'
+    '/action/system/v3/content/update/:do_id'
   ]
 };
 module.exports = API_LIST;
