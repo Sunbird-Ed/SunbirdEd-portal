@@ -1,7 +1,7 @@
 import {Location as SbLocation} from '@project-sunbird/client-services/models/location';
 import {FieldConfig, FieldConfigOption} from 'common-form-elements';
 import {FormGroup} from '@angular/forms';
-import {distinctUntilChanged, take} from 'rxjs/operators';
+import {distinctUntilChanged, map, take} from 'rxjs/operators';
 import {SbFormLocationOptionsFactory} from './sb-form-location-options.factory';
 import {Subscription} from 'rxjs';
 import {IDeviceProfile} from '@sunbird/shared-feature';
@@ -48,9 +48,15 @@ export class SbFormLocationSelectionDelegate {
       this.deviceProfile = deviceProfile;
     }
 
-    this.formLocationSuggestions = this.getFormSuggestionsStrategy();
-
     try {
+      if (!this.deviceProfile) {
+        this.deviceProfile = await this.deviceRegisterService.fetchDeviceProfile().pipe(
+          map((response) => _.get(response, 'result'))
+        ).toPromise();
+      }
+
+      this.formLocationSuggestions = this.getFormSuggestionsStrategy();
+
       // try loading state specific form
       const formInputParams = _.cloneDeep(SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST);
       if (this.userService.loggedIn) {
