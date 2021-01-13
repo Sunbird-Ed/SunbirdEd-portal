@@ -88,16 +88,23 @@ export class UserSDK {
   }
 
   public async getLoggedInUser(userId?: string, withToken?: boolean): Promise<ILoggedInUser> {
-    if(!userId) {
+    if (!userId) {
       const userSession = await this.getUserSession();
       userId = _.get(userSession, 'userId');
     }
     const users = await this.findByUserId(userId);
     let user = users[0];
-    if(!withToken) {
+    if (!withToken) {
       user = _.omit(user, 'accessToken');
     }
     return user;
+  }
+
+  public async getAllManagedUsers() {
+    const query = {
+      selector: { managedBy: { $exists: true } }
+    };
+    return this.dbSDK.find(USER_DB, query).then(result => result.docs);
   }
 
   public async updateLoggedInUser(user: ILoggedInUser) {
@@ -123,7 +130,7 @@ export class UserSDK {
       userId = _.get(userSession, 'userId');
     }
     const users = await this.findByUserId(userId);
-    if(users.length > 0) {
+    if (users.length > 0) {
       const { _id } = users[0];
       return this.dbSDK.delete(USER_DB, _id);
     } else {
