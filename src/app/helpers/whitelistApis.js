@@ -707,12 +707,8 @@ const API_LIST = {
       ]
     },
     '/action/content/v3/read/:do_id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [
-        ROLE.CONTENT_CREATOR,
-        ROLE.COURSE_CREATOR,
-        ROLE.BOOK_CREATOR
-      ]
+      description: 'API is accessed by non logged in user',
+      checksNeeded: []
     },
     '/action/content/v3/bundle': {
       checksNeeded: ['ROLE_CHECK'],
@@ -800,8 +796,12 @@ const API_LIST = {
       ]
     },
     '/action/content/v3/unlisted/publish/:contentId': {
+      description: 'API is used to share content for Limited Sharing feature',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR,
         ROLE.CONTENT_REVIEWER,
         ROLE.BOOK_REVIEWER
       ]
