@@ -4,10 +4,13 @@ import {FormGroup} from '@angular/forms';
 import {distinctUntilChanged, take} from 'rxjs/operators';
 import {SbFormLocationOptionsFactory} from './sb-form-location-options.factory';
 import {Subscription} from 'rxjs';
-import {LocationService} from '../..';
-import {DeviceRegisterService, FormService, UserService} from '@sunbird/core';
 import {IDeviceProfile} from '@sunbird/shared-feature';
 import * as _ from 'lodash-es';
+
+import {LocationService} from '../../services/location/location.service';
+import {UserService} from '../../../../modules/core/services/user/user.service';
+import {DeviceRegisterService} from '../../../../modules/core/services/device-register/device-register.service';
+import {FormService} from '../../../../modules/core/services/form/form.service';
 
 type UseCase = 'SIGNEDIN_GUEST' | 'SIGNEDIN' | 'GUEST';
 
