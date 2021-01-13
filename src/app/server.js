@@ -69,12 +69,6 @@ app.use(cookieParser())
 app.use(helmet())
 app.use(addLogContext)
 
-// ****** DO NOT MODIFY THIS CODE BLOCK / RE-ORDER ******
-app.all('*', apiWhiteListLogger());
-if (envHelper.PORTAL_API_WHITELIST_CHECK == 'true') {
-  app.all('*', isAllowed());
-}
-// ****** DO NOT MODIFY THIS CODE BLOCK / RE-ORDER ******
 app.all([
   '/learner/*', '/content/*', '/user/*', '/merge/*', '/action/*', '/courseReports/*', '/course-reports/*', '/admin-reports/*',
   '/certreg/*', '/device/*', '/google/*', '/report/*', '/reports/*', '/v2/user/*', '/v1/sso/*', '/migrate/*', '/plugins/*', '/content-plugins/*',
@@ -158,7 +152,12 @@ app.get('/endSession', endSession, (req, res) => {
   res.status(200)
   res.end()
 });
-
+// ****** DO NOT MODIFY THIS CODE BLOCK / RE-ORDER ******
+app.all('*', apiWhiteListLogger());
+if (envHelper.PORTAL_API_WHITELIST_CHECK == 'true') {
+  app.all('*', isAllowed());
+}
+// ****** DO NOT MODIFY THIS CODE BLOCK / RE-ORDER ******
 // device routes
 require('./routes/deviceRoutes.js')(app);
 require('./routes/googleRoutes.js')(app);
