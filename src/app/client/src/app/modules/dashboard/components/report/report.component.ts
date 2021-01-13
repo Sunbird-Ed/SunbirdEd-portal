@@ -1,5 +1,5 @@
 import { TelemetryService } from '@sunbird/telemetry';
-import { INoResultMessage, ResourceService, ToasterService, NavigationHelperService, LayoutService, ConfigService } from '@sunbird/shared';
+import { INoResultMessage, ResourceService, ToasterService, NavigationHelperService, LayoutService } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, ViewChildren, QueryList, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { ReportService } from '../../services';
@@ -79,9 +79,9 @@ export class ReportComponent implements OnInit {
     private resourceService: ResourceService, private toasterService: ToasterService,
     private navigationhelperService: NavigationHelperService,
     private router: Router, private telemetryService: TelemetryService, private layoutService: LayoutService,
-    private cdr: ChangeDetectorRef,
-    private configService: ConfigService
+    private cdr: ChangeDetectorRef
   ) { }
+
 
   ngOnInit() {
     this.initLayout();

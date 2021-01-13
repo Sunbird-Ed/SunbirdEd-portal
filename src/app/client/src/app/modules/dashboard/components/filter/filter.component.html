@@ -4,7 +4,7 @@
     <div *ngIf="showGraphStats" class="d-flex flex-ai-center">{{resourceService?.frmelmnts?.lbl?.graphStat }}:
       <sui-checkbox class="toggle ml-8" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
         [telemetryInteractEdata]="setTelemetryInteractEdata('graph-statistics')"
-        [telemetryInteractCdata]="telemetryCdata" (checkChange)="showStats = $event; "></sui-checkbox>
+        [telemetryInteractCdata]="telemetryCdata" (checkChange)="statsChange($event)"></sui-checkbox>
     </div>
     <div class="mr-8" *ngIf="chartType === 'bar' || chartType === 'line'">
       <!-- <button (click)="addChartSummary()" *ngIf="chartConfig.id && isUserReportAdmin" type="button"

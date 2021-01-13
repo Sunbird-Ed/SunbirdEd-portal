@@ -12,7 +12,7 @@ import { Component, OnInit, Input, ViewChild, OnDestroy, ElementRef, ChangeDetec
 import * as _ from 'lodash-es';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Subscription, Subject, timer, of } from 'rxjs';
-import { distinctUntilChanged, map, debounceTime, takeUntil, switchMap } from 'rxjs/operators';
+import { map, takeUntil, switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
 import { IInteractEventObject } from '@sunbird/telemetry';
 import { IBigNumberChart } from '../../interfaces/chartData';
@@ -35,7 +35,6 @@ export class DataChartComponent implements OnInit, OnDestroy {
  // contains the chart configuration
   chartConfig: any;
   chartData: any;
-  showStats: Boolean = false;
   chartType: any;
   chartColors: any;
   legend: any;
@@ -48,9 +47,8 @@ export class DataChartComponent implements OnInit, OnDestroy {
   showFilters: Boolean = false;
   filtersSubscription: Subscription;
   noResultsFound: Boolean;
-
+  showStats: Boolean = false;
   availableChartTypeOptions = ['Bar', 'Line'];
-
   pickerMinDate: any; // min date that can be selected in the datepicker
   pickerMaxDate: any; // max date that can be selected in datepicker
 
@@ -81,16 +79,6 @@ export class DataChartComponent implements OnInit, OnDestroy {
   @ViewChild('chartCanvas') chartCanvas;
 
 
- 
-
-  ranges: any = {
-    'Today': [moment(), moment()],
-    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-    'This Month': [moment().startOf('month'), moment().endOf('month')],
-    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-  };
 
   @ViewChild(BaseChartDirective) chartDirective: BaseChartDirective;
   constructor(public resourceService: ResourceService, private fb: FormBuilder, private cdr: ChangeDetectorRef,
@@ -194,7 +182,9 @@ export class DataChartComponent implements OnInit, OnDestroy {
       this.calculateBigNumber();
     }
     const refreshInterval = _.get(this.chartConfig, 'options.refreshInterval');
-    if (refreshInterval) { this.refreshChartDataAfterInterval(refreshInterval); }
+    if (refreshInterval) {
+       this.refreshChartDataAfterInterval(refreshInterval);
+       }
     this.filters = _.get(this.chartConfig, 'filters') || [];
     this.chartSummary$ = this.getChartSummary();
   }
@@ -208,8 +198,9 @@ export class DataChartComponent implements OnInit, OnDestroy {
     ).subscribe(apiResponse => {
       if (_.get(apiResponse, 'responseCode') === 'OK') {
         const chartData = _.get(apiResponse, 'result.data');
-        this.getDataSetValue(chartData);
-        this.resetFilters = true;
+        this.chartData = chartData;
+        this.resetFilters = { data:chartData };
+
       }
     }, err => {
       console.log('failed to update chart data', err);
@@ -404,6 +395,9 @@ export class DataChartComponent implements OnInit, OnDestroy {
     this.chartType = data.chartType;
     this.cdr.detectChanges();
     this.getDataSetValue(data.chartData);
+  }
+  public graphStatsChange(data:any):void {
+    this.showStats=data;
   }
 
 }

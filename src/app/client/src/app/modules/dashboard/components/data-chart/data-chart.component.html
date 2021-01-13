@@ -2,16 +2,16 @@
 
   <label class="pad5"> {{ this.chartOptions?.title?.text  }} </label>
   <app-filter [resetFilters]="resetFilters"  [hideElements]="hideElements" [selectedFilter]="selectedFilters" [filters]="filters" (filterChanged)="filterChanged($event)" [chartData]="chartData"
- [chartType]="chartType" [telemetryInteractObject]="telemetryInteractObject">
+ [chartType]="chartType" [telemetryInteractObject]="telemetryInteractObject" [showGraphStats]="showGraphStats" (graphStatsChange)="graphStatsChange($event)">
  </app-filter>
 
-  <div *ngIf="showStats">
-    <div _ngcontent-c14="" class="graph-statistics py-16" *ngFor="let stat of loadash.keys(resultStatistics)">
-      {{stat}} <div class="sb-label sb-label-table sb-label-primary-100 mr-4"
-        *ngFor="let op of loadash.keys(resultStatistics[stat])"> {{op}} : {{resultStatistics[stat][op]}}
-      </div>
+ <div *ngIf="showStats">
+  <div _ngcontent-c14="" class="graph-statistics py-16" *ngFor="let stat of loadash.keys(resultStatistics)">
+    {{stat}} <div class="sb-label sb-label-table sb-label-primary-100 mr-4"
+      *ngFor="let op of loadash.keys(resultStatistics[stat])"> {{op}} : {{resultStatistics[stat][op]}}
     </div>
   </div>
+</div>
 
   <div *ngIf="!showFilters && isUserReportAdmin && chartConfig.id" [ngClass]="{'hide': hideElements}"
     class="d-flex flex-jc-flex-end  mt-8 mr-8 sb-last-update-status">

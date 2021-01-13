@@ -21,7 +21,9 @@ export class FilterComponent implements OnInit, OnDestroy {
   @Input() filters: any;
   @Input() telemetryInteractObject: IInteractEventObject;
   @Input() chartType: any;
+  @Input() showGraphStats;
   @Output() filterChanged: EventEmitter<any> = new EventEmitter<any>();
+  @Output() graphStatsChange: EventEmitter<any> = new EventEmitter<any>();
 
   availableChartTypeOptions = ['Bar', 'Line'];
   filtersFormGroup: FormGroup;
@@ -34,12 +36,11 @@ export class FilterComponent implements OnInit, OnDestroy {
   selectedFilters: {};
   noResultsFound: Boolean;
   resultStatistics = {};
-  @ViewChild('datePickerForFilters') datepicker: ElementRef;
   selectedStartDate: any;
   selectedEndDate: any;
   loadash = _;
   showFilters: Boolean = true;
-
+  
   public unsubscribe = new Subject<void>();
   private _selectedFilter; // private property _item
   private _resetFilters;
@@ -68,9 +69,23 @@ export class FilterComponent implements OnInit, OnDestroy {
     if (val) {
         // to apply current filters to new updated chart data;
         const currentFilterValue = _.get(this.filtersFormGroup, 'value');
+        this.resetFilter();
+        this.formGeneration(val.data);
+        this.filtersFormGroup.patchValue(currentFilterValue);
         this.selectedFilters = currentFilterValue;
+    
     }
   }
+
+  ranges: any = {
+    'Today': [moment(), moment()],
+    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+    'This Month': [moment().startOf('month'), moment().endOf('month')],
+    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+  };
+  @ViewChild('datePickerForFilters') datepicker: ElementRef;
 
   constructor(
     public resourceService: ResourceService,
@@ -81,7 +96,11 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   }
 
+  statsChange($event){
+    this.graphStatsChange.emit($event);
+  }
   ngOnInit() {
+
     if (this.filters) {
       this.buildFiltersForm();
     }
@@ -118,7 +137,8 @@ export class FilterComponent implements OnInit, OnDestroy {
         distinctUntilChanged()
       )
       .subscribe((filters) => {
-        this.selectedFilters = _.omit(filters, this.dateFilterReferenceName); // to omit date inside labels
+        this.selectedFilters = filters;
+        // this.selectedFilters = _.omit(filters, this.dateFilterReferenceName); // to omit date inside labels
         this.filterData();
 
       }, (err) => {
@@ -180,6 +200,7 @@ export class FilterComponent implements OnInit, OnDestroy {
         chartType: this.chartType
       });
     }
+    
   }
 
 }
