@@ -1131,7 +1131,7 @@ const API_LIST = {
     },
     '/plugin/v1/form/read': {
       checksNeeded: []
-    }
+    },
     // discussion forum apis
     '/discussion/user/v1/create': {
       checksNeeded: ['ROLE_CHECK'],
