@@ -1296,10 +1296,6 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
-    '/discussion/v2/posts/:pid': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
-    },
     '/discussion/v2/posts/:pid/state': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
@@ -1403,7 +1399,45 @@ const API_LIST = {
     '/action/system/v3/content/update/:do_id',
     '/v1/tenant/info/:tenantId',
     '/v1/user/session/start/:deviceId',
-    '/getGeneralisedResourcesBundles/:lang/:fileName'
+    '/getGeneralisedResourcesBundles/:lang/:fileName',
+    '/discussion/category/:category_id',
+    '/discussion/categories/:cid/moderators',
+    '/discussion/user/:userslug',
+    '/discussion/user/:userslug/upvoted',
+    '/discussion/user/:userslug/downvoted',
+    '/discussion/user/:userslug/bookmarks',
+    '/discussion/user/:userslug/best',
+    '/discussion/topic/:topic_id/:slug',
+    '/discussion/topic/teaser/:topic_id',
+    '/discussion/topic/pagination/:topic_id',
+    '/discussion/groups/:slug',
+    '/discussion/groups/:slug/members',
+    '/discussion/user/:userslug/downvoted',
+    '/discussion/recent/posts/:day',
+    '/discussion/v2/topics/:tid',
+    '/discussion/v2/topics/:tid/state',
+    '/discussion/v2/topics/:tid/follow',
+    '/discussion/v2/topics/:tid/tags',
+    '/discussion/v2/topics/:tid/pin',
+    '/discussion/v2/categories/:cid',
+    '/discussion/v2/categories/:cid/state',
+    '/discussion/v2/categories/:cid/privileges',
+    '/discussion/v2/groups/:slug',
+    '/discussion/v2/groups/:slug/membership',
+    '/discussion/v2/groups/:slug/membership/:uid',
+    '/discussion/v2/posts/:pid',
+    '/discussion/v2/posts/:pid/state',
+    '/discussion/v2/posts/:pid/vote',
+    '/discussion/v2/posts/:pid/bookmark',
+    '/discussion/v2/users/:uid',
+    '/discussion/v2/users/:uid/password',
+    '/discussion/v2/users/:uid/follow',
+    '/discussion/v2/users/:uid/chats',
+    '/discussion/v2/users/:uid/ban',
+    '/discussion/v2/users/:uid/tokens',
+    '/discussion/v2/users/:uid/tokens/:token',
+    '/discussion/user/username/:username',
+    '/discussion/user/uid/:uid'
   ]
 };
 module.exports = API_LIST;
