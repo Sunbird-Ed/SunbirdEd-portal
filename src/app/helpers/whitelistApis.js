@@ -725,9 +725,7 @@ const API_LIST = {
     '/action/content/v3/hierarchy/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
-        ROLE.CONTENT_CREATOR,
-        ROLE.COURSE_CREATOR,
-        ROLE.BOOK_CREATOR
+        ROLE.PUBLIC
       ]
     },
     '/action/content/v3/hierarchy/update': {
@@ -742,7 +740,10 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.CONTENT_REVIEWER,
-        ROLE.BOOK_REVIEWER
+        ROLE.BOOK_REVIEWER,
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
       ]
     },
     '/action/content/v3/publish/:do_id': {
