@@ -641,7 +641,9 @@ describe('SbFormLocationSelectionDelegate', () => {
         sbFormLocationSelectionDelegate.isLocationFormLoading = true;
         sbFormLocationSelectionDelegate['stateChangeSubscription'] = undefined;
         const stateFormControl = new FormControl('');
+        const personaFormControl = new FormControl('SOME_DEFAULT_PERSONA');
         sbFormLocationSelectionDelegate.formGroup = new FormGroup({
+          'persona': personaFormControl,
           'children': new FormGroup({
             'persona': new FormGroup({
               'state': stateFormControl
@@ -661,13 +663,16 @@ describe('SbFormLocationSelectionDelegate', () => {
 
         // act
         sbFormLocationSelectionDelegate.onDataLoadStatusChange('LOADED');
-        stateFormControl.patchValue({
-          code: 'SOME_SELECTED_STATE_CODE',
-          name: 'SOME_SELECTED_STATE_NAME',
-          id: 'SOME_SELECTED_STATE_ID',
-          type: 'SOME_SELECTED_STATE_TYPE'
-        } as Location);
-      });
+        personaFormControl.patchValue('SOME_PERSONA');
+        setTimeout(() => {
+          stateFormControl.patchValue({
+            code: 'SOME_SELECTED_STATE_CODE',
+            name: 'SOME_SELECTED_STATE_NAME',
+            id: 'SOME_SELECTED_STATE_ID',
+            type: 'SOME_SELECTED_STATE_TYPE'
+          } as Location);
+        }, 200);
+      }, 500);
     });
   });
 
