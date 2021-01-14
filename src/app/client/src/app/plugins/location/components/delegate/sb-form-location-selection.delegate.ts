@@ -1,9 +1,9 @@
 import {Location as SbLocation} from '@project-sunbird/client-services/models/location';
 import {FieldConfig, FieldConfigOption} from 'common-form-elements';
 import {FormGroup} from '@angular/forms';
-import {distinctUntilChanged, map, take} from 'rxjs/operators';
+import {delay, distinctUntilChanged, map, mergeMap, take} from 'rxjs/operators';
 import {SbFormLocationOptionsFactory} from './sb-form-location-options.factory';
-import {Subscription} from 'rxjs';
+import {concat, defer, of, Subscription} from 'rxjs';
 import {IDeviceProfile} from '@sunbird/shared-feature';
 import * as _ from 'lodash-es';
 
@@ -30,7 +30,7 @@ export class SbFormLocationSelectionDelegate {
   private formSuggestionsStrategy: 'userLocation' | 'userDeclared' | 'ipLocation';
   private formLocationSuggestions: Partial<SbLocation>[] = [];
   private formLocationOptionsFactory: SbFormLocationOptionsFactory;
-  private formValue: {} = {};
+  private prevFormValue: {} = {};
   private stateChangeSubscription?: Subscription;
 
   constructor(
@@ -93,7 +93,6 @@ export class SbFormLocationSelectionDelegate {
     if (value['children'] && value['children']['persona']) {
       this.shouldDeviceProfileLocationUpdate = true;
       this.shouldUserProfileLocationUpdate = true;
-      this.formValue = value['children']['persona'];
     }
   }
 
@@ -103,12 +102,20 @@ export class SbFormLocationSelectionDelegate {
     } else {
       this.isLocationFormLoading = false;
 
-      // on state load
       if (!this.stateChangeSubscription) {
-        this.stateChangeSubscription = this.formGroup.get('children.persona.state').valueChanges.pipe(
+        this.stateChangeSubscription = concat(
+          of(this.formGroup.get('persona').value),
+          this.formGroup.get('persona').valueChanges
+        ).pipe(
           distinctUntilChanged(),
-          take(1)
-        ).subscribe(async (newStateValue) => {
+          delay(100),
+          mergeMap(() => defer(() => {
+            return this.formGroup.get('children.persona.state').valueChanges.pipe(
+              distinctUntilChanged(),
+              take(1)
+            );
+          }))
+        ).subscribe((newStateValue) => {
           // on state change
           if (!newStateValue) { return; }
 
@@ -116,6 +123,8 @@ export class SbFormLocationSelectionDelegate {
           this.stateChangeSubscription = undefined;
 
           this.isLocationFormLoading = true;
+
+          this.prevFormValue = _.cloneDeep(this.formGroup.value);
 
           this.loadForm(
             {
@@ -203,6 +212,8 @@ export class SbFormLocationSelectionDelegate {
         }
       }
 
+      config.default = _.get(this.prevFormValue, config.code) || config.default;
+
       if (config.templateOptions['dataSrc'] && config.templateOptions['dataSrc']['marker'] === 'SUPPORTED_PERSONA_LIST') {
         config.templateOptions.options = (
           await this.formService.getFormConfig(
@@ -239,8 +250,6 @@ export class SbFormLocationSelectionDelegate {
 
             if (initial) {
               personaLocationConfig.default = this.formLocationSuggestions.find(l => l.type === personaLocationConfig.code);
-            } else {
-              personaLocationConfig.default = this.formValue[personaLocationConfig.code];
             }
 
             switch (personaLocationConfig.templateOptions['dataSrc']['marker']) {
@@ -263,6 +272,10 @@ export class SbFormLocationSelectionDelegate {
                 break;
               }
             }
+
+            personaLocationConfig.default =
+              _.get(this.prevFormValue, `children.persona.${personaLocationConfig.code}`) ||
+              personaLocationConfig.default;
           }
         }
       }
@@ -279,6 +292,15 @@ export class SbFormLocationSelectionDelegate {
       Array.isArray(userProfileData.userLocations) && userProfileData.userLocations.length >= 1;
 
     if (this.userService.loggedIn) {
+      /* istanbul ignore else */
+      if (isUserProfileLocationUpdated) {
+        this.formSuggestionsStrategy = 'userLocation';
+        this.shouldUserProfileLocationUpdate = false;
+        this.shouldDeviceProfileLocationUpdate = false;
+
+        suggestions = this.userService.userProfile.userLocations;
+      }
+
       /* istanbul ignore else */
       if (
         !isUserProfileLocationUpdated
