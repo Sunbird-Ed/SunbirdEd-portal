@@ -4,7 +4,7 @@ import { ResourceService } from '@sunbird/shared';
 import { GeneraliseLabelService } from '@sunbird/core';
 import { configureTestSuite } from '@sunbird/test-util';
 
-fdescribe('CourseDetailsComponent', () => {
+describe('CourseDetailsComponent', () => {
   let component: CourseDetailsComponent;
   let fixture: ComponentFixture<CourseDetailsComponent>;
 
