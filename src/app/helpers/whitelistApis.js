@@ -1144,6 +1144,9 @@ const API_LIST = {
     '/v1/tenant/info/': {
       checksNeeded: []
     },
+    '/device/register/:deviceId': {
+      checksNeeded: []
+    },
     // discussion forum apis
     '/discussion/user/v1/create': {
       checksNeeded: ['ROLE_CHECK'],
@@ -1450,7 +1453,8 @@ const API_LIST = {
     '/discussion/v2/users/:uid/tokens',
     '/discussion/v2/users/:uid/tokens/:token',
     '/discussion/user/username/:username',
-    '/discussion/user/uid/:uid'
+    '/discussion/user/uid/:uid',
+    '/device/register/:deviceId'
   ]
 };
 module.exports = API_LIST;
