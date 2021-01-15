@@ -17,6 +17,7 @@ const ROLE = {
   BOOK_CREATOR: 'BOOK_CREATOR',
   BOOK_REVIEWER: 'BOOK_REVIEWER',
   FLAG_REVIEWER: 'FLAG_REVIEWER',
+  SYSTEM_ADMINISTRATION: 'SYSTEM_ADMINISTRATION',
   ADMIN: 'ADMIN',
   PUBLIC: 'PUBLIC',
   ALL: 'ALL'  // Use when user does not have PUBLIC role (Case: User bulk upload)
@@ -1152,18 +1153,17 @@ const API_LIST = {
     '/api/data/v1/form/update': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
-        ROLE.CONTENT_CREATOR,
-        ROLE.COURSE_CREATOR,
-        ROLE.BOOK_CREATOR
+        ROLE.SYSTEM_ADMINISTRATION
       ],
     },
     '/plugin/v1/form/update': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
-        ROLE.CONTENT_CREATOR,
-        ROLE.COURSE_CREATOR,
-        ROLE.BOOK_CREATOR
+        ROLE.SYSTEM_ADMINISTRATION
       ]
+    },
+    '/google/auth': {
+      checksNeeded: []
     },
     // discussion forum apis
     '/discussion/user/v1/create': {
