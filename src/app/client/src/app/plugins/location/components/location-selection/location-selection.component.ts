@@ -7,8 +7,6 @@ import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { PopupControlService } from '../../../../service/popup-control.service';
 import { IDeviceProfile } from '../../../../modules/shared-feature/interfaces/deviceProfile';
 import { SbFormLocationSelectionDelegate } from '../delegate/sb-form-location-selection.delegate';
-import { Location as SbLocation } from '@project-sunbird/client-services/models/location';
-import * as _ from 'lodash-es';
 
 @Component({
   selector: 'app-location-selection',
@@ -85,16 +83,7 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
 
   async updateUserLocation() {
     try {
-      const updatedLocationDetails: SbLocation[] = await this.sbFormLocationSelectionDelegate.updateUserLocation();
-
-      if (this.userService.loggedIn) {
-        const payload = {
-          userId: _.get(this.userService, 'userid'),
-          firstName: this.sbFormLocationSelectionDelegate.formGroup.value['name'],
-          userType: this.sbFormLocationSelectionDelegate.formGroup.value['persona'],
-        };
-        await this.locationService.updateProfile(payload).toPromise();
-      }
+      await this.sbFormLocationSelectionDelegate.updateUserLocation();
     } catch (e) {
       this.toasterService.error(this.resourceService.messages.fmsg.m0049);
     } finally {
