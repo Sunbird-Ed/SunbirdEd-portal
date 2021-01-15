@@ -6,12 +6,14 @@ import { distinctUntilChanged, startWith, switchMap, tap } from 'rxjs/operators'
 import * as _ from 'lodash-es';
 
 import { LocationService } from '../../services/location/location.service';
+import { UserService } from '../../../../modules/core/services/user/user.service';
 
 export class SbFormLocationOptionsFactory {
   private userLocationCache: {[request: string]: SbLocation[] | undefined} = {};
 
   constructor(
-    private locationService: LocationService
+    private locationService: LocationService,
+    private userService: UserService
   ) {}
 
   buildStateListClosure(config: FieldConfig<any>, initial = false): FieldConfigOptionsBuilder<SbLocation> {
@@ -82,11 +84,18 @@ export class SbFormLocationOptionsFactory {
           }).then((locationList: SbLocation[]) => {
               notifyLoaded();
               const list = locationList.map((s) => ({ label: s.name, value: s }));
-              if (config.default && initial && !formControl.value) {
+              // school is fetched from userProfile.organisation instead of userProfile.userLocations
+              if (config.code === 'school' && initial && !formControl.value) {
+                const option = list.find((o) => {
+                    return (_.get(this.userService, 'userProfile.organisations') || []).find((org) => org.orgName === o.label);
+                });
+                formControl.patchValue(option ? option.value : null, { emitModelToViewChange: false });
+              } else if (config.default && initial && !formControl.value) {
                 const option = list.find((o) => o.value.id === config.default.id || o.label === config.default.name);
                 formControl.patchValue(option ? option.value : null, { emitModelToViewChange: false });
                 config.default['code'] = option ? option.value['code'] : config.default['code'];
               }
+              initial = false;
               return list;
             })
             .catch((e) => {

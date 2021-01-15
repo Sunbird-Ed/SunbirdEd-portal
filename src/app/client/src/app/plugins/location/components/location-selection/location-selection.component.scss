@@ -92,7 +92,10 @@
     margin-top: calculateRem(16px);
     width: 100%;
     text-align: center;
-    max-width: calculateRem(328px);
+
+    @include respond-above(sm) {
+      max-width: 80%;
+    }
   }
 
   .brand-logo {
