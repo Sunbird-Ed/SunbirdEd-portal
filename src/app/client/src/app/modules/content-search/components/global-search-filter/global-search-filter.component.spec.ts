@@ -13,7 +13,7 @@ import { MockData } from './global-search-filter.component.spec.data';
 import { CoreModule, UserService } from '@sunbird/core';
 
 
-fdescribe('GlobalSearchFilterComponent', () => {
+describe('GlobalSearchFilterComponent', () => {
   let component: GlobalSearchFilterComponent;
   let fixture: ComponentFixture<GlobalSearchFilterComponent>;
   class RouterStub {
