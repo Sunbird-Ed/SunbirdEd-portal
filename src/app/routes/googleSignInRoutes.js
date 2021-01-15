@@ -6,13 +6,14 @@ const { logger } = require('@project-sunbird/logger');
 const utils = require('../helpers/utilityService');
 const GOOGLE_SIGN_IN_DELAY = 3000;
 const uuid = require('uuid/v1')
+const bodyParser = require('body-parser');
 const REQUIRED_STATE_FIELD = ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type', 'version', 'merge_account_process'];
 /**
- * keycloack adds this string to track auth redirection and 
+ * keycloack adds this string to track auth redirection and
  * with this it triggers auth code verification to get token and create session
  * google flow this is not required
  */
-const KEYCLOACK_AUTH_CALLBACK_STRING = 'auth_callback=1'; 
+const KEYCLOACK_AUTH_CALLBACK_STRING = 'auth_callback=1';
 
 module.exports = (app) => {
 
@@ -32,7 +33,7 @@ module.exports = (app) => {
     logImpressionEvent(req);
   });
 
-  app.get('/google/auth/android', async (req, res) => {
+  app.post('/google/auth/android', bodyParser.json(), async (req, res) => {
     let errType, newUserDetails = {}
     const {OAuth2Client} = require('google-auth-library');
     const CLIENT_ID = '525350998139-cjr1m4a2p1i296p588vff7qau924et79.apps.googleusercontent.com'
@@ -45,9 +46,15 @@ module.exports = (app) => {
         //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
       });
       const payload = ticket.getPayload();
-      return payload['email'];
       // If request specified a G Suite domain:
       // const domain = payload['hd'];
+      if (req.body['emailId'] !== payload['email']) {
+        res.status(400).send({
+          msg: 'emailId donot match'
+        });
+        throw 'emailId donot match'
+      }
+      return payload['email'];
     }
      verify().then(async (emailId) => {
        let isUserExist = await fetchUserByEmailId(emailId, req).catch(handleGetUserByIdError);
