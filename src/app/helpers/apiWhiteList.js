@@ -92,6 +92,7 @@ const checkIsStaticRoute = (REQ_URL) => {
     '.eot',
     '.svg',
     '.gif',
+    '.png',
     '.html',
     '/dist/',
     '/streaming/',
@@ -111,6 +112,7 @@ const checkIsStaticRoute = (REQ_URL) => {
     '/contribute',
     '/groups',
     '/my-groups',
+    '/telemetry',
     '/api'
   ];
   return _.some(excludePath, (path) => _.includes(REQ_URL, path));
