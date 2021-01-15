@@ -471,4 +471,30 @@ describe('ExplorePageComponent', () => {
     dispatchEvent(scrollEvent);
     expect(component.addHoverData).toHaveBeenCalled();
   });
+
+  it('should call initConfiguration', () => {
+    const layoutService = TestBed.get(LayoutService);
+    const utilService = TestBed.get(UtilService);
+    const userService = TestBed.get(UserService);
+    userService.anonymousUserPreference = {
+      framework: {
+        'id': '01268904781886259221',
+        'board': 'State (Maharashtra)',
+        'medium': [
+          'English',
+          'Hindi'
+        ],
+        'gradeLevel': [
+          'Class 3',
+          'Class 4'
+        ]
+      }
+    };
+    spyOn(layoutService, 'initlayoutConfig');
+    spyOn(component, 'redoLayout');
+    utilService._isDesktopApp = true;
+    component['initConfiguration']();
+    expect(layoutService.initlayoutConfig).toHaveBeenCalled();
+    expect(component.redoLayout).toHaveBeenCalled();
+  });
 });

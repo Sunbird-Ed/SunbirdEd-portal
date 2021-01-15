@@ -1,6 +1,6 @@
 import { GlobalSearchFilterComponent } from './global-search-filter.component';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedModule } from '@sunbird/shared';
+import { SharedModule, UtilService } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -55,6 +55,24 @@ describe('GlobalSearchFilterComponent', () => {
   });
 
   it('should reset filters', () => {
+    const utilService = TestBed.get(UtilService);
+    utilService._isDesktopApp = true;
+    const userService = TestBed.get(UserService);
+    userService.anonymousUserPreference = {
+      framework: {
+        'id': '01268904781886259221',
+        'board': 'State (Maharashtra)',
+        'medium': [
+          'English',
+          'Hindi'
+        ],
+        'gradeLevel': [
+          'Class 3',
+          'Class 4'
+        ]
+      }
+    };
+    component.selectedFilters = { board: '', medium: [], gradeLevel: [] };
     component.resetFilters();
     expect(component.router.navigate).toHaveBeenCalled();
   });
