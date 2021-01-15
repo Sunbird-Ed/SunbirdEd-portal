@@ -5,13 +5,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CoreModule } from '@sunbird/core';
 import { ConfigService, ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { configureTestSuite } from '@sunbird/test-util';
 import { SuiModule } from 'ng2-semantic-ui';
 import { BehaviorSubject, of, throwError } from 'rxjs';
 import { GroupsService } from '../../../services/groups/groups.service';
 import { ActivityListComponent } from './activity-list.component';
 import { mockActivityList } from './activity-list.component.data.spec';
-
 
 describe('ActivityListComponent', () => {
   let component: ActivityListComponent;
@@ -63,7 +61,6 @@ describe('ActivityListComponent', () => {
     }
   };
 
-  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ActivityListComponent],
