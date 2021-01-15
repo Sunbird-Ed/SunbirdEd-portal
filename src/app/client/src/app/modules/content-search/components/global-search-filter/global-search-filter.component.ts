@@ -60,11 +60,12 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
 
   public resetFilters() {
     this.selectedFilters = _.pick(this.selectedFilters, ['key', 'selectedTab']);
-    if(this.utilService.isDesktopApp) {
-      const userpref:any = this.userService.anonymousUserPreference;
+    if (this.utilService.isDesktopApp) {
+      const userPreferences: any = this.userService.anonymousUserPreference;
       _.forEach(['board', 'medium', 'gradeLevel'], (item) => {
-          if(!_.has(this.selectedFilters, item)) {
-            this.selectedFilters[item] = _.isArray(userpref.framework[item]) ? userpref.framework[item] : _.split(userpref.framework[item], ', ');
+          if (!_.has(this.selectedFilters, item)) {
+            this.selectedFilters[item] = _.isArray(userPreferences.framework[item]) ?
+            userPreferences.framework[item] : _.split(userPreferences.framework[item], ', ');
           }
       });
     }
