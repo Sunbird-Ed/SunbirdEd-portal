@@ -17,6 +17,7 @@ const ROLE = {
   BOOK_CREATOR: 'BOOK_CREATOR',
   BOOK_REVIEWER: 'BOOK_REVIEWER',
   FLAG_REVIEWER: 'FLAG_REVIEWER',
+  SYSTEM_ADMINISTRATION: 'SYSTEM_ADMINISTRATION',
   ADMIN: 'ADMIN',
   PUBLIC: 'PUBLIC',
   ALL: 'ALL'  // Use when user does not have PUBLIC role (Case: User bulk upload)
@@ -183,10 +184,6 @@ const API_LIST = {
     '/action/content/v3/hierarchy/update': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_CREATOR]
-    },
-    '/action/content/v3/read': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/content/lock/v1/create': {
       checksNeeded: ['ROLE_CHECK'],
@@ -719,10 +716,8 @@ const API_LIST = {
       ]
     },
     '/action/content/v3/hierarchy/:do_id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [
-        ROLE.PUBLIC
-      ]
+      description: 'API used to read textbook for anonymous users',
+      checksNeeded: [],
     },
     '/action/content/v3/hierarchy/update': {
       checksNeeded: ['ROLE_CHECK'],
@@ -1144,6 +1139,28 @@ const API_LIST = {
     '/v1/tenant/info/': {
       checksNeeded: []
     },
+    '/device/register/:deviceId': {
+      checksNeeded: []
+    },
+    '/user/v1/switch/:userId': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/api/data/v1/form/update': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.SYSTEM_ADMINISTRATION
+      ],
+    },
+    '/plugin/v1/form/update': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.SYSTEM_ADMINISTRATION
+      ]
+    },
+    '/google/auth': {
+      checksNeeded: []
+    },
     // discussion forum apis
     '/discussion/user/v1/create': {
       checksNeeded: ['ROLE_CHECK'],
@@ -1450,7 +1467,9 @@ const API_LIST = {
     '/discussion/v2/users/:uid/tokens',
     '/discussion/v2/users/:uid/tokens/:token',
     '/discussion/user/username/:username',
-    '/discussion/user/uid/:uid'
+    '/discussion/user/uid/:uid',
+    '/device/register/:deviceId',
+    '/user/v1/switch/:userId'
   ]
 };
 module.exports = API_LIST;

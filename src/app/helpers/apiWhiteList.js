@@ -83,6 +83,7 @@ const shouldAllow = (req) => {
  */
 const checkIsStaticRoute = (REQ_URL) => {
   const excludePath = [
+    '.md',
     '.js',
     '.js.map',
     '.ico',
@@ -92,6 +93,7 @@ const checkIsStaticRoute = (REQ_URL) => {
     '.eot',
     '.svg',
     '.gif',
+    '.png',
     '.html',
     '/dist/',
     '/streaming/',
@@ -111,6 +113,9 @@ const checkIsStaticRoute = (REQ_URL) => {
     '/contribute',
     '/groups',
     '/my-groups',
+    '/telemetry',
+    '/content-plugins/',
+    '/editors/',
     '/api'
   ];
   return _.some(excludePath, (path) => _.includes(REQ_URL, path));
