@@ -83,12 +83,14 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         };
         if (this.utilService.isDesktopApp) {
             const userPreferences: any = this.userService.anonymousUserPreference;
-            _.forEach(['board', 'medium', 'gradeLevel'], (item) => {
-                if (!_.has(this.selectedFilters, item)) {
-                    this.defaultFilters[item] = _.isArray(userPreferences.framework[item]) ?
-                        userPreferences.framework[item] : _.split(userPreferences.framework[item], ', ');
-                }
-            });
+            if (userPreferences) {
+                _.forEach(['board', 'medium', 'gradeLevel'], (item) => {
+                    if (!_.has(this.selectedFilters, item)) {
+                        this.defaultFilters[item] = _.isArray(userPreferences.framework[item]) ?
+                            userPreferences.framework[item] : _.split(userPreferences.framework[item], ', ');
+                    }
+                });
+            }
         }
         this.numberOfSections = [get(this.configService, 'appConfig.SEARCH.SECTION_LIMIT') || 3];
         this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -196,12 +198,14 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         if (this.utilService.isDesktopApp) {
             const userPreferences: any = this.userService.anonymousUserPreference;
-            _.forEach(['board', 'medium', 'gradeLevel'], (item) => {
-                if (!_.has(this.selectedFilters, item)) {
-                    this.selectedFilters[item] = _.isArray(userPreferences.framework[item]) ?
+            if (userPreferences) {
+                _.forEach(['board', 'medium', 'gradeLevel'], (item) => {
+                    if (!_.has(this.selectedFilters, item)) {
+                        this.selectedFilters[item] = _.isArray(userPreferences.framework[item]) ?
                         userPreferences.framework[item] : _.split(userPreferences.framework[item], ', ');
-                }
-            });
+                    }
+                });
+            }
         }
         this.apiContentList = [];
         this.pageSections = [];

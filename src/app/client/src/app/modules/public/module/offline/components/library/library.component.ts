@@ -243,13 +243,14 @@ export class LibraryComponent implements OnInit, OnDestroy {
         }
         }
         const userPreference: any = this.userService.anonymousUserPreference;
-        _.forEach(['board', 'medium', 'gradeLevel'], (item) => {
-            if (!_.has(filterData, item)) {
-                filterData[item] = _.isArray(userPreference.framework[item]) ?
-                userPreference.framework[item] : _.split(userPreference.framework[item], ', ');
-            }
-        });
-
+        if (userPreference) {
+            _.forEach(['board', 'medium', 'gradeLevel'], (item) => {
+                if (!_.has(filterData, item)) {
+                    filterData[item] = _.isArray(userPreference.framework[item]) ?
+                        userPreference.framework[item] : _.split(userPreference.framework[item], ', ');
+                }
+            });
+        }
         this.selectedFilters = filterData;
         const defaultFilters = _.reduce(filters, (collector: any, element) => {
             if (element.code === 'board') {

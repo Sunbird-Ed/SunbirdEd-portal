@@ -8,11 +8,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 import { BehaviorSubject } from 'rxjs';
-import {Response} from '../global-search-selected-filter/global-search-selected-filter.component.spec.data';
-import {MockData} from './global-search-filter.component.spec.data';
+import { Response } from '../global-search-selected-filter/global-search-selected-filter.component.spec.data';
+import { MockData } from './global-search-filter.component.spec.data';
+import { CoreModule, UserService } from '@sunbird/core';
 
 
-describe('GlobalSearchFilterComponent', () => {
+fdescribe('GlobalSearchFilterComponent', () => {
   let component: GlobalSearchFilterComponent;
   let fixture: ComponentFixture<GlobalSearchFilterComponent>;
   class RouterStub {
@@ -34,9 +35,12 @@ describe('GlobalSearchFilterComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule.forRoot()],
+      imports: [SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule.forRoot(), CoreModule],
       declarations: [GlobalSearchFilterComponent],
-      providers: [{ provide: Router, useClass: RouterStub }, { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
+      providers: [
+        { provide: Router, useClass: RouterStub },
+        { provide: ActivatedRoute, useClass: FakeActivatedRoute },
+        UserService],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));
@@ -58,7 +62,7 @@ describe('GlobalSearchFilterComponent', () => {
   it('should call removeFilterSelection', () => {
     component.facets = Response.facets;
     component.selectedFilters = Response.selectedFilters;
-    component.removeFilterSelection({type: 'medium', value: 'assamese'});
+    component.removeFilterSelection({ type: 'medium', value: 'assamese' });
     expect(component.selectedFilters).toEqual(Response.filterChange.filters);
   });
 
