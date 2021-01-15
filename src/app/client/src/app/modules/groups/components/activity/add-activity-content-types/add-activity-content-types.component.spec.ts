@@ -60,8 +60,8 @@ describe('AddActivityContentTypesComponent', () => {
     })
   };
 
+  configureTestSuite();
   beforeEach(async(() => {
-    configureTestSuite();
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot()],
       declarations: [AddActivityContentTypesComponent],

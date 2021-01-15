@@ -63,8 +63,8 @@ describe('ActivityListComponent', () => {
     }
   };
 
+  configureTestSuite();
   beforeEach(async(() => {
-    configureTestSuite();
     TestBed.configureTestingModule({
       declarations: [ActivityListComponent],
       imports: [SharedModule.forRoot(), HttpClientTestingModule, CoreModule, TelemetryModule.forRoot(), SuiModule],

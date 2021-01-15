@@ -24,8 +24,8 @@ describe('ConfirmationPopupComponent', () => {
     }
   };
 
+  configureTestSuite();
   beforeEach(async(() => {
-    configureTestSuite();
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [ ConfirmationPopupComponent ],

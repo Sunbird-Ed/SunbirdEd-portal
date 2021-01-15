@@ -40,8 +40,8 @@ describe('DatasetComponent', () => {
     }
   };
 
+  configureTestSuite();
   beforeEach(async(() => {
-    configureTestSuite();
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot(), DashboardModule],
       providers: [

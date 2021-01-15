@@ -4,12 +4,12 @@ import { ResourceService } from '@sunbird/shared';
 import { GeneraliseLabelService } from '@sunbird/core';
 import { configureTestSuite } from '@sunbird/test-util';
 
-describe('CourseDetailsComponent', () => {
+fdescribe('CourseDetailsComponent', () => {
   let component: CourseDetailsComponent;
   let fixture: ComponentFixture<CourseDetailsComponent>;
 
+  configureTestSuite();
   beforeEach(async(() => {
-    configureTestSuite();
     TestBed.configureTestingModule({
       declarations: [ CourseDetailsComponent ],
       providers: [
