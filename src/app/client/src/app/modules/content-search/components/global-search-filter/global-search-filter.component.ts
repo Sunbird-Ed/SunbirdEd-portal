@@ -62,12 +62,14 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
     this.selectedFilters = _.pick(this.selectedFilters, ['key', 'selectedTab']);
     if (this.utilService.isDesktopApp) {
       const userPreferences: any = this.userService.anonymousUserPreference;
-      _.forEach(['board', 'medium', 'gradeLevel'], (item) => {
+      if (userPreferences) {
+        _.forEach(['board', 'medium', 'gradeLevel'], (item) => {
           if (!_.has(this.selectedFilters, item)) {
             this.selectedFilters[item] = _.isArray(userPreferences.framework[item]) ?
             userPreferences.framework[item] : _.split(userPreferences.framework[item], ', ');
           }
-      });
+        });
+      }
     }
     let queryFilters = _.get(this.activatedRoute, 'snapshot.queryParams');
     let redirectUrl; // if pageNumber exist then go to first page every time when filter changes, else go exact path
