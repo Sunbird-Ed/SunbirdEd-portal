@@ -6,6 +6,7 @@ import { SharedModule } from '@sunbird/shared';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { SuiModule } from 'ng2-semantic-ui';
 import { CourseCompletionComponent } from './course-completion.component';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('CourseCompletionComponent', () => {
   let component: CourseCompletionComponent;
@@ -15,6 +16,7 @@ describe('CourseCompletionComponent', () => {
     snapshot: { data: { telemetry: { env: 'Course', pageid: 'course-player' } } }
   };
 
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CourseCompletionComponent],

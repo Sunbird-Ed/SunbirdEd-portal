@@ -2,12 +2,14 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CourseDetailsComponent } from './course-details.component';
 import { ResourceService } from '@sunbird/shared';
 import { GeneraliseLabelService } from '@sunbird/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('CourseDetailsComponent', () => {
   let component: CourseDetailsComponent;
   let fixture: ComponentFixture<CourseDetailsComponent>;
 
   beforeEach(async(() => {
+    configureTestSuite();
     TestBed.configureTestingModule({
       declarations: [ CourseDetailsComponent ],
       providers: [

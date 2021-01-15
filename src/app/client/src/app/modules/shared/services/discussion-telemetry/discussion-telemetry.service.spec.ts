@@ -1,11 +1,10 @@
-import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
-
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SharedModule } from './../../shared.module';
+import { inject, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TelemetryService } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
+import { SharedModule } from './../../shared.module';
 import { NavigationHelperService } from './../navigation-helper/navigation-helper.service';
-import { TestBed, inject } from '@angular/core/testing';
-
 import { DiscussionTelemetryService } from './discussion-telemetry.service';
 
 const event = {
@@ -27,6 +26,7 @@ const event = {
 };
 
 describe('DiscussionTelemetryService', () => {
+  configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({
     providers: [NavigationHelperService, TelemetryService],
     imports: [RouterTestingModule, SharedModule.forRoot(), HttpClientTestingModule]

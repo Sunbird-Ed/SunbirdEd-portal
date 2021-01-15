@@ -1,13 +1,14 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CoreModule, BaseReportService } from '@sunbird/core';
-import { SharedModule } from '@sunbird/shared';
 import { TestBed } from '@angular/core/testing';
-
-import { DatasetService } from './dataset.service';
+import { BaseReportService, CoreModule } from '@sunbird/core';
+import { SharedModule } from '@sunbird/shared';
+import { configureTestSuite } from '@sunbird/test-util';
 import { of } from 'rxjs';
+import { DatasetService } from './dataset.service';
 
 describe('DatasetService', () => {
   let datasetService: DatasetService;
+  configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({
     imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule]
   }));

@@ -1,13 +1,14 @@
-import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterModule, ActivatedRoute } from '@angular/router';
-import { SharedModule, ResourceService, ConnectionService } from '@sunbird/shared';
-import { SuiModalModule } from 'ng2-semantic-ui';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import * as _ from 'lodash-es';
-import { LoadContentComponent } from './load-content.component';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ConnectionService, ResourceService, SharedModule } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
+import * as _ from 'lodash-es';
+import { SuiModalModule } from 'ng2-semantic-ui';
+import { of } from 'rxjs';
 import { ElectronDialogService } from '../../services';
+import { LoadContentComponent } from './load-content.component';
 
 describe('LoadContentComponent', () => {
   let component: LoadContentComponent;
@@ -34,6 +35,8 @@ describe('LoadContentComponent', () => {
     },
     instance: 'tenant'
   };
+
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ LoadContentComponent ],

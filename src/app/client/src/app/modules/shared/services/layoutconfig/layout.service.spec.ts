@@ -1,9 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-
-import { LayoutService, COLUMN_TYPE } from './layout.service';
+import { configureTestSuite } from '@sunbird/test-util';
 import { ConfigService } from '../config/config.service';
+import { COLUMN_TYPE, LayoutService } from './layout.service';
 
 describe('LayoutService', () => {
+  configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({
     providers: [ConfigService]
   }));

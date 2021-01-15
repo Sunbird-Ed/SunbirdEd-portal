@@ -1,19 +1,19 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {ToasterService, ResourceService, ConfigService} from '../../services';
-import {OnDemandReportService} from '../../services/on-demand-report/on-demand-report.service';
-import {SuiModule} from 'ng2-semantic-ui';
-import {FormsModule} from '@angular/forms';
-import {NgxDatatableModule} from '@swimlane/ngx-datatable';
-import {SbDatatableComponent} from '../sb-datatable/sb-datatable.component';
-import {OnDemandReportsComponent} from './on-demand-reports.component';
-import {throwError, of} from 'rxjs';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {MockData} from './on-demand-report.component.spec.data';
-import { ReactiveFormsModule } from '@angular/forms';
-import {SbDataTablePipe} from '../../pipes/sb-data-table-pipe/sb-data-table.pipe';
-import {InterpolatePipe} from '../../pipes/interpolate/interpolate.pipe';
-import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
+import { HttpClient } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { SuiModule } from 'ng2-semantic-ui';
+import { of, throwError } from 'rxjs';
+import { InterpolatePipe } from '../../pipes/interpolate/interpolate.pipe';
+import { SbDataTablePipe } from '../../pipes/sb-data-table-pipe/sb-data-table.pipe';
+import { ConfigService, ResourceService, ToasterService } from '../../services';
+import { OnDemandReportService } from '../../services/on-demand-report/on-demand-report.service';
+import { SbDatatableComponent } from '../sb-datatable/sb-datatable.component';
+import { MockData } from './on-demand-report.component.spec.data';
+import { OnDemandReportsComponent } from './on-demand-reports.component';
 
 describe('OnDemandReportsComponent', () => {
   const resourceBundle = {
@@ -26,6 +26,7 @@ describe('OnDemandReportsComponent', () => {
   };
   let component: OnDemandReportsComponent;
   let fixture: ComponentFixture<OnDemandReportsComponent>;
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [OnDemandReportsComponent, SbDatatableComponent, SbDataTablePipe, InterpolatePipe],

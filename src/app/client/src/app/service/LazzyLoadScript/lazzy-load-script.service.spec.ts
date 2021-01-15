@@ -1,8 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-
+import { configureTestSuite } from '@sunbird/test-util';
 import { LazzyLoadScriptService } from './lazzy-load-script.service';
 
 describe('LazzyLoadScriptService', () => {
+  configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should fetch script and return observable that completes on script load', () => {

@@ -1,9 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ResourceService } from '@sunbird/shared';
+import { configureTestSuite } from '@sunbird/test-util';
 import { SuiModule } from 'ng2-semantic-ui';
 import { ConfirmationPopupComponent } from './confirmation-popup.component';
-import { ResourceService } from '@sunbird/shared';
-
 
 describe('ConfirmationPopupComponent', () => {
   let component: ConfirmationPopupComponent;
@@ -25,6 +25,7 @@ describe('ConfirmationPopupComponent', () => {
   };
 
   beforeEach(async(() => {
+    configureTestSuite();
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [ ConfirmationPopupComponent ],

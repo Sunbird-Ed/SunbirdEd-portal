@@ -1,12 +1,12 @@
-import { By } from '@angular/platform-browser';
-import { of } from 'rxjs';
-import { Router, ActivatedRoute } from '@angular/router';
-import { SharedModule, ConnectionService } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { InfoCardComponent } from './info-card.component';
+import { By } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ConnectionService, SharedModule } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
+import { of } from 'rxjs';
+import { InfoCardComponent } from './info-card.component';
 
 describe('InfoCardComponent', () => {
   let component: InfoCardComponent;
@@ -23,7 +23,7 @@ describe('InfoCardComponent', () => {
     };
   }
 
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule.forRoot()],

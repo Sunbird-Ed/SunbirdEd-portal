@@ -1,13 +1,14 @@
-import { telemetry } from './telemetry-actions.service.spec.data';
-import { of, throwError } from 'rxjs';
-import { TelemetryModule } from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SharedModule } from '@sunbird/shared';
 import { TestBed } from '@angular/core/testing';
-
+import { SharedModule } from '@sunbird/shared';
+import { TelemetryModule } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
+import { of, throwError } from 'rxjs';
 import { TelemetryActionsService } from './telemetry-actions.service';
+import { telemetry } from './telemetry-actions.service.spec.data';
 
 describe('TelemetryActionsService', () => {
+  configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({
     imports: [SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule],
     providers: []

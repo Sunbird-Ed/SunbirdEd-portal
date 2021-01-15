@@ -1,17 +1,17 @@
-import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
-
-import { ActivityListComponent } from './activity-list.component';
-import { SharedModule, ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CoreModule } from '@sunbird/core';
-import { TelemetryModule } from '@sunbird/telemetry';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CoreModule } from '@sunbird/core';
+import { ConfigService, ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
+import { TelemetryModule } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
 import { SuiModule } from 'ng2-semantic-ui';
 import { BehaviorSubject, of, throwError } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
-import { mockActivityList } from './activity-list.component.data.spec';
 import { GroupsService } from '../../../services/groups/groups.service';
-import * as _ from 'lodash-es';
+import { ActivityListComponent } from './activity-list.component';
+import { mockActivityList } from './activity-list.component.data.spec';
+
 
 describe('ActivityListComponent', () => {
   let component: ActivityListComponent;
@@ -64,6 +64,7 @@ describe('ActivityListComponent', () => {
   };
 
   beforeEach(async(() => {
+    configureTestSuite();
     TestBed.configureTestingModule({
       declarations: [ActivityListComponent],
       imports: [SharedModule.forRoot(), HttpClientTestingModule, CoreModule, TelemetryModule.forRoot(), SuiModule],

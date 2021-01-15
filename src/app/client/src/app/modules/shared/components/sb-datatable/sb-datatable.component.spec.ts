@@ -1,15 +1,14 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {FormsModule} from '@angular/forms';
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {SbDatatableComponent} from './sb-datatable.component';
-import {TableData} from './sb-datatable.component.spec.data';
-import {ExportToCsv} from 'export-to-csv';
-import * as _ from 'lodash-es';
-import {FilterPipe} from '../../pipes/filter/filter.pipe';
-import {SbDataTablePipe} from '../../pipes/sb-data-table-pipe/sb-data-table.pipe';
-import {ResourceService} from '../../services/resource/resource.service';
-import {of as observableOf} from "rxjs";
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { TelemetryService } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
+import { ExportToCsv } from 'export-to-csv';
+import { FilterPipe } from '../../pipes/filter/filter.pipe';
+import { SbDataTablePipe } from '../../pipes/sb-data-table-pipe/sb-data-table.pipe';
+import { ResourceService } from '../../services/resource/resource.service';
+import { SbDatatableComponent } from './sb-datatable.component';
+import { TableData } from './sb-datatable.component.spec.data';
 
 describe('SbDatatableComponent', () => {
   let component: SbDatatableComponent;
@@ -23,6 +22,7 @@ describe('SbDatatableComponent', () => {
     },
   };
 
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SbDatatableComponent, FilterPipe, SbDataTablePipe],

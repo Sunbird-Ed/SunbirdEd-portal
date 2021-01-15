@@ -1,14 +1,14 @@
-import { systemInfoData } from './system-info.service.spec.data';
-import { of } from 'rxjs';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
 import { PublicDataService } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
-import { TestBed } from '@angular/core/testing';
-
+import { configureTestSuite } from '@sunbird/test-util';
+import { of } from 'rxjs';
 import { SystemInfoService } from './system-info.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { systemInfoData } from './system-info.service.spec.data';
 
 describe('SystemInfoService', () => {
-
+  configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({
     imports: [SharedModule.forRoot(), HttpClientTestingModule]
   }));

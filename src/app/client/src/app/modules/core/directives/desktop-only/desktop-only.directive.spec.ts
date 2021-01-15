@@ -2,6 +2,7 @@ import { DesktopOnlyDirective } from './desktop-only.directive';
 import { TemplateRef, ViewContainerRef, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
+import { configureTestSuite } from '@sunbird/test-util';
 
 @Component({
   template: '<p *appDesktopOnly>Testing Directives is awesome!</p>'
@@ -12,6 +13,7 @@ class TestComponent {
 describe('DesktopOnlyDirective', () => {
   let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [

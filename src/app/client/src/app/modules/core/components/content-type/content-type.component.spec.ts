@@ -2,14 +2,15 @@ import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CoreModule, FormService, UserService } from '@sunbird/core';
+import { FormService, UserService } from '@sunbird/core';
 import { BrowserCacheTtlService, ConfigService, LayoutService, ResourceService, UtilService } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
 import { CacheService } from 'ng2-cache-service';
 import { of as observableOf } from 'rxjs';
+import { OnlineOnlyDirective } from '../../directives/online-only/online-only.directive';
 import { ContentTypeComponent } from './content-type.component';
 import { mockData } from './content-type.component.spec.data';
-import { OnlineOnlyDirective } from '../../directives/online-only/online-only.directive';
 
 describe('ContentTypeComponent', () => {
   let component: ContentTypeComponent;
@@ -34,6 +35,7 @@ describe('ContentTypeComponent', () => {
       },
     }
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, TelemetryModule.forRoot()],

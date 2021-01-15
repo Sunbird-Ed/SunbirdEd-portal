@@ -4,6 +4,7 @@ import { ElectronDialogService } from './electron-dialog.service';
 import { SharedModule, ConfigService } from '@sunbird/shared';
 import { CoreModule, PublicDataService, DataService } from '@sunbird/core';
 import { of } from 'rxjs';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ElectronDialogService', () => {
   let service: ElectronDialogService;
@@ -16,6 +17,7 @@ describe('ElectronDialogService', () => {
       }
     }
   };
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],

@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-
-import { ConnectionService } from './connection.service';
-import { of as observableOf, of } from 'rxjs';
-import { ToasterService, ResourceService, UtilService } from '@sunbird/shared';
 import { Router } from '@angular/router';
+import { ResourceService, ToasterService, UtilService } from '@sunbird/shared';
+import { configureTestSuite } from '@sunbird/test-util';
+import { of as observableOf, of } from 'rxjs';
+import { ConnectionService } from './connection.service';
 
 describe('ConnectionService', () => {
   class RouterStub {
@@ -17,6 +17,8 @@ describe('ConnectionService', () => {
       emsg: { desktop: { onlineStatus: 'You are offline' } }
     }
   };
+
+  configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({
     providers: [ToasterService, { provide: ResourceService, useValue: resourceMockData },
       { provide: Router, useClass: RouterStub }, UtilService]

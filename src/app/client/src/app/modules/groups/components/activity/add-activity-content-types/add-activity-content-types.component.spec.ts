@@ -11,7 +11,7 @@ import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 import { GroupsService } from '../../../services';
 import { AddActivityContentTypesData } from './add-activity-content-types.spec.data';
 import * as _ from 'lodash-es';
-
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('AddActivityContentTypesComponent', () => {
   let component: AddActivityContentTypesComponent;
@@ -61,6 +61,7 @@ describe('AddActivityContentTypesComponent', () => {
   };
 
   beforeEach(async(() => {
+    configureTestSuite();
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot()],
       declarations: [AddActivityContentTypesComponent],

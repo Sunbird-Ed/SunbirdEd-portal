@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CertPreviewPopupComponent } from './cert-preview-popup.component';
-import { SuiModule } from 'ng2-semantic-ui';
 import { ResourceService } from '@sunbird/shared';
-import { By } from "@angular/platform-browser";
+import { configureTestSuite } from '@sunbird/test-util';
+import { SuiModule } from 'ng2-semantic-ui';
+import { CertPreviewPopupComponent } from './cert-preview-popup.component';
 
 describe('CertPreviewPopupComponent', () => {
   let component: CertPreviewPopupComponent;
@@ -11,6 +11,7 @@ describe('CertPreviewPopupComponent', () => {
   const resourceBundle = {
   };
 
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule],

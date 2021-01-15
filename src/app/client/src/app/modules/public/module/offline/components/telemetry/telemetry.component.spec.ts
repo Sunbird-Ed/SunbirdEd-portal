@@ -1,13 +1,14 @@
-import { telemetry } from './telemetry.component.spec.data';
-import { of, throwError } from 'rxjs';
-import { ActivatedRoute, Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SharedModule, ResourceService , ToasterService, ConnectionService} from '@sunbird/shared';
-import { FileSizeModule } from 'ngx-filesize';
-import { TelemetryModule } from '@sunbird/telemetry';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { TelemetryComponent } from './telemetry.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
+import { ConnectionService, ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
+import { TelemetryModule } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
+import { FileSizeModule } from 'ngx-filesize';
+import { of, throwError } from 'rxjs';
+import { TelemetryComponent } from './telemetry.component';
+import { telemetry } from './telemetry.component.spec.data';
 
 describe('TelemetryComponent', () => {
   let component: TelemetryComponent;
@@ -31,8 +32,7 @@ describe('TelemetryComponent', () => {
       navigate: jasmine.createSpy('navigate')
   };
 
-
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ TelemetryComponent ],

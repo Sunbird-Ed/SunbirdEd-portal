@@ -1,11 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SuiTabsModule, SuiModule } from 'ng2-semantic-ui';
 import { DebugElement } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslateFakeLoader, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { InterpolatePipe } from '@sunbird/shared';
+import { configureTestSuite } from '@sunbird/test-util';
+import { SuiModule, SuiTabsModule } from 'ng2-semantic-ui';
 import { SelectOptionGroupComponent } from './select-option-group.component';
-import {InterpolatePipe} from '@sunbird/shared';
-import * as _ from 'lodash-es';
-import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 
 describe('SelectOptionGroupComponent', () => {
   let component: SelectOptionGroupComponent;
@@ -28,6 +28,7 @@ describe('SelectOptionGroupComponent', () => {
     }]
   }];
   const event = {label: 'Publisher', selectedOption: '012519677821', value: 'channel'};
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, SuiTabsModule, FormsModule, ReactiveFormsModule,

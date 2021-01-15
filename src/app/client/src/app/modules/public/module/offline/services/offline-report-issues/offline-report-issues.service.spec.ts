@@ -1,12 +1,15 @@
-import { TestBed } from '@angular/core/testing';
-import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { OfflineReportIssuesService } from './offline-report-issues.service';
+import { TestBed } from '@angular/core/testing';
 import { PublicDataService } from '@sunbird/core';
+import { SharedModule } from '@sunbird/shared';
+import { configureTestSuite } from '@sunbird/test-util';
 import { CacheService } from 'ng2-cache-service';
 import { of, throwError as observableThrowError } from 'rxjs';
+import { OfflineReportIssuesService } from './offline-report-issues.service';
 import { response } from './offline-report-issues.service.spec.data';
+
 describe('OfflineReportIssuesService', () => {
+  configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({
     imports: [HttpClientTestingModule, SharedModule.forRoot()],
     providers: [OfflineReportIssuesService,

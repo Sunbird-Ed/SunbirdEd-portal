@@ -8,6 +8,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { IInteractEventEdata } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ContentManagerInfoPopUpComponent', () => {
   let component: ContentManagerInfoPopUpComponent;
@@ -25,6 +26,7 @@ describe('ContentManagerInfoPopUpComponent', () => {
       .compileComponents();
   }));
 
+  configureTestSuite();
   beforeEach(() => {
     fixture = TestBed.createComponent(ContentManagerInfoPopUpComponent);
     component = fixture.componentInstance;

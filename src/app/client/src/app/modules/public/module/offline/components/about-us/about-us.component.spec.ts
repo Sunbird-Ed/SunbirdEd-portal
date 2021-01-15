@@ -5,6 +5,7 @@ import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, SharedModule } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
 import { SuiModalModule } from 'ng2-semantic-ui';
 import { of } from 'rxjs';
 import { AppUpdateService } from './../../../offline/services';
@@ -28,6 +29,7 @@ describe('AboutUsComponent', () => {
     navigate = jasmine.createSpy('navigate');
   }
 
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AboutUsComponent],

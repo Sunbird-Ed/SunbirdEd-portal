@@ -1,15 +1,15 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { TelemetryImportComponent } from './telemetry-import.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SharedModule, ResourceService } from '@sunbird/shared';
-import { FileSizeModule } from 'ngx-filesize';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { ResourceService, SharedModule } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { ActivatedRoute, } from '@angular/router';
+import { configureTestSuite } from '@sunbird/test-util';
+import { FileSizeModule } from 'ngx-filesize';
 import { of, throwError } from 'rxjs';
-import { telemetryData } from './telemetry-import.component.spec.data';
-import { TelemetryActionsService } from './../../../offline/services';
 import { ElectronDialogService } from '../../../offline/services';
+import { TelemetryActionsService } from './../../../offline/services';
+import { TelemetryImportComponent } from './telemetry-import.component';
+import { telemetryData } from './telemetry-import.component.spec.data';
 
 describe('TelemetryImportComponent', () => {
   let component: TelemetryImportComponent;
@@ -26,6 +26,7 @@ describe('TelemetryImportComponent', () => {
       }
     };
   }
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [TelemetryImportComponent],

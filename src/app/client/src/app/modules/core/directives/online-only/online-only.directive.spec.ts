@@ -1,8 +1,9 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { OnlineOnlyDirective } from './online-only.directive';
-import { Component, HostListener, ElementRef, Renderer2 } from '@angular/core';
-import { ToasterService, ResourceService, ConnectionService, UtilService } from '@sunbird/shared';
+import { Component, HostListener } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { ResourceService, ToasterService, UtilService } from '@sunbird/shared';
+import { configureTestSuite } from '@sunbird/test-util';
+import { OnlineOnlyDirective } from './online-only.directive';
 
 // Simple test component that will not in the actual app
 @Component({
@@ -34,6 +35,7 @@ describe('OnlineOnlyDirective', () => {
   let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
 
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [

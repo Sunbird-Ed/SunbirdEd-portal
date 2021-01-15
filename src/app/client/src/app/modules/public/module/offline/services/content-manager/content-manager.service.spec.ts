@@ -1,16 +1,16 @@
-import { CacheService } from 'ng2-cache-service';
-import { response } from './content-manager.service.spec.data';
-
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { ConfigService, ToasterService, ResourceService, BrowserCacheTtlService } from '@sunbird/shared';
-import { PublicDataService } from '@sunbird/core';
-import { ContentManagerService } from './content-manager.service';
-import { of as observableOf, throwError } from 'rxjs';
-import { SystemInfoService } from '../system-info/system-info.service';
-import { ElectronDialogService } from '../electron-dialog/electron-dialog.service';
 import { ActivatedRoute } from '@angular/router';
+import { PublicDataService } from '@sunbird/core';
+import { BrowserCacheTtlService, ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
+import { CacheService } from 'ng2-cache-service';
+import { of as observableOf, throwError } from 'rxjs';
+import { ElectronDialogService } from '../electron-dialog/electron-dialog.service';
+import { SystemInfoService } from '../system-info/system-info.service';
+import { ContentManagerService } from './content-manager.service';
+import { response } from './content-manager.service.spec.data';
 
 describe('ContentManagerService', () => {
 
@@ -33,6 +33,7 @@ describe('ContentManagerService', () => {
       }
     };
   }
+  configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({
     imports: [HttpClientTestingModule],
     providers: [ConfigService, ToasterService, ContentManagerService, ElectronDialogService,

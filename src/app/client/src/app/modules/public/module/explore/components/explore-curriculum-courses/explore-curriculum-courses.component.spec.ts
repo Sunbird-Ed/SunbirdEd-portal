@@ -9,7 +9,6 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 
-
 describe('ExploreCurriculumCoursesComponent', () => {
   let component: ExploreCurriculumCoursesComponent;
   let fixture: ComponentFixture<ExploreCurriculumCoursesComponent>;

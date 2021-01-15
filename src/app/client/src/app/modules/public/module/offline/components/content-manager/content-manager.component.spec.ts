@@ -1,18 +1,18 @@
-import { of as observableOf, throwError } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ContentManagerComponent } from './content-manager.component';
-import { ContentManagerService, ElectronDialogService } from '../../services';
-import { SuiModalModule, SuiProgressModule, SuiAccordionModule } from 'ng2-semantic-ui';
-import { SharedModule, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { NavigationHelperService, ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
+import { TelemetryModule, TelemetryService, TELEMETRY_PROVIDER } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
+import { SuiAccordionModule, SuiModalModule, SuiProgressModule } from 'ng2-semantic-ui';
 import { FileSizeModule } from 'ngx-filesize';
 import { OrderModule } from 'ngx-order-pipe';
-import { RouterTestingModule } from '@angular/router/testing';
-import { TelemetryModule, TelemetryService, TELEMETRY_PROVIDER, IInteractEventEdata } from '@sunbird/telemetry';
+import { of as observableOf, throwError } from 'rxjs';
+import { ContentManagerService, ElectronDialogService } from '../../services';
+import { ContentManagerComponent } from './content-manager.component';
 import { response } from './content-manager.component.spec.data';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-
 
 describe('ContentManagerComponent', () => {
   let component: ContentManagerComponent;
@@ -39,6 +39,7 @@ describe('ContentManagerComponent', () => {
     };
   }
 
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModalModule, SharedModule.forRoot(), SuiProgressModule, SuiAccordionModule, HttpClientTestingModule,

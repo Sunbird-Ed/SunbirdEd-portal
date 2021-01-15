@@ -1,18 +1,19 @@
-import { By } from '@angular/platform-browser';
-import { RouterTestingModule } from '@angular/router/testing';
-import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { ResourceService, SharedModule } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { OfflineHelpVideosComponent } from './offline-help-videos.component';
+import { configureTestSuite } from '@sunbird/test-util';
 import { of } from 'rxjs';
+import { OfflineHelpVideosComponent } from './offline-help-videos.component';
 
 describe('OfflineHelpVideosComponent', () => {
   let component: OfflineHelpVideosComponent;
   let fixture: ComponentFixture<OfflineHelpVideosComponent>;
   let resourceServiceStub;
+  configureTestSuite();
   beforeEach(async(() => {
     const fakeActivatedRoute = {
       snapshot: {
