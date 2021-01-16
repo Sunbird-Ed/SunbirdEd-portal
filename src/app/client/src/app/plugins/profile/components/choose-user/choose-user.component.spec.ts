@@ -1,17 +1,18 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {CoreModule, UserService, ManagedUserService, LearnerService, CoursesService} from '@sunbird/core';
-import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick, flush } from '@angular/core/testing';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
+import { CoreModule, LearnerService, ManagedUserService, UserService } from '@sunbird/core';
 import {
-  ResourceService, SharedModule, ConfigService,
-  ToasterService, NavigationHelperService, UtilService
+  ConfigService,
+  NavigationHelperService, ResourceService, SharedModule,
+  ToasterService, UtilService
 } from '@sunbird/shared';
-import {ChooseUserComponent} from './choose-user.component';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {ActivatedRoute, Router} from '@angular/router';
-import {of as observableOf, of, throwError as observableThrowError} from 'rxjs';
-import {mockData} from './choose-user.component.spec.data';
-import {CommonConsumptionModule} from '@project-sunbird/common-consumption-v8';
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
+import { of as observableOf, throwError as observableThrowError } from 'rxjs';
+import { ChooseUserComponent } from './choose-user.component';
+import { mockData } from './choose-user.component.spec.data';
 
 describe('ChooseUserComponent', () => {
   let component: ChooseUserComponent;
@@ -185,4 +186,37 @@ describe('ChooseUserComponent', () => {
     expect(component['userDataSubscription'].unsubscribe).toHaveBeenCalled();
   });
 
+  it('should call getTelemetryContext', () => {
+    const userService = TestBed.get(UserService);
+    userService._userProfile = mockData.userProfile;
+    const context = component.getTelemetryContext();
+    expect(context).toBeDefined();
+  });
+
+  it('should call initializeManagedUser', fakeAsync(() => {
+    const telemetryService = TestBed.get(TelemetryService);
+    const toasterService = TestBed.get(ToasterService);
+    const managedUserService = TestBed.get(ManagedUserService);
+    const utilService = TestBed.get(UtilService);
+    component.selectedUser = {
+      firstName: 'Test'
+    };
+    spyOn(telemetryService, 'setInitialization');
+    spyOn(component, 'getTelemetryContext');
+    spyOn(telemetryService, 'initialize');
+    spyOn(toasterService, 'custom');
+    spyOn(managedUserService, 'getMessage').and.returnValue('Now using SUNBIRD as Test You can update your preferences from the page');
+    spyOn(utilService, 'redirect');
+    component.initializeManagedUser();
+    flush();
+    expect(telemetryService.setInitialization).toHaveBeenCalledWith(false);
+    expect(telemetryService.initialize).toHaveBeenCalled();
+    expect(component.getTelemetryContext).toHaveBeenCalled();
+    expect(toasterService.custom).toHaveBeenCalledWith({
+      message: 'Now using SUNBIRD as Test You can update your preferences from the page',
+      class: 'sb-toaster sb-toast-success sb-toast-normal'
+    });
+    expect(managedUserService.getMessage).toHaveBeenCalledWith('Now using {instance} as {userName} You can update your preferences from the page', 'Test');
+    expect(utilService.redirect).toHaveBeenCalledWith('/resources');
+  }));
 });

@@ -1,34 +1,28 @@
-import {of as observableOf, of, throwError as observableThrowError} from 'rxjs';
-import { RouterTestingModule } from '@angular/router/testing';
-import { mockUserData } from './../../services/user/user.mock.spec.data';
-import {async, ComponentFixture, TestBed, tick} from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MainHeaderComponent } from './main-header.component';
-import {
-  ConfigService,
-  ResourceService,
-  ToasterService,
-  SharedModule,
-  BrowserCacheTtlService,
-  UtilService,
-  LayoutService,
-  NavigationHelperService
-} from '@sunbird/shared';
-import {
-  UserService,
-  LearnerService,
-  PermissionService,
-  TenantService,
-  CoreModule,
-  ManagedUserService, CoursesService, ElectronService
-} from '@sunbird/core';
+import { AnimationBuilder } from '@angular/animations';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import {AnimationBuilder} from '@angular/animations';
-import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
-import {CacheService} from 'ng2-cache-service';
-import {mockData} from './main-header.component.spec.data';
-import {CommonConsumptionModule} from '@project-sunbird/common-consumption-v8';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
+import {
+  CoreModule, PermissionService, UserService,
+  CoursesService, ElectronService, LearnerService,
+  ManagedUserService, TenantService
+} from '@sunbird/core';
+import {
+  BrowserCacheTtlService, ConfigService,
+  LayoutService, UtilService,
+  NavigationHelperService, ResourceService,
+  SharedModule, ToasterService
+} from '@sunbird/shared';
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
+import { CacheService } from 'ng2-cache-service';
+import { of as observableOf, of, throwError as observableThrowError } from 'rxjs';
+import { mockUserData } from './../../services/user/user.mock.spec.data';
+import { MainHeaderComponent } from './main-header.component';
+import { mockData } from './main-header.component.spec.data';
 
 describe('MainHeaderComponent', () => {
   let component: MainHeaderComponent;
@@ -76,7 +70,7 @@ describe('MainHeaderComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       providers: [ToasterService, TenantService, CacheService, BrowserCacheTtlService,
         PermissionService, ManagedUserService, UtilService, LayoutService, NavigationHelperService,
-        {provide: ResourceService, useValue: resourceBundle},
+        { provide: ResourceService, useValue: resourceBundle },
         UserService, ConfigService, AnimationBuilder, ElectronService,
         LearnerService, CoursesService, { provide: 'CS_USER_SERVICE', useValue: MockCSService }]
     })
@@ -86,7 +80,7 @@ describe('MainHeaderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MainHeaderComponent);
     component = fixture.componentInstance;
-    component.routerEvents  = observableOf({id: 1, url: '/explore', urlAfterRedirects: '/explore'});
+    component.routerEvents = observableOf({ id: 1, url: '/explore', urlAfterRedirects: '/explore' });
   });
 
   it('should subscribe to user service', () => {
@@ -222,15 +216,15 @@ describe('MainHeaderComponent', () => {
     const telemetryService = TestBed.get(TelemetryService);
     spyOn(document, 'getElementById').and.callFake((id) => {
       if (id === 'buildNumber') {
-        return {value: '1.1.12.0'};
+        return { value: '1.1.12.0' };
       }
       if (id === 'deviceId') {
-        return {value: 'device'};
+        return { value: 'device' };
       }
       if (id === 'defaultTenant') {
-        return {value: 'defaultTenant'};
+        return { value: 'defaultTenant' };
       }
-      return {value: 'mock Id'};
+      return { value: 'mock Id' };
     });
     const learnerService = TestBed.get(LearnerService);
     const utilsService = TestBed.get(UtilService);
@@ -242,7 +236,7 @@ describe('MainHeaderComponent', () => {
     const managedUserService = TestBed.get(ManagedUserService);
     spyOn(telemetryService, 'initialize');
     spyOn(managedUserService, 'initiateSwitchUser').and.returnValue(observableOf(mockData.managedUserList));
-    component.switchUser({data: {data: mockData.selectedUser}});
+    component.switchUser({ data: { data: mockData.selectedUser } });
     expect(telemetryService.initialize).toHaveBeenCalled();
   });
 
@@ -298,7 +292,7 @@ describe('MainHeaderComponent', () => {
   it('should make isFullScreenView to FALSE', () => {
     component.isFullScreenView = true;
     const navigationHelperService = TestBed.get(NavigationHelperService);
-    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(observableOf({data: false}));
+    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(observableOf({ data: false }));
     component.ngOnInit();
     navigationHelperService.emitFullScreenEvent(false);
     expect(component.isFullScreenView).toBe(false);
@@ -307,7 +301,7 @@ describe('MainHeaderComponent', () => {
   it('should make isFullScreenView to true', () => {
     component.isFullScreenView = false;
     const navigationHelperService = TestBed.get(NavigationHelperService);
-    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(observableOf({data: true}));
+    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(observableOf({ data: true }));
     component.ngOnInit();
     navigationHelperService.emitFullScreenEvent(true);
     expect(component.isFullScreenView).toBe(true);
@@ -346,7 +340,7 @@ describe('MainHeaderComponent', () => {
   it('should switch layout and generate telemetry for joy', () => {
     const layoutService = TestBed.get(LayoutService);
     const telemetryService = TestBed.get(TelemetryService);
-    component.layoutConfiguration = {options: 'option1'};
+    component.layoutConfiguration = { options: 'option1' };
     spyOn(layoutService, 'initiateSwitchLayout').and.callFake(() => {
     });
     spyOn(telemetryService, 'interact').and.callFake(() => {
@@ -357,9 +351,70 @@ describe('MainHeaderComponent', () => {
 
   it('should call login method for desktop app', () => {
     const electronService = TestBed.get(ElectronService);
-    spyOn(electronService, 'get').and.returnValue(observableOf({status: 'success'}));
+    spyOn(electronService, 'get').and.returnValue(observableOf({ status: 'success' }));
     component.doLogin();
     expect(electronService.get).toHaveBeenCalled();
   });
+
+  it('should call navigateToGroups and navigate to My group', () => {
+    const userService = TestBed.get(UserService);
+    userService._authenticated = true;
+    const page = component.navigateToGroups();
+    expect(page).toBe('my-groups');
+  });
+
+  it('should call navigateToGroups and navigate to explore group', () => {
+    const userService = TestBed.get(UserService);
+    userService._authenticated = false;
+    const page = component.navigateToGroups();
+    expect(page).toBe('explore-groups');
+  });
+
+  it('should call locationSubmit', () => {
+    component.locationSubmit();
+    expect(component.showLocationPopup).toBe(false);
+  });
+
+  it('should call getTelemetryContext', () => {
+    const userService = TestBed.get(UserService);
+    userService._userProfile = mockData.userProfile;
+    const context = component.getTelemetryContext();
+    expect(context).toBeDefined();
+  });
+
+  it('should call navigateToHome', () => {
+    const userService = TestBed.get(UserService);
+    const router = TestBed.get(Router);
+    userService._authenticated = true;
+    spyOn(router, 'navigate');
+    component.navigateToHome();
+    expect(router.navigate).toHaveBeenCalledWith(['resources']);
+  });
+
+  it('should call initializeManagedUser', fakeAsync(() => {
+    const telemetryService = TestBed.get(TelemetryService);
+    const toasterService = TestBed.get(ToasterService);
+    const managedUserService = TestBed.get(ManagedUserService);
+    const utilService = TestBed.get(UtilService);
+    spyOn(telemetryService, 'setInitialization');
+    spyOn(component, 'getTelemetryContext');
+    spyOn(telemetryService, 'initialize');
+    spyOn(toasterService, 'custom');
+    spyOn(managedUserService, 'getMessage').and.returnValue('Now using SUNBIRD as Test You can update your preferences from the page');
+    spyOn(utilService, 'redirect');
+    spyOn(component, 'toggleSideMenu');
+    component.initializeManagedUser({ firstName: 'Test' });
+    flush();
+    expect(telemetryService.setInitialization).toHaveBeenCalledWith(false);
+    expect(telemetryService.initialize).toHaveBeenCalled();
+    expect(component.getTelemetryContext).toHaveBeenCalled();
+    expect(toasterService.custom).toHaveBeenCalledWith({
+      message: 'Now using SUNBIRD as Test You can update your preferences from the page',
+      class: 'sb-toaster sb-toast-success sb-toast-normal'
+    });
+    expect(managedUserService.getMessage).toHaveBeenCalledWith('Now using {instance} as {userName} You can update your preferences from the page', 'Test');
+    expect(utilService.redirect).toHaveBeenCalledWith('/resources');
+    expect(component.toggleSideMenu).toHaveBeenCalledWith(false);
+  }));
 
 });
