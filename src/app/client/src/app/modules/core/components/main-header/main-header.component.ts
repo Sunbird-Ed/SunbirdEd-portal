@@ -482,22 +482,16 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.userSid'));
       userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
         if (user && !user.err && user.userProfile.userId === userId) {
-          this.courseService.getEnrolledCourses().subscribe((enrolledCourse) => {
-            this.telemetryService.setInitialization(false);
-            this.telemetryService.initialize(this.getTelemetryContext());
-            this.toasterService.custom({
-              message: this.managedUserService.getMessage(_.get(this.resourceService, 'messages.imsg.m0095'),
-                selectedUser.firstName),
-              class: 'sb-toaster sb-toast-success sb-toast-normal'
+          if (this.utilService.isDesktopApp && !this.isConnected) {
+            this.initializeManagedUser(selectedUser);
+          } else {
+            this.courseService.getEnrolledCourses().subscribe((enrolledCourse) => {
+              this.initializeManagedUser(selectedUser);
             });
-            this.toggleSideMenu(false);
-            if (userSubscription) {
-              userSubscription.unsubscribe();
-            }
-            setTimeout(() => {
-              this.utilService.redirect('/resources');
-            }, 5100);
-          });
+          }
+          if (userSubscription) {
+            userSubscription.unsubscribe();
+          }
         }
       });
     }, (err) => {
@@ -654,9 +648,22 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   doLogin() {
-    this.electronService.get({ url: this.config.urlConFig.URLS.OFFLINE.LOGIN}).subscribe((data) => {
-      console.log(data);
+    this.electronService.get({ url: this.config.urlConFig.URLS.OFFLINE.LOGIN}).subscribe();
+  }
+
+  initializeManagedUser(selectedUser) {
+    this.telemetryService.setInitialization(false);
+    this.telemetryService.initialize(this.getTelemetryContext());
+    this.toasterService.custom({
+      message: this.managedUserService.getMessage(_.get(this.resourceService, 'messages.imsg.m0095'),
+        selectedUser.firstName),
+      class: 'sb-toaster sb-toast-success sb-toast-normal'
     });
+    this.toggleSideMenu(false);
+
+    setTimeout(() => {
+      this.utilService.redirect('/resources');
+    }, 5100);
   }
 
 }

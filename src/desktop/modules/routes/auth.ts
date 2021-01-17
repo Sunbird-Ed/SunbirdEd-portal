@@ -30,9 +30,12 @@ export default (app, proxyURL) => {
                 return new Promise(async function (resolve) {
                     try {
                         const userResp = JSON.parse(proxyResData.toString('utf8'));
-                        if(userResp.responseCode === 'OK') {
+                        if (userResp.responseCode === 'OK' && _.get(userResp, 'result.response')) {
                             const userSDK = containerAPI.getUserSdkInstance();
-                            await userSDK.insertLoggedInUser(userResp);
+                            let user = userResp.result.response;
+                            const userToken = userSDK.getUserToken();
+                            user.accessToken = userToken;
+                            await userSDK.insertLoggedInUser(user);
                         }
                     } catch (error) {
                         logger.error(`Unable to parse or do DB update of user data after fetching from online`, error)
@@ -98,7 +101,11 @@ export default (app, proxyURL) => {
             return require('url').parse(proxyURL + urlParam).path
           }
         },
-        userResDecorator: function (proxyRes, proxyResData, req, res) {
+        proxyErrorHandler: function (err, res, next) {
+          logger.warn(`While /user/v3/read from online`, err);
+          next();
+        },
+        userResDecorator: async (proxyRes, proxyResData, req, res) => {
           try {
             let data = JSON.parse(proxyResData.toString('utf8'));
             _.forEach(_.get(data.result.response, 'content'), (managedUser, index) => {
@@ -113,7 +120,13 @@ export default (app, proxyURL) => {
             return handleSessionExpiry(proxyRes, proxyResData, req, res);
           }
         }
-    }));
+    }), async (req, res) => {
+      logger.debug(`Received API call to read User data`);
+      const userSDK = containerAPI.getUserSdkInstance();
+      let users: any = await userSDK.getAllManagedUsers();
+      users = _.orderBy(users, ['createdDate'], ['desc'])
+      res.send(Response.success("api.user.managed", { response: { content: users, count: users.length } }, req));
+    });
    
     app.get('/learner/isUserExists/user/v1/get/phone/*', proxyObj());
     app.get('/learner/isUserExists/user/v1/get/email/*', proxyObj());

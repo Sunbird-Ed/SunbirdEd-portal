@@ -582,10 +582,10 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@^3.6.11":
-  version "3.6.12"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.6.12.tgz#74175d53ca4a39e28659a5271f09f5dbe828c1c6"
-  integrity sha512-cBKb/c1YCAv/Vfi1kprYKqKRljP15E9dJcMfDR+3PoXKoLcVn+TRfOtPY0brqc9yPndEsEytxVDcIKg1DWjnRQ==
+"@project-sunbird/client-services@^3.6.13":
+  version "3.6.13"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.6.13.tgz#c773ba5ca1073f6c29dee4765c7c9781013c1070"
+  integrity sha512-SidiPtGVru7yrTKyHsUCoaRLn8qEl/4Jm11ucgoEAZWFStLMmzRXup+R4ZK/zVoTnm7kmFO/it1zJqai2O09lg==
   dependencies:
     "@project-sunbird/telemetry-sdk" "0.0.26"
     inversify "^5.0.1"
@@ -593,17 +593,17 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v8@3.6.1":
-  version "3.6.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v8/-/common-consumption-v8-3.6.1.tgz#05944a1d80d59fffd919579d15a2e26cfa0b0d0a"
-  integrity sha512-5xrGu+E5fDHKLtFJzI/5ZifZ8IUAj6NfmPpSYVMmgJPaw44hbFU+OU5fwKc1UIALsCzJ4hNeRmFkMW0US+6h6A==
+"@project-sunbird/common-consumption-v8@3.6.4":
+  version "3.6.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v8/-/common-consumption-v8-3.6.4.tgz#23e9063348a249a9c9cf0f66ac4f6632e138acfe"
+  integrity sha512-r+XpeoDhFhLovMbx3AbYWw2r4bCPQln1WoTjcNYJrtCM5St/f4WW093VL1zEs3eE0Skg9x3AZalsf7zxGrFS/w==
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/discussions-ui-v8@2.0.2":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.0.2.tgz#1b997edcea0da25a84b1a2fb66c54c6b68cbbebd"
-  integrity sha512-BI3RowRTgu6cHzyfzGGhl6bBPCdVjv+4cQio1wwPhlH8nS2jtEvNlvQKnp3EwUl6SHb/pnzqhsuMgacJ3LsY2Q==
+"@project-sunbird/discussions-ui-v8@2.0.5":
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.0.5.tgz#d7c09d5a5246b8ee86eeb9a9c22b41ce2202aaf6"
+  integrity sha512-r1ryZwBR9lUMm+3QeH1Fpb3C4G2WlkMXFUTalrUqYKeA9AGNpf7e9vo1IrE9tudvWV4cKph7r/4KWlonO9I1Wg==
   dependencies:
     tslib "^1.9.0"
 

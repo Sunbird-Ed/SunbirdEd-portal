@@ -3,14 +3,15 @@ import {CoursesService, ManagedUserService, UserService} from '@sunbird/core';
 import {
   ConfigService,
   ResourceService,
-  ToasterService,
+  ToasterService, ConnectionService,
   IUserData, NavigationHelperService, UtilService
 } from '@sunbird/shared';
 import {ActivatedRoute, Router} from '@angular/router';
 import {IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
 import {environment} from '@sunbird/environment';
 import * as _ from 'lodash-es';
-import {zip} from 'rxjs';
+import { zip, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-choose-user',
@@ -23,7 +24,8 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
               public toasterService: ToasterService, public router: Router, private utilService: UtilService,
               public resourceService: ResourceService, private telemetryService: TelemetryService,
               private configService: ConfigService, private managedUserService: ManagedUserService,
-              public activatedRoute: ActivatedRoute, public courseService: CoursesService) {
+              public activatedRoute: ActivatedRoute, public courseService: CoursesService,
+              private connectionService: ConnectionService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
   }
@@ -39,6 +41,8 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
   selectedUser: any;
   submitInteractEdata: IInteractEventEdata;
   userDataSubscription: any;
+  isConnected = false;
+  unsubscribe$ = new Subject<void>();
 
   ngOnInit() {
     this.navigationhelperService.setNavigationUrl();
@@ -47,9 +51,15 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
     });
     this.telemetryImpressionEvent();
     this.setTelemetryData();
+    this.connectionService.monitor()
+    .pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
+      this.isConnected = isConnected;
+    });
   }
 
   ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
     if (this.userDataSubscription) {
       this.userDataSubscription.unsubscribe();
     }
@@ -65,18 +75,13 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
         this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.userSid'));
         this.userService.userData$.subscribe((user: IUserData) => {
           if (user && !user.err && user.userProfile.userId === userId) {
-            this.courseService.getEnrolledCourses().subscribe((enrolledCourse) => {
-              this.telemetryService.setInitialization(false);
-              this.telemetryService.initialize(this.getTelemetryContext());
-              this.toasterService.custom({
-                message: this.managedUserService.getMessage(_.get(this.resourceService, 'messages.imsg.m0095'),
-                  this.selectedUser.firstName),
-                class: 'sb-toaster sb-toast-success sb-toast-normal'
+            if (this.utilService.isDesktopApp && !this.isConnected) {
+              this.initializeManagedUser();
+            } else {
+              this.courseService.getEnrolledCourses().pipe(takeUntil(this.unsubscribe$)).subscribe((enrolledCourse) => {
+                this.initializeManagedUser();
               });
-              setTimeout(() => {
-                this.utilService.redirect('/resources');
-              }, 5100);
-            });
+            }
           }
         });
       }, (err) => {
@@ -174,5 +179,19 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
 
   closeSwitchUser() {
     this.navigationhelperService.navigateToLastUrl();
+  }
+
+  initializeManagedUser() {
+    this.telemetryService.setInitialization(false);
+    this.telemetryService.initialize(this.getTelemetryContext());
+    this.toasterService.custom({
+      message: this.managedUserService.getMessage(_.get(this.resourceService, 'messages.imsg.m0095'),
+        this.selectedUser.firstName),
+      class: 'sb-toaster sb-toast-success sb-toast-normal'
+    });
+
+    setTimeout(() => {
+      this.utilService.redirect('/resources');
+    }, 5100);
   }
 }
