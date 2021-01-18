@@ -25,8 +25,14 @@
       <ng-content select="[slot=popup-footer]"></ng-content>
     </div>
 
-    <div class="sb-onboard__footer">
-      <button type="button" class="sb-btn sb-btn-sm sb-btn-primary text-uppercase w-100" type="submit"
+    <div class="sb-onboard__footer d-flex">
+      <button type="button" class="sb-btn sb-btn-sm sb-btn-white text-uppercase flex-basis-1" type="submit"
+              [class.sb-btn-disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading"
+              [disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading"
+              (click)="clearUserLocationSelections()">{{resourceService?.frmelmnts?.btn?.clear}}
+      </button>
+      <div class="w-10"></div>
+      <button type="button" class="sb-btn sb-btn-sm sb-btn-primary text-uppercase flex-basis-1" type="submit"
               [class.sb-btn-disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading || sbFormLocationSelectionDelegate.formGroup?.invalid"
               [disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading || sbFormLocationSelectionDelegate.formGroup?.invalid"
               (click)="updateUserLocation()">{{resourceService?.frmelmnts?.btn?.submit}}
