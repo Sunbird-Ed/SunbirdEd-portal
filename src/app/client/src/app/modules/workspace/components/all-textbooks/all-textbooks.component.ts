@@ -430,8 +430,8 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
       }
     }
     if (_.size(content.lockInfo)) {
-      this.lockPopupData = content;
-      this.showLockedContentModal = true;
+        this.lockPopupData = content;
+        this.showLockedContentModal = true;
     } else {
       const status = content.status.toLowerCase();
       if (status === 'processing') {
