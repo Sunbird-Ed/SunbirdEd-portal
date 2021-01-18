@@ -420,6 +420,7 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
   }
 
   contentClick(content) {
+    console.log(content);
     if (content.originData) {
       const originData = JSON.parse(content.originData);
       if (originData.copyType === 'shallow') {
