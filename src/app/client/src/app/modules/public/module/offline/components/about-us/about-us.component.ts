@@ -6,7 +6,7 @@ import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { IAppInfo } from './../../interfaces';
-import { AppUpdateService } from './../../services';
+import { AppUpdateService } from '../../../../../core/services/app-update/app-update.service';
 
 @Component({
   selector: 'app-about-us',
