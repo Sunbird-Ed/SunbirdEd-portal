@@ -24,6 +24,7 @@ export class GlobalConsentPiiComponent implements OnInit {
   @Input() profileInfo;
   @ViewChild('profileDetailsModal', {static: false}) profileDetailsModal;
   @Output() close = new EventEmitter<any>();
+  instance: string;
   consentPii = 'Yes';
   isDataShareOn = false;
   lastUpdatedOn = '';
@@ -48,7 +49,10 @@ export class GlobalConsentPiiComponent implements OnInit {
     private coursesService: CoursesService,
     private router: Router,
     public generaliseLabelService: GeneraliseLabelService
-  ) { }
+  ) {
+    this.instance = (<HTMLInputElement>document.getElementById('instance'))
+      ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
+  }
 
   ngOnInit() {
     this.usersProfile = _.cloneDeep(this.userService.userProfile);
