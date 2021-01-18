@@ -5,7 +5,7 @@
   <section class="py-24 d-flex flex-ai-center flex-dc">
     <div class="ui container">
       <div class="mb-15 d-flex flex-jc-center relative avatar-container" >
-       <img *ngIf="userProfile.stateValidated" src="assets/images/avatar-tickmark.svg" alt="certified" class="avatar-tickmark"
+       <img *ngIf="userProfile.stateValidated || !isCustodianOrgUser" src="assets/images/avatar-tickmark.svg" alt="certified" class="avatar-tickmark"
        suiPopup popupText="{{resourceService.frmelmnts.lbl.stateVerified}}" [popupInverted]="true" [popupPlacement]="'right'">
        <ngx-avatar [ngClass]="{verified: userProfile.stateValidated}" class="my-avatar" [style]="{
          backgroundColor: '#ffffff',
@@ -99,7 +99,7 @@
           (click)="showEditUserDetailsPopup=true">{{resourceService.frmelmnts.lbl.edit}}</button>
         <button appTelemetryInteract appOnlineOnly
                 [telemetryInteractEdata]="submitTeacherDetailsInteractEdata"
-                *ngIf="!declarationDetails"
+                *ngIf="!declarationDetails && isCustodianOrgUser"
                 (click)="navigate('/profile/teacher-declaration','submit')"
                 class="no-text-transform sb-btn sb-btn-normal sb-btn-secondary sb-right-icon-btn mx-8 mb-8 px-24" type="submit">
         {{resourceService?.frmelmnts?.lbl?.iAmStateTeacher}} </button>
