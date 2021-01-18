@@ -240,10 +240,20 @@ export class ContentDownloader implements ITaskExecuter {
     const contentPath = await this.contentLocation.get();
     const manifestJson = await this.fileSDK.readJSON(
       path.join(contentPath, contentDetails.identifier, "manifest.json"));
-    const metaData: any = _.get(manifestJson, "archive.items[0]");
+    let metaData: any = _.get(manifestJson, "archive.items[0]");
     if (metaData.mimeType === "application/vnd.ekstep.content-collection") {
-      metaData.children = this.createHierarchy(_.cloneDeep(_.get(manifestJson, "archive.items")), metaData);
+      try {
+        const hierarchy = await this.fileSDK.readJSON(path.join(contentPath, contentDetails.identifier, "hierarchy.json"));
+        metaData = _.get(hierarchy, 'content') ? hierarchy.content : metaData;
+      } catch(error) {
+        metaData.children = this.createHierarchy(_.cloneDeep(_.get(manifestJson, "archive.items")), metaData);
+      }
     }
+    _.forEach(['subject', 'gradeLevel', 'medium'], (item) => {
+      if(metaData[item] && _.isString(metaData[item])) {
+        metaData[item] = metaData[item].split(',');
+      }
+    })
     metaData.baseDir = `content/${contentDetails.identifier}`;
     metaData.desktopAppMetadata = {
       "addedUsing": ContentDownloader.taskType,

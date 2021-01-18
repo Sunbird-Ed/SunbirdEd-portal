@@ -1,6 +1,6 @@
 import { GlobalSearchFilterComponent } from './global-search-filter.component';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedModule } from '@sunbird/shared';
+import { SharedModule, UtilService } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -8,8 +8,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 import { BehaviorSubject } from 'rxjs';
-import {Response} from '../global-search-selected-filter/global-search-selected-filter.component.spec.data';
-import {MockData} from './global-search-filter.component.spec.data';
+import { Response } from '../global-search-selected-filter/global-search-selected-filter.component.spec.data';
+import { MockData } from './global-search-filter.component.spec.data';
+import { CoreModule, UserService } from '@sunbird/core';
 
 
 describe('GlobalSearchFilterComponent', () => {
@@ -34,9 +35,12 @@ describe('GlobalSearchFilterComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule.forRoot()],
+      imports: [SharedModule.forRoot(), HttpClientTestingModule, TelemetryModule.forRoot(), CoreModule],
       declarations: [GlobalSearchFilterComponent],
-      providers: [{ provide: Router, useClass: RouterStub }, { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
+      providers: [
+        { provide: Router, useClass: RouterStub },
+        { provide: ActivatedRoute, useClass: FakeActivatedRoute },
+        UserService],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));
@@ -51,6 +55,24 @@ describe('GlobalSearchFilterComponent', () => {
   });
 
   it('should reset filters', () => {
+    const utilService = TestBed.get(UtilService);
+    utilService._isDesktopApp = true;
+    const userService = TestBed.get(UserService);
+    userService.anonymousUserPreference = {
+      framework: {
+        'id': '01268904781886259221',
+        'board': 'State (Maharashtra)',
+        'medium': [
+          'English',
+          'Hindi'
+        ],
+        'gradeLevel': [
+          'Class 3',
+          'Class 4'
+        ]
+      }
+    };
+    component.selectedFilters = { board: '', medium: [], gradeLevel: [] };
     component.resetFilters();
     expect(component.router.navigate).toHaveBeenCalled();
   });
@@ -58,7 +80,7 @@ describe('GlobalSearchFilterComponent', () => {
   it('should call removeFilterSelection', () => {
     component.facets = Response.facets;
     component.selectedFilters = Response.selectedFilters;
-    component.removeFilterSelection({type: 'medium', value: 'assamese'});
+    component.removeFilterSelection({ type: 'medium', value: 'assamese' });
     expect(component.selectedFilters).toEqual(Response.filterChange.filters);
   });
 
