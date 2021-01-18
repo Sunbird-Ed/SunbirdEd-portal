@@ -1,4 +1,4 @@
-import Hashids from 'hashids';
+const Hashids = require('hashids/cjs');
 import * as UUID from 'uuid';
 
 export class Util {

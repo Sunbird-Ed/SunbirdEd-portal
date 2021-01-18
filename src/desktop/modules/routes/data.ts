@@ -11,6 +11,7 @@ import { manifest } from "./../manifest";
 const proxy = require('express-http-proxy');
 import Response from "./../utils/response";
 import { decorateRequestHeaders } from "../helper/proxyUtils";
+import User from "../controllers/user";
 
 export default (app, proxyURL) => {
     const content = new Content(manifest);
