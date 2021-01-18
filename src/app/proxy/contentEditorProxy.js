@@ -140,7 +140,7 @@ module.exports = function (app) {
     })
   )
   app.all('/action/*',
-  bodyParser.json(),
+  bodyParser.json({ limit: '50mb' }),
   isAPIWhitelisted.isAllowed(),
   telemetryHelper.generateTelemetryForProxy,
   proxy(contentProxyUrl, {
