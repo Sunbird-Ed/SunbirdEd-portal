@@ -36,12 +36,12 @@
               },
               {
                 "glob": "**/*",
-                "input": "./node_modules/@project-sunbird/sunbird-pdf-player/lib/assets/",
+                "input": "./node_modules/@project-sunbird/sunbird-pdf-player-v8/lib/assets/",
                 "output": "/assets/"
               },
               {
                 "glob": "**/*",
-                "input": "node_modules/@project-sunbird/sunbird-video-player/lib/assets/",
+                "input": "node_modules/@project-sunbird/sunbird-video-player-v8/lib/assets/",
                 "output": "/assets/"
               }
             ],
