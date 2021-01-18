@@ -9,7 +9,7 @@ import {
   CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, BatchCardComponent, AccountMergeModalComponent,
   OfflineBannerComponent,
   OfflineApplicationDownloadComponent, FullPageModalComponent, ConfirmPopupComponent, SelectOptionGroupComponent,SbDatatableComponent,
-  OnDemandReportsComponent
+  OnDemandReportsComponent, DesktopAppUpdateComponent
 } from './components';
 import {
   ConfigService, ResourceService, ToasterService, WindowScrollService, BrowserCacheTtlService,
@@ -49,7 +49,8 @@ import { LoadOfflineContentComponent } from './components/load-offline-content/l
     InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
     ConfirmPopupComponent, AddToGroupDirective, SelectOptionGroupComponent, AppLandingSectionComponent, MarkdownDirective,
-    SbDatatableComponent,OnDemandReportsComponent,SbDataTablePipe, NetworkStatusComponent, LoadOfflineContentComponent],
+    SbDatatableComponent,OnDemandReportsComponent,SbDataTablePipe, NetworkStatusComponent, LoadOfflineContentComponent,
+    DesktopAppUpdateComponent],
   exports: [AppLoaderComponent, DateFormatPipe, TranslateModule,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
@@ -57,7 +58,7 @@ import { LoadOfflineContentComponent } from './components/load-offline-content/l
     ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent,
     CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
     MarkdownDirective, AddToGroupDirective, SbDatatableComponent, OnDemandReportsComponent, NgxDatatableModule,SbDataTablePipe, 
-    InterpolatePipe,NetworkStatusComponent,LoadOfflineContentComponent]
+    InterpolatePipe,NetworkStatusComponent,LoadOfflineContentComponent, DesktopAppUpdateComponent]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {

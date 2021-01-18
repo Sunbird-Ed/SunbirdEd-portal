@@ -124,6 +124,11 @@ export default (app, proxyURL) => {
             },
         }),
     );
+
+    const user = new User(manifest);
+    app.get("/api/desktop/user/v1/read",
+      user.read.bind(user),
+    );
 }
 
 const enableProxy = (req) => {

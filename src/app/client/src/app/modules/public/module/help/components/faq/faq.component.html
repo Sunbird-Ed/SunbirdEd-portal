@@ -52,7 +52,8 @@
   <div class="fnormal visit-helpcenter__text mr-16">{{resourceService?.frmelmnts?.lbl?.stillCouldntFind}}
     <b>{{resourceService.frmelmnts?.lnk?.footerHelpCenter}}</b></div>
   <a class="sb-btn sb-btn-normal sb-btn-primary visit-helpcenter__btn" appTelemetryInteract
-    [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')" href="{{defaultFooterConfig?.helpCenterLink}}">
+    [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')" href="{{defaultFooterConfig?.helpCenterLink}}"
+    [target]="isDesktopApp ? '_blank' : '_self'">
     {{resourceService?.frmelmnts?.lbl?.goToHelpCenter}}
   </a>
 </ng-template>

@@ -554,7 +554,8 @@
         "identifier",
         "mimeType",
         "framework",
-        "contentType"
+        "contentType",
+        "trackable"
       ]
     },
     "dynamicFields": {

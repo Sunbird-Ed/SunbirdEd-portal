@@ -67,6 +67,30 @@ export class OfflineHelpVideosComponent implements OnInit, OnDestroy {
           thumbnail: 'assets/images/play-icon.svg',
           url: 'assets/videos/How_do_I_play_content.mp4'
         },
+        {
+          id: 'add-content-online-joyful-theme',
+          name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.loadcontent),
+          thumbnail: 'assets/images/play-icon.svg',
+          url: 'assets/videos/How_do_I_load_content_to_the_desktop_app_joyful_theme.mp4'
+        },
+        {
+          id: 'add-content-offline-joyful-theme',
+          name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.downloadcontent),
+          thumbnail: 'assets/images/play-icon.svg',
+          url: 'assets/videos/How_do_I_download_content_from_DIKSHA_Library_joyful_theme.mp4'
+        },
+        {
+          id: 'find-content-offline-joyful-theme',
+          name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.playcontent),
+          thumbnail: 'assets/images/play-icon.svg',
+          url: 'assets/videos/How_do_I_play_content_joyful_theme.mp4' 
+        },
+        {
+          id: 'copy-content-joyful-theme',
+          name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.copycontent),
+          thumbnail: 'assets/images/play-icon.svg',
+          url: 'assets/videos/How_do_I_copy_content_to_my_pen_drive_joyful_theme.mp4'
+        }
       ];
       this.activeVideoObject = this.slideData[0];
     });

@@ -7,6 +7,7 @@ const path = require('path');
 const fs = require('fs');
 const PouchDataBase = require('pouchdb');
 PouchDataBase.plugin(require('pouchdb-find'));
+import { Util } from '../../utils/util';
 /**
 * This SDK helps in performing operations with database and to create them
 * 
@@ -30,7 +31,8 @@ export default class DatabaseSDK {
             const databases = JSON.parse(fs.readFileSync(path.join(__dirname, 'schema_1.0.json'),
                 { encoding: 'utf8' }));
             for (const db of databases) {
-                let dbInstance = this.getConnection(db.name);
+                const databaseName = Util.generateId(this.pluginId, db.name);
+                let dbInstance = this.getConnection(databaseName);
                 if (!_.isEmpty(db['indexes'])) {
                     for (let index of db.indexes) {
                         await dbInstance.createIndex(index).catch((err) => {
@@ -45,7 +47,7 @@ export default class DatabaseSDK {
         }
     }
     getConnection(database: string) {
-        return new PouchDataBase(path.join(process.env.DATABASE_PATH, database));
+        return new PouchDataBase(path.join(process.env.DATABASE_PATH, Util.generateId(this.pluginId, database)));
     }
 
     get(database: string, Id: string) {
