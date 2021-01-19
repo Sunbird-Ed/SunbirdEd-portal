@@ -72,7 +72,7 @@ export default (app, proxyURL) => {
 
     app.get([
         "/learner/isUserExists/user/v1/get/phone/*",
-        "/learner/isUserExists/user/v1/get/email/",
+        "/learner/isUserExists/user/v1/get/email/*",
     ], (req, res, next) => {
         if (req.url.indexOf('isUserExists') > -1) {
             req.url = req.url.replace('isUserExists/', '');
