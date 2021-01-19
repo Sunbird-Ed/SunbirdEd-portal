@@ -72,6 +72,20 @@ const addAgent = (proxyURL, config) => {
   return config;
 }
 
+// Error response for 404
+const getErrorObj = () => {
+  return {
+    ts: new Date().toISOString(),
+    params: {
+      status: "failed",
+      err: "ERR_DATA_NOT_FOUND",
+      errmsg: "Data not found",
+    },
+    responseCode: "RESOURCE_NOT_FOUND",
+    result: {},
+  };
+}
+
 export const customProxy = (host, options = {}) => {
   return async (req, res, next) => {
     const { method } = req;
@@ -109,6 +123,10 @@ export const customProxy = (host, options = {}) => {
             } catch (err) {
               throw ({ response: error.response })
             }
+          } else if (_.get(response, 'status') === 404) {
+            response.status = 404;
+            response.data = getErrorObj();
+            throw ({ response: error.response })
           } else {
             throw ({ response: error.response })
           }

@@ -5,7 +5,6 @@ const https = require('https');
 const httpAgent = new http.Agent({ keepAlive: true, });
 const httpsAgent = new https.Agent({ keepAlive: true, });
 import { containerAPI } from "@project-sunbird/OpenRAP/api";
-import Response from "./../utils/response";
 
 export const decorateRequestHeaders = function (upstreamUrl = "") {
   return async function (proxyReqOpts, srcReq) {
@@ -47,39 +46,21 @@ export const decorateRequestHeaders = function (upstreamUrl = "") {
   }
 }
 
-export const handleSessionExpiry = async (proxyRes, proxyResData, req?, res?, data?) => {
+export const handleSessionExpiry = (proxyRes, proxyResData, req?, res?, data?) => {
   if ((proxyRes.statusCode === 401)) {
-
-    if (_.lowerCase(_.get(proxyRes, 'statusMessage')) === "unauthorized" || _.lowerCase(_.get(data, 'message')) === "unauthorized") {
-      try {
-        await containerAPI.getDeviceSdkInstance().clearToken().catch(error => { logger.debug("Unable to clear the user token", error);})
-        await containerAPI.getDeviceSdkInstance().getToken().catch((err) => {
-          logger.error(`Received error while fetching device token with error: ${err}`);
-        });
-
-        res.status(401).send({ message: 'Unauthorized' });
-        // TODO:// forwardRequest
-        
-      } catch(error) {
-        res.status(500).send(Response.error("api.user.switch", 500, "Internal server error"));
-      }
-
-    } else {
-      const response = {
-        id: 'app.error',
-        ver: '1.0',
-        params:
-        {
-          'msgid': null,
-          'status': 'failed',
-          'err': 'SESSION_EXPIRED',
-          'errmsg': 'Session Expired'
-        },
-        responseCode: 'SESSION_EXPIRED',
-        result: {}
-      };
-      return res.status(401).send(response);
-    }
+    return {
+      id: 'app.error',
+      ver: '1.0',
+      params:
+      {
+        'msgid': null,
+        'status': 'failed',
+        'err': 'SESSION_EXPIRED',
+        'errmsg': 'Session Expired'
+      },
+      responseCode: 'SESSION_EXPIRED',
+      result: { }
+    };
   } else {
     return proxyResData;
   }
