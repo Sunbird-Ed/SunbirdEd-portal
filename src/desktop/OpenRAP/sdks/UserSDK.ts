@@ -158,6 +158,10 @@ export class UserSDK {
     return this.settingSDK.get('userSession');
   }
 
+  public async deleteUserSession() {
+    return this.settingSDK.delete('userSession');
+  }
+
   private async findByName(name) {
     const query = {
       selector: { name }

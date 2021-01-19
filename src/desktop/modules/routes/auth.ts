@@ -8,6 +8,7 @@ const proxy = require('express-http-proxy');
 const uuidv1 = require('uuid/v1');
 import { decorateRequestHeaders, handleSessionExpiry } from "../helper/proxyUtils";
 import { ILoggedInUser } from '../../OpenRAP/interfaces/IUser';
+import { customProxy } from '../helper/proxyHandler';
 
 export default (app, proxyURL) => {
 
@@ -15,7 +16,8 @@ export default (app, proxyURL) => {
     app.post(
         "/api/user/v1/startSession", authController.startUserSession.bind(authController),
     );
-
+    
+    app.get("/endSession", authController.endSession.bind(authController));
     app.get("/learner/user/v3/read/:id", proxy(proxyURL, {
             proxyReqOptDecorator: decorateRequestHeaders(proxyURL),
             proxyReqPathResolver(req) {
@@ -50,25 +52,9 @@ export default (app, proxyURL) => {
         }
     );
 
-    app.get(
-        ["/learner/user/v1/feed/:userId", "/learner/certreg/v2/certs/download/:id"],
-        proxy(proxyURL, {
-        proxyReqOptDecorator: decorateRequestHeaders(proxyURL),
-        proxyReqPathResolver(req) {
-            logger.debug({ msg: `${req.originalUrl}  called` });
-            return `${proxyURL}${req.originalUrl.replace('/learner/', '/api/')}`;
-        },
-        userResDecorator: function (proxyRes, proxyResData, req, res) {
-            try {
-                const data = JSON.parse(proxyResData.toString('utf8'));
-                if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
-                else return handleSessionExpiry(proxyRes, proxyResData, req, res, data);
-            } catch (err) {
-                logger.error({ msg: 'learner route : userResDecorator json parse error:', proxyResData, error: JSON.stringify(err) })
-                return handleSessionExpiry(proxyRes, proxyResData, req, res);
-            }
-        }
-    }));
+    app.get(["/learner/user/v1/feed/:userId", "/learner/certreg/v2/certs/download/:id"], customProxy(proxyURL, { isUserTokenRequired: true, isAuthTokenRequired: true, bypassLearnerRoute: true }), (req, res) => {
+        res.status(res.statusCode).send(res.body);
+    });
 
     app.patch(['/learner/user/v1/update', '/learner/user/v1/declarations'], proxy(proxyURL, {
         proxyReqOptDecorator: decorateRequestHeaders(proxyURL),
@@ -80,7 +66,7 @@ export default (app, proxyURL) => {
             try {
                 logger.info({ msg: `${req.originalUrl} update called` });
                 const data = JSON.parse(proxyResData.toString('utf8'));
-                if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
+                if (req.method === 'PATCH' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
                 else return handleSessionExpiry(proxyRes, proxyResData, req, res, data);
             } catch (err) {
                 logger.error({ msg: 'learner route : userResDecorator json parse error:', proxyResData });
@@ -135,24 +121,10 @@ export default (app, proxyURL) => {
         "/learner/otp/v1/verify", 
         "/learner/user/v1/consent/read",
         "/learner/user/v1/tnc/accept"
-    ], proxy(proxyURL, {
-        proxyReqOptDecorator: decorateRequestHeaders(proxyURL),
-        proxyReqPathResolver(req) {
-            logger.debug({ msg: `${req.originalUrl}  called` });
-            return `${proxyURL}${req.originalUrl.replace('/learner/', '/api/')}`;
-        },
-        userResDecorator: function (proxyRes, proxyResData, req, res) {
-            try {
-                const data = JSON.parse(proxyResData.toString('utf8'));
-                if (req.method === 'POST' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
-                else return handleSessionExpiry(proxyRes, proxyResData, req, res, data);
-            } catch (err) {
-                logger.error({ msg: 'learner route : userResDecorator json parse error:', proxyResData, error: JSON.stringify(err) })
-                return handleSessionExpiry(proxyRes, proxyResData, req, res);
-            }
-        }
-    }));
-  
+    ], customProxy(proxyURL, { isUserTokenRequired: true, isAuthTokenRequired: true, bypassLearnerRoute: true }), (req, res) => {
+        res.status(res.statusCode).send(res.body);
+    });
+
     app.post("/learner/user/v4/create", proxy(proxyURL, {
         proxyReqOptDecorator: decorateRequestHeaders(proxyURL),
         proxyReqPathResolver(req) {
