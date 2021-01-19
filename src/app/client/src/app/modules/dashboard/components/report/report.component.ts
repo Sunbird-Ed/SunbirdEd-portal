@@ -563,7 +563,7 @@ export class ReportComponent implements OnInit {
     this.showChart = true;
   }
 
-  getAllChartData(chartReports) {
+  getAllChartData() {
     let chartData = [];
     if (this.reportData.charts) {
       this.reportData.charts.map(chartInfo => {

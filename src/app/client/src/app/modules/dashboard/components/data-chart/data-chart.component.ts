@@ -43,7 +43,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
   datasets: any;
   chartLabels: any = [];
   filters: Array<{}>;
-  filtersFormGroup: FormGroup;
+  // filtersFormGroup: FormGroup;
   showFilters: Boolean = false;
   filtersSubscription: Subscription;
   noResultsFound: Boolean;
