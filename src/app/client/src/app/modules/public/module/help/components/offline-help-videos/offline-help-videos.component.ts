@@ -95,7 +95,7 @@ export class OfflineHelpVideosComponent implements OnInit, OnDestroy {
           id: 'how-to-login',
           name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.login),
           thumbnail: 'assets/images/play-icon.svg',
-          url: 'assets/videos/How_do_I_login-on-diksha.mp4'
+          url: 'assets/videos/How_do_I_login_on_diksha.mp4'
         },
         {
           id: 'recover-account',
@@ -107,25 +107,25 @@ export class OfflineHelpVideosComponent implements OnInit, OnDestroy {
           id: 'register-on-diksha',
           name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.register),
           thumbnail: 'assets/images/play-icon.svg',
-          url: 'assets/videos/How_do_I_register-on-diksha.mp4'
+          url: 'assets/videos/How_do_I_register_on_diksha.mp4'
         },
         {
           id: 'how-to-login-joyful-theme',
           name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.loginnewtheme),
           thumbnail: 'assets/images/play-icon.svg',
-          url: 'assets/videos/How_do_I_login-on-diksha_joyful-theme.mp4'
+          url: 'assets/videos/How_do_I_login_on_diksha_joyful_theme.mp4'
         },
         {
           id: 'recover-account-joyful-theme',
           name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.recovaccntnewtheme),
           thumbnail: 'assets/images/play-icon.svg',
-          url: 'assets/videos/How_do_I_recover_myaccount_joyful-theme.mp4'
+          url: 'assets/videos/How_do_I_recover_myaccount_joyful_theme.mp4'
         },
         {
           id: 'register-on-diksha-joyful-theme',
           name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.registernewtheme),
           thumbnail: 'assets/images/play-icon.svg',
-          url: 'assets/videos/How_do_I_register-on-diksha_Joyful.mp4'
+          url: 'assets/videos/How_do_I_register_on_diksha_joyful_theme.mp4'
         },
       ];
       this.activeVideoObject = this.slideData[0];
