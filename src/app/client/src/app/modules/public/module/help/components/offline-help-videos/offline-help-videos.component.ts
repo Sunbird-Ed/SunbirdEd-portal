@@ -90,7 +90,43 @@ export class OfflineHelpVideosComponent implements OnInit, OnDestroy {
           name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.copycontent),
           thumbnail: 'assets/images/play-icon.svg',
           url: 'assets/videos/How_do_I_copy_content_to_my_pen_drive_joyful_theme.mp4'
-        }
+        },
+        {
+          id: 'how-to-login',
+          name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.login),
+          thumbnail: 'assets/images/play-icon.svg',
+          url: 'assets/videos/How_do_I_login-on-diksha.mp4'
+        },
+        {
+          id: 'recover-account',
+          name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.recovaccnt),
+          thumbnail: 'assets/images/play-icon.svg',
+          url: 'assets/videos/How_do_I_recover_myaccount.mp4'
+        },
+        {
+          id: 'register-on-diksha',
+          name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.register),
+          thumbnail: 'assets/images/play-icon.svg',
+          url: 'assets/videos/How_do_I_register-on-diksha.mp4'
+        },
+        {
+          id: 'how-to-login-joyful-theme',
+          name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.loginnewtheme),
+          thumbnail: 'assets/images/play-icon.svg',
+          url: 'assets/videos/How_do_I_login-on-diksha_joyful-theme.mp4'
+        },
+        {
+          id: 'recover-account-joyful-theme',
+          name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.recovaccntnewtheme),
+          thumbnail: 'assets/images/play-icon.svg',
+          url: 'assets/videos/How_do_I_recover_myaccount_joyful-theme.mp4'
+        },
+        {
+          id: 'register-on-diksha-joyful-theme',
+          name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.registernewtheme),
+          thumbnail: 'assets/images/play-icon.svg',
+          url: 'assets/videos/How_do_I_register-on-diksha_Joyful.mp4'
+        },
       ];
       this.activeVideoObject = this.slideData[0];
     });
