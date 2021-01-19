@@ -67,10 +67,11 @@ describe('OfflineHelpVideosComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(OfflineHelpVideosComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
-  xit('should call setVideoHeight method', () => {
+  it('should call setVideoHeight method', () => {
+    component.aspectRatio = fixture.debugElement.query(By.css('.aspectratio'));
+    component.playerInfo = fixture.debugElement.query(By.css('.content-video__player__details'));
     component.instance = resourceServiceStub.instance;
     spyOn(component, 'setVideoHeight');
     spyOn(component, 'interpolateInstance');
@@ -81,10 +82,12 @@ describe('OfflineHelpVideosComponent', () => {
     expect(component.interpolateInstance).toHaveBeenCalled();
   });
 
-  xit('should changeVideoAttributes value', () => {
-    const name = (resourceServiceStub.frmelmnts.instn.t0094).replace('{instance}', (resourceServiceStub.instance).toUpperCase());
+  it('should changeVideoAttributes value', () => {
+    component.aspectRatio = fixture.debugElement.query(By.css('.aspectratio'));
+    component.playerInfo = fixture.debugElement.query(By.css('.content-video__player__details'));
+    const name = (resourceServiceStub.frmelmnts.instn.t0095).replace('{instance}', (resourceServiceStub.instance).toUpperCase());
       const data = {
-      id: 'add-content-online',
+      id: 'add-content-offline',
       name: name,
       thumbnail: 'assets/images/play-icon.svg',
       url: 'assets/videos/How_do_I_load_content_to_the_desktop_app.mp4'};
@@ -92,11 +95,13 @@ describe('OfflineHelpVideosComponent', () => {
     fixture.detectChanges();
     const value = fixture.debugElement.query(By.css('.content-video__player__title')).nativeElement.innerText;
     expect(component.activeVideoObject).toBeDefined();
-    expect(component.activeVideoObject.id).toEqual('add-content-online');
+    expect(component.activeVideoObject.id).toEqual('add-content-offline');
     expect(value).toContain(data.name);
   });
 
-  xit('should emit an event' , () => {
+  it('should emit an event' , () => {
+    component.aspectRatio = fixture.debugElement.query(By.css('.aspectratio'));
+    component.playerInfo = fixture.debugElement.query(By.css('.content-video__player__details'));
     spyOn(component.closeVideoModal, 'emit');
     component.closeModal();
     expect(component.closeVideoModal.emit).toHaveBeenCalled();
