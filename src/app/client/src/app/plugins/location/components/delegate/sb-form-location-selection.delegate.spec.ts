@@ -610,19 +610,6 @@ describe('SbFormLocationSelectionDelegate', () => {
   });
 
   describe('onDataLoadStatusChange()', () => {
-    describe('when status changed to "LOADING"', () => {
-      it('should set loader indicator to true', async () => {
-        // arrange
-        sbFormLocationSelectionDelegate.isLocationFormLoading = false;
-
-        // act
-        await sbFormLocationSelectionDelegate.onDataLoadStatusChange('LOADING');
-
-        // assert
-        expect(sbFormLocationSelectionDelegate.isLocationFormLoading).toBeTruthy();
-      });
-    });
-
     describe('when status changed to "LOADED"', () => {
       it('should set loader indicator to true', async () => {
         // arrange

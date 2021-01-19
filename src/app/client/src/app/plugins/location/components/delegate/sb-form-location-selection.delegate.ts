@@ -102,10 +102,13 @@ export class SbFormLocationSelectionDelegate {
   }
 
   async onDataLoadStatusChange($event) {
-    if ('LOADING' === $event) {
-      this.isLocationFormLoading = true;
-    } else {
+    if ('LOADED' === $event) {
       this.isLocationFormLoading = false;
+
+      const subPersonaFormControl = this.formGroup.get('children.persona.subPersona');
+      if (subPersonaFormControl && !subPersonaFormControl.value) {
+        subPersonaFormControl.patchValue((_.get(this.userService.userProfile, 'userSubType') || '') || null);
+      }
 
       if (!this.stateChangeSubscription) {
         this.stateChangeSubscription = concat(
