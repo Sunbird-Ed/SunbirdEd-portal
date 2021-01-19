@@ -5,7 +5,11 @@ import { CommonModule } from '@angular/common';
 
 import { DiscussionRoutingModule } from './discussion-routing.module';
 import { ForumComponent } from './components/forum/forum.component';
-import { DiscussionUiModule } from '@project-sunbird/discussions-ui-v8';
+import { DiscussionUiModule, DiscussionEventsService } from '@project-sunbird/discussions-ui-v8';
+import { DiscussionTelemetryService } from '../shared/services/discussion-telemetry/discussion-telemetry.service';
+
+import * as _ from 'lodash-es';
+
 
 @NgModule({
   imports: [
@@ -17,4 +21,10 @@ import { DiscussionUiModule } from '@project-sunbird/discussions-ui-v8';
   declarations: [ ForumComponent ],
   providers: [ DiscussionService ]
 })
-export class DiscussionModule { }
+export class DiscussionModule {
+  constructor(private discussionEvents: DiscussionEventsService, private discussionTelemetryService: DiscussionTelemetryService) {
+    this.discussionEvents.telemetryEvent.subscribe(event => {
+      this.discussionTelemetryService.logTelemetryEvent(event);
+    });
+  }
+}
