@@ -1,6 +1,9 @@
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
-import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
-import { CoreModule, UserService, SearchService, PlayerService, LearnerService, CoursesService, CertRegService, OrgDetailsService } from '@sunbird/core';
+import { SharedModule, ResourceService, ToasterService, ConfigService, UtilService } from '@sunbird/shared';
+import {
+  CoreModule, UserService, SearchService, PlayerService, LearnerService,
+  CoursesService, CertRegService, OrgDetailsService, FormService
+} from '@sunbird/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgInviewModule } from 'angular-inport';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -9,9 +12,11 @@ import { ProfilePageComponent } from './profile-page.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SlickModule } from 'ngx-slick';
-import { Response } from './profile-page.spec.data';
-import { of as observableOf, throwError as observableThrowError, of, throwError } from 'rxjs';
+import { locationConfig, personaFormConfig, Response } from './profile-page.spec.data';
+import { of as observableOf, throwError as observableThrowError, of, throwError, Observable } from 'rxjs';
 import { configureTestSuite } from '@sunbird/test-util';
+import * as _ from 'lodash-es';
+
 describe('ProfilePageComponent', () => {
   let component: ProfilePageComponent;
   let fixture: ComponentFixture<ProfilePageComponent>;
@@ -26,7 +31,7 @@ describe('ProfilePageComponent', () => {
       }
     };
     getCurrentNavigation = () => {
-      return { state: {} }; 
+      return { state: {} };
     }
   }
   const env = 'profile';
@@ -51,6 +56,41 @@ describe('ProfilePageComponent', () => {
 
   class MockCSService {
     getSignedCourseCertificate() { return of({ printUri: '' }); }
+  }
+
+  class MockFormService {
+    getFormConfig(d) {
+      if (_.isEqual(d, {formType: 'config', formAction: 'get', contentType: 'userType', component: 'portal' })) {
+        return of(personaFormConfig);
+      } else if (_.isEqual(d, {formType: 'profileConfig', contentType: 'default', formAction: 'get' })) {
+        return of(locationConfig);
+      } else if (_.isEqual(d, {
+        formType: 'user',
+        formAction: 'submit',
+        contentType: 'selfDeclaration',
+        component: 'portal'
+      })) {
+        return of([{
+          code: 'externalIds',
+          templateOptions: {
+            options: []
+          },
+          children: []
+        }]);
+      } else if (_.isEqual(d, {
+        formType: 'user',
+      formAction: 'get',
+      contentType: 'tenantPersonaInfo',
+      component: 'portal'
+      })) {
+        return of([{
+          code: 'tenant',
+          templateOptions: {
+            options: []
+          }
+        }]);
+      }
+    }
   }
 
   const resourceBundle = {
@@ -93,6 +133,7 @@ describe('ProfilePageComponent', () => {
         TelemetryModule, NgInviewModule, SlickModule],
       declarations: [ProfilePageComponent],
       providers: [ProfileService, UserService, SearchService,
+        { provide: FormService, useClass: MockFormService },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         { provide: Router, useClass: RouterStub },
         { provide: 'DOMTOIMAGE', useValue: Promise.resolve(MockDomToImage) },
@@ -116,6 +157,8 @@ describe('ProfilePageComponent', () => {
     resourceService.messages = resourceBundle.messages;
     const userService = TestBed.get(UserService);
     userService._userData$.next({ err: null, userProfile: Response.userData });
+    const formservice = TestBed.get(FormService);
+    spyOn(formservice, 'getFormConfig').and.callThrough();
     spyOn(component, 'getOrgDetails').and.callThrough();
     spyOn(component, 'getContribution').and.callThrough();
     spyOn(component, 'getTrainingAttended').and.callThrough();
@@ -125,11 +168,12 @@ describe('ProfilePageComponent', () => {
     expect(component.getOrgDetails).toHaveBeenCalled();
     expect(component.getContribution).toHaveBeenCalled();
     expect(component.getTrainingAttended).toHaveBeenCalled();
+    expect(formservice.getFormConfig).toHaveBeenCalledTimes(4);
   });
 
   it('should call search service to get my contributions data', () => {
     const searchService = TestBed.get(SearchService);
-    spyOn(searchService, 'searchContentByUserId').and.returnValue(observableOf(Response.success));
+    spyOn(searchService, 'searchContentByUserId').and.returnValue(of(Response.success));
     component.getContribution();
     expect(component.contributions).toBeDefined();
   });
@@ -492,5 +536,4 @@ describe('ProfilePageComponent', () => {
     component.copyToClipboard('user');
     expect(component.toasterService.success).toHaveBeenCalledWith(resourceBundle.messages.profile.smsg.m0041);
   });
-
 });
