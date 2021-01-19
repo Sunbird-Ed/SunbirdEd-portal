@@ -85,7 +85,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     'This Month': [moment().startOf('month'), moment().endOf('month')],
     'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
   };
-  @ViewChild('datePickerForFilters') datepicker: ElementRef;
+  @ViewChild('datePickerForFilters',{static: false}) datepicker: ElementRef;
 
   constructor(
     public resourceService: ResourceService,
