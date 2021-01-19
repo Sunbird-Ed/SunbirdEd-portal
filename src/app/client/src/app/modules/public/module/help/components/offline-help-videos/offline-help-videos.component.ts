@@ -135,7 +135,7 @@ export class OfflineHelpVideosComponent implements OnInit, OnDestroy {
   }
 
   setVideoHeight() {
-    console.log('aspect ratio value', this.aspectRatio);
+    console.log('aspect ratio value', this.aspectRatio); 
     this.aspectRatioHeight = this.aspectRatio.nativeElement.offsetHeight;
     this.playerInfoHeight = this.playerInfo.nativeElement.offsetHeight;
     this.videoContainerHeight = this.aspectRatioHeight + this.playerInfoHeight;
