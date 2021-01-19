@@ -18,7 +18,7 @@ const ROLE = {
   BOOK_REVIEWER: 'BOOK_REVIEWER',
   FLAG_REVIEWER: 'FLAG_REVIEWER',
   SYSTEM_ADMINISTRATION: 'SYSTEM_ADMINISTRATION',
-  ADMIN: 'ADMIN',
+  ADMIN: 'ORG_ADMIN',
   PUBLIC: 'PUBLIC',
   ALL: 'ALL'  // Use when user does not have PUBLIC role (Case: User bulk upload)
 };
