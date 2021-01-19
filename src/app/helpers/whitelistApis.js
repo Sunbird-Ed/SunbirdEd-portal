@@ -1147,10 +1147,8 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/api/data/v1/form/update': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [
-        ROLE.SYSTEM_ADMINISTRATION
-      ],
+      description: 'API for form update; mobile team also uses same API.',
+      checksNeeded: []
     },
     '/plugin/v1/form/update': {
       checksNeeded: ['ROLE_CHECK'],
