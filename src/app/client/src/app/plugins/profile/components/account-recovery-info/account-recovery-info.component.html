@@ -33,7 +33,7 @@
       </div>
 
       <div class="sb-field" *ngIf="contactType === 'phoneNo'">
-        <input maxlength="10" class="sb-form-control mb-8" formControlName="phone" type="string">
+        <input maxlength="10" class="sb-form-control mb-8" formControlName="phone" type="tel">
         <span class="sb-color-error fnormal mt-8"  *ngIf="accountRecoveryForm.controls.phone.dirty && accountRecoveryForm.controls['phone'].errors">
          {{resourceService?.frmelmnts?.prmpt?.enterphoneno}}
         </span>
