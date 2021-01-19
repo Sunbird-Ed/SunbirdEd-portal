@@ -8,9 +8,6 @@ import { ForumComponent } from './components/forum/forum.component';
 import { DiscussionUiModule, DiscussionEventsService } from '@project-sunbird/discussions-ui-v8';
 import { DiscussionTelemetryService } from '../shared/services/discussion-telemetry/discussion-telemetry.service';
 
-import * as _ from 'lodash-es';
-
-
 @NgModule({
   imports: [
     CommonModule,
