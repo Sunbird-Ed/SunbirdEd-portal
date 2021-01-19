@@ -139,6 +139,18 @@ module.exports = function (app) {
       userResDecorator: userResDecorator
     })
   )
+
+  app.post('/action/content/v3/upload/*',
+    isAPIWhitelisted.isAllowed(),
+    proxy(contentProxyUrl, {
+      preserveHostHdr: true,
+      limit: reqDataLimitOfContentUpload,
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+      proxyReqPathResolver: proxyReqPathResolverMethod,
+      userResDecorator: userResDecorator
+    })
+  )
+
   app.all('/action/*',
   bodyParser.json({ limit: '50mb' }),
   isAPIWhitelisted.isAllowed(),
