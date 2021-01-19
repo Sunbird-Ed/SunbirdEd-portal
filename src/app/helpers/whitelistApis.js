@@ -801,7 +801,8 @@ const API_LIST = {
         ROLE.BOOK_REVIEWER
       ]
     },
-    '/action/review/comment/v1/read/comment': {
+    '/plugin/review/comment/v1/read/comment': {
+      description: 'API which provides stage level comments provided by reviewers',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.CONTENT_CREATOR,
