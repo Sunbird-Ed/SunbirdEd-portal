@@ -210,6 +210,13 @@ describe('SbFormLocationOptionsFactory', () => {
         });
         done();
       });
+
+      stateFormControl.patchValue({
+        code: 'SOME_SELECTED_STATE_CODE_1',
+        name: 'SOME_SELECTED_STATE_NAME_1',
+        id: 'SOME_SELECTED_STATE_ID_1',
+        type: 'state'
+      });
     });
   });
 });
