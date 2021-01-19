@@ -91,10 +91,11 @@ export default (app, proxyURL) => {
         }
     });
 
-    app.get([
+    app.post([
         "/learner/otp/v1/generate", 
         "/learner/otp/v1/verify", 
         "/learner/user/v1/consent/read",
+        "/learner/user/v1/consent/update",
         "/learner/user/v1/tnc/accept"
     ], customProxy(proxyURL, defaultProxyConfig), (req, res) => {
         res.status(res.statusCode).send(res.body);
