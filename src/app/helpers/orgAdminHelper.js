@@ -10,11 +10,13 @@ const orgAdminAsCollaborator = async function assignOrgAdminAsCollaborator(req, 
     const userId = req.session.userId
     if ( (req.url == '/content/lock/v1/create') && req.body.request.isRootOrgAdmin) {
         const token =  _.get(req, 'kauth.grant.access_token.token') || _.get(req, 'headers.x-authenticated-user-token');
-        axios.get(envHelper.CONTENT_PROXY_URL +'/action/content/v3/read/' + resourceId + '?fields=collaborators')
+        axios.get(envHelper.CONTENT_PROXY_URL +'/action/content/v3/read/' + resourceId + '?fields=collaborators,createdBy')
         .then((response) => {
             if (_.has(response.data.result.content, 'collaborators') && _.includes(response.data.result.content.collaborators, userId)) {
                 next()
-              } else {
+            } else if (_.has(response.data.result.content, 'createdBy') && userId === response.data.result.content.createdBy) {
+                next()
+            } else {
                 const existingCollaborators =  _.has(response.data.result.content, 'collaborators') ? response.data.result.content.collaborators : [];
                 existingCollaborators.push(userId);
                 const config = {
