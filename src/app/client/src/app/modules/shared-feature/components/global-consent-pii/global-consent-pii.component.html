@@ -86,8 +86,9 @@
     <div class="mb-16 fnormal font-weight-normal" *ngIf="type === 'course-consent'">
       <img src="../../../../../../assets/images/info-icon.svg" width="14px" height="14px" class="mr-8" alt="info">{{resourceService?.frmelmnts?.lbl?.canEditProfileDetails}}
     </div>
+    
     <p class="mb-0fnormal font-weight-normal">
-      <input type="checkbox" [(ngModel)]="isTncAgreed" class="mr-8"> {{consentConfig.tncText}}
+      <input type="checkbox" [(ngModel)]="isTncAgreed" class="mr-8"> {{consentConfig.tncText | interpolate:'{instance}': instance}}
       <a class="sb-color-primary" href="javascript:void(0)" (click)="showTncPopup=true">{{consentConfig.tncLink | interpolate:'{instance}': resourceService?.instance}}</a>
     </p>
   </div>

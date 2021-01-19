@@ -31,6 +31,12 @@ describe('OfflineHelpVideosComponent', () => {
           't0095': 'How do I add content to the {instance} desktop app when I am offline or using a pen drive?',
           't0096': 'My Downloads: How do I play content?',
           't0097': 'How do I copy content to my pen drive?'
+        },
+        vidttl: {
+          'copycontent': 'How do I copy content to my pen drive joyful theme',
+          'loadcontent': 'How do I load content  to the desktop app joyful theme',
+          'playcontent': 'How do I play content joyful theme',
+          'downloadcontent': 'How do I download content from desktop app library joyful theme' 
         }
       },
       languageSelected$: of({})

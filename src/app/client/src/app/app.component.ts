@@ -215,6 +215,9 @@ export class AppComponent implements OnInit, OnDestroy {
             this.checkForCustodianUser();
             return this.setUserDetails();
           } else {
+            if (this.utilService.isDesktopApp) {
+              this.userService.getAnonymousUserPreference();
+            }
             return this.setOrgDetails();
           }
         }))
