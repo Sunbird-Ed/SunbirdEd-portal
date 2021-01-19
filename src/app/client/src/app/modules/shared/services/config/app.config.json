@@ -554,7 +554,8 @@
         "identifier",
         "mimeType",
         "framework",
-        "contentType"
+        "contentType",
+        "trackable"
       ]
     },
     "dynamicFields": {
@@ -1309,7 +1310,8 @@
     "courses": "courses",
     "organization": "organization",
     "externalIdVerification": "externalIdVerification",
-    "assessment": "assessment"
+    "assessment": "assessment",
+    "userType": "userType"
   },
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,
@@ -1403,9 +1405,11 @@
     "PAGE_LIMIT": 10
   },
   "userTypeMapping" : {
-    "student": ["Student"],
-    "teacher": ["Teacher"],
-    "other": ["Student", "Teacher"] 
+    "student": ["Student", "Learner"],
+    "teacher": ["Teacher", "Instructor"],
+    "other": ["Student", "Teacher", "Instructor", "Learner"],
+    "administrator": ["Administrator"],
+    "parent": ["Student", "Teacher", "Instructor", "Learner"]
   },
   "contentType" : {
     "Course" : "Course",

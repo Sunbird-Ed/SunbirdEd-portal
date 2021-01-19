@@ -23,7 +23,7 @@ import { ContentIDParam } from '../../interfaces/delteparam';
 
 export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterViewInit {
 
-  @ViewChild('modalTemplate')
+  @ViewChild('modalTemplate', {static: false})
   public modalTemplate: ModalTemplate<{ data: string }, string, string>;
   /**
      * state for content editior
@@ -266,7 +266,8 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
         board: bothParams.queryParams.board,
         subject: bothParams.queryParams.subject,
         medium: bothParams.queryParams.medium,
-        gradeLevel: bothParams.queryParams.gradeLevel
+        gradeLevel: bothParams.queryParams.gradeLevel,
+        channel: this.userService.channel
       },
       limit: limit,
       offset: (pageNumber - 1) * (limit),
@@ -420,6 +421,14 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
 
   contentClick(content) {
     console.log(content);
+    if (content.originData) {
+      const originData = JSON.parse(content.originData);
+      if (originData.copyType === 'shallow') {
+        const errMsg = (this.resourceService.messages.emsg.m1414).replace('{instance}', originData.organisation[0]);
+        this.toasterService.error(errMsg);
+        return;
+      }
+    }
     if (_.size(content.lockInfo)) {
         this.lockPopupData = content;
         this.showLockedContentModal = true;

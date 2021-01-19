@@ -18,8 +18,8 @@ import { RecaptchaComponent } from 'ng-recaptcha';
   styleUrls: ['./update-contact.component.scss']
 })
 export class UpdateContactComponent implements OnInit, AfterViewInit {
-  @ViewChild('contactDetailsForm') private contactDetailsForm;
-  @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
+  @ViewChild('contactDetailsForm', {static: false}) private contactDetailsForm;
+  @ViewChild('captchaRef', {static: false}) captchaRef: RecaptchaComponent;
   public telemetryImpression;
   public tenantInfo: any = {};
   public showOtpComp = false;

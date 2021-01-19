@@ -1,7 +1,7 @@
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { ElectronService } from '../../../core/services/electron/electron.service';
-import { Component, OnInit, Output, EventEmitter, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, OnDestroy, Input } from '@angular/core';
 import { ResourceService, ConnectionService, ConfigService } from '../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -12,11 +12,11 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
   styleUrls: ['./load-offline-content.component.scss']
 })
 export class LoadOfflineContentComponent implements OnInit, OnDestroy  {
+  @Input() hideLoadButton = false;
   showLoadContentModal: any;
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
   isConnected;
   selectedValue;
-  @Output() close = new EventEmitter();
   onlineMsg: string;
   addImportFontWeight;
   instance: string;
@@ -41,6 +41,9 @@ export class LoadOfflineContentComponent implements OnInit, OnDestroy  {
       this.addFontWeight();
       this.setTelemetryData();
     });
+    if (this.hideLoadButton) {
+      this.handleImportContentDialog();
+    }
   }
 
   openImportContentDialog() {
@@ -59,12 +62,12 @@ export class LoadOfflineContentComponent implements OnInit, OnDestroy  {
   }
 
   closeModal() {
-    this.close.emit();
-    this.modal.deny();
+    this.selectedValue = this.isConnected ? 'browse' : 'import';
+    this.showLoadContentModal = false;
   }
 
   navigate() {
-    this.selectedValue === 'browse' ? this.router.navigate(['/browse']) : this.openImportContentDialog();
+    this.selectedValue === 'browse' ? this.router.navigate(['/explore/1'], { queryParams: { selectedTab: 'all' }}) : this.openImportContentDialog();
     this.modal.deny();
   }
   addFontWeight() {

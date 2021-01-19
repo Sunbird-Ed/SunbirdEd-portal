@@ -1,7 +1,9 @@
 import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash-es';
-import { PlayerConfig, LayoutService, NavigationHelperService } from '@sunbird/shared';
+import { PlayerConfig, LayoutService, NavigationHelperService, ResourceService, UtilService } from '@sunbird/shared';
 import { Router } from '@angular/router';
+import { PublicPlayerService } from '@sunbird/public';
+import { ContentManagerService } from '../../../public/module/offline/services';
 
 const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub', 'video/webm', 'video/mp4', 'application/pdf'];
 import { Subject } from 'rxjs';
@@ -15,7 +17,7 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
   @Input() playerConfig: PlayerConfig;
   @Output() assessmentEvents = new EventEmitter<any>();
   @Output() questionScoreSubmitEvents = new EventEmitter<any>();
-  @ViewChild('contentIframe') contentIframe: ElementRef;
+  @ViewChild('contentIframe', {static: false}) contentIframe: ElementRef;
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
   @Output() sceneChangeEvent = new EventEmitter<any>();
   @Input() contentProgressEvents$: Subject<any>;
@@ -38,12 +40,15 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
   /**
  * Dom element reference of contentRatingModal
  */
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
   @Input() contentData;
   @Input() layoutConfiguration;
   isFullScreenView;
   isLoading: Boolean = false; // To restrict player loading multiple times
-  constructor(public router: Router, public layoutService: LayoutService, public navigationHelperService: NavigationHelperService) {
+  isDesktopApp: Boolean = false;
+  constructor(public router: Router, public layoutService: LayoutService, public navigationHelperService: NavigationHelperService,
+    public playerService: PublicPlayerService, public resourceService: ResourceService,private contentManagerService: ContentManagerService,
+    public utilService: UtilService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
     this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
@@ -58,7 +63,7 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
   ngAfterViewInit() {}
 
   ngOnChanges() {
-    if (this.isContentDeleted) {
+    if (this.isDesktopApp && this.isContentDeleted) {
       this.isContentDeleted.subscribe(data => {
         this.contentDeleted = data.value && !this.router.url.includes('browse');
       });
@@ -71,6 +76,7 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
   }
 
   ngOnInit() {
+    this.isDesktopApp = this.utilService.isDesktopApp;
     this.checkFullScreenView();
     if (this.contentProgressEvents$) {
       this.contentProgressEvents$.subscribe(data => {
@@ -78,6 +84,30 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
       });
     }
     this.initLayout();
+    if(this.isDesktopApp) { 
+      this.contentManagerService.deletedContent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
+        this.deleteContent(data);
+      });
+    }
+  }
+
+  deleteContent(event) {
+    if (!this.router.url.includes('mydownloads')) {
+      this.contentDeleted = true;
+      this.deletedContent.emit(event);
+    }
+  }
+
+  checkContentDownloading(event) {
+    if (this.isDesktopApp && !this.router.url.includes('mydownloads')) {
+      this.contentDeleted = false;
+      const contentDetails = {
+        contentId: event.identifier,
+        contentData: event
+      };
+      this.contentData = event;
+      this.playerConfig = this.playerService.getConfig(contentDetails);
+    }
   }
 
   checkFullScreenView() {

@@ -17,6 +17,8 @@ const ROLE = {
   BOOK_CREATOR: 'BOOK_CREATOR',
   BOOK_REVIEWER: 'BOOK_REVIEWER',
   FLAG_REVIEWER: 'FLAG_REVIEWER',
+  SYSTEM_ADMINISTRATION: 'SYSTEM_ADMINISTRATION',
+  ADMIN: 'ORG_ADMIN',
   PUBLIC: 'PUBLIC',
   ALL: 'ALL'  // Use when user does not have PUBLIC role (Case: User bulk upload)
 };
@@ -182,10 +184,6 @@ const API_LIST = {
     '/action/content/v3/hierarchy/update': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.BOOK_CREATOR]
-    },
-    '/action/content/v3/read': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/content/lock/v1/create': {
       checksNeeded: ['ROLE_CHECK'],
@@ -636,6 +634,745 @@ const API_LIST = {
     // get user session
     '/learner/get/user/sessionId/:userId': {
       checksNeeded: []
+    },
+
+    // Assessment service
+    '/action/assessment/v3/items/read/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.COURSE_MENTOR, ROLE.COURSE_CREATOR, ROLE.BOOK_CREATOR, ROLE.BOOK_REVIEWER, ROLE.FLAG_REVIEWER
+      ]
+    },
+    '/action/assessment/v3/items/search': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.COURSE_MENTOR, ROLE.COURSE_CREATOR, ROLE.BOOK_CREATOR, ROLE.BOOK_REVIEWER, ROLE.FLAG_REVIEWER
+      ]
+    },
+    '/action/assessment/v3/items/update/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR, ROLE.COURSE_CREATOR, ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/assessment/v3/items/create': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR, ROLE.COURSE_CREATOR, ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/assessment/v3/itemsets/retire/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR, ROLE.COURSE_CREATOR, ROLE.BOOK_CREATOR
+      ]
+    },
+
+    // Assessment items service
+    '/action/assessmentitems/update/': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/assessmentitems/create': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+
+    // Content service
+    '/action/content/v3/create': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/content/v3/update/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/content/v3/read/:do_id': {
+      description: 'API is accessed by non logged in user',
+      checksNeeded: []
+    },
+    '/action/content/v3/bundle': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/content/v3/hierarchy/:do_id': {
+      description: 'API used to read textbook for anonymous users',
+      checksNeeded: [],
+    },
+    '/action/content/v3/hierarchy/update': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/content/v3/review/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_REVIEWER,
+        ROLE.BOOK_REVIEWER,
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/content/v3/publish/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_REVIEWER,
+        ROLE.BOOK_REVIEWER
+      ]
+    },
+    '/action/content/v3/upload/url/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/content/v3/reject/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_REVIEWER,
+        ROLE.BOOK_REVIEWER
+      ]
+    },
+    '/action/content/v3/retire/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR,
+        ROLE.ADMIN
+      ]
+    },
+    '/action/content/v3/flag/accept/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_REVIEWER,
+        ROLE.BOOK_REVIEWER
+      ]
+    },
+    '/action/content/v3/flag/reject/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_REVIEWER,
+        ROLE.BOOK_REVIEWER
+      ]
+    },
+    '/action/content/v3/upload/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/content/v3/unlisted/publish/:contentId': {
+      description: 'API is used to share content for Limited Sharing feature',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR,
+        ROLE.CONTENT_REVIEWER,
+        ROLE.BOOK_REVIEWER
+      ]
+    },
+    '/action/review/comment/v1/read/comment': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR,
+        ROLE.CONTENT_REVIEWER,
+        ROLE.BOOK_REVIEWER
+      ]
+    },
+
+    // Dial code service
+    '/action/dialcode/v3/search': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/dialcode/v3/read/:dialId': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/dialcode/v1/reserve/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/dialcode/v1/process/status/:processId': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/collection/v3/dialcode/link/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+
+    // Language service
+    '/action/language/v3/list': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/language/v3/search': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/language/definition/v3/read/Word': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/language/v3/tools/parser': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/language/v3/tools/transliterate': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/language/v3/tools/translate': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/language/v3/varnas/syllables/list': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/language/v3/varnas/vowels/list': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/language/v3/varnas/consonants/list': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+
+    // Lock service
+    '/action/lock/v1/create': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/lock/v1/refresh': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/lock/v1/retire': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+
+    // Learning service
+    '/action/learning/taxonomy/domain/definition/:objType': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+
+    // Meta service
+    '/action/meta/v3/resourcebundles/read/:lineCode': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/meta/v3/terms/list': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/meta/v3/ordinals/list': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+
+    // Domain service
+    '/action/domain/v3/terms/list': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+
+    // Framework service
+    '/action/framework/v3/read/:frameworkId': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR,
+        ROLE.CONTENT_REVIEWER,
+        ROLE.BOOK_REVIEWER
+      ]
+    },
+
+    // Channel service
+    '/action/channel/v3/read/:channel': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+
+    // Vocabulary service
+    '/action/vocabulary/v3/term/suggest': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/vocabulary/v3/term/create': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+
+    // Data service
+    '/action/data/v1/page/assemble': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/data/v1/form/read': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER, ROLE.COURSE_MENTOR, ROLE.COURSE_CREATOR, ROLE.BOOK_CREATOR, ROLE.BOOK_REVIEWER, ROLE.FLAG_REVIEWER
+      ]
+    },
+    '/action/asset/v3/validate': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+
+    // Composite service
+    '/action/composite/v3/search': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+
+    // Textbook service
+    '/action/textbook/v1/toc/upload/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/textbook/v1/toc/download/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.BOOK_CREATOR
+      ]
+    },
+
+    // User service
+    '/action/user/v1/search': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/content/v1/collaborator/update/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/system/v3/content/update/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.ADMIN
+      ]
+    },
+    '/signup': {
+      checksNeeded: []
+    },
+    '/collection-editor/telemetry': {
+      checksNeeded: []
+    },
+    '/content-editor/telemetry': {
+      checksNeeded: []
+    },
+    '/v1/tenant/info/:tenantId': {
+      checksNeeded: []
+    },
+    '/v1/user/session/start/:deviceId': {
+      checksNeeded: []
+    },
+    '/content/data/v1/telemetry': {
+      checksNeeded: []
+    },
+    '/getGeneralisedResourcesBundles/:lang/:fileName': {
+      checksNeeded: []
+    },
+    '/service/health': {
+      checksNeeded: []
+    },
+    '/health': {
+      checksNeeded: []
+    },
+    '/plugin/v1/form/read': {
+      checksNeeded: []
+    },
+    '/v1/tenant/info/': {
+      checksNeeded: []
+    },
+    '/device/register/:deviceId': {
+      checksNeeded: []
+    },
+    '/user/v1/switch/:userId': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/api/data/v1/form/update': {
+      description: 'API for form update; mobile team also uses same API.',
+      checksNeeded: []
+    },
+    '/plugin/v1/form/update': {
+      description: 'API for form update; mobile team also uses same API.',
+      checksNeeded: []
+    },
+    '/google/auth': {
+      checksNeeded: []
+    },
+    // discussion forum apis
+    '/discussion/user/v1/create': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/forum/v2/read': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/forum/v2/create': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/tags': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/notifications': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/category/:category_id': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/categories': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/categories/:cid/moderators': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/user/:userslug': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/user/:userslug/upvoted': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/user/:userslug/downvoted': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/user/:userslug/bookmarks': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/user/:userslug/best': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/unread': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/recent': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/popular': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/top': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/topic/:topic_id/:slug': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/unread/total': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/topic/teaser/:topic_id': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/topic/pagination/:topic_id': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/groups': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/groups/:slug': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/groups/:slug/members': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/user/:userslug/downvoted': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/recent/posts/:day': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v2/topics': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v2/topics/:tid': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v2/topics/:tid/state': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v2/topics/:tid/follow': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v2/topics/:tid/tags': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v2/topics/:tid/pin': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v2/categories': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v2/categories/:cid': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v2/categories/:cid/state': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v2/categories/:cid/privileges': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v2/groups': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v2/groups/:slug': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v2/groups/:slug/membership': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v2/groups/:slug/membership/:uid': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v2/posts/:pid': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v2/posts/:pid/state': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v2/posts/:pid/vote': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v2/posts/:pid/bookmark': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v2/users': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v2/users/:uid': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v2/users/:uid/password': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v2/users/:uid/follow': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v2/users/:uid/chats': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v2/users/:uid/ban': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v2/users/:uid/tokens': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/v2/users/:uid/tokens/:token': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/user/username/:username': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/user/uid/:uid': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     }
   },
   URL_PATTERN: [
@@ -658,7 +1395,77 @@ const API_LIST = {
     '/learner/user/v2/exists/:key/:value',
     '/learner/certreg/v2/certs/download/:id',
     '/content/asset/v1/upload/:id',
-    '/learner/get/user/sessionId/:userId'
+    '/learner/get/user/sessionId/:userId',
+    '/action/assessment/v3/items/read/:do_id',
+    '/action/assessment/v3/items/update/:do_id',
+    '/action/assessment/v3/itemsets/retire/:do_id',
+    '/action/content/v3/update/:do_id',
+    '/action/content/v3/read/:do_id',
+    '/action/content/v3/hierarchy/:do_id',
+    '/action/content/v3/review/:do_id',
+    '/action/content/v3/publish/:do_id',
+    '/action/content/v3/upload/url/:do_id',
+    '/action/content/v3/reject/:do_id',
+    '/action/content/v3/retire/:do_id',
+    '/action/content/v3/flag/accept/:do_id',
+    '/action/content/v3/flag/reject/:do_id',
+    '/action/content/v3/upload/:do_id',
+    '/action/content/v3/unlisted/publish/:contentId',
+    '/action/dialcode/v3/read/:dialId',
+    '/action/dialcode/v1/reserve/:do_id',
+    '/action/dialcode/v1/process/status/:processId',
+    '/action/collection/v3/dialcode/link/:do_id',
+    '/action/learning/taxonomy/domain/definition/:objType',
+    '/action/meta/v3/resourcebundles/read/:lineCode',
+    '/action/framework/v3/read/:frameworkId',
+    '/action/channel/v3/read/:channel',
+    '/action/textbook/v1/toc/upload/:do_id',
+    '/action/textbook/v1/toc/download/:do_id',
+    '/action/content/v1/collaborator/update/:do_id',
+    '/action/system/v3/content/update/:do_id',
+    '/v1/tenant/info/:tenantId',
+    '/v1/user/session/start/:deviceId',
+    '/getGeneralisedResourcesBundles/:lang/:fileName',
+    '/discussion/category/:category_id',
+    '/discussion/categories/:cid/moderators',
+    '/discussion/user/:userslug',
+    '/discussion/user/:userslug/upvoted',
+    '/discussion/user/:userslug/downvoted',
+    '/discussion/user/:userslug/bookmarks',
+    '/discussion/user/:userslug/best',
+    '/discussion/topic/:topic_id/:slug',
+    '/discussion/topic/teaser/:topic_id',
+    '/discussion/topic/pagination/:topic_id',
+    '/discussion/groups/:slug',
+    '/discussion/groups/:slug/members',
+    '/discussion/user/:userslug/downvoted',
+    '/discussion/recent/posts/:day',
+    '/discussion/v2/topics/:tid',
+    '/discussion/v2/topics/:tid/state',
+    '/discussion/v2/topics/:tid/follow',
+    '/discussion/v2/topics/:tid/tags',
+    '/discussion/v2/topics/:tid/pin',
+    '/discussion/v2/categories/:cid',
+    '/discussion/v2/categories/:cid/state',
+    '/discussion/v2/categories/:cid/privileges',
+    '/discussion/v2/groups/:slug',
+    '/discussion/v2/groups/:slug/membership',
+    '/discussion/v2/groups/:slug/membership/:uid',
+    '/discussion/v2/posts/:pid',
+    '/discussion/v2/posts/:pid/state',
+    '/discussion/v2/posts/:pid/vote',
+    '/discussion/v2/posts/:pid/bookmark',
+    '/discussion/v2/users/:uid',
+    '/discussion/v2/users/:uid/password',
+    '/discussion/v2/users/:uid/follow',
+    '/discussion/v2/users/:uid/chats',
+    '/discussion/v2/users/:uid/ban',
+    '/discussion/v2/users/:uid/tokens',
+    '/discussion/v2/users/:uid/tokens/:token',
+    '/discussion/user/username/:username',
+    '/discussion/user/uid/:uid',
+    '/device/register/:deviceId',
+    '/user/v1/switch/:userId'
   ]
 };
 module.exports = API_LIST;

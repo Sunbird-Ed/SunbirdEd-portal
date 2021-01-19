@@ -12,7 +12,7 @@ import * as _ from 'lodash-es';
 })
 export class AccountRecoveryInfoComponent implements OnInit, OnDestroy {
   @Output() close = new EventEmitter<any>();
-  @ViewChild('accountRecoveryModal') accountRecoveryModal;
+  @ViewChild('accountRecoveryModal', {static: false}) accountRecoveryModal;
 
   /** to take the mode of operaion (edit or add of recovery id) from profile page */
   @Input() mode: string;

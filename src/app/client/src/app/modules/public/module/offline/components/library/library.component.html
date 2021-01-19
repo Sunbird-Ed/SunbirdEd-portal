@@ -1,4 +1,4 @@
-<app-landing-section [textToDisplay]="pageTitle" [svgToDisplay]="svgToDisplay"
+<app-landing-section [textToDisplay]="pageTitleSrc" [svgToDisplay]="svgToDisplay"
   [layoutConfiguration]="layoutConfiguration"></app-landing-section>
 <div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
   <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'"
@@ -20,7 +20,7 @@
       <div [appTelemetryImpression]="telemetryImpression"
         [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
         <div>
-          <div class="ui container">
+          <div class="ui container relative9">
             <div class="ui stackable grid m-0">
               <div class="twele wide column p-0">
                 <div *ngIf="showLoader">

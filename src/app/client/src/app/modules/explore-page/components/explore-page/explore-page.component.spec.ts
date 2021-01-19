@@ -1,7 +1,7 @@
 import { SlickModule } from 'ngx-slick';
 import { BehaviorSubject, throwError, of, of as observableOf } from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
-import { ResourceService, ToasterService, SharedModule, LayoutService } from '@sunbird/shared';
+import { ResourceService, ToasterService, SharedModule, LayoutService, UtilService } from '@sunbird/shared';
 import { SearchService, OrgDetailsService, CoreModule, UserService, FormService, CoursesService, PlayerService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PublicPlayerService } from '@sunbird/public';
@@ -16,7 +16,6 @@ import { ContentSearchService } from '@sunbird/content-search';
 import { configureTestSuite } from '@sunbird/test-util';
 import { ContentManagerService } from '../../../public/module/offline/services';
 
-
 describe('ExplorePageComponent', () => {
   let component: ExplorePageComponent;
   let fixture: ComponentFixture<ExplorePageComponent>;
@@ -30,13 +29,6 @@ describe('ExplorePageComponent', () => {
   }
   const resourceBundle = {
     'messages': {
-      'fmsg': {
-        'm0027': 'Something went wrong',
-        'm0090': 'Could not download. Try again later',
-        'm0091': 'Could not copy content. Try again later',
-        'm0004': 'Could not fetch data, try again later...',
-        'm0051': 'Something went wrong, try again later'
-      },
       'stmsg': {
         'm0009': 'error',
         'm0140': 'DOWNLOADING',
@@ -44,6 +36,13 @@ describe('ExplorePageComponent', () => {
         'm0139': 'DOWNLOADED',
       },
       'emsg': {},
+      'fmsg': {
+        'm0027': 'Something went wrong',
+        'm0090': 'Could not download. Try again later',
+        'm0091': 'Could not copy content. Try again later',
+        'm0004': 'Could not fetch data, try again later...',
+        'm0051': 'Something went wrong, try again later'
+      }
     },
     frmelmnts: {
       lbl: {
@@ -55,8 +54,8 @@ describe('ExplorePageComponent', () => {
         noContentfoundSubTitle: 'Your board is yet to add more content. Click the button below to explore other content on {instance}',
         noContentfoundButtonText: 'Explore more content',
         desktop: {
-          yourSearch: '',
-          notMatchContent: ''
+          yourSearch: 'Your search for - "{key}"',
+          notMatchContent: 'did not match any content'
         }
       },
 
@@ -75,6 +74,7 @@ describe('ExplorePageComponent', () => {
       queryParams: {}
     };
     public changeQueryParams(queryParams) { this.queryParamsMock.next(queryParams); }
+    public changeSnapshotQueryParams(queryParams) { this.snapshot.queryParams = queryParams; }
   }
   configureTestSuite();
   beforeEach(async(() => {
@@ -321,15 +321,25 @@ describe('ExplorePageComponent', () => {
     expect(component.selectedFilters).toEqual({ audience: ['Teacher'] });
   });
 
-  it('should set no Result message', done => {
-    component['setNoResultMessage']().subscribe(res => {
-      expect(component.noResultMessage).toEqual({
-        title: 'Board is adding content',
-        subTitle: 'Your board is yet to add more content. Click the button below to explore other content on {instance}',
-        buttonText: 'Explore more content',
-        showExploreContentButton: true
-      });
-      done();
+  it('should set no Result message', () => {
+    component['setNoResultMessage']();
+    expect(component.noResultMessage).toEqual({
+      title: 'Board is adding content',
+      subTitle: 'Your board is yet to add more content. Click the button below to explore other content on {instance}',
+      buttonText: 'Explore more content',
+      showExploreContentButton: true
+    });
+  });
+
+  it('should set no Result message ', () => {
+    const activatedRoute = TestBed.get(ActivatedRoute);
+    activatedRoute.changeSnapshotQueryParams({ subject: ['English'], key: 'test', selectedTab: 'all' });
+    component['setNoResultMessage']();
+    expect(component.noResultMessage).toEqual({
+      title: 'Your search for - "test" did not match any content',
+      subTitle: 'Board is adding courses',
+      buttonText: 'Board is adding courses',
+      showExploreContentButton: true
     });
   });
 
@@ -369,6 +379,16 @@ describe('ExplorePageComponent', () => {
     expect(component.showModal).toBeFalsy();
     expect(component.contentData).toBeDefined();
   });
+  it('should call listenLanguageChange', () => {
+    component.isDesktopApp = true;
+    component.pageSections = [{ name: 'test' }];
+    spyOn(component, 'addHoverData');
+    spyOn<any>(component, 'setNoResultMessage');
+    component['listenLanguageChange']();
+    expect(component.addHoverData).toHaveBeenCalled();
+    expect(component['setNoResultMessage']).toHaveBeenCalled();
+  });
+
 
   it('should call hoverActionClicked for Open ', () => {
     RESPONSE.hoverActionsData['hover'] = {
@@ -402,10 +422,79 @@ describe('ExplorePageComponent', () => {
 
   it('should call download content with error ', () => {
     const contentManagerService = TestBed.get(ContentManagerService);
-    spyOn(contentManagerService, 'startDownload').and.returnValue(throwError({error: {params: {err: 'ERROR'}}}));
+    spyOn(contentManagerService, 'startDownload').and.returnValue(throwError({ error: { params: { err: 'ERROR' } } }));
     component.ngOnInit();
     component.downloadContent('123');
     expect(component.showDownloadLoader).toBeFalsy();
   });
 
+  it('should call addHoverData', () => {
+    component.contentDownloadStatus = { 'do_id': true };
+    component.pageSections = [{ name: 'English', contents: [{ identifier: 'do_id' }] }];
+    const utilService = TestBed.get(UtilService);
+    spyOn(utilService, 'addHoverData');
+    component.addHoverData();
+    expect(utilService.addHoverData).toHaveBeenCalled();
+  });
+
+  it('should call setTelemetryData', () => {
+    component['setTelemetryData']();
+    expect(component.exploreMoreButtonEdata).toBeDefined();
+    expect(component.telemetryImpression).toBeDefined();
+  });
+
+  it('should called ngAfterViewInit', fakeAsync(() => {
+    spyOn<any>(component, 'setTelemetryData');
+    component.ngAfterViewInit();
+    tick(1);
+    expect(component['setTelemetryData']).toHaveBeenCalled();
+  }));
+
+  it('should return slideConfig', () => {
+    const response = component.slideConfig;
+    expect(response).toBeDefined();
+  });
+
+  it('should update cards on scroll', () => {
+    component.pageSections.length = 5;
+    component.apiContentList.length = 50;
+    spyOn(component, 'addHoverData');
+    const scrollEvent = document.createEvent('CustomEvent'); // MUST be 'CustomEvent'
+    scrollEvent.initCustomEvent('scroll', false, false, null);
+
+    const expectedLeft = 123;
+    const expectedTop = 6000;
+
+    document.body.style.minHeight = '9000px';
+    document.body.style.minWidth = '9000px';
+    scrollTo(expectedLeft, expectedTop);
+    dispatchEvent(scrollEvent);
+    expect(component.addHoverData).toHaveBeenCalled();
+  });
+
+  it('should call initConfiguration', () => {
+    const layoutService = TestBed.get(LayoutService);
+    const utilService = TestBed.get(UtilService);
+    const userService = TestBed.get(UserService);
+    userService.anonymousUserPreference = {
+      framework: {
+        'id': '01268904781886259221',
+        'board': 'State (Maharashtra)',
+        'medium': [
+          'English',
+          'Hindi'
+        ],
+        'gradeLevel': [
+          'Class 3',
+          'Class 4'
+        ]
+      }
+    };
+    spyOn(layoutService, 'initlayoutConfig');
+    spyOn(component, 'redoLayout');
+    utilService._isDesktopApp = true;
+    component['initConfiguration']();
+    expect(layoutService.initlayoutConfig).toHaveBeenCalled();
+    expect(component.redoLayout).toHaveBeenCalled();
+  });
 });

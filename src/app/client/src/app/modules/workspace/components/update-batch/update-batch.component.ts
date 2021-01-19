@@ -8,7 +8,7 @@ import { UserService } from '@sunbird/core';
 import { BatchService } from '../../services';
 import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
 
 @Component({
@@ -18,7 +18,13 @@ import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
 })
 export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  @ViewChild('updateBatchModal') private updateBatchModal;
+  private updateBatchModal;
+  @ViewChild('updateBatchModal', {static: false}) set setBatchModal(element) {
+    if (element) {
+      this.updateBatchModal = element;
+    }
+    this.initDropDown();
+  };
   /**
   * batchId
   */
@@ -156,7 +162,6 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         this.mentorList = userList.mentorList;
         this.initializeUpdateForm();
         this.fetchParticipantDetails();
-        this.initDropDown();
       }, (err) => {
         if (err.error && err.error.params && err.error.params.errmsg) {
           this.toasterService.error(err.error.params.errmsg);
@@ -293,7 +298,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     };
   }
   private initDropDown() {
-    const count = this.batchDetails.participants ? this.batchDetails.participants.length : 0;
+    const count = _.get(this.batchDetails, 'participants') ? _.get(this.batchDetails, 'participants.length') : 0;
     this.lazzyLoadScriptService.loadScript('semanticDropdown.js').subscribe(() => {
       $('#participant').dropdown({
         forceSelection: false,

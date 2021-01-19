@@ -74,13 +74,13 @@ export class DataChartComponent implements OnInit, OnDestroy {
   private _globalFilter; // private property _item
   resetFilters;
 
-  @ViewChild('datePickerForFilters') datepicker: ElementRef;
-  @ViewChild('chartRootElement') chartRootElement;
-  @ViewChild('chartCanvas') chartCanvas;
+  @ViewChild('datePickerForFilters', {static: false}) datepicker: ElementRef;
+  @ViewChild('chartRootElement', {static: false}) chartRootElement;
+  @ViewChild('chartCanvas', {static: false}) chartCanvas;
 
 
 
-  @ViewChild(BaseChartDirective) chartDirective: BaseChartDirective;
+  @ViewChild(BaseChartDirective, {static: false}) chartDirective: BaseChartDirective;
   constructor(public resourceService: ResourceService, private fb: FormBuilder, private cdr: ChangeDetectorRef,
     private toasterService: ToasterService, public activatedRoute: ActivatedRoute, private sanitizer: DomSanitizer,
     private usageService: UsageService, private reportService: ReportService) {

@@ -60,6 +60,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
             && this.pageSections.length < this.apiContentList.length) {
             this.pageSections.push(this.apiContentList[this.pageSections.length]);
+            this.addHoverData();
         }
     }
 
@@ -80,6 +81,17 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             board: [DEFAULT_FRAMEWORK], gradeLevel: this.isUserLoggedIn() ? [] : ['Class 10'], medium: [],
             ...userFramework
         };
+        if (this.utilService.isDesktopApp) {
+            const userPreferences: any = this.userService.anonymousUserPreference;
+            if (userPreferences) {
+                _.forEach(['board', 'medium', 'gradeLevel'], (item) => {
+                    if (!_.has(this.selectedFilters, item)) {
+                        this.defaultFilters[item] = _.isArray(userPreferences.framework[item]) ?
+                            userPreferences.framework[item] : _.split(userPreferences.framework[item], ', ');
+                    }
+                });
+            }
+        }
         this.numberOfSections = [get(this.configService, 'appConfig.SEARCH.SECTION_LIMIT') || 3];
         this.layoutConfiguration = this.layoutService.initlayoutConfig();
         this.redoLayout();
@@ -91,14 +103,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private getFormConfig(input = { formType: 'contentcategory', formAction: 'menubar', contentType: 'global' }): Observable<object> {
         return this.formService.getFormConfig(input);
-    }
-
-    private listenLanguageChange() {
-        this.utilService.languageChange.pipe(takeUntil(this.unsubscribe$)).subscribe((langData) => {
-            if (_.get(this.pageSections, 'length')) {
-                this.addHoverData();
-            }
-        });
     }
 
     private fetchChannelData() {
@@ -122,16 +126,15 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngOnInit() {
         this.isDesktopApp = this.utilService.isDesktopApp;
-        if (this.isDesktopApp) {
-            this.listenLanguageChange();
-        }
         this.initConfiguration();
-        this.subscription$ = merge(this.fetchChannelData(), this.initLayout(), this.setNoResultMessage(), this.fetchContents())
+        this.subscription$ = merge(this.fetchChannelData(), this.initLayout(), this.fetchContents())
             .pipe(
                 takeUntil(this.unsubscribe$)
             );
+        this.listenLanguageChange();
         this.contentManagerService.contentDownloadStatus$.subscribe( contentDownloadStatus => {
             this.contentDownloadStatus = contentDownloadStatus;
+            this.addHoverData();
         });
     }
 
@@ -190,8 +193,20 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.selectedFilters = pick(filters, ['board', 'medium', 'gradeLevel', 'channel', 'subject', 'audience']);
         if (has(filters, 'audience') || (localStorage.getItem('userType') && currentPageData.contentType !== 'all')) {
             const userTypes = get(filters, 'audience') || [localStorage.getItem('userType')];
+            const audienceSearchFilterValue = _.get(filters, 'audienceSearchFilterValue');
             const userTypeMapping = get(this.configService, 'appConfig.userTypeMapping');
-            this.selectedFilters['audience'] = uniq(flatten(_map(userTypes, userType => userTypeMapping[userType])));
+            this.selectedFilters['audience'] = audienceSearchFilterValue || uniq(flatten(_map(userTypes, userType => userTypeMapping[userType])));
+        }
+        if (this.utilService.isDesktopApp) {
+            const userPreferences: any = this.userService.anonymousUserPreference;
+            if (userPreferences) {
+                _.forEach(['board', 'medium', 'gradeLevel'], (item) => {
+                    if (!_.has(this.selectedFilters, item)) {
+                        this.selectedFilters[item] = _.isArray(userPreferences.framework[item]) ?
+                        userPreferences.framework[item] : _.split(userPreferences.framework[item], ', ');
+                    }
+                });
+            }
         }
         this.apiContentList = [];
         this.pageSections = [];
@@ -336,24 +351,29 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         };
     }
 
+    private listenLanguageChange() {
+        this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe((languageData) => {
+            this.setNoResultMessage();
+            if (_.get(this.pageSections, 'length') && this.isDesktopApp) {
+                this.addHoverData();
+            }
+        });
+    }
+
     private setNoResultMessage() {
-        return this.resourceService.languageSelected$.pipe(
-            tap(item => {
-                const { key = null, selectedTab = null } = this.activatedRoute.snapshot.queryParams;
-                let { noBookfoundTitle: title, noBookfoundTitle: subTitle, noBookfoundTitle: buttonText, noContentfoundTitle, noContentfoundSubTitle, noContentfoundButtonText,
-                    desktop: { yourSearch = '', notMatchContent = '' } = {} } = get(this.resourceService, 'frmelmnts.lbl');
-                if (key) {
-                    const title_part1 = replace(yourSearch, '{key}', key);
-                    const title_part2 = notMatchContent;
-                    title = title_part1 + ' ' + title_part2;
-                } else if (selectedTab !== 'textbook') {
-                    title = noContentfoundTitle;
-                    subTitle = noContentfoundSubTitle;
-                    buttonText = noContentfoundButtonText;
-                }
-                this.noResultMessage = { title, subTitle, buttonText, showExploreContentButton: true };
-            })
-        );
+        const { key = null, selectedTab = null } = this.activatedRoute.snapshot.queryParams;
+        let { noBookfoundTitle: title, noBookfoundTitle: subTitle, noBookfoundTitle: buttonText, noContentfoundTitle, noContentfoundSubTitle, noContentfoundButtonText,
+            desktop: { yourSearch = '', notMatchContent = '' } = {} } = get(this.resourceService, 'frmelmnts.lbl');
+        if (key) {
+            const title_part1 = replace(yourSearch, '{key}', key);
+            const title_part2 = notMatchContent;
+            title = title_part1 + ' ' + title_part2;
+        } else if (selectedTab !== 'textbook') {
+            title = noContentfoundTitle;
+            subTitle = noContentfoundSubTitle;
+            buttonText = noContentfoundButtonText;
+        }
+        this.noResultMessage = { title, subTitle, buttonText, showExploreContentButton: true };
     }
 
     public navigateToExploreContent() {

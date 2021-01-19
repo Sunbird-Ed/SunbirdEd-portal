@@ -6,17 +6,18 @@ import { CourseConsumptionService, CourseProgressService } from './../../../serv
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { CoursesService, PermissionService, CopyContentService,
-  OrgDetailsService, UserService, GeneraliseLabelService } from '@sunbird/core';
+  OrgDetailsService, UserService, GeneraliseLabelService,  } from '@sunbird/core';
 import {
   ResourceService, ToasterService, ContentData, ContentUtilsServiceService, ITelemetryShare,
   ExternalUrlPreviewService
 } from '@sunbird/shared';
 import { IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { GroupsService } from '../../../../groups/services/groups/groups.service';
 import { NavigationHelperService } from '@sunbird/shared';
 import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 import { CourseBatchService } from './../../../services';
+import { DiscussionService } from '../../../../discussion/services/discussion/discussion.service';
 
 @Component({
   selector: 'app-course-consumption-header',
@@ -68,11 +69,12 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   isCustodianOrgUser = false;
   // courseMentor = false;
   // courseCreator = false;
-  forumId;
+  forumIds = [];
   isTrackable = false;
   viewDashboard = false;
   tocId;
   isGroupAdmin: boolean;
+  showLoader = false;
 
   constructor(private activatedRoute: ActivatedRoute, public courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
@@ -82,7 +84,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     private telemetryService: TelemetryService, private groupService: GroupsService,
     private navigationHelperService: NavigationHelperService, public orgDetailsService: OrgDetailsService,
     public generaliseLabelService: GeneraliseLabelService,
-    public courseBatchService: CourseBatchService) { }
+    public courseBatchService: CourseBatchService,
+    public discussionService: DiscussionService) { }
 
   showJoinModal(event) {
     this.courseConsumptionService.showJoinCourseModal.emit(event);
@@ -90,7 +93,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
 
   ngOnInit() {
     this.getCustodianOrgUser();
-    this.forumId = _.get(this.courseHierarchy, 'forumId') || _.get(this.courseHierarchy, 'metaData.forumId');
     if (!this.courseConsumptionService.getCoursePagePreviousUrl) {
       this.courseConsumptionService.setCoursePagePreviousUrl();
     }
@@ -120,6 +122,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
           this.enrolledCourse = true;
           this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
         }
+        this.fetchForumIds();
       });
     this.interval = setInterval(() => {
       if (document.getElementById('closebutton')) {
@@ -287,7 +290,63 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   openDiscussionForum() {
-    this.router.navigate(['/discussions'], {queryParams: {forumId: this.forumId} });
+    this.checkUserRegistration();
+  }
+
+  checkUserRegistration() {
+    this.showLoader = true;
+    const data = {
+      username: _.get(this.userService.userProfile, 'userName'),
+      identifier: _.get(this.userService.userProfile, 'userId'),
+    };
+    this.discussionService.registerUser(data).subscribe((response) => {
+      const userName = _.get(response, 'result.userName');
+      const result = this.forumIds;
+      this.router.navigate(['/discussion-forum'], {
+        queryParams: {
+          categories: JSON.stringify({ result }),
+          userName: userName
+        }
+      });
+    }, error => {
+      this.showLoader = false;
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
+    });
+  }
+
+  fetchForumIds() {
+    const requestBody = this.prepareRequestBody();
+    if (requestBody) {
+      this.discussionService.getForumIds(requestBody).subscribe(forumDetails => {
+        this.forumIds = _.map(_.get(forumDetails, 'result'), 'cid');
+      }, error => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      });
+    }
+  }
+
+  prepareRequestBody() {
+    const request = {
+      identifier: [],
+      type: ''
+    };
+    const isCreator = this.userService.userid === _.get(this.courseHierarchy, 'createdBy');
+    const isMentor = this.permissionService.checkRolesPermissions(['COURSE_MENTOR']);
+    if (isCreator) {
+      request.identifier = [this.courseId];
+      request.type = 'course';
+    } else if (this.enrolledCourse) {
+      request.identifier = [this.batchId];
+      request.type = 'batch';
+    } else if (isMentor) {
+      // TODO: make getBatches() api call;
+      request.identifier = [this.courseId];
+      request.type = 'course';
+    } else {
+      return;
+    }
+
+    return request;
   }
   async goBack() {
     const previousPageUrl: any = this.courseConsumptionService.getCoursePagePreviousUrl;

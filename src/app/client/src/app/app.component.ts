@@ -15,7 +15,7 @@ import { ProfileService } from '@sunbird/profile';
 import {Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin, zip, Subject} from 'rxjs';
 import { first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
-import { DOCUMENT } from '@angular/platform-browser';
+import { DOCUMENT } from '@angular/common';
 import { image } from '../assets/images/tara-bot-icon';
 /**
  * main app component
@@ -26,7 +26,7 @@ import { image } from '../assets/images/tara-bot-icon';
   styles: ['.header-block { display: none;}']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  @ViewChild('frameWorkPopUp') frameWorkPopUp;
+  @ViewChild('frameWorkPopUp', {static: false}) frameWorkPopUp;
   /**
    * user profile details.
    */
@@ -120,15 +120,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
     const layoutType = localStorage.getItem('layoutType') || '';
-    const layoutTypeAccessablethm = localStorage.getItem('accessable-theme') || '';
     if (layoutType === '' || layoutType === 'joy') {
       this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
       document.documentElement.setAttribute('layout', 'joy');
-      if (layoutTypeAccessablethm === 'accessible') {
-        document.documentElement.setAttribute('accessable-theme', 'accessible');
-      } else {
-        document.documentElement.setAttribute('accessable-theme', '');
-      }
     } else {
       document.documentElement.setAttribute('layout', 'old');
     }
@@ -221,6 +215,9 @@ export class AppComponent implements OnInit, OnDestroy {
             this.checkForCustodianUser();
             return this.setUserDetails();
           } else {
+            if (this.utilService.isDesktopApp) {
+              this.userService.getAnonymousUserPreference();
+            }
             return this.setOrgDetails();
           }
         }))
@@ -334,11 +331,12 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       }
       // TODO: code can be removed in 3.1 release from user-onboarding component as it is handled here.
-      zip(this.tenantService.tenantData$, this.orgDetailsService.orgDetails$).subscribe((res) => {
+      zip(this.tenantService.tenantData$, this.getOrgDetails()).subscribe((res) => {
         if (_.get(res[0], 'tenantData')) {
           const orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
           if (_.get(orgDetailsFromSlug, 'slug') !== this.tenantService.slugForIgot) {
-            this.showUserTypePopup = !localStorage.getItem('userType');
+            const userType = localStorage.getItem('userType');
+            this.showUserTypePopup = _.get(this.userService, 'loggedIn') ? (!_.get(this.userService, 'userProfile.userType') || !userType) : !userType;
           }
         }
       });
@@ -499,6 +497,9 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   public setDeviceId(): Observable<string> {
       return new Observable(observer => this.telemetryService.getDeviceId((deviceId, components, version) => {
+        if (this.utilService.isDesktopApp) {
+         deviceId = (<HTMLInputElement>document.getElementById('deviceId')).value;
+        }
           this.fingerprintInfo = {deviceId, components, version};
           (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
           this.deviceId = deviceId;

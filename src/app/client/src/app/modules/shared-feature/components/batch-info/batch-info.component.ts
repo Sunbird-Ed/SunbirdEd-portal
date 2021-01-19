@@ -5,7 +5,7 @@ import * as _ from 'lodash-es';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil, mergeMap, tap, delay } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 
 @Component({
   selector: 'app-batch-info',
@@ -14,9 +14,10 @@ import * as dayjs from 'dayjs';
 })
 export class BatchInfoComponent implements OnInit, OnDestroy {
 
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
   @Input() enrolledBatchInfo: any;
   @Output() modelClose = new EventEmitter;
+  @Output() routeChanged = new EventEmitter();
   public userDetails = {};
   public hasOngoingBatches = false;
   public enrolledBatches: Array<any> = [];
@@ -75,6 +76,7 @@ export class BatchInfoComponent implements OnInit, OnDestroy {
   }
   public handleResumeEvent(event) {
     this.modal.deny();
+    this.routeChanged.emit(false);
     event.mimeType = 'application/vnd.ekstep.content-collection'; // to route to course page
     event.contentType = 'Course'; // to route to course page
     this.playerService.playContent(event);
@@ -113,7 +115,9 @@ export class BatchInfoComponent implements OnInit, OnDestroy {
     ).subscribe(data => {
       const textbook = _.get(this.activatedRoute, 'snapshot.queryParams.textbook');
       const queryParams = textbook ? { textbook } : {};
-      this.router.navigate(['/learn/course', event.courseId, 'batch', event.identifier], { queryParams });
+      this.router.navigate(['/learn/course', event.courseId, 'batch', event.identifier], { queryParams }).then(res => {
+        this.routeChanged.emit(true);
+      });
     }, (err) => {
       this.disableEnrollBtn = false;
       this.toasterService.error(this.resourceService.messages.emsg.m0001);

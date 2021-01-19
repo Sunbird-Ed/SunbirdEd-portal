@@ -50,7 +50,11 @@ export class ImportContent implements ITaskExecuter {
     this.contentImportData = contentImportData;
     this.observer = observer;
     this.contentFolderPath = await this.contentLocation.get();
-    this.workerProcessRef = childProcess.fork(path.join(__dirname, "contentImportHelper"), [], { execArgv: ['-r', 'ts-node/register', '-r', 'tsconfig-paths/register'] });
+    if(process.env.IS_PACKAGED_APP === 'true') {
+      this.workerProcessRef = childProcess.fork(path.join(__dirname, "contentImportHelper"));
+    } else {
+      this.workerProcessRef = childProcess.fork(path.join(__dirname, "contentImportHelper"), [], { execArgv: ['-r', 'ts-node/register', '-r', 'tsconfig-paths/register'] });
+    }
     this.handleChildProcessMessage();
     this.handleWorkerCloseEvents();
     switch (this.contentImportData.metaData.step) {
@@ -193,13 +197,24 @@ export class ImportContent implements ITaskExecuter {
   }
 
   private async saveContentsToDb(dbContents) {
+    let hierarchy;
     this.manifestJson = await this.fileSDK.readJSON(
       path.join(path.join(this.fileSDK.getAbsPath(""), this.contentImportData.metaData.contentId), "manifest.json"));
+    try {
+      hierarchy = await this.fileSDK.readJSON(
+        path.join(path.join(this.fileSDK.getAbsPath(""), this.contentImportData.metaData.contentId), "hierarchy.json"));
+      hierarchy = _.get(hierarchy, 'content');
+    } catch (error) {
+      logger.debug("Error while reading Hierarchy", error);
+    }
     const resources = _.reduce(_.get(this.manifestJson, "archive.items"), (acc, item) => {
       const parentContent = item.identifier === this.contentImportData.metaData.contentId;
       if (item.mimeType === "application/vnd.ekstep.content-collection" && !parentContent) {
         logger.info("Skipped writing to db for content", item.identifier, "reason: collection and not parent");
         return acc; // db entry not required for collection which are not parent
+      }
+      if (item.mimeType === "application/vnd.ekstep.content-collection" && parentContent) {
+        item = hierarchy;
       }
       const dbResource: any = _.find(dbContents, { identifier: item.identifier });
       const isAvailable = parentContent ? true :
@@ -210,6 +225,11 @@ export class ImportContent implements ITaskExecuter {
         // content added with artifact already or added without artifact but ecar has no artifact for this content
         return acc; // then return
       }
+      _.forEach(['subject', 'gradeLevel', 'medium'], (data) => {
+        if(item[data] && _.isString(item[data])) {
+          item[data] = item[data].split(',');
+        }
+      })
       item._id = item.identifier;
       item.baseDir = `content/${item.identifier}`;
       item.desktopAppMetadata = {

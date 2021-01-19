@@ -30,7 +30,7 @@ import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semanti
   styleUrls: ['./published.component.scss']
 })
 export class PublishedComponent extends WorkSpace implements OnInit, AfterViewInit {
-  @ViewChild('modalTemplate')
+  @ViewChild('modalTemplate', {static: false})
   public modalTemplate: ModalTemplate<{ data: string }, string, string>;
   /**
   * state for content editior
@@ -310,15 +310,15 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
   */
   contentClick(param, content) {
     this.contentMimeType = content.metaData.mimeType;
-     if(param.data && param.data.originData) {
+    if (param.data && param.data.originData) {
       const originData = JSON.parse(param.data.originData)
       if (originData.copyType === 'shallow') {
-        const errMsg =  (this.resourceService.messages.emsg.m1414).replace('{instance}', originData.organisation[0]);
-          this.toasterService.error(errMsg);
+        const errMsg = (this.resourceService.messages.emsg.m1414).replace('{instance}', originData.organisation[0]);
+        this.toasterService.error(errMsg);
         return;
       }
     }
-    else if (param.action.eventName === 'delete') {
+    if (param.action.eventName === 'delete') {
       this.currentContentId = param.data.metaData.identifier;
       const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);
       config.isClosable = false;

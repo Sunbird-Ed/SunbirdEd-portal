@@ -16,7 +16,7 @@ import { IImpressionEventInput } from '@sunbird/telemetry';
   styleUrls: ['./group-details.component.scss']
 })
 export class GroupDetailsComponent implements OnInit, OnDestroy {
-  @ViewChild('addActivityModal') addActivityModal;
+  @ViewChild('addActivityModal', {static: false}) addActivityModal;
   groupData: IGroupCard;
   showModal = false;
   private groupId: string;

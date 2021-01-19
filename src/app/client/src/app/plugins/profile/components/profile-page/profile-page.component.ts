@@ -33,8 +33,8 @@ import { FieldConfig } from 'common-form-elements';
   providers: [CertificateDownloadAsPdfService]
 })
 export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('profileModal') profileModal;
-  @ViewChild('slickModal') slickModal;
+  @ViewChild('profileModal', {static: false}) profileModal;
+  @ViewChild('slickModal', {static: false}) slickModal;
   userProfile: any;
   contributions = [];
   totalContributions: Number;
@@ -52,8 +52,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   orgDetails: any = [];
   showContactPopup = false;
   showEditUserDetailsPopup = false;
-  state: string;
-  district: string;
   userFrameWork: any;
   telemetryImpression: IImpressionEventInput;
   myFrameworkEditEdata: IInteractEventEdata;
@@ -80,14 +78,16 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   instance: string;
   layoutConfiguration: any;
   public unsubscribe$ = new Subject<void>();
-  nonCustodianUserLocation : object = {};
+  nonCustodianUserLocation: object = {};
   declarationDetails;
   tenantInfo;
   selfDeclaredInfo = [];
   selfDeclaredErrorTypes = [];
   scrollToId;
+  isDesktopApp;
+  userLocation: {};
 
-  constructor(@Inject('CS_COURSE_SERVICE') private courseCService: CsCourseService, private cacheService: CacheService, 
+  constructor(@Inject('CS_COURSE_SERVICE') private courseCService: CsCourseService, private cacheService: CacheService,
   public resourceService: ResourceService, public coursesService: CoursesService,
     public toasterService: ToasterService, public profileService: ProfileService, public userService: UserService,
     public configService: ConfigService, public router: Router, public utilService: UtilService, public searchService: SearchService,
@@ -103,6 +103,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    this.isDesktopApp = this.utilService.isDesktopApp;
     this.initLayout();
     this.instance = _.upperFirst(_.toLower(this.resourceService.instance || 'SUNBIRD'));
     this.getCustodianOrgUser();
@@ -110,8 +111,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       /* istanbul ignore else */
       if (user.userProfile) {
         this.userProfile = user.userProfile;
-        this.state = _.get(_.find(this.userProfile.userLocations, { type: 'state' }), 'name');
-        this.district = _.get(_.find(this.userProfile.userLocations, { type: 'district' }), 'name');
+        this.userLocation = this.getUserLocation(this.userProfile);
         this.userFrameWork = this.userProfile.framework ? _.cloneDeep(this.userProfile.framework) : {};
         this.getOrgDetails();
         this.getContribution();
@@ -548,5 +548,15 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       });
     });
   }
+
+  private getUserLocation(profile: any) {
+   const userLocation = {};
+    if (profile && profile.userLocations && profile.userLocations.length) {
+        profile.userLocations.forEach((d) => {
+            userLocation[d.type] = d;
+        });
+    }
+    return userLocation;
+}
 
 }

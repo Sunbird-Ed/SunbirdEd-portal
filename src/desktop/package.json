@@ -1,6 +1,6 @@
 {
     "name": "sunbird",
-    "version": "1.5.0",
+    "version": "1.6.0",
     "description": "sunbird desktop app",
     "main": "main.js",
     "scripts": {
@@ -86,6 +86,7 @@
         "portscanner": "^2.2.0",
         "pouchdb": "^7.2.2",
         "pouchdb-find": "^7.2.2",
+        "qs": "^6.9.4",
         "request": "^2.88.0",
         "rxjs": "^6.2.1",
         "tree-model": "^1.0.7",
