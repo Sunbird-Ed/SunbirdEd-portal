@@ -6,7 +6,8 @@ import {
   OrgDetailsService,
   PlayerService,
   SearchService,
-  UserService
+  UserService,
+  FormService
 } from '@sunbird/core';
 import {
   ConfigService,
@@ -25,7 +26,7 @@ import {CacheService} from 'ng2-cache-service';
 import {takeUntil} from 'rxjs/operators';
 import { CertificateDownloadAsPdfService } from 'sb-svg2pdf';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
-import { FieldConfig } from 'common-form-elements';
+import { FieldConfig, FieldConfigOption } from 'common-form-elements';
 
 @Component({
   templateUrl: './profile-page.component.html',
@@ -33,6 +34,10 @@ import { FieldConfig } from 'common-form-elements';
   providers: [CertificateDownloadAsPdfService]
 })
 export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
+  private static readonly SUPPORTED_PERSONA_LIST_FORM_REQUEST =
+  { formType: 'config', formAction: 'get', contentType: 'userType', component: 'portal' };
+  private static readonly DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST =
+  { formType: 'profileConfig', contentType: 'default', formAction: 'get' };
   @ViewChild('profileModal', {static: false}) profileModal;
   @ViewChild('slickModal', {static: false}) slickModal;
   userProfile: any;
@@ -86,6 +91,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   scrollToId;
   isDesktopApp;
   userLocation: {};
+  persona: {};
+  subPersona: string;
 
   constructor(@Inject('CS_COURSE_SERVICE') private courseCService: CsCourseService, private cacheService: CacheService,
   public resourceService: ResourceService, public coursesService: CoursesService,
@@ -93,7 +100,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public configService: ConfigService, public router: Router, public utilService: UtilService, public searchService: SearchService,
     private playerService: PlayerService, private activatedRoute: ActivatedRoute, public orgDetailsService: OrgDetailsService,
     public navigationhelperService: NavigationHelperService, public certRegService: CertRegService,
-    private telemetryService: TelemetryService, public layoutService: LayoutService,
+    private telemetryService: TelemetryService, public layoutService: LayoutService, private formService: FormService,
     private certDownloadAsPdf: CertificateDownloadAsPdfService) {
     this.getNavParams();
   }
@@ -111,7 +118,15 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       /* istanbul ignore else */
       if (user.userProfile) {
         this.userProfile = user.userProfile;
+        const role: string = (!this.userProfile.userType ||
+          (this.userProfile.userType && this.userProfile.userType === 'OTHER')) ? '' : this.userProfile.userType;
         this.userLocation = this.getUserLocation(this.userProfile);
+        this.getPersonaConfig(role).then((val) => {
+          this.persona = val;
+        });
+        this.getSubPersonaConfig(this.userProfile.userSubType, role.toLowerCase(), this.userLocation).then((val) => {
+          this.subPersona = val;
+        });
         this.userFrameWork = this.userProfile.framework ? _.cloneDeep(this.userProfile.framework) : {};
         this.getOrgDetails();
         this.getContribution();
@@ -557,6 +572,38 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
         });
     }
     return userLocation;
+}
+
+private async getPersonaConfig(persona: string) {
+  const formFields = await this.formService.getFormConfig(ProfilePageComponent.SUPPORTED_PERSONA_LIST_FORM_REQUEST).toPromise();
+  return formFields.find(config => config.code === persona);
+}
+
+private async getSubPersonaConfig(subPersonaCode: string, persona: string, userLocation: any): Promise<string> {
+  if (!subPersonaCode || !persona) {
+      return undefined;
+  }
+  let formFields;
+  try {
+      const state = userLocation.state;
+      formFields = await this.formService.getFormConfig({
+        ...ProfilePageComponent.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST,
+        ...(state ? {contentType: state.code} : {})
+      }).toPromise();
+  } catch (e) {
+      formFields = await this.formService.getFormConfig(ProfilePageComponent.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST).toPromise();
+  }
+
+  const personaConfig = formFields.find(formField => formField.code === 'persona');
+
+  const personaChildrenConfig: FieldConfig<any>[] = personaConfig['children'][persona];
+  const subPersonaConfig = personaChildrenConfig.find(formField => formField.code === 'subPersona');
+  if (!subPersonaConfig) {
+      return undefined;
+   }
+  const subPersonaFieldConfigOption = (subPersonaConfig.templateOptions.options as FieldConfigOption<any>[]).
+              find(option => option.value === subPersonaCode);
+  return subPersonaFieldConfigOption ? subPersonaFieldConfigOption.label : undefined;
 }
 
 }

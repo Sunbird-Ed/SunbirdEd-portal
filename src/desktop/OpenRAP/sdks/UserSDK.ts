@@ -112,7 +112,7 @@ export class UserSDK {
       return this.updateDoc(user);
     } else if (_.get(user, 'userId')) {
       const userData = await this.findByUserId(user.userId);
-      user._id = _.get(userData, '_id');
+      user._id = _.get(userData[0], '_id');
       return this.updateDoc(user);
     } else {
       throw {
@@ -156,6 +156,10 @@ export class UserSDK {
 
   public async getUserSession() {
     return this.settingSDK.get('userSession');
+  }
+
+  public async deleteUserSession() {
+    return this.settingSDK.delete('userSession');
   }
 
   private async findByName(name) {

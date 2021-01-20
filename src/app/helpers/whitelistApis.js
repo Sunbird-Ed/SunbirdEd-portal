@@ -18,7 +18,7 @@ const ROLE = {
   BOOK_REVIEWER: 'BOOK_REVIEWER',
   FLAG_REVIEWER: 'FLAG_REVIEWER',
   SYSTEM_ADMINISTRATION: 'SYSTEM_ADMINISTRATION',
-  ADMIN: 'ADMIN',
+  ADMIN: 'ORG_ADMIN',
   PUBLIC: 'PUBLIC',
   ALL: 'ALL'  // Use when user does not have PUBLIC role (Case: User bulk upload)
 };
@@ -1151,10 +1151,8 @@ const API_LIST = {
       checksNeeded: []
     },
     '/plugin/v1/form/update': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [
-        ROLE.SYSTEM_ADMINISTRATION
-      ]
+      description: 'API for form update; mobile team also uses same API.',
+      checksNeeded: []
     },
     '/google/auth': {
       checksNeeded: []
