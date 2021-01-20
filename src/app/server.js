@@ -219,6 +219,11 @@ app.get('/v1/user/session/start/:deviceId', (req, res) => {
   res.status(200)
   res.end()
 })
+
+const subApp = express()
+subApp.use(bodyParser.json({ limit: '50mb' }))
+app.use('/plugin', subApp)
+
 // ****** DO NOT MODIFY THIS CODE BLOCK / RE-ORDER ******
 app.all('*', apiWhiteListLogger());
 if (envHelper.PORTAL_API_WHITELIST_CHECK == 'true') {
@@ -228,9 +233,6 @@ if (envHelper.PORTAL_API_WHITELIST_CHECK == 'true') {
 app.use('/resourcebundles/v1', bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '50mb' }), require('./helpers/resourceBundles')(express)) // Resource bundles apis
 
-const subApp = express()
-subApp.use(bodyParser.json({ limit: '50mb' }))
-app.use('/plugin', subApp)
 
 frameworkAPI.bootstrap(frameworkConfig, subApp).then(data => runApp()).catch(error => runApp())
 
