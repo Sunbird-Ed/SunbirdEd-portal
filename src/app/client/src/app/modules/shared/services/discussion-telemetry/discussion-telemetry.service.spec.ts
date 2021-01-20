@@ -35,6 +35,19 @@ describe('DiscussionTelemetryService', () => {
     expect(service).toBeTruthy();
   });
 
+  it ('should call impression()',  inject([DiscussionTelemetryService, TelemetryService, NavigationHelperService ],
+    (service: DiscussionTelemetryService, telemetryService: TelemetryService, navigationHelperService: NavigationHelperService) => {
+    spyOn(telemetryService, 'impression');
+    spyOn(navigationHelperService, 'getPageLoadTime').and.returnValue(2.0);
+    service.logTelemetryEvent({eid: 'IMPRESSION', context: {
+      cdata: [{id: '1', type: 'Category'}], object: {id: '1', type: 'Category', ver: '1', rollup: {}}},
+      edata: {id: 'category-card', type: 'view', pageid: 'discussion'}})
+    event.edata['duration'] = 2.0;
+    event.edata.type = 'view'
+    expect(telemetryService.impression).toHaveBeenCalledWith(event);
+    expect(navigationHelperService.getPageLoadTime).toHaveBeenCalled();
+  }));
+
   it ('should call interact()', inject([DiscussionTelemetryService, TelemetryService ],
     (service: DiscussionTelemetryService, telemetryService: TelemetryService) => {
       spyOn(telemetryService, 'interact');
