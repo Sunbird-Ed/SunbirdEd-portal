@@ -13,7 +13,7 @@ import { of } from 'rxjs';
 import { ISummaryObject } from '../../interfaces';
 import { mockLatestReportSummary, mockReportObj,chartData,filters } from './report.component.spec.data';
 import { mockParameterizedReports } from '../list-all-reports/list-all-reports.component.spec.data';
-fdescribe('ReportComponent', () => {
+describe('ReportComponent', () => {
   let component: ReportComponent;
   let fixture: ComponentFixture<ReportComponent>;
   const fakeActivatedRoute = {
@@ -396,6 +396,7 @@ fdescribe('ReportComponent', () => {
       chartData:chartData,
       filters:filters
     });
+    // expect(component.cha).toContain(chartData);
   }));
   it('should get chartData', fakeAsync(() => {
     component.ngOnInit();
@@ -407,7 +408,7 @@ fdescribe('ReportComponent', () => {
     ]
     }
     const data = component.getChartData(chartData[0]);
-    
+    // expect(data).toContain(chartData[0]);
   }));
 
   
