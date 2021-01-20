@@ -50,6 +50,9 @@ const resolveRequestPath = (host, request, options) => {
   if (_.get(options, 'bypassLearnerRoute')) {
     return `${host}${request.originalUrl.replace('/learner/', '/api/')}`
   }
+  if (_.get(options, 'bypassContentRoute')) {
+    return `${host}${request.originalUrl.replace('/content/', '/api/')}`
+  }
   return host;
 }
 

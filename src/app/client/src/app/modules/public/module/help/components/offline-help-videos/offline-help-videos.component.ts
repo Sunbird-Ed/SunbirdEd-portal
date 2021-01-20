@@ -90,7 +90,55 @@ export class OfflineHelpVideosComponent implements OnInit, OnDestroy {
           name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.copycontent),
           thumbnail: 'assets/images/play-icon.svg',
           url: 'assets/videos/How_do_I_copy_content_to_my_pen_drive_joyful_theme.mp4'
-        }
+        },
+        {
+          id: 'how-to-login',
+          name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.login),
+          thumbnail: 'assets/images/play-icon.svg',
+          url: 'assets/videos/How_do_I_login_on_diksha.mp4'
+        },
+        {
+          id: 'recover-account',
+          name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.recovaccnt),
+          thumbnail: 'assets/images/play-icon.svg',
+          url: 'assets/videos/How_do_I_recover_myaccount.mp4'
+        },
+        {
+          id: 'register-on-diksha',
+          name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.register),
+          thumbnail: 'assets/images/play-icon.svg',
+          url: 'assets/videos/How_do_I_register_on_diksha.mp4'
+        },
+        {
+          id: 'how-to-login-joyful-theme',
+          name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.loginnewtheme),
+          thumbnail: 'assets/images/play-icon.svg',
+          url: 'assets/videos/How_do_I_login_on_diksha_joyful_theme.mp4'
+        },
+        {
+          id: 'recover-account-joyful-theme',
+          name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.recovaccntnewtheme),
+          thumbnail: 'assets/images/play-icon.svg',
+          url: 'assets/videos/How_do_I_recover_myaccount_joyful_theme.mp4'
+        },
+        {
+          id: 'register-on-diksha-joyful-theme',
+          name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.registernewtheme),
+          thumbnail: 'assets/images/play-icon.svg',
+          url: 'assets/videos/How_do_I_register_on_diksha_joyful_theme.mp4'
+        },
+        {
+          id: 'add-managed-user',
+          name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.manageuser),
+          thumbnail: 'assets/images/play-icon.svg',
+          url: 'assets/videos/How_do_I_add_users_on_DIKSHA.mp4'
+        },
+        {
+          id: 'add-managed-user-joyful-theme',
+          name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.manageusernewtheme),
+          thumbnail: 'assets/images/play-icon.svg',
+          url: 'assets/videos/How_do_I_add_users_on_DIKSHA_joyful_theme.mp4'
+        },
       ];
       this.activeVideoObject = this.slideData[0];
     });
@@ -99,7 +147,7 @@ export class OfflineHelpVideosComponent implements OnInit, OnDestroy {
   }
 
   setVideoHeight() {
-    console.log('aspect ratio value', this.aspectRatio);
+    console.log('aspect ratio value', this.aspectRatio); 
     this.aspectRatioHeight = this.aspectRatio.nativeElement.offsetHeight;
     this.playerInfoHeight = this.playerInfo.nativeElement.offsetHeight;
     this.videoContainerHeight = this.aspectRatioHeight + this.playerInfoHeight;
