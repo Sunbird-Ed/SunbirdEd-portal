@@ -653,6 +653,10 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR]
     },
+    '/course/batch/cert/v1/template/remove' : {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR]
+    },
 
     // get user session
     '/learner/get/user/sessionId/:userId': {
