@@ -7,7 +7,6 @@ import { Inject } from "typescript-ioc";
 import DatabaseSDK from "../sdk/database/index";
 import Response from "../utils/response";
 const FAQS_DB = "faqs";
-const FAQ_BLOB_URL = `${process.env.FAQ_BLOB_URL}`;
 
 import { ClassLogger } from "@project-sunbird/logger/decorator";
 
@@ -79,7 +78,7 @@ export class Faqs {
           "content-type": "application/json",
       },
     };
-    return await HTTPService.get(`${FAQ_BLOB_URL}faq-${language}.json`, config).toPromise()
+    return await HTTPService.get(`${process.env.FAQ_BLOB_URL}faq-${language}.json`, config).toPromise()
     .then((data: any) => {
       const faqsData = _.get(data, "data");
       if (faqsData) {

@@ -610,19 +610,6 @@ describe('SbFormLocationSelectionDelegate', () => {
   });
 
   describe('onDataLoadStatusChange()', () => {
-    describe('when status changed to "LOADING"', () => {
-      it('should set loader indicator to true', async () => {
-        // arrange
-        sbFormLocationSelectionDelegate.isLocationFormLoading = false;
-
-        // act
-        await sbFormLocationSelectionDelegate.onDataLoadStatusChange('LOADING');
-
-        // assert
-        expect(sbFormLocationSelectionDelegate.isLocationFormLoading).toBeTruthy();
-      });
-    });
-
     describe('when status changed to "LOADED"', () => {
       it('should set loader indicator to true', async () => {
         // arrange
@@ -734,7 +721,10 @@ describe('SbFormLocationSelectionDelegate', () => {
         // assert
         expect(mockLocationService.updateProfile).toHaveBeenCalledWith({
           userId: 'SOME_USER_ID',
-          locationCodes: ['SOME_SELECTED_STATE_CODE', 'SOME_SELECTED_DISTRICT_CODE']
+          locationCodes: [
+            jasmine.objectContaining({code: 'SOME_SELECTED_STATE_CODE'}),
+            jasmine.objectContaining({code: 'SOME_SELECTED_DISTRICT_CODE'})
+          ]
         });
       });
 
@@ -776,7 +766,10 @@ describe('SbFormLocationSelectionDelegate', () => {
           userType: 'SOME_SELECTED_PERSONA',
           userSubType: 'SOME_SELECTED_SUB_PERSONA',
           userId: 'SOME_USER_ID',
-          locationCodes: ['SOME_SELECTED_STATE_CODE', 'SOME_SELECTED_DISTRICT_CODE']
+          locationCodes: [
+            jasmine.objectContaining({code: 'SOME_SELECTED_STATE_CODE'}),
+            jasmine.objectContaining({code: 'SOME_SELECTED_DISTRICT_CODE'})
+          ]
         });
       });
     });

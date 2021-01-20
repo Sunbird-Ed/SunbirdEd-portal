@@ -33,6 +33,8 @@ export class SbFormLocationSelectionDelegate {
   private prevFormValue: {} = {};
   private stateChangeSubscription?: Subscription;
 
+  private changesMap: {} = {};
+
   constructor(
     private userService: UserService,
     private locationService: LocationService,
@@ -40,7 +42,10 @@ export class SbFormLocationSelectionDelegate {
     private deviceRegisterService: DeviceRegisterService,
     private deviceProfile?: IDeviceProfile,
   ) {
-    this.formLocationOptionsFactory = new SbFormLocationOptionsFactory(locationService);
+    this.formLocationOptionsFactory = new SbFormLocationOptionsFactory(
+      locationService,
+      userService
+    );
   }
 
   async init(deviceProfile?: IDeviceProfile) {
@@ -97,10 +102,13 @@ export class SbFormLocationSelectionDelegate {
   }
 
   async onDataLoadStatusChange($event) {
-    if ('LOADING' === $event) {
-      this.isLocationFormLoading = true;
-    } else {
+    if ('LOADED' === $event) {
       this.isLocationFormLoading = false;
+
+      const subPersonaFormControl = this.formGroup.get('children.persona.subPersona');
+      if (subPersonaFormControl && !subPersonaFormControl.value) {
+        subPersonaFormControl.patchValue((_.get(this.userService.userProfile, 'userSubType') || '') || null);
+      }
 
       if (!this.stateChangeSubscription) {
         this.stateChangeSubscription = concat(
@@ -144,16 +152,34 @@ export class SbFormLocationSelectionDelegate {
     }
   }
 
-  async updateUserLocation(): Promise<SbLocation[]> {
-    const {locationCodes, locationDetails} = Object.keys(_.get(this.formGroup.value, 'children.persona'))
-      .reduce<{ locationCodes: string[], locationDetails: SbLocation[] }>((acc, key) => {
+  async updateUserLocation(): Promise<{
+    changes: string, deviceProfile?: 'success' | 'fail', userProfile?: 'success' | 'fail'
+  }> {
+    const changes: string = Object.keys(this.changesMap).reduce<string[]>((acc, code) => {
+      const isChanged = !_.isEqualWith(_.get(this.formGroup.value, code), this.changesMap[code], (a, b) => {
+        if (a && b) {
+          return a === b || a.code === b.code;
+        } else if (!a && !b) {
+          return true;
+        }
+        return a === b;
+      });
+
+      if (isChanged) {
+        acc.push(code + '::changed');
+      }
+
+      return acc;
+    }, []).join('-');
+
+    const locationDetails: SbLocation[] = Object.keys(_.get(this.formGroup.value, 'children.persona'))
+      .reduce<SbLocation[]>((acc, key) => {
         const locationDetail: SbLocation | null = _.get(this.formGroup.value, 'children.persona')[key];
         if (_.get(locationDetail, 'code')) {
-          acc.locationCodes.push(locationDetail.code);
-          acc.locationDetails.push(locationDetail);
+          acc.push(locationDetail);
         }
         return acc;
-      }, {locationCodes: [], locationDetails: []});
+      }, []);
 
     const tasks: Promise<any>[] = [];
 
@@ -162,7 +188,9 @@ export class SbFormLocationSelectionDelegate {
         acc[l.type] = l.name;
         return acc;
       }, {});
-      const task = this.deviceRegisterService.updateDeviceProfile(request).toPromise();
+      const task = this.deviceRegisterService.updateDeviceProfile(request).toPromise()
+        .then(() => ({ deviceProfile: 'success' }))
+        .catch(() => ({ deviceProfile: 'fail' }));
       tasks.push(task);
     }
 
@@ -170,18 +198,33 @@ export class SbFormLocationSelectionDelegate {
       const formValue = this.formGroup.value;
       const payload = {
         userId: _.get(this.userService, 'userid'),
-        locationCodes,
+        locationCodes: locationDetails,
         ...(_.get(formValue, 'name') ? { firstName: _.get(formValue, 'name') } : {} ),
         ...(_.get(formValue, 'persona') ? { userType: _.get(formValue, 'persona') } : {} ),
         ...(_.get(formValue, 'children.persona.subPersona') ? { userSubType: _.get(formValue, 'children.persona.subPersona') } : {} ),
       };
-      const task = this.locationService.updateProfile(payload).toPromise();
+      const task = this.locationService.updateProfile(payload).toPromise()
+        .then(() => ({ userProfile: 'success' }))
+        .catch(() => ({ userProfile: 'fail' }));
       tasks.push(task);
     }
 
-    await Promise.all(tasks);
+    return await Promise.all(tasks).then((result) => {
+      return result.reduce<{
+        changes: string, deviceProfile?: 'success' | 'fail', userProfile?: 'success' | 'fail'
+      }>((acc, v) => {
+        acc = { ...acc, ...v };
+        return acc;
+      }, { changes });
+    });
+  }
 
-    return locationDetails;
+  async clearUserLocationSelections() {
+    const stateFormControl = this.formGroup.get('children.persona.state');
+    /* istanbul ignore else */
+    if (stateFormControl) {
+      stateFormControl.patchValue(null);
+    }
   }
 
   private async loadForm(
@@ -212,6 +255,7 @@ export class SbFormLocationSelectionDelegate {
         }
       }
 
+      this.changesMap[config.code] = config.default;
       config.default = _.get(this.prevFormValue, config.code) || config.default;
 
       if (config.templateOptions['dataSrc'] && config.templateOptions['dataSrc']['marker'] === 'SUPPORTED_PERSONA_LIST') {
@@ -273,6 +317,7 @@ export class SbFormLocationSelectionDelegate {
               }
             }
 
+            this.changesMap[`children.persona.${personaLocationConfig.code}`] = personaLocationConfig.default;
             personaLocationConfig.default =
               _.get(this.prevFormValue, `children.persona.${personaLocationConfig.code}`) ||
               personaLocationConfig.default;

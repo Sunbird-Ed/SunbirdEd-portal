@@ -8,7 +8,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 import { SuiModalModule } from 'ng2-semantic-ui';
 import { of } from 'rxjs';
-import { AppUpdateService } from './../../../offline/services';
+import { AppUpdateService } from '../../../../../core/services/app-update/app-update.service';
 import { AboutUsComponent } from './about-us.component';
 import { appInfoResponse } from './about-us.component.spec.data';
 

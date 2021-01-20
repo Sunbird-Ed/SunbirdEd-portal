@@ -100,6 +100,7 @@ export class UserService {
   public publicDataService: PublicDataService;
   private _slug = '';
   public _isCustodianUser: boolean;
+  public anonymousUserPreference: boolean;
   public readonly userOrgDetails$ = this.userData$.pipe(
     mergeMap(data => iif(() =>
     !this._userProfile.organisationIds, of([]), this.getOrganizationDetails(this._userProfile.organisationIds))),
@@ -380,7 +381,7 @@ export class UserService {
 
   public endSession() {
     const url = this.config.urlConFig.URLS.USER.END_SESSION;
-    this.http.get(url).subscribe();
+    return this.http.get(url);
   }
 
   getUserByKey(key) {
@@ -425,5 +426,14 @@ export class UserService {
       param: this.config.urlConFig.params.userReadParam
     };
     return this.learnerService.getWithHeaders(option);
+  }
+
+  getAnonymousUserPreference() {
+    const options = {
+      url: this.config.urlConFig.URLS.OFFLINE.READ_USER
+    };
+    this.publicDataService.get(options).subscribe((response: ServerResponse) => {
+      this.anonymousUserPreference = response.result;
+    });
   }
 }

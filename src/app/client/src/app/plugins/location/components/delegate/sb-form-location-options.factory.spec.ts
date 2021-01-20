@@ -7,6 +7,7 @@ import {Observable, of} from 'rxjs';
 import {FieldConfigOption} from 'common-form-elements/lib/common-form-config';
 import {Location} from '@project-sunbird/client-services/models/location';
 import {ServerResponse} from '@sunbird/shared';
+import {UserService} from '@sunbird/core';
 
 describe('SbFormLocationOptionsFactory', () => {
   let sbFormLocationOptionsFactory: SbFormLocationOptionsFactory;
@@ -15,10 +16,13 @@ describe('SbFormLocationOptionsFactory', () => {
       return of({}) as any;
     }
   };
+  const mockUserService: Partial<UserService> = {
+  };
 
   beforeAll(() => {
     sbFormLocationOptionsFactory = new SbFormLocationOptionsFactory(
-      mockLocationService as LocationService
+      mockLocationService as LocationService,
+      mockUserService as UserService
     );
   });
 
@@ -205,6 +209,13 @@ describe('SbFormLocationOptionsFactory', () => {
           type: 'district'
         });
         done();
+      });
+
+      stateFormControl.patchValue({
+        code: 'SOME_SELECTED_STATE_CODE_1',
+        name: 'SOME_SELECTED_STATE_NAME_1',
+        id: 'SOME_SELECTED_STATE_ID_1',
+        type: 'state'
       });
     });
   });
