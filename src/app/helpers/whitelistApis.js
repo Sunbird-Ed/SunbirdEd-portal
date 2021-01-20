@@ -20,6 +20,7 @@ const ROLE = {
   SYSTEM_ADMINISTRATION: 'SYSTEM_ADMINISTRATION',
   ADMIN: 'ORG_ADMIN',
   PUBLIC: 'PUBLIC',
+  TEMP_ROLE: 'TEMP_ROLE', // Use only for deprecated APIs
   ALL: 'ALL'  // Use when user does not have PUBLIC role (Case: User bulk upload)
 };
 
@@ -76,7 +77,7 @@ const API_LIST = {
  
     '/content/v1/upload': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
 
     '/content/v1/create': {
@@ -215,7 +216,7 @@ const API_LIST = {
     // Content Editor
     '/content/composite/v1/search': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL]
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
 
     // Generic Editor
@@ -416,7 +417,7 @@ const API_LIST = {
     },
     '/learner/user/v1/upload': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/learner/user/v3/read/:userId': {
       checksNeeded: ['ROLE_CHECK'],
@@ -449,7 +450,7 @@ const API_LIST = {
     },
     '/learner/user/v2/upload': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/learner/user/v4/create': {
       checksNeeded: ['ROLE_CHECK'],
@@ -465,7 +466,7 @@ const API_LIST = {
     },
     '/learner//info': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/learner/data/v1/location/search': {
       checksNeeded: []
@@ -533,23 +534,23 @@ const API_LIST = {
     // Notes related APIs
     '/learner/notes/v1/create': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/learner/notes/v1/delete': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/learner/notes/v1/read': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/learner/notes/v1/search': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/learner/notes/v1/update': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
 
     //Other APIs
