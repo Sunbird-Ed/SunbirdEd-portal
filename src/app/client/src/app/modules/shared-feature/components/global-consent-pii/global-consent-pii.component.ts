@@ -24,6 +24,7 @@ export class GlobalConsentPiiComponent implements OnInit {
   @Input() profileInfo;
   @ViewChild('profileDetailsModal', {static: false}) profileDetailsModal;
   @Output() close = new EventEmitter<any>();
+  instance: string;
   consentPii = 'Yes';
   isDataShareOn = false;
   lastUpdatedOn = '';
@@ -48,7 +49,10 @@ export class GlobalConsentPiiComponent implements OnInit {
     private coursesService: CoursesService,
     private router: Router,
     public generaliseLabelService: GeneraliseLabelService
-  ) { }
+  ) {
+    this.instance = (<HTMLInputElement>document.getElementById('instance'))
+      ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
+  }
 
   ngOnInit() {
     this.usersProfile = _.cloneDeep(this.userService.userProfile);
@@ -98,6 +102,9 @@ export class GlobalConsentPiiComponent implements OnInit {
           case 'block':
             this.userInformation['block'] = locDetail.name;
             break;
+          case 'school':
+            this.userInformation['schoolName'] = locDetail.name;
+            break;
         }
       });
     }
@@ -113,9 +120,6 @@ export class GlobalConsentPiiComponent implements OnInit {
             break;
           case 'declared-school-udise-code':
             this.userInformation['schoolId'] = value;
-            break;
-          case 'declared-school-name':
-            this.userInformation['schoolName'] = value;
             break;
         }
       }

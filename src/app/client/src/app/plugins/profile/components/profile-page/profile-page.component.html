@@ -5,7 +5,7 @@
   <section class="py-24 d-flex flex-ai-center flex-dc">
     <div class="ui container">
       <div class="mb-15 d-flex flex-jc-center relative avatar-container" >
-       <img *ngIf="userProfile.stateValidated" src="assets/images/avatar-tickmark.svg" alt="certified" class="avatar-tickmark"
+       <img *ngIf="userProfile.stateValidated || !isCustodianOrgUser" src="assets/images/avatar-tickmark.svg" alt="certified" class="avatar-tickmark"
        suiPopup popupText="{{resourceService.frmelmnts.lbl.stateVerified}}" [popupInverted]="true" [popupPlacement]="'right'">
        <ngx-avatar [ngClass]="{verified: userProfile.stateValidated}" class="my-avatar" [style]="{
          backgroundColor: '#ffffff',
@@ -55,6 +55,19 @@
         <i class="chevron up icon"></i>
       </span>
     </div>
+    <div class="ui container">
+      <div *ngIf="persona?.name" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+        <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.role}} :</div>
+        <div class="fmedium ml-5 font-w-bold text-center">
+          {{persona.name}} </div>
+      </div>
+
+    <div *ngIf="subPersona" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+      <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.subRole}} :</div>
+      <div class="fmedium ml-5 font-w-bold text-center">
+        {{subPersona}} </div>
+    </div>
+  </div>
     <div class="fs-1-5 font-w-bold d-flex mb-8 text-center org-info" *ngIf=" orgDetails && orgDetails.orgName">{{orgDetails.orgName}}
       <div class="computer only">
           <i *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupInverted]="true" [popupPlacement]="'bottom left'" class="name-info"></i>
@@ -99,7 +112,7 @@
           (click)="showEditUserDetailsPopup=true">{{resourceService.frmelmnts.lbl.edit}}</button>
         <button appTelemetryInteract appOnlineOnly
                 [telemetryInteractEdata]="submitTeacherDetailsInteractEdata"
-                *ngIf="!declarationDetails"
+                *ngIf="!declarationDetails && isCustodianOrgUser"
                 (click)="navigate('/profile/teacher-declaration','submit')"
                 class="no-text-transform sb-btn sb-btn-normal sb-btn-secondary sb-right-icon-btn mx-8 mb-8 px-24" type="submit">
         {{resourceService?.frmelmnts?.lbl?.iAmStateTeacher}} </button>

@@ -1,17 +1,19 @@
 import { FieldConfig, FieldConfigOptionsBuilder } from 'common-form-elements';
 import { Location as SbLocation } from '@project-sunbird/client-services/models/location';
 import { FormControl } from '@angular/forms';
-import { defer, merge, of } from 'rxjs';
-import { distinctUntilChanged, startWith, switchMap, tap } from 'rxjs/operators';
+import { concat, defer, iif, of } from 'rxjs';
+import { distinctUntilChanged, mergeMap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 
 import { LocationService } from '../../services/location/location.service';
+import { UserService } from '../../../../modules/core/services/user/user.service';
 
 export class SbFormLocationOptionsFactory {
   private userLocationCache: {[request: string]: SbLocation[] | undefined} = {};
 
   constructor(
-    private locationService: LocationService
+    private locationService: LocationService,
+    private userService: UserService
   ) {}
 
   buildStateListClosure(config: FieldConfig<any>, initial = false): FieldConfigOptionsBuilder<SbLocation> {
@@ -53,21 +55,21 @@ export class SbFormLocationOptionsFactory {
       if (!contextFormControl) {
         return of([]);
       }
-      return contextFormControl.valueChanges.pipe(
-        startWith(contextFormControl.value),
-        distinctUntilChanged((a: SbLocation, b: SbLocation) => JSON.stringify(a) === JSON.stringify(b)),
-        tap(() => {
-          if (formControl.value) {
-            formControl.patchValue(null, { onlySelf: true, emitEvent: false });
-          }
-        }),
+      return iif(
+        () => initial,
+        contextFormControl.valueChanges,
+        concat(
+          of(contextFormControl.value),
+          contextFormControl.valueChanges
+        )
+      ).pipe(
         distinctUntilChanged((a: SbLocation, b: SbLocation) => {
           return !!(!a && !b ||
             !a && b ||
             !b && a ||
             a.code === b.code);
         }),
-        switchMap(async (value) => {
+        mergeMap(async (value) => {
           if (!value) {
             return [];
           }
@@ -75,18 +77,25 @@ export class SbFormLocationOptionsFactory {
           return this.fetchUserLocation({
             filters: {
               type: locationType,
-              ...(contextFormControl ? {
-                parentId: (contextFormControl.value as SbLocation).id
+              ...(value ? {
+                parentId: (value as SbLocation).id
               } : {})
             }
           }).then((locationList: SbLocation[]) => {
               notifyLoaded();
               const list = locationList.map((s) => ({ label: s.name, value: s }));
-              if (config.default && initial && !formControl.value) {
+              // school is fetched from userProfile.organisation instead of userProfile.userLocations
+              if (config.code === 'school' && initial && !formControl.value) {
+                const option = list.find((o) => {
+                    return (_.get(this.userService, 'userProfile.organisations') || []).find((org) => org.orgName === o.label);
+                });
+                formControl.patchValue(option ? option.value : null, { emitModelToViewChange: false });
+              } else if (config.default && initial && !formControl.value) {
                 const option = list.find((o) => o.value.id === config.default.id || o.label === config.default.name);
                 formControl.patchValue(option ? option.value : null, { emitModelToViewChange: false });
                 config.default['code'] = option ? option.value['code'] : config.default['code'];
               }
+              initial = false;
               return list;
             })
             .catch((e) => {

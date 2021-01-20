@@ -78,6 +78,9 @@ export class UtilService {
       primaryCategory: data.primaryCategory
 
     };
+    if (data.trackable) {
+      content.trackable = data.trackable;
+    }
     if (data.desktopAppMetadata) {
       content['desktopAppMetadata'] = data.desktopAppMetadata;
     }

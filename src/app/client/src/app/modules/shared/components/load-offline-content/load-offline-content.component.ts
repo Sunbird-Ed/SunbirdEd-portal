@@ -17,7 +17,6 @@ export class LoadOfflineContentComponent implements OnInit, OnDestroy  {
   @ViewChild('modal', {static: false}) modal;
   isConnected;
   selectedValue;
-  @Output() close = new EventEmitter();
   onlineMsg: string;
   addImportFontWeight;
   instance: string;
@@ -63,9 +62,8 @@ export class LoadOfflineContentComponent implements OnInit, OnDestroy  {
   }
 
   closeModal() {
+    this.selectedValue = this.isConnected ? 'browse' : 'import';
     this.showLoadContentModal = false;
-    this.close.emit();
-    this.modal.deny();
   }
 
   navigate() {

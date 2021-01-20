@@ -1,11 +1,12 @@
 import { Component, Output, EventEmitter, Input, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import * as _ from 'lodash-es';
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService, UtilService } from '@sunbird/shared';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { debounceTime, map, takeUntil, filter } from 'rxjs/operators';
 import { LibraryFiltersLayout } from '@project-sunbird/common-consumption-v8';
+import { UserService } from '@sunbird/core';
 @Component({
   selector: 'app-global-search-filter',
   templateUrl: './global-search-filter.component.html',
@@ -26,7 +27,8 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
   @Input() isOpen;
   @Output() filterChange: EventEmitter<{ status: string, filters?: any }> = new EventEmitter();
   constructor(public resourceService: ResourceService, public router: Router,
-    private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef) {
+    private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef, private utilService: UtilService,
+    public userService: UserService) {
   }
 
   onChange(facet) {
@@ -58,6 +60,17 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
 
   public resetFilters() {
     this.selectedFilters = _.pick(this.selectedFilters, ['key', 'selectedTab']);
+    if (this.utilService.isDesktopApp) {
+      const userPreferences: any = this.userService.anonymousUserPreference;
+      if (userPreferences) {
+        _.forEach(['board', 'medium', 'gradeLevel'], (item) => {
+          if (!_.has(this.selectedFilters, item)) {
+            this.selectedFilters[item] = _.isArray(userPreferences.framework[item]) ?
+            userPreferences.framework[item] : _.split(userPreferences.framework[item], ', ');
+          }
+        });
+      }
+    }
     let queryFilters = _.get(this.activatedRoute, 'snapshot.queryParams');
     let redirectUrl; // if pageNumber exist then go to first page every time when filter changes, else go exact path
     if (_.get(this.activatedRoute, 'snapshot.params.pageNumber')) { // when using dataDriven filter should this should be verified

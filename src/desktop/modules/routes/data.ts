@@ -11,6 +11,7 @@ import { manifest } from "./../manifest";
 const proxy = require('express-http-proxy');
 import Response from "./../utils/response";
 import { decorateRequestHeaders } from "../helper/proxyUtils";
+import User from "../controllers/user";
 
 export default (app, proxyURL) => {
     const content = new Content(manifest);
@@ -123,6 +124,11 @@ export default (app, proxyURL) => {
                 return `/getGeneralisedResourcesBundles/${req.params.lang}/${req.params.fileName}`;
             },
         }),
+    );
+
+    const user = new User(manifest);
+    app.get("/api/desktop/user/v1/read",
+      user.read.bind(user),
     );
 }
 

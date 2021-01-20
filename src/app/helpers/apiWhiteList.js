@@ -115,6 +115,7 @@ const checkIsStaticRoute = (REQ_URL) => {
     '/my-groups',
     '/telemetry',
     '/content-plugins/',
+    '/editors/',
     '/api'
   ];
   return _.some(excludePath, (path) => _.includes(REQ_URL, path));
