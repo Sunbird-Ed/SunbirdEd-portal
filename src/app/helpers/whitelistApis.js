@@ -20,6 +20,7 @@ const ROLE = {
   SYSTEM_ADMINISTRATION: 'SYSTEM_ADMINISTRATION',
   ADMIN: 'ORG_ADMIN',
   PUBLIC: 'PUBLIC',
+  TEMP_ROLE: 'TEMP_ROLE', // Use only for deprecated APIs
   ALL: 'ALL'  // Use when user does not have PUBLIC role (Case: User bulk upload)
 };
 
@@ -76,7 +77,7 @@ const API_LIST = {
  
     '/content/v1/upload': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
 
     '/content/v1/create': {
@@ -215,7 +216,7 @@ const API_LIST = {
     // Content Editor
     '/content/composite/v1/search': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL]
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
 
     // Generic Editor
@@ -262,7 +263,7 @@ const API_LIST = {
     },
     '/learner/data/v1/system/settings/list': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
 
     //Course related APIs
@@ -328,7 +329,7 @@ const API_LIST = {
     },
     '/learner/badging/v1/issuer/badge/assertion/create': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/learner/org/v2/preferences/read': {
       checksNeeded: ['ROLE_CHECK'],
@@ -408,7 +409,7 @@ const API_LIST = {
     },
     '/learner/user/v1/type/list': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/learner/user/v1/search': {
       checksNeeded: ['ROLE_CHECK'],
@@ -416,7 +417,7 @@ const API_LIST = {
     },
     '/learner/user/v1/upload': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/learner/user/v3/read/:userId': {
       checksNeeded: ['ROLE_CHECK'],
@@ -445,11 +446,15 @@ const API_LIST = {
     },
     '/learner/user/v2/bulk/upload': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.BOOK_CREATOR,
+        ROLE.COURSE_CREATOR
+      ]
     },
     '/learner/user/v2/upload': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/learner/user/v4/create': {
       checksNeeded: ['ROLE_CHECK'],
@@ -465,7 +470,7 @@ const API_LIST = {
     },
     '/learner//info': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/learner/data/v1/location/search': {
       checksNeeded: []
@@ -511,11 +516,11 @@ const API_LIST = {
     //Dashboard related APIs
     '/learner/dashboard/v1/creation/org': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/learner/dashboard/v1/consumption/org': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/learner/dashboard/v1/progress/course': {
       checksNeeded: ['ROLE_CHECK'],
@@ -533,23 +538,23 @@ const API_LIST = {
     // Notes related APIs
     '/learner/notes/v1/create': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/learner/notes/v1/delete': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/learner/notes/v1/read': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/learner/notes/v1/search': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/learner/notes/v1/update': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
 
     //Other APIs
