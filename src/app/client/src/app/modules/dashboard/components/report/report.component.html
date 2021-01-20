@@ -19,7 +19,6 @@
       </div>
       <div class="stackable grid m-0 sb-mid-container-min-height dashboard-body-scroll">
         <div class="sb-sideview-tab-container pb-48 p-0 w-100" *ngIf="showComponent">
-          <!-- <ng-container *ngIf="currentReport else loading"> -->
             <ng-container *ngIf="(report$ | async) as currentReport else loading">
             <div *ngIf="noResult">
               <app-no-result [data]="noResultMessage"></app-no-result>
