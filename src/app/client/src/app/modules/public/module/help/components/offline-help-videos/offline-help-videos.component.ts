@@ -127,6 +127,18 @@ export class OfflineHelpVideosComponent implements OnInit, OnDestroy {
           thumbnail: 'assets/images/play-icon.svg',
           url: 'assets/videos/How_do_I_register_on_diksha_joyful_theme.mp4'
         },
+        {
+          id: 'add-managed-user',
+          name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.manageuser),
+          thumbnail: 'assets/images/play-icon.svg',
+          url: 'assets/videos/How_do_I_add_users_on_DIKSHA.mp4'
+        },
+        {
+          id: 'add-managed-user-joyful-theme',
+          name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.manageusernewtheme),
+          thumbnail: 'assets/images/play-icon.svg',
+          url: 'assets/videos/How_do_I_add_users_on_DIKSHA_joyful_theme.mp4'
+        },
       ];
       this.activeVideoObject = this.slideData[0];
     });
