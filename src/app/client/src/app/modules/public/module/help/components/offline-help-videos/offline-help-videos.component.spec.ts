@@ -36,7 +36,15 @@ describe('OfflineHelpVideosComponent', () => {
           'copycontent': 'How do I copy content to my pen drive joyful theme',
           'loadcontent': 'How do I load content  to the desktop app joyful theme',
           'playcontent': 'How do I play content joyful theme',
-          'downloadcontent': 'How do I download content from desktop app library joyful theme' 
+          'downloadcontent': 'How do I download content from desktop app library joyful theme',
+          'recovaccnt' : 'How do I recover my account',
+          'register' : 'How do i register on {instance}',
+          'login' : 'How do i login on {instance}',
+          'manageuser' : 'How do I add users on {instance}',
+          'manageusernewtheme' : 'How do I add users on {instance} joyful theme',
+          'recovaccntnewtheme' : 'How do I recover my account joyful theme',
+          'registernewtheme' : 'How do i register on {instance} joyful theme',
+          'loginnewtheme' : 'How do I login on {instance} joyful theme'
         }
       },
       languageSelected$: of({})
@@ -59,10 +67,17 @@ describe('OfflineHelpVideosComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(OfflineHelpVideosComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    window.onerror = function(err) {
+      if(err === 'ResizeObserver loop limit exceeded') {
+        console.warn('Ignored: ResizeObserver loop limit exceeded');
+        return false;
+      }
+    }
   });
 
-  xit('should call setVideoHeight method', () => {
+  it('should call setVideoHeight method', () => {
+    component.aspectRatio = fixture.debugElement.query(By.css('.aspectratio'));
+    component.playerInfo = fixture.debugElement.query(By.css('.content-video__player__details'));
     component.instance = resourceServiceStub.instance;
     spyOn(component, 'setVideoHeight');
     spyOn(component, 'interpolateInstance');
@@ -73,10 +88,12 @@ describe('OfflineHelpVideosComponent', () => {
     expect(component.interpolateInstance).toHaveBeenCalled();
   });
 
-  xit('should changeVideoAttributes value', () => {
-    const name = (resourceServiceStub.frmelmnts.instn.t0094).replace('{instance}', (resourceServiceStub.instance).toUpperCase());
+  it('should changeVideoAttributes value', () => {
+    component.aspectRatio = fixture.debugElement.query(By.css('.aspectratio'));
+    component.playerInfo = fixture.debugElement.query(By.css('.content-video__player__details'));
+    const name = (resourceServiceStub.frmelmnts.instn.t0095).replace('{instance}', (resourceServiceStub.instance).toUpperCase());
       const data = {
-      id: 'add-content-online',
+      id: 'add-content-offline',
       name: name,
       thumbnail: 'assets/images/play-icon.svg',
       url: 'assets/videos/How_do_I_load_content_to_the_desktop_app.mp4'};
@@ -84,11 +101,13 @@ describe('OfflineHelpVideosComponent', () => {
     fixture.detectChanges();
     const value = fixture.debugElement.query(By.css('.content-video__player__title')).nativeElement.innerText;
     expect(component.activeVideoObject).toBeDefined();
-    expect(component.activeVideoObject.id).toEqual('add-content-online');
+    expect(component.activeVideoObject.id).toEqual('add-content-offline');
     expect(value).toContain(data.name);
   });
 
-  xit('should emit an event' , () => {
+  it('should emit an event' , () => {
+    component.aspectRatio = fixture.debugElement.query(By.css('.aspectratio'));
+    component.playerInfo = fixture.debugElement.query(By.css('.content-video__player__details'));
     spyOn(component.closeVideoModal, 'emit');
     component.closeModal();
     expect(component.closeVideoModal.emit).toHaveBeenCalled();
