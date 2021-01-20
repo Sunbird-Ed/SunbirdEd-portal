@@ -397,6 +397,14 @@ describe('ReportComponent', () => {
       filters:filters
     });
   }));
+  it('should get chartData', fakeAsync(() => {
+    component.ngOnInit();
+    tick(1000);
+    const data = component.getChartData(chartData[0]);
+    expect(data).toEqual(chartData[0]);   
+  }));
+
+  
 
   it('should handle markdown update stream', done => {
     const spy = spyOn(reportService, 'updateReport').and.returnValue(of({}));

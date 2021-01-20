@@ -57,9 +57,8 @@ export class ReportComponent implements OnInit {
   public selectedFilters: Object;
   public showChart = true;
   public charts: any;
-  public currentReport: any;
   public reportData: any;
-
+  public chartsReportData: any;
   public globalFilterChange: any;
 
   public reportResult: any;
@@ -82,7 +81,7 @@ export class ReportComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) { }
 
-
+ 
   ngOnInit() {
     this.initLayout();
     this.report$ = combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams).pipe(
@@ -104,14 +103,10 @@ export class ReportComponent implements OnInit {
             return of({});
           })
         );
+      
       })
     );
 
-    this.report$.subscribe(data => {
-      this.currentReport = data;
-      this.reportData = JSON.parse(JSON.stringify(data))
-
-    });
 
     this.mergeClickEventStreams();
   }
@@ -174,6 +169,8 @@ export class ReportComponent implements OnInit {
                 result['files'] = this.reportService.getParameterizedFiles(files || [], this.hash);
                 result['lastUpdatedOn'] = this.reportService.getFormattedDate(this.reportService.getLatestLastModifiedOnDate(data));
                 this.reportResult = result;
+                this.chartsReportData = JSON.parse(JSON.stringify(result));
+                this.reportData = JSON.parse(JSON.stringify(result));
                 return result;
               })
             );
@@ -573,9 +570,19 @@ export class ReportComponent implements OnInit {
     return chartData;
   }
 
+  getChartData(chart){
+   let chartInfo = this.chartsReportData.charts.filter(data=>{
+        if(data.chartConfig){
+          if(data.chartConfig.id == chart.chartConfig.id){
+            return data;
+          }
+        }
+    });
+    return chartInfo[0];
+  }
   public filterChanged(data: any): void {
-    if (this.currentReport && this.currentReport.charts) {
-      this.currentReport.charts.map(element => {
+    if (this.chartsReportData && this.chartsReportData.charts) {
+      this.chartsReportData.charts.map(element => {
         element.chartData = data.chartData;
         return element;
       });

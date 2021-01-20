@@ -19,7 +19,8 @@
       </div>
       <div class="stackable grid m-0 sb-mid-container-min-height dashboard-body-scroll">
         <div class="sb-sideview-tab-container pb-48 p-0 w-100" *ngIf="showComponent">
-          <ng-container *ngIf="currentReport else loading">
+          <!-- <ng-container *ngIf="currentReport else loading"> -->
+            <ng-container *ngIf="(report$ | async) as currentReport else loading">
             <div *ngIf="noResult">
               <app-no-result [data]="noResultMessage"></app-no-result>
             </div>
@@ -263,11 +264,12 @@
 
                      <div class="report-block ui bottom attached segment p-0 b-0 no-bg my-24" suiTabContent="graph" >
                       <div class="" *ngIf="currentReport?.reportMetaData?.filters && !hideElements">
-                       <p class="select-filter-label" > Select Filters <small> (This will apply for all the chart sections)</small> </p> 
+                       <p class="select-filter-label" > {{ resourceService?.frmelmnts?.lbl?.selectFilters }} <small> {{ resourceService?.frmelmnts?.lbl?.selectFilterDescription }} </small> </p> 
                       </div>
 
                      
                       <div  class="ui bottom p-0 b-0 no-bg my-24 graph-section" > 
+
                         <div class="global-filter" *ngIf=" currentReport?.reportMetaData?.filters">
                           <app-filter  [hideElements]="hideElements" [selectedFilter]="selectedFilters" [filters]="currentReport.reportMetaData.filters" (filterChanged)="filterChanged($event)" [chartData]="getAllChartData(currentReport)"
                                 [chartType]="Bar" [telemetryInteractObject]="telemetryInteractObject">
@@ -283,7 +285,7 @@
                           </app-map>
                          
                           <app-data-chart [globalFilter]="globalFilterChange" [globalSelectedFilters]="globalSelectedFilters" *ngIf="chart?.chartConfig?.chartType !== 'map' && showChart"
-                            [telemetryInteractObject]="setTelemetryInteractObject()" [chartInfo]="chart"
+                            [telemetryInteractObject]="setTelemetryInteractObject()" [chartInfo]="getChartData(chart)"
                             [hideElements]="hideElements" [isUserReportAdmin]="isUserReportAdmin"
                             (openAddSummaryModal)="openAddSummaryModal($event)" [hash]="hash">
                           </app-data-chart>
