@@ -409,7 +409,7 @@ const API_LIST = {
     },
     '/learner/user/v1/type/list': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/learner/user/v1/search': {
       checksNeeded: ['ROLE_CHECK'],
