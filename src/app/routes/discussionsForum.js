@@ -88,7 +88,7 @@ module.exports = function (app) {
 
 
     // post apis 
-    app.put(`${BASE_REPORT_URL}/v2/posts/:pid`, proxyUtils.verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/v2/posts/:pid`, proxyUtils.verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v2/posts/:pid`, proxyUtils.verifyToken(), proxyObject());
     app.put(`${BASE_REPORT_URL}/v2/posts/:pid/state`, proxyUtils.verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v2/posts/:pid/state`, proxyUtils.verifyToken(), proxyObject());
