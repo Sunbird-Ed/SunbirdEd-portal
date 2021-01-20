@@ -90,7 +90,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     this.playerOption = {
       showContentRating: true
     };
-    this.assessmentMaxAttempts = this.configService.appConfig.CourseConsumption.selfAssessMaxLimit;
+    // this.assessmentMaxAttempts = this.configService.appConfig.CourseConsumption.selfAssessMaxLimit;
   }
 
   navigateToPlayerPage(collectionUnit: {}, event?) {

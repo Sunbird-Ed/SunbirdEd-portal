@@ -118,7 +118,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   ) {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
-    this.assessmentMaxAttempts = this.configService.appConfig.CourseConsumption.selfAssessMaxLimit;
+    // this.assessmentMaxAttempts = this.configService.appConfig.CourseConsumption.selfAssessMaxLimit;
   }
   ngOnInit() {
     if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
