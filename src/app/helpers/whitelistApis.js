@@ -812,6 +812,17 @@ const API_LIST = {
         ROLE.BOOK_REVIEWER
       ]
     },
+    '/plugin/review/comment/v1/create/comment': {
+      description: 'Comments added to slide by reviewer',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR,
+        ROLE.CONTENT_REVIEWER,
+        ROLE.BOOK_REVIEWER
+      ]
+    },
 
     // Dial code service
     '/action/dialcode/v3/search': {
