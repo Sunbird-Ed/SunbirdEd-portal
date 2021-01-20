@@ -1385,6 +1385,14 @@ const API_LIST = {
     '/discussion/user/uid/:uid': {
       checksNeeded: [],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/v1/sso/create/session': {
+      description: 'Desktop API',
+      checksNeeded:[]
+    },
+    '/api/data/v1/form/read': {
+      description: 'Desktop API',
+      checksNeeded:[]
     }
   },
   URL_PATTERN: [
