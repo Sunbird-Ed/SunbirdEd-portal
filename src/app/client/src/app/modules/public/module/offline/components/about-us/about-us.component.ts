@@ -6,7 +6,7 @@ import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { IAppInfo } from './../../interfaces';
-import { AppUpdateService } from './../../services';
+import { AppUpdateService } from '../../../../../core/services/app-update/app-update.service';
 
 @Component({
   selector: 'app-about-us',
@@ -26,7 +26,7 @@ export class AboutUsComponent implements OnInit, OnDestroy {
   isConnected;
   loaderMessage: ILoaderMessage = {};
   currentYear;
-  @ViewChild('termsIframe') termsIframe: ElementRef;
+  @ViewChild('termsIframe', {static: false}) termsIframe: ElementRef;
 
   constructor(
     private appUpdateService: AppUpdateService,

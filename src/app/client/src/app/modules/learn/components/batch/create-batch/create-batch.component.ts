@@ -7,7 +7,7 @@ import { UserService } from '@sunbird/core';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { Subject, combineLatest } from 'rxjs';
 import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
 import { ConfigService } from '@sunbird/shared';
@@ -18,7 +18,7 @@ import { ConfigService } from '@sunbird/shared';
 })
 export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  @ViewChild('createBatchModel') private createBatchModel;
+  @ViewChild('createBatchModel', {static: false}) private createBatchModel;
 
   private userSearchTime: any;
 

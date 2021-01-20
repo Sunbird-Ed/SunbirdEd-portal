@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SearchFilterComponent } from './search-filter.component';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SuiModule } from 'ng2-semantic-ui';
 import { ResourceService, BrowserCacheTtlService, ToasterService, SharedModule, LayoutService } from '@sunbird/shared';

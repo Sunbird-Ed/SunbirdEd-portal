@@ -8,7 +8,7 @@ import { NavigationHelperService } from '@sunbird/shared';
 import { ITenantData } from './../../../core/services/tenant/interfaces/tenant';
 import { ProfileService } from '@sunbird/profile';
 import { BehaviorSubject, merge, empty, of, Subject } from 'rxjs';
-import { switchMap, retry, tap, skipWhile, catchError, takeUntil } from 'rxjs/operators';
+import { switchMap, retry, tap, skipWhile, catchError, takeUntil, concatMap, take, skip } from 'rxjs/operators';
 
 interface IGuest {
   code: string;
@@ -99,12 +99,19 @@ export class OnboardingUserSelectionComponent implements OnInit, OnDestroy {
         switchMap(userType => {
           const payload = {
             userId: _.get(this.userService, 'userid'),
-            userType: _.capitalize(userType)
+            userType: userType.toLowerCase()
           };
           return this.profileService.updateProfile(payload)
             .pipe(
-              tap(_ => { this.userSelect.emit(true); }),
               retry(5),
+              concatMap(() => {
+                return this.userService.userData$.pipe(
+                  skip(1),
+                  take(1)
+                ).pipe(
+                  tap(v => { console.log(v); this.userSelect.emit(true); }),
+                );
+              }),
               catchError(err => {
                 this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
                 return empty();

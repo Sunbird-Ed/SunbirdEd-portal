@@ -18,6 +18,7 @@ import { UtilService } from './util.service';
 import { ResourceService } from '../resource/resource.service';
 import { ExportToCsv } from 'export-to-csv';
 import * as _ from 'lodash-es';
+import { ToasterService } from '@sunbird/shared';
 
 const resourceBundle = {
   messages: {
@@ -44,7 +45,7 @@ describe('UtilService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [UtilService, { provide: ResourceService, useValue: resourceBundle }]
+      providers: [UtilService, { provide: ResourceService, useValue: resourceBundle }, ToasterService]
     });
   });
 

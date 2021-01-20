@@ -4,7 +4,7 @@ import * as _ from 'lodash-es';
 import { ICard, ILanguage } from '@sunbird/shared';
 import { Subject } from 'rxjs';
 import { ResourceService } from '../resource/resource.service';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { ExportToCsv } from 'export-to-csv';
 import { environment } from '@sunbird/environment';
   // Dependency injection creates new instance each time if used in router sub-modules
@@ -78,6 +78,9 @@ export class UtilService {
       primaryCategory: data.primaryCategory
 
     };
+    if (data.trackable) {
+      content.trackable = data.trackable;
+    }
     if (data.desktopAppMetadata) {
       content['desktopAppMetadata'] = data.desktopAppMetadata;
     }

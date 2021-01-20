@@ -22,12 +22,12 @@ export interface ILoggedInUser {
   accessToken?: string;
   firstName: string;
   lastName?: string;
-  rootOrg: RootOrg;
-  promptTnC: boolean;
-  tncAcceptedVersion: string;
-  tncAcceptedOn: string;
-  tncLatestVersion: string;
-  tncLatestVersionUrl: string;
+  rootOrg?: RootOrg;
+  promptTnC?: boolean;
+  tncAcceptedVersion?: string;
+  tncAcceptedOn?: string;
+  tncLatestVersion?: string;
+  tncLatestVersionUrl?: string;
   allTncAccepted?: {
     [key: string]: {
       tncAcceptedOn: string;

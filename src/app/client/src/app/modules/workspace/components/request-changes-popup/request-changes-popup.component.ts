@@ -18,7 +18,7 @@ import { Subject } from 'rxjs';
   templateUrl: './request-changes-popup.component.html'
 })
 export class RequestChangesPopupComponent implements OnInit, OnDestroy {
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
   /**
    * To navigate to other pages
    */

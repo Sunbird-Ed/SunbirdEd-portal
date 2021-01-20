@@ -12,7 +12,7 @@ import { fromEvent, Subject } from 'rxjs';
 export class ContentCreditsComponent implements OnInit, OnChanges {
   @Input() contentData: ContentData;
   @Output() close = new EventEmitter<any>();
-  @ViewChild('contentCreditsModal') contentCreditsModal;
+  @ViewChild('contentCreditsModal', {static: false}) contentCreditsModal;
 
   showContentCreditModal = false;
   instance: string;

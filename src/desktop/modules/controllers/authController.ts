@@ -71,13 +71,25 @@ export default class AuthController {
         }
     }
 
-    private async saveUserInDB(user: ILoggedInUser) {
+    public async saveUserInDB(user: ILoggedInUser) {
         const response = await this.userSDK.insertLoggedInUser(user);
         return response;
     }
 
-    private async setUserSession(user: ILoggedInUser) {
+    public async setUserSession(user: ILoggedInUser) {
         const sessionData = { userId: user.userId, sessionId: uuidv1() };
         await this.userSDK.setUserSession(sessionData);
+    }
+
+    public async endSession(req, res) {
+        try {
+            await this.userSDK.deleteAllLoggedInUsers().catch(error => { logger.error("unable to delete logged in user data", error); })
+            await this.userSDK.deleteUserSession().catch(error => { logger.debug("unable to clear logged in user session", error); })
+            return res.send({ status: 'success' });
+        } catch(err) {
+            let status = err.status || 500;
+            res.status(status);
+            return res.send(Response.error('api.user.endSession', status, err.message));
+        }
     }
 }

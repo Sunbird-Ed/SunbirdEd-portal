@@ -15,7 +15,7 @@ import { ProfileService } from '@sunbird/profile';
 import {Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin, zip, Subject} from 'rxjs';
 import { first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
-import { DOCUMENT } from '@angular/platform-browser';
+import { DOCUMENT } from '@angular/common';
 import { image } from '../assets/images/tara-bot-icon';
 /**
  * main app component
@@ -26,7 +26,7 @@ import { image } from '../assets/images/tara-bot-icon';
   styles: ['.header-block { display: none;}']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  @ViewChild('frameWorkPopUp') frameWorkPopUp;
+  @ViewChild('frameWorkPopUp', {static: false}) frameWorkPopUp;
   /**
    * user profile details.
    */
@@ -215,6 +215,9 @@ export class AppComponent implements OnInit, OnDestroy {
             this.checkForCustodianUser();
             return this.setUserDetails();
           } else {
+            if (this.utilService.isDesktopApp) {
+              this.userService.getAnonymousUserPreference();
+            }
             return this.setOrgDetails();
           }
         }))
@@ -328,7 +331,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       }
       // TODO: code can be removed in 3.1 release from user-onboarding component as it is handled here.
-      zip(this.tenantService.tenantData$, this.orgDetailsService.orgDetails$).subscribe((res) => {
+      zip(this.tenantService.tenantData$, this.getOrgDetails()).subscribe((res) => {
         if (_.get(res[0], 'tenantData')) {
           const orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
           if (_.get(orgDetailsFromSlug, 'slug') !== this.tenantService.slugForIgot) {
@@ -413,7 +416,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.orgDetailsService.getCustodianOrgDetails().subscribe((custodianOrg) => {
           if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') !== _.get(custodianOrg, 'result.response.value')) {
             // Check for non custodian user and show global consent pop up
-            this.consentConfig = { tncLink: '', tncText: this.resourceService.frmelmnts.lbl.nonCustodianTC };
+            this.consentConfig = { tncLink: this.resourceService.frmelmnts.lbl.tncLabelLink, tncText: this.resourceService.frmelmnts.lbl.nonCustodianTC };
             this.showGlobalConsentPopUpSection = true;
           } else {
             this.checkFrameworkSelected();

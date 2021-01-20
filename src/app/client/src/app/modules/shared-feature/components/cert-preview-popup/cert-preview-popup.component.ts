@@ -11,7 +11,7 @@ export class CertPreviewPopupComponent implements OnInit {
 
   @Input() template;
   @Output() close = new EventEmitter();
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
 
   constructor(public resourceService: ResourceService,
     private sanitizer: DomSanitizer) { }

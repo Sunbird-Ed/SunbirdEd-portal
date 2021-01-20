@@ -9,7 +9,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { configureTestSuite } from '@sunbird/test-util';
 import { mockData } from './onboarding-user-selection.component.spec.data';
 import { ProfileService } from '@sunbird/profile';
-import { of } from 'rxjs';
+import { from, of } from 'rxjs';
 import { UserService } from '@sunbird/core';
 
 describe('OnboardingUserSelectionComponent', () => {
@@ -83,11 +83,16 @@ describe('OnboardingUserSelectionComponent', () => {
     spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
     spyOnProperty(userService, 'userid', 'get').and.returnValue('123');
     const userSelectSpy = spyOn(component.userSelect, 'emit');
-    const spy = spyOn(profileService, 'updateProfile').and.returnValue(of({}));
+    const spy = spyOn(profileService, 'updateProfile').and.callFake(() => {
+      setTimeout(() => {
+        userService['_userData$'].next({});
+      });
+      return of({});
+    });
     component['updateUserSelection']().subscribe(res => {
       expect(spy).toHaveBeenCalledWith({
         userId: '123',
-        userType: 'Student'
+        userType: 'student'
       });
       expect(userSelectSpy).toHaveBeenCalled();
       done();

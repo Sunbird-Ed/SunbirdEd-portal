@@ -29,11 +29,11 @@
             <div class="status-container__icon mr-8">
               <img height="37px" src="assets/images/Offline.svg" width="24px">
             </div>
-            <div class="fnormal status-container__title">{{resourceService?.frmelmnts.lbl.offline}}</div>
+            <div class="fnormal status-container__title">{{resourceService?.frmelmnts?.lbl?.offline}}</div>
           </div>
          </div>
           <!--/Online/Offline-->
-         
+
         </div>
         <div class="seven wide column p-0 d-flex flex-jc-flex-end flex-ai-center">
           <!--Hamburger Icon-->
@@ -45,7 +45,7 @@
           <app-main-menu [layoutConfiguration]="layoutConfiguration" class="d-flex computer only ml-auto">
           </app-main-menu>
           <!--/Main Menu-->
-          <a class="profile-avtar p-0 mx-16">
+          <a class="profile-avtar p-0 mx-16" *ngIf="!isDesktopApp">
             <app-in-app-notification *ngIf="userService?.loggedIn" [layoutConfiguration]="layoutConfiguration"></app-in-app-notification>
           </a>
           <!--Avtar Dropdown-->
@@ -177,7 +177,7 @@
             <!--/Logo-->
             <div class="d-flex flex-ai-center sb-responsive-header">
               <!-- Notification dropdown -->
-              <a class="profile-avtar p-0" tabindex="0">
+              <a class="profile-avtar p-0" tabindex="0" *ngIf="!isDesktopApp">
                 <app-in-app-notification *ngIf="userService?.loggedIn" [layoutConfiguration]="layoutConfiguration"></app-in-app-notification>
               </a>
               <!--Avtar Dropdown-->
@@ -210,7 +210,7 @@
               *ngIf="languages && showLanguageDropdown()">
             </app-language-dropdown>
             <!-- Notification dropdown -->
-            <a class="profile-avtar p-0 ml-16" tabindex="0">
+            <a class="profile-avtar p-0 ml-16" tabindex="0" *ngIf="!isDesktopApp">
               <app-in-app-notification *ngIf="userService?.loggedIn" [layoutConfiguration]="layoutConfiguration"></app-in-app-notification>
             </a>
             <!--Avtar Dropdown-->
@@ -283,9 +283,9 @@
         </div>
       </div>
     </div>
-    <div *ngIf="userService.loggedIn">
+    <div *ngIf="userService?.loggedIn">
       <div class="profile__actions">
-        <div class="add-user add-user--horizontal" *ngIf="totalUsersCount >=1"
+        <div appOnlineOnly class="add-user add-user--horizontal" *ngIf="totalUsersCount >=1"
           (click)="toggleSideMenu(false);navigate('/profile/create-managed-user')">
           <div class="add-user__icon">
             <img src="assets/images/user-circle.svg" alt="Add user">
@@ -376,14 +376,14 @@
             </svg></i>
             {{resourceService?.frmelmnts?.lbl?.accessible}}
           </li>
-          <li class="list-item" appOnlineOnly appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
+          <li class="list-item" appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
             (click)="toggleSideMenu(false);logout()">
             <i class="icon-svg icon-svg--sm icon-logout mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#logout"></use>
               </svg></i>
             {{resourceService.frmelmnts?.lnk?.logout}}
           </li>
-          <li *appDesktopOnly class="list-item" (click)="toggleSideMenu(false);" appTelemetryInteract 
+          <li *appDesktopOnly class="list-item" (click)="toggleSideMenu(false);" appTelemetryInteract
             [telemetryInteractEdata]="aboutUsEdata" routerLink="/desktop/about-us">
               <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#profileuser"></use>
@@ -468,7 +468,7 @@
                 {{resourceService.frmelmnts?.btn?.login}}
               </a>
             </li>
-            <li *appDesktopOnly class="list-item" (click)="toggleSideMenu(false);" appTelemetryInteract 
+            <li *appDesktopOnly class="list-item" (click)="toggleSideMenu(false);" appTelemetryInteract
             [telemetryInteractEdata]="aboutUsEdata" routerLink="/desktop/about-us">
               <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#profileuser"></use>
@@ -484,9 +484,20 @@
 </div>
 
 <!-- Manage location for an anonymous user -->
-<app-onboarding-location  *ngIf="showLocationPopup" [tenantInfo]="locationTenantInfo"
-[isCustodianOrgUser]="isCustodianUser" [deviceProfile]="deviceProfile" (close)="locationSubmit()">
-</app-onboarding-location>
+<app-location-selection  *ngIf="showLocationPopup"
+                         [deviceProfile]="deviceProfile"
+                         (close)="locationSubmit()">
+  <div slot="popup-header">
+    <img [src]="tenantInfo?.logo" class="brand-logo" alt="logo" />
+    <h1>{{resourceService?.frmelmnts?.lbl?.welcomeToInstance | interpolate:'{instance}': tenantInfo?.titleName}}</h1>
+  </div>
+  <div slot="popup-sub-header">
+    <p class="subtitle">{{resourceService?.messages?.imsg?.m0075}}</p>
+  </div>
+  <div slot="popup-footer">
+    <p class="py-16">{{resourceService?.messages?.imsg?.m0074}}</p>
+  </div>
+</app-location-selection>
 <!-- Manage location for an anonymous user -->
 
 

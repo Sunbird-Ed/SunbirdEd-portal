@@ -2,7 +2,7 @@ import { debounceTime, map } from 'rxjs/operators';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
-import { SearchService, UserService, CoursesService } from '@sunbird/core';
+import { SearchService, UserService, CoursesService, FrameworkService } from '@sunbird/core';
 import {
   ServerResponse, ConfigService, PaginationService, IPagination,
   IContents, ToasterService, ResourceService, ILoaderMessage, INoResultMessage,
@@ -30,7 +30,7 @@ import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semanti
   styleUrls: ['./published.component.scss']
 })
 export class PublishedComponent extends WorkSpace implements OnInit, AfterViewInit {
-  @ViewChild('modalTemplate')
+  @ViewChild('modalTemplate', {static: false})
   public modalTemplate: ModalTemplate<{ data: string }, string, string>;
   /**
   * state for content editior
@@ -178,6 +178,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
 
   constructor(public modalService: SuiModalService, public searchService: SearchService,
     public workSpaceService: WorkSpaceService,
+    public frameworkService: FrameworkService,
     paginationService: PaginationService,
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
@@ -257,12 +258,15 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
     } else {
       this.sort = { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn };
     }
+    // tslint:disable-next-line:max-line-length
+    const primaryCategories = _.concat(this.frameworkService['_channelData'].contentPrimaryCategories, this.frameworkService['_channelData'].collectionPrimaryCategories);
     const searchParams = {
       filters: {
         status: ['Live'],
         createdBy: this.userService.userid,
         objectType: this.config.appConfig.WORKSPACE.objectType,
-        primaryCategory: _.get(bothParams, 'queryParams.primaryCategory') || this.config.appConfig.WORKSPACE.primaryCategory,
+        // tslint:disable-next-line:max-line-length
+        primaryCategory: _.get(bothParams, 'queryParams.primaryCategory') || primaryCategories || this.config.appConfig.WORKSPACE.primaryCategory,
         mimeType: this.config.appConfig.WORKSPACE.mimeType,
         board: bothParams['queryParams'].board,
         subject: bothParams['queryParams'].subject,

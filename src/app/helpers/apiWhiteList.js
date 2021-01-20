@@ -9,7 +9,7 @@ const _                 = require('lodash');
 const uuidv1            = require('uuid/v1');
 const dateFormat        = require('dateformat');
 const { pathToRegexp }  = require("path-to-regexp");
-const logger            = require('@project-sunbird/logger');
+const { logger }        = require('@project-sunbird/logger');
 
 const API_LIST          = require('./whitelistApis');
 const utils             = require('./utilityService');
@@ -28,33 +28,97 @@ const ROLE = {
  */
 const isAllowed = () => {
   return function (req, res, next) {
-    let REQ_URL = req.path;
-    // Pattern match for URL
-    _.forEach(API_LIST.URL_PATTERN, (url) => {
-      let regExp = pathToRegexp(url);
-      if (regExp.test(REQ_URL)) {
-        REQ_URL = url;
-        return false;
-      }
-    });
-    // Is API whitelisted ?
-    if (_.get(API_LIST.URL, REQ_URL)) {
-      const URL_RULE_OBJ = _.get(API_LIST.URL, REQ_URL);
-      let checksToExecute = [];
-      // Iterate for checks defined for API and push to array
-      URL_RULE_OBJ.checksNeeded.forEach(CHECK => {
-        checksToExecute.push(new Promise((res, rej) => {
-          if (_.get(URL_RULE_OBJ, CHECK) && typeof urlChecks[CHECK] === 'function') {
-            urlChecks[CHECK](res, rej, req, URL_RULE_OBJ[CHECK], REQ_URL);
-          }
-        }));
-      });
-      executeChecks(req, res, next, checksToExecute);
+    if (shouldAllow(req)) {
+      next();
     } else {
-      // If API is not whitelisted
-      respond403(req, res);
+      let REQ_URL = req.path;
+      // Pattern match for URL
+      _.forEach(API_LIST.URL_PATTERN, (url) => {
+        let regExp = pathToRegexp(url);
+        if (regExp.test(REQ_URL)) {
+          REQ_URL = url;
+          return false;
+        }
+      });
+      // Is API whitelisted ?
+      if (_.get(API_LIST.URL, REQ_URL)) {
+        const URL_RULE_OBJ = _.get(API_LIST.URL, REQ_URL);
+        let checksToExecute = [];
+        // Iterate for checks defined for API and push to array
+        URL_RULE_OBJ.checksNeeded.forEach(CHECK => {
+          checksToExecute.push(new Promise((res, rej) => {
+            if (_.get(URL_RULE_OBJ, CHECK) && typeof urlChecks[CHECK] === 'function') {
+              urlChecks[CHECK](res, rej, req, URL_RULE_OBJ[CHECK], REQ_URL);
+            }
+          }));
+        });
+        executeChecks(req, res, next, checksToExecute);
+      } else {
+        // If API is not whitelisted
+        logger.info({
+          msg: 'Portal_API_WHITELIST: URL not whitelisted',
+          reqPath: req.path,
+          reqOriginalUrl: req.originalUrl,
+          method: req.method
+        });
+        respond403(req, res);
+      }
     }
   }
+};
+
+/**
+ * @description - Entry function to check static routes and env flags
+ * @todo - Implement global flag check
+ * @todo - Implement is logger enabled check
+ */
+const shouldAllow = (req) => {
+  // Ignore static routes
+  return req.path === '/' || checkIsStaticRoute(req.path);
+};
+
+/**
+ * @param  { String } REQ_URL - Request URL
+ * @returns { Boolean } - Return boolean value based on exclude path criteria
+ */
+const checkIsStaticRoute = (REQ_URL) => {
+  const excludePath = [
+    '.md',
+    '.js',
+    '.js.map',
+    '.ico',
+    '.ttf',
+    '.woff2',
+    '.woff',
+    '.eot',
+    '.svg',
+    '.gif',
+    '.png',
+    '.html',
+    '/dist/',
+    '/streaming/',
+    '/resourcebundles/',
+    '/assets/',
+    '/explore',
+    '/resources',
+    '/search',
+    '/orgType',
+    '/dashBoard',
+    '/workspace',
+    '/profile',
+    '/learn',
+    '/resources',
+    '/myActivity',
+    '/manage',
+    '/contribute',
+    '/groups',
+    '/my-groups',
+    '/telemetry',
+    '/content-plugins/',
+    '/editors/',
+    '/api'
+  ];
+  return _.some(excludePath, (path) => _.includes(REQ_URL, path));
 };
 
 /**
@@ -73,12 +137,14 @@ const urlChecks = {
    * @since - release-3.1.0
    */
   ROLE_CHECK: (resolve, reject, req, rolesForURL, REQ_URL) => {
-    // logger.info({
-    //   msg: 'whitelist middleware for URL [ ' + REQ_URL + ' ]',
-    //   originalUrl: req.path,
-    //   reqRoles: req.session['roles'] ? req.session['roles'] : 'no roles in session',
-    //   rulesForURL: rolesForURL
-    // });
+    logger.info({
+      msg: 'whitelist middleware for URL [ ' + REQ_URL + ' ]',
+      reqPath: req.path,
+      matchPattern: REQ_URL,
+      method: req.method,
+      sessionRoles: _.get(req, 'session.roles') || 'no roles in session',
+      rulesForURL: rolesForURL
+    });
     if (_.includes(rolesForURL, 'ALL') && req.session['roles'].length > 0) {
       resolve();
     } else if (_.intersection(rolesForURL, req.session['roles']).length > 0) {
@@ -220,7 +286,7 @@ const executeChecks = async (req, res, next, checksToExecute) => {
  * @since release-3.1.0
  */
 const respond403 = (req, res) => {
-  let REQ_URL = req.originalUrl;
+  let REQ_URL = req.path;
   const err = ({ msg: 'API WHITELIST :: Forbidden access for API [ ' + REQ_URL + ' ]', url: REQ_URL });
   utils.logError(req, err, err.msg);
   res.status(403);
@@ -241,6 +307,39 @@ const respond403 = (req, res) => {
   res.end();
 };
 
+const apiWhiteListLogger = () => {
+  return (req, res, next) => {
+    if (req.path === '/' || checkIsStaticRoute(req.path)) {
+      next();
+    } else {
+      let REQ_URL = req.path;
+      // Pattern match for URL
+      _.forEach(API_LIST.URL_PATTERN, (url) => {
+        let regExp = pathToRegexp(url);
+        if (regExp.test(REQ_URL)) {
+          REQ_URL = url;
+          return false;
+        }
+      });
+      // Is API whitelisted ?
+      if (_.get(API_LIST.URL, REQ_URL)) {
+        next();
+      } else {
+        // If API is not whitelisted
+        logger.info({
+          msg: 'Portal_API_WHITELIST_LOGGER: URL not whitelisted',
+          reqPath: req.path,
+          reqOriginalUrl: req.originalUrl,
+          method: req.method,
+          sessionRoles: _.get(req, 'session.roles') || 'no roles in session'
+        });
+        next();
+      }
+    }
+  }
+};
+
 module.exports = {
-  isAllowed
+  isAllowed,
+  apiWhiteListLogger
 };

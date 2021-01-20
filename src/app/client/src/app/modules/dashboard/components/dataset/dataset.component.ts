@@ -6,7 +6,7 @@ import { DatasetService, ReportService } from '../../services';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject, of, zip, Subscription, BehaviorSubject } from 'rxjs';
 import { map, catchError, switchMap, distinctUntilChanged, tap, filter } from 'rxjs/operators';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { get, chunk, map as _map, first, last, partition, forEach, flatMap } from 'lodash-es';
 import * as $ from 'jquery';
 import 'datatables.net';
@@ -42,7 +42,7 @@ export class DatasetComponent implements OnInit, OnDestroy {
 
   private customTimePicker = new BehaviorSubject({ from: dayjs().subtract(7, 'day').toDate(), to: dayjs().subtract(1, 'day').toDate() });
 
-  @ViewChild('datasets') set initTable(element: ElementRef | null) {
+  @ViewChild('datasets', {static: false}) set initTable(element: ElementRef | null) {
     if (!element) { return; }
     this.prepareTable(element.nativeElement);
   }

@@ -51,8 +51,8 @@ export default (app, contentFilesPath, ecarsFolderPath ) => {
     app.use(express.static(path.join(__dirname, "..", "..", "public", "portal")));
     app.all('/logoff', async (req, res) => {
       const userSDK: any = containerAPI.getUserSdkInstance();
-      await userSDK.deleteLoggedInUser().catch(error => { logger.debug("unable to delete logged in user data", error);})
-      await userSDK.setUserSession().catch(error => { logger.debug("unable to clear logged in user session", error);})
+      await userSDK.deleteAllLoggedInUsers().catch(error => { logger.debug("unable to delete logged in user data", error);})
+      await userSDK.deleteUserSession().catch(error => { logger.debug("unable to clear logged in user session", error);})
       res.redirect('/mydownloads?selectedTab=mydownloads')
     })
     

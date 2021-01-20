@@ -14,10 +14,9 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
 export class LoadOfflineContentComponent implements OnInit, OnDestroy  {
   @Input() hideLoadButton = false;
   showLoadContentModal: any;
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
   isConnected;
   selectedValue;
-  @Output() close = new EventEmitter();
   onlineMsg: string;
   addImportFontWeight;
   instance: string;
@@ -63,9 +62,8 @@ export class LoadOfflineContentComponent implements OnInit, OnDestroy  {
   }
 
   closeModal() {
+    this.selectedValue = this.isConnected ? 'browse' : 'import';
     this.showLoadContentModal = false;
-    this.close.emit();
-    this.modal.deny();
   }
 
   navigate() {
