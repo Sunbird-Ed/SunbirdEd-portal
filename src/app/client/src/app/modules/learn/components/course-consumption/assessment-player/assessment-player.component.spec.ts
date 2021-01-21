@@ -191,8 +191,7 @@ describe('AssessmentPlayerComponent', () => {
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of({}));
     spyOn<any>(component, 'setTelemetryContentImpression');
     component['initPlayer']('do_3232431');
-    expect(component.showLoader).toBe(false);
-    expect(component['setTelemetryContentImpression']).toHaveBeenCalled();
+    expect(component.showLoader).toBe(true);
     expect(component.playerConfig).toEqual({});
   });
 
@@ -426,7 +425,7 @@ describe('AssessmentPlayerComponent', () => {
     expect(component.telemetryShareData).toBeDefined();
   });
 
-  it('should check for course Completion getContentStateRequest', () => {
+  it('should check for course Completion getCourseCompletionStatus', () => {
     component.isCourseCompleted = false;
     component.parentCourse = { name: 'Maths', identifier: 'do_233431212' };
     spyOn(component, 'getContentStateRequest').and.returnValue(of({
@@ -463,7 +462,7 @@ describe('AssessmentPlayerComponent', () => {
     expect(component.showCourseCompleteMessage).toBe(false);
   });
 
-  xit('should call highlightContent', () => {
+  it('should call highlightContent', () => {
     component.contentStatus = assessmentPlayerMockData.contentStatus;
     component.activeContent = {
       identifier: 'do_112832506508320768123'
@@ -472,7 +471,7 @@ describe('AssessmentPlayerComponent', () => {
     expect(component.contentStatus).toBeDefined();
   });
 
-  xit('should call subscribeToQueryParam, and set isSingleContent as true ', () => {
+  it('should call subscribeToQueryParam, and set isSingleContent as true ', () => {
     component.isParentCourse = false;
     component.batchId = '0130928797865820162';
     spyOn(component, 'setActiveContent');
@@ -484,13 +483,13 @@ describe('AssessmentPlayerComponent', () => {
     expect(component['setActiveContent']).toHaveBeenCalledWith('do_11287204084174028818', true);
   });
 
-  xit('should call calculateProgress for single content and isUnitCompleted=true', () => {
+  it('should call calculateProgress for single content and isUnitCompleted=true', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchyNochildren;
     fixture.detectChanges();
     component.calculateProgress(true);
     expect(component.isUnitCompleted).toEqual(true);
   });
-  xit('should call calculateProgress for single content', () => {
+  it('should call calculateProgress for single content', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchyNochildren;
     component.courseHierarchy.identifier = 'do_1130272760292638721197';
     fixture.detectChanges();

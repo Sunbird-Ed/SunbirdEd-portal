@@ -126,7 +126,8 @@ describe('CoursePlayerComponent', () => {
   const MockCSService = {
     getUserFeed() { return of({}); },
     updateUserFeedEntry() { return of({}); },
-    deleteUserFeedEntry() { return of({}); }
+    deleteUserFeedEntry() { return of({}); },
+    getContentState() { return of({}); }
   };
 
   class ActivatedRouteStub {
@@ -134,6 +135,12 @@ describe('CoursePlayerComponent', () => {
     snapshot = {
       data: {
         telemetry: { env: 'course', pageid: 'course-read', type: 'workflow', object: { ver: '1.0', type: 'course' } }
+      },
+      queryParams: { 
+        showCourseCompleteMessage: 'true'
+      },
+      params: {
+        courseId: 'do_112270494168555520130'
       }
     };
     queryParamsMock = { contentId: 'do_112270494168555520130' };
@@ -158,6 +165,7 @@ describe('CoursePlayerComponent', () => {
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         NotificationService,
         { provide: 'CS_USER_SERVICE', useValue: MockCSService },
+        { provide: 'CS_COURSE_SERVICE', useValue: MockCSService },
       ],
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, TelemetryModule.forRoot()],
       schemas: [NO_ERRORS_SCHEMA]
@@ -179,7 +187,7 @@ describe('CoursePlayerComponent', () => {
   });
 
 
-  xit('should fetch certificate description', () => {
+  it('should fetch certificate description', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const windowScrollService = TestBed.get(WindowScrollService);
@@ -194,7 +202,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.certificateDescription['description']).toBe('This course certificate is only for Rajasthan users scoring 80% or above');
   });
 
-  xit('should fetch courseHierarchy from courseConsumptionService', () => {
+  it('should fetch courseHierarchy from courseConsumptionService', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const windowScrollService = TestBed.get(WindowScrollService);
@@ -209,7 +217,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.certificateDescription['description']).toBe('');
   });
 
-  xit('should set enrolledCourse to true if batchId is provided by activatedRoute', () => {
+  it('should set enrolledCourse to true if batchId is provided by activatedRoute', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
@@ -224,7 +232,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.enrolledCourse).toBeTruthy();
   });
 
-  xit('should get content state if course is enrolled', () => {
+  it('should get content state if course is enrolled', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
@@ -239,7 +247,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.contentStatus).toBeDefined();
   });
 
-  xit('should not play the content obtained from url if enrolled course and course is flagged', () => {
+  it('should not play the content obtained from url if enrolled course and course is flagged', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
@@ -258,7 +266,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.playerConfig).toBeUndefined();
     expect(component.contentTitle).toBeUndefined();
   });
-  xit('should play the content obtained from url if enrolled course and should set prev and next playable content', () => {
+  it('should play the content obtained from url if enrolled course and should set prev and next playable content', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
@@ -277,7 +285,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.contentTitle).toBeUndefined();
   });
 
-  xit('should play content if course status is unlisted', () => {
+  it('should play content if course status is unlisted', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
@@ -295,7 +303,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.playerConfig).toBeUndefined();
   });
 
-  xit('should not play content if course is not enrolled', () => {
+  it('should not play content if course is not enrolled', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
@@ -313,7 +321,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.playerConfig).toBeUndefined();
   });
 
-  xit('should play content for course creator', () => {
+  it('should play content for course creator', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
@@ -332,7 +340,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.contentId).toBeUndefined();
     expect(component.playerConfig).toBeUndefined();
   });
-  xit('should not play content if his not course creator', () => {
+  it('should not play content if his not course creator', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
@@ -351,7 +359,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.contentId).toBeUndefined();
     expect(component.playerConfig).toBeUndefined();
   });
-  xit('should play content for course mentor', () => {
+  it('should play content for course mentor', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
@@ -373,7 +381,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.contentId).toBeUndefined();
     expect(component.playerConfig).toBeUndefined();
   });
-  xit('should not play content if not course mentor', () => {
+  it('should not play content if not course mentor', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
@@ -395,7 +403,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.contentId).toBeUndefined();
     expect(component.playerConfig).toBeUndefined();
   });
-  xit('should not play the content enrolled batch status is 0', () => {
+  it('should not play the content enrolled batch status is 0', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     resourceService.messages = resourceServiceMockData.messages;
@@ -414,7 +422,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.contentTitle).toBeUndefined();
     enrolledBatch.result.response.status = 1;
   });
-  xit('should not display error message if content id is not available in queryparams', () => {
+  it('should not display error message if content id is not available in queryparams', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const toasterService = TestBed.get(ToasterService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
@@ -427,7 +435,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.courseStatus).toEqual('Unlisted');
   });
 
-  xit('should not make update contentState api call if the content is youTube and progress is greater than 20%', () => {
+  it('should not make update contentState api call if the content is youTube and progress is greater than 20%', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const contentData = { model: { mimeType: 'video/x-youtube' } };
     const telemetryEvent = {
@@ -444,7 +452,7 @@ describe('CoursePlayerComponent', () => {
     component.enrolledBatchInfo = { status: 1 };
     expect(courseConsumptionService.updateContentsState).not.toHaveBeenCalled();
   });
-  xit('should not make update contentState api call if the content is video/mp4 and progress is greater than 20%', () => {
+  it('should not make update contentState api call if the content is video/mp4 and progress is greater than 20%', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const contentData = { model: { mimeType: 'video/mp4' } };
     const telemetryEvent = {
@@ -461,7 +469,7 @@ describe('CoursePlayerComponent', () => {
     component.enrolledBatchInfo = { status: 1 };
     expect(courseConsumptionService.updateContentsState).not.toHaveBeenCalled();
   });
-  xit('should not make update contentState api call if the the content is not(html,h5p,video/youtub) and progress is equal to 100',
+  it('should not make update contentState api call if the the content is not(html,h5p,video/youtub) and progress is equal to 100',
     () => {
       const courseConsumptionService = TestBed.get(CourseConsumptionService);
       const contentData = { model: { mimeType: 'application/vnd.ekstep.eclm-archive' } };
@@ -480,7 +488,7 @@ describe('CoursePlayerComponent', () => {
       component.enrolledBatchInfo = { status: 1 };
       expect(courseConsumptionService.updateContentsState).not.toHaveBeenCalled();
     });
-  xit('should show join training popup if course is unenrolled and try to play content', () => {
+  it('should show join training popup if course is unenrolled and try to play content', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
@@ -526,12 +534,12 @@ describe('CoursePlayerComponent', () => {
   });
 
 
-  xit('should call calculateProgress', () => {
+  it('should call calculateProgress', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     component.contentStatus = assessmentPlayerMockData.contentStatus;
     component.calculateProgress();
   });
-  xit('should call calculateProgress, if single content', () => {
+  it('should call calculateProgress, if single content', () => {
     component.courseHierarchy = {
       children: [{ name: 'acd' }, { name: 'sd' }]
     };
@@ -539,20 +547,20 @@ describe('CoursePlayerComponent', () => {
     component.calculateProgress();
   });
 
-  xit('should call getContentState', () => {
+  it('should call getContentState', () => {
     const courseProgressService = TestBed.get(CourseProgressService);
     spyOn(courseProgressService, 'getContentState').and.returnValue(of({}));
     component['getContentState']();
   });
 
-  xit('should call parseChildContent', () => {
+  it('should call parseChildContent', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     fixture.detectChanges();
     component['parseChildContent']();
     expect(component.contentIds.length).toBeGreaterThan(0);
   });
 
-  xit('should subscribe to updateContentConsumedStatus', () => {
+  it('should subscribe to updateContentConsumedStatus', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     spyOn(courseConsumptionService.updateContentConsumedStatus, 'subscribe');
     component.ngOnInit();
@@ -560,7 +568,7 @@ describe('CoursePlayerComponent', () => {
     expect(courseConsumptionService.updateContentConsumedStatus.subscribe).toHaveBeenCalled();
   });
 
-  xit('should call navigateToContent', () => {
+  it('should call navigateToContent', () => {
     spyOn(component, 'logTelemetry');
     spyOn<any>(component, 'navigateToPlayerPage');
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
@@ -568,7 +576,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.navigateToPlayerPage).toHaveBeenCalled();
   });
 
-  xit('should navigate to the player page with selected content', () => {
+  it('should navigate to the player page with selected content', () => {
     component.batchId = '023214178121';
     component.enrolledCourse = true;
     component['courseId'] = 'do_343432283682323';
@@ -577,7 +585,7 @@ describe('CoursePlayerComponent', () => {
     expect(component['router'].navigate).toHaveBeenCalled();
   });
 
-  xit('should navigate to the player page with, first non-consumed content', () => {
+  it('should navigate to the player page with, first non-consumed content', () => {
     component.contentStatus = assessmentPlayerMockData.contentStatus;
     component.batchId = '023214178121';
     component.enrolledCourse = true;
@@ -587,7 +595,7 @@ describe('CoursePlayerComponent', () => {
     component.navigateToPlayerPage(assessmentPlayerMockData.courseHierarchy);
   });
 
-  xit('should show join course popup if the course is not enrolled or the user has preview permission', () => {
+  it('should show join course popup if the course is not enrolled or the user has preview permission', () => {
     component.hasPreviewPermission = false;
     component.contentStatus = [];
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
@@ -595,13 +603,13 @@ describe('CoursePlayerComponent', () => {
     expect(component.showJoinTrainingModal).toBe(true);
   });
 
-  xit(`Show throw error with msg The course doesn't have any open batches`, () => {
+  it(`Show throw error with msg The course doesn't have any open batches`, () => {
     spyOn(component['courseConsumptionService'], 'getAllOpenBatches');
     component.getAllBatchDetails({ content: [], count: 0 });
     expect(component['courseConsumptionService'].getAllOpenBatches).toHaveBeenCalledWith({ content: [], count: 0 });
   });
 
-  xit('should call shareUnitLink', () => {
+  it('should call shareUnitLink', () => {
     const contentUtilServiceService = TestBed.get(ContentUtilsServiceService);
     spyOn(contentUtilServiceService, 'getCoursePublicShareUrl').and.returnValue('http://localhost:3000/explore-course/course/do_1130314965721088001129');
     spyOn(component, 'setTelemetryShareData');
@@ -610,7 +618,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.setTelemetryShareData).toHaveBeenCalled();
   });
 
-  xit('should call setTelemetryShareData', () => {
+  it('should call setTelemetryShareData', () => {
     const param = {
       identifier: 'do_1130314965721088001129',
       contentType: 'Course',
@@ -621,7 +629,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.telemetryShareData).toEqual([{ id: param.identifier, type: param.contentType, ver: param.pkgVersion.toString() }]);
   });
 
-  xit('should close the popup and generate telemetry', () => {
+  it('should close the popup and generate telemetry', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     component.telemetryCdata = [{ id: '22321244', type: 'CourseBatch' }];
     component['courseId'] = assessmentPlayerMockData.courseHierarchy.identifier;
@@ -632,7 +640,7 @@ describe('CoursePlayerComponent', () => {
     expect(telemetryService.interact).toHaveBeenCalled();
   });
 
-  xit('should close the join training popup on browser back button click', () => {
+  it('should close the join training popup on browser back button click', () => {
     component.hasPreviewPermission = false;
     component.contentStatus = [];
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
@@ -642,14 +650,14 @@ describe('CoursePlayerComponent', () => {
     expect(component.joinTrainingModal).toBeUndefined();
   });
 
-  xit('should call collapsedChange', () => {
+  it('should call collapsedChange', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     fixture.detectChanges();
     component.collapsedChange(false, 0);
     expect(component.courseHierarchy.children[0].collapsed).toBeFalsy();
   });
 
-  xit('should show course last updated on warning message', () => {
+  it('should show course last updated on warning message', () => {
     const courseService = TestBed.get(CoursesService);
     spyOn(courseService, 'getEnrolledCourses').and.returnValue(of(enrolledCourseMockData));
     component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
@@ -659,7 +667,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.isEnrolledCourseUpdated).toBeTruthy();
   });
 
-  xit('should not show course last updated on warning message if course is not enrolled', () => {
+  it('should not show course last updated on warning message if course is not enrolled', () => {
     const courseService = TestBed.get(CoursesService);
     spyOn(courseService, 'getEnrolledCourses').and.returnValue(of(enrolledCourseMockData));
     component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
@@ -669,7 +677,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.isEnrolledCourseUpdated).toBeFalsy();
   });
 
-  xit('should show course completion message when course progress is 100', () => {
+  it('should show course completion message when course progress is 100', () => {
     const courseProgressService = TestBed.get(CourseProgressService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
     activatedRouteStub.snapshot.queryParams = { showCourseCompleteMessage: 'true' };
@@ -678,7 +686,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.showCourseCompleteMessage).toBeTruthy();
   });
 
-  xit('should not show course completion message when course progress is less than 100', () => {
+  it('should not show course completion message when course progress is less than 100', () => {
     const courseProgressService = TestBed.get(CourseProgressService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
     activatedRouteStub.snapshot.queryParams = { showCourseCompleteMessage: 'true' };
@@ -687,7 +695,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.showCourseCompleteMessage).toBeFalsy();
   });
 
-  xit('should navigate to cert-configuration page if the event.mode is add-certificates', () => {
+  it('should navigate to cert-configuration page if the event.mode is add-certificates', () => {
     spyOn(component, 'navigateToConfigureCertificate').and.stub();
     spyOn(component, 'logTelemetry').and.stub();
     const eventData = {
@@ -700,7 +708,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.showConfirmationPopup).toBeFalsy();
   });
 
-  xit('should only log telemetry if the event.mode is other than add-certificates', () => {
+  it('should only log telemetry if the event.mode is other than add-certificates', () => {
     spyOn(component, 'navigateToConfigureCertificate').and.stub();
     spyOn(component, 'logTelemetry').and.stub();
     const eventData = {
@@ -712,7 +720,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.showConfirmationPopup).toBeFalsy();
   });
 
-  xit('should only close the popup if the event does not contain any mode', () => {
+  it('should only close the popup if the event does not contain any mode', () => {
     spyOn(component, 'logTelemetry').and.stub();
     const eventData = {
     };
@@ -720,7 +728,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.showConfirmationPopup).toBeFalsy();
   });
 
-  xit('should navigate to cert-configuration page', () => {
+  it('should navigate to cert-configuration page', () => {
     component['courseId'] = 'do_123456';
     const router = TestBed.get(Router);
     component.navigateToConfigureCertificate('add', '123456');
@@ -732,7 +740,7 @@ describe('CoursePlayerComponent', () => {
       }
     });
   });
-  xit('shold call navigateToPlayerPage case 1', () => {
+  it('shold call navigateToPlayerPage case 1', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
     spyOn(component, 'validateBatchDate').and.stub();
@@ -743,7 +751,7 @@ describe('CoursePlayerComponent', () => {
      expect(component.validateBatchDate).toHaveBeenCalledWith([batchs[0]]);
   })
 
-  xit('shold call navigateToPlayerPage case 2', () => {
+  it('shold call navigateToPlayerPage case 2', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
     spyOn(component, 'validateBatchDate').and.stub();
@@ -754,7 +762,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.validateBatchDate).toHaveBeenCalledWith([featureBatch[0]]);
   });
 
-  xit('shold call validateBatchDate with future batch', () => {
+  it('shold call validateBatchDate with future batch', () => {
     const batch = [{
       batchId: '0130936282663157765',
       createdFor: ['0124784842112040965'],
@@ -769,7 +777,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.validateBatchDate(batch)).toBe(message);
   });
 
-  xit('shold call validateBatchDate with expired batch', () => {
+  it('shold call validateBatchDate with expired batch', () => {
     const batch = [{
       batchId: '0130936282663157765',
       createdFor: ['0124784842112040965'],
@@ -784,7 +792,7 @@ describe('CoursePlayerComponent', () => {
     expect( component.validateBatchDate(batch)).toBe(message);
   });
 
-  xit('shold call validateBatchDate with ongoing batch', () => {
+  it('shold call validateBatchDate with ongoing batch', () => {
     const batch = [{
       batchId: '0130936282663157765',
       createdFor: ['0124784842112040965'],
@@ -799,7 +807,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.validateBatchDate(batch)).toBe(message);
   });
 
-  xit('should navigate to the player page with, first non-consumed content', () => {
+  it('should navigate to the player page with, first non-consumed content', () => {
     component.contentStatus = assessmentPlayerMockData.contentStatus;
     component.batchId = '023214178121';
     component.enrolledCourse = true;
@@ -809,7 +817,7 @@ describe('CoursePlayerComponent', () => {
     component.navigateToPlayerPage(assessmentPlayerMockData.courseHierarchy);
   });
 
-  xit('should navigate to the player page with, first non-consumed content', () => {
+  it('should navigate to the player page with, first non-consumed content', () => {
     component.contentStatus = assessmentPlayerMockData.contentStatus;
     component.batchId = '023214178121';
     component.enrolledCourse = true;
@@ -818,20 +826,20 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'parseChildren').and.returnValue(['do_1128325065083207681123']);
     component.navigateToPlayerPage(assessmentPlayerMockData.courseHierarchy);
   });
-  xit('should call navigateToContent with nogroupData', () => {
+  it('should call navigateToContent with nogroupData', () => {
     spyOn(component, 'logTelemetry');
     spyOn<any>(component, 'navigateToPlayerPage');
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     component.addToGroup = true;
     component.navigateToContent({  data: { identifier: '12343536' } }, 'test');
   });
-  xit('should call navigateToContent with groupData', () => {
+  it('should call navigateToContent with groupData', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     component.addToGroup = false;
     component.navigateToContent({  data: { identifier: '12343536' } }, 'test');
   });
 
-  xit('should show consent PII section', () => {
+  it('should show consent PII section', () => {
     const userService = TestBed.get(UserService);
     userService._userid = 'testUser1';
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
@@ -842,7 +850,7 @@ describe('CoursePlayerComponent', () => {
     expect(response).toBeTruthy();
   });
 
-  xit('should now show consent PII section', () => {
+  it('should now show consent PII section', () => {
     const userService = TestBed.get(UserService);
     userService._userid = 'testUser1';
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
@@ -852,7 +860,7 @@ describe('CoursePlayerComponent', () => {
     expect(response).toBeFalsy();
   });
 
-  xit('shold call validateBatchDate with expired batch', () => {
+  it('shold call validateBatchDate with expired batch', () => {
     const batch = [{
       batchId: '0130936282663157765',
       createdFor: ['0124784842112040965'],
@@ -867,7 +875,7 @@ describe('CoursePlayerComponent', () => {
     expect( component.validateBatchDate(batch)).toBe(message);
   });
 
-  xit('shold call validateBatchDate with ongoing batch', () => {
+  it('shold call validateBatchDate with ongoing batch', () => {
     const batch = [{
       batchId: '0130936282663157765',
       createdFor: ['0124784842112040965'],
@@ -882,7 +890,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.validateBatchDate(batch)).toBe(message);
   });
 
-  xit('should navigate to the player page with, first non-consumed content', () => {
+  it('should navigate to the player page with, first non-consumed content', () => {
     component.contentStatus = assessmentPlayerMockData.contentStatus;
     component.batchId = '023214178121';
     component.enrolledCourse = true;
@@ -892,7 +900,7 @@ describe('CoursePlayerComponent', () => {
     component.navigateToPlayerPage(assessmentPlayerMockData.courseHierarchy);
   });
 
-  xit('should navigate to the player page with, first non-consumed content', () => {
+  it('should navigate to the player page with, first non-consumed content', () => {
     component.contentStatus = assessmentPlayerMockData.contentStatus;
     component.batchId = '023214178121';
     component.enrolledCourse = true;
@@ -901,14 +909,14 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'parseChildren').and.returnValue(['do_1128325065083207681123']);
     component.navigateToPlayerPage(assessmentPlayerMockData.courseHierarchy);
   });
-  xit('should call navigateToContent with nogroupData', () => {
+  it('should call navigateToContent with nogroupData', () => {
     spyOn(component, 'logTelemetry');
     spyOn<any>(component, 'navigateToPlayerPage');
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     component.addToGroup = true;
     component.navigateToContent({  data: { identifier: '12343536' } }, 'test');
   });
-  xit('should call navigateToContent with groupData', () => {
+  it('should call navigateToContent with groupData', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     component.addToGroup = false;
     component.navigateToContent({  data: { identifier: '12343536' } }, 'test');
