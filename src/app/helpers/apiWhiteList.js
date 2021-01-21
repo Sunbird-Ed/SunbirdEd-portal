@@ -99,24 +99,8 @@ const checkIsStaticRoute = (REQ_URL) => {
     '/streaming/',
     '/resourcebundles/',
     '/assets/',
-    '/explore',
-    '/resources',
-    '/search',
-    '/orgType',
-    '/dashBoard',
-    '/workspace',
-    '/profile',
-    '/learn',
-    '/resources',
-    '/myActivity',
-    '/manage',
-    '/contribute',
-    '/groups',
-    '/my-groups',
-    '/telemetry',
     '/content-plugins/',
-    '/editors/',
-    '/api'
+    '/editors/'
   ];
   return _.some(excludePath, (path) => _.includes(REQ_URL, path));
 };
