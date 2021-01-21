@@ -75,22 +75,25 @@ describe('OfflineHelpVideosComponent', () => {
     }
   });
 
-  it('should call setVideoHeight method', () => {
-    component.aspectRatio = fixture.debugElement.query(By.css('.aspectratio'));
-    component.playerInfo = fixture.debugElement.query(By.css('.content-video__player__details'));
+  it('should set slide config', () => {
     component.instance = resourceServiceStub.instance;
-    spyOn(component, 'setVideoHeight');
     spyOn(component, 'interpolateInstance');
     component.ngOnInit();
     expect(component.slideData).toBeDefined();
     expect(component.slideData[0]['id']).toEqual('add-content-offline');
-    expect(component.setVideoHeight).toHaveBeenCalled();
     expect(component.interpolateInstance).toHaveBeenCalled();
   });
 
+  it('should call setVideoHeight method', () => {
+    component.instance = resourceServiceStub.instance;
+    spyOn(component, 'setVideoHeight');
+    component.ngOnInit();
+    component.ngAfterViewInit();
+    fixture.detectChanges();
+    expect(component.setVideoHeight).toHaveBeenCalled();
+  });
+
   it('should changeVideoAttributes value', () => {
-    component.aspectRatio = fixture.debugElement.query(By.css('.aspectratio'));
-    component.playerInfo = fixture.debugElement.query(By.css('.content-video__player__details'));
     const name = (resourceServiceStub.frmelmnts.instn.t0095).replace('{instance}', (resourceServiceStub.instance).toUpperCase());
       const data = {
       id: 'add-content-offline',
@@ -106,8 +109,6 @@ describe('OfflineHelpVideosComponent', () => {
   });
 
   it('should emit an event' , () => {
-    component.aspectRatio = fixture.debugElement.query(By.css('.aspectratio'));
-    component.playerInfo = fixture.debugElement.query(By.css('.content-video__player__details'));
     spyOn(component.closeVideoModal, 'emit');
     component.closeModal();
     expect(component.closeVideoModal.emit).toHaveBeenCalled();
