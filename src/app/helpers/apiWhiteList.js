@@ -122,7 +122,7 @@ const urlChecks = {
    */
   ROLE_CHECK: (resolve, reject, req, rolesForURL, REQ_URL) => {
     logger.info({
-      msg: 'whitelist middleware for URL [ ' + REQ_URL + ' ]',
+      msg: 'Portal_API_WHITELIST : Middleware for URL [ ' + REQ_URL + ' ]',
       reqPath: req.path,
       matchPattern: REQ_URL,
       method: req.method,
