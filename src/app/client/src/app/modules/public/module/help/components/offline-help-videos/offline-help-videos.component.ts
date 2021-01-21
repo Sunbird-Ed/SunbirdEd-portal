@@ -1,6 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
 import { ResourceService, ConfigService } from '@sunbird/shared';
-import { Component, OnInit, Output, EventEmitter, ViewChild, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, Inject, OnDestroy, ElementRef, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { DOCUMENT } from '@angular/common';
 import * as $ from 'jquery';
@@ -13,14 +13,14 @@ import { Subject } from 'rxjs';
   templateUrl: './offline-help-videos.component.html',
   styleUrls: ['./offline-help-videos.component.scss']
 })
-export class OfflineHelpVideosComponent implements OnInit, OnDestroy {
+export class OfflineHelpVideosComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
 
   @Output() closeVideoModal = new EventEmitter<any>();
 
-  @ViewChild('aspectRatio', {static: false}) aspectRatio;
-  @ViewChild('playerInfo', {static: false}) playerInfo;
+  @ViewChild('aspectRatio', {static: false}) aspectRatio: ElementRef;
+  @ViewChild('playerInfo', {static: false}) playerInfo: ElementRef;
   videoContainerHeight: number;
   aspectRatioHeight: number;
   playerInfoHeight: number;
@@ -32,7 +32,7 @@ export class OfflineHelpVideosComponent implements OnInit, OnDestroy {
   instance: string;
   selectVideoInteractEdata: IInteractEventEdata;
   constructor(@Inject(DOCUMENT) private document: Document, public resourceService: ResourceService, public configService: ConfigService,
-  public activatedRoute: ActivatedRoute) {
+  public activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef ) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
 
@@ -138,12 +138,15 @@ export class OfflineHelpVideosComponent implements OnInit, OnDestroy {
           name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.manageusernewtheme),
           thumbnail: 'assets/images/play-icon.svg',
           url: 'assets/videos/How_do_I_add_users_on_DIKSHA_joyful_theme.mp4'
-        },
+        }
       ];
       this.activeVideoObject = this.slideData[0];
     });
-    this.setVideoHeight();
+  }
 
+  ngAfterViewInit() {
+    this.setVideoHeight();
+    this.cdr.detectChanges();
   }
 
   setVideoHeight() {
