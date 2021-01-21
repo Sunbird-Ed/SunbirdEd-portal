@@ -462,7 +462,7 @@ describe('AssessmentPlayerComponent', () => {
     expect(component.showCourseCompleteMessage).toBe(false);
   });
 
-  it('should call highlightContent', () => {
+  xit('should call highlightContent', () => {
     component.contentStatus = assessmentPlayerMockData.contentStatus;
     component.activeContent = {
       identifier: 'do_112832506508320768123'
