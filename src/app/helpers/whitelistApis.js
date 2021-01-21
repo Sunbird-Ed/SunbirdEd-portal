@@ -493,6 +493,9 @@ const API_LIST = {
     '/learner/data/v1/location/search': {
       checksNeeded: []
     },
+    '/v1/location/search': {
+      checksNeeded: []
+    },
     '/learner/data/v1/role/read': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
