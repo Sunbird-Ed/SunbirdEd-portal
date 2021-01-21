@@ -12,7 +12,7 @@ jobs:
   test-cases:
     working_directory: ~/portal/src/app/client
     docker:
-      - image: keshavprasad/build:player
+      - image: sunbird/build:player_v1.1
     steps:
       - checkout:
           path: ~/portal
