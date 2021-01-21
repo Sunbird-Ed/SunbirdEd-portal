@@ -122,8 +122,7 @@
     "contentApiQueryParams": {
       "orgdetails": "orgName,email",
       "licenseDetails": "name,description,url"
-    },
-    "selfAssessMaxLimit": 25
+    }
   },
   "Course": {
     "contentApiQueryParams": {
