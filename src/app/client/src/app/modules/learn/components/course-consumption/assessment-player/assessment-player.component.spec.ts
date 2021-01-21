@@ -510,6 +510,21 @@ describe('AssessmentPlayerComponent', () => {
     expect(component.contentStatus).toBeDefined();
   });
 
+  it('should call calculateProgress for single content and isUnitCompleted=true', () => {
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchyNochildren;
+    fixture.detectChanges();
+    component.calculateProgress(true);
+    expect(component.isUnitCompleted).toEqual(true);
+  });
+
+  it('should call calculateProgress for single content', () => {
+    component.courseHierarchy = assessmentPlayerMockData.courseHierarchyNochildren;
+    component.courseHierarchy.identifier = 'do_1130272760292638721197';
+    fixture.detectChanges();
+    component.calculateProgress();
+    expect(component.isUnitCompleted).toEqual(false);
+  });
+
   it('should call subscribeToQueryParam, and set isSingleContent as true ', () => {
     component.isParentCourse = false;
     component.batchId = '0130928797865820162';
@@ -521,20 +536,6 @@ describe('AssessmentPlayerComponent', () => {
     fixture.detectChanges();
     component['subscribeToQueryParam']();
     expect(component['setActiveContent']).toHaveBeenCalledWith('do_11287204084174028818', true);
-  });
-
-  it('should call calculateProgress for single content and isUnitCompleted=true', () => {
-    component.courseHierarchy = assessmentPlayerMockData.courseHierarchyNochildren;
-    fixture.detectChanges();
-    component.calculateProgress(true);
-    expect(component.isUnitCompleted).toEqual(true);
-  });
-  it('should call calculateProgress for single content', () => {
-    component.courseHierarchy = assessmentPlayerMockData.courseHierarchyNochildren;
-    component.courseHierarchy.identifier = 'do_1130272760292638721197';
-    fixture.detectChanges();
-    component.calculateProgress();
-    expect(component.isUnitCompleted).toEqual(false);
   });
 
 });
