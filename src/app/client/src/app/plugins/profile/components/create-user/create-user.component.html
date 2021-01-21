@@ -30,7 +30,7 @@
       </div>
     </form>
     <div class="user-profile-box__actions pb-16 px-16">
-      <button appTelemetryInteract [telemetryInteractEdata]="submitInteractEdata" [disabled]="!enableSubmitBtn"
+      <button appTelemetryInteract appOnlineOnly [telemetryInteractEdata]="submitInteractEdata" [disabled]="!enableSubmitBtn"
         (click)="onSubmitForm()" type="submit" [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}"
         class="sb-btn sb-btn-normal sb-btn-primary">
         {{resourceService?.frmelmnts?.lbl?.addUser}}

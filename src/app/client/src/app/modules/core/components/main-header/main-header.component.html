@@ -269,7 +269,7 @@
           </div>
         </div>
 
-        <div class="d-flex flex-w-wrap">
+        <div appOnlineOnly class="d-flex flex-w-wrap">
           <sb-member-list [layoutConfig]=memberCardConfig [memberList]="userListToShow" [isMenu]="false"
             (cardClick)="switchUser($event)">
           </sb-member-list>
@@ -283,9 +283,9 @@
         </div>
       </div>
     </div>
-    <div *ngIf="userService.loggedIn">
+    <div *ngIf="userService?.loggedIn">
       <div class="profile__actions">
-        <div class="add-user add-user--horizontal" *ngIf="totalUsersCount >=1"
+        <div appOnlineOnly class="add-user add-user--horizontal" *ngIf="totalUsersCount >=1"
           (click)="toggleSideMenu(false);navigate('/profile/create-managed-user')">
           <div class="add-user__icon">
             <img src="assets/images/user-circle.svg" alt="Add user">

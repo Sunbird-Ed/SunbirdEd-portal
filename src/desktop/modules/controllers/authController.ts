@@ -83,7 +83,7 @@ export default class AuthController {
 
     public async endSession(req, res) {
         try {
-            await this.userSDK.deleteLoggedInUser().catch(error => { logger.debug("unable to delete logged in user data", error); })
+            await this.userSDK.deleteAllLoggedInUsers().catch(error => { logger.error("unable to delete logged in user data", error); })
             await this.userSDK.deleteUserSession().catch(error => { logger.debug("unable to clear logged in user session", error); })
             return res.send({ status: 'success' });
         } catch(err) {

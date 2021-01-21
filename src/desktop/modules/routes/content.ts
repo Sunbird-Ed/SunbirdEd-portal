@@ -7,10 +7,15 @@ const proxy = require('express-http-proxy');
 import * as _ from "lodash";
 import config from "./../config";
 import TelemetryHelper from "./../helper/telemetryHelper";
-import { decorateRequestHeaders, handleSessionExpiry } from "../helper/proxyUtils";
+import { customProxy } from '../helper/proxyHandler';
 
 export default (app, proxyURL, contentDownloadManager) => {
     const content = new Content(manifest);
+    const defaultProxyConfig = { 
+        isUserTokenRequired: true, 
+        isAuthTokenRequired: true, 
+        bypassLearnerRoute: true 
+    };
     app.get(
       "/api/content/v1/read/:id",
       async (req, res, next) => {
@@ -257,41 +262,13 @@ export default (app, proxyURL, contentDownloadManager) => {
       const contentDelete = new ContentDelete(manifest);
       app.post("/api/content/v1/delete", contentDelete.delete.bind(contentDelete));
 
-      app.post('/content/composite/v1/search', proxy(proxyURL, {
-        proxyReqOptDecorator: decorateRequestHeaders(proxyURL),
-        proxyReqPathResolver: (req) => {
-          return `${proxyURL}${req.originalUrl.replace('/content/', '/api/')}`;
-        },
-        userResDecorator: (proxyRes, proxyResData, req, res) => {
-            try {
-                logger.info({ msg: '/content/composite/v1/search called' });
-                const data = JSON.parse(proxyResData.toString('utf8'));
-                if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
-                else return handleSessionExpiry(proxyRes, proxyResData, req, res, data);
-            } catch (err) {
-                logger.error({ msg: 'learner route : userResDecorator json parse error:', proxyResData });
-                return handleSessionExpiry(proxyRes, proxyResData, req, res);
-            }
-        }
-      }));
+      app.post("/content/composite/v1/search", customProxy(proxyURL, { bypassContentRoute: true }), (req, res) => {
+          res.status(res.statusCode).send(res.body);
+      });
 
-      app.post('/certreg/v1/certs/search', proxy(proxyURL, {
-        proxyReqOptDecorator: decorateRequestHeaders(proxyURL),
-        proxyReqPathResolver: function (req) {
-          return `${proxyURL}${req.originalUrl.replace('/learner/', '/api/')}`;
-        },
-        userResDecorator: (proxyRes, proxyResData, req, res) => {
-          try {
-            logger.info({ msg: '/certreg/v1/certs/search called' });
-            const data = JSON.parse(proxyResData.toString('utf8'));
-            if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
-            else return handleSessionExpiry(proxyRes, proxyResData, req, res, data);
-          } catch (err) {
-            logger.error({ msg: 'content api user res decorator json parse error:', proxyResData })
-            return handleSessionExpiry(proxyRes, proxyResData, req, res);
-          }
-        }
-      }));
+      app.post("/certreg/v1/certs/search", customProxy(proxyURL, defaultProxyConfig), (req, res) => {
+          res.status(res.statusCode).send(res.body);
+      });
 }
 
 const enableProxy = (req) => {
