@@ -85,6 +85,7 @@ describe('AssessmentPlayerComponent', () => {
 
   it('should call ngOnInit', () => {
     spyOn<any>(component, 'subscribeToQueryParam');
+    fixture.detectChanges();
     component.ngOnInit();
     expect(component['subscribeToQueryParam']).toHaveBeenCalled();
   });
@@ -92,6 +93,7 @@ describe('AssessmentPlayerComponent', () => {
   it('should go to courseDetails page', () => {
     spyOn(component['router'], 'navigate');
     component.isCourseCompletionPopupShown = true;
+    fixture.detectChanges();
     component.goBack();
     expect(component['router'].navigate).toHaveBeenCalled();
     expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course', '12312433456', 'batch', '12312433'], {queryParams: {}});
@@ -99,6 +101,7 @@ describe('AssessmentPlayerComponent', () => {
 
   it('should go back with showCourseCompleteMessage=true if course completion popup is not shown', () => {
     spyOn(component['router'], 'navigate');
+    fixture.detectChanges();
     component.goBack();
     const paramas = {showCourseCompleteMessage: true};
     expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course', '12312433456', 'batch', '12312433'],
@@ -108,6 +111,7 @@ describe('AssessmentPlayerComponent', () => {
   it('should call subscribeToQueryParam', () => {
     spyOn<any>(component, 'setTelemetryCourseImpression');
     spyOn<any>(component, 'getCollectionInfo').and.returnValue(of({ courseHierarchy: {}, enrolledBatchDetails: {} }));
+    fixture.detectChanges();
     component['subscribeToQueryParam']();
     expect(component['setTelemetryCourseImpression']).toHaveBeenCalled();
   });
@@ -118,6 +122,7 @@ describe('AssessmentPlayerComponent', () => {
     spyOn(toasterService, 'error');
     spyOn(component, 'goBack');
     spyOn<any>(component, 'getCollectionInfo').and.returnValue(throwError({}));
+    fixture.detectChanges();
     component['subscribeToQueryParam']();
     expect(toasterService.error).toHaveBeenCalled();
     expect(component.goBack).toHaveBeenCalled();
@@ -133,6 +138,7 @@ describe('AssessmentPlayerComponent', () => {
       courseHierarchy: assessmentPlayerMockData.courseHierarchy,
       enrolledBatchDetails: {}
     }));
+    fixture.detectChanges();
     component['subscribeToQueryParam']();
     expect(component['setTelemetryCourseImpression']).toHaveBeenCalled();
   });
@@ -144,6 +150,7 @@ describe('AssessmentPlayerComponent', () => {
       }
     });
     spyOn<any>(component, 'getCollectionInfo').and.returnValue(of({ courseHierarchy: {}, enrolledBatchDetails: {} }));
+    fixture.detectChanges();
     component['subscribeToQueryParam']();
     expect(component['getCollectionInfo']).toHaveBeenCalled();
   });
@@ -153,6 +160,7 @@ describe('AssessmentPlayerComponent', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of({}));
     spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(of({}));
+    fixture.detectChanges();
     component['getCollectionInfo']('do_1212');
     expect(courseConsumptionService.getCourseHierarchy).toHaveBeenCalled();
     expect(courseBatchService.getEnrolledBatchDetails).toHaveBeenCalled();
@@ -164,6 +172,7 @@ describe('AssessmentPlayerComponent', () => {
     spyOn(courseConsumptionService, 'flattenDeep').and.returnValue([assessmentPlayerMockData.activeContent]);
     spyOn<any>(component, 'getContentState');
     spyOn<any>(component, 'initPlayer');
+    fixture.detectChanges();
     component.setActiveContent(assessmentPlayerMockData.activeContent.identifier);
     expect(component['getContentState']).toHaveBeenCalled();
     expect(component.isContentPresent).toBe(true);
@@ -174,6 +183,7 @@ describe('AssessmentPlayerComponent', () => {
     component.courseHierarchy = assessmentPlayerMockData.activeContent;
     spyOn<any>(component, 'getContentState');
     spyOn<any>(component, 'initPlayer');
+    fixture.detectChanges();
     component.setActiveContent(assessmentPlayerMockData.activeContent.identifier, true);
     expect(component.activeContent).toEqual(assessmentPlayerMockData.activeContent);
     expect(component['initPlayer']).toHaveBeenCalledWith(assessmentPlayerMockData.activeContent.identifier);
@@ -190,6 +200,7 @@ describe('AssessmentPlayerComponent', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of({}));
     spyOn<any>(component, 'setTelemetryContentImpression');
+    fixture.detectChanges();
     component['initPlayer']('do_3232431');
     expect(component.showLoader).toBe(true);
     expect(component.playerConfig).toEqual({});
@@ -201,6 +212,7 @@ describe('AssessmentPlayerComponent', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(throwError({}));
     spyOn(toasterService, 'error');
+    fixture.detectChanges();
     component['initPlayer']('do_3232431');
     expect(courseConsumptionService.getConfigByContent).toHaveBeenCalled();
     expect(toasterService.error).toHaveBeenCalledWith('Cannot un-enrol now. Try again later');
@@ -210,6 +222,7 @@ describe('AssessmentPlayerComponent', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     spyOn<any>(component, 'initPlayer');
     spyOn(component, 'highlightContent');
+    fixture.detectChanges();
     component.onTocCardClick({ data: { identifier: 'do_2334343' } }, 'test');
     expect(component.activeContent).toEqual({ identifier: 'do_2334343' });
     expect(component['initPlayer']).toHaveBeenCalledWith('do_2334343');
@@ -223,6 +236,7 @@ describe('AssessmentPlayerComponent', () => {
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of({ content: [] }));
     spyOn(component, 'calculateProgress');
     spyOn(component, 'highlightContent');
+    fixture.detectChanges();
     component['getContentState']();
     expect(component.calculateProgress).toHaveBeenCalled();
     expect(component.contentStatus).toEqual([]);
@@ -235,6 +249,7 @@ describe('AssessmentPlayerComponent', () => {
     component.enrolledBatchInfo = { status: 1 };
     component.isUnitCompleted = false;
     spyOn<any>(component, 'validEndEvent').and.returnValue(false);
+    fixture.detectChanges();
     const event = { detail: { telemetryData: { eid: 'END' } } };
     const resp = component.contentProgressEvent(event);
     expect(resp).toBe(undefined);
@@ -250,6 +265,7 @@ describe('AssessmentPlayerComponent', () => {
     spyOn<any>(component, 'validEndEvent').and.returnValue(true);
     spyOn(courseConsumptionService, 'updateContentsState').and.returnValue(of({ content: {} }));
     const event = { detail: { telemetryData: { eid: 'END' } } };
+    fixture.detectChanges();
     component.contentProgressEvent(event);
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
   });
@@ -267,6 +283,7 @@ describe('AssessmentPlayerComponent', () => {
       detail: { telemetryData: { eid: undefined } },
       data: 'renderer:question:submitscore'
     };
+    fixture.detectChanges();
     component.contentProgressEvent(event);
     expect(courseConsumptionService.updateContentsState).toHaveBeenCalled();
 
@@ -274,12 +291,14 @@ describe('AssessmentPlayerComponent', () => {
 
   it('should not update content state if, batch id is not present', () => {
     component.batchId = undefined;
+    fixture.detectChanges();
     const resp = component['contentProgressEvent']({});
     expect(resp).toBe(undefined);
   });
 
   it('should not proceed further if batchId not found inside contentProgressEvent()', () => {
     component.batchId = undefined;
+    fixture.detectChanges();
     component.contentProgressEvent(assessmentPlayerMockData.playerEndData);
     expect(component.contentProgressEvent(assessmentPlayerMockData.playerEndData)).toBeFalsy();
   });
@@ -291,6 +310,7 @@ describe('AssessmentPlayerComponent', () => {
     spyOn<any>(component, 'validEndEvent').and.returnValues(100);
     spyOn<any>(courseConsumptionService, 'updateContentsState').and.returnValues(of({}));
     component.activeContent = assessmentPlayerMockData.activeContent;
+    fixture.detectChanges();
     component.contentProgressEvent(assessmentPlayerMockData.playerEndData);
     expect(component.contentProgressEvent(assessmentPlayerMockData.playerEndData)).toBeFalsy();
   });
@@ -302,6 +322,7 @@ describe('AssessmentPlayerComponent', () => {
     const assessmentScoreService = TestBed.get(AssessmentScoreService);
     spyOn(assessmentScoreService, 'receiveTelemetryEvents').and.stub();
     spyOn(component, 'calculateProgress').and.stub();
+    fixture.detectChanges();
     component.onAssessmentEvents({});
   });
 
@@ -311,6 +332,7 @@ describe('AssessmentPlayerComponent', () => {
     const assessmentScoreService = TestBed.get(AssessmentScoreService);
     spyOn(assessmentScoreService, 'receiveTelemetryEvents');
     spyOn(component, 'calculateProgress');
+    fixture.detectChanges();
     component.onAssessmentEvents({});
     expect(assessmentScoreService.receiveTelemetryEvents).toHaveBeenCalled();
     expect(component.calculateProgress).toHaveBeenCalled();
@@ -320,6 +342,7 @@ describe('AssessmentPlayerComponent', () => {
     const assessmentScoreService = TestBed.get(AssessmentScoreService);
     spyOn(assessmentScoreService, 'handleSubmitButtonClickEvent');
     spyOn(component, 'contentProgressEvent');
+    fixture.detectChanges();
     component.onQuestionScoreSubmitEvents({});
     expect(assessmentScoreService.handleSubmitButtonClickEvent).toHaveBeenCalledWith(true);
     expect(component.contentProgressEvent).toHaveBeenCalled();
@@ -330,6 +353,7 @@ describe('AssessmentPlayerComponent', () => {
     const mimeType = 'application/vnd.ekstep.ecml-archive';
     spyOn<any>(CsContentProgressCalculator, 'calculate').and.returnValue(100);
     component.activeContent = assessmentPlayerMockData.activeContent;
+    fixture.detectChanges();
     component['validEndEvent'](assessmentPlayerMockData.playerEndData);
     expect(CsContentProgressCalculator.calculate).toHaveBeenCalledWith(playerSummury, mimeType);
     expect(component.courseProgress).toEqual(100);
@@ -339,6 +363,7 @@ describe('AssessmentPlayerComponent', () => {
     component.activeContent = assessmentPlayerMockData.activeContent;
     component.activeContent.contentType = 'SelfAssess';
     spyOn<any>(CsContentProgressCalculator, 'calculate').and.returnValue(100);
+    fixture.detectChanges();
     component['validEndEvent'](assessmentPlayerMockData.playerEndData);
     expect(component['validEndEvent'](assessmentPlayerMockData.playerEndData)).toBeTruthy();
   });
@@ -346,18 +371,21 @@ describe('AssessmentPlayerComponent', () => {
   it('should call calculateProgress', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     component.contentStatus = assessmentPlayerMockData.contentStatus;
+    fixture.detectChanges();
     component.calculateProgress(true);
     expect(component.courseHierarchy).toBeDefined();
   });
   it('should call calculateProgress to be called with no parameter', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     component.contentStatus = assessmentPlayerMockData.contentStatus;
+    fixture.detectChanges();
     component.calculateProgress();
     expect(component.courseHierarchy).toBeDefined();
   });
 
   it('should call subscribeToContentProgressEvents', () => {
     component['contentProgressEvents$'].next({ progress: 100 });
+    fixture.detectChanges();
     const resp = component['subscribeToContentProgressEvents']();
     resp.subscribe((data: any) => {
       expect(data.contentProgressEvent.progress).toEqual(100);
@@ -367,6 +395,7 @@ describe('AssessmentPlayerComponent', () => {
   it('should call ngOnDestroy', () => {
     spyOn(component['unsubscribe'], 'complete');
     component.ngOnDestroy();
+    fixture.detectChanges();
     expect(component['unsubscribe'].complete).toHaveBeenCalled();
   });
 
@@ -374,6 +403,7 @@ describe('AssessmentPlayerComponent', () => {
     spyOn(component, 'setTelemetryShareData');
     component.courseId = 'do_2130355309225574401298';
     component.collectionId = 'do_2130355309234831361304';
+    fixture.detectChanges();
     component.onShareLink();
     expect(component.shareLink).toContain('/explore-course/course/do_2130355309225574401298?moduleId=do_2130355309234831361304');
     expect(component.setTelemetryShareData).toHaveBeenCalled();
@@ -387,6 +417,7 @@ describe('AssessmentPlayerComponent', () => {
     component['isUnit'] = true;
     component.courseId = assessmentPlayerMockData.courseHierarchy.identifier;
     spyOn(telemetryService, 'audit');
+    fixture.detectChanges();
     component.logAuditEvent(true);
     expect(telemetryService.audit).toHaveBeenCalled();
   });
@@ -395,6 +426,7 @@ describe('AssessmentPlayerComponent', () => {
     component.isFullScreenView = true;
     const navigationHelperService = TestBed.get(NavigationHelperService);
     spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(of({data: false}));
+    fixture.detectChanges();
     component.ngOnInit();
     navigationHelperService.emitFullScreenEvent(false);
     expect(component.isFullScreenView).toBe(false);
@@ -404,6 +436,7 @@ describe('AssessmentPlayerComponent', () => {
     component.isFullScreenView = false;
     const navigationHelperService = TestBed.get(NavigationHelperService);
     spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(of({data: true}));
+    fixture.detectChanges();
     component.ngOnInit();
     navigationHelperService.emitFullScreenEvent(true);
     expect(component.isFullScreenView).toBe(true);
@@ -411,6 +444,7 @@ describe('AssessmentPlayerComponent', () => {
 
   it('should check for course completion', () => {
     spyOn(component, 'getCourseCompletionStatus');
+    fixture.detectChanges();
     component.onRatingPopupClose();
     expect(component.getCourseCompletionStatus).toHaveBeenCalled();
   });
@@ -421,6 +455,7 @@ describe('AssessmentPlayerComponent', () => {
       contentType: 'Course',
       pkgVersion: 1.0
     };
+    fixture.detectChanges();
     component.setTelemetryShareData(param);
     expect(component.telemetryShareData).toBeDefined();
   });
@@ -442,6 +477,7 @@ describe('AssessmentPlayerComponent', () => {
     };
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(response));
+    fixture.detectChanges();
     component.getCourseCompletionStatus(true);
     expect(component.isCourseCompleted).toBe(false);
     expect(component.showCourseCompleteMessage).toBe(false);
@@ -452,12 +488,14 @@ describe('AssessmentPlayerComponent', () => {
     component.batchId = 'do_1130272760359813121209';
     component.courseId = 'do_1130272760359485441199';
     component.parentCourse = assessmentPlayerMockData.courseHierarchy;
+    fixture.detectChanges();
     component.navigateToPlayerPage(assessmentPlayerMockData.courseHierarchy.children[0]);
     const navigationExtras = { 'queryParams': { 'batchId': 'do_1130272760359813121209', 'courseId': 'do_1130272760359485441199', 'courseName': 'U1' } };
     expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course/play', 'do_1130272760359813121209'], navigationExtras);
   });
 
   xit('should call onCourseCompleteClose', () => {
+    fixture.detectChanges();
     component.onCourseCompleteClose();
     expect(component.showCourseCompleteMessage).toBe(false);
   });
@@ -467,6 +505,7 @@ describe('AssessmentPlayerComponent', () => {
     component.activeContent = {
       identifier: 'do_112832506508320768123'
     };
+    fixture.detectChanges();
     component.highlightContent();
     expect(component.contentStatus).toBeDefined();
   });
@@ -479,6 +518,7 @@ describe('AssessmentPlayerComponent', () => {
       courseHierarchy: assessmentPlayerMockData.courseHierarchyWithDirectChild,
       enrolledBatchDetails: {}
     }));
+    fixture.detectChanges();
     component['subscribeToQueryParam']();
     expect(component['setActiveContent']).toHaveBeenCalledWith('do_11287204084174028818', true);
   });
