@@ -154,7 +154,6 @@ describe('AddMemberComponent', () => {
     spyOn(component['groupsService'], 'addFieldsToMember');
     component.initRecaptcha();
     fixture.detectChanges();
-    component.memberId = '1';
     component.verifyMember();
     expect(component.memberId).toEqual('test-1234abc');
     expect(component.isExistingMember).toHaveBeenCalled();
@@ -168,7 +167,6 @@ describe('AddMemberComponent', () => {
     spyOn(component['groupsService'], 'addFieldsToMember');
     component.initRecaptcha();
     fixture.detectChanges();
-    component.memberId = '2';
     component.captchaResponse = 'captchaToken';
     component.verifyMember();
     expect(component.memberId).toEqual('test-1234abc');
