@@ -9,10 +9,10 @@
         <p>{{generaliseLabelService?.frmelmnts?.lbl?.courseSuccessMessage}}</p>
       </div>
     </div>
-    <div class="course-complete-para mt-32" *ngIf="certificateDescription && !certificateDescription?.isCertificate">
+    <div class="course-complete-para mt-32 sb-color-primary" *ngIf="certificateDescription && !certificateDescription?.isCertificate">
       <p>{{generaliseLabelService?.frmelmnts?.lbl?.courseWithoutCertificateNote }}</p>
     </div>
-    <div class="course-complete-para mt-32" *ngIf="certificateDescription && certificateDescription?.description">
+    <div class="course-complete-para mt-32 sb-color-primary" *ngIf="certificateDescription && certificateDescription?.description">
       <p class="fsmall mb-0 pt-16 pb-8">{{certificateDescription?.description}}</p>
       <p class="fsmall mb-0">{{generaliseLabelService?.frmelmnts?.lbl?.courseSuccessNotificationMessage}}</p>
     </div>
