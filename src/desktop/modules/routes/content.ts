@@ -195,7 +195,7 @@ export default (app, proxyURL, contentDownloadManager) => {
                       _.forEach(['subject', 'gradeLevel', 'medium'], (item) => {
                           if(content[item] && _.isString(content[item])) {
                             content[item] = content[item].split(',');
-                          }
+                          } 
                       })
                   })
                     proxyData.result.content = data;
