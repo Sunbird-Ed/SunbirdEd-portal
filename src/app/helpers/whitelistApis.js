@@ -1152,6 +1152,13 @@ const API_LIST = {
         ROLE.ORG_ADMIN
       ]
     },
+    '/action/content/v3/copy/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.ORG_ADMIN,
+        ROLE.BOOK_CREATOR
+      ]
+    },
     '/signup': {
       checksNeeded: []
     },
@@ -1477,6 +1484,7 @@ const API_LIST = {
     '/action/textbook/v1/toc/download/:do_id',
     '/action/content/v1/collaborator/update/:do_id',
     '/action/system/v3/content/update/:do_id',
+    '/action/content/v3/copy/:do_id',
     '/v1/tenant/info/:tenantId',
     '/v1/user/session/start/:deviceId',
     '/getGeneralisedResourcesBundles/:lang/:fileName',
