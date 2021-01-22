@@ -227,6 +227,13 @@ export default class Content {
                             return content;
                         }
                     });
+                    _.forEach(data, (content) => {
+                        _.forEach(['subject', 'gradeLevel', 'medium'], (item) => {
+                            if(content[item] && _.isString(content[item])) {
+                              content[item] = content[item].split(',');
+                            }
+                        })
+                    })
                     logger.info(`ReqId = "${req.headers['X-msgid']}": Contents = ${data.length} found in DB`)
 
                     resObj = {
