@@ -22,7 +22,7 @@ import { CourseConsumptionService } from '../../../services/course-consumption/c
 import { AssessmentPlayerComponent } from './assessment-player.component';
 import { assessmentPlayerMockData } from './assessment-player.component.data.spec';
 
-fdescribe('AssessmentPlayerComponent', () => {
+describe('AssessmentPlayerComponent', () => {
   let component: AssessmentPlayerComponent;
   let fixture: ComponentFixture<AssessmentPlayerComponent>;
 
