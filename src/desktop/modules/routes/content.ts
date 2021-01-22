@@ -191,6 +191,13 @@ export default (app, proxyURL, contentDownloadManager) => {
                     logger.info(
                       `ReqId = "${req.headers["X-msgid"]}": Resolving Data after decorating contents in contentSearch `,
                     );
+                    _.forEach(data, (content) => {
+                      _.forEach(['subject', 'gradeLevel', 'medium'], (item) => {
+                          if(content[item] && _.isString(content[item])) {
+                            content[item] = content[item].split(',');
+                          }
+                      })
+                  })
                     proxyData.result.content = data;
                     resolve(proxyData);
                   })

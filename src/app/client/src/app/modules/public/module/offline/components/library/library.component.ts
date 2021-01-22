@@ -282,6 +282,16 @@ export class LibraryComponent implements OnInit, OnDestroy {
         filters.board = ['cbse'];
         }
 
+        const userPreference: any = this.userService.anonymousUserPreference;
+        if (userPreference) {
+            _.forEach(['board', 'medium', 'gradeLevel'], (item) => {
+                if (!_.has(filters, item)) {
+                    filters[item] = _.isArray(userPreference.framework[item]) ?
+                    userPreference.framework[item] : _.split(userPreference.framework[item], ', ');
+                }
+            });
+        }
+
         _.forEach(this.formData, (form, key) => {
         const pageTitle = _.get(this.resourceService, form.title);
         if (pageTitle === pageType) {
