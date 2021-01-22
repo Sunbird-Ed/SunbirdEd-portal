@@ -238,7 +238,12 @@ const API_LIST = {
     // Content Editor
     '/content/composite/v1/search': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.TEMP_ROLE]
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR, ROLE.BOOK_REVIEWER,
+        ROLE.FLAG_REVIEWER, ROLE.ORG_ADMIN
+      ]
     },
 
     // Generic Editor
@@ -491,6 +496,9 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/learner/data/v1/location/search': {
+      checksNeeded: []
+    },
+    '/v1/location/search': {
       checksNeeded: []
     },
     '/learner/data/v1/role/read': {

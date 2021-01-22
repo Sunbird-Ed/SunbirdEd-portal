@@ -126,7 +126,8 @@ describe('CoursePlayerComponent', () => {
   const MockCSService = {
     getUserFeed() { return of({}); },
     updateUserFeedEntry() { return of({}); },
-    deleteUserFeedEntry() { return of({}); }
+    deleteUserFeedEntry() { return of({}); },
+    getContentState() { return of({}); }
   };
 
   class ActivatedRouteStub {
@@ -134,6 +135,12 @@ describe('CoursePlayerComponent', () => {
     snapshot = {
       data: {
         telemetry: { env: 'course', pageid: 'course-read', type: 'workflow', object: { ver: '1.0', type: 'course' } }
+      },
+      queryParams: { 
+        showCourseCompleteMessage: 'true'
+      },
+      params: {
+        courseId: 'do_112270494168555520130'
       }
     };
     queryParamsMock = { contentId: 'do_112270494168555520130' };
@@ -158,6 +165,7 @@ describe('CoursePlayerComponent', () => {
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         NotificationService,
         { provide: 'CS_USER_SERVICE', useValue: MockCSService },
+        { provide: 'CS_COURSE_SERVICE', useValue: MockCSService },
       ],
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, TelemetryModule.forRoot()],
       schemas: [NO_ERRORS_SCHEMA]
@@ -480,7 +488,7 @@ describe('CoursePlayerComponent', () => {
       component.enrolledBatchInfo = { status: 1 };
       expect(courseConsumptionService.updateContentsState).not.toHaveBeenCalled();
     });
-  xit('should show join training popup if course is unenrolled and try to play content', () => {
+  it('should show join training popup if course is unenrolled and try to play content', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);

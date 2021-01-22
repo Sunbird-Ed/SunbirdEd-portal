@@ -99,24 +99,8 @@ const checkIsStaticRoute = (REQ_URL) => {
     '/streaming/',
     '/resourcebundles/',
     '/assets/',
-    '/explore',
-    '/resources',
-    '/search',
-    '/orgType',
-    '/dashBoard',
-    '/workspace',
-    '/profile',
-    '/learn',
-    '/resources',
-    '/myActivity',
-    '/manage',
-    '/contribute',
-    '/groups',
-    '/my-groups',
-    '/telemetry',
     '/content-plugins/',
-    '/editors/',
-    '/api'
+    '/editors/'
   ];
   return _.some(excludePath, (path) => _.includes(REQ_URL, path));
 };
@@ -138,7 +122,7 @@ const urlChecks = {
    */
   ROLE_CHECK: (resolve, reject, req, rolesForURL, REQ_URL) => {
     logger.info({
-      msg: 'whitelist middleware for URL [ ' + REQ_URL + ' ]',
+      msg: 'Portal_API_WHITELIST : Middleware for URL [ ' + REQ_URL + ' ]',
       reqPath: req.path,
       matchPattern: REQ_URL,
       method: req.method,
