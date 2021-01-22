@@ -1,7 +1,7 @@
 {
   "name": "player",
   "author": "sunbird",
-  "version": "3.5.0",
+  "version": "3.5.3",
   "buildNumber": "1",
   "private": true,
   "devDependencies": {
