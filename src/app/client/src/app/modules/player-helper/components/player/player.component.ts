@@ -5,7 +5,7 @@ import * as _ from 'lodash-es';
 import { PlayerConfig } from '@sunbird/shared';
 import { Router } from '@angular/router';
 import { ToasterService, ResourceService, ContentUtilsServiceService } from '@sunbird/shared';
-const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub', 'video/webm', 'video/mp4'];
+const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub', 'video/webm', 'video/mp4', 'application/pdf'];
 import { Subject } from 'rxjs';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { IInteractEventEdata } from '@sunbird/telemetry';
@@ -227,7 +227,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
         if (isNewPlayer) {
           this.playerLoaded = false;
-          this.loadNewPlayer();
+          this.loadOldPlayer();
+          // this.loadNewPlayer();
         } else {
           this.loadOldPlayer();
         }
