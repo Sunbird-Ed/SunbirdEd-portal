@@ -227,8 +227,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
         if (isNewPlayer) {
           this.playerLoaded = false;
-          this.loadOldPlayer();
-          // this.loadNewPlayer();
+          this.loadNewPlayer();
         } else {
           this.loadOldPlayer();
         }
