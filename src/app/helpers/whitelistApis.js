@@ -238,7 +238,12 @@ const API_LIST = {
     // Content Editor
     '/content/composite/v1/search': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.TEMP_ROLE]
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR, ROLE.BOOK_REVIEWER,
+        ROLE.FLAG_REVIEWER, ROLE.ORG_ADMIN
+      ]
     },
 
     // Generic Editor
