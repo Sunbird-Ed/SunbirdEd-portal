@@ -92,6 +92,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   ngOnInit() {
+    this.isDesktopApp = this.utilService.isDesktopApp;
     // If `sessionStorage` has UTM data; append the UTM data to context.cdata
     if (this.playerConfig && sessionStorage.getItem('UTM')) {
       let utmData;
@@ -108,7 +109,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         this.playerConfig.context.cdata = _.union(this.playerConfig.context.cdata, utmData);
       }
     }
-    this.isDesktopApp = this.utilService.isDesktopApp;
     // Check for loggedIn user; and append user data to context object
     // User data (`firstName` and `lastName`) is used to show at the end of quiz
     if (this.playerConfig) {
@@ -279,6 +279,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         && _.includes(OFFLINE_ARTIFACT_MIME_TYPES, this.playerConfig.metadata.mimeType)) {
         const artifactFileName = this.playerConfig.metadata.artifactUrl.split('/');
         this.playerConfig.metadata.artifactUrl = artifactFileName[artifactFileName.length - 1];
+        this.playerConfig.metadata.streamingUrl = undefined;
       }
     }
   }
