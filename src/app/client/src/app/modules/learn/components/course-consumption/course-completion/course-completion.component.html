@@ -9,7 +9,7 @@
         <p>{{generaliseLabelService?.frmelmnts?.lbl?.courseSuccessMessage}}</p>
       </div>
     </div>
-    <div class="course-complete-para mt-32 sb-color-primary" *ngIf="certificateDescription && !certificateDescription?.isCertificate">
+    <div class="course-complete-para mt-32 sb-color-warning" *ngIf="certificateDescription && !certificateDescription?.isCertificate">
       <p>{{generaliseLabelService?.frmelmnts?.lbl?.courseWithoutCertificateNote }}</p>
     </div>
     <div class="course-complete-para mt-32 sb-color-primary" *ngIf="certificateDescription && certificateDescription?.description">
