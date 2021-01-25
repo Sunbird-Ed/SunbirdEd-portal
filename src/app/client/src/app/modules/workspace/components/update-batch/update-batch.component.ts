@@ -18,13 +18,7 @@ import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
 })
 export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  private updateBatchModal;
-  @ViewChild('updateBatchModal') set setBatchModal(element) {
-    if (element) {
-      this.updateBatchModal = element;
-    }
-    this.initDropDown();
-  };
+  @ViewChild('updateBatchModal') private updateBatchModal;
   /**
   * batchId
   */
@@ -162,6 +156,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         this.mentorList = userList.mentorList;
         this.initializeUpdateForm();
         this.fetchParticipantDetails();
+        this.initDropDown();
       }, (err) => {
         if (err.error && err.error.params && err.error.params.errmsg) {
           this.toasterService.error(err.error.params.errmsg);
@@ -298,7 +293,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     };
   }
   private initDropDown() {
-    const count = _.get(this.batchDetails, 'participants') ? _.get(this.batchDetails, 'participants.length') : 0;
+    const count = this.batchDetails.participants ? this.batchDetails.participants.length : 0;
     this.lazzyLoadScriptService.loadScript('semanticDropdown.js').subscribe(() => {
       $('#participant').dropdown({
         forceSelection: false,

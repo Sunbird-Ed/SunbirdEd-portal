@@ -266,8 +266,7 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
         board: bothParams.queryParams.board,
         subject: bothParams.queryParams.subject,
         medium: bothParams.queryParams.medium,
-        gradeLevel: bothParams.queryParams.gradeLevel,
-        channel: this.userService.channel
+        gradeLevel: bothParams.queryParams.gradeLevel
       },
       limit: limit,
       offset: (pageNumber - 1) * (limit),

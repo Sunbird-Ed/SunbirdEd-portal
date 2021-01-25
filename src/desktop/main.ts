@@ -545,27 +545,6 @@ const checkForOpenFile = (files?: string[]) => {
   }
 };
 
-const generateUserSession = async (code: string) => {
-  if(_.isEmpty(code)){
-    logger.error('User login failed');
-    return;
-  }
-  await HTTPService.get(`${appBaseUrl}/api/auth/resolvePasswordSession/${code}`, {})
-    .toPromise()
-    .then(data => {
-      logger.info("Login successful successfully");
-    })
-    .catch(error =>
-      logger.error(
-        "User token generation failed",
-        _.get(error, 'response.data') || error.message
-      )
-    ).finally(() => {
-      loginWindow.close();
-      loginWindow = null;
-    })
-};
-
 process
   .on("unhandledRejection", (reason, p) => {
     logger.error(reason, "Unhandled Rejection at Promise", p);
