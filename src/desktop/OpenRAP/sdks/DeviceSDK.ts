@@ -48,8 +48,8 @@ export default class DeviceSDK {
                     producer: process.env.APP_ID,
                     dspec: deviceSpec,
                     userDeclaredLocation: {
-                        state: _.get(userDeclaredLocation, 'state.name'),
-                        district: _.get(userDeclaredLocation, 'city.name')
+                        state: _.get(userDeclaredLocation, 'state.name') || _.get(userDeclaredLocation, 'state'),
+                        district: _.get(userDeclaredLocation, 'city.name') || _.get(userDeclaredLocation, 'city')
                     }
                 }
             };
