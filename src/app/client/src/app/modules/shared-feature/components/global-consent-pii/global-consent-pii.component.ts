@@ -222,7 +222,7 @@ export class GlobalConsentPiiComponent implements OnInit {
     } else if ( this.type === 'global-consent') {
       request.consumerId = this.userService.channel;
       request.objectId = this.userService.channel;
-      request.objectType = 'global';
+      request.objectType = 'Organisation';
     }
     this.csUserService.updateConsent(request, { apiPath: '/learner/user/v1' })
       .pipe(takeUntil(this.unsubscribe))
