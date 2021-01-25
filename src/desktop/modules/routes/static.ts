@@ -3,6 +3,7 @@ const express = require("express");
 import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import { manifest } from "./../manifest";
 import * as path from "path";
+import { logger } from "@project-sunbird/logger";
 
 export default (app, contentFilesPath, ecarsFolderPath ) => {
     const fileSDK = containerAPI.getFileSDKInstance(manifest.id);
@@ -54,9 +55,17 @@ export default (app, contentFilesPath, ecarsFolderPath ) => {
     const deviceId = await containerAPI
       .getSystemSDKInstance(manifest.id)
       .getDeviceId();
+    const userSDK = containerAPI.getUserSdkInstance();
+    const loggedInUserSession: any = await userSDK.getUserSession().catch(error => { logger.debug("User not logged in", error);})
     const locals: any = {};
-    locals.userId = null;
-    locals.sessionId = null;
+
+    if (loggedInUserSession) {
+      locals.userId = loggedInUserSession.userId;
+      locals.sessionId = loggedInUserSession.userId;  
+    } else {
+      locals.userId = null;
+      locals.sessionId = null;
+    }
     locals.cdnUrl = "";
     locals.theme = "";
     locals.defaultPortalLanguage = "en";

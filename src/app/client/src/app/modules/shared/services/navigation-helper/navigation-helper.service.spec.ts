@@ -174,4 +174,17 @@ describe('NavigationHelperService', () => {
       expect(service.contentFullScreenEvent.emit).toHaveBeenCalledWith(false);
     }));
 
+  it('Should emit handleCMvisibility as FALSE', inject([NavigationHelperService, Router, ActivatedRoute, CacheService, UtilService],
+    (service: NavigationHelperService, router, activatedRoute, cacheService, utilService: UtilService) => {
+      spyOn(service.handleCMvisibility, 'emit');
+      service.handleContentManagerOnFullscreen(false);
+      expect(service.handleCMvisibility.emit).toHaveBeenCalledWith(false);
+    }));
+  it('Should emit handleCMvisibility as TRUE', inject([NavigationHelperService, Router, ActivatedRoute, CacheService, UtilService],
+    (service: NavigationHelperService, router, activatedRoute, cacheService, utilService: UtilService) => {
+      spyOn(service.handleCMvisibility, 'emit');
+      service.handleContentManagerOnFullscreen(true);
+      expect(service.handleCMvisibility.emit).toHaveBeenCalledWith(true);
+    }));
+
 });

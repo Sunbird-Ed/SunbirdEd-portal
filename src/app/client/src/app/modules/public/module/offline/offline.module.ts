@@ -11,7 +11,7 @@ import { OfflineRoutingModule } from './offline-routing.module';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import {
     LibraryComponent, ContentManagerComponent, ContentManagerInfoPopUpComponent,
-    LoadContentComponent, NoContentComponent, ConnectionStatusComponent, InfoCardComponent, TelemetryComponent, TelemetryImportComponent
+    LoadContentComponent, InfoCardComponent, TelemetryComponent, TelemetryImportComponent
 } from './components';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
 import { FileSizeModule } from 'ngx-filesize';
@@ -49,8 +49,6 @@ import { ContentSearchModule } from '@sunbird/content-search';
     providers: [DeviceDetectorService, ContentManagerService],
     declarations: [
         LibraryComponent,
-        ConnectionStatusComponent,
-        NoContentComponent,
         LoadContentComponent,
         InfoCardComponent,
         TelemetryComponent,
@@ -61,6 +59,6 @@ import { ContentSearchModule } from '@sunbird/content-search';
     entryComponents: [
         ContentManagerComponent,
     ],
-    exports: [NoContentComponent, ConnectionStatusComponent, InfoCardComponent]
+    exports: [InfoCardComponent]
 })
 export class OfflineModule { }

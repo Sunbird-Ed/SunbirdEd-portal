@@ -32,6 +32,68 @@ export const mockData = {
       limit: 20,
     },
     {
+      'index': 0,
+      'title': 'frmelmnts.lbl.desktop.mylibrary',
+      'desc': 'frmelmnts.lbl.desktop.mylibrary',
+      'menuType': 'Content',
+      'contentType': 'mydownloads',
+      'isEnabled': true,
+      'isDesktopOnly': true,
+      'isOnlineOnly': false,
+      'theme': {
+          'baseColor': '',
+          'textColor': '',
+          'supportingColor': '',
+          'className': 'myDownloads',
+          'imageName': 'textbooks-banner-img.svg'
+      },
+      'anonumousUserRoute': {
+          'route': '/mydownloads',
+          'queryParam': 'mydownloads'
+      },
+      'loggedInUserRoute': {
+          'route': '/mydownloads',
+          'queryParam': 'mydownloads'
+      },
+      'search': {
+          'facets': [
+              'board',
+              'gradeLevel',
+              'subject',
+              'medium',
+              'primaryCategory',
+              'mimeType',
+              'publisher',
+              'audience'
+          ],
+          'fields': [
+              'name',
+              'appIcon',
+              'mimeType',
+              'gradeLevel',
+              'identifier',
+              'medium',
+              'pkgVersion',
+              'board',
+              'subject',
+              'resourceType',
+              'primaryCategory',
+              'contentType',
+              'channel',
+              'organisation',
+              'trackable',
+              'audience'
+          ],
+          'filters': {
+              'primaryCategory': [
+                  'Collection',
+                  'Resource',
+                  'Content Playlist'
+              ]
+          }
+      }
+    },
+    {
       'index': 1,
       'title': 'frmelmnts.lbl.textbooks',
       'desc': 'frmelmnts.lbl.textbooks',

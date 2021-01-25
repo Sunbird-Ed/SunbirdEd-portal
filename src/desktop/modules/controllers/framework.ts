@@ -90,4 +90,10 @@ export class Framework {
         }
       });
   }
+
+  public upsert(framework) {
+    const doc = _.get(framework, "result.framework");
+    const id = doc.identifier;
+    this.databaseSdk.upsert("framework", id, doc);
+  }
 }

@@ -55,7 +55,8 @@ describe('FaqComponent', () => {
   class FakeUtilService {
     public isDesktopApp = false;
     public languageChange = of({ value: 'en' });
-    public changePlatform = () => { this.isDesktopApp = true };
+    public changePlatform = () => { this.isDesktopApp = true; };
+    public getAppBaseUrl = () => 'https://locahost:3000' ;
   }
 
   configureTestSuite();

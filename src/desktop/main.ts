@@ -1,9 +1,10 @@
-import { app, BrowserWindow, dialog, crashReporter } from "electron";
+import { app, BrowserWindow, dialog, crashReporter, shell } from "electron";
 import * as _ from "lodash";
 import * as path from "path";
 import * as fs from "fs";
 import * as fse from "fs-extra";
 import  { Server }   from './modules/server'
+import { LoginSessionProvider } from './helper/login-session-provider'
 const startTime = Date.now();
 let envs: any = {};
 const getFilesPath = () => {
@@ -41,6 +42,7 @@ const initializeEnv = () => {
   process.env.ROOT_ORG_ID = rootOrgId || hashTagId;
   process.env.ROOT_ORG_HASH_TAG_ID = hashTagId;
   process.env.TELEMETRY_VALIDATION = app.isPackaged ? "false" : "true";
+  process.env.IS_PACKAGED_APP = String(app.isPackaged);
   process.env.APP_VERSION = app.getVersion();
   _.forEach(envs, (value, key) => {
     process.env[key] = value;
@@ -83,14 +85,16 @@ const reloadUIOnFileChange = () => {
       "portal file changed- reloading screen with current url",
       currentURL
     );
-    fs.rename(
-      path.join("public", "portal", "index.html"),
-      path.join("public", "portal", "index.ejs"),
-      err => {
-        if (err) console.log("ERROR: " + err);
-        win.reload();
-      }
-    );
+    if(fs.existsSync(path.join("public", "portal", "index.html"))) {
+      fs.rename(
+        path.join("public", "portal", "index.html"),
+        path.join("public", "portal", "index.ejs"),
+        err => {
+          if (err) console.log("ERROR: " + err);
+          win.reload();
+        }
+      );
+    }
   });
   fileSDK
     .watch([path.join("public", "portal")])
@@ -203,38 +207,18 @@ expressApp.use("/dialog/content/suggestLocation", async (req, res) => {
 });
 
 expressApp.use("/dialog/login", async (req, res) => {
-  openLoginWindow();
-  res.send({ message: "SUCCESS", responseCode: "OK" })
+  const options = {"request":{"type":"desktopConfig","action":"get","subType":"login"}};
+  HTTPService.post(`${appBaseUrl}/api/data/v1/form/read`, options).toPromise().then(async response => {
+    let loginFormConfig = _.find(response.data.result.form.data.fields, (field) => field.context == 'login');
+    const loginSessionProvider = new LoginSessionProvider(win, loginFormConfig, appBaseUrl);
+    loginSessionProvider.childLoginWindow().then((rs) =>{
+      res.send({ message: "SUCCESS", responseCode: "OK" })
+    })
+  }, err => {
+    res.status(400).send({ message: "Login failed", responseCode: "LOGIN_FAILED"})
+  })
+  
 });
-
-const openLoginWindow = async () => {
-  loginWindow = new BrowserWindow({ 
-    parent: win, 
-    closable: true, 
-    titleBarStyle: "hidden",
-    show: false,
-    minWidth: 700,
-    minHeight: 500,
-    webPreferences: {
-      nodeIntegration: false,
-      enableRemoteModule: false
-    },
-    icon: windowIcon
-  });
-  const loginURL = `${process.env.AUTH_KC_URL}/auth?client_id=${process.env.AUTH_CLIENT_ID}&redirect_uri=${process.env.AUTH_REDIRECT_URI}&scope=${process.env.AUTH_KC_SCOPE}&response_type=code&version=4`;
-  loginWindow.loadURL(loginURL);
-  loginWindow.setAlwaysOnTop(true);
-  loginWindow.webContents.once("dom-ready", () => {
-    loginWindow.show();
-    loginWindow.maximize();
-    loginWindow.webContents.on('did-navigate', (event, url) => {
-      if(url.includes('oauth2callback')) {
-        let code = url.split("code=")[1];
-        generateUserSession(code);
-      }
-    });
-  });
-}
 
 
 const showFileExplorer = async () => {
@@ -277,10 +261,16 @@ const startApp = async () => {
       })
     });
 };
+
+const waitForDBToLoad = () => {
+  return (new Promise((resolve, reject) => {
+    EventManager.subscribe("openrap-sunbirded-plugin:initialized", resolve)
+  }))
+}
 // start loading all the dependencies
 const bootstrapDependencies = async () => {
   console.log("============> bootstrap started");
-  await startCrashReporter();
+  await startCrashReporter().catch(error => logger.error("unable to start crash reporter", error));
   await copyPluginsMetaData();
   console.log("============> copy plugin done");
   await setAvailablePort();
@@ -288,8 +278,10 @@ const bootstrapDependencies = async () => {
   await containerAPI.bootstrap();
   console.log("============> containerAPI bootstrap done");
   await startApp();
+  await waitForDBToLoad();
+  console.log("============> App startup done");
   //to handle the unexpected navigation to unknown route
-  // expressApp.all("*", (req, res) => res.redirect("/"));
+  //  expressApp.all("*", (req, res) => res.redirect("/"));
 };
 async function initLogger() {
   await setDeviceId();
@@ -381,7 +373,8 @@ async function createWindow() {
       minHeight: 500,
       webPreferences: {
         nodeIntegration: false,
-        enableRemoteModule: false
+        enableRemoteModule: false,
+        nativeWindowOpen: true
       },
       icon: windowIcon
     });
@@ -391,14 +384,24 @@ async function createWindow() {
     if (!app.isPackaged) {
       reloadUIOnFileChange();
     }
-      win.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
-        options.show = false;
+      win.webContents.on('new-window', async(event, url, frameName, disposition, options, additionalFeatures) => {
+        event.preventDefault();
+        try {
+          if (!['https:', 'http:'].includes(new URL(url).protocol)) return;
+          await shell.openExternal(url);
+        } catch(error) {
+          logger.error("Error while opening link",error);
+        }
       })
     
     win.webContents.once("dom-ready", () => {
     let perfLogger = containerAPI.getPerfLoggerInstance();
     const startUpDuration = (Date.now() - startTime) / 1000  
-    logger.info(`App took ${startUpDuration} sec to start`);
+    if(startUpDuration > 10) {
+      logger.error(`App took ${startUpDuration} sec to start`);
+    } else {
+      logger.info(`App took ${startUpDuration} sec to start`);
+    }
     perfLogger.log({
       type: 'APP_STARTUP',
       time: startUpDuration,

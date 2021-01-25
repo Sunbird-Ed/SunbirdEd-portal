@@ -1,12 +1,15 @@
 export const notificationData = {
   identifier: 'c2d72c04-3010-45d7-bc13-29a3105dca26',
   data: {
-    actionType: 'contentURL',
-    contentURL: 'https://staging.ntp.net.in/resources/play/content/do_212669767503060992174',
-    description: 'Notfication description',
-    openPlayer: true,
-    title: 'InApp Notification 4',
-    appIcon: ''
+    actionData: {
+      actionType: 'contentURL',
+      contentURL: 'https://staging.ntp.net.in/resources/play/content/do_212669767503060992174',
+      description: 'Notfication description',
+      openPlayer: true,
+      title: 'InApp Notification 4',
+      appIcon: ''
+    },
+    type: 1
   },
   id: 'c2d72c04-3010-45d7-bc13-29a3105dca26',
   category: 'Notification',
@@ -21,12 +24,15 @@ export const notificationList = [
   {
     identifier: 'c2d72c04-3010-45d7-bc13-29a3105dca26',
     data: {
-      actionType: 'contentURL',
-      contentURL: 'https://staging.ntp.net.in/resources/play/content/do_212669767503060992174',
-      description: 'Notfication description',
-      openPlayer: true,
-      title: 'InApp Notification 4',
-      appIcon: ''
+      actionData: {
+        actionType: 'contentURL',
+        contentURL: 'https://staging.ntp.net.in/resources/play/content/do_212669767503060992174',
+        description: 'Notfication description',
+        openPlayer: true,
+        title: 'InApp Notification 4',
+        appIcon: ''
+      },
+      type: 1
     },
     id: 'c2d72c04-3010-45d7-bc13-29a3105dca26',
     category: 'Notification',
@@ -39,12 +45,15 @@ export const notificationList = [
   {
     identifier: 'c2d72c04-3010-45d7-bc13-29a3105dca26',
     data: {
-      actionType: 'contentURL',
-      contentURL: 'https://staging.ntp.net.in/resources/play/content/do_212669767503060992174',
-      description: 'Notfication description',
-      openPlayer: true,
-      title: 'InApp Notification 4',
-      appIcon: ''
+      actionData: {
+        actionType: 'contentURL',
+        contentURL: 'https://staging.ntp.net.in/resources/play/content/do_212669767503060992174',
+        description: 'Notfication description',
+        openPlayer: true,
+        title: 'InApp Notification 4',
+        appIcon: ''
+      },
+      type: 1
     },
     id: 'c2d72c04-3010-45d7-bc13-29a3105dca26',
     category: 'Other_category',

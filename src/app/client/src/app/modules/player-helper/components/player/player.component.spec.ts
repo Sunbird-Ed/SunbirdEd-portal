@@ -3,11 +3,12 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
-import { SharedModule } from '@sunbird/shared';
+import { FormService, UserService } from '@sunbird/core';
+import { NavigationHelperService, SharedModule, UtilService } from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
 import { of, Subject, throwError } from 'rxjs';
-import { UserService, FormService } from '../../../core/services';
 import { PlayerComponent } from './player.component';
+import { playerData } from './player.component.data.spec';
 
 const startEvent = {
   detail: {
@@ -59,8 +60,8 @@ describe('PlayerComponent', () => {
     component.contentProgressEvents$ = new Subject();
     userService = TestBed.get(UserService);
     userService._authenticated = false;
-    userService.loggedIn =  true;
-    userService.userData$ = of({userProfile: {firstName: 'harish', lastName: 'gangula'}});
+    userService.loggedIn = true;
+    userService.userData$ = of({ userProfile: { firstName: 'harish', lastName: 'gangula' } });
     component.contentIframe = {
       nativeElement: {
         contentWindow: { EkstepRendererAPI: { getCurrentStageId: () => 'stageId' } },
@@ -210,8 +211,12 @@ describe('PlayerComponent', () => {
 
   it('should close player fullscreen ', () => {
     component.isSingleContent = true;
+    component.showRatingModalAfterClose = true;
+    component.modal = { showContentRatingModal: false };
     component.closeFullscreen();
     expect(component.showPlayIcon).toBe(true);
+    expect(component.contentRatingModal).toBe(true);
+    expect(component.modal.showContentRatingModal).toBe(true);
   });
 
   it('should remove Iframe element on destroy', () => {
@@ -226,13 +231,12 @@ describe('PlayerComponent', () => {
 
   it('should make isFullScreenView to TRUE', () => {
     component.isFullScreenView = false;
+    const navigationHelperService = TestBed.get(NavigationHelperService);
     expect(component.isFullScreenView).toBeFalsy();
     spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of(true));
     component.ngOnInit();
-    component.navigationHelperService.contentFullScreenEvent.subscribe(response => {
-      expect(response).toBeTruthy();
-      expect(component.isFullScreenView).toBeTruthy();
-    });
+    navigationHelperService.contentFullScreenEvent.emit(true);
+    expect(component.isFullScreenView).toBeTruthy();
   });
 
   it('should call addUserDataToContext', () => {
@@ -245,13 +249,12 @@ describe('PlayerComponent', () => {
 
   it('should make isFullScreenView to FALSE', () => {
     component.isFullScreenView = true;
+    const navigationHelperService = TestBed.get(NavigationHelperService);
     expect(component.isFullScreenView).toBeTruthy();
     spyOn(component['navigationHelperService'], 'contentFullScreenEvent').and.returnValue(of(false));
     component.ngOnInit();
-    component.navigationHelperService.contentFullScreenEvent.subscribe(response => {
-      expect(response).toBeFalsy();
-      expect(component.isFullScreenView).toBeFalsy();
-    });
+    navigationHelperService.contentFullScreenEvent.emit(false);
+    expect(component.isFullScreenView).toBeFalsy();
   });
 
 
@@ -296,7 +299,7 @@ describe('PlayerComponent', () => {
     expect(component.questionScoreSubmitEvents.emit).toHaveBeenCalled();
   });
 
-  it('should call loadPlayer', () => {
+  xit('should call loadPlayer', () => {
     const formService = TestBed.get(FormService);
     component.isMobileOrTab = true;
     component.playerConfig = playerConfig;
@@ -308,7 +311,7 @@ describe('PlayerComponent', () => {
     expect(component.loadDefaultPlayer).toHaveBeenCalled();
   });
 
-  it('should call loadPlayer with CDN url', () => {
+  xit('should call loadPlayer with CDN url', () => {
     const formService = TestBed.get(FormService);
     component.playerConfig = playerConfig;
     component.isMobileOrTab = false;
@@ -331,6 +334,111 @@ describe('PlayerComponent', () => {
     spyOn(component, 'closeContentFullScreen');
     component.onPopState({});
     expect(component.closeContentFullScreen).toHaveBeenCalled();
+  });
+
+  it('should hide content manger while fullscreen mode for desktop', () => {
+    component.isFullScreenView = false;
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    const utilService = TestBed.get(UtilService);
+    utilService._isDesktopApp = true;
+    spyOn(navigationHelperService, 'handleContentManagerOnFullscreen');
+    component.ngOnInit();
+    navigationHelperService.contentFullScreenEvent.emit(true);
+    expect(component.isFullScreenView).toBeTruthy();
+    expect(navigationHelperService.handleContentManagerOnFullscreen).toHaveBeenCalledWith(true);
+  });
+
+  it('should show content manger when exit from fullscreen mode for desktop', () => {
+    component.isFullScreenView = false;
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'handleContentManagerOnFullscreen');
+    const utilService = TestBed.get(UtilService);
+    utilService._isDesktopApp = true;
+    component.ngOnInit();
+    navigationHelperService.contentFullScreenEvent.emit(false);
+    expect(component.isFullScreenView).toBeFalsy();
+    expect(navigationHelperService.handleContentManagerOnFullscreen).toHaveBeenCalledWith(false);
+  });
+
+  it('should call updateMetadataForDesktop', () => {
+    component.isDesktopApp = true;
+    component.playerConfig = playerData.playerConfig;
+    component.updateMetadataForDesktop();
+    expect(component.playerConfig.data).toEqual('');
+  });
+
+  it('should call updateMetadataForDesktop for pdf content', () => {
+    component.isDesktopApp = true;
+    component.playerConfig = playerData.playerConfig;
+    component.playerConfig.metadata.mimeType = 'application/epub';
+    component.updateMetadataForDesktop();
+    expect(component.playerConfig.metadata.artifactUrl).toEqual('file_example_mp3_700kb.mp3');
+  });
+
+  it('should call loadNewPlayer', () => {
+    spyOn(component, 'addUserDataToContext');
+    spyOn(component, 'rotatePlayer');
+    component.isMobileOrTab = true;
+    component.isDesktopApp = true;
+    component.playerConfig = playerData.playerConfig;
+    component.loadNewPlayer();
+    expect(component.addUserDataToContext).toHaveBeenCalled();
+    expect(component.isFullScreenView).toBe(true);
+    expect(component.rotatePlayer).toHaveBeenCalled();
+    expect(component.showNewPlayer).toBe(true);
+  });
+
+  it('should call loadOldPlayer, for desktop', () => {
+    spyOn(component, 'updateMetadataForDesktop');
+    spyOn(component, 'loadDefaultPlayer');
+    component.isDesktopApp = true;
+    component.playerConfig = playerData.playerConfig;
+    component.loadOldPlayer();
+    expect(component.updateMetadataForDesktop).toHaveBeenCalled();
+    expect(component.loadDefaultPlayer).toHaveBeenCalled();
+    expect(component.showNewPlayer).toBe(false);
+  });
+
+  it('should call loadOldPlayer, for portal', () => {
+    spyOn(component, 'loadDefaultPlayer');
+    spyOn(component, 'rotatePlayer');
+    component.isDesktopApp = false;
+    component.playerConfig = playerData.playerConfig;
+    component.isMobileOrTab = true;
+    component.loadOldPlayer();
+    expect(component.rotatePlayer).toHaveBeenCalled();
+    expect(component.loadDefaultPlayer).toHaveBeenCalled();
+    expect(component.showNewPlayer).toBe(false);
+  });
+
+  it('should call loadOldPlayer, with CDN player', () => {
+    component.isDesktopApp = false;
+    component.playerConfig = playerData.playerConfig;
+    component.isMobileOrTab = true;
+    component.previewCdnUrl = 'someCdnurl';
+    component.isCdnWorking = 'yes';
+    spyOn(component, 'loadCdnPlayer');
+    component.loadOldPlayer();
+    expect(component.showNewPlayer).toBe(false);
+    expect(component.loadCdnPlayer).toHaveBeenCalled();
+  });
+
+  it('should load player, on success', () => {
+    const formService = TestBed.get(FormService);
+    component.playerConfig = playerData.playerConfig;
+    spyOn(formService, 'getFormConfig').and.returnValue(of(playerData.formData));
+    component.loadPlayer();
+    expect(formService.getFormConfig).toHaveBeenCalled();
+  });
+
+  it('should load player, on error', () => {
+    const formService = TestBed.get(FormService);
+    component.playerConfig = playerData.playerConfig;
+    spyOn(formService, 'getFormConfig').and.returnValue(throwError(playerData.formData));
+    spyOn(component, 'loadOldPlayer');
+    component.loadPlayer();
+    expect(formService.getFormConfig).toHaveBeenCalled();
+    expect(component.loadOldPlayer).toHaveBeenCalled();
   });
 });
 

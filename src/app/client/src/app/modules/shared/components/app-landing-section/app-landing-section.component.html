@@ -5,7 +5,7 @@
     <div class="relative" [ngClass]="SECOND_PANEL_LAYOUT">
       <img *ngIf="!noTitle" class="sbt-page-header-line-img" src="./assets/images/header-line.svg" alt="Textbooks">
       <div class="sbt-page-header-content pl-24" [ngClass]="{'sb-no-title': noTitle}">
-        <h1>{{textToDisplay | translate}}</h1>
+        <h1 *ngIf="!noTitle">{{textToDisplay | translate}}</h1>
       </div>
       <img *ngIf="!noTitle" class="sbt-page-header-img" src="./assets/images/banner-svg/{{svgToDisplay}}" alt="Textbooks">
     </div>
