@@ -36,11 +36,7 @@ const setZipConfig = (req, res, type, encoding, dist = '../') => {
         return true
     } else {
       pathMap[req.path + type] = 'notExist';
-      logger.info({msg:'zip file not exist' ,
-      additionalInfo: {
-        url: req.url,
-        type: type
-      }})
+      // logger.info({ msg: 'zip file not exist', additionalInfo: { url: req.url, type: type } });
       return false;
     }
 }

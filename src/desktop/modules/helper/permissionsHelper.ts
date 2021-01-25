@@ -3,7 +3,7 @@ import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import { HTTPService } from "@project-sunbird/OpenRAP/services/httpService";
 import * as _ from "lodash";
 import { ILoggedInUser } from '../../OpenRAP/interfaces/IUser';
-import uuid = require("uuid");
+import uuid from "uuid/v4";
 
 const PERMISSIONS_HELPER = {
 

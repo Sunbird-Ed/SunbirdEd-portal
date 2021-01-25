@@ -19,7 +19,7 @@
   </div>
   <div class="user-profile-box__actions pb-16 px-16">
     <button type="submit" class="sb-btn sb-btn-normal" (click)="switchUser()"
-            [disabled]="!selectedUser"
+            [disabled]="!selectedUser" appOnlineOnly
             appTelemetryInteract [telemetryInteractEdata]="submitInteractEdata"
             [ngClass]="{'sb-btn-disabled': !selectedUser, 'sb-btn-primary': selectedUser}">
       {{resourceService.frmelmnts?.lbl?.switchUser}}
