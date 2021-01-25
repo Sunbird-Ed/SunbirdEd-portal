@@ -238,7 +238,12 @@ const API_LIST = {
     // Content Editor
     '/content/composite/v1/search': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.TEMP_ROLE]
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR, ROLE.CONTENT_REVIEWER,
+        ROLE.COURSE_CREATOR,
+        ROLE.BOOK_CREATOR, ROLE.BOOK_REVIEWER,
+        ROLE.FLAG_REVIEWER, ROLE.ORG_ADMIN
+      ]
     },
 
     // Generic Editor
@@ -491,6 +496,9 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/learner/data/v1/location/search': {
+      checksNeeded: []
+    },
+    '/v1/location/search': {
       checksNeeded: []
     },
     '/learner/data/v1/role/read': {
@@ -1144,6 +1152,13 @@ const API_LIST = {
         ROLE.ORG_ADMIN
       ]
     },
+    '/action/content/v3/copy/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.ORG_ADMIN,
+        ROLE.BOOK_CREATOR
+      ]
+    },
     '/signup': {
       checksNeeded: []
     },
@@ -1469,6 +1484,7 @@ const API_LIST = {
     '/action/textbook/v1/toc/download/:do_id',
     '/action/content/v1/collaborator/update/:do_id',
     '/action/system/v3/content/update/:do_id',
+    '/action/content/v3/copy/:do_id',
     '/v1/tenant/info/:tenantId',
     '/v1/user/session/start/:deviceId',
     '/getGeneralisedResourcesBundles/:lang/:fileName',
