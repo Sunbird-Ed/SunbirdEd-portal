@@ -49,7 +49,7 @@ export default class DeviceSDK {
                     dspec: deviceSpec,
                     userDeclaredLocation: {
                         state: _.get(userDeclaredLocation, 'state.name') || _.get(userDeclaredLocation, 'state'),
-                        district: _.get(userDeclaredLocation, 'city.name') || _.get(userDeclaredLocation, 'city')
+                        district: _.get(userDeclaredLocation, 'city.name') || _.get(userDeclaredLocation, 'district')
                     }
                 }
             };
