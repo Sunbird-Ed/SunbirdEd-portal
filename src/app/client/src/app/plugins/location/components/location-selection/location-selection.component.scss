@@ -57,6 +57,7 @@
     align-items: center;
     justify-content: space-between;
     position: relative;
+    overflow-y: scroll;
 
     @include respond-above(sm) {
       border-radius: calculateRem(8px);
