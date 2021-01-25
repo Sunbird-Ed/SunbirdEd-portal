@@ -88,7 +88,12 @@ export class TelemetryManager {
 
   async batchJob() {
     try {
-      const loggedInUser = await this.userSDK.getUserSession();
+      let loggedInUser;
+      this.userSDK.getUserSession().then(data => {
+        loggedInUser = data;
+      }, (err) => {
+        loggedInUser = '';
+      });
       const userId = _.get(loggedInUser, 'userId') || '';
       let did = await this.systemSDK.getDeviceId();
       let dbFilters = {
