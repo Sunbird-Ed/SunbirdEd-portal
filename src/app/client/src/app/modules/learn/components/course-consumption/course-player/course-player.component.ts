@@ -363,7 +363,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
     /* istanbul ignore else */
     if (!_.isEmpty(this.navigateToContentObject.event.event)) {
-      this.navigateToPlayerPage(this.navigateToContentObject.collectionUnit, event);
+      this.navigateToPlayerPage(this.navigateToContentObject.collectionUnit, this.navigateToContentObject.event);
     }
   }
 
