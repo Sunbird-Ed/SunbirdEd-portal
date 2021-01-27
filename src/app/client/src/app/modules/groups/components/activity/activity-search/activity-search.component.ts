@@ -220,8 +220,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
     const searchQuery = _.get(this.groupAddableBlocData, 'params.searchQuery.request.filters');
     const user = _.omit(_.get(this.userService.userProfile, 'framework'), 'id');
-    filters = { ...filters, ...searchQuery, ...user, 'batches.enrollmentType': 'open',
-    'batches.status': 1 };
+    filters = { ...filters, ...searchQuery, ...user };
     const option: any = {
       filters: _.omit(filters, 'key'),
       fields: _.get(this.allTabData, 'search.fields'),
