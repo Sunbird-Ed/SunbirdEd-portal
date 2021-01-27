@@ -128,7 +128,7 @@ export const customProxy = (host, options = {}) => {
             }
           } else if (_.get(response, 'status') === 404) {
             response.status = 404;
-            response.data = getErrorObj();
+            response.data = response.data || getErrorObj();
             throw ({ response: error.response })
           } else {
             throw ({ response: error.response })
