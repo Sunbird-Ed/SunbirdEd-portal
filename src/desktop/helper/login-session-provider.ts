@@ -72,7 +72,9 @@ export class LoginSessionProvider {
                 this.loginWindow.removeMenu();
             }
         }
-        this.loginWindow.loadURL(loginURL).then(() => {
+        this.loginWindow.loadURL(loginURL, {
+            userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome Electron/8.5.5 Safari/537.36"
+        }).then(() => {
             logger.debug(`Login window loaded successfully`);
             _.forEach(this.loginConfig.return, (forCase) => {
                 switch (forCase.type) {
@@ -180,7 +182,9 @@ export class LoginSessionProvider {
                 this.showLoader();
                 logger.debug(`Resolve redirect url from buildGoogleSessionProvider`);
                 const url = `${captured.googleRedirectUrl}?${qs.stringify(extras)}`;
-                this.loginWindow.loadURL(url).then(() =>{
+                this.loginWindow.loadURL(url, {
+                    userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome Electron/8.5.5 Safari/537.36"
+                }).then(() =>{
                     this.capture({
                         host: forCase.when.host,
                         path: forCase.when.path,
