@@ -64,7 +64,6 @@ export class LoginSessionProvider {
                     enableRemoteModule: false,
                     session: session.fromPartition('loginwindow')
                 },
-                icon: windowIcon
             });
             this.loginWindow.maximize();
             this.loginWindow.show();
