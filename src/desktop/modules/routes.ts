@@ -91,38 +91,29 @@ export class Router {
       next();
     };
     app.use(addRequestId);
-    // portal static routes
+
     staticRoutes(app, 'content', 'ecars');
 
-    // api's for portal    
-    app.get("/device/profile/:id",
-      proxy(proxyUrl, {
-          proxyReqPathResolver(req) {
-              return `/device/profile/:id`;
-          },
-          proxyErrorHandler: function (err, res, next) {
-              logger.warn(`While getting device profile data from online`, err);
-              next();
-          },
-          userResDecorator: function (proxyRes, proxyResData) {
-              return new Promise(function (resolve) {
-                resolve(proxyResData);
-              });
-          }
-      }),
-      async (req, res) => {
-          logger.debug(`Received API call to get device profile data from offline`);
-          const deviceProfile = new Device(manifest);
-          let locationData: any = await deviceProfile.getDeviceProfile();
-          // set Default state value if offline location data is not available
-          let responseObj = { userDeclaredLocation: {'state': '', 'district': '' }}
-          if(locationData) {
-            responseObj.userDeclaredLocation.state = _.get(locationData, 'state');  
-            responseObj.userDeclaredLocation.district = _.get(locationData, 'district');
-          }
+    app.get("/device/profile/:id", async (req, res, next) => {
+      logger.debug(`Received API call to get device profile data from offline`);
+      try {
+        const deviceProfile = new Device(manifest);
+        const locationData: any = await deviceProfile.getDeviceProfile();
+        // set Default state value if offline location data is not available
+        let responseObj = { userDeclaredLocation: { 'state': '', 'district': '' } }
+        if (locationData) {
+          responseObj.userDeclaredLocation.state = _.get(locationData, 'state');
+          responseObj.userDeclaredLocation.district = _.get(locationData, 'district');
           return res.send(Response.success("offline.device-profile", responseObj, req));
+        } else {
+          next();
+        }
+      } catch (error) {
+        next();
       }
-  );
+    }, proxy(proxyUrl, {
+        proxyReqPathResolver(req) { return `/device/profile/:id` },
+    }));
     
     app.post(`/device/register/:id`, async(req, res, next) => {
       logger.debug(`Received API call to update device profile`, req.params.id);
