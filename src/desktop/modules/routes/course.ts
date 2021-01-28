@@ -1,28 +1,33 @@
 import * as _ from "lodash";
-import Response from "./../utils/response";
-import { containerAPI } from '@project-sunbird/OpenRAP/api';
-import { logger } from '@project-sunbird/logger';
-const proxy = require('express-http-proxy');
-import { decorateRequestHeaders, handleSessionExpiry } from "../helper/proxyUtils";
+import { customProxy } from '../helper/proxyHandler';
 
 export default (app, proxyURL) => {
+    const defaultProxyConfig = { 
+        isUserTokenRequired: true, 
+        isAuthTokenRequired: true, 
+        bypassLearnerRoute: true 
+    };
 
-    app.get("/learner/course/v1/user/enrollment/list/:courseId", proxy(proxyURL, {
-            proxyReqOptDecorator: decorateRequestHeaders(proxyURL),
-            proxyReqPathResolver(req) {
-                return `${proxyURL}${req.originalUrl.replace('/learner/', '/api/')}`;
-            },
-            userResDecorator: function (proxyRes, proxyResData, req, res) {
-                try {
-                    const data = JSON.parse(proxyResData.toString('utf8'));
-                    if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
-                    else return handleSessionExpiry(proxyRes, proxyResData, req, res, data);
-                } catch (err) {
-                    logger.error({ msg: 'learner route : userResDecorator json parse error:', proxyResData, error: JSON.stringify(err) })
-                    return handleSessionExpiry(proxyRes, proxyResData, req, res);
-                }
-            }
-        })
-    );
+    app.get([
+        "/learner/course/v1/user/enrollment/list/:courseId",
+        "/learner/course/v1/batch/read/:batchId",
+    ], customProxy(proxyURL, defaultProxyConfig), (req, res) => {
+        res.status(res.statusCode).send(res.body);
+    });
+
+    app.post([
+        "/learner/course/v1/batch/list", 
+        "/learner/user/v1/search", 
+        "/learner/course/v1/enrol",
+        "/content/course/v1/content/state/read",
+    ], customProxy(proxyURL, defaultProxyConfig), (req, res) => {
+        res.status(res.statusCode).send(res.body);
+    });
+
+    app.patch([
+        "/content/course/v1/content/state/update", 
+    ], customProxy(proxyURL, defaultProxyConfig), (req, res) => {
+        res.status(res.statusCode).send(res.body);
+    });
 
 }
