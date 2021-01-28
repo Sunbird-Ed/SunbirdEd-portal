@@ -5,7 +5,8 @@ export default (app, proxyURL) => {
     const defaultProxyConfig = { 
         isUserTokenRequired: true, 
         isAuthTokenRequired: true, 
-        bypassLearnerRoute: true 
+        bypassLearnerRoute: true, 
+        bypassContentRoute: true
     };
 
     app.get([
@@ -19,6 +20,7 @@ export default (app, proxyURL) => {
         "/learner/course/v1/batch/list", 
         "/learner/user/v1/search", 
         "/learner/course/v1/enrol",
+        "/discussion/forum/v2/read",
         "/content/course/v1/content/state/read",
     ], customProxy(proxyURL, defaultProxyConfig), (req, res) => {
         res.status(res.statusCode).send(res.body);
