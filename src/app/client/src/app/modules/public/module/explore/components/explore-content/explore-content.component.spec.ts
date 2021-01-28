@@ -318,13 +318,6 @@ describe('ExploreContentComponent', () => {
     expect(component['setNoResultMessage']).toHaveBeenCalled();
   });
 
-  it('should not play content for trackable collection for desktop app', () => {
-    component.isDesktopApp = true;
-    spyOn(toasterService, 'error').and.callFake(() => { });
-    component.playContent({content: {trackable: {enabled: 'Yes'}}});
-    expect(toasterService.error).toHaveBeenCalled();
-  });
-
   it('should fetch content and remove course from facets for desktop app', fakeAsync(() => {
     const utilService = TestBed.get(UtilService);
     utilService._isDesktopApp = true;
