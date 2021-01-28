@@ -113,6 +113,7 @@ const morganConfig = (tokens, req, res) => {
     tokensList.push(
       tokens.res(req, res, 'content-length'), '-',
       tokens['response-time'](req, res), 'ms',
+      "requestHeader:", JSON.stringify(req.headers),
       "requestBody:", req.body ? JSON.stringify(req.body) : "empty",
       "responseBody:", res.body
     )
