@@ -37,7 +37,6 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
   CONSTANT = {
     ACCESSEVENT: 'renderer:question:submitscore'
   };
-  hideFullscreenButton: boolean;
   /**
  * Dom element reference of contentRatingModal
  */
@@ -62,10 +61,6 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
    */
 
   ngAfterViewInit() {}
-
-  ishideFullscreenButton(event) {
-    this.hideFullscreenButton = event;
-  }
 
   ngOnChanges() {
     if (this.isDesktopApp && this.isContentDeleted) {

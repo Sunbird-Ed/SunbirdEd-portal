@@ -47,7 +47,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   @Input() isContentDeleted: Subject<any>;
   @Output() closePlayerEvent = new EventEmitter<any>();
   @Output() ratingPopupClose = new EventEmitter<any>();
-  @Output() hideFullscreenButton = new EventEmitter<boolean>();
   contentDeleted = false;
   isMobileOrTab: boolean;
   showPlayIcon = true;
@@ -222,9 +221,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         _.forEach(data, (value) => {
           if (_.includes(_.get(value, 'mimeType'), this.playerConfig.metadata.mimeType) && _.get(value, 'version') === 2) {
             this.playerType = _.get(value, 'type');
-            if(this.playerType === 'video-player') {
-              this.hideFullscreenButton.emit(true);
-            }
             isNewPlayer = true;
           }
         });

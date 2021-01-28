@@ -67,7 +67,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   groupId;
   assessmentMaxAttempts: number;
   showMaxAttemptsModal: boolean = false;
-  hideFullscreenButton: boolean;
 
   constructor(
     public resourceService: ResourceService,
@@ -666,9 +665,5 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
         item.status = 1;
       }
     });
-  }
-
-  ishideFullscreenButton(event) {
-    this.hideFullscreenButton = event;
   }
 }

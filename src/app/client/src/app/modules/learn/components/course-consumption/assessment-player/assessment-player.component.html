@@ -86,12 +86,12 @@
                 <app-player class="content-player" [playerOption]="playerOption" [playerConfig]="playerConfig"
                   [contentProgressEvents$]="contentProgressEvents$" (assessmentEvents)="onAssessmentEvents($event)"
                   (questionScoreSubmitEvents)="onQuestionScoreSubmitEvents($event)"
-                  (ratingPopupClose)="onRatingPopupClose()" (hideFullscreenButton)="ishideFullscreenButton($event)"></app-player>
+                  (ratingPopupClose)="onRatingPopupClose()"></app-player>
               </div>
               <app-content-actions *ngIf="isFullScreenView" class="player-fullscreen-action-items" [isFullScreen]="true" [contentData]="activeContent" [objectRollUp]="objectRollUp">
               </app-content-actions>
               <app-content-actions *ngIf="activeContent" [contentData]="activeContent" [objectRollUp]="objectRollUp">
-              </app-content-actions [hideFullscreenButton]="hideFullscreenButton">
+              </app-content-actions>
             </section>
           </div>
           <div class="mt-8">

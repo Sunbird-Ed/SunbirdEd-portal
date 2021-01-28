@@ -18,7 +18,6 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
   @Input() contentData;
-  @Input() hideFullscreenButton: boolean;
   @Input() isFullScreen = false;
   @Output() contentDownloaded = new EventEmitter();
   actionButtons = actionButtons;
@@ -61,13 +60,14 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
     if (_.toLower(_.get(this.contentData, 'board')) === 'cbse') {
       this.contentData.board = 'CBSE/NCERT';
     }
+    const isVideoMimetype = _.includes(["video/mp4","video/webm","audio/mp3"], _.get(this.contentData, 'mimeType'));
     this.activatedRoute.params.subscribe((params) => {
       this.collectionId = params.collectionId;
     });
     this.actionButtons = _.cloneDeep(actionButtons);
     this.fullScreenActionButtons = _.cloneDeep(fullScreenActionButtons);
     _.find(this.actionButtons, (button) => {
-      button.disabled = (button.label === 'Fullscreen') ? (this.hideFullscreenButton || this.deviceDetectorService.isMobile() ||
+      button.disabled = (button.label === 'Fullscreen') ? (isVideoMimetype || this.deviceDetectorService.isMobile() ||
         this.deviceDetectorService.isTablet()) : button.disabled;
     });
     this.collectionId = _.get(this.activatedRoute, 'snapshot.params.collectionId');
