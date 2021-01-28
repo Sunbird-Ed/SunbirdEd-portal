@@ -3,12 +3,12 @@
     <div class="aspectratio" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio [ngClass]="{'player-fullscreen': isFullScreenView}">
       <app-player class="content-player" [playerOption]="playerOption" [playerConfig]="playerConfig"
         [contentProgressEvents$]="contentProgressEvents$" (assessmentEvents)="onAssessmentEvents($event)"
-        (questionScoreSubmitEvents)="onQuestionScoreSubmitEvents($event)" [isContentDeleted]="contentDeleted" ></app-player>
+        (questionScoreSubmitEvents)="onQuestionScoreSubmitEvents($event)" [isContentDeleted]="contentDeleted" (hideFullscreenButton)="ishideFullscreenButton($event)"></app-player>
       
       <app-content-actions *ngIf="isFullScreenView" class="player-fullscreen-action-items" [isFullScreen]="true" [contentData]="contentData" [objectRollUp]="objectRollUp">
         </app-content-actions>
     </div>
-    <app-content-actions *ngIf="contentData && !isFullScreenView" [isFullScreen]="false" (contentDownloaded)="checkContentDownloading($event)" [contentData]="contentData" [objectRollUp]="objectRollUp">
+    <app-content-actions *ngIf="contentData && !isFullScreenView" [hideFullscreenButton]="hideFullscreenButton" [isFullScreen]="false" (contentDownloaded)="checkContentDownloading($event)" [contentData]="contentData" [objectRollUp]="objectRollUp">
     </app-content-actions>
   </section>
 </div>

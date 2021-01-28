@@ -18,6 +18,7 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
   @Input() contentData;
+  @Input() hideFullscreenButton: boolean;
   @Input() isFullScreen = false;
   @Output() contentDownloaded = new EventEmitter();
   actionButtons = actionButtons;
@@ -66,7 +67,7 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
     this.actionButtons = _.cloneDeep(actionButtons);
     this.fullScreenActionButtons = _.cloneDeep(fullScreenActionButtons);
     _.find(this.actionButtons, (button) => {
-      button.disabled = (button.label === 'Fullscreen') ? (this.deviceDetectorService.isMobile() ||
+      button.disabled = (button.label === 'Fullscreen') ? (this.hideFullscreenButton || this.deviceDetectorService.isMobile() ||
         this.deviceDetectorService.isTablet()) : button.disabled;
     });
     this.collectionId = _.get(this.activatedRoute, 'snapshot.params.collectionId');
