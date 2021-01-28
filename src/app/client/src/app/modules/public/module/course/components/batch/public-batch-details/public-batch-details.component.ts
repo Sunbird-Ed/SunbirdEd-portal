@@ -3,11 +3,11 @@ import { takeUntil } from 'rxjs/operators';
 import { CourseBatchService, CourseConsumptionService } from '@sunbird/learn';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { ResourceService, ServerResponse, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
+import { ResourceService, ServerResponse, ToasterService, BrowserCacheTtlService, UtilService, ConfigService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import dayjs from 'dayjs';
-import { UserService, GeneraliseLabelService } from '@sunbird/core';
+import { UserService, GeneraliseLabelService, ElectronService } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import { IInteractEventObject, IInteractEventEdata, TelemetryService } from '@sunbird/telemetry';
 
@@ -42,7 +42,8 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
     public resourceService: ResourceService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
     public router: Router, public userService: UserService, public telemetryService: TelemetryService,
     public activatedRoute: ActivatedRoute, public courseConsumptionService: CourseConsumptionService,
-    public generaliseLabelService: GeneraliseLabelService) {
+    public generaliseLabelService: GeneraliseLabelService, public utilService: UtilService, private config: ConfigService,
+    public electronService: ElectronService) {
     this.batchStatus = this.statusOptions[0].value;
   }
 
@@ -154,6 +155,10 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
 
   setUrlToCourse() {
     const queryParam = this.tocId ? `?textbook=${this.tocId}` : '';
-    window.location.href = this.baseUrl + queryParam;
+    if(this.utilService.isDesktopApp) {
+      this.electronService.get({ url: `${this.config.urlConFig.URLS.OFFLINE.LOGIN}?redirectTo=${this.baseUrl + queryParam}`}).subscribe();
+    } else {
+      window.location.href = this.baseUrl + queryParam;
+    }
   }
 }
