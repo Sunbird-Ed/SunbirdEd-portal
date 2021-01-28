@@ -121,7 +121,8 @@ export class Router {
       if (locationData && _.isObject(locationData.state) || !_.isObject(locationData.city)) {
         const deviceProfile = new Device(manifest);
         deviceProfile.updateDeviceProfile(req.body.request);
-        next();
+        containerAPI.getDeviceSdkInstance().register();
+        res.status(200).send(Response.success('analytics.device-register', { status: 'success' }, req));
       } else {
         logger.error(
           `ReqId = "${req.headers[
@@ -132,11 +133,7 @@ export class Router {
         res.status(status);
         return res.send(Response.error('analytics.device-register', status));
       }
-    },proxy(proxyUrl, {
-      proxyReqPathResolver(req) {
-        return `/device/register/:id`;
-      },
-    }));
+    });
       
     authRoutes(app, proxyUrl);
     contentRoutes(app, proxyUrl, this.contentDownloadManager)
