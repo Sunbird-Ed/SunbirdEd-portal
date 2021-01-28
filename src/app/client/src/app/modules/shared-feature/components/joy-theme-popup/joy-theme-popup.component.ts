@@ -8,7 +8,7 @@ import {IInteractEventEdata} from '@sunbird/telemetry';
   styleUrls: ['./joy-theme-popup.component.scss']
 })
 export class JoyThemePopupComponent implements OnInit {
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
   @Output() closeJoyThemePopup = new EventEmitter<any>();
   instance: string;
   joyThemeIntractEdata: IInteractEventEdata;

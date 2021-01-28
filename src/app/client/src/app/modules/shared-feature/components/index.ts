@@ -7,7 +7,6 @@ export * from './validate-teacher-identifier-popup/validate-teacher-identifier-p
 export * from './user-location/user-location.component';
 export * from './user-onboarding/user-onboarding.component';
 export * from './onboarding-user-selection/onboarding-user-selection.component';
-export * from './onboarding-location-selection/onboarding-location-selection.component';
 export * from './joy-theme-popup/joy-theme-popup.component';
 export * from './confirmation-popup/confirmation-popup.component';
 export * from './cert-preview-popup/cert-preview-popup.component';

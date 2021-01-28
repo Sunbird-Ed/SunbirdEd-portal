@@ -1,4 +1,5 @@
 <div [ngClass]="!layoutConfiguration ? 'footer-fix' : 'new-footer'">
+<app-desktop-app-update *appDesktopOnly></app-desktop-app-update>
 <div [ngClass]="{'loggedInUser': userService.loggedIn, 'guestUser': !userService.loggedIn}">
   <app-popup #frameWorkPopUp *ngIf="showFrameWorkPopUp"
     [buttonLabel]="resourceService.frmelmnts.btn.submit" (submit)="updateFrameWork($event)"></app-popup>

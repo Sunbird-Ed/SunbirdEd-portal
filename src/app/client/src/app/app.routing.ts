@@ -47,7 +47,7 @@ const appRoutes: Routes = [
     path: '', loadChildren: 'app/modules/public/public.module#PublicModule'
   },
   {
-    path: 'discussions', loadChildren: 'app/modules/discussion/discussion.module#DiscussionModule'
+    path: 'discussion-forum', loadChildren: 'app/modules/discussion/discussion.module#DiscussionModule'
   },
   {
     path: MY_GROUPS, loadChildren: 'app/modules/groups/groups.module#GroupsModule'

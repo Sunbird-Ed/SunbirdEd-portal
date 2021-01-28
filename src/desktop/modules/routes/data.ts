@@ -10,6 +10,8 @@ import Tenant from "./../controllers/tenant";
 import { manifest } from "./../manifest";
 const proxy = require('express-http-proxy');
 import Response from "./../utils/response";
+import { decorateRequestHeaders } from "../helper/proxyUtils";
+import User from "../controllers/user";
 
 export default (app, proxyURL) => {
     const content = new Content(manifest);
@@ -26,28 +28,25 @@ export default (app, proxyURL) => {
     const tenant = new Tenant();
     app.get(
         ["/v1/tenant/info/", "/v1/tenant/info/:id"],
-        (req, res, next) => {
-            logger.debug(
-                `Received API call to get tenant data ${_.upperCase(
-                    _.get(req, "params.id"),
-                )}`,
-            );
-
-            logger.debug(`ReqId = "${req.headers["X-msgid"]}": Check proxy`);
-            if (enableProxy(req)) {
-                logger.info(`Proxy is Enabled `);
-                next();
-            } else {
-                logger.debug(`ReqId = "${req.headers["X-msgid"]}": Get tenant Info`);
-                tenant.get(req, res);
-                return;
-            }
-        },
         proxy(proxyURL, {
             proxyReqPathResolver(req) {
                 return `/v1/tenant/info/`;
             },
+            proxyErrorHandler: function (err, res, next) {
+                logger.warn(`Error While getting tenant info data from online`, err);
+                next();
+            },
+            userResDecorator: function (proxyRes, proxyResData) {
+                return new Promise(function (resolve) {
+                    resolve(proxyResData);
+                });
+            }
         }),
+        (req, res) => {
+            logger.debug(`ReqId = "${req.headers["X-msgid"]}": Get tenant Info from local`);
+            tenant.get(req, res);
+            return; 
+        }
     );
 
     const location = new Location(manifest);
@@ -71,10 +70,16 @@ export default (app, proxyURL) => {
         return res.send(Response.success("api.system.settings.get.custodianOrgId", resObj, req));
     });
 
+    app.get("/learner/data/v1/system/settings/*", proxy(proxyURL, {
+        proxyReqOptDecorator: decorateRequestHeaders(proxyURL),
+        proxyReqPathResolver: (req) => {
+            return require('url').parse(proxyURL + req.originalUrl.replace('/learner/', '/api/')).path
+        }
+    }));
+
     app.post(`/api/data/v1/dial/assemble`,
         (req, res, next) => {
-            const online = Boolean(_.get(req, "query.online") && req.query.online.toLowerCase() === "true");
-            if (online) {
+            if (enableProxy(req)) {
                 req = updateRequestBody(req);
                 next();
             } else {
@@ -119,6 +124,11 @@ export default (app, proxyURL) => {
                 return `/getGeneralisedResourcesBundles/${req.params.lang}/${req.params.fileName}`;
             },
         }),
+    );
+
+    const user = new User(manifest);
+    app.get("/api/desktop/user/v1/read",
+      user.read.bind(user),
     );
 }
 

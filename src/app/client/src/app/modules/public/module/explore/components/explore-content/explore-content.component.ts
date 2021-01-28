@@ -247,6 +247,14 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         this.showLoader = false;
         this.facets = this.searchService.updateFacetsData(_.get(data, 'result.facets'));
         this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
+        if(this.isDesktopApp) {
+          _.forEach(this.facets, (facet, index) => {
+            if(facet.name === 'primaryCategory') {
+              const updatedValues = facet.values.filter(value => !['course assessment', 'course'].includes(value.name));
+              facet.values = updatedValues;
+            }
+          })
+        }
         this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
           this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.contentList = data.result.content || [];
@@ -303,6 +311,10 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     };
   }
   public playContent(event) {
+    if(this.isDesktopApp && _.toUpper(_.get(event, 'content.trackable.enabled')) === 'YES') {
+      this.toasterService.error(this.resourceService.messages.imsg.t0143);
+      return false;
+    }
     this.publicPlayerService.playContent(event);
   }
   public inView(event) {

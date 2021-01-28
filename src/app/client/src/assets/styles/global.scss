@@ -661,9 +661,14 @@ app-workspace {
     }
 }
 
-html.PlayerMediaQueryClass {
-  font-size: calc(12px + (32 - 12) * ((100vw - 320px) / (1920 - 320)));
-}
+
+  html.PlayerMediaQueryClass {
+    @include respond-above(xxl){
+      font-size: calc(12px + (18 - 12) * ((100vw - 320px) / (1920 - 320)));
+    }
+  }
+
+
 .sb-notification-modal{
   .ui.modal{
     left: auto;
@@ -722,4 +727,15 @@ html.PlayerMediaQueryClass {
 }
 .pointer-events-disabled {
   pointer-events: none;
+}
+.disabled-toc-card {
+  background-color: var(--white) !important;
+  cursor: not-allowed !important;
+  .sbchapter__item__title {
+    opacity: 0.3;
+    color: var(--black) !important;
+  }
+}
+.consent-info{
+  font-size: calculateRem(12px);
 }

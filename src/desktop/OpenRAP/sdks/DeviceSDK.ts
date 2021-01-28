@@ -183,6 +183,11 @@ export default class DeviceSDK {
             return Promise.resolve(this.apiKey); 
         }
     }
+
+    public async clearToken() {
+        this.apiKey = undefined;
+        await this.settingSDK.delete('device_token').catch(err => { logger.error("while deleting the api key from the database", err) });
+    }
 }
 
 export interface IConfig {

@@ -4,7 +4,7 @@ import * as _ from 'lodash-es';
 import { ICard, ILanguage } from '@sunbird/shared';
 import { Subject } from 'rxjs';
 import { ResourceService } from '../resource/resource.service';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { ExportToCsv } from 'export-to-csv';
 import { environment } from '@sunbird/environment';
   // Dependency injection creates new instance each time if used in router sub-modules
@@ -78,6 +78,9 @@ export class UtilService {
       primaryCategory: data.primaryCategory
 
     };
+    if (data.trackable) {
+      content.trackable = data.trackable;
+    }
     if (data.desktopAppMetadata) {
       content['desktopAppMetadata'] = data.desktopAppMetadata;
     }
@@ -269,10 +272,10 @@ export class UtilService {
         : this.isAvailable(value) ? 'GOTOMYDOWNLOADS' : '') : '',
         actions: [
           {
-            type: isOnlineSearch ? 'download' : (contentStatus ? (_.upperCase(contentStatus) !== 'DOWNLOADED' ? 'download' : 'save') : 'save'),
+            type: isOnlineSearch ? 'download' : (contentStatus ? (!_.includes(['COMPLETED', 'DOWNLOADED'], contentStatus) ? 'download' : 'save') : 'save'),
             label: isOnlineSearch ? (contentStatus ? _.capitalize(contentStatus) :
             this.isAvailable(value) ? _.capitalize('COMPLETED') : _.capitalize('CANCELED')) :
-            (contentStatus ? (_.upperCase(contentStatus) === 'DOWNLOADED' ? 'SAVETOPENDRIVE' : _.capitalize(contentStatus)) :
+            (contentStatus ? (_.includes(['COMPLETED', 'DOWNLOADED'], contentStatus) ? 'SAVETOPENDRIVE' : _.capitalize(contentStatus)) :
             this.isAvailable(value) ? 'SAVETOPENDRIVE' : _.capitalize('CANCELED')),
 
             disabled: isOnlineSearch ? (contentStatus ? _.includes(['Downloaded', 'Completed', 'Downloading', 'Paused', 'Inprogress', 'Resume', 'Inqueue' ], _.capitalize(contentStatus)) :

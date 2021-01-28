@@ -144,3 +144,24 @@
   (close)="shareLinkModal = false">
 </app-share-link>
 <app-course-completion *ngIf="showCourseCompleteMessage" [certificateDescription]="certificateDescription" (close)="onCourseCompleteClose()"></app-course-completion>
+
+<!-- Start - Modal for Assessment attempts -->
+<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
+    appBodyScroll (dismissed)="closeLoginModal()" #modal *ngIf="showMaxAttemptsModal">
+    <div class="sb-modal-header">
+        {{resourceService?.frmelmnts?.lbl?.accessCourse}}
+    </div>
+    <div class="sb-modal-content sb-join-modal-content">
+        <div class="fsmall px-0 py-8">
+          {{resourceService?.frmelmnts?.lbl?.selfAssessMaxAttempt}}
+        </div>
+    </div>
+    <div class="sb-modal-actions">
+        <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+            [telemetryInteractEdata]="signInInteractEdata" (click)="goBack(); showMaxAttemptsModal = !showMaxAttemptsModal"
+            class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn">
+            {{resourceService?.frmelmnts?.btn?.close}}
+        </a>
+    </div>
+</sui-modal>
+<!-- End - Modal for Assessment attempts -->

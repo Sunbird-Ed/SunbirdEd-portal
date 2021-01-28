@@ -9,6 +9,7 @@ let envVariables = {
   APPID: process.env.sunbird_environment + '.' + process.env.sunbird_instance + '.portal',
   sunbird_instance_name: env.sunbird_instance || 'Sunbird',
   DEFAULT_CHANNEL: env.sunbird_default_channel,
+  PORTAL_API_WHITELIST_CHECK: env.sunbird_enable_api_whitelist || 'true',
 
   // discussion forum 
   discussions_middleware: env.discussions_middleware || 'http://discussionsmw-service:3002',
@@ -80,6 +81,19 @@ let envVariables = {
   KEYCLOAK_ANDROID_CLIENT: {
     clientId: env.sunbird_android_keycloak_client_id || 'android',
   },
+
+  KEYCLOAK_GOOGLE_DESKTOP_CLIENT: {
+    clientId: env.sunbird_google_desktop_keycloak_client_id,
+    secret: env.sunbird_google_desktop_keycloak_secret
+  },
+  KEYCLOAK_TRAMPOLINE_DESKTOP_CLIENT: {
+    clientId: env.sunbird_trampoline_desktop_keycloak_client_id,
+    secret: env.sunbird_trampoline_desktop_keycloak_secret
+  },
+  KEYCLOAK_DESKTOP_CLIENT: {
+    clientId: env.sunbird_desktop_keycloak_client_id || 'desktop',
+  },
+
   PORTAL_TRAMPOLINE_CLIENT_ID: env.sunbird_trampoline_client_id || 'trampoline',
   PORTAL_TRAMPOLINE_SECRET: env.sunbird_trampoline_secret,
   PORTAL_AUTOCREATE_TRAMPOLINE_USER: env.sunbird_autocreate_trampoline_user || 'true',

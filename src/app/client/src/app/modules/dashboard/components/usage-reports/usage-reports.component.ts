@@ -2,7 +2,7 @@ import { IInteractEventEdata, IInteractEventObject, TelemetryInteractDirective, 
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { CourseProgressService, UsageService } from './../../services';
 import * as _ from 'lodash-es';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UserService } from '@sunbird/core';
 import {
@@ -41,7 +41,7 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
   public courseProgressService: CourseProgressService;
   layoutConfiguration: any;
   private unsubscribe$ = new Subject<void>();
-  @ViewChild(TelemetryInteractDirective) telemetryInteractDirective;
+  @ViewChild(TelemetryInteractDirective, {static: false}) telemetryInteractDirective;
   constructor(private usageService: UsageService, private sanitizer: DomSanitizer,
     public userService: UserService, private toasterService: ToasterService,
     public resourceService: ResourceService, activatedRoute: ActivatedRoute, private router: Router,

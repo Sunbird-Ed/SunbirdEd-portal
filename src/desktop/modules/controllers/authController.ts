@@ -1,15 +1,11 @@
-import { HTTPService } from "@project-sunbird/OpenRAP/services/httpService";
 import { logger } from "@project-sunbird/logger";
-import * as _ from "lodash";
 import { containerAPI } from "@project-sunbird/OpenRAP/api";
-import * as os from "os";
-import config from "../config";
-import Response from "../utils/response";
 import * as jwt from "jsonwebtoken";
-import permissionsHelper from "../helper/permissionsHelper";
-
-import { ClassLogger } from "@project-sunbird/logger/decorator";
 import { ILoggedInUser } from '../../OpenRAP/interfaces/IUser';
+import permissionsHelper from "../helper/permissionsHelper";
+import Response from "../utils/response";
+const uuidv1 = require('uuid/v1');
+
 
 // @ClassLogger({
 //     logLevel: "debug",
@@ -51,8 +47,21 @@ export default class AuthController {
             }
 
             const user = await permissionsHelper.getUser(userAuthDetails);
+            const managedUsers: any = await permissionsHelper.getManagedUsers(userAuthDetails);
+
+            // Save Logged-in User in DB
             user.accessToken = userAuthDetails.access_token;
             await this.saveUserInDB(user);
+            await this.setUserSession(user);
+
+            // Save managed users in DB
+            if (managedUsers.count) {
+                managedUsers.content.forEach(async (managedUser) => {
+                    managedUser.accessToken = userAuthDetails.access_token;
+                    await this.saveUserInDB(managedUser)
+                });
+            }
+
             return res.send({ status: 'success' });
         } catch (err) {
             logger.error(`While startUserSession ${err.message} ${err.stack}`);
@@ -62,10 +71,25 @@ export default class AuthController {
         }
     }
 
-    private async saveUserInDB(user: ILoggedInUser) {
+    public async saveUserInDB(user: ILoggedInUser) {
         const response = await this.userSDK.insertLoggedInUser(user);
-        const sessionData = { userId: user.userId };
-        await this.userSDK.setUserSession(sessionData);
         return response;
+    }
+
+    public async setUserSession(user: ILoggedInUser) {
+        const sessionData = { userId: user.userId, sessionId: uuidv1() };
+        await this.userSDK.setUserSession(sessionData);
+    }
+
+    public async endSession(req, res) {
+        try {
+            await this.userSDK.deleteAllLoggedInUsers().catch(error => { logger.error("unable to delete logged in user data", error); })
+            await this.userSDK.deleteUserSession().catch(error => { logger.debug("unable to clear logged in user session", error); })
+            return res.send({ status: 'success' });
+        } catch(err) {
+            let status = err.status || 500;
+            res.status(status);
+            return res.send(Response.error('api.user.endSession', status, err.message));
+        }
     }
 }

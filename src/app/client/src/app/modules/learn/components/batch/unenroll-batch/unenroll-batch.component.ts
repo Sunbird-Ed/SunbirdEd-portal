@@ -14,7 +14,7 @@ import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
   templateUrl: './unenroll-batch.component.html'
 })
 export class UnEnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('unenrollBatch') unenrollBatch;
+  @ViewChild('unenrollBatch', {static: false}) unenrollBatch;
   batchId: string;
   batchDetails: any;
   showEnrollDetails = false;

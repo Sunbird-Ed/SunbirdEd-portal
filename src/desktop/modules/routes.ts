@@ -14,6 +14,7 @@ import frameworkRoutes from './routes/framework'
 import desktopRoutes from './routes/desktop';
 import playerProxyRoutes from './routes/playerProxy';
 import staticRoutes from './routes/static';
+import courseRoutes from './routes/course';
 import telemetryRoutes from './routes/telemetry';
 import authRoutes from './routes/auth';
 import Device from './controllers/device';
@@ -90,25 +91,29 @@ export class Router {
       next();
     };
     app.use(addRequestId);
-    // portal static routes
+
     staticRoutes(app, 'content', 'ecars');
 
-    // api's for portal
-
-    app.get(`/device/profile/:id`,
-      async (req, res, next) => {
-        logger.debug(`Received API call to get device profile`);
-        const apiKey = await containerAPI.getDeviceSdkInstance().getToken().catch((err) => {
-          logger.error(`Received error while fetching api key in device profile with error: ${err}`);
-        });
-        req.headers.Authorization = `Bearer ${apiKey}`;
+    app.get("/device/profile/:id", async (req, res, next) => {
+      logger.debug(`Received API call to get device profile data from offline`);
+      try {
+        const deviceProfile = new Device(manifest);
+        const locationData: any = await deviceProfile.getDeviceProfile();
+        // set Default state value if offline location data is not available
+        let responseObj = { userDeclaredLocation: { 'state': '', 'district': '' } }
+        if (locationData) {
+          responseObj.userDeclaredLocation.state = _.get(locationData, 'state');
+          responseObj.userDeclaredLocation.district = _.get(locationData, 'district');
+          return res.send(Response.success("offline.device-profile", responseObj, req));
+        } else {
+          next();
+        }
+      } catch (error) {
         next();
-      },
-      proxy(proxyUrl, {
-        proxyReqPathResolver(req) {
-          return `/api/v3/device/profile/:id`;
-        },
-      }));
+      }
+    }, proxy(proxyUrl, {
+        proxyReqPathResolver(req) { return `/device/profile/:id` },
+    }));
     
     app.post(`/device/register/:id`, async(req, res, next) => {
       logger.debug(`Received API call to update device profile`, req.params.id);
@@ -138,6 +143,7 @@ export class Router {
     channelRoutes(app, proxyUrl);
     frameworkRoutes(app, proxyUrl);
     desktopRoutes(app, proxyUrl);
+    courseRoutes(app, proxyUrl);
     telemetryRoutes(app)
     playerProxyRoutes(app, proxyUrl);
 

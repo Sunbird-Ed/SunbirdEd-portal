@@ -100,6 +100,7 @@ export class UserService {
   public publicDataService: PublicDataService;
   private _slug = '';
   public _isCustodianUser: boolean;
+  public anonymousUserPreference: boolean;
   public readonly userOrgDetails$ = this.userData$.pipe(
     mergeMap(data => iif(() =>
     !this._userProfile.organisationIds, of([]), this.getOrganizationDetails(this._userProfile.organisationIds))),
@@ -256,11 +257,11 @@ export class UserService {
     this._userProfile.hashTagIds = _.uniq(hashTagIds);
     this._userProfile.userId = this.userid; // this line is added to handle userId not returned from user service
     this._rootOrgId = this._userProfile.rootOrgId;
-    this._hashTagId = this._userProfile.rootOrg.hashTagId;
+    this._hashTagId = _.get(this._userProfile, 'rootOrg.hashTagId');
     this.setRoleOrgMap(profileData);
     this.setOrgDetailsToRequestHeaders();
     this._userData$.next({ err: null, userProfile: this._userProfile });
-    this.rootOrgName = this._userProfile.rootOrg.orgName;
+    this.rootOrgName = _.get(this._userProfile, 'rootOrg.orgName');
 
     // Storing profile details of stroger credentials user in cache
     if (!this._userProfile.managedBy) {
@@ -380,7 +381,7 @@ export class UserService {
 
   public endSession() {
     const url = this.config.urlConFig.URLS.USER.END_SESSION;
-    this.http.get(url).subscribe();
+    return this.http.get(url);
   }
 
   getUserByKey(key) {
@@ -425,5 +426,14 @@ export class UserService {
       param: this.config.urlConFig.params.userReadParam
     };
     return this.learnerService.getWithHeaders(option);
+  }
+
+  getAnonymousUserPreference() {
+    const options = {
+      url: this.config.urlConFig.URLS.OFFLINE.READ_USER
+    };
+    this.publicDataService.get(options).subscribe((response: ServerResponse) => {
+      this.anonymousUserPreference = response.result;
+    });
   }
 }

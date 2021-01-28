@@ -81,6 +81,17 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             board: [DEFAULT_FRAMEWORK], gradeLevel: this.isUserLoggedIn() ? [] : ['Class 10'], medium: [],
             ...userFramework
         };
+        if (this.utilService.isDesktopApp) {
+            const userPreferences: any = this.userService.anonymousUserPreference;
+            if (userPreferences) {
+                _.forEach(['board', 'medium', 'gradeLevel'], (item) => {
+                    if (!_.has(this.selectedFilters, item)) {
+                        this.defaultFilters[item] = _.isArray(userPreferences.framework[item]) ?
+                            userPreferences.framework[item] : _.split(userPreferences.framework[item], ', ');
+                    }
+                });
+            }
+        }
         this.numberOfSections = [get(this.configService, 'appConfig.SEARCH.SECTION_LIMIT') || 3];
         this.layoutConfiguration = this.layoutService.initlayoutConfig();
         this.redoLayout();
@@ -182,8 +193,20 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.selectedFilters = pick(filters, ['board', 'medium', 'gradeLevel', 'channel', 'subject', 'audience']);
         if (has(filters, 'audience') || (localStorage.getItem('userType') && currentPageData.contentType !== 'all')) {
             const userTypes = get(filters, 'audience') || [localStorage.getItem('userType')];
+            const audienceSearchFilterValue = _.get(filters, 'audienceSearchFilterValue');
             const userTypeMapping = get(this.configService, 'appConfig.userTypeMapping');
-            this.selectedFilters['audience'] = uniq(flatten(_map(userTypes, userType => userTypeMapping[userType])));
+            this.selectedFilters['audience'] = audienceSearchFilterValue || uniq(flatten(_map(userTypes, userType => userTypeMapping[userType])));
+        }
+        if (this.utilService.isDesktopApp) {
+            const userPreferences: any = this.userService.anonymousUserPreference;
+            if (userPreferences) {
+                _.forEach(['board', 'medium', 'gradeLevel'], (item) => {
+                    if (!_.has(this.selectedFilters, item)) {
+                        this.selectedFilters[item] = _.isArray(userPreferences.framework[item]) ?
+                        userPreferences.framework[item] : _.split(userPreferences.framework[item], ', ');
+                    }
+                });
+            }
         }
         this.apiContentList = [];
         this.pageSections = [];

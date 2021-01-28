@@ -3,7 +3,7 @@ import { combineLatest as observableCombineLatest, Observable, forkJoin } from '
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
-import { SearchService, UserService, ISort } from '@sunbird/core';
+import { SearchService, UserService, ISort, FrameworkService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ConfigService, ToasterService, IPagination,
   ResourceService, ILoaderMessage, INoResultMessage, IContents, NavigationHelperService
@@ -24,7 +24,7 @@ import { ContentIDParam } from '../../interfaces/delteparam';
 
 export class AllContentComponent extends WorkSpace implements OnInit, AfterViewInit {
 
-  @ViewChild('modalTemplate')
+  @ViewChild('modalTemplate', {static: false})
   public modalTemplate: ModalTemplate<{ data: string }, string, string>;
   /**
      * state for content editior
@@ -212,6 +212,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
   constructor(public searchService: SearchService,
     public navigationhelperService: NavigationHelperService,
     public workSpaceService: WorkSpaceService,
+    public frameworkService: FrameworkService,
     paginationService: PaginationService,
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
@@ -264,11 +265,14 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
       this.sort = { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn };
     }
     const preStatus = ['Draft', 'FlagDraft', 'Review', 'Processing', 'Live', 'Unlisted', 'FlagReview'];
+    // tslint:disable-next-line:max-line-length
+    const primaryCategories = _.concat(this.frameworkService['_channelData'].contentPrimaryCategories, this.frameworkService['_channelData'].collectionPrimaryCategories);
     const searchParams = {
       filters: {
         status: bothParams.queryParams.status ? bothParams.queryParams.status : preStatus,
         createdBy: this.userService.userid,
-        primaryCategory: _.get(bothParams, 'queryParams.primaryCategory') || this.config.appConfig.WORKSPACE.primaryCategory,
+        // tslint:disable-next-line:max-line-length
+        primaryCategory: _.get(bothParams, 'queryParams.primaryCategory') || primaryCategories || this.config.appConfig.WORKSPACE.primaryCategory,
         objectType: this.config.appConfig.WORKSPACE.objectType,
         board: bothParams.queryParams.board,
         subject: bothParams.queryParams.subject,
@@ -432,9 +436,17 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
   }
 
   contentClick(content) {
+    if (content.originData) {
+      const originData = JSON.parse(content.originData);
+      if (originData.copyType === 'shallow') {
+        const errMsg = (this.resourceService.messages.emsg.m1414).replace('{instance}', originData.organisation[0]);
+        this.toasterService.error(errMsg);
+        return;
+      }
+    }
     if (_.size(content.lockInfo) && this.userService.userid !== content.lockInfo.createdBy) {
-        this.lockPopupData = content;
-        this.showLockedContentModal = true;
+      this.lockPopupData = content;
+      this.showLockedContentModal = true;
     } else {
       const status = content.status.toLowerCase();
       if (status === 'processing') {
@@ -447,7 +459,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
       }
     }
   }
-
+ 
   public onCloseLockInfoPopup () {
     this.showLockedContentModal = false;
   }

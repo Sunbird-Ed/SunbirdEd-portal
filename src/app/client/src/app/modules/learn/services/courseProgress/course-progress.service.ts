@@ -4,7 +4,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { ConfigService, ServerResponse, ToasterService, ResourceService } from '@sunbird/shared';
 import { ContentService, UserService, CoursesService } from '@sunbird/core';
 import * as _ from 'lodash-es';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 
 @Injectable({
   providedIn: 'root'
@@ -54,6 +54,9 @@ export class CourseProgressService {
           }
         }
       };
+      if (_.get(req, 'fields')) {
+        channelOptions.data.request['fields'] = _.get(req, 'fields');
+      }
       return this.contentService.post(channelOptions).pipe(map((res: ServerResponse) => {
         this.processContent(req, res, courseId_batchId);
         this.courseProgressData.emit(this.courseProgress[courseId_batchId]);
@@ -64,7 +67,18 @@ export class CourseProgressService {
       }));
   }
 
-  private processContent(req, res, courseId_batchId) {
+  public getContentProgressState(req, res) {
+    const courseId_batchId = req.courseId + '_' + req.batchId;
+    this.processContent(req, res, courseId_batchId, true);
+    this.courseProgressData.emit(this.courseProgress[courseId_batchId]);
+    return this.courseProgress[courseId_batchId];
+  }
+
+  private processContent(req, res, courseId_batchId, isCSLResponse: boolean = false) {
+    let _contentList = _.get(res, 'result.contentList');
+    if (isCSLResponse) {
+      _contentList = res;
+    }
     this.courseProgress[courseId_batchId] = {
       progress: 0,
       completedCount: 0,
@@ -72,9 +86,9 @@ export class CourseProgressService {
       content: []
     };
     const resContentIds = [];
-    if (res.result.contentList.length > 0) {
+    if (_contentList.length > 0) {
       _.forEach(_.uniq(req.contentIds), (contentId) => {
-        const content = _.find(res.result.contentList, { 'contentId': contentId });
+        const content = _.find(_contentList, { 'contentId': contentId });
         if (content) {
           this.courseProgress[courseId_batchId].content.push(content);
           resContentIds.push(content.contentId);

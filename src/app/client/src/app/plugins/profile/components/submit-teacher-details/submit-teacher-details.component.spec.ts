@@ -75,6 +75,12 @@ describe('SubmitTeacherDetailsComponent', () => {
       }
     }
   };
+
+  const MockCSService = {
+    updateConsent() { return of({}); },
+    getConsent() { return of({}); }
+  };
+
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -91,6 +97,7 @@ describe('SubmitTeacherDetailsComponent', () => {
       providers: [
         { provide: ResourceService, useValue: resourceBundle },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: 'CS_USER_SERVICE', useValue: MockCSService },
         { provide: Router, useClass: RouterStub },
         NavigationHelperService, DeviceDetectorService,
         TelemetryService, OtpService,

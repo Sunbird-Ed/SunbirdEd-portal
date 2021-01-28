@@ -15,7 +15,7 @@ import {
   UtilService,
   ToasterService,
   IUserData, LayoutService,
-  NavigationHelperService
+  NavigationHelperService, ConnectionService
 } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -24,7 +24,6 @@ import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
 import { Subject, zip, forkJoin } from 'rxjs';
 import { EXPLORE_GROUPS, MY_GROUPS } from '../../../public/module/group/components/routerLinks';
-import { ConnectionService } from '@sunbird/shared';
 
 declare var jQuery: any;
 type reportsListVersionType = 'v1' | 'v2';
@@ -120,6 +119,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   learnMenuIntractEdata: IInteractEventEdata;
   contributeMenuEdata: IInteractEventEdata;
   myGroupIntractEData: IInteractEventEdata;
+  aboutUsEdata: IInteractEventEdata;
   showContributeTab: boolean;
   hideHeader = false;
   ShowStudentDropdown = false;
@@ -377,6 +377,11 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       type: 'click',
       pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') || 'groups'
     };
+    this.aboutUsEdata = {
+      id: 'about-us-tab',
+      type: 'click',
+      pageid: 'about-us'
+    };
   }
 
   getFeatureId(featureId, taskId) {
@@ -477,22 +482,16 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.userSid'));
       userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
         if (user && !user.err && user.userProfile.userId === userId) {
-          this.courseService.getEnrolledCourses().subscribe((enrolledCourse) => {
-            this.telemetryService.setInitialization(false);
-            this.telemetryService.initialize(this.getTelemetryContext());
-            this.toasterService.custom({
-              message: this.managedUserService.getMessage(_.get(this.resourceService, 'messages.imsg.m0095'),
-                selectedUser.firstName),
-              class: 'sb-toaster sb-toast-success sb-toast-normal'
+          if (this.utilService.isDesktopApp && !this.isConnected) {
+            this.initializeManagedUser(selectedUser);
+          } else {
+            this.courseService.getEnrolledCourses().subscribe((enrolledCourse) => {
+              this.initializeManagedUser(selectedUser);
             });
-            this.toggleSideMenu(false);
-            if (userSubscription) {
-              userSubscription.unsubscribe();
-            }
-            setTimeout(() => {
-              this.utilService.redirect('/resources');
-            }, 5100);
-          });
+          }
+          if (userSubscription) {
+            userSubscription.unsubscribe();
+          }
         }
       });
     }, (err) => {
@@ -649,9 +648,22 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   doLogin() {
-    this.electronService.get({ url: this.config.urlConFig.URLS.OFFLINE.LOGIN}).subscribe((data) => {
-      console.log(data);
+    this.electronService.get({ url: this.config.urlConFig.URLS.OFFLINE.LOGIN}).subscribe();
+  }
+
+  initializeManagedUser(selectedUser) {
+    this.telemetryService.setInitialization(false);
+    this.telemetryService.initialize(this.getTelemetryContext());
+    this.toasterService.custom({
+      message: this.managedUserService.getMessage(_.get(this.resourceService, 'messages.imsg.m0095'),
+        selectedUser.firstName),
+      class: 'sb-toaster sb-toast-success sb-toast-normal'
     });
+    this.toggleSideMenu(false);
+
+    setTimeout(() => {
+      this.utilService.redirect('/resources');
+    }, 5100);
   }
 
 }

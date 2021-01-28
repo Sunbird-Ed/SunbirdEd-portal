@@ -13,7 +13,7 @@ import { CourseProgressService, UsageService } from './../../services';
 import { ICourseProgressData, IBatchListData } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { OnDemandReportService } from './../../../shared/services/on-demand-report/on-demand-report.service';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 
 /**
  * This component shows the course progress dashboard
@@ -26,7 +26,7 @@ import * as dayjs from 'dayjs';
 export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit {
   modelChanged: Subject<string> = new Subject<string>();
 
-  @ViewChild(OnDemandReportsComponent)
+  @ViewChild(OnDemandReportsComponent, {static: false})
   public onDemandReports: OnDemandReportsComponent;
   /**
    * Variable to gather and unsubscribe all observable subscriptions in this component.

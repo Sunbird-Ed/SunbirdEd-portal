@@ -7,9 +7,15 @@ const proxy = require('express-http-proxy');
 import * as _ from "lodash";
 import config from "./../config";
 import TelemetryHelper from "./../helper/telemetryHelper";
+import { customProxy } from '../helper/proxyHandler';
 
 export default (app, proxyURL, contentDownloadManager) => {
     const content = new Content(manifest);
+    const defaultProxyConfig = { 
+        isUserTokenRequired: true, 
+        isAuthTokenRequired: true, 
+        bypassLearnerRoute: true 
+    };
     app.get(
       "/api/content/v1/read/:id",
       async (req, res, next) => {
@@ -31,7 +37,8 @@ export default (app, proxyURL, contentDownloadManager) => {
       },
       proxy(proxyURL, {
         proxyReqPathResolver(req) {
-          return `/api/content/v1/read/${req.params.id}?fields=${req.query.fields}`;
+          const query = require('url').parse(req.url).query;
+          return `/api/content/v1/read/${req.params.id}?${query}`;
         },
         userResDecorator(proxyRes, proxyResData, req) {
           return new Promise(function(resolve) {
@@ -254,6 +261,14 @@ export default (app, proxyURL, contentDownloadManager) => {
   
       const contentDelete = new ContentDelete(manifest);
       app.post("/api/content/v1/delete", contentDelete.delete.bind(contentDelete));
+
+      app.post("/content/composite/v1/search", customProxy(proxyURL, { bypassContentRoute: true }), (req, res) => {
+          res.status(res.statusCode).send(res.body);
+      });
+
+      app.post("/certreg/v1/certs/search", customProxy(proxyURL, defaultProxyConfig), (req, res) => {
+          res.status(res.statusCode).send(res.body);
+      });
 }
 
 const enableProxy = (req) => {

@@ -1,7 +1,7 @@
 import { ExploreContentComponent } from './explore-content.component';
 import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
-import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
+import { ResourceService, ToasterService, SharedModule, UtilService } from '@sunbird/shared';
 import { SearchService, OrgDetailsService, CoreModule, UserService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
@@ -38,6 +38,9 @@ describe('ExploreContentComponent', () => {
         'm0140': 'DOWNLOADING',
         'm0138': 'FAILED',
         'm0139': 'DOWNLOADED',
+      },
+      'imsg': {
+       't0143': 'This content is not supported yet'
       },
       'emsg': {},
     },
@@ -314,4 +317,21 @@ describe('ExploreContentComponent', () => {
     expect(component.addHoverData).toHaveBeenCalled();
     expect(component['setNoResultMessage']).toHaveBeenCalled();
   });
+
+  it('should not play content for trackable collection for desktop app', () => {
+    component.isDesktopApp = true;
+    spyOn(toasterService, 'error').and.callFake(() => { });
+    component.playContent({content: {trackable: {enabled: 'Yes'}}});
+    expect(toasterService.error).toHaveBeenCalled();
+  });
+
+  it('should fetch content and remove course from facets for desktop app', fakeAsync(() => {
+    const utilService = TestBed.get(UtilService);
+    utilService._isDesktopApp = true;
+    component.ngOnInit();
+    component.getFilters([{ code: 'board', range: [{ index: 0, name: 'NCRT' }, { index: 1, name: 'CBSC' }] }]);
+    tick(100);
+    expect(component.contentList.length).toEqual(1);
+  }));
+
 });

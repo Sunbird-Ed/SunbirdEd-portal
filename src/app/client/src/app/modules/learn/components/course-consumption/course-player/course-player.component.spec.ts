@@ -27,77 +27,77 @@ describe('CoursePlayerComponent', () => {
   }
   const batchs = [
     {
-      batchId: "0130936282663157765",
-      createdFor: ["0124784842112040965"],
+      batchId: '0130936282663157765',
+      createdFor: ['0124784842112040965'],
       endDate: null,
       enrollmentEndDate: null,
-      enrollmentType: "open",
-      name: "SHS cert course 1 - 0825",
-      startDate: "2020-12-25",
+      enrollmentType: 'open',
+      name: 'SHS cert course 1 - 0825',
+      startDate: '2045-12-25',
       status: 1
     },
     {
-      batchId: "0130936282663157765",
-      createdFor: ["0124784842112040965"],
+      batchId: '0130936282663157765',
+      createdFor: ['0124784842112040965'],
       endDate: null,
       enrollmentEndDate: null,
-      enrollmentType: "open",
-      name: "SHS cert course 1 - 0825",
-      startDate: "2020-08-25",
+      enrollmentType: 'open',
+      name: 'SHS cert course 1 - 0825',
+      startDate: '2045-08-25',
       status: 1
     },
     {
-      batchId: "0130936282663157765",
-      createdFor: ["0124784842112040965"],
+      batchId: '0130936282663157765',
+      createdFor: ['0124784842112040965'],
       endDate: null,
-      enrollmentEndDate: "2020-02-10",
-      enrollmentType: "open",
-      name: "SHS cert course 1 - 0825",
-      startDate: "2020-01-25",
+      enrollmentEndDate: '2020-02-10',
+      enrollmentType: 'open',
+      name: 'SHS cert course 1 - 0825',
+      startDate: '2045-01-25',
       status: 1
     }
   ]
   const featureBatch = [
     {
-      batchId: "0130936282663157765",
-      createdFor: ["0124784842112040965"],
+      batchId: '0130936282663157765',
+      createdFor: ['0124784842112040965'],
       endDate: null,
       enrollmentEndDate: null,
-      enrollmentType: "open",
-      name: "SHS cert course 1 - 0825",
-      startDate: "2020-10-25",
+      enrollmentType: 'open',
+      name: 'SHS cert course 1 - 0825',
+      startDate: '2045-10-25',
       status: 1
     },
     {
-      batchId: "0130936282663157765",
-      createdFor: ["0124784842112040965"],
+      batchId: '0130936282663157765',
+      createdFor: ['0124784842112040965'],
       endDate: null,
-      enrollmentEndDate: "2020-02-10",
-      enrollmentType: "open",
-      name: "SHS cert course 1 - 0825",
-      startDate: "2020-01-25",
+      enrollmentEndDate: '2020-02-10',
+      enrollmentType: 'open',
+      name: 'SHS cert course 1 - 0825',
+      startDate: '2045-01-25',
       status: 1
     }
   ]
   const ongoingBatch = [
     {
-      batchId: "0130936282663157765",
-      createdFor: ["0124784842112040965"],
+      batchId: '0130936282663157765',
+      createdFor: ['0124784842112040965'],
       endDate: null,
       enrollmentEndDate: null,
-      enrollmentType: "open",
-      name: "SHS cert course 1 - 0825",
-      startDate: "2020-08-25",
+      enrollmentType: 'open',
+      name: 'SHS cert course 1 - 0825',
+      startDate: '2020-08-25',
       status: 1
     },
     {
-      batchId: "0130936282663157765",
-      createdFor: ["0124784842112040965"],
+      batchId: '0130936282663157765',
+      createdFor: ['0124784842112040965'],
       endDate: null,
-      enrollmentEndDate: "2020-02-10",
-      enrollmentType: "open",
-      name: "SHS cert course 1 - 0825",
-      startDate: "2020-01-25",
+      enrollmentEndDate: '2020-02-10',
+      enrollmentType: 'open',
+      name: 'SHS cert course 1 - 0825',
+      startDate: '2020-01-25',
       status: 1
     }
   ]
@@ -126,7 +126,8 @@ describe('CoursePlayerComponent', () => {
   const MockCSService = {
     getUserFeed() { return of({}); },
     updateUserFeedEntry() { return of({}); },
-    deleteUserFeedEntry() { return of({}); }
+    deleteUserFeedEntry() { return of({}); },
+    getContentState() { return of({}); }
   };
 
   class ActivatedRouteStub {
@@ -134,6 +135,12 @@ describe('CoursePlayerComponent', () => {
     snapshot = {
       data: {
         telemetry: { env: 'course', pageid: 'course-read', type: 'workflow', object: { ver: '1.0', type: 'course' } }
+      },
+      queryParams: { 
+        showCourseCompleteMessage: 'true'
+      },
+      params: {
+        courseId: 'do_112270494168555520130'
       }
     };
     queryParamsMock = { contentId: 'do_112270494168555520130' };
@@ -158,6 +165,7 @@ describe('CoursePlayerComponent', () => {
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
         NotificationService,
         { provide: 'CS_USER_SERVICE', useValue: MockCSService },
+        { provide: 'CS_COURSE_SERVICE', useValue: MockCSService },
       ],
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, TelemetryModule.forRoot()],
       schemas: [NO_ERRORS_SCHEMA]
@@ -480,7 +488,7 @@ describe('CoursePlayerComponent', () => {
       component.enrolledBatchInfo = { status: 1 };
       expect(courseConsumptionService.updateContentsState).not.toHaveBeenCalled();
     });
-  xit('should show join training popup if course is unenrolled and try to play content', () => {
+  it('should show join training popup if course is unenrolled and try to play content', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const resourceService = TestBed.get(ResourceService);
     const activatedRouteStub = TestBed.get(ActivatedRoute);
@@ -687,7 +695,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.showCourseCompleteMessage).toBeFalsy();
   });
 
-  it('should navigate to cert-configuration page if the event.mode is "add-certificates"', () => {
+  it('should navigate to cert-configuration page if the event.mode is add-certificates', () => {
     spyOn(component, 'navigateToConfigureCertificate').and.stub();
     spyOn(component, 'logTelemetry').and.stub();
     const eventData = {
@@ -700,7 +708,7 @@ describe('CoursePlayerComponent', () => {
     expect(component.showConfirmationPopup).toBeFalsy();
   });
 
-  it('should only log telemetry if the event.mode is other than "add-certificates"', () => {
+  it('should only log telemetry if the event.mode is other than add-certificates', () => {
     spyOn(component, 'navigateToConfigureCertificate').and.stub();
     spyOn(component, 'logTelemetry').and.stub();
     const eventData = {
@@ -756,13 +764,13 @@ describe('CoursePlayerComponent', () => {
 
   it('shold call validateBatchDate with future batch', () => {
     const batch = [{
-      batchId: "0130936282663157765",
-      createdFor: ["0124784842112040965"],
+      batchId: '0130936282663157765',
+      createdFor: ['0124784842112040965'],
       endDate: null,
       enrollmentEndDate: null,
-      enrollmentType: "open",
-      name: "SHS cert course 1 - 0825",
-      startDate: "2020-12-25",
+      enrollmentType: 'open',
+      name: 'SHS cert course 1 - 0825',
+      startDate: '2045-12-25',
       status: 1
     }];
     const message = (resourceServiceMockData.messages.emsg.m009).replace('{startDate}', batch[0]['startDate']);
@@ -771,13 +779,13 @@ describe('CoursePlayerComponent', () => {
 
   it('shold call validateBatchDate with expired batch', () => {
     const batch = [{
-      batchId: "0130936282663157765",
-      createdFor: ["0124784842112040965"],
+      batchId: '0130936282663157765',
+      createdFor: ['0124784842112040965'],
       endDate: null,
-      enrollmentEndDate: "2020-02-02",
-      enrollmentType: "open",
-      name: "SHS cert course 1 - 0825",
-      startDate: "2020-01-25",
+      enrollmentEndDate: '2020-02-02',
+      enrollmentType: 'open',
+      name: 'SHS cert course 1 - 0825',
+      startDate: '2020-01-25',
       status: 1
     }];
     const message = (resourceServiceMockData.messages.emsg.m008).replace('{endDate}', batch[0]['enrollmentEndDate']);
@@ -786,13 +794,13 @@ describe('CoursePlayerComponent', () => {
 
   it('shold call validateBatchDate with ongoing batch', () => {
     const batch = [{
-      batchId: "0130936282663157765",
-      createdFor: ["0124784842112040965"],
+      batchId: '0130936282663157765',
+      createdFor: ['0124784842112040965'],
       endDate: null,
       enrollmentEndDate: null,
-      enrollmentType: "open",
-      name: "SHS cert course 1 - 0825",
-      startDate: "2020-08-25",
+      enrollmentType: 'open',
+      name: 'SHS cert course 1 - 0825',
+      startDate: '2020-08-25',
       status: 1
     }];
     const message = resourceServiceMockData.frmelmnts.lbl.joinTrainingToAcessContent;
@@ -854,13 +862,13 @@ describe('CoursePlayerComponent', () => {
 
   it('shold call validateBatchDate with expired batch', () => {
     const batch = [{
-      batchId: "0130936282663157765",
-      createdFor: ["0124784842112040965"],
+      batchId: '0130936282663157765',
+      createdFor: ['0124784842112040965'],
       endDate: null,
-      enrollmentEndDate: "2020-02-02",
-      enrollmentType: "open",
-      name: "SHS cert course 1 - 0825",
-      startDate: "2020-01-25",
+      enrollmentEndDate: '2020-02-02',
+      enrollmentType: 'open',
+      name: 'SHS cert course 1 - 0825',
+      startDate: '2020-01-25',
       status: 1
     }];
     const message = (resourceServiceMockData.messages.emsg.m008).replace('{endDate}', batch[0]['enrollmentEndDate']);
@@ -869,13 +877,13 @@ describe('CoursePlayerComponent', () => {
 
   it('shold call validateBatchDate with ongoing batch', () => {
     const batch = [{
-      batchId: "0130936282663157765",
-      createdFor: ["0124784842112040965"],
+      batchId: '0130936282663157765',
+      createdFor: ['0124784842112040965'],
       endDate: null,
       enrollmentEndDate: null,
-      enrollmentType: "open",
-      name: "SHS cert course 1 - 0825",
-      startDate: "2020-08-25",
+      enrollmentType: 'open',
+      name: 'SHS cert course 1 - 0825',
+      startDate: '2020-08-25',
       status: 1
     }];
     const message = resourceServiceMockData.frmelmnts.lbl.joinTrainingToAcessContent;

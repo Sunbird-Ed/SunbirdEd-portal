@@ -24,7 +24,7 @@ let PERMISSIONS_HELPER = {
   setUserSessionData (reqObj, body) {
     try {
       if (body.responseCode === 'OK') {
-        reqObj.session.userId = body.result.response.identifier;
+        reqObj.session.userId = body.result.response.id ? body.result.response.id : body.result.response.userId;
         reqObj.session.userName = body.result.response.userName;
         if (body.result.response.managedBy) {
           reqObj.session.userSid = uuidv1();

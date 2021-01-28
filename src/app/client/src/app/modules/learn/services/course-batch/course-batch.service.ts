@@ -57,7 +57,7 @@ export class CourseBatchService {
       } else if (mentorOrg) {
         option.data.request.filters['organisations.organisationId'] = mentorOrg;
       }
-      option.data.request.filters['roles'] = ['COURSE_MENTOR'];
+      option.data.request.filters['organisations.roles'] = ['COURSE_MENTOR'];
       return this.learnerService.post(option).pipe(map((data) => {
         if (_.isEmpty(requestParam)) {
           this.defaultUserList = data;
