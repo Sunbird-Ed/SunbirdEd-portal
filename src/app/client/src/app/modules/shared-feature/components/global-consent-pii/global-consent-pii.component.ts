@@ -121,6 +121,9 @@ export class GlobalConsentPiiComponent implements OnInit {
           case 'declared-school-udise-code':
             this.userInformation['schoolId'] = value;
             break;
+          case 'declared-school-name':
+            this.userInformation['schoolName'] = this.userInformation['schoolName'] || value;
+            break;
         }
       }
     }
@@ -219,7 +222,7 @@ export class GlobalConsentPiiComponent implements OnInit {
     } else if ( this.type === 'global-consent') {
       request.consumerId = this.userService.channel;
       request.objectId = this.userService.channel;
-      request.objectType = 'global';
+      request.objectType = 'Organisation';
     }
     this.csUserService.updateConsent(request, { apiPath: '/learner/user/v1' })
       .pipe(takeUntil(this.unsubscribe))

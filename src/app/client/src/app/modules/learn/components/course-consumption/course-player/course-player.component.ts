@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption-v8';
 import { CoursesService, PermissionService, UserService, GeneraliseLabelService } from '@sunbird/core';
@@ -18,6 +18,7 @@ import { ContentUtilsServiceService } from '@sunbird/shared';
 import { MimeTypeMasterData } from '@project-sunbird/common-consumption-v8/lib/pipes-module/mime-type';
 import dayjs from 'dayjs';
 import { NotificationService } from '../../../../notification/services/notification/notification.service';
+import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 
 @Component({
   selector: 'app-course-player',
@@ -25,7 +26,7 @@ import { NotificationService } from '../../../../notification/services/notificat
   styleUrls: ['course-player.component.scss']
 })
 export class CoursePlayerComponent implements OnInit, OnDestroy {
-
+  @ViewChild('modal', {static: false}) modal;
   public courseInteractObject: IInteractEventObject;
   public contentInteractObject: IInteractEventObject;
   public closeContentIntractEdata: IInteractEventEdata;
@@ -84,11 +85,13 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public todayDate = dayjs(new Date()).format('YYYY-MM-DD');
   public batchMessage: any;
   showDataSettingSection = false;
-
+  assessmentMaxAttempts: number;
   @ViewChild('joinTrainingModal', {static: false}) joinTrainingModal;
   showJoinModal = false;
   tocId;
   groupId;
+  showLastAttemptsModal: boolean = false;
+  navigateToContentObject: any;
   constructor(
     public activatedRoute: ActivatedRoute,
     private configService: ConfigService,
@@ -110,10 +113,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     private contentUtilsServiceService: ContentUtilsServiceService,
     public layoutService: LayoutService,
     public generaliseLabelService: GeneraliseLabelService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    @Inject('CS_COURSE_SERVICE') private CsCourseService: CsCourseService
   ) {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
+    // this.assessmentMaxAttempts = this.configService.appConfig.CourseConsumption.selfAssessMaxLimit;
   }
   ngOnInit() {
     if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
@@ -308,20 +313,25 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   private getContentState() {
-    const req = {
+    let fieldsArray: Array<string> = ['progress', 'score'];
+    const req:any = {
       userId: this.userService.userid,
       courseId: this.courseId,
       contentIds: this.contentIds,
-      batchId: this.batchId
+      batchId: this.batchId,
+      fields: fieldsArray
     };
-    this.courseProgressService.getContentState(req)
+    this.CsCourseService
+      .getContentState(req, { apiPath: '/content/course/v1' })
       .pipe(takeUntil(this.unsubscribe))
-      .subscribe(res => {
-        this.progressToDisplay = Math.floor((res.completedCount / this.courseHierarchy.leafNodesCount) * 100);
-        this.contentStatus = res.content || [];
+      .subscribe((res) => {
+        const _parsedResponse = this.courseProgressService.getContentProgressState(req, res);
+        this.progressToDisplay = Math.floor((_parsedResponse.completedCount / this.courseHierarchy.leafNodesCount) * 100);
+        this.contentStatus = _parsedResponse.content || [];
         this.calculateProgress();
-      },
-        err => console.log(err, 'content read api failed'));
+      }, error => {
+        console.log('Content state read CSL API failed ', error);
+      });
   }
 
   public findContentById(id: string) {
@@ -329,17 +339,32 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   public navigateToContent(event: any, collectionUnit?: any, id?): void {
+    this.navigateToContentObject = {
+      event: event,
+      collectionUnit: collectionUnit,
+      id: id
+    };
+    if (_.get(event, 'event.isDisabled')) {
+      return this.toasterService.error(this.resourceService.frmelmnts.lbl.selfAssessMaxAttempt);
+    } else if (_.get(event, 'event.isLastAttempt')) {
+      this.showLastAttemptsModal = true;
+    } else {
+      this._navigateToContent();
+    }
+  }
+
+  private _navigateToContent() {
     /* istanbul ignore else */
     if (!this.addToGroup) {
-      this.logTelemetry(id, event.data);
+      this.logTelemetry(this.navigateToContentObject.id, this.navigateToContentObject.event.data);
     } else {
-      this.logTelemetry('play-content-group', event.data);
+      this.logTelemetry('play-content-group', this.navigateToContentObject.event.data);
     }
 
-          /* istanbul ignore else */
-      if (!_.isEmpty(event.event)) {
-        this.navigateToPlayerPage(collectionUnit, event);
-      }
+    /* istanbul ignore else */
+    if (!_.isEmpty(this.navigateToContentObject.event.event)) {
+      this.navigateToPlayerPage(this.navigateToContentObject.collectionUnit, this.navigateToContentObject.event);
+    }
   }
 
   private setTelemetryStartEndData() {

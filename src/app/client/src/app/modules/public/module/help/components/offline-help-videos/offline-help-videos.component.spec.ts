@@ -38,13 +38,17 @@ describe('OfflineHelpVideosComponent', () => {
           'playcontent': 'How do I play content joyful theme',
           'downloadcontent': 'How do I download content from desktop app library joyful theme',
           'recovaccnt' : 'How do I recover my account',
-          'register' : 'How do i register on {instance}',
-          'login' : 'How do i login on {instance}',
+          'register' : 'How do I register on {instance}',
+          'login' : 'How do I login on {instance}',
           'manageuser' : 'How do I add users on {instance}',
           'manageusernewtheme' : 'How do I add users on {instance} joyful theme',
           'recovaccntnewtheme' : 'How do I recover my account joyful theme',
           'registernewtheme' : 'How do i register on {instance} joyful theme',
-          'loginnewtheme' : 'How do I login on {instance} joyful theme'
+          'loginnewtheme' : 'How do I login on {instance} joyful theme',
+          'SSologinnewtheme' : 'How do I login using my State ID joyful theme',
+          'loginSSO' : 'How do I login using my State ID',
+          'newthemegooglelogin' : 'How do I login using my Google ID joyful theme',
+          'googlelogin' : 'How do I login using my Google ID'
         }
       },
       languageSelected$: of({})
@@ -75,22 +79,25 @@ describe('OfflineHelpVideosComponent', () => {
     }
   });
 
-  it('should call setVideoHeight method', () => {
-    component.aspectRatio = fixture.debugElement.query(By.css('.aspectratio'));
-    component.playerInfo = fixture.debugElement.query(By.css('.content-video__player__details'));
+  it('should set slide config', () => {
     component.instance = resourceServiceStub.instance;
-    spyOn(component, 'setVideoHeight');
     spyOn(component, 'interpolateInstance');
     component.ngOnInit();
     expect(component.slideData).toBeDefined();
     expect(component.slideData[0]['id']).toEqual('add-content-offline');
-    expect(component.setVideoHeight).toHaveBeenCalled();
     expect(component.interpolateInstance).toHaveBeenCalled();
   });
 
+  it('should call setVideoHeight method', () => {
+    component.instance = resourceServiceStub.instance;
+    spyOn(component, 'setVideoHeight');
+    component.ngOnInit();
+    component.ngAfterViewInit();
+    fixture.detectChanges();
+    expect(component.setVideoHeight).toHaveBeenCalled();
+  });
+
   it('should changeVideoAttributes value', () => {
-    component.aspectRatio = fixture.debugElement.query(By.css('.aspectratio'));
-    component.playerInfo = fixture.debugElement.query(By.css('.content-video__player__details'));
     const name = (resourceServiceStub.frmelmnts.instn.t0095).replace('{instance}', (resourceServiceStub.instance).toUpperCase());
       const data = {
       id: 'add-content-offline',
@@ -106,8 +113,6 @@ describe('OfflineHelpVideosComponent', () => {
   });
 
   it('should emit an event' , () => {
-    component.aspectRatio = fixture.debugElement.query(By.css('.aspectratio'));
-    component.playerInfo = fixture.debugElement.query(By.css('.content-video__player__details'));
     spyOn(component.closeVideoModal, 'emit');
     component.closeModal();
     expect(component.closeVideoModal.emit).toHaveBeenCalled();
