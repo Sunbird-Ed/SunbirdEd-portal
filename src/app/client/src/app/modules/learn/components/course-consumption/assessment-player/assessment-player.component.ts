@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { TelemetryService, IAuditEventInput, IImpressionEventInput } from '@sunbird/telemetry';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption-v8';
 import { UserService, GeneraliseLabelService } from '@sunbird/core';
@@ -23,6 +23,7 @@ const ACCESSEVENT = 'renderer:question:submitscore';
   styleUrls: ['./assessment-player.component.scss']
 })
 export class AssessmentPlayerComponent implements OnInit, OnDestroy {
+  @ViewChild('modal', {static: false}) modal;
   private unsubscribe = new Subject<void>();
   contentProgressEvents$ = new Subject();
   batchId: string;
@@ -64,6 +65,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   isCourseCompletionPopupShown = false;
   previousContent = null;
   groupId;
+  assessmentMaxAttempts: number;
+  showMaxAttemptsModal: boolean = false;
 
   constructor(
     public resourceService: ResourceService,
@@ -87,6 +90,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     this.playerOption = {
       showContentRating: true
     };
+    // this.assessmentMaxAttempts = this.configService.appConfig.CourseConsumption.selfAssessMaxLimit;
   }
 
   navigateToPlayerPage(collectionUnit: {}, event?) {
@@ -243,12 +247,26 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   getCourseCompletionStatus(showPopup: boolean = false) {
     /* istanbul ignore else */
     if (!this.isCourseCompleted) {
+      let maxAttemptsExceeded = false;
+      this.showMaxAttemptsModal = false;
+      let isLastAttempt = false;
       const req = this.getContentStateRequest(this.parentCourse);
       this.courseConsumptionService.getContentState(req)
         .pipe(takeUntil(this.unsubscribe))
         .subscribe(res => {
+          _.forEach(_.get(res, 'content'), (contentState) => {
+            if (_.get(contentState, 'contentId') === this.activeContent.identifier) {
+              if (contentState.score.length >= this.assessmentMaxAttempts) maxAttemptsExceeded = true;
+              if(this.assessmentMaxAttempts - contentState.score.length === 1) isLastAttempt = true;
+            }
+          });
+          
           /* istanbul ignore else */
-          if (_.get(res, 'content.length')) {
+          if (maxAttemptsExceeded) {
+            this.showMaxAttemptsModal = true;
+          } else if (isLastAttempt) {
+            this.toasterService.error(this.resourceService.frmelmnts.lbl.selfAssessLastAttempt);
+          } else if (_.get(res, 'content.length')) {
             this.isCourseCompleted = (res.totalCount === res.completedCount);
             this.showCourseCompleteMessage = this.isCourseCompleted && showPopup;
             if (this.showCourseCompleteMessage) {
@@ -266,7 +284,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       userId: this.userService.userid,
       courseId: this.courseId,
       contentIds: this.courseConsumptionService.parseChildren(course),
-      batchId: this.batchId
+      batchId: this.batchId,
+      fields: ['progress', 'score']
     };
   }
   setActiveContent(selectedContent: string, isSingleContent?: boolean) {

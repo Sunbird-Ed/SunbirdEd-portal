@@ -121,6 +121,9 @@ export class GlobalConsentPiiComponent implements OnInit {
           case 'declared-school-udise-code':
             this.userInformation['schoolId'] = value;
             break;
+          case 'declared-school-name':
+            this.userInformation['schoolName'] = this.userInformation['schoolName'] || value;
+            break;
         }
       }
     }

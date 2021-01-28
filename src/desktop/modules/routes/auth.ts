@@ -75,7 +75,7 @@ export default (app, proxyURL) => {
         "/learner/isUserExists/user/v1/get/email/*",
     ], (req, res, next) => {
         if (req.url.indexOf('isUserExists') > -1) {
-            req.url = req.url.replace('isUserExists/', '');
+            req.originalUrl = req.originalUrl.replace('isUserExists/', '');
         }
         next();
     }, customProxy(proxyURL, defaultProxyConfig), (req, res) => {
@@ -87,8 +87,8 @@ export default (app, proxyURL) => {
                 res.body.result.response.rootOrgId = response.rootOrgId;
                 res.body.result.response.isUserExists = true;
             }
-            res.status(res.statusCode).send(res.body);
         }
+        res.status(res.statusCode).send(res.body);
     });
 
     app.post([

@@ -9,7 +9,7 @@ import { manifest } from "../../manifest";
 import { ContentDownloader } from "./ContentDownloader";
 import { HTTPService } from "@project-sunbird/OpenRAP/services/httpService";
 import Response from "../../utils/response";
-import uuid = require("uuid");
+import uuid from "uuid/v4";
 const DefaultRequestOptions = { headers: { "Content-Type": "application/json" } };
 import HardDiskInfo from "../../utils/hardDiskInfo";
 
