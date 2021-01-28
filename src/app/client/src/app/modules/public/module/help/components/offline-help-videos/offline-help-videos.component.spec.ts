@@ -44,7 +44,11 @@ describe('OfflineHelpVideosComponent', () => {
           'manageusernewtheme' : 'How do I add users on {instance} joyful theme',
           'recovaccntnewtheme' : 'How do I recover my account joyful theme',
           'registernewtheme' : 'How do i register on {instance} joyful theme',
-          'loginnewtheme' : 'How do I login on {instance} joyful theme'
+          'loginnewtheme' : 'How do I login on {instance} joyful theme',
+          'frmelmnts.vidttl.SSologinnewtheme' : 'How do I login using my State ID joyful theme',
+          'frmelmnts.vidttl.loginSSO' : 'How do I login using my State ID',
+          'frmelmnts.vidttl.newthemegooglelogin' : 'How do I login using my Google ID joyful theme',
+          'frmelmnts.vidttl.googlelogin' : 'How do I login using my Google ID'
         }
       },
       languageSelected$: of({})
