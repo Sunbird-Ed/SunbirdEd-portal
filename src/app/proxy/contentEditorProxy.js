@@ -9,6 +9,7 @@ const contentServiceBaseUrl = envHelper.CONTENT_URL
 const reqDataLimitOfContentUpload = '30mb'
 const telemetryHelper = require('../helpers/telemetryHelper')
 const learnerURL = envHelper.LEARNER_URL
+const isAPIWhitelisted = require('../helpers/apiWhiteList');
 
 module.exports = function (app) {
 
@@ -123,7 +124,9 @@ module.exports = function (app) {
     },
     userResDecorator: userResDecorator
   }))
+
   app.post('/action/user/v1/search',
+    isAPIWhitelisted.isAllowed(),
     addCorsHeaders,
     proxyUtils.verifyToken(),
     proxy(learnerURL, {
@@ -134,7 +137,8 @@ module.exports = function (app) {
         return require('url').parse(learnerURL + originalUrl).path
       },
       userResDecorator: userResDecorator
-  }))
+    })
+  )
 
   app.post('/action/content/v3/upload/*',
     isAPIWhitelisted.isAllowed(),
