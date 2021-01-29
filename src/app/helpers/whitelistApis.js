@@ -293,6 +293,7 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
     '/learner/data/v1/system/settings/get/groupsTnc': {
+      description: 'To fetch updated value for groups TnC',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
