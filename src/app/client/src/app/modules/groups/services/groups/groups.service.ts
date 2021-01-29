@@ -32,7 +32,7 @@ export class GroupsService {
   public showActivateModal = new EventEmitter();
   public updateEvent = new EventEmitter();
   public _groupListCount: number;
-  private _systemTncList;
+  private _groupsTnc;
   private _userData;
 
   constructor(
@@ -340,15 +340,14 @@ getActivity(groupId, activity, mergeGroup) {
       return this._userData ? (!_.isEmpty(userTncAccepted) && !_.isEmpty(_.get(userTncAccepted, 'groupsTnc'))) : true;
   }
 
-  set systemsList (list) {
-    const groupsTnc = _.find(list, { id: 'groupsTnc' });
+  set groupsTncDetails (groupsTnc) {
     groupsTnc.value = (typeof groupsTnc.value === 'string') ? JSON.parse(groupsTnc.value) : groupsTnc.value;
 
-    this._systemTncList = groupsTnc;
+    this._groupsTnc = groupsTnc;
   }
 
   get latestTnc() {
-    return this._systemTncList;
+    return this._groupsTnc;
   }
 
   set userData(user) {
@@ -356,7 +355,7 @@ getActivity(groupId, activity, mergeGroup) {
   }
 
   isTncUpdated() {
-    return _.get(this._userData, 'allTncAccepted.groupsTnc.version') < _.get(this._systemTncList, 'value.latestVersion');
+    return _.get(this._userData, 'allTncAccepted.groupsTnc.version') < _.get(this._groupsTnc, 'value.latestVersion');
   }
 
   updateGroupGuidelines(request: CsGroupUpdateGroupGuidelinesRequest) {

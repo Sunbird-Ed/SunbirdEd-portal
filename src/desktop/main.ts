@@ -210,7 +210,13 @@ expressApp.use("/dialog/login", async (req, res) => {
   const options = {"request":{"type":"desktopConfig","action":"get","subType":"login"}};
   HTTPService.post(`${appBaseUrl}/api/data/v1/form/read`, options).toPromise().then(async response => {
     let loginFormConfig = _.find(response.data.result.form.data.fields, (field) => field.context == 'login');
-    const loginSessionProvider = new LoginSessionProvider(win, loginFormConfig, appBaseUrl);
+    const loginPageOptions = {
+      parentWindow: win, 
+      loginFormCoing: loginFormConfig,
+      appbaseUrl: appBaseUrl,
+      deviceId: deviceId
+    }
+    const loginSessionProvider = new LoginSessionProvider(loginPageOptions);
     loginSessionProvider.childLoginWindow().then((rs) =>{
       res.send({ message: "SUCCESS", responseCode: "OK" })
     })
