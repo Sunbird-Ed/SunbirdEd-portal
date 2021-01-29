@@ -15,6 +15,8 @@ import { PublicPlayerService } from '@sunbird/public';
 import { configureTestSuite } from '@sunbird/test-util';
 import { ContentManagerService } from '../../../public/module/offline/services';
 import { APP_BASE_HREF } from '@angular/common';
+import { actionButtons } from './actionButtons';
+
 
 describe('ContentActionsComponent', () => {
   let component: ContentActionsComponent;
@@ -259,6 +261,17 @@ describe('ContentActionsComponent', () => {
     spyOn(contentManagerService, 'contentDownloadStatus').and.returnValue(of([{}]))
     component.ngOnInit();
     expect(component.changeContentStatus).toHaveBeenCalled();
+  });
+
+  it('Fullscreen should be disabled if content mime type is video', () => {
+    component.contentData = actionsData.contentData;
+    component.contentData.mimeType = 'video/mp4';
+    component.actionButtons = actionButtons;
+    component.ngOnInit();
+    let fullScreenObj = component.actionButtons.find((e) => {
+      return e.label === 'Fullscreen';
+    });
+    expect(fullScreenObj.disabled).toBeTruthy();
   });
 
 });

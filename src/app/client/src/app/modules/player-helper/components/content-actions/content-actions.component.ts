@@ -60,7 +60,7 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
     if (_.toLower(_.get(this.contentData, 'board')) === 'cbse') {
       this.contentData.board = 'CBSE/NCERT';
     }
-    const isVideoMimetype = _.includes(["video/mp4","video/webm","audio/mp3"], _.get(this.contentData, 'mimeType'));
+    const isVideoMimetype = _.includes(["video/mp4","video/webm"], _.get(this.contentData, 'mimeType'));
     this.activatedRoute.params.subscribe((params) => {
       this.collectionId = params.collectionId;
     });
