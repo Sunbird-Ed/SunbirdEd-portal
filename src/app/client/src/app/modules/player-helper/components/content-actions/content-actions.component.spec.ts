@@ -264,11 +264,12 @@ describe('ContentActionsComponent', () => {
   });
 
   it('Fullscreen should be disabled if content mime type is video', () => {
+    spyOn(component, 'changeContentStatus');
     component.contentData = actionsData.contentData;
     component.contentData.mimeType = 'video/mp4';
     component.actionButtons = actionButtons;
     component.ngOnInit();
-    let fullScreenObj = component.actionButtons.find((e) => {
+    const fullScreenObj = component.actionButtons.find((e) => {
       return e.label === 'Fullscreen';
     });
     expect(fullScreenObj.disabled).toBeTruthy();
