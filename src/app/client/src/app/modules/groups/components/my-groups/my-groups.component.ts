@@ -91,8 +91,8 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
   }
 
   getLatestTnc(accepted?) {
-    this.tncService.getTncList().subscribe(data => {
-      this.groupService.systemsList = _.get(data, 'result.response');
+    this.tncService.getGroupsTnc().subscribe(data => {
+      this.groupService.groupsTncDetails = _.get(data, 'result.response');
       if (accepted) {
         this.showTncModal =  this.groupService.isTncUpdated() ? this.groupsList.length > 0 : false;
       }
