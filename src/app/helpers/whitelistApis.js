@@ -1173,6 +1173,9 @@ const API_LIST = {
     '/content-editor/telemetry': {
       checksNeeded: []
     },
+    '/app/telemetry': {
+      checksNeeded: []
+    },
     '/v1/tenant/info/:tenantId': {
       checksNeeded: []
     },
