@@ -14,11 +14,13 @@ export class LoginSessionProvider {
     private loginWindow;
     private appBaseUrl;
     private redirectURI;
+    private deviceId;
 
-    constructor(parentWindow, loginFormCoing, appbaseUrl) { 
-        this.mainWindow = parentWindow;
-        this.loginConfig = loginFormCoing;
-        this.appBaseUrl = appbaseUrl;
+    constructor(options: { parentWindow: any; loginFormCoing: any; appbaseUrl: string; deviceId: string; }) { 
+        this.mainWindow = options.parentWindow;
+        this.loginConfig = options.loginFormCoing;
+        this.appBaseUrl = options.appbaseUrl;
+        this.deviceId = options.deviceId;
     }
 
     public buildUrl(host: string, path: string, params: { [p: string]: string }) {
@@ -40,13 +42,20 @@ export class LoginSessionProvider {
 
     async childLoginWindow() {
         logger.debug(`Opening login window`);
-        const params = this.loginConfig.target.params.reduce((acc, p) => {
+        let params = this.loginConfig.target.params.reduce((acc, p) => {
             if(p.key === 'redirect_uri') {
                 this.redirectURI = p.value;
             }
             acc[p.key] = p.value;
             return acc;
         }, {})
+        const pdata = {
+            id: process.env.APP_ID,
+            ver: process.env.APP_VERSION,
+            pid: "desktop.app"
+        }
+        params.pdata = JSON.stringify(pdata);
+        params.did = this.deviceId;
         const loginURL = this.buildUrl(this.loginConfig.target.host, this.loginConfig.target.path, params);
         if(!this.loginWindow) {
             this.loginWindow = new BrowserWindow({ 
@@ -72,7 +81,9 @@ export class LoginSessionProvider {
                 this.loginWindow.removeMenu();
             }
         }
-        this.loginWindow.loadURL(loginURL).then(() => {
+        this.loginWindow.loadURL(loginURL, {
+            userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome Electron/8.5.5 Safari/537.36"
+        }).then(() => {
             logger.debug(`Login window loaded successfully`);
             _.forEach(this.loginConfig.return, (forCase) => {
                 switch (forCase.type) {
@@ -180,7 +191,9 @@ export class LoginSessionProvider {
                 this.showLoader();
                 logger.debug(`Resolve redirect url from buildGoogleSessionProvider`);
                 const url = `${captured.googleRedirectUrl}?${qs.stringify(extras)}`;
-                this.loginWindow.loadURL(url).then(() =>{
+                this.loginWindow.loadURL(url, {
+                    userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome Electron/8.5.5 Safari/537.36"
+                }).then(() =>{
                     this.capture({
                         host: forCase.when.host,
                         path: forCase.when.path,

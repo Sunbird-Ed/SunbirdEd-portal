@@ -112,7 +112,7 @@ export class UserSDK {
       return this.updateDoc(user);
     } else if (_.get(user, 'userId')) {
       const userData = await this.findByUserId(user.userId);
-      user._id = _.get(userData, '_id');
+      user._id = _.get(userData[0], '_id');
       return this.updateDoc(user);
     } else {
       throw {
@@ -140,6 +140,19 @@ export class UserSDK {
         message: `_id is mandatory to update user`
       }
     }
+  }
+
+  public async deleteAllLoggedInUsers() {
+    let docs = await this.dbSDK.list(USER_DB);
+    docs = _.map(docs.rows, (row) => {
+      return {
+        _id: row.id,
+        _rev: row.value.rev,
+        _deleted: true
+      }
+    });
+
+    return this.dbSDK.bulkDocs(USER_DB, docs);
   }
 
   public async getUserToken() {

@@ -37,7 +37,7 @@ describe('TncService', () => {
     const mockData = { success: 'success' };
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(observableOf(mockData));
-    service.getTncList().subscribe((data: any) => {
+    service.getGroupsTnc().subscribe((data: any) => {
       expect(data).toBe(mockData);
     });
   }));
