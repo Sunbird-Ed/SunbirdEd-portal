@@ -53,7 +53,7 @@
     "@project-sunbird/ckeditor-build-font": "^1.0.8",
     "@project-sunbird/client-services": "^3.6.16",
     "@project-sunbird/common-consumption-v8": "3.6.5",
-    "@project-sunbird/discussions-ui-v8": "2.0.9",
+    "@project-sunbird/discussions-ui-v8": "2.0.12",
     "@project-sunbird/sb-styles": "0.0.6",
     "@project-sunbird/sunbird-pdf-player-v8": "3.6.1",
     "@project-sunbird/sunbird-video-player-v8": "3.6.1",
