@@ -153,12 +153,16 @@ export class TelemetryExport {
             const filePath = path.join(this.destFolder, `telemetry_${this.deviceId}_${Date.now()}.zip`);
             const output = fs.createWriteStream(filePath);
             output.on("close", () => resolve({}));
+            output.on("error", (err) => {
+                output.end();
+                reject(err);
+            });
             this.telemetryArchive.on("end", () => {
                 logger.error("Data has been zipped");
                 this.settingSDK.put('telemetryExportedInfo', { lastExportedOn: Date.now() });
                 this.generateShareEvent(this.telemetryShareItems);
             });
-            this.telemetryArchive.on("error", reject);
+            this.telemetryArchive.on("error", (err) => reject(err));
             this.telemetryArchive.finalize();
             this.telemetryArchive.pipe(output);
         });
