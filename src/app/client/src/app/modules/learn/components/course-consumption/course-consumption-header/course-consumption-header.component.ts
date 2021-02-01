@@ -1,4 +1,3 @@
-
 import { combineLatest as observableCombineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
@@ -18,6 +17,8 @@ import { NavigationHelperService } from '@sunbird/shared';
 import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 import { CourseBatchService } from './../../../services';
 import { DiscussionService } from '../../../../discussion/services/discussion/discussion.service';
+
+import { DiscussionTelemetryService } from './../../../../shared/services/discussion-telemetry/discussion-telemetry.service';
 
 @Component({
   selector: 'app-course-consumption-header',
@@ -85,7 +86,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     private navigationHelperService: NavigationHelperService, public orgDetailsService: OrgDetailsService,
     public generaliseLabelService: GeneraliseLabelService,
     public courseBatchService: CourseBatchService,
-    public discussionService: DiscussionService) { }
+    public discussionService: DiscussionService, public discussionTelemetryService: DiscussionTelemetryService) { }
 
   showJoinModal(event) {
     this.courseConsumptionService.showJoinCourseModal.emit(event);
@@ -299,6 +300,16 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
       username: _.get(this.userService.userProfile, 'userName'),
       identifier: _.get(this.userService.userProfile, 'userId'),
     };
+    this.discussionTelemetryService.contextCdata = [
+      {
+        id: this.courseId,
+        type: 'Course'
+      },
+      {
+        id: this.batchId,
+        type: 'Batch'
+      }
+    ];
     this.discussionService.registerUser(data).subscribe((response) => {
       const userName = _.get(response, 'result.userName');
       const result = this.forumIds;

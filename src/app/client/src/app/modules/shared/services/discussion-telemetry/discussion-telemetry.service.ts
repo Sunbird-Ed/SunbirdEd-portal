@@ -11,29 +11,17 @@ export class DiscussionTelemetryService {
 
   constructor(private navigationHelperService: NavigationHelperService, private telemetryService: TelemetryService) { }
 
+  private _contextCdata = [];
   logTelemetryEvent(event) {
     const data = {
       context: {
         env: 'discussion',
-        cdata: _.get(event, 'context.cdata') || []
+        cdata: _.union(_.get(event, 'context.cdata'), this.contextCdata)
       },
       edata: _.get(event, 'edata'),
       object: _.get(event, 'context.object')
     };
 
-    data.context.cdata.push(
-      {
-        id: 'courseId',
-        type: 'Course'
-      }
-    );
-    data.context.cdata.push(
-      {
-        id: 'batchId',
-        type: 'Batch'
-      },
-    );
-    
     switch (event.eid) {
       case 'IMPRESSION':
         data.edata.duration = this.navigationHelperService.getPageLoadTime();
@@ -43,5 +31,13 @@ export class DiscussionTelemetryService {
         this.telemetryService.interact(data);
         break;
     }
+  }
+
+  set contextCdata(objectData: Array<object>) {
+    this._contextCdata = objectData;
+  }
+
+  get contextCdata() {
+    return this._contextCdata;
   }
 }
