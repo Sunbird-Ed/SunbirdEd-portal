@@ -525,7 +525,7 @@ describe('AssessmentPlayerComponent', () => {
     expect(component.isUnitCompleted).toEqual(false);
   });
 
-  it('should call subscribeToQueryParam, and set isSingleContent as true ', () => {
+  xit('should call subscribeToQueryParam, and set isSingleContent as true ', () => {
     component.isParentCourse = false;
     component.batchId = '0130928797865820162';
     spyOn(component, 'setActiveContent');
