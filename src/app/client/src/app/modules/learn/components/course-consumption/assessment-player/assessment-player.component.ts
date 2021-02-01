@@ -255,9 +255,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.unsubscribe))
         .subscribe(res => {
           _.forEach(_.get(res, 'content'), (contentState) => {
-            if (_.get(contentState, 'contentId') === this.activeContent.identifier) {
-              if (contentState.score.length >= this.assessmentMaxAttempts) maxAttemptsExceeded = true;
-              if(this.assessmentMaxAttempts - contentState.score.length === 1) isLastAttempt = true;
+            if (_.get(contentState, 'contentId') === _.get(this.activeContent, 'identifier')) {
+              if (_.get(contentState, 'score.length') >= this.assessmentMaxAttempts) maxAttemptsExceeded = true;
+              if (this.assessmentMaxAttempts - _.get(contentState, 'score.length') === 1) isLastAttempt = true;
             }
           });
           
