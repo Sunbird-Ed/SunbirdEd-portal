@@ -213,16 +213,5 @@ describe('ContentTypeComponent', () => {
     expect(component.selectedContentType).toEqual('textbook');
   });
 
-  it('should not show course tab for desktop app', () => {
-    const formService = TestBed.get(FormService);
-    spyOn(formService, 'getFormConfig').and.returnValue(observableOf(mockData.formData));
-    const utilService = TestBed.get(UtilService);
-    utilService._isDesktopApp = true;
-    const mockFormData = mockData.formData.filter(data => !(data.contentType === 'course'));
-    component.ngOnInit();
-    expect(component.contentTypes).toEqual(mockFormData);
-    expect(component.selectedContentType).toBe('textbook');
-  });
-
 
 });
