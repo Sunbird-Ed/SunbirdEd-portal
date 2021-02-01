@@ -9,7 +9,7 @@ import { DiscussionTelemetryService } from './discussion-telemetry.service';
 const event = {
   context: {
     env: 'discussion',
-    cdata: [{id: '1', type: 'Category'}, {id: 'courseId', type: 'Course'}, {id: 'batchId', type: 'Batch'}]
+    cdata: [{id: '1', type: 'Category'}, {id: 'SOME_COURSE_ID', type: 'Course'}, {id: 'SOME_BATCH_ID', type: 'Batch'}]
   },
   edata: {
     id: 'category-card',
@@ -40,8 +40,9 @@ describe('DiscussionTelemetryService', () => {
     spyOn(telemetryService, 'impression');
     spyOn(navigationHelperService, 'getPageLoadTime').and.returnValue(2.0);
     service.logTelemetryEvent({eid: 'IMPRESSION', context: {
-      cdata: [{id: '1', type: 'Category'}], object: {id: '1', type: 'Category', ver: '1', rollup: {}}},
-      edata: {id: 'category-card', type: 'view', pageid: 'discussion'}})
+      cdata: [{id: '1', type: 'Category'}, {id: 'SOME_COURSE_ID', type: 'Course'}, {id: 'SOME_BATCH_ID', type: 'Batch'}],
+      object: {id: '1', type: 'Category', ver: '1', rollup: {}}},
+      edata: {id: 'category-card', type: 'view', pageid: 'discussion'}});
     event.edata['duration'] = 2.0;
     event.edata.type = 'view'
     expect(telemetryService.impression).toHaveBeenCalledWith(event);
@@ -54,7 +55,8 @@ describe('DiscussionTelemetryService', () => {
       event.edata.type = 'CLICK';
       delete event.edata['duration'];
       service.logTelemetryEvent({eid: 'INTERACT', context: {
-        cdata: [{id: '1', type: 'Category'}], object: {id: '1', type: 'Category', ver: '1', rollup: {}}},
+        cdata: [{id: '1', type: 'Category'}, {id: 'SOME_COURSE_ID', type: 'Course'}, {id: 'SOME_BATCH_ID', type: 'Batch'}],
+        object: {id: '1', type: 'Category', ver: '1', rollup: {}}},
         edata: {id: 'category-card', type: 'CLICK', pageid: 'discussion'}});
       expect(telemetryService.interact).toHaveBeenCalledWith(event);
   }));
