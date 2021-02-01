@@ -10,7 +10,7 @@ import { SharedModule } from '@sunbird/shared';
 import { APP_BASE_HREF } from '@angular/common';
 import { configureTestSuite } from '@sunbird/test-util';
 import { GroupMemberRole, CsGroup, GroupEntityStatus } from '@project-sunbird/client-services/models/group';
-import { groupData, modifiedActivities, list, modified } from './groups.service.spec.data';
+import { groupData, modifiedActivities, groupsTnc, modified } from './groups.service.spec.data';
 
 describe('GroupsService', () => {
   configureTestSuite();
@@ -262,10 +262,10 @@ describe('GroupsService', () => {
     expect(accepted).toEqual(false);
   });
 
-  it ('should set _systemTncList', () => {
+  it ('should set _groupsTncDetails', () => {
     const service = TestBed.get(GroupsService);
-    service.systemsList = list;
-    expect(service['_systemTncList']).toEqual(modified);
+    service.groupsTncDetails = groupsTnc;
+    expect(service['_groupsTnc']).toEqual(modified);
     expect(service.latestTnc).toEqual(modified);
   });
 
@@ -278,7 +278,7 @@ describe('GroupsService', () => {
   it ('should return "TRUE if TNC updated "', () => {
     const service = TestBed.get(GroupsService);
     service.userData = {allTncAccepted: {groupsTnc: {version: '3.3.0'}}};
-    service['_systemTncList'] = modified;
+    service['_groupsTnc'] = modified;
     const accepted = service.isTncUpdated();
     expect(accepted).toEqual(true);
   });
