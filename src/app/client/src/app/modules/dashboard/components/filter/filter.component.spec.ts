@@ -111,22 +111,12 @@ describe('FilterComponent', () => {
     expect(spy).toHaveBeenCalledWith(mockChartData.chartData);
   }));
 
-  it('should change chart type', fakeAsync(() => {
-    component.ngOnInit();
-    tick(1000);
-    component.changeChartType("line");
-    tick(1000);
-    expect(component.chartType).toEqual("line");
-
-  }));
   it('should reset filter', fakeAsync(() => {
     component.ngOnInit();
     tick(1000);
     component.resetFilter();
     tick(1000);
-    // expect(component.selectedFilters).toBeNull();
-    // expect(component.selectedFilters).toEqual({});
-
+    expect(component.showFilters).toEqual(true);
   }));
 
   it('should emit graphStatsChange method ', fakeAsync(() => {
@@ -143,8 +133,6 @@ describe('FilterComponent', () => {
       data: [{ state: "01285019302823526477", Plays: "10", Date: "2020-04-28" }]
     }];
     tick(1000);
-    // component.selectedFilter = {};
-
   }));
 
   it('should emit the filter data', fakeAsync(() => {

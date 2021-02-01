@@ -60,6 +60,8 @@ export class ReportComponent implements OnInit {
   public reportData: any;
   public chartsReportData: any;
   public globalFilterChange: any;
+  public resetFilters: any;
+  filterType:string = "report-filter";
 
   public reportResult: any;
   private set setMaterializedReportStatus(val: string) {
@@ -592,6 +594,11 @@ export class ReportComponent implements OnInit {
       filters: data.filters
     }
     this.cdr.detectChanges();
+  }
+
+  resetFilter(){
+    this.resetFilters = { data: this.getAllChartData(),reset:true }
+    
   }
 }
 

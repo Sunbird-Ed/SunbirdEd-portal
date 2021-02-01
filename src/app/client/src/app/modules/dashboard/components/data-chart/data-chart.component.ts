@@ -73,12 +73,15 @@ export class DataChartComponent implements OnInit, OnDestroy {
   private _chartSummary: string;
   private _globalFilter; // private property _item
   resetFilters;
-
+  filterPopup:Boolean = false;
+  filterOpen:Boolean =false;
+  chartSummarylabel:string;
+  currentFilters:Array<{}>;
   @ViewChild('datePickerForFilters', {static: false}) datepicker: ElementRef;
   @ViewChild('chartRootElement', {static: false}) chartRootElement;
   @ViewChild('chartCanvas', {static: false}) chartCanvas;
-
-
+  filterType:string = "chart-filter";
+ 
 
   @ViewChild(BaseChartDirective, {static: false}) chartDirective: BaseChartDirective;
   constructor(public resourceService: ResourceService, private fb: FormBuilder, private cdr: ChangeDetectorRef,
@@ -92,6 +95,8 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
     this.chartConfig = _.get(this.chartInfo, 'chartConfig');
     this.chartData = _.get(this.chartInfo, 'chartData');
+    this.chartSummarylabel = _.get(this.resourceService, 'frmelmnts.lbl.chartSummary');
+
     if (_.get(this.chartInfo, 'lastUpdatedOn')) {
       this.lastUpdatedOn = moment(_.get(this.chartInfo, 'lastUpdatedOn')).format('DD-MMMM-YYYY');
     }
@@ -184,7 +189,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
     const refreshInterval = _.get(this.chartConfig, 'options.refreshInterval');
     if (refreshInterval) {
        this.refreshChartDataAfterInterval(refreshInterval);
-       }
+    }
     this.filters = _.get(this.chartConfig, 'filters') || [];
     this.chartSummary$ = this.getChartSummary();
   }
@@ -362,6 +367,11 @@ export class DataChartComponent implements OnInit, OnDestroy {
           return _.map(chartSummary, summaryObj => {
             const summary = _.get(summaryObj, 'summary');
             this._chartSummary = summary;
+
+            if(summary){
+              this.chartSummarylabel = _.get(this.resourceService, 'frmelmnts.lbl.updateChartSummary');
+            }
+            
             return {
               label: _.get(this.resourceService, 'frmelmnts.lbl.chartSummary'),
               text: [summary],
@@ -383,21 +393,51 @@ export class DataChartComponent implements OnInit, OnDestroy {
   @Input()
   set globalFilter(val: any) {
     if(val){
-      this.selectedFilters = { filters:val.filters, data:val.chartData }
-      this.chartData = _.get(this.chartInfo, 'chartData');
-      this.getDataSetValue(val.chartData);
-      
 
+      this.chartData = val.chartData;
+      if(val.filters){
+        this.chartData['selectedFilters'] = { };
+      }else {
+        this.chartData['selectedFilters'] = val.filters;
+      }
+     this.cdr.detectChanges();
+      this.getDataSetValue(val.chartData);
+      this.resetForm();
+     
     }
   }
 
   public filterChanged(data: any):void {
     this.chartType = data.chartType;
     this.cdr.detectChanges();
+
+    this.currentFilters = data.filters;
+    if(data.filters){
+      this.chartData['selectedFilters'] = data.filters;
+    }else {
+      this.chartData['selectedFilters'] = {};
+    }
     this.getDataSetValue(data.chartData);
   }
   public graphStatsChange(data:any):void {
     this.showStats=data;
+  }
+  changeChartType(chartType) {
+    this.chartType = _.lowerCase(chartType);
+  }
+  showFilterPopup(){
+    this.cdr.detectChanges();
+    this.filterPopup = true;
+    
+  }
+  public closeFilterModal(): void {
+    this.filterPopup = false;
+    this.cdr.detectChanges();
+  }
+  resetForm(){
+    this.chartData['selectedFilters'] = {};
+    this.resetFilters = { data: this.chartData,reset:true };
+    this.currentFilters = [];
   }
 
 }

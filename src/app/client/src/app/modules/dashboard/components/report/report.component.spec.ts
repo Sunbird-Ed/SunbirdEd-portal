@@ -396,7 +396,6 @@ describe('ReportComponent', () => {
       chartData:chartData,
       filters:filters
     });
-    // expect(component.cha).toContain(chartData);
   }));
   it('should get chartData', fakeAsync(() => {
     component.ngOnInit();
@@ -408,7 +407,17 @@ describe('ReportComponent', () => {
     ]
     }
     const data = component.getChartData(chartData[0]);
-    // expect(data).toContain(chartData[0]);
+  }));
+  it('should get reset filters', fakeAsync(() => {
+    component.ngOnInit();
+    tick(1000);
+    component.reportData = {
+      charts:[{
+        chartData:chartData
+      }
+    ]
+    }
+    component.resetFilter();
   }));
 
   

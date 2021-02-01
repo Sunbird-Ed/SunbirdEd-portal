@@ -1,27 +1,67 @@
 <div class="graph-filters" #chartRootElement>
 
-  <label class="pad5"> {{ this.chartOptions?.title?.text  }} </label>
-  <app-filter [resetFilters]="resetFilters"  [hideElements]="hideElements" [selectedFilter]="selectedFilters" [filters]="filters" (filterChanged)="filterChanged($event)" [chartData]="chartData"
- [chartType]="chartType" [telemetryInteractObject]="telemetryInteractObject" [showGraphStats]="showGraphStats" (graphStatsChange)="graphStatsChange($event)">
- </app-filter>
-
- <div *ngIf="showStats">
-  <div _ngcontent-c14="" class="graph-statistics py-16" *ngFor="let stat of loadash.keys(resultStatistics)">
-    {{stat}} <div class="sb-label sb-label-table sb-label-primary-100 mr-4"
-      *ngFor="let op of loadash.keys(resultStatistics[stat])"> {{op}} : {{resultStatistics[stat][op]}}
+  <div class="d-flex">
+    <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0"> 
+      <label class="pad5 col-6 chart-title"> {{ this.chartOptions?.title?.text  }} </label>
+      <div class="sb-last-update-status" *ngIf="showLastUpdatedOn && lastUpdatedOn">
+        <span >{{resourceService?.frmelmnts?.lbl?.lastUpdatedOn}}&nbsp;: </span> &nbsp; {{lastUpdatedOn}}
+      </div>
     </div>
-  </div>
-</div>
+    <div class="d-flex flex-ai-end flex-w-wrap">
 
-  <div *ngIf="!showFilters && isUserReportAdmin && chartConfig.id" [ngClass]="{'hide': hideElements}"
-    class="d-flex flex-jc-flex-end  mt-8 mr-8 sb-last-update-status">
-    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      <div class="mr-8" *ngIf="chartType === 'bar' || chartType === 'line'">
+        <!-- <button (click)="addChartSummary()" *ngIf="chartConfig.id && isUserReportAdmin" type="button"
+          appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+          [telemetryInteractCdata]="[{id: chartConfig?.id, type: 'Chart'}]"
+          [telemetryInteractEdata]="{id: 'report-chart', type: 'chart-summary', pageid: activatedRoute.snapshot.data.telemetry.pageid}"
+          class="mr-8 sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn"><i class="add icon"></i>Add
+          {{ resourceService?.frmelmnts?.lbl?.chartSummary}}</button> -->
+        <sui-select class="selection" [placeholder]="'Select ChartType'"
+          (selectedOptionChange)="changeChartType($event)">
+          <sui-select-option appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+            [telemetryInteractEdata]="setTelemetryInteractEdata('chart-type-filter')"
+            [telemetryInteractCdata]="telemetryCdata" *ngFor="let option of availableChartTypeOptions" [value]="option">
+          </sui-select-option>
+        </sui-select>
+      </div>
+   
+    <button *ngIf="!showFilters && isUserReportAdmin && chartConfig.id" [ngClass]="{'hide': hideElements}" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
       [telemetryInteractCdata]="[{id: chartConfig?.id, type: 'Chart'}]"
       [telemetryInteractEdata]="{id: 'report-chart', type: 'chart-summary', pageid: activatedRoute.snapshot.data.telemetry.pageid}"
       (click)="addChartSummary()" type="button"
-      class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn"><i class="add icon"></i>Add
-      {{ resourceService?.frmelmnts?.lbl?.chartSummary}}</button>
+      class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8"><i class="add icon"></i>
+      {{ chartSummarylabel }}</button>
+  
+  
+
+  <button class="sb-btn sb-btn-normal sb-btn-primary filter-btn" (click)="showFilterPopup()" *ngIf="filters?.length > 0 " >
+    Filters
+  </button>
+ </div>
   </div>
+
+  <div class="sb-filter-label pt-16 pb-8" *ngIf="currentFilters">
+    <div *ngFor="let key of loadash.keys(currentFilters)" class="d-inline-flex flex-w-wrap"><span
+        class="sb-label-name mb-4">{{key}}:</span><span class="sb-label-value"
+        *ngFor="let val of currentFilters[key]">{{val}}
+        <!-- <i class="close icon mr-0 pl-4"></i> -->
+      </span>
+    </div>
+  </div>
+
+  <div *ngIf="showStats">
+    <div _ngcontent-c14="" class="graph-statistics py-16" *ngFor="let stat of loadash.keys(resultStatistics)">
+      {{stat}} <div class="sb-label sb-label-table sb-label-primary-100 mr-4"
+        *ngFor="let op of loadash.keys(resultStatistics[stat])"> {{op}} : {{resultStatistics[stat][op]}}
+      </div>
+    </div>
+  </div>
+
+  
+
+ 
+
+  
   <div class="dashboard-graph-statistics py-24" *ngIf="bigNumberCharts.length">
     <div class="graph-stat-block" *ngFor="let bigNumberChart of bigNumberCharts">
       <div class="graph-stat-label">{{bigNumberChart?.header}}</div>
@@ -29,9 +69,9 @@
       <div class="graph-stat-info"> {{bigNumberChart?.footer}} </div>
     </div>
   </div>
-  <div class="d-flex flex-jc-flex-end  mt-8 mr-8 sb-last-update-status" *ngIf="showLastUpdatedOn && lastUpdatedOn">
+  <!-- <div class="d-flex flex-jc-flex-end  mt-8 mr-8 sb-last-update-status" *ngIf="showLastUpdatedOn && lastUpdatedOn">
     <span class="font-italic">{{resourceService?.frmelmnts?.lbl?.lastUpdatedOn}}&nbsp;: </span> &nbsp; {{lastUpdatedOn}}
-  </div>
+  </div> -->
   <ng-container *ngIf="showChart && !iframeDetails">
     <canvas #chartCanvas baseChart [datasets]="datasets" [labels]="chartLabels" [options]="chartOptions"
       [chartType]="chartType" [legend]="legend" [colors]="chartColors"></canvas>
@@ -44,5 +84,22 @@
     <app-report-summary *ngIf="summary.length" [inputData]="summary"></app-report-summary>
   </div>
 </div>
+<!-- [ngStyle]="{'display': filterPopup==true ? 'block' : 'none' }" -->
+<sui-modal [mustScroll]="true" (dismissed)="closeFilterModal()" [transitionDuration]="0" [size]="'normal'"
+  class="sb-modal sb-hawkeye-modal" *ngIf="filterPopup">
+  <div class="sb-modal-content  p-32">
+  <app-filter [filterType] ="filterType" [resetFilters]="resetFilters"  [hideElements]="hideElements" [selectedFilter]="selectedFilters" [filters]="filters" (filterChanged)="filterChanged($event)" [chartData]="chartData"
+  [chartType]="chartType" [telemetryInteractObject]="telemetryInteractObject" [showGraphStats]="showGraphStats" (graphStatsChange)="graphStatsChange($event)">
+  </app-filter>
+</div>
 
+<div class="sb-modal-actions">
+  <button (click)="resetForm()" class="sb-btn sb-btn-normal sb-btn-outline-primary">
+    {{resourceService?.frmelmnts?.btn?.reset}} {{resourceService?.frmelmnts?.lbl?.filters  }}
+  </button>
+</div>
+
+</sui-modal>
+ 
+  <!--  -->
 

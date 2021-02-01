@@ -24,6 +24,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   @Input() showGraphStats;
   @Output() filterChanged: EventEmitter<any> = new EventEmitter<any>();
   @Output() graphStatsChange: EventEmitter<any> = new EventEmitter<any>();
+  @Input() filterType:any;
 
   availableChartTypeOptions = ['Bar', 'Line'];
   filtersFormGroup: FormGroup;
@@ -53,10 +54,16 @@ export class FilterComponent implements OnInit, OnDestroy {
   @Input()
   set selectedFilter(val: any) {
     if (val) {
-
       this.selectedFilters = {};
-      this.resetFilter();
+      if(val.filters){
+        this.filters = val.filters;
+      }
       this.formGeneration(val.data);
+      if(val.selectedFilters){
+        this.selectedFilters = val.selectedFilters;
+        this.filtersFormGroup.patchValue(val.selectedFilters);
+      } 
+      
     }
   }
 
@@ -67,12 +74,31 @@ export class FilterComponent implements OnInit, OnDestroy {
   @Input()
   set resetFilters(val: any) {
     if (val) {
+
+      debugger;
         // to apply current filters to new updated chart data;
         const currentFilterValue = _.get(this.filtersFormGroup, 'value');
         this.resetFilter();
-        this.formGeneration(val.data);
-        this.filtersFormGroup.patchValue(currentFilterValue);
-        this.selectedFilters = currentFilterValue;
+        this.chartData = val.data;
+        this.buildFiltersForm();
+        
+        
+        // this.formGeneration(this.chartData);
+        if(val.reset && val.reset==true){
+          this.selectedFilters = {};
+          if(val.filters){
+            this.filters = val.filters;
+          }
+        }
+        else if(val.filters){
+          this.filtersFormGroup.patchValue(val.filters);
+          this.selectedFilters = val.filters;
+        } else if(currentFilterValue){
+          this.filtersFormGroup.patchValue(currentFilterValue);
+          this.selectedFilters = currentFilterValue;
+        }
+      
+        
     
     }
   }
@@ -111,6 +137,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   formGeneration(chartData) {
+    this.filtersFormGroup = this.fb.group({});
     _.forEach(this.filters, filter => {
       if (filter.controlType === 'date' || /date/i.test(_.get(filter, 'reference'))) {
         const dateRange = _.uniq(_.map(chartData, _.get(filter, 'reference')));
@@ -125,7 +152,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   buildFiltersForm() {
-    this.filtersFormGroup = this.fb.group({});
+   
     this.formGeneration(this.chartData);
     this.filtersSubscription = this.filtersFormGroup.valueChanges
       .pipe(
@@ -144,7 +171,11 @@ export class FilterComponent implements OnInit, OnDestroy {
       }, (err) => {
         console.log(err);
       });
-
+      if(this.chartData.selectedFilters){
+          this.filtersFormGroup.patchValue(this.chartData.selectedFilters);
+          // this.selectedFilters = this.chartData.selectedFilters;
+      }
+  
   }
 
   setTelemetryInteractEdata(val) {
@@ -155,12 +186,10 @@ export class FilterComponent implements OnInit, OnDestroy {
     };
   }
 
-  changeChartType(chartType) {
-    this.chartType = _.lowerCase(chartType);
-    this.filterData();
-  }
   resetFilter() {
-    this.filtersFormGroup.reset();
+    if(this.filtersFormGroup){
+      this.filtersFormGroup.reset();
+    }
     if (this.datepicker) {
       this.datepicker.nativeElement.value = '';
     }
@@ -189,12 +218,14 @@ export class FilterComponent implements OnInit, OnDestroy {
         });
       });
       this.filterChanged.emit({
+        allFilters:this.filters,
         filters: this.selectedFilters,
         chartData: res,
         chartType: this.chartType
       });
     } else {
       this.filterChanged.emit({
+        allFilters: this.filters,
         filters: {},
         chartData: this.chartData,
         chartType: this.chartType

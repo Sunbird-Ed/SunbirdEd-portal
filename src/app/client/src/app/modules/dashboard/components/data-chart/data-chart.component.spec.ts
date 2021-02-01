@@ -207,6 +207,26 @@ describe('DataChartComponent', () => {
         component.graphStatsChange(false);
         expect(component.showStats).toEqual(false);
       }));
+      it('should change chart type', fakeAsync(() => {
+        component.ngOnInit();
+        tick(1000);
+        component.changeChartType('bar');
+        expect(component.chartType).toEqual('bar');
+      }));
+
+       it('should close popup', fakeAsync(() => {
+        component.ngOnInit();
+        tick(1000);
+        component.closeFilterModal();
+        expect(component.filterPopup).toEqual(false);
+      }));
+
+      it('should open modal popup', fakeAsync(() => {
+        component.ngOnInit();
+        tick(1000);
+        component.showFilterPopup();
+        expect(component.filterPopup).toEqual(true);
+      }));
 
       
 

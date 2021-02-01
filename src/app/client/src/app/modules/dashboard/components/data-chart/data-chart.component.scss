@@ -8,7 +8,7 @@
 
 .sb-last-update-status {
   color: var(--gray-200);
-  font-size: calculateRem(14px);
+  font-size: calculateRem(13px);
   font-weight: bold;
 }
 
@@ -41,11 +41,6 @@
   height: calculateRem(700px);
 }
 
-.sb-last-update-status {
-  color: var(--gray-200);
-  font-size: calculateRem(14px);
-  font-weight: bold;
-}
 
 @include respond-below(md) {
   .dashboard-graph-statistics {
@@ -69,4 +64,54 @@
   padding-bottom: 5px;
 }
 
+.sb-modal {
+  ::ng-deep {
+    .ui.modal {
+      background-color:#E9E8D9 !important;
+    }
+  }
+} 
+sui-select.selection.ui.dropdown {
+  height: 40px;
+  font-size: 14px;
+  padding: 10px;
+}
+.filter-btn {
+  min-width: 135px !important;
+}
 
+.sb-modal-actions {
+  background-color:#E9E8D9 !important;
+}
+.sb-modal-content {
+  background-color:#E9E8D9 !important;
+  overflow-y: visible !important;
+}
+.sb-modal {
+  background-color:#E9E8D9 !important;
+}
+.sb-btn-normal {
+  font-size: 15px !important;
+}
+.sb-label-value {
+  border-radius: 24px;
+  padding: 6px;
+  background-color: #E9E8D9 !important;
+  box-shadow: 4px 4px 3px 0 #C2C2C2 !important;
+  color: #333;
+  margin-bottom: 0.25rem;
+  margin-right: 0.25rem;
+
+}
+.chart-title {
+  font-size: 16px;
+  font-weight: 500;
+}
+.sb-modal-content {
+  ::ng-deep {
+    .sb-prominent-filter-field {
+      width:50%;
+    }
+  
+  }
+}
