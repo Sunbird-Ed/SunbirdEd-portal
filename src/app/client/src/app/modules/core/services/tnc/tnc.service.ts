@@ -19,9 +19,9 @@ export class TncService {
     return this.learnerService.get(options);
   }
 
-  getTncList() {
+  getGroupsTnc() {
     const options = {
-      url: this.configService.urlConFig.URLS.SYSTEM_SETTING.TNC_LIST
+      url: this.configService.urlConFig.URLS.SYSTEM_SETTING.GROUPS_TNC
     };
     return this.learnerService.get(options);
   }

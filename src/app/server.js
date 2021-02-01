@@ -2,10 +2,20 @@
 const { enableLogger } = require('@project-sunbird/logger');
 const envHelper = require('./helpers/environmentVariablesHelper.js');
 const path = require('path');
+const fs = require('fs');
+const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+
 enableLogger({
   logBasePath: path.join(__dirname, 'logs'),
   logLevel: envHelper.sunbird_portal_log_level,
-  context: {src: 'sunbird-portal'},
+  context: {
+    "channel": envHelper.DEFAULT_CHANNEL,
+    "env": envHelper.APPID,
+    "pdata": {
+      id: envHelper.APPID,
+      ver: packageObj.version,
+      pid: 'sunbird-portal-backend'},
+  },
   adopterConfig: {
     adopter: 'winston'
   }
@@ -27,13 +37,11 @@ const proxyUtils = require('./proxy/proxyUtils.js')
 const healthService = require('./helpers/healthCheckService.js')
 const latexService = require('./helpers/latexService.js')
 const { getKeyCloakClient, memoryStore } = require('./helpers/keyCloakHelper')
-const fs = require('fs')
 const request = require('request-promise');
 const portal = this
 const telemetry = new (require('sb_telemetry_util'))()
 const telemetryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'helpers/telemetryEventConfig.json')))
 const userService = require('./helpers/userService');
-const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 const { frameworkAPI } = require('@project-sunbird/ext-framework-server/api');
 const frameworkConfig = require('./framework.config.js');
 const cookieParser = require('cookie-parser');
@@ -52,11 +60,16 @@ let keycloak = getKeyCloakClient({
 });
 const addLogContext = (req, res, next) => {
   req.context = {
+    channel: envHelper.DEFAULT_CHANNEL,
+    env: envHelper.APPID,
+    did: req.get('X-Device-ID'),
     reqId: req.get('X-Request-ID'),
-    deviceId: req.get('X-Device-ID'),
-    appId: req.get('X-App-Id'),
-    appVersion: req.get('X-App-Version'),
-    sessionId: req.get('X-Session-ID'),
+    sid: req.get('X-Session-ID'),
+    pdata: {
+      "id": req.get('X-App-Id'),
+      "pid": "",
+      "ver":  req.get('X-App-Version')
+    },    
     userId: req.get('X-User-ID'),
     isDebugEnabled: req.get('X-Debug-Enable')
   }
@@ -100,6 +113,7 @@ const morganConfig = (tokens, req, res) => {
     tokensList.push(
       tokens.res(req, res, 'content-length'), '-',
       tokens['response-time'](req, res), 'ms',
+      "requestHeader:", JSON.stringify(req.headers),
       "requestBody:", req.body ? JSON.stringify(req.body) : "empty",
       "responseBody:", res.body
     )

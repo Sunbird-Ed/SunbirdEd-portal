@@ -138,6 +138,30 @@ export class OfflineHelpVideosComponent implements OnInit, OnDestroy, AfterViewI
           name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.manageusernewtheme),
           thumbnail: 'assets/images/play-icon.svg',
           url: 'assets/videos/How_do_I_add_users_on_DIKSHA_joyful_theme.mp4'
+        },
+        {
+          id: 'login-with-sso-joyful-theme',
+          name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.SSologinnewtheme),
+          thumbnail: 'assets/images/play-icon.svg',
+          url: 'assets/videos/How_do_I_login_using_my_State_ID_joyful_theme.mp4'
+        },
+        {
+          id: 'login-with-sso',
+          name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.loginSSO),
+          thumbnail: 'assets/images/play-icon.svg',
+          url: 'assets/videos/How_do_I_login_using_my_State_ID.mp4'
+        },
+        {
+          id: 'login-with-google-joyful-theme',
+          name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.newthemegooglelogin),
+          thumbnail: 'assets/images/play-icon.svg',
+          url: 'assets/videos/How_do_I_login_using_my_Google_ID_joyful_theme.mp4'
+        },
+        {
+          id: 'login-with-google',
+          name: this.interpolateInstance(this.resourceService.frmelmnts.vidttl.googlelogin),
+          thumbnail: 'assets/images/play-icon.svg',
+          url: 'assets/videos/How_do_I_login_using_my_Google_ID.mp4'
         }
       ];
       this.activeVideoObject = this.slideData[0];

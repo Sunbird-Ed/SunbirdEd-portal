@@ -106,7 +106,7 @@
         "cpy-cli": "^2.0.0",
         "cross-env": "^7.0.2",
         "devtron": "^1.4.0",
-        "electron": "^8.2.0",
+        "electron": "^11.2.1",
         "electron-builder": "^21.2.0",
         "electron-builder-squirrel-windows": "^22.2.0",
         "electron-icon-maker": "0.0.4",
@@ -122,6 +122,6 @@
     "keywords": [],
     "license": "MIT",
     "engines": {
-        "node": ">=12.14.0"
+        "node": ">=12.17.0"
     }
 }
