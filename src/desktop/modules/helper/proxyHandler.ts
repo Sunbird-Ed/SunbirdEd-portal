@@ -47,10 +47,10 @@ const decorateRequest = async (request, options) => {
 }
 
 const resolveRequestPath = (host, request, options) => {
-  if (_.get(options, 'bypassLearnerRoute')) {
+  if (_.get(options, 'bypassLearnerRoute') && request.originalUrl.includes('/learner')) {
     return `${host}${request.originalUrl.replace('/learner/', '/api/')}`
   }
-  if (_.get(options, 'bypassContentRoute')) {
+  if (_.get(options, 'bypassContentRoute') && request.originalUrl.includes('/content')) {
     return `${host}${request.originalUrl.replace('/content/', '/api/')}`
   }
   return host;
