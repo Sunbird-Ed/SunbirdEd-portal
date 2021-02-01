@@ -175,8 +175,8 @@ expressApp.use("/dialog/telemetry/export", async (req, res) => {
   if (destFolder && destFolder[0]) {
     fse.access(destFolder[0], fs.constants.F_OK | fs.constants.W_OK, (err) => {
       if (err) {
-        logger.error("Telemetry dest folder not selected", err);
-        res.status(500).send({ message: "Telemetry dest folder not selected", responseCode: "OPERATION_NOT_PERMITTED" });
+        logger.error("Folder does not have write permission", err);
+        res.status(500).send({ message: "Folder does not have write permission", responseCode: "OPERATION_NOT_PERMITTED" });
       } else {
         res.send({
           message: "SUCCESS",
