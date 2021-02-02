@@ -64,7 +64,8 @@ import { Subject } from "rxjs";
 import { debounceTime } from "rxjs/operators";
 import { HTTPService } from "@project-sunbird/OpenRAP/services/httpService";
 import * as os from "os";
-const windowIcon = path.join(__dirname, "build", "icons", "png", "512x512.png");
+const nativeImage = require('electron').nativeImage;
+const windowIcon = nativeImage.createFromPath(path.join(__dirname, "build", "icons", "png", "512x512.png"));
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win: any;
