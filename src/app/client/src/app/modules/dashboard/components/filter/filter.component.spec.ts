@@ -74,7 +74,6 @@ describe('FilterComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(FilterComponent);
     component = fixture.componentInstance;
-    component.chartType = "bar";
     component.filters = mockChartData.filters;
     component.chartData = mockChartData.chartData;
   });
