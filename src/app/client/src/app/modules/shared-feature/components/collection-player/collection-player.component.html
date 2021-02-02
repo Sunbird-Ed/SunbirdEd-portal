@@ -48,7 +48,7 @@
 
             <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
               [telemetryInteractEdata]="copyContentInteractEdata"
-              *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType !== 'TextBook' && !isCopyAsCourseClicked"
+              *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType !== 'TextBook' && !isCopyAsCourseClicked"
               appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']"
               (click)="copyContent(collectionTreeNodes.data)" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
               <i class="blue clone outline icon"></i> {{resourceService?.frmelmnts?.lbl?.copy}}
@@ -56,7 +56,7 @@
 
             <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
               [telemetryInteractEdata]="copyContentInteractEdata"
-              *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && !isCopyAsCourseClicked"
+              *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && !isCopyAsCourseClicked"
               appPermission [permission]="['BOOK_CREATOR']" (click)="copyContent(collectionTreeNodes.data)"
               class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
               <i class="blue clone outline icon"></i> {{resourceService?.frmelmnts?.lbl?.copy}}
@@ -64,7 +64,7 @@
 
             <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
               [telemetryInteractEdata]="copyAsCourseInteractEdata" href="javascript:void(0)"
-              *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && !isCopyAsCourseClicked"
+              *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && !isCopyAsCourseClicked"
               appPermission [permission]="['CONTENT_CREATOR']" (click)="copyAsCourse()"
               class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
               <img src="assets/images/copy-clone.svg" class="mr-4 pt-2">
@@ -96,7 +96,7 @@
               </button>
             </div>
 
-            <div class="ui active inverted dimmer" *ngIf="showCopyLoader">
+            <div class="ui active inverted dimmer" *ngIf="!isDesktopApp && showCopyLoader">
               <div class="ui text centered inline loader mt-40">
                 {{resourceService.frmelmnts.lbl.copycontent}}
               </div>
