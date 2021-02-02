@@ -20,13 +20,9 @@ export class FilterComponent implements OnInit, OnDestroy {
   @Input() chartData: any;
   @Input() filters: any;
   @Input() telemetryInteractObject: IInteractEventObject;
-  @Input() chartType: any;
-  @Input() showGraphStats;
   @Output() filterChanged: EventEmitter<any> = new EventEmitter<any>();
-  @Output() graphStatsChange: EventEmitter<any> = new EventEmitter<any>();
   @Input() filterType:any;
 
-  availableChartTypeOptions = ['Bar', 'Line'];
   filtersFormGroup: FormGroup;
   chartLabels: any = [];
   chartConfig: any;
@@ -41,7 +37,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   selectedEndDate: any;
   loadash = _;
   showFilters: Boolean = true;
-  
+  dateFilters:Array<string>;
   public unsubscribe = new Subject<void>();
   private _selectedFilter; // private property _item
   private _resetFilters;
@@ -75,7 +71,6 @@ export class FilterComponent implements OnInit, OnDestroy {
   set resetFilters(val: any) {
     if (val) {
 
-      debugger;
         // to apply current filters to new updated chart data;
         const currentFilterValue = _.get(this.filtersFormGroup, 'value');
         this.resetFilter();
@@ -122,9 +117,6 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   }
 
-  statsChange($event){
-    this.graphStatsChange.emit($event);
-  }
   ngOnInit() {
 
     if (this.filters) {
@@ -217,21 +209,42 @@ export class FilterComponent implements OnInit, OnDestroy {
           return _.includes(_.toLower(value), data[key].toLowerCase());
         });
       });
+
+      let keys = Object.keys(this.selectedFilters);
+      this.dateFilters = [];
+      this.filters.map(ele=>{
+          if(ele && ele['controlType'].toLowerCase()=="date"){
+            keys.map(item=>{
+              if(item==ele['reference']){
+                this.dateFilters.push(item);
+              }
+            })
+          }
+      });
+
+      
       this.filterChanged.emit({
         allFilters:this.filters,
         filters: this.selectedFilters,
         chartData: res,
-        chartType: this.chartType
       });
     } else {
+      this.dateFilters = [];
       this.filterChanged.emit({
         allFilters: this.filters,
         filters: {},
         chartData: this.chartData,
-        chartType: this.chartType
       });
     }
     
   }
+  checkFilterReferance(element){
+    if(this.dateFilters && this.dateFilters.includes(element)){
+      return true
+    } else {
+      return false
+    }
+  }
+
 
 }

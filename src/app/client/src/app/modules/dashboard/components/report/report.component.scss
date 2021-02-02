@@ -100,8 +100,6 @@
 }
 .sbt-report-btns-panel{
     margin-top: calculateRem(1px);
-    // background: var(--white);
-    border-radius: 0px !important;
     background-color:#E9E8D9 !important;
     border-radius: 0px !important;
 
@@ -190,6 +188,7 @@
     opacity: 0.3;
     font-family: "Noto Sans";
     font-weight: 600;
+
   }
   .ui.secondary.pointing.menu .active.item {
       color: #024F9D !important;
@@ -241,13 +240,12 @@
     width: 57px !important;
     border-radius: 50% !important;
     min-width: auto !important;
-    padding: 0px !important;
     background: #fff;
     box-shadow: var(--sbt-box-shadow-6px) !important;
     
 }
 .report-title {
-    font-size: 20px;
+    font-size: 22px;
     color:#333333;
     font-family: "Noto Sans";
     line-height: 24px;
@@ -255,6 +253,7 @@
 }
 .icon-back {
     height: 20px;
+    width: 48px;
 
 }
 .icon-back .icon-svg--primary {
@@ -301,12 +300,16 @@
     font-weight: 600;
 }
 .sb-btn-normal {
-    min-width: 135px;
+    min-width: 96px !important;
     font-weight: 500 !important;
-    font-size: 14px !important;
+    font-size: 15px !important;
+    padding-left: 18px !important;
+    padding-right: 18px !important;
 }
 .active-btn {
-    min-width:135px !important;
+    padding-left: 19px !important;
+    min-width: 113px !important;
+
     background-color: #024F9D !important;
     box-shadow: var(--sbt-box-shadow-6px) !important;
     ::ng-deep {
@@ -332,6 +335,8 @@
     vertical-align: revert;
     position: relative;
     top: 30px;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
 }
 
 .last-update {
@@ -347,8 +352,8 @@
     ::ng-deep {
         .text {
             color: #fff !important;
-            padding-left: 10px;
-            padding-right: 10px;
+            padding-left: 5px;
+            padding-right: 5px;
         }
     }
 }

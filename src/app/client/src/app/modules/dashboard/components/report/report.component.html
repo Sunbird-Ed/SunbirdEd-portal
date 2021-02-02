@@ -25,7 +25,7 @@
                           <div class="d-flex flex-dc flex-basis-4">
                           <span *ngIf="!hideElements" class="relative position relative9 reports-back-btn my-0 pl-0 pr-10">
                             <span class="ui py-8 px-0">
-                              <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn back-btn-new mb-5"
+                              <button type="button" class="sb-btn sb-btn-link sb-btn-link-primary sb-left-icon-btn back-btn-new mb-5"
                                 (click)="gotoListPage()">
                                 <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
                                     <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
@@ -36,7 +36,8 @@
                           </span>
                           </div>
                           <div *ngIf="!noResult">
-                            <div class="report-title"> {{ report?.title || currentReport?.reportMetaData?.title || currentReport?.reportMetaData?.label}}
+                            <div class="report-title"> {{ ( report?.title || currentReport?.reportMetaData?.title || currentReport?.reportMetaData?.label ) | titlecase }}
+                            <br />
                             <span *ngIf="hash && reportService.isUserReportAdmin()">
                               ( {{reportService.getParameterFromHash(hash)}} )
                             </span>
@@ -46,7 +47,7 @@
                             [ngClass]="{'sb-label-primary-100': report.status === 'retired', 'label-success': report.status === 'live', 'label-warning': report.status === 'draft'}"
                             *ngIf="isUserReportAdmin && !hideElements"
                              class="px-0">
-                            <span *ngIf="report.status === 'live'" class="sb-live"></span>{{report?.status}}</span>
+                            <span *ngIf="report.status === 'live'" class="sb-live"></span>{{ report?.status | titlecase }}</span>
 
                             <span class="ml-auto sb-last-update-status fnormal sb-color-gray-400 px-10 last-update"
                     *ngIf="currentReport?.lastUpdatedOn && type === 0">
@@ -106,7 +107,7 @@
                         </button>
                       </div>
                     </div>
-                    <p class="m-0 report-description py-15" *ngIf="(report?.description || currentReport?.reportMetaData?.description ) && !noResult"
+                    <p class="m-0 report-description py-15 pl-10" *ngIf="(report?.description || currentReport?.reportMetaData?.description ) && !noResult"
                   [innerHTML]="reportService.transformHTML(report?.description || currentReport.reportMetaData.description)">
                   </p>
                   </div>
@@ -125,18 +126,18 @@
                       <div class="ui pointing secondary menu d-flex flex-ai-center sbt-report-tabs-panel px-15" *ngIf="!hideElements">
                         <a appTelemetryInteract
                           [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
-                          [telemetryInteractEdata]="setTelemetryInteractEdata('report-graph')" class="item px-0 mx-15"
+                          [telemetryInteractEdata]="setTelemetryInteractEdata('report-graph')" class="item px-0 mx-15 py-20"
                           suiTabHeader="graph" (activate)="showExportsOption=true"
                           (click)="setDownloadUrl(currentReport.reportMetaData.downloadUrl)">{{resourceService?.frmelmnts?.lbl?.graphs}}</a>
                         <a appTelemetryInteract
                           [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
                           [telemetryInteractEdata]="setTelemetryInteractEdata('report_table_'+table.name)"
                           (activate)="showExportsOption=false" *ngFor="let table of currentReport.tables"
-                          (click)="setDownloadUrl(table.downloadUrl)" class="item px-0 mx-15"
+                          (click)="setDownloadUrl(table.downloadUrl)" class="item px-0 mx-15 py-20"
                           [suiTabHeader]="table.id">{{table?.name}}</a>
                         <a *ngIf="currentReport?.files?.length" appTelemetryInteract
                           [telemetryInteractObject]="setTelemetryInteractObject()"
-                          [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'download'})" class="item px-0 mx-15"
+                          [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'download'})" class="item px-0 mx-15 py-20"
                           suiTabHeader="files">{{resourceService?.frmelmnts?.lbl?.dashboard?.download}}</a>
                       </div>
                       <div class="sbt-report-btns-panel-new pt-15 pb-10" *ngIf="!hideElements">
@@ -257,11 +258,11 @@
                       <div class="global-filter px-20 pb-10 d-flex" *ngIf=" currentReport?.reportMetaData?.filters">
                         <div class="d-flex flex-dc flex-basis-1">
                           <app-filter [filterType]="filterType" [resetFilters]="resetFilters" [hideElements]="hideElements" [selectedFilter]="selectedFilters" [filters]="currentReport.reportMetaData.filters" (filterChanged)="filterChanged($event)" [chartData]="getAllChartData(currentReport)"
-                              [chartType]="Bar" [telemetryInteractObject]="telemetryInteractObject">
+                              [telemetryInteractObject]="telemetryInteractObject">
                           </app-filter>
                         </div>
-                        <div class="d-flex">
-                          <button  class="sb-btn sb-btn-normal sb-btn-outline-primary reset-filter" (click)="resetFilter()">
+                        <div class="d-flex" *ngIf="!hideElements">
+                          <button   class="sb-btn sb-btn-normal sb-btn-outline-primary reset-filter" (click)="resetFilter()">
                           {{resourceService?.frmelmnts?.btn?.reset}} {{resourceService?.frmelmnts?.lbl?.filters  }}
                         </button>
                         </div>

@@ -217,19 +217,18 @@ describe('DataChartComponent', () => {
        it('should close popup', fakeAsync(() => {
         component.ngOnInit();
         tick(1000);
-        component.closeFilterModal();
+        component.filterModalPopup(false);
         expect(component.filterPopup).toEqual(false);
       }));
 
       it('should open modal popup', fakeAsync(() => {
         component.ngOnInit();
         tick(1000);
-        component.showFilterPopup();
+        component.filterModalPopup(true);
         expect(component.filterPopup).toEqual(true);
       }));
-
+     
       
-
     it('should sort data in ascending order based on Date key', () => {
         const inputData = [{ slug: 'ap', date: '01-01-2018' }, { slug: 'rj', date: '01-02-2018' }, { slug: 'gj', date: '01-01-2017' }];
         const key = 'date';

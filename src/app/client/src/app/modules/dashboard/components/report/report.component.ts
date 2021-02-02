@@ -26,7 +26,7 @@ export class ReportComponent implements OnInit {
 
   public report: any;
   public showSummaryModal = false;
-  public report$: any;
+  public report$;
   public noResultMessage: INoResultMessage;
   public noResult: boolean;
   private downloadUrl: string;
@@ -56,7 +56,6 @@ export class ReportComponent implements OnInit {
   public globalSelectedFilters: any;
   public selectedFilters: Object;
   public showChart = true;
-  public charts: any;
   public reportData: any;
   public chartsReportData: any;
   public globalFilterChange: any;
@@ -161,16 +160,16 @@ export class ReportComponent implements OnInit {
               map((apiResponse) => {
                 const [data, reportSummary] = apiResponse;
                 const result: any = Object.assign({});
-                this.charts = (charts && this.reportService.prepareChartData(charts, data, updatedDataSource,
+                const chart = (charts && this.reportService.prepareChartData(charts, data, updatedDataSource,
                   _.get(reportConfig, 'reportLevelDataSourceId'))) || [];
-                result['charts'] = this.charts;
+                result['charts'] =  chart;
                 result['tables'] = (tables && this.reportService.prepareTableData(tables, data, _.get(reportConfig, 'downloadUrl'),
                   this.hash)) || [];
                 result['reportMetaData'] = reportConfig;
                 result['reportSummary'] = reportSummary;
                 result['files'] = this.reportService.getParameterizedFiles(files || [], this.hash);
                 result['lastUpdatedOn'] = this.reportService.getFormattedDate(this.reportService.getLatestLastModifiedOnDate(data));
-                this.reportResult = result;
+              
                 this.chartsReportData = JSON.parse(JSON.stringify(result));
                 this.reportData = JSON.parse(JSON.stringify(result));
                 return result;
@@ -247,17 +246,19 @@ export class ReportComponent implements OnInit {
   }
 
   private downloadReportAsPdf() {
+    
     this.convertHTMLToCanvas(this.reportElement.nativeElement, {
-      scrollX: 0,
+      scrollX:  0,
       scrollY: -window.scrollY,
       scale: 2
     }).then(canvas => {
       const imageURL = canvas.toDataURL('image/jpeg');
       const pdf = new jspdf('p', 'px', 'a4');
       const pageWidth = pdf.internal.pageSize.getWidth();
+
       const imageHeight = (canvas.height * pageWidth) / canvas.width;
       pdf.internal.pageSize.setHeight(imageHeight);
-      pdf.addImage(imageURL, 'JPEG', 10, 8, pageWidth - 24, imageHeight - 24);
+      pdf.addImage(imageURL, 'JPEG', 10, 8, pageWidth - 28, imageHeight - 24);
       pdf.save('report.pdf');
       this.toggleHtmlVisibilty(false);
       this.reportExportInProgress = false;
@@ -268,6 +269,7 @@ export class ReportComponent implements OnInit {
   }
 
   private downloadReportAsImage() {
+
     this.convertHTMLToCanvas(this.reportElement.nativeElement, {
       scrollX: 0,
       scrollY: -window.scrollY,

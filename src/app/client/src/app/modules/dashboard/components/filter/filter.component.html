@@ -48,20 +48,25 @@
   </sui-accordion> -->
 
 
-  <div class="d-flex flex-w-wrap reset-filter-section">
-    <div *ngIf="showGraphStats" class="d-flex flex-ai-center">{{resourceService?.frmelmnts?.lbl?.graphStat }}:
-      <sui-checkbox class="toggle ml-8" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-        [telemetryInteractEdata]="setTelemetryInteractEdata('graph-statistics')"
-        [telemetryInteractCdata]="telemetryCdata" (checkChange)="statsChange($event)"></sui-checkbox>
-    </div>
-  </div>
 </form>
 
 <div class="sb-filter-label pt-16 pb-8" *ngIf="selectedFilters && filterType=='report-filter'">
-  <div *ngFor="let key of loadash.keys(selectedFilters)" class="d-inline-flex flex-w-wrap"><span
+  <div *ngFor="let key of loadash.keys(selectedFilters)" class="d-inline-flex flex-w-wrap">
+    
+    <span *ngIf="checkFilterReferance(key)">
+      <span 
+      class="sb-label-name mb-4" >{{key}}:</span>
+        <span  class="date-range-label"
+        *ngIf="selectedFilters[key]?.length>0">
+            {{selectedFilters[key][0]}} - {{selectedFilters[key][selectedFilters[key].length-1]}} 
+        </span>
+    </span>
+    <span *ngIf="!checkFilterReferance(key)">
+    <span
       class="sb-label-name mb-4">{{key}}:</span><span class="sb-label-value"
       *ngFor="let val of selectedFilters[key]">{{val}}
       <!-- <i class="close icon mr-0 pl-4"></i> -->
+    </span>
     </span>
   </div>
 </div>

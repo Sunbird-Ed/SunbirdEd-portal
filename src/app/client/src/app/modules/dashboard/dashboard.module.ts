@@ -26,7 +26,6 @@ import { SearchService } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { OrderModule } from 'ngx-order-pipe';
 import { AceEditorModule } from 'ng2-ace-editor';
-// import { GlobalFilterComponent } from './components/global-filter/global-filter.component';
 
 
 @NgModule({

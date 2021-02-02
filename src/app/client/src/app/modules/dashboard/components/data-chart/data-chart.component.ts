@@ -81,6 +81,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
   @ViewChild('chartRootElement', {static: false}) chartRootElement;
   @ViewChild('chartCanvas', {static: false}) chartCanvas;
   filterType:string = "chart-filter";
+  dateFilters:Array<string>;
  
 
   @ViewChild(BaseChartDirective, {static: false}) chartDirective: BaseChartDirective;
@@ -95,13 +96,14 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
     this.chartConfig = _.get(this.chartInfo, 'chartConfig');
     this.chartData = _.get(this.chartInfo, 'chartData');
-    this.chartSummarylabel = _.get(this.resourceService, 'frmelmnts.lbl.chartSummary');
-
+    this.chartSummarylabel = "Add " + _.get(this.resourceService, 'frmelmnts.lbl.chartSummary');
+    
     if (_.get(this.chartInfo, 'lastUpdatedOn')) {
       this.lastUpdatedOn = moment(_.get(this.chartInfo, 'lastUpdatedOn')).format('DD-MMMM-YYYY');
     }
     this.prepareChart();
     this.setTelemetryCdata();
+    this.cdr.detectChanges();
 
   }
 
@@ -408,10 +410,21 @@ export class DataChartComponent implements OnInit, OnDestroy {
   }
 
   public filterChanged(data: any):void {
-    this.chartType = data.chartType;
     this.cdr.detectChanges();
-
     this.currentFilters = data.filters;
+
+    let keys = Object.keys(this.currentFilters);
+    this.dateFilters = [];
+    this.filters.map(ele=>{
+        if(ele && ele['controlType'].toLowerCase()=="date"){
+          keys.map(item=>{
+            if(item==ele['reference']){
+              this.dateFilters.push(item);
+            }
+          })
+        }
+    });
+
     if(data.filters){
       this.chartData['selectedFilters'] = data.filters;
     }else {
@@ -425,19 +438,29 @@ export class DataChartComponent implements OnInit, OnDestroy {
   changeChartType(chartType) {
     this.chartType = _.lowerCase(chartType);
   }
-  showFilterPopup(){
-    this.cdr.detectChanges();
-    this.filterPopup = true;
+  filterModalPopup(operator){
+
+    if(operator == false){
+      this.filterPopup = false;
+      this.cdr.detectChanges();
+    }else {
+      this.cdr.detectChanges();
+      this.filterPopup = true;
+    }
     
   }
-  public closeFilterModal(): void {
-    this.filterPopup = false;
-    this.cdr.detectChanges();
-  }
+  
   resetForm(){
     this.chartData['selectedFilters'] = {};
     this.resetFilters = { data: this.chartData,reset:true };
     this.currentFilters = [];
+  }
+  checkFilterReferance(element){
+    if(this.dateFilters && this.dateFilters.includes(element)){
+      return true
+    } else {
+      return false
+    }
   }
 
 }

@@ -13,7 +13,7 @@
 
     &:focus {
       border: calculateRem(1px) solid var(--rc-dddddd);
-      border-radius: calculateRem(3px);
+      border-radius: calculateRem(24px);
     }
 
     &::placeholder {
@@ -63,7 +63,10 @@
   width: 100%;
   .sb-label-value {
     border-radius: 24px;
-    padding: 6px;
+    padding: 7px !important;
+    padding-left: 9px !important;
+    padding-right: 9px !important;
+
     background-color: #F2F2EA !important;
     box-shadow: 4px 4px 3px 0 #C2C2C2 !important;
     color: #333;
@@ -73,7 +76,7 @@
    
   }
   .sb-label-name {
-    font-size: 14px;
+    font-size: 16px;
   }
 }
 
@@ -137,6 +140,10 @@
 
 .sb-prominent-filter-field {
   ::ng-deep {
+    label {
+      padding-bottom: 10px;
+      margin-bottom: 0px !important;
+    }
     .md-drppicker {
       padding: calculateRem(16px) calculateRem(8px);
 

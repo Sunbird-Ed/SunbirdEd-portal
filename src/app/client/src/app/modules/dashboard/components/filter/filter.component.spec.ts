@@ -119,13 +119,6 @@ describe('FilterComponent', () => {
     expect(component.showFilters).toEqual(true);
   }));
 
-  it('should emit graphStatsChange method ', fakeAsync(() => {
-    component.ngOnInit();
-    tick(1000);
-    component.statsChange(false);
-    tick(1000);
-  }));
-
   it('should call selected filter ', fakeAsync(() => {
     component.ngOnInit();
     tick(1000);
@@ -140,6 +133,15 @@ describe('FilterComponent', () => {
     tick(1000);
     component.filterData();
   }));
+
+  it('should check checkFilterReferance', fakeAsync(() => {
+    component.ngOnInit();
+    tick(1000);
+    component.dateFilters['date']
+    const response = component.checkFilterReferance("date");
+    expect(response).toEqual(true);
+  }));
+  
 
   xit('should set the dateRange', fakeAsync(() => {
     component.ngOnInit();

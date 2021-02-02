@@ -7,9 +7,14 @@
 }
 
 .sb-last-update-status {
-  color: var(--gray-200);
-  font-size: calculateRem(13px);
+  font-size: calculateRem(12px);
   font-weight: bold;
+  height: 20px;
+  opacity: 0.5;
+  color: #333333;
+  font-family: "Noto Sans";
+  letter-spacing: 0;
+  line-height: 20px;
 }
 
 .dashboard-graph-statistics {
@@ -75,9 +80,11 @@ sui-select.selection.ui.dropdown {
   height: 40px;
   font-size: 14px;
   padding: 10px;
+  font-family: "Noto Sans";
+  color:#49B1F2 !important;
 }
 .filter-btn {
-  min-width: 135px !important;
+  min-width: 96px;
 }
 
 .sb-modal-actions {
@@ -91,11 +98,17 @@ sui-select.selection.ui.dropdown {
   background-color:#E9E8D9 !important;
 }
 .sb-btn-normal {
+  min-width: 96px !important;
+  font-weight: 500 !important;
   font-size: 15px !important;
+  padding-left: 18px !important;
+  padding-right: 18px !important;
+
 }
+
 .sb-label-value {
   border-radius: 24px;
-  padding: 6px;
+  padding: 7px;
   background-color: #E9E8D9 !important;
   box-shadow: 4px 4px 3px 0 #C2C2C2 !important;
   color: #333;
@@ -106,12 +119,49 @@ sui-select.selection.ui.dropdown {
 .chart-title {
   font-size: 16px;
   font-weight: 500;
+  margin-bottom: 0px !important;
+  padding-top: 5px;
 }
 .sb-modal-content {
   ::ng-deep {
     .sb-prominent-filter-field {
-      width:50%;
+      width:40%;
     }
   
   }
 }
+.sb-label-name {
+  font-size: 16px;
+}
+
+sui-select.selection.ui.dropdown {
+  padding: 8px !important;
+    padding-left: 14px !important;
+
+}
+.selection-block {
+  margin-bottom: 8px;
+}
+
+ .filter-select-title{
+  font-size: 20px;
+  font-weight: 600;
+ }
+
+
+ .sb-label-primary-100 {
+  padding: 7px !important;
+  padding-left: 9px !important;
+  padding-right: 9px !important;
+  color: #333 !important;
+  border-radius: 24px;
+ }
+ .date-range-label{
+  padding: 7px !important;
+  padding-left: 9px !important;
+  padding-right: 9px !important;
+  color: #333 !important;
+  border-radius: 24px;
+  background-color: #E9E8D9 !important;
+ }
+ 
