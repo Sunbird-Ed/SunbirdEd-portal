@@ -3,7 +3,8 @@ import * as qs from 'qs';
 import * as _ from "lodash";
 import * as path from "path";
 import { HTTPService } from "@project-sunbird/OpenRAP/services/httpService";
-const windowIcon = path.join(__dirname, "build", "icons", "png", "512x512.png");
+const nativeImage = require('electron').nativeImage;
+const windowIcon = nativeImage.createFromPath(path.join(__dirname, "build", "icons", "png", "512x512.png"));
 import { logger } from '@project-sunbird/logger';
 
 export class LoginSessionProvider {
