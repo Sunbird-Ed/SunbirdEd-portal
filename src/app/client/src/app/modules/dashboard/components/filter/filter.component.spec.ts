@@ -136,7 +136,7 @@ describe('FilterComponent', () => {
   it('should check checkFilterReferance', fakeAsync(() => {
     component.ngOnInit();
     tick(1000);
-    component.dateFilters['date']
+    component.dateFilters = ['date'];
     const response = component.checkFilterReferance("date");
     expect(response).toEqual(true);
   }));

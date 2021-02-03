@@ -85,9 +85,8 @@ describe('DataChartComponent', () => {
             'Class 9',
             'Class 10'
         ]);
-        expect(component.datasets).toEqual([{
-            label: 'Total number of QR codes',
-            data: [
+        expect(component.datasets[0].data).toEqual(
+           [
                 115,
                 1158,
                 3532,
@@ -98,10 +97,8 @@ describe('DataChartComponent', () => {
                 208,
                 819,
                 750
-            ],
-            hidden: false,
-            fill: true
-        }]);
+            ]
+        );
 
         expect(component.resultStatistics).toEqual({
             'Total number of QR codes': {
@@ -227,7 +224,16 @@ describe('DataChartComponent', () => {
         component.filterModalPopup(true);
         expect(component.filterPopup).toEqual(true);
       }));
+
+      it('should check checkFilterReferance', fakeAsync(() => {
+        component.ngOnInit();
+        tick(1000);
+        component.dateFilters = ['date'];
+        const response = component.checkFilterReferance("date");
+        expect(response).toEqual(true);
+      }));
      
+      
       
     it('should sort data in ascending order based on Date key', () => {
         const inputData = [{ slug: 'ap', date: '01-01-2018' }, { slug: 'rj', date: '01-02-2018' }, { slug: 'gj', date: '01-01-2017' }];
