@@ -396,18 +396,13 @@ describe('ReportComponent', () => {
       chartData:chartData,
       filters:filters
     });
+    expect(component.globalFilterChange).toEqual({
+      chartData:chartData,
+      filters:filters
+    });
+
   }));
-  it('should get chartData', fakeAsync(() => {
-    component.ngOnInit();
-    tick(1000);
-    component.chartsReportData = {
-      charts:[{
-        chartData:chartData
-      }
-    ]
-    }
-    const data = component.getChartData(chartData[0]);
-  }));
+
   it('should get reset filters', fakeAsync(() => {
     component.ngOnInit();
     tick(1000);
