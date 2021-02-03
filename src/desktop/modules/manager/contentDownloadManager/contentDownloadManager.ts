@@ -24,6 +24,7 @@ export class ContentDownloadManager {
   @Inject private dbSDK: DatabaseSDK;
   private systemQueue: ISystemQueueInstance;
   private systemSDK;
+  private settingSDK;
   private ContentReadUrl = `${process.env.APP_BASE_URL}/api/content/v1/read/`;
   private ContentSearchUrl = `${process.env.APP_BASE_URL}/api/content/v1/search`;
   public async initialize() {
@@ -31,6 +32,7 @@ export class ContentDownloadManager {
     this.systemQueue.register(ContentDownloader.taskType, ContentDownloader);
     this.dbSDK.initialize(manifest.id);
     this.systemSDK = containerAPI.getSystemSDKInstance(manifest.id);
+    this.settingSDK = containerAPI.getSettingSDKInstance(manifest.id);
   }
   public async update(req, res) {
     const contentId = req.params.id;
@@ -251,7 +253,7 @@ export class ContentDownloadManager {
     }
   }
 
-  private getContentChildNodeDetailsFromApi(childNodes) {
+  private async getContentChildNodeDetailsFromApi(childNodes) {
     if (!childNodes || !childNodes.length) {
       return Promise.resolve([]);
     }
@@ -264,6 +266,11 @@ export class ContentDownloadManager {
         limit: childNodes.length,
       },
     };
+    const traceId: any = await this.settingSDK.get('traceId').catch((error) => { logger.error("Error while getting traceId", error); });
+
+    if (_.get(traceId, 'id')) {
+      DefaultRequestOptions.headers['X-Request-ID'] = traceId.id;
+    }
     return HTTPService.post(this.ContentSearchUrl, requestBody, DefaultRequestOptions).toPromise()
       .then((response) => _.get(response, "data.result.content") || []);
   }

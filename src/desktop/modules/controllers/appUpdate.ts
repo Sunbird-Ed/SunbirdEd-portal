@@ -7,6 +7,7 @@ import config from "../config";
 import Response from "../utils/response";
 
 import { ClassLogger } from "@project-sunbird/logger/decorator";
+import { manifest } from "../manifest";
 
 const systemInfo = {
     x32: "32bit",
@@ -57,6 +58,8 @@ export default class Appupdate {
     public async getAppInfo(req, res) {
             const data = await this.checkForUpdate().catch((error) =>
             logger.error(`error while checking for update ${error.message} ${error}`));
+            res.set('X-Trace-Enabled', 'abcde');
+            // res.set('Access-Control-Expose-Headers', 'X-Custom-header')
             return res.send(Response.success("api.app.info", {
                 termsOfUseUrl: `${process.env.APP_BASE_URL}/term-of-use.html`,
                 version: process.env.APP_VERSION,
@@ -71,6 +74,9 @@ export default class Appupdate {
             const apiKey = await containerAPI.getDeviceSdkInstance().getToken().catch((err) => {
                 logger.error(`Received error while fetching api key in app update with error: ${err}`);
             });
+            const settingSDK = containerAPI.getSettingSDKInstance(manifest.id);
+            const traceId: any = await settingSDK.get('traceId').catch((error) => { logger.error("Error while getting traceId", error); });
+
             const body = {
                 request: {
                     appVersion: process.env.APP_VERSION,
@@ -84,6 +90,10 @@ export default class Appupdate {
                     "content-type": "application/json",
                 },
             };
+
+            if (_.get(traceId, 'id')) {
+                appConfig.headers['X-Request-ID'] = traceId.id;
+            }
             return HTTPService.post(`${process.env.APP_BASE_URL}/api/desktop/v1/update`, body, appConfig)
             .toPromise();
     }

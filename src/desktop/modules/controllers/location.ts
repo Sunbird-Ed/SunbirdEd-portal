@@ -125,6 +125,11 @@ export class Location {
         const requestParams = {
             request: filter,
         };
+        const traceId: any = await this.settingSDK.get('traceId').catch((error) => { logger.error("Error while getting traceId", error); });
+
+        if (_.get(traceId, 'id')) {
+            config.headers['X-Request-ID'] = traceId.id;
+        }
         try {
             logger.debug(`ReqId =  ${req.headers["X-msgid"]}}: getting location data from online`);
             const responseData = await HTTPService.post(

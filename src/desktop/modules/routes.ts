@@ -86,8 +86,14 @@ export class Router {
       next();
     };
     app.use(logTelemetryEvent);
-    const addRequestId = (req, res, next) => {
+    const addRequestId = async(req, res, next) => {
       req.headers["X-msgid"] = req.get("X-msgid") || uuid.v4();
+      const settingSDK = containerAPI.getSettingSDKInstance(manifest.id);
+      const traceId: any = await settingSDK.get('traceId').catch((error) => { logger.error("Error while getting traceId", error); });
+
+      if (req.headers["x-request-id"] && req.headers["x-request-id"] !== _.get(traceId, 'id')) {
+        await settingSDK.put('traceId', { id: req.headers["x-request-id"] }).catch((error) => { logger.error("Error while Adding traceId", error); });
+      }
       next();
     };
     app.use(addRequestId);
