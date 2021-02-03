@@ -471,7 +471,7 @@ html[layout='joy'] {
         background-color: var(--white);
         &::before{
           content: "";
-          background: url(/assets/images/close.png) no-repeat !important;
+          background: url(assets/images/close.png) no-repeat !important;
           height: calculateRem(22px);
           width: calculateRem(22px);
         }
