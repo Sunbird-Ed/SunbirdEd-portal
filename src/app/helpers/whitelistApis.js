@@ -1236,7 +1236,7 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/discussion/forum/v2/remove': {
-      description: 'API to remove category id attached to a batch/course',
+      description: 'API to remove category id attached to a batch/course ',
       checksNeeded: [],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
