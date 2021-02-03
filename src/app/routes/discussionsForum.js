@@ -35,6 +35,7 @@ module.exports = function (app) {
     app.get(`${BASE_REPORT_URL}/popular`, proxyUtils.verifyToken(), proxyObject());
     app.get(`${BASE_REPORT_URL}/top`, proxyUtils.verifyToken(), proxyObject());
     app.get(`${BASE_REPORT_URL}/topic/:topic_id/:slug`, proxyUtils.verifyToken(), proxyObject());
+    app.get(`${BASE_REPORT_URL}/topic/:topic_id`, proxyUtils.verifyToken(), proxyObject());
     app.get(`${BASE_REPORT_URL}/unread/total`, proxyUtils.verifyToken(), proxyObject());
     app.get(`${BASE_REPORT_URL}/topic/teaser/:topic_id`, proxyUtils.verifyToken(), proxyObject());
     app.get(`${BASE_REPORT_URL}/topic/pagination/:topic_id`, proxyUtils.verifyToken(), proxyObject());
