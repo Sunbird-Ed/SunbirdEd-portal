@@ -81,6 +81,7 @@
         "hashids": "^2.2.2",
         "is-online": "^8.1.0",
         "jsonwebtoken": "^8.5.1",
+        "jwt-decode": "^2.2.0",
         "lodash": "^4.17.15",
         "node-stream-zip": "^1.8.2",
         "portscanner": "^2.2.0",
@@ -92,15 +93,14 @@
         "tree-model": "^1.0.7",
         "typescript-ioc": "^1.2.5",
         "uuid": "^3.3.2",
-        "web-resource-inliner": "^4.3.4",
-        "jwt-decode": "^2.2.0"
+        "web-resource-inliner": "^4.3.4"
     },
     "devDependencies": {
-        "axios": "^0.21.0",
         "@types/cheerio": "^0.22.22",
         "@types/express-http-proxy": "^1.6.1",
         "@types/lodash": "^4.14.123",
         "@types/node": "12.12.21",
+        "axios": "^0.21.0",
         "chai": "^4.2.0",
         "chai-as-promised": "^7.1.1",
         "cpy-cli": "^2.0.0",
@@ -113,6 +113,7 @@
         "grunt": "^1.0.4",
         "gulp": "^4.0.2",
         "mocha": "^7.1.1",
+        "promise.allsettled": "^1.0.4",
         "properties": "^1.2.1",
         "spectron": "^10.0.0",
         "ts-node": "^8.10.2",
