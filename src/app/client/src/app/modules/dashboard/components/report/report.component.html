@@ -2,9 +2,9 @@
 
 </app-landing-section>
 
-<div [ngClass]="layoutConfiguration ? 'sbt-container relative9':''">
+<div [ngClass]="layoutConfiguration ? 'sbt-container relative9':''" class="main-container">
 
-  <div class="ui" [appTelemetryImpression]="getTelemetryImpressionObj({type: 'page-request'})" #reportElement>
+  <div class="ui report-main-block" [appTelemetryImpression]="getTelemetryImpressionObj({type: 'page-request'})" #reportElement>
     <div class="twelve wide column px-0">
       <div class="stackable grid m-0 sb-mid-container-min-height dashboard-body-scroll">
         
@@ -19,7 +19,7 @@
                     <div class="content-header__content p-10">
                       <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
                        
-                        <div class="content-header__title font-weight-bold ellipsis text-left">
+                        <div class="content-header__title font-weight-bold text-left">
 
                           <div class="d-flex">
                           <div class="d-flex flex-dc flex-basis-4">
@@ -151,7 +151,12 @@
                             <h4 class="select-filter-label" *ngIf="showExportsOption && currentReport?.reportMetaData?.filters && !hideElements" > {{ resourceService?.frmelmnts?.lbl?.selectFilters }} <small> {{ resourceService?.frmelmnts?.lbl?.selectFilterDescription }} </small> </h4> 
                            <!-- </div> -->
                            </div>
-                           
+                      
+                           <div class="d-flex flex-ai-center flex-jc-flex-end pr-10" *ngIf="!hideElements && currentReport?.reportMetaData?.filters">
+                            <button   class="sb-btn sb-btn-normal sb-btn-outline-primary  reset-filter" (click)="resetFilter()">
+                            {{resourceService?.frmelmnts?.btn?.reset}} {{resourceService?.frmelmnts?.lbl?.filters  }}
+                          </button>
+                          </div>
                         <div class="d-flex flex-ai-center flex-jc-flex-end">
                         <button appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject()"
                         [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'download'})" type="button"
@@ -261,11 +266,7 @@
                               [telemetryInteractObject]="telemetryInteractObject">
                           </app-filter>
                         </div>
-                        <div class="d-flex" *ngIf="!hideElements">
-                          <button   class="sb-btn sb-btn-normal sb-btn-outline-primary reset-filter" (click)="resetFilter()">
-                          {{resourceService?.frmelmnts?.btn?.reset}} {{resourceService?.frmelmnts?.lbl?.filters  }}
-                        </button>
-                        </div>
+                        
                         
                       </div>
                      

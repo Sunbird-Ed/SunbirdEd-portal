@@ -1,6 +1,6 @@
 <div class="graph-filters" #chartRootElement>
 
-  <div class="d-flex">
+  <div class="d-flex pb-10">
     <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0"> 
       <label class="pad5 col-6 chart-title"> {{ this.chartOptions?.title?.text  }} </label>
       <div class="sb-last-update-status" *ngIf="showLastUpdatedOn && lastUpdatedOn">
@@ -109,9 +109,10 @@
 </div>
 <!-- [ngStyle]="{'display': filterPopup==true ? 'block' : 'none' }" -->
 <sui-modal [mustScroll]="true" (dismissed)="filterModalPopup(false)" [transitionDuration]="0" [size]="'normal'"
-  class="sb-modal sb-hawkeye-modal" *ngIf="filterPopup">
-  <div class="sb-modal-content  p-32">
-    <div class="filter-select-title mb-20"> {{ resourceService?.frmelmnts?.lbl?.selectFilters }} </div>
+  class="sb-modal sb-hawkeye-modal p-15" *ngIf="filterPopup">
+  <div class="filter-select-title mb-0 px-20 mt-20 py-0"> {{ resourceService?.frmelmnts?.lbl?.selectFilters }} </div> 
+  <div class="sb-modal-content p-20 mt-0">
+    
   <app-filter [filterType] ="filterType" [resetFilters]="resetFilters"  [hideElements]="hideElements" [selectedFilter]="selectedFilters" [filters]="filters" (filterChanged)="filterChanged($event)" [chartData]="chartData"
    [telemetryInteractObject]="telemetryInteractObject">
   </app-filter>

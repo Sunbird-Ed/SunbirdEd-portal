@@ -92,7 +92,9 @@ sui-select.selection.ui.dropdown {
 }
 .sb-modal-content {
   background-color:#E9E8D9 !important;
-  overflow-y: visible !important;
+  overflow-y: scroll !important;
+  min-height: 180px;
+  
 }
 .sb-modal {
   background-color:#E9E8D9 !important;

@@ -107,6 +107,7 @@
 .content-header__content {
     border-bottom: 1px solid #ccc;
     padding: 10px;
+    align-items: flex-start !important;
  }
 .report-panel{
     @include respond-below(sm) {
@@ -116,8 +117,8 @@
 }
 .report-description{
     flex: 1;
-    margin-right: calculateRem(50px) !important;
-    width: 65%;
+    margin-right: calculateRem(0px) !important;
+    text-align: justify;
     @include respond-below(sm) {
         flex: auto;
         margin:0 0 1rem 0 !important;
@@ -332,9 +333,6 @@
 
 }
 .reset-filter {
-    vertical-align: revert;
-    position: relative;
-    top: 30px;
     padding-left: 20px !important;
     padding-right: 20px !important;
 }
@@ -375,4 +373,11 @@
     border-radius: 0px 0px 24px 24px !important;
     box-shadow: none;
     border-top: 1px solid #ccc;
+}
+
+.main-container {
+    padding: 0 1%;
+}
+.report-main-block {
+    padding: 0 1%;
 }
