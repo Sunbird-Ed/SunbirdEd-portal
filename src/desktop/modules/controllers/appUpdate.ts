@@ -58,8 +58,6 @@ export default class Appupdate {
     public async getAppInfo(req, res) {
             const data = await this.checkForUpdate().catch((error) =>
             logger.error(`error while checking for update ${error.message} ${error}`));
-            res.set('X-Trace-Enabled', 'abcde');
-            // res.set('Access-Control-Expose-Headers', 'X-Custom-header')
             return res.send(Response.success("api.app.info", {
                 termsOfUseUrl: `${process.env.APP_BASE_URL}/term-of-use.html`,
                 version: process.env.APP_VERSION,
