@@ -58,8 +58,8 @@ export class ReportComponent implements OnInit {
   public showChart = true;
   public reportData: any;
   public chartsReportData: any;
-  public globalFilterChange: any;
-  public resetFilters: any;
+  public globalFilterChange: Object;
+  public resetFilters: Object;
   filterType:string = "report-filter";
 
   public reportResult: any;

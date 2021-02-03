@@ -413,6 +413,8 @@ describe('ReportComponent', () => {
     ]
     }
     component.resetFilter();
+    expect(component.resetFilters).toEqual({ data:chartData,reset:true });
+
   }));
 
   

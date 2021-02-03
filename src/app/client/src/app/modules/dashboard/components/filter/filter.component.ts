@@ -21,7 +21,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   @Input() filters: any;
   @Input() telemetryInteractObject: IInteractEventObject;
   @Output() filterChanged: EventEmitter<any> = new EventEmitter<any>();
-  @Input() filterType:any;
+  @Input() filterType:string;
 
   filtersFormGroup: FormGroup;
   chartLabels: any = [];
