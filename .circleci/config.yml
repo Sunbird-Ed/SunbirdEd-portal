@@ -1,4 +1,3 @@
-
 version: 2.1
 jobs:
   build:
@@ -18,7 +17,7 @@ jobs:
           path: ~/portal
       - run:
           name: Installing npm
-          command: 'npm i npm@latest -g'
+          command: 'npm i yarn -g'
       - run:
           name: Installing angular cli
           command: 'npm install -g @angular/cli@6.0.8 --no-progress'
@@ -26,10 +25,10 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
           name: Installing npm deps
-          command: 'npm install --legacy-peer-deps'
+          command: 'yarn install'
       - save_cache: # special step to save the dependency cache	
           key: dependency-cache-{{ checksum "package.json" }}	
-          paths: ./node_modules    
+          paths: ./node_modules
       - run:
           name: ng lint and building
           command: 'mkdir -p /tmp/logs && ng build --prod --optimization=false --buildOptimizer=false | tee /tmp/logs/build.log'
