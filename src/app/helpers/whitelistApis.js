@@ -292,6 +292,11 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.TEMP_ROLE]
     },
+    '/learner/data/v1/system/settings/get/groupsTnc': {
+      description: 'To fetch updated value for groups TnC',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
 
     //Course related APIs
     '/learner/course/v1/hierarchy/:do_id': {
@@ -1166,6 +1171,9 @@ const API_LIST = {
       checksNeeded: []
     },
     '/content-editor/telemetry': {
+      checksNeeded: []
+    },
+    '/app/telemetry': {
       checksNeeded: []
     },
     '/v1/tenant/info/:tenantId': {

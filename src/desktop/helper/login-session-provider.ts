@@ -3,7 +3,8 @@ import * as qs from 'qs';
 import * as _ from "lodash";
 import * as path from "path";
 import { HTTPService } from "@project-sunbird/OpenRAP/services/httpService";
-const windowIcon = path.join(__dirname, "build", "icons", "png", "512x512.png");
+const nativeImage = require('electron').nativeImage;
+const windowIcon = nativeImage.createFromPath(path.join(__dirname, "build", "icons", "png", "512x512.png"));
 import { logger } from '@project-sunbird/logger';
 
 export class LoginSessionProvider {
@@ -14,11 +15,13 @@ export class LoginSessionProvider {
     private loginWindow;
     private appBaseUrl;
     private redirectURI;
+    private deviceId;
 
-    constructor(parentWindow, loginFormCoing, appbaseUrl) { 
-        this.mainWindow = parentWindow;
-        this.loginConfig = loginFormCoing;
-        this.appBaseUrl = appbaseUrl;
+    constructor(options: { parentWindow: any; loginFormCoing: any; appbaseUrl: string; deviceId: string; }) { 
+        this.mainWindow = options.parentWindow;
+        this.loginConfig = options.loginFormCoing;
+        this.appBaseUrl = options.appbaseUrl;
+        this.deviceId = options.deviceId;
     }
 
     public buildUrl(host: string, path: string, params: { [p: string]: string }) {
@@ -40,13 +43,20 @@ export class LoginSessionProvider {
 
     async childLoginWindow() {
         logger.debug(`Opening login window`);
-        const params = this.loginConfig.target.params.reduce((acc, p) => {
+        let params = this.loginConfig.target.params.reduce((acc, p) => {
             if(p.key === 'redirect_uri') {
                 this.redirectURI = p.value;
             }
             acc[p.key] = p.value;
             return acc;
         }, {})
+        const pdata = {
+            id: process.env.APP_ID,
+            ver: process.env.APP_VERSION,
+            pid: "desktop.app"
+        }
+        params.pdata = JSON.stringify(pdata);
+        params.did = this.deviceId;
         const loginURL = this.buildUrl(this.loginConfig.target.host, this.loginConfig.target.path, params);
         if(!this.loginWindow) {
             this.loginWindow = new BrowserWindow({ 

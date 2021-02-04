@@ -442,6 +442,19 @@ describe('AssessmentPlayerComponent', () => {
     expect(component.isFullScreenView).toBe(true);
   });
 
+  it('should call subscribeToQueryParam, and set isSingleContent as true ', () => {
+    component.isParentCourse = false;
+    component.batchId = '0130928797865820162';
+    spyOn(component, 'setActiveContent');
+    spyOn<any>(component, 'getCollectionInfo').and.returnValue(of({
+      courseHierarchy: assessmentPlayerMockData.courseHierarchyWithDirectChild,
+      enrolledBatchDetails: {}
+    }));
+    fixture.detectChanges();
+    component['subscribeToQueryParam']();
+    expect(component['setActiveContent']).toHaveBeenCalledWith('do_11287204084174028818', true);
+  });
+
   it('should check for course completion', () => {
     spyOn(component, 'getCourseCompletionStatus');
     fixture.detectChanges();
@@ -525,17 +538,6 @@ describe('AssessmentPlayerComponent', () => {
     expect(component.isUnitCompleted).toEqual(false);
   });
 
-  it('should call subscribeToQueryParam, and set isSingleContent as true ', () => {
-    component.isParentCourse = false;
-    component.batchId = '0130928797865820162';
-    spyOn(component, 'setActiveContent');
-    spyOn<any>(component, 'getCollectionInfo').and.returnValue(of({
-      courseHierarchy: assessmentPlayerMockData.courseHierarchyWithDirectChild,
-      enrolledBatchDetails: {}
-    }));
-    fixture.detectChanges();
-    component['subscribeToQueryParam']();
-    expect(component['setActiveContent']).toHaveBeenCalledWith('do_11287204084174028818', true);
-  });
+ 
 
 });

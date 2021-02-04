@@ -64,7 +64,8 @@ import { Subject } from "rxjs";
 import { debounceTime } from "rxjs/operators";
 import { HTTPService } from "@project-sunbird/OpenRAP/services/httpService";
 import * as os from "os";
-const windowIcon = path.join(__dirname, "build", "icons", "png", "512x512.png");
+const nativeImage = require('electron').nativeImage;
+const windowIcon = nativeImage.createFromPath(path.join(__dirname, "build", "icons", "png", "512x512.png"));
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win: any;
@@ -173,10 +174,17 @@ expressApp.use("/dialog/content/export", async (req, res) => {
 expressApp.use("/dialog/telemetry/export", async (req, res) => {
   let destFolder = await showFileExplorer();
   if (destFolder && destFolder[0]) {
-    res.send({
-      message: "SUCCESS",
-      responseCode: "OK",
-      destFolder: destFolder[0]
+    fse.access(destFolder[0], fs.constants.F_OK | fs.constants.W_OK, (err) => {
+      if (err) {
+        logger.error("Folder does not have write permission", err);
+        res.status(500).send({ message: "Folder does not have write permission", responseCode: "OPERATION_NOT_PERMITTED" });
+      } else {
+        res.send({
+          message: "SUCCESS",
+          responseCode: "OK",
+          destFolder: destFolder[0]
+        });
+      }
     });
   } else {
     res
@@ -210,7 +218,13 @@ expressApp.use("/dialog/login", async (req, res) => {
   const options = {"request":{"type":"desktopConfig","action":"get","subType":"login"}};
   HTTPService.post(`${appBaseUrl}/api/data/v1/form/read`, options).toPromise().then(async response => {
     let loginFormConfig = _.find(response.data.result.form.data.fields, (field) => field.context == 'login');
-    const loginSessionProvider = new LoginSessionProvider(win, loginFormConfig, appBaseUrl);
+    const loginPageOptions = {
+      parentWindow: win, 
+      loginFormCoing: loginFormConfig,
+      appbaseUrl: appBaseUrl,
+      deviceId: deviceId
+    }
+    const loginSessionProvider = new LoginSessionProvider(loginPageOptions);
     loginSessionProvider.childLoginWindow().then((rs) =>{
       res.send({ message: "SUCCESS", responseCode: "OK" })
     })
