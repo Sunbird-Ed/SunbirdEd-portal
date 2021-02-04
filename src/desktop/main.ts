@@ -64,7 +64,8 @@ import { Subject } from "rxjs";
 import { debounceTime } from "rxjs/operators";
 import { HTTPService } from "@project-sunbird/OpenRAP/services/httpService";
 import * as os from "os";
-const windowIcon = path.join(__dirname, "build", "icons", "png", "512x512.png");
+const nativeImage = require('electron').nativeImage;
+const windowIcon = nativeImage.createFromPath(path.join(__dirname, "build", "icons", "png", "512x512.png"));
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win: any;
@@ -176,8 +177,8 @@ expressApp.use("/dialog/telemetry/export", async (req, res) => {
   if (destFolder && destFolder[0]) {
     fse.access(destFolder[0], fs.constants.F_OK | fs.constants.W_OK, (err) => {
       if (err) {
-        logger.error("Telemetry dest folder not selected", err);
-        res.status(500).send({ message: "Telemetry dest folder not selected", responseCode: "OPERATION_NOT_PERMITTED" });
+        logger.error("Folder does not have write permission", err);
+        res.status(500).send({ message: "Folder does not have write permission", responseCode: "OPERATION_NOT_PERMITTED" });
       } else {
         res.send({
           message: "SUCCESS",

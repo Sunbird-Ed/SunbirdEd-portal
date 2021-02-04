@@ -22,7 +22,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateStore } from "@ngx-translate/core";
-
+import { HeaderInterceptor } from './modules/core/interceptor/header/header.interceptor';
 
 @NgModule({
   declarations: [
@@ -60,6 +60,7 @@ import { TranslateStore } from "@ngx-translate/core";
     TranslateStore,
     { provide: CacheStorageAbstract, useClass: CacheSessionStorage },
     { provide: HTTP_INTERCEPTORS, useClass: SessionExpiryInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy },
   ]
 })
