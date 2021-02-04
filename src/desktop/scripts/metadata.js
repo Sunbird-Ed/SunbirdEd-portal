@@ -6,13 +6,16 @@ const pluginName = 'openrap-sunbirded-plugin'
 const baseDirPath = path.join(__dirname, '..', pluginName, 'data')
 const _ = require("lodash");
 const { app } = require("electron");
+const allSettled = require('promise.allsettled');
 let rootOrgHashTagId;
+let envObj;
 
 const getInstance = async () => {
-    const envs = await fse.readJSON(path.join(__dirname, '..', 'env.json'))
+    const envs = envObj || await fse.readJSON(path.join(__dirname, '..', 'env.json'));
+    envObj = envs;
     const instance = axios.create({
         baseURL: envs.APP_BASE_URL,
-        timeout: 5000,
+        timeout: 10000,
         headers: {
             'authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -23,18 +26,25 @@ const getInstance = async () => {
 
 const getFrameWorks = async (frameworks = []) => {
     const instance = await getInstance()
+    const frameworkAPIRquests = []
     for (const { identifier } of frameworks) {
-        console.log(`call to get framework ${identifier}`)
-        const response = await instance.get(`/api/framework/v1/read/${identifier}`)
-            .catch(err => console.log(`error while getting framework ${identifier}`, _.get(err, 'response.status'), _.get(err, 'response.data')))
-
-        if (response && response.data) {
-            console.log(`saving framework ${identifier} to file`)
+        frameworkAPIRquests.push(instance.get(`/api/framework/v1/read/${identifier}`))
+    }
+    const responses = await Promise.allSettled(frameworkAPIRquests);
+    const fileCreationPaths = [];
+    const fileWriteData = [];
+    for (const result of responses) {
+        if (result.status === 'fulfilled') {
+            const identifier = result.value.data.result.framework.identifier;
             const freameworkFile = path.join(baseDirPath, 'frameworks', `${identifier}.json`)
-            await fse.createFile(freameworkFile)
-            await fse.writeJSON(freameworkFile, response.data);
+            fileCreationPaths.push(freameworkFile)
+            fileWriteData.push({ file: freameworkFile, data: result.value.data })
+        } else {
+            console.info(_.get(result, 'reason.config.url'), 'URL failed with status : ', _.get(result, 'reason.response.status'));
         }
     }
+    await Promise.allSettled(fileCreationPaths.map(file => fse.createFile(file)));
+    await Promise.allSettled(fileWriteData.map(dataMap => fse.writeJSON(dataMap.file, dataMap.data)));
 }
 
 
@@ -168,19 +178,35 @@ const getForms = async () => {
         }
     ]
     const instance = await getInstance();
+    const formApirequests = []
     for (const { type, subtype, action } of forms) {
-        let response = await instance.post(`/api/data/v1/form/read`, { "request": { "type": type, "action": action, "subType": subtype } })
-            .catch(err => console.log(`error while getting form ${type} ${subtype} ${action}`, err.response.status, err.response.data))
-        if (!response) {
-            response = await instance.post(`/api/data/v1/form/read`, { "request": { "type": type, "action": action, "subtype": subtype } })
-                .catch(err => console.log(`error while getting form ${type} ${subtype} ${action}`, err.response.status, err.response.data))
-        }
-        if (response && response.data) {
-            const formFile = path.join(baseDirPath, 'forms', `${type}_${subtype}_${action}.json`)
-            await fse.createFile(formFile)
-            await fse.writeJSON(formFile, response.data);
-        }
+        formApirequests.push()
     }
+    let formResponses = [];
+    const results = await Promise.allSettled(forms.map(({ type, subtype, action }) => {
+        return instance.post(`/api/data/v1/form/read`, { "request": { "type": type, "action": action, "subType": subtype } })
+    }));
+    const groupedResults = _.groupBy(results, 'status');
+    if(groupedResults.fulfilled) {
+        formResponses = [...formResponses, ...groupedResults.fulfilled]
+    }
+
+    const getFilePath = (value) => {
+        const requestBody = JSON.parse(value.config.data);
+        const request = requestBody.request;
+        console.log(request)
+        const type = request.type;
+        const subtype = request.subType || request.subtype;
+        const action = request.action;
+        return (path.join(baseDirPath, 'forms', `${type}_${subtype}_${action}.json`));
+    }
+    await Promise.allSettled(formResponses.map(({value}) => {
+        return fse.createFile(getFilePath(value))
+    }));
+
+    await Promise.allSettled(formResponses.map(({value}) => {
+        return  fse.writeJSON(getFilePath(value), value.data);
+    }))
 }
 
 const getPages = async () => {
@@ -216,15 +242,31 @@ const getFaqs = async () => {
             }
         })
 
-    const langs = langResponse.data.result.form.data.fields[0].range;
-    for (const { value } of langs) {
-        const faqResponse = await axios.get(`${faqUrl}faq-${value}.json`)
-            .catch(err => console.log(`error while get faq for ${value} language`, err.response.status, err.response.statusText))
-        if (faqResponse && faqResponse.data) {
-            const faqFile = path.join(baseDirPath, 'faqs', `${value}.json`)
-            await fse.createFile(faqFile)
-            await fse.writeJSON(faqFile, faqResponse.data)
+    const langs = _.get(langResponse, 'data.result.form.data.fields[0].range') || [];
+    if (langs) {
+        const faqResponses = await Promise.allSettled(langs.map(({ value }) => {
+            return axios.get(`${faqUrl}faq-${value}.json`)
+        }))
+        for (const response of faqResponses) {
+            if (response.status === 'rejected') {
+                console.info(_.get(response, 'reason.config.url'), 'URL failed with status : ', _.get(response, 'reason.response.status'));
+            }
         }
+        await Promise.allSettled(faqResponses.map(response => {
+            if (response.status === 'fulfilled') {
+                const url = response.value.config.url;
+                const fileName = url.substr(url.length - 7);
+                return fse.createFile(path.join(baseDirPath, 'faqs', fileName));
+            }
+        }))
+
+        await Promise.allSettled(faqResponses.map(response => {
+            if (response.status === 'fulfilled') {
+                const url = response.value.config.url;
+                const fileName = url.substr(url.length - 7);
+                return fse.writeJSON(path.join(baseDirPath, 'faqs', fileName), response.value.data)
+            }
+        }))
     }
 }
 
@@ -235,12 +277,22 @@ const getLocations = async () => {
     await fse.ensureDir(path.join(baseDirPath, 'location'))
     await fse.writeJSON(path.join(baseDirPath, 'location', `state.json`), stateData)
     const states = stateData.result.response
-    for (const { id } of states) {
-        const { data: districtData } = await instance.post(`/api/data/v1/location/search`,
-            { "params": {}, "request": { "filters": { "type": "district", "parentId": id } } }
-        )
-        await fse.writeJSON(path.join(baseDirPath, 'location', `district-${id}.json`), districtData)
-    }
+    const districtResponses = await Promise.allSettled(states.map(({ id }) => instance.post(`/api/data/v1/location/search`,
+        { "params": {}, "request": { "filters": { "type": "district", "parentId": id } } })));
+
+    const districtFileWriteResponses = await Promise.allSettled(districtResponses.map(districtResponse => {
+        if (districtResponse.status === 'fulfilled') {
+            const requestBody = JSON.parse(districtResponse.value.config.data);
+            const id = requestBody.request.filters.parentId;
+            return fse.writeJSON(path.join(baseDirPath, 'location', `district-${id}.json`), districtResponse.value.data)
+        }
+    }))
+
+    districtFileWriteResponses.forEach(districtResponse => {
+        if (districtResponse.status === 'rejected') {
+            console.info(districtResponse.reason);
+        }
+    })
 }
 
 
@@ -273,30 +325,30 @@ const copyAssetsAndUpdateFiles = async () => {
 
     mainJS = mainJS.replace('ROOT_ORG_ID', rootOrgObj.result.response.content[0].rootOrgId)
     mainJS = mainJS.replace('HASH_TAG_ID', rootOrgObj.result.response.content[0].hashTagId)
-    fse.writeFileSync(path.join(__dirname, '..', "main.js"), mainJS);
+    await fse.writeFile(path.join(__dirname, '..', "main.js"), mainJS);
 
-    fse.copySync(
+    await fse.copy(
         path.join(__dirname, `..`, `..`, `desktop-assets`, process.env.offline_target_env, "appLogo.png"),
         path.join(__dirname, '..', "logo.png")
     );
 
-    fse.copySync(
+    await fse.copy(
         path.join(__dirname, `..`, `..`, `desktop-assets`, process.env.offline_target_env, "logo.svg"),
         path.join(__dirname, "..", "public", "portal", "assets", "images", "logo.svg")
     );
 
     //copy help videos and pdfs
-    fse.mkdirSync(path.join(__dirname, "..", "public", "portal", "assets", "videos"));
-    fse.copySync(
+    await fse.mkdir(path.join(__dirname, "..", "public", "portal", "assets", "videos"));
+    await fse.copy(
         path.join(__dirname, `..`, `..`, `desktop-assets`, "help", "videos"),
         path.join(__dirname, "..", "public", "portal", "assets", "videos")
     );
 }
-
 const init = async () => {
     await fse.copyFile(path.join(__dirname, `..`, `..`, `desktop-assets/${process.env.offline_target_env}/appConfig.json`), `env.json`)
     await getMetaData();
     await copyAssetsAndUpdateFiles();
+
 }
 
-init();
+init()
