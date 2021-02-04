@@ -93,6 +93,12 @@ const parseEcar = async () => {
     if (parent.compatibilityLevel > config.get("CONTENT_COMPATIBILITY_LEVEL")) {
       throw getErrorObj({ message: `${parent.compatibilityLevel} not supported. Required ${config.get("CONTENT_COMPATIBILITY_LEVEL")} and below` }, "UNSUPPORTED_COMPATIBILITY_LEVEL");
     }
+    if(_.isString(parent.trackable)) {
+      parent.trackable = JSON.parse(parent.trackable);
+    }
+    if (parent.trackable && parent.trackable.enabled === 'Yes') {
+      throw getErrorObj({ message: `Trackable collection is not supported.` }, "UNSUPPORTED_COMPATIBILITY_LEVEL");
+    }
     contentImportData.metaData.contentId = parent.identifier;
     contentImportData.metaData.mimeType = parent.mimeType;
     contentImportData.metaData.contentType = parent.contentType;
