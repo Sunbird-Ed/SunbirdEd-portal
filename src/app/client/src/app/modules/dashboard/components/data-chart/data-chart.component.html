@@ -34,7 +34,7 @@
         </sui-select>
       </div>
    
-    <button *ngIf="!showFilters && isUserReportAdmin && chartConfig.id" [ngClass]="{'hide': hideElements}" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+    <button *ngIf="isUserReportAdmin && chartConfig.id" [ngClass]="{'hide': hideElements}" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
       [telemetryInteractCdata]="[{id: chartConfig?.id, type: 'Chart'}]"
       [telemetryInteractEdata]="{id: 'report-chart', type: 'chart-summary', pageid: activatedRoute.snapshot.data.telemetry.pageid}"
       (click)="addChartSummary()" type="button"
