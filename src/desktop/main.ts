@@ -171,6 +171,7 @@ expressApp.use("/dialog/content/export", async (req, res) => {
       });
   }
 });
+
 expressApp.use("/dialog/telemetry/export", async (req, res) => {
   let destFolder = await showFileExplorer();
   if (destFolder && destFolder[0]) {
@@ -190,7 +191,7 @@ expressApp.use("/dialog/telemetry/export", async (req, res) => {
     res
       .status(400)
       .send({
-        message: "Ecar dest folder not selected",
+        message: "Telemetry dest folder not selected",
         responseCode: "NO_DEST_FOLDER"
       });
   }
