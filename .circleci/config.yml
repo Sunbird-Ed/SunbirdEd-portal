@@ -16,9 +16,6 @@ jobs:
       - checkout:
           path: ~/portal
       - run:
-          name: Installing npm
-          command: 'npm i yarn -g'
-      - run:
           name: Installing angular cli
           command: 'npm install -g @angular/cli@6.0.8 --no-progress'
       - restore_cache:
