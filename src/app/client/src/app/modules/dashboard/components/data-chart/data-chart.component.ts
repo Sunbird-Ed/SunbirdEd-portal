@@ -12,7 +12,7 @@ import { Component, OnInit, Input, ViewChild, OnDestroy, ElementRef, ChangeDetec
 import * as _ from 'lodash-es';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Subscription, Subject, timer, of } from 'rxjs';
-import { distinctUntilChanged, map, debounceTime, takeUntil, switchMap } from 'rxjs/operators';
+import { map, takeUntil, switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
 import { IInteractEventObject } from '@sunbird/telemetry';
 import { IBigNumberChart } from '../../interfaces/chartData';
@@ -29,11 +29,12 @@ export class DataChartComponent implements OnInit, OnDestroy {
   @Input() isUserReportAdmin = false;
   @Output() openAddSummaryModal = new EventEmitter();
   @Input() hash: string;
-  public unsubscribe = new Subject<void>();
-  // contains the chart configuration
+  @Input() globalSelectedFilters:any;
+ 
+ public unsubscribe = new Subject<void>(); 
+ // contains the chart configuration
   chartConfig: any;
   chartData: any;
-  showStats: Boolean = false;
   chartType: any;
   chartColors: any;
   legend: any;
@@ -42,13 +43,12 @@ export class DataChartComponent implements OnInit, OnDestroy {
   datasets: any;
   chartLabels: any = [];
   filters: Array<{}>;
-  filtersFormGroup: FormGroup;
+  // filtersFormGroup: FormGroup;
   showFilters: Boolean = false;
   filtersSubscription: Subscription;
   noResultsFound: Boolean;
-
+  showStats: Boolean = false;
   availableChartTypeOptions = ['Bar', 'Line'];
-
   pickerMinDate: any; // min date that can be selected in the datepicker
   pickerMaxDate: any; // max date that can be selected in datepicker
 
@@ -71,19 +71,18 @@ export class DataChartComponent implements OnInit, OnDestroy {
   showChart: Boolean = false;
   chartSummary$: any;
   private _chartSummary: string;
-
+  private _globalFilter; // private property _item
+  resetFilters;
+  filterPopup:Boolean = false;
+  filterOpen:Boolean =false;
+  chartSummarylabel:string;
+  currentFilters:Array<{}>;
   @ViewChild('datePickerForFilters', {static: false}) datepicker: ElementRef;
   @ViewChild('chartRootElement', {static: false}) chartRootElement;
   @ViewChild('chartCanvas', {static: false}) chartCanvas;
-
-  ranges: any = {
-    'Today': [moment(), moment()],
-    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-    'This Month': [moment().startOf('month'), moment().endOf('month')],
-    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-  };
+  filterType:string = "chart-filter";
+  dateFilters:Array<string>;
+ 
 
   @ViewChild(BaseChartDirective, {static: false}) chartDirective: BaseChartDirective;
   constructor(public resourceService: ResourceService, private fb: FormBuilder, private cdr: ChangeDetectorRef,
@@ -92,63 +91,23 @@ export class DataChartComponent implements OnInit, OnDestroy {
     this.alwaysShowCalendars = true;
   }
 
+ 
   ngOnInit() {
+
     this.chartConfig = _.get(this.chartInfo, 'chartConfig');
     this.chartData = _.get(this.chartInfo, 'chartData');
+    this.chartSummarylabel = "Add " + _.get(this.resourceService, 'frmelmnts.lbl.chartSummary');
+    
     if (_.get(this.chartInfo, 'lastUpdatedOn')) {
       this.lastUpdatedOn = moment(_.get(this.chartInfo, 'lastUpdatedOn')).format('DD-MMMM-YYYY');
     }
     this.prepareChart();
     this.setTelemetryCdata();
-    if (this.filters) {
-      this.showFilters = false;
-      this.buildFiltersForm();
-    }
+    this.cdr.detectChanges();
+
   }
 
-  buildFiltersForm() {
-    this.filtersFormGroup = this.fb.group({});
-    if (_.get(this.chartConfig, 'labelsExpr')) {
-      _.forEach(this.filters, filter => {
-        if (filter.controlType === 'date' || /date/i.test(_.get(filter, 'reference'))) {
-          const dateRange = _.uniq(_.map(this.chartData, _.get(filter, 'reference')));
-          this.pickerMinDate = moment(dateRange[0], 'DD-MM-YYYY');
-          this.pickerMaxDate = moment(dateRange[dateRange.length - 1], 'DD-MM-YYYY');
-          this.dateFilterReferenceName = filter.reference;
-        }
-        this.filtersFormGroup.addControl(_.get(filter, 'reference'), this.fb.control(''));
-        filter.options = _.sortBy(_.uniq(_.map(this.chartData, data => data[filter.reference].toLowerCase())));
-      });
-      if (this.filters.length > 0) {
-        this.showFilters = true;
-      }
-      this.filtersSubscription = this.filtersFormGroup.valueChanges
-        .pipe(
-          takeUntil(this.unsubscribe),
-          map(filters => {
-            return _.omitBy(filters, _.isEmpty);
-          }),
-          debounceTime(100),
-          distinctUntilChanged()
-        )
-        .subscribe((filters) => {
-          this.selectedFilters = _.omit(filters, this.dateFilterReferenceName); // to omit date inside labels
-          const res: Array<{}> = _.filter(this.chartData, data => {
-            return _.every(filters, (value, key) => {
-              return _.includes(_.toLower(value), data[key].toLowerCase());
-            });
-          });
-          this.noResultsFound = (res.length > 0) ? false : true;
-          if (this.noResultsFound) {
-            this.toasterService.error(this.resourceService.messages.stmsg.m0008);
-          }
-          this.getDataSetValue(res);
-
-        }, (err) => {
-          console.log(err);
-        });
-    }
-  }
+ 
 
   private calculateBigNumber() {
     const bigNumbersConfig = _.get(this.chartConfig, 'bigNumbers');
@@ -230,7 +189,9 @@ export class DataChartComponent implements OnInit, OnDestroy {
       this.calculateBigNumber();
     }
     const refreshInterval = _.get(this.chartConfig, 'options.refreshInterval');
-    if (refreshInterval) { this.refreshChartDataAfterInterval(refreshInterval); }
+    if (refreshInterval) {
+       this.refreshChartDataAfterInterval(refreshInterval);
+    }
     this.filters = _.get(this.chartConfig, 'filters') || [];
     this.chartSummary$ = this.getChartSummary();
   }
@@ -244,10 +205,9 @@ export class DataChartComponent implements OnInit, OnDestroy {
     ).subscribe(apiResponse => {
       if (_.get(apiResponse, 'responseCode') === 'OK') {
         const chartData = _.get(apiResponse, 'result.data');
-        this.getDataSetValue(chartData);
-        // to apply current filters to new updated chart data;
-        const currentFilterValue = _.get(this.filtersFormGroup, 'value');
-        this.filtersFormGroup.patchValue(currentFilterValue);
+        this.chartData = chartData;
+        this.resetFilters = { data:chartData };
+
       }
     }, err => {
       console.log('failed to update chart data', err);
@@ -346,33 +306,6 @@ export class DataChartComponent implements OnInit, OnDestroy {
     return _.values(data);
   }
 
-
-  getDateRange({ startDate, endDate }, columnRef) {
-    this.selectedStartDate = moment(startDate).subtract(1, 'day');
-    this.selectedEndDate = moment(endDate).add(1, 'day');
-    const dateRange = [];
-    const currDate = moment(this.selectedStartDate).startOf('day');
-    const lastDate = moment(this.selectedEndDate).startOf('day');
-    while (currDate.add(1, 'days').diff(lastDate) < 0) {
-      dateRange.push(currDate.clone().format('DD-MM-YYYY'));
-    }
-    this.filtersFormGroup.get(columnRef).setValue(dateRange);
-  }
-
-  changeChartType(chartType) {
-    this.chartType = _.lowerCase(chartType);
-  }
-
-  resetFilter() {
-    this.filtersFormGroup.reset();
-    if (this.datepicker) {
-      this.datepicker.nativeElement.value = '';
-    }
-    this.showFilters = false;
-    this.cdr.detectChanges(); // to fix change detection issue in sui select
-    this.showFilters = true;
-  }
-
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
@@ -436,6 +369,11 @@ export class DataChartComponent implements OnInit, OnDestroy {
           return _.map(chartSummary, summaryObj => {
             const summary = _.get(summaryObj, 'summary');
             this._chartSummary = summary;
+
+            if(summary){
+              this.chartSummarylabel = _.get(this.resourceService, 'frmelmnts.lbl.updateChartSummary');
+            }
+            
             return {
               label: _.get(this.resourceService, 'frmelmnts.lbl.chartSummary'),
               text: [summary],
@@ -449,6 +387,80 @@ export class DataChartComponent implements OnInit, OnDestroy {
     }
   }
 
+   // use getter setter to define the property
+   get globalFilter(): any {
+    return this._globalFilter;
+  }
+
+  @Input()
+  set globalFilter(val: any) {
+    if(val){
+
+      this.chartData = val.chartData;
+      if(val.filters){
+        this.chartData['selectedFilters'] = { };
+      }else {
+        this.chartData['selectedFilters'] = val.filters;
+      }
+     this.cdr.detectChanges();
+      this.getDataSetValue(val.chartData);
+      this.resetForm();
+     
+    }
+  }
+
+  public filterChanged(data: any):void {
+    this.cdr.detectChanges();
+    this.currentFilters = data.filters;
+
+    let keys = Object.keys(this.currentFilters);
+    this.dateFilters = [];
+    this.filters.map(ele=>{
+        if(ele && ele['controlType'].toLowerCase()=="date"){
+          keys.map(item=>{
+            if(item==ele['reference']){
+              this.dateFilters.push(item);
+            }
+          })
+        }
+    });
+
+    if(data.filters){
+      this.chartData['selectedFilters'] = data.filters;
+    }else {
+      this.chartData['selectedFilters'] = {};
+    }
+    this.getDataSetValue(data.chartData);
+  }
+  public graphStatsChange(data:any):void {
+    this.showStats=data;
+  }
+  changeChartType(chartType) {
+    this.chartType = _.lowerCase(chartType);
+  }
+  filterModalPopup(operator){
+
+    if(operator == false){
+      this.filterPopup = false;
+      this.cdr.detectChanges();
+    }else {
+      this.cdr.detectChanges();
+      this.filterPopup = true;
+    }
+    
+  }
+  
+  resetForm(){
+    this.chartData['selectedFilters'] = {};
+    this.resetFilters = { data: this.chartData,reset:true };
+    this.currentFilters = [];
+  }
+  checkFilterReferance(element){
+    if(this.dateFilters && this.dateFilters.includes(element)){
+      return true
+    } else {
+      return false
+    }
+  }
+
 }
-
-

@@ -479,8 +479,8 @@ describe('AssessmentPlayerComponent', () => {
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(response));
     fixture.detectChanges();
     component.getCourseCompletionStatus(true);
-    expect(component.isCourseCompleted).toBe(false);
-    expect(component.showCourseCompleteMessage).toBe(false);
+    expect(component.isCourseCompleted).toBe(true);
+    expect(component.showCourseCompleteMessage).toBe(true);
   });
 
   xit('should call navigateToPlayerPage', () => {

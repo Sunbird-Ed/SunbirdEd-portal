@@ -11,7 +11,7 @@ import { ReportService } from '../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { ISummaryObject } from '../../interfaces';
-import { mockLatestReportSummary, mockReportObj } from './report.component.spec.data';
+import { mockLatestReportSummary, mockReportObj,chartData,filters } from './report.component.spec.data';
 import { mockParameterizedReports } from '../list-all-reports/list-all-reports.component.spec.data';
 describe('ReportComponent', () => {
   let component: ReportComponent;
@@ -374,6 +374,50 @@ describe('ReportComponent', () => {
     });
     component['addSummaryBtnClickStream$'].next({ title: 'Add report Summary', type: 'report' });
   });
+
+  it('should get all report data', fakeAsync(() => {
+    component.ngOnInit();
+    tick(1000);
+
+    component.reportData = {
+      charts:[{
+        chartData:chartData
+      }
+    ]
+    }
+    const data = component.getAllChartData();
+    expect(data).toEqual(chartData);
+  }));
+
+  it('should change the filter', fakeAsync(() => {
+    component.ngOnInit();
+    tick(1000);
+    const data = component.filterChanged({
+      chartData:chartData,
+      filters:filters
+    });
+    expect(component.globalFilterChange).toEqual({
+      chartData:chartData,
+      filters:filters
+    });
+
+  }));
+
+  it('should get reset filters', fakeAsync(() => {
+    component.ngOnInit();
+    tick(1000);
+    component.reportData = {
+      charts:[{
+        chartData:chartData
+      }
+    ]
+    }
+    component.resetFilter();
+    expect(component.resetFilters).toEqual({ data:chartData,reset:true });
+
+  }));
+
+  
 
   it('should handle markdown update stream', done => {
     const spy = spyOn(reportService, 'updateReport').and.returnValue(of({}));
