@@ -16,7 +16,8 @@ import {
   ResourceService,
   ServerResponse,
   ToasterService,
-  UtilService
+  UtilService,
+  ConnectionService
 } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import {Subject, Subscription} from 'rxjs';
@@ -93,6 +94,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   userLocation: {};
   persona: {};
   subPersona: string;
+  isConnected: Boolean = true;
 
   constructor(@Inject('CS_COURSE_SERVICE') private courseCService: CsCourseService, private cacheService: CacheService,
   public resourceService: ResourceService, public coursesService: CoursesService,
@@ -101,7 +103,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     private playerService: PlayerService, private activatedRoute: ActivatedRoute, public orgDetailsService: OrgDetailsService,
     public navigationhelperService: NavigationHelperService, public certRegService: CertRegService,
     private telemetryService: TelemetryService, public layoutService: LayoutService, private formService: FormService,
-    private certDownloadAsPdf: CertificateDownloadAsPdfService) {
+    private certDownloadAsPdf: CertificateDownloadAsPdfService, private connectionService: ConnectionService) {
     this.getNavParams();
   }
 
@@ -111,6 +113,12 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.isDesktopApp = this.utilService.isDesktopApp;
+    if(this.isDesktopApp) {
+      this.connectionService.monitor()
+      .pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
+        this.isConnected = isConnected;
+      });
+    }
     this.initLayout();
     this.instance = _.upperFirst(_.toLower(this.resourceService.instance || 'SUNBIRD'));
     this.getCustodianOrgUser();
