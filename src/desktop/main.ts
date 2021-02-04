@@ -64,8 +64,10 @@ import { Subject } from "rxjs";
 import { debounceTime } from "rxjs/operators";
 import { HTTPService } from "@project-sunbird/OpenRAP/services/httpService";
 import * as os from "os";
+import { IHttpRequestConfig } from './OpenRAP/dist/services/httpService/index';
 const nativeImage = require('electron').nativeImage;
 const windowIcon = nativeImage.createFromPath(path.join(__dirname, "build", "icons", "png", "512x512.png"));
+import { manifest } from "./modules/manifest";
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win: any;
@@ -77,6 +79,7 @@ expressApp.use(bodyParser.json());
 let fileSDK = containerAPI.getFileSDKInstance("");
 let systemSDK = containerAPI.getSystemSDKInstance();
 let deviceSDK = containerAPI.getDeviceSdkInstance();
+let settingsSDK = containerAPI.getSettingSDKInstance(manifest.id);
 deviceSDK.initialize({key: envs.APP_BASE_URL_TOKEN});
 const reloadUIOnFileChange = () => {
   const subject = new Subject<any>();
@@ -126,7 +129,13 @@ const makeTelemetryImportApiCall = async (telemetryFiles: Array<string>) => {
     logger.error('Telemetry import api call error', 'Reason: makeTelemetryImportApiCall called with empty array');
     return;
   }
-  await HTTPService.post(`${appBaseUrl}/api/telemetry/v1/import`, telemetryFiles)
+  let config: IHttpRequestConfig = {};
+  const traceId: any = await settingsSDK.get('traceId').catch((error) => { logger.error("Error while getting traceId", error); });
+
+  if (traceId) {
+    config.headers['X-Request-ID'] = traceId;
+  }
+  await HTTPService.post(`${appBaseUrl}/api/telemetry/v1/import`, telemetryFiles, config)
     .toPromise()
     .then(data => {
       win.webContents.executeJavaScript(`
