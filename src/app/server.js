@@ -8,6 +8,7 @@ const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 enableLogger({
   logBasePath: path.join(__dirname, 'logs'),
   logLevel: envHelper.sunbird_portal_log_level,
+  eid: "LOG",
   context: {
     "channel": envHelper.DEFAULT_CHANNEL,
     "env": envHelper.APPID,
@@ -103,11 +104,24 @@ app.all('/logoff', endSession, (req, res) => {
 })
 
 const morganConfig = (tokens, req, res) => {
+  let edata = {
+    "eid": "LOG",
+    "edata": {
+      "type": "system", 
+      "level": "TRACE", 
+      "requestid": req.get('x-request-id'),
+      "message": "ENTRY LOG: " + req.get('x-msgid'),
+      "params": req.body ? JSON.stringify(req.body) : "empty"
+    }
+  }
   const tokensList = [
     tokens.url(req, res),
     tokens.method(req, res),
     "context: " + JSON.stringify(req.context),
     tokens.status(req, res),
+    "eid: LOG",
+    "edata: " + JSON.stringify(edata)
+
   ];
   if(req.context.isDebugEnabled){ // add more info when log level is debug
     tokensList.push(
