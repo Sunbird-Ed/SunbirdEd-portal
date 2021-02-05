@@ -111,10 +111,10 @@ describe('AddMemberComponent', () => {
     description: '',
     membershipType: GroupMembershipType.INVITE_ONLY,
     active: true,
-    isActive() { return true ;}
+    isActive() { return true ; }
   };
 
-    component.memberId = '2';
+    component.memberId = 'test-1234     abc';
 
     spyOn(component['groupService'], 'getImpressionObject').and.returnValue(impressionObj);
     spyOn(component['groupService'], 'addTelemetry');
@@ -154,8 +154,8 @@ describe('AddMemberComponent', () => {
     spyOn(component['groupsService'], 'addFieldsToMember');
     component.initRecaptcha();
     fixture.detectChanges();
-    component.memberId = '1';
     component.verifyMember();
+    expect(component.memberId).toEqual('test-1234abc');
     expect(component.isExistingMember).toHaveBeenCalled();
     expect(component['groupsService'].getUserData).toHaveBeenCalled();
   });
@@ -167,9 +167,9 @@ describe('AddMemberComponent', () => {
     spyOn(component['groupsService'], 'addFieldsToMember');
     component.initRecaptcha();
     fixture.detectChanges();
-    component.memberId = '2';
     component.captchaResponse = 'captchaToken';
     component.verifyMember();
+    expect(component.memberId).toEqual('test-1234abc');
     expect(component.isExistingMember).toHaveBeenCalled();
     expect(component['groupsService'].getUserData).toHaveBeenCalled();
   });
@@ -318,6 +318,7 @@ describe('AddMemberComponent', () => {
   expect(component.showInvalidUser).not.toHaveBeenCalled();
   expect(component.isExistingMember).toHaveBeenCalled();
   });
+  expect(component.memberId).toEqual('test-1234abc');
 });
 
 it('isVerifiedUser value should become FALSE', () => {
@@ -338,6 +339,7 @@ it('isVerifiedUser value should become FALSE', () => {
   expect(component.showInvalidUser).not.toHaveBeenCalled();
   expect(component.isExistingMember).toHaveBeenCalled();
   });
+  expect(component.memberId).toEqual('test-1234abc');
 });
 
 it('isVerifiedUser value should become FALSE', () => {
@@ -358,6 +360,7 @@ it('isVerifiedUser value should become FALSE', () => {
   expect(component.showInvalidUser).toHaveBeenCalled();
   expect(component.isExistingMember).not.toHaveBeenCalled();
   });
+  expect(component.memberId).toEqual('test-1234abc');
 });
 
 });
