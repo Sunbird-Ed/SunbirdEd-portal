@@ -9,7 +9,7 @@ const contentServiceBaseUrl = envHelper.CONTENT_URL
 const reqDataLimitOfContentUpload = '30mb'
 const telemetryHelper = require('../helpers/telemetryHelper')
 const learnerURL = envHelper.LEARNER_URL
-const isAPIWhitelisted = require('../helpers/apiWhiteList');
+// const isAPIWhitelisted = require('../helpers/apiWhiteList');
 
 module.exports = function (app) {
 
@@ -52,7 +52,6 @@ module.exports = function (app) {
 
   app.all('/action/content/v3/unlisted/publish/:contentId',
     bodyParser.json(),
-    isAPIWhitelisted.isAllowed(),
     proxy(contentProxyUrl, {
       preserveHostHdr: true,
       limit: reqDataLimitOfContentUpload,
@@ -67,7 +66,7 @@ module.exports = function (app) {
     }))
 
   app.all('/action/data/v1/page/assemble',
-  isAPIWhitelisted.isAllowed(),
+  // isAPIWhitelisted.isAllowed(),
   proxy(learnerServiceBaseUrl, {
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerServiceBaseUrl),
     proxyReqPathResolver: function (req) {
@@ -79,7 +78,7 @@ module.exports = function (app) {
 
 
   app.all('/action/data/v1/form/read',
-  isAPIWhitelisted.isAllowed(),
+  // isAPIWhitelisted.isAllowed(),
   proxy(contentServiceBaseUrl, {
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentServiceBaseUrl),
     proxyReqPathResolver: function (req) {
@@ -94,7 +93,7 @@ module.exports = function (app) {
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,PATCH,DELETE,OPTIONS')
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization,' +
       'cid, user-id, x-auth, Cache-Control, X-Requested-With, *')
-  
+
     if (req.method === 'OPTIONS') {
       res.sendStatus(200)
     } else {
@@ -103,7 +102,7 @@ module.exports = function (app) {
   }
 
   app.all('/action/review/comment/*',
-  isAPIWhitelisted.isAllowed(),
+  // isAPIWhitelisted.isAllowed(),
   addCorsHeaders,
   proxy(envHelper.PORTAL_EXT_PLUGIN_URL, {
     proxyReqPathResolver: req => {
@@ -113,7 +112,7 @@ module.exports = function (app) {
   }))
 
   app.all('/action/textbook/v1/toc/*',
-  isAPIWhitelisted.isAllowed(),
+  // isAPIWhitelisted.isAllowed(),
   addCorsHeaders,
   proxy(learnerURL, {
     proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
@@ -126,7 +125,7 @@ module.exports = function (app) {
   }))
 
   app.post('/action/user/v1/search',
-    isAPIWhitelisted.isAllowed(),
+    // isAPIWhitelisted.isAllowed(),
     addCorsHeaders,
     proxyUtils.verifyToken(),
     proxy(learnerURL, {
@@ -141,7 +140,7 @@ module.exports = function (app) {
   )
 
   app.post('/action/content/v3/upload/*',
-    isAPIWhitelisted.isAllowed(),
+    // isAPIWhitelisted.isAllowed(),
     proxy(contentProxyUrl, {
       preserveHostHdr: true,
       limit: reqDataLimitOfContentUpload,
@@ -153,7 +152,6 @@ module.exports = function (app) {
 
   app.all('/action/*',
   bodyParser.json({ limit: '50mb' }),
-  isAPIWhitelisted.isAllowed(),
   telemetryHelper.generateTelemetryForProxy,
   proxy(contentProxyUrl, {
     preserveHostHdr: true,
