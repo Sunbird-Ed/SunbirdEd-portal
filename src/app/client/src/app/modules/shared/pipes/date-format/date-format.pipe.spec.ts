@@ -1,5 +1,5 @@
 import { DateFormatPipe } from './date-format.pipe';
-import * as moment from 'dayjs';
+import  moment from 'dayjs';
 
 describe('DateFormatPipe', () => {
   describe('#transform', () => {

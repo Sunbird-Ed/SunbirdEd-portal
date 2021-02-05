@@ -22,6 +22,9 @@
         <sunbird-video-player *ngIf="playerType === 'video-player'" [playerConfig]="playerConfig"
           (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)">
         </sunbird-video-player>
+
+        <sunbird-epub-player *ngIf="playerType === 'epub-player'" [playerConfig]="playerConfig"
+        (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></sunbird-epub-player>
       </div>
 </div>
 
@@ -48,6 +51,8 @@
   <sunbird-video-player *ngIf="playerType === 'video-player'" [playerConfig]="playerConfig"
     (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)">
   </sunbird-video-player>
+  <sunbird-epub-player *ngIf="playerType === 'epub-player'" [playerConfig]="playerConfig"
+    (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></sunbird-epub-player>
 </div>
 </div>
 
