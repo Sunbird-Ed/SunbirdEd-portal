@@ -642,12 +642,12 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-video-player-v8@3.7.0":
-  version "3.7.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v8/-/sunbird-video-player-v8-3.7.0.tgz#e199eba8912de7819b4a3df866b99fa5004f8569"
-  integrity sha512-+R1w5US5VcN/1pzZvynvLMpKw2g4rzTTj7qPfyMdVueJR5AYbNpYT0MptGXjxFnuOKsYwOHy8869PUk22QJGJg==
+"@project-sunbird/sunbird-video-player-v8@3.7.1":
+  version "3.7.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v8/-/sunbird-video-player-v8-3.7.1.tgz#7b263c67864952b700275b3016c36ca735ce5869"
+  integrity sha512-Xuj6AI6P777QdxTlHuW4S/vVS98s+yezM45GdN/U/bYTa6ID2x57R2oQkZfeaVKTKoFBkJfUxhjX5B8rSn0brw==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v8" "3.6.0"
+    "@project-sunbird/sunbird-player-sdk-v8" "3.7.1"
     tslib "^1.9.0"
 
 "@project-sunbird/telemetry-sdk@0.0.26":
