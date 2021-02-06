@@ -205,8 +205,8 @@ export class FilterComponent implements OnInit, OnDestroy {
   filterData() {
     if (this.selectedFilters) {
       const res: Array<{}> = _.filter(this.chartData, data => {
-        return _.every(this.selectedFilters, (value, key) => {
-          return _.includes(_.toLower(value), data[key].toLowerCase());
+        return _.every(this.selectedFilters, (filterValues, key) => {
+          return _.some(filterValues, filterValue => _.trim(_.toLower(filterValue)) === _.trim(_.toLower(_.get(data, key))));
         });
       });
 
