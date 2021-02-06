@@ -127,7 +127,7 @@ export class ReportComponent implements OnInit {
   }
 
   /**
-   * @description This function fetches config file, datasource and prepares chart and tables data from it.
+   * @description This function fetches config file, dataSource and prepares chart and tables data from it.
    * @param reportId
    */
   private renderReport(reportId: string, hash?: string) {
