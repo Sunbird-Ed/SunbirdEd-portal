@@ -112,9 +112,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
 
   verifyMember() {
     this.showLoader = true;
-    console.log(this.memberId);
     this.memberId = (this.memberId.replace(/([^\w\s]|_)+(?=\s|$)/g, ''));
-    console.log(this.memberId);
       this.groupsService.getUserData((this.memberId), {token: this.captchaResponse})
       .pipe(takeUntil(this.unsubscribe$)).subscribe(member => {
         this.verifiedMember = this.groupsService.addFields(member);
