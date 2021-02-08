@@ -37,6 +37,12 @@ export default (app, contentFilesPath, ecarsFolderPath ) => {
           "/help-center/*",
           "/profile",
           "/profile/*",
+          "/explore-course",
+          "/explore-course/*",
+          "/learn",
+          "/learn/*",
+          "/resources",
+          "/resources/*",
         ],
         async (req, res) => {
             const locals = await getLocals(manifest);
