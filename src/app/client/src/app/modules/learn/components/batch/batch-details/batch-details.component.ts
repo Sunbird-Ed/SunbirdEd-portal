@@ -114,7 +114,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     const searchParams: any = {
       filters: {
         courseId: this.courseId,
-        status: ['0', '1']
+        status: ['1']
       },
       offset: 0,
       sort_by: { createdDate: 'desc' }
@@ -184,7 +184,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
       filters: {
         courseId: this.courseId,
         enrollmentType: 'open',
-        status: ['0', '1']
+        status: ['1']
       },
       offset: 0,
       sort_by: { createdDate: 'desc' }
