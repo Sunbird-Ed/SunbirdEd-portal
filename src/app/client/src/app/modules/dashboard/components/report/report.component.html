@@ -83,8 +83,8 @@
                           [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'report-summary'})"
                           (click)="openReportSummaryModal()" type="button"
                           class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
-                          <i class="blue plus alternate icon"></i> Add
-                          {{ resourceService?.frmelmnts?.lbl?.reportSummary}}
+                          <i class="blue plus alternate icon"></i>
+                          {{ reportSummaryLabel }}
                         </button>
                         <button appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject()"
                           [telemetryInteractCdata]="[getCDataObj({id: '' + currentReport?.charts?.length || '0', type: 'CountCharts'}),

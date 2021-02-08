@@ -61,6 +61,7 @@ export class ReportComponent implements OnInit {
   public globalFilterChange: Object;
   public resetFilters: Object;
   filterType:string = "report-filter";
+  reportSummaryLabel:string;
 
   public reportResult: any;
   private set setMaterializedReportStatus(val: string) {
@@ -108,7 +109,7 @@ export class ReportComponent implements OnInit {
       })
     );
 
-
+    this.reportSummaryLabel = `Add ${_.get(this.resourceService, 'frmelmnts.lbl.reportSummary')}`;
     this.mergeClickEventStreams();
   }
 
@@ -299,8 +300,10 @@ export class ReportComponent implements OnInit {
   }
 
   public openReportSummaryModal(): void {
+
+    
     this.openAddSummaryModal({
-      title: `Add ${_.get(this.resourceService, 'frmelmnts.lbl.reportSummary')}`,
+      title: this.reportSummaryLabel,
       type: 'report',
       ...(this._reportSummary && { summary: this._reportSummary })
     });
@@ -314,8 +317,12 @@ export class ReportComponent implements OnInit {
         const summaries = this.currentReportSummary = _.map(reportSummary, summaryObj => {
           const summary = _.get(summaryObj, 'summary');
           this._reportSummary = summary;
+
+          if(summary){
+            this.reportSummaryLabel = `Update ${_.get(this.resourceService, 'frmelmnts.lbl.reportSummary')}`;
+          }
           return {
-            label: _.get(this.resourceService, 'frmelmnts.lbl.reportSummary'),
+            label: this.reportSummaryLabel,
             text: [summary],
             createdOn: _.get(summaryObj, 'createdon')
           };
@@ -575,12 +582,10 @@ export class ReportComponent implements OnInit {
   }
 
   getChartData(chart){
-   let chartInfo = this.chartsReportData.charts.filter(data=>{
-        if(data.chartConfig){
-          if(data.chartConfig.id == chart.chartConfig.id){
-            return data;
-          }
-        }
+    let chartInfo = this.chartsReportData.charts.filter(data=>{
+      if(JSON.stringify(data)=== JSON.stringify(chart)){
+          return data;
+      }
     });
     return chartInfo[0];
   }

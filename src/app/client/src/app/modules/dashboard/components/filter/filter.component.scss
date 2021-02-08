@@ -43,7 +43,15 @@
   margin-left: 0;
   margin-top: 0;
   text-align: left;
+  padding: 0px;
+  padding-right: calculateRem(16px);
 }
+
+.sb-prominent-filter
+  .sb-prominent-filter-container
+  .sb-prominent-filter-field {
+    margin-bottom:  calculateRem(24px);
+  }
 
 .reset-filter-section {
     display: block !important;
@@ -141,8 +149,9 @@
 .sb-prominent-filter-field {
   ::ng-deep {
     label {
-      padding-bottom: 3px;
+      padding-bottom: 4px;
       margin-bottom: 0px !important;
+      margin-left: 10px !important;
     }
     .md-drppicker {
       padding: calculateRem(16px) calculateRem(8px);
@@ -163,6 +172,14 @@
     }
   }
 }
+
+.ui.dropdown.selection 
+::ng-deep {
+  .menu {
+    padding-top: 16px;
+    border-radius: 16px !important;
+  }
+} 
 
 .ui.form {
   ::ng-deep {

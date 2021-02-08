@@ -162,6 +162,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
   prepareChart() {
     if (!this.checkForExternalChart()) {
+      
       this.chartOptions = _.get(this.chartConfig, 'options') || { responsive: true };
       this.chartColors = _.get(this.chartConfig, 'colors') || [];
       this.chartType = _.get(this.chartConfig, 'chartType') || 'line';
@@ -347,7 +348,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
     const chartId = _.get(this.chartConfig, 'id');
     if (chartId) {
       this.openAddSummaryModal.emit({
-        title: `Add ${_.get(this.resourceService, 'frmelmnts.lbl.chartSummary')}`,
+        title: this.chartSummarylabel,
         type: 'chart',
         chartId,
         ...(this._chartSummary && { summary: this._chartSummary })
