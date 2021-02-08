@@ -37,12 +37,26 @@ export default (app, contentFilesPath, ecarsFolderPath ) => {
           "/help-center/*",
           "/profile",
           "/profile/*",
+          "/explore-course",
+          "/explore-course/*",
+          "/learn",
+          "/learn/*",
+          "/resources",
+          "/resources/*",
         ],
         async (req, res) => {
             const locals = await getLocals(manifest);
             _.forIn(locals, (value, key) => {
               res.locals[key] = value;
             });
+            
+            if(locals.userId) {
+              const courseUrl = req.originalUrl.includes('/explore-course/course/');
+              if (courseUrl) {
+                return res.redirect(req.originalUrl.replace('/explore-course/course/', '/learn/course/'));
+              }
+            }
+
             res.render(
               path.join(__dirname, "..", "..", "public", "portal", "index.ejs"),
             );
