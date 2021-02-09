@@ -10,6 +10,9 @@ import { DataChartComponent } from '../data-chart/data-chart.component';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
 import { ISummaryObject } from '../../interfaces';
+import { data } from '../list-all-reports/list-all-reports.component.spec.data';
+import { random } from 'lodash';
+import { UUID } from 'angular2-uuid';
 
 
 enum ReportType {
@@ -61,8 +64,7 @@ export class ReportComponent implements OnInit {
   public globalFilterChange: Object;
   public resetFilters: Object;
   filterType:string = "report-filter";
-  reportSummaryLabel:string;
-
+ 
   public reportResult: any;
   private set setMaterializedReportStatus(val: string) {
     this.materializedReport = (val === 'true');
@@ -109,7 +111,6 @@ export class ReportComponent implements OnInit {
       })
     );
 
-    this.reportSummaryLabel = `Add ${_.get(this.resourceService, 'frmelmnts.lbl.reportSummary')}`;
     this.mergeClickEventStreams();
   }
 
@@ -163,6 +164,13 @@ export class ReportComponent implements OnInit {
                 const result: any = Object.assign({});
                 const chart = (charts && this.reportService.prepareChartData(charts, data, updatedDataSource,
                   _.get(reportConfig, 'reportLevelDataSourceId'))) || [];
+
+                chart.map(data=>{ 
+                  if(!data['chartConfig']['id']){
+                    data['chartConfig']['id']  = UUID.UUID();
+                  }
+                  return data;
+                })
                 result['charts'] =  chart;
                 result['tables'] = (tables && this.reportService.prepareTableData(tables, data, _.get(reportConfig, 'downloadUrl'),
                   this.hash)) || [];
@@ -300,10 +308,8 @@ export class ReportComponent implements OnInit {
   }
 
   public openReportSummaryModal(): void {
-
-    
     this.openAddSummaryModal({
-      title: this.reportSummaryLabel,
+      title: (this.currentReportSummary !='' ? 'Update ' : 'Add ') + _.get(this.resourceService, 'frmelmnts.lbl.reportSummary'),
       type: 'report',
       ...(this._reportSummary && { summary: this._reportSummary })
     });
@@ -318,11 +324,8 @@ export class ReportComponent implements OnInit {
           const summary = _.get(summaryObj, 'summary');
           this._reportSummary = summary;
 
-          if(summary){
-            this.reportSummaryLabel = `Update ${_.get(this.resourceService, 'frmelmnts.lbl.reportSummary')}`;
-          }
           return {
-            label: this.reportSummaryLabel,
+            label: (this.currentReportSummary !='' ? 'Update ' : 'Add ') + _.get(this.resourceService, 'frmelmnts.lbl.reportSummary'),
             text: [summary],
             createdOn: _.get(summaryObj, 'createdon')
           };
@@ -582,12 +585,12 @@ export class ReportComponent implements OnInit {
   }
 
   getChartData(chart){
-    let chartInfo = this.chartsReportData.charts.filter(data=>{
-      if(JSON.stringify(data)=== JSON.stringify(chart)){
-          return data;
-      }
+    let chartInfo = this.chartsReportData.charts.find(data=>{
+       if(data['chartConfig']['id']==chart['chartConfig']['id']){
+         return true;
+       }
     });
-    return chartInfo[0];
+    return chartInfo;
   }
   public filterChanged(data: any): void {
     if (this.chartsReportData && this.chartsReportData.charts) {
