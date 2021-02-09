@@ -10,26 +10,6 @@ describe('DataService', () => {
       imports: [HttpClientModule],
       providers: [DataService, HttpClient]
     });
-
-    let store = {};
-    const mockLocalStorage = {
-      getItem: (key: string): string => {
-        return key in store ? store[key] : null;
-      },
-      setItem: (key: string, value: string) => {
-        store[key] = `${value}`;
-      },
-      removeItem: (key: string) => {
-        delete store[key];
-      },
-      clear: () => {
-        store = {};
-      }
-    };
-    spyOn(localStorage, 'getItem').and.callFake(mockLocalStorage.getItem);
-    spyOn(localStorage, 'setItem').and.callFake(mockLocalStorage.setItem);
-    spyOn(localStorage, 'removeItem').and.callFake(mockLocalStorage.removeItem);
-    spyOn(localStorage, 'clear').and.callFake(mockLocalStorage.clear);
   });
 
   it('should be created', inject([DataService], (service: DataService) => {
@@ -51,9 +31,7 @@ describe('DataService', () => {
     service.channelId = 'fake-channelId';
     service['userId'] = 'fake_userId';
     service['sessionId'] = 'fake-sessionId';
-    localStorage.setItem('traceId', 'fake-traceId');
     const request = service['getHeader']();
     expect(request).toBeDefined();
-    expect(request['X-Request-ID']).toEqual('fake-traceId');
   }));
 });
