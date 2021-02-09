@@ -84,7 +84,7 @@
                           <div class="child-content-padding">
                             <sb-toc-card [content]="item" (tocCardClick)="navigateToContent($event, item, 'toc-card')"
                               [type]="cardType" [contentStatus]="contentStatus"
-                              [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
+                              [maxAttempts]="item?.maxAttempts" [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
                             </sb-toc-card>
                           </div>
                         </div>
@@ -99,7 +99,7 @@
                               <sb-toc-child-item *ngIf="child?.contentType === 'SelfAssess'" [childData]="child" class="sb-toc-child-item"
                                 (tocCardClick)="navigateToContent($event, item, 'child-item')"
                                 [contentStatus]="contentStatus" [type]="cardType" 
-                                [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
+                                [maxAttempts]="child?.maxAttempts" [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
                               </sb-toc-child-item>
                           </div>
                         </div>
