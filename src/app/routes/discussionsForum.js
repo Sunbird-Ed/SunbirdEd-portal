@@ -17,12 +17,13 @@ module.exports = function (app) {
 
     app.get(`${BASE_REPORT_URL}/tags`, proxyUtils.verifyToken(), proxyObject());
     app.get(`${BASE_REPORT_URL}/tags/:tag`, proxyUtils.verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/tags/list`, proxyUtils.verifyToken(), proxyObject());
     app.get(`${BASE_REPORT_URL}/notifications`, proxyUtils.verifyToken(), proxyObject());
 
     // categories apis
     app.get(`${BASE_REPORT_URL}/category/:category_id`, proxyUtils.verifyToken(), proxyObject());
     app.get(`${BASE_REPORT_URL}/categories`, proxyUtils.verifyToken(), proxyObject());
-    app.get(`${BASE_REPORT_URL}/categories/list`, proxyUtils.verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/category/list`, proxyUtils.verifyToken(), proxyObject());
     app.get(`${BASE_REPORT_URL}/categories/:cid/moderators`, proxyUtils.verifyToken(), proxyObject());
 
     app.get(`${BASE_REPORT_URL}/user/:userslug`, proxyUtils.verifyToken(), proxyObject())
