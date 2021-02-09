@@ -136,7 +136,7 @@ describe('ReportComponent', () => {
     component.openReportSummaryModal();
     expect(component.openAddSummaryModal).toHaveBeenCalled();
     expect(component.openAddSummaryModal).toHaveBeenCalledWith({
-      title: 'Add Report Summary',
+      title: 'Update Report Summary',
       type: 'report'
     });
   });
