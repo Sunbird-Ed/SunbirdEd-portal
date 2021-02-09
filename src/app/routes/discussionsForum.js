@@ -22,6 +22,7 @@ module.exports = function (app) {
     // categories apis
     app.get(`${BASE_REPORT_URL}/category/:category_id`, proxyUtils.verifyToken(), proxyObject());
     app.get(`${BASE_REPORT_URL}/categories`, proxyUtils.verifyToken(), proxyObject());
+    app.get(`${BASE_REPORT_URL}/categories/list`, proxyUtils.verifyToken(), proxyObject());
     app.get(`${BASE_REPORT_URL}/categories/:cid/moderators`, proxyUtils.verifyToken(), proxyObject());
 
     app.get(`${BASE_REPORT_URL}/user/:userslug`, proxyUtils.verifyToken(), proxyObject())
