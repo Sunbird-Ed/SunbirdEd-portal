@@ -73,7 +73,7 @@ app.all([
   '/learner/*', '/content/*', '/user/*', '/merge/*', '/action/*', '/courseReports/*', '/course-reports/*', '/admin-reports/*',
   '/certreg/*', '/device/*', '/google/*', '/report/*', '/reports/*', '/v2/user/*', '/v1/sso/*', '/migrate/*', '/plugins/*', '/content-plugins/*',
   '/content-editor/telemetry','/discussion/*', '/collection-editor/telemetry', '/v1/user/*', '/sessionExpired', '/logoff', '/logout', '/assets/public/*', '/endSession',
-  '/sso/sign-in/*'
+  '/sso/sign-in/*','/desktop/handleGauth', '/desktop/google/auth/success'
 ],
   session({
     secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
@@ -218,6 +218,20 @@ app.get('/v1/user/session/start/:deviceId', (req, res) => {
   }
   res.status(200)
   res.end()
+})
+
+app.get('/desktop/handleGauth', (req, res) => {
+  req.session.desktopAuthdata = req.query;
+  res.redirect('/desktop/google/auth/success');
+})
+app.get('/desktop/google/auth/success', (req, res) => {
+  const data = req.session.desktopAuthdata;
+  delete req.session.desktopAuthdata;
+  const reponseData = `access_token=${data.access_token}&refresh_token=${data.refresh_token}`;
+  res.render(
+    path.join(__dirname, "routes", "googleResponse.ejs"), 
+    {data: reponseData}
+  );
 })
 
 const subApp = express()

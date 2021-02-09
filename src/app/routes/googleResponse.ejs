@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Google Authentication sucessfully done</h1>
+    <button onclick="gotoapplication()">Go back to application</button>
+    <a id="dikshaurl" href="diksha://?<%=data%>"></a>
+    <script type="text/javascript">
+    var customWindow;
+    window.onload = (event) => {
+        gotoapplication();
+    };
+    function gotoapplication() {
+        const link = document.getElementById('dikshaurl');
+        link.click();
+    };
+    </script>
+</body>
+</html>
