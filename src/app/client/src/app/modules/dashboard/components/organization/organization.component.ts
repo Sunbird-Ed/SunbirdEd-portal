@@ -240,7 +240,7 @@ export class OrganisationComponent implements OnDestroy, AfterViewInit {
    */
   validateIdentifier(identifier: string | '') {
     if (identifier) {
-      const selectedOrg = _.find(this.myOrganizations, ['identifier', identifier]);
+      const selectedOrg = _.find(this.myOrganizations, ['id', identifier]);
       if (selectedOrg && selectedOrg.id) {
         this.SelectedOrg = selectedOrg.orgName;
       } else {
