@@ -12,7 +12,6 @@ import * as jspdf from 'jspdf';
 import { ISummaryObject } from '../../interfaces';
 import { data } from '../list-all-reports/list-all-reports.component.spec.data';
 import { random } from 'lodash';
-import { UUID } from 'angular2-uuid';
 
 
 enum ReportType {
@@ -64,7 +63,6 @@ export class ReportComponent implements OnInit {
   public globalFilterChange: Object;
   public resetFilters: Object;
   filterType:string = "report-filter";
- 
   public reportResult: any;
   private set setMaterializedReportStatus(val: string) {
     this.materializedReport = (val === 'true');
@@ -164,13 +162,6 @@ export class ReportComponent implements OnInit {
                 const result: any = Object.assign({});
                 const chart = (charts && this.reportService.prepareChartData(charts, data, updatedDataSource,
                   _.get(reportConfig, 'reportLevelDataSourceId'))) || [];
-
-                chart.map(data=>{ 
-                  if(!data['chartConfig']['id']){
-                    data['chartConfig']['id']  = UUID.UUID();
-                  }
-                  return data;
-                })
                 result['charts'] =  chart;
                 result['tables'] = (tables && this.reportService.prepareTableData(tables, data, _.get(reportConfig, 'downloadUrl'),
                   this.hash)) || [];
