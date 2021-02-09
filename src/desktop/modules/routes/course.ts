@@ -20,6 +20,7 @@ export default (app, proxyURL) => {
         "/learner/course/v1/batch/list", 
         "/learner/user/v1/search", 
         "/learner/course/v1/enrol",
+        "/learner/course/v1/unenrol",
         "/discussion/forum/v2/read",
         "/content/course/v1/content/state/read",
     ], customProxy(proxyURL, defaultProxyConfig), (req, res) => {

@@ -63,7 +63,7 @@ export class BatchInfoComponent implements OnInit, OnDestroy {
       data: {
         request: {
           filters: {
-            status: [ '1', '0' ],
+            status: [ '1' ],
             enrollmentType: 'open',
             courseId: this.enrolledBatchInfo.courseId
           },

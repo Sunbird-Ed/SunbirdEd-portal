@@ -53,7 +53,7 @@ const resolveRequestPath = (host, request, options) => {
   if (_.get(options, 'bypassContentRoute') && request.originalUrl.includes('/content')) {
     return `${host}${request.originalUrl.replace('/content/', '/api/')}`
   }
-  return host;
+  return `${host}${request.originalUrl}`;
 }
 
 const getNewAuthToken = async () => {
