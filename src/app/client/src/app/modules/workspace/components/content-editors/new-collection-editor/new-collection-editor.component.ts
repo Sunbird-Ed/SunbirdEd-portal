@@ -6,7 +6,9 @@ import { EditorService, WorkSpaceService } from './../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { first, mergeMap, tap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of, combineLatest } from 'rxjs';
+import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
+
 @Component({
   selector: 'app-new-collection-editor',
   templateUrl: './new-collection-editor.component.html',
@@ -29,6 +31,7 @@ export class NewCollectionEditorComponent implements OnInit {
     public editorService: EditorService, public workSpaceService: WorkSpaceService,
     public frameworkService: FrameworkService, public toasterService: ToasterService,
     private activatedRoute: ActivatedRoute, private navigationHelperService: NavigationHelperService,
+    private lazzyLoadScriptService: LazzyLoadScriptService,
     public resourceService: ResourceService) {
     const deviceId = (<HTMLInputElement>document.getElementById('deviceId'));
     this.deviceId = deviceId ? deviceId.value : '';
@@ -46,6 +49,11 @@ export class NewCollectionEditorComponent implements OnInit {
         this.showQuestionEditor = this.collectionDetails.mimeType === 'application/vnd.sunbird.questionset' ? true : false;
         this.getFrameWorkDetails();
       });
+    this.loadScripts();
+  }
+
+  loadScripts() {
+    combineLatest(this.lazzyLoadScriptService.loadScript('semanticTreePicker.js'));
   }
 
   private getCollectionDetails() {
