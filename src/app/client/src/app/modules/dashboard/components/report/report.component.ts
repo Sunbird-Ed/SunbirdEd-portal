@@ -10,9 +10,6 @@ import { DataChartComponent } from '../data-chart/data-chart.component';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
 import { ISummaryObject } from '../../interfaces';
-import { data } from '../list-all-reports/list-all-reports.component.spec.data';
-import { random } from 'lodash';
-
 
 enum ReportType {
   report,
@@ -25,7 +22,6 @@ enum ReportType {
   styleUrls: ['./report.component.scss']
 })
 export class ReportComponent implements OnInit {
-
   public report: any;
   public showSummaryModal = false;
   public report$;
