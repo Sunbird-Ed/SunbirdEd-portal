@@ -1,22 +1,21 @@
-<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'normal'" class="sb-modal"
-  #onboardingModal>
+<sui-modal [mustScroll]="true" *ngIf="stage === Stage.USER_SELECTION" [isClosable]="false" [transitionDuration]="0"
+  [size]="'normal'" class="sb-modal" #onboardingModal>
 
-  <app-onboarding-user-selection [tenantInfo]="tenantInfo" *ngIf="stage === Stage.USER_SELECTION" (userSelect)="userTypeSubmit()">
+  <app-onboarding-user-selection [tenantInfo]="tenantInfo" (userSelect)="userTypeSubmit()">
   </app-onboarding-user-selection>
 
-  <app-location-selection *ngIf="stage === Stage.LOCATION_SELECTION"
-                          [deviceProfile]="deviceProfile"
-                          [isClosable]="false"
-                          (close)="locationSubmit()">
-    <div slot="popup-header">
-      <img [src]="tenantInfo?.logo" class="brand-logo" alt="logo" />
-      <h1>{{resourceService?.frmelmnts?.lbl?.welcomeToInstance | interpolate:'{instance}': tenantInfo?.titleName}}</h1>
-    </div>
-    <div slot="popup-sub-header">
-      <p class="subtitle">{{resourceService?.messages?.imsg?.m0075}}</p>
-    </div>
-    <div slot="popup-footer">
-      <p class="py-16">{{resourceService?.messages?.imsg?.m0074}}</p>
-    </div>
-  </app-location-selection>
 </sui-modal>
+
+<app-location-selection *ngIf="stage === Stage.LOCATION_SELECTION" [deviceProfile]="deviceProfile" [isClosable]="false"
+  (close)="locationSubmit()">
+  <div slot="popup-header">
+    <img [src]="tenantInfo?.logo" class="brand-logo" alt="logo" />
+    <h1>{{resourceService?.frmelmnts?.lbl?.welcomeToInstance | interpolate:'{instance}': tenantInfo?.titleName}}</h1>
+  </div>
+  <div slot="popup-sub-header">
+    <p class="subtitle">{{resourceService?.messages?.imsg?.m0075}}</p>
+  </div>
+  <div slot="popup-footer">
+    <p class="py-16">{{resourceService?.messages?.imsg?.m0074}}</p>
+  </div>
+</app-location-selection>
