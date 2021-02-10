@@ -354,17 +354,19 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   private _navigateToContent() {
+    this.showLastAttemptsModal = false;
     /* istanbul ignore else */
     if (!this.addToGroup) {
       this.logTelemetry(this.navigateToContentObject.id, this.navigateToContentObject.event.data);
     } else {
       this.logTelemetry('play-content-group', this.navigateToContentObject.event.data);
     }
-
     /* istanbul ignore else */
-    if (!_.isEmpty(this.navigateToContentObject.event.event)) {
-      this.navigateToPlayerPage(this.navigateToContentObject.collectionUnit, this.navigateToContentObject.event);
-    }
+    setTimeout(() => {
+        if (!this.showLastAttemptsModal && !_.isEmpty(this.navigateToContentObject.event.event)) {
+        this.navigateToPlayerPage(this.navigateToContentObject.collectionUnit, this.navigateToContentObject.event);
+      }
+    }, 100);
   }
 
   private setTelemetryStartEndData() {
