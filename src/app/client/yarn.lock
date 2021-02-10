@@ -612,10 +612,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.6.tgz#15a88937fb643d5eb33a81c8d28ece00b56d5aa0"
   integrity sha512-rK87rHdagadIS7UrWju7HDolIfWlO5CbK+tIJrEApO+QPMi+k8KuWoLc8MxEprrsJxUt6r44O4uGiO0hgI5plA==
 
-"@project-sunbird/sunbird-epub-player-v8@3.7.1":
-  version "3.7.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v8/-/sunbird-epub-player-v8-3.7.1.tgz#db17dc7a35ad3636ca91e90fdd40abb744931c0d"
-  integrity sha512-UV7czrEKwHeb/yF5t7ttwAk49vLgLMh4xfzKSxgF7yodow4IkHruhiFg9GayumLxvR5cNURNWlb/JnPYZvSYzg==
+"@project-sunbird/sunbird-epub-player-v8@3.7.2":
+  version "3.7.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v8/-/sunbird-epub-player-v8-3.7.2.tgz#bd00adfe07385b072f354b2696fe5c9a16cf53c9"
+  integrity sha512-z6d8zB7Pu/sXrvZK16H1qunAk5cXZtK9LpaeJvOSU0ho4X/LeW3mcm6+UUQVnJaNu3alwyoP6hlv88PJ/d3ktw==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v8" "3.7.1"
     tslib "^1.9.0"
