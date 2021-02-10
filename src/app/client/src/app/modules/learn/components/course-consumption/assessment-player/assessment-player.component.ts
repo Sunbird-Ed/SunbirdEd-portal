@@ -453,7 +453,11 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
         } else {
           const _contentIndex = _.findIndex(this.contentStatus, {contentId: request.contentId});
           const _resIndex =  _.findIndex(updatedRes.content, {contentId: request.contentId});
+          // Update the available status data object
+          this._routerStateContentStatus['progress'] = _.get(updatedRes, 'progress');
           this.contentStatus[_contentIndex]['status'] = _.get(updatedRes.content[_resIndex], 'status');
+          this._routerStateContentStatus['totalCount'] = _.get(updatedRes, 'totalCount');
+          this._routerStateContentStatus['completedCount'] = _.get(updatedRes, 'completedCount');
         }
         /* istanbul ignore else */
         if (!this.isUnitCompleted) {
