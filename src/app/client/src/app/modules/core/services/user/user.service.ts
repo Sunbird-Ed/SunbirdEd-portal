@@ -436,4 +436,12 @@ export class UserService {
       this.anonymousUserPreference = response.result;
     });
   }
+
+  get defaultFrameworkFilters() {
+    const isUserLoggedIn = this.loggedIn || false;
+    const { framework = null } = this.userProfile || {};
+    const userFramework = (isUserLoggedIn && framework && _.pick(framework, ['medium', 'gradeLevel', 'board'])) || {};
+    return { board: ['CBSE'], gradeLevel: isUserLoggedIn ? [] : ['Class 10'], medium: [], ...userFramework };
+  }
+
 }
