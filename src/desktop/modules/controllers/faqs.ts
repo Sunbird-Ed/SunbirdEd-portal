@@ -87,7 +87,7 @@ export class Faqs {
       return faqsData;
     }).catch((err) => {
       const traceId = _.get(err, 'data.params.msgid');
-      logger.error(`Got error while reading Faq from blob for language`, language, `for ReqId: ${req.get("x-msgid")}, error message `, err.message, ` with trace Id`, traceId);
+      logger.error(`Got error while reading Faq from blob for language ${language}, for ReqId: ${req.get("x-msgid")}, error message ${err.message}, with trace Id ${traceId}`);
       return undefined;
     });
   }
