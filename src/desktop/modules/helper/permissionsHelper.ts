@@ -70,7 +70,9 @@ const PERMISSIONS_HELPER = {
       const user: ILoggedInUser = _.get(response, 'data.result.response');
       return user;
     } catch (error) {
-      logger.error("Error while getting user", error);
+      const traceId = _.get(error, 'data.params.msgid');
+      logger.error(`Error while getting user with trace id = ${traceId} and error = ${error}`);
+      
       throw { message: `User read failed with ${error}`, status: error.code || 500 }
     }
   },
@@ -93,7 +95,8 @@ const PERMISSIONS_HELPER = {
       const user: ILoggedInUser = _.get(response, 'data.result.response');
       return user;
     } catch (error) {
-      logger.error("Error while getting managed user", error);
+      const traceId = _.get(error, 'data.params.msgid');
+      logger.error(`Error while getting managed user with trace Id = ${traceId}  and error = ${error}`);
       throw { message: `Managed user read failed with ${error}`, status: error.code || 500 }
     }
   },

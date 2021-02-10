@@ -92,6 +92,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   groupId;
   showLastAttemptsModal: boolean = false;
   navigateToContentObject: any;
+  _routerStateContentStatus: any;
   constructor(
     public activatedRoute: ActivatedRoute,
     private configService: ConfigService,
@@ -328,6 +329,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         const _parsedResponse = this.courseProgressService.getContentProgressState(req, res);
         this.progressToDisplay = Math.floor((_parsedResponse.completedCount / this.courseHierarchy.leafNodesCount) * 100);
         this.contentStatus = _parsedResponse.content || [];
+        this._routerStateContentStatus = _parsedResponse;
         this.calculateProgress();
       }, error => {
         console.log('Content state read CSL API failed ', error);
@@ -354,17 +356,19 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   private _navigateToContent() {
+    this.showLastAttemptsModal = false;
     /* istanbul ignore else */
     if (!this.addToGroup) {
       this.logTelemetry(this.navigateToContentObject.id, this.navigateToContentObject.event.data);
     } else {
       this.logTelemetry('play-content-group', this.navigateToContentObject.event.data);
     }
-
     /* istanbul ignore else */
-    if (!_.isEmpty(this.navigateToContentObject.event.event)) {
-      this.navigateToPlayerPage(this.navigateToContentObject.collectionUnit, this.navigateToContentObject.event);
-    }
+    setTimeout(() => {
+        if (!this.showLastAttemptsModal && !_.isEmpty(this.navigateToContentObject.event.event)) {
+        this.navigateToPlayerPage(this.navigateToContentObject.collectionUnit, this.navigateToContentObject.event);
+      }
+    }, 100);
   }
 
   private setTelemetryStartEndData() {
@@ -472,7 +476,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   navigateToPlayerPage(collectionUnit: any, event?) {
     if ((this.enrolledCourse && this.batchId) || this.hasPreviewPermission) {
       const navigationExtras: NavigationExtras = {
-        queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.courseHierarchy.name }
+        queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.courseHierarchy.name },
+        state: { contentStatus: this._routerStateContentStatus }
       };
       if (this.tocId) {
         navigationExtras.queryParams['textbook'] = this.tocId;
