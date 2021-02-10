@@ -115,8 +115,9 @@ export class NetworkQueue extends Queue {
             this.makeHTTPCall(currentQueue.requestHeaderObj, requestBody, currentQueue.pathToApi)
                 .then(async resp => {
                     // For new API if success comes with new responseCode, add responseCode to successResponseCode
+                    const traceId = _.get(resp, 'headers.x-trace-enabled');
                     if (_.includes(successResponseCode, _.toLower(_.get(resp, 'data.responseCode')))) {
-                        logger.info(`Network Queue synced for id = ${currentQueue._id}`);
+                        logger.info(`Network Queue synced for id = ${currentQueue._id}, and traceId = ${traceId}`);
                         await this.deQueue(currentQueue._id).catch(error => {
                             logger.info(`Received error deleting id = ${currentQueue._id}`);
                         });
@@ -124,7 +125,7 @@ export class NetworkQueue extends Queue {
                         this.start();
                         this.running--;
                     } else {
-                        logger.warn(`Unable to sync network queue with id = ${currentQueue._id}`);
+                        logger.warn(`Unable to sync network queue with id = ${currentQueue._id}, and traceId = ${traceId}`);
                         await this.deQueue(currentQueue._id).catch(error => {
                             logger.info(`Received error deleting id = ${currentQueue._id}`);
                         });
@@ -132,7 +133,8 @@ export class NetworkQueue extends Queue {
                     }
                 })
                 .catch(async error => {
-                    logger.error(`Error while syncing to Network Queue for id = ${currentQueue._id}`, error.message);
+                    const traceId = _.get(error, 'headers.x-trace-enabled');
+                    logger.error(`Error while syncing to Network Queue for id = ${currentQueue._id} and traceId = ${traceId}`, error.message);
                     this.logTelemetryError(error);
                     await this.deQueue(currentQueue._id).catch(error => {
                         logger.info(`Received error in catch for deleting id = ${currentQueue._id}`);
@@ -230,16 +232,18 @@ export class NetworkQueue extends Queue {
             let requestBody = _.get(currentQueue, 'requestHeaderObj.Content-Encoding') === 'gzip' ? Buffer.from(currentQueue.requestBody.data) : currentQueue.requestBody;
             try {
                 let resp = await this.makeHTTPCall(currentQueue.requestHeaderObj, requestBody, currentQueue.pathToApi);
+                const traceId = _.get(resp, 'headers.x-trace-enabled');
                 if (_.includes(successResponseCode, _.toLower(_.get(resp, 'data.responseCode')))) {
-                    logger.info(`Network Queue synced for id = ${currentQueue._id}`);
+                    logger.info(`Network Queue synced for id = ${currentQueue._id}, with trace Id = ${traceId}`);
                     await this.deQueue(currentQueue._id);
                     EventManager.emit(`${_.toLower(currentQueue.subType)}-synced`, currentQueue);
                 } else {
-                    logger.warn(`Unable to sync network queue with id = ${currentQueue._id}`);
+                    logger.warn(`Unable to sync network queue with id = ${currentQueue._id}, with trace Id = ${traceId}`);
                     return resp;
                 }
             } catch (error) {
-                logger.error(`Error while syncing to Network Queue for id = ${currentQueue._id}`, error.message);
+                const traceId = _.get(error, 'headers.x-trace-enabled');
+                logger.error(`Error while syncing to Network Queue for id = ${currentQueue._id} and trace Id = ${traceId}`, error.message);
                 this.logTelemetryError(error);
                 return error;
             }
