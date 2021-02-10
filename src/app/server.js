@@ -248,23 +248,6 @@ app.get('/v1/user/session/start/:deviceId', (req, res) => {
   res.end()
 })
 
-app.get('/v1/desktop/handleGauth', (req, res) => {
-  logger.info({ msg: `DESKTOP ROUTE called /v1/desktop/handleGauth ${req.protocol}` });
-  req.session.desktopAuthdata = req.query;
-  res.redirect('/v1/desktop/google/auth/success');
-})
-app.get('/v1/desktop/google/auth/success', (req, res) => {
-  logger.info({ msg: `DESKTOP ROUTE called /v1/desktop/google/auth/success ${req.protocol}` });
-  const data = req.session.desktopAuthdata;
-  delete req.session.desktopAuthdata;
-  const protocol = envHelper.DESKTOP_APP_ID.replace(/\./g, "");
-  const reponseData = `${protocol}://google/signin?access_token=${data.access_token}&refresh_token=${data.refresh_token}`;
-  res.render(
-    path.join(__dirname, "routes", "googleResponse.ejs"), 
-    {data: reponseData}
-  );
-})
-
 const subApp = express()
 subApp.use(bodyParser.json({ limit: '50mb' }))
 app.use('/plugin', subApp)
