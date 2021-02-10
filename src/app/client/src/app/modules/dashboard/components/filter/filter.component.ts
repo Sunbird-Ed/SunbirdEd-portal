@@ -70,15 +70,11 @@ export class FilterComponent implements OnInit, OnDestroy {
   @Input()
   set resetFilters(val: any) {
     if (val) {
-
         // to apply current filters to new updated chart data;
         const currentFilterValue = _.get(this.filtersFormGroup, 'value');
         this.resetFilter();
         this.chartData = val.data;
         this.buildFiltersForm();
-        
-        
-        // this.formGeneration(this.chartData);
         if(val.reset && val.reset==true){
           this.selectedFilters = {};
           if(val.filters){
@@ -92,9 +88,6 @@ export class FilterComponent implements OnInit, OnDestroy {
           this.filtersFormGroup.patchValue(currentFilterValue);
           this.selectedFilters = currentFilterValue;
         }
-      
-        
-    
     }
   }
 

@@ -43,7 +43,6 @@ export class DataChartComponent implements OnInit, OnDestroy {
   datasets: any;
   chartLabels: any = [];
   filters: Array<{}>;
-  // filtersFormGroup: FormGroup;
   showFilters: Boolean = false;
   filtersSubscription: Subscription;
   noResultsFound: Boolean;
@@ -162,6 +161,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
   prepareChart() {
     if (!this.checkForExternalChart()) {
+      
       this.chartOptions = _.get(this.chartConfig, 'options') || { responsive: true };
       this.chartColors = _.get(this.chartConfig, 'colors') || [];
       this.chartType = _.get(this.chartConfig, 'chartType') || 'line';
@@ -222,7 +222,6 @@ export class DataChartComponent implements OnInit, OnDestroy {
     if (_.get(this.chartConfig, 'labels')) {
       labels = _.get(this.chartConfig, 'labels');
     }
-
     _.forEach(labels, (label, key) => {
       labels[key] = _.capitalize(label);
     });
@@ -265,7 +264,6 @@ export class DataChartComponent implements OnInit, OnDestroy {
         ...(lineThickness) && { borderWidth: lineThickness }
       });
     });
-
     if (this.showGraphStats) {
       this.calculateGraphStats();
     }
@@ -302,7 +300,6 @@ export class DataChartComponent implements OnInit, OnDestroy {
       this.setChartLabels(result); // set the labels as per the new dataset.
       return _.values(result);
     }
-
     return _.values(data);
   }
 
@@ -347,7 +344,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
     const chartId = _.get(this.chartConfig, 'id');
     if (chartId) {
       this.openAddSummaryModal.emit({
-        title: `Add ${_.get(this.resourceService, 'frmelmnts.lbl.chartSummary')}`,
+        title: this.chartSummarylabel,
         type: 'chart',
         chartId,
         ...(this._chartSummary && { summary: this._chartSummary })
@@ -395,17 +392,15 @@ export class DataChartComponent implements OnInit, OnDestroy {
   @Input()
   set globalFilter(val: any) {
     if(val){
-
       this.chartData = val.chartData;
       if(val.filters){
         this.chartData['selectedFilters'] = { };
       }else {
         this.chartData['selectedFilters'] = val.filters;
       }
-     this.cdr.detectChanges();
+      this.cdr.detectChanges();
       this.getDataSetValue(val.chartData);
       this.resetForm();
-     
     }
   }
 

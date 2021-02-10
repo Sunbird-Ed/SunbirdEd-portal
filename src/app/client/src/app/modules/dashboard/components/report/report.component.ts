@@ -11,7 +11,6 @@ import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
 import { ISummaryObject } from '../../interfaces';
 
-
 enum ReportType {
   report,
   dataset
@@ -23,7 +22,6 @@ enum ReportType {
   styleUrls: ['./report.component.scss']
 })
 export class ReportComponent implements OnInit {
-
   public report: any;
   public showSummaryModal = false;
   public report$;
@@ -61,7 +59,6 @@ export class ReportComponent implements OnInit {
   public globalFilterChange: Object;
   public resetFilters: Object;
   filterType:string = "report-filter";
-
   public reportResult: any;
   private set setMaterializedReportStatus(val: string) {
     this.materializedReport = (val === 'true');
@@ -107,7 +104,6 @@ export class ReportComponent implements OnInit {
       
       })
     );
-
 
     this.mergeClickEventStreams();
   }
@@ -300,7 +296,7 @@ export class ReportComponent implements OnInit {
 
   public openReportSummaryModal(): void {
     this.openAddSummaryModal({
-      title: `Add ${_.get(this.resourceService, 'frmelmnts.lbl.reportSummary')}`,
+      title: (this.currentReportSummary !='' ? 'Update ' : 'Add ') + _.get(this.resourceService, 'frmelmnts.lbl.reportSummary'),
       type: 'report',
       ...(this._reportSummary && { summary: this._reportSummary })
     });
@@ -314,8 +310,9 @@ export class ReportComponent implements OnInit {
         const summaries = this.currentReportSummary = _.map(reportSummary, summaryObj => {
           const summary = _.get(summaryObj, 'summary');
           this._reportSummary = summary;
+
           return {
-            label: _.get(this.resourceService, 'frmelmnts.lbl.reportSummary'),
+            label: (this.currentReportSummary !='' ? 'Update ' : 'Add ') + _.get(this.resourceService, 'frmelmnts.lbl.reportSummary'),
             text: [summary],
             createdOn: _.get(summaryObj, 'createdon')
           };
@@ -575,14 +572,12 @@ export class ReportComponent implements OnInit {
   }
 
   getChartData(chart){
-   let chartInfo = this.chartsReportData.charts.filter(data=>{
-        if(data.chartConfig){
-          if(data.chartConfig.id == chart.chartConfig.id){
-            return data;
-          }
-        }
+    let chartInfo = this.chartsReportData.charts.find(data=>{
+       if(data['chartConfig']['id']==chart['chartConfig']['id']){
+         return true;
+       }
     });
-    return chartInfo[0];
+    return chartInfo;
   }
   public filterChanged(data: any): void {
     if (this.chartsReportData && this.chartsReportData.charts) {
