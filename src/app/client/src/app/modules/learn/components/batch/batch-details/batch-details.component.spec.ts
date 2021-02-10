@@ -81,7 +81,7 @@ describe('BatchDetailsComponent', () => {
       filters: {
         courseId: component.courseId,
         enrollmentType: 'open',
-        status: ['0', '1']
+        status: ['1']
       },
       offset: 0,
       sort_by: { createdDate: 'desc' }
@@ -253,7 +253,7 @@ describe('BatchDetailsComponent', () => {
     component.getJoinCourseBatchDetails();
     const searchParams: any = {
       filters: {
-        status: ['0', '1'],
+        status: ['1'],
         courseId: component.courseId,
         enrollmentType: 'open'
       },

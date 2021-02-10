@@ -76,7 +76,7 @@ describe('BatchInfoComponent', () => {
     data: {
       request: {
         filters: {
-          status: [ '1', '0' ],
+          status: [ '1' ],
           enrollmentType: 'open',
           courseId: 'do_2127644219762278401149'
         },
