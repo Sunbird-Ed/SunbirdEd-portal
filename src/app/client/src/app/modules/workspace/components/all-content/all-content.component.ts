@@ -15,6 +15,7 @@ import { IImpressionEventInput } from '@sunbird/telemetry';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 import { debounceTime, map } from 'rxjs/operators';
 import { ContentIDParam } from '../../interfaces/delteparam';
+import { environment } from '@sunbird/environment';
 
 @Component({
   selector: 'app-all-content',
@@ -265,15 +266,17 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
       this.sort = { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn };
     }
     const preStatus = ['Draft', 'FlagDraft', 'Review', 'Processing', 'Live', 'Unlisted', 'FlagReview'];
-    // tslint:disable-next-line:max-line-length
-    const primaryCategories = _.concat(this.frameworkService['_channelData'].contentPrimaryCategories, this.frameworkService['_channelData'].collectionPrimaryCategories);
+    let primaryCategories = _.compact(_.concat(this.frameworkService['_channelData'].contentPrimaryCategories,
+        this.frameworkService['_channelData'].collectionPrimaryCategories));
+    if (environment.env !== 'prod') {
+      primaryCategories = _.compact(_.concat(primaryCategories, this.frameworkService['_channelData'].questionSetPrimaryCategories || ['Practice Question Set']));
+    }
     const searchParams = {
       filters: {
         status: bothParams.queryParams.status ? bothParams.queryParams.status : preStatus,
         createdBy: this.userService.userid,
         // tslint:disable-next-line:max-line-length
         primaryCategory: _.get(bothParams, 'queryParams.primaryCategory') || primaryCategories || this.config.appConfig.WORKSPACE.primaryCategory,
-        objectType: this.config.appConfig.WORKSPACE.objectType,
         board: bothParams.queryParams.board,
         subject: bothParams.queryParams.subject,
         medium: bothParams.queryParams.medium,
@@ -284,9 +287,15 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
       query: _.toString(bothParams.queryParams.query),
       sort_by: this.sort
     };
+    if (environment.env === 'prod') {
+      searchParams.filters['objectType'] = this.config.appConfig.WORKSPACE.objectType;
+    }
     this.searchContentWithLockStatus(searchParams).subscribe(
       (data: ServerResponse) => {
-        if (data.result.count && data.result.content.length > 0) {
+        if (data.result.count && (data.result.content.length > 0 || data.result.QuestionSet.length > 0)) {
+          if (environment.env !== 'prod' && data.result.QuestionSet) {
+            data.result.content = _.concat(data.result.content, data.result.QuestionSet);
+          }
           this.allContent = data.result.content;
           this.totalCount = data.result.count;
           this.pager = this.paginationService.getPager(data.result.count, pageNumber, limit);
@@ -459,7 +468,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
       }
     }
   }
- 
+
   public onCloseLockInfoPopup () {
     this.showLockedContentModal = false;
   }

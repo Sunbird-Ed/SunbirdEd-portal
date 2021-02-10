@@ -3,6 +3,8 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ResourceService, ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { FrameworkService, PermissionService } from '@sunbird/core';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { environment } from '@sunbird/environment';
+
 @Component({
   selector: 'app-create-content',
   templateUrl: './create-content.component.html'
@@ -58,6 +60,7 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
 	 * telemetryImpression
 	*/
   telemetryImpression: IImpressionEventInput;
+  public envData = environment.env;
   /**
   * Constructor to create injected service(s) object
   *
