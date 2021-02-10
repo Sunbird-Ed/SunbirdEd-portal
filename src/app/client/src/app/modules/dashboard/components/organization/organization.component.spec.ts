@@ -73,8 +73,7 @@ describe('OrganisationComponent', () => {
     fixture = TestBed.createComponent(OrganisationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    component.myOrganizations = [{ id: '01229679766115942443', name: 'XYZ Institution' }];
-  });
+    component.myOrganizations = [{ id: 'do_1231', name: 'Test 1' }];
 
   it('should create', () => {
     expect(component).toBeTruthy();
