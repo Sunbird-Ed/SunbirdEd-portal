@@ -140,6 +140,36 @@ describe('FilterComponent', () => {
     const response = component.checkFilterReferance("date");
     expect(response).toEqual(true);
   }));
+
+  it('should set resetFilters', fakeAsync(() => {
+    component.ngOnInit();
+    tick(1000);
+    component.resetFilters = { data:mockChartData.chartData,reset:true,filters:mockChartData.filters };
+    tick(1000);
+    expect(component.chartData).toEqual(mockChartData.chartData);
+  }));
+
+  it('should run buildFiltersForm', fakeAsync(() => {
+    component.ngOnInit();
+    tick(1000);
+    component.filters = mockChartData.filters;
+    component.chartData = mockChartData.chartData;
+    component.filtersFormGroup.get('state').setValue(['01285019302823526477']);
+    tick(1000);
+    component.buildFiltersForm();
+    tick(1000);
+    expect(component.selectedFilters).toEqual({
+      'state': ['01285019302823526477']
+    });
+  }));
+
+  it('should get resetFilters', fakeAsync(() => {
+    component.ngOnInit();
+    tick(1000);
+    component['_resetFilters'] = { data:mockChartData.chartData };
+    expect(component.resetFilters).toEqual({ data:mockChartData.chartData });
+  }));
+  
   
 
   xit('should set the dateRange', fakeAsync(() => {

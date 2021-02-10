@@ -233,6 +233,14 @@ describe('DataChartComponent', () => {
         expect(response).toEqual(true);
       }));
      
+      it('should set globalFilter', fakeAsync(() => {
+        component.ngOnInit();
+        tick(1000);
+        component.globalFilter = { chartData : mockChartData.chartData  };
+        expect(component.chartData).toEqual(mockChartData.chartData);
+       
+      }));
+     
       
       
     it('should sort data in ascending order based on Date key', () => {
