@@ -188,7 +188,8 @@ export class ContentDownloadManager {
       return res.send(Response.success("api.content.download", { downloadId: id, contentsToBeDownloaded }, req));
 
     } catch (error) {
-      logger.error(`Content download request failed for contentId: ${contentId} with error: ${error.message}`);
+      const traceId = _.get(error, 'data.params.msgid');
+      logger.error(`Content download request failed for contentId: ${contentId}, trace Id: ${traceId} with error: ${error.message}`);
       if (_.get(error, "code") === "LOW_DISK_SPACE") {
         res.status(507);
         return res.send(Response.error("api.content.download", 507, "Low disk space", "LOW_DISK_SPACE"));
