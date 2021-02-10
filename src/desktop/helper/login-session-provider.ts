@@ -191,7 +191,7 @@ export class LoginSessionProvider {
                 this.showLoader();
                 logger.debug(`Resolve redirect url from buildGoogleSessionProvider`);
                 const parsedUrl = new URL(captured.googleRedirectUrl);
-                const url = `${parsedUrl.protocol}//${parsedUrl.hostname}${parsedUrl.pathname}?redirect_uri=${process.env.APP_BASE_URL}/desktop/handleGauth&${qs.stringify(extras)}`;
+                const url = `${parsedUrl.protocol}//${parsedUrl.hostname}${parsedUrl.pathname}?redirect_uri=${process.env.APP_BASE_URL}/v1/desktop/handleGauth&${qs.stringify(extras)}`;
                 global['childLoginWindow'] = this.loginWindow;
                 shell.openExternal(url);
             })
