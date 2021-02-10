@@ -67,6 +67,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   groupId;
   assessmentMaxAttempts: number;
   showMaxAttemptsModal: boolean = false;
+  isRouterExtrasAvailable: boolean = false;
+  _routerStateContentStatus: any;
 
   constructor(
     public resourceService: ResourceService,
@@ -91,12 +93,19 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       showContentRating: true
     };
     // this.assessmentMaxAttempts = this.configService.appConfig.CourseConsumption.selfAssessMaxLimit;
+    const _routerExtras = this.router.getCurrentNavigation();
+    if (_.get(_routerExtras, 'extras.state')) {
+      this.isRouterExtrasAvailable = true;
+      this._routerStateContentStatus = _.get(_routerExtras, 'extras.state.contentStatus');
+      this.contentStatus = _.get(_routerExtras, 'extras.state.contentStatus.content');
+    }
   }
 
   navigateToPlayerPage(collectionUnit: {}, event?) {
     this.previousContent = null;
       const navigationExtras: NavigationExtras = {
-        queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.parentCourse.name }
+        queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.parentCourse.name },
+        state: { contentStatus: this._routerStateContentStatus }
       };
 
       if (event && !_.isEmpty(event.event)) {
@@ -251,31 +260,52 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       this.showMaxAttemptsModal = false;
       let isLastAttempt = false;
       const req = this.getContentStateRequest(this.parentCourse);
-      this.courseConsumptionService.getContentState(req)
-        .pipe(takeUntil(this.unsubscribe))
-        .subscribe(res => {
-          _.forEach(_.get(res, 'content'), (contentState) => {
-            if (_.get(contentState, 'contentId') === this.activeContent.identifier) {
-              if (contentState.score.length >= this.assessmentMaxAttempts) maxAttemptsExceeded = true;
-              if(this.assessmentMaxAttempts - contentState.score.length === 1) isLastAttempt = true;
+      if (_.get(this.activeContent, 'contentType') === 'SelfAssess' || !this.isRouterExtrasAvailable) {
+        this.courseConsumptionService.getContentState(req)
+          .pipe(takeUntil(this.unsubscribe))
+          .subscribe(res => {
+            _.forEach(_.get(res, 'content'), (contentState) => {
+              if (_.get(contentState, 'contentId') === this.activeContent.identifier) {
+                if (contentState.score.length >= this.assessmentMaxAttempts) maxAttemptsExceeded = true;
+                if(this.assessmentMaxAttempts - contentState.score.length === 1) isLastAttempt = true;
+              }
+            });
+            
+            /* istanbul ignore else */
+            if (maxAttemptsExceeded) {
+              this.showMaxAttemptsModal = true;
+            } else if (isLastAttempt) {
+              this.toasterService.error(this.resourceService.frmelmnts.lbl.selfAssessLastAttempt);
+            } else if (_.get(res, 'content.length')) {
+              this.isCourseCompleted = (res.totalCount === res.completedCount);
+              this.showCourseCompleteMessage = this.isCourseCompleted && showPopup;
+              if (this.showCourseCompleteMessage) {
+                this.notificationService.refreshNotification$.next(true);
+              }
+              this.isCourseCompletionPopupShown = this.isCourseCompleted;
             }
-          });
-          
-          /* istanbul ignore else */
-          if (maxAttemptsExceeded) {
-            this.showMaxAttemptsModal = true;
-          } else if (isLastAttempt) {
-            this.toasterService.error(this.resourceService.frmelmnts.lbl.selfAssessLastAttempt);
-          } else if (_.get(res, 'content.length')) {
-            this.isCourseCompleted = (res.totalCount === res.completedCount);
-            this.showCourseCompleteMessage = this.isCourseCompleted && showPopup;
-            if (this.showCourseCompleteMessage) {
-              this.notificationService.refreshNotification$.next(true);
-            }
-            this.isCourseCompletionPopupShown = this.isCourseCompleted;
+          }, err => console.error(err, 'content read api failed'));
+      } else {
+        _.forEach(this.contentStatus, (contentState) => {
+          if (_.get(contentState, 'contentId') === _.get(this.activeContent, 'identifier')) {
+            if (contentState.score.length >= this.assessmentMaxAttempts) maxAttemptsExceeded = true;
+            if (this.assessmentMaxAttempts - contentState.score.length === 1) isLastAttempt = true;
           }
-
-        }, err => console.error(err, 'content read api failed'));
+        });
+        /* istanbul ignore else */
+        if (maxAttemptsExceeded) {
+          this.showMaxAttemptsModal = true;
+        } else if (isLastAttempt) {
+          this.toasterService.error(this.resourceService.frmelmnts.lbl.selfAssessLastAttempt);
+        } else if (this.contentStatus.length) {
+          this.isCourseCompleted = (_.get(this._routerStateContentStatus, 'totalCount') === _.get(this._routerStateContentStatus, 'completedCount'));
+          this.showCourseCompleteMessage = this.isCourseCompleted && showPopup;
+          if (this.showCourseCompleteMessage) {
+            this.notificationService.refreshNotification$.next(true);
+          }
+          this.isCourseCompletionPopupShown = this.isCourseCompleted;
+        }
+      }
     }
   }
 
@@ -357,14 +387,25 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   private getContentState() {
-    const req = this.getContentStateRequest(this.courseHierarchy);
-    this.courseConsumptionService.getContentState(req)
+    if (_.get(this.activeContent, 'contentType') === 'SelfAssess' || !this.isRouterExtrasAvailable) {
+      const req = this.getContentStateRequest(this.courseHierarchy);
+      this.courseConsumptionService.getContentState(req)
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(res => {
-        this.contentStatus = res.content || [];
+        const _contentIndex = _.findIndex(this.contentStatus, {contentId: _.get(this.activeContent, 'identifier')});
+        const _resIndex =  _.findIndex(res.content, {contentId: _.get(this.activeContent, 'identifier')});
+        if (_.get(this.activeContent, 'contentType') === 'SelfAssess') {
+          this.contentStatus[_contentIndex]['status'] = _.get(res.content[_resIndex], 'status');
+        } else {
+          this.contentStatus = res.content || [];
+        }
         this.highlightContent();
         this.calculateProgress();
       }, err => console.error(err, 'content read api failed'));
+    } else {
+      this.highlightContent();
+      this.calculateProgress();
+    }
   }
 
   public getCurrentContent() {
@@ -407,7 +448,17 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     this.courseConsumptionService.updateContentsState(request)
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(updatedRes => {
-        this.contentStatus = _.cloneDeep(updatedRes.content);
+        if (!this.isRouterExtrasAvailable) {
+          this.contentStatus = _.cloneDeep(updatedRes.content);
+        } else {
+          const _contentIndex = _.findIndex(this.contentStatus, {contentId: request.contentId});
+          const _resIndex =  _.findIndex(updatedRes.content, {contentId: request.contentId});
+          // Update the available status data object
+          this._routerStateContentStatus['progress'] = _.get(updatedRes, 'progress');
+          this.contentStatus[_contentIndex]['status'] = _.get(updatedRes.content[_resIndex], 'status');
+          this._routerStateContentStatus['totalCount'] = _.get(updatedRes, 'totalCount');
+          this._routerStateContentStatus['completedCount'] = _.get(updatedRes, 'completedCount');
+        }
         /* istanbul ignore else */
         if (!this.isUnitCompleted) {
           this.calculateProgress(true);
