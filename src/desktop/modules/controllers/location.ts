@@ -146,7 +146,8 @@ export class Location {
             this.constructSearchEdata(req, responseObj);
             return res.send(responseObj);
         } catch (err) {
-            logger.error(`ReqId =  ${req.headers["X-msgid"]}: Error Received while getting data from Online ${err}`);
+            const traceId = _.get(err, 'data.params.msgid');
+            logger.error(`ReqId =  ${req.headers["X-msgid"]}: Error Received while getting data from Online ${err}, with trace Id= ${traceId}`);
             next();
         }
     }
