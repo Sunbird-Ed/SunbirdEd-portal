@@ -3,10 +3,9 @@ import { UserService, PublicDataService, ContentService, FrameworkService } from
 import { TelemetryService } from '@sunbird/telemetry';
 import { ConfigService, NavigationHelperService, ToasterService, ResourceService } from '@sunbird/shared';
 import { EditorService, WorkSpaceService } from './../../../services';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute} from '@angular/router';
 import * as _ from 'lodash-es';
-import { first, mergeMap, tap } from 'rxjs/operators';
-import { of, combineLatest } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
 
 @Component({
@@ -21,7 +20,6 @@ export class NewCollectionEditorComponent implements OnInit {
   public userProfile: any;
   public showLoader = true;
   private routeParams: any;
-  public queryParams: object;
   public collectionDetails: any;
   public showQuestionEditor = false;
   public hierarchyConfig: any;
@@ -41,9 +39,7 @@ export class NewCollectionEditorComponent implements OnInit {
 
   ngOnInit() {
     this.routeParams = this.activatedRoute.snapshot.params;
-    this.queryParams = this.activatedRoute.snapshot.queryParams;
     this.userProfile = this.userService.userProfile;
-    this.routeParams = this.activatedRoute.snapshot.params;
     this.getCollectionDetails().subscribe(data => {
         this.collectionDetails = data.result.content;
         this.showQuestionEditor = this.collectionDetails.mimeType === 'application/vnd.sunbird.questionset' ? true : false;
