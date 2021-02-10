@@ -249,10 +249,12 @@ app.get('/v1/user/session/start/:deviceId', (req, res) => {
 })
 
 app.get('/v1/desktop/handleGauth', (req, res) => {
+  logger.info({ msg: `DESKTOP ROUTE called /v1/desktop/handleGauth ${req.protocol}` });
   req.session.desktopAuthdata = req.query;
   res.redirect('/v1/desktop/google/auth/success');
 })
 app.get('/v1/desktop/google/auth/success', (req, res) => {
+  logger.info({ msg: `DESKTOP ROUTE called /v1/desktop/google/auth/success ${req.protocol}` });
   const data = req.session.desktopAuthdata;
   delete req.session.desktopAuthdata;
   const protocol = envHelper.DESKTOP_APP_ID.replace(/\./g, "");
