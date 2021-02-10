@@ -115,7 +115,7 @@ export class NetworkQueue extends Queue {
             this.makeHTTPCall(currentQueue.requestHeaderObj, requestBody, currentQueue.pathToApi)
                 .then(async resp => {
                     // For new API if success comes with new responseCode, add responseCode to successResponseCode
-                    const traceId = _.get(resp, 'headers.x-trace-enabled');
+                    const traceId = _.get(resp, 'data.params.msgid');
                     if (_.includes(successResponseCode, _.toLower(_.get(resp, 'data.responseCode')))) {
                         logger.info(`Network Queue synced for id = ${currentQueue._id}, and traceId = ${traceId}`);
                         await this.deQueue(currentQueue._id).catch(error => {
@@ -133,7 +133,7 @@ export class NetworkQueue extends Queue {
                     }
                 })
                 .catch(async error => {
-                    const traceId = _.get(error, 'headers.x-trace-enabled');
+                    const traceId = _.get(error, 'data.params.msgid');
                     logger.error(`Error while syncing to Network Queue for id = ${currentQueue._id} and traceId = ${traceId}`, error.message);
                     this.logTelemetryError(error);
                     await this.deQueue(currentQueue._id).catch(error => {
@@ -232,7 +232,7 @@ export class NetworkQueue extends Queue {
             let requestBody = _.get(currentQueue, 'requestHeaderObj.Content-Encoding') === 'gzip' ? Buffer.from(currentQueue.requestBody.data) : currentQueue.requestBody;
             try {
                 let resp = await this.makeHTTPCall(currentQueue.requestHeaderObj, requestBody, currentQueue.pathToApi);
-                const traceId = _.get(resp, 'headers.x-trace-enabled');
+                const traceId = _.get(resp, 'data.params.msgid');
                 if (_.includes(successResponseCode, _.toLower(_.get(resp, 'data.responseCode')))) {
                     logger.info(`Network Queue synced for id = ${currentQueue._id}, with trace Id = ${traceId}`);
                     await this.deQueue(currentQueue._id);
@@ -242,7 +242,7 @@ export class NetworkQueue extends Queue {
                     return resp;
                 }
             } catch (error) {
-                const traceId = _.get(error, 'headers.x-trace-enabled');
+                const traceId = _.get(error, 'data.params.msgid');
                 logger.error(`Error while syncing to Network Queue for id = ${currentQueue._id} and trace Id = ${traceId}`, error.message);
                 this.logTelemetryError(error);
                 return error;
