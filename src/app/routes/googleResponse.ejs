@@ -8,15 +8,15 @@
 <body>
     <h1>Google Authentication sucessfully done</h1>
     <button onclick="gotoapplication()">Go back to application</button>
-    <a id="dikshaurl" href="diksha://?<%=data%>"></a>
+    <input type="hidden" id="hdnInput" value="<%=data%>"> 
     <script type="text/javascript">
     var customWindow;
     window.onload = (event) => {
         gotoapplication();
     };
     function gotoapplication() {
-        const link = document.getElementById('dikshaurl');
-        link.click();
+        const link = document.getElementById('hdnInput').value;
+        window.location.href = link;
     };
     </script>
 </body>

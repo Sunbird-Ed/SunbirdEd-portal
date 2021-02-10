@@ -227,7 +227,8 @@ app.get('/desktop/handleGauth', (req, res) => {
 app.get('/desktop/google/auth/success', (req, res) => {
   const data = req.session.desktopAuthdata;
   delete req.session.desktopAuthdata;
-  const reponseData = `access_token=${data.access_token}&refresh_token=${data.refresh_token}`;
+  const protocol = envHelper.DESKTOP_APP_ID.replace(/\./g, "");
+  const reponseData = `${protocol}://google/signin?access_token=${data.access_token}&refresh_token=${data.refresh_token}`;
   res.render(
     path.join(__dirname, "routes", "googleResponse.ejs"), 
     {data: reponseData}

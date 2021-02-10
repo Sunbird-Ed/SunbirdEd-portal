@@ -337,7 +337,7 @@ export class LoginSessionProvider {
                     await this.closeLoginWindow(true);
                 }
             }).catch(async (err) => {
-                logger.error(`Error while getUsers after resolving user token : ${err.message}`, err);
+                logger.error(`Error while getUsers after resolving user token : ${err.message}`);
                 await this.closeLoginWindow(false);
             });
     }

@@ -79,6 +79,7 @@ let deviceSDK = containerAPI.getDeviceSdkInstance();
 deviceSDK.initialize({key: envs.APP_BASE_URL_TOKEN});
 global['childLoginWindow'];
 let deeplinkingUrl;
+const app_protocol = process.env.APP_ID.replace(/\./g, "");
 const reloadUIOnFileChange = () => {
   const subject = new Subject<any>();
   subject.pipe(debounceTime(2500)).subscribe(data => {
@@ -504,14 +505,15 @@ app.on("ready", createWindow);
 app.on("window-all-closed", () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
+  app.removeAsDefaultProtocolClient(app_protocol);
   if (process.platform !== "darwin") {
     app.quit();
   }
 });
 
-if (!app.isDefaultProtocolClient(process.env.CUSTOM_PROTOCOL)) {
+if (!app.isDefaultProtocolClient(app_protocol)) {
   // Define custom protocol handler. Deep linking works on packaged versions of the application!
-  app.setAsDefaultProtocolClient(process.env.CUSTOM_PROTOCOL)
+  app.setAsDefaultProtocolClient(app_protocol)
 }
 
 app.on('will-finish-launching', function() {
@@ -584,20 +586,22 @@ const checkForOpenFile = (files?: string[]) => {
 
 const handleUserAuthentication = async () => {
   const parsedUrl = new URL(deeplinkingUrl);
-  const userData = {
-    access_token: new URLSearchParams(parsedUrl.search).get('access_token'),
-    refresh_token: new URLSearchParams(parsedUrl.search).get('refresh_token')
-  };
-  const loginPageOptions = {
-    isFreshWindow: true,
-    parentWindow: win, 
-    appbaseUrl: appBaseUrl,
-    deviceId: deviceId
+  const accessToken = new URLSearchParams(parsedUrl.search).get('access_token');
+  const refreshToken = new URLSearchParams(parsedUrl.search).get('refresh_token');
+  if(accessToken && refreshToken) {
+    const userData = {
+      access_token: accessToken,
+      refresh_token: refreshToken
+    };
+    const loginPageOptions = {
+      isFreshWindow: true,
+      parentWindow: win, 
+      appbaseUrl: appBaseUrl,
+      deviceId: deviceId
+    }
+    const loginSessionProvider = new LoginSessionProvider(loginPageOptions);
+    await loginSessionProvider.getUsers(userData);
   }
-  const loginSessionProvider = new LoginSessionProvider(loginPageOptions);
-  await loginSessionProvider.getUsers(userData).then(() => {
-    protocol.unregisterProtocol(process.env.CUSTOM_PROTOCOL);
-  });
 }
 
 process
