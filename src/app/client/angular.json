@@ -78,7 +78,6 @@
               "./node_modules/katex/dist/katex.min.js",
               "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js",
               "src/assets/libs/semantic-ui/modal.min.js",
-              "src/assets/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.js",
               {
                 "input": "src/assets/libs/semantic-ui/transition.min.js",
                 "lazy": true,
@@ -103,6 +102,26 @@
                 "input": "src/assets/libs/semantic-ui/modal.min.js",
                 "lazy": true,
                 "bundleName": "semanticModal"
+              },
+              {
+                "input": "src/assets/libs/semantic-ui/transition.min.js",
+                "lazy": true,
+                "bundleName": "semanticTreePicker"
+              },
+              {
+                "input": "src/assets/libs/semantic-ui/dimmer.min.js",
+                "lazy": true,
+                "bundleName": "semanticTreePicker"
+              },
+              {
+                "input": "src/assets/libs/semantic-ui/modal.min.js",
+                "lazy": true,
+                "bundleName": "semanticTreePicker"
+              },
+              {
+                "input": "src/assets/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.js",
+                "lazy": true,
+                "bundleName": "semanticTreePicker"
               }
             ]
           },
