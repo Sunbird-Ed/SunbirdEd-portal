@@ -26,7 +26,7 @@ import { ReviewCommentsComponent } from './components/review-comments/review-com
 import { OrderModule } from 'ngx-order-pipe';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { ContentSearchModule } from '@sunbird/content-search';
-import { QuestionEditorLibraryModule } from 'question-editor-library-v8';
+import { QuestionEditorLibraryModule } from '@project-sunbird/sunbird-question-editor';
 
 @NgModule({
   imports: [

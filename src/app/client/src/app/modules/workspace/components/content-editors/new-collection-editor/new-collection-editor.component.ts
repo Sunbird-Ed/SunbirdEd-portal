@@ -184,7 +184,7 @@ export class NewCollectionEditorComponent implements OnInit {
       return 'edit';
     }
     if (contentStatus === 'review') {
-      return 'review';
+      return 'read';
     }
   }
 

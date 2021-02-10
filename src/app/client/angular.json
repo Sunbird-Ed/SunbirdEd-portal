@@ -46,7 +46,7 @@
               },
               {
                 "glob": "**/*",
-                "input": "./node_modules/question-editor-library-v8/lib/assets/",
+                "input": "./node_modules/@project-sunbird/sunbird-question-editor/lib/assets/",
                 "output": "/assets/"
               }
             ],
