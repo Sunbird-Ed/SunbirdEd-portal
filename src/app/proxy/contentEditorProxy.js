@@ -52,6 +52,10 @@ module.exports = function (app) {
 
   app.all('/action/content/v3/unlisted/publish/:contentId',
     bodyParser.json(),
+<<<<<<< HEAD
+=======
+    // isAPIWhitelisted.isAllowed(),
+>>>>>>> 0e58e16cce992267a4d22fc571ac22f79ea932e3
     proxy(contentProxyUrl, {
       preserveHostHdr: true,
       limit: reqDataLimitOfContentUpload,
@@ -152,6 +156,10 @@ module.exports = function (app) {
 
   app.all('/action/*',
   bodyParser.json({ limit: '50mb' }),
+<<<<<<< HEAD
+=======
+  // isAPIWhitelisted.isAllowed(),
+>>>>>>> 0e58e16cce992267a4d22fc571ac22f79ea932e3
   telemetryHelper.generateTelemetryForProxy,
   proxy(contentProxyUrl, {
     preserveHostHdr: true,
