@@ -248,11 +248,11 @@ app.get('/v1/user/session/start/:deviceId', (req, res) => {
   res.end()
 })
 
-app.get('/desktop/handleGauth', (req, res) => {
+app.get('/v1/desktop/handleGauth', (req, res) => {
   req.session.desktopAuthdata = req.query;
-  res.redirect('/desktop/google/auth/success');
+  res.redirect('/v1/desktop/google/auth/success');
 })
-app.get('/desktop/google/auth/success', (req, res) => {
+app.get('/v1/desktop/google/auth/success', (req, res) => {
   const data = req.session.desktopAuthdata;
   delete req.session.desktopAuthdata;
   const protocol = envHelper.DESKTOP_APP_ID.replace(/\./g, "");
