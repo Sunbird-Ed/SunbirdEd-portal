@@ -509,9 +509,9 @@ app.on("window-all-closed", () => {
   }
 });
 
-if (!app.isDefaultProtocolClient('diksha')) {
+if (!app.isDefaultProtocolClient(process.env.CUSTOM_PROTOCOL)) {
   // Define custom protocol handler. Deep linking works on packaged versions of the application!
-  app.setAsDefaultProtocolClient('diksha')
+  app.setAsDefaultProtocolClient(process.env.CUSTOM_PROTOCOL)
 }
 
 app.on('will-finish-launching', function() {
@@ -596,7 +596,7 @@ const handleUserAuthentication = async () => {
   }
   const loginSessionProvider = new LoginSessionProvider(loginPageOptions);
   await loginSessionProvider.getUsers(userData).then(() => {
-    protocol.unregisterProtocol('diksha');
+    protocol.unregisterProtocol(process.env.CUSTOM_PROTOCOL);
   });
 }
 
