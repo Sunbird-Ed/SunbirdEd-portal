@@ -198,7 +198,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
    * To show/hide collection modal
    */
   public collectionListModal = false;
-  public envInfo;
+  public isQuestionSetFilterEnabled: boolean;
   /**
     * Constructor to create injected service(s) object
     Default method of Draft Component class
@@ -233,7 +233,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
   }
 
   ngOnInit() {
-    this.envInfo = (this.userService.appId && this.userService.appId.split('.')[0]);
+    this.isQuestionSetFilterEnabled = this.workSpaceService.isQuestionSetEnabled;
     this.filterType = this.config.appConfig.allmycontent.filterType;
     this.redirectUrl = this.config.appConfig.allmycontent.inPageredirectUrl;
     observableCombineLatest(
@@ -268,7 +268,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
     const preStatus = ['Draft', 'FlagDraft', 'Review', 'Processing', 'Live', 'Unlisted', 'FlagReview'];
     let primaryCategories = _.compact(_.concat(this.frameworkService['_channelData'].contentPrimaryCategories,
         this.frameworkService['_channelData'].collectionPrimaryCategories));
-    if (this.envInfo && this.envInfo !== 'prod') {
+    if (this.isQuestionSetFilterEnabled === true) {
       primaryCategories = _.compact(_.concat(primaryCategories, this.frameworkService['_channelData'].questionSetPrimaryCategories || ['Practice Question Set']));
     }
     const searchParams = {
@@ -287,13 +287,13 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
       query: _.toString(bothParams.queryParams.query),
       sort_by: this.sort
     };
-    if (this.envInfo && this.envInfo === 'prod') {
+    if (this.isQuestionSetFilterEnabled !== true) {
       searchParams.filters['objectType'] = this.config.appConfig.WORKSPACE.objectType;
     }
     this.searchContentWithLockStatus(searchParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.count && (data.result.content.length > 0 || data.result.QuestionSet.length > 0)) {
-          if (this.envInfo && this.envInfo !== 'prod' && data.result.QuestionSet) {
+          if (this.isQuestionSetFilterEnabled === true && data.result.QuestionSet) {
             data.result.content = _.concat(data.result.content, data.result.QuestionSet);
           }
           this.allContent = data.result.content;

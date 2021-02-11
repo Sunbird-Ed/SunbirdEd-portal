@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { LayoutService, COLUMN_TYPE } from '@sunbird/shared';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { WorkSpaceService } from '../../services/work-space/workspace.service';
 
 @Component({
   selector: 'app-workspace',
@@ -13,7 +14,8 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   layoutConfiguration: any;
   FIRST_TO_PANEL_LAYOUT: string;
   SECOND_TO_PANEL_LAYOUT: string;
-  constructor(public router: Router, public layoutService: LayoutService) {
+  constructor(public router: Router, public layoutService: LayoutService,
+    public workSpaceService: WorkSpaceService) {
     window.scroll({
       top: 0,
       left: 0,
@@ -23,7 +25,9 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initLayout();
+    this.workSpaceService.getQuestionSetCreationStatus();
   }
+
   redoLayout() {
     if (this.layoutConfiguration != null) {
       this.FIRST_TO_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine);

@@ -88,25 +88,10 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
     this.contentUploadRole = this.configService.rolesConfig.workSpaceRole.contentUploadRole;
     this.assessmentRole = this.configService.rolesConfig.workSpaceRole.assessmentRole;
     this.courseRole = this.configService.rolesConfig.workSpaceRole.courseRole;
-    this.getQuestionSetCreationStatus();
+    this.enableQuestionSetCreation = this.workSpaceService.isQuestionSetEnabled;
   }
 
-  getQuestionSetCreationStatus() {
-    const formInputParams = {
-      formType: 'questionset',
-      subType: 'editor',
-      formAction: 'display',
-    };
-    this.workSpaceService.getFormData(formInputParams).subscribe(
-      (response) => {
-        const formValue = _.first(_.get(response, 'result.form.data.fields'));
-        this.enableQuestionSetCreation = formValue ? formValue.display : false;
-      },
-      (error) => {
-        console.log(`Unable to fetch form details - ${error}`);
-      }
-    );
-  }
+
 
   ngAfterViewInit () {
     setTimeout(() => {
