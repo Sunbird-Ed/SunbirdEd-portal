@@ -187,7 +187,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         if (!filters || status === 'FETCHING') { return; }
         this.showLoader = true;
         const currentPageData = this.getPageData(get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook');
-        this.selectedFilters = pick(filters, ['board', 'medium', 'gradeLevel', 'channel', 'subject', 'audience']);;
+        this.selectedFilters = pick(filters, ['board', 'medium', 'gradeLevel', 'channel', 'subject', 'audience']);
         if (has(filters, 'audience') || (localStorage.getItem('userType') && currentPageData.contentType !== 'all')) {
             const userTypes = get(filters, 'audience') || [localStorage.getItem('userType')];
             const audienceSearchFilterValue = _.get(filters, 'audienceSearchFilterValue');
@@ -218,7 +218,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             .pipe(
                 skipWhile(data => data === undefined || data === null),
                 switchMap(currentPageData => {
-                    const { fields = [], filters = {}, facetsBasedKeys = ['subject'], groupByKey = "se_subjects" } = currentPageData.search;
+                    const { fields = [], filters = {}, facetsBasedKeys = ['subject'], groupByKey = 'se_subjects' } = currentPageData.search;
                     const request = {
                         filters: this.contentSearchService.mapCategories({ filters: { ...this.selectedFilters, ...filters, se_subjects: [] } }),
                         fields: [...fields, 'se_subjects'],
@@ -275,7 +275,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                 const userProfileSubjects = _.get(this.userService, 'userProfile.framework.subject') || [];
                                 const [userSubjects, notUserSubjects] = partition(sortBy(data, ['name']), value => {
                                     const { name = null } = value || {};
-                                    if (!name) return false;
+                                    if (!name) { return false; }
                                     return find(userProfileSubjects, subject => toLower(subject) === toLower(name));
                                 });
                                 this.apiContentList = [...userSubjects, ...notUserSubjects];

@@ -302,7 +302,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
 
   private getFacets() {
     return this.facets$.pipe(tap(filters => {
-      filters = this.filters = { ...this.filters, ...this.sortFilters({ filters }) }
+      filters = this.filters = { ...this.filters, ...this.sortFilters({ filters }) };
       this.updateFiltersList({ filters });
       this.hardRefreshFilter();
     }));

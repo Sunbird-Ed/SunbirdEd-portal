@@ -490,7 +490,7 @@ describe('ExplorePageComponent', () => {
 
 
   it('should fetch contents', done => {
-    sendPageApi= false
+    sendPageApi = false;
     component['fetchContents']().subscribe(res => {
       expect(component.showLoader).toBeFalsy();
       expect(component.apiContentList).toBeDefined();

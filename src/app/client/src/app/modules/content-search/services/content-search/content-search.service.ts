@@ -95,7 +95,7 @@ export class ContentSearchService {
       medium: 'se_mediums',
       gradeLevel: 'se_gradeLevels',
       board: 'se_boards'
-    }
+    };
   }
 
   public mapCategories({ filters = {} }) {

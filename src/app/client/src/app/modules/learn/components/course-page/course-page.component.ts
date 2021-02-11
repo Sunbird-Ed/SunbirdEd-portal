@@ -119,7 +119,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(
         tap(_ => {
           if (this.isUserLoggedIn()) {
-            this.prepareVisits([])
+            this.prepareVisits([]);
           }
         }),
         delay(1),
@@ -148,7 +148,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
             return {
               channelId: _.get(this.userService, 'hashTagId'), custodianOrg: false,
               ...(this.userService.hashTagId === _.get(custodianOrg, 'result.response.value') && { custodianOrg: true })
-            }
+            };
           }));
     } else {
       if (this.userService.slug) {
@@ -165,11 +165,12 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       switchMap(channelData => {
         const { channelId, custodianOrg } = channelData as { channelId: string, custodianOrg: boolean };
         this.hashTagId = channelId;
-        return forkJoin(this.contentSearchService.initialize(channelId, custodianOrg, _.get(this.defaultFilterValues, 'board[0]')), this.getFrameWork()).pipe(
-          tap(res => { this.initFilters = true; }, err => { this.initFilters = false; })
-        );
+        return forkJoin(this.contentSearchService.initialize(channelId, custodianOrg, _.get(this.defaultFilterValues, 'board[0]')),
+          this.getFrameWork()).pipe(
+            tap(res => { this.initFilters = true; }, err => { this.initFilters = false; })
+          );
       })
-    )
+    );
   }
 
   ngOnInit() {
@@ -259,7 +260,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
               }));
         }
       })
-    )
+    );
   }
 
   private fetchPageData(option: object) {
@@ -320,7 +321,12 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     const option = {
       source: 'web',
       name: 'Course',
-      filters: this.contentSearchService.mapCategories({ filters: { ...this.getSearchFilters(filters), ...(this.selectedFilters || {}), se_subjects: [] } }),
+      filters: this.contentSearchService.mapCategories({
+        filters: {
+          ...this.getSearchFilters(filters), ...(this.selectedFilters || {}),
+          se_subjects: []
+        }
+      }),
       exists: ['batches.batchId'],
       sort_by: { 'me_averageRating': 'desc', 'batches.startDate': 'desc' },
       organisationId: this.hashTagId || '*',
@@ -333,8 +339,8 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
           this._courseSearchResponse = response;
           const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
           _.forEach(_.get(response, 'result.content'), function (content) {
-            if (!_.get(content, 'subject') || !_.size(_.get(content, 'subject'))) content['subject'] = ['Others'];
-            if (!_.get(content, 'se_subjects') || !_.size(_.get(content, 'se_subjects'))) content['se_subjects'] = ['Others'];
+            if (!_.get(content, 'subject') || !_.size(_.get(content, 'subject'))) { content['subject'] = ['Others']; }
+            if (!_.get(content, 'se_subjects') || !_.size(_.get(content, 'se_subjects'))) { content['se_subjects'] = ['Others']; }
           });
           const filteredContents = _.omit(_.groupBy(_.get(response, 'result.content') || [], groupByKey), ['undefined']);
           for (const [key, value] of Object.entries(filteredContents)) {
@@ -384,7 +390,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
             const userProfileSubjects = _.get(this.userService, 'userProfile.framework.subject') || [];
             const [userSubjects, notUserSubjects] = _.partition(_.sortBy(data, ['name']), value => {
               const { name = null } = value || {};
-              if (!name) return false;
+              if (!name) { return false; }
               return _.find(userProfileSubjects, subject => _.toLower(subject) === _.toLower(name));
             });
             this.carouselMasterData = [...userSubjects, ...notUserSubjects];
@@ -392,7 +398,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
               return;
             }
             this.pageSections = this.carouselMasterData.slice(0, 4);
-          }))
+          }));
         }));
   }
 
@@ -457,7 +463,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       const userTypeMapping = _.get(this.configService, 'appConfig.userTypeMapping');
       filterData['audience'] = audienceSearchFilterValue || _.uniq(_.flatten(_.map(userTypes, userType => userTypeMapping[userType])));
     }
-    if (JSON.stringify(this.selectedFilters) === JSON.stringify(filterData)) { return };
+    if (JSON.stringify(this.selectedFilters) === JSON.stringify(filterData)) { return; }
     this.selectedFilters = filterData;
     this.fetchContents$.next(filterData);
   }
