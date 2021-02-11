@@ -97,7 +97,8 @@ export class NewCollectionEditorComponent implements OnInit {
       if (_.isEmpty(value)) {
         switch (key) {
           case 'Question':
-            childrenData[key] = this.frameworkService['_channelData'].questionPrimaryCategories || ['Multiple Choice Question', 'Subjective Question'];
+            childrenData[key] = this.frameworkService['_channelData'].questionPrimaryCategories
+            || this.config.appConfig.WORKSPACE.questionPrimaryCategories;
             break;
           case 'Content':
             childrenData[key] = this.frameworkService['_channelData'].contentPrimaryCategories;
@@ -156,7 +157,7 @@ export class NewCollectionEditorComponent implements OnInit {
         timeDiff: this.userService.getServerTimeDiff,
         defaultLicense: this.frameworkService.getDefaultLicense(),
         endpoint: '/data/v3/telemetry',
-        env: 'collection_editor',
+        env: this.showQuestionEditor ? 'question_editor' : 'collection_editor',
         user: {
           id: this.userService.userid,
           orgIds: this.userProfile.organisationIds,
