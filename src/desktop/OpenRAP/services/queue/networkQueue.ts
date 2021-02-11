@@ -81,8 +81,7 @@ export class NetworkQueue extends Queue {
         try {
             let query = {
                 selector: {
-                    type: QUEUE_TYPE.Network,
-                    subType: {}
+                    type: QUEUE_TYPE.Network
                 },
                 limit: this.concurrency
             };
