@@ -7,7 +7,7 @@ import {
     OfflineCardService
 } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
-import { cloneDeep, get, find, map as _map, pick, omit, groupBy, sortBy, replace, uniqBy, forEach, has, uniq, flatten, each, isNumber, toString, partition, toLower } from 'lodash-es';
+import { cloneDeep, get, find, map as _map, pick, omit, groupBy, sortBy, replace, uniqBy, forEach, has, uniq, flatten, each, isNumber, toString, partition, toLower, includes } from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { map, tap, switchMap, skipWhile, takeUntil, catchError, startWith } from 'rxjs/operators';
 import { ContentSearchService } from '@sunbird/content-search';
@@ -184,10 +184,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     public getFilters({ filters, status }) {
-        this.showLoader = true;
         if (!filters || status === 'FETCHING') { return; }
+        this.showLoader = true;
         const currentPageData = this.getPageData(get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook');
-        this.selectedFilters = pick(filters, ['board', 'medium', 'gradeLevel', 'channel', 'subject', 'audience']);
+        this.selectedFilters = pick(filters, ['board', 'medium', 'gradeLevel', 'channel', 'subject', 'audience']);;
         if (has(filters, 'audience') || (localStorage.getItem('userType') && currentPageData.contentType !== 'all')) {
             const userTypes = get(filters, 'audience') || [localStorage.getItem('userType')];
             const audienceSearchFilterValue = _.get(filters, 'audienceSearchFilterValue');
@@ -218,10 +218,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             .pipe(
                 skipWhile(data => data === undefined || data === null),
                 switchMap(currentPageData => {
-                    const { fields = [], filters = {}, facetsBasedKeys = ['subject'] } = currentPageData.search;
+                    const { fields = [], filters = {}, facetsBasedKeys = ['subject'], groupByKey = "se_subjects" } = currentPageData.search;
                     const request = {
-                        filters: { ...this.selectedFilters, ...filters, subject: [] },
-                        fields,
+                        filters: this.contentSearchService.mapCategories({ filters: { ...this.selectedFilters, ...filters, se_subjects: [] } }),
+                        fields: [...fields, 'se_subjects'],
                         isCustodianOrg: this.custodianOrg,
                         channelId: this.channelId,
                         frameworkId: this.contentSearchService.frameworkId,
@@ -237,7 +237,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                             map((response) => {
                                 const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
                                 this._facets$.next(request.facets ? this.utilService.processCourseFacetData(_.get(response, 'result'), _.get(request, 'facets')) : {});
-                                const filteredContents = omit(groupBy(get(response, 'result.content'), 'subject'), ['undefined']);
+                                const filteredContents = omit(groupBy(get(response, 'result.content'), groupByKey), ['undefined']);
                                 for (const [key, value] of Object.entries(filteredContents)) {
                                     const isMultipleSubjects = key.split(',').length > 1;
                                     if (isMultipleSubjects) {
@@ -272,7 +272,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                 });
                             }), tap(data => {
                                 this.showLoader = false;
-                                const userProfileSubjects = _.get(this.userService, 'defaultFrameworkFilters.subject') || []
+                                const userProfileSubjects = _.get(this.userService, 'userProfile.framework.subject') || [];
                                 const [userSubjects, notUserSubjects] = partition(sortBy(data, ['name']), value => {
                                     const { name = null } = value || {};
                                     if (!name) return false;

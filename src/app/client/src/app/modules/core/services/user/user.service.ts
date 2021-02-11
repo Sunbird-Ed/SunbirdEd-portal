@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 import { PublicDataService } from './../public-data/public-data.service';
 import { skipWhile, tap } from 'rxjs/operators';
 import { APP_BASE_HREF } from '@angular/common';
-import {CacheService} from 'ng2-cache-service';
+import { CacheService } from 'ng2-cache-service';
 import { DataService } from './../data/data.service';
 
 
@@ -49,7 +49,7 @@ export class UserService {
    * Read only observable Containing user profile.
    */
   public readonly userData$: Observable<IUserData> = this._userData$.asObservable()
-  .pipe(skipWhile(data => data === undefined || data === null));
+    .pipe(skipWhile(data => data === undefined || data === null));
   /**
    * reference of config service.
    */
@@ -103,7 +103,7 @@ export class UserService {
   public anonymousUserPreference: boolean;
   public readonly userOrgDetails$ = this.userData$.pipe(
     mergeMap(data => iif(() =>
-    !this._userProfile.organisationIds, of([]), this.getOrganizationDetails(this._userProfile.organisationIds))),
+      !this._userProfile.organisationIds, of([]), this.getOrganizationDetails(this._userProfile.organisationIds))),
     shareReplay(1));
 
   /**
@@ -142,9 +142,9 @@ export class UserService {
   get anonymousSid() {
     return this._anonymousSid;
   }
-    /**
-   * returns login status.
-   */
+  /**
+ * returns login status.
+ */
   get loggedIn(): boolean {
     return this._authenticated;
   }
@@ -219,7 +219,7 @@ export class UserService {
     const hashTagIds = [];
     this._channel = _.get(profileData, 'rootOrg.hashTagId');
     this._slug = _.get(profileData, 'rootOrg.slug');
-    profileData.skills = _.get(profileData, 'skills' ) || [];
+    profileData.skills = _.get(profileData, 'skills') || [];
     hashTagIds.push(this._channel);
     let organisationIds = [];
     if (profileData.rootOrgId) {
@@ -294,7 +294,7 @@ export class UserService {
       }
     };
     return this.publicDataService.post(option)
-    .pipe(tap((data: ServerResponse) => {
+      .pipe(tap((data: ServerResponse) => {
         this.organizationsDetails = _.get(data, 'result.response.content');
         this.orgNames = _.map(this.organizationsDetails, org => org.orgName);
       }));
@@ -385,15 +385,15 @@ export class UserService {
   }
 
   getUserByKey(key) {
-    return this.learnerService.get({ url: this.config.urlConFig.URLS.USER.GET_USER_BY_KEY + '/' + key});
+    return this.learnerService.get({ url: this.config.urlConFig.URLS.USER.GET_USER_BY_KEY + '/' + key });
   }
 
   getIsUserExistsUserByKey(key) {
-    return this.learnerService.get({ url: this.config.urlConFig.URLS.USER.USER_EXISTS_GET_USER_BY_KEY + '/' + key});
+    return this.learnerService.get({ url: this.config.urlConFig.URLS.USER.USER_EXISTS_GET_USER_BY_KEY + '/' + key });
   }
 
   getFeedData() {
-    return this.learnerService.get({ url: this.config.urlConFig.URLS.USER.GET_USER_FEED + '/' + this.userid});
+    return this.learnerService.get({ url: this.config.urlConFig.URLS.USER.GET_USER_FEED + '/' + this.userid });
   }
 
   registerUser(data) {

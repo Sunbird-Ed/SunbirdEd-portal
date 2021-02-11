@@ -46,7 +46,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   constructor(public resourceService: ResourceService, private router: Router,
     private contentSearchService: ContentSearchService,
     private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef,
-    public layoutService: LayoutService, private formService: FormService) {}
+    public layoutService: LayoutService, private formService: FormService) { }
 
   get filterData() {
     return _.get(this.pageData, 'search.facets') || ['medium', 'gradeLevel', 'board', 'channel', 'subject', 'audience', 'publisher'];
@@ -215,7 +215,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
         const filterValuesFromQueryParams = this.queryFilters[filterKey] || [];
         if (_.get(filterValuesFromQueryParams, 'length')) {
           const indices = _.filter(_.map(filterValuesFromQueryParams, queryParamValue => values.findIndex((val) =>
-            val === queryParamValue)), index => index !== -1);
+            _.toLower(val) === _.toLower(queryParamValue))), index => index !== -1);
           selectedIndices = _.get(indices, 'length') ? indices : this.getIndicesFromDefaultFilters({ type: filterKey });
         } else {
           selectedIndices = this.getIndicesFromDefaultFilters({ type: filterKey });
@@ -304,7 +304,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     return this.facets$.pipe(tap(filters => {
       filters = this.filters = { ...this.filters, ...this.sortFilters({ filters }) }
       this.updateFiltersList({ filters });
+      this.hardRefreshFilter();
     }));
   }
-
 }
