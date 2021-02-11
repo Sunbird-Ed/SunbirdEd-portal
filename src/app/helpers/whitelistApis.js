@@ -1237,6 +1237,11 @@ const API_LIST = {
       checksNeeded: [],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
+    '/discussion/forum/v2/remove': {
+      description: 'To remove the forum id attached to a SB identifier',
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
     '/discussion/tags': {
       checksNeeded: [],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
