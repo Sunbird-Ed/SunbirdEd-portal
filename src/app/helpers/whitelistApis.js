@@ -1188,10 +1188,10 @@ const API_LIST = {
     '/getGeneralisedResourcesBundles/:lang/:fileName': {
       checksNeeded: []
     },
-    '/desktop/handleGauth': {
+    '/v1/desktop/handleGauth': {
       checksNeeded: []
     },
-    '/desktop/google/auth/success': {
+    '/v1/desktop/google/auth/success': {
       checksNeeded: []
     },
     '/service/health': {
@@ -1541,9 +1541,7 @@ const API_LIST = {
     '/discussion/user/username/:username',
     '/discussion/user/uid/:uid',
     '/device/register/:deviceId',
-    '/user/v1/switch/:userId',
-    '/desktop/handleGauth',
-    '/desktop/google/auth/success'
+    '/user/v1/switch/:userId'
   ]
 };
 module.exports = API_LIST;
