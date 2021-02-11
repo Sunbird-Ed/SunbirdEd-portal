@@ -356,6 +356,7 @@ export class SearchService {
 
   getSearchRequest(request, primaryCategory) {
     let filters = request.filters;
+    const { facets } = request;
     filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters']);
     filters['primaryCategory'] = primaryCategory;
     if (!request.isCustodianOrg) {
@@ -365,7 +366,7 @@ export class SearchService {
       limit: 100 || this.config.appConfig.SEARCH.PAGE_LIMIT,
       filters: filters,
       // mode: 'soft',
-      // facets: facets,
+      ...(facets ? { facets } : {}),
       params: _.cloneDeep(this.config.appConfig.ExplorePage.contentApiQueryParams),
     };
     if (request.frameworkId) {

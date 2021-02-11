@@ -1166,7 +1166,9 @@ export const Response = {
     'source': 'web',
     'name': 'Course',
     'organisationId': '*',
-    'filters': {},
+    'filters': {
+      'se_subjects': [  ]
+    },
     'facets': [
       'channel',
       'gradeLevel',
@@ -1187,7 +1189,11 @@ export const Response = {
       'topic',
       'mimeType',
       'trackable',
-      'gradeLevel'
+      'gradeLevel',
+      "se_boards",
+      "se_subjects",
+      "se_mediums",
+      "se_gradeLevels"
     ]
   },
   buildOptionNonLoggedin: {
@@ -1323,6 +1329,9 @@ export const Response = {
           'subject': [
             'Political Science'
           ],
+          'se_subjects': [
+            'Political Science'
+          ],
           'name': 'vk-3.4CourseG20102020',
           'organisation': [
             'Odisha'
@@ -1348,6 +1357,9 @@ export const Response = {
           'subject': [
             'General Science'
           ],
+          'se_subjects': [
+            'General Science'
+          ],
           'name': 'Copy of vk-3.3CourseG05102020',
           'organisation': [
             'Odisha'
@@ -1371,6 +1383,7 @@ export const Response = {
             'Class 1'
           ],
           'subject': undefined,
+          'se_subjects': undefined,
           'name': 'vk-3.3CourseG05102020',
           'organisation': [
             'Odisha'

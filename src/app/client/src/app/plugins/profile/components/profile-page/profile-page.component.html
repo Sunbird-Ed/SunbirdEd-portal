@@ -332,8 +332,8 @@
               <div class="list-items__item">{{resourceService?.frmelmnts?.lbl?.course}}</div>
               <div class="list-items__item text-left">{{resourceService?.frmelmnts?.lbl?.batch}}</div>
               <div class="list-items__item">{{resourceService?.frmelmnts?.lbl?.coursecompletiondate}}</div>
+              <div class="list-items__item text-left">{{resourceService?.frmelmnts?.lbl?.status}}</div>
               <div class="list-items__item"></div>
-              <div class="list-items__item">{{resourceService?.frmelmnts?.lbl?.status}}</div>
             </div>
           </div>
           <div class="list-item-parent" *ngFor="let data of attendedTraining | slice:0:courseLimit">
@@ -345,19 +345,20 @@
                   <span class="bar mr-4"></span>
                   <span class="bar"></span>
               </div>
+              <div class="list-items__item status-progress fsmall font-weight-bold text-left" *ngIf="(data.status === 0 || data.status === 1) && (data.batch.status !== 2)" >{{resourceService?.frmelmnts?.lbl?.ongoing}}</div>
+              <div class="list-items__item status-progress fsmall font-weight-bold text-left" *ngIf="(data.status === 0 || data.status === 1) && (data.batch.status === 2)" >{{resourceService?.frmelmnts?.lbl?.expiredbatch}}</div>
+              <div class="list-items__item status-completed fsmall font-weight-bold text-left" *ngIf="data.status === 2 " >{{resourceService?.frmelmnts?.lbl?.completed}}</div>
               <div class="list-items__item" *ngIf="data?.certificates?.length || data?.issuedCertificates?.length">
                 <button appTelemetryInteract
                  [telemetryInteractEdata]="downloadCertificateEData"
                 [telemetryInteractCdata]="[{id: 'course:download:cert', type: 'Feature'},{id: 'SB-14120', type: 'Task'}]"
                 class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn" (click)="downloadCert(data)">
-                <i class="download icon" ></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
+                <i class="download icon"></i>{{resourceService?.frmelmnts?.btn?.downloadCertificate}}</button>
               </div>
               <div class="list-items__item list-items__bar computer only" *ngIf="!data?.certificates?.length && !data?.issuedCertificates?.length">
                   <span class="bar mr-4"></span>
                   <span class="bar"></span>
               </div>
-              <div class="list-items__item status-progress fsmall font-weight-bold text-right" *ngIf="data.status === 0 || data.status === 1" >{{resourceService?.frmelmnts?.lbl?.ongoing}}</div>
-              <div class="list-items__item status-completed fsmall font-weight-bold text-right" *ngIf="data.status === 2 " >{{resourceService?.frmelmnts?.lbl?.completed}}</div>
             </div>
           </div>
           <div class="flex-ai-jc-center sb-ct-list" *ngIf="attendedTraining.length > 3">

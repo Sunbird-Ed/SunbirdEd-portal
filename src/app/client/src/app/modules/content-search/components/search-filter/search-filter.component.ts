@@ -3,7 +3,7 @@ import * as _ from 'lodash-es';
 import { LibraryFiltersLayout } from '@project-sunbird/common-consumption-v8';
 import { ResourceService, LayoutService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subject, merge, of, zip } from 'rxjs';
+import { Subject, merge, of, zip, BehaviorSubject } from 'rxjs';
 import { debounceTime, map, tap, switchMap, takeUntil, retry, catchError } from 'rxjs/operators';
 import { ContentSearchService } from '../../services';
 import { FormService } from '@sunbird/core';
@@ -37,6 +37,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   @Output() filterChange: EventEmitter<{ status: string, filters?: any }> = new EventEmitter();
   @Input() layoutConfiguration;
   @Input() pageData;
+  @Input() facets$ = new BehaviorSubject({});
   selectedFilters = {};
   allValues = {};
   selectedNgModels = {};
@@ -45,8 +46,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   constructor(public resourceService: ResourceService, private router: Router,
     private contentSearchService: ContentSearchService,
     private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef,
-    public layoutService: LayoutService, private formService: FormService) {
-  }
+    public layoutService: LayoutService, private formService: FormService) { }
 
   get filterData() {
     return _.get(this.pageData, 'search.facets') || ['medium', 'gradeLevel', 'board', 'channel', 'subject', 'audience', 'publisher'];
@@ -100,7 +100,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   }
   ngOnInit() {
     this.checkForWindowSize();
-    merge(this.boardChangeHandler(), this.fetchSelectedFilterOptions(), this.handleFilterChange())
+    merge(this.boardChangeHandler(), this.fetchSelectedFilterOptions(), this.handleFilterChange(), this.getFacets())
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(null, error => {
         console.error('Error while fetching filters');
@@ -215,7 +215,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
         const filterValuesFromQueryParams = this.queryFilters[filterKey] || [];
         if (_.get(filterValuesFromQueryParams, 'length')) {
           const indices = _.filter(_.map(filterValuesFromQueryParams, queryParamValue => values.findIndex((val) =>
-            val === queryParamValue)), index => index !== -1);
+            _.toLower(val) === _.toLower(queryParamValue))), index => index !== -1);
           selectedIndices = _.get(indices, 'length') ? indices : this.getIndicesFromDefaultFilters({ type: filterKey });
         } else {
           selectedIndices = this.getIndicesFromDefaultFilters({ type: filterKey });
@@ -298,5 +298,13 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       retry(5),
       catchError(err => of([]))
     );
+  }
+
+  private getFacets() {
+    return this.facets$.pipe(tap(filters => {
+      filters = this.filters = { ...this.filters, ...this.sortFilters({ filters }) };
+      this.updateFiltersList({ filters });
+      this.hardRefreshFilter();
+    }));
   }
 }
