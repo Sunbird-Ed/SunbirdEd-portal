@@ -239,9 +239,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                 this._facets$.next(request.facets ? this.utilService.processCourseFacetData(_.get(response, 'result'), _.get(request, 'facets')) : {});
                                 const filteredContents = omit(groupBy(get(response, 'result.content'), groupByKey), ['undefined']);
                                 for (const [key, value] of Object.entries(filteredContents)) {
-                                    const isMultipleSubjects = key.split(',').length > 1;
+                                    const isMultipleSubjects = key && key.split(',').length > 1;
                                     if (isMultipleSubjects) {
-                                        const subjects = key.split(',');
+                                        const subjects = key && key.split(',');
                                         subjects.forEach((subject) => {
                                             if (filteredContents[subject]) {
                                                 filteredContents[subject] = uniqBy(filteredContents[subject].concat(value), 'identifier');
