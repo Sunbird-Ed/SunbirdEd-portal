@@ -9356,7 +9356,7 @@ sb-svg2pdf@0.0.9:
   dependencies:
     tslib "^1.9.0"
 
-sb-theme@^1.0.14:
+sb-theme@^1.0.17:
   version "1.0.19"
   resolved "https://registry.yarnpkg.com/sb-theme/-/sb-theme-1.0.19.tgz#88df7b43e122a068d32d0293f6bc76123acb4636"
   integrity sha512-o4Gtha3Q7/UWFqmcMem7yd8xgQKc4mjZPmxGTufnDNxswKZ2Sh4mBL3pETqbWSK/314Cgls+gjL8l7128ymfag==
