@@ -17,11 +17,11 @@ jobs:
       - checkout:
           path: ~/portal
       - run:
-          name: Installing npm
-          command: 'npm i npm@latest -g'
-      - run:
           name: Installing angular cli
           command: 'npm install -g @angular/cli@8.0.0 --no-progress'
+      - run:
+          name: Installing npm
+          command: 'npm i npm@latest -g'
       - run:
           name: Installing npm deps
           command: 'npm install --no-progress'
