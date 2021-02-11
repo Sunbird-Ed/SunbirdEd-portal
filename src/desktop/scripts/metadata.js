@@ -259,6 +259,7 @@ const copyAssetsAndUpdateFiles = async () => {
     packageJSON.homepage = appConfig.APP_BASE_URL;
     packageJSON.author.name = appConfig.AUTHOR.NAME;
     packageJSON.author.email = appConfig.AUTHOR.EMAIL;
+    packageJSON.build.protocols.schemes.push(appConfig.APP_ID.replace(/\./g, ""));
     await fse.writeJSON(path.join(__dirname, '..', "package.json"), packageJSON);
     appConfig.APP_BASE_URL_TOKEN = process.env.offline_app_base_url_token;
     appConfig.RELEASE_DATE = Date.now();
