@@ -75,8 +75,8 @@ export class WorkSpace {
             resourceId: content.identifier,
             resourceType: 'Content',
             resourceInfo: JSON.stringify(content),
-            creatorInfo: JSON.stringify({ 'name': this.userService.userProfile.firstName, 'id': this.userService.userProfile.identifier }),
-            createdBy: this.userService.userProfile.identifier
+            creatorInfo: JSON.stringify({ 'name': this.userService.userProfile.firstName, 'id': this.userService.userProfile.id }),
+            createdBy: this.userService.userProfile.id
         };
         return this.workSpaceService.lockContent(input);
     }
