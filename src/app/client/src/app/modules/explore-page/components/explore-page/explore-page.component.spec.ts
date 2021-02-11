@@ -108,7 +108,7 @@ describe('ExplorePageComponent', () => {
       if (sendPageApi) {
         return of(mockPageSection);
       }
-      return throwError({});
+      return of(RESPONSE.searchResult);
     });
   });
   it('should get channel id if slug is not available', done => {
@@ -354,16 +354,6 @@ describe('ExplorePageComponent', () => {
     });
   });
 
-  xit('should fetch contents', done => {
-    component['fetchContents']().subscribe(res => {
-      expect(component.showLoader).toBeFalsy();
-      expect(component.apiContentList).toBeDefined();
-      expect(component.pageSections).toBeDefined();
-      done();
-    });
-    component['fetchContents$'].next(RESPONSE.mockCurrentPageData);
-  });
-
   it('should call hoverActionClicked for DOWNLOAD ', () => {
     RESPONSE.hoverActionsData['hover'] = {
       'type': 'download',
@@ -496,5 +486,19 @@ describe('ExplorePageComponent', () => {
     component['initConfiguration']();
     expect(layoutService.initlayoutConfig).toHaveBeenCalled();
     expect(component.redoLayout).toHaveBeenCalled();
+  });
+
+
+  it('should fetch contents', done => {
+    sendPageApi = false;
+    component['fetchContents']().subscribe(res => {
+      expect(component.showLoader).toBeFalsy();
+      expect(component.apiContentList).toBeDefined();
+      expect(component.pageSections).toBeDefined();
+      expect(pageApiService.contentSearch).toHaveBeenCalled();
+      expect(component.apiContentList.length).toBe(1);
+      done();
+    });
+    component['fetchContents$'].next(RESPONSE.mockCurrentPageData);
   });
 });

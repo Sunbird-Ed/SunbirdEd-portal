@@ -71,7 +71,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     if (this.userService.loggedIn) {
       if (data.contentType === 'course') {
         this.router.navigate([data.loggedInUserRoute.route],
-          { queryParams: { selectedTab: data.loggedInUserRoute.queryParam } });
+          { queryParams: {  ...this.activatedRoute.snapshot.queryParams, selectedTab: data.loggedInUserRoute.queryParam } });
       } else {
         this.router.navigate([data.loggedInUserRoute.route],
           { queryParams: { ...this.activatedRoute.snapshot.queryParams, selectedTab: data.loggedInUserRoute.queryParam } });
@@ -79,7 +79,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     } else {
       if (data.contentType === 'course' || data.contentType === 'mydownloads') {
         this.router.navigate([data.anonumousUserRoute.route],
-          { queryParams: { selectedTab: data.anonumousUserRoute.queryParam } });
+          { queryParams: {  ...this.activatedRoute.snapshot.queryParams, selectedTab: data.anonumousUserRoute.queryParam } });
       } else {
         this.router.navigate([data.anonumousUserRoute.route],
           { queryParams: { ...this.activatedRoute.snapshot.queryParams, selectedTab: data.anonumousUserRoute.queryParam } });
