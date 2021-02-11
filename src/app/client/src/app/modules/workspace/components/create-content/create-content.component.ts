@@ -3,7 +3,8 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ResourceService, ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { FrameworkService, PermissionService, UserService } from '@sunbird/core';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
-
+import { WorkSpaceService } from '../../services/work-space/workspace.service';
+import * as _ from 'lodash-es';
 @Component({
   selector: 'app-create-content',
   templateUrl: './create-content.component.html'
@@ -59,7 +60,7 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
 	 * telemetryImpression
 	*/
   telemetryImpression: IImpressionEventInput;
-  public envInfo;
+  public enableQuestionSetCreation;
   /**
   * Constructor to create injected service(s) object
   *
@@ -70,7 +71,8 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
   constructor(configService: ConfigService, resourceService: ResourceService,
     frameworkService: FrameworkService, permissionService: PermissionService,
     private activatedRoute: ActivatedRoute, public userService: UserService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService,
+    public workSpaceService: WorkSpaceService) {
     this.resourceService = resourceService;
     this.frameworkService = frameworkService;
     this.permissionService = permissionService;
@@ -86,8 +88,10 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
     this.contentUploadRole = this.configService.rolesConfig.workSpaceRole.contentUploadRole;
     this.assessmentRole = this.configService.rolesConfig.workSpaceRole.assessmentRole;
     this.courseRole = this.configService.rolesConfig.workSpaceRole.courseRole;
-    this.envInfo = (this.userService.appId && this.userService.appId.split('.')[0]);
+    this.enableQuestionSetCreation = this.workSpaceService.isQuestionSetEnabled;
   }
+
+
 
   ngAfterViewInit () {
     setTimeout(() => {

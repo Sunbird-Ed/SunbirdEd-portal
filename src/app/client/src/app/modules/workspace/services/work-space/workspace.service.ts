@@ -26,6 +26,8 @@ export class WorkSpaceService {
   public listener;
   public showWarning;
   public browserBackEvent = new EventEmitter();
+
+  private _questionSetEnabled: boolean;
   /**
     * Constructor - default method of WorkSpaceService class
     *
@@ -43,6 +45,12 @@ export class WorkSpaceService {
     this.route = route;
     this.publicDataService = publicDataService;
   }
+
+
+  public get isQuestionSetEnabled(): boolean {
+    return this._questionSetEnabled;
+  }
+
   /**
   * deleteContent
   * delete  content based on contentId
@@ -338,6 +346,23 @@ export class WorkSpaceService {
       }
     };
     return this.actionService.post(req);
+  }
+
+  getQuestionSetCreationStatus() {
+    const formInputParams = {
+      formType: 'questionset',
+      subType: 'editor',
+      formAction: 'display',
+    };
+    this.getFormData(formInputParams).subscribe(
+      (response) => {
+        const formValue = _.first(_.get(response, 'result.form.data.fields'));
+        this._questionSetEnabled = formValue ? formValue.display : false;
+      },
+      (error) => {
+        console.log(`Unable to fetch form details - ${error}`);
+      }
+    );
   }
 
 }
