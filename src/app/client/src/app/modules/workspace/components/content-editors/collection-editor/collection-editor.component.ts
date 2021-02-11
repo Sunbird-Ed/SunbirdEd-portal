@@ -132,8 +132,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       resourceId : contentInfo.identifier,
       resourceType : 'Content',
       resourceInfo : JSON.stringify(contentInfo),
-      creatorInfo : JSON.stringify({'name': this.userService.userProfile.firstName, 'id': this.userService.userProfile.identifier}),
-      createdBy : this.userService.userProfile.identifier,
+      creatorInfo : JSON.stringify({'name': this.userService.userProfile.firstName, 'id': this.userService.userProfile.id}),
+      createdBy : this.userService.userProfile.id,
       isRootOrgAdmin: this.userService.userProfile.rootOrgAdmin
     };
     return this.workspaceService.lockContent(input).pipe(tap((data) => {
