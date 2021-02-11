@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { LayoutService, COLUMN_TYPE } from '@sunbird/shared';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { WorkSpaceService } from '../../services/work-space/workspace.service';
+import { WorkSpaceService } from '../../services';
 
 @Component({
   selector: 'app-workspace',

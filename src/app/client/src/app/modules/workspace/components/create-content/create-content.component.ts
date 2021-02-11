@@ -3,7 +3,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ResourceService, ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { FrameworkService, PermissionService, UserService } from '@sunbird/core';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
-import { WorkSpaceService } from '../../services/work-space/workspace.service';
+import { WorkSpaceService } from './../../services';
 import * as _ from 'lodash-es';
 @Component({
   selector: 'app-create-content',

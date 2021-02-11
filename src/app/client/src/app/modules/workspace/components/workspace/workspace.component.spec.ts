@@ -6,6 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { WorkSpaceService } from '../../services';
 
 describe('WorkspaceComponent', () => {
   let component: WorkspaceComponent;
@@ -18,6 +19,7 @@ describe('WorkspaceComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ WorkspaceComponent ],
+      providers: [ WorkSpaceService ],
       schemas: [NO_ERRORS_SCHEMA],
       imports: [RouterTestingModule, SharedModule.forRoot(), HttpClientTestingModule, ]
     })
