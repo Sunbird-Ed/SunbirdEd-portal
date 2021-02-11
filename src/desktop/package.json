@@ -59,6 +59,10 @@
         "publish": {
             "provider": "generic",
             "url": ""
+        },
+        "protocols": {
+            "name": "app-protocol",
+            "schemes": []
         }
     },
     "homepage": "https://www.sunbird.org",
@@ -93,7 +97,8 @@
         "typescript-ioc": "^1.2.5",
         "uuid": "^3.3.2",
         "web-resource-inliner": "^4.3.4",
-        "jwt-decode": "^2.2.0"
+        "jwt-decode": "^2.2.0",
+        "winreg": "^1.2.4"
     },
     "devDependencies": {
         "axios": "^0.21.0",

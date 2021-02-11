@@ -485,6 +485,7 @@ if (!gotTheLock) {
     }, 1000);
 
     if (process.platform == 'win32') {
+      logger.debug(`second-instance event ${JSON.stringify(commandLine)}`);
       // Keep only command line / deep linked arguments
       deeplinkingUrl = commandLine.slice(1)
       handleUserAuthentication()
@@ -514,6 +515,40 @@ app.on("window-all-closed", () => {
 if (!app.isDefaultProtocolClient(app_protocol)) {
   // Define custom protocol handler. Deep linking works on packaged versions of the application!
   app.setAsDefaultProtocolClient(app_protocol)
+}
+
+if (process.platform === 'win32') {
+  const windowIcon = path.join(__dirname, "build", "icons", "win", "icon.ico");
+  logger.debug(`WINDOW ICON PATH: ${windowIcon}`);
+  registerProtocolHandlerWin32(app_protocol, 'URL:Diksha URL', windowIcon, process.execPath)
+}
+
+function registerProtocolHandlerWin32 (protocol, name, icon, command) {
+  logger.debug(`registerProtocolHandlerWin32 called`);
+  var Registry = require('winreg')
+
+  var protocolKey = new Registry({
+    hive: Registry.HKCU, // HKEY_CURRENT_USER
+    key: '\\Software\\Classes\\' + protocol
+  })
+  protocolKey.set('', Registry.REG_SZ, name, callback)
+  protocolKey.set('URL Protocol', Registry.REG_SZ, '', callback)
+
+  var iconKey = new Registry({
+    hive: Registry.HKCU,
+    key: '\\Software\\Classes\\' + protocol + '\\DefaultIcon'
+  })
+  iconKey.set('', Registry.REG_SZ, icon, callback)
+
+  var commandKey = new Registry({
+    hive: Registry.HKCU,
+    key: '\\Software\\Classes\\' + protocol + '\\shell\\open\\command'
+  })
+  commandKey.set('', Registry.REG_SZ, '"' + command + '" "%1"', callback)
+  logger.debug(`registerProtocolHandlerWin32 called finish`);
+  function callback (err) {
+    if (err) console.error(err.message || err)
+  }
 }
 
 app.on('will-finish-launching', function() {
