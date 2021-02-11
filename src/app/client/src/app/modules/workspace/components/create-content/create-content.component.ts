@@ -81,7 +81,6 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.frameworkService.initialize();
-    this.workSpaceService.getQuestionSetCreationStatus();
     this.textBookRole = this.configService.rolesConfig.workSpaceRole.textBookRole;
     this.lessonRole = this.configService.rolesConfig.workSpaceRole.lessonRole;
     this.collectionRole = this.configService.rolesConfig.workSpaceRole.collectionRole;
