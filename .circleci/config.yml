@@ -31,7 +31,7 @@ jobs:
           paths: ./node_modules
       - run:
           name: ng lint and building
-          command: 'mkdir -p /tmp/logs && node --max_old_space_size=4000 ng build --prod --optimization=false --buildOptimizer=false | tee /tmp/logs/build.log'
+          command: 'mkdir -p /tmp/logs && node --max_old_space_size=4000 ./node_modules/@angular/cli/bin/ng build --prod --optimization=false --buildOptimizer=false | tee /tmp/logs/build.log'
       - run:
           name: Executing test cases
           command: 'npm run test-coverage | tee /tmp/logs/test_cases.log'
