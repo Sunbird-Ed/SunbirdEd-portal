@@ -70,7 +70,6 @@
     "@types/node": "6.0.60",
     "angular-inport": "^2.0.0",
     "angular2-uuid": "1.1.1",
-    "bootstrap": "4.1.1",
     "chart.js": "2.7.3",
     "ckeditor-build-font": "1.0.5",
     "common-form-elements": "^2.0.7",
