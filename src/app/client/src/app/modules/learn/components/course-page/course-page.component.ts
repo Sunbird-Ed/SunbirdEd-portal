@@ -334,6 +334,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
           const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
           _.forEach(_.get(response, 'result.content'), function (content) {
             if (!_.get(content, 'subject') || !_.size(_.get(content, 'subject'))) content['subject'] = ['Others'];
+            if (!_.get(content, 'se_subjects') || !_.size(_.get(content, 'se_subjects'))) content['se_subjects'] = ['Others'];
           });
           const filteredContents = _.omit(_.groupBy(_.get(response, 'result.content') || [], groupByKey), ['undefined']);
           for (const [key, value] of Object.entries(filteredContents)) {
@@ -449,7 +450,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.pageSections = [];
     this._courseSearchResponse = {};
     const currentPageData = this.getPageData(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'course');
-    const filterData = filters && _.pick(filters, ['board', 'medium', 'gradeLevel', 'channel', 'subject', 'audience']) || {};
+    const filterData = filters && _.pick(filters, ['board', 'medium', 'gradeLevel', 'channel', 'subject', 'audience', 'selectedTab']) || {};
     if (_.has(filters, 'audience') || (localStorage.getItem('userType') && currentPageData.contentType !== 'all')) {
       const userTypes = _.get(filters, 'audience') || [localStorage.getItem('userType')];
       const audienceSearchFilterValue = _.get(filters, 'audienceSearchFilterValue');
