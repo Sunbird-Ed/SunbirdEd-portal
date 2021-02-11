@@ -22,8 +22,6 @@ jobs:
       - run:
           name: Installing angular cli
           command: 'npm install -g @angular/cli@8.0.0 --no-progress'
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
       - run:
           name: Installing npm deps
           command: 'npm install --no-progress'
