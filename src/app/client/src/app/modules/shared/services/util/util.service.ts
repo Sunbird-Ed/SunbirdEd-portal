@@ -284,7 +284,7 @@ export class UtilService {
           },
           {
             type: 'open',
-            label: this.resourceService.frmelmnts.lbl.open
+            label: _.get(this.resourceService, 'frmelmnts.lbl.open')
           }
         ]
       };
