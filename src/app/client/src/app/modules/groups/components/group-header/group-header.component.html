@@ -11,6 +11,11 @@
           <div>{{resourceService?.frmelmnts?.lbl?.groupCreatedBy | interpolate:'{name}': creator}}</div>
         </div>
       </div>
+      <!--Forum Icon-->
+      <button _ngcontent-jvn-c45="" apptelemetryinteract="" *ngIf="toggleGroupDiscussionForum" (click)="navigateToDiscussionForum()"
+       class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix ng-star-inserted" title="Forum">
+          <img _ngcontent-jvn-c45="" class="mr-8" src="assets/images/forum.svg" width="20px">
+      </button>
       <div class="d-flex flex-ai-center flex-w-wrap content-header__buttons">
         <!-- <button class="sb-btn sb-btn-normal sb-btn-link-primary min-w-auto p-0 px-8" type="button"
           (click)="toggleFtuModal(true);addTelemetry('member-ftu-popup')">
@@ -22,8 +27,6 @@
         </button> -->
         <div class="kabab-menu" id="group-actions" (click)="dropdownMenu();addTelemetry('kebab-menu')"></div>
         <div class="kabab-menu-dropdown-content" [hidden]="dropdownContent">
-
-
           <!-- dropdownContent btn Labels -->
           <!-- admin -->
           <div *ngIf="groupData?.isAdmin">
@@ -34,6 +37,12 @@
                     </div>
                     <div class="d-flex flex-ai-center list p-8 w-100 fnormal" (click)="toggleModal(true, 'deActivate')">
                       {{resourceService?.frmelmnts?.btn?.deactivategrp}}
+                    </div>
+                    <div class="d-flex flex-ai-center list p-8 w-100 fnormal" *ngIf="toggleDiscussionForum()" >
+                      {{resourceService?.frmelmnts?.lbl?.enableDiscussionForum}}
+                    </div>
+                    <div class="d-flex flex-ai-center list p-8 w-100 fnormal" *ngIf="toggleDiscussionForum()">
+                      {{resourceService?.frmelmnts?.lbl?.disableDiscussionForum}}
                     </div>
               </div>
 

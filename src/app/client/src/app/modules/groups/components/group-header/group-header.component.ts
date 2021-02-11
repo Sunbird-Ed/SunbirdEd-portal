@@ -6,9 +6,11 @@ import { ResourceService, NavigationHelperService, ToasterService } from '@sunbi
 import { MY_GROUPS, GROUP_DETAILS, IGroupCard, EDIT_GROUP } from './../../interfaces';
 import { GroupsService } from '../../services';
 import * as _ from 'lodash-es';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, of, combineLatest } from 'rxjs';
+import { takeUntil, map } from 'rxjs/operators';
 import { UserService } from '@sunbird/core';
+import { DiscussionService } from '../../../discussion/services/discussion/discussion.service';
+import { DiscussionTelemetryService } from '../../../shared/services/discussion-telemetry/discussion-telemetry.service';
 @Component({
   selector: 'app-group-header',
   templateUrl: './group-header.component.html',
@@ -24,14 +26,17 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   creator: string;
   showLeaveGroupModal = false;
   showLoader = false;
+  toggleGroupDiscussionForum = false;
   public title: string;
   public msg: string;
   public name: string;
   private unsubscribe$ = new Subject<void>();
+  forumIds = [];
 
   constructor(private renderer: Renderer2, public resourceService: ResourceService, private router: Router,
     private groupService: GroupsService, private navigationHelperService: NavigationHelperService, private toasterService: ToasterService,
-    private activatedRoute: ActivatedRoute, private userService: UserService) {
+    private activatedRoute: ActivatedRoute, private userService: UserService, private discussionService: DiscussionService, 
+    public discussionTelemetryService: DiscussionTelemetryService) {
     this.renderer.listen('window', 'click', (e: Event) => {
       if (e.target['tabIndex'] === -1 && e.target['id'] !== 'group-actions') {
         this.dropdownContent = true;
@@ -40,6 +45,11 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit () {
+    console.log(this.groupData);
+    const amount = of(70, 72, 76, 79, 75);
+const conversionRate = of(0.06, 0.07, 0.08);
+const fees = combineLatest(amount, conversionRate);
+fees.subscribe(x => console.log('commission is ' + x));
     this.creator = _.capitalize(_.get(_.find(this.groupData['members'], {userId: this.groupData['createdBy']}), 'name'));
     this.groupService.showMenu.subscribe(data => {
       this.dropdownContent = data !== 'group';
@@ -110,7 +120,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
     this.showModal = false;
     this.showLoader = event.action;
     if (!event.action) {
-      this.addTelemetry(`cancel-${event.name}-group`, {status: _.get(this.groupData, 'status')})
+      this.addTelemetry(`cancel-${event.name}-group`, {status: _.get(this.groupData, 'status')});
       return;
     }
     switch (event.name) {
@@ -184,6 +194,52 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
     });
   }
 
+  toggleDiscussionForum() {
+    const request = {
+      identifier: [this.groupData.id],
+      type: 'group'
+    };
+    return this.fetchForumIds(request);
+  }
+
+  navigateToDiscussionForum() {
+    const data = {
+      username: _.get(this.userService.userProfile, 'userName'),
+      identifier: _.get(this.userService.userProfile, 'userId'),
+    };
+    this.discussionTelemetryService.contextCdata = [
+      {
+        id: this.groupData.id,
+        type: 'Group'
+      }
+    ];
+    this.discussionService.registerUser(data).subscribe(response => {
+      const userName = _.get(response, 'result.userSlug');
+      const result = this.forumIds;
+      this.router.navigate(['/discussion-forum'], {
+        queryParams: {
+          categories: JSON.stringify({ result }),
+          userName: userName
+        }
+      });
+    }, error => {
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
+    });
+  }
+    fetchForumIds(request) {
+      console.log(this.forumIds);
+      this.discussionService.getForumIds(request).subscribe(forumDetails => {
+        this.forumIds = _.map(_.get(forumDetails, 'result'), 'cid');
+      console.log('forum ids', this.forumIds);
+      }, error => {
+        console.log('e', error );
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      });
+      if (this.forumIds.length > 0) {
+        return true;
+      }
+      return false;
+    }
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();

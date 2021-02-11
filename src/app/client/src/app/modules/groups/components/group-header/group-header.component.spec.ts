@@ -12,10 +12,12 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MY_GROUPS, GROUP_DETAILS, CREATE_GROUP, EDIT_GROUP } from './../../interfaces';
 import { APP_BASE_HREF } from '@angular/common';
-import { of, throwError } from 'rxjs';
+import { of as observableOf, throwError, of } from 'rxjs';
 import * as _ from 'lodash-es';
 import { impressionObj, fakeActivatedRoute } from './../../services/groups/groups.service.spec.data';
 import { GroupsService } from '../../services/groups/groups.service';
+import { DiscussionService } from '../../../discussion/services/discussion/discussion.service';
+import { MockResponseData } from './group-header.spec.data';
 
 describe('GroupHeaderComponent', () => {
   let component: GroupHeaderComponent;
@@ -50,12 +52,11 @@ describe('GroupHeaderComponent', () => {
     navigate = jasmine.createSpy('navigate');
     url: '/my-groups';
   }
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [GroupHeaderComponent],
       imports: [SuiModule, CommonConsumptionModule, SharedModule.forRoot(), HttpClientModule, RouterTestingModule],
-      providers: [{ provide: ResourceService, useValue: resourceBundle },
+      providers: [{ provide: ResourceService, useValue: resourceBundle }, DiscussionService,
       { provide: ActivatedRoute, useValue: fakeActivatedRoute },
       { provide: APP_BASE_HREF, useValue: '/' },
       { provide: Router, useClass: RouterStub },
@@ -82,8 +83,9 @@ describe('GroupHeaderComponent', () => {
       description: '',
       membershipType: GroupMembershipType.INVITE_ONLY,
       active: true,
-      isActive() { return true ;}
+      isActive() { return true ; }
     };
+    component.toggleGroupDiscussionForum = false;
     spyOn(component['groupService'], 'getImpressionObject').and.returnValue(impressionObj);
     spyOn(component['groupService'], 'addTelemetry');
     fixture.detectChanges();
@@ -111,7 +113,7 @@ describe('GroupHeaderComponent', () => {
       status: GroupEntityStatus.ACTIVE,
       createdBy: 'abcd-pqr-xyz'}],
       active: true,
-      isActive() { return true ;}
+      isActive() { return true ; }
     };
 
     component.ngOnInit();
@@ -306,4 +308,62 @@ describe('GroupHeaderComponent', () => {
 
   });
 
+  it('should show forum icon when enable the discussionForum"', () => {
+   const discussionService = TestBed.get(DiscussionService);
+   const mockRequest = {
+     identifier: ['361a672f-cb77-4dd8-9cdf-9eb7c12ee8c7'],
+     type: 'group'
+   };
+   component.toggleDiscussionForum();
+   spyOn(component, 'fetchForumIds').and.returnValue(mockRequest);
+   spyOn(discussionService, 'getForumIds').and.returnValue(observableOf(MockResponseData.fetchForumResponse));
+   expect(component.toggleGroupDiscussionForum).toBeTruthy();
+  });
+
+  it('should show forum icon when disable the discussionForum"', () => {
+    const discussionService = TestBed.get(DiscussionService);
+    const mockRequest = {
+      identifier: ['361a672f-cb77-4dd8-9cdf-9eb7c12ee8c7'],
+      type: 'group'
+    };
+    component.toggleDiscussionForum();
+    spyOn(component, 'fetchForumIds').and.returnValue(mockRequest);
+    spyOn(discussionService, 'getForumIds').and.returnValue(observableOf(MockResponseData.fetchForumResponse));
+    expect(component.toggleGroupDiscussionForum).toBeFalsy();
+   });
+
+  it('should fetch all the forumIds attached to a group', () => {
+    const discussionService = TestBed.get(DiscussionService);
+    const mockRequest = {
+      identifier: ['361a672f-cb77-4dd8-9cdf-9eb7c12ee8c7'],
+      type: 'group'
+    };
+    spyOn(discussionService, 'getForumIds').and.returnValue(observableOf(MockResponseData.fetchForumResponse));
+    component.fetchForumIds(mockRequest);
+    expect(component.forumIds).toEqual([9]);
+  });
+
+  it('should show error toast if fetch forum id api fails', () => {
+    const discussionService = TestBed.get(DiscussionService);
+    const toasterService = TestBed.get(ToasterService);
+    const mockRequest = {
+      identifier: ['361a672f-cb77-4dd8-9cdf-9eb7c12ee8c7'],
+      type: 'group'
+    };
+    spyOn(toasterService, 'error');
+    spyOn(discussionService, 'getForumIds').and.callFake(() => throwError({}));
+    component.fetchForumIds(mockRequest);
+    expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, try again later');
+  });
+
+  it('should route to DiscussionForumPage', () => {
+    const discussionService = TestBed.get(DiscussionService);
+    const mockRequest = {
+      identifier: 'fca2925f-1eee-4654-9177-fece3fd6afc9',
+      username: 'cctn1350'
+    };
+    spyOn(discussionService, 'registerUser').and.returnValue(observableOf(MockResponseData.fetchForumResponse));
+    component.navigateToDiscussionForum();
+    expect(component['router'].navigate).toHaveBeenCalledWith(['/discussion-forum']);
+  });
 });
