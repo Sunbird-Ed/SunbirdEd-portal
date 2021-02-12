@@ -233,7 +233,11 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
   }
 
   ngOnInit() {
-    this.isQuestionSetFilterEnabled = this.workSpaceService.isQuestionSetEnabled;
+    this.workSpaceService.questionSetEnabled$.subscribe(
+      (response: any) => {
+        this.isQuestionSetFilterEnabled = response.questionSetEnablement;
+      }
+    );
     this.filterType = this.config.appConfig.allmycontent.filterType;
     this.redirectUrl = this.config.appConfig.allmycontent.inPageredirectUrl;
     observableCombineLatest(
