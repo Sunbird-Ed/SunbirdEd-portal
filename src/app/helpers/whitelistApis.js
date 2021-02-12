@@ -1188,6 +1188,12 @@ const API_LIST = {
     '/getGeneralisedResourcesBundles/:lang/:fileName': {
       checksNeeded: []
     },
+    '/v1/desktop/handleGauth': {
+      checksNeeded: []
+    },
+    '/v1/desktop/google/auth/success': {
+      checksNeeded: []
+    },
     '/service/health': {
       checksNeeded: []
     },

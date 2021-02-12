@@ -18,7 +18,7 @@
             </span>
           </div>  
           <div class="menu" suiDropdownMenu>
-            <div class="item" [ngClass]="{'active': organization.identifier === identifier }" *ngFor="let organization of myOrganizations" (click)="onAfterOrgChange(organization.identifier, organization.orgName); SelectedOrg = organization.orgName;" appTelemetryInteract [telemetryInteractObject]="{ id: organization.identifier, type: 'organization', ver: '1.0' }"  [telemetryInteractEdata]="{id:'orgDropdown',type:'click',pageid:'org-admin-dashboard'}">
+            <div class="item" [ngClass]="{'active': organization.id === identifier }" *ngFor="let organization of myOrganizations" (click)="onAfterOrgChange(organization.id, organization.orgName); SelectedOrg = organization.orgName;" appTelemetryInteract [telemetryInteractObject]="{ id: organization.id, type: 'organization', ver: '1.0' }"  [telemetryInteractEdata]="{id:'orgDropdown',type:'click',pageid:'org-admin-dashboard'}">
                 {{organization.orgName}}
             </div>
           </div>

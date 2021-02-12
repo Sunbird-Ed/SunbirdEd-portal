@@ -26,7 +26,11 @@
       "topic",
       "mimeType",
       "trackable",
-      "gradeLevel"
+      "gradeLevel",
+      "se_boards",
+      "se_subjects",
+      "se_mediums",
+      "se_gradeLevels"
     ],
     "programSearch": {
       "fields": "rootOrgId,rootOrgName"

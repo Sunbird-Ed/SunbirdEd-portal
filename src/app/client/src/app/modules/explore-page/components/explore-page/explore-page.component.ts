@@ -1,18 +1,18 @@
-import { forkJoin, Subject, Observable, BehaviorSubject, merge } from 'rxjs';
+import { forkJoin, Subject, Observable, BehaviorSubject, merge, of } from 'rxjs';
 import { OrgDetailsService, UserService, SearchService, FormService, PlayerService, CoursesService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
 import { Component, OnInit, OnDestroy, HostListener, AfterViewInit } from '@angular/core';
 import {
     ResourceService, ToasterService, ConfigService, NavigationHelperService, LayoutService, COLUMN_TYPE, UtilService,
-    OfflineCardService } from '@sunbird/shared';
+    OfflineCardService
+} from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
-import { cloneDeep, get, find, map as _map, pick, omit, groupBy, sortBy, replace, uniqBy, forEach, has, uniq, flatten, each, isNumber, toString } from 'lodash-es';
+import { cloneDeep, get, find, map as _map, pick, omit, groupBy, sortBy, replace, uniqBy, forEach, has, uniq, flatten, each, isNumber, toString, partition, toLower, includes } from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
-import { map, tap, switchMap, skipWhile, takeUntil } from 'rxjs/operators';
+import { map, tap, switchMap, skipWhile, takeUntil, catchError, startWith } from 'rxjs/operators';
 import { ContentSearchService } from '@sunbird/content-search';
 import { ContentManagerService } from '../../../public/module/offline/services';
 import * as _ from 'lodash-es';
-const DEFAULT_FRAMEWORK = 'CBSE';
 @Component({
     selector: 'app-explore-page-component',
     templateUrl: './explore-page.component.html',
@@ -51,6 +51,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     downloadIdentifier: string;
     contentDownloadStatus = {};
     isConnected = true;
+    private _facets$ = new Subject();
+    public facets$ = this._facets$.asObservable().pipe(startWith({}), catchError(err => of({})));
 
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
@@ -75,12 +77,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     private initConfiguration() {
-        const { userProfile: { framework = null } = {} } = this.userService;
-        const userFramework = (this.isUserLoggedIn() && framework && pick(framework, ['medium', 'gradeLevel', 'board', 'subject'])) || {};
-        this.defaultFilters = {
-            board: [DEFAULT_FRAMEWORK], gradeLevel: this.isUserLoggedIn() ? [] : ['Class 10'], medium: [],
-            ...userFramework
-        };
+        this.defaultFilters = this.userService.defaultFrameworkFilters;
         if (this.utilService.isDesktopApp) {
             const userPreferences: any = this.userService.anonymousUserPreference;
             if (userPreferences) {
@@ -132,7 +129,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 takeUntil(this.unsubscribe$)
             );
         this.listenLanguageChange();
-        this.contentManagerService.contentDownloadStatus$.subscribe( contentDownloadStatus => {
+        this.contentManagerService.contentDownloadStatus$.subscribe(contentDownloadStatus => {
             this.contentDownloadStatus = contentDownloadStatus;
             this.addHoverData();
         });
@@ -187,8 +184,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     public getFilters({ filters, status }) {
-        this.showLoader = true;
         if (!filters || status === 'FETCHING') { return; }
+        this.showLoader = true;
         const currentPageData = this.getPageData(get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook');
         this.selectedFilters = pick(filters, ['board', 'medium', 'gradeLevel', 'channel', 'subject', 'audience']);
         if (has(filters, 'audience') || (localStorage.getItem('userType') && currentPageData.contentType !== 'all')) {
@@ -203,7 +200,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 _.forEach(['board', 'medium', 'gradeLevel'], (item) => {
                     if (!_.has(this.selectedFilters, item)) {
                         this.selectedFilters[item] = _.isArray(userPreferences.framework[item]) ?
-                        userPreferences.framework[item] : _.split(userPreferences.framework[item], ', ');
+                            userPreferences.framework[item] : _.split(userPreferences.framework[item], ', ');
                     }
                 });
             }
@@ -221,14 +218,15 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             .pipe(
                 skipWhile(data => data === undefined || data === null),
                 switchMap(currentPageData => {
-                    const { fields, filters } = currentPageData.search;
+                    const { fields = [], filters = {}, facetsBasedKeys = ['subject'], groupByKey = 'se_subjects' } = currentPageData.search;
                     const request = {
-                        filters: {...this.selectedFilters, ...filters},
-                        fields,
+                        filters: this.contentSearchService.mapCategories({ filters: { ...this.selectedFilters, ...filters, se_subjects: [] } }),
+                        fields: [...fields, 'se_subjects'],
                         isCustodianOrg: this.custodianOrg,
                         channelId: this.channelId,
                         frameworkId: this.contentSearchService.frameworkId,
-                        ...(this.isUserLoggedIn() && { limit: get(currentPageData, 'limit') })
+                        ...(this.isUserLoggedIn() && { limit: get(currentPageData, 'limit') }),
+                        ...(get(facetsBasedKeys, 'length') && { facets: facetsBasedKeys })
                     };
                     if (!this.isUserLoggedIn() && get(this.selectedFilters, 'channel') && get(this.selectedFilters, 'channel.length') > 0) {
                         request.channelId = this.selectedFilters['channel'];
@@ -237,11 +235,13 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     return this.searchService.contentSearch(option)
                         .pipe(
                             map((response) => {
-                                const filteredContents = omit(groupBy(get(response, 'result.content'), 'subject'), ['undefined']);
+                                const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
+                                this._facets$.next(request.facets ? this.utilService.processCourseFacetData(_.get(response, 'result'), _.get(request, 'facets')) : {});
+                                const filteredContents = omit(groupBy(get(response, 'result.content'), groupByKey), ['undefined']);
                                 for (const [key, value] of Object.entries(filteredContents)) {
-                                    const isMultipleSubjects = key.split(',').length > 1;
+                                    const isMultipleSubjects = key && key.split(',').length > 1;
                                     if (isMultipleSubjects) {
-                                        const subjects = key.split(',');
+                                        const subjects = key && key.split(',');
                                         subjects.forEach((subject) => {
                                             if (filteredContents[subject]) {
                                                 filteredContents[subject] = uniqBy(filteredContents[subject].concat(value), 'identifier');
@@ -255,6 +255,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                 const sections = [];
                                 for (const section in filteredContents) {
                                     if (section) {
+                                        if (selectedSubjects.length && !(find(selectedSubjects, selectedSub => toLower(selectedSub) === toLower(section)))) {
+                                            continue;
+                                        }
                                         sections.push({
                                             name: section,
                                             contents: filteredContents[section]
@@ -269,7 +272,13 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                 });
                             }), tap(data => {
                                 this.showLoader = false;
-                                this.apiContentList = sortBy(data, ['name']);
+                                const userProfileSubjects = _.get(this.userService, 'userProfile.framework.subject') || [];
+                                const [userSubjects, notUserSubjects] = partition(sortBy(data, ['name']), value => {
+                                    const { name = null } = value || {};
+                                    if (!name) { return false; }
+                                    return find(userProfileSubjects, subject => toLower(subject) === toLower(name));
+                                });
+                                this.apiContentList = [...userSubjects, ...notUserSubjects];
                                 if (!this.apiContentList.length) {
                                     return;
                                 }
@@ -288,9 +297,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     addHoverData() {
         each(this.pageSections, (pageSection) => {
             forEach(pageSection.contents, contents => {
-               if (this.contentDownloadStatus[contents.identifier]) {
-                   contents['downloadStatus'] = this.contentDownloadStatus[contents.identifier];
-               }
+                if (this.contentDownloadStatus[contents.identifier]) {
+                    contents['downloadStatus'] = this.contentDownloadStatus[contents.identifier];
+                }
             });
             this.pageSections[pageSection] = this.utilService.addHoverData(pageSection.contents, true);
         });
