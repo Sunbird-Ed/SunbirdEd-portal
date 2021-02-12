@@ -408,7 +408,7 @@ async function createWindow() {
     if (process.platform === 'win32') {
       const windowIcon = path.join(__dirname, "build", "icons", "win", "icon.ico");
       logger.debug(`WINDOW ICON PATH: ${windowIcon}`);
-      registerProtocolHandlerWin32(app_protocol, 'URL:Diksha URL', windowIcon, process.execPath)
+      registerProtocolHandlerWin32(app_protocol, `URL: ${process.env.APP_NAME} URL`, windowIcon, process.execPath)
     }
 
     if (process.platform === 'linux') {
@@ -557,10 +557,9 @@ function registerProtocolHandlerWin32 (protocol, name, icon, command) {
 }
 
 function installDesktopFile () {
-  var os = require('os')
-
-  var templatePath = path.resolve( './script/appconfig.desktop')
-  var desktopFile = fs.readFileSync(templatePath, 'utf8')
+  const os = require('os')
+  const templatePath = path.resolve( './helper/appconfig.desktop')
+  let desktopFile = fs.readFileSync(templatePath, 'utf8')
 
   desktopFile = desktopFile.replace(/\$APP_NAME/g, process.env.APP_NAME)
   desktopFile = desktopFile.replace(/\$GENERIC_NAME/g, process.env.APP_ID)
@@ -573,9 +572,9 @@ function installDesktopFile () {
 }
 
 function installDesktopIcon () {
-  var os = require('os')
-  var iconFile = fs.readFileSync(windowIcon)
-  var iconFilePath = path.join(os.homedir(), '.local', 'share', 'icons', '512x512.png')
+  const os = require('os')
+  const iconFile = fs.readFileSync(windowIcon)
+  const iconFilePath = path.join(os.homedir(), '.local', 'share', 'icons', '512x512.png')
   fs.writeFileSync(iconFilePath, iconFile)
 }
 
