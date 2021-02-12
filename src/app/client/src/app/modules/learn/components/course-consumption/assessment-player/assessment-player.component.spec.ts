@@ -66,6 +66,7 @@ describe('AssessmentPlayerComponent', () => {
         ContentUtilsServiceService,
         NotificationService,
         { provide: 'CS_USER_SERVICE', useValue: MockCSService },
+        { provide: 'CS_COURSE_SERVICE', useValue: MockCSService }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
