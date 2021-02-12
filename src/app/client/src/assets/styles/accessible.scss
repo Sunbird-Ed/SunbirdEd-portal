@@ -1,4 +1,4 @@
-html[accessable='accessible'] {
+html[accessable-theme='accessible'] {
 	.sbt-class-bar .sb-slider-pills-container .sb-pills-container .pill {
 	  color: #004594 !important;
 	}
@@ -45,7 +45,7 @@ html[accessable='accessible'] {
 	}
 	.sb-onboard {
 	  .multi-select-container .list-border .placeholder {
-		color: hsl(0deg 0% 32%);
+		color: #000000;
 	  }
 	}
 	.overlay-sidebar__menu {
@@ -117,7 +117,7 @@ html[accessable='accessible'] {
 	}
 	.schooling-location {
 	  .multi-select-container .list-border .placeholder {
-		color: hsl(0deg 0% 32%);
+		color: #000000;
 	  }
 	}
 	.select-template-content {
@@ -144,7 +144,7 @@ html[accessable='accessible'] {
 	  }
 	  .three.wide.column.pl-0.pr-0 {
 		.sidebar.py-24 {
-		  color: hsl(0deg 0% 35%);
+		  color:	#000000;
 		}
 	  }
 	}
