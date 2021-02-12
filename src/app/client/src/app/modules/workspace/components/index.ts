@@ -28,4 +28,4 @@ export * from './collaboration-content-filter/collaboration-content-filter.compo
 export * from './batch-page-section/batch-page-section.component';
 export * from './workspace-content-filter/workspace-content-filter.component';
 export * from './all-textbooks/all-textbooks.component';
-
+export * from './content-editors/new-collection-editor/new-collection-editor.component';

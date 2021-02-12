@@ -1,8 +1,10 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ResourceService, ConfigService, NavigationHelperService } from '@sunbird/shared';
-import { FrameworkService, PermissionService } from '@sunbird/core';
+import { FrameworkService, PermissionService, UserService } from '@sunbird/core';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { WorkSpaceService } from './../../services';
+import * as _ from 'lodash-es';
 @Component({
   selector: 'app-create-content',
   templateUrl: './create-content.component.html'
@@ -58,6 +60,7 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
 	 * telemetryImpression
 	*/
   telemetryImpression: IImpressionEventInput;
+  public enableQuestionSetCreation;
   /**
   * Constructor to create injected service(s) object
   *
@@ -66,8 +69,10 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
   * @param {ResourceService} resourceService Reference of ResourceService
  */
   constructor(configService: ConfigService, resourceService: ResourceService,
-    frameworkService: FrameworkService, permissionService: PermissionService, private activatedRoute: ActivatedRoute,
-    public navigationhelperService: NavigationHelperService) {
+    frameworkService: FrameworkService, permissionService: PermissionService,
+    private activatedRoute: ActivatedRoute, public userService: UserService,
+    public navigationhelperService: NavigationHelperService,
+    public workSpaceService: WorkSpaceService) {
     this.resourceService = resourceService;
     this.frameworkService = frameworkService;
     this.permissionService = permissionService;
@@ -83,7 +88,14 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
     this.contentUploadRole = this.configService.rolesConfig.workSpaceRole.contentUploadRole;
     this.assessmentRole = this.configService.rolesConfig.workSpaceRole.assessmentRole;
     this.courseRole = this.configService.rolesConfig.workSpaceRole.courseRole;
+    this.workSpaceService.questionSetEnabled$.subscribe(
+      (response: any) => {
+        this.enableQuestionSetCreation = response.questionSetEnablement;
+      }
+    );
   }
+
+
 
   ngAfterViewInit () {
     setTimeout(() => {

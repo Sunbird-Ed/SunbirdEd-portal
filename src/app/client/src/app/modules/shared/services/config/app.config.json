@@ -733,7 +733,7 @@
       "ribbon.right.name": "primaryCategory",
       "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
     }
-  }, 
+  },
   "TELEMETRY": {
     "MAX_BATCH_SIZE": 10,
     "VERSION": "1.8.0",
@@ -1129,7 +1129,11 @@
       "dynamicFields": {
         "ribbon.right.name": "primaryCategory"
       }
-    }
+    },
+    "questionPrimaryCategories": [
+      "Multiple Choice Question",
+      "Subjective Question"
+    ]
   },
   "DASHBOARD": {
     "PAGE_LIMIT": 200
