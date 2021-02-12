@@ -39,6 +39,9 @@
     "enrolledCourses": {
       "fields": "contentType,topic,name,channel,mimeType,appIcon,gradeLevel,resourceType,identifier,medium,pkgVersion,board,subject,trackable",
       "batchDetails": "name,endDate,startDate,status,enrollmentType,createdBy,certificates"
+    },
+    "objectCategory": {
+      "fields": "objectMetadata,forms,name"
     }
   },
   "URLS": {
@@ -331,6 +334,14 @@
     },
     "TENANT_PREFERENCE" : {
       "READ": "org/v2/preferences/read"
+    },
+    "QUESTIONSET": {
+      "CREATE": "questionset/v1/create",
+      "READ": "questionset/v1/read",
+      "HIERARCHY_READ": "questionset/v1/hierarchy"
+    },
+    "OBJECTCATEGORY": {
+      "READ": "object/category/definition/v1/read"
     }
   }
 }

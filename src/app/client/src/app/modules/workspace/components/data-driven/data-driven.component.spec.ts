@@ -37,7 +37,8 @@ describe('DataDrivenComponent', () => {
       },
       'fmsg': {
         'm0078': 'Creating content failed. Please login again to create content.',
-        'm0010': 'Creating collection failed. Please login again to create collection.'
+        'm0010': 'Creating collection failed. Please login again to create collection.',
+        'm0102' : 'Creating QuestionSet failed. Please login again to create QuestionSet...'
       }
     }
   };
@@ -86,6 +87,43 @@ describe('DataDrivenComponent', () => {
     fixtureParent.detectChanges();
   });
 
+  it('should router to QuestionSet editor', () => {
+    const router = TestBed.get(Router);
+    const service = TestBed.get(FrameworkService);
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    spyOn(workSpaceService, 'createQuestionSet').and.returnValue(observableOf({result: {identifier: 'do_2124708548063559681134'}}));
+    service._frameWorkData$ = mockFrameworkData.frameworkData;
+    service._frameworkData$.next({
+      err: null, framework: mockFrameworkData.success.framework,
+      frameworkdata: mockFrameworkData.frameworkData
+    });
+    componentParent.contentType = 'questionset';
+    spyOn(componentParent, 'generateQuestionSetData').and.callFake(() => {});
+    componentParent.fetchFrameworkMetaData();
+    expect(router.navigate).toHaveBeenCalledWith(
+      ['workspace/edit/', 'QuestionSet', 'do_2124708548063559681134', 'allcontent', 'Draft']);
+  });
+
+  it('should not router to QuestionSet editor', () => {
+    const router = TestBed.get(Router);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callThrough();
+    const service = TestBed.get(FrameworkService);
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    spyOn(workSpaceService, 'createQuestionSet').and.returnValue(observableThrowError({}));
+    service._frameWorkData$ = mockFrameworkData.frameworkData;
+    service._frameworkData$.next({
+      err: null, framework: mockFrameworkData.success.framework,
+      frameworkdata: mockFrameworkData.frameworkData
+    });
+    componentParent.contentType = 'questionset';
+    spyOn(componentParent, 'generateQuestionSetData').and.callFake(() => {});
+    componentParent.fetchFrameworkMetaData();
+    expect(router.navigate).not.toHaveBeenCalledWith(
+      ['workspace/edit/', 'QuestionSet', 'do_2124708548063559681134', 'allcontent', 'Draft']);
+    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0102);
+  });
+
   it('should fetch framework details', () => {
     const service = TestBed.get(FrameworkService);
     const cacheService = TestBed.get(CacheService);
@@ -119,6 +157,7 @@ describe('DataDrivenComponent', () => {
     componentParent.formFieldProperties = mockFrameworkData.formSuccess.fields;
     componentParent.fetchFrameworkMetaData();
   });
+
   it('should router to collection editor ', () => {
     const state = 'draft';
     const type = 'TextBook';

@@ -94,7 +94,7 @@ module.exports = function (app) {
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,PATCH,DELETE,OPTIONS')
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization,' +
       'cid, user-id, x-auth, Cache-Control, X-Requested-With, *')
-  
+
     if (req.method === 'OPTIONS') {
       res.sendStatus(200)
     } else {
@@ -139,6 +139,87 @@ module.exports = function (app) {
       userResDecorator: userResDecorator
     })
   )
+
+  // Question & QuestionSet API's START
+
+  app.get([
+    '/action/questionset/v1/read/:do_id',
+    '/action/question/v1/read/:do_id',
+    '/action/questionset/v1/hierarchy/:do_id',
+    ],
+    // isAPIWhitelisted.isAllowed(),
+    addCorsHeaders,
+    proxyUtils.verifyToken(),
+    proxy(learnerURL, {
+      limit: reqDataLimitOfContentUpload,
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
+      proxyReqPathResolver: function (req) {
+        let originalUrl = req.originalUrl.replace('/action/', '')
+        return require('url').parse(learnerURL + originalUrl).path
+      },
+      userResDecorator: userResDecorator
+    })
+  )
+
+  app.post([
+    '/action/questionset/v1/create',
+    '/action/questionset/v1/review/:do_id',
+    '/action/questionset/v1/publish/:do_id',
+    '/action/questionset/v1/reject/:do_id',
+    '/action/question/v1/create',
+    '/action/question/v1/review/:do_id',
+    '/action/question/v1/publish/:do_id'
+    ],
+    // isAPIWhitelisted.isAllowed(),
+    addCorsHeaders,
+    proxyUtils.verifyToken(),
+    proxy(learnerURL, {
+      limit: reqDataLimitOfContentUpload,
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
+      proxyReqPathResolver: function (req) {
+        let originalUrl = req.originalUrl.replace('/action/', '')
+        return require('url').parse(learnerURL + originalUrl).path
+      },
+      userResDecorator: userResDecorator
+    })
+  )
+
+  app.patch([
+    '/action/questionset/v1/hierarchy/update',
+    '/action/questionset/v1/update/:do_id',
+    '/action/questionset/v1/add',
+    '/action/question/v1/update/:do_id'
+    ],
+    // isAPIWhitelisted.isAllowed(),
+    addCorsHeaders,
+    proxyUtils.verifyToken(),
+    proxy(learnerURL, {
+      limit: reqDataLimitOfContentUpload,
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
+      proxyReqPathResolver: function (req) {
+        let originalUrl = req.originalUrl.replace('/action/', '')
+        return require('url').parse(learnerURL + originalUrl).path
+      },
+      userResDecorator: userResDecorator
+    })
+  )
+
+  app.post('/action/object/category/definition/v1/read',
+    // isAPIWhitelisted.isAllowed(),
+    addCorsHeaders,
+    proxyUtils.verifyToken(),
+    proxy(learnerURL, {
+      limit: reqDataLimitOfContentUpload,
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
+      proxyReqPathResolver: function (req) {
+        let originalUrl = req.originalUrl.replace('/action/', '')
+        return require('url').parse(learnerURL + originalUrl).path
+      },
+      userResDecorator: userResDecorator
+    })
+  )
+
+  // Question & QuestionSet API's END
 
   app.post('/action/content/v3/upload/*',
     // isAPIWhitelisted.isAllowed(),
