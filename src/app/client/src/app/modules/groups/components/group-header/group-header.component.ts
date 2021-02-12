@@ -9,6 +9,8 @@ import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UserService } from '@sunbird/core';
+import { DiscussionService } from '../../../discussion/services/discussion/discussion.service';
+import { DiscussionTelemetryService } from '../../../shared/services/discussion-telemetry/discussion-telemetry.service';
 @Component({
   selector: 'app-group-header',
   templateUrl: './group-header.component.html',
@@ -28,10 +30,14 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   public msg: string;
   public name: string;
   private unsubscribe$ = new Subject<void>();
+  forumIds = [];
+  /* TODO: Need to remove the hardcoded categoryId once create-forum api is ready*/
+  categoryId = 27;
 
   constructor(private renderer: Renderer2, public resourceService: ResourceService, private router: Router,
     private groupService: GroupsService, private navigationHelperService: NavigationHelperService, private toasterService: ToasterService,
-    private activatedRoute: ActivatedRoute, private userService: UserService) {
+    private activatedRoute: ActivatedRoute, private userService: UserService, private discussionService: DiscussionService, 
+    public discussionTelemetryService: DiscussionTelemetryService) {
     this.renderer.listen('window', 'click', (e: Event) => {
       if (e.target['tabIndex'] === -1 && e.target['id'] !== 'group-actions') {
         this.dropdownContent = true;
@@ -51,6 +57,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
     this.groupService.updateEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((status: GroupEntityStatus) => {
       this.groupData.active = this.groupService.updateGroupStatus(this.groupData, status);
     });
+    this.fetchForumIds(this.groupData.id);
   }
 
   navigateToPreviousPage() {
@@ -97,6 +104,10 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
         this.addTelemetry((eventName ? eventName : 'activate-group-menu'), {status: _.get(this.groupData, 'status')});
         this.assignModalStrings(this.resourceService.frmelmnts.lbl.activategrpques, this.resourceService.frmelmnts.msg.activategrppopup);
         break;
+      case actions.DISABLE_FORUM:
+        this.addTelemetry('disable-discussion-forum', {status: _.get(this.groupData, 'status')});
+        this.assignModalStrings('Disable discussion forum ?', 'Disabling forum will remove all the discussion. Do you want to continue');
+        break;
     }
   }
 
@@ -122,6 +133,9 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
         break;
       case actions.ACTIVATE:
         this.activateGroup();
+        break;
+      case actions.DISABLE_FORUM:
+        this.disableDiscussionForum();
         break;
     }
   }
@@ -183,6 +197,82 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
       this.toasterService.error(this.resourceService.frmelmnts.msg.activategrpfailed);
     });
   }
+
+  navigateToDiscussionForum() {
+    this.showLoader = true;
+    const data = {
+      username: _.get(this.userService.userProfile, 'userName'),
+      identifier: _.get(this.userService.userProfile, 'userId'),
+    };
+    this.discussionTelemetryService.contextCdata = [
+      {
+        id: this.groupData.id,
+        type: 'Group'
+      }
+    ];
+    this.discussionService.registerUser(data).subscribe(response => {
+      this.showLoader = false;
+      const userName = _.get(response, 'result.userSlug');
+      const result = this.forumIds;
+      console.log(JSON.stringify({ result }));
+      this.router.navigate(['/discussion-forum'], {
+        queryParams: {
+          categories: JSON.stringify({ result }),
+          userName: userName
+        }
+      });
+    }, error => {
+      this.showLoader = false;
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
+    });
+  }
+    fetchForumIds(groupId: string) {
+      const request = {
+        identifier: [ groupId ],
+        type: 'group'
+      };
+      this.discussionService.getForumIds(request).subscribe(forumDetails => {
+        this.forumIds = _.map(_.get(forumDetails, 'result'), 'cid');
+      }, error => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      });
+    }
+
+    disableDiscussionForum() {
+      this.addTelemetry('confirm-disable-forum', {status: _.get(this.groupData, 'status')});
+      const requestBody = {
+        'sbType': 'group',
+        'sbIdentifier': this.groupData.id,
+        'cid': this.categoryId
+      };
+      this.discussionService.removeForum(requestBody).subscribe(resp => {
+        this.showLoader = false;
+        this.toasterService.success('Disabled discussion forum successfully');
+        this.fetchForumIds(this.groupData.id);
+      }, error => {
+        this.showLoader = false;
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      });
+
+    }
+
+    enableDiscussionForum() {
+      this.addTelemetry('confirm-enable-forum', {status: _.get(this.groupData, 'status')});
+      this.showLoader = true;
+      const requestBody = {
+        'sbType': 'group',
+        'sbIdentifier': this.groupData.id,
+        'cid': this.categoryId
+      };
+      this.discussionService.attachForum(requestBody).subscribe(resp => {
+        this.showLoader = false;
+        this.toasterService.success('Enabled discussion forum successfully');
+        this.fetchForumIds(this.groupData.id);
+      }, error => {
+        this.showLoader = false;
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      });
+    }
 
   ngOnDestroy() {
     this.unsubscribe$.next();

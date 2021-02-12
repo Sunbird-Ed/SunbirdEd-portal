@@ -54,4 +54,28 @@ describe('DiscussionService', () => {
     discussionService.getForumIds(request);
     expect(discussionService['discussionCsService'].getForumIds).toHaveBeenCalledWith(request);
   });
+
+  it('It should add the forum id to the given sb identifier', () => {
+    const discussionService = TestBed.get(DiscussionService);
+    const data = {
+      'sbType': 'group',
+      'sbIdentifier': 'SOME_GROUP_ID',
+      'cid': 5
+    };
+    spyOn(discussionService.discussionCsService, 'attachForum').and.callThrough();
+    discussionService.attachForum(data);
+    expect(discussionService['discussionCsService'].attachForum).toHaveBeenCalledWith(data);
+  });
+
+  it('It should remove the forum id to the given sb identifier', () => {
+    const discussionService = TestBed.get(DiscussionService);
+    const data = {
+      'sbType': 'group',
+      'sbIdentifier': 'SOME_GROUP_ID',
+      'cid': 5
+    };
+    spyOn(discussionService.discussionCsService, 'removeForum').and.callThrough();
+    discussionService.removeForum(data);
+    expect(discussionService['discussionCsService'].removeForum).toHaveBeenCalledWith(data);
+  });
 });
