@@ -194,3 +194,11 @@
     }
   }
 }
+.sb-course-progress-status-label{
+  background: var(--primary-100);
+  width: 100%;
+  border-radius:calculateRem(8px) calculateRem(8px) 0 0;
+  justify-content: space-between;
+  display: flex;
+  padding: calculateRem(8px) calculateRem(16px);
+}
