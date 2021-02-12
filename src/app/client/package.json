@@ -111,6 +111,7 @@
     "rxjs": "^6.5.5",
     "sb-svg2pdf": "0.0.9",
     "slick-carousel": "^1.8.1",
+    "sb-theme": "^1.0.14",
     "tree-model": "^1.0.7",
     "video.js": "7.5.5",
     "zone.js": "^0.10.3"
