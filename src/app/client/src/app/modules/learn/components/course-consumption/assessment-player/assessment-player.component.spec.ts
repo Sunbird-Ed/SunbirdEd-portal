@@ -223,7 +223,7 @@ describe('AssessmentPlayerComponent', () => {
     spyOn<any>(component, 'initPlayer');
     spyOn(component, 'highlightContent');
     fixture.detectChanges();
-    component.onTocCardClick({ data: { identifier: 'do_2334343' } }, 'test');
+    component.onTocCardClick();
     expect(component.activeContent).toEqual({ identifier: 'do_2334343' });
     expect(component['initPlayer']).toHaveBeenCalledWith('do_2334343');
     expect(component.highlightContent).toHaveBeenCalled();
