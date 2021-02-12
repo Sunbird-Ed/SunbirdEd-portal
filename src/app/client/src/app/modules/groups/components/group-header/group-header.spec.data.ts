@@ -36,5 +36,39 @@ export const MockResponseData = {
       'username': 'cctn1350',
       'userSlug': 'cctn1350'
     }
-  }
+  },
+
+  disableDiscussionForum: {
+    'id': 'api.discussions.category.forum',
+    'ver': '1.0',
+    'ets': 1613118781732,
+    'params': {
+        'resmsgid': '7461ebf3-dec0-4500-8eca-8a4ef92103eb',
+        'msgid': '',
+        'status': 'successful'
+    },
+    'responseCode': 'OK',
+    'result': null
+  },
+
+  enableDiscussionForum: {
+    'id': 'api.discussions.category.forum',
+    'ver': '1.0',
+    'ets': 1613118934398,
+    'params': {
+        'resmsgid': '6cebb9e4-1929-431a-92da-d4a76b33ef72',
+        'msgid': '',
+        'status': 'successful'
+    },
+    'responseCode': 'OK',
+    'result': [
+        {
+            '_id': '60263dd6d16d3e0045d6fecd',
+            'sbType': 'group',
+            'sbIdentifier': 'a7e84908-1d22-4da1-95dc-63dae890353c',
+            'cid': 13,
+            '__v': 0
+        }
+    ]
+}
   };

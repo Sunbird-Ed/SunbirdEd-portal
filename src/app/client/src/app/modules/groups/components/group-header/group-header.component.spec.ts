@@ -377,6 +377,56 @@ describe('GroupHeaderComponent', () => {
     /** Assert */
     expect(component.showLoader).toBeFalsy();
     expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
-
   });
+  it('should call enableDiscussionForum() when enable the discussion forum icon', () => {
+    /** Arrange */
+    const discussionService = TestBed.get(DiscussionService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(discussionService, 'attachForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForum));
+    spyOn(toasterService, 'success');
+    /** Act */
+    component.enableDiscussionForum();
+    component.addTelemetry('confirm-enable-forum', {status: _.get('361a672f-cb77-4dd8-9cdf-9eb7c12ee8c7', 'status')});
+    component.fetchForumIds('361a672f-cb77-4dd8-9cdf-9eb7c12ee8c7');
+     /** Assert */
+     expect(component.showLoader).toBeFalsy();
+ });
+ it('should throw error if the attachForum api fails', () => {
+   /** Arrange */
+   const discussionService = TestBed.get(DiscussionService);
+   spyOn(discussionService, 'attachForum').and.callFake(() => throwError({}));
+   spyOn(component['toasterService'], 'error');
+
+   /** Act */
+   component.enableDiscussionForum();
+
+   /** Assert */
+   expect(component.showLoader).toBeFalsy();
+   expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
 });
+ it('should call disableDiscussionForum() when disable the discussion forum icon', () => {
+    /** Arrange */
+    const discussionService = TestBed.get(DiscussionService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(discussionService, 'removeForum').and.returnValue(observableOf(MockResponseData.disableDiscussionForum));
+    spyOn(toasterService, 'success');
+    /** Act */
+    component.disableDiscussionForum();
+    component.addTelemetry('confirm-disable-forum', {status: _.get('361a672f-cb77-4dd8-9cdf-9eb7c12ee8c7', 'status')});
+    component.fetchForumIds('361a672f-cb77-4dd8-9cdf-9eb7c12ee8c7');
+     /** Assert */
+     expect(component.showLoader).toBeFalsy();
+ });
+ it('should throw error if the removeForum api fails', () => {
+      /** Arrange */
+      const discussionService = TestBed.get(DiscussionService);
+      const toasterService = TestBed.get(ToasterService);
+      spyOn(toasterService, 'error');
+      spyOn(discussionService, 'removeForum').and.callFake(() => throwError({}));
+      /** Act */
+      component.disableDiscussionForum();
+     /** Assert */
+      expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
+      expect(component.showLoader).toBeFalsy();
+    });
+  });
