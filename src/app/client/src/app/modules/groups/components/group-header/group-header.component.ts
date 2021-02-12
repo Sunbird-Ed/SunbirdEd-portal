@@ -32,7 +32,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   forumIds = [];
   /* TODO: Need to remove the hardcoded categoryId once create-forum api is ready*/
-  categoryId = 13;
+  categoryId = 27;
 
   constructor(private renderer: Renderer2, public resourceService: ResourceService, private router: Router,
     private groupService: GroupsService, private navigationHelperService: NavigationHelperService, private toasterService: ToasterService,
@@ -247,7 +247,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
       };
       this.discussionService.removeForum(requestBody).subscribe(resp => {
         this.showLoader = false;
-        this.toasterService.success('Disabled forum successfully');
+        this.toasterService.success('Disabled discussion forum successfully');
         this.fetchForumIds(this.groupData.id);
       }, error => {
         this.showLoader = false;
@@ -266,7 +266,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
       };
       this.discussionService.attachForum(requestBody).subscribe(resp => {
         this.showLoader = false;
-        this.toasterService.success('Enabled forum successfully');
+        this.toasterService.success('Enabled discussion forum successfully');
         this.fetchForumIds(this.groupData.id);
       }, error => {
         this.showLoader = false;
