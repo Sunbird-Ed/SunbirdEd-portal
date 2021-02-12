@@ -88,7 +88,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
- 
+
     '/content/v1/upload': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.TEMP_ROLE]
@@ -1640,20 +1640,15 @@ const API_LIST = {
     '/discussion/user/uid/:uid',
     '/device/register/:deviceId',
     '/user/v1/switch/:userId',
-    '/action/questionset/v1/create',
     '/action/questionset/v1/review/:do_id',
-    '/action/questionset/v1/hierarchy/update',
     '/action/questionset/v1/update/:do_id',
-    '/action/questionset/v1/add',
     '/action/questionset/v1/publish/:do_id',
     '/action/questionset/v1/reject/:do_id',
     '/action/questionset/v1/read/:do_id',
     '/action/question/v1/read/:do_id',
-    '/action/question/v1/create',
     '/action/question/v1/review/:do_id',
     '/action/question/v1/publish/:do_id',
-    '/action/question/v1/update/:do_id',
-    '/action/object/category/definition/v1/read'
+    '/action/question/v1/update/:do_id'
   ]
 };
 module.exports = API_LIST;
