@@ -400,6 +400,22 @@ async function createWindow() {
     if (!app.isPackaged) {
       reloadUIOnFileChange();
     }
+    if (!app.isDefaultProtocolClient(app_protocol)) {
+      // Define custom protocol handler. Deep linking works on packaged versions of the application!
+      app.setAsDefaultProtocolClient(app_protocol)
+    }
+    
+    if (process.platform === 'win32') {
+      const windowIcon = path.join(__dirname, "build", "icons", "win", "icon.ico");
+      logger.debug(`WINDOW ICON PATH: ${windowIcon}`);
+      registerProtocolHandlerWin32(app_protocol, 'URL:Diksha URL', windowIcon, process.execPath)
+    }
+
+    if (process.platform === 'linux') {
+      installDesktopFile()
+      installDesktopIcon()
+    }
+    
       win.webContents.on('new-window', async(event, url, frameName, disposition, options, additionalFeatures) => {
         event.preventDefault();
         try {
@@ -487,7 +503,7 @@ if (!gotTheLock) {
     if (process.platform == 'win32') {
       logger.debug(`second-instance event ${JSON.stringify(commandLine)}`);
       // Keep only command line / deep linked arguments
-      deeplinkingUrl = commandLine.slice(1)
+      deeplinkingUrl = commandLine.slice(3)
       handleUserAuthentication()
     }
 
@@ -511,17 +527,6 @@ app.on("window-all-closed", () => {
     app.quit();
   }
 });
-
-if (!app.isDefaultProtocolClient(app_protocol)) {
-  // Define custom protocol handler. Deep linking works on packaged versions of the application!
-  app.setAsDefaultProtocolClient(app_protocol)
-}
-
-if (process.platform === 'win32') {
-  const windowIcon = path.join(__dirname, "build", "icons", "win", "icon.ico");
-  logger.debug(`WINDOW ICON PATH: ${windowIcon}`);
-  registerProtocolHandlerWin32(app_protocol, 'URL:Diksha URL', windowIcon, process.execPath)
-}
 
 function registerProtocolHandlerWin32 (protocol, name, icon, command) {
   logger.debug(`registerProtocolHandlerWin32 called`);
@@ -549,6 +554,29 @@ function registerProtocolHandlerWin32 (protocol, name, icon, command) {
   function callback (err) {
     if (err) console.error(err.message || err)
   }
+}
+
+function installDesktopFile () {
+  var os = require('os')
+
+  var templatePath = path.resolve( './script/appconfig.desktop')
+  var desktopFile = fs.readFileSync(templatePath, 'utf8')
+
+  desktopFile = desktopFile.replace(/\$APP_NAME/g, process.env.APP_NAME)
+  desktopFile = desktopFile.replace(/\$GENERIC_NAME/g, process.env.APP_ID)
+  desktopFile = desktopFile.replace(/\$APP_VERSION/g, process.env.APP_VERSION)
+  desktopFile = desktopFile.replace(/\$APP_PATH/g, path.dirname(process.execPath))
+  desktopFile = desktopFile.replace(/\$EXEC_PATH/g, process.execPath)
+
+  var desktopFilePath = path.join(os.homedir(), '.local', 'share', 'applications', 'appconfig.desktop')
+  fs.writeFileSync(desktopFilePath, desktopFile)
+}
+
+function installDesktopIcon () {
+  var os = require('os')
+  var iconFile = fs.readFileSync(windowIcon)
+  var iconFilePath = path.join(os.homedir(), '.local', 'share', 'icons', '512x512.png')
+  fs.writeFileSync(iconFilePath, iconFile)
 }
 
 app.on('will-finish-launching', function() {
@@ -622,11 +650,9 @@ const checkForOpenFile = (files?: string[]) => {
 const handleUserAuthentication = async () => {
   const parsedUrl = new URL(deeplinkingUrl);
   const accessToken = new URLSearchParams(parsedUrl.search).get('access_token');
-  const refreshToken = new URLSearchParams(parsedUrl.search).get('refresh_token');
-  if(accessToken && refreshToken) {
+  if(accessToken) {
     const userData = {
-      access_token: accessToken,
-      refresh_token: refreshToken
+      access_token: accessToken
     };
     const loginPageOptions = {
       isFreshWindow: true,
