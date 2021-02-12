@@ -141,22 +141,13 @@ module.exports = function (app) {
   )
 
   // Question & QuestionSet API's START
-  app.get('/action/questionset/v1/*',
-    addCorsHeaders,
-    proxyUtils.verifyToken(),
-    proxy(learnerURL, {
-      limit: reqDataLimitOfContentUpload,
-      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
-      proxyReqPathResolver: function (req) {
-        let originalUrl = req.originalUrl.replace('/action/', '')
-        console.log('GET originalUrl ', originalUrl, require('url').parse(learnerURL + originalUrl).path);
-        return require('url').parse(learnerURL + originalUrl).path
-      },
-      userResDecorator: userResDecorator
-    })
-  )
 
-  app.post('/action/questionset/v1/*',
+  app.get([
+    '/action/questionset/v1/read/:do_id',
+    '/action/question/v1/read/:do_id',
+    '/action/questionset/v1/hierarchy/:do_id',
+    ],
+    // isAPIWhitelisted.isAllowed(),
     addCorsHeaders,
     proxyUtils.verifyToken(),
     proxy(learnerURL, {
@@ -170,7 +161,16 @@ module.exports = function (app) {
     })
   )
 
-  app.patch('/action/questionset/v1/*',
+  app.post([
+    '/action/questionset/v1/create',
+    '/action/questionset/v1/review/:do_id',
+    '/action/questionset/v1/publish/:do_id',
+    '/action/questionset/v1/reject/:do_id',
+    '/action/question/v1/create',
+    '/action/question/v1/review/:do_id',
+    '/action/question/v1/publish/:do_id'
+    ],
+    // isAPIWhitelisted.isAllowed(),
     addCorsHeaders,
     proxyUtils.verifyToken(),
     proxy(learnerURL, {
@@ -184,7 +184,13 @@ module.exports = function (app) {
     })
   )
 
-  app.get('/action/question/v1/*',
+  app.patch([
+    '/action/questionset/v1/hierarchy/update',
+    '/action/questionset/v1/update/:do_id',
+    '/action/questionset/v1/add',
+    '/action/question/v1/update/:do_id'
+    ],
+    // isAPIWhitelisted.isAllowed(),
     addCorsHeaders,
     proxyUtils.verifyToken(),
     proxy(learnerURL, {
@@ -198,7 +204,8 @@ module.exports = function (app) {
     })
   )
 
-  app.post('/action/question/v1/*',
+  app.post('/action/object/category/definition/v1/read',
+    // isAPIWhitelisted.isAllowed(),
     addCorsHeaders,
     proxyUtils.verifyToken(),
     proxy(learnerURL, {
@@ -206,36 +213,6 @@ module.exports = function (app) {
       proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
       proxyReqPathResolver: function (req) {
         let originalUrl = req.originalUrl.replace('/action/', '')
-        console.log('POST question  ', originalUrl, require('url').parse(learnerURL + originalUrl).path);
-        return require('url').parse(learnerURL + originalUrl).path
-      },
-      userResDecorator: userResDecorator
-    })
-  )
-
-  app.patch('/action/question/v1/*',
-    addCorsHeaders,
-    proxyUtils.verifyToken(),
-    proxy(learnerURL, {
-      limit: reqDataLimitOfContentUpload,
-      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
-      proxyReqPathResolver: function (req) {
-        let originalUrl = req.originalUrl.replace('/action/', '')
-        return require('url').parse(learnerURL + originalUrl).path
-      },
-      userResDecorator: userResDecorator
-    })
-  )
-
-  app.post('/action/object/category/definition/v1/*',
-    addCorsHeaders,
-    proxyUtils.verifyToken(),
-    proxy(learnerURL, {
-      limit: reqDataLimitOfContentUpload,
-      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
-      proxyReqPathResolver: function (req) {
-        let originalUrl = req.originalUrl.replace('/action/', '')
-        console.log('GET categoryDefinition ', originalUrl, require('url').parse(learnerURL + originalUrl).path);
         return require('url').parse(learnerURL + originalUrl).path
       },
       userResDecorator: userResDecorator
