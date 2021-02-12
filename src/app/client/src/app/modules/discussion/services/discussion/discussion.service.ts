@@ -29,4 +29,12 @@ export class DiscussionService {
   getForumIds(data) {
     return this.discussionCsService.getForumIds(data);
   }
+
+  attachForum(data) {
+    return this.discussionCsService.attachForum(data);
+  }
+
+  removeForum(data) {
+    return this.discussionCsService.removeForum(data);
+  }
 }
