@@ -70,5 +70,5 @@ export const MockResponseData = {
             '__v': 0
         }
     ]
-}
+},
   };

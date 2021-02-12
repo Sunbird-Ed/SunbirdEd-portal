@@ -23,10 +23,13 @@ describe('GroupHeaderComponent', () => {
   let component: GroupHeaderComponent;
   let fixture: ComponentFixture<GroupHeaderComponent>;
   configureTestSuite();
-
   const resourceBundle = {
     messages: {
-      smsg: { m002: '' },
+      smsg: {
+        m002: '' ,
+        m006: 'Discussion forum enabled successfully',
+        m007: 'Discussion forum disabled successfully'
+     },
       emsg: {
         m003: '' ,
         m0005: 'Something went wrong, try again later'
@@ -89,7 +92,7 @@ describe('GroupHeaderComponent', () => {
       description: '',
       membershipType: GroupMembershipType.INVITE_ONLY,
       active: true,
-      isActive() { return true ;}
+      isActive() { return true ; }
     };
     component.forumIds = [];
     spyOn(component['groupService'], 'getImpressionObject').and.returnValue(impressionObj);
@@ -119,7 +122,7 @@ describe('GroupHeaderComponent', () => {
       status: GroupEntityStatus.ACTIVE,
       createdBy: 'abcd-pqr-xyz'}],
       active: true,
-      isActive() { return true ;}
+      isActive() { return true ; }
     };
 
     component.ngOnInit();
@@ -384,12 +387,16 @@ describe('GroupHeaderComponent', () => {
     const toasterService = TestBed.get(ToasterService);
     spyOn(discussionService, 'attachForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForum));
     spyOn(toasterService, 'success');
+    spyOn(component, 'fetchForumIds');
+    spyOn(component, 'addTelemetry');
     /** Act */
     component.enableDiscussionForum();
-    component.addTelemetry('confirm-enable-forum', {status: _.get('361a672f-cb77-4dd8-9cdf-9eb7c12ee8c7', 'status')});
-    component.fetchForumIds('361a672f-cb77-4dd8-9cdf-9eb7c12ee8c7');
      /** Assert */
      expect(component.showLoader).toBeFalsy();
+     expect(component.addTelemetry).toHaveBeenCalledWith('confirm-enable-forum', {status: _.get(component.groupData, 'status')});
+     expect(component.fetchForumIds).toHaveBeenCalledWith('123');
+     expect(toasterService.success).toHaveBeenCalledWith(resourceBundle.messages.smsg.m006);
+
  });
  it('should throw error if the attachForum api fails', () => {
    /** Arrange */
@@ -410,12 +417,15 @@ describe('GroupHeaderComponent', () => {
     const toasterService = TestBed.get(ToasterService);
     spyOn(discussionService, 'removeForum').and.returnValue(observableOf(MockResponseData.disableDiscussionForum));
     spyOn(toasterService, 'success');
+    spyOn(component, 'fetchForumIds');
+    spyOn(component, 'addTelemetry');
     /** Act */
     component.disableDiscussionForum();
-    component.addTelemetry('confirm-disable-forum', {status: _.get('361a672f-cb77-4dd8-9cdf-9eb7c12ee8c7', 'status')});
-    component.fetchForumIds('361a672f-cb77-4dd8-9cdf-9eb7c12ee8c7');
      /** Assert */
      expect(component.showLoader).toBeFalsy();
+     expect(component.addTelemetry).toHaveBeenCalledWith('confirm-disable-forum', {status: _.get(component.groupData, 'status')});
+     expect(component.fetchForumIds).toHaveBeenCalledWith('123');
+     expect(toasterService.success).toHaveBeenCalledWith(resourceBundle.messages.smsg.m007);
  });
  it('should throw error if the removeForum api fails', () => {
       /** Arrange */

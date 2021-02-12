@@ -106,7 +106,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
         break;
       case actions.DISABLE_FORUM:
         this.addTelemetry('disable-discussion-forum', {status: _.get(this.groupData, 'status')});
-        this.assignModalStrings('Disable discussion forum ?', 'Disabling forum will remove all the discussion. Do you want to continue');
+        this.assignModalStrings(this.resourceService.frmelmnts.lbl.dscfrmdisablepopuphdr  , this.resourceService.messages.cmsg.m001);
         break;
     }
   }
@@ -121,7 +121,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
     this.showModal = false;
     this.showLoader = event.action;
     if (!event.action) {
-      this.addTelemetry(`cancel-${event.name}-group`, {status: _.get(this.groupData, 'status')})
+      this.addTelemetry(`cancel-${event.name}-group`, {status: _.get(this.groupData, 'status')});
       return;
     }
     switch (event.name) {
@@ -214,7 +214,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
       this.showLoader = false;
       const userName = _.get(response, 'result.userSlug');
       const result = this.forumIds;
-      console.log(JSON.stringify({ result }));
+      // console.log(JSON.stringify({ result }));
       this.router.navigate(['/discussion-forum'], {
         queryParams: {
           categories: JSON.stringify({ result }),
@@ -247,7 +247,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
       };
       this.discussionService.removeForum(requestBody).subscribe(resp => {
         this.showLoader = false;
-        this.toasterService.success('Disabled forum successfully');
+        this.toasterService.success(this.resourceService.messages.smsg.m007);
         this.fetchForumIds(this.groupData.id);
       }, error => {
         this.showLoader = false;
@@ -266,7 +266,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
       };
       this.discussionService.attachForum(requestBody).subscribe(resp => {
         this.showLoader = false;
-        this.toasterService.success('Enabled forum successfully');
+        this.toasterService.success(this.resourceService.messages.smsg.m006);
         this.fetchForumIds(this.groupData.id);
       }, error => {
         this.showLoader = false;

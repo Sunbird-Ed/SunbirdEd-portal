@@ -20,7 +20,7 @@
       (click)="emitEvent(true)">{{resourceService?.frmelmnts?.lbl?.activategrp}}</button>
 
     <button *ngIf="name === 'disableDiscussionForum'" class="sb-btn sb-btn-normal sb-btn-primary"
-    (click)="emitEvent(true)">{{resourceService?.frmelmnts?.lbl?.disableDiscussionForum}}</button>
+    (click)="emitEvent(true)">{{resourceService?.frmelmnts?.btn?.dscfrmdisablediscussion }}</button>
 
     <button class="sb-btn sb-btn-normal" [ngClass]="{'sb-btn-error': (name !== 'activate'),
     'sb-btn-outline-primary': (name === 'activate')}"
