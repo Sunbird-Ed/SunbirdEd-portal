@@ -143,10 +143,11 @@ module.exports = function (app) {
   // Question & QuestionSet API's START
 
   app.get([
-    '/action/questionset/v1/read/*',
-    '/action/question/v1/read/*',
-    '/action/questionset/v1/hierarchy/*',
-  ],
+    '/action/questionset/v1/read/:do_id',
+    '/action/question/v1/read/:do_id',
+    '/action/questionset/v1/hierarchy/:do_id',
+    ],
+    // isAPIWhitelisted.isAllowed(),
     addCorsHeaders,
     proxyUtils.verifyToken(),
     proxy(learnerURL, {
@@ -162,12 +163,14 @@ module.exports = function (app) {
 
   app.post([
     '/action/questionset/v1/create',
-    '/action/questionset/v1/review/*',
-    '/action/questionset/v1/publish/*',
+    '/action/questionset/v1/review/:do_id',
+    '/action/questionset/v1/publish/:do_id',
+    '/action/questionset/v1/reject/:do_id',
     '/action/question/v1/create',
-    '/action/question/v1/review/*',
-    '/action/question/v1/publish/*'
-  ],
+    '/action/question/v1/review/:do_id',
+    '/action/question/v1/publish/:do_id'
+    ],
+    // isAPIWhitelisted.isAllowed(),
     addCorsHeaders,
     proxyUtils.verifyToken(),
     proxy(learnerURL, {
@@ -183,10 +186,11 @@ module.exports = function (app) {
 
   app.patch([
     '/action/questionset/v1/hierarchy/update',
-    '/action/questionset/v1/update/*',
-    '/action/questionset/v1/add/*',
-    '/action/question/v1/update/*'
-  ],
+    '/action/questionset/v1/update/:do_id',
+    '/action/questionset/v1/add',
+    '/action/question/v1/update/:do_id'
+    ],
+    // isAPIWhitelisted.isAllowed(),
     addCorsHeaders,
     proxyUtils.verifyToken(),
     proxy(learnerURL, {
@@ -200,7 +204,8 @@ module.exports = function (app) {
     })
   )
 
-  app.post('/action/object/category/definition/v1/*',
+  app.post('/action/object/category/definition/v1/read',
+    // isAPIWhitelisted.isAllowed(),
     addCorsHeaders,
     proxyUtils.verifyToken(),
     proxy(learnerURL, {
