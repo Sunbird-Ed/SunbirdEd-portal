@@ -88,7 +88,11 @@ export class CreateContentComponent implements OnInit, AfterViewInit {
     this.contentUploadRole = this.configService.rolesConfig.workSpaceRole.contentUploadRole;
     this.assessmentRole = this.configService.rolesConfig.workSpaceRole.assessmentRole;
     this.courseRole = this.configService.rolesConfig.workSpaceRole.courseRole;
-    this.enableQuestionSetCreation = this.workSpaceService.isQuestionSetEnabled;
+    this.workSpaceService.questionSetEnabled$.subscribe(
+      (response: any) => {
+        this.enableQuestionSetCreation = response.questionSetEnablement;
+      }
+    );
   }
 
 

@@ -1,6 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { Observable, of as observableOf } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of as observableOf } from 'rxjs';
+import { map, skipWhile } from 'rxjs/operators';
 import {
   ConfigService, ServerResponse, ICard, NavigationHelperService, ResourceService, BrowserCacheTtlService
 } from '@sunbird/shared';
@@ -27,7 +27,11 @@ export class WorkSpaceService {
   public showWarning;
   public browserBackEvent = new EventEmitter();
 
-  private _questionSetEnabled: boolean;
+  private _questionSetEnabled$ = new BehaviorSubject<any>(false);
+
+  public readonly questionSetEnabled$: Observable<any> = this._questionSetEnabled$.asObservable()
+  .pipe(skipWhile(data => data === undefined || data === null));
+
   /**
     * Constructor - default method of WorkSpaceService class
     *
@@ -44,11 +48,6 @@ export class WorkSpaceService {
     this.config = config;
     this.route = route;
     this.publicDataService = publicDataService;
-  }
-
-
-  public get isQuestionSetEnabled(): boolean {
-    return this._questionSetEnabled;
   }
 
   /**
@@ -357,9 +356,11 @@ export class WorkSpaceService {
     this.getFormData(formInputParams).subscribe(
       (response) => {
         const formValue = _.first(_.get(response, 'result.form.data.fields'));
-        this._questionSetEnabled = formValue ? formValue.display : false;
+        const displayValue = formValue ? formValue.display : false;
+        this._questionSetEnabled$.next({err: null, questionSetEnablement: displayValue});
       },
       (error) => {
+        this._questionSetEnabled$.next({err: error, questionSetEnablement: false});
         console.log(`Unable to fetch form details - ${error}`);
       }
     );
