@@ -587,7 +587,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       this.isUnitCompleted = false;
       if (this.contentStatus && this.contentStatus.length) {
         const contentState = this.contentStatus.filter(({ contentId, status }) =>
-          this.courseHierarchy.identifier === contentId && status === 2);
+         _.get(this.courseHierarchy, 'identifier') === contentId && status === 2);
         if (contentState.length > 0) {
           this.isUnitCompleted = true;
         }
