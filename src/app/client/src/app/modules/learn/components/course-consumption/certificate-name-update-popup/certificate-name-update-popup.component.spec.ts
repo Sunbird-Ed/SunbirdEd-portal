@@ -15,7 +15,7 @@ import { of as observableOf, throwError as observableThrowError, of } from 'rxjs
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 
-xdescribe('CertificateNameUpdatePopupComponent', () => {
+describe('CertificateNameUpdatePopupComponent', () => {
   let component: CertificateNameUpdatePopupComponent;
   let fixture: ComponentFixture<CertificateNameUpdatePopupComponent>;
   configureTestSuite();
@@ -76,7 +76,7 @@ xdescribe('CertificateNameUpdatePopupComponent', () => {
     fixture.detectChanges();
   });
 
-  xit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
