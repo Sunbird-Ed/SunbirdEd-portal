@@ -13,6 +13,7 @@ import { ProfileService } from '@sunbird/profile';
 import { response as CertMockResponse } from './certificate-name-update-popup.component.spec.data';
 import { of as observableOf, throwError as observableThrowError, of } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
 
 describe('CertificateNameUpdatePopupComponent', () => {
   let component: CertificateNameUpdatePopupComponent;
@@ -54,6 +55,11 @@ describe('CertificateNameUpdatePopupComponent', () => {
         ProfileService,
         TelemetryService,
         {provide: ResourceService, useValue: resourceBundle},
+        {
+          provide: ActivatedRoute, useValue: {
+            paramMap: of(convertToParamMap({ id: 0 }))
+          }
+        }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
