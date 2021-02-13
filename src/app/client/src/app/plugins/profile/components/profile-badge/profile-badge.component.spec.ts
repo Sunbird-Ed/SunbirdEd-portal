@@ -26,6 +26,7 @@ describe('ProfileBadgeComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProfileBadgeComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should call getBadgeData method', () => {
