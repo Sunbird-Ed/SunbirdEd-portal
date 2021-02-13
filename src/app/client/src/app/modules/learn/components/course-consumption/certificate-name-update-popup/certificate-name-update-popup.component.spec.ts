@@ -15,7 +15,7 @@ import { of as observableOf, throwError as observableThrowError, of } from 'rxjs
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 
-describe('CertificateNameUpdatePopupComponent', () => {
+xdescribe('CertificateNameUpdatePopupComponent', () => {
   let component: CertificateNameUpdatePopupComponent;
   let fixture: ComponentFixture<CertificateNameUpdatePopupComponent>;
   configureTestSuite();
