@@ -610,7 +610,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     );
   }
 
-
   logTelemetry(id, content?: {}, rollup?) {
     if (this.batchId) {
       this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
