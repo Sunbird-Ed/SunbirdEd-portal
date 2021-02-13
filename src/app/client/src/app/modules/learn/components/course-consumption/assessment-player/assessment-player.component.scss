@@ -147,6 +147,9 @@
       background: var(--secondary-color);
     }
   }
+  .sbchapter__item__score {
+    display: none !important;
+  }
 }
 
 .cc-player__list {
