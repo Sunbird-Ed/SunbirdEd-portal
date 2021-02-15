@@ -413,7 +413,6 @@ async function createWindow() {
 
     if (process.platform === 'linux') {
       installDesktopFile()
-      installDesktopIcon()
     }
     
       win.webContents.on('new-window', async(event, url, frameName, disposition, options, additionalFeatures) => {
@@ -501,10 +500,14 @@ if (!gotTheLock) {
     }, 1000);
 
     if (process.platform == 'win32') {
-      logger.debug(`second-instance event ${JSON.stringify(commandLine)}`);
       // Keep only command line / deep linked arguments
       deeplinkingUrl = commandLine.slice(3)
       handleUserAuthentication()
+    }
+    if (process.platform == 'linux' ) {
+      // Keep only command line / deep linked arguments
+      deeplinkingUrl = commandLine.slice(1);
+      handleUserAuthentication();
     }
 
     // if user open's second instance, we should focus our window
@@ -558,7 +561,7 @@ function registerProtocolHandlerWin32 (protocol, name, icon, command) {
 
 function installDesktopFile () {
   const os = require('os')
-  const templatePath = path.resolve( './helper/appconfig.desktop')
+  const templatePath = path.resolve(path.join(__dirname, '/helper/appconfig.desktop'));
   let desktopFile = fs.readFileSync(templatePath, 'utf8')
 
   desktopFile = desktopFile.replace(/\$APP_NAME/g, process.env.APP_NAME)
@@ -569,13 +572,6 @@ function installDesktopFile () {
 
   var desktopFilePath = path.join(os.homedir(), '.local', 'share', 'applications', 'appconfig.desktop')
   fs.writeFileSync(desktopFilePath, desktopFile)
-}
-
-function installDesktopIcon () {
-  const os = require('os')
-  const iconFile = fs.readFileSync(windowIcon)
-  const iconFilePath = path.join(os.homedir(), '.local', 'share', 'icons', '512x512.png')
-  fs.writeFileSync(iconFilePath, iconFile)
 }
 
 app.on('will-finish-launching', function() {
