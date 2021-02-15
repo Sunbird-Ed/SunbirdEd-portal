@@ -205,8 +205,8 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
     }];
     const subType = 'group';
     this.discussionService.fetchForumConfig(subType).subscribe((formData: any) => {
-      this.createForumRequest = formData;
-      this.createForumRequest[0]['category']['context'] = groupContext;
+      this.createForumRequest = formData[0];
+      this.createForumRequest['category']['context'] = groupContext;
     }, error => {
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
@@ -270,10 +270,9 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
     }
 
     enableDiscussionForum() {
-      const request = this.createForumRequest[0];
       this.addTelemetry('confirm-enable-forum', {status: _.get(this.groupData, 'status')});
       this.showLoader = true;
-      this.discussionService.createForum(request).subscribe(resp => {
+      this.discussionService.createForum(this.createForumRequest).subscribe(resp => {
         this.showLoader = false;
         this.toasterService.success('Enabled discussion forum successfully');
         this.fetchForumIds(this.groupData.id);
