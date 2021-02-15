@@ -183,6 +183,7 @@ export class ListAllReportsComponent implements OnInit {
         { title: 'Created On', data: 'createdon', visible: false },
         ...(this.reportService.isUserReportAdmin() ? [{
           class: 'details-control',
+          title: '',
           orderable: false,
           data: null,
           render: (value, type, row) => {
