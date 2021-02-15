@@ -12,8 +12,8 @@
       </div>
       <div [ngClass]="isDesktopApp ? 'sb-desktop-filter-section' : ''">
         <app-search-filter [facets$]="facets$" [layoutConfiguration]="layoutConfiguration" [isOpen]='true'
-          *ngIf="initFilters" (filterChange)="getFilters($event)" [pageData]="pageData" [pageId]="pageId"
-          [defaultFilters]="defaultFilterValues">
+          *ngIf="initFilters" (filterChange)="getFilters($event)" [pageData]="getCurrentPageData" [pageId]="pageId"
+          [defaultFilters]="defaultFilters">
         </app-search-filter>
       </div>
 

@@ -1,10 +1,10 @@
 import { Location } from '@angular/common';
 import { TelemetryService, IAuditEventInput, IImpressionEventInput } from '@sunbird/telemetry';
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Inject } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption-v8';
 import { UserService, GeneraliseLabelService } from '@sunbird/core';
-import { AssessmentScoreService, CourseBatchService, CourseConsumptionService } from '@sunbird/learn';
+import { AssessmentScoreService, CourseBatchService, CourseConsumptionService, CourseProgressService } from '@sunbird/learn';
 import { PublicPlayerService } from '@sunbird/public';
 import { ConfigService, ResourceService, ToasterService, NavigationHelperService,
    ContentUtilsServiceService, ITelemetryShare, LayoutService } from '@sunbird/shared';
@@ -14,6 +14,8 @@ import { first, map, takeUntil } from 'rxjs/operators';
 import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
 import * as TreeModel from 'tree-model';
 import { NotificationService } from '../../../../notification/services/notification/notification.service';
+import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
+import { result } from 'lodash';
 
 const ACCESSEVENT = 'renderer:question:submitscore';
 
@@ -69,6 +71,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   showMaxAttemptsModal: boolean = false;
   isRouterExtrasAvailable: boolean = false;
   _routerStateContentStatus: any;
+  showLastAttemptsModal: boolean = false;
+  navigationObj: { event: any; id: any; };
 
   constructor(
     public resourceService: ResourceService,
@@ -87,7 +91,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     private telemetryService: TelemetryService,
     private layoutService: LayoutService,
     public generaliseLabelService: GeneraliseLabelService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private CourseProgressService: CourseProgressService,
+    @Inject('CS_COURSE_SERVICE') private CsCourseService: CsCourseService
   ) {
     this.playerOption = {
       showContentRating: true
@@ -161,7 +167,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     if (_.get(this.activatedRoute, 'snapshot.queryParams.textbook')) {
       paramas['textbook'] = _.get(this.activatedRoute, 'snapshot.queryParams.textbook');
     }
-    this.router.navigate(['/learn/course', this.courseId, 'batch', this.batchId], {queryParams: paramas});
+    setTimeout(() => {
+      this.router.navigate(['/learn/course', this.courseId, 'batch', this.batchId], {queryParams: paramas});
+    }, 500);
   }
 
   private subscribeToQueryParam() {
@@ -259,18 +267,20 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       let maxAttemptsExceeded = false;
       this.showMaxAttemptsModal = false;
       let isLastAttempt = false;
-      const req = this.getContentStateRequest(this.parentCourse);
+      const req:any = this.getContentStateRequest(this.parentCourse);
       if (_.get(this.activeContent, 'contentType') === 'SelfAssess' || !this.isRouterExtrasAvailable) {
-        this.courseConsumptionService.getContentState(req)
+        this.CsCourseService
+          .getContentState(req, { apiPath: '/content/course/v1' })
           .pipe(takeUntil(this.unsubscribe))
-          .subscribe(res => {
+          .subscribe((_res) => {
+            const res = this.CourseProgressService.getContentProgressState(req, _res);
             _.forEach(_.get(res, 'content'), (contentState) => {
               if (_.get(contentState, 'contentId') === this.activeContent.identifier) {
-                if (contentState.score.length >= this.assessmentMaxAttempts) maxAttemptsExceeded = true;
-                if(this.assessmentMaxAttempts - contentState.score.length === 1) isLastAttempt = true;
+                if (_.get(contentState, 'score.length') >= _.get(this.activeContent, 'maxAttempts')) maxAttemptsExceeded = true;
+                if (_.get(this.activeContent, 'maxAttempts') - _.get(contentState, 'score.length') === 1) isLastAttempt = true;
               }
             });
-            
+
             /* istanbul ignore else */
             if (maxAttemptsExceeded) {
               this.showMaxAttemptsModal = true;
@@ -284,12 +294,15 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
               }
               this.isCourseCompletionPopupShown = this.isCourseCompleted;
             }
-          }, err => console.error(err, 'content read api failed'));
+            this.calculateProgress();
+          }, error => {
+            console.log('Content state read CSL API failed ', error);
+          });
       } else {
         _.forEach(this.contentStatus, (contentState) => {
           if (_.get(contentState, 'contentId') === _.get(this.activeContent, 'identifier')) {
-            if (contentState.score.length >= this.assessmentMaxAttempts) maxAttemptsExceeded = true;
-            if (this.assessmentMaxAttempts - contentState.score.length === 1) isLastAttempt = true;
+            if (_.get(contentState, 'score.length') >= _.get(this.activeContent, 'maxAttempts')) maxAttemptsExceeded = true;
+            if (_.get(this.activeContent, 'maxAttempts') - _.get(contentState, 'score.length') === 1) isLastAttempt = true;
           }
         });
         /* istanbul ignore else */
@@ -375,33 +388,51 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       });
   }
 
-  onTocCardClick(event: any, id) {
+  navigateToInitPlayer(event: any, id) {
+    this.navigationObj = {
+      event: event,
+      id: id
+    };
+    if (_.get(event, 'event.isDisabled')) {
+      return this.toasterService.error(this.resourceService.frmelmnts.lbl.selfAssessMaxAttempt);
+    } else if (_.get(event, 'event.isLastAttempt')) {
+      this.showLastAttemptsModal = true;
+    } else {
+      this.onTocCardClick();
+    }
+  }
+
+  onTocCardClick() {
     this.previousContent = _.cloneDeep(this.activeContent);
     /* istanbul ignore else */
-    if (_.get(event, 'data')) {
-      this.activeContent = event.data;
+    if (_.get(this.navigationObj, 'event.data')) {
+      this.activeContent = this.navigationObj.event.data;
       this.initPlayer(_.get(this.activeContent, 'identifier'));
       this.highlightContent();
-      this.logTelemetry(id, event.data);
+      this.logTelemetry(this.navigationObj.id, this.navigationObj.event.data);
     }
   }
 
   private getContentState() {
     if (_.get(this.activeContent, 'contentType') === 'SelfAssess' || !this.isRouterExtrasAvailable) {
-      const req = this.getContentStateRequest(this.courseHierarchy);
-      this.courseConsumptionService.getContentState(req)
+      const req:any = this.getContentStateRequest(this.courseHierarchy);
+      this.CsCourseService
+      .getContentState(req, { apiPath: '/content/course/v1' })
       .pipe(takeUntil(this.unsubscribe))
-      .subscribe(res => {
+      .subscribe((_res) => {
+        const res = this.CourseProgressService.getContentProgressState(req, _res);
         const _contentIndex = _.findIndex(this.contentStatus, {contentId: _.get(this.activeContent, 'identifier')});
         const _resIndex =  _.findIndex(res.content, {contentId: _.get(this.activeContent, 'identifier')});
-        if (_.get(this.activeContent, 'contentType') === 'SelfAssess') {
+        if (_.get(this.activeContent, 'contentType') === 'SelfAssess' && this.isRouterExtrasAvailable) {
           this.contentStatus[_contentIndex]['status'] = _.get(res.content[_resIndex], 'status');
         } else {
           this.contentStatus = res.content || [];
         }
         this.highlightContent();
         this.calculateProgress();
-      }, err => console.error(err, 'content read api failed'));
+      }, error => {
+        console.log('Content state read CSL API failed ', error);
+      });
     } else {
       this.highlightContent();
       this.calculateProgress();
@@ -556,7 +587,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       this.isUnitCompleted = false;
       if (this.contentStatus && this.contentStatus.length) {
         const contentState = this.contentStatus.filter(({ contentId, status }) =>
-          this.courseHierarchy.identifier === contentId && status === 2);
+          _.get(this.courseHierarchy, 'identifier') === contentId && status === 2);
         if (contentState.length > 0) {
           this.isUnitCompleted = true;
         }
@@ -578,7 +609,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe)
     );
   }
-
 
   logTelemetry(id, content?: {}, rollup?) {
     if (this.batchId) {
