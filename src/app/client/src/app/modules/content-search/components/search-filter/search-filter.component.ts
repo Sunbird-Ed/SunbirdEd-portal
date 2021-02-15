@@ -49,7 +49,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     public layoutService: LayoutService, private formService: FormService) { }
 
   get filterData() {
-    return _.get(this.pageData, 'search.facets') || ['medium', 'gradeLevel', 'board', 'channel', 'subject', 'audience', 'publisher'];
+    return _.get(this.pageData, 'metaData.filters') || ['medium', 'gradeLevel', 'board', 'channel', 'subject', 'audience', 'publisher'];
   }
   public getChannelId(index) {
     const { publisher: publishers = [] } = this.filters || {};
