@@ -31,8 +31,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   public name: string;
   private unsubscribe$ = new Subject<void>();
   forumIds = [];
-  /* TODO: Need to remove the hardcoded categoryId once create-forum api is ready*/
-  categoryId = 27;
+  createForumRequest: any;
 
   constructor(private renderer: Renderer2, public resourceService: ResourceService, private router: Router,
     private groupService: GroupsService, private navigationHelperService: NavigationHelperService, private toasterService: ToasterService,
@@ -46,6 +45,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit () {
+    this.fetchForumConfig();
     this.creator = _.capitalize(_.get(_.find(this.groupData['members'], {userId: this.groupData['createdBy']}), 'name'));
     this.groupService.showMenu.subscribe(data => {
       this.dropdownContent = data !== 'group';
@@ -198,6 +198,19 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
     });
   }
 
+  fetchForumConfig() {
+    const groupContext = [{
+      type: 'group',
+      identifier: this.groupData.id
+    }];
+    const subType = 'group';
+    this.discussionService.fetchForumConfig(subType).subscribe((formData: any) => {
+      this.createForumRequest = formData[0];
+      this.createForumRequest['category']['context'] = groupContext;
+    }, error => {
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
+    });
+  }
   navigateToDiscussionForum() {
     this.showLoader = true;
     const data = {
@@ -243,7 +256,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
       const requestBody = {
         'sbType': 'group',
         'sbIdentifier': this.groupData.id,
-        'cid': this.categoryId
+        'cid': this.forumIds
       };
       this.discussionService.removeForum(requestBody).subscribe(resp => {
         this.showLoader = false;
@@ -259,12 +272,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
     enableDiscussionForum() {
       this.addTelemetry('confirm-enable-forum', {status: _.get(this.groupData, 'status')});
       this.showLoader = true;
-      const requestBody = {
-        'sbType': 'group',
-        'sbIdentifier': this.groupData.id,
-        'cid': this.categoryId
-      };
-      this.discussionService.attachForum(requestBody).subscribe(resp => {
+      this.discussionService.createForum(this.createForumRequest).subscribe(resp => {
         this.showLoader = false;
         this.toasterService.success('Enabled discussion forum successfully');
         this.fetchForumIds(this.groupData.id);
