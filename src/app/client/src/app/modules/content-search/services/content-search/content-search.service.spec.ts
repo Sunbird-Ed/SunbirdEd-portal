@@ -33,7 +33,7 @@ describe('ContentSearchService', () => {
   it('should map categories to new keys', () => {
     const input = { subject: [], medium: [], gradeLevel: [], board: [], contentType: 'course' };
     const contentSearchService: ContentSearchService = TestBed.get(ContentSearchService);
-    const result = contentSearchService.mapCategories({ filters: input });
+    const result = contentSearchService.mapCategories({ filters: input, groupByKey: 'se_subjects' });
     expect(result).toEqual({ se_subjects: [], se_mediums: [], se_gradeLevels: [], se_boards: [], contentType: 'course' });
   });
 

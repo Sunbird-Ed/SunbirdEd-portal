@@ -24,6 +24,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initLayout();
   }
+
   redoLayout() {
     if (this.layoutConfiguration != null) {
       this.FIRST_TO_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine);

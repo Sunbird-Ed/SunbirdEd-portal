@@ -108,15 +108,20 @@
             <div *ngIf="item;else noContent">
               <div *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection' && !item?.children?.length">
                 <div class="child-content-padding">
-                  <sb-toc-card [content]="item" (tocCardClick)="onTocCardClick($event, 'toc-card')" [type]="cardType"
+                  <!-- toc card for Non Self Assess content -->
+                  <sb-toc-card *ngIf="item?.contentType !== 'SelfAssess'" [content]="item" (tocCardClick)="navigateToInitPlayer($event, 'toc-card')" [type]="cardType"
                     [contentStatus]="contentStatus">
+                  </sb-toc-card>
+                  <!-- toc card for Self Assess content with Label for Best Score -->
+                  <sb-toc-card *ngIf="item?.contentType === 'SelfAssess'" [content]="item" (tocCardClick)="navigateToInitPlayer($event, 'toc-card')" [type]="cardType"
+                    [contentStatus]="contentStatus" [maxAttempts]="item?.maxAttempts" [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
                   </sb-toc-card>
                 </div>
               </div>
               <div *ngIf="item?.children?.length">
                 <div *ngFor="let child of item?.children">
                   <div class="toc-child-item">
-                    <sb-toc-child-item [activeContent]="activeContent" [childData]="child" (tocCardClick)="onTocCardClick($event, 'child-item')"
+                    <sb-toc-child-item [activeContent]="activeContent" [childData]="child" (tocCardClick)="navigateToInitPlayer($event, 'child-item')"
                       [contentStatus]="contentStatus" [type]="cardType">
                     </sb-toc-child-item>
                   </div>
@@ -129,7 +134,7 @@
           </div>
           <sb-toc-card [content]="courseHierarchy"
             *ngIf="courseHierarchy?.mimeType !== 'application/vnd.ekstep.content-collection'"
-            (tocCardClick)="onTocCardClick($event)" [type]="cardType" [contentStatus]="contentStatus">
+            (tocCardClick)="navigateToInitPlayer($event)" [type]="cardType" [contentStatus]="contentStatus">
           </sb-toc-card>
         </div>
       </div>
@@ -162,6 +167,27 @@
             class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn">
             {{resourceService?.frmelmnts?.btn?.close}}
         </a>
+    </div>
+</sui-modal>
+<!-- End - Modal for Assessment attempts -->
+<!-- Start - Modal for Assessment attempts -->
+<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
+    appBodyScroll #modal *ngIf="showLastAttemptsModal">
+    <div class="sb-modal-header">
+        {{resourceService?.frmelmnts?.lbl?.accessCourse}}
+    </div>
+    <div class="sb-modal-content sb-join-modal-content">
+        <div class="fsmall px-0 py-8">
+          {{resourceService?.frmelmnts?.lbl?.selfAssessLastAttempt}}
+        </div>
+    </div>
+    <div class="sb-modal-actions">
+      <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="showLastAttemptsModal = false; onTocCardClick();">
+        {{resourceService.frmelmnts?.btn?.ok}}
+      </button>
+      <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="showLastAttemptsModal = false;">
+        {{resourceService.frmelmnts?.btn?.cancel}}
+      </button>
     </div>
 </sui-modal>
 <!-- End - Modal for Assessment attempts -->

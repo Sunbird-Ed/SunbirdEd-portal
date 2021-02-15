@@ -10,6 +10,8 @@ const testData = mockData.mockRes;
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
 import { configureTestSuite } from '@sunbird/test-util';
+import { WorkSpaceService } from '../../services';
+
 describe('CreateContentComponent', () => {
   let component: CreateContentComponent;
   let fixture: ComponentFixture<CreateContentComponent>;
@@ -33,7 +35,7 @@ describe('CreateContentComponent', () => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, SharedModule.forRoot(), HttpClientTestingModule, CoreModule, TelemetryModule],
       declarations: [CreateContentComponent],
-      providers: [ResourceService, CacheService, ConfigService,
+      providers: [ResourceService, CacheService, ConfigService, WorkSpaceService,
        {provide: ActivatedRoute, useValue: fakeActivatedRoute}]
     })
       .compileComponents();

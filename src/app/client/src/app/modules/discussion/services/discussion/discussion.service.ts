@@ -1,6 +1,7 @@
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
 import { Injectable } from '@angular/core';
 import { CsModule } from '@project-sunbird/client-services';
+import { FormService } from '@sunbird/core';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ export class DiscussionService {
   private discussionCsService: any;
 
   constructor(
-    private csLibInitializerService: CsLibInitializerService
+    private csLibInitializerService: CsLibInitializerService,
+    private formService: FormService
   ) {
     if (!CsModule.instance.isInitialised) {
       this.csLibInitializerService.initializeCs();
@@ -28,5 +30,26 @@ export class DiscussionService {
 
   getForumIds(data) {
     return this.discussionCsService.getForumIds(data);
+  }
+
+  attachForum(data) {
+    return this.discussionCsService.attachForum(data);
+  }
+
+  removeForum(data) {
+    return this.discussionCsService.removeForum(data);
+  }
+
+  createForum(data) {
+    return this.discussionCsService.createForum(data);
+  }
+
+  fetchForumConfig(contentType) {
+    const formServiceInputParams = {
+      formType: 'forum',
+      formAction: 'create',
+      contentType: contentType
+    };
+    return this.formService.getFormConfig(formServiceInputParams);
   }
 }
