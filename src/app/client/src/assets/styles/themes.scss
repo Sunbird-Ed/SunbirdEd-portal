@@ -1,4 +1,156 @@
-@import '../../../node_modules/sb-theme/themes/theme.scss';
+  //accessible scss start
+html[accessable-theme="accessible"] {
+	.sbt-class-bar .sb-slider-pills-container .sb-pills-container .pill {
+	  color: #004594 !important;
+	}
+  
+	.sbt-class-bar .sb-slider-pills-container .sb-pills-container .pill.active,
+	.sbt-class-bar .sb-slider-pills-container .sb-pills-container .pill:hover {
+	  background: #004285 !important;
+	}
+  
+	.update.basic.label {
+	  color: #525252 !important;
+	}
+  
+	button.no-text-transform {
+	  color: #000000;
+	}
+  
+	.sb--card__meta1 > .data_2 {
+	  background-color: #bddcff !important;
+	  color: #003e85 !important;
+	}
+  
+	.certified-course__btn > .textbook__addbtn {
+	  color: #1a1a1a;
+	}
+  
+	.sb-btn-link-gray {
+	  color: #4b4b4b;
+	}
+	.content-metadeta__title {
+	  color: #4b4b4b !important;
+	}
+	// .sb-btn-normal {
+	// 	color:#F5F5F5 ;
+	// 	background-color:#A80011;
+	// }
+	.title.ng-star-inserted {
+	  color: #525252 !important;
+	}
+	.sbt-welcome-theme-container {
+	  .sb-color-warning {
+		color: #8d3719 !important;
+	  }
+	}
+	.sb-onboard {
+	  .multi-select-container .list-border .placeholder {
+		color: hsl(0deg 0% 32%);
+	  }
+	}
+	.overlay-sidebar__menu {
+	  .group__type {
+		color: #0c0c0c;
+	  }
+	}
+	.signup-background {
+	  .year-birth {
+		.sb-color-red {
+		  color: #952833 !important;
+		}
+	  }
+	  .infotext {
+		color: #9d1b1b !important;
+	  }
+	  .sb-requirement-field span {
+		color: #9d1b1b !important;
+	  }
+	  button.sb-btn.sb-btn-normal.w-100.sb-btn-disabled {
+		color: #383838 !important;
+	  }
+	}
+	.sbt-mygroups-details {
+	  .sb--card__moreinfo {
+		.sb--card__org {
+		  color: #545454 !important;
+		}
+		.sb--card__type {
+		  color: #080808 !important;
+		}
+	  }
+	}
+	.sb-library-cards {
+	  .sb-members-list-item--horizontal {
+		.status {
+		  color: #046646 !important;
+		}
+	  }
+	}
+	.sb-modal-content {
+	  .sb-form {
+		span.sb-color-warning {
+		  color: #813317 !important;
+		}
+	  }
+	}
+	.profile-bg-c-3 {
+	  .update {
+		color: #595959 !important;
+	  }
+	}
+	.sbt-sb-g {
+	  .header {
+		button.sb-btn.sb-btn-xs.sb-btn-secondary.ml-auto {
+		  color: #1a1a1a !important;
+		}
+	  }
+	}
+	.sb-pageSection-header {
+	  .sb-pageSection-sentenceCase {
+		.sb-pageSection-count {
+		  background-color: #933310 !important;
+		}
+		button.sb-btn-secondary {
+		  color: #1a1a1a;
+		}
+	  }
+	}
+	.schooling-location {
+	  .multi-select-container .list-border .placeholder {
+		color: hsl(0deg 0% 32%);
+	  }
+	}
+	.select-template-content {
+	  .no-template-text {
+		color: #4a4a4a;
+		b {
+		  color: #474747;
+		}
+	  }
+	  .certificate-content {
+		.sb-field {
+		  .asterik {
+			color: #a30010;
+		  }
+		  .sb-browse-btn {
+			color: #395470 !important;
+		  }
+		}
+	  }
+	  .re-issue-content {
+		.certificate-id-info {
+		  color: #595959 !important;
+		}
+	  }
+	  .three.wide.column.pl-0.pr-0 {
+		.sidebar.py-24 {
+		  color: hsl(0deg 0% 35%);
+		}
+	  }
+	}
+  }
+  //accessible scss end
 html.transition,
 html.transition *,
 html.transition *:before,
