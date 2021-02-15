@@ -243,7 +243,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
             fields: _.get(currentPageData, 'search.fields') || _.get(this.configService, 'urlConFig.params.CourseSearchField'),
           })
         };
-
+        delete option.filters['selectedTab'];
         if (!this.isUserLoggedIn()) {
           return of(option);
         } else {
@@ -343,6 +343,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       facets: facets || ['channel', 'gradeLevel', 'subject', 'medium'],
       fields
     };
+    delete option.filters['selectedTab'];
     return this.searchService.contentSearch(option)
       .pipe(
         map((response) => {
@@ -466,7 +467,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.pageSections = [];
     this._courseSearchResponse = {};
     const currentPageData = this.getPageData(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'course');
-    const filterData = filters && _.pick(filters, ['board', 'medium', 'gradeLevel', 'channel', 'subject', 'audience']) || {};
+    const filterData = filters && _.pick(filters, ['board', 'medium', 'gradeLevel', 'channel', 'subject', 'audience', 'selectedTab']) || {};
     if (_.has(filters, 'audience') || (localStorage.getItem('userType') && currentPageData.contentType !== 'all')) {
       const userTypes = _.get(filters, 'audience') || [localStorage.getItem('userType')];
       const audienceSearchFilterValue = _.get(filters, 'audienceSearchFilterValue');
@@ -479,7 +480,6 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public getSearchFilters(filters) {
-    delete filters['selectedTab'];
     const filterObj = {
       'primaryCategory': ['Course', 'Course Assessment'],
       'status': ['Live'],
