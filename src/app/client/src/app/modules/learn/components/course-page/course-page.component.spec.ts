@@ -180,7 +180,6 @@ describe('CoursePageComponent', () => {
         component['getChannelData']().subscribe(res => {
             expect(component.hashTagId).toBe('123');
             expect(contentSearchServiceSpy).toHaveBeenCalled();
-            expect(component.initFilters).toBeTruthy();
             done();
         });
     });
