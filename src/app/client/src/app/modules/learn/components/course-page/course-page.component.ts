@@ -166,7 +166,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       switchMap(channelData => {
         const { channelId, custodianOrg } = channelData as { channelId: string, custodianOrg: boolean };
         this.hashTagId = channelId;
-        return forkJoin(this.contentSearchService.initialize(channelId, custodianOrg, _.get(this.defaultFilters || this.defaultFilterValues, 'board[0]')), this.getFrameWork());
+        return forkJoin(this.contentSearchService.initialize(channelId, custodianOrg, _.get({ ...this.defaultFilterValues, ...this.defaultFilters }, 'board[0]')), this.getFrameWork());
       })
     );
   }
@@ -325,7 +325,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
       return (key === 'appliedFilters' || key === 'selectedTab') ? false : value.length;
     });
-    filters = _.omit(filters, ['utm_source']);
+    filters = _.omit(filters, ['utm_source', 'publisher']);
     filters['contentType'] = contentType;
     const option = {
       source: 'web',
