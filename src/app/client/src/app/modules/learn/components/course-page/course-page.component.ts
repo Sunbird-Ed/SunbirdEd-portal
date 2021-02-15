@@ -73,6 +73,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
   _courseSearchResponse: any;
   isPageAssemble: boolean = true;
   isDesktopApp: boolean = false;
+  defaultFilters = {};
 
   private _facets$ = new Subject();
   public facets$ = this._facets$.asObservable().pipe(startWith({}), catchError(err => of({})));
@@ -165,10 +166,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       switchMap(channelData => {
         const { channelId, custodianOrg } = channelData as { channelId: string, custodianOrg: boolean };
         this.hashTagId = channelId;
-        return forkJoin(this.contentSearchService.initialize(channelId, custodianOrg, _.get(this.defaultFilterValues, 'board[0]')),
-          this.getFrameWork()).pipe(
-            tap(res => { this.initFilters = true; }, err => { this.initFilters = false; })
-          );
+        return forkJoin(this.contentSearchService.initialize(channelId, custodianOrg, _.get(this.defaultFilters || this.defaultFilterValues, 'board[0]')), this.getFrameWork());
       })
     );
   }
@@ -187,8 +185,14 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     return merge(this.initLayout(), fetchContent$, combineLatest(...observables)
       .pipe(
+        tap(res => {
+          const { defaultFilters = {} } = _.get(this.getCurrentPageData(), 'metaData') || {};
+          this.defaultFilters = { ...this.defaultFilterValues, ...(!this.isUserLoggedIn() && defaultFilters) };
+          this.initFilters = true;
+        }),
         catchError(err => {
           this.carouselMasterData = [];
+          this.initFilters = false;
           this.pageSections = [];
           this.toasterService.error(this.resourceService.messages.fmsg.m0002);
           this.router.navigate(['']);
@@ -199,11 +203,15 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       );
   }
 
+  public getCurrentPageData() {
+    return this.getPageData(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'course');
+  }
+
   private buildOption() {
     return this.fetchContents$.pipe(
       switchMap((selectedFilters: object) => {
         let hashTagId;
-        const currentPageData = this.getPageData(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'course');
+        const currentPageData = this.getCurrentPageData();
         this.isPageAssemble = _.get(currentPageData, 'isPageAssemble');
         let filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
           if (_.includes(['appliedFilters', ...(this.isUserLoggedIn() ? ['sort_by', 'sortType'] : ['selectedTab'])], key)) {
@@ -285,7 +293,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.carouselMasterData = this.prepareCarouselData(_.get(data, 'sections'));
                 facetsList.channel = orgDetails;
                 facetsList = this.utilService.removeDuplicate(facetsList);
-                this._facets$.next(_.pick(facetsList, 'subject'));
+                this._facets$.next(facetsList || {});
                 if (!_.get(this.carouselMasterData, 'length')) {
                   return;
                 }
@@ -312,26 +320,28 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private fetchCourses(currentPageData) {
 
-    const { facets = ['subject'], groupByKey = 'se_subjects' } = _.get(currentPageData, 'search');
+    const { search: { facets = ['subject'], fields = _.get(this.configService, 'urlConFig.params.CourseSearchField'),
+      filters: { contentType = 'Course' } = {} } = {}, metaData: { groupByKey = 'subject' } = {} } = currentPageData || {};
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string, key) => {
       return (key === 'appliedFilters' || key === 'selectedTab') ? false : value.length;
     });
     filters = _.omit(filters, ['utm_source']);
-    filters['contentType'] = _.get(currentPageData, 'search.filters.contentType');
+    filters['contentType'] = contentType;
     const option = {
       source: 'web',
       name: 'Course',
       filters: this.contentSearchService.mapCategories({
+        groupByKey,
         filters: {
           ...this.getSearchFilters(filters), ...(this.selectedFilters || {}),
-          se_subjects: []
+          [groupByKey]: []
         }
       }),
       exists: ['batches.batchId'],
       sort_by: { 'me_averageRating': 'desc', 'batches.startDate': 'desc' },
       organisationId: this.hashTagId || '*',
       facets: facets || ['channel', 'gradeLevel', 'subject', 'medium'],
-      fields: this.configService.urlConFig.params.CourseSearchField
+      fields
     };
     return this.searchService.contentSearch(option)
       .pipe(
@@ -386,7 +396,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
             this.showLoader = false;
             facetsList.channel = _.get(orgDetails, 'content');
             facetsList = this.utilService.removeDuplicate(facetsList);
-            this._facets$.next(_.pick(facetsList, 'subject'));
+            this._facets$.next(facetsList || {});
             const userProfileSubjects = _.get(this.userService, 'userProfile.framework.subject') || [];
             const [userSubjects, notUserSubjects] = _.partition(_.sortBy(data, ['name']), value => {
               const { name = null } = value || {};
@@ -456,7 +466,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.pageSections = [];
     this._courseSearchResponse = {};
     const currentPageData = this.getPageData(_.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'course');
-    const filterData = filters && _.pick(filters, ['board', 'medium', 'gradeLevel', 'channel', 'subject', 'audience', 'selectedTab']) || {};
+    const filterData = filters && _.pick(filters, ['board', 'medium', 'gradeLevel', 'channel', 'subject', 'audience']) || {};
     if (_.has(filters, 'audience') || (localStorage.getItem('userType') && currentPageData.contentType !== 'all')) {
       const userTypes = _.get(filters, 'audience') || [localStorage.getItem('userType')];
       const audienceSearchFilterValue = _.get(filters, 'audienceSearchFilterValue');

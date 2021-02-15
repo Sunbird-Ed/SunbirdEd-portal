@@ -96,9 +96,10 @@ export class ContentSearchService {
       gradeLevel: 'se_gradeLevels',
       board: 'se_boards'
     };
-  }
+  } 
 
-  public mapCategories({ filters = {} }) {
+  public mapCategories({ filters = {}, groupByKey = 'subject' }) {
+    if (_.toLower(groupByKey) === 'subject') return filters;
     return _.reduce(filters, (acc, value, key) => {
       const mappedValue = _.get(this.getCategoriesMapping, [key]);
       if (mappedValue) { acc[mappedValue] = value; delete acc[key]; }

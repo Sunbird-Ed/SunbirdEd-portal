@@ -77,7 +77,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     private initConfiguration() {
-        this.defaultFilters = this.userService.defaultFrameworkFilters;
         if (this.utilService.isDesktopApp) {
             const userPreferences: any = this.userService.anonymousUserPreference;
             if (userPreferences) {
@@ -110,6 +109,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.channelId = channelId;
                     this.custodianOrg = custodianOrg;
                     this.formData = formConfig;
+                    const { defaultFilters = {} } = _.get(this.getCurrentPageData(), 'metaData') || {};
+                    this.defaultFilters = { ...this.userService.defaultFrameworkFilters, ...(!this.isUserLoggedIn() && defaultFilters) };
                     return this.contentSearchService.initialize(this.channelId, this.custodianOrg, get(this.defaultFilters, 'board[0]'));
                 }),
                 tap(data => {
@@ -183,10 +184,14 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         return find(this.formData, data => data.contentType === input);
     }
 
+    public getCurrentPageData() {
+        return this.getPageData(get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook');
+    }
+
     public getFilters({ filters, status }) {
         if (!filters || status === 'FETCHING') { return; }
         this.showLoader = true;
-        const currentPageData = this.getPageData(get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook');
+        const currentPageData = this.getCurrentPageData();
         this.selectedFilters = pick(filters, ['board', 'medium', 'gradeLevel', 'channel', 'subject', 'audience']);
         if (has(filters, 'audience') || (localStorage.getItem('userType') && currentPageData.contentType !== 'all')) {
             const userTypes = get(filters, 'audience') || [localStorage.getItem('userType')];
@@ -218,15 +223,15 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             .pipe(
                 skipWhile(data => data === undefined || data === null),
                 switchMap(currentPageData => {
-                    const { fields = [], filters = {}, facetsBasedKeys = ['subject'], groupByKey = 'se_subjects' } = currentPageData.search;
+                    const { search: { fields = [], filters = {}, facets = ['subject'] } = {}, metaData: { groupByKey = 'subject' } = {} } = currentPageData || {};
                     const request = {
-                        filters: this.contentSearchService.mapCategories({ filters: { ...this.selectedFilters, ...filters, se_subjects: [] } }),
-                        fields: [...fields, 'se_subjects'],
+                        filters: this.contentSearchService.mapCategories({ groupByKey, filters: { ...this.selectedFilters, ...filters, [groupByKey]: [] } }),
+                        fields,
                         isCustodianOrg: this.custodianOrg,
                         channelId: this.channelId,
                         frameworkId: this.contentSearchService.frameworkId,
                         ...(this.isUserLoggedIn() && { limit: get(currentPageData, 'limit') }),
-                        ...(get(facetsBasedKeys, 'length') && { facets: facetsBasedKeys })
+                        ...(get(facets, 'length') && { facets })
                     };
                     if (!this.isUserLoggedIn() && get(this.selectedFilters, 'channel') && get(this.selectedFilters, 'channel.length') > 0) {
                         request.channelId = this.selectedFilters['channel'];
