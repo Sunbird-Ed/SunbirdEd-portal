@@ -77,6 +77,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
     private initConfiguration() {
+        this.defaultFilters = this.userService.defaultFrameworkFilters;
         if (this.utilService.isDesktopApp) {
             const userPreferences: any = this.userService.anonymousUserPreference;
             if (userPreferences) {
