@@ -9358,6 +9358,7 @@ sb-svg2pdf@0.0.9:
 
 sb-theme@^1.0.14:
   version "1.0.14"
+  
   resolved "https://registry.yarnpkg.com/sb-theme/-/sb-theme-1.0.14.tgz#f315a6de02fd60291ca940024c162548eb6bf494"
   integrity sha512-yNWE9rvnj5GMm/UDkY8ikosE9FPhdBavo+uTYTdTF6ffx5Yf5aDCHUe+5sljD9zkgPmQaIrtnfIjGcCbVdZWLg==
 
