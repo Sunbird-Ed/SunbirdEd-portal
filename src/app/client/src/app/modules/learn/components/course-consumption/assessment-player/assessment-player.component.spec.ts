@@ -199,22 +199,30 @@ describe('AssessmentPlayerComponent', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(throwError({}));
     spyOn(toasterService, 'error');
+    component.contentStatus = assessmentPlayerMockData.contentStatus;
     fixture.detectChanges();
     component['initPlayer']('do_3232431');
     expect(courseConsumptionService.getConfigByContent).toHaveBeenCalled();
     expect(toasterService.error).toHaveBeenCalledWith('Cannot un-enrol now. Try again later');
+    expect(component.contentStatus[4]['bestScore']).toBeDefined();
+    expect(component.contentStatus[4]['score']).toBeDefined();
+    expect(component.contentStatus[4]['score'].length).toEqual(1);
   });
 
   it('should call onTocCardClick', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     spyOn<any>(component, 'initPlayer');
     spyOn(component, 'highlightContent');
+    component.contentStatus = assessmentPlayerMockData.contentStatus;
     fixture.detectChanges();
     component.navigationObj = { event: { data: { identifier: 'do_2334343' } }, id: 'test' };
     component.onTocCardClick();
     expect(component.activeContent).toEqual({ identifier: 'do_2334343' });
     expect(component['initPlayer']).toHaveBeenCalledWith('do_2334343');
     expect(component.highlightContent).toHaveBeenCalled();
+    expect(component.contentStatus[4]['bestScore']).toBeDefined();
+    expect(component.contentStatus[4]['score']).toBeDefined();
+    expect(component.contentStatus[4]['score'].length).toEqual(1);
   });
 
   it('should call getContentState', () => {
