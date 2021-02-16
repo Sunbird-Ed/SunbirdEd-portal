@@ -123,6 +123,7 @@ html[accessable-theme="accessible"] {
       color: #525252 !important;
 	  }
 	}
+
 	.select-template-content {
 	  .no-template-text {
 		color: #4a4a4a;
@@ -150,6 +151,13 @@ html[accessable-theme="accessible"] {
 		  color: hsl(0deg 0% 35%);
 		}
 	  }
+	}
+  .cc-player__content-header{
+		.certified-course{
+			.sb-btn-secondary{
+				color: #1a1a1a !important;
+			}
+		}
 	}
   }
   //accessible scss end
