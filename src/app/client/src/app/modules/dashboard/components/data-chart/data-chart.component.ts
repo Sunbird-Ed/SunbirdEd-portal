@@ -394,11 +394,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
     if(val){
       val.chartData['selectedFilters'] = {}
       this.chartData = val.chartData;
-      if(val.filters){
-        this.chartData['selectedFilters'] = { };
-      }else {
-        this.chartData['selectedFilters'] = {};
-      }
+      this.chartData['selectedFilters'] = { };
       this.cdr.detectChanges();
       this.getDataSetValue(val.chartData);
       this.resetForm();

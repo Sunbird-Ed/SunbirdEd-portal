@@ -62,15 +62,12 @@ export class FilterComponent implements OnInit, OnDestroy {
       
     }
   }
-
   get resetFilters(): any {
     return this._resetFilters;
   }
-
   @Input()
   set resetFilters(val: any) {
     if (val) {
-        // to apply current filters to new updated chart data;
         const currentFilterValue = _.get(this.filtersFormGroup, 'value');
         this.resetFilter();
         this.chartData = val.data;
@@ -108,7 +105,6 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
     if (this.filters) {
       this.buildFiltersForm();
     }
@@ -133,7 +129,6 @@ export class FilterComponent implements OnInit, OnDestroy {
         _.map(chartData, (data) =>  data[filter.reference] ? data[filter.reference].toLowerCase() : ""
         
         )))).filter(Boolean);
-        
     });
   }
 
@@ -152,7 +147,6 @@ export class FilterComponent implements OnInit, OnDestroy {
       )
       .subscribe((filters) => {
         this.selectedFilters = filters;
-        // this.selectedFilters = _.omit(filters, this.dateFilterReferenceName); // to omit date inside labels
         this.filterData();
 
       }, (err) => {
@@ -160,7 +154,6 @@ export class FilterComponent implements OnInit, OnDestroy {
       });
       if(this.chartData.selectedFilters){
           this.filtersFormGroup.patchValue(this.chartData.selectedFilters);
-          // this.selectedFilters = this.chartData.selectedFilters;
       }
   
   }

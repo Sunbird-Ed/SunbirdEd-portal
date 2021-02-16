@@ -76,6 +76,7 @@ describe('FilterComponent', () => {
     component = fixture.componentInstance;
     component.filters = mockChartData.filters;
     component.chartData = mockChartData.chartData;
+    component.selectedFilter = {};
   });
 
   it('should create', () => {
@@ -125,6 +126,7 @@ describe('FilterComponent', () => {
       data: [{ state: "01285019302823526477", Plays: "10", Date: "2020-04-28" }]
     }];
     tick(1000);
+    expect(component.selectedFilters).toEqual({});
   }));
 
   it('should emit the filter data', fakeAsync(() => {
@@ -145,6 +147,10 @@ describe('FilterComponent', () => {
     component.ngOnInit();
     tick(1000);
     component.resetFilters = { data:mockChartData.chartData,reset:true,filters:mockChartData.filters };
+    tick(1000);
+    component.resetFilter();
+    tick(1000);
+    component.buildFiltersForm()  
     tick(1000);
     expect(component.chartData).toEqual(mockChartData.chartData);
   }));
@@ -167,6 +173,7 @@ describe('FilterComponent', () => {
   it('should get resetFilters', fakeAsync(() => {
     component.ngOnInit();
     tick(1000);
+
     component['_resetFilters'] = { data:mockChartData.chartData };
     expect(component.resetFilters).toEqual({ data:mockChartData.chartData });
   }));
