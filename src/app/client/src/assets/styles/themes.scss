@@ -159,6 +159,18 @@ html[accessable-theme="accessible"] {
 			}
 		}
 	}
+  .certificate-container{
+		.certificate-content{
+			.sb-field{
+				.asterik{
+					color: #962934 !important;
+				}
+				.sb-browse-btn{
+					color: #39546f;
+				}
+			}
+		}
+	}
   }
   //accessible scss end
 html.transition,
