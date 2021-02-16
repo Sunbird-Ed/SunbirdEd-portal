@@ -4177,7 +4177,7 @@ file-loader@4.0.0:
     loader-utils "^1.2.2"
     schema-utils "^1.0.0"
 
-"file-saver@github:eligrey/FileSaver.js#1.3.8":
+file-saver@eligrey/FileSaver.js#1.3.8:
   version "1.3.8"
   resolved "https://codeload.github.com/eligrey/FileSaver.js/tar.gz/e865e37af9f9947ddcced76b549e27dc45c1cb2e"
 
@@ -9350,10 +9350,10 @@ sb-svg2pdf@0.0.9:
   dependencies:
     tslib "^1.9.0"
 
-sb-theme@1.0.19:
-  version "1.0.19"
-  resolved "https://registry.yarnpkg.com/sb-theme/-/sb-theme-1.0.19.tgz#88df7b43e122a068d32d0293f6bc76123acb4636"
-  integrity sha512-o4Gtha3Q7/UWFqmcMem7yd8xgQKc4mjZPmxGTufnDNxswKZ2Sh4mBL3pETqbWSK/314Cgls+gjL8l7128ymfag==
+sb-theme@1.0.14:
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/sb-theme/-/sb-theme-1.0.14.tgz#f315a6de02fd60291ca940024c162548eb6bf494"
+  integrity sha512-yNWE9rvnj5GMm/UDkY8ikosE9FPhdBavo+uTYTdTF6ffx5Yf5aDCHUe+5sljD9zkgPmQaIrtnfIjGcCbVdZWLg==
 
 schema-utils@^0.3.0:
   version "0.3.0"
