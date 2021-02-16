@@ -382,8 +382,8 @@ describe('GroupHeaderComponent', () => {
     /** Arrange */
     const discussionService = TestBed.get(DiscussionService);
     const toasterService = TestBed.get(ToasterService);
-    spyOn(discussionService, 'attachForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForum));
-    spyOn(toasterService, 'success');
+    spyOn(discussionService, 'createForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForum));
+    spyOn(toasterService, 'success').and.stub();
     /** Act */
     component.enableDiscussionForum();
     component.addTelemetry('confirm-enable-forum', {status: _.get('361a672f-cb77-4dd8-9cdf-9eb7c12ee8c7', 'status')});
@@ -391,10 +391,10 @@ describe('GroupHeaderComponent', () => {
      /** Assert */
      expect(component.showLoader).toBeFalsy();
  });
- it('should throw error if the attachForum api fails', () => {
+ it('should throw error if the createForum api fails', () => {
    /** Arrange */
    const discussionService = TestBed.get(DiscussionService);
-   spyOn(discussionService, 'attachForum').and.callFake(() => throwError({}));
+   spyOn(discussionService, 'createForum').and.callFake(() => throwError({}));
    spyOn(component['toasterService'], 'error');
 
    /** Act */
@@ -428,5 +428,17 @@ describe('GroupHeaderComponent', () => {
      /** Assert */
       expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
       expect(component.showLoader).toBeFalsy();
+    });
+
+    it('should fetch the config for create forum', () => {
+      /** Arrange */
+      const discussionService = TestBed.get(DiscussionService);
+      spyOn(discussionService, 'fetchForumConfig').and.returnValue(observableOf(MockResponseData.forumConfig));
+
+      /** Act */
+      component.fetchForumConfig();
+
+      /**Assert */
+      expect(component.createForumRequest).toEqual(MockResponseData.forumConfig[0]);
     });
   });
