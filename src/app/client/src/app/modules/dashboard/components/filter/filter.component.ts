@@ -77,9 +77,6 @@ export class FilterComponent implements OnInit, OnDestroy {
         this.buildFiltersForm();
         if(val.reset && val.reset==true){
           this.selectedFilters = {};
-          if(val.filters){
-            this.filters = val.filters;
-          }
         }
         else if(val.filters){
           this.filtersFormGroup.patchValue(val.filters);
@@ -122,6 +119,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   formGeneration(chartData) {
+    
     this.filtersFormGroup = this.fb.group({});
     _.forEach(this.filters, filter => {
       if (filter.controlType === 'date' || /date/i.test(_.get(filter, 'reference'))) {
@@ -131,14 +129,18 @@ export class FilterComponent implements OnInit, OnDestroy {
         this.dateFilterReferenceName = filter.reference;
       }
       this.filtersFormGroup.addControl(_.get(filter, 'reference'), this.fb.control(''));
-      filter.options = _.sortBy(_.uniq(_.map(chartData, data => data[filter.reference].toLowerCase())));
-
+      filter.options = (_.sortBy(_.uniq(
+        _.map(chartData, (data) =>  data[filter.reference] ? data[filter.reference].toLowerCase() : ""
+        
+        )))).filter(Boolean);
+        
     });
   }
 
   buildFiltersForm() {
    
     this.formGeneration(this.chartData);
+    this.selectedFilters = {};
     this.filtersSubscription = this.filtersFormGroup.valueChanges
       .pipe(
         takeUntil(this.unsubscribe),
@@ -199,7 +201,9 @@ export class FilterComponent implements OnInit, OnDestroy {
     if (this.selectedFilters) {
       const res: Array<{}> = _.filter(this.chartData, data => {
         return _.every(this.selectedFilters, (value, key) => {
-          return _.includes(_.toLower(value), data[key].toLowerCase());
+          if(data[key]){
+            return _.includes(_.toLower(value), data[key].toLowerCase());
+          }
         });
       });
 

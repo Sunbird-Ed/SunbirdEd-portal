@@ -242,7 +242,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
     const labelsExpr = _.get(this.chartConfig, 'labelsExpr');
     if (labelsExpr) {
       const sortedData = this.sortData(chartData, labelsExpr);
-      groupedDataBasedOnLabels = _.groupBy(sortedData, (data) => _.trim(data[labelsExpr].toLowerCase()));
+      groupedDataBasedOnLabels = _.groupBy(sortedData, (data) =>  ( data[labelsExpr]? (_.trim(data[labelsExpr].toLowerCase()) ) : ""  ));
     }
     this.setChartLabels(groupedDataBasedOnLabels);
     this.datasets = [];
@@ -392,11 +392,12 @@ export class DataChartComponent implements OnInit, OnDestroy {
   @Input()
   set globalFilter(val: any) {
     if(val){
+      val.chartData['selectedFilters'] = {}
       this.chartData = val.chartData;
       if(val.filters){
         this.chartData['selectedFilters'] = { };
       }else {
-        this.chartData['selectedFilters'] = val.filters;
+        this.chartData['selectedFilters'] = {};
       }
       this.cdr.detectChanges();
       this.getDataSetValue(val.chartData);
@@ -407,7 +408,6 @@ export class DataChartComponent implements OnInit, OnDestroy {
   public filterChanged(data: any):void {
     this.cdr.detectChanges();
     this.currentFilters = data.filters;
-
     let keys = Object.keys(this.currentFilters);
     this.dateFilters = [];
     this.filters.map(ele=>{
@@ -439,6 +439,11 @@ export class DataChartComponent implements OnInit, OnDestroy {
       this.filterPopup = false;
       this.cdr.detectChanges();
     }else {
+      if(this.currentFilters){
+        this.chartData['selectedFilters'] = this.currentFilters;
+      }else {
+        this.chartData['selectedFilters'] = {};
+      }
       this.cdr.detectChanges();
       this.filterPopup = true;
     }
