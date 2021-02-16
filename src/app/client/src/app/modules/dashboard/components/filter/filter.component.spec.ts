@@ -154,10 +154,11 @@ describe('FilterComponent', () => {
     tick(1000);
     component.filters = mockChartData.filters;
     component.chartData = mockChartData.chartData;
-    component.filtersFormGroup.get('state').setValue(['01285019302823526477']);
     tick(1000);
     component.buildFiltersForm();
     tick(1000);
+    component.filtersFormGroup.get('state').setValue(['01285019302823526477']);
+    tick(1000)
     expect(component.selectedFilters).toEqual({
       'state': ['01285019302823526477']
     });
