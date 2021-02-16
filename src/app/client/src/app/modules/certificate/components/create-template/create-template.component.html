@@ -30,7 +30,8 @@
               <div class="twelve wide column">
                   <div class="sb-field mb-0">
                     <label>{{resourceService?.frmelmnts?.cert?.lbl?.certtitle}}<span class="asterik">*</span></label>
-                    <input formControlName="certificateTitle" [ngClass]="(createTemplateForm.controls.certificateTitle.touched && createTemplateForm.controls.certificateTitle.invalid) ? 'is-invalid' : 'is-valid'" class="sb-form-control" [placeholder]="resourceService?.frmelmnts?.cert?.prmpt?.certtitle">
+                    <label for="certificateTitle-input" class="hide">{{resourceService?.frmelmnts?.cert?.prmpt?.certtitle}}</label>
+                    <input formControlName="certificateTitle" id="certificateTitle-input" [ngClass]="(createTemplateForm.controls.certificateTitle.touched && createTemplateForm.controls.certificateTitle.invalid) ? 'is-invalid' : 'is-valid'" class="sb-form-control" [placeholder]="resourceService?.frmelmnts?.cert?.prmpt?.certtitle">
                   </div>
                   <small class="pl-4 fsmall">
                    {{resourceService?.frmelmnts?.cert?.inlntxt?.certtitle}}
@@ -42,7 +43,8 @@
               <div class="twelve wide column py-8">
                 <div class="sb-field d-flex flex-dc">
                   <label for="state" class="state-labels">{{resourceService?.frmelmnts?.lbl?.name}}<span class="asterik">*</span></label>
-                  <input formControlName="stateName" class="sb-form-control" 
+                  <label for="stateName-input" class="hide">{{resourceService?.frmelmnts?.cert?.prmttxt?.statedet}}</label>
+                  <input formControlName="stateName" id="stateName-input" class="sb-form-control" 
                   [ngClass]="(createTemplateForm.controls.stateName.touched && createTemplateForm.controls.stateName.invalid) ? 'is-invalid' : 'is-valid'"
                   [placeholder]="resourceService?.frmelmnts?.cert?.prmttxt?.statedet">
                 </div>
@@ -96,7 +98,8 @@
                 <div class="sb-field mb-0">
                   <label class="mb-16">{{resourceService?.frmelmnts?.cert?.lbl?.signdesig}}<span class="asterik">*</span></label>
                   <div class="sb-field mb-0">
-                    <input formControlName="authoritySignature_0" class="sb-form-control"
+                    <label for="authoritySignature_0-input" class="hide">{{resourceService?.frmelmnts?.cert?.lbl?.designation}}</label>
+                    <input formControlName="authoritySignature_0" class="sb-form-control" id="authoritySignature_0-input"
                     [ngClass]="(createTemplateForm.controls.authoritySignature_0.touched && createTemplateForm.controls.authoritySignature_0.invalid) ? 'is-invalid' : 'is-valid'"
                     [placeholder]="resourceService?.frmelmnts?.cert?.lbl?.designation">
                   </div>
@@ -124,7 +127,8 @@
                 <div class="sb-field mb-0">
                   <label class="mb-16">{{resourceService?.frmelmnts?.cert?.lbl?.signdesig2}}</label>
                   <div class="sb-field mb-0">
-                    <input formControlName="authoritySignature_1"
+                    <label for="authoritySignature_1-input" class="hide">{{resourceService?.frmelmnts?.cert?.lbl?.designation}}</label>
+                    <input formControlName="authoritySignature_1" id="authoritySignature_1-input"
                     [ngClass]="(createTemplateForm.controls.authoritySignature_1.touched && createTemplateForm.controls.authoritySignature_1.invalid) ? 'is-invalid' : 'is-valid'"
                     class="sb-form-control" [placeholder]="resourceService?.frmelmnts?.cert?.lbl?.designation">
                   </div>
@@ -161,7 +165,7 @@
               <div class="cert-select-card">
                 <div class="d-flex flex-ai-center flex-dc cert-select-card__content">
                   <div class="d-flex flex-ai-center flex-jc-center cert-select-card__content__description">
-                    <img [src]="getImagePath()" class="w-100">
+                    <img [src]="getImagePath()" class="w-100" alt="Certificate template">
                   </div>
                 </div>
               </div>

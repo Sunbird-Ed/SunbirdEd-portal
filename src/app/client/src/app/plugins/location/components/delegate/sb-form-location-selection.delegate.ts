@@ -249,9 +249,9 @@ export class SbFormLocationSelectionDelegate {
       if (config.code === 'persona') {
         if (this.userService.loggedIn) {
           config.templateOptions.hidden = false;
-          config.default = (_.get(this.userService.userProfile, 'userType') || '').toLowerCase() || null;
+          config.default = (_.get(this.userService.userProfile, 'userType') || '').toLowerCase() || 'teacher';
         } else {
-          config.default = (localStorage.getItem('userType') || '').toLowerCase() || null;
+          config.default = (localStorage.getItem('userType') || '').toLowerCase() || 'teacher';
         }
       }
 

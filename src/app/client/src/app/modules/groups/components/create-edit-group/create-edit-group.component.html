@@ -18,13 +18,15 @@
     <form class="sb-form" [formGroup]="groupForm">
       <div class="sb-field mb-16">
         <label>{{ resourceService?.frmelmnts?.lbl?.groupName }} <span class="sb-color-warning">*</span> </label>
-        <input class="sb-form-control" type="text" autofocus placeholder="{{ resourceService?.frmelmnts?.lbl?.enterGroupName }}" formControlName="name" [ngClass]="{'is-invalid' : isFieldValid('name')}" maxlength="50">
+        <label for="group-name-input" class="hide">{{ resourceService?.frmelmnts?.lbl?.enterGroupName }}</label>
+        <input class="sb-form-control" type="text" id="group-name-input" autofocus placeholder="{{ resourceService?.frmelmnts?.lbl?.enterGroupName }}" formControlName="name" [ngClass]="{'is-invalid' : isFieldValid('name')}" maxlength="50">
         <small class="mt-4 pull-right sb-color-grey fxsmall"> {{50 - groupForm?.value?.name?.length}} {{resourceService?.frmelmnts?.lbl?.characterleft}}</small>
         <small class="message sb-color-error font-weight-bold" *ngIf="isFieldValid('name')">{{ resourceService?.frmelmnts?.lbl?.groupNameRequired }}</small>
       </div>
       <div class="sb-field mb-16">
         <label>{{resourceService?.frmelmnts?.lbl?.description}}</label>
-        <textarea class="sb-form-control" rows="5" type="text" placeholder="Description" formControlName="description" [ngClass]="{'is-invalid' : isFieldValid('description')}" maxlength="150"
+        <label for="group-description-input" class="hide">{{resourceService?.frmelmnts?.lbl?.groupDescription}}</label>
+        <textarea class="sb-form-control" id="group-description-input" rows="5" type="text" placeholder="Description" formControlName="description" [ngClass]="{'is-invalid' : isFieldValid('description')}" maxlength="150"
         placeholder="{{resourceService?.frmelmnts?.lbl?.groupDescription}}"
         ></textarea>
         <small class="mt-4 pull-right sb-color-grey fxsmall">{{150 - groupForm?.value?.description?.length}} {{resourceService?.frmelmnts?.lbl?.characterleft}}</small>

@@ -183,6 +183,7 @@ export class ListAllReportsComponent implements OnInit {
         { title: 'Created On', data: 'createdon', visible: false },
         ...(this.reportService.isUserReportAdmin() ? [{
           class: 'details-control',
+          title: '',
           orderable: false,
           data: null,
           render: (value, type, row) => {
@@ -191,7 +192,7 @@ export class ListAllReportsComponent implements OnInit {
             if (isParameterized && row.children) {
               count = _.filter(row.children, child => _.toLower(child.status) === 'live').length;
             }
-            return `<button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-btn-square">
+            return `<button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-btn-square" aria-label="file-icon">
             <i class="icon ${isParameterized && row.children ? 'copy outline' : 'file outline'}
             alternate"></i><span>${isParameterized && row.children ? `${count}/${row.children.length} Live` : ''}</span></button>`;
           },

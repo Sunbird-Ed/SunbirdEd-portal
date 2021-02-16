@@ -331,7 +331,7 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       }
       // TODO: code can be removed in 3.1 release from user-onboarding component as it is handled here.
-      zip(this.tenantService.tenantData$, this.getOrgDetails()).subscribe((res) => {
+      zip(this.tenantService.tenantData$, this.getOrgDetails(false)).subscribe((res) => {
         if (_.get(res[0], 'tenantData')) {
           const orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
           if (_.get(orgDetailsFromSlug, 'slug') !== this.tenantService.slugForIgot) {
@@ -427,11 +427,11 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     }
   }
-  public getOrgDetails() {
+  public getOrgDetails(storeOrgDetails = true) {
     const slug = this.userService.slug;
     return this.orgDetailsService.getOrgDetails(slug).pipe(
       tap(data => {
-        if (slug !== '') {
+        if (slug !== '' && storeOrgDetails) {
           this.cacheService.set('orgDetailsFromSlug', data, {
             maxAge: 86400
           });
@@ -611,7 +611,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private setPortalTitleLogo(): void {
     this.tenantService.tenantData$.subscribe(data => {
       if (!data.err) {
-        document.title = this.userService.rootOrgName || data.tenantData.titleName;
+        document.title = _.get(this.userService, 'rootOrgName') || _.get(data, 'tenantData.titleName');
         document.querySelector('link[rel*=\'icon\']').setAttribute('href', data.tenantData.favicon);
       }
     });
