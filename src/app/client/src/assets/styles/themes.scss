@@ -51,7 +51,7 @@ html[accessable-theme="accessible"] {
 	}
 	.overlay-sidebar__menu {
 	  .group__type {
-		color: #0c0c0c;
+		color: #0c0c0c !important;
 	  }
 	}
 	.signup-background {
@@ -126,15 +126,15 @@ html[accessable-theme="accessible"] {
 
 	.select-template-content {
 	  .no-template-text {
-		color: #4a4a4a;
+		color: #4a4a4a !important;
 		b {
-		  color: #474747;
+		  color: #474747 !important;
 		}
 	  }
 	  .certificate-content {
 		.sb-field {
 		  .asterik {
-			color: #a30010;
+			color: #a30010 !important;
 		  }
 		  .sb-browse-btn {
 			color: #395470 !important;
