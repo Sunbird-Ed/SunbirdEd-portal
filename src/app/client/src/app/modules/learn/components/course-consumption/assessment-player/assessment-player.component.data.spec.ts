@@ -444,6 +444,17 @@ export const assessmentPlayerMockData = {
       'status': 0,
       'courseId': 'do_1130272760292638721197',
       'batchId': '0130272832104038409'
+    },
+    {
+      'contentId': 'do_2334343',
+      'status': 0,
+      'courseId': 'do_1130272760292638721197',
+      'batchId': '0130272832104038409',
+      'bestScore': {},
+      'score': [{
+        'maxScore': 10,
+        'bestScore': 5
+      }]
     }
   ],
   activeContent: {

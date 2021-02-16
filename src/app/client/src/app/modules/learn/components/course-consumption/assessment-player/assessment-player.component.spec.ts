@@ -78,7 +78,7 @@ describe('AssessmentPlayerComponent', () => {
     fixture = TestBed.createComponent(AssessmentPlayerComponent);
     component = fixture.componentInstance;
     component.contentStatus = assessmentPlayerMockData.contentStatus;
-    component['activeContent'] = { contentType: 'SelfAssess',  identifier: 'do_2334343' };
+    component['activeContent'] = { contentType: 'SelfAssess',  identifier: 'do_2334343', maxAttempts: 3 };
     fixture.detectChanges();
   });
 
@@ -535,15 +535,19 @@ describe('AssessmentPlayerComponent', () => {
 
     const response = {
       content: [
-        { identifier: 'do_2121', status: 2 }, { identifier: 'do_232343', status: 2 }, { identifier: 'do_45454', status: 2 }
+        { identifier: 'do_2121', status: 2 }, { identifier: 'do_2334343', status: 2 }, { identifier: 'do_45454', status: 2 }
       ]
     };
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(response));
+    component.contentStatus = assessmentPlayerMockData.contentStatus;
     fixture.detectChanges();
     component.getCourseCompletionStatus(true);
     expect(component.isCourseCompleted).toBe(false);
     expect(component.showCourseCompleteMessage).toBe(false);
+    expect(component.contentStatus[4]['bestScore']).toBeDefined();
+    expect(component.contentStatus[4]['score']).toBeDefined();
+    expect(component.contentStatus[4]['score'].length).toEqual(1);
   });
 
   xit('should call setActiveContent', () => {
