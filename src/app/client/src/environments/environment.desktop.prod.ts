@@ -1,5 +1,5 @@
 export const environment = {
-  env: 'desktop-prod',
+  env: 'desktop-production',
   production: true,
   enableTelemetryValidation: false,
   isDesktopApp: true
