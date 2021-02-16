@@ -1456,6 +1456,10 @@ const API_LIST = {
     '/api/data/v1/form/read': {
       description: 'Desktop API',
       checksNeeded:[]
+    },
+    '/learner/user/v1/role/assign': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ORG_ADMIN]
     }
   },
   URL_PATTERN: [
