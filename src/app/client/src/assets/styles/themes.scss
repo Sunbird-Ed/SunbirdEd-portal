@@ -166,7 +166,7 @@ html[accessable-theme="accessible"] {
 					color: #962934 !important;
 				}
 				.sb-browse-btn{
-					color: #39546f;
+					color: #39546f !important;
 				}
 			}
 		}
@@ -200,6 +200,11 @@ html[accessable-theme="accessible"] {
         .success-label{
           color: #006645!important;
         }
+      }
+    }
+    app-dashboard-sidebar{
+      .sidebar a{
+       color: #595959 !important;
       }
     }
    
