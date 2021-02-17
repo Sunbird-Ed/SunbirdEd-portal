@@ -76,6 +76,10 @@ describe('FilterComponent', () => {
     component = fixture.componentInstance;
     component.filters = mockChartData.filters;
     component.chartData = mockChartData.chartData;
+    component.selectedFilter = {};
+    component.filterType = "chart-filter";
+    component.chartLabels = [];
+    component.dateFilterReferenceName = "";
   });
 
   it('should create', () => {
@@ -125,6 +129,7 @@ describe('FilterComponent', () => {
       data: [{ state: "01285019302823526477", Plays: "10", Date: "2020-04-28" }]
     }];
     tick(1000);
+    expect(component.selectedFilters).toEqual({});
   }));
 
   it('should emit the filter data', fakeAsync(() => {
@@ -146,6 +151,10 @@ describe('FilterComponent', () => {
     tick(1000);
     component.resetFilters = { data:mockChartData.chartData,reset:true,filters:mockChartData.filters };
     tick(1000);
+    component.resetFilter();
+    tick(1000);
+    component.buildFiltersForm()  
+    tick(1000);
     expect(component.chartData).toEqual(mockChartData.chartData);
   }));
 
@@ -154,24 +163,34 @@ describe('FilterComponent', () => {
     tick(1000);
     component.filters = mockChartData.filters;
     component.chartData = mockChartData.chartData;
-    component.filtersFormGroup.get('state').setValue(['01285019302823526477']);
     tick(1000);
     component.buildFiltersForm();
+    tick(1000);
+    component.filtersFormGroup.get('state').setValue(['01285019302823526477']);
     tick(1000);
     expect(component.selectedFilters).toEqual({
       'state': ['01285019302823526477']
     });
   }));
 
-  it('should get resetFilters', fakeAsync(() => {
+  it('should get filter dat with selected filter', fakeAsync(() => {
     component.ngOnInit();
     tick(1000);
-    component['_resetFilters'] = { data:mockChartData.chartData };
-    expect(component.resetFilters).toEqual({ data:mockChartData.chartData });
-  }));
-  
-  
+    component.filters = mockChartData.filters;
+    component.chartData = mockChartData.chartData;
+    tick(1000);
+    component.buildFiltersForm();
+    tick(1000);
+    component.filtersFormGroup.get('state').setValue(['01285019302823526477']);
+    tick(1000);
+    component.filterData();
+    expect(component.selectedFilters).toEqual({
+      'state': ['01285019302823526477']
+    });
 
+  }));
+
+ 
   xit('should set the dateRange', fakeAsync(() => {
     component.ngOnInit();
     tick(1000);
