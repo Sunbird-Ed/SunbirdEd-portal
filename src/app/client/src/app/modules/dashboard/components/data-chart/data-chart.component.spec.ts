@@ -240,7 +240,20 @@ describe('DataChartComponent', () => {
         expect(component.chartData).toEqual(mockChartData.chartData);
        
       }));
-     
+
+      it('Should add call addsummary popup', fakeAsync(() => {
+        component.ngOnInit();
+        tick(1000);
+        component.addChartSummary();
+      }));
+
+      it('Should get chart summary', fakeAsync(() => {
+        component.ngOnInit();
+        tick(1000);
+        const data = component.getChartSummary();
+        expect(data).toBeDefined();
+
+      }));
       
       
     it('should sort data in ascending order based on Date key', () => {

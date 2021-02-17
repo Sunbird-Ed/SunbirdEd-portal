@@ -77,6 +77,10 @@ describe('FilterComponent', () => {
     component.filters = mockChartData.filters;
     component.chartData = mockChartData.chartData;
     component.selectedFilter = {};
+    component.filterType = "chart-filter";
+    component.chartLabels = [];
+    component.dateFilterReferenceName = "";
+ 
   });
 
   it('should create', () => {
@@ -133,6 +137,8 @@ describe('FilterComponent', () => {
     component.ngOnInit();
     tick(1000);
     component.filterData();
+    tick(1000);
+    component.selectedFilters={};
   }));
 
   it('should check checkFilterReferance', fakeAsync(() => {
@@ -176,6 +182,13 @@ describe('FilterComponent', () => {
 
     component['_resetFilters'] = { data:mockChartData.chartData };
     expect(component.resetFilters).toEqual({ data:mockChartData.chartData });
+  }));
+
+  it('should set telemetry interact data', fakeAsync(() => {
+    component.ngOnInit();
+    tick(1000);
+    const data =component.setTelemetryInteractEdata(mockChartData.filters[0].reference+"-filter");
+    
   }));
   
   

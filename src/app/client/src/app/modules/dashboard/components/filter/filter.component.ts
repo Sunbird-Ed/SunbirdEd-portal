@@ -115,7 +115,6 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   formGeneration(chartData) {
-    
     this.filtersFormGroup = this.fb.group({});
     _.forEach(this.filters, filter => {
       if (filter.controlType === 'date' || /date/i.test(_.get(filter, 'reference'))) {
@@ -133,7 +132,6 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   buildFiltersForm() {
-   
     this.formGeneration(this.chartData);
     this.selectedFilters = {};
     this.filtersSubscription = this.filtersFormGroup.valueChanges
