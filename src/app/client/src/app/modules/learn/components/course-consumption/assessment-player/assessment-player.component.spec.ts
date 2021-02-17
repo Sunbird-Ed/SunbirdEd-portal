@@ -19,6 +19,7 @@ import { of, throwError } from 'rxjs';
 import { NotificationService } from '../../../../notification/services/notification/notification.service';
 import { AssessmentScoreService } from '../../../services/assessment/assessment-score.service';
 import { CourseConsumptionService } from '../../../services/course-consumption/course-consumption.service';
+import { CourseProgressService } from '../../../services/courseProgress/course-progress.service';
 import { AssessmentPlayerComponent } from './assessment-player.component';
 import { assessmentPlayerMockData } from './assessment-player.component.data.spec';
 
@@ -65,7 +66,7 @@ describe('AssessmentPlayerComponent', () => {
         { provide: ResourceService, useValue: resourceMockData },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         ContentUtilsServiceService,
-        NotificationService,
+        NotificationService, CourseProgressService,
         { provide: 'CS_USER_SERVICE', useValue: MockCSService },
         { provide: 'CS_COURSE_SERVICE', useValue: MockCSService }
       ],
@@ -78,7 +79,7 @@ describe('AssessmentPlayerComponent', () => {
     fixture = TestBed.createComponent(AssessmentPlayerComponent);
     component = fixture.componentInstance;
     component.contentStatus = assessmentPlayerMockData.contentStatus;
-    component['activeContent'] = { contentType: 'SelfAssess',  identifier: 'do_2334343' };
+    component['activeContent'] = { contentType: 'SelfAssess',  identifier: 'do_2334343', maxAttempts: 3 };
     fixture.detectChanges();
   });
 
@@ -199,22 +200,30 @@ describe('AssessmentPlayerComponent', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(throwError({}));
     spyOn(toasterService, 'error');
+    component.contentStatus = assessmentPlayerMockData.contentStatus;
     fixture.detectChanges();
     component['initPlayer']('do_3232431');
     expect(courseConsumptionService.getConfigByContent).toHaveBeenCalled();
     expect(toasterService.error).toHaveBeenCalledWith('Cannot un-enrol now. Try again later');
+    expect(component.contentStatus[4]['bestScore']).toBeDefined();
+    expect(component.contentStatus[4]['score']).toBeDefined();
+    expect(component.contentStatus[4]['score'].length).toEqual(1);
   });
 
   it('should call onTocCardClick', () => {
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     spyOn<any>(component, 'initPlayer');
     spyOn(component, 'highlightContent');
+    component.contentStatus = assessmentPlayerMockData.contentStatus;
     fixture.detectChanges();
     component.navigationObj = { event: { data: { identifier: 'do_2334343' } }, id: 'test' };
     component.onTocCardClick();
     expect(component.activeContent).toEqual({ identifier: 'do_2334343' });
     expect(component['initPlayer']).toHaveBeenCalledWith('do_2334343');
     expect(component.highlightContent).toHaveBeenCalled();
+    expect(component.contentStatus[4]['bestScore']).toBeDefined();
+    expect(component.contentStatus[4]['score']).toBeDefined();
+    expect(component.contentStatus[4]['score'].length).toEqual(1);
   });
 
   it('should call getContentState', () => {
@@ -535,15 +544,23 @@ describe('AssessmentPlayerComponent', () => {
 
     const response = {
       content: [
-        { identifier: 'do_2121', status: 2 }, { identifier: 'do_232343', status: 2 }, { identifier: 'do_45454', status: 2 }
+        { identifier: 'do_2121', status: 2 }, { identifier: 'do_2334343', status: 2 }, { identifier: 'do_45454', status: 2 }
       ]
     };
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(response));
+    const courseProgressService = TestBed.get(CourseProgressService);
+    spyOn(courseProgressService, 'getContentProgressState').and.callFake(function ({}, {}) {
+      return assessmentPlayerMockData.contentProgressReqData;
+    });
+    component.contentStatus = assessmentPlayerMockData.contentStatus;
     fixture.detectChanges();
     component.getCourseCompletionStatus(true);
-    expect(component.isCourseCompleted).toBe(false);
-    expect(component.showCourseCompleteMessage).toBe(false);
+    expect(component.isCourseCompleted).toBe(true);
+    expect(component.showCourseCompleteMessage).toBe(true);
+    expect(component.contentStatus[4]['bestScore']).toBeDefined();
+    expect(component.contentStatus[4]['score']).toBeDefined();
+    expect(component.contentStatus[4]['score'].length).toEqual(1);
   });
 
   xit('should call setActiveContent', () => {
