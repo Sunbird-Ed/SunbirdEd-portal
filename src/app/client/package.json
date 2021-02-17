@@ -56,7 +56,7 @@
     "@project-sunbird/discussions-ui-v8": "2.0.15",
     "@project-sunbird/sb-styles": "0.0.6",
     "@project-sunbird/sunbird-pdf-player-v8": "3.6.1",
-    "@project-sunbird/sunbird-video-player-v8": "3.7.1",
+    "@project-sunbird/sunbird-video-player-v8": "3.7.2",
     "@project-sunbird/sunbird-epub-player-v8": "3.7.1",
     "epubjs": "^0.3.88",
     "@project-sunbird/telemetry-sdk": "0.0.26",
