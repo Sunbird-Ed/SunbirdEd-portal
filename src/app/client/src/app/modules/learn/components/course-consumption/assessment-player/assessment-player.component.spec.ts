@@ -19,6 +19,7 @@ import { of, throwError } from 'rxjs';
 import { NotificationService } from '../../../../notification/services/notification/notification.service';
 import { AssessmentScoreService } from '../../../services/assessment/assessment-score.service';
 import { CourseConsumptionService } from '../../../services/course-consumption/course-consumption.service';
+import { CourseProgressService } from '../../../services/courseProgress/course-progress.service';
 import { AssessmentPlayerComponent } from './assessment-player.component';
 import { assessmentPlayerMockData } from './assessment-player.component.data.spec';
 
@@ -65,7 +66,7 @@ describe('AssessmentPlayerComponent', () => {
         { provide: ResourceService, useValue: resourceMockData },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         ContentUtilsServiceService,
-        NotificationService,
+        NotificationService, CourseProgressService,
         { provide: 'CS_USER_SERVICE', useValue: MockCSService },
         { provide: 'CS_COURSE_SERVICE', useValue: MockCSService }
       ],
@@ -548,11 +549,15 @@ describe('AssessmentPlayerComponent', () => {
     };
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(response));
+    const courseProgressService = TestBed.get(CourseProgressService);
+    spyOn(courseProgressService, 'getContentProgressState').and.callFake(function ({}, {}) {
+      return assessmentPlayerMockData.contentProgressReqData;
+    });
     component.contentStatus = assessmentPlayerMockData.contentStatus;
     fixture.detectChanges();
     component.getCourseCompletionStatus(true);
-    expect(component.isCourseCompleted).toBe(false);
-    expect(component.showCourseCompleteMessage).toBe(false);
+    expect(component.isCourseCompleted).toBe(true);
+    expect(component.showCourseCompleteMessage).toBe(true);
     expect(component.contentStatus[4]['bestScore']).toBeDefined();
     expect(component.contentStatus[4]['score']).toBeDefined();
     expect(component.contentStatus[4]['score'].length).toEqual(1);

@@ -1028,5 +1028,19 @@ export const assessmentPlayerMockData = {
     'pkgVersion': 1,
     'idealScreenDensity': 'hdpi',
     'progress': 0
+  },
+  contentProgressReqData: {
+    'content': [
+      {
+        'contentId': 'do_2334343',
+        'courseId': 'do_1130272760292638721197',
+        'batchId': '0130272832104038409',
+        'bestScore': {},
+        'score': [{
+          'maxScore': 10,
+          'bestScore': 5
+        }]
+      }
+    ]
   }
 };
