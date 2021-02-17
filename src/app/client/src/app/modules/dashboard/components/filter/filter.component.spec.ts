@@ -176,13 +176,25 @@ describe('FilterComponent', () => {
     });
   }));
 
-  it('should get resetFilters', fakeAsync(() => {
+
+  it('should get filter dat with selected filter', fakeAsync(() => {
     component.ngOnInit();
     tick(1000);
+    component.filters = mockChartData.filters;
+    component.chartData = mockChartData.chartData;
+    tick(1000);
+    component.buildFiltersForm();
+    tick(1000);
+    component.filtersFormGroup.get('state').setValue(['01285019302823526477']);
+    tick(1000);
+    component.filterData();
+    expect(component.selectedFilters).toEqual({
+      'state': ['01285019302823526477']
+    });
 
-    component['_resetFilters'] = { data:mockChartData.chartData };
-    expect(component.resetFilters).toEqual({ data:mockChartData.chartData });
   }));
+
+
 
   it('should set telemetry interact data', fakeAsync(() => {
     component.ngOnInit();
