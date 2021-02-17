@@ -177,8 +177,8 @@
               <div class ="d-flex flex-w-wrap">
                 <div *ngFor="let certificate of defaultCertificates" class ="cert-img-sb-card active mr-16">
                   <div class="cert-img-sb-card__content" alt="certificate template">
-                    <img (click)="chooseCertificate(certificate)" [src]="certificate?.artifactUrl"  />
-                    <div *ngIf="selectedCertificate?.identifier === certificate?.identifier" class="selected-mark"><img src="assets/images/checkbox-icon.svg"></div>
+                    <img (click)="chooseCertificate(certificate)" [src]="certificate?.artifactUrl" alt="certificate template"  />
+                    <div *ngIf="selectedCertificate?.identifier === certificate?.identifier" class="selected-mark"><img src="assets/images/checkbox-icon.svg" alt="selected mark"></div>
                   </div>
                 </div>
               </div>
