@@ -25,6 +25,7 @@ export const RESPONSE = {
             'key'
           ],
           'subject': 'English',
+          'se_subjects': ['English'],
           'channel': '012530141516660736208',
           'downloadUrl': 'https://ntpstagingr_fi1/assam-text-book_1576731343811_do_212916581536096256131_1.0_spine.ecar',
           'organisation': [
@@ -160,6 +161,7 @@ export const RESPONSE = {
           ],
           'copyright': 'Chhattisgarh',
           'subject': 'English',
+          'se_subjects': ['English'],
           'downloadUrl': 'https://ntpstagido_21285725285052416011433/test-k12-book_1569489359437_do_21285725285052416011433_1.0_spine.ecar',
           'channel': '01258043108936908899',
           'organisation': [
@@ -812,6 +814,7 @@ export const RESPONSE = {
             'key'
           ],
           'subject': 'English',
+          'se_subjects': ['English'],
           'channel': '012530141516660736208',
           // tslint:disable-next-line:max-line-length
           'downloadUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_212916581536096256131/assam-text-book_1576731343811_do_212916581536096256131_1.0_spine.ecar',
@@ -956,6 +959,7 @@ export const RESPONSE = {
           ],
           'copyright': 'Chhattisgarh',
           'subject': 'English',
+          'se_subjects': ['English'],
           // tslint:disable-next-line:max-line-length
           'downloadUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_21286012130068070412543/test-copy-feature_1569839071542_do_21286012130068070412543_1.0_spine.ecar',
           'channel': '01258043108936908899',
@@ -1070,6 +1074,7 @@ export const RESPONSE = {
           ],
           'copyright': 'Chhattisgarh',
           'subject': 'English',
+          'se_subjects': ['English'],
           // tslint:disable-next-line:max-line-length
           'downloadUrl': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/ecar_files/do_21285725285052416011433/test-k12-book_1569489359437_do_21285725285052416011433_1.0_spine.ecar',
           'channel': '01258043108936908899',

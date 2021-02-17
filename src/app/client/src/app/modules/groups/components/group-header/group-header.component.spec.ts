@@ -12,10 +12,12 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MY_GROUPS, GROUP_DETAILS, CREATE_GROUP, EDIT_GROUP } from './../../interfaces';
 import { APP_BASE_HREF } from '@angular/common';
-import { of, throwError } from 'rxjs';
+import { of as observableOf, throwError, of } from 'rxjs';
 import * as _ from 'lodash-es';
 import { impressionObj, fakeActivatedRoute } from './../../services/groups/groups.service.spec.data';
 import { GroupsService } from '../../services/groups/groups.service';
+import { DiscussionService } from '../../../discussion/services/discussion/discussion.service';
+import { MockResponseData } from './group-header.spec.data';
 
 describe('GroupHeaderComponent', () => {
   let component: GroupHeaderComponent;
@@ -25,7 +27,10 @@ describe('GroupHeaderComponent', () => {
   const resourceBundle = {
     messages: {
       smsg: { m002: '' },
-      emsg: { m003: '' },
+      emsg: {
+        m003: '' ,
+        m0005: 'Something went wrong, try again later'
+      },
       imsg: { m0082: 'Deleting {groupName} will permanently remove the group from the application' }
     },
     frmelmnts: {
@@ -34,7 +39,9 @@ describe('GroupHeaderComponent', () => {
         you: 'You',
         deactivategrpques: 'Deactivate group',
         activategrpques: 'Activate group?',
-        deleteGroup: 'Delete Group'
+        deleteGroup: 'Delete Group',
+        disableDiscussionForum: 'Disable Discussion Forum',
+        enableDiscussionForum: 'Enable Discussion Forum'
       },
       msg: {
         deactivategrpsuccess: 'Group deactivated successfully',
@@ -55,7 +62,7 @@ describe('GroupHeaderComponent', () => {
     TestBed.configureTestingModule({
       declarations: [GroupHeaderComponent],
       imports: [SuiModule, CommonConsumptionModule, SharedModule.forRoot(), HttpClientModule, RouterTestingModule],
-      providers: [{ provide: ResourceService, useValue: resourceBundle },
+      providers: [{ provide: ResourceService, useValue: resourceBundle }, DiscussionService,
       { provide: ActivatedRoute, useValue: fakeActivatedRoute },
       { provide: APP_BASE_HREF, useValue: '/' },
       { provide: Router, useClass: RouterStub },
@@ -84,6 +91,7 @@ describe('GroupHeaderComponent', () => {
       active: true,
       isActive() { return true ;}
     };
+    component.forumIds = [];
     spyOn(component['groupService'], 'getImpressionObject').and.returnValue(impressionObj);
     spyOn(component['groupService'], 'addTelemetry');
     fixture.detectChanges();
@@ -295,6 +303,14 @@ describe('GroupHeaderComponent', () => {
     expect(component.showLoader).toBeTruthy();
   });
 
+  it('should "call disableDiscussionForum() when event id disableForum" ', () => {
+    spyOn(component, 'disableDiscussionForum');
+    component.handleEvent({name: 'disableDiscussionForum', action: true});
+    expect(component.disableDiscussionForum).toHaveBeenCalled();
+    expect(component.showModal).toBeFalsy();
+    expect(component.showLoader).toBeTruthy();
+  });
+
   it ('should call "toggleModal() when showActivateModal event emitted"', () => {
     spyOn(component, 'toggleModal');
     spyOn(component['groupService'], 'showActivateModal').and.returnValue(of (true));
@@ -306,4 +322,123 @@ describe('GroupHeaderComponent', () => {
 
   });
 
+
+  it('should fetch all the forumIds attached to a group', () => {
+    /** Arrange */
+    const discussionService = TestBed.get(DiscussionService);
+    spyOn(discussionService, 'getForumIds').and.returnValue(observableOf(MockResponseData.fetchForumResponse));
+
+    /** Act */
+    component.fetchForumIds('361a672f-cb77-4dd8-9cdf-9eb7c12ee8c7');
+
+    /** Assert */
+    expect(component.forumIds).toEqual([9]);
+  });
+
+  it('should show error toast if fetch forum id api fails', () => {
+    /** Arrange */
+    const discussionService = TestBed.get(DiscussionService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error');
+    spyOn(discussionService, 'getForumIds').and.callFake(() => throwError({}));
+
+    /** Act */
+    component.fetchForumIds('361a672f-cb77-4dd8-9cdf-9eb7c12ee8c7');
+
+    /** Assert */
+    expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, try again later');
+  });
+
+  it('should navigate to Discussion forum landing page', () => {
+    /** Arrange */
+    const discussionService = TestBed.get(DiscussionService);
+    spyOn(discussionService, 'registerUser').and.returnValue(observableOf(MockResponseData.registerUserSuccess));
+    const result = component.forumIds = [6];
+
+    /** Act */
+    component.navigateToDiscussionForum();
+
+    /** Assert */
+    expect(component['router'].navigate).toHaveBeenCalledWith(['/discussion-forum'], { queryParams: {
+      categories: JSON.stringify({ result }),
+      userName: 'cctn1350'
+    }});
+  });
+
+  it('should throw error if the register-user api fails', () => {
+    /** Arrange */
+    const discussionService = TestBed.get(DiscussionService);
+    spyOn(discussionService, 'registerUser').and.callFake(() => throwError({}));
+    spyOn(component['toasterService'], 'error');
+
+    /** Act */
+    component.navigateToDiscussionForum();
+
+    /** Assert */
+    expect(component.showLoader).toBeFalsy();
+    expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
+  });
+  it('should call enableDiscussionForum() when enable the discussion forum icon', () => {
+    /** Arrange */
+    const discussionService = TestBed.get(DiscussionService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(discussionService, 'createForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForum));
+    spyOn(toasterService, 'success').and.stub();
+    /** Act */
+    component.enableDiscussionForum();
+    component.addTelemetry('confirm-enable-forum', {status: _.get('361a672f-cb77-4dd8-9cdf-9eb7c12ee8c7', 'status')});
+    component.fetchForumIds('361a672f-cb77-4dd8-9cdf-9eb7c12ee8c7');
+     /** Assert */
+     expect(component.showLoader).toBeFalsy();
+ });
+ it('should throw error if the createForum api fails', () => {
+   /** Arrange */
+   const discussionService = TestBed.get(DiscussionService);
+   spyOn(discussionService, 'createForum').and.callFake(() => throwError({}));
+   spyOn(component['toasterService'], 'error');
+
+   /** Act */
+   component.enableDiscussionForum();
+
+   /** Assert */
+   expect(component.showLoader).toBeFalsy();
+   expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
 });
+ it('should call disableDiscussionForum() when disable the discussion forum icon', () => {
+    /** Arrange */
+    const discussionService = TestBed.get(DiscussionService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(discussionService, 'removeForum').and.returnValue(observableOf(MockResponseData.disableDiscussionForum));
+    spyOn(toasterService, 'success');
+    /** Act */
+    component.disableDiscussionForum();
+    component.addTelemetry('confirm-disable-forum', {status: _.get('361a672f-cb77-4dd8-9cdf-9eb7c12ee8c7', 'status')});
+    component.fetchForumIds('361a672f-cb77-4dd8-9cdf-9eb7c12ee8c7');
+     /** Assert */
+     expect(component.showLoader).toBeFalsy();
+ });
+ it('should throw error if the removeForum api fails', () => {
+      /** Arrange */
+      const discussionService = TestBed.get(DiscussionService);
+      const toasterService = TestBed.get(ToasterService);
+      spyOn(toasterService, 'error');
+      spyOn(discussionService, 'removeForum').and.callFake(() => throwError({}));
+      /** Act */
+      component.disableDiscussionForum();
+     /** Assert */
+      expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
+      expect(component.showLoader).toBeFalsy();
+    });
+
+    it('should fetch the config for create forum', () => {
+      /** Arrange */
+      const discussionService = TestBed.get(DiscussionService);
+      spyOn(discussionService, 'fetchForumConfig').and.returnValue(observableOf(MockResponseData.forumConfig));
+
+      /** Act */
+      component.fetchForumConfig();
+
+      /**Assert */
+      expect(component.createForumRequest).toEqual(MockResponseData.forumConfig[0]);
+    });
+  });

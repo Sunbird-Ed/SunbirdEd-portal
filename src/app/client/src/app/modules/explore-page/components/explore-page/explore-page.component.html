@@ -11,8 +11,8 @@
           </div>
         </div>
       <div [ngClass]="isDesktopApp ? 'sb-desktop-filter-section' : ''">
-        <app-search-filter [layoutConfiguration]="layoutConfiguration" [isOpen]='true' *ngIf="initFilter"
-          (filterChange)="getFilters($event)" [pageData]="pageData" [pageId]="isUserLoggedIn() ? 'resource-page' : 'explore-page'" [defaultFilters]="defaultFilters">
+        <app-search-filter [facets$]="facets$" [layoutConfiguration]="layoutConfiguration" [isOpen]='true' *ngIf="initFilter"
+          (filterChange)="getFilters($event)" [pageData]="getCurrentPageData()" [pageId]="isUserLoggedIn() ? 'resource-page' : 'explore-page'" [defaultFilters]="defaultFilters">
         </app-search-filter>
       </div>
     </div>

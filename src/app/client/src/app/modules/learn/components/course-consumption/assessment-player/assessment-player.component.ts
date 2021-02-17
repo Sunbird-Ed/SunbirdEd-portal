@@ -1,10 +1,10 @@
 import { Location } from '@angular/common';
 import { TelemetryService, IAuditEventInput, IImpressionEventInput } from '@sunbird/telemetry';
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Inject } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption-v8';
 import { UserService, GeneraliseLabelService } from '@sunbird/core';
-import { AssessmentScoreService, CourseBatchService, CourseConsumptionService } from '@sunbird/learn';
+import { AssessmentScoreService, CourseBatchService, CourseConsumptionService, CourseProgressService } from '@sunbird/learn';
 import { PublicPlayerService } from '@sunbird/public';
 import { ConfigService, ResourceService, ToasterService, NavigationHelperService,
    ContentUtilsServiceService, ITelemetryShare, LayoutService } from '@sunbird/shared';
@@ -14,6 +14,8 @@ import { first, map, takeUntil } from 'rxjs/operators';
 import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
 import * as TreeModel from 'tree-model';
 import { NotificationService } from '../../../../notification/services/notification/notification.service';
+import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
+import { result } from 'lodash';
 
 const ACCESSEVENT = 'renderer:question:submitscore';
 
@@ -67,6 +69,10 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   groupId;
   assessmentMaxAttempts: number;
   showMaxAttemptsModal: boolean = false;
+  isRouterExtrasAvailable: boolean = false;
+  _routerStateContentStatus: any;
+  showLastAttemptsModal: boolean = false;
+  navigationObj: { event: any; id: any; };
 
   constructor(
     public resourceService: ResourceService,
@@ -85,18 +91,27 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     private telemetryService: TelemetryService,
     private layoutService: LayoutService,
     public generaliseLabelService: GeneraliseLabelService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private CourseProgressService: CourseProgressService,
+    @Inject('CS_COURSE_SERVICE') private CsCourseService: CsCourseService
   ) {
     this.playerOption = {
       showContentRating: true
     };
     // this.assessmentMaxAttempts = this.configService.appConfig.CourseConsumption.selfAssessMaxLimit;
+    const _routerExtras = this.router.getCurrentNavigation();
+    if (_.get(_routerExtras, 'extras.state')) {
+      this.isRouterExtrasAvailable = true;
+      this._routerStateContentStatus = _.get(_routerExtras, 'extras.state.contentStatus');
+      this.contentStatus = _.get(_routerExtras, 'extras.state.contentStatus.content');
+    }
   }
 
   navigateToPlayerPage(collectionUnit: {}, event?) {
     this.previousContent = null;
       const navigationExtras: NavigationExtras = {
-        queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.parentCourse.name }
+        queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.parentCourse.name },
+        state: { contentStatus: this._routerStateContentStatus }
       };
 
       if (event && !_.isEmpty(event.event)) {
@@ -152,7 +167,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     if (_.get(this.activatedRoute, 'snapshot.queryParams.textbook')) {
       paramas['textbook'] = _.get(this.activatedRoute, 'snapshot.queryParams.textbook');
     }
-    this.router.navigate(['/learn/course', this.courseId, 'batch', this.batchId], {queryParams: paramas});
+    setTimeout(() => {
+      this.router.navigate(['/learn/course', this.courseId, 'batch', this.batchId], {queryParams: paramas});
+    }, 500);
   }
 
   private subscribeToQueryParam() {
@@ -250,32 +267,58 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       let maxAttemptsExceeded = false;
       this.showMaxAttemptsModal = false;
       let isLastAttempt = false;
-      const req = this.getContentStateRequest(this.parentCourse);
-      this.courseConsumptionService.getContentState(req)
-        .pipe(takeUntil(this.unsubscribe))
-        .subscribe(res => {
-          _.forEach(_.get(res, 'content'), (contentState) => {
-            if (_.get(contentState, 'contentId') === this.activeContent.identifier) {
-              if (contentState.score.length >= this.assessmentMaxAttempts) maxAttemptsExceeded = true;
-              if(this.assessmentMaxAttempts - contentState.score.length === 1) isLastAttempt = true;
-            }
-          });
-          
-          /* istanbul ignore else */
-          if (maxAttemptsExceeded) {
-            this.showMaxAttemptsModal = true;
-          } else if (isLastAttempt) {
-            this.toasterService.error(this.resourceService.frmelmnts.lbl.selfAssessLastAttempt);
-          } else if (_.get(res, 'content.length')) {
-            this.isCourseCompleted = (res.totalCount === res.completedCount);
-            this.showCourseCompleteMessage = this.isCourseCompleted && showPopup;
-            if (this.showCourseCompleteMessage) {
-              this.notificationService.refreshNotification$.next(true);
-            }
-            this.isCourseCompletionPopupShown = this.isCourseCompleted;
-          }
+      const req:any = this.getContentStateRequest(this.parentCourse);
+      if (_.get(this.activeContent, 'contentType') === 'SelfAssess' || !this.isRouterExtrasAvailable) {
+        this.CsCourseService
+          .getContentState(req, { apiPath: '/content/course/v1' })
+          .pipe(takeUntil(this.unsubscribe))
+          .subscribe((_res) => {
+            const res = this.CourseProgressService.getContentProgressState(req, _res);
+            _.forEach(_.get(res, 'content'), (contentState) => {
+              if (_.get(contentState, 'contentId') === this.activeContent.identifier) {
+                if (_.get(contentState, 'score.length') >= _.get(this.activeContent, 'maxAttempts')) maxAttemptsExceeded = true;
+                if (_.get(this.activeContent, 'maxAttempts') - _.get(contentState, 'score.length') === 1) isLastAttempt = true;
+              }
+            });
 
-        }, err => console.error(err, 'content read api failed'));
+            /* istanbul ignore else */
+            if (maxAttemptsExceeded) {
+              this.showMaxAttemptsModal = true;
+            } else if (isLastAttempt) {
+              this.toasterService.error(this.resourceService.frmelmnts.lbl.selfAssessLastAttempt);
+            } else if (_.get(res, 'content.length')) {
+              this.isCourseCompleted = (res.totalCount === res.completedCount);
+              this.showCourseCompleteMessage = this.isCourseCompleted && showPopup;
+              if (this.showCourseCompleteMessage) {
+                this.notificationService.refreshNotification$.next(true);
+              }
+              this.isCourseCompletionPopupShown = this.isCourseCompleted;
+            }
+            this.calculateProgress();
+          }, error => {
+            console.log('Content state read CSL API failed ', error);
+          });
+      } else {
+        _.forEach(this.contentStatus, (contentState) => {
+          if (_.get(contentState, 'contentId') === _.get(this.activeContent, 'identifier')) {
+            if (_.get(contentState, 'score.length') >= _.get(this.activeContent, 'maxAttempts')) maxAttemptsExceeded = true;
+            if (_.get(this.activeContent, 'maxAttempts') - _.get(contentState, 'score.length') === 1) isLastAttempt = true;
+          }
+        });
+        /* istanbul ignore else */
+        if (maxAttemptsExceeded) {
+          this.showMaxAttemptsModal = true;
+        } else if (isLastAttempt) {
+          this.toasterService.error(this.resourceService.frmelmnts.lbl.selfAssessLastAttempt);
+        } else if (this.contentStatus.length) {
+          this.isCourseCompleted = (_.get(this._routerStateContentStatus, 'totalCount') === _.get(this._routerStateContentStatus, 'completedCount'));
+          this.showCourseCompleteMessage = this.isCourseCompleted && showPopup;
+          if (this.showCourseCompleteMessage) {
+            this.notificationService.refreshNotification$.next(true);
+          }
+          this.isCourseCompletionPopupShown = this.isCourseCompleted;
+        }
+      }
     }
   }
 
@@ -345,26 +388,55 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       });
   }
 
-  onTocCardClick(event: any, id) {
+  navigateToInitPlayer(event: any, id) {
+    this.navigationObj = {
+      event: event,
+      id: id
+    };
+    if (_.get(event, 'event.isDisabled')) {
+      return this.toasterService.error(this.resourceService.frmelmnts.lbl.selfAssessMaxAttempt);
+    } else if (_.get(event, 'event.isLastAttempt')) {
+      this.showLastAttemptsModal = true;
+    } else {
+      this.onTocCardClick();
+    }
+  }
+
+  onTocCardClick() {
     this.previousContent = _.cloneDeep(this.activeContent);
     /* istanbul ignore else */
-    if (_.get(event, 'data')) {
-      this.activeContent = event.data;
+    if (_.get(this.navigationObj, 'event.data')) {
+      this.activeContent = this.navigationObj.event.data;
       this.initPlayer(_.get(this.activeContent, 'identifier'));
       this.highlightContent();
-      this.logTelemetry(id, event.data);
+      this.logTelemetry(this.navigationObj.id, this.navigationObj.event.data);
     }
   }
 
   private getContentState() {
-    const req = this.getContentStateRequest(this.courseHierarchy);
-    this.courseConsumptionService.getContentState(req)
+    if (_.get(this.activeContent, 'contentType') === 'SelfAssess' || !this.isRouterExtrasAvailable) {
+      const req:any = this.getContentStateRequest(this.courseHierarchy);
+      this.CsCourseService
+      .getContentState(req, { apiPath: '/content/course/v1' })
       .pipe(takeUntil(this.unsubscribe))
-      .subscribe(res => {
-        this.contentStatus = res.content || [];
+      .subscribe((_res) => {
+        const res = this.CourseProgressService.getContentProgressState(req, _res);
+        const _contentIndex = _.findIndex(this.contentStatus, {contentId: _.get(this.activeContent, 'identifier')});
+        const _resIndex =  _.findIndex(res.content, {contentId: _.get(this.activeContent, 'identifier')});
+        if (_.get(this.activeContent, 'contentType') === 'SelfAssess' && this.isRouterExtrasAvailable) {
+          this.contentStatus[_contentIndex]['status'] = _.get(res.content[_resIndex], 'status');
+        } else {
+          this.contentStatus = res.content || [];
+        }
         this.highlightContent();
         this.calculateProgress();
-      }, err => console.error(err, 'content read api failed'));
+      }, error => {
+        console.log('Content state read CSL API failed ', error);
+      });
+    } else {
+      this.highlightContent();
+      this.calculateProgress();
+    }
   }
 
   public getCurrentContent() {
@@ -407,7 +479,17 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     this.courseConsumptionService.updateContentsState(request)
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(updatedRes => {
-        this.contentStatus = _.cloneDeep(updatedRes.content);
+        if (!this.isRouterExtrasAvailable) {
+          this.contentStatus = _.cloneDeep(updatedRes.content);
+        } else {
+          const _contentIndex = _.findIndex(this.contentStatus, {contentId: request.contentId});
+          const _resIndex =  _.findIndex(updatedRes.content, {contentId: request.contentId});
+          // Update the available status data object
+          this._routerStateContentStatus['progress'] = _.get(updatedRes, 'progress');
+          this.contentStatus[_contentIndex]['status'] = _.get(updatedRes.content[_resIndex], 'status');
+          this._routerStateContentStatus['totalCount'] = _.get(updatedRes, 'totalCount');
+          this._routerStateContentStatus['completedCount'] = _.get(updatedRes, 'completedCount');
+        }
         /* istanbul ignore else */
         if (!this.isUnitCompleted) {
           this.calculateProgress(true);
@@ -505,7 +587,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       this.isUnitCompleted = false;
       if (this.contentStatus && this.contentStatus.length) {
         const contentState = this.contentStatus.filter(({ contentId, status }) =>
-          this.courseHierarchy.identifier === contentId && status === 2);
+          _.get(this.courseHierarchy, 'identifier') === contentId && status === 2);
         if (contentState.length > 0) {
           this.isUnitCompleted = true;
         }
@@ -527,7 +609,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe)
     );
   }
-
 
   logTelemetry(id, content?: {}, rollup?) {
     if (this.batchId) {

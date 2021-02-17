@@ -84,7 +84,7 @@
                           <div class="child-content-padding">
                             <sb-toc-card [content]="item" (tocCardClick)="navigateToContent($event, item, 'toc-card')"
                               [type]="cardType" [contentStatus]="contentStatus"
-                              [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
+                              [maxAttempts]="item?.maxAttempts" [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
                             </sb-toc-card>
                           </div>
                         </div>
@@ -99,7 +99,7 @@
                               <sb-toc-child-item *ngIf="child?.contentType === 'SelfAssess'" [childData]="child" class="sb-toc-child-item"
                                 (tocCardClick)="navigateToContent($event, item, 'child-item')"
                                 [contentStatus]="contentStatus" [type]="cardType" 
-                                [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
+                                [maxAttempts]="child?.maxAttempts" [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
                               </sb-toc-child-item>
                           </div>
                         </div>
@@ -235,10 +235,9 @@
   </div>
 </div>
 <app-course-completion *ngIf="showCourseCompleteMessage" [certificateDescription]="certificateDescription" (close)="onCourseCompleteClose()"></app-course-completion>
-
 <!-- Start - Modal for Assessment attempts -->
 <sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-    appBodyScroll (dismissed)="closeLoginModal()" #modal *ngIf="showLastAttemptsModal">
+    appBodyScroll #modal *ngIf="showLastAttemptsModal">
     <div class="sb-modal-header">
         {{resourceService?.frmelmnts?.lbl?.accessCourse}}
     </div>
@@ -248,10 +247,10 @@
         </div>
     </div>
     <div class="sb-modal-actions">
-      <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="_navigateToContent();">
+      <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="showLastAttemptsModal = false; _navigateToContent();">
         {{resourceService.frmelmnts?.btn?.ok}}
       </button>
-      <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="showLastAttemptsModal = !showLastAttemptsModal;">
+      <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="showLastAttemptsModal = false;">
         {{resourceService.frmelmnts?.btn?.cancel}}
       </button>
     </div>

@@ -43,9 +43,15 @@
                 "glob": "**/*",
                 "input": "node_modules/@project-sunbird/sunbird-video-player-v8/lib/assets/",
                 "output": "/assets/"
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@project-sunbird/sunbird-question-editor/lib/assets/",
+                "output": "/assets/"
               }
             ],
             "styles": [
+              "src/assets/quml-styles/quml-carousel.css",
               "node_modules/datatables.net-dt/css/jquery.dataTables.min.css",
               "src/assets/styles/semantic/semantic.min.css",
               "node_modules/font-awesome/css/font-awesome.css",
@@ -53,7 +59,8 @@
               "./node_modules/leaflet/dist/leaflet.css",
               "src/assets/styles/styles.scss",
               "node_modules/video.js/dist/video-js.min.css",
-              "./node_modules/@project-sunbird/discussions-ui-v8/assets/styles/global.scss"
+              "./node_modules/@project-sunbird/discussions-ui-v8/assets/styles/global.scss",
+              "node_modules/katex/dist/katex.min.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -68,11 +75,9 @@
               "node_modules/@project-sunbird/telemetry-sdk/index.js",
               "src/assets/libs/semantic-ui/sidebar.min.js",
               "node_modules/leaflet/dist/leaflet.js",
-              {
-                "input": "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js",
-                "lazy": true,
-                "bundleName": "fancytree-all-deps"
-              },
+              "./node_modules/katex/dist/katex.min.js",
+              "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js",
+              "src/assets/libs/semantic-ui/modal.min.js",
               {
                 "input": "src/assets/libs/semantic-ui/transition.min.js",
                 "lazy": true,
@@ -97,6 +102,26 @@
                 "input": "src/assets/libs/semantic-ui/modal.min.js",
                 "lazy": true,
                 "bundleName": "semanticModal"
+              },
+              {
+                "input": "src/assets/libs/semantic-ui/transition.min.js",
+                "lazy": true,
+                "bundleName": "semanticTreePicker"
+              },
+              {
+                "input": "src/assets/libs/semantic-ui/dimmer.min.js",
+                "lazy": true,
+                "bundleName": "semanticTreePicker"
+              },
+              {
+                "input": "src/assets/libs/semantic-ui/modal.min.js",
+                "lazy": true,
+                "bundleName": "semanticTreePicker"
+              },
+              {
+                "input": "src/assets/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.js",
+                "lazy": true,
+                "bundleName": "semanticTreePicker"
               }
             ]
           },

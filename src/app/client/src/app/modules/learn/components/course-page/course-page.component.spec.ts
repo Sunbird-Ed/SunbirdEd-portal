@@ -13,6 +13,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { configureTestSuite } from '@sunbird/test-util';
+import { ContentSearchService } from '@sunbird/content-search';
+
 
 describe('CoursePageComponent', () => {
     let component: CoursePageComponent;
@@ -128,41 +130,73 @@ describe('CoursePageComponent', () => {
             return undefined;
         });
     });
-    it('should emit filter data when getFilters is called with data', () => {
-        component.facets = Response.facets;
-        spyOn(component.dataDrivenFilterEvent, 'emit');
-        component.getFilters([{ code: 'board', range: [{ index: 0, name: 'NCRT' }, { index: 1, name: 'CBSC' }] }]);
-        expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({ board: 'NCRT' });
-    });
     it('should set selected tab filters', () => {
-        spyOn(component.dataDrivenFilterEvent, 'emit');
-        component.facets = Response.facets;
+        const spy = spyOn<any>(component['fetchContents$'], 'next');
         component.getFilters({
-            'status': 'FETCHED', 'filters': {
-                'selectedTab': 'course', 'channel': [
-                    'Chhattisgarh']
-            }
+            'status': 'FETCHED', 'filters': { 'selectedTab': 'course', 'channel': ['Chhattisgarh'], audience: ['Teacher'], audienceSearchFilterValue: ['Teacher'] }
         });
-        expect(component.selectedFilters).toEqual({
+        const response = {
             'selectedTab': 'course',
+            'audience': ['Teacher'],
             'channel': [
                 'Chhattisgarh'
             ]
-        });
-        expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalled();
+        };
+        expect(component.selectedFilters).toEqual(response);
+        expect(spy).toHaveBeenCalledWith(response);
+        expect(component.carouselMasterData).toEqual([]);
+        expect(component.pageSections).toEqual([]);
+        expect(component._courseSearchResponse).toEqual({});
     });
-    it('should emit filter data when getFilters is called with no data', () => {
-        spyOn(component.dataDrivenFilterEvent, 'emit');
-        component.getFilters({ filters: [] });
-        expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({});
-    });
-    it('should fetch hashTagId from API and filter details from data driven filter component', done => {
+    it('should fetch hashTagId from API for logged in User', done => {
+        const userService = TestBed.get(UserService);
+        spyOn(component, 'isUserLoggedIn').and.returnValue(true);
+        spyOnProperty(userService, 'hashTagId', 'get').and.returnValue('123');
+        spyOn<any>(orgDetailsService, 'getCustodianOrgDetails').and.returnValue(of({ result: { response: { value: '123' } } }));
         component['getOrgDetails']().subscribe(res => {
-            expect(orgDetailsService.getOrgDetails).toHaveBeenCalled();
-            expect(component.hashTagId).toBe('123');
+            expect(res.channelId).toBe('123');
+            expect(res.custodianOrg).toBeTruthy();
             done();
         });
-
+    });
+    it('should fetch hashTagId from API for non logged in User', done => {
+        const userService = TestBed.get(UserService);
+        spyOn(component, 'isUserLoggedIn').and.returnValue(false);
+        spyOnProperty(userService, 'hashTagId', 'get').and.returnValue('123');
+        spyOnProperty(userService, 'slug', 'get').and.returnValue(undefined);
+        spyOn<any>(orgDetailsService, 'getCustodianOrgDetails').and.returnValue(of({ result: { response: { value: '123' } } }));
+        component['getOrgDetails']().subscribe(res => {
+            expect(res.channelId).toBe('123');
+            expect(res.custodianOrg).toBeTruthy();
+            done();
+        });
+    });
+    it('should fetch hashTagId from API and filter details from data driven filter component', done => {
+        component.initFilters = false;
+        const contentSearchService = TestBed.get(ContentSearchService);
+        const contentSearchServiceSpy = spyOn(contentSearchService, 'initialize').and.returnValue(of({}));
+        spyOn<any>(component, 'getFrameWork').and.returnValue(of({}));
+        spyOn<any>(component, 'getOrgDetails').and.returnValue(of({ channelId: '123', custodianOrg: false }));
+        component['getChannelData']().subscribe(res => {
+            expect(component.hashTagId).toBe('123');
+            expect(contentSearchServiceSpy).toHaveBeenCalled();
+            done();
+        });
+    });
+    it('should not show filters if API fails', done => {
+        component.initFilters = false;
+        const contentSearchService = TestBed.get(ContentSearchService);
+        const contentSearchServiceSpy = spyOn(contentSearchService, 'initialize').and.returnValue(throwError({}));
+        spyOn<any>(component, 'getFrameWork').and.returnValue(of({}));
+        spyOn<any>(component, 'getOrgDetails').and.returnValue(of({ channelId: '123', custodianOrg: false }));
+        component['getChannelData']().subscribe(res => {
+            done();
+        }, err => {
+            expect(component.hashTagId).toBe('123');
+            expect(contentSearchServiceSpy).toHaveBeenCalled();
+            expect(component.initFilters).toBeFalsy();
+            done();
+        });
     });
     it('should navigate to landing page if fetching org details fails and data driven filter do not returned data', done => {
         spyOn(component, 'isUserLoggedIn').and.returnValue(false);
@@ -181,7 +215,7 @@ describe('CoursePageComponent', () => {
             });
     });
     xit('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', () => {
-        spyOn(orgDetailsService, 'searchOrgDetails').and.callFake((options) => {
+        spyOn(orgDetailsService, 'searchOrgDetails').and.callFake((options) => {    
             return of(Response.orgSearch);
         });
         component.ngOnInit();
@@ -293,7 +327,7 @@ describe('CoursePageComponent', () => {
             source: 'web', name: 'Course', organisationId: '*',
             filters: { sort_by: 'name', sortType: 'desc', audience: ['Teacher'] },
             fields: ['name', 'appIcon', 'medium', 'subject',
-             'resourceType', 'contentType', 'organisation', 'topic', 'mimeType', 'trackable'],
+                'resourceType', 'contentType', 'organisation', 'topic', 'mimeType', 'trackable'],
             params: { orgdetails: 'orgName,email' },
             facets: ['channel', 'gradeLevel', 'subject', 'medium']
         };
@@ -309,10 +343,6 @@ describe('CoursePageComponent', () => {
             expect();
             done();
         });
-    });
-    it('should get processed facets data', () => {
-        const facetsData = component.updateFacetsData(Response.facetsList);
-        expect(facetsData).toEqual(Response.updatedFacetsList);
     });
     it('should redirect to view-all page for logged in user', () => {
         spyOn(component, 'isUserLoggedIn').and.returnValue(true);
@@ -393,6 +423,7 @@ describe('CoursePageComponent', () => {
             expect(res).toEqual(Response.buildOptionRespForNonLoggedInUser);
             done();
         });
+        component['fetchContents$'].next({});
     });
 
     it('should prepare option for non loggedIn user', done => {
@@ -407,6 +438,7 @@ describe('CoursePageComponent', () => {
             expect(getCourseSectionDetailsSpy).toHaveBeenCalled();
             done();
         });
+        component['fetchContents$'].next({});
     });
 
     it('should fetch page Data', done => {
@@ -416,10 +448,9 @@ describe('CoursePageComponent', () => {
         spyOn(component, 'isPageAssemble').and.returnValue(true);
         component['fetchPageData'](Response.buildOptionNonLoggedin)
             .subscribe(res => {
+                expect(res).toBeDefined();
                 expect(pageApiService.getPageData).toHaveBeenCalled();
                 expect(orgDetailsService.searchOrgDetails).toHaveBeenCalled();
-                expect(component.facets).toBeDefined();
-                expect(component.initFilters).toBeTruthy();
                 expect(component.carouselMasterData).toBeDefined();
                 done();
             });
@@ -428,7 +459,7 @@ describe('CoursePageComponent', () => {
     it('should fetch page Data based on search API', done => {
         spyOn(component, 'isUserLoggedIn').and.returnValue(false);
         spyOn<any>(component, 'searchOrgDetails').and.callThrough();
-        spyOn<any>(component, 'processOrgData').and.callFake(function() {return {}})
+        spyOn<any>(component, 'processOrgData').and.callFake(function () { return {} })
         spyOn<any>(orgDetailsService, 'searchOrgDetails').and.returnValue(of(Response.orgSearch));
         spyOn<any>(searchService, 'contentSearch').and.returnValue(of(Response.contentSearchResponse));
         spyOn<any>(utilService, 'processCourseFacetData').and.returnValue(of(Response.courseSectionsFacet));
@@ -439,8 +470,6 @@ describe('CoursePageComponent', () => {
             .subscribe(res => {
                 expect(searchService.contentSearch).toHaveBeenCalled();
                 expect(orgDetailsService.searchOrgDetails).toHaveBeenCalled();
-                expect(component.facets).toBeDefined();
-                expect(component.initFilters).toBeTruthy();
                 expect(component.carouselMasterData).toBeDefined();
                 expect(component.carouselMasterData.length).toEqual(3);
                 done();
@@ -450,8 +479,8 @@ describe('CoursePageComponent', () => {
     it('should fetch page Data based on else block', done => {
         spyOn(component, 'isUserLoggedIn').and.returnValue(false);
         spyOn<any>(component, 'searchOrgDetails').and.callThrough();
-        spyOn<any>(component, 'fetchCourses').and.callFake(function() {return {}})
-        spyOn<any>(component, 'processOrgData').and.callFake(function() {return {}})
+        spyOn<any>(component, 'fetchCourses').and.callFake(function () { return {} })
+        spyOn<any>(component, 'processOrgData').and.callFake(function () { return {} })
         spyOn<any>(orgDetailsService, 'searchOrgDetails').and.returnValue(of(Response.orgSearch));
         spyOn<any>(searchService, 'contentSearch').and.returnValue(of(Response.contentSearchResponse));
         spyOn<any>(utilService, 'processCourseFacetData').and.returnValue(of(Response.courseSectionsFacet));
