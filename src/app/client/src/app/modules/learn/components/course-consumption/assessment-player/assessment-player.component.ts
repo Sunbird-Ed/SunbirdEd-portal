@@ -278,6 +278,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
               if (_.get(contentState, 'contentId') === this.activeContent.identifier) {
                 if (_.get(contentState, 'score.length') >= _.get(this.activeContent, 'maxAttempts')) maxAttemptsExceeded = true;
                 if (_.get(this.activeContent, 'maxAttempts') - _.get(contentState, 'score.length') === 1) isLastAttempt = true;
+                /* istanbul ignore if */
                 if (_.get(this.activeContent, 'contentType') === 'SelfAssess') {
                   const _contentIndex = _.findIndex(this.contentStatus, {contentId: _.get(this.activeContent, 'identifier')});
                   this.contentStatus[_contentIndex]['bestScore'] = _.get(contentState, 'bestScore');
@@ -367,14 +368,17 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     let maxAttemptsExceeded = false;
     this.showMaxAttemptsModal = false;
     let isLastAttempt = false;
+    /* istanbul ignore if */
     if (_.get(this.activeContent, 'contentType') === 'SelfAssess') {
       const _contentIndex = _.findIndex(this.contentStatus, {contentId: _.get(this.activeContent, 'identifier')});
       if (_.get(this.contentStatus[_contentIndex], 'score.length') >= _.get(this.activeContent, 'maxAttempts')) maxAttemptsExceeded = true;
       if (_.get(this.activeContent, 'maxAttempts') - _.get(this.contentStatus[_contentIndex], 'score.length') === 1) isLastAttempt = true;
     }
+    /* istanbul ignore if */
     if (maxAttemptsExceeded) {
       this.showMaxAttemptsModal = true;
     } else {
+      /* istanbul ignore if */
       if (isLastAttempt && !this.showLastAttemptsModal && this._routerStateContentStatus) {
         this.toasterService.error(this.resourceService.frmelmnts.lbl.selfAssessLastAttempt);
       }
