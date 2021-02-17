@@ -104,7 +104,7 @@
                 <div class="certificate-edit-sbcard">
                   <div class="d-flex flex-ai-center flex-dc p-16 certificate-edit-sbcard-content">
                     <div class="certificate-frame">
-                      <div *ngIf="certEditable"><img src="{{previewUrl}}"></div>
+                      <div *ngIf="certEditable"><img src="{{previewUrl}}" alt="certificate edit"></div>
                       <div *ngIf="!certEditable"
                         class="d-flex flex-jc-center flex-dc p-24 fnormal text-center sb-color-error w-100 no-cert">
                         <h3>{{resourceService?.frmelmnts?.cert?.lbl?.noEditAction}}</h3>
@@ -185,7 +185,7 @@
               <div class="certificate-edit-sbcard">
                 <div class="d-flex flex-dc p-16 certificate-edit-sbcard-content">
                   <div class="certificate-frame">
-                    <div><img src="{{selectedTemplate?.artifactUrl || selectedTemplate?.previewUrl}}"></div>
+                    <div><img src="{{selectedTemplate?.artifactUrl || selectedTemplate?.previewUrl}}" alt="certificate edit"></div>
                   </div>
                   <div class="d-flex flex-ai-center flex-jc-space-between w-100 pt-16">
                     <div class="d-flex flex-ai-center ml-auto d-flex">
