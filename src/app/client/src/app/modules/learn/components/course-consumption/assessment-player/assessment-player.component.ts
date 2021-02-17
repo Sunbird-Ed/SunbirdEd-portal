@@ -388,7 +388,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
         contentDetails: { identifier: id }
       });
       const options: any = { courseId: this.collectionId };
-  
       /* istanbul ignore else */
       if (this.batchId) {
         options.batchId = this.batchId;
