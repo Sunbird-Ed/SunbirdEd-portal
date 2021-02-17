@@ -31,6 +31,11 @@ describe('AssessmentPlayerComponent', () => {
     messages: {
       fmsg: { m0051: 'Fetching districts failed. Try again later' },
       stmsg: { m0009: 'Cannot un-enrol now. Try again later', m0005: 'Something went wrong' }
+    },
+    frmelmnts: {
+      lbl: {
+        selfAssessLastAttempt: 'This is the last attempt remaining'
+      }
     }
   };
 
@@ -574,6 +579,107 @@ describe('AssessmentPlayerComponent', () => {
     expect(component['getContentState']).toHaveBeenCalled();
     expect(component.isContentPresent).toBe(true);
     expect(component['initPlayer']).toHaveBeenCalledWith(assessmentPlayerMockData.activeContent.identifier);
+  });
+
+  it('should call onSelfAssessLastAttempt', () => {
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error');
+    component.onSelfAssessLastAttempt(true);
+    expect(toasterService.error).toHaveBeenCalled();
+  });
+
+  it('should check for course Completion getCourseCompletionStatus on self assess course for max attempt', () => {
+    component.isCourseCompleted = false;
+    component.isRouterExtrasAvailable = true;
+    component.parentCourse = { name: 'Maths', identifier: 'do_233431212' };
+    spyOn(component, 'getContentStateRequest').and.returnValue(of({
+      userId: 'asas-saa12-asas-12',
+      courseId: 'do_234212322',
+      contentIds: [],
+      batchId: '221243'
+    }));
+    component.activeContent = assessmentPlayerMockData.maxAttemptContent;
+    component.contentStatus = assessmentPlayerMockData.contentStatus;
+    fixture.detectChanges();
+    component.getCourseCompletionStatus(true);
+    expect(component.showMaxAttemptsModal).toBe(true);
+  });
+
+  it('should call getCourseCompletionStatus on self assess course for last attempt', () => {
+    component.isCourseCompleted = false;
+    component.isRouterExtrasAvailable = true;
+    component.parentCourse = { name: 'Maths', identifier: 'do_233431212' };
+    spyOn(component, 'getContentStateRequest').and.returnValue(of({
+      userId: 'asas-saa12-asas-12',
+      courseId: 'do_234212322',
+      contentIds: [],
+      batchId: '221243'
+    }));
+    component.activeContent = assessmentPlayerMockData.lastAttemptContent;
+    component.contentStatus = assessmentPlayerMockData.contentStatus;
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error');
+    fixture.detectChanges();
+    component.getCourseCompletionStatus(true);
+    expect(toasterService.error).toHaveBeenCalled();
+  });
+
+  it('should call getCourseCompletionStatus for self assess course', () => {
+    component.isCourseCompleted = false;
+    component.parentCourse = { name: 'Maths', identifier: 'do_233431212' };
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error');
+    spyOn(component, 'getContentStateRequest').and.returnValue(of({
+      userId: 'asas-saa12-asas-12',
+      courseId: 'do_234212322',
+      contentIds: [],
+      batchId: '221243'
+    }));
+
+    const response = {
+      content: [
+        { identifier: 'do_2121', status: 2 }, { identifier: 'do_2334343', status: 2 }, { identifier: 'do_45454', status: 2 }
+      ]
+    };
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(response));
+    const courseProgressService = TestBed.get(CourseProgressService);
+    spyOn(courseProgressService, 'getContentProgressState').and.callFake(function ({}, {}) {
+      return assessmentPlayerMockData.contentProgressReqData;
+    });
+    component.activeContent = assessmentPlayerMockData.selfAssessContent1;
+    component.contentStatus = assessmentPlayerMockData.contentStatus;
+    fixture.detectChanges();
+    component.getCourseCompletionStatus(true);
+    expect(toasterService.error).toHaveBeenCalled();
+  });
+
+  it('should call getCourseCompletionStatus for self assess course', () => {
+    component.isCourseCompleted = false;
+    component.parentCourse = { name: 'Maths', identifier: 'do_233431212' };
+    spyOn(component, 'getContentStateRequest').and.returnValue(of({
+      userId: 'asas-saa12-asas-12',
+      courseId: 'do_234212322',
+      contentIds: [],
+      batchId: '221243'
+    }));
+
+    const response = {
+      content: [
+        { identifier: 'do_2121', status: 2 }, { identifier: 'do_2334343', status: 2 }, { identifier: 'do_45454', status: 2 }
+      ]
+    };
+    const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(response));
+    const courseProgressService = TestBed.get(CourseProgressService);
+    spyOn(courseProgressService, 'getContentProgressState').and.callFake(function ({}, {}) {
+      return assessmentPlayerMockData.contentProgressReqData;
+    });
+    component.activeContent = assessmentPlayerMockData.selfAssessContent2;
+    component.contentStatus = assessmentPlayerMockData.contentStatus;
+    fixture.detectChanges();
+    component.getCourseCompletionStatus(true);
+    expect(component.showMaxAttemptsModal).toBe(true);
   });
 
 });
