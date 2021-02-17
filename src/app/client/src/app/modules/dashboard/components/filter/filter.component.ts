@@ -39,13 +39,13 @@ export class FilterComponent implements OnInit, OnDestroy {
   showFilters: Boolean = true;
   dateFilters:Array<string>;
   public unsubscribe = new Subject<void>();
-  private _selectedFilter; // private property _item
-  private _resetFilters;
+  // private _selectedFilter; // private property _item
+  // private _resetFilters;
 
-  // use getter setter to define the property
-  get selectedFilter(): any {
-    return this._selectedFilter;
-  }
+  // // use getter setter to define the property
+  // get selectedFilter(): any {
+  //   return this._selectedFilter;
+  // }
 
   @Input()
   set selectedFilter(val: any) {
@@ -62,9 +62,9 @@ export class FilterComponent implements OnInit, OnDestroy {
       
     }
   }
-  get resetFilters(): any {
-    return this._resetFilters;
-  }
+  // get resetFilters(): any {
+  //   return this._resetFilters;
+  // }
   @Input()
   set resetFilters(val: any) {
     if (val) {
