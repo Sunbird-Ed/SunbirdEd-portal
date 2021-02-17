@@ -1509,7 +1509,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
-    '/action/action/v1/hierarchy/:do_id': {
+    '/action/questionset/v1/hierarchy/:do_id': {
       description: 'QuestionSet hierarchy read',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
@@ -1650,6 +1650,7 @@ const API_LIST = {
     '/action/questionset/v1/publish/:do_id',
     '/action/questionset/v1/reject/:do_id',
     '/action/questionset/v1/read/:do_id',
+    '/action/questionset/v1/hierarchy/:do_id',
     '/action/question/v1/read/:do_id',
     '/action/question/v1/review/:do_id',
     '/action/question/v1/publish/:do_id',
