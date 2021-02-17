@@ -166,11 +166,48 @@ html[accessable-theme="accessible"] {
 					color: #962934 !important;
 				}
 				.sb-browse-btn{
-					color: #39546f;
+					color: #39546f !important;
 				}
 			}
 		}
 	}
+  .re-issue-content{
+    .certificate-id-info{
+      color: #595959 !important;
+    }
+  }
+  .three.wide.column.pl-0.pr-0 {
+		.sidebar.py-24 {
+      color: #595959 !important;
+		}
+	  }
+    .progress-content{
+      #dashoardFiltersHolder{
+        .current-batch-list{
+          .update-text{
+            color: #595959 !important;
+          }
+        }
+      }
+    }
+    .detailed-report{
+      .administrator-text{
+        color: #595959 !important;
+      }
+    }
+    .datatable-body{
+      .datatable-body .datatable-body-row .datatable-body-cell{
+        .success-label{
+          color: #006645!important;
+        }
+      }
+    }
+    app-dashboard-sidebar{
+      .sidebar a{
+       color: #595959 !important;
+      }
+    }
+   
   }
   //accessible scss end
 html.transition,
