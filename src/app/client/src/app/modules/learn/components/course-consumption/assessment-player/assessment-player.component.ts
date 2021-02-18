@@ -424,12 +424,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSelfAssessLastAttempt(event) {
-    if (event) {
-      this.toasterService.error(this.resourceService.frmelmnts.lbl.selfAssessLastAttempt);
-    }
-  }
-
   /**
    * @since #SH-120
    * @param  {object} event - telemetry end event data
@@ -778,6 +772,12 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
           this.showLoader = false;
           this.toasterService.error(this.resourceService.messages.stmsg.m0009);
         });
+    }
+  }
+
+  onSelfAssessLastAttempt(event) {
+    if (event) {
+      this.toasterService.error(this.resourceService.frmelmnts.lbl.selfAssessLastAttempt);
     }
   }
 
