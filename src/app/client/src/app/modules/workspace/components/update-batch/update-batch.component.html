@@ -113,7 +113,7 @@
           <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0005}}</div>
           <div class="menu">
             <div class="item" [attr.data-value]="mentor.id" *ngFor="let mentor of mentorList">
-              <img class="ui mini avatar image" src="{{mentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" alt="avatar image">
+              <img class="ui mini avatar image" src="{{mentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" alt="avatar-image">
               {{mentor.name}}{{mentor.otherDetail}}
             </div>
           </div>
@@ -123,7 +123,7 @@
         <label>{{resourceService?.frmelmnts?.lbl?.batchselmentors}}</label>
         <a class="ui label mt-5" *ngFor="let selectmentor of selectedMentors">
           <img class="ui right spaced avatar image"
-            src="{{selectmentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" alt="avatar image">
+            src="{{selectmentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" alt="avatar-image">
           {{selectmentor.name}}{{selectmentor.otherDetail}}
         </a>
       </div>
