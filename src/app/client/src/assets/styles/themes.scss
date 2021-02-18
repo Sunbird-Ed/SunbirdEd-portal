@@ -206,6 +206,9 @@ html[accessable-theme="accessible"] {
       .sidebar a{
        color: #595959 !important;
       }
+     .sidebar a.active{
+      color: var(--primary-color);
+     }
     }
     table.sb-table-striped{
       .sb-table .sb-media .media-description{
