@@ -9,4 +9,5 @@ Promise.all([
     fse.copy('./OpenRAP/dist/project-sunbird-OpenRAP-1.0.2.tgz', 'app_dist/OpenRAP/dist/project-sunbird-OpenRAP-1.0.2.tgz'),
     fse.copy('./logo.png', 'app_dist/logo.png'),
     fse.copy('./../app/resourcebundles/json/', './app_dist/openrap-sunbirded-plugin/data/resourceBundles'),
+    fse.copy('./helper/appconfig.desktop', './app_dist/helper/appconfig.desktop')
 ])
