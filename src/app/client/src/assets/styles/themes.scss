@@ -206,8 +206,22 @@ html[accessable-theme="accessible"] {
       .sidebar a{
        color: #595959 !important;
       }
+     .sidebar a.active{
+      color: var(--primary-color);
+     }
     }
-   
+    table.sb-table-striped{
+      .sb-table .sb-media .media-description{
+        color: #525252 !important;
+      }
+    }
+    .report__header{
+      .content-header__title{
+        span.label-success{
+          color: #005700  !important;
+        }
+      }
+    }
   }
   //accessible scss end
 html.transition,

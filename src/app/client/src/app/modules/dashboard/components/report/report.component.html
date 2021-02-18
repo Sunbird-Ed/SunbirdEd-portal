@@ -25,7 +25,7 @@
                           <div class="d-flex flex-dc flex-basis-4">
                           <span *ngIf="!hideElements" class="relative position relative9 reports-back-btn my-0 pl-0 pr-10">
                             <span class="ui py-8 px-0">
-                              <button type="button" class="sb-btn sb-btn-link sb-btn-link-primary sb-left-icon-btn back-btn-new mb-5"
+                              <button type="button" class="sb-btn sb-btn-link sb-btn-link-primary sb-left-icon-btn back-btn-new mb-5" aria-label="back-button"
                                 (click)="gotoListPage()">
                                 <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
                                     <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
@@ -165,6 +165,7 @@
                           class="download icon"></i>
                         {{resourceService?.frmelmnts?.lbl?.downloadCsv}}</button>
                         <div class="sb-field mb-0 mr-8 d-flex flex-jc-flex-end"    >
+                          <label>
                           <sui-select *ngIf="showExportsOption" class="selection mr-12 active-btn"
                             [ngClass]="{'ml-auto': !currentReport?.reportMetaData?.downloadUrl}"
                             [placeholder]="'Export As'" (selectedOptionChange)="downloadReport($event)">
@@ -172,7 +173,7 @@
                               appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject()"
                               [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'export-chart', subtype: option})">
                             </sui-select-option>
-                          </sui-select>
+                          </sui-select></label>
                         </div>
                       </div>
                       </div>
