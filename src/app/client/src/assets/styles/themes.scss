@@ -212,6 +212,13 @@ html[accessable-theme="accessible"] {
         color: #525252 !important;
       }
     }
+    .report__header{
+      .content-header__title{
+        span.label-success{
+          color: #005700  !important;
+        }
+      }
+    }
   }
   //accessible scss end
 html.transition,

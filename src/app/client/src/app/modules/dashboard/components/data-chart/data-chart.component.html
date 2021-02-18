@@ -25,13 +25,14 @@
           [telemetryInteractEdata]="{id: 'report-chart', type: 'chart-summary', pageid: activatedRoute.snapshot.data.telemetry.pageid}"
           class="mr-8 sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn"><i class="add icon"></i>Add
           {{ resourceService?.frmelmnts?.lbl?.chartSummary}}</button> -->
+          <label>
         <sui-select class="selection" [placeholder]="'Select ChartType'"
           (selectedOptionChange)="changeChartType($event)">
           <sui-select-option appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
             [telemetryInteractEdata]="setTelemetryInteractEdata('chart-type-filter')"
             [telemetryInteractCdata]="telemetryCdata" *ngFor="let option of availableChartTypeOptions" [value]="option">
           </sui-select-option>
-        </sui-select>
+        </sui-select></label>
       </div>
    
     <button *ngIf="isUserReportAdmin && chartConfig.id" [ngClass]="{'hide': hideElements}" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
