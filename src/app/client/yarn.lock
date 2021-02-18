@@ -665,10 +665,10 @@
     "@project-sunbird/sunbird-player-sdk" "0.0.16"
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-video-player-v8@3.7.4":
-  version "3.7.4"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v8/-/sunbird-video-player-v8-3.7.4.tgz#91de25f5d49bde30c7bd4dfaa6eb2eb72c578042"
-  integrity sha512-vsBuEpCivljudH1AnbArEmyt7ALn5ggrezcep/RHEe2UhOpaof6j+R7hHy5+FB2X/pdz7GN5mUB9ruXcydA7vw==
+"@project-sunbird/sunbird-video-player-v8@3.7.5":
+  version "3.7.5"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v8/-/sunbird-video-player-v8-3.7.5.tgz#625875d05bedd617d65bd73f602be1aebb4e2444"
+  integrity sha512-x4AP+vN10ar9+eYo5eaUerveo0ueC01lc9H2C6Opipqeh9VF4TLCBNcgutBnfjPlsWHUQAVG4/57DFfc+n7GKw==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v8" "3.6.0"
     tslib "^1.9.0"
