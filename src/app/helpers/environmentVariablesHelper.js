@@ -166,6 +166,7 @@ let envVariables = {
   sunbird_portal_offline_app_version: env.sunbird_portal_offline_app_version,
   sunbird_portal_offline_app_download_url: env.sunbird_portal_offline_app_download_url,
   DESKTOP_APP_STORAGE_URL: env.desktop_app_storage_url,
+  DESKTOP_APP_ID: env.desktop_app_id || "staging.sunbird.desktop",
 
 
   // CDN Configuration
