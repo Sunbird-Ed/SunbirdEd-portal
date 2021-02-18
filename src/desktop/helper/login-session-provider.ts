@@ -1,4 +1,4 @@
-import { app, BrowserWindow, dialog, session } from "electron";
+import { app, BrowserWindow, dialog, session, shell } from "electron";
 import * as qs from 'qs';
 import * as _ from "lodash";
 import * as path from "path";
@@ -16,7 +16,7 @@ export class LoginSessionProvider {
     private redirectURI;
     private deviceId;
 
-    constructor(options: { parentWindow: any; loginFormCoing: any; appbaseUrl: string; deviceId: string; }) { 
+    constructor(options: { parentWindow: any; loginFormCoing?: any; appbaseUrl: string; deviceId: string; }) { 
         this.mainWindow = options.parentWindow;
         this.loginConfig = options.loginFormCoing;
         this.appBaseUrl = options.appbaseUrl;
@@ -190,36 +190,10 @@ export class LoginSessionProvider {
             this.getCaptureExtras().then((extras) => {
                 this.showLoader();
                 logger.debug(`Resolve redirect url from buildGoogleSessionProvider`);
-                const url = `${captured.googleRedirectUrl}?${qs.stringify(extras)}`;
-                this.loginWindow.loadURL(url, {
-                    userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome Electron/8.5.5 Safari/537.36"
-                }).then(() =>{
-                    this.capture({
-                        host: forCase.when.host,
-                        path: forCase.when.path,
-                        params: [{
-                                "key": "access_token",
-                                "resolveTo": "access_token"
-                            }, {
-                                "key": "refresh_token",
-                                "resolveTo": "refresh_token"
-                            }]
-                    }).then(async () =>
-                        this.success()
-                    ).then(async (captured) => {
-                        this.showLoader();
-                        logger.debug(`Resolve access token from buildGoogleSessionProvider`);
-                        const userData = {
-                            access_token: captured.access_token,
-                            refresh_token: captured.refresh_token
-                        };
-                        if(userData) {
-                            await this.getUsers(userData);
-                        }
-                    }).catch(err => { 
-                        this.showLoader();
-                    })
-                });
+                const parsedUrl = new URL(captured.googleRedirectUrl);
+                const url = `${parsedUrl.protocol}//${parsedUrl.hostname}${parsedUrl.pathname}?redirect_uri=${process.env.APP_BASE_URL}/v1/desktop/handleGauth&${qs.stringify(extras)}`;
+                global['childLoginWindow'] = this.loginWindow;
+                shell.openExternal(url);
             })
         );
     }
@@ -277,10 +251,14 @@ export class LoginSessionProvider {
 
     async closeLoginWindow(loginStatus: boolean, error_message?: string) {
         logger.debug(`closing login window with login status ${loginStatus}`);
+        if(!this.loginWindow) {
+            this.loginWindow = global['childLoginWindow'];
+        }
         await this.loginWindow.webContents.session.clearStorageData();
         this.loginWindow.close();
         this.captured = {};
         this.loginWindow = null;
+        global['childLoginWindow'] = null;
         if(loginStatus) {
             this.mainWindow.reload();
         } else {
@@ -345,7 +323,7 @@ export class LoginSessionProvider {
             });
     }
 
-    private async getUsers(userTokens) {
+    public async getUsers(userTokens) {
         const reqBody = userTokens;
         const appConfig = {
             headers: {
@@ -356,11 +334,11 @@ export class LoginSessionProvider {
             .toPromise()
             .then(async (response: any) => {
                 if (response) {
-                    this.closeLoginWindow(true);
+                    await this.closeLoginWindow(true);
                 }
-            }).catch((err) => {
-                logger.error(`Error while getUsers after resolving user token : ${err.message}`, err);
-                this.closeLoginWindow(false);
+            }).catch(async (err) => {
+                logger.error(`Error while getUsers after resolving user token : ${err.message}`);
+                await this.closeLoginWindow(false);
             });
     }
 }
