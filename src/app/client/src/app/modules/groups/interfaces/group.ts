@@ -49,7 +49,8 @@ export interface IGroupMember extends GroupMember {
 export enum actions {
   DELETE = 'delete',
   DEACTIVATE = 'deActivate',
-  ACTIVATE = 'activate'
+  ACTIVATE = 'activate',
+  DISABLE_FORUM = 'disableDiscussionForum'
 }
 
 export enum acceptTnc {

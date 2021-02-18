@@ -9,10 +9,9 @@ let envVariables = {
   APPID: process.env.sunbird_environment + '.' + process.env.sunbird_instance + '.portal',
   sunbird_instance_name: env.sunbird_instance || 'Sunbird',
   DEFAULT_CHANNEL: env.sunbird_default_channel,
-  // PORTAL_API_WHITELIST_CHECK: env.sunbird_enable_api_whitelist || 'true',
-  PORTAL_API_WHITELIST_CHECK: 'false',
+  PORTAL_API_WHITELIST_CHECK: env.sunbird_enable_api_whitelist || 'true',
 
-  // discussion forum 
+  // discussion forum
   discussions_middleware: env.discussions_middleware || 'http://discussionsmw-service:3002',
 
   // Application Start-up - Hosts and PORT Configuration
@@ -44,11 +43,11 @@ let envVariables = {
   SUNBIRD_PORTAL_BASE_URL: env.sunbird_portal_base_url,
   sunbird_device_api: env.sunbird_device_api || 'https://staging.ntp.net.in/api/',
   sunbird_portal_slugForProminentFilter: env.sunbird_portal_slugForProminentFilter,
-  sunbird_super_admin_slug: env.sunbird_super_admin_slug || 'sunbird', 
+  sunbird_super_admin_slug: env.sunbird_super_admin_slug || 'sunbird',
   sunbird_kid_public_key_base_path: env.sunbird_kid_public_key_base_path || '/keys/',
   reportsListVersion: env.reportsListVersion || 'v1',
   sunbird_data_product_service: env.sunbird_data_product_service || 'https://staging.ntp.net.in/',
-  
+
 
   // TTL and Intervals
   CONFIG_REFRESH_INTERVAL: env.config_refresh_interval || 10,
@@ -153,7 +152,7 @@ let envVariables = {
   sunbird_portal_cassandra_db_health_status: 'true',
 
 
-  // Bot configuration 
+  // Bot configuration
   sunbird_bot_configured: env.sunbird_bot_configured,
   sunbird_bot_service_URL: env.sunbird_bot_service_URL,
 

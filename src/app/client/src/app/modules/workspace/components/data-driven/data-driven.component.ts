@@ -15,6 +15,8 @@ import { WorkSpace } from '../../classes/workspace';
 import { WorkSpaceService } from '../../services';
 import { combineLatest, Subscription, Subject, of, throwError } from 'rxjs';
 import { takeUntil, first, mergeMap, map, tap , filter, catchError} from 'rxjs/operators';
+import { UUID } from 'angular2-uuid';
+
 @Component({
   selector: 'app-data-driven',
   templateUrl: './data-driven.component.html',
@@ -189,37 +191,47 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
         if (_.lowerCase(this.contentType) !== 'course') {
           this.framework = frameworkData.frameworkdata['defaultFramework'].code;
         }
-        const categoryList = {
-          'code' : 'primaryCategory',
-          'identifier': 'sb_primaryCategory',
-          'description': 'Primary Category',
-          'terms' : this.getCategoryList(this.contentType)
-        };
-        this.categoryMasterList.push(categoryList);
-        /**
-        * isCachedDataExists will check data is exists in cache or not. If exists should not call
-        * form api otherwise call form api and get form data
-        */
-        this.isCachedDataExists = this._cacheService.exists(this.contentType + this.formAction);
-        if (this.isCachedDataExists) {
-          const data: any | null = this._cacheService.get(this.contentType + this.formAction);
-          this.formFieldProperties = data;
+        if (_.lowerCase(this.contentType) === 'questionset') {
+          const reqData = this.generateQuestionSetData();
+          this.workSpaceService.createQuestionSet(reqData).subscribe(res => {
+            // tslint:disable-next-line:max-line-length
+            this.router.navigate(['workspace/edit/', 'QuestionSet', res.result.identifier, 'allcontent', 'Draft']);
+          }, err => {
+            this.toasterService.error(this.resourceService.messages.fmsg.m0102);
+          });
         } else {
-          const formServiceInputParams = {
-            formType: this.formType,
-            formAction: this.formAction,
-            contentType: this.contentType,
-            framework: this.framework
+          const categoryList = {
+            'code' : 'primaryCategory',
+            'identifier': 'sb_primaryCategory',
+            'description': 'Primary Category',
+            'terms' : this.getCategoryList(this.contentType)
           };
-          this.formService.getFormConfig(formServiceInputParams).subscribe(
-            (data: ServerResponse) => {
-              this.formFieldProperties = data;
-              this.getFormConfig();
-            },
-            (err: ServerResponse) => {
-              this.toasterService.error(this.resourceService.messages.emsg.m0005);
-            }
-          );
+          this.categoryMasterList.push(categoryList);
+          /**
+          * isCachedDataExists will check data is exists in cache or not. If exists should not call
+          * form api otherwise call form api and get form data
+          */
+          this.isCachedDataExists = this._cacheService.exists(this.contentType + this.formAction);
+          if (this.isCachedDataExists) {
+            const data: any | null = this._cacheService.get(this.contentType + this.formAction);
+            this.formFieldProperties = data;
+          } else {
+            const formServiceInputParams = {
+              formType: this.formType,
+              formAction: this.formAction,
+              contentType: this.contentType,
+              framework: this.framework
+            };
+            this.formService.getFormConfig(formServiceInputParams).subscribe(
+              (data: ServerResponse) => {
+                this.formFieldProperties = data;
+                this.getFormConfig();
+              },
+              (err: ServerResponse) => {
+                this.toasterService.error(this.resourceService.messages.emsg.m0005);
+              }
+            );
+          }
         }
       } else if (frameworkData && frameworkData.err) {
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
@@ -475,5 +487,25 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
       }
     }
     return primaryCategoryList;
+  }
+
+  generateQuestionSetData() {
+    let name = this.userService.userProfile.firstName;
+    if (!_.isEmpty(this.userService.userProfile.lastName)) {
+      name = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
+    }
+    return {
+        'questionset': {
+          name: 'Untitled QuestionSet',
+          mimeType: 'application/vnd.sunbird.questionset',
+          primaryCategory: 'Practice Question Set',
+          createdBy: this.userService.userProfile.id,
+          // organisation: _.uniq(this.userService.orgNames),
+          createdFor: this.userService.userProfile.organisationIds,
+          framework: this.framework,
+          // creator: name,
+          code: UUID.UUID()
+        }
+    };
   }
 }

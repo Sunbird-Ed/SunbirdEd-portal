@@ -76,6 +76,12 @@
       ],
       "@sunbird/location": [
         "app/modules/location"
+      ],
+      "sunbird-question-editor": [
+        "../node_modules/@project-sunbird/sunbird-question-editor"
+      ],
+      "sunbird-question-editor/*": [
+        "../node_modules/@project-sunbird/sunbird-question-editor/*"
       ]
     },
     "module": "es2015",
