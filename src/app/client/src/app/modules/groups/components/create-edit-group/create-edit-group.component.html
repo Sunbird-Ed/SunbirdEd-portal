@@ -33,7 +33,7 @@
       </div>
       <div class="sb-field mt-24 mb-8" *ngIf="!groupId">
       <label class="d-flex flex-ai-center">
-        <input type="checkbox" aria-labelledby="terms and agreement" role="checkbox" class="mr-8 cursor-pointer" formControlName="groupToc"
+        <input type="checkbox" role="checkbox" class="mr-8 cursor-pointer" formControlName="groupToc"
         [ngClass]="{'is-invalid' : isFieldValid('groupToc')}">
         <span class="font-weight-normal fnormal">{{resourceService?.frmelmnts?.lbl?.agreeGroupToc | interpolate:'{instance}': instance }} <a href="{{url}}/term-of-use.html#groupGuidelines" target="_blank" class="sb-color-primary">{{resourceService?.frmelmnts?.lbl?.groupGuidelines}}</a></span>
       </label>

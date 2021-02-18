@@ -207,7 +207,11 @@ html[accessable-theme="accessible"] {
        color: #595959 !important;
       }
     }
-   
+    table.sb-table-striped{
+      .sb-table .sb-media .media-description{
+        color: #525252 !important;
+      }
+    }
   }
   //accessible scss end
 html.transition,
