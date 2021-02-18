@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const path = require('path');
 const { googleOauth, createSession, fetchUserByEmailId, createUserWithMailId } = require('./../helpers/googleOauthHelper');
 const telemetryHelper = require('../helpers/telemetryHelper')
 const googleDid = '2c010e13a76145d864e459f75a176171';
@@ -7,6 +8,7 @@ const utils = require('../helpers/utilityService');
 const GOOGLE_SIGN_IN_DELAY = 3000;
 const uuid = require('uuid/v1')
 const REQUIRED_STATE_FIELD = ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type', 'version', 'merge_account_process'];
+const envHelper = require('../helpers/environmentVariablesHelper.js');
 /**
  * keycloack adds this string to track auth redirection and 
  * with this it triggers auth code verification to get token and create session
@@ -87,6 +89,15 @@ module.exports = (app) => {
       logErrorEvent(req, errType, error);
     } finally {
       logger.info({msg: 'redirecting to ' + redirectUrl});
+      if(reqQuery.client_id === 'desktop') {
+        const protocol = envHelper.DESKTOP_APP_ID.replace(/\./g, "");
+        const reponseData = `${protocol}://google/signin?access_token=${data.access_token}`;
+        logger.info({msg: 'DESKTOP REDIRECT URL ' + reponseData});
+        res.render(
+            path.join(__dirname, "googleResponse.ejs"), 
+            {data: reponseData}
+        );
+      }
       res.redirect(redirectUrl || '/resources');
     }
   });
