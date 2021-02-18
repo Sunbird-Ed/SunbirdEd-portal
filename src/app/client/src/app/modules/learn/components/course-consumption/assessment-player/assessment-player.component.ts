@@ -670,12 +670,15 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
           .pipe(takeUntil(this.unsubscribe))
           .subscribe((_res) => {
             const res = this.CourseProgressService.getContentProgressState(req, _res);
+            /* istanbul ignore next*/
             _.forEach(_.get(res, 'content'), (contentState) => {
               if (_.get(contentState, 'contentId') === this.activeContent.identifier) {
+                /* istanbul ignore next*/
                 if (_.get(contentState, 'score.length') >= _.get(this.activeContent, 'maxAttempts')) maxAttemptsExceeded = true;
                 if (_.get(this.activeContent, 'maxAttempts') - _.get(contentState, 'score.length') === 1) isLastAttempt = true;
-                /* istanbul ignore if */
+                /* istanbul ignore next*/
                 if (_.get(this.activeContent, 'contentType') === 'SelfAssess') {
+                  /* istanbul ignore next*/
                   const _contentIndex = _.findIndex(this.contentStatus, {contentId: _.get(this.activeContent, 'identifier')});
                   this.contentStatus[_contentIndex]['bestScore'] = _.get(contentState, 'bestScore');
                   this.contentStatus[_contentIndex]['score'] = _.get(contentState, 'score');
@@ -701,8 +704,11 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
             console.log('Content state read CSL API failed ', error);
           });
       } else {
+        /* istanbul ignore next*/
         _.forEach(this.contentStatus, (contentState) => {
+          /* istanbul ignore next*/
           if (_.get(contentState, 'contentId') === _.get(this.activeContent, 'identifier')) {
+            /* istanbul ignore next*/
             if (_.get(contentState, 'score.length') >= _.get(this.activeContent, 'maxAttempts')) maxAttemptsExceeded = true;
             if (_.get(this.activeContent, 'maxAttempts') - _.get(contentState, 'score.length') === 1) isLastAttempt = true;
           }
