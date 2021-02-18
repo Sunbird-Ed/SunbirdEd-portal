@@ -123,7 +123,6 @@
             <label class="d-block footer-terms-info text-left font-weight-normal">
               <a *ngIf="!isDesktopApp" appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"
                 href="/term-of-use.html">{{resourceService.frmelmnts?.lnk?.footerTnC}}</a>
-              <span>| &copy; {{date | date:'yyyy'}}, {{instance}}</span>
               <a *ngIf="isDesktopApp" appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"
                 href="{{appBaseUrl}}/term-of-use.html" target="_blank">{{resourceService.frmelmnts?.lnk?.footerTnC}}</a>
               <span>| &copy; {{date | date:'yyyy'}}, {{instance}}</span>

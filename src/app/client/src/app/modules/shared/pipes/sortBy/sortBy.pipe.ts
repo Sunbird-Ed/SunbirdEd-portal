@@ -6,7 +6,7 @@
  */
 
 import { Pipe, PipeTransform } from '@angular/core';
-import { orderBy } from 'lodash-es';
+import { orderBy, get, toLower, trim } from 'lodash-es';
 
 @Pipe({
   name: 'sortBy'
@@ -30,9 +30,6 @@ export class SortByPipe implements PipeTransform {
         return data.sort().reverse();
       }
     }
-    data.forEach((obj) => {
-      obj[sortField] = obj[sortField].trim();
-    });
-    return orderBy(data, [sortField], [sortOrder]);
+    return orderBy(data, val => toLower(trim(get(val, [sortField]))), [sortOrder]);
   }
 }
