@@ -76,7 +76,7 @@ app.all([
   '/sso/sign-in/*'
 ],
   session({
-    secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
+    secret: envHelper.PORTAL_SESSION_SECRET_KEY,
     resave: false,
     cookie: {
       maxAge: envHelper.sunbird_session_ttl 

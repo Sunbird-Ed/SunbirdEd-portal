@@ -39,14 +39,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   showFilters: Boolean = true;
   dateFilters:Array<string>;
   public unsubscribe = new Subject<void>();
-  private _selectedFilter; // private property _item
-  private _resetFilters;
-
-  // use getter setter to define the property
-  get selectedFilter(): any {
-    return this._selectedFilter;
-  }
-
+ 
   @Input()
   set selectedFilter(val: any) {
     if (val) {
@@ -63,23 +56,16 @@ export class FilterComponent implements OnInit, OnDestroy {
     }
   }
 
-  get resetFilters(): any {
-    return this._resetFilters;
-  }
 
   @Input()
   set resetFilters(val: any) {
     if (val) {
-        // to apply current filters to new updated chart data;
         const currentFilterValue = _.get(this.filtersFormGroup, 'value');
         this.resetFilter();
         this.chartData = val.data;
         this.buildFiltersForm();
         if(val.reset && val.reset==true){
           this.selectedFilters = {};
-          if(val.filters){
-            this.filters = val.filters;
-          }
         }
         else if(val.filters){
           this.filtersFormGroup.patchValue(val.filters);
@@ -111,7 +97,6 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
     if (this.filters) {
       this.buildFiltersForm();
     }
@@ -131,13 +116,14 @@ export class FilterComponent implements OnInit, OnDestroy {
         this.dateFilterReferenceName = filter.reference;
       }
       this.filtersFormGroup.addControl(_.get(filter, 'reference'), this.fb.control(''));
-      filter.options = _.sortBy(_.uniq(_.map(chartData, data => data[filter.reference].toLowerCase())));
+      filter.options = (_.sortBy(_.uniq(
+        _.map(chartData, (data) =>  data[filter.reference] ? data[filter.reference].toLowerCase() : ""
+        )))).filter(Boolean);
 
     });
   }
 
   buildFiltersForm() {
-   
     this.formGeneration(this.chartData);
     this.filtersSubscription = this.filtersFormGroup.valueChanges
       .pipe(
@@ -150,7 +136,6 @@ export class FilterComponent implements OnInit, OnDestroy {
       )
       .subscribe((filters) => {
         this.selectedFilters = filters;
-        // this.selectedFilters = _.omit(filters, this.dateFilterReferenceName); // to omit date inside labels
         this.filterData();
 
       }, (err) => {
@@ -158,7 +143,6 @@ export class FilterComponent implements OnInit, OnDestroy {
       });
       if(this.chartData.selectedFilters){
           this.filtersFormGroup.patchValue(this.chartData.selectedFilters);
-          // this.selectedFilters = this.chartData.selectedFilters;
       }
   
   }
@@ -198,8 +182,10 @@ export class FilterComponent implements OnInit, OnDestroy {
   filterData() {
     if (this.selectedFilters) {
       const res: Array<{}> = _.filter(this.chartData, data => {
-        return _.every(this.selectedFilters, (filterValues, key) => {
-          return _.some(filterValues, filterValue => _.trim(_.toLower(filterValue)) === _.trim(_.toLower(_.get(data, key))));
+        return _.every(this.selectedFilters, (value, key) => {
+          if(data[key]){
+            return _.includes(_.toLower(value), data[key].toLowerCase());
+          }
         });
       });
 
