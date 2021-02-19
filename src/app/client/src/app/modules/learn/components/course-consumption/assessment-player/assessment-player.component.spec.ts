@@ -29,8 +29,10 @@ describe('AssessmentPlayerComponent', () => {
   const resourceMockData = {
     messages: {
       fmsg: { m0051: 'Fetching districts failed. Try again later' },
-      stmsg: { m0009: 'Cannot un-enrol now. Try again later', m0005: 'Something went wrong' }
-    }
+      stmsg: { m0009: 'Cannot un-enrol now. Try again later', m0005: 'Something went wrong' },
+      lbl: { noContentAvailable: 'No content available' }
+    },
+    languageSelected$: of({})
   };
 
   const fakeActivatedRoute = {
@@ -88,9 +90,11 @@ describe('AssessmentPlayerComponent', () => {
 
   it('should call ngOnInit', () => {
     spyOn<any>(component, 'subscribeToQueryParam');
+    spyOn(component, 'getLanguageChangeEvent');
     fixture.detectChanges();
     component.ngOnInit();
     expect(component['subscribeToQueryParam']).toHaveBeenCalled();
+    expect(component.getLanguageChangeEvent).toHaveBeenCalled();
   });
 
   it('should go to courseDetails page', fakeAsync(() => {
@@ -191,6 +195,11 @@ describe('AssessmentPlayerComponent', () => {
     component['initPlayer']('do_3232431');
     expect(component.showLoader).toBe(true);
     expect(component.playerConfig).toEqual({});
+  });
+
+  it('should call getLanguageChangeEvent', () => {
+    component.getLanguageChangeEvent();
+    expect(component.noContentMessage).toEqual('No content available');
   });
 
   it('should call initPlayer on error', () => {
