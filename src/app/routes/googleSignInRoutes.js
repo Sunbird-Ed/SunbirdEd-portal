@@ -91,7 +91,7 @@ module.exports = (app) => {
       logger.info({msg: 'redirecting to ' + redirectUrl});
       if(reqQuery.client_id === 'desktop') {
         const protocol = envHelper.DESKTOP_APP_ID.replace(/\./g, "");
-        const reponseData = `${protocol}://google/signin${getQueryParams(keyCloakToken)}`;
+        const reponseData = `${protocol}://google/signin?access_token=${keyCloakToken.access_token}`;
         logger.info({msg: 'DESKTOP REDIRECT URL ' + reponseData});
         res.render(
             path.join(__dirname, "googleResponse.ejs"), 
