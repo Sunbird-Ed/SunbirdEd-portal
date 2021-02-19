@@ -1,11 +1,39 @@
 <div [ngClass]="!layoutConfiguration ? 'footer-fix' : 'new-footer'">
 <app-desktop-app-update *appDesktopOnly></app-desktop-app-update>
 <div [ngClass]="{'loggedInUser': userService.loggedIn, 'guestUser': !userService.loggedIn}">
+  <div class="ui container sbt-container d-flex flex-ai-center sb-bg-color-black py-4 flex-w-wrap sbt-sticky sbt-sticky-topbar sb-fontresizecontainer">
+    <div class="sb-color-white fxsmall mr-auto"><img src="https://static.preprod.ntp.net.in/tenants/ntp/diksha-mission/Flag_of_India.svg" width="32"
+        alt="DIKSHA" />
+      &nbsp;{{resourceService?.frmelmnts?.lbl?.govtofindia}}</div>
+    <div class="d-flex flex-ai-center">
+      <ul class="d-flex flex-ai-center fsmall sb-color-white mb-0">
+        <li class="mb-0"><a href="" class="cursor-pointer sb-color-white">{{resourceService?.frmelmnts?.lbl?.skiptomaincontent}}</a></li><li class="mx-4 mb-0">|</li>
+        <li class="mb-0"><a href="" class="cursor-pointer sb-color-white">{{resourceService?.frmelmnts?.lbl?.screenreader}}</a></li><li class="mx-4 mb-0">|</li>
+        <li class="mb-0"><a href="" class="cursor-pointer sb-color-white">{{resourceService?.frmelmnts?.lbl?.sitemap}}</a></li><li class="mx-4 mb-0">|</li>
+      </ul>
+      <div class="fontResize-container d-flex flex-ai-center pull-right">
+        <!-- <span class="fxsmall computer only mr-8 sb-color-white">Text Size: {{fontSize}}</span> -->
+        <button type="button" class="fontResizeBtn fontResizeBtn_A-" title="Decrease Font Size" 
+          (click)="changeFontSize('decrease');" #decreaseFontSize>{{resourceService?.frmelmnts?.lbl?.aminus}}</button>
+        <button type="button" class="fontResizeBtn fontResizeBtn_A" title="Reset to Default" (click)="changeFontSize('reset');"
+          #resetFontSize>{{resourceService?.frmelmnts?.lbl?.a}}</button>
+        <button type="button" class="fontResizeBtn fontResizeBtn_A+" title="Increase Font Size"
+        (click)="changeFontSize('increase');" #increaseFontSize>{{resourceService?.frmelmnts?.lbl?.aplus}}</button>
+      </div>
+      <!-- <button id="dark-mode-toggle" class="dark-mode-toggle ml-8" title="Switch Mode">
+        <svg width="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 496">
+          <path fill="#fff"
+            d="M8,256C8,393,119,504,256,504S504,393,504,256,393,8,256,8,8,119,8,256ZM256,440V72a184,184,0,0,1,0,368Z"
+            transform="translate(-8 -8)" />
+        </svg>
+      </button> -->
+    </div>
+  </div>
   <app-popup #frameWorkPopUp *ngIf="showFrameWorkPopUp"
     [buttonLabel]="resourceService.frmelmnts.btn.submit" (submit)="updateFrameWork($event)"></app-popup>
   <app-tnc-popup (close)="onAcceptTnc()" #termsAndCondPopUp *ngIf="showTermsAndCondPopUp">
   </app-tnc-popup>
-  <div class="mb-16" *ngIf="showGlobalConsentPopUpSection">
+  <div *ngIf="showGlobalConsentPopUpSection">
     <app-global-consent-pii [type]="globalConsent" [isglobalConsent]="isglobalConsent" (close)="closeConsentPopUp()" [consentConfig]="consentConfig"></app-global-consent-pii>
   </div>
   <app-validate-teacher-identifier-popup *ngIf="showUserVerificationPopup && labels" [labels]="labels" [userFeedData]="userFeed"> </app-validate-teacher-identifier-popup>
