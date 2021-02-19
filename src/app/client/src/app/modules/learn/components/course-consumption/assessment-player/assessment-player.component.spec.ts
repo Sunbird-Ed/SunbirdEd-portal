@@ -29,8 +29,7 @@ describe('AssessmentPlayerComponent', () => {
   const resourceMockData = {
     messages: {
       fmsg: { m0051: 'Fetching districts failed. Try again later' },
-      stmsg: { m0009: 'Cannot un-enrol now. Try again later', m0005: 'Something went wrong' },
-      lbl: { noContentAvailable: 'No content available' }
+      stmsg: { m0009: 'Cannot un-enrol now. Try again later', m0005: 'Something went wrong', m0121: 'Content not added yet' }
     },
     languageSelected$: of({})
   };
@@ -199,7 +198,7 @@ describe('AssessmentPlayerComponent', () => {
 
   it('should call getLanguageChangeEvent', () => {
     component.getLanguageChangeEvent();
-    expect(component.noContentMessage).toEqual('No content available');
+    expect(component.noContentMessage).toEqual('Content not added yet');
   });
 
   it('should call initPlayer on error', () => {

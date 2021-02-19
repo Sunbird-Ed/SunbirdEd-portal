@@ -147,7 +147,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
       this.isFullScreenView = isFullScreen;
     });
-    this.noContentMessage = _.get(this.resourceService, 'messages.lbl.noContentAvailable');
+    this.noContentMessage = _.get(this.resourceService, 'messages.stmsg.m0121');
     this.getLanguageChangeEvent();
   }
   initLayout() {
@@ -176,7 +176,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
 
   getLanguageChangeEvent() {
     this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe)).subscribe(item => {
-      this.noContentMessage = _.get(this.resourceService, 'messages.lbl.noContentAvailable');
+      this.noContentMessage = _.get(this.resourceService, 'messages.stmsg.m0121');
     });
   }
 

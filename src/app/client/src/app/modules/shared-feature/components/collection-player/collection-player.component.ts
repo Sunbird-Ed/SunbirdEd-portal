@@ -130,7 +130,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
 
   ngOnInit() {
     this.isDesktopApp = this.utilService.isDesktopApp;
-    this.noContentMessage = _.get(this.resourceService, 'messages.lbl.noContentAvailable');
+    this.noContentMessage = _.get(this.resourceService, 'messages.stmsg.m0121');
     this.playerServiceReference = this.userService.loggedIn ? this.playerService : this.publicPlayerService;
     this.initLayout();
     this.dialCode = _.get(this.route, 'snapshot.queryParams.dialCode');
@@ -353,7 +353,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   getGeneraliseResourceBundle(data) {
     this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
       this.generaliseLabelService.initialize(data, item.value);
-      this.noContentMessage = _.get(this.resourceService, 'messages.lbl.noContentAvailable');
+      this.noContentMessage = _.get(this.resourceService, 'messages.stmsg.m0121');
     });
   }
 
