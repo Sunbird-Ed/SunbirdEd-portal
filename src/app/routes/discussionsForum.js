@@ -16,6 +16,7 @@ module.exports = function (app) {
     app.post(`${BASE_REPORT_URL}/forum/v2/create`, proxyUtils.verifyToken(), proxyObject());
     app.post(`${BASE_REPORT_URL}/forum/v2/remove`, proxyUtils.verifyToken(), proxyObject());
     app.post(`${BASE_REPORT_URL}/forum/v3/create`, proxyUtils.verifyToken(), proxyObject());
+    // copu privileges from selected category or from parent category
     app.post(`${BASE_REPORT_URL}/privileges/v2/copy`, proxyUtils.verifyToken(), proxyObject());
 
     app.get(`${BASE_REPORT_URL}/tags`, proxyUtils.verifyToken(), proxyObject());
