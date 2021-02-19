@@ -246,6 +246,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
                 this.contentList = _.get(data, 'result.content') ? this.getOrderedData(_.get(data, 'result.content')) : [];
                 this.addHoverData();
                 this.totalCount = data.result.count;
+                this.setNoResultMessage();
             }, err => {
                 this.showLoader = false;
                 this.contentList = [];
