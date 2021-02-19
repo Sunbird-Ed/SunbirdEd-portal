@@ -1,6 +1,7 @@
 <div [ngClass]="!layoutConfiguration ? 'footer-fix' : 'new-footer'">
 <app-desktop-app-update *appDesktopOnly></app-desktop-app-update>
 <div [ngClass]="{'loggedInUser': userService.loggedIn, 'guestUser': !userService.loggedIn}">
+  <!-- Font Resize Header -->
   <div class="ui container sbt-container d-flex flex-ai-center sb-bg-color-black py-4 flex-w-wrap sbt-sticky sbt-sticky-topbar sb-fontresizecontainer">
     <div class="sb-color-white fxsmall mr-auto"><img src="https://static.preprod.ntp.net.in/tenants/ntp/diksha-mission/Flag_of_India.svg" width="32"
         alt="DIKSHA" />
