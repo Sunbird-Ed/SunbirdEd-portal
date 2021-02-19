@@ -91,14 +91,15 @@ module.exports = (app) => {
       logger.info({msg: 'redirecting to ' + redirectUrl});
       if(reqQuery.client_id === 'desktop') {
         const protocol = envHelper.DESKTOP_APP_ID.replace(/\./g, "");
-        const reponseData = `${protocol}://google/signin?access_token=${data.access_token}`;
+        const reponseData = `${protocol}://google/signin${getQueryParams(keyCloakToken)}`;
         logger.info({msg: 'DESKTOP REDIRECT URL ' + reponseData});
         res.render(
             path.join(__dirname, "googleResponse.ejs"), 
             {data: reponseData}
         );
+      } else {
+        res.redirect(redirectUrl || '/resources');
       }
-      res.redirect(redirectUrl || '/resources');
     }
   });
 }
