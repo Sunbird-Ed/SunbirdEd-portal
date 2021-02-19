@@ -184,8 +184,9 @@ getActivity(groupId, activity, mergeGroup) {
 
   addGroupPaletteList(groupList: []) {
 
+
     const bgColors = ['#FFDFD9', '#FFD6EB', '#DAD4FF', '#DAFFD8', '#C2E2E9', '#FFE59B', '#C2ECE6', '#FFDFC7', '#D4F386', '#E1E1E1'];
-    const titleColors = ['#EA2E52', '#FD59B3', '#635CDC', '#218432', '#07718A', '#8D6A00', '#149D88', '#AD632D', '#709511', '#666666'];
+    const titleColors = ['#870D24', '#920251', '#2F27B9', '#218432', '#07718A', '#5C4500', '#0C554A', '#6D3E1C', '#374809', '#666666'];
 
     _.forEach(groupList, group => {
       group.cardBgColor = bgColors[Math.floor(
