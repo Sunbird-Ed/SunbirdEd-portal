@@ -86,6 +86,7 @@ module.exports = (app, keycloak) => {
   })
 
   app.all('/play/quiz/*', playContent);
+  app.all('/manage-learn/*', MLContent);
 
   app.all('/get/dial/:dialCode',(req,res,next) => {
       if (_.get(req, 'query.channel')) {
@@ -309,6 +310,13 @@ const redirectTologgedInPage = (req, res) => {
 const playContent = (req, res) => {
   if (req.path.includes('/play/quiz') && fs.existsSync(path.join(__dirname, '../tenant/quiz/', 'index.html'))){
     res.sendFile(path.join(__dirname, '../tenant/quiz/', 'index.html'));
+  } else {
+    renderDefaultIndexPage(req, res);
+  }
+}
+const MLContent = (req, res) => {
+  if (req.path.includes('/manage-learn/') && fs.existsSync(path.join(__dirname, '../tenant/manage-learn/', 'index.html'))){
+    res.sendFile(path.join(__dirname, '../tenant/manage-learn/', 'index.html'));
   } else {
     renderDefaultIndexPage(req, res);
   }
