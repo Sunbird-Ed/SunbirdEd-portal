@@ -60,7 +60,7 @@
           <div class="input-div relative">
             <i class="search icon" aria-hidden="true"></i>
             <input class="sb-search-input" type="text" #searchInputBox (input)="search(searchInputBox.value)"
-              [placeholder]="resourceService?.frmelmnts?.lbl?.searchWithinGroup" />
+              [placeholder]="resourceService?.frmelmnts?.lbl?.searchWithinGroup" aria-label="search box" />
           </div>
           <button class="sb-btn sb-btn-normal" type="button">{{ resourceService?.frmelmnts?.lbl?.search }}</button>
         </div>
