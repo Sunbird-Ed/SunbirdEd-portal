@@ -529,7 +529,7 @@ app-workspace {
 }
 
 .sbt-sticky-topbar {
-  top: calculateRem(32px);
+  top: calculateRem(48px);
   z-index: 10;
   &.player-fullscreen-header{
     display: none;
@@ -758,6 +758,9 @@ app-workspace {
 /* theme and font resize css */
 .sb-fontresizecontainer {
   top: 0;
+  @include respond-below(sm) {
+    padding: calculateRem(8px);
+  }
 }
 
 .fontResizeBtn_A- {}
@@ -767,38 +770,12 @@ app-workspace {
 .fontResizeBtn_A+ {}
 
 .fontResizeBtn {
-  border: 0px;
-  font-size: 0.75rem;
-  background: none;
-  color: #fff;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0px 2px;
-  padding: 0px 8px;
-}
-
-/* theme and font resize css */
-.fontResizeBtn_A- {
-  font-size: 12px;
-}
-
-.fontResizeBtn_A {
-  font-size: 14px;
-}
-
-.fontResizeBtn_A+ {
-  font-size: 16px;
-}
-
-.fontResizeBtn {
   border: 1px solid #484848;
   background: none;
   color: var(--white);
-  width: 24px;
-  height: 24px;
+  font-size: calculateRem(12px);
+  width: calculateRem(32px);
+  height: calculateRem(32px);
   display: flex;
   align-items: center;
   justify-content: center;
