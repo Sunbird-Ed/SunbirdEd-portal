@@ -735,11 +735,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
     if (value === 'increase') {
       this.fontSize = this.fontSize + 2;
-      this.fontSize <= 20 ? this.setLocalFontSize(this.fontSize) : this.defaultFontSize;
+      this.fontSize = this.fontSize <= 20 ? this.setLocalFontSize(this.fontSize) : this.defaultFontSize;
 
     } else if (value === 'decrease') {
       this.fontSize = this.fontSize - 2;
-      this.fontSize >= 12 ? this.setLocalFontSize(this.fontSize) : this.defaultFontSize;
+      this.fontSize = this.fontSize >= 12 ? this.setLocalFontSize(this.fontSize) : this.defaultFontSize;
 
     } else {
       this.setLocalFontSize(this.defaultFontSize);
