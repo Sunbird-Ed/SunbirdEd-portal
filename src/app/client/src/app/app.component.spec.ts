@@ -11,7 +11,7 @@ import { TelemetryService, TELEMETRY_PROVIDER } from '@sunbird/telemetry';
 import { TestBed, async, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { mockData } from './app.component.spec.data';
 import { AppComponent } from './app.component';
-import { NO_ERRORS_SCHEMA, Renderer2 } from '@angular/core';
+import { ElementRef, NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import * as _ from 'lodash-es';
@@ -31,13 +31,17 @@ class RouterStub {
     observer.complete();
   });
 }
+
+class MockElementRef {
+  nativeElement: {};
+}
+
 const fakeActivatedRoute = {
   snapshot: {
     root: { firstChild: { params: { slug: 'sunbird' } } }
   },
   queryParams: of({})
 };
-const renderer2Stub = { setAttribute: () => ({}), removeAttribute: () => ({}) };
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -58,7 +62,7 @@ describe('AppComponent', () => {
       providers: [
         { provide: Router, useClass: RouterStub},
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
-        { provide: Renderer2, useValue: renderer2Stub },
+        { provide: ElementRef, useValue: new MockElementRef() },
         ToasterService, TenantService, CacheService, AnimationBuilder,
         UserService, ConfigService, LearnerService, BrowserCacheTtlService,
         PermissionService, ResourceService, CoursesService, OrgDetailsService, ProfileService,
@@ -362,4 +366,32 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     expect(component.isDisableFontSize).toHaveBeenCalledWith(12);
   });
 
+  it('should call isDisableFontSize with the value 12', () => {
+    const setAttributeSpy = spyOn<any>(component['renderer'], 'setAttribute');
+    const removeAttributeSpy = spyOn<any>(component['renderer'], 'removeAttribute');
+    const increaseFontSize = component.increaseFontSize = TestBed.get(ElementRef);
+    const decreaseFontSize = component.decreaseFontSize  = TestBed.get(ElementRef);
+    const resetFontSize = component.resetFontSize  = TestBed.get(ElementRef);
+
+    component.isDisableFontSize(20);
+    expect(setAttributeSpy).toHaveBeenCalledWith(increaseFontSize.nativeElement, 'disabled', 'true');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(resetFontSize.nativeElement, 'disabled');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(decreaseFontSize.nativeElement, 'disabled');
+
+    component.isDisableFontSize(12);
+    expect(setAttributeSpy).toHaveBeenCalledWith(decreaseFontSize.nativeElement, 'disabled', 'true');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(resetFontSize.nativeElement, 'disabled');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(increaseFontSize.nativeElement, 'disabled');
+
+    component.isDisableFontSize(16);
+    expect(setAttributeSpy).toHaveBeenCalledWith(resetFontSize.nativeElement, 'disabled', 'true');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(increaseFontSize.nativeElement, 'disabled');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(decreaseFontSize.nativeElement, 'disabled');
+
+    component.isDisableFontSize(14);
+    expect(removeAttributeSpy).toHaveBeenCalledWith(increaseFontSize.nativeElement, 'disabled');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(resetFontSize.nativeElement, 'disabled');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(decreaseFontSize.nativeElement, 'disabled');
+
+  });
 });

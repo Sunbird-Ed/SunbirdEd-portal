@@ -1,10 +1,8 @@
 <div [ngClass]="!layoutConfiguration ? 'footer-fix' : 'new-footer'">
 <app-desktop-app-update *appDesktopOnly></app-desktop-app-update>
 <div [ngClass]="{'loggedInUser': userService.loggedIn, 'guestUser': !userService.loggedIn}">
-  <div class="ui container sbt-container d-flex flex-ai-center sb-bg-color-black py-4 flex-w-wrap sbt-sticky sbt-sticky-topbar sb-fontresizecontainer">
-    <div class="sb-color-white fxsmall mr-auto"><img src="https://static.preprod.ntp.net.in/tenants/ntp/diksha-mission/Flag_of_India.svg" width="32"
-        alt="DIKSHA" />
-      &nbsp;{{resourceService?.frmelmnts?.lbl?.govtofindia}}</div>
+  <div class="ui container sbt-container d-flex flex-ai-center sb-bg-color-black py-4 flex-w-wrap sbt-sticky sbt-sticky-topbar sb-fontresizecontainer flex-jc-flex-end">
+
     <div class="d-flex flex-ai-center">
       <ul class="d-flex flex-ai-center fsmall sb-color-white mb-0">
         <li class="mb-0"><a href="" class="cursor-pointer sb-color-white">{{resourceService?.frmelmnts?.lbl?.skiptomaincontent}}</a></li><li class="mx-4 mb-0">|</li>
