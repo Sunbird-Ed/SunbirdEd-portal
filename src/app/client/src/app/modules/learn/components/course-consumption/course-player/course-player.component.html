@@ -238,11 +238,8 @@
 <!-- Start - Modal for Assessment attempts -->
 <sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
     appBodyScroll #modal *ngIf="showLastAttemptsModal">
-    <div class="sb-modal-header">
-        {{resourceService?.frmelmnts?.lbl?.accessCourse}}
-    </div>
     <div class="sb-modal-content sb-join-modal-content">
-        <div class="fsmall px-0 py-8">
+        <div class="sb-h4 px-0 py-20">
           {{resourceService?.frmelmnts?.lbl?.selfAssessLastAttempt}}
         </div>
     </div>

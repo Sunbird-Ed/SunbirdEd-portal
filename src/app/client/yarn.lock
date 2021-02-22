@@ -600,10 +600,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/discussions-ui-v8@2.0.15":
-  version "2.0.15"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.0.15.tgz#e3f9a48ef3dc83045446548de026087ab34dd4e3"
-  integrity sha512-1ZYteo2Bj3e4e/al1qnQRy0JOAmPlga+JE0H/1ZG4voEJqrk7mZ4zdrtNYat1aX/RzkB/YAIrfdS2vceuoF4ow==
+"@project-sunbird/discussions-ui-v8@2.0.16":
+  version "2.0.16"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.0.16.tgz#41d686eb0bf6d9f6421e311b5d4fccc00cb74dd4"
+  integrity sha512-usuIxhZvT+SNVi56T5ubk/fcTsBfAi4N70C0Cv5K5WNF/5IZt7+xSTe5EU48uu8+2uLeqyD/jskui9Fq7kFy2g==
   dependencies:
     tslib "^1.9.0"
 
@@ -665,12 +665,12 @@
     "@project-sunbird/sunbird-player-sdk" "0.0.16"
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-video-player-v8@3.7.1":
-  version "3.7.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v8/-/sunbird-video-player-v8-3.7.1.tgz#7b263c67864952b700275b3016c36ca735ce5869"
-  integrity sha512-Xuj6AI6P777QdxTlHuW4S/vVS98s+yezM45GdN/U/bYTa6ID2x57R2oQkZfeaVKTKoFBkJfUxhjX5B8rSn0brw==
+"@project-sunbird/sunbird-video-player-v8@3.7.5":
+  version "3.7.5"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v8/-/sunbird-video-player-v8-3.7.5.tgz#625875d05bedd617d65bd73f602be1aebb4e2444"
+  integrity sha512-x4AP+vN10ar9+eYo5eaUerveo0ueC01lc9H2C6Opipqeh9VF4TLCBNcgutBnfjPlsWHUQAVG4/57DFfc+n7GKw==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v8" "3.7.1"
+    "@project-sunbird/sunbird-player-sdk-v8" "3.6.0"
     tslib "^1.9.0"
 
 "@project-sunbird/telemetry-sdk@0.0.26":
