@@ -1575,6 +1575,7 @@ const API_LIST = {
       description: 'Object category read',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
+    },
     '/learner/user/v1/role/assign': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ORG_ADMIN]
