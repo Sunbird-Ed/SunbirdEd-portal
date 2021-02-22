@@ -5,7 +5,7 @@ import {
   UtilService, ResourceService, ToasterService, IUserData, IUserProfile,
   NavigationHelperService, ConfigService, BrowserCacheTtlService, LayoutService
 } from '@sunbird/shared';
-import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, AfterViewInit, ChangeDetectorRef, ElementRef, Renderer2 } from '@angular/core';
 import {
   UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService,
   SessionExpiryInterceptor, FormService, ProgramsService, GeneraliseLabelService
@@ -105,6 +105,12 @@ export class AppComponent implements OnInit, OnDestroy {
   showJoyThemePopUp = false;
   public unsubscribe$ = new Subject<void>();
   consentConfig: { tncLink: string; tncText: any; };
+  // Font Increase Decrease Variables
+  fontSize: any;
+  defaultFontSize = 16;
+  @ViewChild('increaseFontSize', {static: false}) increaseFontSize: ElementRef;
+  @ViewChild('decreaseFontSize', {static: false}) decreaseFontSize: ElementRef;
+  @ViewChild('resetFontSize', {static: false}) resetFontSize: ElementRef;
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -116,7 +122,7 @@ export class AppComponent implements OnInit, OnDestroy {
     public formService: FormService, private programsService: ProgramsService,
     @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
     public changeDetectorRef: ChangeDetectorRef, public layoutService: LayoutService,
-    public generaliseLabelService: GeneraliseLabelService) {
+    public generaliseLabelService: GeneraliseLabelService, private renderer: Renderer2) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
     const layoutType = localStorage.getItem('layoutType') || '';
@@ -169,6 +175,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
     this.setTheme();
     // themeing code
+    this.getLocalFontSize();
   }
 
   setTheme() {
@@ -706,6 +713,67 @@ export class AppComponent implements OnInit, OnDestroy {
             });
       }
     });
+  }
+
+   // Change Font Size (Increase & Decrease)
+   getLocalFontSize() {
+    const localFontSize = localStorage.getItem('fontSize');
+    if (localFontSize) {
+      document.documentElement.style.setProperty('font-size', localFontSize + 'px');
+      this.fontSize = localFontSize;
+      this.isDisableFontSize(localFontSize);
+    }
+  }
+
+  changeFontSize(value: string) {
+
+    const elFontSize = window.getComputedStyle(document.documentElement).getPropertyValue('font-size');
+
+    const localFontSize = localStorage.getItem('fontSize');
+    const currentFontSize = localFontSize ? localFontSize : elFontSize;
+    this.fontSize = parseInt(currentFontSize);
+
+    if (value === 'increase') {
+      this.fontSize = this.fontSize + 2;
+      if (this.fontSize <= 20) {
+        this.setLocalFontSize(this.fontSize);
+      }
+    } else if (value === 'decrease') {
+      this.fontSize = this.fontSize - 2;
+      if (this.fontSize >= 12) {
+        this.setLocalFontSize(this.fontSize);
+      }
+    } else {
+      this.setLocalFontSize(this.defaultFontSize);
+    }
+
+  }
+
+  setLocalFontSize(value: any) {
+    document.documentElement.style.setProperty('font-size', value + 'px');
+    localStorage.setItem('fontSize', value);
+    this.isDisableFontSize(value);
+  }
+
+  isDisableFontSize(value: any) {
+    value = parseInt(value);
+    if (value === 20) {
+      this.renderer.setAttribute(this.increaseFontSize.nativeElement, 'disabled', 'true');
+      this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'disabled');
+      this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'disabled');
+    } else if (value === 12) {      
+      this.renderer.setAttribute(this.decreaseFontSize.nativeElement, 'disabled', 'true');
+      this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'disabled');
+      this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'disabled');
+    } else if (value === 16) {
+      this.renderer.setAttribute(this.resetFontSize.nativeElement, 'disabled', 'true');
+      this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'disabled');
+      this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'disabled');
+    } else {
+      this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'disabled');
+      this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'disabled');
+      this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'disabled');
+    }
   }
 
 }

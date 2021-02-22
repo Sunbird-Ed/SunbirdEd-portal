@@ -127,7 +127,7 @@
           <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0005}}</div>
           <div class="menu">
             <div class="item" [attr.data-value]="mentor.id" *ngFor="let mentor of mentorList">
-              <img class="ui mini avatar image" src="{{mentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}">
+              <img class="ui mini avatar image" src="{{mentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" alt="avatar-img">
               {{mentor.name}}{{mentor.otherDetail}}
             </div>
           </div>
@@ -137,7 +137,7 @@
         <label>{{resourceService?.frmelmnts?.lbl?.batchselmentors}}</label>
         <a class="ui label mt-5" *ngFor="let selectmentor of selectedMentors">
           <img class="ui right spaced avatar image"
-            src="{{selectmentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}">
+            src="{{selectmentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" alt="avatar-img">
           {{selectmentor.name}}{{selectmentor.otherDetail}}
           <i class="delete icon" *ngIf="batchDetails.status === 0" (click)="removeMentor(selectmentor)"></i>
         </a>
@@ -155,7 +155,7 @@
           <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0006}}</div>
           <div class="menu">
             <div class="item" *ngFor="let user of participantList" [attr.data-value]="user.id">
-              <img class="ui mini avatar image" src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}">
+              <img class="ui mini avatar image" src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" alt="avatar-img">
               {{user.name}}{{user.otherDetail}}
             </div>
           </div>
@@ -168,7 +168,7 @@
         <label>{{resourceService?.frmelmnts?.lbl?.batchparticipants}}</label>
         <a class="ui label mt-5" *ngFor="let user of selectedParticipants">
           <img class="ui right spaced avatar image"
-            src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> {{user.name}}{{user.otherDetail}}
+            src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" alt="avatar-img"> {{user.name}}{{user.otherDetail}}
           <!-- TODO: Will be enabled in future
           <i class="delete icon" *ngIf="batchDetails.status === 0" (click)="removeParticipant(user)"></i>-->
         </a>
