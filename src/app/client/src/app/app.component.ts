@@ -110,6 +110,7 @@ export class AppComponent implements OnInit, OnDestroy {
   defaultFontSize = 16;
   @ViewChild('increaseFontSize', {static: false}) increaseFontSize: ElementRef;
   @ViewChild('decreaseFontSize', {static: false}) decreaseFontSize: ElementRef;
+  @ViewChild('resetFontSize', {static: false}) resetFontSize: ElementRef;
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -734,11 +735,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
     if (value === 'increase') {
       this.fontSize = this.fontSize + 2;
-      this.fontSize = this.fontSize <= 20 ? this.setLocalFontSize(this.fontSize) : this.defaultFontSize;
+      this.fontSize <= 20 ? this.setLocalFontSize(this.fontSize) : this.defaultFontSize;
 
     } else if (value === 'decrease') {
       this.fontSize = this.fontSize - 2;
-      this.fontSize = this.fontSize >= 12 ? this.setLocalFontSize(this.fontSize) : this.defaultFontSize;
+      this.fontSize >= 12 ? this.setLocalFontSize(this.fontSize) : this.defaultFontSize;
 
     } else {
       this.setLocalFontSize(this.defaultFontSize);
@@ -753,16 +754,23 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   isDisableFontSize(value: any) {
-    value = parseFloat(value);
+    value = parseInt(value);
     if (value === 20) {
       this.renderer.setAttribute(this.increaseFontSize.nativeElement, 'disabled', 'true');
       this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'disabled');
+      this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'disabled');
     } else if (value === 12) {      
       this.renderer.setAttribute(this.decreaseFontSize.nativeElement, 'disabled', 'true');
       this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'disabled');
+      this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'disabled');
+    } else if (value === 16) {
+      this.renderer.setAttribute(this.resetFontSize.nativeElement, 'disabled', 'true');
+      this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'disabled');
+      this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'disabled');
     } else {
       this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'disabled');
       this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'disabled');
+      this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'disabled');
     }
   }
 }

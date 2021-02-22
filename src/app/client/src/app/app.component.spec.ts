@@ -11,7 +11,7 @@ import { TelemetryService, TELEMETRY_PROVIDER } from '@sunbird/telemetry';
 import { TestBed, async, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { mockData } from './app.component.spec.data';
 import { AppComponent } from './app.component';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, Renderer2 } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import * as _ from 'lodash-es';
@@ -37,7 +37,7 @@ const fakeActivatedRoute = {
   },
   queryParams: of({})
 };
-
+const renderer2Stub = { setAttribute: () => ({}), removeAttribute: () => ({}) };
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -58,6 +58,7 @@ describe('AppComponent', () => {
       providers: [
         { provide: Router, useClass: RouterStub},
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: Renderer2, useValue: renderer2Stub },
         ToasterService, TenantService, CacheService, AnimationBuilder,
         UserService, ConfigService, LearnerService, BrowserCacheTtlService,
         PermissionService, ResourceService, CoursesService, OrgDetailsService, ProfileService,
@@ -321,4 +322,44 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     expect(component.layoutConfiguration).toEqual('new layout');
     expect(document.querySelector).toHaveBeenCalledWith('link[rel*=\'icon\']');
   });
+
+  it('should check if font size if stored in system or not', () => {
+    spyOn(localStorage, 'getItem').and.returnValue(16);
+    spyOn(component, 'isDisableFontSize');
+    component.getLocalFontSize();
+    expect(component.fontSize).toBe(16);
+    expect(component.isDisableFontSize).toHaveBeenCalledWith(16);
+  });
+
+  it('should reset font size of the browser to 16px', () => {
+    spyOn(localStorage, 'getItem').and.returnValue(16);
+    spyOn(component, 'setLocalFontSize');
+    component.changeFontSize('reset');
+    expect(component.fontSize).toBe(16);
+    expect(component.setLocalFontSize).toHaveBeenCalledWith(16);
+  });
+
+  it('should increase font size of the browser by 2px', () => {
+    spyOn(localStorage, 'getItem').and.returnValue(18);
+    spyOn(component, 'setLocalFontSize');
+    component.changeFontSize('increase');
+    expect(component.fontSize).toBe(20);
+    expect(component.setLocalFontSize).toHaveBeenCalledWith(20);
+  });
+
+  it('should decrease font size of the browser by 2px', () => {
+    spyOn(localStorage, 'getItem').and.returnValue(14);
+    spyOn(component, 'setLocalFontSize');
+    component.changeFontSize('decrease');
+    expect(component.fontSize).toBe(12);
+    expect(component.setLocalFontSize).toHaveBeenCalledWith(12);
+  });
+
+  it('should call isDisableFontSize with the value 12', () => {
+    spyOn(localStorage, 'setItem');
+    spyOn(component, 'isDisableFontSize');
+    component.setLocalFontSize(12);
+    expect(component.isDisableFontSize).toHaveBeenCalledWith(12);
+  });
+
 });
