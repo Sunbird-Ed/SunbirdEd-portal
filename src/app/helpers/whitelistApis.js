@@ -126,7 +126,10 @@ const API_LIST = {
       ROLE_CHECK: [
         ROLE.ADMIN,
         ROLE.BOOK_REVIEWER,
-        ROLE.CONTENT_REVIEWER
+        ROLE.CONTENT_REVIEWER,
+        ROLE.CONTENT_CREATOR,
+        ROLE.BOOK_CREATOR,
+        ROLE.COURSE_CREATOR
       ]
     },
     '/content/content/v1/reject': {
