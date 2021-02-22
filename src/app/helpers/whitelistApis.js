@@ -122,11 +122,15 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/content/content/v1/retire': {
+      description: 'API to delete the content(s)',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.ADMIN,
         ROLE.BOOK_REVIEWER,
-        ROLE.CONTENT_REVIEWER
+        ROLE.CONTENT_REVIEWER,
+        ROLE.CONTENT_CREATOR,
+        ROLE.BOOK_CREATOR,
+        ROLE.COURSE_CREATOR
       ]
     },
     '/content/content/v1/reject': {
@@ -498,6 +502,11 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
+    '/learner/portal/user/v1/update': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ORG_ADMIN]
+    },
+
     '/learner/get/tenant/logo': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
@@ -1566,6 +1575,9 @@ const API_LIST = {
       description: 'Object category read',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
+    '/learner/user/v1/role/assign': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ORG_ADMIN]
     }
   },
   URL_PATTERN: [

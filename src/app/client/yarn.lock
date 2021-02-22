@@ -567,10 +567,10 @@
   dependencies:
     tslib "^2.0.0"
 
-"@project-sunbird/chatbot-client-v8@2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/chatbot-client-v8/-/chatbot-client-v8-2.0.1.tgz#f0d3f9b721693c9d8e99744259af1f6f215e30ee"
-  integrity sha512-TstcviQAj9Kgn54TZMCBNJBHplIg4yiAv2KjA29zaS7J5NZFi293zhD8gEfUZ4d0PL0siaK5SEdQtVxc2j9itw==
+"@project-sunbird/chatbot-client-v8@2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/chatbot-client-v8/-/chatbot-client-v8-2.0.2.tgz#7309a67ed509c0b250e00443ffa858b7ad4ffa65"
+  integrity sha512-+5zXnnj9gytNv5PKgS0Y5LD2YzCjs8jVah+ptjezciw3uaTLAqVwLFuroUpATfsCz1Wgw8E/+gnSgFnwY+qrLQ==
   dependencies:
     tslib "^1.9.0"
 
@@ -649,10 +649,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-question-editor@0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-question-editor/-/sunbird-question-editor-0.0.6.tgz#061cd1e67bb15c92f4942e569ed12095f729a92c"
-  integrity sha512-N244bJYVOPkQooCo7FZRkbRY4L8r2KZ5XAkFhhiyd6fvh9DyB/W6iRIDJvovrHd9M5vu5fOL9reTojPPdYikqg==
+"@project-sunbird/sunbird-question-editor@0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-question-editor/-/sunbird-question-editor-0.0.9.tgz#49f0c79397f35b993ab6f5ed6d05499db8fde91c"
+  integrity sha512-QZP/JBZoLAW7cj1MXDtI/vi2ovd1j/9ZrUNXI3wv4VYXC/JlG5ceHsBGmuxaiLQHkBbc/aLUM6BwlwULuiqP8w==
   dependencies:
     tslib "^1.9.0"
 

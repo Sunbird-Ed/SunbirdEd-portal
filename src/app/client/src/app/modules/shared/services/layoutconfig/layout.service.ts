@@ -40,6 +40,7 @@ export class LayoutService {
   }
   setLayoutConfig(layoutConfig: any) {
     this.layoutConfig = layoutConfig;
+    this.setAccessableThemeAttribute(layoutConfig ? 'accessible': '');
     this._layout$.next({layout: layoutConfig});
   }
   switchableLayout() {
@@ -101,13 +102,16 @@ export class LayoutService {
  switchToAccessibleLayout() {
    if (this.acessibleLayoutEnabled) {
     this.acessibleLayoutEnabled=false;
-    document.documentElement.setAttribute('accessable-theme', '');
-    localStorage.setItem('accessable-theme', '');
+    this.setAccessableThemeAttribute('');
    } else {
     this.acessibleLayoutEnabled=true;
-    document.documentElement.setAttribute('accessable-theme', 'accessible');
-    localStorage.setItem('accessable-theme', 'accessible');
+    this.setAccessableThemeAttribute('accessible');
    }
+  }
+
+  private setAccessableThemeAttribute(val: string){
+    document.documentElement.setAttribute('accessable-theme', val);
+    localStorage.setItem('accessable-theme', val);
   }
 
   scrollTop() {

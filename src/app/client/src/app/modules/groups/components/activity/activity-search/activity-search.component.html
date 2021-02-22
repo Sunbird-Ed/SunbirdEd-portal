@@ -14,7 +14,8 @@
             <div class="sb-search-box large">
               <div class="input-div relative">
                 <i aria-hidden="true" class="search icon"></i>
-                <input class="sb-search-input" type="text" [(ngModel)]="searchQuery"
+                <label for="search-for-content-group" class="hide">{{resourceService?.frmelmnts?.lbl?.TypeToSearchForContent}}</label>
+                <input class="sb-search-input" id="search-for-content-group" type="text" [(ngModel)]="searchQuery"
                   [placeholder]="resourceService?.frmelmnts?.lbl?.TypeToSearchForContent" />
               </div>
               <button class="sb-btn sb-btn-normal"

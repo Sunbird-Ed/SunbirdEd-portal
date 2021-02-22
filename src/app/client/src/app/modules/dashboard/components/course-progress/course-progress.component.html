@@ -41,6 +41,7 @@
           <div class="d-flex  progress-report-content">
               <div class="d-flex w-300 flex-dc">
                 <label class="fnormal font-weight-normal pl-4 text-left">{{resourceService?.frmelmnts?.lbl?.selectBatch}}</label>
+                <label class="w-100">
                   <sui-select class="selection course-dashboard-select" placeholder="Select batch to see dashboard"
                     [(ngModel)]="selectedOption" [options]="batchlist" labelField="name" valueField="id"
                     #select>
@@ -49,7 +50,7 @@
                       [telemetryInteractEdata]="{id:'batchSelection',type:'click',pageid:'course-progress-dashboard'}"
                       [telemetryInteractCdata]="[{ 'type': 'batch', 'id': course.id}]">
                     </sui-select-option>
-                  </sui-select>
+                  </sui-select></label>
                 </div>
               <!-- below needs to be done score card -->
 
@@ -124,7 +125,7 @@
           <!-- Select Batch image content start-->
            <div class="d-flex flex-jc-center" *ngIf="batchlist && batchlist.length > 1 && showWarningDiv && !showLoader">
             <div class="d-flex flex-dc flex-ai-center pb-24">
-              <div><img src="assets/images/batch.png" width="329px" height="229px"></div>
+              <div><img src="assets/images/batch.png" width="329px" height="229px" alt="batch"></div>
               <p class="img-text">Select batch to view details</p>
             </div>
           </div>
