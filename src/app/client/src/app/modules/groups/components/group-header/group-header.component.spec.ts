@@ -403,7 +403,6 @@ describe('GroupHeaderComponent', () => {
    const discussionService = TestBed.get(DiscussionService);
    spyOn(discussionService, 'createForum').and.callFake(() => throwError({}));
    spyOn(component['toasterService'], 'error');
-
    /** Act */
    component.enableDiscussionForum();
 
