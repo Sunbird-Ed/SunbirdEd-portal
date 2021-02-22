@@ -37,7 +37,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   previewCdnUrl: string;
   isCdnWorking: string;
   CONSTANT = {
-    ACCESSEVENT: 'renderer:question:submitscore'
+    ACCESSEVENT: 'renderer:question:submitscore',
+    ISLASTATTEMPT: 'renderer:selfassess:lastattempt'
   };
   @Input() overlayImagePath: string;
   @Input() isSingleContent: boolean;
@@ -47,6 +48,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   @Input() isContentDeleted: Subject<any>;
   @Output() closePlayerEvent = new EventEmitter<any>();
   @Output() ratingPopupClose = new EventEmitter<any>();
+  @Output() selfAssessLastAttempt = new EventEmitter<any>();
   contentDeleted = false;
   isMobileOrTab: boolean;
   showPlayIcon = true;
@@ -300,6 +302,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   generateScoreSubmitEvent(event: any) {
     if (event.data.toLowerCase() === (this.CONSTANT.ACCESSEVENT).toLowerCase()) {
       this.questionScoreSubmitEvents.emit(event);
+    }
+    if (event.data.toLowerCase() === (this.CONSTANT.ISLASTATTEMPT).toLowerCase()) {
+      this.selfAssessLastAttempt.emit(event);
     }
   }
   eventHandler(event) {
