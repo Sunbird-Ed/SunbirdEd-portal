@@ -18,7 +18,7 @@
       
       <div *ngIf="allUserType" class="sb-prominent-filter-field">
         <label>{{resourceService.frmelmnts?.lbl?.userType | translate}}</label>
-        <app-custom-multi-select [inputData]="inputData.Usertype" [field]="allUserType" [valueField]="valueField" (selectedValue)="selectedValue($event, allUserType.code);">
+        <app-custom-multi-select [inputData]="inputData.Usertype" [field]="allUserType" (selectedValue)="selectedValue($event, allUserType.code);">
         </app-custom-multi-select>
       </div>
 
