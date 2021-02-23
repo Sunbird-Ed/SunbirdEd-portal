@@ -38,7 +38,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   isCdnWorking: string;
   CONSTANT = {
     ACCESSEVENT: 'renderer:question:submitscore',
-    ISLASTATTEMPT: 'renderer:selfassess:lastattempt'
+    ISLASTATTEMPT: 'renderer:selfassess:lastattempt',
+    MAXATTEMPT: 'renderer:maxLimitExceeded'
   };
   @Input() overlayImagePath: string;
   @Input() isSingleContent: boolean;
@@ -304,6 +305,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.questionScoreSubmitEvents.emit(event);
     }
     if (event.data.toLowerCase() === (this.CONSTANT.ISLASTATTEMPT).toLowerCase()) {
+      this.selfAssessLastAttempt.emit(event);
+    }
+    if (event.data.toLowerCase() === (this.CONSTANT.MAXATTEMPT).toLowerCase()) {
       this.selfAssessLastAttempt.emit(event);
     }
   }
