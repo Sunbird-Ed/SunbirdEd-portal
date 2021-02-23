@@ -1,4 +1,4 @@
-import { ConfigService } from '@sunbird/shared';
+import { ConfigService } from '../../../shared/services/config/config.service';
 import { DataService } from './../data/data.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
