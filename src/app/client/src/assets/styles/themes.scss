@@ -222,7 +222,13 @@ html[accessable-theme="accessible"] {
         }
       }
     }
+    app-in-app-notification {
+      .notification-count {
+        color: #1f1f1f !important;
+      }
+    }
   }
+  
   //accessible scss end
 html.transition,
 html.transition *,
