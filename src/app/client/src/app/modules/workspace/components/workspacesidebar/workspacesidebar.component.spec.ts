@@ -6,6 +6,7 @@ import { SharedModule, ConfigService} from '@sunbird/shared';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import { configureTestSuite } from '@sunbird/test-util';
+import { WorkSpaceService } from './../../services';
 
 describe('WorkspacesidebarComponent', () => {
   let component: WorkspacesidebarComponent;
@@ -14,7 +15,7 @@ describe('WorkspacesidebarComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ WorkspacesidebarComponent ],
-      providers: [ ConfigService],
+      providers: [ ConfigService, WorkSpaceService],
       imports: [RouterTestingModule, HttpClientTestingModule, CoreModule, SharedModule.forRoot(), SuiModule]
     })
     .compileComponents();

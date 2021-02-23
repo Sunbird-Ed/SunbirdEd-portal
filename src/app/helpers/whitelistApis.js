@@ -88,7 +88,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
- 
+
     '/content/v1/upload': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.TEMP_ROLE]
@@ -126,7 +126,10 @@ const API_LIST = {
       ROLE_CHECK: [
         ROLE.ADMIN,
         ROLE.BOOK_REVIEWER,
-        ROLE.CONTENT_REVIEWER
+        ROLE.CONTENT_REVIEWER,
+        ROLE.CONTENT_CREATOR,
+        ROLE.BOOK_CREATOR,
+        ROLE.COURSE_CREATOR
       ]
     },
     '/content/content/v1/reject': {
@@ -326,8 +329,13 @@ const API_LIST = {
       }
     },
     '/learner/course/v1/user/enrollment/list/:userId': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL]
+      checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
+      ROLE_CHECK: [ROLE.ALL],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__urlparams__userId', params: [], key: 'userId' }
+        ]
+      }
     },
     '/learner/course/v1/enrol': {
       checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
@@ -432,8 +440,13 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/user/v1/feed/:userId': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__urlparams__userId', params: [], key: 'userId' }
+        ]
+      }
     },
     '/learner/user/v1/migrate': {
       checksNeeded: ['ROLE_CHECK'],
@@ -621,8 +634,13 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/group/v1/list': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [], key: 'body.request.filters.userId' }
+        ]
+      }
     },
     '/learner/group/v1/read/:groupId': {
       checksNeeded: ['ROLE_CHECK'],
@@ -1188,10 +1206,10 @@ const API_LIST = {
     '/getGeneralisedResourcesBundles/:lang/:fileName': {
       checksNeeded: []
     },
-    '/desktop/handleGauth': {
+    '/v1/desktop/handleGauth': {
       checksNeeded: []
     },
-    '/desktop/google/auth/success': {
+    '/v1/desktop/google/auth/success': {
       checksNeeded: []
     },
     '/service/health': {
@@ -1234,6 +1252,11 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/discussion/forum/v2/create': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/discussion/forum/v2/remove': {
+      description: 'To remove the forum id attached to a SB identifier',
       checksNeeded: [],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
@@ -1448,6 +1471,104 @@ const API_LIST = {
     '/api/data/v1/form/read': {
       description: 'Desktop API',
       checksNeeded:[]
+    },
+    // Question & QuestionSet API's
+    '/action/questionset/v1/create': {
+      description: 'QuestionSet create',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR
+      ]
+    },
+    '/action/questionset/v1/review/:do_id': {
+      description: 'QuestionSet review',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR
+      ]
+    },
+    '/action/questionset/v1/hierarchy/update': {
+      description: 'QuestionSet hierarchy update',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR
+      ]
+    },
+    '/action/questionset/v1/update/:do_id': {
+      description: 'QuestionSet update',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR
+      ]
+    },
+    '/action/questionset/v1/add': {
+      description: 'Link Question to QuestionSet',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR
+      ]
+    },
+    '/action/questionset/v1/publish/:do_id': {
+      description: 'QuestionSet publish',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_REVIEWER
+      ]
+    },
+    '/action/questionset/v1/reject/:do_id': {
+      description: 'QuestionSet reject',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_REVIEWER
+      ]
+    },
+    '/action/questionset/v1/read/:do_id': {
+      description: 'Question read',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/action/questionset/v1/hierarchy/:do_id': {
+      description: 'QuestionSet hierarchy read',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/action/question/v1/read/:do_id': {
+      description: 'Question read',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/action/question/v1/create': {
+      description: 'Question create',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR
+      ]
+    },
+    '/action/question/v1/review/:do_id': {
+      description: 'Question Review',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR
+      ]
+    },
+    '/action/question/v1/publish/:do_id': {
+      description: 'Question publish',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_REVIEWER
+      ]
+    },
+    '/action/question/v1/update/:do_id': {
+      description: 'Question update',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR
+      ]
+    },
+    '/action/object/category/definition/v1/read': {
+      description: 'Object category read',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
     }
   },
   URL_PATTERN: [
@@ -1542,8 +1663,16 @@ const API_LIST = {
     '/discussion/user/uid/:uid',
     '/device/register/:deviceId',
     '/user/v1/switch/:userId',
-    '/desktop/handleGauth',
-    '/desktop/google/auth/success'
+    '/action/questionset/v1/review/:do_id',
+    '/action/questionset/v1/update/:do_id',
+    '/action/questionset/v1/publish/:do_id',
+    '/action/questionset/v1/reject/:do_id',
+    '/action/questionset/v1/read/:do_id',
+    '/action/questionset/v1/hierarchy/:do_id',
+    '/action/question/v1/read/:do_id',
+    '/action/question/v1/review/:do_id',
+    '/action/question/v1/publish/:do_id',
+    '/action/question/v1/update/:do_id'
   ]
 };
 module.exports = API_LIST;

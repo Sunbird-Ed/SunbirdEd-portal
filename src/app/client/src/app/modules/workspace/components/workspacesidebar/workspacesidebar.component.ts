@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ResourceService, ConfigService } from '@sunbird/shared';
 import { PermissionService } from '@sunbird/core';
 import {Router, ActivatedRoute} from '@angular/router';
+import { WorkSpaceService } from './../../services';
 /**
  * The Workspace side  component shows the sidebar for workspace
  */
@@ -102,7 +103,7 @@ export class WorkspacesidebarComponent implements OnInit {
      * @param {ConfigService} config Reference of ConfigService
   */
   constructor(config: ConfigService, resourceService: ResourceService, permissionService: PermissionService,
-   router: Router) {
+   router: Router, public workSpaceService: WorkSpaceService) {
     this.resourceService = resourceService;
     this.permissionService = permissionService;
     this.config = config;
@@ -110,6 +111,7 @@ export class WorkspacesidebarComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.workSpaceService.getQuestionSetCreationStatus();
     this.alltextbookRole = this.config.rolesConfig.workSpaceRole.alltextbookRole;
     this.createRole = this.config.rolesConfig.workSpaceRole.createRole;
     this.draftRole = this.config.rolesConfig.workSpaceRole.draftRole;
