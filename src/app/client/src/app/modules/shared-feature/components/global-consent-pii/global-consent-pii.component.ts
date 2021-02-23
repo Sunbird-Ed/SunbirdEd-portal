@@ -104,6 +104,7 @@ export class GlobalConsentPiiComponent implements OnInit {
             break;
           case 'school':
             this.userInformation['schoolName'] = locDetail.name;
+            this.userInformation['schoolId'] = locDetail.id;
             break;
         }
       });
@@ -119,7 +120,7 @@ export class GlobalConsentPiiComponent implements OnInit {
             this.userInformation['phone'] = value;
             break;
           case 'declared-school-udise-code':
-            this.userInformation['schoolId'] = value;
+            this.userInformation['schoolId'] = this.userInformation['schoolId'] || value;
             break;
           case 'declared-school-name':
             this.userInformation['schoolName'] = this.userInformation['schoolName'] || value;
