@@ -9,6 +9,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { of, Subject, throwError } from 'rxjs';
 import { PlayerComponent } from './player.component';
 import { playerData } from './player.component.data.spec';
+import  { printEvent } from './player.component.data.spec';
 
 const startEvent = {
   detail: {
@@ -447,5 +448,14 @@ describe('PlayerComponent', () => {
     expect(formService.getFormConfig).toHaveBeenCalled();
     expect(component.loadOldPlayer).toHaveBeenCalled();
   });
+
+  fit('should handle event for print' , () => {
+     component.playerConfig = playerConfig;
+     const url = component.playerConfig['metadata']['streamingUrl'];
+     spyOn(window, 'open');
+     component.eventHandler(printEvent);
+     expect(window.open).toHaveBeenCalledWith(url);
+     expect(component.mobileViewDisplay).toBe('none');
+  })
 });
 
