@@ -801,6 +801,7 @@ app-workspace {
 .fontResizeBtn:disabled,
 .fontResizeBtn[disabled] {
   opacity: 0.5;
+  background: none;
 }
 
 .fontResize-divider {
