@@ -210,3 +210,6 @@ $sb-radio-btn-border-disabled-color: $gray-100;
     }
   }
 }
+sb-form .sb-checkbox label:before {
+  display: none;
+}
