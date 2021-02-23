@@ -758,7 +758,18 @@ app-workspace {
 /* theme and font resize css */
 .sb-fontresizecontainer {
   top: 0;
+  &.sbt-container {
+    padding: 0;
+    html[layout="joy"] & {
+      padding: 0 2%;
+    }
+  }
   @include respond-below(sm) {
+    &.sbt-container {
+      .ui.container {
+        width: 100% !important;
+      }
+    }
     padding: calculateRem(8px);
   }
 }
