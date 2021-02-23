@@ -6,7 +6,12 @@
       <div class="d-flex flex-ai-center flex-jc-flex-end">
         <ul class="d-flex flex-ai-center fsmall sb-color-white mb-0 computer only">
           <li class="mb-0"><a href="/screenreaderaccess.html" class="cursor-pointer sb-color-white">Screen Reader Access</a></li><li class="mx-4 mb-0">|</li>
-          <li class="mb-0"><a href="/sitemap.html" class="cursor-pointer sb-color-white">Sitemap</a></li><li class="mx-4 mb-0">|</li>
+          <ng-container *ngIf="userService.loggedIn">
+            <li class="mb-0"><a href="/sitemap.html?session=true" class="cursor-pointer sb-color-white">Sitemap</a></li>
+          </ng-container>
+          <ng-container *ngIf="!userService.loggedIn">
+            <li class="mb-0"><a href="/sitemap.html" class="cursor-pointer sb-color-white">Sitemap</a></li>
+          </ng-container>
         </ul>
         <div class="fontResize-container d-flex flex-ai-center pull-right">
           <button type="button" class="fontResizeBtn fontResizeBtn_A-" title="Decrease Font Size" 
