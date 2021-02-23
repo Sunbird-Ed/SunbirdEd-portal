@@ -786,7 +786,7 @@ app-workspace {
 
 .fontResizeBtn:hover,
 .fontResizeBtn:active {
-  background: #484848;
+  background: #ff714a;
   color: var(--white);
   cursor: pointer;
   border-radius: 50%;
@@ -801,6 +801,7 @@ app-workspace {
 .fontResizeBtn:disabled,
 .fontResizeBtn[disabled] {
   opacity: 0.5;
+  background: none;
 }
 
 .fontResize-divider {
