@@ -598,7 +598,7 @@ app-workspace {
     .lib-chat-head {
       position: absolute !important;
       right: 4.5rem !important;
-      top: calculateRem(-2px) !important;
+      top: calculateRem(44px) !important;
       bottom: inherit !important;
       z-index: 999 !important;
     }
@@ -614,7 +614,7 @@ app-workspace {
        font-size:calculateRem(14px) !important;
      }
      html[layout="joy"] .lib-chat-head {
-      top: calculateRem(6px) !important;
+      top: calculateRem(56px) !important;
       z-index: inherit !important;
      }
   }

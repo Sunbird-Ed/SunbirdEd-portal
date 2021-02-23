@@ -130,6 +130,7 @@
   .download-mobile-app {
     box-shadow: 0 calculateRem(-5px) calculateRem(20px) calculateRem(5px) rgba(var(--rc-rgba-black), 0.2);
     height: auto;
+    bottom: calculateRem(140px);
 
     .download-mobile-app-logo {
       height: auto;
@@ -151,6 +152,9 @@
 
   .footer {
     max-height: calculateRem(230px);
+    &.old-footer {
+      min-height: calculateRem(140px);
+    }
 
     .footerMenu {
       ul {
