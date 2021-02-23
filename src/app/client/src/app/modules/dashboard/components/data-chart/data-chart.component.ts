@@ -287,6 +287,11 @@ export class DataChartComponent implements OnInit, OnDestroy {
   private getData(groupedDataBasedOnLabels, dataExpr, pickTopNElements: number) {
 
     const data = _.mapValues(groupedDataBasedOnLabels, value => {
+      value = value.filter(element=>{
+        if(element[dataExpr]){
+          return element;
+        }
+      })
       return _.sumBy(value, (o) => +o[dataExpr]);
     });
 
