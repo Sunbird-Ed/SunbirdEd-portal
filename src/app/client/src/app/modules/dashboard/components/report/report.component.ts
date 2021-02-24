@@ -1,7 +1,7 @@
 import { TelemetryService } from '@sunbird/telemetry';
 import { INoResultMessage, ResourceService, ToasterService, NavigationHelperService, LayoutService } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit, ViewChildren, QueryList, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { ReportService } from '../../services';
 import * as _ from 'lodash-es';
 import { Observable, throwError, of, forkJoin, Subject, merge, combineLatest } from 'rxjs';
@@ -22,7 +22,6 @@ enum ReportType {
   styleUrls: ['./report.component.scss']
 })
 export class ReportComponent implements OnInit {
-
   public report: any;
   public showSummaryModal = false;
   public report$;
@@ -52,7 +51,15 @@ export class ReportComponent implements OnInit {
   public type: ReportType = ReportType.report;
   private reportConfig: object;
   layoutConfiguration: any;
-
+  public globalSelectedFilters: any;
+  public selectedFilters: Object;
+  public showChart = true;
+  public reportData: any;
+  public chartsReportData: any;
+  public globalFilterChange: Object;
+  public resetFilters: Object;
+  filterType:string = "report-filter";
+  public reportResult: any;
   private set setMaterializedReportStatus(val: string) {
     this.materializedReport = (val === 'true');
   }
@@ -68,8 +75,11 @@ export class ReportComponent implements OnInit {
   constructor(public reportService: ReportService, private activatedRoute: ActivatedRoute,
     private resourceService: ResourceService, private toasterService: ToasterService,
     private navigationhelperService: NavigationHelperService,
-    private router: Router, private telemetryService: TelemetryService, private layoutService: LayoutService) { }
+    private router: Router, private telemetryService: TelemetryService, private layoutService: LayoutService,
+    private cdr: ChangeDetectorRef
+  ) { }
 
+ 
   ngOnInit() {
     this.initLayout();
     this.report$ = combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams).pipe(
@@ -91,8 +101,10 @@ export class ReportComponent implements OnInit {
             return of({});
           })
         );
+      
       })
     );
+
     this.mergeClickEventStreams();
   }
 
@@ -144,14 +156,18 @@ export class ReportComponent implements OnInit {
               map((apiResponse) => {
                 const [data, reportSummary] = apiResponse;
                 const result: any = Object.assign({});
-                result['charts'] = (charts && this.reportService.prepareChartData(charts, data, updatedDataSource,
+                const chart = (charts && this.reportService.prepareChartData(charts, data, updatedDataSource,
                   _.get(reportConfig, 'reportLevelDataSourceId'))) || [];
+                result['charts'] =  chart;
                 result['tables'] = (tables && this.reportService.prepareTableData(tables, data, _.get(reportConfig, 'downloadUrl'),
                   this.hash)) || [];
                 result['reportMetaData'] = reportConfig;
                 result['reportSummary'] = reportSummary;
                 result['files'] = this.reportService.getParameterizedFiles(files || [], this.hash);
                 result['lastUpdatedOn'] = this.reportService.getFormattedDate(this.reportService.getLatestLastModifiedOnDate(data));
+              
+                this.chartsReportData = JSON.parse(JSON.stringify(result));
+                this.reportData = JSON.parse(JSON.stringify(result));
                 return result;
               })
             );
@@ -226,17 +242,19 @@ export class ReportComponent implements OnInit {
   }
 
   private downloadReportAsPdf() {
+    
     this.convertHTMLToCanvas(this.reportElement.nativeElement, {
-      scrollX: 0,
+      scrollX:  0,
       scrollY: -window.scrollY,
       scale: 2
     }).then(canvas => {
       const imageURL = canvas.toDataURL('image/jpeg');
       const pdf = new jspdf('p', 'px', 'a4');
       const pageWidth = pdf.internal.pageSize.getWidth();
+
       const imageHeight = (canvas.height * pageWidth) / canvas.width;
       pdf.internal.pageSize.setHeight(imageHeight);
-      pdf.addImage(imageURL, 'JPEG', 10, 8, pageWidth - 24, imageHeight - 24);
+      pdf.addImage(imageURL, 'JPEG', 10, 8, pageWidth - 28, imageHeight - 24);
       pdf.save('report.pdf');
       this.toggleHtmlVisibilty(false);
       this.reportExportInProgress = false;
@@ -247,6 +265,7 @@ export class ReportComponent implements OnInit {
   }
 
   private downloadReportAsImage() {
+
     this.convertHTMLToCanvas(this.reportElement.nativeElement, {
       scrollX: 0,
       scrollY: -window.scrollY,
@@ -277,7 +296,7 @@ export class ReportComponent implements OnInit {
 
   public openReportSummaryModal(): void {
     this.openAddSummaryModal({
-      title: `Add ${_.get(this.resourceService, 'frmelmnts.lbl.reportSummary')}`,
+      title: (this.currentReportSummary !='' ? 'Update ' : 'Add ') + _.get(this.resourceService, 'frmelmnts.lbl.reportSummary'),
       type: 'report',
       ...(this._reportSummary && { summary: this._reportSummary })
     });
@@ -291,8 +310,9 @@ export class ReportComponent implements OnInit {
         const summaries = this.currentReportSummary = _.map(reportSummary, summaryObj => {
           const summary = _.get(summaryObj, 'summary');
           this._reportSummary = summary;
+
           return {
-            label: _.get(this.resourceService, 'frmelmnts.lbl.reportSummary'),
+            label: (this.currentReportSummary !='' ? 'Update ' : 'Add ') + _.get(this.resourceService, 'frmelmnts.lbl.reportSummary'),
             text: [summary],
             createdOn: _.get(summaryObj, 'createdon')
           };
@@ -535,6 +555,47 @@ export class ReportComponent implements OnInit {
       });
   }
 
-}
+  globalFilter(data: any): void {
+    this.showChart = false;
+    this.globalSelectedFilters = data;
+    this.showChart = true;
+  }
 
+  getAllChartData() {
+    let chartData = [];
+    if (this.reportData.charts) {
+      this.reportData.charts.map(chartInfo => {
+        chartData.push(...chartInfo.chartData);
+      });
+    }
+    return chartData;
+  }
+
+  getChartData(chart){
+    let chartInfo = this.chartsReportData.charts.find(data=>{
+       if(data['chartConfig']['id']==chart['chartConfig']['id']){
+         return true;
+       }
+    });
+    return chartInfo;
+  }
+  public filterChanged(data: any): void {
+    if (this.chartsReportData && this.chartsReportData.charts) {
+      this.chartsReportData.charts.map(element => {
+        element.chartData = data.chartData;
+        return element;
+      });
+    }
+    this.globalFilterChange = {
+      chartData: data.chartData,
+      filters: data.filters
+    }
+    this.cdr.detectChanges();
+  }
+
+  resetFilter(){
+    this.resetFilters = { data: this.getAllChartData(),reset:true }
+    
+  }
+}
 

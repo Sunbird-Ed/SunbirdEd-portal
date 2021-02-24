@@ -37,11 +37,12 @@
       <div class="batch-details">
         <div class="mb-16" *ngIf="showBatchList">
           <div class="batch-details__dropdown">
+            <label>
             <sui-select (selectedOptionChange)="getSelectedBatches()" class="selection mb-16" [(ngModel)]="batchStatus"
               [options]="statusOptions" valueField="value" labelField="name" #batchStatusSelect>
               <sui-select-option *ngFor="let option of batchStatusSelect?.filteredOptions" [value]="option">
               </sui-select-option>
-            </sui-select>
+            </sui-select></label>
             <div *ngFor="let batch of batchList">
 
               <div class="sb-color-primary fmedium font-weight-bold"><i class="calendar outline icon"></i>
