@@ -71,7 +71,7 @@
     "angular2-uuid": "1.1.1",
     "chart.js": "2.7.3",
     "ckeditor-build-font": "1.0.5",
-    "common-form-elements": "^3.7.0",
+    "common-form-elements": "^3.7.1",
     "core-js": "^2.4.1",
     "datatables.net-dt": "^1.10.20",
     "dayjs": "^1.8.26",
