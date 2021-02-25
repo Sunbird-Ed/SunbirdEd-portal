@@ -3,8 +3,8 @@
 <div [ngClass]="{'loggedInUser': userService.loggedIn, 'guestUser': !userService.loggedIn}">
   <div class="sbt-container d-flex flex-ai-center sb-bg-color-black py-8 flex-w-wrap sbt-sticky sbt-sticky-topbar sb-fontresizecontainer">
     <div class="ui container">
-      <div class="d-flex flex-ai-center flex-jc-flex-end">
-        <ul class="d-flex flex-ai-center fsmall sb-color-white mb-0 dk-top-head-ul">
+      <div class="d-flex flex-ai-center flex-jc-flex-end flex-w-wrap">
+        <ul class="d-flex flex-ai-center fsmall sb-color-white mb-0">
           <li class="mb-0"><a href="/screenreaderaccess.html" class="cursor-pointer sb-color-white">Screen Reader Access</a></li><li class="mx-4 mb-0">|</li>
           <ng-container *ngIf="userService.loggedIn">
             <li class="mb-0"><a href="/sitemap.html?session=true" class="cursor-pointer sb-color-white">Sitemap</a></li><li class="mx-4 mb-0">|</li>

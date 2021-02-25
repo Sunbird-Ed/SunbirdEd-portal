@@ -60,10 +60,10 @@
         </div>
         <div class="four wide column contantDetails">
           <label class="d-flex flex-w-wrap mb-16 flex-jc-center">
-            <ul class="d-flex flex-ai-center fsmall sb-color-white mb-0 pl-0 dk-footer-ul">
+            <!-- <ul class="d-flex flex-ai-center fsmall sb-color-white mb-0 pl-0 dk-footer-ul">
               <li class="mb-0"><a href="/screenreaderaccess.html" class="cursor-pointer sb-color-white">Screen Reader Access</a></li><li class="mx-4 mb-0">|</li>
               <li class="mb-0"><a href="/sitemap.html" class="cursor-pointer sb-color-white">Sitemap</a></li><li class="mx-4 mb-0">|</li>
-            </ul>
+            </ul> -->
             <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')" href="/term-of-use.html">
               {{resourceService.frmelmnts?.lnk?.footerTnC}}
             </a>
@@ -125,10 +125,10 @@
             </div>
             <div>
             <label class="d-flex footer-terms-info text-left font-weight-normal flex-w-wrap">
-              <ul class="d-flex flex-ai-center fsmall mb-0 dk-footer-ul pl-0">
+              <!-- <ul class="d-flex flex-ai-center fsmall mb-0 dk-footer-ul pl-0">
                 <li class="mb-0"><a href="/screenreaderaccess.html" class="cursor-pointer">Screen Reader Access</a></li><li class="mx-4 mb-0">|</li>
                 <li class="mb-0"><a href="/sitemap.html" class="cursor-pointer">Sitemap</a></li><li class="mx-4 mb-0">|</li>
-              </ul>
+              </ul> -->
               <a *ngIf="!isDesktopApp" appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"
                 href="/term-of-use.html">{{resourceService.frmelmnts?.lnk?.footerTnC}}</a>
               <span>| &copy; {{date | date:'yyyy'}}, {{instance}}</span>
