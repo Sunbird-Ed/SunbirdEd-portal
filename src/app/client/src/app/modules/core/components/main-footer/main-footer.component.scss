@@ -130,6 +130,7 @@
             margin: 0 auto;
             @include respond-below (sm){
               bottom: calculateRem(80px);
+              padding: 0;
             }
           }
           .playStore-img{
@@ -158,5 +159,11 @@
         }
       }
     }   
+  }
+}
+
+.dk-footer-ul {
+  @include respond-above(sm) {
+    display: none !important;
   }
 }

@@ -764,6 +764,16 @@ app-workspace {
       padding: 0 2%;
     }
   }
+
+  .dk-top-head-ul {
+    ul li a:hover {
+      color: #ff714a;
+    }
+    @include respond-below(sm) {
+      display: none !important;
+    }
+  }
+
   @include respond-below(sm) {
     &.sbt-container {
       .ui.container {
