@@ -134,8 +134,8 @@ export class DataChartComponent implements OnInit, OnDestroy {
         .subscribe((filters) => {
           this.selectedFilters = _.omit(filters, this.dateFilterReferenceName); // to omit date inside labels
           const res: Array<{}> = _.filter(this.chartData, data => {
-            return _.every(filters, (value, key) => {
-              return _.includes(_.toLower(value), data[key].toLowerCase());
+            return _.every(filters, (filterValues, key) => {
+              return _.some(filterValues, filterValue => _.trim(_.toLower(filterValue)) === _.trim(_.toLower(_.get(data, key))));
             });
           });
           this.noResultsFound = (res.length > 0) ? false : true;
