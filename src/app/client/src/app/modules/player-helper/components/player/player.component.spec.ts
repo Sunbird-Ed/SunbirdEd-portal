@@ -299,6 +299,20 @@ describe('PlayerComponent', () => {
     expect(component.questionScoreSubmitEvents.emit).toHaveBeenCalled();
   });
 
+  it('should call generateScoreSubmitEvent for maxAttempts', () => {
+    const event = { data: 'renderer:selfassess:lastattempt' };
+    spyOn(component.selfAssessLastAttempt, 'emit');
+    component.generateScoreSubmitEvent(event);
+    expect(component.selfAssessLastAttempt.emit).toHaveBeenCalled();
+  });
+
+  it('should call generateScoreSubmitEvent for maxAttempts exceeded', () => {
+    const event = { data: 'renderer:maxLimitExceeded' };
+    spyOn(component.selfAssessLastAttempt, 'emit');
+    component.generateScoreSubmitEvent(event);
+    expect(component.selfAssessLastAttempt.emit).toHaveBeenCalled();
+  });
+
   xit('should call loadPlayer', () => {
     const formService = TestBed.get(FormService);
     component.isMobileOrTab = true;

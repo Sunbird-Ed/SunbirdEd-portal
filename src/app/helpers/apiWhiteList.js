@@ -8,8 +8,8 @@
 const _                 = require('lodash');
 const uuidv1            = require('uuid/v1');
 const dateFormat        = require('dateformat');
-const { pathToRegexp }  = require("path-to-regexp");
 const { logger }        = require('@project-sunbird/logger');
+const { pathToRegexp, match }  = require("path-to-regexp");
 
 const API_LIST          = require('./whitelistApis');
 const utils             = require('./utilityService');
@@ -153,7 +153,7 @@ const urlChecks = {
         ownerChecks.push(new Promise((res, rej) => {
           let _checkFor = _.get(ownerCheckObj, 'entity');
           if (_checkFor && typeof urlChecks[_checkFor] === 'function') {
-            urlChecks[_checkFor](res, rej, req, ownerCheckObj);
+            urlChecks[_checkFor](res, rej, req, ownerCheckObj, REQ_URL);
           }
         }));
       });
@@ -182,10 +182,10 @@ const urlChecks = {
    * @description - Function to check session userId for incoming API along with request userId
    * @since - release-3.1.0
    */
-  __session__userId: (resolve, reject, req, ownerCheckObj) => {
+  __session__userId: (resolve, reject, req, ownerCheckObj, REQ_URL) => {
     try {
       const _sessionUserId = _.get(req, 'session.userId');
-      const _reqUserId = _.get(req, 'body.request.userId');
+      const _reqUserId = _.get(ownerCheckObj, 'key') ? _.get(req, ownerCheckObj.key) : _.get(req, 'body.request.userId');
       if (_sessionUserId === _reqUserId) {
         resolve();
       } else {
@@ -206,7 +206,7 @@ const urlChecks = {
    *  the session userId is same as that of the request userId then also resolve
    * @since - release-3.3.0
    */
-  __adminCheck__userId: (resolve, reject, req, ownerCheckObj) => {
+  __adminCheck__userId: (resolve, reject, req, ownerCheckObj, REQ_URL) => {
     try {
       const _sessionUserId = _.get(req, 'session.userId');
       const _reqUserId = _.get(req, 'body.request.userId');
@@ -224,7 +224,33 @@ const urlChecks = {
     } catch (error) {
       return reject('User id validation failed.');
     }
-  }
+  },
+  /**
+   * @param  {Callback} resolve      - Callback to `OWNER_CHECK` promise object
+   * @param  {Callback} reject       - Callback to `OWNER_CHECK` promise object
+   * @param  {Object} req            - API request object
+   * @param  {Object} ownerCheckObj  - `OWNER_CHECK` object
+   * @access Private
+   * @description - Function to check session userId for incoming API along with url params userId
+   * @since - release-3.7.0
+   */
+  __urlparams__userId: (resolve, reject, req, ownerCheckObj, REQ_URL) => {
+    try {
+      const _sessionUserId = _.get(req, 'session.userId');
+      const _match = match(REQ_URL);
+      const params = _match(_.get(req, 'path')).params;
+      const _key = _.get(ownerCheckObj, 'key');
+      if (_sessionUserId === _.get(params, _key)) {
+        resolve();
+      } else {
+        return reject('Mismatch in user id verification. Session UserId [ ' + _sessionUserId +
+          ' ] does not match with request body UserId [ ' + _reqUserId + ' ]');
+      }
+      resolve();
+    } catch (error) {
+      return reject('User id validation failed for __urlparams__userId.');
+    }
+  },
 };
 
 /**

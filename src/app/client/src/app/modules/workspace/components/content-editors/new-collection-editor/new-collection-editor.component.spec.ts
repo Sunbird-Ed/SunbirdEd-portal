@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ConfigService, NavigationHelperService, ToasterService, ResourceService, BrowserCacheTtlService } from '@sunbird/shared';
+import { ConfigService, NavigationHelperService, ToasterService, ResourceService, BrowserCacheTtlService, LayoutService } from '@sunbird/shared';
 import { UserService, PublicDataService, ContentService, FrameworkService, CoreModule } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -55,7 +55,7 @@ describe('NewCollectionEditorComponent', () => {
       imports: [HttpClientTestingModule, RouterTestingModule, CoreModule, TelemetryModule.forRoot()],
       providers: [
         UserService, PublicDataService, ContentService, { provide: FrameworkService, useValue: mockFrameworkService },
-        ResourceService, ToasterService, ConfigService,
+        ResourceService, ToasterService, ConfigService, LayoutService,
         BrowserCacheTtlService, WorkSpaceService, EditorService,
         { provide: NavigationHelperService, useClass: NavigationHelperServiceStub },
         { provide: Router, useClass: RouterStub },
@@ -117,6 +117,22 @@ describe('NewCollectionEditorComponent', () => {
       spyOn(toasterService, 'error').and.callThrough();
       component.getFrameWorkDetails();
       expect(toasterService.error).toHaveBeenCalledWith(mockResourceService.messages.emsg.m0015);
+    }));
+
+  it('#switchLayout() should switch theme if layoutType is #joy',
+    inject([LayoutService], ( layoutService ) => {
+      spyOn(layoutService, 'initiateSwitchLayout').and.callThrough();
+      component.layoutType = 'joy';
+      component.switchLayout();
+      expect(layoutService.initiateSwitchLayout).toHaveBeenCalled();
+    }));
+
+  it('#switchLayout() should not switch theme if layoutType is not #joy',
+    inject([LayoutService], ( layoutService ) => {
+      spyOn(layoutService, 'initiateSwitchLayout').and.callThrough();
+      component.layoutType = '';
+      component.switchLayout();
+      expect(layoutService.initiateSwitchLayout).not.toHaveBeenCalled();
     }));
 
   it('#getPrimaryCategoryData() should return valid Categories', () => {

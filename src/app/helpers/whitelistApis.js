@@ -126,7 +126,10 @@ const API_LIST = {
       ROLE_CHECK: [
         ROLE.ADMIN,
         ROLE.BOOK_REVIEWER,
-        ROLE.CONTENT_REVIEWER
+        ROLE.CONTENT_REVIEWER,
+        ROLE.CONTENT_CREATOR,
+        ROLE.BOOK_CREATOR,
+        ROLE.COURSE_CREATOR
       ]
     },
     '/content/content/v1/reject': {
@@ -326,8 +329,13 @@ const API_LIST = {
       }
     },
     '/learner/course/v1/user/enrollment/list/:userId': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.ALL]
+      checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
+      ROLE_CHECK: [ROLE.ALL],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__urlparams__userId', params: [], key: 'userId' }
+        ]
+      }
     },
     '/learner/course/v1/enrol': {
       checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
@@ -432,8 +440,13 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/user/v1/feed/:userId': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__urlparams__userId', params: [], key: 'userId' }
+        ]
+      }
     },
     '/learner/user/v1/migrate': {
       checksNeeded: ['ROLE_CHECK'],
@@ -621,8 +634,13 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/group/v1/list': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [], key: 'body.request.filters.userId' }
+        ]
+      }
     },
     '/learner/group/v1/read/:groupId': {
       checksNeeded: ['ROLE_CHECK'],

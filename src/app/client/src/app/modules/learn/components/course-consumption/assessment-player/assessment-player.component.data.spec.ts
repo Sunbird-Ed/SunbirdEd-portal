@@ -444,6 +444,83 @@ export const assessmentPlayerMockData = {
       'status': 0,
       'courseId': 'do_1130272760292638721197',
       'batchId': '0130272832104038409'
+    },
+    {
+      'contentId': 'do_2334343',
+      'status': 0,
+      'courseId': 'do_1130272760292638721197',
+      'batchId': '0130272832104038409',
+      'bestScore': {},
+      'score': [{
+        'maxScore': 10,
+        'bestScore': 5
+      }]
+    },
+    {
+      'contentId': 'do_11002',
+      'status': 2,
+      'courseId': 'do_1130272760292638721197',
+      'batchId': '0130272832104038409',
+      'lastAccessTime': '2020-05-31 21:09:16:392+0530',
+      'bestScore': {},
+      'score': [{
+        'maxScore': 10,
+        'bestScore': 5
+      },{
+        'maxScore': 10,
+        'bestScore': 5
+      }]
+    },
+    {
+      'contentId': 'do_11003',
+      'status': 2,
+      'courseId': 'do_1130272760292638721197',
+      'batchId': '0130272832104038409',
+      'lastAccessTime': '2020-05-31 21:09:16:392+0530',
+      'bestScore': {},
+      'score': [{
+        'maxScore': 10,
+        'bestScore': 5
+      },{
+        'maxScore': 10,
+        'bestScore': 5
+      },{
+        'maxScore': 10,
+        'bestScore': 5
+      }]
+    },
+    {
+      'contentId': 'do_1100201',
+      'status': 2,
+      'courseId': 'do_1130272760292638721197',
+      'batchId': '0130272832104038409',
+      'lastAccessTime': '2020-05-31 21:09:16:392+0530',
+      'bestScore': {},
+      'score': [{
+        'maxScore': 10,
+        'bestScore': 5
+      },{
+        'maxScore': 10,
+        'bestScore': 5
+      }]
+    },
+    {
+      'contentId': 'do_1100202',
+      'status': 2,
+      'courseId': 'do_1130272760292638721197',
+      'batchId': '0130272832104038409',
+      'lastAccessTime': '2020-05-31 21:09:16:392+0530',
+      'bestScore': {},
+      'score': [{
+        'maxScore': 10,
+        'bestScore': 5
+      },{
+        'maxScore': 10,
+        'bestScore': 5
+      },{
+        'maxScore': 10,
+        'bestScore': 5
+      }]
     }
   ],
   activeContent: {
@@ -1017,5 +1094,569 @@ export const assessmentPlayerMockData = {
     'pkgVersion': 1,
     'idealScreenDensity': 'hdpi',
     'progress': 0
+  },
+  contentProgressReqData: {
+    'content': [
+      {
+        'contentId': 'do_2334343',
+        'courseId': 'do_1130272760292638721197',
+        'batchId': '0130272832104038409',
+        'bestScore': {},
+        'score': [{
+          'maxScore': 10,
+          'bestScore': 5
+        }]
+      },
+      {
+        'contentId': 'do_11002',
+        'status': 2,
+        'courseId': 'do_1130272760292638721197',
+        'batchId': '0130272832104038409',
+        'lastAccessTime': '2020-05-31 21:09:16:392+0530',
+        'bestScore': {},
+        'score': [{
+          'maxScore': 10,
+          'bestScore': 5
+        },{
+          'maxScore': 10,
+          'bestScore': 5
+        }]
+      },
+      {
+        'contentId': 'do_11003',
+        'status': 2,
+        'courseId': 'do_1130272760292638721197',
+        'batchId': '0130272832104038409',
+        'lastAccessTime': '2020-05-31 21:09:16:392+0530',
+        'bestScore': {},
+        'score': [{
+          'maxScore': 10,
+          'bestScore': 5
+        },{
+          'maxScore': 10,
+          'bestScore': 5
+        },{
+          'maxScore': 10,
+          'bestScore': 5
+        }]
+      },
+      {
+        'contentId': 'do_1100201',
+        'status': 2,
+        'courseId': 'do_1130272760292638721197',
+        'batchId': '0130272832104038409',
+        'lastAccessTime': '2020-05-31 21:09:16:392+0530',
+        'bestScore': {},
+        'score': [{
+          'maxScore': 10,
+          'bestScore': 5
+        },{
+          'maxScore': 10,
+          'bestScore': 5
+        }]
+      },
+      {
+        'contentId': 'do_1100202',
+        'status': 2,
+        'courseId': 'do_1130272760292638721197',
+        'batchId': '0130272832104038409',
+        'lastAccessTime': '2020-05-31 21:09:16:392+0530',
+        'bestScore': {},
+        'score': [{
+          'maxScore': 10,
+          'bestScore': 5
+        },{
+          'maxScore': 10,
+          'bestScore': 5
+        },{
+          'maxScore': 10,
+          'bestScore': 5
+        }]
+      }
+    ]
+  },
+  lastAttemptContent: {
+    'maxAttempts': 3,
+    'ownershipType': [
+      'createdBy'
+    ],
+    'copyright': 'Sunbird',
+    'previewUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/ecml/do_11287204084174028818-latest',
+    'subject': [
+      'Math'
+    ],
+    'plugins': [
+      {
+        'identifier': 'org.ekstep.stage',
+        'semanticVersion': '1.0'
+      },
+      {
+        'identifier': 'org.ekstep.image',
+        'semanticVersion': '1.1'
+      },
+      {
+        'identifier': 'org.ekstep.shape',
+        'semanticVersion': '1.0'
+      },
+      {
+        'identifier': 'org.ekstep.text',
+        'semanticVersion': '1.2'
+      },
+      {
+        'identifier': 'org.ekstep.navigation',
+        'semanticVersion': '1.0'
+      }
+    ],
+    'downloadUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_11287204084174028818/untitled-resource_1571294546089_do_11287204084174028818_1.0.ecar',
+    'channel': 'b00bc992ef25f1a9a8d63291e20efc8d',
+    'questions': [],
+    'organisation': [
+      'Sunbird'
+    ],
+    'language': [
+      'English'
+    ],
+    'variants': {
+      'spine': {
+        'ecarUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_11287204084174028818/untitled-resource_1571294546432_do_11287204084174028818_1.0_spine.ecar',
+        'size': 38754
+      }
+    },
+    'mimeType': 'application/vnd.ekstep.ecml-archive',
+    'editorState': '{"plugin":{"noOfExtPlugins":12,"extPlugins":[{"plugin":"org.ekstep.contenteditorfunctions","version":"1.2"},{"plugin":"org.ekstep.keyboardshortcuts","version":"1.0"},{"plugin":"org.ekstep.richtext","version":"1.0"},{"plugin":"org.ekstep.iterator","version":"1.0"},{"plugin":"org.ekstep.navigation","version":"1.0"},{"plugin":"org.ekstep.reviewercomments","version":"1.0"},{"plugin":"org.ekstep.questionunit.mtf","version":"1.2"},{"plugin":"org.ekstep.questionunit.mcq","version":"1.3"},{"plugin":"org.ekstep.keyboard","version":"1.1"},{"plugin":"org.ekstep.questionunit.reorder","version":"1.1"},{"plugin":"org.ekstep.questionunit.sequence","version":"1.1"},{"plugin":"org.ekstep.questionunit.ftb","version":"1.1"}]},"stage":{"noOfStages":3,"currentStage":"267c5647-929c-4398-aebe-0eba56bbd94c","selectedPluginObject":"155062bd-602d-43a5-9a00-9892ba7c943a"},"sidebar":{"selectedMenu":"settings"}}',
+    'gradeLevel': [
+      'Kindergarten'
+    ],
+    'appIcon': 'assets/common-consumption/images/sprite.svg#touch',
+    'assets': [
+      'do_112835334818643968148'
+    ],
+    'appId': 'dev.sunbird.portal',
+    'usesContent': [],
+    'contentEncoding': 'gzip',
+    'artifactUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11287204084174028818/artifact/1571294545639_do_11287204084174028818.zip',
+    'lockKey': '7c9c43a7-b5fb-4bfc-a9f5-71ef0d365266',
+    'contentType': 'Resource',
+    'lastUpdatedBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+    'identifier': 'do_11002',
+    'audience': [
+      'Learner'
+    ],
+    'visibility': 'Default',
+    'author': 'b00bc992ef25f1a9a8d63291e20efc8d',
+    'consumerId': '273f3b18-5dda-4a27-984a-060c7cd398d3',
+    'mediaType': 'content',
+    'itemSets': [],
+    'osId': 'org.ekstep.quiz.app',
+    'lastPublishedBy': 'Ekstep',
+    'version': 2,
+    'license': 'CC BY-NC 4.0',
+    'prevState': 'Review',
+    'size': 76152,
+    'lastPublishedOn': '2019-10-17T06:42:26.074+0000',
+    'concepts': [],
+    'name': 'Untitled Resource',
+    'status': 'Live',
+    'totalQuestions': 0,
+    'code': 'org.sunbird.cXP2g6',
+    'methods': [],
+    'description': 'Enter description for Resource',
+    'streamingUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/ecml/do_11287204084174028818-latest',
+    'medium': [
+      'English'
+    ],
+    'posterImage': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_112835334818643968148/artifact/06_maths_book_1566813333849.jpg',
+    'idealScreenSize': 'normal',
+    'createdOn': '2019-10-17T06:34:08.063+0000',
+    'contentDisposition': 'inline',
+    'lastUpdatedOn': '2019-10-17T06:42:23.458+0000',
+    'SYS_INTERNAL_LAST_UPDATED_ON': '2019-10-17T06:42:27.705+0000',
+    'dialcodeRequired': 'No',
+    'creator': 'Creation',
+    'createdFor': [
+      'ORG_001'
+    ],
+    'lastStatusChangedOn': '2019-10-17T06:42:27.698+0000',
+    'os': [
+      'All'
+    ],
+    'libraries': [],
+    'totalScore': 0,
+    'pkgVersion': 1,
+    'versionKey': '1571294543458',
+    'idealScreenDensity': 'hdpi',
+    's3Key': 'ecar_files/do_11287204084174028818/untitled-resource_1571294546089_do_11287204084174028818_1.0.ecar',
+    'framework': 'NCFCOPY',
+    'lastSubmittedOn': '2019-10-17T06:41:49.741+0000',
+    'createdBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+    'compatibilityLevel': 2,
+    'board': 'NCERT',
+    'resourceType': 'Learn',
+    'index': 1,
+    'depth': 3,
+    'parent': 'do_1130272760359813121209'
+  },
+  maxAttemptContent: {
+    'maxAttempts': 3,
+    'ownershipType': [
+      'createdBy'
+    ],
+    'copyright': 'Sunbird',
+    'previewUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/ecml/do_11287204084174028818-latest',
+    'subject': [
+      'Math'
+    ],
+    'plugins': [
+      {
+        'identifier': 'org.ekstep.stage',
+        'semanticVersion': '1.0'
+      },
+      {
+        'identifier': 'org.ekstep.image',
+        'semanticVersion': '1.1'
+      },
+      {
+        'identifier': 'org.ekstep.shape',
+        'semanticVersion': '1.0'
+      },
+      {
+        'identifier': 'org.ekstep.text',
+        'semanticVersion': '1.2'
+      },
+      {
+        'identifier': 'org.ekstep.navigation',
+        'semanticVersion': '1.0'
+      }
+    ],
+    'downloadUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_11287204084174028818/untitled-resource_1571294546089_do_11287204084174028818_1.0.ecar',
+    'channel': 'b00bc992ef25f1a9a8d63291e20efc8d',
+    'questions': [],
+    'organisation': [
+      'Sunbird'
+    ],
+    'language': [
+      'English'
+    ],
+    'variants': {
+      'spine': {
+        'ecarUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_11287204084174028818/untitled-resource_1571294546432_do_11287204084174028818_1.0_spine.ecar',
+        'size': 38754
+      }
+    },
+    'mimeType': 'application/vnd.ekstep.ecml-archive',
+    'editorState': '{"plugin":{"noOfExtPlugins":12,"extPlugins":[{"plugin":"org.ekstep.contenteditorfunctions","version":"1.2"},{"plugin":"org.ekstep.keyboardshortcuts","version":"1.0"},{"plugin":"org.ekstep.richtext","version":"1.0"},{"plugin":"org.ekstep.iterator","version":"1.0"},{"plugin":"org.ekstep.navigation","version":"1.0"},{"plugin":"org.ekstep.reviewercomments","version":"1.0"},{"plugin":"org.ekstep.questionunit.mtf","version":"1.2"},{"plugin":"org.ekstep.questionunit.mcq","version":"1.3"},{"plugin":"org.ekstep.keyboard","version":"1.1"},{"plugin":"org.ekstep.questionunit.reorder","version":"1.1"},{"plugin":"org.ekstep.questionunit.sequence","version":"1.1"},{"plugin":"org.ekstep.questionunit.ftb","version":"1.1"}]},"stage":{"noOfStages":3,"currentStage":"267c5647-929c-4398-aebe-0eba56bbd94c","selectedPluginObject":"155062bd-602d-43a5-9a00-9892ba7c943a"},"sidebar":{"selectedMenu":"settings"}}',
+    'gradeLevel': [
+      'Kindergarten'
+    ],
+    'appIcon': 'assets/common-consumption/images/sprite.svg#touch',
+    'assets': [
+      'do_112835334818643968148'
+    ],
+    'appId': 'dev.sunbird.portal',
+    'usesContent': [],
+    'contentEncoding': 'gzip',
+    'artifactUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11287204084174028818/artifact/1571294545639_do_11287204084174028818.zip',
+    'lockKey': '7c9c43a7-b5fb-4bfc-a9f5-71ef0d365266',
+    'contentType': 'Resource',
+    'lastUpdatedBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+    'identifier': 'do_11003',
+    'audience': [
+      'Learner'
+    ],
+    'visibility': 'Default',
+    'author': 'b00bc992ef25f1a9a8d63291e20efc8d',
+    'consumerId': '273f3b18-5dda-4a27-984a-060c7cd398d3',
+    'mediaType': 'content',
+    'itemSets': [],
+    'osId': 'org.ekstep.quiz.app',
+    'lastPublishedBy': 'Ekstep',
+    'version': 2,
+    'license': 'CC BY-NC 4.0',
+    'prevState': 'Review',
+    'size': 76152,
+    'lastPublishedOn': '2019-10-17T06:42:26.074+0000',
+    'concepts': [],
+    'name': 'Untitled Resource',
+    'status': 'Live',
+    'totalQuestions': 0,
+    'code': 'org.sunbird.cXP2g6',
+    'methods': [],
+    'description': 'Enter description for Resource',
+    'streamingUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/ecml/do_11287204084174028818-latest',
+    'medium': [
+      'English'
+    ],
+    'posterImage': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_112835334818643968148/artifact/06_maths_book_1566813333849.jpg',
+    'idealScreenSize': 'normal',
+    'createdOn': '2019-10-17T06:34:08.063+0000',
+    'contentDisposition': 'inline',
+    'lastUpdatedOn': '2019-10-17T06:42:23.458+0000',
+    'SYS_INTERNAL_LAST_UPDATED_ON': '2019-10-17T06:42:27.705+0000',
+    'dialcodeRequired': 'No',
+    'creator': 'Creation',
+    'createdFor': [
+      'ORG_001'
+    ],
+    'lastStatusChangedOn': '2019-10-17T06:42:27.698+0000',
+    'os': [
+      'All'
+    ],
+    'libraries': [],
+    'totalScore': 0,
+    'pkgVersion': 1,
+    'versionKey': '1571294543458',
+    'idealScreenDensity': 'hdpi',
+    's3Key': 'ecar_files/do_11287204084174028818/untitled-resource_1571294546089_do_11287204084174028818_1.0.ecar',
+    'framework': 'NCFCOPY',
+    'lastSubmittedOn': '2019-10-17T06:41:49.741+0000',
+    'createdBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+    'compatibilityLevel': 2,
+    'board': 'NCERT',
+    'resourceType': 'Learn',
+    'index': 1,
+    'depth': 3,
+    'parent': 'do_1130272760359813121209'
+  },
+  selfAssessContent1: {
+    'maxAttempts': 3,
+    'ownershipType': [
+      'createdBy'
+    ],
+    'copyright': 'Sunbird',
+    'previewUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/ecml/do_11287204084174028818-latest',
+    'subject': [
+      'Math'
+    ],
+    'plugins': [
+      {
+        'identifier': 'org.ekstep.stage',
+        'semanticVersion': '1.0'
+      },
+      {
+        'identifier': 'org.ekstep.image',
+        'semanticVersion': '1.1'
+      },
+      {
+        'identifier': 'org.ekstep.shape',
+        'semanticVersion': '1.0'
+      },
+      {
+        'identifier': 'org.ekstep.text',
+        'semanticVersion': '1.2'
+      },
+      {
+        'identifier': 'org.ekstep.navigation',
+        'semanticVersion': '1.0'
+      }
+    ],
+    'downloadUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_11287204084174028818/untitled-resource_1571294546089_do_11287204084174028818_1.0.ecar',
+    'channel': 'b00bc992ef25f1a9a8d63291e20efc8d',
+    'questions': [],
+    'organisation': [
+      'Sunbird'
+    ],
+    'language': [
+      'English'
+    ],
+    'variants': {
+      'spine': {
+        'ecarUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_11287204084174028818/untitled-resource_1571294546432_do_11287204084174028818_1.0_spine.ecar',
+        'size': 38754
+      }
+    },
+    'mimeType': 'application/vnd.ekstep.ecml-archive',
+    'editorState': '{"plugin":{"noOfExtPlugins":12,"extPlugins":[{"plugin":"org.ekstep.contenteditorfunctions","version":"1.2"},{"plugin":"org.ekstep.keyboardshortcuts","version":"1.0"},{"plugin":"org.ekstep.richtext","version":"1.0"},{"plugin":"org.ekstep.iterator","version":"1.0"},{"plugin":"org.ekstep.navigation","version":"1.0"},{"plugin":"org.ekstep.reviewercomments","version":"1.0"},{"plugin":"org.ekstep.questionunit.mtf","version":"1.2"},{"plugin":"org.ekstep.questionunit.mcq","version":"1.3"},{"plugin":"org.ekstep.keyboard","version":"1.1"},{"plugin":"org.ekstep.questionunit.reorder","version":"1.1"},{"plugin":"org.ekstep.questionunit.sequence","version":"1.1"},{"plugin":"org.ekstep.questionunit.ftb","version":"1.1"}]},"stage":{"noOfStages":3,"currentStage":"267c5647-929c-4398-aebe-0eba56bbd94c","selectedPluginObject":"155062bd-602d-43a5-9a00-9892ba7c943a"},"sidebar":{"selectedMenu":"settings"}}',
+    'gradeLevel': [
+      'Kindergarten'
+    ],
+    'appIcon': 'assets/common-consumption/images/sprite.svg#touch',
+    'assets': [
+      'do_112835334818643968148'
+    ],
+    'appId': 'dev.sunbird.portal',
+    'usesContent': [],
+    'contentEncoding': 'gzip',
+    'artifactUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11287204084174028818/artifact/1571294545639_do_11287204084174028818.zip',
+    'lockKey': '7c9c43a7-b5fb-4bfc-a9f5-71ef0d365266',
+    'contentType': 'SelfAssess',
+    'lastUpdatedBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+    'identifier': 'do_1100201',
+    'audience': [
+      'Learner'
+    ],
+    'visibility': 'Default',
+    'author': 'b00bc992ef25f1a9a8d63291e20efc8d',
+    'consumerId': '273f3b18-5dda-4a27-984a-060c7cd398d3',
+    'mediaType': 'content',
+    'itemSets': [],
+    'osId': 'org.ekstep.quiz.app',
+    'lastPublishedBy': 'Ekstep',
+    'version': 2,
+    'license': 'CC BY-NC 4.0',
+    'prevState': 'Review',
+    'size': 76152,
+    'lastPublishedOn': '2019-10-17T06:42:26.074+0000',
+    'concepts': [],
+    'name': 'Untitled Resource',
+    'status': 'Live',
+    'totalQuestions': 0,
+    'code': 'org.sunbird.cXP2g6',
+    'methods': [],
+    'description': 'Enter description for Resource',
+    'streamingUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/ecml/do_11287204084174028818-latest',
+    'medium': [
+      'English'
+    ],
+    'posterImage': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_112835334818643968148/artifact/06_maths_book_1566813333849.jpg',
+    'idealScreenSize': 'normal',
+    'createdOn': '2019-10-17T06:34:08.063+0000',
+    'contentDisposition': 'inline',
+    'lastUpdatedOn': '2019-10-17T06:42:23.458+0000',
+    'SYS_INTERNAL_LAST_UPDATED_ON': '2019-10-17T06:42:27.705+0000',
+    'dialcodeRequired': 'No',
+    'creator': 'Creation',
+    'createdFor': [
+      'ORG_001'
+    ],
+    'lastStatusChangedOn': '2019-10-17T06:42:27.698+0000',
+    'os': [
+      'All'
+    ],
+    'libraries': [],
+    'totalScore': 0,
+    'pkgVersion': 1,
+    'versionKey': '1571294543458',
+    'idealScreenDensity': 'hdpi',
+    's3Key': 'ecar_files/do_11287204084174028818/untitled-resource_1571294546089_do_11287204084174028818_1.0.ecar',
+    'framework': 'NCFCOPY',
+    'lastSubmittedOn': '2019-10-17T06:41:49.741+0000',
+    'createdBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+    'compatibilityLevel': 2,
+    'board': 'NCERT',
+    'resourceType': 'Learn',
+    'index': 1,
+    'depth': 3,
+    'parent': 'do_1130272760359813121209'
+  },
+  selfAssessContent2: {
+    'maxAttempts': 3,
+    'ownershipType': [
+      'createdBy'
+    ],
+    'copyright': 'Sunbird',
+    'previewUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/ecml/do_11287204084174028818-latest',
+    'subject': [
+      'Math'
+    ],
+    'plugins': [
+      {
+        'identifier': 'org.ekstep.stage',
+        'semanticVersion': '1.0'
+      },
+      {
+        'identifier': 'org.ekstep.image',
+        'semanticVersion': '1.1'
+      },
+      {
+        'identifier': 'org.ekstep.shape',
+        'semanticVersion': '1.0'
+      },
+      {
+        'identifier': 'org.ekstep.text',
+        'semanticVersion': '1.2'
+      },
+      {
+        'identifier': 'org.ekstep.navigation',
+        'semanticVersion': '1.0'
+      }
+    ],
+    'downloadUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_11287204084174028818/untitled-resource_1571294546089_do_11287204084174028818_1.0.ecar',
+    'channel': 'b00bc992ef25f1a9a8d63291e20efc8d',
+    'questions': [],
+    'organisation': [
+      'Sunbird'
+    ],
+    'language': [
+      'English'
+    ],
+    'variants': {
+      'spine': {
+        'ecarUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_11287204084174028818/untitled-resource_1571294546432_do_11287204084174028818_1.0_spine.ecar',
+        'size': 38754
+      }
+    },
+    'mimeType': 'application/vnd.ekstep.ecml-archive',
+    'editorState': '{"plugin":{"noOfExtPlugins":12,"extPlugins":[{"plugin":"org.ekstep.contenteditorfunctions","version":"1.2"},{"plugin":"org.ekstep.keyboardshortcuts","version":"1.0"},{"plugin":"org.ekstep.richtext","version":"1.0"},{"plugin":"org.ekstep.iterator","version":"1.0"},{"plugin":"org.ekstep.navigation","version":"1.0"},{"plugin":"org.ekstep.reviewercomments","version":"1.0"},{"plugin":"org.ekstep.questionunit.mtf","version":"1.2"},{"plugin":"org.ekstep.questionunit.mcq","version":"1.3"},{"plugin":"org.ekstep.keyboard","version":"1.1"},{"plugin":"org.ekstep.questionunit.reorder","version":"1.1"},{"plugin":"org.ekstep.questionunit.sequence","version":"1.1"},{"plugin":"org.ekstep.questionunit.ftb","version":"1.1"}]},"stage":{"noOfStages":3,"currentStage":"267c5647-929c-4398-aebe-0eba56bbd94c","selectedPluginObject":"155062bd-602d-43a5-9a00-9892ba7c943a"},"sidebar":{"selectedMenu":"settings"}}',
+    'gradeLevel': [
+      'Kindergarten'
+    ],
+    'appIcon': 'assets/common-consumption/images/sprite.svg#touch',
+    'assets': [
+      'do_112835334818643968148'
+    ],
+    'appId': 'dev.sunbird.portal',
+    'usesContent': [],
+    'contentEncoding': 'gzip',
+    'artifactUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_11287204084174028818/artifact/1571294545639_do_11287204084174028818.zip',
+    'lockKey': '7c9c43a7-b5fb-4bfc-a9f5-71ef0d365266',
+    'contentType': 'SelfAssess',
+    'lastUpdatedBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+    'identifier': 'do_1100202',
+    'audience': [
+      'Learner'
+    ],
+    'visibility': 'Default',
+    'author': 'b00bc992ef25f1a9a8d63291e20efc8d',
+    'consumerId': '273f3b18-5dda-4a27-984a-060c7cd398d3',
+    'mediaType': 'content',
+    'itemSets': [],
+    'osId': 'org.ekstep.quiz.app',
+    'lastPublishedBy': 'Ekstep',
+    'version': 2,
+    'license': 'CC BY-NC 4.0',
+    'prevState': 'Review',
+    'size': 76152,
+    'lastPublishedOn': '2019-10-17T06:42:26.074+0000',
+    'concepts': [],
+    'name': 'Untitled Resource',
+    'status': 'Live',
+    'totalQuestions': 0,
+    'code': 'org.sunbird.cXP2g6',
+    'methods': [],
+    'description': 'Enter description for Resource',
+    'streamingUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/ecml/do_11287204084174028818-latest',
+    'medium': [
+      'English'
+    ],
+    'posterImage': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_112835334818643968148/artifact/06_maths_book_1566813333849.jpg',
+    'idealScreenSize': 'normal',
+    'createdOn': '2019-10-17T06:34:08.063+0000',
+    'contentDisposition': 'inline',
+    'lastUpdatedOn': '2019-10-17T06:42:23.458+0000',
+    'SYS_INTERNAL_LAST_UPDATED_ON': '2019-10-17T06:42:27.705+0000',
+    'dialcodeRequired': 'No',
+    'creator': 'Creation',
+    'createdFor': [
+      'ORG_001'
+    ],
+    'lastStatusChangedOn': '2019-10-17T06:42:27.698+0000',
+    'os': [
+      'All'
+    ],
+    'libraries': [],
+    'totalScore': 0,
+    'pkgVersion': 1,
+    'versionKey': '1571294543458',
+    'idealScreenDensity': 'hdpi',
+    's3Key': 'ecar_files/do_11287204084174028818/untitled-resource_1571294546089_do_11287204084174028818_1.0.ecar',
+    'framework': 'NCFCOPY',
+    'lastSubmittedOn': '2019-10-17T06:41:49.741+0000',
+    'createdBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+    'compatibilityLevel': 2,
+    'board': 'NCERT',
+    'resourceType': 'Learn',
+    'index': 1,
+    'depth': 3,
+    'parent': 'do_1130272760359813121209'
   }
 };
