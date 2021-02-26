@@ -57,7 +57,7 @@ describe('LibrarySearchComponent', () => {
     languageSelected$: of({})
   };
   class FakeActivatedRoute {
-    queryParamsMock = new BehaviorSubject<any>({ subject: ['English'] });
+    queryParamsMock = new BehaviorSubject<any>({ subject: ['English'], utm_source: 'Tara' });
     paramsMock = new BehaviorSubject<any>({ pageNumber: '1' });
     get params() { return this.paramsMock.asObservable(); }
     get queryParams() { return this.queryParamsMock.asObservable(); }
@@ -339,4 +339,53 @@ describe('LibrarySearchComponent', () => {
     tick(100);
     expect(component.contentList.length).toEqual(2);
   }));
+
+  it('should call the content search api with a predefined request body', () => {
+    /** Arrange */
+    component.hashTagId = 'g7d8dddidjd8d9d7d';
+    component.queryParams = {
+      mediaType: ['text/html'],
+      utm_source: 'Tara',
+      key: 'comic-book',
+      sortType: 'asc',
+      appliedFilters: [{ code: 'board', range: [{ index: 0, name: 'NCRT' }, { index: 1, name: 'CBSC' }] }],
+      softConstraints: '',
+      selectedTab: 'explore',
+    };
+    component.globalSearchFacets = [];
+    component.allTabData = {
+      search: {
+        fields: '',
+        limit: 20,
+        filters: {
+          mimeType: {name: 'text/html', value: 'text/html'},
+          primaryCategory: 'course'
+        }
+      }
+    };
+
+    const option = {
+      filters: {
+        channel: 'g7d8dddidjd8d9d7d',
+        primaryCategory: 'course',
+        mimeType: undefined
+      },
+      fields: '',
+      limit: 20,
+      pageNumber: 1,
+      query: 'comic-book',
+      mode: 'soft',
+      softConstraints: {},
+      facets: [],
+      params: {
+        orgdetails: 'orgName,email'
+      }
+    };
+
+    /** Act */
+    component['fetchContents']();
+
+    /** Assert */
+    expect(searchService.contentSearch).toHaveBeenCalledWith(option);
+  });
 });

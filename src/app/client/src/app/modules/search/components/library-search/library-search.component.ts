@@ -185,7 +185,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         const mimeType = _.find(_.get(this.allTabData, 'search.filters.mimeType'), (o) => {
             return o.name === (selectedMediaType || 'all');
         });
-        let filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType']);
+        let filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType', 'utm_source']);
         if (_.isEmpty(filters)) {
             filters = _.omit(this.frameworkData, ['id']);
         }
