@@ -116,12 +116,12 @@
         <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
         <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors"
           ng-class="batch.isUserSearch === 1 ? 'loading' : undefined">
-          <input id="mentorSelList">
+          <input id="mentorSelList" aria-label="mentor list">
           <i class="dropdown icon"></i>
           <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0005}}</div>
           <div class="menu">
             <div class="item" [attr.data-value]="mentor.id" *ngFor="let mentor of mentorList">
-              <img class="ui mini avatar image" src="{{mentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}">
+              <img class="ui mini avatar image" src="{{mentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" alt="avatar image">
               {{mentor.name}}{{mentor.otherDetail}}
             </div>
           </div>
@@ -137,7 +137,7 @@
           <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0006}}</div>
           <div class="menu">
             <div class="item" *ngFor="let user of participantList" [attr.data-value]="user.id">
-              <img class="ui mini avatar image" src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}">
+              <img class="ui mini avatar image" src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" alt="avatar image">
               {{user.name}}{{user.otherDetail}}
             </div>
           </div>
@@ -146,7 +146,7 @@
 
       <div class="sb-field mt-24 mb-8" >
         <label class="d-flex flex-ai-center">
-          <input type="checkbox" formControlName="tncCheck" aria-labelledby="terms and agreement" role="checkbox" class="mr-8 cursor-pointer">
+          <input type="checkbox" formControlName="tncCheck" role="checkbox" class="mr-8 cursor-pointer">
           <span class="font-weight-normal fnormal">
             {{resourceService?.frmelmnts?.lbl?.agreeCourseToc  | interpolate:'{instance}': instance }}<a href="{{url}}/term-of-use.html#courseGuidelines" target="_blank" class="sb-color-primary">{{resourceService?.frmelmnts?.lbl?.courseGuidelines}}</a></span>
         </label>

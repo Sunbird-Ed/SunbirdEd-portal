@@ -76,4 +76,11 @@
       }
     }
   }
+  .main-side-toc-content{
+    sb-toc-item{
+      .sb-card-swap{
+        flex-direction: unset;
+      }
+    }
+  }
 }

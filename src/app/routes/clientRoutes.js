@@ -86,6 +86,7 @@ module.exports = (app, keycloak) => {
   })
 
   app.all('/play/quiz/*', playContent);
+  app.all('/manage-learn/*', MLContent);
 
   app.all('/get/dial/:dialCode',(req,res,next) => {
       if (_.get(req, 'query.channel')) {
@@ -100,7 +101,7 @@ module.exports = (app, keycloak) => {
   '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources', '/discussion-forum/*',
   '/resources/*', '/myActivity', '/myActivity/*', '/org/*', '/manage', '/contribute','/contribute/*','/groups','/groups/*', '/my-groups','/my-groups/*','/certs/configure/*'], 
   session({
-    secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
+    secret: envHelper.PORTAL_SESSION_SECRET_KEY,
     resave: false,
     cookie: {
       maxAge: envHelper.sunbird_session_ttl 
@@ -115,7 +116,7 @@ module.exports = (app, keycloak) => {
     '/:slug/explore-course', '/:slug/explore-course/*', '/:slug/signup', '/signup', '/:slug/sign-in/*',
     '/sign-in/*', '/download/*', '/accountMerge/*','/:slug/accountMerge/*', '/:slug/download/*', '/certs/*', '/:slug/certs/*', '/recover/*', '/:slug/recover/*', '/explore-groups'], 
     session({
-      secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
+      secret: envHelper.PORTAL_SESSION_SECRET_KEY,
       resave: false,
       cookie: {
         maxAge: envHelper.sunbird_session_ttl 
@@ -309,6 +310,13 @@ const redirectTologgedInPage = (req, res) => {
 const playContent = (req, res) => {
   if (req.path.includes('/play/quiz') && fs.existsSync(path.join(__dirname, '../tenant/quiz/', 'index.html'))){
     res.sendFile(path.join(__dirname, '../tenant/quiz/', 'index.html'));
+  } else {
+    renderDefaultIndexPage(req, res);
+  }
+}
+const MLContent = (req, res) => {
+  if (req.path.includes('/manage-learn/') && fs.existsSync(path.join(__dirname, '../tenant/manage-learn/', 'index.html'))){
+    res.sendFile(path.join(__dirname, '../tenant/manage-learn/', 'index.html'));
   } else {
     renderDefaultIndexPage(req, res);
   }
