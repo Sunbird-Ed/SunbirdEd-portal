@@ -103,6 +103,8 @@ describe('FilterComponent', () => {
     expect(component.filtersFormGroup.contains('state')).toBe(true);
     expect(component.filtersFormGroup.controls).toBeTruthy();
     expect(component.selectedFilters).toEqual({});
+  
+
   }));
   
 
@@ -119,16 +121,10 @@ describe('FilterComponent', () => {
   }));
 
   it('should reset filter', fakeAsync(() => {
+    const spy = spyOn(component, 'resetFilter').and.callThrough();
     component.ngOnInit();
     tick(1000);
-    component.resetFilter();
-    tick(1000);
     expect(component.showFilters).toEqual(true);
-    
-    const spy = spyOn(component, 'resetFilter').and.callThrough();
-        component.ngOnInit();
-     //   expect(spy).toHaveBeenCalled();
-        expect(component.showFilters).toEqual(true);
 
    
   }));
@@ -136,12 +132,21 @@ describe('FilterComponent', () => {
   it('should call selected filter ', fakeAsync(() => {
     component.ngOnInit();
     tick(1000);
+    spyOnProperty(component, 'selectedFilter', 'set').and.callThrough();
     component.selectedFilter = [{
-      data: [{ state: "01285019302823526477", Plays: "10", Date: "2020-04-28" }],filters:{}
+      data: [{ state: "01285019302823526477", Plays: "10", Date: "2020-04-28" }],filters:mockChartData.filters
     }];
     tick(1000);
     expect(component.selectedFilters).toEqual({});
     expect(component.filters).toEqual(mockChartData.filters);
+    tick(1000)
+
+    component.selectedFilter = [{
+      data: [{ state: "01285019302823526477", Plays: "10", Date: "2020-04-28" }],selectedFilters:mockChartData.filters
+    }];
+    tick(1000);
+    expect(component.selectedFilters).toEqual({});
+
   }));
 
   it('should emit the filter data', fakeAsync(() => {
@@ -156,6 +161,8 @@ describe('FilterComponent', () => {
     component.dateFilters = ['date'];
     const response = component.checkFilterReferance("date");
     expect(response).toEqual(true);
+    const response2 = component.checkFilterReferance("date2");
+    expect(response2).toEqual(false);
   }));
 
   it('should set resetFilters', fakeAsync(() => {
@@ -166,10 +173,6 @@ describe('FilterComponent', () => {
     component.selectedFilters = {};
     component.resetFilters = { data:mockChartData.chartData,reset:true,filters:mockChartData.filters };
     tick(1000);
-    // component.resetFilter();
-    // tick(1000);
-    // component.buildFiltersForm()  
-    // tick(1000);
     expect(component.selectedFilters).toEqual({});
     tick(1000);
     expect(component.chartData).toEqual(mockChartData.chartData);
@@ -178,6 +181,7 @@ describe('FilterComponent', () => {
     tick(1000);
     expect(component.selectedFilters).toEqual({});
     expect(component.chartData).toEqual(mockChartData.chartData);
+
 
   }));
 
@@ -196,7 +200,7 @@ describe('FilterComponent', () => {
     });
   }));
 
-  it('should get filter dat with selected filter', fakeAsync(() => {
+  it('should get filter data with selected filter', fakeAsync(() => {
     component.ngOnInit();
     tick(1000);
     component.filters = mockChartData.filters;
@@ -213,12 +217,18 @@ describe('FilterComponent', () => {
 
   }));
 
- 
-  // it('unsubscribes when destoryed', () => {
-  //   fixture.detectChanges();
-  //   component.ngOnDestroy();
-  // });
+  it('should get filter data without selected filter', fakeAsync(() => {
+    component.ngOnInit();
+    tick(1000);
+    component.selectedFilters ={};
+    tick(1000);
+    tick(1000);
+    component.filterData();
+    expect(component.selectedFilters).toEqual({});
 
+  }));
+
+ 
   it('should call setTelemetryInteractEdata', () => {
     const resp = component.setTelemetryInteractEdata('filter.reference');
     expect(resp).toEqual({ id: 'filter.reference', type: 'click', pageid:  component.activatedRoute.snapshot.data.telemetry.pageid });

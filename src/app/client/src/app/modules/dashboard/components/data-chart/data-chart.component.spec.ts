@@ -77,7 +77,7 @@ describe('DataChartComponent', () => {
         expect(component.legend).toBe(true);
         expect(component.filters).toBe(mockChartData.chartConfig.filters);
         expect(spy).toHaveBeenCalled();
-        
+
         expect(component.chartLabels).toEqual([
             'Class 1',
             'Class 2',
@@ -244,6 +244,31 @@ describe('DataChartComponent', () => {
         component.globalFilter = { chartData : mockChartData.chartData  };
         expect(component.chartData).toEqual(mockChartData.chartData);
        
+      }));
+
+      it('should set getIframeURL', fakeAsync(() => {
+        component.ngOnInit();
+        tick(1000);
+        const res = component.getIframeURL();
+        
+      }));
+
+      it('should set refreshChartDataAfterInterval', fakeAsync(() => {
+        component.ngOnInit();
+        tick(1000);
+        component.refreshChartDataAfterInterval(5);
+        tick(1000);
+    
+        
+      }));
+     
+      it('should get globalFilter', fakeAsync(() => {
+        component.ngOnInit();
+        tick(1000);
+        spyOnProperty(component, 'globalFilter', 'get').and.callThrough();
+        component.globalFilter = { chartData : mockChartData.chartData  };
+        expect(component.chartData).toEqual(mockChartData.chartData);
+        
       }));
      
       

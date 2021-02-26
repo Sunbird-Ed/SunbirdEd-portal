@@ -169,6 +169,7 @@ describe('ReportComponent', () => {
       expect(reportService.getLatestSummary).toHaveBeenCalled();
       expect(reportService.getLatestSummary).toHaveBeenCalledWith({ reportId: '123', hash: undefined });
       expect(res).toBeDefined();
+      component.currentReportSummary = 'Update Report Summary';
       expect(res).toEqual([{
         label: 'Update Report Summary',
         text: [mockLatestReportSummary[0].summary],
