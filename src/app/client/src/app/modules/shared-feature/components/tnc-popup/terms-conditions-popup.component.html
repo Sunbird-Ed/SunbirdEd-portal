@@ -20,7 +20,7 @@
         (load)="showLoader = false"></iframe>
     </form>
     <label *ngIf="!tncUrl || showAcceptTnc" class="d-flex flex-jc-center flex-ai-center mt-16 mb-0">
-      <input type="checkbox" aria-labelledby="terms and agreement" role="checkbox" [(ngModel)]="tncChecked" value="true" (click)="onClickCheckbox(tncChecked)" class="mr-10 cursor-pointer"><span> {{resourceService?.frmelmnts?.lbl?.termsAndCondAgree}}</span>
+      <input type="checkbox" role="checkbox" [(ngModel)]="tncChecked" value="true" (click)="onClickCheckbox(tncChecked)" class="mr-10 cursor-pointer"><span> {{resourceService?.frmelmnts?.lbl?.termsAndCondAgree}}</span>
     </label>
   </div>
 

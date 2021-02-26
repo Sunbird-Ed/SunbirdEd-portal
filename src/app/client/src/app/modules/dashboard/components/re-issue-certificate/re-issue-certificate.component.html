@@ -11,7 +11,8 @@
               </span></label>
             <div class="d-flex">
               <div class="user-id-input">
-                <input class="sb-form-control font-weight-bold" name="id" placeholder="{{resourceService?.frmelmnts?.lbl?.searchUser}}" type="id" [(ngModel)]="userName" (ngModelChange)="resetValues()">
+                <label for="search-user-input-id" class="hide">{{resourceService?.frmelmnts?.lbl?.searchUser}}</label>
+                <input class="sb-form-control font-weight-bold" id="search-user-input-id" name="id" placeholder="{{resourceService?.frmelmnts?.lbl?.searchUser}}" type="id" [(ngModel)]="userName" (ngModelChange)="resetValues()">
                 <small class="message sb-color-error font-weight-bold mt-8"></small></div>
               <button class="sb-btn sb-btn-normal ml-16" id="search-btn" type="button" (click)="searchCertificates();addTelemetry('search-user-cert', {userId: userName, courseId: courseId})" [disabled]="!userName"
                 #searchBtn [ngClass]="{'sb-btn-disabled': !userName?.trim(), 'sb-btn-outline-primary': userName}">{{resourceService?.frmelmnts?.lbl?.search}}</button>

@@ -67,7 +67,7 @@ export class UserOnboardingComponent implements OnInit {
 
   locationSubmit() {
     this.popupControlService.changePopupStatus(true);
-    this.onboardingModal.deny();
+    this.onboardingModal && this.onboardingModal.deny();
     this.close.emit();
   }
 
