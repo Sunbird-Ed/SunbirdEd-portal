@@ -15,7 +15,7 @@
           </svg></i>
         {{resourceService?.frmelmnts?.btn?.back}}
       </button>
-      <div *ngIf="batchRemaningTime">{{batchRemaningTime}}</div>
+      <div *ngIf="enrolledCourse && batchEndDate">{{batchRemaningTime}}</div>
     </div>
   </div>
 </div>

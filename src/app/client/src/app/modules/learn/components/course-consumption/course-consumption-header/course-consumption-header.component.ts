@@ -174,8 +174,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     const minutes = Math.floor( (total/1000/60) % 60 );
     const hours = Math.floor( (total/(1000*60*60)) % 24 );
     const days = Math.floor( total/(1000*60*60*24) );
-  
-    return this.resourceService.frmelmnts.btn.BatchExpiringIn + ' ' + days + ' ' + 'day(s)' + ' ' + hours + 'h' + ' ' + minutes + 'm' + ' ' + seconds + 's'
+    
+    return this.resourceService.frmelmnts.lbl.BatchExpiringIn + ' ' + days + ' ' + 'day(s)' + ' ' + hours + 'h' + ' ' + minutes + 'm' + ' ' + seconds + 's'
   } 
   showDashboard() {
     this.router.navigate(['learn/course', this.courseId, 'dashboard', 'batches']);

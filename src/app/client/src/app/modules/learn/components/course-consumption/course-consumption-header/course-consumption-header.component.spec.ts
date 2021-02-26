@@ -32,7 +32,8 @@ const resourceServiceMockData = {
       close: 'close'
     },
     lbl: {
-      description: 'description'
+      description: 'description',
+      BatchExpiringIn: "Batch expiring in"
     }
   }
 };
@@ -156,6 +157,14 @@ describe('CourseConsumptionHeaderComponent', () => {
     expect(component.getBatchStatus).toHaveBeenCalled();
     expect(returnValue).toBe(true);
   });
+  it('should call  getTimeRemaining and return remaning time', () => {
+    let endDate = "2021-02-27";
+    spyOn(component, 'getTimeRemaining').and.callThrough();
+    const returnValue = component.getTimeRemaining(endDate);
+    expect(component.getTimeRemaining).toHaveBeenCalled();
+    expect(returnValue).toBeDefined();
+  });
+
   it('should call  getBatchStatus and return false if batch status is not  "2" and course is  completed', () => {
     component.enrolledBatchInfo = { status: 1 };
     component.progress = 100;
