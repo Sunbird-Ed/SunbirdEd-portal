@@ -64,6 +64,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   courseStatus: string;
   public unsubscribe = new Subject<void>();
   batchEndDate: any;
+  batchRemaningTime: any;
   public interval: any;
   telemetryCdata: Array<{}>;
   enableProgress = false;
@@ -166,6 +167,16 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
          });
   }
 
+  getTimeRemaining(endtime){
+    let date = new Date().toString();
+    const total = Date.parse(endtime) - Date.parse(date);
+    const seconds = Math.floor( (total/1000) % 60 );
+    const minutes = Math.floor( (total/1000/60) % 60 );
+    const hours = Math.floor( (total/(1000*60*60)) % 24 );
+    const days = Math.floor( total/(1000*60*60*24) );
+  
+    return this.resourceService.frmelmnts.btn.BatchExpiringIn + ' ' + days + ' ' + 'day(s)' + ' ' + hours + 'h' + ' ' + minutes + 'm' + ' ' + seconds + 's'
+  } 
   showDashboard() {
     this.router.navigate(['learn/course', this.courseId, 'dashboard', 'batches']);
   }
@@ -231,6 +242,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
    /* istanbul ignore else */
    if (_.get(this.enrolledBatchInfo, 'endDate')) {
     this.batchEndDate = dayjs(this.enrolledBatchInfo.endDate).format('YYYY-MM-DD');
+    this.batchRemaningTime = this.getTimeRemaining(this.batchEndDate);
    }
    return (_.get(this.enrolledBatchInfo, 'status') === 2 && this.progress <= 100);
   }
