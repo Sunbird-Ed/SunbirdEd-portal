@@ -449,6 +449,16 @@ const API_LIST = {
         ]
       }
     },
+    '/learner/user/v1/feed/delete': {
+      description: 'API to delete notification card by user',
+      checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [], key: 'body.request.userId' }
+        ]
+      }
+    },
     '/learner/user/v1/migrate': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
@@ -1582,6 +1592,7 @@ const API_LIST = {
     }
   },
   URL_PATTERN: [
+    '/learner/user/v1/feed/delete',
     '/content/content/v1/read/:do_id',
     '/content/content/v1/copy/:do_id',
     '/content/content/v1/publish/:do_id',
