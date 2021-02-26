@@ -863,3 +863,14 @@ quml-player {
     }
   }
 }
+
+.desktop-app {
+  .sb-md-container{
+    .sb-textbox{
+      padding: 4px 16px !important;
+    }
+  }
+  .sbt-sticky-topbar { // To hide top(screen reader) space
+    top: 0;
+  }
+}

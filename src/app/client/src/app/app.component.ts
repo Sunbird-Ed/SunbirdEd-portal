@@ -105,6 +105,7 @@ export class AppComponent implements OnInit, OnDestroy {
   showJoyThemePopUp = false;
   public unsubscribe$ = new Subject<void>();
   consentConfig: { tncLink: string; tncText: any; };
+  isDesktopApp = false;
 // Font Increase Decrease Variables
   fontSize: any;
   defaultFontSize = 16;
@@ -186,6 +187,10 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.isDesktopApp = this.utilService.isDesktopApp;
+    if (this.isDesktopApp) {
+      this._document.body.classList.add('desktop-app');
+    }
     this.checkFullScreenView();
     this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
       if (layoutConfig != null) {
