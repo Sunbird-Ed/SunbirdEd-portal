@@ -771,7 +771,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
           this.playerConfig = config;
           const _contentIndex = _.findIndex(this.contentStatus, { contentId: _.get(config, 'context.contentId') });
           this.playerConfig['metadata']['maxAttempt'] = _.get(this.activeContent, 'maxAttempts');
-          this.playerConfig['metadata']['currentAttempt'] = _.get(this.contentStatus[_contentIndex], 'score.length');
+          this.playerConfig['metadata']['currentAttempt'] = _.get(this.contentStatus[_contentIndex], 'score.length') || 0;
           this.showLoader = false;
           this.setTelemetryContentImpression();
         }, (err) => {

@@ -28,41 +28,45 @@ const ROLE = {
  */
 const isAllowed = () => {
   return function (req, res, next) {
-    if (shouldAllow(req)) {
-      next();
-    } else {
-      let REQ_URL = req.path;
-      // Pattern match for URL
-      _.forEach(API_LIST.URL_PATTERN, (url) => {
-        let regExp = pathToRegexp(url);
-        if (regExp.test(REQ_URL)) {
-          REQ_URL = url;
-          return false;
-        }
-      });
-      // Is API whitelisted ?
-      if (_.get(API_LIST.URL, REQ_URL)) {
-        const URL_RULE_OBJ = _.get(API_LIST.URL, REQ_URL);
-        let checksToExecute = [];
-        // Iterate for checks defined for API and push to array
-        URL_RULE_OBJ.checksNeeded.forEach(CHECK => {
-          checksToExecute.push(new Promise((res, rej) => {
-            if (_.get(URL_RULE_OBJ, CHECK) && typeof urlChecks[CHECK] === 'function') {
-              urlChecks[CHECK](res, rej, req, URL_RULE_OBJ[CHECK], REQ_URL);
-            }
-          }));
-        });
-        executeChecks(req, res, next, checksToExecute);
+    if (envHelper.PORTAL_API_WHITELIST_CHECK == 'true') {
+      if (shouldAllow(req)) {
+        next();
       } else {
-        // If API is not whitelisted
-        logger.info({
-          msg: 'Portal_API_WHITELIST: URL not whitelisted',
-          reqPath: req.path,
-          reqOriginalUrl: req.originalUrl,
-          method: req.method
+        let REQ_URL = req.path;
+        // Pattern match for URL
+        _.forEach(API_LIST.URL_PATTERN, (url) => {
+          let regExp = pathToRegexp(url);
+          if (regExp.test(REQ_URL)) {
+            REQ_URL = url;
+            return false;
+          }
         });
-        respond403(req, res);
+        // Is API whitelisted ?
+        if (_.get(API_LIST.URL, REQ_URL)) {
+          const URL_RULE_OBJ = _.get(API_LIST.URL, REQ_URL);
+          let checksToExecute = [];
+          // Iterate for checks defined for API and push to array
+          URL_RULE_OBJ.checksNeeded.forEach(CHECK => {
+            checksToExecute.push(new Promise((res, rej) => {
+              if (_.get(URL_RULE_OBJ, CHECK) && typeof urlChecks[CHECK] === 'function') {
+                urlChecks[CHECK](res, rej, req, URL_RULE_OBJ[CHECK], REQ_URL);
+              }
+            }));
+          });
+          executeChecks(req, res, next, checksToExecute);
+        } else {
+          // If API is not whitelisted
+          logger.info({
+            msg: 'Portal_API_WHITELIST: URL not whitelisted',
+            reqPath: req.path,
+            reqOriginalUrl: req.originalUrl,
+            method: req.method
+          });
+          respond403(req, res);
+        }
       }
+    } else {
+      next();
     }
   }
 };
