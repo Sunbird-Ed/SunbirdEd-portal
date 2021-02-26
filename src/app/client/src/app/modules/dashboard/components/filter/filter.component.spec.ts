@@ -93,14 +93,18 @@ describe('FilterComponent', () => {
   });
 
 
-  it('should build filters form from the configuration', () => {
+  it('should build filters form from the configuration', fakeAsync(() =>  {
     const spy = spyOn(component, 'buildFiltersForm').and.callThrough();
+    tick(1000);
     component.ngOnInit();
+    tick(1000);
     expect(spy).toHaveBeenCalled();
     expect(spy).toHaveBeenCalledTimes(1);
     expect(component.filtersFormGroup.contains('state')).toBe(true);
     expect(component.filtersFormGroup.controls).toBeTruthy();
-  });
+    expect(component.selectedFilters).toEqual({});
+  }));
+  
 
   it('should change selected filters value whenever any filter is changed', fakeAsync(() => {
     const spy = spyOn(component, 'formGeneration').and.callThrough();
@@ -120,16 +124,24 @@ describe('FilterComponent', () => {
     component.resetFilter();
     tick(1000);
     expect(component.showFilters).toEqual(true);
+    
+    const spy = spyOn(component, 'resetFilter').and.callThrough();
+        component.ngOnInit();
+     //   expect(spy).toHaveBeenCalled();
+        expect(component.showFilters).toEqual(true);
+
+   
   }));
 
   it('should call selected filter ', fakeAsync(() => {
     component.ngOnInit();
     tick(1000);
     component.selectedFilter = [{
-      data: [{ state: "01285019302823526477", Plays: "10", Date: "2020-04-28" }]
+      data: [{ state: "01285019302823526477", Plays: "10", Date: "2020-04-28" }],filters:{}
     }];
     tick(1000);
     expect(component.selectedFilters).toEqual({});
+    expect(component.filters).toEqual(mockChartData.filters);
   }));
 
   it('should emit the filter data', fakeAsync(() => {
@@ -149,13 +161,24 @@ describe('FilterComponent', () => {
   it('should set resetFilters', fakeAsync(() => {
     component.ngOnInit();
     tick(1000);
+    spyOnProperty(component, 'resetFilters', 'set').and.callThrough();
+    tick(1000);
+    component.selectedFilters = {};
     component.resetFilters = { data:mockChartData.chartData,reset:true,filters:mockChartData.filters };
     tick(1000);
-    component.resetFilter();
-    tick(1000);
-    component.buildFiltersForm()  
+    // component.resetFilter();
+    // tick(1000);
+    // component.buildFiltersForm()  
+    // tick(1000);
+    expect(component.selectedFilters).toEqual({});
     tick(1000);
     expect(component.chartData).toEqual(mockChartData.chartData);
+    tick(1000);
+    component.resetFilters = { data:mockChartData.chartData,filters:mockChartData.filters };
+    tick(1000);
+    expect(component.selectedFilters).toEqual({});
+    expect(component.chartData).toEqual(mockChartData.chartData);
+
   }));
 
   it('should run buildFiltersForm', fakeAsync(() => {
@@ -191,6 +214,16 @@ describe('FilterComponent', () => {
   }));
 
  
+  // it('unsubscribes when destoryed', () => {
+  //   fixture.detectChanges();
+  //   component.ngOnDestroy();
+  // });
+
+  it('should call setTelemetryInteractEdata', () => {
+    const resp = component.setTelemetryInteractEdata('filter.reference');
+    expect(resp).toEqual({ id: 'filter.reference', type: 'click', pageid:  component.activatedRoute.snapshot.data.telemetry.pageid });
+  });
+
   xit('should set the dateRange', fakeAsync(() => {
     component.ngOnInit();
     tick(1000);

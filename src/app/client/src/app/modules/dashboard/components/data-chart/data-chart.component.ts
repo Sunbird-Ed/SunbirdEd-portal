@@ -90,9 +90,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
     this.alwaysShowCalendars = true;
   }
 
- 
   ngOnInit() {
-
     this.chartConfig = _.get(this.chartInfo, 'chartConfig');
     this.chartData = _.get(this.chartInfo, 'chartData');
     this.chartSummarylabel = "Add " + _.get(this.resourceService, 'frmelmnts.lbl.chartSummary');
@@ -161,7 +159,6 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
   prepareChart() {
     if (!this.checkForExternalChart()) {
-      
       this.chartOptions = _.get(this.chartConfig, 'options') || { responsive: true };
       this.chartColors = _.get(this.chartConfig, 'colors') || [];
       this.chartType = _.get(this.chartConfig, 'chartType') || 'line';
@@ -371,7 +368,6 @@ export class DataChartComponent implements OnInit, OnDestroy {
           return _.map(chartSummary, summaryObj => {
             const summary = _.get(summaryObj, 'summary');
             this._chartSummary = summary;
-
             if(summary){
               this.chartSummarylabel = _.get(this.resourceService, 'frmelmnts.lbl.updateChartSummary');
             }

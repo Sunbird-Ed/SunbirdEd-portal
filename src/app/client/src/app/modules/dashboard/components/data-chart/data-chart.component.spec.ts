@@ -13,7 +13,7 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { By } from '@angular/platform-browser';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA,ChangeDetectorRef } from '@angular/core';
 import { ReportService } from '../../services';
 import { configureTestSuite } from '@sunbird/test-util';
 
@@ -27,7 +27,9 @@ describe('DataChartComponent', () => {
             schemas: [NO_ERRORS_SCHEMA],
             imports: [ChartsModule, SuiModule, ReactiveFormsModule, SharedModule.forRoot(), HttpClientTestingModule,
                 NgxDaterangepickerMd.forRoot(), TelemetryModule.forRoot(), RouterTestingModule, CoreModule, DashboardModule],
-            providers: [ReportService, {
+            providers: [
+                ChangeDetectorRef,
+                ReportService, {
                 provide: ActivatedRoute, useValue: {
                     snapshot: {
                         params: {
@@ -47,7 +49,9 @@ describe('DataChartComponent', () => {
         fixture = TestBed.createComponent(DataChartComponent);
         component = fixture.componentInstance;
         component.chartInfo = mockChartData;
+        component.chartSummarylabel = "Add Chart Summary";
         fixture.detectChanges();
+        fixture.changeDetectorRef.detectChanges();
     });
 
     afterEach(() => {
@@ -73,6 +77,7 @@ describe('DataChartComponent', () => {
         expect(component.legend).toBe(true);
         expect(component.filters).toBe(mockChartData.chartConfig.filters);
         expect(spy).toHaveBeenCalled();
+        
         expect(component.chartLabels).toEqual([
             'Class 1',
             'Class 2',
