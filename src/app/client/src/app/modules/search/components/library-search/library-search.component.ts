@@ -197,6 +197,12 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         }
         filters.primaryCategory = (_.get(filters, 'primaryCategory.length') && filters.primaryCategory) || _.get(this.allTabData, 'search.filters.primaryCategory');
         filters.mimeType = _.get(mimeType, 'values');
+        const _filters = _.get(this.allTabData, 'search.filters');
+        _.forEach(_filters, (el, key) => {
+            if(key !== 'primaryCategory' && key !== 'mimeType'){
+              filters[key] = el;
+            }
+         });
 
         // Replacing cbse/ncert value with cbse
         if (_.toLower(_.get(filters, 'board[0]')) === 'cbse/ncert' || _.toLower(_.get(filters, 'board')) === 'cbse/ncert') {

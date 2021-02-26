@@ -29,7 +29,7 @@
     padding: calculateRem(8px) calculateRem(16px);
     border-radius: calculateRem(6px);
     box-shadow: var(--sbt-box-shadow-6px);
-    font-size: 12px;
+    font-size: calculateRem(12px);
     font-weight: bold;
     margin-right: calculateRem(24px);
     height: calculateRem(48px);

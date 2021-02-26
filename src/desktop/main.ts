@@ -1,4 +1,4 @@
-import { app, BrowserWindow, dialog, crashReporter, shell } from "electron";
+import { app, BrowserWindow, dialog, crashReporter, shell, protocol } from "electron";
 import * as _ from "lodash";
 import * as path from "path";
 import * as fs from "fs";
@@ -78,6 +78,9 @@ let fileSDK = containerAPI.getFileSDKInstance("");
 let systemSDK = containerAPI.getSystemSDKInstance();
 let deviceSDK = containerAPI.getDeviceSdkInstance();
 deviceSDK.initialize({key: envs.APP_BASE_URL_TOKEN});
+global['childLoginWindow'];
+let deeplinkingUrl;
+const app_protocol = process.env.APP_ID.replace(/\./g, "");
 const reloadUIOnFileChange = () => {
   const subject = new Subject<any>();
   subject.pipe(debounceTime(2500)).subscribe(data => {
@@ -399,6 +402,21 @@ async function createWindow() {
     if (!app.isPackaged) {
       reloadUIOnFileChange();
     }
+    if (!app.isDefaultProtocolClient(app_protocol)) {
+      // Define custom protocol handler. Deep linking works on packaged versions of the application!
+      app.setAsDefaultProtocolClient(app_protocol)
+    }
+    
+    if (process.platform === 'win32') {
+      const windowIcon = path.join(__dirname, "build", "icons", "win", "icon.ico");
+      logger.debug(`WINDOW ICON PATH: ${windowIcon}`);
+      registerProtocolHandlerWin32(app_protocol, `URL: ${process.env.APP_NAME} URL`, windowIcon, process.execPath)
+    }
+
+    if (process.platform === 'linux') {
+      installDesktopFile()
+    }
+    
       win.webContents.on('new-window', async(event, url, frameName, disposition, options, additionalFeatures) => {
         event.preventDefault();
         try {
@@ -482,6 +500,18 @@ if (!gotTheLock) {
         clearInterval(interval);
       }
     }, 1000);
+
+    if (process.platform == 'win32') {
+      // Keep only command line / deep linked arguments
+      deeplinkingUrl = commandLine.slice(3)
+      handleUserAuthentication()
+    }
+    if (process.platform == 'linux' ) {
+      // Keep only command line / deep linked arguments
+      deeplinkingUrl = commandLine.slice(1);
+      handleUserAuthentication();
+    }
+
     // if user open's second instance, we should focus our window
     if (win) {
       if (win.isMinimized()) win.restore();
@@ -497,10 +527,64 @@ app.on("ready", createWindow);
 app.on("window-all-closed", () => {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
+  app.removeAsDefaultProtocolClient(app_protocol);
   if (process.platform !== "darwin") {
     app.quit();
   }
 });
+
+function registerProtocolHandlerWin32 (protocol, name, icon, command) {
+  logger.debug(`registerProtocolHandlerWin32 called`);
+  var Registry = require('winreg')
+
+  var protocolKey = new Registry({
+    hive: Registry.HKCU, // HKEY_CURRENT_USER
+    key: '\\Software\\Classes\\' + protocol
+  })
+  protocolKey.set('', Registry.REG_SZ, name, callback)
+  protocolKey.set('URL Protocol', Registry.REG_SZ, '', callback)
+
+  var iconKey = new Registry({
+    hive: Registry.HKCU,
+    key: '\\Software\\Classes\\' + protocol + '\\DefaultIcon'
+  })
+  iconKey.set('', Registry.REG_SZ, icon, callback)
+
+  var commandKey = new Registry({
+    hive: Registry.HKCU,
+    key: '\\Software\\Classes\\' + protocol + '\\shell\\open\\command'
+  })
+  commandKey.set('', Registry.REG_SZ, '"' + command + '" "%1"', callback)
+  logger.debug(`registerProtocolHandlerWin32 called finish`);
+  function callback (err) {
+    if (err) console.error(err.message || err)
+  }
+}
+
+function installDesktopFile () {
+  const os = require('os')
+  const templatePath = path.resolve(path.join(__dirname, '/helper/appconfig.desktop'));
+  let desktopFile = fs.readFileSync(templatePath, 'utf8')
+
+  desktopFile = desktopFile.replace(/\$APP_NAME/g, process.env.APP_NAME)
+  desktopFile = desktopFile.replace(/\$GENERIC_NAME/g, process.env.APP_ID)
+  desktopFile = desktopFile.replace(/\$APP_VERSION/g, process.env.APP_VERSION)
+  desktopFile = desktopFile.replace(/\$APP_PATH/g, path.dirname(process.execPath))
+  desktopFile = desktopFile.replace(/\$EXEC_PATH/g, process.execPath)
+
+  var desktopFilePath = path.join(os.homedir(), '.local', 'share', 'applications', 'appconfig.desktop')
+  fs.writeFileSync(desktopFilePath, desktopFile)
+}
+
+app.on('will-finish-launching', function() {
+  // Protocol handler for osx
+  app.on('open-url', function(event, url) {
+    event.preventDefault()
+    deeplinkingUrl = url
+    handleUserAuthentication();
+  })
+})
+
 app.on("activate", () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
@@ -559,6 +643,24 @@ const checkForOpenFile = (files?: string[]) => {
     );
   }
 };
+
+const handleUserAuthentication = async () => {
+  const parsedUrl = new URL(deeplinkingUrl);
+  const accessToken = new URLSearchParams(parsedUrl.search).get('access_token');
+  if(accessToken) {
+    const userData = {
+      access_token: accessToken
+    };
+    const loginPageOptions = {
+      isFreshWindow: true,
+      parentWindow: win, 
+      appbaseUrl: appBaseUrl,
+      deviceId: deviceId
+    }
+    const loginSessionProvider = new LoginSessionProvider(loginPageOptions);
+    await loginSessionProvider.getUsers(userData);
+  }
+}
 
 process
   .on("unhandledRejection", (reason, p) => {
