@@ -4,7 +4,7 @@
 .notification-bell{
   box-shadow: var(--sbt-box-shadow-6px);
   border-radius: 50%;
-  background-color: var(--white);
+  background-color: var(--sb-notification-bg);
   width: calculateRem(40px);
   height: calculateRem(40px);
   img{

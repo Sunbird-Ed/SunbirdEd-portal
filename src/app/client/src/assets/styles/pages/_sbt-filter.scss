@@ -5,7 +5,7 @@
 
       .sb-grade-pills-container {
         background: inherit !important;
-        padding-top:0px !important;
+        padding-top: 0px !important;
       }
 
       .sb-pills-container {
@@ -38,7 +38,7 @@
           // }
           &.active,
           &:hover {
-            color: var(--white) !important;
+            color: var(--sbt-pill-text-hover) !important;
             background-color: var(--sbt-pill-bg-active) !important;
             box-shadow: var(--sbt-box-shadow-3px) !important;
           }
@@ -111,19 +111,19 @@
     }
   }
 
-.sbt-filter-bar .treepicker-parent input.topic-picker-selector {
-  padding-left: calculateRem(16px);
-  background: var(--sbt-theme-purple-selectbox-lbg) !important;
-  color: var(--sbt-theme-purple-selectbox);
-  border: 0px;
-  border-radius: calculateRem(24px);
-  height: calculateRem(40px);
-  width: 100%;
-  margin-bottom: calculateRem(16px);
-  font-size: calculateRem(12px);
-  font-weight: bold;
-  box-shadow: var(--sbt-box-shadow-3px);
-}
+  .sbt-filter-bar .treepicker-parent input.topic-picker-selector {
+    padding-left: calculateRem(16px);
+    background: var(--sbt-theme-purple-selectbox-lbg) !important;
+    color: var(--sbt-theme-purple-selectbox);
+    border: 0px;
+    border-radius: calculateRem(24px);
+    height: calculateRem(40px);
+    width: 100%;
+    margin-bottom: calculateRem(16px);
+    font-size: calculateRem(12px);
+    font-weight: bold;
+    box-shadow: var(--sbt-box-shadow-3px);
+  }
 
 }
 
@@ -154,7 +154,7 @@
   }
 
   &-switcher {
-    --primary-color:#024F9D;
+    --primary-color: #024F9D;
     width: calculateRem(40px);
     height: calculateRem(40px);
     background-color: var(--sbt-header-bg);
@@ -170,9 +170,11 @@
     top: 0px;
     z-index: 999;
     cursor: pointer;
+
     html[dir="rtl"] & {
-      right:calculateRem(24px);
+      right: calculateRem(24px);
     }
+
     i {
       margin-top: calculateRem(-10px);
       margin-left: calculateRem(3px);
@@ -203,6 +205,7 @@
       justify-content: center;
       box-shadow: var(--sbt-box-shadow-3px);
       border-radius: calculateRem(20px);
+
       html[dir="rtl"] & {
         right: calculateRem(24px);
         padding: 0 calculateRem(48px) 0 calculateRem(16px);
@@ -238,7 +241,7 @@
   }
 
   &-bar {
-    background: var(--white);
+    background: var(--sbt-filter-bar-bg);
     box-shadow: var(--sbt-box-shadow-6px);
     min-width: calculateRem(232px);
     padding: calculateRem(32px) calculateRem(0px) calculateRem(16px) calculateRem(24px);
@@ -274,8 +277,9 @@
     overflow-y: auto;
     height: calc(100vh - 64px);
     padding-bottom: calculateRem(8px);
+
     @include respond-between(sm, md) {
-      height: calc(100vh - 280px); 
+      height: calc(100vh - 280px);
     }
 
     @include respond-above(md) {
@@ -321,4 +325,3 @@
   }
 
 }
-

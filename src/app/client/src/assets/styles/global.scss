@@ -863,3 +863,13 @@ quml-player {
     }
   }
 }
+
+.sbt-accessbility-bar {
+  background-color: #000;
+}
+.ui.text.menu .item{
+  color: var(--sb-menu-item) !important;
+  &:hover,&:active{
+    color: var(--sb-menu-item-hover) !important;
+  }
+ }
