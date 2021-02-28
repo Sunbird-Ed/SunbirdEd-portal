@@ -95,7 +95,7 @@
 }
 
 .footer {
-  background: $primary-color;
+  background: var(--sb-footer-bg);
   color: $white-color !important;
   padding: calculateRem(34px) 0;
   font-size: calculateRem(14px);

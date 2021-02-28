@@ -255,7 +255,7 @@
 
   // green color with white bg
   &.sbt-green {
-    background: var(--white);
+    background: var(--sbt-green-bg);
     color: var(--sbt-theme-green-selectbox);
 
     .default.text {
