@@ -1,6 +1,6 @@
 import {
   PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage, OfflineCardService,
-  ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination, LayoutService, COLUMN_TYPE
+  ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination, LayoutService, COLUMN_TYPE, SchemaService
 } from '@sunbird/shared';
 import { SearchService, PlayerService, OrgDetailsService, UserService, FrameworkService } from '@sunbird/core';
 import { PublicPlayerService } from '../../../../services';
@@ -67,7 +67,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     public userService: UserService, public frameworkService: FrameworkService,
     public cacheService: CacheService, public navigationhelperService: NavigationHelperService, public layoutService: LayoutService,
     public contentManagerService: ContentManagerService, private offlineCardService: OfflineCardService,
-    public telemetryService: TelemetryService) {
+    public telemetryService: TelemetryService, private schemaService: SchemaService) {
     this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
     this.filterType = this.configService.appConfig.explore.filterType;
   }
@@ -109,10 +109,10 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       }
     );
     this.searchAll = this.resourceService.frmelmnts.lbl.allContent;
-    this.contentManagerService.contentDownloadStatus$.subscribe( contentDownloadStatus => {
+    this.contentManagerService.contentDownloadStatus$.subscribe(contentDownloadStatus => {
       this.contentDownloadStatus = contentDownloadStatus;
       this.addHoverData();
-  });
+    });
   }
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -181,18 +181,21 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       return o.name === (selectedMediaType || 'all');
     });
     const pageType = _.get(this.queryParams, 'pageTitle');
-    const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType', 'utm_source']);
+    const filters: any = this.searchService.schemaValidator({
+      inputObj: this.queryParams || {}, schema: _.get(this.schemaService, 'contentSchema.properties') || {},
+      omitKeys: ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType', 'utm_source']
+    });
     if (!filters.channel) {
       filters.channel = this.hashTagId;
     }
     const _filters = _.get(this.allTabData, 'search.filters');
-    filters.primaryCategory = (_.get(filters, 'primaryCategory.length') && filters.primaryCategory) || _.get(this.allTabData, 'search.filters.primaryCategory');
-    filters.mimeType = _.get(mimeType, 'values');
-   _.forEach(_filters, (el, key) => {
-      if(key !== 'primaryCategory' && key !== 'mimeType'){
+    filters.primaryCategory = filters.primaryCategory || ((_.get(filters, 'primaryCategory.length') && filters.primaryCategory) || _.get(this.allTabData, 'search.filters.primaryCategory'));
+    filters.mimeType = filters.mimeType || _.get(mimeType, 'values');
+    _.forEach(_filters, (el, key) => {
+      if (key !== 'primaryCategory' && key !== 'mimeType' && !_.has(filters, key)) {
         filters[key] = el;
       }
-   });
+    });
 
     // Replacing cbse/ncert value with cbse
     if (_.toLower(_.get(filters, 'board[0]')) === 'cbse/ncert' || _.toLower(_.get(filters, 'board')) === 'cbse/ncert') {
@@ -202,13 +205,14 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     _.forEach(this.formData, (form, key) => {
       const pageTitle = _.get(this.resourceService, form.title);
       if (pageTitle === pageType) {
-        filters.contentType = _.get(form, 'search.filters.contentType');
+        filters.contentType = filters.contentType || _.get(form, 'search.filters.contentType');
       }
     });
     const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
     if (this.queryParams.key) {
       delete softConstraints['board'];
     }
+
     const option: any = {
       filters: _.omitBy(filters || {}, value => _.isArray(value) ? (!_.get(value, 'length') ? true : false) : false),
       fields: _.get(this.allTabData, 'search.fields'),
@@ -271,11 +275,11 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   addHoverData() {
     _.forEach(this.contentList, contents => {
       if (this.contentDownloadStatus[contents.identifier]) {
-          contents['downloadStatus'] = this.contentDownloadStatus[contents.identifier];
+        contents['downloadStatus'] = this.contentDownloadStatus[contents.identifier];
       }
-   });
-   this.contentList = this.utilService.addHoverData(this.contentList, true);
-}
+    });
+    this.contentList = this.utilService.addHoverData(this.contentList, true);
+  }
   public navigateToPage(page: number): void {
     if (page < 1 || page > this.paginationDetails.totalPages) {
       return;
@@ -342,7 +346,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   private listenLanguageChange() {
     this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe((languageData) => {
       this.setNoResultMessage();
-      if (_.get(this.contentList, 'length') ) {
+      if (_.get(this.contentList, 'length')) {
         if (this.isDesktopApp) {
           this.addHoverData();
         }
@@ -378,83 +382,83 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     this.contentData = event.data;
     let telemetryButtonId: any;
     switch (event.hover.type.toUpperCase()) {
-        case 'OPEN':
-            this.playContent(event);
-            this.logTelemetry(this.contentData, 'play-content');
-            break;
-        case 'DOWNLOAD':
-            this.downloadIdentifier = _.get(event, 'content.identifier');
-            this.showModal = this.offlineCardService.isYoutubeContent(this.contentData);
-            if (!this.showModal) {
-                this.showDownloadLoader = true;
-                this.downloadContent(this.downloadIdentifier);
-            }
-            telemetryButtonId = this.contentData.mimeType ===
-                'application/vnd.ekstep.content-collection' ? 'download-collection' : 'download-content';
-            this.logTelemetry(this.contentData, telemetryButtonId);
-            break;
+      case 'OPEN':
+        this.playContent(event);
+        this.logTelemetry(this.contentData, 'play-content');
+        break;
+      case 'DOWNLOAD':
+        this.downloadIdentifier = _.get(event, 'content.identifier');
+        this.showModal = this.offlineCardService.isYoutubeContent(this.contentData);
+        if (!this.showModal) {
+          this.showDownloadLoader = true;
+          this.downloadContent(this.downloadIdentifier);
+        }
+        telemetryButtonId = this.contentData.mimeType ===
+          'application/vnd.ekstep.content-collection' ? 'download-collection' : 'download-content';
+        this.logTelemetry(this.contentData, telemetryButtonId);
+        break;
     }
-}
+  }
 
-callDownload() {
+  callDownload() {
     this.showDownloadLoader = true;
     this.downloadContent(this.downloadIdentifier);
-}
+  }
 
-downloadContent(contentId) {
+  downloadContent(contentId) {
     this.contentManagerService.downloadContentId = contentId;
     this.contentManagerService.downloadContentData = this.contentData;
     this.contentManagerService.failedContentName = this.contentName;
     this.contentManagerService.startDownload({})
-        .pipe(takeUntil(this.unsubscribe$))
-        .subscribe(data => {
-            this.downloadIdentifier = '';
-            this.contentManagerService.downloadContentId = '';
-            this.contentManagerService.downloadContentData = {};
-            this.contentManagerService.failedContentName = '';
-            this.showDownloadLoader = false;
-        }, error => {
-            this.downloadIdentifier = '';
-            this.contentManagerService.downloadContentId = '';
-            this.contentManagerService.downloadContentData = {};
-            this.contentManagerService.failedContentName = '';
-            this.showDownloadLoader = false;
-            _.each(this.contentList, (content) => {
-              content['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
-            });
-            if (!(error.error.params.err === 'LOW_DISK_SPACE')) {
-                this.toasterService.error(this.resourceService.messages.fmsg.m0090);
-            }
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(data => {
+        this.downloadIdentifier = '';
+        this.contentManagerService.downloadContentId = '';
+        this.contentManagerService.downloadContentData = {};
+        this.contentManagerService.failedContentName = '';
+        this.showDownloadLoader = false;
+      }, error => {
+        this.downloadIdentifier = '';
+        this.contentManagerService.downloadContentId = '';
+        this.contentManagerService.downloadContentData = {};
+        this.contentManagerService.failedContentName = '';
+        this.showDownloadLoader = false;
+        _.each(this.contentList, (content) => {
+          content['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
         });
+        if (!(error.error.params.err === 'LOW_DISK_SPACE')) {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+        }
+      });
   }
 
   logTelemetry(content, actionId) {
-      const telemetryInteractObject = {
-          id: content.identifier,
-          type: content.contentType,
-          ver: content.pkgVersion ? content.pkgVersion.toString() : '1.0'
-      };
+    const telemetryInteractObject = {
+      id: content.identifier,
+      type: content.contentType,
+      ver: content.pkgVersion ? content.pkgVersion.toString() : '1.0'
+    };
 
-      const appTelemetryInteractData: any = {
-          context: {
-              env: _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
-              _.get(this.activatedRoute, 'snapshot.data.telemetry.env') ||
-              _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env')
-          },
-          edata: {
-              id: actionId,
-              type: 'click',
-              pageid: this.router.url.split('/')[1] || 'explore-page'
-          }
-      };
-
-      if (telemetryInteractObject) {
-          if (telemetryInteractObject.ver) {
-              telemetryInteractObject.ver = _.isNumber(telemetryInteractObject.ver) ?
-              _.toString(telemetryInteractObject.ver) : telemetryInteractObject.ver;
-          }
-          appTelemetryInteractData.object = telemetryInteractObject;
+    const appTelemetryInteractData: any = {
+      context: {
+        env: _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
+          _.get(this.activatedRoute, 'snapshot.data.telemetry.env') ||
+          _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env')
+      },
+      edata: {
+        id: actionId,
+        type: 'click',
+        pageid: this.router.url.split('/')[1] || 'explore-page'
       }
-      this.telemetryService.interact(appTelemetryInteractData);
+    };
+
+    if (telemetryInteractObject) {
+      if (telemetryInteractObject.ver) {
+        telemetryInteractObject.ver = _.isNumber(telemetryInteractObject.ver) ?
+          _.toString(telemetryInteractObject.ver) : telemetryInteractObject.ver;
+      }
+      appTelemetryInteractData.object = telemetryInteractObject;
+    }
+    this.telemetryService.interact(appTelemetryInteractData);
   }
 }

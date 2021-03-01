@@ -1,6 +1,6 @@
 import {
     PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage, OfflineCardService,
-    ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination, LayoutService, COLUMN_TYPE
+    ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination, LayoutService, COLUMN_TYPE, SchemaService
 } from '@sunbird/shared';
 import { SearchService, PlayerService, UserService, FrameworkService, OrgDetailsService, CoursesService } from '@sunbird/core';
 import { combineLatest, Subject, of } from 'rxjs';
@@ -69,9 +69,9 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         public configService: ConfigService, public utilService: UtilService,
         public navigationHelperService: NavigationHelperService, public userService: UserService,
         public cacheService: CacheService, public frameworkService: FrameworkService, private coursesService: CoursesService,
-        public navigationhelperService: NavigationHelperService, public layoutService: LayoutService,  public orgDetailsService: OrgDetailsService,
-        public contentManagerService: ContentManagerService,  private offlineCardService: OfflineCardService, public telemetryService: TelemetryService,
-        private publicPlayerService: PublicPlayerService) {
+        public navigationhelperService: NavigationHelperService, public layoutService: LayoutService, public orgDetailsService: OrgDetailsService,
+        public contentManagerService: ContentManagerService, private offlineCardService: OfflineCardService, public telemetryService: TelemetryService,
+        private publicPlayerService: PublicPlayerService, private schemaService: SchemaService) {
         this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.filterType = this.configService.appConfig.library.filterType;
         this.redirectUrl = this.configService.appConfig.library.searchPageredirectUrl;
@@ -96,7 +96,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         this.initLayout();
         this.frameworkService.channelData$.pipe(takeUntil(this.unsubscribe$)).subscribe((channelData) => {
             if (!channelData.err) {
-              this.frameworkId = _.get(channelData, 'channelData.defaultFramework');
+                this.frameworkId = _.get(channelData, 'channelData.defaultFramework');
             }
         });
         this.userService.userData$.subscribe(userData => {
@@ -110,11 +110,11 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
                 this.fetchContentOnParamChange();
                 this.setNoResultMessage();
             });
-            this.searchAll = this.resourceService.frmelmnts.lbl.allContent;
-            this.contentManagerService.contentDownloadStatus$.subscribe( contentDownloadStatus => {
-                this.contentDownloadStatus = contentDownloadStatus;
-                this.addHoverData();
-            });
+        this.searchAll = this.resourceService.frmelmnts.lbl.allContent;
+        this.contentManagerService.contentDownloadStatus$.subscribe(contentDownloadStatus => {
+            this.contentDownloadStatus = contentDownloadStatus;
+            this.addHoverData();
+        });
     }
     initLayout() {
         this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -139,17 +139,17 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     public getFilters(filters) {
         const filterData = filters && filters.filters || {};
         if (filterData.channel && this.facets) {
-          const channelIds = [];
-          const facetsData = _.find(this.facets, { 'name': 'channel' });
-          _.forEach(filterData.channel, (value, index) => {
-            const data = _.find(facetsData.values, { 'identifier': value });
-            if (data) {
-              channelIds.push(data.name);
+            const channelIds = [];
+            const facetsData = _.find(this.facets, { 'name': 'channel' });
+            _.forEach(filterData.channel, (value, index) => {
+                const data = _.find(facetsData.values, { 'identifier': value });
+                if (data) {
+                    channelIds.push(data.name);
+                }
+            });
+            if (channelIds && Array.isArray(channelIds) && channelIds.length > 0) {
+                filterData.channel = channelIds;
             }
-          });
-          if (channelIds && Array.isArray(channelIds) && channelIds.length > 0) {
-            filterData.channel = channelIds;
-          }
         }
         this.selectedFilters = filterData;
         const defaultFilters = _.reduce(filters, (collector: any, element) => {
@@ -166,7 +166,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
                 tap(data => this.inView({ inview: [] })), // trigger pageexit if last filter resulted 0 contents
                 delay(10), // to trigger pageexit telemetry event
                 tap(data => {
-                this.setTelemetryData();
+                    this.setTelemetryData();
                 }),
                 map(result => ({ params: { pageNumber: Number(result[0].pageNumber) }, queryParams: result[1] })),
                 takeUntil(this.unsubscribe$)
@@ -185,7 +185,11 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         const mimeType = _.find(_.get(this.allTabData, 'search.filters.mimeType'), (o) => {
             return o.name === (selectedMediaType || 'all');
         });
-        let filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType', 'utm_source']);
+        let filters = this.searchService.schemaValidator({
+            inputObj: this.queryParams || {},
+            schema: _.get(this.schemaService, 'contentSchema.properties') || {},
+            omitKeys: ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType', 'utm_source']
+        });
         if (_.isEmpty(filters)) {
             filters = _.omit(this.frameworkData, ['id']);
         }
@@ -195,14 +199,14 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         if (Object.keys(this.queryParams).length > 0) {
             filters = _.omit(filters, _.difference(this.globalSearchFacets, _.keysIn(this.queryParams)));
         }
-        filters.primaryCategory = (_.get(filters, 'primaryCategory.length') && filters.primaryCategory) || _.get(this.allTabData, 'search.filters.primaryCategory');
-        filters.mimeType = _.get(mimeType, 'values');
+        filters.primaryCategory = filters.primaryCategory || ((_.get(filters, 'primaryCategory.length') && filters.primaryCategory) || _.get(this.allTabData, 'search.filters.primaryCategory'));
+        filters.mimeType = filters.mimeType || _.get(mimeType, 'values');
         const _filters = _.get(this.allTabData, 'search.filters');
         _.forEach(_filters, (el, key) => {
-            if(key !== 'primaryCategory' && key !== 'mimeType'){
-              filters[key] = el;
+            if (key !== 'primaryCategory' && key !== 'mimeType' && !_.has(filters, key)) {
+                filters[key] = el;
             }
-         });
+        });
 
         // Replacing cbse/ncert value with cbse
         if (_.toLower(_.get(filters, 'board[0]')) === 'cbse/ncert' || _.toLower(_.get(filters, 'board')) === 'cbse/ncert') {
@@ -225,24 +229,24 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
             option.params.framework = this.frameworkId;
         }
         this.searchService.contentSearch(option)
-        .pipe(
-            mergeMap(data => {
-              const channelFacet = _.find(_.get(data, 'result.facets') || [], facet => _.get(facet, 'name') === 'channel')
-              if(channelFacet){
-                const rootOrgIds =  this.processOrgData(_.get(channelFacet, 'values'));
-                return this.orgDetailsService.searchOrgDetails({
-                  filters: { isRootOrg: true, rootOrgId: rootOrgIds },
-                  fields: ['slug', 'identifier', 'orgName']
-                }).pipe(
-                  mergeMap(orgDetails => {
-                    channelFacet.values = _.get(orgDetails, 'content');
+            .pipe(
+                mergeMap(data => {
+                    const channelFacet = _.find(_.get(data, 'result.facets') || [], facet => _.get(facet, 'name') === 'channel')
+                    if (channelFacet) {
+                        const rootOrgIds = this.processOrgData(_.get(channelFacet, 'values'));
+                        return this.orgDetailsService.searchOrgDetails({
+                            filters: { isRootOrg: true, rootOrgId: rootOrgIds },
+                            fields: ['slug', 'identifier', 'orgName']
+                        }).pipe(
+                            mergeMap(orgDetails => {
+                                channelFacet.values = _.get(orgDetails, 'content');
+                                return of(data);
+                            })
+                        )
+                    }
                     return of(data);
-                  })
-                ) 
-              }
-              return of(data);
-            })
-          )
+                })
+            )
             .subscribe(data => {
                 this.showLoader = false;
                 this.facets = this.searchService.updateFacetsData(_.get(data, 'result.facets'));
@@ -276,11 +280,11 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
 
     addHoverData() {
         _.forEach(this.contentList, contents => {
-          if (this.contentDownloadStatus[contents.identifier]) {
-              contents['downloadStatus'] = this.contentDownloadStatus[contents.identifier];
-          }
-       });
-       this.contentList = this.utilService.addHoverData(this.contentList, true);
+            if (this.contentDownloadStatus[contents.identifier]) {
+                contents['downloadStatus'] = this.contentDownloadStatus[contents.identifier];
+            }
+        });
+        this.contentList = this.utilService.addHoverData(this.contentList, true);
     }
 
     public navigateToPage(page: number): void {
@@ -325,9 +329,9 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
             }
         });
         if (this.telemetryImpression) {
-        this.telemetryImpression.edata.visits = this.inViewLogs;
-        this.telemetryImpression.edata.subtype = 'pageexit';
-        this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+            this.telemetryImpression.edata.visits = this.inViewLogs;
+            this.telemetryImpression.edata.subtype = 'pageexit';
+            this.telemetryImpression = Object.assign({}, this.telemetryImpression);
         }
     }
     public playContent(event) {
@@ -343,7 +347,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: identifier };
         this.showBatchInfo = true;
     }
-    ngAfterViewInit () {
+    ngAfterViewInit() {
         setTimeout(() => {
             this.telemetryImpression = {
                 context: {
@@ -365,32 +369,32 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     }
     private setNoResultMessage() {
         this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$))
-          .subscribe(item => {
-            let title = this.resourceService.frmelmnts.lbl.noBookfoundTitle;
-            if(this.queryParams.key) {
-              const title_part1 = _.replace(this.resourceService.frmelmnts.lbl.desktop.yourSearch, '{key}', this.queryParams.key);
-              const title_part2 = this.resourceService.frmelmnts.lbl.desktop.notMatchContent;
-              title = title_part1 + ' ' + title_part2;
-            }
-            this.noResultMessage = {
-              'title': title,
-              'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
-              'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
-              'showExploreContentButton': false
-            };
-          });
-      }
-      processOrgData(channels) {
+            .subscribe(item => {
+                let title = this.resourceService.frmelmnts.lbl.noBookfoundTitle;
+                if (this.queryParams.key) {
+                    const title_part1 = _.replace(this.resourceService.frmelmnts.lbl.desktop.yourSearch, '{key}', this.queryParams.key);
+                    const title_part2 = this.resourceService.frmelmnts.lbl.desktop.notMatchContent;
+                    title = title_part1 + ' ' + title_part2;
+                }
+                this.noResultMessage = {
+                    'title': title,
+                    'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
+                    'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
+                    'showExploreContentButton': false
+                };
+            });
+    }
+    processOrgData(channels) {
         const rootOrgIds = [];
         _.forEach(channels, (channelData) => {
-          if (channelData.name) {
-            rootOrgIds.push(channelData.name);
-          }
+            if (channelData.name) {
+                rootOrgIds.push(channelData.name);
+            }
         });
         return rootOrgIds;
-      }
-    
-      hoverActionClicked(event) {
+    }
+
+    hoverActionClicked(event) {
         event['data'] = event.content;
         this.contentName = event.content.name;
         this.contentData = event.data;
@@ -413,12 +417,12 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
                 break;
         }
     }
-    
+
     callDownload() {
         this.showDownloadLoader = true;
         this.downloadContent(this.downloadIdentifier);
     }
-    
+
     downloadContent(contentId) {
         this.contentManagerService.downloadContentId = contentId;
         this.contentManagerService.downloadContentData = this.contentData;
@@ -438,58 +442,58 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
                 this.contentManagerService.failedContentName = '';
                 this.showDownloadLoader = false;
                 _.each(this.contentList, (content) => {
-                  content['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
+                    content['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
                 });
                 if (!(error.error.params.err === 'LOW_DISK_SPACE')) {
                     this.toasterService.error(this.resourceService.messages.fmsg.m0090);
                 }
             });
-      }
-    
-      logTelemetry(content, actionId) {
-          const telemetryInteractObject = {
-              id: content.identifier,
-              type: content.contentType,
-              ver: content.pkgVersion ? content.pkgVersion.toString() : '1.0'
-          };
-    
-          const appTelemetryInteractData: any = {
-              context: {
-                  env: _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
-                  _.get(this.activatedRoute, 'snapshot.data.telemetry.env') ||
-                  _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env')
-              },
-              edata: {
-                  id: actionId,
-                  type: 'click',
-                  pageid: this.router.url.split('/')[1] || 'explore-page'
-              }
-          };
-    
-          if (telemetryInteractObject) {
-              if (telemetryInteractObject.ver) {
-                  telemetryInteractObject.ver = _.isNumber(telemetryInteractObject.ver) ?
-                  _.toString(telemetryInteractObject.ver) : telemetryInteractObject.ver;
-              }
-              appTelemetryInteractData.object = telemetryInteractObject;
-          }
-          this.telemetryService.interact(appTelemetryInteractData);
-      }
-      private listenLanguageChange() {
-        this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe((languageData) => {
-          this.setNoResultMessage();
-          if (_.get(this.contentList, 'length') ) {
-            if (this.isDesktopApp) {
-              this.addHoverData();
+    }
+
+    logTelemetry(content, actionId) {
+        const telemetryInteractObject = {
+            id: content.identifier,
+            type: content.contentType,
+            ver: content.pkgVersion ? content.pkgVersion.toString() : '1.0'
+        };
+
+        const appTelemetryInteractData: any = {
+            context: {
+                env: _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
+                    _.get(this.activatedRoute, 'snapshot.data.telemetry.env') ||
+                    _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env')
+            },
+            edata: {
+                id: actionId,
+                type: 'click',
+                pageid: this.router.url.split('/')[1] || 'explore-page'
             }
-            this.facets = this.searchService.updateFacetsData(this.facets);
-          }
+        };
+
+        if (telemetryInteractObject) {
+            if (telemetryInteractObject.ver) {
+                telemetryInteractObject.ver = _.isNumber(telemetryInteractObject.ver) ?
+                    _.toString(telemetryInteractObject.ver) : telemetryInteractObject.ver;
+            }
+            appTelemetryInteractData.object = telemetryInteractObject;
+        }
+        this.telemetryService.interact(appTelemetryInteractData);
+    }
+    private listenLanguageChange() {
+        this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe((languageData) => {
+            this.setNoResultMessage();
+            if (_.get(this.contentList, 'length')) {
+                if (this.isDesktopApp) {
+                    this.addHoverData();
+                }
+                this.facets = this.searchService.updateFacetsData(this.facets);
+            }
         });
-      }
-    
-      updateCardData(downloadListdata) {
+    }
+
+    updateCardData(downloadListdata) {
         _.each(this.contentList, (contents) => {
-          this.publicPlayerService.updateDownloadStatus(downloadListdata, contents);
+            this.publicPlayerService.updateDownloadStatus(downloadListdata, contents);
         });
-      }
+    }
 }

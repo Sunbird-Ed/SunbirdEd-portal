@@ -498,19 +498,19 @@ export class SearchService {
           facet['mimeTypeList'] = this.mimeTypeList;
           break;
         case 'mediaType':
-            facet['index'] = '8';
-            facet['label'] = this.resourceService.frmelmnts.lbl.mediaType;
-            facet['mimeTypeList'] = this.mimeTypeList;
-            break;
+          facet['index'] = '8';
+          facet['label'] = this.resourceService.frmelmnts.lbl.mediaType;
+          facet['mimeTypeList'] = this.mimeTypeList;
+          break;
         case 'audience':
-            facet['index'] = '9';
-            facet['label'] =  this.resourceService.frmelmnts.lbl.userType;
-            facet['placeholder'] =  this.resourceService.frmelmnts.lbl.selectMeantFor;
-            break;
+          facet['index'] = '9';
+          facet['label'] = this.resourceService.frmelmnts.lbl.userType;
+          facet['placeholder'] = this.resourceService.frmelmnts.lbl.selectMeantFor;
+          break;
         case 'channel':
           facet['index'] = '1';
           facet['label'] = _.get(this.resourceService, 'frmelmnts.lbl.orgname');
-          facet['placeholder'] =  _.get(this.resourceService, 'frmelmnts.lbl.orgname');
+          facet['placeholder'] = _.get(this.resourceService, 'frmelmnts.lbl.orgname');
           facet['values'] = _.map(facet.values || [], value => ({ ...value, name: value.orgName }));
           break;
       }
@@ -521,5 +521,23 @@ export class SearchService {
   isContentTrackable(content, type) {
     return (_.lowerCase(_.get(content, 'trackable.enabled')) === 'yes'
       || (_.lowerCase(type) === _.lowerCase(this.config.appConfig.contentType.Course)));
+  }
+
+
+  private checkForScriptInjection(value: string | any[]) {
+    const applyXssProtection = (input: string) => input.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    if (typeof value === 'string') return applyXssProtection(value);
+    return value.map(val => applyXssProtection(val));
+  }
+
+
+  public schemaValidator({ inputObj = {}, schema = {}, omitKeys = [] }) {
+    return _.reduce(inputObj, (accumulator, value, key) => {
+      // const { type = 'string' } = _.get(schema, [key]) || {};
+      if (schema.hasOwnProperty(key) && !(omitKeys.length && omitKeys.includes(key))) {
+        accumulator[key] = this.checkForScriptInjection(value);
+      }
+      return accumulator;
+    }, {});
   }
 }
