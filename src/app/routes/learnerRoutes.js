@@ -31,14 +31,15 @@ module.exports = function (app) {
         return '/private/user/v1/update';
       },
       userResDecorator: (proxyRes, proxyResData, req, res) => {
+        logger.info({ msg: '/learner/portal/user/v1/update called /private/user/v1/update' });
         try {
-          logger.info({ msg: '/learner/portal/user/v1/update called' });
           const data = JSON.parse(proxyResData.toString('utf8'));
           if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
           else return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
         } catch (err) {
           logger.error({ msg: 'learner route : userResDecorator json parse error:', proxyResData });
-          return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, data);
+          logger.error({ msg: 'learner route : error for /learner/portal/user/v1/update', err });
+          return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res, null);
         }
       }
     })

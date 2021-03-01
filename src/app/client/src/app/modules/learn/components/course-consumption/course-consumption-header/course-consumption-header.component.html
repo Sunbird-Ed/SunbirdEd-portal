@@ -15,6 +15,7 @@
           </svg></i>
         {{resourceService?.frmelmnts?.btn?.back}}
       </button>
+      <div *ngIf="enrolledCourse && batchEndDate">{{batchRemaningTime}}</div>
     </div>
   </div>
 </div>
@@ -66,7 +67,7 @@
                [telemetryInteractEdata]="{id:'discussion' , type: 'click' , pageid:'course-consumption'}" 	
                [telemetryInteractCdata]="[{id: courseHierarchy?.identifier, type: 'Course'}]"	
                (click)="openDiscussionForum()" title="Forum">	
-                  <img src="assets/images/forum.svg" width="16px" class="mr-8">	
+                  <img src="assets/images/forum.svg" width="16px" class="mr-8" alt="{{resourceService?.frmelmnts?.lbl?.discussionForum}}">	
                   {{resourceService?.frmelmnts?.lbl?.discussionForum}}	
                </button>
             </div>

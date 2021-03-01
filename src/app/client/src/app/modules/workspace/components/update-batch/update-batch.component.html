@@ -108,12 +108,12 @@
         <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
         <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors"
           [ngClass]="{ 'disabled': batchDetails.status === 2 || showFormInViewMode }">
-          <input id="mentorSelList">
+          <input id="mentorSelList" aria-label="mentor list">
           <i class="dropdown icon"></i>
           <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0005}}</div>
           <div class="menu">
             <div class="item" [attr.data-value]="mentor.id" *ngFor="let mentor of mentorList">
-              <img class="ui mini avatar image" src="{{mentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}">
+              <img class="ui mini avatar image" src="{{mentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" alt="avatar-image">
               {{mentor.name}}{{mentor.otherDetail}}
             </div>
           </div>
@@ -123,7 +123,7 @@
         <label>{{resourceService?.frmelmnts?.lbl?.batchselmentors}}</label>
         <a class="ui label mt-5" *ngFor="let selectmentor of selectedMentors">
           <img class="ui right spaced avatar image"
-            src="{{selectmentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}">
+            src="{{selectmentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" alt="avatar-image">
           {{selectmentor.name}}{{selectmentor.otherDetail}}
         </a>
       </div>
@@ -140,7 +140,7 @@
           <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0006}}</div>
           <div class="menu">
             <div class="item" *ngFor="let user of participantList" [attr.data-value]="user.id">
-              <img class="ui mini avatar image" src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}">
+              <img class="ui mini avatar image" src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" alt="avatar-image">
               {{user.name}}{{user.otherDetail}}
             </div>
           </div>
@@ -154,7 +154,7 @@
         <label>{{resourceService?.frmelmnts?.lbl?.batchparticipants}}</label>
         <a class="ui label mt-5" *ngFor="let user of selectedParticipants">
           <img class="ui right spaced avatar image"
-            src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}">
+            src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" alt="avatar-image">
           {{user.name}}{{user.otherDetail}}
         </a>
       </div>

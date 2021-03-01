@@ -12,12 +12,13 @@
 
     <div class="sb-onboard__content">
       <div class="schooling-location" [appTelemetryImpression]="telemetryImpression">
+        <label class="w-100">
         <sb-form *ngIf="sbFormLocationSelectionDelegate.locationFormConfig && sbFormLocationSelectionDelegate.locationFormConfig.length"
                  [config]="sbFormLocationSelectionDelegate.locationFormConfig"
                  (initialize)="sbFormLocationSelectionDelegate.onFormInitialize($event)"
                  (valueChanges)="sbFormLocationSelectionDelegate.onFormValueChange($event)"
                  (dataLoadStatus)="sbFormLocationSelectionDelegate.onDataLoadStatusChange($event)">
-        </sb-form>
+        </sb-form></label>
       </div>
     </div>
 

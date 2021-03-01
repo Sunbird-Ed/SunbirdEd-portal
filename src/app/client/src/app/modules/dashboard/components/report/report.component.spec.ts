@@ -11,7 +11,7 @@ import { ReportService } from '../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { ISummaryObject } from '../../interfaces';
-import { mockLatestReportSummary, mockReportObj } from './report.component.spec.data';
+import { mockLatestReportSummary, mockReportObj,chartData,filters } from './report.component.spec.data';
 import { mockParameterizedReports } from '../list-all-reports/list-all-reports.component.spec.data';
 describe('ReportComponent', () => {
   let component: ReportComponent;
@@ -136,7 +136,7 @@ describe('ReportComponent', () => {
     component.openReportSummaryModal();
     expect(component.openAddSummaryModal).toHaveBeenCalled();
     expect(component.openAddSummaryModal).toHaveBeenCalledWith({
-      title: 'Add Report Summary',
+      title: 'Update Report Summary',
       type: 'report'
     });
   });
@@ -170,7 +170,7 @@ describe('ReportComponent', () => {
       expect(reportService.getLatestSummary).toHaveBeenCalledWith({ reportId: '123', hash: undefined });
       expect(res).toBeDefined();
       expect(res).toEqual([{
-        label: 'Report Summary',
+        label: 'Update Report Summary',
         text: [mockLatestReportSummary[0].summary],
         createdOn: mockLatestReportSummary[0].createdon
       }]);
@@ -374,6 +374,83 @@ describe('ReportComponent', () => {
     });
     component['addSummaryBtnClickStream$'].next({ title: 'Add report Summary', type: 'report' });
   });
+
+  it('should get all report data', fakeAsync(() => {
+    component.ngOnInit();
+    tick(1000);
+
+    component.reportData = {
+      charts:[{
+        chartData:chartData
+      }
+    ]
+    }
+    const data = component.getAllChartData();
+    expect(data).toEqual(chartData);
+  }));
+
+
+  it('should get check global filters', fakeAsync(() => {
+    component.ngOnInit();
+    tick(1000);
+    const data = component.globalFilter({data: mockReportObj,filters:{ } });
+    expect(component.showChart).toEqual(true);
+  }));
+
+  it('should get chart data', fakeAsync(() => {
+    component.ngOnInit();
+    tick(1000);
+    component.chartsReportData = {
+      charts:[{
+          chartConfig : {
+            id: 123
+          }
+      }]
+    }
+    const data = component.getChartData({
+        chartConfig : {
+          id: 123
+        }
+    });
+    expect(data).toEqual({
+      chartConfig : {
+        id: 123
+      }
+    });
+  }));
+
+
+
+
+  it('should change the filter', fakeAsync(() => {
+    component.ngOnInit();
+    tick(1000);
+    const data = component.filterChanged({
+      chartData:chartData,
+      filters:filters
+    });
+    expect(component.globalFilterChange).toEqual({
+      chartData:chartData,
+      filters:filters
+    });
+
+  }));
+
+  it('should get reset filters', fakeAsync(() => {
+    component.ngOnInit();
+    tick(1000);
+    component.reportData = {
+      charts:[{
+        chartData:chartData
+      }
+    ]
+    }
+    component.resetFilter();
+    expect(component.resetFilters).toEqual({ data:chartData,reset:true });
+
+  }));
+
+  
 
   it('should handle markdown update stream', done => {
     const spy = spyOn(reportService, 'updateReport').and.returnValue(of({}));
