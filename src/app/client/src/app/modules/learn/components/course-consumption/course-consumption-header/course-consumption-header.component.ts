@@ -192,7 +192,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.formService.getFormConfig(formServiceInputParams).subscribe((data: any) => {
       _.forEach(data, (value, key) => {
         if ('frmelmnts.tab.courses' === value.title) {
-          this.batchEndCounter = value.batchEndCounter || 5;
+          this.batchEndCounter = value.batchEndCounter || null;
         }
       });
     });
