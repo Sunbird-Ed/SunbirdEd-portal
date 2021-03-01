@@ -29,9 +29,7 @@ const ROLE = {
  */
 const isAllowed = () => {
   return function (req, res, next) {
-    if (envHelper.PORTAL_API_WHITELIST_CHECK != 'true') {
-      next();
-    } else {
+    if (envHelper.PORTAL_API_WHITELIST_CHECK == 'true') {
       if (shouldAllow(req)) {
         next();
       } else {
@@ -68,6 +66,8 @@ const isAllowed = () => {
           respond403(req, res);
         }
       }
+    } else {
+      next();
     }
   }
 };
