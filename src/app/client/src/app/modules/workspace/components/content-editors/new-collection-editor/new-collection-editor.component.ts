@@ -36,7 +36,7 @@ export class NewCollectionEditorComponent implements OnInit {
     this.deviceId = deviceId ? deviceId.value : '';
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     this.portalVersion = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
-    this.layoutType = localStorage.getItem('layoutType') || '';
+    this.layoutType = localStorage.getItem('layoutType') || 'joy';
   }
 
   ngOnInit() {
@@ -110,13 +110,13 @@ export class NewCollectionEditorComponent implements OnInit {
             || this.config.appConfig.WORKSPACE.questionPrimaryCategories;
             break;
           case 'Content':
-            childrenData[key] = this.frameworkService['_channelData'].contentPrimaryCategories;
+            childrenData[key] = this.frameworkService['_channelData'].contentPrimaryCategories || [];
             break;
           case 'Collection':
-            childrenData[key] = this.frameworkService['_channelData'].collectionPrimaryCategories;
+            childrenData[key] = this.frameworkService['_channelData'].collectionPrimaryCategories || [];
             break;
           case 'QuestionSet':
-            childrenData[key] = this.frameworkService['_channelData'].questionsetPrimaryCategories;
+            childrenData[key] = this.frameworkService['_channelData'].questionsetPrimaryCategories || [];
             break;
         }
       }

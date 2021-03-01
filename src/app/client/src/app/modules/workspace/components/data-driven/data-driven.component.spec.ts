@@ -374,17 +374,16 @@ describe('DataDrivenComponent', () => {
 
   it(`should set framework selection card's metadata`, () => {
     componentParent.setFrameworkData(mockFrameworkData.channelData);
-    expect(componentParent.frameworkCardData).toEqual([
-      {
-        title: 'Curriculum courses',
-        description: `Create courses for concepts from the syllabus, across grades and subjects. For example, courses on fractions, photosynthesis, reading comprehension, etc.`,
-        framework: 'NCFCOPY'
-      },
-      {
-        title: 'Generic courses',
-        description: `Create courses that help develop professional skills. For example, courses on classroom management, pedagogy, ICT, Leadership, etc.`,
-        framework: 'TPD'
-      }
+    expect(componentParent.frameworkCardData).toEqual([{
+      title: 'Curriculum Course',
+      description: `Create courses for concepts from the syllabus, across grades and subjects. For example, courses on fractions, photosynthesis, reading comprehension, etc.`,
+      primaryCategory: 'Curriculum Course'
+    },
+    {
+      title: 'Professional Development Course',
+      description: `Create courses that help develop professional skills. For example, courses on classroom management, pedagogy, ICT, Leadership, etc.`,
+      primaryCategory: 'Professional Development Course'
+    }
     ]);
   });
 
@@ -394,6 +393,10 @@ describe('DataDrivenComponent', () => {
       description: `Create courses for concepts from the syllabus, across grades and subjects, for example;
       for fractions, photosynthesis, reading comprehension, etc.`,
       framework: 'NCFCOPY'
+      title: 'Curriculum Course',
+      description: `Create courses for concepts from the syllabus, across grades and subjects.
+       For example, courses on fractions, photosynthesis, reading comprehension, etc.`,
+      primaryCategory: 'Curriculum Course'
     };
     const interactData = {
       context: {
@@ -401,6 +404,7 @@ describe('DataDrivenComponent', () => {
         cdata: [{
           type: 'framework',
           id: 'NCFCOPY'
+          id: 'nit_k-12'
         }]
       },
       edata: {
@@ -411,6 +415,9 @@ describe('DataDrivenComponent', () => {
     };
     const telemetryService = TestBed.get(TelemetryService);
     spyOn(telemetryService, 'interact').and.stub();
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockFrameworkData.successCategory));
+    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkDataByType));
     componentParent.selectFramework(mockCardData);
     expect(componentParent.enableCreateButton).toBe(true);
     expect(componentParent.selectedCard).toEqual(mockCardData);
