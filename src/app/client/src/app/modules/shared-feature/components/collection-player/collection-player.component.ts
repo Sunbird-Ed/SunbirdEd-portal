@@ -102,6 +102,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   showDownloadLoader: Boolean = false;
   disableDelete: Boolean = false;
   isAvailableLocally = false;
+  noContentMessage = '';
 
   constructor(public route: ActivatedRoute, public playerService: PlayerService,
     private windowScrollService: WindowScrollService, public router: Router, public navigationHelperService: NavigationHelperService,
@@ -129,6 +130,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
 
   ngOnInit() {
     this.isDesktopApp = this.utilService.isDesktopApp;
+    this.noContentMessage = _.get(this.resourceService, 'messages.stmsg.m0121');
     this.playerServiceReference = this.userService.loggedIn ? this.playerService : this.publicPlayerService;
     this.initLayout();
     this.dialCode = _.get(this.route, 'snapshot.queryParams.dialCode');
@@ -351,6 +353,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   getGeneraliseResourceBundle(data) {
     this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
       this.generaliseLabelService.initialize(data, item.value);
+      this.noContentMessage = _.get(this.resourceService, 'messages.stmsg.m0121');
     });
   }
 

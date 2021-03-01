@@ -258,6 +258,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         this.contentList = data.result.content || [];
         this.addHoverData();
         this.totalCount = data.result.count;
+        this.setNoResultMessage();
       }, err => {
         this.showLoader = false;
         this.contentList = [];
