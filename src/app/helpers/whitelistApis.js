@@ -122,11 +122,15 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/content/content/v1/retire': {
+      description: 'API to delete the content(s)',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.ADMIN,
         ROLE.BOOK_REVIEWER,
-        ROLE.CONTENT_REVIEWER
+        ROLE.CONTENT_REVIEWER,
+        ROLE.CONTENT_CREATOR,
+        ROLE.BOOK_CREATOR,
+        ROLE.COURSE_CREATOR
       ]
     },
     '/content/content/v1/reject': {
@@ -445,6 +449,16 @@ const API_LIST = {
         ]
       }
     },
+    '/learner/user/v1/feed/delete': {
+      description: 'API to delete notification card by user',
+      checksNeeded: ['ROLE_CHECK', 'OWNER_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC],
+      OWNER_CHECK: {
+        checks: [
+          { entity: '__session__userId', params: [], key: 'body.request.userId' }
+        ]
+      }
+    },
     '/learner/user/v1/migrate': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
@@ -498,6 +512,11 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
+    '/learner/portal/user/v1/update': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ORG_ADMIN]
+    },
+
     '/learner/get/tenant/logo': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
@@ -1566,9 +1585,14 @@ const API_LIST = {
       description: 'Object category read',
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/learner/user/v1/role/assign': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ORG_ADMIN]
     }
   },
   URL_PATTERN: [
+    '/learner/user/v1/feed/delete',
     '/content/content/v1/read/:do_id',
     '/content/content/v1/copy/:do_id',
     '/content/content/v1/publish/:do_id',

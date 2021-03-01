@@ -3,14 +3,15 @@
     <div class="d-flex flex-dc">
       <!-- <label class="request-report-label font-weight-normal">{{resourceService?.frmelmnts?.lbl?.requestReport}}</label> -->
       <div [formGroup]="reportForm" class="d-flex flex-ai-center">
+        <label>
         <sui-select [isSearchable]="false" formControlName="reportType" class="selection course-dashboard-select" placeholder="Choose your report"
                     [options]="reportTypes" labelField="title" valueField="title" #select>
           <sui-select-option *ngFor="let report of reportTypes" [value]="report" (click)="reportChanged(report);">
           </sui-select-option>
-        </sui-select>
+        </sui-select></label>
 
         <div class="sb-field filterTable mx-16 mb-0">
-          <input class="sb-form-control" type="text" formControlName="password" placeholder="Enter password">
+          <input class="sb-form-control" type="text" formControlName="password" placeholder="Enter password" aria-label="enter password">
         </div>
         <button type="button" [disabled]="(!selectedReport || (selectedReport?.encrypt === 'true' && !reportForm.valid))"
         [ngClass]="{'sb-btn-disabled': (!selectedReport || (selectedReport?.encrypt === 'true' && !reportForm.valid))}"

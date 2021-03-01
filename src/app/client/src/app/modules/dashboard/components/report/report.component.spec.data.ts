@@ -41,3 +41,12 @@ export let mockReportObj = {
     'isParameterized': true,
     'hashed_val': '123'
 };
+
+export let filters =  [{
+    "controlType": "multi-select",
+    "displayName": "Select state",
+    "options": ["01285019302823526477", "013016492159606784174", "0130385861180866561", "b00bc992ef25f1a9a8d", "b00bc992ef25f1a9a8d63291e20efc8d"],
+    "reference": "state"
+}];
+
+export let chartData = [{ state: "01285019302823526477", Plays: "10", Date: "2020-04-28" }];

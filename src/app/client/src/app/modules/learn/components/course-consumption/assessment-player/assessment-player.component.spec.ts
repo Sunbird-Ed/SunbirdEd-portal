@@ -587,11 +587,24 @@ describe('AssessmentPlayerComponent', () => {
     expect(component['initPlayer']).toHaveBeenCalledWith(assessmentPlayerMockData.activeContent.identifier);
   });
 
-  it('should call onSelfAssessLastAttempt', () => {
+  it('should call onSelfAssessLastAttempt last attempt', () => {
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error');
-    component.onSelfAssessLastAttempt(true);
+    const event = { 
+      'data': 'renderer:selfassess:lastattempt'
+    };
+    component.onSelfAssessLastAttempt(event);
     expect(toasterService.error).toHaveBeenCalled();
+  });
+
+  it('should call onSelfAssessLastAttempt max attempt exceeded', () => {
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error');
+    const event = { 
+      'data': 'renderer:maxLimitExceeded'
+    };
+    component.onSelfAssessLastAttempt(event);
+    expect(component.showMaxAttemptsModal).toBe(true);
   });
 
   it('should check for course Completion getCourseCompletionStatus on self assess course for max attempt', () => {
@@ -660,8 +673,8 @@ describe('AssessmentPlayerComponent', () => {
     expect(toasterService.error).toHaveBeenCalled();
   });
 
-  it('should call getCourseCompletionStatus for self assess course', () => {
-    component.isCourseCompleted = false;
+  it('should call getCourseCompletionStatus for self assess course completed', () => {
+    component.isCourseCompleted = true;
     component.parentCourse = { name: 'Maths', identifier: 'do_233431212' };
     spyOn(component, 'getContentStateRequest').and.returnValue(of({
       userId: 'asas-saa12-asas-12',
@@ -685,7 +698,7 @@ describe('AssessmentPlayerComponent', () => {
     component.contentStatus = assessmentPlayerMockData.contentStatus;
     fixture.detectChanges();
     component.getCourseCompletionStatus(true);
-    expect(component.showMaxAttemptsModal).toBe(true);
+    expect(component.showMaxAttemptsModal).toBe(false);
   });
 
 });

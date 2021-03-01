@@ -409,6 +409,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
         onAdd: () => {
         }
       });
+      $("#mentors input.search").attr("aria-label", "select batch mentor");//fix accessibility on screen reader
       $('#participant input.search').on('keyup', (e) => {
         this.getUserListWithQuery($('#participant input.search').val(), 'participant');
       });
