@@ -38,10 +38,7 @@ const mockUserService = {
 
 const mockFrameworkService = {
   _channelData: {
-    questionPrimaryCategories: ['Multiple Choice Question', 'Subjective Question'],
-    contentPrimaryCategories: ['content'],
-    collectionPrimaryCategories: ['collection'],
-    questionsetPrimaryCategories: ['questionSet']
+    questionPrimaryCategories: ['Multiple Choice Question', 'Subjective Question']
   }
 };
 
@@ -139,11 +136,11 @@ describe('NewCollectionEditorComponent', () => {
     let result = component.getPrimaryCategoryData({ Question: [] });
     expect(result).toEqual({ Question: ['Multiple Choice Question', 'Subjective Question'] });
     result = component.getPrimaryCategoryData({ Content: [] });
-    expect(result).toEqual({ Content: ['content'] });
+    expect(result).toEqual({ Content: [] });
     result = component.getPrimaryCategoryData({ Collection: [] });
-    expect(result).toEqual({ Collection: ['collection'] });
+    expect(result).toEqual({ Collection: [] });
     result = component.getPrimaryCategoryData({ QuestionSet: [] });
-    expect(result).toEqual({ QuestionSet: ['questionSet'] });
+    expect(result).toEqual({ QuestionSet: [] });
   });
 
   it('#editorEventListener() should call #redirectToWorkSpace method', () => {

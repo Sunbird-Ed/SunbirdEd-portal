@@ -74,7 +74,6 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     this.getDetails().pipe(
       first(),
       tap(data => {
-        console.log(data);
         if (data.tenantDetails) {
           this.logo = data.tenantDetails.logo;
         }

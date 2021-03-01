@@ -171,6 +171,8 @@ describe('DataDrivenComponent', () => {
     componentParent.formData = componentChild;
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'textbook';
+    componentParent.targetFramework = 'nit_k-12';
+    componentParent.primaryCategory = 'Curriculum Course';
     userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
     userService._userProfile = {};
     spyOn(componentParent, 'createContent').and.callThrough();
@@ -191,6 +193,8 @@ describe('DataDrivenComponent', () => {
     componentParent.formData = componentChild;
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'studymaterial';
+    componentParent.targetFramework = 'nit_k-12';
+    componentParent.primaryCategory = 'Curriculum Course';
     userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
     userService._userProfile = {};
     spyOn(componentParent, 'createContent').and.callThrough();
@@ -355,6 +359,7 @@ describe('DataDrivenComponent', () => {
     spyOn(frameworkService, 'getChannel').and.returnValue(observableOf(mockFrameworkData.channelData));
     componentParent.ngOnInit();
     expect(componentParent.setFrameworkData).toHaveBeenCalledWith(mockFrameworkData.channelData);
+    expect(componentParent.userChannelData).toBeDefined();
   });
 
   it('should throw error if channel read api fails', () => {

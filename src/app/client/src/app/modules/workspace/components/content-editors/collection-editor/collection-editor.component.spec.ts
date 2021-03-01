@@ -69,6 +69,23 @@ describe('CollectionEditorComponent', () => {
     component = fixture.componentInstance;
   });
 
+  afterEach(() => {
+      const activatedRoute = TestBed.get(ActivatedRoute);
+      activatedRoute.snapshot.params.type = 'collection';
+  });
+
+  it('should router to course editor ',
+  inject([EditorService, ToasterService, TenantService, WorkSpaceService, FrameworkService, UserService],
+    (editorService, toasterService, tenantService, workspaceService, frameworkService, userService) => {
+      const router = TestBed.get(Router);
+      const activatedRoute = TestBed.get(ActivatedRoute);
+      activatedRoute.snapshot.params.type = 'Course';
+      component.ngOnInit();
+      expect(router.navigate).toHaveBeenCalledWith(
+        ['workspace/edit/', 'Course', 'do_21247940906829414411032', 'upForReview', 'Review']);
+      expect(component.collectionDetails).not.toBeDefined();
+    }));
+
   it('should fetch tenant and collection details and set logo and collection details if success',
   inject([EditorService, ToasterService, TenantService, WorkSpaceService, FrameworkService, UserService],
     (editorService, toasterService, tenantService, workspaceService, frameworkService, userService) => {
