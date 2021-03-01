@@ -249,7 +249,11 @@ describe('DataChartComponent', () => {
       it('should set getIframeURL', fakeAsync(() => {
         component.ngOnInit();
         tick(1000);
+        component.iframeDetails = { sourceUrl:"dashbord/report" }
+
         const res = component.getIframeURL();
+        
+        expect(res).toBeTruthy();
         
       }));
 
@@ -258,6 +262,7 @@ describe('DataChartComponent', () => {
         tick(1000);
         component.refreshChartDataAfterInterval(5);
         tick(1000);
+        expect(component.chartData).toEqual(mockChartData.chartData);
     
         
       }));

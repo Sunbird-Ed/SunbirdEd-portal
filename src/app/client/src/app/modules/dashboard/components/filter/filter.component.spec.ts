@@ -153,6 +153,9 @@ describe('FilterComponent', () => {
     component.ngOnInit();
     tick(1000);
     component.filterData();
+    expect(component.selectedFilters).toEqual({});
+    expect(component.filters).toEqual(mockChartData.filters);
+
   }));
 
   it('should check checkFilterReferance', fakeAsync(() => {
@@ -214,7 +217,11 @@ describe('FilterComponent', () => {
     expect(component.selectedFilters).toEqual({
       'state': ['01285019302823526477']
     });
-
+    expect(component.filters).toEqual([{ controlType: 'multi-select',
+     displayName: 'Select state', 
+     options: [ '01285019302823526477', '013016492159606784174', '0130385861180866561', 'b00bc992ef25f1a9a8d', 'b00bc992ef25f1a9a8d63291e20efc8d' ], 
+     reference: 'state' }]);
+    
   }));
 
   it('should get filter data without selected filter', fakeAsync(() => {
