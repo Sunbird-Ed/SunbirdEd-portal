@@ -21,3 +21,4 @@ export * from './sb-datatable/sb-datatable.component';
 export * from './network-status/network-status.component';
 export * from './load-offline-content/load-offline-content.component';
 export * from './desktop-app-update/desktop-app-update.component';
+export * from './system-warning/system-warning.component';
