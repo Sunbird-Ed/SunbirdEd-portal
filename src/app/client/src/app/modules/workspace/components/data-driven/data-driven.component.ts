@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import {
-  ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile, Framework,
+  ResourceService, ConfigService, ToasterService, ServerResponse, Framework,
   ILoaderMessage, NavigationHelperService , BrowserCacheTtlService
 } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,11 +10,11 @@ import { SearchService, UserService, FrameworkService, FormService, PublicDataSe
 import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
 import { DefaultTemplateComponent } from '../content-creation-default-template/content-creation-default-template.component';
-import { IInteractEventInput, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
+import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { WorkSpace } from '../../classes/workspace';
 import { WorkSpaceService } from '../../services';
-import { combineLatest, Subscription, Subject, of, throwError, forkJoin } from 'rxjs';
-import { takeUntil, first, mergeMap, map, tap , filter, catchError} from 'rxjs/operators';
+import { Subject, forkJoin } from 'rxjs';
+import { takeUntil} from 'rxjs/operators';
 import { UUID } from 'angular2-uuid';
 
 @Component({
