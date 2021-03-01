@@ -79,6 +79,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   isGroupAdmin: boolean;
   showLoader = false;
   batchEndCounter: number;
+  showBatchCounter: boolean;
 
   constructor(private activatedRoute: ActivatedRoute, public courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
@@ -177,7 +178,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     const minutes = Math.floor( (total/1000/60) % 60 );
     const hours = Math.floor( (total/(1000*60*60)) % 24 );
     const days = Math.floor( total/(1000*60*60*24) );
-    if (this.batchEndCounter >= days){
+    this.showBatchCounter = this.batchEndCounter >= days;
+    if (this.showBatchCounter){
       return days + ' ' + 'day(s)' + ' ' + hours + 'h' + ' ' + minutes + 'm'
     }
     return
