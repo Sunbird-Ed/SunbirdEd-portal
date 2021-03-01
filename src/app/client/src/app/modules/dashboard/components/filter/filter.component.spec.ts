@@ -118,13 +118,16 @@ describe('FilterComponent', () => {
     });
     expect(spy).toHaveBeenCalled();
     expect(spy).toHaveBeenCalledWith(mockChartData.chartData);
+
   }));
 
   it('should reset filter', fakeAsync(() => {
-    const spy = spyOn(component, 'resetFilter').and.callThrough();
     component.ngOnInit();
     tick(1000);
+    component.resetFilter();
+    tick(1000);
     expect(component.showFilters).toEqual(true);
+    expect(component.filtersFormGroup.value).toEqual({ state: null });
 
    
   }));
@@ -229,9 +232,10 @@ describe('FilterComponent', () => {
     tick(1000);
     component.selectedFilters ={};
     tick(1000);
-    tick(1000);
     component.filterData();
     expect(component.selectedFilters).toEqual({});
+    expect(component.chartData).toEqual(mockChartData.chartData);
+    expect(component.filters).toEqual(mockChartData.filters);
 
   }));
 
