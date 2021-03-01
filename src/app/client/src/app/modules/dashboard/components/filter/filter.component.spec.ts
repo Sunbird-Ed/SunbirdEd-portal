@@ -124,6 +124,7 @@ describe('FilterComponent', () => {
   it('should reset filter', fakeAsync(() => {
     component.ngOnInit();
     tick(1000);
+    component.filtersFormGroup.get('state').setValue(['01285019302823526477']);
     component.resetFilter();
     tick(1000);
     expect(component.showFilters).toEqual(true);
