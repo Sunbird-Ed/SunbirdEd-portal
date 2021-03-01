@@ -389,10 +389,6 @@ describe('DataDrivenComponent', () => {
 
   it('should select a framework card and fires an interact event', () => {
     const mockCardData =  {
-      title: 'Curriculum courses',
-      description: `Create courses for concepts from the syllabus, across grades and subjects, for example;
-      for fractions, photosynthesis, reading comprehension, etc.`,
-      framework: 'NCFCOPY'
       title: 'Curriculum Course',
       description: `Create courses for concepts from the syllabus, across grades and subjects.
        For example, courses on fractions, photosynthesis, reading comprehension, etc.`,
@@ -403,7 +399,6 @@ describe('DataDrivenComponent', () => {
         env: _.get(fakeActivatedRoute, 'snapshot.data.telemetry.env'),
         cdata: [{
           type: 'framework',
-          id: 'NCFCOPY'
           id: 'nit_k-12'
         }]
       },
