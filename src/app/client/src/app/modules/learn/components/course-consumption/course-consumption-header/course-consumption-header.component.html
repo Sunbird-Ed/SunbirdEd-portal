@@ -15,7 +15,10 @@
           </svg></i>
         {{resourceService?.frmelmnts?.btn?.back}}
       </button>
-      <div *ngIf="enrolledCourse && batchEndDate">{{batchRemaningTime}}</div>
+      <div *ngIf="enrolledCourse && batchEndDate" class="d-flex">
+        <span class="fnormal sb-color-gray-400">{{resourceService?.frmelmnts?.lbl?.BatchExpiringIn}}</span>:  
+        <span class="fsmall font-weight-bold mb-8 sb-color-gray-800"><h6 >{{batchRemaningTime}}</h6></span>
+      </div>
     </div>
   </div>
 </div>
