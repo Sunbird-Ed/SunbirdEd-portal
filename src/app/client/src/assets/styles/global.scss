@@ -866,6 +866,9 @@ quml-player {
 
 .desktop-app {
   .sb-md-container{
+    .async-text{
+      height: 36px !important;
+    }
     .sb-textbox{
       padding: 4px 16px !important;
     }
