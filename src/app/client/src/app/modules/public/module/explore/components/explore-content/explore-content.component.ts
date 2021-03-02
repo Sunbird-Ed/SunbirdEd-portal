@@ -1,6 +1,6 @@
 import {
   PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage, OfflineCardService,
-  ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination, LayoutService, COLUMN_TYPE
+  ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination, LayoutService, COLUMN_TYPE, SchemaService
 } from '@sunbird/shared';
 import { SearchService, PlayerService, OrgDetailsService, UserService, FrameworkService } from '@sunbird/core';
 import { PublicPlayerService } from '../../../../services';
@@ -67,7 +67,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     public userService: UserService, public frameworkService: FrameworkService,
     public cacheService: CacheService, public navigationhelperService: NavigationHelperService, public layoutService: LayoutService,
     public contentManagerService: ContentManagerService, private offlineCardService: OfflineCardService,
-    public telemetryService: TelemetryService) {
+    public telemetryService: TelemetryService, private schemaService: SchemaService) {
     this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
     this.filterType = this.configService.appConfig.explore.filterType;
   }
@@ -181,15 +181,18 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       return o.name === (selectedMediaType || 'all');
     });
     const pageType = _.get(this.queryParams, 'pageTitle');
-    const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType', 'utm_source']);
+    const filters: any = this.searchService.schemaValidator({
+      inputObj: this.queryParams || {}, schema: _.get(this.schemaService, 'contentSchema.properties') || {},
+      omitKeys: ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType', 'utm_source']
+    });
     if (!filters.channel) {
       filters.channel = this.hashTagId;
     }
     const _filters = _.get(this.allTabData, 'search.filters');
-    filters.primaryCategory = (_.get(filters, 'primaryCategory.length') && filters.primaryCategory) || _.get(this.allTabData, 'search.filters.primaryCategory');
-    filters.mimeType = _.get(mimeType, 'values');
+    filters.primaryCategory = filters.primaryCategory || ((_.get(filters, 'primaryCategory.length') && filters.primaryCategory) || _.get(this.allTabData, 'search.filters.primaryCategory'));
+    filters.mimeType = filters.mimeType || _.get(mimeType, 'values');
    _.forEach(_filters, (el, key) => {
-      if(key !== 'primaryCategory' && key !== 'mimeType'){
+      if(key !== 'primaryCategory' && key !== 'mimeType' && !_.has(filters, key)){
         filters[key] = el;
       }
    });
@@ -202,7 +205,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     _.forEach(this.formData, (form, key) => {
       const pageTitle = _.get(this.resourceService, form.title);
       if (pageTitle === pageType) {
-        filters.contentType = _.get(form, 'search.filters.contentType');
+        filters.contentType = filters.contentType || _.get(form, 'search.filters.contentType');
       }
     });
     const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
