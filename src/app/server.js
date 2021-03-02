@@ -100,7 +100,10 @@ app.all([
   }), keycloak.middleware({ admin: '/callback', logout: '/logout' }));
 
 app.all('/logoff', endSession, (req, res) => {
-  res.cookie('connect.sid', '', { expires: new Date() }); res.redirect('/logout')
+  // Clear cookie for client (browser)
+  res.status(200).clearCookie('connect.sid', { path: '/' });
+  // Clear session pertaining to User
+  req.session.destroy(function (err) { res.redirect('/logout') });
 })
 
 const morganConfig = (tokens, req, res) => {

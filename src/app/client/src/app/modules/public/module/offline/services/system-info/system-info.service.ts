@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { PublicDataService } from '@sunbird/core';
-import { ConfigService } from '@sunbird/shared';
+import { PublicDataService } from '../../../../../core/services/public-data/public-data.service';
+import { ConfigService } from '../../../../../shared/services/config/config.service';
 
 @Injectable({
   providedIn: 'root'
