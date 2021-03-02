@@ -198,5 +198,4 @@ export class NewCollectionEditorComponent implements OnInit {
       return 'read';
     }
   }
-
 }
