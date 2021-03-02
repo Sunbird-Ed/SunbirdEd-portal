@@ -459,9 +459,12 @@ describe('PlayerComponent', () => {
   fit('should handle event for print' , () => {
      component.playerConfig = playerConfig;
      const url = component.playerConfig['metadata']['streamingUrl'];
-     spyOn(window, 'open');
+     const frames = [{
+       print: () => {}
+     }]
+     spyOnProperty(window, 'frames').and.returnValue(frames);
      component.eventHandler(printEvent);
-     expect(window.open).toHaveBeenCalledWith(url);
+     expect(window.frames[0].print()).toHaveBeenCalled();
      expect(component.mobileViewDisplay).toBe('none');
   })
 });

@@ -317,8 +317,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.mobileViewDisplay = 'none';
     }
     if (_.get(event, 'edata.type') === 'PRINT') {
-      let url = this.playerConfig.metadata.streamingUrl;
-      (window as any).open(url);
+      window.frames[0].print();
       this.mobileViewDisplay = 'none';
     }
   }
