@@ -1,38 +1,85 @@
 <div [ngClass]="!layoutConfiguration ? 'footer-fix' : 'new-footer'">
   <app-desktop-app-update *appDesktopOnly></app-desktop-app-update>
   <div [ngClass]="{'loggedInUser': userService.loggedIn, 'guestUser': !userService.loggedIn}">
-    <div class="sbt-container d-flex flex-ai-center sb-bg-color-black py-8 flex-w-wrap sbt-sticky sbt-sticky-topbar sb-fontresizecontainer">
     <div
-      class="ui container">
-      <div class="d-flex flex-ai-center flex-jc-flex-end">
-        <ul class="d-flex flex-ai-center fsmall sb-color-white mb-0 computer only">
-          <li class="mb-0"><a href="/screenreaderaccess.html" class="cursor-pointer sb-color-white">Screen Reader Access</a></li><li class="mx-4 mb-0">|</li>
-          <ng-container *ngIf="userService.loggedIn">
-            <li class="mb-0"><a href="/sitemap.html?session=true" class="cursor-pointer sb-color-white">Sitemap</a></li>
-          </ng-container>
-          <ng-container *ngIf="!userService.loggedIn">
-            <li class="mb-0"><a href="/sitemap.html" class="cursor-pointer sb-color-white">Sitemap</a></li>
-          </ng-container>
-          <li class="mx-4 mb-0">|</li>
-        </ul>
-        <div class="fontResize-container d-flex flex-ai-center pull-right">
-          <button type="button" class="fontResizeBtn fontResizeBtn_A-" title="Decrease Font Size"
-            (click)="changeFontSize('decrease');" #decreaseFontSize>A-</button>
-          <button type="button" class="fontResizeBtn fontResizeBtn_A" title="Reset to Default"
-            (click)="changeFontSize('reset');" #resetFontSize>A</button>
-          <button type="button" class="fontResizeBtn fontResizeBtn_A+" title="Increase Font Size"
-            (click)="changeFontSize('increase');" #increaseFontSize>A+</button>
+      class="sbt-container d-flex flex-ai-center sb-bg-color-black py-8 flex-w-wrap sbt-sticky sbt-sticky-topbar sb-fontresizecontainer">
+      <div class="ui container">
+        <div class="brand-header-tail">
+          <div class="dk-country-flag">
+            <!-- <img title="" src="./assets/img/Flag_of_India.svg" width="32" alt="{{ site.data.text.govofIndia }}" />भारत सरकार | Goverment of India -->
+          </div>
+          <div class="d-flex flex-ai-center head-tail-right-side">
+            <div class="pull-right dk-top-head-ul">
+              <ul>
+                <li class="skip-content-link"><a href="/screenreaderaccess.html"
+                    title="Skip to Main Content">Skip to Main Content</a></li>
+                <li class="mx-4">|</li>
+                <li class="screen-reader-link"><a href="/screenreaderaccess.html" class=""
+                    title="Screen Reader Access">Screen Reader Access</a></li>
+                <li class="mx-4">|</li>
+                <ng-container *ngIf="userService.loggedIn">
+                <li class="sitemap-link "><a class="" href="/sitemap.html?session=true" title="Sitemap">Sitemap</a></li>
+                  </ng-container>
+                  <ng-container *ngIf="!userService.loggedIn">
+                    <li class="sitemap-link "><a class="" href="/sitemap.html" title="Sitemap">Sitemap</a></li>
+                      </ng-container>
+                <li class="mx-4">|</li>
+              </ul>
+              <ul>
+                <li>
+                  <div class="fontResize-container d-flex flex-ai-center pull-right">
+                    <button type="button" class="fontResizeBtn fontResizeBtn_A-" title="Decrease Font Size"
+                    (click)="changeFontSize('decrease');" #decreaseFontSize>A-</button>
+                    <button type="button" class="fontResizeBtn fontResizeBtn_A" title="Reset to Default"
+                    (click)="changeFontSize('reset');" #resetFontSize>A</button>
+                    <button type="button" class="fontResizeBtn fontResizeBtn_A+" title="Increase Font Size"
+                    (click)="changeFontSize('increase');" #increaseFontSize>A+</button>
+                  </div>
+                </li>
+                <li class="mx-4">|</li>
+                <li><button id="dark-mode-toggle" class="dark-mode-toggle" title="Switch Mode" (click)="changeTheme()">
+                    <svg width="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 496">
+                      <path fill="var(--white)"
+                        d="M8,256C8,393,119,504,256,504S504,393,504,256,393,8,256,8,8,119,8,256ZM256,440V72a184,184,0,0,1,0,368Z"
+                        transform="translate(-8 -8)" /></svg>
+                  </button></li>
+              </ul>
+            </div>
+          </div>
         </div>
-        <button id="dark-mode-toggle" class="dark-mode-toggle ml-8" title="Switch Mode" (click)="changeTheme()">
-          <svg width="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 496">
-            <path fill="#fff"
-              d="M8,256C8,393,119,504,256,504S504,393,504,256,393,8,256,8,8,119,8,256ZM256,440V72a184,184,0,0,1,0,368Z"
-              transform="translate(-8 -8)" />
-          </svg>
-        </button>
+
+        <div class="d-flex flex-ai-center flex-jc-flex-end hide hidden">
+          <ul class="d-flex flex-ai-center fsmall sb-color-white mb-0 computer only">
+            <li class="mb-0"><a href="/screenreaderaccess.html" class="cursor-pointer sb-color-white">Screen Reader
+                Access</a></li>
+            <li class="mx-4 mb-0">|</li>
+            <ng-container *ngIf="userService.loggedIn">
+              <li class="mb-0"><a href="/sitemap.html?session=true" class="cursor-pointer sb-color-white">Sitemap</a>
+              </li>
+            </ng-container>
+            <ng-container *ngIf="!userService.loggedIn">
+              <li class="mb-0"><a href="/sitemap.html" class="cursor-pointer sb-color-white">Sitemap</a></li>
+            </ng-container>
+            <li class="mx-4 mb-0">|</li>
+          </ul>
+          <div class="fontResize-container d-flex flex-ai-center pull-right">
+            <button type="button" class="fontResizeBtn fontResizeBtn_A-" title="Decrease Font Size"
+              (click)="changeFontSize('decrease');" #decreaseFontSize>A-</button>
+            <button type="button" class="fontResizeBtn fontResizeBtn_A" title="Reset to Default"
+              (click)="changeFontSize('reset');" #resetFontSize>A</button>
+            <button type="button" class="fontResizeBtn fontResizeBtn_A+" title="Increase Font Size"
+              (click)="changeFontSize('increase');" #increaseFontSize>A+</button>
+          </div>
+          <button id="dark-mode-toggle" class="dark-mode-toggle ml-8" title="Switch Mode" (click)="changeTheme()">
+            <svg width="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 496">
+              <path fill="#fff"
+                d="M8,256C8,393,119,504,256,504S504,393,504,256,393,8,256,8,8,119,8,256ZM256,440V72a184,184,0,0,1,0,368Z"
+                transform="translate(-8 -8)" />
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
-  </div>
     <app-popup #frameWorkPopUp *ngIf="showFrameWorkPopUp" [buttonLabel]="resourceService.frmelmnts.btn.submit"
       (submit)="updateFrameWork($event)"></app-popup>
     <app-tnc-popup (close)="onAcceptTnc()" #termsAndCondPopUp *ngIf="showTermsAndCondPopUp">
@@ -66,7 +113,7 @@
   </div>
   <div class="sb-modal-content">
     <p class="ui center aligned segment">
-        {{resourceService?.frmelmnts?.lbl?.plslgn |
+      {{resourceService?.frmelmnts?.lbl?.plslgn |
           interpolate:'{instance}': instance }}
     </p>
   </div>
