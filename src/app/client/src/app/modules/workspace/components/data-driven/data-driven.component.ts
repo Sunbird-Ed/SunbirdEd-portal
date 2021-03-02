@@ -1,20 +1,20 @@
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import {
-  ResourceService, ConfigService, ToasterService, ServerResponse, Framework,
+  ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile, Framework,
   ILoaderMessage, NavigationHelperService , BrowserCacheTtlService
 } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EditorService } from './../../services';
-import { SearchService, UserService, FrameworkService, FormService, PublicDataService, ContentService } from '@sunbird/core';
+import { SearchService, UserService, FrameworkService, FormService, ContentService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
 import { DefaultTemplateComponent } from '../content-creation-default-template/content-creation-default-template.component';
-import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
+import { IInteractEventInput, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { WorkSpace } from '../../classes/workspace';
 import { WorkSpaceService } from '../../services';
-import { Subject, forkJoin } from 'rxjs';
-import { takeUntil} from 'rxjs/operators';
+import { combineLatest, Subscription, Subject, of, throwError, forkJoin } from 'rxjs';
+import { takeUntil, first, mergeMap, map, tap , filter, catchError} from 'rxjs/operators';
 import { UUID } from 'angular2-uuid';
 
 @Component({
@@ -137,7 +137,6 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     public navigationHelperService: NavigationHelperService,
     public browserCacheTtlService: BrowserCacheTtlService,
     public telemetryService: TelemetryService,
-    public publicDataService: PublicDataService,
     public contentService: ContentService
   ) {
     super(searchService, workSpaceService, userService);
