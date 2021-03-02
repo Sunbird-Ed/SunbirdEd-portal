@@ -7,7 +7,7 @@ import * as contentSchema from './schemas/contentSchema.json';
 export class SchemaService {
 
   /**
-   * @description property containing content schema
+   * @description property containing content schema.
    * @memberof SchemaService
    */
   readonly contentSchema = (<any>contentSchema.default);
