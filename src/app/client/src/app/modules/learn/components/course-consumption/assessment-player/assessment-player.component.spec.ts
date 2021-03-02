@@ -30,13 +30,12 @@ describe('AssessmentPlayerComponent', () => {
   const resourceMockData = {
     messages: {
       fmsg: { m0051: 'Fetching districts failed. Try again later' },
-      stmsg: { m0009: 'Cannot un-enrol now. Try again later', m0005: 'Something went wrong' }
+      stmsg: { m0009: 'Cannot un-enrol now. Try again later', m0005: 'Something went wrong', m0121: 'Content not added yet' }
     },
     frmelmnts: {
-      lbl: {
-        selfAssessLastAttempt: 'This is the last attempt remaining'
-      }
-    }
+      lbl: { selfAssessLastAttempt: 'This is the last attempt remaining' }
+    },
+    languageSelected$: of({})
   };
 
   const fakeActivatedRoute = {
@@ -84,7 +83,7 @@ describe('AssessmentPlayerComponent', () => {
     fixture = TestBed.createComponent(AssessmentPlayerComponent);
     component = fixture.componentInstance;
     component.contentStatus = assessmentPlayerMockData.contentStatus;
-    component['activeContent'] = { contentType: 'SelfAssess',  identifier: 'do_2334343', maxAttempts: 3 };
+    component['activeContent'] = { contentType: 'SelfAssess', identifier: 'do_2334343', maxAttempts: 3 };
     fixture.detectChanges();
   });
 
@@ -94,9 +93,11 @@ describe('AssessmentPlayerComponent', () => {
 
   it('should call ngOnInit', () => {
     spyOn<any>(component, 'subscribeToQueryParam');
+    spyOn(component, 'getLanguageChangeEvent');
     fixture.detectChanges();
     component.ngOnInit();
     expect(component['subscribeToQueryParam']).toHaveBeenCalled();
+    expect(component.getLanguageChangeEvent).toHaveBeenCalled();
   });
 
   it('should go to courseDetails page', fakeAsync(() => {
@@ -107,7 +108,7 @@ describe('AssessmentPlayerComponent', () => {
     tick(500);
     fixture.detectChanges();
     expect(component['router'].navigate).toHaveBeenCalled();
-    expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course', '12312433456', 'batch', '12312433'], {queryParams: {}});
+    expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course', '12312433456', 'batch', '12312433'], { queryParams: {} });
   }));
 
   it('should go back with showCourseCompleteMessage=true if course completion popup is not shown', fakeAsync(() => {
@@ -116,9 +117,9 @@ describe('AssessmentPlayerComponent', () => {
     component.goBack();
     tick(500);
     fixture.detectChanges();
-    const paramas = {showCourseCompleteMessage: true};
+    const paramas = { showCourseCompleteMessage: true };
     expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course', '12312433456', 'batch', '12312433'],
-     {queryParams: paramas});
+      { queryParams: paramas });
   }));
 
   it('should call subscribeToQueryParam', () => {
@@ -166,7 +167,7 @@ describe('AssessmentPlayerComponent', () => {
     });
     spyOn<any>(component, 'getCollectionInfo').and.returnValue(of({
       courseHierarchy: assessmentPlayerMockData.courseHierarchy,
-      enrolledBatchDetails: {} 
+      enrolledBatchDetails: {}
     }));
     component['subscribeToQueryParam']();
     expect(component['getCollectionInfo']).toHaveBeenCalled();
@@ -197,6 +198,11 @@ describe('AssessmentPlayerComponent', () => {
     component['initPlayer']('do_3232431');
     expect(component.showLoader).toBe(true);
     expect(component.playerConfig).toEqual({});
+  });
+
+  it('should call getLanguageChangeEvent', () => {
+    component.getLanguageChangeEvent();
+    expect(component.noContentMessage).toEqual('Content not added yet');
   });
 
   it('should call initPlayer on error', () => {
@@ -430,7 +436,7 @@ describe('AssessmentPlayerComponent', () => {
   it('should make isFullScreenView to FALSE', () => {
     component.isFullScreenView = true;
     const navigationHelperService = TestBed.get(NavigationHelperService);
-    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(of({data: false}));
+    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(of({ data: false }));
     fixture.detectChanges();
     component.ngOnInit();
     navigationHelperService.emitFullScreenEvent(false);
@@ -440,7 +446,7 @@ describe('AssessmentPlayerComponent', () => {
   it('should make isFullScreenView to TRUE', () => {
     component.isFullScreenView = false;
     const navigationHelperService = TestBed.get(NavigationHelperService);
-    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(of({data: true}));
+    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(of({ data: true }));
     fixture.detectChanges();
     component.ngOnInit();
     navigationHelperService.emitFullScreenEvent(true);
@@ -468,7 +474,7 @@ describe('AssessmentPlayerComponent', () => {
     component._routerStateContentStatus = {};
     fixture.detectChanges();
     component.navigateToPlayerPage(assessmentPlayerMockData.courseHierarchy.children[0]);
-    const navigationExtras = { 'queryParams': { 'batchId': 'do_1130272760359813121209', 'courseId': 'do_1130272760359485441199', 'courseName': 'U1' }, state: { contentStatus: {} }};
+    const navigationExtras = { 'queryParams': { 'batchId': 'do_1130272760359813121209', 'courseId': 'do_1130272760359485441199', 'courseName': 'U1' }, state: { contentStatus: {} } };
     expect(component['router'].navigate).toHaveBeenCalledWith(['/learn/course/play', 'do_1130272760359813121209'], navigationExtras);
   });
 
@@ -508,13 +514,13 @@ describe('AssessmentPlayerComponent', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of({}));
     spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(of({}));
-    component['activeContent'] = { contentType: 'SelfAssess',  identifier: 'do_2334343' };
+    component['activeContent'] = { contentType: 'SelfAssess', identifier: 'do_2334343' };
     fixture.detectChanges();
     component['getCollectionInfo']('do_1212');
     expect(courseConsumptionService.getCourseHierarchy).toHaveBeenCalled();
     expect(courseBatchService.getEnrolledBatchDetails).toHaveBeenCalled();
   });
- 
+
   it('should check for course completion', () => {
     spyOn(component, 'getCourseCompletionStatus');
     fixture.detectChanges();
@@ -555,7 +561,7 @@ describe('AssessmentPlayerComponent', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(response));
     const courseProgressService = TestBed.get(CourseProgressService);
-    spyOn(courseProgressService, 'getContentProgressState').and.callFake(function ({}, {}) {
+    spyOn(courseProgressService, 'getContentProgressState').and.callFake(function ({ }, { }) {
       return assessmentPlayerMockData.contentProgressReqData;
     });
     component.contentStatus = assessmentPlayerMockData.contentStatus;
@@ -581,11 +587,24 @@ describe('AssessmentPlayerComponent', () => {
     expect(component['initPlayer']).toHaveBeenCalledWith(assessmentPlayerMockData.activeContent.identifier);
   });
 
-  it('should call onSelfAssessLastAttempt', () => {
+  it('should call onSelfAssessLastAttempt last attempt', () => {
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error');
-    component.onSelfAssessLastAttempt(true);
+    const event = { 
+      'data': 'renderer:selfassess:lastattempt'
+    };
+    component.onSelfAssessLastAttempt(event);
     expect(toasterService.error).toHaveBeenCalled();
+  });
+
+  it('should call onSelfAssessLastAttempt max attempt exceeded', () => {
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error');
+    const event = { 
+      'data': 'renderer:maxLimitExceeded'
+    };
+    component.onSelfAssessLastAttempt(event);
+    expect(component.showMaxAttemptsModal).toBe(true);
   });
 
   it('should check for course Completion getCourseCompletionStatus on self assess course for max attempt', () => {
@@ -644,7 +663,7 @@ describe('AssessmentPlayerComponent', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(response));
     const courseProgressService = TestBed.get(CourseProgressService);
-    spyOn(courseProgressService, 'getContentProgressState').and.callFake(function ({}, {}) {
+    spyOn(courseProgressService, 'getContentProgressState').and.callFake(function ({ }, { }) {
       return assessmentPlayerMockData.contentProgressReqData;
     });
     component.activeContent = assessmentPlayerMockData.selfAssessContent1;
@@ -654,8 +673,8 @@ describe('AssessmentPlayerComponent', () => {
     expect(toasterService.error).toHaveBeenCalled();
   });
 
-  it('should call getCourseCompletionStatus for self assess course', () => {
-    component.isCourseCompleted = false;
+  it('should call getCourseCompletionStatus for self assess course completed', () => {
+    component.isCourseCompleted = true;
     component.parentCourse = { name: 'Maths', identifier: 'do_233431212' };
     spyOn(component, 'getContentStateRequest').and.returnValue(of({
       userId: 'asas-saa12-asas-12',
@@ -672,14 +691,14 @@ describe('AssessmentPlayerComponent', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(response));
     const courseProgressService = TestBed.get(CourseProgressService);
-    spyOn(courseProgressService, 'getContentProgressState').and.callFake(function ({}, {}) {
+    spyOn(courseProgressService, 'getContentProgressState').and.callFake(function ({ }, { }) {
       return assessmentPlayerMockData.contentProgressReqData;
     });
     component.activeContent = assessmentPlayerMockData.selfAssessContent2;
     component.contentStatus = assessmentPlayerMockData.contentStatus;
     fixture.detectChanges();
     component.getCourseCompletionStatus(true);
-    expect(component.showMaxAttemptsModal).toBe(true);
+    expect(component.showMaxAttemptsModal).toBe(false);
   });
 
 });

@@ -11,20 +11,21 @@
             {{resourceService.frmelmnts.lbl.registerOn | interpolate:'{instance}': instance}}</div>
           <div class="year-birth my-16 required">
             <label class="mr-16">{{resourceService.frmelmnts?.lbl?.yearOfBirth}}<span class="sb-color-red">*</span></label>
-            <sui-select class="selection" [options]="birthYearOptions" placeholder="{{resourceService.frmelmnts?.lbl?.year}}"
+           <label> <sui-select class="selection" [options]="birthYearOptions" placeholder="{{resourceService.frmelmnts?.lbl?.year}}"
                         (selectedOptionChange)="changeBirthYear($event)"
                         #select>
               <sui-select-option *ngFor="let option of select.filteredOptions"
                                  [value]="option">
               </sui-select-option>
-            </sui-select>
+            </sui-select></label>
           </div>
           <form class="ui form borderd" [ngClass]="{'Off':disableForm, 'On':!disableForm}" [formGroup]="signUpForm" autocomplete="off" id="signUpForm">
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.name.touched && signUpForm.controls['name'].errors && signUpForm.controls['name'].errors.required">{{resourceService.frmelmnts?.lbl?.enterName}}</label>
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.name.touched && signUpForm.controls['name'].errors && signUpForm.controls['name'].errors.pattern">{{resourceService.frmelmnts.lbl.enterValidName}}</label>
             <div class="required field mb-8">
               <label class="mb-10 font-weight-bold" *ngIf="!(signUpForm.controls.name.touched && signUpForm.controls['name'].errors)">{{resourceService.frmelmnts?.lbl?.name}}</label>
-              <input class="sb-form-control" [ngClass]="{'orange-border': signUpForm.controls.name.touched && signUpForm.controls['name'].errors}" formControlName="name"
+              <label for="signup-form-name" class="hide">{{resourceService.frmelmnts?.lbl?.name}}</label>
+              <input id="signup-form-name" class="sb-form-control" [ngClass]="{'orange-border': signUpForm.controls.name.touched && signUpForm.controls['name'].errors}" formControlName="name"
                 type="text" name="name" placeholder="{{resourceService.frmelmnts?.lbl?.name}}">
             </div>
             <div class="required field mb-16"
@@ -60,7 +61,8 @@
             </div>
             <div class="field" *ngIf="showContact === 'phone'">
               <div class="ui left icon input">
-                <input class="sb-form-control" [ngClass]="{'orange-border': signUpForm.controls.phone.touched && signUpForm.controls['phone'].errors}" formControlName="phone"
+                <label for="signup-form-phone" class="hide">{{resourceService.frmelmnts.lbl.tenDigitPhone}}</label>
+                <input id="signup-form-phone" class="sb-form-control" [ngClass]="{'orange-border': signUpForm.controls.phone.touched && signUpForm.controls['phone'].errors}" formControlName="phone"
                   type="number" name="phone" placeholder="{{resourceService.frmelmnts.lbl.tenDigitPhone}}" (blur)="getReCaptchaToken('phone')">
                 <i class=" icon">+91-</i>
               </div>
@@ -68,7 +70,8 @@
             <div class="required field mb-16">
               <label class="mb-10 font-weight-bold">{{resourceService.frmelmnts.lbl.password}}</label>
               <div class="ui icon input">
-                <input class="sb-form-control" [ngClass]="{'orange-border': signUpForm.controls.password.touched && signUpForm.controls['password'].errors}" [type]="showPassword ? 'text' : 'password'"
+                <label for="signup-form-password" class="hide">{{resourceService.frmelmnts.lbl.EnterPassword}}</label>
+                <input id="signup-form-password" class="sb-form-control" [ngClass]="{'orange-border': signUpForm.controls.password.touched && signUpForm.controls['password'].errors}" [type]="showPassword ? 'text' : 'password'"
                   formControlName="password" name="password" placeholder="{{resourceService.frmelmnts.lbl.EnterPassword}}">
                 <!-- <i class="icon large sb-icon-preview link opacity-1" (click)="displayPassword()"></i> -->
                 <img class="password-showhideimage" src="{{ showPassword ? 'assets/images/password-hidden.svg' : 'assets/images/password-visibile.svg'}}" alt="show-password.svg" (click)="displayPassword()">
@@ -78,7 +81,8 @@
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.confirmPassword.touched && signUpForm.controls['confirmPassword'].errors">{{resourceService.frmelmnts.lbl.errorConfirmPassword}}</label>
             <div class="required field mb-16">
               <label class="mb-10 font-weight-bold" *ngIf="!(signUpForm.controls.confirmPassword.touched && signUpForm.controls['confirmPassword'].errors)">{{resourceService.frmelmnts.lbl.confirmPassword}}</label>
-              <input class="sb-form-control" [ngClass]="{'orange-border': signUpForm.controls.confirmPassword.touched && signUpForm.controls['confirmPassword'].errors}"
+              <label for="signup-form-confirmPassword" class="hide">{{resourceService.frmelmnts.lbl.reEnterPassword}}</label>
+              <input id="signup-form-confirmPassword" class="sb-form-control" [ngClass]="{'orange-border': signUpForm.controls.confirmPassword.touched && signUpForm.controls['confirmPassword'].errors}"
                 formControlName="confirmPassword" type="password" name="confirmPassword" placeholder="{{resourceService.frmelmnts.lbl.reEnterPassword}}">
             </div>
             <div class="sb-requirement-field mb-8 font-weight-bold">

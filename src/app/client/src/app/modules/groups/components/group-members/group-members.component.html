@@ -9,7 +9,8 @@
       <div class="sb-search-box no-btn mb-16">
         <div class="input-div relative">
           <i class="search icon" aria-hidden="true"></i>
-          <input class="sb-search-input" type="text" #searchInputBox (input)="search(searchInputBox.value)"
+          <label for="search-within-group" class="hide">{{resourceService?.frmelmnts?.lbl?.searchWithinGroup}}</label>
+          <input class="sb-search-input" id="search-within-group" type="text" #searchInputBox (input)="search(searchInputBox.value)"
             [placeholder]="resourceService?.frmelmnts?.lbl?.searchWithinGroup" />
         </div>
         <button class="sb-btn sb-btn-normal">{{resourceService?.frmelmnts?.lbl?.search}}</button>

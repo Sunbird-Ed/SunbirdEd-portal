@@ -239,4 +239,53 @@ describe('CourseSearchComponent', () => {
     expect(component.contentList.length).toEqual(0);
     expect(toasterService.error).toHaveBeenCalled();
   }));
+
+  it('should call the content search api with a predefined request body', () => {
+    /** Arrange */
+    component.queryParams = {
+      mediaType: ['text/html'],
+      utm_source: 'Tara',
+      key: 'comic-book',
+      sortType: 'asc',
+      appliedFilters: [{ code: 'board', range: [{ index: 0, name: 'NCRT' }, { index: 1, name: 'CBSC' }] }],
+      softConstraints: '',
+      selectedTab: 'explore',
+      sort_by: 'name'
+    };
+    component.globalSearchFacets = [];
+    component.allTabData = {
+      search: {
+        fields: '',
+        limit: 20,
+        filters: {
+          mimeType: {name: 'text/html', value: 'text/html'},
+          primaryCategory: 'course'
+        }
+      }
+    };
+
+    const option = {
+      filters: {
+        primaryCategory: 'course',
+        mimeType: undefined
+      },
+      fields: '',
+      limit: 20,
+      pageNumber: 1,
+      query: 'comic-book',
+      facets: [],
+      sort_by : {'name': 'asc' },
+      params: {
+        orgdetails: 'orgName,email',
+        licenseDetails: 'name,description,url',
+        framework: 'TPD'
+      }
+    };
+
+    /** Act */
+    component['fetchContents']();
+
+    /** Assert */
+    expect(searchService.contentSearch).toHaveBeenCalledWith(option);
+  });
 });

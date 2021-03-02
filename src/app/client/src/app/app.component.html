@@ -1,11 +1,34 @@
 <div [ngClass]="!layoutConfiguration ? 'footer-fix' : 'new-footer'">
 <app-desktop-app-update *appDesktopOnly></app-desktop-app-update>
 <div [ngClass]="{'loggedInUser': userService.loggedIn, 'guestUser': !userService.loggedIn}">
+  <div class="sbt-container d-flex flex-ai-center sb-bg-color-black py-8 flex-w-wrap sbt-sticky sbt-sticky-topbar sb-fontresizecontainer">
+    <div class="ui container">
+      <div class="d-flex flex-ai-center flex-jc-flex-end">
+        <ul class="d-flex flex-ai-center fsmall sb-color-white mb-0 computer only">
+          <li class="mb-0"><a href="/screenreaderaccess.html" class="cursor-pointer sb-color-white">Screen Reader Access</a></li><li class="mx-4 mb-0">|</li>
+          <ng-container *ngIf="userService.loggedIn">
+            <li class="mb-0"><a href="/sitemap.html?session=true" class="cursor-pointer sb-color-white">Sitemap</a></li>
+          </ng-container>
+          <ng-container *ngIf="!userService.loggedIn">
+            <li class="mb-0"><a href="/sitemap.html" class="cursor-pointer sb-color-white">Sitemap</a></li>
+          </ng-container>
+        </ul>
+        <div class="fontResize-container d-flex flex-ai-center pull-right">
+          <button type="button" class="fontResizeBtn fontResizeBtn_A-" title="Decrease Font Size" 
+            (click)="changeFontSize('decrease');" #decreaseFontSize>A-</button>
+          <button type="button" class="fontResizeBtn fontResizeBtn_A" title="Reset to Default" (click)="changeFontSize('reset');"
+            #resetFontSize>A</button>
+          <button type="button" class="fontResizeBtn fontResizeBtn_A+" title="Increase Font Size"
+          (click)="changeFontSize('increase');" #increaseFontSize>A+</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <app-popup #frameWorkPopUp *ngIf="showFrameWorkPopUp"
     [buttonLabel]="resourceService.frmelmnts.btn.submit" (submit)="updateFrameWork($event)"></app-popup>
   <app-tnc-popup (close)="onAcceptTnc()" #termsAndCondPopUp *ngIf="showTermsAndCondPopUp">
   </app-tnc-popup>
-  <div class="mb-16" *ngIf="showGlobalConsentPopUpSection">
+  <div *ngIf="showGlobalConsentPopUpSection">
     <app-global-consent-pii [type]="globalConsent" [isglobalConsent]="isglobalConsent" (close)="closeConsentPopUp()" [consentConfig]="consentConfig"></app-global-consent-pii>
   </div>
   <app-validate-teacher-identifier-popup *ngIf="showUserVerificationPopup && labels" [labels]="labels" [userFeedData]="userFeed"> </app-validate-teacher-identifier-popup>

@@ -34,7 +34,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   courseHierarchy;
   enrolledBatchInfo;
   showLoader = true;
-  noContentMessage = 'No Content available';
+  noContentMessage = '';
   activeContent: any;
   isContentPresent = false;
   courseFallbackImg = './../../../../../assets/images/book.png';
@@ -147,6 +147,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
       this.isFullScreenView = isFullScreen;
     });
+    this.noContentMessage = _.get(this.resourceService, 'messages.stmsg.m0121');
+    this.getLanguageChangeEvent();
   }
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -170,6 +172,12 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.router.navigate(['/learn/course', this.courseId, 'batch', this.batchId], {queryParams: paramas});
     }, 500);
+  }
+
+  getLanguageChangeEvent() {
+    this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe)).subscribe(item => {
+      this.noContentMessage = _.get(this.resourceService, 'messages.stmsg.m0121');
+    });
   }
 
   private subscribeToQueryParam() {
@@ -687,7 +695,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
             });
 
             /* istanbul ignore else */
-            if (maxAttemptsExceeded) {
+            if (maxAttemptsExceeded && !showPopup) {
               this.showMaxAttemptsModal = true;
             } else if (isLastAttempt) {
               this.toasterService.error(this.resourceService.frmelmnts.lbl.selfAssessLastAttempt);
@@ -770,8 +778,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
           }
           this.playerConfig = config;
           const _contentIndex = _.findIndex(this.contentStatus, { contentId: _.get(config, 'context.contentId') });
-          this.playerConfig.maxAttempt = _.get(this.activeContent, 'maxAttempts');
-          this.playerConfig.currentAttempt = _.get(this.contentStatus[_contentIndex], 'score.length');
+          this.playerConfig['metadata']['maxAttempt'] = _.get(this.activeContent, 'maxAttempts');
+          this.playerConfig['metadata']['currentAttempt'] = _.get(this.contentStatus[_contentIndex], 'score.length') || 0;
           this.showLoader = false;
           this.setTelemetryContentImpression();
         }, (err) => {
@@ -782,8 +790,11 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   onSelfAssessLastAttempt(event) {
-    if (event) {
+    if (_.get(event, 'data') === 'renderer:selfassess:lastattempt') {
       this.toasterService.error(this.resourceService.frmelmnts.lbl.selfAssessLastAttempt);
+    }
+    if (_.get(event, 'data') === 'renderer:maxLimitExceeded') {
+      this.showMaxAttemptsModal = true;
     }
   }
 
