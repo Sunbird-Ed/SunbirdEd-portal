@@ -28,7 +28,9 @@ describe('DataDrivenComponent', () => {
   const resourceBundle = {
     'messages': {
       'emsg': {
-        'm0005': 'api failed, please try again'
+        'm0005': 'api failed, please try again',
+        'm0014' : 'Unable to get channel details',
+        'm0015' : 'Unable to get collection details'
       },
       'stmsg': {
         'm0018': 'We are fetching content...',
@@ -169,6 +171,8 @@ describe('DataDrivenComponent', () => {
     componentParent.formData = componentChild;
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'textbook';
+    componentParent.targetFramework = 'nit_k-12';
+    componentParent.primaryCategory = 'Curriculum Course';
     userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
     userService._userProfile = {};
     spyOn(componentParent, 'createContent').and.callThrough();
@@ -189,6 +193,8 @@ describe('DataDrivenComponent', () => {
     componentParent.formData = componentChild;
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'studymaterial';
+    componentParent.targetFramework = 'nit_k-12';
+    componentParent.primaryCategory = 'Curriculum Course';
     userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
     userService._userProfile = {};
     spyOn(componentParent, 'createContent').and.callThrough();
@@ -353,6 +359,7 @@ describe('DataDrivenComponent', () => {
     spyOn(frameworkService, 'getChannel').and.returnValue(observableOf(mockFrameworkData.channelData));
     componentParent.ngOnInit();
     expect(componentParent.setFrameworkData).toHaveBeenCalledWith(mockFrameworkData.channelData);
+    expect(componentParent.userChannelData).toBeDefined();
   });
 
   it('should throw error if channel read api fails', () => {
@@ -376,31 +383,31 @@ describe('DataDrivenComponent', () => {
     componentParent.setFrameworkData(mockFrameworkData.channelData);
     expect(componentParent.frameworkCardData).toEqual([
       {
-        title: 'Curriculum courses',
+        title: 'Curriculum Course',
         description: `Create courses for concepts from the syllabus, across grades and subjects. For example, courses on fractions, photosynthesis, reading comprehension, etc.`,
-        framework: 'NCFCOPY'
+        primaryCategory: 'Curriculum Course'
       },
       {
-        title: 'Generic courses',
+        title: 'Professional Development Course',
         description: `Create courses that help develop professional skills. For example, courses on classroom management, pedagogy, ICT, Leadership, etc.`,
-        framework: 'TPD'
+        primaryCategory: 'Professional Development Course'
       }
     ]);
   });
 
   it('should select a framework card and fires an interact event', () => {
     const mockCardData =  {
-      title: 'Curriculum courses',
-      description: `Create courses for concepts from the syllabus, across grades and subjects, for example;
-      for fractions, photosynthesis, reading comprehension, etc.`,
-      framework: 'NCFCOPY'
+      title: 'Curriculum Course',
+      description: `Create courses for concepts from the syllabus, across grades and subjects.
+       For example, courses on fractions, photosynthesis, reading comprehension, etc.`,
+      primaryCategory: 'Curriculum Course'
     };
     const interactData = {
       context: {
         env: _.get(fakeActivatedRoute, 'snapshot.data.telemetry.env'),
         cdata: [{
           type: 'framework',
-          id: 'NCFCOPY'
+          id: 'nit_k-12'
         }]
       },
       edata: {
@@ -411,10 +418,77 @@ describe('DataDrivenComponent', () => {
     };
     const telemetryService = TestBed.get(TelemetryService);
     spyOn(telemetryService, 'interact').and.stub();
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockFrameworkData.successCategory));
+    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkDataByType));
     componentParent.selectFramework(mockCardData);
     expect(componentParent.enableCreateButton).toBe(true);
     expect(componentParent.selectedCard).toEqual(mockCardData);
     expect(telemetryService.interact).toHaveBeenCalledWith(interactData);
+  });
+
+  it('should select a target framework card and fires an interact event', () => {
+    const mockCardData =  {
+      title: 'Curriculum Course',
+      description: `Create courses for concepts from the syllabus, across grades and subjects.
+       For example, courses on fractions, photosynthesis, reading comprehension, etc.`,
+      primaryCategory: 'Professional Development Course'
+    };
+    const interactData = {
+      context: {
+        env: _.get(fakeActivatedRoute, 'snapshot.data.telemetry.env'),
+        cdata: [{
+          type: 'framework',
+          id: 'nit_k-12'
+        }, {
+          type: 'targetFW',
+          id: 'nit_k-12'
+        }]
+      },
+      edata: {
+        id: mockCardData.title,
+        type: 'click',
+        pageid: _.get(fakeActivatedRoute, 'snapshot.data.telemetry.pageid')
+      }
+    };
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact').and.stub();
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    delete mockFrameworkData.successCategory;
+    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockFrameworkData.successCategory));
+    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkDataByType));
+    componentParent.selectFramework(mockCardData);
+    expect(componentParent.enableCreateButton).toBe(true);
+    expect(componentParent.selectedCard).toEqual(mockCardData);
+    expect(telemetryService.interact).toHaveBeenCalledWith(interactData);
+  });
+
+  it('#selectFramework() should throw error if category defination API failed', () => {
+    const mockCardData =  {
+      primaryCategory: 'Professional Development Course'
+    };
+    const resourceService = TestBed.get(ResourceService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callThrough();
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableThrowError({}));
+    componentParent.selectFramework(mockCardData);
+    expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0015);
+  });
+
+  it('#selectFramework() should throw error if framework API failed', () => {
+    const mockCardData =  {
+      primaryCategory: 'Professional Development Course'
+    };
+    const resourceService = TestBed.get(ResourceService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callThrough();
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockFrameworkData.successCategory));
+    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableThrowError({}));
+    componentParent.selectFramework(mockCardData);
+    expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0014);
+
   });
 
   it('should create lock to the opened content and redirect to editor after logging an interact event', () => {
@@ -452,4 +526,23 @@ describe('DataDrivenComponent', () => {
     componentParent.logTelemetry('do_123456');
     expect(telemetryService.interact).toHaveBeenCalledWith(telemetryData);
   });
+
+  it('#generateQuestionSetData() should return valid metadata', () => {
+    const userService = TestBed.get(UserService);
+    componentParent.framework = 'NCERT';
+    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
+    userService._userProfile = {};
+    const res = componentParent.generateQuestionSetData();
+    expect(Object.keys(res)).toContain('questionset');
+  });
+
+  it('#getFrameworkDataByType() should fetch framework data by type', () => {
+    const contentService = TestBed.get(ContentService);
+    spyOn(contentService, 'post').and.returnValue(observableOf(mockFrameworkData.frameworkDataByType));
+    const frameworkReq = componentParent.getFrameworkDataByType('k-12', 'sunbird');
+    frameworkReq.subscribe((response) => {
+      expect(response).toEqual(mockFrameworkData.frameworkDataByType);
+    });
+  });
+
 });
