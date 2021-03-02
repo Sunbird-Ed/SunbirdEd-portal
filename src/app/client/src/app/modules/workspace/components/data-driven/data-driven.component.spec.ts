@@ -193,8 +193,31 @@ describe('DataDrivenComponent', () => {
     componentParent.formData = componentChild;
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'course';
-    componentParent.targetFramework = 'nit_k-12';
     componentParent.primaryCategory = 'Curriculum Course';
+    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
+    userService._userProfile = {};
+    spyOn(componentParent, 'createContent').and.callThrough();
+    spyOn(workSpaceService, 'lockContent').and.returnValue(observableOf({}));
+    componentParent.generateData(componentParent.formData.formInputData);
+    spyOn(editorService, 'create').and.returnValue(observableOf(mockFrameworkData.createCollectionData));
+    componentParent.createContent(undefined);
+    expect(router.navigate).toHaveBeenCalledWith(
+      ['/workspace/content/edit/collection', 'do_2124708548063559681134', 'Course', 'draft', componentParent.framework, 'Draft']);
+  });
+
+  it('should router to course collection editor ', () => {
+    const state = 'draft';
+    const type = 'Course';
+    const router = TestBed.get(Router);
+    const userService = TestBed.get(UserService);
+    const editorService = TestBed.get(EditorService);
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    componentChild.formInputData = { name: 'abcd', board: 'NCERT' };
+    componentParent.formData = componentChild;
+    componentParent.framework = 'NCERT';
+    componentParent.contentType = 'course';
+    componentParent.targetFramework = 'nit_k-12';
+    componentParent.primaryCategory = 'Professional Development Course';
     userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
     userService._userProfile = {};
     spyOn(componentParent, 'createContent').and.callThrough();
