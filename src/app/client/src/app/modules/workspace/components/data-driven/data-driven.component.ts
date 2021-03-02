@@ -116,7 +116,6 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
   public enableCreateButton = false;
 
   public isSubmit = false;
-
   public unsubscribe = new Subject<void>();
   public targetFramework: string;
   public primaryCategory: string;
