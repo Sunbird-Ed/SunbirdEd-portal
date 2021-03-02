@@ -1,6 +1,6 @@
 import {
     PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage, OfflineCardService,
-    ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination, LayoutService, COLUMN_TYPE
+    ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination, LayoutService, COLUMN_TYPE, SchemaService
 } from '@sunbird/shared';
 import { SearchService, PlayerService, UserService, FrameworkService, OrgDetailsService, CoursesService } from '@sunbird/core';
 import { combineLatest, Subject, of } from 'rxjs';
@@ -71,7 +71,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         public cacheService: CacheService, public frameworkService: FrameworkService, private coursesService: CoursesService,
         public navigationhelperService: NavigationHelperService, public layoutService: LayoutService,  public orgDetailsService: OrgDetailsService,
         public contentManagerService: ContentManagerService,  private offlineCardService: OfflineCardService, public telemetryService: TelemetryService,
-        private publicPlayerService: PublicPlayerService) {
+        private publicPlayerService: PublicPlayerService, private schemaService: SchemaService) {
         this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.filterType = this.configService.appConfig.library.filterType;
         this.redirectUrl = this.configService.appConfig.library.searchPageredirectUrl;
@@ -185,7 +185,11 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         const mimeType = _.find(_.get(this.allTabData, 'search.filters.mimeType'), (o) => {
             return o.name === (selectedMediaType || 'all');
         });
-        let filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType', 'utm_source']);
+        let filters = this.searchService.schemaValidator({
+            inputObj: this.queryParams || {},
+            schema: _.get(this.schemaService, 'contentSchema.properties') || {},
+            omitKeys: ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType', 'utm_source']
+        });
         if (_.isEmpty(filters)) {
             filters = _.omit(this.frameworkData, ['id']);
         }
@@ -195,11 +199,11 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         if (Object.keys(this.queryParams).length > 0) {
             filters = _.omit(filters, _.difference(this.globalSearchFacets, _.keysIn(this.queryParams)));
         }
-        filters.primaryCategory = (_.get(filters, 'primaryCategory.length') && filters.primaryCategory) || _.get(this.allTabData, 'search.filters.primaryCategory');
-        filters.mimeType = _.get(mimeType, 'values');
+        filters.primaryCategory = filters.primaryCategory || ((_.get(filters, 'primaryCategory.length') && filters.primaryCategory) || _.get(this.allTabData, 'search.filters.primaryCategory'));
+        filters.mimeType = filters.mimeType || _.get(mimeType, 'values');
         const _filters = _.get(this.allTabData, 'search.filters');
         _.forEach(_filters, (el, key) => {
-            if(key !== 'primaryCategory' && key !== 'mimeType'){
+            if(key !== 'primaryCategory' && key !== 'mimeType' && !_.has(filters, key)){
               filters[key] = el;
             }
          });
