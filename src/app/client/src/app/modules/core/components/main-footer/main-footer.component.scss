@@ -95,11 +95,14 @@
       }
       .footer-terms-info{
         a{
-          color: var(--green);
+          color: var(--sbt-footer-info-links);
           font-size: calculateRem(14px);
-          font-weight: bold
+          font-weight: bold;
+          &:hover{
+            color: var(--sbt-footer-info-links-hover);
+          }
         }
-        color: var(--green);
+        color: var(--sbt-footer-info-links);
         font-size: calculateRem(14px);
         font-weight: bold
       }

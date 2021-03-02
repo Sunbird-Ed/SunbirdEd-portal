@@ -7,8 +7,11 @@
   background-color: var(--sb-notification-bg);
   width: calculateRem(40px);
   height: calculateRem(40px);
-  img{
+  .icon-svg{
     width: 1.5rem;
+  }
+  .bell-icon{
+    fill: var(--bell-icon);
   }
 }
 .notification-count{

@@ -80,17 +80,18 @@ html[data-theme='Default'] {
   --sidebar-li-hover-bg: var(--primary-100);
   --sb-linkmenu-bg: var(--white);
   --sb-linkmenu-text: var(--primary-400);
-  --sb-linkmenu-active-text: var(--primary-100);
+  --sb-linkmenu-active-text: var(--primary-400);
   --sb-linkmenu-text-hover: var(--white);
   --sb-linkmenu-bg-hover: var(--primary-color);
   --sb-linkmenu-icon-bg-hover: var(--white);
+  --sb-btn-default-color: var(--white);
 
   //header
   --sb-menu-bg: #E5EDF5;
   --sb-menu-item: var(--gray-800);
   --sb-menu-item-hover: var(--primary-color);
   --sb-header-bg: var(--primary-400);
-  --sb-botification-bg: var(--white);
+  --sb-notification-bg: var(--white);
   --sb-header-qrcode-btn-bg: var(--white);
   --sb-header-qrcode-btn: var(--primary-color);
   --sb-header-qrcode-btn-border: var(--primary-300);
@@ -105,9 +106,30 @@ html[data-theme='Default'] {
   --sb-search-auto-select: var(--white);
   --sb-footer-bg: var(--primary-color);
   --sbt-green-bg: var(--white);
+  --bell-icon: var(--primary-color);
+  --sbt-language-dropdown-bg: var(--white);
+  --sb-footer-bg: var(--primary-color);
 
-  --sb-search-input-text: var(--gray-200);
-  --sb-search-input-bg: var(--white);
+  //landing page
+  --sb-landing-page-bg: var(--white);
+  --sb-landing-page-segments: var(--sb-landing-page-bg);
+  --sb-landing-page-cards: var(--white);
+  --sb-landing-page-cards-desc: rgba(0,0,0,.68);
+  --sb-landing-page-btn: transparent;
+
+  //profile page
+  --sb-profile-certificate-bg: var(--white);
+  --sb-course-progress-status-label: #333333;
+  --sb-list-data: var(--gray-400);
+  --sb-list-items: #333333;
+  --sb-profile-bg-c-4: var(--rc-E0EFFF);
+  --sb-profile-page-basic-label-bg: var(--white);
+
+  //pagination
+  --sb-pagination-bg: var(--white);
+  --sb-pagination-item-bg: var(--sb-pagination-bg);
+  --sb-pagination-item: var(--gray-400);
+  --sb-pagination-item-active: var(--sb-pagination-item);
 }
 
 html[data-theme='Default'][layout='joy'] {
@@ -136,6 +158,11 @@ html[layout='joy'] {
   --sbt-body-bg2: #E9E8D9;
   --sbt-primary-bg: var(--primary-theme);
   --sbt-border-chapter: #E4E8EE;
+  --sbt-language-dropdown-bg: var(--white);
+  --sbt-language-dropdown-item: #008840;
+  --sbt-language-selectbox: #008840;
+  --sbt-language-dropdown-item-hover-bg: rgba(0,0,0,.05);
+  --sbt-language-dropdown-item-hover-text: #008840;
 
   .navBlock .pdf-nav-unit {
     color: var(--gray-800) !important;
@@ -1117,7 +1144,17 @@ html[layout='joy'][dir='rtl'] {
 
 html[data-theme=Darkmode] {
   --primary-theme: #ffd92a;
-  --primary-color: #ffd92a;
+  --primary-color:#ffd92a;
+  --primary-0: #fffcee;
+  --primary-100: #fff8db; // default button bg
+  --primary-200: #fffd2a; // divider
+  --primary-250: #f1f1c7;
+  --primary-300: #ffeb2a; // outline, focus fields
+  --primary-400: var(--primary-color); // button bg, heading, table titles, links, toggles
+  --primary-600: #ffc72a; // on press
+  --primary-800: #ffb62a; // hover
+  --secondary-200: #ffb62a;
+  --secondary-color: #ffb62a;
   --sbt-primary-bg: var(--primary-theme);
   --sbt-border-chapter: #E4E8EE;
   --sbt-body-bg: #000;
@@ -1187,25 +1224,26 @@ html[data-theme=Darkmode] {
   --sidebar-li-hover-bg: #222;
   --sb-linkmenu-bg: #222;
   --sb-linkmenu-text: #fff;
-  --sb-linkmenu-active-text: #222;
+  --sb-linkmenu-active-text: var(--primary-color);
   --sb-linkmenu-text-hover: #222;
   --sb-linkmenu-bg-hover: var(--primary-color);
   --sb-linkmenu-icon-bg-hover: #222;
-
+  --sb-btn-default-color: var(--black);
 
   //header
   --sb-menu-bg: var(--black);
   --sb-menu-item: var(--gray-0);
   --sb-menu-item-hover: var(--primary-color);
-  --sb-header-bg: var(--gray-800);
+  --sb-header-bg: #333333;
   --sb-notification-bg: var(--gray);
-  --sb-header-qrcode-btn-bg: var(--gray-800);
+  --bell-icon: var(--white);
+  --sb-header-qrcode-btn-bg: #333333;
   --sb-header-qrcode-btn: var(--primary-color);
-  --sb-header-qrcode-btn-border: var(--primary-300);
+  --sb-header-qrcode-btn-border: #ffeb2a;
   --sb-search-input-bg: #222222;
   --sb-search-input-text: var(--gray-200);
-  --sb-search-btn-bg: #333;
-  --sb-search-btn-text: #fff;
+  --sb-search-btn-bg: #efebd8;
+  --sb-search-btn-text: #000;
   --sb-qrcode-divider: var(--primary-0);
   --sb-language-dropdown-bg: var(--black);
   --sb-language-dropdown-item: var(--white);
@@ -1238,18 +1276,53 @@ html[data-theme=Darkmode] {
   --cc-sbcard-hover-text: var(--white);
   --cc-sbcard-hover-bg: var(--primary-color);
 
+  //landing page
+  --sb-landing-page-bg: var(--black);
+  --sb-landing-page-segments: #333;
+  --sb-landing-page-cards: var(--sb-landing-page-bg);
+  --sb-landing-page-cards-desc: var(--white);
+  --sb-landing-page-btn: var(--sb-landing-page-segments);
+
+   //profile page
+   --sb-profile-certificate-bg: #333;
+   --sb-course-progress-status-label: var(--black);
+   --sb-list-data: var(--gray-100);
+   --sb-list-items: var(--white);
+   --sb-profile-bg-c-4: #fff8db;
+   --sb-profile-page-basic-label-bg: #333333;
+
+   //pagination
+  --sb-pagination-bg: #333333;
+  --sb-pagination-item-bg: var(--sb-pagination-bg);
+  --sb-pagination-item: var(--white);
+  --sb-pagination-item-active: var(--gray-400);
+  .notification-bell{
+    box-shadow: none;
+  }
 }
 
 html[data-theme='Darkmode'][layout='joy'] {
-  --primary-0: #fffcee;
-  --primary-100: #fff8db; // default button bg
-  --primary-200: #fffd2a; // divider
-  --primary-300: #ffeb2a; // outline, focus fields
-  --primary-400: var(--primary-color); // button bg, heading, table titles, links, toggles
-  --primary-600: #ffc72a; // on press
-  --primary-800: #ffb62a; // hover
+  --primary-color:#ffd92a;
   --sb-search-btn-bg: #333;
   --sb-search-btn-text: var(--primary-color);
+
+  //Joy theme header
+  --sbt-header-bg: var(--gray);
+  --sbt-page-header-bg: var(--sbt-header-bg);
+  --sbt-theme-green-selectbox: var(--gray-200);
+  --sbt-language-dropdown-icon: var(--primary-color);
+  --sbt-language-dropdown-bg: #000;
+  --sbt-language-dropdown-item-hover-bg: #333333;
+  --sbt-language-dropdown-item-hover-text: var(--primary-color);
+  --sbt-language-selectbox: var(--primary-color);
+  --sb-notification-bg: var(--black);
+  --sb-footer-bg: var(--gray);
+  --sbt-footer-info-links: var(--white);
+  --sbt-footer-info-links-hover: var(--primary-color);
+  --sbt-language-dropdown-item: var(--white);
+  .notification-bell{
+    box-shadow: var(--sbt-box-shadow-6px);
+  }
 }
 
 

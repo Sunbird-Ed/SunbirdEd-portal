@@ -17,7 +17,8 @@
 }
 
 .profile-bg-c-4 {
-  background: var(--rc-E0EFFF) !important;
+  background: var(--sb-profile-bg-c-4) !important;
+  color:var(--black)
 }
 
 /* width */
@@ -104,6 +105,7 @@
   font-size: 1.16rem;
   padding: calculateRem(8px) calculateRem(16px);
   color: var(--rc-9b9b9b);
+  background: var(--sb-profile-page-basic-label-bg);
 }
 
 .ui.label>.recovery-img {
@@ -177,7 +179,7 @@
 .sb-certificate-trained {
   border: calculateRem(0.5px) solid var(--gray-100);
   border-radius: calculateRem(4px);
-  background-color: var(--white);
+  background-color: var(--sb-profile-certificate-bg);
   margin: 0 auto;
 
   .sb-ct-list {
@@ -201,4 +203,7 @@
   justify-content: space-between;
   display: flex;
   padding: calculateRem(8px) calculateRem(16px);
+  .list-items__item{
+    color: var(--sb-course-progress-status-label);
+  }
 }
