@@ -873,3 +873,27 @@ quml-player {
     color: var(--sb-menu-item-hover) !important;
   }
  }
+ .download-mobile-app {
+  background: #333 !important;
+ }
+ app-landing-page{
+  .ui.segment{
+    background: var(--sb-landing-page-segments);
+  }
+  .ui.card, .ui.cards>.card{
+    background: var(--sb-landing-page-cards);
+  }
+  .ui.card>.content>.description, .ui.cards>.card>.content>.description{
+    color: var(--sb-landing-page-cards-desc);
+  }
+  .ui.list .list>.item .description, .ui.list>.item .description{
+    color: var(--sb-landing-page-cards-desc);
+  }
+  .ui.basic.button, .ui.basic.buttons .button{
+    background: var(--sb-landing-page-btn) !important;
+    color: var(--sb-landing-page-cards-desc) !important;
+  }
+ }
+ .sb-btn-secondary, .sb-btn-primary{
+   color: var(--sb-btn-default-color);
+ }
