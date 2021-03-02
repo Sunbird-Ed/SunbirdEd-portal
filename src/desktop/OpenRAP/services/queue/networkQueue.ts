@@ -81,13 +81,13 @@ export class NetworkQueue extends Queue {
         try {
             let query = {
                 selector: {
-                    type: QUEUE_TYPE.Network,
-                    subType: {}
+                    type: QUEUE_TYPE.Network
                 },
                 limit: this.concurrency
             };
             if (!_.isEmpty(this.excludeSubType)) {
-                query.selector['subType']['$nin'] = this.excludeSubType
+                query.selector['subType'] = {};
+                query.selector['subType']['$nin'] = this.excludeSubType;
             }
             this.queueList = await this.getByQuery(query);
 
@@ -101,6 +101,7 @@ export class NetworkQueue extends Queue {
             this.execute();
             this.queueInProgress = false;
         } catch (error) {
+            this.queueInProgress = false;
             logger.error(`DB error while fetching network queue data = ${error}`);
             this.logTelemetryError(error, "DB_ERROR");
         }

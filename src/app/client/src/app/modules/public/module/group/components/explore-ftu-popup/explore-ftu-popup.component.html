@@ -6,7 +6,7 @@
 
     <!-- content comes from CC -->
     <h4 class="sb-group-container__title">{{ resourceService?.frmelmnts?.lbl?.groupWelcomeTitle }}</h4>
-    <img src="./assets/images/groups.png" class="sb-group-container__img" />
+    <img src="./assets/images/groups.png" class="sb-group-container__img" alt="{{ resourceService?.frmelmnts?.lbl?.groupWelcomeTitle }}" />
     <p class="sb-group-container__description">{{ resourceService.frmelmnts.lbl.groupWelcomeMsg }}</p>
     <button type="button" class="sb-btn sb-btn-sm sb-btn-primary text-uppercase w-100" (click)="userVisited();addTelemetry('ftu-get-started')">{{ resourceService.frmelmnts.lbl.getStarted }}<span
       class='arrow-icon pull-right'><i class="icon-svg icon-svg--xxs icon-back">

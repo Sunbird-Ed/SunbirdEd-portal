@@ -1,0 +1,16 @@
+[Desktop Entry]
+Name=$APP_NAME
+Version=$APP_VERSION
+GenericName=$GENERIC_NAME
+X-GNOME-FullName=$APP_NAME
+Comment=Browse the app
+Encoding=UTF-8
+Type=Application
+Icon=safeicon
+Terminal=false
+Path=$APP_PATH
+Exec=$EXEC_PATH %U
+TryExec=$EXEC_PATH
+StartupNotify=false
+Categories=Network;Browser;P2P;
+MimeType=x-scheme-handler/safe;x-scheme-handler/safe-auth;

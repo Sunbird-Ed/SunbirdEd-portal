@@ -185,8 +185,14 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     if (!filters.channel) {
       filters.channel = this.hashTagId;
     }
+    const _filters = _.get(this.allTabData, 'search.filters');
     filters.primaryCategory = (_.get(filters, 'primaryCategory.length') && filters.primaryCategory) || _.get(this.allTabData, 'search.filters.primaryCategory');
     filters.mimeType = _.get(mimeType, 'values');
+   _.forEach(_filters, (el, key) => {
+      if(key !== 'primaryCategory' && key !== 'mimeType'){
+        filters[key] = el;
+      }
+   });
 
     // Replacing cbse/ncert value with cbse
     if (_.toLower(_.get(filters, 'board[0]')) === 'cbse/ncert' || _.toLower(_.get(filters, 'board')) === 'cbse/ncert') {
@@ -252,6 +258,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         this.contentList = data.result.content || [];
         this.addHoverData();
         this.totalCount = data.result.count;
+        this.setNoResultMessage();
       }, err => {
         this.showLoader = false;
         this.contentList = [];
