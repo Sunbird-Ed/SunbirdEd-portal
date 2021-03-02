@@ -1,5 +1,8 @@
 :host::ng-deep {
   .sbt-class-bar {
+    label {
+      color:var(--sbt-class-bar-label-text);
+    }
     .sb-slider-pills-container {
       overflow-x: inherit !important;
 
@@ -127,7 +130,9 @@
 
 }
 
-
+.filter-pref-text {
+  color:var(--filter-pref-text);
+}
 .sbt-filter {
   // margin-bottom: calculateRem(16px);
   z-index: 9;

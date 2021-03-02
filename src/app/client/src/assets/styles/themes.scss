@@ -109,7 +109,8 @@ html[data-theme='Default'] {
   --bell-icon: var(--primary-color);
   --sbt-language-dropdown-bg: var(--white);
   --sb-footer-bg: var(--primary-color);
-
+  --filter-pref-text:var(--gray-800);
+  --sbt-class-bar-label-text:var(--gray-800);
   //landing page
   --sb-landing-page-bg: var(--white);
   --sb-landing-page-segments: var(--sb-landing-page-bg);
@@ -130,6 +131,74 @@ html[data-theme='Default'] {
   --sb-pagination-item-bg: var(--sb-pagination-bg);
   --sb-pagination-item: var(--gray-400);
   --sb-pagination-item-active: var(--sb-pagination-item);
+
+  //cc
+  --cc-accordion-panel-br: var(--primary-300);
+--cc-accordion-panel-bg:var(--gray-0);
+--cc-accordion-panel-header-bg: var(--white);
+--cc-accordion-panel-header-br:var(--primary-300);
+--cc-accordion-panel-header-title: var(--primary-400);
+--cc-progress-circle-stroke:var(--secondary-200);
+--cc-sbcard-meta1:var(--rc-979797);
+--cc-sbcard-metaC-data:var(--rc-FAFAFA);
+--cc-sbcard-course-curi-title:var(--white);
+--cc-sbcard-img-label:#284C3F;
+--cc-sbcard-img-label-bg:#B3EBD7;
+--cc-sbcard-img-badge-bg:var(--black);
+--cc-sbcard-img-badge-text:var(--white);
+--cc-sblabel-badge-br:var(--secondary-color);
+--cc-sblabel-badge-text:var(--secondary-color);
+--sb-pill-bg:var(--white);
+--cc-pill-border:var(--secondary-color);
+--cc-pill-text:var(--secondary-color);
+--cc-pill-bg-hover:var(--secondary-color);
+--cc-pill-text-hover:var(--white);
+--cc-grade-pill-container-bg:var(--gray-0);
+--cc-grade-pill-text:var(--primary-color);
+--cc-grade-pill-bg-hover:var(--primary-color);
+--cc-grade-pill-text-hover:var(--white);
+--cc-grade-pill-svg-fill:var(--white);
+--sbt-pill-hs: 212,100%;
+--cd-sbcard-data2-bg:hsl(var(--sbt-pill-hs), 90%);
+--cd-sbcard-data2-bg-active:hsl(var(--sbt-pill-hs), 50%); //#0076FE
+--cd-sbcard-data1-2-text:var(--primary-color);
+
+  --cc-sbcard-bg: #fff !important;
+  --cc-sbcard-img-container-bg: var(--gray-100);
+  --cc-sbcard-title:inherit;
+  --cc-sbcard-meta-text: var(--gray-800);
+  --cc-sbcard-dot-divider: var(--gray-200);
+  --cc-sbcard-moreinfo-bg: #fff !important;
+  --cc-sbcard-moreinfo-bordertop: #cacbce;
+  --cc-sbcard-meta2-text: var(--gray-800);
+  --cc-sbcard-org-text: var(--gray-200);
+  --cc-sbcard-type-bg: var(--gray-200);
+  --cc-sbcard-type-text: var(--white);
+  --cc-sbcard-rv-img-container-bg: var(--gray-100);
+  --cc-sbcard-selected-border: var(--primary-color);
+  --cc-sbcard-offline-bg: var(--tertiary-color);
+  --cc-sbcard-offline-img-text: var(--white);
+  --cc-sbcard-card__progressbar-bg: var(--gray-100);
+  --cc-sbcard-card__progressbar-span-bg: var(--secondary-200);
+  --cc-sbcard-hover-text: var(--white);
+  --cc-sbcard-hover-bg: var(--primary-color);
+  --cc-sbcard-org-text: var(--balck);
+  --cc-sbcard-selected-border: var(--primary-color);
+  --cd-sbcard-data1-bg: #E0F5EA;
+  --sbt-pill-hs: 212, 100%;
+  --cd-sbcard-data2-bg: hsl(var(--sbt-pill-hs), 90%);
+  --cd-sbcard-data2-bg-active: hsl(var(--sbt-pill-hs), 50%); //#0076FE
+  --cc-sbcard-moreinfo-bg: var(--white);
+  --cc-sbcard-type-bg: var(--black);
+  --cc-sbcard-type-text: var(--white);
+
+  //black header bar
+  --brand-header-tail-bg:#000;
+  --brand-header-tail-text:#fff;
+  --primary-menu-link-active:#ff714a;
+
+  //joy theme
+  --themeflower-bg:#ffd92a;
 }
 
 html[data-theme='Default'][layout='joy'] {
@@ -1250,11 +1319,43 @@ html[data-theme=Darkmode] {
   --sb-language-dropdown-item-active: var(--gray);
   --sb-search-auto-select: var(--black);
   --sb-footer-bg: var(--gray);
-
+  --filter-pref-text:var(--gray-100);
+  --sbt-class-bar-label-text:var(--gray-100);
   --sbt-green-bg: #222;
   --sbt-theme-green-selectbox: #fff;
   --sb-search-input-text: #fff;
   --sb-search-input-bg: #222;
+
+  //cc
+  --cc-accordion-panel-br: var(--primary-300);
+--cc-accordion-panel-bg:var(--gray-0);
+--cc-accordion-panel-header-bg: var(--white);
+--cc-accordion-panel-header-br:var(--primary-300);
+--cc-accordion-panel-header-title: var(--primary-400);
+--cc-progress-circle-stroke:var(--secondary-200);
+--cc-sbcard-meta1:var(--rc-979797);
+--cc-sbcard-metaC-data:var(--rc-FAFAFA);
+--cc-sbcard-course-curi-title:var(--white);
+--cc-sbcard-img-label:#284C3F;
+--cc-sbcard-img-label-bg:#B3EBD7;
+--cc-sbcard-img-badge-bg:var(--black);
+--cc-sbcard-img-badge-text:var(--white);
+--cc-sblabel-badge-br:var(--secondary-color);
+--cc-sblabel-badge-text:var(--secondary-color);
+--sb-pill-bg:var(--white);
+--cc-pill-border:var(--secondary-color);
+--cc-pill-text:var(--secondary-color);
+--cc-pill-bg-hover:var(--secondary-color);
+--cc-pill-text-hover:var(--white);
+--cc-grade-pill-container-bg:var(--gray-0);
+--cc-grade-pill-text:var(--primary-color);
+--cc-grade-pill-bg-hover:var(--primary-color);
+--cc-grade-pill-text-hover:var(--white);
+--cc-grade-pill-svg-fill:var(--white);
+--sbt-pill-hs: 212,100%;
+--cd-sbcard-data2-bg:hsl(var(--sbt-pill-hs), 90%);
+--cd-sbcard-data2-bg-active:hsl(var(--sbt-pill-hs), 50%); //#0076FE
+--cd-sbcard-data1-2-text:var(--primary-color);
 
   --cc-sbcard-bg: #222 !important;
   --cc-sbcard-img-container-bg: var(--gray-100);
@@ -1266,7 +1367,7 @@ html[data-theme=Darkmode] {
   --cc-sbcard-meta2-text: var(--gray-800);
   --cc-sbcard-org-text: var(--gray-200);
   --cc-sbcard-type-bg: var(--gray-200);
-  --cc-sbcard-type-text: var(white);
+  --cc-sbcard-type-text: var(--white);
   --cc-sbcard-rv-img-container-bg: var(--gray-100);
   --cc-sbcard-selected-border: var(--primary-color);
   --cc-sbcard-offline-bg: var(--tertiary-color);
@@ -1275,6 +1376,15 @@ html[data-theme=Darkmode] {
   --cc-sbcard-card__progressbar-span-bg: var(--secondary-200);
   --cc-sbcard-hover-text: var(--white);
   --cc-sbcard-hover-bg: var(--primary-color);
+  --cc-sbcard-org-text: var(--balck);
+  --cc-sbcard-selected-border: var(--primary-color);
+  --cd-sbcard-data1-bg: #444;
+  --sbt-pill-hs: 212, 100%;
+  --cd-sbcard-data2-bg: #444;
+  --cd-sbcard-data2-bg-active: #ffeb2a; 
+  --cc-sbcard-moreinfo-bg: var(--white);
+  --cc-sbcard-type-bg: var(--black);
+  --cc-sbcard-type-text: var(--white);
 
   //landing page
   --sb-landing-page-bg: var(--black);
@@ -1291,6 +1401,13 @@ html[data-theme=Darkmode] {
    --sb-profile-bg-c-4: #fff8db;
    --sb-profile-page-basic-label-bg: #333333;
 
+   //black header bar
+   --brand-header-tail-bg:#000;
+   --brand-header-tail-text:#fff;
+   --primary-menu-link-active:#ff714a;
+
+   // joy theme
+   --themeflower-bg:#1a1a1a;
    //pagination
   --sb-pagination-bg: #333333;
   --sb-pagination-item-bg: var(--sb-pagination-bg);
