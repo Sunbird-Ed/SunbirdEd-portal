@@ -17,7 +17,7 @@
   <!--/Header-->
 
    <!--Content-->
-  <div class="sb-modal-content" *ngIf="showMainLoader">
+  <div class="sb-modal-content o-y-visible" *ngIf="showMainLoader">
     <div class="ui grid">
       <div class="twelve wide column">
         <app-loader></app-loader>
@@ -39,46 +39,6 @@
           valueField="role" name="role" placeholder="{{resourceService?.frmelmnts?.btn?.selrole | translate}}" #allroles>
           <sui-select-option *ngFor="let role of allroles.filteredOptions" [value]="role"></sui-select-option>
         </sui-multi-select>
-      </div>
-
-      <div class="field">
-        <label>{{resourceService.frmelmnts?.lbl?.district | translate}}</label>
-      </div>
-      <div class="field">
-        <sui-select [isSearchable]="true" class="selection" (selectedOptionChange)="enableSubmitBtn = true;" formControlName="district" [options]="allDistricts" labelField="name"
-          valueField="code" name="district" placeholder="{{resourceService?.frmelmnts?.lbl?.selectDistrict | translate}}" #districtDiv>
-          <sui-select-option *ngFor="let district of districtDiv.filteredOptions | slice:0:100" [value]="district"></sui-select-option>
-        </sui-select>
-      </div>
-
-      <div class="field">
-        <label>{{resourceService.frmelmnts?.lbl?.block | translate}}</label>
-      </div>
-      <div class="field">
-        <div class="ui segment" *ngIf="blockLoader">
-          <div class="ui active inverted dimmer">
-            <div class="ui mini text loader">{{resourceService.frmelmnts?.lbl?.fetchingBlocks | translate}}</div>
-          </div>
-        </div>
-        <sui-select *ngIf="!blockLoader" [isSearchable]="true" class="selection" (selectedOptionChange)="enableSubmitBtn = true;" formControlName="block" [options]="allBlocks" labelField="name"
-          valueField="code" name="block" placeholder="{{resourceService.frmelmnts?.lbl?.selectBlock | translate}}" #blockDiv>
-          <sui-select-option *ngFor="let block of blockDiv.filteredOptions | slice:0:100" [value]="block"></sui-select-option>
-        </sui-select>
-      </div>
-
-      <div class="field">
-        <label>{{resourceService.frmelmnts?.lbl?.school | translate}}</label>
-      </div>
-      <div class="field">
-        <div class="ui segment" *ngIf="schoolLoader">
-          <div class="ui active inverted dimmer">
-            <div class="ui mini text loader">{{resourceService.frmelmnts?.lbl?.fetchingSchools | translate}}</div>
-          </div>
-        </div>
-        <sui-select *ngIf="!schoolLoader" [isSearchable]="true" class="selection" (selectedOptionChange)="enableSubmitBtn = true;" formControlName="school" [options]="allSchools"
-          labelField="orgName" valueField="identifier" name="school" placeholder="{{resourceService.frmelmnts?.lbl?.selectSchool | translate}}" #schoolDiv>
-          <sui-select-option *ngFor="let school of schoolDiv.filteredOptions | slice:0:100" [value]="school"></sui-select-option>
-        </sui-select>
       </div>
     </form>
   </div>

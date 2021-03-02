@@ -1,5 +1,5 @@
 <div *ngIf="showFooter">
-  <footer class="footer" #footerFix *ngIf="!layoutConfiguration" [ngClass]="{'player-fullscreen-footer': isFullScreenView}">
+  <footer class="footer old-footer" #footerFix *ngIf="!layoutConfiguration" [ngClass]="{'player-fullscreen-footer': isFullScreenView}">
     <div  class="ui container">
       <div class="ui grid stackable">
         <div class="four wide column footerMenu mr-auto">
@@ -59,7 +59,11 @@
           </div>
         </div>
         <div class="four wide column contantDetails">
-          <label class="d-block mb-16">
+          <label class="d-flex flex-w-wrap mb-16 flex-jc-center">
+            <ul class="d-flex flex-ai-center fsmall sb-color-white mb-0 mobile only pl-0">
+              <li class="mb-0"><a href="/screenreaderaccess.html" class="cursor-pointer sb-color-white">Screen Reader Access</a></li><li class="mx-4 mb-0">|</li>
+              <li class="mb-0"><a href="/sitemap.html" class="cursor-pointer sb-color-white">Sitemap</a></li><li class="mx-4 mb-0">|</li>
+            </ul>
             <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')" href="/term-of-use.html">
               {{resourceService.frmelmnts?.lnk?.footerTnC}}
             </a>
@@ -80,7 +84,7 @@
       <div class="sbt-container">
         <img src="/assets/images/footer-line.svg" class="sbt-skyline-path" alt="line path">
         <div class="sbt-footer-shade">
-          <img src="/assets/images/footer-flower.svg" alt="shade">
+          <img src="/assets/images/footer-flower.svg" alt="flower footer shade image">
         </div>
         <div class="ui grid stackable px-72">
           <div class="six wide column contantDetails px-0">
@@ -120,7 +124,11 @@
               </ul> -->
             </div>
             <div>
-            <label class="d-block footer-terms-info text-left font-weight-normal">
+            <label class="d-flex footer-terms-info text-left font-weight-normal flex-w-wrap">
+              <ul class="d-flex flex-ai-center fsmall mb-0 mobile only pl-0">
+                <li class="mb-0"><a href="/screenreaderaccess.html" class="cursor-pointer">Screen Reader Access</a></li><li class="mx-4 mb-0">|</li>
+                <li class="mb-0"><a href="/sitemap.html" class="cursor-pointer">Sitemap</a></li><li class="mx-4 mb-0">|</li>
+              </ul>
               <a *ngIf="!isDesktopApp" appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"
                 href="/term-of-use.html">{{resourceService.frmelmnts?.lnk?.footerTnC}}</a>
               <a *ngIf="isDesktopApp" appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"

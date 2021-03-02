@@ -10,6 +10,8 @@ let envVariables = {
   sunbird_instance_name: env.sunbird_instance || 'Sunbird',
   DEFAULT_CHANNEL: env.sunbird_default_channel,
   PORTAL_API_WHITELIST_CHECK: env.sunbird_enable_api_whitelist || 'true',
+  PORTAL_SESSION_SECRET_KEY: (env.sunbird_portal_session_secret && env.sunbird_portal_session_secret !== '') 
+  ? env.sunbird_portal_session_secret.split(',') : '',
 
   // discussion forum
   discussions_middleware: env.discussions_middleware || 'http://discussionsmw-service:3002',
@@ -164,7 +166,7 @@ let envVariables = {
   sunbird_portal_offline_app_version: env.sunbird_portal_offline_app_version,
   sunbird_portal_offline_app_download_url: env.sunbird_portal_offline_app_download_url,
   DESKTOP_APP_STORAGE_URL: env.desktop_app_storage_url,
-  DESKTOP_APP_ID: env.desktop_app_id || "staging.sunbird.desktop",
+  DESKTOP_APP_ID: process.env.sunbird_environment + '.' + process.env.sunbird_instance + '.desktop',
 
 
   // CDN Configuration

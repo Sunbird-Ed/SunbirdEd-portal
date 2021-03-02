@@ -152,7 +152,7 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       return o.name === (selectedMediaType || 'all');
     });
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
-    filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters', 'selectedTab', 'mediaType']);
+    filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters', 'selectedTab', 'mediaType', 'utm_source']);
     filters.primaryCategory = filters.primaryCategory || _.get(this.allTabData, 'search.filters.primaryCategory');
     filters.mimeType = _.get(mimeType, 'values');
 
