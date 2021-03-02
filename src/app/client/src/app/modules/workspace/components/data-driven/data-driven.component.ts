@@ -6,7 +6,7 @@ import {
 } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EditorService } from './../../services';
-import { SearchService, UserService, FrameworkService, FormService, PublicDataService, ContentService } from '@sunbird/core';
+import { SearchService, UserService, FrameworkService, FormService, ContentService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
 import { DefaultTemplateComponent } from '../content-creation-default-template/content-creation-default-template.component';
@@ -137,7 +137,6 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     public navigationHelperService: NavigationHelperService,
     public browserCacheTtlService: BrowserCacheTtlService,
     public telemetryService: TelemetryService,
-    public publicDataService: PublicDataService,
     public contentService: ContentService
   ) {
     super(searchService, workSpaceService, userService);
@@ -421,7 +420,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     this.primaryCategory = cardData.primaryCategory;
     let orgFWType, targetFWType;
     this.workSpaceService.getCategoryDefinition('Collection', cardData.primaryCategory, this.userService.channel)
-    .subscribe(categoryDefinitionData => {
+    .subscribe((categoryDefinitionData) => {
       if (_.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata')) {
         // tslint:disable-next-line:max-line-length
         orgFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.orgFWType');

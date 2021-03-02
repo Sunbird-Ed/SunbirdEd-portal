@@ -360,6 +360,7 @@ describe('DataDrivenComponent', () => {
     componentParent.ngOnInit();
     expect(componentParent.setFrameworkData).toHaveBeenCalledWith(mockFrameworkData.channelData);
     expect(componentParent.userChannelData).toBeDefined();
+    expect(componentParent.userChannelData).toEqual(mockFrameworkData.channelData);
   });
 
   it('should throw error if channel read api fails', () => {
