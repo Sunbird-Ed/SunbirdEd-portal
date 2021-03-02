@@ -21,7 +21,7 @@ import { FormBuilder } from '@angular/forms';
 import { configureTestSuite } from '@sunbird/test-util';
 import { ProfileService } from '@sunbird/profile';
 
-fdescribe('UserEditComponent', () => {
+describe('UserEditComponent', () => {
   let component: UserEditComponent;
   let fixture: ComponentFixture<UserEditComponent>;
   const resourceBundle = {
