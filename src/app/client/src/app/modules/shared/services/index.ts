@@ -14,3 +14,4 @@ export * from './recaptcha/recaptcha.service';
 export * from './layoutconfig/layout.service';
 export * from './on-demand-report/on-demand-report.service';
 export * from './connection-service/connection.service';
+export * from './schema/schema.service';
