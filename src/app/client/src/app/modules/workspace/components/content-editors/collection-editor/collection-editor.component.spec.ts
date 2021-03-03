@@ -4,7 +4,7 @@ import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing'
 import { CollectionEditorComponent } from './collection-editor.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TelemetryModule } from '@sunbird/telemetry';
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { NavigationHelperService, ResourceService, ConfigService, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
 import { EditorService } from '@sunbird/workspace';
 import { ContentService, UserService, LearnerService, CoreModule, TenantService, FrameworkService } from '@sunbird/core';
@@ -17,7 +17,7 @@ document.body.innerHTML = document.body.innerHTML +
   '<input id="collectionEditorURL" value="https://dev.sunbirded.org/collection-editor/index.html"'
   + ' type="hidden" />';
 
-const mockResourceService = { messages: { emsg: { m0004: '1000' } } };
+const mockResourceService = { messages: { emsg: { m0004: '1000', m0013: '1000' } } };
 const mockActivatedRoute = {
   snapshot: {
     params: {
@@ -51,7 +51,7 @@ describe('CollectionEditorComponent', () => {
       declarations: [CollectionEditorComponent],
       imports: [HttpClientTestingModule, CoreModule, TelemetryModule.forRoot()],
       providers: [
-        EditorService, UserService, ContentService,
+        EditorService, UserService, ContentService, TelemetryService,
         ResourceService, ToasterService, ConfigService, LearnerService,
         BrowserCacheTtlService, WorkSpaceService,
         {provide: NavigationHelperService, useClass: NavigationHelperServiceStub},
@@ -119,6 +119,16 @@ describe('CollectionEditorComponent', () => {
       expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0004);
     }));
 
+    it('should throw error if dont have permission to edit this content',
+  inject([EditorService, UserService, Router, ToasterService, ResourceService, TenantService],
+    (editorService, userService, router, toasterService, resourceService, tenantService) => {
+      tenantService._tenantData$.next({ err: null, tenantData: mockRes.tenantMockData });
+      spyOn(editorService, 'getContent').and.returnValue(throwError('NO_PERMISSION'));
+      spyOn(toasterService, 'error').and.callFake(() => {});
+      component.ngOnInit();
+      expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0013);
+    }));
+
   it('should navigate to draft', inject([Router, NavigationHelperService], (router, navigationHelperService) => () => {
     spyOn(navigationHelperService, 'navigateToWorkSpace').and.callFake(() => { });
     component.closeModal();
@@ -132,9 +142,35 @@ describe('CollectionEditorComponent', () => {
     expect(component.retireLock).toHaveBeenCalled();
   }));
 
+  it('#retireLock() should call #redirectToWorkSpace() method if success', () => {
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    spyOn(workSpaceService, 'retireLock').and.returnValue(observableOf({}));
+    spyOn(component, 'redirectToWorkSpace').and.callThrough();
+    component['routeParams'] = {contentId: '12345'};
+    component.retireLock();
+    expect(component.redirectToWorkSpace).toHaveBeenCalled();
+  });
+
+  it('#retireLock() should call #redirectToWorkSpace() method if failed', () => {
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    spyOn(workSpaceService, 'retireLock').and.returnValue(throwError({}));
+    spyOn(component, 'redirectToWorkSpace').and.callThrough();
+    component['routeParams'] = {contentId: '12345'};
+    component.retireLock();
+    expect(component.redirectToWorkSpace).toHaveBeenCalled();
+  });
+
   it('should set window config nodeDisplayCriteria to CourseUnit if the content type is CurriculumCourse', () => {
     component['routeParams'] = {type: 'curriculumcourse'};
     const windowConfigData = { contentType: ['CourseUnit'] };
+    spyOn<any>(component, 'updateModeAndStatus').and.stub();
+    component['setWindowConfig']();
+    expect(window.config.nodeDisplayCriteria).toEqual(windowConfigData);
+  });
+
+  it('should set window config nodeDisplayCriteria to textbook if the content type is textbook', () => {
+    component['routeParams'] = {type: 'textbook'};
+    const windowConfigData = { contentType: ['TextBookUnit'] };
     spyOn<any>(component, 'updateModeAndStatus').and.stub();
     component['setWindowConfig']();
     expect(window.config.nodeDisplayCriteria).toEqual(windowConfigData);
@@ -147,4 +183,40 @@ describe('CollectionEditorComponent', () => {
     component['setWindowContext']();
     expect(window.context.board).toEqual(['CBSE']);
   });
+
+  it('#lockContent() should navigate with lock data',  () => {
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    const router = TestBed.get(Router);
+    spyOn(workSpaceService, 'lockContent').and.returnValue(observableOf({result: 'test'}));
+    component['routeParams'] = {state: 'collaborating-on'};
+    component.lockContent().subscribe(() => {
+      expect(component.queryParams).toBeDefined();
+      expect(router.navigate).toHaveBeenCalled();
+    });
+  });
+
+  it('Should generate interact telemetry event', () => {
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact').and.callThrough();
+    component.collectionDetails = mockRes.successResult.result.content;
+    component['generateInteractEvent']({});
+    expect(telemetryService.interact).toHaveBeenCalled();
+  });
+
+  it('#getObjectTypes() Should return valid object type', () => {
+    component['routeParams'] = {type: 'Course'};
+    let objType = component['getObjectTypes']();
+    expect(objType[0].type).toBe('Course');
+    component['routeParams'] = {type: 'Collection'};
+    objType = component['getObjectTypes']();
+    expect(objType[0].type).toBe('Collection');
+    component['routeParams'] = {type: 'LessonPlan'};
+    objType = component['getObjectTypes']();
+    expect(objType[0].type).toBe('LessonPlan');
+    component['routeParams'] = {type: 'CurriculumCourse'};
+    objType = component['getObjectTypes']();
+    expect(objType[0].type).toBe('CurriculumCourse');
+  });
+
 });
+
