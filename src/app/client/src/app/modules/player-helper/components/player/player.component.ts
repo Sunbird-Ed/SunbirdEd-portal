@@ -316,6 +316,13 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.contentUtilsServiceService.contentShareEvent.emit('open');
       this.mobileViewDisplay = 'none';
     }
+    if (_.get(event, 'edata.type') === 'PRINT') {
+      let windowFrame = window.document.querySelector('pdf-viewer iframe');
+      if (windowFrame) {
+        windowFrame['contentWindow'].print()
+      }
+      this.mobileViewDisplay = 'none';
+    }
   }
 
   generateContentReadEvent(event: any, newPlayerEvent?) {
