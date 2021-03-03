@@ -567,10 +567,10 @@
   dependencies:
     tslib "^2.0.0"
 
-"@project-sunbird/chatbot-client-v8@2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/chatbot-client-v8/-/chatbot-client-v8-2.0.1.tgz#f0d3f9b721693c9d8e99744259af1f6f215e30ee"
-  integrity sha512-TstcviQAj9Kgn54TZMCBNJBHplIg4yiAv2KjA29zaS7J5NZFi293zhD8gEfUZ4d0PL0siaK5SEdQtVxc2j9itw==
+"@project-sunbird/chatbot-client-v8@2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/chatbot-client-v8/-/chatbot-client-v8-2.0.2.tgz#7309a67ed509c0b250e00443ffa858b7ad4ffa65"
+  integrity sha512-+5zXnnj9gytNv5PKgS0Y5LD2YzCjs8jVah+ptjezciw3uaTLAqVwLFuroUpATfsCz1Wgw8E/+gnSgFnwY+qrLQ==
   dependencies:
     tslib "^1.9.0"
 
@@ -612,12 +612,12 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.6.tgz#15a88937fb643d5eb33a81c8d28ece00b56d5aa0"
   integrity sha512-rK87rHdagadIS7UrWju7HDolIfWlO5CbK+tIJrEApO+QPMi+k8KuWoLc8MxEprrsJxUt6r44O4uGiO0hgI5plA==
 
-"@project-sunbird/sunbird-epub-player-v8@3.7.6":
-  version "3.7.6"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v8/-/sunbird-epub-player-v8-3.7.6.tgz#3417d32a718d4838a25b34fa5697e1e3bc006f90"
-  integrity sha512-praeoBvTf/0uH1DAPgvw8keo8nyohgH9PSfMHzrExbO/MfAg9EGQN18ZXHQ6vWgopyYde55Rh8YZQXpfop+/eQ==
+"@project-sunbird/sunbird-epub-player-v8@3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v8/-/sunbird-epub-player-v8-3.8.0.tgz#20f1fa41be53ffe7198f0c82f76f9a30f1c05b15"
+  integrity sha512-NLaQSzbqZmkQ4yKeLNeY9DNLSh9Bv/i1LRnwhxnBCVKBP7685LmMB2/wtjy938tZ+SeymgGCL7wz6jkdFQZ9rw==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v8" "3.7.1"
+    "@project-sunbird/sunbird-player-sdk-v8" "3.8.0"
     tslib "^1.9.0"
 
 "@project-sunbird/sunbird-pdf-player-v8@3.6.1":
@@ -635,10 +635,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-player-sdk-v8@3.7.1":
-  version "3.7.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v8/-/sunbird-player-sdk-v8-3.7.1.tgz#6d10410040d3cfcfdb27dc0f45613c1f947fb44d"
-  integrity sha512-5Zoa9GPFlmtahb+GFaalmoOmvIlMoy7BIimEHx78njxVhciear/rFDgdRzbDpNTA9oNjnR6VFXZx/kcfF96McA==
+"@project-sunbird/sunbird-player-sdk-v8@3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v8/-/sunbird-player-sdk-v8-3.8.0.tgz#9029bdc008f75b956469733572079c9050149ca7"
+  integrity sha512-QKwmCfJBNYp13CcZ8xOnRMc22TGZmHWNyJNJR5k272ptYvWckxOb6cje+OEDOUKiqfRHA411ET8k76mZabdGgA==
   dependencies:
     tslib "^1.9.0"
 
@@ -649,10 +649,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-question-editor@0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-question-editor/-/sunbird-question-editor-0.0.6.tgz#061cd1e67bb15c92f4942e569ed12095f729a92c"
-  integrity sha512-N244bJYVOPkQooCo7FZRkbRY4L8r2KZ5XAkFhhiyd6fvh9DyB/W6iRIDJvovrHd9M5vu5fOL9reTojPPdYikqg==
+"@project-sunbird/sunbird-question-editor@0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-question-editor/-/sunbird-question-editor-0.0.9.tgz#49f0c79397f35b993ab6f5ed6d05499db8fde91c"
+  integrity sha512-QZP/JBZoLAW7cj1MXDtI/vi2ovd1j/9ZrUNXI3wv4VYXC/JlG5ceHsBGmuxaiLQHkBbc/aLUM6BwlwULuiqP8w==
   dependencies:
     tslib "^1.9.0"
 
