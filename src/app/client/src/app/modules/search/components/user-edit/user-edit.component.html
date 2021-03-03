@@ -17,14 +17,14 @@
   <!--/Header-->
 
    <!--Content-->
-  <div class="sb-modal-content o-y-visible" *ngIf="showMainLoader">
+  <div class="sb-modal-content" *ngIf="showMainLoader">
     <div class="ui grid">
       <div class="twelve wide column">
         <app-loader></app-loader>
       </div>
     </div>
   </div>
-  <div class="sb-modal-content" *ngIf="!showMainLoader">
+  <div class="sb-modal-content o-y-visible" *ngIf="!showMainLoader">
     <div class="ui grid">
       <div class="ten wide column mb-30">
         <span class="ui header">{{resourceService.frmelmnts?.lbl?.editUserDetails | translate}}</span>
