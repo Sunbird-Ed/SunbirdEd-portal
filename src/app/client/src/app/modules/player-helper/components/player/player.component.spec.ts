@@ -459,12 +459,15 @@ describe('PlayerComponent', () => {
   fit('should handle event for print' , () => {
      component.playerConfig = playerConfig;
      const url = component.playerConfig['metadata']['streamingUrl'];
-     const frames = [{
-       print: () => {}
-     }]
-     spyOnProperty(window, 'frames').and.returnValue(frames);
+     const mockFrameValue = {
+       contentWindow: {
+         print: () => {}
+       }
+     }
+     spyOn(mockFrameValue.contentWindow, 'print').and.stub();
+     spyOn(window.document , 'querySelector').and.returnValue(mockFrameValue);
      component.eventHandler(printEvent);
-     expect(window.frames[0].print()).toHaveBeenCalled();
+     expect(mockFrameValue.contentWindow.print).toHaveBeenCalled();
      expect(component.mobileViewDisplay).toBe('none');
   })
 });
