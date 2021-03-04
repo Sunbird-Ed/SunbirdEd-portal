@@ -456,7 +456,7 @@ describe('PlayerComponent', () => {
     expect(component.loadOldPlayer).toHaveBeenCalled();
   });
 
-  fit('should handle event for print' , () => {
+  it('should handle event for print' , () => {
      component.playerConfig = playerConfig;
      const url = component.playerConfig['metadata']['streamingUrl'];
      const mockFrameValue = {
