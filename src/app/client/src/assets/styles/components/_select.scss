@@ -10,6 +10,7 @@
     }
     .menu {
       width: calc(100%);
+      background: var(--sb-dropdown-menu-bg);
     }
     > {
       .dropdown.icon,
@@ -49,7 +50,8 @@
     }
   }
   &.multiple {
-    border-color: var(--gray-200);
+    border-color: var(--sb-multiple-dropdown-border);
+    background: var( --sb-multiple-dropdown-bg) !important;
     label {
       font-size: calculateRem(12px);
       margin: 0 calculateRem(4px) calculateRem(8px) calculateRem(4px);

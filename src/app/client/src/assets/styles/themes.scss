@@ -134,6 +134,25 @@ html[data-theme='Default'] {
   --sb-pagination-item: var(--gray-400);
   --sb-pagination-item-active: var(--sb-pagination-item);
 
+  //filters
+  --sb-prominent-filter-bg: var(--white);
+  --sb-prominent-filter-title: rgba(0,0,0,.87);
+  --sb-multiple-dropdown-border: var(--gray-200);
+  --sb-multiple-dropdown-border-hover: rgba(34,36,38,.35);
+  --sb-multiple-dropdown-bg: transparent;
+  --sb-prominent-filter-field-color: var(--rc-4a4a4a);
+  --sb-dropdown-menu-bg: var(--white);
+  --sb-dropdown-menu-item: var(--rc-4a4a4a);
+  --sb-drodown-selection-active: #96c8da;
+  --ui-seleted-label-bg: #e8e8e8;
+  --ui-seleted-label-bg-hover: #e0e0e0;
+  --state-medium-container-bg: var(--white);
+  --sb-class-bar-bg: var(--gray-0);
+  --sb-dropdown-menu-text: rgba(0,0,0,.8);
+  --ui-dropdown-menu-selected-item-bg: rgba(0,0,0,.03);
+  --ui-dropdown-menu-selected-item: rgba(0,0,0,.95);
+  --sb-filter-selected-dropdown-hover: var(--primary-color);
+
   //cc
   --cc-accordion-panel-br: var(--primary-300);
   --cc-accordion-panel-bg: var(--gray-0);
@@ -1493,6 +1512,25 @@ html[data-theme=Darkmode] {
   --sb-pagination-item-bg: var(--sb-pagination-bg);
   --sb-pagination-item: var(--white);
   --sb-pagination-item-active: var(--gray-400);
+
+  //filters
+  --sb-prominent-filter-bg: #444;
+  --sb-prominent-filter-title: var(--white);
+  --sb-multiple-dropdown-border: var(--gray-100);
+  --sb-multiple-dropdown-border-hover: var(--gray-200);
+  --sb-multiple-dropdown-bg: #222;
+  --sb-prominent-filter-field-color: var(--white);
+  --sb-dropdown-menu-bg: var(--sb-multiple-dropdown-bg);
+  --sb-dropdown-menu-item: var(--white);
+  --sb-drodown-selection-active: var(--primary-300);
+  --ui-seleted-label-bg: #222;
+  --ui-seleted-label-bg-hover: var(--black);
+  --state-medium-container-bg: #444;
+  --sb-class-bar-bg: #333;
+  --sb-dropdown-menu-text: var(--white);
+  --ui-dropdown-menu-selected-item-bg: #444;
+  --ui-dropdown-menu-selected-item: var(--white);
+  --sb-filter-selected-dropdown-hover: var(--black);
 
   // cc pills box
   --cc-pills-grid-item: var(--white);
