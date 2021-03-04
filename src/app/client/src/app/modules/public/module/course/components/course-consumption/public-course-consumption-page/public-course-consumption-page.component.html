@@ -45,6 +45,15 @@
             </div>
 
             <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4 certified-course">
+                <div *ngIf="isDesktopApp">
+                    <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="isConnected && (checkStatus('DOWNLOADED')) && showUpdate" (click)="updateCollection(courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.desktop?.updateTextbook}}</button>
+                    <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADED')" [disabled]="disableDelete" (click)="logTelemetry('confirm-delete-collection'); showDeleteModal = !showDeleteModal;">{{resourceService?.frmelmnts?.lbl?.desktop?.deleteBook}}</button>
+                    <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADED')" (click)="exportCollection(courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.saveToPenDrive}}</button>
+                    <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOAD')" (click)="isYoutubeContentPresent(courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.desktop?.downloadBook}}</button>
+                    <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADING')">{{resourceService?.frmelmnts?.lbl?.downloading}}</button>
+                    <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8 sb-btn-disabled" *ngIf="checkStatus('DOWNLOADED')">{{resourceService?.messages?.stmsg?.m0139}}</button>
+                    <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('PAUSED')">{{resourceService.frmelmnts?.lbl?.downloadingPaused}}</button>
+                  </div>
                 <div class="certified-course__btn" *ngIf="!enrolledCourse && !courseMentor">
                     <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
                         (click)="showJoinModal(true); logTelemetry('join-course', courseHierarchy);">{{generaliseLabelService?.frmelmnts?.btn?.enroll}}</button>

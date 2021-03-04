@@ -126,6 +126,36 @@ export default (app, proxyURL) => {
         }),
     );
 
+    // app.get(
+    //     "/getGeneralisedResourcesBundles/:lang/:fileName",
+    //     proxy(proxyURL, {
+    //         proxyReqPathResolver(req) {
+    //             return "/getGeneralisedResourcesBundles/:lang/:fileName";
+    //         },
+    //         proxyErrorHandler: function (err, res, next) {
+    //             logger.warn(`While getting generalised labels from online`, err);
+    //             next();
+    //         },
+    //         userResDecorator: function (proxyRes, proxyResData) {
+    //             return new Promise(function (resolve) {
+    //                 try {
+    //                     const formResp = JSON.parse(proxyResData.toString('utf8'));
+    //                     console.log(formResp);
+    //                     // Needs to update in resourcebundle dbData
+    //                 } catch (error) {
+    //                     logger.error(`Unable to parse or do DB update of generalised labels from online`, error)
+    //                 }
+    //                 resolve(proxyResData);
+    //             });
+    //         }
+    //     }),
+    //     (req, res) => {
+    //         logger.debug(`Received API call to read generalised labels`);
+    //         logger.debug(`ReqId = "${req.headers["X-msgid"]}": Check proxy`);
+    //         return resourcebundle.get(req, res);
+    //     }
+    // );
+
     const user = new User(manifest);
     app.get("/api/desktop/user/v1/read",
       user.read.bind(user),
