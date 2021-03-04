@@ -16,7 +16,7 @@ module.exports = function (app) {
     app.post(`${BASE_REPORT_URL}/forum/v2/create`, proxyUtils.verifyToken(), proxyObject());
     app.post(`${BASE_REPORT_URL}/forum/v2/remove`, proxyUtils.verifyToken(), proxyObject());
     app.post(`${BASE_REPORT_URL}/forum/v3/create`, proxyUtils.verifyToken(), proxyObject());
-
+    app.post(`${BASE_REPORT_URL}/forum/v3/category/:cid/privileges`, proxyUtils.verifyToken(), proxyObject());
     app.post(`${BASE_REPORT_URL}/forum/v3/group/membership`,proxyUtils.verifyToken(), proxyObject());
     app.post(`${BASE_REPORT_URL}/forum/v3/groups/users`, proxyUtils.verifyToken(), proxyObject());
 
