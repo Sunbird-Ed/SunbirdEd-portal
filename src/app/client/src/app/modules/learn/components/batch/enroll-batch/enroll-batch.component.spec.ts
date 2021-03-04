@@ -62,8 +62,11 @@ describe('EnrollBatchComponent', () => {
     navigate: (route) => { },
     url: 'http://localhost:3000/learn/course/do_2131140513216512001688/enroll/batch/01311408513794867224?autoEnroll=true',
   };
+  let originalTimeout;
   configureTestSuite();
   beforeEach(async(() => {
+    originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     TestBed.configureTestingModule({
       declarations: [EnrollBatchComponent],
       schemas: [NO_ERRORS_SCHEMA],
@@ -85,6 +88,10 @@ describe('EnrollBatchComponent', () => {
     toasterService = TestBed.get(ToasterService);
     coursesService = TestBed.get(CoursesService);
     router = TestBed.get(Router);
+  });
+
+  afterEach(() => {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
   });
 
   it('should fetch details using the batch id', () => {

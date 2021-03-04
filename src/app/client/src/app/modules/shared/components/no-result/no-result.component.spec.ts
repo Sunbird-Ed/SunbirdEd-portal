@@ -6,6 +6,7 @@ import { of } from 'rxjs';
 import { configureTestSuite } from '@sunbird/test-util';
 
 const data = {'message': 'messages.stmsg.m0007 ', 'messageText': 'messages.stmsg.m0006'};
+let originalTimeout;
 describe('NoResultComponent', () => {
   let component: NoResultComponent;
   let fixture: ComponentFixture<NoResultComponent>;
@@ -18,6 +19,8 @@ describe('NoResultComponent', () => {
   };
   configureTestSuite();
   beforeEach(async(() => {
+    originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     TestBed.configureTestingModule({
       imports: [ SharedModule.forRoot() ],
       providers: [ ResourceService,
@@ -31,6 +34,11 @@ describe('NoResultComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
+
+  afterEach(() => {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+  });
+
   it('should take input for showing the no result message  ', fakeAsync(() => {
      component.data = data;
      component.message = data.message;

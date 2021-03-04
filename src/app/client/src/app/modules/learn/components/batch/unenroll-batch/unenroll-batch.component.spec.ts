@@ -58,7 +58,10 @@ describe('UnEnrollBatchComponent', () => {
     }
   };
   configureTestSuite();
+  let originalTimeout;
   beforeEach(async(() => {
+    originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
     TestBed.configureTestingModule({
       declarations: [UnEnrollBatchComponent],
       schemas: [NO_ERRORS_SCHEMA],
@@ -79,6 +82,10 @@ describe('UnEnrollBatchComponent', () => {
     fixture.detectChanges();
     courseBatchService = TestBed.get(CourseBatchService);
     toasterService = TestBed.get(ToasterService);
+  });
+
+  afterEach(() => {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
   });
 
   it('should fetch batch details with batch Id', () => {
