@@ -152,6 +152,11 @@ html[data-theme='Default'] {
   --ui-dropdown-menu-selected-item-bg: rgba(0,0,0,.03);
   --ui-dropdown-menu-selected-item: rgba(0,0,0,.95);
   --sb-filter-selected-dropdown-hover: var(--primary-color);
+  //slick slide card
+  --sb-card-bg: var(--white);
+  --sb-card-border: 0.0625rem solid var(--rc-dedede);
+  --sb-card-text: var(--gray-400);
+  --sb-card-slick-arrows-bg: var(--white);
 
   //cc
   --cc-accordion-panel-br: var(--primary-300);
@@ -728,7 +733,7 @@ html[layout='joy'] {
     padding: calculateRem(16px);
     margin-bottom: calculateRem(24px);
     box-shadow: none;
-    background: var(--sbt-compt-bg);
+    background: var(--sbt-compt-bg) !important;
     padding-top: 0px;
   }
 
@@ -1426,8 +1431,8 @@ html[data-theme=Darkmode] {
 
   //cc
   --cc-accordion-panel-br: var(--primary-300);
-  --cc-accordion-panel-bg: var(--gray-0);
-  --cc-accordion-panel-header-bg: var(--white);
+  --cc-accordion-panel-bg: #222;
+  --cc-accordion-panel-header-bg: #333;
   --cc-accordion-panel-header-br: var(--primary-300);
   --cc-accordion-panel-header-title: var(--primary-400);
   --cc-progress-circle-stroke: var(--secondary-200);
@@ -1532,6 +1537,12 @@ html[data-theme=Darkmode] {
   --ui-dropdown-menu-selected-item: var(--white);
   --sb-filter-selected-dropdown-hover: var(--black);
 
+  //slick slide card
+  --sb-card-bg: #222;
+  --sb-card-border: 0.0625rem solid transparent;
+  --sb-card-text: var(--white);
+  --sb-card-slick-arrows-bg: #444;
+
   // cc pills box
   --cc-pills-grid-item: var(--white);
   --cc-pills-grid-item-hover: #f2f2f2;
@@ -1610,6 +1621,33 @@ html[data-theme=Darkmode] {
   .notification-bell {
     box-shadow: none;
   }
+  .cc-player__btn-back{
+    background: #222;
+  }
+  .back-btn-container.cc-player__btn-back{
+    background: #222 !important;
+  }
+  .cc-player__content-header{
+    background: #444;
+  }
+  .content-video__player__details{
+    background: #333 !important;
+  }
+  .content-metadeta{
+    background: #333 !important;
+  }
+  .ui.styled.accordion, .ui.styled.accordion .accordion {
+    background: #333 !important;
+  }
+  .sb-accordion-content.sb-bg-color-white {
+    background: #333 !important;
+  }
+  .sb-toc-credits {
+    .sbaccordion__panel-header,
+    .sbaccordion__panel-content {
+      background: #333 !important;
+    }
+  }
 }
 
 html[data-theme='Darkmode'][layout='joy'] {
@@ -1634,6 +1672,9 @@ html[data-theme='Darkmode'][layout='joy'] {
 
   .notification-bell {
     box-shadow: var(--sbt-box-shadow-6px);
+  }
+  .sbaccordion__panel-header .icon-svg, .help-page__content .panel-heading .icon-svg{
+    background: #222222;
   }
 }
 
