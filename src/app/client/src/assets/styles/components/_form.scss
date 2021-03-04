@@ -79,6 +79,8 @@ $sb-selection-line-height: calculateRem(18px);
     display: flex;
     align-items: center;
     flex-wrap: wrap;
+    background: var(--sb-dropdown-menu-bg);
+    color: var(--sb-dropdown-menu-text);
     .text {
       text-overflow: ellipsis;
       overflow: hidden;

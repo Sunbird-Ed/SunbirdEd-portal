@@ -892,7 +892,10 @@ app-landing-page {
 .sb-btn-primary {
   color: var(--sb-btn-default-color);
 }
-
+.sb-btn-outline-primary,
+.sb-btn-outline-secondary {
+background-color: var(--sb-btn-default-color);
+}
 
 /* header tail black bar */
 
@@ -1065,4 +1068,46 @@ app-landing-page {
       border-radius: 50%;
     }
   }
+}
+.ui.accordion .title:not(.ui){
+  color: var(--sb-prominent-filter-title);
+}
+.ui.selection.active.dropdown{
+  border-color: var(--sb-drodown-selection-active);
+  .menu{
+    border-color: var(--sb-drodown-selection-active);
+  }
+}
+.ui.selection.active.dropdown:hover .menu{
+  border-color: var(--sb-drodown-selection-active);
+}
+.ui.label{
+  background-color: var(--ui-seleted-label-bg);
+}
+a.ui.label:hover, a.ui.labels .label:hover{
+  background-color: var(--ui-seleted-label-bg-hover);
+}
+.sb-header-filter-bar{
+  .state-medium-container{
+    background: var(--state-medium-container-bg) !important;
+  }
+  .sb-class-bar{
+    background: var(--sb-class-bar-bg) !important;
+  }
+  .sb-global-filter-section{
+    background: var(--state-medium-container-bg) !important;
+  }
+}
+.sb-slider-pills-container .sb-medium-pills-container{
+  background: var(--state-medium-container-bg) !important;
+}
+.ui.selection.visible.dropdown>.text:not(.default){
+  color: var(--sb-dropdown-menu-text);
+}
+.ui.dropdown .menu .selected.item, .ui.dropdown.selected{
+  color: var(--ui-dropdown-menu-selected-item);
+}
+.state-selection__section .item:hover, .state-selection__section .item.active{
+  background: var(--ui-dropdown-menu-selected-item-bg);
+  color: var(--black) !important;
 }
