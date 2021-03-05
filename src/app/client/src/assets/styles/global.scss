@@ -1111,3 +1111,16 @@ a.ui.label:hover, a.ui.labels .label:hover{
   background: var(--ui-dropdown-menu-selected-item-bg);
   color: var(--black) !important;
 }
+.sb-modal .ui.modal {
+  .sb-modal-header {
+    color: var(--sb-modal-header-text);
+  }
+
+  .sb-modal-content {
+    background: var(--sb-modal-content-bg);
+  }
+
+  .sb-modal-actions {
+    background: var(--sb-modal-actions-bg);
+  }
+}
