@@ -4,7 +4,7 @@ const envHelper         = require('../helpers/environmentVariablesHelper.js')
 const learnerURL        = envHelper.LEARNER_URL
 const proxy             = require('express-http-proxy')
 const reqDataLimitOfContentUpload = '50mb'
-const { logger } = require('@project-sunbird/logger');
+const { logger } = require('@project-sunbird/logger')
 
 module.exports = function (app) {
     app.get('/learner/group/v1/read/:groupId', proxyObj());
