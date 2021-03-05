@@ -567,10 +567,10 @@
   dependencies:
     tslib "^2.0.0"
 
-"@project-sunbird/chatbot-client-v8@2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/chatbot-client-v8/-/chatbot-client-v8-2.0.1.tgz#f0d3f9b721693c9d8e99744259af1f6f215e30ee"
-  integrity sha512-TstcviQAj9Kgn54TZMCBNJBHplIg4yiAv2KjA29zaS7J5NZFi293zhD8gEfUZ4d0PL0siaK5SEdQtVxc2j9itw==
+"@project-sunbird/chatbot-client-v8@2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/chatbot-client-v8/-/chatbot-client-v8-2.0.2.tgz#7309a67ed509c0b250e00443ffa858b7ad4ffa65"
+  integrity sha512-+5zXnnj9gytNv5PKgS0Y5LD2YzCjs8jVah+ptjezciw3uaTLAqVwLFuroUpATfsCz1Wgw8E/+gnSgFnwY+qrLQ==
   dependencies:
     tslib "^1.9.0"
 
@@ -593,10 +593,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v8@3.6.6":
-  version "3.6.6"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v8/-/common-consumption-v8-3.6.6.tgz#2493fa24b6f6cc22b93777f5d3d655c2cf4c7d61"
-  integrity sha512-UZUqg0bsdXDmndQJXPCs2dTbCBqZRwh13vugFdf4pcs3uFHIoW/rrXvFPPdKlsoJx4Xa3BjYKbLAjM0vcxmQQQ==
+"@project-sunbird/common-consumption-v8@3.7.1":
+  version "3.7.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v8/-/common-consumption-v8-3.7.1.tgz#4b34f0852b76feb8ffb0849762f001ead86a55f7"
+  integrity sha512-dOATUpYrZNeALJuEVdWgjnWY4RWnUU4f/AuuBmVLgKJ0YYMr7slRxF65+n4C9DRmuNRLCbe09qOE5T9K83GDvA==
   dependencies:
     tslib "^1.9.0"
 
@@ -620,12 +620,12 @@
     "@project-sunbird/sunbird-player-sdk-v8" "3.7.1"
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-pdf-player-v8@3.6.1":
-  version "3.6.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-pdf-player-v8/-/sunbird-pdf-player-v8-3.6.1.tgz#64c141b6b24994aca72100f911d7d734fe472157"
-  integrity sha512-VZgQf6GgKOfTonVWyeOtiWYbURg28pOYMFbVQ3F9itWliW4tVkiFO/+s1w2pjyX4LmuCXMvbuPLB+H+s+kGGZQ==
+"@project-sunbird/sunbird-pdf-player-v8@3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-pdf-player-v8/-/sunbird-pdf-player-v8-3.8.0.tgz#d6e4c828a1bb3e3c0d7c234fb0d917f4c87fd51e"
+  integrity sha512-JniGcaxJ5P8c1sWctPp3i5Wb4b2o516jqYkFFOM8tVXtWpZqkt1hgbz6Tw+DZu1rt+BvTWyG1Q0XNWfE2IRIsQ==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v8" "3.6.0"
+    "@project-sunbird/sunbird-player-sdk-v8" "3.8.0"
     tslib "^1.9.0"
 
 "@project-sunbird/sunbird-player-sdk-v8@3.6.0":
@@ -642,6 +642,13 @@
   dependencies:
     tslib "^1.9.0"
 
+"@project-sunbird/sunbird-player-sdk-v8@3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v8/-/sunbird-player-sdk-v8-3.8.0.tgz#9029bdc008f75b956469733572079c9050149ca7"
+  integrity sha512-QKwmCfJBNYp13CcZ8xOnRMc22TGZmHWNyJNJR5k272ptYvWckxOb6cje+OEDOUKiqfRHA411ET8k76mZabdGgA==
+  dependencies:
+    tslib "^1.9.0"
+
 "@project-sunbird/sunbird-player-sdk@0.0.16":
   version "0.0.16"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk/-/sunbird-player-sdk-0.0.16.tgz#72bab646b41e47df38f71ecfd76f1c9e01094f7b"
@@ -649,10 +656,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-question-editor@0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-question-editor/-/sunbird-question-editor-0.0.6.tgz#061cd1e67bb15c92f4942e569ed12095f729a92c"
-  integrity sha512-N244bJYVOPkQooCo7FZRkbRY4L8r2KZ5XAkFhhiyd6fvh9DyB/W6iRIDJvovrHd9M5vu5fOL9reTojPPdYikqg==
+"@project-sunbird/sunbird-question-editor@0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-question-editor/-/sunbird-question-editor-0.0.9.tgz#49f0c79397f35b993ab6f5ed6d05499db8fde91c"
+  integrity sha512-QZP/JBZoLAW7cj1MXDtI/vi2ovd1j/9ZrUNXI3wv4VYXC/JlG5ceHsBGmuxaiLQHkBbc/aLUM6BwlwULuiqP8w==
   dependencies:
     tslib "^1.9.0"
 
@@ -2752,10 +2759,10 @@ commander@^2.11.0, commander@^2.12.1, commander@^2.19.0, commander@^2.20.0, comm
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
 
-common-form-elements@^2.0.7:
-  version "2.0.7"
-  resolved "https://registry.yarnpkg.com/common-form-elements/-/common-form-elements-2.0.7.tgz#d220def7f4cad077df196e8d0c24f84c7a736ccb"
-  integrity sha512-rP++u7VbKkE8TiRzEw8SddmZio6PmeJLvHkhAutNXjSaRqy0vwMPTxL/iW5ejxTRBfoigrs12UI1Tss87D638A==
+common-form-elements@^3.7.1:
+  version "3.7.2"
+  resolved "https://registry.yarnpkg.com/common-form-elements/-/common-form-elements-3.7.2.tgz#58019056769783a304e21f8de11da7e095a09556"
+  integrity sha512-x4AxjlhGt7cIyK+PFzmacMT6kH5k3NEEBbQ9Qi17aWGCI6ie1EA/CJhCxmG/sp0N+bT6HwcGxtvp1F8wpD5fDw==
   dependencies:
     immutable "^4.0.0-rc.12"
     tslib "^1.9.0"

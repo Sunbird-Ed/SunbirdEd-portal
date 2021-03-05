@@ -27,7 +27,7 @@ const mockActivatedRoute = {
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
 }
-class NavigationHelperServiceStub { }
+class NavigationHelperServiceStub { navigateToWorkSpace() { } }
 const mockUserService = {
   userOrgDetails$: observableOf({}),
   userProfile: {
@@ -38,11 +38,9 @@ const mockUserService = {
 
 const mockFrameworkService = {
   _channelData: {
-    questionPrimaryCategories: ['Multiple Choice Question', 'Subjective Question'],
-    contentPrimaryCategories: ['content'],
-    collectionPrimaryCategories: ['collection'],
-    questionsetPrimaryCategories: ['questionSet']
-  }
+    questionPrimaryCategories: ['Multiple Choice Question', 'Subjective Question']
+  },
+  getDefaultLicense : () => {}
 };
 
 describe('NewCollectionEditorComponent', () => {
@@ -139,11 +137,11 @@ describe('NewCollectionEditorComponent', () => {
     let result = component.getPrimaryCategoryData({ Question: [] });
     expect(result).toEqual({ Question: ['Multiple Choice Question', 'Subjective Question'] });
     result = component.getPrimaryCategoryData({ Content: [] });
-    expect(result).toEqual({ Content: ['content'] });
+    expect(result).toEqual({ Content: [] });
     result = component.getPrimaryCategoryData({ Collection: [] });
-    expect(result).toEqual({ Collection: ['collection'] });
+    expect(result).toEqual({ Collection: [] });
     result = component.getPrimaryCategoryData({ QuestionSet: [] });
-    expect(result).toEqual({ QuestionSet: ['questionSet'] });
+    expect(result).toEqual({ QuestionSet: [] });
   });
 
   it('#editorEventListener() should call #redirectToWorkSpace method', () => {
@@ -152,11 +150,35 @@ describe('NewCollectionEditorComponent', () => {
     expect(component.redirectToWorkSpace).toHaveBeenCalled();
   });
 
-  xit('#redirectToWorkSpace() should redirect to workspace with valid #URL',
+    it('#setEditorConfig() should set editor config',
+    inject([FrameworkService], (frameworkService) => {
+      spyOn(frameworkService, 'getDefaultLicense').and.callFake( () => {});
+      component.collectionDetails = mockRes.successResult.result.content;
+      component.showQuestionEditor = true;
+      component.ngOnInit();
+      component.setEditorConfig();
+      expect(frameworkService.getDefaultLicense).toHaveBeenCalled();
+      expect(Object.keys(component.editorConfig)).toEqual(['context', 'config']);
+    }));
+
+    it('#redirectToWorkSpace() should redirect to workspace with valid #URL',
     inject([NavigationHelperService], (navigationHelperService) => {
       spyOn(navigationHelperService, 'navigateToWorkSpace').and.callFake(() => { });
+      component.ngOnInit();
       component.redirectToWorkSpace();
-      expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalled();
+      expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('/workspace/content/allcontent/1');
+      const activatedRoute = TestBed.get(ActivatedRoute);
+      activatedRoute.snapshot.params = {state: 'collaborating-on'};
+      component.ngOnInit();
+      component.redirectToWorkSpace();
+      expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('/workspace/content/collaborating-on/1');
+      activatedRoute.snapshot.params = {state: 'upForReview'};
+      component.ngOnInit();
+      component.redirectToWorkSpace();
+      expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('/workspace/content/upForReview/1');
+      activatedRoute.snapshot.params = {state: ''};
+      component.ngOnInit();
+      component.redirectToWorkSpace();
       expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('/workspace/content/draft/1');
     }));
 

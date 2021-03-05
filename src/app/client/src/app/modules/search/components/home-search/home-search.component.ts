@@ -1,7 +1,7 @@
 import {
   PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
   ICard, ILoaderMessage, UtilService, BrowserCacheTtlService, NavigationHelperService, IPagination,
-  LayoutService, COLUMN_TYPE
+  LayoutService, COLUMN_TYPE, SchemaService
 } from '@sunbird/shared';
 import { SearchService, PlayerService, CoursesService, UserService, ISort, OrgDetailsService } from '@sunbird/core';
 import { combineLatest, Subject, of } from 'rxjs';
@@ -55,7 +55,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     public configService: ConfigService, public utilService: UtilService, public coursesService: CoursesService,
     private playerService: PlayerService, public userService: UserService, public cacheService: CacheService,
     public browserCacheTtlService: BrowserCacheTtlService, public orgDetailsService: OrgDetailsService,
-    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
+    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService, private schemaService: SchemaService) {
     this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
     this.filterType = this.configService.appConfig.home.filterType;
     // this.redirectUrl = this.configService.appConfig.courses.searchPageredirectUrl;
@@ -130,9 +130,13 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       return o.name === (selectedMediaType || 'all');
     });
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
-    filters = _.omit(filters, ['key', 'sort_by', 'sortType', 'appliedFilters', 'selectedTab', 'mediaType']);
+    filters = this.searchService.schemaValidator({
+      inputObj: filters || {},
+      schema: _.get(this.schemaService, 'contentSchema.properties') || {},
+      omitKeys: ['key', 'sort_by', 'sortType', 'appliedFilters', 'selectedTab', 'mediaType']
+    });
     filters.primaryCategory = filters.primaryCategory || _.get(this.allTabData, 'search.filters.primaryCategory');
-    filters.mimeType = _.get(mimeType, 'values');
+    filters.mimeType = filters.mimeType || _.get(mimeType, 'values');
 
     // Replacing cbse/ncert value with cbse
     if (_.toLower(_.get(filters, 'board[0]')) === 'cbse/ncert' || _.toLower(_.get(filters, 'board')) === 'cbse/ncert') {
