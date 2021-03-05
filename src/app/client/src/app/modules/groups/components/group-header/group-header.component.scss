@@ -1,7 +1,7 @@
 @import 'mixins/mixins';
 
 .content-header {
-    background:var(--rc-FAFAFA);
+    background: var(--groups-content-header);
     min-height: calculateRem(14px);
   
       &__content{
