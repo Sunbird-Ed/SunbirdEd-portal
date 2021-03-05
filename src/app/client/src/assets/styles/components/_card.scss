@@ -47,8 +47,8 @@ $sb-card-meta-org-font-size-ur: $font-size-sm;
 /* sb card styles */
 .sb-card {
   width: $sb-card-width;
-  background-color: $sb-card-bg-color;
-  border: $sb-card-border;
+  background-color: var(--sb-card-bg);
+  border: var(--sb-card-border);
   border-radius: $sb-card-border-radius;
   cursor: pointer;
   position: relative;
@@ -109,7 +109,7 @@ $sb-card-meta-org-font-size-ur: $font-size-sm;
   }
   .sb-card-meta-item {
     font-size: $sb-card-meta-font-size;
-    color: $sb-card-meta-color;
+    color: var(--sb-card-text);
     width: $sb-card-meta-width;
     line-height: $sb-card-meta-line-height;
   }
@@ -124,7 +124,7 @@ $sb-card-meta-org-font-size-ur: $font-size-sm;
   }
   .sb-card-org {
     font-size: $sb-card-meta-org-font-size;
-    color: $sb-card-meta-color;
+    color: var(--sb-card-text);
   }
   .sb-card-progressbar {
     height: $sb-card-progressbar-height;
