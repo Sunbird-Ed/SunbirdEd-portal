@@ -8,7 +8,7 @@ import { CoursesService, PermissionService, CopyContentService,
   OrgDetailsService, UserService, GeneraliseLabelService,  } from '@sunbird/core';
 import {
   ResourceService, ToasterService, ContentData, ContentUtilsServiceService, ITelemetryShare,
-  ExternalUrlPreviewService
+  ExternalUrlPreviewService, UtilService, ConnectionService, OfflineCardService
 } from '@sunbird/shared';
 import { IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
 import dayjs from 'dayjs';
@@ -19,6 +19,7 @@ import { CourseBatchService } from './../../../services';
 import { DiscussionService } from '../../../../discussion/services/discussion/discussion.service';
 import { FormService } from '../../../../core/services/form/form.service';
 
+import { ContentManagerService } from '../../../../public/module/offline/services';
 import { DiscussionTelemetryService } from './../../../../shared/services/discussion-telemetry/discussion-telemetry.service';
 
 @Component({
@@ -80,6 +81,15 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   showLoader = false;
   batchEndCounter: number;
   showBatchCounter: boolean;
+  isDesktopApp: Boolean = false;
+  isConnected: Boolean = true;
+  contentDownloadStatus = {};
+  showUpdate: Boolean = false;
+  showExportLoader: Boolean = false;
+  showModal: Boolean = false;
+  showDownloadLoader: Boolean = false;
+  disableDelete: Boolean = false;
+  isAvailableLocally = false;
 
   constructor(private activatedRoute: ActivatedRoute, public courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
@@ -88,9 +98,9 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService, private userService: UserService,
     private telemetryService: TelemetryService, private groupService: GroupsService,
     private navigationHelperService: NavigationHelperService, public orgDetailsService: OrgDetailsService,
-    public generaliseLabelService: GeneraliseLabelService,
-    public courseBatchService: CourseBatchService,
-    private formService: FormService,
+    public generaliseLabelService: GeneraliseLabelService,public connectionService: ConnectionService,
+    public courseBatchService: CourseBatchService, private utilService: UtilService, public contentManagerService: ContentManagerService,
+    private formService: FormService, private offlineCardService: OfflineCardService, 
     public discussionService: DiscussionService, public discussionTelemetryService: DiscussionTelemetryService) { }
 
   showJoinModal(event) {
@@ -98,6 +108,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   }
 
   ngOnInit() {
+    this.isDesktopApp = this.utilService.isDesktopApp;
     this.getCustodianOrgUser();
     if (!this.courseConsumptionService.getCoursePagePreviousUrl) {
       this.courseConsumptionService.setCoursePagePreviousUrl();
@@ -140,6 +151,15 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.courseConsumptionService.userCreatedAnyBatch.subscribe((visibility: boolean) => {
       this.viewDashboard = this.viewDashboard && visibility;
     });
+    if (this.isDesktopApp) {
+      this.contentManagerService.contentDownloadStatus$.pipe(takeUntil(this.unsubscribe)).subscribe( contentDownloadStatus => {
+        this.contentDownloadStatus = contentDownloadStatus;
+        this.checkDownloadStatus();
+      });
+      this.connectionService.monitor().subscribe(isConnected => {
+        this.isConnected = isConnected;
+      });
+    }
   }
   ngAfterViewInit() {
     this.courseProgressService.courseProgressData.pipe(
@@ -413,5 +433,98 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         this.router.navigate([previousPageUrl.url]);
       }
     }
+  }
+  checkStatus(status) {
+    this.checkDownloadStatus();
+    return this.utilService.getPlayerDownloadStatus(status, this.courseHierarchy);
+  }
+  checkDownloadStatus() {
+    if (this.courseHierarchy) {
+      const downloadStatus = ['CANCELED', 'CANCEL', 'FAILED', 'DOWNLOAD'];
+      const status = this.contentDownloadStatus[this.courseHierarchy.identifier];
+      this.courseHierarchy['downloadStatus'] = _.isEqual(downloadStatus, status) ? 'DOWNLOAD' :
+      (_.includes(['INPROGRESS', 'RESUME', 'INQUEUE'], status) ? 'DOWNLOADING' : _.isEqual(status, 'COMPLETED') ? 'DOWNLOADED' : status);
+    }
+  }
+  updateCollection(collection) {
+    collection['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
+    this.logTelemetry('update-collection');
+    const request = {
+      contentId: collection.identifier
+    };
+    this.contentManagerService.updateContent(request).pipe(takeUntil(this.unsubscribe)).subscribe(data => {
+      collection['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
+      this.showUpdate = false;
+    }, (err) => {
+      this.showUpdate = true;
+      const errorMessage = !this.isConnected ? _.replace(this.resourceService.messages.smsg.m0056, '{contentName}', collection.name) :
+        this.resourceService.messages.fmsg.m0096;
+      this.toasterService.error(errorMessage);
+    });
+  }
+
+  exportCollection(collection) {
+    this.logTelemetry('export-collection');
+    this.showExportLoader = true;
+    this.contentManagerService.exportContent(collection.identifier)
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(data => {
+        this.showExportLoader = false;
+        this.toasterService.success(this.resourceService.messages.smsg.m0059);
+      }, error => {
+        this.showExportLoader = false;
+        if (_.get(error, 'error.responseCode') !== 'NO_DEST_FOLDER') {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+        }
+      });
+  }
+
+  isYoutubeContentPresent(collection) {
+    this.logTelemetry('is-youtube-in-collection');
+    this.showModal = this.offlineCardService.isYoutubeContent(collection);
+    if (!this.showModal) {
+      this.downloadCollection(collection);
+    }
+  }
+
+  downloadCollection(collection) {
+    this.showDownloadLoader = true;
+    this.disableDelete = false;
+    collection['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
+    this.logTelemetry('download-collection');
+    this.contentManagerService.downloadContentId = collection.identifier;
+    this.contentManagerService.downloadContentData = collection;
+    this.contentManagerService.failedContentName = collection.name;
+    this.contentManagerService.startDownload({}).pipe(takeUntil(this.unsubscribe)).subscribe(data => {
+      this.contentManagerService.downloadContentId = '';
+      this.contentManagerService.downloadContentData = {};
+      this.showDownloadLoader = false;
+      collection['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
+    }, error => {
+      this.disableDelete = true;
+      this.showDownloadLoader = false;
+      this.contentManagerService.downloadContentId = '';
+      this.contentManagerService.downloadContentData = {};
+      this.contentManagerService.failedContentName = '';
+      collection['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
+      if (!(error.error.params.err === 'LOW_DISK_SPACE')) {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+          }
+    });
+  }
+
+  deleteCollection(collectionData) {
+    this.disableDelete = true;
+    this.logTelemetry('delete-collection');
+    const request = {request: {contents: [collectionData.identifier]}};
+    this.contentManagerService.deleteContent(request).pipe(takeUntil(this.unsubscribe)).subscribe(data => {
+      this.toasterService.success(this.resourceService.messages.stmsg.desktop.deleteTextbookSuccessMessage);
+      collectionData['downloadStatus'] = 'DOWNLOAD';
+      collectionData['desktopAppMetadata.isAvailable'] = false;
+      this.goBack();
+    }, err => {
+      this.disableDelete = false;
+      this.toasterService.error(this.resourceService.messages.etmsg.desktop.deleteTextbookErrorMessage);
+    });
   }
 }

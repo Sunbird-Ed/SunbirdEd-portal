@@ -164,8 +164,9 @@ export class PublicPlayerService {
     }, 0);
   }
   handleNavigation(content, isTrackable, queryParams?, isAvailableLocally?) {
+    const courseRoute = this.userService.loggedIn ? 'learn/course' : 'explore-course/course';
     if (isTrackable) {
-      this.router.navigate(['explore-course/course', content.identifier], { queryParams });
+      this.router.navigate([courseRoute, content.identifier], { queryParams });
     } else {
       queryParams = { ...queryParams, contentType: content.contentType };
       if (isAvailableLocally) {

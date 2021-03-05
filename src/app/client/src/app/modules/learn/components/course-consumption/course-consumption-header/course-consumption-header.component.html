@@ -93,6 +93,15 @@
           appAddToGroup [identifier]="courseHierarchy?.identifier" [pageId]="courseHierarchy?.primaryCategory.toLowerCase()">
           {{resourceService?.frmelmnts?.lbl?.AddtoGroup}}</button>
         </div>
+        <div *ngIf="isDesktopApp">
+          <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="isConnected && (checkStatus('DOWNLOADED')) && showUpdate" (click)="updateCollection(courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.desktop?.updateTextbook}}</button>
+          <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADED')" [disabled]="disableDelete" (click)="logTelemetry('confirm-delete-collection'); showDeleteModal = !showDeleteModal;">{{resourceService?.frmelmnts?.lbl?.desktop?.deleteBook}}</button>
+          <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADED')" (click)="exportCollection(courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.saveToPenDrive}}</button>
+          <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOAD')" (click)="isYoutubeContentPresent(courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.desktop?.downloadBook}}</button>
+          <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADING')">{{resourceService?.frmelmnts?.lbl?.downloading}}</button>
+          <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8 sb-btn-disabled" *ngIf="checkStatus('DOWNLOADED')">{{resourceService?.messages?.stmsg?.m0139}}</button>
+          <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('PAUSED')">{{resourceService.frmelmnts?.lbl?.downloadingPaused}}</button>
+        </div>
         <!-- join course, start learning, continue learning, view dashboard buttons -->  
         <div *ngIf="!showAddGroup && isTrackable">
           <div class="certified-course__btn" *ngIf="!enrolledCourse && !viewDashboard">
