@@ -157,6 +157,11 @@ html[data-theme='Default'] {
   --sb-card-border: 0.0625rem solid var(--rc-dedede);
   --sb-card-text: var(--gray-400);
   --sb-card-slick-arrows-bg: var(--white);
+  --sb-profile-page-container: var(--white);
+
+  //myGroups
+  --sb-mygroups-bg: var(--white);
+  --groups-content-header: var(--rc-FAFAFA);
 
   //cc
   --cc-accordion-panel-br: var(--primary-300);
@@ -1542,6 +1547,11 @@ html[data-theme=Darkmode] {
   --sb-card-border: 0.0625rem solid transparent;
   --sb-card-text: var(--white);
   --sb-card-slick-arrows-bg: #444;
+  --sb-profile-page-container: #333;
+
+  //myGroups
+  --sb-mygroups-bg: #444;
+  --groups-content-header: #444;
 
   // cc pills box
   --cc-pills-grid-item: var(--white);
@@ -1553,8 +1563,8 @@ html[data-theme=Darkmode] {
   --cc-viewbtn-hover: var(--white);
 
   //member card
-  --cc-members-list-item-selected: var(--rc-E0EFFF);
-  --cc-members-list-item-selected-border: var(--rc-E0EFFF);
+  --cc-members-list-item-selected: var(--black);
+  --cc-members-list-item-selected-border: var(--primary-color);
   --cc-members-list-item-menu-text: var(--gray-200);
   --cc-members-list-item-status-text: var(--secondary-200);
   --cc-members-list-item-status-br: var(--secondary-200);
@@ -1647,6 +1657,14 @@ html[data-theme=Darkmode] {
     .sbaccordion__panel-content {
       background: #333 !important;
     }
+  }
+  .sb-back-header{
+    .sb-back-btn-panel{
+      background: #222 !important;
+    }
+  }
+  .sb-groups-members-card{
+    background: #333333 !important;
   }
 }
 

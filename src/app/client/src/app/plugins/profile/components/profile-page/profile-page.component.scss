@@ -207,3 +207,8 @@
     color: var(--sb-course-progress-status-label);
   }
 }
+.sb-profile-page-container{
+  .ui.segment{
+    background: var(--sb-profile-page-container);
+  }
+}
