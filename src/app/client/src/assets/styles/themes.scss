@@ -299,7 +299,10 @@ html[data-theme='Default'] {
   --cc-lb-card-stack-btn-bg: var(--primary-100);
   --cc-lb-card-stack-btn-text: var(--primary-color);
 
-
+  // Modal
+  --sb-modal-header-text: var(--white);
+  --sb-modal-content-bg: var(--white);
+  --sb-modal-actions-bg: var(--white);
   //joy theme
   --themeflower-bg: #ffd92a;
 }
@@ -335,6 +338,11 @@ html[layout='joy'] {
   --sbt-language-selectbox: #008840;
   --sbt-language-dropdown-item-hover-bg: rgba(0, 0, 0, .05);
   --sbt-language-dropdown-item-hover-text: #008840;
+
+  //Modal
+  --sb-modal-header-text: var(--black);
+  --sb-modal-content-bg: var(--sbt-compt-bg);
+  --sb-modal-actions-bg: var(--sbt-compt-bg);
 
   .navBlock .pdf-nav-unit {
     color: var(--gray-800) !important;
@@ -454,7 +462,7 @@ html[layout='joy'] {
 
       .sb-modal-header {
         background-color: var(--sbt-compt-bg);
-        color: var(--black);
+        color: var(--sb-modal-header-text);
         border-radius: var(--sbt-bradius-24) var(--sbt-bradius-24) 0 0;
         padding: calculateRem(24px) calculateRem(24px) calculateRem(8px) calculateRem(24px);
       }
@@ -463,12 +471,12 @@ html[layout='joy'] {
         min-height: 100px;
         padding: calculateRem(16px) calculateRem(24px);
         overflow-y: auto;
-        background: var(--sbt-compt-bg);
+        background: var(--sb-modal-content-bg);
       }
 
       .sb-modal-actions {
         padding: calculateRem(8px) calculateRem(24px) calculateRem(24px);
-        background: var(--sbt-compt-bg);
+        background: var(--sb-modal-actions-bg);
         border-top: calculateRem(0px) solid var(--gray-100);
         border-radius: 0 0 var(--sbt-bradius-24) var(--sbt-bradius-24);
       }
@@ -1618,6 +1626,11 @@ html[data-theme=Darkmode] {
   --cc-lb-card-stack-btn-bg: var(--primary-100);
   --cc-lb-card-stack-btn-text: var(--primary-color);
 
+  //Modal
+  --sb-modal-header-text: var(--black);
+  --sb-modal-content-bg: var(--sbt-compt-bg);
+  --sb-modal-actions-bg: var(--sbt-compt-bg);
+
   .notification-bell {
     box-shadow: none;
   }
@@ -1669,6 +1682,9 @@ html[data-theme='Darkmode'][layout='joy'] {
   --sbt-footer-info-links: var(--white);
   --sbt-footer-info-links-hover: var(--primary-color);
   --sbt-language-dropdown-item: var(--white);
+
+    //Modal
+    --sb-modal-header-text: var(--white);
 
   .notification-bell {
     box-shadow: var(--sbt-box-shadow-6px);
