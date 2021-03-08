@@ -43,7 +43,7 @@ html[data-theme='Default'] {
   --sbt-bradius-16: calc(var(--sbt-bradius) * 8);
   --sbt-bradius-24: calc(var(--sbt-bradius) * 12);
   --sbt-bradius-32: calc(var(--sbt-bradius) * 16);
-
+  --sb-container-bg: var(--white);
   --sbt-textbooks: #0091FF;
   --sbt-courses: #0531FF;
   --sbt-quizzes: #0C989B;
@@ -136,9 +136,9 @@ html[data-theme='Default'] {
 
   //filters
   --sb-prominent-filter-bg: var(--white);
-  --sb-prominent-filter-title: rgba(0,0,0,.87);
+  --sb-prominent-filter-title: rgba(0, 0, 0, .87);
   --sb-multiple-dropdown-border: var(--gray-200);
-  --sb-multiple-dropdown-border-hover: rgba(34,36,38,.35);
+  --sb-multiple-dropdown-border-hover: rgba(34, 36, 38, .35);
   --sb-multiple-dropdown-bg: transparent;
   --sb-prominent-filter-field-color: var(--rc-4a4a4a);
   --sb-dropdown-menu-bg: var(--white);
@@ -148,9 +148,9 @@ html[data-theme='Default'] {
   --ui-seleted-label-bg-hover: #e0e0e0;
   --state-medium-container-bg: var(--white);
   --sb-class-bar-bg: var(--gray-0);
-  --sb-dropdown-menu-text: rgba(0,0,0,.8);
-  --ui-dropdown-menu-selected-item-bg: rgba(0,0,0,.03);
-  --ui-dropdown-menu-selected-item: rgba(0,0,0,.95);
+  --sb-dropdown-menu-text: rgba(0, 0, 0, .8);
+  --ui-dropdown-menu-selected-item-bg: rgba(0, 0, 0, .03);
+  --ui-dropdown-menu-selected-item: rgba(0, 0, 0, .95);
   --sb-filter-selected-dropdown-hover: var(--primary-color);
   //slick slide card
   --sb-card-bg: var(--white);
@@ -215,11 +215,12 @@ html[data-theme='Default'] {
   --cc-sbcard-offline-img-text: var(--white);
   --cc-sbcard-card__progressbar-bg: var(--gray-100);
   --cc-sbcard-card__progressbar-span-bg: var(--secondary-200);
+  --cc-sbcard-type-br: var(--gray-200);
   --cc-sbcard-hover-text: var(--white);
   --cc-sbcard-hover-bg: var(--primary-color);
   --cc-sbcard-org-text: var(--balck);
   --cd-sbcard-data1-bg: #E0F5EA;
-  --cd-sbcard-data1-bg-active:#0076FE;
+  --cd-sbcard-data1-bg-active: #0076FE;
   --sbt-pill-hs: 212, 100%;
   --cd-sbcard-data2-bg: hsl(var(--sbt-pill-hs), 90%);
   --cd-sbcard-data2-bg-active: hsl(var(--sbt-pill-hs), 50%); //#0076FE
@@ -311,8 +312,28 @@ html[data-theme='Default'] {
   --sb-modal-header-text: var(--white);
   --sb-modal-content-bg: var(--white);
   --sb-modal-actions-bg: var(--white);
+  // lazy loading
+  --lazyload-bg: #f6f7f8;
+  --grey-nuance-lighter: #eeeeee;
+  --grey-nuance-darker: #dddddd;
+  --fade-grey: #e8e8e8;
+
   //joy theme
   --themeflower-bg: #ffd92a;
+
+  .navBlock .pdf-nav-unit {
+    color: var(--white) !important;
+  }
+
+}
+
+html[data-theme=Darkmode][layout='old'] {
+  // lazy loading
+  --lazyload-bg: #333;
+  --grey-nuance-lighter: #333;
+  --grey-nuance-darker: #111;
+  --fade-grey: #f2f2f2;
+
 }
 
 html[data-theme='Default'][layout='joy'] {
@@ -326,12 +347,6 @@ html[data-theme='Default'][layout='joy'] {
   --sbt-filter-bar-bg: var(--white);
   --sb-search-btn-bg: #333;
   --sb-search-btn-text: #fff;
-}
-
-html[data-theme='Default'] {
-  .navBlock .pdf-nav-unit {
-    color: var(--white) !important;
-  }
 }
 
 html[layout='joy'] {
@@ -1321,12 +1336,12 @@ html[layout='joy'] {
     width: calc(100% - 4%);
     margin: 0 auto;
   }
-}
 
-html[layout='joy'][dir='rtl'] {
-  .sb-modal .ui.modal .close {
-    left: calculateRem(12px) !important;
-    right: auto;
+  & [dir='rtl'] {
+    .sb-modal .ui.modal .close {
+      left: calculateRem(12px) !important;
+      right: auto;
+    }
   }
 }
 
@@ -1351,6 +1366,7 @@ html[data-theme=Darkmode] {
   --sbt-filter-bar-bg: #444;
   --sbt-menu-bg: var(--sbt-header-bg);
   --sbt-page-header-bg: var(--sbt-menu-bg);
+  --sb-container-bg: var(--black);
   --sbt-footer-bg: #333;
   --sbt-box-shadow-black: rgba(0, 0, 0, 0.1);
   --sbt-box-shadow-6px: 0.375rem 0.375rem 0.125rem 0 var(--sbt-box-shadow-black);
@@ -1494,11 +1510,12 @@ html[data-theme=Darkmode] {
   --cc-sbcard-offline-img-text: var(--white);
   --cc-sbcard-card__progressbar-bg: var(--gray-100);
   --cc-sbcard-card__progressbar-span-bg: var(--secondary-200);
+  --cc-sbcard-type-br: var(--black);
   --cc-sbcard-hover-text: var(--white);
   --cc-sbcard-hover-bg: var(--primary-color);
   --cc-sbcard-org-text: var(--balck);
   --cd-sbcard-data1-bg: #444;
-  --cd-sbcard-data1-bg-active:#ffeb2a;
+  --cd-sbcard-data1-bg-active: #ffeb2a;
   --sbt-pill-hs: 212, 100%;
   --cd-sbcard-data2-bg: #444;
   --cd-sbcard-data2-bg-active: #ffeb2a;
@@ -1657,28 +1674,38 @@ html[data-theme=Darkmode] {
   .notification-bell {
     box-shadow: none;
   }
-  .cc-player__btn-back{
+
+  .cc-player__btn-back {
     background: #222;
   }
-  .back-btn-container.cc-player__btn-back{
+
+  .back-btn-container.cc-player__btn-back {
     background: #222 !important;
   }
-  .cc-player__content-header{
+
+  .cc-player__content-header {
     background: #444;
   }
-  .content-video__player__details{
+
+  .content-video__player__details {
     background: #333 !important;
   }
-  .content-metadeta{
+
+  .content-metadeta {
     background: #333 !important;
   }
-  .ui.styled.accordion, .ui.styled.accordion .accordion {
+
+  .ui.styled.accordion,
+  .ui.styled.accordion .accordion {
     background: #333 !important;
   }
+
   .sb-accordion-content.sb-bg-color-white {
     background: #333 !important;
   }
+
   .sb-toc-credits {
+
     .sbaccordion__panel-header,
     .sbaccordion__panel-content {
       background: #333 !important;
@@ -1713,6 +1740,12 @@ html[data-theme='Darkmode'][layout='joy'] {
   --sbt-footer-info-links: var(--white);
   --sbt-footer-info-links-hover: var(--primary-color);
   --sbt-language-dropdown-item: var(--white);
+  --sbt-filter-switcher-bg: var(--primary-color);
+  // lazy loading
+  --lazyload-bg: #333;
+  --grey-nuance-lighter: #333;
+  --grey-nuance-darker: #111;
+  --fade-grey: #f2f2f2;
 
     //Modal
     --sb-modal-header-text: var(--white);
@@ -1720,7 +1753,9 @@ html[data-theme='Darkmode'][layout='joy'] {
   .notification-bell {
     box-shadow: var(--sbt-box-shadow-6px);
   }
-  .sbaccordion__panel-header .icon-svg, .help-page__content .panel-heading .icon-svg{
+
+  .sbaccordion__panel-header .icon-svg,
+  .help-page__content .panel-heading .icon-svg {
     background: #222222;
   }
   .sbt-dropdown-language.ui.selection.sbt-dropdown.dropdown > .text span:last-child::before{
@@ -1730,7 +1765,6 @@ html[data-theme='Darkmode'][layout='joy'] {
     color: var(--black) !important;
   }
 }
-
 
 //accessible scss start
 html[xxxxaccessable-theme="accessible"] {
