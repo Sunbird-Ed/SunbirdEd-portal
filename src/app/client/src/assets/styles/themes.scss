@@ -162,6 +162,9 @@ html[data-theme='Default'] {
   //myGroups
   --sb-mygroups-bg: var(--white);
   --groups-content-header: var(--rc-FAFAFA);
+  --kabab-menu-hover-bg: var(--gray-0);
+  --kabab-menu-dropdown-bg: var(--white);
+  --kabab-menu-dropdown-item-active: var(--primary-100);
 
   //cc
   --cc-accordion-panel-br: var(--primary-300);
@@ -1502,6 +1505,7 @@ html[data-theme=Darkmode] {
   --cc-sbcard-moreinfo-bg: var(--white);
   --cc-sbcard-type-bg: var(--black);
   --cc-sbcard-type-text: var(--white);
+  --sbt-filter-switcher-bg: var(--primary-theme);
 
   //landing page
   --sb-landing-page-bg: var(--black);
@@ -1560,7 +1564,16 @@ html[data-theme=Darkmode] {
   //myGroups
   --sb-mygroups-bg: #444;
   --groups-content-header: #444;
+  --kabab-menu-hover-bg: var(--black);
+  --kabab-menu-dropdown-bg: #222;
+  --kabab-menu-dropdown-item-active: #333;
 
+  //avtar
+  .avatar-content{
+    background: #222222 !important;
+    border: 1px solid #222222 !important;
+    color: var(--white) !important;
+  }
   // cc pills box
   --cc-pills-grid-item: var(--white);
   --cc-pills-grid-item-hover: #f2f2f2;
@@ -1709,6 +1722,12 @@ html[data-theme='Darkmode'][layout='joy'] {
   }
   .sbaccordion__panel-header .icon-svg, .help-page__content .panel-heading .icon-svg{
     background: #222222;
+  }
+  .sbt-dropdown-language.ui.selection.sbt-dropdown.dropdown > .text span:last-child::before{
+    background: url(/assets/images/Language-white.svg) no-repeat !important;
+  }
+  .sbt-footer-title{
+    color: var(--black) !important;
   }
 }
 
