@@ -7,8 +7,8 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserSearchService } from './services';
 import { OrderModule } from 'ngx-order-pipe';
-import { CourseSearchComponent, UserFilterComponent, UserEditComponent, UserDeleteComponent, HomeSearchComponent,
-  OrgSearchComponent, OrgFilterComponent, UserProfileComponent, UserSearchComponent, LibrarySearchComponent } from './components';
+import { UserFilterComponent, UserEditComponent, UserDeleteComponent, HomeSearchComponent,
+   UserProfileComponent, UserSearchComponent } from './components';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { AvatarModule } from 'ngx-avatar';
@@ -36,8 +36,8 @@ import { TranslateModule } from '@ngx-translate/core';
     CommonConsumptionModule,
     ContentSearchModule
   ],
-  declarations: [ UserSearchComponent, CourseSearchComponent, LibrarySearchComponent,
-  UserFilterComponent, UserEditComponent, UserDeleteComponent, OrgSearchComponent, OrgFilterComponent,
+  declarations: [ UserSearchComponent,
+  UserFilterComponent, UserEditComponent, UserDeleteComponent,
   UserProfileComponent, HomeSearchComponent ],
   providers: [UserSearchService]
 })
