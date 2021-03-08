@@ -195,7 +195,11 @@ export class NewCollectionEditorComponent implements OnInit {
       return 'edit';
     }
     if (contentStatus === 'review') {
-      return 'read';
+      if (this.collectionDetails.createdBy === this.userProfile.id) {
+        return 'read';
+      } else {
+        return 'review';
+      }
     }
   }
 }
