@@ -144,9 +144,9 @@ export const customProxy = (host, options = {}) => {
       next();
     }, error => {
       const response = _.get(error, 'response');
-      res.body = _.get(response, 'data');
+      res.body = _.get(response, 'data') || {};
       res.headers = _.get(response, 'headers');
-      res.statusCode = _.get(response, 'status');
+      res.statusCode = _.get(response, 'status') || 500;
       next();
     });
   };

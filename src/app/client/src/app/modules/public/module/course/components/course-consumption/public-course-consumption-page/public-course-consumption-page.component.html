@@ -75,3 +75,26 @@
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal"
     (close)="closeSharePopup('close-share-link-popup')">
 </app-share-link>
+
+<div *ngIf="isDesktopApp">
+
+    <sui-modal *ngIf="showDeleteModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+      class="sb-modal" appBodyScroll (dismissed)="showDeleteModal = !showDeleteModal;" #modal>
+      <div class="sb-modal-header">
+        {{resourceService?.frmelmnts?.lbl?.delete}}
+      </div>
+      <div class="sb-modal-content">
+        <p>{{resourceService?.frmelmnts?.lbl?.desktop?.deleteCollection | interpolate:'{name}': collectionData?.name}}</p>
+      </div>
+      <div class="sb-modal-actions">
+        <button class="sb-btn sb-btn-normal sb-btn-primary"
+          (click)="deleteCollection(collectionData); showDeleteModal = !showDeleteModal;">
+          {{resourceService?.frmelmnts?.lbl?.delete}}
+        </button>
+        <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
+          (click)="logTelemetry('cancel-delete-collection'); showDeleteModal = !showDeleteModal;">
+          {{resourceService.frmelmnts?.btn?.cancel}}
+        </button>
+      </div>
+    </sui-modal>
+  </div>

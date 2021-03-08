@@ -81,15 +81,16 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   showLoader = false;
   batchEndCounter: number;
   showBatchCounter: boolean;
-  isDesktopApp: Boolean = false;
-  isConnected: Boolean = true;
+  isDesktopApp = false;
+  isConnected = true;
   contentDownloadStatus = {};
-  showUpdate: Boolean = false;
-  showExportLoader: Boolean = false;
-  showModal: Boolean = false;
-  showDownloadLoader: Boolean = false;
-  disableDelete: Boolean = false;
+  showUpdate = false;
+  showExportLoader = false;
+  showModal = false;
+  showDownloadLoader = false;
+  disableDelete = false;
   isAvailableLocally = false;
+  showDeleteModal = false;
 
   constructor(private activatedRoute: ActivatedRoute, public courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
