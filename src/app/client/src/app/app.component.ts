@@ -236,6 +236,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.logCdnStatus();
         this.setFingerPrintTelemetry();
         this.initApp = true;
+        localStorage.setItem('joyThemePopup', 'true');
         this.joyThemePopup();
         this.changeDetectorRef.detectChanges();
       }, error => {
@@ -292,11 +293,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
   joyThemePopup() {
     const joyThemePopup = localStorage.getItem('joyThemePopup');
-    if (joyThemePopup === 'true') {
-      this.checkTncAndFrameWorkSelected();
-    } else {
-      this.showJoyThemePopUp = true;
-    }
+    // if (joyThemePopup === 'true') {
+    //   this.checkTncAndFrameWorkSelected();
+    // } else {
+    //   this.showJoyThemePopUp = true;
+    // }
+    this.checkTncAndFrameWorkSelected();
   }
 
   checkLocationStatus() {
