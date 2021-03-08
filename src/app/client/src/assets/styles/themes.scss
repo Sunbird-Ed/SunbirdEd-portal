@@ -36,6 +36,7 @@ html[data-theme='Default'] {
   --sbt-pill-hs: 212, 100%;
   --sbt-pill-bg: hsl(var(--sbt-pill-hs), 90%);
   --sbt-pill-bg-active: hsl(var(--sbt-pill-hs), 50%); // #0076FE
+  --sbt-pill-text: #000;
   --sbt-pill-text-hover: #fff;
   --sbt-compt-bg: #E9E8D9;
   --sbt-bradius: 0.125rem;
@@ -1356,8 +1357,8 @@ html[data-theme=Darkmode] {
   --primary-400: var(--primary-color); // button bg, heading, table titles, links, toggles
   --primary-600: #ffc72a; // on press
   --primary-800: #ffb62a; // hover
-  --secondary-200: #ffb62a;
-  --secondary-color: #ffb62a;
+  --secondary-200: #ffd92a;
+  --secondary-color: #ffd92a;
   --sbt-primary-bg: var(--primary-theme);
   --sbt-border-chapter: #E4E8EE;
   --sbt-body-bg: #000;
@@ -1383,6 +1384,7 @@ html[data-theme=Darkmode] {
   --sbt-pill-hs: 212, 100%;
   --sbt-pill-bg: #5c5c5c;
   --sbt-pill-bg-active: #ffd92a; // #0076FE
+  --sbt-pill-text:#fff;
   --sbt-pill-text-hover: #222;
   --sbt-compt-bg: #333;
   --gray-800: #fff;
@@ -1481,9 +1483,9 @@ html[data-theme=Darkmode] {
   --cc-pill-border: var(--secondary-color);
   --cc-pill-text: var(--secondary-color);
   --cc-pill-bg-hover: var(--secondary-color);
-  --cc-pill-text-hover: var(--white);
+  --cc-pill-text-hover: var(--black);
   --cc-grade-pill-container-bg: #333;
-  --cc-grade-pill-text: var(--primary-color);
+  --cc-grade-pill-text: var(--white);
   --cc-grade-pill-bg-hover: var(--primary-color);
   --cc-grade-pill-text-hover: #222;
   --cc-grade-pill-svg-fill: #222;
@@ -1767,12 +1769,12 @@ html[data-theme='Darkmode'][layout='joy'] {
 }
 
 //accessible scss start
-html[xxxxaccessable-theme="accessible"] {
-  --sbt-pill-bg: #004594 !important;
+html[xxxaccessable-theme="accessible"] {
+  --sbt-pill-text: #000 !important;
   --sbt-pill-bg-active: #004594 !important;
 
   .sbt-class-bar .sb-slider-pills-container .sb-pills-container .pill {
-    color: var(--sbt-pill-bg-active) !important
+    color: var(--sbt-pill-text) !important
   }
 
   .sbt-class-bar .sb-slider-pills-container .sb-pills-container .pill.active,
