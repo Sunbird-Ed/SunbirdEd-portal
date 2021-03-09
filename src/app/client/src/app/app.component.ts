@@ -105,6 +105,7 @@ export class AppComponent implements OnInit, OnDestroy {
   showJoyThemePopUp = false;
   public unsubscribe$ = new Subject<void>();
   consentConfig: { tncLink: string; tncText: any; };
+  isDesktopApp = false;
 // Font Increase Decrease Variables
   fontSize: any;
   defaultFontSize = 16;
@@ -186,6 +187,10 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.isDesktopApp = this.utilService.isDesktopApp;
+    if (this.isDesktopApp) {
+      this._document.body.classList.add('desktop-app');
+    }
     this.checkFullScreenView();
     this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
       if (layoutConfig != null) {
@@ -236,6 +241,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.logCdnStatus();
         this.setFingerPrintTelemetry();
         this.initApp = true;
+        localStorage.setItem('joyThemePopup', 'true');
         this.joyThemePopup();
         this.changeDetectorRef.detectChanges();
       }, error => {
@@ -292,11 +298,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
   joyThemePopup() {
     const joyThemePopup = localStorage.getItem('joyThemePopup');
-    if (joyThemePopup === 'true') {
-      this.checkTncAndFrameWorkSelected();
-    } else {
-      this.showJoyThemePopUp = true;
-    }
+    // if (joyThemePopup === 'true') {
+    //   this.checkTncAndFrameWorkSelected();
+    // } else {
+    //   this.showJoyThemePopUp = true;
+    // }
+    this.checkTncAndFrameWorkSelected();
   }
 
   checkLocationStatus() {

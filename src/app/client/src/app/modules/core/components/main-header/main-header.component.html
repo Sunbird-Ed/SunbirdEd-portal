@@ -362,7 +362,6 @@
             </svg></i>
             <span *ngIf="layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToOldLayout}}</span>
             <span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToJoyLayout}}</span>
-            <span class="group__type mx-8">New</span>
           </li>
           <li class="list-item" (click)="toggleSideMenu(false);" routerLink="/desktop/telemetry" *appDesktopOnly>
             <i class="icon-svg icon-svg--sm icon-manage mr-8"><svg class="icon icon-svg--primary">
@@ -417,7 +416,6 @@
               </svg></i>
               <span *ngIf="layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToOldLayout}}</span>
               <span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToJoyLayout}}</span>
-              <span class="group__type mx-8">New</span>
             </li>
             <li class="list-item" (click)="toggleSideMenu(false);manageLocation()">
               <i class="icon-svg icon-svg--sm icon-manage mr-8"><svg class="icon icon-svg--primary">
