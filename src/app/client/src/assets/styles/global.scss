@@ -863,3 +863,20 @@ quml-player {
     }
   }
 }
+
+.desktop-app {
+  .sb-md-container{
+    .async-text{
+      border: none !important;
+      input{
+        border: 1px solid #333 !important;
+      }
+    }
+    .sb-textbox{
+      padding: 4px 16px !important;
+    }
+  }
+  .sbt-sticky-topbar { // To hide top(screen reader) space
+    top: 0;
+  }
+}
