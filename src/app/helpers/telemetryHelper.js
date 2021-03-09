@@ -302,8 +302,8 @@ module.exports = {
     const context = {
       channel: options.context.channel || channel,
       env: options.context.env || apiConfig.env,
-      cdata: options.context.cdata, 
-      rollup: options.context.rollup || telemetry.getRollUpData(dims), 
+      cdata: options.context.cdata,
+      rollup: options.context.rollup || telemetry.getRollUpData(dims),
       did: options.context.did || req.context.did,
       sid: req.sessionID || uuidv1()
     }
