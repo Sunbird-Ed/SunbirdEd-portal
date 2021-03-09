@@ -892,10 +892,10 @@ app-landing-page {
 .sb-btn-primary {
   color: var(--sb-btn-default-color);
 }
-.sb-btn-outline-primary,
-.sb-btn-outline-secondary {
-background-color: var(--sb-btn-default-color);
-}
+// .sb-btn-outline-primary,
+// .sb-btn-outline-secondary {
+// background-color: var(--sb-btn-default-color);
+// }
 
 /* header tail black bar */
 
@@ -1122,5 +1122,16 @@ a.ui.label:hover, a.ui.labels .label:hover{
 
   .sb-modal-actions {
     background: var(--sb-modal-actions-bg);
+  }
+}
+
+// Buttons
+.sb-btn-outline-primary {
+  html[data-theme=Darkmode] & {
+    &:hover, &:active, &.active {
+      i.blue.icon {
+        color: var(--black) !important;
+      }
+    }
   }
 }
