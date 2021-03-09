@@ -43,7 +43,7 @@
           <ng-container>
             <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" [hover-template]="hoverTemplate"
                              appContentDirection appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType||'Content',ver:'1.0'}"
-                             (clickEvent)="playContent($event)" [content]="content" [cardImg]="content?.image || 'assets/images/book.png'">
+                             (cardClick)="playContent($event)" [content]="content" [cardImg]="content?.image || 'assets/images/book.png'">
               <ng-template #hoverTemplate let-hoverData="hoverData" let-content="content">
                  <sb-card-hover class="card-hover" [content]="content" [hoverData]="hoverData" 
                     (hoverActionClick)="hoverActionClicked($event)"></sb-card-hover>
