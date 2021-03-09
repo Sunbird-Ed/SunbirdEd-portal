@@ -775,4 +775,12 @@ export class AppComponent implements OnInit, OnDestroy {
       this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'disabled');
     }
   }
+  skipToMainContent(){
+    var headerHeight=document.getElementsByClassName("sbt-fluid-header-bg")[1].clientHeight;
+    let topHeight=headerHeight==80?160:96;
+    window.scroll({
+     top:topHeight,
+      behavior: 'smooth'
+    });
+  }
 }
