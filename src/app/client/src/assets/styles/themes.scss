@@ -1681,8 +1681,8 @@ html[data-theme=Darkmode] {
     background: #222;
   }
 
-  .back-btn-container.cc-player__btn-back {
-    background: #222 !important;
+  .back-btn-container.cc-player__btn-back{
+    background: var(--sbt-compt-bg) !important;
   }
 
   .cc-player__content-header {
@@ -1720,6 +1720,65 @@ html[data-theme=Darkmode] {
   }
   .sb-groups-members-card{
     background: #333333 !important;
+  }
+
+  .training-relevant .sb-color-gray-400 {
+    color: var(--white) !important;
+  }
+  //buttons 
+
+  .sb-btn-primary, .sb-btn-link-primary, .sb-btn-secondary {
+    &:hover, &:active, &.active {
+      color: var(--black);
+    }
+  }
+
+  .sb-btn-primary {
+    .icon-svg--white {
+      fill: var(--black);
+    }
+  }
+
+  .sb-btn-outline-primary , .sb-btn-outline-secondary {
+    background-color: var(--sbt-filter-bar-bg);
+    &:hover, &:active, &.active {
+      color: var(--black);
+    }
+  }
+  
+  .sb-btn-outline-primary {
+    &:hover, &:active, &.active {
+      background-color: var(--primary-800);
+    }
+  }
+  
+  .sb-btn-outline-secondary {
+    &:hover, &:active, &.active {
+      background-color: var(--secondary-400);
+    }
+  }
+  
+  .sb-btn-link-gray {
+    &:hover, &:active, &.active {
+      background-color: var(--primary-color);
+      color: var(--black);
+    }
+  }
+
+  .sb-btn-link-primary, .sb-btn-link-gray {
+    &:hover, &:active, &.active {
+      .icon-svg--primary {
+        fill: var(--black);
+      }
+    }
+  }
+
+  app-faq .sb-btn-round.sb-btn-link-primary {
+    background-color: inherit !important;
+    &:hover, &:active, &.active {
+      background-color: var(--primary-color) !important;
+      color: var(--black);
+    }
   }
 }
 
