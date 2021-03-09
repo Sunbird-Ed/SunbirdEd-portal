@@ -93,7 +93,7 @@
           appAddToGroup [identifier]="courseHierarchy?.identifier" [pageId]="courseHierarchy?.primaryCategory.toLowerCase()">
           {{resourceService?.frmelmnts?.lbl?.AddtoGroup}}</button>
         </div>
-        <div *ngIf="isDesktopApp">
+        <div *ngIf="isDesktopApp && enrolledCourse && !viewDashboard">
           <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="isConnected && (checkStatus('DOWNLOADED')) && showUpdate" (click)="updateCollection(courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.desktop?.updateTextbook}}</button>
           <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADED')" [disabled]="disableDelete" (click)="logTelemetry('confirm-delete-collection'); showDeleteModal = !showDeleteModal;">{{resourceService?.frmelmnts?.lbl?.desktop?.deleteBook}}</button>
           <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADED')" (click)="exportCollection(courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.saveToPenDrive}}</button>
