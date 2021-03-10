@@ -2,7 +2,7 @@
   <app-desktop-app-update *appDesktopOnly></app-desktop-app-update>
   <div [ngClass]="{'loggedInUser': userService.loggedIn, 'guestUser': !userService.loggedIn}">
     <div
-      class="sbt-container d-flex flex-ai-center sb-bg-color-black py-8 flex-w-wrap sbt-sticky sbt-sticky-topbar sb-fontresizecontainer">
+      class="sbt-container d-flex flex-ai-center sb-bg-color-black py-8 flex-w-wrap sbt-sticky sbt-sticky-topbar sb-fontresizecontainer" [ngClass]="{'hide hidden': isFullScreenView}">
       <div class="ui container">
         <div class="brand-header-tail">
           <div class="dk-country-flag">
@@ -10,32 +10,33 @@
           <div class="d-flex flex-ai-center head-tail-right-side">
             <div class="pull-right dk-top-head-ul">
               <ul>
-                <li class="mb-0" *ngIf="!hideHeaderNFooter"><a href="javascript:void(0);" title="Skip to main content" (click)="skipToMainContent()" class="cursor-pointer">Skip to main content</a></li>
+                {{resourceService?.frmelmnts?.lbl?.accessibilitytskip}}
+                <li class="mb-0" *ngIf="!hideHeaderNFooter"><a href="javascript:void(0);" title="{{resourceService?.frmelmnts?.lbl?.accessibilitytskip}}" (click)="skipToMainContent()" class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.accessibilitytskip}}</a></li>
                 <li *ngIf="!hideHeaderNFooter" class="mx-4 mb-0">|</li>
                 <li class="screen-reader-link"><a href="/screenreaderaccess.html" class=""
-                    title="Screen Reader Access">Screen Reader Access</a></li>
+                    title="{{resourceService?.frmelmnts?.lbl?.accessibility}}">{{resourceService?.frmelmnts?.lbl?.accessibility}}</a></li>
                 <li class="mx-4">|</li>
                 <ng-container *ngIf="userService.loggedIn">
-                  <li class="mb-0"><a href="/sitemap.html?session=true" class="cursor-pointer">Sitemap</a></li>
+                  <li class="mb-0"><a title="{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}" href="/sitemap.html?session=true" class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}</a></li>
                 </ng-container>
                 <ng-container *ngIf="!userService.loggedIn">
-                  <li class="mb-0"><a href="/sitemap.html" class="cursor-pointer">Sitemap</a></li>
+                  <li class="mb-0"><a title="{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}" href="/sitemap.html" class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}</a></li>
                 </ng-container>
                 <li class="mx-4">|</li>
               </ul>
               <ul>
                 <li>
                   <div class="fontResize-container d-flex flex-ai-center pull-right">
-                    <button type="button" class="fontResizeBtn fontResizeBtn_A-" title="Decrease Font Size"
+                    <button type="button" class="fontResizeBtn fontResizeBtn_A-" title="{{resourceService?.frmelmnts?.lbl?.accessibilityfont}}"
                     (click)="changeFontSize('decrease');" #decreaseFontSize>A-</button>
-                    <button type="button" class="fontResizeBtn fontResizeBtn_A" title="Reset to Default"
+                    <button type="button" class="fontResizeBtn fontResizeBtn_A" title="{{resourceService?.frmelmnts?.lbl?.accessibilityfntdflt}}"
                     (click)="changeFontSize('reset');" #resetFontSize>A</button>
-                    <button type="button" class="fontResizeBtn fontResizeBtn_A+" title="Increase Font Size"
+                    <button type="button" class="fontResizeBtn fontResizeBtn_A+" title="{{resourceService?.frmelmnts?.lbl?.increaseFontSize}}"
                     (click)="changeFontSize('increase');" #increaseFontSize>A+</button>
                   </div>
                 </li>
                 <li class="mx-4">|</li>
-                <li><button id="dark-mode-toggle" class="dark-mode-toggle" title="Switch Mode" (click)="changeTheme()">
+                <li><button id="dark-mode-toggle" class="dark-mode-toggle" title="{{resourceService?.frmelmnts?.lbl?.accessibilitytheme}}" (click)="changeTheme()">
                     <svg width="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 496">
                       <path fill="var(--white)"
                         d="M8,256C8,393,119,504,256,504S504,393,504,256,393,8,256,8,8,119,8,256ZM256,440V72a184,184,0,0,1,0,368Z"

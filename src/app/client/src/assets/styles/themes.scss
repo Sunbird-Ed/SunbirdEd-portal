@@ -299,6 +299,10 @@ html[data-theme='Default'] {
   --cc-faq-panel-title-text: var(--primary-color);
   --cc-faq-info-msg-bg: var(--primary-0);
   --cc-faq-panelheader-bg: var(--white);
+  --cc-faq-panel-body-bg:var(--white);
+  --cc-faq-panel-interact-bg:var(--white);
+  --cc-faq-yesbtn-bg:inherit;
+    --cc-faq-yesbtn-text:inherit;
 
   //layout
   --cc-lb-card-hlist-title: var(--black);
@@ -321,7 +325,7 @@ html[data-theme='Default'] {
 
   //joy theme
   --themeflower-bg: #ffd92a;
-
+  --visit-helpcenter-bg:var(--white);
   .navBlock .pdf-nav-unit {
     color: var(--white) !important;
   }
@@ -334,7 +338,6 @@ html[data-theme=Darkmode][layout='old'] {
   --grey-nuance-lighter: #333;
   --grey-nuance-darker: #111;
   --fade-grey: #f2f2f2;
-
 }
 
 html[data-theme='Default'][layout='joy'] {
@@ -1658,6 +1661,10 @@ html[data-theme=Darkmode] {
   --cc-faq-panel-title-text: var(--primary-color);
   --cc-faq-info-msg-bg: var(--primary-0);
   --cc-faq-panelheader-bg: var(--white);
+  --cc-faq-panel-body-bg:#222;
+  --cc-faq-panel-interact-bg:#222;
+  --cc-faq-yesbtn-bg:inherit;
+  --cc-faq-yesbtn-text:#000;
 
   //layout
   --cc-lb-card-hlist-title: var(--black);
@@ -1672,6 +1679,8 @@ html[data-theme=Darkmode] {
   --sb-modal-header-text: var(--black);
   --sb-modal-content-bg: var(--sbt-compt-bg);
   --sb-modal-actions-bg: var(--sbt-compt-bg);
+
+  --visit-helpcenter-bg:#333;
 
   .notification-bell {
     box-shadow: none;
@@ -1779,6 +1788,12 @@ html[data-theme=Darkmode] {
       background-color: var(--primary-color) !important;
       color: var(--black);
     }
+  }
+  .sb-onboard__container {
+    background: #333;
+  }
+  .help-page__header.sb-bg-color-white {
+    background:#222 !important;
   }
 }
 
