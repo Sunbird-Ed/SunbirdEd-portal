@@ -29,8 +29,8 @@ describe('DataDrivenComponent', () => {
     'messages': {
       'emsg': {
         'm0005': 'api failed, please try again',
-        'm0014' : 'Unable to get channel details',
-        'm0015' : 'Unable to get collection details'
+        'm0024' : 'Unable to get category defination details, please try again later...',
+        'm0025' : 'Unable to get framework details, please try again later...'
       },
       'stmsg': {
         'm0018': 'We are fetching content...',
@@ -472,7 +472,7 @@ describe('DataDrivenComponent', () => {
     const workSpaceService = TestBed.get(WorkSpaceService);
     spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableThrowError({}));
     componentParent.selectFramework(mockCardData);
-    expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0015);
+    expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0024);
   });
 
   it('#selectFramework() should throw error if framework API failed', () => {
@@ -486,7 +486,7 @@ describe('DataDrivenComponent', () => {
     spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockFrameworkData.successCategory));
     spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableThrowError({}));
     componentParent.selectFramework(mockCardData);
-    expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0014);
+    expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0025);
 
   });
 

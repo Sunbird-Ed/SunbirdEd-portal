@@ -57,6 +57,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   contentData;
   contentName: string;
   showModal = false;
+
   constructor(public searchService: SearchService, public router: Router,
     public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
     public resourceService: ResourceService, public toasterService: ToasterService, public changeDetectorRef: ChangeDetectorRef,
@@ -75,6 +76,12 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.isDesktopApp = this.utilService.isDesktopApp;
     this.listenLanguageChange();
+    this.contentManagerService.contentDownloadStatus$
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(contentDownloadStatus => {
+      this.contentDownloadStatus = contentDownloadStatus;
+      this.addHoverData();
+    });
     this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
       this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
       this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
@@ -288,6 +295,55 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       this.telemetryImpression = Object.assign({}, this.telemetryImpression);
     }
   }
+  private setTelemetryData() {
+    this.inViewLogs = []; // set to empty every time filter or page changes
+    this.closeIntractEdata = {
+      id: 'search-close',
+      type: 'click',
+      pageid: 'home-search'
+    };
+    this.cardIntractEdata = {
+      id: 'content-card',
+      type: 'click',
+      pageid: 'home-search'
+    };
+    this.filterIntractEdata = {
+      id: 'filter',
+      type: 'click',
+      pageid: 'home-search'
+    };
+  }
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          uri: this.router.url,
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          duration: this.navigationhelperService.getPageLoadTime()
+        }
+      };
+    });
+  }
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+  private setNoResultMessage() {
+    this.noResultMessage = {
+      'message': 'messages.stmsg.m0007',
+      'messageText': 'messages.stmsg.m0006'
+    };
+  }
+
+  callDownload() {
+    this.showDownloadLoader = true;
+    this.downloadContent(this.downloadIdentifier);
+  }
 
   addHoverData() {
     _.forEach(this.contentList, contents => {
@@ -349,45 +405,6 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         });
   }
 
-  private setTelemetryData() {
-    this.inViewLogs = []; // set to empty every time filter or page changes
-    this.closeIntractEdata = {
-      id: 'search-close',
-      type: 'click',
-      pageid: 'home-search'
-    };
-    this.cardIntractEdata = {
-      id: 'content-card',
-      type: 'click',
-      pageid: 'home-search'
-    };
-    this.filterIntractEdata = {
-      id: 'filter',
-      type: 'click',
-      pageid: 'home-search'
-    };
-  }
-  ngAfterViewInit() {
-    setTimeout(() => {
-      this.telemetryImpression = {
-        context: {
-          env: this.activatedRoute.snapshot.data.telemetry.env
-        },
-        edata: {
-          type: this.activatedRoute.snapshot.data.telemetry.type,
-          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-          uri: this.router.url,
-          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
-          duration: this.navigationhelperService.getPageLoadTime()
-        }
-      };
-    });
-  }
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
-
   private listenLanguageChange() {
     this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe((languageData) => {
       this.setNoResultMessage();
@@ -398,13 +415,6 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         this.facets = this.searchService.updateFacetsData(this.facets);
       }
     });
-  }
-
-  private setNoResultMessage() {
-    this.noResultMessage = {
-      'message': 'messages.stmsg.m0007',
-      'messageText': 'messages.stmsg.m0006'
-    };
   }
 
   logTelemetry(content, actionId) {
@@ -423,7 +433,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         edata: {
             id: actionId,
             type: 'click',
-            pageid: this.router.url.split('/')[1] || 'explore-page'
+            pageid: this.router.url.split('/')[1] || 'Search-page'
         }
     };
 
@@ -435,5 +445,5 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         appTelemetryInteractData.object = telemetryInteractObject;
     }
     this.telemetryService.interact(appTelemetryInteractData);
-}
+  }
 }

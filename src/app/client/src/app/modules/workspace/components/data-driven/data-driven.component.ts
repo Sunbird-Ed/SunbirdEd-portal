@@ -480,10 +480,10 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
         this.selectedCard = cardData;
         this.telemetryService.interact(telemetryInteractData);
       }, err => {
-        this.toasterService.error(this.resourceService.messages.emsg.m0014);
+        this.toasterService.error(this.resourceService.messages.emsg.m0025);
       });
     }, err => {
-      this.toasterService.error(this.resourceService.messages.emsg.m0015);
+      this.toasterService.error(this.resourceService.messages.emsg.m0024);
     });
   }
 
