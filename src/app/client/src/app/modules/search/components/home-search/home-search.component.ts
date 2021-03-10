@@ -1,16 +1,17 @@
 import {
   PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
   ICard, ILoaderMessage, UtilService, BrowserCacheTtlService, NavigationHelperService, IPagination,
-  LayoutService, COLUMN_TYPE, SchemaService
+  LayoutService, COLUMN_TYPE, SchemaService, OfflineCardService
 } from '@sunbird/shared';
 import { SearchService, PlayerService, CoursesService, UserService, ISort, OrgDetailsService } from '@sunbird/core';
 import { combineLatest, Subject, of } from 'rxjs';
 import { Component, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
-import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { takeUntil, map, delay, first, debounceTime, tap, mergeMap } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
+import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
 
 @Component({
   templateUrl: './home-search.component.html'
@@ -49,13 +50,23 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   public globalSearchFacets: Array<string>;
   public allTabData;
   public allMimeType;
+  isDesktopApp = false;
+  contentDownloadStatus = {};
+  downloadIdentifier: string;
+  showDownloadLoader = false;
+  contentData;
+  contentName: string;
+  showModal = false;
+
   constructor(public searchService: SearchService, public router: Router,
     public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
     public resourceService: ResourceService, public toasterService: ToasterService, public changeDetectorRef: ChangeDetectorRef,
     public configService: ConfigService, public utilService: UtilService, public coursesService: CoursesService,
     private playerService: PlayerService, public userService: UserService, public cacheService: CacheService,
     public browserCacheTtlService: BrowserCacheTtlService, public orgDetailsService: OrgDetailsService,
-    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService, private schemaService: SchemaService) {
+    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService, private schemaService: SchemaService,
+    public contentManagerService: ContentManagerService, public telemetryService: TelemetryService,
+    private offlineCardService: OfflineCardService) {
     this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
     this.filterType = this.configService.appConfig.home.filterType;
     // this.redirectUrl = this.configService.appConfig.courses.searchPageredirectUrl;
@@ -63,6 +74,14 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.setTelemetryData();
   }
   ngOnInit() {
+    this.isDesktopApp = this.utilService.isDesktopApp;
+    this.listenLanguageChange();
+    this.contentManagerService.contentDownloadStatus$
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(contentDownloadStatus => {
+      this.contentDownloadStatus = contentDownloadStatus;
+      this.addHoverData();
+    });
     this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
       this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
       this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
@@ -181,6 +200,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         const { constantData, metaData, dynamicFields } = this.configService.appConfig.HomeSearch;
         this.contentList = _.map(data.result.content, (content: any) =>
           this.utilService.processContent(content, constantData, dynamicFields, metaData));
+        this.addHoverData();
       }, err => {
         this.showLoader = false;
         this.contentList = [];
@@ -318,5 +338,112 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       'message': 'messages.stmsg.m0007',
       'messageText': 'messages.stmsg.m0006'
     };
+  }
+
+  callDownload() {
+    this.showDownloadLoader = true;
+    this.downloadContent(this.downloadIdentifier);
+  }
+
+  addHoverData() {
+    _.forEach(this.contentList, contents => {
+      if (this.contentDownloadStatus[contents.identifier]) {
+          contents['downloadStatus'] = this.contentDownloadStatus[contents.identifier];
+      }
+   });
+   this.contentList = this.utilService.addHoverData(this.contentList, true);
+  }
+
+  hoverActionClicked(event) {
+    event['data'] = event.content;
+    this.contentName = event.content.name;
+    this.contentData = event.data;
+    let telemetryButtonId: any;
+    switch (event.hover.type.toUpperCase()) {
+        case 'OPEN':
+            this.playContent(event);
+            this.logTelemetry(this.contentData, 'play-content');
+            break;
+        case 'DOWNLOAD':
+            this.downloadIdentifier = _.get(event, 'content.identifier');
+            this.showModal = this.offlineCardService.isYoutubeContent(this.contentData);
+            if (!this.showModal) {
+                this.showDownloadLoader = true;
+                this.downloadContent(this.downloadIdentifier);
+            }
+            telemetryButtonId = this.contentData.mimeType ===
+                'application/vnd.ekstep.content-collection' ? 'download-collection' : 'download-content';
+            this.logTelemetry(this.contentData, telemetryButtonId);
+            break;
+    }
+  }
+
+  downloadContent(contentId) {
+    this.contentManagerService.downloadContentId = contentId;
+    this.contentManagerService.downloadContentData = this.contentData;
+    this.contentManagerService.failedContentName = this.contentName;
+    this.contentManagerService.startDownload({})
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(data => {
+            this.downloadIdentifier = '';
+            this.contentManagerService.downloadContentId = '';
+            this.contentManagerService.downloadContentData = {};
+            this.contentManagerService.failedContentName = '';
+            this.showDownloadLoader = false;
+        }, error => {
+            this.downloadIdentifier = '';
+            this.contentManagerService.downloadContentId = '';
+            this.contentManagerService.downloadContentData = {};
+            this.contentManagerService.failedContentName = '';
+            this.showDownloadLoader = false;
+            _.each(this.contentList, (content) => {
+              content['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
+            });
+            if (!(error.error.params.err === 'LOW_DISK_SPACE')) {
+                this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+            }
+        });
+  }
+
+  private listenLanguageChange() {
+    this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe((languageData) => {
+      this.setNoResultMessage();
+      if (_.get(this.contentList, 'length') ) {
+        if (this.isDesktopApp) {
+          this.addHoverData();
+        }
+        this.facets = this.searchService.updateFacetsData(this.facets);
+      }
+    });
+  }
+
+  logTelemetry(content, actionId) {
+    const telemetryInteractObject = {
+        id: content.identifier,
+        type: content.contentType,
+        ver: content.pkgVersion ? content.pkgVersion.toString() : '1.0'
+    };
+
+    const appTelemetryInteractData: any = {
+        context: {
+            env: _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
+            _.get(this.activatedRoute, 'snapshot.data.telemetry.env') ||
+            _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env')
+        },
+        edata: {
+            id: actionId,
+            type: 'click',
+            pageid: this.router.url.split('/')[1] || 'Search-page'
+        }
+    };
+
+    if (telemetryInteractObject) {
+        if (telemetryInteractObject.ver) {
+            telemetryInteractObject.ver = _.isNumber(telemetryInteractObject.ver) ?
+            _.toString(telemetryInteractObject.ver) : telemetryInteractObject.ver;
+        }
+        appTelemetryInteractData.object = telemetryInteractObject;
+    }
+    this.telemetryService.interact(appTelemetryInteractData);
   }
 }
