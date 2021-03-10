@@ -1828,6 +1828,33 @@ html[data-theme='Darkmode'][layout='joy'] {
 }
 
 //accessible scss start
+html[accessable-theme="accessible"][data-theme=Darkmode] {
+  .sb--card__meta1>.data_2 {
+    background-color: #444444 !important;
+    color: #ffd92a !important;
+  }
+  
+}
+
+html[accessable-theme="accessible"][layout='joy'] {
+  .sb--card__meta1>.data_2 {
+    background-color: #444444 !important;
+    color: #ffd92a !important;
+  }
+}
+
+html[accessable-theme="accessible"][layout='joy'][data-theme=Darkmode] {
+  .sbt-class-bar .sb-slider-pills-container .sb-pills-container .pill.active,
+  .sbt-class-bar .sb-slider-pills-container .sb-pills-container .pill:hover {
+    background-color: var(--primary-color) !important;
+    color: var(--black) !important;
+  }
+  .sbt-class-bar .sb-slider-pills-container .sb-pills-container .pill {
+    color: var(--white) !important;
+  }
+}
+
+
 html[accessable-theme="accessible"] {
   --sbt-pill-text: #000 !important;
   --sbt-pill-bg-active: #004594 !important;
@@ -1859,11 +1886,11 @@ html[accessable-theme="accessible"] {
   }
 
   .sb-btn-link-gray {
-    color: #4b4b4b;
+    color: var(--gray-200);
   }
 
   .content-metadeta__title {
-    color: #4b4b4b !important;
+    color: var(--gray-200) !important;
   }
 
   // .sb-btn-normal {
@@ -1871,7 +1898,7 @@ html[accessable-theme="accessible"] {
   // 	background-color:#A80011;
   // }
   .title.ng-star-inserted {
-    color: #525252 !important;
+    color: var(--primary-color) !important;
   }
 
   .sbt-welcome-theme-container {
@@ -1958,13 +1985,13 @@ html[accessable-theme="accessible"] {
     .sb-pageSection-header {
       .sb-pageSection-sentenceCase {
         .sb-pageSection-count {
-          background-color: #933310 !important;
+          background-color: var(--tertiary-color);
         }
       }
 
       button.sb-btn-secondary,
       .sb-cls-btn {
-        color: #1a1a1a !important;
+        color: var(--white);
       }
     }
   }
