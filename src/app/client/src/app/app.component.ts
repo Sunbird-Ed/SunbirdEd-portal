@@ -107,7 +107,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public unsubscribe$ = new Subject<void>();
   consentConfig: { tncLink: string; tncText: any; };
   isDesktopApp = false;
-// Font Increase Decrease Variables
+  // Font Increase Decrease Variables
   fontSize: any;
   defaultFontSize = 16;
   @ViewChild('increaseFontSize', { static: false }) increaseFontSize: ElementRef;
@@ -806,7 +806,7 @@ export class AppComponent implements OnInit, OnDestroy {
     const headerHeight = document.getElementsByClassName('sbt-fluid-header-bg')[1].clientHeight;
     const topHeight = headerHeight === 80 ? 160 : 96;
     window.scroll({
-     top: topHeight,
+      top: topHeight,
       behavior: 'smooth'
     });
   }
