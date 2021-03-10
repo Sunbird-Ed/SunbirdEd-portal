@@ -4,8 +4,10 @@ import { NotificationService } from '../../services/notification/notification.se
 import * as _ from 'lodash-es';
 import { UserFeedStatus } from '@project-sunbird/client-services/models';
 import { NotificationViewConfig } from '@project-sunbird/common-consumption-v8';
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService, ConnectionService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
+import { takeUntil, delay } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-in-app-notification',
@@ -20,13 +22,16 @@ export class InAppNotificationComponent implements OnInit, OnDestroy {
   notificationList = [];
   notificationCount = 0;
   inAppNotificationConfig: NotificationViewConfig;
+  isConnected = false;
+  unsubscribe$ = new Subject<void>();
 
   constructor(
     private notificationService: NotificationService,
     private router: Router,
     public resourceService: ResourceService,
     private telemetryService: TelemetryService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private connectionService: ConnectionService
   ) {
     this.inAppNotificationConfig = {
       title: this.resourceService.frmelmnts.lbl.notification,
@@ -39,6 +44,14 @@ export class InAppNotificationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.connectionService.monitor()
+    .pipe(takeUntil(this.unsubscribe$), delay(2000)).subscribe(isConnected => {
+      this.isConnected = isConnected;
+      if (this.isConnected) {
+        this.notificationService.refreshNotification$.next(true);
+      }
+    });
+
     this.fetchNotificationList();
     this.notificationService.refreshNotification$.subscribe(refresh => {
       if (refresh) {
