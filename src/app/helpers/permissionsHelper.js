@@ -51,7 +51,14 @@ let PERMISSIONS_HELPER = {
         if (body.result.response.rootOrg && body.result.response.rootOrg.id) {
           reqObj.session.rootOrgId = body.result.response.rootOrg.id
           reqObj.session.rootOrghashTagId = body.result.response.rootOrg.hashTagId
-          reqObj.session.rootOrg = body.result.response.rootOrg
+          // reqObj.session.rootOrg = body.result.response.rootOrg
+          reqObj.session.rootOrg = {};
+          reqObj.session['rootOrg']['id']           = _.get(body, 'result.response.rootOrg.id');
+          reqObj.session['rootOrg']['slug']         = _.get(body, 'result.response.rootOrg.slug');
+          reqObj.session['rootOrg']['orgName']      = _.get(body, 'result.response.rootOrg.orgName');
+          reqObj.session['rootOrg']['channel']      = _.get(body, 'result.response.rootOrg.channel');
+          reqObj.session['rootOrg']['hashTagId']    = _.get(body, 'result.response.rootOrg.hashTagId');
+          reqObj.session['rootOrg']['rootOrgId']    = _.get(body, 'result.response.rootOrg.rootOrgId');
         }
         // For bulk upload user(s); `PUBLIC` role added.
         if (!_.includes(reqObj.session.roles, 'PUBLIC')) {
