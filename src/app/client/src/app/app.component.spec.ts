@@ -394,12 +394,12 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     expect(removeAttributeSpy).toHaveBeenCalledWith(decreaseFontSize.nativeElement, 'disabled');
 
   });
-  
+
   it('should get Local Theme', () => {
-    spyOn(localStorage, 'getItem').and.returnValue('data-theme');
-    spyOn(component, 'getLocalTheme');
+    spyOn(localStorage, 'getItem').and.returnValue('true');
+    spyOn(component, 'setLocalTheme');
     component.getLocalTheme();
-    expect(component.getLocalTheme).toHaveBeenCalled();
+    expect(component.setLocalTheme).toHaveBeenCalled();
   });
   it('should change Theme to Dark mode', () => {
     component.dataThemeAttribute = 'Darkmode';
@@ -413,6 +413,9 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     component.setLocalTheme(component.dataThemeAttribute);
     expect(component.setLocalTheme).toHaveBeenCalled();
   });
-
-
+  it('should call skipToMainContent', () => {
+    spyOn(component, 'skipToMainContent');
+    component.skipToMainContent();
+    expect(component.skipToMainContent).toHaveBeenCalled();
+  });
 });

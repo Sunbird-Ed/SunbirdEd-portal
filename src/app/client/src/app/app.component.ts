@@ -179,7 +179,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.setTheme();
     // themeing code
     this.getLocalFontSize();
-
     // dark theme
     this.getLocalTheme();
   }
@@ -265,7 +264,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.botObject['imageUrl'] = image.imageUrl;
     this.botObject['title'] = this.botObject['header'] = this.title;
     this.generaliseLabelService.getGeneraliseResourceBundle();
-
   }
 
   // Change theme
@@ -810,7 +808,4 @@ export class AppComponent implements OnInit, OnDestroy {
       behavior: 'smooth'
     });
   }
-
 }
-
-
