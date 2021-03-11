@@ -404,10 +404,8 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
   it('should change Theme to Dark mode', () => {
     component.dataThemeAttribute = 'Darkmode';
     spyOn(component, 'changeTheme');
-    spyOn(component, 'setLocalTheme');
     component.changeTheme();
     expect(component.changeTheme).toHaveBeenCalled();
-    expect(component.setLocalTheme).toHaveBeenCalled();
   });
   it('should set the Local Theme', () => {
     component.dataThemeAttribute = 'Darkmode';
