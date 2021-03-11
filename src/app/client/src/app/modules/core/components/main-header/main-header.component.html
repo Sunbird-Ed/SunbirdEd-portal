@@ -376,7 +376,7 @@
             </svg></i>
             {{resourceService?.frmelmnts?.lbl?.accessible}}
           </li>
-          <li class="list-item" appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
+          <li appOnlineOnly class="list-item" appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
             (click)="toggleSideMenu(false);logout()">
             <i class="icon-svg icon-svg--sm icon-logout mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#logout"></use>
