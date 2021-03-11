@@ -54,7 +54,9 @@ export class InAppNotificationComponent implements OnInit, OnDestroy {
     });
 
     this.fetchNotificationList();
-    this.notificationService.refreshNotification$.subscribe(refresh => {
+    this.notificationService.refreshNotification$
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(refresh => {
       if (refresh) {
         this.fetchNotificationList();
       }
@@ -154,7 +156,8 @@ export class InAppNotificationComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.notificationService.refreshNotification$.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   handleShowMore(event) {
@@ -168,5 +171,4 @@ export class InAppNotificationComponent implements OnInit, OnDestroy {
       this.generateInteractEvent('see-less');
     }
   }
-
 }
