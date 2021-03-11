@@ -2,7 +2,7 @@
 @import 'mixins/mixins';
 
 .landing-page-section {
-    background-color:var(--white);
+    background-color:var(--sb-landing-page-bg);
     border-bottom: calculateRem(1px) solid rgba(var(--rc-rgba-gray), 0.79);
     -webkit-box-shadow: 0 calculateRem(1px) calculateRem(3px) rgba(var(--rc-rgba-black), 0.075);
     box-shadow: 0 calculateRem(1px) calculateRem(3px) rgba(var(--rc-rgba-black), 0.075);
