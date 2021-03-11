@@ -394,4 +394,25 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     expect(removeAttributeSpy).toHaveBeenCalledWith(decreaseFontSize.nativeElement, 'disabled');
 
   });
+  
+  it('should get Local Theme', () => {
+    spyOn(localStorage, 'getItem').and.returnValue('data-theme');
+    spyOn(component, 'getLocalTheme');
+    component.getLocalTheme();
+    expect(component.getLocalTheme).toHaveBeenCalled();
+  });
+  it('should change Theme to Dark mode', () => {
+    component.dataThemeAttribute = 'Darkmode';
+    spyOn(component, 'changeTheme');
+    component.changeTheme();
+    expect(component.changeTheme).toHaveBeenCalled();
+  });
+  it('should set the Local Theme', () => {
+    component.dataThemeAttribute = 'Darkmode';
+    spyOn(component, 'setLocalTheme');
+    component.setLocalTheme(component.dataThemeAttribute);
+    expect(component.setLocalTheme).toHaveBeenCalled();
+  });
+
+
 });
