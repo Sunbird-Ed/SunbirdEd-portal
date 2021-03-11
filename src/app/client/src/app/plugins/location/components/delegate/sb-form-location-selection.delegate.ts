@@ -199,7 +199,7 @@ export class SbFormLocationSelectionDelegate {
 
     if (this.shouldUserProfileLocationUpdate && this.userService.loggedIn) {
       const formValue = this.formGroup.value;
-      const payload = {
+      const payload: any = {
         userId: _.get(this.userService, 'userid'),
         locationCodes: locationDetails,
         ...(_.get(formValue, 'name') ? { firstName: _.get(formValue, 'name') } : {} ),
