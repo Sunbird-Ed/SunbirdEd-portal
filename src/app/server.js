@@ -90,7 +90,7 @@ app.all([
   '/sso/sign-in/*','/v1/desktop/handleGauth', '/v1/desktop/google/auth/success'
 ],
   session({
-    secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
+    secret: envHelper.PORTAL_SESSION_SECRET_KEY,
     resave: false,
     cookie: {
       maxAge: envHelper.sunbird_session_ttl 
@@ -100,7 +100,10 @@ app.all([
   }), keycloak.middleware({ admin: '/callback', logout: '/logout' }));
 
 app.all('/logoff', endSession, (req, res) => {
-  res.cookie('connect.sid', '', { expires: new Date() }); res.redirect('/logout')
+  // Clear cookie for client (browser)
+  res.status(200).clearCookie('connect.sid', { path: '/' });
+  // Clear session pertaining to User
+  req.session.destroy(function (err) { res.redirect('/logout') });
 })
 
 const morganConfig = (tokens, req, res) => {

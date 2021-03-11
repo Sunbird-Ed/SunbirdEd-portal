@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService, PublicDataService, ContentService, FrameworkService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
-import { ConfigService, NavigationHelperService, ToasterService, ResourceService } from '@sunbird/shared';
+import { ConfigService, NavigationHelperService, ToasterService, ResourceService, LayoutService } from '@sunbird/shared';
 import { EditorService, WorkSpaceService } from './../../../services';
 import { ActivatedRoute} from '@angular/router';
 import * as _ from 'lodash-es';
@@ -23,7 +23,8 @@ export class NewCollectionEditorComponent implements OnInit {
   public collectionDetails: any;
   public showQuestionEditor = false;
   public hierarchyConfig: any;
-  constructor(private userService: UserService,
+  public layoutType: string;
+  constructor(private userService: UserService, public layoutService: LayoutService,
     private telemetryService: TelemetryService, private publicDataService: PublicDataService,
     private config: ConfigService, private contentService: ContentService,
     public editorService: EditorService, public workSpaceService: WorkSpaceService,
@@ -35,17 +36,25 @@ export class NewCollectionEditorComponent implements OnInit {
     this.deviceId = deviceId ? deviceId.value : '';
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     this.portalVersion = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
+    this.layoutType = localStorage.getItem('layoutType') || 'joy';
   }
 
   ngOnInit() {
     this.routeParams = this.activatedRoute.snapshot.params;
     this.userProfile = this.userService.userProfile;
     this.getCollectionDetails().subscribe(data => {
+        this.switchLayout();
         this.collectionDetails = data.result.content;
         this.showQuestionEditor = this.collectionDetails.mimeType === 'application/vnd.sunbird.questionset' ? true : false;
         this.getFrameWorkDetails();
       });
     this.loadScripts();
+  }
+
+  switchLayout() {
+    if (this.layoutType === 'joy') {
+      this.layoutService.initiateSwitchLayout();
+    }
   }
 
   loadScripts() {
@@ -101,13 +110,13 @@ export class NewCollectionEditorComponent implements OnInit {
             || this.config.appConfig.WORKSPACE.questionPrimaryCategories;
             break;
           case 'Content':
-            childrenData[key] = this.frameworkService['_channelData'].contentPrimaryCategories;
+            childrenData[key] = this.frameworkService['_channelData'].contentPrimaryCategories || [];
             break;
           case 'Collection':
-            childrenData[key] = this.frameworkService['_channelData'].collectionPrimaryCategories;
+            childrenData[key] = this.frameworkService['_channelData'].collectionPrimaryCategories || [];
             break;
           case 'QuestionSet':
-            childrenData[key] = this.frameworkService['_channelData'].questionsetPrimaryCategories;
+            childrenData[key] = this.frameworkService['_channelData'].questionsetPrimaryCategories || [];
             break;
         }
       }
@@ -116,6 +125,7 @@ export class NewCollectionEditorComponent implements OnInit {
   }
 
   editorEventListener(event) {
+    this.switchLayout();
     this.redirectToWorkSpace();
   }
 
@@ -185,8 +195,11 @@ export class NewCollectionEditorComponent implements OnInit {
       return 'edit';
     }
     if (contentStatus === 'review') {
-      return 'read';
+      if (this.collectionDetails.createdBy === this.userProfile.id) {
+        return 'read';
+      } else {
+        return 'review';
+      }
     }
   }
-
 }

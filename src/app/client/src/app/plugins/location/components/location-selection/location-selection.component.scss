@@ -98,9 +98,11 @@
       max-width: 80%;
     }
   }
-
-  .brand-logo {
-    width: calculateRem(86px);
+  
+  ::ng-deep{
+    .brand-logo {
+      width: calculateRem(86px);
+    }
   }
 
   .arrow-icon {

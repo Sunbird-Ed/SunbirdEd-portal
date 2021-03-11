@@ -529,7 +529,7 @@ app-workspace {
 }
 
 .sbt-sticky-topbar {
-  top: 0;
+  top: calculateRem(48px);
   z-index: 10;
   &.player-fullscreen-header{
     display: none;
@@ -598,7 +598,7 @@ app-workspace {
     .lib-chat-head {
       position: absolute !important;
       right: 4.5rem !important;
-      top: calculateRem(-2px) !important;
+      top: calculateRem(44px) !important;
       bottom: inherit !important;
       z-index: 999 !important;
     }
@@ -614,7 +614,7 @@ app-workspace {
        font-size:calculateRem(14px) !important;
      }
      html[layout="joy"] .lib-chat-head {
-      top: calculateRem(6px) !important;
+      top: calculateRem(56px) !important;
       z-index: inherit !important;
      }
   }
@@ -752,5 +752,131 @@ app-workspace {
     background: url(assets/images/close.png) no-repeat!important;
     height: 1.375rem;
     width: 1.375rem;
+  }
+}
+
+/* theme and font resize css */
+.sb-fontresizecontainer {
+  top: 0;
+  &.sbt-container {
+    padding: 0;
+    html[layout="joy"] & {
+      padding: 0 2%;
+    }
+  }
+  @include respond-below(sm) {
+    &.sbt-container {
+      .ui.container {
+        width: 100% !important;
+      }
+    }
+    padding: calculateRem(8px);
+  }
+}
+
+.fontResizeBtn_A- {}
+
+.fontResizeBtn_A {}
+
+.fontResizeBtn_A+ {}
+
+.fontResizeBtn {
+  border: 1px solid #484848;
+  background: none;
+  color: var(--white);
+  font-size: calculateRem(12px);
+  width: calculateRem(32px);
+  height: calculateRem(32px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0px 2px;
+  padding: 0px 8px;
+  transition: all .3s ease-in-out;
+}
+
+.fontResizeBtn:hover,
+.fontResizeBtn:active {
+  background: #ff714a;
+  color: var(--white);
+  cursor: pointer;
+  border-radius: 50%;
+  outline: 0px;
+}
+
+.fontResizeBtn:focus,
+.dark-mode-toggle:focus {
+  outline: 0px;
+}
+
+.fontResizeBtn:disabled,
+.fontResizeBtn[disabled] {
+  opacity: 0.5;
+  background: none;
+}
+
+.fontResize-divider {
+  width: calculateRem(1px);
+  height: calculateRem(12px);
+  background-color: var(--white);
+  margin: 0 calculateRem(8px);
+}
+
+.dark-mode-toggle {
+  border: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0px;
+  background: none;
+  cursor: pointer;
+  transition: all .3s ease-in-out;
+}
+
+.dark-mode-toggle:hover {
+  outline: none;
+  background: #484848;
+  border-radius: 50%;
+}
+
+quml-player {
+  .quml-container {
+    width: 100%;
+    background: white;
+    height: 100%;
+    overflow: auto;
+
+    .filter-option:hover, .active {
+      border-bottom: unset;
+      font-weight: inherit;
+    }
+
+
+    .lanscape-mode-right {
+      height: calc(100% - 56px);
+
+      ul::before {
+        z-index: 0 !important;
+      }
+    }
+  }
+}
+
+.desktop-app {
+  .sb-md-container{
+    .async-text{
+      border: none !important;
+      input{
+        border: 1px solid #333 !important;
+      }
+    }
+    .sb-textbox{
+      padding: 4px 16px !important;
+    }
+  }
+  .sbt-sticky-topbar { // To hide top(screen reader) space
+    top: 0;
   }
 }

@@ -85,9 +85,8 @@ describe('DataChartComponent', () => {
             'Class 9',
             'Class 10'
         ]);
-        expect(component.datasets).toEqual([{
-            label: 'Total number of QR codes',
-            data: [
+        expect(component.datasets[0].data).toEqual(
+           [
                 115,
                 1158,
                 3532,
@@ -98,10 +97,8 @@ describe('DataChartComponent', () => {
                 208,
                 819,
                 750
-            ],
-            hidden: false,
-            fill: true
-        }]);
+            ]
+        );
 
         expect(component.resultStatistics).toEqual({
             'Total number of QR codes': {
@@ -112,78 +109,6 @@ describe('DataChartComponent', () => {
             }
         });
     });
-
-    it('should build filters form from the configuration', () => {
-        const spy = spyOn(component, 'buildFiltersForm').and.callThrough();
-        component.ngOnInit();
-        expect(spy).toHaveBeenCalled();
-        expect(spy).toHaveBeenCalledTimes(1);
-        expect(component.filtersFormGroup.contains('Medium')).toBe(true);
-        expect(component.filtersFormGroup.contains('Grade')).toBe(true);
-        expect(component.filtersFormGroup.contains('Textbook name')).toBe(true);
-        expect(component.filtersFormGroup.controls).toBeTruthy();
-    });
-
-    it('should change selected filters value whenever any filter is changed', fakeAsync(() => {
-        const spy = spyOn(component, 'getDataSetValue').and.callThrough();
-        component.ngOnInit();
-        component.filtersFormGroup.get('Grade').setValue(['Class 2']);
-        component.filtersFormGroup.get('Medium').setValue(['telugu']);
-        tick(1000);
-        expect(component.selectedFilters).toEqual({
-            'Grade': ['Class 2'],
-            'Medium': ['telugu']
-        });
-        expect(spy).toHaveBeenCalled();
-        expect(spy).toHaveBeenCalledWith([{
-            'Textbook ID': 'do_312526681781231616143581',
-            'Medium': 'Telugu',
-            'Grade': 'Class 2',
-            'Subject': 'English',
-            'Textbook name': 'TEL_MY_English_BOOK_STD_2ND',
-            'Total number of QR codes': '70',
-            'Number of QR codes with atleast 1 linked content': '64',
-            'Number of QR codes with no linked content': '6'
-        }, {
-            'Textbook ID': 'do_312528209599135744252700',
-            'Medium': 'Telugu',
-            'Grade': 'Class 2',
-            'Subject': 'Mathematics',
-            'Textbook name': 'Tel_mathematics_std_2nd',
-            'Total number of QR codes': '65',
-            'Number of QR codes with atleast 1 linked content': '5',
-            'Number of QR codes with no linked content': '60'
-        }]);
-        expect(component.noResultsFound).toBe(false);
-        expect(component.chartLabels).toEqual(['Class 2']);
-        expect(component.datasets).toEqual([{
-            label: 'Total number of QR codes',
-            data: [135],
-            hidden: false,
-            fill: true
-        }]);
-    }));
-
-    it('should reset the filters on click of reset button', () => {
-        const spy = spyOn(component, 'resetFilter').and.callThrough();
-        const resetButton = fixture.debugElement.query(By.css('.sb-btn.sb-btn-outline-primary.sb-btn-normal'));
-        resetButton.triggerEventHandler('click', null);
-        fixture.detectChanges();
-        fixture.whenStable().then(() => {
-            expect(spy).toHaveBeenCalled();
-        });
-    });
-
-    xit('should set the dateRange', fakeAsync(() => {
-        component.ngOnInit();
-        tick(1000);
-        component.getDateRange({
-            startDate: 'Tue Jan 08 2019 00:00:00 GMT+0530 (India Standard Time)',
-            endDate: 'Tue Jan 10 2019 00:00:00 GMT+0530 (India Standard Time)'
-        }, 'Grade');
-        tick(1000);
-        expect(component.filtersFormGroup.get('Grade').value).toEqual(['08-01-2019', '09-01-2019', '10-01-2019']);
-    }));
 
     describe('checkForStacking function', () => {
 
@@ -261,6 +186,63 @@ describe('DataChartComponent', () => {
         expect(result).toEqual([{ slug: 'ap' }, { slug: 'gj' }, { slug: 'rj' }]);
     });
 
+  
+    it('should change the filter and chart type', fakeAsync(() => {
+        component.ngOnInit();
+        tick(1000);
+        component.filterChanged({
+            chartType:mockChartData.chartConfig.chartType,
+          chartData:mockChartData.chartData,
+          filters:mockChartData.chartConfig.filters
+        });
+        expect(component.chartType).toEqual(mockChartData.chartConfig.chartType);
+      }));
+
+      it('should check show stats', fakeAsync(() => {
+        component.ngOnInit();
+        tick(1000);
+        component.graphStatsChange(false);
+        expect(component.showStats).toEqual(false);
+      }));
+      it('should change chart type', fakeAsync(() => {
+        component.ngOnInit();
+        tick(1000);
+        component.changeChartType('bar');
+        expect(component.chartType).toEqual('bar');
+      }));
+
+       it('should close popup', fakeAsync(() => {
+        component.ngOnInit();
+        tick(1000);
+        component.filterModalPopup(false);
+        expect(component.filterPopup).toEqual(false);
+      }));
+
+      it('should open modal popup', fakeAsync(() => {
+        component.ngOnInit();
+        tick(1000);
+        component.filterModalPopup(true);
+        expect(component.filterPopup).toEqual(true);
+      }));
+
+      it('should check checkFilterReferance', fakeAsync(() => {
+        component.ngOnInit();
+        tick(1000);
+        component.dateFilters = ['date'];
+        const response = component.checkFilterReferance("date");
+        expect(response).toEqual(true);
+      }));
+     
+      it('should set globalFilter', fakeAsync(() => {
+        component.ngOnInit();
+        tick(1000);
+        component.globalFilter = { chartData : mockChartData.chartData  };
+        expect(component.chartData).toEqual(mockChartData.chartData);
+       
+      }));
+     
+      
+      
     it('should sort data in ascending order based on Date key', () => {
         const inputData = [{ slug: 'ap', date: '01-01-2018' }, { slug: 'rj', date: '01-02-2018' }, { slug: 'gj', date: '01-01-2017' }];
         const key = 'date';

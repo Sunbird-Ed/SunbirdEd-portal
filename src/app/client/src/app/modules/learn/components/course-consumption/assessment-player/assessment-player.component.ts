@@ -34,7 +34,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   courseHierarchy;
   enrolledBatchInfo;
   showLoader = true;
-  noContentMessage = 'No Content available';
+  noContentMessage = '';
   activeContent: any;
   isContentPresent = false;
   courseFallbackImg = './../../../../../assets/images/book.png';
@@ -147,6 +147,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
       this.isFullScreenView = isFullScreen;
     });
+    this.noContentMessage = _.get(this.resourceService, 'messages.stmsg.m0121');
+    this.getLanguageChangeEvent();
   }
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -170,6 +172,12 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.router.navigate(['/learn/course', this.courseId, 'batch', this.batchId], {queryParams: paramas});
     }, 500);
+  }
+
+  getLanguageChangeEvent() {
+    this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe)).subscribe(item => {
+      this.noContentMessage = _.get(this.resourceService, 'messages.stmsg.m0121');
+    });
   }
 
   private subscribeToQueryParam() {
@@ -261,67 +269,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     }));
   }
 
-  getCourseCompletionStatus(showPopup: boolean = false) {
-    /* istanbul ignore else */
-    if (!this.isCourseCompleted) {
-      let maxAttemptsExceeded = false;
-      this.showMaxAttemptsModal = false;
-      let isLastAttempt = false;
-      const req:any = this.getContentStateRequest(this.parentCourse);
-      if (_.get(this.activeContent, 'contentType') === 'SelfAssess' || !this.isRouterExtrasAvailable) {
-        this.CsCourseService
-          .getContentState(req, { apiPath: '/content/course/v1' })
-          .pipe(takeUntil(this.unsubscribe))
-          .subscribe((_res) => {
-            const res = this.CourseProgressService.getContentProgressState(req, _res);
-            _.forEach(_.get(res, 'content'), (contentState) => {
-              if (_.get(contentState, 'contentId') === this.activeContent.identifier) {
-                if (_.get(contentState, 'score.length') >= _.get(this.activeContent, 'maxAttempts')) maxAttemptsExceeded = true;
-                if (_.get(this.activeContent, 'maxAttempts') - _.get(contentState, 'score.length') === 1) isLastAttempt = true;
-              }
-            });
-
-            /* istanbul ignore else */
-            if (maxAttemptsExceeded) {
-              this.showMaxAttemptsModal = true;
-            } else if (isLastAttempt) {
-              this.toasterService.error(this.resourceService.frmelmnts.lbl.selfAssessLastAttempt);
-            } else if (_.get(res, 'content.length')) {
-              this.isCourseCompleted = (res.totalCount === res.completedCount);
-              this.showCourseCompleteMessage = this.isCourseCompleted && showPopup;
-              if (this.showCourseCompleteMessage) {
-                this.notificationService.refreshNotification$.next(true);
-              }
-              this.isCourseCompletionPopupShown = this.isCourseCompleted;
-            }
-            this.calculateProgress();
-          }, error => {
-            console.log('Content state read CSL API failed ', error);
-          });
-      } else {
-        _.forEach(this.contentStatus, (contentState) => {
-          if (_.get(contentState, 'contentId') === _.get(this.activeContent, 'identifier')) {
-            if (_.get(contentState, 'score.length') >= _.get(this.activeContent, 'maxAttempts')) maxAttemptsExceeded = true;
-            if (_.get(this.activeContent, 'maxAttempts') - _.get(contentState, 'score.length') === 1) isLastAttempt = true;
-          }
-        });
-        /* istanbul ignore else */
-        if (maxAttemptsExceeded) {
-          this.showMaxAttemptsModal = true;
-        } else if (isLastAttempt) {
-          this.toasterService.error(this.resourceService.frmelmnts.lbl.selfAssessLastAttempt);
-        } else if (this.contentStatus.length) {
-          this.isCourseCompleted = (_.get(this._routerStateContentStatus, 'totalCount') === _.get(this._routerStateContentStatus, 'completedCount'));
-          this.showCourseCompleteMessage = this.isCourseCompleted && showPopup;
-          if (this.showCourseCompleteMessage) {
-            this.notificationService.refreshNotification$.next(true);
-          }
-          this.isCourseCompletionPopupShown = this.isCourseCompleted;
-        }
-      }
-    }
-  }
-
   getContentStateRequest(course: any) {
     return {
       userId: this.userService.userid,
@@ -358,36 +305,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     return contents.find((content) => content.mimeType !== 'application/vnd.ekstep.content-collection');
   }
 
-  private initPlayer(id: string) {
-    this.assessmentScoreService.init({
-      batchDetails: this.enrolledBatchInfo,
-      courseDetails: this.courseHierarchy,
-      contentDetails: { identifier: id }
-    });
-    const options: any = { courseId: this.collectionId };
-
-    /* istanbul ignore else */
-    if (this.batchId) {
-      options.batchId = this.batchId;
-    }
-
-    this.courseConsumptionService.getConfigByContent(id, options)
-      .pipe(first(), takeUntil(this.unsubscribe))
-      .subscribe(config => {
-        const objectRollup = this.courseConsumptionService.getContentRollUp(this.courseConsumptionService.courseHierarchy, id);
-        this.objectRollUp = objectRollup ? this.courseConsumptionService.getRollUp(objectRollup) : {};
-        if (config && config.context) {
-          config.context.objectRollup = this.objectRollUp;
-        }
-        this.playerConfig = config;
-        this.showLoader = false;
-        this.setTelemetryContentImpression();
-      }, (err) => {
-        this.showLoader = false;
-        this.toasterService.error(this.resourceService.messages.stmsg.m0009);
-      });
-  }
-
   navigateToInitPlayer(event: any, id) {
     this.navigationObj = {
       event: event,
@@ -395,7 +312,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     };
     if (_.get(event, 'event.isDisabled')) {
       return this.toasterService.error(this.resourceService.frmelmnts.lbl.selfAssessMaxAttempt);
-    } else if (_.get(event, 'event.isLastAttempt')) {
+    } else if (_.get(event, 'event.isLastAttempt') && !this._routerStateContentStatus) {
       this.showLastAttemptsModal = true;
     } else {
       this.onTocCardClick();
@@ -747,4 +664,138 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  getCourseCompletionStatus(showPopup: boolean = false) {
+    /* istanbul ignore else */
+    if (!this.isCourseCompleted) {
+      let maxAttemptsExceeded = false;
+      this.showMaxAttemptsModal = false;
+      let isLastAttempt = false;
+      const req:any = this.getContentStateRequest(this.parentCourse);
+      if (_.get(this.activeContent, 'contentType') === 'SelfAssess' || !this.isRouterExtrasAvailable) {
+        this.CsCourseService
+          .getContentState(req, { apiPath: '/content/course/v1' })
+          .pipe(takeUntil(this.unsubscribe))
+          .subscribe((_res) => {
+            const res = this.CourseProgressService.getContentProgressState(req, _res);
+            /* istanbul ignore next*/
+            _.forEach(_.get(res, 'content'), (contentState) => {
+              if (_.get(contentState, 'contentId') === this.activeContent.identifier) {
+                /* istanbul ignore next*/
+                if (_.get(contentState, 'score.length') >= _.get(this.activeContent, 'maxAttempts')) maxAttemptsExceeded = true;
+                if (_.get(this.activeContent, 'maxAttempts') - _.get(contentState, 'score.length') === 1) isLastAttempt = true;
+                /* istanbul ignore next*/
+                if (_.get(this.activeContent, 'contentType') === 'SelfAssess') {
+                  /* istanbul ignore next*/
+                  const _contentIndex = _.findIndex(this.contentStatus, {contentId: _.get(this.activeContent, 'identifier')});
+                  this.contentStatus[_contentIndex]['bestScore'] = _.get(contentState, 'bestScore');
+                  this.contentStatus[_contentIndex]['score'] = _.get(contentState, 'score');
+                }
+              }
+            });
+
+            /* istanbul ignore else */
+            if (maxAttemptsExceeded && !showPopup) {
+              this.showMaxAttemptsModal = true;
+            } else if (isLastAttempt) {
+              this.toasterService.error(this.resourceService.frmelmnts.lbl.selfAssessLastAttempt);
+            } else if (_.get(res, 'content.length')) {
+              this.isCourseCompleted = (res.totalCount === res.completedCount);
+              this.showCourseCompleteMessage = this.isCourseCompleted && showPopup;
+              if (this.showCourseCompleteMessage) {
+                this.notificationService.refreshNotification$.next(true);
+              }
+              this.isCourseCompletionPopupShown = this.isCourseCompleted;
+            }
+            this.calculateProgress();
+          }, error => {
+            console.log('Content state read CSL API failed ', error);
+          });
+      } else {
+        /* istanbul ignore next*/
+        _.forEach(this.contentStatus, (contentState) => {
+          /* istanbul ignore next*/
+          if (_.get(contentState, 'contentId') === _.get(this.activeContent, 'identifier')) {
+            /* istanbul ignore next*/
+            if (_.get(contentState, 'score.length') >= _.get(this.activeContent, 'maxAttempts')) maxAttemptsExceeded = true;
+            if (_.get(this.activeContent, 'maxAttempts') - _.get(contentState, 'score.length') === 1) isLastAttempt = true;
+          }
+        });
+        /* istanbul ignore else */
+        if (maxAttemptsExceeded) {
+          this.showMaxAttemptsModal = true;
+        } else if (isLastAttempt) {
+          this.toasterService.error(this.resourceService.frmelmnts.lbl.selfAssessLastAttempt);
+        } else if (this.contentStatus && this.contentStatus.length) {
+          this.isCourseCompleted = (_.get(this._routerStateContentStatus, 'totalCount') === _.get(this._routerStateContentStatus, 'completedCount'));
+          this.showCourseCompleteMessage = this.isCourseCompleted && showPopup;
+          if (this.showCourseCompleteMessage) {
+            this.notificationService.refreshNotification$.next(true);
+          }
+          this.isCourseCompletionPopupShown = this.isCourseCompleted;
+        }
+      }
+    }
+  }
+
+  private initPlayer(id: string) {
+    let maxAttemptsExceeded = false;
+    this.showMaxAttemptsModal = false;
+    let isLastAttempt = false;
+    /* istanbul ignore if */
+    if (_.get(this.activeContent, 'contentType') === 'SelfAssess') {
+      const _contentIndex = _.findIndex(this.contentStatus, {contentId: _.get(this.activeContent, 'identifier')});
+      /* istanbul ignore if */
+      if (_.get(this.contentStatus[_contentIndex], 'score.length') >= _.get(this.activeContent, 'maxAttempts')) maxAttemptsExceeded = true;
+      if (_.get(this.activeContent, 'maxAttempts') - _.get(this.contentStatus[_contentIndex], 'score.length') === 1) isLastAttempt = true;
+    }
+    /* istanbul ignore if */
+    if (maxAttemptsExceeded) {
+      this.showMaxAttemptsModal = true;
+    } else {
+      /* istanbul ignore if */
+      if (isLastAttempt && !this.showLastAttemptsModal && this._routerStateContentStatus) {
+        this.toasterService.error(this.resourceService.frmelmnts.lbl.selfAssessLastAttempt);
+      }
+      this.assessmentScoreService.init({
+        batchDetails: this.enrolledBatchInfo,
+        courseDetails: this.courseHierarchy,
+        contentDetails: { identifier: id }
+      });
+      const options: any = { courseId: this.collectionId };
+      /* istanbul ignore else */
+      if (this.batchId) {
+        options.batchId = this.batchId;
+      }
+  
+      this.courseConsumptionService.getConfigByContent(id, options)
+        .pipe(first(), takeUntil(this.unsubscribe))
+        .subscribe(config => {
+          const objectRollup = this.courseConsumptionService.getContentRollUp(this.courseConsumptionService.courseHierarchy, id);
+          this.objectRollUp = objectRollup ? this.courseConsumptionService.getRollUp(objectRollup) : {};
+          if (config && config.context) {
+            config.context.objectRollup = this.objectRollUp;
+          }
+          this.playerConfig = config;
+          const _contentIndex = _.findIndex(this.contentStatus, { contentId: _.get(config, 'context.contentId') });
+          this.playerConfig['metadata']['maxAttempt'] = _.get(this.activeContent, 'maxAttempts');
+          this.playerConfig['metadata']['currentAttempt'] = _.get(this.contentStatus[_contentIndex], 'score.length') || 0;
+          this.showLoader = false;
+          this.setTelemetryContentImpression();
+        }, (err) => {
+          this.showLoader = false;
+          this.toasterService.error(this.resourceService.messages.stmsg.m0009);
+        });
+    }
+  }
+
+  onSelfAssessLastAttempt(event) {
+    if (_.get(event, 'data') === 'renderer:selfassess:lastattempt') {
+      this.toasterService.error(this.resourceService.frmelmnts.lbl.selfAssessLastAttempt);
+    }
+    if (_.get(event, 'data') === 'renderer:maxLimitExceeded') {
+      this.showMaxAttemptsModal = true;
+    }
+  }
+
 }

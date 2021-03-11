@@ -8,13 +8,17 @@
         <ng-container *ngIf="isDesktopApp">
           <app-network-status></app-network-status>
           <app-load-offline-content></app-load-offline-content>
+          <app-system-warning></app-system-warning>
         </ng-container>
       </div>
       <div [ngClass]="isDesktopApp ? 'sb-desktop-filter-section' : ''">
-        <app-search-filter [facets$]="facets$" [layoutConfiguration]="layoutConfiguration" [isOpen]='true'
+        <!-- <app-search-filter [facets$]="facets$" [layoutConfiguration]="layoutConfiguration" [isOpen]='true'
           *ngIf="initFilters" (filterChange)="getFilters($event)" [pageData]="getCurrentPageData" [pageId]="pageId"
           [defaultFilters]="defaultFilters">
-        </app-search-filter>
+        </app-search-filter> -->
+        <app-global-search-filter [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true'
+          *ngIf="initFilters" (filterChange)="getFilters($event)">
+        </app-global-search-filter>
       </div>
 
     </div>

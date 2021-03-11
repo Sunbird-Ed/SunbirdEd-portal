@@ -8,10 +8,12 @@ import { SuiModule } from 'ng2-semantic-ui';
 import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './home-search.component.spec.data';
+import { Response as contentResponse } from '../../../../modules/public/module/explore/components/explore-content/explore-content.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { configureTestSuite } from '@sunbird/test-util';
+import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
 
 describe('HomeSearchComponent', () => {
   let component: HomeSearchComponent;
@@ -37,7 +39,8 @@ describe('HomeSearchComponent', () => {
       'lbl': {
         'mytrainings': 'My Trainings'
       }
-    }
+    },
+    languageSelected$: of({})
   };
   class FakeActivatedRoute {
     queryParamsMock = new BehaviorSubject<any>({ subject: ['English'] });
@@ -60,7 +63,8 @@ describe('HomeSearchComponent', () => {
       declarations: [HomeSearchComponent],
       providers: [{ provide: ResourceService, useValue: resourceBundle },
       { provide: Router, useClass: RouterStub },
-      { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
+      { provide: ActivatedRoute, useClass: FakeActivatedRoute },
+      ContentManagerService],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));
@@ -261,6 +265,70 @@ describe('HomeSearchComponent', () => {
     component.navigateToPage(2);
     expect(router.navigate).toHaveBeenCalled();
     expect(window.scroll).toHaveBeenCalledWith({ top: 0, left: 0, behavior: 'smooth' });
+  });
+
+  it('should call listenLanguageChange', () => {
+    component.isDesktopApp = true;
+    component.contentList = [{ name: 'test' }];
+    spyOn(component, 'addHoverData');
+    spyOn<any>(component, 'setNoResultMessage');
+    component['listenLanguageChange']();
+    expect(component.addHoverData).toHaveBeenCalled();
+    expect(component['setNoResultMessage']).toHaveBeenCalled();
+  });
+
+  it('should call hoverActionClicked for DOWNLOAD ', () => {
+    contentResponse.hoverActionsData['hover'] = {
+      'type': 'download',
+      'label': 'Download',
+      'disabled': false
+    };
+    contentResponse.hoverActionsData['data'] = contentResponse.hoverActionsData.content;
+    spyOn(component, 'logTelemetry');
+    spyOn(component, 'downloadContent').and.callThrough();
+    component.hoverActionClicked(contentResponse.hoverActionsData);
+    expect(component.downloadContent).toHaveBeenCalledWith(component.downloadIdentifier);
+    expect(component.logTelemetry).toHaveBeenCalledWith(component.contentData, 'download-collection');
+    expect(component.showModal).toBeFalsy();
+    expect(component.contentData).toBeDefined();
+  });
+
+  it('should call hoverActionClicked for Open ', () => {
+    contentResponse.hoverActionsData['hover'] = {
+      'type': 'Open',
+      'label': 'OPEN',
+      'disabled': false
+    };
+    contentResponse.hoverActionsData['data'] = contentResponse.hoverActionsData.content;
+    const route = TestBed.get(Router);
+    route.url = '/explore-page?selectedTab=explore-page';
+    spyOn(component, 'logTelemetry').and.callThrough();
+    spyOn(component, 'playContent');
+    component.hoverActionClicked(contentResponse.hoverActionsData);
+    expect(component.playContent).toHaveBeenCalledWith(contentResponse.hoverActionsData);
+    expect(component.logTelemetry).toHaveBeenCalledWith(component.contentData, 'play-content');
+    expect(component.contentData).toBeDefined();
+  });
+
+  it('should call download content with success ', () => {
+    const contentManagerService = TestBed.get(ContentManagerService);
+    spyOn(contentManagerService, 'startDownload').and.returnValue(of({}));
+    component.downloadContent('123');
+    expect(component.showDownloadLoader).toBeFalsy();
+  });
+  it('should call download content from popup ', () => {
+    spyOn(component, 'downloadContent');
+    component.callDownload();
+    expect(component.showDownloadLoader).toBeTruthy();
+    expect(component.downloadContent).toHaveBeenCalled();
+  });
+
+  it('should call download content with error ', () => {
+    const contentManagerService = TestBed.get(ContentManagerService);
+    spyOn(contentManagerService, 'startDownload').and.returnValue(throwError({ error: { params: { err: 'ERROR' } } }));
+    component.ngOnInit();
+    component.downloadContent('123');
+    expect(component.showDownloadLoader).toBeFalsy();
   });
 
 });

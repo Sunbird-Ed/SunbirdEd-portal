@@ -37,7 +37,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   previewCdnUrl: string;
   isCdnWorking: string;
   CONSTANT = {
-    ACCESSEVENT: 'renderer:question:submitscore'
+    ACCESSEVENT: 'renderer:question:submitscore',
+    ISLASTATTEMPT: 'renderer:selfassess:lastattempt',
+    MAXATTEMPT: 'renderer:maxLimitExceeded'
   };
   @Input() overlayImagePath: string;
   @Input() isSingleContent: boolean;
@@ -47,6 +49,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   @Input() isContentDeleted: Subject<any>;
   @Output() closePlayerEvent = new EventEmitter<any>();
   @Output() ratingPopupClose = new EventEmitter<any>();
+  @Output() selfAssessLastAttempt = new EventEmitter<any>();
   contentDeleted = false;
   isMobileOrTab: boolean;
   showPlayIcon = true;
@@ -301,10 +304,23 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     if (event.data.toLowerCase() === (this.CONSTANT.ACCESSEVENT).toLowerCase()) {
       this.questionScoreSubmitEvents.emit(event);
     }
+    if (event.data.toLowerCase() === (this.CONSTANT.ISLASTATTEMPT).toLowerCase()) {
+      this.selfAssessLastAttempt.emit(event);
+    }
+    if (event.data.toLowerCase() === (this.CONSTANT.MAXATTEMPT).toLowerCase()) {
+      this.selfAssessLastAttempt.emit(event);
+    }
   }
   eventHandler(event) {
     if (_.get(event, 'edata.type') === 'SHARE') {
       this.contentUtilsServiceService.contentShareEvent.emit('open');
+      this.mobileViewDisplay = 'none';
+    }
+    if (_.get(event, 'edata.type') === 'PRINT') {
+      let windowFrame = window.document.querySelector('pdf-viewer iframe');
+      if (windowFrame) {
+        windowFrame['contentWindow'].print()
+      }
       this.mobileViewDisplay = 'none';
     }
   }

@@ -27,6 +27,8 @@ import { OrderModule } from 'ngx-order-pipe';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { ContentSearchModule } from '@sunbird/content-search';
 import { QuestionEditorLibraryModule } from '@project-sunbird/sunbird-question-editor';
+import { CollectionEditorLibraryModule } from '@project-sunbird/sunbird-collection-editor';
+
 
 @NgModule({
   imports: [
@@ -43,7 +45,8 @@ import { QuestionEditorLibraryModule } from '@project-sunbird/sunbird-question-e
     OrderModule,
     PlayerHelperModule,
     ContentSearchModule,
-    QuestionEditorLibraryModule
+    QuestionEditorLibraryModule,
+    CollectionEditorLibraryModule
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent, DateFilterXtimeAgoPipe,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,

@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ConfigService, NavigationHelperService, ToasterService, ResourceService, BrowserCacheTtlService } from '@sunbird/shared';
+import { ConfigService, NavigationHelperService, ToasterService, ResourceService, BrowserCacheTtlService, LayoutService } from '@sunbird/shared';
 import { UserService, PublicDataService, ContentService, FrameworkService, CoreModule } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -27,7 +27,7 @@ const mockActivatedRoute = {
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
 }
-class NavigationHelperServiceStub { }
+class NavigationHelperServiceStub { navigateToWorkSpace() { } }
 const mockUserService = {
   userOrgDetails$: observableOf({}),
   userProfile: {
@@ -38,11 +38,9 @@ const mockUserService = {
 
 const mockFrameworkService = {
   _channelData: {
-    questionPrimaryCategories: ['Multiple Choice Question', 'Subjective Question'],
-    contentPrimaryCategories: ['content'],
-    collectionPrimaryCategories: ['collection'],
-    questionsetPrimaryCategories: ['questionSet']
-  }
+    questionPrimaryCategories: ['Multiple Choice Question', 'Subjective Question']
+  },
+  getDefaultLicense : () => {}
 };
 
 describe('NewCollectionEditorComponent', () => {
@@ -55,7 +53,7 @@ describe('NewCollectionEditorComponent', () => {
       imports: [HttpClientTestingModule, RouterTestingModule, CoreModule, TelemetryModule.forRoot()],
       providers: [
         UserService, PublicDataService, ContentService, { provide: FrameworkService, useValue: mockFrameworkService },
-        ResourceService, ToasterService, ConfigService,
+        ResourceService, ToasterService, ConfigService, LayoutService,
         BrowserCacheTtlService, WorkSpaceService, EditorService,
         { provide: NavigationHelperService, useClass: NavigationHelperServiceStub },
         { provide: Router, useClass: RouterStub },
@@ -119,15 +117,31 @@ describe('NewCollectionEditorComponent', () => {
       expect(toasterService.error).toHaveBeenCalledWith(mockResourceService.messages.emsg.m0015);
     }));
 
+  it('#switchLayout() should switch theme if layoutType is #joy',
+    inject([LayoutService], ( layoutService ) => {
+      spyOn(layoutService, 'initiateSwitchLayout').and.callThrough();
+      component.layoutType = 'joy';
+      component.switchLayout();
+      expect(layoutService.initiateSwitchLayout).toHaveBeenCalled();
+    }));
+
+  it('#switchLayout() should not switch theme if layoutType is not #joy',
+    inject([LayoutService], ( layoutService ) => {
+      spyOn(layoutService, 'initiateSwitchLayout').and.callThrough();
+      component.layoutType = '';
+      component.switchLayout();
+      expect(layoutService.initiateSwitchLayout).not.toHaveBeenCalled();
+    }));
+
   it('#getPrimaryCategoryData() should return valid Categories', () => {
     let result = component.getPrimaryCategoryData({ Question: [] });
     expect(result).toEqual({ Question: ['Multiple Choice Question', 'Subjective Question'] });
     result = component.getPrimaryCategoryData({ Content: [] });
-    expect(result).toEqual({ Content: ['content'] });
+    expect(result).toEqual({ Content: [] });
     result = component.getPrimaryCategoryData({ Collection: [] });
-    expect(result).toEqual({ Collection: ['collection'] });
+    expect(result).toEqual({ Collection: [] });
     result = component.getPrimaryCategoryData({ QuestionSet: [] });
-    expect(result).toEqual({ QuestionSet: ['questionSet'] });
+    expect(result).toEqual({ QuestionSet: [] });
   });
 
   it('#editorEventListener() should call #redirectToWorkSpace method', () => {
@@ -136,11 +150,35 @@ describe('NewCollectionEditorComponent', () => {
     expect(component.redirectToWorkSpace).toHaveBeenCalled();
   });
 
-  xit('#redirectToWorkSpace() should redirect to workspace with valid #URL',
+    it('#setEditorConfig() should set editor config',
+    inject([FrameworkService], (frameworkService) => {
+      spyOn(frameworkService, 'getDefaultLicense').and.callFake( () => {});
+      component.collectionDetails = mockRes.successResult.result.content;
+      component.showQuestionEditor = true;
+      component.ngOnInit();
+      component.setEditorConfig();
+      expect(frameworkService.getDefaultLicense).toHaveBeenCalled();
+      expect(Object.keys(component.editorConfig)).toEqual(['context', 'config']);
+    }));
+
+    it('#redirectToWorkSpace() should redirect to workspace with valid #URL',
     inject([NavigationHelperService], (navigationHelperService) => {
       spyOn(navigationHelperService, 'navigateToWorkSpace').and.callFake(() => { });
+      component.ngOnInit();
       component.redirectToWorkSpace();
-      expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalled();
+      expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('/workspace/content/allcontent/1');
+      const activatedRoute = TestBed.get(ActivatedRoute);
+      activatedRoute.snapshot.params = {state: 'collaborating-on'};
+      component.ngOnInit();
+      component.redirectToWorkSpace();
+      expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('/workspace/content/collaborating-on/1');
+      activatedRoute.snapshot.params = {state: 'upForReview'};
+      component.ngOnInit();
+      component.redirectToWorkSpace();
+      expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('/workspace/content/upForReview/1');
+      activatedRoute.snapshot.params = {state: ''};
+      component.ngOnInit();
+      component.redirectToWorkSpace();
       expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('/workspace/content/draft/1');
     }));
 

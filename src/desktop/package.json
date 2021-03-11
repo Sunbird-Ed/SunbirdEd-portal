@@ -1,6 +1,6 @@
 {
     "name": "sunbird",
-    "version": "1.7.0",
+    "version": "1.8.0",
     "description": "sunbird desktop app",
     "main": "main.js",
     "scripts": {
@@ -59,6 +59,10 @@
         "publish": {
             "provider": "generic",
             "url": ""
+        },
+        "protocols": {
+            "name": "app-protocol",
+            "schemes": []
         }
     },
     "homepage": "https://www.sunbird.org",
@@ -93,7 +97,9 @@
         "tree-model": "^1.0.7",
         "typescript-ioc": "^1.2.5",
         "uuid": "^3.3.2",
-        "web-resource-inliner": "^4.3.4"
+        "web-resource-inliner": "^4.3.4",
+        "jwt-decode": "^2.2.0",
+        "winreg": "^1.2.4"
     },
     "devDependencies": {
         "@types/cheerio": "^0.22.22",

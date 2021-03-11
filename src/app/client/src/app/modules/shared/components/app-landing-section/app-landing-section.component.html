@@ -3,7 +3,7 @@
     <div [ngClass]="FIRST_PANEL_LAYOUT">
     </div>
     <div class="relative" [ngClass]="SECOND_PANEL_LAYOUT">
-      <img *ngIf="!noTitle" class="sbt-page-header-line-img" src="./assets/images/header-line.svg" alt="Textbooks">
+      <img *ngIf="!noTitle" class="sbt-page-header-line-img" src="./assets/images/header-line.svg" alt="header line path image">
       <div class="sbt-page-header-content pl-24" [ngClass]="{'sb-no-title': noTitle}">
         <h1 *ngIf="!noTitle">{{textToDisplay | translate}}</h1>
       </div>
