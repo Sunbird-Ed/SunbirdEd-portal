@@ -26,7 +26,7 @@
               </span>
             </div>
             <div class="sbt-filter-scrollable pr-24">
-              <div class="fsmall my-8 text-left">{{resourceService.frmelmnts?.lbl?.basedOnPref | translate}}</div>
+              <div class="fsmall my-8 text-left filter-pref-text">{{resourceService.frmelmnts?.lbl?.basedOnPref | translate}}</div>
               <div *ngIf="refresh">
                 <div *ngFor="let facet of facets | sortBy:'index':'asc'">
                   <label class="fnormal font-weight-bold d-flex">{{facet.label | translate}} </label>

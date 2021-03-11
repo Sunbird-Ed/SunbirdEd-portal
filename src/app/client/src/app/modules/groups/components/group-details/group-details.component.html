@@ -4,7 +4,7 @@
 <app-ftu-popup *ngIf="showMemberPopup" [showMemberPopup]="showMemberPopup" (close)="toggleFtuModal(false)">
 </app-ftu-popup>
 
-<div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-back-header sbt-mygroups-details relative9' : ''">
+<div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-back-header sbt-mygroups-details relative9' : 'sb-back-header'">
 
 <div class="ui container" *ngIf="isLoader" > 
   <app-loader></app-loader>

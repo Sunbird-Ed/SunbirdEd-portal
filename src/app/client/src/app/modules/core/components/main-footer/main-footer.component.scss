@@ -24,7 +24,7 @@
       margin: 0 auto;
       padding-top: calculateRem(60px);
       border-radius: calculateRem(40px) calculateRem(40px) 0 0;
-      background-color: var(--white);
+      background-color: var(--sbt-footer-bg);
       box-shadow: var(--sbt-box-shadow-6px);
       left:0;
       position:absolute;
@@ -95,11 +95,14 @@
       }
       .footer-terms-info{
         a{
-          color: var(--green);
+          color: var(--sbt-footer-info-links);
           font-size: calculateRem(14px);
-          font-weight: bold
+          font-weight: bold;
+          &:hover{
+            color: var(--sbt-footer-info-links-hover);
+          }
         }
-        color: var(--green);
+        color: var(--sbt-footer-info-links);
         font-size: calculateRem(14px);
         font-weight: bold
       }
