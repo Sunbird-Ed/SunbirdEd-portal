@@ -266,23 +266,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.generaliseLabelService.getGeneraliseResourceBundle();
   }
 
-  // Change theme
-  getLocalTheme() {
-    const localDataThemeAttribute = localStorage.getItem('data-theme');
-    if (localDataThemeAttribute) {
-      this.setLocalTheme(localDataThemeAttribute);
-    }
-  }
-  changeTheme() {
-    this.dataThemeAttribute = document.documentElement.getAttribute('data-theme');
-    this.dataThemeAttribute = this.dataThemeAttribute === 'Default' ? 'Darkmode' : 'Default';
-    this.setLocalTheme(this.dataThemeAttribute);
-    localStorage.setItem('data-theme', this.dataThemeAttribute);
-  }
-  setLocalTheme(value: string) {
-    document.documentElement.setAttribute('data-theme', value);
-  }
-
   onCloseJoyThemePopup() {
     this.showJoyThemePopUp = false;
     this.checkTncAndFrameWorkSelected();
@@ -807,5 +790,20 @@ export class AppComponent implements OnInit, OnDestroy {
       top: topHeight,
       behavior: 'smooth'
     });
+  }
+  getLocalTheme() {
+    const localDataThemeAttribute = localStorage.getItem('data-theme');
+    if (localDataThemeAttribute) {
+      this.setLocalTheme(localDataThemeAttribute);
+    }
+  }
+  changeTheme() {
+    this.dataThemeAttribute = document.documentElement.getAttribute('data-theme');
+    this.dataThemeAttribute = this.dataThemeAttribute === 'Default' ? 'Darkmode' : 'Default';
+    this.setLocalTheme(this.dataThemeAttribute);
+    localStorage.setItem('data-theme', this.dataThemeAttribute);
+  }
+  setLocalTheme(value: string) {
+    document.documentElement.setAttribute('data-theme', value);
   }
 }
