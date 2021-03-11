@@ -9,16 +9,16 @@
         <div class="d-flex flex-ai-center head-tail-right-side">
           <div class="pull-right dk-top-head-ul">
             <ul>
-              <li class="mb-0" *ngIf="!hideHeaderNFooter"><a href="javascript:void(0);" title="Skip to Main Content" (click)="skipToMainContent()" class="cursor-pointer">Skip to Main Content</a></li>
+              <li class="mb-0" *ngIf="!hideHeaderNFooter"><a href="javascript:void(0);" title="Skip to Main Content" (click)="skipToMainContent()" class="cursor-pointer"> {{resourceService?.frmelmnts?.lbl?.skipToMainContent}}</a></li>
               <li *ngIf="!hideHeaderNFooter" class="mx-4 mb-0">|</li>
               <li class="screen-reader-link"><a href="/screenreaderaccess.html" class=""
-                  title="Screen Reader Access">Screen Reader Access</a></li>
+                  title="Screen Reader Access">{{resourceService?.frmelmnts?.lbl?.screenReaderAccess}}</a></li>
               <li class="mx-4">|</li>
               <ng-container *ngIf="userService.loggedIn">
-                <li class="mb-0"><a title="Site Map" href="/sitemap.html?session=true" class="cursor-pointer">Site Map</a></li>
+                <li class="mb-0"><a title="Site Map" href="/sitemap.html?session=true" class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.sitemap}}</a></li>
               </ng-container>
               <ng-container *ngIf="!userService.loggedIn">
-                <li class="mb-0"><a title="Site Map" href="/sitemap.html" class="cursor-pointer">Site Map</a></li>
+                <li class="mb-0"><a title="Site Map" href="/sitemap.html" class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.sitemap}}</a></li>
               </ng-container>
               <li class="mx-4">|</li>
             </ul>
