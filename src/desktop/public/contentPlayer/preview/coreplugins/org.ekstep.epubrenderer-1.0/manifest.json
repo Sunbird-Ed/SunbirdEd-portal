@@ -1,0 +1,28 @@
+{
+    "id": "org.ekstep.epubrenderer",
+    "ver": "1.0",
+    "shortId": "org.eskstep.epubrenderer",
+    "author": "Manoj Chandrashekar <manoj.chandrashekar@tarento.com>",
+    "description": "Plugin to render ePub content",
+    "publishedDate": "",
+    "renderer": {
+        "main": "renderer/plugin.js",
+        "dependencies": [
+            {
+                "type": "js",
+                "src": "renderer/libs/jszip.min.js"
+            },
+            {
+                "type": "js",
+                "src": "renderer/libs/epub.min.js"
+            }
+        ]
+    },
+    "dependencies": [
+        {
+            "plugin": "org.ekstep.overlay",
+            "ver": "1.0",
+            "scope": "renderer"
+        }
+    ]
+}
