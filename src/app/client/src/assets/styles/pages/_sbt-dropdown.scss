@@ -81,6 +81,7 @@
   .dropdown.icon {
     top: calculateRem(8px);
     margin: 0;
+    color: var(--sbt-language-dropdown-icon);
   }
 
   .menu {
@@ -255,7 +256,7 @@
 
   // green color with white bg
   &.sbt-green {
-    background: var(--white);
+    background: var(--sbt-green-bg);
     color: var(--sbt-theme-green-selectbox);
 
     .default.text {
@@ -263,14 +264,21 @@
     }
 
     .menu {
-      background: var(--white);
+      background: var(--sbt-language-dropdown-bg);
 
       >.item {
-        color: var(--sbt-theme-green-selectbox);
+        color: var(--sbt-language-dropdown-item);
+        &:active{
+          color: var(--gray-800) !important;
+        }
 
+        &:hover{
+          background: var(--sbt-language-dropdown-item-hover-bg) !important;
+          color: var(--sbt-language-dropdown-item-hover-text) !important;
+        }
         &.active::after {
-          border-bottom: calculateRem(2px) solid var(--sbt-theme-green-selectbox);
-          border-right: calculateRem(2px) solid var(--sbt-theme-green-selectbox);
+          border-bottom: calculateRem(2px) solid var(--sbt-language-selectbox);
+          border-right: calculateRem(2px) solid var(--sbt-language-selectbox);
         }
       }
     }

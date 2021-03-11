@@ -69,16 +69,16 @@ $sb-search-close-btn-color: var(--white);
     padding: calculateRem(4px) calculateRem(4px) calculateRem(4px) calculateRem(32px);
     border-radius: calculateRem(3px) 0 0 calculateRem(3px);
     line-height: normal;
-    background: $white;
-    color: $gray-200;
+    background: var(--sb-search-input-bg);
+    color: var(--sb-search-input-text) !important;
   }
   .sb-btn {
-    background: $sb-search-btn-bg;
+    background: var(--sb-search-btn-bg);
     border: 0;
     min-width: auto;
     white-space: nowrap;
     border-radius: 0 calculateRem(3px) calculateRem(3px) 0;
-    color: var(--primary-400);
+    color: var(--sb-search-btn-text);
     font-size: $sb-search-btn-font-size;
     font-weight: bold;
     margin: 0 !important;
@@ -160,7 +160,7 @@ textarea:-internal-autofill-previewed,
 textarea:-internal-autofill-selected, 
 select:-internal-autofill-previewed, 
 select:-internal-autofill-selected {
-  background-color: var(--white) !important;
+  background-color: var(--sb-search-auto-select) !important;
 }
 
 
@@ -240,8 +240,8 @@ select:-internal-autofill-selected {
     padding: calculateRem(4px) calculateRem(88px) calculateRem(4px) calculateRem(40px);
     border-radius:calculateRem(28px);
     line-height: normal;
-    background: var(--white);
-    color: var(--gray-200);
+    background: var(--sb-search-input-bg);
+    color: var(--sb-search-input-text);
     html[dir="rtl"] & {
       padding: calculateRem(4px) calculateRem(40px) calculateRem(4px) calculateRem(88px);
     } 
@@ -254,12 +254,12 @@ select:-internal-autofill-selected {
   }
 
   .sb-btn {
-    background: var(--gray-800);
+    background: var(--sb-search-btn-bg);
     border: 0;
     min-width: auto;
     white-space: nowrap;
     border-radius: calculateRem(28px);
-    color: var(--white);
+    color: var(--sb-search-btn-text);
     font-size: $font-size-sm;
     margin: 0 !important;
     position: absolute;

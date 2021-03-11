@@ -29,7 +29,7 @@ $sb-prominent-filter-dropdown-item-active-color: $primary-color;
 $sb-prominent-filter-dropdown-item-active-font-weight: 700;
 
 .sb-prominent-filter {
-  background: $sb-prominent-filter-background-color;
+  background: var(--sb-prominent-filter-bg);
   padding: calculateRem(8px) 0px 0px 0px;
 
   .sb-prominent-filter-header {
@@ -83,6 +83,10 @@ $sb-prominent-filter-dropdown-item-active-font-weight: 700;
         border-radius: $sb-prominent-filter-field-border-radius;
         padding: 0;
         display: flex;
+        color: var(--sb-dropdown-menu-text);
+        &:hover{
+          border-color: var(--sb-multiple-dropdown-border-hover);
+        }
         .divider{
           margin: 0;
         }
@@ -92,7 +96,7 @@ $sb-prominent-filter-dropdown-item-active-font-weight: 700;
           align-items: center;
           width: $sb-prominent-filter-field-width;
           padding: $sb-prominent-filter-dropdown-font-size;
-          color: $sb-prominent-filter-field-color;
+          color: var(--sb-dropdown-menu-item);
           font-size: $sb-prominent-filter-field-font-size;
 
           &.header {
@@ -106,7 +110,7 @@ $sb-prominent-filter-dropdown-item-active-font-weight: 700;
           }
           &:hover{
             background: $primary-250;
-            color: $blue;
+            color: var(--sb-filter-selected-dropdown-hover);
           }
           i.icon.square.outline{
             height: ($base-block-space * 2);
@@ -134,7 +138,7 @@ $sb-prominent-filter-dropdown-item-active-font-weight: 700;
           text-transform: lowercase;
           text-overflow: ellipsis;
           overflow: hidden;
-          color: $sb-prominent-filter-field-color;
+          color:var(--sb-prominent-filter-field-color);
           margin: 0;
           padding: $sb-prominent-filter-field-input-padding;
           font-size: $sb-prominent-filter-field-font-size;
