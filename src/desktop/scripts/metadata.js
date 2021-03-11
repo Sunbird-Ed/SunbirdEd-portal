@@ -175,7 +175,18 @@ const getForms = async () => {
             "type": "desktopConfig",
             "subtype": "login",
             "action": "get"
-        }
+        },
+        {
+            "type": "profileConfig",
+            "action": "get",
+            "subtype": "default"
+        },
+        {
+            "type": "config",
+            "action": "get",
+            "subtype": "userType",
+            "component": "portal"
+          }
     ]
     const instance = await getInstance();
     const formApirequests = []
@@ -183,8 +194,12 @@ const getForms = async () => {
         formApirequests.push()
     }
     let formResponses = [];
-    const results = await Promise.allSettled(forms.map(({ type, subtype, action }) => {
-        return instance.post(`/api/data/v1/form/read`, { "request": { "type": type, "action": action, "subType": subtype } })
+    const results = await Promise.allSettled(forms.map(({ type, subtype, action, component }) => {
+        const req = { "request": { "type": type, "action": action, "subType": subtype } };
+        if (component) {
+            req.request.component = component;
+        }
+        return instance.post(`/api/data/v1/form/read`, req)
     }));
     const groupedResults = _.groupBy(results, 'status');
     if(groupedResults.fulfilled) {
