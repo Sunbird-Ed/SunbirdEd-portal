@@ -26,7 +26,7 @@
 
         <div *ngIf="isEnrolledCourseUpdated" class="mobile only">
           <div class="sb-no-course-found my-16 d-flex flex-ai-center">
-            <div><img src="assets/images/alert.svg" width="20px" height="20px"></div>
+            <div><img src="assets/images/alert.svg" alt="alert-image" width="20px" height="20px"></div>
             <div class="ml-8">{{ generaliseLabelService?.frmelmnts?.lbl?.courseLastUpdatedOn }} {{ courseHierarchy?.lastUpdatedOn | date:'dd/MM/yyyy'  }}</div>
           </div>
         </div>
@@ -141,7 +141,7 @@
 
         <div *ngIf="isEnrolledCourseUpdated" class="computer only">
           <div class="sb-no-course-found my-16 d-flex flex-ai-center">
-            <div><img src="assets/images/alert.svg" width="20px" height="20px"></div>
+            <div><img src="assets/images/alert.svg" alt="alert-image" width="20px" height="20px"></div>
             <div class="ml-8">{{ generaliseLabelService?.frmelmnts?.lbl?.courseLastUpdatedOn }} {{ courseHierarchy?.lastUpdatedOn | date:'dd/MM/yyyy'  }}</div>
           </div>
         </div>
