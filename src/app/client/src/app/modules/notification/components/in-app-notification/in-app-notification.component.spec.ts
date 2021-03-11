@@ -1,14 +1,14 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { InAppNotificationComponent } from './in-app-notification.component';
 
 import { configureTestSuite } from '@sunbird/test-util';
 import { SuiModule } from 'ng2-semantic-ui';
-import { SharedModule, ResourceService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ConnectionService } from '@sunbird/shared';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { NotificationService } from '../../services/notification/notification.service';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
-import { of as observableOf } from 'rxjs';
+import { of as observableOf, of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -73,6 +73,17 @@ describe('InAppNotificationComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should call ngOnInit', fakeAsync(() => {
+    const connectionService = TestBed.get(ConnectionService);
+    spyOn(connectionService, 'monitor').and.returnValue(of(true));
+    spyOn(component, 'fetchNotificationList');
+    component.ngOnInit();
+    tick(2001);
+    expect(connectionService.monitor).toHaveBeenCalled();
+    expect(component.isConnected).toBeTruthy();
+    expect(component.fetchNotificationList).toHaveBeenCalled();
+  }));
 
   describe('generateInteractEvent', () => {
 
