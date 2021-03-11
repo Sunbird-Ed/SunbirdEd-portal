@@ -4,10 +4,11 @@ import { NotificationService } from '../../services/notification/notification.se
 import * as _ from 'lodash-es';
 import { UserFeedStatus } from '@project-sunbird/client-services/models';
 import { NotificationViewConfig } from '@project-sunbird/common-consumption-v8';
-import { ResourceService, ConnectionService } from '@sunbird/shared';
+import { ResourceService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
 import { takeUntil, delay } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { ConnectionService } from '../../../shared/services/connection-service/connection.service';
 
 @Component({
   selector: 'app-in-app-notification',
