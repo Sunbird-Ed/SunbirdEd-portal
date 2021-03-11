@@ -227,6 +227,9 @@ html[accessable-theme="accessible"] {
         color: #1f1f1f !important;
       }
     }
+    .skip-to-main-content:hover{
+      text-decoration: underline;
+    }
   }
   
   //accessible scss end

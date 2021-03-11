@@ -62,7 +62,7 @@
             <sb-accordion [multi]="false">
               <sb-accordion-item [expanded]="isExpanded(index)" (collapsedChange)="collapsedChange($event, index)" [collapsed]="item?.collapsed">
                 <sb-accordion-header class="sb-bg-color-gray-0" (click)="isModuleExpanded = true;">
-                  <i class="icon-svg icon-svg--sm icon-tick mr-8"
+                  <i class="icon-svg icon-svg--sm icon-tick mr-8" role="img" aria-label="tick-icon"
                     *ngIf="enrolledCourse && item?.consumedContent === item?.contentCount">
                     <svg class="icon">
                       <use xlink:href="./assets/images/sprite.svg#circle-with-check-symbol"></use>
