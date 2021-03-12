@@ -34,6 +34,7 @@ export class SbFormLocationSelectionDelegate {
   private stateChangeSubscription?: Subscription;
 
   private changesMap: {} = {};
+  private isDefaultConfig = false;
 
   constructor(
     private userService: UserService,
@@ -74,10 +75,12 @@ export class SbFormLocationSelectionDelegate {
             SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST.contentType;
         })();
       }
+      this.isDefaultConfig = false;
       await this.loadForm(formInputParams, true);
     } catch (e) {
       // load default form
       console.error(e);
+      this.isDefaultConfig = true;
       await this.loadForm(SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST, true);
     }
   }
@@ -196,13 +199,17 @@ export class SbFormLocationSelectionDelegate {
 
     if (this.shouldUserProfileLocationUpdate && this.userService.loggedIn) {
       const formValue = this.formGroup.value;
-      const payload = {
+      const payload: any = {
         userId: _.get(this.userService, 'userid'),
         locationCodes: locationDetails,
         ...(_.get(formValue, 'name') ? { firstName: _.get(formValue, 'name') } : {} ),
         ...(_.get(formValue, 'persona') ? { userType: _.get(formValue, 'persona') } : {} ),
         ...(_.get(formValue, 'children.persona.subPersona') ? { userSubType: _.get(formValue, 'children.persona.subPersona') } : {} ),
       };
+
+      if (this.isDefaultConfig) {
+        delete payload.userType;
+      }
       const task = this.locationService.updateProfile(payload).toPromise()
         .then(() => ({ userProfile: 'success' }))
         .catch(() => ({ userProfile: 'fail' }));
