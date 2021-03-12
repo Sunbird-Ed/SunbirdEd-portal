@@ -14,12 +14,8 @@
               <li class="screen-reader-link"><a href="/screenreaderaccess.html" class=""
                   title="Screen Reader Access">{{resourceService?.frmelmnts?.lbl?.screenReaderAccess}}</a></li>
               <li class="mx-4">|</li>
-              <ng-container *ngIf="userService.loggedIn">
-                <li class="mb-0"><a title="Site Map" href="/sitemap.html?session=true" class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.sitemap}}</a></li>
-              </ng-container>
-              <ng-container *ngIf="!userService.loggedIn">
-                <li class="mb-0"><a title="Site Map" href="/sitemap.html" class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.sitemap}}</a></li>
-              </ng-container>
+                <li class="mb-0"><a title="Site Map" *ngIf="userService.loggedIn" href="/sitemap.html?session=true" class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.sitemap}}</a>
+                <a title="Site Map" *ngIf="!userService.loggedIn" href="/sitemap.html" class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.sitemap}}</a></li>
               <li class="mx-4">|</li>
             </ul>
             <ul>
