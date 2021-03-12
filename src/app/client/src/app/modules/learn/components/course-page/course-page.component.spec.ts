@@ -184,6 +184,7 @@ describe('CoursePageComponent', () => {
         spyOn(orgDetailsService, 'searchOrgDetails').and.callFake((options) => {
             return of(Response.orgSearch);
         });
+        spyOn<any>(component, 'getLanguageChange');
         component.ngOnInit();
         // component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
         expect(component.hashTagId).toEqual('123');
@@ -191,6 +192,7 @@ describe('CoursePageComponent', () => {
         // expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
         expect(component.showLoader).toBeFalsy();
         expect(component.carouselMasterData.length).toEqual(1);
+        expect(component['getLanguageChange']).toHaveBeenCalled();
     });
     xit('should not navigate to landing page if fetching frameWork from form service fails and data driven filter returns data', () => {
         sendFormApi = false;
@@ -447,6 +449,7 @@ describe('CoursePageComponent', () => {
         spyOn<any>(utilService, 'processCourseFacetData').and.returnValue(of(Response.courseSectionsFacet));
         spyOn(component, 'isPageAssemble').and.returnValue(false);
         spyOn(component, 'getPageData').and.returnValue(Response.buildOptionRespForFetchCourse);
+        spyOn(component, 'addHoverData');
         component.queryParams = { 'selectedTab': 'course' };
         component['fetchCourses'](Response.buildOptionRespForFetchCourse)
             .subscribe(res => {
@@ -456,6 +459,7 @@ describe('CoursePageComponent', () => {
                 expect(component.initFilters).toBeTruthy();
                 expect(component.carouselMasterData).toBeDefined();
                 expect(component.carouselMasterData.length).toEqual(3);
+                expect(component.addHoverData).toHaveBeenCalled();
                 done();
             });
     });

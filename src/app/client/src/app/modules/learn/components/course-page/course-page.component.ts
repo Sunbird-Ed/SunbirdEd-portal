@@ -540,11 +540,6 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   addHoverData() {
     _.each(this.pageSections, (pageSection) => {
-      _.forEach(pageSection.contents, contents => {
-        if (this.contentDownloadStatus[contents.identifier]) {
-          contents['downloadStatus'] = this.contentDownloadStatus[contents.identifier];
-        }
-      });
       this.pageSections[pageSection] = this.utilService.addHoverData(pageSection.contents, true);
     });
   }
