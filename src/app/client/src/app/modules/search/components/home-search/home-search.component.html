@@ -2,11 +2,20 @@
 <div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg sbt-home-search-component':''">
   <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'">
     <div [ngClass]="FIRST_PANEL_LAYOUT">
-      <ng-container>
-        <app-global-search-filter [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true'
-          *ngIf="initFilters && allTabData" (filterChange)="getFilters($event)">
-        </app-global-search-filter>
-      </ng-container>
+      <div *ngIf="layoutConfiguration">
+        <ng-container *ngIf="isDesktopApp">
+          <app-network-status></app-network-status>
+          <app-load-offline-content></app-load-offline-content>
+          <app-system-warning></app-system-warning>
+        </ng-container>
+      </div>
+      <div [ngClass]="isDesktopApp ? 'sb-desktop-filter-section' : ''">
+        <ng-container>
+          <app-global-search-filter [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true'
+            *ngIf="initFilters && allTabData" (filterChange)="getFilters($event)">
+          </app-global-search-filter>
+        </ng-container>
+      </div>
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT">
       <div [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-16'">
@@ -32,9 +41,23 @@
             [data]="content" (clickEvent)="playContent($event)"></app-card>
           </ng-container>
           <ng-container>
-            <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration"
+            <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" *ngIf="!isDesktopApp;else desktopCard"
                              appContentDirection appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType||'Content',ver:'1.0'}"
                              (cardClick)="playContent($event)" [content]="content" [cardImg]="content?.image || 'assets/images/book.png'" ></sb-library-card>
+            <ng-template #desktopCard>
+              <div class="sb-desktop-library-card">
+                <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" appTelemetryInteract
+                                [telemetryInteractEdata]="cardIntractEdata"
+                                [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'content',ver:content.pkgVersion ? content.pkgVersion.toString():'1.0'}"
+                                [hover-template]="hoverTemplate" [content]="content" [cardImg]="content?.appIcon || 'assets/images/book.png'">
+                  <ng-template #hoverTemplate let-hoverData="hoverData" let-content="content">
+                    <sb-card-hover class="card-hover" [content]="content" [hoverData]="hoverData"
+                      (hoverActionClick)="hoverActionClicked($event)">
+                    </sb-card-hover>
+                  </ng-template>
+                </sb-library-card>
+              </div>
+            </ng-template>
           </ng-container>
         </div>
       </div>
@@ -62,3 +85,22 @@
 </div>
 </div>
 <app-batch-info *ngIf="showBatchInfo" [enrolledBatchInfo]="selectedCourseBatches" (modelClose)="showBatchInfo = false"></app-batch-info>
+
+<!-- Show Modal if content has any YouTube data-->
+ <sui-modal *ngIf="showModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+ class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal;" #modal>
+ <div class="sb-modal-header">
+   {{resourceService.frmelmnts?.btn?.download}}
+ </div>
+ <div class="sb-modal-content">
+   <p>{{resourceService?.messages?.stmsg?.m0137 }}</p>
+ </div>
+ <div class="sb-modal-actions">
+   <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="callDownload(); showModal = !showModal; logTelemetry(contentData, 'confirm-download-content');">
+     {{resourceService.frmelmnts?.btn?.yes}}
+   </button>
+   <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="showModal = !showModal; logTelemetry(contentData, 'cancel-download-content');">
+     {{resourceService.frmelmnts?.btn?.cancel}}
+   </button>
+ </div>
+</sui-modal>
