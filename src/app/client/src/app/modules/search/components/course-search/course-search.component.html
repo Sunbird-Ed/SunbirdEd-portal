@@ -26,12 +26,25 @@
               *ngIf="initFilters && facets && layoutConfiguration" (filterChange)="getFilters($event)"></app-global-search-selected-filter>
             <div [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inView($event)" *ngIf="!showLoader && contentList.length" class="sb-grid dynamic-section-card">
                 <div in-view-item [id]="index" [data]="content" class="" *ngFor="let content of contentList;let i = index;">
-                    <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" appTelemetryInteract
+                    <sb-library-card *ngIf="!isDesktopApp;else desktopCard" [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" appTelemetryInteract
                       [telemetryInteractEdata]="cardIntractEdata"
                       [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'content',ver:content.pkgVersion ? content.pkgVersion.toString():'1.0'}"
                       (cardClick)="playContent($event)" [content]="content"
                       [cardImg]="content?.appIcon || 'assets/images/book.png'">
                     </sb-library-card>
+                    <ng-template #desktopCard>
+                      <div class="sb-desktop-library-card">
+                        <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata"
+                        [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'content',ver:content.pkgVersion ? content.pkgVersion.toString():'1.0'}"
+                        [hover-template]="hoverTemplate" [content]="content" [cardImg]="content?.appIcon || 'assets/images/book.png'">
+                          <ng-template #hoverTemplate let-hoverData="hoverData" let-content="content">
+                            <sb-card-hover class="card-hover" [content]="content" [hoverData]="hoverData"
+                              (hoverActionClick)="hoverActionClicked($event)">
+                            </sb-card-hover>
+                          </ng-template>
+                        </sb-library-card>
+                      </div>
+                    </ng-template>
                 </div>
             </div>
         </div>
