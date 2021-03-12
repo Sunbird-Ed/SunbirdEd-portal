@@ -1689,6 +1689,14 @@ html[data-theme=Darkmode] {
 
   --visit-helpcenter-bg:#333333;
 
+  .file-download__popup {
+    background: #333;
+  }
+  .logo.sbt-logo {
+    background: #fff;
+    padding: 0.5rem;
+    border-radius: 0 0 1rem 1rem;
+  }
   .add-user--horizontal{
     background-color: var(--primary-color);
     .add-user__label{
@@ -2084,6 +2092,13 @@ html[data-theme='Darkmode'][layout='joy'] {
   //Modal
   --sb-modal-header-text: var(--white);
 
+  .ui.selection.sbt-dropdown.dropdown.sbt-green {
+    color: #fff;
+  }
+  .profile-bg-c-4 {
+    background: #222222 !important;
+    color: #ffffff;
+  }
   .ui.selection.sbt-dropdown.dropdown .menu > div .item:hover, .ui.selection.sbt-dropdown.dropdown .menu > div .item.active{
     background: var(--primary-color) !important;
     color: var(--black);
