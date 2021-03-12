@@ -341,6 +341,10 @@ html[data-theme=Darkmode][layout='old'] {
   --grey-nuance-lighter: #333333;
   --grey-nuance-darker: #111;
   --fade-grey: #f2f2f2;
+
+  .sb-fontresizecontainer.sbt-sticky {
+    position: relative;
+  }
 }
 
 html[data-theme='Default'][layout='joy'] {
@@ -1698,7 +1702,8 @@ html[data-theme=Darkmode] {
     color: #333;
   }
 
-  .ui.selection.sbt-dropdown.dropdown.sbt-purple--lbg .sbt-dropdown-section .item:hover, .ui.selection.sbt-dropdown.dropdown.sbt-purple--lbg .sbt-dropdown-section .item.active {
+  .ui.selection.sbt-dropdown.dropdown.sbt-purple--lbg .sbt-dropdown-section .item:hover,
+  .ui.selection.sbt-dropdown.dropdown.sbt-purple--lbg .sbt-dropdown-section .item.active {
     background: var(--primary-color) !important;
     color: var(--black);
   }
@@ -1707,14 +1712,17 @@ html[data-theme=Darkmode] {
     background-color: #fff;
     color: #333;
   }
+
   .sb-modal-dropdown-web .selected-option {
     background: #ffd92a;
   }
+
   .sb-onbrd-g-box__guest__item {
     box-shadow: 0 1.25rem 2.5rem -0.625rem #191818;
     background-color: #222;
     border: 0.125rem solid #222;
   }
+
   .sb-members-list-item:hover,
   .sb-members-list-item.active {
     border-radius: 0rem;
@@ -1732,8 +1740,11 @@ html[data-theme=Darkmode] {
     background: #222;
   }
 
-  .ui.styled.accordion .accordion .active.title, .ui.styled.accordion .accordion .title:hover, .ui.styled.accordion .active.title, .ui.styled.accordion .title:hover {
-    color: rgba(255,255,255,.75);
+  .ui.styled.accordion .accordion .active.title,
+  .ui.styled.accordion .accordion .title:hover,
+  .ui.styled.accordion .active.title,
+  .ui.styled.accordion .title:hover {
+    color: rgba(255, 255, 255, .75);
   }
 
   .ui.mini.rating {
@@ -1880,11 +1891,37 @@ html[data-theme=Darkmode] {
     }
   }
 
+  .ui.styled.accordion .title:hover {
+    color: var(--primary-color);
+  }
+
+  .sb-toc-child-item {
+    background: var(--cc-chapter-bg);
+  }
+
+  .help-page__header.sb-bg-color-white {
+    background: var(--cc-accordion-panel-header-bg) !important;
+  }
+
+  .help-page__content .panel {
+
+    .panel-heading,
+    .panel-interact {
+      background: var(--cc-accordion-panel-header-bg);
+    }
+  }
+
   sunbird-pdf-player .sunbird-pdf-palyer-container {
     .sb-pdf-main-header .sb-player-header {
       background: var(--sbt-compt-bg);
       z-index: 1;
       position: relative;
+
+      .icon_rotate {
+        img {
+          filter: invert(1);
+        }
+      }
     }
 
     #overlay-button span {
@@ -1917,6 +1954,28 @@ html[data-theme=Darkmode] {
 
       &:hover span:after {
         background: var(--white) !important;
+      }
+    }
+
+    .navBlock {
+      background: #222;
+
+      ul li {
+        background: #222 !important;
+        color: var(--white) !important;
+
+        .player-icon {
+          background: var(--white) !important;
+        }
+
+        &:hover {
+          color: var(--black) !important;
+          background: var(--gray-0) !important;
+
+          .player-icon {
+            background: var(--black) !important;
+          }
+        }
       }
     }
 
