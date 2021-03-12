@@ -1689,6 +1689,17 @@ html[data-theme=Darkmode] {
 
   --visit-helpcenter-bg:#333333;
 
+  .add-user--horizontal{
+    background-color: var(--primary-color);
+    .add-user__label{
+      color: var(--black) !important;
+    }
+  }
+
+  .sbt-welcome-theme-container .joy-modal-footer {
+    background-color: #333;
+  }
+
   .user-profile-box,
   .sb-members-list-item {
     background: #333;
@@ -1721,6 +1732,9 @@ html[data-theme=Darkmode] {
     box-shadow: 0 1.25rem 2.5rem -0.625rem #191818;
     background-color: #222;
     border: 0.125rem solid #222;
+    .title {
+      color:#333;
+    }
   }
 
   .sb-members-list-item:hover,
