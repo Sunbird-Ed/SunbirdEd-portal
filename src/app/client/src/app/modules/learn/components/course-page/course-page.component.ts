@@ -71,13 +71,15 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   });
   _courseSearchResponse: any;
-  isPageAssemble: boolean = true;
-  isDesktopApp: boolean = false;
+  isPageAssemble = true;
+  isDesktopApp = false;
+  contentDownloadStatus = {};
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
       && this.pageSections.length < this.carouselMasterData.length) {
       this.pageSections.push(this.carouselMasterData[this.pageSections.length]);
+      this.addHoverData();
     }
   }
   constructor(private pageApiService: PageApiService, private toasterService: ToasterService,
@@ -148,6 +150,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.initialize();
     this.subscription$ = this.mergeObservables();
     this.isDesktopApp = this.utilService.isDesktopApp;
+    this.getLanguageChange().pipe(takeUntil(this.unsubscribe$)).subscribe();
   }
 
   private mergeObservables() {
@@ -368,6 +371,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
               return; // no page section
             }
             this.pageSections = this.carouselMasterData.slice(0, 4);
+            this.addHoverData();
           }))
         }));
   }
@@ -526,6 +530,23 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.telemetryImpression.edata.visits = this.inViewLogs;
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+  }
+  hoverActionClicked(event) {
+    const type = _.get(event, 'hover.type');
+    if (_.toUpper(type) === 'OPEN') {
+      event['data'] = event.content;
+      this.playContent(event);
+    }
+  }
+  addHoverData() {
+    _.each(this.pageSections, (pageSection) => {
+      _.forEach(pageSection.contents, contents => {
+        if (this.contentDownloadStatus[contents.identifier]) {
+          contents['downloadStatus'] = this.contentDownloadStatus[contents.identifier];
+        }
+      });
+      this.pageSections[pageSection] = this.utilService.addHoverData(pageSection.contents, true);
+    });
   }
   public playContent(event, sectionType?) {
     if (!this.isUserLoggedIn()) {
@@ -747,6 +768,9 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
           if (_.get(this.enrolledSection, 'name')) {
             this.enrolledSection.name = _.get(this.resourceService, 'frmelmnts.lbl.mytrainings');
           }
+          if (_.get(this.pageSections, 'length') && this.isDesktopApp) {
+            this.addHoverData();
+        }
         })
       );
   }
