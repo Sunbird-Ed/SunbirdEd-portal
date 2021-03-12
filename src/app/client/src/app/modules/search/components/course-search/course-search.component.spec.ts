@@ -1,8 +1,8 @@
 import { CourseSearchComponent } from './course-search.component';
 import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
-import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
-import { SearchService, CoursesService, CoreModule, FormService, LearnerService} from '@sunbird/core';
+import { ResourceService, ToasterService, SharedModule, UtilService } from '@sunbird/shared';
+import { SearchService, CoursesService, CoreModule, FormService, LearnerService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import * as _ from 'lodash-es';
@@ -46,9 +46,9 @@ describe('CourseSearchComponent', () => {
     get params() { return this.paramsMock.asObservable(); }
     get queryParams() { return this.queryParamsMock.asObservable(); }
     snapshot = {
-      params: {slug: 'ap'},
+      params: { slug: 'ap' },
       data: {
-        telemetry: { env: 'resource', pageid: 'resource-search', type: 'view', subtype: 'paginate'}
+        telemetry: { env: 'resource', pageid: 'resource-search', type: 'view', subtype: 'paginate' }
       }
     };
     public changeQueryParams(queryParams) { this.queryParamsMock.next(queryParams); }
@@ -81,10 +81,10 @@ describe('CourseSearchComponent', () => {
     sendFormResult = true;
     sendFormApi = true;
     toasterService = TestBed.get(ToasterService);
-    spyOn(toasterService, 'error').and.callFake(() => {});
+    spyOn(toasterService, 'error').and.callFake(() => { });
     spyOn(learnerService, 'get').and.callFake((options) => {
       if (sendEnrolledCourses) {
-        return of({result: {courses: Response.enrolledCourses}});
+        return of({ result: { courses: Response.enrolledCourses } });
       }
       return throwError({});
     });
@@ -102,7 +102,7 @@ describe('CourseSearchComponent', () => {
     });
     spyOn(formService, 'getFormConfig').and.callFake((options) => {
       if (sendFormApi) {
-        return of([{framework: 'TPD'}]);
+        return of([{ framework: 'TPD' }]);
       }
       return throwError({});
     });
@@ -113,8 +113,8 @@ describe('CourseSearchComponent', () => {
   it('should emit filter data when getFilters is called with data', () => {
     spyOn(component.dataDrivenFilterEvent, 'emit');
     coursesService.initialize();
-    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
-    expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({ board: 'NCRT'});
+    component.getFilters([{ code: 'board', range: [{ index: 0, name: 'NCRT' }, { index: 1, name: 'CBSC' }] }]);
+    expect(component.dataDrivenFilterEvent.emit).toHaveBeenCalledWith({ board: 'NCRT' });
   });
   it('should emit filter data when getFilters is called with no data', () => {
     spyOn(component.dataDrivenFilterEvent, 'emit');
@@ -139,7 +139,7 @@ describe('CourseSearchComponent', () => {
   it('should fetch content after getting hashTagId and filter data and set carouselData if api returns data', fakeAsync(() => {
     coursesService.initialize();
     component.ngOnInit();
-    component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
+    component.getFilters([{ code: 'board', range: [{ index: 0, name: 'NCRT' }, { index: 1, name: 'CBSC' }] }]);
     tick(100);
     expect(component.frameWorkName).toEqual('TPD');
     // expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
@@ -175,7 +175,7 @@ describe('CourseSearchComponent', () => {
     // component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     tick(100);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
-    activatedRoute.changeQueryParams({board: ['NCRT']});
+    activatedRoute.changeQueryParams({ board: ['NCRT'] });
     tick(100);
     expect(component.contentList.length).toEqual(1);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(2);
@@ -186,7 +186,7 @@ describe('CourseSearchComponent', () => {
     // component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     tick(100);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
-    activatedRoute.changeParams({pageNumber: 2});
+    activatedRoute.changeParams({ pageNumber: 2 });
     tick(100);
     expect(component.contentList.length).toEqual(1);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(2);
@@ -197,8 +197,8 @@ describe('CourseSearchComponent', () => {
     // component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
     tick(100);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(1);
-    activatedRoute.changeQueryParams({board: ['NCRT']});
-    activatedRoute.changeParams({pageNumber: 2});
+    activatedRoute.changeQueryParams({ board: ['NCRT'] });
+    activatedRoute.changeParams({ pageNumber: 2 });
     tick(100);
     expect(component.contentList.length).toEqual(1);
     expect(searchService.contentSearch).toHaveBeenCalledTimes(2);
@@ -259,7 +259,7 @@ describe('CourseSearchComponent', () => {
         fields: '',
         limit: 20,
         filters: {
-          mimeType: {name: 'text/html', value: 'text/html'},
+          mimeType: { name: 'text/html', value: 'text/html' },
           primaryCategory: 'course'
         }
       }
@@ -275,7 +275,7 @@ describe('CourseSearchComponent', () => {
       pageNumber: 1,
       query: 'comic-book',
       facets: [],
-      sort_by : {'name': 'asc' },
+      sort_by: { 'name': 'asc' },
       params: {
         orgdetails: 'orgName,email',
         licenseDetails: 'name,description,url',
@@ -302,17 +302,27 @@ describe('CourseSearchComponent', () => {
 
   it('should call hoverActionClicked for Open ', () => {
     const event = {
-        hover: {
-            type: 'Open',
-            label: 'OPEN',
-            disabled: false
-        },
-        content: {
-            identifier: 'do_id'
-        }
+      hover: {
+        type: 'Open',
+        label: 'OPEN',
+        disabled: false
+      },
+      content: {
+        identifier: 'do_id'
+      }
     };
     spyOn(component, 'playContent');
     component.hoverActionClicked(event);
     expect(component.playContent).toHaveBeenCalled();
-});
+  });
+
+  it('should call addHoverData', () => {
+    component.contentDownloadStatus = { 'do_id': true };
+    component.contentList = [{ name: 'do_id' }];
+    const utilService = TestBed.get(UtilService);
+    spyOn(utilService, 'addHoverData');
+    component.addHoverData();
+    expect(utilService.addHoverData).toHaveBeenCalled();
+  });
+
 });

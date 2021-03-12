@@ -310,11 +310,6 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.showBatchInfo = true;
   }
   addHoverData() {
-    _.forEach(this.contentList, contents => {
-      if (this.contentDownloadStatus[contents.identifier]) {
-        contents['downloadStatus'] = this.contentDownloadStatus[contents.identifier];
-      }
-    });
     this.contentList = this.utilService.addHoverData(this.contentList, true);
   }
   public inView(event) {
