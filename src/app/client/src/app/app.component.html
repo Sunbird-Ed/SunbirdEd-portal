@@ -9,28 +9,30 @@
           <div class="d-flex flex-ai-center head-tail-right-side">
             <div class="pull-right dk-top-head-ul">
               <ul>
-                <li class="mb-0" *ngIf="!hideHeaderNFooter"><a href="javascript:void(0);" title="Skip to Main Content" (click)="skipToMainContent()" class="cursor-pointer"> {{resourceService?.frmelmnts?.lbl?.skipToMainContent}}</a></li>
+                <li class="mb-0" *ngIf="!hideHeaderNFooter"><a href="javascript:void(0);" title="{{resourceService?.frmelmnts?.lbl?.accessibilitytskip}}" (click)="skipToMainContent()" class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.accessibilitytskip}}</a></li>
                 <li *ngIf="!hideHeaderNFooter" class="mx-4 mb-0">|</li>
-                <li class="screen-reader-link"><a href="/screenreaderaccess.html" class=""
-                    title="Screen Reader Access">{{resourceService?.frmelmnts?.lbl?.screenReaderAccess}}</a></li>
+                <li class="screen-reader-link"><a href="/screenreaderaccess.html"
+                    title="{{resourceService?.frmelmnts?.lbl?.accessibility}}">{{resourceService?.frmelmnts?.lbl?.accessibility}}</a></li>
                 <li class="mx-4">|</li>
-                  <li class="mb-0"><a title="Site Map" *ngIf="userService.loggedIn" href="/sitemap.html?session=true" class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.sitemap}}</a>
+                <li class="mb-0"><a title="Site Map" *ngIf="userService.loggedIn" href="/sitemap.html?session=true" class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.sitemap}}</a>
                   <a title="Site Map" *ngIf="!userService.loggedIn" href="/sitemap.html" class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.sitemap}}</a></li>
+                  <li class="mb-0"><a *ngIf="!userService.loggedIn" title="{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}" href="/sitemap.html" class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}</a></li>
+      
                 <li class="mx-4">|</li>
               </ul>
               <ul>
                 <li>
                   <div class="fontResize-container d-flex flex-ai-center pull-right">
-                    <button type="button" class="fontResizeBtn fontResizeBtn_A-" title="Decrease font size"
+                    <button type="button" class="fontResizeBtn fontResizeBtn_A-" title="{{resourceService?.frmelmnts?.lbl?.accessibilityfont}}"
                     (click)="changeFontSize('decrease');" #decreaseFontSize>A-</button>
-                    <button type="button" class="fontResizeBtn fontResizeBtn_A" title="Reset to default"
+                    <button type="button" class="fontResizeBtn fontResizeBtn_A" title="{{resourceService?.frmelmnts?.lbl?.accessibilityfntdflt}}"
                     (click)="changeFontSize('reset');" #resetFontSize>A</button>
-                    <button type="button" class="fontResizeBtn fontResizeBtn_A+" title="Increase font size"
+                    <button type="button" class="fontResizeBtn fontResizeBtn_A+" title="{{resourceService?.frmelmnts?.lbl?.increaseFontSize}}"
                     (click)="changeFontSize('increase');" #increaseFontSize>A+</button>
                   </div>
                 </li>
                 <li class="mx-4">|</li>
-                <li><button id="dark-mode-toggle" class="dark-mode-toggle" title="Dark mode/Normal mode" (click)="changeTheme()">
+                <li><button id="dark-mode-toggle" class="dark-mode-toggle" title="{{resourceService?.frmelmnts?.lbl?.accessibilitytheme}}" (click)="changeTheme()">
                     <svg width="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 496">
                       <path fill="var(--white)"
                         d="M8,256C8,393,119,504,256,504S504,393,504,256,393,8,256,8,8,119,8,256ZM256,440V72a184,184,0,0,1,0,368Z"
