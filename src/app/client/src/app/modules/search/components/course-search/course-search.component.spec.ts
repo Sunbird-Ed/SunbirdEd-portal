@@ -37,7 +37,8 @@ describe('CourseSearchComponent', () => {
       'lbl': {
         'mytrainings': 'My Trainings'
       }
-    }
+    },
+    languageSelected$: of({})
   };
   class FakeActivatedRoute {
     queryParamsMock = new BehaviorSubject<any>({ subject: ['English'] });
@@ -288,4 +289,30 @@ describe('CourseSearchComponent', () => {
     /** Assert */
     expect(searchService.contentSearch).toHaveBeenCalledWith(option);
   });
+
+  it('should call listenLanguageChange', () => {
+    component.isDesktopApp = true;
+    component.contentList = [{ name: 'test' }];
+    spyOn(component, 'addHoverData');
+    spyOn<any>(component, 'setNoResultMessage');
+    component['listenLanguageChange']();
+    expect(component.addHoverData).toHaveBeenCalled();
+    expect(component['setNoResultMessage']).toHaveBeenCalled();
+  });
+
+  it('should call hoverActionClicked for Open ', () => {
+    const event = {
+        hover: {
+            type: 'Open',
+            label: 'OPEN',
+            disabled: false
+        },
+        content: {
+            identifier: 'do_id'
+        }
+    };
+    spyOn(component, 'playContent');
+    component.hoverActionClicked(event);
+    expect(component.playContent).toHaveBeenCalled();
+});
 });
