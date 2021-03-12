@@ -19,14 +19,16 @@
                     title="{{resourceService?.frmelmnts?.lbl?.accessibility}}">{{resourceService?.frmelmnts?.lbl?.accessibility}}</a>
                 </li>
                 <li class="mx-4">|</li>
-                <li class="mb-0"><a title="Site Map" *ngIf="userService.loggedIn" href="/sitemap.html?session=true"
-                    class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.sitemap}}</a>
-                  <a title="Site Map" *ngIf="!userService.loggedIn" href="/sitemap.html"
-                    class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.sitemap}}</a></li>
-                <li class="mb-0"><a *ngIf="!userService.loggedIn"
-                    title="{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}" href="/sitemap.html"
-                    class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}</a></li>
-
+                <li class="mb-0">
+                  <ng-container *ngIf="userService.loggedIn">
+                    <a title="{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}" href="/sitemap.html?session=true"
+                      class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}</a>
+                  </ng-container>
+                  <ng-container *ngIf="!userService.loggedIn">
+                    <a title="{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}" href="/sitemap.html"
+                      class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}</a>
+                  </ng-container>
+                </li>
                 <li class="mx-4">|</li>
               </ul>
               <ul>
