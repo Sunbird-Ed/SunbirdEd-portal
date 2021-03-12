@@ -531,18 +531,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
-  hoverActionClicked(event) {
-    const type = _.get(event, 'hover.type');
-    if (_.toUpper(type) === 'OPEN') {
-      event['data'] = event.content;
-      this.playContent(event);
-    }
-  }
-  addHoverData() {
-    _.each(this.pageSections, (pageSection) => {
-      this.pageSections[pageSection] = this.utilService.addHoverData(pageSection.contents, true);
-    });
-  }
+
   public playContent(event, sectionType?) {
     if (!this.isUserLoggedIn()) {
       this.publicPlayerService.playContent(event);
@@ -570,6 +559,20 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       }
       this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: metaData.identifier };
       this.showBatchInfo = true;
+    }
+  }
+
+  addHoverData() {
+    _.each(this.pageSections, (pageSection) => {
+      this.pageSections[pageSection] = this.utilService.addHoverData(pageSection.contents, true);
+    });
+  }
+
+  hoverActionClicked(event) {
+    const type = _.get(event, 'hover.type');
+    if (_.toUpper(type) === 'OPEN') {
+      event['data'] = event.content;
+      this.playContent(event);
     }
   }
 
