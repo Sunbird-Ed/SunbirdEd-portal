@@ -67,10 +67,9 @@ export class Form {
     const requestBody = req.body;
     let requestObj = _.get(requestBody, "request");
     requestObj = {
-      type: requestObj.type,
-      subtype: requestObj.subType,
-      action: requestObj.action,
-    };
+      type: requestObj.type.toLowerCase(),
+      subtype: requestObj.subType.toLowerCase(),
+      action: requestObj.action.toLowerCase(),    };
     // requestObj.rootOrgId = requestObj.rootOrgId || '*';
     // requestObj.component = requestObj.component || '*';
     // requestObj.framework = requestObj.framework || '*';
