@@ -503,7 +503,11 @@ if (!gotTheLock) {
 
     if (process.platform == 'win32') {
       // Keep only command line / deep linked arguments
-      deeplinkingUrl = commandLine.slice(3)
+      commandLine.filter(function(el){
+        if(el.includes('://google/signin?access_token=') ) {
+          deeplinkingUrl = el;
+        }
+      });
       handleUserAuthentication()
     }
     if (process.platform == 'linux' ) {
