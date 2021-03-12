@@ -67,7 +67,7 @@
 
 .player-fullscreen {
     position:fixed;
-    top:calculateRem(48px);
+    top:calculateRem(0px);
     left:0;
     bottom:0; 
     right:0;
@@ -76,7 +76,7 @@
     padding:0; 
     overflow:hidden; 
     z-index:9999;
-    height: calc(100% - 7rem) !important;
+    height: calc(100% - 4rem) !important;
     background:var(--white);
 } 
 
