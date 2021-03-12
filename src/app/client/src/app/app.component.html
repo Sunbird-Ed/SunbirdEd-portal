@@ -3,61 +3,78 @@
 <div [ngClass]="{'loggedInUser': userService.loggedIn, 'guestUser': !userService.loggedIn}">
   <div *ngIf="!isDesktopApp" class="sbt-container d-flex flex-ai-center sb-bg-color-black py-8 flex-w-wrap sbt-sticky sbt-sticky-topbar sb-fontresizecontainer">
     <div class="ui container">
-      <div class="d-flex flex-ai-center flex-jc-flex-end">
-        <ul class="d-flex flex-ai-center fsmall sb-color-white mb-0 computer only">
-          <li class="mb-0" *ngIf="!hideHeaderNFooter" (click)="skipToMainContent()">Skip to main content</li><li *ngIf="!hideHeaderNFooter" class="mx-4 mb-0">|</li>
-          <li class="mb-0"><a href="/screenreaderaccess.html" class="cursor-pointer sb-color-white">Screen Reader Access</a></li><li class="mx-4 mb-0">|</li>
-          <ng-container *ngIf="userService.loggedIn">
-            <li class="mb-0"><a href="/sitemap.html?session=true" class="cursor-pointer sb-color-white">Sitemap</a></li>
-          </ng-container>
-          <ng-container *ngIf="!userService.loggedIn">
-            <li class="mb-0"><a href="/sitemap.html" class="cursor-pointer sb-color-white">Sitemap</a></li>
-          </ng-container>
-        </ul>
-        <div class="fontResize-container d-flex flex-ai-center pull-right">
-          <button type="button" class="fontResizeBtn fontResizeBtn_A-" title="Decrease Font Size" 
-            (click)="changeFontSize('decrease');" #decreaseFontSize>A-</button>
-          <button type="button" class="fontResizeBtn fontResizeBtn_A" title="Reset to Default" (click)="changeFontSize('reset');"
-            #resetFontSize>A</button>
-          <button type="button" class="fontResizeBtn fontResizeBtn_A+" title="Increase Font Size"
-          (click)="changeFontSize('increase');" #increaseFontSize>A+</button>
+      <div class="brand-header-tail">
+        <div class="dk-country-flag">
+        </div>
+        <div class="d-flex flex-ai-center head-tail-right-side">
+          <div class="pull-right dk-top-head-ul">
+            <ul>
+              <li class="mb-0" *ngIf="!hideHeaderNFooter"><a href="javascript:void(0);" title="Skip to Main Content" (click)="skipToMainContent()" class="cursor-pointer"> {{resourceService?.frmelmnts?.lbl?.skipToMainContent}}</a></li>
+              <li *ngIf="!hideHeaderNFooter" class="mx-4 mb-0">|</li>
+              <li class="screen-reader-link"><a href="/screenreaderaccess.html" class=""
+                  title="Screen Reader Access">{{resourceService?.frmelmnts?.lbl?.screenReaderAccess}}</a></li>
+              <li class="mx-4">|</li>
+                <li class="mb-0"><a title="Site Map" *ngIf="userService.loggedIn" href="/sitemap.html?session=true" class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.sitemap}}</a>
+                <a title="Site Map" *ngIf="!userService.loggedIn" href="/sitemap.html" class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.sitemap}}</a></li>
+              <li class="mx-4">|</li>
+            </ul>
+            <ul>
+              <li>
+                <div class="fontResize-container d-flex flex-ai-center pull-right">
+                  <button type="button" class="fontResizeBtn fontResizeBtn_A-" title="Decrease font size"
+                  (click)="changeFontSize('decrease');" #decreaseFontSize>A-</button>
+                  <button type="button" class="fontResizeBtn fontResizeBtn_A" title="Reset to default"
+                  (click)="changeFontSize('reset');" #resetFontSize>A</button>
+                  <button type="button" class="fontResizeBtn fontResizeBtn_A+" title="Increase font size"
+                  (click)="changeFontSize('increase');" #increaseFontSize>A+</button>
+                </div>
+              </li>
+              <li class="mx-4">|</li>
+              <li><button id="dark-mode-toggle" class="dark-mode-toggle" title="Dark mode/Normal mode" (click)="changeTheme()">
+                  <svg width="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 496">
+                    <path fill="var(--white)"
+                      d="M8,256C8,393,119,504,256,504S504,393,504,256,393,8,256,8,8,119,8,256ZM256,440V72a184,184,0,0,1,0,368Z"
+                      transform="translate(-8 -8)" /></svg>
+                </button></li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
+    <app-popup #frameWorkPopUp *ngIf="showFrameWorkPopUp" [buttonLabel]="resourceService.frmelmnts.btn.submit"
+      (submit)="updateFrameWork($event)"></app-popup>
+    <app-tnc-popup (close)="onAcceptTnc()" #termsAndCondPopUp *ngIf="showTermsAndCondPopUp">
+    </app-tnc-popup>
+    <div *ngIf="showGlobalConsentPopUpSection">
+      <app-global-consent-pii [type]="globalConsent" [isglobalConsent]="isglobalConsent" (close)="closeConsentPopUp()"
+        [consentConfig]="consentConfig"></app-global-consent-pii>
+    </div>
+    <app-validate-teacher-identifier-popup *ngIf="showUserVerificationPopup && labels" [labels]="labels"
+      [userFeedData]="userFeed"> </app-validate-teacher-identifier-popup>
+    <app-user-onboarding (close)="onLocationSubmit()" *ngIf="showUserTypePopup || !isLocationConfirmed"
+      [isCustodianOrgUser]="isCustodianOrgUser" [deviceProfile]="deviceProfile"></app-user-onboarding>
+    <app-header *ngIf="!hideHeaderNFooter" [layoutConfiguration]="layoutConfiguration" [routerEvents]="routeData$"
+      [ngClass]="{'header-block': isFullScreenView}"></app-header>
+    <app-install-app (viewInBrowser)="viewInBrowser($event)" *ngIf="showAppPopUp && userService.loggedIn">
+    </app-install-app>
+    <!--<app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>-->
+    <router-outlet *ngIf="initApp && !showFrameWorkPopUp && !showTermsAndCondPopUp"></router-outlet>
   </div>
-  <app-popup #frameWorkPopUp *ngIf="showFrameWorkPopUp"
-    [buttonLabel]="resourceService.frmelmnts.btn.submit" (submit)="updateFrameWork($event)"></app-popup>
-  <app-tnc-popup (close)="onAcceptTnc()" #termsAndCondPopUp *ngIf="showTermsAndCondPopUp">
-  </app-tnc-popup>
-  <div *ngIf="showGlobalConsentPopUpSection">
-    <app-global-consent-pii [type]="globalConsent" [isglobalConsent]="isglobalConsent" (close)="closeConsentPopUp()" [consentConfig]="consentConfig"></app-global-consent-pii>
-  </div>
-  <app-validate-teacher-identifier-popup *ngIf="showUserVerificationPopup && labels" [labels]="labels" [userFeedData]="userFeed"> </app-validate-teacher-identifier-popup>
-  <app-user-onboarding (close)="onLocationSubmit()" *ngIf="showUserTypePopup || !isLocationConfirmed"
-[isCustodianOrgUser]="isCustodianOrgUser" [deviceProfile]="deviceProfile"></app-user-onboarding>
-  <app-header *ngIf="!hideHeaderNFooter" [layoutConfiguration]="layoutConfiguration"
-              [routerEvents]="routeData$"
-              [ngClass]="{'header-block': isFullScreenView}"></app-header>
-  <app-install-app (viewInBrowser)="viewInBrowser($event)" *ngIf="showAppPopUp && userService.loggedIn">
-  </app-install-app>
-  <!--<app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>-->
-  <router-outlet *ngIf="initApp && !showFrameWorkPopUp && !showTermsAndCondPopUp"></router-outlet>
+  <app-joy-theme-popup [hidden]="!showJoyThemePopUp" (closeJoyThemePopup)="onCloseJoyThemePopup()">
+  </app-joy-theme-popup>
 </div>
-  <app-joy-theme-popup [hidden]="!showJoyThemePopUp"
-                       (closeJoyThemePopup)="onCloseJoyThemePopup()"></app-joy-theme-popup>
-</div>
-<div *ngIf= "isBotEnabled === 'true'" [ngClass]="{'hideBot': isBotdisplayforRoute(), 'hideBot': isFullScreenView}">
+<div *ngIf="isBotEnabled === 'true'" [ngClass]="{'hideBot': isBotdisplayforRoute(), 'hideBot': isFullScreenView}">
   <lib-chat-window [inputValues]="botObject"></lib-chat-window>
 </div>
 <app-footer [layoutConfiguration]="layoutConfiguration" *ngIf="!hideHeaderNFooter"></app-footer>
 <sui-modal [mustScroll]="false" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
   (dismissed)="showLoginModal = false" #modal *ngIf="sessionExpiryInterceptor.sessionExpired">
   <div class="sb-modal-header">
-      {{resourceService?.frmelmnts?.lbl?.sesnexrd}}
-    </div>
+    {{resourceService?.frmelmnts?.lbl?.sesnexrd}}
+  </div>
   <div class="sb-modal-content">
     <p class="ui center aligned segment">
-        {{resourceService?.frmelmnts?.lbl?.plslgn |
+      {{resourceService?.frmelmnts?.lbl?.plslgn |
           interpolate:'{instance}': instance }}
     </p>
   </div>
@@ -69,15 +86,18 @@
 </sui-modal>
 
 <ng-container *ngIf="layoutConfiguration">
-  <svg width="332px" height="358px" viewBox="0 0 332 358"  class="sbt-theme-bg-img computer only" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <svg width="332px" height="358px" viewBox="0 0 332 358" class="sbt-theme-bg-img computer only" version="1.1"
+    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <g id="Illustration-&amp;-colour-palette-" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Textbooks" transform="translate(106.000000, -390.000000)" class="st0">
-            <g id="Group-8" transform="translate(-106.000000, 390.000000)">
-                <path d="M118.918045,0.564535521 C154.339379,5.57509002 108.755811,52.1143659 108.755811,52.1143659 C108.755811,52.1143659 185.339755,-2.23575328 230.549812,15.5417727 C275.757394,33.3168228 187.673287,114.572323 187.673287,114.572323 C187.673287,114.572323 287.217863,85.2828923 327.147644,127.129789 C367.077425,168.976685 101.348714,205.62258 101.348714,205.62258 C101.348714,205.62258 148.828363,288.592959 141.567958,311.1744 C141.567958,311.1744 127.106556,361.690251 56.4047156,265.925614 C56.4047156,265.925614 57.4676522,364.523693 19.8774293,357.393721 C-17.71032,350.261277 10.076548,243.873629 10.076548,243.873629 L2.56785415,83.5788451 L2.66395147,83.4746638 C5.78661141,80.0950646 84.2002875,-4.34581014 118.918045,0.564535521 Z M185.066826,37.6429976 L78.104636,142.528307 L77.8957176,143.177194 C72.4179048,160.682299 83.0348258,169.5 109.307095,169.5 C135.085318,169.5 176.196991,161.104755 232.667135,144.317206 L232.667135,144.317206 L236.143681,143.278911 L235.856319,142.321089 L234.115849,142.84208 C176.838582,159.948371 135.227065,168.5 109.307095,168.5 L109.307095,168.5 L108.533441,168.497459 C83.4175642,168.331435 73.6662583,160.0296 78.8533181,143.465566 L78.8533181,143.465566 L78.979,143.071 L185.766967,38.3570024 L185.066826,37.6429976 Z" id="Combined-Shape"></path>
-            </g>
+      <g id="Textbooks" transform="translate(106.000000, -390.000000)" class="st0">
+        <g id="Group-8" transform="translate(-106.000000, 390.000000)">
+          <path
+            d="M118.918045,0.564535521 C154.339379,5.57509002 108.755811,52.1143659 108.755811,52.1143659 C108.755811,52.1143659 185.339755,-2.23575328 230.549812,15.5417727 C275.757394,33.3168228 187.673287,114.572323 187.673287,114.572323 C187.673287,114.572323 287.217863,85.2828923 327.147644,127.129789 C367.077425,168.976685 101.348714,205.62258 101.348714,205.62258 C101.348714,205.62258 148.828363,288.592959 141.567958,311.1744 C141.567958,311.1744 127.106556,361.690251 56.4047156,265.925614 C56.4047156,265.925614 57.4676522,364.523693 19.8774293,357.393721 C-17.71032,350.261277 10.076548,243.873629 10.076548,243.873629 L2.56785415,83.5788451 L2.66395147,83.4746638 C5.78661141,80.0950646 84.2002875,-4.34581014 118.918045,0.564535521 Z M185.066826,37.6429976 L78.104636,142.528307 L77.8957176,143.177194 C72.4179048,160.682299 83.0348258,169.5 109.307095,169.5 C135.085318,169.5 176.196991,161.104755 232.667135,144.317206 L232.667135,144.317206 L236.143681,143.278911 L235.856319,142.321089 L234.115849,142.84208 C176.838582,159.948371 135.227065,168.5 109.307095,168.5 L109.307095,168.5 L108.533441,168.497459 C83.4175642,168.331435 73.6662583,160.0296 78.8533181,143.465566 L78.8533181,143.465566 L78.979,143.071 L185.766967,38.3570024 L185.066826,37.6429976 Z"
+            id="Combined-Shape"></path>
         </g>
+      </g>
     </g>
-</svg>
+  </svg>
 </ng-container>
 <ng-container *ngIf="layoutConfiguration">
   <div class="sbt-theme-right-flower computer only"></div>
