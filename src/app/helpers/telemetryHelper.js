@@ -529,5 +529,22 @@ module.exports = {
       type: 'UserSession'
     });
     return cdata;
+  },
+/**
+ * This function used to generate api_ERROR log event
+ */
+getTelemetryAPIErrorLogEventData: function (data, req, context) {
+    if (data.responseCode !== 'OK' && data.responseCode !== 200) {
+    const result = data.params;
+    const edata = {
+      err:  data.responseCode ,
+      type: result.err ,
+      msgid: result.msgid ,
+      env:  context.env,
+      errmsg: _.concat(((context.env).toUpperCase())+ " " + result.errmsg) 
+    }   
+    const option = {edata, context}
+    this.logApiErrorEventV2(req, option);
+   }
   }
 }
