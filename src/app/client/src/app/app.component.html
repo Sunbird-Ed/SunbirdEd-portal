@@ -3,24 +3,41 @@
 <div [ngClass]="{'loggedInUser': userService.loggedIn, 'guestUser': !userService.loggedIn}">
   <div *ngIf="!isDesktopApp" class="sbt-container d-flex flex-ai-center sb-bg-color-black py-8 flex-w-wrap sbt-sticky sbt-sticky-topbar sb-fontresizecontainer">
     <div class="ui container">
-      <div class="d-flex flex-ai-center flex-jc-flex-end">
-        <ul class="d-flex flex-ai-center fsmall sb-color-white mb-0 computer only">
-          <li class="mb-0" *ngIf="!hideHeaderNFooter" (click)="skipToMainContent()">Skip to main content</li><li *ngIf="!hideHeaderNFooter" class="mx-4 mb-0">|</li>
-          <li class="mb-0"><a href="/screenreaderaccess.html" class="cursor-pointer sb-color-white">Screen Reader Access</a></li><li class="mx-4 mb-0">|</li>
-          <ng-container *ngIf="userService.loggedIn">
-            <li class="mb-0"><a href="/sitemap.html?session=true" class="cursor-pointer sb-color-white">Sitemap</a></li>
-          </ng-container>
-          <ng-container *ngIf="!userService.loggedIn">
-            <li class="mb-0"><a href="/sitemap.html" class="cursor-pointer sb-color-white">Sitemap</a></li>
-          </ng-container>
-        </ul>
-        <div class="fontResize-container d-flex flex-ai-center pull-right">
-          <button type="button" class="fontResizeBtn fontResizeBtn_A-" title="Decrease Font Size" 
-            (click)="changeFontSize('decrease');" #decreaseFontSize>A-</button>
-          <button type="button" class="fontResizeBtn fontResizeBtn_A" title="Reset to Default" (click)="changeFontSize('reset');"
-            #resetFontSize>A</button>
-          <button type="button" class="fontResizeBtn fontResizeBtn_A+" title="Increase Font Size"
-          (click)="changeFontSize('increase');" #increaseFontSize>A+</button>
+      <div class="brand-header-tail">
+        <div class="dk-country-flag">
+        </div>
+        <div class="d-flex flex-ai-center head-tail-right-side">
+          <div class="pull-right dk-top-head-ul">
+            <ul>
+              <li class="mb-0" *ngIf="!hideHeaderNFooter"><a href="javascript:void(0);" title="Skip to Main Content" (click)="skipToMainContent()" class="cursor-pointer"> {{resourceService?.frmelmnts?.lbl?.skipToMainContent}}</a></li>
+              <li *ngIf="!hideHeaderNFooter" class="mx-4 mb-0">|</li>
+              <li class="screen-reader-link"><a href="/screenreaderaccess.html" class=""
+                  title="Screen Reader Access">{{resourceService?.frmelmnts?.lbl?.screenReaderAccess}}</a></li>
+              <li class="mx-4">|</li>
+                <li class="mb-0"><a title="Site Map" *ngIf="userService.loggedIn" href="/sitemap.html?session=true" class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.sitemap}}</a>
+                <a title="Site Map" *ngIf="!userService.loggedIn" href="/sitemap.html" class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.sitemap}}</a></li>
+              <li class="mx-4">|</li>
+            </ul>
+            <ul>
+              <li>
+                <div class="fontResize-container d-flex flex-ai-center pull-right">
+                  <button type="button" class="fontResizeBtn fontResizeBtn_A-" title="Decrease font size"
+                  (click)="changeFontSize('decrease');" #decreaseFontSize>A-</button>
+                  <button type="button" class="fontResizeBtn fontResizeBtn_A" title="Reset to default"
+                  (click)="changeFontSize('reset');" #resetFontSize>A</button>
+                  <button type="button" class="fontResizeBtn fontResizeBtn_A+" title="Increase font size"
+                  (click)="changeFontSize('increase');" #increaseFontSize>A+</button>
+                </div>
+              </li>
+              <li class="mx-4">|</li>
+              <li><button id="dark-mode-toggle" class="dark-mode-toggle" title="Dark mode/Normal mode" (click)="changeTheme()">
+                  <svg width="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 496">
+                    <path fill="var(--white)"
+                      d="M8,256C8,393,119,504,256,504S504,393,504,256,393,8,256,8,8,119,8,256ZM256,440V72a184,184,0,0,1,0,368Z"
+                      transform="translate(-8 -8)" /></svg>
+                </button></li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
