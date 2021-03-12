@@ -2010,6 +2010,10 @@ html[data-theme=Darkmode] {
     pdf-viewer iframe {
       filter: invert(.9);
     }
+    .sb-pdf-reading-status {
+      color: var(--black) !important;
+      background: var(--primary-color) !important;
+    }
   }
 
   .sb-onboard__container {
