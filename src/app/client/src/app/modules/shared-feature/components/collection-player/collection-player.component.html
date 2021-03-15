@@ -67,7 +67,7 @@
               *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && !isCopyAsCourseClicked"
               appPermission [permission]="['CONTENT_CREATOR']" (click)="copyAsCourse()"
               class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
-              <img src="assets/images/copy-clone.svg" class="mr-4 pt-2">
+              <img src="assets/images/copy-clone.svg" alt="copy-clone" class="mr-4 pt-2">
               {{generaliseLabelService?.frmelmnts?.lbl?.copyAsCourse}}
             </button>
 
