@@ -34,7 +34,6 @@ export class SbFormLocationSelectionDelegate {
   private stateChangeSubscription?: Subscription;
 
   private changesMap: {} = {};
-  private isDefaultConfig = false;
 
   constructor(
     private userService: UserService,
@@ -75,12 +74,10 @@ export class SbFormLocationSelectionDelegate {
             SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST.contentType;
         })();
       }
-      this.isDefaultConfig = false;
       await this.loadForm(formInputParams, true);
     } catch (e) {
       // load default form
       console.error(e);
-      this.isDefaultConfig = true;
       await this.loadForm(SbFormLocationSelectionDelegate.DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST, true);
     }
   }
