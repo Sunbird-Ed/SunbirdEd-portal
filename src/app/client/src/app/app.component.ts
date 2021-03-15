@@ -784,12 +784,15 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
   skipToMainContent() {
-    const headerHeight = document.getElementsByClassName('sbt-fluid-header-bg')[1].clientHeight;
-    const topHeight = ( headerHeight === 80 ) ? 160 : 96;
-    window.scroll({
+    const elementArray=document.getElementsByClassName('sbt-fluid-header-bg').length;
+    if(elementArray>0){
+      const headerHeight = document.getElementsByClassName('sbt-fluid-header-bg')[elementArray-1].clientHeight;
+      const topHeight =  headerHeight *2;
+       window.scroll({
       top: topHeight,
       behavior: 'smooth'
-    });
+      });
+     }
   }
   getLocalTheme() {
     const localDataThemeAttribute = localStorage.getItem('data-theme');
