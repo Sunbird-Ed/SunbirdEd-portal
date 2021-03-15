@@ -789,8 +789,8 @@ export class AppComponent implements OnInit, OnDestroy {
       const headerHeight = document.getElementsByClassName('sbt-fluid-header-bg')[elementArray-1].clientHeight;
       const topHeight =  headerHeight *2;
        window.scroll({
-      top: topHeight,
-      behavior: 'smooth'
+         top: topHeight,
+         behavior: 'smooth'
       });
      }
   }
