@@ -245,7 +245,12 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.showNewPlayer = false;
     if (this.isDesktopApp) {
       this.updateMetadataForDesktop();
-      this.loadDefaultPlayer(this.configService.appConfig.PLAYER_CONFIG.localBaseUrl);
+      const downloadStatus = Boolean(_.get(this.playerConfig, 'metadata.desktopAppMetadata.isAvailable'));
+      let playerUrl = this.configService.appConfig.PLAYER_CONFIG.localBaseUrl;
+      if (!downloadStatus) {
+        playerUrl = `${playerUrl}webview=true`;
+      }
+      this.loadDefaultPlayer(playerUrl);
       return;
     }
     if (this.isMobileOrTab) {
