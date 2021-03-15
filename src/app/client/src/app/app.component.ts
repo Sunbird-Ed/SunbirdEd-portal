@@ -94,6 +94,7 @@ export class AppComponent implements OnInit, OnDestroy {
   showUserTypePopup = false;
   deviceId: string;
   dataThemeAttribute: string;
+  scrollHeight:number;
   public botObject: any = {};
   isBotEnabled = (<HTMLInputElement>document.getElementById('isBotConfigured'))
     ? (<HTMLInputElement>document.getElementById('isBotConfigured')).value : 'false';
@@ -787,9 +788,13 @@ export class AppComponent implements OnInit, OnDestroy {
     const elementArray=document.getElementsByClassName('sbt-fluid-header-bg').length;
     if(elementArray>0){
       const headerHeight = document.getElementsByClassName('sbt-fluid-header-bg')[elementArray-1].clientHeight;
-      const topHeight =  headerHeight *2;
+      if(typeof window.orientation !== 'undefined'){
+        this.scrollHeight =  document.getElementsByClassName('sbt-fluid-header-bg')[0].clientHeight+150;
+      }else{
+        this.scrollHeight =  headerHeight *2;
+      }
        window.scroll({
-         top: topHeight,
+         top:  this.scrollHeight,
          behavior: 'smooth'
       });
      }
