@@ -1632,7 +1632,7 @@ html[data-theme=Darkmode] {
 
   // toc 
   --cc-toc-card-item-bg: #333333;
-  --cc-toc-card-item-hover: #ffffff;
+  --cc-toc-card-item-hover: var(--primary-color);
   --cc-toc-card-item-br: #222222;
   --cc-toc-card-item-bs: var(--rc-rgba-primary);
   --cc-toc-card-item-img-bg: var(--rc-dddddd);
@@ -2027,6 +2027,9 @@ html[data-theme=Darkmode] {
     .sb-pdf-reading-status {
       color: var(--black) !important;
       background: var(--primary-color) !important;
+      span {
+        background: var(--black) !important;
+      }
     }
 
     .file-download__popup {
@@ -2072,6 +2075,19 @@ html[data-theme=Darkmode] {
     &:hover {
       img {
         filter: unset;
+      }
+    }
+  }
+
+  .content-header__buttons {
+    .sb-btn.sb-btn-normal.sb-btn-outline-primary {
+      &:hover {
+        img.mr-4.pt-2 {
+          filter: unset;
+        }
+      }
+      img.mr-4.pt-2 {
+        filter: invert(1);
       }
     }
   }
