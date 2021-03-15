@@ -48,7 +48,7 @@ endPage.controller("endPageController", function($scope, $rootScope, $state,$ele
     };
    
     $scope.replayContent = function() {
-        if (content.primaryCategory && content.primaryCategory.toLowerCase() === 'course assessment'){
+        if (!isbrowserpreview && content.primaryCategory && content.primaryCategory.toLowerCase() === 'course assessment'){
             org.ekstep.service.content.checkMaxLimit(content).then(function(response){
                 if (response && response.isCloseButtonClicked){
                     return;
@@ -64,8 +64,20 @@ endPage.controller("endPageController", function($scope, $rootScope, $state,$ele
                     $scope.replayCallback();
                 }
             });
+        }else if (isbrowserpreview && content.primaryCategory && content.primaryCategory.toLowerCase() === 'course assessment'){
+            $scope.replayAssessment();
         }else{
             $scope.replayCallback();
+        }
+    };
+
+    $scope.replayAssessment = function(){
+        content.currentAttempt = content.currentAttempt + 1
+        if (content.maxAttempt <= content.currentAttempt){
+            window.postMessage('renderer:maxLimitExceeded');
+            return;
+        }else{
+            $scope.replayPlayer();
         }
     };
     

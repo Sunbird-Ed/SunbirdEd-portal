@@ -83,7 +83,9 @@ endPage.controller("endPageController", function($scope, $rootScope, $state,$ele
     $scope.replayContent = function() {
         if(!isbrowserpreview && $rootScope.enableUserSwitcher && ($rootScope.users.length > 1)) {
             EkstepRendererAPI.dispatchEvent("event:openUserSwitchingModal", {'logGEEvent': $scope.pluginInstance._isAvailable});
-        }else {
+        }else if(isbrowserpreview && content.primaryCategory && content.primaryCategory.toLowerCase() === 'course assessment'){
+            $scope.replayAssessment();
+        }else{
             $scope.replayCallback();
         }
 
@@ -92,6 +94,15 @@ endPage.controller("endPageController", function($scope, $rootScope, $state,$ele
             stageId: "ContentApp-EndScreen",
             subtype: "ContentID"
         });
+    };
+    $scope.replayAssessment = function(){
+        content.currentAttempt = content.currentAttempt + 1;
+        if (content.maxAttempt <= content.currentAttempt){
+            window.postMessage('renderer:maxLimitExceeded');
+            return;
+        }else{
+            $scope.replayPlayer();
+        }
     };
     $scope.replayCallback = function(){
         if (content.primaryCategory && content.primaryCategory.toLowerCase() === 'course assessment'){
@@ -103,7 +114,6 @@ endPage.controller("endPageController", function($scope, $rootScope, $state,$ele
                     window.postMessage({
                         event: 'renderer:maxLimitExceeded',
                         data: {
-                            "initialtedFrom": "replay"
                         }
                     })
                 } else{
