@@ -789,7 +789,7 @@ export class AppComponent implements OnInit, OnDestroy {
     if(elementArray>0){
       const headerHeight = document.getElementsByClassName('sbt-fluid-header-bg')[elementArray-1].clientHeight;
       if(typeof window.orientation !== 'undefined'){
-        this.scrollHeight =  document.getElementsByClassName('sbt-fluid-header-bg')[0].clientHeight+150;
+          this.scrollHeight =  document.getElementsByClassName('sbt-fluid-header-bg')[0].clientHeight+150;
       }else{
         this.scrollHeight =  headerHeight *2;
       }
