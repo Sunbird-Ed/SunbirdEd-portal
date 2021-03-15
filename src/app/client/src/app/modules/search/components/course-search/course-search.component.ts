@@ -53,6 +53,8 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   public selectedFilters;
   public searchAll;
   public allMimeType;
+  isDesktopApp = false;
+  contentDownloadStatus = {};
   // TODO: to rework igot.
   public slugForProminentFilter = (<HTMLInputElement>document.getElementById('slugForProminentFilter')) ?
   (<HTMLInputElement>document.getElementById('slugForProminentFilter')).value : null;
@@ -71,6 +73,8 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
   }
   ngOnInit() {
+    this.isDesktopApp = this.utilService.isDesktopApp;
+    this.listenLanguageChange();
     this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
       this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
       this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
@@ -202,7 +206,8 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         const { constantData, metaData, dynamicFields } = this.configService.appConfig.CoursePageSection.course;
         this.contentList = _.map(data.result.content, (content: any) =>
           this.utilService.processContent(content, constantData, dynamicFields, metaData));
-          this.totalCount = data.result.count;
+        this.totalCount = data.result.count;
+        this.addHoverData();
       }, err => {
         this.showLoader = false;
         this.contentList = [];
@@ -280,6 +285,14 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       behavior: 'smooth'
     });
   }
+  hoverActionClicked(event) {
+    const type = _.get(event, 'hover.type');
+
+    if (_.toUpper(type) === 'OPEN') {
+      event['data'] = event.content;
+      this.playContent(event);
+    }
+  }
   public playContent({ data }) {
     const { metaData } = data;
     this.changeDetectorRef.detectChanges();
@@ -295,6 +308,9 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: metaData.identifier };
     this.showBatchInfo = true;
+  }
+  addHoverData() {
+    this.contentList = this.utilService.addHoverData(this.contentList, true);
   }
   public inView(event) {
     _.forEach(event.inview, (elem, key) => {
@@ -346,6 +362,17 @@ export class CourseSearchComponent implements OnInit, OnDestroy, AfterViewInit {
           duration: this.navigationhelperService.getPageLoadTime()
         }
       };
+    });
+  }
+
+  private listenLanguageChange() {
+    this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe((languageData) => {
+      this.setNoResultMessage();
+      if (_.get(this.contentList, 'length') ) {
+        if (this.isDesktopApp) {
+          this.addHoverData();
+        }
+      }
     });
   }
 

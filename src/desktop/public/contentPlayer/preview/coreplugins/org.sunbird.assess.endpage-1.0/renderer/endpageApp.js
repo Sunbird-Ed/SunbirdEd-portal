@@ -48,8 +48,27 @@ endPage.controller("endPageController", function($scope, $rootScope, $state,$ele
     };
    
     $scope.replayContent = function() {
-        $scope.replayCallback();
+        if (content.primaryCategory && content.primaryCategory.toLowerCase() === 'course assessment'){
+            org.ekstep.service.content.checkMaxLimit(content).then(function(response){
+                if (response && response.isCloseButtonClicked){
+                    return;
+                }
+                else if(response && response.limitExceeded) {
+                        window.postMessage({
+                        event: 'renderer:maxLimitExceeded',
+                        data: {
+                        }
+                    })
+                    return;
+                } else{
+                    $scope.replayCallback();
+                }
+            });
+        }else{
+            $scope.replayCallback();
+        }
     };
+    
     $scope.replayCallback = function(){
         EkstepRendererAPI.hideEndPage();
         EkstepRendererAPI.dispatchEvent('renderer:content:replay');
@@ -140,31 +159,61 @@ endPage.controller("endPageController", function($scope, $rootScope, $state,$ele
 
         var contentToPlay = (contentType === 'previous') ? $scope.previousContent[contentId] : $scope.nextContent[contentId];
         var contentMetadata = {};
-        if(contentToPlay){
-            contentMetadata = contentToPlay.content.contentData;
-            _.extend(contentMetadata,  _.pick(contentToPlay.content, "hierarchyInfo", "isAvailableLocally", "basePath", "rollup"));
-            contentMetadata.basepath = contentMetadata.basePath;
-            $rootScope.content = window.content = content = contentMetadata;
-        }
 
-        if (contentToPlay.content.isAvailableLocally) {
-                EkstepRendererAPI.hideEndPage();
-                var object = {
-                    'config': GlobalContext.config,
-                    'data': undefined,
-                    'metadata': contentMetadata
-                }
-                GlobalContext.config = mergeJSON(AppConfig, contentMetadata);
-                window.globalConfig = GlobalContext.config;
-
-                org.ekstep.contentrenderer.initializePreview(object)
-                EkstepRendererAPI.dispatchEvent('renderer:player:show');
-        } else {
-            if(contentMetadata.identifier && window.parent.hasOwnProperty('onContentNotFound')) {
-                window.parent.onContentNotFound(contentMetadata.identifier, contentMetadata.hierarchyInfo);
-            } else {
-                console.warn('Content not Available');
+        $scope.checkMaxLimit(contentToPlay, function(response){
+            if (response && response.isCloseButtonClicked){
+                return;
             }
+            else if (response && response.limitExceeded) {
+                    window.postMessage({
+                    event: 'renderer:maxLimitExceeded',
+                    data: {
+                    }
+                })
+                return;
+            }
+            if(contentToPlay){
+                contentMetadata = contentToPlay.content.contentData;
+                _.extend(contentMetadata,  _.pick(contentToPlay.content, "hierarchyInfo", "isAvailableLocally", "basePath", "rollup"));
+                contentMetadata.basepath = contentMetadata.basePath;
+                $rootScope.content = window.content = content = contentMetadata;
+            }
+
+            if (contentToPlay.content.isAvailableLocally) {
+                    EkstepRendererAPI.hideEndPage();
+                    var object = {
+                        'config': GlobalContext.config,
+                        'data': undefined,
+                        'metadata': contentMetadata
+                    }
+                    GlobalContext.config = mergeJSON(AppConfig, contentMetadata);
+                    window.globalConfig = GlobalContext.config;
+
+                    org.ekstep.contentrenderer.initializePreview(object)
+                    EkstepRendererAPI.dispatchEvent('renderer:player:show');
+            } else {
+                if(contentMetadata.identifier && window.parent.hasOwnProperty('onContentNotFound')) {
+                    window.parent.onContentNotFound(contentMetadata.identifier, contentMetadata.hierarchyInfo);
+                } else {
+                    console.warn('Content not Available');
+                }
+            }
+        });
+    };
+
+    $scope.checkMaxLimit = function(contentToPlay, callback) {
+        var contentMetadata = contentToPlay.content.contentData
+        if (contentToPlay.content && contentToPlay.content.primaryCategory.toLowerCase() === 'course assessment'){
+            org.ekstep.service.content.checkMaxLimit(contentMetadata).then(function(response){
+                if(response){
+                    callback(response);
+                } else{
+                    console.log('Error has occurred');
+                    callback(false);
+                }
+            });
+        }else{
+            callback(false);
         }
     };
 
