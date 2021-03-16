@@ -619,20 +619,20 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-epub-player-v8@3.7.6":
-  version "3.7.6"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v8/-/sunbird-epub-player-v8-3.7.6.tgz#3417d32a718d4838a25b34fa5697e1e3bc006f90"
-  integrity sha512-praeoBvTf/0uH1DAPgvw8keo8nyohgH9PSfMHzrExbO/MfAg9EGQN18ZXHQ6vWgopyYde55Rh8YZQXpfop+/eQ==
+"@project-sunbird/sunbird-epub-player-v8@3.8.1":
+  version "3.8.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v8/-/sunbird-epub-player-v8-3.8.1.tgz#03479a3f05de8a1f877a19a590656c3e6ac6fe2b"
+  integrity sha512-Z0EvJRmUDyvJQ+FjfyiKBIdBM5TSAttSQhAIOn/6tP7Cks6kgbP1TKIf95QG2L26Jl0gbM0zliwLY5hScn++1Q==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v8" "3.7.1"
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-pdf-player-v8@3.8.1":
-  version "3.8.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-pdf-player-v8/-/sunbird-pdf-player-v8-3.8.1.tgz#b0d526c0b3ccee79c81dbf9bff645d7ea3bc5afd"
-  integrity sha512-qwYx6WGeTeeqQwq0g3A3YqZIJ48oHWvaFhgvfZU63Gxs6PO+Ql/E3bMQ3HlbhlD/lYYC5NiiO73OmtTCQ3CwQQ==
+"@project-sunbird/sunbird-pdf-player-v8@3.6.1":
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-pdf-player-v8/-/sunbird-pdf-player-v8-3.6.1.tgz#64c141b6b24994aca72100f911d7d734fe472157"
+  integrity sha512-VZgQf6GgKOfTonVWyeOtiWYbURg28pOYMFbVQ3F9itWliW4tVkiFO/+s1w2pjyX4LmuCXMvbuPLB+H+s+kGGZQ==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v8" "3.8.0"
+    "@project-sunbird/sunbird-player-sdk-v8" "3.6.0"
     tslib "^1.9.0"
 
 "@project-sunbird/sunbird-player-sdk-v8@3.6.0":
@@ -646,13 +646,6 @@
   version "3.7.1"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v8/-/sunbird-player-sdk-v8-3.7.1.tgz#6d10410040d3cfcfdb27dc0f45613c1f947fb44d"
   integrity sha512-5Zoa9GPFlmtahb+GFaalmoOmvIlMoy7BIimEHx78njxVhciear/rFDgdRzbDpNTA9oNjnR6VFXZx/kcfF96McA==
-  dependencies:
-    tslib "^1.9.0"
-
-"@project-sunbird/sunbird-player-sdk-v8@3.8.0":
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v8/-/sunbird-player-sdk-v8-3.8.0.tgz#9029bdc008f75b956469733572079c9050149ca7"
-  integrity sha512-QKwmCfJBNYp13CcZ8xOnRMc22TGZmHWNyJNJR5k272ptYvWckxOb6cje+OEDOUKiqfRHA411ET8k76mZabdGgA==
   dependencies:
     tslib "^1.9.0"
 
