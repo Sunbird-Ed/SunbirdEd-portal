@@ -173,11 +173,14 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
 
   getTimeRemaining(endtime){
     this.getFormData();
-    let date = new Date().toString();
-    const total = Date.parse(endtime) - Date.parse(date);
-    const minutes = Math.floor( (total/1000/60) % 60 );
-    const hours = Math.floor( (total/(1000*60*60)) % 24 );
+    let countDownDate = new Date(endtime).getTime() + 1000*60*60*24;
+    let now = new Date().getTime();
+    const total = countDownDate - now;
     const days = Math.floor( total/(1000*60*60*24) );
+    const hours = Math.floor( (total/(1000*60*60)) % 24 );
+    const minutes = Math.floor( (total/1000/60) % 60 );
+    
+    
     this.showBatchCounter = this.batchEndCounter >= days;
     if (this.showBatchCounter){
       return days + ' ' + 'day(s)' + ' ' + hours + 'h' + ' ' + minutes + 'm'
@@ -265,7 +268,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
    /* istanbul ignore else */
    if (_.get(this.enrolledBatchInfo, 'endDate')) {
     this.batchEndDate = dayjs(this.enrolledBatchInfo.endDate).format('YYYY-MM-DD');
-    this.batchRemaningTime = this.getTimeRemaining(this.batchEndDate);
+    let leftTimeDate = dayjs(this.batchEndDate).format('MMM DD, YYYY') 
+    this.batchRemaningTime = this.getTimeRemaining(leftTimeDate);
    }
    return (_.get(this.enrolledBatchInfo, 'status') === 2 && this.progress <= 100);
   }
