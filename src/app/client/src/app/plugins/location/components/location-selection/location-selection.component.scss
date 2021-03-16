@@ -30,6 +30,10 @@
     }
 
     .sb-modal-dropdown-web {
+      ul{
+        overflow-y: auto !important;
+        overflow: hidden;
+      }
       li {
         margin: 0 !important;
         padding: 0 !important;

@@ -204,6 +204,12 @@ html[data-theme=Darkmode][layout='old'] {
   .sb-fontresizecontainer.sbt-sticky {
     position: relative;
   }
+  .sb-back-btn-panel.sb-bg-color-white{
+    background-color: var(--black) !important;
+  }
+  .content-header{
+    background-color: #222;
+  }
 }
 
 html[data-theme='Default'][layout='joy'] {
@@ -249,7 +255,12 @@ html[layout='joy'] {
     width: calc(100% - 4%);
     margin: 0 auto;
   }
-
+  .sb-onboard sb-form .sb-textbox {
+   border-radius: 1.75rem;
+  }
+  .sb-onboard sb-form .list-border {
+    border-radius: 1.75rem;
+}
   .kabab-menu-dropdown-content {
     border-radius: var(--sbt-bradius-16);
 
@@ -1603,7 +1614,7 @@ html[data-theme=Darkmode] {
   }
 
   .sb-modal-dropdown-web ul li:hover {
-    background-color: #f2f2f2;
+    background-color: #222;
   }
 
   .sb-members-list-item--medium .selected img {
@@ -1617,6 +1628,7 @@ html[data-theme=Darkmode] {
       color: var(--white);
     }
   }
+
   .sb-field.ui.left.icon.input {
     i.icon {
       color: var(--white);
@@ -1642,14 +1654,21 @@ html[data-theme=Darkmode] {
   }
 
   .sb-modal-dropdown-web ul {
-    background-color: #fff;
-    color: #333;
+    background-color: var(--black) !important;
+    color: var(--white);
+    border: calculateRem(2px) solid var(--primary-color) !important;
+    box-shadow: none !important;
   }
 
   .sb-modal-dropdown-web .selected-option {
-    background: #ffd92a;
+    background: var(--primary-color) !important;
+    color:var(--black);
   }
-
+  .sb-onboard sb-form .sb-textbox {
+    background: #333333;
+    border: .5px solid var(--gray-400);
+    color: #fff;
+  }
   .sb-onbrd-g-box__guest__item {
     box-shadow: 0 1.25rem 2.5rem -0.625rem #191818;
     background-color: #222;
@@ -2276,7 +2295,7 @@ html[accessable-theme="accessible"] {
 
   .schooling-location {
     .multi-select-container .list-border .placeholder {
-      color: #525252 !important;
+      color: #f2f2f2 !important;
     }
   }
 
