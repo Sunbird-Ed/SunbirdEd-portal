@@ -1611,7 +1611,28 @@ html[data-theme=Darkmode] {
   }
 
   .sb-form-control {
-    color: #333;
+    color: var(--white) !important;
+    background: var(--black) !important;
+    &::placeholder {
+      color: var(--white);
+    }
+  }
+  .sb-field.ui.left.icon.input {
+    i.icon {
+      color: var(--white);
+    }
+  }
+
+  .sb-rating.ui.star.rating .icon {
+    color: #444;
+  }
+
+  .sb-checkbox label:before, .sb-radio-btn-checkbox label:before {
+    background: var(--black);
+  }
+
+  .sb-checkbox input:checked ~ .box:after, .sb-checkbox input:checked ~ label:after {
+    color: var(--black);
   }
 
   .ui.selection.sbt-dropdown.dropdown.sbt-purple--lbg .sbt-dropdown-section .item:hover,
@@ -2016,6 +2037,8 @@ html[data-theme=Darkmode] {
     --sb-profile-bg-c-4: #222;
     color: #fff;
   }
+
+
 }
  
 html[data-theme='Darkmode'][layout='joy'] {
