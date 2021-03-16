@@ -1906,6 +1906,13 @@ html[data-theme=Darkmode] {
     }
   }
 
+  .sb-btn-square {
+    color: var(--white);
+    &:hover {
+      color: var(--black);
+    }
+  }
+
   app-faq .sb-btn-round.sb-btn-link-primary {
     background-color: inherit !important;
 
@@ -1937,6 +1944,52 @@ html[data-theme=Darkmode] {
     }
   }
 
+  // Player sidebar menu
+  .navBlock {
+    background: #222 !important;
+
+    ul li {
+      background: #222 !important;
+      color: var(--white) !important;
+
+      .player-icon {
+        background: var(--white) !important;
+      }
+
+      &:hover {
+        color: var(--black) !important;
+        background: var(--gray-0) !important;
+
+        .player-icon {
+          background: var(--black) !important;
+        }
+      }
+    }
+  }
+
+  .navBlock .player-nav-unit {
+    color: var(--black) !important;
+  }
+
+  .file-download__popup {
+    background: #444 !important;
+  }
+  
+  .file-download .close-btn .close-icon {
+    &:after, &:before {
+      background: var(--white) !important;
+    }
+  
+    &[data-animation=showShadow]:not(.showShadow):hover {
+      box-shadow: 0 0 0 0.25rem var(--white) inset !important;
+    }
+  }
+  
+  .file-download__text, .file-download__size {
+    color: var(--white) !important;
+  }
+
+  // Pdf Player
   sunbird-pdf-player .sunbird-pdf-palyer-container {
     .sb-pdf-main-header .sb-player-header {
       background: var(--sbt-compt-bg);
@@ -1983,32 +2036,6 @@ html[data-theme=Darkmode] {
       }
     }
 
-    .navBlock {
-      background: #222;
-
-      ul li {
-        background: #222 !important;
-        color: var(--white) !important;
-
-        .player-icon {
-          background: var(--white) !important;
-        }
-
-        &:hover {
-          color: var(--black) !important;
-          background: var(--gray-0) !important;
-
-          .player-icon {
-            background: var(--black) !important;
-          }
-        }
-      }
-    }
-
-    .navBlock .player-nav-unit {
-      color: var(--black) !important;
-    }
-
     .sb-player-header__panel .player-zoom-btns__zoombtn {
       color: var(--white) !important;
 
@@ -2045,23 +2072,6 @@ html[data-theme=Darkmode] {
       }
     }
 
-    .file-download__popup {
-      background: #444 !important;
-    }
-    
-    .file-download .close-btn .close-icon {
-      &:after, &:before {
-        background: var(--white) !important;
-      }
-    
-      &[data-animation=showShadow]:not(.showShadow):hover {
-        box-shadow: 0 0 0 0.25rem var(--white) inset !important;
-      }
-    }
-    
-    .file-download__text, .file-download__size {
-      color: var(--white) !important;
-    }
   }
 
   sui-multi-select.ui.selection.dropdown {
@@ -2106,6 +2116,11 @@ html[data-theme=Darkmode] {
   }
 
   app-loader {
+
+    .ui.icon.message {
+      background: #333;
+    }
+
     .notched.circle.loading.icon {
       color: var(--white) !important;
     }
@@ -2114,7 +2129,7 @@ html[data-theme=Darkmode] {
         color: var(--white) !important;
       }
     }
-  } 
+  }
 
   .sb-onboard__container {
     background: #333333;
@@ -2123,6 +2138,11 @@ html[data-theme=Darkmode] {
   .help-page__header.sb-bg-color-white {
     background: #222 !important;
   }
+
+  .content-metadeta__title {
+    color: var(--white) !important;
+  }
+  
 }
 
 html[data-theme='Darkmode'][layout='joy'] {
@@ -2176,7 +2196,7 @@ html[data-theme='Darkmode'][layout='joy'] {
   }
 
   .sbt-dropdown-language.ui.selection.sbt-dropdown.dropdown>.text span:last-child::before {
-    background: url(/assets/images/Language-white.svg) no-repeat !important;
+    background: url(assets/images/Language-white.svg) no-repeat !important;
   }
 
   .sbt-footer-title {
@@ -2244,13 +2264,13 @@ html[accessable-theme="accessible"] {
     color: #1a1a1a;
   }
 
-  .sb-btn-link-gray {
-    color: var(--gray-200);
-  }
+  // .sb-btn-link-gray {
+  //   color: var(--gray-200);
+  // }
 
-  .content-metadeta__title {
-    color: var(--gray-200) !important;
-  }
+  // .content-metadeta__title {
+  //   color: var(--gray-200) !important;
+  // }
 
   // .sb-btn-normal {
   // 	color:#F5F5F5 ;
