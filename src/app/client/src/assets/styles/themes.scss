@@ -1603,7 +1603,7 @@ html[data-theme=Darkmode] {
   }
 
   .sb-modal-dropdown-web ul li:hover {
-    background-color: #f2f2f2;
+    background-color: #222;
   }
 
   .sb-members-list-item--medium .selected img {
@@ -1621,12 +1621,15 @@ html[data-theme=Darkmode] {
   }
 
   .sb-modal-dropdown-web ul {
-    background-color: #fff;
-    color: #333;
+    background-color: var(--black) !important;
+    color: var(--white);
+    border: calculateRem(2px) solid var(--primary-color) !important;
+    box-shadow: none !important;
   }
 
   .sb-modal-dropdown-web .selected-option {
-    background: #ffd92a;
+    background: var(--primary-color) !important;
+    color:var(--black);
   }
 
   .sb-onbrd-g-box__guest__item {
