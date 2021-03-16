@@ -2190,6 +2190,17 @@ html[accessable-theme="accessible"][data-theme=Darkmode] {
     background-color: #444444 !important;
     color: #ffd92a !important;
   }
+  .new-layout-footer .sbt-container .sbt-footer-download-app .sbt-footer-bg .sbt-footer-title {
+    color:var(--yellow)!important
+  }
+.sb-pageSection .sb-pageSection-header .sb-pageSection-sentenceCase .sb-pageSection-count{
+  background-color: var(--black);
+  color:var(--white);
+}
+.sb-pageSection .sb-pageSection-header .sb-cls-btn, .sb-pageSection .sb-pageSection-header button.sb-btn-secondary{
+  background-color: var(--black);
+  color:var(--white);
+}
 
 }
 
