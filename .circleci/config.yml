@@ -18,15 +18,13 @@ jobs:
       - run: 
           name: Installing prerequisites
           command: |-
-            echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee -a /etc/apt/sources.list
-            wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
             sudo apt-get update && sudo apt install -y libxpm4 libxrender1 libgtk2.0-0 libnss3 libgconf-2-4 \
                   xvfb gtk2-engines-pixbuf \
-                  xfonts-cyrillic xfonts-100dpi xfonts-75dpi xfonts-base xfonts-scalable \
-                  google-chrome-stable git curl
+                  xfonts-cyrillic xfonts-100dpi xfonts-75dpi xfonts-base xfonts-scalable
             curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
             sudo apt install nodejs -y
             sudo npm install -g yarn
+            node --version
       - run:
           name: ignore-engines
           command: 'yarn config set ignore-engines true'
