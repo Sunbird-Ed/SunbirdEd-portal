@@ -160,9 +160,9 @@
                                 </a>
                                 <p class="ps-action-text">Replay</p>
                             </li>
-                            <li class="ps-action-list__item"><a class="ps-btn ps-btn--blue"><span class="user-name">{{currentUser.name.charAt(0).toUpperCase() + string.slice(1) || currentUser.handle.charAt(0).toUpperCase() + string.slice(1)}}</span></a>
+                            <li class="ps-action-list__item"><a class="ps-btn ps-btn--blue"><span class="user-name">{{currentPlayerFirstChar}}</span></a>
                                 <div class="ps-action-data">
-                                    <p class="ps-action-text">{{currentUser.name || currentUser.handle}}</p>
+                                    <p class="ps-action-text">{{currentPlayer}}</p>
                                 </div>
                             </li>
                             <li ng-if="!isCordova" class="ps-action-list__item">

@@ -196,13 +196,14 @@ export class SbFormLocationSelectionDelegate {
 
     if (this.shouldUserProfileLocationUpdate && this.userService.loggedIn) {
       const formValue = this.formGroup.value;
-      const payload = {
+      const payload: any = {
         userId: _.get(this.userService, 'userid'),
         locationCodes: locationDetails,
         ...(_.get(formValue, 'name') ? { firstName: _.get(formValue, 'name') } : {} ),
         ...(_.get(formValue, 'persona') ? { userType: _.get(formValue, 'persona') } : {} ),
         ...(_.get(formValue, 'children.persona.subPersona') ? { userSubType: _.get(formValue, 'children.persona.subPersona') } : {} ),
       };
+
       const task = this.locationService.updateProfile(payload).toPromise()
         .then(() => ({ userProfile: 'success' }))
         .catch(() => ({ userProfile: 'fail' }));
