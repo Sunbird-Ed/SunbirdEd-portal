@@ -1665,5 +1665,51 @@ export const mockFrameworkData = {
         'defaultFramework': 'NCFCOPY'
       }
     }
+  },
+  successCategory: {
+    'id': 'api.object.category.definition.read',
+    'ver': '3.0',
+    'ts': '2021-02-24T08:06:08ZZ',
+    'params': {
+      'resmsgid': '4e4a7b07-0e9d-4d33-8287-b6d38a3c2765',
+      'msgid': null,
+      'err': null,
+      'status': 'successful',
+      'errmsg': null
+    },
+    'responseCode': 'OK',
+    'result': {
+      'objectCategoryDefinition': {
+        'identifier': 'obj-cat:curriculum-course_collection_all',
+        'objectMetadata': {
+          'config': {
+            'frameworkMetadata': {'orgFWType': 'K-12'},
+          }
+        },
+        'languageCode': [],
+        'name': 'Curriculum Course',
+      }
+    }
+},
+frameworkDataByType : {
+    'id': 'api.v1.search',
+    'ver': '1.0',
+    'ts': '2021-02-24T08:09:34.325Z',
+    'params': {
+      'resmsgid': 'a13d0a50-7677-11eb-9624-f93ee942e604',
+      'msgid': '992d7c94-a5d6-c940-0af4-9104ef87b1f1',
+      'status': 'successful',
+      'err': null,
+      'errmsg': null
+    },
+    'responseCode': 'OK',
+    'result': {
+      'count': 1,
+      'Framework': [
+        {
+          'identifier': 'nit_k-12'
+        }
+      ]
+    }
   }
 };

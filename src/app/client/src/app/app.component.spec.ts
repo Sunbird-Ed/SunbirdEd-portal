@@ -284,13 +284,6 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     expect(component.checkTncAndFrameWorkSelected).toHaveBeenCalled();
   });
 
-
-  it('should show joy theme popup first time', () => {
-    spyOn(localStorage, 'getItem').and.returnValue(null);
-    component.joyThemePopup();
-    expect(component.showJoyThemePopUp).toBe(true);
-  });
-
   it('should show tnc popup second time', () => {
     spyOn(localStorage, 'getItem').and.returnValue('true');
     spyOn(component, 'checkTncAndFrameWorkSelected');
