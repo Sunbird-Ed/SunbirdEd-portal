@@ -204,6 +204,12 @@ html[data-theme=Darkmode][layout='old'] {
   .sb-fontresizecontainer.sbt-sticky {
     position: relative;
   }
+  .sb-back-btn-panel.sb-bg-color-white{
+    background-color: var(--black) !important;
+  }
+  .content-header{
+    background-color: #222;
+  }
 }
 
 html[data-theme='Default'][layout='joy'] {
