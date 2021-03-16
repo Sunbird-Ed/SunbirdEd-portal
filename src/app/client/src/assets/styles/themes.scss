@@ -255,12 +255,15 @@ html[layout='joy'] {
     width: calc(100% - 4%);
     margin: 0 auto;
   }
+
   .sb-onboard sb-form .sb-textbox {
-   border-radius: 1.75rem;
+    border-radius: 1.75rem;
   }
+
   .sb-onboard sb-form .list-border {
     border-radius: 1.75rem;
-}
+  }
+
   .kabab-menu-dropdown-content {
     border-radius: var(--sbt-bradius-16);
 
@@ -529,6 +532,7 @@ html[layout='joy'] {
     padding: 0px 16px;
     position: relative;
     z-index: 3;
+    background: #444 !important;
   }
 
   .sb-search-box {
@@ -1369,11 +1373,7 @@ html[data-theme=Darkmode] {
   --cc-grade-pill-bg-hover: var(--primary-color);
   --cc-grade-pill-text-hover: #222222;
   --cc-grade-pill-svg-fill: #222222;
-  --sbt-pill-hs: 212, 100%;
-  --cc-sbcard-data2-bg: hsl(var(--sbt-pill-hs), 90%);
-  --cc-sbcard-data2-bg-active: hsl(var(--sbt-pill-hs), 50%); //#0076FE
   --cc-sbcard-data1-2-text: var(--primary-color);
-
   --cc-sbcard-bg: #222222;
   --cc-sbcard-img-container-bg: var(--gray-100);
   --cc-sbcard-title: #ffffff;
@@ -1488,7 +1488,7 @@ html[data-theme=Darkmode] {
   --cc-members-list-item-menu-text: var(--gray-200);
   --cc-members-list-item-status-text: var(--secondary-200);
   --cc-members-list-item-status-br: var(--secondary-200);
-  --cc-members-list-item-status-bg: var(--white);
+  --cc-members-list-item-status-bg: #ffd92a;
 
   // notification
   --cc-notification-list-bg: #222222;
@@ -1559,8 +1559,79 @@ html[data-theme=Darkmode] {
 
   --visit-helpcenter-bg:#333333;
 
-  .file-download__popup {
-    background: #333;
+  .sb-bg-color-white.sb-back-btn-panel {
+    background: #444444 !important;
+  }
+
+  .content-header {
+    background: #333333;
+  }
+
+  .sb-bg-color-white.sb-modal-content {
+    background-color: #333;
+  }
+
+  //chatbot
+  .lib-chat-panel {
+    background: #222;
+  }
+
+  .lib-chat-header {
+    background: #222222;
+    color: #fff;
+  }
+
+  .lib-chat-body {
+    background-color: #333333;
+  }
+
+  .messages-container {
+    background-color: #333333;
+  }
+
+  .chat-msg.recieved {
+    background: #222;
+
+    div {
+      color: #fff;
+    }
+
+    .btn-primary {
+      background: #ffd92a;
+      border: 1px solid #ffd92a;
+      color: #000000;
+
+      &:hover {
+        background: #f3a819;
+      }
+    }
+  }
+
+  .lib-chat-footer {
+    border-top: 1px solid #333;
+  }
+
+  .msg-input {
+    background: #222;
+    color: #fff;
+  }
+
+  .chatbox-cover .chatbox {
+    border: 1px solid #000000;
+    background-color: #000;
+  }
+
+  .chatbox-cover .chatboxText {
+    background: #000000;
+    color: #fff;
+  }
+
+  .chatbox-cover .chatbox::after {
+    border-color: #000000 #000000 transparent transparent;
+  }
+
+  .lib-chat-footer .send-btn img {
+    filter: invert(1);
   }
 
   .player-endpage,
@@ -1609,6 +1680,26 @@ html[data-theme=Darkmode] {
     background: #333;
   }
 
+  .members-inline .sb-members-list-item {
+    background: #222;
+  }
+
+  .sb-btn-outline-primary {
+    img {
+      filter: invert(1);
+    }
+
+    &:hover {
+      img {
+        filter: grayscale(1);
+      }
+    }
+  }
+
+  .add-user__icon img {
+    filter: grayscale(1);
+  }
+
   .ui.segment {
     background: #333;
   }
@@ -1641,13 +1732,15 @@ html[data-theme=Darkmode] {
 
   .sb-modal-dropdown-web .selected-option {
     background: var(--primary-color) !important;
-    color:var(--black);
+    color: var(--black);
   }
+
   .sb-onboard sb-form .sb-textbox {
     background: #333333;
     border: .5px solid var(--gray-400);
     color: #fff;
   }
+
   .sb-onbrd-g-box__guest__item {
     box-shadow: 0 1.25rem 2.5rem -0.625rem #191818;
     background-color: #222;
@@ -1859,8 +1952,14 @@ html[data-theme=Darkmode] {
     }
   }
 
+  .sb-toc-child-item .toc-child-item, .sb-toc-child-item .child-content-padding, .side-toc-content.chapter-box .toc-child-item, .side-toc-content.chapter-box .child-content-padding {
+    background: #222222 !important;
+  }
+  .cc-player__list {
+    background-color: #222;
+  }
   // Pdf Player
-  sunbird-pdf-player .sunbird-pdf-palyer-container {
+  sunbird-pdf-player .sunbird-pdf-palyer-container, sunbird-epub-player .sunbird-epub-container {
     .sb-pdf-main-header .sb-player-header {
       background: var(--sbt-compt-bg);
       z-index: 1;
@@ -1906,6 +2005,29 @@ html[data-theme=Darkmode] {
       }
     }
 
+    .navBlock {
+      background: #222;
+      ul li {
+        background: #222 !important;
+        color: var(--white) !important;
+        .player-icon {
+          background: var(--white) !important;
+        }
+        &:hover {
+          color: var(--black) !important;
+          background: var(--gray-0) !important;
+          .player-icon {
+            background: var(--black) !important;
+          }
+        }
+      }
+    }
+
+    .navBlock .player-nav-unit {
+      color: var(--black) !important;
+    }
+
+
     .sb-player-header__panel .player-zoom-btns__zoombtn {
       color: var(--white) !important;
 
@@ -1944,6 +2066,27 @@ html[data-theme=Darkmode] {
     }
 
   }
+
+  .file-download__popup {
+    background: #444 !important;
+  }
+  .file-download .close-btn .close-icon {
+    &:after, &:before {
+      background: var(--white) !important;
+    }
+    &[data-animation=showShadow]:not(.showShadow):hover {
+      box-shadow: 0 0 0 0.25rem var(--white) inset !important;
+    }
+  }
+
+  .file-download__text, .file-download__size {
+    color: var(--white) !important;
+  }
+
+  .file-download__overlay {
+    background: rgba(var(--rc-rgba-black),.8);
+  }
+
 
   sui-multi-select.ui.selection.dropdown {
     background: var(--sb-dropdown-menu-bg);
@@ -2036,7 +2179,7 @@ html[data-theme=Darkmode] {
     color: #fff;
   }
 }
- 
+
 html[data-theme='Darkmode'][layout='joy'] {
   --primary-color: #ffd92a;
   --sb-search-btn-bg: #333333;
@@ -2062,6 +2205,9 @@ html[data-theme='Darkmode'][layout='joy'] {
   --grey-nuance-lighter: #333333;
   --grey-nuance-darker: #111;
   --fade-grey: #f2f2f2;
+
+  --cc-sbcard-data2-bg: #444444;
+  --cc-sbcard-data2-bg-active: #ffeb2a;
 
   //Modal
   --sb-modal-header-text: var(--white);
@@ -2100,20 +2246,6 @@ html[data-theme='Darkmode'][layout='joy'] {
 }
 
 //accessible scss start
-html[accessable-theme="accessible"][data-theme=Darkmode] {
-  .sb--card__meta1>.data_2 {
-    background-color: #444444 !important;
-    color: #ffd92a !important;
-  }
-
-}
-
-html[accessable-theme="accessible"][layout='joy'] {
-  .sb--card__meta1>.data_2 {
-    background-color: #444444 !important;
-    color: #ffd92a !important;
-  }
-}
 
 html[accessable-theme="accessible"][layout='joy'][data-theme=Darkmode] {
 
@@ -2148,11 +2280,6 @@ html[accessable-theme="accessible"] {
 
   button.no-text-transform {
     color: #000000;
-  }
-
-  .sb--card__meta1>.data_2 {
-    background-color: #bddcff !important;
-    color: #003e85 !important;
   }
 
   .certified-course__btn>.textbook__addbtn {
@@ -2228,7 +2355,7 @@ html[accessable-theme="accessible"] {
   .sb-library-cards {
     .sb-members-list-item--horizontal {
       .status {
-        color: #046646 !important;
+        color: #000 !important;
       }
     }
   }
