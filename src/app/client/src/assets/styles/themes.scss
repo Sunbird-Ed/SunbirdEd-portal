@@ -2131,6 +2131,10 @@ html[data-theme=Darkmode] {
     }
   }
 
+  .course-complete-para {
+    color: var(--white) !important;
+  }
+
   .sb-onboard__container {
     background: #333333;
   }
@@ -2142,7 +2146,7 @@ html[data-theme=Darkmode] {
   .content-metadeta__title {
     color: var(--white) !important;
   }
-  
+
 }
 
 html[data-theme='Darkmode'][layout='joy'] {
