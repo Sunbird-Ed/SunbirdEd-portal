@@ -1958,6 +1958,18 @@ html[data-theme=Darkmode] {
   .cc-player__list {
     background-color: #222;
   }
+
+  .sb-course-details .sb-course-details__info .sb-bg-color-white {
+    background: #333 !important;
+  }
+
+  .sb-course-details .certified-course__certificate {
+    background-color: #222222 !important;
+}
+
+  .sb-bg-color-white.certified-course__progress {
+    background: var(--sbt-compt-bg) !important;
+  }
   // Pdf Player
   sunbird-pdf-player .sunbird-pdf-palyer-container, sunbird-epub-player .sunbird-epub-container {
     .sb-pdf-main-header .sb-player-header {
