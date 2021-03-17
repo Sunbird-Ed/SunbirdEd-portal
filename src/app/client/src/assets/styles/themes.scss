@@ -210,6 +210,10 @@ html[data-theme=Darkmode][layout='old'] {
   .content-header{
     background-color: #222;
   }
+  .sb-manage-section .sb-multi-rows:nth-child(odd){
+    background-color: #222;
+    border: none;
+  }
 }
 
 html[data-theme='Default'][layout='joy'] {
@@ -1558,7 +1562,13 @@ html[data-theme=Darkmode] {
   --sb-modal-actions-bg: var(--sbt-compt-bg);
 
   --visit-helpcenter-bg:#333333;
-
+  .sb-multi-rows{
+    img{
+      filter: invert(1);
+    }
+  }
+ 
+  
   .sb-bg-color-white.sb-back-btn-panel {
     background: #444444 !important;
   }
@@ -1658,7 +1668,6 @@ html[data-theme=Darkmode] {
   .logo.sbt-logo,
   .five.wide.column .d-flex.logo,
   .sb-onboard .brand-logo {
-    background: #fff;
     padding: 0.5rem;
     border-radius: 0 0 1rem 1rem;
   }
