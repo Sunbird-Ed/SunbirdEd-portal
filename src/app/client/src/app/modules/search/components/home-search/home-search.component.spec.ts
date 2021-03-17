@@ -2,7 +2,7 @@ import { HomeSearchComponent } from './home-search.component';
 import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule } from '@sunbird/shared';
-import { SearchService, CoursesService, CoreModule, LearnerService, PlayerService} from '@sunbird/core';
+import { SearchService, CoursesService, CoreModule, LearnerService, PlayerService, SchemaService} from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import * as _ from 'lodash-es';
@@ -18,7 +18,7 @@ import { ContentManagerService } from '../../../public/module/offline/services/c
 describe('HomeSearchComponent', () => {
   let component: HomeSearchComponent;
   let fixture: ComponentFixture<HomeSearchComponent>;
-  let toasterService, searchService, coursesService, activatedRoute, cacheService, learnerService;
+  let toasterService, searchService, coursesService, activatedRoute, cacheService, learnerService, schemaService;
   const mockSearchData: any = Response.successData;
   let sendEnrolledCourses = true;
   let sendSearchResult = true;
@@ -78,6 +78,7 @@ describe('HomeSearchComponent', () => {
     cacheService = TestBed.get(CacheService);
     learnerService = TestBed.get(LearnerService);
     coursesService = TestBed.get(CoursesService);
+    schemaService = TestBed.get(SchemaService);
     sendEnrolledCourses = true;
     sendSearchResult = true;
     sendFormResult = true;
@@ -105,6 +106,7 @@ describe('HomeSearchComponent', () => {
     spyOn(cacheService, 'get').and.callFake((options) => {
       return undefined;
     });
+    spyOn(schemaService, 'fetchSchemas').and.returnValue([{ id: 'content', schema: { properties: [] } }]);
   });
   it('should emit filter data when getFilters is called with data', () => {
     spyOn(component.dataDrivenFilterEvent, 'emit');

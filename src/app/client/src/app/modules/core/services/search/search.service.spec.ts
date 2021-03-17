@@ -170,18 +170,4 @@ describe('SearchService', () => {
         expect(value).toBe(false);
     }));
 
-  it('should validate against the schema', () => {
-    const searchService = TestBed.get(SearchService);
-    const input = {
-      inputObj: {
-        name: 'sunbird', env: 'sunbird', keyToOmit: 2, xssTestString: '<script>alert(2)</script>',
-        xssTestArr: ['<script>alert(2)</script>']
-      },
-      schema: { name: { type: 'string' }, xssTestString: { type: 'string' }, xssTestArr: { type: 'array' } },
-      omitKeys: ['keyToOmit']
-    };
-    const result = searchService.schemaValidator(input);
-    expect(result).toEqual({ name: 'sunbird', xssTestString: '&lt;script&gt;alert(2)&lt;/script&gt;', xssTestArr: ['&lt;script&gt;alert(2)&lt;/script&gt;'] });
-  });
-
   });
