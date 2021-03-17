@@ -5,6 +5,7 @@ const proxy = require('express-http-proxy')
 const reqDataLimitOfContentUpload = '50mb'
 const Telemetry = require('../libs/sb_telemetry_util/telemetryService.js')
 const telemetry = new Telemetry()
+const telemetryHelper = require('../helpers/telemetryHelper.js')
 const isAPIWhitelisted = require('../helpers/apiWhiteList');
 const { logger } = require('@project-sunbird/logger');
 const _ = require('lodash')
@@ -55,7 +56,10 @@ function proxyObj() {
                 const context = {
                     env: telemtryEventConfig.URL[uri].env || 'group'
                 }
-                telemetry.getTelemetryAPIErrorLogEventData(JSON.parse(resData), req, context);
+                const option = telemetry.getTelemetryAPIError(JSON.parse(resData), context);
+                if (option) {
+                telemetryHelper.logApiErrorEventV2(req, option);
+                }
                 logger.error({ msg: 'learner route : userResDecorator json parse error:', proxyResData })
                 return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
             }
