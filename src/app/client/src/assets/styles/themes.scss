@@ -1713,8 +1713,29 @@ html[data-theme=Darkmode] {
   }
 
   .sb-form-control {
-    color: #fff;
-    background: #222;
+    color: var(--white) !important;
+    background: var(--black) !important;
+    &::placeholder {
+      color: var(--white);
+    }
+  }
+
+  .sb-field.ui.left.icon.input {
+    i.icon {
+      color: var(--white);
+    }
+  }
+
+  .sb-rating.ui.star.rating .icon {
+    color: #444;
+  }
+
+  .sb-checkbox label:before, .sb-radio-btn-checkbox label:before {
+    background: var(--black);
+  }
+
+  .sb-checkbox input:checked ~ .box:after, .sb-checkbox input:checked ~ label:after {
+    color: var(--black);
   }
 
   .ui.selection.sbt-dropdown.dropdown.sbt-purple--lbg .sbt-dropdown-section .item:hover,
@@ -1970,20 +1991,65 @@ html[data-theme=Darkmode] {
   .sb-bg-color-white.certified-course__progress {
     background: var(--sbt-compt-bg) !important;
   }
-  // Pdf Player
-  sunbird-pdf-player .sunbird-pdf-palyer-container, sunbird-epub-player .sunbird-epub-container {
-    .sb-pdf-main-header .sb-player-header {
-      background: var(--sbt-compt-bg);
-      z-index: 1;
-      position: relative;
 
-      .icon_rotate {
-        img {
-          filter: invert(1);
+  // Player sidebar menu list
+  .navBlock {
+    background: #222 !important;
+
+    ul li {
+      background: #222 !important;
+      color: var(--white) !important;
+
+      .player-icon {
+        background: var(--white) !important;
+      }
+
+      &:hover {
+        color: var(--black) !important;
+        background: var(--gray-0) !important;
+
+        .player-icon {
+          background: var(--black) !important;
         }
       }
     }
+  }
 
+  .navBlock .player-nav-unit {
+    color: var(--black) !important;
+  }
+
+  // player header
+  sb-player-header .sb-player-header {
+    background: var(--sbt-compt-bg) !important;
+    z-index: 1;
+    position: relative;
+
+    .icon_rotate {
+      img {
+        filter: invert(1);
+      }
+    }
+    .navigation-arrows {
+      background-color: var(--white);
+      border-color: unset !important;
+    }
+  
+    .paginate.left,
+    .paginate {
+      i {
+        background-color: var(--black);
+      }
+    }
+  
+    .paginate.left:hover i {
+      background: var(--black);
+    }
+
+  }
+
+  // Hamburger menu for pdf, epub, player etc
+  sb-player-side-menu-icon {
     #overlay-button span {
       background: var(--white) !important;
 
@@ -2016,52 +2082,17 @@ html[data-theme=Darkmode] {
         background: var(--white) !important;
       }
     }
+  }
 
-    .navBlock {
-      background: #222;
-      ul li {
-        background: #222 !important;
-        color: var(--white) !important;
-        .player-icon {
-          background: var(--white) !important;
-        }
-        &:hover {
-          color: var(--black) !important;
-          background: var(--gray-0) !important;
-          .player-icon {
-            background: var(--black) !important;
-          }
-        }
-      }
-    }
-
-    .navBlock .player-nav-unit {
-      color: var(--black) !important;
-    }
-
-
+  // Pdf Player
+  sunbird-pdf-player .sunbird-pdf-palyer-container {
+    
     .sb-player-header__panel .player-zoom-btns__zoombtn {
       color: var(--white) !important;
 
       &:hover {
         color: var(--black) !important;
       }
-    }
-
-    .navigation-arrows {
-      background-color: var(--white);
-      border-color: unset !important;
-    }
-
-    .paginate.left,
-    .paginate {
-      i {
-        background-color: var(--black);
-      }
-    }
-
-    .paginate.left:hover i {
-      background: var(--black);
     }
 
     pdf-viewer iframe {
@@ -2190,6 +2221,8 @@ html[data-theme=Darkmode] {
     --sb-profile-bg-c-4: #222;
     color: #fff;
   }
+
+
 }
 
 html[data-theme='Darkmode'][layout='joy'] {
