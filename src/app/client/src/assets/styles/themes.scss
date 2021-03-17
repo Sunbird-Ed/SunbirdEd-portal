@@ -2337,6 +2337,32 @@ html[data-theme='Darkmode'][layout='joy'] {
 
 //accessible scss start
 html[accessable-theme="accessible"][layout='joy'][data-theme=Darkmode] {
+  .sb--card__meta1>.data_2 {
+    background-color: #444444 !important;
+    color: #ffd92a !important;
+  }
+  .new-layout-footer .sbt-container .sbt-footer-download-app .sbt-footer-bg .sbt-footer-title {
+    color:var(--yellow)!important
+  }
+  .sb-pageSection .sb-pageSection-header .sb-pageSection-sentenceCase .sb-pageSection-count{
+    background-color: var(--black);
+    color:var(--white);
+}
+  .sb-pageSection .sb-pageSection-header .sb-cls-btn, .sb-pageSection .sb-pageSection-header button.sb-btn-secondary{
+    background-color: var(--black);
+    color:var(--white);
+}
+
+}
+
+html[accessable-theme="accessible"][layout='joy'] {
+  .sb--card__meta1>.data_2 {
+      background-color: #bddcff !important;
+	    color: #003e85 !important;
+  }
+}
+
+html[accessable-theme="accessible"][layout='joy'][data-theme=Darkmode] {
 
   .sbt-class-bar .sb-slider-pills-container .sb-pills-container .pill.active,
   .sbt-class-bar .sb-slider-pills-container .sb-pills-container .pill:hover {

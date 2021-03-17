@@ -785,19 +785,42 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
   skipToMainContent() {
-    const elementArray=document.getElementsByClassName('sbt-fluid-header-bg').length;
-    if(elementArray>0){
-      const headerHeight = document.getElementsByClassName('sbt-fluid-header-bg')[elementArray-1].clientHeight;
-      if(typeof window.orientation !== 'undefined'){
-          this.scrollHeight =  document.getElementsByClassName('sbt-fluid-header-bg')[0].clientHeight+150;
-      }else{
-        this.scrollHeight =  headerHeight *2;
+    const getTheme = localStorage.getItem("layoutType");
+    if (getTheme == "joy") {
+      const headerElement=document.getElementsByClassName('sbt-fluid-header-bg');
+      if(headerElement.length>0){
+        const headerHeight = headerElement[headerElement.length-1].clientHeight;
+        if(typeof window.orientation !== 'undefined'){
+          this.scrollHeight =  headerElement[0].clientHeight+150;
+        }else{
+          this.scrollHeight =  headerHeight *2;
+        }
+        this.scrollTo(this.scrollHeight);
+       }
+    } else {
+      const header = document.getElementsByTagName("app-header");
+      const headerElement = header[0].children[0].children[0].clientHeight;
+      if (document.getElementsByTagName("app-search-filter").length > 0) {
+        const searchFilter = document.getElementsByTagName("app-search-filter")[0]
+          .children[0].clientHeight;
+        this.scrollTo(searchFilter + headerElement + 48);
+      } else if (
+        document.getElementsByTagName("app-global-search-filter").length > 0
+      ) {
+        const searchFilter = document.getElementsByTagName(
+          "app-global-search-filter"
+        )[0].children[0].clientHeight;
+        this.scrollTo(searchFilter + headerElement + 48);
+      } else {
+        this.scrollTo(headerElement + 48);
       }
-       window.scroll({
-         top:  this.scrollHeight,
-         behavior: 'smooth'
-      });
-     }
+    }
+  }
+  scrollTo(height) {
+    window.scroll({
+      top: height,
+      behavior: "smooth",
+    });
   }
   getLocalTheme() {
     const localDataThemeAttribute = localStorage.getItem('data-theme');
