@@ -8,9 +8,9 @@ const telemetry = new Telemetry()
 const telemetryHelper = require('../helpers/telemetryHelper.js')
 const isAPIWhitelisted = require('../helpers/apiWhiteList');
 const { logger } = require('@project-sunbird/logger');
-const _ = require('lodash')
 const fs = require('fs')
 const path = require('path')
+const _ = require('lodash')
 const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, '../helpers/telemetryEventConfig.json')))
 
 module.exports = function (app) {
