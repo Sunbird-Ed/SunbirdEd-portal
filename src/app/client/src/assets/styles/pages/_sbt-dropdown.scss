@@ -6,7 +6,7 @@
 
     &::before {
       content: "";
-      background: url(/assets/images/Language.svg) no-repeat !important;
+      background: url(assets/images/Language.svg) no-repeat !important;
       height: calculateRem(20px);
       width: calculateRem(20px);
       display: block;
