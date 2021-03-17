@@ -61,7 +61,7 @@
               </button>
 
                <!-- Discussion Forum -->
-               <button *ngIf="forumIds.length > 0" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix" 	
+               <button *ngIf="forumIds.length > 0" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix forum-btn" 	
                appTelemetryInteract [telemetryInteractObject]="courseInteractObject"	
                [telemetryInteractEdata]="{id:'discussion' , type: 'click' , pageid:'course-consumption'}" 	
                [telemetryInteractCdata]="[{id: courseHierarchy?.identifier, type: 'Course'}]"	

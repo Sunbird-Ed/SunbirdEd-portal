@@ -1735,6 +1735,10 @@ html[data-theme=Darkmode] {
     &::placeholder {
       color: var(--white);
     }
+
+    &::selection {
+      color: var(--white) !important;
+    }
   }
 
   .sb-field.ui.left.icon.input {
@@ -2186,7 +2190,7 @@ html[data-theme=Darkmode] {
     color: var(--white);
   }
 
-  .training-modules__title .sb-btn.sb-btn-outline-primary {
+  .training-modules__title .sb-btn.sb-btn-outline-primary, .forum-btn {
     img {
       filter: invert(1);
     }
@@ -2254,6 +2258,11 @@ html[data-theme=Darkmode] {
     color: #fff;
   }
 
+  .sbaccordion__panel-content {
+    .heading {
+      color: var(--white);
+    }
+  }
 }
 
 html[data-theme='Darkmode'][layout='joy'] {
