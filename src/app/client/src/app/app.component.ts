@@ -812,7 +812,7 @@ export class AppComponent implements OnInit, OnDestroy {
         )[0].children[0].clientHeight;
         this.scrollTo(searchFilter + headerElement + 48);
       } else {
-        this.scrollTo(headerElement + 48); 
+        this.scrollTo(headerElement + 48);
       }
     }
   }
