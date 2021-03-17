@@ -1478,7 +1478,9 @@ html[data-theme=Darkmode] {
     border: 1px solid #222222 !important;
     color: var(--white) !important;
   }
-
+  .sb-search-box .sb-btn {
+    background: #FFD92A;
+  }
   // cc pills box
   --cc-pills-grid-item: var(--white);
   --cc-pills-grid-item-hover: #f2f2f2;
