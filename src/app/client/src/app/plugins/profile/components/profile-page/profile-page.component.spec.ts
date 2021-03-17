@@ -493,15 +493,6 @@ describe('ProfilePageComponent', () => {
     expect(component.downloadPdfCertificate).toHaveBeenCalled();
   });
 
-  it('should call downloadPdfCertificate and return signedPdfUrl', () => {
-    const profileService = TestBed.get(ProfileService);
-    spyOn(profileService, 'downloadCertificates').and.returnValue(of(Response.v1DownloadCertResponse));
-    spyOn(window, 'open');
-    component.downloadPdfCertificate(Response.pdfCertificate[0]);
-    expect(profileService.downloadCertificates).toHaveBeenCalled();
-    expect(window.open).toHaveBeenCalledWith(Response.v1DownloadCertResponse.result.signedUrl, '_blank');
-  });
-
   it('should call downloadPdfCertificate and does not return signedPdfUrl', () => {
     const profileService = TestBed.get(ProfileService);
     const toasterService = TestBed.get(ToasterService);
