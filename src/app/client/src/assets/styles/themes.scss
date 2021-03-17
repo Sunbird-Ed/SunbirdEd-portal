@@ -204,10 +204,12 @@ html[data-theme=Darkmode][layout='old'] {
   .sb-fontresizecontainer.sbt-sticky {
     position: relative;
   }
-  .sb-back-btn-panel.sb-bg-color-white{
+
+  .sb-back-btn-panel.sb-bg-color-white {
     background-color: var(--black) !important;
   }
-  .content-header{
+
+  .content-header {
     background-color: #222;
   }
 }
@@ -532,7 +534,7 @@ html[layout='joy'] {
     padding: 0px 16px;
     position: relative;
     z-index: 3;
-    background: #444 !important;
+    background: var(--sbt-compt-bg) !important;
   }
 
   .sb-search-box {
@@ -1715,6 +1717,7 @@ html[data-theme=Darkmode] {
   .sb-form-control {
     color: var(--white) !important;
     background: var(--black) !important;
+
     &::placeholder {
       color: var(--white);
     }
@@ -1730,11 +1733,13 @@ html[data-theme=Darkmode] {
     color: #444;
   }
 
-  .sb-checkbox label:before, .sb-radio-btn-checkbox label:before {
+  .sb-checkbox label:before,
+  .sb-radio-btn-checkbox label:before {
     background: var(--black);
   }
 
-  .sb-checkbox input:checked ~ .box:after, .sb-checkbox input:checked ~ label:after {
+  .sb-checkbox input:checked~.box:after,
+  .sb-checkbox input:checked~label:after {
     color: var(--black);
   }
 
@@ -1973,9 +1978,13 @@ html[data-theme=Darkmode] {
     }
   }
 
-  .sb-toc-child-item .toc-child-item, .sb-toc-child-item .child-content-padding, .side-toc-content.chapter-box .toc-child-item, .side-toc-content.chapter-box .child-content-padding {
+  .sb-toc-child-item .toc-child-item,
+  .sb-toc-child-item .child-content-padding,
+  .side-toc-content.chapter-box .toc-child-item,
+  .side-toc-content.chapter-box .child-content-padding {
     background: #222222 !important;
   }
+
   .cc-player__list {
     background-color: #222;
   }
@@ -1986,38 +1995,26 @@ html[data-theme=Darkmode] {
 
   .sb-course-details .certified-course__certificate {
     background-color: #222222 !important;
-}
+  }
 
   .sb-bg-color-white.certified-course__progress {
     background: var(--sbt-compt-bg) !important;
   }
 
-  // Player sidebar menu list
-  .navBlock {
-    background: #222 !important;
-
-    ul li {
-      background: #222 !important;
-      color: var(--white) !important;
+  // Pdf Player
+  sunbird-pdf-player .sunbird-pdf-palyer-container,
+  sunbird-epub-player .sunbird-epub-container {
+    .sb-pdf-main-header .sb-player-header {
+      background: var(--sbt-compt-bg);
+      z-index: 1;
+      position: relative;
 
       .player-icon {
-        background: var(--white) !important;
-      }
-
-      &:hover {
-        color: var(--black) !important;
-        background: var(--gray-0) !important;
-
-        .player-icon {
-          background: var(--black) !important;
-        }
+        background: var(--black) !important;
       }
     }
   }
 
-  .navBlock .player-nav-unit {
-    color: var(--black) !important;
-  }
 
   // player header
   sb-player-header .sb-player-header {
@@ -2030,18 +2027,19 @@ html[data-theme=Darkmode] {
         filter: invert(1);
       }
     }
+
     .navigation-arrows {
       background-color: var(--white);
       border-color: unset !important;
     }
-  
+
     .paginate.left,
     .paginate {
       i {
         background-color: var(--black);
       }
     }
-  
+
     .paginate.left:hover i {
       background: var(--black);
     }
@@ -2084,52 +2082,77 @@ html[data-theme=Darkmode] {
     }
   }
 
-  // Pdf Player
-  sunbird-pdf-player .sunbird-pdf-palyer-container {
-    
-    .sb-player-header__panel .player-zoom-btns__zoombtn {
+  .navBlock {
+    background: #222 !important;
+
+    ul li {
+      background: #222 !important;
       color: var(--white) !important;
+
+      .player-icon {
+        background: var(--white) !important;
+      }
 
       &:hover {
         color: var(--black) !important;
+        background: var(--gray-0) !important;
+
+        .player-icon {
+          background: var(--black) !important;
+        }
       }
     }
+  }
 
-    pdf-viewer iframe {
-      // filter: invert(.9);
-    }
+  .navBlock .player-nav-unit {
+    color: var(--black) !important;
+  }
 
-    .sb-pdf-reading-status {
+  .sb-player-header__panel .player-zoom-btns__zoombtn {
+    color: var(--white) !important;
+
+    &:hover {
       color: var(--black) !important;
-      background: var(--primary-color) !important;
-
-      span {
-        background: var(--black) !important;
-      }
     }
+  }
 
+  pdf-viewer iframe {
+    // filter: invert(.9);
+  }
+
+  .sb-pdf-reading-status {
+    color: var(--black) !important;
+    background: var(--primary-color) !important;
+
+    span {
+      background: var(--black) !important;
+    }
   }
 
   .file-download__popup {
     background: #444 !important;
   }
+
   .file-download .close-btn .close-icon {
-    &:after, &:before {
+
+    &:after,
+    &:before {
       background: var(--white) !important;
     }
+
     &[data-animation=showShadow]:not(.showShadow):hover {
       box-shadow: 0 0 0 0.25rem var(--white) inset !important;
     }
   }
 
-  .file-download__text, .file-download__size {
+  .file-download__text,
+  .file-download__size {
     color: var(--white) !important;
   }
 
   .file-download__overlay {
-    background: rgba(var(--rc-rgba-black),.8);
+    background: rgba(var(--rc-rgba-black), .8);
   }
-
 
   sui-multi-select.ui.selection.dropdown {
     background: var(--sb-dropdown-menu-bg);
@@ -2217,12 +2240,6 @@ html[data-theme=Darkmode] {
     color: #fff;
   }
 
-  .profile-bg-c-4 {
-    --sb-profile-bg-c-4: #222;
-    color: #fff;
-  }
-
-
 }
 
 html[data-theme='Darkmode'][layout='joy'] {
@@ -2257,6 +2274,9 @@ html[data-theme='Darkmode'][layout='joy'] {
   //Modal
   --sb-modal-header-text: var(--white);
 
+  .sbt-back-header .content-header {
+    background-color: #444 !important;
+  }
   .ui.selection.sbt-dropdown.dropdown.sbt-green {
     color: #fff;
   }
@@ -2291,7 +2311,6 @@ html[data-theme='Darkmode'][layout='joy'] {
 }
 
 //accessible scss start
-
 html[accessable-theme="accessible"][layout='joy'][data-theme=Darkmode] {
 
   .sbt-class-bar .sb-slider-pills-container .sb-pills-container .pill.active,
@@ -2303,8 +2322,10 @@ html[accessable-theme="accessible"][layout='joy'][data-theme=Darkmode] {
   .sbt-class-bar .sb-slider-pills-container .sb-pills-container .pill {
     color: var(--white) !important;
   }
+  .sbt-mygroups-details .sb--card__moreinfo .sb--card__type {
+    color:#fff !important
+  }
 }
-
 
 html[accessable-theme="accessible"] {
   --sbt-pill-text: #000 !important;
