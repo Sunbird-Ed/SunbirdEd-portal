@@ -593,10 +593,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v8@3.7.4":
-  version "3.7.4"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v8/-/common-consumption-v8-3.7.4.tgz#76140654cd5b007b11a1d919cd3961b6331ebb93"
-  integrity sha512-s6yBkOLDxLfFXCn2zleEWucbnwYorB+4eibciRKvviDhOnIWQmur6bFHBjvW6GpWnoCxYGUPdd3sTNOn5Pe/Ow==
+"@project-sunbird/common-consumption-v8@3.7.6":
+  version "3.7.6"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v8/-/common-consumption-v8-3.7.6.tgz#de3c9d4425659adc01bdd88cf8a3fcac47f2543c"
+  integrity sha512-pAzn3ZghYLuxl3BKAPvm77g8ioVtvDMts91tbvo17IbZIX3Ddl8T+flzQUnwtVR6PBxtg1i7VJGIMr32dFS42g==
   dependencies:
     tslib "^1.9.0"
 
@@ -612,10 +612,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.6.tgz#15a88937fb643d5eb33a81c8d28ece00b56d5aa0"
   integrity sha512-rK87rHdagadIS7UrWju7HDolIfWlO5CbK+tIJrEApO+QPMi+k8KuWoLc8MxEprrsJxUt6r44O4uGiO0hgI5plA==
 
-"@project-sunbird/sunbird-epub-player-v8@3.7.6":
-  version "3.7.6"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v8/-/sunbird-epub-player-v8-3.7.6.tgz#3417d32a718d4838a25b34fa5697e1e3bc006f90"
-  integrity sha512-praeoBvTf/0uH1DAPgvw8keo8nyohgH9PSfMHzrExbO/MfAg9EGQN18ZXHQ6vWgopyYde55Rh8YZQXpfop+/eQ==
+"@project-sunbird/sunbird-epub-player-v8@3.8.1":
+  version "3.8.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v8/-/sunbird-epub-player-v8-3.8.1.tgz#03479a3f05de8a1f877a19a590656c3e6ac6fe2b"
+  integrity sha512-Z0EvJRmUDyvJQ+FjfyiKBIdBM5TSAttSQhAIOn/6tP7Cks6kgbP1TKIf95QG2L26Jl0gbM0zliwLY5hScn++1Q==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v8" "3.7.1"
     tslib "^1.9.0"
