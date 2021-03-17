@@ -1957,7 +1957,7 @@ html[data-theme=Darkmode] {
     }
   }
 
-  .sb-btn-square {
+  .sb-btn-square, .content-video__player__tools .sb-btn-square {
     color: var(--white);
 
     &:hover {
