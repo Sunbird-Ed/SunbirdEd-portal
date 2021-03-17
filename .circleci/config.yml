@@ -10,28 +10,37 @@ jobs:
           command: /bin/bash -x build.sh ${CIRCLE_SHA1} test
   test-cases:
     working_directory: ~/portal/src/app/client
-    docker:
-      - image: sunbird/build:player_v1.1
+    machine:
+      image: ubuntu-1604:202101-01
     steps:
       - checkout:
           path: ~/portal
+      - run: 
+          name: Installing prerequisites
+          command: |-
+            sudo apt-get update && sudo apt install -y libxpm4 libxrender1 libgtk2.0-0 libnss3 libgconf-2-4 \
+                  xvfb gtk2-engines-pixbuf \
+                  xfonts-cyrillic xfonts-100dpi xfonts-75dpi xfonts-base xfonts-scalable
+            curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+            sudo apt install nodejs -y
+            sudo npm install -g yarn
+            node --version
       - run:
           name: ignore-engines
           command: 'yarn config set ignore-engines true'
-      - run:
-          name: Installing angular cli
-          command: 'npm install -g @angular/cli@6.0.8 --no-progress'
       - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          name: Restoring cache
+          key: dependency-cache-portal-{{ checksum "package.json" }}
       - run:
           name: Installing npm deps
           command: 'yarn install'
-      - save_cache: # special step to save the dependency cache	
-          key: dependency-cache-{{ checksum "package.json" }}	
-          paths: ./node_modules
+      - save_cache: # special step to save the dependency cache   
+          key: dependency-cache-portal-{{ checksum "package.json" }}   
+          paths:
+            - ./node_modules
       - run:
           name: ng lint and building
-          command: 'mkdir -p /tmp/logs && node --max_old_space_size=4000 ./node_modules/@angular/cli/bin/ng build --prod --optimization=false --buildOptimizer=false | tee /tmp/logs/build.log'
+          command: 'mkdir -p /tmp/logs && node --max_old_space_size=6000 ./node_modules/@angular/cli/bin/ng build --prod --optimization=false --buildOptimizer=false | tee /tmp/logs/build.log'
       - run:
           name: Executing test cases
           command: 'npm run test-coverage | tee /tmp/logs/test_cases.log'
