@@ -64,7 +64,7 @@
 				(click)="showSideBar()" routerLink="/profile">
 				{{resourceService.frmelmnts?.lnk?.profile}}
 			</a>
-			<a class="item logout-btn" appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
+			<a class="item logout-btn" appOnlineOnly appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
 				(click)="logout()">
 				{{resourceService.frmelmnts?.lnk?.logout}}
 			</a>
@@ -147,7 +147,7 @@
 				(click)="showSideBar()" routerLink="/profile">
 				{{resourceService.frmelmnts?.lnk?.profile}}
 			</a>
-			<a class="item logout-btn" appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
+			<a class="item logout-btn" appOnlineOnly appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
 				(click)="logout()">
 				{{resourceService.frmelmnts?.lnk?.logout}}
 			</a>

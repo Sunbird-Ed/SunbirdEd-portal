@@ -184,6 +184,7 @@ describe('CoursePageComponent', () => {
         spyOn(orgDetailsService, 'searchOrgDetails').and.callFake((options) => {
             return of(Response.orgSearch);
         });
+        spyOn<any>(component, 'getLanguageChange');
         component.ngOnInit();
         // component.getFilters([{ code: 'board', range: [{index: 0, name: 'NCRT'}, {index: 1, name: 'CBSC'}]}]);
         expect(component.hashTagId).toEqual('123');
@@ -191,6 +192,7 @@ describe('CoursePageComponent', () => {
         // expect(component.dataDrivenFilters).toEqual({ board: 'NCRT'});
         expect(component.showLoader).toBeFalsy();
         expect(component.carouselMasterData.length).toEqual(1);
+        expect(component['getLanguageChange']).toHaveBeenCalled();
     });
     xit('should not navigate to landing page if fetching frameWork from form service fails and data driven filter returns data', () => {
         sendFormApi = false;
@@ -293,7 +295,7 @@ describe('CoursePageComponent', () => {
             source: 'web', name: 'Course', organisationId: '*',
             filters: { sort_by: 'name', sortType: 'desc', audience: ['Teacher'] },
             fields: ['name', 'appIcon', 'medium', 'subject',
-             'resourceType', 'contentType', 'organisation', 'topic', 'mimeType', 'trackable'],
+                'resourceType', 'contentType', 'organisation', 'topic', 'mimeType', 'trackable'],
             params: { orgdetails: 'orgName,email' },
             facets: ['channel', 'gradeLevel', 'subject', 'medium']
         };
@@ -304,6 +306,19 @@ describe('CoursePageComponent', () => {
         component.enrolledSection = {
             name: 'sample'
         };
+        component.isDesktopApp = true;
+        component.pageSections = [{
+            name: 'Accountancy And Auditing',
+            contents: [{
+                'identifier': 'do_213199093633138688144',
+                'courseName': '80cer',
+                'description': '',
+                'leafNodesCount': 2,
+                'courseId': 'course_Id',
+                'userId': 'user_id'
+            }],
+            length: 1
+        }];
         component['getLanguageChange']().subscribe(res => {
             expect(component.enrolledSection.name).toBeDefined();
             expect();
@@ -428,12 +443,13 @@ describe('CoursePageComponent', () => {
     it('should fetch page Data based on search API', done => {
         spyOn(component, 'isUserLoggedIn').and.returnValue(false);
         spyOn<any>(component, 'searchOrgDetails').and.callThrough();
-        spyOn<any>(component, 'processOrgData').and.callFake(function() {return {}})
+        spyOn<any>(component, 'processOrgData').and.callFake(function () { return {} })
         spyOn<any>(orgDetailsService, 'searchOrgDetails').and.returnValue(of(Response.orgSearch));
         spyOn<any>(searchService, 'contentSearch').and.returnValue(of(Response.contentSearchResponse));
         spyOn<any>(utilService, 'processCourseFacetData').and.returnValue(of(Response.courseSectionsFacet));
         spyOn(component, 'isPageAssemble').and.returnValue(false);
         spyOn(component, 'getPageData').and.returnValue(Response.buildOptionRespForFetchCourse);
+        spyOn(component, 'addHoverData');
         component.queryParams = { 'selectedTab': 'course' };
         component['fetchCourses'](Response.buildOptionRespForFetchCourse)
             .subscribe(res => {
@@ -443,6 +459,7 @@ describe('CoursePageComponent', () => {
                 expect(component.initFilters).toBeTruthy();
                 expect(component.carouselMasterData).toBeDefined();
                 expect(component.carouselMasterData.length).toEqual(3);
+                expect(component.addHoverData).toHaveBeenCalled();
                 done();
             });
     });
@@ -450,8 +467,8 @@ describe('CoursePageComponent', () => {
     it('should fetch page Data based on else block', done => {
         spyOn(component, 'isUserLoggedIn').and.returnValue(false);
         spyOn<any>(component, 'searchOrgDetails').and.callThrough();
-        spyOn<any>(component, 'fetchCourses').and.callFake(function() {return {}})
-        spyOn<any>(component, 'processOrgData').and.callFake(function() {return {}})
+        spyOn<any>(component, 'fetchCourses').and.callFake(function () { return {} })
+        spyOn<any>(component, 'processOrgData').and.callFake(function () { return {} })
         spyOn<any>(orgDetailsService, 'searchOrgDetails').and.returnValue(of(Response.orgSearch));
         spyOn<any>(searchService, 'contentSearch').and.returnValue(of(Response.contentSearchResponse));
         spyOn<any>(utilService, 'processCourseFacetData').and.returnValue(of(Response.courseSectionsFacet));
@@ -466,5 +483,21 @@ describe('CoursePageComponent', () => {
         const res = component.getSearchFilters(filters);
         expect(res).toBeDefined();
         done();
+    });
+
+    it('should call hoverActionClicked for Open ', () => {
+        const event = {
+            hover: {
+                type: 'Open',
+                label: 'OPEN',
+                disabled: false
+            },
+            content: {
+                identifier: 'do_id'
+            }
+        };
+        spyOn(component, 'playContent');
+        component.hoverActionClicked(event);
+        expect(component.playContent).toHaveBeenCalled();
     });
 });

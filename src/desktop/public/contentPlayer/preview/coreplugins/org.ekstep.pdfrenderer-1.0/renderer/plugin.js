@@ -13,8 +13,10 @@ org.ekstep.contentrenderer.baseLauncher.extend({
     DEFAULT_SCALE_DELTA : 1.1,
     MIN_SCALE: 0.25,
     MAX_SCALE: 10.0,
-
-
+    messages: {
+        noInternetConnection: "Internet not available. Please connect and try again."
+    },
+    optionalData: {},
     context: undefined,
     stageId: [],
     heartBeatData: {},
@@ -68,6 +70,12 @@ org.ekstep.contentrenderer.baseLauncher.extend({
         $('#pdf-buttons').css({
             display: 'none'
         });
+        setTimeout(function() {
+            jQuery('previous-navigation').show();
+            jQuery('next-navigation').show();
+            jQuery('custom-previous-navigation').hide();
+            jQuery('custom-next-navigation').hide();
+        }, 100);
     },
     start: function() {
         this._super();
@@ -82,10 +90,13 @@ org.ekstep.contentrenderer.baseLauncher.extend({
             if(!regex.test(globalConfigObj.basepath)){
                 var prefix_url = globalConfigObj.basepath || '';
                 path = prefix_url + "/" + data.artifactUrl + "?" + new Date().getSeconds();
+                context.optionalData = { "artifactUrl": path };
             }else
                 path = data.streamingUrl;
+                context.optionalData = { "streamingUrl": path };
         } else {
             path = data.artifactUrl + "?" + new Date().getSeconds();
+            context.optionalData = { "artifactUrl": path };
         }
         
         var div = document.createElement('div');
@@ -165,6 +176,13 @@ org.ekstep.contentrenderer.baseLauncher.extend({
         pdfDownloadContainer.id = "pdf-download-container";
         pdfDownloadContainer.className = "download-pdf-image";
 
+        /**pdf error popup to download pdf */
+        var pdfErrorPopup = document.createElement("div");
+        var pdfErrorMessage = document.createElement("p");
+        pdfErrorPopup.id = "pdf-error-popup";
+        pdfErrorMessage.textContent = "Your internet connection is unstable. Please download the PDF to play the content.";
+        pdfErrorPopup.appendChild(pdfErrorMessage);
+
         var pdfTitleContainer = document.createElement("div");
         pdfTitleContainer.textContent = content.name;
         pdfTitleContainer.className = "pdf-name";
@@ -175,9 +193,8 @@ org.ekstep.contentrenderer.baseLauncher.extend({
 
         if (!window.cordova){
             pdfMetaData.appendChild(pdfDownloadContainer);
-            this.addDownloadButton(path, pdfDownloadContainer);
+            this.addDownloadButton(path, pdfDownloadContainer, true);
         }
-
 
         var pageCountContainer = document.createElement("div");
         pageCountContainer.id = "page-count-container";
@@ -258,8 +275,10 @@ org.ekstep.contentrenderer.baseLauncher.extend({
         pdfBodyContainer.appendChild(pdfLoader);
         pdfBodyContainer.appendChild(pdfContents);
         //pdfBodyContainer.appendChild(sbPdfBody);
+        pdfBodyContainer.appendChild(pdfErrorPopup);
 
         canvasContainer.appendChild(pdfMainContainer);
+
         canvasContainer.appendChild(pdfBodyContainer);
 
         document.getElementById(this.manifest.id).style.overflow = "auto";
@@ -367,15 +386,22 @@ org.ekstep.contentrenderer.baseLauncher.extend({
             
         }
     },
-    addDownloadButton: function(path, pdfSearchContainer){
+    addDownloadButton: function(path, pdfSearchContainer, showIcon, callback){
         if(!path.length) return false;
         var instance = this;
-        var downloadBtn = document.createElement("img");
-        downloadBtn.id = "download-btn";
-        downloadBtn.src = "assets/icons/down-arrow.png";
-        downloadBtn.className = "pdf-download-btn";
+        if (showIcon){
+            var downloadBtn = document.createElement("img");
+            downloadBtn.id = "download-btn";
+            downloadBtn.src = "assets/icons/down-arrow.png";
+            downloadBtn.className = "pdf-download-btn";
+        }else {
+            var downloadBtn = document.createElement("BUTTON");
+            downloadBtn.textContent = "Download PDF";
+            downloadBtn.className = "sb-btn sb-btn-normal sb-btn-primary";
+        }
         downloadBtn.onclick = function(){
-            window.open(path, '_blank');
+            callback && callback();
+            if (!window.cordova) window.open(path, '_blank');
             context.logInteractEvent("TOUCH", "Download", "TOUCH", {
                 stageId: context.CURRENT_PAGE.toString(),
                 subtype: ''
@@ -427,8 +453,12 @@ org.ekstep.contentrenderer.baseLauncher.extend({
         }
     },
     showPDF: function(pdf_url) {
+        var instance = this;
+        if (!navigator.onLine) {
+            instance.throwError({ message: instance.messages.noInternetConnection });
+        }
         try {
-            var instance = this;
+            $("#pdf-error-popup").css("display","none");
             $("#pdf-loader").css("display","block"); // use rendere loader
             console.log("MANIFEST DATA", this.manifest)
             console.log("pdfjsLib lib", pdfjsLib)
@@ -450,8 +480,24 @@ org.ekstep.contentrenderer.baseLauncher.extend({
                 // If error re-show the upload button
                 $("#pdf-loader").css("display","none");
                 $("#upload-button").show();
-                error.message = "Missing PDF"
-                context.throwError(error);
+                if (!error.message) {
+                    error.message = (navigator.onLine) ? "Missing PDF" : "No internet - Missing PDF";
+                }else{
+                    error.message = (navigator.onLine) ? error.message : "No internet - " + error.message;
+                }
+                error.logFullError = true;
+                error.message = error.message + "options: " + JSON.stringify(context.optionalData);
+                $("#pdf-error-popup").css("display","flex");
+                var pdfErrorPopup = $("#pdf-error-popup")[0];
+                instance.addDownloadButton(pdf_url, pdfErrorPopup, false, function(){
+                    error.pdfUrl = pdf_url;
+                    instance.postError(error);
+                });
+                EkstepRendererAPI.logErrorEvent(error, {
+                    'type': 'content',
+                    'action': 'play',
+                    'severity': 'error'
+                });
             });
         }
         catch (e){
@@ -482,6 +528,29 @@ org.ekstep.contentrenderer.baseLauncher.extend({
         var currentStageIndex = _.size(_.uniq(this.stageId)) || 1;
         return this.progres(currentStageIndex, totalStages);
     },
+    contentPlaySummary: function () {
+        var playSummary =  [
+            {
+              "totallength":  parseInt(this.TOTAL_PAGES)
+            },
+            {
+              "visitedlength": parseInt(_.max(this.stageId))
+            },
+            {
+              "visitedcontentend": (this.TOTAL_PAGES == Math.max.apply(Math, this.stageId)) ? true : false
+            },
+            {
+              "totalseekedlength": parseInt(this.TOTAL_PAGES) - _.size(_.uniq(this.stageId))
+            }
+        ]
+        return playSummary;
+    },
+
+    // use this methos to send additional content statistics
+    additionalContentSummary: function () {
+        return
+    },
+
     logInteractEvent: function(type, id, extype, eks, eid){
         window.PLAYER_STAGE_START_TIME = Date.now()/1000;
         EkstepRendererAPI.getTelemetryService().interact(type, id, extype, eks,eid);
@@ -490,6 +559,20 @@ org.ekstep.contentrenderer.baseLauncher.extend({
         EkstepRendererAPI.getTelemetryService().navigate(stageId, stageTo, {
             "duration": (Date.now()/1000) - window.PLAYER_STAGE_START_TIME
         });
+    },
+    postError: function(error){
+        var origin = ""
+        if (!window.location.origin) {
+            origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ":" + window.location.port : "")
+        } else {
+            origin = window.location.origin
+        }
+
+        if (window.cordova){
+            window.postMessage({"player.pdf-renderer.error": error}, origin)
+        }else{
+            parent.postMessage({"player.pdf-renderer.error": error}, origin)
+        }
     }
 });
 
