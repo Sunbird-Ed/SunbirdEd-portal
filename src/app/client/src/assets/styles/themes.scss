@@ -212,10 +212,6 @@ html[data-theme=Darkmode][layout='old'] {
   .content-header {
     background-color: #222;
   }
-  .sb-manage-section .sb-multi-rows:nth-child(odd){
-    background-color: #222;
-    border: none;
-  }
 }
 
 html[data-theme='Default'][layout='joy'] {
@@ -1482,6 +1478,12 @@ html[data-theme=Darkmode] {
     background: #FFD92A;
   }
   .sb-modal .ui.modal > .close { filter: invert(1); }
+  .sbchapter__item .sbchapter__img--inprogress .icon-svg svg.icon.icon-svg--primary {   fill: #000;
+  }
+  .sb-manage-section .sb-multi-rows:nth-child(odd){
+    background: #222 !important;
+    border: none;
+  }
   // cc pills box
   --cc-pills-grid-item: var(--white);
   --cc-pills-grid-item-hover: #f2f2f2;
