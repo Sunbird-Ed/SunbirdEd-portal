@@ -258,11 +258,7 @@ html[layout='joy'] {
     margin: 0 auto;
   }
 
-  .sb-onboard sb-form .sb-textbox {
-    border-radius: 1.75rem;
-  }
-
-  .sb-onboard sb-form .list-border {
+  .sb-onboard sb-form .sb-textbox,.sb-onboard sb-form .list-border,sb-form .multi-select-container .list-border, sb-form .sb-textbox, sb-form .async-text {
     border-radius: 1.75rem;
   }
 
@@ -1468,6 +1464,9 @@ html[data-theme=Darkmode] {
   --kabab-menu-dropdown-bg: #222222;
   --kabab-menu-dropdown-item-active: #333333;
 
+  sb-caret-down svg {
+    filter: invert(1);
+  }
   //avtar
   .avatar-content {
     background: #222222 !important;
@@ -1477,7 +1476,7 @@ html[data-theme=Darkmode] {
   .sb-search-box .sb-btn {
     background: #FFD92A;
   }
-  .sb-modal .ui.modal > .close { filter: invert(1); }
+  .sb-modal .ui.modal > .close { color:#000; }
   .sbchapter__item .sbchapter__img--inprogress .icon-svg svg.icon.icon-svg--primary {   fill: #000;
   }
   .sb-manage-section .sb-multi-rows:nth-child(odd){
@@ -1730,7 +1729,7 @@ html[data-theme=Darkmode] {
 
   .sb-form-control {
     color: var(--white) !important;
-    background: var(--black) !important;
+    background: #333 !important;
 
     &::placeholder {
       color: var(--white);
@@ -1779,12 +1778,11 @@ html[data-theme=Darkmode] {
     color: var(--black);
   }
 
-  .sb-onboard sb-form .sb-textbox {
+  .sb-onboard sb-form .sb-textbox, sb-form .sb-textbox,sb-form .async-text {
     background: #333333;
     border: .5px solid var(--gray-400);
     color: #fff;
   }
-
   .sb-onbrd-g-box__guest__item {
     box-shadow: 0 1.25rem 2.5rem -0.625rem #191818;
     background-color: #222;
@@ -2251,7 +2249,7 @@ html[data-theme=Darkmode] {
   }
 
   .sb-md-container {
-    background: #222 !important;
+    background: #333 !important;
   }
 
   .ui.selection.dropdown .menu>.message {
@@ -2297,6 +2295,10 @@ html[data-theme='Darkmode'][layout='joy'] {
   //Modal
   --sb-modal-header-text: var(--white);
 
+  .multi-select-container .list-border,sb-form .sb-textbox, sb-form .async-text{
+    border-radius: 1.75rem;
+  }
+  
   .sbt-back-header .content-header {
     background-color: #444 !important;
   }
