@@ -53,24 +53,24 @@ const keycloakMergeGoogleAndroid = getKeyCloakClient({
   }
 })
 
-// const keycloakGoogleDesktop = getKeyCloakClient({
-//   resource: envHelper.KEYCLOAK_GOOGLE_DESKTOP_CLIENT.clientId,
-//   bearerOnly: true,
-//   serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
-//   realm: envHelper.PORTAL_REALM,
-//   credentials: {
-//     secret: envHelper.KEYCLOAK_GOOGLE_DESKTOP_CLIENT.secret
-//   }
-// })
-// const keycloakMergeGoogleDesktop = getKeyCloakClient({
-//   resource: envHelper.KEYCLOAK_GOOGLE_DESKTOP_CLIENT.clientId,
-//   bearerOnly: true,
-//   serverUrl: envHelper.PORTAL_MERGE_AUTH_SERVER_URL,
-//   realm: envHelper.PORTAL_REALM,
-//   credentials: {
-//     secret: envHelper.KEYCLOAK_GOOGLE_DESKTOP_CLIENT.secret
-//   }
-// })
+const keycloakGoogleDesktop = getKeyCloakClient({
+  resource: envHelper.KEYCLOAK_GOOGLE_DESKTOP_CLIENT.clientId,
+  bearerOnly: true,
+  serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
+  realm: envHelper.PORTAL_REALM,
+  credentials: {
+    secret: envHelper.KEYCLOAK_GOOGLE_DESKTOP_CLIENT.secret
+  }
+})
+const keycloakMergeGoogleDesktop = getKeyCloakClient({
+  resource: envHelper.KEYCLOAK_GOOGLE_DESKTOP_CLIENT.clientId,
+  bearerOnly: true,
+  serverUrl: envHelper.PORTAL_MERGE_AUTH_SERVER_URL,
+  realm: envHelper.PORTAL_REALM,
+  credentials: {
+    secret: envHelper.KEYCLOAK_GOOGLE_DESKTOP_CLIENT.secret
+  }
+})
 
 class GoogleOauth {
   createConnection(req) {
