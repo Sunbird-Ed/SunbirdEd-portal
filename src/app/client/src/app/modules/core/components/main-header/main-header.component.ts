@@ -93,7 +93,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     'center': false,
     'smallBox': false,
     'mediumBox': false,
-    'largeBox': false
+    'largeBox': true
   };
   languages: Array<any>;
   showOfflineHelpCentre = false;
