@@ -69,7 +69,7 @@ module.exports = function (app) {
     // topics apis 
     app.post(`${BASE_REPORT_URL}/v2/topics`, proxyUtils.verifyToken(), proxyObject());
     app.post(`${BASE_REPORT_URL}/v2/topics/:tid`, proxyUtils.verifyToken(), proxyObject());
-    app.post(`${BASE_REPORT_URL}/v2/topics/:tid`, proxyUtils.verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/v2/topics/update/:tid`, proxyUtils.verifyToken(), proxyObject());
     app.delete(`${BASE_REPORT_URL}/v2/topics/:tid`, proxyUtils.verifyToken(), proxyObject());
     app.put(`${BASE_REPORT_URL}/v2/topics/:tid/state`, proxyUtils.verifyToken(), proxyObject());
     app.put(`${BASE_REPORT_URL}/v2/topics/:tid/follow`, proxyUtils.verifyToken(), proxyObject());
