@@ -15,7 +15,7 @@
 </div>
 <div *ngIf="!isMobileOrTab && showNewPlayer && !isContentDeleted" class="w-100 h-100">
         <div >
-        <!-- <sunbird-pdf-player *ngIf="playerType === 'pdf-player'" [playerConfig]="playerConfig"
+        <sunbird-pdf-player *ngIf="playerType === 'pdf-player'" [playerConfig]="playerConfig"
           (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)">
         </sunbird-pdf-player>
 
@@ -24,11 +24,9 @@
         </sunbird-video-player>
 
         <sunbird-epub-player *ngIf="playerType === 'epub-player'" [playerConfig]="playerConfig"
-        (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></sunbird-epub-player> -->
+        (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></sunbird-epub-player>
 
-        <!-- *ngIf="playerType === 'quml-player'" -->
-
-        <quml-player  [QumlPlayerConfig]="playerConfig" (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event)"></quml-player>
+        <quml-player *ngIf="playerType === 'quml-player' && showQumlPlayer" [QumlPlayerConfig]="playerConfig" (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event)"></quml-player>
       </div>
 </div>
 
