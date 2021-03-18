@@ -14,8 +14,8 @@
     <iframe #contentIframe id="contentPlayer" class="contentViewerIframeShadow" [ngClass]="{'player-fullscreen': isFullScreenView}" name="contentPlayer"></iframe>
 </div>
 <div *ngIf="!isMobileOrTab && showNewPlayer && !isContentDeleted" class="w-100 h-100">
-        <div class="contentViewerIframeShadow" [ngClass]="{'player-fullscreen content-full-video': isFullScreenView}">
-        <sunbird-pdf-player *ngIf="playerType === 'pdf-player'" [playerConfig]="playerConfig"
+        <div >
+        <!-- <sunbird-pdf-player *ngIf="playerType === 'pdf-player'" [playerConfig]="playerConfig"
           (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)">
         </sunbird-pdf-player>
 
@@ -24,7 +24,11 @@
         </sunbird-video-player>
 
         <sunbird-epub-player *ngIf="playerType === 'epub-player'" [playerConfig]="playerConfig"
-        (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></sunbird-epub-player>
+        (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></sunbird-epub-player> -->
+
+        <!-- *ngIf="playerType === 'quml-player'" -->
+
+        <quml-player  [QumlPlayerConfig]="playerConfig" (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event)"></quml-player>
       </div>
 </div>
 

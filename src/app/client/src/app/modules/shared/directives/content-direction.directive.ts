@@ -19,21 +19,21 @@ export class ContentDirectionDirective implements AfterViewInit  {
 
   ngAfterViewInit(): void {
     this.mediumCode = this.configService.appConfig.mediumCode;
-    if (this.data.medium) {
-      const langCode = _.get(this.mediumCode, _.lowerCase(this.data.medium));
-      if (this.cacheService.get('resourcebundlesearch')) {
-        const data = this.cacheService.get('resourcebundlesearch');
-        const item =  (_.find(data[0].range, ['value', langCode]));
-        if (item) {
-          this.renderer.setAttribute(this.elRef.nativeElement, 'lang' , item.value);
-          this.renderer.setAttribute(this.elRef.nativeElement, 'dir' , item.dir);
-        } else {
-          const englishLanguage = (_.find(data[0].range, ['value', 'en']));
-          this.renderer.setAttribute(this.elRef.nativeElement, 'lang' , englishLanguage.value);
-          this.renderer.setAttribute(this.elRef.nativeElement, 'dir' , englishLanguage.dir);
-        }
-      }
-    }
+    // if (this.data.medium) {
+    //   const langCode = _.get(this.mediumCode, _.lowerCase(this.data.medium));
+    //   if (this.cacheService.get('resourcebundlesearch')) {
+    //     const data = this.cacheService.get('resourcebundlesearch');
+    //     const item =  (_.find(data[0].range, ['value', langCode]));
+    //     if (item) {
+    //       this.renderer.setAttribute(this.elRef.nativeElement, 'lang' , item.value);
+    //       this.renderer.setAttribute(this.elRef.nativeElement, 'dir' , item.dir);
+    //     } else {
+    //       const englishLanguage = (_.find(data[0].range, ['value', 'en']));
+    //       this.renderer.setAttribute(this.elRef.nativeElement, 'lang' , englishLanguage.value);
+    //       this.renderer.setAttribute(this.elRef.nativeElement, 'dir' , englishLanguage.dir);
+    //     }
+    //   }
+    // }
   }
 
 }

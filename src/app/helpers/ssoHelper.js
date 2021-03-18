@@ -31,15 +31,15 @@ const keycloakTrampolineAndroid = getKeyCloakClient({
     secret: envHelper.KEYCLOAK_TRAMPOLINE_ANDROID_CLIENT.secret
   }
 })
-const keycloakTrampolineDesktop = getKeyCloakClient({
-  resource: envHelper.KEYCLOAK_TRAMPOLINE_DESKTOP_CLIENT.clientId,
-  bearerOnly: true,
-  serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
-  realm: envHelper.PORTAL_REALM,
-  credentials: {
-    secret: envHelper.KEYCLOAK_TRAMPOLINE_DESKTOP_CLIENT.secret
-  }
-})
+// const keycloakTrampolineDesktop = getKeyCloakClient({
+//   resource: envHelper.KEYCLOAK_TRAMPOLINE_DESKTOP_CLIENT.clientId,
+//   bearerOnly: true,
+//   serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
+//   realm: envHelper.PORTAL_REALM,
+//   credentials: {
+//     secret: envHelper.KEYCLOAK_TRAMPOLINE_DESKTOP_CLIENT.secret
+//   }
+// })
 const verifySignature = async (token) => {
   let options = {
     method: 'GET',

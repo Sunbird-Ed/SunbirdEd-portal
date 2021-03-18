@@ -283,7 +283,7 @@ if (!process.env.sunbird_environment || !process.env.sunbird_instance) {
   logger.error({
     msg: `please set environment variable sunbird_environment,sunbird_instance
   start service Eg: sunbird_environment = dev, sunbird_instance = sunbird`})
-  process.exit(1)
+  // process.exit(1)
 }
 async function runApp() {
   await loadTokenPublicKeys(path.join(__dirname, kidTokenPublicKeyBasePath));

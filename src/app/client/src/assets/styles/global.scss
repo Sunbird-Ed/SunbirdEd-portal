@@ -881,8 +881,21 @@ quml-player {
   }
 }
 
-.sb-notification-container {
-  .clear-text {
-    cursor: pointer;;
+quml-player {
+  .quml-container {
+    width: 100%;
+    background: white;
+    height: 100%;
+    overflow: auto;
+    .filter-option:hover, .active {
+      border-bottom: unset;
+      font-weight: inherit;
+    }
+    .lanscape-mode-right {
+      height: calc(100% - 56px);
+      ul::before {
+        z-index: 0 !important;
+      }
+    }
   }
 }

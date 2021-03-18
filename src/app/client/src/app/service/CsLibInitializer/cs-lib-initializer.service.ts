@@ -49,8 +49,12 @@ export class CsLibInitializerService {
                 certRegistrationApiPath: '/learner/certreg/v2/certs'
               },
               discussionServiceConfig: {
-                apiPath: '/discussion'
-            }
+                apiPath: '/discussion',
+              },
+              contentServiceConfig: {
+                hierarchyApiPath: '/learner/questionset/v1',
+                questionListApiPath: '/learner/question/v1'
+              }
           }
       },
       null,
@@ -72,7 +76,8 @@ export class CsLibInitializerService {
     }
   }
   initializeCs() {
-    this.userService.userData$.pipe(first())
-    .subscribe(() => this._initializeCs());
+    this._initializeCs();
+    // this.userService.userData$.pipe(first())
+    // .subscribe(() => this._initializeCs());
   }
 }
