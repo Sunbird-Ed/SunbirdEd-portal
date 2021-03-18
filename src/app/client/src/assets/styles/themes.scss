@@ -2308,6 +2308,15 @@ html[data-theme=Darkmode] {
   .data-labels {
     color: var(--white);
   }
+
+  sb-card-hover.card-hover .action-item {
+    .sb-btn-grow {
+      color: var(--black) !important;
+      .icon-svg svg.icon {
+        filter: invert(1) !important;
+      }
+    }
+  }
 }
 
 html[data-theme='Darkmode'][layout='joy'] {
