@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 import { defer, of } from 'rxjs';
 import { delay, mergeMap, retryWhen, take, tap } from 'rxjs/operators';
 import { IHttpRequestConfig } from '../../OpenRAP/dist/services/httpService/index';
+import Response from "../utils/response";
 const { logger } = require('@project-sunbird/logger');
 const http = require('http');
 const https = require('https');
@@ -89,11 +90,17 @@ const getErrorObj = () => {
   };
 }
 
+const getAPIId = (host, requestUrl) => {
+  const url  = requestUrl.split('?')[0];
+  return _.replace(url, `${host}/`, '').split('/').join('.');
+}
+
 export const customProxy = (host, options = {}) => {
   return async (req, res, next) => {
     const { method } = req;
     const headers = await decorateRequest(req, options);
     const proxyURL = resolveRequestPath(host, req, options);
+    const apiId = getAPIId(host, proxyURL);
 
     let config: IHttpRequestConfig = {
       headers: headers,
@@ -146,7 +153,12 @@ export const customProxy = (host, options = {}) => {
       const response = _.get(error, 'response');
       res.body = _.get(response, 'data') || {};
       res.headers = _.get(response, 'headers');
-      res.statusCode = _.get(response, 'status') || 500;
+      res.statusCode = _.get(response, 'status');
+
+      if (!res.body && !res.statusCode) {
+        res.body = Response.error(apiId, 500);
+        res.statusCode = 500;
+      }
       next();
     });
   };
