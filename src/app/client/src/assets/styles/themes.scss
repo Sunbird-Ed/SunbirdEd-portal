@@ -2398,7 +2398,96 @@ html[data-theme=Darkmode] {
       }
     }
   }
+
+  // Discussion Forum
+  sb-card-hover.card-hover .action-item {
+    .sb-btn-grow {
+      color: var(--black) !important;
+      .icon-svg svg.icon {
+        filter: invert(1) !important;
+      }
+    }
+  }
+
+  .discussion-forum {
+
+    .tabs-active, .df-filter-option:hover {
+      color: var(--black) !important;
+    }
+
+    .category-card, .discuss-card-content, .discussion-details, .profileCard {
+      background: var(--black) !important;
+    }
+
+    .catergory-card-header-image {
+      border-color: var(--white) !important;
+    }
+
+    .category-card-header-label,
+    .category-card-header-text,
+    .category-card-main-content,
+    .discuss-card-title,
+    .discuss-card-label,
+    .discuss-user-label,
+    .timing,
+    .votes-content span,
+    .views-content span,
+    .discussion-card-title,
+    .discussion-heading,
+    .discussion-labels,
+    h3.fs-1.font-weight-bold,
+    .no-data-label,
+    .profile-label,
+    .fnormal .flex-custom-m {
+      color: var(--white) !important;
+    }
+
+    lib-post-reply {
+      textarea {
+        background: #444 !important;
+        color: var(--white) !important;
+      }
+    }
+
+    .post-btn {
+      background: var(--primary-color) !important;
+      color: var(--black) !important;
+      &.sb-btn-disabled {
+        background-color: var(--gray-100) !important;
+      }
+    }
+    .comments-area {
+      img {
+        filter: invert(1);
+      }
+      span {
+        color: var(--white) !important;
+      }
+    }
+  
+    .comments-count {
+      color: var(--primary-color) !important;
+    }
+
+    .eye-icon, .discuss-card-label img, .votes-content img, .views-content img {
+      filter: invert(1) !important;
+    }
+
+    .sb-sidebar-menu {
+      li.menu-active, li:hover  {
+        background-color: var(--primary-color) !important;
+        border-left: 3px solid var(--white) !important;
+        color: var(--black) !important;
+      }
+    } 
+  }
+
+  .discuss-right-panel.df-main-content, .discuss-left-panel.df-side-content {
+    background: var(--sbt-compt-bg) !important;
+  }
+
 }
+
 
 html[data-theme='Darkmode'][layout='joy'] {
   --primary-color: #ffd92a;
