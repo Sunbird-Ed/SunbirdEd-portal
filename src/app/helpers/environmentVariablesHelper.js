@@ -1,3 +1,4 @@
+'use strict'
 const env = process.env
 const fs = require('fs')
 const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'))
