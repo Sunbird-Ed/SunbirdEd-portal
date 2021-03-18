@@ -77,7 +77,5 @@ export class CsLibInitializerService {
   }
   initializeCs() {
     this._initializeCs();
-    // this.userService.userData$.pipe(first())
-    // .subscribe(() => this._initializeCs());
   }
 }
