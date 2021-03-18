@@ -2309,6 +2309,7 @@ html[data-theme=Darkmode] {
     color: var(--white);
   }
 
+  // Discussion Forum
   sb-card-hover.card-hover .action-item {
     .sb-btn-grow {
       color: var(--black) !important;
@@ -2316,6 +2317,41 @@ html[data-theme=Darkmode] {
         filter: invert(1) !important;
       }
     }
+  }
+
+  .discussion-forum {
+
+    .category-card, .discuss-card-content {
+      background: var(--black) !important;
+    }
+
+    .catergory-card-header-image {
+      border-color: var(--white) !important;
+    }
+
+    .category-card-header-label, .category-card-header-text, .category-card-main-content, .discuss-card-title, .discuss-card-label, .discuss-user-label, .timing, .votes-content span, .views-content span {
+      color: var(--white) !important;
+    }
+
+    .comments-count {
+      color: var(--primary-color) !important;
+    }
+
+    .eye-icon, .discuss-card-label img, .votes-content img, .views-content img {
+      filter: invert(1) !important;
+    }
+
+    .sb-sidebar-menu {
+      li.menu-active, li:hover  {
+        background-color: var(--primary-color) !important;
+        border-left: 3px solid var(--white) !important;
+        color: var(--black) !important;
+      }
+    } 
+  }
+
+  .discuss-right-panel.df-main-content, .discuss-left-panel.df-side-content {
+    background: var(--sbt-compt-bg) !important;
   }
 }
 
