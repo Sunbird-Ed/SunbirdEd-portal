@@ -5,11 +5,9 @@ import { FormService } from '@sunbird/core';
 @Injectable({
   providedIn: 'root'
 })
-
 export class DiscussionService{
 
   private discussionCsService: any;
-  private contentCsService: any;
 
   constructor(
     private csLibInitializerService: CsLibInitializerService,
@@ -19,7 +17,6 @@ export class DiscussionService{
       this.csLibInitializerService.initializeCs();
     }
     this.discussionCsService = CsModule.instance.discussionService;
-    this.contentCsService = CsModule.instance.contentService;
   } 
 
   registerUser(data) {
