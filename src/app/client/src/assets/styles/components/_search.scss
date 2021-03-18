@@ -77,7 +77,7 @@ $sb-search-close-btn-color: var(--white);
     border: 0;
     min-width: auto;
     white-space: nowrap;
-    border-radius: 0 calculateRem(3px) calculateRem(3px) 0;
+    border-radius: 0 calculateRem(3px) calculateRem(3px) 0 !important;
     color: var(--sb-search-btn-text);
     font-size: $sb-search-btn-font-size;
     font-weight: bold;

@@ -1475,6 +1475,7 @@ html[data-theme=Darkmode] {
   }
   .sb-search-box .sb-btn {
     background: #FFD92A;
+    color: #000;
   }
   .sb-modal .ui.modal > .close { color:#000; }
   .sbchapter__item .sbchapter__img--inprogress .icon-svg svg.icon.icon-svg--primary {   fill: #000;
@@ -1483,6 +1484,41 @@ html[data-theme=Darkmode] {
     background: #222 !important;
     border: none;
   }
+  .sb-notification-container .sb-notification-header{
+    color: var(--white) !important;
+  }
+  .sb-notification-modal .ui.modal{
+    background-color: #333;
+  }
+  .sb-members-list-item .menu:hover::after{
+    background: var(--kabab-menu-hover-bg) !important;
+  }
+  .menu:hover::after{
+    background: var(--kabab-menu-hover-bg) !important;
+  }
+  .sb-members-list-item .status{
+    color: var(--black) !important;
+  }
+  .no-clicked, .yes-clicked{
+    background: #222222;
+  }
+  .help-page__content .panel .panel-info{
+    .input-text{
+      background: var(--black);
+      color: var(--white);
+    }
+    .submit-button{
+      color:var(--black);
+    }
+  } 
+  app-add-member{
+   .ui.container{
+      .sb-bg-color-white {
+        background: #333 !important;
+      }
+    }
+  }
+
   // cc pills box
   --cc-pills-grid-item: var(--white);
   --cc-pills-grid-item-hover: #f2f2f2;
@@ -2407,9 +2443,9 @@ html[accessable-theme="accessible"] {
     color: var(--gray-200);
   }
 
-  .content-metadeta__title {
-    color: var(--gray-0) !important;
-  }
+  // .content-metadeta__title {
+  //   color: var(--gray-0) !important;
+  // }
 
   // .sb-btn-normal {
   // 	color:#F5F5F5 ;
