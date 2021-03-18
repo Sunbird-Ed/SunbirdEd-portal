@@ -159,7 +159,7 @@ describe('CourseConsumptionHeaderComponent', () => {
   });
 
   it('should call  getTimeRemaining and return remaning time', () => {
-    let endDate = "2021-02-27";
+    let endDate = "Mar 19, 2021";
     spyOn(component, 'getTimeRemaining').and.callThrough();
     spyOn(component, 'getFormData').and.callThrough();
     component.batchEndCounter = 5;
@@ -169,7 +169,7 @@ describe('CourseConsumptionHeaderComponent', () => {
   });
 
   it('should get formconfig to show remaining time of batch', () => {
-    let endDate = "2021-02-27";
+    let endDate = "Mar 19, 2021";
     spyOn(component, 'getTimeRemaining').and.callThrough();
     spyOn(component, 'getFormData').and.callThrough();
     component.getTimeRemaining(endDate)

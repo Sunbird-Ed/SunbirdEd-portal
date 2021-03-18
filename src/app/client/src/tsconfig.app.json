@@ -77,12 +77,6 @@
       "@sunbird/location": [
         "app/modules/location"
       ],
-      "sunbird-question-editor": [
-        "../node_modules/@project-sunbird/sunbird-question-editor"
-      ],
-      "sunbird-question-editor/*": [
-        "../node_modules/@project-sunbird/sunbird-question-editor/*"
-      ],
       "sunbird-collection-editor": [
         "../node_modules/@project-sunbird/sunbird-collection-editor"
       ],
