@@ -15,7 +15,6 @@ import { takeUntil } from 'rxjs/operators';
 import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
 import { ContentService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
-import { DiscussionService } from '../../../discussion/services/discussion/discussion.service';
 import { QumlPlayerService } from '../../service/quml-player/quml-player.service';
 import { QuestionCursor } from 'quml-player';
 
@@ -83,7 +82,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.closeContentFullScreen();
   }
 
-  constructor(private discussionService: DiscussionService, public configService: ConfigService, public router: Router, private toasterService: ToasterService,
+  constructor(public configService: ConfigService, public router: Router, private toasterService: ToasterService,
     public resourceService: ResourceService, public navigationHelperService: NavigationHelperService,
     private deviceDetectorService: DeviceDetectorService, private userService: UserService, public formService: FormService
     , public contentUtilsServiceService: ContentUtilsServiceService, private contentService: ContentService,
