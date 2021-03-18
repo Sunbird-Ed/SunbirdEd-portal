@@ -2321,7 +2321,11 @@ html[data-theme=Darkmode] {
 
   .discussion-forum {
 
-    .category-card, .discuss-card-content {
+    .tabs-active, .df-filter-option:hover {
+      color: var(--black) !important;
+    }
+
+    .category-card, .discuss-card-content, .discussion-details, .profileCard {
       background: var(--black) !important;
     }
 
@@ -2329,10 +2333,48 @@ html[data-theme=Darkmode] {
       border-color: var(--white) !important;
     }
 
-    .category-card-header-label, .category-card-header-text, .category-card-main-content, .discuss-card-title, .discuss-card-label, .discuss-user-label, .timing, .votes-content span, .views-content span {
+    .category-card-header-label,
+    .category-card-header-text,
+    .category-card-main-content,
+    .discuss-card-title,
+    .discuss-card-label,
+    .discuss-user-label,
+    .timing,
+    .votes-content span,
+    .views-content span,
+    .discussion-card-title,
+    .discussion-heading,
+    .discussion-labels,
+    h3.fs-1.font-weight-bold,
+    .no-data-label,
+    .profile-label,
+    .fnormal .flex-custom-m {
       color: var(--white) !important;
     }
 
+    lib-post-reply {
+      textarea {
+        background: #444 !important;
+        color: var(--white) !important;
+      }
+    }
+
+    .post-btn {
+      background: var(--primary-color) !important;
+      color: var(--black) !important;
+      &.sb-btn-disabled {
+        background-color: var(--gray-100) !important;
+      }
+    }
+    .comments-area {
+      img {
+        filter: invert(1);
+      }
+      span {
+        color: var(--white) !important;
+      }
+    }
+  
     .comments-count {
       color: var(--primary-color) !important;
     }
