@@ -249,9 +249,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         if (isNewPlayer) {
           this.playerLoaded = false;
           this.loadNewPlayer();
-          console.log('=================his.playerConfig', this.playerConfig)
-          console.log('=================his.qumlThreshold', this.qumlThreshold)
-          console.log('=================his.questionids', this.questionids)
         } else {
           this.loadOldPlayer();
         }
