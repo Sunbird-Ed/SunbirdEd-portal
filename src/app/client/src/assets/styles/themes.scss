@@ -1955,6 +1955,13 @@ html[data-theme=Darkmode] {
     }
   }
 
+  .batch-deatils__button .sb-btn-disabled {
+    color: #444;
+    &:hover {
+      color: #444 !important;
+    }
+  }
+
   .sb-btn-square, .content-video__player__tools .sb-btn-square {
     color: var(--white);
 
@@ -2261,6 +2268,10 @@ html[data-theme=Darkmode] {
       color: var(--white);
     }
   }
+
+  .data-labels {
+    color: var(--white);
+  }
 }
 
 html[data-theme='Darkmode'][layout='joy'] {
@@ -2399,17 +2410,17 @@ html[accessable-theme="accessible"] {
     color: #000000;
   }
 
-  .certified-course__btn>.textbook__addbtn {
-    color: #1a1a1a;
-  }
+  // .certified-course__btn>.textbook__addbtn {
+  //   color: #1a1a1a;
+  // }
 
   .sb-btn-link-gray {
     color: var(--gray-200);
   }
 
-  .content-metadeta__title {
-    color: var(--gray-0) !important;
-  }
+  // .content-metadeta__title {
+  //   color: var(--gray-0) !important;
+  // }
 
   // .sb-btn-normal {
   // 	color:#F5F5F5 ;
@@ -2554,13 +2565,13 @@ html[accessable-theme="accessible"] {
     }
   }
 
-  .cc-player__content-header {
-    .certified-course {
-      .sb-btn-secondary {
-        color: #1a1a1a !important;
-      }
-    }
-  }
+  // .cc-player__content-header {
+  //   .certified-course {
+  //     .sb-btn-secondary {
+  //       color: #1a1a1a !important;
+  //     }
+  //   }
+  // }
 
   .certificate-container {
     .certificate-content {
