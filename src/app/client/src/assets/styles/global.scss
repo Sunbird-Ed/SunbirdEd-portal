@@ -881,6 +881,11 @@ quml-player {
   }
 }
 
+.sb-notification-container {
+  .clear-text {
+    cursor: pointer;;
+  }
+  
 quml-player {
   .quml-container {
     width: 100%;
