@@ -179,7 +179,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     const days = Math.floor(total / (1000 * 60 * 60 * 24));
     const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
     const minutes = Math.floor((total / 1000 / 60) % 60);
-    if (days > -1) {
+    if (days >= 0) {
       this.showBatchCounter = this.batchEndCounter >= days;
       if (this.showBatchCounter) {
         return days + ' ' + 'day(s)' + ' ' + hours + 'h' + ' ' + minutes + 'm';
