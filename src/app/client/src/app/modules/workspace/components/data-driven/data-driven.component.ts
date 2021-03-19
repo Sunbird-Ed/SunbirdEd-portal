@@ -400,14 +400,14 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
    */
   setFrameworkData(channelData) {
     this.frameworkCardData = [{
-      title: 'Curriculum Course',
+      title: 'Curriculum courses',
       description: `Create courses for concepts from the syllabus, across grades and subjects. For example, courses on fractions, photosynthesis, reading comprehension, etc.`,
-      primaryCategory: 'Curriculum Course'
+      framework: _.get(channelData, 'result.channel.defaultFramework')
     },
     {
-      title: 'Professional Development Course',
+      title: 'Generic courses',
       description: `Create courses that help develop professional skills. For example, courses on classroom management, pedagogy, ICT, Leadership, etc.`,
-      primaryCategory: 'Professional Development Course'
+      framework: _.get(channelData, 'result.channel.defaultCourseFramework')
     }
     ];
   }
@@ -420,71 +420,24 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
    *                2. It also logs interact telemetry on card click.
    */
   selectFramework(cardData) {
-    this.primaryCategory = cardData.primaryCategory;
-    let orgFWType, targetFWType;
-    this.workSpaceService.getCategoryDefinition('Collection', cardData.primaryCategory, this.userService.channel)
-    .subscribe(categoryDefinitionData => {
-      if (_.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata')) {
-        // tslint:disable-next-line:max-line-length
-        orgFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.orgFWType');
-        // tslint:disable-next-line:max-line-length
-        targetFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.targetFWType');
-      } else {
-        if (cardData.primaryCategory === 'Curriculum Course') {
-          orgFWType = 'K-12';
-        } else {
-          orgFWType = 'TPD';
-          targetFWType = 'K-12';
-        }
+    this.enableCreateButton = true;
+    this.selectedCard = cardData;
+    this.framework = _.get(cardData, 'framework');
+    const telemetryInteractData = {
+      context: {
+        env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env'),
+        cdata: [{
+          type: 'framework',
+          id: this.framework
+        }]
+      },
+      edata: {
+        id: _.get(cardData, 'title'),
+        type: 'click',
+        pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid')
       }
-      const frameworkReq = [this.getFrameworkDataByType(orgFWType, this.userService.channel)];
-      if (targetFWType) {
-        frameworkReq.push(this.getFrameworkDataByType(targetFWType, this.userService.channel));
-      }
-      forkJoin(frameworkReq).subscribe((response) => {
-        const orgFWData = _.first(response);
-        if (orgFWData.result.count > 0) {
-          this.framework = _.get(_.first(_.get(orgFWData, 'result.Framework')), 'identifier');
-        } else {
-          // tslint:disable-next-line:max-line-length
-          this.framework = cardData.primaryCategory ===  'Curriculum Course' ?
-          _.get(this.userChannelData, 'result.channel.defaultFramework') : _.get(this.userChannelData, 'result.channel.defaultCourseFramework');
-        }
-        const telemetryInteractData = {
-          context: {
-            env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env'),
-            cdata: [{
-              type: 'framework',
-              id: this.framework
-            }]
-          },
-          edata: {
-            id: _.get(cardData, 'title'),
-            type: 'click',
-            pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid')
-          }
-        };
-        if (targetFWType) {
-          const targetFWData = _.last(response);
-          if (targetFWData.result.count > 0) {
-            this.targetFramework = _.get(_.first(_.get(targetFWData, 'result.Framework')), 'identifier');
-          } else {
-            this.targetFramework = _.get(this.userChannelData, 'result.channel.defaultFramework');
-          }
-          telemetryInteractData.context.cdata.push({
-            type: 'targetFW',
-            id: this.targetFramework
-          });
-        }
-        this.enableCreateButton = true;
-        this.selectedCard = cardData;
-        this.telemetryService.interact(telemetryInteractData);
-      }, err => {
-        this.toasterService.error(this.resourceService.messages.emsg.m0025);
-      });
-    }, err => {
-      this.toasterService.error(this.resourceService.messages.emsg.m0024);
-    });
+    };
+    this.telemetryService.interact(telemetryInteractData);
   }
 
   getFrameworkDataByType(type, channel = this.userService.channel) {
