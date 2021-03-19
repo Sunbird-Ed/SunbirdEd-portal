@@ -1568,6 +1568,16 @@ html[data-theme=Darkmode] {
     }
   }
 
+  .certificate-course-content{
+    .sbchapter__item__score{
+      color: var(--white);
+    }
+  }
+  .sbchapter__item--active, .sbchapter__item--active:hover, .sbchapter__item:hover{
+    .sbchapter__item__score{
+      color: var(--black);
+    }
+  }
   // cc pills box
   --cc-pills-grid-item: var(--white);
   --cc-pills-grid-item-hover: #f2f2f2;
