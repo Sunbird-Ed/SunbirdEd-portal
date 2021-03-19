@@ -104,8 +104,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   ngOnInit() {
-    if(this.playerConfig.metadata.mimeType === 'application/vnd.sunbird.questionset') {
-      this.playerService.getQuestionSetHierarchy(this.playerConfig.metadata.identifier).subscribe(data => {
+    if(_.get(this.playerConfig, 'metadata.mimeType') === 'application/vnd.sunbird.questionset') {
+      this.playerService.getQuestionSetHierarchy(_.get(this.playerConfig, 'metadata.identifier')).subscribe(data => {
         this.questionids = _.get(data, 'questionSet.childNodes');
         this.playerConfig.data = this.playerConfig.metadata;
         this.showQumlPlayer = true;
