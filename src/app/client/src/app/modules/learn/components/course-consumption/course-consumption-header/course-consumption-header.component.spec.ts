@@ -161,21 +161,22 @@ describe('CourseConsumptionHeaderComponent', () => {
 
   it('should call  getTimeRemaining and return remaning time', () => {
     const endDate = new Date().getTime() + 2000 * 60 * 60 * 24;
-    const incrementEndDate = dayjs(endDate).format('MMM DD, YYYY');
+    const incrEndDate = dayjs(endDate).format('MMM DD, YYYY');
     spyOn(Date, 'now').and.returnValue(1387636363717);
     spyOn(component, 'getTimeRemaining').and.callThrough();
     spyOn(component, 'getFormData').and.callThrough();
     component.batchEndCounter = 2;
-    const returnValue = component.getTimeRemaining(incrementEndDate);
+    const returnValue = component.getTimeRemaining(incrEndDate);
     expect(component.getTimeRemaining).toHaveBeenCalled();
     expect(returnValue).toBeDefined();
   });
 
   it('should get formconfig to show remaining time of batch', () => {
-    const endDate = 'Mar 19, 2021';
+    const endDate = new Date().getTime() + 2000 * 60 * 60 * 24;
+    const incrEndDate = dayjs(endDate).format('MMM DD, YYYY');
     spyOn(component, 'getTimeRemaining').and.callThrough();
     spyOn(component, 'getFormData').and.callThrough();
-    component.getTimeRemaining(endDate);
+    component.getTimeRemaining(incrEndDate);
     expect(component.getFormData).toHaveBeenCalled();
   });
 
