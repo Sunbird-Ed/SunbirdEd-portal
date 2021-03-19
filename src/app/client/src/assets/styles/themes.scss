@@ -1814,7 +1814,7 @@ html[data-theme=Darkmode] {
     background: #222;
   }
 
-  .sb-btn-outline-primary {
+  .sb-btn-outline-primary, .df-back-btn-container .sb-btn {
     img {
       filter: invert(1);
     }
@@ -2416,24 +2416,101 @@ html[data-theme=Darkmode] {
   sb-card-hover.card-hover .action-item {
     .sb-btn-grow {
       color: var(--black) !important;
+
       .icon-svg svg.icon {
         filter: invert(1) !important;
       }
     }
   }
 
+  .ui.container {
+    .df-back-btn-container {
+      background: var(--sbt-compt-bg) !important;
+    }
+  }
+
   .discussion-forum {
 
-    .tabs-active, .df-filter-option:hover {
+    .discussion-start-modal .discussion-start-modal-content {
+      background: var(--sbt-compt-bg);
+
+      .discussion-start-form {
+        .start-form-field .start-form-field-control {
+          background: var(--black) !important;
+          color: var(--white) !important;
+          outline: none;
+        }
+
+        .start-modal-buttons {
+          .discard-btn {
+            color: var(--primary-color) !important;
+            background: var(--sbt-compt-bg) !important;
+          }
+
+          .submit-post-btn {
+            background: var(--primary-color) !important;
+            color: var(--black) !important;
+          }
+
+          .df-btn-disabled {
+            background: var(--gray-100) !important;
+          }
+        }
+      }
+    }
+
+    tag-input-form,
+    tag-input-form form,
+    .ng2-tag-input__text-input {
+      width: 100%;
+    }
+
+    .ng2-tag-input__text-input {
+      background: var(--black);
+      color: var(--white);
+    }
+
+    .ui.icon.message {
+      background: #444;
+
+      i.notched.circle.loading.icon {
+        color: var(--white);
+      }
+
+      .header {
+        color: var(--white);
+      }
+    }
+
+    p {
+      color: var(--white);
+    }
+
+    .df-filter-option {
+      border: none;
+      background: #444;
+      color: var(--white);
+    }
+
+    .tabs-active {
+      color: var(--black) !important;
+      background: var(--primary-color);
+    }
+
+    .df-filter-option:hover {
       color: var(--black) !important;
     }
 
-    .category-card, .discuss-card-content, .discussion-details, .profileCard {
-      background: var(--black) !important;
+    .category-card,
+    .discuss-card-content,
+    .discussion-details,
+    .profileCard,
+    .related-discuss-card {
+      background: var(--black);
     }
 
     .catergory-card-header-image {
-      border-color: var(--white) !important;
+      border-color: var(--white);
     }
 
     .category-card-header-label,
@@ -2451,51 +2528,80 @@ html[data-theme=Darkmode] {
     h3.fs-1.font-weight-bold,
     .no-data-label,
     .profile-label,
-    .fnormal .flex-custom-m {
+    .fnormal .flex-custom-m,
+    .post-name,
+    .post-time,
+    .post-labels,
+    .reply-area,
+    .reply-btn,
+    .width-expand,
+    div.my-24.fnormal,
+    .related-discuss-card-content,
+    .category-name,
+    div.time {
       color: var(--white) !important;
+    }
+
+    .separator-dot {
+      background-color: var(--white);
     }
 
     lib-post-reply {
       textarea {
-        background: #444 !important;
-        color: var(--white) !important;
+        background: #444;
+        color: var(--white);
       }
     }
 
     .post-btn {
-      background: var(--primary-color) !important;
-      color: var(--black) !important;
+      background: var(--primary-color);
+      color: var(--black);
+
       &.sb-btn-disabled {
-        background-color: var(--gray-100) !important;
+        background-color: var(--gray-100);
       }
     }
+
     .comments-area {
       img {
         filter: invert(1);
       }
+
       span {
-        color: var(--white) !important;
+        color: var(--white);
       }
     }
-  
+
     .comments-count {
-      color: var(--primary-color) !important;
+      color: var(--primary-color);
     }
 
-    .eye-icon, .discuss-card-label img, .votes-content img, .views-content img {
-      filter: invert(1) !important;
+    .eye-icon,
+    .discuss-card-label img,
+    .votes-content img,
+    .views-content img,
+    span.cursor-pointer img,
+    .category-card-img,
+    .reply-area img {
+      filter: invert(1);
     }
 
     .sb-sidebar-menu {
-      li.menu-active, li:hover  {
-        background-color: var(--primary-color) !important;
-        border-left: 3px solid var(--white) !important;
-        color: var(--black) !important;
+      li {
+        color: var(--white);
       }
-    } 
+
+      li.menu-active,
+      li:hover {
+        background-color: var(--primary-color) !important;
+        border-left: 3px solid var(--white);
+        color: var(--black);
+      }
+    }
   }
 
-  .discuss-right-panel.df-main-content, .discuss-left-panel.df-side-content {
+  .discuss-right-panel.df-main-content,
+  .discuss-left-panel.df-side-content {
     background: var(--sbt-compt-bg) !important;
   }
 
