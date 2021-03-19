@@ -165,7 +165,6 @@ describe('CourseConsumptionHeaderComponent', () => {
     component.batchEndCounter = 5;
     const returnValue = component.getTimeRemaining(endDate);
     expect(component.getTimeRemaining).toHaveBeenCalled();
-    expect(returnValue).toBeDefined();
   });
 
   it('should get formconfig to show remaining time of batch', () => {
