@@ -1468,7 +1468,6 @@ html[data-theme=Darkmode] {
   .sb-epub-reading-status {
     background: #333;
   }
-  
   .flex-ai-jc-center.add-member-content {
     background: #333;
     img {
@@ -1804,12 +1803,17 @@ html[data-theme=Darkmode] {
 
   .logo.sbt-logo,
   .five.wide.column .d-flex.logo,
-  .sb-onboard .brand-logo {
+  .sb-onboard .brand-logo, .terms-modal-logo {
     padding: 0.5rem;
     border-radius: 0 0 1rem 1rem;
     background: #fff;
   }
-
+  .terms-modal-logo {
+    max-width: 14rem;
+    /* float: left; */
+    text-align: center;
+    margin: 0 auto;
+  }
   .add-user--horizontal {
     background-color: var(--primary-color);
 
