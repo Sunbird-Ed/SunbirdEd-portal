@@ -21,11 +21,7 @@ import { QuestionCursor } from 'quml-player';
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
-  styleUrls: ['./player.component.scss'],
-  providers: [{
-    provide: QuestionCursor,
-    useClass: QumlPlayerService
-  }]
+  styleUrls: ['./player.component.scss']
 })
 export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   @Input() playerConfig: PlayerConfig;
@@ -69,7 +65,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   playerType: string;
   isDesktopApp = false;
   showQumlPlayer = false;
-  questionids: string[];
+  questionIds: string[];
   qumlThreshold: number;
 
   /**
@@ -106,7 +102,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   ngOnInit() {
     if(_.get(this.playerConfig, 'metadata.mimeType') === 'application/vnd.sunbird.questionset') {
       this.playerService.getQuestionSetHierarchy(_.get(this.playerConfig, 'metadata.identifier')).subscribe(data => {
-        this.questionids = _.get(data, 'questionSet.childNodes');
+        this.questionIds = _.get(data, 'questionSet.childNodes');
         this.playerConfig.data = this.playerConfig.metadata;
         this.showQumlPlayer = true;
       }, error => {

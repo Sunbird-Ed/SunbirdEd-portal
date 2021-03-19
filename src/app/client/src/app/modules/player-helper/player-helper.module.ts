@@ -17,10 +17,16 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8'
 import {SunbirdPdfPlayerModule} from '@project-sunbird/sunbird-pdf-player-v8';
 import { SunbirdVideoPlayerModule } from '@project-sunbird/sunbird-video-player-v8';
 import { SunbirdEpubPlayerModule } from '@project-sunbird/sunbird-epub-player-v8';
-import { QumlLibraryModule } from '@project-sunbird/sunbird-quml-player';
+import { QumlLibraryModule } from 'quml-player';
+import { QumlPlayerService } from './service/quml-player/quml-player.service';
+import { QuestionCursor } from 'quml-player';
 
 
 @NgModule({
+  providers: [{
+    provide: QuestionCursor,
+    useClass: QumlPlayerService
+  }],
   imports: [
     CommonModule,
     SuiModule,

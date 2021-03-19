@@ -8884,10 +8884,10 @@ querystringify@^2.1.1:
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-2.2.0.tgz#3345941b4153cb9d082d8eee4cda2016a9aef7f6"
   integrity sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==
 
-quml-player@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/quml-player/-/quml-player-1.0.2.tgz#30c4c01810af66e9087fd2b0c5517a7ec65414af"
-  integrity sha512-UHLAW+KDpuNCcG46hpmdolFQ4G2ho1MHB3y0IHbus+LpJz0b5WE5D0kYWdSN0xsmrLErOSYersZ19n3Qu4FS9A==
+quml-player@1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/quml-player/-/quml-player-1.0.3.tgz#a15ee1f67352843339a8405a03016c74219be7d0"
+  integrity sha512-lH1T86priShncDnTu85mf6UCDhcul3Mgn34BluxPIpn6N6jmM/cMg6vnx6EbTK0qpOrEyV7GLPlG/ZBd2h+DEA==
   dependencies:
     "@project-sunbird/client-services" "^3.4.9"
     "@project-sunbird/sunbird-player-sdk" "0.0.16"
