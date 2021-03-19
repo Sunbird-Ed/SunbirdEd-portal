@@ -613,7 +613,7 @@ html[dir="rtl"] {
 @media only screen and (max-width: 767px) {
   .lib-chat-head {
     position: absolute !important;
-    right: 4.5rem !important;
+    right: 8.15rem !important;
     top: calculateRem(44px) !important;
     bottom: inherit !important;
     z-index: 999 !important;
@@ -633,8 +633,8 @@ html[dir="rtl"] {
     font-size: calculateRem(14px) !important;
   }
 
-  html[layout="joy"] .lib-chat-head {
-    top: calculateRem(56px) !important;
+  html[data-theme='Default'] .lib-chat-head {
+    top: calculateRem(88px) !important;
     z-index: inherit !important;
   }
 }
