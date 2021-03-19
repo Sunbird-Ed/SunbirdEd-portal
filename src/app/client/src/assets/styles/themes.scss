@@ -159,8 +159,6 @@ html[data-theme='Default'] {
   --sb-card-text: var(--gray-400);
   --sb-card-slick-arrows-bg: var(--white);
   --sb-profile-page-container: var(--white);
-
-  --cc-grade-pill-container-bg: #e9e8d8;
   //myGroups
   --sb-mygroups-bg: var(--white);
   --groups-content-header: var(--rc-FAFAFA);
@@ -226,6 +224,7 @@ html[data-theme='Default'][layout='joy'] {
   --sbt-filter-bar-bg: var(--white);
   --sb-search-btn-bg: #333333;
   --sb-search-btn-text: #ffffff;
+  --cc-grade-pill-container-bg: #e9e8d8;
 }
 
 html[layout='joy'] {
@@ -1463,10 +1462,24 @@ html[data-theme=Darkmode] {
   --kabab-menu-dropdown-bg: #222222;
   --kabab-menu-dropdown-item-active: #333333;
 
+  .flex-ai-jc-center.add-member-content {
+    background: #333;
+    img {
+      filter:invert(1);
+    }
+  }
   sb-caret-down svg {
     filter: invert(1);
   }
-
+  .sb-form-control:focus + i.icon-input-close {
+    filter: invert(1);
+  }
+  .sb-btn-nolayer img {
+    filter: invert(1);
+  }
+  .sb-player-header__panel .player-pagenumber .page-count:focus ~ .focus-arrow {
+    background: #222;
+  }
   .ui.star.rating .icon {
     color: rgba(0, 0, 0, .5);
   }
@@ -2521,6 +2534,9 @@ html[data-theme='Darkmode'][layout='joy'] {
   //Modal
   --sb-modal-header-text: var(--white);
 
+  .sbt-filter-text {
+    background: #222 !important;
+  }
   .multi-select-container .list-border,
   sb-form .sb-textbox,
   sb-form .async-text {
@@ -2566,10 +2582,6 @@ html[data-theme='Darkmode'][layout='joy'] {
 
 //accessible scss start
 html[accessable-theme="accessible"][layout='joy'][data-theme=Darkmode] {
-  .sb--card__meta1>.data_2 {
-    background-color: #444444 !important;
-    color: #ffd92a !important;
-  }
 
   .new-layout-footer .sbt-container .sbt-footer-download-app .sbt-footer-bg .sbt-footer-title {
     color: var(--yellow) !important
@@ -2586,13 +2598,6 @@ html[accessable-theme="accessible"][layout='joy'][data-theme=Darkmode] {
     color: var(--white);
   }
 
-}
-
-html[accessable-theme="accessible"][layout='joy'] {
-  .sb--card__meta1>.data_2 {
-    background-color: #bddcff !important;
-    color: #003e85 !important;
-  }
 }
 
 html[accessable-theme="accessible"][layout='joy'][data-theme=Darkmode] {
