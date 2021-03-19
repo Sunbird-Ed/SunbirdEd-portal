@@ -335,17 +335,17 @@ const onMainWindowCrashed = async (err) => {
     })
     let userResponse = await dialog.showMessageBox(
         {
-          title: 'App is crashed',
-          message: 'App is crashed, please click on button to Restart or close the app',
-          defaultId: 0,
-          cancelId: 1,
-          buttons: ['Restart', 'Close']
+          title: `${process.env.APP_NAME} application has stopped`,
+          message: 'Click Restart to resume the app, or Click Close and open the app again to resume',
+          defaultId: 1,
+          cancelId: 0,
+          buttons: ['Close', 'Restart']
         }
       );
-    if(userResponse.response === 0) {
+    if(userResponse.response === 1) {
         app.relaunch();
         app.quit()
-    } else if (userResponse.response === 1) {
+    } else if (userResponse.response === 0) {
         app.quit()
     }
 };
@@ -453,7 +453,11 @@ async function createWindow() {
       win.show();
       win.maximize();
       EventManager.emit("app:initialized", {})
-      win.webContents.on('crashed', onMainWindowCrashed)
+      win.webContents.on('render-process-gone', (e, details) => {
+        if(details.reason === 'crashed') {
+          onMainWindowCrashed(details)
+        }
+      });
       win.webContents.on('console-message', (event, level, message, line, sourceId) => {
         const levelMap = new Map([[0, 'debug'],[1, 'info'],[2, 'warn'], [3, 'error']])
         logger[levelMap.get(level)](message, sourceId, line);
@@ -503,7 +507,11 @@ if (!gotTheLock) {
 
     if (process.platform == 'win32') {
       // Keep only command line / deep linked arguments
-      deeplinkingUrl = commandLine.slice(3)
+      commandLine.filter(function(el){
+        if(el.includes('://google/signin?access_token=') ) {
+          deeplinkingUrl = el;
+        }
+      });
       handleUserAuthentication()
     }
     if (process.platform == 'linux' ) {

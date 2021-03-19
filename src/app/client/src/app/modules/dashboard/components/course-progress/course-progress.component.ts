@@ -342,7 +342,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
           'batchId': this.currentBatch.batchId
         },
         'groupBy': ['dist', 'state'],
-        'granularity': 'LAST_30DAYS' // data conformation
+        'granularity': 'ALL' // data conformation
       }
     };
     this.onDemandReportService.getSummeryReports(request).subscribe((reports: any) => {

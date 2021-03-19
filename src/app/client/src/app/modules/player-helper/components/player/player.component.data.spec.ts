@@ -115,6 +115,7 @@ export const playerData = {
       'credentials': '{"enabled":"No"}',
       'publishError': null,
       'prevStatus': 'Draft',
+      'streamingUrl': 'http://www.streamingurl.com',
       'idealScreenSize': 'normal',
       'createdOn': '2020-12-08T14:15:57.805+0000',
       'se_boards': null,
@@ -166,4 +167,10 @@ export const playerData = {
     }
   ]
 };
+
+export const printEvent ={
+   edata: {
+     type: 'PRINT'
+   }
+}
 

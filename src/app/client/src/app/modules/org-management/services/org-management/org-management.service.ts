@@ -34,16 +34,6 @@ export class OrgManagementService {
     };
     return this.learnerService.post(httpOptions);
   }
-    /**
- * This method is used to call upload api to upload users file
- */
-  public bulkUserUpload(req): Observable<ServerResponse> {
-    const httpOptions: RequestParam = {
-      url: this.configService.urlConFig.URLS.ADMIN.BULK.USER_UPLOAD_SHADOW,
-      data: req
-    };
-    return this.learnerService.post(httpOptions);
-  }
       /**
  * This method is used to call status api to get the status of uploaded file
  */
