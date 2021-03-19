@@ -15,6 +15,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ResourceService, ToasterService, ContentData } from '@sunbird/shared';
 import { ContentUtilsServiceService } from '../../../../shared/services/content-utils/content-utils.service';
 import { configureTestSuite } from '@sunbird/test-util';
+import dayjs from 'dayjs';
 import { GroupsService } from '../../../../groups/services/groups/groups.service';
 import { DiscussionService } from './../../../../discussion/services/discussion/discussion.service';
 import { MockResponseData } from './course-consumption-header.spec.data';
@@ -159,21 +160,23 @@ describe('CourseConsumptionHeaderComponent', () => {
   });
 
   it('should call  getTimeRemaining and return remaning time', () => {
-    let endDate = "Mar 19, 2021";
+    const endDate = new Date().getTime() + 2000 * 60 * 60 * 24;
+    const incrementEndDate = dayjs(endDate).format('MMM DD, YYYY');
+    spyOn(Date, 'now').and.returnValue(1387636363717);
     spyOn(component, 'getTimeRemaining').and.callThrough();
     spyOn(component, 'getFormData').and.callThrough();
-    component.batchEndCounter = 5;
-    const returnValue = component.getTimeRemaining(endDate);
+    component.batchEndCounter = 2;
+    const returnValue = component.getTimeRemaining(incrementEndDate);
     expect(component.getTimeRemaining).toHaveBeenCalled();
     expect(returnValue).toBeDefined();
   });
 
   it('should get formconfig to show remaining time of batch', () => {
-    let endDate = "Mar 19, 2021";
+    const endDate = 'Mar 19, 2021';
     spyOn(component, 'getTimeRemaining').and.callThrough();
     spyOn(component, 'getFormData').and.callThrough();
-    component.getTimeRemaining(endDate)
-    expect(component.getFormData).toHaveBeenCalled();;
+    component.getTimeRemaining(endDate);
+    expect(component.getFormData).toHaveBeenCalled();
   });
 
   it('should call  getBatchStatus and return false if batch status is not  "2" and course is  completed', () => {
