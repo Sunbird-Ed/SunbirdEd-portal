@@ -1462,6 +1462,13 @@ html[data-theme=Darkmode] {
   --kabab-menu-dropdown-bg: #222222;
   --kabab-menu-dropdown-item-active: #333333;
 
+  .no-content-container .board-title, .no-content-container .sub-title, .ui.semi-circular.update.basic.label, .ui.semi-circular.basic.label {
+    color: var(--gray-100) !important;
+  }
+  .sb-epub-reading-status {
+    background: #333;
+  }
+  
   .flex-ai-jc-center.add-member-content {
     background: #333;
     img {
