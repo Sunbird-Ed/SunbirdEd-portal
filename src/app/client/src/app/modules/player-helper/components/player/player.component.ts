@@ -479,7 +479,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
           const userProfile = user.userProfile;
           this.playerConfig.context['userData'] = {
             firstName: userProfile.firstName ? userProfile.firstName : 'anonymous',
-            lastName: userProfile.lastName ? userProfile.lastName : 'anonymous'
+            lastName: userProfile.lastName ? userProfile.lastName : ''
           };
         }
       });
