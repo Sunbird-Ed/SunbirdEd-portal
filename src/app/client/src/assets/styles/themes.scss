@@ -1727,7 +1727,7 @@ html[data-theme=Darkmode] {
       }
 
       .btn-primary {
-        background: #ffd92a;
+        background: #92918e;
         border: 1px solid #ffd92a;
         color: #000000;
 
@@ -1740,20 +1740,6 @@ html[data-theme=Darkmode] {
     .msg-input {
       background: #222;
       color: #fff;
-    }
-
-    .chatbox-cover .chatbox {
-      border: 1px solid #000000 !important;
-      background-color: #000 !important;
-    }
-
-    .chatbox-cover .chatboxText {
-      background: #000000 !important;
-      color: #fff !important;
-    }
-
-    .chatbox-cover .chatbox ::after {
-      border-color: #000000 #000000 transparent transparent !important;
     }
 
     .chat-msg.sent {
@@ -1778,6 +1764,20 @@ html[data-theme=Darkmode] {
       border-top: 1px solid #333;
     }
 
+  }
+
+  .chatbox-cover .chatbox {
+    border: 1px solid #ffd92a !important;
+    background-color: #ffd92a !important;
+  }
+
+  .chatbox-cover .chatboxText {
+    background: #ffd92a !important;
+    color: #000 !important;
+  }
+
+  .chatbox-cover .chatbox ::after {
+    border-color: #ffd92a #ffd92a transparent transparent !important;
   }
 
   .player-endpage,
