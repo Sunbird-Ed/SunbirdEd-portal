@@ -318,20 +318,24 @@ telemetryService.prototype.generateApiCallLogEvent = function (data) {
 /**
  * This function used to generate api_ERROR log event
  */
-telemetryService.prototype.getTelemetryAPIError = function (data, context) {
-  if (data.responseCode !== 'OK' && data.responseCode !== 200) {
+telemetryService.prototype.getTelemetryAPIError = function (data, res, context) {
+  try {
+  if ( (data.responseCode !== 'OK' && data.responseCode !== 200) || res.statusCode !== 200) {
   const result = data.params;
+  if (result) {
   const edata = {
-    err:  data.responseCode ,
-    type: result.err ,
-    msgid: result.msgid ,
-    env:  context.env,
-    errmsg: _.concat(((context.env).toUpperCase())+ " " + result.errmsg) 
-  }   
+    err: data.responseCode  || res.statusCode,
+    errtype: result.err || res.statusMessage,
+    requestid:  result.resmsgid || 'null',
+    errmsg: result.errmsg  || 'null',
+  }
   const option = {edata, context}
  return option;
  }
- return ;
 }
-
+return ;
+} catch (error) {
+  console.log('error', error)
+ }
+}
 module.exports = telemetryService

@@ -56,7 +56,7 @@ function proxyObj() {
                 const context = {
                     env: telemtryEventConfig.URL[uri].env || 'group'
                 }
-                const option = telemetry.getTelemetryAPIError(JSON.parse(resData), context);
+                const option = telemetry.getTelemetryAPIError(JSON.parse(resData),proxyRes, context);
                 if (option) {
                 telemetryHelper.logApiErrorEventV2(req, option);
                 }
