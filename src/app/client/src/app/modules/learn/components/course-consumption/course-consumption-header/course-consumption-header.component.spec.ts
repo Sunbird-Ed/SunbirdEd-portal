@@ -179,6 +179,18 @@ describe('CourseConsumptionHeaderComponent', () => {
     expect(component.getFormData).toHaveBeenCalled();
   });
 
+  it('if same date and hours or mins left should show the remaning time', () => {
+    const endDate = new Date().getTime() + 60 * 60 * 24;
+    const incrEndDate = dayjs(endDate).format('MMM DD, YYYY');
+    spyOn(component, 'getTimeRemaining').and.callThrough();
+    spyOn(component, 'getFormData').and.callThrough();
+    component.batchEndCounter = 2;
+    const returnValue = component.getTimeRemaining(incrEndDate);
+    expect(component.getTimeRemaining).toHaveBeenCalled();
+    expect(component.showBatchCounter).toBeTruthy();
+    expect(returnValue).toBeDefined();
+  });
+
   it('should call  getBatchStatus and return false if batch status is not  "2" and course is  completed', () => {
     component.enrolledBatchInfo = { status: 1 };
     component.progress = 100;
