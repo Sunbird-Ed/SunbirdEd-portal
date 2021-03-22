@@ -28,7 +28,7 @@ export class DiscussionModule {
     this.discussionEvents.telemetryEvent.subscribe(event => {
       this.discussionTelemetryService.logTelemetryEvent(event);
       if (_.get(event, 'action') === 'DF_CLOSE' ) {
-        window.location.href = this.navigationHelperService.parentRouteUrl;
+        this.navigationHelperService.navigateToLastUrl();
       }
     });
   }

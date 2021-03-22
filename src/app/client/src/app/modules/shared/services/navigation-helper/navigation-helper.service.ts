@@ -53,8 +53,6 @@ export class NavigationHelperService {
     return NavigationHelperService.singletonInstance;
   }
 
-  /** To store the current url */
-  private _parentUrl = '';
   /**
    * Stores routing history
    * @memberof NavigationHelperService
@@ -219,8 +217,8 @@ export class NavigationHelperService {
     this.handleCMvisibility.emit(value);
   }
 
-  setNavigationUrl() {
-    const urlToNavigate = this.getPreviousUrl();
+  setNavigationUrl(navigationUrl?: UrlHistory) {
+    const urlToNavigate = navigationUrl ? navigationUrl : this.getPreviousUrl();
     if (urlToNavigate && !(_.includes(urlToNavigate.url, 'create-managed-user') || _.includes(urlToNavigate.url, 'choose-managed-user'))) {
       this.previousNavigationUrl = urlToNavigate;
     }
@@ -238,11 +236,5 @@ export class NavigationHelperService {
     }
   }
 
-  set parentRouteUrl(url) {
-    this._parentUrl = url;
-  }
 
-  get parentRouteUrl() {
-    return this._parentUrl;
-  }
 }
