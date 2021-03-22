@@ -12,7 +12,6 @@ export class DiscussionTelemetryService {
   constructor(private navigationHelperService: NavigationHelperService, private telemetryService: TelemetryService) { }
 
   private _contextCdata = [];
-  private _parentUrl = '';
   logTelemetryEvent(event) {
     const data = {
       context: {
@@ -42,11 +41,5 @@ export class DiscussionTelemetryService {
     return this._contextCdata;
   }
 
-  set parentRouteUrl(url) {
-    this._parentUrl = url;
-  }
 
-  get parentRouteUrl() {
-    return this._parentUrl;
-  }
 }

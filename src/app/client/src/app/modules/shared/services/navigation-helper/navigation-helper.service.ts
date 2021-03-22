@@ -52,6 +52,9 @@ export class NavigationHelperService {
     }
     return NavigationHelperService.singletonInstance;
   }
+
+  /** To store the current url */
+  private _parentUrl = '';
   /**
    * Stores routing history
    * @memberof NavigationHelperService
@@ -233,5 +236,13 @@ export class NavigationHelperService {
     } else {
       this.router.navigate(['/resources']);
     }
+  }
+
+  set parentRouteUrl(url) {
+    this._parentUrl = url;
+  }
+
+  get parentRouteUrl() {
+    return this._parentUrl;
   }
 }
