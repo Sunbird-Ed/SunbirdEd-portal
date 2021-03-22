@@ -183,6 +183,10 @@ html[data-theme='Default'] {
   --grey-nuance-darker: #dddddd;
   --fade-grey: #e8e8e8;
 
+  //cc
+  --cc-sbcard-type-bg:var(--black);
+  --cc-sbcard-type-br:var(--black);
+  --cc-sbcard-org-text:var(--black);
 
   //joy theme
   --themeflower-bg: #ffd92a;
@@ -1385,7 +1389,6 @@ html[data-theme=Darkmode] {
   --cc-sbcard-moreinfo-bordertop: #cacbce;
   --cc-sbcard-meta2-text: var(--gray-800);
   --cc-sbcard-org-text: var(--gray-200);
-  --cc-sbcard-type-bg: var(--gray-200);
   --cc-sbcard-type-text: var(--white);
   --cc-sbcard-rv-img-container-bg: var(--gray-100);
   --cc-sbcard-selected-border: var(--primary-color);
@@ -2349,6 +2352,12 @@ html[accessable-theme="accessible"][layout='joy'][data-theme=Darkmode] {
   .sb-pageSection .sb-pageSection-header .sb-cls-btn, .sb-pageSection .sb-pageSection-header button.sb-btn-secondary{
     background-color: var(--black);
     color:var(--white);
+}
+sb-accordion-body .sbaccordion__panel-content .credits-section .title{
+  color: #c1c1c1;
+}
+.sb-pageSection-content ngx-slick .slick-next .slick-arrow{
+  color: #c2c2c2;
 }
 
 }
