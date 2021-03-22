@@ -250,6 +250,9 @@ html[layout='joy'] {
   }
   .sbt-sticky-topbar.sb-fontresizecontainer{
     position: sticky;
+    @include respond-below(sm) {
+      position: initial;
+    }
   }
   .sbt-fluid-header-bg {
     display: block;
