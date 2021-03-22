@@ -52,7 +52,6 @@ export class NavigationHelperService {
     }
     return NavigationHelperService.singletonInstance;
   }
-
   /**
    * Stores routing history
    * @memberof NavigationHelperService
@@ -235,6 +234,4 @@ export class NavigationHelperService {
       this.router.navigate(['/resources']);
     }
   }
-
-
 }
