@@ -40,6 +40,4 @@ export class DiscussionTelemetryService {
   get contextCdata() {
     return this._contextCdata;
   }
-
-
 }
