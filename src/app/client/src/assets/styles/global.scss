@@ -614,9 +614,9 @@ html[dir="rtl"] {
   .lib-chat-head {
     position: absolute !important;
     right: 8.15rem !important;
-    top: calculateRem(44px) !important;
+    top: 5.75rem !important;
     bottom: inherit !important;
-    z-index: 999 !important;
+    z-index: 8 !important;
   }
 
   .chatbox-cover .chatboxImg {
@@ -634,7 +634,7 @@ html[dir="rtl"] {
   }
 
   html[data-theme='Default'] .lib-chat-head {
-    top: calculateRem(88px) !important;
+    top: 5.75rem !important;
     z-index: inherit !important;
   }
 }

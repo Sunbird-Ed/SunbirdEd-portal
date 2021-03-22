@@ -1462,6 +1462,12 @@ html[data-theme=Darkmode] {
   --kabab-menu-dropdown-bg: #222222;
   --kabab-menu-dropdown-item-active: #333333;
 
+  .no-content-container .board-title, .no-content-container .sub-title, .ui.semi-circular.update.basic.label, .ui.semi-circular.basic.label {
+    color: var(--gray-100) !important;
+  }
+  .sb-epub-reading-status {
+    background: #333;
+  }
   .flex-ai-jc-center.add-member-content {
     background: #333;
     img {
@@ -1721,12 +1727,12 @@ html[data-theme=Darkmode] {
       }
 
       .btn-primary {
-        background: #ffd92a;
+        background: #fff;
         border: 1px solid #ffd92a;
         color: #000000;
 
         &:hover {
-          background: #f3a819;
+          background: #ffd92a;
         }
       }
     }
@@ -1734,20 +1740,6 @@ html[data-theme=Darkmode] {
     .msg-input {
       background: #222;
       color: #fff;
-    }
-
-    .chatbox-cover .chatbox {
-      border: 1px solid #000000 !important;
-      background-color: #000 !important;
-    }
-
-    .chatbox-cover .chatboxText {
-      background: #000000 !important;
-      color: #fff !important;
-    }
-
-    .chatbox-cover .chatbox ::after {
-      border-color: #000000 #000000 transparent transparent !important;
     }
 
     .chat-msg.sent {
@@ -1774,6 +1766,20 @@ html[data-theme=Darkmode] {
 
   }
 
+  .chatbox-cover .chatbox {
+    border: 1px solid #ffd92a !important;
+    background-color: #ffd92a !important;
+  }
+
+  .chatbox-cover .chatboxText {
+    background: #ffd92a !important;
+    color: #000 !important;
+  }
+
+  .chatbox-cover .chatbox ::after {
+    border-color: #ffd92a #ffd92a transparent transparent !important;
+  }
+
   .player-endpage,
   .replay-section {
     background-color: #333 !important;
@@ -1797,12 +1803,17 @@ html[data-theme=Darkmode] {
 
   .logo.sbt-logo,
   .five.wide.column .d-flex.logo,
-  .sb-onboard .brand-logo {
+  .sb-onboard .brand-logo, .terms-modal-logo {
     padding: 0.5rem;
     border-radius: 0 0 1rem 1rem;
     background: #fff;
   }
-
+  .terms-modal-logo {
+    max-width: 14rem;
+    /* float: left; */
+    text-align: center;
+    margin: 0 auto;
+  }
   .add-user--horizontal {
     background-color: var(--primary-color);
 
