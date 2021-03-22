@@ -182,6 +182,10 @@ html[data-theme='Default'] {
   --grey-nuance-darker: #dddddd;
   --fade-grey: #e8e8e8;
 
+  //cc
+  --cc-sbcard-type-bg:var(--black);
+  --cc-sbcard-type-br:var(--black);
+  --cc-sbcard-org-text:var(--black);
 
   //joy theme
   --themeflower-bg: #ffd92a;
@@ -190,6 +194,9 @@ html[data-theme='Default'] {
   .navBlock .pdf-nav-unit {
     color: var(--white) !important;
   }
+  .profile-bg-c-3 .school-id-section {
+    color: var(--black);
+}
 
 }
 
@@ -1384,7 +1391,6 @@ html[data-theme=Darkmode] {
   --cc-sbcard-moreinfo-bordertop: #cacbce;
   --cc-sbcard-meta2-text: var(--gray-800);
   --cc-sbcard-org-text: var(--gray-200);
-  --cc-sbcard-type-bg: var(--gray-200);
   --cc-sbcard-type-text: var(--white);
   --cc-sbcard-rv-img-container-bg: var(--gray-100);
   --cc-sbcard-selected-border: var(--primary-color);
@@ -2631,6 +2637,7 @@ html[data-theme=Darkmode] {
     background: var(--sbt-compt-bg) !important;
   }
 
+
 }
 
 
@@ -2718,6 +2725,17 @@ html[accessable-theme="accessible"][layout='joy'][data-theme=Darkmode] {
   .new-layout-footer .sbt-container .sbt-footer-download-app .sbt-footer-bg .sbt-footer-title {
     color: var(--yellow) !important
   }
+  .sb-pageSection .sb-pageSection-header .sb-pageSection-sentenceCase .sb-pageSection-count{
+    background-color: var(--black);
+    color:var(--white);
+}
+  .sb-pageSection .sb-pageSection-header .sb-cls-btn, .sb-pageSection .sb-pageSection-header button.sb-btn-secondary{
+    background-color: var(--black);
+    color:var(--white) !important;
+}
+sb-accordion-body .sbaccordion__panel-content .credits-section .title{
+  color: #c1c1c1;
+}
 
   .sb-pageSection .sb-pageSection-header .sb-pageSection-sentenceCase .sb-pageSection-count {
     background-color: var(--black);
@@ -2728,6 +2746,9 @@ html[accessable-theme="accessible"][layout='joy'][data-theme=Darkmode] {
   .sb-pageSection .sb-pageSection-header button.sb-btn-secondary {
     background-color: var(--black);
     color: var(--white);
+  }
+  .content-metadeta__title {
+    color: var(--white) !important;
   }
 
 }
@@ -2749,7 +2770,7 @@ html[accessable-theme="accessible"][layout='joy'][data-theme=Darkmode] {
   }
 }
 
-html[accessable-theme="accessible"] {
+html[accessable-theme="accessible"]{
   --sbt-pill-text: #000 !important;
   --sbt-pill-bg-active: #004594 !important;
 
@@ -2770,17 +2791,18 @@ html[accessable-theme="accessible"] {
     color: #000000;
   }
 
-  // .certified-course__btn>.textbook__addbtn {
-  //   color: #1a1a1a;
-  // }
-
-  .sb-btn-link-gray {
-    color: var(--gray-200);
+  .certified-course__btn>.textbook__addbtn {
+    color: #1a1a1a;
   }
 
-  // .content-metadeta__title {
-  //   color: var(--gray-0) !important;
-  // }
+  .sb-btn-link-gray {
+    color: #4b4b4b;
+  }
+
+
+  .content-metadeta__title {
+    color: #4b4b4b!important
+  }
 
   // .sb-btn-normal {
   // 	color:#F5F5F5 ;
@@ -2925,13 +2947,13 @@ html[accessable-theme="accessible"] {
     }
   }
 
-  // .cc-player__content-header {
-  //   .certified-course {
-  //     .sb-btn-secondary {
-  //       color: #1a1a1a !important;
-  //     }
-  //   }
-  // }
+  .cc-player__content-header {
+    .certified-course {
+      .sb-btn-secondary {
+        color: #1a1a1a !important;
+      }
+    }
+  }
 
   .certificate-container {
     .certificate-content {
@@ -3012,4 +3034,7 @@ html[accessable-theme="accessible"] {
       color: #1f1f1f !important;
     }
   }
+  .sb-pageSection .sb-pageSection-header .sb-cls-btn, .sb-pageSection .sb-pageSection-header button.sb-btn-secondary{
+    color:var(--black) !important;
+}
 }
