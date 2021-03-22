@@ -248,7 +248,9 @@ html[layout='joy'] {
   .navBlock .pdf-nav-unit {
     color: var(--gray-800) !important;
   }
-
+  .sbt-sticky-topbar.sb-fontresizecontainer{
+    position: sticky;
+  }
   .sbt-fluid-header-bg {
     display: block;
   }
