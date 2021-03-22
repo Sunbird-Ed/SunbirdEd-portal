@@ -1602,6 +1602,9 @@ html[data-theme=Darkmode] {
       color: var(--black);
     }
   }
+  .multi-select-container .list-border .placeholder{
+    color: var(--white) !important;
+  }
   // cc pills box
   --cc-pills-grid-item: var(--white);
   --cc-pills-grid-item-hover: #f2f2f2;
@@ -2796,11 +2799,11 @@ html[accessable-theme="accessible"] {
     }
   }
 
-  .sb-onboard {
-    .multi-select-container .list-border .placeholder {
-      color: #525252 !important;
-    }
-  }
+  // .sb-onboard {
+  //   .multi-select-container .list-border .placeholder {
+  //     color: #525252 !important;
+  //   }
+  // }
 
   .overlay-sidebar__menu {
     .group__type {
@@ -2885,11 +2888,11 @@ html[accessable-theme="accessible"] {
     }
   }
 
-  .schooling-location {
-    .multi-select-container .list-border .placeholder {
-      color: var(--black) !important;
-    }
-  }
+  // .schooling-location {
+  //   .multi-select-container .list-border .placeholder {
+  //     color: var(--black) !important;
+  //   }
+  // }
 
   .select-template-content {
     .no-template-text {
