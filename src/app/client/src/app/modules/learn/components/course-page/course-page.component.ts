@@ -551,6 +551,9 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       if (onGoingBatchCount === 1) { // play course if only one open batch is present
         metaData.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
         return this.playerService.playContent(metaData);
+      } else if (onGoingBatchCount === 0 && expiredBatchCount === 1) {
+        metaData.batchId = openBatch.expired.length ? openBatch.expired[0].batchId : inviteOnlyBatch.expired[0].batchId;
+        return this.playerService.playContent(metaData);
       }
       this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: metaData.identifier };
       this.showBatchInfo = true;
