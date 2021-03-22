@@ -210,8 +210,7 @@
       "BULK": {
         "USERS_UPLOAD": "user/v2/upload",
         "ORGANIZATIONS_UPLOAD": "org/v1/upload",
-        "STATUS": "data/v1/upload/status",
-        "USER_UPLOAD_SHADOW": "user/v2/bulk/upload"
+        "STATUS": "data/v1/upload/status"
       },
       "DELETE_USER": "user/v1/block",
       "UPDATE_USER_ORG_ROLES": "user/v1/role/assign"

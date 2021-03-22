@@ -2,7 +2,7 @@ import { ExploreContentComponent } from './explore-content.component';
 import { BehaviorSubject, throwError, of } from 'rxjs';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { ResourceService, ToasterService, SharedModule, UtilService } from '@sunbird/shared';
-import { SearchService, OrgDetailsService, CoreModule, UserService } from '@sunbird/core';
+import { SearchService, OrgDetailsService, CoreModule, UserService, SchemaService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui';
 import * as _ from 'lodash-es';
@@ -17,7 +17,7 @@ import { PublicPlayerService } from '@sunbird/public';
 describe('ExploreContentComponent', () => {
   let component: ExploreContentComponent;
   let fixture: ComponentFixture<ExploreContentComponent>;
-  let toasterService, userService, searchService, orgDetailsService, activatedRoute;
+  let toasterService, userService, searchService, orgDetailsService, activatedRoute, schemaService;
   const mockSearchData: any = Response.successData;
   let sendOrgDetails = true;
   let sendSearchResult = true;
@@ -90,6 +90,7 @@ describe('ExploreContentComponent', () => {
     searchService = TestBed.get(SearchService);
     orgDetailsService = TestBed.get(OrgDetailsService);
     activatedRoute = TestBed.get(ActivatedRoute);
+    schemaService = TestBed.get(SchemaService);
     sendOrgDetails = true;
     sendSearchResult = true;
     sendFormResult = true;
@@ -111,6 +112,7 @@ describe('ExploreContentComponent', () => {
       }
       return throwError({});
     });
+    spyOn(schemaService, 'fetchSchemas').and.returnValue([{ id: 'content', schema: { properties: [] } }]);
   });
   it('should emit filter data when getFilters is called with data', () => {
     spyOn(component.dataDrivenFilterEvent, 'emit');

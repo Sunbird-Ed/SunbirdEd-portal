@@ -1,6 +1,5 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { UserUploadComponent } from '../user-upload/user-upload.component';
 import { UserService } from '../../../core/services/user/user.service';
 import { ManageService } from '../../services/manage/manage.service';
 import { SuiModule } from 'ng2-semantic-ui';
@@ -89,7 +88,7 @@ describe('UserOrgManagementComponent', () => {
         SuiModule, CoreModule
       ],
       declarations: [
-        UserOrgManagementComponent, UserUploadComponent
+        UserOrgManagementComponent
       ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
@@ -252,29 +251,6 @@ describe('UserOrgManagementComponent', () => {
     expect(component.unsubscribe$.next).toHaveBeenCalled();
   });
 
-  it('should call uploadCSV method with error response giving invalid coloumn', () => {
-    const resourceService = TestBed.get(ResourceService);
-    const manageService = TestBed.get(ManageService);
-    const toasterService = TestBed.get(ToasterService);
-    spyOn(toasterService, 'error').and.callThrough();
-    component.fileUpload = event.target.files[0]
-    resourceService.messages = mockRes.resourceBundle.messages;
-    spyOn(manageService, 'bulkUserUpload').and.callFake(() => observableThrowError(mockRes.errorUpload));
-    component.uploadCSV();
-    expect(component.uploadButton).toBe(component.resourceService.frmelmnts.btn.selectCsvFile);
-    expect(toasterService.error).toHaveBeenCalled();
-
-  });
-
-  it('should call uploadCSV method with invalid file', () => {
-    const resourceService = TestBed.get(ResourceService);
-    const toasterService = TestBed.get(ToasterService);
-    spyOn(toasterService, 'error').and.callThrough();
-    component.fileUpload = eventText.target.files[0];
-    component.uploadCSV();
-    expect(component.uploadButton).toBe(component.resourceService.frmelmnts.btn.selectCsvFile);
-    expect(toasterService.error).toHaveBeenCalled();
-  });
   it('should call fileChanged method', () => {
     component.fileChanged(event);
     expect(component.fileUpload).toBe(event.target.files[0]);
@@ -297,18 +273,6 @@ describe('UserOrgManagementComponent', () => {
     expect(component.showUploadUserModal).toBeFalsy();
     expect(component.telemetryService.interact).toHaveBeenCalledWith(interactData);
   });
-  it('should call uploadUsersCSV method with success response', () => {
-    const manageService = TestBed.get(ManageService);
-    const toasterService = TestBed.get(ToasterService);
-    spyOn(toasterService, 'success').and.callThrough();
-    component.fileUpload = event.target.files[0];
-    spyOn(manageService, 'bulkUserUpload').and.callFake(() => observableOf(mockRes.successResponse));
-     component.uploadCSV();
-    expect(component.uploadButton).toBe(component.resourceService.frmelmnts.btn.selectCsvFile);
-    expect(toasterService.success).toHaveBeenCalled();
-    expect(component.showUploadUserModal).toBeFalsy();
-  });
-
   it('should call geoTableView and update geoTabledata array', () => {
     component.geoButtonText = resourceMockData.frmelmnts.btn.viewdetails;
     component.geoSummary = [

@@ -1,9 +1,9 @@
 import {
   PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
   ICard, ILoaderMessage, UtilService, BrowserCacheTtlService, NavigationHelperService, IPagination,
-  LayoutService, COLUMN_TYPE, SchemaService, OfflineCardService
+  LayoutService, COLUMN_TYPE, OfflineCardService
 } from '@sunbird/shared';
-import { SearchService, PlayerService, CoursesService, UserService, ISort, OrgDetailsService } from '@sunbird/core';
+import { SearchService, PlayerService, CoursesService, UserService, ISort, OrgDetailsService, SchemaService } from '@sunbird/core';
 import { combineLatest, Subject, of } from 'rxjs';
 import { Component, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -125,7 +125,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   private fetchContentOnParamChange() {
-    combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
+    combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams, this.schemaService.fetchSchemas())
       .pipe(debounceTime(5),
         tap(data => this.inView({ inview: [] })), // trigger pageexit if last filter resulted 0 contents
         delay(10), // to trigger pageexit telemetry event
@@ -149,9 +149,9 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       return o.name === (selectedMediaType || 'all');
     });
     let filters = _.pickBy(this.queryParams, (value: Array<string> | string) => value && value.length);
-    filters = this.searchService.schemaValidator({
+    filters = this.schemaService.schemaValidator({
       inputObj: filters || {},
-      schema: _.get(this.schemaService, 'contentSchema.properties') || {},
+      properties: _.get(this.schemaService.getSchema('content'), 'properties') || {},
       omitKeys: ['key', 'sort_by', 'sortType', 'appliedFilters', 'selectedTab', 'mediaType']
     });
     filters.primaryCategory = filters.primaryCategory || _.get(this.allTabData, 'search.filters.primaryCategory');
