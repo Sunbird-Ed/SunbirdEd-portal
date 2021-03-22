@@ -7,6 +7,7 @@ import { DiscussionRoutingModule } from './discussion-routing.module';
 import { ForumComponent } from './components/forum/forum.component';
 import { DiscussionUiModule, DiscussionEventsService } from '@project-sunbird/discussions-ui-v8';
 import { DiscussionTelemetryService } from '../shared/services/discussion-telemetry/discussion-telemetry.service';
+import * as _ from 'lodash-es';
 
 @NgModule({
   imports: [
@@ -19,9 +20,14 @@ import { DiscussionTelemetryService } from '../shared/services/discussion-teleme
   providers: [ DiscussionService ]
 })
 export class DiscussionModule {
-  constructor(private discussionEvents: DiscussionEventsService, private discussionTelemetryService: DiscussionTelemetryService) {
+  constructor(
+    private discussionEvents: DiscussionEventsService,
+    private discussionTelemetryService: DiscussionTelemetryService) {
     this.discussionEvents.telemetryEvent.subscribe(event => {
       this.discussionTelemetryService.logTelemetryEvent(event);
+      if (_.get(event, 'action') === 'close' ) {
+        window.location.href = this.discussionTelemetryService.parentRouteUrl;
+      }
     });
   }
 }
