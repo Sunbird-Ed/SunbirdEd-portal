@@ -250,6 +250,9 @@ html[layout='joy'] {
   }
   .sbt-sticky-topbar.sb-fontresizecontainer{
     position: sticky;
+    @include respond-below(sm) {
+      position: initial;
+    }
   }
   .sbt-fluid-header-bg {
     display: block;
@@ -1750,14 +1753,14 @@ html[data-theme=Darkmode] {
     }
 
     .btn-info {
-      background: #ffd92a !important;
-      color: #222 !important;
-
+      background: transparent !important;
+      color: #fff !important;
+      border: 0px solid red !important;
       &:hover {
-        background: #f3a819;
+        background: #F3A819 !important;
+        color: #333 !important;
       }
     }
-
     .lib-chat-footer .send-btn img {
       filter: invert(1);
     }
@@ -2884,7 +2887,7 @@ html[accessable-theme="accessible"] {
 
   .schooling-location {
     .multi-select-container .list-border .placeholder {
-      color: #f2f2f2 !important;
+      color: var(--black) !important;
     }
   }
 

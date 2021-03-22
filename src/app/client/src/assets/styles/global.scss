@@ -1151,3 +1151,9 @@ a.ui.label:hover, a.ui.labels .label:hover{
     top: 0;
   }
 }
+
+.schooling-location {
+  .multi-select-container .list-border .placeholder {
+    color: var(--black) !important;
+  }
+}
