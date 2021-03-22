@@ -2632,6 +2632,7 @@ html[data-theme=Darkmode] {
     background: var(--sbt-compt-bg) !important;
   }
 
+
 }
 
 
@@ -2730,9 +2731,6 @@ html[accessable-theme="accessible"][layout='joy'][data-theme=Darkmode] {
 sb-accordion-body .sbaccordion__panel-content .credits-section .title{
   color: #c1c1c1;
 }
-.sb-pageSection-content ngx-slick .slick-next .slick-arrow{
-  color: #c2c2c2;
-}
 
   .sb-pageSection .sb-pageSection-header .sb-pageSection-sentenceCase .sb-pageSection-count {
     background-color: var(--black);
@@ -2793,8 +2791,9 @@ html[accessable-theme="accessible"]{
   }
 
   .sb-btn-link-gray {
-    color: var(--gray-200);
+    color: #4b4b4b;
   }
+
 
   .content-metadeta__title {
     color: #4b4b4b!important
