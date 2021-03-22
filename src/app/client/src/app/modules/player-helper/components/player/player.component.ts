@@ -103,7 +103,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     if(_.get(this.playerConfig, 'metadata.mimeType') === 'application/vnd.sunbird.questionset') {
       this.playerService.getQuestionSetHierarchy(_.get(this.playerConfig, 'metadata.identifier')).subscribe(data => {
         this.questionIds = _.get(data, 'questionSet.childNodes');
-        this.playerConfig.data = this.playerConfig.metadata;
+        this.playerConfig.metadata = _.get(data, 'questionSet');
+        delete this.playerConfig.metadata.children;
         this.showQumlPlayer = true;
       }, error => {
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
