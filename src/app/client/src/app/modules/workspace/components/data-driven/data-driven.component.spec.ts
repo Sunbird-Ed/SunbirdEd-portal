@@ -355,10 +355,10 @@ describe('DataDrivenComponent', () => {
 
   it('should fetch frameworks from channel-read api and set for the associated popup cards based on queryParams', () => {
     const frameworkService = TestBed.get(FrameworkService);
-    spyOn<any>(componentParent, 'setFrameworkData').and.stub();
+    spyOn<any>(componentParent, 'selectFramework').and.stub();
     spyOn(frameworkService, 'getChannel').and.returnValue(observableOf(mockFrameworkData.channelData));
     componentParent.ngOnInit();
-    expect(componentParent.setFrameworkData).toHaveBeenCalledWith(mockFrameworkData.channelData);
+    expect(componentParent.selectFramework).toHaveBeenCalled();
     expect(componentParent.userChannelData).toBeDefined();
   });
 
@@ -379,113 +379,43 @@ describe('DataDrivenComponent', () => {
     expect(componentParent.fetchFrameworkMetaData).toHaveBeenCalled();
   });
 
-  xit(`should set framework selection card's metadata`, () => {
-    componentParent.setFrameworkData(mockFrameworkData.channelData);
-    expect(componentParent.frameworkCardData).toEqual([{
-      title: 'Curriculum Course',
-      description: `Create courses for concepts from the syllabus, across grades and subjects. For example, courses on fractions, photosynthesis, reading comprehension, etc.`,
-      primaryCategory: 'Curriculum Course'
-    },
-    {
-      title: 'Professional Development Course',
-      description: `Create courses that help develop professional skills. For example, courses on classroom management, pedagogy, ICT, Leadership, etc.`,
-      primaryCategory: 'Professional Development Course'
-    }
-    ]);
-  });
-
-  xit('should select a framework card and fires an interact event', () => {
-    const mockCardData =  {
-      title: 'Curriculum Course',
-      description: `Create courses for concepts from the syllabus, across grades and subjects.
-       For example, courses on fractions, photosynthesis, reading comprehension, etc.`,
-      primaryCategory: 'Curriculum Course'
-    };
-    const interactData = {
-      context: {
-        env: _.get(fakeActivatedRoute, 'snapshot.data.telemetry.env'),
-        cdata: [{
-          type: 'framework',
-          id: 'nit_k-12'
-        }]
-      },
-      edata: {
-        id: mockCardData.title,
-        type: 'click',
-        pageid: _.get(fakeActivatedRoute, 'snapshot.data.telemetry.pageid')
-      }
-    };
-    const telemetryService = TestBed.get(TelemetryService);
-    spyOn(telemetryService, 'interact').and.stub();
+  it('#selectFramework() should fetch category and framwork data when API success', () => {
+    spyOn(componentParent, 'createContent').and.stub();
     const workSpaceService = TestBed.get(WorkSpaceService);
     spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockFrameworkData.successCategory));
     spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkDataByType));
-    componentParent.selectFramework(mockCardData);
-    expect(componentParent.enableCreateButton).toBe(true);
-    expect(componentParent.selectedCard).toEqual(mockCardData);
-    expect(telemetryService.interact).toHaveBeenCalledWith(interactData);
+    componentParent.selectFramework();
+    expect(componentParent.createContent).toHaveBeenCalledWith(undefined);
   });
 
-  xit('should select a target framework card and fires an interact event', () => {
-    const mockCardData =  {
-      title: 'Curriculum Course',
-      description: `Create courses for concepts from the syllabus, across grades and subjects.
-       For example, courses on fractions, photosynthesis, reading comprehension, etc.`,
-      primaryCategory: 'Professional Development Course'
-    };
-    const interactData = {
-      context: {
-        env: _.get(fakeActivatedRoute, 'snapshot.data.telemetry.env'),
-        cdata: [{
-          type: 'framework',
-          id: 'nit_k-12'
-        }, {
-          type: 'targetFW',
-          id: 'nit_k-12'
-        }]
-      },
-      edata: {
-        id: mockCardData.title,
-        type: 'click',
-        pageid: _.get(fakeActivatedRoute, 'snapshot.data.telemetry.pageid')
-      }
-    };
-    const telemetryService = TestBed.get(TelemetryService);
-    spyOn(telemetryService, 'interact').and.stub();
+  it('#selectFramework() should thorw error message when framwork not defined at channel or system level', () => {
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callThrough();
     const workSpaceService = TestBed.get(WorkSpaceService);
-    delete mockFrameworkData.successCategory;
-    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockFrameworkData.successCategory));
+    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf({}));
     spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkDataByType));
-    componentParent.selectFramework(mockCardData);
-    expect(componentParent.enableCreateButton).toBe(true);
-    expect(componentParent.selectedCard).toEqual(mockCardData);
-    expect(telemetryService.interact).toHaveBeenCalledWith(interactData);
+    componentParent.selectFramework();
+    expect(toasterService.error).toHaveBeenCalledWith('Unknown framework category Course. Please check the configuration.');
   });
 
-  xit('#selectFramework() should throw error if category defination API failed', () => {
-    const mockCardData =  {
-      primaryCategory: 'Professional Development Course'
-    };
+  it('#selectFramework() should throw error if category defination API failed', () => {
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     const workSpaceService = TestBed.get(WorkSpaceService);
     spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableThrowError({}));
-    componentParent.selectFramework(mockCardData);
+    componentParent.selectFramework();
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0024);
   });
 
-  xit('#selectFramework() should throw error if framework API failed', () => {
-    const mockCardData =  {
-      primaryCategory: 'Professional Development Course'
-    };
+  it('#selectFramework() should throw error if framework API failed', () => {
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     const workSpaceService = TestBed.get(WorkSpaceService);
     spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockFrameworkData.successCategory));
     spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableThrowError({}));
-    componentParent.selectFramework(mockCardData);
+    componentParent.selectFramework();
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0025);
 
   });

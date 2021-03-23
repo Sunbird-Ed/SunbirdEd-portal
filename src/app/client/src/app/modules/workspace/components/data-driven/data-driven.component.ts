@@ -167,8 +167,8 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
       this.checkForPreviousRouteForRedirect();
       if (this.showFrameworkSelection) {
         this.frameworkService.getChannel(this.userService.hashTagId).pipe(takeUntil(this.unsubscribe)).subscribe(data => {
-          this.setFrameworkData(data);
           this.userChannelData = data;
+          this.selectFramework();
         }, err => {
           this.toasterService.error(this.resourceService.messages.emsg.m0005);
         });
@@ -395,49 +395,71 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
 
   /**
    * @since - #SH-403
-   * @param  {} channelData
-   * @description - It sets the card data and its associated framework
-   */
-  setFrameworkData(channelData) {
-    this.frameworkCardData = [{
-      title: 'Curriculum courses',
-      description: `Create courses for concepts from the syllabus, across grades and subjects. For example, courses on fractions, photosynthesis, reading comprehension, etc.`,
-      framework: _.get(channelData, 'result.channel.defaultFramework')
-    },
-    {
-      title: 'Generic courses',
-      description: `Create courses that help develop professional skills. For example, courses on classroom management, pedagogy, ICT, Leadership, etc.`,
-      framework: _.get(channelData, 'result.channel.defaultCourseFramework')
-    }
-    ];
-  }
-
-  /**
-   * @since - #SH-403
    * @param  {} cardData
    * @description - 1. It selects a card from the framework selection popup
    *                shown while creating any resource (only course as of now)
    *                2. It also logs interact telemetry on card click.
    */
-  selectFramework(cardData) {
-    this.enableCreateButton = true;
-    this.selectedCard = cardData;
-    this.framework = _.get(cardData, 'framework');
-    const telemetryInteractData = {
-      context: {
-        env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env'),
-        cdata: [{
-          type: 'framework',
-          id: this.framework
-        }]
-      },
-      edata: {
-        id: _.get(cardData, 'title'),
-        type: 'click',
-        pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid')
+  selectFramework() {
+    this.primaryCategory = 'Course';
+    let orgFWType, targetFWType;
+    this.workSpaceService.getCategoryDefinition('Collection', this.primaryCategory, this.userService.channel)
+    .subscribe(categoryDefinitionData => {
+      orgFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.schema.properties.framework.default');
+      targetFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.schema.properties.targetFWIds.default');
+      const frameworkReq = [];
+      if (_.isEmpty(orgFWType)) {
+        orgFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.orgFWType');
+        frameworkReq.push(this.getFrameworkDataByType(orgFWType, this.userService.channel));
       }
-    };
-    this.telemetryService.interact(telemetryInteractData);
+
+      if (_.isEmpty(targetFWType)) {
+        // tslint:disable-next-line:max-line-length
+        targetFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.targetFWType');
+        frameworkReq.push(this.getFrameworkDataByType(targetFWType, this.userService.channel));
+      }
+
+      if (_.isEmpty(orgFWType) || _.isEmpty(targetFWType)) {
+        this.toasterService.error(`Unknown framework category ${this.primaryCategory}. Please check the configuration.`);
+        this.redirect();
+        return;
+      }
+
+      if (!_.isEmpty(frameworkReq)) {
+        forkJoin(frameworkReq).subscribe((response) => {
+          if (!_.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.schema.properties.framework.default')) {
+            const orgFWData = _.first(response);
+            if (orgFWData.result.count > 0) {
+            this.framework = _.get(_.first(_.get(orgFWData, 'result.Framework')), 'identifier');
+            }
+          } else {
+          this.framework = orgFWType;
+          }
+          if (!_.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.schema.properties.targetFWIds.default')) {
+            const targetFWData = _.last(response);
+            if (targetFWType && targetFWData.result.count > 0) {
+              this.targetFramework = _.get(_.first(_.get(targetFWData, 'result.Framework')), 'identifier');
+            }
+          } else {
+            this.targetFramework = targetFWType;
+          }
+          if (_.isEmpty(this.framework) || _.isEmpty(this.targetFramework)) {
+            this.toasterService.error(`Unknown framework category ${this.primaryCategory}. Please check the configuration.`);
+            this.redirect();
+            return;
+          }
+          this.createContent(undefined);
+        }, err => {
+          this.toasterService.error(this.resourceService.messages.emsg.m0025);
+        });
+      } else {
+        this.framework = orgFWType;
+        this.targetFramework = targetFWType;
+        this.createContent(undefined);
+      }
+    }, err => {
+      this.toasterService.error(this.resourceService.messages.emsg.m0024);
+    });
   }
 
   getFrameworkDataByType(type, channel = this.userService.channel) {
@@ -484,6 +506,12 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
         rollup: {},
       }
     };
+    if (this.targetFramework) {
+      telemetryData.context.cdata.push({
+        type: 'targetFW',
+        id: this.targetFramework
+      });
+    }
     this.telemetryService.interact(telemetryData);
   }
 

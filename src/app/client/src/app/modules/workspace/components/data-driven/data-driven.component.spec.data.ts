@@ -1683,7 +1683,7 @@ export const mockFrameworkData = {
         'identifier': 'obj-cat:curriculum-course_collection_all',
         'objectMetadata': {
           'config': {
-            'frameworkMetadata': {'orgFWType': 'K-12'},
+            'frameworkMetadata': {'orgFWType': 'K-12', 'targetFWType': 'K-12'},
           }
         },
         'languageCode': [],
