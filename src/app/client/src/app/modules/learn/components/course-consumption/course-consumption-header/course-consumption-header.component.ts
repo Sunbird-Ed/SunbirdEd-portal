@@ -351,6 +351,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         type: 'Batch'
       }
     ];
+    this.navigationHelperService.setNavigationUrl({url: this.router.url});
     this.discussionService.registerUser(data).subscribe((response) => {
       const userName = _.get(response, 'result.userSlug');
       const result = this.forumIds;
