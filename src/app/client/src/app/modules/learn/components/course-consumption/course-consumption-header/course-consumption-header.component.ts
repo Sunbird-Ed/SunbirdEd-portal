@@ -110,6 +110,15 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
 
   ngOnInit() {
     this.isDesktopApp = this.utilService.isDesktopApp;
+    if (this.isDesktopApp) {
+      this.connectionService.monitor().pipe(takeUntil(this.unsubscribe)).subscribe(isConnected => {
+        this.isConnected = isConnected;
+      });
+      this.contentManagerService.contentDownloadStatus$.pipe(takeUntil(this.unsubscribe)).subscribe( contentDownloadStatus => {
+        this.contentDownloadStatus = contentDownloadStatus;
+        this.checkDownloadStatus();
+      });
+    }
     this.getCustodianOrgUser();
     if (!this.courseConsumptionService.getCoursePagePreviousUrl) {
       this.courseConsumptionService.setCoursePagePreviousUrl();
@@ -152,15 +161,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.courseConsumptionService.userCreatedAnyBatch.subscribe((visibility: boolean) => {
       this.viewDashboard = this.viewDashboard && visibility;
     });
-    if (this.isDesktopApp) {
-      this.contentManagerService.contentDownloadStatus$.pipe(takeUntil(this.unsubscribe)).subscribe( contentDownloadStatus => {
-        this.contentDownloadStatus = contentDownloadStatus;
-        this.checkDownloadStatus();
-      });
-      this.connectionService.monitor().subscribe(isConnected => {
-        this.isConnected = isConnected;
-      });
-    }
   }
   ngAfterViewInit() {
     this.courseProgressService.courseProgressData.pipe(
@@ -389,7 +389,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
 
   fetchForumIds() {
     const requestBody = this.prepareRequestBody();
-    if (requestBody) {
+    if (requestBody && this.isConnected) {
       this.discussionService.getForumIds(requestBody).subscribe(forumDetails => {
         this.forumIds = _.map(_.get(forumDetails, 'result'), 'cid');
       }, error => {
@@ -424,6 +424,10 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   async goBack() {
     const previousPageUrl: any = this.courseConsumptionService.getCoursePagePreviousUrl;
     this.courseConsumptionService.coursePagePreviousUrl = '';
+    if (this.isDesktopApp && !this.isConnected) {
+      this.router.navigate(['/mydownloads'], { queryParams: { selectedTab: 'mydownloads' } });
+      return;
+    }
     if (this.tocId) {
       const navigateUrl = this.userService.loggedIn ? '/resources/play/collection' : '/play/collection';
       this.router.navigate([navigateUrl, this.tocId], { queryParams: { textbook: this.tocId } });

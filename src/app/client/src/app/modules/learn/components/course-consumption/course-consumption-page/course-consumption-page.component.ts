@@ -1,6 +1,6 @@
-import { combineLatest, Subject, throwError, BehaviorSubject } from 'rxjs';
+import { combineLatest, Subject, throwError, BehaviorSubject, of } from 'rxjs';
 import { map, mergeMap, first, takeUntil, delay, switchMap } from 'rxjs/operators';
-import { ResourceService, ToasterService, ConfigService, NavigationHelperService, LayoutService } from '@sunbird/shared';
+import { ResourceService, ToasterService, ConfigService, NavigationHelperService, LayoutService, UtilService, ConnectionService } from '@sunbird/shared';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -26,14 +26,23 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
   selectedCourseBatches: { onGoingBatchCount: any; expiredBatchCount: any; openBatch: any; inviteOnlyBatch: any; courseId: any; };
   obs$;
   private fetchEnrolledCourses$ = new BehaviorSubject<boolean>(true);
+  isConnected = false;
+  isDesktopApp = false;
   constructor(private activatedRoute: ActivatedRoute, private configService: ConfigService,
     private courseConsumptionService: CourseConsumptionService, private coursesService: CoursesService,
     public toasterService: ToasterService, public courseBatchService: CourseBatchService,
     private resourceService: ResourceService, public router: Router, private groupsService: GroupsService,
     public navigationHelperService: NavigationHelperService, public permissionService: PermissionService,
-    public layoutService: LayoutService, public generaliseLabelService: GeneraliseLabelService) {
+    public layoutService: LayoutService, public generaliseLabelService: GeneraliseLabelService,
+    private utilService: UtilService,
+    private connectionService: ConnectionService) {
   }
   ngOnInit() {
+    this.isDesktopApp = this.utilService.isDesktopApp;
+    this.connectionService.monitor()
+    .pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
+      this.isConnected = isConnected;
+    });
     this.initLayout();
     this.fetchEnrolledCourses$.pipe(switchMap(this.handleEnrolledCourses.bind(this)))
       .subscribe(({ courseHierarchy, enrolledBatchDetails }: any) => {
@@ -90,7 +99,7 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
             }
           }
         }
-        return this.getDetails(paramsObj);
+        return this.getDetails(paramsObj, enrollCourses);
       }), delay(200),
       takeUntil(this.unsubscribe$));
   }
@@ -132,12 +141,19 @@ export class CourseConsumptionPageComponent implements OnInit, OnDestroy {
       }
     }
   }
-  private getDetails(queryParams) {
+  private getDetails(queryParams, enrolledCourse?) {
     if (this.batchId) {
+      if (this.isDesktopApp && !this.isConnected && enrolledCourse ) {
+        return combineLatest(
+          this.courseConsumptionService.getCourseHierarchy(this.courseId, queryParams),
+          of(enrolledCourse.batch)
+        ).pipe(map(result => ({ courseHierarchy: result[0], enrolledBatchDetails: result[1] })));
+      } else {
       return combineLatest(
         this.courseConsumptionService.getCourseHierarchy(this.courseId, queryParams),
         this.courseBatchService.getEnrolledBatchDetails(this.batchId)
       ).pipe(map(result => ({ courseHierarchy: result[0], enrolledBatchDetails: result[1] })));
+      }
     } else {
       return this.courseConsumptionService.getCourseHierarchy(this.courseId, queryParams)
         .pipe(map(courseHierarchy => ({ courseHierarchy })));

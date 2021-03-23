@@ -3,7 +3,7 @@ import { TelemetryService, IAuditEventInput, IImpressionEventInput } from '@sunb
 import { Component, OnInit, OnDestroy, ViewChild, Inject } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption-v8';
-import { UserService, GeneraliseLabelService } from '@sunbird/core';
+import { UserService, GeneraliseLabelService, CoursesService } from '@sunbird/core';
 import { AssessmentScoreService, CourseBatchService, CourseConsumptionService, CourseProgressService } from '@sunbird/learn';
 import { PublicPlayerService } from '@sunbird/public';
 import { ConfigService, ResourceService, ToasterService, NavigationHelperService,
@@ -16,6 +16,7 @@ import * as TreeModel from 'tree-model';
 import { NotificationService } from '../../../../notification/services/notification/notification.service';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 import { result } from 'lodash';
+import { ConnectionService, UtilService } from '@sunbird/shared';
 
 const ACCESSEVENT = 'renderer:question:submitscore';
 
@@ -73,6 +74,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   _routerStateContentStatus: any;
   showLastAttemptsModal: boolean = false;
   navigationObj: { event: any; id: any; };
+  isConnected = false;
+  isDesktopApp = false;
 
   constructor(
     public resourceService: ResourceService,
@@ -93,6 +96,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     public generaliseLabelService: GeneraliseLabelService,
     private notificationService: NotificationService,
     private CourseProgressService: CourseProgressService,
+    private connectionService: ConnectionService,
+    private utilService: UtilService,
+    public coursesService: CoursesService,
     @Inject('CS_COURSE_SERVICE') private CsCourseService: CsCourseService
   ) {
     this.playerOption = {
@@ -140,6 +146,11 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.isDesktopApp = this.utilService.isDesktopApp;
+    this.connectionService.monitor()
+    .pipe(takeUntil(this.unsubscribe)).subscribe(isConnected => {
+      this.isConnected = isConnected;
+    });
     this.initLayout();
     this.subscribeToQueryParam();
     this.subscribeToContentProgressEvents().subscribe(data => { });
@@ -258,14 +269,34 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
 
   private getCollectionInfo(courseId: string): Observable<any> {
     const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
-    return combineLatest([
-      this.courseConsumptionService.getCourseHierarchy(courseId, inputParams),
-      this.courseBatchService.getEnrolledBatchDetails(this.batchId),
-    ]).pipe(map((results: any) => {
-      return {
-        courseHierarchy: results[0],
-        enrolledBatchDetails: results[1],
-      };
+    if (this.isDesktopApp && !this.isConnected) {
+      return combineLatest([
+        this.courseConsumptionService.getCourseHierarchy(courseId, inputParams),
+        this.getCurrentCourse()
+      ]).pipe(map((results: any) => {
+        return {
+          courseHierarchy: results[0],
+          enrolledBatchDetails: _.get(results[1], 'batch'),
+        };
+      }));
+    } else {
+      return combineLatest([
+        this.courseConsumptionService.getCourseHierarchy(courseId, inputParams),
+        this.courseBatchService.getEnrolledBatchDetails(this.batchId),
+      ]).pipe(map((results: any) => {
+        return {
+          courseHierarchy: results[0],
+          enrolledBatchDetails: results[1],
+        };
+      }));
+    }
+  }
+
+  getCurrentCourse() {
+    return this.coursesService.getEnrolledCourses().pipe(map(resp => {
+      const enrolledCourses = _.get(resp, 'result.courses');
+      const course = _.find(enrolledCourses, { courseId: this.courseId });
+      return course;
     }));
   }
 
