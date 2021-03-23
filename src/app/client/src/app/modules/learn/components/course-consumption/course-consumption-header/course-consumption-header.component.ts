@@ -171,21 +171,23 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
          });
   }
 
-  getTimeRemaining(endtime){
+  getTimeRemaining(endTime) {
     this.getFormData();
-    let countDownDate = new Date(endtime).getTime() + 1000*60*60*24;
-    let now = new Date().getTime();
+    const countDownDate = new Date(endTime).getTime() + 1000 * 60 * 60 * 24;
+    const now = new Date().getTime();
     const total = countDownDate - now;
-    const days = Math.floor( total/(1000*60*60*24) );
-    const hours = Math.floor( (total/(1000*60*60)) % 24 );
-    const minutes = Math.floor( (total/1000/60) % 60 );
-    
-    
-    this.showBatchCounter = this.batchEndCounter >= days;
-    if (this.showBatchCounter){
-      return days + ' ' + 'day(s)' + ' ' + hours + 'h' + ' ' + minutes + 'm'
+    const days = Math.floor(total / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((total / 1000 / 60) % 60);
+    if (days >= 0) {
+      this.showBatchCounter = this.batchEndCounter >= days;
+      if (this.showBatchCounter) {
+        return days + ' ' + 'day(s)' + ' ' + hours + 'h' + ' ' + minutes + 'm';
+      }
+    } else {
+      this.showBatchCounter = false;
     }
-    return
+    return;
   }
 
   getFormData() {
@@ -268,7 +270,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
    /* istanbul ignore else */
    if (_.get(this.enrolledBatchInfo, 'endDate')) {
     this.batchEndDate = dayjs(this.enrolledBatchInfo.endDate).format('YYYY-MM-DD');
-    let leftTimeDate = dayjs(this.batchEndDate).format('MMM DD, YYYY') 
+    const leftTimeDate = dayjs(this.batchEndDate).format('MMM DD, YYYY');
     this.batchRemaningTime = this.getTimeRemaining(leftTimeDate);
    }
    return (_.get(this.enrolledBatchInfo, 'status') === 2 && this.progress <= 100);
@@ -349,6 +351,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         type: 'Batch'
       }
     ];
+    this.navigationHelperService.setNavigationUrl({url: this.router.url});
     this.discussionService.registerUser(data).subscribe((response) => {
       const userName = _.get(response, 'result.userSlug');
       const result = this.forumIds;

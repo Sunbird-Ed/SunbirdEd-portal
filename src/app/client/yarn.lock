@@ -582,7 +582,18 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@3.7.3", "@project-sunbird/client-services@^3.4.9":
+"@project-sunbird/client-services@3.8.5":
+  version "3.8.5"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.8.5.tgz#eea148e00c3a26cfb8e351fde40e85b2d712d90d"
+  integrity sha512-Y3qAk670zD026cQMX5j8J28J7YJYPlZe8j6C9LicPDbSxSvwr+9elvxsbmjCmXJwcfBlalneB+L5dOIqu+oi3A==
+  dependencies:
+    "@project-sunbird/telemetry-sdk" "0.0.26"
+    inversify "^5.0.1"
+    qs "^6.9.4"
+    reflect-metadata "^0.1.13"
+    whatwg-fetch "^3.1.0"
+
+"@project-sunbird/client-services@^3.4.9":
   version "3.7.3"
   resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.7.3.tgz#3864695e06f03fbb6d5b1625d597e6f8c1cede1c"
   integrity sha512-oztcr1iME4l2EVTLd8nMGx8G+Hnfn/Q4rUwagGMNl3UzUUUUDpMXZ+2oY6L6kN8BXQynlLypL2SVuGH+exw+LQ==
@@ -600,10 +611,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/discussions-ui-v8@2.0.20":
-  version "2.0.20"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.0.20.tgz#2d53f55d1902ac95490db4eab3e3841e8326dee1"
-  integrity sha512-5w2r16bR1rh/xWS9N2PF3cS8BBAHPjMU2Q9T0mwciRH1B9AeQUGTiQBy5ibe30KV70THr7jaIoZ/cQv3LVPJ9Q==
+"@project-sunbird/discussions-ui-v8@2.0.25":
+  version "2.0.25"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.0.25.tgz#1c9bbc3c8c9d400a6d9504f3295a3d6a550faa11"
+  integrity sha512-gDgn/U8PWwAM77iTq/2nGnsR5xKaS1OpD34hckemQEho3mt+ArIlXvrfOeo84+IJT3UU9ltCowARlkn5Lsxi/w==
   dependencies:
     tslib "^1.9.0"
 
@@ -612,17 +623,17 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.6.tgz#15a88937fb643d5eb33a81c8d28ece00b56d5aa0"
   integrity sha512-rK87rHdagadIS7UrWju7HDolIfWlO5CbK+tIJrEApO+QPMi+k8KuWoLc8MxEprrsJxUt6r44O4uGiO0hgI5plA==
 
-"@project-sunbird/sunbird-collection-editor@0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-0.0.9.tgz#1fba5a6b3c00aa73b0ce790435d6b9e6ec59fec4"
-  integrity sha512-WcFxhvHt9RasK/Q+eNsJoYHBCn6annlA/7DdhuMizKpQFGWAP43qq+IfOYgdsJ6eJHAKQK7LDjDp2zwJFgrBCQ==
+"@project-sunbird/sunbird-collection-editor@0.0.13":
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-0.0.13.tgz#5b1d27c9d46a856dd5bccfe48d214588f8a88a8e"
+  integrity sha512-/nWzDDuMWxqaOpUX13dbLbUy7P37ppS9zQ8IxdDX25PWg5/YI69vh1Gcz5DOt8jKedTWcBt7lDeV96zSdnHRZg==
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-epub-player-v8@3.7.6":
-  version "3.7.6"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v8/-/sunbird-epub-player-v8-3.7.6.tgz#3417d32a718d4838a25b34fa5697e1e3bc006f90"
-  integrity sha512-praeoBvTf/0uH1DAPgvw8keo8nyohgH9PSfMHzrExbO/MfAg9EGQN18ZXHQ6vWgopyYde55Rh8YZQXpfop+/eQ==
+"@project-sunbird/sunbird-epub-player-v8@3.8.1":
+  version "3.8.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v8/-/sunbird-epub-player-v8-3.8.1.tgz#03479a3f05de8a1f877a19a590656c3e6ac6fe2b"
+  integrity sha512-Z0EvJRmUDyvJQ+FjfyiKBIdBM5TSAttSQhAIOn/6tP7Cks6kgbP1TKIf95QG2L26Jl0gbM0zliwLY5hScn++1Q==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v8" "3.7.1"
     tslib "^1.9.0"
@@ -660,13 +671,6 @@
   version "0.0.16"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk/-/sunbird-player-sdk-0.0.16.tgz#72bab646b41e47df38f71ecfd76f1c9e01094f7b"
   integrity sha512-dO1C8Adhh5dVdv8kczi0NJuoT0sm/XYcWfA64PM15f1q4/LIA1gYcvux3y2jM4+nUQrLkC/+p+eS6/x7YpGDLg==
-  dependencies:
-    tslib "^1.9.0"
-
-"@project-sunbird/sunbird-question-editor@0.0.14":
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-question-editor/-/sunbird-question-editor-0.0.14.tgz#5586d498be5df3f7532404f88f5c221329ff9478"
-  integrity sha512-DIdcMm6y2ItjzDE7y074+0s0+HdCJ+GiRIIcKuRkyfy7WyZSmLjeYbm4Veq6+9B4xAgjH44/TFIf+4S3vPEPjw==
   dependencies:
     tslib "^1.9.0"
 

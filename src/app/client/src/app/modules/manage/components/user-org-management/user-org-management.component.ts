@@ -152,33 +152,6 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
     window.open(path, '_blank');
   }
 
-  uploadCSV() {
-    const file: any = this.fileUpload;
-    if (file && file.name.match(/.(csv)$/i)) {
-      this.disableBtn = true;
-      this.uploadButton = this.resourceService.frmelmnts.btn.uploading;
-      const formData = new FormData();
-      formData.set('user', file);
-      formData.set('operation', 'selfdeclared');
-      this.manageService.bulkUserUpload(formData).subscribe(res => {
-        this.showUploadUserModal = false;
-        this.disableBtn = false;
-        this.uploadButton = this.resourceService.frmelmnts.btn.selectCsvFile;
-        this.toasterService.success(this.resourceService.frmelmnts.lbl.fileUploadSuccessMessage);
-      }, error => {
-        this.disableBtn = false;
-        this.uploadButton = this.resourceService.frmelmnts.btn.selectCsvFile;
-        if (_.get(error, 'error.params.err') === 'MANDATORY_PARAMETER_MISSING') {
-          this.toasterService.error(_.get(error, 'error.params.errmsg'));
-        } else {
-          this.toasterService.error(this.resourceService.frmelmnts.lbl.uploadFileError);
-        }
-      });
-    } else if (file && !(file.name.match(/.(csv)$/i))) {
-      this.toasterService.error(this.resourceService.messages.stmsg.m0080);
-    }
-  }
-
   public fileChanged(event) {
     this.fileUpload =  (event.target as HTMLInputElement).files[0];
     this.disableBtn = false;

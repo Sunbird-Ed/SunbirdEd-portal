@@ -38,16 +38,4 @@ describe('OrgManagementService', () => {
         expect(apiResponse.responseCode).toBe('OK');
       });
   });
-  it('should call bulkUserUpload method', () => {
-    const learnerService = TestBed.get(LearnerService);
-    const orgManagementService = TestBed.get(OrgManagementService);
-    const formData = new FormData();
-    formData.append('org', testData.mockRes.userRequest[0]);
-    const fd = formData;
-    spyOn(learnerService, 'post').and.callFake(() => observableOf(testData.mockRes.successBulkStatusResponse));
-    orgManagementService.bulkUserUpload(fd).subscribe(
-      apiResponse => {
-        expect(apiResponse.responseCode).toBe('OK');
-      });
-  });
 });

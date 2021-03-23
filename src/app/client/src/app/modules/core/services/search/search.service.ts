@@ -522,20 +522,4 @@ export class SearchService {
     return (_.lowerCase(_.get(content, 'trackable.enabled')) === 'yes'
       || (_.lowerCase(type) === _.lowerCase(this.config.appConfig.contentType.Course)));
   }
-
-  private checkForScriptInjection(value: string | any[]) {
-    const applyXssProtection = (input: string) => input.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    if (typeof value === 'string') return applyXssProtection(value);
-    return value.map(val => applyXssProtection(val));
-  }
-
-  public schemaValidator({ inputObj = {}, schema = {}, omitKeys = [] }) {
-    return _.reduce(inputObj, (accumulator, value, key) => {
-      // const { type = 'string' } = _.get(schema, [key]) || {};
-      if (schema.hasOwnProperty(key) && !(omitKeys.length && omitKeys.includes(key))) {
-        accumulator[key] = this.checkForScriptInjection(value);
-      }
-      return accumulator;
-    }, {});
-  }
 }

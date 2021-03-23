@@ -11,6 +11,8 @@ endPage.controller("endPageController", function($scope, $rootScope, $state,$ele
     $scope.totalScore = undefined;
     $scope.templateToRender = undefined;
     $scope.displayScore = true;
+    $scope.currentPlayer = undefined;
+    $scope.currentPlayerFirstChar = undefined; 
 
     /**
      * @property - {Object} which holds previous content of current content
@@ -28,6 +30,16 @@ endPage.controller("endPageController", function($scope, $rootScope, $state,$ele
     $scope.setLicense = function(){
         $scope.licenseAttribute = $scope.playerMetadata.license || 'Licensed under CC By 4.0 license'
     };
+
+    $scope.setCurrentUser = function() {
+        if($scope.isCordova) { 
+            $scope.currentPlayer = (_.has($scope.currentUser,"handle"))? $scope.currentUser.handle : $scope.currentUser.name;
+        }
+        else {
+            $scope.currentPlayer = (_.has(globalConfig.context, "userData")) ? globalConfig.context.userData.firstName : $scope.currentUser.handle;
+        }
+        $scope.currentPlayerFirstChar = $scope.currentPlayer.charAt(0).toUpperCase().slice(0);
+    }
 
     $scope.getTotalScore = function(id) {
         var totalScore = 0, maxScore = 0;
@@ -71,7 +83,9 @@ endPage.controller("endPageController", function($scope, $rootScope, $state,$ele
     $scope.replayContent = function() {
         if(!isbrowserpreview && $rootScope.enableUserSwitcher && ($rootScope.users.length > 1)) {
             EkstepRendererAPI.dispatchEvent("event:openUserSwitchingModal", {'logGEEvent': $scope.pluginInstance._isAvailable});
-        }else {
+        }else if(isbrowserpreview && content.primaryCategory && content.primaryCategory.toLowerCase() === 'course assessment'){
+            $scope.replayAssessment();
+        }else{
             $scope.replayCallback();
         }
 
@@ -81,7 +95,37 @@ endPage.controller("endPageController", function($scope, $rootScope, $state,$ele
             subtype: "ContentID"
         });
     };
+    $scope.replayAssessment = function(){
+        content.currentAttempt = content.currentAttempt + 1;
+        if (content.maxAttempt <= content.currentAttempt){
+            window.postMessage('renderer:maxLimitExceeded');
+            return;
+        }else{
+            $scope.replayPlayer();
+        }
+    };
     $scope.replayCallback = function(){
+        if (content.primaryCategory && content.primaryCategory.toLowerCase() === 'course assessment'){
+            org.ekstep.service.content.checkMaxLimit(content).then(function(response){
+                if (response.isCloseButtonClicked){
+                    return;
+                }
+                if(response.limitExceeded){
+                    window.postMessage({
+                        event: 'renderer:maxLimitExceeded',
+                        data: {
+                        }
+                    })
+                } else{
+                    $scope.replayPlayer();
+                }
+            });
+        }else{
+            $scope.replayPlayer();
+        }
+    };
+
+    $scope.replayPlayer = function(){
         EkstepRendererAPI.hideEndPage();
         EkstepRendererAPI.dispatchEvent('renderer:content:replay');
     };
@@ -128,6 +172,7 @@ endPage.controller("endPageController", function($scope, $rootScope, $state,$ele
             $rootScope.$apply();
         }, 1000);
         EkstepRendererAPI.dispatchEvent("renderer:splash:hide");
+        $scope.setCurrentUser();
         $scope.setTotalTimeSpent();
         $scope.getTotalScore($rootScope.content.identifier);
         $scope.getRelevantContent($rootScope.content.identifier);
@@ -171,41 +216,89 @@ endPage.controller("endPageController", function($scope, $rootScope, $state,$ele
 
         var contentToPlay = (contentType === 'previous') ? $scope.previousContent[contentId] : $scope.nextContent[contentId];
         var contentMetadata = {};
-        if(contentToPlay){
-            contentMetadata = contentToPlay.content.contentData;
-            _.extend(contentMetadata,  _.pick(contentToPlay.content, "hierarchyInfo", "isAvailableLocally", "basePath", "rollup"));
-            contentMetadata.basepath = contentMetadata.basePath;
-            $rootScope.content = window.content = content = contentMetadata;
-        }
-        
-        if(content.mimeType === "video/x-youtube"){
-            contentToPlay.content.isAvailableLocally = false;
-        }
-
-        if (contentToPlay.content.isAvailableLocally) {
-                EkstepRendererAPI.hideEndPage();
-                var object = {
-                    'config': GlobalContext.config,
-                    'data': undefined,
-                    'metadata': contentMetadata
-                }
-                GlobalContext.config = mergeJSON(AppConfig, contentMetadata);
-                window.globalConfig = GlobalContext.config;
-
-                org.ekstep.contentrenderer.initializePreview(object)
-                EkstepRendererAPI.dispatchEvent('renderer:player:show');
-        } else {
-            if(contentMetadata.identifier && window.parent.hasOwnProperty('onContentNotFound')) {
-                window.parent.onContentNotFound(contentMetadata.identifier, contentMetadata.hierarchyInfo);
-            } else {
-                console.warn('Content not Available');
+        $scope.checkMaxLimit(contentToPlay, function(response){
+            if (response && response.isCloseButtonClicked){
+                return;
             }
-        }
+            else if (response && response.limitExceeded) {
+                    window.postMessage({
+                    event: 'renderer:maxLimitExceeded',
+                    data: {
+                    }
+                })
+                return;
+            }
+            if (window.cordova && contentToPlay.content && !contentToPlay.content.isCompatible) {
+                window.postMessage({
+                    event: 'renderer:contentNotComaptible',
+                    data: {
+                    }
+                });
+                return;
+            }
+            if (contentToPlay.content && contentToPlay.content.trackableParentInfo){
+                var trackableParentInfo = contentToPlay.content.trackableParentInfo;
+                window.postMessage(JSON.stringify({
+                    event: 'renderer:navigate',
+                    data: {
+                        identifier: trackableParentInfo.identifier,
+                        hierarchyInfo: trackableParentInfo.hierarchyInfo,
+                        trackable: 'Yes'
+                    }
+                }));
+                return;
+            }else if (contentToPlay.content){
+                contentMetadata = contentToPlay.content.contentData;
+                _.extend(contentMetadata,  _.pick(contentToPlay.content, "hierarchyInfo", "isAvailableLocally", "basePath", "rollup"));
+                contentMetadata.basepath = contentMetadata.basePath;
+                $rootScope.content = window.content = content = contentMetadata;
+            }
+            
+            if(content.mimeType === "video/x-youtube"){
+                contentToPlay.content.isAvailableLocally = false;
+            }
+
+            if (contentToPlay.content.isAvailableLocally) {
+                    EkstepRendererAPI.hideEndPage();
+                    var object = {
+                        'config': GlobalContext.config,
+                        'data': undefined,
+                        'metadata': contentMetadata
+                    }
+                    GlobalContext.config = mergeJSON(AppConfig, contentMetadata);
+                    window.globalConfig = GlobalContext.config;
+
+                    org.ekstep.contentrenderer.initializePreview(object)
+                    EkstepRendererAPI.dispatchEvent('renderer:player:show');
+            } else {
+                if(contentMetadata.identifier && window.parent.hasOwnProperty('onContentNotFound')) {
+                    window.parent.onContentNotFound(contentMetadata.identifier, contentMetadata.hierarchyInfo);
+                } else {
+                    console.warn('Content not Available');
+                }
+            }
+        });
     };
+
+    $scope.checkMaxLimit = function(contentToPlay, callback) {
+        var contentMetadata = contentToPlay.content.contentData
+        if (contentToPlay.content && contentToPlay.content.primaryCategory.toLowerCase() === 'course assessment'){
+            org.ekstep.service.content.checkMaxLimit(contentMetadata).then(function(response){
+                if(response){
+                    callback(response);
+                } else{
+                    console.log('Error has occurred');
+                    callback(false);
+                }
+            });
+        }else{
+            callback(false);
+        }
+    }
 
     $scope.initEndpage = function() {
 
-        $scope.playerMetadata = content;
+        $rootScope.content = $scope.playerMetadata = content;
         $scope.genieIcon = EkstepRendererAPI.resolvePluginResource($scope.pluginManifest.id, $scope.pluginManifest.ver, "renderer/assets/home.png");
         $scope.scoreIcon = EkstepRendererAPI.resolvePluginResource($scope.pluginManifest.id, $scope.pluginManifest.ver, "renderer/assets/score.svg");
         $scope.leftArrowIcon = EkstepRendererAPI.resolvePluginResource($scope.pluginManifest.id, $scope.pluginManifest.ver, "renderer/assets/left-arrow.svg");
