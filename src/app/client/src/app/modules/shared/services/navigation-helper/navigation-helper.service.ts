@@ -216,8 +216,8 @@ export class NavigationHelperService {
     this.handleCMvisibility.emit(value);
   }
 
-  setNavigationUrl() {
-    const urlToNavigate = this.getPreviousUrl();
+  setNavigationUrl(navigationUrl?: UrlHistory) {
+    const urlToNavigate = navigationUrl ? navigationUrl : this.getPreviousUrl();
     if (urlToNavigate && !(_.includes(urlToNavigate.url, 'create-managed-user') || _.includes(urlToNavigate.url, 'choose-managed-user'))) {
       this.previousNavigationUrl = urlToNavigate;
     }

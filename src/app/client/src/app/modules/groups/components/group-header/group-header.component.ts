@@ -223,6 +223,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
         type: 'Group'
       }
     ];
+    this.navigationHelperService.setNavigationUrl({url: this.router.url});
     this.discussionService.registerUser(data).subscribe(response => {
       this.showLoader = false;
       const userName = _.get(response, 'result.userSlug');
