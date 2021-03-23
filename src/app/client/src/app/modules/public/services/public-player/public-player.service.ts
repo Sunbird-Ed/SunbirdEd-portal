@@ -204,6 +204,17 @@ export class PublicPlayerService {
     return this.contentCsService.getQuestionSetHierarchy(data);
   }
 
+  getQuestionSetRead(contentId: string, option: any = { params: {} }): Observable<ServerResponse> {
+    const param = { fields: this.configService.editorConfig.DEFAULT_PARAMS_FIELDS };
+    const req = {
+        url: `${this.configService.urlConFig.URLS.QUESTIONSET.READ}/${contentId}`,
+        param: { ...param, ...option.params }
+    };
+    return this.publicDataService.get(req).pipe(map((response: ServerResponse) => {
+        return response;
+    }));
+  }
+
     get libraryFilters() {
         return this._libraryFilters;
     }

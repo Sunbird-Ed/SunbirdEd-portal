@@ -6,17 +6,15 @@ import { PlayerConfig } from '@sunbird/shared';
 import { Router } from '@angular/router';
 import { ToasterService, ResourceService, ContentUtilsServiceService } from '@sunbird/shared';
 const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub'];
-import { Subject } from 'rxjs';
+import { forkJoin, of, Subject } from 'rxjs';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { UserService, FormService } from '../../../core/services';
 import { OnDestroy } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { catchError, takeUntil } from 'rxjs/operators';
 import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
 import { ContentService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
-import { QumlPlayerService } from '../../service/quml-player/quml-player.service';
-import { QuestionCursor } from 'quml-player';
 
 @Component({
   selector: 'app-player',
@@ -100,13 +98,18 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   ngOnInit() {
-    if(_.get(this.playerConfig, 'metadata.mimeType') === 'application/vnd.sunbird.questionset') {
-      this.playerService.getQuestionSetHierarchy(_.get(this.playerConfig, 'metadata.identifier')).subscribe(data => {
-        this.questionIds = _.get(data, 'questionSet.childNodes');
-        this.playerConfig.metadata = _.get(data, 'questionSet');
+    if (_.get(this.playerConfig, 'metadata.mimeType') === 'application/vnd.sunbird.questionset') {
+      const getQuestionSetHierarchy = this.playerService.getQuestionSetHierarchy(_.get(this.playerConfig, 'metadata.identifier'));
+      const getQuestionSetRead = this.playerService.getQuestionSetRead(_.get(this.playerConfig, 'metadata.identifier')).pipe(catchError(error => of('error')));
+      forkJoin([getQuestionSetHierarchy, getQuestionSetRead]).subscribe((res) => {
+        this.questionIds = _.get(res[0], 'questionSet.childNodes');
+        this.playerConfig.metadata = _.get(res[0], 'questionSet');
         delete this.playerConfig.metadata.children;
+        if (res[1] !== 'error') {
+          this.playerConfig.metadata.instructions = _.get(res[1], 'result.questionset.instructions');
+        }
         this.showQumlPlayer = true;
-      }, error => {
+      }, (err) => {
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
       });
     }
