@@ -59,6 +59,8 @@
         </div>
       </div>
     </div>
+    <app-joy-theme-popup [hidden]="!showJoyThemePopUp" (closeJoyThemePopup)="onCloseJoyThemePopup()">
+    </app-joy-theme-popup>
     <app-popup #frameWorkPopUp *ngIf="showFrameWorkPopUp" [buttonLabel]="resourceService.frmelmnts.btn.submit"
       (submit)="updateFrameWork($event)"></app-popup>
     <app-tnc-popup (close)="onAcceptTnc()" #termsAndCondPopUp *ngIf="showTermsAndCondPopUp">
@@ -78,8 +80,6 @@
     <!--<app-breadcrumbs *ngIf="userService.loggedIn"></app-breadcrumbs>-->
     <router-outlet *ngIf="initApp && !showFrameWorkPopUp && !showTermsAndCondPopUp"></router-outlet>
   </div>
-  <app-joy-theme-popup [hidden]="!showJoyThemePopUp" (closeJoyThemePopup)="onCloseJoyThemePopup()">
-  </app-joy-theme-popup>
 </div>
 <div *ngIf="isBotEnabled === 'true'" [ngClass]="{'hideBot': isBotdisplayforRoute(), 'hideBot': isFullScreenView}">
   <lib-chat-window [inputValues]="botObject"></lib-chat-window>
