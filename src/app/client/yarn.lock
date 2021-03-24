@@ -593,10 +593,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v8@3.7.4":
-  version "3.7.4"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v8/-/common-consumption-v8-3.7.4.tgz#76140654cd5b007b11a1d919cd3961b6331ebb93"
-  integrity sha512-s6yBkOLDxLfFXCn2zleEWucbnwYorB+4eibciRKvviDhOnIWQmur6bFHBjvW6GpWnoCxYGUPdd3sTNOn5Pe/Ow==
+"@project-sunbird/common-consumption-v8@3.7.8":
+  version "3.7.8"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v8/-/common-consumption-v8-3.7.8.tgz#6ff53a643dd962eb113759c3fba7b4910b971d12"
+  integrity sha512-o8oMaQSa8daxvzc5+utai44AzLwUh4ejmYz9w2gZOdDJLiw3BIA5Je5i2SJ7PgWdGvQIL75Ay5xAkjl0nP2Qrw==
   dependencies:
     tslib "^1.9.0"
 
@@ -660,6 +660,13 @@
   version "0.0.16"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk/-/sunbird-player-sdk-0.0.16.tgz#72bab646b41e47df38f71ecfd76f1c9e01094f7b"
   integrity sha512-dO1C8Adhh5dVdv8kczi0NJuoT0sm/XYcWfA64PM15f1q4/LIA1gYcvux3y2jM4+nUQrLkC/+p+eS6/x7YpGDLg==
+  dependencies:
+    tslib "^1.9.0"
+
+"@project-sunbird/sunbird-question-editor@0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-question-editor/-/sunbird-question-editor-0.0.9.tgz#49f0c79397f35b993ab6f5ed6d05499db8fde91c"
+  integrity sha512-QZP/JBZoLAW7cj1MXDtI/vi2ovd1j/9ZrUNXI3wv4VYXC/JlG5ceHsBGmuxaiLQHkBbc/aLUM6BwlwULuiqP8w==
   dependencies:
     tslib "^1.9.0"
 
@@ -9472,11 +9479,6 @@ sb-svg2pdf@0.0.9:
   integrity sha512-BKxj5D+67MzRZjdZkRtpO+AJ+Qk7OV5XY1SeUsdLkPnAttzv9zX/OtRRKSPHHjsP3vhIkCA9WhWdp0fjIvumXg==
   dependencies:
     tslib "^1.9.0"
-
-sb-theme@^1.0.14:
-  version "1.0.14"
-  resolved "https://registry.yarnpkg.com/sb-theme/-/sb-theme-1.0.14.tgz#f315a6de02fd60291ca940024c162548eb6bf494"
-  integrity sha512-yNWE9rvnj5GMm/UDkY8ikosE9FPhdBavo+uTYTdTF6ffx5Yf5aDCHUe+5sljD9zkgPmQaIrtnfIjGcCbVdZWLg==
 
 schema-utils@^0.3.0:
   version "0.3.0"
