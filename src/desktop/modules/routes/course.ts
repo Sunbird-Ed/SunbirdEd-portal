@@ -3,7 +3,6 @@ import ContentStatus from '../controllers/content/contentStatus';
 import { customProxy } from '../helper/proxyHandler';
 import { manifest } from "./../manifest";
 import * as _ from 'lodash';
-import { logger } from "@project-sunbird/logger";
 
 const course = new Course(manifest);
 const contentStatus = new ContentStatus(manifest);

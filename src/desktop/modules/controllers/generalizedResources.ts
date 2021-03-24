@@ -6,8 +6,8 @@ import * as path from "path";
 import { Inject } from "typescript-ioc";
 import DatabaseSDK from "../sdk/database/index";
 import Response from "../utils/response";
-const GEN_RESOURCE_DB = "generalized_resource_bundle";
 
+const GEN_RESOURCE_DB = "generalized_resource_bundle";
 export class GeneralizedResources {
 
   @Inject private databaseSdk: DatabaseSDK;
@@ -36,7 +36,6 @@ export class GeneralizedResources {
             });
           }
         }
-        console.log("bulkDOcs", bulkDocs);
         await this.databaseSdk.bulk(GEN_RESOURCE_DB, bulkDocs);
       }
     } catch (err) {
@@ -62,12 +61,12 @@ export class GeneralizedResources {
 
   public async fetchOffline(language, req): Promise<any> {
     const docId = `generalized_${language}`;
-    let faqsData: any = await this.databaseSdk.get(GEN_RESOURCE_DB, docId).then((doc) => doc.data).catch((err) => {
+    let resources: any = await this.databaseSdk.get(GEN_RESOURCE_DB, docId).then((doc) => doc.data).catch((err) => {
       logger.error(`Got error while reading Generalized resources from DB for language`, language, `for ReqId: ${req.get("x-msgid")}, error message `, err.message);
       return undefined;
     });
 
-    return faqsData;
+    return resources;
   }
 
   public async fetchOnline(language, req): Promise<any> {
@@ -85,7 +84,7 @@ export class GeneralizedResources {
         return resources;
       }).catch((err) => {
         const traceId = _.get(err, 'data.params.msgid');
-        logger.error(`Got error while reading Faq from blob for language ${language}, for ReqId: ${req.get("x-msgid")}, error message ${err.message}, with trace Id ${traceId}`);
+        logger.error(`Got error while reading generalized resources from blob for language ${language}, for ReqId: ${req.get("x-msgid")}, error message ${err.message}, with trace Id ${traceId}`);
         return undefined;
       });
   }
@@ -96,4 +95,3 @@ export class GeneralizedResources {
       .catch((err) => logger.error(`Received error while insert/updating generalized resources for language: ${id} to generalized resources database and err.message: ${err.message}`));
   }
 }
-

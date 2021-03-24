@@ -1,11 +1,11 @@
+import { logger } from "@project-sunbird/logger";
 import { containerAPI } from "@project-sunbird/OpenRAP/api";
+import { NetworkQueue } from "@project-sunbird/OpenRAP/services/queue";
 import * as _ from 'lodash';
 import { Inject } from "typescript-ioc";
+import { manifest } from "../../manifest";
 import DatabaseSDK from "./../../sdk/database/index";
 import Response from "./../../utils/response";
-import { logger } from "@project-sunbird/logger";
-import { manifest } from "../../manifest";
-import { NetworkQueue } from "@project-sunbird/OpenRAP/services/queue";
 
 const DB_NAME = "content_status";
 const API_ID = "api.content.state.read";

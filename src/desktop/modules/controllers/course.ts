@@ -57,7 +57,6 @@ export default class Course {
       }
 
     } catch (error) {
-      console.log(error);
       logger.error(`Error while inserting content status in database with error message = ${error.message}`);
     }
   }
