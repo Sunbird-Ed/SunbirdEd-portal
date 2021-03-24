@@ -1162,3 +1162,7 @@ a.ui.label:hover, a.ui.labels .label:hover{
     cursor: pointer;;
   }
 }
+.sb-slider-pills-container .sb-grade-pills-container .pill:hover{
+  background: var(--gray-100) !important;
+  color: var(--black) !important;
+}
