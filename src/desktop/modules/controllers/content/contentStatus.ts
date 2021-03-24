@@ -70,7 +70,7 @@ export default class ContentStatus {
         );
 
         if (_.get(resp, 'docs.length')) { // upsert if found
-          await this.databaseSdk.upsert(DB_NAME, resp._id, element);
+          await this.databaseSdk.upsert(DB_NAME, resp.docs[0]._id, element);
         } else { // insert if not found
           element.userId = userId;
           await this.databaseSdk.insert(DB_NAME, element);
@@ -85,24 +85,15 @@ export default class ContentStatus {
     this.deviceId = this.deviceId || await containerAPI.getSystemSDKInstance(manifest.id).getDeviceId();
     const userToken: any = await userSDK.getUserToken().catch(error => { logger.debug("Unable to get the user token", error); });
     const loggedInUserSession: any = await userSDK.getUserSession().catch(error => { logger.debug("User not logged in", error); });
-
     const currentUser: any = await userSDK.getLoggedInUser(loggedInUserSession.userId, true).catch(error => { logger.debug("Unable to get the user token", error); });
 
     let headers = {
       "Content-Type": "application/json",
       "did": this.deviceId,
-      // "X-Authenticated-Userid": loggedInUserSession.userId,
-      // "x-authenticated-user-token": userToken
+      "X-Authenticated-Userid": loggedInUserSession.userId,
+      "x-authenticated-user-token": userToken
     };
 
-    if (currentUser.managedBy)  {
-      const mainUser: any = await userSDK.getLoggedInUser(currentUser.managedBy, true).catch(error => { logger.debug("Unable to get the user token", error); });
-      headers["x-authenticated-userid"] = loggedInUserSession.userId;
-      headers["x-authenticated-for"] = currentUser.accessToken;
-      headers["x-authenticated-user-token"] = mainUser.accessToken;
-    }
-
-    console.log("currentUser", currentUser);
     const request = {
       bearerToken: true,
       pathToApi: `${process.env.APP_BASE_URL}/api/course/v1/content/state/update`,
@@ -112,11 +103,12 @@ export default class ContentStatus {
       requestMethod: "PATCH"
     };
 
-    this.networkQueue.add(request).then((data) => {
+    this.networkQueue.add(request).then(async(data) => {
       logger.info("Added in queue");
       const contents = _.get(req, 'body.request.contents');
       const contentIds = _.map(contents, item => item.contentId);
-      const result = contentIds.reduce((o, key) => ({ ...o, [key]: 'SUCCESS' }), {})
+      const result = contentIds.reduce((o, key) => ({ ...o, [key]: 'SUCCESS' }), {});
+      await this.saveContentStatus(contents);
       res.status(200).send(Response.success("api.content.state.update", { result }, req));
     }).catch((error) => {
       logger.error("Error while adding to Network queue", error);
