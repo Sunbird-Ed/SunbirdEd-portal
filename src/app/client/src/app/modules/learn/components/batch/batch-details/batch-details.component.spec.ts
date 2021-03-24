@@ -48,7 +48,7 @@ const resourceServiceMockData = {
   }
 };
 
-fdescribe('BatchDetailsComponent', () => {
+describe('BatchDetailsComponent', () => {
   let component: BatchDetailsComponent;
   let fixture: ComponentFixture<BatchDetailsComponent>;
   configureTestSuite();
