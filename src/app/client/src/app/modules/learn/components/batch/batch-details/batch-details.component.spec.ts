@@ -48,7 +48,7 @@ const resourceServiceMockData = {
   }
 };
 
-describe('BatchDetailsComponent', () => {
+fdescribe('BatchDetailsComponent', () => {
   let component: BatchDetailsComponent;
   let fixture: ComponentFixture<BatchDetailsComponent>;
   configureTestSuite();
@@ -178,6 +178,7 @@ describe('BatchDetailsComponent', () => {
     component.courseProgressData = {progress: 0,
       completedCount: 1, totalCount: 1, content: [], lastPlayedContentId: 'do_112501345261985792135'};
     component.enrolledBatchInfo = {'enrollmentType': 'open'};
+    component.isConnected = true;
     component.isUnenrollDisabled();
     expect(component.isUnenrollbtnDisabled).toBeFalsy();
   });
