@@ -554,7 +554,7 @@ export class SubmitTeacherDetailsComponent implements OnInit, OnDestroy {
     const declarations = [];
     const declaredDetails = this.declaredLatestFormValue.children && this.declaredLatestFormValue.children.externalIds;
     let operation = '';
-    if (!this.userProfile.declarations || !this.userProfile.declarations.length) {
+    if (!this.userProfile.declarations || !_.get(this.userProfile, 'declarations.length')) {
       operation = 'add';
     } else if (this.tenantPersonaLatestFormValue.tenant === this.userProfile.declarations[0].orgId) {
       operation = 'edit';

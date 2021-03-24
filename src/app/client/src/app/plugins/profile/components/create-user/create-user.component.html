@@ -15,7 +15,7 @@
             <div class="sb-field field-focus mb-8 w-100">
               <input
                 [ngClass]="{'orange-border': userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors}"
-                class="sb-form-control" formControlName="{{field.code}}" type="text" name="{{field.code}}"
+                class="sb-form-control" formControlName="{{field.code}}" aria-label="Enter Name" type="text" name="{{field.code}}"
                 placeholder="{{field.description}}">
               <label
                 *ngIf="!(userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors)"
