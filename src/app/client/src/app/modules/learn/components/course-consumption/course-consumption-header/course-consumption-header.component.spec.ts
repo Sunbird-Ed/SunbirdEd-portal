@@ -15,6 +15,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ResourceService, ToasterService, ContentData } from '@sunbird/shared';
 import { ContentUtilsServiceService } from '../../../../shared/services/content-utils/content-utils.service';
 import { configureTestSuite } from '@sunbird/test-util';
+import dayjs from 'dayjs';
 import { GroupsService } from '../../../../groups/services/groups/groups.service';
 import { DiscussionService } from './../../../../discussion/services/discussion/discussion.service';
 import { MockResponseData } from './course-consumption-header.spec.data';
@@ -32,7 +33,8 @@ const resourceServiceMockData = {
       close: 'close'
     },
     lbl: {
-      description: 'description'
+      description: 'description',
+      BatchExpiringIn: "Batch expiring in"
     }
   }
 };
@@ -156,6 +158,40 @@ describe('CourseConsumptionHeaderComponent', () => {
     expect(component.getBatchStatus).toHaveBeenCalled();
     expect(returnValue).toBe(true);
   });
+
+  it('should call  getTimeRemaining and return remaning time', () => {
+    const endDate = new Date().getTime() + 2000 * 60 * 60 * 24;
+    const incrEndDate = dayjs(endDate).format('MMM DD, YYYY');
+    spyOn(Date, 'now').and.returnValue(1387636363717);
+    spyOn(component, 'getTimeRemaining').and.callThrough();
+    spyOn(component, 'getFormData').and.callThrough();
+    component.batchEndCounter = 2;
+    const returnValue = component.getTimeRemaining(incrEndDate);
+    expect(component.getTimeRemaining).toHaveBeenCalled();
+    expect(returnValue).toBeDefined();
+  });
+
+  it('should get formconfig to show remaining time of batch', () => {
+    const endDate = new Date().getTime() + 2000 * 60 * 60 * 24;
+    const incrEndDate = dayjs(endDate).format('MMM DD, YYYY');
+    spyOn(component, 'getTimeRemaining').and.callThrough();
+    spyOn(component, 'getFormData').and.callThrough();
+    component.getTimeRemaining(incrEndDate);
+    expect(component.getFormData).toHaveBeenCalled();
+  });
+
+  it('if same date and hours or mins left should show the remaning time', () => {
+    const endDate = new Date().getTime() + 60 * 60 * 24;
+    const incrEndDate = dayjs(endDate).format('MMM DD, YYYY');
+    spyOn(component, 'getTimeRemaining').and.callThrough();
+    spyOn(component, 'getFormData').and.callThrough();
+    component.batchEndCounter = 2;
+    const returnValue = component.getTimeRemaining(incrEndDate);
+    expect(component.getTimeRemaining).toHaveBeenCalled();
+    expect(component.showBatchCounter).toBeTruthy();
+    expect(returnValue).toBeDefined();
+  });
+
   it('should call  getBatchStatus and return false if batch status is not  "2" and course is  completed', () => {
     component.enrolledBatchInfo = { status: 1 };
     component.progress = 100;

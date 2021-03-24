@@ -1157,3 +1157,8 @@ a.ui.label:hover, a.ui.labels .label:hover{
     color: var(--black) !important;
   }
 }
+.sb-notification-container {
+  .clear-text {
+    cursor: pointer;;
+  }
+}

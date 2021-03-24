@@ -412,12 +412,13 @@ html[layout='joy'] {
         right: calculateRem(12px) !important;
         top: calculateRem(12px) !important;
         background-color: var(--white);
-
-        &::before {
-          content: "";
-          background: url(assets/images/close.png) no-repeat !important;
-          height: calculateRem(22px);
-          width: calculateRem(22px);
+        &::before{
+          content: "\2715";
+          font-size: calculateRem(18px);
+          color: #e82520;
+          // background: url(assets/images/close.png) no-repeat !important;
+          // height: calculateRem(22px);
+          // width: calculateRem(22px);
         }
 
       }

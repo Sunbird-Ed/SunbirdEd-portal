@@ -182,6 +182,7 @@ export class ChooseUserComponent implements OnInit, OnDestroy {
   }
 
   initializeManagedUser() {
+    this.telemetryService.syncEvents(false);
     this.telemetryService.setInitialization(false);
     this.telemetryService.initialize(this.getTelemetryContext());
     this.toasterService.custom({

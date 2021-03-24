@@ -245,7 +245,12 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.showNewPlayer = false;
     if (this.isDesktopApp) {
       this.updateMetadataForDesktop();
-      this.loadDefaultPlayer(this.configService.appConfig.PLAYER_CONFIG.localBaseUrl);
+      const downloadStatus = Boolean(_.get(this.playerConfig, 'metadata.desktopAppMetadata.isAvailable'));
+      let playerUrl = this.configService.appConfig.PLAYER_CONFIG.localBaseUrl;
+      if (!downloadStatus) {
+        playerUrl = `${playerUrl}webview=true`;
+      }
+      this.loadDefaultPlayer(playerUrl);
       return;
     }
     if (this.isMobileOrTab) {
@@ -314,6 +319,13 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   eventHandler(event) {
     if (_.get(event, 'edata.type') === 'SHARE') {
       this.contentUtilsServiceService.contentShareEvent.emit('open');
+      this.mobileViewDisplay = 'none';
+    }
+    if (_.get(event, 'edata.type') === 'PRINT') {
+      let windowFrame = window.document.querySelector('pdf-viewer iframe');
+      if (windowFrame) {
+        windowFrame['contentWindow'].print()
+      }
       this.mobileViewDisplay = 'none';
     }
   }

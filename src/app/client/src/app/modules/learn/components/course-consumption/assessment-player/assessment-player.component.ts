@@ -34,7 +34,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   courseHierarchy;
   enrolledBatchInfo;
   showLoader = true;
-  noContentMessage = 'No Content available';
+  noContentMessage = '';
   activeContent: any;
   isContentPresent = false;
   courseFallbackImg = './../../../../../assets/images/book.png';
@@ -147,6 +147,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
       this.isFullScreenView = isFullScreen;
     });
+    this.noContentMessage = _.get(this.resourceService, 'messages.stmsg.m0121');
+    this.getLanguageChangeEvent();
   }
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -170,6 +172,12 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.router.navigate(['/learn/course', this.courseId, 'batch', this.batchId], {queryParams: paramas});
     }, 500);
+  }
+
+  getLanguageChangeEvent() {
+    this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe)).subscribe(item => {
+      this.noContentMessage = _.get(this.resourceService, 'messages.stmsg.m0121');
+    });
   }
 
   private subscribeToQueryParam() {

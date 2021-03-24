@@ -1,5 +1,5 @@
 import { combineLatest as observableCombineLatest, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, map} from 'rxjs/operators';
 import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { CourseConsumptionService, CourseProgressService } from './../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,6 +17,7 @@ import { NavigationHelperService } from '@sunbird/shared';
 import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 import { CourseBatchService } from './../../../services';
 import { DiscussionService } from '../../../../discussion/services/discussion/discussion.service';
+import { FormService } from '../../../../core/services/form/form.service';
 
 import { DiscussionTelemetryService } from './../../../../shared/services/discussion-telemetry/discussion-telemetry.service';
 
@@ -64,6 +65,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   courseStatus: string;
   public unsubscribe = new Subject<void>();
   batchEndDate: any;
+  batchRemaningTime: any;
   public interval: any;
   telemetryCdata: Array<{}>;
   enableProgress = false;
@@ -76,6 +78,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   tocId;
   isGroupAdmin: boolean;
   showLoader = false;
+  batchEndCounter: number;
+  showBatchCounter: boolean;
 
   constructor(private activatedRoute: ActivatedRoute, public courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
@@ -86,6 +90,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     private navigationHelperService: NavigationHelperService, public orgDetailsService: OrgDetailsService,
     public generaliseLabelService: GeneraliseLabelService,
     public courseBatchService: CourseBatchService,
+    private formService: FormService,
     public discussionService: DiscussionService, public discussionTelemetryService: DiscussionTelemetryService) { }
 
   showJoinModal(event) {
@@ -166,6 +171,40 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
          });
   }
 
+  getTimeRemaining(endTime) {
+    this.getFormData();
+    const countDownDate = new Date(endTime).getTime() + 1000 * 60 * 60 * 24;
+    const now = new Date().getTime();
+    const total = countDownDate - now;
+    const days = Math.floor(total / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((total / 1000 / 60) % 60);
+    if (days >= 0) {
+      this.showBatchCounter = this.batchEndCounter >= days;
+      if (this.showBatchCounter) {
+        return days + ' ' + 'day(s)' + ' ' + hours + 'h' + ' ' + minutes + 'm';
+      }
+    } else {
+      this.showBatchCounter = false;
+    }
+    return;
+  }
+
+  getFormData() {
+    const formServiceInputParams = {
+      formType: 'contentcategory',
+      formAction: 'menubar',
+      contentType: 'global'
+    };
+    this.formService.getFormConfig(formServiceInputParams).subscribe((data: any) => {
+      _.forEach(data, (value, key) => {
+        if ('frmelmnts.tab.courses' === value.title) {
+          this.batchEndCounter = value.batchEndCounter || null;
+        }
+      });
+    });
+  }
+
   showDashboard() {
     this.router.navigate(['learn/course', this.courseId, 'dashboard', 'batches']);
   }
@@ -231,6 +270,8 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
    /* istanbul ignore else */
    if (_.get(this.enrolledBatchInfo, 'endDate')) {
     this.batchEndDate = dayjs(this.enrolledBatchInfo.endDate).format('YYYY-MM-DD');
+    const leftTimeDate = dayjs(this.batchEndDate).format('MMM DD, YYYY');
+    this.batchRemaningTime = this.getTimeRemaining(leftTimeDate);
    }
    return (_.get(this.enrolledBatchInfo, 'status') === 2 && this.progress <= 100);
   }
@@ -310,6 +351,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         type: 'Batch'
       }
     ];
+    this.navigationHelperService.setNavigationUrl({url: this.router.url});
     this.discussionService.registerUser(data).subscribe((response) => {
       const userName = _.get(response, 'result.userSlug');
       const result = this.forumIds;

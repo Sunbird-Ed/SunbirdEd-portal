@@ -8,6 +8,7 @@
         <ng-container *ngIf="isDesktopApp">
           <app-network-status></app-network-status>
           <app-load-offline-content></app-load-offline-content>
+          <app-system-warning></app-system-warning>
         </ng-container>
       </div>
       <div [ngClass]="isDesktopApp ? 'sb-desktop-filter-section' : ''">
@@ -34,10 +35,16 @@
             <app-page-section *ngIf="isPageAssemble" (visits)="prepareVisits($event)"
               [layoutConfiguration]="layoutConfiguration" (playEvent)="playContent($event)" [section]="section"
               (viewAll)="viewAll($event)"></app-page-section>
-            <sb-library-cards-grid *ngIf="!isPageAssemble" [layoutConfig]="layoutConfiguration" [title]="section.name"
+            <sb-library-cards-grid *ngIf="!isPageAssemble && !isDesktopApp" [layoutConfig]="layoutConfiguration" [title]="section.name"
               [contentList]="section.contents | sortBy:'name':'asc'" [type]="'infinite_card_grid'"
               (cardClick)="playContent($event)">
             </sb-library-cards-grid>
+            <div class="sb-desktop-library-card">
+              <sb-library-cards-grid *ngIf="!isPageAssemble && isDesktopApp" [layoutConfig]="layoutConfiguration" [type]="'infinite_card_grid_with_hover'" 
+              [title]="section?.name" [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3" 
+              (hoverActionClick)="hoverActionClicked($event)">
+              </sb-library-cards-grid>
+            </div>
           </div>
           <div class="twelve wide column" *ngIf="showLoader">
             <app-loader [data]='loaderMessage'></app-loader>

@@ -20,6 +20,7 @@ import authRoutes from './routes/auth';
 import Device from './controllers/device';
 import { manifest } from "./manifest";
 import Response from './utils/response';
+import { addPerfLogForAPICall } from './loaders/logger';
 const proxy = require('express-http-proxy');
 
 export class Router {
@@ -68,6 +69,33 @@ export class Router {
           const size = parseInt(res.getHeader("Content-Length"));
           if (size) {
             params.push({ size });
+          }
+
+          const xhr = _.get(req, 'headers.accept');
+          if (xhr && xhr.indexOf('json') > -1) {
+            let apiUrl;
+            let routePath = _.get(req, 'route.path');
+
+            if (_.isArray(routePath)) {
+             let path = req.path;
+             routePath.forEach((item) => {
+               const result = item.split(":");
+
+               if (path.startsWith(result[0]) && _.has(req.params, result[1])) {
+                apiUrl = result[0];
+               }
+             }); 
+            } else {
+              apiUrl = req.path;
+            } 
+
+            if (apiUrl) {
+              const perfData = {
+                time: elapsedTime,
+                metaData: { url: apiUrl }
+              }
+              addPerfLogForAPICall(perfData);
+            }
           }
           const logEvent = {
             context: {

@@ -1,20 +1,20 @@
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import {
-  ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile, Framework,
+  ResourceService, ConfigService, ToasterService, ServerResponse, Framework,
   ILoaderMessage, NavigationHelperService , BrowserCacheTtlService
 } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EditorService } from './../../services';
-import { SearchService, UserService, FrameworkService, FormService } from '@sunbird/core';
+import { SearchService, UserService, FrameworkService, FormService, PublicDataService, ContentService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
 import { DefaultTemplateComponent } from '../content-creation-default-template/content-creation-default-template.component';
-import { IInteractEventInput, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
+import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { WorkSpace } from '../../classes/workspace';
 import { WorkSpaceService } from '../../services';
-import { combineLatest, Subscription, Subject, of, throwError } from 'rxjs';
-import { takeUntil, first, mergeMap, map, tap , filter, catchError} from 'rxjs/operators';
+import { Subject, forkJoin } from 'rxjs';
+import { takeUntil} from 'rxjs/operators';
 import { UUID } from 'angular2-uuid';
 
 @Component({
@@ -118,6 +118,9 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
   public isSubmit = false;
 
   public unsubscribe = new Subject<void>();
+  public targetFramework: string;
+  public primaryCategory: string;
+  public userChannelData;
   constructor(
     public searchService: SearchService,
     public workSpaceService: WorkSpaceService,
@@ -133,7 +136,9 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     private _cacheService: CacheService,
     public navigationHelperService: NavigationHelperService,
     public browserCacheTtlService: BrowserCacheTtlService,
-    public telemetryService: TelemetryService
+    public telemetryService: TelemetryService,
+    public publicDataService: PublicDataService,
+    public contentService: ContentService
   ) {
     super(searchService, workSpaceService, userService);
     this.activatedRoute = activatedRoute;
@@ -163,6 +168,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
       if (this.showFrameworkSelection) {
         this.frameworkService.getChannel(this.userService.hashTagId).pipe(takeUntil(this.unsubscribe)).subscribe(data => {
           this.setFrameworkData(data);
+          this.userChannelData = data;
         }, err => {
           this.toasterService.error(this.resourceService.messages.emsg.m0005);
         });
@@ -303,6 +309,14 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     } else {
       requestData.creator = this.userService.userProfile.firstName;
     }
+
+    if (this.targetFramework) {
+      requestData.targetFWIds = [this.targetFramework];
+    }
+    if (this.primaryCategory) {
+      requestData.primaryCategory = this.primaryCategory;
+    }
+
     return requestData;
   }
 
@@ -424,6 +438,24 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
       }
     };
     this.telemetryService.interact(telemetryInteractData);
+  }
+
+  getFrameworkDataByType(type, channel = this.userService.channel) {
+    const option = {
+      url: `${this.configService.urlConFig.URLS.COMPOSITE.SEARCH}`,
+      'data': {
+        'request': {
+            'filters': {
+                'objectType': 'Framework',
+                'type': type,
+                'status': 'Live',
+                channel
+            },
+            'limit': 1
+        }
+    }
+      };
+      return this.contentService.post(option);
   }
 
   /**
