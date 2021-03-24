@@ -57,8 +57,10 @@ export default class AuthController {
             // Save managed users in DB
             if (managedUsers.count) {
                 managedUsers.content.forEach(async (managedUser) => {
-                    managedUser.accessToken = userAuthDetails.access_token;
-                    await this.saveUserInDB(managedUser)
+                    const managedUserDetails = { access_token: userAuthDetails.access_token, userId: managedUser.userId };
+                    const userDetails = await permissionsHelper.getUser(managedUserDetails, true);
+                    user.accessToken = userAuthDetails.access_token;
+                    await this.saveUserInDB(userDetails)
                 });
             }
 

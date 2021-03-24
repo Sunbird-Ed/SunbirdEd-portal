@@ -94,6 +94,10 @@ export default class ContentStatus {
       "x-authenticated-user-token": userToken
     };
 
+    if (currentUser.managedToken) {
+      headers["x-authenticated-for"] = currentUser.managedToken;
+    }
+
     const request = {
       bearerToken: true,
       pathToApi: `${process.env.APP_BASE_URL}/api/course/v1/content/state/update`,
