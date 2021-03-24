@@ -64,7 +64,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   isDesktopApp = false;
   showQumlPlayer = false;
   questionIds: string[];
-  qumlThreshold: number;
 
   /**
  * Dom element reference of contentRatingModal
@@ -241,7 +240,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         let isNewPlayer = false;
         _.forEach(data, (value) => {
           if (_.includes(_.get(value, 'mimeType'), this.playerConfig.metadata.mimeType) && _.get(value, 'version') === 2) {
-            this.qumlThreshold = _.get(value, 'threshold');
+            this.playerConfig.metadata.threshold = _.get(value, 'threshold');
             this.playerType = _.get(value, 'type');
             isNewPlayer = true;
           }
