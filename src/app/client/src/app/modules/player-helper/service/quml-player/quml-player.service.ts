@@ -1,4 +1,4 @@
-import { QuestionCursor } from 'quml-player';
+import { QuestionCursor } from '@project-sunbird/sunbird-quml-player';
 import { Observable } from 'rxjs';
 import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
