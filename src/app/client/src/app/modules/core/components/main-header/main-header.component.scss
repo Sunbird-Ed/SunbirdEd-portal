@@ -2,6 +2,10 @@
 @import "mixins/mixins";
 @import "layout/header";
 
+.sb-header-bg{
+  background: var(--sb-header-bg) !important;
+}
+
 .overlay-sidebar,
 .overlay-sidebar__menu {
   position: fixed;
@@ -16,12 +20,12 @@
   overflow: hidden;
   display: block;
   z-index: 99999;
-  background: rgba(var(--rc-rgba-black), 0.4);
+  background: rgba(var(--sbt-sidemenu-overlay-bg), 0.4); //--rc-rgba-black
 
   &__menu {
     width: calculateRem(400px);
     right: 0;
-    background: var(--white);
+    background: var(--sbt-sidemenu-bg);
     z-index: 100000;
     overflow-y: auto;
     overflow-x: hidden;
@@ -32,7 +36,7 @@
 .profile {
   &__info {
     padding: calculateRem(40px) calculateRem(16px) calculateRem(8px) calculateRem(16px);
-    background-color: var(--primary-100);
+    background-color: var(--sidebar-profil-header-bg);
     position: relative;
 
     .icon-close {
@@ -74,7 +78,7 @@
 
         &:hover,
         &.active {
-          background-color: var(--primary-100);
+          background-color: var(--sidebar-li-hover-bg);
         }
       }
     }

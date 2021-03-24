@@ -2,7 +2,7 @@
 <app-landing-section [textToDisplay]="" 
 [layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
 
-<div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-mygroups relative9' : ''">
+<div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-mygroups relative9' : 'sb-mygroups'">
 <div class="flex-dc mt-48 sb-group-container sb-group-container--sm" *ngIf="!groupsList.length && !isLoader">
   <div class="d-flex flex-dc flex-ai-center flex-jc-center">
     <img alt="{{resourceService?.frmelmnts?.lbl?.createGroupDes}}" src="./assets/images/mygroups.svg" width="220">

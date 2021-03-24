@@ -65,7 +65,7 @@
     <!--Header White Section-->
     <!--Header Blue Section-->
     <!--Computer-->
-    <div class="sb-bg-color-primary p-8 px-16"
+    <div class="sb-header-bg p-8 px-16"
       *ngIf="(showExploreHeader || userService.loggedIn && !showOfflineHelpCentre) && !router.url.includes('/contribute/program')">
       <ng-container *ngIf="contributeTabActive else defaultView">
         <div class="ui container d-flex flex-ai-center mx-0 px-8">
@@ -95,7 +95,7 @@
           </app-search>
           <!--/Logged in Pages-->
           <!--Explore Pages-->
-          <div class="sb-search-box b-0" *ngIf="showExploreComponent && !hideHeader"
+          <div class="sb-search-box b-0 large" *ngIf="showExploreComponent && !hideHeader"
             [ngClass]="{'ml-auto': searchBox.center, 'ml-0': !searchBox.center, 'small': searchBox.smallBox, 'large': searchBox.largeBox, 'medium': searchBox.mediumBox}">
             <div class="input-div relative">
               <!-- <i class="search icon"></i> -->
@@ -121,7 +121,7 @@
            <!--/Load content -->
           <!--Language Dropdown-->
           <app-language-dropdown [layoutConfiguration]="layoutConfiguration" [languageRange]='languages'
-            class="computer only ml-auto" *ngIf="languages && showLanguageDropdown()">
+            class="computer only ml-auto d-flex" *ngIf="languages && showLanguageDropdown()">
           </app-language-dropdown>
           <!--/Language Dropdown-->
         </div>
