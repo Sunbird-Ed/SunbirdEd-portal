@@ -155,6 +155,25 @@
 </app-share-link>
 
 <div *ngIf="isDesktopApp">
+  <sui-modal *ngIf="showModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+  class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal;" #modal>
+  <div class="sb-modal-header">
+    {{resourceService.frmelmnts?.btn?.download}}
+  </div>
+  <div class="sb-modal-content">
+    <p>{{resourceService?.messages?.stmsg?.m0137}}</p>
+  </div>
+  <div class="sb-modal-actions">
+    <button  class="sb-btn sb-btn-normal sb-btn-primary"
+      (click)="downloadCollection(courseHierarchy); showModal = !showModal;">
+      {{resourceService.frmelmnts?.btn?.download}}
+    </button>
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
+      (click)="logTelemetry('cancel-download-collection'); showModal = !showModal;">
+      {{resourceService.frmelmnts?.btn?.cancel}}
+    </button>
+  </div>
+  </sui-modal>
 
   <sui-modal *ngIf="showDeleteModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
     class="sb-modal" appBodyScroll (dismissed)="showDeleteModal = !showDeleteModal;" #modal>
@@ -162,11 +181,11 @@
       {{resourceService?.frmelmnts?.lbl?.delete}}
     </div>
     <div class="sb-modal-content">
-      <p>{{resourceService?.frmelmnts?.lbl?.desktop?.deleteCollection | interpolate:'{name}': collectionData?.name}}</p>
+      <p>{{resourceService?.frmelmnts?.lbl?.desktop?.deleteCollection | interpolate:'{name}': courseHierarchy?.name}}</p>
     </div>
     <div class="sb-modal-actions">
       <button class="sb-btn sb-btn-normal sb-btn-primary"
-        (click)="deleteCollection(collectionData); showDeleteModal = !showDeleteModal;">
+        (click)="deleteCollection(courseHierarchy); showDeleteModal = !showDeleteModal;">
         {{resourceService?.frmelmnts?.lbl?.delete}}
       </button>
       <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
