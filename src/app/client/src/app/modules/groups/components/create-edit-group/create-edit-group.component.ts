@@ -63,7 +63,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy {
       request.description = _.trim(request.description);
       this.groupService.createGroup(request).pipe(takeUntil(this.unsubscribe$)).subscribe(group => {
         if (group) {
-          this.toasterService.success(this.resourceService.messages.smsg.m001);
+          this.toasterService.success(this.resourceService.messages.smsg.grpcreatesuccess);
         }
         this.groupService.emitCloseForm();
         this.disableBtn = false;
