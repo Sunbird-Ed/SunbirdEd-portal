@@ -93,7 +93,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     'center': false,
     'smallBox': false,
     'mediumBox': false,
-    'largeBox': false
+    'largeBox': true
   };
   languages: Array<any>;
   showOfflineHelpCentre = false;
@@ -248,7 +248,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.formService.getFormConfig(formServiceInputParams, channelId).subscribe((data: any) => {
       this.languages = data[0].range;
     }, (err: any) => {
-      this.languages = [{ 'value': 'en', 'label': 'English', 'dir': 'ltr' }];
+      this.languages = [{ 'value': 'en', 'label': 'English', 'dir': 'ltr','accessibleText':'English' }];
     });
   }
   navigateToHome() {

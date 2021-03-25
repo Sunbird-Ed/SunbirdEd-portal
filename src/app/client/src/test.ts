@@ -60,6 +60,10 @@ if (!CsModule.instance.isInitialised) {
       },
       discussionServiceConfig: {
         apiPath: '/discussion'
+      },
+      contentServiceConfig: {
+        hierarchyApiPath: '/learner/questionset/v1',
+        questionListApiPath: '/content/question/v1'
       }
     }
   });

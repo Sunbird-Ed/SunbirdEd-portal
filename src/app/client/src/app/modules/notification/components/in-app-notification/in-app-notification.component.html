@@ -1,6 +1,9 @@
 <div class="ui dropdown right top pointing" [ngClass]="{'notification-disable': !notificationList?.length}" id="dropdown-menu-list-header" (click)="toggleInAppNotifications()" title="{{notificationList?.length ? '' : resourceService.frmelmnts?.lbl?.noNotificationsToDisplay}}">
   <div class="notification-bell d-flex flex-ai-center flex-jc-center" name="Guest">
-    <img src="./assets/images/notification.svg" alt="In App Notification">
+    <!-- <img src="./assets/images/notification.svg" alt="In App Notification"> -->
+    <i class="icon-svg icon-svg--sm icon-manage"><svg class="icon bell-icon">
+      <use xlink:href="./assets/images/sprite.svg#notification"></use>
+    </svg></i>
   </div>
   <div class="notification-count" *ngIf="notificationCount">{{notificationCount}}</div>
 </div>
