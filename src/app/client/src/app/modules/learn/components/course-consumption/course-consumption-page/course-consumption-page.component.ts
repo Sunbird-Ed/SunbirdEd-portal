@@ -1,6 +1,6 @@
-import { combineLatest, Subject, throwError, BehaviorSubject, of } from 'rxjs';
+import { combineLatest, Subject, throwError, BehaviorSubject } from 'rxjs';
 import { map, mergeMap, first, takeUntil, delay, switchMap } from 'rxjs/operators';
-import { ResourceService, ToasterService, ConfigService, NavigationHelperService, LayoutService, UtilService, ConnectionService } from '@sunbird/shared';
+import { ResourceService, ToasterService, ConfigService, NavigationHelperService, LayoutService } from '@sunbird/shared';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';

@@ -3,7 +3,7 @@ import { TelemetryService, IAuditEventInput, IImpressionEventInput } from '@sunb
 import { Component, OnInit, OnDestroy, ViewChild, Inject } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption-v8';
-import { UserService, GeneraliseLabelService, CoursesService } from '@sunbird/core';
+import { UserService, GeneraliseLabelService } from '@sunbird/core';
 import { AssessmentScoreService, CourseBatchService, CourseConsumptionService, CourseProgressService } from '@sunbird/learn';
 import { PublicPlayerService } from '@sunbird/public';
 import { ConfigService, ResourceService, ToasterService, NavigationHelperService,
@@ -16,7 +16,6 @@ import * as TreeModel from 'tree-model';
 import { NotificationService } from '../../../../notification/services/notification/notification.service';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 import { result } from 'lodash';
-import { ConnectionService, UtilService } from '@sunbird/shared';
 
 const ACCESSEVENT = 'renderer:question:submitscore';
 
@@ -94,7 +93,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     public generaliseLabelService: GeneraliseLabelService,
     private notificationService: NotificationService,
     private CourseProgressService: CourseProgressService,
-    public coursesService: CoursesService,
     @Inject('CS_COURSE_SERVICE') private CsCourseService: CsCourseService
   ) {
     this.playerOption = {
@@ -256,6 +254,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
         this.setTelemetryCourseImpression();
       });
   }
+
 
   private getCollectionInfo(courseId: string): Observable<any> {
     const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
