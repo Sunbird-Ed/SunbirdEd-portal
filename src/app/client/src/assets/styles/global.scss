@@ -1162,3 +1162,26 @@ a.ui.label:hover, a.ui.labels .label:hover{
     cursor: pointer;;
   }
 }
+.sb-slider-pills-container .sb-grade-pills-container .pill:hover{
+  background: var(--gray-100) !important;
+  color: var(--black) !important;
+}
+
+quml-player {
+  .quml-container {
+    width: 100%;
+    background: white;
+    height: 100%;
+    overflow: auto;
+    .filter-option:hover, .active {
+      border-bottom: unset;
+      font-weight: inherit;
+    }
+    .lanscape-mode-right {
+      height: calc(100% - 56px);
+      ul::before {
+        z-index: 0 !important;
+      }
+    }
+  }
+}

@@ -1473,7 +1473,6 @@ html[data-theme=Darkmode] {
   --kabab-menu-hover-bg: var(--black);
   --kabab-menu-dropdown-bg: #222222;
   --kabab-menu-dropdown-item-active: #333333;
-
   .no-content-container .board-title, .no-content-container .sub-title, .ui.semi-circular.update.basic.label, .ui.semi-circular.basic.label {
     color: var(--gray-100) !important;
   }
@@ -2770,9 +2769,11 @@ sb-accordion-body .sbaccordion__panel-content .credits-section .title{
 
 html[accessable-theme="accessible"][layout='joy'][data-theme=Darkmode] {
 
-  .sbt-class-bar .sb-slider-pills-container .sb-pills-container .pill.active,
-  .sbt-class-bar .sb-slider-pills-container .sb-pills-container .pill:hover {
+  .sbt-class-bar .sb-slider-pills-container .sb-pills-container .pill.active {
     background-color: var(--primary-color) !important;
+    color: var(--black) !important;
+  }
+  .sbt-class-bar .sb-slider-pills-container .sb-pills-container .pill:hover {
     color: var(--black) !important;
   }
 
@@ -2813,11 +2814,13 @@ html[accessable-theme="accessible"]{
     color: var(--sbt-pill-text) !important
   }
 
-  .sbt-class-bar .sb-slider-pills-container .sb-pills-container .pill.active,
-  .sbt-class-bar .sb-slider-pills-container .sb-pills-container .pill:hover {
+  .sbt-class-bar .sb-slider-pills-container .sb-pills-container .pill.active {
     background: var(--sbt-pill-bg-active) !important;
   }
-
+  .sbt-class-bar .sb-slider-pills-container .sb-pills-container .pill:hover {
+    background-color: var(--gray-100) !important;
+    color: var(--black) !important;
+  }
   .update.basic.label {
     color: #525252 !important;
   }

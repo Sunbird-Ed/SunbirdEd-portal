@@ -25,6 +25,8 @@
 
         <sunbird-epub-player *ngIf="playerType === 'epub-player'" [playerConfig]="playerConfig"
         (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></sunbird-epub-player>
+
+        <quml-player *ngIf="playerType === 'quml-player' && showQumlPlayer" [QumlPlayerConfig]="playerConfig" (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event)" [questionIds]="questionIds"></quml-player>
       </div>
 </div>
 
