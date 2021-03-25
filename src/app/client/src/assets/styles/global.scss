@@ -1126,7 +1126,7 @@ a.ui.label:hover, a.ui.labels .label:hover{
 
 // Buttons
 .sb-btn-outline-primary {
-  & {
+  html[data-theme=Darkmode]& {
     &:hover, &:active, &.active {
       i.blue.icon {
         color: var(--black) !important;
