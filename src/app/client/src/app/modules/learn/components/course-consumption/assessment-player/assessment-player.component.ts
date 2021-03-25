@@ -432,7 +432,10 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   private validEndEvent(event) {
     const playerSummary: Array<any> = _.get(event, 'detail.telemetryData.edata.summary');
     const contentMimeType = _.get(this.previousContent, 'mimeType') ? _.get(this.previousContent, 'mimeType') : _.get(this.activeContent, 'mimeType');
+    const contentType = _.get(this.previousContent, 'primaryCategory') ? _.get(this.previousContent, 'primaryCategory') : _.get(this.activeContent, 'primaryCategory');
     this.courseProgress = CsContentProgressCalculator.calculate(playerSummary, contentMimeType);
+    console.log(_.find(playerSummary, ['endpageseen', true]));
+    this.courseProgress = (contentType.toLowerCase() === 'course assessment' && _.find(playerSummary, ['endpageseen', true])) ? this.courseProgress : 0;
     return this.courseProgress;
   }
 
