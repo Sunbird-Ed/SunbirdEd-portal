@@ -1,103 +1,139 @@
-
 [
-        {
-            "name": "content",
-            "indexes": [
-                {
-                    "index": {
-                        "fields": [
-                            "desktopAppMetadata.updatedOn"
-                        ]
-                    },
-                    "name": "sort_updatedOn_index"
+    {
+        "name": "content",
+        "indexes": [
+            {
+                "index": {
+                    "fields": [
+                        "desktopAppMetadata.updatedOn"
+                    ]
                 },
-                {
-                    "index": {
-                        "fields": [
-                            "desktopAppMetadata.isAvailable",
-                            "desktopAppMetadata.updatedOn",
-                            "board",
-                            "medium",
-                            "gradeLevel",
-                            "subject",
-                            "dialcodes",
-                            "keywords",
-                            "name",
-                            "description",
-                            "contentType",
-                            "description",
-                            "identifier"
-                            
-                        ]
-                    },
-                    "name": "search"
+                "name": "sort_updatedOn_index"
+            },
+            {
+                "index": {
+                    "fields": [
+                        "desktopAppMetadata.isAvailable",
+                        "desktopAppMetadata.updatedOn",
+                        "board",
+                        "medium",
+                        "gradeLevel",
+                        "subject",
+                        "dialcodes",
+                        "keywords",
+                        "name",
+                        "description",
+                        "contentType",
+                        "description",
+                        "identifier"
+                    ]
+                },
+                "name": "search"
+            }
+        ]
+    },
+    {
+        "name": "framework",
+        "indexes": [
+            {
+                "index": {
+                    "fields": [
+                        "_id"
+                    ]
                 }
-            ]
-        },
-        {
-            "name": "framework",
-            "indexes": [
-                {
-                    "index": {
-                        "fields": [
-                            "_id"
-                        ]
-                    }
+            }
+        ]
+    },
+    {
+        "name": "faqs"
+    },
+    {
+        "name": "enrolled_trackable_collection",
+        "indexes": [
+            {
+                "index": {
+                    "fields": [
+                        "userId"
+                    ]
                 }
-            ]
-        },
-        {
-            "name": "faqs"
-        },
-        {
-            "name": "resource_bundle",
-            "indexes": [
-                {
-                    "index": {
-                        "fields": [
-                            "_id"
-                        ]
-                    }
+            }
+        ]
+    },
+    {
+        "name": "content_status",
+        "indexes": [
+            {
+                "index": {
+                    "fields": [
+                        "contentId",
+                        "batchId",
+                        "courseId",
+                        "userId"
+                    ]
                 }
-            ]
-        },
-        {
-            "name": "organization",
-            "indexes": [
-                {
-                    "index": {
-                        "fields": [
-                            "_id"
-                        ]
-                    }
+            }
+        ]
+    },    {
+        "name": "batch_details",
+        "indexes": [
+            {
+                "index": {
+                    "fields": [
+                        "identifier"
+                    ]
                 }
-            ]
-        },
-        {
-            "name": "channel",
-            "indexes": [
-                {
-                    "index": {
-                        "fields": [
-                            "_id"
-                        ]
-                    }
+            }
+        ]
+    },
+    {
+        "name": "resource_bundle",
+        "indexes": [
+            {
+                "index": {
+                    "fields": [
+                        "_id"
+                    ]
                 }
-            ]
-        },
-        {
-            "name": "form",
-            "indexes": [
-                {
-                    "index": {
-                        "fields": [
-                            "_id"
-                        ]
-                    }
+            }
+        ]
+    },
+    {
+        "name": "organization",
+        "indexes": [
+            {
+                "index": {
+                    "fields": [
+                        "_id"
+                    ]
                 }
-            ]
-        },
-        {
-            "name": "location"
-        }
-    ]
+            }
+        ]
+    },
+    {
+        "name": "channel",
+        "indexes": [
+            {
+                "index": {
+                    "fields": [
+                        "_id"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "name": "form",
+        "indexes": [
+            {
+                "index": {
+                    "fields": [
+                        "_id"
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "name": "location"
+    }
+]

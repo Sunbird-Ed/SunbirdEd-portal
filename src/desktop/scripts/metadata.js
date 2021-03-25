@@ -285,6 +285,39 @@ const getFaqs = async () => {
     }
 }
 
+const getGeneralizedLabels = async () => {
+    const instance = await getInstance()
+    const langResponse = await instance.post(`/api/data/v1/form/read`, {
+        request: {
+            type: "generaliseresourcebundles",
+            action: "list",
+            subType: "global",
+            component: "portal"
+        },
+    });
+    const langObj = _.get(langResponse, 'data.result.form.data.fields[0].default.trackable');
+    if (langObj) {
+        let generalizedLabelResponses = [];
+
+        for (const iterator in langObj) {
+            const gl = await instance.get(`getGeneralisedResourcesBundles/${iterator}/${langObj[iterator]}`);
+            generalizedLabelResponses.push({key: iterator, value:_.get(gl, 'data.result')});
+        }
+
+        const getFilePath = (key) => {
+            return path.join(baseDirPath, 'resourceBundles', `generalized_${key}.json`);
+        }
+        await Promise.allSettled(generalizedLabelResponses.map(({key}) => {
+            return fse.createFile(getFilePath(key));
+        }));
+
+        await Promise.allSettled(generalizedLabelResponses.map(({key, value}) => {
+            return fse.writeJSON(getFilePath(key), value);
+        }));
+    }
+
+};
+
 const getLocations = async () => {
     const instance = await getInstance();
     const { data: stateData } = await instance.post(`/api/data/v1/location/search`,
@@ -312,7 +345,7 @@ const getLocations = async () => {
 
 
 const getMetaData = async () => {
-    return Promise.all([getOrgs(), getForms(), getLocations(), getFaqs()])
+    return Promise.all([getOrgs(), getForms(), getLocations(), getFaqs(), getGeneralizedLabels()])
     // getPages();
 }
 

@@ -134,11 +134,10 @@ export const customProxy = (host, options = {}) => {
               throw ({ response: error.response })
             }
           } else if (_.get(response, 'status') === 404) {
-            response.status = 404;
             response.data = response.data || getErrorObj();
-            throw ({ response: error.response })
+            throw ({ response })
           } else {
-            throw ({ response: error.response })
+            throw ({ response })
           }
         }),
         tap(val => logger.log("Retrying API request")),
@@ -151,11 +150,11 @@ export const customProxy = (host, options = {}) => {
       next();
     }, error => {
       const response = _.get(error, 'response');
-      res.body = _.get(response, 'data');
+      res.body = _.get(response, 'data') || {};
       res.headers = _.get(response, 'headers');
       res.statusCode = _.get(response, 'status');
 
-      if (!res.body && !res.statusCode) {
+      if (_.isEmpty(res.body) && !res.statusCode) {
         res.body = Response.error(apiId, 500);
         res.statusCode = 500;
       }
