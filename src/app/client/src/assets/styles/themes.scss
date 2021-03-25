@@ -1479,6 +1479,10 @@ html[data-theme=Darkmode] {
   --kabab-menu-hover-bg: var(--black);
   --kabab-menu-dropdown-bg: #222222;
   --kabab-menu-dropdown-item-active: #333333;
+
+  .terms-and-cond-form iframe{
+    filter: invert(1);
+  }
   .no-content-container .board-title, .no-content-container .sub-title, .ui.semi-circular.update.basic.label, .ui.semi-circular.basic.label {
     color: var(--gray-100) !important;
   }
