@@ -1126,7 +1126,7 @@ a.ui.label:hover, a.ui.labels .label:hover{
 
 // Buttons
 .sb-btn-outline-primary {
-  html[data-theme=Darkmode] & {
+  & {
     &:hover, &:active, &.active {
       i.blue.icon {
         color: var(--black) !important;
@@ -1184,4 +1184,7 @@ quml-player {
       }
     }
   }
+}
+.logo.sbt-logo, .five.wide.column .d-flex.logo, .five.wide.column .logo.flex-ai-jc-center, .five.wide.column .logo.flex-jc-ai-center, .five.wide.column .list-items .logo.list-items__bar, .list-items .five.wide.column .logo.list-items__bar, .sb-onboard .brand-logo, .terms-modal-logo{
+  padding: 0.5rem;
 }
