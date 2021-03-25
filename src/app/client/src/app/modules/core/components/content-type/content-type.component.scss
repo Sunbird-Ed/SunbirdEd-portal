@@ -14,7 +14,7 @@
 }
 .item a.item.active, .item a.item:hover {
   outline: none;
-  color: var(--primary-color) !important;
+  color: var(--sb-linkmenu-active-text) !important;
 }
 .item a.item.active {
   font-weight: bold;
@@ -25,7 +25,7 @@
   overflow: auto;
   padding: 0 0 calculateRem(8px) 0;
   .item {
-    background: var(--white);
+    background: var(--sb-linkmenu-bg);
     padding: calculateRem(8px) calculateRem(16px);
     border-radius: calculateRem(6px);
     box-shadow: var(--sbt-box-shadow-6px);
@@ -38,93 +38,78 @@
     align-items: center;
     cursor: pointer;
     white-space: nowrap;
-    color: var(--gray-800);
+    color: var(--sb-linkmenu-text);
     @include respond-above(md){
       min-width: calculateRem(180px);
     }
     &.active,
     &:hover {
-      color: var(--white);
+      color: var(--sb-linkmenu-text-hover);
       text-decoration: none;
-      background-color: var(--primary-color);
+      background-color: var(--sb-linkmenu-bg-hover);
       .sb-icon {
-        background-color: var(--white);
+        background-color: var(--sb-linkmenu-icon-bg-hover);
       }
     }
 /*
     &--textbooks {
       color: var(--sbt-textbooks-text);
-
       &:hover,
       &.item.active,
       .sb-icon__textbooks {
         background-color: var(--sbt-textbooks-bg);
       }
     }
-
     &--courses {
       color: var(--sbt-courses-text);
-
       &:hover,
       &.item.active,
       .sb-icon__courses {
         background-color: var(--sbt-courses-bg);
       }
     }
-
     &--tests {
       color: var(--sbt-tests-text);
-
       &:hover,
       &.item.active,
       .sb-icon__tests {
         background-color: var(--sbt-tests-bg);
       }
     }
-
     &--quizzes {
       color: var(--sbt-quizzes-text);
-
       &:hover,
       &.item.active,
       .sb-icon__quizzes {
         background-color: var(--sbt-quizzes-bg);
       }
     }
-
     &--stories {
       color: var(--sbt-stories-text);
-
       &:hover,
       &.item.active,
       .sb-icon__stories {
         background-color: var(--sbt-stories-bg);
       }
     }
-
     &--poems {
       color: var(--sbt-poems-text);
-
       &:hover,
       &.item.active,
       .sb-icon__poems {
         background-color: var(--sbt-poems-bg);
       }
     }
-
     &--tv {
       color: var(--sbt-tv-text);
-
       &:hover,
       &.item.active,
       .sb-icon__tv {
         background-color: var(--sbt-tv-bg);
       }
     }
-
     &--all {
       color: var(--sbt-all-text);
-
       &:hover,
       &.item.active,
       .sb-icon__all {

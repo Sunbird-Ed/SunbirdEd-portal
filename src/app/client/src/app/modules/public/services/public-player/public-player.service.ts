@@ -8,6 +8,9 @@ import {
   ConfigService, ServerResponse, ContentDetails, PlayerConfig, ContentData, NavigationHelperService, ResourceService, UtilService
 } from '@sunbird/shared';
 import * as _ from 'lodash-es';
+import { CsModule } from '@project-sunbird/client-services';
+import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +27,10 @@ export class PublicPlayerService {
   previewCdnUrl: string;
   sessionId;
   private _libraryFilters: any = {};
+  private contentCsService: any;
 
-  constructor(public userService: UserService, private orgDetailsService: OrgDetailsService,
+
+  constructor(private csLibInitializerService: CsLibInitializerService, public userService: UserService, private orgDetailsService: OrgDetailsService,
     public configService: ConfigService, public router: Router,
     public publicDataService: PublicDataService, public navigationHelperService: NavigationHelperService,
     public resourceService: ResourceService, private utilService: UtilService) {
@@ -33,6 +38,10 @@ export class PublicPlayerService {
       ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
       this.sessionId = (<HTMLInputElement>document.getElementById('sessionId'))
       ? (<HTMLInputElement>document.getElementById('sessionId')).value : undefined;
+      if (!CsModule.instance.isInitialised) {
+        this.csLibInitializerService.initializeCs();
+      }
+      this.contentCsService = CsModule.instance.contentService;
   }
 
   /**
@@ -189,6 +198,21 @@ export class PublicPlayerService {
     content['downloadStatus'] = downloadListdata[identifier];
 
     return content;
+  }
+
+  getQuestionSetHierarchy(data) {
+    return this.contentCsService.getQuestionSetHierarchy(data);
+  }
+
+  getQuestionSetRead(contentId: string, option: any = { params: {} }): Observable<ServerResponse> {
+    const param = { fields: this.configService.editorConfig.DEFAULT_PARAMS_FIELDS };
+    const req = {
+        url: `${this.configService.urlConFig.URLS.QUESTIONSET.READ}/${contentId}`,
+        param: { ...param, ...option.params }
+    };
+    return this.publicDataService.get(req).pipe(map((response: ServerResponse) => {
+        return response;
+    }));
   }
 
     get libraryFilters() {

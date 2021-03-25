@@ -9,7 +9,7 @@ appBodyScroll
 #modal  *ngIf="showContentRatingModal"
 >
   <!--Header-->
-  <i class="close icon" (click)="modal.deny()"></i>
+  <i class="close icon" role="img" aria-label="close" (click)="modal.deny()"></i>
   <div class="sb-modal-header">
     {{resourceService?.frmelmnts?.lbl?.enjoyedContent}}
   </div>
