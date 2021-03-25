@@ -94,7 +94,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   navigateToContentObject: any;
   _routerStateContentStatus: any;
   isConnected = false;
-  isDesktopApp = false;
   constructor(
     public activatedRoute: ActivatedRoute,
     private configService: ConfigService,
@@ -118,7 +117,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     public generaliseLabelService: GeneraliseLabelService,
     private notificationService: NotificationService,
     private connectionService: ConnectionService,
-    private utilService: UtilService,
     @Inject('CS_COURSE_SERVICE') private CsCourseService: CsCourseService
   ) {
     this.router.onSameUrlNavigation = 'ignore';
@@ -131,7 +129,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     } else {
       this.courseMentor = false;
     }
-    this.isDesktopApp = this.utilService.isDesktopApp;
     this.connectionService.monitor()
     .pipe(takeUntil(this.unsubscribe)).subscribe(isConnected => {
       this.isConnected = isConnected;
@@ -204,17 +201,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
         /* istanbul ignore else */
         if (this.batchId) {
-          if (this.isDesktopApp && !this.isConnected) {
-            return combineLatest([
-              this.courseConsumptionService.getCourseHierarchy(courseId, inputParams),
-              this.getCurrentCourse()
-            ]).pipe(map(results => ({ courseHierarchy: results[0], enrolledBatchDetails: _.get(results[1], 'batch') })));
-          } else {
-            return combineLatest([
-              this.courseConsumptionService.getCourseHierarchy(courseId, inputParams),
-              this.courseBatchService.getEnrolledBatchDetails(this.batchId)
-            ]).pipe(map(results => ({ courseHierarchy: results[0], enrolledBatchDetails: results[1] })));
-          }
+          return combineLatest([
+            this.courseConsumptionService.getCourseHierarchy(courseId, inputParams),
+            this.courseBatchService.getEnrolledBatchDetails(this.batchId)
+          ]).pipe(map(results => ({ courseHierarchy: results[0], enrolledBatchDetails: results[1] })));
         }
 
         return this.courseConsumptionService.getCourseHierarchy(courseId, inputParams)
@@ -700,14 +690,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         const courseLastUpdatedOn = new Date(this.courseHierarchy.lastUpdatedOn).getTime();
         this.isEnrolledCourseUpdated = (enrolledCourse && (enrolledCourseDateTime < courseLastUpdatedOn)) || false;
       });
-  }
-
-  getCurrentCourse() {
-    return this.coursesService.getEnrolledCourses().pipe(map(resp => {
-      const enrolledCourses = _.get(resp, 'result.courses');
-      const course = _.find(enrolledCourses, { courseId: this.courseId });
-      return course;
-    }));
   }
 
   onCourseCompleteClose() {

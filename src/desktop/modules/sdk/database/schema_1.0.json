@@ -73,6 +73,17 @@
                 }
             }
         ]
+    },    {
+        "name": "batch_details",
+        "indexes": [
+            {
+                "index": {
+                    "fields": [
+                        "identifier"
+                    ]
+                }
+            }
+        ]
     },
     {
         "name": "resource_bundle",

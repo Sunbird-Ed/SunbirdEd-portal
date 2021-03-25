@@ -23,7 +23,7 @@ export default class Course {
     return currentUserId;
   }
 
-  private async getCourses(userId: string) {
+  public async getCourses(userId: string) {
     // Find if the user is existed in the database
     const query = {
       selector: { userId },

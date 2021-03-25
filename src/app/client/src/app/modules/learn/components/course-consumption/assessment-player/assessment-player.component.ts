@@ -74,8 +74,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   _routerStateContentStatus: any;
   showLastAttemptsModal: boolean = false;
   navigationObj: { event: any; id: any; };
-  isConnected = false;
-  isDesktopApp = false;
 
   constructor(
     public resourceService: ResourceService,
@@ -96,8 +94,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     public generaliseLabelService: GeneraliseLabelService,
     private notificationService: NotificationService,
     private CourseProgressService: CourseProgressService,
-    private connectionService: ConnectionService,
-    private utilService: UtilService,
     public coursesService: CoursesService,
     @Inject('CS_COURSE_SERVICE') private CsCourseService: CsCourseService
   ) {
@@ -146,11 +142,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.isDesktopApp = this.utilService.isDesktopApp;
-    this.connectionService.monitor()
-    .pipe(takeUntil(this.unsubscribe)).subscribe(isConnected => {
-      this.isConnected = isConnected;
-    });
     this.initLayout();
     this.subscribeToQueryParam();
     this.subscribeToContentProgressEvents().subscribe(data => { });
@@ -266,37 +257,16 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       });
   }
 
-
   private getCollectionInfo(courseId: string): Observable<any> {
     const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
-    if (this.isDesktopApp && !this.isConnected) {
-      return combineLatest([
-        this.courseConsumptionService.getCourseHierarchy(courseId, inputParams),
-        this.getCurrentCourse()
-      ]).pipe(map((results: any) => {
-        return {
-          courseHierarchy: results[0],
-          enrolledBatchDetails: _.get(results[1], 'batch'),
-        };
-      }));
-    } else {
-      return combineLatest([
-        this.courseConsumptionService.getCourseHierarchy(courseId, inputParams),
-        this.courseBatchService.getEnrolledBatchDetails(this.batchId),
-      ]).pipe(map((results: any) => {
-        return {
-          courseHierarchy: results[0],
-          enrolledBatchDetails: results[1],
-        };
-      }));
-    }
-  }
-
-  getCurrentCourse() {
-    return this.coursesService.getEnrolledCourses().pipe(map(resp => {
-      const enrolledCourses = _.get(resp, 'result.courses');
-      const course = _.find(enrolledCourses, { courseId: this.courseId });
-      return course;
+    return combineLatest([
+      this.courseConsumptionService.getCourseHierarchy(courseId, inputParams),
+      this.courseBatchService.getEnrolledBatchDetails(this.batchId),
+    ]).pipe(map((results: any) => {
+      return {
+        courseHierarchy: results[0],
+        enrolledBatchDetails: results[1],
+      };
     }));
   }
 

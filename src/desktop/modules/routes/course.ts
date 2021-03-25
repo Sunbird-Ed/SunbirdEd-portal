@@ -1,9 +1,11 @@
-import Course from '../controllers/course';
+import * as _ from 'lodash';
+import BatchDetails from '../controllers/batchDetails';
 import ContentStatus from '../controllers/content/contentStatus';
+import Course from '../controllers/course';
 import { customProxy } from '../helper/proxyHandler';
 import { manifest } from "./../manifest";
-import * as _ from 'lodash';
 
+const batchDetails = new BatchDetails(manifest);
 const course = new Course(manifest);
 const contentStatus = new ContentStatus(manifest);
 
@@ -25,8 +27,13 @@ export default (app, proxyURL) => {
         }
     });
 
-    app.get("/learner/course/v1/batch/read/:batchId", customProxy(proxyURL, defaultProxyConfig), (req, res) => {
-        res.status(res.statusCode).send(res.body);
+    app.get("/learner/course/v1/batch/read/:batchId", customProxy(proxyURL, defaultProxyConfig), async (req, res) => {
+        if (_.get(res, 'body.result.response')) {
+            await batchDetails.save(res.body.result.response);
+            res.status(res.statusCode).send(res.body);
+        } else {
+            await batchDetails.get(req, res);
+        }
     });
 
     app.post([
@@ -44,8 +51,10 @@ export default (app, proxyURL) => {
         const contentList = _.get(res, 'body.result.contentList');
         if (contentList) {
             await contentStatus.saveContentStatus(contentList);
+            await contentStatus.getLocalContentStatusList(req, res);
+        } else {
+            await contentStatus.getLocalContentStatusList(req, res);
         }
-        await contentStatus.getLocalContentStatusList(req, res);
     });
 
     app.patch("/content/course/v1/content/state/update", customProxy(proxyURL, defaultProxyConfig), async (req, res) => {
