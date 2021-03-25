@@ -44,10 +44,8 @@ export default (app, proxyURL) => {
         const contentList = _.get(res, 'body.result.contentList');
         if (contentList) {
             await contentStatus.saveContentStatus(contentList);
-            res.status(res.statusCode).send(res.body);
-        } else {
-            contentStatus.getLocalContentStatusList(req, res);
         }
+        await contentStatus.getLocalContentStatusList(req, res);
     });
 
     app.patch("/content/course/v1/content/state/update", customProxy(proxyURL, defaultProxyConfig), async (req, res) => {

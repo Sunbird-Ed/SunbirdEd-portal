@@ -59,7 +59,7 @@ export default class AuthController {
                 managedUsers.content.forEach(async (managedUser) => {
                     const managedUserDetails = { access_token: userAuthDetails.access_token, userId: managedUser.userId };
                     const userDetails = await permissionsHelper.getUser(managedUserDetails, true);
-                    user.accessToken = userAuthDetails.access_token;
+                    userDetails.accessToken = userAuthDetails.access_token;
                     await this.saveUserInDB(userDetails)
                 });
             }

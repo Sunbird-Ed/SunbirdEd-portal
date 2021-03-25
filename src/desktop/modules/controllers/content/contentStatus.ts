@@ -70,7 +70,10 @@ export default class ContentStatus {
         );
 
         if (_.get(resp, 'docs.length')) { // upsert if found
-          await this.databaseSdk.upsert(DB_NAME, resp.docs[0]._id, element);
+          const content = resp.docs[0];
+          if (element.status >= content.status ) {
+            await this.databaseSdk.upsert(DB_NAME, resp.docs[0]._id, element);
+          }
         } else { // insert if not found
           element.userId = userId;
           await this.databaseSdk.insert(DB_NAME, element);
