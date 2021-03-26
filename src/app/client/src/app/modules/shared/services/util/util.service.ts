@@ -290,7 +290,7 @@ export class UtilService {
       };
 
       value['hoverData'].actions[0].label = status[_.upperCase(value['hoverData'].actions[0].label)];
-      if (_.toUpper(_.get(value, 'trackable.enabled')) === 'YES') {
+      if (_.toUpper(_.get(value, 'trackable.enabled')) === 'YES' || _.get(value, 'resourceType') === 'Course') {
         value['hoverData'].actions.shift();
       }
     });

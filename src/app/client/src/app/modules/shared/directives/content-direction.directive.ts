@@ -19,7 +19,7 @@ export class ContentDirectionDirective implements AfterViewInit  {
 
   ngAfterViewInit(): void {
     this.mediumCode = this.configService.appConfig.mediumCode;
-    if (this.data.medium) {
+    if (_.get(this.data, 'medium')) {
       const langCode = _.get(this.mediumCode, _.lowerCase(this.data.medium));
       if (this.cacheService.get('resourcebundlesearch')) {
         const data = this.cacheService.get('resourcebundlesearch');

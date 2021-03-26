@@ -12,6 +12,7 @@ const proxy = require('express-http-proxy');
 import Response from "./../utils/response";
 import { decorateRequestHeaders } from "../helper/proxyUtils";
 import User from "../controllers/user";
+import { GeneralizedResources } from "../controllers/generalizedResources";
 
 export default (app, proxyURL) => {
     const content = new Content(manifest);
@@ -112,19 +113,11 @@ export default (app, proxyURL) => {
             },
         }));
     
-    app.get(
-        "/getGeneralisedResourcesBundles/:lang/:fileName",
-        (req, res, next) => {
-            logger.debug(`Received API call to read generalise resourse bundle`);
-            logger.debug(`ReqId = "${req.headers["X-msgid"]}": Check proxy`);
-            next();
-        },
-        proxy(proxyURL, {
-            proxyReqPathResolver(req) {
-                return `/getGeneralisedResourcesBundles/${req.params.lang}/${req.params.fileName}`;
-            },
-        }),
-    );
+
+    const generalizedResource = new GeneralizedResources(manifest);
+    app.get("/getGeneralisedResourcesBundles/:lang/:fileName", (req, res) => {
+        generalizedResource.read(req, res);
+    });
 
     const user = new User(manifest);
     app.get("/api/desktop/user/v1/read",
