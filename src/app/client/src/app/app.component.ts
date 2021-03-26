@@ -787,7 +787,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
   skipToMainContent() {
-    const getTheme = localStorage.getItem("layoutType");
+    const getTheme = document.documentElement.attributes["layout"].value;
     if (getTheme == "joy") {
       const headerElement=document.getElementsByClassName('sbt-fluid-header-bg');
       if(headerElement.length>0){
