@@ -36,7 +36,6 @@ export class ContentManagerService {
   updateContentDownloadStatus(contentDownloadList) {
     this.contentDownloadStatus = {};
     _.forEach(contentDownloadList, content => {
-      if (content.addedUsing === 'download') {
         _.forEach(content.contentDownloadList, childContent => {
           if (childContent.step === 'COMPLETE') {
             this.contentDownloadStatus[childContent.identifier] = _.includes(this.deletedContentIds, childContent.identifier) ?
@@ -46,7 +45,6 @@ export class ContentManagerService {
           }
         });
         this.contentDownloadStatus[content.contentId] = _.toUpper(content.status);
-      }
     });
     this.contentDownloadStatus$.next(this.contentDownloadStatus);
   }
