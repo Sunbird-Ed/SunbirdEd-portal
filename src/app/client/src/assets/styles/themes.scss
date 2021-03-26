@@ -2729,7 +2729,7 @@ html[accessable-theme="accessible"][layout='joy'][data-theme=Darkmode] {
     color: var(--yellow) !important
   }
   .sb-pageSection .sb-pageSection-header .sb-pageSection-sentenceCase .sb-pageSection-count{
-    background-color: var(--black);
+    background-color: var(--black) !important;
     color:var(--white);
 }
   .sb-pageSection .sb-pageSection-header .sb-cls-btn, .sb-pageSection .sb-pageSection-header button.sb-btn-secondary{
@@ -2741,7 +2741,7 @@ sb-accordion-body .sbaccordion__panel-content .credits-section .title{
 }
 
   .sb-pageSection .sb-pageSection-header .sb-pageSection-sentenceCase .sb-pageSection-count {
-    background-color: var(--black);
+    background-color: var(--black) !important;
     color: var(--white);
   }
 
@@ -2764,6 +2764,15 @@ sb-accordion-body .sbaccordion__panel-content .credits-section .title{
     }
     .module-complete-content label.fnormal{
       color: #004D24 !important;
+    }
+    .nested-group-container .fxsmall {
+      color: var(--black);
+    }
+    .nested-group-container .fsmall {
+      color: var(--black);
+    }
+   .nested-group-container .member-name .fnormal {
+      color: var(--black);
     }
   }
 
@@ -2847,6 +2856,9 @@ html[accessable-theme="accessible"]{
   // 	background-color:#A80011;
   // }
   .title.ng-star-inserted {
+    color: var(--primary-color) !important;
+  }
+  .sbaccordion__panel-content .sb-meta-data .title{
     color: var(--primary-color) !important;
   }
 
@@ -2934,7 +2946,7 @@ html[accessable-theme="accessible"]{
     .sb-pageSection-header {
       .sb-pageSection-sentenceCase {
         .sb-pageSection-count {
-          background-color: var(--tertiary-color);
+          background-color: #9a3713 !important;
         }
       }
 
@@ -3073,6 +3085,28 @@ html[accessable-theme="accessible"]{
   }
   .sb-pageSection .sb-pageSection-header .sb-cls-btn, .sb-pageSection .sb-pageSection-header button.sb-btn-secondary{
     color:var(--black) !important;
+}
+.licenseTag{
+  color:var(--gray-400) !important ;
+}
+.sb-modal-actions{
+  a.sb-btn.sb-btn-normal.sb-btn-primary{
+    color: var(--white);
+  }
+}
+.multi-select-section-app .multi-select-container .placeholder{
+  color: var(--gray-400) !important;
+}
+.user-profile-box{
+  span.sb-color-warning {
+    color:#B30000 !important;
+  }
+}
+.discuss-card-content .timing{
+  color: #5B5757 !important;
+}
+.discussion-content .discussion-labels{
+  color: #5B5757 !important;
 }
 
 }
