@@ -360,7 +360,6 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     if (this.contentType === 'studymaterial' || this.contentType === 'assessment') {
       this.router.navigate(['/workspace/content/edit/content/', content.identifier, state, framework, 'Draft']);
     }  else if (this.contentType === 'course') {
-      const type = this.configService.appConfig.contentCreateTypeForEditors[this.contentType];
       this.router.navigate(['workspace/edit/', 'Course', content.identifier, state, 'Draft']);
     } else {
       const type = this.configService.appConfig.contentCreateTypeForEditors[this.contentType];
@@ -425,8 +424,9 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
           }
           if (_.isEmpty(this.targetFramework)) {
             this.showCategoryConfigError();
+          } else {
+            this.createContent(undefined);
           }
-          this.createContent(undefined);
         }, err => {
           this.toasterService.error(this.resourceService.messages.emsg.m0025);
         });

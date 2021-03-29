@@ -30,12 +30,12 @@ jobs:
           command: 'yarn config set ignore-engines true'
       - restore_cache:
           name: Restoring cache
-          key: dependency-cache-portal-{{ checksum "package.json" }}
+          key: v1-dependency-cache-portal-{{ checksum "package.json" }}
       - run:
           name: Installing npm deps
           command: 'yarn install'
-      - save_cache: # special step to save the dependency cache   
-          key: dependency-cache-portal-{{ checksum "package.json" }}   
+      - save_cache: # special step to save the dependency cache
+          key: v1-dependency-cache-portal-{{ checksum "package.json" }}
           paths:
             - ./node_modules
       - run:
