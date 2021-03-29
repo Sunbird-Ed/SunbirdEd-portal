@@ -213,7 +213,7 @@ describe('DataDrivenComponent', () => {
     componentChild.formInputData = { name: 'abcd', board: 'NCERT' };
     componentParent.formData = componentChild;
     componentParent.framework = 'Course';
-    componentParent.contentType = 'collection';
+    componentParent.contentType = 'course';
     componentParent.targetFramework = 'nit_k-12';
     componentParent.primaryCategory = 'course';
     userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
@@ -225,7 +225,7 @@ describe('DataDrivenComponent', () => {
     componentParent.generateData(componentParent.formData.formInputData);
     spyOn(editorService, 'create').and.returnValue(observableOf(mockFrameworkData.createCollectionData));
     componentParent.createContent(undefined);
-    expect(router.navigate).not.toHaveBeenCalledWith(
+    expect(router.navigate).toHaveBeenCalledWith(
       ['workspace/edit/', 'Course', 'do_2124708548063559681134', 'draft', 'Draft']);
   });
   it('should router to contentEditor editor ', () => {
@@ -370,6 +370,7 @@ describe('DataDrivenComponent', () => {
     componentParent.createContent(undefined);
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0010);
   });
+
   it('When contentType is present', () => {
     expect(componentParent.name).toBe('Untitled Textbook');
     expect(componentParent.description).toBe('Enter description for TextBook');
@@ -619,6 +620,15 @@ describe('DataDrivenComponent', () => {
     spyOn(componentParent, 'logTelemetry').and.stub();
     componentParent.createLockAndNavigateToEditor(contentData);
     expect(componentParent.logTelemetry).toHaveBeenCalledWith('do_123456');
+  });
+
+  it('should nvigate to new course ditor', () => {
+    const contentData = { identifier: 'do_123456' };
+    componentParent.framework = 'NCERT';
+    componentParent.contentType = 'course';
+    spyOn(componentParent, 'createLockAndNavigateToEditor').and.stub();
+    componentParent.createLockAndNavigateToEditor(contentData);
+    expect(componentParent.createLockAndNavigateToEditor).toHaveBeenCalledWith(contentData);
   });
 
   it('should trigger interact event', () => {
