@@ -116,6 +116,8 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
   public enableCreateButton = false;
 
   public isSubmit = false;
+  public orgFWType;
+  public targetFWType;
 
   public unsubscribe = new Subject<void>();
   public targetFramework: string;
@@ -407,24 +409,23 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
    */
   selectFramework() {
     this.primaryCategory = 'Course';
-    let orgFWType, targetFWType;
     this.workSpaceService.getCategoryDefinition('Collection', this.primaryCategory, this.userService.channel)
     .subscribe(categoryDefinitionData => {
-      orgFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.schema.properties.framework.default');
-      targetFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.schema.properties.targetFWIds.default');
+      this.orgFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.schema.properties.framework.default');
+      this.targetFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.schema.properties.targetFWIds.default');
       const frameworkReq = [];
-      if (_.isEmpty(orgFWType)) {
-        orgFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.orgFWType');
-        frameworkReq.push(this.getFrameworkDataByType(orgFWType, this.userService.channel));
+      if (_.isEmpty(this.orgFWType)) {
+        this.orgFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.orgFWType');
+        frameworkReq.push(this.getFrameworkDataByType(this.orgFWType, this.userService.channel));
       }
 
-      if (_.isEmpty(targetFWType)) {
+      if (_.isEmpty(this.targetFWType)) {
         // tslint:disable-next-line:max-line-length
-        targetFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.targetFWType');
-        frameworkReq.push(this.getFrameworkDataByType(targetFWType, this.userService.channel));
+        this.targetFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.targetFWType');
+        frameworkReq.push(this.getFrameworkDataByType(this.targetFWType, this.userService.channel));
       }
 
-      if (_.isEmpty(orgFWType) || _.isEmpty(targetFWType)) {
+      if (_.isEmpty(this.orgFWType) || _.isEmpty(this.targetFWType)) {
         this.showCategoryConfigError();
       }
 
@@ -438,11 +439,11 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
           }
           if (!_.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.schema.properties.targetFWIds.default')) {
             const targetFWData = _.last(response);
-            if (targetFWType && targetFWData.result.count > 0) {
+            if (this.targetFWType && targetFWData.result.count > 0) {
               this.targetFramework = _.get(_.first(_.get(targetFWData, 'result.Framework')), 'identifier');
             }
           } else {
-            this.targetFramework = targetFWType;
+            this.targetFramework = this.targetFWType;
           }
           if (_.isEmpty(this.targetFramework)) {
             this.showCategoryConfigError();
@@ -453,7 +454,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
         });
       } else {
         // this.framework = orgFWType;
-        this.targetFramework = targetFWType;
+        this.targetFramework = this.targetFWType;
         this.createContent(undefined);
       }
     }, err => {
