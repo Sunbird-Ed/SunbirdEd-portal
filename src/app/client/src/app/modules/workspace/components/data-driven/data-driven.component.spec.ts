@@ -213,11 +213,12 @@ describe('DataDrivenComponent', () => {
     componentChild.formInputData = { name: 'abcd', board: 'NCERT' };
     componentParent.formData = componentChild;
     componentParent.framework = 'Course';
-    componentParent.contentType = 'studymaterial';
+    componentParent.contentType = 'collection';
     componentParent.targetFramework = 'nit_k-12';
     componentParent.primaryCategory = 'course';
     userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
     userService._userProfile = {};
+    componentParent.fetchFrameworkMetaData();
     spyOn(componentParent, 'createContent').and.callThrough();
     const workSpaceService = TestBed.get(WorkSpaceService);
     spyOn(workSpaceService, 'lockContent').and.returnValue(observableOf({}));
@@ -412,7 +413,6 @@ describe('DataDrivenComponent', () => {
   });
 
   it('#selectFramework() should fetch category and framwork data when API success', () => {
-    spyOn(componentParent, 'createContent').and.stub();
     const workSpaceService = TestBed.get(WorkSpaceService);
     const mockdata = {
         'id': 'api.object.category.definition.read',
@@ -438,14 +438,14 @@ describe('DataDrivenComponent', () => {
           }
         }
     };
+    spyOn(componentParent, 'showCategoryConfigError').and.stub();
     spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockdata));
     spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkDataByType));
     componentParent.selectFramework();
-    expect(componentParent.createContent).toHaveBeenCalledWith(undefined);
+    expect(componentParent.showCategoryConfigError).toHaveBeenCalled();
   });
 
   it('#selectFramework() should fetch category and framwork data when API success', () => {
-    spyOn(componentParent, 'createContent').and.stub();
     const workSpaceService = TestBed.get(WorkSpaceService);
     const mockdata = {
         'id': 'api.object.category.definition.read',
@@ -479,11 +479,9 @@ describe('DataDrivenComponent', () => {
     componentParent.orgFWType = _.get(mockdata, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.orgFWType');
     expect(componentParent.orgFWType).toEqual(undefined);
     expect(componentParent.showCategoryConfigError).toHaveBeenCalled();
-    expect(componentParent.createContent).toHaveBeenCalledWith(undefined);
   });
 
   it('#selectFramework() should fetch category and framwork data when API success', () => {
-    spyOn(componentParent, 'createContent').and.stub();
     const workSpaceService = TestBed.get(WorkSpaceService);
     const mockdata = {
         'id': 'api.object.category.definition.read',
@@ -512,12 +510,11 @@ describe('DataDrivenComponent', () => {
     };
     spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockdata));
     spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkDataByType));
-    spyOn(componentParent, 'showCategoryConfigError').and.callThrough();
+    spyOn(componentParent, 'showCategoryConfigError').and.stub();
     componentParent.selectFramework();
     componentParent.targetFWType = _.get(mockdata, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.targetFWType');
     expect(componentParent.targetFWType).toEqual(undefined);
     expect(componentParent.showCategoryConfigError).toHaveBeenCalled();
-    expect(componentParent.createContent).toHaveBeenCalledWith(undefined);
   });
 
   it('#selectFramework() should fetch category and framwork data when API success', () => {
