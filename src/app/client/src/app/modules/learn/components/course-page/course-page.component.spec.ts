@@ -519,20 +519,23 @@ describe('CoursePageComponent', () => {
         expect(component.showModal).toBeFalsy();
     });
 
-    xit('should call download content with success ', () => {
+    it('should call download content with success ', () => {
         const contentManagerService = TestBed.get(ContentManagerService);
+        component.pageSections = Response.pageSections;
         spyOn(contentManagerService, 'startDownload').and.returnValue(of({}));
         component.downloadContent('123');
         expect(component.showDownloadLoader).toBeFalsy();
     });
-    xit('should call download content from popup ', () => {
+    it('should call download content from popup ', () => {
+        component.pageSections = Response.pageSections;
         spyOn(component, 'downloadContent');
         component.callDownload();
         expect(component.showDownloadLoader).toBeTruthy();
         expect(component.downloadContent).toHaveBeenCalled();
     });
 
-    xit('should call download content with error ', () => {
+    it('should call download content with error ', () => {
+        component.pageSections = Response.pageSections;
         const contentManagerService = TestBed.get(ContentManagerService);
         spyOn(contentManagerService, 'startDownload').and.returnValue(throwError({ error: { params: { err: 'ERROR' } } }));
         component.downloadContent('123');
