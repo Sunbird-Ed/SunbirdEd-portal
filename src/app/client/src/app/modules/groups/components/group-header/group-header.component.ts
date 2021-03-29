@@ -161,7 +161,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   deleteGroup() {
       this.groupService.deleteGroupById(_.get(this.groupData, 'id')).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
         this.addTelemetry('confirm-delete-group', {status: 'inactive', prevstatus: _.get(this.groupData, 'status')});
-        this.toasterService.success(this.resourceService.messages.smsg.m002);
+        this.toasterService.success(this.resourceService.messages.smsg.grpdeletesuccess);
         this.navigateToPreviousPage();
       }, err => {
         this.addTelemetry('confirm-delete-group', {status: _.get(this.groupData, 'status')});

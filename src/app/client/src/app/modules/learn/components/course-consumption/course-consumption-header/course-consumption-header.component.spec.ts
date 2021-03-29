@@ -12,20 +12,31 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CourseConsumptionService, CourseProgressService } from '../../../services';
 import { CoreModule, UserService, CoursesService, PermissionService, CopyContentService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SharedModule, ResourceService, ToasterService, ContentData } from '@sunbird/shared';
+import { SharedModule, ResourceService, ToasterService, ContentData, OfflineCardService } from '@sunbird/shared';
 import { ContentUtilsServiceService } from '../../../../shared/services/content-utils/content-utils.service';
 import { configureTestSuite } from '@sunbird/test-util';
 import dayjs from 'dayjs';
-import { GroupsService } from '../../../../groups/services/groups/groups.service';
 import { DiscussionService } from './../../../../discussion/services/discussion/discussion.service';
 import { MockResponseData } from './course-consumption-header.spec.data';
+import { ContentManagerService } from '../../../../public/module/offline/services/content-manager/content-manager.service';
 
 const resourceServiceMockData = {
   messages: {
     imsg: { m0027: 'Something went wrong', activityAddedSuccess: 'Activity added successfully' },
-    stmsg: { m0009: 'error', activityAddFail: 'Unable to add activity, please try again' },
+    stmsg: {
+      m0009: 'error', activityAddFail: 'Unable to add activity, please try again',
+      desktop: {
+        deleteTextbookSuccessMessage: 'Textbook deleted successfully'
+      }
+    },
+    etmsg: {
+      desktop: {
+        'deleteTextbookErrorMessage': 'Unable to delete textbook. Please try again..',
+      }
+    },
     emsg: { m0005: 'Something went wrong, try again later', noAdminRole: `You don't have permission to add activity to the group` },
-    smsg: { m0042: ''},
+    smsg: { m0042: '', m0059: 'Content successfully copied' },
+    fmsg: { m0096: 'Could not Update. Try again later', m0091: 'Could not copy content. Try again later', m0090: 'Could not download. Try again later' }
   },
   frmelmnts: {
     btn: {
@@ -43,6 +54,16 @@ class ActivatedRouteStub {
   queryParamsMock = { contentId: 'do_112270494168555520130' };
   queryParams = observableOf(this.queryParamsMock);
   params = { first: () => observableOf(this.paramsMock) };
+  snapshot = {
+    data: {
+      telemetry: {
+        env: 'get', pageid: 'get', type: 'edit', subtype: 'paginate'
+      },
+    },
+    params: {
+      courseId: 'do_212347136096788480178'
+    }
+  };
   firstChild = {
     params: observableOf(this.paramsMock),
     queryParams: observableOf(this.queryParamsMock)
@@ -68,7 +89,7 @@ describe('CourseConsumptionHeaderComponent', () => {
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],
       providers: [{ provide: ActivatedRoute, useClass: ActivatedRouteStub }, PermissionService,
         CourseConsumptionService, CourseProgressService, { provide: Router, useClass: RouterStub },
-        TelemetryService, CopyContentService, DiscussionService, UserService ],
+        TelemetryService, CopyContentService, DiscussionService, UserService],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -221,20 +242,20 @@ describe('CourseConsumptionHeaderComponent', () => {
 
   it('should call route to dashboard', () => {
     component.courseHierarchy = CourseHierarchyGetMockResponse.result.content;
-    component.courseId  = 'do_212347136096788480178';
+    component.courseId = 'do_212347136096788480178';
     component.showDashboard();
     expect(component['router'].navigate).toHaveBeenCalledWith(['learn/course', component.courseId, 'dashboard', 'batches']);
   });
 
   it('should close the dashboard', () => {
-    component.courseId  = 'do_212347136096788480178';
+    component.courseId = 'do_212347136096788480178';
     component.closeDashboard();
     expect(component['router'].navigate).toHaveBeenCalledWith(['learn/course', component.courseId]);
   });
 
   it('should close the dashboard', () => {
     component.resourceService.messages = resourceServiceMockData.messages;
-    spyOn(component.copyContentService, 'copyContent').and.returnValue(of ({content: {}}));
+    spyOn(component.copyContentService, 'copyContent').and.returnValue(of({ content: {} }));
     spyOn(component.toasterService, 'success');
     let content: ContentData;
     component.copyContent(content);
@@ -248,7 +269,7 @@ describe('CourseConsumptionHeaderComponent', () => {
   it('should show error if copy content fails', () => {
     component.resourceService.messages = resourceServiceMockData.messages;
     const copycontentService = TestBed.get(CopyContentService);
-    spyOn(copycontentService, 'copyContent').and.returnValue(throwError ({content: {}}));
+    spyOn(copycontentService, 'copyContent').and.returnValue(throwError({ content: {} }));
     spyOn(component.toasterService, 'error');
     let content: ContentData;
     component.copyContent(content);
@@ -276,9 +297,9 @@ describe('CourseConsumptionHeaderComponent', () => {
   it('should call goBack and return to previous page with query params', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const router = TestBed.get(Router);
-    courseConsumptionService.coursePagePreviousUrl = { url: '/search/Courses/1', queryParams: {key: 'misc course'} };
+    courseConsumptionService.coursePagePreviousUrl = { url: '/search/Courses/1', queryParams: { key: 'misc course' } };
     component.goBack();
-    expect(router.navigate).toHaveBeenCalledWith(['/search/Courses/1'], {queryParams:  {key: 'misc course'} });
+    expect(router.navigate).toHaveBeenCalledWith(['/search/Courses/1'], { queryParams: { key: 'misc course' } });
   });
 
   it('should call logTelemetry', () => {
@@ -286,7 +307,7 @@ describe('CourseConsumptionHeaderComponent', () => {
     const telemetryService = TestBed.get(TelemetryService);
     spyOn(telemetryService, 'interact').and.callThrough();
     activatedRouteStub['snapshot'] = {
-      params: [ {
+      params: [{
         courseId: 'do_1125083286221291521153',
       }],
       data: {
@@ -305,7 +326,7 @@ describe('CourseConsumptionHeaderComponent', () => {
     const telemetryService = TestBed.get(TelemetryService);
     spyOn(telemetryService, 'interact').and.callThrough();
     activatedRouteStub['snapshot'] = {
-      params: [ {
+      params: [{
         courseId: 'do_1125083286221291521153',
       }],
       data: {
@@ -319,7 +340,7 @@ describe('CourseConsumptionHeaderComponent', () => {
     expect(telemetryService.interact).toHaveBeenCalled();
   });
 
-  it ('should enable isTrackable', () => {
+  it('should enable isTrackable', () => {
     CourseHierarchyGetMockResponseFlagged.result.content['trackable.enabled'] = 'Yes';
     component.courseHierarchy = CourseHierarchyGetMockResponseFlagged.result.content;
     spyOn(component['courseConsumptionService'], 'canViewDashboard').and.returnValue(true);
@@ -329,7 +350,7 @@ describe('CourseConsumptionHeaderComponent', () => {
     expect(component.viewDashboard).toBeTruthy();
   });
 
-  it ('should disable isTrackable', () => {
+  it('should disable isTrackable', () => {
     CourseHierarchyGetMockResponseFlagged.result.content['trackable.enabled'] = 'No';
     CourseHierarchyGetMockResponseFlagged.result.content['contentType'] = 'Textbook';
     component.courseHierarchy = CourseHierarchyGetMockResponseFlagged.result.content;
@@ -389,4 +410,113 @@ describe('CourseConsumptionHeaderComponent', () => {
 
   });
 
+  it('should check checkDownloadStatus', () => {
+    component.courseHierarchy = MockResponseData.contentHeaderData.collectionData.result.content;
+    component.contentDownloadStatus = { [MockResponseData.contentHeaderData.collectionData.result.content.identifier]: 'COMPLETED' };
+    component.checkDownloadStatus();
+    expect(component.courseHierarchy).toEqual(MockResponseData.contentHeaderData.collectionData.result.content);
+    expect(component.courseHierarchy['downloadStatus']).toEqual('DOWNLOADED');
+  });
+
+  it('should check collection status', () => {
+    component.courseHierarchy = MockResponseData.contentHeaderData.collectionData.result.content;
+    component.contentDownloadStatus = { [MockResponseData.contentHeaderData.collectionData.result.content.identifier]: 'COMPLETED' };
+    spyOn(component, 'checkDownloadStatus').and.callThrough();
+    const status = component.checkStatus('DOWNLOADED');
+    expect(status).toBeTruthy();
+  });
+
+  it('should check isYoutubeContentPresent', () => {
+    const offlineCardService = TestBed.get(OfflineCardService);
+    component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
+    spyOn(offlineCardService, 'isYoutubeContent').and.returnValue(false);
+    spyOn(component, 'downloadCollection').and.returnValue(MockResponseData.contentHeaderData.collectionData);
+    component.isYoutubeContentPresent(MockResponseData.contentHeaderData.collectionData);
+    expect(component.showModal).toBeFalsy();
+    expect(component.downloadCollection).toHaveBeenCalledWith(MockResponseData.contentHeaderData.collectionData);
+  });
+
+  it('should call updateCollection and successfuly update collection ', () => {
+    component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
+    const contentService = TestBed.get(ContentManagerService);
+    spyOn(contentService, 'updateContent').and.returnValue(of(MockResponseData.contentHeaderData.updateCollection.success));
+    component.updateCollection(MockResponseData.contentHeaderData.collectionData);
+    expect(component.showUpdate).toBeFalsy();
+  });
+
+  it('should call updateCollection and error while updating collection ', () => {
+    component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
+    const contentService = TestBed.get(ContentManagerService);
+    spyOn(contentService, 'updateContent').and.returnValue(throwError(MockResponseData.contentHeaderData.updateCollection.error));
+    component.updateCollection(MockResponseData.contentHeaderData.collectionData);
+    expect(component.isConnected).toBeTruthy();
+    expect(component.showUpdate).toBeTruthy();
+    expect(component.toasterService.error(resourceServiceMockData.messages.fmsg.m0096));
+  });
+
+  it('should call exportCollection and successfuly export collection ', () => {
+    component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
+    component.showExportLoader = true;
+    const contentService = TestBed.get(ContentManagerService);
+    spyOn(contentService, 'exportContent').and.returnValue(of(MockResponseData.contentHeaderData.exportCollection.success));
+    component.exportCollection(MockResponseData.contentHeaderData.collectionData);
+    expect(component.showExportLoader).toBeFalsy();
+    expect(component.toasterService.success(resourceServiceMockData.messages.smsg.m0059));
+  });
+
+  it('should call exportCollection and error while  exporting collection ', () => {
+    component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
+    component.showExportLoader = true;
+    const contentService = TestBed.get(ContentManagerService);
+    spyOn(contentService, 'exportContent').and.returnValue(throwError(MockResponseData.contentHeaderData.exportCollection.error));
+    component.exportCollection(MockResponseData.contentHeaderData.collectionData);
+    expect(component.showExportLoader).toBeFalsy();
+    expect(component.toasterService.error(resourceServiceMockData.messages.fmsg.m0091));
+  });
+  it('should check isYoutubeContentPresent', () => {
+    const offlineCardService = TestBed.get(OfflineCardService);
+    component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
+    spyOn(offlineCardService, 'isYoutubeContent').and.returnValue(false);
+    spyOn(component, 'downloadCollection').and.returnValue(MockResponseData.contentHeaderData.collectionData);
+    component.isYoutubeContentPresent(MockResponseData.contentHeaderData.collectionData);
+    expect(component.showModal).toBeFalsy();
+    expect(component.downloadCollection).toHaveBeenCalledWith(MockResponseData.contentHeaderData.collectionData);
+  });
+  it('should call downloadCollection and successfuly collection downloaded', () => {
+    component.contentManagerService.downloadContentId = MockResponseData.contentHeaderData.collectionData.result.content.identifier;
+    component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
+    component.disableDelete = false;
+    const contentService = TestBed.get(ContentManagerService);
+    spyOn(contentService, 'startDownload').and.returnValue(of(MockResponseData.contentHeaderData.downloadCollection.success));
+    component.downloadCollection(MockResponseData.contentHeaderData.collectionData);
+    expect(component.contentManagerService.downloadContentId).toEqual('');
+  });
+
+  it('should call downloadCollection and error while downloading collection', () => {
+    component.contentManagerService.downloadContentId = MockResponseData.contentHeaderData.collectionData.result.content.identifier;
+    component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
+    component.disableDelete = false;
+    const contentService = TestBed.get(ContentManagerService);
+    spyOn(contentService, 'startDownload').and.returnValue(throwError(MockResponseData.contentHeaderData.downloadCollection.downloadError));
+    component.downloadCollection(MockResponseData.contentHeaderData.collectionData);
+    expect(component.contentManagerService.downloadContentId).toEqual('');
+    expect(component.contentManagerService.failedContentName).toEqual('');
+    expect(component.toasterService.error(resourceServiceMockData.messages.fmsg.m0090));
+  });
+  it('should call delete collection and successfuly delete collection ', () => {
+    component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
+    const contentService = TestBed.get(ContentManagerService);
+    spyOn(contentService, 'deleteContent').and.returnValue(of(MockResponseData.contentHeaderData.deleteCollection.success));
+    component.deleteCollection(MockResponseData.contentHeaderData.collectionData);
+    expect(component.toasterService.success(resourceServiceMockData.messages.stmsg.desktop.deleteTextbookSuccessMessage));
+  });
+  it('should call delete collection and error while deleting collection ', () => {
+    component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
+    component.disableDelete = true;
+    const contentService = TestBed.get(ContentManagerService);
+    spyOn(contentService, 'deleteContent').and.returnValue(throwError(MockResponseData.contentHeaderData.deleteCollection.error));
+    component.deleteCollection(MockResponseData.contentHeaderData.collectionData);
+    expect(component.disableDelete).toBeFalsy();
+    expect(component.toasterService.error(resourceServiceMockData.messages.etmsg.desktop.deleteTextbookErrorMessage));
+  });
 });

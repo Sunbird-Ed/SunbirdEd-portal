@@ -4,7 +4,7 @@ import { combineLatest } from 'rxjs';
 import { CourseBatchService, CourseProgressService, CourseConsumptionService } from './../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Input, OnDestroy, Output, EventEmitter, ViewChild } from '@angular/core';
-import { ResourceService, ServerResponse, ToasterService } from '@sunbird/shared';
+import { ResourceService, ServerResponse, ToasterService, ConnectionService } from '@sunbird/shared';
 import { PermissionService, UserService, GeneraliseLabelService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { TelemetryService } from '@sunbird/telemetry';
@@ -58,12 +58,13 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   batchMessage = '';
   showMessageModal = false;
   tocId = '';
+  isConnected = false;
 
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
     public userService: UserService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
     public router: Router, public activatedRoute: ActivatedRoute, public courseProgressService: CourseProgressService,
     public courseConsumptionService: CourseConsumptionService, public telemetryService: TelemetryService,
-    public generaliseLabelService: GeneraliseLabelService) {
+    public generaliseLabelService: GeneraliseLabelService, private connectionService: ConnectionService) {
     this.batchStatus = this.statusOptions[0].value;
   }
   isUnenrollDisabled() {
@@ -77,6 +78,9 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     this.enrolledBatchInfo.enrollmentType === 'open' && this.progress !== 100) {
       this.isUnenrollbtnDisabled = false;
     }
+    if (!this.isConnected) {
+      this.isUnenrollbtnDisabled = true;
+    }
   }
 
   isValidEnrollmentEndDate(enrollmentEndDate) {
@@ -88,6 +92,10 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.connectionService.monitor()
+    .pipe(takeUntil(this.unsubscribe)).subscribe(isConnected => {
+      this.isConnected = isConnected;
+    });
     this.tocId = _.get(this.activatedRoute, 'snapshot.queryParams.textbook');
     this.showCreateBatch();
       this.courseConsumptionService.showJoinCourseModal
@@ -211,7 +219,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   }
 
   getEnrolledCourseBatchDetails() {
-    if (this.enrolledBatchInfo.participant) {
+    if (_.get(this.enrolledBatchInfo, 'participant')) {
       const participant = [];
       _.forIn(this.enrolledBatchInfo.participant, (value, key) => {
         participant.push(key);
