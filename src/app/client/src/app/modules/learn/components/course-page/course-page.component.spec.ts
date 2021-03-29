@@ -511,6 +511,7 @@ describe('CoursePageComponent', () => {
             'disabled': false
         };
         Response.hoverActionsData['data'] = Response.successData.result.response;
+        component.pageSections = Response.pageSections;
         spyOn(component, 'logTelemetry');
         spyOn(component, 'downloadContent');
         component.hoverActionClicked(Response.hoverActionsData);
