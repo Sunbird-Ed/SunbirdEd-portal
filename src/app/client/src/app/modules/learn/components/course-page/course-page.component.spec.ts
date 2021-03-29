@@ -534,12 +534,4 @@ describe('CoursePageComponent', () => {
         expect(component.showDownloadLoader).toBeTruthy();
         expect(component.downloadContent).toHaveBeenCalled();
     });
-
-    it('should call download content with error ', () => {
-        component.pageSections = Response.pageSections;
-        const contentManagerService = TestBed.get(ContentManagerService);
-        spyOn(contentManagerService, 'startDownload').and.returnValue(throwError({ error: { params: { err: 'ERROR' } } }));
-        component.downloadContent('123');
-        expect(component.showDownloadLoader).toBeFalsy();
-    });
 });
