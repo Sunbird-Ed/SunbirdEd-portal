@@ -399,7 +399,6 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
       }
 
       if (_.isEmpty(this.targetFWType)) {
-        // tslint:disable-next-line:max-line-length
         this.targetFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.targetFWType');
         frameworkReq.push(this.getFrameworkDataByType(this.targetFWType, this.userService.channel));
       }

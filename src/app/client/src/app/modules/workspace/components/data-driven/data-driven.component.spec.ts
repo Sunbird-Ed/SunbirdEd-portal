@@ -430,6 +430,115 @@ describe('DataDrivenComponent', () => {
           'objectCategoryDefinition': {
             'identifier': 'obj-cat:course_collection_all',
             'objectMetadata': {
+              'config': {},
+              'schema': {}
+            },
+            'languageCode': [],
+            'name': 'Course',
+          }
+        }
+    };
+    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockdata));
+    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkDataByType));
+    componentParent.selectFramework();
+    expect(componentParent.createContent).toHaveBeenCalledWith(undefined);
+  });
+
+  it('#selectFramework() should fetch category and framwork data when API success', () => {
+    spyOn(componentParent, 'createContent').and.stub();
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    const mockdata = {
+        'id': 'api.object.category.definition.read',
+        'ver': '3.0',
+        'ts': '2021-02-24T08:06:08ZZ',
+        'params': {
+          'resmsgid': '4e4a7b07-0e9d-4d33-8287-b6d38a3c2765',
+          'msgid': null,
+          'err': null,
+          'status': 'successful',
+          'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+          'objectCategoryDefinition': {
+            'identifier': 'obj-cat:course_collection_all',
+            'objectMetadata': {
+              'config': {
+                'frameworkMetadata': {},
+              }
+            },
+            'languageCode': [],
+            'name': 'Course',
+          }
+        }
+    };
+    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockdata));
+    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkDataByType));
+    spyOn(componentParent, 'showCategoryConfigError').and.stub();
+    componentParent.selectFramework();
+    componentParent.orgFWType = _.get(mockdata, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.orgFWType');
+    expect(componentParent.orgFWType).toEqual(undefined);
+    expect(componentParent.showCategoryConfigError).toHaveBeenCalled();
+    expect(componentParent.createContent).toHaveBeenCalledWith(undefined);
+  });
+
+  it('#selectFramework() should fetch category and framwork data when API success', () => {
+    spyOn(componentParent, 'createContent').and.stub();
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    const mockdata = {
+        'id': 'api.object.category.definition.read',
+        'ver': '3.0',
+        'ts': '2021-02-24T08:06:08ZZ',
+        'params': {
+          'resmsgid': '4e4a7b07-0e9d-4d33-8287-b6d38a3c2765',
+          'msgid': null,
+          'err': null,
+          'status': 'successful',
+          'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+          'objectCategoryDefinition': {
+            'identifier': 'obj-cat:course_collection_all',
+            'objectMetadata': {
+              'config': {
+                'frameworkMetadata': {},
+              }
+            },
+            'languageCode': [],
+            'name': 'Course',
+          }
+        }
+    };
+    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockdata));
+    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkDataByType));
+    spyOn(componentParent, 'showCategoryConfigError').and.callThrough();
+    componentParent.selectFramework();
+    componentParent.targetFWType = _.get(mockdata, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.targetFWType');
+    expect(componentParent.targetFWType).toEqual(undefined);
+    expect(componentParent.showCategoryConfigError).toHaveBeenCalled();
+    expect(componentParent.createContent).toHaveBeenCalledWith(undefined);
+  });
+
+  it('#selectFramework() should fetch category and framwork data when API success', () => {
+    spyOn(componentParent, 'createContent').and.stub();
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    const mockdata = {
+        'id': 'api.object.category.definition.read',
+        'ver': '3.0',
+        'ts': '2021-02-24T08:06:08ZZ',
+        'params': {
+          'resmsgid': '4e4a7b07-0e9d-4d33-8287-b6d38a3c2765',
+          'msgid': null,
+          'err': null,
+          'status': 'successful',
+          'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+          'objectCategoryDefinition': {
+            'identifier': 'obj-cat:course_collection_all',
+            'objectMetadata': {
               'config': {
                 'frameworkMetadata': {'orgFWType': 'K-12', 'targetFWType': 'K-12'},
               },
@@ -442,9 +551,11 @@ describe('DataDrivenComponent', () => {
     };
     spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockdata));
     spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkDataByType));
+    componentParent.orgFWType = {};
+    componentParent.targetFWType = {};
     componentParent.selectFramework();
-    componentParent.orgFWType = _.get(mockdata, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.orgFWType');
-    componentParent.targetFWType = _.get(mockdata, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.targetFWType');
+    expect(componentParent.orgFWType).toEqual('K-12');
+    expect(componentParent.targetFWType).toEqual('K-12');
     expect(componentParent.createContent).toHaveBeenCalledWith(undefined);
   });
 
