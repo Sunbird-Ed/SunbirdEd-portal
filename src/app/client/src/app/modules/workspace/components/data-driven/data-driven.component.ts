@@ -13,8 +13,8 @@ import { DefaultTemplateComponent } from '../content-creation-default-template/c
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { WorkSpace } from '../../classes/workspace';
 import { WorkSpaceService } from '../../services';
-import { Subject, forkJoin } from 'rxjs';
-import { takeUntil} from 'rxjs/operators';
+import { Subject, forkJoin, of } from 'rxjs';
+import { mergeMap, takeUntil} from 'rxjs/operators';
 import { UUID } from 'angular2-uuid';
 
 @Component({
@@ -391,41 +391,50 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     .subscribe(categoryDefinitionData => {
       this.orgFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.schema.properties.framework.default');
       this.targetFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.schema.properties.targetFWIds.default');
-      const frameworkReq = [];
+      const orgframeworkReq = [];
+      const targetframeworkReq = [];
       if (_.isEmpty(this.orgFWType)) {
         this.orgFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.orgFWType');
-        frameworkReq.push(this.getFrameworkDataByType(this.orgFWType, this.userService.channel));
+        orgframeworkReq.push(this.getFrameworkDataByType(this.orgFWType, this.userService.channel));
+        orgframeworkReq.push(this.getFrameworkDataByType(this.orgFWType));
       }
 
       if (_.isEmpty(this.targetFWType)) {
         this.targetFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.targetFWType');
-        frameworkReq.push(this.getFrameworkDataByType(this.targetFWType, this.userService.channel));
+        targetframeworkReq.push(this.getFrameworkDataByType(this.targetFWType, this.userService.channel));
+        targetframeworkReq.push(this.getFrameworkDataByType(this.targetFWType));
       }
 
       if (_.isEmpty(this.orgFWType) || _.isEmpty(this.targetFWType)) {
         this.showCategoryConfigError();
       }
 
-      if (!_.isEmpty(frameworkReq)) {
-        forkJoin(frameworkReq).subscribe((response) => {
+      if (!_.isEmpty(orgframeworkReq)) {
+        this.checkChannelOrSystem(orgframeworkReq[0], orgframeworkReq[1]).subscribe((response) => {
           if (!_.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.schema.properties.framework.default')) {
-            const orgFWData = _.first(response);
-            if (orgFWData.result.count <= 0) {
+            const orgFWData = response;
+            if (_.get(orgFWData, 'result.count') <= 0) {
               this.showCategoryConfigError();
-            }
-          }
-          if (!_.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.schema.properties.targetFWIds.default')) {
-            const targetFWData = _.last(response);
-            if (this.targetFWType && targetFWData.result.count > 0) {
-              this.targetFramework = _.get(_.first(_.get(targetFWData, 'result.Framework')), 'identifier');
+            } else {
+              this.checkChannelOrSystem(targetframeworkReq[0], targetframeworkReq[1]).subscribe((targetRes) => {
+                // tslint:disable-next-line:max-line-length
+                if (!_.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.schema.properties.targetFWIds.default')) {
+                  const targetFWData = targetRes;
+                  if (this.targetFWType && targetFWData.result.count > 0) {
+                    this.targetFramework = _.get(_.first(_.get(targetFWData, 'result.Framework')), 'identifier');
+                  }
+                } else {
+                  this.targetFramework = this.targetFWType;
+                }
+                if (_.isEmpty(this.targetFramework)) {
+                  this.showCategoryConfigError();
+                } else {
+                  this.createContent(undefined);
+                }
+              });
             }
           } else {
-            this.targetFramework = this.targetFWType;
-          }
-          if (_.isEmpty(this.targetFramework)) {
             this.showCategoryConfigError();
-          } else {
-            this.createContent(undefined);
           }
         }, err => {
           this.toasterService.error(this.resourceService.messages.emsg.m0025);
@@ -443,7 +452,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
   showCategoryConfigError() {
     this.toasterService.error(`Unknown framework category ${this.primaryCategory}. Please check the configuration.`);
     this.redirect();
-    return;
+    return ;
   }
 
   redirect() {
@@ -467,22 +476,32 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     });
   }
 
-  getFrameworkDataByType(type, channel = this.userService.channel) {
+  getFrameworkDataByType(type?, channel?, identifer?) {
     const option = {
       url: `${this.configService.urlConFig.URLS.COMPOSITE.SEARCH}`,
-      'data': {
-        'request': {
-            'filters': {
-                'objectType': 'Framework',
-                'type': type,
-                'status': 'Live',
-                channel
+      data: {
+        request: {
+            filters: {
+                objectType: 'Framework',
+                status: ['Live'],
+                ...(type && {type}),
+                ...(identifer && {identifer}),
+                ...(channel && {channel})
             },
             'limit': 1
         }
     }
       };
       return this.contentService.post(option);
+  }
+
+  checkChannelOrSystem(channelObservable, systemObservable) {
+    return channelObservable.pipe(mergeMap(
+      (data) => {
+        if (_.get(data, 'result.count') > 0) { return of(data); }
+        return systemObservable;
+      }
+    ));
   }
 
   /**
