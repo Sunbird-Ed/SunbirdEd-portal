@@ -13,6 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { configureTestSuite } from '@sunbird/test-util';
+import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
 
 describe('CoursePageComponent', () => {
     let component: CoursePageComponent;
@@ -485,6 +486,16 @@ describe('CoursePageComponent', () => {
         done();
     });
 
+    it('should call listenLanguageChange', () => {
+        component.isDesktopApp = true;
+        component.pageSections = [{ name: 'test', contents: [{ name: 'test' }], length: 5 }];
+        spyOn(component, 'addHoverData');
+        spyOn<any>(component, 'setNoResultMessage');
+        component['listenLanguageChange']();
+        expect(component.addHoverData).toHaveBeenCalled();
+        expect(component['setNoResultMessage']).toHaveBeenCalled();
+    });
+
     it('should call hoverActionClicked for Open ', () => {
         const event = {
             hover: {
@@ -497,7 +508,44 @@ describe('CoursePageComponent', () => {
             }
         };
         spyOn(component, 'playContent');
+        const route = TestBed.get(Router);
+        route.url = '/course-page?selectedTab=course-page';
         component.hoverActionClicked(event);
         expect(component.playContent).toHaveBeenCalled();
+    });
+
+    it('should call hoverActionClicked for DOWNLOAD ', () => {
+        Response.hoverActionsData['hover'] = {
+            'type': 'download',
+            'label': 'Download',
+            'disabled': false
+        };
+        Response.hoverActionsData['data'] = Response.successData.result.response;
+        spyOn(component, 'logTelemetry');
+        spyOn(component, 'downloadContent').and.callThrough();
+        component.hoverActionClicked(Response.hoverActionsData);
+        expect(component.downloadContent).toHaveBeenCalledWith(Response.hoverActionsData['data'].identifier);
+        expect(component.logTelemetry).toHaveBeenCalled();
+        expect(component.showModal).toBeFalsy();
+    });
+
+    it('should call download content with success ', () => {
+        const contentManagerService = TestBed.get(ContentManagerService);
+        spyOn(contentManagerService, 'startDownload').and.returnValue(of({}));
+        component.downloadContent('123');
+        expect(component.showDownloadLoader).toBeFalsy();
+    });
+    it('should call download content from popup ', () => {
+        spyOn(component, 'downloadContent');
+        component.callDownload();
+        expect(component.showDownloadLoader).toBeTruthy();
+        expect(component.downloadContent).toHaveBeenCalled();
+    });
+
+    it('should call download content with error ', () => {
+        const contentManagerService = TestBed.get(ContentManagerService);
+        spyOn(contentManagerService, 'startDownload').and.returnValue(throwError({ error: { params: { err: 'ERROR' } } }));
+        component.downloadContent('123');
+        expect(component.showDownloadLoader).toBeFalsy();
     });
 });

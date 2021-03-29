@@ -78,6 +78,9 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
   contentDownloadStatus = {};
   showModal = false;
   showDownloadLoader = false;
+  contentName;
+  contentData;
+  downloadIdentifier: string;
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -588,35 +591,41 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   hoverActionClicked(event) {
     event['data'] = event.content;
+    this.contentName = event.content.name;
+    this.contentData = event.data;
     const type = _.toUpper(_.get(event, 'hover.type'));
-    const contentData = event.data;
     if (type === 'OPEN') {
       this.playContent(event);
-      this.logTelemetry(contentData, 'play-content');
+      this.logTelemetry(this.contentData, 'play-content');
     } else if (type === 'DOWNLOAD') {
-      const contentName = event.content.name;
-      const downloadIdentifier = _.get(event, 'content.identifier');
-      this.showModal = this.offlineCardService.isYoutubeContent(contentData);
+      this.downloadIdentifier = _.get(event, 'content.identifier');
+      this.showModal = this.offlineCardService.isYoutubeContent(this.contentData);
       if (!this.showModal) {
           this.showDownloadLoader = true;
-          this.downloadContent(downloadIdentifier, contentData, contentName);
+          this.downloadContent(this.downloadIdentifier);
       }
-      this.logTelemetry(contentData, 'download-trackable-collection');
+      this.logTelemetry(this.contentData, 'download-trackable-collection');
     }
   }
 
-  downloadContent(contentId, contentData, contentName) {
+  callDownload() {
+    this.showDownloadLoader = true;
+    this.downloadContent(this.downloadIdentifier);
+}
+  downloadContent(contentId) {
     this.contentManagerService.downloadContentId = contentId;
-    this.contentManagerService.downloadContentData = contentData;
-    this.contentManagerService.failedContentName = contentName;
+    this.contentManagerService.downloadContentData = this.contentData;
+    this.contentManagerService.failedContentName = this.contentName;
     this.contentManagerService.startDownload({})
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
+        this.downloadIdentifier = '';
         this.contentManagerService.downloadContentId = '';
         this.contentManagerService.downloadContentData = {};
         this.contentManagerService.failedContentName = '';
         this.showDownloadLoader = false;
       }, error => {
+        this.downloadIdentifier = '';
         this.contentManagerService.downloadContentId = '';
         this.contentManagerService.downloadContentData = {};
         this.contentManagerService.failedContentName = '';
