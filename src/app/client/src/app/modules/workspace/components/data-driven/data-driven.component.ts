@@ -283,8 +283,10 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
       requestData.createdBy = this.userService.userProfile.id,
       requestData.organisation = _.uniq(this.userService.orgNames),
       requestData.createdFor = this.userService.userProfile.organisationIds,
-      requestData.contentType = this.configService.appConfig.contentCreateTypeForEditors[this.contentType],
+      requestData.contentType = this.configService.appConfig.contentCreateTypeForEditors[this.contentType];
+    if (this.framework) {
       requestData.framework = this.framework;
+    }
     if (this.contentType === 'studymaterial' && data.contentType) {
       requestData.contentType = data.contentType;
     }
@@ -355,6 +357,9 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     const framework = this.framework;
     if (this.contentType === 'studymaterial' || this.contentType === 'assessment') {
       this.router.navigate(['/workspace/content/edit/content/', content.identifier, state, framework, 'Draft']);
+    }  else if (this.contentType === 'course') {
+      const type = this.configService.appConfig.contentCreateTypeForEditors[this.contentType];
+      this.router.navigate(['workspace/edit/', 'Course', content.identifier, state, 'Draft']);
     } else {
       const type = this.configService.appConfig.contentCreateTypeForEditors[this.contentType];
       this.router.navigate(['/workspace/content/edit/collection', content.identifier, type, state, framework, 'Draft']);
@@ -420,20 +425,16 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
       }
 
       if (_.isEmpty(orgFWType) || _.isEmpty(targetFWType)) {
-        this.toasterService.error(`Unknown framework category ${this.primaryCategory}. Please check the configuration.`);
-        this.redirect();
-        return;
+        this.showCategoryConfigError();
       }
 
       if (!_.isEmpty(frameworkReq)) {
         forkJoin(frameworkReq).subscribe((response) => {
           if (!_.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.schema.properties.framework.default')) {
             const orgFWData = _.first(response);
-            if (orgFWData.result.count > 0) {
-            this.framework = _.get(_.first(_.get(orgFWData, 'result.Framework')), 'identifier');
+            if (orgFWData.result.count <= 0) {
+              this.showCategoryConfigError();
             }
-          } else {
-          this.framework = orgFWType;
           }
           if (!_.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.schema.properties.targetFWIds.default')) {
             const targetFWData = _.last(response);
@@ -443,23 +444,27 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
           } else {
             this.targetFramework = targetFWType;
           }
-          if (_.isEmpty(this.framework) || _.isEmpty(this.targetFramework)) {
-            this.toasterService.error(`Unknown framework category ${this.primaryCategory}. Please check the configuration.`);
-            this.redirect();
-            return;
+          if (_.isEmpty(this.targetFramework)) {
+            this.showCategoryConfigError();
           }
           this.createContent(undefined);
         }, err => {
           this.toasterService.error(this.resourceService.messages.emsg.m0025);
         });
       } else {
-        this.framework = orgFWType;
+        // this.framework = orgFWType;
         this.targetFramework = targetFWType;
         this.createContent(undefined);
       }
     }, err => {
       this.toasterService.error(this.resourceService.messages.emsg.m0024);
     });
+  }
+
+  showCategoryConfigError() {
+    this.toasterService.error(`Unknown framework category ${this.primaryCategory}. Please check the configuration.`);
+    this.redirect();
+    return;
   }
 
   getFrameworkDataByType(type, channel = this.userService.channel) {
