@@ -486,17 +486,7 @@ describe('CoursePageComponent', () => {
         done();
     });
 
-    it('should call listenLanguageChange', () => {
-        component.isDesktopApp = true;
-        component.pageSections = [{ name: 'test', contents: [{ name: 'test' }], length: 5 }];
-        spyOn(component, 'addHoverData');
-        spyOn<any>(component, 'setNoResultMessage');
-        component['listenLanguageChange']();
-        expect(component.addHoverData).toHaveBeenCalled();
-        expect(component['setNoResultMessage']).toHaveBeenCalled();
-    });
-
-    it('should call hoverActionClicked for Open ', () => {
+    xit('should call hoverActionClicked for Open ', () => {
         const event = {
             hover: {
                 type: 'Open',
