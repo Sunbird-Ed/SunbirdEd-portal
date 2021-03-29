@@ -379,28 +379,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     }
 }
 
-  redirect() {
-    this.router.navigate(['/workspace/content/create']);
-  }
-
-  ngAfterViewInit () {
-    setTimeout(() => {
-      this.telemetryImpression = {
-        context: {
-          env: this.activatedRoute.snapshot.data.telemetry.env
-        },
-        edata: {
-          type: this.activatedRoute.snapshot.data.telemetry.type,
-          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
-          uri: this.activatedRoute.snapshot.data.telemetry.uri,
-          duration: this.navigationHelperService.getPageLoadTime()
-        }
-      };
-    });
-  }
-
-  /**
+/**
    * @since - #SH-403
    * @param  {} cardData
    * @description - 1. It selects a card from the framework selection popup
@@ -466,6 +445,27 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     this.toasterService.error(`Unknown framework category ${this.primaryCategory}. Please check the configuration.`);
     this.redirect();
     return;
+  }
+
+  redirect() {
+    this.router.navigate(['/workspace/content/create']);
+  }
+
+  ngAfterViewInit () {
+    setTimeout(() => {
+      this.telemetryImpression = {
+        context: {
+          env: this.activatedRoute.snapshot.data.telemetry.env
+        },
+        edata: {
+          type: this.activatedRoute.snapshot.data.telemetry.type,
+          pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+          subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+          uri: this.activatedRoute.snapshot.data.telemetry.uri,
+          duration: this.navigationHelperService.getPageLoadTime()
+        }
+      };
+    });
   }
 
   getFrameworkDataByType(type, channel = this.userService.channel) {
