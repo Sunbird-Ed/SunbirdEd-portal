@@ -398,7 +398,7 @@ describe('DataDrivenComponent', () => {
     expect(toasterService.error).toHaveBeenCalledWith('Unknown framework category Course. Please check the configuration.');
   });
 
-  it('#selectFramework() should throw error if category defination API failed', () => {
+  xit('#selectFramework() should throw error if category defination API failed', () => {
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
