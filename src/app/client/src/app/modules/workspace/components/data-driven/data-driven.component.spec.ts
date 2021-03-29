@@ -172,7 +172,6 @@ describe('DataDrivenComponent', () => {
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'textbook';
     componentParent.targetFramework = 'nit_k-12';
-    componentParent.primaryCategory = 'Curriculum Course';
     userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
     userService._userProfile = {};
     spyOn(componentParent, 'createContent').and.callThrough();
@@ -194,7 +193,6 @@ describe('DataDrivenComponent', () => {
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'studymaterial';
     componentParent.targetFramework = 'nit_k-12';
-    componentParent.primaryCategory = 'Curriculum Course';
     userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
     userService._userProfile = {};
     spyOn(componentParent, 'createContent').and.callThrough();
@@ -205,6 +203,30 @@ describe('DataDrivenComponent', () => {
     componentParent.createContent(undefined);
     expect(router.navigate).not.toHaveBeenCalledWith(
       ['/workspace/content/edit/collection', 'do_2124708548063559681134', 'TextBook', 'draft', componentParent.framework]);
+  });
+  it('should not router to new collection editor ', () => {
+    const state = 'draft';
+    const type = 'Course';
+    const router = TestBed.get(Router);
+    const userService = TestBed.get(UserService);
+    const editorService = TestBed.get(EditorService);
+    componentChild.formInputData = { name: 'abcd', board: 'NCERT' };
+    componentParent.formData = componentChild;
+    componentParent.framework = 'Course';
+    componentParent.contentType = 'course';
+    componentParent.targetFramework = 'nit_k-12';
+    componentParent.primaryCategory = 'course';
+    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
+    userService._userProfile = {};
+    componentParent.fetchFrameworkMetaData();
+    spyOn(componentParent, 'createContent').and.callThrough();
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    spyOn(workSpaceService, 'lockContent').and.returnValue(observableOf({}));
+    componentParent.generateData(componentParent.formData.formInputData);
+    spyOn(editorService, 'create').and.returnValue(observableOf(mockFrameworkData.createCollectionData));
+    componentParent.createContent(undefined);
+    expect(router.navigate).toHaveBeenCalledWith(
+      ['workspace/edit/', 'Course', 'do_2124708548063559681134', 'draft', 'Draft']);
   });
   it('should router to contentEditor editor ', () => {
     const state = 'draft';
@@ -348,6 +370,7 @@ describe('DataDrivenComponent', () => {
     componentParent.createContent(undefined);
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.fmsg.m0010);
   });
+
   it('When contentType is present', () => {
     expect(componentParent.name).toBe('Untitled Textbook');
     expect(componentParent.description).toBe('Enter description for TextBook');
@@ -355,10 +378,10 @@ describe('DataDrivenComponent', () => {
 
   it('should fetch frameworks from channel-read api and set for the associated popup cards based on queryParams', () => {
     const frameworkService = TestBed.get(FrameworkService);
-    spyOn<any>(componentParent, 'setFrameworkData').and.stub();
+    spyOn<any>(componentParent, 'selectFramework').and.stub();
     spyOn(frameworkService, 'getChannel').and.returnValue(observableOf(mockFrameworkData.channelData));
     componentParent.ngOnInit();
-    expect(componentParent.setFrameworkData).toHaveBeenCalledWith(mockFrameworkData.channelData);
+    expect(componentParent.selectFramework).toHaveBeenCalled();
     expect(componentParent.userChannelData).toBeDefined();
   });
 
@@ -379,115 +402,217 @@ describe('DataDrivenComponent', () => {
     expect(componentParent.fetchFrameworkMetaData).toHaveBeenCalled();
   });
 
-  xit(`should set framework selection card's metadata`, () => {
-    componentParent.setFrameworkData(mockFrameworkData.channelData);
-    expect(componentParent.frameworkCardData).toEqual([{
-      title: 'Curriculum Course',
-      description: `Create courses for concepts from the syllabus, across grades and subjects. For example, courses on fractions, photosynthesis, reading comprehension, etc.`,
-      primaryCategory: 'Curriculum Course'
-    },
-    {
-      title: 'Professional Development Course',
-      description: `Create courses that help develop professional skills. For example, courses on classroom management, pedagogy, ICT, Leadership, etc.`,
-      primaryCategory: 'Professional Development Course'
-    }
-    ]);
-  });
-
-  xit('should select a framework card and fires an interact event', () => {
-    const mockCardData =  {
-      title: 'Curriculum Course',
-      description: `Create courses for concepts from the syllabus, across grades and subjects.
-       For example, courses on fractions, photosynthesis, reading comprehension, etc.`,
-      primaryCategory: 'Curriculum Course'
-    };
-    const interactData = {
-      context: {
-        env: _.get(fakeActivatedRoute, 'snapshot.data.telemetry.env'),
-        cdata: [{
-          type: 'framework',
-          id: 'nit_k-12'
-        }]
-      },
-      edata: {
-        id: mockCardData.title,
-        type: 'click',
-        pageid: _.get(fakeActivatedRoute, 'snapshot.data.telemetry.pageid')
-      }
-    };
-    const telemetryService = TestBed.get(TelemetryService);
-    spyOn(telemetryService, 'interact').and.stub();
+  it('#selectFramework() should fetch category and framwork data when API success', () => {
+    spyOn(componentParent, 'createContent').and.stub();
     const workSpaceService = TestBed.get(WorkSpaceService);
     spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockFrameworkData.successCategory));
     spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkDataByType));
-    componentParent.selectFramework(mockCardData);
-    expect(componentParent.enableCreateButton).toBe(true);
-    expect(componentParent.selectedCard).toEqual(mockCardData);
-    expect(telemetryService.interact).toHaveBeenCalledWith(interactData);
+    componentParent.selectFramework();
+    componentParent.orgFWType = _.get(mockFrameworkData.successCategory, 'result.objectCategoryDefinition.objectMetadata.schema.properties.framework.default');
+    componentParent.targetFWType = _.get(mockFrameworkData.successCategory, 'result.objectCategoryDefinition.objectMetadata.schema.properties.targetFWIds.default');
+    expect(componentParent.createContent).toHaveBeenCalledWith(undefined);
   });
 
-  xit('should select a target framework card and fires an interact event', () => {
-    const mockCardData =  {
-      title: 'Curriculum Course',
-      description: `Create courses for concepts from the syllabus, across grades and subjects.
-       For example, courses on fractions, photosynthesis, reading comprehension, etc.`,
-      primaryCategory: 'Professional Development Course'
-    };
-    const interactData = {
-      context: {
-        env: _.get(fakeActivatedRoute, 'snapshot.data.telemetry.env'),
-        cdata: [{
-          type: 'framework',
-          id: 'nit_k-12'
-        }, {
-          type: 'targetFW',
-          id: 'nit_k-12'
-        }]
-      },
-      edata: {
-        id: mockCardData.title,
-        type: 'click',
-        pageid: _.get(fakeActivatedRoute, 'snapshot.data.telemetry.pageid')
-      }
-    };
-    const telemetryService = TestBed.get(TelemetryService);
-    spyOn(telemetryService, 'interact').and.stub();
+  it('#selectFramework() should fetch category and framwork data when API success', () => {
     const workSpaceService = TestBed.get(WorkSpaceService);
-    delete mockFrameworkData.successCategory;
-    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockFrameworkData.successCategory));
+    const mockdata = {
+        'id': 'api.object.category.definition.read',
+        'ver': '3.0',
+        'ts': '2021-02-24T08:06:08ZZ',
+        'params': {
+          'resmsgid': '4e4a7b07-0e9d-4d33-8287-b6d38a3c2765',
+          'msgid': null,
+          'err': null,
+          'status': 'successful',
+          'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+          'objectCategoryDefinition': {
+            'identifier': 'obj-cat:course_collection_all',
+            'objectMetadata': {
+              'config': {},
+              'schema': {}
+            },
+            'languageCode': [],
+            'name': 'Course',
+          }
+        }
+    };
+    spyOn(componentParent, 'showCategoryConfigError').and.stub();
+    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockdata));
     spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkDataByType));
-    componentParent.selectFramework(mockCardData);
-    expect(componentParent.enableCreateButton).toBe(true);
-    expect(componentParent.selectedCard).toEqual(mockCardData);
-    expect(telemetryService.interact).toHaveBeenCalledWith(interactData);
+    componentParent.selectFramework();
+    expect(componentParent.showCategoryConfigError).toHaveBeenCalled();
   });
 
-  xit('#selectFramework() should throw error if category defination API failed', () => {
-    const mockCardData =  {
-      primaryCategory: 'Professional Development Course'
+  it('#selectFramework() should fetch category and framwork data when API success', () => {
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    const mockdata = {
+        'id': 'api.object.category.definition.read',
+        'ver': '3.0',
+        'ts': '2021-02-24T08:06:08ZZ',
+        'params': {
+          'resmsgid': '4e4a7b07-0e9d-4d33-8287-b6d38a3c2765',
+          'msgid': null,
+          'err': null,
+          'status': 'successful',
+          'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+          'objectCategoryDefinition': {
+            'identifier': 'obj-cat:course_collection_all',
+            'objectMetadata': {
+              'config': {
+                'frameworkMetadata': {},
+              }
+            },
+            'languageCode': [],
+            'name': 'Course',
+          }
+        }
     };
+    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockdata));
+    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkDataByType));
+    spyOn(componentParent, 'showCategoryConfigError').and.stub();
+    componentParent.selectFramework();
+    componentParent.orgFWType = _.get(mockdata, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.orgFWType');
+    expect(componentParent.orgFWType).toEqual(undefined);
+    expect(componentParent.showCategoryConfigError).toHaveBeenCalled();
+  });
+
+  it('#selectFramework() should fetch category and framwork data when API success', () => {
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    const mockdata = {
+        'id': 'api.object.category.definition.read',
+        'ver': '3.0',
+        'ts': '2021-02-24T08:06:08ZZ',
+        'params': {
+          'resmsgid': '4e4a7b07-0e9d-4d33-8287-b6d38a3c2765',
+          'msgid': null,
+          'err': null,
+          'status': 'successful',
+          'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+          'objectCategoryDefinition': {
+            'identifier': 'obj-cat:course_collection_all',
+            'objectMetadata': {
+              'config': {
+                'frameworkMetadata': {},
+              }
+            },
+            'languageCode': [],
+            'name': 'Course',
+          }
+        }
+    };
+    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockdata));
+    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkDataByType));
+    spyOn(componentParent, 'showCategoryConfigError').and.stub();
+    componentParent.selectFramework();
+    componentParent.targetFWType = _.get(mockdata, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.targetFWType');
+    expect(componentParent.targetFWType).toEqual(undefined);
+    expect(componentParent.showCategoryConfigError).toHaveBeenCalled();
+  });
+
+  it('#selectFramework() should fetch category and framwork data when API success', () => {
+    spyOn(componentParent, 'createContent').and.stub();
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    const mockdata = {
+        'id': 'api.object.category.definition.read',
+        'ver': '3.0',
+        'ts': '2021-02-24T08:06:08ZZ',
+        'params': {
+          'resmsgid': '4e4a7b07-0e9d-4d33-8287-b6d38a3c2765',
+          'msgid': null,
+          'err': null,
+          'status': 'successful',
+          'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+          'objectCategoryDefinition': {
+            'identifier': 'obj-cat:course_collection_all',
+            'objectMetadata': {
+              'config': {
+                'frameworkMetadata': {'orgFWType': 'K-12', 'targetFWType': 'K-12'},
+              },
+              'schema': {}
+            },
+            'languageCode': [],
+            'name': 'Course',
+          }
+        }
+    };
+    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockdata));
+    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkDataByType));
+    componentParent.orgFWType = {};
+    componentParent.targetFWType = {};
+    componentParent.selectFramework();
+    expect(componentParent.orgFWType).toEqual('K-12');
+    expect(componentParent.targetFWType).toEqual('K-12');
+    expect(componentParent.createContent).toHaveBeenCalledWith(undefined);
+  });
+
+  it('#selectFramework() should thorw error message when framwork not defined at channel or system level', () => {
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callThrough();
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf({}));
+    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkDataByType));
+    componentParent.selectFramework();
+    expect(toasterService.error).toHaveBeenCalledWith('Unknown framework category Course. Please check the configuration.');
+  });
+
+  it('#selectFramework() should throw error if category defination API failed', () => {
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     const workSpaceService = TestBed.get(WorkSpaceService);
     spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableThrowError({}));
-    componentParent.selectFramework(mockCardData);
+    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkDataByType));
+    componentParent.selectFramework();
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0024);
   });
 
-  xit('#selectFramework() should throw error if framework API failed', () => {
-    const mockCardData =  {
-      primaryCategory: 'Professional Development Course'
-    };
+  it('#selectFramework() should throw error if framework API failed', () => {
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     const workSpaceService = TestBed.get(WorkSpaceService);
-    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockFrameworkData.successCategory));
+    const mockdata = {
+      'id': 'api.object.category.definition.read',
+      'ver': '3.0',
+      'ts': '2021-02-24T08:06:08ZZ',
+      'params': {
+        'resmsgid': '4e4a7b07-0e9d-4d33-8287-b6d38a3c2765',
+        'msgid': null,
+        'err': null,
+        'status': 'successful',
+        'errmsg': null
+      },
+      'responseCode': 'OK',
+      'result': {
+        'objectCategoryDefinition': {
+          'identifier': 'obj-cat:course_collection_all',
+          'objectMetadata': {
+            'config': {
+              'frameworkMetadata': {'orgFWType': 'K-121', 'targetFWType': 'K-121'},
+            },
+            'schema': {}
+          },
+          'languageCode': [],
+          'name': 'Course',
+        }
+      }
+  };
+    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockdata));
     spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableThrowError({}));
-    componentParent.selectFramework(mockCardData);
+    componentParent.selectFramework();
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0025);
-
   });
 
   it('should create lock to the opened content and redirect to editor after logging an interact event', () => {
@@ -495,6 +620,15 @@ describe('DataDrivenComponent', () => {
     spyOn(componentParent, 'logTelemetry').and.stub();
     componentParent.createLockAndNavigateToEditor(contentData);
     expect(componentParent.logTelemetry).toHaveBeenCalledWith('do_123456');
+  });
+
+  it('should nvigate to new course ditor', () => {
+    const contentData = { identifier: 'do_123456' };
+    componentParent.framework = 'NCERT';
+    componentParent.contentType = 'course';
+    spyOn(componentParent, 'createLockAndNavigateToEditor').and.stub();
+    componentParent.createLockAndNavigateToEditor(contentData);
+    expect(componentParent.createLockAndNavigateToEditor).toHaveBeenCalledWith(contentData);
   });
 
   it('should trigger interact event', () => {
@@ -544,4 +678,11 @@ describe('DataDrivenComponent', () => {
     });
   });
 
+  it('should call ngOnDestroy', () => {
+    componentParent.modal = {
+      deny: jasmine.createSpy('deny')
+    };
+    componentParent.ngOnDestroy();
+    expect(componentParent.modal.deny).toHaveBeenCalled();
+  });
 });
