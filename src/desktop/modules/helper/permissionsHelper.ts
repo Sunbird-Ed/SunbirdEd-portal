@@ -55,7 +55,7 @@ const PERMISSIONS_HELPER = {
     });
     let url = `${process.env.APP_BASE_URL}/api/user/v3/read/${userData.userId}?fields=organisations,roles,locations,declarations`;
     if (isManagedUser) {
-      url = url + "?withTokens=true";
+      url = url + "&withTokens=true";
     }
     const options = {
       headers: {

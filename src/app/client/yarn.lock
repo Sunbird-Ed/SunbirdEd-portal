@@ -612,10 +612,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.6.tgz#15a88937fb643d5eb33a81c8d28ece00b56d5aa0"
   integrity sha512-rK87rHdagadIS7UrWju7HDolIfWlO5CbK+tIJrEApO+QPMi+k8KuWoLc8MxEprrsJxUt6r44O4uGiO0hgI5plA==
 
-"@project-sunbird/sunbird-collection-editor@0.0.14":
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-0.0.14.tgz#59cfc8ae41a6b0472205ff5e973b9685d2d18a97"
-  integrity sha512-2MxLYJyx4cJlUoI3vn6N0r5clQSAf71BILGpYdUcJYRN/8f2mu1sB96wL0/urh3AYE6bIQXEITl0s1ehEfsX/A==
+"@project-sunbird/sunbird-collection-editor@0.0.15":
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-0.0.15.tgz#6225b32f531f141b79e672de0088ace57029cf54"
+  integrity sha512-Ir6LtuVvXFJvv+cU4RoknGI05HLQb8TfIfkzZTstBkbB5+Vm3VfFWJHDmg4aakBFTw74NltlTjBnyq4MtOSjZQ==
   dependencies:
     tslib "^1.9.0"
 
@@ -2766,10 +2766,10 @@ commander@^2.11.0, commander@^2.12.1, commander@^2.19.0, commander@^2.20.0, comm
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
 
-common-form-elements@^3.8.1:
-  version "3.8.1"
-  resolved "https://registry.yarnpkg.com/common-form-elements/-/common-form-elements-3.8.1.tgz#c90812bd0c2b4739acdf2d16871dda588a2aa42a"
-  integrity sha512-cKOlwCEsBOjsOWO73tzMv/lXZtjuBHCx0CIPmK7F6fDo4IZrHRy+k9vV4BdWH4+JVtCNRKm+KFkrcX+V4Qslfg==
+common-form-elements@^3.8.2:
+  version "3.8.2"
+  resolved "https://registry.yarnpkg.com/common-form-elements/-/common-form-elements-3.8.2.tgz#dcde44620b29e2cab72166dbd4368f8876a05650"
+  integrity sha512-SRWAnST5IozNxmFBqNnJsB6SYhHB7FrKzidxFmJB8JrXFA4wOcAAQBUICR2wsAgy7vVAePMTToqRb24lirFqIA==
   dependencies:
     immutable "^4.0.0-rc.12"
     moment "^2.29.1"

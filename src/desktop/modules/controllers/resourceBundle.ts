@@ -33,17 +33,19 @@ export class ResourceBundle {
       const resourceBundlesListLength = resourceBundlesList ? resourceBundlesList.length : 0;
       const resourceBundleDocs = [];
       for (const file of files) {
-        const id = path.basename(file, path.extname(file));
-        let docInfo: undefined | object;
-        if (resourceBundlesListLength > 0) {
-          docInfo = _.find(resourceBundlesList, {id});
+        if (!file.startsWith('generalized_')) {
+          const id = path.basename(file, path.extname(file));
+          let docInfo: undefined | object;
+          if (resourceBundlesListLength > 0) {
+            docInfo = _.find(resourceBundlesList, { id });
+          }
+          const doc = await this.fileSDK.readJSON(path.join(resourceBundlesFilesBasePath, file));
+          doc._id = id;
+          if (docInfo) {
+            doc._rev = _.get(docInfo, "value.rev");
+          }
+          resourceBundleDocs.push(doc);
         }
-        const doc =  await this.fileSDK.readJSON(path.join(resourceBundlesFilesBasePath, file));
-        doc._id = id;
-        if (docInfo) {
-          doc._rev = _.get(docInfo, "value.rev");
-        }
-        resourceBundleDocs.push(doc);
       }
       if (resourceBundleDocs.length) {
         await this.databaseSdk.bulk("resource_bundle", resourceBundleDocs);
