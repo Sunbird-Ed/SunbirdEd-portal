@@ -34,13 +34,13 @@
               <ul>
                 <li>
                   <div class="fontResize-container d-flex flex-ai-center pull-right">
-                    <button type="button" class="fontResizeBtn fontResizeBtn_A-"
+                    <button type="button" role="img" class="fontResizeBtn fontResizeBtn_A-"
                       title="{{resourceService?.frmelmnts?.lbl?.accessibilityfont}}"
                       (click)="changeFontSize('decrease');" #decreaseFontSize>A-</button>
-                    <button type="button" class="fontResizeBtn fontResizeBtn_A"
+                    <button type="button" role="img" class="fontResizeBtn fontResizeBtn_A"
                       title="{{resourceService?.frmelmnts?.lbl?.accessibilityfntdflt}}"
                       (click)="changeFontSize('reset');" #resetFontSize>A</button>
-                    <button type="button" class="fontResizeBtn fontResizeBtn_A+"
+                    <button type="button" role="img" class="fontResizeBtn fontResizeBtn_A+"
                       title="{{resourceService?.frmelmnts?.lbl?.increaseFontSize}}"
                       (click)="changeFontSize('increase');" #increaseFontSize>A+</button>
                   </div>
