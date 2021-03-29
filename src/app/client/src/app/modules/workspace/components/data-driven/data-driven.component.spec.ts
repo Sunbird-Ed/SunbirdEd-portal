@@ -172,7 +172,6 @@ describe('DataDrivenComponent', () => {
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'textbook';
     componentParent.targetFramework = 'nit_k-12';
-    componentParent.primaryCategory = 'Curriculum Course';
     userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
     userService._userProfile = {};
     spyOn(componentParent, 'createContent').and.callThrough();
@@ -194,7 +193,6 @@ describe('DataDrivenComponent', () => {
     componentParent.framework = 'NCERT';
     componentParent.contentType = 'studymaterial';
     componentParent.targetFramework = 'nit_k-12';
-    componentParent.primaryCategory = 'Curriculum Course';
     userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
     userService._userProfile = {};
     spyOn(componentParent, 'createContent').and.callThrough();
@@ -205,6 +203,29 @@ describe('DataDrivenComponent', () => {
     componentParent.createContent(undefined);
     expect(router.navigate).not.toHaveBeenCalledWith(
       ['/workspace/content/edit/collection', 'do_2124708548063559681134', 'TextBook', 'draft', componentParent.framework]);
+  });
+  it('should not router to new collection editor ', () => {
+    const state = 'draft';
+    const type = 'Course';
+    const router = TestBed.get(Router);
+    const userService = TestBed.get(UserService);
+    const editorService = TestBed.get(EditorService);
+    componentChild.formInputData = { name: 'abcd', board: 'NCERT' };
+    componentParent.formData = componentChild;
+    componentParent.framework = 'Course';
+    componentParent.contentType = 'studymaterial';
+    componentParent.targetFramework = 'nit_k-12';
+    componentParent.primaryCategory = 'course';
+    userService._userData$.next({ err: null, userProfile: mockFrameworkData.userMockData });
+    userService._userProfile = {};
+    spyOn(componentParent, 'createContent').and.callThrough();
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    spyOn(workSpaceService, 'lockContent').and.returnValue(observableOf({}));
+    componentParent.generateData(componentParent.formData.formInputData);
+    spyOn(editorService, 'create').and.returnValue(observableOf(mockFrameworkData.createCollectionData));
+    componentParent.createContent(undefined);
+    expect(router.navigate).not.toHaveBeenCalledWith(
+      ['workspace/edit/', 'Course', 'do_2124708548063559681134', 'draft', 'Draft']);
   });
   it('should router to contentEditor editor ', () => {
     const state = 'draft';
@@ -398,12 +419,13 @@ describe('DataDrivenComponent', () => {
     expect(toasterService.error).toHaveBeenCalledWith('Unknown framework category Course. Please check the configuration.');
   });
 
-  xit('#selectFramework() should throw error if category defination API failed', () => {
+  it('#selectFramework() should throw error if category defination API failed', () => {
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     const workSpaceService = TestBed.get(WorkSpaceService);
     spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableThrowError({}));
+    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkDataByType));
     componentParent.selectFramework();
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0024);
   });
@@ -474,4 +496,11 @@ describe('DataDrivenComponent', () => {
     });
   });
 
+  it('should call ngOnDestroy', () => {
+    componentParent.modal = {
+      deny: jasmine.createSpy('deny')
+    };
+    componentParent.ngOnDestroy();
+    expect(componentParent.modal.deny).toHaveBeenCalled();
+  });
 });

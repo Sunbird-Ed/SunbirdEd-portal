@@ -1680,14 +1680,24 @@ export const mockFrameworkData = {
     'responseCode': 'OK',
     'result': {
       'objectCategoryDefinition': {
-        'identifier': 'obj-cat:curriculum-course_collection_all',
+        'identifier': 'obj-cat:course_collection_all',
         'objectMetadata': {
           'config': {
             'frameworkMetadata': {'orgFWType': 'K-12', 'targetFWType': 'K-12'},
-          }
+          },
+          'schema': {
+            'properties': {
+                'framework': {
+                  'default': 'TPD'
+                },
+                'targetFWIds': {
+                  'default': 'nit_k-12'
+                }
+              }
+            }
         },
         'languageCode': [],
-        'name': 'Curriculum Course',
+        'name': 'Course',
       }
     }
 },
