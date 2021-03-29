@@ -566,7 +566,7 @@ describe('DataDrivenComponent', () => {
     expect(toasterService.error).toHaveBeenCalledWith('Unknown framework category Course. Please check the configuration.');
   });
 
-  xit('#selectFramework() should throw error if category defination API failed', () => {
+  it('#selectFramework() should throw error if category defination API failed', () => {
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
@@ -577,12 +577,38 @@ describe('DataDrivenComponent', () => {
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0024);
   });
 
-  xit('#selectFramework() should throw error if framework API failed', () => {
+  it('#selectFramework() should throw error if framework API failed', () => {
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     const workSpaceService = TestBed.get(WorkSpaceService);
-    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockFrameworkData.successCategory));
+    const mockdata = {
+      'id': 'api.object.category.definition.read',
+      'ver': '3.0',
+      'ts': '2021-02-24T08:06:08ZZ',
+      'params': {
+        'resmsgid': '4e4a7b07-0e9d-4d33-8287-b6d38a3c2765',
+        'msgid': null,
+        'err': null,
+        'status': 'successful',
+        'errmsg': null
+      },
+      'responseCode': 'OK',
+      'result': {
+        'objectCategoryDefinition': {
+          'identifier': 'obj-cat:course_collection_all',
+          'objectMetadata': {
+            'config': {
+              'frameworkMetadata': {'orgFWType': 'K-121', 'targetFWType': 'K-121'},
+            },
+            'schema': {}
+          },
+          'languageCode': [],
+          'name': 'Course',
+        }
+      }
+  };
+    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockdata));
     spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableThrowError({}));
     componentParent.selectFramework();
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0025);
