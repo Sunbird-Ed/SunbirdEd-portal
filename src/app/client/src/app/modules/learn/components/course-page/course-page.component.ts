@@ -10,10 +10,12 @@ import {
 } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
-import { IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { PublicPlayerService } from '@sunbird/public';
 import { takeUntil, map, mergeMap, filter, catchError, tap, pluck, switchMap, delay } from 'rxjs/operators';
+import { OfflineCardService } from '@sunbird/shared';
+import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
 
 @Component({
   templateUrl: './course-page.component.html'
@@ -74,6 +76,8 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
   isPageAssemble = true;
   isDesktopApp = false;
   contentDownloadStatus = {};
+  showModal = false;
+  showDownloadLoader = false;
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -88,7 +92,9 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     private publicPlayerService: PublicPlayerService, private cacheService: CacheService,
     private browserCacheTtlService: BrowserCacheTtlService, private userService: UserService, public formService: FormService,
     public navigationhelperService: NavigationHelperService, public layoutService: LayoutService, private coursesService: CoursesService,
-    private frameworkService: FrameworkService, private playerService: PlayerService, private searchService: SearchService) {
+    private frameworkService: FrameworkService, private playerService: PlayerService, private searchService: SearchService,
+    private offlineCardService: OfflineCardService, public contentManagerService: ContentManagerService,
+    public telemetryService: TelemetryService) {
     this.setTelemetryData();
   }
 
@@ -151,6 +157,10 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subscription$ = this.mergeObservables();
     this.isDesktopApp = this.utilService.isDesktopApp;
     this.getLanguageChange().pipe(takeUntil(this.unsubscribe$)).subscribe();
+    this.contentManagerService.contentDownloadStatus$.subscribe(contentDownloadStatus => {
+      this.contentDownloadStatus = contentDownloadStatus;
+      this.addHoverData();
+  });
   }
 
   private mergeObservables() {
@@ -567,16 +577,89 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   addHoverData() {
     _.each(this.pageSections, (pageSection) => {
+      _.forEach(pageSection.contents, contents => {
+        if (this.contentDownloadStatus[contents.identifier]) {
+          contents['downloadStatus'] = this.contentDownloadStatus[contents.identifier];
+        }
+      });
       this.pageSections[pageSection] = this.utilService.addHoverData(pageSection.contents, true);
     });
   }
 
   hoverActionClicked(event) {
-    const type = _.get(event, 'hover.type');
-    if (_.toUpper(type) === 'OPEN') {
-      event['data'] = event.content;
+    event['data'] = event.content;
+    const type = _.toUpper(_.get(event, 'hover.type'));
+    const contentData = event.data;
+    if (type === 'OPEN') {
       this.playContent(event);
+      this.logTelemetry(contentData, 'play-content');
+    } else if (type === 'DOWNLOAD') {
+      const contentName = event.content.name;
+      const downloadIdentifier = _.get(event, 'content.identifier');
+      this.showModal = this.offlineCardService.isYoutubeContent(contentData);
+      if (!this.showModal) {
+          this.showDownloadLoader = true;
+          this.downloadContent(downloadIdentifier, contentData, contentName);
+      }
+      this.logTelemetry(contentData, 'download-trackable-collection');
     }
+  }
+
+  downloadContent(contentId, contentData, contentName) {
+    this.contentManagerService.downloadContentId = contentId;
+    this.contentManagerService.downloadContentData = contentData;
+    this.contentManagerService.failedContentName = contentName;
+    this.contentManagerService.startDownload({})
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(data => {
+        this.contentManagerService.downloadContentId = '';
+        this.contentManagerService.downloadContentData = {};
+        this.contentManagerService.failedContentName = '';
+        this.showDownloadLoader = false;
+      }, error => {
+        this.contentManagerService.downloadContentId = '';
+        this.contentManagerService.downloadContentData = {};
+        this.contentManagerService.failedContentName = '';
+        this.showDownloadLoader = false;
+        _.each(this.pageSections, (pageSection) => {
+          _.each(pageSection.contents, (pageData) => {
+            pageData['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
+          });
+        });
+        if (!(error.error.params.err === 'LOW_DISK_SPACE')) {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+        }
+      });
+  }
+
+  logTelemetry(content, actionId) {
+    const telemetryInteractObject = {
+      id: content.identifier,
+      type: content.contentType,
+      ver: content.pkgVersion ? content.pkgVersion.toString() : '1.0'
+    };
+
+    const appTelemetryInteractData: any = {
+      context: {
+        env: _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
+          _.get(this.activatedRoute, 'snapshot.data.telemetry.env') ||
+          _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env')
+      },
+      edata: {
+        id: actionId,
+        type: 'click',
+        pageid: this.router.url.split('/')[1] || 'explore-page'
+      }
+    };
+
+    if (telemetryInteractObject) {
+      if (telemetryInteractObject.ver) {
+        telemetryInteractObject.ver = _.isNumber(telemetryInteractObject.ver) ?
+          _.toString(telemetryInteractObject.ver) : telemetryInteractObject.ver;
+      }
+      appTelemetryInteractData.object = telemetryInteractObject;
+    }
+    this.telemetryService.interact(appTelemetryInteractData);
   }
 
   processOrgData(channels) {
