@@ -249,7 +249,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         contents: []
       };
       if (err) {
-        // show toaster message this.resourceService.messages.fmsg.m0001
+        // shows toaster message this.resourceService.messages.fmsg.m0001
         return enrolledSection;
       }
       const { constantData, metaData, dynamicFields, slickSize } = this.configService.appConfig.CoursePageSection.enrolledCourses;
