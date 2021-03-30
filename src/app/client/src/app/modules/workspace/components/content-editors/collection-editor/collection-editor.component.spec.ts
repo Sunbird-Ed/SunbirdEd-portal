@@ -74,7 +74,7 @@ describe('CollectionEditorComponent', () => {
       activatedRoute.snapshot.params.type = 'collection';
   });
 
-  xit('should router to course editor ',
+  it('should router to course editor ',
   inject([EditorService, ToasterService, TenantService, WorkSpaceService, FrameworkService, UserService],
     (editorService, toasterService, tenantService, workspaceService, frameworkService, userService) => {
       const router = TestBed.get(Router);
