@@ -281,6 +281,9 @@ const redirectTologgedInPage = (req, res) => {
 			[`/${req.params.slug}/explore-course`]: '/learn'
 		}
 	}
+  if ((_.get(req, 'query.redirect_uri')) && (_.get(req, 'query.redirect_uri')).includes(envHelper.vdnURL)){
+    res.cookie ('redirectPath', envHelper.vdnURL);
+  }
 	if (_.get(req, 'sessionID') && _.get(req, 'session.userId')) {
 		if (_.get(redirectRoutes, req.originalUrl)) {
 			const routes = _.get(redirectRoutes, req.originalUrl);
