@@ -170,7 +170,11 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       paramas['textbook'] = _.get(this.activatedRoute, 'snapshot.queryParams.textbook');
     }
     setTimeout(() => {
-      this.router.navigate(['/learn/course', this.courseId, 'batch', this.batchId], {queryParams: paramas});
+      if (this.batchId) {
+        this.router.navigate(['/learn/course', this.courseId, 'batch', this.batchId], {queryParams: paramas});
+      } else {
+        this.router.navigate(['/learn/course', this.courseId], { queryParams: paramas });
+      }
     }, 500);
   }
 
@@ -331,7 +335,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   private getContentState() {
-    if (_.get(this.activeContent, 'contentType') === 'SelfAssess' || !this.isRouterExtrasAvailable) {
+    if (this.batchId && _.get(this.activeContent, 'contentType') === 'SelfAssess' || !this.isRouterExtrasAvailable) {
       const req:any = this.getContentStateRequest(this.courseHierarchy);
       this.CsCourseService
       .getContentState(req, { apiPath: '/content/course/v1' })
@@ -463,7 +467,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
           if (_.get(unit, 'children.length')) {
             flattenDeepContents = this.courseConsumptionService.flattenDeep(unit.children).filter(item => item.mimeType !== 'application/vnd.ekstep.content-collection');
             /* istanbul ignore else */
-            if (this.contentStatus.length) {
+            if (this.contentStatus && this.contentStatus.length) {
               consumedContents = flattenDeepContents.filter(o => {
                 return this.contentStatus.some(({ contentId, status }) => o.identifier === contentId && status === 2);
               });
@@ -663,11 +667,13 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   highlightContent() {
-    this.contentStatus.forEach((item) => {
-      if (_.get(item, 'contentId') === _.get(this.activeContent, 'identifier') && item.status === 0) {
-        item.status = 1;
-      }
-    });
+    if (this.contentStatus && this.contentStatus.length > 0) {
+      this.contentStatus.forEach((item) => {
+        if (_.get(item, 'contentId') === _.get(this.activeContent, 'identifier') && item.status === 0) {
+          item.status = 1;
+        }
+      });
+    }
   }
 
   getCourseCompletionStatus(showPopup: boolean = false) {
@@ -776,7 +782,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       this.courseConsumptionService.getConfigByContent(id, options)
         .pipe(first(), takeUntil(this.unsubscribe))
         .subscribe(config => {
-          const objectRollup = this.courseConsumptionService.getContentRollUp(this.courseConsumptionService.courseHierarchy, id);
+          const objectRollup = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, id);
           this.objectRollUp = objectRollup ? this.courseConsumptionService.getRollUp(objectRollup) : {};
           if (config && config.context) {
             config.context.objectRollup = this.objectRollUp;
@@ -784,7 +790,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
           this.playerConfig = config;
           const _contentIndex = _.findIndex(this.contentStatus, { contentId: _.get(config, 'context.contentId') });
           this.playerConfig['metadata']['maxAttempt'] = _.get(this.activeContent, 'maxAttempts');
-          this.playerConfig['metadata']['currentAttempt'] = _.get(this.contentStatus[_contentIndex], 'score.length') || 0;
+          this.playerConfig['metadata']['currentAttempt'] = _contentIndex > 0 ? _.get(this.contentStatus[_contentIndex], 'score.length') : 0;
           this.showLoader = false;
           this.setTelemetryContentImpression();
         }, (err) => {
