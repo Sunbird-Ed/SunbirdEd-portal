@@ -455,7 +455,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
 
   calculateProgress(isLogAuditEvent?: boolean) {
     /* istanbul ignore else */
-    if (_.get(this.courseHierarchy, 'children')) {
+    if (this.batchId &&  _.get(this.courseHierarchy, 'children')) {
       this.consumedContents = 0;
       this.totalContents = 0;
       this.courseHierarchy.children.forEach(unit => {
@@ -757,8 +757,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     if (_.get(this.activeContent, 'contentType') === 'SelfAssess') {
       const _contentIndex = _.findIndex(this.contentStatus, {contentId: _.get(this.activeContent, 'identifier')});
       /* istanbul ignore if */
-      if (_.get(this.contentStatus[_contentIndex], 'score.length') >= _.get(this.activeContent, 'maxAttempts')) maxAttemptsExceeded = true;
-      if (_.get(this.activeContent, 'maxAttempts') - _.get(this.contentStatus[_contentIndex], 'score.length') === 1) isLastAttempt = true;
+      if (_contentIndex > 0 && _.get(this.contentStatus[_contentIndex], 'score.length') >= _.get(this.activeContent, 'maxAttempts')) maxAttemptsExceeded = true;
+      if (_contentIndex > 0 && _.get(this.activeContent, 'maxAttempts') - _.get(this.contentStatus[_contentIndex], 'score.length') === 1) isLastAttempt = true;
     }
     /* istanbul ignore if */
     if (maxAttemptsExceeded) {
