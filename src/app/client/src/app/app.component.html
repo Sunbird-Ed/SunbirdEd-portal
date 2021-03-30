@@ -1,7 +1,7 @@
 <div [ngClass]="!layoutConfiguration ? 'footer-fix' : 'new-footer'">
   <app-desktop-app-update *appDesktopOnly></app-desktop-app-update>
   <div [ngClass]="{'loggedInUser': userService.loggedIn, 'guestUser': !userService.loggedIn}">
-    <div *ngIf="!isDesktopApp"
+    <div
       class="sbt-container d-flex flex-ai-center sb-bg-color-black py-8 flex-w-wrap sbt-sticky-topbar sb-fontresizecontainer"
       [ngClass]="{'hide': isFullScreenView}">
       <div class="ui container">
