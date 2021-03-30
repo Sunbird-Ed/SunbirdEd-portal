@@ -2802,6 +2802,9 @@ sb-accordion-body .sbaccordion__panel-content .credits-section .title{
    .nested-group-container .member-name .fnormal {
       color: var(--black);
     }
+    .cursor-pointer .download-text{
+      color: var(--black);
+    }
   }
 
 html[accessable-theme="accessible"][layout='joy'][data-theme=Darkmode] {
@@ -3143,5 +3146,6 @@ html[accessable-theme="accessible"]{
 .module-complete-content label.fnormal{
   color:#004D26 !important;
 }
+
 
 }
