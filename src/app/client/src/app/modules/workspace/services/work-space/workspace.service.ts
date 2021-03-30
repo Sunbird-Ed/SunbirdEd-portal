@@ -102,7 +102,10 @@ export class WorkSpaceService {
   * @param {string}  state - Present state
 */
   openCollectionEditor(content, state) {
-    const navigationParams = ['/workspace/content/edit/collection', content.identifier, content.contentType, state, content.framework];
+    let navigationParams = ['/workspace/content/edit/collection', content.identifier, content.contentType, state, content.framework];
+    if (content.contentType === 'Course') {
+      navigationParams = ['workspace/edit/', 'Course', content.identifier, state, 'Draft'];
+    }
     if (content.status) {
       navigationParams.push(content.status);
     }
