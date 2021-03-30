@@ -157,6 +157,13 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     filters.primaryCategory = filters.primaryCategory || _.get(this.allTabData, 'search.filters.primaryCategory');
     filters.mimeType = filters.mimeType || _.get(mimeType, 'values');
 
+    const _filters = _.get(this.allTabData, 'search.filters');
+    _.forEach(_filters, (el, key) => {
+      if (!['primaryCategory', 'mimeType'].includes(key) && !_.has(filters, key)) {
+        filters[key] = el;
+      }
+    });
+
     // Replacing cbse/ncert value with cbse
     if (_.toLower(_.get(filters, 'board[0]')) === 'cbse/ncert' || _.toLower(_.get(filters, 'board')) === 'cbse/ncert') {
       filters.board = ['cbse'];
