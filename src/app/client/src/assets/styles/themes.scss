@@ -1237,6 +1237,12 @@ html[layout='joy'] {
       right: auto;
     }
   }
+
+  .cc-player {
+    .ui.info.message {
+      border-radius: calculateRem(20px);
+    }
+  }
 }
 
 html[data-theme=Darkmode] {
@@ -1473,6 +1479,10 @@ html[data-theme=Darkmode] {
   --kabab-menu-hover-bg: var(--black);
   --kabab-menu-dropdown-bg: #222222;
   --kabab-menu-dropdown-item-active: #333333;
+
+  .terms-and-cond-form iframe{
+    filter: invert(1);
+  }
   .no-content-container .board-title, .no-content-container .sub-title, .ui.semi-circular.update.basic.label, .ui.semi-circular.basic.label {
     color: var(--gray-100) !important;
   }
@@ -1631,12 +1641,12 @@ html[data-theme=Darkmode] {
   // notification
   --cc-notification-list-bg: #222222;
   --cc-notification-list-br: #111111;
-  --cc-notification-status-bg: var(--gray-200);
-  --cc-notification-date-text: #979797;
+  --cc-notification-status-bg: var(--white);
+  --cc-notification-date-text: var(--white);
   --cc-notification-logo-bg: var(--gray-0);
   --cc-notification-title-text: var(--gray-400);
   --cc-notification-title-active: var(--primary-color);
-  --cc-notification-subtitle-text: var(--gray-400);
+  --cc-notification-subtitle-text: var(--white);
 
   // toc 
   --cc-toc-card-item-bg: #333333;
@@ -1696,6 +1706,10 @@ html[data-theme=Darkmode] {
   --sb-modal-actions-bg: var(--sbt-compt-bg);
 
   --visit-helpcenter-bg:#333333;
+
+  .sb-notification-container .clear-text a {
+    color: var(--primary-color) !important;
+  }
 
   .sb-multi-rows {
     img {
@@ -1975,10 +1989,6 @@ html[data-theme=Darkmode] {
     color: rgba(255, 255, 255, .75);
   }
 
-  .ui.mini.rating {
-    filter: invert(1);
-  }
-
   .sb-color-gray-400 {
     color: var(--gray-800) !important;
   }
@@ -2036,6 +2046,24 @@ html[data-theme=Darkmode] {
 
   .training-relevant .sb-color-gray-400 {
     color: var(--white) !important;
+  }
+
+  .sbchapter__item.disabled-toc-card {
+    background-color: var(--gray-200) !important;
+    .sbchapter__item__title {
+      opacity: 1;
+    }
+    .sbchapter__item__score {
+      color: var(--black) !important;
+    }
+  }
+
+  .cc-player {
+    .ui.info.message {
+      background-color: #222 !important;
+      color: var(--primary-color) !important;
+      box-shadow: none;
+    }
   }
 
   //buttons 
@@ -2903,17 +2931,15 @@ html[accessable-theme="accessible"]{
     }
   }
 
+  
   .sbt-mygroups-details {
     .sb--card__moreinfo {
       .sb--card__org {
         color: #545454 !important;
       }
-
-      .sb--card__type {
-        color: #080808 !important;
-      }
     }
   }
+
 
   .sb-library-cards {
     .sb-members-list-item--horizontal {

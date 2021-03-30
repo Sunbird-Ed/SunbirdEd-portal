@@ -31,8 +31,7 @@ export default class DatabaseSDK {
             const databases = JSON.parse(fs.readFileSync(path.join(__dirname, 'schema_1.0.json'),
                 { encoding: 'utf8' }));
             for (const db of databases) {
-                const databaseName = Util.generateId(this.pluginId, db.name);
-                let dbInstance = this.getConnection(databaseName);
+                let dbInstance = this.getConnection(db.name);
                 if (!_.isEmpty(db['indexes'])) {
                     for (let index of db.indexes) {
                         await dbInstance.createIndex(index).catch((err) => {
@@ -46,6 +45,12 @@ export default class DatabaseSDK {
             logger.error(`while creating the indexes`, error);
         }
     }
+
+    async getIndex(database: string) {
+        let db = this.getConnection(database);
+        return db.getIndexes();
+    }
+
     getConnection(database: string) {
         return new PouchDataBase(path.join(process.env.DATABASE_PATH, Util.generateId(this.pluginId, database)));
     }

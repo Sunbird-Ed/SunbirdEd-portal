@@ -18,6 +18,7 @@ import { LogSyncManager } from "./manager/logSyncManager";
 import { manifest } from "./manifest";
 import { Router } from "./routes";
 import DatabaseSDK from "./sdk/database";
+import { GeneralizedResources } from './controllers/generalizedResources';
 
 const LOG_SYNC_INTERVAL_TIMESTAMP = 2 * 60 * 60 * 1000; // Triggers on every 2 hrs
 export class Server {
@@ -119,10 +120,11 @@ export class Server {
     const channel = new Channel(manifest);
     const form = new Form(manifest);
     const location = new Location(manifest);
+    const generalizedResources = new GeneralizedResources(manifest);
     return Promise.all([organization.insert(), resourceBundle.insert(),
       framework.insert(), faqs.insert(),
       channel.insert(), form.insert(),
-      form.insert(), location.insert()]);
+      form.insert(), location.insert(), generalizedResources.insert()]);
   }
 }
 

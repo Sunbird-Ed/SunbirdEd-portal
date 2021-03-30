@@ -13,6 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { configureTestSuite } from '@sunbird/test-util';
+import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
 
 describe('CoursePageComponent', () => {
     let component: CoursePageComponent;
@@ -497,7 +498,40 @@ describe('CoursePageComponent', () => {
             }
         };
         spyOn(component, 'playContent');
+        const route = TestBed.get(Router);
+        route.url = '/course-page?selectedTab=course-page';
         component.hoverActionClicked(event);
         expect(component.playContent).toHaveBeenCalled();
+    });
+
+    it('should call hoverActionClicked for DOWNLOAD ', () => {
+        Response.hoverActionsData['hover'] = {
+            'type': 'download',
+            'label': 'Download',
+            'disabled': false
+        };
+        Response.hoverActionsData['data'] = Response.successData.result.response;
+        component.pageSections = Response.pageSections;
+        spyOn(component, 'logTelemetry');
+        spyOn(component, 'downloadContent');
+        component.hoverActionClicked(Response.hoverActionsData);
+        expect(component.downloadContent).toHaveBeenCalledWith(Response.hoverActionsData['data'].identifier);
+        expect(component.logTelemetry).toHaveBeenCalled();
+        expect(component.showModal).toBeFalsy();
+    });
+
+    it('should call download content with success ', () => {
+        const contentManagerService = TestBed.get(ContentManagerService);
+        component.pageSections = Response.pageSections;
+        spyOn(contentManagerService, 'startDownload').and.returnValue(of({}));
+        component.downloadContent('123');
+        expect(component.showDownloadLoader).toBeFalsy();
+    });
+    it('should call download content from popup ', () => {
+        component.pageSections = Response.pageSections;
+        spyOn(component, 'downloadContent');
+        component.callDownload();
+        expect(component.showDownloadLoader).toBeTruthy();
+        expect(component.downloadContent).toHaveBeenCalled();
     });
 });
