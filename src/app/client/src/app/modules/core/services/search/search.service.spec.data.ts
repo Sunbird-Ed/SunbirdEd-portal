@@ -211,5 +211,117 @@ export const serviceMockData = {
         }
       ]
     }
-  }
+  },
+  option: {
+    'url': 'content/v1/search',
+    'param': {
+        'orgdetails': 'orgName,email',
+        'framework': 'sample3'
+    },
+    'data': {
+        'request': {
+            'filters': {
+                'board': [
+                    'sample'
+                ],
+                'medium': [
+                    'English'
+                ],
+                'gradeLevel': [
+                    'Class 10'
+                ],
+                'channel': [],
+                'subject': [],
+                'audience': [],
+                'contentType': [
+                    'TextBook'
+                ],
+                'primaryCategory': [
+                    'Digital Textbook',
+                    'eTextbook'
+                ]
+            },
+            'limit': 100,
+            'fields': [
+                'name',
+                'appIcon',
+                'mimeType',
+                'gradeLevel',
+                'identifier',
+                'medium',
+                'pkgVersion',
+                'board',
+                'subject',
+                'resourceType',
+                'contentType',
+                'channel',
+                'organisation',
+                'trackable',
+                'se_boards',
+                'se_subjects',
+                'se_mediums',
+                'se_gradeLevels'
+            ],
+            'facets': [
+                'subject'
+            ]
+        }
+    }
+},
+respOption : {
+  'url': 'content/v1/search',
+    'param': {
+        'orgdetails': 'orgName,email',
+        'framework': 'sample3'
+    },
+    'data': {
+        'request': {
+            'filters': {
+                'se_boards': [
+                    'sample'
+                ],
+                'se_mediums': [
+                    'English'
+                ],
+                'se_gradeLevels': [
+                    'Class 10'
+                ],
+                'channel': [],
+                'se_subjects': [],
+                'audience': [],
+                'contentType': [
+                    'TextBook'
+                ],
+                'primaryCategory': [
+                    'Digital Textbook',
+                    'eTextbook'
+                ]
+            },
+            'limit': 100,
+            'fields': [
+                'name',
+                'appIcon',
+                'mimeType',
+                'gradeLevel',
+                'identifier',
+                'medium',
+                'pkgVersion',
+                'board',
+                'subject',
+                'resourceType',
+                'contentType',
+                'channel',
+                'organisation',
+                'trackable',
+                'se_boards',
+                'se_subjects',
+                'se_mediums',
+                'se_gradeLevels'
+            ],
+            'facets': [
+                'subject'
+            ]
+        }
+    }
+}
 };
