@@ -585,6 +585,7 @@ export class ReportComponent implements OnInit {
         element.chartData = data.chartData;
         return element;
       });
+      this.globalSelectedFilters = data;
     }
     this.globalFilterChange = {
       chartData: data.chartData,
