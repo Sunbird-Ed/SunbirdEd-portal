@@ -275,7 +275,7 @@ export class SearchService {
   }
   updateOption(option: any) {
     if (_.get(option, 'data.request.filters.board')) {
-      option.data.request.filters['se_brards'] = option.data.request.filters.board;
+      option.data.request.filters['se_boards'] = option.data.request.filters.board;
       delete option.data.request.filters.board;
     }
     if (_.get(option, 'data.request.filters.gradeLevel')) {
