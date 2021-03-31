@@ -170,4 +170,11 @@ describe('SearchService', () => {
         expect(value).toBe(false);
     }));
 
+    it ('should call the updateOption method with data', () => {
+      const searchService = TestBed.get(SearchService);
+      const obj = serviceMockData.option;
+      const newObj = searchService.updateOption(obj);
+      expect(newObj).toBe(serviceMockData.respOption);
+     });
+
   });
