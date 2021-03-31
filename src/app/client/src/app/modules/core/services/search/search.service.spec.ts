@@ -157,6 +157,7 @@ describe('SearchService', () => {
           }
           return observableThrowError({});
         });
+        expect(service.updateOption).toHaveBeenCalled();
       }));
 
     it ('should return TRUE (when content is trackable or contentType = COURSE)', inject([SearchService],
