@@ -267,11 +267,42 @@ export class SearchService {
         }
       }
     };
-
+    option['data'] = this.updateOption(option);
     if (requestParam['pageNumber'] && requestParam['limit']) {
       option.data.request['offset'] = (requestParam.pageNumber - 1) * requestParam.limit;
     }
     return this.publicDataService.post(option);
+  }
+  /* *
+  * update option that was sent to the the search service call
+  * this method takes option object as input
+  * and provides the updated data opject as output
+  * the method will convert the following
+  * board into se_boards
+  * gradeLevel into se_gradelevels
+  * medium into se_mediums
+  * subject into se_subjects
+  * and will delete the board, medium, gradeLevel, subject
+  * @param {option} 
+  **/
+  public updateOption(option: any) {
+    if (_.get(option, 'data.request.filters.board')) {
+      option.data.request.filters['se_boards'] = option.data.request.filters.board;
+      delete option.data.request.filters.board;
+    }
+    if (_.get(option, 'data.request.filters.gradeLevel')) {
+      option.data.request.filters['se_gradeLevels'] = option.data.request.filters.gradeLevel;
+      delete option.data.request.filters.gradeLevel;
+    }
+    if (_.get(option, 'data.request.filters.medium')) {
+      option.data.request.filters['se_mediums'] = option.data.request.filters.medium;
+      delete option.data.request.filters.medium;
+    }
+    if (_.get(option, 'data.request.filters.subject')) {
+      option.data.request.filters['se_subjects'] = option.data.request.filters.subject;
+      delete option.data.request.filters.subject;
+    }
+    return option.data;
   }
   /**
   * Batch Search.

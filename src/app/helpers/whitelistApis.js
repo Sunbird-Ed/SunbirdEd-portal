@@ -1157,6 +1157,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [
         ROLE.CONTENT_CREATOR,
+        ROLE.CONTENT_REVIEWER,
         ROLE.COURSE_CREATOR,
         ROLE.BOOK_CREATOR
       ]
