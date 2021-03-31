@@ -204,6 +204,10 @@ const API_LIST = {
         ROLE.CONTENT_CREATOR
       ]
     },
+    '/content/question/v1/list': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
 
     // Collection Editor
     '/action/content/v1/collaborator/update': {
@@ -627,6 +631,10 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/role/read': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/learner/questionset/v1/hierarchy/:do_id': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
@@ -1593,12 +1601,14 @@ const API_LIST = {
   },
   URL_PATTERN: [
     '/learner/user/v1/feed/delete',
+    '/content/question/v1/list',
     '/content/content/v1/read/:do_id',
     '/content/content/v1/copy/:do_id',
     '/content/content/v1/publish/:do_id',
     '/content/content/v1/reject/:do_id',
     '/content/content/v1/flag/accept/:do_id',
     '/content/content/v1/flag/reject/:do_id',
+    '/learner/questionset/v1/hierarchy/:do_id',
     '/learner/data/v1/system/settings/get/:slug',
     '/learner/course/v1/hierarchy/:do_id',
     '/learner/user/v3/read/:userId',

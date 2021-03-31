@@ -63,7 +63,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   playerType: string;
   isDesktopApp = false;
   showQumlPlayer = false;
-  questionIds: string[];
 
   /**
  * Dom element reference of contentRatingModal
@@ -101,7 +100,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       const getQuestionSetHierarchy = this.playerService.getQuestionSetHierarchy(_.get(this.playerConfig, 'metadata.identifier'));
       const getQuestionSetRead = this.playerService.getQuestionSetRead(_.get(this.playerConfig, 'metadata.identifier')).pipe(catchError(error => of('error')));
       forkJoin([getQuestionSetHierarchy, getQuestionSetRead]).subscribe((res) => {
-        this.questionIds = _.get(res[0], 'questionSet.childNodes');
         this.playerConfig.metadata = _.get(res[0], 'questionSet');
         delete this.playerConfig.metadata.children;
         if (res[1] !== 'error') {
@@ -240,7 +238,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         let isNewPlayer = false;
         _.forEach(data, (value) => {
           if (_.includes(_.get(value, 'mimeType'), this.playerConfig.metadata.mimeType) && _.get(value, 'version') === 2) {
-            this.playerConfig.metadata.threshold = _.get(value, 'threshold');
+            this.playerConfig.context.threshold = _.get(value, 'threshold');
             this.playerType = _.get(value, 'type');
             isNewPlayer = true;
           }
