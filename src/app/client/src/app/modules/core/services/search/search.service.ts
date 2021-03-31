@@ -273,7 +273,19 @@ export class SearchService {
     }
     return this.publicDataService.post(option);
   }
-  updateOption(option: any) {
+  /* *
+  * update option that was sent to the the search service call
+  * this method takes option object as input
+  * and provides the updated data opject as output
+  * the method will convert the following
+  * board into se_boards
+  * gradeLevel into se_gradelevels
+  * medium into se_mediums
+  * subject into se_subjects
+  * and will delete the board, medium, gradeLevel, subject
+  * @param {option} 
+  **/
+  public updateOption(option: any) {
     if (_.get(option, 'data.request.filters.board')) {
       option.data.request.filters['se_boards'] = option.data.request.filters.board;
       delete option.data.request.filters.board;

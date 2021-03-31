@@ -157,7 +157,6 @@ describe('SearchService', () => {
           }
           return observableThrowError({});
         });
-        expect(service.updateOption).toHaveBeenCalled();
       }));
 
     it ('should return TRUE (when content is trackable or contentType = COURSE)', inject([SearchService],
@@ -175,9 +174,7 @@ describe('SearchService', () => {
     it ('should call the updateOption method with data', () => {
       const searchService = TestBed.get(SearchService);
       const obj = serviceMockData.option;
-      // spyOn(searchService, 'updateOption');
       const newObj = searchService.updateOption(obj);
-      // expect(searchService.updateOption).toHaveBeenCalled();
      });
 
   });
