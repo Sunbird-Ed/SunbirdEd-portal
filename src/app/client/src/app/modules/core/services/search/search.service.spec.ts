@@ -17,7 +17,7 @@ import { CoreModule, FormService } from '@sunbird/core';
 import { configureTestSuite } from '@sunbird/test-util';
 import { serviceMockData } from './search.service.spec.data';
 
-fdescribe('SearchService', () => {
+describe('SearchService', () => {
   const resourceBundle = {
     frmelmnts: {
       lbl: {
