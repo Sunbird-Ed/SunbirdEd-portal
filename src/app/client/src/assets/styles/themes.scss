@@ -2752,6 +2752,7 @@ html[data-theme='Darkmode'][layout='joy'] {
 
 //accessible scss start
 html[accessable-theme="accessible"][layout='joy'][data-theme=Darkmode] {
+  --accessible-green: #004D26;  
 
   .new-layout-footer .sbt-container .sbt-footer-download-app .sbt-footer-bg .sbt-footer-title {
     color: var(--yellow) !important
@@ -2791,7 +2792,7 @@ sb-accordion-body .sbaccordion__panel-content .credits-section .title{
       color: var(--white) !important;
     }
     .module-complete-content label.fnormal{
-      color:#004D26 !important;
+      color:var(--accessible-green) !important;
     }
     .nested-group-container .fxsmall {
       color: var(--black);
@@ -2850,6 +2851,7 @@ html[accessable-theme="accessible"][layout='joy'][data-theme=Darkmode] {
 }
 
 html[accessable-theme="accessible"]{
+  --accessible-green: #004D26;  
   --sbt-pill-text: #000 !important;
   --sbt-pill-bg-active: #004594 !important;
 
@@ -3141,10 +3143,10 @@ html[accessable-theme="accessible"]{
   color: #5B5757 !important;
 }
 .add-user--horizontal .add-user__label.sb-color-secondary{
-  color: #004D24 !important;
+  color:var(--accessible-green) !important;
 }
 .module-complete-content label.fnormal{
-  color:#004D26 !important;
+  color:var(--accessible-green) !important;
 }
 
 
