@@ -19,6 +19,7 @@ const errorUrl = '/sso/sign-in/error';
 const { logger } = require('@project-sunbird/logger');
 const url = require('url');
 const {acceptTncAndGenerateToken} = require('../helpers/userService');
+const VDNURL = envHelper.vdnURL || 'https://dock.preprod.ntp.net.in/';
 
 module.exports = (app) => {
 
@@ -200,7 +201,7 @@ module.exports = (app) => {
 
   app.get(successUrl, async (req, res) => { // to support mobile sso flow
     if (_.get(req, 'cookies.redirectPath')){
-      res.redirect(envHelper.vdnURL+'success_loader.html?obj='+getEncyptedQueryParams({userId:_.get(req, 'cookies.userDetails')}));
+      res.redirect(VDNURL+'success_loader.html?obj='+getEncyptedQueryParams({userId:_.get(req, 'cookies.userDetails')}));
     } else {
       res.status(200).sendFile('./success_loader.html', {root: __dirname})
     }

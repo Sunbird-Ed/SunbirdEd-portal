@@ -16,7 +16,7 @@ const CONSTANTS = require('../helpers/constants');
 const { memoryStore } = require('../helpers/keyCloakHelper')
 const session = require('express-session');
 const { logger } = require('@project-sunbird/logger');
-const VDNURL = envHelper.vdnURL || 'https://dock.preprod.ntp.net.in/'
+const VDNURL = envHelper.vdnURL || 'https://dock.preprod.ntp.net.in/';
 
 logger.info({msg:`CDN index file exist: ${cdnIndexFileExist}`});
 
