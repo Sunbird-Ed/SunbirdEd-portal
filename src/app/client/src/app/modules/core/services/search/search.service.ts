@@ -267,11 +267,30 @@ export class SearchService {
         }
       }
     };
-
+    option['data'] = this.updateOption(option);
     if (requestParam['pageNumber'] && requestParam['limit']) {
       option.data.request['offset'] = (requestParam.pageNumber - 1) * requestParam.limit;
     }
     return this.publicDataService.post(option);
+  }
+  updateOption(option: any) {
+    if (_.get(option, 'data.request.filters.board')) {
+      option.data.request.filters['se_brards'] = option.data.request.filters.board;
+      delete option.data.request.filters.board;
+    }
+    if (_.get(option, 'data.request.filters.gradeLevel')) {
+      option.data.request.filters['se_gradeLevels'] = option.data.request.filters.gradeLevel;
+      delete option.data.request.filters.gradeLevel;
+    }
+    if (_.get(option, 'data.request.filters.medium')) {
+      option.data.request.filters['se_mediums'] = option.data.request.filters.medium;
+      delete option.data.request.filters.medium;
+    }
+    if (_.get(option, 'data.request.filters.subject')) {
+      option.data.request.filters['se_subjects'] = option.data.request.filters.subject;
+      delete option.data.request.filters.subject;
+    }
+    return option.data;
   }
   /**
   * Batch Search.
