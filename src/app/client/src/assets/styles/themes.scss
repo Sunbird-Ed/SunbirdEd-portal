@@ -1641,12 +1641,12 @@ html[data-theme=Darkmode] {
   // notification
   --cc-notification-list-bg: #222222;
   --cc-notification-list-br: #111111;
-  --cc-notification-status-bg: var(--gray-200);
-  --cc-notification-date-text: #979797;
+  --cc-notification-status-bg: var(--white);
+  --cc-notification-date-text: var(--white);
   --cc-notification-logo-bg: var(--gray-0);
   --cc-notification-title-text: var(--gray-400);
   --cc-notification-title-active: var(--primary-color);
-  --cc-notification-subtitle-text: var(--gray-400);
+  --cc-notification-subtitle-text: var(--white);
 
   // toc 
   --cc-toc-card-item-bg: #333333;
@@ -1706,6 +1706,10 @@ html[data-theme=Darkmode] {
   --sb-modal-actions-bg: var(--sbt-compt-bg);
 
   --visit-helpcenter-bg:#333333;
+
+  .sb-notification-container .clear-text a {
+    color: var(--primary-color) !important;
+  }
 
   .sb-multi-rows {
     img {
@@ -2753,7 +2757,7 @@ html[accessable-theme="accessible"][layout='joy'][data-theme=Darkmode] {
     color: var(--yellow) !important
   }
   .sb-pageSection .sb-pageSection-header .sb-pageSection-sentenceCase .sb-pageSection-count{
-    background-color: var(--black);
+    background-color: var(--black) !important;
     color:var(--white);
 }
   .sb-pageSection .sb-pageSection-header .sb-cls-btn, .sb-pageSection .sb-pageSection-header button.sb-btn-secondary{
@@ -2765,7 +2769,7 @@ sb-accordion-body .sbaccordion__panel-content .credits-section .title{
 }
 
   .sb-pageSection .sb-pageSection-header .sb-pageSection-sentenceCase .sb-pageSection-count {
-    background-color: var(--black);
+    background-color: var(--black) !important;
     color: var(--white);
   }
 
@@ -2788,6 +2792,15 @@ sb-accordion-body .sbaccordion__panel-content .credits-section .title{
     }
     .module-complete-content label.fnormal{
       color: #004D24 !important;
+    }
+    .nested-group-container .fxsmall {
+      color: var(--black);
+    }
+    .nested-group-container .fsmall {
+      color: var(--black);
+    }
+   .nested-group-container .member-name .fnormal {
+      color: var(--black);
     }
   }
 
@@ -2873,6 +2886,9 @@ html[accessable-theme="accessible"]{
   .title.ng-star-inserted {
     color: var(--primary-color) !important;
   }
+  .sbaccordion__panel-content .sb-meta-data .title{
+    color: var(--primary-color) !important;
+  }
 
   .sbt-welcome-theme-container {
     .sb-color-warning {
@@ -2912,17 +2928,15 @@ html[accessable-theme="accessible"]{
     }
   }
 
+  
   .sbt-mygroups-details {
     .sb--card__moreinfo {
       .sb--card__org {
         color: #545454 !important;
       }
-
-      .sb--card__type {
-        color: #080808 !important;
-      }
     }
   }
+
 
   .sb-library-cards {
     .sb-members-list-item--horizontal {
@@ -2958,7 +2972,7 @@ html[accessable-theme="accessible"]{
     .sb-pageSection-header {
       .sb-pageSection-sentenceCase {
         .sb-pageSection-count {
-          background-color: var(--tertiary-color);
+          background-color: #9a3713 !important;
         }
       }
 
@@ -3097,6 +3111,28 @@ html[accessable-theme="accessible"]{
   }
   .sb-pageSection .sb-pageSection-header .sb-cls-btn, .sb-pageSection .sb-pageSection-header button.sb-btn-secondary{
     color:var(--black) !important;
+}
+.licenseTag{
+  color:var(--gray-400) !important ;
+}
+.sb-modal-actions{
+  a.sb-btn.sb-btn-normal.sb-btn-primary{
+    color: var(--white);
+  }
+}
+.multi-select-section-app .multi-select-container .placeholder{
+  color: var(--gray-400) !important;
+}
+.user-profile-box{
+  span.sb-color-warning {
+    color:#B30000 !important;
+  }
+}
+.discuss-card-content .timing{
+  color: #5B5757 !important;
+}
+.discussion-content .discussion-labels{
+  color: #5B5757 !important;
 }
 
 }

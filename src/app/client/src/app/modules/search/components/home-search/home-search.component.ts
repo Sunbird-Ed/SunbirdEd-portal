@@ -157,6 +157,13 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     filters.primaryCategory = filters.primaryCategory || _.get(this.allTabData, 'search.filters.primaryCategory');
     filters.mimeType = filters.mimeType || _.get(mimeType, 'values');
 
+    const _filters = _.get(this.allTabData, 'search.filters');
+    _.forEach(_filters, (el, key) => {
+      if (!['primaryCategory', 'mimeType'].includes(key) && !_.has(filters, key)) {
+        filters[key] = el;
+      }
+    });
+
     // Replacing cbse/ncert value with cbse
     if (_.toLower(_.get(filters, 'board[0]')) === 'cbse/ncert' || _.toLower(_.get(filters, 'board')) === 'cbse/ncert') {
       filters.board = ['cbse'];
@@ -242,7 +249,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         contents: []
       };
       if (err) {
-        // show toaster message this.resourceService.messages.fmsg.m0001
+        // shows toaster message this.resourceService.messages.fmsg.m0001
         return enrolledSection;
       }
       const { constantData, metaData, dynamicFields, slickSize } = this.configService.appConfig.CoursePageSection.enrolledCourses;

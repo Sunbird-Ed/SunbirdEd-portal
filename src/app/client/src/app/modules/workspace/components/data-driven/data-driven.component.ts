@@ -13,8 +13,8 @@ import { DefaultTemplateComponent } from '../content-creation-default-template/c
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { WorkSpace } from '../../classes/workspace';
 import { WorkSpaceService } from '../../services';
-import { Subject, forkJoin } from 'rxjs';
-import { takeUntil} from 'rxjs/operators';
+import { Subject, forkJoin, of } from 'rxjs';
+import { mergeMap, takeUntil} from 'rxjs/operators';
 import { UUID } from 'angular2-uuid';
 
 @Component({
@@ -116,6 +116,8 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
   public enableCreateButton = false;
 
   public isSubmit = false;
+  public orgFWType;
+  public targetFWType;
 
   public unsubscribe = new Subject<void>();
   public targetFramework: string;
@@ -167,8 +169,8 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
       this.checkForPreviousRouteForRedirect();
       if (this.showFrameworkSelection) {
         this.frameworkService.getChannel(this.userService.hashTagId).pipe(takeUntil(this.unsubscribe)).subscribe(data => {
-          this.setFrameworkData(data);
           this.userChannelData = data;
+          this.selectFramework();
         }, err => {
           this.toasterService.error(this.resourceService.messages.emsg.m0005);
         });
@@ -283,8 +285,10 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
       requestData.createdBy = this.userService.userProfile.id,
       requestData.organisation = _.uniq(this.userService.orgNames),
       requestData.createdFor = this.userService.userProfile.organisationIds,
-      requestData.contentType = this.configService.appConfig.contentCreateTypeForEditors[this.contentType],
+      requestData.contentType = this.configService.appConfig.contentCreateTypeForEditors[this.contentType];
+    if (this.framework) {
       requestData.framework = this.framework;
+    }
     if (this.contentType === 'studymaterial' && data.contentType) {
       requestData.contentType = data.contentType;
     }
@@ -355,6 +359,8 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     const framework = this.framework;
     if (this.contentType === 'studymaterial' || this.contentType === 'assessment') {
       this.router.navigate(['/workspace/content/edit/content/', content.identifier, state, framework, 'Draft']);
+    }  else if (this.contentType === 'course') {
+      this.router.navigate(['workspace/edit/', 'Course', content.identifier, state, 'Draft']);
     } else {
       const type = this.configService.appConfig.contentCreateTypeForEditors[this.contentType];
       this.router.navigate(['/workspace/content/edit/collection', content.identifier, type, state, framework, 'Draft']);
@@ -371,6 +377,83 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
       this.redirect();
     }
 }
+
+/**
+   * @since - #SH-403
+   * @param  {} cardData
+   * @description - 1. It selects a card from the framework selection popup
+   *                shown while creating any resource (only course as of now)
+   *                2. It also logs interact telemetry on card click.
+   */
+  selectFramework() {
+    this.primaryCategory = 'Course';
+    this.workSpaceService.getCategoryDefinition('Collection', this.primaryCategory, this.userService.channel)
+    .subscribe(categoryDefinitionData => {
+      this.orgFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.schema.properties.framework.default');
+      this.targetFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.schema.properties.targetFWIds.default');
+      const orgframeworkReq = [];
+      const targetframeworkReq = [];
+      if (_.isEmpty(this.orgFWType)) {
+        this.orgFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.orgFWType');
+        orgframeworkReq.push(this.getFrameworkDataByType(this.orgFWType, this.userService.channel));
+        orgframeworkReq.push(this.getFrameworkDataByType(this.orgFWType));
+      }
+
+      if (_.isEmpty(this.targetFWType)) {
+        this.targetFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.targetFWType');
+        targetframeworkReq.push(this.getFrameworkDataByType(this.targetFWType, this.userService.channel));
+        targetframeworkReq.push(this.getFrameworkDataByType(this.targetFWType));
+      }
+
+      if (_.isEmpty(this.orgFWType) || _.isEmpty(this.targetFWType)) {
+        this.showCategoryConfigError();
+      }
+
+      if (!_.isEmpty(orgframeworkReq)) {
+        this.checkChannelOrSystem(orgframeworkReq[0], orgframeworkReq[1]).subscribe((response) => {
+          if (!_.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.schema.properties.framework.default')) {
+            const orgFWData = response;
+            if (_.get(orgFWData, 'result.count') <= 0) {
+              this.showCategoryConfigError();
+            } else {
+              this.checkChannelOrSystem(targetframeworkReq[0], targetframeworkReq[1]).subscribe((targetRes) => {
+                // tslint:disable-next-line:max-line-length
+                if (!_.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.schema.properties.targetFWIds.default')) {
+                  const targetFWData = targetRes;
+                  if (this.targetFWType && targetFWData.result.count > 0) {
+                    this.targetFramework = _.get(_.first(_.get(targetFWData, 'result.Framework')), 'identifier');
+                  }
+                } else {
+                  this.targetFramework = this.targetFWType;
+                }
+                if (_.isEmpty(this.targetFramework)) {
+                  this.showCategoryConfigError();
+                } else {
+                  this.createContent(undefined);
+                }
+              });
+            }
+          } else {
+            this.showCategoryConfigError();
+          }
+        }, err => {
+          this.toasterService.error(this.resourceService.messages.emsg.m0025);
+        });
+      } else {
+        // this.framework = orgFWType;
+        this.targetFramework = this.targetFWType;
+        this.createContent(undefined);
+      }
+    }, err => {
+      this.toasterService.error(this.resourceService.messages.emsg.m0024);
+    });
+  }
+
+  showCategoryConfigError() {
+    this.toasterService.error(`Unknown framework category ${this.primaryCategory}. Please check the configuration.`);
+    this.redirect();
+    return ;
+  }
 
   redirect() {
     this.router.navigate(['/workspace/content/create']);
@@ -393,69 +476,32 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     });
   }
 
-  /**
-   * @since - #SH-403
-   * @param  {} channelData
-   * @description - It sets the card data and its associated framework
-   */
-  setFrameworkData(channelData) {
-    this.frameworkCardData = [{
-      title: 'Curriculum courses',
-      description: `Create courses for concepts from the syllabus, across grades and subjects. For example, courses on fractions, photosynthesis, reading comprehension, etc.`,
-      framework: _.get(channelData, 'result.channel.defaultFramework')
-    },
-    {
-      title: 'Generic courses',
-      description: `Create courses that help develop professional skills. For example, courses on classroom management, pedagogy, ICT, Leadership, etc.`,
-      framework: _.get(channelData, 'result.channel.defaultCourseFramework')
-    }
-    ];
-  }
-
-  /**
-   * @since - #SH-403
-   * @param  {} cardData
-   * @description - 1. It selects a card from the framework selection popup
-   *                shown while creating any resource (only course as of now)
-   *                2. It also logs interact telemetry on card click.
-   */
-  selectFramework(cardData) {
-    this.enableCreateButton = true;
-    this.selectedCard = cardData;
-    this.framework = _.get(cardData, 'framework');
-    const telemetryInteractData = {
-      context: {
-        env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env'),
-        cdata: [{
-          type: 'framework',
-          id: this.framework
-        }]
-      },
-      edata: {
-        id: _.get(cardData, 'title'),
-        type: 'click',
-        pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid')
-      }
-    };
-    this.telemetryService.interact(telemetryInteractData);
-  }
-
-  getFrameworkDataByType(type, channel = this.userService.channel) {
+  getFrameworkDataByType(type?, channel?, identifer?) {
     const option = {
       url: `${this.configService.urlConFig.URLS.COMPOSITE.SEARCH}`,
-      'data': {
-        'request': {
-            'filters': {
-                'objectType': 'Framework',
-                'type': type,
-                'status': 'Live',
-                channel
+      data: {
+        request: {
+            filters: {
+                objectType: 'Framework',
+                status: ['Live'],
+                ...(type && {type}),
+                ...(identifer && {identifer}),
+                ...(channel && {channel})
             },
             'limit': 1
         }
     }
       };
       return this.contentService.post(option);
+  }
+
+  checkChannelOrSystem(channelObservable, systemObservable) {
+    return channelObservable.pipe(mergeMap(
+      (data) => {
+        if (_.get(data, 'result.count') > 0) { return of(data); }
+        return systemObservable;
+      }
+    ));
   }
 
   /**
@@ -484,6 +530,12 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
         rollup: {},
       }
     };
+    if (this.targetFramework) {
+      telemetryData.context.cdata.push({
+        type: 'targetFW',
+        id: this.targetFramework
+      });
+    }
     this.telemetryService.interact(telemetryData);
   }
 
