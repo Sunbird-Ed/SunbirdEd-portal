@@ -1,0 +1,117 @@
+<app-landing-section [textToDisplay]="" [layoutConfiguration]="{}" [noTitle]="true"></app-landing-section>
+<div [ngClass]="layoutConfiguration ? 'relative9' : ''">
+  <section class="py-24 d-flex flex-ai-center flex-dc">
+    <div class="ui container">
+      <div class="mb-15 d-flex flex-jc-center relative avatar-container">
+        <ngx-avatar class="my-avatar" [style]="avatarStyle" size="98" initialsSize="1" textSizeRatio="2"
+          [name]="userName">
+        </ngx-avatar>
+      </div>
+    </div>
+    <div class="profile-user-label font-w-bold d-flex text-center relative position">{{userName | titlecase}}
+    </div>
+    <div class="ui container">
+      <div class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+        <div class="fmedium text-center">{{resourceService?.frmelmnts?.lbl?.role}} :</div>
+        <div class="fmedium ml-5 font-w-bold text-center">
+          Admin</div>
+      </div>
+      <div class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+        <div class="fmedium text-center">{{resourceService?.frmelmnts?.lbl?.subRole}} :</div>
+        <div class="fmedium ml-5 font-w-bold text-center">
+          HM and BM </div>
+      </div>
+    </div>
+
+    <!-- add state and district -->
+    <div class="ui container">
+      <div class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+        <div class="fmedium text-center">{{resourceService?.frmelmnts?.lbl?.school}} :</div>
+        <div class="fmedium ml-5 font-w-bold text-center">
+          School Name here </div>
+      </div>
+      <div class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+        <div class="fmedium text-center">{{resourceService?.frmelmnts?.lbl?.cluster}} :</div>
+        <div class="fmedium ml-5 font-w-bold text-center">
+          cluster name here </div>
+      </div>
+      <div class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+        <div class="fmedium text-center">{{resourceService?.frmelmnts?.lbl?.block}} :</div>
+        <div class="fmedium ml-5 font-w-bold text-center">
+          block name here </div>
+      </div>
+      <div class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+        <div class="fmedium text-center">{{resourceService?.frmelmnts?.lbl?.district}} :</div>
+        <div class="fmedium ml-5 font-w-bold text-center">
+          district name here </div>
+      </div>
+      <div class="d-flex mb-5 flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+        <div class="fmedium text-center">{{resourceService?.frmelmnts?.lbl?.state}} :</div>
+        <div class="fmedium ml-5 font-w-bold text-center">
+          state name here</div>
+      </div>
+      <div class="d-flex flex-dc flex-jcc-center flex-ai-center">
+        <button appTelemetryInteract appOnlineOnly [telemetryInteractEdata]="editProfileInteractEdata"
+          class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border my-16"
+          (click)="showEditUserDetailsPopup=true">{{resourceService?.frmelmnts?.lbl?.edit}}</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="d-flex flex-ai-center flex-dc pt-30 pb-30 profile-bg-c-3">
+    <!-- User info computer view starts-->
+    <div class="ui container">
+      <div class="d-flex flex-jc-center flex-ai-center flex-dc">
+        <div class="max-w-400 computer only">
+          <div class="mb-15 d-flex flex-jc-center">
+            <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.boards}} :</span>
+            <span class="fmedium font-w-bold pl-4">{{ 'CBSE' | interpolate: 'CBSE':
+              'CBSE/NCERT'}}</span>
+          </div>
+          <div class="mb-15 d-flex flex-jc-center">
+            <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.medium}} :</span>
+            <span class="fmedium font-w-bold pl-4">{{'English'}}</span>
+          </div>
+          <div class="mb-15 d-flex flex-jc-center">
+            <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.classes}} :</span>
+            <span class="fmedium font-w-bold pl-4">{{ 'Class 10'}}</span>
+          </div>
+          <div class="d-flex flex-jc-center">
+            <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.subjects}} :</span>
+            <span class="fmedium font-w-bold pl-4">{{'Environmental Science'}}</span>
+          </div>
+        </div>
+        <button class="sb-btn sb-btn-primary sb-btn-normal my-16 sb-btn-border computer only" appTelemetryInteract
+          appOnlineOnly [telemetryInteractEdata]="myFrameworkEditEdata"
+          (click)="showEdit = !showEdit">{{resourceService?.frmelmnts?.lbl?.edit}}</button>
+      </div>
+    </div>
+    <!-- User info computer view ends-->
+
+    <!-- User info mobile view starts-->
+    <div class="max-w-300 mobile only">
+      <div class="mb-15 d-flex flex-ai-center flex-dc">
+        <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.boards}}:</span>
+        <span class="fmedium font-w-bold text-center">{{'CBSE'}}</span>
+      </div>
+      <div class="mb-15 d-flex flex-ai-center flex-dc">
+        <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.medium}} :</span>
+        <span class="fmedium font-w-bold text-center">{{'English'}}</span>
+      </div>
+      <div class="mb-15 d-flex flex-ai-center flex-dc">
+        <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.classes}} :</span>
+        <span class="fmedium font-w-bold text-center">{{'Class 10'}}</span>
+      </div>
+      <div class="mb-15 d-flex flex-ai-center flex-dc">
+        <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.subjects}} :</span>
+        <span class="fmedium font-w-bold text-center">{{'Environmental Science'}}</span>
+      </div>
+      <div class="d-flex flex-ai-center flex-jc-center" appTelemetryInteract
+        [telemetryInteractEdata]="myFrameworkEditEdata" (click)="showEdit = !showEdit">
+        <button appOnlineOnly
+          class="sb-btn sb-btn-primary sb-btn-xs mt-30">{{resourceService?.frmelmnts?.lbl?.edit}}</button>
+      </div>
+    </div>
+    <!-- User info mobile view ends-->
+  </section>
+</div>
