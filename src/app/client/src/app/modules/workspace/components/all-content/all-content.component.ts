@@ -270,11 +270,8 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
       this.sort = { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn };
     }
     const preStatus = ['Draft', 'FlagDraft', 'Review', 'Processing', 'Live', 'Unlisted', 'FlagReview'];
-    let primaryCategories = _.compact(_.concat(this.frameworkService['_channelData'].contentPrimaryCategories,
+    const primaryCategories = _.compact(_.concat(this.frameworkService['_channelData'].contentPrimaryCategories,
         this.frameworkService['_channelData'].collectionPrimaryCategories));
-    if (this.isQuestionSetFilterEnabled === true) {
-      primaryCategories = _.compact(_.concat(primaryCategories, this.frameworkService['_channelData'].questionSetPrimaryCategories));
-    }
     const searchParams = {
       filters: {
         status: bothParams.queryParams.status ? bothParams.queryParams.status : preStatus,
