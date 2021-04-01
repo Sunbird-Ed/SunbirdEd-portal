@@ -40,8 +40,6 @@ function proxyObj() {
             }
         },
         userResDecorator: function (proxyRes, proxyResData, req, res) {
-            console.log('here>>>>>>>>>>')
-            console.log('here>>>>>>>>>>', req)
             let resData = proxyResData.toString('utf8');
             try {
                 logger.info({ msg: 'proxyObj' });
