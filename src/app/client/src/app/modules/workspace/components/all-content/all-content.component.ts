@@ -273,7 +273,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
     let primaryCategories = _.compact(_.concat(this.frameworkService['_channelData'].contentPrimaryCategories,
         this.frameworkService['_channelData'].collectionPrimaryCategories));
     if (this.isQuestionSetFilterEnabled === true) {
-      primaryCategories = _.compact(_.concat(primaryCategories, this.frameworkService['_channelData'].questionSetPrimaryCategories || ['Practice Question Set']));
+      primaryCategories = _.compact(_.concat(primaryCategories, this.frameworkService['_channelData'].questionSetPrimaryCategories));
     }
     const searchParams = {
       filters: {
