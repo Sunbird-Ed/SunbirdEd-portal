@@ -1602,7 +1602,6 @@ const API_LIST = {
   },
   URL_PATTERN: [
     '/learner/user/v1/feed/delete',
-    '/content/question/v1/list',
     '/content/content/v1/read/:do_id',
     '/content/content/v1/copy/:do_id',
     '/content/content/v1/publish/:do_id',
