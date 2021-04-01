@@ -311,15 +311,7 @@ async function initLogger() {
   enableLogger({
     logBasePath: path.join(getFilesPath(), 'logs'),
     logLevel: logLevel,
-    context: {
-      channel: process.env.CHANNEL,
-      env: 'desktop',
-      pdata: {
-        id: process.env.APP_ID,
-        ver: app.getVersion(),
-        pid: 'sunbird-desktop-backend'
-      },
-    },
+    context: {src: 'desktop', did: deviceId, appVersion: app.getVersion()},
     adopterConfig: {
       adopter: 'winston'
     }
