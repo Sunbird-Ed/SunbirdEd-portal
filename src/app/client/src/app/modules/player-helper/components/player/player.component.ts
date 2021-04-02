@@ -101,7 +101,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       const getQuestionSetRead = this.playerService.getQuestionSetRead(_.get(this.playerConfig, 'metadata.identifier')).pipe(catchError(error => of('error')));
       forkJoin([getQuestionSetHierarchy, getQuestionSetRead]).subscribe((res) => {
         this.playerConfig.metadata = _.get(res[0], 'questionSet');
-        delete this.playerConfig.metadata.children;
         if (res[1] !== 'error') {
           this.playerConfig.metadata.instructions = _.get(res[1], 'result.questionset.instructions');
         }
