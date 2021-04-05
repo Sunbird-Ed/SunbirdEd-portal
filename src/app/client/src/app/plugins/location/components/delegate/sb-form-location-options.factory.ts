@@ -76,15 +76,14 @@ export class SbFormLocationOptionsFactory {
             return [];
           }
           notifyLoading();
-          return this.getSchoolList(locationType, value).then((locationList: any) => {
+          return this.fetchLocationList(locationType, value).then((locationList: any) => {
               notifyLoaded();
               let list;
               if (locationType === 'school') {
-                list = locationList.map((s) => ({ label: s.orgName, code: s.externalId, value: s }));
+                list = locationList;
               } else {
-               list = locationList.map((s) => ({ label: s.name, value: s }));
+                list = locationList.map((s) => ({ label: s.name, value: s }));
               }
-              console.log('locationList', locationList);
               // school is fetched from userProfile.organisation instead of userProfile.userLocations
               if (config.code === 'school' && initial && !formControl.value) {
                 const option = list.find((o) => {
@@ -109,17 +108,29 @@ export class SbFormLocationOptionsFactory {
     };
   }
 
-  getSchoolList(locationType, value): Promise<any> {
-    console.log('Test cases', locationType);
+  fetchLocationList(locationType, value): Promise<any> {
     if (locationType === 'school') {
       return this.orgDetailsService.searchOrgDetails({
-        filter: {
+        filters: {
           'orgLocation.id': (value as SbLocation).id,
           isSchool: true
         }
-      }).toPromise();
+      }).pipe(
+        map((list: any) => list.map(ele => {
+          return {
+            label: ele.orgName,
+            value: { 
+              code: ele.externalId,
+              parentId: value.id,
+              type: locationType,
+              name: ele.orgName,
+              id: ele.identifier,
+              identifier: ele.identifier
+            }
+          };
+        }))
+      ).toPromise();
     } else {
-      console.log('Test cases2');
       return this.fetchUserLocation({
         filters: {
           type: locationType,
@@ -133,15 +144,12 @@ export class SbFormLocationOptionsFactory {
 
   private async fetchUserLocation(request: any): Promise<SbLocation[]> {
     const serialized = JSON.stringify(request);
-    console.log('Test cases3');
     if (this.userLocationCache[serialized]) {
       return this.userLocationCache[serialized];
     }
 
-    console.log('Test cases4');
     return this.locationService.getUserLocation(request).toPromise()
       .then((response) => {
-        console.log('Test cases5');
         const result = response.result.response;
         this.userLocationCache[serialized] = result;
         return result;

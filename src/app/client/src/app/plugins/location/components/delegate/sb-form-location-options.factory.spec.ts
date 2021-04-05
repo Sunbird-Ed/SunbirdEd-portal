@@ -18,7 +18,11 @@ describe('SbFormLocationOptionsFactory', () => {
     }
   };
   const mockUserService: Partial<UserService> = {};
-  const mockOrgDetailsService: Partial<OrgDetailsService> = {};
+  const mockOrgDetailsService: Partial<OrgDetailsService> = {
+    searchOrgDetails(request): Observable<any> {
+      return of({}) as any;
+    }
+  };
 
   beforeAll(() => {
     sbFormLocationOptionsFactory = new SbFormLocationOptionsFactory(
@@ -216,6 +220,112 @@ describe('SbFormLocationOptionsFactory', () => {
       stateFormControl.patchValue({
         code: 'SOME_SELECTED_STATE_CODE_1',
         name: 'SOME_SELECTED_STATE_NAME_1',
+        id: 'SOME_SELECTED_STATE_ID_1',
+        type: 'state'
+      });
+    });
+
+    it('should create a closure for school which should call searchOrgDetails', (done) => {
+      // arrange
+      spyOn(mockLocationService, 'getUserLocation').and.returnValue(of({
+        result: {
+          response: [
+            {
+              code: 'SOME_SELECTED_DISTRICT_CODE_1',
+              name: 'SOME_SELECTED_DISTRICT_NAME_1',
+              id: 'SOME_SELECTED_DISTRICT_ID_1',
+              type: 'district'
+            },
+            {
+              code: 'SOME_SELECTED_DISTRICT_CODE_2',
+              name: 'SOME_SELECTED_DISTRICT_NAME_2',
+              id: 'SOME_SELECTED_DISTRICT_ID_2',
+              type: 'district'
+            },
+          ]
+        }
+      }));
+      spyOn(mockOrgDetailsService, 'searchOrgDetails').and.returnValue(of(
+        [
+          {
+            externalId: 'SOME_SELECTED_DISTRICT_CODE_1',
+            orgName: 'SOME_SELECTED_DISTRICT_NAME_1',
+            id: 'SOME_SELECTED_DISTRICT_ID_1',
+            type: 'district'
+          },
+          {
+            externalId: 'SOME_SELECTED_DISTRICT_CODE_2',
+            orgName: 'SOME_SELECTED_DISTRICT_NAME_2',
+            id: 'SOME_SELECTED_DISTRICT_ID_2',
+            type: 'district'
+          },
+        ]
+      ));
+      const districtFormConfig: any = {
+        'code': 'district',
+        'type': 'select',
+        'context': 'state',
+        'default': { 'id': 'SOME_SELECTED_DISTRICT_ID_1' },
+        'templateOptions': {
+          'labelHtml': {
+            'contents': '<span>$0&nbsp;<span class="required-asterisk">*</span></span>',
+            'values': {
+              '$0': 'District'
+            }
+          },
+          'placeHolder': 'Select District',
+          'multiple': false,
+          'dataSrc': {
+            'marker': 'LOCATION_LIST',
+            'params': {
+              'id': 'school',
+              'useCase': 'SIGNEDIN_GUEST'
+            }
+          }
+        },
+        'validations': [
+          {
+            'type': 'required'
+          }
+        ]
+      };
+      const districtFormControl = new FormControl();
+      const stateFormControl = new FormControl({
+        code: 'SOME_SELECTED_STATE_CODE_1',
+        name: 'SOME_SELECTED_STATE_NAME_1',
+        id: 'SOME_SELECTED_STATE_ID_1',
+        type: 'state'
+      });
+      const mockNotifyLoading = () => {};
+      const mockNotifyLoaded = () => {};
+
+      // act
+      const closure = sbFormLocationOptionsFactory.buildLocationListClosure(
+        districtFormConfig as FieldConfig<any>,
+        true
+      );
+
+      (closure(
+        districtFormControl,
+        stateFormControl,
+        mockNotifyLoading,
+        mockNotifyLoaded
+      ) as Observable<FieldConfigOption<Location>[]>).pipe(
+        take(1)
+      ).subscribe((options: FieldConfigOption<Location>[]) => {
+        // assert
+        expect(mockOrgDetailsService.searchOrgDetails).toHaveBeenCalledWith({
+          filters: {
+            'orgLocation.id': 'SOME_SELECTED_STATE_ID_1',
+            isSchool: true
+          }
+        });
+        done();
+      });
+
+      stateFormControl.patchValue({
+        externalId: 'SOME_SELECTED_STATE_CODE_1',
+        orgName: 'SOME_SELECTED_STATE_NAME_1',
         id: 'SOME_SELECTED_STATE_ID_1',
         type: 'state'
       });
