@@ -305,7 +305,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       filters = this.filters = { ...this.filters, ...this.sortFilters({ filters }) };
       const categoryMapping = Object.entries(this.contentSearchService.getCategoriesMapping);
       filters = _.mapKeys(filters, (value, filterKey) => {
-        const [key] = categoryMapping.find(([category, mappedValue]) => mappedValue === filterKey) || [];
+        const [key = null] = categoryMapping.find(([category, mappedValue]) => mappedValue === filterKey) || [];
         return key || filterKey;
       });
       this.updateFiltersList({ filters });
