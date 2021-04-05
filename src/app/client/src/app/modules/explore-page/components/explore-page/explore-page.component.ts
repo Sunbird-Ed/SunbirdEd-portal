@@ -145,7 +145,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
           .pipe(
             map(({ enrolledCourses, err }) => {
               const pageData = this.getCurrentPageData();
-              if (_.get(pageData, 'contentType') === 'course') {
+              if (_.toLower(_.get(pageData, 'contentType')) === 'course') {
                 this.enrolledCourses = _.orderBy(enrolledCourses, ['enrolledDate'], ['desc']);
                 const enrolledSection = {
                     name: _.get(this.resourceService, 'frmelmnts.lbl.mytrainings'),

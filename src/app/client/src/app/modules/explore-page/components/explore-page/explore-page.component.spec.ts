@@ -501,12 +501,12 @@ describe('ExplorePageComponent', () => {
     });
     component['fetchContents$'].next(RESPONSE.mockCurrentPageData);
   });
-
-
+  
 it('should fetch enrolled courses for logged in users', done => {
   const utilService = TestBed.get(UtilService);
   const coursesService = TestBed.get(CoursesService);
   spyOn(utilService, 'processContent').and.callThrough();
+  spyOn( component, 'getCurrentPageData').and.returnValue({contentType:'course'});
   component['fetchEnrolledCoursesSection']().subscribe(res => {
       expect(utilService.processContent).toHaveBeenCalled();
       expect(component.enrolledSection).toBeDefined();
