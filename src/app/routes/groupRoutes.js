@@ -15,7 +15,8 @@ const telemtryEventConfig = JSON.parse(fs.readFileSync(path.join(__dirname, '../
 
 module.exports = function (app) {
     app.get('/learner/group/v1/read/:groupId', proxyObj());
-    app.get('/learner/user/v2/exists/:key/:value', proxyObj());
+    // TODO: Commenting out the route to bypass through learner*,
+    // app.get('/learner/user/v2/exists/:key/:value', proxyObj());
     app.get('/learner/data/v1/system/settings/get/groupsTnc', proxyObj());
     app.post('/learner/group/v1/create', proxyObj());
     app.post('/learner/group/v1/list', proxyObj());
