@@ -46,10 +46,6 @@ export default (app, proxyURL) => {
         res.status(res.statusCode).send(res.body);
     });
 
-    app.post("/learner/certreg/v1/certs/download", customProxy(proxyURL, defaultProxyConfig), (req, res) => {
-        res.status(res.statusCode).send(res.body);
-    });
-
     app.post("/learner/user/v1/feed/delete", customProxy(proxyURL, defaultProxyConfig), (req, res) => {
         res.status(res.statusCode).send(res.body);
     });
