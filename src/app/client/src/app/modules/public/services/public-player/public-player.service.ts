@@ -201,8 +201,11 @@ export class PublicPlayerService {
     return content;
   }
 
-  getQuestionSetHierarchy(data) {
-    return this.contentCsService.getQuestionSetHierarchy(data);
+  getQuestionSetHierarchy(contentId: string) {
+    return this.contentCsService.getQuestionSetHierarchy(contentId).pipe(map((response: any) => {
+      this.contentData = response.questionSet;
+      return response;
+    }));
   }
 
   getQuestionSetRead(contentId: string, option: any = { params: {} }): Observable<ServerResponse> {

@@ -37,6 +37,14 @@ const routes: Routes = [
             breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Library', url: '' }],
             telemetry: { env: telemetryEnv, pageid: 'content-player-unlisted', type: 'play' }
         }
+    },
+    {
+        path: 'questionset/:contentId', component: ContentPlayerComponent,
+        data: {
+            telemetry: {
+                env: telemetryEnv, pageid: 'quml-player', type: 'play'
+            }
+        }
     }
 ];
 @NgModule({

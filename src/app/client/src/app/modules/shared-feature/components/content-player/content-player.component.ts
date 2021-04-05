@@ -44,6 +44,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy 
   public objectRollup = {};
   isGroupAdmin: boolean;
   groupId: string;
+  isQuestionSet:boolean = false;
 
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
@@ -59,6 +60,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   ngOnInit() {
+    this.isQuestionSet = _.includes(this.router.url, 'questionset');
     this.initLayout();
     this.activatedRoute.params.subscribe((params) => {
       this.showPlayer = false;
@@ -129,7 +131,10 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   getContent() {
-    if (this.userService.loggedIn) {
+    if(this.isQuestionSet) {
+      this.getQuestionSetHierarchy();
+    }
+    else if (this.userService.loggedIn) {
       const option = { params: this.configService.appConfig.ContentPlayer.contentApiQueryParams };
       if (this.contentStatus && this.contentStatus === 'Unlisted') {
         option.params = { mode: 'edit' };
@@ -159,6 +164,27 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy 
     } else {
       this.getPublicContent();
     }
+  }
+
+  getQuestionSetHierarchy() {
+    const serveiceRef =  this.userService.loggedIn ? this.playerService : this.publicPlayerService;
+    this.publicPlayerService.getQuestionSetHierarchy(this.contentId).pipe(
+      takeUntil(this.unsubscribe$))
+      .subscribe((response) => {
+        this.showLoader = false;
+        const contentDetails = {
+          contentId: this.contentId,
+          contentData: response.questionSet
+        };
+        this.playerConfig = serveiceRef.getConfig(contentDetails);
+        this.playerConfig.context.objectRollup = this.objectRollup;
+        this.contentData = response.questionSet;
+        this.showPlayer = true;
+      }, (err) => {
+        this.showLoader = false;
+        this.showError = true;
+        this.errorMessage = this.resourceService.messages.stmsg.m0009;
+      });
   }
 
   getPublicContent() {

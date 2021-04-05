@@ -47,6 +47,8 @@ export class ContentUtilsServiceService {
       } else {
         return `${this.baseUrl}resources/play/collection/${contentShare.identifier}/Unlisted`;
       }
+    } else if (contentShare.mimeType === 'application/questionset') {
+      return `${this.baseUrl}resources/play/questionset/${contentShare.identifier}/Unlisted`;
     } else {
       return `${this.baseUrl}resources/play/content/${contentShare.identifier}/Unlisted`;
     }
@@ -65,6 +67,9 @@ export class ContentUtilsServiceService {
     }
     if (type === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
       playertype = 'collection';
+    } 
+    else if (type === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
+      playertype = 'questionset';
     } else {
       playertype = 'content';
     }
