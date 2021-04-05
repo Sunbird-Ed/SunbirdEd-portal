@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { LayoutService } from '../../../../../shared/services/layoutconfig/layout.service';
+import { IInteractEventEdata } from '@sunbird/telemetry';
 
 @Component({
   selector: 'app-guest-profile',
@@ -17,11 +21,42 @@ export class GuestProfileComponent implements OnInit {
     fontFamily: 'inherit'
   };
   userName = 'Guest User';
+  layoutConfiguration: any;
+  showEdit = false;
+  showEditUserDetailsPopup = false;
+
+  editProfileInteractEdata: IInteractEventEdata;
+  public unsubscribe$ = new Subject<void>();
   constructor(
-    public resourceService: ResourceService
+    public resourceService: ResourceService,
+    public layoutService: LayoutService
   ) { }
 
   ngOnInit() {
+    this.initLayout();
+    this.setInteractEventData();
   }
 
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+      /* istanbul ignore else */
+      if (layoutConfig != null) {
+        this.layoutConfiguration = layoutConfig.layout;
+      }
+    });
+  }
+
+  setInteractEventData() {
+    this.editProfileInteractEdata = {
+      id: 'guest-profile-edit',
+      type: 'click',
+      pageid: 'guest-profile-read'
+    };
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 }

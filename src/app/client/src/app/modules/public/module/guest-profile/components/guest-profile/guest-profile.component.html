@@ -82,7 +82,7 @@
           </div>
         </div>
         <button class="sb-btn sb-btn-primary sb-btn-normal my-16 sb-btn-border computer only" appTelemetryInteract
-          appOnlineOnly [telemetryInteractEdata]="myFrameworkEditEdata"
+          appOnlineOnly [telemetryInteractEdata]="editProfileInteractEdata"
           (click)="showEdit = !showEdit">{{resourceService?.frmelmnts?.lbl?.edit}}</button>
       </div>
     </div>
@@ -107,7 +107,7 @@
         <span class="fmedium font-w-bold text-center">{{'Environmental Science'}}</span>
       </div>
       <div class="d-flex flex-ai-center flex-jc-center" appTelemetryInteract
-        [telemetryInteractEdata]="myFrameworkEditEdata" (click)="showEdit = !showEdit">
+        [telemetryInteractEdata]="editProfileInteractEdata" (click)="showEdit = !showEdit">
         <button appOnlineOnly
           class="sb-btn sb-btn-primary sb-btn-xs mt-30">{{resourceService?.frmelmnts?.lbl?.edit}}</button>
       </div>
