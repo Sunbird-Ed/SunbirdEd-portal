@@ -501,4 +501,17 @@ describe('ExplorePageComponent', () => {
     });
     component['fetchContents$'].next(RESPONSE.mockCurrentPageData);
   });
+
+
+it('should fetch enrolled courses for logged in users', done => {
+  const utilService = TestBed.get(UtilService);
+  const coursesService = TestBed.get(CoursesService);
+  spyOn(utilService, 'processContent').and.callThrough();
+  component['fetchEnrolledCoursesSection']().subscribe(res => {
+      expect(utilService.processContent).toHaveBeenCalled();
+      expect(component.enrolledSection).toBeDefined();
+      done();
+  });
+  coursesService['_enrolledCourseData$'].next({ enrolledCourses: RESPONSE.enrolledCourses, err: null });
+});
 });
