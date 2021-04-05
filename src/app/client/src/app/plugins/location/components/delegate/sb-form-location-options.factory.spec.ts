@@ -8,6 +8,7 @@ import {FieldConfigOption} from 'common-form-elements/lib/common-form-config';
 import {Location} from '@project-sunbird/client-services/models/location';
 import {ServerResponse} from '@sunbird/shared';
 import {UserService} from '@sunbird/core';
+import { OrgDetailsService } from '@sunbird/core';
 
 describe('SbFormLocationOptionsFactory', () => {
   let sbFormLocationOptionsFactory: SbFormLocationOptionsFactory;
@@ -16,13 +17,14 @@ describe('SbFormLocationOptionsFactory', () => {
       return of({}) as any;
     }
   };
-  const mockUserService: Partial<UserService> = {
-  };
+  const mockUserService: Partial<UserService> = {};
+  const mockOrgDetailsService: Partial<OrgDetailsService> = {};
 
   beforeAll(() => {
     sbFormLocationOptionsFactory = new SbFormLocationOptionsFactory(
       mockLocationService as LocationService,
-      mockUserService as UserService
+      mockUserService as UserService,
+      mockOrgDetailsService as OrgDetailsService
     );
   });
 

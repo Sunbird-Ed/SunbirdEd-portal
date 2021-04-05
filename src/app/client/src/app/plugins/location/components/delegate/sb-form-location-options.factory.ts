@@ -1,19 +1,21 @@
 import { FieldConfig, FieldConfigOptionsBuilder } from 'common-form-elements';
 import { Location as SbLocation } from '@project-sunbird/client-services/models/location';
 import { FormControl } from '@angular/forms';
-import { concat, defer, iif, of } from 'rxjs';
-import { distinctUntilChanged, mergeMap } from 'rxjs/operators';
+import { concat, defer, iif, Observable, of } from 'rxjs';
+import { distinctUntilChanged, mergeMap, map } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 
 import { LocationService } from '../../services/location/location.service';
 import { UserService } from '../../../../modules/core/services/user/user.service';
+import { OrgDetailsService } from '@sunbird/core';
 
 export class SbFormLocationOptionsFactory {
   private userLocationCache: {[request: string]: SbLocation[] | undefined} = {};
 
   constructor(
     private locationService: LocationService,
-    private userService: UserService
+    private userService: UserService,
+    private orgDetailsService: OrgDetailsService
   ) {}
 
   buildStateListClosure(config: FieldConfig<any>, initial = false): FieldConfigOptionsBuilder<SbLocation> {
@@ -74,16 +76,15 @@ export class SbFormLocationOptionsFactory {
             return [];
           }
           notifyLoading();
-          return this.fetchUserLocation({
-            filters: {
-              type: locationType,
-              ...(value ? {
-                parentId: (value as SbLocation).id
-              } : {})
-            }
-          }).then((locationList: SbLocation[]) => {
+          return this.getSchoolList(locationType, value).then((locationList: any) => {
               notifyLoaded();
-              const list = locationList.map((s) => ({ label: s.name, value: s }));
+              let list;
+              if (locationType === 'school') {
+                list = locationList.map((s) => ({ label: s.orgName, code: s.externalId, value: s }));
+              } else {
+               list = locationList.map((s) => ({ label: s.name, value: s }));
+              }
+              console.log('locationList', locationList);
               // school is fetched from userProfile.organisation instead of userProfile.userLocations
               if (config.code === 'school' && initial && !formControl.value) {
                 const option = list.find((o) => {
@@ -108,15 +109,39 @@ export class SbFormLocationOptionsFactory {
     };
   }
 
+  getSchoolList(locationType, value): Promise<any> {
+    console.log('Test cases', locationType);
+    if (locationType === 'school') {
+      return this.orgDetailsService.searchOrgDetails({
+        filter: {
+          'orgLocation.id': (value as SbLocation).id,
+          isSchool: true
+        }
+      }).toPromise();
+    } else {
+      console.log('Test cases2');
+      return this.fetchUserLocation({
+        filters: {
+          type: locationType,
+          ...(value ? {
+            parentId: (value as SbLocation).id
+          } : {})
+        }
+      });
+    }
+  };
+
   private async fetchUserLocation(request: any): Promise<SbLocation[]> {
     const serialized = JSON.stringify(request);
-
+    console.log('Test cases3');
     if (this.userLocationCache[serialized]) {
       return this.userLocationCache[serialized];
     }
 
+    console.log('Test cases4');
     return this.locationService.getUserLocation(request).toPromise()
       .then((response) => {
+        console.log('Test cases5');
         const result = response.result.response;
         this.userLocationCache[serialized] = result;
         return result;
