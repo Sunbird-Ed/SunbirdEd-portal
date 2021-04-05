@@ -630,6 +630,10 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
+    '/learner/questionset/v1/hierarchy/:do_id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
     '/learner/user/v1/exists/email/:emailId': {
       checksNeeded: []
     },
@@ -1600,6 +1604,7 @@ const API_LIST = {
     '/content/content/v1/reject/:do_id',
     '/content/content/v1/flag/accept/:do_id',
     '/content/content/v1/flag/reject/:do_id',
+    '/learner/questionset/v1/hierarchy/:do_id',
     '/learner/data/v1/system/settings/get/:slug',
     '/learner/course/v1/hierarchy/:do_id',
     '/learner/user/v3/read/:userId',

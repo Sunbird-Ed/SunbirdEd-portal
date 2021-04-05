@@ -582,10 +582,10 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@3.8.5", "@project-sunbird/client-services@^3.8.5":
-  version "3.8.5"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.8.5.tgz#eea148e00c3a26cfb8e351fde40e85b2d712d90d"
-  integrity sha512-Y3qAk670zD026cQMX5j8J28J7YJYPlZe8j6C9LicPDbSxSvwr+9elvxsbmjCmXJwcfBlalneB+L5dOIqu+oi3A==
+"@project-sunbird/client-services@3.8.7", "@project-sunbird/client-services@^3.8.5":
+  version "3.8.7"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.8.7.tgz#cc0a6b931975abf55bc5f19a76b69b9217c6cd86"
+  integrity sha512-sCjgKREyEMPR5DkUOO3DjHPlxCtsxCs0nWZvr5XpR3811kMblX0RDGt9u+2MbuI3TDvgXMXH3t4A2D8Htx/gsQ==
   dependencies:
     "@project-sunbird/telemetry-sdk" "0.0.26"
     inversify "^5.0.1"
@@ -612,10 +612,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.6.tgz#15a88937fb643d5eb33a81c8d28ece00b56d5aa0"
   integrity sha512-rK87rHdagadIS7UrWju7HDolIfWlO5CbK+tIJrEApO+QPMi+k8KuWoLc8MxEprrsJxUt6r44O4uGiO0hgI5plA==
 
-"@project-sunbird/sunbird-collection-editor@0.0.15":
-  version "0.0.15"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-0.0.15.tgz#6225b32f531f141b79e672de0088ace57029cf54"
-  integrity sha512-Ir6LtuVvXFJvv+cU4RoknGI05HLQb8TfIfkzZTstBkbB5+Vm3VfFWJHDmg4aakBFTw74NltlTjBnyq4MtOSjZQ==
+"@project-sunbird/sunbird-collection-editor@0.0.31":
+  version "0.0.31"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-0.0.31.tgz#aee67a0283a24e726c76ea6a4e36b1e5321db959"
+  integrity sha512-wFHgANthbYqg0mWmtN6/10gzzZs0KWtjWw5fweHASKTTiWyaW2+xrRwirHQpv48MaKnjnvBT25rBa5HYCmeslw==
   dependencies:
     tslib "^1.9.0"
 
@@ -668,6 +668,14 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-question-editor/-/sunbird-question-editor-0.0.9.tgz#49f0c79397f35b993ab6f5ed6d05499db8fde91c"
   integrity sha512-QZP/JBZoLAW7cj1MXDtI/vi2ovd1j/9ZrUNXI3wv4VYXC/JlG5ceHsBGmuxaiLQHkBbc/aLUM6BwlwULuiqP8w==
   dependencies:
+    tslib "^1.9.0"
+
+"@project-sunbird/sunbird-quml-player-v8@3.9.1":
+  version "3.9.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v8/-/sunbird-quml-player-v8-3.9.1.tgz#a83a8a8b3492965b85907d126a7f7d455047a5dc"
+  integrity sha512-n+gx701GBS1yIe6H/NZa894lQ7jcydu+0uKLV7MDUsjeWtU1/Cv0dXlnbCaiaPfVWJPsQxKOW2NpL12Knira5g==
+  dependencies:
+    "@project-sunbird/sunbird-player-sdk-v8" "3.8.0"
     tslib "^1.9.0"
 
 "@project-sunbird/sunbird-quml-player@3.8.0":
@@ -2766,10 +2774,10 @@ commander@^2.11.0, commander@^2.12.1, commander@^2.19.0, commander@^2.20.0, comm
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
 
-common-form-elements@^3.8.2:
-  version "3.8.2"
-  resolved "https://registry.yarnpkg.com/common-form-elements/-/common-form-elements-3.8.2.tgz#dcde44620b29e2cab72166dbd4368f8876a05650"
-  integrity sha512-SRWAnST5IozNxmFBqNnJsB6SYhHB7FrKzidxFmJB8JrXFA4wOcAAQBUICR2wsAgy7vVAePMTToqRb24lirFqIA==
+common-form-elements@^3.8.11:
+  version "3.8.11"
+  resolved "https://registry.yarnpkg.com/common-form-elements/-/common-form-elements-3.8.11.tgz#0cbc02500992f785efae1a08fa70d6f5ceabf9ff"
+  integrity sha512-4kz6HioMR7Na9izSA2c5tZA7/1cufMwAUWjx39zm0OxjH/PA3ikqM5Ple9kWeKLanERoICk8fjjEA20D1blEDg==
   dependencies:
     immutable "^4.0.0-rc.12"
     moment "^2.29.1"

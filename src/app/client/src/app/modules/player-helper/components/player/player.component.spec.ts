@@ -496,7 +496,6 @@ describe('PlayerComponent', () => {
     spyOn(playerService, 'getQuestionSetHierarchy').and.returnValue(throwError({}));
     component.ngOnInit();
     expect(component.showQumlPlayer).toBeFalsy();
-    expect(component.questionIds).toBeUndefined();
     expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
   });
 });
