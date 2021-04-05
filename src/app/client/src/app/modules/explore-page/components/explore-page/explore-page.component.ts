@@ -243,7 +243,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                             map((response) => {
                                 const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
                                 this._facets$.next(request.facets ? this.utilService.processCourseFacetData(_.get(response, 'result'), _.get(request, 'facets')) : {});
-                                const filteredContents = omit(groupBy(get(response, 'result.content'), groupByKey), ['undefined']);
+                                const filteredContents = omit(groupBy(get(response, 'result.content'), content => {
+                                    return content[groupByKey] || content['subject'] || 'Others';
+                                }), ['undefined']);
                                 for (const [key, value] of Object.entries(filteredContents)) {
                                     const isMultipleSubjects = key && key.split(',').length > 1;
                                     if (isMultipleSubjects) {
