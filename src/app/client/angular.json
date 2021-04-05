@@ -48,6 +48,11 @@
                 "glob": "**/*",
                 "input": "./node_modules/@project-sunbird/sunbird-collection-editor/lib/assets/",
                 "output": "/assets/"
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@project-sunbird/sunbird-quml-player-v8/lib/assets/",
+                "output": "/assets/"
               }
             ],
             "styles": [

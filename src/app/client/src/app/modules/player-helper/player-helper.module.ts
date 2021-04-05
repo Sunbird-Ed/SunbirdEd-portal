@@ -18,7 +18,7 @@ import {SunbirdPdfPlayerModule} from '@project-sunbird/sunbird-pdf-player-v8';
 import { SunbirdVideoPlayerModule } from '@project-sunbird/sunbird-video-player-v8';
 import { SunbirdEpubPlayerModule } from '@project-sunbird/sunbird-epub-player-v8';
 import { QumlPlayerService } from './service/quml-player/quml-player.service';
-import { QumlLibraryModule, QuestionCursor } from '@project-sunbird/sunbird-quml-player';
+import { QumlLibraryModule, QuestionCursor } from '@project-sunbird/sunbird-quml-player-v8';
 
 
 @NgModule({
