@@ -204,10 +204,6 @@ const API_LIST = {
         ROLE.CONTENT_CREATOR
       ]
     },
-    '/content/question/v1/list': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
-    },
 
     // Collection Editor
     '/action/content/v1/collaborator/update': {
