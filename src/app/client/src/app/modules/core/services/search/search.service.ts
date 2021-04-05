@@ -488,6 +488,7 @@ export class SearchService {
   updateFacetsData(facets) {
     return _.map(facets, facet => {
       switch (_.get(facet, 'name')) {
+        case 'se_boards':
         case 'board':
           facet['index'] = '2';
           facet['label'] = this.resourceService.frmelmnts.lbl.boards;
@@ -497,16 +498,19 @@ export class SearchService {
             if (_.toLower(val.name) === 'cbse') { val.name = 'CBSE/NCERT'; }
           });
           break;
+        case 'se_mediums':  
         case 'medium':
           facet['index'] = '3';
           facet['label'] = this.resourceService.frmelmnts.lbl.medium;
           facet['placeholder'] = this.resourceService.frmelmnts.lbl.selectMedium;
           break;
+        case 'se_gradeLevels':  
         case 'gradeLevel':
           facet['index'] = '4';
           facet['label'] = this.resourceService.frmelmnts.lbl.class;
           facet['placeholder'] = this.resourceService.frmelmnts.lbl.selectClass;
           break;
+        case 'se_subjects':
         case 'subject':
           facet['index'] = '5';
           facet['label'] = this.resourceService.frmelmnts.lbl.subject;
