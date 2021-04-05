@@ -166,6 +166,9 @@ export class PublicPlayerService {
           const isTrackable = metaData.trackable && metaData.trackable.enabled === 'No' ? false : true;
           this.handleNavigation(metaData, isTrackable, queryParams, isAvailableLocally);
         }
+      } else if (metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
+        this.router.navigate(['play/questionset', metaData.identifier],
+        {queryParams: {contentType: metaData.contentType}});
       } else {
         this.router.navigate(['play/content', metaData.identifier],
         {queryParams: {contentType: metaData.contentType}});
