@@ -336,7 +336,6 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     } else if (contentMimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
       this.router.navigate(['/resources/play/questionset', _.get(activityCard, 'identifier')],
       {queryParams: {contentType: _.get(activityCard, 'primaryCategory'), groupId: _.get(this.groupData, 'id')}});
-
     } else {
       this.router.navigate(['/resources/play/content', _.get(activityCard, 'identifier')],
       {queryParams: {contentType: _.get(activityCard, 'primaryCategory'), groupId: _.get(this.groupData, 'id')}});
