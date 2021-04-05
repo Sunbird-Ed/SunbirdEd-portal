@@ -103,7 +103,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     if (_.get(_routerExtras, 'extras.state')) {
       this.isRouterExtrasAvailable = true;
       this._routerStateContentStatus = _.get(_routerExtras, 'extras.state.contentStatus');
-      this.contentStatus = _.get(_routerExtras, 'extras.state.contentStatus.content');
+      this.contentStatus = _.get(_routerExtras, 'extras.state.contentStatus.content') ? 
+        _.get(_routerExtras, 'extras.state.contentStatus.content') : [];
     }
   }
 
@@ -335,7 +336,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   private getContentState() {
-    if (this.batchId && _.get(this.activeContent, 'contentType') === 'SelfAssess' || !this.isRouterExtrasAvailable) {
+    if (this.batchId && (_.get(this.activeContent, 'contentType') === 'SelfAssess' || !this.isRouterExtrasAvailable)) {
       const req:any = this.getContentStateRequest(this.courseHierarchy);
       this.CsCourseService
       .getContentState(req, { apiPath: '/content/course/v1' })
