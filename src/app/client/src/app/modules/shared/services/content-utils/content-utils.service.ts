@@ -65,6 +65,9 @@ export class ContentUtilsServiceService {
     }
     if (type === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
       playertype = 'collection';
+    } 
+    else if (type === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
+      playertype = 'questionset';
     } else {
       playertype = 'content';
     }
