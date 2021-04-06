@@ -96,19 +96,10 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   ngOnInit() {
-    if (_.get(this.playerConfig, 'metadata.mimeType') === 'application/vnd.sunbird.questionset') {
-      const getQuestionSetHierarchy = this.playerService.getQuestionSetHierarchy(_.get(this.playerConfig, 'metadata.identifier'));
-      const getQuestionSetRead = this.playerService.getQuestionSetRead(_.get(this.playerConfig, 'metadata.identifier')).pipe(catchError(error => of('error')));
-      forkJoin([getQuestionSetHierarchy, getQuestionSetRead]).subscribe((res) => {
-        this.playerConfig.metadata = _.get(res[0], 'questionSet');
-        if (res[1] !== 'error') {
-          this.playerConfig.metadata.instructions = _.get(res[1], 'result.questionset.instructions');
-        }
-        this.showQumlPlayer = true;
-      }, (err) => {
-        this.toasterService.error(this.resourceService.messages.emsg.m0005);
-      });
-    }
+    this.playerService.getQuestionSetRead(_.get(this.playerConfig, 'metadata.identifier')).subscribe((data: any) => {
+      this.playerConfig.metadata.instructions = _.get(data, 'result.questionset.instructions');
+    });
+    this.showQumlPlayer = true;
     // If `sessionStorage` has UTM data; append the UTM data to context.cdata
     if (this.playerConfig && sessionStorage.getItem('UTM')) {
       let utmData;

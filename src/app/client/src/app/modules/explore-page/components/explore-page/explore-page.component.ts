@@ -1,4 +1,4 @@
-import { forkJoin, Subject, Observable, BehaviorSubject, merge, of } from 'rxjs';
+import { forkJoin, Subject, Observable, BehaviorSubject, merge, of, concat } from 'rxjs';
 import { OrgDetailsService, UserService, SearchService, FormService, PlayerService, CoursesService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
 import { Component, OnInit, OnDestroy, HostListener, AfterViewInit } from '@angular/core';
@@ -52,6 +52,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     contentDownloadStatus = {};
     isConnected = true;
     private _facets$ = new Subject();
+
+    public enrolledCourses: Array<any>;
+    public enrolledSection: any;
+
     public facets$ = this._facets$.asObservable().pipe(startWith({}), catchError(err => of({})));
 
     get slideConfig() {
@@ -126,7 +130,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     ngOnInit() {
         this.isDesktopApp = this.utilService.isDesktopApp;
         this.initConfiguration();
-        this.subscription$ = merge(this.fetchChannelData(), this.initLayout(), this.fetchContents())
+        this.subscription$ = merge(concat(this.fetchChannelData(), this.fetchEnrolledCoursesSection()), this.initLayout(), this.fetchContents())
             .pipe(
                 takeUntil(this.unsubscribe$)
             );
@@ -136,6 +140,40 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             this.addHoverData();
         });
     }
+    public fetchEnrolledCoursesSection() {
+        return this.coursesService.enrolledCourseData$
+          .pipe(
+            map(({ enrolledCourses, err }) => {
+              const pageData = this.getCurrentPageData();
+              if (_.toLower(_.get(pageData, 'contentType')) === 'course') {
+                this.enrolledCourses = _.orderBy(enrolledCourses, ['enrolledDate'], ['desc']);
+                const enrolledSection = {
+                    name: _.get(this.resourceService, 'frmelmnts.lbl.mytrainings'),
+                    length: 0,
+                    count: 0,
+                    contents: []
+                };
+                if (err) {
+                    return enrolledSection;
+                }
+                const { constantData, metaData, dynamicFields, slickSize } = _.get(this.configService, 'appConfig.CoursePageSection.enrolledCourses');
+                enrolledSection.contents = _.map(this.enrolledCourses, content => {
+                    const formatedContent = this.utilService.processContent(content, constantData, dynamicFields, metaData);
+                    formatedContent.metaData.mimeType = 'application/vnd.ekstep.content-collection';
+                    formatedContent.metaData.contentType = _.get(pageData, 'contentType');
+                    const trackableObj = _.get(content, 'content.trackable');
+                    if (trackableObj) {
+                    formatedContent.metaData.trackable = trackableObj;
+                    }
+                    return formatedContent;
+                });
+                enrolledSection.count = enrolledSection.contents.length;
+                return this.enrolledSection = enrolledSection;
+            } else {
+                this.enrolledCourses = [];
+            }
+            }));
+      }
 
     initLayout() {
         return this.layoutService.switchableLayout()
