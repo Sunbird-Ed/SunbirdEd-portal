@@ -631,8 +631,7 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.PUBLIC]
     },
     '/learner/questionset/v1/hierarchy/:do_id': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      checksNeeded: []
     },
     '/learner/user/v1/exists/email/:emailId': {
       checksNeeded: []
