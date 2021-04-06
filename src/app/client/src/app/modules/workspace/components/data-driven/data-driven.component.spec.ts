@@ -452,7 +452,85 @@ describe('DataDrivenComponent', () => {
     expect(componentParent.createContent).toHaveBeenCalledWith(undefined);
   });
 
-  it('#selectFramework() should fetch target framwork data when target not defined', () => {
+  it('#selectFramework() should throw error when org framwork not set', () => {
+    spyOn(componentParent, 'createContent').and.stub();
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callThrough();
+    const mockdata = {
+        'id': 'api.object.category.definition.read',
+        'ver': '3.0',
+        'ts': '2021-02-24T08:06:08ZZ',
+        'params': {
+          'resmsgid': '4e4a7b07-0e9d-4d33-8287-b6d38a3c2765',
+          'msgid': null,
+          'err': null,
+          'status': 'successful',
+          'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+          'objectCategoryDefinition': {
+            'identifier': 'obj-cat:course_collection_all',
+            'objectMetadata': {
+              'config': {
+                'frameworkMetadata': {'orgFWType': 'K-12', 'targetFWType': 'K-12'},
+              },
+              'schema': {}
+            },
+            'languageCode': [],
+            'name': 'Course',
+          }
+        }
+    };
+    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockdata));
+    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf({result: { count: 0}}));
+    componentParent.orgFWType = {};
+    componentParent.targetFWType = {};
+    componentParent.selectFramework();
+    expect(toasterService.error).toHaveBeenCalledWith('Unknown framework category Course. Please check the configuration.');
+  });
+
+  it('#selectFramework() should set targetFramework value from default properties of config', () => {
+    spyOn(componentParent, 'createContent').and.stub();
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    const mockdata = {
+        'id': 'api.object.category.definition.read',
+        'ver': '3.0',
+        'ts': '2021-02-24T08:06:08ZZ',
+        'params': {
+          'resmsgid': '4e4a7b07-0e9d-4d33-8287-b6d38a3c2765',
+          'msgid': null,
+          'err': null,
+          'status': 'successful',
+          'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+          'objectCategoryDefinition': {
+            'identifier': 'obj-cat:course_collection_all',
+            'objectMetadata': {
+              'config': {
+                'frameworkMetadata': {'orgFWType': 'K-12'},
+              },
+              'schema': {
+                'properties' : { 'targetFWIds' : { 'default' : 'NCF' } }
+              }
+            },
+            'languageCode': [],
+            'name': 'Course',
+          }
+        }
+    };
+    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockdata));
+    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf({result: { count: 2}}));
+    componentParent.orgFWType = {};
+    componentParent.targetFWType = {};
+    componentParent.selectFramework();
+    expect(componentParent.targetFramework).toEqual('NCF');
+  });
+
+  it('#selectFramework() should fetch target framwork data when target framework not defined', () => {
     spyOn(componentParent, 'createContent').and.stub();
     const workSpaceService = TestBed.get(WorkSpaceService);
     const mockdata = {
