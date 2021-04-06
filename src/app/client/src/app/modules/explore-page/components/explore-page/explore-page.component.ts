@@ -165,7 +165,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     public fetchEnrolledCoursesSection() {
-        if (!this.isUserLoggedIn()) return of([]);
         return this.coursesService.enrolledCourseData$
             .pipe(
                 tap(({ enrolledCourses, err }) => {
