@@ -416,18 +416,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
             this.showCategoryConfigError();
           } else {
             if (!_.isEmpty(targetframeworkReq)) {
-              this.checkChannelOrSystem(targetframeworkReq[0], targetframeworkReq[1]).subscribe((targetRes) => {
-                // tslint:disable-next-line:max-line-length
-                const targetFWData = targetRes;
-                if (this.targetFWType && targetFWData.result.count > 0) {
-                  this.targetFramework = _.get(_.first(_.get(targetFWData, 'result.Framework')), 'identifier');
-                }
-                if (_.isEmpty(this.targetFramework)) {
-                  this.showCategoryConfigError();
-                } else {
-                  this.createContent(undefined);
-                }
-              });
+               this.fetchTargetFramework(targetframeworkReq);
             } else {
               this.targetFramework = _.isArray(this.targetFWType) ? _.first(this.targetFWType) : this.targetFWType;
               this.createContent(undefined);
@@ -438,18 +427,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
         });
       } else {
         if (!_.isEmpty(targetframeworkReq)) {
-          this.checkChannelOrSystem(targetframeworkReq[0], targetframeworkReq[1]).subscribe((targetRes) => {
-            // tslint:disable-next-line:max-line-length
-            const targetFWData = targetRes;
-            if (this.targetFWType && targetFWData.result.count > 0) {
-              this.targetFramework = _.get(_.first(_.get(targetFWData, 'result.Framework')), 'identifier');
-            }
-            if (_.isEmpty(this.targetFramework)) {
-              this.showCategoryConfigError();
-            } else {
-              this.createContent(undefined);
-            }
-          });
+          this.fetchTargetFramework(targetframeworkReq);
         } else {
           this.targetFramework = _.isArray(this.targetFWType) ? _.first(this.targetFWType) : this.targetFWType;
           this.createContent(undefined);
@@ -457,6 +435,21 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
       }
     }, err => {
       this.toasterService.error(this.resourceService.messages.emsg.m0024);
+    });
+  }
+
+  fetchTargetFramework(targetframeworkReq) {
+    this.checkChannelOrSystem(targetframeworkReq[0], targetframeworkReq[1]).subscribe((targetRes) => {
+      // tslint:disable-next-line:max-line-length
+      const targetFWData = targetRes;
+      if (this.targetFWType && targetFWData.result.count > 0) {
+        this.targetFramework = _.get(_.first(_.get(targetFWData, 'result.Framework')), 'identifier');
+      }
+      if (_.isEmpty(this.targetFramework)) {
+        this.showCategoryConfigError();
+      } else {
+        this.createContent(undefined);
+      }
     });
   }
 
