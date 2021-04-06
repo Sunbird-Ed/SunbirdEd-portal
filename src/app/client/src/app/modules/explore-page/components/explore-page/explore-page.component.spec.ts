@@ -548,9 +548,14 @@ describe('ExplorePageComponent', () => {
     expect(component.telemetryImpression).toBeDefined();
   });
 
-  it('should call play content method', () => {
-    const publicPlayerService = TestBed.get(PublicPlayerService);
-    spyOn(publicPlayerService, 'playContent').and.callThrough();
+  describe('it should play content', () => {
+    let publicPlayerService, courseService, playerService;
+    beforeEach(() => {
+      publicPlayerService = TestBed.get(PublicPlayerService);
+      courseService = TestBed.get(CoursesService);
+      playerService = TestBed.get(PlayerService);
+      spyOn(publicPlayerService, 'playContent').and.callThrough();
+    })
     const event = {
       data: {
         metaData: {
@@ -558,31 +563,74 @@ describe('ExplorePageComponent', () => {
         }
       }
     };
-    component.playEnrolledContent(event);
-    expect(publicPlayerService.playContent).toHaveBeenCalled();
-  });
 
-  it('should call play content method for the logged in user', () => {
-    const publicPlayerService = TestBed.get(PublicPlayerService);
-    const courseService = TestBed.get(CoursesService);
-    const playerService = TestBed.get(PlayerService);
-    spyOn(component, 'isUserLoggedIn').and.returnValue(true);
-    spyOn(courseService, 'findEnrolledCourses').and.returnValue({
-      onGoingBatchCount: 0,
-      expiredBatchCount: 0,
-      openBatch: {},
-      inviteOnlyBatch: {}
+    it('for non loggedin user', () => {
+      component.playEnrolledContent(event);
+      expect(publicPlayerService.playContent).toHaveBeenCalled();
     });
-    spyOn(playerService, 'playContent');
-    const event = {
-      data: {
-        metaData: {
-          identifier: 'do_21307528604532736012398'
-        }
-      }
-    };
-    component.playEnrolledContent(event);
-    expect(playerService.playContent).toHaveBeenCalled();
-  });
 
+    describe('for loggedin user', () => {
+
+      beforeEach(() => {
+        spyOn(component, 'isUserLoggedIn').and.returnValue(true);
+        spyOn(playerService, 'playContent');
+      })
+
+      it('with 0 expired and ongoing batches', () => {
+        spyOn(courseService, 'findEnrolledCourses').and.returnValue({
+          onGoingBatchCount: 0,
+          expiredBatchCount: 0
+        });
+        component.playEnrolledContent(event);
+        expect(playerService.playContent).toHaveBeenCalled();
+        expect(component.showBatchInfo).toBeFalsy();
+      });
+
+      it('with 0 expired and ongoing batches', () => {
+        const courseService = TestBed.get(CoursesService);
+        spyOn(courseService, 'findEnrolledCourses').and.returnValue({
+          onGoingBatchCount: 2,
+          expiredBatchCount: 0
+        });
+        component.playEnrolledContent(event);
+        expect(playerService.playContent).not.toHaveBeenCalled();
+        expect(component.showBatchInfo).toBeTruthy();
+      });
+
+      it('with 1 ongoing batches', () => {
+        const courseService = TestBed.get(CoursesService);
+        spyOn(courseService, 'findEnrolledCourses').and.returnValue({
+          onGoingBatchCount: 1,
+          expiredBatchCount: 0,
+          openBatch: { ongoing: [], expired: [] }, inviteOnlyBatch: { ongoing: [], expired: [] }
+        });
+        component.playEnrolledContent(event);
+        expect(playerService.playContent).toHaveBeenCalled();
+        expect(component.showBatchInfo).toBeFalsy();
+      });
+
+      it('with 1 expired batches', () => {
+        const courseService = TestBed.get(CoursesService);
+        spyOn(courseService, 'findEnrolledCourses').and.returnValue({
+          onGoingBatchCount: 0,
+          expiredBatchCount: 1,
+          openBatch: { ongoing: [], expired: [] }, inviteOnlyBatch: { ongoing: [], expired: [] }
+        });
+        component.playEnrolledContent(event);
+        expect(playerService.playContent).toHaveBeenCalled();
+        expect(component.showBatchInfo).toBeFalsy();
+      });
+    });
+
+    it('should fetch query Params', done => {
+      spyOn(component, 'isUserLoggedIn').and.returnValue(true);
+      const prepareVisitsSpy = spyOn(component, 'prepareVisits');
+      component['getQueryParams']().subscribe(res => {
+        expect(component.queryParams).toEqual({ subject: ['English'], selectedTab: 'textbook' });
+        expect(prepareVisitsSpy).toHaveBeenCalled();
+        done();
+      })
+    });
+
+  })
 });
