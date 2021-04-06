@@ -10,16 +10,18 @@ import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RESPONSE } from './explore-page.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TelemetryModule } from '@sunbird/telemetry';
+import { TelemetryModule, IImpressionEventInput } from '@sunbird/telemetry';
 import { ExplorePageComponent } from './explore-page.component';
 import { ContentSearchService } from '@sunbird/content-search';
 import { configureTestSuite } from '@sunbird/test-util';
 import { ContentManagerService } from '../../../public/module/offline/services';
+import { CacheService } from 'ng2-cache-service';
+
 
 describe('ExplorePageComponent', () => {
   let component: ExplorePageComponent;
   let fixture: ComponentFixture<ExplorePageComponent>;
-  let toasterService, userService, pageApiService, orgDetailsService;
+  let toasterService, userService, pageApiService, orgDetailsService, cacheService;
   const mockPageSection: any = RESPONSE.searchResult;
   let sendOrgDetails = true;
   let sendPageApi = true;
@@ -96,6 +98,7 @@ describe('ExplorePageComponent', () => {
     userService = TestBed.get(UserService);
     pageApiService = TestBed.get(SearchService);
     orgDetailsService = TestBed.get(OrgDetailsService);
+    cacheService = TestBed.get(CacheService);
     sendOrgDetails = true;
     sendPageApi = true;
     spyOn(orgDetailsService, 'getOrgDetails').and.callFake((options) => {
@@ -501,17 +504,133 @@ describe('ExplorePageComponent', () => {
     });
     component['fetchContents$'].next(RESPONSE.mockCurrentPageData);
   });
-  
-it('should fetch enrolled courses for logged in users', done => {
-  const utilService = TestBed.get(UtilService);
-  const coursesService = TestBed.get(CoursesService);
-  spyOn(utilService, 'processContent').and.callThrough();
-  spyOn( component, 'getCurrentPageData').and.returnValue({contentType:'course'});
-  component['fetchEnrolledCoursesSection']().subscribe(res => {
+
+  it('should fetch enrolled courses for logged in users', done => {
+    const utilService = TestBed.get(UtilService);
+    const coursesService = TestBed.get(CoursesService);
+    spyOn(utilService, 'processContent').and.callThrough();
+    spyOn(component, 'getCurrentPageData').and.returnValue({ contentType: 'course' });
+    spyOn(component, 'isUserLoggedIn').and.returnValue(true);
+    component['fetchEnrolledCoursesSection']().subscribe(res => {
       expect(utilService.processContent).toHaveBeenCalled();
       expect(component.enrolledSection).toBeDefined();
       done();
+    }, err => {
+      done();
+    });
+    coursesService['_enrolledCourseData$'].next({ enrolledCourses: RESPONSE.enrolledCourses, err: null });
   });
-  coursesService['_enrolledCourseData$'].next({ enrolledCourses: RESPONSE.enrolledCourses, err: null });
-});
+
+  it('should redirect to viewall page with queryparams', () => {
+    const router = TestBed.get(Router);
+    const searchQuery = '{"request":{"query":"","filters":{"status":"1"},"limit":10,"sort_by":{"createdDate":"desc"}}}';
+    spyOn(component, 'viewAll').and.callThrough();
+    spyOn(cacheService, 'set').and.stub();
+    router.url = '/explore-course?selectedTab=course';
+    component.viewAll({ searchQuery: searchQuery, name: 'Featured-courses' });
+    expect(router.navigate).toHaveBeenCalledWith(['/explore-course/view-all/Featured-courses', 1],
+      { queryParams: { 'status': '1', 'defaultSortBy': '{"createdDate":"desc"}', 'exists': undefined } });
+    expect(cacheService.set).toHaveBeenCalled();
+  });
+
+  it('should generate visit telemetry impression event', () => {
+    component.telemetryImpression = { edata: {} } as IImpressionEventInput;
+    const event = {
+      data: {
+        metaData: {
+          identifier: 'do_21307528604532736012398',
+          contentType: 'Course'
+        },
+        section: 'Featured courses'
+      }
+    };
+    component.prepareVisits(event);
+    expect(component.telemetryImpression).toBeDefined();
+  });
+
+  describe('it should play content', () => {
+    let publicPlayerService, courseService, playerService;
+    beforeEach(() => {
+      publicPlayerService = TestBed.get(PublicPlayerService);
+      courseService = TestBed.get(CoursesService);
+      playerService = TestBed.get(PlayerService);
+      spyOn(publicPlayerService, 'playContent').and.callThrough();
+    })
+    const event = {
+      data: {
+        metaData: {
+          identifier: 'do_21307528604532736012398'
+        }
+      }
+    };
+
+    it('for non loggedin user', () => {
+      component.playEnrolledContent(event);
+      expect(publicPlayerService.playContent).toHaveBeenCalled();
+    });
+
+    describe('for loggedin user', () => {
+
+      beforeEach(() => {
+        spyOn(component, 'isUserLoggedIn').and.returnValue(true);
+        spyOn(playerService, 'playContent');
+      })
+
+      it('with 0 expired and ongoing batches', () => {
+        spyOn(courseService, 'findEnrolledCourses').and.returnValue({
+          onGoingBatchCount: 0,
+          expiredBatchCount: 0
+        });
+        component.playEnrolledContent(event);
+        expect(playerService.playContent).toHaveBeenCalled();
+        expect(component.showBatchInfo).toBeFalsy();
+      });
+
+      it('with 0 expired and ongoing batches', () => {
+        const courseService = TestBed.get(CoursesService);
+        spyOn(courseService, 'findEnrolledCourses').and.returnValue({
+          onGoingBatchCount: 2,
+          expiredBatchCount: 0
+        });
+        component.playEnrolledContent(event);
+        expect(playerService.playContent).not.toHaveBeenCalled();
+        expect(component.showBatchInfo).toBeTruthy();
+      });
+
+      it('with 1 ongoing batches', () => {
+        const courseService = TestBed.get(CoursesService);
+        spyOn(courseService, 'findEnrolledCourses').and.returnValue({
+          onGoingBatchCount: 1,
+          expiredBatchCount: 0,
+          openBatch: { ongoing: [], expired: [] }, inviteOnlyBatch: { ongoing: [], expired: [] }
+        });
+        component.playEnrolledContent(event);
+        expect(playerService.playContent).toHaveBeenCalled();
+        expect(component.showBatchInfo).toBeFalsy();
+      });
+
+      it('with 1 expired batches', () => {
+        const courseService = TestBed.get(CoursesService);
+        spyOn(courseService, 'findEnrolledCourses').and.returnValue({
+          onGoingBatchCount: 0,
+          expiredBatchCount: 1,
+          openBatch: { ongoing: [], expired: [] }, inviteOnlyBatch: { ongoing: [], expired: [] }
+        });
+        component.playEnrolledContent(event);
+        expect(playerService.playContent).toHaveBeenCalled();
+        expect(component.showBatchInfo).toBeFalsy();
+      });
+    });
+
+    it('should fetch query Params', done => {
+      spyOn(component, 'isUserLoggedIn').and.returnValue(true);
+      const prepareVisitsSpy = spyOn(component, 'prepareVisits');
+      component['getQueryParams']().subscribe(res => {
+        expect(component.queryParams).toEqual({ subject: ['English'], selectedTab: 'textbook' });
+        expect(prepareVisitsSpy).toHaveBeenCalled();
+        done();
+      })
+    });
+
+  })
 });
