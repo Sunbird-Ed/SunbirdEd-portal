@@ -562,4 +562,27 @@ describe('ExplorePageComponent', () => {
     expect(publicPlayerService.playContent).toHaveBeenCalled();
   });
 
+  it('should call play content method for the logged in user', () => {
+    const publicPlayerService = TestBed.get(PublicPlayerService);
+    const courseService = TestBed.get(CoursesService);
+    const playerService = TestBed.get(PlayerService);
+    spyOn(component, 'isUserLoggedIn').and.returnValue(true);
+    spyOn(courseService, 'findEnrolledCourses').and.returnValue({
+      onGoingBatchCount: 0,
+      expiredBatchCount: 0,
+      openBatch: {},
+      inviteOnlyBatch: {}
+    });
+    spyOn(playerService, 'playContent');
+    const event = {
+      data: {
+        metaData: {
+          identifier: 'do_21307528604532736012398'
+        }
+      }
+    };
+    component.playEnrolledContent(event);
+    expect(playerService.playContent).toHaveBeenCalled();
+  });
+
 });

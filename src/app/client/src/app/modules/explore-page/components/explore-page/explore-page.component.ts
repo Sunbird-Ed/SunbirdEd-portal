@@ -176,7 +176,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         contents: []
                     };
                     const { contentType: pageContentType = null, search: { filters: { primaryCategory: pagePrimaryCategories = [] } } } = this.getCurrentPageData();
-                    if (err && !pageContentType) return enrolledSection;
+                    if (err) return enrolledSection;
                     const enrolledContentPredicate = course => {
                         const { primaryCategory = null, contentType = null } = _.get(course, 'content') || {};
                         return pagePrimaryCategories.some(category => _.toLower(category) === _.toLower(primaryCategory)) || (_.toLower(contentType) === _.toLower(pageContentType));
