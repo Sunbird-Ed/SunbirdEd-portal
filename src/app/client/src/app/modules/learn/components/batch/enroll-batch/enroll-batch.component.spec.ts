@@ -204,13 +204,10 @@ describe('EnrollBatchComponent', () => {
     spyOn(coursesService, 'getEnrolledCourses').and.returnValue(of(''));
     const routerSpy = spyOn(router, 'navigate').and.returnValue(new Promise((resolve, reject) => { }));
     component.batchDetails = fakeBatchDetails;
-    const toasterSpy = spyOn(toasterService, 'success');
     component.fetchEnrolledCourseData();
     tick(2000);
     expect(routerSpy).toHaveBeenCalled();
     expect(component.disableSubmitBtn).toBe(false);
-    expect(toasterSpy).toHaveBeenCalled();
-    expect(toasterSpy).toHaveBeenCalledWith(fakeResourceService.messages.smsg.m0036);
     expect(router.navigate).toHaveBeenCalled();
   }));
 
