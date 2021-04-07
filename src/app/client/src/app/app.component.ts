@@ -111,6 +111,8 @@ export class AppComponent implements OnInit, OnDestroy {
   // Font Increase Decrease Variables
   fontSize: any;
   defaultFontSize = 16;
+  isGuestUser = true;
+  guestUserDetails;
   @ViewChild('increaseFontSize', { static: false }) increaseFontSize: ElementRef;
   @ViewChild('decreaseFontSize', { static: false }) decreaseFontSize: ElementRef;
   @ViewChild('resetFontSize', { static: false }) resetFontSize: ElementRef;
@@ -225,6 +227,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.userService.initialize(this.userService.loggedIn);
           this.getOrgDetails();
           if (this.userService.loggedIn) {
+            this.isGuestUser = false;
             this.permissionService.initialize();
             this.courseService.initialize();
             this.programsService.initialize();
@@ -232,8 +235,13 @@ export class AppComponent implements OnInit, OnDestroy {
             this.checkForCustodianUser();
             return this.setUserDetails();
           } else {
+            this.isGuestUser = true;
             if (this.utilService.isDesktopApp) {
-              this.userService.getAnonymousUserPreference();
+              this.userService.getAnonymousUserPreference().subscribe((response) => {
+                this.guestUserDetails = response;
+              });
+            } else {
+              this.guestUserDetails = localStorage.getItem('guestUserDetails');
             }
             return this.setOrgDetails();
           }
@@ -282,6 +290,11 @@ export class AppComponent implements OnInit, OnDestroy {
     this.navigationHelperService.contentFullScreenEvent.pipe(takeUntil(this.unsubscribe$)).subscribe(isFullScreen => {
       this.isFullScreenView = isFullScreen;
     });
+  }
+
+  createGuestUser(framework) {
+    const req = { request: { name: 'Guest', framework } };
+    this.userService.createAnonymousUser(req).subscribe();
   }
 
   storeThemeColour(value) {
@@ -475,7 +488,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.showFrameWorkPopUp = false;
       this.checkLocationStatus();
     } else {
-      if (this.userService.loggedIn && _.isEmpty(_.get(this.userProfile, 'framework'))) {
+      if (this.userService.loggedIn && _.isEmpty(_.get(this.userProfile, 'framework')) || (this.isGuestUser && !this.guestUserDetails)) {
         this.showFrameWorkPopUp = true;
       } else {
         this.checkLocationStatus();
@@ -634,26 +647,40 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  closeFrameworkPopup () {
+    this.frameWorkPopUp.modal.deny();
+    this.showFrameWorkPopUp = false;
+  }
   /**
    * updates user framework. After update redirects to library
    */
   public updateFrameWork(event) {
-    const req = {
-      framework: event
-    };
-    this.profileService.updateProfile(req).subscribe(res => {
-      this.frameWorkPopUp.modal.deny();
-      this.userService.setUserFramework(event);
-      this.showFrameWorkPopUp = false;
+    if (this.isGuestUser && !this.guestUserDetails) {
+      if (this.isDesktopApp) {
+        this.createGuestUser(event);
+      } else {
+        const details = { name: 'Guest', framework: event };
+        localStorage.setItem('guestUserDetails', JSON.stringify(details));
+      }
+      this.closeFrameworkPopup();
       this.checkLocationStatus();
-      this.utilService.toggleAppPopup();
-      this.showAppPopUp = this.utilService.showAppPopUp;
-    }, err => {
-      this.toasterService.warning(this.resourceService.messages.emsg.m0012);
-      this.frameWorkPopUp.modal.deny();
-      this.checkLocationStatus();
-      this.showFrameWorkPopUp = false;
-    });
+    } else {
+      const req = {
+        framework: event
+      };
+      this.profileService.updateProfile(req).subscribe(res => {
+        this.closeFrameworkPopup();
+        this.userService.setUserFramework(event);
+        this.checkLocationStatus();
+        this.utilService.toggleAppPopup();
+        this.showAppPopUp = this.utilService.showAppPopUp;
+      }, err => {
+        this.toasterService.warning(this.resourceService.messages.emsg.m0012);
+        this.closeFrameworkPopup();
+        this.checkLocationStatus();
+      });
+    }
   }
   viewInBrowser() {
     // no action required

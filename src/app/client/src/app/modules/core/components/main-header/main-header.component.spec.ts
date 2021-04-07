@@ -362,4 +362,17 @@ describe('MainHeaderComponent', () => {
     expect(electronService.get).toHaveBeenCalled();
   });
 
+  it('should call getGuestUser for desktop app', () => {
+    const userService = TestBed.get(UserService);
+    component.isDesktopApp = true;
+    spyOn(userService, 'getAnonymousUserPreference').and.returnValue(of({ result: { name: 'Guest' } }));
+    component.getGuestUser();
+    expect(component.guestUser).toBeDefined();
+  });
+
+  it('should call getGuestUser', () => {
+    component.isDesktopApp = true;
+    spyOn(Object.getPrototypeOf(localStorage), 'getItem').and.returnValue('{"name":"Guest"}');
+    component.getGuestUser();
+  });
 });

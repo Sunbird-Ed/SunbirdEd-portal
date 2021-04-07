@@ -394,6 +394,10 @@
     </div>
     <ng-container>
       <div *ngIf="!userService.loggedIn">
+        <div class="mb-16">
+          <sb-member-card [config]=cardConfig [initial]="guestUser?.name[0] || 'G'" [title]="guestUser?.name || 'Guest'">
+          </sb-member-card>
+        </div>
         <div class="profile__actions">
           <ul class="profile__actions__list pl-0">
 
@@ -401,7 +405,12 @@
               <app-content-type [layoutConfiguration]="layoutConfiguration"
                                 (closeSideMenu)="toggleSideMenu(false)"></app-content-type>
             </div>
-
+            <li class="list-item" (click)="toggleSideMenu(false)" routerLink="guest-profile">
+              <i class="icon-svg icon-svg--sm icon-profileuser mr-8"><svg class="icon icon-svg--primary">
+                  <use xlink:href="./assets/images/sprite.svg#profileuser"></use>
+                </svg></i>
+              {{resourceService.frmelmnts?.lnk?.profile}}
+            </li>
             <li appOnlineOnly class="list-item" (click)="toggleSideMenu(false)" [class.active]="router.isActive(routerLinks?.explore)"
               *ngIf="!router.isActive('', true) && !isDesktopApp" [routerLink]="[navigateToGroups()]" appTelemetryInteract
               [telemetryInteractEdata]="myGroupIntractEData">

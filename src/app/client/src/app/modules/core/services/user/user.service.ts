@@ -100,7 +100,7 @@ export class UserService {
   public publicDataService: PublicDataService;
   private _slug = '';
   public _isCustodianUser: boolean;
-  public anonymousUserPreference: boolean;
+  public anonymousUserPreference;
   public readonly userOrgDetails$ = this.userData$.pipe(
     mergeMap(data => iif(() =>
       !this._userProfile.organisationIds, of([]), this.getOrganizationDetails(this._userProfile.organisationIds))),
@@ -428,13 +428,33 @@ export class UserService {
     return this.learnerService.getWithHeaders(option);
   }
 
-  getAnonymousUserPreference() {
+  getAnonymousUserPreference(): Observable<ServerResponse> {
     const options = {
       url: this.config.urlConFig.URLS.OFFLINE.READ_USER
     };
-    this.publicDataService.get(options).subscribe((response: ServerResponse) => {
-      this.anonymousUserPreference = response.result;
-    });
+    return this.publicDataService.get(options).pipe(map((response: ServerResponse) => {
+      this.anonymousUserPreference = _.get(response, 'result');
+      return response;
+    }));
+  }
+
+  updateAnonymousUserDetails(request): Observable<ServerResponse> {
+    const options = {
+      url: this.config.urlConFig.URLS.OFFLINE.UPDATE_USER,
+      data: request
+    };
+    return this.publicDataService.post(options);
+  }
+
+  createAnonymousUser(request): Observable<ServerResponse> {
+    const options = {
+      url: this.config.urlConFig.URLS.OFFLINE.CREATE_USER,
+      data: request
+    };
+    return this.publicDataService.post(options).pipe(map((response: ServerResponse) => {
+      this.getAnonymousUserPreference().subscribe();
+      return response;
+    }));
   }
 
   get defaultFrameworkFilters() {
