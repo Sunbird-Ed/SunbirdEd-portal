@@ -1,5 +1,5 @@
 <app-landing-section [textToDisplay]="" [layoutConfiguration]="{}" [noTitle]="true"></app-landing-section>
-<div [ngClass]="layoutConfiguration ? 'relative9' : ''">
+<div [ngClass]="layoutConfiguration ? 'relative9' : ''" [appTelemetryImpression]="telemetryImpression">
   <section class="py-24 d-flex flex-ai-center flex-dc">
     <div class="ui container">
       <div class="mb-15 d-flex flex-jc-center relative avatar-container">
@@ -114,7 +114,7 @@
         <span class="fmedium font-w-bold text-center">{{convertToString(guestUser?.framework?.subject)}}</span>
       </div>
       <div class="d-flex flex-ai-center flex-jc-center" appTelemetryInteract
-        [telemetryInteractEdata]="editProfileInteractEdata" (click)="showEdit = !showEdit">
+        [telemetryInteractEdata]="editFrameworkInteractEData" (click)="showEdit = !showEdit">
         <button appOnlineOnly
           class="sb-btn sb-btn-primary sb-btn-xs mt-30">{{resourceService?.frmelmnts?.lbl?.edit}}</button>
       </div>

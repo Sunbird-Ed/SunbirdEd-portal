@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DeviceRegisterService, UserService } from '@sunbird/core';
-import { ResourceService, UtilService } from '@sunbird/shared';
-import { IInteractEventEdata } from '@sunbird/telemetry';
+import { ResourceService, UtilService, NavigationHelperService } from '@sunbird/shared';
+import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LayoutService } from '../../../../../shared/services/layoutconfig/layout.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 const USER_DETAILS_KEY = 'guestUserDetails';
 @Component({
@@ -34,13 +35,18 @@ export class GuestProfileComponent implements OnInit {
   isDesktop = false;
 
   editProfileInteractEdata: IInteractEventEdata;
+  editFrameworkInteractEData: IInteractEventEdata;
+  telemetryImpression: IImpressionEventInput;
   public unsubscribe$ = new Subject<void>();
   constructor(
+    public activatedRoute: ActivatedRoute,
     public resourceService: ResourceService,
     public layoutService: LayoutService,
     public deviceRegisterService: DeviceRegisterService,
     public utilService: UtilService,
-    public userService: UserService
+    public userService: UserService,
+    public router: Router,
+    public navigationHelperService: NavigationHelperService
   ) { }
 
   ngOnInit() {
@@ -112,6 +118,28 @@ export class GuestProfileComponent implements OnInit {
       id: 'guest-profile-edit',
       type: 'click',
       pageid: 'guest-profile-read'
+    };
+    this.editFrameworkInteractEData = {
+      id: 'guest-profile-framework-edit',
+      type: 'click',
+      pageid: 'guest-profile-read'
+    };
+    this.telemetryImpression = {
+      context: {
+        env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env')
+      },
+      object: {
+        id: 'guest',
+        type: 'User',
+        ver: '1.0'
+      },
+      edata: {
+        type: _.get(this.activatedRoute, 'snapshot.data.telemetry.type'),
+        pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid'),
+        subtype: _.get(this.activatedRoute, 'snapshot.data.telemetry.subtype'),
+        uri: this.router.url,
+        duration: this.navigationHelperService.getPageLoadTime()
+      },
     };
   }
 
