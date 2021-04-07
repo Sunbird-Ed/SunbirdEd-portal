@@ -49,7 +49,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     public layoutService: LayoutService, private formService: FormService) { }
 
   get filterData() {
-    return _.get(this.pageData, 'metaData.filters') || ['medium', 'gradeLevel', 'board', 'channel', 'subject', 'audience', 'publisher'];
+    return _.get(this.pageData, 'metaData.filters') || ['medium', 'gradeLevel', 'board', 'channel', 'subject', 'audience', 'publisher', 'se_subjects', 'se_boards', 'se_gradeLevels', 'se_mediums'];
   }
   public getChannelId(index) {
     const { publisher: publishers = [] } = this.filters || {};
@@ -303,6 +303,11 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   private getFacets() {
     return this.facets$.pipe(tap(filters => {
       filters = this.filters = { ...this.filters, ...this.sortFilters({ filters }) };
+      const categoryMapping = Object.entries(this.contentSearchService.getCategoriesMapping);
+      filters = _.mapKeys(filters, (value, filterKey) => {
+        const [key = null] = categoryMapping.find(([category, mappedValue]) => mappedValue === filterKey) || [];
+        return key || filterKey;
+      });
       this.updateFiltersList({ filters });
       this.hardRefreshFilter();
     }));

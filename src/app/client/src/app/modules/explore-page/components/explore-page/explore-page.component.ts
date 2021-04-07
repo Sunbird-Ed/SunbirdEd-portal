@@ -1,10 +1,10 @@
-import { forkJoin, Subject, Observable, BehaviorSubject, merge, of } from 'rxjs';
+import { forkJoin, Subject, Observable, BehaviorSubject, merge, of, concat, combineLatest } from 'rxjs';
 import { OrgDetailsService, UserService, SearchService, FormService, PlayerService, CoursesService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
 import { Component, OnInit, OnDestroy, HostListener, AfterViewInit } from '@angular/core';
 import {
     ResourceService, ToasterService, ConfigService, NavigationHelperService, LayoutService, COLUMN_TYPE, UtilService,
-    OfflineCardService
+    OfflineCardService, BrowserCacheTtlService
 } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { cloneDeep, get, find, map as _map, pick, omit, groupBy, sortBy, replace, uniqBy, forEach, has, uniq, flatten, each, isNumber, toString, partition, toLower, includes } from 'lodash-es';
@@ -13,6 +13,8 @@ import { map, tap, switchMap, skipWhile, takeUntil, catchError, startWith } from
 import { ContentSearchService } from '@sunbird/content-search';
 import { ContentManagerService } from '../../../public/module/offline/services';
 import * as _ from 'lodash-es';
+import { CacheService } from 'ng2-cache-service';
+
 @Component({
     selector: 'app-explore-page-component',
     templateUrl: './explore-page.component.html',
@@ -20,6 +22,7 @@ import * as _ from 'lodash-es';
 })
 export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public initFilter = false;
+    public inViewLogs = [];
     public showLoader = true;
     public noResultMessage;
     public apiContentList: Array<any> = [];
@@ -52,7 +55,15 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     contentDownloadStatus = {};
     isConnected = true;
     private _facets$ = new Subject();
+    public showBatchInfo = false;
+    public enrolledCourses: Array<any>;
+    public enrolledSection: any;
+    public selectedCourseBatches: any;
+    private myCoursesSearchQuery = JSON.stringify({
+        'request': { "filters": { "contentType": ["Course"], "objectType": ["Content"], "status": ["Live"] }, "sort_by": { "lastPublishedOn": "desc" }, "limit": 10, "organisationId": _.get(this.userService.userProfile, 'organisationIds') }
+    });
     public facets$ = this._facets$.asObservable().pipe(startWith({}), catchError(err => of({})));
+    queryParams: { [x: string]: any; };
 
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
@@ -73,7 +84,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         public telemetryService: TelemetryService, public layoutService: LayoutService,
         private formService: FormService, private playerService: PlayerService, private coursesService: CoursesService,
         private utilService: UtilService, private offlineCardService: OfflineCardService,
-        public contentManagerService: ContentManagerService) { }
+        public contentManagerService: ContentManagerService, private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService) { }
 
 
     private initConfiguration() {
@@ -122,10 +133,26 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             );
     }
 
+    private getQueryParams = () => {
+        const { queryParams, params } = this.activatedRoute;
+        return combineLatest(queryParams, params).pipe(
+            tap(([params = {}, queryParams = {}]) => {
+                if (this.isUserLoggedIn()) {
+                    this.prepareVisits([])
+                }
+                this.queryParams = { ...params, ...queryParams };
+            }))
+    }
+
     ngOnInit() {
         this.isDesktopApp = this.utilService.isDesktopApp;
         this.initConfiguration();
-        this.subscription$ = merge(this.fetchChannelData(), this.initLayout(), this.fetchContents())
+
+        const enrolledSection$ = this.getQueryParams().pipe(
+            switchMap(this.fetchEnrolledCoursesSection.bind(this))
+        );
+
+        this.subscription$ = merge(concat(this.fetchChannelData(), enrolledSection$), this.initLayout(), this.fetchContents())
             .pipe(
                 takeUntil(this.unsubscribe$)
             );
@@ -134,6 +161,41 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             this.contentDownloadStatus = contentDownloadStatus;
             this.addHoverData();
         });
+    }
+
+    public fetchEnrolledCoursesSection() {
+        return this.coursesService.enrolledCourseData$
+            .pipe(
+                tap(({ enrolledCourses, err }) => {
+                    this.enrolledCourses = this.enrolledSection = [];
+                    const enrolledSection = {
+                        name: _.get(this.resourceService, 'frmelmnts.lbl.mytrainings'),
+                        length: 0,
+                        count: 0,
+                        contents: []
+                    };
+                    const { contentType: pageContentType = null, search: { filters: { primaryCategory: pagePrimaryCategories = [] } } } = this.getCurrentPageData();
+                    if (err) return enrolledSection;
+                    const enrolledContentPredicate = course => {
+                        const { primaryCategory = null, contentType = null } = _.get(course, 'content') || {};
+                        return pagePrimaryCategories.some(category => _.toLower(category) === _.toLower(primaryCategory)) || (_.toLower(contentType) === _.toLower(pageContentType));
+                    };
+                    const filteredCourses = _.filter(enrolledCourses || [], enrolledContentPredicate);
+                    this.enrolledCourses = _.orderBy(filteredCourses, ['enrolledDate'], ['desc']);
+                    const { constantData, metaData, dynamicFields } = _.get(this.configService, 'appConfig.CoursePageSection.enrolledCourses');
+                    enrolledSection.contents = _.map(filteredCourses, content => {
+                        const formatedContent = this.utilService.processContent(content, constantData, dynamicFields, metaData);
+                        formatedContent.metaData.mimeType = 'application/vnd.ekstep.content-collection';
+                        formatedContent.metaData.contentType = _.get(content, 'content.primaryCategory') || _.get(content, 'content.contentType');
+                        const trackableObj = _.get(content, 'content.trackable');
+                        if (trackableObj) {
+                            formatedContent.metaData.trackable = trackableObj;
+                        }
+                        return formatedContent;
+                    });
+                    enrolledSection.count = enrolledSection.contents.length;
+                    this.enrolledSection = enrolledSection;
+                }));
     }
 
     initLayout() {
@@ -251,7 +313,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                             map((response) => {
                                 const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
                                 this._facets$.next(request.facets ? this.utilService.processCourseFacetData(_.get(response, 'result'), _.get(request, 'facets')) : {});
-                                const filteredContents = omit(groupBy(get(response, 'result.content'), groupByKey), ['undefined']);
+                                const filteredContents = omit(groupBy(get(response, 'result.content'), content => {
+                                    return content[groupByKey] || content['subject'] || 'Others';
+                                }), ['undefined']);
                                 for (const [key, value] of Object.entries(filteredContents)) {
                                     const isMultipleSubjects = key && key.split(',').length > 1;
                                     if (isMultipleSubjects) {
@@ -557,6 +621,81 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             appTelemetryInteractData.object = telemetryInteractObject;
         }
         this.telemetryService.interact(appTelemetryInteractData);
+    }
+
+    public prepareVisits(event) {
+        _.forEach(event, (inView, index) => {
+            if (inView.metaData.identifier) {
+                this.inViewLogs.push({
+                    objid: inView.metaData.identifier,
+                    objtype: inView.metaData.contentType,
+                    index: index,
+                    section: inView.section,
+                });
+            }
+        });
+        this.telemetryImpression.edata.visits = this.inViewLogs;
+        this.telemetryImpression.edata.subtype = 'pageexit';
+        this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+    }
+
+    public playEnrolledContent(event, sectionType?) {
+        if (!this.isUserLoggedIn()) {
+            this.publicPlayerService.playContent(event);
+        } else {
+            if (sectionType) {
+                event.section = this.resourceService.frmelmnts.lbl.mytrainings;
+                event.data.identifier = _.get(event, 'data.metaData.courseId');
+            }
+            const { section, data } = event;
+            const isPageAssemble = _.get(this.getCurrentPageData(), 'isPageAssemble');
+            const metaData = isPageAssemble ? _.get(data, 'metaData') : data;
+
+            const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } =
+                this.coursesService.findEnrolledCourses(metaData.identifier);
+
+            if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
+                return this.playerService.playContent(metaData);
+            }
+
+            if (onGoingBatchCount === 1) { // play course if only one open batch is present
+                metaData.batchId = _.get(openBatch, 'ongoing.length') ? _.get(openBatch, 'ongoing[0].batchId') : _.get(inviteOnlyBatch, 'ongoing[0].batchId');
+                return this.playerService.playContent(metaData);
+            } else if (onGoingBatchCount === 0 && expiredBatchCount === 1) {
+                metaData.batchId = _.get(openBatch, 'expired.length') ? _.get(openBatch, 'expired[0].batchId') : _.get(inviteOnlyBatch, 'expired[0].batchId');
+                return this.playerService.playContent(metaData);
+            }
+            this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: metaData.identifier };
+            this.showBatchInfo = true;
+        }
+    }
+
+    public viewAll(event) {
+        let searchQuery;
+        if (this.isUserLoggedIn() && !_.get(event, 'searchQuery')) {
+            searchQuery = JSON.parse(this.myCoursesSearchQuery);
+        } else {
+            searchQuery = JSON.parse(event.searchQuery);
+        }
+        const searchQueryParams: any = {};
+        _.forIn(searchQuery.request.filters, (value, key) => {
+            if (_.isPlainObject(value)) {
+                searchQueryParams.dynamic = JSON.stringify({ [key]: value });
+            } else {
+                searchQueryParams[key] = value;
+            }
+        });
+        searchQueryParams.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
+        searchQueryParams['exists'] = _.get(searchQuery, 'request.exists');
+        if (this.isUserLoggedIn()) {
+            this.cacheService.set('viewAllQuery', searchQueryParams, { maxAge: 600 });
+        } else {
+            this.cacheService.set('viewAllQuery', searchQueryParams);
+        }
+        this.cacheService.set('pageSection', event, { maxAge: this.browserCacheTtlService.browserCacheTtl });
+        const queryParams = { ...searchQueryParams, ...this.queryParams };
+        const sectionUrl = _.get(this.router, 'url.split') && this.router.url.split('?')[0] + '/view-all/' + event.name.replace(/\s/g, '-');
+        this.router.navigate([sectionUrl, 1], { queryParams: queryParams });
     }
 
 }
