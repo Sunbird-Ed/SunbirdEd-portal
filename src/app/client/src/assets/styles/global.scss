@@ -790,7 +790,7 @@ html.PlayerMediaQueryClass {
   background-color: var(--white);
 
   &::before {
-    content: "";
+    content: "" !important;
     background: url(assets/images/close.png) no-repeat !important;
     height: 1.375rem;
     width: 1.375rem;

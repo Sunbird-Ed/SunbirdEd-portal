@@ -166,6 +166,9 @@ export class PublicPlayerService {
           const isTrackable = metaData.trackable && metaData.trackable.enabled === 'No' ? false : true;
           this.handleNavigation(metaData, isTrackable, queryParams, isAvailableLocally);
         }
+      } else if (metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
+        this.router.navigate(['play/questionset', metaData.identifier],
+        {queryParams: {contentType: metaData.contentType}});
       } else {
         this.router.navigate(['play/content', metaData.identifier],
         {queryParams: {contentType: metaData.contentType}});
@@ -201,8 +204,11 @@ export class PublicPlayerService {
     return content;
   }
 
-  getQuestionSetHierarchy(data) {
-    return this.contentCsService.getQuestionSetHierarchy(data);
+  getQuestionSetHierarchy(contentId: string) {
+    return this.contentCsService.getQuestionSetHierarchy(contentId).pipe(map((response: any) => {
+      this.contentData = response.questionSet;
+      return response;
+    }));
   }
 
   getQuestionSetRead(contentId: string, option: any = { params: {} }): Observable<ServerResponse> {
