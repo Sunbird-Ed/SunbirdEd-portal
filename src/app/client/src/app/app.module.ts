@@ -22,6 +22,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateStore } from "@ngx-translate/core";
+import { FormsModule } from '@angular/forms';
+import { SuiModule } from 'ng2-semantic-ui/dist';
 @NgModule({
   declarations: [
     AppComponent
@@ -30,6 +32,8 @@ import { TranslateStore } from "@ngx-translate/core";
     BrowserAnimationsModule, // used this instaed of browser module since it includes in it.
     CoreModule,
     CommonModule,
+    FormsModule,
+    SuiModule,
     HttpClientModule,
     SuiModalModule,
     SharedModule.forRoot(),

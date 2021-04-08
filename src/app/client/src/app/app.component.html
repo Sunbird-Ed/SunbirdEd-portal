@@ -118,3 +118,24 @@
 <ng-container *ngIf="layoutConfiguration">
   <div class="sbt-theme-right-flower computer only"></div>
 </ng-container>
+
+<sui-modal [mustScroll]="false" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
+(dismissed)="showLoginModal = false" *ngIf="isCustodianOrgUser && usersProfile && usersProfile?.dob && (userProfile?.userLocations?.length>0 || showBirthdayPopup)" #yearOfBirthModal>
+<div class="sb-modal-header">
+  {{resourceService?.frmelmnts?.lbl?.yearOfBirthHeader}}
+</div>
+<div class="sb-modal-content o-y-visible">
+  <div class="ui center aligned segment">
+    <label class="mr-16">{{resourceService.frmelmnts?.lbl?.yearOfBirth}}<span class="sb-color-red">*</span></label>
+   <sui-select class="selection" [options]="birthYearOptions" placeholder="{{resourceService.frmelmnts?.lbl?.year}}" [(ngModel)]="selectedBirthYear" #select>
+      <sui-select-option style="z-index: 10" *ngFor="let option of select.filteredOptions" [value]="option">
+      </sui-select-option>
+    </sui-select>
+  </div>
+</div>
+<div class="sb-modal-actions">
+  <button type="button" (click)="submitYOB()" [disabled]="!selectedBirthYear" class="sb-btn sb-btn-normal sb-btn-primary">
+    {{resourceService?.frmelmnts?.lbl?.submit}}
+  </button>
+</div>
+</sui-modal>

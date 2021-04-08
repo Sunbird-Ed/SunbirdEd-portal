@@ -111,9 +111,13 @@ export class AppComponent implements OnInit, OnDestroy {
   // Font Increase Decrease Variables
   fontSize: any;
   defaultFontSize = 16;
+  selectedBirthYear: number;
+  birthYearOptions: Array<number> = [];
+  showBirthdayPopup = false;
   @ViewChild('increaseFontSize', { static: false }) increaseFontSize: ElementRef;
   @ViewChild('decreaseFontSize', { static: false }) decreaseFontSize: ElementRef;
   @ViewChild('resetFontSize', { static: false }) resetFontSize: ElementRef;
+  @ViewChild ('yearOfBirthModal', {static: false}) yearOfBirthModal;
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -266,6 +270,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.botObject['imageUrl'] = image.imageUrl;
     this.botObject['title'] = this.botObject['header'] = this.title;
     this.generaliseLabelService.getGeneraliseResourceBundle();
+    this.initiateYearSelecter();
   }
 
   onCloseJoyThemePopup() {
@@ -686,6 +691,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   /** will be triggered once location popup gets closed */
   onLocationSubmit() {
+    this.showBirthdayPopup = true;
     if (this.userFeed) {
       this.showUserVerificationPopup = true;
     }
@@ -838,5 +844,24 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   setLocalTheme(value: string) {
     document.documentElement.setAttribute('data-theme', value);
+  }
+
+  submitYOB() {
+    const currentYear = new Date().getFullYear();
+    const userAge = currentYear - this.selectedBirthYear;
+    if (this.selectedBirthYear) {
+      const req = {dob: this.selectedBirthYear.toString()};
+      this.profileService.updateProfile(req).subscribe(res => {
+        this.yearOfBirthModal.deny();
+      });
+    }
+  }
+
+  initiateYearSelecter() {
+    const endYear = new Date().getFullYear();
+    const startYear = endYear - this.configService.constants.SIGN_UP.MAX_YEARS;
+    for (let year = endYear; year > startYear; year--) {
+      this.birthYearOptions.push(year);
+    }
   }
 }

@@ -411,4 +411,33 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     component.skipToMainContent();
     expect(component.skipToMainContent).toHaveBeenCalled();
   });
+
+  it('should initialized total years', () => {
+    configService = {
+      constants: {
+        SIGN_UP: {
+          MAX_YEARS: '1921'
+        }
+      }
+    };
+    component.initiateYearSelecter();
+    expect(configService.constants).toBeTruthy();
+  });
+
+  it('should update profile if DOB is missing', () => {
+    component.selectedBirthYear = 2000;
+    const mockProfileService: Partial<ProfileService> = {
+      updateProfile(request): Observable<any> {
+        return of({});
+      }
+    };
+    component.yearOfBirthModal = {
+      deny() {
+        return;
+      }
+    };
+    component.submitYOB();
+    expect(component.selectedBirthYear).toBeTruthy();
+    expect(component.yearOfBirthModal).toBeTruthy();
+  });
 });
