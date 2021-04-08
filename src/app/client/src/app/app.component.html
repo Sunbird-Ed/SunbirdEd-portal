@@ -120,7 +120,7 @@
 </ng-container>
 
 <sui-modal [mustScroll]="false" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-(dismissed)="showLoginModal = false" *ngIf="isCustodianOrgUser && usersProfile && !usersProfile?.dob && (userProfile?.userLocations?.length>0 || showBirthdayPopup)" #yearOfBirthModal>
+(dismissed)="showLoginModal = false" *ngIf="isCustodianOrgUser && usersProfile && !usersProfile?.dob && (usersProfile?.userLocations?.length>0 || showBirthdayPopup)" #yearOfBirthModal>
 <div class="sb-modal-header">
   {{resourceService?.frmelmnts?.lbl?.yearOfBirthHeader}}
 </div>
