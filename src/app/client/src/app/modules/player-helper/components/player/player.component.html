@@ -46,6 +46,7 @@
 </div>
 
 <div id="playerFullscreen" *ngIf="!showPlayIcon" class="player-fullscreen" [ngStyle]="{'display': mobileViewDisplay}"> 
+  <img *ngIf="playerType !== 'quml-player'" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="closeButtonInteractEdata" (click)="closeFullscreen()" class="close-button" src="assets/images/close-Black.svg" alt="">
   <sunbird-pdf-player *ngIf="playerType === 'pdf-player'" [playerConfig]="playerConfig"
     (playerEvent)="eventHandler($event)" (telemetryEvent)="generateContentReadEvent($event, true)"></sunbird-pdf-player>
 
@@ -62,3 +63,4 @@
     <!--Rating popup -->
 <app-content-rating #modal *ngIf="contentRatingModal && playerConfig"
     [contentData]="playerConfig.metadata" (closeModal)="closeModal()"></app-content-rating>
+<button *ngIf="playerType !== 'quml-player'" class="sb-btn sb-btn-primary sb-btn-normal pull-right view-fullscreen"[ngClass]="{'d-none': !viewFullscreenBtn}" (click)="viewInFullscreen()" appTelemetryInteract [telemetryInteractEdata]="viewFullScreenIntractEdata" [telemetryInteractObject]="viewFullScreenIntractObject"> <i class="expand icon"></i> View Full Screen</button>
