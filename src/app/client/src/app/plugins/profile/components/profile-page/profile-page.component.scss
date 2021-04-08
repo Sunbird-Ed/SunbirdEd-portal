@@ -18,7 +18,14 @@
 
 .profile-bg-c-4 {
   background: var(--sb-profile-bg-c-4) !important;
-  color:var(--black)
+  color:var(--black);
+}
+
+.profile-bg-c-4 {
+  @include respond-below(md) {
+    margin: 0 2% calculateRem(24px) 2%;
+    border-radius: calculateRem(24px);
+  }
 }
 
 /* width */
@@ -210,5 +217,18 @@
 .sb-profile-page-container{
   .ui.segment{
     background: var(--sb-profile-page-container);
+  }
+}
+
+.content-preference {
+  @include respond-below(md) {
+    padding: 0 2%;
+    &__info {
+      background: var(--sb-profile-bg-c-4);
+      padding: calculateRem(16px) 0;
+      border-radius: calculateRem(24px);
+      width: 100%;
+      color: var(--black);
+    }
   }
 }
