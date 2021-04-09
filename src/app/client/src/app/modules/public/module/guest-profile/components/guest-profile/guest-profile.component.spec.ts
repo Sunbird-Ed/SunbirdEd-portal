@@ -59,12 +59,10 @@ describe('GuestProfileComponent', () => {
   });
 
   it('should fetch Guest User', () => {
-    component.isDesktop = true;
     const userService = TestBed.get(UserService);
-    spyOn(userService, 'getAnonymousUserPreference').and.returnValue(of({ result: { name: 'Guest' } }));
+    spyOn(userService, 'getGuestUser').and.returnValue(of({ result: { name: 'Guest' } }));
     component.getGuestUser();
-    expect(userService.getAnonymousUserPreference).toHaveBeenCalled();
-    expect(component.guestUser).toBeDefined();
+    expect(userService.getGuestUser).toHaveBeenCalled();
   });
 
   it('should call getLocation', () => {

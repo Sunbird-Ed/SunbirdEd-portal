@@ -60,16 +60,9 @@ export class GuestProfileComponent implements OnInit {
   }
 
   getGuestUser() {
-    if (this.isDesktop) {
-      this.userService.getAnonymousUserPreference().subscribe((response) => {
-        this.guestUser = _.get(response, 'result');
-      });
-    } else {
-      const details = localStorage.getItem(USER_DETAILS_KEY);
-      if (details) {
-        this.guestUser = JSON.parse(details);
-      }
-    }
+    this.userService.getGuestUser().subscribe((response) => {
+      this.guestUser = response;
+    });
     this.userRole = localStorage.getItem('userType');
   }
 
