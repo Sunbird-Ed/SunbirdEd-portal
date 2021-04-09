@@ -33,6 +33,7 @@ export class GuestProfileComponent implements OnInit {
   guestUser;
   deviceProfile;
   isDesktop = false;
+  userRole: string;
 
   editProfileInteractEdata: IInteractEventEdata;
   editFrameworkInteractEData: IInteractEventEdata;
@@ -69,6 +70,7 @@ export class GuestProfileComponent implements OnInit {
         this.guestUser = JSON.parse(details);
       }
     }
+    this.userRole = localStorage.getItem('userType');
   }
 
   initLayout() {
@@ -112,6 +114,7 @@ export class GuestProfileComponent implements OnInit {
   }
 
   closeEditDetailsPopup() {
+    this.getGuestUser();
     this.getLocation();
     this.showEditUserDetailsPopup = !this.showEditUserDetailsPopup;
   }

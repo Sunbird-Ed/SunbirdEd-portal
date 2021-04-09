@@ -245,7 +245,7 @@ export class AppComponent implements OnInit, OnDestroy {
             return this.setUserDetails();
           } else {
             this.isGuestUser = true;
-            this.userService.getGuestUser(this.utilService.isDesktopApp).subscribe((response) => {
+            this.userService.getGuestUser().subscribe((response) => {
               this.guestUserDetails = response;
             });
             return this.setOrgDetails();
@@ -294,13 +294,6 @@ export class AppComponent implements OnInit, OnDestroy {
   checkFullScreenView() {
     this.navigationHelperService.contentFullScreenEvent.pipe(takeUntil(this.unsubscribe$)).subscribe(isFullScreen => {
       this.isFullScreenView = isFullScreen;
-    });
-  }
-
-  createGuestUser(framework) {
-    const req = { request: { name: 'Guest', framework } };
-    this.userService.createAnonymousUser(req).subscribe((data) => {}, error => {
-      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
     });
   }
 
@@ -379,8 +372,8 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       });
     }, (err) => {
-      this.isLocationConfirmed = true;
-      this.showUserTypePopup = false;
+      this.isLocationConfirmed = false;
+      this.showUserTypePopup = true;
     });
     this.getUserFeedData();
   }
@@ -495,8 +488,19 @@ export class AppComponent implements OnInit, OnDestroy {
       this.showFrameWorkPopUp = false;
       this.checkLocationStatus();
     } else {
-      if (this.userService.loggedIn && _.isEmpty(_.get(this.userProfile, 'framework')) || (this.isGuestUser && !this.guestUserDetails)) {
+      if (this.userService.loggedIn && _.isEmpty(_.get(this.userProfile, 'framework'))) {
         this.showFrameWorkPopUp = true;
+      } else if (this.isGuestUser) {
+        if (!this.guestUserDetails) {
+          this.userService.getGuestUser().subscribe((response) => {
+            this.guestUserDetails = response;
+            this.showFrameWorkPopUp = false;
+          }, error => {
+            this.showFrameWorkPopUp = true;
+          });
+        } else {
+          this.showFrameWorkPopUp = true;
+        }
       } else {
         this.checkLocationStatus();
       }
@@ -664,12 +668,12 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   public updateFrameWork(event) {
     if (this.isGuestUser && !this.guestUserDetails) {
-      if (this.isDesktopApp) {
-        this.createGuestUser(event);
-      } else {
-        const details = { name: 'Guest', framework: event };
-        localStorage.setItem('guestUserDetails', JSON.stringify(details));
-      }
+      const user = { name: 'guest', formatedName: 'Guest', framework: event };
+      this.userService.createGuestUser(user).subscribe(data => {
+        this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
+      }, error => {
+        this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+      });
       this.closeFrameworkPopup();
       this.checkLocationStatus();
     } else {

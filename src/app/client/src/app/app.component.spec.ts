@@ -421,11 +421,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     expect(component.frameWorkPopUp.modal.deny).toHaveBeenCalled();
     expect(component.showFrameWorkPopUp).toBe(false);
   });
-  it('should create guest user for desktop app', () => {
-    spyOn(userService, 'createAnonymousUser').and.returnValue(of({}));
-    component.createGuestUser({ board: ['CBSE'], medium: ['English'], gradeLevel: ['Class 1'], subject: ['English'] });
-    expect(userService.createAnonymousUser).toHaveBeenCalled();
-  });
+
   it('should update framework for logged In user', () => {
     const event = { board: ['CBSE'], medium: ['English'], gradeLevel: ['Class 1'], subject: ['English'] };
     component.isGuestUser = false;
@@ -468,12 +464,10 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     component.isGuestUser = true;
     component.guestUserDetails = undefined;
     component.isDesktopApp = true;
-    spyOn(component, 'createGuestUser');
     spyOn(component, 'closeFrameworkPopup');
     spyOn(component, 'checkLocationStatus');
     component.updateFrameWork(event);
     expect(component.closeFrameworkPopup).toHaveBeenCalled();
     expect(component.checkLocationStatus).toHaveBeenCalled();
-    expect(component.createGuestUser).toHaveBeenCalled();
   });
 });

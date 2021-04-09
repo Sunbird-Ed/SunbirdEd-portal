@@ -395,7 +395,7 @@
     <ng-container>
       <div *ngIf="!userService.loggedIn">
         <div class="mb-16">
-          <sb-member-card [config]=cardConfig [initial]="guestUser?.name[0] || 'G'" [title]="guestUser?.name || 'Guest'">
+          <sb-member-card [config]=cardConfig [initial]="guestUser?.formatedName[0] || 'G'" [title]="guestUser?.formatedName || 'Guest'">
           </sb-member-card>
         </div>
         <div class="profile__actions">

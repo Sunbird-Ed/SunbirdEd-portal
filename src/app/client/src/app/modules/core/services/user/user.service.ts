@@ -2,7 +2,7 @@ import { ConfigService, ServerResponse, IUserProfile, IUserData, IOrganization, 
 import { LearnerService } from './../learner/learner.service';
 import { ContentService } from './../content/content.service';
 import { Injectable, Inject, EventEmitter } from '@angular/core';
-import { Observable, BehaviorSubject, iif, of } from 'rxjs';
+import { Observable, BehaviorSubject, iif, of, throwError } from 'rxjs';
 import { map, mergeMap, shareReplay } from 'rxjs/operators';
 import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash-es';
@@ -12,6 +12,7 @@ import { skipWhile, tap } from 'rxjs/operators';
 import { APP_BASE_HREF } from '@angular/common';
 import { CacheService } from 'ng2-cache-service';
 import { DataService } from './../data/data.service';
+import { environment } from '@sunbird/environment';
 
 
 /**
@@ -93,6 +94,7 @@ export class UserService {
 
   public organizationsDetails: Array<IOrganization>;
   public createManagedUser = new EventEmitter();
+  private _isDesktopApp = false;
 
   /**
    * Reference of public data service.
@@ -118,6 +120,7 @@ export class UserService {
     this.learnerService = learner;
     this.contentService = contentService;
     this.publicDataService = publicDataService;
+    this._isDesktopApp = environment.isDesktopApp;
     try {
       this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
       DataService.userId = this._userid;
@@ -457,14 +460,35 @@ export class UserService {
     }));
   }
 
-  getGuestUser(isDesktopApp: boolean) {
-    if (isDesktopApp) {
+  getGuestUser(): Observable<any> {
+    if (this._isDesktopApp) {
       return this.getAnonymousUserPreference().pipe(map((response: ServerResponse) => {
         return _.get(response, 'result');
       }));
     } else {
       const guestUserDetails = localStorage.getItem('guestUserDetails');
-      return (guestUserDetails ? of(JSON.parse(guestUserDetails)) : of(undefined));
+      return (guestUserDetails ? of(JSON.parse(guestUserDetails)) : throwError(undefined));
+    }
+  }
+
+  updateGuestUser(userDetails): Observable<any> {
+    if (this._isDesktopApp) {
+      userDetails.identifier = userDetails._id;
+      const req = { request: userDetails };
+      return this.updateAnonymousUserDetails(req);
+    } else {
+      localStorage.setItem('guestUserDetails', JSON.stringify(userDetails));
+      return of({});
+    }
+  }
+
+  createGuestUser(userDetails): Observable<any> {
+    if (this._isDesktopApp) {
+      const req = { request: userDetails };
+      return this.createAnonymousUser(req);
+    } else {
+      localStorage.setItem('guestUserDetails', JSON.stringify(userDetails));
+      return of({});
     }
   }
 
@@ -474,5 +498,4 @@ export class UserService {
     const userFramework = (isUserLoggedIn && framework && _.pick(framework, ['medium', 'gradeLevel', 'board'])) || {};
     return { board: ['CBSE'], gradeLevel: isUserLoggedIn ? [] : ['Class 10'], medium: [], ...userFramework };
   }
-
 }
