@@ -17,6 +17,7 @@ import { first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil } fr
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/common';
 import { image } from '../assets/images/tara-bot-icon';
+import { SBTagModule } from 'sb-tag-manager';
 /**
  * main app component
  */
@@ -182,6 +183,14 @@ export class AppComponent implements OnInit, OnDestroy {
     this.getLocalFontSize();
     // dark theme
     this.getLocalTheme();
+
+    this.setTagManager();
+  }
+
+  setTagManager() {
+    console.log("Tag Manager");
+    window['TagManager'] = SBTagModule.instance;
+    window['TagManager'].init();
   }
 
   setTheme() {
