@@ -447,5 +447,6 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     component.submitYearOfBirth();
     expect(component.selectedBirthYear).toBeTruthy();
     expect(component.yearOfBirthModal).toBeTruthy();
+    
   });
 });
