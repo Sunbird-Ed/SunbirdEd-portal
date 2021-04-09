@@ -612,10 +612,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.6.tgz#15a88937fb643d5eb33a81c8d28ece00b56d5aa0"
   integrity sha512-rK87rHdagadIS7UrWju7HDolIfWlO5CbK+tIJrEApO+QPMi+k8KuWoLc8MxEprrsJxUt6r44O4uGiO0hgI5plA==
 
-"@project-sunbird/sunbird-collection-editor@0.0.35":
-  version "0.0.35"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-0.0.35.tgz#367a2778907c144661a9aec41c5bffa696715a5b"
-  integrity sha512-laXAVCNT6cVWjegWFwM8+jNr/Eip7sQ7s2tE1pmtwcoCnMAI9FCWEfoUGalAnbnwNMlyFBNzWQkR1Hymv06TDw==
+"@project-sunbird/sunbird-collection-editor@0.0.40":
+  version "0.0.40"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-0.0.40.tgz#c25ed55ca216cb4ec3724981ac5df13898341ac4"
+  integrity sha512-KoXK1+2QLJynZ2sZ593gggTvRYNDgm0/cBKLvxcKXb196awo16V/mbgXKd4qD6MLOfKkRhR54VyDb1SlQVvuyw==
   dependencies:
     tslib "^1.9.0"
 
@@ -670,10 +670,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v8@3.9.3":
-  version "3.9.3"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v8/-/sunbird-quml-player-v8-3.9.3.tgz#cbd44892600f2a73729967ad6777f2496408c585"
-  integrity sha512-pwcN0xJ8z9nfyKJnOaH3hPhSBJEtsKiVZx8wqRzDKVXm8wORsc3zqyuEEtYWfcJ0euQjngAN/gqRmJ2qBzAWGg==
+"@project-sunbird/sunbird-quml-player-v8@3.9.5":
+  version "3.9.5"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v8/-/sunbird-quml-player-v8-3.9.5.tgz#86ce2d3014fc69e34f62f40c3acdd1b02e210e39"
+  integrity sha512-aqf0xfehevLAgpRm5zU+AuNjxpVlnNmnBWh26ETsNMU86yG3eAts9NjnnNlVvYM5/lEywqqIssa+j4I3Kh7qFg==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v8" "3.8.0"
     tslib "^1.9.0"
@@ -2774,10 +2774,10 @@ commander@^2.11.0, commander@^2.12.1, commander@^2.19.0, commander@^2.20.0, comm
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
 
-common-form-elements@^3.8.14:
-  version "3.8.14"
-  resolved "https://registry.yarnpkg.com/common-form-elements/-/common-form-elements-3.8.14.tgz#e1a44aa52f54a8c17a365edb22874298526604a3"
-  integrity sha512-/ZkIA8pa6drg6rX71UijWr9WxdP71zgPmFh90FI+nuPnZ91OCBFZLcqC6AfovXxQU+eTdHCvW+PjihiLViIYQA==
+common-form-elements@^3.8.15:
+  version "3.8.15"
+  resolved "https://registry.yarnpkg.com/common-form-elements/-/common-form-elements-3.8.15.tgz#ae00c61da366328b74f40c7d0c4b2f72ebafcc4f"
+  integrity sha512-m9urSEUP+ad5xq48qH9WT9gPoA7jy9bOjXyYKotHwEUHDcCkaWZSpxyxIP6j3+2saYNHTwpqfvUNM7fe5D0vUQ==
   dependencies:
     immutable "^4.0.0-rc.12"
     moment "^2.29.1"
