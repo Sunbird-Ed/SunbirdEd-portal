@@ -94,6 +94,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   navigateToContentObject: any;
   _routerStateContentStatus: any;
   isConnected = false;
+  dropdownContent = true;
   constructor(
     public activatedRoute: ActivatedRoute,
     private configService: ConfigService,
@@ -702,5 +703,24 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         return true;
     }
     return false;
+  }
+  dropdownMenu() {
+    this.dropdownContent = !this.dropdownContent;
+  }
+  public forceSync() {
+    this.dropdownContent = !this.dropdownContent;
+    console.log('need to call the sync function now');
+    const req = {
+      'courseId': this.courseId,
+      'batchId': this.batchId,
+      'userId': _.get(this.userService, 'userid')
+    }
+    this.CsCourseService.updateContentState(req, { apiPath: '/content/course/v1' })
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe((res) => {
+      console.log('Content state update CSL API called');
+    }, error => {
+      console.log('Content state update CSL API failed ', error);
+    });
   }
 }
