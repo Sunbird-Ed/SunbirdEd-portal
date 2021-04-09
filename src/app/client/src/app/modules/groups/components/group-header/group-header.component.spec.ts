@@ -76,6 +76,7 @@ describe('GroupHeaderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(GroupHeaderComponent);
     component = fixture.componentInstance;
+    jasmine.getEnv().allowRespy(true);
     component.groupData = {
       id: '123', createdBy: 'user_123', name: 'Test group',
       members: [{
@@ -89,7 +90,7 @@ describe('GroupHeaderComponent', () => {
       description: '',
       membershipType: GroupMembershipType.INVITE_ONLY,
       active: true,
-      isActive() { return true ;}
+      isActive() { return true ; }
     };
     component.forumIds = [];
     spyOn(component['groupService'], 'getImpressionObject').and.returnValue(impressionObj);
@@ -119,7 +120,7 @@ describe('GroupHeaderComponent', () => {
       status: GroupEntityStatus.ACTIVE,
       createdBy: 'abcd-pqr-xyz'}],
       active: true,
-      isActive() { return true ;}
+      isActive() { return true ; }
     };
 
     component.ngOnInit();
@@ -349,35 +350,6 @@ describe('GroupHeaderComponent', () => {
     expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, try again later');
   });
 
-  it('should navigate to Discussion forum landing page', () => {
-    /** Arrange */
-    const discussionService = TestBed.get(DiscussionService);
-    spyOn(discussionService, 'registerUser').and.returnValue(observableOf(MockResponseData.registerUserSuccess));
-    const result = component.forumIds = [6];
-
-    /** Act */
-    component.navigateToDiscussionForum();
-
-    /** Assert */
-    expect(component['router'].navigate).toHaveBeenCalledWith(['/discussion-forum'], { queryParams: {
-      categories: JSON.stringify({ result }),
-      userName: 'cctn1350'
-    }});
-  });
-
-  it('should throw error if the register-user api fails', () => {
-    /** Arrange */
-    const discussionService = TestBed.get(DiscussionService);
-    spyOn(discussionService, 'registerUser').and.callFake(() => throwError({}));
-    spyOn(component['toasterService'], 'error');
-
-    /** Act */
-    component.navigateToDiscussionForum();
-
-    /** Assert */
-    expect(component.showLoader).toBeFalsy();
-    expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
-  });
   it('should call enableDiscussionForum() when enable the discussion forum icon', () => {
     /** Arrange */
     const discussionService = TestBed.get(DiscussionService);
@@ -440,5 +412,20 @@ describe('GroupHeaderComponent', () => {
 
       /**Assert */
       expect(component.createForumRequest).toEqual(MockResponseData.forumConfig[0]);
+    });
+
+    it('should navigate to discussion Forum', () => {
+      const routerData = {
+        forumIds: [6],
+        userName: 'cctn1350'
+      };
+      spyOn(component['router'], 'navigate');
+      component.assignForumData(routerData);
+      expect(component['router'].navigate).toHaveBeenCalledWith(['/discussion-forum'], {
+        queryParams: {
+          categories: JSON.stringify({ result: routerData.forumIds }),
+          userName: routerData.userName
+        }
+      });
     });
   });
