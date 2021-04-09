@@ -558,9 +558,13 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
         this.guestUser = _.get(response, 'result');
       });
     } else {
-      const details = localStorage.getItem('guestUserDetails');
-      if (details) {
-        this.guestUser = JSON.parse(details);
+      try {
+        const details = localStorage.getItem('guestUserDetails');
+        if (details) {
+          this.guestUser = JSON.parse(details);
+        }
+      } catch (error) {
+        console.error('Error while parsing object', error);
       }
     }
   }
