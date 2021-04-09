@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DeviceRegisterService, UserService } from '@sunbird/core';
-import { ResourceService, UtilService, NavigationHelperService } from '@sunbird/shared';
+import { ResourceService, UtilService, NavigationHelperService, ToasterService } from '@sunbird/shared';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
@@ -46,7 +46,8 @@ export class GuestProfileComponent implements OnInit {
     public utilService: UtilService,
     public userService: UserService,
     public router: Router,
-    public navigationHelperService: NavigationHelperService
+    public navigationHelperService: NavigationHelperService,
+    public toasterService: ToasterService
   ) { }
 
   ngOnInit() {
@@ -96,6 +97,7 @@ export class GuestProfileComponent implements OnInit {
     } else {
       localStorage.setItem(USER_DETAILS_KEY, JSON.stringify(this.guestUser));
       this.getGuestUser();
+      this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
     }
   }
 
@@ -103,6 +105,7 @@ export class GuestProfileComponent implements OnInit {
     const req = { request: { ...user, identifier: user._id } };
     this.userService.updateAnonymousUserDetails(req).subscribe((response) => {
       this.getGuestUser();
+      this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
     }, error => {
       console.error('Error while updating guest user', error);
     });

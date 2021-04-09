@@ -24,6 +24,7 @@ describe('GuestProfileComponent', () => {
     },
     'messages': {
       'smsg': {
+        'm0058': 'User preference updated successfully'
       },
       'fmsg': {
       },
