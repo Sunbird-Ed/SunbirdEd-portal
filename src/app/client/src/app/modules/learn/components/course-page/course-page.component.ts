@@ -742,6 +742,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     const facetsData = [];
     _.forEach(facets, (facet, key) => {
       switch (key) {
+        case 'se_boards':
         case 'board':
           const boardData = {
             index: '1',
@@ -752,6 +753,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
           };
           facetsData.push(boardData);
           break;
+        case 'se_mediums':
         case 'medium':
           const mediumData = {
             index: '2',
@@ -762,6 +764,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
           };
           facetsData.push(mediumData);
           break;
+        case 'se_gradeLevels':
         case 'gradeLevel':
           const gradeLevelData = {
             index: '3',
@@ -772,6 +775,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
           };
           facetsData.push(gradeLevelData);
           break;
+        case 'se_subjects':
         case 'subject':
           const subjectData = {
             index: '4',

@@ -258,8 +258,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
         this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
           this.configService.appConfig.SEARCH.PAGE_LIMIT);
-        this.contentList = data.result.content || [];
-        this.addHoverData();
+          this.contentList = _.concat(_.get(data, 'result.content') || [], _.get(data, 'result.QuestionSet') || []) || []; 
+          this.addHoverData();
         this.totalCount = data.result.count;
         this.setNoResultMessage();
       }, err => {

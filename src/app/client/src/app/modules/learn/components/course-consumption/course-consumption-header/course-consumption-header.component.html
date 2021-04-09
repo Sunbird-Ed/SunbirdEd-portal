@@ -32,7 +32,7 @@
         <div class="textbook__details d-flex flex-ai-center">
           <!-- Textbook image -->
           <div class="textbook__bookimg">
-            <img src="{{courseHierarchy?.appIcon}}" alt="textbook">
+            <img src="{{courseHierarchy?.appIcon || 'assets/images/book.png'}}" alt="{{courseHierarchy?.name}}">
           </div>
           <div class="ml-8 textbook__heading">
             <!-- Textbook title -->

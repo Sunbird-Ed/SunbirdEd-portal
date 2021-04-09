@@ -26,12 +26,12 @@
             </button>
           </div>
         </div>
-        <div class="d-flex flex-jc-space-between my-16 p-8 group-status" *ngIf="!groupData?.active">
-          <div class="d-flex fnormal flex-ai-center group-status__label">
+        <div class="my-16 p-8 group-status" *ngIf="!groupData?.active">
+          <div class="fnormal group-status__label">
           <img class="mr-8" src="assets/images/exclamation.svg" width="18px">
            {{resourceService?.messages?.imsg?.m001}}
           </div>
-         <button *ngIf="groupData?.isAdmin" class="sb-btn sb-btn-primary sb-btn-normal" type="button" (click)="handleEvent()">{{resourceService?.frmelmnts?.lbl?.activategrp}}</button>
+         <button *ngIf="groupData?.isAdmin" class="sb-btn sb-btn-primary sb-btn-normal mt-8" type="button" (click)="handleEvent()">{{resourceService?.frmelmnts?.lbl?.activategrp}}</button>
         </div>
         <app-add-activity *ngIf="!showActivityList"></app-add-activity>
         <app-activity-list *ngIf="showActivityList" [groupData]="groupData" [activityList]="activityList"></app-activity-list>
