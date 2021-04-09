@@ -1188,3 +1188,70 @@ quml-player {
 .logo.sbt-logo, .five.wide.column .d-flex.logo, .five.wide.column .logo.flex-ai-jc-center, .five.wide.column .logo.flex-jc-ai-center, .five.wide.column .list-items .logo.list-items__bar, .list-items .five.wide.column .logo.list-items__bar, .sb-onboard .brand-logo, .terms-modal-logo{
   padding: 0.5rem;
 }
+
+
+.sb-dark-theme-tooltip{
+    position: absolute;
+    z-index: 9999;
+    top: 2.5rem;
+    right: -1rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    height: 3rem;
+    width:13.75rem;
+    border-radius: 0.5rem;
+    background-color: #004FD4;
+    html[dir="rtl"] & {
+      left: -1rem;
+      right: auto;
+    }
+    .rectangle{
+      height: 0.75rem;
+      width: 0.75rem;
+      transform: rotate(45deg);
+      border-radius: 0 3px 0 0;
+      background-color: #004FD4;
+      position: absolute;
+      top: -0.375rem;
+      right: 1.625rem;
+      html[dir="rtl"] & {
+        left: 1.625rem;
+        right: auto;
+      }
+    }
+    .tooltip-close{
+      position: absolute;
+      right: 0;
+      left: 0;
+      margin: auto;
+      top: -0.13rem;
+     
+      img{
+        width: 1.125rem;
+        cursor: pointer;
+      }
+    }
+    .new-theme-badge {
+      margin-left: 1.5rem;
+      background-color: #EE8924;
+      position: relative;
+      height: 1rem;
+      padding: 0 0 0 0.25rem;
+      color: var(--white);
+      margin-right: -.5rem;
+      font-size: 0.6875rem;
+      display: flex;
+      align-items: center;
+      font-weight: 400;
+  }
+  .new-theme-badge:after {
+    content: "";
+    width: 0;
+    height: 0;
+    border-width: 0.5rem 0.325rem;
+    border-style: solid;
+    border-color: #EE8924 transparent #EE8924 #EE8924;
+    position: absolute;
+    right: -.625rem;
+  }
+}

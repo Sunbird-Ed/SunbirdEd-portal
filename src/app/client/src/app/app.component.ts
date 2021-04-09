@@ -114,6 +114,7 @@ export class AppComponent implements OnInit, OnDestroy {
   @ViewChild('increaseFontSize', { static: false }) increaseFontSize: ElementRef;
   @ViewChild('decreaseFontSize', { static: false }) decreaseFontSize: ElementRef;
   @ViewChild('resetFontSize', { static: false }) resetFontSize: ElementRef;
+  showTooltip: boolean = true;
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -838,5 +839,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   setLocalTheme(value: string) {
     document.documentElement.setAttribute('data-theme', value);
+  }
+  closeTooltip(){
+    this.showTooltip = ! this.showTooltip;
   }
 }

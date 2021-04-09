@@ -46,13 +46,24 @@
                   </div>
                 </li>
                 <li class="mx-4">|</li>
-                <li><button id="dark-mode-toggle" class="dark-mode-toggle"
+                <li class="relative"><button id="dark-mode-toggle" class="dark-mode-toggle"
                     title="{{resourceService?.frmelmnts?.lbl?.accessibilitytheme}}" (click)="changeTheme()">
                     <svg width="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 496">
                       <path fill="var(--white)"
                         d="M8,256C8,393,119,504,256,504S504,393,504,256,393,8,256,8,8,119,8,256ZM256,440V72a184,184,0,0,1,0,368Z"
                         transform="translate(-8 -8)" /></svg>
-                  </button></li>
+                  </button>
+                  <div class="sb-dark-theme-tooltip d-flex flex-ai-center" *ngIf="showTooltip">
+                    <span class="rectangle"></span>
+                    <div class="d-flex flex-ai-center mt-8">
+                      <span class="mr-4">Try new dark theme</span>
+                      <span class="new-theme-badge mx-8">New</span>
+                    </div>
+                    <div class="tooltip-close">
+                      <img src="./assets/images/tooltip-close.svg" alt="close" width="48" (click)="closeTooltip()">
+                    </div>
+                  </div>
+                </li>
               </ul>
             </div>
           </div>
