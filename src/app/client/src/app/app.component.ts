@@ -236,13 +236,9 @@ export class AppComponent implements OnInit, OnDestroy {
             return this.setUserDetails();
           } else {
             this.isGuestUser = true;
-            if (this.utilService.isDesktopApp) {
-              this.userService.getAnonymousUserPreference().subscribe((response) => {
-                this.guestUserDetails = response;
-              });
-            } else {
-              this.guestUserDetails = localStorage.getItem('guestUserDetails');
-            }
+            this.userService.getGuestUser(this.utilService.isDesktopApp).subscribe((response) => {
+              this.guestUserDetails = response;
+            });
             return this.setOrgDetails();
           }
         }))
@@ -294,7 +290,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
   createGuestUser(framework) {
     const req = { request: { name: 'Guest', framework } };
-    this.userService.createAnonymousUser(req).subscribe();
+    this.userService.createAnonymousUser(req).subscribe((data) => {}, error => {
+      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+    });
   }
 
   storeThemeColour(value) {

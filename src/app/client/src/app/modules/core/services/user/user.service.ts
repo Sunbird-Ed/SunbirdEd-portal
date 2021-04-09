@@ -457,6 +457,17 @@ export class UserService {
     }));
   }
 
+  getGuestUser(isDesktopApp: boolean) {
+    if (isDesktopApp) {
+      return this.getAnonymousUserPreference().pipe(map((response: ServerResponse) => {
+        return _.get(response, 'result');
+      }));
+    } else {
+      const guestUserDetails = localStorage.getItem('guestUserDetails');
+      return (guestUserDetails ? of(JSON.parse(guestUserDetails)) : of(undefined));
+    }
+  }
+
   get defaultFrameworkFilters() {
     const isUserLoggedIn = this.loggedIn || false;
     const { framework = null } = this.userProfile || {};
