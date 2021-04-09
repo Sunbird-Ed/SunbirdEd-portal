@@ -71,6 +71,8 @@
       [userFeedData]="userFeed"> </app-validate-teacher-identifier-popup>
     <app-user-onboarding (close)="onLocationSubmit()" *ngIf="showUserTypePopup || !isLocationConfirmed"
       [isCustodianOrgUser]="isCustodianOrgUser" [deviceProfile]="deviceProfile"></app-user-onboarding>
+    
+    <app-year-of-birth *ngIf="isCustodianOrgUser && usersProfile && !usersProfile?.dob && (usersProfile?.userLocations?.length>0 || showYearOfBirthPopup)"></app-year-of-birth>
     <app-header *ngIf="!hideHeaderNFooter" [layoutConfiguration]="layoutConfiguration" [routerEvents]="routeData$"
       [ngClass]="{'header-block': isFullScreenView}"></app-header>
     <app-install-app (viewInBrowser)="viewInBrowser($event)" *ngIf="showAppPopUp && userService.loggedIn">
@@ -119,23 +121,3 @@
   <div class="sbt-theme-right-flower computer only"></div>
 </ng-container>
 
-<sui-modal [mustScroll]="false" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
-(dismissed)="showLoginModal = false" *ngIf="isCustodianOrgUser && usersProfile && !usersProfile?.dob && (usersProfile?.userLocations?.length>0 || showYearOfBirthPopup)" #yearOfBirthModal>
-<div class="sb-modal-header">
-  {{resourceService?.frmelmnts?.lbl?.yearOfBirthHeader}}
-</div>
-<div class="sb-modal-content o-y-visible">
-  <div class="ui center aligned segment">
-    <label class="mr-16">{{resourceService.frmelmnts?.lbl?.yearOfBirth}}<span class="sb-color-red">*</span></label>
-   <sui-select class="selection" [options]="birthYearOptions" placeholder="{{resourceService.frmelmnts?.lbl?.year}}" [(ngModel)]="selectedBirthYear" #select>
-      <sui-select-option *ngFor="let option of select.filteredOptions" [value]="option">
-      </sui-select-option>
-    </sui-select>
-  </div>
-</div>
-<div class="sb-modal-actions">
-  <button type="button" (click)="submitYearOfBirth()" [disabled]="!selectedBirthYear" class="sb-btn sb-btn-normal sb-btn-primary">
-    {{resourceService?.frmelmnts?.lbl?.submit}}
-  </button>
-</div>
-</sui-modal>

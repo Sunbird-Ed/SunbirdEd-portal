@@ -43,11 +43,6 @@ const fakeActivatedRoute = {
   queryParams: of({})
 };
 
-const mockProfileService: Partial<ProfileService> = {
-  updateProfile(request): Observable<any> {
-    return of({});
-  }
-};
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -116,7 +111,6 @@ afterEach(() => {
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
     spyOn(publicDataService, 'post').and.returnValue(of({result: { response: { content: 'data'} } }));
     spyOn(learnerService, 'getWithHeaders').and.returnValue(of(mockData.success));
-    spyOn(component, 'initiateYearSelector');
     component.ngOnInit();
     const config = {
       userOrgDetails: {
@@ -152,7 +146,6 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
     spyOn(publicDataService, 'post').and.returnValue(of(maockOrgDetails));
     orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
-    spyOn(component, 'initiateYearSelector');
     component.ngOnInit();
     const config = {
       userOrgDetails: {
@@ -218,7 +211,6 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
     spyOn(publicDataService, 'post').and.returnValue(of({}));
     orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
-    spyOn(component, 'initiateYearSelector');
     component.ngOnInit();
     component.ngAfterViewInit();
     expect(document.title).toEqual(mockData.tenantResponse.result.titleName);
@@ -232,7 +224,6 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
     spyOn(publicDataService, 'post').and.returnValue(of({}));
     orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
-    spyOn(component, 'initiateYearSelector');
     component.ngOnInit();
     expect(document.title).toEqual(mockData.tenantResponse.result.titleName);
     expect(document.querySelector).toHaveBeenCalledWith('link[rel*=\'icon\']');
@@ -245,7 +236,6 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
     spyOn(publicDataService, 'postWithHeaders').and.returnValue(of({result: { response: { content: 'data'} } }));
     spyOn(learnerService, 'getWithHeaders').and.returnValue(of(mockData.success));
-    spyOn(component, 'initiateYearSelector');
     component.ngOnInit();
     expect(component.showFrameWorkPopUp).toBeTruthy();
   });
@@ -326,7 +316,6 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     spyOn(layoutService, 'switchableLayout').and.returnValue(of({layout: 'new layout'}));
     spyOn(publicDataService, 'post').and.returnValue(of({}));
     orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
-    spyOn(component, 'initiateYearSelector');
     component.ngOnInit();
     expect(document.title).toEqual(mockData.tenantResponse.result.titleName);
     expect(component.layoutConfiguration).toEqual('new layout');
@@ -423,30 +412,5 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     spyOn(component, 'skipToMainContent');
     component.skipToMainContent();
     expect(component.skipToMainContent).toHaveBeenCalled();
-  });
-
-  it('should initialized total years', () => {
-    configService = {
-      constants: {
-        SIGN_UP: {
-          MAX_YEARS: '1921'
-        }
-      }
-    };
-    component.initiateYearSelector();
-    expect(configService.constants).toBeTruthy();
-  });
-
-  it('should update profile if DOB is missing', () => {
-    component.selectedBirthYear = 2000;
-    component.yearOfBirthModal = {
-      deny() {
-        return;
-      }
-    };
-    component.submitYearOfBirth();
-    expect(component.selectedBirthYear).toBeTruthy();
-    expect(component.yearOfBirthModal).toBeTruthy();
-    
   });
 });
