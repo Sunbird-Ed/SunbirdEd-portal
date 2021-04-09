@@ -153,7 +153,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
           this.enrolledCourse = true;
           this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
         }
-        // this.fetchForumIds();
       });
     this.interval = setInterval(() => {
       if (document.getElementById('closebutton')) {
