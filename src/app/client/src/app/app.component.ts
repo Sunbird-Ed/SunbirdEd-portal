@@ -113,7 +113,7 @@ export class AppComponent implements OnInit, OnDestroy {
   defaultFontSize = 16;
   selectedBirthYear: number;
   birthYearOptions: Array<number> = [];
-  showBirthdayPopup = false;
+  showYearOfBirthPopup = false;
   @ViewChild('increaseFontSize', { static: false }) increaseFontSize: ElementRef;
   @ViewChild('decreaseFontSize', { static: false }) decreaseFontSize: ElementRef;
   @ViewChild('resetFontSize', { static: false }) resetFontSize: ElementRef;
@@ -270,7 +270,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.botObject['imageUrl'] = image.imageUrl;
     this.botObject['title'] = this.botObject['header'] = this.title;
     this.generaliseLabelService.getGeneraliseResourceBundle();
-    this.initiateYearSelecter();
+    this.initiateYearSelector();
   }
 
   onCloseJoyThemePopup() {
@@ -691,7 +691,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   /** will be triggered once location popup gets closed */
   onLocationSubmit() {
-    this.showBirthdayPopup = true;
+    this.showYearOfBirthPopup = true;
     if (this.userFeed) {
       this.showUserVerificationPopup = true;
     }
@@ -846,9 +846,7 @@ export class AppComponent implements OnInit, OnDestroy {
     document.documentElement.setAttribute('data-theme', value);
   }
 
-  submitYOB() {
-    const currentYear = new Date().getFullYear();
-    const userAge = currentYear - this.selectedBirthYear;
+  submitYearOfBirth() {
     if (this.selectedBirthYear) {
       const req = {dob: this.selectedBirthYear.toString()};
       this.profileService.updateProfile(req).subscribe(res => {
@@ -857,7 +855,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
-  initiateYearSelecter() {
+  initiateYearSelector() {
     const endYear = new Date().getFullYear();
     const startYear = endYear - this.configService.constants.SIGN_UP.MAX_YEARS;
     for (let year = endYear; year > startYear; year--) {

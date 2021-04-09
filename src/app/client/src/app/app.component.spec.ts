@@ -116,7 +116,7 @@ afterEach(() => {
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
     spyOn(publicDataService, 'post').and.returnValue(of({result: { response: { content: 'data'} } }));
     spyOn(learnerService, 'getWithHeaders').and.returnValue(of(mockData.success));
-    spyOn(component, 'initiateYearSelecter');
+    spyOn(component, 'initiateYearSelector');
     component.ngOnInit();
     const config = {
       userOrgDetails: {
@@ -152,7 +152,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
     spyOn(publicDataService, 'post').and.returnValue(of(maockOrgDetails));
     orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
-    spyOn(component, 'initiateYearSelecter');
+    spyOn(component, 'initiateYearSelector');
     component.ngOnInit();
     const config = {
       userOrgDetails: {
@@ -218,7 +218,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
     spyOn(publicDataService, 'post').and.returnValue(of({}));
     orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
-    spyOn(component, 'initiateYearSelecter');
+    spyOn(component, 'initiateYearSelector');
     component.ngOnInit();
     component.ngAfterViewInit();
     expect(document.title).toEqual(mockData.tenantResponse.result.titleName);
@@ -232,7 +232,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
     spyOn(publicDataService, 'post').and.returnValue(of({}));
     orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
-    spyOn(component, 'initiateYearSelecter');
+    spyOn(component, 'initiateYearSelector');
     component.ngOnInit();
     expect(document.title).toEqual(mockData.tenantResponse.result.titleName);
     expect(document.querySelector).toHaveBeenCalledWith('link[rel*=\'icon\']');
@@ -245,7 +245,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
     spyOn(publicDataService, 'postWithHeaders').and.returnValue(of({result: { response: { content: 'data'} } }));
     spyOn(learnerService, 'getWithHeaders').and.returnValue(of(mockData.success));
-    spyOn(component, 'initiateYearSelecter');
+    spyOn(component, 'initiateYearSelector');
     component.ngOnInit();
     expect(component.showFrameWorkPopUp).toBeTruthy();
   });
@@ -279,6 +279,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
   });
   it('Check onLocationSubmit called ', () => {
     spyOn(component, 'onLocationSubmit');
+    component.showYearOfBirthPopup = false;
     component.onLocationSubmit();
     expect(component.onLocationSubmit).toHaveBeenCalled();
   });
@@ -325,7 +326,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     spyOn(layoutService, 'switchableLayout').and.returnValue(of({layout: 'new layout'}));
     spyOn(publicDataService, 'post').and.returnValue(of({}));
     orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
-    spyOn(component, 'initiateYearSelecter');
+    spyOn(component, 'initiateYearSelector');
     component.ngOnInit();
     expect(document.title).toEqual(mockData.tenantResponse.result.titleName);
     expect(component.layoutConfiguration).toEqual('new layout');
@@ -432,7 +433,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
         }
       }
     };
-    component.initiateYearSelecter();
+    component.initiateYearSelector();
     expect(configService.constants).toBeTruthy();
   });
 
@@ -443,7 +444,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
         return;
       }
     };
-    component.submitYOB();
+    component.submitYearOfBirth();
     expect(component.selectedBirthYear).toBeTruthy();
     expect(component.yearOfBirthModal).toBeTruthy();
   });
