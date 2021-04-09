@@ -167,7 +167,7 @@
           <div class="fsmall relative9">
             <div class="kabab-menu pull-right" *ngIf="progressToDisplay === 100" (click)="dropdownMenu();addTelemetry('kebab-menu')"></div>
             <div class="kabab-menu-dropdown-content" [hidden]="dropdownContent">
-              <div class="d-flex flex-ai-center list p-8 w-100" (click)="forceSync()">Force Sync Progress</div>
+              <div class="d-flex flex-ai-center list p-8 w-100" (click)="forceSync()">{{resourceService?.frmelmnts?.lbl?.forceSync}}</div>
             </div>
           </div>
           <div class="fsmall">{{generaliseLabelService?.frmelmnts?.lbl?.courseProgress}}</div>
