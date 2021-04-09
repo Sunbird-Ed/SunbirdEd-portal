@@ -378,26 +378,6 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     }
   }
 
-  fetchTargetFramework(targetframeworkReq) {
-    if (!_.isEmpty(targetframeworkReq)) {
-      this.checkChannelOrSystem(targetframeworkReq[0], targetframeworkReq[1]).subscribe((targetRes) => {
-        // tslint:disable-next-line:max-line-length
-        const targetFWData = targetRes;
-        if (this.targetFWType && targetFWData.result.count > 0) {
-          this.targetFramework = _.get(_.first(_.get(targetFWData, 'result.Framework')), 'identifier');
-        }
-        if (_.isEmpty(this.targetFramework)) {
-          this.showCategoryConfigError();
-        } else {
-          this.createContent(undefined);
-        }
-      });
-    } else {
-      this.targetFramework = _.isArray(this.targetFWType) ? _.first(this.targetFWType) : this.targetFWType;
-      this.createContent(undefined);
-    }
-  }
-
 /**
    * @since - #SH-403
    * @param  {} cardData
@@ -409,44 +389,76 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     this.primaryCategory = 'Course';
     this.workSpaceService.getCategoryDefinition('Collection', this.primaryCategory, this.userService.channel)
     .subscribe(categoryDefinitionData => {
-      this.orgFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.schema.properties.framework.default');
-      this.targetFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.schema.properties.targetFWIds.default');
-      const orgframeworkReq = [];
-      const targetframeworkReq = [];
+      this.orgFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.schema.properties.framework.enum') ||
+      _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.schema.properties.framework.default');
+      const targetFWIdentifiers = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.schema.properties.targetFWIds.default');
+      const channelFrameworks = _.get(this.userChannelData, 'result.channel.frameworks');
+      const channelFrameworksType = _.compact(_.map(channelFrameworks, 'type'));
+
       if (_.isEmpty(this.orgFWType)) {
         this.orgFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.orgFWType');
-        orgframeworkReq.push(this.getFrameworkDataByType(this.orgFWType, this.userService.channel));
-        orgframeworkReq.push(this.getFrameworkDataByType(this.orgFWType));
-      }
+        const difference = _.difference(this.orgFWType, _.uniq(channelFrameworksType));
 
-      if (_.isEmpty(this.targetFWType)) {
-        this.targetFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.targetFWType');
-        targetframeworkReq.push(this.getFrameworkDataByType(this.targetFWType, this.userService.channel));
-        targetframeworkReq.push(this.getFrameworkDataByType(this.targetFWType));
-      }
-
-      if (_.isEmpty(this.orgFWType) || _.isEmpty(this.targetFWType)) {
-        this.showCategoryConfigError();
-      }
-
-      if (!_.isEmpty(orgframeworkReq)) {
-        this.checkChannelOrSystem(orgframeworkReq[0], orgframeworkReq[1]).subscribe((response) => {
-          const orgFWData = response;
-          if (_.get(orgFWData, 'result.count') <= 0) {
-            this.showCategoryConfigError();
-          } else {
-            this.fetchTargetFramework(targetframeworkReq);
-          }
-        }, err => {
-          this.toasterService.error(this.resourceService.messages.emsg.m0025);
-        });
+        if ((this.orgFWType && channelFrameworksType && !_.isEmpty(difference))  || _.isEmpty(channelFrameworksType)) {
+          this.getFrameworkDataByType(undefined, difference, undefined, 'Yes').subscribe(
+            (response) => {
+              if (!_.get(response, 'result.count')) {
+                this.showCategoryConfigError();
+              } else {
+                this.setTargetFramework(categoryDefinitionData, targetFWIdentifiers, channelFrameworksType, channelFrameworks);
+              }
+            }, (error) => {
+              this.showCategoryConfigError();
+            }
+          );
+        } else {
+          this.setTargetFramework(categoryDefinitionData, targetFWIdentifiers, channelFrameworksType, channelFrameworks);
+        }
       } else {
-        this.fetchTargetFramework(targetframeworkReq);
+        this.setTargetFramework(categoryDefinitionData, targetFWIdentifiers, channelFrameworksType, channelFrameworks);
       }
     }, err => {
       this.toasterService.error(this.resourceService.messages.emsg.m0024);
     });
   }
+
+  setTargetFramework(categoryDefinitionData, targetFWIdentifiers, channelFrameworksType, channelFrameworks) {
+    if (_.isEmpty(targetFWIdentifiers)) {
+      this.targetFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.targetFWType');
+      const difference =  _.difference(this.targetFWType, _.uniq(channelFrameworksType));
+
+      if (this.targetFWType && channelFrameworksType && _.isEmpty(difference)) {
+          this.targetFramework =  _.get(_.first(_.filter(channelFrameworks, framework => {
+            return framework.type === _.first(this.targetFWType);
+          })), 'identifier');
+          if (_.isEmpty(this.targetFramework)) {
+            this.showCategoryConfigError();
+          } else {
+            this.createContent(undefined);
+          }
+      } else if ((this.targetFWType && channelFrameworksType && !_.isEmpty(difference))  || _.isEmpty(channelFrameworksType)) {
+        this.getFrameworkDataByType(undefined, difference, undefined, 'Yes').subscribe(
+          (targetResponse) => {
+            this.targetFramework = _.get(_.first(_.get(targetResponse, 'result.Framework')), 'identifier');
+            if (_.isEmpty(this.targetFramework)) {
+              this.showCategoryConfigError();
+            } else {
+              this.createContent(undefined);
+            }
+          }, (error) => {
+            this.showCategoryConfigError();
+          }
+        );
+      }
+      if (_.isEmpty(this.orgFWType) || _.isEmpty(this.targetFWType)) {
+        this.showCategoryConfigError();
+      }
+    } else {
+      this.targetFramework = _.isArray(targetFWIdentifiers) ? _.first(targetFWIdentifiers) : targetFWIdentifiers;
+      this.createContent(undefined);
+    }
+  }
+
 
   showCategoryConfigError() {
     this.toasterService.error(`Unknown framework category ${this.primaryCategory}. Please check the configuration.`);
@@ -475,7 +487,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     });
   }
 
-  getFrameworkDataByType(type?, channel?, identifer?) {
+  getFrameworkDataByType(channel?, type?, identifer?, systemDefault?) {
     const option = {
       url: `${this.configService.urlConFig.URLS.COMPOSITE.SEARCH}`,
       data: {
@@ -485,23 +497,15 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
                 status: ['Live'],
                 ...(type && {type}),
                 ...(identifer && {identifer}),
-                ...(channel && {channel})
-            },
-            'limit': 1
+                ...(channel && {channel}),
+                ...(systemDefault && {systemDefault})
+            }
         }
     }
       };
       return this.contentService.post(option);
   }
 
-  checkChannelOrSystem(channelObservable, systemObservable) {
-    return channelObservable.pipe(mergeMap(
-      (data) => {
-        if (_.get(data, 'result.count') > 0) { return of(data); }
-        return systemObservable;
-      }
-    ));
-  }
 
   /**
    * @since - #SH-403
