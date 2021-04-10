@@ -399,7 +399,8 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
         this.orgFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.orgFWType');
         const difference = _.difference(this.orgFWType, _.uniq(channelFrameworksType));
 
-        if ((this.orgFWType && channelFrameworksType && !_.isEmpty(difference))  || _.isEmpty(channelFrameworksType)) {
+        if ((!_.isEmpty(this.orgFWType) && !_.isEmpty(channelFrameworksType) && !_.isEmpty(difference)) ||
+        _.isEmpty(channelFrameworksType)) {
           this.getFrameworkDataByType(undefined, difference, undefined, 'Yes').subscribe(
             (response) => {
               if (!_.get(response, 'result.count')) {
@@ -461,7 +462,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
 
 
   showCategoryConfigError() {
-    this.toasterService.error(`Unknown framework category ${this.primaryCategory}. Please check the configuration.`);
+    this.toasterService.error(`Unknown framework category ${this.primaryCategory || 'Course'}. Please check the configuration.`);
     this.redirect();
     return ;
   }
