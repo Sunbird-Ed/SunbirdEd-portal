@@ -25,9 +25,8 @@ export class YearOfBirthComponent implements OnInit {
     submitYearOfBirth() {
         if (this.selectedYearOfBirth) {
             const req = { dob: this.selectedYearOfBirth.toString() };
-            this.profileService.updateProfile(req).subscribe(res => {
-                this.modal.deny();
-            });
+            this.profileService.updateProfile(req).subscribe();
+            this.modal.deny();
         }
     }
 
