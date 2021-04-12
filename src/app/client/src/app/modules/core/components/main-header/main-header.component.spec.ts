@@ -364,8 +364,8 @@ describe('MainHeaderComponent', () => {
 
   it('should call getGuestUser for desktop app', () => {
     const userService = TestBed.get(UserService);
-    component.isDesktopApp = true;
-    spyOn(userService, 'getAnonymousUserPreference').and.returnValue(of({ result: { name: 'Guest' } }));
+    userService._guestUserProfile = { name: 'test' };
+    userService._guestData$.next({ userProfile: { name: 'test' } });
     component.getGuestUser();
     expect(component.guestUser).toBeDefined();
   });
