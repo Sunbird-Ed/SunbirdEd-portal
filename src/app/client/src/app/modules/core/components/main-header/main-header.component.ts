@@ -556,6 +556,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     if (this.isDesktopApp) {
       this.userService.getAnonymousUserPreference().subscribe((response) => {
         this.guestUser = _.get(response, 'result');
+      }, error => {
+        console.error('Error while fetching guest user', error);
       });
     } else {
       try {
