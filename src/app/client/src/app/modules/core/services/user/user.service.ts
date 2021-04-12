@@ -95,7 +95,10 @@ export class UserService {
   public organizationsDetails: Array<IOrganization>;
   public createManagedUser = new EventEmitter();
   private _isDesktopApp = false;
-
+  private _guestData$ = new BehaviorSubject<any>(undefined);
+  private guestUserProfile;
+  public readonly guestData$: Observable<any> = this._guestData$.asObservable()
+    .pipe(skipWhile(data => data === undefined || data === null));
   /**
    * Reference of public data service.
    */
@@ -463,17 +466,31 @@ export class UserService {
   getGuestUser(): Observable<any> {
     if (this._isDesktopApp) {
       return this.getAnonymousUserPreference().pipe(map((response: ServerResponse) => {
-        return _.get(response, 'result');
+        this.guestUserProfile = _.get(response, 'result');
+        this._guestData$.next({ userProfile: this.guestUserProfile });
+        return this.guestUserProfile;
       }));
     } else {
       const guestUserDetails = localStorage.getItem('guestUserDetails');
-      return (guestUserDetails ? of(JSON.parse(guestUserDetails)) : throwError(undefined));
+
+      if (guestUserDetails) {
+        this.guestUserProfile = JSON.parse(guestUserDetails);
+        this._guestData$.next({ userProfile: this.guestUserProfile });
+        return of(this.guestUserProfile);
+      } else {
+        return throwError(undefined);
+      }
     }
   }
 
   updateGuestUser(userDetails): Observable<any> {
     if (this._isDesktopApp) {
       userDetails.identifier = userDetails._id;
+      const userType = localStorage.getItem('userType');
+
+      if (userType) {
+        userDetails.role = userType;
+      }
       const req = { request: userDetails };
       return this.updateAnonymousUserDetails(req);
     } else {

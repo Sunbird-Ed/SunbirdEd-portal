@@ -247,7 +247,10 @@ export class AppComponent implements OnInit, OnDestroy {
             this.isGuestUser = true;
             this.userService.getGuestUser().subscribe((response) => {
               this.guestUserDetails = response;
+            }, error => {
+              console.error('Error while fetching guest user', error);
             });
+
             return this.setOrgDetails();
           }
         }))
@@ -366,7 +369,13 @@ export class AppComponent implements OnInit, OnDestroy {
         if (_.get(res[0], 'tenantData')) {
           const orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
           if (_.get(orgDetailsFromSlug, 'slug') !== this.tenantService.slugForIgot) {
-            const userType = localStorage.getItem('userType');
+
+            let userType;
+            if (this.isDesktopApp) {
+               userType = _.get(this.guestUserDetails, 'role') ? this.guestUserDetails.role : undefined;
+            } else {
+              userType = localStorage.getItem('userType');
+            }
             this.showUserTypePopup = _.get(this.userService, 'loggedIn') ? (!_.get(this.userService, 'userProfile.userType') || !userType) : !userType;
           }
         }
@@ -498,8 +507,6 @@ export class AppComponent implements OnInit, OnDestroy {
           }, error => {
             this.showFrameWorkPopUp = true;
           });
-        } else {
-          this.showFrameWorkPopUp = true;
         }
       } else {
         this.checkLocationStatus();

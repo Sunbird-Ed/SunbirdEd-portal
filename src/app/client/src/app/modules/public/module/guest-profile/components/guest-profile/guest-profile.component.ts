@@ -62,8 +62,8 @@ export class GuestProfileComponent implements OnInit {
   getGuestUser() {
     this.userService.getGuestUser().subscribe((response) => {
       this.guestUser = response;
+      this.userRole = this.isDesktop && _.get(this.guestUser, 'role') ? this.guestUser.role : localStorage.getItem('userType');
     });
-    this.userRole = localStorage.getItem('userType');
   }
 
   initLayout() {

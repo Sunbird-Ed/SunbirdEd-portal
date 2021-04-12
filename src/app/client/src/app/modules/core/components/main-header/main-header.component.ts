@@ -553,22 +553,9 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   getGuestUser() {
-    if (this.isDesktopApp) {
-      this.userService.getAnonymousUserPreference().subscribe((response) => {
-        this.guestUser = _.get(response, 'result');
-      }, error => {
-        console.error('Error while fetching guest user', error);
-      });
-    } else {
-      try {
-        const details = localStorage.getItem('guestUserDetails');
-        if (details) {
-          this.guestUser = JSON.parse(details);
-        }
-      } catch (error) {
-        console.error('Error while parsing object', error);
-      }
-    }
+    this.userService.guestData$.subscribe((data) => {
+      this.guestUser = data.userProfile;
+    });
   }
 
   ngOnDestroy() {

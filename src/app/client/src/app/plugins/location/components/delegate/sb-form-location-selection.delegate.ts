@@ -416,8 +416,8 @@ export class SbFormLocationSelectionDelegate {
         this.shouldDeviceProfileLocationUpdate = true;
 
         suggestions = [
-          { type: 'state', name: this.deviceProfile.ipLocation.state },
-          { type: 'district', name: this.deviceProfile.ipLocation.district }
+          { type: 'state', name: _.get(this.deviceProfile, 'ipLocation.state') },
+          { type: 'district', name: _.get(this.deviceProfile, 'ipLocation.district') }
         ];
       } else {
         // render using userDeclaredLocation
