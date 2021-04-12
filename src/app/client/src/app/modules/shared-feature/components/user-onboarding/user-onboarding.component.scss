@@ -144,7 +144,7 @@
   &__guest {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(160px, auto));
-    grid-auto-rows: minmax(auto, 190px);
+    grid-auto-rows: minmax(auto, auto);
     grid-column-gap: 1.5rem;
     grid-row-gap: 1rem;
 

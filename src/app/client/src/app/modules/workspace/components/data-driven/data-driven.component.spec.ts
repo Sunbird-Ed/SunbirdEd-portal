@@ -402,233 +402,355 @@ describe('DataDrivenComponent', () => {
     expect(componentParent.fetchFrameworkMetaData).toHaveBeenCalled();
   });
 
-  it('#selectFramework() should fetch category and framwork data when API success', () => {
-    spyOn(componentParent, 'createContent').and.stub();
+  it('selectFramework() function should fetch categoryDefinition', () => {
     const workSpaceService = TestBed.get(WorkSpaceService);
-    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockFrameworkData.successCategory));
-    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkDataByType));
     componentParent.selectFramework();
-    componentParent.orgFWType = _.get(mockFrameworkData.successCategory, 'result.objectCategoryDefinition.objectMetadata.schema.properties.framework.default');
-    componentParent.targetFWType = _.get(mockFrameworkData.successCategory, 'result.objectCategoryDefinition.objectMetadata.schema.properties.targetFWIds.default');
-    expect(componentParent.createContent).toHaveBeenCalledWith(undefined);
-  });
-
-  it('#selectFramework() should fetch category and framwork data when API success', () => {
-    spyOn(componentParent, 'createContent').and.stub();
-    const workSpaceService = TestBed.get(WorkSpaceService);
-    const mockdata = {
-        'id': 'api.object.category.definition.read',
-        'ver': '3.0',
-        'ts': '2021-02-24T08:06:08ZZ',
-        'params': {
-          'resmsgid': '4e4a7b07-0e9d-4d33-8287-b6d38a3c2765',
-          'msgid': null,
-          'err': null,
-          'status': 'successful',
-          'errmsg': null
-        },
-        'responseCode': 'OK',
-        'result': {
-          'objectCategoryDefinition': {
-            'identifier': 'obj-cat:course_collection_all',
-            'objectMetadata': {
-              'config': {
-                'frameworkMetadata': {'orgFWType': 'K-12', 'targetFWType': 'K-12'},
-              },
-              'schema': {}
-            },
-            'languageCode': [],
-            'name': 'Course',
-          }
-        }
-    };
-    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockdata));
-    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkDataByType));
-    componentParent.orgFWType = {};
-    componentParent.targetFWType = {};
-    componentParent.selectFramework();
+    componentParent.orgFWType = _.get(mockFrameworkData.successCategory, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.orgFWType');
     expect(componentParent.orgFWType).toEqual('K-12');
-    expect(componentParent.targetFWType).toEqual('K-12');
-    expect(componentParent.createContent).toHaveBeenCalledWith(undefined);
   });
 
-  it('#selectFramework() should throw error when org framwork not set', () => {
-    spyOn(componentParent, 'createContent').and.stub();
-    const workSpaceService = TestBed.get(WorkSpaceService);
-    const toasterService = TestBed.get(ToasterService);
-    spyOn(toasterService, 'error').and.callThrough();
-    const mockdata = {
-        'id': 'api.object.category.definition.read',
-        'ver': '3.0',
-        'ts': '2021-02-24T08:06:08ZZ',
-        'params': {
-          'resmsgid': '4e4a7b07-0e9d-4d33-8287-b6d38a3c2765',
-          'msgid': null,
-          'err': null,
-          'status': 'successful',
-          'errmsg': null
-        },
-        'responseCode': 'OK',
-        'result': {
-          'objectCategoryDefinition': {
-            'identifier': 'obj-cat:course_collection_all',
-            'objectMetadata': {
-              'config': {
-                'frameworkMetadata': {'orgFWType': 'K-12', 'targetFWType': 'K-12'},
-              },
-              'schema': {}
-            },
-            'languageCode': [],
-            'name': 'Course',
-          }
-        }
-    };
-    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockdata));
-    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf({result: { count: 0}}));
-    componentParent.orgFWType = {};
-    componentParent.targetFWType = {};
-    componentParent.selectFramework();
-    expect(toasterService.error).toHaveBeenCalledWith('Unknown framework category Course. Please check the configuration.');
-  });
-
-  it('#selectFramework() should set targetFramework value from default properties of config', () => {
-    spyOn(componentParent, 'createContent').and.stub();
-    const workSpaceService = TestBed.get(WorkSpaceService);
-    const mockdata = {
-        'id': 'api.object.category.definition.read',
-        'ver': '3.0',
-        'ts': '2021-02-24T08:06:08ZZ',
-        'params': {
-          'resmsgid': '4e4a7b07-0e9d-4d33-8287-b6d38a3c2765',
-          'msgid': null,
-          'err': null,
-          'status': 'successful',
-          'errmsg': null
-        },
-        'responseCode': 'OK',
-        'result': {
-          'objectCategoryDefinition': {
-            'identifier': 'obj-cat:course_collection_all',
-            'objectMetadata': {
-              'config': {
-                'frameworkMetadata': {'orgFWType': 'K-12'},
-              },
-              'schema': {
-                'properties' : { 'targetFWIds' : { 'default' : 'NCF' } }
-              }
-            },
-            'languageCode': [],
-            'name': 'Course',
-          }
-        }
-    };
-    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockdata));
-    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf({result: { count: 2}}));
-    componentParent.orgFWType = {};
-    componentParent.targetFWType = {};
-    componentParent.selectFramework();
-    expect(componentParent.targetFramework).toEqual('NCF');
-  });
-
-  it('#selectFramework() should fetch target framwork data when target framework not defined', () => {
-    spyOn(componentParent, 'createContent').and.stub();
-    const workSpaceService = TestBed.get(WorkSpaceService);
-    const mockdata = {
-        'id': 'api.object.category.definition.read',
-        'ver': '3.0',
-        'ts': '2021-02-24T08:06:08ZZ',
-        'params': {
-          'resmsgid': '4e4a7b07-0e9d-4d33-8287-b6d38a3c2765',
-          'msgid': null,
-          'err': null,
-          'status': 'successful',
-          'errmsg': null
-        },
-        'responseCode': 'OK',
-        'result': {
-          'objectCategoryDefinition': {
-            'identifier': 'obj-cat:course_collection_all',
-            'objectMetadata': {
-              'config': {
-                'frameworkMetadata': {'orgFWType': 'K-12', 'targetFWType': 'K-12'},
-              },
-              'schema': {
-                'properties' : { 'framework' : { 'default' : 'NCF' } }
-              }
-            },
-            'languageCode': [],
-            'name': 'Course',
-          }
-        }
-    };
-    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockdata));
-    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkDataByType));
-    componentParent.orgFWType = {};
-    componentParent.targetFWType = {};
-    componentParent.selectFramework();
-    expect(componentParent.orgFWType).toEqual('NCF');
-    expect(componentParent.targetFWType).toEqual('K-12');
-    expect(componentParent.targetFramework).toEqual('nit_k-12');
-    expect(componentParent.createContent).toHaveBeenCalledWith(undefined);
-  });
-
-  it('#selectFramework() should thorw error message when framwork not defined at channel or system level', () => {
-    const toasterService = TestBed.get(ToasterService);
-    spyOn(toasterService, 'error').and.callThrough();
-    const workSpaceService = TestBed.get(WorkSpaceService);
-    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf({}));
-    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkDataByType));
-    componentParent.selectFramework();
-    expect(toasterService.error).toHaveBeenCalledWith('Unknown framework category Course. Please check the configuration.');
-  });
-
-  it('#selectFramework() should throw error if category defination API failed', () => {
+  it('selectFramework() function should categoryDefinition api throw error', () => {
     const resourceService = TestBed.get(ResourceService);
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error').and.callThrough();
     const workSpaceService = TestBed.get(WorkSpaceService);
     spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableThrowError({}));
-    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkDataByType));
     componentParent.selectFramework();
+    componentParent.orgFWType = _.get(mockFrameworkData.successCategory, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.orgFWType');
     expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0024);
   });
 
-  it('#selectFramework() should throw error if framework API failed', () => {
-    const resourceService = TestBed.get(ResourceService);
-    const toasterService = TestBed.get(ToasterService);
-    spyOn(toasterService, 'error').and.callThrough();
+  it('selectFramework() function should fetch categoryDefinition and getFrameworkDataByType() after success', () => {
+    spyOn(componentParent, 'setTargetFramework').and.stub();
     const workSpaceService = TestBed.get(WorkSpaceService);
-    const mockdata = {
-      'id': 'api.object.category.definition.read',
-      'ver': '3.0',
-      'ts': '2021-02-24T08:06:08ZZ',
-      'params': {
-        'resmsgid': '4e4a7b07-0e9d-4d33-8287-b6d38a3c2765',
-        'msgid': null,
-        'err': null,
-        'status': 'successful',
-        'errmsg': null
+    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockFrameworkData.objectCategoryDefinitionFrameworkData));
+    componentParent.userChannelData = _.get(mockFrameworkData, 'userChannelData');
+    componentParent.orgFWType = _.get(mockFrameworkData.successCategory, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.orgFWType');
+    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkSearchByType));
+    componentParent.selectFramework();
+    expect(componentParent.orgFWType).toContain('K-12');
+    expect(componentParent.setTargetFramework).toHaveBeenCalled();
+  });
+
+  it('#selectFramework() function should have channel with empty framework', () => {
+    spyOn(componentParent, 'setTargetFramework').and.stub();
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockFrameworkData.objectCategoryDefinitionFrameworkData));
+    componentParent.userChannelData = _.get(mockFrameworkData, 'userChannelDataEmptyFramework');
+    componentParent.orgFWType = _.get(mockFrameworkData.successCategory, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.orgFWType');
+    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkSearchByType));
+
+    componentParent.selectFramework();
+    expect(componentParent.orgFWType).toContain('K-12');
+    expect(componentParent.setTargetFramework).toHaveBeenCalled();
+  });
+
+  it('#selectFramework() - getFrameworkDataByType() function call returns count 0', () => {
+    spyOn(componentParent, 'setTargetFramework').and.stub();
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockFrameworkData.objectCategoryDefinitionFrameworkData));
+    spyOn(toasterService, 'error').and.callThrough();
+    componentParent.userChannelData = _.get(mockFrameworkData, 'userChannelData');
+    componentParent.orgFWType = _.get(mockFrameworkData.successCategory, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.orgFWType');
+    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkSearchByTypeCountZero));
+    componentParent.selectFramework();
+    expect(toasterService.error).toHaveBeenCalledWith('Unknown framework category Course. Please check the configuration.');
+   });
+
+
+   it('#selectFramework() - getFrameworkDataByType() function should throw error', () => {
+    const resourceService = TestBed.get(ResourceService);
+    spyOn(componentParent, 'setTargetFramework').and.stub();
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockFrameworkData.objectCategoryDefinitionFrameworkData));
+    spyOn(toasterService, 'error').and.callThrough();
+    componentParent.userChannelData = _.get(mockFrameworkData, 'userChannelData');
+    componentParent.orgFWType = _.get(mockFrameworkData.successCategory, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.orgFWType');
+    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableThrowError({}));
+    componentParent.selectFramework();
+    expect(toasterService.error).toHaveBeenCalledWith('Unknown framework category Course. Please check the configuration.');
+   });
+
+   it('#selectFramework() - function should fetch categoryDefinition with schema configured with framework identifiers', () => {
+    spyOn(componentParent, 'setTargetFramework').and.stub();
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    spyOn(workSpaceService, 'getCategoryDefinition').and
+    .returnValue(observableOf(mockFrameworkData.objectCategoryDefinitionSchemaFrameworkData));
+    componentParent.userChannelData = _.get(mockFrameworkData, 'userChannelData');
+    componentParent.orgFWType = _.get(mockFrameworkData.successCategory, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.orgFWType');
+    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkSearchByType));
+    componentParent.selectFramework();
+    expect(componentParent.setTargetFramework).toHaveBeenCalled();
+  });
+
+  it('#selectFramework() - function should categoryDefinition config and channel has same framework type', () => {
+    spyOn(componentParent, 'setTargetFramework').and.stub();
+    const workSpaceService = TestBed.get(WorkSpaceService);
+    spyOn(workSpaceService, 'getCategoryDefinition').and
+    .returnValue(observableOf(mockFrameworkData.objectCategoryDefinitionFrameworkData));
+    componentParent.userChannelData = _.get(mockFrameworkData, 'userChannelDataWithFrameworkSameAsCategoryDefinition');
+    componentParent.orgFWType = _.get(mockFrameworkData.successCategory, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.orgFWType');
+    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkSearchByType));
+    componentParent.selectFramework();
+    expect(componentParent.setTargetFramework).toHaveBeenCalled();
+  });
+
+  it('#setTargetFramework() - should create content if targetFWIdentifiers is set', () => {
+    spyOn(componentParent, 'createContent').and.stub();
+    componentParent.setTargetFramework(
+      _.get(mockFrameworkData, 'objectCategoryDefinitionFrameworkData'),
+      'nit_k-12',
+      ['K-12', 'TPD'],
+      [
+      {
+          'name': 'nit_k-12',
+          'relation': 'hasSequenceMember',
+          'identifier': 'nit_k-12',
+          'description': 'nit_k-12 Framework',
+          'objectType': 'Framework',
+          'status': 'Live',
+          'type': 'K-12'
       },
-      'responseCode': 'OK',
+      {
+          'name': 'nit_tpd',
+          'relation': 'hasSequenceMember',
+          'identifier': 'nit_tpd',
+          'description': 'nit_tpd Framework',
+          'objectType': 'Framework',
+          'status': 'Live',
+          'type': 'TPD'
+      }]
+    );
+    expect(componentParent.createContent).toHaveBeenCalledWith(undefined);
+  });
+
+  it('#setTargetFramework() - should throw error if categoryDefinition does not have targetFWType', () => {
+    const emptyTargetFWType = {
       'result': {
         'objectCategoryDefinition': {
-          'identifier': 'obj-cat:course_collection_all',
+          'identifier': 'obj-cat:course_collection_01309282781705830427',
           'objectMetadata': {
             'config': {
-              'frameworkMetadata': {'orgFWType': 'K-121', 'targetFWType': 'K-121'},
+              'frameworkMetadata': {
+                'orgFWType': [
+                  'K-12',
+                  'TPD'
+                ]
+              }
             },
-            'schema': {}
+            'schema': {
+              'properties': {}
+            }
           },
           'languageCode': [],
           'name': 'Course',
+          'forms': {}
         }
       }
-  };
-    spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockdata));
-    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableThrowError({}));
-    componentParent.selectFramework();
-    expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0025);
+    };
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callThrough();
+    componentParent.orgFWType = ['K-12', 'TPD'];
+    componentParent.setTargetFramework(
+      emptyTargetFWType,
+      undefined,
+      ['K-12', 'TPD'],
+      [
+      {
+          'name': 'nit_k-12',
+          'relation': 'hasSequenceMember',
+          'identifier': 'nit_k-12',
+          'description': 'nit_k-12 Framework',
+          'objectType': 'Framework',
+          'status': 'Live',
+          'type': 'K-12'
+      },
+      {
+          'name': 'nit_tpd',
+          'relation': 'hasSequenceMember',
+          'identifier': 'nit_tpd',
+          'description': 'nit_tpd Framework',
+          'objectType': 'Framework',
+          'status': 'Live',
+          'type': 'TPD'
+      }]
+    );
+    expect(toasterService.error).toHaveBeenCalledWith('Unknown framework category Course. Please check the configuration.');
   });
+
+  it('#setTargetFramework() - should create content if targetFWIdentifiers is set but an Array', () => {
+    spyOn(componentParent, 'createContent').and.stub();
+    componentParent.setTargetFramework(
+      _.get(mockFrameworkData, 'objectCategoryDefinitionFrameworkData'),
+      ['nit_k-12'],
+      ['K-12', 'TPD'],
+      [
+      {
+          'name': 'nit_k-12',
+          'relation': 'hasSequenceMember',
+          'identifier': 'nit_k-12',
+          'description': 'nit_k-12 Framework',
+          'objectType': 'Framework',
+          'status': 'Live',
+          'type': 'K-12'
+      },
+      {
+          'name': 'nit_tpd',
+          'relation': 'hasSequenceMember',
+          'identifier': 'nit_tpd',
+          'description': 'nit_tpd Framework',
+          'objectType': 'Framework',
+          'status': 'Live',
+          'type': 'TPD'
+      }]
+    );
+    expect(componentParent.createContent).toHaveBeenCalledWith(undefined);
+  });
+
+  it('#setTargetFramework() - should create content if targetFWIdentifiers is not set', () => {
+    spyOn(componentParent, 'createContent').and.stub();
+    componentParent.setTargetFramework(
+      _.get(mockFrameworkData, 'objectCategoryDefinitionFrameworkData'),
+      undefined,
+      ['K-12', 'TPD'],
+      [
+      {
+          'name': 'nit_k-12',
+          'relation': 'hasSequenceMember',
+          'identifier': 'nit_k-12',
+          'description': 'nit_k-12 Framework',
+          'objectType': 'Framework',
+          'status': 'Live',
+          'type': 'K-12'
+      },
+      {
+          'name': 'nit_tpd',
+          'relation': 'hasSequenceMember',
+          'identifier': 'nit_tpd',
+          'description': 'nit_tpd Framework',
+          'objectType': 'Framework',
+          'status': 'Live',
+          'type': 'TPD'
+      }]
+    );
+    expect(componentParent.createContent).toHaveBeenCalledWith(undefined);
+  });
+
+  it('#setTargetFramework() - should throw config error if framework is set incorrectly', () => {
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callThrough();
+    componentParent.setTargetFramework(
+      _.get(mockFrameworkData, 'successCategory'),
+      undefined,
+      ['K-12', 'TPD'],
+      [{
+          'name': 'nit_k-12',
+          'relation': 'hasSequenceMember',
+          'identifier': 'nit_k-12',
+          'description': 'nit_k-12 Framework',
+          'objectType': 'Framework',
+          'status': 'Live',
+          'type': 'K-12'
+      },
+      {
+          'name': 'nit_tpd',
+          'relation': 'hasSequenceMember',
+          'identifier': 'nit_tpd',
+          'description': 'nit_tpd Framework',
+          'objectType': 'Framework',
+          'status': 'Live',
+          'type': 'TPD'
+      }]
+    );
+    expect(toasterService.error).toHaveBeenCalledWith('Unknown framework category Course. Please check the configuration.');
+  });
+
+  it('#setTargetFramework() - should make getFrameworkDataByType() api if difference exists', () => {
+    spyOn(componentParent, 'createContent').and.stub();
+    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkSearchByType));
+
+    componentParent.setTargetFramework(
+      mockFrameworkData.objectCategoryDefinitionFrameworkData,
+      undefined,
+      ['TPD'],
+      [{
+          'name': 'nit_k-12',
+          'relation': 'hasSequenceMember',
+          'identifier': 'nit_k-12',
+          'description': 'nit_k-12 Framework',
+          'objectType': 'Framework',
+          'status': 'Live',
+          'type': 'K-12'
+      }]
+    );
+    expect(componentParent.createContent).toHaveBeenCalledWith(undefined);
+  });
+
+  it('#setTargetFramework() - should make getFrameworkDataByType() api if channelFrameworksType is empty', () => {
+    spyOn(componentParent, 'createContent').and.stub();
+    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf(mockFrameworkData.frameworkSearchByType));
+
+    componentParent.setTargetFramework(
+      mockFrameworkData.objectCategoryDefinitionFrameworkData,
+      undefined,
+      undefined,
+      [{
+          'name': 'nit_k-12',
+          'relation': 'hasSequenceMember',
+          'identifier': 'nit_k-12',
+          'description': 'nit_k-12 Framework',
+          'objectType': 'Framework',
+          'status': 'Live',
+          'type': 'K-12'
+      }]
+    );
+    expect(componentParent.createContent).toHaveBeenCalledWith(undefined);
+  });
+
+  it('#setTargetFramework() - should throw error getFrameworkDataByType() api return empty Framework', () => {
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callThrough();
+    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableOf({'result': {}}));
+    componentParent.setTargetFramework(
+      mockFrameworkData.objectCategoryDefinitionFrameworkData,
+      undefined,
+      ['TPD'],
+      [{
+          'name': 'nit_k-12',
+          'relation': 'hasSequenceMember',
+          'identifier': 'nit_k-12',
+          'description': 'nit_k-12 Framework',
+          'objectType': 'Framework',
+          'status': 'Live',
+          'type': 'K-12'
+      }]
+    );
+    expect(toasterService.error).toHaveBeenCalledWith('Unknown framework category Course. Please check the configuration.');
+  });
+
+  it('#setTargetFramework() - should getFrameworkDataByType() throw error', () => {
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callThrough();
+    spyOn(componentParent, 'getFrameworkDataByType').and.returnValue(observableThrowError({}));
+    componentParent.setTargetFramework(
+      mockFrameworkData.objectCategoryDefinitionFrameworkData,
+      undefined,
+      ['TPD'],
+      [{
+          'name': 'nit_k-12',
+          'relation': 'hasSequenceMember',
+          'identifier': 'nit_k-12',
+          'description': 'nit_k-12 Framework',
+          'objectType': 'Framework',
+          'status': 'Live',
+          'type': 'K-12'
+      }]
+    );
+    expect(toasterService.error).toHaveBeenCalledWith('Unknown framework category Course. Please check the configuration.');
+  });
+
 
   it('should create lock to the opened content and redirect to editor after logging an interact event', () => {
     const contentData = { identifier: 'do_123456' };
