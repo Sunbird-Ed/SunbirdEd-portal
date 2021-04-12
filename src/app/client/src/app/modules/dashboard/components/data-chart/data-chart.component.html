@@ -18,7 +18,7 @@
         </div>
       </div>
 
-      <div class="mr-8" *ngIf="chartType === 'bar' || chartType === 'line' && !bigNumbersConfig" [ngClass]="{'hide': hideElements}">
+      <div class="mr-8" *ngIf="chartType === 'bar' || chartType === 'line' && !bigNumberCharts.length" [ngClass]="{'hide': hideElements}">
         <!-- <button (click)="addChartSummary()" *ngIf="chartConfig.id && isUserReportAdmin" type="button"
           appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
           [telemetryInteractCdata]="[{id: chartConfig?.id, type: 'Chart'}]"
