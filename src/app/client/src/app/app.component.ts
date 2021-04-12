@@ -372,7 +372,7 @@ export class AppComponent implements OnInit, OnDestroy {
           if (_.get(orgDetailsFromSlug, 'slug') !== this.tenantService.slugForIgot) {
 
             let userType;
-            if (this.isDesktopApp) {
+            if (this.isDesktopApp && this.isGuestUser) {
                userType = _.get(this.guestUserDetails, 'role') ? this.guestUserDetails.role : undefined;
             } else {
               userType = localStorage.getItem('userType');
