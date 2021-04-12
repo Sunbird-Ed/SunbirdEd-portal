@@ -43,6 +43,7 @@ const fakeActivatedRoute = {
   queryParams: of({})
 };
 
+
 describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
@@ -268,6 +269,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
   });
   it('Check onLocationSubmit called ', () => {
     spyOn(component, 'onLocationSubmit');
+    component.showYearOfBirthPopup = false;
     component.onLocationSubmit();
     expect(component.onLocationSubmit).toHaveBeenCalled();
   });
