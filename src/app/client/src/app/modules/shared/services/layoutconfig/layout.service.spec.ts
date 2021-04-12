@@ -38,7 +38,6 @@ describe('LayoutService', () => {
     const service: LayoutService = TestBed.get(LayoutService);
     const configService = TestBed.get(ConfigService);
     service.layoutConfig = null;
-    service.switchToAccessibleLayout();
     expect(service).toBeTruthy();
   });
   it('should switchLayout to accessibleLayout', () => {
@@ -46,7 +45,6 @@ describe('LayoutService', () => {
     service.acessibleLayoutEnabled=true;
     const configService = TestBed.get(ConfigService);
     service.layoutConfig = null;
-    service.switchToAccessibleLayout();
     expect(service).toBeTruthy();
   });
 
