@@ -114,6 +114,7 @@ export class AppComponent implements OnInit, OnDestroy {
   defaultFontSize = 16;
   isGuestUser = true;
   guestUserDetails;
+  showYearOfBirthPopup = false;
   @ViewChild('increaseFontSize', { static: false }) increaseFontSize: ElementRef;
   @ViewChild('decreaseFontSize', { static: false }) decreaseFontSize: ElementRef;
   @ViewChild('resetFontSize', { static: false }) resetFontSize: ElementRef;
@@ -731,6 +732,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   /** will be triggered once location popup gets closed */
   onLocationSubmit() {
+    this.showYearOfBirthPopup = true;
     if (this.userFeed) {
       this.showUserVerificationPopup = true;
     }
