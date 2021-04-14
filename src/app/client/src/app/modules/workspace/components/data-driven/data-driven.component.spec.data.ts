@@ -1666,7 +1666,36 @@ export const mockFrameworkData = {
       }
     }
   },
-  successCategory: {
+  userChannelData: {
+    'result': {
+        'channel': {
+            'code': '01309282781705830427',
+            'apoc_json': '{"batch": true}',
+            'frameworks': [
+                {
+                    'name': 'nit_tpd',
+                    'relation': 'hasSequenceMember',
+                    'identifier': 'nit_tpd',
+                    'description': 'nit_tpd Framework',
+                    'objectType': 'Framework',
+                    'status': 'Live',
+                    'type': 'TPD'
+                }
+            ],
+            'channel': 'in.ekstep',
+            'description': 'Preprod Kayal Org',
+            'createdOn': '2020-08-24T05:00:51.381+0000',
+            'objectType': 'Channel',
+            'apoc_text': 'APOC',
+            'appId': '@ignore@',
+            'name': 'NIT123',
+            'defaultCourseFramework': 'TPD',
+            'status': 'Live',
+            'defaultFramework': 'ekstep_ncert_k-12'
+        }
+    }
+},
+successCategory: {
     'id': 'api.object.category.definition.read',
     'ver': '3.0',
     'ts': '2021-02-24T08:06:08ZZ',
@@ -1721,5 +1750,169 @@ frameworkDataByType : {
         }
       ]
     }
+  },
+objectCategoryDefinitionFrameworkData: {
+  'result': {
+    'objectCategoryDefinition': {
+      'identifier': 'obj-cat:course_collection_01309282781705830427',
+      'objectMetadata': {
+        'config': {
+          'frameworkMetadata': {
+            'orgFWType': [
+              'K-12',
+              'TPD'
+            ],
+            'targetFWType': [
+              'K-12'
+            ]
+          }
+        },
+        'schema': {
+          'properties': {}
+        }
+      },
+      'languageCode': [],
+      'name': 'Course',
+      'forms': {}
+    }
   }
+},
+frameworkSearchByType: {
+    'result': {
+        'count': 2,
+        'Framework': [
+            {
+                'owner': '0127920770478571522',
+                'identifier': 'ekstep_ncert_k-12',
+                'code': 'ekstep_ncert_k-12',
+                'channel': '0127920770478571522',
+                'type': 'K-12',
+                'objectType': 'Framework',
+                'systemDefault': 'Yes',
+                'channels': [
+                    '0127920770478571522'
+                ],
+                'name': 'Centre',
+                'categories': [
+                    'ekstep_ncert_k-12_board',
+                    'ekstep_ncert_k-12_medium',
+                    'ekstep_ncert_k-12_gradelevel',
+                    'ekstep_ncert_k-12_subject',
+                    'ekstep_ncert_k-12_topic',
+                    'ekstep_ncert_k-12_learningoutcome'
+                ]
+            },
+            {
+                'identifier': 'TPD',
+                'code': 'TPD',
+                'channel': 'in.ekstep',
+                'description': 'TPD Framework',
+                'type': 'TPD',
+                'objectType': 'Framework',
+                'name': 'TPD',
+                'lastUpdatedOn': '2021-04-08T15:50:39.492+0000',
+                'categories': [
+                    'tpd_topic',
+                    'tpd_subject',
+                    'tpd_purpose',
+                    'tpd_gradelevel',
+                    'tpd_medium'
+                ]
+            }
+        ]
+    }
+},
+frameworkSearchByTypeCountZero: {
+    'result': {
+        'count': 0
+    }
+},
+userChannelDataEmptyFramework: {
+    'result': {
+        'channel': {
+            'code': '01309282781705830427',
+            'apoc_json': '{"batch": true}',
+            'frameworks': [
+            ],
+            'channel': 'in.ekstep',
+            'description': 'Preprod Kayal Org',
+            'createdOn': '2020-08-24T05:00:51.381+0000',
+            'objectType': 'Channel',
+            'apoc_text': 'APOC',
+            'appId': '@ignore@',
+            'name': 'NIT123',
+            'defaultCourseFramework': 'TPD',
+            'status': 'Live',
+            'defaultFramework': 'ekstep_ncert_k-12'
+        }
+    }
+},
+objectCategoryDefinitionSchemaFrameworkData: {
+    'result': {
+      'objectCategoryDefinition': {
+        'identifier': 'obj-cat:course_collection_01309282781705830427',
+        'objectMetadata': {
+          'config': {
+            'frameworkMetadata': {
+              'orgFWType': [
+                'K-12',
+                'TPD'
+              ],
+              'targetFWType': [
+                'K-12'
+              ]
+            }
+          },
+          'schema': {
+            'properties': {
+                'framework': {
+                    'enum': ['nit_k-12', 'nit_tpd']
+                }
+            }
+          }
+        },
+        'languageCode': [],
+        'name': 'Course',
+        'forms': {}
+      }
+    }
+},
+userChannelDataWithFrameworkSameAsCategoryDefinition: {
+    'result': {
+        'channel': {
+            'code': '01309282781705830427',
+            'apoc_json': '{"batch": true}',
+            'frameworks': [
+                {
+                    'name': 'nit_k-12',
+                    'relation': 'hasSequenceMember',
+                    'identifier': 'nit_k-12',
+                    'description': 'nit_k-12 Framework',
+                    'objectType': 'Framework',
+                    'status': 'Live',
+                    'type': 'K-12'
+                },
+                {
+                    'name': 'nit_tpd',
+                    'relation': 'hasSequenceMember',
+                    'identifier': 'nit_tpd',
+                    'description': 'nit_tpd Framework',
+                    'objectType': 'Framework',
+                    'status': 'Live',
+                    'type': 'TPD'
+                }
+            ],
+            'channel': 'in.ekstep',
+            'description': 'Preprod Kayal Org',
+            'createdOn': '2020-08-24T05:00:51.381+0000',
+            'objectType': 'Channel',
+            'apoc_text': 'APOC',
+            'appId': '@ignore@',
+            'name': 'NIT123',
+            'defaultCourseFramework': 'TPD',
+            'status': 'Live',
+            'defaultFramework': 'ekstep_ncert_k-12'
+        }
+    }
+},
 };
