@@ -207,13 +207,14 @@ export class ImportContent implements ITaskExecuter {
     } catch (error) {
       logger.debug("Error while reading Hierarchy", error);
     }
+    logger.debug("Coming here=====================");
     const resources = _.reduce(_.get(this.manifestJson, "archive.items"), (acc, item) => {
       const parentContent = item.identifier === this.contentImportData.metaData.contentId;
       if (item.mimeType === "application/vnd.ekstep.content-collection" && !parentContent) {
         logger.info("Skipped writing to db for content", item.identifier, "reason: collection and not parent");
         return acc; // db entry not required for collection which are not parent
       }
-      if (item.mimeType === "application/vnd.ekstep.content-collection" && parentContent) {
+      if (item.mimeType === "application/vnd.ekstep.content-collection" && parentContent && hierarchy) {
         item = hierarchy;
       }
       const dbResource: any = _.find(dbContents, { identifier: item.identifier });
