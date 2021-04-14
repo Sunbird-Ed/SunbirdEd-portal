@@ -96,7 +96,7 @@ $sb-download-text-max-width: 18em;
 .sb-single-pannel-accordion-list-item {
   font-size: calculateRem(14px);
   padding: calculateRem(16px);
-  background: $white-color;
+  background: var(--sbt-filter-bar-bg);
   display: flex;
   min-height: calculateRem(80px);
   border-bottom: $sb-content-manager-border;
