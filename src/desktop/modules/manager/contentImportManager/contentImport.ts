@@ -207,7 +207,6 @@ export class ImportContent implements ITaskExecuter {
     } catch (error) {
       logger.debug("Error while reading Hierarchy", error);
     }
-    logger.debug("Coming here=====================");
     const resources = _.reduce(_.get(this.manifestJson, "archive.items"), (acc, item) => {
       const parentContent = item.identifier === this.contentImportData.metaData.contentId;
       if (item.mimeType === "application/vnd.ekstep.content-collection" && !parentContent) {
