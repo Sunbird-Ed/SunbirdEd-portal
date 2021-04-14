@@ -284,7 +284,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
         _.forEach(this.formData, (form, key) => {
         const pageTitle = _.get(this.resourceService, form.title);
-        if (pageTitle === pageType) {
+        if (pageTitle && pageType && (pageTitle === pageType)) {
             filters.contentType = _.get(form, 'search.filters.contentType');
         }
         });
