@@ -2,6 +2,7 @@
 :root {
     --visit-helpcenter-bg:var(--white);
 }
+
 :host::ng-deep {
 
     .help-page {
@@ -16,6 +17,10 @@
                     max-width: 100%;
                     padding: calculateRem(16px);
                 }
+            }
+            ul li {
+                margin-bottom: auto;
+                list-style: initial;
             }
         }
 
