@@ -82,6 +82,12 @@
       ],
       "sunbird-collection-editor/*": [
         "../node_modules/@project-sunbird/sunbird-collection-editor/*"
+      ],
+      "@project-sunbird/search-filter-widget": [
+        "../node_modules/project-sunbird-search-filter-widget"
+      ],
+      "@project-sunbird/search-filter-widget/*": [
+        "../node_modules/project-sunbird-search-filter-widget/*"
       ]
     },
     "module": "es2015",
