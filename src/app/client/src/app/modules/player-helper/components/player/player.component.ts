@@ -96,10 +96,16 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   ngOnInit() {
-    this.playerService.getQuestionSetRead(_.get(this.playerConfig, 'metadata.identifier')).subscribe((data: any) => {
-      this.playerConfig.metadata.instructions = _.get(data, 'result.questionset.instructions');
-    });
-    this.showQumlPlayer = true;
+    if (_.get(this.playerConfig, 'metadata.mimeType') === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
+      this.playerConfig.config.sideMenu.showDownload = false;
+      this.playerService.getQuestionSetRead(_.get(this.playerConfig, 'metadata.identifier')).subscribe((data: any) => {
+        this.playerConfig.metadata.instructions = _.get(data, 'result.questionset.instructions');
+        this.showQumlPlayer = true;
+      }, (error) => {
+        this.showQumlPlayer = true;
+      });
+    }
+    
     // If `sessionStorage` has UTM data; append the UTM data to context.cdata
     if (this.playerConfig && sessionStorage.getItem('UTM')) {
       let utmData;

@@ -41,7 +41,7 @@
                       title="{{resourceService?.frmelmnts?.lbl?.accessibilityfntdflt}}"
                       (click)="changeFontSize('reset');" #resetFontSize>A</button>
                     <button type="button" role="img" class="fontResizeBtn fontResizeBtn_A+"
-                      title="{{resourceService?.frmelmnts?.lbl?.increaseFontSize}}"
+                      title="{{resourceService?.frmelmnts?.lbl?.accessibilitytextsize}}"
                       (click)="changeFontSize('increase');" #increaseFontSize>A+</button>
                   </div>
                 </li>
@@ -59,8 +59,8 @@
         </div>
       </div>
     </div>
-    <app-popup #frameWorkPopUp *ngIf="showFrameWorkPopUp" [buttonLabel]="resourceService.frmelmnts.btn.submit"
-      (submit)="updateFrameWork($event)"></app-popup>
+    <app-popup #frameWorkPopUp *ngIf="showFrameWorkPopUp" [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" 
+      [isGuestUser]="isGuestUser" (submit)="updateFrameWork($event)"></app-popup>
     <app-tnc-popup (close)="onAcceptTnc()" #termsAndCondPopUp *ngIf="showTermsAndCondPopUp">
     </app-tnc-popup>
     <div *ngIf="showGlobalConsentPopUpSection">
