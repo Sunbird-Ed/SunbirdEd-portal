@@ -376,13 +376,10 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       requestParams['facets'] = this.facetsList;
     }
 
-    if (_.get(this.activatedRoute.snapshot, 'data.baseUrl') === 'learn') {
-      return combineLatest(
-        this.searchService.contentSearch(requestParams),
-        this.coursesService.enrolledCourseData$).pipe(map(data => ({ contentData: data[0], enrolledCourseData: data[1] })));
-    } else {
-      return this.searchService.contentSearch(requestParams).pipe(map(data => ({ contentData: data })));
-    }
+    return combineLatest(
+      this.searchService.contentSearch(requestParams),
+      this.coursesService.enrolledCourseData$).pipe(map(data => ({ contentData: data[0], enrolledCourseData: data[1] })));
+
   }
 
   private formatSearchresults(sectionData) {
@@ -529,7 +526,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   processEnrolledCourses(courseData) {
     if (_.get(courseData, 'enrolledCourses')) {
-      const enrolledCourseCount = _.get(courseData, 'enrolledCourses').length;
+      const enrolledCourseCount = _.get(courseData, 'enrolledCourses.length');
       this.noResult = false;
       this.totalCount = enrolledCourseCount;
       const sortedData = _.map(_.orderBy(_.get(courseData, 'enrolledCourses'), ['enrolledDate'], ['desc']), (val) => {

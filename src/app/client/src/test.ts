@@ -63,7 +63,7 @@ if (!CsModule.instance.isInitialised) {
       },
       contentServiceConfig: {
         hierarchyApiPath: '/learner/questionset/v1',
-        questionListApiPath: '/content/question/v1'
+        questionListApiPath: '/api/question/v1'
       }
     }
   });

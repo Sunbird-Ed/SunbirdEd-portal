@@ -198,8 +198,9 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     });
 
     // Replacing cbse/ncert value with cbse
-    if (_.toLower(_.get(filters, 'board[0]')) === 'cbse/ncert' || _.toLower(_.get(filters, 'board')) === 'cbse/ncert') {
-      filters.board = ['cbse'];
+    const cbseNcertExists =[_.get(filters, 'board[0]'), _.get(filters, 'board'), _.get(filters, 'se_boards[0]'), _.get(filters, 'se_boards')].some(board => _.toLower(board) === 'cbse/ncert');
+    if (cbseNcertExists) {
+      filters.se_boards = ['cbse'];
     }
 
     _.forEach(this.formData, (form, key) => {
@@ -258,8 +259,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
         this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
           this.configService.appConfig.SEARCH.PAGE_LIMIT);
-        this.contentList = data.result.content || [];
-        this.addHoverData();
+          this.contentList = _.concat(_.get(data, 'result.content') || [], _.get(data, 'result.QuestionSet') || []) || [];
+          this.addHoverData();
         this.totalCount = data.result.count;
         this.setNoResultMessage();
       }, err => {

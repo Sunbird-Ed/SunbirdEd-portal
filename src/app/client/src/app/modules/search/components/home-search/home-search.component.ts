@@ -165,8 +165,9 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     // Replacing cbse/ncert value with cbse
-    if (_.toLower(_.get(filters, 'board[0]')) === 'cbse/ncert' || _.toLower(_.get(filters, 'board')) === 'cbse/ncert') {
-      filters.board = ['cbse'];
+    const cbseNcertExists =[_.get(filters, 'board[0]'), _.get(filters, 'board'), _.get(filters, 'se_boards[0]'), _.get(filters, 'se_boards')].some(board => _.toLower(board) === 'cbse/ncert');
+    if (cbseNcertExists) {
+      filters.se_boards = ['cbse'];
     }
 
     const option = {
@@ -205,7 +206,8 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
           this.configService.appConfig.SEARCH.PAGE_LIMIT);
         const { constantData, metaData, dynamicFields } = this.configService.appConfig.HomeSearch;
-        this.contentList = _.map(data.result.content, (content: any) =>
+        this.contentList = _.concat(_.get(data, 'result.content') || [], _.get(data, 'result.QuestionSet') || []) || [];
+        this.contentList = _.map(this.contentList, (content: any) =>
           this.utilService.processContent(content, constantData, dynamicFields, metaData));
         this.addHoverData();
       }, err => {
@@ -272,7 +274,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   public playContent({ data }) {
     const { metaData } = data;
     this.changeDetectorRef.detectChanges();
-    const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } = 
+    const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } =
     this.coursesService.findEnrolledCourses(metaData.identifier);
 
     if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present

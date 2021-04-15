@@ -53,6 +53,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
   instance: string;
   redirectCollectionUrl: string;
   redirectContentUrl: string;
+  redirectQuestionsetUrl: string;
   showDownloadLoader = false;
   isBrowse = false;
   showSelectChapter = false;
@@ -243,6 +244,7 @@ export class DialCodeComponent implements OnInit, OnDestroy {
 
     this.redirectCollectionUrl = 'play/collection';
     this.redirectContentUrl = 'play/content';
+    this.redirectQuestionsetUrl = 'play/questionset';
 
     if (event.data.metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
       if (_.get(event, 'data.metaData.childTextbookUnit') || _.toLower(_.get(event, 'data.contentType') === 'textbook')) {
@@ -257,6 +259,11 @@ export class DialCodeComponent implements OnInit, OnDestroy {
         this.router.navigate([this.redirectCollectionUrl, event.data.metaData.identifier],
           { queryParams: { dialCode: this.dialCode, l1Parent: event.data.metaData.l1Parent } });
       }
+    }
+    else if (event.data.metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
+      this.router.navigate([this.redirectQuestionsetUrl, event.data.metaData.identifier],
+        { queryParams: { dialCode: this.dialCode, l1Parent: sessionStorage.getItem('l1parent') || event.data.metaData.l1Parent },
+          state: { 'isSingleContent': this.searchResults.length > 1 ? false : true} });
     } else {
       this.router.navigate([this.redirectContentUrl, event.data.metaData.identifier],
         { queryParams: { dialCode: this.dialCode, l1Parent: sessionStorage.getItem('l1parent') || event.data.metaData.l1Parent },

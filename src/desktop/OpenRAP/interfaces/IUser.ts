@@ -5,6 +5,7 @@ export interface IUser {
   framework: IFramework;
   createdOn?: number;
   updatedOn?: number;
+  role?: string;
 }
 
 export interface IFramework {
