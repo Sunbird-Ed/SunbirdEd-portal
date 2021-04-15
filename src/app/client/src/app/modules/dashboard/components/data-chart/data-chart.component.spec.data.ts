@@ -4380,48 +4380,6 @@ export let mockChartData = {
             'Number of QR codes with atleast 1 linked content': '6',
             'Number of QR codes with no linked content': '18'
         }
-    ],
-    bigNumber: [{
-        "Date": "2021-01-01",
-        "District": "GUNTUR",
-        "District wise Users": "1.0",
-        "Domain Name": "School Leadership and Management Team",
-        "Observation form name": "Infrastructure Assessment- Furniture",
-        "Program Name": "3.8.0 testing program",
-        "Total Unique Entity": "1.0",
-        "Total Unique Users": "2.0",
-        "channel_slug": "dikshapreprodcustodian",
-        "parent_channel": "SHIKSHALOKAM"
-    }],
-    bigNumberConfig: {
-        "id": "Big_Number",
-        "filters": [
-            {
-                "reference": "Domain Name",
-                "controlType": "multi-select",
-                "displayName": "Select Domain Name"
-            }
-        ],
-        "bigNumbers": [
-            {
-                "footer": " ",
-                "header": "Total Unique Users",
-                "dataExpr": "Total Unique Users"
-            },
-            {
-                "footer": " ",
-                "header": "Total Unique Entity",
-                "dataExpr": "Total Unique Entity"
-            }
-        ],
-        "dataSource": {
-            "ids": [
-                "unique_user",
-                "unique_entity",
-                "district_wise_unique_user_new"
-            ],
-            "commonDimension": "Date"
-        }
-    }
+    ]
 };
 
