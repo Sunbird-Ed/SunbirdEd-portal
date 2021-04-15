@@ -90,12 +90,6 @@ export class DataChartComponent implements OnInit, OnDestroy {
     this.alwaysShowCalendars = true;
   }
 
-  @Input()
-  set globalSelectedFilters(val: any) {
-    if (val) {
-      this.calculateBigNumber(val.chartData);
-    }
-  }
  
   ngOnInit() {
 
@@ -171,8 +165,8 @@ export class DataChartComponent implements OnInit, OnDestroy {
       
       this.chartOptions = _.get(this.chartConfig, 'options') || { responsive: true };
       this.chartColors = _.get(this.chartConfig, 'colors') || [];
-      this.chartType = _.get(this.chartConfig, 'chartType') || 'line';
-
+      this.chartType = _.get(this.chartConfig, 'chartType');
+      
       // shows percentage in pie chart if showPercentage config is enabled.
       if (this.chartType === 'pie' && _.get(this.chartOptions, 'showPercentage')) {
         (this.chartOptions.tooltips || (this.chartOptions.tooltips = {})).callbacks = this.showPercentageInCharts();
@@ -409,6 +403,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
       this.chartData['selectedFilters'] = { };
       this.cdr.detectChanges();
       this.getDataSetValue(val.chartData);
+      this.calculateBigNumber(val.chartData);
       this.resetForm();
     }
   }

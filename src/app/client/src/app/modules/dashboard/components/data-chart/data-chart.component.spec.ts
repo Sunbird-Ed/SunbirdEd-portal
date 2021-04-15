@@ -250,21 +250,4 @@ describe('DataChartComponent', () => {
         { slug: 'rj', date: '01-02-2018' }]);
     });
 
-    it('should set globalSelectedFilters', fakeAsync(() => {
-        component.ngOnInit();
-        tick(1000);
-        mockChartData.chartConfig['bigNumbers'] = mockChartData.bigNumberConfig.bigNumbers;
-        component.globalSelectedFilters =  { chartData : mockChartData.bigNumber }
-        expect(component.bigNumberCharts).toEqual([{
-            "data": "2",
-            "footer": " ",
-            "header": "Total Unique Users"
-        }, {
-            "data": "1",
-            "footer": " ",
-            "header": "Total Unique Entity"
-        }]);
-
-    }));
-
 });

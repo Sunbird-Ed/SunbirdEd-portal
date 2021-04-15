@@ -107,31 +107,28 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
 
-  formGeneration(chartData, resetOptions = false) {
-    if (resetOptions == true) {
-      let filterKeys = Object.keys(this.selectedFilters);
-      let previousKeys = [];
-      if (this.previousFilters) {
-        previousKeys = Object.keys(this.previousFilters);
-      }
+  formUpdate(chartData){
+    let filterKeys = Object.keys(this.selectedFilters);
+    let previousKeys = [];
+    if (this.previousFilters) {
+      previousKeys = Object.keys(this.previousFilters);
+    }
+    _.forEach(this.filters, filter => {
+      let options = (_.sortBy(_.uniq(
+        _.map(chartData, (data) => data[filter.reference] ? data[filter.reference].toLowerCase() : ""
+        )))).filter(Boolean);
 
-      _.forEach(this.filters, filter => {
-
-        let options = (_.sortBy(_.uniq(
-          _.map(chartData, (data) => data[filter.reference] ? data[filter.reference].toLowerCase() : ""
-          )))).filter(Boolean);
-
-        if (!filterKeys.includes(filter.reference)) {
-          filter.options = options;
-        } else {
-          if (previousKeys && previousKeys.includes(filter.reference) && this.previousFilters && this.previousFilters[filter.reference].length == this.selectedFilters[filter.reference].length) {
-            filter.options = options
-          }
+      if (!filterKeys.includes(filter.reference)) {
+        filter.options = options;
+      } else {
+        if (previousKeys && previousKeys.includes(filter.reference) && this.previousFilters && this.previousFilters[filter.reference].length == this.selectedFilters[filter.reference].length) {
+          filter.options = options
         }
-
-      });
-
-    } else {
+      }
+    });
+    this.previousFilters = this.selectedFilters;
+  }
+  formGeneration(chartData) {
 
       this.filtersFormGroup = this.fb.group({});
       _.forEach(this.filters, filter => {
@@ -148,9 +145,7 @@ export class FilterComponent implements OnInit, OnDestroy {
           )))).filter(Boolean);
 
       });
-    }
-
-    this.previousFilters = this.selectedFilters;
+   
   }
 
   buildFiltersForm() {
@@ -217,7 +212,7 @@ export class FilterComponent implements OnInit, OnDestroy {
           }
         });
       });
-      this.formGeneration(res, true);
+      this.formUpdate(res);
 
       let keys = Object.keys(this.selectedFilters);
       this.dateFilters = [];

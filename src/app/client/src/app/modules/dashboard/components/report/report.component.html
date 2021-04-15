@@ -279,7 +279,7 @@
                             [options]="chart?.chartConfig?.options">
                           </app-map>
                          
-                          <app-data-chart [globalFilter]="globalFilterChange" [globalSelectedFilters]="globalSelectedFilters" *ngIf="chart?.chartConfig?.chartType !== 'map' && showChart"
+                          <app-data-chart [globalFilter]="globalFilterChange" *ngIf="chart?.chartConfig?.chartType !== 'map' && showChart"
                             [telemetryInteractObject]="setTelemetryInteractObject()" [chartInfo]="getChartData(chart)"
                             [hideElements]="hideElements" [isUserReportAdmin]="isUserReportAdmin"
                             (openAddSummaryModal)="openAddSummaryModal($event)" [hash]="hash">

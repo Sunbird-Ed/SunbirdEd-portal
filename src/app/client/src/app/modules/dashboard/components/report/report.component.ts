@@ -51,7 +51,6 @@ export class ReportComponent implements OnInit {
   public type: ReportType = ReportType.report;
   private reportConfig: object;
   layoutConfiguration: any;
-  public globalSelectedFilters: any;
   public selectedFilters: Object;
   public showChart = true;
   public reportData: any;
@@ -555,12 +554,6 @@ export class ReportComponent implements OnInit {
       });
   }
 
-  globalFilter(data: any): void {
-    this.showChart = false;
-    this.globalSelectedFilters = data;
-    this.showChart = true;
-  }
-
   getAllChartData() {
     let chartData = [];
     if (this.reportData.charts) {
@@ -585,7 +578,6 @@ export class ReportComponent implements OnInit {
         element.chartData = data.chartData;
         return element;
       });
-      this.globalSelectedFilters = data;
     }
     this.globalFilterChange = {
       chartData: data.chartData,
