@@ -161,7 +161,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   deleteGroup() {
       this.groupService.deleteGroupById(_.get(this.groupData, 'id')).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
         this.addTelemetry('confirm-delete-group', {status: 'inactive', prevstatus: _.get(this.groupData, 'status')});
-        this.toasterService.success(this.resourceService.messages.smsg.m002);
+        this.toasterService.success(this.resourceService.messages.smsg.grpdeletesuccess);
         this.navigateToPreviousPage();
       }, err => {
         this.addTelemetry('confirm-delete-group', {status: _.get(this.groupData, 'status')});
@@ -223,6 +223,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
         type: 'Group'
       }
     ];
+    this.navigationHelperService.setNavigationUrl({url: this.router.url});
     this.discussionService.registerUser(data).subscribe(response => {
       this.showLoader = false;
       const userName = _.get(response, 'result.userSlug');

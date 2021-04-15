@@ -9,7 +9,7 @@ appBodyScroll
 #modal  *ngIf="showContentRatingModal"
 >
   <!--Header-->
-  <i class="close icon" (click)="modal.deny()"></i>
+  <i class="close icon" role="img" aria-label="close" (click)="modal.deny()"></i>
   <div class="sb-modal-header">
     {{resourceService?.frmelmnts?.lbl?.enjoyedContent}}
   </div>
@@ -34,7 +34,7 @@ appBodyScroll
           </div> -->
           <div class="sb-checkbox sb-checkbox-primary sb-checkbox-rightaligned" *ngFor="let feedback of feedbackObj[contentRating]['options']">
             <input type="checkbox" id="{{feedback['value']}}" [(ngModel)]="feedback.checked" (click)="changeOptions(feedback)">
-            <label for="{{feedback['value']}}" class="fsmall mb-16">{{feedback['value']}}</label>
+            <label for="{{feedback['value']}}" class="fsmall mb-16" role="img" title="{{feedback['value']}}">{{feedback['value']}}</label>
           </div>
           <div *ngIf="showTextarea">
             <textarea rows="5" maxlength="1000" class="sb-form-control" [(ngModel)]="feedbackText"></textarea>

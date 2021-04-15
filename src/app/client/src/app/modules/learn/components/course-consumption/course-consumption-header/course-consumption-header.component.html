@@ -32,7 +32,7 @@
         <div class="textbook__details d-flex flex-ai-center">
           <!-- Textbook image -->
           <div class="textbook__bookimg">
-            <img src="{{courseHierarchy?.appIcon}}" alt="textbook">
+            <img src="{{courseHierarchy?.appIcon || 'assets/images/book.png'}}" alt="{{courseHierarchy?.name}}">
           </div>
           <div class="ml-8 textbook__heading">
             <!-- Textbook title -->
@@ -65,7 +65,7 @@
               </button>
 
                <!-- Discussion Forum -->
-               <button *ngIf="forumIds.length > 0" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix" 	
+               <button *ngIf="forumIds.length > 0" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix forum-btn" 	
                appTelemetryInteract [telemetryInteractObject]="courseInteractObject"	
                [telemetryInteractEdata]="{id:'discussion' , type: 'click' , pageid:'course-consumption'}" 	
                [telemetryInteractCdata]="[{id: courseHierarchy?.identifier, type: 'Course'}]"	
@@ -87,11 +87,19 @@
 
       </div>
 
-      <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4 certified-course">
+      <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4 certified-course" [ngClass]="{'d-flex': isDesktopApp}">
         <div class="certified-course__btn" *ngIf="showAddGroup">
           <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
           appAddToGroup [identifier]="courseHierarchy?.identifier" [pageId]="courseHierarchy?.primaryCategory.toLowerCase()">
           {{resourceService?.frmelmnts?.lbl?.AddtoGroup}}</button>
+        </div>
+        <div *ngIf="isDesktopApp && enrolledCourse && !viewDashboard" class="d-flex">
+          <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="isConnected && (checkStatus('DOWNLOADED')) && showUpdate" (click)="updateCollection(courseHierarchy)">{{resourceService?.frmelmnts?.btn?.update}}</button>
+          <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADED')" [disabled]="disableDelete" (click)="logTelemetry('confirm-delete-collection'); showDeleteModal = !showDeleteModal;">{{resourceService?.frmelmnts?.btn?.delete}}</button>
+          <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADED')" (click)="exportCollection(courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.saveToPenDrive}}</button>
+          <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOAD')" appOnlineOnly (click)="isYoutubeContentPresent(courseHierarchy)">{{resourceService?.frmelmnts?.btn?.download}}</button>
+          <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADING')">{{resourceService?.frmelmnts?.lbl?.downloading}}</button>
+          <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('PAUSED')">{{resourceService.frmelmnts?.lbl?.downloadingPaused}}</button>
         </div>
         <!-- join course, start learning, continue learning, view dashboard buttons -->  
         <div *ngIf="!showAddGroup && isTrackable">
@@ -144,3 +152,45 @@
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal"
   (close)="closeSharePopup('close-share-link-popup')">
 </app-share-link>
+
+<div *ngIf="isDesktopApp">
+  <sui-modal *ngIf="showModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+  class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal;" #modal>
+  <div class="sb-modal-header">
+    {{resourceService.frmelmnts?.btn?.download}}
+  </div>
+  <div class="sb-modal-content">
+    <p>{{resourceService?.messages?.stmsg?.m0137}}</p>
+  </div>
+  <div class="sb-modal-actions">
+    <button  class="sb-btn sb-btn-normal sb-btn-primary"
+      (click)="downloadCollection(courseHierarchy); showModal = !showModal;">
+      {{resourceService.frmelmnts?.btn?.download}}
+    </button>
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
+      (click)="logTelemetry('cancel-download-collection'); showModal = !showModal;">
+      {{resourceService.frmelmnts?.btn?.cancel}}
+    </button>
+  </div>
+  </sui-modal>
+
+  <sui-modal *ngIf="showDeleteModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+    class="sb-modal" appBodyScroll (dismissed)="showDeleteModal = !showDeleteModal;" #modal>
+    <div class="sb-modal-header">
+      {{resourceService?.frmelmnts?.lbl?.delete}}
+    </div>
+    <div class="sb-modal-content">
+      <p>{{resourceService?.frmelmnts?.lbl?.desktop?.deleteCollection | interpolate:'{name}': courseHierarchy?.name}}</p>
+    </div>
+    <div class="sb-modal-actions">
+      <button class="sb-btn sb-btn-normal sb-btn-primary"
+        (click)="deleteCollection(courseHierarchy); showDeleteModal = !showDeleteModal;">
+        {{resourceService?.frmelmnts?.lbl?.delete}}
+      </button>
+      <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
+        (click)="logTelemetry('cancel-delete-collection'); showDeleteModal = !showDeleteModal;">
+        {{resourceService.frmelmnts?.btn?.cancel}}
+      </button>
+    </div>
+  </sui-modal>
+</div>

@@ -1,5 +1,7 @@
 @import "mixins/mixins";
-
+:root {
+    --visit-helpcenter-bg:var(--white);
+}
 :host::ng-deep {
 
     .help-page {
@@ -8,7 +10,7 @@
             margin-top: calculateRem(24px);
             .panel {
                 .panel-heading, .panel-interact, .panel-info {
-                    background: var(--white);
+                    background: var(--cc-faq-panel-interact-bg);
                 }
                 .panel-info {
                     max-width: 100%;
@@ -18,7 +20,7 @@
         }
 
         &__visit-helpcenter {
-            background-color: var(--white);
+            background-color: var(--visit-helpcenter-bg);
             .visit-helpcenter__text {
                 @include respond-below(sm) {
                     flex-basis: 50%;

@@ -87,7 +87,7 @@ app.all([
   '/learner/*', '/content/*', '/user/*', '/merge/*', '/action/*', '/courseReports/*', '/course-reports/*', '/admin-reports/*',
   '/certreg/*', '/device/*', '/google/*', '/report/*', '/reports/*', '/v2/user/*', '/v1/sso/*', '/migrate/*', '/plugins/*', '/content-plugins/*',
   '/content-editor/telemetry','/discussion/*', '/collection-editor/telemetry', '/v1/user/*', '/sessionExpired', '/logoff', '/logout', '/assets/public/*', '/endSession',
-  '/sso/sign-in/*','/v1/desktop/handleGauth', '/v1/desktop/google/auth/success'
+  '/sso/sign-in/*','/v1/desktop/handleGauth', '/v1/desktop/google/auth/success', '/clearSession'
 ],
   session({
     secret: envHelper.PORTAL_SESSION_SECRET_KEY,
@@ -157,6 +157,17 @@ const captureResBodyForLogging = (req, res, next) => {
   next();
 }
 
+/**
+ * @param  {Object} - Request object
+ * @param  {Object} - Response object
+ * @description API to clear session for mobile browser redirection
+ * @since release-3.8.0
+ */
+app.all('/clearSession', (req, res) => {
+  res.status(200).clearCookie('connect.sid', { path: '/' });
+  req.session.destroy(function (err) { res.sendStatus(200); });
+});
+
 app.use(['/api/*', '/user/*', '/merge/*', '/device/*', '/google/*', '/v2/user/*', '/v1/sso/*', '/migrate/*', '/v1/user/*' , '/logoff', '/logout', '/sso/sign-in/*'],
   captureResBodyForLogging, 
   morgan(morganConfig)); // , { skip: (req, res) => !(logger.level === "debug") })); // skip logging if logger level is not debug
@@ -215,6 +226,8 @@ require('./routes/discussionsForum.js')(app, keycloak) // report routes
 
 app.all(['/content-editor/telemetry', '/collection-editor/telemetry'], bodyParser.urlencoded({ extended: false }),
   bodyParser.json({ limit: '50mb' }), keycloak.protect(), telemetryHelper.logSessionEvents)
+
+require('./routes/groupRoutes.js')(app) // group api routes
 
 require('./routes/learnerRoutes.js')(app) // learner api routes
 

@@ -8,6 +8,9 @@ import {
   ConfigService, ServerResponse, ContentDetails, PlayerConfig, ContentData, NavigationHelperService, ResourceService, UtilService
 } from '@sunbird/shared';
 import * as _ from 'lodash-es';
+import { CsModule } from '@project-sunbird/client-services';
+import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +27,10 @@ export class PublicPlayerService {
   previewCdnUrl: string;
   sessionId;
   private _libraryFilters: any = {};
+  private contentCsService: any;
 
-  constructor(public userService: UserService, private orgDetailsService: OrgDetailsService,
+
+  constructor(private csLibInitializerService: CsLibInitializerService, public userService: UserService, private orgDetailsService: OrgDetailsService,
     public configService: ConfigService, public router: Router,
     public publicDataService: PublicDataService, public navigationHelperService: NavigationHelperService,
     public resourceService: ResourceService, private utilService: UtilService) {
@@ -33,6 +38,10 @@ export class PublicPlayerService {
       ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
       this.sessionId = (<HTMLInputElement>document.getElementById('sessionId'))
       ? (<HTMLInputElement>document.getElementById('sessionId')).value : undefined;
+      if (!CsModule.instance.isInitialised) {
+        this.csLibInitializerService.initializeCs();
+      }
+      this.contentCsService = CsModule.instance.contentService;
   }
 
   /**
@@ -157,6 +166,9 @@ export class PublicPlayerService {
           const isTrackable = metaData.trackable && metaData.trackable.enabled === 'No' ? false : true;
           this.handleNavigation(metaData, isTrackable, queryParams, isAvailableLocally);
         }
+      } else if (metaData.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
+        this.router.navigate(['play/questionset', metaData.identifier],
+        {queryParams: {contentType: metaData.contentType}});
       } else {
         this.router.navigate(['play/content', metaData.identifier],
         {queryParams: {contentType: metaData.contentType}});
@@ -164,8 +176,9 @@ export class PublicPlayerService {
     }, 0);
   }
   handleNavigation(content, isTrackable, queryParams?, isAvailableLocally?) {
+    const courseRoute = this.userService.loggedIn ? 'learn/course' : 'explore-course/course';
     if (isTrackable) {
-      this.router.navigate(['explore-course/course', content.identifier], { queryParams });
+      this.router.navigate([courseRoute, content.identifier], { queryParams });
     } else {
       queryParams = { ...queryParams, contentType: content.contentType };
       if (isAvailableLocally) {
@@ -189,6 +202,24 @@ export class PublicPlayerService {
     content['downloadStatus'] = downloadListdata[identifier];
 
     return content;
+  }
+
+  getQuestionSetHierarchy(contentId: string) {
+    return this.contentCsService.getQuestionSetHierarchy(contentId).pipe(map((response: any) => {
+      this.contentData = response.questionSet;
+      return response;
+    }));
+  }
+
+  getQuestionSetRead(contentId: string, option: any = { params: {} }): Observable<ServerResponse> {
+    const param = { fields: this.configService.editorConfig.DEFAULT_PARAMS_FIELDS };
+    const req = {
+        url: `${this.configService.urlConFig.URLS.QUESTIONSET.READ}/${contentId}`,
+        param: { ...param, ...option.params }
+    };
+    return this.publicDataService.get(req).pipe(map((response: ServerResponse) => {
+        return response;
+    }));
   }
 
     get libraryFilters() {

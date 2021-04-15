@@ -37,8 +37,8 @@
 
     .badge {
       display: inline-block;
-      background: var(--rc-d4d3d3);
-      color: var(--gray-800);
+      background: var(--sbt-badge-bg);
+      color: var(--sbt-badge-text);
       text-align: center;
       padding: 0 .75rem;
       border-radius: .25rem;
@@ -55,4 +55,9 @@
     }
   }
 
+}
+.sb-mygroups{
+  .sb-bg-color-white{
+    background: var(--sb-mygroups-bg) !important;
+  }
 }

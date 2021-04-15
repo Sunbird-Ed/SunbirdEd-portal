@@ -376,13 +376,10 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       requestParams['facets'] = this.facetsList;
     }
 
-    if (_.get(this.activatedRoute.snapshot, 'data.baseUrl') === 'learn') {
-      return combineLatest(
-        this.searchService.contentSearch(requestParams),
-        this.coursesService.enrolledCourseData$).pipe(map(data => ({ contentData: data[0], enrolledCourseData: data[1] })));
-    } else {
-      return this.searchService.contentSearch(requestParams).pipe(map(data => ({ contentData: data })));
-    }
+    return combineLatest(
+      this.searchService.contentSearch(requestParams),
+      this.coursesService.enrolledCourseData$).pipe(map(data => ({ contentData: data[0], enrolledCourseData: data[1] })));
+
   }
 
   private formatSearchresults(sectionData) {
@@ -432,6 +429,9 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if (onGoingBatchCount === 1) { // play course if only one open batch is present
       metaData.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
+      return this.playerService.playContent(metaData);
+    } else if (onGoingBatchCount === 0 && expiredBatchCount === 1) {
+      metaData.batchId = openBatch.expired.length ? openBatch.expired[0].batchId : inviteOnlyBatch.expired[0].batchId;
       return this.playerService.playContent(metaData);
     }
     this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: metaData.identifier };
@@ -526,7 +526,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   processEnrolledCourses(courseData) {
     if (_.get(courseData, 'enrolledCourses')) {
-      const enrolledCourseCount = _.get(courseData, 'enrolledCourses').length;
+      const enrolledCourseCount = _.get(courseData, 'enrolledCourses.length');
       this.noResult = false;
       this.totalCount = enrolledCourseCount;
       const sortedData = _.map(_.orderBy(_.get(courseData, 'enrolledCourses'), ['enrolledDate'], ['desc']), (val) => {

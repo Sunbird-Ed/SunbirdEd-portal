@@ -14,7 +14,7 @@ import { map, mergeMap, takeUntil, tap } from 'rxjs/operators';
 import * as TreeModel from 'tree-model';
 import { PopupControlService } from '../../../../../service/popup-control.service';
 import { CourseBatchService, CourseConsumptionService, CourseProgressService } from './../../../services';
-import { ContentUtilsServiceService } from '@sunbird/shared';
+import { ContentUtilsServiceService, ConnectionService } from '@sunbird/shared';
 import { MimeTypeMasterData } from '@project-sunbird/common-consumption-v8/lib/pipes-module/mime-type';
 import dayjs from 'dayjs';
 import { NotificationService } from '../../../../notification/services/notification/notification.service';
@@ -93,6 +93,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   showLastAttemptsModal: boolean = false;
   navigateToContentObject: any;
   _routerStateContentStatus: any;
+  isConnected = false;
   constructor(
     public activatedRoute: ActivatedRoute,
     private configService: ConfigService,
@@ -115,6 +116,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     public layoutService: LayoutService,
     public generaliseLabelService: GeneraliseLabelService,
     private notificationService: NotificationService,
+    private connectionService: ConnectionService,
     @Inject('CS_COURSE_SERVICE') private CsCourseService: CsCourseService
   ) {
     this.router.onSameUrlNavigation = 'ignore';
@@ -127,6 +129,11 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     } else {
       this.courseMentor = false;
     }
+    this.connectionService.monitor()
+    .pipe(takeUntil(this.unsubscribe)).subscribe(isConnected => {
+      this.isConnected = isConnected;
+    });
+
     // Set consetnt pop up configuration here
     this.consentConfig = {
       tncLink: this.resourceService.frmelmnts.lbl.tncLabelLink,

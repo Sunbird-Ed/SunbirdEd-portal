@@ -23,7 +23,7 @@
               </label>
               <div class="d-flex flex-jc-space-between flex-dc">
                 <div class="w-100 relative">
-                  <input type="id" name="id" class="sb-form-control" [ngClass]="{'is-invalid': isInvalidUser}" placeholder="{{resourceService?.frmelmnts?.lbl?.enterInstanceId | interpolate:'{instance}': instance}}" [(ngModel)]="memberId" (ngModelChange)="reset()">
+                  <input type="id" name="id" aria-label="search user id" class="sb-form-control" [ngClass]="{'is-invalid': isInvalidUser}" placeholder="{{resourceService?.frmelmnts?.lbl?.enterInstanceId | interpolate:'{instance}': instance}}" [(ngModel)]="memberId" (ngModelChange)="reset()">
                   <i class="icon close icon-input-close" (click)="resetValue(memberId);"></i>
                 </div>
                 <small class="message sb-color-error font-weight-bold mt-8" *ngIf="isInvalidUser">{{resourceService?.messages?.emsg?.m004  | interpolate:'{instance}': instance}}</small>

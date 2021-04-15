@@ -1,3 +1,4 @@
+import { filter } from 'rxjs/operators';
 import { mockData } from './../../../../app.component.spec.data';
 
 import {throwError as observableThrowError,  Observable } from 'rxjs';
@@ -169,5 +170,11 @@ describe('SearchService', () => {
         const value = service.isContentTrackable({identifier: '123', trackable: {enabled: 'no'}}, 'resource');
         expect(value).toBe(false);
     }));
+
+    it ('should call the updateOption method with data', () => {
+      const searchService = TestBed.get(SearchService);
+      const obj = serviceMockData.option;
+      const newObj = searchService.updateOption(obj);
+     });
 
   });

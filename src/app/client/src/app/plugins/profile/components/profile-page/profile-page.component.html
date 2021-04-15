@@ -299,8 +299,8 @@
   <app-profile-badge *ngIf="userProfile.badgeAssertions && userProfile.badgeAssertions.length > 0"></app-profile-badge>
   <!-- my badges section ends -->
 
-  <div class="pt-30" *ngIf="isConnected">
-    <div [ngClass]="layoutConfiguration ? 'sbt-center-container' : 'ui container'">
+  <div class="pt-30">
+    <div class="sb-profile-page-container" [ngClass]="layoutConfiguration ? 'sbt-center-container' : 'ui container'">
       <!--contributions view starts-->
       <div class="fs-1-7 font-w-bold pl-20 mobile only" *ngIf="contributions && contributions.length > 0">
         {{resourceService.frmelmnts.scttl.contributions}}

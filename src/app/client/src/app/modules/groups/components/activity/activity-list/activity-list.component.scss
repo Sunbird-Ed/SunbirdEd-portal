@@ -20,7 +20,7 @@
 .kabab-menu-dropdown-content {
   position: absolute;
   border-radius: calculateRem(2px);
-  background-color: var(--white);
+  background-color: var(--kabab-menu-dropdown-bg);
   box-shadow: 0 calculateRem(3px) calculateRem(5px) calculateRem(4px) rgba(0, 0, 0, 0.05);
   padding: calculateRem(8px);
   z-index: 1;
@@ -36,7 +36,7 @@
     font-size: calculateRem(14px);
     padding: calculateRem(8px);
     &:hover,&:active{
-      background-color: var(--primary-100);
+      background-color: var(--kabab-menu-dropdown-item-active);
     }
   }
 }

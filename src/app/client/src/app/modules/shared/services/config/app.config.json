@@ -840,7 +840,8 @@
       "ePub": "application/epub",
       "h5p": "application/vnd.ekstep.h5p-archive",
       "webm": "video/webm",
-      "xUrl": "text/x-url"
+      "xUrl": "text/x-url",
+      "questionset": "application/vnd.sunbird.questionset"
     },
     "baseURL": "/content/preview/preview.html?webview=true",
     "localBaseUrl": "/contentPlayer/preview/preview.html?",

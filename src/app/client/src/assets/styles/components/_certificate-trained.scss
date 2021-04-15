@@ -38,6 +38,7 @@
   }
   &__item {
     text-align: center;
+    color: var(--sb-list-items);
     @include respond-below(md) {
       text-align: center !important;
     }
@@ -87,7 +88,7 @@
   .list-date {
     text-transform: uppercase;
     font-size: $font-size-base;
-    color: var(--gray-400);
+    color: var(--sb-list-data);
   }
   .list-items__bar {
     @extend .flex-ai-jc-center;

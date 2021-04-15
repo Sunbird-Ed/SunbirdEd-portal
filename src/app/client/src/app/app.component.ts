@@ -12,7 +12,7 @@ import {
 } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
-import {Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin, zip, Subject} from 'rxjs';
+import { Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin, zip, Subject } from 'rxjs';
 import { first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/common';
@@ -26,7 +26,7 @@ import { image } from '../assets/images/tara-bot-icon';
   styles: ['.header-block { display: none;}']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  @ViewChild('frameWorkPopUp', {static: false}) frameWorkPopUp;
+  @ViewChild('frameWorkPopUp', { static: false }) frameWorkPopUp;
   /**
    * user profile details.
    */
@@ -93,25 +93,27 @@ export class AppComponent implements OnInit, OnDestroy {
   labels: {};
   showUserTypePopup = false;
   deviceId: string;
+  dataThemeAttribute: string;
+  scrollHeight:number;
   public botObject: any = {};
   isBotEnabled = (<HTMLInputElement>document.getElementById('isBotConfigured'))
-  ? (<HTMLInputElement>document.getElementById('isBotConfigured')).value : 'false';
+    ? (<HTMLInputElement>document.getElementById('isBotConfigured')).value : 'false';
   botServiceURL = (<HTMLInputElement>document.getElementById('botServiceURL'))
-  ? (<HTMLInputElement>document.getElementById('botServiceURL')).value : '';
+    ? (<HTMLInputElement>document.getElementById('botServiceURL')).value : '';
   baseUrl = (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl'))
-  ? (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl')).value : '';
+    ? (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl')).value : '';
   layoutConfiguration;
-  title =  _.get(this.resourceService, 'frmelmnts.btn.botTitle') ? _.get(this.resourceService, 'frmelmnts.btn.botTitle') : 'Ask Tara';
+  title = _.get(this.resourceService, 'frmelmnts.btn.botTitle') ? _.get(this.resourceService, 'frmelmnts.btn.botTitle') : 'Ask Tara';
   showJoyThemePopUp = false;
   public unsubscribe$ = new Subject<void>();
   consentConfig: { tncLink: string; tncText: any; };
   isDesktopApp = false;
-// Font Increase Decrease Variables
+  // Font Increase Decrease Variables
   fontSize: any;
   defaultFontSize = 16;
-  @ViewChild('increaseFontSize', {static: false}) increaseFontSize: ElementRef;
-  @ViewChild('decreaseFontSize', {static: false}) decreaseFontSize: ElementRef;
-  @ViewChild('resetFontSize', {static: false}) resetFontSize: ElementRef;
+  @ViewChild('increaseFontSize', { static: false }) increaseFontSize: ElementRef;
+  @ViewChild('decreaseFontSize', { static: false }) decreaseFontSize: ElementRef;
+  @ViewChild('resetFontSize', { static: false }) resetFontSize: ElementRef;
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -157,26 +159,29 @@ export class AppComponent implements OnInit, OnDestroy {
           _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.firstChild.data.hideHeaderNFooter');
       });
   }
+
   ngAfterViewInit() {
     // themeing code
     const trans = () => {
       document.documentElement.classList.add('transition');
       window.setTimeout(() => {
-          document.documentElement.classList.remove('transition');
+        document.documentElement.classList.remove('transition');
       }, 1000);
-  };
+    };
     const selector = document.querySelectorAll('input[name=selector]');
     for (let i = 0; i < selector.length; i++) {
-      selector[i].addEventListener('change', function() {
+      selector[i].addEventListener('change', function () {
         if (this.checked) {
-           trans();
-           document.documentElement.setAttribute('data-theme', this.value);
+          trans();
+          document.documentElement.setAttribute('data-theme', this.value);
         }
-    });
+      });
     }
     this.setTheme();
     // themeing code
     this.getLocalFontSize();
+    // dark theme
+    this.getLocalTheme();
   }
 
   setTheme() {
@@ -256,20 +261,19 @@ export class AppComponent implements OnInit, OnDestroy {
       this.botObject['userId'] = this.deviceId;
     }
     this.botObject['appId'] = this.userService.appId;
-    this.botObject['chatbotUrl'] =  this.baseUrl + this.botServiceURL;
+    this.botObject['chatbotUrl'] = this.baseUrl + this.botServiceURL;
 
     this.botObject['imageUrl'] = image.imageUrl;
     this.botObject['title'] = this.botObject['header'] = this.title;
     this.generaliseLabelService.getGeneraliseResourceBundle();
   }
 
-
   onCloseJoyThemePopup() {
     this.showJoyThemePopUp = false;
     this.checkTncAndFrameWorkSelected();
   }
 
-  isBotdisplayforRoute () {
+  isBotdisplayforRoute() {
     const url = this.router.url;
     return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in'));
   }
@@ -510,18 +514,18 @@ export class AppComponent implements OnInit, OnDestroy {
    * fetch device id using fingerPrint2 library.
    */
   public setDeviceId(): Observable<string> {
-      return new Observable(observer => this.telemetryService.getDeviceId((deviceId, components, version) => {
-        if (this.utilService.isDesktopApp) {
-         deviceId = (<HTMLInputElement>document.getElementById('deviceId')).value;
-        }
-          this.fingerprintInfo = {deviceId, components, version};
-          (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
-          this.deviceId = deviceId;
-          this.botObject['did'] = deviceId;
-        this.deviceRegisterService.setDeviceId();
-          observer.next(deviceId);
-          observer.complete();
-        }));
+    return new Observable(observer => this.telemetryService.getDeviceId((deviceId, components, version) => {
+      if (this.utilService.isDesktopApp) {
+        deviceId = (<HTMLInputElement>document.getElementById('deviceId')).value;
+      }
+      this.fingerprintInfo = { deviceId, components, version };
+      (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
+      this.deviceId = deviceId;
+      this.botObject['did'] = deviceId;
+      this.deviceRegisterService.setDeviceId();
+      observer.next(deviceId);
+      observer.complete();
+    }));
   }
   /**
    * set user details for loggedIn user.
@@ -692,32 +696,32 @@ export class AppComponent implements OnInit, OnDestroy {
     this.orgDetailsService.getCustodianOrgDetails().subscribe(custodianOrg => {
       if (this.userService.loggedIn && !this.userService.userProfile.managedBy &&
         (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value'))) {
-          this.userService.getFeedData().subscribe(
-            (data) => {
-              this.userFeed = _.get(data, 'result.response.userFeed[0]');
-              if (this.userFeed && _.get(this.userFeed, 'category').toLowerCase() === this.feedCategory.toLowerCase()) {
-                const formReadInputParams = {
-                  formType: 'user',
-                  formAction: 'onboarding',
-                  contentType: 'externalIdVerification'
-                };
-                let orgId;
-                if ((_.get(this.userFeed, 'data.prospectChannelsIds')) && (_.get(this.userFeed, 'data.prospectChannelsIds').length) === 1) {
-                  orgId = _.get(this.userFeed, 'data.prospectChannelsIds[0].id');
-                }
-                this.formService.getFormConfig(formReadInputParams, orgId).subscribe(
-                  (formResponsedata) => {
-                    this.labels = _.get(formResponsedata[0], ('range[0]'));
-                  }
-                );
-                // if location popup isn't opened on the very first time.
-                if (this.isLocationConfirmed) {
-                  this.showUserVerificationPopup = true;
-                }
+        this.userService.getFeedData().subscribe(
+          (data) => {
+            this.userFeed = _.get(data, 'result.response.userFeed[0]');
+            if (this.userFeed && _.get(this.userFeed, 'category').toLowerCase() === this.feedCategory.toLowerCase()) {
+              const formReadInputParams = {
+                formType: 'user',
+                formAction: 'onboarding',
+                contentType: 'externalIdVerification'
+              };
+              let orgId;
+              if ((_.get(this.userFeed, 'data.prospectChannelsIds')) && (_.get(this.userFeed, 'data.prospectChannelsIds').length) === 1) {
+                orgId = _.get(this.userFeed, 'data.prospectChannelsIds[0].id');
               }
-            },
-            (error) => {
-            });
+              this.formService.getFormConfig(formReadInputParams, orgId).subscribe(
+                (formResponsedata) => {
+                  this.labels = _.get(formResponsedata[0], ('range[0]'));
+                }
+              );
+              // if location popup isn't opened on the very first time.
+              if (this.isLocationConfirmed) {
+                this.showUserVerificationPopup = true;
+              }
+            }
+          },
+          (error) => {
+          });
       }
     });
   }
@@ -768,7 +772,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.renderer.setAttribute(this.increaseFontSize.nativeElement, 'disabled', 'true');
       this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'disabled');
       this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'disabled');
-    } else if (value === 12) {      
+    } else if (value === 12) {
       this.renderer.setAttribute(this.decreaseFontSize.nativeElement, 'disabled', 'true');
       this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'disabled');
       this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'disabled');
@@ -781,5 +785,58 @@ export class AppComponent implements OnInit, OnDestroy {
       this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'disabled');
       this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'disabled');
     }
+  }
+  skipToMainContent() {
+    const getTheme = document.documentElement.attributes["layout"].value;
+    if (getTheme == "joy") {
+      const headerElement=document.getElementsByClassName('sbt-fluid-header-bg');
+      if(headerElement.length>0){
+        const headerHeight = headerElement[headerElement.length-1].clientHeight;
+        if(typeof window.orientation !== 'undefined'){
+          this.scrollHeight =  headerElement[0].clientHeight+150;
+        }else{
+          this.scrollHeight =  headerHeight *2;
+        }
+        this.scrollTo(this.scrollHeight);
+       }
+    } else {
+      const header = document.getElementsByTagName("app-header");
+      const headerElement = header[0].children[0].children[0].clientHeight;
+      if (document.getElementsByTagName("app-search-filter").length > 0) {
+        const searchFilter = document.getElementsByTagName("app-search-filter")[0]
+          .children[0].clientHeight;
+        this.scrollTo(searchFilter + headerElement + 48);
+      } else if (
+        document.getElementsByTagName("app-global-search-filter").length > 0
+      ) {
+        const searchFilter = document.getElementsByTagName(
+          "app-global-search-filter"
+        )[0].children[0].clientHeight;
+        this.scrollTo(searchFilter + headerElement + 48);
+      } else {
+        this.scrollTo(headerElement + 48);
+      }
+    }
+  }
+  scrollTo(height) {
+    window.scroll({
+      top: height,
+      behavior: "smooth",
+    });
+  }
+  getLocalTheme() {
+    const localDataThemeAttribute = localStorage.getItem('data-theme');
+    if (localDataThemeAttribute) {
+      this.setLocalTheme(localDataThemeAttribute);
+    }
+  }
+  changeTheme() {
+    this.dataThemeAttribute = document.documentElement.getAttribute('data-theme');
+    this.dataThemeAttribute = this.dataThemeAttribute === 'Default' ? 'Darkmode' : 'Default';
+    this.setLocalTheme(this.dataThemeAttribute);
+    localStorage.setItem('data-theme', this.dataThemeAttribute);
+  }
+  setLocalTheme(value: string) {
+    document.documentElement.setAttribute('data-theme', value);
   }
 }
