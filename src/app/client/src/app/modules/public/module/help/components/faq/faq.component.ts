@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CacheService } from 'ng2-cache-service';
 import { UtilService, ResourceService, LayoutService, NavigationHelperService, ToasterService, ConfigService } from '@sunbird/shared';
@@ -10,6 +10,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Location } from '@angular/common';
 import { FaqService } from '../../services/faq/faq.service';
+import { FaqData } from './faq-data';
 
 @Component({
   selector: 'app-faq',
@@ -17,6 +18,7 @@ import { FaqService } from '../../services/faq/faq.service';
   styleUrls: ['./faq.component.scss']
 })
 export class FaqComponent implements OnInit {
+  faqData: any;
   faqList: any;
   faqBaseUrl: string;
   selectedLanguage: string;
@@ -29,6 +31,14 @@ export class FaqComponent implements OnInit {
   defaultToEnglish = false;
   isDesktopApp = false;
   helpCenterLink = '/help/faqs/user/index.html';
+  selectedFaqCategory: any;
+  isMobileView = false;
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    if (event && event.target && event.target.innerWidth) {
+      this.checkScreenView(event.target && event.target.innerWidth);
+    }
+  }
 
   constructor(private http: HttpClient, private _cacheService: CacheService, private utilService: UtilService,
     public tenantService: TenantService, public resourceService: ResourceService, public activatedRoute: ActivatedRoute,
@@ -75,6 +85,7 @@ export class FaqComponent implements OnInit {
         this.getFaqJson();
       }
     });
+    this.checkScreenView(window.innerWidth);
   }
 
   private getFaqJson() {
@@ -83,6 +94,7 @@ export class FaqComponent implements OnInit {
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
       this.faqList = data;
+      this.getFaqCategoryData();
       this.showLoader = false;
       this.defaultToEnglish = false;
     }, (err) => {
@@ -171,6 +183,33 @@ export class FaqComponent implements OnInit {
       }
     };
     this.telemetryService.interact(cardClickInteractData);
+  }
+
+  getFaqCategoryData() {
+    this.faqData = FaqData;
+  }
+
+  onCategorySelect(event) {
+    this.selectedFaqCategory = undefined;
+    if (!event && !event.data) {
+      return;
+    }
+    setTimeout(() => {
+      this.selectedFaqCategory = event.data
+    }, 0);
+  }
+
+  onVideoSelect(event) {
+    console.log(event);
+  }
+
+  checkScreenView(width) {
+    if (width <= 767) {
+      this.isMobileView = true;
+    } else {
+      this.isMobileView = false;
+    }
+    console.log('isMobileView', this.isMobileView);
   }
 
 }

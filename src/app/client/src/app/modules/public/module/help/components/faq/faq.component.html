@@ -29,11 +29,38 @@
     <div class="m-16 font-weight-bold" *appDesktopOnly>
       {{resourceService?.frmelmnts?.lbl?.frequentlyAskedQuestions}}</div>
     <div class="help-page__content" *ngIf="faqList && !showLoader">
-      <sb-faq [extraTemplate]="extraTemplate" [data]="faqList"
+      <div class="sbhelp_container mt-24" style="min-height:600px;">
+        <section class="sbhelp_container__left" *ngIf="(isMobileView && !selectedFaqCategory) || !isMobileView" [ngClass]="{'category-list-mobile':isMobileView, 'category-list-web':!isMobileView}">
+          <sb-list [title]="'Category'" [listData]="faqData?.categories" [btnText]="'REPORT OTHER ISSUE'" (itemClick)="onCategorySelect($event)"></sb-list>
+        </section>
+    
+        <section class="sbhelp_container__right" *ngIf="selectedFaqCategory" [ngClass]="{'faq-section-mobile':isMobileView, 'faq-section-web':!isMobileView}">
+         <div>
+          <div class="d-flex flex-ai-center mb-8" *ngIf="selectedFaqCategory && isMobileView">
+            <button class="sb-btn sb-btn-outline-primary sb-btn-normal" (click)="selectedFaqCategory=undefined">Back</button>
+            <h4 class="ml-16"><b>Section title comes here</b></h4>
+          </div>
+          <div>
+            <sb-carousel [title]="'Videos'" (itemClick)="onVideoSelect($event)"></sb-carousel>
+          </div>
+          <div class="faq_title mb-16">FAQ's</div>
+          <div class="sbhelp_container__faq">
+            <sb-faq [extraTemplate]="extraTemplate" [data]="selectedFaqCategory"
+              (toggleGroupEvent)="logInteractEvent($event, 'toggle-clicked');"
+              (yesClickedEvent)="logInteractEvent($event, 'yes-clicked');"
+              (noClickedEvent)="logInteractEvent($event, 'no-clicked');"
+              (submitClickedEvent)="logInteractEvent($event, 'submit-clicked');">
+            </sb-faq>
+          </div>
+         </div>
+        </section>
+        
+      </div>
+      <!-- <sb-faq [extraTemplate]="extraTemplate" [data]="faqList"
         (toggleGroupEvent)="logInteractEvent($event, 'toggle-clicked');"
         (yesClickedEvent)="logInteractEvent($event, 'yes-clicked');"
         (noClickedEvent)="logInteractEvent($event, 'no-clicked');"
-        (submitClickedEvent)="logInteractEvent($event, 'submit-clicked');"></sb-faq>
+        (submitClickedEvent)="logInteractEvent($event, 'submit-clicked');"></sb-faq> -->
     </div>
     <div class="help-page__visit-helpcenter mt-24 w-100 p-16 d-flex flex-ai-center relative9"
       *ngIf="faqList && !showLoader">
@@ -46,6 +73,8 @@
       </a>
     </div>
   </div>
+  
+
 </div>
 
 <ng-template #extraTemplate>
