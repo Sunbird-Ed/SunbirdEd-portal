@@ -3147,3 +3147,15 @@ html[accessable-theme="accessible"]{
 
 
 }
+
+html[data-theme=Darkmode][layout='old'][accessable-theme="accessible"] {
+  .licenseTag{
+    color: var(--gray-800)!important;
+  }
+  .sb-modal-content .sb-color-warning{
+   color: #ffae91 !important;
+  }
+  .user-profile-box span.sb-color-warning{
+    color: #ffae91 !important;
+  }
+}

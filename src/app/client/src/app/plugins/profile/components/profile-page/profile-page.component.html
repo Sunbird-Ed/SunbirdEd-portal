@@ -20,12 +20,12 @@
     </div>
     <div class="profile-user-label font-w-bold d-flex text-center relative position">{{userProfile.firstName | titlecase}} {{userProfile.lastName |
       titlecase}}
-      <div class="computer only">
+      <!-- <div class="computer only">
         <i  *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupPlacement]="'bottom left'" [popupInverted]="true" class="name-info"></i>
-    </div>
-    <div class="mobile only name-info-mobile">
+    </div> -->
+    <!-- <div class="mobile only name-info-mobile">
         <i *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupPlacement]="'bottom right'" [popupInverted]="true" class="name-info"></i>
-    </div>
+    </div> -->
     </div>
     <div class="mt-8 mb-16 d-flex flex-jc-center">
       <div class="fnormal">{{resourceService?.frmelmnts?.lbl?.instacnceId | interpolate:'{instance}': instance}} :</div>
@@ -69,12 +69,12 @@
     </div>
   </div>
     <div class="fs-1-5 font-w-bold d-flex mb-8 text-center org-info" *ngIf=" orgDetails && orgDetails.orgName">{{orgDetails.orgName}}
-      <div class="computer only">
+      <!-- <div class="computer only">
           <i *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupInverted]="true" [popupPlacement]="'bottom left'" class="name-info"></i>
-      </div>
-      <div class="mobile only">
+      </div> -->
+      <!-- <div class="mobile only">
           <i *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupInverted]="true" [popupPlacement]="'bottom right'" class="name-info"></i>
-      </div>
+      </div> -->
 
     </div>
 
