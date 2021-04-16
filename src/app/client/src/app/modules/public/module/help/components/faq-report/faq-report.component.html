@@ -1,0 +1,13 @@
+<div class="faq-report-container">
+  <h6>{{resourceService?.frmelmnts?.lbl?.faqTellUsMore}}</h6>
+  <sb-form [config]='faqReportConfig' [platform]="'web'" (valueChanges)="valueChanged($event)" (statusChanges)="statusChanged($event)"
+    (dataLoadStatus)="dataLoadStatus($event)">
+  </sb-form>
+
+  <div>
+    <p>{{resourceService?.frmelmnts?.lbl?.submitEmailNote}}</p>
+    <button (click)="faqReportSubmit()">
+      Submit feedback
+    </button>
+  </div>
+</div>

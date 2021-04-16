@@ -33,6 +33,8 @@ export class FaqComponent implements OnInit {
   helpCenterLink = '/help/faqs/user/index.html';
   selectedFaqCategory: any;
   isMobileView = false;
+  showFaqReport: boolean;
+  showOnlyFaqCategory = true;
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     if (event && event.target && event.target.innerWidth) {
@@ -187,9 +189,12 @@ export class FaqComponent implements OnInit {
 
   getFaqCategoryData() {
     this.faqData = FaqData;
+    this.selectedFaqCategory = this.faqData.categories[0];
   }
 
   onCategorySelect(event) {
+    this.showOnlyFaqCategory = false;
+    this.showFaqReport = false;
     this.selectedFaqCategory = undefined;
     if (!event && !event.data) {
       return;
@@ -206,10 +211,16 @@ export class FaqComponent implements OnInit {
   checkScreenView(width) {
     if (width <= 767) {
       this.isMobileView = true;
+      this.showOnlyFaqCategory = true;
     } else {
       this.isMobileView = false;
     }
     console.log('isMobileView', this.isMobileView);
+  }
+
+  enableFaqReport(event) {
+    this.showOnlyFaqCategory = false;
+    this.showFaqReport = true;
   }
 
 }

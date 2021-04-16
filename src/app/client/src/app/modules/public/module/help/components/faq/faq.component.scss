@@ -3,9 +3,9 @@
     --visit-helpcenter-bg:var(--white);
 }
 :host::ng-deep {
-
+​
     .help-page {
-
+​
         &__content {
             margin-top: calculateRem(24px);
             .panel {
@@ -18,7 +18,7 @@
                 }
             }
         }
-
+​
         &__visit-helpcenter {
             background-color: var(--visit-helpcenter-bg);
             .visit-helpcenter__text {
@@ -28,7 +28,7 @@
             }
         }
     }
-
+​
     .extraTemplate {
         @include respond-below(sm) {
             flex-wrap: wrap;
@@ -41,7 +41,7 @@
         }
     }
 }
-
+​
 .faq_title {
     color: var(--carousel-title);
     font-size: 1rem;
@@ -65,14 +65,16 @@
     align-items: flex-start;
     &__left {
         min-width: calculateRem(312px);
-        flex:none;
+        flex:1;
         padding:1.5rem;
         min-height: 8rem;
         background: var(--sbfaq-compt-bg);
+        transition: 0.3 ease-in-out;
     }
     &__right {
         padding-left: 2rem;
         width: calc(100% - 19.5rem);
+        transition: 0.3 ease-in-out;
         @include respond-below(sm) {
             padding-left: 0rem;
         }
