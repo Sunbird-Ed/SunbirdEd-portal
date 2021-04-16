@@ -100,7 +100,6 @@ describe('ViewAllComponent', () => {
     expect(component.queryParams).toEqual(queryParams);
     expect(component.filters).toEqual(filters);
     expect(searchService.contentSearch).toHaveBeenCalled();
-    expect(component.closeUrl).toEqual('/learn');
     expect(component.sectionName).toEqual('Latest Courses');
     expect(component.pageNumber).toEqual(1);
   });
@@ -140,7 +139,6 @@ describe('ViewAllComponent', () => {
    expect(component.queryParams).toEqual(queryParams);
     expect(component.filters).toEqual(filters);
     expect(searchService.contentSearch).toHaveBeenCalled();
-    expect(component.closeUrl).toEqual('/learn');
     expect(component.sectionName).toEqual('Latest Courses');
     expect(component.pageNumber).toEqual(1);
     expect(component.showLoader).toBeFalsy();
@@ -270,5 +268,10 @@ describe('ViewAllComponent', () => {
     expect(component.noResult).toBeTruthy();
     expect(component.noResultMessage).toEqual(noResultMessages);
   });
-
+  it('should handle close button click', () => {
+    const route = TestBed.get(Router);
+    route.url = 'learn/view-all/LatestCourses/1?contentType: course';
+    component.handleCloseButton();
+    expect(route.navigate).toHaveBeenCalledWith(['/learn'], { queryParams: { selectedTab: '' } });
+  });
 });

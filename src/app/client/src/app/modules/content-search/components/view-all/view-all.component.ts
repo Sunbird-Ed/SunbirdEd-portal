@@ -131,7 +131,6 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   public filterType: string;
   public frameWorkName: string;
   public sortingOptions: Array<ISort>;
-  public closeUrl: string;
   public sectionName: string;
   public unsubscribe = new Subject<void>();
   showExportLoader = false;
@@ -277,7 +276,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
           this.facets = this.updateFacetsData(facetsList);
           this.initFilters = true;
         }
-      this.showLoader = false;
+        this.showLoader = false;
       if (this.sectionName === this.resourceService.frmelmnts.lbl.mytrainings) {
        this.processEnrolledCourses(_.get(response, 'enrolledCourseData'));
       } else {
