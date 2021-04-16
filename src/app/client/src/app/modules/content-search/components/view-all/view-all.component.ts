@@ -186,8 +186,6 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       tap(res => {
         this.showLoader = true;
         this.queryParams = res.queryParams;
-        const route = this.router.url.split('/view-all');
-        this.closeUrl = '/' + route[0].toString();
         this.sectionName = res.params.section.replace(/\-/g, ' ');
         this.pageNumber = Number(res.params.pageNumber);
       }),
@@ -628,5 +626,10 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     return facetsData;
   }
-
+  public handleCloseButton() {
+    const [path] = this.router.url.split('/view-all');
+    const redirectionUrl = `/${path.toString()}`;
+    const { selectedTab = '' } = this.queryParams || {};
+    this.router.navigate([redirectionUrl], { queryParams: { selectedTab } });
+  }
 }
