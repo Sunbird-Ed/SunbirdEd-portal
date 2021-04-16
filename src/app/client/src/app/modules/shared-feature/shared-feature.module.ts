@@ -6,7 +6,7 @@ import {
   ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
   OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent, ValidateTeacherIdentifierPopupComponent,
   UserLocationComponent, UserOnboardingComponent, OnboardingUserSelectionComponent,
-  ConfirmationPopupComponent, CertPreviewPopupComponent, ContentPlayerComponent, CollectionPlayerComponent
+  ConfirmationPopupComponent, CertPreviewPopupComponent, ContentPlayerComponent, CollectionPlayerComponent, YearOfBirthComponent
 } from './components';
 import { SlickModule } from 'ngx-slick';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -52,12 +52,12 @@ export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerSe
     UserOnboardingComponent,
     OnboardingUserSelectionComponent,
     ConfirmationPopupComponent, CertPreviewPopupComponent, ContentPlayerComponent, GlobalConsentPiiComponent,
-     CollectionPlayerComponent
+     CollectionPlayerComponent, YearOfBirthComponent
   ],
   exports: [ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
     OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent, ValidateTeacherIdentifierPopupComponent,
     UserLocationComponent, UserOnboardingComponent, OnboardingUserSelectionComponent,
     ConfirmationPopupComponent, CertPreviewPopupComponent,
-     ContentPlayerComponent, GlobalConsentPiiComponent, CollectionPlayerComponent]
+     ContentPlayerComponent, GlobalConsentPiiComponent, CollectionPlayerComponent, YearOfBirthComponent]
 })
 export class SharedFeatureModule { }

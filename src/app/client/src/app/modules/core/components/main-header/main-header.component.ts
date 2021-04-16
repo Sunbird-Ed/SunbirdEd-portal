@@ -148,6 +148,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   isConnected = false;
   isDesktopApp = false;
   showLoadContentModal = false;
+  guestUser;
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
     public orgDetailsService: OrgDetailsService, public formService: FormService,
@@ -506,6 +507,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
       this.isConnected = isConnected;
     });
+    this.getGuestUser();
     this.checkFullScreenView();
     try {
       this.helpLinkVisibility = (<HTMLInputElement>document.getElementById('helpLinkVisibility')).value;
@@ -547,6 +549,12 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   checkFullScreenView() {
     this.navigationHelperService.contentFullScreenEvent.pipe(takeUntil(this.unsubscribe$)).subscribe(isFullScreen => {
       this.isFullScreenView = isFullScreen;
+    });
+  }
+
+  getGuestUser() {
+    this.userService.guestData$.subscribe((data) => {
+      this.guestUser = data.userProfile;
     });
   }
 

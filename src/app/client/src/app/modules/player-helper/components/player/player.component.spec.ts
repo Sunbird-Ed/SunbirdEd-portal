@@ -479,25 +479,5 @@ describe('PlayerComponent', () => {
      expect(mockFrameValue.contentWindow.print).toHaveBeenCalled();
      expect(component.mobileViewDisplay).toBe('none');
   })
-
-  it('should call hierarchy api in ngoninit and get throwerror', () => {
-    component.playerConfig = {
-      config: {},
-      context: {},
-      data: {},
-      metadata: {
-        mimeType: 'application/vnd.sunbird.questionset',
-        identifier: 'do_1132388568303943681505'
-      }
-    };
-    const playerService = TestBed.get(PublicPlayerService);
-    const toasterService = TestBed.get(ToasterService);
-    spyOn(toasterService, 'error').and.callThrough();
-    spyOn(playerService, 'getQuestionSetHierarchy').and.returnValue(throwError({}));
-    component.ngOnInit();
-    expect(component.showQumlPlayer).toBeFalsy();
-    expect(component.questionIds).toBeUndefined();
-    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
-  });
 });
 
