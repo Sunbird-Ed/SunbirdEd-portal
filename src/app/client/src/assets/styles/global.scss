@@ -841,6 +841,10 @@ quml-player {
         z-index: 0 !important;
       }
     }
+
+    figure.image img {
+      max-width: 100%;
+    }
   }
 }
 
