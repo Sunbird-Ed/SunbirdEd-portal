@@ -525,11 +525,12 @@ describe('ExplorePageComponent', () => {
     const router = TestBed.get(Router);
     const searchQuery = '{"request":{"query":"","filters":{"status":"1"},"limit":10,"sort_by":{"createdDate":"desc"}}}';
     spyOn(component, 'viewAll').and.callThrough();
+    spyOn(component, 'getCurrentPageData').and.returnValue({})
     spyOn(cacheService, 'set').and.stub();
     router.url = '/explore-course?selectedTab=course';
     component.viewAll({ searchQuery: searchQuery, name: 'Featured-courses' });
     expect(router.navigate).toHaveBeenCalledWith(['/explore-course/view-all/Featured-courses', 1],
-      { queryParams: { 'status': '1', 'defaultSortBy': '{"createdDate":"desc"}', 'exists': undefined } });
+      { queryParams: { 'status': '1', 'defaultSortBy': '{"createdDate":"desc"}', 'exists': undefined }, state: { currentPageData: {}} });
     expect(cacheService.set).toHaveBeenCalled();
   });
 

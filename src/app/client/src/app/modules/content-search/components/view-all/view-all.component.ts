@@ -1,6 +1,6 @@
 import { PublicPlayerService } from '@sunbird/public';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-import {combineLatest, of, Subject} from 'rxjs';
+import { combineLatest, Observable, of, Subject } from 'rxjs';
 import {
   ServerResponse, PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
   ILoaderMessage, UtilService, ICard, BrowserCacheTtlService, NavigationHelperService, IPagination,
@@ -19,8 +19,8 @@ import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from
 })
 export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
-	 * telemetryImpression
-	*/
+   * telemetryImpression
+  */
   public telemetryImpression: IImpressionEventInput;
   public closeIntractEdata: IInteractEventEdata;
   public cardIntractEdata: IInteractEventEdata;
@@ -83,8 +83,8 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   pageNumber: number;
   /**
-	 * Contains page limit of outbox list
-	 */
+   * Contains page limit of outbox list
+   */
   pageLimit: number;
   /**
    * This variable hepls to show and hide page loader.
@@ -131,7 +131,6 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   public filterType: string;
   public frameWorkName: string;
   public sortingOptions: Array<ISort>;
-  public closeUrl: string;
   public sectionName: string;
   public unsubscribe = new Subject<void>();
   showExportLoader = false;
@@ -186,8 +185,6 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       tap(res => {
         this.showLoader = true;
         this.queryParams = res.queryParams;
-        const route = this.router.url.split('/view-all');
-        this.closeUrl = '/' + route[0].toString();
         this.sectionName = res.params.section.replace(/\-/g, ' ');
         this.pageNumber = Number(res.params.pageNumber);
       }),
@@ -198,7 +195,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       }),
       takeUntil(this.unsubscribe)
     ).subscribe((response: any) => {
-        this.getContents(response);
+      this.getContents(response);
     }, (error) => {
       this.showLoader = false;
       this.noResult = true;
@@ -214,9 +211,9 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     const filterData = filters && filters.filters || {};
     if (filterData.channel && this.facets) {
       const channelIds = [];
-      const facetsData = _.find(this.facets, {'name': 'channel'});
+      const facetsData = _.find(this.facets, { 'name': 'channel' });
       _.forEach(filterData.channel, (value, index) => {
-        const data = _.find(facetsData.values, {'identifier': value});
+        const data = _.find(facetsData.values, { 'identifier': value });
         if (data) {
           channelIds.push(data.name);
         }
@@ -232,12 +229,12 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.redoLayout();
     this.layoutService.switchableLayout().
-    pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig => {
-    if (layoutConfig != null) {
-      this.layoutConfiguration = layoutConfig.layout;
-    }
-    this.redoLayout();
-   });
+      pipe(takeUntil(this.unsubscribe)).subscribe(layoutConfig => {
+        if (layoutConfig != null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        }
+        this.redoLayout();
+      });
   }
 
   fetchOrgData(orgList) {
@@ -246,7 +243,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       const channelList = this.getChannelList(_.get(orgList, 'contentData.result.facets'));
       const rootOrgIds = this.processOrgData(channelList);
       return this.orgDetailsService.searchOrgDetails({
-        filters: {isRootOrg: true, rootOrgId: rootOrgIds},
+        filters: { isRootOrg: true, rootOrgId: rootOrgIds },
         fields: ['slug', 'identifier', 'orgName']
       });
     } else {
@@ -279,23 +276,23 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
           this.facets = this.updateFacetsData(facetsList);
           this.initFilters = true;
         }
-      this.showLoader = false;
-      if (this.sectionName === this.resourceService.frmelmnts.lbl.mytrainings) {
-       this.processEnrolledCourses(_.get(response, 'enrolledCourseData'));
-      } else {
-        if (response.contentData.result.count && response.contentData.result.content) {
-          this.noResult = false;
-          this.totalCount = response.contentData.result.count;
-          this.pager = this.paginationService.getPager(response.contentData.result.count, this.pageNumber, this.pageLimit);
-          this.searchList = this.formatSearchresults(response.contentData.result.content);
+        this.showLoader = false;
+        if (this.sectionName === _.get(this.resourceService, 'frmelmnts.lbl.myEnrolledCollections')) {
+          this.processEnrolledCourses(_.get(response, 'enrolledCourseData'), _.get(response, 'currentPageData'));
         } else {
-          this.noResult = true;
-          this.noResultMessage = {
-            'message': 'messages.stmsg.m0007',
-            'messageText': 'messages.stmsg.m0006'
-          };
+          if (response.contentData.result.count && response.contentData.result.content) {
+            this.noResult = false;
+            this.totalCount = response.contentData.result.count;
+            this.pager = this.paginationService.getPager(response.contentData.result.count, this.pageNumber, this.pageLimit);
+            this.searchList = this.formatSearchresults(response.contentData.result.content);
+          } else {
+            this.noResult = true;
+            this.noResultMessage = {
+              'message': 'messages.stmsg.m0007',
+              'messageText': 'messages.stmsg.m0006'
+            };
+          }
         }
-      }
       }, err => {
         this.showLoader = false;
         this.noResult = true;
@@ -367,8 +364,8 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       params: this.configService.appConfig.ViewAll.contentApiQueryParams,
     };
     requestParams['exists'] = request.queryParams.exists,
-    requestParams['sort_by'] = request.queryParams.sortType ?
-    { [request.queryParams.sort_by]: request.queryParams.sortType } : JSON.parse(request.queryParams.defaultSortBy);
+      requestParams['sort_by'] = request.queryParams.sortType ?
+        { [request.queryParams.sort_by]: request.queryParams.sortType } : JSON.parse(request.queryParams.defaultSortBy);
     if (_.get(manipulatedData, 'filters')) {
       requestParams['softConstraints'] = _.get(manipulatedData, 'softConstraints');
     }
@@ -378,8 +375,8 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
 
     return combineLatest(
       this.searchService.contentSearch(requestParams),
-      this.coursesService.enrolledCourseData$).pipe(map(data => ({ contentData: data[0], enrolledCourseData: data[1] })));
-
+      this.coursesService.enrolledCourseData$,
+      this.getCurrentPageData()).pipe(map(data => ({ contentData: data[0], enrolledCourseData: data[1], currentPageData: data[2] })));
   }
 
   private formatSearchresults(sectionData) {
@@ -421,7 +418,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   handleCourseRedirection({ data }) {
     const { metaData } = data;
-    const {onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch} = this.coursesService.findEnrolledCourses(metaData.identifier);
+    const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } = this.coursesService.findEnrolledCourses(metaData.identifier);
 
     if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
       return this.playerService.playContent(metaData);
@@ -463,7 +460,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
       });
   }
-  ngAfterViewInit () {
+  ngAfterViewInit() {
     setTimeout(() => {
       this.setTelemetryImpressionData();
     });
@@ -516,7 +513,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getChannelList(channels) {
-    return _.find(channels, {'name': 'channel'});
+    return _.find(channels, { 'name': 'channel' });
   }
 
   /**
@@ -524,12 +521,19 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
    * @param  {} courseData
    * @description - It will process the enrolled course data if user comes to this page from My courses section
    */
-  processEnrolledCourses(courseData) {
-    if (_.get(courseData, 'enrolledCourses')) {
-      const enrolledCourseCount = _.get(courseData, 'enrolledCourses.length');
+  processEnrolledCourses(courseData, pageData) {
+    const enrolledCourses = _.get(courseData, 'enrolledCourses');
+    if (enrolledCourses) {
+      const { contentType: pageContentType = null, search: { filters: { primaryCategory: pagePrimaryCategories = [] } } } = pageData;
+      const enrolledContentPredicate = course => {
+        const { primaryCategory = null, contentType = null } = _.get(course, 'content') || {};
+        return pagePrimaryCategories.some(category => _.toLower(category) === _.toLower(primaryCategory)) || (_.toLower(contentType) === _.toLower(pageContentType));
+      };
+      const filteredCourses = _.filter(enrolledCourses || [], enrolledContentPredicate);
+      const enrolledCourseCount = _.get(filteredCourses, 'length');
       this.noResult = false;
       this.totalCount = enrolledCourseCount;
-      const sortedData = _.map(_.orderBy(_.get(courseData, 'enrolledCourses'), ['enrolledDate'], ['desc']), (val) => {
+      const sortedData = _.map(_.orderBy(filteredCourses, ['enrolledDate'], ['desc']), (val) => {
         const value = _.get(val, 'content');
         return value;
       });
@@ -628,5 +632,25 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     return facetsData;
   }
+  public handleCloseButton() {
+    const [path] = this.router.url.split('/view-all');
+    const redirectionUrl = `/${path.toString()}`;
+    const { selectedTab = '' } = this.queryParams || {};
+    this.router.navigate([redirectionUrl], { queryParams: { selectedTab } });
+  }
 
+  private getFormConfig(input = { formType: 'contentcategory', formAction: 'menubar', contentType: 'global' }): Observable<object> {
+    return this.formService.getFormConfig(input);
+  }
+
+  private getPageData = selectedTab => formData => _.find(formData, data => data.contentType === selectedTab);
+
+  private getCurrentPageData() {
+    const { currentPageData = null } = _.get(history, 'state') || {};
+    if (currentPageData) return of(currentPageData);
+    const selectedTab = _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook';
+    return this.getFormConfig().pipe(
+      map(this.getPageData(selectedTab))
+    )
+  }
 }
