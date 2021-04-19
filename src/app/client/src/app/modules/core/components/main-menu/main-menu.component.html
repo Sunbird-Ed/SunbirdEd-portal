@@ -10,7 +10,7 @@
 	<ng-container *ngIf="userService.loggedIn">
 
 		<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive('/workspace')" appTelemetryInteract
-			[telemetryInteractEdata]="workspaceMenuIntractEdata" *ngIf='permissionService.permissionAvailable'
+			[telemetryInteractEdata]="workspaceMenuIntractEdata" *ngIf='!isDesktopApp && permissionService?.permissionAvailable'
 			appPermission [permission]='workSpaceRole' [routerLink]="[navigateToWorkspace()]" tabindex="0">
 			{{resourceService?.frmelmnts?.tab?.workspace}}
 		</a>
