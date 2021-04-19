@@ -1479,7 +1479,63 @@ html[data-theme=Darkmode] {
   --kabab-menu-hover-bg: var(--black);
   --kabab-menu-dropdown-bg: #222222;
   --kabab-menu-dropdown-item-active: #333333;
-
+  //desktop dark theme css
+  .sb-label-secondary-0, .sb-label-success-0{
+    background: #222;
+    border-color: #222;
+  }
+  .system-warning-section{
+    background-color: #444;
+    .sb-bg-color-white {
+      background: #444 !important;
+    }
+  }
+  .sb-btn-outline-error, .sb-modal.sb-error .ui.modal .sb-modal-actions .sb-btn{
+    background-color: #444;
+  }
+  .sb-single-pannel-accordion-list-item .info-text{
+    color: var(--gray-100);
+  }
+  .sb-single-pannel-accordion-list-item .download-text{
+    color:var(--white) !important;
+  }
+  .sb-toaster.sb-toast-info{
+    background: #444;
+  }
+  .sb-toaster.sb-toast-info .iziToast-body .iziToast-texts .iziToast-title, 
+  .sb-toaster.sb-toast-info .iziToast-body .iziToast-texts .sb-toast-title, 
+  .sb-toaster.sb-toast-info .iziToast-body .sb-toast-texts .iziToast-title, 
+  .sb-toaster.sb-toast-info .iziToast-body .sb-toast-texts .sb-toast-title, 
+  .sb-toaster.sb-toast-info .sb-toast-body .iziToast-texts .iziToast-title, 
+  .sb-toaster.sb-toast-info .sb-toast-body .iziToast-texts .sb-toast-title, 
+  .sb-toaster.sb-toast-info .sb-toast-body .sb-toast-texts .iziToast-title, 
+  .sb-toaster.sb-toast-info .sb-toast-body .sb-toast-texts .sb-toast-title{
+    color: var(--white);
+  }
+  .iziToast > .iziToast-body .iziToast-icon.ico-info{
+    filter: invert(1);
+  }
+  .sb-single-resource .sb-bg-color-white {
+    background: #222 !important;
+  }
+  .sb-bordered-list{
+    border:none;
+  }
+  .sb-bordered-list .sb-bordered-list-item{
+    background: #222 !important;
+  }
+  .about-page{
+    .sb-bg-color-white {
+      background: #222 !important;
+    }
+    .sb-left-content {  
+      color: var(--gray-100);
+    }
+  }
+  .profile__actions__list .list-item:focus{
+    outline: none;
+  }
+  //desktop dark theme css
   .terms-and-cond-form iframe{
     filter: invert(1);
   }
@@ -2724,6 +2780,13 @@ html[data-theme='Darkmode'][layout='joy'] {
   .profile-bg-c-4 {
     background: #222222 !important;
     color: #ffffff;
+  }
+
+  .content-preference__info {
+    @include respond-below(md) {
+      background: #222222 !important;
+      color: #ffffff;
+    } 
   }
 
   .ui.selection.sbt-dropdown.dropdown .menu>div .item:hover,

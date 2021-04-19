@@ -90,7 +90,7 @@ export class PlayerService {
     configuration.context.sid = this.userService.sessionId;
     configuration.context.uid = this.userService.userid;
     configuration.context.timeDiff = this.userService.getServerTimeDiff;
-    configuration.context.contextRollup = this.getRollUpData(this.userService.userProfile.hashTagIds);
+    configuration.context.contextRollup = this.getRollUpData(_.get(this.userService, 'userProfile.hashTagIds'));
     configuration.context.channel = this.userService.channel;
     const deviceId = (<HTMLInputElement>document.getElementById('deviceId'));
     configuration.context.did = deviceId ? deviceId.value : '';
@@ -108,7 +108,7 @@ export class PlayerService {
       configuration.context.dims = cloneDims;
     }
     const tags = [];
-    _.forEach(this.userService.userProfile.organisations, (org) => {
+    _.forEach(_.get(this.userService, 'userProfile.organisations'), (org) => {
       if (org.hashTagId) {
         tags.push(org.hashTagId);
       }
@@ -212,6 +212,8 @@ export class PlayerService {
           }
       } else if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent) {
         this.router.navigate(['/resources/play/content', content.identifier]);
+      } else if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
+        this.router.navigate(['/resources/play/questionset', content.identifier]);
       } else {
         this.router.navigate(['/resources/play/content', content.identifier]);
       }

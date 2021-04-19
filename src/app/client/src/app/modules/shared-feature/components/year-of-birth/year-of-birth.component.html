@@ -1,0 +1,20 @@
+<sui-modal [mustScroll]="false" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal" #modal>
+<div class="sb-modal-header">
+  {{resourceService?.frmelmnts?.lbl?.yearOfBirthHeader}}
+</div>
+<div class="sb-modal-content o-y-visible">
+  <div class="ui center aligned segment">
+    <label class="mr-16">{{resourceService?.frmelmnts?.lbl?.yearOfBirth}}<span class="sb-color-red">*</span></label>
+   <sui-select class="selection" [options]="birthYearOptions" placeholder="{{resourceService.frmelmnts?.lbl?.year}}"
+     (selectedOptionChange)="changeBirthYear($event)" #select>
+      <sui-select-option *ngFor="let option of select.filteredOptions" [value]="option">
+      </sui-select-option>
+    </sui-select>
+  </div>
+</div>
+<div class="sb-modal-actions">
+  <button type="button" (click)="submitYearOfBirth()" [disabled]="!selectedYearOfBirth" class="sb-btn sb-btn-normal sb-btn-primary">
+    {{resourceService?.frmelmnts?.lbl?.submit}}
+  </button>
+</div>
+</sui-modal>
