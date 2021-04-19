@@ -2806,6 +2806,9 @@ sb-accordion-body .sbaccordion__panel-content .credits-section .title{
     .cursor-pointer .download-text{
       color: var(--black);
     }
+    .sb-btn-outline-error, .sb-modal.sb-error .ui.modal .sb-modal-actions > button.sb-btn{
+      color:black !important
+      }
   }
 
 html[accessable-theme="accessible"][layout='joy'][data-theme=Darkmode] {
