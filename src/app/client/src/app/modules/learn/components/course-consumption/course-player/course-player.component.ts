@@ -708,7 +708,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.dropdownContent = !this.dropdownContent;
   }
   public forceSync() {
-    this.closeSharePopup('forceSync');
+    this.closeSharePopup('force-sync');
     this.dropdownContent = !this.dropdownContent;
     console.log('need to call the sync function now');
     const req = {
