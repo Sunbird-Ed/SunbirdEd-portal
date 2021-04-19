@@ -53,6 +53,7 @@ export class NewCollectionEditorComponent implements OnInit {
 
   switchLayout() {
     if (this.layoutType === 'joy') {
+      localStorage.setItem('collectionEditorLayoutType', this.layoutType);
       this.layoutService.initiateSwitchLayout();
     }
   }
@@ -125,7 +126,12 @@ export class NewCollectionEditorComponent implements OnInit {
   }
 
   editorEventListener(event) {
-    this.switchLayout();
+    const layoutType = localStorage.getItem('layoutType');
+    const collectionEditorLayoutType = localStorage.getItem('collectionEditorLayoutType');
+    if (layoutType === 'default' && collectionEditorLayoutType) {
+      this.layoutService.initiateSwitchLayout();
+      localStorage.removeItem('collectionEditorLayoutType');
+    }
     this.redirectToWorkSpace();
   }
 
