@@ -41,7 +41,6 @@
         }
     }
 }
-​
 .faq_title {
     color: var(--carousel-title);
     font-size: 1rem;
@@ -69,12 +68,12 @@
         padding:1.5rem;
         min-height: 8rem;
         background: var(--sbfaq-compt-bg);
-        transition: 0.3 ease-in-out;
+        transition: all ease-in-out .3s;
     }
     &__right {
         padding-left: 2rem;
         width: calc(100% - 19.5rem);
-        transition: 0.3 ease-in-out;
+        transition: all ease-in-out .3s;
         @include respond-below(sm) {
             padding-left: 0rem;
         }

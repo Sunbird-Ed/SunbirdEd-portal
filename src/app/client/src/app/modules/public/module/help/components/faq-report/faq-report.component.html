@@ -1,12 +1,12 @@
 <div class="faq-report-container">
   <h6>{{resourceService?.frmelmnts?.lbl?.faqTellUsMore}}</h6>
-  <sb-form [config]='faqReportConfig' [platform]="'web'" (valueChanges)="valueChanged($event)" (statusChanges)="statusChanged($event)"
+  <sb-form class="faq-sbforms"[config]='faqReportConfig' [platform]="'web'" (valueChanges)="valueChanged($event)" (statusChanges)="statusChanged($event)"
     (dataLoadStatus)="dataLoadStatus($event)">
   </sb-form>
 
-  <div>
+  <div class="d-flex flex-ai-jc-center mt-8">
     <p>{{resourceService?.frmelmnts?.lbl?.submitEmailNote}}</p>
-    <button (click)="faqReportSubmit()">
+    <button class="sb-btn sb-btn-primary sb-btn-normal" (click)="faqReportSubmit()">
       Submit feedback
     </button>
   </div>
