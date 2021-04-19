@@ -53,7 +53,7 @@
               </button>
 
               <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix"
-                *ngIf="permissionService.permissionAvailable && courseStatus !== 'Unlisted'" appPermission
+                *ngIf="!isDesktopApp && permissionService?.permissionAvailable && courseStatus !== 'Unlisted'" appPermission
                 appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
                 [telemetryInteractEdata]="{id:'copyContent' , type: 'click' , pageid:'course-consumption'}"
                 [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" (click)="copyContent(courseHierarchy)"
