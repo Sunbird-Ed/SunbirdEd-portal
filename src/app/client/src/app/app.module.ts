@@ -22,7 +22,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateStore } from '@ngx-translate/core';
-import { SbSearchFilterModule } from '@project-sunbird/search-filter-widget';
+import { SbSearchFilterModule } from 'common-form-elements';
 
 @NgModule({
   declarations: [

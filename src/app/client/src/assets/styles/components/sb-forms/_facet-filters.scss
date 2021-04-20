@@ -141,6 +141,7 @@
       & > div {
         display: block;
         width: 100%;
+        text-transform: capitalize;
       }
 
       &.selected-option {

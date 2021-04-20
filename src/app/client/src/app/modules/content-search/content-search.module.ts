@@ -15,7 +15,7 @@ import { SlickModule } from 'ngx-slick';
 import { RouterModule } from '@angular/router';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { TranslateModule } from '@ngx-translate/core';
-import { SbSearchFilterModule } from '@project-sunbird/search-filter-widget';
+import { SbSearchFilterModule } from 'common-form-elements';
 
 @NgModule({
   declarations: [NoResultComponent, SearchFilterComponent, PageSectionComponent, ProminentFilterComponent,

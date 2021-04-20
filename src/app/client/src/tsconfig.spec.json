@@ -75,12 +75,6 @@
       ],
       "@sunbird/groups": [
         "app/modules/groups"
-      ],
-      "@project-sunbird/search-filter-widget": [
-        "../node_modules/project-sunbird-search-filter-widget"
-      ],
-      "@project-sunbird/search-filter-widget/*": [
-        "../node_modules/project-sunbird-search-filter-widget/*"
       ]
     },
     "module": "es2015",
