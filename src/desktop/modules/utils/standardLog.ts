@@ -22,7 +22,6 @@ export class StandardLog {
   public debug(logData: ILogData) {
     const actor = { id: this.userId, type: 'user' };
     const data = { ...logData, id: `${LOG_PREFIX}_${logData.id}`,  actor };
-    data.id = 'ODC_'
     logger.debug(data);
   }
 

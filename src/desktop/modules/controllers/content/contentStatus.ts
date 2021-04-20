@@ -16,12 +16,10 @@ export default class ContentStatus {
   @Inject private databaseSdk: DatabaseSDK;
   private deviceId: string;
   private networkQueue: NetworkQueue;
-  private standardLog: StandardLog;
 
   constructor(manifest) {
     this.networkQueue = containerAPI.getNetworkQueueInstance();
     this.databaseSdk.initialize(manifest.id);
-    this.standardLog = new StandardLog();
   }
 
   // Get logged in user ID
@@ -41,6 +39,7 @@ export default class ContentStatus {
   }
 
   public async getLocalContentStatusList(req, res) {
+    const standardLog = new StandardLog();
     try {
       const currentUserId = await this.getCurrentUserId();
       const request = _.get(req, 'body.request');
@@ -56,12 +55,13 @@ export default class ContentStatus {
 
       res.status(200).send(Response.success(API_ID, { contentList }, req));
     } catch (error) {
-      this.standardLog.error({id: 'db_read_failed', message: 'Error while fetching content status from database', error});
+      standardLog.error({id: 'db_read_failed', message: 'Error while fetching content status from database', error});
       res.status(500).send(Response.error(API_ID, 500));
     }
   }
 
   public async saveContentStatus(contentStatusList = []) {
+    const standardLog = new StandardLog();
     return new Promise(async(resolve, reject) => {
       try {
         const userId = await this.getCurrentUserId();
@@ -85,13 +85,14 @@ export default class ContentStatus {
           resolve({});
         });
       } catch (error) {
-        this.standardLog.error({ id: 'db_insert_failed', message: 'Error while inserting content status in database', error });
+        standardLog.error({ id: 'db_insert_failed', message: 'Error while inserting content status in database', error });
         resolve({});
       }
     });
   }
 
   async update(req, res) {
+    const standardLog = new StandardLog();
     this.deviceId = this.deviceId || await containerAPI.getSystemSDKInstance(manifest.id).getDeviceId();
     const userToken: any = await userSDK.getUserToken().catch(error => { logger.debug("Unable to get the user token", error); });
     const loggedInUserSession: any = await userSDK.getUserSession().catch(error => { logger.debug("User not logged in", error); });
@@ -125,7 +126,7 @@ export default class ContentStatus {
       await this.saveContentStatus(contents);
       res.status(200).send(Response.success("api.content.state.update", { result }, req));
     }).catch((error) => {
-      this.standardLog.error({ id: 'networkQueue_insert_failed', message: "Error while adding to Network queue", error });
+      standardLog.error({ id: 'networkQueue_insert_failed', message: "Error while adding to Network queue", error });
       res.status(500).send(Response.error("api.content.state.update", 500));
     });
   }
