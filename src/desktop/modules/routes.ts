@@ -152,7 +152,7 @@ export class Router {
     }));
     
     app.post(`/device/register/:id`, async(req, res, next) => {
-      this.standardLog.debug({ id: 'register_device_profile', message: `Received API call to update device profile ${_.get(req, 'params.id')}`});
+      this.standardLog.debug({ id: 'register_device_profile', message: `Received API call to update device profile`, mid: _.get(req, 'params.id')});
       const locationData = _.get(req, "body.request.userDeclaredLocation");
       if (locationData && _.isObject(locationData.state) || !_.isObject(locationData.city)) {
         const deviceProfile = new Device(manifest);

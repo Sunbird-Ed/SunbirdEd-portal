@@ -7,6 +7,7 @@ import DatabaseSDK from "../sdk/database";
 import Response from "../utils/response";
 
 import { ClassLogger } from "@project-sunbird/logger/decorator";
+import { StandardLog } from '../utils/standardLog';
 
 // @ClassLogger({
 //   logLevel: "debug",
@@ -15,12 +16,13 @@ import { ClassLogger } from "@project-sunbird/logger/decorator";
 export class Organization {
   @Inject
   private databaseSdk: DatabaseSDK;
-
   private fileSDK;
+  private standardLog: StandardLog;
 
   constructor(manifest) {
     this.databaseSdk.initialize(manifest.id);
     this.fileSDK = containerAPI.getFileSDKInstance(manifest.id);
+    this.standardLog = new StandardLog();
   }
 
   public async insert() {
@@ -52,9 +54,7 @@ export class Organization {
         await this.databaseSdk.bulk("organization", organizationDocs);
       }
     } catch (error) {
-      logger.error(
-        `While inserting organization ${error.message} ${error.stack}`,
-      );
+      this.standardLog.error({id: 'db_insert_failed', message: 'While inserting organization', error});
     }
   }
 
@@ -84,9 +84,7 @@ export class Organization {
         return res.send(Response.success("api.org.search", resObj, req));
       })
       .catch((err) => {
-        logger.error(
-          `ReqId = "${req.headers["X-msgid"]}": Received error while searching in organization database and err.message: ${err.message} ${err}`,
-        );
+        this.standardLog.error({id: 'db_search_failed', message: 'Received error while searching in organization database', error: err, mid: req.headers["X-msgid"]});
         if (err.status === 404) {
           res.status(404);
           return res.send(Response.error("api.org.search", 404));

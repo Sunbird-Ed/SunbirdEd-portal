@@ -4,7 +4,6 @@ import * as _ from "lodash";
 
 const LOG_PREFIX = "ODC";
 export class StandardLog {
-  deviceId: string;
   userId: string;
   userSDK;
 

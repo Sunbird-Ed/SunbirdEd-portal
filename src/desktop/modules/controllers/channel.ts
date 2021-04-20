@@ -7,6 +7,7 @@ import DatabaseSDK from "../sdk/database/index";
 import Response from "../utils/response";
 
 import { ClassLogger } from "@project-sunbird/logger/decorator";
+import { StandardLog } from '../utils/standardLog';
 
 // @ClassLogger({
 //   logLevel: "debug",
@@ -17,10 +18,12 @@ export class Channel {
   private databaseSdk: DatabaseSDK;
 
   private fileSDK;
+  private standardLog: StandardLog;
 
   constructor(manifest) {
     this.databaseSdk.initialize(manifest.id);
     this.fileSDK = containerAPI.getFileSDKInstance(manifest.id);
+    this.standardLog = new StandardLog();
   }
 
   public async insert() {
@@ -51,9 +54,7 @@ export class Channel {
         await this.databaseSdk.bulk("channel", channelDocs);
       }
     } catch (error) {
-      logger.error(
-        `While inserting channels ${error.message} ${error.stack}`,
-      );
+      this.standardLog.error({id: 'channel_insert_failed', message: 'Error While inserting channels', error});
     }
   }
 

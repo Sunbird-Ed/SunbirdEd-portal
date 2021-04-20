@@ -4,6 +4,7 @@ import * as jwt from "jsonwebtoken";
 import { ILoggedInUser } from '../../OpenRAP/interfaces/IUser';
 import permissionsHelper from "../helper/permissionsHelper";
 import Response from "../utils/response";
+import { StandardLog } from '../utils/standardLog';
 const uuidv1 = require('uuid/v1');
 
 
@@ -15,9 +16,11 @@ const uuidv1 = require('uuid/v1');
 export default class AuthController {
     private deviceId;
     private userSDK;
+    private standardLog: StandardLog;
     constructor(manifest) {
         this.getDeviceId(manifest);
         this.userSDK = containerAPI.getUserSdkInstance();
+        this.standardLog = new StandardLog();
     }
 
     public async getDeviceId(manifest) {
@@ -66,7 +69,7 @@ export default class AuthController {
 
             return res.send({ status: 'success' });
         } catch (err) {
-            logger.error(`While startUserSession ${err.message} ${err.stack}`);
+            this.standardLog.error({ id: 'userSession_initialization_failed', message: 'Error while start UserSession', error: err });
             let status = err.status || 500;
             res.status(status);
             return res.send(Response.error('api.user.read', status, err.message));
@@ -85,8 +88,8 @@ export default class AuthController {
 
     public async endSession(req, res) {
         try {
-            await this.userSDK.deleteAllLoggedInUsers().catch(error => { logger.error("unable to delete logged in user data", error); })
-            await this.userSDK.deleteUserSession().catch(error => { logger.debug("unable to clear logged in user session", error); })
+            await this.userSDK.deleteAllLoggedInUsers().catch(error => { this.standardLog.error({ id: 'user_delete_failed', message: 'Unable to delete logged in user data', error }); })
+            await this.userSDK.deleteUserSession().catch(error => { this.standardLog.error({id: 'user_session_clear_failed', message: 'Unable to clear logged in user session', error}); })
             return res.send({ status: 'success' });
         } catch(err) {
             let status = err.status || 500;
