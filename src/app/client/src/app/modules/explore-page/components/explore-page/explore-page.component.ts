@@ -170,7 +170,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 tap(({ enrolledCourses, err }) => {
                     this.enrolledCourses = this.enrolledSection = [];
                     const enrolledSection = {
-                        name: _.get(this.resourceService, 'frmelmnts.lbl.mytrainings'),
+                        name: _.get(this.resourceService, 'frmelmnts.lbl.myEnrolledCollections'),
                         length: 0,
                         count: 0,
                         contents: []
@@ -636,7 +636,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             this.publicPlayerService.playContent(event);
         } else {
             if (sectionType) {
-                event.section = this.resourceService.frmelmnts.lbl.mytrainings;
+                event.section = _.get(this.resourceService, 'frmelmnts.lbl.myEnrolledCollections');
                 event.data.identifier = _.get(event, 'data.metaData.courseId');
             }
             const { section, data } = event;
@@ -687,7 +687,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.cacheService.set('pageSection', event, { maxAge: this.browserCacheTtlService.browserCacheTtl });
         const queryParams = { ...searchQueryParams, ...this.queryParams };
         const sectionUrl = _.get(this.router, 'url.split') && this.router.url.split('?')[0] + '/view-all/' + event.name.replace(/\s/g, '-');
-        this.router.navigate([sectionUrl, 1], { queryParams: queryParams });
+        this.router.navigate([sectionUrl, 1], { queryParams: queryParams, state: { currentPageData: this.getCurrentPageData()} });
     }
 
 }

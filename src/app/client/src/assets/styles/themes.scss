@@ -2806,6 +2806,9 @@ sb-accordion-body .sbaccordion__panel-content .credits-section .title{
     .cursor-pointer .download-text{
       color: var(--black);
     }
+    .sb-btn-outline-error, .sb-modal.sb-error .ui.modal .sb-modal-actions > button.sb-btn{
+      color:black !important
+      }
   }
 
 html[accessable-theme="accessible"][layout='joy'][data-theme=Darkmode] {
@@ -3146,4 +3149,16 @@ html[accessable-theme="accessible"]{
 }
 
 
+}
+
+html[data-theme=Darkmode][layout='old'][accessable-theme="accessible"] {
+  .licenseTag{
+    color: var(--gray-800)!important;
+  }
+  .sb-modal-content .sb-color-warning{
+   color: #ffae91 !important;
+  }
+  .user-profile-box span.sb-color-warning{
+    color: #ffae91 !important;
+  }
 }
