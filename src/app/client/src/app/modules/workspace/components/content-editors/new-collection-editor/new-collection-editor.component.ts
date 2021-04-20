@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService, PublicDataService, ContentService, FrameworkService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
-import { ConfigService, NavigationHelperService, ToasterService, ResourceService, LayoutService, Util } from '@sunbird/shared';
+import { ConfigService, NavigationHelperService, ToasterService, ResourceService, LayoutService} from '@sunbird/shared';
 import { EditorService, WorkSpaceService } from './../../../services';
 import { ActivatedRoute} from '@angular/router';
 import * as _ from 'lodash-es';
