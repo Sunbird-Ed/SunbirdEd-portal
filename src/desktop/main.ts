@@ -319,7 +319,7 @@ async function initLogger() {
         pdata: {
           id: process.env.APP_ID,
           ver: app.getVersion(),
-          pid: 'sunbird-desktop-backend'
+          pid: 'sunbird-desktop'
         }
       }
     },

@@ -1,6 +1,7 @@
 import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import { logger } from "@project-sunbird/logger";
 import * as _ from "lodash";
+import { EventManager } from "@project-sunbird/OpenRAP/managers/EventManager";
 
 const LOG_PREFIX = "ODC";
 export class StandardLog {
@@ -10,6 +11,7 @@ export class StandardLog {
   constructor() {
     this.userSDK = containerAPI.getUserSdkInstance();
     this.getUserId();
+    this.updateUserId();
   }
 
   private async getUserId() {
@@ -17,6 +19,12 @@ export class StandardLog {
     const currentUserSession = await this.userSDK.getUserSession().catch(error => logger.error("Error while fetching User Id", error));
     const currentUserId = _.get(currentUserSession, 'userId');
     this.userId = currentUserId || 'anonymous';
+  }
+
+  private updateUserId() {
+    EventManager.subscribe("user:switched", (userId) => {
+      this.userId = userId ? userId : this.userId;
+    });
   }
 
   public debug(logData: ILogData) {

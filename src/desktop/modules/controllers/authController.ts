@@ -5,6 +5,7 @@ import { ILoggedInUser } from '../../OpenRAP/interfaces/IUser';
 import permissionsHelper from "../helper/permissionsHelper";
 import Response from "../utils/response";
 import { StandardLog } from '../utils/standardLog';
+import { EventManager } from "@project-sunbird/OpenRAP/managers/EventManager";
 const uuidv1 = require('uuid/v1');
 
 
@@ -67,6 +68,7 @@ export default class AuthController {
                 });
             }
 
+            EventManager.emit('user:switched', userId);
             return res.send({ status: 'success' });
         } catch (err) {
             this.standardLog.error({ id: 'userSession_initialization_failed', message: 'Error while start UserSession', error: err });
@@ -88,8 +90,9 @@ export default class AuthController {
 
     public async endSession(req, res) {
         try {
-            await this.userSDK.deleteAllLoggedInUsers().catch(error => { this.standardLog.error({ id: 'user_delete_failed', message: 'Unable to delete logged in user data', error }); })
-            await this.userSDK.deleteUserSession().catch(error => { this.standardLog.error({id: 'user_session_clear_failed', message: 'Unable to clear logged in user session', error}); })
+            await this.userSDK.deleteAllLoggedInUsers().catch(error => { this.standardLog.error({ id: 'user_delete_failed', message: 'Unable to delete logged in user data', error }); });
+            await this.userSDK.deleteUserSession().catch(error => { this.standardLog.error({id: 'user_session_clear_failed', message: 'Unable to clear logged in user session', error}); });
+            EventManager.emit('user:switched', 'anonymous');
             return res.send({ status: 'success' });
         } catch(err) {
             let status = err.status || 500;

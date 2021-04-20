@@ -4,6 +4,7 @@ import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import { manifest } from "./../manifest";
 import * as path from "path";
 import { logger } from "@project-sunbird/logger";
+import { EventManager } from "@project-sunbird/OpenRAP/managers/EventManager";
 
 export default (app, contentFilesPath, ecarsFolderPath ) => {
     const fileSDK = containerAPI.getFileSDKInstance(manifest.id);
@@ -67,6 +68,7 @@ export default (app, contentFilesPath, ecarsFolderPath ) => {
       const userSDK: any = containerAPI.getUserSdkInstance();
       await userSDK.deleteAllLoggedInUsers().catch(error => { logger.debug("unable to delete logged in user data", error);})
       await userSDK.deleteUserSession().catch(error => { logger.debug("unable to clear logged in user session", error);})
+      EventManager.emit('user:switched', 'anonymous');
       res.redirect('/mydownloads?selectedTab=mydownloads')
     })
     

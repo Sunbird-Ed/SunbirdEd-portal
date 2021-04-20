@@ -2,9 +2,11 @@ import { Channel } from "./../controllers/channel";
 import { manifest } from "./../manifest";
 const proxy = require('express-http-proxy');
 import { logger } from "@project-sunbird/logger";
+import { StandardLog } from '../utils/standardLog';
 
 export default (app, proxyURL) => {
     const channel = new Channel(manifest);
+    const standardLog = new StandardLog();
     app.get(
         "/api/channel/v1/read/:id",
         proxy(proxyURL, {
@@ -12,7 +14,7 @@ export default (app, proxyURL) => {
                 return `/api/channel/v1/read/${req.params.id}`;
             },
             proxyErrorHandler: function (err, res, next) {
-                logger.warn(`While getting channel data from online`, err);
+                standardLog.warn({ id: 'channel_fetch_failed', message: 'Error while getting channel data from online', error: err });
                 next();
             },
             userResDecorator: function (proxyRes, proxyResData) {
@@ -21,17 +23,14 @@ export default (app, proxyURL) => {
                         const channelResponse = JSON.parse(proxyResData.toString('utf8'));
                         channel.upsert(channelResponse);
                     } catch (error) {
-                        logger.error(`Unable to parse or do DB update of channel data after fetching from online`, error)
+                        standardLog.error({ id: 'parse_failed', message: 'Unable to parse or do DB update of channel data after fetching from online', error });
                     }
                     resolve(proxyResData);
                 });
             }
         }),
         (req, res, next) => {
-            logger.debug(
-                `Received API call to get channel data for channel with Id: ${req.params.id}`,
-            );
-            logger.debug(`ReqId = "${req.headers["X-msgid"]}": Check proxy`);
+            standardLog.debug({ id: 'api_request', message: `Received API call to get channel data for channel with Id: ${req.params.id}`, mid: req.headers["X-msgid"] });
                 return channel.get(req, res);
         },
 
