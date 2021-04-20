@@ -59,8 +59,10 @@ describe('ExplorePageComponent', () => {
           yourSearch: 'Your search for - "{key}"',
           notMatchContent: 'did not match any content'
         }
-      },
-
+      }
+    },
+    tbk: {
+      trk: { frmelmnts: { lbl: { mytrainings: 'My Digital Textbook' } } }
     },
     languageSelected$: of({})
   };
@@ -631,6 +633,12 @@ describe('ExplorePageComponent', () => {
         expect(prepareVisitsSpy).toHaveBeenCalled();
         done();
       })
+    });
+
+    it('should get the section name based on current tab', () => {
+      const currentTab = 'textbook';
+      const sectionName = component['getSectionName'](currentTab);
+      expect(sectionName).toBe(resourceBundle.tbk.trk.frmelmnts.lbl.mytrainings);
     });
 
   })
