@@ -675,9 +675,6 @@ describe('CertificateConfigurationComponent', () => {
       name : 'My state teacher'
     }]);
 
-    expect(component.certTypes).toEqual([{
-      name : 'Completion certificate'
-    }]);
   });
 
   it('should handle "select" click on hover certificate templates', () => {
