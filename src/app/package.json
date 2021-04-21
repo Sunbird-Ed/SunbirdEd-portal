@@ -60,7 +60,7 @@
   },
   "dependencies": {
     "@project-sunbird/discussion-service": "0.0.6",
-    "@project-sunbird/ext-framework-server": "0.1.27",
+    "@project-sunbird/ext-framework-server": "0.1.28",
     "@project-sunbird/form-service": "0.0.13",
     "@project-sunbird/logger": "^0.0.9",
     "@project-sunbird/review-comment": "0.0.8",

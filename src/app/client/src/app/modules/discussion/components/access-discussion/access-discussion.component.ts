@@ -1,3 +1,4 @@
+import { IFetchForumId } from './../../../groups/interfaces/group';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToasterService, ResourceService, NavigationHelperService } from '../../../shared/services';
@@ -16,7 +17,7 @@ import { CsModule } from '@project-sunbird/client-services';
 export class AccessDiscussionComponent implements OnInit {
   // TODO : Publishing as a independent npm module by taking the below properties as input
   // icon, name, context data, output event (click)
-  @Input() fetchForumIdReq: any;
+  @Input() fetchForumIdReq: IFetchForumId;
   @Output() routerData = new EventEmitter();
   showLoader = false;
   forumIds = [];
