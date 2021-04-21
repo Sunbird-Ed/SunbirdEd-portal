@@ -118,9 +118,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   }
   checkMultipleAssessment(){
     const contentTypes = JSON.parse(_.get(this.courseDetails, 'contentTypesCount'));
-    console.log(contentTypes);
     const selfAssessCount = _.get(contentTypes, 'SelfAssess')
-    console.log(selfAssessCount);
     if (selfAssessCount && selfAssessCount > 1) {
       this.isMultipleAssessment = true;
     } else {
@@ -546,7 +544,6 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       range=range-step;
     }
     this.arrayValue['range']=arr;
-    console.log(this.arrayValue);
   }
   removeRule(){
     this.addScoreRule = false;
