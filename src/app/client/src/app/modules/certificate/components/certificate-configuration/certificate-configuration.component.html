@@ -143,7 +143,7 @@
                     {{resourceService?.frmelmnts?.cert?.lbl?.addCert}}</div>
                   <div *ngIf="configurationMode === 'edit'" class="pb-24 font-weight-bold certificates-label">
                     {{resourceService?.frmelmnts?.cert?.lbl?.editCert}}</div>
-                  <div class="d-flex flex-dc">
+                  <!-- <div class="d-flex flex-dc">
                     <label
                       class="fnormal font-weight-normal text-left">{{resourceService?.frmelmnts?.cert?.lbl?.certType}}</label>
                     <label>
@@ -154,7 +154,7 @@
                         </sui-select-option>
                       </sui-select>
                     </label>
-                  </div>
+                  </div> -->
                 </div>
               </div>
 
@@ -182,54 +182,55 @@
               <div class="ui stackable grid mt-0">
                 <div class="twelve wide column pt-0">
                   <div class="d-flex rules-configuration px-16">
-                    <label class="d-flex flex-ai-center fnormal font-weight-normal mb-0 py-8">Progress Rule</label>
+                    <label class="d-flex flex-ai-center fnormal font-weight-normal mb-0 py-8">{{resourceService?.frmelmnts?.lbl?.addCertificateprogressrule}}</label>
                     <div class="mx-24 progress-separator"></div>
-                    <form class="py-16 d-flex flex-wrap rules-form-content">
+                    <div class="py-16 d-flex flex-wrap rules-form-content">
                       <div class="mr-16 sb-field-group">
                         <div class="sb-field">
-                          <input class="sb-form-control fnormal font-weight-bold" type="text" placeholder="100%">
+                          <input class="sb-form-control fnormal font-weight-bold" type="text" placeholder="100%" value="100%" readonly=true>
                         </div>
                         <p class="font-weight-normal fsmall mb-0 completion-text">
                           <span class="asterik">*</span>
-                          Completion certificate will be issued upon 100% completion
+                          {{resourceService?.frmelmnts?.lbl?.addCertificateText}}
                         </p>
                       </div>
-                    </form>
+                    </div>
                   </div>
                 </div>
               </div>
 
               <div class="progess-add-content">
                 <div class="left-border"></div>
-                <!-- <button type="button" class="add-score-btn py-8 px-16 fsmall font-weight-bold">And</button> -->
-                <button type="button" class="d-flex flex-ai-center flex-jc-center plus-btn"><img src="assets/images/plus-icon.svg"></button>
-                <div class="left-border"></div>
+                <button type="button" class="add-score-btn py-8 px-16 fsmall font-weight-bold" *ngIf="addScoreRule" >And</button>
+                <button type="button" class="d-flex flex-ai-center flex-jc-center plus-btn" *ngIf="!addScoreRule" (click)="addRule()"><img src="assets/images/plus-icon.svg"></button>
+                <div class="left-border" *ngIf="addScoreRule"></div>
               </div>
 
-              <div class="ui stackable grid mt-0">
+              <div class="ui stackable grid mt-0" *ngIf="addScoreRule">
                 <div class="twelve wide column pt-0">
                   <div class="d-flex rules-configuration px-16">
-                    <label class="d-flex flex-ai-center fnormal font-weight-normal mb-0 py-8">Score Rule</label>
+                    <label class="d-flex flex-ai-center fnormal font-weight-normal mb-0 py-8">{{resourceService?.frmelmnts?.lbl?.addCertificatescorerule}}</label>
                     <div class="mx-24 progress-separator"></div>
-                    <form class="py-16 d-flex flex-wrap rules-form-content">
+                    <div class="py-16 d-flex flex-wrap rules-form-content">
                       <div class="mr-16 sb-field-group">
                         <div class="sb-field">
                           <input class="sb-form-control fnormal font-weight-bold" type="text"
-                            placeholder="Best attempt score">
+                            placeholder="Best attempt score" value="{{resourceService?.frmelmnts?.lbl?.bestScoreattempt}}" readonly="true">
+                        </div>
+                        <div class="mr-24 sb-field">
+                          <sui-select class="selection form-control" 
+                        [placeholder]="'Select'" formControlName="scoreRange" [options]="scoreRange" #selectScoreRange>
+                        <sui-select-option *ngFor="let option of arrayValue['range']" [value]="option + '%'">
+                        </sui-select-option>
+                      </sui-select> 
                         </div>
                         <p class="font-weight-normal fsmall mb-0 completion-text">
                           <span class="asterik">*</span>
-                          Completion certificate will be issued upon 100% completion
+                          {{resourceService?.frmelmnts?.lbl?.addCertificateText}}
                         </p>
                       </div>
-                      <div class="mr-24 sb-field">
-                        <!-- <sui-select class="selection sb-form-control">
-                          <sui-select-option>1</sui-select-option>
-                          <sui-select-option>2</sui-select-option>
-                        </sui-select> -->
-                      </div>
-                    </form>
-                    <div class="close-score"><img src="assets/images/close.svg"></div>
+                    </div>
+                    <div class="close-score" (click)="removeRule()"><img src="assets/images/close.svg"></div>
                   </div>
                 </div>
               </div>
