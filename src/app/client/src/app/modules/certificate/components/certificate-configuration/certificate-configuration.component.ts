@@ -367,10 +367,10 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     this.issueTo = _.get(data, 'issueTo');
     // this.certTypes = _.get(data, 'certTypes');
     this.scoreRange = _.get(data, 'scoreRange');
-    const certTypeFormEle = this.userPreference.controls['certificateType'];
+    // const certTypeFormEle = this.userPreference.controls['certificateType'];
     const issueToFormEle = this.userPreference.controls['issueTo'];
     this.issueTo && this.issueTo.length > 0 ? issueToFormEle.setValue(this.issueTo[0].name) : issueToFormEle.setValue('');
-    this.certTypes && this.certTypes.length > 0 ? certTypeFormEle.setValue(this.certTypes[0].name) : certTypeFormEle.setValue('');
+    // this.certTypes && this.certTypes.length > 0 ? certTypeFormEle.setValue(this.certTypes[0].name) : certTypeFormEle.setValue('');
   }
 
   handleCertificateEvent(event, template: {}) {
