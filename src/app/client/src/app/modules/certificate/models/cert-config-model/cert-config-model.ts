@@ -19,7 +19,11 @@ export class CertConfigModel {
         if (_.get(rawValues, 'issueTo') !== this.dropDownFields.ALL) {
             criteria['user'] =  { rootOrgId: rootOrgId };
         }
-        criteria['enrollment'] = _.get(rawValues, 'certificateType') === this.dropDownFields.COMPLETION_CERTIFICATE ? { status: 2 } : { };
+        criteria['enrollment'] =  { status: 2 };
+        if (_.get(rawValues, 'scoreRange')) {
+            const scoreRange = (_.get(rawValues, 'scoreRange')).substr(0,(_.get(rawValues, 'scoreRange')).indexOf('%'));
+            criteria['assessment'] = { score:{'>=': scoreRange}};
+        }
         return criteria;
     }
 
