@@ -203,19 +203,29 @@ describe('FilterComponent', () => {
   }));
 
   it('should update form', fakeAsync(() => {
-    component.ngOnInit();
-    tick(1000);
+   
     component.filters = mockChartData.filters;
     component.chartData = mockChartData.chartData;
+    component.ngOnInit();
     tick(1000);
     component.filtersFormGroup.get('state').setValue(['01285019302823526477']);
-    component.formUpdate(mockChartData.chartData);
     tick(1000);
-    expect(component.filtersFormGroup.contains('state')).toBe(true);
     expect(component.filtersFormGroup.controls).toBeTruthy();
     expect(component.previousFilters).toEqual({
       'state': ['01285019302823526477']
     });
+    const  updatedForm = [{
+      "controlType": "multi-select",
+      "displayName": "Select state",
+      "options": ["01285019302823526477","013016492159606784174", "0130385861180866561", "b00bc992ef25f1a9a8d", "b00bc992ef25f1a9a8d63291e20efc8d"],
+      "reference": "state"
+    },{
+      "controlType": "multi-select",
+      "displayName": "Select Plays",
+      "options": ["10"],
+      "reference": "Plays"
+  }]
+    expect(component.filters).toEqual(updatedForm);
   }));
 
 });
