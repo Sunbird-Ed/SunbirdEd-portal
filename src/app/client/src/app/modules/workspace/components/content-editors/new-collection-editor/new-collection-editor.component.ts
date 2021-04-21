@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService, PublicDataService, ContentService, FrameworkService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
-import { ConfigService, NavigationHelperService, ToasterService, ResourceService, LayoutService } from '@sunbird/shared';
+import { ConfigService, NavigationHelperService, ToasterService, ResourceService, LayoutService} from '@sunbird/shared';
 import { EditorService, WorkSpaceService } from './../../../services';
 import { ActivatedRoute} from '@angular/router';
 import * as _ from 'lodash-es';
@@ -24,6 +24,7 @@ export class NewCollectionEditorComponent implements OnInit {
   public showQuestionEditor = false;
   public hierarchyConfig: any;
   public layoutType: string;
+  public baseUrl: string;
   constructor(private userService: UserService, public layoutService: LayoutService,
     private telemetryService: TelemetryService, private publicDataService: PublicDataService,
     private config: ConfigService, private contentService: ContentService,
@@ -37,6 +38,8 @@ export class NewCollectionEditorComponent implements OnInit {
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     this.portalVersion = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
     this.layoutType = localStorage.getItem('layoutType') || 'joy';
+    this.baseUrl = (<HTMLInputElement>document.getElementById('baseUrl'))
+      ? (<HTMLInputElement>document.getElementById('baseUrl')).value : document.location.origin;
   }
 
   ngOnInit() {
@@ -159,6 +162,7 @@ export class NewCollectionEditorComponent implements OnInit {
         did: this.deviceId,
         uid: this.userService.userid,
         additionalCategories: additionalCategories,
+        host: this.baseUrl,
         pdata: {
           id: this.userService.appId,
           ver: this.portalVersion,

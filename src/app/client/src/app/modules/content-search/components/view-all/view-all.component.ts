@@ -143,7 +143,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   public facetsList = ['channel', 'gradeLevel', 'subject', 'medium'];
   public selectedFilters;
   public initFilters = false;
-
+  private _enrolledSectionNames: string[];
 
   constructor(searchService: SearchService, router: Router, private playerService: PlayerService, private formService: FormService,
     activatedRoute: ActivatedRoute, paginationService: PaginationService,
@@ -162,6 +162,8 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     this.userService = userService;
     this.router.onSameUrlNavigation = 'reload';
     this.sortingOptions = this.configService.dropDownConfig.FILTER.RESOURCES.sortingOptions;
+    this._enrolledSectionNames = [_.get(this.resourceService, 'frmelmnts.lbl.myEnrolledCollections'), _.get(this.resourceService, 'tbk.trk.frmelmnts.lbl.mytrainings'),
+    _.get(this.resourceService, 'crs.trk.frmelmnts.lbl.mytrainings'), _.get(this.resourceService, 'tvc.trk.frmelmnts.lbl.mytrainings')];
   }
 
   ngOnInit() {
@@ -277,7 +279,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
           this.initFilters = true;
         }
         this.showLoader = false;
-        if (this.sectionName === _.get(this.resourceService, 'frmelmnts.lbl.myEnrolledCollections')) {
+        if (this._enrolledSectionNames.some(sectionName => sectionName === this.sectionName)) {
           this.processEnrolledCourses(_.get(response, 'enrolledCourseData'), _.get(response, 'currentPageData'));
         } else {
           if (response.contentData.result.count && response.contentData.result.content) {
