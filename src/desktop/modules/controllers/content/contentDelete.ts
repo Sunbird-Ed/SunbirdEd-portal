@@ -8,8 +8,7 @@ import DatabaseSDK from "../../sdk/database";
 import Response from "../../utils/response";
 import { ContentDeleteHelper } from "./contentDeleteHelper";
 import { IContentDelete } from "./IContent";
-import { StandardLog } from '../../utils/standardLog';
-
+import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
 
 /*@ClassLogger({
   logLevel: "debug",
@@ -19,12 +18,12 @@ export default class ContentDelete {
     @Inject
     private databaseSdk: DatabaseSDK;
     private systemQueue: ISystemQueueInstance;
-    private standardLog: StandardLog;
+    @Inject private standardLog: StandardLogger;
     constructor(manifest) {
         this.databaseSdk.initialize(manifest.id);
         this.systemQueue = containerAPI.getSystemQueueInstance(manifest.id);
         this.systemQueue.register(ContentDeleteHelper.taskType, ContentDeleteHelper);
-        this.standardLog = new StandardLog();
+        this.standardLog = containerAPI.getStandardLoggerInstance();
     }
 
     public async delete(req, res) {
@@ -61,7 +60,7 @@ export default class ContentDelete {
             }
             res.send(Response.success("api.content.delete", {deleted, failed}, req));
             } catch (err) {
-                this.standardLog.error({ id: 'content_delete_failed', message: 'Received Error while Deleting content', error: err });
+                this.standardLog.error({ id: 'CONTENT_DELETE_FAILED', message: 'Received Error while Deleting content', error: err });
                 res.status(500);
                 res.send(Response.error(`api.content.delete`, 500, err.errMessage || err.message, err.code));
             }

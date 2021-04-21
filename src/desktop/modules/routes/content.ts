@@ -8,7 +8,7 @@ import * as _ from "lodash";
 import config from "./../config";
 import TelemetryHelper from "./../helper/telemetryHelper";
 import { customProxy } from '../helper/proxyHandler';
-import { StandardLog } from '../utils/standardLog';
+import { containerAPI } from '@project-sunbird/OpenRAP/api';
 
 export default (app, proxyURL, contentDownloadManager) => {
     const content = new Content(manifest);
@@ -17,13 +17,13 @@ export default (app, proxyURL, contentDownloadManager) => {
         isAuthTokenRequired: true, 
         bypassLearnerRoute: true 
     };
-    const standardLog = new StandardLog();
+    const standardLog = containerAPI.getStandardLoggerInstance();
     app.get(
       "/api/content/v1/read/:id",
       async (req, res, next) => {
-        standardLog.debug({ id: 'api_request', message: `Received API call to read Content: ${req.params.id}` });
+        standardLog.debug({ id: 'CONTENT_API_REQUEST', message: `Received API call to read Content: ${req.params.id}` });
         const offlineData = await content.getOfflineContents([req.params.id], req.headers["X-msgid"]).catch(error => {
-          standardLog.error({ id: 'db_search_failed', message: `Received error while getting data from course read`, mid: req.headers["X-msgid"], error });
+          standardLog.error({ id: 'CONTENT_DB_SEARCH_FAILED', message: `Received error while getting data from course read`, mid: req.headers["X-msgid"], error });
         });
         if (enableProxy(req) && offlineData.docs.length <= 0 ) {
           logger.info(`Proxy is Enabled`);

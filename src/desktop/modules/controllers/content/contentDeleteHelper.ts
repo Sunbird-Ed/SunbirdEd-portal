@@ -22,6 +22,7 @@ export class ContentDeleteHelper implements ITaskExecuter {
   private fileSDK = containerAPI.getFileSDKInstance(manifest.id);
   private settingSDK = containerAPI.getSettingSDKInstance(manifest.id);
   private prefixPath = this.fileSDK.getAbsPath("");
+  private standardLog = containerAPI.getStandardLoggerInstance();
 
   public async start(contentDeleteData: ISystemQueue, observer: import("rxjs").Observer<ISystemQueue>) {
     this.observer  = observer;
@@ -55,7 +56,7 @@ export class ContentDeleteHelper implements ITaskExecuter {
                 },
                 error: (err) => {
                     this.observer.error(err);
-                    logger.error(`error while deleting the content ${err.stack} and retried for 5 times`);
+                    this.standardLog.error({ id: 'CONTENT_DELETE_FAILED', message: `error while deleting the content and retried for 5 times`, error: err });
                 },
               });
     }

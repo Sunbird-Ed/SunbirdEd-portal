@@ -7,7 +7,8 @@ import config from "../config";
 import Response from "../utils/response";
 
 import { ClassLogger } from "@project-sunbird/logger/decorator";
-import { StandardLog } from '../utils/standardLog';
+import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
+import { Inject } from 'typescript-ioc';
 
 const systemInfo = {
     x32: "32bit",
@@ -27,17 +28,17 @@ const systemInfo = {
 //   })
 export default class Appupdate {
     private deviceId;
-    private standardLog: StandardLog;
+    @Inject private standardLog: StandardLogger;
     constructor(manifest) {
         this.getDeviceId(manifest);
-        this.standardLog = new StandardLog();
+        this.standardLog = containerAPI.getStandardLoggerInstance();
     }
 
     public async getDeviceId(manifest) {
         try {
             this.deviceId = await containerAPI.getSystemSDKInstance(manifest.id).getDeviceId();
         } catch (error) {
-            this.standardLog.error({ id: 'deviceId_fetch_failed', message: 'Caught exception while fetching device id', error });
+            this.standardLog.error({ id: 'APP_UPDATE_DEVICEID_FETCH_FAILED', message: 'Caught exception while fetching device id', error });
         }
     }
     public async getDesktopAppUpdate(req, res) {
@@ -46,7 +47,7 @@ export default class Appupdate {
             logger.info(`ReqId = "${req.headers["X-msgid"]}": result: ${data} found from desktop app update api`);
             return res.send(Response.success("api.desktop.update", _.get(data, "data.result"), req));
         } catch (error) {
-            this.standardLog.error({ id: 'app_update_request_failed', mid: req.headers["X-msgid"], message: "Received error while processing desktop app update request", error });
+            this.standardLog.error({ id: 'APP_UPDATE_REQUEST_FAILED', mid: req.headers["X-msgid"], message: "Received error while processing desktop app update request", error });
             res.status(500);
             return res.send(Response.error("api.desktop.update", 500));
         }

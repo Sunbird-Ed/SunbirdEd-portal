@@ -6,7 +6,7 @@ import * as path from "path";
 import { Inject } from "typescript-ioc";
 import DatabaseSDK from "../sdk/database/index";
 import Response from "../utils/response";
-import { StandardLog } from '../utils/standardLog';
+import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
 
 const GEN_RESOURCE_DB = "generalized_resource_bundle";
 export class GeneralizedResources {
@@ -14,13 +14,13 @@ export class GeneralizedResources {
   @Inject private databaseSdk: DatabaseSDK;
   private fileSDK;
   private resourceBasePath;
-  private standardLog: StandardLog;
+  @Inject private standardLog: StandardLogger;
 
   constructor(manifest) {
     this.databaseSdk.initialize(manifest.id);
     this.fileSDK = containerAPI.getFileSDKInstance(manifest.id);
     this.resourceBasePath = this.fileSDK.getAbsPath(path.join("data", "resourceBundles"));
-    this.standardLog = new StandardLog();
+    this.standardLog = containerAPI.getStandardLoggerInstance();
   }
 
   public async insert() {
@@ -42,7 +42,7 @@ export class GeneralizedResources {
         await this.databaseSdk.bulk(GEN_RESOURCE_DB, bulkDocs);
       }
     } catch (err) {
-      this.standardLog.error({ id: 'db_insert_failed', message: 'generalized_resource_bundle:insert caught exception while inserting generalized labels', error: err });
+      this.standardLog.error({ id: 'GENERALIZED_RESOURCE_DB_INSERT_FAILED', message: 'generalized_resource_bundle:insert caught exception while inserting generalized labels', error: err });
     }
   }
 
@@ -61,7 +61,7 @@ export class GeneralizedResources {
   public async fetchOffline(language, req): Promise<any> {
     const docId = `generalized_${language}`;
     let resources: any = await this.databaseSdk.get(GEN_RESOURCE_DB, docId).then((doc) => doc.data).catch((err) => {
-      this.standardLog.error({ id: 'db_read_failed', message: `Error while reading Generalized resources from DB for language: ${language}`, mid: req.get("x-msgid"), error: err });
+      this.standardLog.error({ id: 'GENERALIZED_RESOURCE_DB_READ_FAILED', message: `Error while reading Generalized resources from DB for language: ${language}`, mid: req.get("x-msgid"), error: err });
       return undefined;
     });
 
@@ -91,6 +91,6 @@ export class GeneralizedResources {
   private async addToDb(id: string, data: any) {
     id = `generalized_${id}`;
     await this.databaseSdk.upsert(GEN_RESOURCE_DB, id, { data })
-      .catch((err) => this.standardLog.error({ id: 'db_insert_failed', message: `Received error while insert/updating generalized resources for language: ${id} to generalized resources database`, error: err }));
+      .catch((err) => this.standardLog.error({ id: 'GENERALIZED_RESOURCE_DB_INSERT_FAILED', message: `Received error while insert/updating generalized resources for language: ${id} to generalized resources database`, error: err }));
   }
 }

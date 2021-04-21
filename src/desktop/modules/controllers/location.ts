@@ -8,9 +8,7 @@ import TelemetryHelper from "../helper/telemetryHelper";
 import DatabaseSDK from "../sdk/database/index";
 import Response from "../utils/response";
 import { ILocation } from "./ILocation";
-
-import { ClassLogger } from "@project-sunbird/logger/decorator";
-import { StandardLog } from '../utils/standardLog';
+import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
 
 /*@ClassLogger({
   logLevel: "debug",
@@ -19,15 +17,14 @@ import { StandardLog } from '../utils/standardLog';
 export class Location {
     @Inject private databaseSdk: DatabaseSDK;
     @Inject private telemetryHelper: TelemetryHelper;
-
+    @Inject private standardLog: StandardLogger;
     private fileSDK;
     private settingSDK;
-    private standardLog: StandardLog;
     constructor(manifest) {
         this.databaseSdk.initialize(manifest.id);
         this.fileSDK = containerAPI.getFileSDKInstance(manifest.id);
         this.settingSDK = containerAPI.getSettingSDKInstance(manifest.id);
-        this.standardLog = new StandardLog();
+        this.standardLog = containerAPI.getStandardLoggerInstance();
     }
 
     // Inserting states and districts data from files
@@ -48,12 +45,12 @@ export class Location {
                 }
                 logger.debug("Inserting location data in locationDB");
                 await this.databaseSdk.bulk("location", allStates).catch((err) => {
-                    this.standardLog.error({id: 'db_insert_failed', message: 'While inserting location data in locationDB', error: err});
+                    this.standardLog.error({id: 'LOCATION_DB_INSERT_FAILED', message: 'While inserting location data in locationDB', error: err});
                 });
             }
             return;
         } catch (err) {
-            this.standardLog.error({id: 'db_insert_failed', message: 'While inserting location data in locationDB', error: err});
+            this.standardLog.error({id: 'LOCATION_DB_INSERT_FAILED', message: 'While inserting location data in locationDB', error: err});
             return;
         }
     }
@@ -91,7 +88,7 @@ export class Location {
             this.constructSearchEdata(req, responseObj);
             return res.send(responseObj);
         }).catch((err) => {
-            this.standardLog.error({ id: 'db_search_failed', mid: req.headers["X-msgid"], message: 'Received error while searching in location database', error: err });
+            this.standardLog.error({ id: 'LOCATION_DB_SEARCH_FAILED', mid: req.headers["X-msgid"], message: 'Received error while searching in location database', error: err });
             if (err.status === 404) {
                 res.status(404);
                 return res.send(Response.error("api.location.search", 404));
@@ -182,7 +179,7 @@ export class Location {
                 return;
             }
         } catch (err) {
-            this.standardLog.error({ id: 'db_insert_failed', mid: msgId, message: 'Failed to insert states in database', error: err });
+            this.standardLog.error({ id: 'LOCATION_DB_INSERT_FAILED', mid: msgId, message: 'Failed to insert states in database', error: err });
             return;
         }
     }
@@ -202,7 +199,7 @@ export class Location {
             }
 
         } catch (err) {
-            this.standardLog.error({ id: 'db_update_failed', mid: msgId, message: 'Failed to update states in database', error: err });
+            this.standardLog.error({ id: 'LOCATION_DB_UPDATE_FAILED', mid: msgId, message: 'Failed to update states in database', error: err });
             return;
         }
     }
@@ -219,7 +216,7 @@ export class Location {
             res.status(200);
             return res.send(Response.success("api.location.save", response, req));
         } catch (err) {
-            this.standardLog.error({ id: 'db_insert_failed', mid: req.headers["X-msgid"], message: 'Received error while saving in location database', error: err });
+            this.standardLog.error({ id: 'LOCATION_DB_INSERT_FAILED', mid: req.headers["X-msgid"], message: 'Received error while saving in location database', error: err });
             if (err.status === 404) {
                 res.status(404);
                 return res.send(Response.error("api.location.save", 404));
@@ -237,7 +234,7 @@ export class Location {
             const locationData = await this.settingSDK.get("location");
             return res.send(Response.success("api.location.read", locationData, req));
         } catch (err) {
-            this.standardLog.error({ id: 'db_read_failed', mid: req.headers["X-msgid"], message: 'Received error while getting location from location database', error: err });
+            this.standardLog.error({ id: 'LOCATION_DB_READ_FAILED', mid: req.headers["X-msgid"], message: 'Received error while getting location from location database', error: err });
             const status = err.status || 500;
             res.status(status);
             return res.send(Response.error("api.location.read", status));

@@ -4,8 +4,9 @@ import * as jwt from "jsonwebtoken";
 import { ILoggedInUser } from '../../OpenRAP/interfaces/IUser';
 import permissionsHelper from "../helper/permissionsHelper";
 import Response from "../utils/response";
-import { StandardLog } from '../utils/standardLog';
+import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
 import { EventManager } from "@project-sunbird/OpenRAP/managers/EventManager";
+import { Inject } from 'typescript-ioc';
 const uuidv1 = require('uuid/v1');
 
 
@@ -17,11 +18,11 @@ const uuidv1 = require('uuid/v1');
 export default class AuthController {
     private deviceId;
     private userSDK;
-    private standardLog: StandardLog;
+    @Inject private standardLog: StandardLogger;
     constructor(manifest) {
         this.getDeviceId(manifest);
         this.userSDK = containerAPI.getUserSdkInstance();
-        this.standardLog = new StandardLog();
+        this.standardLog = containerAPI.getStandardLoggerInstance();
     }
 
     public async getDeviceId(manifest) {
@@ -71,7 +72,7 @@ export default class AuthController {
             EventManager.emit('user:switched', userId);
             return res.send({ status: 'success' });
         } catch (err) {
-            this.standardLog.error({ id: 'userSession_initialization_failed', message: 'Error while start UserSession', error: err });
+            this.standardLog.error({ id: 'AUTH_CONTROLLER_USER_SESSION_INITIALIZATION_FAILED', message: 'Error while start UserSession', error: err });
             let status = err.status || 500;
             res.status(status);
             return res.send(Response.error('api.user.read', status, err.message));
@@ -90,8 +91,8 @@ export default class AuthController {
 
     public async endSession(req, res) {
         try {
-            await this.userSDK.deleteAllLoggedInUsers().catch(error => { this.standardLog.error({ id: 'user_delete_failed', message: 'Unable to delete logged in user data', error }); });
-            await this.userSDK.deleteUserSession().catch(error => { this.standardLog.error({id: 'user_session_clear_failed', message: 'Unable to clear logged in user session', error}); });
+            await this.userSDK.deleteAllLoggedInUsers().catch(error => { this.standardLog.error({ id: 'AUTH_CONTROLLER_USER_DELETE_FAILED', message: 'Unable to delete logged in user data', error }); });
+            await this.userSDK.deleteUserSession().catch(error => { this.standardLog.error({id: 'AUTH_CONTROLLER_USER_SESSION_CLEAR_FAILED', message: 'Unable to clear logged in user session', error}); });
             EventManager.emit('user:switched', 'anonymous');
             return res.send({ status: 'success' });
         } catch(err) {
