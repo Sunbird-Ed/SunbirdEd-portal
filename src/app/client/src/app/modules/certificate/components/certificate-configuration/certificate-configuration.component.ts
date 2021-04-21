@@ -58,6 +58,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   addScoreRule = false;
   arrayValue={};
   scoreRange: any;
+  isMultipleAssessment=false;
 
   constructor(
     private certificateService: CertificateService,
@@ -116,7 +117,15 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     });
   }
   checkMultipleAssessment(){
-    console.log(this.courseDetails);
+    const contentTypes = JSON.parse(_.get(this.courseDetails, 'contentTypesCount'));
+    console.log(contentTypes);
+    const selfAssessCount = _.get(contentTypes, 'SelfAssess')
+    console.log(selfAssessCount);
+    if (selfAssessCount && selfAssessCount > 1) {
+      this.isMultipleAssessment = true;
+    } else {
+      this.isMultipleAssessment = false;
+    }
   }
   certificateCreation() {
     this.currentState = this.screenStates.certRules;
@@ -365,12 +374,14 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   processCriteria(criteria) {
     const data = this.certConfigModalInstance.processCriteria(criteria);
     this.issueTo = _.get(data, 'issueTo');
-    // this.certTypes = _.get(data, 'certTypes');
-    this.scoreRange = _.get(data, 'scoreRange');
-    // const certTypeFormEle = this.userPreference.controls['certificateType'];
+    const scoreRange = _.get(data, 'scoreRange');
+    if (scoreRange) {
+      this.addRule();
+    }
+    const scoreRangeFormEle = this.userPreference.controls['scoreRange'];
     const issueToFormEle = this.userPreference.controls['issueTo'];
     this.issueTo && this.issueTo.length > 0 ? issueToFormEle.setValue(this.issueTo[0].name) : issueToFormEle.setValue('');
-    // this.certTypes && this.certTypes.length > 0 ? certTypeFormEle.setValue(this.certTypes[0].name) : certTypeFormEle.setValue('');
+    scoreRange ? scoreRangeFormEle.setValue(scoreRange) : scoreRangeFormEle.setValue('');
   }
 
   handleCertificateEvent(event, template: {}) {
