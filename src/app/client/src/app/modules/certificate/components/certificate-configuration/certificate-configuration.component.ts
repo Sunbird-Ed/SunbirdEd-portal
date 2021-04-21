@@ -365,7 +365,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   processCriteria(criteria) {
     const data = this.certConfigModalInstance.processCriteria(criteria);
     this.issueTo = _.get(data, 'issueTo');
-    this.certTypes = _.get(data, 'certTypes');
+    // this.certTypes = _.get(data, 'certTypes');
     this.scoreRange = _.get(data, 'scoreRange');
     const certTypeFormEle = this.userPreference.controls['certificateType'];
     const issueToFormEle = this.userPreference.controls['issueTo'];
