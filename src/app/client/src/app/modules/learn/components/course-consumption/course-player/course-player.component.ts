@@ -95,6 +95,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   _routerStateContentStatus: any;
   isConnected = false;
   dropdownContent = true;
+  showForceSync = true;
   constructor(
     public activatedRoute: ActivatedRoute,
     private configService: ConfigService,
@@ -123,7 +124,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
     // this.assessmentMaxAttempts = this.configService.appConfig.CourseConsumption.selfAssessMaxLimit;
-  }
+  } 
   ngOnInit() {
     if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
       this.courseMentor = true;
@@ -261,6 +262,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         }
       }, 1000);
     });
+    const isForceSynced = localStorage.getItem(this.courseId+'_isforce-sync');
+        if(isForceSynced){
+          this.showForceSync = false
+        }
   }
 
   /**
@@ -708,8 +713,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.dropdownContent = !this.dropdownContent;
   }
   public forceSync() {
+    localStorage.setItem(this.courseId+'_isforce-sync', 'true');
+    this.showForceSync = false;
+    this.closeSharePopup('force-sync');
     this.dropdownContent = !this.dropdownContent;
-    console.log('need to call the sync function now');
     const req = {
       'courseId': this.courseId,
       'batchId': this.batchId,
@@ -718,7 +725,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.CsCourseService.updateContentState(req, { apiPath: '/content/course/v1' })
     .pipe(takeUntil(this.unsubscribe))
     .subscribe((res) => {
-      console.log('Content state update CSL API called');
+      this.toasterService.success(this.resourceService.frmelmnts.lbl.forceSyncsuccess);
     }, error => {
       console.log('Content state update CSL API failed ', error);
     });

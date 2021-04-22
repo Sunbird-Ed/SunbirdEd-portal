@@ -162,7 +162,7 @@ describe('PlayerComponent', () => {
       expect(screen.orientation.lock).toHaveBeenCalledWith('landscape');
     }));
 
-    it('should rotate player ms browser', fakeAsync(() => {
+    xit('should rotate player ms browser', fakeAsync(() => {
       mockDomElement.requestFullscreen = undefined;
       mockDomElement.mozRequestFullScreen = undefined;
       mockDomElement.webkitRequestFullscreen = undefined;

@@ -841,6 +841,10 @@ quml-player {
         z-index: 0 !important;
       }
     }
+
+    figure.image img {
+      max-width: 100%;
+    }
   }
 }
 
@@ -1190,4 +1194,13 @@ quml-player {
 }
 .sb-desktop-content-manager .sb-single-pannel-accordion-heading {
   background-color: #5630DC;
+}
+ .sb-slider-pills-container .sb-grade-pills-container .pill.active:hover{
+  background-color: var(--cc-grade-pill-bg-hover) !important;
+  color: var(--cc-grade-pill-text-hover) !important;
+ }
+ .sbt-class-bar .sb-slider-pills-container .sb-pills-container .pill.active:hover{
+    background-color: var(--cc-grade-pill-bg-hover) !important;
+    color: var(--cc-grade-pill-text-hover) !important;
+    box-shadow: 0 3px 4px 0 rgba(var(--rc-rgba-black),.19) !important;
 }
