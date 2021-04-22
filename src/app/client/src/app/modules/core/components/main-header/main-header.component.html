@@ -9,7 +9,7 @@
     <!--Header White Section-->
     <div class="ui container sb-header-ui-container">
       <div class="ui grid padded width-100">
-        <div class="five wide column p-0 d-flex flex-ai-center">
+        <div class="p-0 d-flex flex-ai-center" [ngClass]="isDesktopApp ? 'five wide column' : 'three wide column'">
           <!--Logo-->
           <a class="d-flex logo" tabindex="0" title="{{tenantInfo.titleName}}" role="banner">
             <img (click)="navigateToHome()" class="cursor-pointer" alt={{tenantInfo.titleName}}
@@ -35,7 +35,8 @@
           <!--/Online/Offline-->
 
         </div>
-        <div class="seven wide column p-0 d-flex flex-jc-flex-end flex-ai-center">
+        <div class="p-0 d-flex flex-jc-flex-end flex-ai-center" 
+        [ngClass]="isDesktopApp ? 'seven wide column sb-desktop-header-list-items' : 'nine wide column sb-header-list-items'">
           <!--Hamburger Icon-->
 <!--
           <i class="large bars icon link primary-color mobile only" (click)="showSideBar()" tabindex="0"></i>
