@@ -52,4 +52,41 @@ sb-form.faq-sbforms {}
     }
 
   }
+
+  sb-form{
+    sb-multiple-dropdown{
+      .list-border{
+        ul{
+          padding: 0;
+        }
+        height: 3rem !important;
+      }
+    }
+
+    .sb-modal-dropdown-web {
+      ul{
+        overflow-y: auto !important;
+        overflow: hidden;
+      }
+      li {
+        margin: 0 !important;
+        padding: 0 !important;
+
+        > div {
+          cursor: pointer;
+          padding: 16px;
+        }
+      }
+    }
+
+    sb-textarea{
+      textarea{
+        height: 16rem;
+      }
+    }
+  }
+}
+
+.submit-feedback{
+  float:right;
 }

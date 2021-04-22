@@ -10,7 +10,6 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Location } from '@angular/common';
 import { FaqService } from '../../services/faq/faq.service';
-import { FaqData } from './faq-data';
 
 @Component({
   selector: 'app-faq',
@@ -19,7 +18,6 @@ import { FaqData } from './faq-data';
 })
 export class FaqComponent implements OnInit {
   faqData: any;
-  faqList: any;
   faqBaseUrl: string;
   selectedLanguage: string;
   showLoader = true;
@@ -91,12 +89,12 @@ export class FaqComponent implements OnInit {
   }
 
   private getFaqJson() {
-    this.faqList = undefined;
+    this.faqData = undefined;
     this.http.get(`${this.faqBaseUrl}/faq-${this.selectedLanguage}.json`)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
-      this.faqList = data;
-      this.getFaqCategoryData();
+      this.faqData = data;
+      this.selectedFaqCategory = this.faqData.categories[0];
       this.showLoader = false;
       this.defaultToEnglish = false;
     }, (err) => {
@@ -118,7 +116,7 @@ export class FaqComponent implements OnInit {
     this.publicDataService.get(requestParams).pipe(takeUntil(this.unsubscribe$))
       .subscribe((response) => {
         this.showLoader = false;
-        this.faqList = _.get(response, 'result.faqs');
+        this.faqData = _.get(response, 'result.faqs');
         this.defaultToEnglish = false;
       }, (error) => {
         if (_.get(error, 'status') === 404 && !this.defaultToEnglish) {
@@ -159,6 +157,10 @@ export class FaqComponent implements OnInit {
   }
 
   goBack() {
+    if (!this.showOnlyFaqCategory && this.isMobileView) {
+      this.showOnlyFaqCategory = true;
+      return;
+    }
     this.location.back();
   }
 
@@ -187,11 +189,6 @@ export class FaqComponent implements OnInit {
     this.telemetryService.interact(cardClickInteractData);
   }
 
-  getFaqCategoryData() {
-    this.faqData = FaqData;
-    this.selectedFaqCategory = this.faqData.categories[0];
-  }
-
   onCategorySelect(event) {
     this.showOnlyFaqCategory = false;
     this.showFaqReport = false;
@@ -201,6 +198,7 @@ export class FaqComponent implements OnInit {
     }
     setTimeout(() => {
       this.selectedFaqCategory = event.data
+      this.selectedFaqCategory.constants = this.faqData.constants;
     }, 0);
   }
 
@@ -215,7 +213,6 @@ export class FaqComponent implements OnInit {
     } else {
       this.isMobileView = false;
     }
-    console.log('isMobileView', this.isMobileView);
   }
 
   enableFaqReport(event) {

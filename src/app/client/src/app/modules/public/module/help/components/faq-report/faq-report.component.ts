@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { FaqReportData } from './faq-report-data';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { ProfileService } from '@sunbird/profile';
@@ -13,8 +13,11 @@ import * as _ from 'lodash-es';
 })
 export class FaqReportComponent implements OnInit {
 
+  @Input() faqData;
   faqReportConfig;
   unsubscribe = new Subject<void>();
+  formValues: any;
+  formStatus: any;
 
   constructor(
     public resourceService: ResourceService,
@@ -31,7 +34,6 @@ export class FaqReportComponent implements OnInit {
   fetchFaqReportConfig() {
     // FormAPI call    
     this.profileService.getFaqReportIssueForm().pipe(takeUntil(this.unsubscribe)).subscribe(formConfig => {
-      console.log('formConfig', formConfig);
       this.faqReportConfig = formConfig;
     }, error => {
       console.error('Unable to fetch form', error);
@@ -40,15 +42,11 @@ export class FaqReportComponent implements OnInit {
   }
 
   valueChanged(event) {
-  
+    this.formValues = event;
   }
 
   statusChanged(event) {
-    
-  }
-
-  dataLoadStatus(event) {
-    
+    this.formStatus = event;
   }
 
   faqReportSubmit() {
