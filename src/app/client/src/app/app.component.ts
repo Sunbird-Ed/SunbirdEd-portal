@@ -493,7 +493,7 @@ export class AppComponent implements OnInit, OnDestroy {
    * checks if user has selected the framework and shows popup if not selected.
    */
   public checkFrameworkSelected() {
-    // should not show location popup for sign up and recover route
+    // should not show framework popup for sign up and recover route
     if (this.isLocationStatusRequired()) {
       return;
     }
