@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CacheService } from 'ng2-cache-service';
 import { UtilService, ResourceService, LayoutService, NavigationHelperService, ToasterService, ConfigService } from '@sunbird/shared';
@@ -17,7 +17,7 @@ import { FaqService } from '../../services/faq/faq.service';
   styleUrls: ['./faq.component.scss']
 })
 export class FaqComponent implements OnInit {
-  faqList: any;
+  faqData: any;
   faqBaseUrl: string;
   selectedLanguage: string;
   showLoader = true;
@@ -29,6 +29,16 @@ export class FaqComponent implements OnInit {
   defaultToEnglish = false;
   isDesktopApp = false;
   helpCenterLink = '/help/faqs/user/index.html';
+  selectedFaqCategory: any;
+  isMobileView = false;
+  showFaqReport: boolean;
+  showOnlyFaqCategory = true;
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    if (event && event.target && event.target.innerWidth) {
+      this.checkScreenView(event.target && event.target.innerWidth);
+    }
+  }
 
   constructor(private http: HttpClient, private _cacheService: CacheService, private utilService: UtilService,
     public tenantService: TenantService, public resourceService: ResourceService, public activatedRoute: ActivatedRoute,
@@ -75,14 +85,16 @@ export class FaqComponent implements OnInit {
         this.getFaqJson();
       }
     });
+    this.checkScreenView(window.innerWidth);
   }
 
   private getFaqJson() {
-    this.faqList = undefined;
+    this.faqData = undefined;
     this.http.get(`${this.faqBaseUrl}/faq-${this.selectedLanguage}.json`)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
-      this.faqList = data;
+      this.faqData = data;
+      this.selectedFaqCategory = this.faqData.categories[0];
       this.showLoader = false;
       this.defaultToEnglish = false;
     }, (err) => {
@@ -104,7 +116,7 @@ export class FaqComponent implements OnInit {
     this.publicDataService.get(requestParams).pipe(takeUntil(this.unsubscribe$))
       .subscribe((response) => {
         this.showLoader = false;
-        this.faqList = _.get(response, 'result.faqs');
+        this.faqData = _.get(response, 'result.faqs');
         this.defaultToEnglish = false;
       }, (error) => {
         if (_.get(error, 'status') === 404 && !this.defaultToEnglish) {
@@ -145,6 +157,10 @@ export class FaqComponent implements OnInit {
   }
 
   goBack() {
+    if (!this.showOnlyFaqCategory && this.isMobileView) {
+      this.showOnlyFaqCategory = true;
+      return;
+    }
     this.location.back();
   }
 
@@ -171,6 +187,37 @@ export class FaqComponent implements OnInit {
       }
     };
     this.telemetryService.interact(cardClickInteractData);
+  }
+
+  onCategorySelect(event) {
+    this.showOnlyFaqCategory = false;
+    this.showFaqReport = false;
+    this.selectedFaqCategory = undefined;
+    if (!event || !event.data) {
+      return;
+    }
+    setTimeout(() => {
+      this.selectedFaqCategory = event.data;
+      this.selectedFaqCategory.constants = this.faqData.constants;
+    }, 0);
+  }
+
+  onVideoSelect(event) {
+    console.log(event);
+  }
+
+  checkScreenView(width) {
+    if (width <= 767) {
+      this.isMobileView = true;
+      this.showOnlyFaqCategory = true;
+    } else {
+      this.isMobileView = false;
+    }
+  }
+
+  enableFaqReport(event) {
+    this.showOnlyFaqCategory = false;
+    this.showFaqReport = true;
   }
 
 }
