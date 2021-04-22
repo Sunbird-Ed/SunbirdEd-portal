@@ -25,6 +25,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   @Input() playerConfig: PlayerConfig;
   @Output() assessmentEvents = new EventEmitter<any>();
   @Output() questionScoreSubmitEvents = new EventEmitter<any>();
+  @Output() questionScoreReviewEvents = new EventEmitter<any>();
   @ViewChild('contentIframe', {static: false}) contentIframe: ElementRef;
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
   @Output() sceneChangeEvent = new EventEmitter<any>();
@@ -39,7 +40,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   CONSTANT = {
     ACCESSEVENT: 'renderer:question:submitscore',
     ISLASTATTEMPT: 'renderer:selfassess:lastattempt',
-    MAXATTEMPT: 'renderer:maxLimitExceeded'
+    MAXATTEMPT: 'renderer:maxLimitExceeded',
+    ACCESSREVIEWEVENT: 'renderer:question:reviewAssessment'
   };
   @Input() overlayImagePath: string;
   @Input() isSingleContent: boolean;
@@ -325,6 +327,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
     if (event.data.toLowerCase() === (this.CONSTANT.MAXATTEMPT).toLowerCase()) {
       this.selfAssessLastAttempt.emit(event);
+    }
+    if (event.data.toLowerCase() === (this.CONSTANT.ACCESSREVIEWEVENT).toLowerCase()) {
+      this.questionScoreReviewEvents.emit(event);
     }
   }
   eventHandler(event) {
