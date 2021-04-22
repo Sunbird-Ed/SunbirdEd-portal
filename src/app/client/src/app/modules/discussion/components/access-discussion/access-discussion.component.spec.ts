@@ -43,7 +43,7 @@ describe('AccessDiscussionComponent', () => {
     fixture = TestBed.createComponent(AccessDiscussionComponent);
     component = fixture.componentInstance;
     component.fetchForumIdReq = {
-      identifier: '123',
+      identifier: ['123'],
       type: 'course'
     };
     fixture.detectChanges();
