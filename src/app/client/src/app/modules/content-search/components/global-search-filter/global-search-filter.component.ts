@@ -78,28 +78,25 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
         }
         return -1;
       }).map((f) => {
-        switch (f.name) {
-          case 'mediaType': {
-            f.values = f.mimeTypeList.map((m) => ({name: m}));
+        if (f.name === 'mediaType') {
+          f.values = f.mimeTypeList.map((m) => ({name: m}));
 
-            return {
-              facet: f.name,
-              type: 'pills',
-              labelText: f.label || f.name,
-              placeholderText: `${this.resourceService.frmelmnts.lbl.Select} ${f.label || f.name}`,
-              multiple: true
-            };
-          }
-          default: {
-            return {
-              facet: f.name,
-              type: 'dropdown',
-              labelText: f.label || f.name,
-              placeholderText: `${this.resourceService.frmelmnts.lbl.Select} ${f.label || f.name}`,
-              multiple: true
-            };
-          }
+          return {
+            facet: f.name,
+            type: 'pills',
+            labelText: f.label || f.name,
+            placeholderText: `${this.resourceService.frmelmnts.lbl.Select} ${f.label || f.name}`,
+            multiple: true
+          };
         }
+
+        return {
+          facet: f.name,
+          type: 'dropdown',
+          labelText: f.label || f.name,
+          placeholderText: `${this.resourceService.frmelmnts.lbl.Select} ${f.label || f.name}`,
+          multiple: true
+        };
       });
     }
   }
@@ -245,6 +242,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
   }
 
   onSearchFacetFilterReset() {
+    /* istanbul ignore else */
     if (this.searchFacetFilterComponent) {
       this.searchFacetFilterComponent.resetFilter();
     }
