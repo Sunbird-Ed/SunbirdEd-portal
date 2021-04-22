@@ -4,6 +4,8 @@ import { ProfileService } from '@sunbird/profile';
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 import * as _ from 'lodash-es';
+import { TelemetryService } from '@sunbird/telemetry';
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: 'app-faq-report',
@@ -19,9 +21,11 @@ export class FaqReportComponent implements OnInit {
   formStatus: any;
 
   constructor(
-    public resourceService: ResourceService,
-    public toasterService: ToasterService,
-    public profileService: ProfileService
+    private resourceService: ResourceService,
+    private toasterService: ToasterService,
+    private profileService: ProfileService,
+    private telemetryService: TelemetryService,
+    private activatedRoute: ActivatedRoute
   ) {
     
   }
@@ -49,7 +53,40 @@ export class FaqReportComponent implements OnInit {
   }
 
   faqReportSubmit() {
-    
+    if (!this.formStatus || !this.formStatus.isValid) {
+      return false;
+    }
+
+    const params = [];
+    for (const [key, value] of this.formValues) {
+      if (key === 'children') {
+        for (const [childKey, childValue] of this.formValues[key]) {
+          params.push({childKey: childValue});
+        }    
+      } else {
+        params.push({key: value});
+      }
+    }
+
+    const event = {
+      context: {
+        env: 'portal'
+      },
+      edata: {
+        id: 'faq',
+        type: 'system',
+        level: "INFO",
+        message: "faq",
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        params
+      }
+    };
+    this.telemetryService.log(event);
+
+    this.toasterService.custom({
+      message: this.faqData && this.faqData.constants && this.faqData.constants.thanksForFeedbackMsg,
+      class: 'sb-toaster sb-toast-success sb-toast-normal'
+    });
   }
 
   ngOnDestroy() {

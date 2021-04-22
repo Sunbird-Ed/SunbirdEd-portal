@@ -198,7 +198,6 @@ export class FaqComponent implements OnInit {
     }
     setTimeout(() => {
       this.selectedFaqCategory = event.data;
-      console.log(JSON.stringify(this.faqData))
       this.selectedFaqCategory.constants = this.faqData.constants;
     }, 0);
   }
