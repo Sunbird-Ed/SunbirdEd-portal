@@ -209,7 +209,7 @@ describe('CertificateConfigurationComponent', () => {
   //   expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, try again later');
   // });
 
-  it('should fetch the drop-down values for "Certificate type" and "Issue to" from preference api', () => {
+  xit('should fetch the drop-down values for "Certificate type" and "Issue to" from preference api', () => {
     /** Arrange */
     const userService = TestBed.get(UserService);
     const certificateService  = TestBed.get(CertificateService);
