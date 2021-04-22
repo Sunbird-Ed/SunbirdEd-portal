@@ -65,13 +65,10 @@ export class AssessmentScoreService {
    private processTelemetryEvents(event) {
     const eventData = _.get(event, 'detail.telemetryData');
     const eid = _.get(eventData, 'eid');
-    const edata =  _.get(eventData, 'edata');
     if (eventData && eid === 'START') {
       this._startEvent = eventData;
       this._assessmentTs = _.get(eventData, 'ets');
       this._userId = _.get(eventData, 'actor.id');
-      this._assessEvents = [];
-    } else if (eventData && eid === 'INTERACT' && edata.id === 'Review_button') {
       this._assessEvents = [];
     } else if (eventData && eid === 'ASSESS') {
       this._assessEvents.push(eventData);
