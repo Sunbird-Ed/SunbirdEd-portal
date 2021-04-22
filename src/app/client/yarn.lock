@@ -604,10 +604,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v8@3.7.8":
-  version "3.7.8"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v8/-/common-consumption-v8-3.7.8.tgz#6ff53a643dd962eb113759c3fba7b4910b971d12"
-  integrity sha512-o8oMaQSa8daxvzc5+utai44AzLwUh4ejmYz9w2gZOdDJLiw3BIA5Je5i2SJ7PgWdGvQIL75Ay5xAkjl0nP2Qrw==
+"@project-sunbird/common-consumption-v8@3.8.2":
+  version "3.8.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v8/-/common-consumption-v8-3.8.2.tgz#31d1346497ba957b2c78b0c4fb38050ecdf60457"
+  integrity sha512-WKoj6g+GnKUs+2Vaf/x2F9IMqo7vYCda6PdpE47h7cWVFJrD8UcY31Sl2f90stWCjRvMTbx6OWoWVz7i9X/J1g==
   dependencies:
     tslib "^1.9.0"
 
@@ -9500,9 +9500,9 @@ sb-svg2pdf@0.0.9:
     tslib "^1.9.0"
 
 sb-tag-manager@^3.9.15:
-  version "3.9.19"
-  resolved "https://registry.yarnpkg.com/sb-tag-manager/-/sb-tag-manager-3.9.19.tgz#f9ca802c7b6618b9c5e694f8a17e525091d06077"
-  integrity sha512-0G/gpKcInDNXzTs68jBKIGdj6vZLWZJF1UJtWU8qZiRoIWVOUyUl4RKFuzobix6kvZuHvu2kww/j4IdJ3GYWLw==
+  version "3.9.18"
+  resolved "https://registry.yarnpkg.com/sb-tag-manager/-/sb-tag-manager-3.9.18.tgz#31d80e77eba39c2a79a1cebd15d54e3f248f2596"
+  integrity sha512-Xx6TkpBH3re67Xp7/hwsMQxNS26+cr5zg3mUF814dmxLLjtUDhZw3bzn6+LzScbwW/cX7OHgJeG8AE2vDQ3ejg==
   dependencies:
     inversify "^5.0.1"
     qs "^6.9.4"
