@@ -37,6 +37,7 @@ export class CertConfigModel {
         dropDowns['issueTo'] = _.get(criteria, 'user.rootOrgId') ?
         [{ name: this.dropDownFields.MY_STATE_TEACHER }] : [{ name: this.dropDownFields.ALL }];
         dropDowns['certTypes'] = _.get(criteria, 'enrollment.status') === 2 ? [{ name: this.dropDownFields.COMPLETION_CERTIFICATE }] : [{}];
+        dropDowns ['scoreRange'] = _.get(criteria,'assessment.score')?criteria.assessment.score['>=']+'%':'';
         return dropDowns;
     }
 

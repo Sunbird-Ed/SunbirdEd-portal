@@ -199,14 +199,14 @@
                 </div>
               </div>
 
-              <div class="progess-add-content">
+              <div class="progess-add-content" *ngIf="!isMultipleAssessment">
                 <div class="left-border"></div>
                 <button type="button" class="add-score-btn py-8 px-16 fsmall font-weight-bold" *ngIf="addScoreRule" >And</button>
                 <button type="button" class="d-flex flex-ai-center flex-jc-center plus-btn" *ngIf="!addScoreRule" (click)="addRule()"><img src="assets/images/plus-icon.svg"></button>
                 <div class="left-border" *ngIf="addScoreRule"></div>
               </div>
 
-              <div class="ui stackable grid mt-0" *ngIf="addScoreRule">
+              <div class="ui stackable grid mt-0" *ngIf="addScoreRule && !isMultipleAssessment">
                 <div class="twelve wide column pt-0">
                   <div class="d-flex rules-configuration px-16">
                     <label class="d-flex flex-ai-center fnormal font-weight-normal mb-0 py-8">{{resourceService?.frmelmnts?.lbl?.addCertificatescorerule}}</label>
