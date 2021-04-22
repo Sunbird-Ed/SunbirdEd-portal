@@ -8,8 +8,6 @@ import { ImportTelemetry } from "../manager/telemetryImportManager/telemetryImpo
 import { TelemetryImportManager } from "../manager/telemetryImportManager/telemetryImportManager";
 import Response from "../utils/response";
 
-import { ClassLogger } from "@project-sunbird/logger/decorator";
-
 /*@ClassLogger({
   logLevel: "debug",
   logTime: true,
@@ -20,7 +18,6 @@ export default class Telemetry {
   private telemetrySDK;
   private systemQueue: ISystemQueueInstance;
   private networkQueue: NetworkQueue;
-
   @Inject private telemetryImportManager: TelemetryImportManager;
 
   constructor(manifest) {
@@ -32,6 +29,7 @@ export default class Telemetry {
   }
 
   public addEvents(req, res) {
+    const standardLog = containerAPI.getStandardLoggerInstance();
     const events = req.body.events;
     if (_.isArray(events) && events.length) {
       logger.debug(
@@ -46,9 +44,7 @@ export default class Telemetry {
           return res.send(Response.success("api.telemetry", {}, req));
         })
         .catch((err) => {
-          logger.error(
-            `ReqId = "${req.headers["X-msgid"]}": Received error while inserting events to telemetry db and err.message: ${err.message} `,
-          );
+          standardLog.error({id: 'TELEMETRY_DB_INSERT_FAILED', mid: req.headers["X-msgid"], message: 'Received error while inserting events to telemetry db', error: err});
           res.status(500);
           return res.send(Response.error("api.telemetry", 500));
         });
@@ -76,16 +72,13 @@ export default class Telemetry {
   }
 
   public async getTelemetrySyncSetting(req, res) {
+    const standardLog = containerAPI.getStandardLoggerInstance();
     try {
       const telemetryConfigData = await this.telemetrySDK.getTelemetrySyncSetting();
       res.status(200);
       return res.send(Response.success("api.telemetry.config.info", telemetryConfigData , req));
     } catch (err) {
-      logger.error(
-        `ReqId = "${req.headers[
-        "X-msgid"
-        ]}": Received error while getting telemetry config and err.message: ${err.message} ${err}`,
-      );
+      standardLog.error({ id: 'TELEMETRY_CONFIG_FETCH_FAILED', mid: req.headers["X-msgid"], message: 'Received error while getting telemetry config ', error: err });
       res.status(err.status || 500);
       return res.send(Response.error("api.telemetry.config.info", err.status || 500
         , err.errMessage || err.message, err.code));
@@ -93,6 +86,7 @@ export default class Telemetry {
   }
 
   public async setTelemetrySyncSetting(req, res) {
+    const standardLog = containerAPI.getStandardLoggerInstance();
     try {
       const enable = _.get(req, "body.request.enable");
       if (enable === undefined || typeof enable !== "boolean") {
@@ -104,11 +98,7 @@ export default class Telemetry {
       res.status(200);
       return res.send(Response.success("api.telemetry.set.config", { response: resp }, req));
     } catch (err) {
-      logger.error(
-        `ReqId = "${req.headers[
-        "X-msgid"
-        ]}": Received error while setting telemetry config and err.message: ${err.message} ${err}`,
-      );
+      standardLog.error({ id: 'TELEMETRY_CONFIG_SET_FAILED', mid: req.headers["X-msgid"], message: 'Received error while setting telemetry config ', error: err });
       res.status(err.status || 500);
       return res.send(Response.error("api.telemetry.set.config", err.status || 500
         , err.errMessage || err.message, err.code));

@@ -7,6 +7,7 @@ import DatabaseSDK from "../sdk/database/index";
 import Response from "../utils/response";
 
 import { ClassLogger } from "@project-sunbird/logger/decorator";
+import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
 
 // @ClassLogger({
 //   logLevel: "debug",
@@ -17,10 +18,12 @@ export class Channel {
   private databaseSdk: DatabaseSDK;
 
   private fileSDK;
+  @Inject private standardLog: StandardLogger;
 
   constructor(manifest) {
     this.databaseSdk.initialize(manifest.id);
     this.fileSDK = containerAPI.getFileSDKInstance(manifest.id);
+    this.standardLog = containerAPI.getStandardLoggerInstance();
   }
 
   public async insert() {
@@ -51,9 +54,7 @@ export class Channel {
         await this.databaseSdk.bulk("channel", channelDocs);
       }
     } catch (error) {
-      logger.error(
-        `While inserting channels ${error.message} ${error.stack}`,
-      );
+      this.standardLog.error({id: 'CHANNEL_INSERT_FAILED', message: 'Error While inserting channels', error});
     }
   }
 

@@ -4,9 +4,11 @@ import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import { manifest } from "./../manifest";
 import * as path from "path";
 import { logger } from "@project-sunbird/logger";
+import { EventManager } from "@project-sunbird/OpenRAP/managers/EventManager";
 
 export default (app, contentFilesPath, ecarsFolderPath ) => {
     const fileSDK = containerAPI.getFileSDKInstance(manifest.id);
+    const standardLog = containerAPI.getStandardLoggerInstance();
     app.set("view engine", "ejs");
     app.use("/contentPlayer/preview/content",express.static(fileSDK.getAbsPath(contentFilesPath)));
     app.use( "/contentPlayer/preview", express.static(fileSDK.getAbsPath(contentFilesPath)));
@@ -65,8 +67,13 @@ export default (app, contentFilesPath, ecarsFolderPath ) => {
     app.use(express.static(path.join(__dirname, "..", "..", "public", "portal")));
     app.all('/logoff', async (req, res) => {
       const userSDK: any = containerAPI.getUserSdkInstance();
-      await userSDK.deleteAllLoggedInUsers().catch(error => { logger.debug("unable to delete logged in user data", error);})
-      await userSDK.deleteUserSession().catch(error => { logger.debug("unable to clear logged in user session", error);})
+      await userSDK.deleteAllLoggedInUsers().catch(error => {
+        standardLog.error({ id: 'STATIC_USER_DELETE_FAILED', message: 'Unable to delete logged in user data', mid: req.headers["X-msgid"], error });
+      });
+      await userSDK.deleteUserSession().catch(error => { 
+        standardLog.error({ id: 'STATIC_USER_SESSION_CLEAR_FAILED', message: 'Unable to clear logged in user session', mid: req.headers["X-msgid"], error });
+      });
+      EventManager.emit('user:switched', 'anonymous');
       res.redirect('/mydownloads?selectedTab=mydownloads')
     })
     
@@ -74,11 +81,15 @@ export default (app, contentFilesPath, ecarsFolderPath ) => {
     
 
   const getLocals = async (manifest) => {
+    const standardLog = containerAPI.getStandardLoggerInstance();
     const deviceId = await containerAPI
       .getSystemSDKInstance(manifest.id)
       .getDeviceId();
     const userSDK = containerAPI.getUserSdkInstance();
-    const loggedInUserSession: any = await userSDK.getUserSession().catch(error => { logger.debug("unable to get the user session data", error);})
+    const loggedInUserSession: any = await userSDK.getUserSession().catch(error => { 
+      logger.debug("unable to get the user session data", error);
+      standardLog.error({ id: 'STATIC_USER_SESSION_FETCH_FAILED', message: 'Unable to get the user session data', error });
+    })
     const locals: any = {};
 
     if (loggedInUserSession) {

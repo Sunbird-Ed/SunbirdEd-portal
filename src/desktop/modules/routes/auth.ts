@@ -7,6 +7,7 @@ import { logger } from '@project-sunbird/logger';
 const uuidv1 = require('uuid/v1');
 import { ILoggedInUser } from '../../OpenRAP/interfaces/IUser';
 import { customProxy } from '../helper/proxyHandler';
+import { EventManager } from "@project-sunbird/OpenRAP/managers/EventManager";
 
 export default (app, proxyURL) => {
 
@@ -16,6 +17,7 @@ export default (app, proxyURL) => {
         isAuthTokenRequired: true, 
         bypassLearnerRoute: true 
     };
+    const standardLog = containerAPI.getStandardLoggerInstance();
     app.post("/api/user/v1/startSession", authController.startUserSession.bind(authController));
     
     app.get("/endSession", authController.endSession.bind(authController));
@@ -116,7 +118,9 @@ export default (app, proxyURL) => {
     app.post("/learner/user/v4/create", customProxy(proxyURL, defaultProxyConfig),async (req, res) => {
         const userSDK: any = containerAPI.getUserSdkInstance();
         const userId = _.get(res, 'body.result.userId');
-        const userToken: string = await userSDK.getUserToken().catch(error => { logger.debug("Unable to get the user token", error); })
+        const userToken: string = await userSDK.getUserToken().catch(error => { 
+            standardLog.debug({ id: 'AUTH_DB_READ_FAILED', message: 'Unable to get the user token', error });
+        });
         const user: ILoggedInUser = {
             id: userId,
             userId,
@@ -133,7 +137,7 @@ export default (app, proxyURL) => {
   app.get('/user/v1/switch/:userId', async (req, res) => {
     const userSDK = containerAPI.getUserSdkInstance();
     if (!req.params.userId) {
-      logger.info({ msg: 'switch user rejected missing userID' });
+      standardLog.info({ id: 'AUTH_USER_SWITCH_FAILED', message: 'Switch user rejected missing userID' });
       res.status(400).send(Response.error("api.user.switch", 400, "failed to switch user", "BAD_REQUEST"));
     }
 
@@ -144,9 +148,11 @@ export default (app, proxyURL) => {
         response: "Success",
         userSid: sessionData.sessionId
       }
+      
+      EventManager.emit('user:switched', req.params.userId);
       res.status(200).send(Response.success("api.user.switch", result, req));
     } catch (error) {
-      logger.error({ msg: "Error while switching user", error });
+      standardLog.error({ id: 'AUTH_USER_SWITCH_FAILED', message: 'Error while switching user', error });
       res.status(500).send(Response.error("api.user.switch", 500, "failed to switch user"));
     }
   });

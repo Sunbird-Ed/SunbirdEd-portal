@@ -6,6 +6,7 @@ import * as path from "path";
 import { Inject } from "typescript-ioc";
 import DatabaseSDK from "../sdk/database/index";
 import Response from "../utils/response";
+import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
 const FAQS_DB = "faqs";
 
 import { ClassLogger } from "@project-sunbird/logger/decorator";
@@ -19,10 +20,12 @@ export class Faqs {
   @Inject private databaseSdk: DatabaseSDK;
   private fileSDK;
   private faqsBasePath;
+  @Inject private standardLog: StandardLogger;
   constructor(manifest) {
       this.databaseSdk.initialize(manifest.id);
       this.fileSDK = containerAPI.getFileSDKInstance(manifest.id);
       this.faqsBasePath = this.fileSDK.getAbsPath(path.join("data", "faqs"));
+      this.standardLog = containerAPI.getStandardLoggerInstance();
   }
   public async insert() {
     try {
@@ -41,11 +44,7 @@ export class Faqs {
         await this.databaseSdk.bulk(FAQS_DB, bulkDocs);
       }
     } catch (err) {
-      logger.error({
-        msg: "faqs:insert caught exception while inserting faqs with error",
-        errorMessage: err.message,
-        error: err,
-      });
+      this.standardLog.error({ id: 'FAQ_DB_INSERT_FAILED', message: 'faqs:insert caught exception while inserting faqs', error: err });
     }
   }
   public async read(req, res) {
@@ -54,13 +53,13 @@ export class Faqs {
     if (faqs) {
       res.send(Response.success("api.faqs.read", { faqs }, req));
     } else {
-      logger.error(`FAQ not found for language: `, language, `for ReqId: ${req.get("x-msgid")} `);
+      this.standardLog.error({ id: 'FAQ_NOT_FOUND', message: `FAQ not found for language: ${language}`, mid: req.get("x-msgid") });
       res.status(404).send(Response.error("api.faqs.read", 404));
     }
   }
   public async fetchOfflineFaqs(language, req): Promise<IFaqsData | undefined > {
     let faqsData: IFaqsData = await this.databaseSdk.get(FAQS_DB, language).then((doc) => doc.data).catch((err) => {
-      logger.error(`Got error while reading Faq from DB for language`, language, `for ReqId: ${req.get("x-msgid")}, error message `, err.message);
+      this.standardLog.error({ id: 'FAQ_DB_READ_FAILED', message: `Got error while reading Faq from DB for language: ${language}`, mid: req.get("x-msgid"), error: err });
       return undefined;
     });
     if (!faqsData) { // Load from files. Not needed as we have inserted all faqs json on app start.
@@ -87,13 +86,15 @@ export class Faqs {
       return faqsData;
     }).catch((err) => {
       const traceId = _.get(err, 'data.params.msgid');
-      logger.error(`Got error while reading Faq from blob for language ${language}, for ReqId: ${req.get("x-msgid")}, error message ${err.message}, with trace Id ${traceId}`);
+      this.standardLog.error({ id: 'FAQ_NOT_FOUND', message: `Got error while reading Faq from blob for language: ${language}, with trace Id ${traceId}`, mid: req.get("x-msgid"), error: err });
       return undefined;
     });
   }
   private async addToDb(id: string, data: IFaqsData) {
     await this.databaseSdk.upsert(FAQS_DB, id, { data })
-    .catch((err) => logger.error(`Received error while insert/updating faqs for language: ${id} to faqs database and err.message: ${err.message}`));
+    .catch((err) => {
+      this.standardLog.error({ id: 'FAQ_DB_INSERT_FAILED', message: `Received error while insert/updating faqs for language: ${id} to faqs database`, error: err });
+    });
   }
 }
 
