@@ -1204,3 +1204,64 @@ quml-player {
     color: var(--cc-grade-pill-text-hover) !important;
     box-shadow: 0 3px 4px 0 rgba(var(--rc-rgba-black),.19) !important;
 }
+
+
+//portal
+@media screen and (min-width:1024px) and (max-width:1199px){
+  *[lang="ta"] {
+    .sb-header-list-items{
+      .ui.text.menu .item a.item, .status-container__title {
+        max-width: 100px;
+        word-break: break-word;
+      }
+      .ui.text.menu a.item.pr-24{
+        padding-right: 0 !important;
+      }
+    }
+  }
+}
+@media screen and (min-width:1200px) and (max-width:1280px){
+  *[lang="ta"] {
+    .sb-header-list-items{
+      .ui.text.menu .item a.item, .status-container__title {
+        max-width:170px;
+        word-break: break-word;
+      }
+      .ui.text.menu a.item.pr-24{
+        padding-right: 0 !important;
+      }
+    }
+  }
+}
+
+
+//desktop
+.sb-desktop-filter-section .status-container__title {
+  max-width: 100% !important;
+}
+@media screen and (min-width:1024px) and (max-width:1199px){
+  *[lang="ta"] {
+    .sb-desktop-header-list-items{
+      .ui.text.menu .item a.item, .status-container__title {
+        max-width: 75px;
+        word-break: break-word;
+      }
+      .ui.text.menu a.item.pr-24{
+        padding-right: 0 !important;
+      }
+    }
+  }
+}
+@media screen and (min-width:1200px) and (max-width:1600px){
+  *[lang="ta"] {
+    .sb-desktop-header-list-items{
+      .ui.text.menu .item a.item, .status-container__title {
+        max-width: 90px;
+        word-break: break-word;
+      }
+      .ui.text.menu a.item.pr-24{
+        padding-right: 0 !important;
+      }
+    }
+  }
+}

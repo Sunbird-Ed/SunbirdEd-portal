@@ -130,6 +130,10 @@
   color: var(--red-400);
 }
 
+:host ::ng-deep {
+  @import "components/sb-forms/facet-filters";
+}
+
 :host ::ng-deep .dropdown:not(.button)>.default.text {
   color: var(--primary-400) !important;
 }

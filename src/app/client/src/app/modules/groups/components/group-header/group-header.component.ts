@@ -30,7 +30,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   public msg: string;
   public name: string;
   private unsubscribe$ = new Subject<void>();
-  forumIds = [];
+  forumIds: Array<number> = [];
   createForumRequest: any;
 
     /**
@@ -60,6 +60,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
       identifier: [ this.groupData.id ]
     };
     this.fetchForumConfig();
+    this.fetchForumIds(this.groupData.id);
     this.creator = _.capitalize(_.get(_.find(this.groupData['members'], {userId: this.groupData['createdBy']}), 'name'));
     this.groupService.showMenu.subscribe(data => {
       this.dropdownContent = data !== 'group';

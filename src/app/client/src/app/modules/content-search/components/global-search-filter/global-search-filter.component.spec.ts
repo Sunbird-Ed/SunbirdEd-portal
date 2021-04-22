@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 import { BehaviorSubject } from 'rxjs';
-import { Response } from '../global-search-selected-filter/global-search-selected-filter.component.spec.data';
+import { Response, searchResultFacets } from '../global-search-selected-filter/global-search-selected-filter.component.spec.data';
 import { MockData } from './global-search-filter.component.spec.data';
 import { CoreModule, UserService } from '@sunbird/core';
 
@@ -49,9 +49,47 @@ describe('GlobalSearchFilterComponent', () => {
     fixture = TestBed.createComponent(GlobalSearchFilterComponent);
     component = fixture.componentInstance;
   });
+
   it('should call ngoninit', () => {
     component.ngOnInit();
     expect(component.selectedFilters).toEqual({ subject: ['English'] });
+  });
+
+  describe('on input facet changes', () => {
+    it('should rebuild form config from new facets', () => {
+      // arrange
+      component.resourceService.frmelmnts['lbl'] = {
+        Select: 'Select'
+      };
+
+      // act
+      component.ngOnChanges({
+        'facets': {
+          currentValue: searchResultFacets,
+          previousValue: null,
+          firstChange: true,
+          isFirstChange: () => true
+        }
+      });
+
+      // assert
+      expect(component.filterFormTemplateConfig).toEqual([
+        {
+          'facet': 'se_mediums',
+          'type': 'dropdown',
+          'labelText': 'Medium',
+          'placeholderText': 'Select Medium',
+          'multiple': true
+        },
+        {
+          'facet': 'mediaType',
+          'type': 'pills',
+          'labelText': 'Media type',
+          'placeholderText': 'Select Media type',
+          'multiple': true
+        }
+      ]);
+    });
   });
 
   it('should reset filters', () => {
