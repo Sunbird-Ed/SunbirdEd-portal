@@ -193,11 +193,12 @@ export class FaqComponent implements OnInit {
     this.showOnlyFaqCategory = false;
     this.showFaqReport = false;
     this.selectedFaqCategory = undefined;
-    if (!event && !event.data) {
+    if (!event || !event.data) {
       return;
     }
     setTimeout(() => {
-      this.selectedFaqCategory = event.data
+      this.selectedFaqCategory = event.data;
+      console.log(JSON.stringify(this.faqData))
       this.selectedFaqCategory.constants = this.faqData.constants;
     }, 0);
   }

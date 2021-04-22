@@ -169,4 +169,67 @@ describe('FaqComponent', () => {
     expect(location.back).toHaveBeenCalled();
   });
 
+  it('should call goBack but will change the view', () => {
+    spyOn(location, 'back');
+    component.showOnlyFaqCategory = false;
+    component.isMobileView = true
+    component.goBack();
+    expect(location.back).not.toHaveBeenCalled();
+  });
+
+  describe('onCategorySelect', () => {
+    it('should terminate flow if the data is empty', () => {
+      // arrange
+      const eventData = {}
+      // act
+      component.onCategorySelect(eventData);
+      // assert
+      expect(component.selectedFaqCategory).toEqual(undefined);
+    });
+
+    it('should select the faqCategory and display the select faq and videos', (done) => {
+      // arrange
+      const eventData = {
+        data: {
+          faqs: [],
+          videos: [],
+        }
+      }
+      component.faqData = FaqData;
+      const outputData = {
+        faqs: [],
+        videos: [],
+        constants: FaqData.constants
+      }
+      // act
+      component.onCategorySelect(eventData);
+      // assert
+      setTimeout(() => {
+        expect(component.selectedFaqCategory).toEqual(outputData);
+        done()
+      }, 0);
+    });
+  });
+
+  describe('checkScreenView', () => {
+    it('should check the screen size and should enable mobile view if the width is less than 767', () => {
+      // arrange
+      const width = 640;
+      // act
+      component.checkScreenView(width);
+      // assert
+      expect(component.isMobileView).toEqual(true);
+      expect(component.showOnlyFaqCategory).toEqual(true);
+    });
+
+    it('should check the screen size and should disable mobile view if the width is greater than 767', () => {
+      // arrange
+      const width = 1200;
+      // act
+      component.checkScreenView(width);
+      // assert
+      expect(component.isMobileView).toEqual(false);
+    });
+  });
+
 });
