@@ -1,5 +1,5 @@
 import { logger } from "@project-sunbird/logger";
-import { EventManager } from "@project-sunbird/OpenRAP/managers/EventManager";
+import { EventManager } from "../../managers/EventManager";
 import * as _ from "lodash";
 import { Singleton, Inject } from 'typescript-ioc';
 import { UserSDK } from '../../sdks/UserSDK';
