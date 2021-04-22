@@ -8,7 +8,6 @@ import ContentLocation from "./../controllers/contentLocation";
 import User from "./../controllers/user";
 import { manifest } from "./../manifest";
 import Response from "./../utils/response";
-import { StandardLog } from '../utils/standardLog';
 const proxy = require('express-http-proxy');
 
 export default (app, proxyURL) => {
