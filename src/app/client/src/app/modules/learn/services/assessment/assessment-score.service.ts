@@ -56,7 +56,9 @@ export class AssessmentScoreService {
     }
     this.processTelemetryEvents(event);
   }
-
+  handleReviewButtonClickEvent(){
+    this._assessEvents = [];
+  }
   /**
    * process the telemetry Events
    */

@@ -428,7 +428,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     this.assessmentScoreService.receiveTelemetryEvents(event);
     this.calculateProgress();
   }
-
+  onQuestionScoreReviewEvents(event) {
+    this.assessmentScoreService.handleReviewButtonClickEvent();
+  }
   onQuestionScoreSubmitEvents(event) {
     /* istanbul ignore else */
     if (event) {
