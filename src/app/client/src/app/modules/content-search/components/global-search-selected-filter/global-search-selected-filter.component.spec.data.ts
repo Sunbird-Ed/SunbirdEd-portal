@@ -29,3 +29,68 @@ export const Response = {
     ]
   },
 };
+
+export const searchResultFacets = [
+  {
+    'values': [
+      {
+        'name': 'tamil',
+        'count': 2
+      },
+      {
+        'name': 'hindi',
+        'count': 120
+      },
+      {
+        'name': 'english',
+        'count': 114
+      },
+      {
+        'name': 'bengali',
+        'count': 1
+      },
+      {
+        'name': 'gujarati',
+        'count': 1
+      },
+      {
+        'name': 'sanskrit',
+        'count': 2
+      },
+      {
+        'name': 'telugu',
+        'count': 6
+      },
+      {
+        'name': 'assamese',
+        'count': 46
+      }
+    ],
+    'name': 'se_mediums',
+    'index': '3',
+    'label': 'Medium',
+    'placeholder': 'Select medium'
+  },
+  {
+    'values': [
+      {
+        'name': 'application/vnd.ekstep.content-collection',
+        'count': 1488
+      },
+      {
+        'name': 'application/vnd.ekstep.ecml-archive',
+        'count': 1
+      }
+    ],
+    'name': 'mediaType',
+    'index': '8',
+    'label': 'Media type',
+    'mimeTypeList': [
+      'all',
+      'video',
+      'documents',
+      'interactive',
+      'audio'
+    ]
+  }
+];
