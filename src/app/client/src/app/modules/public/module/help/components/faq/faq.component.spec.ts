@@ -12,6 +12,8 @@ import { of, throwError } from 'rxjs';
 import { FaqService } from '../../services/faq/faq.service';
 import { FaqComponent } from './faq.component';
 import { RESPONSE } from './faq.component.spec.data';
+import { FaqData } from './faq-data';
+import { HttpClient } from '@angular/common/http';
 
 
 describe('FaqComponent', () => {
@@ -92,6 +94,8 @@ describe('FaqComponent', () => {
 
   it('should call ngOnInit', () => {
     const faqService = TestBed.get(FaqService);
+    const httpService = TestBed.get(HttpClient);
+    httpService.get.and.returnValue(of(FaqData));
     spyOn(component, 'setTelemetryImpression');
     spyOn(component, 'initLayout');
     spyOn(faqService, 'getFaqJSON').and.returnValues(of(RESPONSE.faqJson));
@@ -102,7 +106,10 @@ describe('FaqComponent', () => {
   });
 
   it('should call ngOnInit and get success for getting faq json file', () => {
+    component.faqData = FaqData;
     const faqService = TestBed.get(FaqService);
+    const httpService = TestBed.get(HttpClient);
+    httpService.get.and.returnValue(of(FaqData));
     spyOn(component, 'setTelemetryImpression');
     spyOn(component, 'initLayout');
     spyOn(faqService, 'getFaqJSON').and.returnValues(of(RESPONSE.faqJson));
@@ -112,6 +119,8 @@ describe('FaqComponent', () => {
 
   it('should call ngOnInit and get 404 for getting faq json file', () => {
     const faqService = TestBed.get(FaqService);
+    const httpService = TestBed.get(HttpClient);
+    httpService.get.and.returnValue(of(FaqData));
     spyOn(component, 'setTelemetryImpression');
     spyOn(component, 'initLayout');
     spyOn(faqService, 'getFaqJSON').and.returnValues(of(RESPONSE.faqJson));
@@ -142,7 +151,7 @@ describe('FaqComponent', () => {
     spyOn(publicDataService, 'get').and.returnValue(of({ result: { faqs: {} } }));
     component['getDesktopFAQ']('hi');
     expect(component.showLoader).toBe(false);
-    expect(component.faqList).toEqual({});
+    expect(component.faqData).toEqual({});
     expect(component.defaultToEnglish).toBe(false);
   });
 

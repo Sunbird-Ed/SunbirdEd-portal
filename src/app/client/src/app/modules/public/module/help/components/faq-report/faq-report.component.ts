@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { FaqReportData } from './faq-report-data';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { ProfileService } from '@sunbird/profile';
 import { takeUntil } from "rxjs/operators";
