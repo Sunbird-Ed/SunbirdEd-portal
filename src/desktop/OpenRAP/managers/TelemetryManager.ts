@@ -31,7 +31,7 @@ export class TelemetryManager {
   @Inject
   private telemetryInstance: TelemetryInstance;
   @Inject
-  private standardLog: StandardLogger = new StandardLogger();
+  private standardLog: StandardLogger;
   private settingSDK = new SettingSDK('openrap-sunbirded-plugin');
   private TELEMETRY_PACKET_SIZE =
     parseInt(process.env.TELEMETRY_PACKET_SIZE) || 200;
