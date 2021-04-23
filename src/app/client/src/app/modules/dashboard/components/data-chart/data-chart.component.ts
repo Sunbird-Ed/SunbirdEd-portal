@@ -29,7 +29,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
   @Input() isUserReportAdmin = false;
   @Output() openAddSummaryModal = new EventEmitter();
   @Input() hash: string;
-  @Input() globalSelectedFilters:any;
+  
  
  public unsubscribe = new Subject<void>(); 
  // contains the chart configuration
@@ -108,17 +108,18 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
  
 
-  private calculateBigNumber() {
+  private calculateBigNumber(chartData) {
+
     const bigNumbersConfig = _.get(this.chartConfig, 'bigNumbers');
     this.bigNumberCharts = [];
-    if (bigNumbersConfig.length) {
+    if (bigNumbersConfig && bigNumbersConfig.length) {
       _.forEach(bigNumbersConfig, (config: IBigNumberChart) => {
         const bigNumberChartObj = {};
         if (_.get(config, 'dataExpr')) {
           bigNumberChartObj['header'] = _.get(config, 'header') || '';
           bigNumberChartObj['footer'] = _.get(config, 'footer') || _.get(config, 'dataExpr');
           bigNumberChartObj['data'] =
-            (_.round(_.sumBy(this.chartData, data => _.toNumber(data[_.get(config, 'dataExpr')])))).toLocaleString('hi-IN');
+            (_.round(_.sumBy(chartData, data => _.toNumber( data[_.get(config, 'dataExpr')] ? data[_.get(config, 'dataExpr')] : 0  )))).toLocaleString('hi-IN');
           this.bigNumberCharts.push(bigNumberChartObj);
         }
       });
@@ -164,8 +165,8 @@ export class DataChartComponent implements OnInit, OnDestroy {
       
       this.chartOptions = _.get(this.chartConfig, 'options') || { responsive: true };
       this.chartColors = _.get(this.chartConfig, 'colors') || [];
-      this.chartType = _.get(this.chartConfig, 'chartType') || 'line';
-
+      this.chartType = _.get(this.chartConfig, 'chartType');
+      
       // shows percentage in pie chart if showPercentage config is enabled.
       if (this.chartType === 'pie' && _.get(this.chartOptions, 'showPercentage')) {
         (this.chartOptions.tooltips || (this.chartOptions.tooltips = {})).callbacks = this.showPercentageInCharts();
@@ -186,7 +187,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
       this.iframeDetails = _.get(this.chartConfig, 'iframeConfig');
     }
     if (_.get(this.chartConfig, 'bigNumbers')) {
-      this.calculateBigNumber();
+      this.calculateBigNumber(this.chartData);
     }
     const refreshInterval = _.get(this.chartConfig, 'options.refreshInterval');
     if (refreshInterval) {
@@ -402,6 +403,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
       this.chartData['selectedFilters'] = { };
       this.cdr.detectChanges();
       this.getDataSetValue(val.chartData);
+      this.calculateBigNumber(val.chartData);
       this.resetForm();
     }
   }
@@ -427,6 +429,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
       this.chartData['selectedFilters'] = {};
     }
     this.getDataSetValue(data.chartData);
+    this.calculateBigNumber(data.chartData);
   }
   public graphStatsChange(data:any):void {
     this.showStats=data;
