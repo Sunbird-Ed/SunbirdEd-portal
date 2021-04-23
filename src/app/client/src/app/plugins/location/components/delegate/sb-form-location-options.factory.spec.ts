@@ -246,20 +246,23 @@ describe('SbFormLocationOptionsFactory', () => {
         }
       }));
       spyOn(mockOrgDetailsService, 'searchOrgDetails').and.returnValue(of(
-        [
-          {
-            externalId: 'SOME_SELECTED_DISTRICT_CODE_1',
-            orgName: 'SOME_SELECTED_DISTRICT_NAME_1',
-            id: 'SOME_SELECTED_DISTRICT_ID_1',
-            type: 'district'
-          },
-          {
-            externalId: 'SOME_SELECTED_DISTRICT_CODE_2',
-            orgName: 'SOME_SELECTED_DISTRICT_NAME_2',
-            id: 'SOME_SELECTED_DISTRICT_ID_2',
-            type: 'district'
-          },
-        ]
+        {
+          content: 
+          [
+            {
+              externalId: 'SOME_SELECTED_DISTRICT_CODE_1',
+              orgName: 'SOME_SELECTED_DISTRICT_NAME_1',
+              id: 'SOME_SELECTED_DISTRICT_ID_1',
+              type: 'district'
+            },
+            {
+              externalId: 'SOME_SELECTED_DISTRICT_CODE_2',
+              orgName: 'SOME_SELECTED_DISTRICT_NAME_2',
+              id: 'SOME_SELECTED_DISTRICT_ID_2',
+              type: 'district'
+            },
+          ]
+        }
       ));
       const districtFormConfig: any = {
         'code': 'district',
