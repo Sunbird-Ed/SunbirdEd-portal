@@ -177,7 +177,11 @@ export class NewCollectionEditorComponent implements OnInit {
           isRootOrgAdmin: this.userService.userProfile.rootOrgAdmin
         },
         channelData: this.frameworkService['_channelData'],
-        cloudStorageUrls : this.userService.cloudStorageUrls
+        cloudStorageUrls : this.userService.cloudStorageUrls,
+        userData: {
+          firstName: this.userProfile.firstName,
+          lastName: !_.isEmpty(this.userProfile.lastName) ? this.userProfile.lastName : '',
+        },
       },
       config: {
         mode: this.getEditorMode()
