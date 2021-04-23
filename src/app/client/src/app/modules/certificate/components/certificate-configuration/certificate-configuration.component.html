@@ -211,19 +211,19 @@
                   <div class="d-flex rules-configuration px-16">
                     <label class="d-flex flex-ai-center fnormal font-weight-normal mb-0 py-8">{{resourceService?.frmelmnts?.lbl?.addCertificatescorerule}}</label>
                     <div class="mx-24 progress-separator"></div>
-                    <div class="py-16 d-flex flex-wrap rules-form-content">
-                      <div class="mr-16 sb-field-group">
-                        <div class="sb-field">
+                    <div class="py-16 d-flex flex-dc rules-form-content my-16">
+                      <div class="ui stackable grid mt-0 sb-field-group">
+                        <div class="five wide column sb-field mb-0">
                           <input class="sb-form-control fnormal font-weight-bold" type="text"
                             placeholder="Best attempt score" value="{{resourceService?.frmelmnts?.lbl?.bestScoreattempt}}" readonly="true">
                         </div>
-                        <label class="fnormal font-weight-normal mb-0 py-8">{{resourceService?.frmelmnts?.lbl?.addCertificategreaterThan}}</label>
-                        <div class="mr-24 sb-field">
+                        <div class="three wide fnormal column mt-5">{{resourceService?.frmelmnts?.lbl?.addCertificategreaterThan}}</div>
+                        <div class="four wide column sb-field mb-0">
                           <sui-select class="selection form-control" 
                         [placeholder]="'Select'" formControlName="scoreRange" [options]="scoreRange" #selectScoreRange>
-                        <sui-select-option *ngFor="let option of arrayValue['range']" [value]="option + '%'">
-                        </sui-select-option>
-                      </sui-select> 
+                            <sui-select-option *ngFor="let option of arrayValue['range']" [value]="option + '%'">
+                            </sui-select-option>
+                          </sui-select> 
                         </div>
                         <p class="font-weight-normal fsmall mb-0 completion-text">
                           <span class="asterik">*</span>
