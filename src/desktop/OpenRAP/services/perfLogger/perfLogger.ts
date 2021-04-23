@@ -24,7 +24,7 @@ export class PerfLogger {
     @Inject private dbSDK: DataBaseSDK;
     @Inject private settingSDK: SettingSDK;
     @Inject private telemetryInstance: TelemetryInstance;
-    @Inject private standardLog: StandardLogger = new StandardLogger();
+    @Inject private standardLog: StandardLogger;
 
     public initialize(initial_trigger = INITIAL_TRIGGER, scheduled_trigger =  DAY_IN_MILLISECONDS){
         timer(initial_trigger, scheduled_trigger).subscribe(this.handleTimerEvent.bind(this)); // triggers aggregate job initial after initial_trigger and every 24 hours after initial trigger
