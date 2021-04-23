@@ -389,14 +389,6 @@ describe('ReportComponent', () => {
     expect(data).toEqual(chartData);
   }));
 
-
-  it('should get check global filters', fakeAsync(() => {
-    component.ngOnInit();
-    tick(1000);
-    const data = component.globalFilter({data: mockReportObj,filters:{ } });
-    expect(component.showChart).toEqual(true);
-  }));
-
   it('should get chart data', fakeAsync(() => {
     component.ngOnInit();
     tick(1000);
