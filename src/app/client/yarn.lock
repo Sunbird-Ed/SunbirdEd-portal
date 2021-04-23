@@ -582,7 +582,18 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@3.8.7", "@project-sunbird/client-services@^3.8.5":
+"@project-sunbird/client-services@3.9.5":
+  version "3.9.5"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.9.5.tgz#c9e56d2ec1ca636184f275446e4b820f2739afb8"
+  integrity sha512-v9L3pfVSs5TDv+psO/jlzvO++SpWhLxHRMUoOnPAH7DIBaOO0pWOLUvMQ7aTfg2IDnzpixFyR+8BiupnoW6wSQ==
+  dependencies:
+    "@project-sunbird/telemetry-sdk" "0.0.26"
+    inversify "^5.0.1"
+    qs "^6.9.4"
+    reflect-metadata "^0.1.13"
+    whatwg-fetch "^3.1.0"
+
+"@project-sunbird/client-services@^3.8.5":
   version "3.8.7"
   resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.8.7.tgz#cc0a6b931975abf55bc5f19a76b69b9217c6cd86"
   integrity sha512-sCjgKREyEMPR5DkUOO3DjHPlxCtsxCs0nWZvr5XpR3811kMblX0RDGt9u+2MbuI3TDvgXMXH3t4A2D8Htx/gsQ==
@@ -600,10 +611,8 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/discussions-ui-v8@2.0.26":
-  version "2.0.26"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.0.26.tgz#b37d9b2091aa0699c000c0306e4d7c5407436e33"
-  integrity sha512-/Fq0mVdr7LB2yerSRgLUgBOqe0fWwg+RDsCEtuKs3P25ugIVyliy5M7ZIziKCnk20qfMKXgLKfxyZF2cvLdtJg==
+"@project-sunbird/discussions-ui-v8@file:../../../../../ekstep/discussions-UI/dist/discussion-ui":
+  version "2.1.0-beta.3"
   dependencies:
     tslib "^1.9.0"
 
@@ -612,10 +621,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.6.tgz#15a88937fb643d5eb33a81c8d28ece00b56d5aa0"
   integrity sha512-rK87rHdagadIS7UrWju7HDolIfWlO5CbK+tIJrEApO+QPMi+k8KuWoLc8MxEprrsJxUt6r44O4uGiO0hgI5plA==
 
-"@project-sunbird/sunbird-collection-editor@0.0.35":
-  version "0.0.35"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-0.0.35.tgz#367a2778907c144661a9aec41c5bffa696715a5b"
-  integrity sha512-laXAVCNT6cVWjegWFwM8+jNr/Eip7sQ7s2tE1pmtwcoCnMAI9FCWEfoUGalAnbnwNMlyFBNzWQkR1Hymv06TDw==
+"@project-sunbird/sunbird-collection-editor@0.0.37":
+  version "0.0.37"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-0.0.37.tgz#b9f0e34345e1daa70c481500e2cc0bbefa7b6731"
+  integrity sha512-Tc6v/sr5J9FSHcWV5SFVLb4AAfXmvONWYADwqH4emEn6kmszga8SCnBc7OGNxzvU+Iv3EwDd2EGyb9cQUPdlYg==
   dependencies:
     tslib "^1.9.0"
 
@@ -2774,10 +2783,10 @@ commander@^2.11.0, commander@^2.12.1, commander@^2.19.0, commander@^2.20.0, comm
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
 
-common-form-elements@^3.8.14:
-  version "3.8.14"
-  resolved "https://registry.yarnpkg.com/common-form-elements/-/common-form-elements-3.8.14.tgz#e1a44aa52f54a8c17a365edb22874298526604a3"
-  integrity sha512-/ZkIA8pa6drg6rX71UijWr9WxdP71zgPmFh90FI+nuPnZ91OCBFZLcqC6AfovXxQU+eTdHCvW+PjihiLViIYQA==
+common-form-elements@^3.8.15:
+  version "3.9.3"
+  resolved "https://registry.yarnpkg.com/common-form-elements/-/common-form-elements-3.9.3.tgz#e281b669e4653b679b1aec6a5492c7c133fd72cd"
+  integrity sha512-wa4oDNZDISZjZZQGc3f/QOiHeG0UvWjjHsY6bDaWAHomwkkLkbKova33SGWywnsUK5HvH7+rSMQKTEszHelwNQ==
   dependencies:
     immutable "^4.0.0-rc.12"
     moment "^2.29.1"
@@ -9487,6 +9496,16 @@ sb-svg2pdf@0.0.9:
   integrity sha512-BKxj5D+67MzRZjdZkRtpO+AJ+Qk7OV5XY1SeUsdLkPnAttzv9zX/OtRRKSPHHjsP3vhIkCA9WhWdp0fjIvumXg==
   dependencies:
     tslib "^1.9.0"
+
+sb-tag-manager@^3.9.15:
+  version "3.9.15"
+  resolved "https://registry.yarnpkg.com/sb-tag-manager/-/sb-tag-manager-3.9.15.tgz#eb3eb76253eb705899d423643fc9569183bc1b23"
+  integrity sha512-/ZukSpRPwTRAJHhZuXNtdZrAzHcvYXWIkN2vvn4eNBEbM25p1Y0GCp4cjaIpUknmckXWyj3R4FOKNHSgVWa0sg==
+  dependencies:
+    inversify "^5.0.1"
+    qs "^6.9.4"
+    reflect-metadata "^0.1.13"
+    whatwg-fetch "^3.1.0"
 
 schema-utils@^0.3.0:
   version "0.3.0"
