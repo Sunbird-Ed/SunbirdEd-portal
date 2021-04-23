@@ -342,9 +342,17 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   }
 
   processCertificateDetails(certTemplateDetails) {
-    const templateData = _.pick(_.get(certTemplateDetails, Object.keys(certTemplateDetails)), ['criteria', 'previewUrl', 'artifactUrl', 'identifier', 'data']);
+    const templateData = _.pick(_.get(certTemplateDetails, Object.keys(certTemplateDetails)), ['criteria', 'previewUrl', 'artifactUrl', 'identifier', 'data', 'issuer', 'signatoryList','name']);
     this.templateIdentifier = _.get(templateData, 'identifier');
-    this.selectedTemplate = {'name' : _.get(templateData, 'identifier'), 'previewUrl': _.get(templateData, 'previewUrl')};
+    this.selectedTemplate = { 
+      'name': _.get(templateData, 'name'), 
+      'identifier': _.get(templateData, 'identifier'), 
+      'previewUrl': _.get(templateData, 'previewUrl'),
+      'issuer': JSON.stringify(_.get(templateData, 'issuer')),
+      'data': JSON.stringify(_.get(templateData, 'data')),
+      'signatoryList': JSON.stringify(_.get(templateData, 'signatoryList')),
+      'artifactUrl':_.get(templateData, 'artifactUrl')
+     };
     // if (!_.isEmpty(this.newTemplateIdentifier)) {
     //   this.templateIdentifier = this.newTemplateIdentifier;
     //   this.selectedTemplate = null;

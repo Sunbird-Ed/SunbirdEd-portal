@@ -22,7 +22,7 @@ export class CertConfigModel {
         criteria['enrollment'] =  { status: 2 };
         if (_.get(rawValues, 'scoreRange')) {
             const scoreRange = (_.get(rawValues, 'scoreRange')).substr(0,(_.get(rawValues, 'scoreRange')).indexOf('%'));
-            criteria['assessment'] = { score:{'>=': scoreRange}};
+            criteria['assessment'] = { score:{'>=': parseInt(scoreRange)}};
         }
         return criteria;
     }
