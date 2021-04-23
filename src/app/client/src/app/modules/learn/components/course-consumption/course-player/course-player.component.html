@@ -164,7 +164,7 @@
 
       <!-- 2. Course Progress bar -->
         <div class="sb-bg-color-white certified-course__progress p-16 mb-16" *ngIf="enrolledCourse && !addToGroup && !courseMentor">
-          <div class="fsmall relative9">
+          <div class="fsmall relative9 relative">
             <div class="kabab-menu pull-right" *ngIf="progressToDisplay === 100 && showForceSync" (click)="dropdownMenu();"></div>
             <div class="kabab-menu-dropdown-content" [hidden]="dropdownContent">
               <div class="d-flex flex-ai-center list p-8 w-100" (click)="forceSync()">{{resourceService?.frmelmnts?.lbl?.forceSync}}</div>
