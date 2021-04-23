@@ -116,7 +116,7 @@ export class SbFormLocationOptionsFactory {
           isSchool: true
         }
       }).pipe(
-        map((list: any) => list.map(ele => {
+        map((list: any) => list.content.map(ele => {
           return {
             label: ele.orgName,
             value: { 
