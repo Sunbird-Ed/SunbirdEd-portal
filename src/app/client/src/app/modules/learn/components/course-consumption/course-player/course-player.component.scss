@@ -232,7 +232,7 @@ xxl calculateRem(88px) 24px 20px;
   background-color: var(--kabab-menu-dropdown-bg);
   box-shadow: 0 calculateRem(3px) calculateRem(5px) calculateRem(4px) rgba(var(--rc-rgba-black), 0.05);
   padding: calculateRem(8px);
-  z-index: 1;
+  z-index: 2;
   text-align: left;
   right:0;
   top: 2rem;
