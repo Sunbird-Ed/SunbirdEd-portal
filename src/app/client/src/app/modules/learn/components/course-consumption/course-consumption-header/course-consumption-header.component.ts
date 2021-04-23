@@ -367,6 +367,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
               type: 'batch',
               identifier: [this.batchId]
           };
+
     // TODO: need to check with sudip for this repeating code
         // if (isCreator) {
         //   this.fetchForumIdReq = {
