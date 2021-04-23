@@ -4,6 +4,8 @@ import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import Response from "../utils/response";
 
 import { ClassLogger } from "@project-sunbird/logger/decorator";
+import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
+import { Inject } from 'typescript-ioc';
 
 /*@ClassLogger({
   logLevel: "debug",
@@ -13,9 +15,11 @@ import { ClassLogger } from "@project-sunbird/logger/decorator";
 export default class User {
     private userSDK;
     private settingSDK;
+    @Inject private standardLog: StandardLogger;
     constructor(manifest) {
         this.userSDK = containerAPI.getUserSdkInstance();
         this.settingSDK = containerAPI.getSettingSDKInstance(manifest.id);
+        this.standardLog = containerAPI.getStandardLoggerInstance();
     }
 
     public async create(req, res) {
@@ -30,7 +34,7 @@ export default class User {
             logger.info(`ReqId = "${req.headers["X-msgid"]}": request: ${_.get(req, "body.request")} found from desktop app update api`);
             return res.send(Response.success("api.desktop.user.create", { id: createResp._id }, req));
         } catch (err) {
-            logger.error(`ReqId = "${req.headers["X-msgid"]}": Received error while adding user,  where err = ${err}`);
+            this.standardLog.error({ id: 'USER_DB_INSERT_FAILED', mid: req.headers["X-msgid"], message: 'Received error while adding user', error: err });
             res.status(err.status || 500);
             return res.send(
                 Response.error("api.desktop.user.create", err.status || 500, err.message || ""),
@@ -41,12 +45,13 @@ export default class User {
     public async read(req, res) {
         try {
             const userData = await this.userSDK.read();
-            const locationData = await this.settingSDK.get("location");
+            const locationData = await this.settingSDK.get("location").catch((error) => { logger.error("Error while getting location data from setting SDK", error); });
             userData.location = locationData;
             logger.info(`ReqId = "${req.headers["X-msgid"]}": result: ${userData} found from desktop app update api`);
             return res.send(Response.success("api.desktop.user.read", userData, req));
         } catch (err) {
             logger.error(`ReqId = "${req.headers["X-msgid"]}": Received error while getting user,  where err = ${err}`);
+            this.standardLog.error({ id: 'USER_DB_READ_FAILED', mid: req.headers["X-msgid"], message: 'Received error while getting user', error: err });
             res.status(err.status || 500);
             return res.send(
                 Response.error("api.desktop.user.read", err.status || 500, err.message || ""),
@@ -63,11 +68,7 @@ export default class User {
             res.status(200);
             return res.send(Response.success("api.desktop.user.update", {identifier: reqObj._id}, req));
         } catch (err) {
-            logger.error(
-                `ReqId = "${req.headers[
-                "X-msgid"
-                ]}": Received error while updating in user  database and err.message: ${err.message} ${err}`,
-            );
+            this.standardLog.error({ id: 'USER_DB_UPDATED_FAILED', mid: req.headers["X-msgid"], message: 'Received error while updating user database', error: err });
             if (err.status === 404) {
                 res.status(404);
                 return res.send(Response.error("api.desktop.user.update", 404));

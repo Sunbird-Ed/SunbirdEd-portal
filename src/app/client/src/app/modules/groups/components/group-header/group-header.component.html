@@ -12,10 +12,7 @@
         </div>
       </div>
       <!--Forum Icon-->
-      <button _ngcontent-jvn-c45="" apptelemetryinteract="" *ngIf="forumIds.length > 0" (click)="navigateToDiscussionForum()"
-       class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix ng-star-inserted forum-btn fs-1 font-weight-bold" title="Forum">
-          <img _ngcontent-jvn-c45="" class="mr-8" src="assets/images/forum.svg" width="20px"> Forum
-      </button>
+      <app-access-discussion [forumIds]="forumIds" [fetchForumIdReq]="fetchForumIdReq" (routerData)="assignForumData($event)"> </app-access-discussion>
       <div class="d-flex flex-ai-center flex-w-wrap content-header__buttons">
         <!-- <button class="sb-btn sb-btn-normal sb-btn-link-primary min-w-auto p-0 px-8" type="button"
           (click)="toggleFtuModal(true);addTelemetry('member-ftu-popup')">

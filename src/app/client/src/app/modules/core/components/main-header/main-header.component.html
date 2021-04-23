@@ -9,7 +9,7 @@
     <!--Header White Section-->
     <div class="ui container sb-header-ui-container">
       <div class="ui grid padded width-100">
-        <div class="five wide column p-0 d-flex flex-ai-center">
+        <div class="p-0 d-flex flex-ai-center" [ngClass]="isDesktopApp ? 'five wide column' : 'three wide column'">
           <!--Logo-->
           <a class="d-flex logo" tabindex="0" title="{{tenantInfo.titleName}}" role="banner">
             <img (click)="navigateToHome()" class="cursor-pointer" alt={{tenantInfo.titleName}}
@@ -35,7 +35,8 @@
           <!--/Online/Offline-->
 
         </div>
-        <div class="seven wide column p-0 d-flex flex-jc-flex-end flex-ai-center">
+        <div class="p-0 d-flex flex-jc-flex-end flex-ai-center" 
+        [ngClass]="isDesktopApp ? 'seven wide column sb-desktop-header-list-items' : 'nine wide column sb-header-list-items'">
           <!--Hamburger Icon-->
 <!--
           <i class="large bars icon link primary-color mobile only" (click)="showSideBar()" tabindex="0"></i>
@@ -394,6 +395,10 @@
     </div>
     <ng-container>
       <div *ngIf="!userService.loggedIn">
+        <div class="mb-16">
+          <sb-member-card [config]=cardConfig [initial]="guestUser?.formatedName[0] || 'G'" [title]="guestUser?.formatedName || 'Guest'">
+          </sb-member-card>
+        </div>
         <div class="profile__actions">
           <ul class="profile__actions__list pl-0">
 
@@ -401,7 +406,12 @@
               <app-content-type [layoutConfiguration]="layoutConfiguration"
                                 (closeSideMenu)="toggleSideMenu(false)"></app-content-type>
             </div>
-
+            <li class="list-item" (click)="toggleSideMenu(false)" routerLink="guest-profile">
+              <i class="icon-svg icon-svg--sm icon-profileuser mr-8"><svg class="icon icon-svg--primary">
+                  <use xlink:href="./assets/images/sprite.svg#profileuser"></use>
+                </svg></i>
+              {{resourceService.frmelmnts?.lnk?.profile}}
+            </li>
             <li appOnlineOnly class="list-item" (click)="toggleSideMenu(false)" [class.active]="router.isActive(routerLinks?.explore)"
               *ngIf="!router.isActive('', true) && !isDesktopApp" [routerLink]="[navigateToGroups()]" appTelemetryInteract
               [telemetryInteractEdata]="myGroupIntractEData">
@@ -416,12 +426,6 @@
               </svg></i>
               <span *ngIf="layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToOldLayout}}</span>
               <span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToJoyLayout}}</span>
-            </li>
-            <li class="list-item" (click)="toggleSideMenu(false);manageLocation()">
-              <i class="icon-svg icon-svg--sm icon-manage mr-8"><svg class="icon icon-svg--primary">
-                <use xlink:href="./assets/images/sprite.svg#manage-location"></use>
-              </svg></i>
-              <span>{{resourceService?.frmelmnts?.lbl?.manageLocation}}</span>
             </li>
             <li class="list-item" (click)="toggleSideMenu(false);" routerLink="/desktop/telemetry" *appDesktopOnly>
               <i class="icon-svg icon-svg--sm icon-manage mr-8"><svg class="icon icon-svg--primary">
@@ -480,23 +484,5 @@
     </ng-container>
   </div>
 </div>
-
-<!-- Manage location for an anonymous user -->
-<app-location-selection  *ngIf="showLocationPopup"
-                         [deviceProfile]="deviceProfile"
-                         (close)="locationSubmit()">
-  <div slot="popup-header">
-    <img [src]="tenantInfo?.logo" class="brand-logo" alt="logo" />
-    <h1>{{resourceService?.frmelmnts?.lbl?.welcomeToInstance | interpolate:'{instance}': tenantInfo?.titleName}}</h1>
-  </div>
-  <div slot="popup-sub-header">
-    <p class="subtitle">{{resourceService?.messages?.imsg?.m0075}}</p>
-  </div>
-  <div slot="popup-footer">
-    <p class="py-16">{{resourceService?.messages?.imsg?.m0074}}</p>
-  </div>
-</app-location-selection>
-<!-- Manage location for an anonymous user -->
-
 
 <app-load-offline-content [hideLoadButton]="true" (close)="showLoadContentModal=false"  *ngIf="showLoadContentModal"></app-load-offline-content>

@@ -160,4 +160,16 @@ export class ProfileService {
       return response;
     }));
   }
+
+  getFaqReportIssueForm(orgId?: string) {
+    const formServiceInputParams = {
+      formType: 'config',
+      formAction: 'reportIssue',
+      contentType: 'faq',
+      component: 'portal'
+    };
+    return this.formService.getFormConfig(formServiceInputParams, orgId).pipe(map((response) => {
+      return response;
+    }));
+  }
 }

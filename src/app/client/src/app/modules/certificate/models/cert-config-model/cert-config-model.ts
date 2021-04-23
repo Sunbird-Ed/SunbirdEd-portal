@@ -19,7 +19,11 @@ export class CertConfigModel {
         if (_.get(rawValues, 'issueTo') !== this.dropDownFields.ALL) {
             criteria['user'] =  { rootOrgId: rootOrgId };
         }
-        criteria['enrollment'] = _.get(rawValues, 'certificateType') === this.dropDownFields.COMPLETION_CERTIFICATE ? { status: 2 } : { };
+        criteria['enrollment'] =  { status: 2 };
+        if (_.get(rawValues, 'scoreRange')) {
+            const scoreRange = (_.get(rawValues, 'scoreRange')).substr(0,(_.get(rawValues, 'scoreRange')).indexOf('%'));
+            criteria['assessment'] = { score:{'>=': parseInt(scoreRange)}};
+        }
         return criteria;
     }
 
@@ -33,6 +37,7 @@ export class CertConfigModel {
         dropDowns['issueTo'] = _.get(criteria, 'user.rootOrgId') ?
         [{ name: this.dropDownFields.MY_STATE_TEACHER }] : [{ name: this.dropDownFields.ALL }];
         dropDowns['certTypes'] = _.get(criteria, 'enrollment.status') === 2 ? [{ name: this.dropDownFields.COMPLETION_CERTIFICATE }] : [{}];
+        dropDowns ['scoreRange'] = _.get(criteria,'assessment.score')?criteria.assessment.score['>=']+'%':'';
         return dropDowns;
     }
 

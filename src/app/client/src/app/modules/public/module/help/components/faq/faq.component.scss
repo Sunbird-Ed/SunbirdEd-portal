@@ -3,9 +3,9 @@
     --visit-helpcenter-bg:var(--white);
 }
 :host::ng-deep {
-
+​
     .help-page {
-
+​
         &__content {
             margin-top: calculateRem(24px);
             .panel {
@@ -18,7 +18,7 @@
                 }
             }
         }
-
+​
         &__visit-helpcenter {
             background-color: var(--visit-helpcenter-bg);
             .visit-helpcenter__text {
@@ -28,7 +28,7 @@
             }
         }
     }
-
+​
     .extraTemplate {
         @include respond-below(sm) {
             flex-wrap: wrap;
@@ -39,5 +39,48 @@
                 margin-top: 16px;
             }
         }
+    }
+}
+.faq_title {
+    color: var(--carousel-title);
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: 1.5rem;
+  }
+.sbhelp_container {
+    .category-list-mobile{
+        width:100%; 
+        display: block;
+    }
+    .faq-section-mobile{
+        width:100%; 
+        float:none;
+    }
+    .category-list-web{
+        display: inline-block;
+    }
+    display: flex;
+    align-items: flex-start;
+    &__left {
+        min-width: calculateRem(312px);
+        flex:1;
+        padding:1.5rem;
+        min-height: 8rem;
+        background: var(--sbfaq-compt-bg);
+        transition: all ease-in-out .3s;
+    }
+    &__right {
+        padding-left: 2rem;
+        width: calc(100% - 19.5rem);
+        transition: all ease-in-out .3s;
+        @include respond-below(sm) {
+            padding-left: 0rem;
+        }
+    }
+    &__faq {
+        background: var(--sbfaq-compt-bg);
+        padding: 1.5rem;
+        border-radius: 1.5rem;
     }
 }

@@ -1,5 +1,5 @@
 
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import {
   ConfigService, ToasterService, ResourceService, SharedModule, NavigationHelperService,
   BrowserCacheTtlService, LayoutService
@@ -21,6 +21,7 @@ import { animate, AnimationBuilder, AnimationMetadata, AnimationPlayer, style } 
 import { configureTestSuite } from '@sunbird/test-util';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { UtilService } from '@sunbird/shared';
 
 class RouterStub {
   public navigationEnd = new NavigationEnd(0, '/explore', '/explore');
@@ -42,6 +43,7 @@ const fakeActivatedRoute = {
   },
   queryParams: of({})
 };
+
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -268,6 +270,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
   });
   it('Check onLocationSubmit called ', () => {
     spyOn(component, 'onLocationSubmit');
+    component.showYearOfBirthPopup = false;
     component.onLocationSubmit();
     expect(component.onLocationSubmit).toHaveBeenCalled();
   });
@@ -410,5 +413,63 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     spyOn(component, 'skipToMainContent');
     component.skipToMainContent();
     expect(component.skipToMainContent).toHaveBeenCalled();
+  });
+  it('should close framework popup', () => {
+    component.frameWorkPopUp = { modal: {
+        deny: jasmine.createSpy('deny')
+      }
+    };
+    component.closeFrameworkPopup();
+    expect(component.frameWorkPopUp.modal.deny).toHaveBeenCalled();
+    expect(component.showFrameWorkPopUp).toBe(false);
+  });
+
+  it('should update framework for logged In user', () => {
+    const event = { board: ['CBSE'], medium: ['English'], gradeLevel: ['Class 1'], subject: ['English'] };
+    component.isGuestUser = false;
+    const profileService = TestBed.get(ProfileService);
+    const utilService = TestBed.get(UtilService);
+    spyOn(profileService, 'updateProfile').and.returnValue(of({}));
+    spyOn(component, 'closeFrameworkPopup');
+    spyOn(component, 'checkLocationStatus');
+    spyOn(userService, 'setUserFramework');
+    spyOn(utilService, 'toggleAppPopup');
+    component.updateFrameWork(event);
+    expect(profileService.updateProfile).toHaveBeenCalled();
+    expect(component.closeFrameworkPopup).toHaveBeenCalled();
+    expect(component.checkLocationStatus).toHaveBeenCalled();
+    expect(userService.setUserFramework).toHaveBeenCalled();
+    expect(utilService.toggleAppPopup).toHaveBeenCalled();
+  });
+  it('should not update framework for logged In user', () => {
+    const event = { board: ['CBSE'], medium: ['English'], gradeLevel: ['Class 1'], subject: ['English'] };
+    component.isGuestUser = false;
+    const profileService = TestBed.get(ProfileService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(profileService, 'updateProfile').and.returnValue(throwError({}));
+    component.updateFrameWork(event);
+    expect(profileService.updateProfile).toHaveBeenCalled();
+  });
+  it('should update framework for guest user', () => {
+    const event = { board: ['CBSE'], medium: ['English'], gradeLevel: ['Class 1'], subject: ['English'] };
+    component.isGuestUser = true;
+    component.guestUserDetails = undefined;
+    component.isDesktopApp = false;
+    spyOn(component, 'closeFrameworkPopup');
+    spyOn(component, 'checkLocationStatus');
+    component.updateFrameWork(event);
+    expect(component.closeFrameworkPopup).toHaveBeenCalled();
+    expect(component.checkLocationStatus).toHaveBeenCalled();
+  });
+  it('should update framework for guest user/desktop', () => {
+    const event = { board: ['CBSE'], medium: ['English'], gradeLevel: ['Class 1'], subject: ['English'] };
+    component.isGuestUser = true;
+    component.guestUserDetails = undefined;
+    component.isDesktopApp = true;
+    spyOn(component, 'closeFrameworkPopup');
+    spyOn(component, 'checkLocationStatus');
+    component.updateFrameWork(event);
+    expect(component.closeFrameworkPopup).toHaveBeenCalled();
+    expect(component.checkLocationStatus).toHaveBeenCalled();
   });
 });

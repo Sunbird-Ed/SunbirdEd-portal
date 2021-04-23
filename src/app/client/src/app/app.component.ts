@@ -112,6 +112,9 @@ export class AppComponent implements OnInit, OnDestroy {
   // Font Increase Decrease Variables
   fontSize: any;
   defaultFontSize = 16;
+  isGuestUser = true;
+  guestUserDetails;
+  showYearOfBirthPopup = false;
   @ViewChild('increaseFontSize', { static: false }) increaseFontSize: ElementRef;
   @ViewChild('decreaseFontSize', { static: false }) decreaseFontSize: ElementRef;
   @ViewChild('resetFontSize', { static: false }) resetFontSize: ElementRef;
@@ -234,6 +237,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.userService.initialize(this.userService.loggedIn);
           this.getOrgDetails();
           if (this.userService.loggedIn) {
+            this.isGuestUser = false;
             this.permissionService.initialize();
             this.courseService.initialize();
             this.programsService.initialize();
@@ -241,9 +245,13 @@ export class AppComponent implements OnInit, OnDestroy {
             this.checkForCustodianUser();
             return this.setUserDetails();
           } else {
-            if (this.utilService.isDesktopApp) {
-              this.userService.getAnonymousUserPreference();
-            }
+            this.isGuestUser = true;
+            this.userService.getGuestUser().subscribe((response) => {
+              this.guestUserDetails = response;
+            }, error => {
+              console.error('Error while fetching guest user', error);
+            });
+
             return this.setOrgDetails();
           }
         }))
@@ -362,14 +370,20 @@ export class AppComponent implements OnInit, OnDestroy {
         if (_.get(res[0], 'tenantData')) {
           const orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
           if (_.get(orgDetailsFromSlug, 'slug') !== this.tenantService.slugForIgot) {
-            const userType = localStorage.getItem('userType');
+
+            let userType;
+            if (this.isDesktopApp && this.isGuestUser) {
+               userType = _.get(this.guestUserDetails, 'role') ? this.guestUserDetails.role : undefined;
+            } else {
+              userType = localStorage.getItem('userType');
+            }
             this.showUserTypePopup = _.get(this.userService, 'loggedIn') ? (!_.get(this.userService, 'userProfile.userType') || !userType) : !userType;
           }
         }
       });
     }, (err) => {
-      this.isLocationConfirmed = true;
-      this.showUserTypePopup = false;
+      this.isLocationConfirmed = false;
+      this.showUserTypePopup = true;
     });
     this.getUserFeedData();
   }
@@ -479,6 +493,10 @@ export class AppComponent implements OnInit, OnDestroy {
    * checks if user has selected the framework and shows popup if not selected.
    */
   public checkFrameworkSelected() {
+    // should not show framework popup for sign up and recover route
+    if (this.isLocationStatusRequired()) {
+      return;
+    }
     const frameWorkPopUp: boolean = this.cacheService.get('showFrameWorkPopUp');
     if (frameWorkPopUp) {
       this.showFrameWorkPopUp = false;
@@ -486,6 +504,15 @@ export class AppComponent implements OnInit, OnDestroy {
     } else {
       if (this.userService.loggedIn && _.isEmpty(_.get(this.userProfile, 'framework'))) {
         this.showFrameWorkPopUp = true;
+      } else if (this.isGuestUser) {
+        if (!this.guestUserDetails) {
+          this.userService.getGuestUser().subscribe((response) => {
+            this.guestUserDetails = response;
+            this.showFrameWorkPopUp = false;
+          }, error => {
+            this.showFrameWorkPopUp = true;
+          });
+        }
       } else {
         this.checkLocationStatus();
       }
@@ -643,26 +670,40 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  closeFrameworkPopup () {
+    this.frameWorkPopUp.modal.deny();
+    this.showFrameWorkPopUp = false;
+  }
   /**
    * updates user framework. After update redirects to library
    */
   public updateFrameWork(event) {
-    const req = {
-      framework: event
-    };
-    this.profileService.updateProfile(req).subscribe(res => {
-      this.frameWorkPopUp.modal.deny();
-      this.userService.setUserFramework(event);
-      this.showFrameWorkPopUp = false;
+    if (this.isGuestUser && !this.guestUserDetails) {
+      const user = { name: 'guest', formatedName: 'Guest', framework: event };
+      this.userService.createGuestUser(user).subscribe(data => {
+        this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
+      }, error => {
+        this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+      });
+      this.closeFrameworkPopup();
       this.checkLocationStatus();
-      this.utilService.toggleAppPopup();
-      this.showAppPopUp = this.utilService.showAppPopUp;
-    }, err => {
-      this.toasterService.warning(this.resourceService.messages.emsg.m0012);
-      this.frameWorkPopUp.modal.deny();
-      this.checkLocationStatus();
-      this.showFrameWorkPopUp = false;
-    });
+    } else {
+      const req = {
+        framework: event
+      };
+      this.profileService.updateProfile(req).subscribe(res => {
+        this.closeFrameworkPopup();
+        this.userService.setUserFramework(event);
+        this.checkLocationStatus();
+        this.utilService.toggleAppPopup();
+        this.showAppPopUp = this.utilService.showAppPopUp;
+      }, err => {
+        this.toasterService.warning(this.resourceService.messages.emsg.m0012);
+        this.closeFrameworkPopup();
+        this.checkLocationStatus();
+      });
+    }
   }
   viewInBrowser() {
     // no action required
@@ -695,6 +736,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   /** will be triggered once location popup gets closed */
   onLocationSubmit() {
+    this.showYearOfBirthPopup = true;
     if (this.userFeed) {
       this.showUserVerificationPopup = true;
     }

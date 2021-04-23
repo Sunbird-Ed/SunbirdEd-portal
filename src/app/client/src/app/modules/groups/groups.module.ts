@@ -19,6 +19,7 @@ import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-i
 import { ContentSearchModule } from '@sunbird/content-search';
 import { SlickModule } from 'ngx-slick';
 import { RecaptchaModule } from 'ng-recaptcha';
+import { DiscussionModule } from '../discussion/discussion.module';
 
 @NgModule({
   imports: [
@@ -37,7 +38,8 @@ import { RecaptchaModule } from 'ng-recaptcha';
     SlickModule,
     SuiModalModule,
     SuiRatingModule,
-    RecaptchaModule
+    RecaptchaModule,
+    DiscussionModule
   ],
   providers: [GroupsService],
   declarations: [ MyGroupsComponent, AddMemberComponent,
