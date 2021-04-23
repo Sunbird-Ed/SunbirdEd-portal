@@ -18,7 +18,7 @@ export default class DeviceSDK {
     private settingSDK = new SettingSDK('openrap-sunbirded-plugin');
     @Inject private systemSDK: SystemSDK;
     @Inject private databaseSdk: DataBaseSDK;
-    @Inject private standardLog: StandardLogger = new StandardLogger();
+    @Inject private standardLog: StandardLogger;
     private config: IConfig;
     private apiKey: string;
     private deviceRegistryV1APIPath = "/api/api-manager/v1/consumer/desktop_device/credential/register";
