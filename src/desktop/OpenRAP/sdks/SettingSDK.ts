@@ -1,7 +1,7 @@
 import { DataBaseSDK } from "./DataBaseSDK";
 import { hash } from "./../utils";
 import { Inject } from "typescript-ioc";
-import { StandardLogger } from '../services/standardLogger/standardLogger';
+import { logger } from '@project-sunbird/logger';
 
 /**
  * @author Harish Kumar Gangula <harishg@ilimi.in>
@@ -11,7 +11,6 @@ let dbName = "settings";
 
 export default class SettingSDK {
   @Inject private dbSDK: DataBaseSDK;
-  @Inject private standardLog: StandardLogger = new StandardLogger();
   constructor(public pluginId?: string) {}
   /*
    * Method to put the setting
@@ -21,7 +20,7 @@ export default class SettingSDK {
   put = async (key: string, value: object): Promise<boolean> => {
     let keyName = this.pluginId ? `${hash(this.pluginId)}_${key}` : key;
     await this.dbSDK.upsertDoc(dbName, keyName, value).catch(err => {
-      this.standardLog.error({ id: 'SETTING_SDK_DB_INSERT_FAILED', message: 'Error while inserting the key to the  database', error: err });
+      logger.error({ id: 'SETTING_SDK_DB_INSERT_FAILED', message: 'Error while inserting the key to the  database', error: err });
     });
     return true;
   };
@@ -41,7 +40,7 @@ export default class SettingSDK {
 
   delete = async (key: string): Promise<boolean> => {
     await this.dbSDK.delete(dbName, key).catch(err => {
-      this.standardLog.error({ id: 'SETTING_SDK_DB_ENTRIES_DELETE_FAILED', message: 'Error while deleting the key to the  database', error: err });
+      logger.error({ id: 'SETTING_SDK_DB_ENTRIES_DELETE_FAILED', message: 'Error while deleting the key to the  database', error: err });
     });
     return true;
   }

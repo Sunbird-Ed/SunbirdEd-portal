@@ -58,7 +58,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   addScoreRule = false;
   arrayValue={};
   scoreRange: any;
-  isMultipleAssessment=false;
+  isSingleAssessment=false;
 
   constructor(
     private certificateService: CertificateService,
@@ -120,9 +120,11 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     const contentTypes = JSON.parse(_.get(this.courseDetails, 'contentTypesCount'));
     const selfAssessCount = _.get(contentTypes, 'SelfAssess')
     if (selfAssessCount && selfAssessCount > 1) {
-      this.isMultipleAssessment = true;
+      this.isSingleAssessment = false;
+    } else if(selfAssessCount && selfAssessCount == 1){
+      this.isSingleAssessment = true;
     } else {
-      this.isMultipleAssessment = false;
+      this.isSingleAssessment = false;
     }
   }
   certificateCreation() {
