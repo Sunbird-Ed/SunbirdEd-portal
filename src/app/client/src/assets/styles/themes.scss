@@ -3147,11 +3147,10 @@ html[accessable-theme="accessible"]{
 .module-complete-content label.fnormal{
   color:var(--accessible-green) !important;
 }
-
-
 }
 
 html[data-theme=Darkmode][layout='old'][accessable-theme="accessible"] {
+  --tertiary-color:#9a3713!important;
   .licenseTag{
     color: var(--gray-800)!important;
   }
@@ -3161,4 +3160,12 @@ html[data-theme=Darkmode][layout='old'][accessable-theme="accessible"] {
   .user-profile-box span.sb-color-warning{
     color: #ffae91 !important;
   }
+}
+html[layout='old'][accessable-theme="accessible"] {
+  --sb-search-input-text:#525252 !important;
+  --tertiary-color:#9a3713!important;
+  app-language-dropdown label{
+    margin-bottom: auto !important;
+  }
+ 
 }

@@ -11,6 +11,7 @@ import {LocationService} from '../../services/location/location.service';
 import {UserService} from '../../../../modules/core/services/user/user.service';
 import {DeviceRegisterService} from '../../../../modules/core/services/device-register/device-register.service';
 import {FormService} from '../../../../modules/core/services/form/form.service';
+import { OrgDetailsService } from '@sunbird/core';
 
 type UseCase = 'SIGNEDIN_GUEST' | 'SIGNEDIN' | 'GUEST';
 
@@ -40,11 +41,13 @@ export class SbFormLocationSelectionDelegate {
     private locationService: LocationService,
     private formService: FormService,
     private deviceRegisterService: DeviceRegisterService,
-    private deviceProfile?: IDeviceProfile,
+    private orgDetailsService: OrgDetailsService,
+    private deviceProfile?: IDeviceProfile
   ) {
     this.formLocationOptionsFactory = new SbFormLocationOptionsFactory(
       locationService,
-      userService
+      userService,
+      orgDetailsService
     );
   }
 
