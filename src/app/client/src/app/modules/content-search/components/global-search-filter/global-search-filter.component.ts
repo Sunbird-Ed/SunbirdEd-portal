@@ -1,4 +1,14 @@
-import { Component, Output, EventEmitter, Input, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  Output,
+  EventEmitter,
+  Input,
+  OnInit,
+  OnDestroy,
+  ChangeDetectorRef,
+  OnChanges,
+  SimpleChanges, ViewChild
+} from '@angular/core';
 import * as _ from 'lodash-es';
 import { ResourceService, UtilService } from '@sunbird/shared';
 import { IInteractEventEdata } from '@sunbird/telemetry';
@@ -7,12 +17,14 @@ import { Subject } from 'rxjs';
 import { debounceTime, map, takeUntil, filter } from 'rxjs/operators';
 import { LibraryFiltersLayout } from '@project-sunbird/common-consumption-v8';
 import { UserService } from '@sunbird/core';
+import { IFacetFilterFieldTemplateConfig } from 'common-form-elements';
+
 @Component({
   selector: 'app-global-search-filter',
   templateUrl: './global-search-filter.component.html',
   styleUrls: ['./global-search-filter.component.scss']
 })
-export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
+export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy {
   @Input() facets;
   @Input() queryParamsToOmit;
   public filterLayout = LibraryFiltersLayout;
@@ -26,6 +38,11 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
   @Input() layoutConfiguration;
   @Input() isOpen;
   @Output() filterChange: EventEmitter<{ status: string, filters?: any }> = new EventEmitter();
+
+  @ViewChild('sbSearchFacetFilterComponent', { static: false }) searchFacetFilterComponent: any;
+
+  filterFormTemplateConfig?: IFacetFilterFieldTemplateConfig[];
+
   constructor(public resourceService: ResourceService, public router: Router,
     private activatedRoute: ActivatedRoute, private cdr: ChangeDetectorRef, private utilService: UtilService,
     public userService: UserService) {
@@ -46,6 +63,42 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
       this.selectedFilters.channel = channelIds;
     }
     this.filterChangeEvent.next({event: this.selectedFilters[facet.name], type: facet.name});
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['facets'] && changes['facets'].currentValue) {
+      const updatedFacets = changes['facets'].currentValue;
+
+      this.filterFormTemplateConfig = [...updatedFacets].sort((a, b) => {
+        if (a.index && b.index) {
+          return a.index.localeCompare(b.index);
+        }
+        if (a.index) {
+          return 1;
+        }
+        return -1;
+      }).map((f) => {
+        if (f.name === 'mediaType') {
+          f.values = f.mimeTypeList.map((m) => ({name: m}));
+
+          return {
+            facet: f.name,
+            type: 'pills',
+            labelText: f.label || f.name,
+            placeholderText: `${this.resourceService.frmelmnts.lbl.Select} ${f.label || f.name}`,
+            multiple: true
+          };
+        }
+
+        return {
+          facet: f.name,
+          type: 'dropdown',
+          labelText: f.label || f.name,
+          placeholderText: `${this.resourceService.frmelmnts.lbl.Select} ${f.label || f.name}`,
+          multiple: true
+        };
+      });
+    }
   }
 
   ngOnInit() {
@@ -186,6 +239,13 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
     });
     this.filterChange.emit({ status: 'FETCHED', filters: this.selectedFilters });
     this.updateRoute();
+  }
+
+  onSearchFacetFilterReset() {
+    /* istanbul ignore else */
+    if (this.searchFacetFilterComponent) {
+      this.searchFacetFilterComponent.resetFilter();
+    }
   }
 
   ngOnDestroy() {

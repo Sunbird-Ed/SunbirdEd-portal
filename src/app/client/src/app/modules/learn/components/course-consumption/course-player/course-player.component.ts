@@ -262,7 +262,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         }
       }, 1000);
     });
-    const isForceSynced = localStorage.getItem(this.courseId);
+    const isForceSynced = localStorage.getItem(this.courseId+'_isforce-sync');
         if(isForceSynced){
           this.showForceSync = false
         }
@@ -713,11 +713,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.dropdownContent = !this.dropdownContent;
   }
   public forceSync() {
-    localStorage.setItem(this.courseId, 'true');
+    localStorage.setItem(this.courseId+'_isforce-sync', 'true');
     this.showForceSync = false;
     this.closeSharePopup('force-sync');
     this.dropdownContent = !this.dropdownContent;
-    console.log('need to call the sync function now');
     const req = {
       'courseId': this.courseId,
       'batchId': this.batchId,
@@ -726,7 +725,6 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.CsCourseService.updateContentState(req, { apiPath: '/content/course/v1' })
     .pipe(takeUntil(this.unsubscribe))
     .subscribe((res) => {
-      console.log('Content state update CSL API called');
       this.toasterService.success(this.resourceService.frmelmnts.lbl.forceSyncsuccess);
     }, error => {
       console.log('Content state update CSL API failed ', error);

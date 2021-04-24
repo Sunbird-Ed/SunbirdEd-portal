@@ -26,6 +26,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   @ViewChild('selectCertType', {static: false}) selectCertType;
   @ViewChild('selectRecipient', {static: false}) selectRecipient;
   @ViewChild('templateChangeModal', {static: false}) templateChangeModal;
+  @ViewChild('selectScoreRange', {static: false}) selectScoreRange;
 
   public unsubscribe$ = new Subject<void>();
   showPreviewModal;
@@ -54,6 +55,10 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   certificate: any;
   newTemplateIdentifier: any;
   showAlertModal = false;
+  addScoreRule = false;
+  arrayValue={};
+  scoreRange: any;
+  isSingleAssessment=false;
 
   constructor(
     private certificateService: CertificateService,
@@ -105,12 +110,23 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       this.getTemplateList(),
     ).subscribe((data) => {
       this.showLoader = false;
+      this.checkMultipleAssessment();
     }, (error) => {
       this.showLoader = false;
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
   }
-
+  checkMultipleAssessment(){
+    const contentTypes = JSON.parse(_.get(this.courseDetails, 'contentTypesCount'));
+    const selfAssessCount = _.get(contentTypes, 'SelfAssess')
+    if (selfAssessCount && selfAssessCount > 1) {
+      this.isSingleAssessment = false;
+    } else if(selfAssessCount && selfAssessCount == 1){
+      this.isSingleAssessment = true;
+    } else {
+      this.isSingleAssessment = false;
+    }
+  }
   certificateCreation() {
     this.currentState = this.screenStates.certRules;
   }
@@ -159,6 +175,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       const dropDownValues = this.certConfigModalInstance.getDropDownValues(_.get(certRulesData, 'result.response.data.fields'));
       this.certTypes = _.get(dropDownValues, 'certTypes');
       this.issueTo = _.get(dropDownValues, 'issueTo');
+      this.scoreRange = _.get(dropDownValues, 'scoreRange');
     }, error => {
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
@@ -236,7 +253,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
 
   initializeFormFields() {
     this.userPreference = new FormGroup({
-      certificateType: new FormControl('', [Validators.required]),
+      scoreRange: new FormControl(''),
       issueTo: new FormControl('', [Validators.required]),
       allowPermission: new FormControl('', [Validators.required])
     });
@@ -327,9 +344,17 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   }
 
   processCertificateDetails(certTemplateDetails) {
-    const templateData = _.pick(_.get(certTemplateDetails, Object.keys(certTemplateDetails)), ['criteria', 'previewUrl', 'artifactUrl', 'identifier', 'data']);
+    const templateData = _.pick(_.get(certTemplateDetails, Object.keys(certTemplateDetails)), ['criteria', 'previewUrl', 'artifactUrl', 'identifier', 'data', 'issuer', 'signatoryList','name']);
     this.templateIdentifier = _.get(templateData, 'identifier');
-    this.selectedTemplate = {'name' : _.get(templateData, 'identifier'), 'previewUrl': _.get(templateData, 'previewUrl')};
+    this.selectedTemplate = { 
+      'name': _.get(templateData, 'name'), 
+      'identifier': _.get(templateData, 'identifier'), 
+      'previewUrl': _.get(templateData, 'previewUrl'),
+      'issuer': JSON.stringify(_.get(templateData, 'issuer')),
+      'data': JSON.stringify(_.get(templateData, 'data')),
+      'signatoryList': JSON.stringify(_.get(templateData, 'signatoryList')),
+      'artifactUrl':_.get(templateData, 'artifactUrl')
+     };
     // if (!_.isEmpty(this.newTemplateIdentifier)) {
     //   this.templateIdentifier = this.newTemplateIdentifier;
     //   this.selectedTemplate = null;
@@ -357,11 +382,14 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   processCriteria(criteria) {
     const data = this.certConfigModalInstance.processCriteria(criteria);
     this.issueTo = _.get(data, 'issueTo');
-    this.certTypes = _.get(data, 'certTypes');
-    const certTypeFormEle = this.userPreference.controls['certificateType'];
+    const scoreRange = _.get(data, 'scoreRange');
+    if (scoreRange) {
+      this.addRule();
+    }
+    const scoreRangeFormEle = this.userPreference.controls['scoreRange'];
     const issueToFormEle = this.userPreference.controls['issueTo'];
     this.issueTo && this.issueTo.length > 0 ? issueToFormEle.setValue(this.issueTo[0].name) : issueToFormEle.setValue('');
-    this.certTypes && this.certTypes.length > 0 ? certTypeFormEle.setValue(this.certTypes[0].name) : certTypeFormEle.setValue('');
+    scoreRange ? scoreRangeFormEle.setValue(scoreRange) : scoreRangeFormEle.setValue('');
   }
 
   handleCertificateEvent(event, template: {}) {
@@ -515,5 +543,19 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
     this.uploadCertificateService.certificate.next(null);
+  }
+  public addRule(){
+    this.addScoreRule = true;
+    let range = 100;
+    const step = 10;
+    let arr = []
+    while(range > 0){
+      arr.push(range);
+      range=range-step;
+    }
+    this.arrayValue['range']=arr;
+  }
+  removeRule(){
+    this.addScoreRule = false;
   }
 }

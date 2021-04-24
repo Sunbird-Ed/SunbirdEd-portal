@@ -7,23 +7,22 @@ import * as os from "os";
 import * as si from "systeminformation";
 import * as _ from "lodash";
 import SettingSDK from "./SettingSDK";
-import { ClassLogger } from '@project-sunbird/logger/decorator';
 
-@ClassLogger({
-  logLevel: "debug",
-  logTime: true
-})
+import { StandardLogger } from '../services/standardLogger/standardLogger';
+
 @Singleton
 export default class SystemSDK {
   private deviceId: string;
-  @Inject
-  private settingSDK: SettingSDK;
+  @Inject private settingSDK: SettingSDK;
+  @Inject private standardLog: StandardLogger;
   
   constructor(pluginId?: string) {}
 
   async getDeviceId() {
     if (this.deviceId) return Promise.resolve(this.deviceId);
-    const  deviceInfo: any = await this.settingSDK.get('deviceId').catch(err => logger.error('While getting deviceId from settingSDK', err));
+    const  deviceInfo: any = await this.settingSDK.get('deviceId').catch(err => {
+      this.standardLog.error({ id: 'SYSTEM_SDK_DEVICE_ID_FETCH_FAILED', message: 'While getting deviceId from settingSDK', error: err });
+    });
     if (deviceInfo && deviceInfo.did) {
       this.deviceId = deviceInfo.did
       return Promise.resolve(deviceInfo.did)
@@ -55,7 +54,9 @@ export default class SystemSDK {
     let availableHarddisk = 0;
     let fsSize = await si
       .fsSize()
-      .catch(error => logger.error(`while getting hard disk size`, error));
+      .catch(error => {
+        this.standardLog.error({ id: 'SYSTEM_SDK_HARD_DISK_SIZE_FETCH_FAILED', message: 'while getting hard disk size', error })
+      }); 
     if (fsSize) {
       if (os.platform() === "win32") {
         totalHarddisk = fsSize
@@ -83,20 +84,24 @@ export default class SystemSDK {
       totalMemory = _.get(memory, "total") || 0;
       availableMemory = _.get(memory, "free") || 0;
     } catch (error) {
-      logger.error(`while getting memory size`, error);
+      this.standardLog.error({ id: 'SYSTEM_SDK_MEMORY_SIZE_FETCH_FAILED', message: 'while getting memory size', error });
     }
     return { totalMemory, availableMemory };
   }
   async getCpuLoad(){
     let currentLoad = await si
     .currentLoad()
-    .catch(err => logger.error("while reading CPU Load ", err));
+    .catch(err => {
+    this.standardLog.error({ id: 'SYSTEM_SDK_CPU_LOAD_FETCH_FAILED', message: 'while reading CPU Load', error: err })
+    });
     return currentLoad;
   }
   async getNetworkInfo(){
     let networkInfo = await si
     .networkInterfaces()
-    .catch(err => logger.error("while reading Network info", err));
+      .catch(err => { 
+        this.standardLog.error({ id: 'SYSTEM_SDK_NETWORK_INFO_READ_FAILED', message: 'while reading Network info', error: err })
+      });
     return networkInfo;
   }
   async getDeviceInfo() {
@@ -127,7 +132,9 @@ export default class SystemSDK {
     deviceInfo.id = await this.getDeviceId();
     let osInfo = await si
       .osInfo()
-      .catch(err => logger.error("while reading os info ", err));
+      .catch(err => {
+        this.standardLog.error({ id: 'SYSTEM_SDK_OS_INFO_READ_FAILED', message: 'while reading os info', error: err })
+      }); 
     if (osInfo) {
       deviceInfo.platform = osInfo.platform;
       deviceInfo.distro = osInfo.distro;
@@ -138,7 +145,9 @@ export default class SystemSDK {
 
     let cpu = await si
       .cpu()
-      .catch(err => logger.error("while reading cpu info ", err));
+      .catch(err => {
+        this.standardLog.error({ id: 'SYSTEM_SDK_CPU_INFO_READ_FAILED', message: 'while reading cpu info ', error: err })
+      });
     if (cpu) {
       deviceInfo.cores = cpu.cores;
       deviceInfo.cpuManufacturer = cpu.manufacturer;
@@ -148,7 +157,9 @@ export default class SystemSDK {
 
     let currentLoad = await si
       .currentLoad()
-      .catch(err => logger.error("while reading current load ", err));
+      .catch(err => {
+        this.standardLog.error({id: 'SYSTEM_SDK_CURRENT_LOAD_READ_FAILED', message: 'while reading current load', error: err})
+      });
     if (currentLoad) {
       deviceInfo.cpuLoad = currentLoad.currentload;
     }
@@ -158,7 +169,9 @@ export default class SystemSDK {
 
     let battery = await si
       .battery()
-      .catch(err => logger.error("while reading battery info", err));
+      .catch(err => {
+        this.standardLog.error({ id: 'SYSTEM_SDK_BATTERY_READ_FAILED', message: 'while reading battery info', error: err })
+      });
 
     if (battery) {
       deviceInfo.hasBattery = battery.hasbattery;
@@ -166,7 +179,9 @@ export default class SystemSDK {
 
     let graphics = await si
       .graphics()
-      .catch(err => logger.error("while reading graphics info", err));
+      .catch(err => { 
+        this.standardLog.error({id: 'SYSTEM_SDK_GRAPHICS_INFO_READ_FAILED', message: 'while reading graphics info', error: err})
+      });
     if (!_.isEmpty(graphics["displays"][0])) {
       deviceInfo.displayResolution =
         graphics["displays"][0].currentResX +

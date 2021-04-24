@@ -15,47 +15,25 @@
           <div class="sbt-filter-bar mr-16 pl-24">
             <div class="sbt-reset-bar d-flex flex-ai-center flex-ai-jc-center">
               <button class="sb-btn sb-btn-xs sb-btn-link-primary pull-right sbt-btn-reset cursor-pointer"
-                (click)="resetFilters()" appTelemetryInteract
+                (click)="onSearchFacetFilterReset()" appTelemetryInteract
                 [telemetryInteractEdata]="resetFilterInteractEdata">{{resourceService.frmelmnts?.btn?.reset | translate}} <i
                   class="icon undo"></i></button>
-                  <span class="sbt-filter-close"><i class="icon-svg icon-svg--xxs icon-close cursor-pointer" (click)="isOpen = !isOpen">	
-                    <svg class="icon icon-svg--red">	
-                        <use xlink:href="./assets/images/sprite.svg#close"></use>	
-                    </svg>	
+                  <span class="sbt-filter-close"><i class="icon-svg icon-svg--xxs icon-close cursor-pointer" (click)="isOpen = !isOpen">
+                    <svg class="icon icon-svg--red">
+                        <use xlink:href="./assets/images/sprite.svg#close"></use>
+                    </svg>
                 </i>
               </span>
             </div>
             <div class="sbt-filter-scrollable pr-24">
               <div class="fsmall my-8 text-left filter-pref-text">{{resourceService.frmelmnts?.lbl?.basedOnPref | translate}}</div>
-              <div *ngIf="refresh">
-                <div *ngFor="let facet of facets | sortBy:'index':'asc'">
-                  <label class="fnormal font-weight-bold d-flex">{{facet.label | translate}} </label>
-                  <label class="w-100" *ngIf="facet.name !== 'mediaType'">
-                  <sui-multi-select *ngIf="facet.name !== 'mediaType'" [hasLabels]="false" defaultSelectionText={{facet.label}}
-                    zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} labelField="name" valueField="name"
-                    class="ui selection dropdown sbt-dropdown-tick multiple selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg w-100 mb-16"
-                    [(ngModel)]="selectedFilters[facet.name]"
-                    (ngModelChange)="onChange(facet)">
-                    <div *ngIf="facet.name !== 'gradeLevel' else gradeLevel">
-                      <sui-select-option class="text-capitalize"
-                        *ngFor="let dropdownValue of facet.values | sortBy:'name':'asc'" [value]="dropdownValue">
-                      </sui-select-option>
-                    </div>
-                    <ng-template #gradeLevel>
-                      <sui-select-option class="text-capitalize" *ngFor="let dropdownValue of facet.values"
-                        [value]="dropdownValue">
-                      </sui-select-option>
-                    </ng-template>
-                  </sui-multi-select>
-                </label>
-                  <div *ngIf="facet.name === 'mediaType'" class="sbt-class-bar text-left">
-                    <sb-library-filters [list]="facet.mimeTypeList" [layout]="filterLayout.ROUND"
-                      [selectedItems]="[facet.mimeTypeList.indexOf(selectedMediaType) !== -1 ? facet.mimeTypeList.indexOf(selectedMediaType): selectedMediaTypeIndex]"
-                      (selectedFilter)="filterChangeEvent.next({ event: $event, type: 'mediaType'}); selectedFilters[facet.name]=[$event.data.text]">
-                    </sb-library-filters>
-                  </div>
-                </div>
-              </div>
+              <sb-search-facet-filter *ngIf="filterFormTemplateConfig"
+                                      [supportedFilterAttributes]="['se_boards', 'se_mediums', 'se_gradeLevels', 'se_subjects', 'primaryCategory', 'mediaType']"
+                                      [searchResultFacets]="facets"
+                                      [filterFormTemplateConfig]="filterFormTemplateConfig"
+                                      (searchFilterChange)="this.selectedFilters = $event; emitFilterChangeEvent(true)"
+                                      #sbSearchFacetFilterComponent>
+              </sb-search-facet-filter>
             </div>
           </div>
         </ng-container>
