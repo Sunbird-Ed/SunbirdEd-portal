@@ -108,7 +108,7 @@ export class SbFormLocationSelectionDelegate {
 
       const subPersonaFormControl = this.formGroup.get('children.persona.subPersona');
       if (subPersonaFormControl && !subPersonaFormControl.value) {
-        subPersonaFormControl.patchValue((_.get(this.userService.userProfile, 'userSubType') || '') || null);
+        subPersonaFormControl.patchValue((_.get(this.userService.userProfile.profileUserType, 'subType') || '') || null);
       }
 
       if (!this.stateChangeSubscription) {
@@ -316,7 +316,7 @@ export class SbFormLocationSelectionDelegate {
             switch (personaLocationConfig.templateOptions['dataSrc']['marker']) {
               case 'SUBPERSONA_LIST': {
                 if (this.userService.loggedIn) {
-                  personaLocationConfig.default = (_.get(this.userService.userProfile, 'userSubType') || '') || null;
+                  personaLocationConfig.default = (_.get(this.userService.userProfile.profileUserType, 'subType') || '') || null;
                 }
                 break;
               }
