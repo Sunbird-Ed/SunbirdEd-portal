@@ -48,6 +48,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       this.orgDetailsService.getOrgDetails(this.userService.slug).subscribe((data: any) => {
         this.guestUserHashTagId = data.hashTagId;
       });
+      this.allowedFields = ['board', 'medium', 'gradeLevel'];
     }
     // Replacing CBSE with CBSE/NCERT
     if (_.toLower(_.get(this.selectedOption, 'board')) === 'cbse') {

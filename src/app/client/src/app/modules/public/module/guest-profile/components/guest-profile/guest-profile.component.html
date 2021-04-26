@@ -11,30 +11,29 @@
     <div class="profile-user-label font-w-bold d-flex text-center relative position">{{guestUser?.formatedName |
       titlecase}}
     </div>
-    <div class="ui container">
+
+  </section>
+  <section class="d-flex flex-ai-center flex-dc pb-24 content-preference">
+    <h3 class="content-header-info font-weight-bold mb-16 d-flex flex-jc-center">
+      {{resourceService.frmelemnts.lbl.profiledetails}}</h3>
+    <div class="ui container content-preference__info pt-16">
       <div *ngIf="userRole" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
         <div class="fmedium text-center">{{resourceService?.frmelmnts?.lbl?.role}} :</div>
         <div class="fmedium ml-5 font-w-bold text-center">
-          {{userRole}}</div>
+          {{userRole | titlecase}}</div>
       </div>
-      <div *ngIf="guestUser?.subrole"
-        class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+      <div *ngIf="guestUser?.subrole" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
         <div class="fmedium text-center">{{resourceService?.frmelmnts?.lbl?.subRole}} :</div>
         <div class="fmedium ml-5 font-w-bold text-center">
           {{guestUser?.subrole}}</div>
       </div>
-    </div>
 
-    <!-- add state and district -->
-    <div class="ui container">
-      <div *ngIf="guestUser?.school"
-        class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+      <div *ngIf="guestUser?.school" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
         <div class="fmedium text-center">{{resourceService?.frmelmnts?.lbl?.school}} :</div>
         <div class="fmedium ml-5 font-w-bold text-center">
           {{guestUser?.school}} </div>
       </div>
-      <div *ngIf="guestUser?.cluster"
-        class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+      <div *ngIf="guestUser?.cluster" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
         <div class="fmedium text-center">{{resourceService?.frmelmnts?.lbl?.cluster}} :</div>
         <div class="fmedium ml-5 font-w-bold text-center">
           {{guestUser?.cluster}} </div>
@@ -64,7 +63,7 @@
     </div>
   </section>
 
-  <section class="d-flex flex-ai-center flex-dc pt-30 pb-30 profile-bg-c-3">
+  <section class="d-flex flex-ai-center flex-dc pt-30 pb-30 profile-bg-c-4 content-preference">
     <!-- User info computer view starts-->
     <div class="ui container">
       <div class="d-flex flex-jc-center flex-ai-center flex-dc">
@@ -82,7 +81,7 @@
             <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.classes}} :</span>
             <span class="fmedium font-w-bold pl-4">{{convertToString(guestUser?.framework?.gradeLevel)}}</span>
           </div>
-          <div class="d-flex flex-jc-center">
+          <div class="d-flex flex-jc-center" *ngIf="guestUser?.framework?.subject?.length">
             <span class="fmedium white-space-nowrap">{{resourceService?.frmelmnts?.lbl?.subjects}} :</span>
             <span class="fmedium font-w-bold pl-4">{{convertToString(guestUser?.framework?.subject)}}</span>
           </div>
