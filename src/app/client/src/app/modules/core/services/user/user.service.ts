@@ -404,7 +404,7 @@ export class UserService {
 
   registerUser(data) {
     const options = {
-      url: this.config.urlConFig.URLS.USER.SIGN_UP_V4,
+      url: this.config.urlConFig.URLS.USER.SIGN_UP_MANAGED_USER,
       data: data
     };
     return this.learnerService.post(options).pipe(
