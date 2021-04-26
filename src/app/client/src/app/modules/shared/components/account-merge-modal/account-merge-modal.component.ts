@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, ViewChild, OnDestroy} from '@angular/core';
 import {ResourceService} from '../../services';
 import {Router} from '@angular/router';
 import {IInteractEventEdata} from '@sunbird/telemetry';
@@ -9,9 +9,9 @@ import {HttpClient} from '@angular/common/http';
   selector: 'app-account-merge-modal',
   templateUrl: './account-merge-modal.component.html'
 })
-export class AccountMergeModalComponent implements OnInit {
+export class AccountMergeModalComponent implements OnInit, OnDestroy {
   @Output() closeAccountMergeModal = new EventEmitter<any>();
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
   instance: string;
   mergeIntractEdata: IInteractEventEdata;
   public telemetryCdata: Array<{}> = [];
@@ -65,5 +65,10 @@ export class AccountMergeModalComponent implements OnInit {
   redirect(redirectUrl) {
     this.closeModal();
     window.location.href = redirectUrl;
+  }
+  ngOnDestroy() {
+    if (this.modal.deny) {
+      this.modal.deny();
+    }
   }
 }

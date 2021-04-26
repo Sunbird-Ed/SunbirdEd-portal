@@ -8,9 +8,11 @@ import { DashboardUtilsService } from './../dashboard-utils/dashboard-utils.serv
 import { LearnerService } from '@sunbird/core';
 import { ConfigService } from '@sunbird/shared';
 import * as mockData from './download.service.spec.data';
+import { configureTestSuite } from '@sunbird/test-util';
 const testData = mockData.mockRes;
 
 describe('DownloadService', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],

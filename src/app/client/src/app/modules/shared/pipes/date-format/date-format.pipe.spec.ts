@@ -1,5 +1,5 @@
 import { DateFormatPipe } from './date-format.pipe';
-import * as moment from 'moment';
+import  moment from 'dayjs';
 
 describe('DateFormatPipe', () => {
   describe('#transform', () => {
@@ -7,21 +7,21 @@ describe('DateFormatPipe', () => {
       const pipe = new DateFormatPipe();
       const date = new Date();
       const result = pipe.transform(date, '');
-      const ans = moment(date).format('Do MMMM YYYY');
+      const ans = moment(date).format('DD MMMM YYYY');
       expect(result).toBe(ans);
     });
 
     it('test for given format for date', () => {
       const pipe = new DateFormatPipe();
       const date = new Date();
-      const result = pipe.transform(date, 'MMMM YYYY Do');
-      const ans = moment(date).format('MMMM YYYY Do');
+      const result = pipe.transform(date, 'MMMM YYYY DD');
+      const ans = moment(date).format('MMMM YYYY DD');
       expect(result).toBe(ans);
     });
 
     it('if date is blank', () => {
       const pipe = new DateFormatPipe();
-      const result = pipe.transform('', 'Do MMMM YYYY');
+      const result = pipe.transform('', 'DD MMMM YYYY');
       expect(result).toBe('-');
     });
 

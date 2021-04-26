@@ -1,0 +1,40 @@
+<sui-modal 
+[mustScroll]="true"
+[isClosable]="true"
+[transitionDuration]="0"
+[size]="'normal'"
+class="sb-modal sb-batch-update-modal"
+appBodyScroll
+(dismissed)="closeModal()"
+#confirmationModal>
+
+<!-- Header-->
+  <div class="sb-modal-header">
+
+  </div>
+
+  <!-- Content-->
+  <div class="sb-modal-content">
+    <div class="ui stackable grid my-8">
+      <div class="one wide column">
+        <div class="checkbox-img"></div>
+      </div>
+      <div class="eleven wide column">
+        <div *ngIf="popupMode === 'create'" class="pb-16 font-weight-bold">{{resourceService?.frmelmnts?.cert?.lbl?.batchCreateSuccess}}</div>
+        <div *ngIf="popupMode === 'edit'" class="pb-16 font-weight-bold">{{resourceService?.frmelmnts?.cert?.lbl?.batchUpdateSuccess}}</div>
+        <div class="">{{resourceService?.frmelmnts?.cert?.lbl?.addCertToBatch}}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action-->
+  <div class="sb-modal-actions">
+    <button id="close-modal-btn"class="sb-btn sb-btn-normal sb-btn-primary" (click)="closeModal()">
+      {{resourceService?.frmelmnts.btn.close}}
+    </button>
+    <button id="add-certificate" class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="navigateToAddCertificate()">
+      {{resourceService?.frmelmnts.cert.lbl.addCert}}
+    </button>
+  </div>
+
+</sui-modal>

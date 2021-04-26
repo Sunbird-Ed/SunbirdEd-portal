@@ -1,17 +1,25 @@
-
 import { combineLatest as observableCombineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { CourseConsumptionService, CourseProgressService } from './../../../services';
-import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
-import { CoursesService, PermissionService, CopyContentService } from '@sunbird/core';
+import { CoursesService, PermissionService, CopyContentService,
+  OrgDetailsService, UserService, GeneraliseLabelService,  } from '@sunbird/core';
 import {
   ResourceService, ToasterService, ContentData, ContentUtilsServiceService, ITelemetryShare,
   ExternalUrlPreviewService
 } from '@sunbird/shared';
-import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-import * as moment from 'moment';
+import { IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
+import dayjs from 'dayjs';
+import { GroupsService } from '../../../../groups/services/groups/groups.service';
+import { NavigationHelperService } from '@sunbird/shared';
+import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
+import { CourseBatchService } from './../../../services';
+import { DiscussionService } from '../../../../discussion/services/discussion/discussion.service';
+
+import { DiscussionTelemetryService } from './../../../../shared/services/discussion-telemetry/discussion-telemetry.service';
+
 @Component({
   selector: 'app-course-consumption-header',
   templateUrl: './course-consumption-header.component.html',
@@ -20,6 +28,12 @@ import * as moment from 'moment';
 export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   sharelinkModal: boolean;
+  showProfileUpdatePopup = false;
+  profileInfo: {
+    firstName: string,
+    lastName: string,
+    id: string
+  };
   /**
    * contains link that can be shared
    */
@@ -33,14 +47,15 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
    * to show loader while copying content
    */
   showCopyLoader = false;
-  onPageLoadResume = true;
+  onPageLoadResume = false;
   courseInteractObject: IInteractEventObject;
-  resumeIntractEdata: IInteractEventEdata;
   @Input() courseHierarchy: any;
   @Input() enrolledBatchInfo: any;
-  enrolledCourse: boolean;
+  @Input() groupId: string;
+  @Input() showAddGroup = false;
+  enrolledCourse = false;
   batchId: any;
-  dashboardPermission = ['COURSE_MENTOR'];
+  dashboardPermission = ['COURSE_MENTOR', 'CONTENT_CREATOR'];
   courseId: string;
   lastPlayedContentId: string;
   showResumeCourse = true;
@@ -50,15 +65,43 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   public unsubscribe = new Subject<void>();
   batchEndDate: any;
   public interval: any;
-  constructor(private activatedRoute: ActivatedRoute, private courseConsumptionService: CourseConsumptionService,
+  telemetryCdata: Array<{}>;
+  enableProgress = false;
+  isCustodianOrgUser = false;
+  // courseMentor = false;
+  // courseCreator = false;
+  forumIds = [];
+  isTrackable = false;
+  viewDashboard = false;
+  tocId;
+  isGroupAdmin: boolean;
+  showLoader = false;
+
+  constructor(private activatedRoute: ActivatedRoute, public courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
     public toasterService: ToasterService, public copyContentService: CopyContentService, private changeDetectorRef: ChangeDetectorRef,
     private courseProgressService: CourseProgressService, public contentUtilsServiceService: ContentUtilsServiceService,
-    public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService) {
+    public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService, private userService: UserService,
+    private telemetryService: TelemetryService, private groupService: GroupsService,
+    private navigationHelperService: NavigationHelperService, public orgDetailsService: OrgDetailsService,
+    public generaliseLabelService: GeneraliseLabelService,
+    public courseBatchService: CourseBatchService,
+    public discussionService: DiscussionService, public discussionTelemetryService: DiscussionTelemetryService) { }
 
+  showJoinModal(event) {
+    this.courseConsumptionService.showJoinCourseModal.emit(event);
   }
 
   ngOnInit() {
+    this.getCustodianOrgUser();
+    if (!this.courseConsumptionService.getCoursePagePreviousUrl) {
+      this.courseConsumptionService.setCoursePagePreviousUrl();
+    }
+    this.isTrackable = this.courseConsumptionService.isTrackableCollection(this.courseHierarchy);
+    this.viewDashboard = this.courseConsumptionService.canViewDashboard(this.courseHierarchy);
+
+    this.profileInfo = this.userService.userProfile;
+
     observableCombineLatest(this.activatedRoute.firstChild.params, this.activatedRoute.firstChild.queryParams,
       (params, queryParams) => {
         return { ...params, ...queryParams };
@@ -67,11 +110,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         this.batchId = params.batchId;
         this.courseStatus = params.courseStatus;
         this.contentId = params.contentId;
-        this.resumeIntractEdata = {
-          id: 'course-resume',
-          type: 'click',
-          pageid: 'course-consumption'
-        };
+        this.tocId = params.textbook;
         this.courseInteractObject = {
           id: this.courseHierarchy.identifier,
           type: 'Course',
@@ -82,48 +121,73 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         }
         if (this.batchId) {
           this.enrolledCourse = true;
+          this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
         }
+        this.fetchForumIds();
       });
-      this.interval = setInterval(() => {
-        if (document.getElementById('closebutton')) {
-          this.showResumeCourse = true;
-        } else {
-          this.showResumeCourse = false;
-        }
-      }, 500);
+    this.interval = setInterval(() => {
+      if (document.getElementById('closebutton')) {
+        this.showResumeCourse = true;
+      } else {
+        this.showResumeCourse = false;
+      }
+    }, 500);
+    this.courseConsumptionService.userCreatedAnyBatch.subscribe((visibility: boolean) => {
+      this.viewDashboard = this.viewDashboard && visibility;
+    });
   }
   ngAfterViewInit() {
     this.courseProgressService.courseProgressData.pipe(
       takeUntil(this.unsubscribe))
       .subscribe((courseProgressData) => {
-        this.enrolledCourse = true;
-        this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
-        this.lastPlayedContentId = courseProgressData.lastPlayedContentId;
-        if (!this.flaggedCourse && this.onPageLoadResume &&
-          !this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
-          this.onPageLoadResume = false;
-          this.showResumeCourse = false;
-          this.resumeCourse();
-        } else if (!this.flaggedCourse && this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
-          this.onPageLoadResume = false;
-          this.showResumeCourse = false;
-        } else {
-          this.onPageLoadResume = false;
+        if (this.batchId) {
+          this.enrolledCourse = true;
+          this.progress = courseProgressData.progress ? Math.floor(courseProgressData.progress) : 0;
+          this.lastPlayedContentId = courseProgressData.lastPlayedContentId;
+          if (!this.flaggedCourse && this.onPageLoadResume &&
+            !this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
+            this.onPageLoadResume = false;
+            this.showResumeCourse = false;
+            this.resumeCourse();
+          } else if (!this.flaggedCourse && this.contentId && this.enrolledBatchInfo.status > 0 && this.lastPlayedContentId) {
+            this.onPageLoadResume = false;
+            this.showResumeCourse = false;
+          } else {
+            this.onPageLoadResume = false;
+          }
         }
       });
+
+      this.courseConsumptionService.updateContentConsumedStatus.emit(
+        {
+          courseId: this.courseId,
+          batchId: this.batchId,
+          courseHierarchy: this.courseHierarchy
+         });
   }
 
   showDashboard() {
-    this.router.navigate(['learn/course', this.courseId, 'dashboard']);
+    this.router.navigate(['learn/course', this.courseId, 'dashboard', 'batches']);
+  }
+
+  // To close the dashboard
+  closeDashboard() {
+    this.router.navigate(['learn/course', this.courseId]);
   }
 
   resumeCourse(showExtUrlMsg?: boolean) {
-    const navigationExtras: NavigationExtras = {
-      queryParams: { 'contentId': this.lastPlayedContentId },
-      relativeTo: this.activatedRoute
-    };
-    this.router.navigate([this.courseId, 'batch', this.batchId], navigationExtras);
-    this.coursesService.setExtContentMsg(showExtUrlMsg);
+    const IsStoredLocally = localStorage.getItem('isCertificateNameUpdated_' + this.profileInfo.id) || 'false' ;
+    const certificateDescription = this.courseBatchService.getcertificateDescription(this.enrolledBatchInfo);
+    if (IsStoredLocally !== 'true'
+    &&
+    certificateDescription &&
+    certificateDescription.isCertificate
+    && this.isCustodianOrgUser && this.progress < 100) {
+      this.showProfileUpdatePopup = true;
+    } else {
+      this.courseConsumptionService.launchPlayer.emit();
+      this.coursesService.setExtContentMsg(showExtUrlMsg);
+    }
   }
 
   flagCourse() {
@@ -164,9 +228,155 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.unsubscribe.complete();
   }
   getBatchStatus() {
-   if (this.enrolledBatchInfo.endDate) {
-    this.batchEndDate = moment(this.enrolledBatchInfo.endDate).format('YYYY-MM-DD');
+   /* istanbul ignore else */
+   if (_.get(this.enrolledBatchInfo, 'endDate')) {
+    this.batchEndDate = dayjs(this.enrolledBatchInfo.endDate).format('YYYY-MM-DD');
    }
-   return (this.enrolledBatchInfo.status === 2 && this.progress <= 100);
+   return (_.get(this.enrolledBatchInfo, 'status') === 2 && this.progress <= 100);
+  }
+
+  closeSharePopup(id) {
+    this.sharelinkModal = false;
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
+        cdata: this.telemetryCdata
+      },
+      edata: {
+        id: id,
+        type: 'click',
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'course-details',
+      },
+      object: {
+        id: _.get(this.courseHierarchy, 'identifier'),
+        type: _.get(this.courseHierarchy, 'contentType') || 'Course',
+        ver: `${_.get(this.courseHierarchy, 'pkgVersion')}` || `1.0`,
+        rollup: {l1: this.courseId}
+      }
+    };
+    this.telemetryService.interact(interactData);
+  }
+  private getCustodianOrgUser() {
+    this.orgDetailsService.getCustodianOrgDetails().subscribe(custodianOrg => {
+      if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value')) {
+        this.isCustodianOrgUser = true;
+      } else {
+        this.isCustodianOrgUser = false;
+      }
+    });
+  }
+  logTelemetry(id, content?: {}) {
+    if (this.batchId) {
+      this.telemetryCdata = [{ id: this.batchId, type: 'courseBatch' }];
+    }
+    const objectRollUp = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, _.get(content, 'identifier'));
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'Course',
+        cdata: this.telemetryCdata || []
+      },
+      edata: {
+        id: id,
+        type: 'click',
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'course-consumption',
+      },
+      object: {
+        id: content ? _.get(content, 'identifier') : this.activatedRoute.snapshot.params.courseId,
+        type: content ? _.get(content, 'contentType') : 'Course',
+        ver: content ? `${_.get(content, 'pkgVersion')}` : `1.0`,
+        rollup: this.courseConsumptionService.getRollUp(objectRollUp) || {}
+      }
+    };
+    this.telemetryService.interact(interactData);
+  }
+
+  openDiscussionForum() {
+    this.checkUserRegistration();
+  }
+
+  checkUserRegistration() {
+    this.showLoader = true;
+    const data = {
+      username: _.get(this.userService.userProfile, 'userName'),
+      identifier: _.get(this.userService.userProfile, 'userId'),
+    };
+    this.discussionTelemetryService.contextCdata = [
+      {
+        id: this.courseId,
+        type: 'Course'
+      },
+      {
+        id: this.batchId,
+        type: 'Batch'
+      }
+    ];
+    this.discussionService.registerUser(data).subscribe((response) => {
+      const userName = _.get(response, 'result.userSlug');
+      const result = this.forumIds;
+      this.router.navigate(['/discussion-forum'], {
+        queryParams: {
+          categories: JSON.stringify({ result }),
+          userName: userName
+        }
+      });
+    }, error => {
+      this.showLoader = false;
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
+    });
+  }
+
+  fetchForumIds() {
+    const requestBody = this.prepareRequestBody();
+    if (requestBody) {
+      this.discussionService.getForumIds(requestBody).subscribe(forumDetails => {
+        this.forumIds = _.map(_.get(forumDetails, 'result'), 'cid');
+      }, error => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      });
+    }
+  }
+
+  prepareRequestBody() {
+    const request = {
+      identifier: [],
+      type: ''
+    };
+    const isCreator = this.userService.userid === _.get(this.courseHierarchy, 'createdBy');
+    const isMentor = this.permissionService.checkRolesPermissions(['COURSE_MENTOR']);
+    if (isCreator) {
+      request.identifier = [this.courseId];
+      request.type = 'course';
+    } else if (this.enrolledCourse) {
+      request.identifier = [this.batchId];
+      request.type = 'batch';
+    } else if (isMentor) {
+      // TODO: make getBatches() api call;
+      request.identifier = [this.courseId];
+      request.type = 'course';
+    } else {
+      return;
+    }
+
+    return request;
+  }
+  async goBack() {
+    const previousPageUrl: any = this.courseConsumptionService.getCoursePagePreviousUrl;
+    this.courseConsumptionService.coursePagePreviousUrl = '';
+    if (this.tocId) {
+      const navigateUrl = this.userService.loggedIn ? '/resources/play/collection' : '/play/collection';
+      this.router.navigate([navigateUrl, this.tocId], { queryParams: { textbook: this.tocId } });
+    } else if (!previousPageUrl) {
+      this.router.navigate(['/learn']);
+      return;
+    }
+    if (previousPageUrl.url.indexOf('/my-groups/') >= 0) {
+      this.navigationHelperService.goBack();
+    } else {
+      if (previousPageUrl.queryParams) {
+        this.router.navigate([previousPageUrl.url], {queryParams: previousPageUrl.queryParams});
+      } else {
+        this.router.navigate([previousPageUrl.url]);
+      }
+    }
   }
 }

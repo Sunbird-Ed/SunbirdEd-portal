@@ -1,8 +1,13 @@
+/* position styles */
+
 .relative {
   position: relative !important;
 }
 .absolute {
   position: absolute !important;
+}
+.fixed {
+  position:fixed !important;
 }
 
 .right-0 {
@@ -41,9 +46,14 @@
 .sb-sticky-top {
   top: 0;
 }
-.zindex-1 {
-  z-index: 1;
+
+
+$zindexes: 1, 2, 9, 99, 999, 9999, 99999;
+
+@each $zindex in $zindexes {
+  .zindex-#{$zindex} {
+    z-index: #{$zindex} !important;
+  }
 }
-.zindex-2 {
-  z-index: 2;
-}
+
+/* position styles ends */

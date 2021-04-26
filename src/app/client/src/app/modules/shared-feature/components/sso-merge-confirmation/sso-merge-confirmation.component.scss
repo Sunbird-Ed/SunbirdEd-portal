@@ -1,17 +1,8 @@
-.fullpage {
-  ::ng-deep {
-    .ui.fullscreen.modal > .close {
-      opacity: 0;
-      pointer-events: none;
-    }
-  }
-}
-.sb-merged-account-body-header{	
-  font-size: 18px;	
-}
+@import "mixins/mixins";
+@import "pages/sign_in_up";
 .sb-list-items{
-  text-align: left;
+   text-align: left;
     list-style-type: initial;
-    padding-left: 16px;
+    padding-left: calculateRem(16px);
     line-height: normal;
 }

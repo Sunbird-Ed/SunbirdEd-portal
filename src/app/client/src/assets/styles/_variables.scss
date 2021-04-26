@@ -20,65 +20,101 @@
     "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue",
     sans-serif;
 
+  // base colors
   --blue: #024f9d;
-  --black: #000000;
   --green: #008840;
   --orange: #e55a28;
   --red: #ff4558;
-  --white: #ffffff;
-  --black: #000000;
   --indigo: #6610f2;
   --purple: #6f42c1;
   --pink: #e83e8c;
   --yellow: #ffc107;
   --teal: #20c997;
   --cyan: #17a2b8;
+  --black: #000000;
+  --white: #ffffff;
 
+  // gray colors shades
   --gray-hs: 0, 0%;
   --gray: hsl(var(--gray-hs), 20%);
   --gray-0: hsl(var(--gray-hs), 95%); // place holder active bg #F2F2F2
   --gray-100: hsl(var(--gray-hs), 80%); // disable btn bg, icon color #CCCCCC
-  --gray-200: hsl(
-    var(--gray-hs),
-    60%
-  ); // disable text, place holder text #999999
+  --gray-200: hsl(var(--gray-hs), 60%); // disable text, place holder text #999999
   --gray-300: hsl(var(--gray-hs), 59%); // sub heading 2 #969696
   --gray-400: hsl(var(--gray-hs), 40%); // sub heading #666666
   --gray-800: var(--gray); // text color #333333
 
-  --primary-color: var(--blue);
-  --secondary-color: var(--green);
-  --tertiary-color: var(--orange);
+  // basetheme
+  --primary-color: #024f9d;
+  --secondary-color: #008840;
+  --tertiary-color: #e55a28;
 
+  // primary colors
   --primary-0: #f3f7fa; // bg
   --primary-100: #edf4f9; // default button bg
   --primary-200: #80a7ce; // divider
   --primary-250: #d3e7f4; //pagination bg color
   --primary-300: #7ab4ee; // outline, focus fields
-  --primary-400: var(
-    --primary-color
-  ); // button bg, heading, table titles, links, toggles
+  --primary-400: var(--primary-color); // button bg, heading, table titles, links, toggles
   --primary-600: #005391; // on press
   --primary-800: #002e50; // hover
 
+  // secondary colors
   --secondary-0: #e1ffdf; // toast bg, label
-  --secondary-100: #00c786; // buttong bg, toast
+  --secondary-100: #00c786; // button bg bg, toast
   --secondary-200: #07bc81; // button bg
   --secondary-400: var(--secondary-color); // hover
 
+  // tertiary colors
   --tertiary-0: #feedd7; // toast bg, label
   --tertiary-100: #ffa11d; // buttong bg, toast
   --tertiary-400: var(--tertiary-color); // icon, label, notification bg
 
+  // red colors
   --red-0: #fbccd1; // toast bg
   --red-100: #ff6979; // buttong bg, toast
   --red-400: var(--red); // icon color, lable, notification
 
+  // status colors
+  --info-color: var(--blue);
+  --success-color: var(--green);
+  --warning-color: var(--orange);
+  --danger-color: var(--red);
+
+  // element based variables
+  --body-background-color: var(--primary-0);
+  --default-text-color: var(--gray-800);
+  --bg-body: var(--primary-0);
+  --body-color: var(--gray-800);
+
+  // alpha
   --alpha0: 0;
   --alpha25: 0.25;
   --alpha50: 0.5;
   --alpha75: 0.75;
 
+  // fonts
+  --font-default-size: 0.875rem;
+  --font-size-base: var(--font-default-size); // 14px Assumes the browser default, typically `16px`
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-bold: 700;
+  --font-weight-base: var(--font-weight-normal);
+  --line-height-base: calc(var(--font-size-base) * 1.61803398875);
+  --h1-font-size: 2rem; // 32px
+  --h2-font-size: 1.75rem; // 28px
+  --h3-font-size: 1.5rem; // 24px
+  --h4-font-size: 1.2rem; // 20px
+  --h5-font-size: 1rem; // 16px
+  --h6-font-size: var(--font-size-base); // 14px
+  --font-size-lg: var(--h4-font-size); //20px
+  --font-size-md: var(--h5-font-size); // 16px
+  --font-size-normal: var(--font-size-base); // 14px
+  --font-size-sm: 0.75rem; // 12px
+  --font-size-xs: 0.625rem; // 10px
+  --p-font-size: var(--font-size-base); //14px
+
+  // base variables
   --base-font-size: 0.875rem;
   --base-block-space: 0.5rem; //8px,
   --icon-svg-xxs: 0.75rem;
@@ -87,6 +123,113 @@
   --icon-svg-md: calc(var(--base-block-space) * 4);
   --icon-svg-lg: calc(var(--base-block-space) * 5);
   --icon-svg-xl: calc(var(--base-block-space) * 6);
+
+  //random colors and backgrounds
+  --rc-96C8DA: #96C8DA;
+  --rc-0076FE: #0076FE;
+  --rc-E5EDF5: #E5EDF5;
+  --rc-7c7b7b: #7c7b7b;
+  --rc-f5f5f5: #f5f5f5;
+  --rc-fdfdfd: #fdfdfd;
+  --rc-dedede: #dedede;
+  --rc-F5F9FC: #F5F9FC;
+  --rc-c4c4c4: #c4c4c4;
+  --rc-d8d8d8: #d8d8d8;
+  --rc-e9e5e5: #e9e5e5;
+  --rc-dddddd: #dddddd;
+  --rc-7b86f4: #7b86f4;
+  --rc-d0d0d0: #d0d0d0;
+  --rc-5c8db7: #5c8db7;
+  --rc-91aecc: #91aecc;
+  --rc-f9f9f9: #f9f9f9;
+  --rc-d4d3d3: #d4d3d3;
+  --rc-FAFAFA: #FAFAFA;
+  --rc-866A6A: #866a6a;
+  --rc-979797: #979797;
+  --rc-e0e1e2: #e0e1e2;
+  --rc-00BD7F: #00BD7F;
+  --rc-9F9F9F: #9F9F9F;
+  --rc-F3F8FF: #F3F8FF;
+  --rc-80A7CE: #80A7CE;
+  --rc-9b9b9b: #9b9b9b;
+  --rc-2ca58d: #2ca58d;
+  --rc-007AFF: #007AFF;
+  --rc-bdbdbd: #bdbdbd;
+  --rc-cecece: #cecece;
+  --rc-2972a4: #2972a4;
+  --rc-E0F1FD: #E0F1FD;
+  --rc-C8D6EA: #C8D6EA;
+  --rc-e2e3e5: #e2e3e5;
+  --rc-BCBEC0: #BCBEC0;
+  --rc-d4d4d5: #d4d4d5;
+  --rc-d4d8da: #d4d8da;
+  --rc-bfe1cf: #bfe1cf;
+  --rc-289fd9: #289fd9;
+  --rc-e68900: #e68900;
+  --rc-2f4272: #2f4272;
+  --rc-e0e0e0: #e0e0e0;
+  --rc-2361ff: #2361ff;
+  --rc-c2c2c2: #c2c2c2;
+  --rc-e5e5e5: #e5e5e5;
+  --rc-ffb300: #ffb300;
+  --rc-d8dee2: #d8dee2;
+  --rc-252525: #252525;
+  --rc-fcf2d6: #fcf2d6;
+  --rc-add8e6: #add8e6;
+  --rc-afd9e7: #afd9e7;
+  --rc-D9E4F2: #D9E4F2;
+  --rc-88B7E6: #88B7E6;
+  --rc-4a4a4a: #4a4a4a;
+  --rc-fff6f6: #fff6f6;
+  --rc-f7f7f7: #f7f7f7;
+  --rc-66c7f4: #66c7f4;
+  --rc-1B4785: #1B4785;
+  --rc-a9a9a9: #a9a9a9;
+  --rc-eeeeee: #eeeeee;
+  --rc-1b1c1d: #1b1c1d;
+  --rc-dededf: #dededf;
+  --rc-aaaaaa: #aaaaaa;
+  --rc-042D55: #042D55;
+  --rc-eeeeee: #eeeeee;
+  --rc-bbbbbb: #bbbbbb;
+  --rc-009D53: #009D53;
+  --rc-E0EFFF: #E0EFFF;
+  --rc-196DAB: #196DAB;
+  --rc-c2c2c2: #c2c2c2;
+  --rc-e5e5e5: #e5e5e5;
+  --rc-c3c3c3: #c3c3c3;
+  --rc-00abc7:#00abc7;
+  --rc-FCE6E6:#FCE6E6;
+  --rc-DECACA:#DECACA;
+  --rc-424242:#424242;
+  --rc-F5D7D7:#F5D7D7;
+  --rc-F7FFF5:#F7FFF5;
+  --rc-D3DED1:#D3DED1;
+  --rc-EBF6E0:#EBF6E0;
+  --rc-F6F6F6:#F6F6F6;
+  --rc-33B6CC:#33B6CC;
+  --rc-2dadc2:#2dadc2;
+  --rc-0fbad6:#0fbad6;
+  --rc-f7ffec:#f7ffec;
+  --rc-d2ddc7:#d2ddc7;
+  --rc-ffe1e1:#ffe1e1;
+  --rc-e6c8c8:#e6c8c8;
+  --rc-f56b56:#f56b56;
+  --rc-dc523d:#dc523d;
+  --rc-e65c47:#e65c47;
+  --rc-565c70:#565c70;
+  --rc-6D7278:#6D7278;
+  --rc-E08A20:#E08A20;
+  --rc-rgba-black: 0, 0, 0; // var(--black)
+  --rc-rgba-white: 255, 255, 255; // var(--white)
+  --rc-rgba-gray: 51, 51, 51; // var(--gray-300)
+  --rc-rgba-primary: 2, 79, 157; // var(--primary-color)
+  --rc-rgba-primary-300: 41, 114, 164; //var(--primary-300)
+  --rc-rgba-gray-300: 34, 36, 38; //var(--gray-100)
+  --rc-rgba-866a6a: 134, 106, 106;
+  --rc-rgba-d0d0d0: 208, 208, 208;
+  --rc-rgba-7b86f4: 123, 134, 244;
+  --rc-rgba-C8D6EA: 200, 214, 234;
 }
 
 // Variables
@@ -95,11 +238,11 @@ $font-stack-hi: var(--font-stack-hi);
 $font-stack-ur: var(--font-stack-ur);
 
 // Base Colors
-$blue: var(--blue);
-$black: var(--black);
-$green: var(--green);
-$orange: var(--orange);
+$blue: var(--primary-color);
+$green: var(--secondary-color);
+$orange: var(--tertiary-color);
 $red: var(--red);
+$black: var(--black);
 $white: var(--white);
 $indigo: var(--indigo);
 $purple: var(--purple);
@@ -129,9 +272,7 @@ $primary-100: var(--primary-100); // default button bg
 $primary-200: var(--primary-200); // divider
 $primary-250: var(--primary-250); //pagination bg color
 $primary-300: var(--primary-300); // outline, focus fields
-$primary-400: var(
-  --primary-400
-); // button bg, heading, table titles, links, toggles
+$primary-400: var(--primary-400); // button bg, heading, table titles, links, toggles
 $primary-600: var(--primary-600); // on press
 $primary-800: var(--primary-800); // hover
 
@@ -155,605 +296,35 @@ $red-400: var(--red-400); // icon color, lable, notification
 $input-border-width: 0.0625rem;
 
 // Status Colors
-$info-color: $primary-400;
-$success-color: $secondary-200;
-$warning-color: $tertiary-400;
-$danger-color: $red-100;
-// Settings for the `<body>` element.
-$body-background-color: $primary-0;
-$default-text-color: $gray-800;
-$bg-body: $primary-0;
-$body-color: $gray-800;
-$theme-colors: () !default;
-$theme-colors: map-merge(
-  (
-    "primary": $primary-color,
-    "secondary": $secondary-color,
-    "tertiary": $tertiary-color,
-    "success": $success-color,
-    "info": $info-color,
-    "warning": $warning-color,
-    "danger": $danger-color,
-    "light": $gray-100,
-    "dark": $gray
-  ),
-  $theme-colors
-);
-// Style anchor elements.
-$link-color: theme-color("primary");
-$link-decoration: none;
-//$link-hover-color:        darken($link-color, 15%);
-$link-hover-decoration: underline;
-// Fonts
-// $font-default-size: 14px;
-$font-size-base: 0.875rem; // 14px Assumes the browser default, typically `16px`
-$font-weight-light: 300;
-$font-weight-normal: 400;
-$font-weight-bold: 700;
-$font-weight-base: $font-weight-normal;
-$line-height-base: ($font-size-base * 1.61803398875);
-$h1-font-size: 2rem; // 32px
-$h2-font-size: 1.75rem; // 28px
-$h3-font-size: 1.5rem; // 24px
-$h4-font-size: 1.2rem; // 20px
-$h5-font-size: 1rem; // 16px
-$h6-font-size: $font-size-base; // 14px
-$font-size-lg: $h4-font-size; //20px
-$font-size-md: $h5-font-size; // 16px
-$font-size-normal: $font-size-base; // 14px
-$font-size-sm: 0.75rem; // 12px
-$font-size-xs: 0.625rem; // 10px
-$p-font-size: $font-size-base; //14px
+$info-color: var(--primary-400);
+$success-color: var(--secondary-200);
+$warning-color: var(--tertiary-400);
+$danger-color: var(--red-100);
+$body-background-color: var(--primary-0);
+$default-text-color: var(--gray-800);
+$bg-body: var(--primary-0);
+$body-color: var(--gray-800);
+
+/* Fonts */
+$font-default-size: var(--font-default-size);
+$font-size-base: var(--font-size-base); // 14px Assumes the browser default, typically `16px`
+$font-weight-light: var(--font-weight-light);
+$font-weight-normal: var(--font-weight-normal);
+$font-weight-bold: var(--font-weight-bold);
+$font-weight-base: var(--font-weight-normal);
+$line-height-base: calc(var(--font-size-base) * 1.61803398875);
+$h1-font-size: var(--h1-font-size); // 32px
+$h2-font-size: var(--h2-font-size); // 28px
+$h3-font-size: var(--h3-font-size); // 24px
+$h4-font-size: var(--h4-font-size); // 20px
+$h5-font-size: var(--h5-font-size); // 16px
+$h6-font-size: var(--font-size-base); // 14px
+$font-size-lg: var(--h4-font-size); //20px
+$font-size-md: var(--h5-font-size); // 16px
+$font-size-normal: var(--font-size-base); // 14px
+$font-size-sm: var(--font-size-sm); // 12px
+$font-size-xs: var(--font-size-xs); // 10px
+$p-font-size: var(--font-size-base); //14px
+
 // spaces
 $base-block-space: 0.5rem;
-$block-padding-y-x: ($base-block-space * 1) ($base-block-space * 2); // any block default spacing 16px
-$block-padding-xy: ($base-block-space * 2); // top right bottom left spacing
-$block-padding-x: ($base-block-space * 2) ($base-block-space * 2); // left right spacing
-$block-padding-y: ($base-block-space * 1) ($base-block-space * 1); // top bottom spacing
-$block-margin-xl-minus: -($base-block-space * 2); // minus margin 16px left
-$block-margin-xr-minus: -($base-block-space * 2); // minus margin 16px right
-$block-margin-xr-minus: -($base-block-space * 2) - ($base-block-space * 2); // minus margin 16px left & right
-$base-btn-xs-height: ($base-block-space * 3);
-$base-btn-normal-height: ($base-block-space * 4);
-$base-btn-sm-height: ($base-block-space * 5);
-$base-btn-md-height: ($base-block-space * 6);
-$base-btn-lg-height: ($base-block-space * 7);
-$base-btn-fluid: 100%;
-// modal component
-$sb-modal-header-bg: $primary-400;
-$sb-modal-header-color: $white-color;
-$sb-modal-header-padding: $base-block-space ($base-block-space * 2);
-$sb-modal-header-height: ($base-block-space * 5);
-$sb-modal-fs-header-height: ($base-block-space * 7);
-$sb-modal-header-line-height: ($base-block-space * 3);
-$sb-modal-fs-header-line-height: ($h5-font-size * 1.61803398875);
-$sb-modal-content-padding: $block-padding-xy;
-$sb-modal-actions-bg: $white-color;
-$sb-modal-actions-padding: ($base-block-space) ($base-block-space * 1);
-$sb-modal-header-padding: ($base-block-space * 1) ($base-block-space * 2);
-$sb-modal-header-height: ($base-block-space * 5);
-$sb-modal-fs-header-height: ($base-block-space * 7);
-$sb-modal-header-line-height: ($h5-font-size + 8);
-$sb-modal-content-padding: $block-padding-xy;
-$sb-modal-actions-bg: $white-color;
-$sb-modal-actions-padding: ($base-block-space * 1) ($base-block-space * 2);
-$sb-modal-actions-height: ($base-block-space * 7);
-$sb-modal-header-bg-success: $secondary-200;
-$sb-modal-header-bg-warning: $tertiary-100;
-$sb-modal-header-bg-error: $red-400;
-$sb-modal-header-fsize: $h5-font-size;
-$sb-modal-small-width: 480px;
-$sb-modal-normal-width: 720px;
-$sb-modal-large-width: 900px;
-$sb-modal-corner-radius: $base-block-space; 
-$sb-modal-corner-radius: 8px;
-//button component
-
-// Search Component
-$sb-search-box-shadow-color: $primary-300;
-$sb-search-input-font-size: $font-size-sm;
-$sb-search-border-color: $primary-300;
-$sb-search-btn-bg: $primary-100;
-$sb-search-btn-font-size: $font-size-sm;
-$sb-search-close-btn-bg: $blue;
-$sb-search-close-btn-color: $white;
-
-//form components
-
-/* sb-field */
-$sb-field-margin-bottom: ($base-block-space * 1);
-$sb-field-disabled-background: $gray-0;
-$sb-field-disabled-border: $input-border-width solid $gray-0;
-$sb-field-disabled-opacity: 0.45;
-
-/* sb-input */
-$sb-input-background-color: $white-color;
-$sb-input-font-size: 0.8571rem;
-$sb-input-line-height: 1.5;
-$sb-input-padding: 0.5714rem;
-$sb-input-color: #333;
-$sb-input-border-radius: 0.2143rem;
-$sb-input-border-normal: $input-border-width solid $gray-200;
-$sb-input-border-focus: $input-border-width solid $primary-600;
-$sb-input-border-hover: $input-border-width solid $primary-300;
-$sb-input-border-error: $input-border-width solid $red-400;
-$sb-input-border-success: $input-border-width solid $secondary-200;
-
-/* sb-input label and text */
-$sb-error-text: $red-400;
-$sb-success-text: $secondary-200;
-$sb-label-font-size: 0.8571rem;
-
-//accordions
-$sb-content-manager-border: 0.0625rem solid $gray-100;
-$sb-download-text-max-width: 18em;
-
-// Dashed Buttons
-$sb-btn-dashed-border: 0.5 solid $primary-color;
-$sb-btn-dashed-background-color: $white-color;
-$sb-btn-dashed-color: $primary-400;
-
-// Button groups
-$sb-btn-group-border-width: 0.0625rem;
-$sb-btn-group-border-width: 1px;
-$sb-btn-group-border-color: $gray-100;
-$sb-btn-group-btn-background: $white-color;
-$sb-btn-group-btn-color: $primary-400;
-$sb-btn-group-btn-active-background-color: $primary-100;
-
-// Dropdown
-$sb-dropdown-border-color: $gray-200;
-$sb-dropdown-border-focus: $primary-600;
-$sb-dropdown-border-hover: $primary-300;
-$sb-dropdown-min-height: 2.44em;
-$sb-dropdown-border-radius: 3px;
-$sb-dropdown-border: $input-border-width solid $sb-dropdown-border-color;
-$sb-dropdown-active-item: #333;
-$sb-multi-select-dropdown-icon-font-size: 1.3em;
-$sb-dropdown-label-font-size: 0.8em;
-$sb-selection-dropdown-min-height: ($base-block-space * 4);
-$sb-selection-dropdown-padding: ($base-block-space/2) ($base-block-space/1);
-$sb-multiple-dropdown-label-font-size: $font-size-sm;
-$sb-multiple-dropdown-label-margin-right: 4px;
-$sb-multiple-dropdown-text-margin: 0.23238095em 0 0.23238095em 0.64285714em;
-$sb-multiple-dropdown-text-font-size: $font-size-sm;
-$sb-selection-line-height: 18px;
-
-// Tabs
-$sb-tabs-border-active-color: $primary-600;
-$sb-tabs-color: $primary-600;
-$sb-pointing-tabs-border: #dededf; //TODO design team need to add this in color scheme
-$sb-pointing-tabs-min-width: 2.285714em;
-$sb-pointing-tabs-border-radius: 4px;
-
-// Radio buttons
-$sb-radio-btn-border: 1px; //width of the border
-$sb-radio-btn-border-radius: 100%;
-$sb-radio-btn-disabled-opacity: 0.5;
-$sb-radio-btn-border-color: $primary-300;
-$sb-radio-btn-border-disabled-color: $gray-100;
-$sb-radio-btn-label-color: $gray-200;
-$sb-radio-btn-backgroud-before-checked: $white-color;
-$sb-radio-btn-backgroud-after-checked: $primary-300;
-
-
-// Checkbox
-$sb-checkbox-primary-background: $primary-color;
-$sb-checkbox-secondary-background: $secondary-100;
-$sb-checkbox-warning-background: $tertiary-100;
-$sb-checkbox-error-background: $red-100;
-$sb-radio-btn-primary-border: $primary-color;
-$sb-radio-btn-secondary-border: $secondary-100;
-$sb-radio-btn-warning-border: $tertiary-100;
-$sb-radio-btn-error-border: $red-100;
-$sb-checkbox-border-width: 1px;
-$sb-checkbox-background-color: $secondary-100;
-$sb-checkbox-label-font-size: 0.8571rem;
-$sb-checkbox-border-radius: 4px;
-$sb-checkbox-after-checked-color: $white-color;
-$sb-checkbox-before-checked-background-color: $white-color;
-$sb-radio-btn-border-color: $primary-300;
-
-// Page section component
-$sb-page-section-font-size: $h5-font-size;
-$sb-page-section-header-content-space: 0 0 ($base-block-space * 3) 0;
-$sb-page-section-header-content-space-compact: 0 0 ($base-block-space) 0;
-$sb-page-sections-between-space: 0 0 ($base-block-space * 3) 0;
-$sb-page-sections-divider-color: $gray-0 !important;
-
-// Card component
-$sb-card-width: 292px;
-$sb-card-height: 208px;
-$sb-card-body-height: 204px;
-$sb-card-progressbar-height: 4px;
-$sb-card-hover-movement: 3px;
-$sb-card-padding: ($base-block-space * 2) ($base-block-space * 2)
-  ($base-block-space) ($base-block-space * 2);
-$sb-card-border-radius: ($base-block-space / 2);
-$sb-card-border: 0.5px solid #dedede;
-$sb-card-box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.16);
-$sb-card-bg-color: $white-color;
-$sb-card-image-height: 92px;
-$sb-card-image-width: 70px;
-$sb-card-image-border-radius: 2px;
-$sb-card-image-border: 0.5px solid $gray-100;
-$sb-card-image-bg-color: $gray-0;
-$sb-card-label-font-size: ($font-size-sm - 1);
-$sb-card-label-color: $primary-color;
-$sb-card-label-border: 1px solid $primary-color;
-$sb-card-label-border-radius: 2px;
-$sb-card-label-padding: ($base-block-space / 2) ($base-block-space);
-$sb-card-label-height: 24px;
-$sb-card-badge-height: 30px;
-$sb-card-badge-width: 30px;
-$sb-card-meta-width: 172px;
-$sb-card-meta-color: $gray-400;
-$sb-card-meta-font-size: $font-size-sm;
-$sb-card-meta-line-height: 18px;
-$sb-card-title-color: $primary-color;
-$sb-card-title-font-size: $h6-font-size;
-$sb-card-title-line-height: ($sb-card-title-font-size * 1.25);
-$sb-card-title-height: ($sb-card-title-line-height * 2);
-$sb-card-title-font-weight: $font-weight-bold;
-$sb-card-title-spacing: ($base-block-space * 2) 0 ($base-block-space * 1) 0;
-$sb-card-meta-org-font-size: $h6-font-size;
-$sb-card-progressbar-border-radius: 0 4px 4px 4px;
-// Tamil
-$sb-card-label-font-size-ta: 9px;
-$sb-card-meta-font-size-ta: 10px;
-$sb-card-title-font-size-ta: $font-size-sm;
-$sb-card-meta-org-font-size-ta: $font-size-sm;
-// Urdu
-$sb-card-label-font-size-ur: 9px;
-$sb-card-meta-font-size-ur: 10px;
-$sb-card-title-font-size-ur: $font-size-sm;
-$sb-card-meta-org-font-size-ur: $font-size-sm;
-
-// tooltip Component
-$tooltip-bg: $gray;
-$tooltip-color: $gray-0;
-$tooltip-content-color: $gray-200;
-$tooltip-content-font-size: $font-size-sm;
-$tooltip-header-font-size: $font-size-sm;
-
-// Topic Picker
-$sb-treePicker-selectionTab-width: 400px;
-$sb-treePicker-selectedTab-width: calc(100% - 400px);
-$sb-treePicker-selectionTab-padding: ($base-block-space * 2);
-$sb-treePicker-selectedTab-padding: ($base-block-space * 2);
-$sb-treePicker-searchbox-max-width: 392px;
-$sb-treePicker-searchbox-tree-space: 0 0 (2 * $base-block-space) 0;
-$sb-treePicker-searchbox-width: 100%;
-$sb-treePicker-searchbox-border: 0.5px solid $primary-300;
-$sb-treePicker-searchbox-iconColor-search: #aaa;
-$sb-treePicker-selected-color: $secondary-100;
-$sb-treePicker-tabs-divider-border-color: $gray-100;
-$sb-treePicker-tabs-divider-border-mobile: 0 0 1px 0;
-$sb-treePicker-tabs-divider-border-desktop: 0 1px 0 0;
-$sb-treePicker-tabs-divider-border-desktop-rtl: 0 0 0 1px;
-$sb-treePicker-nodes-between-spacing: 0 0 $base-block-space 0;
-$sb-treePicker-nodes-icon-title-spacing: 0 $base-block-space 0 0;
-$sb-treePicker-nodes-icon-title-spacing-rtl: 0 0 0 $base-block-space;
-$sb-treePicker-checked-nodes-icon-title-spacing: 0 10px 0 0;
-$sb-treePicker-checked-nodes-icon-title-spacing-rtl: 0 0 0 10px;
-$sb-treePicker-nodes-icons-font-size: 10px;
-$sb-treePicker-nodes-icons-line-height: 11px;
-$sb-treePicker-nodes-icons-border-radius: 4px;
-$sb-treePicker-nodes-icons-border: 1px solid $primary-200;
-$sb-treePicker-nodes-icons-padding: 2px;
-$sb-treePicker-nodes-icons-height: ($base-block-space * 2);
-$sb-treePicker-nodes-icons-width: ($base-block-space * 2);
-$sb-treePicker-nodes-icons-color: $primary-200;
-$sb-treePicker-not-selected-node-icons-size: ($base-block-space * 2);
-$sb-treePicker-nodes-name-color: $gray-400;
-$sb-treePicker-opened-node-name-color: $gray-800;
-$sb-treePicker-node-min-height: ($base-block-space * 2);
-$sb-treePicker-nodes-childlist-border: 1px dotted $gray-100;
-$sb-treePicker-nodes-childlist-padding: 0 $base-block-space;
-$sb-treePicker-nodes-childlist-margin: $base-block-space;
-$sb-treePicker-nodes-disabled-opacity: 0.3;
-$sb-treePicker-search-query-highlight-color: $yellow;
-
-// TOC or Collection Tree
-$sb-collectionTree-border-radius: ($base-block-space / 2);
-$sb-collectionTree-border: 1px solid $primary-200;
-$sb-collectionTree-padding: ($base-block-space * 2);
-$sb-collectionTree-margin: $base-block-space 0 0 0;
-$sb-collectionTree-background-color: $white-color;
-$sb-collectionTree-title-color: $gray-800;
-$sb-collectionTree-title-font-size: $h6-font-size;
-$sb-collectionTree-title-line-height: 20px;
-$sb-collectionTree-title-font-weight: 400;
-$sb-collectionTree-active-title-color: $primary-color;
-$sb-collectionTree-active-title-font-weight: bold;
-$sb-collectionTree-title-icon-color: $tertiary-100;
-$sb-collectionTree-title-icon-font-size: 20px;
-$sb-collectionTree-title-icon-line-height: 20px;
-$sb-collectionTree-title-icon-height: 20px;
-$sb-collectionTree-title-icon-font-weight: 500;
-$sb-collectionTree-title-toggle-icon-color: $primary-color;
-$sb-collectionTree-title-toggle-icon-font-size: $font-size-sm;
-$sb-collectionTree-title-toggle-icon-line-height: 20px;
-$sb-collectionTree-title-toggle-icon-height: 20px;
-$sb-collectionTree-title-toggle-icon-font-weight: 500;
-$sb-collectionTree-disabled-border: 1px solid $gray-100;
-$sb-collectionTree-disabled-title-icon-color: $gray-100;
-
-// Fancy Tree
-$sb-fancyTree-margin-ltr: 0 0 0 ($base-block-space * 1.25);
-$sb-fancyTree-margin-rtl: 0 ($base-block-space * 1.25) 0 0;
-$sb-fancyTree-padding: ($base-block-space * 2) 0 0 0;
-$sb-fancyTree-list-border-color: $primary-200;
-$sb-fancyTree-list-border-width: 1px;
-$sb-fancyTree-list-item-margin: 0 0 (2 * $base-block-space) 0;
-$sb-fancyTree-list-item-padding-ltr: 0 0 0 ($base-block-space * 1.75);
-$sb-fancyTree-list-item-padding-rtl: 0 ($base-block-space * 1.75) 0 0;
-$sb-fancyTree-list-item-border-text-spacing: ($base-block-space * 1.75);
-$sb-fancyTree-list-item-icon-size: 20px;
-$sb-fancyTree-default-list-item-icon-color: $tertiary-100;
-$sb-fancyTree-completed-list-item-icon-color: $success-color;
-$sb-fancyTree-inprogress-list-item-icon-color: $primary-color;
-$sb-fancyTree-disabled-list-item-icon-color: $gray-100;
-$sb-fancyTree-list-item-title-padding: 0 ($base-block-space);
-$sb-fancyTree-list-item-title-font-size: $h6-font-size;
-$sb-fancyTree-list-item-title-commingSoonMessage-spacing: 0
-  ($base-block-space / 2);
-
-/* circular list*/
-$sb-circular-list-item-padding-ltr: ($base-block-space * 1) 0
-  ($base-block-space * 1) ($base-block-space * 4);
-$sb-circular-list-item-padding-rtl: ($base-block-space * 1)
-  ($base-block-space * 4) ($base-block-space * 1) 0;
-$sb-circular-list-item-font-size: ($base-block-space * 2);
-$sb-circular-list-item-circle-color: $primary-color;
-$sb-circular-list-item-circle-border-radius: 50%;
-$sb-circular-list-item-circle-width: 12px;
-$sb-circular-list-item-circle-height: 12px;
-$sb-circular-list-item-circle-top: 12px;
-
-/* description list */
-$sb-description-list-key-color: $gray-400;
-$sb-description-list-key-font-size: ($base-block-space * 2);
-$sb-description-list-value-color: $gray-400;
-$sb-description-list-value-font-size: ($base-block-space * 2);
-$sb-description-list-value-margin-left: ($base-block-space * 1);
-$sb-description-list-value-margin-right: ($base-block-space * 1);
-$sb-description-list-key-small-font-size: 14px;
-$sb-description-list-value-small-font-size: 14px;
-
-//banner
-$sb-banner-padding: ($base-block-space * 3);
-$sb-banner-border-radius: 4px 4px 0 0;
-$sb-banner-background-color: rgba(2, 79, 157, 0.1);
-$sb-banner-box-shadow: 0 -4px 7px 0 rgba(0, 0, 0, 0.25);
-$sb-banner-heading-font-size: 18px;
-$sb-banner-heading-color: $primary-color;
-$sb-banner-close-icon-width: ($base-block-space * 2);
-$sb-banner-close-icon-margin-right: ($base-block-space * 3);
-$sb-banner-close-icon-font-size: ($base-block-space * 3);
-$sb-banner-close-icon-margin-left: ($base-block-space * 3);
-
-//multiline list
-$multiline-list-key-font-size: 11px;
-$multiline-list-key-font-color: $gray-400;
-$multiline-list-value-font-size: 11px;
-$multiline-list-value-font-color: $gray-400;
-
-// bordered-list--adds border around the list
-$sb-bordered-list-border: 1px solid $gray-100;
-$sb-bordered-list-border-radius: 4px 4px 0 0;
-$sb-bordered-list-item-font-size: ($base-block-space * 2);
-$sb-bordered-list-item-padding: ($base-block-space * 2) ($base-block-space * 3);
-$sb-bordered-list-item-border-bottom: 1px solid $gray-100;
-$sb-bordered-list-item-border-background: #f7f7f7;
-$sb-bordered-list-item-title-font-size: 14px;
-$sb-bordered-list-item-title-color: $primary-color;
-$sb-bordered-list-item-title-extra-font-size: 12px;
-$sb-bordered-list-item-title-extra-color: $gray-800;
-$sb-bordered-list-item-heading-font-size: 14px;
-$sb-bordered-list-item-heading-color: $gray-800;
-$sb-bordered-list-item-subheading-font-size: 12px;
-$sb-bordered-list-item-subheading-color: $gray-400;
-$sb-bordered-list-item-first-child-padding: ($base-block-space * 1)
-  ($base-block-space * 2);
-$sb-bordered-list-item-first-child-background: $white-color;
-
-// label
-$sb-label-status-width: 130px;
-$sb-label-status-height: 32px;
-$sb-label-status-padding: 5px;
-$sb-label-status-font-size: 14px;
-$sb-label-status-before-border: 1px solid teal;
-$sb-label-status-before-top: -11%;
-$sb-label-status-before-bottom: -11%;
-$sb-label-status-before-left: -2%;
-$sb-label-status-before-right: -3%;
-$sb-label-status-before-border-bottom-left-radius: 10px;
-$sb-label-status-before-border-bottom-right-radius: 10px;
-$sb-label-status-success-border-color: $secondary-0;
-$sb-label-status-success-background-color: $secondary-0;
-$sb-label-status-error-background-color: $tertiary-0;
-$sb-label-status-error-border-color: $tertiary-0;
-$sb-label-status-error-color: $tertiary-color;
-$sb-label-status-success-color: $secondary-color;
-$sb-label-status-indicator-height: 8px;
-$sb-label-status-indicator-width: 8px;
-$sb-label-status-indicator-border-radius: 50%;
-$sb-label-status-indicator-margin-right: 4px;
-$sb-label-status-indicator-success-background: $secondary-color;
-$sb-label-status-indicator-error-background: $tertiary-color;
-
-// Filters
-$sb-prominent-filter-background-color: $white-color;
-$sb-prominent-filter-padding: $base-block-space * 2 $base-block-space * 2;
-$sb-prominent-filter-header-font-weight: bold;
-$sb-prominent-filter-header-margin: ($base-block-space) 0
-  ($base-block-space * 2) 0;
-$sb-prominent-filter-header-color: $primary-color;
-$sb-prominent-filter-field-width-below-sm: 50%;
-$sb-prominent-filter-field-width-above-sm: 33.3333%;
-$sb-prominent-filter-field-width-above-md: 25%;
-$sb-prominent-filter-field-width-above-lg: 20%;
-$sb-prominent-filter-field-bottom-spacing: ($base-block-space * 2);
-$sb-prominent-filter-field-side-spacing: ($base-block-space * 2);
-$sb-prominent-filter-field-label-font-size: 14px;
-$sb-prominent-filter-field-label-font-weight: normal;
-$sb-prominent-filter-field-label-color: $gray-800;
-$sb-prominent-filter-field-label-margin: 0 0 $base-block-space 0;
-$sb-prominent-filter-field-font-size: 12px;
-$sb-prominent-filter-field-color: #4a4a4a;
-$sb-prominent-filter-field-border: 1px solid #999999;
-$sb-prominent-filter-field-border-radius: 3px;
-$sb-prominent-filter-field-height: 32px;
-$sb-prominent-filter-field-width: 100%;
-$sb-prominent-filter-field-input-padding: 8px;
-$sb-prominent-filter-dropdown-font-size: 12px;
-$sb-prominent-filter-dropdown-header-font-weight: 500;
-$sb-prominent-filter-dropdown-item-active-color: $primary-color;
-$sb-prominent-filter-dropdown-item-active-font-weight: 700;
-
-// To clean
-$text-gray: $gray-100;
-$signup-btn-bg-not-active-color: $gray-200;
-$signup-thankyou-text-color: $gray-400;
-$form-input-border-color: $gray-300;
-$qr-btn: $gray-100;
-$signup-btn-bg-active-color: $secondary-400;
-$form-input-border-active-color: $primary-400;
-
-/* description list */
-$sb-description-list-key-color: $gray-400;
-$sb-description-list-key-font-size: ($base-block-space * 2);
-$sb-description-list-value-color: $gray-400;
-$sb-description-list-value-font-size: ($base-block-space * 2);
-$sb-description-list-value-margin-left: ($base-block-space * 1);
-$sb-description-list-value-margin-right: ($base-block-space * 1);
-$sb-description-list-key-small-font-size: 14px;
-$sb-description-list-value-small-font-size: 14px;
-//banner
-$sb-banner-padding: ($base-block-space * 3);
-$sb-banner-border-radius: 0 0 4px 4px;
-$sb-banner-background-color: #dae6f1;
-$sb-banner-box-shadow: 0 -4px 7px 0 rgba(0, 0, 0, 0.25);
-$sb-banner-heading-font-size: 18px;
-$sb-banner-heading-color: $primary-color;
-$sb-banner-close-icon-width: ($base-block-space * 2);
-$sb-banner-close-icon-margin-right: ($base-block-space * 3);
-$sb-banner-close-icon-font-size: ($base-block-space * 3);
-$sb-banner-close-icon-margin-left: ($base-block-space * 3);
-
-// lists
-
-/* circular list*/
-$sb-circular-list-item-padding-ltr: ($base-block-space * 1) 0
-  ($base-block-space * 1) ($base-block-space * 4);
-$sb-circular-list-item-padding-rtl: ($base-block-space * 1)
-  ($base-block-space * 4) ($base-block-space * 1) 0;
-$sb-circular-list-item-font-size: ($base-block-space * 2);
-$sb-circular-list-item-circle-color: $primary-color;
-$sb-circular-list-item-circle-border-radius: 50%;
-$sb-circular-list-item-circle-width: 12px;
-$sb-circular-list-item-circle-height: 12px;
-$sb-circular-list-item-circle-top: 12px;
-
-/* description list */
-$sb-description-list-key-color: $gray-400;
-$sb-description-list-key-font-size: ($base-block-space * 2);
-$sb-description-list-value-color: $gray-400;
-$sb-description-list-value-font-size: ($base-block-space * 2);
-$sb-description-list-value-margin-left: ($base-block-space * 1);
-$sb-description-list-value-margin-right: ($base-block-space * 1);
-$sb-description-list-key-small-font-size: 14px;
-$sb-description-list-value-small-font-size: 14px;
-
-//multiline list
-$multiline-list-key-font-size: 11px;
-$multiline-list-key-font-color: $gray-400;
-$multiline-list-value-font-size: 11px;
-$multiline-list-value-font-color: $gray-400;
-
-// bordered-list--adds border around the list
-
-$sb-bordered-list-border: 1px solid $gray-100;
-$sb-bordered-list-border-radius: 4px 4px 0 0;
-$sb-bordered-list-item-font-size: ($base-block-space * 2);
-$sb-bordered-list-item-padding: ($base-block-space * 2) ($base-block-space * 3);
-$sb-bordered-list-item-border-bottom: 1px solid $gray-100;
-$sb-bordered-list-item-border-background: #f7f7f7;
-$sb-bordered-list-item-title-font-size: 14px;
-$sb-bordered-list-item-title-color: $primary-color;
-$sb-bordered-list-item-title-extra-font-size: 12px;
-$sb-bordered-list-item-title-extra-color: $gray-800;
-$sb-bordered-list-item-heading-font-size: 14px;
-$sb-bordered-list-item-heading-color: $gray-800;
-$sb-bordered-list-item-subheading-font-size: 12px;
-$sb-bordered-list-item-subheading-color: $gray-400;
-$sb-bordered-list-item-first-child-padding: ($base-block-space * 1)
-  ($base-block-space * 2);
-$sb-bordered-list-item-first-child-background: $white-color;
-
-// Certificate
-
-$sb-certificatePage-bg-color: $white-color;
-$sb-certificatePage-padding: 16px;
-$sb-certificatePage-max-width: 320px;
-$sb-certificatePage-min-height: 560px;
-$sb-certificatePage-margin: 0 auto 48px auto;
-$sb-certificatePage-logo-height: 56px;
-$sb-certificatePage-desc-background: #e5edf5;
-$sb-certificatePage-desc-padding: 24px;
-$sb-certificatePage-desc-margin-mobile: 0;
-$sb-certificatePage-desc-margin-desktop: 0 16px;
-$sb-certificatePage-desc-img-width: 197px;
-$sb-certificatePage-label-font-size: 12px;
-$sb-certificatePage-label-line-height: 17px;
-$sb-certificatePage-label-color: #333333;
-$sb-certificatePage-field-width: 215px;
-$sb-certificatePage-field-margin: 0 auto 36px auto;
-$sb-certificatePage-input-height: 30px;
-$sb-certificatePage-input-width: 215px;
-$sb-certificatePage-input-background: linear-gradient(
-  to left,
-  #333333 70%,
-  rgba(255, 255, 255, 0) 0%
-);
-$sb-certificatePage-input-background-size: 35px 1px;
-$sb-certificatePage-input-font-size: 16px;
-$sb-certificatePage-input-letter-spacing: 24px;
-$sb-certificatePage-input-color: #333333;
-$sb-certificatePage-input-placeholder-color: $gray-0;
-$sb-certificatePage-input-padding: 0 0 0 15px;
-$sb-certificatePage-holder-details-padding: 16px;
-$sb-certificatePage-holder-desc-font-size: 12px;
-$sb-certificatePage-holder-desc-line-height: 18px;
-$sb-certificatePage-holder-desc-color: #333;
-$sb-certificatePage-holder-desc-primary-color: $primary-color;
-$sb-certificatePage-holder-name-font-size: 22px;
-$sb-certificatePage-holder-name-line-height: 30px;
-$sb-certificatePage-holder-name-color: #333;
-$sb-certificatePage-holder-name-margin: 8px 0 24px 0;
-$sb-certificatePage-holder-margin: 0 0 14px 0;
-$sb-certificatePage-overlay-background: rgba(255, 255, 255, 0.5);
-$sb-certificatePage-loader-img-height: 30px;
-$sb-certificatePage-loader-img-width: 30px;
-
-// Mobile Device
-$sb-mobileDevice-width-mobile: 360px;
-$sb-mobileDevice-height-mobile: 202.5px;
-$sb-mobileDevice-width-tablet: 680px;
-$sb-mobileDevice-height-tablet: 340px;
-$sb-mobileDevice-width-desktop: 800px;
-$sb-mobileDevice-height-desktop: 400px;
-$sb-mobileDevice-border: 10px solid $black;
-$sb-mobileDevice-border-radius: 15px;
-$sb-mobileDevice-sensors-background: $black;
-$sb-mobileDevice-sensors-padding: 10px 5px 10px 0;
-$sb-mobileDevice-sensors-border-radius: 25px;
-$sb-mobileDevice-sensor-background: #252525;
-$sb-mobileDevice-sensor-size: 8px;
-$sb-mobileDevice-speaker-height: 74px;
-$sb-mobileDevice-speaker-width: 5px;
-$sb-mobileDevice-speaker-border-radius: 10px;
-$sb-mobileDevice-speaker-padding: 10px 0 10px 1px;
-$sb-mobileDevice-videoScreen-border-radius: 5px;
-

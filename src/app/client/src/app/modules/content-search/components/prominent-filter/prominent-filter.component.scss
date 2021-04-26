@@ -1,0 +1,76 @@
+@import "variables";
+@import "mixins/mixins";
+@import "pages/sbt-filter";
+
+// state dropdown css
+.ui.selection.dropdown .menu>.item {
+  font-size: calculateRem(12px);
+  padding: 1em 1em !important;
+}
+
+.ui.selection.dropdown.state-medium {
+  color: var(--primary-400);
+  display: flex;
+  align-items: center;
+  border: none;
+  background: none;
+  min-width: calculateRem(100px);
+  margin: 0;
+
+  .medium-selection {
+    min-width: calculateRem(120px);
+  }
+
+  &:hover {
+    background: var(--rc-E5EDF5);
+  }
+}
+
+.ui.selection.dropdown.state-selection {
+  color: var(--primary-400);
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  min-width: calculateRem(208px);
+
+  @include respond-below(sm) {
+    min-width: 10rem;
+  }
+
+  border-radius: calculateRem(2px);
+  border: calculateRem(0.5px) solid var(--primary-400);
+
+  &.active {
+    background: var(--rc-E5EDF5) !important;
+    color: var(--primary-400) !important;
+    border-color: var(--primary-400);
+    box-shadow: none;
+  }
+
+  &:hover {
+    color: var(--primary-400) !important;
+    box-sizing: border-box;
+    border-radius: calculateRem(2px);
+    background-color: var(--rc-E5EDF5);
+    box-shadow: none;
+  }
+
+}
+
+.ui.selection.dropdown .menu {
+  max-height: 20em;
+}
+
+.ui.default.dropdown:not(.button)>.text,
+.ui.dropdown:not(.button)>.default.text {
+  color: var(--red-400);
+}
+
+:host ::ng-deep .dropdown:not(.button)>.default.text {
+  color: var(--primary-400) !important;
+}
+
+:host ::ng-deep .sb-slider-pills-container .sb-pills-container {
+  padding: 0.5rem 0 !important;
+}
+

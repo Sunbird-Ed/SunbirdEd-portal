@@ -1,0 +1,10 @@
+<div class="content" [appTelemetryImpression]="telemetryImpression">
+  <div class="batch-content-area">
+      <div class="batch-sbcard" *ngFor="let item of dashBoardItems">
+       <div class="d-flex flex-ai-center flex-jc-center flex-dc p-16 batch-sbcard-content" >
+        <div class="batch-card-title">{{item?.title}}</div>
+        <div class="batch-card-number">{{item?.count || 0}}</div>
+        </div>
+      </div>
+  </div>
+</div> 

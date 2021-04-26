@@ -1,49 +1,4 @@
-.sb-secondary-pointing-menu {
-  margin-left: 0;
-  margin-right: 0;
-  border-bottom: 2px solid rgba(34, 36, 38, 0.15);
-  border-radius: 0;
-  border: none;
-  box-shadow: none;
-  display: flex;
-  .item {
-    border-bottom-color: transparent;
-    border-bottom-style: solid;
-    border-radius: 0;
-    -ms-flex-item-align: end;
-    align-self: flex-end;
-    margin: 0 0 -2px;
-    padding: 0.85714286em 1.14285714em;
-    border-bottom-width: 2px;
-    -webkit-transition: color 0.1s ease;
-    transition: color 0.1s ease;
-    box-shadow: none;
-    border: none;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    position: relative;
-    vertical-align: middle;
-    line-height: 1;
-    text-decoration: none;
-    -webkit-tap-highlight-color: transparent;
-    -webkit-box-flex: 0;
-    &.active {
-      background-color: transparent;
-      box-shadow: none;
-      border-color: #1b1c1d;
-      font-weight: 700;
-      color: var(--primary-400);
-      font-weight: bold;
-      font-size: 14px;
-      border-bottom: 2px solid var(--primary-400);
-    }
-    &:hover {
-      border-color: var(--primary-400);
-    }
-  }
-}
+
 
 .sb-sidebar-menu {
   h5 {
@@ -57,11 +12,11 @@
     li {
       padding: calculateRem(12px) $base-block-space * 2;
       font-size: $font-size-sm;
-      color: #333;
+      color: var(--gray-800);
       cursor: pointer;
       &.active {
         background: $primary-0;
-        border-left: 2px solid $primary-600;
+        border-left: calculateRem(2px) solid $primary-600;
         color: $primary-800;
         font-weight: $font-weight-bold;
       }
@@ -75,6 +30,7 @@
 .sb-sideview-tab-container {
   padding: $base-block-space * 3 $base-block-space * 3;
   background: $primary-0;
+  min-height: calc(100vh - 288px);
 }
 
 .sb-dotmenu {
@@ -82,7 +38,7 @@
   height: $base-block-space/2;
   border-radius: 50%;
   background-color: $gray-200;
-  box-shadow: 0px -6px 0px $gray-200, 0px 6px 0px $gray-200;
+  box-shadow: 0px calculateRem(-6px) 0px $gray-200, 0px calculateRem(6px) 0px $gray-200;
   display: inline-block;
   cursor: pointer;
 }
@@ -90,7 +46,7 @@
 .sb-tabset-menu {
     background: $gray-0;
     width: 100%;
-    min-height: 40px;
+    min-height: calculateRem(40px);
     display: flex;
 
     .sb-item {
@@ -101,7 +57,7 @@
 
         &.active {
             color: $primary-color;
-            border-bottom: 2px solid $primary-color;
+            border-bottom: calculateRem(2px) solid $primary-color;
         }
     }
 }

@@ -1,5 +1,8 @@
+<app-landing-section [noTitle]="true" 
+[layoutConfiguration]="layoutConfiguration"></app-landing-section>
+<div [ngClass]="layoutConfiguration ? 'sbt-center-container relative9':''">
 <div class="ui container">
-   <div class="content-grid mt-24">
+   <div class="content-grid my-24">
       <div class="sb-pageSection">
           <div  class="sb-pageSection-header">
                   <h4 class="sb-pageSection-title font-weight-bold m-0 mr-5"> {{sectionName}}
@@ -40,4 +43,5 @@
       <app-loader [data]="loaderMessage"></app-loader>
     </div>
     <router-outlet></router-outlet>
+</div>
 </div>

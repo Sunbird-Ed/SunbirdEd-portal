@@ -8,7 +8,8 @@ import {
 import { PlayerService, ContentService } from '@sunbird/core';
 @Component({
   selector: 'app-reviewsubmissions-contentplayer',
-  templateUrl: './reviewsubmissions-contentplayer.component.html'
+  templateUrl: './reviewsubmissions-contentplayer.component.html',
+  styleUrls: ['./reviewsubmissions-contentplayer.component.scss']
 })
 export class ReviewsubmissionsContentplayerComponent implements OnInit {
   /**

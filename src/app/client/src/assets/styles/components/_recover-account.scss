@@ -5,16 +5,15 @@
   min-height: 100%;
 
   @include respond-above(xs) {
-    max-width: 320px;
-    min-height: 540px;
+    max-width: calculateRem(320px);
+    min-height: calculateRem(540px);
   }
   .sb-account-recoverpage-logo {
-    height: 56px;
+    height: calculateRem(56px);
   }
   .sb-account-recoverpage-header{
-    margin-top: calculateRem(24px);
     .sb-account-recoverpage-header-text {
-      font-size: 18px;
+      font-size: calculateRem(18px);
       font-weight: bold;
     }
   }

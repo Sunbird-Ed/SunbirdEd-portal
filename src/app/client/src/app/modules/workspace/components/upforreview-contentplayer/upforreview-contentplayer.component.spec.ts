@@ -10,6 +10,7 @@ import { SharedModule,  ToasterService, ResourceService, NavigationHelperService
 import { PlayerService, UserService, LearnerService, ContentService, CoreModule } from '@sunbird/core';
 import * as mockData from './upforreview-content.component.spce.data';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 const testData = mockData.mockRes;
 describe('UpforreviewContentplayerComponent', () => {
@@ -30,6 +31,7 @@ describe('UpforreviewContentplayerComponent', () => {
     }
   }
 };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ UpforreviewContentplayerComponent ],
@@ -78,6 +80,28 @@ describe('UpforreviewContentplayerComponent', () => {
     expect(component.contentData).toBeDefined();
     expect(component.showError).toBeFalsy();
     expect(component.showLoader).toBeFalsy();
+  });
+  it('should call handleSceneChangeEvent', () => {
+    component.stageId = '1';
+    const data = {
+      stageId: '2'
+    };
+    spyOn(component, 'handleSceneChangeEvent').and.callThrough();
+    component.handleSceneChangeEvent(data);
+    expect(component.handleSceneChangeEvent).toHaveBeenCalledWith(data);
+    expect(component.stageId).toBe('2');
+  });
+  it('should redo layout on render', () => {
+    component.layoutConfiguration = {};
+    spyOn(component, 'initLayout').and.callThrough();
+    component.ngOnInit();
+    expect(component.initLayout).toHaveBeenCalled();
+  });
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.unsubscribe$, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
 
 });

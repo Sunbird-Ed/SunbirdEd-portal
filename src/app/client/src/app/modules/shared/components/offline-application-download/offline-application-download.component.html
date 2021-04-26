@@ -2,7 +2,7 @@
   <div class="ui stackable grid mt-32">
     <div class="seven wide column pr-8">
       <div class="offline-download-card">
-        <h2 class="offline-download-card-heading">
+        <h2 class="offline-download-card__heading">
           {{resourceService?.frmelmnts?.lbl?.downloadAppLite | interpolate:'{instance}': instance}}</h2>
         <dl class="mt-16">
           <div class="d-flex" *ngIf="desktopAppVersion">
@@ -18,7 +18,7 @@
             <dd class="description-list-value">{{desktopAppSupportedLanguage}}</dd>
           </div>
         </dl>
-        <div class="offline-download-card-description mt-32">
+        <div class="offline-download-card__description mt-32">
           {{resourceService?.frmelmnts?.lbl?.desktopAppDescription | interpolate:'{instance}': instance | interpolate:'{instance}': instance}}
         </div>
         <ul class="sb-circular-list mt-32">
@@ -63,7 +63,7 @@
               <span class="mr-8" *ngIf="recomandedOS==='linux'"><img src="assets/images/windows.svg" width="16px"></span>
               {{otherOption2}}&#x200E;</button>
           </div>
-          <!-- <div class="offline-download-card-extra my-8 cursor-pointer">
+          <!-- <div class="offline-download-card__extra my-8 cursor-pointer">
             {{resourceService?.frmelmnts?.btn?.downloadInstruction}}</div>
           </div> -->
          </div>

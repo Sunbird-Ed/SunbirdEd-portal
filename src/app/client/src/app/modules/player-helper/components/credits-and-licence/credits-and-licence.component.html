@@ -1,0 +1,71 @@
+<div *ngIf="contentData.description" class="content-metadeta sb-bg-color-white mt-8 text-left">
+  <div class="mx-16 py-16 content-metadeta__content">
+    <div class="content-metadeta__title fnormal font-weight-bold">
+      {{resourceService?.frmelmnts?.lbl?.description}}</div>
+    <p class="content-metadeta__text fnormal pt-8">
+      {{contentData?.description}}
+    </p>
+  </div>
+
+</div>
+
+<sui-accordion class="styled fluid sb-accordion">
+  <sui-accordion-panel>
+    <div title class="sb-accordion-title fnormal">
+      {{resourceService?.frmelmnts?.lbl?.aboutTheContent}}
+      <i class="chevron down icon ml-8"></i>
+    </div>
+    <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-8">
+     
+
+      <div class="py-8" *ngIf="contentData?.author">
+        <div class="content-metadeta__title  fxsmall mb-4">{{resourceService?.frmelmnts?.lbl?.author}}</div>
+        <div class="content-metadeta__text  fnormal">{{contentData?.author}}</div>
+      </div>
+      <div class="py-8" *ngIf="attributions">
+        <div class="content-metadeta__title  fxsmall mb-4">{{resourceService?.frmelmnts?.lbl?.attributions}}</div>
+        <div class="content-metadeta__text  fnormal">{{attributions}}</div>
+      </div>
+      <div class="py-8" *ngIf="contentData?.license">
+        <div class="content-metadeta__title  fxsmall mb-4">{{resourceService?.frmelmnts?.lbl?.licenseTerms}}</div>
+        <div class="content-metadeta__text  fnormal">{{contentData.license}}</div>
+      </div>
+      <div class="py-8" *ngIf="contentData?.licenseDetails?.name">
+        <div class="content-metadeta__title  fxsmall mb-4"></div>
+        <div class="content-metadeta__text  fnormal" *ngIf="contentData?.licenseDetails?.name">{{contentData.licenseDetails['name']}} {{contentData.licenseDetails['description']}}&#x200E; <br />
+          <span *ngIf="contentData.licenseDetails['url']">
+            <a href="{{contentData.licenseDetails['url']}}" class="break-all" target="_blank">{{contentData.licenseDetails['url']}}</a>
+          </span>
+        </div>
+      </div>
+      <div class="py-8" *ngIf="contentData?.copyright">
+        <div class="content-metadeta__title  fxsmall mb-4">{{resourceService?.frmelmnts?.lbl?.copyRight}}</div>
+        <div class="content-metadeta__text  fnormal">{{contentData?.copyright}}<span
+          *ngIf="contentData?.copyrightYear">,&nbsp;{{contentData?.copyrightYear}}</span></div>
+      </div>
+      <div *ngIf="contentData.originData">
+        <div class="content-metadeta__text fnormal sb-color-primary-400" *ngIf="contentData?.originData">{{resourceService?.frmelmnts?.lbl?.contentcopiedtitle}}</div>
+        <div class="py-8" *ngIf="contentData?.originData?.name">
+          <div class="content-metadeta__title  fxsmall mb-4">{{resourceService?.frmelmnts?.lbl?.desktop.content}}</div>
+          <div class="content-metadeta__text  fnormal">{{contentData?.originData?.name}}</div>
+        </div>
+        <div class="py-8" *ngIf="contentData?.originData?.author">
+          <div class="content-metadeta__title  fxsmall mb-4">{{resourceService?.frmelmnts?.lbl?.desktop.authorOfSourceContent}}</div>
+          <div class="content-metadeta__text  fnormal">{{contentData?.originData?.author}}</div>
+        </div>
+        <div class="py-8" *ngIf="contentData?.originData?.license">
+          <div class="content-metadeta__title  fxsmall mb-4">{{resourceService?.frmelmnts?.lbl?.licenseTerms}}</div>
+          <div class="content-metadeta__text  fnormal">{{contentData?.originData?.license}}</div>
+        </div>
+        <div class="py-8" *ngIf="contentData?.originData?.organisation">
+          <div class="content-metadeta__title  fxsmall mb-4"  [innerHTML]="resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance"></div>
+          <div class="content-metadeta__text  fnormal" *ngIf="contentData?.originData?.organisation">{{contentData?.originData?.organisation.join(', ')}}</div>
+          <a *ngIf="contentData?.orgDetails?.email"
+          href="mailto:{{contentData.orgDetails?.email}}?subject={{contentData.name}}">{{contentData.orgDetails?.email}}</a>
+        </div>
+      </div>
+      
+
+    </div>
+  </sui-accordion-panel>
+</sui-accordion>

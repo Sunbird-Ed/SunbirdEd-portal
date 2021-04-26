@@ -1,11 +1,23 @@
 export const mockRes = {
+  orgDetailsSuccess1: {
+    'responseCode': 'OK',
+    'result': {
+      'response': {
+        'count': 2,
+        'content': {
+          'id': '01229679766115942443',
+          'orgName': 'XYZ Institution'
+        }
+      }
+    },
+  },
   orgDetailsSuccess: {
     'responseCode': 'OK',
     'result': {
       'response': {
         'count': 2,
         'content': [{
-          'identifier': '01229679766115942443',
+          'id': '01229679766115942443',
           'orgName': 'XYZ Institution'
         }]
       }
@@ -17,10 +29,10 @@ export const mockRes = {
       'response': {
         'count': 2,
         'content': [{
-          'identifier': '01229679766115942443',
+          'id': '01229679766115942443',
           'orgName': 'XYZ Institution'
         }, {
-          'identifier': '0123150108807004166',
+          'id': '0123150108807004166',
           'orgName': 'NTP Content Create Testing'
         }]
       }

@@ -1,3 +1,6 @@
+@import "mixins/mixins";
+@import "./../../../../../../../../assets/styles/pages/sign_in_up";
+
 .failed-message{
-    color: #e55a28;
+    color: var(--tertiary-400);
 }

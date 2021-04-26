@@ -1,0 +1,17 @@
+<div id="overlay" class="overlay-html" ng-show="overlayVisible" ng-controller="OverlayController">
+	<previous-navigation></previous-navigation>
+	<next-navigation></next-navigation>
+	<assess image="icons.assess.enable" ng-show="showOverlaySubmit"></assess>
+	<reload-stage ng-show="showReload" style="position: absolute;width: 7%;bottom: 1%;left: 1%;"></reload-stage>
+	<content-close ng-show="showContentClose" style="position: absolute;width: 7%;top: 1%;right: 1%;"></content-close>
+
+	<!-- Note: all the HTML elements should be above this menu tag
+	Don't add any HTML elements after this menu tag
+	-->
+	<!-- Menu overlay to hide canvas -->
+	<menu></menu>
+	<!-- All the popup's should add here -->
+	<try-again ng-show="showOverlayTryAgain == state_on"></try-again>
+	<good-job ng-show="showOverlayGoodJob == state_on"></good-job>
+</div>
+<user-switcher> </user-switcher>

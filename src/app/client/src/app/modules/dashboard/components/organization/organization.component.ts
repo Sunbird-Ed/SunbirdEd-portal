@@ -240,8 +240,8 @@ export class OrganisationComponent implements OnDestroy, AfterViewInit {
    */
   validateIdentifier(identifier: string | '') {
     if (identifier) {
-      const selectedOrg = _.find(this.myOrganizations, ['identifier', identifier]);
-      if (selectedOrg && selectedOrg.identifier) {
+      const selectedOrg = _.find(this.myOrganizations, ['id', identifier]);
+      if (selectedOrg && selectedOrg.id) {
         this.SelectedOrg = selectedOrg.orgName;
       } else {
         // TODO: Need to redirect to home page
@@ -299,7 +299,7 @@ export class OrganisationComponent implements OnDestroy, AfterViewInit {
    * @param {string} identifier organization identifier
    * @param {string} orgName    organization name
    *
-   * @example onAfterOrgChange(identifier: do_xxxxx, Test Organization)
+   * @example onAfterOrgChange(identifier: do_xxxxx, Test Organization) 
    */
   onAfterOrgChange(identifier: string, orgName: string) {
     if (this.identifier === identifier) {
@@ -328,7 +328,7 @@ export class OrganisationComponent implements OnDestroy, AfterViewInit {
     if (data && data.content && data.content.length) {
       this.myOrganizations = data.content;
       if (this.myOrganizations.length === 1) {
-        this.identifier = this.myOrganizations[0].identifier;
+        this.identifier = this.myOrganizations[0].id;
         this.route.navigate(['dashBoard/organization', this.datasetType, this.identifier, this.timePeriod]);
       }
       this.isMultipleOrgs = this.userService.userProfile.organisationIds.length > 1 ? true : false;
@@ -390,7 +390,7 @@ export class OrganisationComponent implements OnDestroy, AfterViewInit {
             this.myOrganizations = data.result.response.content;
             this.isMultipleOrgs = orgIds.length > 1 ? true : false;
             if (this.myOrganizations.length === 1) {
-              this.identifier = this.myOrganizations[0].identifier;
+              this.identifier = this.myOrganizations[0].id;
               this.route.navigate(['dashBoard/organization', this.datasetType, this.identifier, this.timePeriod]);
             }
           }

@@ -1,57 +1,56 @@
 @import "variables";
+@import "components/form";
+
 .ui.grey.button {
-    background: $signup-btn-bg-not-active-color;
-    color: $white-color;
-    pointer-events: none !important;
-    cursor: not-allowed !important; 
-    height: 38px !important;
-    font-size: 1rem;
+  background: var(--gray-200);
+  color: var(--white);
+  pointer-events: none !important;
+  cursor: not-allowed !important;
+  height: calculateRem(38px) !important;
+  font-size: 1rem;
 }
 
 .ui.dodger-blue.button {
-    background: $primary-color;
-    color: $white-color;
-    font-size: 1rem;
-    height: 38px !important;
+  background: var(--primary-color);
+  color: var(--white);
+  font-size: 1rem;
+  height: calculateRem(38px) !important;
 }
 
 .ui.basic.error.label {
-    background: $white-color !important;
-    color: $danger-color !important;
-    border: 0 !important;
-    padding-left: 0;
-    font-size: 1rem;
-    font-weight: normal;
-    padding:10px 0;
+  background: none !important;
+  color: var(--red-100) !important;
+  border: 0 !important;
+  padding-left: 0;
+  font-size: 1rem;
+  font-weight: normal;
+  padding: calculateRem(10px) 0;
 }
 
-.ui.left.icon.input .icon{
-    //left: 11px;
-   // top: 13px;
-    font-size: 1rem;
-    font-family: inherit;
- }
-
-// .ui.input > input {
-//     padding-left: 3.37142857em !important;
-// }
+.ui.left.icon.input .icon {
+  font-size: 1rem;
+  font-family: inherit;
+}
 
 .height-200 {
-    height: 200px !important;
+  height: calculateRem(200px) !important;
 }
 
-.sb-field.ui.input{
-    display: block;
-    .icon{
-        left: 0;
-        top: 10px;
+.sb-field.ui.input {
+  display: block;
+
+  .icon {
+    left: 0;
+    top: calculateRem(10px);
+  }
+
+  .sb-form-control {
+    border: $sb-input-border-normal;
+    line-height: 1.5;
+    padding: 0.5714rem;
+
+    &:hover {
+      border: $sb-input-border-hover;
     }
-    .sb-form-control{
-        border: $sb-input-border-normal;
-        line-height: 1.5;
-        padding: 0.5714rem;
-        &:hover {
-            border: $sb-input-border-hover; 
-        }
-    }
+  }
 }

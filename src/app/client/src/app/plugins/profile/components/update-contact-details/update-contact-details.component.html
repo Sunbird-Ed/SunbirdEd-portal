@@ -25,7 +25,7 @@
           <div class="sb-field-group" *ngSwitchCase="'email'">
             <label>{{resourceService?.frmelmnts?.prmpt?.enteremailID}}</label>
             <div class="sb-field ui input">
-                <input class="sb-form-control" formControlName="email" type="text" placeholder="Enter Email">
+                <input class="sb-form-control" formControlName="email" type="text" placeholder="{{ resourceService?.frmelmnts?.lbl?.enterEmail}}">
             </div>
             <label class="ui basic blue error label pt-0" *ngIf="contactTypeForm.controls.email.dirty && contactTypeForm.controls['email'].errors">{{resourceService?.frmelmnts?.lbl?.validEmail}}</label>
             <label class="ui basic blue error label pt-0" *ngIf="showUniqueError && !(contactTypeForm.controls.email.touched && contactTypeForm.controls['email'].errors)">{{showUniqueError}}</label>
@@ -33,11 +33,11 @@
           <div class="sb-field-group" *ngSwitchCase="'phone'">
               <label>{{resourceService?.frmelmnts?.prmpt?.enterphoneno}}</label>
               <div class="sb-field ui left icon input">
-                  <input class="sb-form-control" formControlName="phone" type="number" placeholder="Enter Mobile Number">
+                  <input class="sb-form-control" formControlName="phone" type="number" placeholder="{{resourceService?.frmelmnts?.lbl?.enterPhoneNumber}}">
                   <i class=" icon">{{resourceService?.frmelmnts?.lbl?.indPhoneCode}}-</i>
               </div>
               <label class="ui basic blue error label pt-0" *ngIf="contactTypeForm.controls.phone.dirty && contactTypeForm.controls['phone'].errors">{{resourceService?.frmelmnts?.lbl?.validPhone}}</label>
-              <label class="ui basic blue error label pt-0" *ngIf="showUniqueError && !(contactTypeForm.controls.phone.touched && contactTypeForm.controls['phone'].errors)">{{showUniqueError}}</label>
+              <label class="ui basic blue error label pt-0" *ngIf="showUniqueError && !(contactTypeForm.controls['phone'].errors)">{{showUniqueError}}</label>
           </div>
         </div>
       </form>
@@ -45,7 +45,7 @@
     <!--/Content-->
 
     <!--Actions-->
-    <div class="sb-modal-actions">
+    <div class="sb-modal-actions text-center">
       <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
       [telemetryInteractEdata]="submitInteractEdata"
         [ngClass]="{'disabled':!enableSubmitBtn}" 
@@ -59,8 +59,10 @@
 
   <app-otp-popup 
     *ngIf="!showForm" 
-    [otpData]="otpData" 
-    (verificationSuccess)="updateProfile($event)" 
+    [otpData]="otpData"
+    [redirectToLogin]="false"
+    (verificationSuccess)="updateProfile($event)"
+    (closeContactForm)="closeModal()"
     (redirectToParent)="showParentForm($event)">
   </app-otp-popup>
 </sui-modal>

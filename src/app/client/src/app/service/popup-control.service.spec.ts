@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { PopupControlService } from './popup-control.service';
-
+import { configureTestSuite } from '@sunbird/test-util';
 describe('PopupControlService', () => {
+  configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should create PopupControlService', () => {

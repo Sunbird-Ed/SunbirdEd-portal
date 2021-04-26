@@ -4,8 +4,10 @@ import { LearnerService } from '@sunbird/core';
 // Rxjs
 import { Observable } from 'rxjs';
 
-
 import * as _ from 'lodash-es';
+import { UsageService } from '../usage/usage.service';
+import { map } from 'rxjs/operators';
+import { TelemetryService } from '@sunbird/telemetry';
 
 /**
  * Service to get course progress dashboard
@@ -25,7 +27,7 @@ export class CourseProgressService {
   public config: ConfigService;
 
   constructor(private learnerService: LearnerService,
-    config: ConfigService) {
+    config: ConfigService, private usageService: UsageService, private telemetryService: TelemetryService) {
     this.config = config;
   }
 
@@ -96,5 +98,29 @@ export class CourseProgressService {
       }
     });
     return tableData;
+  }
+
+  getReportsMetaData(requestParam): Observable<ServerResponse> {
+    const url = `${this.config.urlConFig['URLS'].COURSE.GET_REPORTS_METADATA}`;
+    return this.usageService.getData(url, requestParam).pipe(map((response: any) => {
+      if (requestParam.telemetryData) {
+        for (const reportName of Object.keys(response.result)) {
+          const event = {
+            context: {
+              env: requestParam.telemetryData.snapshot.data.telemetry.env
+            },
+            edata: {
+              type: requestParam.telemetryData.snapshot.data.telemetry.type,
+              level: _.get(response, `result.${reportName}.statusCode`) !== 200 ? 'ERROR' : 'SUCCESS',
+              // tslint:disable-next-line: max-line-length
+              message: _.get(response, `result.${reportName}.lastModified`) ? `${reportName} is available` : `${reportName} is not available`,
+              pageid: requestParam.telemetryData.snapshot.data.telemetry.pageid
+            }
+          };
+          this.telemetryService.log(event);
+        }
+      }
+      return response;
+    }));
   }
 }

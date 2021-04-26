@@ -1,21 +1,17 @@
 import {
-  PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-  ICard, ILoaderMessage, UtilService, NavigationHelperService
+  PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage, OfflineCardService,
+  ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination, LayoutService, COLUMN_TYPE
 } from '@sunbird/shared';
 import { SearchService, PlayerService, OrgDetailsService, UserService, FrameworkService } from '@sunbird/core';
-import { IPagination } from '@sunbird/announcement';
 import { PublicPlayerService } from '../../../../services';
-import { combineLatest, Subject } from 'rxjs';
+import { combineLatest, Subject, of } from 'rxjs';
 import { Component, OnInit, OnDestroy, EventEmitter, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
-import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { takeUntil, map, mergeMap, first, filter, debounceTime, tap, delay } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
-import { environment } from '@sunbird/environment';
-import {
-  ContentManagerService
-} from './../../../../../../../../projects/desktop/src/app/modules/offline/services/content-manager/content-manager.service';
+import { ContentManagerService } from '../../../offline/services';
 
 @Component({
   templateUrl: './explore-content.component.html',
@@ -43,29 +39,61 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   public contentList: Array<ICard> = [];
   public cardIntractEdata: IInteractEventEdata;
   public loaderMessage: ILoaderMessage;
-  isOffline: boolean = environment.isOffline;
+  public numberOfSections = new Array(this.configService.appConfig.SEARCH.PAGE_LIMIT);
   showExportLoader = false;
   contentName: string;
   showDownloadLoader = false;
   frameworkId;
+  public globalSearchFacets: Array<string>;
+  public allTabData;
+  public selectedFilters;
+  public formData;
+  layoutConfiguration;
+  FIRST_PANEL_LAYOUT;
+  SECOND_PANEL_LAYOUT;
+  public totalCount;
+  public searchAll;
+  public allMimeType;
+  downloadIdentifier: string;
+  contentDownloadStatus = {};
+  contentData;
+  showModal = false;
+  isDesktopApp = false;
   constructor(public searchService: SearchService, public router: Router,
     public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public configService: ConfigService, public utilService: UtilService, public orgDetailsService: OrgDetailsService,
     public navigationHelperService: NavigationHelperService, private publicPlayerService: PublicPlayerService,
     public userService: UserService, public frameworkService: FrameworkService,
-    public cacheService: CacheService, public navigationhelperService: NavigationHelperService,
-    public contentManagerService: ContentManagerService) {
+    public cacheService: CacheService, public navigationhelperService: NavigationHelperService, public layoutService: LayoutService,
+    public contentManagerService: ContentManagerService, private offlineCardService: OfflineCardService,
+    public telemetryService: TelemetryService) {
     this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
     this.filterType = this.configService.appConfig.explore.filterType;
   }
   ngOnInit() {
+    this.isDesktopApp = this.utilService.isDesktopApp;
+    this.activatedRoute.queryParams.pipe(takeUntil(this.unsubscribe$)).subscribe(queryParams => {
+      this.queryParams = { ...queryParams };
+    });
+    this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
+      this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
+      this.formData = formData;
+      this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
+      this.listenLanguageChange();
+      this.initFilters = true;
+    }, error => {
+      this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
+      this.navigationhelperService.goBack();
+    });
+
+    this.initLayout();
     this.frameworkService.channelData$.pipe(takeUntil(this.unsubscribe$)).subscribe((channelData) => {
       if (!channelData.err) {
         this.frameworkId = _.get(channelData, 'channelData.defaultFramework');
       }
     });
-    this.orgDetailsService.getOrgDetails(this.activatedRoute.snapshot.params.slug).pipe(
+    this.orgDetailsService.getOrgDetails(this.userService.slug).pipe(
       mergeMap((orgDetails: any) => {
         this.hashTagId = orgDetails.hashTagId;
         this.initFilters = true;
@@ -80,20 +108,48 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
         this.router.navigate(['']);
       }
     );
-
-    if (this.isOffline) {
-      this.contentManagerService.downloadEvent.pipe(tap(() => {
-        this.showDownloadLoader = false;
-      }), takeUntil(this.unsubscribe$)).subscribe(() => { });
-
-      this.contentManagerService.downloadListEvent.pipe(
-        takeUntil(this.unsubscribe$)).subscribe((data) => {
-          this.updateCardData(data);
-        });
+    this.searchAll = this.resourceService.frmelmnts.lbl.allContent;
+    this.contentManagerService.contentDownloadStatus$.subscribe( contentDownloadStatus => {
+      this.contentDownloadStatus = contentDownloadStatus;
+      this.addHoverData();
+  });
+  }
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.redoLayout();
+    this.layoutService.switchableLayout().
+      pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+        if (layoutConfig != null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        }
+        this.redoLayout();
+      });
+  }
+  redoLayout() {
+    if (this.layoutConfiguration != null) {
+      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
+      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
+    } else {
+      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
+      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
     }
   }
   public getFilters(filters) {
-    this.facets = filters.map(element => element.code);
+    const filterData = filters && filters.filters || {};
+    if (filterData.channel && this.facets) {
+      const channelIds = [];
+      const facetsData = _.find(this.facets, { 'name': 'channel' });
+      _.forEach(filterData.channel, (value, index) => {
+        const data = _.find(facetsData.values, { 'identifier': value });
+        if (data) {
+          channelIds.push(data.name);
+        }
+      });
+      if (channelIds && Array.isArray(channelIds) && channelIds.length > 0) {
+        filterData.channel = channelIds;
+      }
+    }
+    this.selectedFilters = filterData;
     const defaultFilters = _.reduce(filters, (collector: any, element) => {
       if (element.code === 'board') {
         collector.board = _.get(_.orderBy(element.range, ['index'], ['asc']), '[0].name') || '';
@@ -119,17 +175,49 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       });
   }
   private fetchContents() {
-    const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints']);
-    filters.channel = this.hashTagId;
-    filters.contentType = filters.contentType || this.configService.appConfig.CommonSearch.contentType;
+    const selectedMediaType = _.isArray(_.get(this.queryParams, 'mediaType')) ? _.get(this.queryParams, 'mediaType')[0] :
+      _.get(this.queryParams, 'mediaType');
+    const mimeType = _.find(_.get(this.allTabData, 'search.filters.mimeType'), (o) => {
+      return o.name === (selectedMediaType || 'all');
+    });
+    const pageType = _.get(this.queryParams, 'pageTitle');
+    const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType', 'utm_source']);
+    if (!filters.channel) {
+      filters.channel = this.hashTagId;
+    }
+    const _filters = _.get(this.allTabData, 'search.filters');
+    filters.primaryCategory = (_.get(filters, 'primaryCategory.length') && filters.primaryCategory) || _.get(this.allTabData, 'search.filters.primaryCategory');
+    filters.mimeType = _.get(mimeType, 'values');
+   _.forEach(_filters, (el, key) => {
+      if(key !== 'primaryCategory' && key !== 'mimeType'){
+        filters[key] = el;
+      }
+   });
+
+    // Replacing cbse/ncert value with cbse
+    if (_.toLower(_.get(filters, 'board[0]')) === 'cbse/ncert' || _.toLower(_.get(filters, 'board')) === 'cbse/ncert') {
+      filters.board = ['cbse'];
+    }
+
+    _.forEach(this.formData, (form, key) => {
+      const pageTitle = _.get(this.resourceService, form.title);
+      if (pageTitle === pageType) {
+        filters.contentType = _.get(form, 'search.filters.contentType');
+      }
+    });
+    const softConstraints = _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {};
+    if (this.queryParams.key) {
+      delete softConstraints['board'];
+    }
     const option: any = {
-      filters: filters,
-      limit: this.configService.appConfig.SEARCH.PAGE_LIMIT,
+      filters: _.omitBy(filters || {}, value => _.isArray(value) ? (!_.get(value, 'length') ? true : false) : false),
+      fields: _.get(this.allTabData, 'search.fields'),
+      limit: _.get(this.allTabData, 'search.limit'),
       pageNumber: this.paginationDetails.currentPage,
       query: this.queryParams.key,
       mode: 'soft',
-      softConstraints: _.get(this.activatedRoute.snapshot, 'data.softConstraints') || {},
-      facets: this.facets,
+      softConstraints: softConstraints,
+      facets: this.globalSearchFacets,
       params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
     };
     if (this.queryParams.softConstraints) {
@@ -143,21 +231,51 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       option.params.framework = this.frameworkId;
     }
     this.searchService.contentSearch(option)
+      .pipe(
+        mergeMap(data => {
+          const channelFacet = _.find(_.get(data, 'result.facets') || [], facet => _.get(facet, 'name') === 'channel')
+          if (channelFacet) {
+            const rootOrgIds = this.orgDetailsService.processOrgData(_.get(channelFacet, 'values'));
+            return this.orgDetailsService.searchOrgDetails({
+              filters: { isRootOrg: true, rootOrgId: rootOrgIds },
+              fields: ['slug', 'identifier', 'orgName']
+            }).pipe(
+              mergeMap(orgDetails => {
+                channelFacet.values = _.get(orgDetails, 'content');
+                return of(data);
+              })
+            )
+          }
+          return of(data);
+        })
+      )
       .subscribe(data => {
         this.showLoader = false;
+        this.facets = this.searchService.updateFacetsData(_.get(data, 'result.facets'));
         this.facetsList = this.searchService.processFilterData(_.get(data, 'result.facets'));
         this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
           this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.contentList = data.result.content || [];
+        this.addHoverData();
+        this.totalCount = data.result.count;
       }, err => {
         this.showLoader = false;
         this.contentList = [];
         this.facetsList = [];
+        this.totalCount = 0;
         this.paginationDetails = this.paginationService.getPager(0, this.paginationDetails.currentPage,
           this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.toasterService.error(this.resourceService.messages.fmsg.m0051);
       });
   }
+  addHoverData() {
+    _.forEach(this.contentList, contents => {
+      if (this.contentDownloadStatus[contents.identifier]) {
+          contents['downloadStatus'] = this.contentDownloadStatus[contents.identifier];
+      }
+   });
+   this.contentList = this.utilService.addHoverData(this.contentList, true);
+}
   public navigateToPage(page: number): void {
     if (page < 1 || page > this.paginationDetails.totalPages) {
       return;
@@ -179,7 +297,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       edata: {
         type: this.activatedRoute.snapshot.data.telemetry.type,
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        uri: this.router.url,
+        uri: this.userService.slug ? '/' + this.userService.slug + this.router.url : this.router.url,
         subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
         duration: this.navigationhelperService.getPageLoadTime()
       }
@@ -191,29 +309,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     };
   }
   public playContent(event) {
-    // For offline environment content will only play when event.action is open
-    if (event.action === 'download' && this.isOffline) {
-      this.startDownload(event.data.metaData.identifier);
-      this.showDownloadLoader = true;
-      this.contentName = event.data.name;
-      return false;
-    } else if (event.action === 'export' && this.isOffline) {
-      this.showExportLoader = true;
-      this.contentName = event.data.name;
-      this.exportOfflineContent(event.data.metaData.identifier);
-      return false;
-    }
-
-    if (!this.userService.loggedIn && event.data.contentType === 'Course') {
-      this.showLoginModal = true;
-      this.baseUrl = '/' + 'learn' + '/' + 'course' + '/' + event.data.metaData.identifier;
-    } else {
-      if (_.includes(this.router.url, 'browse') && this.isOffline) {
-        this.publicPlayerService.playContentForOfflineBrowse(event);
-      } else {
-        this.publicPlayerService.playContent(event);
-      }
-    }
+    this.publicPlayerService.playContent(event);
   }
   public inView(event) {
     _.forEach(event.inview, (elem, key) => {
@@ -242,51 +338,123 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
-  private setNoResultMessage() {
-    if (this.isOffline && !(this.router.url.includes('/browse'))) {
-      this.noResultMessage = {
-        'message': 'messages.stmsg.m0007',
-        'title': 'messages.stmsg.m0133'
-      };
-    } else {
-      this.noResultMessage = {
-        'title': this.resourceService.frmelmnts.lbl.noBookfoundTitle,
-        'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
-        'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
-        'showExploreContentButton': false
-      };
-    }
-  }
 
-  startDownload(contentId) {
-    this.contentManagerService.downloadContentId = contentId;
-    this.contentManagerService.startDownload({}).subscribe(data => {
-      this.contentManagerService.downloadContentId = '';
-    }, error => {
-      this.contentManagerService.downloadContentId = '';
-      this.showDownloadLoader = false;
-      _.each(this.contentList, (contents) => {
-        contents['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
-      });
-      this.toasterService.error(this.resourceService.messages.fmsg.m0090);
-    });
-  }
-
-  exportOfflineContent(contentId) {
-    this.contentManagerService.exportContent(contentId).subscribe(data => {
-      this.showExportLoader = false;
-      this.toasterService.success(this.resourceService.messages.smsg.m0059);
-    }, error => {
-      this.showExportLoader = false;
-      if (error.error.responseCode !== 'NO_DEST_FOLDER') {
-        this.toasterService.error(this.resourceService.messages.fmsg.m0091);
+  private listenLanguageChange() {
+    this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe((languageData) => {
+      this.setNoResultMessage();
+      if (_.get(this.contentList, 'length') ) {
+        if (this.isDesktopApp) {
+          this.addHoverData();
+        }
+        this.facets = this.searchService.updateFacetsData(this.facets);
       }
     });
+  }
+
+  private setNoResultMessage() {
+    let title = this.resourceService.frmelmnts.lbl.noBookfoundTitle;
+    if (this.queryParams.key) {
+      const title_part1 = _.replace(this.resourceService.frmelmnts.lbl.desktop.yourSearch, '{key}', this.queryParams.key);
+      const title_part2 = this.resourceService.frmelmnts.lbl.desktop.notMatchContent;
+      title = title_part1 + ' ' + title_part2;
+    }
+    this.noResultMessage = {
+      'title': title,
+      'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
+      'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
+      'showExploreContentButton': false
+    };
   }
 
   updateCardData(downloadListdata) {
     _.each(this.contentList, (contents) => {
       this.publicPlayerService.updateDownloadStatus(downloadListdata, contents);
     });
+  }
+
+  hoverActionClicked(event) {
+    event['data'] = event.content;
+    this.contentName = event.content.name;
+    this.contentData = event.data;
+    let telemetryButtonId: any;
+    switch (event.hover.type.toUpperCase()) {
+        case 'OPEN':
+            this.playContent(event);
+            this.logTelemetry(this.contentData, 'play-content');
+            break;
+        case 'DOWNLOAD':
+            this.downloadIdentifier = _.get(event, 'content.identifier');
+            this.showModal = this.offlineCardService.isYoutubeContent(this.contentData);
+            if (!this.showModal) {
+                this.showDownloadLoader = true;
+                this.downloadContent(this.downloadIdentifier);
+            }
+            telemetryButtonId = this.contentData.mimeType ===
+                'application/vnd.ekstep.content-collection' ? 'download-collection' : 'download-content';
+            this.logTelemetry(this.contentData, telemetryButtonId);
+            break;
+    }
+}
+
+callDownload() {
+    this.showDownloadLoader = true;
+    this.downloadContent(this.downloadIdentifier);
+}
+
+downloadContent(contentId) {
+    this.contentManagerService.downloadContentId = contentId;
+    this.contentManagerService.downloadContentData = this.contentData;
+    this.contentManagerService.failedContentName = this.contentName;
+    this.contentManagerService.startDownload({})
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(data => {
+            this.downloadIdentifier = '';
+            this.contentManagerService.downloadContentId = '';
+            this.contentManagerService.downloadContentData = {};
+            this.contentManagerService.failedContentName = '';
+            this.showDownloadLoader = false;
+        }, error => {
+            this.downloadIdentifier = '';
+            this.contentManagerService.downloadContentId = '';
+            this.contentManagerService.downloadContentData = {};
+            this.contentManagerService.failedContentName = '';
+            this.showDownloadLoader = false;
+            _.each(this.contentList, (content) => {
+              content['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
+            });
+            if (!(error.error.params.err === 'LOW_DISK_SPACE')) {
+                this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+            }
+        });
+  }
+
+  logTelemetry(content, actionId) {
+      const telemetryInteractObject = {
+          id: content.identifier,
+          type: content.contentType,
+          ver: content.pkgVersion ? content.pkgVersion.toString() : '1.0'
+      };
+
+      const appTelemetryInteractData: any = {
+          context: {
+              env: _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
+              _.get(this.activatedRoute, 'snapshot.data.telemetry.env') ||
+              _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env')
+          },
+          edata: {
+              id: actionId,
+              type: 'click',
+              pageid: this.router.url.split('/')[1] || 'explore-page'
+          }
+      };
+
+      if (telemetryInteractObject) {
+          if (telemetryInteractObject.ver) {
+              telemetryInteractObject.ver = _.isNumber(telemetryInteractObject.ver) ?
+              _.toString(telemetryInteractObject.ver) : telemetryInteractObject.ver;
+          }
+          appTelemetryInteractData.object = telemetryInteractObject;
+      }
+      this.telemetryService.interact(appTelemetryInteractData);
   }
 }

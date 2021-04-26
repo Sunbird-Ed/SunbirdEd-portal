@@ -2,14 +2,17 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   ResourceService, ILoaderMessage, PlayerConfig, ContentData,
-  WindowScrollService, ToasterService, NavigationHelperService
+  WindowScrollService, ToasterService, NavigationHelperService, LayoutService
 } from '@sunbird/shared';
 import { PlayerService, PermissionService, UserService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import { takeUntil } from 'rxjs/operators';
+import { Subject} from 'rxjs';
 @Component({
   selector: 'app-upforreview-contentplayer',
-  templateUrl: './upforreview-contentplayer.component.html'
+  templateUrl: './upforreview-contentplayer.component.html',
+  styleUrls: ['./upforreview-contentplayer.component.scss']
 })
 export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
   public requestForChangesInteractEdata: IInteractEventEdata;
@@ -19,6 +22,7 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
   public telemetryInteractObject: IInteractEventObject;
   public closeInteractEdata: IInteractEventEdata;
 
+  public unsubscribe$ = new Subject<void>();
   /**
    * To navigate to other pages
    */
@@ -96,9 +100,10 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
 
   public playerLoaded = false;
 
-  @ViewChild('publishWarningModal') publishWarningModal;
+  @ViewChild('publishWarningModal', {static: false}) publishWarningModal;
 
   showPublishWarningModal = false;
+  layoutConfiguration: any;
   /**
   * Constructor to create injected service(s) object
   Default method of Draft Component class
@@ -107,7 +112,8 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
   */
   constructor(resourceService: ResourceService, public activatedRoute: ActivatedRoute, userService: UserService,
     playerService: PlayerService, windowScrollService: WindowScrollService, permissionService: PermissionService,
-    toasterService: ToasterService, public navigationHelperService: NavigationHelperService, router: Router) {
+    toasterService: ToasterService, public layoutService: LayoutService,
+    public navigationHelperService: NavigationHelperService, router: Router) {
     this.resourceService = resourceService;
     this.playerService = playerService;
     this.userService = userService;
@@ -130,6 +136,7 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
     }
   }
   ngOnInit() {
+    this.initLayout();
     this.userService.userData$.subscribe(userdata => {
       if (userdata && !userdata.err) {
         this.userId = userdata.userProfile.userId;
@@ -142,9 +149,20 @@ export class UpforreviewContentplayerComponent implements OnInit, OnDestroy {
     });
   }
   ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
     if (this.publishWarningModal) {
       this.publishWarningModal.deny();
     }
+  }
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().
+        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+        if (layoutConfig != null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        }
+      });
   }
   public handleSceneChangeEvent(data) {
     if (this.stageId !== data.stageId) {

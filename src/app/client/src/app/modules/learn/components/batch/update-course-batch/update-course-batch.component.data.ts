@@ -229,6 +229,9 @@ export const getUserList = {
 };
 
 export const updateBatchDetails = {
+    'result' : {
+      'batchId': '123456'
+    },
   'identifier': '01248661735846707228',
   'enrollmentEndDate': '2018-07-11T18:29:59.999Z',
   'createdFor': [
@@ -1424,7 +1427,6 @@ export const getUserDetails = {
               'roles': [
                 'CONTENT_CREATOR',
                 'COURSE_MENTOR',
-                'ANNOUNCEMENT_SENDER'
               ],
               'approvedBy': '781c21fc-5054-4ee0-9a02-fbb1006a4fdd',
               'updatedDate': null,

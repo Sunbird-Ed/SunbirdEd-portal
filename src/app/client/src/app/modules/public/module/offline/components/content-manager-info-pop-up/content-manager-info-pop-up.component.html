@@ -1,0 +1,45 @@
+<sui-modal [mustScroll]="false" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+  class="sb-modal sb-warning sb-modal-center" appBodyScroll (dismissed)="closeModal()" #modal>
+  <div class="sb-modal-header">
+    {{resourceService?.frmelmnts?.lbl?.desktop?.storageSpaceRunningOutHeader}}
+  </div>
+
+  <div class="sb-modal-content flex-dc">
+    <div *ngIf="!showContentChangeWarning">
+      <p class="text-center fmedium import-content">
+        {{resourceService?.frmelmnts?.lbl?.desktop?.failedListLabel}}
+      </p>
+      <div class="custom-height">
+        <div class="p-8 warning-ecar-list" *ngFor="let items of failedList">
+          {{items['name']}}
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="showContentChangeWarning">
+      <p class="text-center fmedium import-content">
+        {{resourceService?.messages?.stmsg?.changeContentLocationWarning }}
+      </p>
+      <div class="ui segments">
+        <div class="ui segment">
+          <p>{{resourceService?.frmelmnts?.lbl?.chooseContentLocationDrive}}</p>
+          <sui-select class="selection min-width-18" [(ngModel)]="selectedDrive"
+            [placeholder]="resourceService?.frmelmnts?.lbl?.selectDrive" [options]="drives" #drivesOption
+            labelField="label">
+            <sui-select-option *ngFor="let drive of drivesOption?.filteredOptions" [value]="drive"
+              [ngClass]="{disabled: drive?.isCurrentContentLocation}" appTelemetryInteract
+              [telemetryInteractEdata]="getDriveSelectInteractEdata(drive)">
+            </sui-select-option>
+          </sui-select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-outline-warning" (click)="closeModal(selectedDrive)"
+    appTelemetryInteract [telemetryInteractEdata]="popupInteractEdata">
+      {{resourceService?.frmelmnts?.btn?.ok}}
+    </button>
+  </div>
+</sui-modal>

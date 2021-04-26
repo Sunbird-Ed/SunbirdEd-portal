@@ -1,0 +1,63 @@
+@import './mixins/mixins';
+@import './pages/page-center-view';
+
+.sb-page-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: calculateRem(64px);
+
+  h2 {
+    color: var(--primary-color);
+    font-size: calculateRem(18px);
+    font-weight: bold;
+    line-height: calculateRem(24px);
+  }
+}
+
+.section-header {
+  display: flex;
+  flex-direction: row;
+  padding: 0;
+  align-items: center;
+
+  &__title {
+    font-family: inherit;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    flex: 1;
+    height: 1.5rem;
+    color: var(--primary-color);
+    font-size: 1.125rem;
+    font-weight: 700;
+    text-transform: capitalize;
+    line-height: 1.625rem;
+    display: flex;
+    align-items: center;
+
+    .badge {
+      display: inline-block;
+      background: var(--sbt-badge-bg);
+      color: var(--sbt-badge-text);
+      text-align: center;
+      padding: 0 .75rem;
+      border-radius: .25rem;
+      height: 1.5rem;
+      line-height: 1.5rem;
+      font-size: 1rem;
+      font-weight: 400;
+      margin-left: calculateRem(8px);
+
+      html[dir="rtl"] & {
+        margin-right: calculateRem(8px);
+        margin-left: inherit;
+      }
+    }
+  }
+
+}
+.sb-mygroups{
+  .sb-bg-color-white{
+    background: var(--sb-mygroups-bg) !important;
+  }
+}

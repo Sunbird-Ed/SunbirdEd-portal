@@ -1,4 +1,17 @@
 export const OtpComponentMockResponse = {
+  data : {
+    'firstName': 'test',
+    'password': 'Test@123',
+    'email': 'otptest10@yopmail.com',
+    'emailVerified': true,
+    'validator': `{
+      \"iv\":\"c541833780a389a6f01b65c192e207c3\",
+      \"encryptedData\":
+      \"c3eaeb67799ebc684ea2a696ab9916fe8f3de4f0
+      833c4ccd5173c32a9a60d6bc2f47fe7c5741c9b2280
+      5bb5562d1fc9f0af2c6b254788c4672758aebbce09db9\"
+    }`
+},
   signupData: {
     'controls': {
       'contactType': {
@@ -195,5 +208,18 @@ export const OtpComponentMockResponse = {
             'responseCode': 'CLIENT_ERROR',
             'result': {}
         }
+    },
+  generateOtpMinor: {
+    'request': {
+      'key': '9999999999',
+      'type': 'phone',
+      'templateId': 'wardLoginOTP'
     }
+  },
+  generateOtp: {
+    'request': {
+      'key': '9999999999',
+      'type': 'phone'
+    }
+  }
 };

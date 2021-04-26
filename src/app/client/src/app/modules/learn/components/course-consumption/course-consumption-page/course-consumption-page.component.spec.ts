@@ -5,12 +5,14 @@ import { CourseHierarchyGetMockResponse } from './../course-player/course-player
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { CourseConsumptionPageComponent } from './course-consumption-page.component';
 import {SharedModule, ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
-import { CoreModule, CoursesService, LearnerService } from '@sunbird/core';
+import { CoreModule, CoursesService, LearnerService, GeneraliseLabelService } from '@sunbird/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import {CourseConsumptionService, CourseProgressService, CourseBatchService} from '../../../services';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { configureTestSuite } from '@sunbird/test-util';
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 
 const enrolledCourse = {
   courseSuccessEnroll: {
@@ -42,7 +44,8 @@ const resourceServiceMockData = {
     lbl: {
       description: 'description'
     }
-  }
+  },
+  languageSelected$: of({})
 };
 class ActivatedRouteStub {
   snapshot = {
@@ -64,16 +67,16 @@ describe('CourseConsumptionPageComponent', () => {
   let component: CourseConsumptionPageComponent;
   let fixture: ComponentFixture<CourseConsumptionPageComponent>;
   let activatedRouteStub, courseService, toasterService, courseConsumptionService, courseBatchService, learnerService,
-  navigationHelperService;
-
+  navigationHelperService, generaliseLabelService;
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterTestingModule, TelemetryModule.forRoot()],
       declarations: [ CourseConsumptionPageComponent ],
       providers: [{ provide: ActivatedRoute, useClass: ActivatedRouteStub },
         { provide: ResourceService, useValue: resourceServiceMockData },
         CourseConsumptionService,  { provide: Router, useClass: MockRouter },
-        CourseProgressService, CourseBatchService],
+        CourseProgressService, CourseBatchService, TelemetryService],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));
@@ -88,6 +91,8 @@ describe('CourseConsumptionPageComponent', () => {
     courseBatchService = TestBed.get(CourseBatchService);
     learnerService = TestBed.get(LearnerService);
     navigationHelperService = TestBed.get(NavigationHelperService);
+    generaliseLabelService = TestBed.get(GeneraliseLabelService);
+    spyOn(generaliseLabelService, 'initialize').and.returnValue('');
     spyOn(navigationHelperService, 'navigateToResource').and.returnValue('');
     spyOn(toasterService, 'error').and.returnValue('');
     activatedRouteStub.snapshot.firstChild.params = { courseId: 'do_212347136096788480178', batchId: 'do_112498388508524544160'};
@@ -169,5 +174,25 @@ describe('CourseConsumptionPageComponent', () => {
     spyOn(component.unsubscribe$, 'complete');
     component.ngOnDestroy();
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
+  });
+  it('should navigate to enroll course page if batch and autoEnroll available in queryParams', () => {
+    activatedRouteStub.snapshot.firstChild.params = {courseId: 'do_212347136096788480178', batchId: ''};
+    activatedRouteStub.snapshot.queryParams = {batch: 'do_112498388508524544160', autoEnroll: 'true'};
+    spyOn(learnerService, 'get').and.returnValue(of({}));
+    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
+    spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(of(enrolledBatch));
+    courseService.initialize();
+    component.ngOnInit();
+    const routedURL = ['learn/course/do_212347136096788480178/enroll/batch/do_112498388508524544160'];
+    const reqParams = {
+      queryParams: { autoEnroll: 'true' }
+    };
+    expect(component.router.navigate).toHaveBeenCalledWith(routedURL, reqParams);
+  });
+  it('should refresh component with updated batch details when user selects another batch', () => {
+    const spy = spyOn<any>(component['fetchEnrolledCourses$'], 'next');
+    component.refreshComponent(true);
+    expect(spy).toHaveBeenCalled();
+    expect(component.showBatchInfo).toBeFalsy();
   });
 });

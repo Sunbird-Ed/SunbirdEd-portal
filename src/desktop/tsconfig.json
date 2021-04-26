@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "moduleResolution": "node",
+    "declaration": true,
+    "module": "commonjs",
+    "outDir": "./app_dist",
+    "target": "es6",
+    "baseUrl": "./",
+    "allowJs": true
+  },
+  "include": ["modules", "main.ts"],
+  "exclude": ["node_modules", "*/**/*.spec.ts", "*.spec.ts", 
+    "temp", "client", "public", "openrap-sunbird-plugin",
+     "resourcebundles", "test", "OpenRAP", "modules/test_data/*.ts", "scripts"]
+}

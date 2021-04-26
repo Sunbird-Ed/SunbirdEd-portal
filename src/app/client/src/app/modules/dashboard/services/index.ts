@@ -6,3 +6,5 @@ export * from './dashboard-utils/dashboard-utils.service';
 export * from './chartjs';
 export * from './course-progress/course-progress.service';
 export * from './usage/usage.service';
+export * from './report/report.service';
+export * from './dataset/dataset.service';

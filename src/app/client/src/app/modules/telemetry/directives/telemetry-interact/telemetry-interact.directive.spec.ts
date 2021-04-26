@@ -7,7 +7,7 @@ import { ElementRef, Component, DebugElement, ViewChild } from '@angular/core';
 import { eventData } from './telemetry-interact.directive.spec.data';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { By } from '@angular/platform-browser';
+import { configureTestSuite } from '@sunbird/test-util';
 
 const env = 'profile';
 class ActivatedRouteStub {
@@ -34,7 +34,7 @@ const telemetryInteractObject = {
   class="ui primary button">save</button>`
 })
 class TestDirectiveComponent {
-  @ViewChild(TelemetryInteractDirective) appTelemetryInteract: TelemetryInteractDirective;
+  @ViewChild(TelemetryInteractDirective, {static: false}) appTelemetryInteract: TelemetryInteractDirective;
   telemetryInteractObject = telemetryInteractObject;
   telemetryInteractEdata = telemetryInteractEdata;
   constructor() {
@@ -44,6 +44,7 @@ describe('TelemetryInteractDirective', () => {
     let component: TestDirectiveComponent;
     let fixture: ComponentFixture<TestDirectiveComponent>;
     let inputEl: HTMLElement;
+    configureTestSuite();
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [RouterTestingModule],

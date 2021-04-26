@@ -1,12 +1,13 @@
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-
+import { configureTestSuite } from '@sunbird/test-util';
 import { ManageService } from './manage.service';
 import { of } from 'rxjs';
 
 describe('ManageService', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [ManageService, HttpClient],
@@ -21,13 +22,13 @@ describe('ManageService', () => {
 
   describe('getData method ', () => {
     it('should call the api', () => {
-      const http = TestBed.get(HttpClient);
+      const http = TestBed.get(HttpClient, HttpHeaders);
       const manageService = TestBed.get(ManageService);
       spyOn(http, 'get').and.returnValue(of({ test: 'ok' }));
       manageService.getData('sunbird', 'a.txt');
       expect(http.get).toHaveBeenCalled();
       expect(http.get).toHaveBeenCalledTimes(1);
-      expect(http.get).toHaveBeenCalledWith('/admin-reports/sunbird/a.txt');
+      expect(http.get).toHaveBeenCalledWith('/admin-reports/sunbird/a.txt', {headers: new HttpHeaders()});
     });
 
     it('should return data  if response do contain result key', () => {

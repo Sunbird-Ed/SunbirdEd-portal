@@ -1,0 +1,355 @@
+<app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration">
+
+</app-landing-section>
+
+<div [ngClass]="layoutConfiguration ? 'sbt-container relative9':''" class="main-container">
+
+  <div class="ui report-main-block" [appTelemetryImpression]="getTelemetryImpressionObj({type: 'page-request'})" #reportElement>
+    <div class="twelve wide column px-0">
+      <div class="stackable grid m-0 sb-mid-container-min-height dashboard-body-scroll">
+        
+        <div class="sb-sideview-tab-container pb-48 p-0 w-100" *ngIf="showComponent">
+            <ng-container *ngIf="(report$ | async) as currentReport else loading">
+           
+            <div [appTelemetryImpression]="getTelemetryImpressionObj({type: 'page-loaded'})">
+              <div id="report-header" class="report__header">
+
+                <div class="cc-player__content-header relative9 reports-content-header">
+                  <div class="ui container py-16">
+                    <div class="content-header__content p-10">
+                      <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
+                       
+                        <div class="content-header__title font-weight-bold text-left">
+
+                          <div class="d-flex">
+                          <div class="d-flex flex-dc flex-basis-4">
+                          <span *ngIf="!hideElements" class="relative position relative9 reports-back-btn my-0 pl-0 pr-10">
+                            <span class="ui py-8 px-0">
+                              <button type="button" class="sb-btn sb-btn-link sb-btn-link-primary sb-left-icon-btn back-btn-new mb-5" aria-label="back-button"
+                                (click)="gotoListPage()">
+                                <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+                                    <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+                                  </svg></i>
+                                <!-- {{resourceService?.frmelmnts?.btn?.back}} -->
+                              </button>
+                            </span>
+                          </span>
+                          </div>
+                          <div *ngIf="!noResult">
+                            <div class="report-title"> {{ ( report?.title || currentReport?.reportMetaData?.title || currentReport?.reportMetaData?.label ) | titlecase }}
+                            <br />
+                            <span *ngIf="hash && reportService.isUserReportAdmin()">
+                              ( {{reportService.getParameterFromHash(hash)}} )
+                            </span>
+                          </div>
+                          <div *ngIf="!noResult">
+                            <span
+                            [ngClass]="{'sb-label-primary-100': report.status === 'retired', 'label-success': report.status === 'live', 'label-warning': report.status === 'draft'}"
+                            *ngIf="isUserReportAdmin && !hideElements"
+                             class="px-0">
+                            <span *ngIf="report.status === 'live'" class="sb-live"></span>{{ report?.status | titlecase }}</span>
+
+                            <span class="ml-auto sb-last-update-status fnormal sb-color-gray-400 px-10 last-update"
+                    *ngIf="currentReport?.lastUpdatedOn && type === 0">
+                    <span>{{resourceService?.frmelmnts?.lbl?.lastUpdatedOn}}&nbsp;: </span> &nbsp;
+                    {{currentReport?.lastUpdatedOn}}
+                          </span>
+                          </div>
+                            
+                          </div>
+                        </div>
+                          
+                        </div>
+                       
+                      </div>
+                      <div *ngIf="isUserReportAdmin && !hideElements && !noResult"
+                        class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
+
+                        <div
+                        *ngIf="reportService.isUserReportAdmin() && report.parameters && report.parameters.length && !hideElements"
+                        class="d-flex">
+                        <div class="sb-field filter-drop mb-0 mr-8" *ngIf="getParametersValueForDropDown$ | async as options">
+                          <sui-select *ngIf="options.length" class="selection mr-8" [options]="options"
+                            labelField="label" isSearchable="true" [placeholder]="'Select Parameter'"
+                            (selectedOptionChange)="handleParameterChange($event)" #paramSelect>
+                            <sui-select-option *ngFor="let option of paramSelect.filteredOptions" [value]="option">
+                            </sui-select-option>
+                            </sui-select>
+                        </div>
+                      </div>
+
+                        <button *ngIf="type === 0" appTelemetryInteract
+                          [telemetryInteractObject]="setTelemetryInteractObject()"
+                          [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'report-summary'})"
+                          (click)="openReportSummaryModal()" type="button"
+                          class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
+                          <i class="blue plus alternate icon"></i>
+                          {{ this.currentReportSummary !='' ? 'Update' : 'Add' }} {{ resourceService.frmelmnts.lbl.reportSummary }}
+                        </button>
+                        <button appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject()"
+                          [telemetryInteractCdata]="[getCDataObj({id: '' + currentReport?.charts?.length || '0', type: 'CountCharts'}),
+                          getCDataObj({id: reportService.getParameterValues('$slug').value, type: 'State'})]"
+                          [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'select-retire'})"
+                          (click)="openConfirmationModal('retire')"
+                          *ngIf="report?.status !== 'retired' && !(type === 1 && !reportService?.isUserSuperAdmin())"
+                          type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
+                          <i class="white minus alternate icon"></i>
+                          {{report?.status === 'live' ? 'Retire' : 'Discard'}}
+                        </button>
+                        <button appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject()"
+                          [telemetryInteractCdata]="[getCDataObj({id: '' + currentReport?.charts?.length || '0', type: 'CountCharts'}),
+                          getCDataObj({id: reportService.getParameterValues('$slug').value, type: 'State'})]"
+                          [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'select-publish'})"
+                          (click)="openConfirmationModal('publish')"
+                          *ngIf="report?.status === 'draft' && !(type === 1 && !reportService?.isUserSuperAdmin())"
+                          type="button" class="sb-btn sb-btn-normal sb-btn-primary mr-8">
+                          <i class="white check alternate icon"></i> Publish
+                        </button>
+                      </div>
+                    </div>
+                    <p class="m-0 report-description py-15 pl-10" *ngIf="(report?.description || currentReport?.reportMetaData?.description ) && !noResult"
+                  [innerHTML]="reportService.transformHTML(report?.description || currentReport.reportMetaData.description)">
+                  </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ui container" *ngIf="!noResult">
+                <div class="twelve wide column">
+                  <div *ngIf="type === 1">
+                    <app-dataset [markdownUpdated$]="markdownUpdated$" [dataset]="report?.reportconfig?.dataset">
+                    </app-dataset>
+                  </div>
+                  <div id="report-body" class="my-16" *ngIf="type === 0">
+                    <sui-tabset>
+
+                      <div class="ui pointing secondary menu d-flex flex-ai-center sbt-report-tabs-panel px-15" *ngIf="!hideElements">
+                        <a appTelemetryInteract
+                          [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
+                          [telemetryInteractEdata]="setTelemetryInteractEdata('report-graph')" class="item px-0 mx-15 py-20"
+                          suiTabHeader="graph" (activate)="showExportsOption=true"
+                          (click)="setDownloadUrl(currentReport.reportMetaData.downloadUrl)">{{resourceService?.frmelmnts?.lbl?.graphs}}</a>
+                        <a appTelemetryInteract
+                          [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
+                          [telemetryInteractEdata]="setTelemetryInteractEdata('report_table_'+table.name)"
+                          (activate)="showExportsOption=false" *ngFor="let table of currentReport.tables"
+                          (click)="setDownloadUrl(table.downloadUrl)" class="item px-0 mx-15 py-20"
+                          [suiTabHeader]="table.id">{{table?.name}}</a>
+                        <a *ngIf="currentReport?.files?.length" appTelemetryInteract
+                          [telemetryInteractObject]="setTelemetryInteractObject()"
+                          [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'download'})" class="item px-0 mx-15 py-20"
+                          suiTabHeader="files">{{resourceService?.frmelmnts?.lbl?.dashboard?.download}}</a>
+                      </div>
+                      <div class="sbt-report-btns-panel-new pt-15 pb-10" *ngIf="!hideElements">
+                       
+                       
+
+                        <div  class="d-flex my-0">
+                            <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0"  > 
+                       
+                          <!-- <div class="" *ngIf="currentReport?.reportMetaData?.filters && !hideElements"> -->
+                            <h4 class="select-filter-label" *ngIf="showExportsOption && currentReport?.reportMetaData?.filters && !hideElements" > {{ resourceService?.frmelmnts?.lbl?.selectFilters }} <small> {{ resourceService?.frmelmnts?.lbl?.selectFilterDescription }} </small> </h4> 
+                           <!-- </div> -->
+                           </div>
+                      
+                           <div class="d-flex flex-ai-center flex-jc-flex-end pr-10" *ngIf="!hideElements && currentReport?.reportMetaData?.filters">
+                            <button   class="sb-btn sb-btn-normal sb-btn-outline-primary  reset-filter" (click)="resetFilter()">
+                            {{resourceService?.frmelmnts?.btn?.reset}} {{resourceService?.frmelmnts?.lbl?.filters  }}
+                          </button>
+                          </div>
+                        <div class="d-flex flex-ai-center flex-jc-flex-end">
+                        <button appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject()"
+                        [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'download'})" type="button"
+                        *ngIf="currentReport?.reportMetaData?.downloadUrl && !currentReport?.files?.length"
+                        class="sb-left-icon-btn sb-btn sb-btn-tertiary sb-btn-normal mr-8" (click)="downloadCSV()"><i
+                          class="download icon"></i>
+                        {{resourceService?.frmelmnts?.lbl?.downloadCsv}}</button>
+                        <div class="sb-field mb-0 mr-8 d-flex flex-jc-flex-end"    >
+                          <label>
+                          <sui-select *ngIf="showExportsOption" class="selection mr-12 active-btn"
+                            [ngClass]="{'ml-auto': !currentReport?.reportMetaData?.downloadUrl}"
+                            [placeholder]="'Export As'" (selectedOptionChange)="downloadReport($event)">
+                            <sui-select-option *ngFor="let option of exportOptions" [value]="option"
+                              appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject()"
+                              [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'export-chart', subtype: option})">
+                            </sui-select-option>
+                          </sui-select></label>
+                        </div>
+                      </div>
+                      </div>
+
+                       
+                        
+                      
+                      </div>
+
+                      <div class="ui bottom  p-0 b-0" suiTabContent="files">
+                        <div class="files-block p-20">
+                          <table *ngIf="currentReport?.files?.length" id="downloadTable"
+                            class="sb-table sb-table-striped sb-table-sortable sb-table-fixed" cellspacing="0">
+                            <thead class="sb-table-header sb-table-thead-gray">
+                              <tr>
+                                <th>
+                                  <div class="cursor-pointer">
+                                    {{resourceService?.frmelmnts?.lbl?.dashboard?.fileName}}
+                                  </div>
+                                </th>
+                                <th>
+                                  <div class="cursor-pointer">
+                                    {{resourceService?.frmelmnts?.lbl?.dashboard?.description}}
+                                  </div>
+                                </th>
+                                <th>
+                                  <div class="cursor-pointer">
+                                    {{resourceService?.frmelmnts?.lbl?.dashboard?.fileSize}}
+                                  </div>
+                                </th>
+                                <th>
+                                  <div class="cursor-pointer">
+                                    {{resourceService?.frmelmnts?.lbl?.createdon}}
+                                  </div>
+                                </th>
+                                <th class="table-headerDashboard">
+                                  <div class="cursor-pointer">
+                                    {{resourceService?.frmelmnts?.lbl?.dashboard?.action}}
+                                  </div>
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody class="sb-table-body">
+                              <tr *ngFor="let file of currentReport.files; let i = index; let l = last;">
+                                <td *ngIf="file.name">
+                                  {{file.name}}
+                                </td>
+                                <td *ngIf="!file.name">
+                                  --
+                                </td>
+                                <td *ngIf="file.description">
+                                  {{file.description}}
+                                </td>
+                                <td *ngIf="!file.description">
+                                  --
+                                </td>
+                                <td *ngIf="file.fileSize">
+                                  {{file.fileSize}}
+                                </td>
+                                <td *ngIf="!file.fileSize">
+                                  --
+                                </td>
+                                <td *ngIf="file.createdOn">
+                                  {{file.createdOn}}
+                                </td>
+                                <td *ngIf="!file.createdOn">
+                                  --
+                                </td>
+                                <td>
+                                  <button type="button" class="sb-btn sb-btn-tertiary sb-btn-normal ml-auto mr-8"
+                                    appTelemetryInteract
+                                    [telemetryInteractObject]="setTelemetryInteractObject(currentReport.id)"
+                                    [telemetryInteractEdata]="setTelemetryInteractEdata('report-download')"
+                                    (click)="downloadCSV(file.downloadUrl)"><i class="icon"></i>
+                                    {{resourceService?.frmelmnts?.lbl?.dashboard?.downloadfile}}</button>
+                                </td>
+                            </tbody>
+                          </table>
+                          <div class="ui warning message" *ngIf="!currentReport.files.length">
+                            File Not Available
+                          </div>
+                        </div>
+                      </div>
+
+                     <div class="report-block ui bottom attached segment p-0 b-0 no-bg my-24"
+                      suiTabContent="graph" >
+
+                      <div class="global-filter px-20 pb-10 d-flex" *ngIf=" currentReport?.reportMetaData?.filters">
+                        <div class="d-flex flex-dc flex-basis-1">
+                          <app-filter [filterType]="filterType" [resetFilters]="resetFilters" [hideElements]="hideElements" [selectedFilter]="selectedFilters" [filters]="currentReport.reportMetaData.filters" (filterChanged)="filterChanged($event)" [chartData]="getAllChartData(currentReport)"
+                              [telemetryInteractObject]="telemetryInteractObject">
+                          </app-filter>
+                        </div>
+                        
+                        
+                      </div>
+                     
+                      <div  class="ui bottom p-0 b-0 no-bg my-24 graph-section" > 
+                        <div class="sb-graph-section p-24 my-24"
+                          *ngFor="let chart of currentReport.charts; let i = index; let l = last;">
+
+                          <app-map *ngIf="chart?.chartConfig?.chartType === 'map'" [mapData]="chart?.mapData"
+                            [options]="chart?.chartConfig?.options">
+                          </app-map>
+                         
+                          <app-data-chart [globalFilter]="globalFilterChange" [globalSelectedFilters]="globalSelectedFilters" *ngIf="chart?.chartConfig?.chartType !== 'map' && showChart"
+                            [telemetryInteractObject]="setTelemetryInteractObject()" [chartInfo]="getChartData(chart)"
+                            [hideElements]="hideElements" [isUserReportAdmin]="isUserReportAdmin"
+                            (openAddSummaryModal)="openAddSummaryModal($event)" [hash]="hash">
+                          </app-data-chart>
+                        </div>
+
+                        <div class="ui warning message" *ngIf="!currentReport.charts.length">
+                          {{resourceService?.frmelmnts?.lbl?.graphNotAvailable}}
+                        </div>
+
+                      </div>
+                     </div>
+                    
+                      
+                      <ng-container *ngFor="let table of currentReport.tables">
+                        <div class="ui bottom attached small segment  p-0 b-0 no-bg py-24 px-20 table-view" [suiTabContent]="table.id">
+                          <div *ngIf="table.data">
+                            <app-data-table [tableId]="table.id" [headerData]="table.header" [rowsData]="table.data">
+                            </app-data-table>
+                          </div>
+                          <div class="ui warning message" *ngIf="!table.data">
+                            {{resourceService?.frmelmnts?.lbl?.tableNotAvailable}}
+                          </div>
+                        </div>
+                      </ng-container>
+                    </sui-tabset>
+                  </div>
+                  
+                  <div class="report__summary" id="report-summary" class="my-16"
+                    *ngIf="currentReportSummary && currentReportSummary.length && type === 0">
+                    <app-report-summary [inputData]="currentReportSummary"></app-report-summary>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="noResult">
+              <app-no-result [data]="noResultMessage"></app-no-result>
+            </div>
+          </ng-container>
+          <ng-template #loading>
+            <div class="ui container">
+              <div class="nine wide column workspacesegment">
+                <app-loader></app-loader>
+              </div>
+            </div>
+
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<sui-modal [mustScroll]="false" [isClosable]="isClosable" [transitionDuration]="0" [size]="'normal'"
+  class="sb-modal sb-hawkeye-modal" #modal (dismissed)="modal.deny();close.emit()" *ngIf="reportExportInProgress">
+  <div class="sb-modal-content o-y-visible">
+    <div class="ui">
+      <div class="twelve wide column px-0 mb-30">
+        <app-loader [data]="{loaderMessage: 'Report generation is in Progress. Please wait...'}"></app-loader>
+      </div>
+    </div>
+  </div>
+</sui-modal>
+
+<app-confirm-popup *ngIf="showConfirmationModal" (confirmation)="handleConfirmationEvent($event)"
+  [input]="confirmationPopupInput">
+</app-confirm-popup>
+
+<app-add-summary-modal (closeModalEvent)="closeSummaryModal()" [input]="inputForSummaryModal"
+  (submitButtonEvent)="onAddSummary($event)" *ngIf="showSummaryModal">
+</app-add-summary-modal>

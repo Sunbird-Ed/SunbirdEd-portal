@@ -6,8 +6,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ConfigService } from '@sunbird/shared';
 import { OrgManagementService } from './org-management.service';
 import { LearnerService } from '@sunbird/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('OrgManagementService', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],

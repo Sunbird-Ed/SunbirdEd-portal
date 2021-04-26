@@ -1,15 +1,19 @@
+/* accordion styles */
+$sb-content-manager-border: 0.0625rem solid $gray-100;
+$sb-download-text-max-width: 18em;
+
 .ui.styled.accordion .accordion .content,
 .ui.styled.accordion .content {
   padding: 0;
 }
 .ui.styled.accordion .active.title,
 .ui.styled.accordion .accordion .active.title {
-  padding: ($base-block-space * 2);
+  padding: calculateRem(16px);
   color: $primary-400;
 }
 .ui.styled.accordion .accordion .title,
 .ui.styled.accordion .title {
-  padding: ($base-block-space * 2);
+  padding: calculateRem(16px);
   color: $gray-800;
 }
 .ui.accordion .active.title .chevron.down.icon {
@@ -19,32 +23,21 @@
   transform: rotate(180deg);
 }
 .ui.styled.accordion.sb-single-pannel-accordion {
-  // position: sticky;
-  // position: -webkit-sticky;
   bottom: 0;
   width: 100%;
   margin-left: auto;
   max-width: $base-block-space * 60;
-  margin-right: 32px;
+  margin-right: calculateRem(32px);
   z-index:999;
   position: fixed;
-  right: 32px;
+  right: calculateRem(32px);
 }
-// .ui.styled.accordion.sb-single-pannel-accordion.sb-single-pannel-accordion-fixed {
-//   position: fixed;
-//   right: 32px;
-//   z-index: 999;
-// }
 .ui.styled.accordion.sb-single-pannel-accordion .title,
 .ui.styled.accordion.sb-single-pannel-accordion .accordion .active.title {
   padding: 0;
 }
-// .ui.styled.accordion.sb-single-pannel-accordion .content {
-//     overflow-y: auto;
-//     max-height: 560px;
-// }
 .sb-single-pannel-accordion .ui.progress {
-  margin-right: ($base-block-space * 4);
+  margin-right: calculateRem(32px);
   margin-bottom: 0;
 }
 .ui.styled.sb-accordion.accordion,
@@ -52,85 +45,84 @@
   box-shadow: none;
 }
 .help-section-title {
-  font-size: 16px;
+  font-size: calculateRem(16px);
   color: $gray-800;
 }
 .sb-help-section-subheading {
   color: $gray-800;
-  font-size: 12px;
+  font-size: calculateRem(12px);
   font-weight: bold;
 }
 .sb-help-section-extra {
   color: $gray-800;
-  font-size: 12px;
+  font-size: calculateRem(12px);
 }
 .sb-help-section-heading {
-  font-size: 14px;
+  font-size: calculateRem(14px);
   color: $gray-800;
 }
 .sb-accordion-content {
   background-color: $primary-0;
-  padding: ($base-block-space * 2);
+  padding: calculateRem(16px);
+  border-radius: calculateRem(2px);
 }
 .sb-accordion-text {
   color: $gray-800;
-  font-size: 14px;
+  font-size: calculateRem(14px);
 }
 .sb-accordion-footer {
-  padding: ($base-block-space * 3);
-  font-size: 12px;
+  padding: calculateRem(24px);
+  font-size: calculateRem(12px);
 }
 .ui.styled.accordion.sb-single-pannel-accordion {
-  border-radius: 4px 4px 0 0;
-  box-shadow: 0 -4px 5px 0 rgba(0, 0, 0, 0.25);
+  border-radius: calculateRem(4px) calculateRem(4px) 0 0;
+  box-shadow: 0 calculateRem(-4px) calculateRem(5px) 0 rgba(var(--rc-rgba-black), 0.25);
 }
 .sb-download-manager-panel {
   z-index: 999;
 }
 .sb-single-pannel-accordion-heading {
-  background: #333;
-  padding: ($base-block-space * 2);
+  background: var(--gray-800);
+  padding: calculateRem(16px);
   color: $white-color;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-radius: 4px 4px 0px 0px;
+  border-radius: calculateRem(4px) calculateRem(4px) 0px 0px;
   span {
     font-size: $font-size-base;
   }
 }
 .sb-single-pannel-accordion-list-item {
-  font-size: 14px;
-  padding: ($base-block-space) * 2;
+  font-size: calculateRem(14px);
+  padding: calculateRem(16px);
   background: $white-color;
   display: flex;
-  // flex-wrap: wrap;
-  min-height: ($base-block-space * 10);
+  min-height: calculateRem(80px);
   border-bottom: $sb-content-manager-border;
   align-items: center;
   &.download-complete {
-    background: #F2F2F2;
+    background: var(--gray-0);
   }
   .sb-color-success {
-    color: #008840;
+    color: var(--secondary-color);
   }
   .info-text {
-    font-size: 12px;
-    margin-bottom: 4px;
+    font-size: calculateRem(12px);
+    margin-bottom: calculateRem(4px);
     width: auto;
     display: inline-block;
-    color: #999;
-    margin-bottom: 8px;
+    color: var(--gray-400);
+    margin-bottom: calculateRem(8px);
   }
   i.icon {
-    // font-size: $base-block-space*2;
     width: auto;
     &.error-icon {
       color: $danger-color;
     }
     &.success-icon {
-      color: #008840;
-      height: 60px;
+      color: var(--secondary-color);
+      height: calculateRem(60px);
     }
     &.waiting-icon {
       color: $orange;
@@ -142,41 +134,40 @@
   .download-text {
     font-size: $font-size-base;
     flex: 1;
-    // max-width: ($base-block-space*30) + ($base-block-space*6) + $base-block-space/4;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
     min-width: 0;
-    margin-bottom: 4px;
-    max-width: 400px;
+    margin-bottom: calculateRem(4px);
+    max-width: calculateRem(400px);
   }
   .download-image {
-    width: $base-block-space * 4;
-    height: $base-block-space * 4;
-    margin-right: 8px;
+    width: calculateRem(32px);
+    height: calculateRem(32px);
+    margin-right: calculateRem(8px);
   }
   .download-details-container {
     width: 100%;
   }
 }
 .error-text {
-  font-size: 14px;
+  font-size: calculateRem(14px);
   color: $danger-color;
   text-align: right;
 }
 .success-text {
-  font-size: 14px;
+  font-size: calculateRem(14px);
   color: $success-color;
   text-align: right;
 }
 .waiting-text {
-  font-size: 14px;
+  font-size: calculateRem(14px);
   color: $tertiary-400;
   text-align: right;
 }
 .info-text {
-  width: 110px;
-  font-size: 12px;
+  width: calculateRem(110px);
+  font-size: calculateRem(12px);
   text-align: left;
 }
 .ui.styled.accordion.sb-single-pannel-accordion .title,
@@ -189,14 +180,14 @@
   overflow-x: hidden;
 }
 .sb-single-pannel-accordion .ui.progress {
-  margin-right: ($base-block-space * 4);
+  margin-right: calculateRem(32px);
   margin-bottom: 0;
 }
 .sb-single-pannel-accordion-list-item .ui.progress {
-  height: $base-block-space;
-  border-radius: $base-block-space;
+  height: calculateRem(8px);
+  border-radius: calculateRem(8px);
   width: 100%;
-  border: 1px solid $white-color;
+  border: calculateRem(1px) solid $white-color;
   background: $secondary-0;
   margin-right: inherit;
 }
@@ -209,7 +200,9 @@
   }
   .bar {
     height: calculateRem(7px) !important;
-    border-radius: $base-block-space/2;
+    border-radius: calculateRem(4px);
     background: $green;
   }
 }
+
+/* accordion style ends */

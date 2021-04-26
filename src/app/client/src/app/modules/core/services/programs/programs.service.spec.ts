@@ -10,11 +10,13 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { mockResponseData } from './programs.service.spec.data';
 import * as _ from 'lodash-es';
 import { of, throwError } from 'rxjs';
+import { CoreModule } from '@sunbird/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('ProgramsService', () => {
-
+  configureTestSuite();
   beforeEach(() => TestBed.configureTestingModule({
-    imports: [SharedModule.forRoot(), HttpClientTestingModule, RouterTestingModule],
+    imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, RouterTestingModule],
     providers: [ConfigService, ExtPluginService, OrgDetailsService, UserService]
   }));
 

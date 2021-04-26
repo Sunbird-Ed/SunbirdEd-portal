@@ -12,7 +12,7 @@
       }
     }
     .sb-bulk-upload-details-report-info {
-      border-bottom: 1px solid #ddd;
+      border-bottom: calculateRem(1px) solid var(--rc-dddddd);
   
       .sb-bulk-upload-file {
         flex-basis: 70%;
@@ -23,9 +23,9 @@
         }
   
         .sb-upload-file {
-          height: ($base-block-space * 7);
-          width:  ($base-block-space * 7);
-          background: #6666;
+          height: calculateRem(56px);
+          width:  calculateRem(56px);
+          background: var(--gray-400);
           margin-top: auto;
           margin-bottom: auto;
         }
@@ -44,7 +44,7 @@
     }
     input {
         position: absolute;
-        font-size: 50px;
+        font-size: calculateRem(50px);
         opacity: 0;
         right: 0;
         top: 0;
@@ -69,9 +69,9 @@
       }
     .sb-bulk-upload-file {
       .sb-upload-file {
-          height: ($base-block-space * 7);
-          width:  ($base-block-space * 7);
-          background: #6666;
+          height: calculateRem(56px);
+          width:  calculateRem(56px);
+          background: var(--gray-400);
           margin-top: auto;
           margin-bottom: auto;
       }
@@ -97,16 +97,16 @@
       }
   
       .sb-bulk-upload-error-list {
-        max-height: 140px;
+        max-height: calculateRem(140px);
         overflow-y: auto;
   
         .sb-bulk-upload-error-list-item {
           font-size: $font-size-sm;
           color: $gray-400;
-          line-height: 20px;
-          margin-bottom: ($base-block-space / 2);
-          padding-bottom: ($base-block-space / 2);
-          border-bottom: 1px solid #ddd;
+          line-height: calculateRem(20px);
+          margin-bottom: calculateRem(4px);
+          padding-bottom: calculateRem(4px);
+          border-bottom: calculateRem(1px) solid var(--rc-dddddd);
           &:last-child {
             margin: 0;
           }

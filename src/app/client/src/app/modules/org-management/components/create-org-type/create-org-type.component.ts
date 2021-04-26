@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { AnnouncementService } from '@sunbird/core';
 import { ResourceService, ToasterService, RouterNavigationService, ServerResponse, NavigationHelperService } from '@sunbird/shared';
 import { OrgTypeService } from './../../services/';
 import { FormControl } from '@angular/forms';
@@ -22,7 +21,7 @@ export class CreateOrgTypeComponent implements OnInit, OnDestroy, AfterViewInit 
   public addOrganizationType: IInteractEventEdata;
   public updateOrganizationType: IInteractEventEdata;
   public cancelModal: IInteractEventEdata;
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: true}) modal;
   pageId: string;
   /**
   * telemetryImpression

@@ -1,0 +1,339 @@
+@import "variables";
+@import "mixins/mixins";
+@import "layout/header";
+
+.sb-header-bg{
+  background: var(--sb-header-bg) !important;
+}
+
+.overlay-sidebar,
+.overlay-sidebar__menu {
+  position: fixed;
+  top: 0;
+  height: 100%;
+}
+
+.overlay-sidebar {
+  width: 100%;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  display: block;
+  z-index: 99999;
+  background: rgba(var(--sbt-sidemenu-overlay-bg), 0.4); //--rc-rgba-black
+
+  &__menu {
+    width: calculateRem(400px);
+    right: 0;
+    background: var(--sbt-sidemenu-bg);
+    z-index: 100000;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: calculateRem(-6px) 0 calculateRem(10px) 0 rgba(var(--rc-rgba-black), 0.1);
+  }
+}
+
+.profile {
+  &__info {
+    padding: calculateRem(40px) calculateRem(16px) calculateRem(8px) calculateRem(16px);
+    background-color: var(--sidebar-profil-header-bg);
+    position: relative;
+
+    .icon-close {
+      position: absolute;
+      top: calculateRem(16px);
+      left: calculateRem(16px);
+      cursor: pointer;
+    }
+
+    &__desc {
+      padding: 0 0.5rem;
+    }
+  }
+
+  &__actions {
+    &__list {
+
+      .list-item {
+        margin: 0 0 0 0;
+        padding: calculateRem(16px) calculateRem(20px);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        color: var(--primary-color);
+        a {
+          padding: calculateRem(16px) calculateRem(20px);
+          width: 100%;
+          display: flex;
+          align-items: center;
+          &:hover {
+            text-decoration: none;
+          }
+        }
+        img {
+          width: calculateRem(24px);
+          height: calculateRem(24px);
+          margin-right: calculateRem(8px);
+        }
+
+        &:hover,
+        &.active {
+          background-color: var(--sidebar-li-hover-bg);
+        }
+      }
+    }
+  }
+}
+
+
+.add-user {
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+
+  &__icon {
+    width: calculateRem(32px);
+    height: calculateRem(32px);
+    display: inline-block;
+
+    img {
+      max-width: 100%;
+    }
+  }
+
+  &__label {
+    margin-top: calculateRem(9px);
+  }
+
+  &--horizontal {
+    display: flex;
+    align-items: center;
+    padding: calculateRem(4px) calculateRem(16px);
+    background-color: var(--rc-bfe1cf);
+
+    .add-user__label {
+      margin-top: 0;
+      margin-left: calculateRem(8px);
+    }
+  }
+}
+
+.more-user {
+  text-align: center;
+  cursor: pointer;
+
+  &__btn {
+    width: calculateRem(32px);
+    height: calculateRem(32px);
+    background: var(--white);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    box-shadow: 0 0 calculateRem(3px) 0 rgba(var(--rc-rgba-black), 0.1);
+
+    img {
+      max-width: 100%;
+    }
+  }
+
+  &__label {
+    font-size: var(--font-size-base);
+    ;
+    margin-top: calculateRem(8px);
+  }
+}
+
+.my-avatar ::ng-deep .avatar-content {
+  background-color: var(--red) !important;
+}
+
+@include respond-below(sm) {
+  .profile__info {
+    // padding: calculateRem(16px);
+
+    .icon-close {
+      right: calculateRem(16px);
+      left: unset;
+      z-index: 9999;
+    }
+
+    .user {
+      flex-wrap: wrap;
+      margin-bottom: calculateRem(8px) !important;
+
+      &__name {
+        width: 100%;
+        margin-left: 0 !important;
+      }
+    }
+
+    &__desc {
+      margin-bottom: calculateRem(8px) !important;
+    }
+  }
+}
+
+@include respond-below(xs) {
+  .overlay-sidebar__menu {
+    width: 88%;
+    left: 0;
+    right: unset;
+  }
+}
+
+//sb member card styles from CC 
+.sb-member {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  // Size variations
+  &--small {
+    .sb-member__img {
+      width: calculateRem(32px);
+      height: calculateRem(32px);
+      font-size: calculateRem(20px);
+    }
+
+    .sb-member__name {
+      font-size: calculateRem(14px);
+    }
+  }
+
+  &--medium {
+    .sb-member__img {
+      width: calculateRem(48px);
+      height: calculateRem(48px);
+      font-size: calculateRem(34px);
+    }
+
+    .sb-member__name {
+      font-size: calculateRem(16px);
+    }
+  }
+
+  &--large {
+    .sb-member__img {
+      width: calculateRem(64px);
+      height: calculateRem(64px);
+      font-size: calculateRem(38px);
+    }
+
+    .sb-member__name {
+      font-size: calculateRem(18px);
+    }
+  }
+
+  // font weight bold and normal
+  &--font-bold {
+    .sb-member__name {
+      font-weight: bold;
+    }
+  }
+
+  // View variations
+  &--horizontal {
+    flex-direction: row;
+
+    .sb-member__name {
+      margin: 0 0 0 calculateRem(8px);
+    }
+  }
+
+  &--vertical {
+    flex-direction: column;
+
+    .sb-member__name {
+      margin: calculateRem(8px) 0 0 0;
+      text-align: center;
+    }
+  }
+
+  // avatar first letter
+  &__img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: var(--white);
+    box-shadow: 0 0 calculateRem(6px) 0 rgba(var(--rc-rgba-black), 0.1);
+    font-weight: bold;
+  }
+
+  // avatar name
+  &__name {
+    font-weight: normal;
+    cursor: pointer;
+  }
+
+}
+
+:host ::ng-deep {
+  .group__type {
+    margin-left: 1.5rem;
+    background: var(--red-100);
+    position: relative;
+    height: 1.25rem;
+    padding: 0 .25rem 0 0.5rem;
+    color: var(--white);
+    margin-right: -.5rem;
+    font-size: .6875rem;
+    display: flex;
+    align-items: center;
+    font-weight: normal;
+    html[dir="rtl"] & {
+      padding: 0 .5rem 0 0.25rem;
+    }
+  }
+  
+  .group__type:after {
+    content: "";
+    width: 0;
+    height: 0;
+    border-width: .625rem .3125rem;
+    border-style: solid;
+    border-color: var(--red-100) transparent var(--red-100) var(--red-100);
+    position: absolute;
+    right: -.625rem;
+    html[dir="rtl"] & {
+      left: -.6rem;
+      right: inherit;
+      transform: rotate(180deg);
+    }
+  }
+}
+
+
+__textbooks {
+  -webkit-mask-image: url(/assets/images/mask-image/textbooks.svg);
+  mask-image: url(/assets/images/mask-image/textbooks.svg);
+}
+
+:host ::ng-deep {
+  @include respond-below(sm) {
+    html[layout='joy'] {
+      .sbt-dropdown-profile-area,
+      app-language-dropdown {
+        width: 100%;
+      }
+      .ui.selection.sbt-dropdown.dropdown {
+        min-width: 100%;
+      }
+    }
+  }
+}
+
+.sbt-logo {
+  height: calculateRem(80px);
+  display:flex;
+  align-items: center;
+  img {
+    min-height: 65%;
+    height: 80%;
+  }
+}
+
+.sb-load-content-btn{
+  line-height: 0.5;
+}

@@ -1,0 +1,71 @@
+@import 'variables';
+@import 'mixins/mixins';
+
+.content-metadeta {
+  &__content {
+    border-bottom: calculateRem(1px) solid var(--gray-100);
+  }
+
+  &__title {
+    color: var(--gray-200);
+  }
+
+  &__text {
+    color: var(--gray-800);
+
+    &__link:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+:host ::ng-deep {
+  .ui.styled.accordion .title {
+    color: var(--primary-400) !important;
+  }
+
+  .ui.styled.accordion .active.title,
+  .ui.styled.accordion .accordion .active.title {
+    padding: calculateRem(16px) calculateRem(16px) calculateRem(8px) calculateRem(16px) !important;
+  }
+
+  .ui.accordion .active.title .chevron.down.icon {
+    position: relative;
+    top: calculateRem(8px);
+  }
+
+}
+
+.contentdata-description {
+  border-bottom: calculateRem(0.5px) solid var(--rc-979797);
+}
+
+.credits-section {
+  background-color: var(--white);
+  padding: calculateRem(16px);
+
+  .title {
+    color: var(--gray-200);
+    font-size: calculateRem(10px);
+    font-weight: bold;
+    word-wrap: break-word;
+  }
+
+  .description {
+    color: var(--gray-800);
+    font-size: calculateRem(14px);
+    word-wrap: break-word;
+  }
+
+  .sub-section {
+    color: var(--primary-color);
+    font-size: calculateRem(14px);
+    word-wrap: break-word;
+  }
+
+  .title,
+  .description,
+  .sub-section {
+    line-height: inherit;
+  }
+}

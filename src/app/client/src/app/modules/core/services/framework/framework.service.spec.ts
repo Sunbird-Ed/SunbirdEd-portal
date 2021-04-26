@@ -5,13 +5,14 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FrameworkService, UserService, CoreModule, PublicDataService } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
-import { mockFrameworkData } from './framework.mock.spec.data';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('FrameworkService', () => {
   let userService, publicDataService, frameworkService, cacheService;
   let mockHashTagId: string, mockFrameworkInput: string;
   let mockFrameworkCategories: Array<any> = [];
   let makeChannelReadSuc, makeFrameworkReadSuc  = true;
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
@@ -91,6 +92,13 @@ describe('FrameworkService', () => {
       expect(data.frameworkdata).toEqual({'NCF': {'code': 'NCF', 'categories': []}});
       expect(data.err).toBeDefined();
     });
+  });
+
+  it('should fetch the default course framework from channel read api', () => {
+    cacheService.get('defaultCourseFramework', null);
+    spyOn<any>(frameworkService, 'getChannel').and.callThrough();
+    frameworkService.getDefaultCourseFramework('012451140510203904560');
+    expect(frameworkService['getChannel']).toHaveBeenCalledWith('012451140510203904560');
   });
 });
 

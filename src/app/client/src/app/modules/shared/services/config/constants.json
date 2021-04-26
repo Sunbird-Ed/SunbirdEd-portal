@@ -1,5 +1,22 @@
 {
   "TEMPLATES": {
-    "RESET_PASSWORD_TEMPLATE": "resetPasswordWithOtp"
-  }
+    "RESET_PASSWORD_TEMPLATE": "resetPasswordWithOtp",
+    "VERIFY_OTP_MINOR": "wardLoginOTP"
+  },
+  "HTTP_STATUS_CODES": {
+    "OTP_VERIFICATION_FAILED": "OTP_VERIFICATION_FAILED"
+  },
+  "SIGN_UP": {
+    "MAX_YEARS": 100,
+    "MINIMUN_AGE": 18
+  },
+  "SIZE": {
+    "MEDIUM": "medium",
+    "SMALL": "small"
+  },
+  "VIEW": {
+    "HORIZONTAL": "horizontal",
+    "VERTICAL": "vertical"
+  },
+  "DEFAULT_THEME": "joy"
 }

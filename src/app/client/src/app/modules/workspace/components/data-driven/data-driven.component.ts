@@ -10,18 +10,21 @@ import { SearchService, UserService, FrameworkService, FormService } from '@sunb
 import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
 import { DefaultTemplateComponent } from '../content-creation-default-template/content-creation-default-template.component';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventInput, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { WorkSpace } from '../../classes/workspace';
 import { WorkSpaceService } from '../../services';
 import { combineLatest, Subscription, Subject, of, throwError } from 'rxjs';
 import { takeUntil, first, mergeMap, map, tap , filter, catchError} from 'rxjs/operators';
+import { UUID } from 'angular2-uuid';
+
 @Component({
   selector: 'app-data-driven',
-  templateUrl: './data-driven.component.html'
+  templateUrl: './data-driven.component.html',
+  styleUrls: ['./data-driven.component.scss']
 })
 export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('formData') formData: DefaultTemplateComponent;
-  @ViewChild('modal') modal;
+  @ViewChild('formData', {static: false}) formData: DefaultTemplateComponent;
+  @ViewChild('modal', {static: false}) modal;
 
   /**
 	 * This variable hepls to show and hide page loader.
@@ -51,10 +54,6 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
  * userForm name creation
  */
   public creationForm: FormGroup;
-  /**
- * userProfile is of type userprofile interface
- */
-  public userProfile: IUserProfile;
   /**
 * Contains config service reference
 */
@@ -108,6 +107,16 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
 	*/
   telemetryImpression: IImpressionEventInput;
 
+  public showFrameworkSelection: boolean;
+
+  public frameworkCardData = [];
+
+  public selectedCard: any;
+
+  public enableCreateButton = false;
+
+  public isSubmit = false;
+
   public unsubscribe = new Subject<void>();
   constructor(
     public searchService: SearchService,
@@ -123,7 +132,8 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     formService: FormService,
     private _cacheService: CacheService,
     public navigationHelperService: NavigationHelperService,
-    public browserCacheTtlService: BrowserCacheTtlService
+    public browserCacheTtlService: BrowserCacheTtlService,
+    public telemetryService: TelemetryService
   ) {
     super(searchService, workSpaceService, userService);
     this.activatedRoute = activatedRoute;
@@ -144,34 +154,27 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
    this.description = this.configService.appConfig.contentDescription[this.contentType] ?
    this.configService.appConfig.contentDescription[this.contentType] : 'Untitled';
   }
-
-
   ngOnInit() {
-
-    this.checkForPreviousRouteForRedirect();
-    if (_.lowerCase(this.contentType) === 'course') {
-      this.getCourseFrameworkId().pipe(takeUntil(this.unsubscribe)).subscribe(data => {
-        this.framework = data;
+    this.activatedRoute.queryParams.subscribe(queryParams => {
+      this.showFrameworkSelection = _.get(queryParams, 'showFrameworkSelection');
+    });
+    this.userService.userOrgDetails$.subscribe(() => { // wait for user organization details
+      this.checkForPreviousRouteForRedirect();
+      if (this.showFrameworkSelection) {
+        this.frameworkService.getChannel(this.userService.hashTagId).pipe(takeUntil(this.unsubscribe)).subscribe(data => {
+          this.setFrameworkData(data);
+        }, err => {
+          this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        });
+      } else {
+        /**
+       * fetchFrameworkMetaData is called to config the form data and framework data
+       */
         this.fetchFrameworkMetaData();
-      }, err => {
-        this.toasterService.error(this.resourceService.messages.emsg.m0005);
-       });
-    } else {
-      /**
-     * fetchFrameworkMetaData is called to config the form data and framework data
-     */
-      this.fetchFrameworkMetaData();
-    }
-    /***
- * Call User service to get user data
- */
-    this.userService.userData$.subscribe(
-      (user: IUserData) => {
-        if (user && !user.err) {
-          this.userProfile = user.userProfile;
-        }
-      });
+      }
+    });
   }
+
   ngOnDestroy() {
     if (this.modal && this.modal.deny) {
       this.modal.deny();
@@ -188,30 +191,47 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
         if (_.lowerCase(this.contentType) !== 'course') {
           this.framework = frameworkData.frameworkdata['defaultFramework'].code;
         }
-        /**
-        * isCachedDataExists will check data is exists in cache or not. If exists should not call
-        * form api otherwise call form api and get form data
-        */
-        this.isCachedDataExists = this._cacheService.exists(this.contentType + this.formAction);
-        if (this.isCachedDataExists) {
-          const data: any | null = this._cacheService.get(this.contentType + this.formAction);
-          this.formFieldProperties = data;
+        if (_.lowerCase(this.contentType) === 'questionset') {
+          const reqData = this.generateQuestionSetData();
+          this.workSpaceService.createQuestionSet(reqData).subscribe(res => {
+            // tslint:disable-next-line:max-line-length
+            this.router.navigate(['workspace/edit/', 'QuestionSet', res.result.identifier, 'allcontent', 'Draft']);
+          }, err => {
+            this.toasterService.error(this.resourceService.messages.fmsg.m0102);
+          });
         } else {
-          const formServiceInputParams = {
-            formType: this.formType,
-            formAction: this.formAction,
-            contentType: this.contentType,
-            framework: this.framework
+          const categoryList = {
+            'code' : 'primaryCategory',
+            'identifier': 'sb_primaryCategory',
+            'description': 'Primary Category',
+            'terms' : this.getCategoryList(this.contentType)
           };
-          this.formService.getFormConfig(formServiceInputParams).subscribe(
-            (data: ServerResponse) => {
-              this.formFieldProperties = data;
-              this.getFormConfig();
-            },
-            (err: ServerResponse) => {
-              this.toasterService.error(this.resourceService.messages.emsg.m0005);
-            }
-          );
+          this.categoryMasterList.push(categoryList);
+          /**
+          * isCachedDataExists will check data is exists in cache or not. If exists should not call
+          * form api otherwise call form api and get form data
+          */
+          this.isCachedDataExists = this._cacheService.exists(this.contentType + this.formAction);
+          if (this.isCachedDataExists) {
+            const data: any | null = this._cacheService.get(this.contentType + this.formAction);
+            this.formFieldProperties = data;
+          } else {
+            const formServiceInputParams = {
+              formType: this.formType,
+              formAction: this.formAction,
+              contentType: this.contentType,
+              framework: this.framework
+            };
+            this.formService.getFormConfig(formServiceInputParams).subscribe(
+              (data: ServerResponse) => {
+                this.formFieldProperties = data;
+                this.getFormConfig();
+              },
+              (err: ServerResponse) => {
+                this.toasterService.error(this.resourceService.messages.emsg.m0005);
+              }
+            );
+          }
         }
       } else if (frameworkData && frameworkData.err) {
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
@@ -254,9 +274,9 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     const requestData = _.cloneDeep(data);
     requestData.name = data.name ? data.name : this.name,
       requestData.description = data.description ? data.description : this.description,
-      requestData.createdBy = this.userProfile.id,
-      requestData.organisation = _.uniq(this.userProfile.organisationNames),
-      requestData.createdFor = this.userProfile.organisationIds,
+      requestData.createdBy = this.userService.userProfile.id,
+      requestData.organisation = _.uniq(this.userService.orgNames),
+      requestData.createdFor = this.userService.userProfile.organisationIds,
       requestData.contentType = this.configService.appConfig.contentCreateTypeForEditors[this.contentType],
       requestData.framework = this.framework;
     if (this.contentType === 'studymaterial' && data.contentType) {
@@ -264,6 +284,9 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     }
     if (requestData.year) {
       requestData.year = requestData.year.toString();
+    }
+    if (requestData.maxAttempts) {
+      requestData.maxAttempts = _.parseInt(requestData.maxAttempts);
     }
     if (this.contentType === 'studymaterial' || this.contentType === 'assessment') {
       requestData.mimeType = this.configService.appConfig.CONTENT_CONST.CREATE_LESSON;
@@ -275,18 +298,29 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     } else if (this.resourceType) {
       requestData.resourceType = this.resourceType;
     }
-    if (!_.isEmpty(this.userProfile.lastName)) {
-      requestData.creator = this.userProfile.firstName + ' ' + this.userProfile.lastName;
+    if (!_.isEmpty(this.userService.userProfile.lastName)) {
+      requestData.creator = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
     } else {
-      requestData.creator = this.userProfile.firstName;
+      requestData.creator = this.userService.userProfile.firstName;
     }
     return requestData;
   }
 
-  createContent() {
+  createContent(modal) {
+    let requiredFields = [];
+    requiredFields = _.map(_.filter(this.formFieldProperties, { 'required': true }), field => field.code );
     const requestData = {
       content: this.generateData(_.pickBy(this.formData.formInputData))
     };
+    for (let i = 0; i < requiredFields.length; i++) {
+      if (_.isUndefined(requestData.content[requiredFields[i]])) {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0101);
+        return;
+      }
+    }
+    if (!_.isUndefined(modal)) {
+      modal.deny();
+    }
     if (this.contentType === 'studymaterial' || this.contentType === 'assessment') {
       this.editorService.create(requestData).subscribe(res => {
         this.createLockAndNavigateToEditor({identifier: res.result.content_id});
@@ -311,17 +345,18 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
       const type = this.configService.appConfig.contentCreateTypeForEditors[this.contentType];
       this.router.navigate(['/workspace/content/edit/collection', content.identifier, type, state, framework, 'Draft']);
     }
+    this.logTelemetry(content.identifier);
   }
 
   /**
     * Issue #SB-1448,  If previous url is not from create page, redirect current page to 'workspace/content/create'
   */
-  checkForPreviousRouteForRedirect() {
-    const previousUrlObj = this.navigationHelperService.getPreviousUrl();
+ checkForPreviousRouteForRedirect() {
+  const previousUrlObj = this.navigationHelperService.getPreviousUrl();
     if (previousUrlObj && previousUrlObj.url && (previousUrlObj.url !== '/workspace/content/create')) {
       this.redirect();
     }
-  }
+}
 
   redirect() {
     this.router.navigate(['/workspace/content/create']);
@@ -343,22 +378,134 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
       };
     });
   }
+
   /**
-  * fetchCourseFrameworkId (i.e TPD)
-  */
-  getCourseFrameworkId() {
-    const framework = this._cacheService.get('course' + 'framework');
-    if (framework) {
-      return of(framework);
-    } else {
-     return this.frameworkService.getCourseFramework()
-        .pipe(map((data) => {
-          const frameWork = _.get(data.result.response , 'value');
-          this._cacheService.set('course' + 'framework', frameWork, { maxAge: this.browserCacheTtlService.browserCacheTtl });
-          return frameWork;
-        }), catchError((error) => {
-          return of(false);
-        }));
+   * @since - #SH-403
+   * @param  {} channelData
+   * @description - It sets the card data and its associated framework
+   */
+  setFrameworkData(channelData) {
+    this.frameworkCardData = [{
+      title: 'Curriculum courses',
+      description: `Create courses for concepts from the syllabus, across grades and subjects. For example, courses on fractions, photosynthesis, reading comprehension, etc.`,
+      framework: _.get(channelData, 'result.channel.defaultFramework')
+    },
+    {
+      title: 'Generic courses',
+      description: `Create courses that help develop professional skills. For example, courses on classroom management, pedagogy, ICT, Leadership, etc.`,
+      framework: _.get(channelData, 'result.channel.defaultCourseFramework')
     }
+    ];
+  }
+
+  /**
+   * @since - #SH-403
+   * @param  {} cardData
+   * @description - 1. It selects a card from the framework selection popup
+   *                shown while creating any resource (only course as of now)
+   *                2. It also logs interact telemetry on card click.
+   */
+  selectFramework(cardData) {
+    this.enableCreateButton = true;
+    this.selectedCard = cardData;
+    this.framework = _.get(cardData, 'framework');
+    const telemetryInteractData = {
+      context: {
+        env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env'),
+        cdata: [{
+          type: 'framework',
+          id: this.framework
+        }]
+      },
+      edata: {
+        id: _.get(cardData, 'title'),
+        type: 'click',
+        pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid')
+      }
+    };
+    this.telemetryService.interact(telemetryInteractData);
+  }
+
+  /**
+   * @since - #SH-403
+   * @param  {string} contentId
+   * @description - it triggers an interact event when Start creating button is clicked.
+   */
+  logTelemetry(contentId) {
+    const telemetryData = {
+      context: {
+        env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env'),
+        cdata: [{
+          type: 'framework',
+          id: this.framework
+        }]
+      },
+      edata: {
+        id: 'start-creating-' + this.contentType,
+        type: 'click',
+        pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid')
+      },
+      object: {
+        id: contentId,
+        type: this.contentType,
+        ver: '1.0',
+        rollup: {},
+      }
+    };
+    this.telemetryService.interact(telemetryData);
+  }
+
+  getCategoryList(type: string): object {
+    const primaryCategoryList = [];
+      if (type === 'collection' || type === 'lessonplan') {
+        if (!_.isEmpty(this.frameworkService['_channelData'].collectionPrimaryCategories)) {
+          _.forEach(this.frameworkService['_channelData'].collectionPrimaryCategories, (field) => {
+            if (_.lowerCase(field) === _.lowerCase('Course')) {
+              return;
+            }
+            const categoryTemplateObject = {
+               'identifier' : field,
+               'name' : field,
+               'description': field
+            };
+            primaryCategoryList.push(categoryTemplateObject);
+        });
+        }
+      } else if (type === 'studymaterial' || type === 'assessment') {
+        if (!_.isEmpty(this.frameworkService['_channelData'].contentPrimaryCategories)) {
+          _.forEach(this.frameworkService['_channelData'].contentPrimaryCategories, (field) => {
+            if (_.lowerCase(field) === _.lowerCase('Course Assessment')) {
+              return;
+            }
+            const categoryTemplateObject = {
+               'identifier' : field,
+               'name' : field,
+               'description': field
+            };
+            primaryCategoryList.push(categoryTemplateObject);
+        });
+      }
+    }
+    return primaryCategoryList;
+  }
+
+  generateQuestionSetData() {
+    let name = this.userService.userProfile.firstName;
+    if (!_.isEmpty(this.userService.userProfile.lastName)) {
+      name = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
+    }
+    return {
+        'questionset': {
+          name: 'Untitled QuestionSet',
+          mimeType: 'application/vnd.sunbird.questionset',
+          primaryCategory: 'Practice Question Set',
+          createdBy: this.userService.userProfile.id,
+          // organisation: _.uniq(this.userService.orgNames),
+          createdFor: this.userService.userProfile.organisationIds,
+          framework: this.framework,
+          // creator: name,
+          code: UUID.UUID()
+        }
+    };
   }
 }

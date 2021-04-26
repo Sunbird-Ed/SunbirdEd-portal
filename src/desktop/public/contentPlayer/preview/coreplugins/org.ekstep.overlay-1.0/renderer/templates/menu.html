@@ -1,0 +1,42 @@
+<div class="menu-overlay" ng-click="hideMenu()" ng-cloak></div>
+<!-- Menu container -->
+<div class="gc-menu">
+    <a ng-if="!showUser" class="gc-menu-btn old_menu" href="javascript:void(0)" ng-click="openMenu()">
+        <img ng-if="!navigationTop" class="menu-icon icon" ng-src="{{imageBasePath}}menu_icon_old.png" ng-hide="menuOpened"/>
+        <div><img ng-if="navigationTop" class="menu-icon icon nav-top hamberger-menu" ng-src="{{imageBasePath}}menu.png" ng-hide="menuOpened"/></div>
+    </a>
+    <a ng-if="showUser" class="gc-menu-btn hamberger-menu" href="javascript:void(0)" ng-click="openMenu()">
+        <img ng-if="!navigationTop" class="menu-icon icon" ng-src="{{imageBasePath}}menu_icon.png" ng-hide="menuOpened"/>
+        <img ng-if="navigationTop" class="menu-icon icon nav-top hamberger-menu" ng-src="{{imageBasePath}}menu.png" ng-hide="menuOpened"/>
+        <!-- <img class="menu-icon user" ng-src="{{imageBasePath}}avatar_anonymous.png" ng-hide="menuOpened"/> -->
+    </a>
+    <div class=" gc-menu-cont" ng-show="menuOpened">
+        <div class="gc-menu-title-cont">
+            <p class="icon-font">{{ content.name }}</p>
+        </div>
+        <div class = "gc-menu-options">
+            <div ng-click="replayContent()">
+                <img ng-src="{{imageBasePath}}icn_replay.png"/>
+                <span> {{AppLables.replay}} </span>
+            </div>
+        </div>
+        <div ng-if="showUser" ng-click="openUserSwitchingModal()" class = "gc-menu-options profile">
+            <img alt="prof img" ng-src="{{imageBasePath}}avatar_anonymous.png"/>
+            <span class="menu-text"> {{currentUser.handle}} <br/> <small> {{AppLables.change}} </small></span>
+        </div>
+        <div class = "gc-menu-options">
+            <mute></mute>
+        </div>
+        <div class = "gc-menu-options" ng-show="showTeacherIns">
+            <stage-instructions></stage-instructions>
+        </div>
+        <div class = "gc-menu-options">
+            <genie></genie>
+        </div>
+        <div class="inst-message-cont " ng-show="showInst">
+            <img class="inst-icon" ng-src="{{imageBasePath}}icn_teacherinfo.png" ng-click="expeandInstruction()" />
+            <p class="stage-Teacherinst">{{ stageInstMessage }}</p>
+            <img class="inst-done" ng-src="{{imageBasePath}}icn_done.png" ng-click="closeInstructions()" />
+        </div>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+{
+  "id": "api.location.search",
+  "ver": "v1",
+  "ts": "2019-11-12 09:08:47:711+0000",
+  "params": {
+    "resmsgid": null,
+    "msgid": null,
+    "err": null,
+    "status": "success",
+    "errmsg": null
+  },
+  "responseCode": "OK",
+  "result": { "response": [
+    {
+      "code": "2927",
+      "name": "test_district_5",
+      "id": "dcb5d08d-5e5d-4cae-af7d-f5b4607aaef7",
+      "type": "district",
+      "parentId": "4a6d77a1-6653-4e30-9be8-93371b6b53b5"
+    }
+  ] }
+}

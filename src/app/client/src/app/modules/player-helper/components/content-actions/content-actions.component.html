@@ -1,0 +1,46 @@
+<div class="d-flex flex-w-wrap content-video__player__details sb-bg-color-white" #playerInfo *ngIf="contentData">
+  <div class="d-flex flex-dc flex-basis-1 ml-8">
+    <div class="content-video__player__title mr-auto sb__ellipsis sb__ellipsis--one">
+      {{contentData?.name}}
+    </div>
+    <div class="content-video__player__title__subtitle fsmall mt-4">
+      <span class="mr-8" *ngIf="contentData?.board">{{resourceService?.frmelmnts?.lbl?.desktop?.board | interpolate:'{board}': contentData?.board}}</span>
+      <span class="dot-divider" *ngIf="contentData?.me_averageRating"></span>
+      <span class="mr-8" *ngIf="contentData?.me_averageRating">{{contentData?.me_averageRating || '0'}}</span>
+      <span *ngIf="contentData?.me_averageRating"><i class="icon star outline"></i></span>
+    </div>
+  </div>
+
+  <div class="d-flex flex-w-wrap content-video__player__tools" *ngIf="isFullScreen">
+    <sb-player-actions [actionButtons]="fullScreenActionButtons" (buttonClick)="onActionButtonClick($event, contentData)">
+    </sb-player-actions>
+  </div>
+  <div class="d-flex flex-w-wrap content-video__player__tools" *ngIf="!isFullScreen">
+    <sb-player-actions [actionButtons]="actionButtons" (buttonClick)="onActionButtonClick($event, contentData)">
+    </sb-player-actions>
+  </div>
+</div>
+
+<app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal"
+  (close)="sharelinkModal = false; contentUtilsServiceService.contentShareEvent.emit('close')">
+</app-share-link> 
+
+<sui-modal *ngIf="showDeleteModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+class="sb-modal" appBodyScroll (dismissed)="showDeleteModal = !showDeleteModal;" #modal>
+<div class="sb-modal-header">
+  {{resourceService?.frmelmnts?.lbl?.delete}}
+</div>
+  <div class="sb-modal-content">
+    <p>{{resourceService?.frmelmnts?.lbl?.desktop?.deleteContent | interpolate:'{name}': contentData?.name}}</p>
+  </div>
+  <div class="sb-modal-actions">
+  <button class="sb-btn sb-btn-normal sb-btn-primary"
+    (click)="deleteContent(contentData); showDeleteModal = !showDeleteModal;">
+    {{resourceService?.frmelmnts?.lbl?.delete}}
+  </button>
+  <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
+    (click)="logTelemetry('cancel-delete-content', contentData); showDeleteModal = !showDeleteModal;">
+    {{resourceService.frmelmnts?.btn?.cancel}}
+  </button>
+</div>
+</sui-modal>

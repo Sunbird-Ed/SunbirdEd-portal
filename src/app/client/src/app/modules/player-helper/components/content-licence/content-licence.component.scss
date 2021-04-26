@@ -1,0 +1,57 @@
+@import 'variables';
+@import 'mixins/mixins';
+
+::ng-deep{
+  .sb-toc-credits {
+    .sbaccordion__panel {
+      box-shadow: none !important;
+    }
+    .sb-bg-color-gray-0 {
+      .sbaccordion__panel-header {
+        background:var(--gray-0) !important;
+        height:2.5rem !important;
+      }
+    }
+    
+    .sbaccordion__panel-header__title {
+      width: auto;
+      padding-right: calculateRem(16px);
+      font-weight: normal;
+    }
+    .sbaccordion__panel-content{
+      overflow: inherit;
+      max-height: 100%;
+      border-top: 0px;
+      background-color: transparent !important;
+    }
+  }
+}
+
+.contentdata-description {
+  border-bottom: 0.5px solid var(--rc-979797);
+}
+
+.credits-section {
+  padding: calculateRem(16px);
+  .title {
+    color: var(--gray-200);
+    font-size: calculateRem(10px);
+    font-weight: bold;
+    word-wrap: break-word; 
+  }
+  .description {
+    color: var(--gray-800);
+    font-size: calculateRem(14px);
+    word-wrap: break-word; 
+  }
+  .sub-section {
+    color: var(--primary-color);
+    font-size: calculateRem(14px);
+    word-wrap: break-word;
+  }
+
+  .title, .description, .sub-section {
+    line-height: inherit;
+  }
+}
+

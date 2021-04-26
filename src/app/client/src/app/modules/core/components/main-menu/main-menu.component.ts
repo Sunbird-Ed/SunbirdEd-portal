@@ -1,12 +1,12 @@
-import { ConfigService, ResourceService, IUserData, IUserProfile } from '@sunbird/shared';
+import { EXPLORE_GROUPS, MY_GROUPS } from '../../../public/module/group/components/routerLinks';
+import { ConfigService, ResourceService, IUserData, IUserProfile, LayoutService, UtilService } from '@sunbird/shared';
 import { Component, OnInit, Input } from '@angular/core';
 import { UserService, PermissionService, ProgramsService } from '../../services';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
+import {IInteractEventObject, IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { first, filter, tap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
-import { environment } from '@sunbird/environment';
 import { merge } from 'rxjs';
 declare var jQuery: any;
 
@@ -47,6 +47,9 @@ export class MainMenuComponent implements OnInit {
    * reference of Router.
    */
   private router: Router;
+
+  @Input()
+  public layoutConfiguration: any;
   homeMenuIntractEdata: IInteractEventEdata;
   learnMenuIntractEdata: IInteractEventEdata;
   libraryMenuIntractEdata: IInteractEventEdata;
@@ -56,40 +59,55 @@ export class MainMenuComponent implements OnInit {
   workspaceMenuIntractEdata: IInteractEventEdata;
   helpMenuIntractEdata: IInteractEventEdata;
   contributeMenuEdata: IInteractEventEdata;
-  exploreRoutingUrl: string;
-  showExploreHeader = false;
+  groupsMenuIntractEdata: IInteractEventEdata;
   helpLinkVisibility: string;
-  isOffline: boolean = environment.isOffline;
   /**
    * shows/hides contribute tab
    */
 
   signInIntractEdata: IInteractEventEdata;
-  slug: string;
   showContributeTab: boolean;
+  hrefPath = '/resources';
+  routerLinks = {explore: `/${EXPLORE_GROUPS}`, groups: `/${MY_GROUPS}`};
+  isDesktopApp = false;
   /*
   * constructor
   */
   constructor(resourceService: ResourceService, userService: UserService, router: Router, public activatedRoute: ActivatedRoute,
-    permissionService: PermissionService, config: ConfigService, private cacheService: CacheService,
-    private programsService: ProgramsService) {
+    permissionService: PermissionService, config: ConfigService, private cacheService: CacheService, private utilService: UtilService,
+    private programsService: ProgramsService, public layoutService: LayoutService, public telemetryService: TelemetryService) {
     this.resourceService = resourceService;
     this.userService = userService;
     this.permissionService = permissionService;
     this.router = router;
     this.config = config;
     this.workSpaceRole = this.config.rolesConfig.headerDropdownRoles.workSpaceRole;
+    this.updateHrefPath(this.router.url);
+    router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      this.updateHrefPath(event.url);
+    });
   }
-
+  updateHrefPath(url) {
+      if (url.indexOf('explore-course') >= 0) {
+        this.hrefPath = url.replace('explore-course', 'learn');
+      } else if (url.indexOf('explore') >= 0) {
+        this.hrefPath = url.replace('explore', 'resources');
+      } else if (url.indexOf('play') >= 0) {
+        this.hrefPath = '/resources' + url;
+      } else {
+        this.hrefPath = '/resources';
+      }
+  }
   ngOnInit() {
-    this.slug = this.activatedRoute.snapshot.params.slug;
+    this.isDesktopApp = this.utilService.isDesktopApp;
     try {
       this.helpLinkVisibility = (<HTMLInputElement>document.getElementById('helpLinkVisibility')).value;
     } catch (error) {
       this.helpLinkVisibility = 'false';
     }
     this.setInteractData();
-    this.getUrl();
     merge(this.programsService.allowToContribute$.pipe(
       tap((showTab: boolean) => {
         this.showContributeTab = showTab;
@@ -134,6 +152,11 @@ export class MainMenuComponent implements OnInit {
       type: 'click',
       pageid: 'learn'
     };
+    this.groupsMenuIntractEdata = {
+      id: 'groups-tab',
+      type: 'click',
+      pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') || 'groups'
+    };
     this.workspaceMenuIntractEdata = {
       id: 'workspace-menu-button',
       type: 'click',
@@ -152,6 +175,7 @@ export class MainMenuComponent implements OnInit {
     this.signInIntractEdata = {
       id: ' signin-tab',
       type: 'click',
+      pageid: this.router.url
     };
   }
 
@@ -171,34 +195,6 @@ export class MainMenuComponent implements OnInit {
   showSideBar() {
     jQuery('.ui.sidebar').sidebar('setting', 'transition', 'overlay').sidebar('toggle');
   }
-  navigateTo(url) {
-    return this.slug ? this.slug + url : url;
-  }
-  getUrl() {
-    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((urlAfterRedirects: NavigationEnd) => {
-      this.slug = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.params.slug');
-      if (_.includes(urlAfterRedirects.url, '/explore')) {
-        this.showExploreHeader = true;
-        const url = urlAfterRedirects.url.split('?')[0].split('/');
-        if (url.indexOf('explore') === 2) {
-          this.exploreRoutingUrl = url[1] + '/' + url[2];
-        } else {
-          this.exploreRoutingUrl = url[1];
-        }
-      } else if (_.includes(urlAfterRedirects.url, '/explore-course')) {
-        this.showExploreHeader = true;
-        const url = urlAfterRedirects.url.split('?')[0].split('/');
-        if (url.indexOf('explore-course') === 2) {
-          this.exploreRoutingUrl = url[1] + '/' + url[2];
-        } else {
-          this.exploreRoutingUrl = url[1];
-        }
-      } else {
-        this.showExploreHeader = false;
-      }
-      this.signInIntractEdata['pageid'] = this.exploreRoutingUrl;
-    });
-  }
 
   navigateToWorkspace() {
     const authroles = this.permissionService.getWorkspaceAuthRoles();
@@ -208,7 +204,35 @@ export class MainMenuComponent implements OnInit {
   }
 
   getFeatureId(featureId, taskId) {
-    return [{ id: featureId, type: 'Feature' }, { id: taskId, type: 'Task' }];
+    return [{id: featureId, type: 'Feature'}, {id: taskId, type: 'Task'}];
   }
 
+  navigateToGroups() {
+    return !this.userService.loggedIn ? EXPLORE_GROUPS : MY_GROUPS ;
+  }
+  isLayoutAvailable() {
+    return this.layoutService.isLayoutAvailable(this.layoutConfiguration);
+  }
+
+  switchLayout() {
+    this.layoutService.initiateSwitchLayout();
+    this.generateInteractTelemetry();
+  }
+ 
+
+  generateInteractTelemetry() {
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env') || 'main-header',
+        cdata: []
+      },
+      edata: {
+        id: 'switch-theme',
+        type: 'click',
+        pageid: this.router.url,
+        subtype: this.layoutConfiguration ? 'joy' : 'classic'
+      }
+    };
+    this.telemetryService.interact(interactData);
+  }
 }

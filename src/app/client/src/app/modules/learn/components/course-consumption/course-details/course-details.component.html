@@ -1,0 +1,28 @@
+<div class="training-info" *ngIf="courseHierarchy">
+  <h4 class="font-weight-bold">{{generaliseLabelService?.frmelmnts?.lbl?.courseDetails}}</h4>
+  <div class="training-relevant my-16">
+    <h6 class="mt-0 mb-8 fsmall training-relevant__heading">{{generaliseLabelService?.frmelmnts?.lbl?.courseRelevantFor}}</h6>
+    <div class="training-relevant__class mb-4 sb-color-gray-400 fnormal" *ngIf="courseHierarchy?.gradeLevel">
+      <span>{{resourceService?.frmelmnts?.lbl?.class}}:&nbsp;</span><span>{{ courseHierarchy?.gradeLevel?.join(', ')}}</span>
+    </div>
+    <div class="training-relevant__subject mb-4 sb-color-gray-400 fnormal" *ngIf="courseHierarchy?.subject">
+      <span>{{resourceService?.frmelmnts?.lbl?.subject}}:&nbsp;</span><span>{{ courseHierarchy?.subject}}</span></div>
+    <div class="training-relevant__medium mb-4 sb-color-gray-400 fnormal" *ngIf="courseHierarchy?.medium">
+      <span>{{resourceService?.frmelmnts?.lbl?.medium}}:&nbsp;</span><span>{{ courseHierarchy?.medium}}</span>
+    </div>
+    <div *ngIf="courseHierarchy?.description">
+      <label class="fsmall mt-16 mb-8">{{resourceService?.frmelmnts?.lbl?.description}}</label>
+      <p *ngIf="!readMore" class="traning-relevant__description sb-color-gray-400 fnormal">
+        {{ courseHierarchy?.description | slice:0:200 }}&nbsp;
+        <span class="ui cardsKnowMore mouse-pointer"
+          *ngIf="courseHierarchy?.description?.length > 200 && readMore === false"
+          (click)="readMore = !readMore;">{{resourceService?.frmelmnts?.lbl?.readmore}}</span>
+      </p>
+      <p *ngIf="readMore" class="traning-relevant__description sb-color-gray-400">
+        {{ courseHierarchy?.description}}&nbsp;
+        <span class="ui cardsKnowMore mouse-pointer"
+          (click)="readMore = false;">{{resourceService?.frmelmnts?.lbl?.readless}}</span>
+      </p>
+    </div>
+  </div>
+</div>

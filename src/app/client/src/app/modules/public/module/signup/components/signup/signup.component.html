@@ -1,26 +1,40 @@
-<sui-modal [isClosable]="false" class="fullpage" [size]="'fullscreen'" [isClosable]="'false'" #modal [mustScroll]="'true'">
   <div class="signup-background">
-    <div class="ui raised shadow container segment">
-      <div class="d-flex flex-jc-center mb-24">
-        <img class="image centered" alt={{tenantName}} height="56" src="{{logo}}">
-      </div>
-      <div class="width-300 mx-auto">
+    <div class="fullpage-background-image">
+      <div class="container-wrapper">
+        <div class="text-center mb-24">
+          <img class="image centered" alt={{tenantName}} height="56" src="{{logo}}">
+        </div>
         <div *ngIf="showSignUpForm" [appTelemetryStart]="telemetryStart">
-          <!-- <div *ngIf="telemetryImpression" [appTelemetryImpression]="telemetryImpression" class="fs-1 font-weight-bold mb-20 text-center">{{resourceService.frmelmnts.lbl.signUp}}</div> -->
+          <!-- <div *ngIf="telemetryImpression" [appTelemetryImpression]="telemetryImpression" class="fs-1 font-weight-bold mb-16 text-center">{{resourceService.frmelmnts.lbl.signUp}}</div> -->
           <div *ngIf="telemetryImpression" [appTelemetryImpression]="telemetryImpression"
-            class="sb-account-header-text  text-center">
+            class="title text-center">
             {{resourceService.frmelmnts.lbl.registerOn | interpolate:'{instance}': instance}}</div>
-          <div class="text-center mt-16 grey-text mb-32">
-            {{resourceService.frmelmnts.lbl.provideDetails | interpolate:'{instance}': instance}}</div>
-          <form class="ui form borderd" [formGroup]="signUpForm" autocomplete="off" id="signUpForm">
-            <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.name.touched && signUpForm.controls['name'].errors && signUpForm.controls['name'].errors.required">{{resourceService.frmelmnts.lbl.fnameLname}}</label>
+          <div class="year-birth my-16 required">
+            <label class="mr-16">{{resourceService.frmelmnts?.lbl?.yearOfBirth}}<span class="sb-color-red">*</span></label>
+           <label> <sui-select class="selection" [options]="birthYearOptions" placeholder="{{resourceService.frmelmnts?.lbl?.year}}"
+                        (selectedOptionChange)="changeBirthYear($event)"
+                        #select>
+              <sui-select-option *ngFor="let option of select.filteredOptions"
+                                 [value]="option">
+              </sui-select-option>
+            </sui-select></label>
+          </div>
+          <form class="ui form borderd" [ngClass]="{'Off':disableForm, 'On':!disableForm}" [formGroup]="signUpForm" autocomplete="off" id="signUpForm">
+            <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.name.touched && signUpForm.controls['name'].errors && signUpForm.controls['name'].errors.required">{{resourceService.frmelmnts?.lbl?.enterName}}</label>
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.name.touched && signUpForm.controls['name'].errors && signUpForm.controls['name'].errors.pattern">{{resourceService.frmelmnts.lbl.enterValidName}}</label>
-            <div class="required field mb-20">
-              <label class="mb-10 font-weight-bold" *ngIf="!(signUpForm.controls.name.touched && signUpForm.controls['name'].errors)">{{resourceService.frmelmnts.lbl.fullName}}</label>
-              <input class="sb-form-control" [ngClass]="{'orange-border': signUpForm.controls.name.touched && signUpForm.controls['name'].errors}" formControlName="name"
-                type="text" name="name" placeholder="{{resourceService.frmelmnts.lbl.fullName}}">
+            <div class="required field mb-8">
+              <label class="mb-10 font-weight-bold" *ngIf="!(signUpForm.controls.name.touched && signUpForm.controls['name'].errors)">{{resourceService.frmelmnts?.lbl?.name}}</label>
+              <label for="signup-form-name" class="hide">{{resourceService.frmelmnts?.lbl?.name}}</label>
+              <input id="signup-form-name" class="sb-form-control" [ngClass]="{'orange-border': signUpForm.controls.name.touched && signUpForm.controls['name'].errors}" formControlName="name"
+                type="text" name="name" placeholder="{{resourceService.frmelmnts?.lbl?.name}}">
             </div>
-            <div class="required field mb-20"><label class="pt-0 font-weight-bold" *ngIf="!(signUpForm.controls.phone.touched && signUpForm.controls['phone'].errors) && !(signUpForm.controls.email.touched && signUpForm.controls['email'].errors) && !showUniqueError">{{resourceService.frmelmnts.lbl.phoneOrEmail}}</label></div>
+            <div class="required field mb-16"
+                 *ngIf="!(signUpForm.controls.phone.touched && signUpForm.controls['phone'].errors) && !(signUpForm.controls.email.touched && signUpForm.controls['email'].errors) && !showUniqueError">
+              <label id="phoneOrEmail" class="pt-0 font-weight-bold">
+                {{resourceService.frmelmnts.lbl.phoneOrEmail}}
+                <span *ngIf="isMinor">{{resourceService.frmelmnts?.lbl?.parentOrGuardian}}</span>
+              </label>
+            </div>
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.phone.touched && signUpForm.controls['phone'].errors">{{resourceService.frmelmnts.lbl.validPhone}}</label>
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.email.touched && signUpForm.controls['email'].errors">{{resourceService.frmelmnts.lbl.validEmail}}</label>
             <label class="ui basic blue error label pt-0" *ngIf="showUniqueError && !(signUpForm.controls.phone.touched && signUpForm.controls['phone'].errors) && !(signUpForm.controls.email.touched && signUpForm.controls['email'].errors)">{{showUniqueError}}</label>
@@ -38,37 +52,44 @@
                 </div>
               </div>
             </div>
+            <div>
+              <label class="mb-10 font-weight-bold">{{resourceService.frmelmnts.lbl.OTPmsgforuser}}</label>
+            </div>
             <div class="field" *ngIf="showContact === 'email'">
               <input class="sb-form-control" type="email" [ngClass]="{'orange-border': signUpForm.controls.email.touched && signUpForm.controls['email'].errors}"
-                formControlName="email" name="email" placeholder="{{resourceService.frmelmnts.lbl.email}}">
+                formControlName="email" name="email" placeholder="{{resourceService.frmelmnts.lbl.email}}" (blur)="getReCaptchaToken('email')">
             </div>
             <div class="field" *ngIf="showContact === 'phone'">
               <div class="ui left icon input">
-                <input class="sb-form-control" [ngClass]="{'orange-border': signUpForm.controls.phone.touched && signUpForm.controls['phone'].errors}" formControlName="phone"
-                  type="number" name="phone" placeholder="{{resourceService.frmelmnts.lbl.tenDigitPhone}}">
+                <label for="signup-form-phone" class="hide">{{resourceService.frmelmnts.lbl.tenDigitPhone}}</label>
+                <input id="signup-form-phone" class="sb-form-control" [ngClass]="{'orange-border': signUpForm.controls.phone.touched && signUpForm.controls['phone'].errors}" formControlName="phone"
+                  type="number" name="phone" placeholder="{{resourceService.frmelmnts.lbl.tenDigitPhone}}" (blur)="getReCaptchaToken('phone')">
                 <i class=" icon">+91-</i>
               </div>
             </div>
-            <div class="required field mb-20">
+            <div class="required field mb-16">
               <label class="mb-10 font-weight-bold">{{resourceService.frmelmnts.lbl.password}}</label>
               <div class="ui icon input">
-                <input class="sb-form-control" [ngClass]="{'orange-border': signUpForm.controls.password.touched && signUpForm.controls['password'].errors}" [type]="showPassword ? 'text' : 'password'"
+                <label for="signup-form-password" class="hide">{{resourceService.frmelmnts.lbl.EnterPassword}}</label>
+                <input id="signup-form-password" class="sb-form-control" [ngClass]="{'orange-border': signUpForm.controls.password.touched && signUpForm.controls['password'].errors}" [type]="showPassword ? 'text' : 'password'"
                   formControlName="password" name="password" placeholder="{{resourceService.frmelmnts.lbl.EnterPassword}}">
-                <i class="icon large sb-icon-preview link opacity-1" (click)="displayPassword()"></i>
+                <!-- <i class="icon large sb-icon-preview link opacity-1" (click)="displayPassword()"></i> -->
+                <img class="password-showhideimage" src="{{ showPassword ? 'assets/images/password-hidden.svg' : 'assets/images/password-visibile.svg'}}" alt="show-password.svg" (click)="displayPassword()">
               </div>
               <label class="ui basic label pt-8 p-0 m-0 infotext line-height-1-3" [ngClass]="{'error': ((signUpForm.controls.password.touched && signUpForm.controls['password'].errors))}">{{passwordError}}</label>
             </div>
             <label class="ui basic blue error label pt-0" *ngIf="signUpForm.controls.confirmPassword.touched && signUpForm.controls['confirmPassword'].errors">{{resourceService.frmelmnts.lbl.errorConfirmPassword}}</label>
-            <div class="required field mb-20">
+            <div class="required field mb-16">
               <label class="mb-10 font-weight-bold" *ngIf="!(signUpForm.controls.confirmPassword.touched && signUpForm.controls['confirmPassword'].errors)">{{resourceService.frmelmnts.lbl.confirmPassword}}</label>
-              <input class="sb-form-control" [ngClass]="{'orange-border': signUpForm.controls.confirmPassword.touched && signUpForm.controls['confirmPassword'].errors}"
+              <label for="signup-form-confirmPassword" class="hide">{{resourceService.frmelmnts.lbl.reEnterPassword}}</label>
+              <input id="signup-form-confirmPassword" class="sb-form-control" [ngClass]="{'orange-border': signUpForm.controls.confirmPassword.touched && signUpForm.controls['confirmPassword'].errors}"
                 formControlName="confirmPassword" type="password" name="confirmPassword" placeholder="{{resourceService.frmelmnts.lbl.reEnterPassword}}">
             </div>
             <div class="sb-requirement-field mb-8 font-weight-bold">
               {{resourceService.frmelmnts.lbl.fieldsmarked}}<span class="sb-error">*</span>{{resourceService.frmelmnts.lbl.mandatory  }}
           </div>
             <!-- Google invisible recaptcha -->
-            <re-captcha #captchaRef="reCaptcha" (resolved)="resolved($event)" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
+            <re-captcha *ngIf="isP1CaptchaEnabled === 'true'" #captchaRef="reCaptcha" (resolved)="$event && resolved($event) && captchaRef.reset()" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
             <div class="required sb-checkbox sb-checkbox-primary sb-field mt-16">
               <input type="checkbox" id="tncAccepted" role="checkbox" (click)="generateTelemetry($event)"
                      formControlName="tncAccepted" name="tncAccepted">
@@ -80,16 +101,15 @@
             </div>
 
           </form>
-          <button appTelemetryInteract [telemetryInteractEdata]="submitInteractEdata"  [telemetryInteractCdata]="telemetryCdata" [ngClass]="{'grey':disableSubmitBtn, 'light-sea-green':!disableSubmitBtn}" class="ui button width-300 mt-10" tabindex="0"
-            (click)="captchaRef.execute();">{{resourceService.frmelmnts.lbl.signUp}}</button>
+          <button appTelemetryInteract [telemetryInteractEdata]="submitInteractEdata"  [telemetryInteractCdata]="telemetryCdata" [ngClass]="{'sb-btn-disabled':disableSubmitBtn, 'sb-btn-primary':!disableSubmitBtn}" class="sb-btn sb-btn-normal width-100 mt-10" tabindex="0"
+            (click)="submitSignupForm()" [disabled]="disableSubmitBtn"  >{{resourceService.frmelmnts.lbl.signUp}}</button>
           <a (click)="captchaRef.reset()" id="resetGoogleCaptcha"></a>
         </div>
         <div *ngIf="!showSignUpForm">
-          <app-otp [signUpdata]="signUpForm" [tncLatestVersion]="tncLatestVersion" (redirectToParent)="showParentForm($event)"></app-otp>
+          <app-otp [isMinor]="isMinor" [signUpdata]="signUpForm" [tncLatestVersion]="tncLatestVersion" (redirectToParent)="showParentForm($event)"></app-otp>
         </div>
       </div>
     </div>
   </div>
   <app-tnc-popup (close)="showAndHidePopup(false)" [tncUrl]="termsAndConditionLink" #termsAndCondPopUp *ngIf="showTncPopup">
   </app-tnc-popup>  
-</sui-modal>

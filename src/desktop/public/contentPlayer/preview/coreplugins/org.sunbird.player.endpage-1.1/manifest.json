@@ -1,0 +1,18 @@
+{
+    "id": "org.sunbird.player.endpage",
+    "ver": "1.1",
+    "shortId": "org.sunbird.player.endpage",
+    "author": "Gourav More",
+    "description": "",
+    "publishedDate": "",
+    "renderer": {
+        "main": "renderer/plugin.js",
+        "dependencies": [
+            {"type": "css", "src": "renderer/templates/style.css"}
+        ]
+    },
+    "dependencies": [
+        {"plugin": "org.sunbird.player.userswitcher", "ver": "1.0", "scope": "renderer" }
+    ]   
+
+}

@@ -5,8 +5,8 @@ import { ServerResponse, RequestParam, HttpOptions } from '@sunbird/shared';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UUID } from 'angular2-uuid';
-import * as moment from 'moment';
 import * as _ from 'lodash-es';
+import dayjs from 'dayjs';
 
 /**
  * Service to provide base CRUD methods to make api request.
@@ -16,6 +16,8 @@ import * as _ from 'lodash-es';
   providedIn: 'root'
 })
 export class DataService {
+  static userId: string;
+  static sessionId: string;
   /**
    * Contains rootOrg Id
    */
@@ -44,8 +46,11 @@ export class DataService {
    * Constructor
    * @param {HttpClient} http HttpClient reference
    */
+  appVersion: string;
   constructor(http: HttpClient) {
     this.http = http;
+    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
+    this.appVersion = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
   }
 
   /**
@@ -173,12 +178,16 @@ export class DataService {
    * for preparing headers
    */
   private getHeader(headers?: HttpOptions['headers']): HttpOptions['headers'] {
+    const _uuid = UUID.UUID();
     const default_headers = {
       'Accept': 'application/json',
       // 'X-Consumer-ID': 'X-Consumer-ID',
       'X-Source': 'web',
-      'ts': moment().format(),
-      'X-msgid': UUID.UUID()
+      'ts': dayjs().format(),
+      'X-msgid': _uuid,
+      'X-Request-ID': _uuid,
+      'X-App-Version': this.appVersion,
+      'X-Session-ID': DataService.sessionId
     };
     try {
       this.deviceId = (<HTMLInputElement>document.getElementById('deviceId')).value;
@@ -195,6 +204,9 @@ export class DataService {
     }
     if (this.appId) {
       default_headers['X-App-Id'] = this.appId;
+    }
+    if (DataService.userId) {
+      default_headers['X-User-ID'] = DataService.userId;
     }
     if (headers) {
       return { ...default_headers, ...headers };

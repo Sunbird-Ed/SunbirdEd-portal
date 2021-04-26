@@ -1,0 +1,11 @@
+@import "variables";
+@import "mixins/mixins";
+
+.no-result-container{
+    max-width: calculateRem(420px);
+    width:100%;
+    margin: 0 auto;
+    &__para{
+        color:var(--gray-800);
+    }
+}

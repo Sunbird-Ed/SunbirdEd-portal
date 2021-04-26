@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { ResourceService, ConfigService, BrowserCacheTtlService, SharedModule } from '@sunbird/shared';
+import { ResourceService, ConfigService, BrowserCacheTtlService, SharedModule, LayoutService } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui';
 import { async, ComponentFixture, TestBed, fakeAsync, tick, inject} from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -11,8 +11,11 @@ import { Location } from '@angular/common';
 import { ActivatedRoute, Router, Params, UrlSegment, NavigationEnd} from '@angular/router';
 import { UserService, LearnerService, ContentService } from '@sunbird/core';
 import { mockResponse } from './search.component.spec.data';
-
+import { CoreModule } from '@sunbird/core';
+import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
+import { configureTestSuite } from '@sunbird/test-util';
+
 describe('SearchComponent', () => {
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
@@ -31,12 +34,13 @@ describe('SearchComponent', () => {
       observer.complete();
     });
   }
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SearchComponent ],
-      imports: [SharedModule.forRoot(), SuiModule, FormsModule, RouterTestingModule, HttpClientTestingModule],
-      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, UserService, LearnerService,
+      declarations: [ ],
+      imports: [SharedModule.forRoot(), TelemetryModule.forRoot(),
+        CoreModule, SuiModule, FormsModule, RouterTestingModule, HttpClientTestingModule],
+      providers: [ResourceService, ConfigService, CacheService, LayoutService, BrowserCacheTtlService, UserService, LearnerService, LayoutService,
       ContentService, { provide: Router, useClass: MockRouter},
          { provide: ActivatedRoute, useValue: {queryParams: {
           subscribe: (fn: (value: Params) => void) => fn({
@@ -51,6 +55,7 @@ describe('SearchComponent', () => {
     location = TestBed.get(Location);
     fixture = TestBed.createComponent(SearchComponent);
     component = fixture.componentInstance;
+    component.layoutConfiguration = {};
   });
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -109,5 +114,23 @@ describe('SearchComponent', () => {
     component.ngOnInit();
     expect(component.selectedOption).toEqual('Users');
   });
-
+  xit('should call search redo layout', () => {
+    component.isLayoutAvailable();
+    expect(component).toBeTruthy();
+  });
+  it('should call setSearchPlaceHolderValue method', () => {
+    component.selectedOption = 'Users';
+    component.searchDisplayValueMappers = {User: 'user'};
+    spyOn(component, 'setSearchPlaceHolderValue');
+    component.setSearchPlaceHolderValue();
+    expect(component.setSearchPlaceHolderValue).toHaveBeenCalled();
+  });
+  it('should call onEnter method and redirect to mydownloads page when user is offline', ( ) => {
+    component.isDesktopApp = true;
+    component.isConnected = false;
+    const key = 'hello';
+    component.queryParam['key'] = key;
+    component.onEnter(key);
+    expect(router.navigate).toHaveBeenCalledWith(['mydownloads'], {queryParams:  component.queryParam});
+  });
 });

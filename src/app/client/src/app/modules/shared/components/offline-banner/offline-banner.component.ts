@@ -1,7 +1,6 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Input } from '@angular/core';
 import { ResourceService } from './../../services';
-import { environment } from '@sunbird/environment';
 import * as _ from 'lodash-es';
 
 @Component({
@@ -29,8 +28,6 @@ export class OfflineBannerComponent implements OnInit {
     /* stores the offline desktop download url from envHelper variable */
   public appDownloadUrl = (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl')) ?
     (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl')).value : '';
-
-  public isOffline: boolean = environment.isOffline;
 
   constructor(public router: Router, public resourceService: ResourceService, public activatedRoute: ActivatedRoute) {
     this.pageId = _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid');

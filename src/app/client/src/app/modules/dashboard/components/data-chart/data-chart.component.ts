@@ -2,17 +2,17 @@
  * Component to render & apply filter on admin chart
  * @author Ravinder Kumar
  */
-
-import { UsageService } from './../../services';
+import { EventEmitter, Output } from '@angular/core';
+import { UsageService, ReportService } from './../../services';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { BaseChartDirective } from 'ng2-charts';
-import { Component, OnInit, Input, ViewChild, OnDestroy, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnDestroy, ElementRef, ChangeDetectorRef } from '@angular/core';
 import * as _ from 'lodash-es';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { Subscription, Subject, timer } from 'rxjs';
-import { distinctUntilChanged, map, debounceTime, takeUntil, switchMap } from 'rxjs/operators';
+import { Subscription, Subject, timer, of } from 'rxjs';
+import { map, takeUntil, switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
 import { IInteractEventObject } from '@sunbird/telemetry';
 import { IBigNumberChart } from '../../interfaces/chartData';
@@ -25,33 +25,36 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
   @Input() chartInfo: any;
   @Input() telemetryInteractObject: IInteractEventObject;
-  public unsubscribe = new Subject<void>();
-  // contains the chart configuration
-  chartConfig;
-  chartData;
-  showStats: Boolean = false;
-  chartType;
-  chartColors;
-  legend;
-  chartOptions;
+  @Input() hideElements = false;
+  @Input() isUserReportAdmin = false;
+  @Output() openAddSummaryModal = new EventEmitter();
+  @Input() hash: string;
+  @Input() globalSelectedFilters:any;
+ 
+ public unsubscribe = new Subject<void>(); 
+ // contains the chart configuration
+  chartConfig: any;
+  chartData: any;
+  chartType: any;
+  chartColors: any;
+  legend: any;
+  chartOptions: any;
   loadash = _;
-  datasets;
-  chartLabels = [];
+  datasets: any;
+  chartLabels: any = [];
   filters: Array<{}>;
-  filtersFormGroup: FormGroup;
   showFilters: Boolean = false;
   filtersSubscription: Subscription;
   noResultsFound: Boolean;
-
+  showStats: Boolean = false;
   availableChartTypeOptions = ['Bar', 'Line'];
+  pickerMinDate: any; // min date that can be selected in the datepicker
+  pickerMaxDate: any; // max date that can be selected in datepicker
 
-  pickerMinDate; // min date that can be selected in the datepicker
-  pickerMaxDate; // max date that can be selected in datepicker
+  selectedStartDate: any;
+  selectedEndDate: any;
 
-  selectedStartDate;
-  selectedEndDate;
-
-  datePickerConfig = { applyLabel: 'Set Date', format: 'DD-MM-YYYY' };
+  datePickerConfig: any = { applyLabel: 'Set Date', format: 'DD-MM-YYYY' };
   alwaysShowCalendars: boolean;
 
   resultStatistics = {};
@@ -65,82 +68,45 @@ export class DataChartComponent implements OnInit, OnDestroy {
   lastUpdatedOn: any;
   showLastUpdatedOn: Boolean = false;
   showChart: Boolean = false;
+  chartSummary$: any;
+  private _chartSummary: string;
+  private _globalFilter; // private property _item
+  resetFilters;
+  filterPopup:Boolean = false;
+  filterOpen:Boolean =false;
+  chartSummarylabel:string;
+  currentFilters:Array<{}>;
+  @ViewChild('datePickerForFilters', {static: false}) datepicker: ElementRef;
+  @ViewChild('chartRootElement', {static: false}) chartRootElement;
+  @ViewChild('chartCanvas', {static: false}) chartCanvas;
+  filterType:string = "chart-filter";
+  dateFilters:Array<string>;
+ 
 
-  @ViewChild('datePickerForFilters') datepicker: ElementRef;
-
-  ranges: any = {
-    'Today': [moment(), moment()],
-    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-    'This Month': [moment().startOf('month'), moment().endOf('month')],
-    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-  };
-
-  @ViewChild(BaseChartDirective) chartDirective: BaseChartDirective;
-  constructor(public resourceService: ResourceService, private fb: FormBuilder,
-    private toasterService: ToasterService, private activatedRoute: ActivatedRoute, private sanitizer: DomSanitizer,
-    private usageService: UsageService) {
+  @ViewChild(BaseChartDirective, {static: false}) chartDirective: BaseChartDirective;
+  constructor(public resourceService: ResourceService, private fb: FormBuilder, private cdr: ChangeDetectorRef,
+    private toasterService: ToasterService, public activatedRoute: ActivatedRoute, private sanitizer: DomSanitizer,
+    private usageService: UsageService, private reportService: ReportService) {
     this.alwaysShowCalendars = true;
   }
 
+ 
   ngOnInit() {
+
     this.chartConfig = _.get(this.chartInfo, 'chartConfig');
     this.chartData = _.get(this.chartInfo, 'chartData');
+    this.chartSummarylabel = "Add " + _.get(this.resourceService, 'frmelmnts.lbl.chartSummary');
+    
     if (_.get(this.chartInfo, 'lastUpdatedOn')) {
       this.lastUpdatedOn = moment(_.get(this.chartInfo, 'lastUpdatedOn')).format('DD-MMMM-YYYY');
     }
     this.prepareChart();
     this.setTelemetryCdata();
-    if (this.filters) {
-      this.showFilters = false;
-      this.buildFiltersForm();
-    }
+    this.cdr.detectChanges();
+
   }
 
-  buildFiltersForm() {
-    this.filtersFormGroup = this.fb.group({});
-    if (_.get(this.chartConfig, 'labelsExpr')) {
-      _.forEach(this.filters, filter => {
-        if (filter.controlType === 'date' || /date/i.test(_.get(filter, 'reference'))) {
-          const dateRange = _.uniq(_.map(this.chartData, _.get(filter, 'reference')));
-          this.pickerMinDate = moment(dateRange[0], 'DD-MM-YYYY');
-          this.pickerMaxDate = moment(dateRange[dateRange.length - 1], 'DD-MM-YYYY');
-          this.dateFilterReferenceName = filter.reference;
-        }
-        this.filtersFormGroup.addControl(_.get(filter, 'reference'), this.fb.control(''));
-        filter.options = _.uniq(_.map(this.chartData, data => data[filter.reference].toLowerCase()));
-      });
-      if (this.filters.length > 0) {
-        this.showFilters = true;
-      }
-      this.filtersSubscription = this.filtersFormGroup.valueChanges
-        .pipe(
-          takeUntil(this.unsubscribe),
-          map(filters => {
-            return _.omitBy(filters, _.isEmpty);
-          }),
-          debounceTime(100),
-          distinctUntilChanged()
-        )
-        .subscribe((filters) => {
-          this.selectedFilters = _.omit(filters, this.dateFilterReferenceName); // to omit date inside labels
-          const res: Array<{}> = _.filter(this.chartData, data => {
-            return _.every(filters, (value, key) => {
-              return _.includes(value, data[key].toLowerCase());
-            });
-          });
-          this.noResultsFound = (res.length > 0) ? false : true;
-          if (this.noResultsFound) {
-            this.toasterService.error(this.resourceService.messages.stmsg.m0008);
-          }
-          this.getDataSetValue(res);
-
-        }, (err) => {
-          console.log(err);
-        });
-    }
-  }
+ 
 
   private calculateBigNumber() {
     const bigNumbersConfig = _.get(this.chartConfig, 'bigNumbers');
@@ -159,7 +125,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
     }
   }
 
-  private checkForExternalChart() {
+  private checkForExternalChart(): boolean {
     const iframeConfig = _.get(this.chartConfig, 'iframeConfig');
     if (iframeConfig) {
       if (_.get(iframeConfig, 'sourceUrl')) {
@@ -174,15 +140,41 @@ export class DataChartComponent implements OnInit, OnDestroy {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
+  /**
+   * @description show percentage in pie charts
+   * @private
+   * @memberof DataChartComponent
+   */
+  private showPercentageInCharts = () => {
+    return {
+      label: (tooltipItem, data) => {
+        const dataset = data.datasets[tooltipItem.datasetIndex];
+        const total = dataset.data.reduce((previousValue, currentValue, currentIndex, array) => {
+          return previousValue + currentValue;
+        });
+        const currentVal = dataset.data[tooltipItem.index];
+        const percentage = Math.floor(((currentVal / total) * 100) + 0.5);
+        return `${data.labels[tooltipItem.index]}: ${currentVal}  ( ${percentage} % )`;
+      }
+    };
+  }
+
   prepareChart() {
     if (!this.checkForExternalChart()) {
+      
       this.chartOptions = _.get(this.chartConfig, 'options') || { responsive: true };
-      this.chartColors = _.get(this.chartConfig, 'colors') || ['#024F9D'];
+      this.chartColors = _.get(this.chartConfig, 'colors') || [];
       this.chartType = _.get(this.chartConfig, 'chartType') || 'line';
+
+      // shows percentage in pie chart if showPercentage config is enabled.
+      if (this.chartType === 'pie' && _.get(this.chartOptions, 'showPercentage')) {
+        (this.chartOptions.tooltips || (this.chartOptions.tooltips = {})).callbacks = this.showPercentageInCharts();
+      }
+
       this.legend = (_.get(this.chartConfig, 'legend') === false) ? false : true;
       this.showLastUpdatedOn = false;
       this.showChart = false;
-      if (_.get(this.chartConfig, 'options.showLastUpdatedOn') && this.lastUpdatedOn) {
+      if (_.get(this.chartConfig, 'options.showLastUpdatedOn') || this.lastUpdatedOn) {
         this.showLastUpdatedOn = true;
       }
       if ((_.get(this.chartConfig, 'labelsExpr') || _.get(this.chartConfig, 'labels')) && _.get(this.chartConfig, 'datasets')) {
@@ -197,90 +189,123 @@ export class DataChartComponent implements OnInit, OnDestroy {
       this.calculateBigNumber();
     }
     const refreshInterval = _.get(this.chartConfig, 'options.refreshInterval');
-    if (refreshInterval) { this.refreshChartDataAfterInterval(refreshInterval); }
+    if (refreshInterval) {
+       this.refreshChartDataAfterInterval(refreshInterval);
+    }
     this.filters = _.get(this.chartConfig, 'filters') || [];
+    this.chartSummary$ = this.getChartSummary();
   }
 
   refreshChartDataAfterInterval(interval) {
     timer(interval, interval).pipe(
       switchMap(val => {
-        return this.usageService.getData(_.get(this.chartInfo, 'downloadUrl'));
+        return this.usageService.getData(_.head(_.get(this.chartInfo, 'downloadUrl')).path);
       }),
       takeUntil(this.unsubscribe)
     ).subscribe(apiResponse => {
       if (_.get(apiResponse, 'responseCode') === 'OK') {
         const chartData = _.get(apiResponse, 'result.data');
-        this.getDataSetValue(chartData);
-        // to apply current filters to new updated chart data;
-        const currentFilterValue = _.get(this.filtersFormGroup, 'value');
-        this.filtersFormGroup.patchValue(currentFilterValue);
+        this.chartData = chartData;
+        this.resetFilters = { data:chartData };
+
       }
     }, err => {
       console.log('failed to update chart data', err);
     });
   }
 
-  getDataSetValue(chartData = this.chartData) {
+  private setChartLabels = (groupedDataBasedOnLabels) => {
     let labels = [];
-    let groupedDataBasedOnLabels;
-    if (_.get(this.chartConfig, 'labelsExpr')) {
-      groupedDataBasedOnLabels = _.groupBy(chartData, (data) => _.trim(data[_.get(this.chartConfig, 'labelsExpr')].toLowerCase()));
-      labels = _.keys(groupedDataBasedOnLabels);
-    }
+    labels = _.keys(groupedDataBasedOnLabels);
+
+    // if hard-codes labels are there use them.
     if (_.get(this.chartConfig, 'labels')) {
       labels = _.get(this.chartConfig, 'labels');
     }
+    _.forEach(labels, (label, key) => {
+      labels[key] = _.capitalize(label);
+    });
+
     this.chartLabels = labels;
+  }
+
+  private sortData(chartData, labelsExpr) {
+    return _.orderBy(chartData, data => {
+      const date = moment(data[labelsExpr], 'DD-MM-YYYY');
+      if (date.isValid()) { return date; }
+      return data[labelsExpr];
+    });
+  }
+
+  getDataSetValue(chartData = this.chartData) {
+    let groupedDataBasedOnLabels;
+    const labelsExpr = _.get(this.chartConfig, 'labelsExpr');
+    if (labelsExpr) {
+      const sortedData = this.sortData(chartData, labelsExpr);
+      groupedDataBasedOnLabels = _.groupBy(sortedData, (data) =>  ( data[labelsExpr]? (_.trim(data[labelsExpr].toLowerCase()) ) : ""  ));
+    }
+    this.setChartLabels(groupedDataBasedOnLabels);
     this.datasets = [];
+    const isStackingEnabled = this.checkForStacking();
     _.forEach(this.chartConfig.datasets, dataset => {
+      const hidden = _.get(dataset, 'hidden') || false;
+      const fill = _.isBoolean(_.get(dataset, 'fill')) ? _.get(dataset, 'fill') : true;
+      const type = _.get(dataset, 'type');
+      const lineThickness = _.get(dataset, 'lineThickness');
+      const goalValue = _.get(dataset, 'goal');
       this.datasets.push({
         label: dataset.label,
-        data: _.get(dataset, 'data') || this.getData(groupedDataBasedOnLabels, dataset['dataExpr']),
-        hidden: _.get(dataset, 'hidden') || false
+        data: (goalValue && this.getGoalsDataset(chartData, +goalValue)) || (_.get(dataset, 'data') ||
+          this.getData(groupedDataBasedOnLabels, dataset['dataExpr'], +_.get(dataset, 'top'))),
+        hidden,
+        fill,
+        ...(isStackingEnabled) && { stack: _.get(dataset, 'stack') || 'default' },
+        ...(type && { type }),
+        ...(lineThickness) && { borderWidth: lineThickness }
       });
     });
-
     if (this.showGraphStats) {
-      _.forEach(this.datasets, dataset => {
-        this.resultStatistics[dataset.label] = {
-          sum: _.sumBy(dataset.data, (val) => _.toNumber(val)).toFixed(2),
-          min: _.minBy(dataset.data, (val) => _.toNumber(val)),
-          max: _.maxBy(dataset.data, (val) => _.toNumber(val)),
-          avg: dataset.data.length > 0 ? (_.sumBy(dataset.data, (val) => _.toNumber(val)) / dataset.data.length).toFixed(2) : 0
-        };
-      });
+      this.calculateGraphStats();
     }
   }
 
-  getData(groupedDataBasedOnLabels, dataExpr) {
+  private getGoalsDataset(chartData, goalValue: number) {
+    return _.fill(chartData, goalValue);
+  }
+
+  private calculateGraphStats() {
+    _.forEach(this.datasets, dataset => {
+      this.resultStatistics[dataset.label] = {
+        sum: _.sumBy(dataset.data, (val) => _.toNumber(val)).toFixed(2),
+        min: _.minBy(dataset.data, (val) => _.toNumber(val)),
+        max: _.maxBy(dataset.data, (val) => _.toNumber(val)),
+        avg: dataset.data.length > 0 ? (_.sumBy(dataset.data, (val) => _.toNumber(val)) / dataset.data.length).toFixed(2) : 0
+      };
+    });
+  }
+
+  private getData(groupedDataBasedOnLabels, dataExpr, pickTopNElements: number) {
+
     const data = _.mapValues(groupedDataBasedOnLabels, value => {
+      value = value.filter(element=>{
+        if(element[dataExpr]){
+          return element;
+        }
+      })
       return _.sumBy(value, (o) => +o[dataExpr]);
     });
+
+    // Currently enabled for only pie charts
+    if (this.chartType === 'pie' && pickTopNElements) {
+      const sortedDataInDescOrder = _.orderBy(_.map(data, (val, key) => ({ key, val })), 'val', 'desc');
+      const topNData = _.slice(sortedDataInDescOrder, 0, pickTopNElements);
+      const restOfTheData = _.slice(sortedDataInDescOrder, pickTopNElements);
+      const result = _.mapValues(_.keyBy(topNData, 'key'), 'val');
+      result['others'] = _.sumBy(restOfTheData, 'val');
+      this.setChartLabels(result); // set the labels as per the new dataset.
+      return _.values(result);
+    }
     return _.values(data);
-  }
-
-
-  getDateRange({ startDate, endDate }, columnRef) {
-    this.selectedStartDate = moment(startDate).subtract(1, 'day');
-    this.selectedEndDate = moment(endDate).add(1, 'day');
-    const dateRange = [];
-    const currDate = moment(this.selectedStartDate).startOf('day');
-    const lastDate = moment(this.selectedEndDate).startOf('day');
-    while (currDate.add(1, 'days').diff(lastDate) < 0) {
-      dateRange.push(currDate.clone().format('DD-MM-YYYY'));
-    }
-    this.filtersFormGroup.get(columnRef).setValue(dateRange);
-  }
-
-  changeChartType(chartType) {
-    this.chartType = _.lowerCase(chartType);
-  }
-
-  resetFilter() {
-    this.filtersFormGroup.reset();
-    if (this.datepicker) {
-      this.datepicker.nativeElement.value = '';
-    }
   }
 
   ngOnDestroy() {
@@ -308,6 +333,135 @@ export class DataChartComponent implements OnInit, OnDestroy {
     };
   }
 
+  checkForStacking(): boolean {
+    if (_.includes(['bar', 'horizontalbar'], _.toLower(this.chartType))) {
+      // in case of bar chart check both the axes
+      return _.get(this.chartOptions, 'scales.yAxes') && _.get(this.chartOptions, 'scales.xAxes') &&
+        _.every(this.chartOptions.scales.yAxes, 'stacked') && _.every(this.chartOptions.scales.xAxes, 'stacked');
+    } else if (_.toLower(this.chartType) === 'line') {
+      // check for y axis only in case of line area chart
+      return _.get(this.chartOptions, 'scales.yAxes') && _.every(this.chartOptions.scales.yAxes, 'stacked');
+    }
+    return false;
+  }
+
+  public addChartSummary(): void {
+    const chartId = _.get(this.chartConfig, 'id');
+    if (chartId) {
+      this.openAddSummaryModal.emit({
+        title: this.chartSummarylabel,
+        type: 'chart',
+        chartId,
+        ...(this._chartSummary && { summary: this._chartSummary })
+      });
+    } else {
+      this.toasterService.error('Chart id is not present');
+    }
+  }
+
+  public getChartSummary() {
+    const chartId = _.get(this.chartConfig, 'id');
+    if (_.get(this.chartConfig, 'id')) {
+      return this.reportService.getLatestSummary({
+        reportId: this.activatedRoute.snapshot.params.reportId, chartId,
+        ...(this.hash && { hash: this.hash })
+      }).pipe(
+        map(chartSummary => {
+          this._chartSummary = '';
+          return _.map(chartSummary, summaryObj => {
+            const summary = _.get(summaryObj, 'summary');
+            this._chartSummary = summary;
+
+            if(summary){
+              this.chartSummarylabel = _.get(this.resourceService, 'frmelmnts.lbl.updateChartSummary');
+            }
+            
+            return {
+              label: _.get(this.resourceService, 'frmelmnts.lbl.chartSummary'),
+              text: [summary],
+              createdOn: _.get(summaryObj, 'createdon')
+            };
+          });
+        })
+      );
+    } else {
+      return of([]);
+    }
+  }
+
+   // use getter setter to define the property
+   get globalFilter(): any {
+    return this._globalFilter;
+  }
+
+  @Input()
+  set globalFilter(val: any) {
+    if(val){
+      val.chartData['selectedFilters'] = {};
+      this.chartData = val.chartData;
+      this.chartData['selectedFilters'] = { };
+      this.cdr.detectChanges();
+      this.getDataSetValue(val.chartData);
+      this.resetForm();
+    }
+  }
+
+  public filterChanged(data: any):void {
+    this.cdr.detectChanges();
+    this.currentFilters = data.filters;
+    let keys = Object.keys(this.currentFilters);
+    this.dateFilters = [];
+    this.filters.map(ele=>{
+        if(ele && ele['controlType'].toLowerCase()=="date"){
+          keys.map(item=>{
+            if(item==ele['reference']){
+              this.dateFilters.push(item);
+            }
+          })
+        }
+    });
+
+    if(data.filters){
+      this.chartData['selectedFilters'] = data.filters;
+    }else {
+      this.chartData['selectedFilters'] = {};
+    }
+    this.getDataSetValue(data.chartData);
+  }
+  public graphStatsChange(data:any):void {
+    this.showStats=data;
+  }
+  changeChartType(chartType) {
+    this.chartType = _.lowerCase(chartType);
+  }
+  filterModalPopup(operator){
+
+    if(operator == false){
+      this.filterPopup = false;
+      this.cdr.detectChanges();
+    }else {
+      if(this.currentFilters){
+        this.chartData['selectedFilters'] = this.currentFilters;
+      }else {
+        this.chartData['selectedFilters'] = {};
+      }
+      this.cdr.detectChanges();
+      this.filterPopup = true;
+    }
+    
+  }
+  
+  resetForm(){
+    this.chartData['selectedFilters'] = {};
+    this.resetFilters = { data: this.chartData,reset:true };
+    this.currentFilters = [];
+  }
+  checkFilterReferance(element){
+    if(this.dateFilters && this.dateFilters.includes(element)){
+      return true
+    } else {
+      return false
+    }
+  }
+
 }
-
-

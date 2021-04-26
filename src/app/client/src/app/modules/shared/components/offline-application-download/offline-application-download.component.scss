@@ -1,0 +1,28 @@
+@import "variables";
+@import "mixins/mixins";
+
+.offline-page-content {
+    height: 100%;
+    .desktop-icon{
+      width:100%;
+      max-width: calculateRem(300px);
+    }
+  }
+  .offline-download-card {
+    background-color: var(--white);
+    box-shadow: 0 calculateRem(10px) calculateRem(10px) 0 rgba(var(--rc-rgba-black), 0.1);
+    padding: calculateRem(40px);
+    &__heading {
+      color: var(--primary-color);
+      font-size: calculateRem(18px);
+      font-weight: bold;
+    }
+    &__description {
+      font-size: calculateRem(14px);
+      color:var(--gray-800);
+    }
+  &__extra {
+      color: var(--primary-color);
+      font-size: calculateRem(12px);
+    }
+  }

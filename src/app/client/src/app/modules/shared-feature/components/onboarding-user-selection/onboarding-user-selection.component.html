@@ -1,0 +1,38 @@
+<div class="sb-onboard" [appTelemetryImpression]="telemetryImpression">
+  <div class="sb-onboard__container">
+    <div class="sb-onboard__header">
+      <img [src]="tenantInfo?.logo" class="brand-logo" alt="logo" />
+      <h1>{{resourceService?.frmelmnts?.lbl?.welcomeToInstance | interpolate:'{instance}': tenantInfo?.titleName}}</h1>
+    </div>
+    <div class="sb-onboard__content">
+      <div class="animation">
+        <div class="sb-onbrd-g-box px-32 pb-32">
+          <p class="subtitle">{{resourceService?.frmelmnts?.lbl?.youAre}}</p>
+          <div class="sb-onbrd-g-box__guest">
+            <div *ngFor="let guest of guestList; let index=index;" class="sb-onbrd-g-box__guest__item"
+              [ngClass]="{'active': guest?.isActive}" (click)="selectUserType(guest)">
+              <div class="p-16">
+                <img [src]="guest?.icon" alt="{{guest?.label}}" />
+                <img src="assets/images/round-check2.svg" class="check-icon" alt="check-mark" />
+                <div class="title mt-4">{{guest?.label}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sb-onboard__footer">
+      <button type="button" *ngIf="selectedUserType" class="sb-btn sb-btn-sm sb-btn-primary text-uppercase w-100"
+        type="submit" (click)="submit()" appTelemetryInteract [telemetryInteractEdata]="userSelectionInteractEdata">
+        {{resourceService?.frmelmnts?.lbl?.continue}}
+        <span class='arrow-icon'>
+          <em class="icon-svg icon-svg--xxs icon-back">
+            <svg class="icon icon-svg--white">
+              <use xlink:href="assets/images/sprite.svg#arrow-long-right"></use>
+            </svg>
+          </em>
+        </span>
+      </button>
+    </div>
+  </div>
+</div>

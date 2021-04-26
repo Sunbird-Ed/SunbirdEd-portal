@@ -40,6 +40,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   public ownershipType: Array<string>;
   public queryParams: object;
   resource_framework: string;
+  collectionEditorURL: string = (<HTMLInputElement>document.getElementById('collectionEditorURL')) ?
+  (<HTMLInputElement>document.getElementById('collectionEditorURL')).value : '';
   /**
   * Default method of classs CollectionEditorComponent
   * @param {ResourceService} resourceService To get language constant
@@ -68,6 +70,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     this.getDetails().pipe(
       first(),
       tap(data => {
+        console.log(data);
         if (data.tenantDetails) {
           this.logo = data.tenantDetails.logo;
         }
@@ -95,16 +98,25 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   }
   private getDetails() {
     const lockInfo = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
-    const allowedEditState = ['draft', 'allcontent', 'collaborating-on', 'uploaded'].includes(this.routeParams.state);
+    const allowedEditState = ['draft', 'allcontent', 'collaborating-on', 'uploaded', 'alltextbooks'].includes(this.routeParams.state);
     const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
-    if (_.isEmpty(lockInfo) && allowedEditState && allowedEditStatus) {
-      return combineLatest(this.tenantService.tenantData$, this.getCollectionDetails(),
-      this.editorService.getOwnershipType(), this.lockContent(), this.frameworkService.frameworkData$).
+    if (_.isEmpty(lockInfo) && allowedEditState && ( allowedEditStatus || this.userService.userProfile.rootOrgAdmin )) {
+      return combineLatest(
+      this.tenantService.tenantData$,
+      this.getCollectionDetails(),
+      this.editorService.getOwnershipType(),
+      this.lockContent(),
+      this.frameworkService.frameworkData$,
+      this.userService.userOrgDetails$).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
         collectionDetails: data[1], ownershipType: data[2], resource_framework: data[4].frameworkdata })));
     } else {
-      return combineLatest(this.tenantService.tenantData$, this.getCollectionDetails(),
-      this.editorService.getOwnershipType(), this.frameworkService.frameworkData$).
+      return combineLatest(
+        this.tenantService.tenantData$,
+        this.getCollectionDetails(),
+        this.editorService.getOwnershipType(),
+        this.frameworkService.frameworkData$,
+        this.userService.userOrgDetails$).
       pipe(map(data => ({ tenantDetails: data[0].tenantData,
         collectionDetails: data[1], ownershipType: data[2], resource_framework: data[3].frameworkdata })));
     }
@@ -120,8 +132,9 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       resourceId : contentInfo.identifier,
       resourceType : 'Content',
       resourceInfo : JSON.stringify(contentInfo),
-      creatorInfo : JSON.stringify({'name': this.userService.userProfile.firstName, 'id': this.userService.userProfile.identifier}),
-      createdBy : this.userService.userProfile.identifier
+      creatorInfo : JSON.stringify({'name': this.userService.userProfile.firstName, 'id': this.userService.userProfile.id}),
+      createdBy : this.userService.userProfile.id,
+      isRootOrgAdmin: this.userService.userProfile.rootOrgAdmin
     };
     return this.workspaceService.lockContent(input).pipe(tap((data) => {
       this.queryParams = data.result;
@@ -167,7 +180,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
     jQuery('#collectionEditor').iziModal({
       title: '',
       iframe: true,
-      iframeURL: '/thirdparty/editors/collection-editor/index.html?' + this.buildNumber,
+      iframeURL: this.collectionEditorURL + '?' + this.buildNumber,
       navigateArrows: false,
       fullscreen: false,
       openFullscreen: true,
@@ -190,7 +203,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
         orgIds: this.userProfile.organisationIds,
         organisations: this.userService.orgIdNameMap,
         name : !_.isEmpty(this.userProfile.lastName) ? this.userProfile.firstName + ' ' + this.userProfile.lastName :
-        this.userProfile.firstName
+        this.userProfile.firstName,
+        isRootOrgAdmin: this.userService.userProfile.rootOrgAdmin
       },
       did: this.deviceId,
       sid: this.userService.sessionId,
@@ -214,6 +228,9 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       ownershipType: this.ownershipType,
       timeDiff: this.userService.getServerTimeDiff
     };
+    if (this.routeParams.type.toLowerCase() === 'course' ) {
+      window.context['board'] = _.get(this.userProfile, 'framework.board');
+    }
   }
   private setWindowConfig() {
     window.config = _.cloneDeep(this.configService.editorConfig.COLLECTION_EDITOR.WINDOW_CONFIG); // cloneDeep to preserve default config
@@ -237,11 +254,15 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
       };
     } else if (this.routeParams.type.toLowerCase() === 'course') {
       window.config.nodeDisplayCriteria = {
-        contentType: ['CourseUnit']
+        contentType: ['Course', 'CourseUnit', 'Collection', 'Resource', 'SelfAssess']
       };
     } else if (this.routeParams.type.toLowerCase() === 'lessonplan') {
       window.config.nodeDisplayCriteria = {
         contentType: ['LessonPlanUnit']
+      };
+    } else if (this.routeParams.type.toLowerCase() === 'curriculumcourse') {
+      window.config.nodeDisplayCriteria = {
+        contentType: ['CourseUnit']
       };
     }
     if (this.routeParams.state === state.UP_FOR_REVIEW &&
@@ -352,6 +373,8 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
         return this.configService.editorConfig.COLLECTION_EDITOR.COLLECTION_ARRAY;
       case 'LessonPlan':
         return this.configService.editorConfig.COLLECTION_EDITOR.LESSON_PLAN;
+      case 'CurriculumCourse':
+        return this.configService.editorConfig.COLLECTION_EDITOR.CURRICULUM_COURSE_ARRAY;
       default:
         return this.configService.editorConfig.COLLECTION_EDITOR.DEFAULT_CONFIG;
     }

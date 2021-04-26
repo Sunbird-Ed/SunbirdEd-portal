@@ -1,17 +1,17 @@
+import { SlickModule } from 'ngx-slick';
 import { ExploreRoutingModule } from './explore-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ExploreContentComponent} from './components';
+import { ExploreContentComponent, ExploreCurriculumCoursesComponent} from './components';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { NgInviewModule } from 'angular-inport';
-import { ExploreComponent } from './components/explore/explore.component';
 import {SharedFeatureModule} from '@sunbird/shared-feature';
 import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
   SuiRatingModule, SuiCollapseModule, SuiDimmerModule } from 'ng2-semantic-ui';
 import { WebExtensionModule } from '@project-sunbird/web-extensions';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
 import { ContentSearchModule } from '@sunbird/content-search';
 
 @NgModule({
@@ -25,9 +25,8 @@ import { ContentSearchModule } from '@sunbird/content-search';
     SharedFeatureModule,
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
     SuiRatingModule, SuiCollapseModule, SuiDimmerModule, WebExtensionModule,
-    CommonConsumptionModule, ContentSearchModule
+    CommonConsumptionModule, ContentSearchModule, SlickModule
   ],
-  declarations: [ ExploreContentComponent, ExploreComponent],
-  exports: [ExploreComponent]
+  declarations: [ ExploreContentComponent, ExploreCurriculumCoursesComponent]
 })
 export class ExploreModule { }

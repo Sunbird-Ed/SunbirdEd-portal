@@ -16,14 +16,17 @@ import {
   BatchListComponent, BatchPageSectionComponent, UpdateBatchComponent,
   UpforreviewContentplayerComponent, FlagConentplayerComponent, ReviewsubmissionsContentplayerComponent,
   PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
-  AllContentComponent, FlagReviewerComponent, AllMyContentFilterComponent, CollaboratingOnComponent,
-  CollaborationContentFilterComponent
+  AllContentComponent, FlagReviewerComponent, CollaboratingOnComponent,
+  CollaborationContentFilterComponent, WorkspaceContentFilterComponent, AllTextbooksComponent, NewCollectionEditorComponent
 } from './components';
+import { DateFilterXtimeAgoPipe } from './pipes';
 import { NgInviewModule } from 'angular-inport';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ReviewCommentsComponent } from './components/review-comments/review-comments.component';
 import { OrderModule } from 'ngx-order-pipe';
 import { PlayerHelperModule } from '@sunbird/player-helper';
+import { ContentSearchModule } from '@sunbird/content-search';
+import { QuestionEditorLibraryModule } from '@project-sunbird/sunbird-question-editor';
 
 @NgModule({
   imports: [
@@ -38,9 +41,11 @@ import { PlayerHelperModule } from '@sunbird/player-helper';
     NgInviewModule,
     TelemetryModule,
     OrderModule,
-    PlayerHelperModule
+    PlayerHelperModule,
+    ContentSearchModule,
+    QuestionEditorLibraryModule
   ],
-  declarations: [WorkspaceComponent, WorkspacesidebarComponent,
+  declarations: [WorkspaceComponent, WorkspacesidebarComponent, DateFilterXtimeAgoPipe,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
     PublishedComponent, UploadedComponent, CollectionEditorComponent,
     ContentEditorComponent, GenericEditorComponent, UpForReviewComponent, UpforReviewFilterComponent,
@@ -53,13 +58,15 @@ import { PlayerHelperModule } from '@sunbird/player-helper';
     RequestChangesPopupComponent,
     LimitedPublishedComponent,
     AllContentComponent,
+    AllTextbooksComponent,
     FlagReviewerComponent,
-    AllMyContentFilterComponent,
     CollaboratingOnComponent,
     CollaborationContentFilterComponent,
     ReviewCommentsComponent,
     CollaborationContentFilterComponent,
+    WorkspaceContentFilterComponent,
+    NewCollectionEditorComponent
   ],
-  providers: [WorkSpaceService, EditorService, BatchService, ReviewCommentsService]
+  providers: [WorkSpaceService, EditorService, BatchService, ReviewCommentsService, DateFilterXtimeAgoPipe]
 })
 export class WorkspaceModule { }

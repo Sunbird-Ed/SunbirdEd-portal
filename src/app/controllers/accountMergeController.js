@@ -6,7 +6,7 @@ const { parseJson } = require('../helpers/utilityService');
 const request = require('request-promise');
 const envHelper = require('./../helpers/environmentVariablesHelper.js');
 const authorizationToken = envHelper.PORTAL_API_AUTH_TOKEN;
-const logger = require('sb_logger_util_v2');
+const { logger } = require('@project-sunbird/logger');
 
 
 const sessionSave = async function (req, res) {
@@ -49,7 +49,7 @@ const sessionSave = async function (req, res) {
         }
       });
     } else {
-      logger.debug({
+      logger.debug(req.context, {
         msg: 'user/session/save user session saved successfully',
         error: JSON.stringify(result),
         additionalInfo: {

@@ -16,13 +16,17 @@ import * as mockData from './published.component.spec.data';
 const testData = mockData.mockRes;
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule, SuiModalService } from 'ng2-semantic-ui';
+import { CoreModule } from '@sunbird/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('PublishedComponent', () => {
   let component: PublishedComponent;
   let fixture: ComponentFixture<PublishedComponent>;
   const fakeActivatedRoute = {
     'params': observableOf({ 'pageNumber': 1 }),
+    'queryParams': observableOf({ subject: ['english', 'odia'], sort_by: 'lastUpdatedOn', sortType: 'asc' }),
     snapshot: {
       params: [
         {
@@ -52,17 +56,19 @@ describe('PublishedComponent', () => {
       }
     }
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [PublishedComponent],
-      imports: [HttpClientTestingModule, RouterTestingModule, SuiModule , SharedModule.forRoot(),
+      imports: [HttpClientTestingModule, RouterTestingModule, SuiModule , CoreModule, SharedModule.forRoot(),
         TelemetryModule.forRoot(), NgInviewModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ResourceService, ToasterService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }
-      ]
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
   }));
@@ -76,10 +82,12 @@ describe('PublishedComponent', () => {
   // If search api returns more than one published
   it('should call search api and returns result count more than 1', inject([SearchService], (searchService) => {
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableOf(testData.searchSuccessWithCountTwo));
-    component.fetchPublishedContent(9, 1);
+    component.fetchPublishedContent(9, 1,  { queryParams: { subject: ['english', 'odia'], sort_by: 'lastUpdatedOn', sortType: 'asc'}});
     fixture.detectChanges();
     expect(component.publishedContent).toBeDefined();
     expect(component.publishedContent.length).toBeGreaterThan(1);
+    expect(component.sort).toEqual({lastUpdatedOn: 'asc'});
+    expect(component.noResult).toBeFalsy();
   }));
 
   it('should call delete api and get success response', inject([WorkSpaceService, ActivatedRoute],
@@ -92,7 +100,12 @@ describe('PublishedComponent', () => {
           eventName: 'delete'
         }, data: { metaData: { identifier: 'do_2124341006465925121871' } }
       };
-      component.contentClick(params);
+      const content = {
+        metaData: {
+          contentType: 'Resource'
+        }
+      };
+      component.contentClick(params, content);
       const DeleteParam = {
         contentIds: ['do_2124341006465925121871']
       };
@@ -107,10 +120,11 @@ describe('PublishedComponent', () => {
   // if  search api's throw's error
   it('should throw error', inject([SearchService], (searchService) => {
     spyOn(searchService, 'compositeSearch').and.callFake(() => observableThrowError({}));
-    component.fetchPublishedContent(9, 1);
+    component.fetchPublishedContent(9, 1, { queryParams: { subject: ['english', 'odia'], sort_by: 'lastUpdatedOn', sortType: 'asc'}});
     fixture.detectChanges();
     expect(component.publishedContent.length).toBeLessThanOrEqual(0);
     expect(component.publishedContent.length).toEqual(0);
+    expect(component.sort).toEqual({lastUpdatedOn: 'asc'});
   }));
   it('should call inview method for visits data', () => {
     component.telemetryImpression = testData.telemetryData;
@@ -119,4 +133,51 @@ describe('PublishedComponent', () => {
     expect(component.inview).toHaveBeenCalled();
     expect(component.inviewLogs).toBeDefined();
   });
+
+  it('should call fetchPublishedContents()', () => {
+    spyOn(component, 'fetchPublishedContent');
+    const bothParams = { params: {pageNumber: 1}, queryParams: {subject: ['english', 'odia'], sort_by: 'lastUpdatedOn', sortType: 'asc'}};
+    component.pageNumber = 1;
+    component.queryParams = bothParams.queryParams ;
+    component.ngOnInit();
+    expect(component.fetchPublishedContent).toHaveBeenCalledWith(9, 1, bothParams);
+  });
+
+  it('should navigate to given pageNumber along with the filter if added', () => {
+    const route = TestBed.get(Router);
+    spyOn(route, 'navigate').and.stub();
+    component.pager = testData.pager;
+    const bothParams = { params: {pageNumber: 1}, queryParams: {subject: ['english', 'odia'], sort_by: 'lastUpdatedOn', sortType: 'asc'}};
+    component.queryParams = bothParams.queryParams ;
+    component.pageNumber = 1;
+    component.navigateToPage(1);
+    fixture.detectChanges();
+    expect(route.navigate).toHaveBeenCalledWith(['workspace/content/published', 1],
+    { queryParams: component.queryParams });
+  });
+
+  it('should call isPublishedCourse and showCourseQRCodeBtn should be true', () => {
+    const searchService = TestBed.get(SearchService);
+    spyOn(searchService, 'compositeSearch').and.returnValue(observableOf(mockData.mockRes.searchSuccess));
+    component.isPublishedCourse();
+    expect(component.showCourseQRCodeBtn).toBeTruthy();
+  });
+
+  it('should call getCourseQRCsv', () => {
+    const returnData = { result: { fileUrl: 'test'}};
+    const coursesService = TestBed.get(CoursesService);
+    spyOn(window, 'open');
+    spyOn(coursesService, 'getQRCodeFile').and.returnValue(observableOf(returnData));
+    component.getCourseQRCsv();
+    expect(window.open).toHaveBeenCalledWith(returnData.result.fileUrl, '_blank');
+  });
+  it('should call search content and get channel and get success response', inject([SuiModalService, WorkSpaceService],
+    (modalService, workSpaceService) => {
+      spyOn(workSpaceService, 'searchContent').and.callFake(() => observableOf(testData.searchedCollection));
+      spyOn(workSpaceService, 'getChannel').and.callFake(() => observableOf(testData.channelDetail));
+      spyOn(component, 'checkLinkedCollections').and.callThrough();
+      spyOn(modalService, 'open').and.callThrough();
+      component.checkLinkedCollections(undefined);
+      expect(component.checkLinkedCollections).toHaveBeenCalledWith(undefined);
+    }));
 });

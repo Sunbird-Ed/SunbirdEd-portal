@@ -1,0 +1,187 @@
+<app-landing-section [textToDisplay]="" 
+[layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
+<div *ngIf="!showLoader" [appTelemetryImpression]="telemetryPlayerPageImpression" class="text-left relative9">
+
+  <!-- Header: Back Button Previous Module & Next Module button -->
+  <div class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9">
+    <div class="ui container">
+      <div class="py-8 d-flex flex-ai-center">
+        <!-- Back button -->
+        <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto"
+          (click)="goBack(); logTelemetry('back-track', courseHierarchy)">
+          <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+              <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+            </svg></i>
+          {{resourceService?.frmelmnts?.btn?.back}}
+        </button>
+        <div class="d-flex flex-ai-center">
+          <!-- Previous module button -->
+          <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-left-icon-btn" aria-label="previous-module" *ngIf="prevModule"
+            (click)="navigateToPlayerPage(prevModule); logTelemetry('previous-module', prevModule, true);">
+            <i class="icon-svg icon-svg--xxs icon-back mr-4 rotate-90" role="img" aria-label="arrow-up"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>{{generaliseLabelService?.frmelmnts?.lbl?.prevModule | translate}}
+          </button>
+          <!-- Previous Module button -->
+          <div class="modulebtn-divider" *ngIf="prevModule && nextModule"></div>
+          <!-- Next Module button -->
+          <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-right-icon-btn" aria-label="next-module" *ngIf="nextModule"
+            (click)="navigateToPlayerPage(nextModule); logTelemetry('next-module', nextModule, true)">
+            {{generaliseLabelService?.frmelmnts?.lbl?.nextModule | translate}}<i class="icon-svg icon-svg--xxs icon-back ml-4 rotate90" role="img" aria-label="arrow-up"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>
+          </button>
+          <!-- Next Module button -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="textbook-container cc-player__content-header relative9" [ngClass]="{'header-block': isFullScreenView}">
+    <div class="ui container">
+      <div class="textbook py-16 sb-g">
+        <div class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12">
+          <!-- Textbook details -->
+          <div class="textbook__details d-flex flex-ai-center">
+            <!-- Textbook image -->
+            <div class="textbook__heading">
+              <!-- Textbook title -->
+              <h5 class="textbook__title sb-color-primary font-weight-bold mb-0">{{courseHierarchy?.name | titlecase}}
+              </h5>
+              <!-- Textbook Rating with share icon -->
+              <div class="textbook__rating mt-4">
+                <button (click)="onShareLink();shareLinkModal=true;"
+                  class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn">
+                  <i class="icon-svg icon-svg--xxs icon-share mr-4"><svg class="icon icon-svg--primary">
+                    <use xlink:href="assets/images/sprite.svg#share"></use>
+                  </svg></i>
+                  {{resourceService?.frmelmnts?.lbl?.share}}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 certified-course">
+          <!-- Module Progress bar -->
+          <div class="certified-course__progress" *ngIf="totalContents > 0 && !isUnitCompleted">
+            <div class="fsmall">{{generaliseLabelService?.frmelmnts?.lbl?.moduleProgress}}</div>         
+            <div class="sb-color-primary fnormal font-weight-bold mt-4">{{consumedContents}}/{{totalContents}} {{resourceService?.frmelmnts?.lbl?.completed}}</div>
+            <sui-progress [value]="consumedContents" [maximum]="totalContents" class="mb-0 mr-0 mt-8 tiny"></sui-progress>
+          </div>
+
+          <div class="module-complete-content d-flex flex-ai-center py-8 px-16" *ngIf="isUnitCompleted">
+            <div class="mr-16 complete-content-image"><img src="./assets/images/badge-complete.svg" alt="complete-content-image"></div>
+            <label class="font-weight-bold mb-0 sb-color-secondary fnormal">{{generaliseLabelService?.frmelmnts?.lbl?.moduleFinish}}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CC-Player Video -->
+  <div class="ui container">
+    <div class="cc-player sb-g">
+      <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12 cc-player__video sb-toc-player-column">
+        <div class="toc-content text-left">
+          <div class="content-video">
+            <section class="content-video__player" id="player-area-height">
+              <div class="aspectratio" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio>
+                <app-player class="content-player" [playerOption]="playerOption" [playerConfig]="playerConfig"
+                  [contentProgressEvents$]="contentProgressEvents$" (assessmentEvents)="onAssessmentEvents($event)"
+                  (questionScoreSubmitEvents)="onQuestionScoreSubmitEvents($event)"
+                  (ratingPopupClose)="onRatingPopupClose()" (selfAssessLastAttempt)="onSelfAssessLastAttempt($event)"></app-player>
+              </div>
+              <app-content-actions *ngIf="isFullScreenView" class="player-fullscreen-action-items" [isFullScreen]="true" [contentData]="activeContent" [objectRollUp]="objectRollUp">
+              </app-content-actions>
+              <app-content-actions *ngIf="activeContent" [contentData]="activeContent" [objectRollUp]="objectRollUp">
+              </app-content-actions>
+            </section>
+          </div>
+          <div class="mt-8">
+            <app-credits-and-licence *ngIf="activeContent" [contentData]="activeContent"></app-credits-and-licence>
+          </div>
+        </div>
+      </section>
+      <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4">
+        <div class="cc-player__list px-0">
+        <h5 class="p-16 mb-0 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.contentsLabel}}</h5>
+        <div class="side-toc-content chapter-box">
+          <div *ngFor="let item of courseHierarchy?.children; let index = index;">
+            <p *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection'" class="title">{{item?.name}}</p>
+            <div *ngIf="item;else noContent">
+              <div *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection' && !item?.children?.length">
+                <div class="child-content-padding">
+                  <!-- toc card for Non Self Assess content -->
+                  <sb-toc-card *ngIf="item?.contentType !== 'SelfAssess'" [content]="item" (tocCardClick)="navigateToInitPlayer($event, 'toc-card')" [type]="cardType"
+                    [contentStatus]="contentStatus">
+                  </sb-toc-card>
+                  <!-- toc card for Self Assess content with Label for Best Score -->
+                  <sb-toc-card *ngIf="item?.contentType === 'SelfAssess'" [content]="item" (tocCardClick)="navigateToInitPlayer($event, 'toc-card')" [type]="cardType"
+                    [contentStatus]="contentStatus" [maxAttempts]="item?.maxAttempts" [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
+                  </sb-toc-card>
+                </div>
+              </div>
+              <div *ngIf="item?.children?.length">
+                <div *ngFor="let child of item?.children">
+                  <div class="toc-child-item">
+                    <sb-toc-child-item [activeContent]="activeContent" [childData]="child" (tocCardClick)="navigateToInitPlayer($event, 'child-item')"
+                      [contentStatus]="contentStatus" [type]="cardType">
+                    </sb-toc-child-item>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <ng-template #noContent>
+              <div class="heading">{{noContentMessage}}</div>
+            </ng-template>
+          </div>
+          <sb-toc-card [content]="courseHierarchy"
+            *ngIf="courseHierarchy?.mimeType !== 'application/vnd.ekstep.content-collection'"
+            (tocCardClick)="navigateToInitPlayer($event)" [type]="cardType" [contentStatus]="contentStatus">
+          </sb-toc-card>
+        </div>
+      </div>
+      </section>
+    </div>
+  </div>
+</div>
+<div class="ui container py-16" *ngIf="showLoader">
+  <app-loader [data]='loaderMessage'></app-loader>
+</div>
+<app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="shareLinkModal"
+  (close)="shareLinkModal = false">
+</app-share-link>
+<app-course-completion *ngIf="showCourseCompleteMessage" [certificateDescription]="certificateDescription" (close)="onCourseCompleteClose()"></app-course-completion>
+
+<!-- Start - Modal for Assessment attempts -->
+<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
+    appBodyScroll (dismissed)="closeLoginModal()" #modal *ngIf="showMaxAttemptsModal">
+    <div class="sb-modal-content sb-join-modal-content">
+        <div class="sb-h4 px-0 py-20">
+          {{resourceService?.frmelmnts?.lbl?.selfAssessMaxAttempt}}
+        </div>
+    </div>
+    <div class="sb-modal-actions">
+        <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+            [telemetryInteractEdata]="signInInteractEdata" (click)="goBack(); showMaxAttemptsModal = !showMaxAttemptsModal"
+            class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn">
+            {{resourceService?.frmelmnts?.btn?.close}}
+        </a>
+    </div>
+</sui-modal>
+<!-- End - Modal for Assessment attempts -->
+<!-- Start - Modal for Assessment attempts -->
+<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'small'" class="sb-modal"
+    appBodyScroll #modal *ngIf="showLastAttemptsModal">
+    <div class="sb-modal-content sb-join-modal-content">
+        <div class="sb-h4 px-0 py-20">
+          {{resourceService?.frmelmnts?.lbl?.selfAssessLastAttempt}}
+        </div>
+    </div>
+    <div class="sb-modal-actions">
+      <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="showLastAttemptsModal = false; onTocCardClick();">
+        {{resourceService.frmelmnts?.btn?.ok}}
+      </button>
+      <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="showLastAttemptsModal = false;">
+        {{resourceService.frmelmnts?.btn?.cancel}}
+      </button>
+    </div>
+</sui-modal>
+<!-- End - Modal for Assessment attempts -->

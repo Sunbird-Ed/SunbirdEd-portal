@@ -67,8 +67,11 @@ export const validateCertMockResponse = {
                     'validFrom': '2019-06-21',
                     '@context': 'http://localhost:8080/_schemas/context.json'
                 },
-                'batchId': null,
-                'courseId': null
+                'related' : {
+                    'batchId': '1234',
+                    'courseId': 'do_123456',
+                    'certVideoUrl': 'www.abc.com/abc.mp4'
+                    }
             }
         }
     },

@@ -1,18 +1,20 @@
 @import "variables";
+@import "mixins/mixins";
+@import 'pages/sign_in_up';
 
 .ui.raised.shadow.container.segment {
-  margin: 24px auto !important;
+  margin: calculateRem(24px) auto !important;
   padding: 0;
-  padding: 10px;
+  padding: calculateRem(10px);
   width: calc(100% - 4%) !important;
   min-height: calc(100vh - 48px);
 }
 
 @media only screen and (min-width: 1024px) {
   .ui.raised.shadow.container.segment {
-    width: 944px !important;
-    padding: 24px;
-    box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.2);
+    width: calculateRem(944px) !important;
+    padding: calculateRem(24px);
+    box-shadow: 0 calculateRem(2px) calculateRem(16px) 0 rgba(var(--rc-rgba-black), 0.2);
   }
 }
 @media only screen and (max-width: 767px) {
@@ -21,15 +23,15 @@
   }
 
   .ui.raised.shadow.container.segment {
-    max-width: 320px !important;
+    max-width: calculateRem(320px) !important;
     margin: 0 auto !important;
     box-shadow: none !important;
     height: 100vh;
     width: 100% !important;
-    background: #fff;
+    background: var(--white);
   }
   .signup-background {
-    background: #fff !important;
+    background: var(--white) !important;
   }
 }
 
@@ -40,10 +42,4 @@
       pointer-events: none;
     }
   }
-}
-.signup-background {
-  background: url('/assets/images/bg.svg') no-repeat center center fixed;
-  background-size: cover;
-  width: 100%;
-  position: fixed;
 }

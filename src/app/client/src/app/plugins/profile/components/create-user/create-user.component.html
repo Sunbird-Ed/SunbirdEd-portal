@@ -1,0 +1,43 @@
+<div [appTelemetryImpression]="telemetryImpression">
+  <div class="ui container py-16" *ngIf="showLoader">
+    <app-loader></app-loader>
+  </div>
+  <div class="user-profile-box p-0" *ngIf="!showLoader">
+    <div class="d-flex flex-jc-space-between py-16 px-16">
+      <div class="user-profile-box__title">{{resourceService?.frmelmnts?.lbl?.createUser}}</div>
+    </div>
+    <div class="twelve wide column p-0 mx-16 mb-8 text-center"><img src="../../assets/images/profile-icon.svg" alt="profile-icon"
+        width="88px"></div>
+    <form class="sb-form mb-16 px-16" [formGroup]="userDetailsForm">
+      <div class="ui stackable grid m-0" *ngFor="let field of formData">
+        <div class="twelve wide column p-0" *ngIf="field.inputType==='input' && field.visible===true">
+          <div class="d-flex fields-selection p-0">
+            <div class="sb-field field-focus mb-8 w-100">
+              <input
+                [ngClass]="{'orange-border': userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors}"
+                class="sb-form-control" formControlName="{{field.code}}" aria-label="Enter Name" type="text" name="{{field.code}}"
+                placeholder="{{field.description}}">
+              <label
+                *ngIf="!(userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors)"
+                class="font-weight-normal">{{field.name}}<span class="sb-color-warning">*</span></label>
+              <label *ngIf="userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors"
+                class="font-weight-normal orange text">{{resourceService?.frmelmnts?.lbl?.nameRequired}}</label>
+            </div>
+          </div>
+          <p class="fsmall my-8 text-left line-height-normal">
+            {{resourceService?.frmelmnts?.lbl?.preferenceCanBeUpdated}}&lrm;</p>
+        </div>
+      </div>
+    </form>
+    <div class="user-profile-box__actions pb-16 px-16">
+      <button appTelemetryInteract appOnlineOnly [telemetryInteractEdata]="submitInteractEdata" [disabled]="!enableSubmitBtn"
+        (click)="onSubmitForm()" type="submit" [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}"
+        class="sb-btn sb-btn-normal sb-btn-primary">
+        {{resourceService?.frmelmnts?.lbl?.addUser}}
+      </button>
+      <button appTelemetryInteract [telemetryInteractEdata]="submitCancelInteractEdata" appTelemetryInteract
+        type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" (click)="onCancel()">
+        {{resourceService?.frmelmnts.btn.cancel}}</button>
+    </div>
+  </div>
+</div>

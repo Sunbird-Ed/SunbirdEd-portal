@@ -1,5 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, OnDestroy} from '@angular/core';
 import {ResourceService} from '@sunbird/shared';
+import {Subscription} from 'rxjs';
+import {TenantService} from '@sunbird/core';
 
 
 @Component({
@@ -7,13 +9,16 @@ import {ResourceService} from '@sunbird/shared';
   templateUrl: './sso-merge-confirmation.component.html',
   styleUrls: ['./sso-merge-confirmation.component.scss']
 })
-export class SsoMergeConfirmationComponent implements OnInit {
+export class SsoMergeConfirmationComponent implements OnInit, OnDestroy {
   @Input() userDetails: any;
   @Input() identifierType: any;
   @Input() identifierValue: any;
   @Input() tncVersionAccepted: string;
   @Input() isTncAccepted: boolean;
   instance: string;
+  logo: string;
+  tenantName: string;
+  tenantDataSubscription: Subscription;
   telemetryCdata = [{
     id: 'user:account:migrate',
     type: 'Feature'
@@ -21,12 +26,19 @@ export class SsoMergeConfirmationComponent implements OnInit {
     id: 'SB-13773',
     type: 'Task'
   }];
-  constructor(public resourceService: ResourceService) {
+
+  constructor(public resourceService: ResourceService, public tenantService: TenantService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
   }
 
   ngOnInit() {
+    this.tenantDataSubscription = this.tenantService.tenantData$.subscribe(data => {
+      if (data && !data.err && data.tenantData) {
+        this.logo = data.tenantData.logo;
+        this.tenantName = data.tenantData.titleName;
+      }
+    });
   }
 
   createNewUser() {
@@ -44,4 +56,11 @@ export class SsoMergeConfirmationComponent implements OnInit {
     queryParams = queryParams + '&tncAccepted=' + this.isTncAccepted + '&tncVersion=' + this.tncVersionAccepted;
     window.location.href = '/v1/sso/migrate/account/initiate?userId=' + this.userDetails.id + queryParams;
   }
+
+  ngOnDestroy() {
+    if (this.tenantDataSubscription) {
+      this.tenantDataSubscription.unsubscribe();
+    }
+  }
+
 }

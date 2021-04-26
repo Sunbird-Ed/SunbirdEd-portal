@@ -12,6 +12,8 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { Response } from './flagged.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
+import { CoreModule } from '@sunbird/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('FlaggedComponent', () => {
   let component: FlaggedComponent;
@@ -63,10 +65,11 @@ describe('FlaggedComponent', () => {
     'ANNOUNCEMENT_SENDER': ['01232002070124134414'],
     'CONTENT_REVIEWER': ['01232002070124134414']
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [FlaggedComponent],
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), TelemetryModule.forRoot(),
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot(),
         NgInviewModule],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,

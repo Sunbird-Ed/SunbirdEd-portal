@@ -4,11 +4,12 @@ import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing'
 import { SharedModule, ResourceService, ConfigService, BrowserCacheTtlService, UtilService } from '@sunbird/shared';
 import { CoreModule, OrgDetailsService, ContentService, PublicDataService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { CacheService } from 'ng2-cache-service';
 import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { LanguageDropdownComponent } from './language-dropdown.component';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('LanguageDropdownComponent', () => {
     let component: LanguageDropdownComponent;
@@ -31,9 +32,10 @@ describe('LanguageDropdownComponent', () => {
     const mockQueryParma = {
         'query': 'hello'
     };
-    class RouterStub {
-        navigate = jasmine.createSpy('navigate');
-    }
+    const routerStub = {
+        url: '',
+        navigate : jasmine.createSpy('navigate')
+    };
     const fakeActivatedRoute = {
         'queryParams': observableOf({ language: 'en' }),
         snapshot: {
@@ -42,11 +44,12 @@ describe('LanguageDropdownComponent', () => {
             }
         }
     };
+    configureTestSuite();
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, RouterModule.forRoot([])],
             providers: [ConfigService, OrgDetailsService, CacheService, BrowserCacheTtlService, UtilService,
-                { provide: ResourceService, useValue: resourceBundle },
+                { provide: ResourceService, useValue: resourceBundle }
             ],
             schemas: [NO_ERRORS_SCHEMA]
         })
@@ -70,5 +73,14 @@ describe('LanguageDropdownComponent', () => {
         component.ngOnInit();
         expect(component.selectedLanguage).toBe('en');
     }));
+    it('should get the interact edata for telemetry', () => {
+        const route = TestBed.get(Router);
+        route.navigate(['learn?selectedTab=course'])
+        .then(() => {
+            spyOn(component, 'getTelemetryInteractEdata');
+            const result = component.getTelemetryInteractEdata('en');
+            expect(result).toEqual({id: 'en-lang', type: 'click', pageid: 'learn'});
+        });
+    });
 });
 

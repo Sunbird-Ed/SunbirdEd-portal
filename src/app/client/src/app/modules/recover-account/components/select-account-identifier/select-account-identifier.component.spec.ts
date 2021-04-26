@@ -9,6 +9,8 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { configureTestSuite } from '@sunbird/test-util';
+import { RecaptchaModule } from 'ng-recaptcha';
 
 describe('SelectAccountIdentifierComponent', () => {
   let component: SelectAccountIdentifierComponent;
@@ -28,7 +30,8 @@ describe('SelectAccountIdentifierComponent', () => {
         close: 'close'
       },
       lbl: {
-        description: 'description'
+        description: 'description',
+        generateOtpFailed: 'Generate OTP failed. Please try again'
       }
     }
   };
@@ -44,11 +47,13 @@ describe('SelectAccountIdentifierComponent', () => {
       this.queryParamsMock = params;
     }
   }
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SelectAccountIdentifierComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), FormsModule, ReactiveFormsModule, CoreModule, SharedModule.forRoot()],
+      imports: [HttpClientTestingModule, TelemetryModule.forRoot(), FormsModule, ReactiveFormsModule,
+        RecaptchaModule, CoreModule, SharedModule.forRoot()],
       providers: [RecoverAccountService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },

@@ -1,0 +1,36 @@
+@import 'variables';
+@import 'mixins/mixins';
+
+.content-header {
+    &__img {
+      overflow: hidden;
+      width: calculateRem(48px);
+      height:calculateRem(48px);
+      img {
+      height: 100%;
+    }
+    }
+    &__title{
+      color: var(--primary-color);
+      font-size: calculateRem(18px);
+      font-weight: bold;
+    }
+    &__info {
+      color:var(--gray-800);
+      font-size: calculateRem(14px);
+      
+    }
+  }
+
+.sbgrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(291.98px, 1fr));
+    grid-gap: 1rem;
+    grid-row-gap: 1.5rem;
+}
+.header-shadow {
+    min-height: calculateRem(80px);
+    background-color: var(--rc-FAFAFA);
+    box-shadow: 0 calculateRem(10px) calculateRem(10px) calculateRem(-10px) rgba(var(--rc-rgba-black), 0.25);
+    z-index: 99;
+  }

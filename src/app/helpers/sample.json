@@ -1,0 +1,30 @@
+{
+    "orgDetails": {
+        "id": "",
+        "identifier": "",
+        "hashTagId": "",
+        "rootOrgId": "",
+        "channel": "",
+        "isRootOrg": true,
+        "orgName": "",
+        "andOtherDetail": ""
+    },
+    "tenantInfo": {
+        "logo": "",
+        "name": "",
+        "helpCenterLink": "",
+        "helpDeskEmail": "",
+        "playstoreLink": ""
+    },
+    "supportedLanguages": [],
+    "custodianOrgDetail": {
+        "id": "",
+        "channel": "",
+        "availableFrameworks": [],
+        "defaultFramework": "CBSE"
+    },
+    "isCustodianOrg": true,
+    "frameworkId": "",
+    "courseFrameworkId": "",
+    "contentComingSoonMes": {}
+}

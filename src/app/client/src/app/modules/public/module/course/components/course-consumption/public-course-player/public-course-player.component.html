@@ -1,140 +1,133 @@
-<div class="ui container">
-<div class="ui stackable grid mt-20">
-    <div class="twelve wide column">
-        <div *ngIf="!loader">
-            <div class="content" [appTelemetryImpression]="telemetryCourseImpression">
-                <div class="ui stackable grid">
-                    <div class="row">
-                        <div class='nine wide column'>
-
-                            <div class="sb-pageSection">
-                                <div class="sb-pageSection-header">
-                                    <h4 class="sb-pageSection-title sb-pageSection-title-light">{{resourceService.frmelmnts.lbl.aboutthecourse}}</h4>
-                                </div>
-                                <div class="sb-pageSection-content">
-                                    <div *ngIf="courseHierarchy.description">
-                                        <p *ngIf="!readMore"> 
-                                            {{ courseHierarchy.description | slice:0:200 }}&nbsp;
-                                            <span class="ui cardsKnowMore mouse-pointer" *ngIf="courseHierarchy.description && courseHierarchy.description.length > 200 && readMore === false" (click)="readMore = !readMore;">{{resourceService.frmelmnts.lbl.readmore}}</span>
-                                        </p>
-                                        <p *ngIf="readMore">
-                                            {{ courseHierarchy.description}}&nbsp; 
-                                            <span class="ui cardsKnowMore mouse-pointer" (click)="readMore = false;">{{resourceService.frmelmnts.lbl.readless}}</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="sb-pageSection mt-24">
-                                <div class="sb-pageSection-header">
-                                    <h4 class="sb-pageSection-title sb-pageSection-title-light">{{resourceService.frmelmnts.lbl.coursestructure}}</h4>
-                                </div>
-                            </div>
-
-                            <app-collection-tree *ngIf="collectionTreeNodes.data && collectionTreeNodes.data.children && collectionTreeNodes.data.children.length >0 ; else dataCommingSoon" [nodes]="collectionTreeNodes" [options]="collectionTreeOptions"></app-collection-tree>
-
-                            <ng-template #dataCommingSoon>
-                                <div class="placeholder mt-40">
-                                    <img src="{{'assets/images/datacomingsoon.png' | cdnprefixurl }}"/>
-                                    <h5 class="header placeholder-heading mb-5">{{resourceService?.messages?.stmsg?.m0121}}</h5>
-                                    <p class="placeholder-content">{{resourceService?.messages?.stmsg?.m0122}}</p>
-                                </div> 
-                            </ng-template>
-
-                        </div>
-                        <div class='three wide column'>
-                            <app-public-batch-details  [courseId]="courseId"
-                                [courseHierarchy]="courseHierarchy"></app-public-batch-details>
-                            <br>
-                            <div class="rightSideSectionCards ui card sb-course-batch-card" *ngIf="curriculum && curriculum.length > 0">
-                                    <div class="header p-16 fnormal">{{resourceService?.frmelmnts?.lbl?.curriculum}}</div>
-                                <div class="content">
-                                    <div class="description">
-                                        <div class="ui list">
-                                            <div class="item" *ngFor="let data of curriculum">
-                                                <div *ngIf="data.mimeType=='application/pdf'">
-                                                    <div class="content curriculum-content">
-                                                        <i class="file pdf outline icon"></i>
-                                                        <span> {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.pdfcontents}}</span>
-                                                    </div>
-                                                </div>
-                                                <div *ngIf="data.mimeType.indexOf('video')!=-1">
-                                                    <div class="content curriculum-content">
-                                                        <i class="file video outline icon"></i>
-                                                        <span> {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.videos}}</span>
-                                                    </div>
-                                                </div>
-                                                <div *ngIf="data.mimeType.indexOf('image')!=-1">
-                                                    <div class="content curriculum-content">
-                                                        <i class="file image outline icon"></i>
-                                                        <span> {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.imagecontents}}</span>
-                                                    </div>
-                                                </div>
-                                                <div *ngIf="data.mimeType=='application/vnd.ekstep.html-archive'">
-                                                    <div class="content curriculum-content">
-                                                        <i class="html5 icon"></i>
-                                                        <span> {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.htmlarchives}}</span>
-                                                    </div>
-                                                </div>
-                                                <div *ngIf="data.mimeType=='application/vnd.ekstep.ecml-archive'">
-                                                    <div class="content curriculum-content">
-                                                        <i class="file archive outline icon"></i>
-                                                        <span> {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.ecmlarchives}}</span>
-                                                    </div>
-                                                </div>
-                                                <div *ngIf="data.mimeType=='application/epub'">
-                                                    <div class="content curriculum-content">
-                                                        <i class="file archive outline icon"></i>
-                                                        <span> {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.epubarchives}}</span>
-                                                    </div>
-                                                </div>
-                                                <div *ngIf="data.mimeType=='application/vnd.ekstep.h5p-archive'">
-                                                    <div class="content curriculum-content">
-                                                        <i class="file archive outline icon"></i>
-                                                        <span> {{data.count}}&nbsp;{{resourceService.frmelmnts.lbl.h5parchives}}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <br>
-                            <div class="courseupdate">
-                                <p class="mb-5" *ngIf="courseHierarchy.author">{{resourceService.frmelmnts.lbl.author}}: {{courseHierarchy.author}}</p>
-                                <p class="mb-5" *ngIf="courseHierarchy.creator">{{resourceService.frmelmnts.lbl.courseCreatedBy}}: {{courseHierarchy.creator}}</p>
-                                <p class="mb-5" *ngIf="courseHierarchy.orgDetails?.orgName">{{resourceService.frmelmnts.lbl.publishedBy}}: {{courseHierarchy?.organisation?.join(', ')}}</p>
-                                <p class="mb-5"*ngIf="courseHierarchy.orgDetails?.email">
-                                    <a href="mailto:{{courseHierarchy.orgDetails?.email}}?subject={{courseHierarchy.name}}">{{courseHierarchy.orgDetails?.email}}</a>
-                                </p>
-                                <div class="ui divider"></div>
-                                <p class="mb-5"><span>{{resourceService.frmelmnts.lbl.coursecreatedon}}</span>: {{courseHierarchy.createdOn | dateFormat}}</p>
-                                <p class="mb-5"><span>{{resourceService.frmelmnts.lbl.updatedon}}</span>: {{courseHierarchy.lastUpdatedOn | dateFormat}}</p>
-                                <p class="mb-5">
-                                    <a (click)="showContentCreditsPopup()" title="{{resourceService.frmelmnts.lbl.courseCredits}}" class="cursor-pointer">
-                                        {{resourceService.frmelmnts.lbl.courseCredits}}
-                                    </a>
-                                    </p>
-                                <div class="ui divider"></div>
-                                <p class="mb-5" *ngIf="courseHierarchy && !(courseHierarchy.licenseDetails && courseHierarchy.licenseDetails['name']) && courseHierarchy.license">{{resourceService.frmelmnts.lbl.licenseTerms}}: {{courseHierarchy.license}}&#x200E;</p>
-                                <p class="mb-5" *ngIf="courseHierarchy && courseHierarchy.licenseDetails && courseHierarchy.licenseDetails['name']">
-                                    <span>{{resourceService.frmelmnts.lbl.licenseTerms}}:</span>
-                                    {{courseHierarchy.licenseDetails['name']}} <br> 
-                                <span class="licenseTag">
-                                    For details - <a href="{{courseHierarchy.licenseDetails['url']}}" target="_blank">{{courseHierarchy.licenseDetails['url']}}</a>
-                                </span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div *ngIf="!loader">
+  <div class="ui container" [appTelemetryImpression]="telemetryCourseImpression">
+    <div class="sb-course-details sb-g sb-g--gap24 py-16 text-left course-consumption-container">
+      <div class="sb-course-details__training sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
+        <!-- Course details -->
+        <div class="training-info" *ngIf="courseHierarchy">
+          <h4 class="font-weight-bold">{{generaliseLabelService?.frmelmnts?.lbl?.courseDetails}}</h4>
+          <div class="training-relevant my-16">
+            <h6 class="mt-0 mb-8 fsmall training-relevant__heading">
+              {{generaliseLabelService?.frmelmnts?.lbl?.courseRelevantFor}}</h6>
+            <div class="training-relevant__class mb-4 sb-color-gray-400 fnormal" *ngIf="courseHierarchy?.gradeLevel">
+              <span>{{resourceService?.frmelmnts?.lbl?.class}}:&nbsp;</span><span>{{ courseHierarchy?.gradeLevel?.join(', ')}}</span>
             </div>
+            <div class="training-relevant__subject mb-4 sb-color-gray-400 fnormal" *ngIf="courseHierarchy?.subject">
+              <span>{{resourceService?.frmelmnts?.lbl?.subject}}:&nbsp;</span><span>{{ courseHierarchy?.subject}}</span>
+            </div>
+            <div class="training-relevant__medium mb-4 sb-color-gray-400 fnormal" *ngIf="courseHierarchy?.medium">
+              <span>{{resourceService?.frmelmnts?.lbl?.medium}}:&nbsp;</span><span>{{ courseHierarchy?.medium}}</span>
+            </div>
+            <div *ngIf="courseHierarchy?.description">
+              <label class="fsmall mt-16 mb-8">{{resourceService?.frmelmnts?.lbl?.description}}</label>
+              <p *ngIf="!readMore" class="traning-relevant__description sb-color-gray-400 fnormal">
+                {{ courseHierarchy?.description | slice:0:200 }}&nbsp;
+                <span class="ui cardsKnowMore mouse-pointer"
+                  *ngIf="courseHierarchy?.description?.length > 200 && readMore === false"
+                  (click)="readMore = !readMore;">{{resourceService?.frmelmnts?.lbl?.readmore}}</span>
+              </p>
+              <p *ngIf="readMore" class="traning-relevant__description sb-color-gray-400">
+                {{ courseHierarchy?.description}}&nbsp;
+                <span class="ui cardsKnowMore mouse-pointer"
+                  (click)="readMore = false;">{{resourceService?.frmelmnts?.lbl?.readless}}</span>
+              </p>
+            </div>
+          </div>
         </div>
-        <div *ngIf="loader">
-            <app-loader [data]="loaderMessage"></app-loader>
+
+        <div class="training-modules my-16">
+          <div class="training-modules__title d-flex flex-ai-center mb-16">
+            <h4 class="sb-pageSection-title sb-pageSection-title-light">
+              {{generaliseLabelService?.frmelmnts?.lbl?.coursestructure}}</h4>
+            <button *ngIf="!isExpandedAll"
+              class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto d-flex flex-ai-center"
+              (click)="isExpandedAll = true; logTelemetry('expand-all', courseHierarchy);"><img
+                src="assets/images/plus.png" class="mr-8" alt=""
+                width="12px">{{resourceService?.frmelmnts?.lbl?.expandAll}}</button>
+            <button *ngIf="isExpandedAll"
+              class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto d-flex flex-ai-center"
+              (click)="isExpandedAll = false; logTelemetry('collapse-all', courseHierarchy);"><img
+                src="assets/images/collapse.png" class="mr-8" alt=""
+                width="12px">{{resourceService?.frmelmnts?.lbl?.collapseAll}}</button>
+          </div>
+
+          <div class="course-consumption-modules-container" *ngFor="let item of courseHierarchy?.children; let index = index">
+            <sb-accordion [multi]="false">
+              <sb-accordion-item [expanded]="isExpanded(index)">
+                <sb-accordion-header class="sb-bg-color-gray-0">
+                  <i class="icon-svg icon-svg--sm icon-tick mr-8"
+                    *ngIf="enrolledCourse && item?.consumedContent === item?.contentCount">
+                    <svg class="icon">
+                      <use xlink:href="./assets/images/sprite.svg#circle-with-check-symbol"></use>
+                    </svg>
+                  </i>
+                  {{item?.name}}
+                </sb-accordion-header>
+                <sb-accordion-body>
+                  <div class="chapter-box sb-g">
+                    <section class="sb-g-col-xs-12 sb-g-col-md-12 sb-g-col-lg-12">
+                      <div *ngIf="item;else noContent">
+                        <div
+                          *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection' && !item?.children?.length">
+                          <div class="child-content-padding">
+                            <sb-toc-card [content]="item" (tocCardClick)="navigateToContent($event, 'toc-card')"
+                              [type]="cardType">
+                            </sb-toc-card>
+                          </div>
+                        </div>
+                        <div *ngIf="item?.children?.length">
+                          <div *ngFor="let child of item?.children">
+                            <div>
+                              <sb-toc-child-item [childData]="child"
+                                (tocCardClick)="navigateToContent($event, 'child-item')" [type]="cardType" class="sb-toc-child-item">
+                              </sb-toc-child-item>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <ng-template #noContent>
+                        <div class="heading">{{noContentMessage}}</div>
+                      </ng-template>
+                    </section>
+                  </div>
+                </sb-accordion-body>
+              </sb-accordion-item>
+            </sb-accordion>
+          </div>
         </div>
+      </div>
+      <div class="sb-course-details__info sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4">
+
+        <app-public-batch-details [courseId]="courseId" [courseHierarchy]="courseHierarchy"
+          (allBatchDetails)="getAllBatchDetails($event)">
+        </app-public-batch-details>
+
+        <!-- Credits & License information -->
+        <div class="course-player--metadata text-left">
+          <app-course-info [courseHierarchy]="courseHierarchy"></app-course-info>
+        </div>
+
+      </div>
     </div>
+  </div>
 </div>
+
+<div *ngIf="loader">
+  <app-loader [data]="loaderMessage"></app-loader>
 </div>
-<app-content-credits [contentData]="courseHierarchy" *ngIf="showContentCreditsModal" (close)="showContentCreditsModal = false"></app-content-credits>
-<router-outlet></router-outlet>
+
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
+  appBodyScroll (dismissed)="showJoinTrainingModal = false; logTelemetry('join-training-popup-close')"
+  *ngIf="showJoinTrainingModal" #joinTrainingModal>
+  <div class="sb-modal-header">
+    {{generaliseLabelService?.frmelmnts?.btn?.enroll}}
+  </div>
+  <div class="sb-modal-content">
+    <div class="ui center aligned segment">
+      <p>{{generaliseLabelService?.frmelmnts?.lbl?.accessToLogin}}</p>
+    </div>
+  </div>
+</sui-modal>
+
+<app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="shareLinkModal"
+  (close)="closeSharePopup('close-share-link-popup')">
+</app-share-link>

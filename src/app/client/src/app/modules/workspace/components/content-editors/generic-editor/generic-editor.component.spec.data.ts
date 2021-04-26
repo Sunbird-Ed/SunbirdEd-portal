@@ -22,7 +22,7 @@ export const mockRes = {
             'content': {
                 'identifier': 'do_21247940906829414411032',
                 'createdBy': '68777b59-b28b-4aee-88d6-50d46e4c3509',
-                'mimeType': 'application/vnd.ekstep.ecml-archive',
+                'mimeType': 'application/pdf',
                 'languageCode': 'en',
                 'status': 'Review'
             }

@@ -12,6 +12,8 @@ import { StatusComponent } from './status.component';
 import { FormBuilder } from '@angular/forms';
 import { mockRes } from './status.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
+
 describe('StatusComponent', () => {
   let component: StatusComponent;
   let fixture: ComponentFixture<StatusComponent>;
@@ -29,7 +31,7 @@ describe('StatusComponent', () => {
       }
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [StatusComponent],

@@ -1,16 +1,18 @@
+import { debounceTime, map } from 'rxjs/operators';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
-import { SearchService, UserService, CoursesService } from '@sunbird/core';
+import { SearchService, UserService, CoursesService, FrameworkService } from '@sunbird/core';
 import {
-  ServerResponse, ConfigService, PaginationService,
+  ServerResponse, ConfigService, PaginationService, IPagination,
   IContents, ToasterService, ResourceService, ILoaderMessage, INoResultMessage,
   NavigationHelperService
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
-import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput } from '@sunbird/telemetry';
+import { combineLatest, forkJoin } from 'rxjs';
+import { ContentIDParam } from '../../interfaces/delteparam';
 
 /**
  * Interface for passing the configuartion for modal
@@ -24,10 +26,11 @@ import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semanti
 
 @Component({
   selector: 'app-published',
-  templateUrl: './published.component.html'
+  templateUrl: './published.component.html',
+  styleUrls: ['./published.component.scss']
 })
 export class PublishedComponent extends WorkSpace implements OnInit, AfterViewInit {
-  @ViewChild('modalTemplate')
+  @ViewChild('modalTemplate', {static: false})
   public modalTemplate: ModalTemplate<{ data: string }, string, string>;
   /**
   * state for content editior
@@ -123,6 +126,44 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
 	 * inviewLogs
 	*/
   inviewLogs = [];
+  queryParams: object;
+  query: string;
+  sort: object;
+
+   /**
+  * To store all the collection details to be shown in collection modal
+  */
+  public collectionData: Array<any>;
+
+  /**
+  * Flag to show/hide loader on first modal
+  */
+  private showCollectionLoader: boolean;
+
+  /**
+  * To define collection modal table header
+  */
+  private headers: any;
+
+  /**
+  * To store deleting content id
+  */
+  private currentContentId: ContentIDParam;
+
+  /**
+  * To store deleteing content type
+  */
+  private contentMimeType: string;
+
+  /**
+   * To store modal object of first yes/No modal
+   */
+  private deleteModal: any;
+
+  /**
+   * To show/hide collection modal
+   */
+  public collectionListModal = false;
 
   /**
     * Constructor to create injected service(s) object
@@ -137,6 +178,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
 
   constructor(public modalService: SuiModalService, public searchService: SearchService,
     public workSpaceService: WorkSpaceService,
+    public frameworkService: FrameworkService,
     paginationService: PaginationService,
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
@@ -154,16 +196,33 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
   }
 
   ngOnInit() {
-    this.activatedRoute.params.subscribe(params => {
-      this.pageNumber = Number(params.pageNumber);
-      this.fetchPublishedContent(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
-    });
-    this.isPublishedCourse();
+    combineLatest(
+      this.activatedRoute.params,
+      this.activatedRoute.queryParams).pipe(
+        debounceTime(100),
+        map(([params, queryParams]) => ({ params, queryParams })
+      ))
+      .subscribe(bothParams => {
+        if (bothParams.params.pageNumber) {
+          this.pageNumber = Number(bothParams.params.pageNumber);
+        }
+        this.queryParams = bothParams.queryParams;
+        this.query = this.queryParams['query'];
+        this.fetchPublishedContent(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber, bothParams);
+      });
+      this.isPublishedCourse();
   }
   isPublishedCourse() {
-    const searchParams = { status: ['Live'], contentType: ['Course'], params: { lastUpdatedOn: 'desc' } };
-    const inputParams = { params: '' };
-      this.searchService.searchContentByUserId(searchParams, inputParams).subscribe((data: ServerResponse) => {
+    const searchParams = {
+      filters: {
+        status: ['Live'],
+        createdBy: this.userService.userid,
+        contentType: ['Course'],
+        objectType: this.config.appConfig.WORKSPACE.objectType,
+      },
+      sort_by: { lastUpdatedOn: 'desc' }
+    };
+      this.searchService.compositeSearch(searchParams).subscribe((data: ServerResponse) => {
        if (data.result.content.length > 0) {
          this.showCourseQRCodeBtn = true;
        }
@@ -183,20 +242,41 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
   /**
     * This method sets the make an api call to get all Published content with page No and offset
     */
-  fetchPublishedContent(limit: number, pageNumber: number) {
+  fetchPublishedContent(limit: number, pageNumber: number, bothParams?: object) {
     this.showLoader = true;
     this.pageNumber = pageNumber;
     this.pageLimit = limit;
+    this.publishedContent = [];
+    this.totalCount = 0;
+    this.noResult = false;
+    if (bothParams['queryParams'].sort_by) {
+      const sort_by = bothParams['queryParams'].sort_by;
+      const sortType = bothParams['queryParams'].sortType;
+      this.sort = {
+        [sort_by]: _.toString(sortType)
+      };
+    } else {
+      this.sort = { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn };
+    }
+    // tslint:disable-next-line:max-line-length
+    const primaryCategories = _.concat(this.frameworkService['_channelData'].contentPrimaryCategories, this.frameworkService['_channelData'].collectionPrimaryCategories);
     const searchParams = {
       filters: {
         status: ['Live'],
         createdBy: this.userService.userid,
-        contentType: this.config.appConfig.WORKSPACE.contentType,
         objectType: this.config.appConfig.WORKSPACE.objectType,
+        // tslint:disable-next-line:max-line-length
+        primaryCategory: _.get(bothParams, 'queryParams.primaryCategory') || primaryCategories || this.config.appConfig.WORKSPACE.primaryCategory,
+        mimeType: this.config.appConfig.WORKSPACE.mimeType,
+        board: bothParams['queryParams'].board,
+        subject: bothParams['queryParams'].subject,
+        medium: bothParams['queryParams'].medium,
+        gradeLevel: bothParams['queryParams'].gradeLevel
       },
       limit: this.pageLimit,
       offset: (this.pageNumber - 1) * (this.pageLimit),
-      sort_by: { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn }
+      query: _.toString(bothParams['queryParams'].query),
+      sort_by: this.sort
     };
     this.loaderMessage = {
       'loaderMessage': this.resourceService.messages.stmsg.m0021,
@@ -232,23 +312,102 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
   /**
     * This method launch the content editior
   */
-  contentClick(param) {
+  contentClick(param, content) {
+    this.contentMimeType = content.metaData.mimeType;
+    if (param.data && param.data.originData) {
+      const originData = JSON.parse(param.data.originData)
+      if (originData.copyType === 'shallow') {
+        const errMsg = (this.resourceService.messages.emsg.m1414).replace('{instance}', originData.organisation[0]);
+        this.toasterService.error(errMsg);
+        return;
+      }
+    }
     if (param.action.eventName === 'delete') {
-      this.deleteConfirmModal(param.data.metaData.identifier);
+      this.currentContentId = param.data.metaData.identifier;
+      const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);
+      config.isClosable = false;
+      config.size = 'small';
+      config.transitionDuration = 0;
+      config.mustScroll = true;
+      this.modalService
+        .open(config);
+      this.showCollectionLoader = false;
     } else {
       this.workSpaceService.navigateToContent(param.data.metaData, this.state);
     }
   }
 
-  public deleteConfirmModal(contentIds) {
-    const config = new TemplateModalConfig<{ data: string }, string, string>(this.modalTemplate);
-    config.isClosable = false;
-    config.size = 'small';
-    config.transitionDuration = 0;
-    config.mustScroll = true;
-    this.modalService
-      .open(config)
-      .onApprove(result => {
+  /**
+  * This method checks whether deleting content is linked to any collections, if linked to collection displays collection list pop modal.
+  */
+  public checkLinkedCollections(modal) {
+    if (!_.isUndefined(modal)) {
+      this.deleteModal = modal;
+    }
+    this.showCollectionLoader = false;
+    if (this.contentMimeType === 'application/vnd.ekstep.content-collection') {
+      this.deleteContent(this.currentContentId);
+      return;
+    }
+    this.getLinkedCollections(this.currentContentId)
+      .subscribe((response) => {
+        const count = _.get(response, 'result.count');
+        if (!count) {
+          this.deleteContent(this.currentContentId);
+          return;
+        }
+        this.showCollectionLoader = true;
+        const collections = _.get(response, 'result.content', []);
+
+        const channels = _.map(collections, (collection) => {
+          return _.get(collection, 'channel');
+        });
+        const channelMapping = {};
+        forkJoin(_.map(channels, (channel: string) => {
+            return this.getChannelDetails(channel);
+          })).subscribe((forkResponse) => {
+            this.collectionData = [];
+            _.forEach(forkResponse, channelResponse => {
+              const channelId = _.get(channelResponse, 'result.channel.code');
+              const channelName = _.get(channelResponse, 'result.channel.name');
+              channelMapping[channelId] = channelName;
+            });
+
+            _.forEach(collections, collection => {
+              const obj = _.pick(collection, ['contentType', 'board', 'medium', 'name', 'gradeLevel', 'subject', 'channel']);
+              obj['channel'] = channelMapping[obj.channel];
+              this.collectionData.push(obj);
+          });
+
+          this.headers = {
+             type: 'Type',
+             name: 'Name',
+             subject: 'Subject',
+             grade: 'Grade',
+             medium: 'Medium',
+             board: 'Board',
+             channel: 'Tenant Name'
+             };
+             if (!_.isUndefined(this.deleteModal)) {
+              this.deleteModal.deny();
+            }
+          this.collectionListModal = true;
+          },
+          (error) => {
+           this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0014'));
+            console.log(error);
+          });
+        },
+        (error) => {
+         this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0015'));
+          console.log(error);
+        });
+  }
+
+  /**
+  * This method deletes content using the content id.
+  */
+  public deleteContent(contentIds) {
         this.showLoader = true;
         this.loaderMessage = {
           'loaderMessage': this.resourceService.messages.stmsg.m0034,
@@ -267,9 +426,9 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
             this.toasterService.success(this.resourceService.messages.fmsg.m0022);
           }
         );
-      })
-      .onDeny(result => {
-      });
+        if (!_.isUndefined(this.deleteModal)) {
+          this.deleteModal.deny();
+        }
   }
 
   /**
@@ -295,7 +454,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
       return;
     }
     this.pageNumber = page;
-    this.route.navigate(['workspace/content/published', this.pageNumber]);
+    this.route.navigate(['workspace/content/published', this.pageNumber], { queryParams: this.queryParams });
   }
 
   ngAfterViewInit () {

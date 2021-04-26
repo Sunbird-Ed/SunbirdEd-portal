@@ -1,0 +1,59 @@
+<app-landing-section [appTelemetryImpression]="telemetryImpression" [textToDisplay]=""
+  [layoutConfiguration]="layoutConfiguration" [noTitle]="true">
+</app-landing-section>
+
+<div class="help-page relative9">
+  <div class="help-page__header sb-bg-color-white p-16">
+    <div class="ui container d-flex flex-ai-center">
+      <button (click)="goBack()"
+        class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn sb-btn-round" type="button"><i
+          class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+            <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+          </svg></i><span>{{resourceService?.frmelmnts?.btn?.back}}</span> </button>
+      <div class="d-flex flex-dc ml-8">
+        <h4 class="mb-4">{{resourceService?.frmelmnts?.tab?.help}}</h4>
+        <div class="fsmall" *ngIf="isDesktopApp">
+          {{resourceService?.frmelmnts?.lbl?.learn_more | interpolate:'{instance}': instance}}</div>
+        <div class="fsmall" *ngIf="!isDesktopApp">{{resourceService?.frmelmnts?.lbl?.frequentlyAskedQuestions}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ui container">
+    <div class="help-page__content" *ngIf="showLoader">
+      <app-loader></app-loader>
+    </div>
+    <div class="ml-8" *appDesktopOnly>
+      <app-offline-help-videos></app-offline-help-videos>
+    </div>
+    <div class="m-16 font-weight-bold" *appDesktopOnly>
+      {{resourceService?.frmelmnts?.lbl?.frequentlyAskedQuestions}}</div>
+    <div class="help-page__content" *ngIf="faqList && !showLoader">
+      <sb-faq [extraTemplate]="extraTemplate" [data]="faqList"
+        (toggleGroupEvent)="logInteractEvent($event, 'toggle-clicked');"
+        (yesClickedEvent)="logInteractEvent($event, 'yes-clicked');"
+        (noClickedEvent)="logInteractEvent($event, 'no-clicked');"
+        (submitClickedEvent)="logInteractEvent($event, 'submit-clicked');"></sb-faq>
+    </div>
+    <div class="help-page__visit-helpcenter mt-24 w-100 p-16 d-flex flex-ai-center relative9"
+      *ngIf="faqList && !showLoader">
+      <div class="fnormal mr-auto visit-helpcenter__text">{{resourceService?.frmelmnts?.lbl?.stillCouldntFind}}
+        <b>{{resourceService.frmelmnts?.lnk?.footerHelpCenter}}</b></div>
+      <a class="sb-btn sb-btn-normal sb-btn-outline-primary" appTelemetryInteract
+        [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')"
+        href="{{defaultFooterConfig?.helpCenterLink}}" [target]="isDesktopApp ? '_blank' : '_self'">
+        {{resourceService?.frmelmnts?.lbl?.goToHelpCenter}}
+      </a>
+    </div>
+  </div>
+</div>
+
+<ng-template #extraTemplate>
+  <div class="fnormal visit-helpcenter__text mr-16">{{resourceService?.frmelmnts?.lbl?.stillCouldntFind}}
+    <b>{{resourceService.frmelmnts?.lnk?.footerHelpCenter}}</b></div>
+  <a class="sb-btn sb-btn-normal sb-btn-primary visit-helpcenter__btn" appTelemetryInteract
+    [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')" href="{{defaultFooterConfig?.helpCenterLink}}"
+    [target]="isDesktopApp ? '_blank' : '_self'">
+    {{resourceService?.frmelmnts?.lbl?.goToHelpCenter}}
+  </a>
+</ng-template>

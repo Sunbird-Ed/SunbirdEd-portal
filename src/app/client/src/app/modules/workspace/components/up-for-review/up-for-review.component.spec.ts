@@ -12,6 +12,9 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { Response } from './up-for-review.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { CoreModule } from '@sunbird/core';
+import { DateFilterXtimeAgoPipe } from './../../pipes';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('UpForReviewComponent', () => {
   let component: UpForReviewComponent;
@@ -66,10 +69,11 @@ describe('UpForReviewComponent', () => {
   const mockUserRoles = {
     userRoles: ['PUBLIC', 'CONTENT_REVIEWER']
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [UpForReviewComponent],
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), TelemetryModule.forRoot()],
+      declarations: [UpForReviewComponent, DateFilterXtimeAgoPipe],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ResourceService, ToasterService,
@@ -140,7 +144,7 @@ describe('UpForReviewComponent', () => {
     const ContentType = ['Collection', 'Course', 'LessonPlan', 'Resource', 'SelfAssess', 'PracticeResource',
       'LearningOutcomeDefinition',
       'ExplanationResource',
-      'ExperientialResource'];
+      'ExperientialResource', 'eTextBook', 'TVLesson'];
     expect(returnContentType).toEqual(ContentType);
   }));
   it('should call setpage method and set proper page number', inject([ConfigService, Router],

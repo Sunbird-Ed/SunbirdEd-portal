@@ -1,31 +1,27 @@
+// tooltip Component
 .ui {
     &.popup {
-      background: $tooltip-bg;
-      border: 1px solid $tooltip-bg;
-      padding: $base-block-space;
+      background: var(--gray);
+      border: calculateRem(1px) solid var(--gray);
+      padding: calculateRem(8px);
   
       .content {
-        font-size: $tooltip-content-font-size;
-        color: $tooltip-color; 
+        font-size: calculateRem(12px);
+        color:  var(--gray-0); 
         line-height: normal;
       }
   
       .header {
-        font-size: $tooltip-header-font-size;
-        color:$tooltip-content-color;
+        font-size: calculateRem(12px);
+        color: var(--gray-200);
       }
   
       .arrow {
-        background: $tooltip-bg;
-        border: 1px solid $tooltip-bg;
-        box-shadow: 1px 1px 0 0 $tooltip-bg !important;
+        background: var(--gray);
+        border: calculateRem(1px) solid var(--gray);
+        box-shadow: calculateRem(1px) calculateRem(1px) 0 0 var(--gray) !important;
         display: none;
       }
     }
   }
-  
 
-  tooltip {
-    color: white !important;
-    background-color: black !important;
-  }

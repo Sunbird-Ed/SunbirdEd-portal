@@ -18,16 +18,19 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { userLocationMockData } from './user-location.component.spec.data';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SharedModule } from '@sunbird/shared';
-
+import { CoreModule } from '@sunbird/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('UserLocationComponent', () => {
   let component: UserLocationComponent;
   let fixture: ComponentFixture<UserLocationComponent>;
   let configService;
 
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
+        CoreModule,
         SuiModule,
         FormsModule,
         ReactiveFormsModule,

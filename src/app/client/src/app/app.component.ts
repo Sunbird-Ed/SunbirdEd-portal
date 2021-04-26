@@ -3,30 +3,30 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { TelemetryService, ITelemetryContext } from '@sunbird/telemetry';
 import {
   UtilService, ResourceService, ToasterService, IUserData, IUserProfile,
-  NavigationHelperService, ConfigService, BrowserCacheTtlService
+  NavigationHelperService, ConfigService, BrowserCacheTtlService, LayoutService
 } from '@sunbird/shared';
-import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, AfterViewInit, ChangeDetectorRef, ElementRef, Renderer2 } from '@angular/core';
 import {
   UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService,
-  SessionExpiryInterceptor, FormService, ProgramsService
+  SessionExpiryInterceptor, FormService, ProgramsService, GeneraliseLabelService
 } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
-import { Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin } from 'rxjs';
+import { Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin, zip, Subject } from 'rxjs';
 import { first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
-import { DOCUMENT } from '@angular/platform-browser';
-import { ShepherdService } from 'angular-shepherd';
-
+import { DOCUMENT } from '@angular/common';
+import { image } from '../assets/images/tara-bot-icon';
 /**
  * main app component
  */
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html'
+  templateUrl: './app.component.html',
+  styles: ['.header-block { display: none;}']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  @ViewChild('frameWorkPopUp') frameWorkPopUp;
+  @ViewChild('frameWorkPopUp', { static: false }) frameWorkPopUp;
   /**
    * user profile details.
    */
@@ -50,17 +50,15 @@ export class AppComponent implements OnInit, OnDestroy {
   public showTermsAndCondPopUp = false;
 
   /**
-   * Used to fetch tenant details and org details for Anonymous user. Possible values
-   * 1. url slug param will be slug for Anonymous user
-   * 2. user profile rootOrg slug for logged in
+   * this variable is used to show the global consent pop up
    */
-  private slug: string;
+  public showGlobalConsentPopUpSection = false;
   /**
    * Used to config telemetry service and device register api. Possible values
    * 1. org hashtag for Anonymous user
    * 2. user profile rootOrg hashtag for logged in
    */
-  private channel: string;
+  public channel: string;
   private _routeData$ = new BehaviorSubject(undefined);
   public readonly routeData$ = this._routeData$.asObservable()
     .pipe(skipWhile(data => data === undefined || data === null));
@@ -73,11 +71,10 @@ export class AppComponent implements OnInit, OnDestroy {
   */
   showAppPopUp = false;
   viewinBrowser = false;
-  isOffline: boolean = environment.isOffline;
   sessionExpired = false;
+  isglobalConsent = true;
   instance: string;
   resourceDataSubscription: any;
-  shepherdData: Array<any>;
   private fingerprintInfo: any;
   hideHeaderNFooter = true;
   queryParams: any;
@@ -89,9 +86,35 @@ export class AppComponent implements OnInit, OnDestroy {
   usersProfile: any;
   isLocationConfirmed = true;
   userFeed: any;
+  isFullScreenView;
   showUserVerificationPopup = false;
   feedCategory = 'OrgMigrationAction';
+  globalConsent = 'global-consent';
   labels: {};
+  showUserTypePopup = false;
+  deviceId: string;
+  dataThemeAttribute: string;
+  scrollHeight:number;
+  public botObject: any = {};
+  isBotEnabled = (<HTMLInputElement>document.getElementById('isBotConfigured'))
+    ? (<HTMLInputElement>document.getElementById('isBotConfigured')).value : 'false';
+  botServiceURL = (<HTMLInputElement>document.getElementById('botServiceURL'))
+    ? (<HTMLInputElement>document.getElementById('botServiceURL')).value : '';
+  baseUrl = (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl'))
+    ? (<HTMLInputElement>document.getElementById('offlineDesktopAppDownloadUrl')).value : '';
+  layoutConfiguration;
+  title = _.get(this.resourceService, 'frmelmnts.btn.botTitle') ? _.get(this.resourceService, 'frmelmnts.btn.botTitle') : 'Ask Tara';
+  showJoyThemePopUp = false;
+  public unsubscribe$ = new Subject<void>();
+  consentConfig: { tncLink: string; tncText: any; };
+  isDesktopApp = false;
+  // Font Increase Decrease Variables
+  fontSize: any;
+  defaultFontSize = 16;
+  @ViewChild('increaseFontSize', { static: false }) increaseFontSize: ElementRef;
+  @ViewChild('decreaseFontSize', { static: false }) decreaseFontSize: ElementRef;
+  @ViewChild('resetFontSize', { static: false }) resetFontSize: ElementRef;
+
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
     private permissionService: PermissionService, public resourceService: ResourceService,
@@ -101,9 +124,17 @@ export class AppComponent implements OnInit, OnDestroy {
     private profileService: ProfileService, private toasterService: ToasterService, public utilService: UtilService,
     public formService: FormService, private programsService: ProgramsService,
     @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
-    private shepherdService: ShepherdService) {
+    public changeDetectorRef: ChangeDetectorRef, public layoutService: LayoutService,
+    public generaliseLabelService: GeneraliseLabelService, private renderer: Renderer2) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
+    const layoutType = localStorage.getItem('layoutType') || '';
+    if (layoutType === '' || layoutType === 'joy') {
+      this.layoutConfiguration = this.configService.appConfig.layoutConfiguration;
+      document.documentElement.setAttribute('layout', 'joy');
+    } else {
+      document.documentElement.setAttribute('layout', 'old');
+    }
   }
   /**
    * dispatch telemetry window unload event before browser closes
@@ -117,6 +148,7 @@ export class AppComponent implements OnInit, OnDestroy {
     window.location.replace('/sessionExpired');
     this.cacheService.removeAll();
   }
+
   handleHeaderNFooter() {
     this.router.events
       .pipe(
@@ -127,7 +159,55 @@ export class AppComponent implements OnInit, OnDestroy {
           _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.firstChild.data.hideHeaderNFooter');
       });
   }
+
+  ngAfterViewInit() {
+    // themeing code
+    const trans = () => {
+      document.documentElement.classList.add('transition');
+      window.setTimeout(() => {
+        document.documentElement.classList.remove('transition');
+      }, 1000);
+    };
+    const selector = document.querySelectorAll('input[name=selector]');
+    for (let i = 0; i < selector.length; i++) {
+      selector[i].addEventListener('change', function () {
+        if (this.checked) {
+          trans();
+          document.documentElement.setAttribute('data-theme', this.value);
+        }
+      });
+    }
+    this.setTheme();
+    // themeing code
+    this.getLocalFontSize();
+    // dark theme
+    this.getLocalTheme();
+  }
+
+  setTheme() {
+    const themeColour = localStorage.getItem('layoutColour') || 'Default';
+    this.setSelectedThemeColour(themeColour);
+    document.documentElement.setAttribute('data-theme', themeColour);
+    this.layoutService.setLayoutConfig(this.layoutConfiguration);
+  }
+
   ngOnInit() {
+    this.isDesktopApp = this.utilService.isDesktopApp;
+    if (this.isDesktopApp) {
+      this._document.body.classList.add('desktop-app');
+    }
+    this.checkFullScreenView();
+    this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+      if (layoutConfig != null) {
+        this.layoutConfiguration = layoutConfig.layout;
+      }
+    });
+    this.activatedRoute.queryParams.pipe(filter(param => !_.isEmpty(param))).subscribe(params => {
+      const utmParams = ['utm_campaign', 'utm_medium', 'utm_source', 'utm_term', 'utm_content', 'channel'];
+      if (_.some(_.intersection(utmParams, _.keys(params)))) {
+        this.telemetryService.makeUTMSession(params);
+      }
+    });
     this.didV2 = (localStorage && localStorage.getItem('fpDetails_v2')) ? true : false;
     const queryParams$ = this.activatedRoute.queryParams.pipe(
       filter(queryParams => queryParams && queryParams.clientId === 'android' && queryParams.context),
@@ -138,42 +218,94 @@ export class AppComponent implements OnInit, OnDestroy {
     );
     this.handleHeaderNFooter();
     this.resourceService.initialize();
-    combineLatest(queryParams$, this.setSlug(), this.setDeviceId())
+    combineLatest(queryParams$, this.setDeviceId())
       .pipe(
         mergeMap(data => {
           this.navigationHelperService.initialize();
           this.userService.initialize(this.userService.loggedIn);
+          this.getOrgDetails();
           if (this.userService.loggedIn) {
             this.permissionService.initialize();
             this.courseService.initialize();
             this.programsService.initialize();
             this.userService.startSession();
+            this.checkForCustodianUser();
             return this.setUserDetails();
           } else {
+            if (this.utilService.isDesktopApp) {
+              this.userService.getAnonymousUserPreference();
+            }
             return this.setOrgDetails();
           }
         }))
       .subscribe(data => {
-        this.tenantService.getTenantInfo(this.slug);
+        this.tenantService.getTenantInfo(this.userService.slug);
+        this.tenantService.initialize();
         this.setPortalTitleLogo();
         this.telemetryService.initialize(this.getTelemetryContext());
         this.logCdnStatus();
         this.setFingerPrintTelemetry();
-        this.checkTncAndFrameWorkSelected();
         this.initApp = true;
+        this.joyThemePopup();
+        this.changeDetectorRef.detectChanges();
       }, error => {
         this.initApp = true;
+        this.changeDetectorRef.detectChanges();
       });
 
     this.changeLanguageAttribute();
-    if (this.isOffline) {
-      document.body.classList.add('sb-offline');
+    if (this.userService.loggedIn) {
+      this.botObject['userId'] = this.userService.userid;
+    } else {
+      this.botObject['userId'] = this.deviceId;
+    }
+    this.botObject['appId'] = this.userService.appId;
+    this.botObject['chatbotUrl'] = this.baseUrl + this.botServiceURL;
+
+    this.botObject['imageUrl'] = image.imageUrl;
+    this.botObject['title'] = this.botObject['header'] = this.title;
+    this.generaliseLabelService.getGeneraliseResourceBundle();
+  }
+
+  onCloseJoyThemePopup() {
+    this.showJoyThemePopUp = false;
+    this.checkTncAndFrameWorkSelected();
+  }
+
+  isBotdisplayforRoute() {
+    const url = this.router.url;
+    return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in'));
+  }
+
+  checkFullScreenView() {
+    this.navigationHelperService.contentFullScreenEvent.pipe(takeUntil(this.unsubscribe$)).subscribe(isFullScreen => {
+      this.isFullScreenView = isFullScreen;
+    });
+  }
+
+  storeThemeColour(value) {
+    localStorage.setItem('layoutColour', value);
+  }
+
+  setSelectedThemeColour(value) {
+    const element = (<HTMLInputElement>document.getElementById(value));
+    if (element) {
+      element.checked = true;
     }
   }
 
   isLocationStatusRequired() {
-    const url = this.router.url;
+    const url = location.href;
     return !!(_.includes(url, 'signup') || _.includes(url, 'recover') || _.includes(url, 'sign-in'));
+  }
+
+  joyThemePopup() {
+    const joyThemePopup = localStorage.getItem('joyThemePopup');
+    if (joyThemePopup === 'true') {
+      this.checkTncAndFrameWorkSelected();
+    } else {
+      this.showJoyThemePopUp = true;
+    }
   }
 
   checkLocationStatus() {
@@ -214,8 +346,19 @@ export class AppComponent implements OnInit, OnDestroy {
           }
         }
       }
+      // TODO: code can be removed in 3.1 release from user-onboarding component as it is handled here.
+      zip(this.tenantService.tenantData$, this.getOrgDetails(false)).subscribe((res) => {
+        if (_.get(res[0], 'tenantData')) {
+          const orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
+          if (_.get(orgDetailsFromSlug, 'slug') !== this.tenantService.slugForIgot) {
+            const userType = localStorage.getItem('userType');
+            this.showUserTypePopup = _.get(this.userService, 'loggedIn') ? (!_.get(this.userService, 'userProfile.userType') || !userType) : !userType;
+          }
+        }
+      });
     }, (err) => {
       this.isLocationConfirmed = true;
+      this.showUserTypePopup = false;
     });
     this.getUserFeedData();
   }
@@ -281,14 +424,46 @@ export class AppComponent implements OnInit, OnDestroy {
    * checks if user has accepted the tnc and show tnc popup.
    */
   public checkTncAndFrameWorkSelected() {
-    if (_.has(this.userProfile, 'promptTnC') && _.has(this.userProfile, 'tncLatestVersion') &&
-      _.has(this.userProfile, 'tncLatestVersion') && this.userProfile.promptTnC === true) {
+    if (_.has(this.userService.userProfile, 'promptTnC') && _.has(this.userService.userProfile, 'tncLatestVersion') &&
+      _.has(this.userService.userProfile, 'tncLatestVersion') && this.userService.userProfile.promptTnC === true) {
       this.showTermsAndCondPopUp = true;
     } else {
-      this.checkFrameworkSelected();
+      if (this.userService.loggedIn) {
+        this.orgDetailsService.getCustodianOrgDetails().subscribe((custodianOrg) => {
+          if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') !== _.get(custodianOrg, 'result.response.value')) {
+            // Check for non custodian user and show global consent pop up
+            this.consentConfig = { tncLink: this.resourceService.frmelmnts.lbl.privacyPolicy, tncText: this.resourceService.frmelmnts.lbl.nonCustodianTC };
+            this.showGlobalConsentPopUpSection = true;
+          } else {
+            this.checkFrameworkSelected();
+          }
+        });
+      } else {
+        this.checkFrameworkSelected();
+      }
     }
   }
-
+  public getOrgDetails(storeOrgDetails = true) {
+    const slug = this.userService.slug;
+    return this.orgDetailsService.getOrgDetails(slug).pipe(
+      tap(data => {
+        if (slug !== '' && storeOrgDetails) {
+          this.cacheService.set('orgDetailsFromSlug', data, {
+            maxAge: 86400
+          });
+        }
+      })
+    );
+  }
+  public checkForCustodianUser() {
+    this.orgDetailsService.getCustodianOrgDetails().subscribe((custodianOrg) => {
+      if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value')) {
+        this.userService.setIsCustodianUser(true);
+      } else {
+        this.userService.setIsCustodianUser(false);
+      }
+    });
+  }
   /**
    * checks if user has selected the framework and shows popup if not selected.
    */
@@ -311,6 +486,25 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   public onAcceptTnc() {
     this.showTermsAndCondPopUp = false;
+    if (this.userService.loggedIn) {
+      this.orgDetailsService.getCustodianOrgDetails().subscribe((custodianOrg) => {
+        if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') !== _.get(custodianOrg, 'result.response.value')) {
+          // Check for non custodian user and show global consent pop up
+          this.consentConfig = { tncLink: this.resourceService.frmelmnts.lbl.privacyPolicy, tncText: this.resourceService.frmelmnts.lbl.nonCustodianTC };
+          this.showGlobalConsentPopUpSection = true;
+        } else {
+          this.checkFrameworkSelected();
+        }
+      });
+    } else {
+      this.checkFrameworkSelected();
+    }
+  }
+
+  public closeConsentPopUp() {
+    this.showGlobalConsentPopUpSection = false;
+    this.isglobalConsent = false;
+    this.globalConsent = '';
     this.checkFrameworkSelected();
   }
 
@@ -318,28 +512,18 @@ export class AppComponent implements OnInit, OnDestroy {
    * fetch device id using fingerPrint2 library.
    */
   public setDeviceId(): Observable<string> {
-      return new Observable(observer => this.telemetryService.getDeviceId((deviceId, components, version) => {
-          this.fingerprintInfo = {deviceId, components, version};
-          if (this.isOffline) {
-            deviceId = <HTMLInputElement>document.getElementById('deviceId') ?
-                        (<HTMLInputElement>document.getElementById('deviceId')).value : deviceId;
-          }
-          (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
-        this.deviceRegisterService.setDeviceId();
-          observer.next(deviceId);
-          observer.complete();
-        }));
-  }
-  /**
-   * set slug from url only for Anonymous user.
-   */
-  private setSlug(): Observable<string> {
-    if (this.userService.loggedIn) {
-      return of(undefined);
-    } else {
-      return this.router.events.pipe(filter(event => event instanceof NavigationEnd), first(),
-        map(data => this.slug = _.get(this.activatedRoute, 'snapshot.firstChild.firstChild.params.slug')));
-    }
+    return new Observable(observer => this.telemetryService.getDeviceId((deviceId, components, version) => {
+      if (this.utilService.isDesktopApp) {
+        deviceId = (<HTMLInputElement>document.getElementById('deviceId')).value;
+      }
+      this.fingerprintInfo = { deviceId, components, version };
+      (<HTMLInputElement>document.getElementById('deviceId')).value = deviceId;
+      this.deviceId = deviceId;
+      this.botObject['did'] = deviceId;
+      this.deviceRegisterService.setDeviceId();
+      observer.next(deviceId);
+      observer.complete();
+    }));
   }
   /**
    * set user details for loggedIn user.
@@ -351,8 +535,8 @@ export class AppComponent implements OnInit, OnDestroy {
           return throwError(user.err);
         }
         this.userProfile = user.userProfile;
-        this.slug = _.get(this.userProfile, 'rootOrg.slug');
         this.channel = this.userService.hashTagId;
+        this.botObject['channel'] = this.channel;
         return of(user.userProfile);
       }));
   }
@@ -360,10 +544,16 @@ export class AppComponent implements OnInit, OnDestroy {
    * set org Details for Anonymous user.
    */
   private setOrgDetails(): Observable<any> {
-    return this.orgDetailsService.getOrgDetails(this.slug).pipe(
+    return this.orgDetailsService.getOrgDetails(this.userService.slug).pipe(
       tap(data => {
         this.orgDetails = data;
         this.channel = this.orgDetails.hashTagId;
+        this.botObject['channel'] = this.channel;
+        if (this.userService.slug !== '') {
+          this.cacheService.set('orgDetailsFromSlug', data, {
+            maxAge: 86400
+          });
+        }
       })
     );
   }
@@ -437,7 +627,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private setPortalTitleLogo(): void {
     this.tenantService.tenantData$.subscribe(data => {
       if (!data.err) {
-        document.title = this.userService.rootOrgName || data.tenantData.titleName;
+        document.title = _.get(this.userService, 'rootOrgName') || _.get(data, 'tenantData.titleName');
         document.querySelector('link[rel*=\'icon\']').setAttribute('href', data.tenantData.favicon);
       }
     });
@@ -460,11 +650,11 @@ export class AppComponent implements OnInit, OnDestroy {
       this.toasterService.warning(this.resourceService.messages.emsg.m0012);
       this.frameWorkPopUp.modal.deny();
       this.checkLocationStatus();
-      this.cacheService.set('showFrameWorkPopUp', 'installApp');
+      this.showFrameWorkPopUp = false;
     });
   }
   viewInBrowser() {
-    this.router.navigate(['/resources']);
+    // no action required
   }
   closeIcon() {
     this.showFrameWorkPopUp = false;
@@ -486,6 +676,8 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.resourceDataSubscription) {
       this.resourceDataSubscription.unsubscribe();
     }
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
   interpolateInstance(message) {
     return message.replace('{instance}', _.upperCase(this.instance));
@@ -499,32 +691,150 @@ export class AppComponent implements OnInit, OnDestroy {
 
   /** It will fetch user feed data if user is custodian as well as logged in. */
   getUserFeedData() {
-    this.orgDetailsService.getCustodianOrg().subscribe(custodianOrg => {
-      if (this.userService.loggedIn &&
+    this.orgDetailsService.getCustodianOrgDetails().subscribe(custodianOrg => {
+      if (this.userService.loggedIn && !this.userService.userProfile.managedBy &&
         (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(custodianOrg, 'result.response.value'))) {
-          this.userService.getFeedData().subscribe(
-            (data) => {
-              this.userFeed = _.get(data, 'result.response.userFeed[0]');
-              if (this.userFeed && _.get(this.userFeed, 'category').toLowerCase() === this.feedCategory.toLowerCase()) {
-                const formReadInputParams = {
-                  formType: 'user',
-                  formAction: 'onboarding',
-                  contentType: 'externalIdVerification'
-                };
-                this.formService.getFormConfig(formReadInputParams).subscribe(
-                  (formResponsedata) => {
-                    this.labels = _.get(formResponsedata[0], ('range[0]'));
-                  }
-                );
-                // if location popup isn't opened on the very first time.
-                if (this.isLocationConfirmed) {
-                  this.showUserVerificationPopup = true;
-                }
+        this.userService.getFeedData().subscribe(
+          (data) => {
+            this.userFeed = _.get(data, 'result.response.userFeed[0]');
+            if (this.userFeed && _.get(this.userFeed, 'category').toLowerCase() === this.feedCategory.toLowerCase()) {
+              const formReadInputParams = {
+                formType: 'user',
+                formAction: 'onboarding',
+                contentType: 'externalIdVerification'
+              };
+              let orgId;
+              if ((_.get(this.userFeed, 'data.prospectChannelsIds')) && (_.get(this.userFeed, 'data.prospectChannelsIds').length) === 1) {
+                orgId = _.get(this.userFeed, 'data.prospectChannelsIds[0].id');
               }
-            },
-            (error) => {
-            });
+              this.formService.getFormConfig(formReadInputParams, orgId).subscribe(
+                (formResponsedata) => {
+                  this.labels = _.get(formResponsedata[0], ('range[0]'));
+                }
+              );
+              // if location popup isn't opened on the very first time.
+              if (this.isLocationConfirmed) {
+                this.showUserVerificationPopup = true;
+              }
+            }
+          },
+          (error) => {
+          });
       }
     });
+  }
+
+  // Change Font Size (Increase & Decrease)
+  getLocalFontSize() {
+    const localFontSize = localStorage.getItem('fontSize');
+    if (localFontSize) {
+      document.documentElement.style.setProperty('font-size', localFontSize + 'px');
+      this.fontSize = localFontSize;
+      this.isDisableFontSize(localFontSize);
+    }
+  }
+
+  changeFontSize(value: string) {
+
+    const elFontSize = window.getComputedStyle(document.documentElement).getPropertyValue('font-size');
+
+    const localFontSize = localStorage.getItem('fontSize');
+    const currentFontSize = localFontSize ? localFontSize : elFontSize;
+    this.fontSize = parseInt(currentFontSize);
+
+    if (value === 'increase') {
+      this.fontSize = this.fontSize + 2;
+      if (this.fontSize <= 20) {
+        this.setLocalFontSize(this.fontSize);
+      }
+    } else if (value === 'decrease') {
+      this.fontSize = this.fontSize - 2;
+      if (this.fontSize >= 12) {
+        this.setLocalFontSize(this.fontSize);
+      }
+    } else {
+      this.setLocalFontSize(this.defaultFontSize);
+    }
+
+  }
+
+  setLocalFontSize(value: any) {
+    document.documentElement.style.setProperty('font-size', value + 'px');
+    localStorage.setItem('fontSize', value);
+    this.isDisableFontSize(value);
+  }
+
+  isDisableFontSize(value: any) {
+    value = parseInt(value);
+    if (value === 20) {
+      this.renderer.setAttribute(this.increaseFontSize.nativeElement, 'disabled', 'true');
+      this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'disabled');
+      this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'disabled');
+    } else if (value === 12) {
+      this.renderer.setAttribute(this.decreaseFontSize.nativeElement, 'disabled', 'true');
+      this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'disabled');
+      this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'disabled');
+    } else if (value === 16) {
+      this.renderer.setAttribute(this.resetFontSize.nativeElement, 'disabled', 'true');
+      this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'disabled');
+      this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'disabled');
+    } else {
+      this.renderer.removeAttribute(this.increaseFontSize.nativeElement, 'disabled');
+      this.renderer.removeAttribute(this.decreaseFontSize.nativeElement, 'disabled');
+      this.renderer.removeAttribute(this.resetFontSize.nativeElement, 'disabled');
+    }
+  }
+  skipToMainContent() {
+    const getTheme = localStorage.getItem("layoutType");
+    if (getTheme == "joy") {
+      const headerElement=document.getElementsByClassName('sbt-fluid-header-bg');
+      if(headerElement.length>0){
+        const headerHeight = headerElement[headerElement.length-1].clientHeight;
+        if(typeof window.orientation !== 'undefined'){
+          this.scrollHeight =  headerElement[0].clientHeight+150;
+        }else{
+          this.scrollHeight =  headerHeight *2;
+        }
+        this.scrollTo(this.scrollHeight);
+       }
+    } else {
+      const header = document.getElementsByTagName("app-header");
+      const headerElement = header[0].children[0].children[0].clientHeight;
+      if (document.getElementsByTagName("app-search-filter").length > 0) {
+        const searchFilter = document.getElementsByTagName("app-search-filter")[0]
+          .children[0].clientHeight;
+        this.scrollTo(searchFilter + headerElement + 48);
+      } else if (
+        document.getElementsByTagName("app-global-search-filter").length > 0
+      ) {
+        const searchFilter = document.getElementsByTagName(
+          "app-global-search-filter"
+        )[0].children[0].clientHeight;
+        this.scrollTo(searchFilter + headerElement + 48);
+      } else {
+        this.scrollTo(headerElement + 48);
+      }
+    }
+  }
+  scrollTo(height) {
+    window.scroll({
+      top: height,
+      behavior: "smooth",
+    });
+  }
+  getLocalTheme() {
+    const localDataThemeAttribute = localStorage.getItem('data-theme');
+    if (localDataThemeAttribute) {
+      this.setLocalTheme(localDataThemeAttribute);
+    }
+  }
+  changeTheme() {
+    this.dataThemeAttribute = document.documentElement.getAttribute('data-theme');
+    this.dataThemeAttribute = this.dataThemeAttribute === 'Default' ? 'Darkmode' : 'Default';
+    this.setLocalTheme(this.dataThemeAttribute);
+    localStorage.setItem('data-theme', this.dataThemeAttribute);
+  }
+  setLocalTheme(value: string) {
+    document.documentElement.setAttribute('data-theme', value);
   }
 }

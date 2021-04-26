@@ -7,7 +7,10 @@ import { PageApiService } from './page-api.service';
 import { ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
 import { testData } from './page-api.service.spec.data';
+import { configureTestSuite } from '@sunbird/test-util';
+
 describe('PageApiService', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CoreModule],

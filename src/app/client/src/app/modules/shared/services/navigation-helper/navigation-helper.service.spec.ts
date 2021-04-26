@@ -6,10 +6,11 @@ import { Observable, of as observableOf } from 'rxjs';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { CacheService } from 'ng2-cache-service';
 import { UtilService } from '../util/util.service';
+import { configureTestSuite } from '@sunbird/test-util';
 
 class RouterStub {
   // navigate = jasmine.createSpy('navigate');
-  public navigate() { }
+  navigate = jasmine.createSpy('navigate');
   // events: Observable<NavigationEnd>  = observableOf([
   //   {id: 2, url: '/home', urlAfterRedirects: '/home', toString: () =>  'home' }
   // ]);
@@ -29,6 +30,7 @@ class UtilServiceMock {
   public updateSearchKeyword() { }
 }
 describe('NavigationHelperService', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, SharedModule.forRoot()],
@@ -39,6 +41,64 @@ describe('NavigationHelperService', () => {
       ]
     });
   });
+
+  xit('should navigate to default route',
+    inject([NavigationHelperService, Router, ActivatedRoute, CacheService, UtilService],
+      (service: NavigationHelperService, router, activatedRoute, cacheService, utilService: UtilService) => {
+        service.navigateToLastUrl();
+        expect(service.router.navigate).toHaveBeenCalledWith(['/resources']);
+      }
+    ));
+
+  it('should navigate to profile as value present',
+    inject([NavigationHelperService, Router, ActivatedRoute, CacheService, UtilService],
+      (service: NavigationHelperService, router, activatedRoute, cacheService, utilService: UtilService) => {
+        service.previousNavigationUrl = {url: '/profile'};
+        service.navigateToLastUrl();
+        expect(service.router.navigate).toHaveBeenCalledWith(['/profile']);
+      }
+    ));
+
+  it('should navigate to with query params',
+    inject([NavigationHelperService, Router, ActivatedRoute, CacheService, UtilService],
+      (service: NavigationHelperService, router, activatedRoute, cacheService, utilService: UtilService) => {
+        service.previousNavigationUrl = {url: '/profile', queryParams: 'mockQueryParam'};
+        service.navigateToLastUrl();
+        expect(service.router.navigate).toHaveBeenCalledWith(['/profile'], {queryParams: 'mockQueryParam'});
+      }
+    ));
+
+  it('should set navigation from previous url',
+    inject([NavigationHelperService, Router, ActivatedRoute, CacheService, UtilService],
+      (service: NavigationHelperService, router, activatedRoute, cacheService, utilService: UtilService) => {
+        const mockUrl = {url: '/profile'};
+        spyOn(service, 'getPreviousUrl').and.returnValue(mockUrl);
+        service.setNavigationUrl();
+        expect(service.previousNavigationUrl).toBe(mockUrl);
+      }
+    ));
+
+  it('should not set navigation as page is create managed user',
+    inject([NavigationHelperService, Router, ActivatedRoute, CacheService, UtilService],
+      (service: NavigationHelperService, router, activatedRoute, cacheService, utilService: UtilService) => {
+        const mockUrl = {url: '/create-managed-user'};
+        service.previousNavigationUrl = {url: '/profile'};
+        spyOn(service, 'getPreviousUrl').and.returnValue(mockUrl);
+        service.setNavigationUrl();
+        expect(service.previousNavigationUrl).toEqual({url: '/profile'});
+      }
+    ));
+
+  it('should not set navigation as page is choose user',
+    inject([NavigationHelperService, Router, ActivatedRoute, CacheService, UtilService],
+      (service: NavigationHelperService, router, activatedRoute, cacheService, utilService: UtilService) => {
+        const mockUrl = {url: '/choose-managed-user'};
+        service.previousNavigationUrl = {url: '/profile'};
+        spyOn(service, 'getPreviousUrl').and.returnValue(mockUrl);
+        service.setNavigationUrl();
+        expect(service.previousNavigationUrl).toEqual({url: '/profile'});
+      }
+    ));
 
   it('should store route history', inject([NavigationHelperService, Router], (service: NavigationHelperService, router) => {
     const history = service.history;
@@ -99,5 +159,32 @@ describe('NavigationHelperService', () => {
         service.goBack();
         expect(service.router.navigate).toHaveBeenCalledWith([previousUrl.url]);
       }));
+
+  it('Should emit contentFullScreenEvent as TRUE', inject([NavigationHelperService, Router, ActivatedRoute, CacheService, UtilService],
+    (service: NavigationHelperService, router, activatedRoute, cacheService, utilService: UtilService) => {
+      spyOn(service.contentFullScreenEvent, 'emit');
+      service.emitFullScreenEvent(true);
+      expect(service.contentFullScreenEvent.emit).toHaveBeenCalledWith(true);
+    }));
+
+  it('Should emit contentFullScreenEvent as FALSE', inject([NavigationHelperService, Router, ActivatedRoute, CacheService, UtilService],
+    (service: NavigationHelperService, router, activatedRoute, cacheService, utilService: UtilService) => {
+      spyOn(service.contentFullScreenEvent, 'emit');
+      service.emitFullScreenEvent(false);
+      expect(service.contentFullScreenEvent.emit).toHaveBeenCalledWith(false);
+    }));
+
+  it('Should emit handleCMvisibility as FALSE', inject([NavigationHelperService, Router, ActivatedRoute, CacheService, UtilService],
+    (service: NavigationHelperService, router, activatedRoute, cacheService, utilService: UtilService) => {
+      spyOn(service.handleCMvisibility, 'emit');
+      service.handleContentManagerOnFullscreen(false);
+      expect(service.handleCMvisibility.emit).toHaveBeenCalledWith(false);
+    }));
+  it('Should emit handleCMvisibility as TRUE', inject([NavigationHelperService, Router, ActivatedRoute, CacheService, UtilService],
+    (service: NavigationHelperService, router, activatedRoute, cacheService, utilService: UtilService) => {
+      spyOn(service.handleCMvisibility, 'emit');
+      service.handleContentManagerOnFullscreen(true);
+      expect(service.handleCMvisibility.emit).toHaveBeenCalledWith(true);
+    }));
 
 });

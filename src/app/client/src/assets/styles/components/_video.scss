@@ -79,4 +79,22 @@
       // border: calculateRem(6px) solid var(--black);
     }
   }
+  &.player-fullscreen {
+    width: 100%;
+    height: calc(100vh - 4rem) !important;
+    position:fixed;
+    top:calculateRem(0px);//50px
+    left:0;
+    bottom:0; 
+    right:0;
+    border:none; 
+    margin:0;
+    padding:0; 
+    z-index:9999;
+   }
+   &.player-fullscreen iframe, &.player-fullscreen video {
+    width: 100%;
+    height: calc(100vh - 4rem) !important;
+    background:var(--white);
+ }
 }

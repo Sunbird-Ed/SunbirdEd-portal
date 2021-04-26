@@ -1,11 +1,88 @@
-::ng-deep {
-    .ui.tiny.progress .bar{
-        min-width: 0
+@import "./mixins/mixins";
+
+
+.back-btn-container {
+  z-index: 1;
+
+  .modulebtn-divider {
+    width: calculateRem(1px);
+    height: calculateRem(24px);
+    background: var(--gray-200);
+    display: inline-block;
+    margin: 0 calculateRem(8px);
+  }
+}
+
+.certified-course {
+  justify-self: end;
+  align-self: center;
+}
+
+.textbook {
+  &-container {
+    z-index: 2;
+    box-shadow: 0 0.125rem 0.4375rem 0 rgba(0, 0, 0, .16);
+    position: relative;
+    background-color: var(--rc-FAFAFA);
+  }
+
+  &__details {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__bookimg {
+    width: calculateRem(48px);
+    height: calculateRem(48px);
+
+    img {
+      width: calculateRem(48px);
+      height: calculateRem(48px);
     }
-    .ui.progress.status.expired .bar {
-        background-color: #bdbdbd !important;
+  }
+
+  &__heading {
+    min-width: 0;
+
+    .textbook__title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
-    .ui.progress .bar{
-        height: 6px !important; 
+  }
+
+  &__addbtn {
+    white-space: nowrap;
+  }
+}
+
+@include respond-below(sm) {
+  .certified-course {
+    justify-self: start;
+  }
+
+  .certified-course__btn {
+    margin-top: calculateRem(8px);
+  }
+}
+
+
+// profile certificate modal styles
+.profile-section-content{
+  margin: 0 calculateRem(48px);
+  @include respond-below(sm) {
+    margin: 0;
+  }
+  .profile-info{
+    span{
+      &:first-child{
+        font-size: calculateRem(12px);
+      }
+      color: var(--gray);
+      font-size: calculateRem(20px);
     }
-} 
+  }
+  .profile-info-para{
+    font-size: calculateRem(14px);
+  }
+}
