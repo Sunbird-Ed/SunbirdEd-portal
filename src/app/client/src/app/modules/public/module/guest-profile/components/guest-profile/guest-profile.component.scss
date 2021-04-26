@@ -30,3 +30,16 @@
 .max-w-400 {
   max-width: calculateRem(400px) !important;
 }
+
+.content-preference {
+  @include respond-below(md) {
+    padding: 0 2%;
+    &__info {
+      background: var(--sb-profile-bg-c-4);
+      padding: calculateRem(16px) 0;
+      border-radius: calculateRem(24px);
+      width: 100%;
+      color: var(--black);
+    }
+  }
+}
