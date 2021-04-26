@@ -436,7 +436,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
-    '/learner/user/v1/signup': {
+    '/learner/user/v2/signup': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
@@ -467,7 +467,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
-    '/learner/user/v1/search': {
+    '/learner/user/v2/search': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
@@ -475,7 +475,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ADMIN]
     },
-    '/learner/user/v3/read/:userId': {
+    '/learner/user/v4/read/:userId': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC, ROLE.ADMIN]
       // OWNER_CHECK: {
@@ -512,7 +512,12 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
-    '/learner/portal/user/v1/update': {
+    '/learner/user/v1/managed/create': {
+      description: 'API is to create managed user',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/learner/portal/user/v2/update': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ORG_ADMIN]
     },
@@ -564,7 +569,7 @@ const API_LIST = {
     },
 
     // ORD related APIs
-    '/learner/org/v1/search': {
+    '/learner/org/v2/search': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
@@ -1606,7 +1611,7 @@ const API_LIST = {
     '/learner/questionset/v1/hierarchy/:do_id',
     '/learner/data/v1/system/settings/get/:slug',
     '/learner/course/v1/hierarchy/:do_id',
-    '/learner/user/v3/read/:userId',
+    '/learner/user/v4/read/:userId',
     '/learner/course/v1/user/enrollment/list/:userId',
     '/learner/user/v1/feed/:userId',
     '/learner/course/v1/batch/read/:batchId',
