@@ -358,11 +358,19 @@
               <div class="list-items__item list-items__bar computer only" *ngIf="!data?.certificates?.length && !data?.issuedCertificates?.length">
                   <span class="bar mr-4"></span>
                   <span class="bar"></span>
+              </div>
+            </div>
+          </div>
           <div class="flex-ai-jc-center sb-ct-list" *ngIf="attendedTraining.length > 3">
+            <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
               [telemetryInteractEdata]="{id:'view-more' , type:'click' , pageid:'profile-read'}" *ngIf="showMoreTrainings"
               (click)="toggleCourse(true, attendedTraining.length)">{{resourceService.frmelmnts.lbl.viewmore}}<i
                 class="chevron down icon"></i></button>
+            <button class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" appTelemetryInteract
+              [telemetryInteractEdata]="{id:'view-less' , type:'click' , pageid:'profile-read'}"
+              (click)="toggleCourse(false, attendedTraining.length)" *ngIf="!showMoreTrainings">{{resourceService.frmelmnts.lbl.viewless}}<i
                 class="chevron up icon"></i></button>
+          </div>
         </div>
          <!-- trainings attended computer view ends-->
 
@@ -426,4 +434,3 @@
   </app-location-selection>
   <app-account-recovery-info *ngIf="showRecoveryId" [mode]="mode" (close)="showRecoveryId = !showRecoveryId"></app-account-recovery-info>
 <router-outlet></router-outlet>
-
