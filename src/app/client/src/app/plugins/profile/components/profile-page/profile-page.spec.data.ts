@@ -288,8 +288,10 @@ export const Response = {
                 }
             }
         ],
-    userType: 'teacher',
-    userSubType: 'brc',
+    profileUserType:  {
+      'type': 'teacher',
+      'subType': 'brc'
+    },
     userLocations: [{code: 'sample-code', type: 'sample-type', name: 'sapmle-name'}]
     },
     success: {
