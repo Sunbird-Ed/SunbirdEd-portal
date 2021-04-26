@@ -22,7 +22,7 @@ export default (app, proxyURL) => {
     
     app.get("/endSession", authController.endSession.bind(authController));
 
-    app.get("/learner/user/v3/read/:id", customProxy(proxyURL, defaultProxyConfig), async (req, res) => {
+    app.get(["/learner/user/v3/read/:id", "/learner/user/v4/read/:id" ], customProxy(proxyURL, defaultProxyConfig), async (req, res) => {
             const userSDK = containerAPI.getUserSdkInstance();
             let user = _.get(res, 'body.result.response');
             if (user) {
@@ -61,7 +61,8 @@ export default (app, proxyURL) => {
     });
 
     app.patch([
-        '/learner/user/v1/update', 
+        '/learner/user/v1/update',
+        '/learner/user/v2/update',
         '/learner/user/v1/declarations'
     ], customProxy(proxyURL, defaultProxyConfig), (req, res) => {
         res.status(res.statusCode).send(res.body);
