@@ -27,7 +27,7 @@ export class FaqReportComponent implements OnInit {
     private telemetryService: TelemetryService,
     private activatedRoute: ActivatedRoute
   ) {
-    
+
   }
 
   ngOnInit() {
@@ -35,7 +35,7 @@ export class FaqReportComponent implements OnInit {
   }
 
   fetchFaqReportConfig() {
-    // FormAPI call    
+    // FormAPI call
     this.profileService.getFaqReportIssueForm().pipe(takeUntil(this.unsubscribe)).subscribe(formConfig => {
       this.faqReportConfig = formConfig;
     }, error => {
@@ -62,7 +62,7 @@ export class FaqReportComponent implements OnInit {
       if (key === 'children') {
         for (const [childKey, childValue] of this.formValues[key]) {
           params.push({childKey: childValue});
-        }    
+        }
       } else {
         params.push({key: value});
       }
@@ -82,9 +82,9 @@ export class FaqReportComponent implements OnInit {
       }
     };
     this.telemetryService.log(event);
-
+    const message: string = _.get(this.faqData, 'constants.thanksForFeedbackMsg');
     this.toasterService.custom({
-      message: this.faqData && this.faqData.constants && this.faqData.constants.thanksForFeedbackMsg,
+      message: message.replace('{{app_name}}', _.get(this.resourceService, 'instance')),
       class: 'sb-toaster sb-toast-success sb-toast-normal'
     });
   }
