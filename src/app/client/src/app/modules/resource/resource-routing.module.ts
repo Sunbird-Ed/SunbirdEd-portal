@@ -16,7 +16,8 @@ const routes: Routes = [
       },
       filterType: 'library',
       softConstraints: { badgeAssertions: 98, board: 99, channel: 100 },
-      applyMode: true
+      applyMode: true,
+      facets: true
     }
   },
   {

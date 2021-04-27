@@ -1,5 +1,5 @@
 import {SbFormLocationSelectionDelegate} from './sb-form-location-selection.delegate';
-import {DeviceRegisterService, FormService, UserService} from '@sunbird/core';
+import {DeviceRegisterService, FormService, UserService, OrgDetailsService} from '@sunbird/core';
 import {LocationService} from '../../services';
 import {IDeviceProfile} from '@sunbird/shared-feature';
 import {EMPTY, Observable, of, throwError} from 'rxjs';
@@ -38,6 +38,7 @@ describe('SbFormLocationSelectionDelegate', () => {
     }
   };
   const mockDeviceProfile: Partial<IDeviceProfile> = {};
+  const mockOrgDetailsService: Partial<OrgDetailsService> = {};
 
   beforeAll(() => {
     sbFormLocationSelectionDelegate = new SbFormLocationSelectionDelegate(
@@ -45,6 +46,7 @@ describe('SbFormLocationSelectionDelegate', () => {
       mockLocationService as LocationService,
       mockFormService as FormService,
       mockDeviceRegisterService as DeviceRegisterService,
+      mockOrgDetailsService as OrgDetailsService,
       mockDeviceProfile as IDeviceProfile,
     );
   });
