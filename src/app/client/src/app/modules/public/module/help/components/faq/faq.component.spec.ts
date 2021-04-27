@@ -263,4 +263,31 @@ describe('FaqComponent', () => {
     });
   });
 
+  describe('enableFaqReport', () => {
+    it('should enable the report an issue component', () => {
+      // arrange
+      component.sbFaqCategoryList = {};
+      const eventData = {};
+      // act
+      component.enableFaqReport(eventData);
+      // assert
+      expect(component.showOnlyFaqCategory).toEqual(false);
+      expect(component.showFaqReport).toEqual(true);
+    });
+
+    it('should enable the report an issue component and should deselect the category', () => {
+      // arrange
+      component.sbFaqCategoryList = {
+        selectedIndex: -1
+      };
+      const eventData = {};
+      // act
+      component.enableFaqReport(eventData);
+      // assert
+      expect(component.showOnlyFaqCategory).toEqual(false);
+      expect(component.showFaqReport).toEqual(true);
+      expect(component.sbFaqCategoryList.selectedIndex).toEqual(-1);
+    });
+  });
+
 });

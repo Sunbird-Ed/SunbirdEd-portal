@@ -215,26 +215,6 @@ export class FaqComponent implements OnInit {
     }, 0);
   }
 
-  onVideoSelect(event) {
-    if (!event || !event.data) {
-      return;
-    }
-
-    const video = VideoConfig;
-    video.metadata.appIcon = event.data.thumbnail;
-    video.metadata.name = event.data.name;
-    video.metadata.artifactUrl = event.data.url;
-
-    this.playerConfig = video
-    this.showVideoModal = true;
-
-    this.videoPlayer.changes.subscribe(() => {
-      if (_.get(document.getElementsByClassName('sb-player-side-menu-icon'), '0.style'))  {
-        document.getElementsByClassName('sb-player-side-menu-icon')[0]['style'].display = 'none';
-      }
-    });
-  }
-
   eventHandler(event) {
     if (event === 'SHARE' || _.get(event, 'edata.type') === 'SHARE') {
       this.contentUtilsServiceService.contentShareEvent.emit('open');
@@ -254,6 +234,26 @@ export class FaqComponent implements OnInit {
     } else {
       this.isMobileView = false;
     }
+  }
+
+  onVideoSelect(event) {
+    if (!event || !event.data) {
+      return;
+    }
+
+    const video = VideoConfig;
+    video.metadata.appIcon = event.data.thumbnail;
+    video.metadata.name = event.data.name;
+    video.metadata.artifactUrl = event.data.url;
+
+    this.playerConfig = video
+    this.showVideoModal = true;
+
+    this.videoPlayer.changes.subscribe(() => {
+      if (_.get(document.getElementsByClassName('sb-player-side-menu-icon'), '0.style'))  {
+        document.getElementsByClassName('sb-player-side-menu-icon')[0]['style'].display = 'none';
+      }
+    });
   }
 
   enableFaqReport(event) {
