@@ -68,20 +68,22 @@ export class FaqReportComponent implements OnInit {
       }
     }
 
-    const event = {
-      context: {
-        env: 'portal'
-      },
+    const telemetryContextObj = { env: 'portal', cdata: [] };
+    const edata = { id: 'faq', type: 'system', pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') };
+
+    const interactEvent = { context: telemetryContextObj, edata }
+    const logEvent = {
+      context: telemetryContextObj,
       edata: {
-        id: 'faq',
-        type: 'system',
         level: "INFO",
         message: "faq",
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        params
+        params,
+        ...edata
       }
     };
-    this.telemetryService.log(event);
+
+    this.telemetryService.log(logEvent);
+    this.telemetryService.interact(interactEvent);
     const message: string = _.get(this.faqData, 'constants.thanksForFeedbackMsg');
     this.toasterService.custom({
       message: message.replace('{{app_name}}', _.get(this.resourceService, 'instance')),
