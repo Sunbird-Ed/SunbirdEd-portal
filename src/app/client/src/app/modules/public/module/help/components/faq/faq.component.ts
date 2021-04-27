@@ -1,7 +1,7 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CacheService } from 'ng2-cache-service';
-import { UtilService, ResourceService, LayoutService, NavigationHelperService, ToasterService, ConfigService } from '@sunbird/shared';
+import { UtilService, ResourceService, LayoutService, NavigationHelperService, ToasterService, ConfigService, ContentUtilsServiceService } from '@sunbird/shared';
 import { TenantService, PublicDataService } from '@sunbird/core';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,6 +10,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Location } from '@angular/common';
 import { FaqService } from '../../services/faq/faq.service';
+import { VideoConfig } from './faq-data';
 
 @Component({
   selector: 'app-faq',
@@ -33,6 +34,11 @@ export class FaqComponent implements OnInit {
   isMobileView = false;
   showFaqReport: boolean;
   showOnlyFaqCategory = true;
+  @ViewChild('sbFaqCategoryList', { static: false }) sbFaqCategoryList;
+
+  showVideoModal = false;
+  playerConfig: any;
+
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     if (event && event.target && event.target.innerWidth) {
@@ -45,7 +51,8 @@ export class FaqComponent implements OnInit {
     private layoutService: LayoutService, public navigationHelperService: NavigationHelperService, private location: Location,
     private router: Router, private telemetryService: TelemetryService,
     private faqService: FaqService, private toasterService: ToasterService,
-    private configService: ConfigService, private publicDataService: PublicDataService) {
+    private configService: ConfigService, private publicDataService: PublicDataService,
+    public contentUtilsServiceService: ContentUtilsServiceService) {
   }
 
   ngOnInit() {
@@ -95,6 +102,11 @@ export class FaqComponent implements OnInit {
     .subscribe(data => {
       this.faqData = data;
       this.selectedFaqCategory = this.faqData.categories[0];
+      setTimeout(() => {
+        if (this.sbFaqCategoryList && this.sbFaqCategoryList.selectedIndex !== undefined) {
+          this.sbFaqCategoryList.selectedIndex = 0
+        }
+      }, 0);
       this.showLoader = false;
       this.defaultToEnglish = false;
     }, (err) => {
@@ -197,13 +209,37 @@ export class FaqComponent implements OnInit {
       return;
     }
     setTimeout(() => {
-      this.selectedFaqCategory = event.data;
-      this.selectedFaqCategory.constants = this.faqData.constants;
+      const faqCategory = event.data;
+      faqCategory.constants = this.faqData.constants;
+      this.selectedFaqCategory = faqCategory;
     }, 0);
   }
 
   onVideoSelect(event) {
-    console.log(event);
+    if (!event || !event.data) {
+      return;
+    }
+
+    const video = VideoConfig;
+    video.metadata.appIcon = event.data.thumbnail;
+    video.metadata.name = event.data.name;
+    video.metadata.artifactUrl = event.data.url;
+
+    console.log(video);
+    this.playerConfig = video
+    this.showVideoModal = true;
+  }
+
+  eventHandler(event) {
+    if (_.get(event, 'edata.type') === 'SHARE') {
+      this.contentUtilsServiceService.contentShareEvent.emit('open');
+    }
+    if (_.get(event, 'edata.type') === 'PRINT') {
+      let windowFrame = window.document.querySelector('pdf-viewer iframe');
+      if (windowFrame) {
+        windowFrame['contentWindow'].print()
+      }
+    }
   }
 
   checkScreenView(width) {
@@ -218,6 +254,9 @@ export class FaqComponent implements OnInit {
   enableFaqReport(event) {
     this.showOnlyFaqCategory = false;
     this.showFaqReport = true;
+    if (this.sbFaqCategoryList && this.sbFaqCategoryList.selectedIndex !== undefined) {
+      this.sbFaqCategoryList.selectedIndex = -1
+    }
   }
 
 }

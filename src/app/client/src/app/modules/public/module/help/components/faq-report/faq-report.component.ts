@@ -87,6 +87,8 @@ export class FaqReportComponent implements OnInit {
       message: this.faqData && this.faqData.constants && this.faqData.constants.thanksForFeedbackMsg,
       class: 'sb-toaster sb-toast-success sb-toast-normal'
     });
+    this.faqReportConfig = undefined;
+    this.fetchFaqReportConfig()
   }
 
   ngOnDestroy() {
