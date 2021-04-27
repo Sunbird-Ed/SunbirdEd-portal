@@ -212,7 +212,7 @@ export class PublicPlayerService {
   }
 
   getQuestionSetRead(contentId: string, option: any = { params: {} }): Observable<ServerResponse> {
-    const param = { fields: this.configService.editorConfig.DEFAULT_PARAMS_FIELDS };
+    const param = { fields: this.configService.urlConFig.params.questionSetRead };
     const req = {
         url: `${this.configService.urlConFig.URLS.QUESTIONSET.READ}/${contentId}`,
         param: { ...param, ...option.params }

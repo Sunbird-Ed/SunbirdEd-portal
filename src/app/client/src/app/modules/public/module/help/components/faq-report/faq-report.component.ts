@@ -89,6 +89,8 @@ export class FaqReportComponent implements OnInit {
       message: message.replace('{{app_name}}', _.get(this.resourceService, 'instance')),
       class: 'sb-toaster sb-toast-success sb-toast-normal'
     });
+    this.faqReportConfig = undefined;
+    this.fetchFaqReportConfig()
   }
 
   ngOnDestroy() {
