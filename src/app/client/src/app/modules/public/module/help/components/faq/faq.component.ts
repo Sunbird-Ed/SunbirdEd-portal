@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CacheService } from 'ng2-cache-service';
 import { UtilService, ResourceService, LayoutService, NavigationHelperService, ToasterService, ConfigService, ContentUtilsServiceService } from '@sunbird/shared';
@@ -10,7 +10,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Location } from '@angular/common';
 import { FaqService } from '../../services/faq/faq.service';
-import { VideoConfig } from './faq-data';
+import { FaqData, VideoConfig } from './faq-data';
 
 @Component({
   selector: 'app-faq',
@@ -35,7 +35,7 @@ export class FaqComponent implements OnInit {
   showFaqReport: boolean;
   showOnlyFaqCategory = true;
   @ViewChild('sbFaqCategoryList', { static: false }) sbFaqCategoryList;
-
+  @ViewChildren('videoPlayer') videoPlayer;
   showVideoModal = false;
   playerConfig: any;
 
@@ -228,10 +228,17 @@ export class FaqComponent implements OnInit {
     console.log(video);
     this.playerConfig = video
     this.showVideoModal = true;
+
+    
+    this.videoPlayer.changes.subscribe(() => {
+      if (_.get(document.getElementsByClassName('sb-player-side-menu-icon'), '0.style'))  {
+        document.getElementsByClassName('sb-player-side-menu-icon')[0]['style'].display = 'none';
+      }
+    });
   }
 
   eventHandler(event) {
-    if (_.get(event, 'edata.type') === 'SHARE') {
+    if (event === 'SHARE' || _.get(event, 'edata.type') === 'SHARE') {
       this.contentUtilsServiceService.contentShareEvent.emit('open');
     }
     if (_.get(event, 'edata.type') === 'PRINT') {

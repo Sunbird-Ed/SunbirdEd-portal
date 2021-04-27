@@ -97,7 +97,7 @@
   *ngIf="showVideoModal && playerConfig">
 
   <div class="sb-modal-content height-auto">
-    <sunbird-video-player [playerConfig]="playerConfig" (playerEvent)="eventHandler($event)">
+    <sunbird-video-player [playerConfig]="playerConfig" (playerEvent)="eventHandler($event)" #videoPlayer>
     </sunbird-video-player>
   </div>
 
