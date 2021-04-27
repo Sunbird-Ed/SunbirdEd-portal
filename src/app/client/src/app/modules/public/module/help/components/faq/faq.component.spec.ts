@@ -232,4 +232,35 @@ describe('FaqComponent', () => {
     });
   });
 
+  describe('onVideoSelect', () => {
+    it('should terminate the flow if the data is empty', () => {
+      // arrange
+      component.showVideoModal = false;
+      const eventData = {};
+      // act
+      component.onVideoSelect(eventData);
+      // assert
+      expect(component.showVideoModal).toEqual(false);
+    });
+
+    it('should open up the player modal and play the faq video', () => {
+      // arrange
+      component.showVideoModal = false;
+      component.videoPlayer = {
+        changes: of({})
+      }
+      const eventData = {
+        data: {
+          thumbnail: 'some_thumbnail',
+          name: 'some_name',
+          url: 'some_url',
+        }
+      };
+      // act
+      component.onVideoSelect(eventData);
+      // assert
+      expect(component.showVideoModal).toEqual(true);
+    });
+  });
+
 });

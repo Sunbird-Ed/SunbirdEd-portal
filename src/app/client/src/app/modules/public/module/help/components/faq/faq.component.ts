@@ -225,11 +225,9 @@ export class FaqComponent implements OnInit {
     video.metadata.name = event.data.name;
     video.metadata.artifactUrl = event.data.url;
 
-    console.log(video);
     this.playerConfig = video
     this.showVideoModal = true;
 
-    
     this.videoPlayer.changes.subscribe(() => {
       if (_.get(document.getElementsByClassName('sb-player-side-menu-icon'), '0.style'))  {
         document.getElementsByClassName('sb-player-side-menu-icon')[0]['style'].display = 'none';
