@@ -215,18 +215,6 @@ export class FaqComponent implements OnInit {
     }, 0);
   }
 
-  eventHandler(event) {
-    if (event === 'SHARE' || _.get(event, 'edata.type') === 'SHARE') {
-      this.contentUtilsServiceService.contentShareEvent.emit('open');
-    }
-    if (_.get(event, 'edata.type') === 'PRINT') {
-      let windowFrame = window.document.querySelector('pdf-viewer iframe');
-      if (windowFrame) {
-        windowFrame['contentWindow'].print()
-      }
-    }
-  }
-
   checkScreenView(width) {
     if (width <= 767) {
       this.isMobileView = true;
