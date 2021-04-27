@@ -145,6 +145,10 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       .subscribe(null, error => {
         console.error('Error while fetching filters');
       });
+
+    if (!_.get(this.activatedRoute, 'snapshot.queryParams["board"]')) {
+      this.router.navigate([], { queryParams: this.defaultFilters, relativeTo: this.activatedRoute } );
+    }
   }
   private boardChangeHandler() {
     return this.boardChange$.pipe(
