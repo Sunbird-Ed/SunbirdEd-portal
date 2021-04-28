@@ -94,7 +94,7 @@ export class UserService {
 
   public organizationsDetails: Array<IOrganization>;
   public createManagedUser = new EventEmitter();
-  private _isDesktopApp = false;
+  public isDesktopApp = false;
   private _guestData$ = new BehaviorSubject<any>(undefined);
   private guestUserProfile;
   public readonly guestData$: Observable<any> = this._guestData$.asObservable()
@@ -123,7 +123,7 @@ export class UserService {
     this.learnerService = learner;
     this.contentService = contentService;
     this.publicDataService = publicDataService;
-    this._isDesktopApp = environment.isDesktopApp;
+    this.isDesktopApp = environment.isDesktopApp;
     try {
       this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
       DataService.userId = this._userid;
@@ -466,7 +466,7 @@ export class UserService {
   }
 
   getGuestUser(): Observable<any> {
-    if (this._isDesktopApp) {
+    if (this.isDesktopApp) {
       return this.getAnonymousUserPreference().pipe(map((response: ServerResponse) => {
         this.guestUserProfile = _.get(response, 'result');
         this._guestData$.next({ userProfile: this.guestUserProfile });
@@ -488,7 +488,7 @@ export class UserService {
   updateGuestUser(userDetails, formValue): Observable<any> {
     window['TagManager'].SBTagService.pushTag(formValue,'USERLOCATION_', true);
     window['TagManager'].SBTagService.pushTag(userDetails,'USERFRAMEWORK_', true);
-    if (this._isDesktopApp) {
+    if (this.isDesktopApp) {
       userDetails.identifier = userDetails._id;
       const userType = localStorage.getItem('userType');
 
@@ -504,7 +504,7 @@ export class UserService {
   }
 
   createGuestUser(userDetails): Observable<any> {
-    if (this._isDesktopApp) {
+    if (this.isDesktopApp) {
       const req = { request: userDetails };
       return this.createAnonymousUser(req);
     } else {
