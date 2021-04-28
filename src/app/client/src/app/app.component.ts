@@ -738,10 +738,12 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.resourceDataSubscription) {
       this.resourceDataSubscription.unsubscribe();
     }
-    if(this.userService.loggedIn) {
-      localStorage.setItem('tagManager_' + this.userService.userid, JSON.stringify(window['TagManager'].SBTagService));
-    } else {
-      localStorage.setItem('tagManager_' + 'guest', JSON.stringify(window['TagManager'].SBTagService));
+    if(window['TagManager']) {
+      if(this.userService.loggedIn) {
+        localStorage.setItem('tagManager_' + this.userService.userid, JSON.stringify(window['TagManager'].SBTagService));
+      } else {
+        localStorage.setItem('tagManager_' + 'guest', JSON.stringify(window['TagManager'].SBTagService));
+      }
     }
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
