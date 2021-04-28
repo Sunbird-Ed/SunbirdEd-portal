@@ -36,10 +36,10 @@
       <div [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inView($event)" *ngIf="!showLoader && contentList.length"
         class="sb-grid dynamic-section-card ">
         <div in-view-item [id]="index" [data]="content" class="" *ngFor="let content of contentList;let i = index;">
-          <ng-container *ngIf="!layoutConfiguration">
+          <!-- <ng-container *ngIf="!layoutConfiguration">
           <app-card appContentDirection appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType||'Content',ver:'1.0'}"
             [data]="content" (clickEvent)="playContent($event)"></app-card>
-          </ng-container>
+          </ng-container> -->
           <ng-container>
             <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" *ngIf="!isDesktopApp;else desktopCard"
                              appContentDirection appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType||'Content',ver:'1.0'}"
