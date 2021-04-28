@@ -16,6 +16,9 @@ describe('GuestProfileComponent', () => {
   let fixture: ComponentFixture<GuestProfileComponent>;
 
   const resourceBundle = {
+    'frmelemnts': {
+      'lbl' : { }
+    },
     'frmelmnts': {
       'instn': {
       },
