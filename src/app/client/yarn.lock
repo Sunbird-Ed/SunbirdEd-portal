@@ -820,10 +820,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/ckeditor-build-classic@0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/ckeditor-build-classic/-/ckeditor-build-classic-0.0.3.tgz#e7f2a184c9613d90d70191648f920469596466f2"
-  integrity sha512-KpXHfCB6XBgd5SACj/0mL0kIvd4HrFy7P2YKqaF+xCw8W07rOa6oGayXte2HOvl0TRntgrOjbrNBowAFK/Lq3w==
+"@project-sunbird/ckeditor-build-classic@0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/ckeditor-build-classic/-/ckeditor-build-classic-0.0.4.tgz#12a3c774c633053186dd78fa87c6891eafa43f8e"
+  integrity sha512-CAbcLLVrrpyu3V4RoDccVSLRstNpdJ9sl+lxsrwVz7dJAvKcLJXgjjKRxMAnGtJ8aR6+P8ci0JFERE188G1t2Q==
   dependencies:
     "@ckeditor/ckeditor5-adapter-ckfinder" "^27.0.0"
     "@ckeditor/ckeditor5-autoformat" "^27.0.0"
@@ -884,10 +884,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/discussions-ui-v8@2.1.0-beta.6":
-  version "2.1.0-beta.6"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.1.0-beta.6.tgz#ccad8e81598343689f397bfbb2ef5673d57409fd"
-  integrity sha512-TDgVUkn7tzSYk0OmMr8f4RlcF/xlNZpStBg+QA2p8Z8BMoj0vH9BrbBUrXX9Rist1/vaNVpDte7Jgi9w52dWcA==
+"@project-sunbird/discussions-ui-v8@2.1.0-beta.9":
+  version "2.1.0-beta.9"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.1.0-beta.9.tgz#48151544fc94cd4dccc8d310cc2cb244a66c52e0"
+  integrity sha512-Mz/v3tTv/M9x05UgtX0ZxvUAn6IcLPV9Fa98XNvyDE3GR1MdrF7Z89M1Iv26pERd73KhzAzvmA2HsrkP5V7GiQ==
   dependencies:
     tslib "^1.9.0"
 
@@ -896,10 +896,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.6.tgz#15a88937fb643d5eb33a81c8d28ece00b56d5aa0"
   integrity sha512-rK87rHdagadIS7UrWju7HDolIfWlO5CbK+tIJrEApO+QPMi+k8KuWoLc8MxEprrsJxUt6r44O4uGiO0hgI5plA==
 
-"@project-sunbird/sunbird-collection-editor@3.9.8":
-  version "3.9.8"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-3.9.8.tgz#2a9034e77b1a7c006c74b7095055c74b47b029c3"
-  integrity sha512-H4VEXtdzfIlUZlYfOdg7iKOuzNgJLl8nL9Ep3p6JtB1SnHHLX5/KuN9Tqb3QRX3cqcnK24Ma05daZj3LZ86hUA==
+"@project-sunbird/sunbird-collection-editor@3.9.10":
+  version "3.9.10"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-3.9.10.tgz#6a7abbb81ec94120534663494a6d8f8a211b2121"
+  integrity sha512-/QI9lEoUZw4DbsoA6nCKv7Wcu9yhPxNHIzR1WhR4WhZ1TOEmwV0zFqp5Nd0qVgaoU+YceK/7tfAT1YbwGf2Jyg==
   dependencies:
     tslib "^1.9.0"
 
@@ -3081,12 +3081,12 @@ commander@^2.11.0, commander@^2.12.1, commander@^2.19.0, commander@^2.20.0, comm
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
 
-common-form-elements@^3.9.9:
-  version "3.9.9"
-  resolved "https://registry.yarnpkg.com/common-form-elements/-/common-form-elements-3.9.9.tgz#9a7f70cc3481de56a9b6f1849acf4e91d32e61a9"
-  integrity sha512-zVjYRbp/pZ7MI0HiVFhrc1snmhOUdyfFxbGsmLXukZz9j6uydH0ZApc83zy/9+4S7H5PInFuOg/xDNFSj8Kuog==
+common-form-elements@^3.9.10:
+  version "3.9.10"
+  resolved "https://registry.yarnpkg.com/common-form-elements/-/common-form-elements-3.9.10.tgz#7e9a4b3889221b0c64c70a6574a1182c13993a0a"
+  integrity sha512-dWc4Y93ImrpsLA/2nQLzy1TNZwNS95v/xhlE63gCVGD+UxsKa+qg83C0Juu/mXZSzcxp80UWgwnJBX5Lobwo3A==
   dependencies:
-    "@project-sunbird/ckeditor-build-classic" "0.0.3"
+    "@project-sunbird/ckeditor-build-classic" "0.0.4"
     immutable "^4.0.0-rc.12"
     moment "^2.29.1"
     tslib "^1.9.0"
