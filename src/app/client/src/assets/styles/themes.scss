@@ -2809,6 +2809,11 @@ sb-accordion-body .sbaccordion__panel-content .credits-section .title{
     .sb-btn-outline-error, .sb-modal.sb-error .ui.modal .sb-modal-actions > button.sb-btn{
       color:black !important
       }
+      .sb-modal-actions{
+        a.sb-btn.sb-btn-normal.sb-btn-primary{
+          color: var(--black);
+        }
+      }
   }
 
 html[accessable-theme="accessible"][layout='joy'][data-theme=Darkmode] {
@@ -3159,6 +3164,12 @@ html[data-theme=Darkmode][layout='old'][accessable-theme="accessible"] {
   }
   .user-profile-box span.sb-color-warning{
     color: #ffae91 !important;
+  }
+  .sb-pageSection-content button.slick-next.slick-arrow{
+    color: rgb(194, 194, 194) !important;
+  }
+  .sb-pageSection-content button.slick-prev.slick-arrow.slick-disabled{
+    color: #C2C2C2 !important;
   }
 }
 html[layout='old'][accessable-theme="accessible"] {
