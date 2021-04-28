@@ -1479,7 +1479,9 @@ html[data-theme=Darkmode] {
   --kabab-menu-hover-bg: var(--black);
   --kabab-menu-dropdown-bg: #222222;
   --kabab-menu-dropdown-item-active: #333333;
-
+  .licenseTag{
+    color:var(--white) !important ;
+  }
   .terms-and-cond-form iframe{
     filter: invert(1);
   }
@@ -2886,10 +2888,6 @@ html[accessable-theme="accessible"]{
   }
 
 
-  .content-metadeta__title {
-    color: #4b4b4b!important
-  }
-
   .title.ng-star-inserted {
     color: var(--primary-color) !important;
   }
@@ -3119,9 +3117,7 @@ html[accessable-theme="accessible"]{
   .sb-pageSection .sb-pageSection-header .sb-cls-btn, .sb-pageSection .sb-pageSection-header button.sb-btn-secondary{
     color:var(--black) !important;
 }
-.licenseTag{
-  color:var(--gray-400) !important ;
-}
+
 .sb-modal-actions{
   a.sb-btn.sb-btn-normal.sb-btn-primary{
     color: var(--white);
