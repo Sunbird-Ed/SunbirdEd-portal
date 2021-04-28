@@ -218,7 +218,7 @@ export class SbFormLocationSelectionDelegate {
       if (_.get(formValue, 'persona')) {
         localStorage.setItem('userType', formValue.persona);
       }
-      this.userService.updateGuestUser(user).subscribe();
+      this.userService.updateGuestUser(user, formValue).subscribe();
     }
 
     return await Promise.all(tasks).then((result) => {

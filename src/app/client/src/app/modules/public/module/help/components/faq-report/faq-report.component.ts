@@ -58,20 +58,20 @@ export class FaqReportComponent implements OnInit {
     }
 
     const params = [];
-    for (const [key, value] of this.formValues) {
+    for (const [key, value] of Object.entries(this.formValues)) {
       if (key === 'children') {
         for (const [childKey, childValue] of this.formValues[key]) {
-          params.push({childKey: childValue});
+          params.push({[childKey]: childValue});
         }
       } else {
-        params.push({key: value});
+        params.push({[key]: value});
       }
     }
 
-    const telemetryContextObj = { env: 'portal', cdata: [] };
-    const edata = { id: 'faq', type: 'system', pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') };
+    const telemetryContextObj = { env: 'portal', cdata: []};
+    const edata = { type: 'system', pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') };
 
-    const interactEvent = { context: telemetryContextObj, edata }
+    const interactEvent = { context: telemetryContextObj, edata: { id: 'submit-clicked', ...edata, type: 'support' } }
     const logEvent = {
       context: telemetryContextObj,
       edata: {
