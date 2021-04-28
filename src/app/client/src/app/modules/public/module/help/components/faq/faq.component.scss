@@ -40,6 +40,20 @@
             }
         }
     }
+
+    sb-list {
+        .listView-compt{
+            section.mt-24{
+                button{
+                    text-transform: uppercase;
+                    font-weight: bold;
+                    img{
+                        height: 1rem;
+                    }
+                }
+            }
+        }
+    }
 }
 .faq_title {
     color: var(--carousel-title);

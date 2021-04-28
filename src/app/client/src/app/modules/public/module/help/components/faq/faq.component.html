@@ -31,10 +31,11 @@
     <div class="help-page__content" *ngIf="faqData && !showLoader">
       <div class="sbhelp_container mt-24" style="min-height:600px;">
         <section class="sbhelp_container__left" *ngIf="(isMobileView && showOnlyFaqCategory) || !isMobileView" [ngClass]="{'category-list-mobile':isMobileView, 'category-list-web':!isMobileView}">
-          <sb-list 
+          <sb-list #sbFaqCategoryList
             [title]="faqData?.constants?.selectCategoryTitle"
             [listData]="faqData?.categories"
             [btnText]="faqData?.constants?.reportIssueMsg"
+            [btnImg]="'./assets/images/report.svg'"
             (itemClick)="onCategorySelect($event)"
             (btnClick)="enableFaqReport($event)">
           </sb-list>
@@ -80,8 +81,6 @@
       </a>
     </div>
   </div>
-  
-
 </div>
 
 <ng-template #extraTemplate>
@@ -93,3 +92,13 @@
     {{resourceService?.frmelmnts?.lbl?.goToHelpCenter}}
   </a>
 </ng-template>
+
+<sui-modal class="sb-modal sb-success" (dismissed)="showVideoModal = false" [size]="'large'" [mustScroll]="false"
+  *ngIf="showVideoModal && playerConfig">
+
+  <div class="sb-modal-content height-auto">
+    <sunbird-video-player [playerConfig]="playerConfig" #videoPlayer>
+    </sunbird-video-player>
+  </div>
+
+</sui-modal>

@@ -798,7 +798,7 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@3.9.5", "@project-sunbird/client-services@^3.8.5":
+"@project-sunbird/client-services@3.9.5":
   version "3.9.5"
   resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.9.5.tgz#c9e56d2ec1ca636184f275446e4b820f2739afb8"
   integrity sha512-v9L3pfVSs5TDv+psO/jlzvO++SpWhLxHRMUoOnPAH7DIBaOO0pWOLUvMQ7aTfg2IDnzpixFyR+8BiupnoW6wSQ==
@@ -809,17 +809,28 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v8@3.9.1":
-  version "3.9.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v8/-/common-consumption-v8-3.9.1.tgz#7f73cbd2f9f5e5c27c2099d7068cf27406a8767a"
-  integrity sha512-E9fQMpXbHPtu5Sam3ERnRU78+3lHutYSh5S7asTbbPGhzTVv9AyBDMM3vvDNeDLc4XfsINdDNkWFX6q5kuXcxw==
+"@project-sunbird/client-services@^3.8.5":
+  version "3.9.6"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.9.6.tgz#de2598e219525a1a2985a4bba7650a191b93e54b"
+  integrity sha512-4MivgyZUr3BKUb1P574PyvQH7NoCtE6Rj6SibCh+b9aN/oGcTI0DxU01Pwlok1AXQ+7+GCyPOzhV+FwainuLGA==
+  dependencies:
+    "@project-sunbird/telemetry-sdk" "0.0.26"
+    inversify "^5.0.1"
+    qs "^6.9.4"
+    reflect-metadata "^0.1.13"
+    whatwg-fetch "^3.1.0"
+
+"@project-sunbird/common-consumption-v8@3.9.2":
+  version "3.9.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v8/-/common-consumption-v8-3.9.2.tgz#51555500d83d7f066f514342bb061c1e776df8bd"
+  integrity sha512-1B7GkYNJiHB2LfgGqAqQqjAFow0ez6rPhaTGMubYkv3Qgzg3r0V9ooW5HjzsaANmDGy1T8c5l8Tt0QgvXiLQHw==
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/discussions-ui-v8@2.1.0-beta.5":
-  version "2.1.0-beta.5"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.1.0-beta.5.tgz#ad211f1e5495a4be5c7229375ec00685deda582a"
-  integrity sha512-xtfPBgB9D4RCPgW1it9oivP7vab3Mn1Dm6FwgSRbBze1MskYWIiaNt4mgRrhSGZOvab2MbfpIWnRXSfHtlNz6w==
+"@project-sunbird/discussions-ui-v8@2.1.0-beta.6":
+  version "2.1.0-beta.6"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.1.0-beta.6.tgz#ccad8e81598343689f397bfbb2ef5673d57409fd"
+  integrity sha512-TDgVUkn7tzSYk0OmMr8f4RlcF/xlNZpStBg+QA2p8Z8BMoj0vH9BrbBUrXX9Rist1/vaNVpDte7Jgi9w52dWcA==
   dependencies:
     tslib "^1.9.0"
 
@@ -828,10 +839,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.6.tgz#15a88937fb643d5eb33a81c8d28ece00b56d5aa0"
   integrity sha512-rK87rHdagadIS7UrWju7HDolIfWlO5CbK+tIJrEApO+QPMi+k8KuWoLc8MxEprrsJxUt6r44O4uGiO0hgI5plA==
 
-"@project-sunbird/sunbird-collection-editor@3.9.7":
-  version "3.9.7"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-3.9.7.tgz#982823ccc38b1c79ead12f85888cbf525909d42f"
-  integrity sha512-mmeGzAStLz3QSVpm4vAPCvPHGDfLW9R6tQLZ7w5F7nUrigKAUi79HsxDUX8rRsnsPResrEwH1r3JX+aM9vmmoA==
+"@project-sunbird/sunbird-collection-editor@3.9.8":
+  version "3.9.8"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-3.9.8.tgz#2a9034e77b1a7c006c74b7095055c74b47b029c3"
+  integrity sha512-H4VEXtdzfIlUZlYfOdg7iKOuzNgJLl8nL9Ep3p6JtB1SnHHLX5/KuN9Tqb3QRX3cqcnK24Ma05daZj3LZ86hUA==
   dependencies:
     tslib "^1.9.0"
 
@@ -886,10 +897,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v8@3.9.17":
-  version "3.9.17"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v8/-/sunbird-quml-player-v8-3.9.17.tgz#f8769229077c4a28391433c8a92387e2ba3a5b34"
-  integrity sha512-5wv3Hvk0CDYPfmlbdndd293LfzNvDboWxrXq53MdhMfAM2t+FAk7rIIvAh2E24MyRRcWBiSZ1VShKuKJDRdEgw==
+"@project-sunbird/sunbird-quml-player-v8@3.9.19":
+  version "3.9.19"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v8/-/sunbird-quml-player-v8-3.9.19.tgz#4d986f5c10186dcab6c4ba47496a346f92c9fad3"
+  integrity sha512-9WA8ru+CjkwEscnBNu/xIdR/OpNokNTkKqBOGFJggnpkGilaUofDOKFpltIgMrhcWb2d2RS2Ld8k/YrCuAffVQ==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v8" "3.8.0"
     tslib "^1.9.0"
@@ -1049,9 +1060,9 @@
   integrity sha512-1z8k4wzFnNjVK/tlxvrWuK5WMt6mydWWP7+zvH5eFep4oj+UkrfiJTRtjCeBXNpwaA/FYqqtb4/QS4ianFpIRA==
 
 "@types/node@*":
-  version "15.0.0"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-15.0.0.tgz#557dd0da4a6dca1407481df3bbacae0cd6f68042"
-  integrity sha512-YN1d+ae2MCb4U0mMa+Zlb5lWTdpFShbAj5nmte6lel27waMMBfivrm0prC16p/Di3DyTrmerrYUT8/145HXxVw==
+  version "15.0.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-15.0.1.tgz#ef34dea0881028d11398be5bf4e856743e3dc35a"
+  integrity sha512-TMkXt0Ck1y0KKsGr9gJtWGjttxlZnnvDtphxUOSd0bfaR6Q1jle+sPvrzNR1urqYTWMinoKvjKfXUGsumaO1PA==
 
 "@types/node@6.0.60":
   version "6.0.60"
@@ -1074,9 +1085,9 @@
   integrity sha512-tGomyEuzSC1H28y2zlW6XPCaDaXFaD6soTdb4GNdmte2qfHtrKqhy0ZFs4r/1hpazCfEZqeTSRLvSasmEx89uw==
 
 "@types/sizzle@*":
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/@types/sizzle/-/sizzle-2.3.2.tgz#a811b8c18e2babab7d542b3365887ae2e4d9de47"
-  integrity sha512-7EJYyKTL7tFR8+gDbB6Wwz/arpGa0Mywk1TJbNzKzHtzbwVmY4HR9WqS5VV7dsBUKQmPNr192jHr/VpBluj/hg==
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/@types/sizzle/-/sizzle-2.3.3.tgz#ff5e2f1902969d305225a047c8a0fd5c915cebef"
+  integrity sha512-JYM8x9EGF163bEyhdJBpR2QX1R5naCJHC8ucJylJ3w9/CVBaskdQ8WqBf8MmQrd1kRvp/a4TS8HJ+bxzR7ZJYQ==
 
 "@types/source-list-map@*":
   version "0.1.2"
@@ -2620,9 +2631,9 @@ caniuse-lite@1.0.30000979:
   integrity sha512-gcu45yfq3B7Y+WB05fOMfr0EiSlq+1u+m6rPHyJli/Wy3PVQNGaU7VA4bZE5qw+AU2UVOBR/N5g1bzADUqdvFw==
 
 caniuse-lite@^1.0.30000971, caniuse-lite@^1.0.30000975, caniuse-lite@^1.0.30001214:
-  version "1.0.30001216"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001216.tgz#47418a082a4f952d14d8964ae739e25efb2060a9"
-  integrity sha512-1uU+ww/n5WCJRwUcc9UH/W6925Se5aNnem/G5QaSDga2HzvjYMs8vRbekGUN/PnTZ7ezTHcxxTEb9fgiMYwH6Q==
+  version "1.0.30001218"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001218.tgz#9b44f6ed16f875db6373e2debd4d14a07359002f"
+  integrity sha512-0ASydOWSy3bB88FbDpJSTt+PfDwnMqrym3yRZfqG8EXSQ06OZhF+q5wgYP/EN+jJMERItNcDQUqMyNjzZ+r5+Q==
 
 canonical-path@1.0.0:
   version "1.0.0"
@@ -3852,9 +3863,9 @@ ee-first@1.1.1:
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
 electron-to-chromium@^1.3.164, electron-to-chromium@^1.3.719:
-  version "1.3.722"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.722.tgz#621657f79e7f65402e71aa3403bc941f3a4af0a0"
-  integrity sha512-aAsc906l0RBsVTsGTK+KirVfey9eNtxyejdkbNzkISGxb7AFna3Kf0qvsp8tMttzBt9Bz3HddtYQ+++/PZtRYA==
+  version "1.3.723"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.723.tgz#52769a75635342a4db29af5f1e40bd3dad02c877"
+  integrity sha512-L+WXyXI7c7+G1V8ANzRsPI5giiimLAUDC6Zs1ojHHPhYXb3k/iTABFmWjivEtsWrRQymjnO66/rO2ZTABGdmWg==
 
 element-closest@^2.0.2:
   version "2.0.2"
@@ -4532,7 +4543,7 @@ file-loader@^6.2.0:
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
 
-file-saver@eligrey/FileSaver.js#1.3.8:
+"file-saver@github:eligrey/FileSaver.js#1.3.8":
   version "1.3.8"
   resolved "https://codeload.github.com/eligrey/FileSaver.js/tar.gz/e865e37af9f9947ddcced76b549e27dc45c1cb2e"
 
@@ -10969,9 +10980,9 @@ timespan@2.3.x:
   integrity sha1-SQLOBAvRPYRcj1myfp1ZutbzmSk=
 
 tlds@^1.203.0:
-  version "1.221.0"
-  resolved "https://registry.yarnpkg.com/tlds/-/tlds-1.221.0.tgz#480f01ae383a8d5ee1acc54a23c9775e87bcbc6e"
-  integrity sha512-Y+9N1HvzgtLVMPGcBqNGQObKru0l0mukGAw6PEAe7gOXtUpiV/MKdpECPvxRfeP/77sbqR7UCeA4mZEkK+RqFQ==
+  version "1.221.1"
+  resolved "https://registry.yarnpkg.com/tlds/-/tlds-1.221.1.tgz#6cf6bff5eaf30c5618c5801c3f425a6dc61ca0ad"
+  integrity sha512-N1Afn/SLeOQRpxMwHBuNFJ3GvGrdtY4XPXKPFcx8he0U9Jg9ZkvTKE1k3jQDtCmlFn44UxjVtouF6PT4rEGd3Q==
 
 tmp@0.0.30:
   version "0.0.30"

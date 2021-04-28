@@ -27,7 +27,7 @@ export class FaqReportComponent implements OnInit {
     private telemetryService: TelemetryService,
     private activatedRoute: ActivatedRoute
   ) {
-    
+
   }
 
   ngOnInit() {
@@ -35,7 +35,7 @@ export class FaqReportComponent implements OnInit {
   }
 
   fetchFaqReportConfig() {
-    // FormAPI call    
+    // FormAPI call
     this.profileService.getFaqReportIssueForm().pipe(takeUntil(this.unsubscribe)).subscribe(formConfig => {
       this.faqReportConfig = formConfig;
     }, error => {
@@ -62,31 +62,35 @@ export class FaqReportComponent implements OnInit {
       if (key === 'children') {
         for (const [childKey, childValue] of this.formValues[key]) {
           params.push({childKey: childValue});
-        }    
+        }
       } else {
         params.push({key: value});
       }
     }
 
-    const event = {
-      context: {
-        env: 'portal'
-      },
+    const telemetryContextObj = { env: 'portal', cdata: [] };
+    const edata = { id: 'faq', type: 'system', pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') };
+
+    const interactEvent = { context: telemetryContextObj, edata }
+    const logEvent = {
+      context: telemetryContextObj,
       edata: {
-        id: 'faq',
-        type: 'system',
         level: "INFO",
         message: "faq",
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-        params
+        params,
+        ...edata
       }
     };
-    this.telemetryService.log(event);
 
+    this.telemetryService.log(logEvent);
+    this.telemetryService.interact(interactEvent);
+    const message: string = _.get(this.faqData, 'constants.thanksForFeedbackMsg');
     this.toasterService.custom({
-      message: this.faqData && this.faqData.constants && this.faqData.constants.thanksForFeedbackMsg,
+      message: message.replace('{{app_name}}', _.get(this.resourceService, 'instance')),
       class: 'sb-toaster sb-toast-success sb-toast-normal'
     });
+    this.faqReportConfig = undefined;
+    this.fetchFaqReportConfig()
   }
 
   ngOnDestroy() {

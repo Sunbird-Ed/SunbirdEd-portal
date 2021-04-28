@@ -8,6 +8,8 @@ import { SharedModule } from '@sunbird/shared';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
 import { FaqReportComponent } from './components/faq-report/faq-report.component';
 import { CommonFormElementsModule } from 'common-form-elements';
+import { SuiModalModule } from 'ng2-semantic-ui';
+import { SunbirdVideoPlayerModule } from '@project-sunbird/sunbird-video-player-v8';
 
 @NgModule({
   imports: [
@@ -17,7 +19,9 @@ import { CommonFormElementsModule } from 'common-form-elements';
     SharedModule,
     HelpRoutingModule,
     CommonConsumptionModule,
-    CommonFormElementsModule
+    CommonFormElementsModule,
+    SuiModalModule,
+    SunbirdVideoPlayerModule
   ],
   declarations: [FaqComponent, OfflineHelpVideosComponent, FaqReportComponent],
   exports: [FaqComponent, OfflineHelpVideosComponent, FaqReportComponent]
