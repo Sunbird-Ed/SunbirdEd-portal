@@ -147,6 +147,7 @@ export class AppComponent implements OnInit, OnDestroy {
   @HostListener('window:beforeunload', ['$event'])
   public beforeunloadHandler($event) {
     this.telemetryService.syncEvents(false);
+    this.ngOnDestroy();
   }
   handleLogin() {
     window.location.replace('/sessionExpired');
@@ -194,6 +195,15 @@ export class AppComponent implements OnInit, OnDestroy {
     console.log("Tag Manager");
     window['TagManager'] = SBTagModule.instance;
     window['TagManager'].init();
+    if(this.userService.loggedIn) {
+      if (localStorage.getItem('tagManager_' + this.userService.userid)) {
+        window['TagManager'].SBTagService.restoreTags(localStorage.getItem('tagManager_' + this.userService.userid));
+      } 
+    } else {
+      if (localStorage.getItem('tagManager_' + 'guest')) {
+        window['TagManager'].SBTagService.restoreTags(localStorage.getItem('tagManager_' + 'guest'));
+      } 
+    }
   }
 
   setTheme() {
@@ -727,6 +737,13 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.resourceDataSubscription) {
       this.resourceDataSubscription.unsubscribe();
+    }
+    if(window['TagManager']) {
+      if(this.userService.loggedIn) {
+        localStorage.setItem('tagManager_' + this.userService.userid, JSON.stringify(window['TagManager'].SBTagService));
+      } else {
+        localStorage.setItem('tagManager_' + 'guest', JSON.stringify(window['TagManager'].SBTagService));
+      }
     }
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
