@@ -71,7 +71,7 @@ export class FaqReportComponent implements OnInit {
     const telemetryContextObj = { env: 'portal', cdata: []};
     const edata = { type: 'system', pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') };
 
-    const interactEvent = { context: telemetryContextObj, edata: { id: 'submit-clicked', ...edata } }
+    const interactEvent = { context: telemetryContextObj, edata: { id: 'submit-clicked', ...edata, type: 'support' } }
     const logEvent = {
       context: telemetryContextObj,
       edata: {
