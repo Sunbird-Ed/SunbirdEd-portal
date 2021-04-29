@@ -961,7 +961,7 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v8@3.9.22":
+"@project-sunbird/sunbird-quml-player-v8@3.9.21":
   version "3.9.21"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v8/-/sunbird-quml-player-v8-3.9.21.tgz#d793f34a42f94bf24e94ccc138109ba4a2a8a887"
   integrity sha512-iYEjmG6AKj/ogBhCPCtlIrkOjVzFPLBk4YI3aAQ4/D+4aogU/vDl9BT6PcN27WsAxRlyvyQ7+CM/kRlVVSM0jg==
