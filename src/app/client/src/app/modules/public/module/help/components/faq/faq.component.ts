@@ -10,7 +10,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Location } from '@angular/common';
 import { FaqService } from '../../services/faq/faq.service';
-import { FaqData, VideoConfig } from './faq-data';
+import { VideoConfig } from './faq-data';
 
 @Component({
   selector: 'app-faq',
