@@ -65,6 +65,9 @@ sb-form.faq-sbforms {}
 
     .sb-modal-dropdown-web {
       ul{
+        top: auto !important;
+        border-radius: 2rem;
+        padding: 0 1rem;
         overflow-y: auto !important;
         overflow: hidden;
       }

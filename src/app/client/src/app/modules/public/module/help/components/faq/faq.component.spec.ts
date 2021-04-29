@@ -232,4 +232,62 @@ describe('FaqComponent', () => {
     });
   });
 
+  describe('onVideoSelect', () => {
+    it('should terminate the flow if the data is empty', () => {
+      // arrange
+      component.showVideoModal = false;
+      const eventData = {};
+      // act
+      component.onVideoSelect(eventData);
+      // assert
+      expect(component.showVideoModal).toEqual(false);
+    });
+
+    it('should open up the player modal and play the faq video', () => {
+      // arrange
+      component.showVideoModal = false;
+      component.videoPlayer = {
+        changes: of({})
+      }
+      const eventData = {
+        data: {
+          thumbnail: 'some_thumbnail',
+          name: 'some_name',
+          url: 'some_url',
+        }
+      };
+      // act
+      component.onVideoSelect(eventData);
+      // assert
+      expect(component.showVideoModal).toEqual(true);
+    });
+  });
+
+  describe('enableFaqReport', () => {
+    it('should enable the report an issue component', () => {
+      // arrange
+      component.sbFaqCategoryList = {};
+      const eventData = {};
+      // act
+      component.enableFaqReport(eventData);
+      // assert
+      expect(component.showOnlyFaqCategory).toEqual(false);
+      expect(component.showFaqReport).toEqual(true);
+    });
+
+    it('should enable the report an issue component and should deselect the category', () => {
+      // arrange
+      component.sbFaqCategoryList = {
+        selectedIndex: -1
+      };
+      const eventData = {};
+      // act
+      component.enableFaqReport(eventData);
+      // assert
+      expect(component.showOnlyFaqCategory).toEqual(false);
+      expect(component.showFaqReport).toEqual(true);
+      expect(component.sbFaqCategoryList.selectedIndex).toEqual(-1);
+    });
+  });
+
 });
