@@ -11,8 +11,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { of, throwError } from 'rxjs';
 import { FaqService } from '../../services/faq/faq.service';
 import { FaqComponent } from './faq.component';
-import { RESPONSE } from './faq.component.spec.data';
-import { FaqData } from './faq-data';
+import { FaqData, RESPONSE } from './faq.component.spec.data';
 import { HttpClient } from '@angular/common/http';
 
 
