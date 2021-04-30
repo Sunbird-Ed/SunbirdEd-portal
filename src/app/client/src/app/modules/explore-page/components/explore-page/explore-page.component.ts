@@ -289,7 +289,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 switchMap(currentPageData => {
                     const { search: { fields = [], filters = {}, facets = ['subject'] } = {}, metaData: { groupByKey = 'subject' } = {} } = currentPageData || {};
                     const request = {
-                        filters: this.contentSearchService.mapCategories({ filters: { ...this.selectedFilters, ...filters, ['se_subjects']: [] } }),
+                      filters: { ...this.contentSearchService.mapCategories({ filters: { ...this.selectedFilters, ...filters } }), se_subjects: [] },
                         fields,
                         isCustodianOrg: this.custodianOrg,
                         channelId: this.channelId,
