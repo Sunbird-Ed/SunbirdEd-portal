@@ -283,7 +283,7 @@ export class SearchService {
   * medium into se_mediums
   * subject into se_subjects
   * and will delete the board, medium, gradeLevel, subject
-  * @param {option} 
+  * @param {option}
   **/
   public updateOption(option: any) {
     if (_.get(option, 'data.request.filters.board')) {
@@ -298,10 +298,10 @@ export class SearchService {
       option.data.request.filters['se_mediums'] = option.data.request.filters.medium;
       delete option.data.request.filters.medium;
     }
-    if (_.get(option, 'data.request.filters.subject')) {
-      option.data.request.filters['se_subjects'] = option.data.request.filters.subject;
-      delete option.data.request.filters.subject;
-    }
+    // if (_.get(option, 'data.request.filters.subject')) {
+    //   option.data.request.filters['se_subjects'] = option.data.request.filters.subject;
+    //   delete option.data.request.filters.subject;
+    // }
     return option.data;
   }
   /**
@@ -498,13 +498,13 @@ export class SearchService {
             if (_.toLower(val.name) === 'cbse') { val.name = 'CBSE/NCERT'; }
           });
           break;
-        case 'se_mediums':  
+        case 'se_mediums':
         case 'medium':
           facet['index'] = '3';
           facet['label'] = this.resourceService.frmelmnts.lbl.medium;
           facet['placeholder'] = this.resourceService.frmelmnts.lbl.selectMedium;
           break;
-        case 'se_gradeLevels':  
+        case 'se_gradeLevels':
         case 'gradeLevel':
           facet['index'] = '4';
           facet['label'] = this.resourceService.frmelmnts.lbl.class;
