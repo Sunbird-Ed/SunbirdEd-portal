@@ -1,19 +1,21 @@
 import { FieldConfig, FieldConfigOptionsBuilder } from 'common-form-elements';
 import { Location as SbLocation } from '@project-sunbird/client-services/models/location';
 import { FormControl } from '@angular/forms';
-import { concat, defer, iif, of } from 'rxjs';
-import { distinctUntilChanged, mergeMap } from 'rxjs/operators';
+import { concat, defer, iif, Observable, of } from 'rxjs';
+import { distinctUntilChanged, mergeMap, map } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 
 import { LocationService } from '../../services/location/location.service';
 import { UserService } from '../../../../modules/core/services/user/user.service';
+import { OrgDetailsService } from '@sunbird/core';
 
 export class SbFormLocationOptionsFactory {
   private userLocationCache: {[request: string]: SbLocation[] | undefined} = {};
 
   constructor(
     private locationService: LocationService,
-    private userService: UserService
+    private userService: UserService,
+    private orgDetailsService: OrgDetailsService
   ) {}
 
   buildStateListClosure(config: FieldConfig<any>, initial = false): FieldConfigOptionsBuilder<SbLocation> {
@@ -74,16 +76,14 @@ export class SbFormLocationOptionsFactory {
             return [];
           }
           notifyLoading();
-          return this.fetchUserLocation({
-            filters: {
-              type: locationType,
-              ...(value ? {
-                parentId: (value as SbLocation).id
-              } : {})
-            }
-          }).then((locationList: SbLocation[]) => {
+          return this.fetchLocationList(locationType, value).then((locationList: any) => {
               notifyLoaded();
-              const list = locationList.map((s) => ({ label: s.name, value: s }));
+              let list;
+              if (locationType === 'school') {
+                list = locationList;
+              } else {
+                list = locationList.map((s) => ({ label: s.name, value: s }));
+              }
               // school is fetched from userProfile.organisation instead of userProfile.userLocations
               if (config.code === 'school' && initial && !formControl.value) {
                 const option = list.find((o) => {
@@ -108,9 +108,42 @@ export class SbFormLocationOptionsFactory {
     };
   }
 
+  fetchLocationList(locationType, value): Promise<any> {
+    if (locationType === 'school') {
+      return this.orgDetailsService.searchOrgDetails({
+        filters: {
+          'orgLocation.id': (value as SbLocation).id,
+          isSchool: true
+        }
+      }).pipe(
+        map((list: any) => list.content.map(ele => {
+          return {
+            label: ele.orgName,
+            value: { 
+              code: ele.externalId,
+              parentId: value.id,
+              type: locationType,
+              name: ele.orgName,
+              id: ele.identifier,
+              identifier: ele.identifier
+            }
+          };
+        }))
+      ).toPromise();
+    } else {
+      return this.fetchUserLocation({
+        filters: {
+          type: locationType,
+          ...(value ? {
+            parentId: (value as SbLocation).id
+          } : {})
+        }
+      });
+    }
+  };
+
   private async fetchUserLocation(request: any): Promise<SbLocation[]> {
     const serialized = JSON.stringify(request);
-
     if (this.userLocationCache[serialized]) {
       return this.userLocationCache[serialized];
     }
