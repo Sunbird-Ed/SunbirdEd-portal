@@ -202,7 +202,7 @@ export class SbFormLocationSelectionDelegate {
       const formValue = this.formGroup.value;
       const payload: any = {
         userId: _.get(this.userService, 'userid'),
-        locationCodes: locationDetails,
+        profileLocation: locationDetails,
         ...(_.get(formValue, 'name') ? { firstName: _.get(formValue, 'name') } : {} ),
         ...(_.get(formValue, 'persona') ? { userType: _.get(formValue, 'persona') } : {} ),
         ...(_.get(formValue, 'children.persona.subPersona') ? { userSubType: _.get(formValue, 'children.persona.subPersona') } : {} ),

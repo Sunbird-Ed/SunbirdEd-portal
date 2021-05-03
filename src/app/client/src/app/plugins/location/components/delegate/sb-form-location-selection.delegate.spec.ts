@@ -731,7 +731,7 @@ describe('SbFormLocationSelectionDelegate', () => {
         // assert
         expect(mockLocationService.updateProfile).toHaveBeenCalledWith({
           userId: 'SOME_USER_ID',
-          locationCodes: [
+          profileLocation: [
             jasmine.objectContaining({code: 'SOME_SELECTED_STATE_CODE'}),
             jasmine.objectContaining({code: 'SOME_SELECTED_DISTRICT_CODE'})
           ]
