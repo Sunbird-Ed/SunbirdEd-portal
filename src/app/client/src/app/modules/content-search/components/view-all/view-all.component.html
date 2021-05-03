@@ -1,6 +1,6 @@
 <app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration"></app-landing-section>
 <div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
-    <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'" [appTelemetryImpression]="telemetryImpression">    
+    <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'" [appTelemetryImpression]="telemetryImpression">
     <div [ngClass]="FIRST_PANEL_LAYOUT">
       <app-global-search-filter [queryParamsToOmit]="facetsList" [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true'
                                 *ngIf="initFilters" (filterChange)="getFilters($event)">
@@ -17,7 +17,7 @@
       <div class="sb-pageSection-header" *ngIf="!showLoader">
             <h4 class="sb-pageSection-title m-0 mr-5">{{sectionName}}</h4>
             <span  *ngIf="totalCount" class="sb-pageSection-count sb-label sb-label-xs sb-label-error">{{totalCount}}</span>
-            <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" type="button" [routerLink]="[closeUrl]">{{resourceService?.frmelmnts?.btn?.close}} <i class="close icon"></i></button>
+            <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" type="button" (click)="handleCloseButton()">{{resourceService?.frmelmnts?.btn?.close}} <i class="close icon"></i></button>
         </div>
     </div>
         <div class="twelve wide column mt-16" *ngIf="!showLoader && !noResult">
@@ -32,7 +32,7 @@
                         appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType || 'Content',ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0'}"
                         (cardClick)="playContent($event)" [content]="content" [cardImg]="content?.image || 'assets/images/book.png'" ></sb-library-card>
                     </ng-container>
-                        
+
                 </div>
             </div>
         </div>
@@ -55,22 +55,22 @@
                     class="sb-item ">&raquo;</a>
                 </div>
             </div>
-          
+
         </div>
         </div>
         </div>
     </div>
 </div>
 </div>
-<sui-modal 
-    [mustScroll]="true" 
+<sui-modal
+    [mustScroll]="true"
     [isClosable]="true"
     [transitionDuration]="0"
     [size]="'small'"
     class="sb-modal"
     appBodyScroll
-    (dismissed)="closeModal()" 
-    #modal 
+    (dismissed)="closeModal()"
+    #modal
     *ngIf="showLoginModal">
 
     <!--Header-->
@@ -90,7 +90,7 @@
     <div class="sb-modal-actions">
         <a href={{baseUrl}} class="sb-btn sb-btn-normal sb-btn-primary">
             {{resourceService.frmelmnts?.btn?.signin}}
-        </a> 
+        </a>
     </div>
     <!--/Actions-->
 </sui-modal>

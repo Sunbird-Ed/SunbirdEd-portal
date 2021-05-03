@@ -17,6 +17,7 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
   @Input() playerConfig: PlayerConfig;
   @Output() assessmentEvents = new EventEmitter<any>();
   @Output() questionScoreSubmitEvents = new EventEmitter<any>();
+  @Output() questionScoreReviewEvents = new EventEmitter<any>();
   @ViewChild('contentIframe', {static: false}) contentIframe: ElementRef;
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
   @Output() sceneChangeEvent = new EventEmitter<any>();
@@ -35,7 +36,8 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
   youTubeContentStatus: any;
   public unsubscribe$ = new Subject<void>();
   CONSTANT = {
-    ACCESSEVENT: 'renderer:question:submitscore'
+    ACCESSEVENT: 'renderer:question:submitscore',
+    ACCESSREVIEWEVENT: 'renderer:question:reviewAssessment'
   };
   /**
  * Dom element reference of contentRatingModal
@@ -130,6 +132,9 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
     if (_.toLower(event.data) === (_.toLower(this.CONSTANT.ACCESSEVENT))) {
       this.questionScoreSubmitEvents.emit(event);
     }
+    if (event.data.toLowerCase() === (this.CONSTANT.ACCESSREVIEWEVENT).toLowerCase()) {
+      this.questionScoreReviewEvents.emit(event);
+    }
   }
 
   onAssessmentEvents(event) {
@@ -139,7 +144,9 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
   onQuestionScoreSubmitEvents(event) {
     this.questionScoreSubmitEvents.emit(event);
   }
-
+  onQuestionScoreReviewEvents(event) {
+    this.questionScoreReviewEvents.emit(event);
+  }
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();

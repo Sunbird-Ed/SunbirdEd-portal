@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { ResourceService, ToasterService, NavigationHelperService } from '@sunbird/shared';
-import { DeviceRegisterService, FormService, UserService } from '../../../../modules/core/services';
+import { DeviceRegisterService, FormService, OrgDetailsService, UserService } from '../../../../modules/core/services';
 import { Router } from '@angular/router';
 import { LocationService } from '../../services/location/location.service';
 import { IImpressionEventInput, IInteractEventInput, TelemetryService } from '@sunbird/telemetry';
@@ -33,13 +33,15 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
     public navigationHelperService: NavigationHelperService,
     public popupControlService: PopupControlService,
     protected telemetryService: TelemetryService,
-    protected formService: FormService
+    protected formService: FormService,
+    private orgDetailsService: OrgDetailsService
   ) {
     this.sbFormLocationSelectionDelegate = new SbFormLocationSelectionDelegate(
       this.userService,
       this.locationService,
       this.formService,
-      this.deviceRegisterService
+      this.deviceRegisterService,
+      this.orgDetailsService
     );
   }
 
