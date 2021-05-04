@@ -53,7 +53,7 @@ export class GeneralizedResources {
     if (generalizedResources) {
       res.send(Response.success("api.report", { result: generalizedResources }, req));
     } else {
-      logger.error(`Generalized Resources not found for language: `, language, `for ReqId: ${req.get("x-msgid")} `);
+      this.standardLog.error({ id: 'GENERALIZED_RESOURCE_LANG_NOT_FOUND', message: `Generalized Resources not found for language: ${language}`, mid: req.get("x-msgid"), error: 'Resource not found!' });
       res.status(404).send(Response.error("api.report", 404));
     }
   }
@@ -83,7 +83,7 @@ export class GeneralizedResources {
         return resources;
       }).catch((err) => {
         const traceId = _.get(err, 'data.params.msgid');
-        logger.error(`Got error while reading generalized resources from blob for language ${language}, for ReqId: ${req.get("x-msgid")}, error message ${err.message}, with trace Id ${traceId}`);
+        this.standardLog.error({ id: 'GENERALIZED_RESOURCE_BLOB_READ_FAILED', message: `Got error while reading generalized resources from blob, for language: ${language}, with trace Id ${traceId}`, mid: req.get("x-msgid"), error: err });
         return undefined;
       });
   }

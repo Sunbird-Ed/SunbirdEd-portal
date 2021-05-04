@@ -755,7 +755,7 @@ export default class Content {
             contents = await this.changeContentStatus(offlineContents.docs, reqId, contents);
             return contents;
         } catch (err) {
-            logger.error(`ReqId = "${reqId}": Received  error err.message: ${err.message} ${err}`);
+            this.standardLog.error({id: 'CONTENT_DECORATE_FAILED', message: 'Received  error while decorating content', mid: reqId, error: err});
             return contents;
         }
     }

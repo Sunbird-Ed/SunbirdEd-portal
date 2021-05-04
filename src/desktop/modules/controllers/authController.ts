@@ -29,11 +29,7 @@ export default class AuthController {
         try {
             this.deviceId = await containerAPI.getSystemSDKInstance(manifest.id).getDeviceId();
         } catch (err) {
-            logger.error({
-                msg: "appUpdate:getDeviceId caught exception while fetching device id with error",
-                errorMessage: err.message,
-                error: err,
-            });
+            this.standardLog.error({ id: 'AUTH_CONTROLLER_DEVICE_ID_FETCH_FAILED', message: 'appUpdate:getDeviceId caught exception while fetching device id', error: err });
         }
     }
 

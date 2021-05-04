@@ -1,4 +1,3 @@
-import { logger } from "@project-sunbird/logger";
 import * as _ from "lodash";
 import { containerAPI, ISystemQueueInstance, SystemQueueReq } from "@project-sunbird/OpenRAP/api";
 import * as path from "path";
@@ -30,7 +29,7 @@ export default class ContentDelete {
         const reqId = req.headers["X-msgid"];
         const contentIDS: string[] = _.get(req.body, "request.contents");
         if (!contentIDS) {
-            logger.error(`${reqId}: Error: content Ids not found`);
+            this.standardLog.error({id: 'CONTENT_DELETE_ID_NOT_FOUND', message: `${reqId}: Error: content Ids not found`, error: `content Id not found`});
             return res.status(400).send(Response.error(`api.content.delete`, 400, "MISSING_CONTENTS"));
         }
         try {
@@ -43,7 +42,7 @@ export default class ContentDelete {
                     },
                 };
             let contentsToDelete = await this.databaseSdk.find("content", dbFilter).catch((error) => {
-                    logger.error(`Received Error while finding contents (isAvailable : false) Error: ${error.stack}`);
+                    this.standardLog.error({id: 'CONTENT_DELETE_SEARCH_FAILED', message: `Received Error while finding contents (isAvailable : false)`, error });
                 });
             contentsToDelete = await this.getContentsToDelete(contentsToDelete.docs);
             let deleted = await this.databaseSdk.bulk("content", contentsToDelete).catch((err) => {
@@ -125,7 +124,7 @@ export default class ContentDelete {
                 ],
             },
         };
-        logger.info(`finding all child contents of a collection`);
+        this.standardLog.info({ id: 'CONTENT_DELETE_FIND_CHILDREN', message: `finding all child contents of a collection` });
         return await this.databaseSdk.find("content", dbFilter);
     }
 }

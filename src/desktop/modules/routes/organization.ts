@@ -1,9 +1,11 @@
 import { Organization } from "./../controllers/organization";
 import { manifest } from "./../manifest";
 import { logger } from "@project-sunbird/logger";
+import { containerAPI } from '@project-sunbird/OpenRAP/api';
 const proxy = require('express-http-proxy');
 
 export default (app, proxyURL) => {
+    const standardLog = containerAPI.getStandardLoggerInstance();
     const organization = new Organization(manifest);
     app.post(
         "/api/org/v1/search",
@@ -21,7 +23,7 @@ export default (app, proxyURL) => {
                         const orgResponse = JSON.parse(proxyResData.toString('utf8'));
                         organization.upsert(orgResponse);
                     } catch (error) {
-                        logger.error(`Unable to parse or do DB update of organization data after fetching from online`, error)
+                        standardLog.error({ id: 'ORGANIZATION_SEARCH_FAILED', message: `Unable to parse or do DB update of organization data after fetching from online`, error });
                     }
                     resolve(proxyResData);
                 });
@@ -49,7 +51,7 @@ export default (app, proxyURL) => {
                         const orgResponse = JSON.parse(proxyResData.toString('utf8'));
                         organization.upsert(orgResponse);
                     } catch (error) {
-                        logger.error(`Unable to parse or do DB update of organization data after fetching from online`, error)
+                        standardLog.error({ id: 'ORGANIZATION_SEARCH_FAILED', message: `Unable to parse or do DB update of organization data after fetching from online`, error });
                     }
                     resolve(proxyResData);
                 });

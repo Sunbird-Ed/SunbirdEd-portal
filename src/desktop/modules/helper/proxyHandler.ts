@@ -10,6 +10,7 @@ const http = require('http');
 const https = require('https');
 
 const decorateRequest = async (request, options) => {
+  const standardLog = containerAPI.getStandardLoggerInstance();
   const { headers } = request;
   const userSDK: any = containerAPI.getUserSdkInstance();
   const channel = _.get(headers, 'X-Channel-Id') || process.env.CHANNEL;
@@ -37,7 +38,7 @@ const decorateRequest = async (request, options) => {
 
   if (options.isAuthTokenRequired) {
     const apiKey = await containerAPI.getDeviceSdkInstance().getToken().catch((err) => {
-      logger.error(`Received error while fetching device token with error: ${err}`);
+      standardLog.error({ id: 'PROXY_HELPER_AUTH_TOKEN_FETCH_FAILED', message: 'Received error while fetching api key in getUser', error: err });
     });
     headers.Authorization = `Bearer ${apiKey}`;
   }
@@ -58,10 +59,11 @@ const resolveRequestPath = (host, request, options) => {
 }
 
 const getNewAuthToken = async () => {
+  const standardLog = containerAPI.getStandardLoggerInstance();
   await containerAPI.getDeviceSdkInstance().clearToken();
   await containerAPI.getDeviceSdkInstance().getToken();
   const apiKey = await containerAPI.getDeviceSdkInstance().getToken().catch((err) => {
-    logger.error(`Received error while fetching device token with error: ${err}`);
+    standardLog.error({ id: 'PROXY_HELPER_AUTH_TOKEN_FETCH_FAILED', message: 'Received error while fetching api key in getUser', error: err });
   });
   return apiKey;
 }

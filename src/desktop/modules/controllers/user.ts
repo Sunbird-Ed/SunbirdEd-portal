@@ -50,7 +50,6 @@ export default class User {
             logger.info(`ReqId = "${req.headers["X-msgid"]}": result: ${userData} found from desktop app update api`);
             return res.send(Response.success("api.desktop.user.read", userData, req));
         } catch (err) {
-            logger.error(`ReqId = "${req.headers["X-msgid"]}": Received error while getting user,  where err = ${err}`);
             this.standardLog.error({ id: 'USER_DB_READ_FAILED', mid: req.headers["X-msgid"], message: 'Received error while getting user', error: err });
             res.status(err.status || 500);
             return res.send(

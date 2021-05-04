@@ -1,4 +1,3 @@
-import { logger } from "@project-sunbird/logger";
 import * as _ from "lodash";
 import { containerAPI, ISystemQueue, ITaskExecuter } from "@project-sunbird/OpenRAP/api";
 import * as os from "os";

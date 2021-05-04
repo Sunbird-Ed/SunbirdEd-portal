@@ -49,9 +49,7 @@ export default class Telemetry {
           return res.send(Response.error("api.telemetry", 500));
         });
     } else {
-      logger.error(
-        `ReqId = "${req.headers["X-msgid"]}": Received err and err.res.status: 400`,
-      );
+      standardLog.error({id: 'TELEMETRY_DB_INSERTION_FAILED', message: `Received err and status: 400`, error: 'Empty events provided'});
       res.status(400);
       return res.send(Response.error("api.telemetry", 400));
     }
@@ -164,6 +162,7 @@ export default class Telemetry {
   }
 
   public async list(req: any, res: any) {
+    const standardLog = containerAPI.getStandardLoggerInstance();
     try {
       let dbData = await this.systemQueue.query({ type: ImportTelemetry.taskType });
       dbData = _.map(dbData.docs, (data) => ({
@@ -184,7 +183,7 @@ export default class Telemetry {
         },
       }, req));
     } catch (error) {
-      logger.error(`ReqId = "${req.headers["X-msgid"]}": Error while processing the telemetry import list request and err.message: ${error.message}`);
+      standardLog.error({ id: 'TELEMETRY_DB_FETCH_FAILED', message: 'Error while processing the telemetry import list request', mid: req.headers["X-msgid"], error });
       res.status(500);
       return res.send(Response.error("api.telemetry.list", 500));
     }

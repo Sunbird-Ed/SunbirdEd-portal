@@ -7,6 +7,7 @@ import * as path from "path";
 import { Singleton } from "typescript-ioc";
 import { manifest } from "../../manifest";
 import { ErrorObj } from "./ILogSync";
+import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
 
 const LAST_ERROR_LOG_SYNC_ON = "LAST_ERROR_LOG_SYNC_ON";
 
@@ -17,10 +18,12 @@ export class LogSyncManager {
   private settingSDK;
   private workerProcessRef: childProcess.ChildProcess;
   private isInProgress = false;
+  private standardLog: StandardLogger;
 
   constructor() {
     this.networkQueue = containerAPI.getNetworkQueueInstance();
     this.settingSDK = containerAPI.getSettingSDKInstance(manifest.id);
+    this.standardLog = containerAPI.getStandardLoggerInstance();
   }
   public async start() {
     if (!this.isInProgress) {
@@ -84,7 +87,7 @@ export class LogSyncManager {
       logger.info("Added in queue");
       this.updateLastSyncDate(Date.now());
     }).catch((error) => {
-      logger.error("Error while adding to Network queue", error);
+      this.standardLog.error({ id: 'LOG_SYNC_MANAGER_SYNC_FAILED', message: `Error while adding to Network queue`, error });
     });
   }
 
@@ -109,13 +112,13 @@ export class LogSyncManager {
     try {
       this.workerProcessRef.kill();
     } catch (error) {
-      logger.error("Error while killing the logSyncHelper child process", error);
+      this.standardLog.error({ id: 'LOG_SYNC_MANAGER_CHILD_PROCESS_KILLED', message: `Error while killing the logSyncHelper child process`, error });
     }
   }
 
   private handleChildProcessError(error: ErrorObj) {
     this.killChildProcess();
-    logger.error(error.errMessage);
+    this.standardLog.error({ id: 'LOG_SYNC_MANAGER_CHILD_PROCESS_ERROR', message: `Error while processing child`, error });
   }
 
   private async updateLastSyncDate(date: number) {
