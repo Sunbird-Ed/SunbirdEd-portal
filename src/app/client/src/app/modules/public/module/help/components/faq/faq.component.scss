@@ -66,6 +66,25 @@
             }
         }
     }
+
+    sb-faq {
+        .panel {
+            ul {
+                list-style: disc;
+                margin-top: 1rem;
+                margin-bottom: 1rem;
+            }
+            ul li {
+                margin-bottom: auto;
+            }
+            code {
+                background-color: #eee;
+                border-radius: 3px;
+                font-family: courier, monospace;
+                padding: 0 3px;
+            }
+        }
+    }
 }
 .faq_title {
     color: var(--carousel-title);
