@@ -54,7 +54,7 @@ export class AddActivityContentTypesComponent implements OnInit, AfterViewInit, 
   }
 
   ngAfterViewInit() {
-    this.setTelemetryImpressionData();
+    this.setTelemetryImpressionData({type: 'content-categories'});
   }
 
   fetchActivityList() {
@@ -80,11 +80,11 @@ export class AddActivityContentTypesComponent implements OnInit, AfterViewInit, 
         contentType: cardData.activityType
       }
     });
-    this.sendInteractData({id: `${cardData.activityType}-card`});
+    this.sendInteractData({id: `${cardData.activityType}-card`}, {type: 'select-category'} );
     this.router.navigate([`${ADD_ACTIVITY_TO_GROUP}`, cardData.activityType , 1], { relativeTo: this.activatedRoute });
   }
 
-  sendInteractData(interactData) {
+  sendInteractData(interactData, edata?) {
     const data = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env,
@@ -99,11 +99,13 @@ export class AddActivityContentTypesComponent implements OnInit, AfterViewInit, 
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid
       }
     };
-
+    if (edata) {
+      data.edata.type = edata.type;
+    }
     this.telemetryService.interact(data);
   }
 
-  setTelemetryImpressionData() {
+  setTelemetryImpressionData(edata?) {
     this.telemetryImpression = {
       context: {
         env: this.activatedRoute.snapshot.data.telemetry.env,
@@ -120,6 +122,9 @@ export class AddActivityContentTypesComponent implements OnInit, AfterViewInit, 
         duration: this.navigationHelperService.getPageLoadTime()
       }
     };
+    if (edata) {
+      this.telemetryImpression.edata.type = edata.type;
+    }
     this.telemetryService.impression(this.telemetryImpression);
   }
 

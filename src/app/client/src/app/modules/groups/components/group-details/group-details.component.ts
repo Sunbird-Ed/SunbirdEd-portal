@@ -61,7 +61,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     this.groupService.updateEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((status: GroupEntityStatus) => {
       this.groupData.active = this.groupService.updateGroupStatus(this.groupData, status);
     });
-    this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url);
+    this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url, {type: 'page-loaded'});
   }
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -113,9 +113,12 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-
-  addTelemetry (id, extra?) {
-    this.groupService.addTelemetry({id, extra}, this.activatedRoute.snapshot, [], this.groupId);
+ /**
+   * @description - To set the telemetry Intract event data
+   * @param  {} edata? - it's an object to specify the type and subtype of edata
+   */
+  addTelemetry (id, extra?, edata?) {
+    this.groupService.addTelemetry({id, extra, edata}, this.activatedRoute.snapshot, [], this.groupId);
   }
 
   toggleFtuModal(visibility: boolean = false) {

@@ -43,7 +43,7 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
     this.showModal = !localStorage.getItem('login_ftu_groups');
     this.initLayout();
     this.getMyGroupList();
-    this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url);
+    this.setTelemetryImpression({type: 'page-loaded'});
     this.groupService.closeForm.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       this.getMyGroupList();
     });
@@ -106,7 +106,8 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
   public navigateToDetailPage(event) {
 
     (_.get(event, 'data.status') === 'suspended') ?
-    this.addTelemetry('suspended-group-card', _.get(event, 'data.id')) : this.addTelemetry('group-card', _.get(event, 'data.id'));
+    this.addTelemetry('suspended-group-card', _.get(event, 'data.id')) :
+    this.addTelemetryWithData('group-card', { type: 'select-group'}, _.get(event, 'data.id'));
 
     this.selectedType = acceptTnc.GROUP;
     this.selectedGroup = event.data;
@@ -137,6 +138,21 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
     this.groupService.addTelemetry({id, extra: extras}, this.activatedRoute.snapshot, [], groupId, obj);
   }
 
+   /**
+   * @description - To set the telemetry Intract event data
+   * @param  {} edata? - it's an object to specify the type and subtype of edata
+   */
+  addTelemetryWithData (id, edata, groupId?, extra?) {
+    const selectedGroup = _.find(this.groupsList, {id: groupId});
+    const obj = selectedGroup ? {id: groupId, type: 'group', ver: '1.0'} : {};
+    const extras = extra ? extra : {status: _.get(selectedGroup, 'status')};
+    this.groupService.addTelemetry({id, extra: extras, edata: edata}, this.activatedRoute.snapshot, [], groupId, obj);
+  }
+
+  setTelemetryImpression(edata?) {
+    this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url, edata);
+  }
+
   handleGroupTnc(event?: {type: string}) {
     if (event) {
       switch (event.type) {
@@ -145,7 +161,7 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
           this.acceptAllGroupsTnc();
           break;
         case acceptTnc.GROUP:
-          this.addTelemetry('accept-group-tnc', _.get(this.selectedGroup, 'id'));
+          this.addTelemetry('accept-group-tnc',  _.get(this.selectedGroup, 'id'));
           this.acceptGroupTnc();
           break;
       }

@@ -110,7 +110,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
       this.dataDrivenFilters = {};
       this.fetchContentOnParamChange();
       this.setNoResultMessage();
-      this.telemetryImpression = this.groupsService.getImpressionObject(this.activatedRoute.snapshot, this.router.url);
+      this.telemetryImpression = this.groupsService.getImpressionObject(this.activatedRoute.snapshot, this.router.url, {type: 'category-search'});
     }, error => {
       this.toasterService.error(this.resourceService.messages.fmsg.m0002);
     });
@@ -320,7 +320,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     this.groupAddableBlocData.pageIds = [_.get(activityCard, 'primaryCategory').toLowerCase(), ADD_ACTIVITY_TO_GROUP];
     this.csGroupAddableBloc.updateState(this.groupAddableBlocData);
     const cdata = [{ id: _.get(activityCard, 'identifier'), type: _.get(activityCard, 'primaryCategory') }];
-    this.addTelemetry('activity-course-card', cdata);
+    this.addTelemetry('activity-course-card', cdata, '', {type: 'view-activity'});
     const isTrackable = this.courseConsumptionService.isTrackableCollection(activityCard);
     const contentMimeType = _.get(activityCard, 'mimeType');
 
@@ -342,8 +342,12 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     }
   }
 
-  addTelemetry(id, cdata, extra?) {
-    this.groupsService.addTelemetry({ id, extra }, this.activatedRoute.snapshot, cdata || [], this.groupId);
+  /**
+   * @description - To set the telemetry Intract event data
+   * @param  {} edata? - it's an object to specify the type and subtype of edata
+   */
+  addTelemetry(id, cdata, extra?, edata?) {
+    this.groupsService.addTelemetry({ id, extra, edata}, this.activatedRoute.snapshot, cdata || [], this.groupId);
   }
 
   private setNoResultMessage() {

@@ -3,7 +3,7 @@ import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import {ResourceService, ToasterService, RecaptchaService, LayoutService} from '@sunbird/shared';
-import { Component, OnInit, Output, EventEmitter, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import * as _ from 'lodash-es';
 import { IGroupMember, IGroupCard, IMember } from '../../interfaces';
 import { GroupsService } from '../../services';
@@ -16,7 +16,7 @@ import { TelemetryService } from '@sunbird/telemetry';
   templateUrl: './add-member.component.html',
   styleUrls: ['./add-member.component.scss']
 })
-export class AddMemberComponent implements OnInit, OnDestroy {
+export class AddMemberComponent implements OnInit, OnDestroy, AfterViewInit {
   showModal = false;
   instance: string;
   membersList: IGroupMember[] ;
@@ -56,10 +56,15 @@ export class AddMemberComponent implements OnInit, OnDestroy {
     this.initRecaptcha();
     this.instance = _.upperCase(this.resourceService.instance);
     this.membersList = this.groupsService.addFieldsToMember(_.get(this.groupData, 'members'));
-    this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url);
   }
 
-  initLayout() {
+  /**
+   * @description - It will trigger impression telemetry event once the view is ready.
+   */
+  ngAfterViewInit() {
+      this.setTelemetryImpressionData({type: 'popup-loaded'});
+  }
+   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
       if (layoutConfig != null) {
@@ -198,7 +203,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
     this.showModal = visibility;
   }
 
-  setInteractData (id, extra?, Cdata?) {
+  setInteractData (id, extra?, Cdata?, edata?) {
     const interactData = {
       context: {
         env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env'),
@@ -216,7 +221,9 @@ export class AddMemberComponent implements OnInit, OnDestroy {
       },
       object: {}
     };
-
+    if (edata) {
+      interactData.edata.type = edata.type;
+    }
     if (extra) {
       interactData.edata['extra'] = extra;
     }
@@ -227,7 +234,9 @@ export class AddMemberComponent implements OnInit, OnDestroy {
     this.telemetryService.interact(interactData);
   }
 
-
+  setTelemetryImpressionData(edata?) {
+    this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url, edata);
+  }
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
