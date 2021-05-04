@@ -52,7 +52,7 @@
 
 .ui.positive.button,
 .ui.positive.buttons .button {
-  background-color: $secondary-color;
+  background-color: var(--secondary-color);
 }
 
 .ui.positive.button:hover,
@@ -62,8 +62,8 @@
 
 .ui.basic.positive.button,
 .ui.basic.positive.buttons .button {
-  border-color: $secondary-color !important;
-  color: $secondary-color !important;
+  border-color: var(--secondary-color) !important;
+  color: var(--secondary-color) !important;
 }
 
 .ui.basic.positive.button:hover,

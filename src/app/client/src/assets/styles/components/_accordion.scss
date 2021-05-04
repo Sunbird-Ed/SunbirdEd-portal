@@ -1,6 +1,4 @@
 /* accordion styles */
-$sb-content-manager-border: 0.0625rem solid $gray-100;
-$sb-download-text-max-width: 18em;
 
 .ui.styled.accordion .accordion .content,
 .ui.styled.accordion .content {
@@ -9,12 +7,12 @@ $sb-download-text-max-width: 18em;
 .ui.styled.accordion .active.title,
 .ui.styled.accordion .accordion .active.title {
   padding: calculateRem(16px);
-  color: $primary-400;
+  color: var(--primary-400);
 }
 .ui.styled.accordion .accordion .title,
 .ui.styled.accordion .title {
   padding: calculateRem(16px);
-  color: $gray-800;
+  color: var(--gray-800);
 }
 .ui.accordion .active.title .chevron.down.icon {
   transform: rotate(180deg);
@@ -26,7 +24,7 @@ $sb-download-text-max-width: 18em;
   bottom: 0;
   width: 100%;
   margin-left: auto;
-  max-width: $base-block-space * 60;
+  max-width: 30rem;
   margin-right: calculateRem(32px);
   z-index:999;
   position: fixed;
@@ -46,28 +44,28 @@ $sb-download-text-max-width: 18em;
 }
 .help-section-title {
   font-size: calculateRem(16px);
-  color: $gray-800;
+  color: var(--gray-800);
 }
 .sb-help-section-subheading {
-  color: $gray-800;
+  color: var(--gray-800);
   font-size: calculateRem(12px);
   font-weight: bold;
 }
 .sb-help-section-extra {
-  color: $gray-800;
+  color: var(--gray-800);
   font-size: calculateRem(12px);
 }
 .sb-help-section-heading {
   font-size: calculateRem(14px);
-  color: $gray-800;
+  color: var(--gray-800);
 }
 .sb-accordion-content {
-  background-color: $primary-0;
+  background-color: var(--primary-0);
   padding: calculateRem(16px);
   border-radius: calculateRem(2px);
 }
 .sb-accordion-text {
-  color: $gray-800;
+  color: var(--gray-800);
   font-size: calculateRem(14px);
 }
 .sb-accordion-footer {
@@ -84,13 +82,13 @@ $sb-download-text-max-width: 18em;
 .sb-single-pannel-accordion-heading {
   background: var(--gray-800);
   padding: calculateRem(16px);
-  color: $white-color;
+  color: var(--white);
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-radius: calculateRem(4px) calculateRem(4px) 0px 0px;
   span {
-    font-size: $font-size-base;
+    font-size: var(--font-size-base);
   }
 }
 .sb-single-pannel-accordion-list-item {
@@ -99,7 +97,7 @@ $sb-download-text-max-width: 18em;
   background: var(--sbt-filter-bar-bg);
   display: flex;
   min-height: calculateRem(80px);
-  border-bottom: $sb-content-manager-border;
+  border-bottom: 0.0625rem solid var(--gray-100);
   align-items: center;
   &.download-complete {
     background: var(--gray-0);
@@ -118,21 +116,21 @@ $sb-download-text-max-width: 18em;
   i.icon {
     width: auto;
     &.error-icon {
-      color: $danger-color;
+      color: var(--red-100);
     }
     &.success-icon {
       color: var(--secondary-color);
       height: calculateRem(60px);
     }
     &.waiting-icon {
-      color: $orange;
+      color: var(--tertiary-color);
     }
     &.info-icon {
-      color: $blue;
+      color: var(--blue);
     }
   }
   .download-text {
-    font-size: $font-size-base;
+    font-size: var(--font-size-base);
     flex: 1;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -152,17 +150,17 @@ $sb-download-text-max-width: 18em;
 }
 .error-text {
   font-size: calculateRem(14px);
-  color: $danger-color;
+  color: var(--red-100);
   text-align: right;
 }
 .success-text {
   font-size: calculateRem(14px);
-  color: $success-color;
+  color: var(--secondary-200);
   text-align: right;
 }
 .waiting-text {
   font-size: calculateRem(14px);
-  color: $tertiary-400;
+  color: var(--tertiary-400);
   text-align: right;
 }
 .info-text {
@@ -187,21 +185,21 @@ $sb-download-text-max-width: 18em;
   height: calculateRem(8px);
   border-radius: calculateRem(8px);
   width: 100%;
-  border: calculateRem(1px) solid $white-color;
-  background: $secondary-0;
+  border: calculateRem(1px) solid var(--white);
+  background: var(--secondary-0);
   margin-right: inherit;
 }
 .sb-single-pannel-accordion-list-item .ui.progress {
   &.error {
-    background-color: $orange;
+    background-color: var(--tertiary-color);
     .bar {
-      background: $orange;
+      background: var(--tertiary-color);
     }
   }
   .bar {
     height: calculateRem(7px) !important;
     border-radius: calculateRem(4px);
-    background: $green;
+    background: var(--secondary-color);
   }
 }
 
