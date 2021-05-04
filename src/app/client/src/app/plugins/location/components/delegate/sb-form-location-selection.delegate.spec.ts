@@ -1,5 +1,5 @@
 import {SbFormLocationSelectionDelegate} from './sb-form-location-selection.delegate';
-import {DeviceRegisterService, FormService, UserService} from '@sunbird/core';
+import {DeviceRegisterService, FormService, UserService, OrgDetailsService} from '@sunbird/core';
 import {LocationService} from '../../services';
 import {IDeviceProfile} from '@sunbird/shared-feature';
 import {EMPTY, Observable, of, throwError} from 'rxjs';
@@ -41,6 +41,7 @@ describe('SbFormLocationSelectionDelegate', () => {
     }
   };
   const mockDeviceProfile: Partial<IDeviceProfile> = {};
+  const mockOrgDetailsService: Partial<OrgDetailsService> = {};
 
   beforeAll(() => {
     sbFormLocationSelectionDelegate = new SbFormLocationSelectionDelegate(
@@ -48,6 +49,7 @@ describe('SbFormLocationSelectionDelegate', () => {
       mockLocationService as LocationService,
       mockFormService as FormService,
       mockDeviceRegisterService as DeviceRegisterService,
+      mockOrgDetailsService as OrgDetailsService,
       mockDeviceProfile as IDeviceProfile,
     );
   });
@@ -729,7 +731,7 @@ describe('SbFormLocationSelectionDelegate', () => {
         // assert
         expect(mockLocationService.updateProfile).toHaveBeenCalledWith({
           userId: 'SOME_USER_ID',
-          locationCodes: [
+          profileLocation: [
             jasmine.objectContaining({code: 'SOME_SELECTED_STATE_CODE'}),
             jasmine.objectContaining({code: 'SOME_SELECTED_DISTRICT_CODE'})
           ]
@@ -774,7 +776,7 @@ describe('SbFormLocationSelectionDelegate', () => {
           userType: 'SOME_SELECTED_PERSONA',
           userSubType: 'SOME_SELECTED_SUB_PERSONA',
           userId: 'SOME_USER_ID',
-          locationCodes: [
+          profileLocation: [
             jasmine.objectContaining({code: 'SOME_SELECTED_STATE_CODE'}),
             jasmine.objectContaining({code: 'SOME_SELECTED_DISTRICT_CODE'})
           ]

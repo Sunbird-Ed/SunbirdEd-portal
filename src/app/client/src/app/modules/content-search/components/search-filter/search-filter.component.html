@@ -3,10 +3,10 @@
         <div class="d-flex state-medium-container sb-bg-color-white">
             <div class="ui container d-flex flex-ai-center">
                 <div *ngIf="boards?.length" class="state-medium-container__dropdown">
-                    <div class="sb-field mb-0">
+                    <div class="sb-field mb-0"><label>
                         <app-select-option-group *ngIf="optionData" [optionData]="optionData"
                             [selectedOption]="selectedOption" (selectedValue)="selectedGroupOption($event);">
-                        </app-select-option-group>
+                        </app-select-option-group></label>
                     </div>
                 </div>
                 <div *ngIf="boards?.length && allValues?.medium?.length" class="state-medium-container__separator">
@@ -32,7 +32,7 @@
             <div class="ui container">
                 <div class="d-flex flex-ai-center flex-w-wrap">
                     <div *ngIf="allValues?.subject?.length" class="state-medium-container__dropdown">
-                        <div class="sb-field mb-0">
+                        <div class="sb-field mb-0"><label>
                             <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['subject']"
                                 (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'subject'})"
                                 defaultSelectionText={{resourceService?.frmelmnts?.lbl?.subject}}
@@ -45,14 +45,14 @@
                                         [value]="dropdownValue">
                                     </sui-select-option>
                                 </div>
-                            </sui-multi-select>
+                            </sui-multi-select></label>
                         </div>
                     </div>
 
                     <div *ngIf="allValues?.publisher?.length" class="state-medium-container__separator"> </div>
 
                     <div *ngIf="allValues?.publisher?.length" class="state-medium-container__dropdown">
-                        <div class="sb-field mb-0">
+                        <div class="sb-field mb-0"><label>
                             <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['publisher']"
                                 (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'publisher'})"
                                 defaultSelectionText={{resourceService?.frmelmnts?.lbl?.publishedBy}}
@@ -65,7 +65,7 @@
                                         [value]="dropdownValue">
                                     </sui-select-option>
                                 </div>
-                            </sui-multi-select>
+                            </sui-multi-select></label>
                         </div>
                     </div>
 
@@ -73,7 +73,7 @@
 
 
                     <div *ngIf="allValues?.audience?.length" class="state-medium-container__dropdown">
-                        <div class="sb-field mb-0">
+                        <div class="sb-field mb-0"><label>
                             <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['audience']"
                                 (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'audience'})"
                                 defaultSelectionText={{resourceService?.frmelmnts?.lbl?.userType}}
@@ -86,7 +86,7 @@
                                         [value]="dropdownValue">
                                     </sui-select-option>
                                 </div>
-                            </sui-multi-select>
+                            </sui-multi-select></label>
                         </div>
                     </div>
                     <button (click)="resetFilters()" appTelemetryInteract

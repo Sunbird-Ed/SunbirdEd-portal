@@ -306,14 +306,14 @@
               </svg></i>
             {{resourceService.frmelmnts?.lnk?.profile}}
           </li>
-          <li class="list-item" *ngIf='permissionService.permissionAvailable' appPermission
+          <li class="list-item" *ngIf='!isDesktopApp && permissionService.permissionAvailable' appPermission
             [permission]='adminDashboard' (click)="toggleSideMenu(false)" [routerLink]="reportsListVersion === 'v2' ? 'dashBoard/reports': 'dashBoard/organization' ">
             <i class="icon-svg icon-svg--sm icon-dashboard mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#dashboard"></use>
               </svg></i>
             {{resourceService.frmelmnts?.lnk?.dashboard}}
           </li>
-          <li class="list-item" (click)="toggleSideMenu(false)" *ngIf='permissionService.permissionAvailable'
+          <li class="list-item" (click)="toggleSideMenu(false)" *ngIf='!isDesktopApp && permissionService.permissionAvailable'
             appPermission [permission]='orgSetupRole' routerLink="org/orgType">
             {{resourceService.frmelmnts?.lbl?.orgtypes}}
           </li>
@@ -324,7 +324,7 @@
               </svg></i>
             {{resourceService.frmelmnts?.lbl?.mergeAccount}}
           </li>
-          <li class="list-item" (click)="toggleSideMenu(false)" *ngIf='permissionService.permissionAvailable'
+          <li class="list-item" (click)="toggleSideMenu(false)" *ngIf='!isDesktopApp && permissionService.permissionAvailable'
             appPermission [permission]='orgAdminRole' routerLink="manage">
             <i class="icon-svg icon-svg--sm icon-manage mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#manage"></use>
@@ -343,7 +343,7 @@
 
           <li class="list-item" [class.active]="router.isActive('/workspace')" appTelemetryInteract
             [telemetryInteractEdata]="workspaceMenuIntractEdata" (click)="toggleSideMenu(false)"
-            *ngIf='isLayoutAvailable() && permissionService.permissionAvailable' appPermission
+            *ngIf='!isDesktopApp && isLayoutAvailable() && permissionService.permissionAvailable' appPermission
             [permission]='workSpaceRole' [routerLink]="[navigateToWorkspace()]" tabindex="0">
             <i class="icon-svg icon-svg--sm icon-workspace mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#workspace"></use>
@@ -370,7 +370,7 @@
             </svg></i>
             <span>{{resourceService?.frmelmnts?.lbl?.desktop?.syncTelemetry}}</span>
           </li>
-          <li class="list-item hide" (click)="toggleSideMenu(false);switchToAccessibleLayout()">
+          <li class="list-item hide" (click)="toggleSideMenu(false);">
             <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
               <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
             </svg></i>
@@ -440,13 +440,13 @@
               </svg></i>
             {{resourceService?.frmelmnts?.tab?.help}}
           </li>
-            <li *ngIf="!isDesktopApp" class="list-item hide" (click)="toggleSideMenu(false);switchToAccessibleLayout()">
+            <li *ngIf="!isDesktopApp" class="list-item hide" (click)="toggleSideMenu(false)">
               <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
               </svg></i>
               {{resourceService?.frmelmnts?.lbl?.accessible}}
             </li>
-            <li *ngIf="isDesktopApp" class="list-item hide" (click)="toggleSideMenu(false);switchToAccessibleLayout()" appOnlineOnly>
+            <li *ngIf="isDesktopApp" class="list-item hide" (click)="toggleSideMenu(false)" appOnlineOnly>
               <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
               </svg></i>
