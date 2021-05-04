@@ -86,6 +86,7 @@
                 <app-player class="content-player" [playerOption]="playerOption" [playerConfig]="playerConfig"
                   [contentProgressEvents$]="contentProgressEvents$" (assessmentEvents)="onAssessmentEvents($event)"
                   (questionScoreSubmitEvents)="onQuestionScoreSubmitEvents($event)"
+                  (questionScoreReviewEvents)="onQuestionScoreReviewEvents($event)"
                   (ratingPopupClose)="onRatingPopupClose()" (selfAssessLastAttempt)="onSelfAssessLastAttempt($event)"></app-player>
               </div>
               <app-content-actions *ngIf="isFullScreenView" class="player-fullscreen-action-items" [isFullScreen]="true" [contentData]="activeContent" [objectRollUp]="objectRollUp">

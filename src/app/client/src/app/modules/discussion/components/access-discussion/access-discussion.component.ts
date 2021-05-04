@@ -1,3 +1,4 @@
+import { IFetchForumId } from './../../../groups/interfaces/group';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToasterService, ResourceService, NavigationHelperService } from '../../../shared/services';
@@ -16,10 +17,10 @@ import { CsModule } from '@project-sunbird/client-services';
 export class AccessDiscussionComponent implements OnInit {
   // TODO : Publishing as a independent npm module by taking the below properties as input
   // icon, name, context data, output event (click)
-  @Input() fetchForumIdReq: any;
+  @Input() fetchForumIdReq: IFetchForumId;
+  @Input() forumIds: Array<number>;
   @Output() routerData = new EventEmitter();
   showLoader = false;
-  forumIds = [];
   private discussionCsService: any;
 
   constructor(
@@ -37,8 +38,14 @@ export class AccessDiscussionComponent implements OnInit {
     this.discussionCsService = CsModule.instance.discussionService;
   }
 
+  /**
+   * @description - It will first check for the forum IDs coming as an input param or not,
+   *                If it is not coming then it will make an api call to get the forum IDs
+   */
   ngOnInit() {
+    if (!this.forumIds) {
     this.fetchForumIds();
+    }
   }
   /**
    * @description - fetch all the forumIds attached to a course/group/batch
@@ -63,7 +70,7 @@ export class AccessDiscussionComponent implements OnInit {
     };
     this.discussionTelemetryService.contextCdata = [
       {
-        id: this.fetchForumIdReq.identifier,
+        id: this.fetchForumIdReq.identifier.toString(),
         type: this.fetchForumIdReq.type
       }
     ];

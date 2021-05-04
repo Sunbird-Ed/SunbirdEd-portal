@@ -1,4 +1,3 @@
-import { logger } from "@project-sunbird/logger";
 import * as _ from "lodash";
 import StreamZip from "node-stream-zip";
 import { containerAPI, ISystemQueue, ITaskExecuter } from "@project-sunbird/OpenRAP/api";
@@ -34,6 +33,7 @@ export class ContentDownloader implements ITaskExecuter {
   private extractionFailedCount = 0;
   private downloadContentCount = 0;
   private contentLocation = new ContentLocation(manifest.id);
+  @Inject private standardLog = containerAPI.getStandardLoggerInstance();
   public async start(contentDownloadData: ISystemQueue, observer: Observer<ISystemQueue>) {
     this.databaseSdk.initialize(manifest.id);
     const contentPath = await this.contentLocation.get();
@@ -106,7 +106,7 @@ export class ContentDownloader implements ITaskExecuter {
     }
   }
   public async retry(contentDownloadData: ISystemQueue, observer: Observer<ISystemQueue>) {
-    logger.debug("ContentDownload executer retry method called", this.contentDownloadData._id, "calling retry method");
+    this.standardLog.debug({ id: 'CONTENT_DOWNLOAD_RETRY', message: `ContentDownload executer retry method called ${this.contentDownloadData._id} calling retry method` });
     return this.start(contentDownloadData, observer);
   }
   private getDownloadObserver(contentId) {
@@ -119,7 +119,7 @@ export class ContentDownloader implements ITaskExecuter {
       this.handleDownloadError(contentId, downloadError);
     };
     const complete = () => {
-      logger.debug(`${this.contentDownloadData._id}:Download complete event contentId: ${contentId}`);
+      this.standardLog.debug({ id: 'CONTENT_DOWNLOAD_COMPLETED', message: `${this.contentDownloadData._id}:Download complete event contentId: ${contentId}` });
       const contentDetails = this.contentDownloadMetaData.contentDownloadList[contentId];
       contentDetails.step = "EXTRACT";
       this.contentDownloadMetaData.downloadedSize += contentDetails.size;
@@ -184,13 +184,12 @@ export class ContentDownloader implements ITaskExecuter {
       const fileSDKInstance = containerAPI.getFileSDKInstance(manifest.id);
       for (const item of itemsToDelete) {
         await fileSDKInstance.remove(item).catch((error) => {
-          logger.error(`Received error while deleting ecar path: ${path} and error: ${error}`);
+          this.standardLog.error({ id: 'CONTENT_DOWNLOADER_ECAR_DELETE_FAILED', message: `Received error while deleting ecar path: ${path}`, error });
         });
       }
       this.checkForAllTaskCompletion();
     } catch (err) {
-      logger.error(`${this.contentDownloadData._id}:error while processing download complete event: ${contentId}`,
-        err.message);
+      this.standardLog.error({ id: 'CONTENT_DOWNLOAD_FAILED', message: `${this.contentDownloadData._id}:error while processing download complete event: ${contentId}`, error: err});
       this.extractionFailedCount += 1;
       if (this.extractionFailedCount > 1 || (this.downloadContentCount === 1)) {
         this.interrupt = false;
@@ -219,7 +218,7 @@ export class ContentDownloader implements ITaskExecuter {
         path.join(contentPath, contentDetails.identifier));
     }
     zipHandler.close();
-    logger.debug(`${this.contentDownloadData._id}:Extracted content: ${contentId}`);
+    this.standardLog.debug({ id: 'CONTENT_EXTRACTION_STEP', message: `${this.contentDownloadData._id}:Extracted content: ${contentId}` });
     itemsToDelete.push(path.join("ecars", contentDetails.downloadId));
     const manifestJson = await this.fileSDK.readJSON(
       path.join(contentPath, contentDetails.identifier, "manifest.json"));
@@ -227,7 +226,7 @@ export class ContentDownloader implements ITaskExecuter {
     if (_.endsWith(metaData.artifactUrl, ".zip")) {
       await this.checkSpaceAvailability(path.join(contentPath,
         contentDetails.identifier, path.basename(metaData.artifactUrl)));
-      logger.debug(`${this.contentDownloadData._id}:Extracting artifact url content: ${contentId}`);
+      this.standardLog.debug({ id: 'ARTIFACT_EXTRACTION_STEP', message: `${this.contentDownloadData._id}:Extracting artifact url content: ${contentId}` });
       await this.fileSDK.unzip(path.join(contentDetails.identifier, path.basename(metaData.artifactUrl)),
       contentDetails.identifier, false);
       itemsToDelete.push(path.join("content", contentDetails.identifier, path.basename(metaData.artifactUrl)));
@@ -278,13 +277,12 @@ export class ContentDownloader implements ITaskExecuter {
       }
     });
     if (totalContents === (completedContents + this.extractionFailedCount + this.downloadFailedCount)) {
-      logger.debug(`${this.contentDownloadData._id}:download completed`);
+      this.standardLog.debug({ id: 'CONTENT_DOWNLOADED', message: `${this.contentDownloadData._id}:download completed` });
       this.constructShareEvent(this.contentDownloadData);
       this.deleteRemovedContent();
       this.observer.complete();
     } else {
-      logger.debug(`${this.contentDownloadData._id}:Extraction completed for ${completedContents},
-      ${totalContents - completedContents}`);
+      this.standardLog.debug({ id: 'CONTENT_EXTRACTION_COMPLETED', message: `${this.contentDownloadData._id}:Extraction completed for ${completedContents}, ${totalContents - completedContents}` });
     }
   }
   private constructShareEvent(data) {
@@ -309,7 +307,7 @@ export class ContentDownloader implements ITaskExecuter {
     });
     if(updateDoc.length){
       this.databaseSdk.bulk("content", updateDoc).catch(error => {
-        logger.debug(`${this.contentDownloadData._id}: content visibility update failed for deleted content`, error.message)
+        this.standardLog.error({ id: 'CONTENT_VISIBILITY_UPDATE_FAILED', message: `${this.contentDownloadData._id}: content visibility update failed for deleted content`, error });
       });
     }
   }

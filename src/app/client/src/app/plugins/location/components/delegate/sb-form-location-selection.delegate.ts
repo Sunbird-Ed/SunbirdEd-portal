@@ -11,6 +11,7 @@ import {LocationService} from '../../services/location/location.service';
 import {UserService} from '../../../../modules/core/services/user/user.service';
 import {DeviceRegisterService} from '../../../../modules/core/services/device-register/device-register.service';
 import {FormService} from '../../../../modules/core/services/form/form.service';
+import { OrgDetailsService } from '@sunbird/core';
 
 type UseCase = 'SIGNEDIN_GUEST' | 'SIGNEDIN' | 'GUEST';
 
@@ -41,11 +42,13 @@ export class SbFormLocationSelectionDelegate {
     private locationService: LocationService,
     private formService: FormService,
     private deviceRegisterService: DeviceRegisterService,
-    private deviceProfile?: IDeviceProfile,
+    private orgDetailsService: OrgDetailsService,
+    private deviceProfile?: IDeviceProfile
   ) {
     this.formLocationOptionsFactory = new SbFormLocationOptionsFactory(
       locationService,
-      userService
+      userService,
+      orgDetailsService
     );
   }
 
@@ -108,7 +111,7 @@ export class SbFormLocationSelectionDelegate {
 
       const subPersonaFormControl = this.formGroup.get('children.persona.subPersona');
       if (subPersonaFormControl && !subPersonaFormControl.value) {
-        subPersonaFormControl.patchValue((_.get(this.userService.userProfile, 'userSubType') || '') || null);
+        subPersonaFormControl.patchValue((_.get(this.userService.userProfile.profileUserType, 'subType') || '') || null);
       }
 
       if (!this.stateChangeSubscription) {
@@ -199,7 +202,7 @@ export class SbFormLocationSelectionDelegate {
       const formValue = this.formGroup.value;
       const payload: any = {
         userId: _.get(this.userService, 'userid'),
-        locationCodes: locationDetails,
+        profileLocation: locationDetails,
         ...(_.get(formValue, 'name') ? { firstName: _.get(formValue, 'name') } : {} ),
         ...(_.get(formValue, 'persona') ? { userType: _.get(formValue, 'persona') } : {} ),
         ...(_.get(formValue, 'children.persona.subPersona') ? { userSubType: _.get(formValue, 'children.persona.subPersona') } : {} ),
@@ -218,7 +221,7 @@ export class SbFormLocationSelectionDelegate {
       if (_.get(formValue, 'persona')) {
         localStorage.setItem('userType', formValue.persona);
       }
-      this.userService.updateGuestUser(user).subscribe();
+      this.userService.updateGuestUser(user, formValue).subscribe();
     }
 
     return await Promise.all(tasks).then((result) => {
@@ -316,7 +319,7 @@ export class SbFormLocationSelectionDelegate {
             switch (personaLocationConfig.templateOptions['dataSrc']['marker']) {
               case 'SUBPERSONA_LIST': {
                 if (this.userService.loggedIn) {
-                  personaLocationConfig.default = (_.get(this.userService.userProfile, 'userSubType') || '') || null;
+                  personaLocationConfig.default = (_.get(this.userService.userProfile.profileUserType, 'subType') || '') || null;
                 }
                 break;
               }

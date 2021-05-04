@@ -94,7 +94,7 @@ export class UserService {
 
   public organizationsDetails: Array<IOrganization>;
   public createManagedUser = new EventEmitter();
-  private _isDesktopApp = false;
+  public isDesktopApp = false;
   private _guestData$ = new BehaviorSubject<any>(undefined);
   private guestUserProfile;
   public readonly guestData$: Observable<any> = this._guestData$.asObservable()
@@ -123,7 +123,7 @@ export class UserService {
     this.learnerService = learner;
     this.contentService = contentService;
     this.publicDataService = publicDataService;
-    this._isDesktopApp = environment.isDesktopApp;
+    this.isDesktopApp = environment.isDesktopApp;
     try {
       this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
       DataService.userId = this._userid;
@@ -273,6 +273,8 @@ export class UserService {
     if (!this._userProfile.managedBy) {
       this.cacheService.set('userProfile', this._userProfile);
     }
+    window['TagManager'].SBTagService.pushTag({userLoocation:profileData.userLocations},'USERLOCATION_', true)
+    window['TagManager'].SBTagService.pushTag(profileData.framework,'USERFRAMEWORK_', true);
   }
   setOrgDetailsToRequestHeaders() {
     this.learnerService.rootOrgId = this._rootOrgId;
@@ -404,7 +406,7 @@ export class UserService {
 
   registerUser(data) {
     const options = {
-      url: this.config.urlConFig.URLS.USER.SIGN_UP_V4,
+      url: this.config.urlConFig.URLS.USER.SIGN_UP_MANAGED_USER,
       data: data
     };
     return this.learnerService.post(options).pipe(
@@ -464,7 +466,7 @@ export class UserService {
   }
 
   getGuestUser(): Observable<any> {
-    if (this._isDesktopApp) {
+    if (this.isDesktopApp) {
       return this.getAnonymousUserPreference().pipe(map((response: ServerResponse) => {
         this.guestUserProfile = _.get(response, 'result');
         this._guestData$.next({ userProfile: this.guestUserProfile });
@@ -483,8 +485,10 @@ export class UserService {
     }
   }
 
-  updateGuestUser(userDetails): Observable<any> {
-    if (this._isDesktopApp) {
+  updateGuestUser(userDetails, formValue): Observable<any> {
+    window['TagManager'].SBTagService.pushTag(formValue,'USERLOCATION_', true);
+    window['TagManager'].SBTagService.pushTag(userDetails,'USERFRAMEWORK_', true);
+    if (this.isDesktopApp) {
       userDetails.identifier = userDetails._id;
       const userType = localStorage.getItem('userType');
 
@@ -500,7 +504,7 @@ export class UserService {
   }
 
   createGuestUser(userDetails): Observable<any> {
-    if (this._isDesktopApp) {
+    if (this.isDesktopApp) {
       const req = { request: userDetails };
       return this.createAnonymousUser(req);
     } else {

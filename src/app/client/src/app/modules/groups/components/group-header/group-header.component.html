@@ -12,7 +12,7 @@
         </div>
       </div>
       <!--Forum Icon-->
-      <app-access-discussion [fetchForumIdReq]="fetchForumIdReq" (routerData)="assignForumData($event)"> </app-access-discussion>
+      <app-access-discussion [forumIds]="forumIds" [fetchForumIdReq]="fetchForumIdReq" (routerData)="assignForumData($event)"> </app-access-discussion>
       <div class="d-flex flex-ai-center flex-w-wrap content-header__buttons">
         <!-- <button class="sb-btn sb-btn-normal sb-btn-link-primary min-w-auto p-0 px-8" type="button"
           (click)="toggleFtuModal(true);addTelemetry('member-ftu-popup')">

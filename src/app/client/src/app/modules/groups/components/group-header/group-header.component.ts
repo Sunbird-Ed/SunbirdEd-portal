@@ -3,7 +3,7 @@ import { actions } from './../../interfaces/group';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, ViewChild, Input, Renderer2, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { ResourceService, NavigationHelperService, ToasterService } from '@sunbird/shared';
-import { MY_GROUPS, GROUP_DETAILS, IGroupCard, IForumContext, EDIT_GROUP } from './../../interfaces';
+import { MY_GROUPS, GROUP_DETAILS, IGroupCard, IFetchForumId, EDIT_GROUP, IFetchForumConfig } from './../../interfaces';
 import { GroupsService } from '../../services';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
@@ -30,12 +30,18 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   public msg: string;
   public name: string;
   private unsubscribe$ = new Subject<void>();
-  forumIds = [];
+  forumIds: Array<number> = [];
   createForumRequest: any;
+
     /**
-   * input data for fetchforum Ids
+   * input data to fetch forum Ids
    */
-  fetchForumIdReq: IForumContext;
+  fetchForumIdReq: IFetchForumId;
+
+  /**
+   * To fetch create-forum request payload for groups
+   */
+  fetchForumConfigReq: Array<IFetchForumConfig>;
 
   constructor(private renderer: Renderer2, public resourceService: ResourceService, private router: Router,
     private groupService: GroupsService, private navigationHelperService: NavigationHelperService, private toasterService: ToasterService,
@@ -49,7 +55,12 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit () {
+    this.fetchForumIdReq = {
+      type: 'group',
+      identifier: [ this.groupData.id ]
+    };
     this.fetchForumConfig();
+    this.fetchForumIds(this.groupData.id);
     this.creator = _.capitalize(_.get(_.find(this.groupData['members'], {userId: this.groupData['createdBy']}), 'name'));
     this.groupService.showMenu.subscribe(data => {
       this.dropdownContent = data !== 'group';
@@ -202,14 +213,14 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   }
 
   fetchForumConfig() {
-    this.fetchForumIdReq = {
+    this.fetchForumConfigReq = [{
       type: 'group',
-      identifier: [this.groupData.id]
-  };
+      identifier: this.groupData.id
+  }];
     const subType = 'group';
     this.discussionService.fetchForumConfig(subType).subscribe((formData: any) => {
       this.createForumRequest = formData[0];
-      this.createForumRequest['category']['context'] =  this.fetchForumIdReq;
+      this.createForumRequest['category']['context'] =  this.fetchForumConfigReq;
     }, error => {
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });

@@ -34,7 +34,7 @@ export class ProfileService {
   public updatePrivateProfile(request) {
     const data = this.formatRequest(request);
     const options = {
-      url: 'portal/user/v1/update',
+      url: 'portal/user/v2/update',
       data: data
     };
     return this.learnerService.patch(options);
@@ -154,6 +154,18 @@ export class ProfileService {
       formType: 'user',
       formAction: 'submit',
       contentType: 'selfDeclaration',
+      component: 'portal'
+    };
+    return this.formService.getFormConfig(formServiceInputParams, orgId).pipe(map((response) => {
+      return response;
+    }));
+  }
+
+  getFaqReportIssueForm(orgId?: string) {
+    const formServiceInputParams = {
+      formType: 'config',
+      formAction: 'reportIssue',
+      contentType: 'faq',
       component: 'portal'
     };
     return this.formService.getFormConfig(formServiceInputParams, orgId).pipe(map((response) => {

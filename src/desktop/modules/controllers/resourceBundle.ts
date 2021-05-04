@@ -5,6 +5,7 @@ import * as path from "path";
 import { Inject } from "typescript-ioc";
 import DatabaseSDK from "../sdk/database/index";
 import Response from "../utils/response";
+import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
 
 import { ClassLogger } from "@project-sunbird/logger/decorator";
 
@@ -17,11 +18,13 @@ export class ResourceBundle {
   // resourceBundleFiles
   @Inject
   private databaseSdk: DatabaseSDK;
+  @Inject private standardLog: StandardLogger;
 
   private fileSDK;
   constructor(manifest) {
     this.databaseSdk.initialize(manifest.id);
     this.fileSDK = containerAPI.getFileSDKInstance(manifest.id);
+    this.standardLog = containerAPI.getStandardLoggerInstance();
   }
 
   public async insert() {
@@ -51,7 +54,7 @@ export class ResourceBundle {
         await this.databaseSdk.bulk("resource_bundle", resourceBundleDocs);
       }
     } catch (error) {
-      logger.error(`While inserting resource bundles ${error.message} ${error.stack}`);
+      this.standardLog.error({ id: 'resource_bundle_db_insert_failed', message: 'While inserting resource bundles', error });
     }
   }
 
@@ -71,9 +74,7 @@ export class ResourceBundle {
         return res.send(Response.success("api.resoucebundles.read", data, req));
       })
       .catch((err) => {
-        logger.error(
-          `ReqId = "${req.headers["X-msgid"]}": Received error while getting the data from resource_bundle database with id: ${id} and err: ${err}`,
-        );
+        this.standardLog.error({ id: 'resource_bundle_db_read_failed', message: `Received error while getting the data from resource_bundle database with id: ${id}`, mid: req.headers["X-msgid"] });
         if (err.status === 404) {
           res.status(404);
           return res.send(Response.error("api.resoucebundles.read", 404));
