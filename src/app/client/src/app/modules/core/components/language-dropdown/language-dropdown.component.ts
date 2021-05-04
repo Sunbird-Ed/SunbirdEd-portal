@@ -26,15 +26,29 @@ export class LanguageDropdownComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.selectedLanguage = this._cacheService.get('portalLanguage') || 'en';
-    this.resourceService.getLanguageChange(_.find(this.languageRange, ['value', this.selectedLanguage]));
+  	//check if website select the language else get the cache service lang
+  	let tenantPageLang = localStorage.getItem('portalLanguage') || this._cacheService.get('portalLanguage');
+  	if (tenantPageLang == null) {
+  		tenantPageLang = 'en';
+  	}
+  	//if website has lang then set the lang in cache service
+  	if (localStorage.getItem('portalLanguage')) {
+  		this._cacheService.set('portalLanguage', tenantPageLang);
+  		this.resourceService.initialize();
+  	} else {
+  		//If user directly open portal then set lang to storage for website
+  		localStorage.setItem('portalLanguage', tenantPageLang);
+  	}
+  	this.selectedLanguage = this._cacheService.get('portalLanguage') || 'en';
+  	this.resourceService.getLanguageChange(_.find(this.languageRange, ['value', this.selectedLanguage]));
     window['TagManager'].SBTagService.pushTag({portalLanguage:this.selectedLanguage},'USERLANG_', true);
   }
 
   onLanguageChange(event) {
     this._cacheService.set('portalLanguage', event);
-    window['TagManager'].SBTagService.pushTag({portalLanguage:event},'USERLANG_', true);
+    localStorage.setItem('portalLanguage', event);
     const language = _.find(this.languageRange, ['value', event]);
+    window['TagManager'].SBTagService.pushTag({portalLanguage:event},'USERLANG_', true);
     this.utilService.emitLanguageChangeEvent(language);
     this.resourceService.getResource(event, language);
   }
