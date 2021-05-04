@@ -57,20 +57,17 @@ export const FaqData = {
 
       ],
       "faqs": [
-        {
-          "topic": "I forgot my password",
-          "description": "I forgot my password"
-        },
-        {
-          "topic": "I want to edit my profile details",
-          "description": "I want to edit my profile details"
-        }
       ]
     },
     {
       "name": "Course & certificates",
       "videos": [
-
+        {
+          "id": "add-content-offline",
+          "name": "How do I download content from {instance} Library?",
+          "thumbnail": "assets/images/play-icon.svg",
+          "url": "assets/videos/How_do_I_download_content_from_DIKSHA_Library.mp4"
+        }
       ],
       "faqs": [
         {

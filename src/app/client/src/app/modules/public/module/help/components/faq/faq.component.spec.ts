@@ -147,10 +147,10 @@ describe('FaqComponent', () => {
 
   it('should call getDesktopFAQ on success', () => {
     const publicDataService = TestBed.get(PublicDataService);
-    spyOn(publicDataService, 'get').and.returnValue(of({ result: { faqs: {} } }));
+    spyOn(publicDataService, 'get').and.returnValue(of({ result: FaqData }));
     component['getDesktopFAQ']('hi');
     expect(component.showLoader).toBe(false);
-    expect(component.faqData).toEqual({});
+    expect(component.faqData).toEqual(undefined);
     expect(component.defaultToEnglish).toBe(false);
   });
 
