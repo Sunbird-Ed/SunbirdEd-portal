@@ -100,13 +100,7 @@ export class FaqComponent implements OnInit {
     this.http.get(`${this.faqBaseUrl}/faq-${this.selectedLanguage}.json`)
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(data => {
-      this.faqData = data;
-      this.selectedFaqCategory = this.faqData.categories[0];
-      setTimeout(() => {
-        if (this.sbFaqCategoryList && this.sbFaqCategoryList.selectedIndex !== undefined) {
-          this.sbFaqCategoryList.selectedIndex = 0
-        }
-      }, 0);
+      this.selectInitialCategory(data);
       this.showLoader = false;
       this.defaultToEnglish = false;
     }, (err) => {
@@ -125,10 +119,12 @@ export class FaqComponent implements OnInit {
     const requestParams = {
       url: `${this.configService.urlConFig.URLS.OFFLINE.READ_FAQ}/${languageCode}`
     };
+    this.faqData = undefined;
     this.publicDataService.get(requestParams).pipe(takeUntil(this.unsubscribe$))
       .subscribe((response) => {
         this.showLoader = false;
-        this.faqData = _.get(response, 'result.faqs');
+        const faqData = _.get(response, 'result.faqs');
+        this.selectInitialCategory(faqData);
         this.defaultToEnglish = false;
       }, (error) => {
         if (_.get(error, 'status') === 404 && !this.defaultToEnglish) {
@@ -141,6 +137,35 @@ export class FaqComponent implements OnInit {
           this.toasterService.error(this.resourceService.messages.emsg.m0005);
         }
       });
+  }
+
+  private selectInitialCategory(data) {
+    if (_.get(data, 'categories.length')) {
+      this.faqData = this.prepareFaqData(data);
+      this.selectedFaqCategory = _.get(this.faqData, 'categories.0');
+        setTimeout(() => {
+          if (this.sbFaqCategoryList && this.sbFaqCategoryList.selectedIndex !== undefined) {
+            this.sbFaqCategoryList.selectedIndex = 0
+          }
+        }, 0);
+    }
+  }
+
+  private prepareFaqData(data){
+    for (let i = 0; i < data.categories.length; i++) {
+      if (_.get(data.categories[i], 'faqs.length')) {
+        for (let j = 0; j < data.categories[i].faqs.length; j++) {
+          data.categories[i].faqs[j].topic = _.replace(data.categories[i].faqs[j].topic, /{instance}/g, this.instance);
+          data.categories[i].faqs[j].description = _.replace(data.categories[i].faqs[j].description, /{instance}/g, this.instance);
+        }
+      }
+      if (_.get(data.categories[i], 'videos.length')) {
+        for (let j = 0; j < data.categories[i].videos.length; j++) {
+          data.categories[i].videos[j].name = _.replace(data.categories[i].videos[j].name, /{instance}/g, this.instance);
+        }
+      }
+    }
+    return data;
   }
 
   setTelemetryImpression() {

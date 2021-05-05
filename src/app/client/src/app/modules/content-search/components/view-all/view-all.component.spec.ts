@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedModule, ResourceService, ConfigService, IAction, ToasterService, NavigationHelperService, PaginationService } from '@sunbird/shared';
-import { CoreModule, LearnerService, CoursesService, SearchService, PlayerService } from '@sunbird/core';
+import { CoreModule, LearnerService, CoursesService, SearchService, PlayerService, FormService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ViewAllComponent } from './view-all.component';
-import {throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
+import {throwError as observableThrowError, of as observableOf, Observable, of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './view-all.component.spec.data';
 import { PublicPlayerService } from '@sunbird/public';
@@ -30,7 +30,8 @@ describe('ViewAllComponent', () => {
     'frmelmnts' : {
       'lbl' : {
         'signinenrollTitle' : 'Log in to join this course',
-        'mytrainings' : 'My courses'
+        'mytrainings' : 'My courses',
+        'myEnrolledCollections': 'My Enrolled Collection'
       }
     }
   };
@@ -42,6 +43,7 @@ describe('ViewAllComponent', () => {
     'queryParams': observableOf({ contentType: ['Course'], objectType: ['Content'], status: ['Live'],
     defaultSortBy: JSON.stringify({'lastPublishedOn': 'desc'}) }),
     snapshot: {
+      queryParams: { selectedTab: 'textbook' },
       data: {
         telemetry: {
           env: 'course', pageid: 'course', type: 'view', subtype: 'paginate'
@@ -100,7 +102,6 @@ describe('ViewAllComponent', () => {
     expect(component.queryParams).toEqual(queryParams);
     expect(component.filters).toEqual(filters);
     expect(searchService.contentSearch).toHaveBeenCalled();
-    expect(component.closeUrl).toEqual('/learn');
     expect(component.sectionName).toEqual('Latest Courses');
     expect(component.pageNumber).toEqual(1);
   });
@@ -140,7 +141,6 @@ describe('ViewAllComponent', () => {
    expect(component.queryParams).toEqual(queryParams);
     expect(component.filters).toEqual(filters);
     expect(searchService.contentSearch).toHaveBeenCalled();
-    expect(component.closeUrl).toEqual('/learn');
     expect(component.sectionName).toEqual('Latest Courses');
     expect(component.pageNumber).toEqual(1);
     expect(component.showLoader).toBeFalsy();
@@ -198,14 +198,15 @@ describe('ViewAllComponent', () => {
 
   it('should process the data if view-all is clicked from My-Courses section', () => {
     const courseService = TestBed.get(CoursesService);
-    component.sectionName = 'My courses';
+    component.sectionName = 'My Enrolled Collection';
     const sortedData = _.map(_.orderBy(_.get(Response, 'enrolledCourseData.enrolledCourses'), ['enrolledDate'], ['desc']), (val) => {
       const value = _.get(val, 'content');
       return value;
     });
     spyOn<any>(component, 'getContentList').and.returnValue(observableOf({
       'enrolledCourseData': Response.enrolledCourseData,
-      'contentData': Response.successData
+      'contentData': Response.successData,
+      'currentPageData': { contentType: 'Course', search: {filters: {primaryCategory: []}}}
     }));
     courseService._enrolledCourseData$.next({ err: null, enrolledCourses: Response.enrolledCourseData});
     spyOn<any>(component, 'formatSearchresults').and.stub();
@@ -270,5 +271,32 @@ describe('ViewAllComponent', () => {
     expect(component.noResult).toBeTruthy();
     expect(component.noResultMessage).toEqual(noResultMessages);
   });
+  it('should handle close button click', () => {
+    const route = TestBed.get(Router);
+    route.url = 'learn/view-all/LatestCourses/1?contentType: course';
+    component.handleCloseButton();
+    expect(route.navigate).toHaveBeenCalledWith(['/learn'], { queryParams: { selectedTab: '' } });
+  });
+  describe('get the current page data', () => {
+    it('from history state', done => {
+      const currentPageData = {contentType: 'course'};
+      spyOnProperty(history, 'state', 'get').and.returnValue({currentPageData});
+      component['getCurrentPageData']().subscribe(res => {
+        expect(res).toEqual(currentPageData);
+        done();
+      })
+    });
 
+    it('from the form config is history state is not available', done => {
+      const formService = TestBed.get(FormService);
+      spyOn(formService, 'getFormConfig').and.returnValue(of([{
+        contentType: 'textbook'
+      }]))
+
+      component['getCurrentPageData']().subscribe(res => {
+        expect(res).toEqual({ contentType: 'textbook' });
+        done();
+      })
+    })
+  })
 });

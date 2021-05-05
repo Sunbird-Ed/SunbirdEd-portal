@@ -26,6 +26,7 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
 
   @Output() assessmentEvents = new EventEmitter<any>();
   @Output() questionScoreSubmitEvents = new EventEmitter<any>();
+  @Output() questionScoreReviewEvents = new EventEmitter<any>();
   @Output() contentDownloaded = new EventEmitter();
   @Output() deletedContent = new EventEmitter();
 
@@ -214,7 +215,9 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
   onQuestionScoreSubmitEvents(event) {
     this.questionScoreSubmitEvents.emit(event);
   }
-
+  onQuestionScoreReviewEvents(event) {
+    this.questionScoreReviewEvents.emit(event);
+  }
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();

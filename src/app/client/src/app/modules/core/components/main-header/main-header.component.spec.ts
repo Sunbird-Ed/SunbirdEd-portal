@@ -337,9 +337,6 @@ describe('MainHeaderComponent', () => {
   it('should switch layout and generate telemetry for classic', () => {
     const layoutService = TestBed.get(LayoutService);
     component.layoutConfiguration = null;
-    spyOn(layoutService, 'switchToAccessibleLayout').and.callFake(() => {
-    });
-    component.switchToAccessibleLayout();
     expect(layoutService).toBeTruthy();
   });
 
