@@ -209,7 +209,7 @@ describe('AddToGroupDirective', () => {
       },
       edata: {
         id: 'add-to-group-button',
-        type: 'CLICK',
+        type: 'select-activity',
         pageid: directive.pageId
       },
       object: {
