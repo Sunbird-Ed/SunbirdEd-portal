@@ -192,6 +192,9 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
               this.pushNewFilter({ type, index });
             }
           } else {
+            if (type === 'subject') {
+              this.selectedNgModels['selected_subjects'] = event;
+            }
             this.pushNewFilter({
               type, updatedValues: _.map(event || [],
                 selectedValue => _.findIndex(this.allValues[type], val => val === selectedValue))
@@ -266,6 +269,9 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
         }
         this.selectedFilters[filterKey] = selectedIndices;
         this.selectedNgModels[filterKey] = _.map(selectedIndices, index => this.allValues[filterKey][index]);
+        if (filterKey === 'subject') {
+          this.selectedNgModels['selected_subjects'] = filterValuesFromQueryParams;
+        }
       }
     });
   }
@@ -288,6 +294,9 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     });
     if (_.has(this.selectedFilters, 'publisher')) {
       filters['channel'] = _.compact(_.map(this.selectedFilters['publisher'], publisher => this.getChannelId(publisher)));
+    }
+    if (_.has(this.selectedNgModels, 'selected_subjects')) {
+      filters['subject'] = this.selectedNgModels['selected_subjects'] || [];
     }
     if (_.has(this.selectedFilters, 'audience')) {
       filters['audienceSearchFilterValue'] = _.flatten(_.compact(_.map(filters['audience'] || {}, audienceType => {
