@@ -34,7 +34,7 @@ body {
   body {
     .sb-mid-container-min-height {
       min-height: calc(100vh - 288px);
-      margin-bottom: -($base-block-space * 4) !important;
+      margin-bottom: -2rem !important;
     }
   }
 }
@@ -93,7 +93,7 @@ body {
 
 .description.annannouncement-description {
   .sb-label-status-error {
-    color: $sb-label-status-error-color;
+    color: var(--tertiary-color);
     font-size: calculateRem(11px);
   }
 
