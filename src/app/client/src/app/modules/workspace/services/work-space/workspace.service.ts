@@ -103,7 +103,7 @@ export class WorkSpaceService {
 */
   openCollectionEditor(content, state) {
     let navigationParams = ['/workspace/content/edit/collection', content.identifier, content.contentType, state, content.framework];
-    if (_.lowerCase(content.contentType) === 'course') {
+    if (_.lowerCase(content.contentType) === 'course' && _.lowerCase(content.primaryCategory) === 'course') {
       navigationParams = ['workspace/edit/', content.contentType, content.identifier, state];
     }
     if (content.status) {

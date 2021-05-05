@@ -1479,7 +1479,9 @@ html[data-theme=Darkmode] {
   --kabab-menu-hover-bg: var(--black);
   --kabab-menu-dropdown-bg: #222222;
   --kabab-menu-dropdown-item-active: #333333;
-
+  .licenseTag{
+    color:var(--white) !important ;
+  }
   .terms-and-cond-form iframe{
     filter: invert(1);
   }
@@ -2806,6 +2808,14 @@ sb-accordion-body .sbaccordion__panel-content .credits-section .title{
     .cursor-pointer .download-text{
       color: var(--black);
     }
+    .sb-btn-outline-error, .sb-modal.sb-error .ui.modal .sb-modal-actions > button.sb-btn{
+      color:black !important
+      }
+      .sb-modal-actions{
+        a.sb-btn.sb-btn-normal.sb-btn-primary{
+          color: var(--black);
+        }
+      }
   }
 
 html[accessable-theme="accessible"][layout='joy'][data-theme=Darkmode] {
@@ -2882,10 +2892,6 @@ html[accessable-theme="accessible"]{
     color: #4b4b4b;
   }
 
-
-  .content-metadeta__title {
-    color: #4b4b4b!important
-  }
 
   .title.ng-star-inserted {
     color: var(--primary-color) !important;
@@ -3116,9 +3122,7 @@ html[accessable-theme="accessible"]{
   .sb-pageSection .sb-pageSection-header .sb-cls-btn, .sb-pageSection .sb-pageSection-header button.sb-btn-secondary{
     color:var(--black) !important;
 }
-.licenseTag{
-  color:var(--gray-400) !important ;
-}
+
 .sb-modal-actions{
   a.sb-btn.sb-btn-normal.sb-btn-primary{
     color: var(--white);
@@ -3144,6 +3148,36 @@ html[accessable-theme="accessible"]{
 .module-complete-content label.fnormal{
   color:var(--accessible-green) !important;
 }
-
-
 }
+
+html[data-theme=Darkmode][layout='old'][accessable-theme="accessible"] {
+  --tertiary-color:#9a3713!important;
+  .licenseTag{
+    color: var(--gray-800)!important;
+  }
+  .sb-modal-content .sb-color-warning{
+   color: #ffae91 !important;
+  }
+  .user-profile-box span.sb-color-warning{
+    color: #ffae91 !important;
+  }
+  .sb-pageSection-content button.slick-next.slick-arrow{
+    color: rgb(194, 194, 194) !important;
+  }
+  .sb-pageSection-content button.slick-prev.slick-arrow.slick-disabled{
+    color: #C2C2C2 !important;
+  }
+}
+html[layout='old'][accessable-theme="accessible"] {
+  --sb-search-input-text:#525252 !important;
+  --tertiary-color:#9a3713!important;
+  app-language-dropdown label{
+    margin-bottom: auto !important;
+  }
+ 
+}
+html[accessable-theme=accessible][layout=joy]{
+  .sb-modal.sb-error .ui.modal .sb-modal-actions>button.sb-btn{
+    color: var(--black);
+  }
+} 

@@ -428,7 +428,9 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     this.assessmentScoreService.receiveTelemetryEvents(event);
     this.calculateProgress();
   }
-
+  onQuestionScoreReviewEvents(event) {
+    this.assessmentScoreService.handleReviewButtonClickEvent();
+  }
   onQuestionScoreSubmitEvents(event) {
     /* istanbul ignore else */
     if (event) {
@@ -791,7 +793,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
           this.playerConfig = config;
           const _contentIndex = _.findIndex(this.contentStatus, { contentId: _.get(config, 'context.contentId') });
           this.playerConfig['metadata']['maxAttempt'] = _.get(this.activeContent, 'maxAttempts');
-          this.playerConfig['metadata']['currentAttempt'] = _contentIndex > 0 ? _.get(this.contentStatus[_contentIndex], 'score.length') : 0;
+          let _currentAttempt = _contentIndex > 0 ? _.get(this.contentStatus[_contentIndex], 'score.length') : 0;
+          this.playerConfig['metadata']['currentAttempt'] = _currentAttempt == undefined ? 0 : _currentAttempt;
           this.showLoader = false;
           this.setTelemetryContentImpression();
         }, (err) => {

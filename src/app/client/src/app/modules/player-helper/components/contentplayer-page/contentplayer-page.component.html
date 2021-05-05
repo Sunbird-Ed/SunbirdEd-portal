@@ -3,7 +3,8 @@
     <app-content-player [playerConfig]="playerConfig" [contentData]="contentDetails" [isContentPresent]="true"
         [isContentDeleted]="isContentDeleted" [contentProgressEvents$]="contentProgressEvents$"
         (assessmentEvents)="onAssessmentEvents($event)"
-        (questionScoreSubmitEvents)="onQuestionScoreSubmitEvents($event)"></app-content-player>
+        (questionScoreSubmitEvents)="onQuestionScoreSubmitEvents($event)"
+        (questionScoreReviewEvents)="onQuestionScoreReviewEvents($event)"></app-content-player>
 
     <div class="mt-8">
         <app-credits-and-licence *ngIf="contentDetails" [contentData]="contentDetails"></app-credits-and-licence>

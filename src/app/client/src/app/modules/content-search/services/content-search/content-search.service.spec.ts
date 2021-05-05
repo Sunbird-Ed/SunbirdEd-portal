@@ -34,7 +34,7 @@ describe('ContentSearchService', () => {
     const input = { subject: [], medium: [], gradeLevel: [], board: [], contentType: 'course' };
     const contentSearchService: ContentSearchService = TestBed.get(ContentSearchService);
     const result = contentSearchService.mapCategories({ filters: input });
-    expect(result).toEqual({ se_subjects: [], se_mediums: [], se_gradeLevels: [], se_boards: [], contentType: 'course' });
+    expect(result).toEqual({ subject: [], se_mediums: [], se_gradeLevels: [], se_boards: [], contentType: 'course' });
   });
 
 });
