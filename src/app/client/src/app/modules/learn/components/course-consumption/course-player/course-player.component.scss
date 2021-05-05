@@ -200,8 +200,8 @@ xxl calculateRem(88px) 24px 20px;
 }
 
 .sb-no-course-found{
-  background-color: $tertiary-0;
-  border: 1px solid $tertiary-100;
+  background-color: var(--tertiary-0);
+  border: 1px solid var(--tertiary-100);
   padding: calculateRem(16px) calculateRem(24px);
   border-radius: calculateRem(4px);
   font-size: calculateRem(12px);
