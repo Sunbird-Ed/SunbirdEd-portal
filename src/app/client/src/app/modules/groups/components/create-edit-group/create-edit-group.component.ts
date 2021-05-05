@@ -168,7 +168,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy, AfterViewIni
         env: this.activatedRoute.snapshot.data.telemetry.env,
         cdata: [{
           type: 'Group',
-          id: ''
+          id: this.groupId || ''
         }]
       },
       edata: {
