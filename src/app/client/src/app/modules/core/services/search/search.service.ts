@@ -298,10 +298,10 @@ export class SearchService {
       option.data.request.filters['se_mediums'] = option.data.request.filters.medium;
       delete option.data.request.filters.medium;
     }
-    if (_.get(option, 'data.request.filters.subject')) {
-      option.data.request.filters['se_subjects'] = option.data.request.filters.subject;
-      delete option.data.request.filters.subject;
-    }
+    // if (_.get(option, 'data.request.filters.subject')) {
+    //   option.data.request.filters['se_subjects'] = option.data.request.filters.subject;
+    //   delete option.data.request.filters.subject;
+    // }
     return option.data;
   }
   /**
