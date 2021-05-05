@@ -19,6 +19,7 @@ import { manifest } from "./manifest";
 import { Router } from "./routes";
 import DatabaseSDK from "./sdk/database";
 import { GeneralizedResources } from './controllers/generalizedResources';
+import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
 
 const LOG_SYNC_INTERVAL_TIMESTAMP = 2 * 60 * 60 * 1000; // Triggers on every 2 hrs
 export class Server {
@@ -30,6 +31,7 @@ export class Server {
   @Inject private fileSDK;
   @Inject private contentDelete: ContentDelete;
   @Inject private logSyncManager: LogSyncManager
+  @Inject private standardLog: StandardLogger = containerAPI.getStandardLoggerInstance();
   private settingSDK;
   constructor(app) {
     this.fileSDK = containerAPI.getFileSDKInstance(manifest.id);
@@ -37,14 +39,11 @@ export class Server {
     perfLoggerInit();
     this.initialize(app)
       .then(() => {
-        logger.info(`${manifest.id}:initialized successfully`);
+        this.standardLog.info({ id: `SERVER_${manifest.id}_INITIALIZED`, message: `${manifest.id}:initialized successfully` });
         EventManager.emit(`${manifest.id}:initialized`, {});
       })
       .catch(err => {
-        logger.error(
-          "Error while initializing server",
-          err
-        );
+        this.standardLog.error({ id: `SERVER_INITIALIZED_FAILED`, message: 'Error while initializing server', error: err });
         EventManager.emit(`${manifest.id}:initialized`, {});
       });
   }
@@ -53,16 +52,15 @@ export class Server {
     //registerAcrossAllSDKS()
     await this.databaseSdk.initializeAndCreateIndex(manifest.id);
     this.contentDelete = new ContentDelete(manifest);
-    
-
     await this.setContentStorageLocations(app);
     const response = await this.settingSDK.get(`${process.env.APP_VERSION}_configured`)
     .catch((err) => {
-      logger.info(`${manifest.id} not configured for version`, `${process.env.APP_VERSION}`, err);
+      this.standardLog.info({ id: `${manifest.id}_CONFIGURATION_MISSING`, message: `${manifest.id} not configured for version ${process.env.APP_VERSION}`, error: err });
     });
     if (!response) {
-      logger.debug("removing old device_token");
-      await this.settingSDK.delete('device_token').catch(error => logger.error("Error while deleting device_token from setting", error));
+      this.standardLog.debug({ id: 'SERVER_DEVICE_TOKEN_REMOVE', message: "removing old device_token" });
+      await this.settingSDK.delete('device_token').catch(error => 
+        this.standardLog.error({ id: 'SERVER_DEVICE_TOKEN_DELETE_FAILED', message: 'Error while deleting device_token from setting', error }));
       await this.insertConfig();    // insert meta data for app
       this.settingSDK.put(`${process.env.APP_VERSION}_configured`, { dataInserted: true});
       logger.info(`${manifest.id} configured for version ${process.env.APP_VERSION} and settingSdk updated`);
@@ -99,7 +97,7 @@ export class Server {
           });
         }
       } catch (error) {
-        logger.error("Error while fetching content storage location", error);
+        this.standardLog.error({ id: `SERVER_DB_READ_FAILED`, message: `Error while fetching content storage location`, error });
       }
     }
   }
@@ -108,7 +106,7 @@ export class Server {
     try {
       await this.logSyncManager.start();
     } catch (error) {
-      logger.error("Error while syncing error logs", error);
+      this.standardLog.error({ id: `SERVER_ERROR_LOGS_SYNC_FAILED`, message: `Error while syncing error logs`, error });
     }
   }
 

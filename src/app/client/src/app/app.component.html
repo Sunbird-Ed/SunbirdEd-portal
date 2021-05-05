@@ -59,8 +59,8 @@
         </div>
       </div>
     </div>
-    <app-popup #frameWorkPopUp *ngIf="showFrameWorkPopUp" [buttonLabel]="resourceService.frmelmnts.btn.submit"
-      (submit)="updateFrameWork($event)"></app-popup>
+    <app-popup #frameWorkPopUp *ngIf="showFrameWorkPopUp" [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" 
+      [isGuestUser]="isGuestUser" (submit)="updateFrameWork($event)"></app-popup>
     <app-tnc-popup (close)="onAcceptTnc()" #termsAndCondPopUp *ngIf="showTermsAndCondPopUp">
     </app-tnc-popup>
     <div *ngIf="showGlobalConsentPopUpSection">
@@ -71,6 +71,8 @@
       [userFeedData]="userFeed"> </app-validate-teacher-identifier-popup>
     <app-user-onboarding (close)="onLocationSubmit()" *ngIf="showUserTypePopup || !isLocationConfirmed"
       [isCustodianOrgUser]="isCustodianOrgUser" [deviceProfile]="deviceProfile"></app-user-onboarding>
+    
+    <app-year-of-birth *ngIf="isCustodianOrgUser && usersProfile && !usersProfile?.managedBy && !usersProfile?.dob && (usersProfile?.userLocations?.length>0 || showYearOfBirthPopup)"></app-year-of-birth>
     <app-header *ngIf="!hideHeaderNFooter" [layoutConfiguration]="layoutConfiguration" [routerEvents]="routeData$"
       [ngClass]="{'header-block': isFullScreenView}"></app-header>
     <app-install-app (viewInBrowser)="viewInBrowser($event)" *ngIf="showAppPopUp && userService.loggedIn">
@@ -118,3 +120,4 @@
 <ng-container *ngIf="layoutConfiguration">
   <div class="sbt-theme-right-flower computer only"></div>
 </ng-container>
+

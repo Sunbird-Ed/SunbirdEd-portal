@@ -71,8 +71,9 @@
                     <div class="certificate-card-title sb__ellipsis sb__ellipsis--three px-16">{{courseDetails?.name}}
                     </div>
                     <div class="d-flex flex-ai-center">
-                      <div class="certificate-card-img px-16"> 
-                        <img src="assets/images/certificate-icon.png" width="25px" height="20px" alt="certificate-icon"/>
+                      <div class="certificate-card-img px-16">
+                        <img src="assets/images/certificate-icon.png" width="25px" height="20px"
+                          alt="certificate-icon" />
                       </div>
                       <div class="border-right"></div>
                     </div>
@@ -93,7 +94,8 @@
               <button type="button" id="addNewCert" (click)="certificateCreation()"
                 class="sb-btn sb-btn-normal sb-btn-outline-primary px-24">
                 {{resourceService?.frmelmnts?.cert?.lbl?.addCert }}
-                <img src="assets/images/plus-icon.svg" alt=" Add certificate " width="8px" class="ml-4 plus-icon"></button>
+                <img src="assets/images/plus-icon.svg" alt=" Add certificate " width="8px"
+                  class="ml-4 plus-icon"></button>
             </div>
           </div>
           <div *ngIf="selectedTemplate" class="certificate-edit-content p-24">
@@ -141,16 +143,18 @@
                     {{resourceService?.frmelmnts?.cert?.lbl?.addCert}}</div>
                   <div *ngIf="configurationMode === 'edit'" class="pb-24 font-weight-bold certificates-label">
                     {{resourceService?.frmelmnts?.cert?.lbl?.editCert}}</div>
-                  <div class="d-flex flex-dc">
+                  <!-- <div class="d-flex flex-dc">
                     <label
                       class="fnormal font-weight-normal text-left">{{resourceService?.frmelmnts?.cert?.lbl?.certType}}</label>
-                    <label><sui-select class="selection form-control" formControlName="certificateType" [options]="certTypes"
-                      [placeholder]="'Select certificate'" labelField="name" valueField="name" [isSearchable]="false"
-                      [isDisabled]="configurationMode === 'edit'" #selectCertType>
-                      <sui-select-option *ngFor="let option of selectCertType.filteredOptions" [value]="option">
-                      </sui-select-option>
-                    </sui-select></label>
-                  </div>
+                    <label>
+                      <sui-select class="selection form-control" formControlName="certificateType" [options]="certTypes"
+                        [placeholder]="'Select certificate'" labelField="name" valueField="name" [isSearchable]="false"
+                        [isDisabled]="configurationMode === 'edit'" #selectCertType>
+                        <sui-select-option *ngFor="let option of selectCertType.filteredOptions" [value]="option">
+                        </sui-select-option>
+                      </sui-select>
+                    </label>
+                  </div> -->
                 </div>
               </div>
 
@@ -161,12 +165,73 @@
                   <div class="d-flex flex-dc">
                     <label
                       class="fnormal font-weight-normal text-left">{{resourceService?.frmelmnts?.cert?.lbl?.issueTo}}</label>
-                    <label><sui-select class="selection form-control" formControlName="issueTo" [options]="issueTo"
-                      [placeholder]="'Select'" labelField="name" valueField="name" [isSearchable]="false"
-                      [isDisabled]="configurationMode === 'edit'" #selectRecipient>
-                      <sui-select-option *ngFor="let option of selectRecipient.filteredOptions" [value]="option">
-                      </sui-select-option>
-                    </sui-select></label>
+                    <label>
+                      <sui-select class="selection form-control" formControlName="issueTo" [options]="issueTo"
+                        [placeholder]="'Select'" labelField="name" valueField="name" [isSearchable]="false"
+                        [isDisabled]="configurationMode === 'edit'" #selectRecipient>
+                        <sui-select-option *ngFor="let option of selectRecipient.filteredOptions" [value]="option">
+                        </sui-select-option>
+                      </sui-select>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <hr class="mt-16 mb-24">
+
+              <div class="ui stackable grid mt-0">
+                <div class="twelve wide column pt-0">
+                  <div class="d-flex rules-configuration px-16">
+                    <label class="d-flex flex-ai-center fnormal font-weight-normal mb-0 py-8">{{resourceService?.frmelmnts?.lbl?.addCertificateprogressrule}}</label>
+                    <div class="mx-24 progress-separator"></div>
+                    <div class="py-16 d-flex flex-wrap rules-form-content">
+                      <div class="mr-16 sb-field-group">
+                        <div class="sb-field">
+                          <input class="sb-form-control fnormal font-weight-bold" type="text" placeholder="100%" value="100%" readonly=true>
+                        </div>
+                        <p class="font-weight-normal fsmall mb-0 completion-text">
+                          <span class="asterik">*</span>
+                          {{resourceService?.frmelmnts?.lbl?.addCertificateText}}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="progess-add-content" *ngIf="isSingleAssessment">
+                <div class="left-border"></div>
+                <button type="button" class="add-score-btn py-8 px-16 fsmall font-weight-bold" *ngIf="addScoreRule" >And</button>
+                <button type="button" class="d-flex flex-ai-center flex-jc-center plus-btn" *ngIf="!addScoreRule" (click)="addRule()"><img src="assets/images/plus-icon.svg"></button>
+                <div class="left-border" *ngIf="addScoreRule"></div>
+              </div>
+
+              <div class="ui stackable grid mt-0" *ngIf="addScoreRule && isSingleAssessment">
+                <div class="twelve wide column pt-0">
+                  <div class="d-flex rules-configuration px-16">
+                    <label class="d-flex flex-ai-center fnormal font-weight-normal mb-0 py-8">{{resourceService?.frmelmnts?.lbl?.addCertificatescorerule}}</label>
+                    <div class="mx-24 progress-separator"></div>
+                    <div class="py-16 d-flex flex-dc rules-form-content my-16">
+                      <div class="ui stackable grid mt-0 sb-field-group">
+                        <div class="five wide column sb-field mb-0">
+                          <input class="sb-form-control fnormal font-weight-bold" type="text"
+                            placeholder="Best attempt score" value="{{resourceService?.frmelmnts?.lbl?.bestScoreattempt}}" readonly="true">
+                        </div>
+                        <div class="three wide fnormal column mt-5">{{resourceService?.frmelmnts?.lbl?.addCertificategreaterThan}}</div>
+                        <div class="four wide column sb-field mb-0">
+                          <sui-select class="selection form-control" 
+                        [placeholder]="'Select'" formControlName="scoreRange" [options]="scoreRange" #selectScoreRange>
+                            <sui-select-option *ngFor="let option of arrayValue['range']" [value]="option + '%'">
+                            </sui-select-option>
+                          </sui-select> 
+                        </div>
+                        <p class="font-weight-normal fsmall mb-0 completion-text">
+                          <span class="asterik">*</span>
+                          {{resourceService?.frmelmnts?.lbl?.addCertificateText}}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="close-score" (click)="removeRule()"><img src="assets/images/close.svg"></div>
                   </div>
                 </div>
               </div>
@@ -181,21 +246,22 @@
               </div>
             </form>
             <div *ngIf="selectedTemplate">
-            <div class="certificate-edit-area">
-              <div class="certificate-edit-sbcard">
-                <div class="d-flex flex-dc p-16 certificate-edit-sbcard-content">
-                  <div class="certificate-frame">
-                    <div><img src="{{selectedTemplate?.artifactUrl || selectedTemplate?.previewUrl}}" alt="certificate edit"></div>
-                  </div>
-                  <div class="d-flex flex-ai-center flex-jc-space-between w-100 pt-16">
-                    <div class="d-flex flex-ai-center ml-auto d-flex">
-                      <button type="button" (click)="removeSelectedCertificate()"
-                        class="sb-btn sb-btn-primary sb-btn-normal">{{resourceService?.frmelmnts?.btn?.remove}}</button>
+              <div class="certificate-edit-area">
+                <div class="certificate-edit-sbcard">
+                  <div class="d-flex flex-dc p-16 certificate-edit-sbcard-content">
+                    <div class="certificate-frame">
+                      <div><img src="{{selectedTemplate?.artifactUrl || selectedTemplate?.previewUrl}}"
+                          alt="certificate edit"></div>
+                    </div>
+                    <div class="d-flex flex-ai-center flex-jc-space-between w-100 pt-16">
+                      <div class="d-flex flex-ai-center ml-auto d-flex">
+                        <button type="button" (click)="removeSelectedCertificate()"
+                          class="sb-btn sb-btn-primary sb-btn-normal">{{resourceService?.frmelmnts?.btn?.remove}}</button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
             </div>
           </div>
         </div>
@@ -204,19 +270,21 @@
         <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-3">
           <div class="select-template-content sb-bg-color-white p-24 certificate-bg">
             <div class="select-template-container mb-16">
-               <div class="d-flex flex-ai-center text-left flex-jc-space-between">
-               <label class="certificates-label">{{resourceService?.frmelmnts?.cert?.lbl?.templates}}</label>
-               <button class="add-new-template-btn sb-btn sb-btn-normal sb-btn-outline-primary sb-left-icon-btn font-weight-bold" type="button"
-               (click)="navigateToCreateTemplate()">
-                <i class="plus alternate outline icon"></i>{{resourceService?.frmelmnts?.cert?.btn?.createtemp}}</button>
+              <div class="d-flex flex-ai-center text-left flex-jc-space-between">
+                <label class="certificates-label">{{resourceService?.frmelmnts?.cert?.lbl?.templates}}</label>
+                <button
+                  class="add-new-template-btn sb-btn sb-btn-normal sb-btn-outline-primary sb-left-icon-btn font-weight-bold"
+                  type="button" (click)="navigateToCreateTemplate()">
+                  <i
+                    class="plus alternate outline icon"></i>{{resourceService?.frmelmnts?.cert?.btn?.createtemp}}</button>
               </div>
               <div class="d-flex flex-ai-center text-left flex-jc-space-between">
                 <label class="font-weight-normal fsmall">{{resourceService?.frmelmnts?.cert?.lbl?.certNote}}</label>
                 <button (click)="refreshData()" class="sb-btn sb-btn-normal sb-btn-outline-primary my-16">
                   {{resourceService?.frmelmnts?.cert?.btn?.refresh}}
                 </button>
-            </div>
-               <div *ngIf="certTemplateList" class="certificate-scrollbar">
+              </div>
+              <div *ngIf="certTemplateList" class="certificate-scrollbar">
                 <div *ngFor="let template of certTemplateList">
                   <sb-certificate-actions [preview]="config?.preview"
                     [isSelectedTemplate]="selectedTemplate?.identifier === template?.identifier && !showPreviewModal"
@@ -237,7 +305,7 @@
             <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
               (click)="cancelSelection()">{{resourceService?.frmelmnts?.btn?.cancel}}</button>
             <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" *ngIf="configurationMode === 'add'"
-            [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24"
+              [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24"
               (click)="attachCertificateToBatch()">{{resourceService?.frmelmnts?.cert?.lbl?.addCert}}</button>
             <button id="update-certificate" [ngClass]="{'sb-btn-disabled': disableAddCertificate }"
               *ngIf="configurationMode === 'edit'" [disabled]="disableAddCertificate"

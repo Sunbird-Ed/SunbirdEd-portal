@@ -289,6 +289,12 @@ export class UtilService {
         ]
       };
 
+      // Disable Download button for resources who does not have download url while searching online.
+      if (isOnlineSearch && _.get(value, 'mimeType') !== 'application/vnd.ekstep.content-collection' && !_.get(value, 'downloadUrl')) {
+        value['hoverData'].actions[0].disabled = true;
+        value['hoverData'].actions[0].title = _.get(this.resourceService, 'messages.stmsg.desktop.contentCantDownload') || '';
+      }
+
       value['hoverData'].actions[0].label = status[_.upperCase(value['hoverData'].actions[0].label)];
     });
 

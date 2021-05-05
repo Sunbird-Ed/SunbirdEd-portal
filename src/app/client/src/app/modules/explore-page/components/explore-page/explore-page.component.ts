@@ -90,15 +90,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     private initConfiguration() {
         this.defaultFilters = this.userService.defaultFrameworkFilters;
         if (this.utilService.isDesktopApp) {
-            const userPreferences: any = this.userService.anonymousUserPreference;
-            if (userPreferences) {
-                _.forEach(['board', 'medium', 'gradeLevel'], (item) => {
-                    if (!_.has(this.selectedFilters, item)) {
-                        this.defaultFilters[item] = _.isArray(userPreferences.framework[item]) ?
-                            userPreferences.framework[item] : _.split(userPreferences.framework[item], ', ');
-                    }
-                });
-            }
+            this.setDesktopFilters(true);
         }
         this.numberOfSections = [get(this.configService, 'appConfig.SEARCH.SECTION_LIMIT') || 3];
         this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -122,7 +114,14 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.custodianOrg = custodianOrg;
                     this.formData = formConfig;
                     const { defaultFilters = {} } = _.get(this.getCurrentPageData(), 'metaData') || {};
-                    this.defaultFilters = { ...this.userService.defaultFrameworkFilters, ...(!this.isUserLoggedIn() && defaultFilters) };
+
+                    if (this.isUserLoggedIn()) {
+                        this.defaultFilters = this.userService.defaultFrameworkFilters;
+                    } else if (!this.isDesktopApp) {
+                        let guestUserDetails: any = localStorage.getItem('guestUserDetails');
+                        guestUserDetails = JSON.parse(guestUserDetails);
+                        this.defaultFilters = guestUserDetails.framework ? guestUserDetails.framework : this.defaultFilters;
+                    }
                     return this.contentSearchService.initialize(this.channelId, this.custodianOrg, get(this.defaultFilters, 'board[0]'));
                 }),
                 tap(data => {
@@ -264,15 +263,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             this.selectedFilters['audience'] = audienceSearchFilterValue || uniq(flatten(_map(userTypes, userType => userTypeMapping[userType])));
         }
         if (this.utilService.isDesktopApp) {
-            const userPreferences: any = this.userService.anonymousUserPreference;
-            if (userPreferences) {
-                _.forEach(['board', 'medium', 'gradeLevel'], (item) => {
-                    if (!_.has(this.selectedFilters, item)) {
-                        this.selectedFilters[item] = _.isArray(userPreferences.framework[item]) ?
-                            userPreferences.framework[item] : _.split(userPreferences.framework[item], ', ');
-                    }
-                });
-            }
+            this.setDesktopFilters(false);
         }
         this.apiContentList = [];
         this.pageSections = [];
@@ -280,6 +271,23 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.pageTitle = get(this.resourceService, get(currentPageData, 'title'));
         this.svgToDisplay = get(currentPageData, 'theme.imageName');
         this.fetchContents$.next(currentPageData);
+    }
+
+    setDesktopFilters(isDefaultFilters) {
+        const userPreferences: any = this.userService.anonymousUserPreference;
+            if (userPreferences) {
+                _.forEach(['board', 'medium', 'gradeLevel', 'subject'], (item) => {
+                    if (!_.has(this.selectedFilters, item) || !_.get(this.selectedFilters[item], 'length')) {
+                         const itemData = _.isArray(userPreferences.framework[item]) ?
+                            userPreferences.framework[item] : _.split(userPreferences.framework[item], ', ');
+                        if (isDefaultFilters) {
+                            this.defaultFilters[item] = itemData;
+                        } else {
+                            this.selectedFilters[item] = itemData;
+                        }
+                    }
+                });
+            }
     }
 
     private fetchContents() {

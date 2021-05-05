@@ -18,7 +18,7 @@ import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 import { CourseBatchService } from './../../../services';
 import { DiscussionService } from '../../../../discussion/services/discussion/discussion.service';
 import { FormService } from '../../../../core/services/form/form.service';
-
+import { IForumContext } from '../../../interfaces';
 import { ContentManagerService } from '../../../../public/module/offline/services';
 import { DiscussionTelemetryService } from './../../../../shared/services/discussion-telemetry/discussion-telemetry.service';
 
@@ -36,6 +36,10 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     lastName: string,
     id: string
   };
+  /**
+   * input data for fetchforum Ids
+   */
+  fetchForumIdReq: IForumContext;
   /**
    * contains link that can be shared
    */
@@ -99,9 +103,9 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     public externalUrlPreviewService: ExternalUrlPreviewService, public coursesService: CoursesService, private userService: UserService,
     private telemetryService: TelemetryService, private groupService: GroupsService,
     private navigationHelperService: NavigationHelperService, public orgDetailsService: OrgDetailsService,
-    public generaliseLabelService: GeneraliseLabelService,public connectionService: ConnectionService,
+    public generaliseLabelService: GeneraliseLabelService, public connectionService: ConnectionService,
     public courseBatchService: CourseBatchService, private utilService: UtilService, public contentManagerService: ContentManagerService,
-    private formService: FormService, private offlineCardService: OfflineCardService, 
+    private formService: FormService, private offlineCardService: OfflineCardService,
     public discussionService: DiscussionService, public discussionTelemetryService: DiscussionTelemetryService) { }
 
   showJoinModal(event) {
@@ -149,7 +153,6 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
           this.enrolledCourse = true;
           this.telemetryCdata = [{ id: this.batchId, type: 'CourseBatch' }];
         }
-        this.fetchForumIds();
       });
     this.interval = setInterval(() => {
       if (document.getElementById('closebutton')) {
@@ -161,6 +164,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.courseConsumptionService.userCreatedAnyBatch.subscribe((visibility: boolean) => {
       this.viewDashboard = this.viewDashboard && visibility;
     });
+    this.generateDataForDF();
   }
   ngAfterViewInit() {
     this.courseProgressService.courseProgressData.pipe(
@@ -351,76 +355,36 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     };
     this.telemetryService.interact(interactData);
   }
-
-  openDiscussionForum() {
-    this.checkUserRegistration();
-  }
-
-  checkUserRegistration() {
-    this.showLoader = true;
-    const data = {
-      username: _.get(this.userService.userProfile, 'userName'),
-      identifier: _.get(this.userService.userProfile, 'userId'),
-    };
-    this.discussionTelemetryService.contextCdata = [
-      {
-        id: this.courseId,
-        type: 'Course'
-      },
-      {
-        id: this.batchId,
-        type: 'Batch'
+  generateDataForDF() {
+        // const isCreator = this.userService.userid === _.get(this.courseHierarchy, 'createdBy');
+        // const isMentor = this.permissionService.checkRolesPermissions(['COURSE_MENTOR']);
+        this.fetchForumIdReq = {
+              type: 'course',
+              identifier: [this.courseId]
+          };
+        if (this.enrolledCourse) {
+            this.fetchForumIdReq = {
+              type: 'batch',
+              identifier: [this.batchId]
+          };
+    // TODO: need to check with sudip for this repeating code
+        // if (isCreator) {
+        //   this.fetchForumIdReq = {
+        //     type: 'course',
+        //     identifier: [this.courseId]
+        // };
+        // } else if (this.enrolledCourse) {
+        //   this.fetchForumIdReq = {
+        //     type: 'batch',
+        //     identifier: [this.batchId]
+        // };
+        // } else if (isMentor) {
+        //   // TODO: make getBatches() api call;
+        //   this.fetchForumIdReq = {
+        //     type: 'course',
+        //     identifier: [this.courseId]
+        // };
       }
-    ];
-    this.navigationHelperService.setNavigationUrl({url: this.router.url});
-    this.discussionService.registerUser(data).subscribe((response) => {
-      const userName = _.get(response, 'result.userSlug');
-      const result = this.forumIds;
-      this.router.navigate(['/discussion-forum'], {
-        queryParams: {
-          categories: JSON.stringify({ result }),
-          userName: userName
-        }
-      });
-    }, error => {
-      this.showLoader = false;
-      this.toasterService.error(this.resourceService.messages.emsg.m0005);
-    });
-  }
-
-  fetchForumIds() {
-    const requestBody = this.prepareRequestBody();
-    if (requestBody && this.isConnected) {
-      this.discussionService.getForumIds(requestBody).subscribe(forumDetails => {
-        this.forumIds = _.map(_.get(forumDetails, 'result'), 'cid');
-      }, error => {
-        this.toasterService.error(this.resourceService.messages.emsg.m0005);
-      });
-    }
-  }
-
-  prepareRequestBody() {
-    const request = {
-      identifier: [],
-      type: ''
-    };
-    const isCreator = this.userService.userid === _.get(this.courseHierarchy, 'createdBy');
-    const isMentor = this.permissionService.checkRolesPermissions(['COURSE_MENTOR']);
-    if (isCreator) {
-      request.identifier = [this.courseId];
-      request.type = 'course';
-    } else if (this.enrolledCourse) {
-      request.identifier = [this.batchId];
-      request.type = 'batch';
-    } else if (isMentor) {
-      // TODO: make getBatches() api call;
-      request.identifier = [this.courseId];
-      request.type = 'course';
-    } else {
-      return;
-    }
-
-    return request;
   }
   async goBack() {
     const previousPageUrl: any = this.courseConsumptionService.getCoursePagePreviousUrl;
@@ -537,6 +501,18 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     }, err => {
       this.disableDelete = false;
       this.toasterService.error(this.resourceService.messages.etmsg.desktop.deleteTextbookErrorMessage);
+    });
+  }
+   /**
+     * @description - navigate to the DF Page when the event is emited from the access-discussion component
+     * @param  {} routerData
+     */
+  assignForumData(routerData) {
+    this.router.navigate(['/discussion-forum'], {
+      queryParams: {
+        categories: JSON.stringify({ result: routerData.forumIds }),
+        userName: routerData.userName
+      }
     });
   }
 }

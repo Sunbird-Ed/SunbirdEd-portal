@@ -11,6 +11,7 @@ const fileSDK = containerAPI.getFileSDKInstance(manifest.id);
 import ContentLocation from "../../controllers/contentLocation";
 
 import { ClassLogger } from "@project-sunbird/logger/decorator";
+import { Inject } from 'typescript-ioc';
 // @ClassLogger({
 //   logLevel: "debug",
 //   logTime: true,
@@ -24,6 +25,7 @@ export class ExportContent {
   private startTime = Date.now();
   private cb;
   private settingSDK = containerAPI.getSettingSDKInstance(manifest.id);
+  @Inject private standardLog = containerAPI.getStandardLoggerInstance();
   constructor(private destFolder, private dbParentNode, private dbChildNodes) { }
   public async export(cb) {
     const contentLocation = new ContentLocation(manifest.id);
@@ -56,7 +58,7 @@ export class ExportContent {
       this.cb(null, data);
     } catch (error) {
       this.cb(error, null);
-      logger.error("Error while exporting content", this.ecarName, error, this.corruptContents);
+      this.standardLog.error({ id: 'CONTENT_EXPORT_FAILED', message: `Error while exporting content, ${this.ecarName}, ${this.corruptContents}`, error });
     }
   }
   private async loadParentCollection(): Promise<boolean> {
@@ -272,6 +274,7 @@ export class ExportContent {
         }
       } catch (error) {
         logger.error("Error while exporting content", error);
+        this.standardLog.error({ id: 'CONTENT_EXPORT_FAILED', message: `Error while exporting content`, error });
       }
     }
   }

@@ -278,7 +278,7 @@ export class UserLocationComponent implements OnInit, OnDestroy, AfterViewInit {
       locationCodes.push(this.userDetailsForm.value.district);
       locationDetails.districtCode = this.userDetailsForm.value.district;
     }
-    const data = {locationCodes: locationCodes};
+    const data = {profileLocation: locationCodes};
     let districtData, stateData, changeType = '';
     if (locationDetails.stateCode) {
       stateData = _.find(this.allStates, (states) => {

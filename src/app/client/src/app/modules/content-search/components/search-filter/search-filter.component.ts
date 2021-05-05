@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Input, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import {Component, Output, EventEmitter, Input, OnInit, OnDestroy, ChangeDetectorRef, ViewChild} from '@angular/core';
 import * as _ from 'lodash-es';
 import { LibraryFiltersLayout } from '@project-sunbird/common-consumption-v8';
 import { ResourceService, LayoutService } from '@sunbird/shared';
@@ -7,6 +7,7 @@ import { Subject, merge, of, zip, BehaviorSubject } from 'rxjs';
 import { debounceTime, map, tap, switchMap, takeUntil, retry, catchError } from 'rxjs/operators';
 import { ContentSearchService } from '../../services';
 import { FormService } from '@sunbird/core';
+import {IFrameworkCategoryFilterFieldTemplateConfig} from 'common-form-elements';
 
 
 @Component({
@@ -42,6 +43,45 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   allValues = {};
   selectedNgModels = {};
   private audienceList;
+
+  @ViewChild('sbSearchFrameworkFilterComponent', { static: false }) searchFrameworkFilterComponent: any;
+  filterFormTemplateConfig: IFrameworkCategoryFilterFieldTemplateConfig[] = [
+    {
+      category: 'board',
+      type: 'dropdown',
+      labelText: 'Board',
+      placeholderText: 'Select Board',
+      multiple: false
+    },
+    {
+      category: 'medium',
+      type: 'pills',
+      labelText: 'Medium',
+      placeholderText: 'Select Board',
+      multiple: true
+    },
+    {
+      category: 'gradeLevel',
+      type: 'pills',
+      labelText: 'Class',
+      placeholderText: 'Select Class',
+      multiple: true
+    },
+    {
+      category: 'publisher',
+      type: 'dropdown',
+      labelText: 'Published by',
+      placeholderText: 'Select Published by',
+      multiple: true
+    },
+    {
+      category: 'audience',
+      type: 'dropdown',
+      labelText: 'Published User Type',
+      placeholderText: 'Select User Type',
+      multiple: true
+    }
+  ];
 
   constructor(public resourceService: ResourceService, private router: Router,
     private contentSearchService: ContentSearchService,
@@ -105,6 +145,10 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       .subscribe(null, error => {
         console.error('Error while fetching filters');
       });
+
+    if (!_.get(this.activatedRoute, 'snapshot.queryParams["board"]')) {
+      this.router.navigate([], { queryParams: this.defaultFilters, relativeTo: this.activatedRoute } );
+    }
   }
   private boardChangeHandler() {
     return this.boardChange$.pipe(
@@ -296,6 +340,13 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   public resetFilters() {
     this.updateRoute(true);
   }
+
+  onSearchFrameworkFilterReset() {
+    if (this.searchFrameworkFilterComponent) {
+      this.searchFrameworkFilterComponent.resetFilter();
+    }
+  }
+
   private getAudienceTypeFormConfig() {
     const formServiceInputParams = { formType: 'config', formAction: 'get', contentType: 'userType', component: 'portal' };
     return this.formService.getFormConfig(formServiceInputParams).pipe(
