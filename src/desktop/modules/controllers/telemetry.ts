@@ -189,7 +189,7 @@ export default class Telemetry {
         },
       }, req));
     } catch (error) {
-      standardLog.error({ id: 'TELEMETRY_DB_FETCH_FAILED', message: 'Error while processing the telemetry import list request', mid: req.headers["X-msgid"], error });
+      standardLog.error({ id: 'TELEMETRY_DB_READ_FAILED', message: 'Error while processing the telemetry import list request', mid: req.headers["X-msgid"], error });
       res.status(500);
       return res.send(Response.error("api.telemetry.list", 500));
     }

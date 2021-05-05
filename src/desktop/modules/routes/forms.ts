@@ -23,7 +23,7 @@ const form = new Form(manifest);
                         const formResp = JSON.parse(proxyResData.toString('utf8'));
                         form.upsert(formResp);
                     } catch (error) {
-                        standardLog.error({id: 'FORM_READ_FAILED', message: `Unable to parse or do DB update of form data after fetching from online`, error});
+                        standardLog.error({ id: 'FORM_READ_FAILED', message: `Unable to parse or do DB update of form data after fetching from online`, error });
                     }
                     resolve(proxyResData);
                 });

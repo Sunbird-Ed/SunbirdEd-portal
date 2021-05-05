@@ -37,7 +37,7 @@ export default class Appupdate {
         try {
             this.deviceId = await containerAPI.getSystemSDKInstance(manifest.id).getDeviceId();
         } catch (error) {
-            this.standardLog.error({ id: 'APP_UPDATE_DEVICEID_FETCH_FAILED', message: 'Caught exception while fetching device id', error });
+            this.standardLog.error({ id: 'APP_UPDATE_DEVICE_ID_FETCH_FAILED', message: 'Caught exception while fetching device id', error });
         }
     }
     public async getDesktopAppUpdate(req, res) {

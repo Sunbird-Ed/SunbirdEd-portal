@@ -24,10 +24,10 @@ const decorateRequest = async (request, options) => {
 
   if (options.isUserTokenRequired) {
     const loggedInUserSession: any = await userSDK.getUserSession().catch(error => { 
-      standardLog.error({ id: 'PROXY_HELPER_FETCH_USER_SESSION_FAILED', message: 'Received error while fetching current user session', error });
+      standardLog.error({ id: 'PROXY_HANDLER_READ_USER_SESSION_FAILED', message: 'Received error while fetching current user session', error });
     });
     const userToken: any = await userSDK.getUserToken().catch(error => { 
-      standardLog.error({ id: 'PROXY_HELPER_FETCH_USER_TOKEN_FAILED', message: 'Received error while fetching current user token', error });
+      standardLog.error({ id: 'PROXY_HANDLER_READ_USER_TOKEN_FAILED', message: 'Received error while fetching current user token', error });
     })
     if (loggedInUserSession) {
       const userId = loggedInUserSession.userId;
@@ -43,7 +43,7 @@ const decorateRequest = async (request, options) => {
 
   if (options.isAuthTokenRequired) {
     const apiKey = await containerAPI.getDeviceSdkInstance().getToken().catch((err) => {
-      standardLog.error({ id: 'PROXY_HELPER_AUTH_TOKEN_FETCH_FAILED', message: 'Received error while fetching api key in getUser', error: err });
+      standardLog.error({ id: 'PROXY_HANDLER_AUTH_TOKEN_FETCH_FAILED', message: 'Received error while fetching api key in getUser', error: err });
     });
     headers.Authorization = `Bearer ${apiKey}`;
   }
@@ -68,7 +68,7 @@ const getNewAuthToken = async () => {
   await containerAPI.getDeviceSdkInstance().clearToken();
   await containerAPI.getDeviceSdkInstance().getToken();
   const apiKey = await containerAPI.getDeviceSdkInstance().getToken().catch((err) => {
-    standardLog.error({ id: 'PROXY_HELPER_AUTH_TOKEN_FETCH_FAILED', message: 'Received error while fetching api key in getUser', error: err });
+    standardLog.error({ id: 'PROXY_HANDLER_AUTH_TOKEN_FETCH_FAILED', message: 'Received error while fetching api key in getUser', error: err });
   });
   return apiKey;
 }

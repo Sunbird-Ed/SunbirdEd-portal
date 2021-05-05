@@ -22,7 +22,7 @@ export default class Device {
   public async getDeviceProfile() {
     return await this.settingSDK.get(`location`)
       .catch((error) => { 
-        this.standardLog.error({ id: 'DEVICE_DB_FETCH_FAILED', message: 'Error while getting location data from setting SDK', error });
+        this.standardLog.error({ id: 'DEVICE_DB_READ_FAILED', message: 'Error while getting location data from setting SDK', error });
       });
   }
   
