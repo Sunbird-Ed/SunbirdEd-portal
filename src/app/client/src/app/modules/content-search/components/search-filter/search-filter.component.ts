@@ -68,6 +68,13 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       multiple: true
     },
     {
+      category: 'subject',
+      type: 'dropdown',
+      labelText: 'Subject',
+      placeholderText: 'Select Subject',
+      multiple: true
+    },
+    {
       category: 'publisher',
       type: 'dropdown',
       labelText: 'Published by',
@@ -278,7 +285,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   private updateRoute(resetFilters?: boolean) {
     const selectedTab = _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook';
     this.router.navigate([], {
-      queryParams: resetFilters ? { selectedTab } : _.omit(this.getSelectedFilter() || {}, ['audienceSearchFilterValue']),
+      queryParams: resetFilters ? { ...this.defaultFilters, selectedTab} : _.omit(this.getSelectedFilter() || {}, ['audienceSearchFilterValue']),
       relativeTo: this.activatedRoute.parent
     });
   }
