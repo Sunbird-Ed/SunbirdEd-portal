@@ -10,18 +10,19 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CourseProgressComponent } from './course-progress.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SuiModule } from 'ng2-semantic-ui';
-import { ContentService, UserService, LearnerService, CoreModule } from '@sunbird/core';
+import {ContentService, UserService, LearnerService, CoreModule, FormService} from '@sunbird/core';
 import { By } from '@angular/platform-browser';
 import {
   SharedModule, ResourceService, ConfigService, PaginationService,
   ToasterService, ServerResponse
 } from '@sunbird/shared';
-import { IAnnouncementListData, IPagination } from '@sunbird/announcement';
 import { CourseProgressService, UsageService } from './../../services';
 import { FormsModule } from '@angular/forms';
 import * as testData from './course-progress.component.spec.data';
 import { OrderModule } from 'ngx-order-pipe';
-import { TelemetryModule } from '@sunbird/telemetry';
+import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
+import { ReactiveFormsModule } from '@angular/forms';
 
 describe('CourseProgressComponent', () => {
   let component: CourseProgressComponent;
@@ -44,6 +45,9 @@ describe('CourseProgressComponent', () => {
       'stmsg': {
         'm0132': 'We have received your download request. The file will be sent to your registered email ID shortly.',
         'm0141': 'Data unavailable to generate Score Report'
+      },
+      "fmsg": {
+        "m0004": "Could not fetch data, try again later"
       }
     },
     'frmelmnts': {
@@ -55,6 +59,7 @@ describe('CourseProgressComponent', () => {
 
   const fakeActivatedRoute = {
     'params': observableOf({ contentId: 'do_112470675618004992181', courseId: 'do_112470675618004992181' }),
+    'parent': {params: observableOf({ contentId: 'do_112470675618004992181', courseId: 'do_112470675618004992181' })},
     'queryParams': observableOf({ batchIdentifier: '0124963192947507200', timePeriod: '7d' }),
     snapshot: {
       'params': { contentId: 'do_112470675618004992181', courseId: 'do_112470675618004992181' },
@@ -66,13 +71,13 @@ describe('CourseProgressComponent', () => {
       }
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule.forRoot(), OrderModule,
-        CoreModule, DashboardModule, TelemetryModule.forRoot()],
+        CoreModule, DashboardModule, TelemetryModule.forRoot(), ReactiveFormsModule],
       declarations: [],
-      providers: [CourseProgressService, UsageService,
+      providers: [CourseProgressService, UsageService, TelemetryService, FormService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         { provide: ResourceService, useValue: resourceBundle }],
@@ -140,26 +145,6 @@ describe('CourseProgressComponent', () => {
     component.setTimePeriod('7d');
     expect(component.queryParams.timePeriod).toEqual('7d');
   }));
-
-  it('spy on populateCourseDashboardData()', inject([UserService, CourseProgressService],
-    (userService, courseService) => {
-      userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
-      fixture.detectChanges();
-      spyOn(courseService, 'getDashboardData').and.returnValue(observableOf(testData.mockUserData.populateCourseDashboardDataRes));
-      component.populateCourseDashboardData(testData.mockUserData.getBatchResZero.result.response);
-      expect(component.dashboarData).toBeDefined();
-      expect(component.showLoader).toEqual(false);
-    }));
-
-  it('spy on populateCourseDashboardData() with error', inject([UserService, CourseProgressService, ResourceService, ToasterService],
-    (userService, courseService, resourceService, toasterService) => {
-      userService._userData$.next({ err: null, userProfile: testData.mockUserData.userMockData });
-      fixture.detectChanges();
-      spyOn(courseService, 'getDashboardData').and.callFake(() => observableThrowError(testData.mockUserData.dashboardError));
-      spyOn(toasterService, 'error').and.callThrough();
-      component.populateCourseDashboardData(testData.mockUserData.getBatchResZero.result.response);
-      expect(toasterService.error).toHaveBeenCalledWith(testData.mockUserData.dashboardError.error.params.errmsg);
-    }));
 
   it('spy on downloadDashboardData()', inject([UserService, CourseProgressService, ResourceService, ToasterService],
     (userService, courseService, resourceService, toasterService) => {
@@ -251,4 +236,52 @@ describe('CourseProgressComponent', () => {
     expect(window.open).toHaveBeenCalledWith(testData.mockUserData.assessmentReportDownloadMock.result.reports.assessmentReportUrl,
       '_blank');
   })));
+
+  it('should set completedCount and participantCount as 0 to the currentBatch if it is empty in the currentBatch', () => {
+    component.currentBatch = testData.mockUserData.currentBatchDataBefore;
+    component.setCounts(component.currentBatch);
+    expect(component.currentBatch['completedCount']).toEqual(0);
+    expect(component.currentBatch['participantCount']).toEqual(0);
+  });
+
+  it(`should set completedCount and participantCount to the currentBatch with the existing values
+  if it is not empty in the currentBatch`, () => {
+    component.currentBatch = testData.mockUserData.currentBatchDataWithCount;
+    component.setCounts(component.currentBatch);
+    expect(component.currentBatch['completedCount']).toEqual(testData.mockUserData.currentBatchDataWithCount.completedCount);
+    expect(component.currentBatch['participantCount']).toEqual(testData.mockUserData.currentBatchDataWithCount.participantCount);
+  });
+
+  it ( 'should set filterText', () => {
+     fakeActivatedRoute.queryParams.subscribe(data => {
+      component.queryParams = data;
+    });
+    component.setFilterDescription();
+    expect(component.filterText).toEqual('Stats for last 7 days');
+  });
+
+  it ( 'should call getFormData as a COURSE_CREATOR', () => {
+    component.userRoles = ['CONTENT_CREATOR'];
+    component.selectedTab = 2;
+    const formService = TestBed.get(FormService);
+    spyOn(formService, 'getFormConfig' ).and.returnValue(observableOf(testData.mockUserData.reportTypes));
+    component.getFormData();
+    expect(component.reportTypes).toEqual(testData.mockUserData.reportTypes);
+  });
+  it ( 'should call getFormData as a COURSE_MENTOR', () => {
+    component.userRoles = ['COURSE_MENTOR'];
+    const formService = TestBed.get(FormService);
+    spyOn(formService, 'getFormConfig' ).and.returnValue(observableOf(testData.mockUserData.reportTypes));
+    component.getFormData();
+    expect(component.reportTypes).toEqual(testData.mockUserData.reportTypesMentor);
+  });
+  it ( 'should call getFormData error case ', () => {
+    component.userRoles = ['COURSE_MENTOR'];
+    const toasterService = TestBed.get(ToasterService);
+    const formService = TestBed.get(FormService);
+    spyOn(toasterService, 'error').and.stub();
+    spyOn(formService, 'getFormConfig' ).and.returnValue(observableThrowError('error'));
+    component.getFormData();
+    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0004);
+  });
 });

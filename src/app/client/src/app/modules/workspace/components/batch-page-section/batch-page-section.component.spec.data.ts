@@ -1,4 +1,79 @@
 export const mockRes = {
+    sectionData: [{
+        'display': '{\'name\':{\'en\':\'Ongoing Courses\'}}',
+        'alt': null,
+        'count': 2,
+        'description': null,
+        'index': 1,
+        'sectionDataType': 'coursebatch',
+        'imgUrl': null,
+        'contents': [{
+            'identifier': '0130206984449556485',
+            'createdFor': ['01285019302823526477', 'ORG_001'],
+            'endDate': '2020-05-15',
+            'description': 'test',
+            'updatedDate': '2020-05-14 07:34:30:796+0000',
+            'batchId': '0130206984449556485',
+            'createdDate': '2020-05-14 07:16:05:013+0000',
+            'createdBy': 'fd4227f7-9de8-40b4-af82-edb8cbd14fb1',
+            'mentors': ['a41dc769-882a-4d93-b7b8-5cfcff1becfe', '7dc801f2-a9aa-4561-ba93-b7b31696efd1'],
+            'name': '14th may batch 5',
+            'id': '0130206984449556485',
+            'enrollmentType': 'open',
+            'courseId': 'do_1130206856421867521137',
+            'enrollmentEndDate': '2020-05-15',
+            'startDate': '2020-05-14',
+            'status': 1
+        }],
+        'searchQuery': '{\'request\':{\'query\':\'\',\'filters\':{\'status\':\'1\'},\'limit\':10,\'sort_by\':{\'createdDate\':\'desc\'}}}',
+        'name': 'Ongoing Course',
+        'id': '0127029938411765763',
+        'dynamicFilters': null,
+        'dataSource': 'batch',
+        'group': 1
+    }],
+    courseDetails: {
+        'id': 'api.content.search',
+        'ver': '1.0',
+        'ts': '2020-05-14T12:45:20.401Z',
+        'params': {
+            'resmsgid': 'c5536010-95e0-11ea-b062-a3f599b7b162',
+            'msgid': 'ff5f7017-2a0a-844e-26f4-2797f286bb77',
+            'status': 'successful',
+            'err': null,
+            'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+            'count': 1,
+            'content': [{
+                'identifier': 'do_1130206856421867521137',
+                'name': '14th may live curriculaum'
+            }]
+        }
+    },
+    updatedBatchList: [{
+        'identifier': '0130206984449556485',
+        'createdFor': ['01285019302823526477', 'ORG_001'],
+        'endDate': '2020-05-15',
+        'description': 'test',
+        'updatedDate': '2020-05-14 07:34:30:796+0000',
+        'batchId': '0130206984449556485',
+        'createdDate': '2020-05-14 07:16:05:013+0000',
+        'createdBy': 'fd4227f7-9de8-40b4-af82-edb8cbd14fb1',
+        'mentors': ['a41dc769-882a-4d93-b7b8-5cfcff1becfe', '7dc801f2-a9aa-4561-ba93-b7b31696efd1'],
+        'name': '14th may batch 5',
+        'id': '0130206984449556485',
+        'enrollmentType': 'open',
+        'courseId': 'do_1130206856421867521137',
+        'enrollmentEndDate': '2020-05-15',
+        'startDate': '2020-05-14',
+        'status': 1,
+        'courseDetails': {
+            'identifier': 'do_1130206856421867521137',
+            'name': '14th may live curriculaum'
+        }
+    }],
     successData: {
         'id': '0122838911932661768',
         'name': 'Course',

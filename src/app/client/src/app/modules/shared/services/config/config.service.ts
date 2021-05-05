@@ -4,8 +4,8 @@ import * as dropDownConfig from './dropdown.config.json';
 import * as rolesConfig from './roles.config.json';
 import * as appConfig from './app.config.json';
 import * as editorConfig from './editor.config.json';
-import * as offlineConfig from './offline.config.json';
 import * as constants from './constants.json';
+import * as offlineConfig from './offline.config.json';
 
 /**
  * Service to fetch config details.
@@ -38,15 +38,15 @@ export class ConfigService {
   *
   */
   editorConfig = (<any>editorConfig.default);
-  /**
-  * property containing offline application config
-  *
-  */
-  offlineConfig = (<any>offlineConfig.default);
 
   /**
    * Constants to configure the app
    */
   constants = (<any>constants.default);
+  /**
+  * property containing offline application config
+  *
+  */
+  offlineConfig = (<any>offlineConfig.default);
 }
 

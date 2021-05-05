@@ -2,7 +2,6 @@ import { IInteractEventObject, IImpressionEventInput } from '@sunbird/telemetry'
 import { ResourceService } from '@sunbird/shared';
 import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, Input, OnDestroy } from '@angular/core';
 import { UserService } from '@sunbird/core';
-import { environment } from '@sunbird/environment';
 import { ToasterService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
@@ -16,9 +15,9 @@ import { PopupControlService } from '../../../../service/popup-control.service';
 })
 export class ValidateTeacherIdentifierPopupComponent implements OnInit, OnDestroy {
   @Input() userFeedData: {};
-  @Input() labels: {};
+  @Input() labels: any;
   @Output() close = new EventEmitter<any>();
-  @ViewChild('createValidateModal') createValidateModal;
+  @ViewChild('createValidateModal', {static: false}) createValidateModal;
   userDetailsForm: FormGroup;
   formBuilder: FormBuilder;
   processValidation = false;
@@ -26,7 +25,6 @@ export class ValidateTeacherIdentifierPopupComponent implements OnInit, OnDestro
   showError: boolean;
   extIdVerified: boolean;
   extIdFailed: boolean;
-  isOffline = environment.isOffline;
   userId: string;
   channelData: [];
   showStateDropdown: boolean;

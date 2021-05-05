@@ -1,4 +1,26 @@
 @import 'variables';
+@import "mixins/mixins";
+
+
+// Mobile Device
+$sb-mobileDevice-width-mobile: 360px;
+$sb-mobileDevice-height-mobile: 202.5px;
+$sb-mobileDevice-width-tablet: 680px;
+$sb-mobileDevice-height-tablet: 340px;
+$sb-mobileDevice-width-desktop: 800px;
+$sb-mobileDevice-height-desktop: 400px;
+$sb-mobileDevice-border: 10px solid $black;
+$sb-mobileDevice-border-radius: 15px;
+$sb-mobileDevice-sensors-background: $black;
+$sb-mobileDevice-sensors-padding: 10px 5px 10px 0;
+$sb-mobileDevice-sensors-border-radius: 25px;
+$sb-mobileDevice-sensor-background: #252525;
+$sb-mobileDevice-sensor-size: 8px;
+$sb-mobileDevice-speaker-height: 74px;
+$sb-mobileDevice-speaker-width: 5px;
+$sb-mobileDevice-speaker-border-radius: 10px;
+$sb-mobileDevice-speaker-padding: 10px 0 10px 1px;
+$sb-mobileDevice-videoScreen-border-radius: 5px;
 
 .sb-mobileDevice {
     .sb-mobileDevice-screen {
@@ -62,7 +84,7 @@
     background-position: center;
     height: 100%;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: calculateRem(5px);
   }
 
   ::ng-deep {

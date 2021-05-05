@@ -31,6 +31,25 @@ export const testData = {
     'responseCode': 'CLIENT_ERROR',
     'result': {}
   },
+  noAttemptLeft: {
+    error: {
+      'result': {
+        'remainingAttempt': 0
+      }
+    }
+  },
+  oneAttemptLeft: {
+    'error': {
+      'params': {
+        'err': 'ERROR_INVALID_OTP',
+        'status': 'ERROR_INVALID_OTP',
+      }
+    },
+    'result': {
+      'maxAllowedAttempt': 2,
+      'remainingAttempt': 1
+    }
+  },
   resendOtpSuccess: {
     'id': 'api.otp.generate',
     'ver': 'v1',
@@ -65,11 +84,15 @@ export const testData = {
     'messages': {
       'fmsg': {
         'm0051': 'There is some technical error',
+      },
+      emsg: {
+        m0050: 'otp failed'
       }
     },
     'frmelmnts': {
       'lbl': {
-        'resentOTP': 'OTP resent'
+        'resentOTP': 'OTP resent',
+        wrongEmailOTP: 'wrong otp'
       }
     }
   }

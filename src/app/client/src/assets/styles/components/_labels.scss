@@ -26,7 +26,7 @@ $sb-label-status-indicator-error-background: $tertiary-color;
 // base label styles
 .sb-label {
     display: inline-block;
-    border: 1px solid;
+    border: calculateRem(1px) solid;
     color: $white-color;
     line-height: inherit;
     @include border-radius(3px);
@@ -177,6 +177,18 @@ $sb-label-status-indicator-error-background: $tertiary-color;
     font-size:calculateRem(16px);
     border: none;
     height: auto;
+}
+.badge {
+    display: inline-block;
+    background: var(--sbt-badge-bg);
+    color: var(--sbt-badge-text);
+    text-align: center;
+    padding: 0 .75rem;
+    border-radius: .25rem;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    font-size: 1rem;
+    font-weight: 400;
 }
 .sb-section-title {
     font-size: $font-size-md;

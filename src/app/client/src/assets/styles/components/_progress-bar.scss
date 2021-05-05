@@ -1,7 +1,7 @@
 .ui.progress {
   .bar {
-    background: $primary-color;
-    height: 4px !important;
+    background: var(--primary-color);
+    height: calculateRem(4px);
     min-width: 0;
 
     .progress {
@@ -11,11 +11,11 @@
 }
 
 .ui.progress.blue .bar {
-  background-color: $primary-color!important;
+  background-color: var(--primary-color)!important;
 }
 
 .ui.progress.success .bar {
-  background-color: $success-color !important;
+  background-color: var(--secondary-200) !important;
 }
 
 .ui.progress .label {

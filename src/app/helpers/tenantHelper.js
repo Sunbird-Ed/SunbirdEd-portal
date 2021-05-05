@@ -5,6 +5,7 @@ const uuidv1 = require('uuid/v1')
 const envHelper = require('./environmentVariablesHelper.js')
 const async = require('async')
 const _ = require('lodash')
+const { logger } = require('@project-sunbird/logger');
 const telemetryHelper = require('./telemetryHelper')
 const appId = envHelper.APPID
 const defaultTenant = envHelper.DEFAULT_CHANNEL
@@ -150,7 +151,7 @@ module.exports = {
       var stats = fs.statSync(path.join(__dirname, '../tenant', defaultTenant, 'index.html'))
       return stats.isFile()
     } catch (e) {
-      console.log('DEFAULT_CHANNEL_index_file_stats_error ', e)
+      logger.error({msg: 'tenantHelper : DEFAULT_CHANNEL_index_file_stats_error', error: e});
       return false;
     }
   }

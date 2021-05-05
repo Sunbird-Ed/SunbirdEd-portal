@@ -1,0 +1,251 @@
+@import "mixins/mixins";
+
+:host {
+
+  //back-header
+  .back-bar {
+    width: 100%;
+  }
+
+  // textbook header
+  .textbook {
+    &-container {
+      z-index: 2;
+      position: relative;
+      background-color: var(--rc-FAFAFA);
+    }
+
+    &__details {
+      flex: 1;
+      min-width: 0;
+    }
+
+    &__bookimg {
+      width: calculateRem(48px);
+      height: calculateRem(48px);
+
+      img {
+        width: calculateRem(48px);
+        height: calculateRem(48px);
+      }
+    }
+
+    &__heading {
+      min-width: 0;
+
+      .textbook__title {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 18px;
+      }
+    }
+
+    &__addbtn {
+      white-space: nowrap;
+    }
+  }
+
+  .certificate-container {
+    position: relative;
+    top: calculateRem(2px);
+    z-index: 2;
+
+    .certificate-scrollbar {
+      height: 90%;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+      padding-left: 0;
+     
+
+      html[dir="rtl"] & {
+        padding-right: 0;
+        padding-left: 0.5rem;
+      }
+    }
+
+    .certificates-label {
+      font-size: calculateRem(18px);
+      letter-spacing: 0;
+      line-height: 20px;
+    }
+
+    .certificate-content-area {
+      height: 100%;
+      width: 100%;
+    }
+
+    .certificate-sidebar {
+      height: 100vh;
+      // z-index: 2;
+      width: 100%;
+      background: var(--white);
+
+      @include respond-below(sm) {
+        height: auto;
+        margin-bottom: 0px;
+      }
+
+      .certificate-sbcard {
+        color: var(--gray-400);
+        font-family: "Noto Sans";
+        font-size: calculateRem(12px);
+        min-height: calculateRem(52px);
+        box-shadow: 0 3px 4px 0 rgba(2, 79, 157, 0.1);
+        background-color: var(--white);
+        border: .0625rem solid var(--rc-dedede);
+        border-radius: calculateRem(12px);
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition: box-shadow .3s ease-out, transform .3s ease-out, opacity .2s ease-out;
+        transition-delay: .1s;
+
+        &:active {
+          // border: .0625rem solid var(--primary-400);
+          // background-color: rgba(2, 79, 157, 0.1);
+          color: var(--primary-400);
+          font-weight: bold;
+          .border-right{
+            border-right: calculateRem(4px) solid var(--primary-400);
+            height: calculateRem(24px);
+          }
+        }
+
+        .certificate-card-img {
+          position: relative;
+        }
+
+        .certificate-card-count {
+          position: relative;
+          bottom: calculateRem(2px);
+        }
+      }
+    }
+
+    .select-template-container {
+      height: 100%;
+      position: relative;
+    }
+
+    .select-template-content {
+      height: 100vh;
+      width: 100%;
+      // background: var(--white);
+
+      @include respond-below(sm) {
+        height: auto;
+      }
+
+      .no-template-text {
+        color: var(--gray-300);
+        text-align: center;
+        max-width: calculateRem(310px);
+        font-size: calculateRem(12px);
+      }
+
+      .plus-icon {
+        position: relative;
+        bottom: calculateRem(1px);
+      }
+    }
+
+    .certificate-edit-content {
+      background: var(--white);
+      width: 100%;
+      height: 100vh;
+
+      @include respond-below(sm) {
+        height: auto;
+      }
+
+      .certificate-edit-area {
+        display: grid;
+        grid-template-areas:
+          "smallcard smallcard2";
+        grid-gap: calculateRem(24px);
+        grid-template-columns: 1fr 1fr;
+        background: var(--white);
+
+        @include respond-below(sm) {
+          grid-template-areas:
+            "smallcard"
+            "smallcard2";
+          grid-template-columns: 1fr;
+        }
+
+        .certificate-edit-sbcard {
+          width: 100%;
+          border-radius: calculateRem(8px);
+          cursor: pointer;
+          border: calculateRem(1px) solid #E8E8E8;
+
+          &:nth-child(1) {
+            grid-area: smallcard;
+          }
+
+          &:nth-child(2) {
+            grid-area: smallcard2;
+          }
+
+          .certificate-edit-sbcard-content {
+            height: 100%;
+
+            .certificate-frame {
+              box-shadow: 0 0.125rem 0.4375rem 0 rgba(0, 0, 0, .16);
+              position: relative;
+              width: 100%;
+
+              img {
+                max-width: 100%;
+                width: 100%;
+              }
+
+              .no-cert {
+                min-height: calculateRem(300px);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+
+  ::ng-deep {
+    .ui.selection.dropdown>.text {
+      cursor: text;
+      font-weight: bold;
+      position: relative;
+      left: 8px;
+
+      html[dir="rtl"] & {
+        right: 8px;
+        left: 0px;
+      }
+    }
+  }
+
+  .sb-batch-update-modal {
+    .checkbox-img {
+      position: absolute;
+      top: 0.5rem;
+      left: 3rem;
+      display: inline;
+      width: 2rem;
+      height: 2rem;
+      background-color: var(--rc-009D53);
+      -webkit-mask-image: url(assets/images/warning.svg);
+      mask-image: url(assets/images/warning.svg);
+      -webkit-mask-size: contain;
+      -webkit-mask-position: 50% 50%;
+      -webkit-mask-repeat: no-repeat;
+      mask-size: contain;
+      mask-position: 50% 50%;
+      mask-repeat: no-repeat;
+    }
+  }
+
+}
+
+.add-new-template-btn{position:absolute;right:0px;top:0px;}

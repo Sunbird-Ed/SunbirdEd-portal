@@ -10,7 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockUserData } from './validate-teacher-identifier-popup.component.spec.data';
 import * as _ from 'lodash-es';
-
+import { configureTestSuite } from '@sunbird/test-util';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 
 const mockUserService = {
@@ -26,7 +26,7 @@ const mockUserService = {
 describe('ValidateTeacherIdentifierPopupComponent', () => {
   let component: ValidateTeacherIdentifierPopupComponent;
   let fixture: ComponentFixture<ValidateTeacherIdentifierPopupComponent>;
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ValidateTeacherIdentifierPopupComponent],

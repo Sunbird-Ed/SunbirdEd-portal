@@ -57,13 +57,13 @@ export interface IUserProfile {
     roleOrgMap?: { [key: string]: string };
     organisationIds?: Array<string>;
     hashTagIds?: Array<string>;
-    organisationNames?: Array<string>;
     framework?: any;
     tncAcceptedVersion?: string;
     tncAcceptedOn?: string;
     tncLatestVersion?: string;
     promptTnC?: boolean;
     tncLatestVersionUrl?: string;
+    managedBy?: string;
 }
 export interface IJobProfile {
     jobName: string;

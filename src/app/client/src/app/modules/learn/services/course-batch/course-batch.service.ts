@@ -5,7 +5,9 @@ import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { SearchParam, LearnerService, UserService, ContentService, SearchService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class CourseBatchService {
   private _enrollToBatchDetails: any;
   private _updateBatchDetails: any;
@@ -49,12 +51,13 @@ export class CourseBatchService {
       if (requestParam.limit) {
         option.data.request['limit'] = requestParam.limit;
       }
-      const mentorOrg = this.userService.userProfile.roleOrgMap['COURSE_MENTOR'];
+      const mentorOrg = this.userService.userProfile.roleOrgMap['CONTENT_CREATOR'];
       if (mentorOrg && mentorOrg.includes(this.userService.rootOrgId)) {
         option.data.request.filters['rootOrgId'] = this.userService.rootOrgId;
       } else if (mentorOrg) {
         option.data.request.filters['organisations.organisationId'] = mentorOrg;
       }
+      option.data.request.filters['organisations.roles'] = ['COURSE_MENTOR'];
       return this.learnerService.post(option).pipe(map((data) => {
         if (_.isEmpty(requestParam)) {
           this.defaultUserList = data;
@@ -162,5 +165,25 @@ export class CourseBatchService {
         return data.result.response;
       }));
     }
+  }
+  getcertificateDescription(enrolledBatchInfo) {
+    let certificateDescription = {isCertificate: false,description: ''};
+    const certificateTemplate = _.get(enrolledBatchInfo, 'cert_templates');
+    if(certificateTemplate && Object.keys(certificateTemplate).length !== 0) {
+      const templateKey = Object.keys(certificateTemplate);
+      const description = certificateTemplate[templateKey[0]].description
+      if(description){
+        certificateDescription = {
+          isCertificate: true,
+          description: description
+        };
+      }else{
+        certificateDescription = {
+          isCertificate: true,
+          description: ''
+        };
+      }
+    }
+    return certificateDescription;
   }
 }

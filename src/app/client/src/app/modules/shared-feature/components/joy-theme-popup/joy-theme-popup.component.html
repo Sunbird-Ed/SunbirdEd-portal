@@ -1,0 +1,43 @@
+<sui-modal
+[mustScroll]="true" 
+  [isClosable]="false" 
+  [transitionDuration]="0"
+  [size]="'normal'"
+  class="sb-modal"
+  #modal
+  (dismissed)="closePopup()"
+  appBodyScroll 
+  *ngIf="showPopup">
+
+
+  <div class="sb-group-container sb-group-container--md sbt-welcome-theme-container">
+    <a class="close" appTelemetryInteract [telemetryInteractEdata]="closeButtonIntractEdata" (click)="closePopup()"><i class="d-flex icon-svg icon-svg--xxs icon-close">
+      <svg class="icon icon-svg--warning">
+        <use xlink:href="./assets/images/sprite.svg#close"></use>
+      </svg>
+    </i></a>
+    <!-- below content comes from CC -->
+    <div class="text-left">
+      <h4 class="sb-group-container__title mt-24 px-24 w-75">{{resourceService.frmelmnts?.lbl?.newLookAndFeel | interpolate:'{instance}': instance}}</h4>
+      <p class="sb-group-container__description px-24 mt-8 w-75">{{resourceService.frmelmnts?.lbl?.joyThemeText}}.</p>
+    </div>
+    <div class="w-100">
+    <div class="img-container text-center w-100 pt-24">
+      <img src="./assets/images/new-theme-img.svg" class="w-100" alt="New Joyful Theme" />
+    </div>
+    <div class="d-flex flex-dc joy-modal-footer">
+      <p class="sb-group-container__description mt-16 fnormal text-left"><span class="sb-color-warning">*</span> {{resourceService.frmelmnts?.lbl?.goBackToClassicTheme | interpolate:'{instance}': instance }}</p>
+      <div class="text-right">
+      <button class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" appTelemetryInteract [telemetryInteractEdata]="oldThemeIntractEdata"
+      (click)="switchToNewLayout(false)">{{resourceService?.frmelmnts?.lbl?.noThankYou}}!
+      </button>
+      <button class="sb-btn  sb-btn-primary sb-btn-normal mr-8" appTelemetryInteract [telemetryInteractEdata]="joyThemeIntractEdata"
+              (click)="switchToNewLayout(true)"> {{resourceService.frmelmnts?.lbl?.tryNewTheme}}
+      </button>
+</div>
+    </div>
+  </div>
+  </div>
+
+
+</sui-modal>

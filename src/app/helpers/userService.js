@@ -1,4 +1,6 @@
 const {getKeyCloakClient} = require('./keyCloakHelper');
+const {getCurrentUserRoles} = require('./permissionsHelper');
+const telemetryHelper = require('./telemetryHelper.js');
 const envHelper = require('./environmentVariablesHelper.js');
 const keyCloakClient = getKeyCloakClient({
   resource: envHelper.KEYCLOAK_GOOGLE_CLIENT.clientId,
@@ -13,8 +15,10 @@ const CONSTANTS = require('./constants');
 const _ = require('lodash');
 const {acceptTermsAndCondition} = require('./userHelper');
 const httpSatusCode = require('http-status-codes');
-const logger = require('sb_logger_util_v2');
+const { logger } = require('@project-sunbird/logger');
 const {delay} = require('../helpers/utilityService');
+const uuidv1 = require('uuid/v1');
+const {parseJson} = require('./utilityService');
 
 const handleError = (error) => {
   logger.error({
@@ -126,11 +130,68 @@ const acceptTnc = async (req, res) => {
   }
 };
 
+const switchUser = async (req, res) => {
+  let isManagedUser;
+  if (!req.params.userId || !req.query.isManagedUser) {
+    logger.info({msg: 'switch user rejected missing userID'});
+    res.status(httpSatusCode.BAD_REQUEST).send(errorResponse);
+  }
+  const initiatorUserData = {
+    session: req.session
+  };
+  const cdata = [
+    {id: 'initiator-id', type: initiatorUserData.session.userId},
+    {id: 'managed-user-id', type: req.params.userId}
+  ];
+  if (req.query.isManagedUser) {
+    isManagedUser = parseJson(req.query.isManagedUser);
+  }
+  getCurrentUserRoles(req, function (error, data) {
+    if (error) {
+      res.status(httpSatusCode.INTERNAL_SERVER_ERROR).send(errorResponse);
+    } else {
+      telemetryHelper.logSessionEnd(initiatorUserData, cdata);
+      req.session.userSid = uuidv1();
+      if (!isManagedUser) {
+        delete req.session.managedToken;
+      }
+      req.session.save(function (error) {
+        if (error) {
+          res.status(httpSatusCode.INTERNAL_SERVER_ERROR).send(errorResponse);
+        } else {
+          telemetryHelper.logSessionStart(req, cdata);
+          res.status(httpSatusCode.OK).send({
+            id: "api.user.switch",
+            params: {
+              err: null,
+              status: "success",
+              errType: null,
+              message: "User Switched Successfully"
+            },
+            responseCode: httpSatusCode.OK,
+            result: {
+              response: "Success",
+              userSid: req.session.userSid
+            }
+          });
+        }
+      });
+    }
+  }, req.params.userId, isManagedUser);
+};
 
-module.exports = {acceptTnc, acceptTncAndGenerateToken};
+const errorResponse = {
+  id: "api.user.switch",
+  params: {
+    err: "failed to switch user",
+    status: "error",
+    errType: "FAILED_TO_SWITCH_USER"
+  },
+  responseCode: httpSatusCode.BAD_REQUEST,
+  result: {
+    response: "ERROR"
+  }
+};
 
 
-
-
-
-
+module.exports = {acceptTnc, acceptTncAndGenerateToken, switchUser};

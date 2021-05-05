@@ -1,43 +1,69 @@
-<sui-modal
-    [mustScroll]="true"
-    [isClosable]="false"
-    [transitionDuration]="0"
-    [size]="'normal'"
-    class="sb-modal"
-    appBodyScroll
-    (dismissed)="goToCreate();"
-    #modal
-    [appTelemetryImpression]="telemetryImpression">
 
-    <i class="icon close" (click)="modal.deny('denied')" tabindex="0"></i>
+  <sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'normal'"
+  class="sb-modal sb-course-modal" appBodyScroll (dismissed)="goToCreate();" #modal
+  [appTelemetryImpression]="telemetryImpression">
 
+  <i class="icon close" (click)="modal.deny('denied')" tabindex="0"></i>
+
+  <!-- This section will show framework selection cards -->
+  <div *ngIf="showFrameworkSelection">
     <!--Header-->
     <div class="sb-modal-header">
-        {{resourceService?.frmelmnts?.lbl[creationFormLable]}}
+      {{resourceService?.frmelmnts?.lbl?.whatToCreate}}
     </div>
     <!--/Header-->
-
+  
     <!--Content-->
-    <div class="sb-modal-content o-y-visible pb-8" *ngIf="formFieldProperties && categoryMasterList">
-        <app-content-creation-default-template
-            #formData
-            [formFieldProperties]="formFieldProperties"
-            [categoryMasterList]="categoryMasterList">
-        </app-content-creation-default-template>
+    <div class="sb-modal-content o-y-visible">
+      <div class="sbgrid p-16" #formData>
+        <div [ngClass]="{'active': selectedCard === data}" (click)="selectFramework(data)"  class="sb-education-card" *ngFor="let data of frameworkCardData">
+          <div class="checkbox-img"></div>
+          <h4 class="sb-education-card__title pb-12">
+            {{data.title}}
+          </h4>
+          <p class="sb-education-card__text">
+            {{data.description}}
+          </p>
+        </div>
+      </div>
     </div>
     <!--/Content-->
-
+  
     <!--Actions-->
     <div class="sb-modal-actions">
-        <button
-            class="sb-btn sb-btn-normal sb-btn-primary"
-            (click)="createContent();modal.deny()"
-            appTelemetryInteract [telemetryInteractEdata]="{id:'start-creating',
-            type: 'click',
-            pageid: 'workspace'}"
-        >
+      <button [ngClass]="{'sb-btn-disabled' : !enableCreateButton}" [disabled]="!enableCreateButton"
+        class="sb-btn sb-btn-normal sb-btn-primary" (click)="createContent();modal.deny()">
             {{resourceService?.frmelmnts?.btn?.startcreating}}
-        </button>
+      </button>
     </div>
-    <!--/Actions-->
+    <!-- /Actions-->
+  </div>
+
+  <!-- This section will show as usual creation popup -->
+  <div *ngIf="!showFrameworkSelection">
+    <!--Header-->
+    <div class="sb-modal-header">
+      {{resourceService?.frmelmnts?.lbl[creationFormLable]}}
+    </div>
+    <!--/Header-->
+  
+    <!--Content-->
+    <div class="sb-modal-content o-y-visible" *ngIf="formFieldProperties && categoryMasterList">
+      <app-content-creation-default-template #formData [formFieldProperties]="formFieldProperties"
+        [categoryMasterList]="categoryMasterList">
+      </app-content-creation-default-template>
+    </div>
+    <!--/Content-->
+  
+    <!--Actions-->
+    <div class="sb-modal-actions">
+      <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="createContent(modal)">
+        {{resourceService?.frmelmnts?.btn?.startcreating}}
+      </button>
+    </div>
+  </div>
+
+  <!--/Actions-->
 </sui-modal>
+
+

@@ -1,4 +1,4 @@
-<div class="ui grid">
+<div class="ui grid relative9">
   <div class="one wide column"></div>
   <div class="ten wide column">
     <div class="row" *ngIf="showLoader">
@@ -19,19 +19,20 @@
           </h5>
         </div>
       </div>
-
+      <div class="aspectratio sbt-shadow-radius" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio>
       <app-player class="content-player" [playerConfig]="playerConfig"></app-player>
+      </div>
     </div>
 
     <div class="row mt-10" *ngIf="!showLoader">
       <div class="mt-5 videosegment ui clearing segment">
-        <div *ngIf="userService.userid !== contentData.createdBy &&  permissionService.permissionAvailable && contentData && contentData.status === 'Flagged'"
+        <div class="d-flex flex-ai-center flex-jc-flex-end" *ngIf="userService.userid !== contentData.createdBy &&  permissionService.permissionAvailable && contentData && contentData.status === 'Flagged'"
          appPermission [permission]="['FLAG_REVIEWER']">
-          <button class="ui right floated primary button mouse-pointer" (click)="acceptContentFlag()">
-          {{resourceService?.frmelmnts?.btn?.accept}}
-        </button>
-          <button class="ui right floated primary button mouse-pointer" (click)="discardContentFlag()">
+         <button class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" (click)="discardContentFlag()">
           {{resourceService?.frmelmnts?.btn?.discard}}
+        </button>
+          <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="acceptContentFlag()">
+          {{resourceService?.frmelmnts?.btn?.accept}}
         </button>
         </div>
       </div>

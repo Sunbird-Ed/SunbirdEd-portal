@@ -12,6 +12,9 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { Response } from './flag-reviewer.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { CoreModule } from '@sunbird/core';
+import { DateFilterXtimeAgoPipe } from './../../pipes';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('FlagReviewerComponent', () => {
   let component: FlagReviewerComponent;
@@ -63,10 +66,11 @@ describe('FlagReviewerComponent', () => {
   const mockUserRoles = {
     userRoles: ['PUBLIC']
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [FlagReviewerComponent],
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), TelemetryModule.forRoot()],
+      declarations: [FlagReviewerComponent, DateFilterXtimeAgoPipe],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot()],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ResourceService, ToasterService,

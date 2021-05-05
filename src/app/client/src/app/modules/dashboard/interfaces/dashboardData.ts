@@ -56,3 +56,9 @@ export interface IBatchListData {
     status?: Number;
     updatedDate?: any;
 }
+
+export interface IDashboardItems {
+    title: string;
+    count: number;
+    type: string;
+}

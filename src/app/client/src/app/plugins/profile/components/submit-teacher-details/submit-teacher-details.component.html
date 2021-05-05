@@ -1,0 +1,67 @@
+<div class="mt-24 sb-md-container">
+  <div class="sb-modal-header teacher-header font-weight-bold px-24 py-16">
+    <span *ngIf="formAction === 'submit'">{{resourceService?.frmelmnts?.lbl?.provideTeacherDetails}} </span>
+    <span *ngIf="formAction === 'update'">{{resourceService?.frmelmnts?.lbl?.updateDetails}}</span>
+  </div>
+
+  <div class="py-16 px-32">
+    <div *ngIf="showLoader">
+      <app-loader></app-loader>
+    </div>
+
+    <div *ngIf="!showLoader">
+      <sb-form *ngIf="tenantPersonaForm" [config]="tenantPersonaForm" [platform]="'web'"
+        (initialize)="tenantPersonaFormValueChanges($event?.value); tenantPersonaFormStatusChanges($event);"
+        (valueChanges)="tenantPersonaFormValueChanges($event)" (statusChanges)="tenantPersonaFormStatusChanges($event)">
+      </sb-form>
+
+      <sb-form *ngIf=" teacherDetailsForm?.length" [config]="teacherDetailsForm" [platform]="'web'"
+        (valueChanges)="declarationFormValueChanges($event)" (statusChanges)="declarationFormStatusChanges($event)"
+        (linkClicked)="linkClicked($event)">
+      </sb-form>
+
+      <div class="teacher-buttons text-right">
+        <button *ngIf="formAction === 'submit'" appTelemetryInteract [telemetryInteractEdata]="submitInteractEdata"
+          [ngClass]="{'sb-btn-disabled': !isTenantPersonaFormValid || !isDeclarationFormValid}"
+          class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="!isTenantPersonaFormValid || !isDeclarationFormValid"
+          (click)="submit()">
+          {{resourceService?.frmelmnts?.btn?.submit}}
+        </button>
+        <button *ngIf="formAction === 'update'" appTelemetryInteract [telemetryInteractEdata]="getUpdateTelemetry()"
+          [ngClass]="{'sb-btn-disabled': !isTenantPersonaFormValid || !isDeclarationFormValid}"
+          class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="!isTenantPersonaFormValid || !isDeclarationFormValid"
+          (click)="submit()">
+          {{resourceService?.frmelmnts?.btn?.update}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- information submitted modal in TEACHER Profile-->
+<sui-modal *ngIf="showSuccessModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'"
+  class="sb-modal sb-success" appBodyScroll (dismissed)="closeSuccessModal()" #modal>
+  <div class="sb-modal-header font-weight-normal">
+    {{resourceService?.frmelmnts?.lbl?.thankyouForSubmittingDetails}}
+  </div>
+  <div class="sb-modal-content text-center">
+    <div class="my-16">{{resourceService?.frmelmnts?.lbl?.editProfileInfo}}</div>
+  </div>
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-success" appTelemetryInteract
+      [telemetryInteractEdata]="submitDetailsInteractEdata" (click)="closeSuccessModal()">
+      {{resourceService?.frmelmnts?.btn?.ok}}
+    </button>
+  </div>
+</sui-modal>
+
+<app-tnc-popup (close)="showAndHidePopup(false)" [tncUrl]="termsAndConditionLink" *ngIf="showTncPopup">
+</app-tnc-popup>
+
+<sui-modal *ngIf="isOtpVerificationRequired" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'small'" class="sb-modal sb-modal-white sb-success" appBodyScroll (dismissed)="onOtpPopupClose()" #modal>
+
+  <app-otp-popup [otpData]="otpData" [redirectToLogin]="false" (verificationSuccess)="onVerificationSuccess($event)"
+    (closeContactForm)="onOtpPopupClose()" (redirectToParent)="onOtpVerificationError($event)">
+  </app-otp-popup>
+</sui-modal>

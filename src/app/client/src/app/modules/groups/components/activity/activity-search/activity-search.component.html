@@ -1,0 +1,101 @@
+<app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration">
+</app-landing-section>
+
+<div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-back-header sbt-activity-search relative9':'sb-back-header'" >
+  <app-back-button></app-back-button>
+  <div class="content-header" [appTelemetryImpression]="telemetryImpression">
+    <div class="ui container py-16">
+      <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
+        <div class="flex-basis-1 mr-32 activity-search">
+          <div class="content-header__title font-weight-bold sb__ellipsis sb__ellipsis--one d-flex">
+            <div>{{resourceService?.frmelmnts?.lbl?.addContentType | interpolate:'{contentType}': groupAddableBlocData?.params?.contentType}}</div>
+          </div>
+          <div class="d-flex flex-ai-center flex-jc-space-between content-header__info mt-16">
+            <div class="sb-search-box large">
+              <div class="input-div relative">
+                <i aria-hidden="true" class="search icon"></i>
+                <label for="search-for-content-group" class="hide">{{resourceService?.frmelmnts?.lbl?.TypeToSearchForContent}}</label>
+                <input class="sb-search-input" id="search-for-content-group" type="text" [(ngModel)]="searchQuery"
+                  [placeholder]="resourceService?.frmelmnts?.lbl?.TypeToSearchForContent" />
+              </div>
+              <button class="sb-btn sb-btn-normal"
+                (click)="search()">{{resourceService?.frmelmnts?.lbl?.search}}</button>
+            </div>
+            <button class="sb-btn sb-btn-outline-primary sb-btn-normal" (click)="toggleFilter()">
+              <img class="mr-4" alt="filter" src="./assets/images/outline-tune.svg"
+                width="16">{{resourceService?.frmelmnts?.lbl?.filterby}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="showFilters">
+    <app-global-search-filter *ngIf="initFilters && allTabData" [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true' (filterChange)="getFilters($event)">
+    </app-global-search-filter>
+  </div>
+  <div class="ui container">
+    <div class="mt-24">
+      <div class="sb-pageSection">
+        <div class="sb-pageSection-header">
+          <h4 class="sb-pageSection-title m-0 sb-pageSection-activity-title">
+            <span *ngIf="!queryParams?.key?.length">{{resourceService?.frmelmnts?.lbl?.activityRecommendation}}</span>
+            <span *ngIf="queryParams?.key?.length && contentList?.length">
+              {{resourceService?.frmelmnts?.lbl?.showingResultsForWithCount | interpolate:'{resultCount}' : contentList?.length}}&nbsp;
+              "{{queryParams?.key}}"</span>
+          </h4>
+        </div>
+      </div>
+
+      <div class="sb-card-grid my-24" *ngIf="showLoader">
+        <div class="sb-grid--item" *ngFor="let i of numberOfSections">
+          <sb-course-card [isLoading]="true"></sb-course-card>
+        </div>
+      </div>
+
+      <div *ngIf="!showLoader && contentList?.length" class="sb-card-grid my-24">
+        <div class="sb-card-grid--item" *ngFor="let content of contentList;">
+          <!-- <sb-course-card (cardClick)="addActivity($event)" [course]="content" [section]="null"
+            [cardImg]="content?.image || './assets/images/book.png'">
+          </sb-course-card> -->
+
+          <sb-library-card [content]="content"
+              [cardImg]="content?.image || 'assets/images/add-icon.svg'"  [hover-template]="hoverTemplate" [type]="'recently_viewed'">
+            <ng-template #hoverTemplate let-hoverData="hoverData" 
+              let-content="content">
+              <sb-card-hover class="card-hover" 
+                [hoverData]="hoverData"
+                [content]="content"
+                (hoverActionClick)="hoverActionClicked($event, appAddToGroupElement)">
+              </sb-card-hover>
+            </ng-template>
+            <div appAddToGroup #appAddToGroupElement [identifier]="content?.identifier" [pageId]="ADD_ACTIVITY_TO_GROUP"></div>
+          </sb-library-card>
+
+        </div>
+      </div>
+
+      <div class="twelve wide column" *ngIf="contentList?.length === 0 && !showLoader">
+        <app-no-result [data]="noResultMessage"></app-no-result>
+      </div>
+
+      <div class="twelve wide column right aligned"
+        *ngIf="paginationDetails?.totalItems > configService?.appConfig?.SEARCH.PAGE_LIMIT && !showLoader">
+        <div class="sb-pagination-container flex-jc-flex-end mt-16" *ngIf="paginationDetails?.pages?.length">
+          <div class="sb-pagination my-0">
+            <a [ngClass]="{disabled:paginationDetails?.currentPage===1 }" class="sb-item "
+              (click)="navigateToPage(1) ">&laquo;</a>
+            <a [ngClass]="{disabled:paginationDetails?.currentPage===1 }" class="sb-item "
+              (click)="navigateToPage(paginationDetails?.currentPage - 1)">&lt;</a>
+            <a *ngFor="let page of paginationDetails?.pages" [ngClass]="{active:paginationDetails?.currentPage===page}"
+              (click)="navigateToPage(page)" class="sb-item">{{page}}</a>
+            <a [ngClass]="{disabled:paginationDetails?.currentPage=== paginationDetails?.totalPages}"
+              (click)="navigateToPage(paginationDetails?.currentPage + 1)" class="sb-item">&gt;</a>
+            <a [ngClass]="{disabled:paginationDetails?.currentPage=== paginationDetails?.totalPages}"
+              (click)="navigateToPage(paginationDetails?.totalPages)" class="sb-item ">&raquo;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

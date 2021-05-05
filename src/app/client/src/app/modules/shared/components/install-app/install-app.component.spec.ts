@@ -5,14 +5,21 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { InstallAppComponent } from './install-app.component';
 import { ResourceService, ConfigService, BrowserCacheTtlService } from '../../services';
 import { CacheService } from 'ng2-cache-service';
+import { configureTestSuite } from '@sunbird/test-util';
+import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 
 describe('InstallAppComponent', () => {
     let comp: InstallAppComponent;
     let fixture: ComponentFixture<InstallAppComponent>;
-
+    configureTestSuite();
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-          imports: [HttpClientTestingModule],
+          imports: [HttpClientTestingModule,TranslateModule.forRoot({
+             loader: {
+                provide: TranslateLoader,
+                useClass: TranslateFakeLoader
+             }
+          }),],
           declarations: [ InstallAppComponent, InterpolatePipe ],
           providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService],
           schemas: [NO_ERRORS_SCHEMA]

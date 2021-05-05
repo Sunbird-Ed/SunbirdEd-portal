@@ -6,13 +6,15 @@ import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { NgInviewModule } from 'angular-inport';
 import {SharedFeatureModule} from '@sunbird/shared-feature';
-import { PublicCourseComponent, PublicCourseConsumptionPageComponent,
+import { PublicCourseConsumptionPageComponent,
   ExploreCourseComponent, PublicCoursePlayerComponent, PublicBatchDetailsComponent } from './components';
 import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
   SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
 import { CourseConsumptionService, CourseBatchService, CourseProgressService } from '@sunbird/learn';
 import { FormsModule } from '@angular/forms';
 import { PlayerHelperModule } from '@sunbird/player-helper';
+import { ContentSearchModule } from '@sunbird/content-search';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
 
 @NgModule({
   imports: [
@@ -26,10 +28,12 @@ import { PlayerHelperModule } from '@sunbird/player-helper';
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
     SuiRatingModule, SuiCollapseModule,
     FormsModule,
-    PlayerHelperModule
+    PlayerHelperModule,
+    ContentSearchModule,
+    CommonConsumptionModule
   ],
   providers: [CourseConsumptionService, CourseBatchService, CourseProgressService],
-  declarations: [ PublicCourseComponent, PublicCourseConsumptionPageComponent, ExploreCourseComponent,
+  declarations: [ PublicCourseConsumptionPageComponent, ExploreCourseComponent,
     PublicCoursePlayerComponent, PublicBatchDetailsComponent ]
 })
 export class CourseModule { }

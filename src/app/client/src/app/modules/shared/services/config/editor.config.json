@@ -1,5 +1,5 @@
 {
-    "DEFAULT_PARAMS_FIELDS": "createdBy,status,mimeType,contentType,resourceType,collaborators",
+    "DEFAULT_PARAMS_FIELDS": "createdBy,status,mimeType,contentType,resourceType,collaborators,contentDisposition,primaryCategory,framework,targetFWIds",
     "COLLECTION_EDITOR": {
         "WINDOW_CONFIG": {
             "editorConfig": {
@@ -77,9 +77,10 @@
                 "childrenTypes": [
                     "CourseUnit",
                     "Collection",
-                    "Resource"
+                    "Resource",
+                    "Course"
                 ],
-                "addType": "Editor",
+                "addType": ["Editor", "Browser"],
                 "iconClass": "fa fa-book"
             },
             {
@@ -91,6 +92,7 @@
                     "CourseUnit",
                     "Collection",
                     "Resource",
+                    "Course",
                     "SelfAssess",
                     "FocusSpot",
                     "LearningOutcomeDefinition",
@@ -98,10 +100,42 @@
                     "CuriosityQuestions",
                     "MarkingSchemeRubric",
                     "ExplanationResource",
-                    "ExperientialResource"
+                    "ExperientialResource",
+                    "PracticeResource",
+                    "LessonPlan",
+                    "eTextBook",
+                    "TeachingMethod",
+                    "PedagogyFlow",
+                    "CuriosityQuestionSet",
+                    "ConceptMap",
+                    "ExplanationVideo",
+                    "ClassroomTeachingVideo",
+                    "ExplanationReadingMaterial",
+                    "LearningActivity",
+                    "PreviousBoardExamPapers",
+                    "LessonPlanResource",
+                    "TVLesson"
                 ],
-                "addType": "Editor",
+                "addType": ["Editor"],
                 "iconClass": "fa fa-folder-o"
+            },
+            {
+                "type": "LessonPlan",
+                "label": "LessonPlan",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "eTextBook",
+                "label": "eTextBook",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
             },
             {
                 "type": "Collection",
@@ -109,7 +143,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -118,7 +152,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },{
                 "type": "SelfAssess",
@@ -126,7 +160,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -135,7 +169,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -144,7 +178,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -153,7 +187,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -162,7 +196,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -171,7 +205,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -180,7 +214,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -189,7 +223,115 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "PracticeResource",
+                "label": "PracticeResource",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "TeachingMethod",
+                "label": "TeachingMethod",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "PedagogyFlow",
+                "label": "PedagogyFlow",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "CuriosityQuestionSet",
+                "label": "CuriosityQuestionSet",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "ConceptMap",
+                "label": "ConceptMap",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "ExplanationVideo",
+                "label": "ExplanationVideo",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "ClassroomTeachingVideo",
+                "label": "ClassroomTeachingVideo",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "ExplanationReadingMaterial",
+                "label": "ExplanationReadingMaterial",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "LearningActivity",
+                "label": "LearningActivity",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "PreviousBoardExamPapers",
+                "label": "PreviousBoardExamPapers",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "LessonPlanResource",
+                "label": "LessonPlanResource",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "TVLesson",
+                "label": "TVLesson",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             }
         ],
@@ -210,7 +352,7 @@
                     "ExplanationResource",
                     "ExperientialResource"
                 ],
-                "addType": "Editor",
+                "addType": ["Editor"],
                 "iconClass": "fa fa-folder-o"
             },
             {
@@ -219,7 +361,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -228,7 +370,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -237,7 +379,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -246,7 +388,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -255,7 +397,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -264,7 +406,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -273,7 +415,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -282,7 +424,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -291,7 +433,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             }
         ],
@@ -306,7 +448,7 @@
                     "Collection",
                     "Resource"
                 ],
-                "addType": "Editor",
+                "addType": ["Editor"],
                 "iconClass": "fa fa-book"
             },
             {
@@ -326,7 +468,7 @@
                     "ExplanationResource",
                     "ExperientialResource"
                 ],
-                "addType": "Editor",
+                "addType": ["Editor"],
                 "iconClass": "fa fa-folder-o"
             },
             {
@@ -335,7 +477,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -344,7 +486,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -353,7 +495,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -362,7 +504,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -371,7 +513,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -380,7 +522,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -389,7 +531,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -398,7 +540,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -407,7 +549,142 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            }
+        ],
+        "CURRICULUM_COURSE_ARRAY": [
+            {
+                "type": "CurriculumCourse",
+                "label": "Curriculum Course",
+                "isRoot": true,
+                "editable": true,
+                "childrenTypes": [
+                    "CourseUnit",
+                    "Collection",
+                    "Resource"
+                ],
+                "addType": ["Editor"],
+                "iconClass": "fa fa-book"
+            },
+            {
+                "type": "CourseUnit",
+                "label": "Course Unit",
+                "isRoot": false,
+                "editable": true,
+                "childrenTypes": [
+                    "CourseUnit",
+                    "Collection",
+                    "Resource",
+                    "SelfAssess",
+                    "FocusSpot",
+                    "LearningOutcomeDefinition",
+                    "PracticeQuestionSet",
+                    "CuriosityQuestions",
+                    "MarkingSchemeRubric",
+                    "ExplanationResource",
+                    "ExperientialResource",
+                    "PracticeResource"
+                ],
+                "addType": ["Editor"],
+                "iconClass": "fa fa-folder-o"
+            },
+            {
+                "type": "Collection",
+                "label": "Collection",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "Resource",
+                "label": "Resource",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },{
+                "type": "SelfAssess",
+                "label": "SelfAssess",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "FocusSpot",
+                "label": "FocusSpot",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "LearningOutcomeDefinition",
+                "label": "LearningOutcomeDefinition",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "PracticeQuestionSet",
+                "label": "PracticeQuestionSet",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "CuriosityQuestions",
+                "label": "CuriosityQuestions",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "MarkingSchemeRubric",
+                "label": "MarkingSchemeRubric",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "ExplanationResource",
+                "label": "ExplanationResource",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "ExperientialResource",
+                "label": "ExperientialResource",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "PracticeResource",
+                "label": "PracticeResource",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             }
         ],
@@ -422,7 +699,7 @@
                     "Collection",
                     "Resource"
                 ],
-                "addType": "Editor",
+                "addType": ["Editor"],
                 "iconClass": "fa fa-book"
             },
             {
@@ -433,6 +710,7 @@
                 "childrenTypes": [
                     "TextBookUnit",
                     "Collection",
+                    "Course",
                     "Resource",
                     "FocusSpot",
                     "LearningOutcomeDefinition",
@@ -440,10 +718,33 @@
                     "CuriosityQuestions",
                     "MarkingSchemeRubric",
                     "ExplanationResource",
-                    "ExperientialResource"
+                    "ExperientialResource",
+                    "eTextBook",
+                    "PracticeResource",
+                    "TeachingMethod",
+                    "PedagogyFlow",
+                    "CuriosityQuestionSet",
+                    "ConceptMap",
+                    "SelfAssess",
+                    "ExplanationVideo",
+                    "ClassroomTeachingVideo",
+                    "ExplanationReadingMaterial",
+                    "LearningActivity",
+                    "PreviousBoardExamPapers",
+                    "LessonPlanResource",
+                    "TVLesson"
                 ],
-                "addType": "Editor",
+                "addType": ["Editor"],
                 "iconClass": "fa fa-folder-o"
+            },
+            {
+                "type": "Course",
+                "label": "Course",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
             },
             {
                 "type": "Collection",
@@ -451,7 +752,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -460,7 +761,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -469,7 +770,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -478,7 +779,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -487,7 +788,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -496,7 +797,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -505,7 +806,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -514,7 +815,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -523,7 +824,7 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             },
             {
@@ -532,7 +833,133 @@
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
-                "addType": "Browser",
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "eTextBook",
+                "label": "eTextBook",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "PracticeResource",
+                "label": "PracticeResource",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "TeachingMethod",
+                "label": "TeachingMethod",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "PedagogyFlow",
+                "label": "PedagogyFlow",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "CuriosityQuestionSet",
+                "label": "CuriosityQuestionSet",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "ConceptMap",
+                "label": "ConceptMap",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "SelfAssess",
+                "label": "SelfAssess",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "ExplanationVideo",
+                "label": "ExplanationVideo",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "ClassroomTeachingVideo",
+                "label": "ClassroomTeachingVideo",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "ExplanationReadingMaterial",
+                "label": "ExplanationReadingMaterial",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "LearningActivity",
+                "label": "LearningActivity",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "PreviousBoardExamPapers",
+                "label": "PreviousBoardExamPapers",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "LessonPlanResource",
+                "label": "LessonPlanResource",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "TVLesson",
+                "label": "TVLesson",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
             }
         ],
@@ -543,7 +970,8 @@
             "flagged",
             "limitedPublish",
             "flagreviewer",
-            "collaborating-on"
+            "collaborating-on",
+            "alltextbooks"
         ],
         "collectionStatus": [
             "Review",
@@ -684,6 +1112,22 @@
                 },
                 "showEndPage": false
             }
-        }
+        },
+        "contentState": [
+            "upForReview",
+            "review",
+            "published",
+            "limitedPublish",
+            "flagreviewer",
+            "collaborating-on"
+        ],
+        "contentStatus": [
+            "Review",
+            "Draft",
+            "Live",
+            "Unlisted",
+            "FlagDraft",
+            "FlagReview"
+        ]
     }
 }

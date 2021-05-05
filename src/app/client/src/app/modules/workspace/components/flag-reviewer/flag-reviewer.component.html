@@ -1,10 +1,7 @@
 <div class="ui grid" *ngIf="flageReviewerContentData.length > 0 && !showLoader">
-  <div class="ten wide column">
+  <div class="twelve wide column">
     <app-data-driven-filter  [filterEnv]="filterType"  [accordionDefaultOpen]=false
       [isShowFilterLabel]=true></app-data-driven-filter>
-  </div>
-  <div class="two wide column">
-    <app-sort-by [sortingOptions]="sortByOption" [url]="redirectUrl"></app-sort-by>
   </div>
 </div>
 <div class="twelve wide column mt-20" *ngIf="showLoader ">

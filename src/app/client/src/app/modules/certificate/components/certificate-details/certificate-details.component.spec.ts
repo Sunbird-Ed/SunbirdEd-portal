@@ -13,6 +13,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { validateCertMockResponse } from './certificate-details.component.spec.data';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('CertificateDetailsComponent', () => {
   let component: CertificateDetailsComponent;
@@ -37,7 +38,7 @@ describe('CertificateDetailsComponent', () => {
       }
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, FormsModule, SharedModule.forRoot(), SuiModule, TelemetryModule.forRoot(), PlayerHelperModule],
@@ -68,6 +69,16 @@ describe('CertificateDetailsComponent', () => {
     expect(component.courseName).toBe(certData.result.response.json.badge.name);
   });
 
+  it('should process the video url if it is present inside response, no need to call hierarchy api', () => {
+    component.loader = true;
+    const certificateService = TestBed.get(CertificateService);
+    spyOn(certificateService, 'validateCertificate').and.returnValue(observableOf(validateCertMockResponse.successResponse));
+    spyOn(component, 'processVideoUrl');
+    const certData = validateCertMockResponse.successResponse;
+    component.certificateVerify();
+    expect(component.processVideoUrl).toHaveBeenCalledWith(certData.result.response.related.certVideoUrl);
+  });
+
   it('should not verify the certificate', () => {
     component.loader = true;
     const certificateService = TestBed.get(CertificateService);
@@ -85,6 +96,19 @@ describe('CertificateDetailsComponent', () => {
     component.watchVideoLink = validateCertMockResponse.getCourseIdResponse.result.content.certVideoUrl;
     component.getCourseVideoUrl('do_1126972203209768961327');
     expect(component.contentId).toBe('do_112831862871203840114');
+  });
+
+  it('should get key up event - getCodeLength', () => {
+    const event = {target: {value: 'key-up'}};
+    spyOn(component, 'getCodeLength');
+    component.getCodeLength(event);
+    expect(component.getCodeLength).toHaveBeenCalled();
+  });
+
+  it('should back to course return to course', () => {
+    spyOn(component, 'navigateToCoursesPage');
+    component.navigateToCoursesPage();
+    expect(component.navigateToCoursesPage).toHaveBeenCalled();
   });
 
   it('should play the content', () => {

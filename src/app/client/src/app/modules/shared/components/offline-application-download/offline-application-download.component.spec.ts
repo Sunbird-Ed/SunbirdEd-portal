@@ -6,6 +6,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { OfflineApplicationDownloadComponent } from './offline-application-download.component';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { Router, ActivatedRoute } from '@angular/router';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('OfflineApplicationDownloadComponent', () => {
   let component: OfflineApplicationDownloadComponent;
@@ -35,7 +36,7 @@ describe('OfflineApplicationDownloadComponent', () => {
       }
     }
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, TelemetryModule.forRoot()],

@@ -1,22 +1,12 @@
-@import "variables";
+
 @import "mixins/mixins";
 
-.ui.light-sea-green.button {
-  background: #2ca58d;
-  color: #fff;
-  height: 38px !important;
+.terms-and-cond-form{
+  height: calc(100vh - 350px);
+ iframe{
+   height: 100%;
+ }
 }
-
-.ui.grey.button {
-  background: #9B9B9B;
-  color: #fff;
-  height: 38px !important;
-}
-
-.width-310 {
-  width: 310px !important;
-}
-
 @include respond-below(sm) {
 
   ::ng-deep {
@@ -28,13 +18,15 @@
           margin: 0px !important;
           left: 0px !important;
           max-width: 100%;
+          height: 100%;
           .sb-modal-content {
-            min-height: calc(100vh - 96px);
+            height: calc(100% - 96px);
+            max-height: 100%;
+            overflow: hidden;
           }
         }
-
-        .toc-page {
-          height: calc(100vh - 215px);
+        .toc-page { 
+          height: 100%;
         }
       }
     }

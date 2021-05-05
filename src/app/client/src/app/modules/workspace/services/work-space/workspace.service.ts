@@ -1,11 +1,11 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { Observable, of as observableOf } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of as observableOf } from 'rxjs';
+import { map, skipWhile } from 'rxjs/operators';
 import {
   ConfigService, ServerResponse, ICard, NavigationHelperService, ResourceService, BrowserCacheTtlService
 } from '@sunbird/shared';
-import { ContentService, PublicDataService, UserService } from '@sunbird/core';
-import { IDeleteParam } from '../../interfaces/delteparam';
+import { ContentService, PublicDataService, UserService, ActionService } from '@sunbird/core';
+import { IDeleteParam, ContentIDParam } from '../../interfaces/delteparam';
 import { Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
@@ -26,6 +26,12 @@ export class WorkSpaceService {
   public listener;
   public showWarning;
   public browserBackEvent = new EventEmitter();
+
+  private _questionSetEnabled$ = new BehaviorSubject<any>(false);
+
+  public readonly questionSetEnabled$: Observable<any> = this._questionSetEnabled$.asObservable()
+  .pipe(skipWhile(data => data === undefined || data === null));
+
   /**
     * Constructor - default method of WorkSpaceService class
     *
@@ -37,11 +43,13 @@ export class WorkSpaceService {
     route: Router, public navigationHelperService: NavigationHelperService,
     private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     private resourceService: ResourceService, public publicDataService: PublicDataService,
-    public userService: UserService) {
+    public userService: UserService, public actionService: ActionService) {
     this.content = content;
     this.config = config;
     this.route = route;
+    this.publicDataService = publicDataService;
   }
+
   /**
   * deleteContent
   * delete  content based on contentId
@@ -73,10 +81,21 @@ export class WorkSpaceService {
       this.openCollectionEditor(content, state);
     } else if (mimeType === 'application/vnd.ekstep.ecml-archive') {
       this.openContent(content, state);
+    } else if (mimeType === 'application/vnd.sunbird.questionset') {
+      this.openQuestionSetEditor(content, state);
     } else if ((this.config.appConfig.WORKSPACE.genericMimeType).includes(mimeType)) {
       this.openGenericEditor(content, state);
     }
   }
+
+  openQuestionSetEditor(content, state) {
+    const navigationParams = ['/workspace/edit/QuestionSet/', content.identifier, state];
+    if (content.status) {
+      navigationParams.push(content.status);
+    }
+    this.route.navigate(navigationParams);
+  }
+
   /**
   * collectionEditor
   * @param {Object}  content - content
@@ -147,7 +166,8 @@ export class WorkSpaceService {
         name: item.name,
         image: item.appIcon,
         description: item.description,
-        lockInfo: item.lockInfo
+        lockInfo: item.lockInfo,
+        originData : item.originData
       };
       _.forIn(staticData, (value, key1) => {
         card[key1] = value;
@@ -259,4 +279,91 @@ export class WorkSpaceService {
       maxAge: this.browserCacheTtlService.browserCacheTtl
     });
   }
+
+/**
+  * Search Content which are used in some other content/collection
+  * @param {ContentID} requestParam
+  */
+  searchContent(requestparam: ContentIDParam): Observable<ServerResponse> {
+  const option = {
+    url: `${this.config.urlConFig.URLS.COMPOSITE.SEARCH}`,
+    'data': {
+      'request': {
+        'filters': {
+            'childNodes': [requestparam]
+          }
+        }
+        }
+    };
+    return this.content.post(option);
+  }
+
+/**
+ * To get channel details
+ * @param {channelId} id required for read API
+ */
+  getChannel(channelId): Observable<ServerResponse> {
+    const option = {
+      url: `${this.config.urlConFig.URLS.CHANNEL.READ}` + '/' + channelId
+    };
+    return this.publicDataService.get(option);
+  }
+
+  createQuestionSet(req): Observable<ServerResponse> {
+    const option = {
+          url: this.config.urlConFig.URLS.QUESTIONSET.CREATE,
+          data: {
+              'request': req
+          }
+      };
+    return this.actionService.post(option);
+  }
+
+  getQuestion(contentId: string, option: any = { params: {} }): Observable<ServerResponse> {
+    const param = { fields: this.config.editorConfig.DEFAULT_PARAMS_FIELDS };
+    const req = {
+        url: `${this.config.urlConFig.URLS.QUESTIONSET.READ}/${contentId}`,
+        param: { ...param, ...option.params }
+    };
+    return this.actionService.get(req).pipe(map((response: ServerResponse) => {
+        return response;
+    }));
+  }
+
+  getCategoryDefinition(objectType, name, channel?) {
+    const req = {
+      url: _.get(this.config, 'urlConFig.URLS.OBJECTCATEGORY.READ'),
+      param: _.get(this.config, 'urlConFig.params.objectCategory'),
+      data: {
+        request: {
+          objectCategoryDefinition: {
+              objectType: objectType,
+              name: name,
+              ...(channel && {channel})
+          }
+        }
+      }
+    };
+    return this.actionService.post(req);
+  }
+
+  getQuestionSetCreationStatus() {
+    const formInputParams = {
+      formType: 'questionset',
+      subType: 'editor',
+      formAction: 'display',
+    };
+    this.getFormData(formInputParams).subscribe(
+      (response) => {
+        const formValue = _.first(_.get(response, 'result.form.data.fields'));
+        const displayValue = formValue ? formValue.display : false;
+        this._questionSetEnabled$.next({err: null, questionSetEnablement: displayValue});
+      },
+      (error) => {
+        this._questionSetEnabled$.next({err: error, questionSetEnablement: false});
+        console.log(`Unable to fetch form details - ${error}`);
+      }
+    );
+  }
+
 }

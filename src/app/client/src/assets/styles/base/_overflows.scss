@@ -1,24 +1,15 @@
-.o-y-auto {
-    overflow-y: auto !important
+/* overflow styles */
+
+$value: ('auto': 'auto', 'visible': 'visible', 'hide': 'hidden', 'scroll': 'scroll');
+
+$cordinate: x, y;
+
+@each $i in $cordinate {
+  @each $key, $val in $value {
+    .o-#{$i}-#{$key} {
+      overflow-#{$i}: #{$val} !important;
+    }
+  }
 }
-.o-y-visible {
-    overflow-y: visible !important
-}
-.o-y-hide {
-    overflow-y: hidden !important
-}
-.o-y-scroll {
-    overflow-y: scroll !important 
-}
-.o-x-auto {
-    overflow-x: auto !important
-}
-.o-y-visible {
-    overflow-y: visible !important 
-}
-.o-x-hide {
-    overflow-x: hidden !important
-}
-.o-x-scroll {
-    overflow-x: scroll !important
-}
+
+/* overflow styles ends */

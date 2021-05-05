@@ -1,11 +1,11 @@
 #Dockerfile for the player setup
-FROM node:8.11.0
+FROM node:12.16.1
 MAINTAINER "Rajesh Rajendran <rajesh.r@optit.co>"
 RUN sed -i '/jessie-updates/d' /etc/apt/sources.list
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils \
     && apt-get install -y --force-yes python python-dev autoconf g++ make nasm bzip2 \
     && useradd jenkins
-RUN npm i -g npm@3.10.10
+RUN npm i -g npm@6.13.4
 RUN mkdir -p /home/jenkins
 WORKDIR /home/jenkins
 COPY * /home/jenkins/

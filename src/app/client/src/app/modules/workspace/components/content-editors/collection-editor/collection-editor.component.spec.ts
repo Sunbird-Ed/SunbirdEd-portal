@@ -11,6 +11,11 @@ import { ContentService, UserService, LearnerService, CoreModule, TenantService,
 import { mockRes } from './collection-editor.component.spec.data';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WorkSpaceService } from '../../../services';
+import { configureTestSuite } from '@sunbird/test-util';
+
+document.body.innerHTML = document.body.innerHTML +
+  '<input id="collectionEditorURL" value="https://dev.sunbirded.org/collection-editor/index.html"'
+  + ' type="hidden" />';
 
 const mockResourceService = { messages: { emsg: { m0004: '1000' } } };
 const mockActivatedRoute = {
@@ -28,10 +33,19 @@ class RouterStub {
 class NavigationHelperServiceStub {
   public navigateToWorkSpace() {}
 }
-const mockUserService = { userProfile: { userId: '68777b59-b28b-4aee-88d6-50d46e4c35090'} };
+const mockUserService = {
+  userOrgDetails$ : observableOf({}),
+  userProfile: {
+  userId: '68777b59-b28b-4aee-88d6-50d46e4c35090',
+  organisationIds: [],
+  framework: {
+    board: ['CBSE']
+  }
+}};
 describe('CollectionEditorComponent', () => {
   let component: CollectionEditorComponent;
   let fixture: ComponentFixture<CollectionEditorComponent>;
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CollectionEditorComponent],
@@ -56,8 +70,8 @@ describe('CollectionEditorComponent', () => {
   });
 
   it('should fetch tenant and collection details and set logo and collection details if success',
-  inject([EditorService, ToasterService, TenantService, WorkSpaceService, FrameworkService],
-    (editorService, toasterService, tenantService, workspaceService, frameworkService) => {
+  inject([EditorService, ToasterService, TenantService, WorkSpaceService, FrameworkService, UserService],
+    (editorService, toasterService, tenantService, workspaceService, frameworkService, userService) => {
       frameworkService._frameWorkData$ = mockRes.frameworkData;
       frameworkService._frameworkData$.next({
       err: null, frameworkdata: mockRes.frameworkData
@@ -100,4 +114,20 @@ describe('CollectionEditorComponent', () => {
     component.closeModal();
     expect(component.retireLock).toHaveBeenCalled();
   }));
+
+  it('should set window config nodeDisplayCriteria to CourseUnit if the content type is CurriculumCourse', () => {
+    component['routeParams'] = {type: 'curriculumcourse'};
+    const windowConfigData = { contentType: ['CourseUnit'] };
+    spyOn<any>(component, 'updateModeAndStatus').and.stub();
+    component['setWindowConfig']();
+    expect(window.config.nodeDisplayCriteria).toEqual(windowConfigData);
+  });
+
+  it('should pass user selected board in the context for courses', () => {
+    const userService = TestBed.get(UserService);
+    component['userProfile'] = userService.userProfile;
+    component['routeParams'] = {type: 'course'};
+    component['setWindowContext']();
+    expect(window.context.board).toEqual(['CBSE']);
+  });
 });

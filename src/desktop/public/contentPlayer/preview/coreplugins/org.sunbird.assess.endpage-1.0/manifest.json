@@ -1,0 +1,16 @@
+{
+    "id": "org.sunbird.assess.endpage",
+    "ver": "1.0",
+    "shortId": "org.sunbird.assess.endpage",
+    "author": "Jagadish Pujari",
+    "description": "",
+    "publishedDate": "",
+    "renderer": {
+        "main": "renderer/plugin.js",
+        "dependencies": [
+            {"type": "css", "src": "renderer/templates/style.css"}
+        ]
+    },
+    "dependencies": [ ]   
+
+}

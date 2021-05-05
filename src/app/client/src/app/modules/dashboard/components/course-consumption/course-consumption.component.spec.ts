@@ -16,6 +16,8 @@ import { UserService, SearchService, ContentService, LearnerService } from '@sun
 // Test data
 import * as mockData from './course-consumption.component.spec.data';
 import { TelemetryModule } from '@sunbird/telemetry';
+import { CoreModule } from '@sunbird/core';
+import { configureTestSuite } from '@sunbird/test-util';
 
 const testData = mockData.mockRes;
 describe('CourseConsumptionComponent', () => {
@@ -42,11 +44,11 @@ describe('CourseConsumptionComponent', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CourseConsumptionComponent],
-      imports: [HttpClientModule, FormsModule, SuiModule, ChartsModule, SharedModule.forRoot(), TelemetryModule.forRoot()],
+      imports: [CoreModule, HttpClientModule, FormsModule, SuiModule, ChartsModule, SharedModule.forRoot(), TelemetryModule.forRoot()],
       providers: [CourseConsumptionService,
         RendererService,
         LearnerService,

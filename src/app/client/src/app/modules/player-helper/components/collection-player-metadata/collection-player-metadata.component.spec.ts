@@ -7,20 +7,27 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute } from '@angular/router';
 import { CollectionPlayerMetadataComponent } from './collection-player-metadata.component';
 import { DateFormatPipe, InterpolatePipe } from '@sunbird/shared';
-import { ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
 import { Response } from './collection-player-metadata.spec.data';
-
+import { configureTestSuite } from '@sunbird/test-util';
+import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 describe('CollectionPlayerMetadataComponent', () => {
   let component: CollectionPlayerMetadataComponent;
   let fixture: ComponentFixture<CollectionPlayerMetadataComponent>;
   const fakeActivatedRoute = {
     'params': observableOf({ collectionId: 'LP_FT_TextBook2' })
   };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CollectionPlayerMetadataComponent, DateFormatPipe, InterpolatePipe],
-      imports: [HttpClientTestingModule, RouterTestingModule],
+      imports: [HttpClientTestingModule, RouterTestingModule, TranslateModule.forRoot({
+         loader: {
+            provide: TranslateLoader,
+            useClass: TranslateFakeLoader
+         }
+      })],
       providers: [ResourceService, ConfigService, CacheService,
         BrowserCacheTtlService, { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]

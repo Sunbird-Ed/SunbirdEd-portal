@@ -5,8 +5,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { throwError as observableThrowError, of as observableOf, Observable } from 'rxjs';
 import { testData } from './otp.service.spec.data';
 import { OtpService } from './otp.service';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('OtpService', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],

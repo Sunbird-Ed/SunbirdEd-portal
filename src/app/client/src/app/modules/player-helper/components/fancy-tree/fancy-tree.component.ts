@@ -4,18 +4,21 @@ import { IFancytreeOptions } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { TelemetryInteractDirective } from '@sunbird/telemetry';
 import { ActivatedRoute } from '@angular/router';
+import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
+
 @Component({
   selector: 'app-fancy-tree',
   templateUrl: './fancy-tree.component.html'
 })
 export class FancyTreeComponent implements AfterViewInit {
-  @ViewChild('fancyTree') public tree: ElementRef;
+  @ViewChild('fancyTree', {static: true}) public tree: ElementRef;
   @Input() public nodes: any;
   @Input() public options: any;
   @Input() public rootNode;
+  @Input() public telemetryInteractData;
   @Output() public itemSelect: EventEmitter<Fancytree.FancytreeNode> = new EventEmitter();
-  @ViewChild(TelemetryInteractDirective) telemetryInteractDirective: TelemetryInteractDirective;
-  constructor(public activatedRoute: ActivatedRoute) { }
+  @ViewChild(TelemetryInteractDirective, {static: false}) telemetryInteractDirective: TelemetryInteractDirective;
+  constructor(public activatedRoute: ActivatedRoute, private lazzyLoadScriptService: LazzyLoadScriptService) { }
   ngAfterViewInit() {
     let options: any = {
       extensions: ['glyph'],
@@ -30,7 +33,7 @@ export class FancyTreeComponent implements AfterViewInit {
       },
       click: (event, data): boolean => {
         this.telemetryInteractDirective.telemetryInteractObject = this.getTelemetryInteractObject(_.get(data, 'node.data'));
-        this.telemetryInteractDirective.telemetryInteractEdata = this.getTelemetryInteractEdata();
+        this.telemetryInteractDirective.telemetryInteractEdata = this.telemetryInteractData || this.getTelemetryInteractEdata();
         this.telemetryInteractDirective.telemetryInteractCdata = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode') ?
         [{id: _.get(this.activatedRoute, 'snapshot.queryParams.dialCode'), type: 'dialCode'}] : [];
         this.tree.nativeElement.click();
@@ -40,10 +43,14 @@ export class FancyTreeComponent implements AfterViewInit {
       },
     };
     options = { ...options, ...this.options };
-    $(this.tree.nativeElement).fancytree(options);
-    if (this.options.showConnectors) {
-      $('.fancytree-container').addClass('fancytree-connectors');
-    }
+    this.lazzyLoadScriptService.loadScript('fancytree-all-deps.js').subscribe(() => {
+      $(this.tree.nativeElement).fancytree(options);
+      if (this.options.showConnectors) {
+        $('.fancytree-container').addClass('fancytree-connectors');
+      }
+    }, err => {
+      console.error('loading fancy tree failed');
+    });
   }
 
   getTelemetryInteractObject(data) {

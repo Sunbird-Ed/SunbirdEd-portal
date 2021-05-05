@@ -5,23 +5,43 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import {
   ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
   CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent,
-  ContentRatingComponent, CommingSoonComponent, ContentDownloadComponent
+  ContentRatingComponent, CommingSoonComponent,
+  CreditsAndLicenceComponent, ContentActionsComponent, ContentPlayerComponent,
+  ContentPlayerPageComponent, ContentChapterlistComponent, ContentLicenceComponent,
+  CurriculumInfoComponent, CourseInfoComponent
 } from './components';
 import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
+import { FormsModule } from '@angular/forms';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
+import {SunbirdPdfPlayerModule} from '@project-sunbird/sunbird-pdf-player-v8';
+import { SunbirdVideoPlayerModule } from '@project-sunbird/sunbird-video-player-v8';
+import { SunbirdEpubPlayerModule } from '@project-sunbird/sunbird-epub-player-v8';
+
 @NgModule({
   imports: [
     CommonModule,
     SuiModule,
     TelemetryModule,
     SharedModule,
-    CoreModule
+    CoreModule,
+    FormsModule,
+    CommonConsumptionModule,
+    SunbirdPdfPlayerModule,
+    SunbirdVideoPlayerModule,
+    SunbirdEpubPlayerModule
   ],
   declarations: [ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
     CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent,
-    CommingSoonComponent, ContentDownloadComponent],
+    CommingSoonComponent, CreditsAndLicenceComponent, ContentActionsComponent,
+    ContentPlayerComponent, ContentPlayerPageComponent, ContentChapterlistComponent,
+    ContentLicenceComponent,
+    CurriculumInfoComponent,
+    CourseInfoComponent],
   exports: [ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
     CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent,
-    CommingSoonComponent, ContentDownloadComponent]
+    CommingSoonComponent, CreditsAndLicenceComponent, ContentActionsComponent,
+    ContentPlayerComponent, ContentPlayerPageComponent, ContentChapterlistComponent,
+    ContentLicenceComponent, CurriculumInfoComponent, CourseInfoComponent]
 })
 export class PlayerHelperModule { }

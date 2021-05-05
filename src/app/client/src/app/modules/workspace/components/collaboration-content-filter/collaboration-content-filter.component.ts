@@ -1,26 +1,15 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, ConfigService } from '@sunbird/shared';
 import { ISelectFilter } from '../../interfaces/selectfilter';
 import * as _ from 'lodash-es';
 import { Subject , Observable, of} from 'rxjs';
 import { debounceTime, distinctUntilChanged, delay, flatMap } from 'rxjs/operators';
-import { IInteractEventEdata } from '@sunbird/telemetry';
+import { IInteractEventEdata, IInteractEventInput, IInteractEventObject, IProducerData, TelemetryService } from '@sunbird/telemetry';
 @Component({
   selector: 'app-collaboration-content-filter',
   templateUrl: './collaboration-content-filter.component.html',
-  styles: [`
-     >>> .ui.dropdown:not(.button)>.default.text {
-      display: none;
-       }
-      .ui.inline.dropdown.search-dropdown {
-       margin-left: 5px;
-       box-sizing: border-box;
-       }
-      .popup-content{
-        width: 850px !important;
-       }
-   `]
+  styleUrls: ['./collaboration-content-filter.component.scss']
 })
 export class CollaborationContentFilterComponent implements OnInit {
   modelChanged: Subject<string> = new Subject<string>();
@@ -75,6 +64,15 @@ export class CollaborationContentFilterComponent implements OnInit {
   * Telemetry filterIntractEdata
   */
   filterIntractEdata: IInteractEventEdata;
+  telemetryInteractEdata: any;
+  appTelemetryInteractData: IInteractEventInput;
+
+  public telemetryService: TelemetryService;
+
+  @Input() telemetryInteractContext;
+  @Input() telemetryInteractCdata: Array<{}>;
+  @Input() telemetryInteractObject: IInteractEventObject;
+  @Input() telemetryInteractPdata: IProducerData;
 
   /**
    * Constructor to create injected service(s) object
@@ -88,7 +86,8 @@ export class CollaborationContentFilterComponent implements OnInit {
  */
   constructor(resourceService: ResourceService, config: ConfigService,
     activatedRoute: ActivatedRoute,
-    route: Router) {
+    route: Router, telemetryService: TelemetryService) {
+    this.telemetryService = telemetryService;
     this.route = route;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
@@ -105,7 +104,7 @@ export class CollaborationContentFilterComponent implements OnInit {
       .subscribe(params => {
         this.queryParams = { ...params };
         this.query = this.queryParams['query'];
-        this.sortByOption = this.queryParams['sort_by'];
+        this.sortByOption = _.isArray(this.queryParams['sort_by']) ? this.queryParams['sort_by'][0] : this.queryParams['sort_by'];
         _.forIn(params, (value, key) => {
           if (typeof value === 'string' && key !== 'query') {
             this.queryParams[key] = [value];
@@ -132,11 +131,33 @@ export class CollaborationContentFilterComponent implements OnInit {
     } else {
       delete this.queryParams['query'];
     }
+    this.setCollabartionContentSearchInteractEdata();
     this.route.navigate(['workspace/content/collaborating-on', 1], { queryParams: this.queryParams });
   }
   keyup(event) {
     this.query = event;
     this.modelChanged.next(this.query);
+  }
+  setCollabartionContentSearchInteractEdata() {
+    const searchInteractEdata = {
+      id: 'search-collabaration-content',
+      type: 'click',
+      pageid: 'collabratingon'
+    };
+    if (this.query) {
+      searchInteractEdata['extra'] = {
+        query: this.query
+      };
+    }
+      this.appTelemetryInteractData = {
+       context: {
+          env: _.get(this.telemetryInteractContext, 'env') || _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
+          _.get(this.activatedRoute, 'snapshot.data.telemetry.env'),
+          cdata: this.telemetryInteractCdata || [],
+        },
+        edata: searchInteractEdata
+      };
+      this.telemetryService.interact(this.appTelemetryInteractData);
   }
 
   applySorting(sortByOption) {

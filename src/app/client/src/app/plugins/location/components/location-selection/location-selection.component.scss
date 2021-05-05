@@ -1,0 +1,330 @@
+@import "variables";
+@import "mixins/mixins";
+
+.sb-onboard {
+  sb-form::ng-deep {
+    .sb-textbox {
+      font-size: 14px;
+    }
+
+    .list-border {
+      padding: 16px !important;
+    }
+
+    ul {
+      padding: 0;
+
+      &[disabled] {
+        opacity: initial !important;
+      }
+    }
+
+    li {
+      margin: 0 !important;
+      padding: 16px !important;
+    }
+
+    li.placeholder {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .sb-modal-dropdown-web {
+      ul{
+        overflow-y: auto !important;
+        overflow: hidden;
+      }
+      li {
+        margin: 0 !important;
+        padding: 0 !important;
+
+        > div {
+          cursor: pointer;
+          padding: 16px;
+        }
+      }
+    }
+
+    .multi-select-container {
+      margin-top: 8px;
+    }
+  }
+
+  &__container {
+    width: 100%;
+    height: 100vh;
+    background: var(--primary-100);
+    padding: calculateRem(24px);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    overflow-y: scroll;
+
+    @include respond-above(sm) {
+      border-radius: calculateRem(8px);
+      max-width: calculateRem(1008px);
+      min-height: calculateRem(610px);
+      height: auto;
+    }
+  }
+
+  &__header {
+    width: 100%;
+    text-align: center;
+    max-width: calculateRem(328px);
+
+    &::ng-deep h1 {
+      color: var(--primary-400);
+      font-size: calculateRem(24px);
+      font-weight: bold;
+      letter-spacing: 0;
+      line-height: calculateRem(32px);
+      text-align: center;
+      margin: calculateRem(8px) 0px;
+    }
+  }
+
+  &__content {
+    width: calculateRem(648px);
+    max-width: 100%;
+    margin-bottom: auto;
+  }
+
+  &__footer {
+    margin-top: calculateRem(16px);
+    width: 100%;
+    text-align: center;
+
+    @include respond-above(sm) {
+      max-width: 80%;
+    }
+  }
+  
+  ::ng-deep{
+    .brand-logo {
+      width: calculateRem(86px);
+    }
+  }
+
+  .arrow-icon {
+    float: right;
+
+    html[dir="rtl"] & {
+      float: left;
+    }
+  }
+
+  .close-modal {
+    position: absolute;
+    right: calculateRem(16px);
+    top: calculateRem(16px);
+    z-index: 9;
+    min-width: auto;
+  }
+
+  .back-btn {
+    position: absolute;
+    left: calculateRem(8px);
+    top: calculateRem(16px);
+    min-width: auto;
+  }
+}
+
+::ng-deep {
+  p.subtitle {
+    color: var(--gray-800);
+    font-size: calculateRem(18px);
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: calculateRem(26px);
+    text-align: center;
+  }
+}
+
+.animation {
+  &.start {
+    transform: translateX(-999px);
+    transition: all 0.75s ease;
+  }
+}
+
+.sb-onbrd-g-box {
+  &__language-select {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(144px, auto));
+    grid-auto-rows: minmax(auto, 88px);
+    grid-column-gap: calculateRem(24px);
+    grid-row-gap: calculateRem(16px);
+
+    .check-icon {
+      position: absolute;
+      top: calculateRem(8px);
+      right: calculateRem(8px);
+    }
+
+    &__item {
+      border-radius: calculateRem(4px);
+      background-color: var(--white);
+      box-shadow: 0 calculateRem(20px) calculateRem(40px) calculateRem(-10px) var(--rc-d8d8d8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+
+      span {
+        color: var(--gray-800);
+        font-size: calculateRem(20px);
+      }
+
+      &:hover,
+      &.active {
+        background-color: var(--primary-color);
+        box-shadow: 0 calculateRem(20px) calculateRem(40px) calculateRem(-10px) rgba(var(--rc-rgba-primary), 0.3);
+        cursor: pointer;
+
+        span {
+          color: var(--white);
+        }
+      }
+    }
+  }
+
+  &__guest {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, auto));
+    grid-auto-rows: minmax(auto, 190px);
+    grid-column-gap: 1.5rem;
+    grid-row-gap: 1rem;
+
+    .check-icon {
+      position: absolute;
+      top: calculateRem(8px);
+      right: calculateRem(8px);
+      display: none;
+    }
+
+    &__item {
+      border-radius: calculateRem(4px);
+      background-color: var(--white);
+      box-shadow: 0 calculateRem(20px) calculateRem(40px) calculateRem(-10px) var(--rc-d8d8d8);
+      text-align: center;
+      position: relative;
+      border: calculateRem(2px) solid var(--white);
+
+      .title {
+        color: var(--gray-800);
+        font-size: calculateRem(22px);
+        font-weight: bold;
+      }
+
+      &:hover,
+      &.active {
+        border: calculateRem(2px) solid var(--primary-color);
+        border-radius: calculateRem(4px);
+        background-color: var(--white);
+        box-shadow: 0 calculateRem(4px) calculateRem(7px) 0 rgba(var(--rc-rgba-primary), 0.3);
+        cursor: pointer;
+
+        .check-icon {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+.fields-selection {
+  display: flex;
+  flex-direction: column;
+
+  @include respond-above(sm) {
+    flex-direction: row;
+  }
+
+  .sb-field .ui.selection.active.dropdown {
+    border-color: var(--rc-96C8DA);
+  }
+
+  .sb-field .ui.selection.active.dropdown .text {
+    color: var(--rc-0076FE) !important;
+  }
+
+  .sb-field {
+    margin-bottom: calculateRem(16px) 0px;
+    width: 100%;
+
+    label {
+      font-size: calculateRem(14px);
+    }
+  }
+
+  .onboard-content {
+    @include respond-above(sm) {
+      margin-left: 2rem;
+
+      html[dir="rtl"] & {
+        margin-right: 2rem;
+      }
+    }
+  }
+
+  .textColorChange {
+    color: var(--rc-0076FE);
+  }
+}
+
+.field-focus {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-start;
+}
+
+.ui.selection.dropdown.fields-dropdown {
+  height: 2rem !important;
+
+  &:focus {
+    border: calculateRem(1px) solid var(--rc-0076FE);
+    color: var(--rc-0076FE) !important;
+  }
+}
+
+.ui.selection.dropdown.fields-dropdown:focus~label {
+  border: 0px;
+  color: var(--rc-0076FE);
+  font-weight: normal;
+}
+
+.ui.selection.dropdown.fields-dropdown option {
+  background: var(--white);
+  color: var(--black);
+}
+
+::ng-deep {
+  .sb-onbrd-modal {
+    @include respond-below(sm) {
+      .ui.modal {
+        width: 95%;
+        margin: 0 0 0 0;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+      }
+
+      .ui.modal.scroll {
+        position: fixed !important;
+        margin-top: o !important;
+        margin-bottom: 0px !important;
+        top: 0;
+        width: 100%;
+        left: 0px;
+        right: 0px;
+        margin: 0 !important;
+      }
+    }
+  }
+}

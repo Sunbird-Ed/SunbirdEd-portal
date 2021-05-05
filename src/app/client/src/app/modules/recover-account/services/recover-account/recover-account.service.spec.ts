@@ -5,8 +5,10 @@ import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RecoverAccountService } from './recover-account.service';
 import { of as observableOf, Observable } from 'rxjs';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('RecoverAccountService', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
@@ -17,6 +19,7 @@ describe('RecoverAccountService', () => {
     const service: RecoverAccountService = TestBed.get(RecoverAccountService);
     expect(service).toBeTruthy();
   });
+
 
   it('should call resetPassword API', inject([],
     () => {
@@ -36,7 +39,7 @@ describe('RecoverAccountService', () => {
       const params = { 'request': { 'type': 'user', 'key': 'testKey', 'userId': 'testUserId' } };
       spyOn(learnerService, 'post').and.returnValue(observableOf({}));
       certificateService.generateOTP(params);
-      const options = { url: 'otp/v1/generate', data: params };
+      const options = { url: 'anonymous/otp/v1/generate?captchaResponse=undefined', data: params };
       expect(learnerService.post).toHaveBeenCalledWith(options);
     }));
 
@@ -71,7 +74,7 @@ describe('RecoverAccountService', () => {
       };
       spyOn(learnerService, 'post').and.returnValue(observableOf({}));
       certificateService.fuzzyUserSearch(params);
-      const options = { url: 'user/v1/fuzzy/search', data: params };
+      const options = { url: 'user/v1/fuzzy/search?captchaResponse=undefined', data: params };
       expect(learnerService.post).toHaveBeenCalledWith(options);
     }));
 });

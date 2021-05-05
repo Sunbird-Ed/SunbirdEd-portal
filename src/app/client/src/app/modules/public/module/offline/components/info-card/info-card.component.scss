@@ -1,0 +1,14 @@
+@import "variables";
+@import "mixins/mixins";
+
+.info-container{
+    width: 100%;
+    padding:1.5rem ;
+    box-shadow: 0px calculateRem(5px) calculateRem(10px) 0px rgba(0,0,0,0.12);
+
+    &__label{
+        &:hover{
+            text-decoration: underline;
+        }   
+    }
+}

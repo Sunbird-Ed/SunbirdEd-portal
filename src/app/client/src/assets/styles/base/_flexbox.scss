@@ -1,47 +1,71 @@
-.flex-ai-jc-center{
-@extend .d-flex;
-@extend .flex-jc-center;
-@extend .flex-ai-center;
+/* flex styles */
+
+.flex-ai-jc-center,.flex-jc-ai-center {
+  @extend .d-flex;
+  @extend .flex-jc-center;
+  @extend .flex-ai-center;
 }
-.flex-jc-center {
-  justify-content: center !important;
+
+$declarations: center,
+flex-start,
+flex-end;
+
+$jc-properties: space-between,
+space-around,
+space-evenly;
+
+$direction: "r" row,
+"c" column;
+
+@each $value in $declarations {
+  .flex-ai-#{$value} {
+    align-items: $value !important;
+  }
+
+  .flex-as-#{$value} {
+    align-self: $value !important;
+  }
+
+  .flex-jc-#{$value} {
+    justify-content: $value !important;
+  }
 }
-.flex-jc-flex-end {
-  justify-content: flex-end !important;
+
+@each $value in $jc-properties {
+  .flex-jc-#{$value} {
+    justify-content: $value !important;
+  }
 }
-.flex-jc-space-around {
-  justify-content: space-around !important;
+
+@each $name,
+$value in $direction {
+  .flex-d#{$name} {
+    flex-direction: $value !important;
+  }
 }
-.flex-jc-space-between {
-  justify-content: space-between !important;
-}
-.flex-as-center {
-   align-self: center !important;
-}
-.flex-as-flex-end {
-  align-self: flex-end !important;
-}  
-.flex-ai-center {
-  align-items: center !important;
-}
+
 .flex-ai-baseline {
   align-items: baseline !important;
 }
+
 .flex-ai-end {
   align-items: flex-end !important;
 }
-.flex-dr {
-  flex-direction: row !important;
-}
-.flex-dc {
-  flex-direction: column !important;
-}
+
 .flex-w-wrap {
   flex-wrap: wrap !important;
 }
+
 .flex-basis-1 {
-  flex:1;
+  flex: 1;
 }
+
 .flex-basis-100 {
   flex-basis: 100%;
 }
+
+.flex-none {
+  flex: none;
+}
+
+/* flex styles ends */

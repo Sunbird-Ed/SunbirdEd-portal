@@ -5,11 +5,10 @@ import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ConfigService, ToasterService,
-  ResourceService, IContents, ILoaderMessage, INoResultMessage,
+  ResourceService, IContents, ILoaderMessage, INoResultMessage, IPagination,
   ContentUtilsServiceService, ITelemetryShare, NavigationHelperService
 } from '@sunbird/shared';
 import { WorkSpaceService } from '../../services';
-import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
 import {
   SuiModalService, TemplateModalConfig, ModalTemplate
@@ -26,7 +25,7 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 })
 export class LimitedPublishedComponent extends WorkSpace implements OnInit, AfterViewInit {
 
-  @ViewChild('modalTemplate')
+  @ViewChild('modalTemplate', {static: false})
   public modalTemplate: ModalTemplate<{ data: string }, string, string>;
   /**
    * To navigate to other pages

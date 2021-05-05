@@ -1,0 +1,14 @@
+{
+    "id": "org.sunbird.player.userswitcher",
+    "ver": "1.0",
+    "shortId": "org.sunbird.player.userswitcher",
+    "author": "Gourav More, Akash Gupta",
+    "description": "",
+    "publishedDate": "",
+    "renderer": {
+        "main": "renderer/plugin.js",
+        "views": [
+            { "template": "./templates/sunbird-user-switch-popup.html", "controller": "./controller/sunbirdUserSwitcher.js" }
+        ]
+    }
+}

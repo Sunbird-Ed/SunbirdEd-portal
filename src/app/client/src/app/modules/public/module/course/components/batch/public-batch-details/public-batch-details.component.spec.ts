@@ -11,13 +11,20 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { allBatchDetails } from './public-batch-details.component.data';
 import { UserService } from '@sunbird/core';
 import { CourseBatchService } from '@sunbird/learn';
+import { configureTestSuite } from '@sunbird/test-util';
+import { TelemetryService } from '@sunbird/telemetry';
 
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
 }
 const fakeActivatedRoute = {
   'params': observableOf({ courseId: 'do_1125083286221291521153' }),
-  'queryParams': observableOf({})
+  'queryParams': observableOf({}),
+  'snapshot' : {
+    data: {
+      telemetry: { env: 'explore-course', pageid: 'explore-course', type: 'view', object: { ver: '1.0', type: 'course' } }
+    }
+  }
 };
 const resourceServiceMockData = {
   messages : {
@@ -38,11 +45,12 @@ const resourceServiceMockData = {
 describe('PublicBatchDetailsComponent', () => {
   let component: PublicBatchDetailsComponent;
   let fixture: ComponentFixture<PublicBatchDetailsComponent>;
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, SuiModule],
       declarations: [PublicBatchDetailsComponent],
-      providers: [CourseBatchService, UserService, { provide: Router, useClass: RouterStub },
+      providers: [CourseBatchService, UserService, TelemetryService, { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -95,10 +103,40 @@ describe('PublicBatchDetailsComponent', () => {
   });
   it('should show login modal if user is not loggedin on click of enroll button', () => {
       const courseBatchService = TestBed.get(CourseBatchService);
+      spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableOf(allBatchDetails));
       const userService = TestBed.get(UserService);
       component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
       component.ngOnInit();
-      component.enrollBatch();
+      component.enrollBatch(component.batchList[0].identifier);
       expect(component.showLoginModal).toBeTruthy();
+  });
+
+  it('should navigate to enroll course if user is loggedin', () => {
+      const courseBatchService = TestBed.get(CourseBatchService);
+      const route = TestBed.get(Router);
+      spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableOf(allBatchDetails));
+      const userService = TestBed.get(UserService);
+      userService._authenticated = true;
+      component.courseId = 'do_1125083286221291521153';
+      component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
+      component.ngOnInit();
+      component.enrollBatch(component.batchList[0].identifier);
+    expect(route.navigate).toHaveBeenCalledWith([component.baseUrl], { queryParams: { textbook: undefined } });
+  });
+
+  it('should log telemetry event when user close login popup', () => {
+    const courseBatchService = TestBed.get(CourseBatchService);
+    spyOn(courseBatchService, 'getAllBatchDetails').and.returnValue(observableOf(allBatchDetails));
+    const userService = TestBed.get(UserService);
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact');
+    component.courseHierarchy = {identifier: '01250836468775321655', pkgVersion: '1'} ;
+    component.courseId = 'do_1125083286221291521153';
+    component.ngOnInit();
+    component.enrollBatch(component.batchList[0].identifier);
+    expect(component.showLoginModal).toBeTruthy();
+    component.closeLoginModal();
+    expect(telemetryService.interact).toHaveBeenCalled();
+    expect(component.showLoginModal).toBeFalsy();
   });
 });

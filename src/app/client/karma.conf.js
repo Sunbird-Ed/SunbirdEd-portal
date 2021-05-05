@@ -18,17 +18,17 @@ module.exports = function (config) {
     browserNoActivityTimeout: 100000,
     client: {
       jasmine: {
-        timeoutInterval: 50000
+        timeoutInterval: 300000
       },
       args: [tags],
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
     coverageIstanbulReporter: {
-      dir: require('path').join(__dirname, 'coverage'), reports: [ 'html', 'lcovonly' ],
+      dir: require('path').join(__dirname, './coverage'), reports: [ 'html', 'lcovonly' ],
       fixWebpackSourcePaths: true
     },
     
-    reporters: ['mocha'],
+    reporters: ['mocha', 'coverage-istanbul'],
     mochaReporter: {
       symbols: {
         success: '+',

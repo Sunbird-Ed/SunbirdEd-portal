@@ -1,0 +1,44 @@
+<ul class="sb-bordered-list my-16">
+    <li class="sb-bordered-list-item m-0 relative9">
+      <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
+        <div class="sb-bordered-list-item-title">{{resourceService?.frmelmnts?.lbl?.desktop?.filesImported}}
+          ({{importFilesList?.length}})&lrm;
+          <span class="sb-bordered-list-item-title-extra ml-16">{{resourceService?.frmelmnts?.lbl?.desktop?.TotalSize}}
+            {{importedFilesSize | filesize }}</span></div>
+  
+        <button class="sb-btn sb-btn-normal sb-bulk-upload-btn sb-btn-outline-primary" (click)="openImportTelemetryDialog()">
+          <img src="assets/images/plus-icon.svg" width="12px" height="12px" class="mr-8">
+          {{resourceService?.frmelmnts?.lbl?.desktop?.importNewFile}}
+        </button>
+  
+      </div>
+    </li>
+    <li class="sb-bordered-list-item m-0 relative9" *ngFor="let items of importFilesList">
+      <div class="d-flex flex-ai-center flex-jc-space-between">
+        <div class="sb-bordered-list-item-heading file-import-text" title="{{items.name}}">{{items.name}}
+        </div>
+        <div class="sb-bordered-list-item-subheading ml-16 file-import-text">{{items.createdOn | dateFormat: 'DD MMMM YYYY'}}
+          at {{items.createdOn | date:'h:mm a'}}, {{items?.totalSize | filesize}}</div>
+        <div class="sb-bordered-list-item-subheading ml-16 ">
+          <span *ngIf="items.status === 'inProgress'" class="sb-label sb-label-table sb-label-success-0">{{items.status}} </span>
+          <span *ngIf="items.status === 'completed'" class="sb-label sb-label-table sb-label-success-0">{{items.status}} </span>
+          <span *ngIf="items.status === 'inQueue'"
+            class="sb-label sb-label-table sb-label-error-0">{{resourceService?.frmelmnts?.lbl?.desktop?.waitingForImport}} </span>
+          <span *ngIf="items.status === 'failed' && items.failedCode === 'MANIFEST_MISSING'" >
+            <span class="sb-label sb-label-table sb-label-error-0">
+              <span> {{items.status}}  </span>
+              <span class="ml-8"> 
+                {{resourceService?.frmelmnts?.emsg?.desktop?.importValidZipFile}} </span>
+             </span>
+            </span>
+          <span *ngIf="items.status === 'failed' && items.failedCode !== 'MANIFEST_MISSING'" class="sb-color-error">
+            {{items.status}}
+            <button type="button" class="sb-btn sb-btn-xs sb-btn-outline-warning ml-8" [disabled]="items.disable"
+              (click)="reTryImport(items)">
+              {{resourceService?.frmelmnts?.btn?.retry}}
+            </button>
+          </span>
+        </div>
+      </div>
+    </li>
+  </ul>

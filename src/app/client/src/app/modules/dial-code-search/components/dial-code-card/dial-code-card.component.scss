@@ -1,25 +1,28 @@
+@import 'variables';
+@import "./mixins/mixins";
+
 .btn-div .button {
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 0;
-    border-bottom-right-radius: 4px;
-    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: calculateRem(4px);
+    border-bottom-left-radius: calculateRem(4px);
     outline: none;
     width: 100%;
-    font-size: 12px;
+    font-size: calculateRem(12px);
    }
    .btn-div .button .icon {
     line-height: normal;
-    font-size: 20px;
-    margin-right: 8px !important;
+    font-size: calculateRem(20px);
+    margin-right: calculateRem(8px) !important;
     opacity: 1 !important;
-    padding-left: 3px;
+    padding-left: calculateRem(3px);
    }
    .play-btn{
-    height: 32px;
-    line-height: 32px;
-    font-size: 14px;
+    height: calculateRem(32px);
+    line-height: calculateRem(32px);
+    font-size: calculateRem(14px);
    
     .sb-btn{
         font-weight: 700;
@@ -27,22 +30,22 @@
         line-height: inherit;
          width: 100%;
         .caret{
-         height: 16px;
-         width: 16px;
-         background: #fff;
-         color: #00c786;
+         height: calculateRem(16px);
+         width: calculateRem(16px);
+         background: var(--white);
+         color: var(--secondary-100);
          border-radius: 50%;
-         font-size: 14px;
-         margin-right: 8px;
-         padding-left: 2px;
-         line-height: 16px;
+         font-size: calculateRem(14px);
+         margin-right: calculateRem(8px);
+         padding-left: calculateRem(2px);
+         line-height: calculateRem(16px);
         }
     }
 }
 .sb-card-secrtion{
     padding: 0.45rem 1rem;
-    background: #FAFAFA;
-    border-top: 1px solid #dedede;
+    background: var(--rc-FAFAFA);
+    border-top: calculateRem(1px) solid var(--rc-dedede);
     .sb-label-value{
         font-weight: bold;
         word-break: break-all;

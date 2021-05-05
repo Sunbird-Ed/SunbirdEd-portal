@@ -1,14 +1,18 @@
 import { ConfigService, ServerResponse, IUserProfile, IUserData, IOrganization, HttpOptions } from '@sunbird/shared';
 import { LearnerService } from './../learner/learner.service';
 import { ContentService } from './../content/content.service';
-import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Injectable, Inject, EventEmitter } from '@angular/core';
+import { Observable, BehaviorSubject, iif, of } from 'rxjs';
+import { map, mergeMap, shareReplay } from 'rxjs/operators';
 import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash-es';
 import { HttpClient } from '@angular/common/http';
 import { PublicDataService } from './../public-data/public-data.service';
-import { skipWhile } from 'rxjs/operators';
+import { skipWhile, tap } from 'rxjs/operators';
+import { APP_BASE_HREF } from '@angular/common';
+import { CacheService } from 'ng2-cache-service';
+import { DataService } from './../data/data.service';
+
 
 /**
  * Service to fetch user details from server
@@ -45,7 +49,7 @@ export class UserService {
    * Read only observable Containing user profile.
    */
   public readonly userData$: Observable<IUserData> = this._userData$.asObservable()
-  .pipe(skipWhile(data => data === undefined || data === null));
+    .pipe(skipWhile(data => data === undefined || data === null));
   /**
    * reference of config service.
    */
@@ -83,48 +87,64 @@ export class UserService {
   /**
    * Reference of orgNames
    */
-  private orgNames: Array<string> = [];
+  public orgNames: Array<string> = [];
 
   public rootOrgName: string;
 
-  public orgnisationsDetails: Array<IOrganization>;
+  public organizationsDetails: Array<IOrganization>;
+  public createManagedUser = new EventEmitter();
 
   /**
    * Reference of public data service.
    */
   public publicDataService: PublicDataService;
+  private _slug = '';
+  public _isCustodianUser: boolean;
+  public anonymousUserPreference: boolean;
+  public readonly userOrgDetails$ = this.userData$.pipe(
+    mergeMap(data => iif(() =>
+      !this._userProfile.organisationIds, of([]), this.getOrganizationDetails(this._userProfile.organisationIds))),
+    shareReplay(1));
 
   /**
   * constructor
   * @param {ConfigService} config ConfigService reference
   * @param {LearnerService} learner LearnerService reference
   */
-  constructor(config: ConfigService, learner: LearnerService,
-    private http: HttpClient, contentService: ContentService, publicDataService: PublicDataService) {
+  constructor(config: ConfigService, learner: LearnerService, private cacheService: CacheService,
+    private http: HttpClient, contentService: ContentService, publicDataService: PublicDataService,
+    @Inject(APP_BASE_HREF) baseHref: string, private dataService: DataService) {
     this.config = config;
     this.learnerService = learner;
     this.contentService = contentService;
     this.publicDataService = publicDataService;
     try {
       this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
+      DataService.userId = this._userid;
       this._sessionId = (<HTMLInputElement>document.getElementById('sessionId')).value;
+      DataService.sessionId = this._sessionId;
       this._authenticated = true;
     } catch (error) {
       this._authenticated = false;
       this._anonymousSid = UUID.UUID();
+      DataService.sessionId = this._anonymousSid;
     }
     try {
       this._appId = (<HTMLInputElement>document.getElementById('appId')).value;
       this._cloudStorageUrls = (<HTMLInputElement>document.getElementById('cloudStorageUrls')).value.split(',');
     } catch (error) {
     }
+    this._slug = baseHref && baseHref.split('/')[1] ? baseHref.split('/')[1] : '';
+  }
+  get slug() {
+    return this._slug;
   }
   get anonymousSid() {
     return this._anonymousSid;
   }
-    /**
-   * returns login status.
-   */
+  /**
+ * returns login status.
+ */
   get loggedIn(): boolean {
     return this._authenticated;
   }
@@ -135,11 +155,21 @@ export class UserService {
   get userid(): string {
     return this._userid;
   }
+
+  setUserId(userId: string) {
+    this._userid = userId;
+  }
   /**
   * get method to fetch sessionId.
   */
   get sessionId(): string {
     return this._sessionId;
+  }
+  setIsCustodianUser(isCustodianUser) {
+    this._isCustodianUser = isCustodianUser;
+  }
+  get isCustodianUser(): boolean {
+    return this._isCustodianUser;
   }
   /**
    * method to fetch user profile from server.
@@ -188,7 +218,8 @@ export class UserService {
     const orgRoleMap = {};
     const hashTagIds = [];
     this._channel = _.get(profileData, 'rootOrg.hashTagId');
-    profileData.skills = _.get(profileData, 'skills' ) || [];
+    this._slug = _.get(profileData, 'rootOrg.slug');
+    profileData.skills = _.get(profileData, 'skills') || [];
     hashTagIds.push(this._channel);
     let organisationIds = [];
     if (profileData.rootOrgId) {
@@ -226,12 +257,16 @@ export class UserService {
     this._userProfile.hashTagIds = _.uniq(hashTagIds);
     this._userProfile.userId = this.userid; // this line is added to handle userId not returned from user service
     this._rootOrgId = this._userProfile.rootOrgId;
-    this._hashTagId = this._userProfile.rootOrg.hashTagId;
-    this.getOrganisationDetails(organisationIds);
+    this._hashTagId = _.get(this._userProfile, 'rootOrg.hashTagId');
     this.setRoleOrgMap(profileData);
     this.setOrgDetailsToRequestHeaders();
     this._userData$.next({ err: null, userProfile: this._userProfile });
-    this.rootOrgName = this._userProfile.rootOrg.orgName;
+    this.rootOrgName = _.get(this._userProfile, 'rootOrg.orgName');
+
+    // Storing profile details of stroger credentials user in cache
+    if (!this._userProfile.managedBy) {
+      this.cacheService.set('userProfile', this._userProfile);
+    }
   }
   setOrgDetailsToRequestHeaders() {
     this.learnerService.rootOrgId = this._rootOrgId;
@@ -247,9 +282,9 @@ export class UserService {
    *
    * @param {requestParam} requestParam api request data
    */
-  getOrganisationDetails(organisationIds) {
+  private getOrganizationDetails(organisationIds) {
     const option = {
-      url: this.config.urlConFig.URLS.ADMIN.ORG_SEARCH,
+      url: this.config.urlConFig.URLS.ADMIN.ORG_EXT_SEARCH,
       data: {
         request: {
           filters: {
@@ -258,19 +293,11 @@ export class UserService {
         }
       }
     };
-    this.publicDataService.post(option).subscribe
-      ((data: ServerResponse) => {
-        this.orgnisationsDetails = _.get(data, 'result.response.content');
-        _.forEach(this.orgnisationsDetails, (orgData) => {
-          this.orgNames.push(orgData.orgName);
-        });
-        this._userProfile.organisationNames = this.orgNames;
-      },
-      (err: ServerResponse) => {
-        this.orgNames = [];
-        this._userProfile.organisationNames = this.orgNames;
-      }
-      );
+    return this.publicDataService.post(option)
+      .pipe(tap((data: ServerResponse) => {
+        this.organizationsDetails = _.get(data, 'result.response.content');
+        this.orgNames = _.map(this.organizationsDetails, org => org.orgName);
+      }));
   }
 
   /**
@@ -290,7 +317,7 @@ export class UserService {
 
   get orgIdNameMap() {
     const mapOrgIdNameData = {};
-    _.forEach(this.orgnisationsDetails, (orgDetails) => {
+    _.forEach(this.organizationsDetails, (orgDetails) => {
       mapOrgIdNameData[orgDetails.identifier] = orgDetails.orgName;
     });
     return mapOrgIdNameData;
@@ -352,12 +379,33 @@ export class UserService {
     this.http.get(url).subscribe();
   }
 
+  public endSession() {
+    const url = this.config.urlConFig.URLS.USER.END_SESSION;
+    return this.http.get(url);
+  }
+
   getUserByKey(key) {
-    return this.learnerService.get({ url: this.config.urlConFig.URLS.USER.GET_USER_BY_KEY + '/' + key});
+    return this.learnerService.get({ url: this.config.urlConFig.URLS.USER.GET_USER_BY_KEY + '/' + key });
+  }
+
+  getIsUserExistsUserByKey(key) {
+    return this.learnerService.get({ url: this.config.urlConFig.URLS.USER.USER_EXISTS_GET_USER_BY_KEY + '/' + key });
   }
 
   getFeedData() {
-    return this.learnerService.get({ url: this.config.urlConFig.URLS.USER.GET_USER_FEED + '/' + this.userid});
+    return this.learnerService.get({ url: this.config.urlConFig.URLS.USER.GET_USER_FEED + '/' + this.userid });
+  }
+
+  registerUser(data) {
+    const options = {
+      url: this.config.urlConFig.URLS.USER.SIGN_UP_V4,
+      data: data
+    };
+    return this.learnerService.post(options).pipe(
+      map((resp) => {
+        this.createManagedUser.emit(_.get(resp, 'result.userId'));
+        return resp;
+      }));
   }
 
   userMigrate(requestBody) {
@@ -371,4 +419,29 @@ export class UserService {
   setUserFramework(framework) {
     this._userProfile.framework = framework;
   }
+
+  getUserData(userId) {
+    const option = {
+      url: `${this.config.urlConFig.URLS.USER.GET_PROFILE}${userId}`,
+      param: this.config.urlConFig.params.userReadParam
+    };
+    return this.learnerService.getWithHeaders(option);
+  }
+
+  getAnonymousUserPreference() {
+    const options = {
+      url: this.config.urlConFig.URLS.OFFLINE.READ_USER
+    };
+    this.publicDataService.get(options).subscribe((response: ServerResponse) => {
+      this.anonymousUserPreference = response.result;
+    });
+  }
+
+  get defaultFrameworkFilters() {
+    const isUserLoggedIn = this.loggedIn || false;
+    const { framework = null } = this.userProfile || {};
+    const userFramework = (isUserLoggedIn && framework && _.pick(framework, ['medium', 'gradeLevel', 'board'])) || {};
+    return { board: ['CBSE'], gradeLevel: isUserLoggedIn ? [] : ['Class 10'], medium: [], ...userFramework };
+  }
+
 }

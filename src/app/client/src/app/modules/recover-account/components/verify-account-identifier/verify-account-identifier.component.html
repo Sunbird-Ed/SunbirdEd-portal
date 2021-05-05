@@ -9,26 +9,31 @@
       <span>{{resourceService?.frmelmnts?.lbl?.validFor}}.</span>
     </div>
   </div>
-  <form [formGroup]="form" class="sb-form mt-48" autocomplete="off">
+  <form [formGroup]="form" class="sb-form mt-24" autocomplete="off">
     <div class="sb-field-group mb-16 text-left">
       <div class="sb-field">
         <label class="sb-account-recoverpage-label required">{{resourceService?.frmelmnts?.lbl?.enterOTP}} </label>
-        <input class="sb-form-control" [ngClass]="{'is-invalid': false }" formControlName="otp" name="otp"
-          placeholder="{{resourceService?.frmelmnts?.lbl?.enterOTP}}">
-        <span class="sb-color-warning fxsmall mt-8"
-          *ngIf="form.controls.otp.touched && form.controls.otp.errors && form.controls.otp.errors.required">
+        <label *ngIf="errorMessage" class="ui basic label text-center error d-inline-block line-height-1-3">{{errorMessage}} </label>
+        <input class="sb-form-control" [ngClass]="{'is-invalid': false }" formControlName="otp" name="otp" placeholder="{{resourceService?.frmelmnts?.lbl?.enterOTP}}">
+        <span class="sb-color-warning fxsmall mt-8" *ngIf="form.controls.otp.touched && form.controls.otp.errors && form.controls.otp.errors.required">
           {{resourceService?.frmelmnts?.lbl?.otpMandatory}}
         </span>
       </div>
     </div>
+    <re-captcha *ngIf="isP2CaptchaEnabled === 'true'" #captchaRef="reCaptcha" (resolved)="$event && resolved($event)" siteKey="{{googleCaptchaSiteKey}}"
+      size="invisible"></re-captcha>
+    <a (click)="captchaRef.reset()" id="resetGoogleCaptcha"></a>
     <div class="d-flex flex-jc-space-between mt-32">
-      <button class="sb-btn sb-btn-normal width-100 mr-4 sb-btn-secondary" tabindex="0" [disabled]="disableResendOtp"
-        appTelemetryInteract [telemetryInteractCdata]="telemetryCdata"
-        [telemetryInteractEdata]="{id: 'resend-otp', type: 'click', pageid: 'verify-identifier', extra: { form: recoverAccountService.selectedAccountIdentifier} }"
-        (click)="handleResendOtp()"> {{resourceService?.frmelmnts?.lbl?.resendOTP}}</button>
-      <button class="sb-btn sb-btn-normal width-100 ml-4 sb-btn-secondary" tabindex="0" [disabled]="disableFormSubmit"
-        appTelemetryInteract [telemetryInteractCdata]="telemetryCdata"
-        [telemetryInteractEdata]="{id: 'verify-otp', type: 'click', pageid: 'verify-identifier', extra: { form: recoverAccountService.selectedAccountIdentifier} }"
+      <button class="sb-btn sb-btn-normal width-100 mr-4 sb-btn-outline-primary row" tabindex="0" [ngClass]="{'sb-btn-disabled': !disableResendOtp}"
+        appTelemetryInteract [telemetryInteractCdata]="telemetryCdata" [disabled]="!disableResendOtp" [telemetryInteractEdata]="{id: 'resend-otp', type: 'click', pageid: 'verify-identifier', extra: { form: recoverAccountService.selectedAccountIdentifier} }"
+        (click)="submitResendOTP()">
+        <div class="d-flex flex-jc-center">
+          <span>{{resourceService?.frmelmnts?.lbl?.resendOTP}}</span> &nbsp;
+          <span *ngIf="counter>0">( {{counter}} )</span>
+        </div>
+      </button>
+      <button class="sb-btn sb-btn-normal width-100 ml-4 sb-btn-primary" tabindex="0" [disabled]="disableFormSubmit" appTelemetryInteract
+        [telemetryInteractCdata]="telemetryCdata" [telemetryInteractEdata]="{id: 'verify-otp', type: 'click', pageid: 'verify-identifier', extra: { form: recoverAccountService.selectedAccountIdentifier} }"
         (click)="handleVerifyOtp()">{{resourceService?.frmelmnts?.lbl?.submitOTP}}</button>
     </div>
   </form>

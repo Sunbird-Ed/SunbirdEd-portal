@@ -1,0 +1,27 @@
+@import "variables";
+@import "mixins/mixins";
+
+.sb-single-resource {
+  width: 100%;
+  height: 100%;
+  max-width: calculateRem(720px);
+  margin: 0 auto;
+  @include respond-above(lg) {
+    max-width: calculateRem(1024px);
+  }
+}
+
+::ng-deep {
+  .toc-content {
+    width: 100%;
+    height: 100%;
+
+    app-credits-and-licence {
+      sb-accordion {
+        .sbaccordion__panel {
+          box-shadow: none;
+        }
+      }
+    }
+  }
+}

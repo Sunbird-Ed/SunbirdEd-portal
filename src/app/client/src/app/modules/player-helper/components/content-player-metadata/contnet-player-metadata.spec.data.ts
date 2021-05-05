@@ -62,6 +62,7 @@ export const mockRes = {
         'description': 'Text',
         'userId': '874ed8a5-782e-4f6c-8f36-e0288455901e',
         'userName': 'created_author',
-        'attributions': ['Text Attribution']
+        'attributions': ['Text Attribution'],
+        'primaryCategory': 'Learning Resource'
     },
 };

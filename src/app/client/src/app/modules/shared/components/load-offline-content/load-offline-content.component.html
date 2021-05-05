@@ -1,0 +1,37 @@
+<!--Load content-->
+<div class="load-content-section mr-16 p-24 mb-24" *ngIf="!hideLoadButton">
+  <div class="load-content-title d-flex">{{resourceService?.frmelmnts?.lbl?.downloadBooks}}</div>
+  <button class="sb-btn sb-btn-secondary sb-btn-normal my-8 w-100 fs-1" type="button" (click)="showLoadContentModal = true">
+    {{resourceService?.frmelmnts?.btn?.loadContent}} </button>
+</div>
+<!--Load content-->
+
+
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+class="sb-modal" appBodyScroll  #modal (dismissed)="closeModal()" *ngIf="showLoadContentModal">
+<div class="sb-modal-header font-weight-normal">{{resourceService?.frmelmnts?.lbl?.loadContentFrom}}</div>
+<div class="sb-modal-content">
+    <div class="p-8">
+      <div class="d-flex flex-dc sb-radio-btn-checkbox sb-radio-btn-secondary m-0 mb-16" [ngClass]="{'disable-color': !isConnected}">
+        <div class="d-flex flex-ai-center">
+          <input type="radio" id="online" name="example" [disabled]="!isConnected" [checked]="isConnected"  (change)="onChange('browse')">
+          <label for="online" class="mb-0" [ngClass]="{'font-weight-bold': !addImportFontWeight}" id="browse">{{resourceService?.frmelmnts?.lbl?.library}}</label>
+          <div class="sb-label sb-label-table sb-label-error-0 ml-12"  *ngIf="!isConnected"><span class="sb-live-error mr-8"></span>{{resourceService?.frmelmnts?.lbl?.offline}}</div>
+          <div class="sb-label sb-label-table sb-label-success-0 ml-12"  *ngIf="isConnected"><span class="sb-live mr-8"></span>{{resourceService?.frmelmnts?.lbl?.online}}</div>
+        </div>
+        <div class="sb-radio-title py-8 fs-0-92">{{resourceService?.messages?.stmsg?.m0031 | interpolate:'{instance}': instance}} &lrm;</div>
+      </div>
+      <div class="d-flex flex-dc sb-radio-btn-checkbox sb-radio-btn-secondary">
+        <div class="d-flex flex-ai-center">
+          <input type="radio" id="offline" name="example2" [checked]="!isConnected"  (change)="onChange('import')">
+          <label class="font-weight-bold mb-0" id="" for="offline" [ngClass]="{'font-weight-bold': addImportFontWeight}">{{resourceService?.frmelmnts?.lbl?.drive}}</label>
+        </div>
+        <div class="sb-radio-title py-8 fs-0-92">{{resourceService?.messages?.stmsg?.m0036 | interpolate:'{instance}': instance}} &lrm;</div>
+      </div>
+    </div>
+  </div>
+  <div class="sb-modal-actions">
+      <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="navigate()" appTelemetryInteract [telemetryInteractEdata]="continueTelemetryInteractEdata">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
+      <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal" (click)="closeModal()" appTelemetryInteract [telemetryInteractEdata]="cancelTelemetryInteractEdata">{{resourceService?.frmelmnts?.btn?.cancel}}</button>
+    </div>
+  </sui-modal>

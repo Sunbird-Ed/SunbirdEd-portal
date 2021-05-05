@@ -1,0 +1,86 @@
+<app-landing-section [textToDisplay]="pageTitleSrc" [svgToDisplay]="svgToDisplay"
+  [layoutConfiguration]="layoutConfiguration"></app-landing-section>
+<div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
+  <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'"
+    [appTelemetryImpression]="telemetryImpression">
+    <div [ngClass]="FIRST_PANEL_LAYOUT">
+      <div class="sb-desktop-filter-section">
+        <div *ngIf="layoutConfiguration">
+          <div *ngIf="isDesktopApp">
+            <app-network-status></app-network-status>
+            <app-load-offline-content></app-load-offline-content>
+          </div>
+        </div>
+        <app-global-search-filter [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true'
+          *ngIf="initFilters" (filterChange)="getFilters($event)">
+        </app-global-search-filter>
+      </div>
+    </div>
+    <div [ngClass]="SECOND_PANEL_LAYOUT">
+      <div [appTelemetryImpression]="telemetryImpression"
+        [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
+        <div>
+          <div class="ui container relative9">
+            <div class="ui stackable grid m-0">
+              <div class="twele wide column p-0">
+                <div *ngIf="showLoader">
+                  <app-loader [data]='loaderMessage'></app-loader>
+                </div>
+                <section *ngFor="let section of pageSections; let index=index;">
+                  <div class="sb-desktop-library-card">
+                    <sb-library-cards-grid *ngIf="section?.name !== 'Recently Added'" [layoutConfig]="layoutConfiguration"
+                      [type]="'infinite_card_grid_with_hover'" [title]="section?.name" [contentList]="section?.contents"
+                      [maxCardCount]="3" (hoverActionClick)="hoverActionClicked($event)">
+                    </sb-library-cards-grid>
+                  </div>
+                </section>
+                <div class="twelve wide column" *ngIf="!pageSections?.length">
+                    <app-no-result-found [title]="resourceService?.messages?.stmsg?.m0030"></app-no-result-found>
+                </div>
+
+                <div *ngIf="showSectionLoader">
+                  <app-loader [data]='loaderMessage'></app-loader>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-load-content *ngIf="showLoadContentModal" (close)="showLoadContentModal = false"></app-load-content>
+
+<!-- Show Modal if content has any YouTube data-->
+<sui-modal *ngIf="showModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+  class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal;" #modal>
+  <div class="sb-modal-header">
+    {{resourceService.frmelmnts?.btn?.download}}
+  </div>
+  <div class="sb-modal-content">
+    <p>{{resourceService?.messages?.stmsg?.m0137 }}</p>
+  </div>
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-primary"
+      (click)="callDownload(); showModal = !showModal; logTelemetry(contentData, 'confirm-download-content');">
+      {{resourceService.frmelmnts?.btn?.yes}}
+    </button>
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
+      (click)="showModal = !showModal; logTelemetry(contentData, 'cancel-download-content');">
+      {{resourceService.frmelmnts?.btn?.cancel}}
+    </button>
+  </div>
+</sui-modal>
+
+<sui-dimmer class="page offline content" [isDimmed]="showExportLoader" [isClickable]="false">
+  <div class="ui active centered inline loader"></div>
+  <h6 class="mt-8"> {{resourceService.frmelmnts?.lbl?.exportingContent | interpolate:'{contentName}':contentName}}
+  </h6>
+</sui-dimmer>
+<sui-dimmer class="page offline content" [isDimmed]="showDownloadLoader" [isClickable]="false">
+  <div class="ui active centered inline loader"></div>
+  <h6 class="mt-8">
+    {{resourceService.frmelmnts?.lbl?.downloadingContent | interpolate:'{contentName}':contentName}}
+  </h6>
+</sui-dimmer>

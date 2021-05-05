@@ -1,0 +1,14 @@
+<div class="sbt-fluid-header-bg mb-8" *ngIf="layoutConfiguration">
+  <div class="sb-g sbt-container sbt-page-header" [ngClass]="{'sb-no-title': noTitle}">
+    <div [ngClass]="FIRST_PANEL_LAYOUT">
+    </div>
+    <div class="relative" [ngClass]="SECOND_PANEL_LAYOUT">
+      <img *ngIf="!noTitle" class="sbt-page-header-line-img" src="./assets/images/header-line.svg" alt="header line path image">
+      <div class="sbt-page-header-content pl-24" [ngClass]="{'sb-no-title': noTitle}">
+        <h1 *ngIf="!noTitle">{{textToDisplay | translate}}</h1>
+      </div>
+      <img *ngIf="!noTitle" class="sbt-page-header-img" src="./assets/images/banner-svg/{{svgToDisplay}}" alt="Textbooks">
+    </div>
+  </div>
+</div>
+<div *ngIf="!layoutConfiguration"></div>

@@ -1,0 +1,17 @@
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
+  [ngClass]="{'sb-error': memberActionData?.theme === 'error'}" appBodyScroll (dismissed)="closeModal();" #modal>
+
+  <div class="sb-modal-header">
+    {{memberActionData?.title}}
+  </div>
+
+  <div class="sb-modal-content">
+    <p> {{memberActionData?.description}}</p>
+  </div>
+
+  <div class="sb-modal-actions">
+    <button class="sb-btn sb-btn-normal sb-btn-primary" [ngClass]="{'sb-btn-error': memberActionData?.theme === 'error'}"
+      (click)="performAction()">{{memberActionData?.buttonText}}</button>
+  </div>
+
+</sui-modal>

@@ -1,0 +1,196 @@
+<ng-template id="sunbirdUserSwitch.html">
+<style>
+#sunbirdUserSwitchingModal .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    border: 1px solid #888;
+    width: 98%;
+    height: 96vh;
+    position: relative;
+    font-family: notosans;
+}
+#sunbirdUserSwitchingModal .modal-content .user-header {
+    background-color: #eee;
+    padding: 2% 2% 2% 4%;
+    height: 15%;
+}
+#sunbirdUserSwitchingModal .modal-content .user-header .active {
+    /*color: #1786fe;
+    border-bottom: 3px solid #7d87ff;*/
+    background-color: inherit;
+}
+/* The Close Button */
+#sunbirdUserSwitchingModal .close-block {
+    float: right;
+}
+#sunbirdUserSwitchingModal .close {
+    height: 5.5vw;
+    width: 5.5vw;
+    margin-top: -6px;
+}
+#sunbirdUserSwitchingModal .close:hover,
+#sunbirdUserSwitchingModal .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+#sunbirdUserSwitchingModal .model-butttons .replay {
+    border-radius: 5px;
+    padding: 7px 35px;
+    background-color: #007aff;
+    color: #fefefe;
+    float: right;
+    margin: 0.5em 20px 0 0;
+    text-transform: uppercase;
+    /*font-weight: bold;*/
+}
+/* User Switcher popup*/
+#sunbirdUserSwitchingModal.user-modal {
+    display: block;
+    position: fixed;
+    z-index: 99999;
+    padding-top: 2vh;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+#sunbirdUserSwitchingModal .modal-content .userswitcher-card {
+    padding: 12px 2px 0px 13px;
+    height: 33.4%;
+    width: 49.4%;
+}
+#sunbirdUserSwitchingModal .modal-content .tab button {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-family: "NotoSans-SemiBold";
+}
+#sunbirdUserSwitchingModal .modal-content #users {
+    height: 70%;
+    width: 99%;
+    overflow-y: auto;
+    padding: 4px 0px 11px 9px;
+}
+#sunbirdUserSwitchingModal .modal-content .user-header .tablinks {
+    text-transform: uppercase;
+    margin-top: 15%;
+    font-weight: 700;
+    font-size: 100%;
+}
+#sunbirdUserSwitchingModal .modal-content .model-butttons {
+    display: table;
+    width: 100%;
+    height: 15%;
+}
+#sunbirdUserSwitchingModal .modal-content .model-butttons .user-footer {
+    background-color: #fff;
+    border-top: 2px solid #f3f3f3;
+    border-bottom: none;
+    vertical-align: middle;
+    display: table-cell;
+}
+#sunbirdUserSwitchingModal .modal-content .grid-container {
+  display: inline-grid;
+  grid-template-columns: auto;
+}
+#sunbirdUserSwitchingModal .modal-content .grid-container .grid-item {
+    background-color: #f5f5f5;
+    display: table;
+    height: 100%;
+    min-width: 100%;
+    padding-left: 16px;
+}
+#sunbirdUserSwitchingModal .modal-content .userswitcher-class {
+    color: #a0a0a0;
+    margin-top: 7px;
+    font-size: 0.8em;
+}
+#sunbirdUserSwitchingModal .modal-content #users .active .userswitcher-container .userswitcher-name {
+    color: #007aff;
+}
+#sunbirdUserSwitchingModal .modal-content #users .active .userswitcher-name{
+    white-space: nowrap;
+    width: 30vw; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+#sunbirdUserSwitchingModal .modal-content #users .userswitcher-name{
+    white-space: nowrap;
+    font-family: "NotoSans-SemiBold"; 
+    width: 40vw; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px; 
+}
+#users::-webkit-scrollbar {
+    border-radius: 30%;
+}
+#users::-webkit-scrollbar-thumb {
+    background-color: #d5d5d5;
+    border-radius: 25px;
+}
+#users::-webkit-scrollbar{
+    width: 5px;
+}
+#users::-webkit-scrollbar-thumb:hover {
+    background-color: #000000;
+    border-radius: 10%;
+}
+.userswitcher-data {
+    display: table-cell;
+    vertical-align: middle;
+    position: relative;
+}
+img.user-check{
+    height: 3vw;
+    width: 3vw;
+    position: absolute;
+    top: 26%;
+}
+.userswitcher-data .inline-username-block{
+    display: inline-block;
+    width: 81%;
+    height: 10vh;
+}
+.inline-block{
+    display: inline-block;
+}
+
+</style>
+<div ng-init="init()" ng-show="showSunbirdUserSwitchModal" id="sunbirdUserSwitchingModal" class="user-modal">
+    <div class="modal-content">
+        <div class="user-header tab">
+            <div class="inline-block">
+                <h1 class="tablinks" id="usersButton" ng-click="initializeUser($event, 'users')">Users</h1>
+            </div>
+            <div class="close-block">
+                <span ng-click="closeUserSwitchingModal()"><img class="close" ng-src="{{closeIcon}}"></span>
+            </div>
+            <!-- <button class="tablinks" id="groupsButton" ng-click="initializeUser($event, 'groups')">Groups</button> -->
+        </div>
+        <div id="users">
+            <div ng-repeat="user in $root.users track by $index" ng-click='selectUser(user)' class="userswitcher-card grid-container" ng-class="user.selected ? 'active' : ''">
+                <div class="userswitcher-container grid-item">
+                    <div class="userswitcher-data">
+                        <div class="inline-username-block">
+                            <p class="userswitcher-name">{{user.handle}}</p>
+                            <span ng-show="user.grade" class="userswitcher-class" ng-repeat="(key, value) in user.gradeValueMap">{{value}}{{$last? ' ': ', '}}</span>
+                        </div>
+                        <div class="inline-block">
+                            <img ng-show="user.selected" class="user-check" ng-src="{{checkMarkIcon}}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="model-butttons">
+            <div class="tab user-footer">
+                <button class="replay" ng-click="replayContent()">{{playButton}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+</ng-template>

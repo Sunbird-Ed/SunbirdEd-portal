@@ -1,4 +1,3 @@
-export * from './view-all/view-all.component';
 export * from './profile-framework-popup/profile-framework-popup.component';
 export * from './tnc-popup/terms-conditions-popup.component';
 export * from './otp-popup/otp-popup.component';
@@ -6,6 +5,11 @@ export * from './batch-info/batch-info.component';
 export * from './sso-merge-confirmation/sso-merge-confirmation.component';
 export * from './validate-teacher-identifier-popup/validate-teacher-identifier-popup.component';
 export * from './user-location/user-location.component';
-
-
-
+export * from './user-onboarding/user-onboarding.component';
+export * from './onboarding-user-selection/onboarding-user-selection.component';
+export * from './joy-theme-popup/joy-theme-popup.component';
+export * from './confirmation-popup/confirmation-popup.component';
+export * from './cert-preview-popup/cert-preview-popup.component';
+export * from './content-player/content-player.component';
+export * from './global-consent-pii/global-consent-pii.component';
+export * from './collection-player/collection-player.component';

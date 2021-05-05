@@ -17,7 +17,7 @@
           <div class="ui grid">
             <div class="two wide column pt-0">
               <div class="userAvtarWrap field link ui small circular image header-image-profile">
-                <img class="ui small circular image header-image-profile" [src]="userDetails.avatar || 'assets/images/user_logo.png' | cdnprefixurl">
+                <img class="ui small circular image header-image-profile" [src]="userDetails.avatar || 'assets/images/user_logo.png' | cdnprefixurl" alt="avatar image">
               </div>
             </div>
             <div class="ten wide column profile-header-text pt-0">
@@ -50,15 +50,15 @@
       <div class="twelve wide column" *ngIf="userDetails.profileSummary">
         <div class="mt-20 ui raised segment">
           <div class="header">
-            <span class="segment-heading"> {{resourceService.frmelmnts?.lbl?.summary}} </span>
+            <span class="segment-heading"> {{resourceService.frmelmnts?.lbl?.summary | translate}} </span>
           </div>
           <div class="description pt-10">
             <div *ngIf="descriptionReadMore && userDetails.profileSummary.length > 120">
               <span class="overflow-word-wrap">{{userDetails.profileSummary | slice:0:120 }}&nbsp;</span>
-              <span class="ui expand-or-minimize" (click)="descriptionReadMore = false;">{{resourceService.frmelmnts?.lbl?.readmore}}</span>
+              <span class="ui expand-or-minimize" (click)="descriptionReadMore = false;">{{resourceService.frmelmnts?.lbl?.readmore | translate}}</span>
             </div>
             <div class="overflow-word-wrap" *ngIf="!descriptionReadMore && userDetails.profileSummary.length > 120"> {{userDetails.profileSummary}}&nbsp;
-              <span class="ui expand-or-minimize" (click)="descriptionReadMore = true;">{{resourceService.frmelmnts?.lbl?.readless}}</span>
+              <span class="ui expand-or-minimize" (click)="descriptionReadMore = true;">{{resourceService.frmelmnts?.lbl?.readless | translate}}</span>
             </div>
           </div>
         </div>
@@ -67,7 +67,7 @@
       <div class="twelve wide column">
         <div class="ui raised segment">
           <div class="header announcementCard-header">
-            <span class="header cardsHeading">{{resourceService.frmelmnts?.lbl?.address}}</span>
+            <span class="header cardsHeading">{{resourceService.frmelmnts?.lbl?.address | translate}}</span>
           </div>
           <div class="profileitems ui relaxed divided items">
             <div class="item" *ngFor="let address of userDetails.address">
@@ -91,7 +91,7 @@
       <div class="twelve wide column">
         <div class="ui raised segment">
           <div class="header announcementCard-header">
-            <span class="header cardsHeading">{{resourceService.frmelmnts?.lbl?.experience}}</span>
+            <span class="header cardsHeading">{{resourceService.frmelmnts?.lbl?.experience | translate}}</span>
           </div>
           <div class="profileitems ui relaxed divided items ">
             <div class="item" *ngFor="let experience of userDetails.jobProfile">
@@ -100,15 +100,15 @@
                 <a class=" header ">{{experience.jobName}}</a>
                 <div class="description ">{{experience.role}}
                   <span *ngIf="experience.role">&nbsp;,&nbsp;</span>{{experience.orgName}}
-                  <p class="mb-0 " *ngIf="experience.subject.length ">{{resourceService.frmelmnts?.lbl?.subjectstaught}} :
+                  <p class="mb-0 " *ngIf="experience.subject.length ">{{resourceService.frmelmnts?.lbl?.subjectstaught | translate}} :
                     <span>
                       <span *ngFor="let sub of experience.subject; let last = last;">{{sub}}
                         <span *ngIf="!last ">, </span>
                       </span>
                     </span>
                   </p>
-                  <p *ngIf="experience.joiningDate ">{{resourceService.frmelmnts?.lbl?.tcfrom}} : {{experience.joiningDate}} &nbsp;
-                    <span *ngIf="experience.endDate ">, &nbsp;{{resourceService.frmelmnts?.lbl?.tcto}} : {{experience.endDate}}</span>
+                  <p *ngIf="experience.joiningDate ">{{resourceService.frmelmnts?.lbl?.tcfrom | translate}} : {{experience.joiningDate}} &nbsp;
+                    <span *ngIf="experience.endDate ">, &nbsp;{{resourceService.frmelmnts?.lbl?.tcto | translate}} : {{experience.endDate}}</span>
                   </p>
                 </div>
               </div>
@@ -120,7 +120,7 @@
       <div class="twelve wide column">
         <div class="ui raised segment">
           <div class="header announcementCard-header">
-            <span class="header cardsHeading">{{resourceService.frmelmnts?.lbl?.education}}</span>
+            <span class="header cardsHeading">{{resourceService.frmelmnts?.lbl?.education | translate}}</span>
           </div>
           <div class="profileitems ui relaxed divided items ">
             <div class="item" *ngFor="let education of userDetails.education">
@@ -144,7 +144,7 @@
       <div class="twelve wide column">
         <div class="ui raised segment mb-0">
           <div class="header announcementCard-header ">
-            <span class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.skillTags}}</span>
+            <span class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.skillTags | translate}}</span>
           </div>
           <div class="profileitems profile-des ui relaxed aligned list">
             <div class="item " *ngFor="let skill of userDetails.skills | slice:0:skillLimit | orderBy:'addedAt':true">
@@ -166,13 +166,13 @@
           <div class="active item  expand-or-minimize-btn-pad">
             <a (click)="toggle(true); skillLimit = userDetails.skills.length" *ngIf="skillViewMore">
               <span class="cursor-pointer">
-                {{resourceService?.frmelmnts?.btn?.viewmore}}
+                {{resourceService?.frmelmnts?.btn?.viewmore | translate}}
                 <i class="chevron down icon"></i>
               </span>
             </a>
             <a (click)="toggle(false)" *ngIf="!skillViewMore">
               <span class="cursor-pointer">
-                {{resourceService?.frmelmnts?.btn?.viewless}}
+                {{resourceService?.frmelmnts?.btn?.viewless | translate}}
                 <i class="chevron up icon"></i>
               </span>
             </a>
@@ -184,7 +184,7 @@
       <div class="twelve wide column" *ngIf="userDetails.badgeArray && userDetails.badgeArray.length > 0">
         <div class="ui raised segment mb-0">
           <div class="header announcementCard-header">
-            <span class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.certificationAward}}</span>
+            <span class="header cardsHeading">{{resourceService?.frmelmnts?.lbl?.certificationAward | translate}}</span>
           </div>
           <div class="ui items mt-10">
             <div class="item" *ngFor="let badge of userDetails.badgeArray | slice:0:badgeLimit">
@@ -206,13 +206,13 @@
           <div class="active item expand-or-minimize-btn-pad">
             <a (click)="badgeToggle(true)" *ngIf="badgeViewMore">
               <span class="cursor-pointer">
-                {{resourceService?.frmelmnts?.btn?.viewmore}}
+                {{resourceService?.frmelmnts?.btn?.viewmore | translate}}
                 <i class="chevron down icon"></i>
               </span>
             </a>
             <a (click)="badgeToggle(false)" *ngIf="!badgeViewMore">
               <span class="cursor-pointer">
-                {{resourceService?.frmelmnts?.btn?.viewless}}
+                {{resourceService?.frmelmnts?.btn?.viewless | translate}}
                 <i class="chevron up icon"></i>
               </span>
             </a>
@@ -224,7 +224,7 @@
       <div class="twelve wide column">
         <div class="ui raised segment ">
           <div class="header announcementCard-header ">
-            <span class="header cardsHeading ">{{resourceService?.frmelmnts?.lbl?.addlInfo}}</span>
+            <span class="header cardsHeading ">{{resourceService?.frmelmnts?.lbl?.addlInfo | translate}}</span>
           </div>
           <div class="profileitems profile-des ui relaxed aligned list ">
             <div class="item ">
@@ -232,7 +232,7 @@
                 <span>{{userDetails.location}}</span>
               </div>
               <div class="iniformationcontent content ">
-                {{resourceService.frmelmnts?.lbl?.currentlocation}}
+                {{resourceService.frmelmnts?.lbl?.currentlocation | translate}}
               </div>
             </div>
             <div class="item ">
@@ -244,7 +244,7 @@
                 </span>
               </div>
               <div class="iniformationcontent content ">
-                {{resourceService.frmelmnts?.lbl?.grades}}
+                {{resourceService.frmelmnts?.lbl?.grades | translate}}
               </div>
             </div>
             <div class="item ">
@@ -252,7 +252,7 @@
                 <span>{{userDetails.gender}}</span>
               </div>
               <div class="iniformationcontent content ">
-                {{resourceService.frmelmnts?.lbl?.gender}}
+                {{resourceService.frmelmnts?.lbl?.gender | translate}}
               </div>
             </div>
             <div class="item ">
@@ -260,7 +260,7 @@
                 <span>{{userDetails.dob | date : "dd/MM/y"}}</span>
               </div>
               <div class="iniformationcontent content ">
-                {{resourceService.frmelmnts?.lbl?.birthdate}}
+                {{resourceService.frmelmnts?.lbl?.birthdate | translate}}
               </div>
             </div>
             <div class="item ">
@@ -268,7 +268,7 @@
                 {{userDetails.subject.join(', ')}}
               </div>
               <div class="iniformationcontent content ">
-                {{resourceService.frmelmnts?.lbl?.subjects}}
+                {{resourceService.frmelmnts?.lbl?.subjects | translate}}
               </div>
             </div>
             <div class="item ">
@@ -276,7 +276,7 @@
                 {{userDetails.language.join(', ')}}
               </div>
               <div class="iniformationcontent content ">
-                {{resourceService.frmelmnts?.lbl?.language}}
+                {{resourceService.frmelmnts?.lbl?.language | translate}}
               </div>
             </div>
           </div>

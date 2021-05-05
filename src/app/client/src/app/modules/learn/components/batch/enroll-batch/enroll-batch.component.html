@@ -7,6 +7,7 @@
     appBodyScroll 
     (dismissed)="redirect()"
     #enrollBatch
+    *ngIf="modalVisibility"
 >
     <!--Header-->
     <div class="sb-modal-header">
@@ -62,8 +63,17 @@
         id="enrollToCourse" 
         (click)="enrollToCourse()"
     >
-        {{resourceService.frmelmnts.lbl.enrollcourse}}
+    {{generaliseLabelService?.frmelmnts?.btn?.enroll}}
     </button>
   </div>
   <!--Actions-->
+</sui-modal>
+<sui-modal
+[isClosable]="false"
+[transitionDuration]="0"
+[size]="'normal'"
+class="sb-modal" *ngIf="showLoader">
+    <div class="twelve wide column my-20">
+        <app-loader></app-loader>
+    </div>
 </sui-modal>

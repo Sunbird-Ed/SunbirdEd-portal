@@ -1,20 +1,37 @@
-<app-data-driven-filter [enrichFilters]="facetsList" [pageId]="'course-search'" *ngIf="initFilters" [ignoreQuery]="['key']" [filterEnv]="filterType" [accordionDefaultOpen]=false [isShowFilterLabel]=true [formAction]="'filter'" [frameworkName]="frameWorkName" (dataDrivenFilter)="getFilters($event)"></app-data-driven-filter>
-<div class="ui container">
-    <div class="content-grid mt-24">
+<app-landing-section *ngIf="allTabData" [textToDisplay]="resourceService?.frmelmnts?.tab?.all" [layoutConfiguration]="layoutConfiguration" [svgToDisplay]="allTabData?.theme?.imageName"></app-landing-section>
+<div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
+  <div [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'">
+    <div [ngClass]="FIRST_PANEL_LAYOUT">
+      <ng-container>
+        <app-global-search-filter [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true'
+          *ngIf="initFilters && allTabData" (filterChange)="getFilters($event)">
+        </app-global-search-filter>
+      </ng-container>
+    </div>
+    <div [ngClass]="SECOND_PANEL_LAYOUT" class="w-100">
+      <div [appTelemetryImpression]="telemetryImpression" [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
+    <div class="content-grid relative9">
         <div class="sb-pageSection">
-            <div  class="sb-pageSection-header" *ngIf="!showLoader && this.queryParams.key">
+            <div  class="sb-pageSection-header" *ngIf="!showLoader && totalCount > 0">
                 <h4 class="sb-pageSection-title m-0 mr-5" [innerHTML] ="resourceService.frmelmnts?.lbl?.showingResultsFor |
-                interpolate:'{searchString}':this.queryParams.key "> </h4>
+                interpolate:'{searchString}':this.queryParams.key !=null?this.queryParams.key:searchAll "> </h4>
+                <span class="badge">{{totalCount}}</span>
                 <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata"  class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" type="button" [routerLink]="['/learn']">
-                    {{resourceService?.frmelmnts?.btn?.close}} <i class="close icon"></i></button>
+                    {{resourceService?.frmelmnts?.btn?.close | translate}} <i class="close icon"></i></button>
             </div>      
         </div>
 
         <div class="twelve wide column">
-            <div [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inView($event)" *ngIf="!showLoader && contentList.length" class="masonry-grid dynamic-section-card ">
-                <div in-view-item [id]="index" [data]="content" class="masonry-item" *ngFor="let content of contentList;let i = index;">
-                    <app-card appContentDirection appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" 
-                        [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:'1.0'}" [data]="content" (clickEvent)="playContent($event)" ></app-card>
+          <app-global-search-selected-filter [facets]="facets" [selectedFilters]="selectedFilters"
+              *ngIf="initFilters && facets && layoutConfiguration" (filterChange)="getFilters($event)"></app-global-search-selected-filter>
+            <div [appTelemetryImpression]="telemetryImpression" in-view-container (inview)="inView($event)" *ngIf="!showLoader && contentList.length" class="sb-grid dynamic-section-card">
+                <div in-view-item [id]="index" [data]="content" class="" *ngFor="let content of contentList;let i = index;">
+                    <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" appTelemetryInteract
+                      [telemetryInteractEdata]="cardIntractEdata"
+                      [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'content',ver:content.pkgVersion ? content.pkgVersion.toString():'1.0'}"
+                      (cardClick)="playContent($event)" [content]="content"
+                      [cardImg]="content?.appIcon || 'assets/images/book.png'">
+                    </sb-library-card>
                 </div>
             </div>
         </div>
@@ -36,5 +53,9 @@
             <app-loader [data]='loaderMessage'></app-loader>
         </div>
     </div>
+        </div>
+    </div>
 </div>
+</div>
+
 <app-batch-info *ngIf="showBatchInfo" [enrolledBatchInfo]="selectedCourseBatches" (modelClose)="showBatchInfo = false"></app-batch-info>

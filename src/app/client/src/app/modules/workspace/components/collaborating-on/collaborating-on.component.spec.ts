@@ -3,7 +3,7 @@ import { CollaboratingOnComponent } from './collaborating-on.component';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService , DateFilterXtimeAgoPipe} from '@sunbird/shared';
+import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService } from '@sunbird/shared';
 import { SearchService, ContentService } from '@sunbird/core';
 import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
@@ -12,6 +12,11 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { Response } from './collaborating.component.spec.data';
 import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
 import { OrderModule } from 'ngx-order-pipe';
+import { CoreModule } from '@sunbird/core';
+import { TelemetryModule } from '@sunbird/telemetry';
+import { DateFilterXtimeAgoPipe } from './../../pipes';
+import { configureTestSuite } from '@sunbird/test-util';
+
 describe('CollaboratingOnComponent', () => {
   let component: CollaboratingOnComponent;
   let fixture: ComponentFixture<CollaboratingOnComponent>;
@@ -51,10 +56,11 @@ describe('CollaboratingOnComponent', () => {
     }
   };
   const bothParams = { 'params': { 'pageNumber': '1' }, 'queryParams': { 'sort_by': 'Updated On' } };
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CollaboratingOnComponent],
-      imports: [HttpClientTestingModule, OrderModule, SharedModule.forRoot()],
+      declarations: [CollaboratingOnComponent, DateFilterXtimeAgoPipe],
+      imports: [HttpClientTestingModule, OrderModule, CoreModule, TelemetryModule.forRoot(), SharedModule.forRoot()],
       providers: [PaginationService, WorkSpaceService, UserService,
         SearchService, ContentService, LearnerService, CoursesService,
         PermissionService, ResourceService, ToasterService,

@@ -4,8 +4,26 @@ import {SignupService} from './signup.service';
 import {ConfigService, SharedModule} from '@sunbird/shared';
 import {LearnerService, UserService} from '@sunbird/core';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('SignupService', () => {
+  const generateOtpData = {
+    'id': 'api.otp.generate',
+    'ver': 'v1',
+    'ts': '2020-01-08 07:49:17:041+0000',
+    'params': {
+      'resmsgid': null,
+      'msgid': null,
+      'err': null,
+      'status': 'success',
+      'errmsg': null
+    },
+    'responseCode': 'OK',
+    'result': {
+      'response': 'SUCCESS'
+    }
+  };
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
@@ -19,25 +37,14 @@ describe('SignupService', () => {
     expect(service).toBeTruthy();
   }));
 
-  it('should fetch tnc configuration', inject([SignupService], (service: SignupService) => {
-    const mockData = {'success': 'success'};
+  it('should call generate API for anonymous', () => {
     const signupService = TestBed.get(SignupService);
     const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(observableOf(mockData));
-    signupService.getTncConfig().subscribe(data => {
-      expect(data).toBe(mockData);
-    });
-  }));
-
-  it('should not fetch tnc configuration and throw error', inject([SignupService], (service: SignupService) => {
-    const mockError = {'error': 'error'};
-    const signupService = TestBed.get(SignupService);
-    const learnerService = TestBed.get(LearnerService);
-    spyOn(learnerService, 'get').and.returnValue(observableThrowError(mockError));
-    signupService.getTncConfig().subscribe(null, data => {
-      expect(data).toBe(mockError);
-    });
-  }));
-
+    const params = { 'request': { 'key': '1242142', 'type': 'phone' } };
+    spyOn(learnerService, 'post').and.returnValue(observableOf(generateOtpData));
+    signupService.generateOTPforAnonymousUser(params, 'G-cjkdjflsfkja');
+    const options = { url: 'anonymous/otp/v1/generate' + '?captchaResponse=' + 'G-cjkdjflsfkja', data: params };
+    expect(learnerService.post).toHaveBeenCalledWith(options);
+  });
 
 });

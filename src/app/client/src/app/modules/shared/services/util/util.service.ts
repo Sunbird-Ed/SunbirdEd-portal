@@ -1,9 +1,13 @@
+import * as TreeModel from 'tree-model';
 import { Injectable, EventEmitter } from '@angular/core';
 import * as _ from 'lodash-es';
 import { ICard, ILanguage } from '@sunbird/shared';
 import { Subject } from 'rxjs';
 import { ResourceService } from '../resource/resource.service';
-  // Dependency injection creates new instance each time if used in router sub-modules
+import dayjs from 'dayjs';
+import { ExportToCsv } from 'export-to-csv';
+import { environment } from '@sunbird/environment';
+// Dependency injection creates new instance each time if used in router sub-modules
 @Injectable()
 export class UtilService {
   static singletonInstance: UtilService;
@@ -13,12 +17,28 @@ export class UtilService {
   public languageChange = new EventEmitter<ILanguage>();
   public hideHeaderTabs = new EventEmitter<boolean>();
   public searchKeyword = new EventEmitter<string>();
+  private csvExporter: any;
+  private _isDesktopApp = false;
 
   constructor(private resourceService: ResourceService) {
     if (!UtilService.singletonInstance) {
       UtilService.singletonInstance = this;
     }
+    this._isDesktopApp = environment.isDesktopApp;
     return UtilService.singletonInstance;
+
+  }
+
+  get isDesktopApp() {
+    return this._isDesktopApp;
+  }
+
+  public sortChildrenWithIndex(tree) {
+    if (!_.get(tree, 'children.length')) {
+      return tree;
+    }
+    tree.children = _.sortBy(tree.children.map(childNode => this.sortChildrenWithIndex(childNode)), ['index']);
+    return tree;
   }
   getDataForCard(data, staticData, dynamicFields, metaData) {
     const list: Array<ICard> = [];
@@ -54,8 +74,13 @@ export class UtilService {
       hoverData: data.hoverData,
       board: data.board || '',
       identifier: data.identifier,
+      mimeType: data.mimeType,
+      primaryCategory: data.primaryCategory
 
     };
+    if (data.trackable) {
+      content.trackable = data.trackable;
+    }
     if (data.desktopAppMetadata) {
       content['desktopAppMetadata'] = data.desktopAppMetadata;
     }
@@ -68,7 +93,7 @@ export class UtilService {
     }
 
     if (data.gradeLevel && data.gradeLevel.length) {
-        content['gradeLevel'] = _.isString(data.gradeLevel) ? data.gradeLevel : data.gradeLevel.join(',');
+      content['gradeLevel'] = _.isString(data.gradeLevel) ? data.gradeLevel : data.gradeLevel.join(',');
     }
     _.forIn(staticData, (value, key1) => {
       content[key1] = value;
@@ -87,7 +112,7 @@ export class UtilService {
     return content;
   }
 
-  public getTopicSubTopic (type, topic) {
+  public getTopicSubTopic(type, topic) {
     if (type === 'topic') {
       return _.size(topic) > 0 ? topic[0] : '';
     } else {
@@ -103,9 +128,9 @@ export class UtilService {
 
   public manipulateSoftConstraint(filter, softConstraintData, frameWorkData?: any) {
     if (!_.isEmpty(frameWorkData) && !filter) {
-      return {filters: _.omit(frameWorkData, ['id']), mode: 'soft'};
+      return { filters: _.omit(frameWorkData, ['id']), mode: 'soft' };
     } else if (filter) {
-     return false;
+      return false;
     } else {
       return softConstraintData;
     }
@@ -181,20 +206,20 @@ export class UtilService {
     });
     return formInputData;
   }
-  getPlayerDownloadStatus(status, content, currentRoute) {
+  getPlayerDownloadStatus(status, content, currentRoute?) {
     if (content) {
-    const downloadStatus = content['downloadStatus'];
-    const addedUsing  = _.get(content, 'desktopAppMetadata.addedUsing');
-    if (addedUsing && addedUsing === 'import' && !downloadStatus) {
-      return this.isDownloaded(content, status);
-    } else {
-      const contentStatus = ['DOWNLOAD', 'FAILED', 'CANCELED'];
+      const downloadStatus = content['downloadStatus'];
+      const addedUsing = _.get(content, 'desktopAppMetadata.addedUsing');
+      if (addedUsing && addedUsing === 'import' && !downloadStatus) {
+        return this.isDownloaded(content, status);
+      } else {
+        const contentStatus = ['DOWNLOAD', 'FAILED', 'CANCELED'];
         if (status === 'DOWNLOAD') {
-        return  downloadStatus ? _.includes(contentStatus, downloadStatus) : this.isDownloaded(content, status);
+          return downloadStatus ? _.includes(contentStatus, downloadStatus) : this.isDownloaded(content, status);
         } else {
-         return downloadStatus ? downloadStatus === status : this.isDownloaded(content, status);
+          return downloadStatus ? downloadStatus === status : this.isDownloaded(content, status);
         }
-    }
+      }
     }
   }
 
@@ -217,7 +242,7 @@ export class UtilService {
   }
 
   clearSearchQuery() {
-      this.searchQuery.next();
+    this.searchQuery.next();
   }
 
   updateSearchKeyword(keyword: string) {
@@ -227,47 +252,54 @@ export class UtilService {
   /* This will add hover data in card content */
   addHoverData(contentList, isOnlineSearch) {
     const status = {
-      DOWNLOADING: this.resourceService.messages.stmsg.m0140,
-      FAILED: this.resourceService.messages.stmsg.m0143,
-      DOWNLOADED: this.resourceService.messages.stmsg.m0139,
-      PAUSED: this.resourceService.messages.stmsg.m0142,
-      CANCELED: this.resourceService.messages.stmsg.m0143,
-      COMPLETED: this.resourceService.messages.stmsg.m0139,
-      INPROGRESS: this.resourceService.messages.stmsg.m0140,
-      RESUME: this.resourceService.messages.stmsg.m0140,
-      INQUEUE: this.resourceService.messages.stmsg.m0140,
-      goToMyDownloads: this.resourceService.frmelmnts.lbl.goToMyDownloads,
-      saveToPenDrive: this.resourceService.frmelmnts.lbl.saveToPenDrive,
+      DOWNLOADING: _.get(this.resourceService, 'messages.stmsg.m0140'),
+      FAILED: _.get(this.resourceService, 'messages.stmsg.m0143'),
+      DOWNLOADED: _.get(this.resourceService, 'messages.stmsg.m0139'),
+      PAUSED: _.get(this.resourceService, 'messages.stmsg.m0142'),
+      CANCELED: _.get(this.resourceService, 'messages.stmsg.m0143'),
+      COMPLETED: _.get(this.resourceService, 'messages.stmsg.m0139'),
+      INPROGRESS: _.get(this.resourceService, 'messages.stmsg.m0140'),
+      RESUME: _.get(this.resourceService, 'messages.stmsg.m0140'),
+      INQUEUE: _.get(this.resourceService, 'messages.stmsg.m0140'),
+      GOTOMYDOWNLOADS: _.get(this.resourceService, 'frmelmnts.lbl.goToMyDownloads'),
+      SAVETOPENDRIVE: _.get(this.resourceService, 'frmelmnts.lbl.saveToPenDrive')
     };
 
     _.each(contentList, (value) => {
-      const contentStatus = status[_.get(value, 'downloadStatus')];
+      const contentStatus = _.get(value, 'downloadStatus');
       value['hoverData'] = {
-        note: isOnlineSearch ? (contentStatus ? (contentStatus === 'DOWNLOADED' ?  status.goToMyDownloads : '')
-        : this.isAvailable(value) ? status.goToMyDownloads : '') : '',
+        note: isOnlineSearch ? (contentStatus ? (_.upperCase(contentStatus) === 'DOWNLOADED' ? 'GOTOMYDOWNLOADS' : '')
+          : this.isAvailable(value) ? 'GOTOMYDOWNLOADS' : '') : '',
         actions: [
           {
-            type: isOnlineSearch ? 'download' : (contentStatus  ? (contentStatus !== 'DOWNLOADED' ? 'download' : 'save') : 'save') ,
+            type: isOnlineSearch ? 'download' : (contentStatus ? (!_.includes(['COMPLETED', 'DOWNLOADED'], contentStatus) ? 'download' : 'save') : 'save'),
             label: isOnlineSearch ? (contentStatus ? _.capitalize(contentStatus) :
-            this.isAvailable(value) ? _.capitalize(status.COMPLETED) : _.capitalize(status.CANCELED)) :
-            (contentStatus ? (contentStatus === 'DOWNLOADED' ? status.saveToPenDrive : _.capitalize(contentStatus)) :
-            this.isAvailable(value) ? status.saveToPenDrive : _.capitalize(status.CANCELED)),
-            disabled: isOnlineSearch ? contentStatus ? _.includes(['DOWNLOADED', 'DOWNLOADING', 'PAUSED'], contentStatus) :
-            this.isAvailable(value) : contentStatus ? _.includes(['DOWNLOADING', 'PAUSED'], contentStatus) : !this.isAvailable(value)
+              this.isAvailable(value) ? _.capitalize('COMPLETED') : _.capitalize('CANCELED')) :
+              (contentStatus ? (_.includes(['COMPLETED', 'DOWNLOADED'], contentStatus) ? 'SAVETOPENDRIVE' : _.capitalize(contentStatus)) :
+                this.isAvailable(value) ? 'SAVETOPENDRIVE' : _.capitalize('CANCELED')),
+
+            disabled: isOnlineSearch ? (contentStatus ? _.includes(['Downloaded', 'Completed', 'Downloading', 'Paused', 'Inprogress', 'Resume', 'Inqueue'], _.capitalize(contentStatus)) :
+              this.isAvailable(value)) : contentStatus ? _.includes(['Downloading', 'Inprogress', 'Resume', 'Inqueue', 'Paused'],
+                _.capitalize(contentStatus)) : !this.isAvailable(value)
           },
           {
             type: 'open',
-            label: this.resourceService.frmelmnts.lbl.open
+            label: _.get(this.resourceService, 'frmelmnts.lbl.open')
           }
         ]
       };
+
+      value['hoverData'].actions[0].label = status[_.upperCase(value['hoverData'].actions[0].label)];
+      if (_.toUpper(_.get(value, 'trackable.enabled')) === 'YES') {
+        value['hoverData'].actions.shift();
+      }
     });
 
     return contentList;
   }
   isAvailable(content) {
     return (_.has(content, 'desktopAppMetadata') ? (!_.has(content, 'desktopAppMetadata.isAvailable')
-    || _.get(content, 'desktopAppMetadata.isAvailable')) : false);
+      || _.get(content, 'desktopAppMetadata.isAvailable')) : false);
   }
 
   emitLanguageChangeEvent(language: ILanguage) {
@@ -289,5 +321,103 @@ export class UtilService {
     } catch (e) {
       throw new Error('ERROR_PARSING_STRING');
     }
+  }
+
+
+  /**
+   * Redirects to login page wth error message
+   */
+  redirectToLogin(errorMessage) {
+    window.location.href = '/redirect/login?error_message=' + errorMessage;
+  }
+
+  redirect(redirectUrl) {
+    window.location.href = redirectUrl;
+  }
+
+  processData(sections, keys) {
+    const facetObj = {};
+    _.forEach(sections, (section) => {
+      if (section && section.facets) {
+        _.forEach(section.facets, (facet) => {
+          if (_.indexOf(keys, facet.name) > -1) {
+            if (facetObj[facet.name]) {
+              facetObj[facet.name].push(...facet.values);
+            } else {
+              facetObj[facet.name] = [];
+              facetObj[facet.name].push(...facet.values);
+            }
+          }
+        });
+      }
+    });
+    return facetObj;
+  }
+
+  removeDuplicateData(data, key) {
+    return _.uniqBy(data, key);
+  }
+
+  removeDuplicate(dataToProcess) {
+    const processedData = {};
+    let uniqueKey: string;
+    _.forEach(dataToProcess, (data, key) => {
+      uniqueKey = key === 'channel' ? 'identifier' : 'name';
+      processedData[key] = _.uniqBy(data, uniqueKey);
+    });
+    return processedData;
+  }
+
+  processCourseFacetData(sections, keys) {
+    const facetObj = {};
+    if (sections && sections.facets) {
+      _.forEach(sections.facets, (facet) => {
+        if (_.indexOf(keys, facet.name) > -1) {
+          if (facetObj[facet.name]) {
+            facetObj[facet.name].push(...facet.values);
+          } else {
+            facetObj[facet.name] = [];
+            facetObj[facet.name].push(...facet.values);
+          }
+        }
+      });
+    }
+    return facetObj;
+  }
+
+  reduceTreeProps(collection, requiredProps) {
+    const model = new TreeModel();
+    const treeModel: any = model.parse(collection);
+
+    treeModel.walk(node => {
+      for (const key of Object.keys(node.model)) {
+        if (!_.includes(requiredProps, key)) {
+          delete node.model[key];
+        }
+      }
+    });
+    return treeModel.model;
+  }
+
+  downloadCSV(collection, data) {
+    const options = {
+      filename: `${_.snakeCase(_.get(collection, 'name'))}_${dayjs().format('YYYY_MM_DD_HH_mm')}`,
+      fieldSeparator: ',',
+      quoteStrings: '"',
+      decimalSeparator: '.',
+      showLabels: true,
+      showTitle: false,
+      useTextFile: false,
+      useBom: true,
+      useKeysAsHeaders: true
+    };
+    this.csvExporter = new ExportToCsv(options);
+    this.csvExporter.generateCsv(data);
+  }
+
+  getAppBaseUrl() {
+    let origin = (<HTMLInputElement>document.getElementById('baseUrl'))
+      ? (<HTMLInputElement>document.getElementById('baseUrl')).value : document.location.origin;
+    return origin;
   }
 }

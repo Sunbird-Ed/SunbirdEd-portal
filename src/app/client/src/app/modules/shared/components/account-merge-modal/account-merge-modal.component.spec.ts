@@ -4,7 +4,7 @@ import {ResourceService} from '@sunbird/shared';
 import {TelemetryModule} from '@sunbird/telemetry';
 import {RouterTestingModule} from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-
+import { configureTestSuite } from '@sunbird/test-util';
 import {AccountMergeModalComponent} from './account-merge-modal.component';
 import {of as observableOf} from 'rxjs';
 import {InterpolatePipe} from './../../pipes';
@@ -16,7 +16,7 @@ describe('AccountMergeModalComponent', () => {
   const resourceBundle = {
     languageSelected$: observableOf({})
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModule, TelemetryModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
@@ -33,7 +33,11 @@ describe('AccountMergeModalComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should call initiateMerge and throwerror', () => {
+    const returnData = { responseCode: 'FAILED'};
+    spyOn(component['http'], 'get').and.returnValue(observableOf(returnData));
+    spyOn(component, 'closeModal');
+    component.initiateMerge();
+    expect(component.closeModal).toHaveBeenCalled();
   });
 });

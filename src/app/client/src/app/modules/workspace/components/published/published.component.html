@@ -1,11 +1,12 @@
+<app-workspace-content-filter ></app-workspace-content-filter>
 <!-- Loader -->
 <div class="twelve wide column mt-20" *ngIf="showLoader">
   <app-loader [data] ="loaderMessage"></app-loader>
 </div>
 
 <div class="ui grid" *ngIf="!showLoader">
-  <div *ngIf="showCourseQRCodeBtn" class="ml-auto">
-    <button class="sb-btn sb-btn-normal sb-btn-secondary" appTelemetryInteract 
+  <div *ngIf="showCourseQRCodeBtn" class="ml-auto mb-16">
+    <button class="sb-btn sb-btn-normal sb-btn-secondary my-16" appTelemetryInteract 
       [telemetryInteractObject]="{id:course-qrdownload,type:'course-qrcode',ver:'1.0'}" 
       [telemetryInteractEdata]="{id:'download-qrcsv',type:'click',pageid:'course-qrcode'}" 
       [telemetryInteractCdata]="[{id: 'course:download:QRCode', type: 'Feature'},{id: 'SB-13798', type: 'Task'}]" (click)=getCourseQRCsv();
@@ -16,7 +17,7 @@
   <div class="twelve wide column" [appTelemetryImpression]="telemetryImpression">
     <div class="ui stackable three column grid" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="publishedContent">
       <div in-view-item *ngFor="let content of publishedContent;let i = index;" [id]="i" [data]="content" class="column py-5 pl-10">
-       <app-card-creation [data]="content" (clickEvent)="contentClick($event)"></app-card-creation>
+       <app-card-creation [data]="content" (clickEvent)="contentClick($event,content)"></app-card-creation>
       </div>
     </div>
     <div *ngIf="noResult">
@@ -49,34 +50,80 @@
 
       <!--Header-->
       <div class="sb-modal-header">
-        {{resourceService?.frmelmnts?.lbl?.deletepublishedcontent}}
+        {{resourceService?.frmelmnts?.lbl?.deletecontent}}
       </div>
       <!--/Header-->
 
       <!--Content-->
       <div class="sb-modal-content">
-        <p>{{resourceService?.frmelmnts?.lbl?.deletepublishedconfirm}}</p>
+        <p [class.sb-color-gray-100]="showCollectionLoader">{{resourceService?.frmelmnts?.lbl?.deleteconfirm}}</p>
+        <div class="py-30">
+          <div *ngIf="showCollectionLoader" class="sb-loader sb-gray-loader pb-20"></div>
+        </div>
       </div>
       <!--/Content-->
 
       <!--Actions-->
-      <div class="sb-modal-actions">
-        <button 
-          class="sb-btn sb-btn-normal sb-btn-error" 
-          (click)="modal.approve('approved')" 
-          autofocus
-        >
-          {{resourceService?.frmelmnts?.btn?.yes}}
-        </button>
-        <button 
-          class="sb-btn sb-btn-normal sb-btn-outline-error" 
+      <div class="sb-modal-actions flex-jc-space-between">
+        <div>
+          <button
+          class="sb-btn sb-btn-normal sb-btn-outline-error mr-10"
+          [class.fadInButton]="showCollectionLoader"
           (click)="modal.deny('denied')"
-        >
+          [disabled]="showCollectionLoader"
+          >
           {{resourceService?.frmelmnts?.btn?.no}}
-        </button>
-        
+          </button>
+          <button
+          class="sb-btn sb-btn-normal sb-btn-error ui disabled"
+          [class.fadInButton]="showCollectionLoader"
+          (click)="checkLinkedCollections(modal)"
+          autofocus
+          [disabled]="showCollectionLoader"
+          >
+          {{resourceService?.frmelmnts?.btn?.yes}}
+          </button>
+        </div>
+        <div *ngIf="showCollectionLoader">{{resourceService?.frmelmnts?.lbl?.scanningLinkedCollection}}</div>
       </div>
       <!--/Actions-->
     </div>
   </div>
 </ng-template>
+<sui-modal *ngIf="collectionListModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'large'"
+class="sb-modal custom-lg-modal" (dismissed)="this.collectionListModal = false" #modal>
+		<div class="sb-modal-header">
+		</div>
+		<div class="sb-modal-content">
+      <h5 class="font-weight-bold sb-color-red">{{resourceService?.frmelmnts?.lbl?.linkedContentErrorMessage}}</h5>
+			<div class="sb-table-responsive">
+				<table aria-hidden="true" class="sb-table sb-table-striped sb-table-sortable sb-table-blue-strip">
+					<thead>
+            <th class="w-10" id="contentType">{{headers.type}}</th>
+            <th class="w-30" id="contentName">{{headers.name}}</th>
+            <th class="w-10" id="contentSubject">{{headers.subject}}</th>
+            <th class="w-10" id="contentGrade">{{headers.grade}}</th>
+            <th class="w-10" id="contentMedium">{{headers.medium}}</th>
+            <th class="w-10" id="contentBoard">{{headers.board}}</th>
+            <th class="w-20" id="contentchannel">{{headers.channel}}</th>
+          </thead>
+          <tbody>
+            <tr *ngFor = "let row of collectionData">
+              <td class="white-space-inherit">{{row['contentType']}}</td>
+              <td class="white-space-inherit font-weight-bold">{{row['name']}}</td>
+              <td class="white-space-inherit">{{row['subject']?.join(", ") || '-'}}</td>
+              <td class="white-space-inherit">{{row['gradeLevel']?.join(", ") || '-'}}</td>
+              <td class="white-space-inherit">{{row['medium']?.join(", ") || '-'}}</td>
+              <td class="white-space-inherit">{{row['board']}}</td>
+              <td class="white-space-inherit">{{row['channel']}}</td>
+            </tr>
+          </tbody>
+        </table>
+			</div>
+		</div>
+		<div class="sb-modal-actions">
+		<button class="sb-btn sb-btn-normal sb-btn-primary" (click)="modal.deny('denied')">
+			{{resourceService?.frmelmnts?.btn?.close}}
+		</button>
+		</div>
+</sui-modal>

@@ -24,10 +24,56 @@ export const mockRes = {
     'audience': ['Learner'], 'visibility': 'Default', 'libraries': [], 'mediaType': 'content',
     'ageGroup': ['6-7', '8-10'], 'osId': 'org.ekstep.quiz.app', 'languageCode': 'en', 'userId': 's', 'userName': 'sourav',
     'versionKey': '1497009185536', 'tags': ['elephant'], 'concepts': [], 'createdBy': 'EkStep',
-    'name': 'Elephant and the Monkey', 'me_averageRating': 'd', 'publisher': 'EkStep', 'usedByContent': [], 'status': 'Live', 'path': ''
+    'name': 'Elephant and the Monkey', 'me_averageRating': 'd', 'publisher': 'EkStep', 'usedByContent': [], 'status': 'Live', 'path': '',
+    'primaryCategory': 'Learning Resource'
   },
   userData: {
     'firstName': 'Sourav',
-    'lastName': 'Dey'
-  }
+    'lastName': 'Dey',
+    'organisationNames' : ['Sunbird'],
+    'organisationIds' : ['ORG_001'],
+    'userId' : '8454cb21-3ce9-4e30-85b5-fade097880d8'
+  },
+  copyContentSuccess: {
+      'id': 'api.course.create',
+      'ver': 'v1',
+      'ts': '2020-05-15 13:09:33:042+0000',
+      'params': {
+        'resmsgid': null,
+        'msgid': null,
+        'err': null,
+        'status': 'success',
+        'errmsg': null
+      },
+      'responseCode': 'OK',
+      'result': {
+        'versionKey': '1589548170308',
+        'identifier': 'do_11302157861002444811',
+        'course_id': 'do_11302157861002444811'
+      }
+    },
+    copyCourseContentData : {
+      identifier: 'do_112598807704158208111',
+      name: 'Demo course',
+      description: '',
+      framework: 'NCFCOPY',
+      children: [{
+        'ownershipType': [
+          'createdBy'
+        ],
+        'parent': 'do_11303070829060915211',
+        'code': '8981daac-6d18-4322-81b3-5da1c284119b',
+        'channel': 'b00bc992ef25f1a9a8d63291e20efc8d',
+        'description': 'test',
+        'language': [
+          'English'
+        ],
+        'mimeType': 'application/vnd.ekstep.content-collection',
+        'idealScreenSize': 'normal',
+        'createdOn': '2020-05-28T10:45:47.259+0000',
+        'objectType': 'Content',
+        'visibility': 'Parent',
+        'selected': true
+      }]
+    }
 };

@@ -1,11 +1,11 @@
 import { Component, OnInit, Output, EventEmitter, Input, ViewChild, OnDestroy } from '@angular/core';
 import { ResourceService, ToasterService, ConfigService } from '@sunbird/shared';
-import { PlayerService, LearnerService, UserService, CoursesService } from '@sunbird/core';
+import { PlayerService, LearnerService, UserService, CoursesService, GeneraliseLabelService } from '@sunbird/core';
 import * as _ from 'lodash-es';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil, mergeMap, tap, delay } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import * as moment from 'moment';
+import dayjs from 'dayjs';
 
 @Component({
   selector: 'app-batch-info',
@@ -14,9 +14,10 @@ import * as moment from 'moment';
 })
 export class BatchInfoComponent implements OnInit, OnDestroy {
 
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
   @Input() enrolledBatchInfo: any;
   @Output() modelClose = new EventEmitter;
+  @Output() routeChanged = new EventEmitter();
   public userDetails = {};
   public hasOngoingBatches = false;
   public enrolledBatches: Array<any> = [];
@@ -28,7 +29,8 @@ export class BatchInfoComponent implements OnInit, OnDestroy {
 
   constructor(public resourceService: ResourceService, public playerService: PlayerService, public configService: ConfigService,
     public learnerService: LearnerService, public userService: UserService, public toasterService: ToasterService,
-    public coursesService: CoursesService, public router: Router) {
+    public coursesService: CoursesService, public router: Router, public generaliseLabelService: GeneraliseLabelService,
+    public activatedRoute: ActivatedRoute) {
       this.resumeInteractEdata = {
         id: 'resume',
         type: 'click',
@@ -61,7 +63,7 @@ export class BatchInfoComponent implements OnInit, OnDestroy {
       data: {
         request: {
           filters: {
-            status: [ '1', '0' ],
+            status: [ '1' ],
             enrollmentType: 'open',
             courseId: this.enrolledBatchInfo.courseId
           },
@@ -74,14 +76,22 @@ export class BatchInfoComponent implements OnInit, OnDestroy {
   }
   public handleResumeEvent(event) {
     this.modal.deny();
+    this.routeChanged.emit(false);
     event.mimeType = 'application/vnd.ekstep.content-collection'; // to route to course page
     event.contentType = 'Course'; // to route to course page
     this.playerService.playContent(event);
   }
   public handleEnrollmentEndDate(batchDetails) {
-    const enrollmentEndDate = moment(_.get(batchDetails, 'enrollmentEndDate')).format('YYYY-MM-DD');
-    const systemDate = moment();
-    return enrollmentEndDate ? moment(enrollmentEndDate).isBefore(systemDate) : false;
+    const enrollmentEndDate = dayjs(_.get(batchDetails, 'enrollmentEndDate')).format('YYYY-MM-DD');
+    const systemDate = dayjs();
+    const disableEnrollBtn = enrollmentEndDate ? dayjs(enrollmentEndDate).isBefore(systemDate) : false;
+    return disableEnrollBtn;
+  }
+  public handleStartDate(batchDetails) {
+    const batchStartDate = dayjs(_.get(batchDetails, 'startDate')).format('YYYY-MM-DD');
+    const systemDate = dayjs();
+    const isJoinNotEnabled = batchStartDate ? dayjs(batchStartDate).isAfter(systemDate) : false;
+    return isJoinNotEnabled;
   }
   public handleEnrollEvent(event) {
     this.disableEnrollBtn = true;
@@ -103,7 +113,11 @@ export class BatchInfoComponent implements OnInit, OnDestroy {
       delay(2000), // wait for data to sync
       mergeMap(data => this.coursesService.getEnrolledCourses()), // fetch enrolled course
     ).subscribe(data => {
-      this.router.navigate(['/learn/course', event.courseId, 'batch', event.identifier]);
+      const textbook = _.get(this.activatedRoute, 'snapshot.queryParams.textbook');
+      const queryParams = textbook ? { textbook } : {};
+      this.router.navigate(['/learn/course', event.courseId, 'batch', event.identifier], { queryParams }).then(res => {
+        this.routeChanged.emit(true);
+      });
     }, (err) => {
       this.disableEnrollBtn = false;
       this.toasterService.error(this.resourceService.messages.emsg.m0001);

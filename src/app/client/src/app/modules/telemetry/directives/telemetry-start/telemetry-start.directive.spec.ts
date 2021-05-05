@@ -5,7 +5,10 @@ import { IStartEventInput } from '../../interfaces';
 import { TelemetryService, TELEMETRY_PROVIDER } from '../../services';
 import {TestBed, ComponentFixture} from '@angular/core/testing';
 import {eventData} from './telemetry-start.directive.spec.data';
+import { configureTestSuite } from '@sunbird/test-util';
+
 describe('TelemetryStartDirective', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TelemetryStartDirective],

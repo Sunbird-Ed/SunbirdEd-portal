@@ -2,6 +2,11 @@
   "UrlLinks": {
     "downloadDikshaApp": "https://play.google.com/store/apps/details?id=in.gov.diksha.app"
   },
+  "layoutConfiguration": {
+    "source": "",
+    "name": "newLayout",
+    "options": ""
+  },
   "CommonSearch": {
     "contentType": [
       "Collection",
@@ -11,7 +16,17 @@
       "SelfAssess",
       "PracticeResource",
       "LearningOutcomeDefinition",
-      "ExplanationResource"
+      "ExplanationResource",
+      "CurriculumCourse"
+    ]
+  },
+  "DialAssembleSearch": {
+    "contentType": [
+      "Collection",
+      "TextBook",
+      "TextBookUnit",
+      "Resource",
+      "Course"
     ]
   },
   "Home": {
@@ -40,7 +55,8 @@
       },
       "metaData": [
         "batchId",
-        "courseId"
+        "courseId",
+        "trackable"
       ],
       "maxCount": "leafNodesCount",
       "progress": "progress"
@@ -83,7 +99,8 @@
       },
       "metaData": [
         "batchId",
-        "courseId"
+        "courseId",
+        "trackable"
       ]
     },
     "metaData": {
@@ -91,11 +108,12 @@
         "identifier",
         "mimeType",
         "framework",
-        "contentType"
+        "contentType",
+        "trackable"
       ]
     },
     "dynamicFields": {
-      "ribbon.right.name": "resourceType",
+      "ribbon.right.name": "primaryCategory",
       "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
     },
     "PAGE_LIMIT": 20
@@ -133,7 +151,7 @@
         ]
       },
       "dynamicFields": {
-        "ribbon.right.name": "contentType"
+        "ribbon.right.name": "primaryCategory"
       }
     },
     "enrolledCourses": {
@@ -152,7 +170,8 @@
       },
       "metaData": [
         "batchId",
-        "courseId"
+        "courseId",
+        "trackable"
       ],
       "maxCount": "leafNodesCount",
       "progress": "progress"
@@ -321,6 +340,88 @@
       "rtl": false
     }
   },
+  "LibraryCourses": {
+    "slickSize": 10,
+    "slideConfig": {
+      "slidesToShow": 4,
+      "slidesToScroll": 4,
+      "respondTo": "slider",
+      "responsive": [
+        {
+          "breakpoint": 2800,
+          "settings": {
+            "slidesToShow": 4,
+            "slidesToScroll": 4
+          }
+        },
+        {
+          "breakpoint": 2200,
+          "settings": {
+            "slidesToShow": 4,
+            "slidesToScroll": 4
+          }
+        },
+        {
+          "breakpoint": 2000,
+          "settings": {
+            "slidesToShow": 3.01,
+            "slidesToScroll": 3.01
+          }
+        },
+        {
+          "breakpoint": 1600,
+          "settings": {
+            "slidesToShow": 3,
+            "slidesToScroll": 3
+          }
+        },
+        {
+          "breakpoint": 1200,
+          "settings": {
+            "slidesToShow": 2.5,
+            "slidesToScroll": 2.5
+          }
+        },
+        {
+          "breakpoint": 900,
+          "settings": {
+            "slidesToShow": 2.5,
+            "slidesToScroll": 2
+          }
+        },
+        {
+          "breakpoint": 768,
+          "settings": {
+            "slidesToShow": 2,
+            "slidesToScroll": 1
+          }
+        },
+        {
+          "breakpoint": 660,
+          "settings": {
+            "slidesToShow": 2,
+            "slidesToScroll": 1
+          }
+        },
+        {
+          "breakpoint": 530,
+          "settings": {
+            "slidesToShow": 1.5,
+            "slidesToScroll": 1
+          }
+        },
+        {
+          "breakpoint": 450,
+          "settings": {
+            "slidesToShow": 1,
+            "slidesToScroll": 1
+          }
+        }
+      ],
+      "infinite": false,
+      "rtl": false
+    }
+  },
   "CoursePageSection": {
     "contentApiQueryParams": {
       "orgdetails": "orgName,email"
@@ -345,8 +446,13 @@
           "identifier",
           "mimeType",
           "framework",
-          "contentType"
+          "contentType",
+          "trackable"
         ]
+      },
+      "dynamicFields": {
+        "ribbon.right.name": "primaryCategory",
+        "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
       }
     },
     "enrolledCourses": {
@@ -367,12 +473,14 @@
       "metaData": {
         "metaData": [
           "batchId",
-          "courseId"
+          "courseId",
+          "trackable"
         ]
       },
       "dynamicFields": {
         "maxCount": "leafNodesCount",
-        "progress": "progress"
+        "progress": "progress",
+        "ribbon.right.name": "content.primaryCategory"
       }
     }
   },
@@ -405,7 +513,7 @@
       ]
     },
     "dynamicFields": {
-      "ribbon.right.name": "resourceType",
+      "ribbon.right.name": "primaryCategory",
       "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
     }
   },
@@ -446,11 +554,12 @@
         "identifier",
         "mimeType",
         "framework",
-        "contentType"
+        "contentType",
+        "trackable"
       ]
     },
     "dynamicFields": {
-      "ribbon.right.name": "resourceType",
+      "ribbon.right.name": "primaryCategory",
       "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
     }
   },
@@ -476,10 +585,13 @@
         "identifier",
         "mimeType",
         "framework",
-        "contentType"
+        "contentType",
+        "trackable",
+        "forumId"
       ]
     },
     "dynamicFields": {
+      "ribbon.right.name": "primaryCategory",
       "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
     }
   },
@@ -524,7 +636,7 @@
       ]
     },
     "dynamicFields": {
-      "ribbon.right.name": "resourceType",
+      "ribbon.right.name": "primaryCategory",
       "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
     }
   },
@@ -548,7 +660,7 @@
       ]
     },
     "dynamicFields": {
-      "ribbon.right.name": "resourceType",
+      "ribbon.right.name": "primaryCategory",
       "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
     }
   },
@@ -585,7 +697,8 @@
         "identifier",
         "mimeType",
         "framework",
-        "contentType"
+        "contentType",
+        "trackable"
       ]
     }
   },
@@ -617,10 +730,10 @@
       ]
     },
     "dynamicFields": {
-      "ribbon.right.name": "contentType",
+      "ribbon.right.name": "primaryCategory",
       "ribbon.left.image": "badgeAssertions[0].badgeClassImage"
     }
-  }, 
+  },
   "TELEMETRY": {
     "MAX_BATCH_SIZE": 10,
     "VERSION": "1.8.0",
@@ -694,7 +807,12 @@
             "ver": 1.1,
             "type": "plugin"
           }
-        ]
+        ],
+        "sideMenu": {
+          "showShare": true,
+          "showDownload": true,
+          "showExit": false
+        }
       }
     },
     "contentType": {
@@ -740,7 +858,23 @@
       "PracticeResource",
       "LearningOutcomeDefinition",
       "ExplanationResource",
-      "ExperientialResource"
+      "ExperientialResource",
+      "eTextBook",
+      "TVLesson"
+    ],
+    "primaryCategory": [
+      "Course",
+      "Digital Textbook",
+      "Content Playlist",
+      "Explanation Content",
+      "Learning Resource",
+      "Practice Question Set",
+      "eTextbook",
+      "Teacher Resource",
+      "Course Assessment"
+    ],
+    "adminHandledContentType" :[
+      "TextBook"
     ],
     "mimeType": [
       "application/vnd.ekstep.ecml-archive",
@@ -808,7 +942,7 @@
         ]
       },
       "dynamicFields": {
-        "ribbon.right.name": "contentType"
+        "ribbon.right.name": "primaryCategory"
       }
     },
     "Published": {
@@ -846,7 +980,7 @@
         ]
       },
       "dynamicFields": {
-        "ribbon.right.name": "contentType"
+        "ribbon.right.name": "primaryCategory"
       }
     },
     "Uploaded": {
@@ -884,7 +1018,7 @@
         ]
       },
       "dynamicFields": {
-        "ribbon.right.name": "contentType"
+        "ribbon.right.name": "primaryCategory"
       }
     },
     "Flagged": {
@@ -917,7 +1051,7 @@
         ]
       },
       "dynamicFields": {
-        "ribbon.right.name": "contentType"
+        "ribbon.right.name": "primaryCategory"
       }
     },
     "ReviewSubmission": {
@@ -950,7 +1084,7 @@
         ]
       },
       "dynamicFields": {
-        "ribbon.right.name": "contentType"
+        "ribbon.right.name": "primaryCategory"
       }
     },
     "LimitedPublishing": {
@@ -993,9 +1127,13 @@
         ]
       },
       "dynamicFields": {
-        "ribbon.right.name": "contentType"
+        "ribbon.right.name": "primaryCategory"
       }
-    }
+    },
+    "questionPrimaryCategories": [
+      "Multiple Choice Question",
+      "Subjective Question"
+    ]
   },
   "DASHBOARD": {
     "PAGE_LIMIT": 200
@@ -1005,45 +1143,12 @@
   },
   "SEARCH": {
     "PAGE_LIMIT": 20,
+    "SECTION_LIMIT": 3,
     "USER": {
       "DOWNLOAD_BUTTON_VISIBILITY": "FALSE"
     },
     "ORGANISATION": {
       "DOWNLOAD_BUTTON_VISIBILITY": "TRUE"
-    }
-  },
-  "ANNOUNCEMENT": {
-    "HOME": {
-      "PAGE_LIMIT": 2
-    },
-    "OUTBOX": {
-      "PAGE_LIMIT": 25
-    },
-    "INBOX": {
-      "PAGE_LIMIT": 10
-    },
-    "PAGINATION": {
-      "PAGE_STRIP": 5
-    },
-    "API": {
-      "ANNOUNCEMENT": {
-        "CHANNEL": "web"
-      }
-    },
-    "FILEUPLOAD": {
-      "MAXFILESIZETOUPLOAD": 1024000,
-      "FILEEXTENSIONTOUPLOAD": "application/pdf, application/jpg, application/png",
-      "ALLOWEDFILEEXTENSION": [
-        "png",
-        "pdf",
-        "jpg"
-      ]
-    },
-    "GEOCONFIG": {
-      "geo": {
-        "adaptor": "SERVICE",
-        "service": "geoService"
-      }
     }
   },
   "ADMIN_UPLOAD": {
@@ -1155,6 +1260,21 @@
     "inPageredirectUrl": "workspace/content/allcontent/1",
     "searchPageredirectUrl": "workspace/content/allcontent/1"
   },
+  "alltextbooks": {
+    "filterType": "alltextbooks",
+    "inPageredirectUrl": "workspace/content/alltextbooks/1",
+    "searchPageredirectUrl": "workspace/content/alltextbooks/1"
+  },
+  "draft": {
+    "filterType": "draft",
+    "inPageredirectUrl": "workspace/content/draft/1",
+    "searchPageredirectUrl": "workspace/content/draft/1"
+  },
+  "published": {
+    "filterType": "published",
+    "inPageredirectUrl": "workspace/content/published/1",
+    "searchPageredirectUrl": "workspace/content/published/1"
+  },
   "collaboration": {
     "filterType": "collaboration",
     "inPageredirectUrl": "workspace/content/collaborating-on/1",
@@ -1194,7 +1314,8 @@
     "courses": "courses",
     "organization": "organization",
     "externalIdVerification": "externalIdVerification",
-    "assessment": "assessment"
+    "assessment": "assessment",
+    "userType": "userType"
   },
   "cacheServiceConfig": {
     "setTimeInMinutes": 10,
@@ -1283,5 +1404,26 @@
     "gujarati": "gu",
     "punjabi": "pa",
     "oriya": "or"
+  },
+  "DIAL_CODE": {
+    "PAGE_LIMIT": 10
+  },
+  "userTypeMapping" : {
+    "student": ["Student", "Learner"],
+    "teacher": ["Teacher", "Instructor"],
+    "other": ["Student", "Teacher", "Instructor", "Learner"],
+    "administrator": ["Administrator"],
+    "parent": ["Student", "Teacher", "Instructor", "Learner"]
+  },
+  "contentType" : {
+    "Course" : "Course",
+    "Collection": "Collection",
+    "Textbook": "Textbook",
+    "Resource": "Resource",
+    "Courses" : "Courses",
+    "Textbooks": "Textbooks"
+  },
+  "assetsPath": {
+    "book": "./assets/images/book.png"
   }
 }

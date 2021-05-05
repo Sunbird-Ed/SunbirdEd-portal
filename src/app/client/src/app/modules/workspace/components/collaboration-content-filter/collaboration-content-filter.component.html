@@ -1,4 +1,5 @@
-<div class="ui grid padded">
+<div class="sbt-page-gap">
+  <div class="ui grid padded">
     <div class="seven wide column pt-0 pl-0">
       <div class="ui fluid icon input left action" id="search-input-container">
         <div class="searchfilterinput ui search">
@@ -40,9 +41,10 @@
     </div>
   </div>
   
+</div>
   <ng-template let-popup #popupTemplate>
     <div class="popup-content">
-        <app-data-driven-filter [pageId]="'all-my-content-page'"[ignoreQuery]="['key']" *ngIf="filterType" [filterEnv]="filterType"
+        <app-data-driven-filter [pageId]="'all-my-content-page'"[ignoreQuery]="['key','sortType','sort_by','query']" *ngIf="filterType" [filterEnv]="filterType"
         [accordionDefaultOpen]=true [isShowFilterLabel]=false [showSearchedParam]=false></app-data-driven-filter>
       </div>
   </ng-template>

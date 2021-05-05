@@ -1,4 +1,102 @@
 /* typography styles */
+@import "./variables";
+
+$line-height-value: 1.61803398875;
+
+// Headings
+$typography: 
+h1 var(--h1-font-size) calc(var(--h1-font-size) * $line-height-value), // 32px
+h2 var(--h2-font-size) calc(var(--h2-font-size) * $line-height-value), // 28px
+h3 var(--h3-font-size) calc(var(--h3-font-size) * $line-height-value), // 24px
+h4 var(--h4-font-size) calc(var(--h4-font-size) * $line-height-value), // 20px
+h5 var(--h5-font-size) calc(var(--h5-font-size) * $line-height-value), // 16px
+h6 var(--h6-font-size) calc(var(--h6-font-size) * $line-height-value); // 14px
+
+@each $name, $font-size, $line-height in $typography {
+  #{$name}, .sb-#{$name} {
+    font-size: $font-size;
+    line-height: $line-height;
+  }
+}
+
+// Font sizes
+
+$font-size: ('medium': var(--font-size-md), 'normal': var(--font-size-normal), 'small': var(--font-size-sm), 'xsmall': var(--font-size-xs));
+
+@each $name, $size in $font-size {
+  .f#{$name} {
+    font-size: #{$size} !important;
+  }
+}
+
+
+// Font sizes in values
+
+$font-size-number: ('0-785': 0.785rem, '0-92': 0.9286rem, '1': 1rem, '1-143': 1.143rem, '1-16': 1.16rem, '1-286': 1.286rem, '1-3': 1.3rem,
+'1-429': 1.429rem, '1-5': 1.5rem, '1-7': 1.7rem, '2': 2rem, '2-5': 2.5rem, '2-57': 2.571rem, '3': 3rem, '3-5': 3.5rem);
+
+@each $num, $size in $font-size-number {
+  .fs-#{$num} {
+    font-size: $size !important;
+  }
+}
+
+// Text transform
+
+$text-transform: capitalize, uppercase, lowercase, inherit;
+
+@each $val in $text-transform {
+  .text-#{$val} {
+    text-transform: $val !important;
+  }
+}
+
+.text-sentencecase {
+  @extend .text-lowercase;
+  &::first-letter {
+    text-transform: uppercase !important;
+  }
+}
+// Font weight
+
+$font-weight: bold, normal;
+
+@each $val in $font-weight {
+  .font-weight-#{$val} {
+    font-weight: $val !important;
+  }
+}
+
+// Word break
+
+$word-break: break-word, break-all;
+
+@each $val in $word-break {
+  .#{$val} {
+    word-break: $val !important;
+  }
+}
+
+// Cursor
+
+$cursor: pointer, text;
+
+@each $val in $cursor {
+  .cursor-#{$val} {
+    cursor: $val !important;
+  }
+}
+
+// Vertical alignment
+
+$vertical-align: bottom, middle, top;
+
+@each $val in $vertical-align {
+  .va-#{$val} {
+    vertical-align: $val !important;
+  }
+}
+
 h1,
 h2,
 h3,
@@ -8,158 +106,31 @@ h6 {
   margin: 0;
   padding: 0;
 }
-h1,
-.sb-h1 {
-  font-size: $h1-font-size; //32px
-  line-height: ($h1-font-size * 1.61803398875);
-}
-h2,
-.sb-h2 {
-  font-size: $h2-font-size; //28px
-  line-height: ($h2-font-size * 1.61803398875);
-}
-h3,
-.sb-h3 {
-  font-size: $h3-font-size; //24px
-  line-height: ($h3-font-size * 1.61803398875);
-}
-h4,
-.sb-h4 {
-  font-size: $h4-font-size; //20px
-  line-height: ($h4-font-size * 1.61803398875); //* 1.42857
-}
-h5,
-.sb-h5 {
-  font-size: $h5-font-size; //16px
-  line-height: ($h5-font-size * 1.61803398875);
-}
-h6,
-.sb-h6 {
-  font-size: $h6-font-size; //14px
-  line-height: ($h6-font-size * 1.61803398875);
-}
+
 p,
 .sb-para {
-  font-size: $p-font-size; //14px
-  line-height: ($p-font-size * 1.61803398875); //* 1.618
-}
-.fmedium {
-  font-size: $font-size-md !important; //16px
-}
-.fnormal {
-  font-size: $font-size-normal; // 14px
-}
-.fsmall {
-  font-size: $font-size-sm !important; //12px
-}
-.fxsmall {
-  font-size: $font-size-xs !important; //10px
+  font-size: var(--p-font-size); //14px
+  line-height: calc(var(--p-font-size) * 1.61803398875); //* 1.618
 }
 
-.fs-0-785 {
-  font-size: 0.785rem !important;
-}
-.fs-0-92 {
-  font-size: 0.9286rem !important;
-}
-.fs-1 {
-  font-size: 1rem !important;
-}
-.fs-1-143 {
-  font-size: 1.143rem !important;
-}
-.fs-1-16 {
-  font-size: 1.16rem !important;
-}
-.fs-1-286 {
-  font-size: 1.286rem !important;
-}
-.fs-1-3 {
-  font-size: 1.3rem !important;
-}
-.fs-1-429 {
-  font-size: 1.429rem !important;
-}
-.fs-1-5 {
-  font-size: 1.5rem !important;
-}
-.fs-1-7 {
-  font-size: 1.7rem !important;
-}
-.fs-2 {
-  font-size: 2rem !important;
-}
-.fs-2-5 {
-  font-size: 2.5rem !important;
-}
-.fs-2-57 {
-  font-size: 2.571rem !important;
-}
-.fs-3 {
-  font-size: 3rem !important;
-}
-.fs-3-5 {
-  font-size: 3.5rem !important;
-}
-
-.font-weight-bold {
-  font-weight: bold !important;
-}
-.font-weight-normal {
-  font-weight: normal !important;
-}
 .font-italic {
   font-style: italic;
 }
 
 a {
-  color: $primary-color;
+  color: var(--primary-color);
   &:hover {
-    color: $primary-color;
+    color: var(--primary-color);
   }
   &:focus {
     outline: 0;
   }
 }
 
-.text-capitalize {
-  text-transform: capitalize !important;
-}
-.text-uppercase {
-  text-transform: uppercase !important;
-}
-.text-lowercase {
-  text-transform: lowercase !important;
-}
-.text-sentencecase {
-  text-transform: lowercase !important;
-  &::first-letter {
-    text-transform: uppercase !important;
-  }
-}
-.text-inherit {
-  text-transform: inherit !important;
-}
-
-.break-word {
-  word-break: break-word;
-}
 .white-space-nowrap {
   white-space: nowrap !important;
 }
 
-.cursor-text {
-  cursor: text !important;
-}
-.cursor-pointer {
-  cursor: pointer !important;
-}
-.va-bottom {
-  vertical-align: bottom !important;
-}
-.va-middle {
-  vertical-align: middle;
-}
 .text-center {
   text-align: center !important;
 }
@@ -180,7 +151,7 @@ a {
 
 .sb-section-title,
 .sb-pageSection-title {
-  font-size: $h5-font-size;
+  font-size: var(--h5-font-size);
   display: inline;
   font-weight: 600;
   &.sb-pageSection-sentenceCase {
@@ -193,7 +164,11 @@ a {
     color: $gray-400;
   }
 }
-
+.sb-categories-title {
+  color: var(--gray-800);
+  font-size:calculateRem(18px);
+  font-weight: bold;
+}
 .sb__ellipsis {
   /* autoprefixer: off */
   -webkit-box-orient: vertical;
@@ -220,3 +195,15 @@ a {
 .text-underline {
   text-decoration: underline !important;
 }
+
+.line-height-normal {
+  line-height: normal !important;
+}
+
+/* typography styles ends */
+
+.sb-modal.custom-lg-modal  .modal.large{max-width: 70.25rem !important;}
+
+.w-10{width:10% !important;max-width:10% !important;}
+.w-20{width:20% !important;max-width:20% !important;}
+.w-30{width:30% !important;max-width:30% !important;}

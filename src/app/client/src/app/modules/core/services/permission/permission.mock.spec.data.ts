@@ -284,19 +284,6 @@ export const mockPermissionRes = {
           {
             'actionGroups': [
               {
-                'name': 'Announcement Sender',
-                'id': 'ANNOUNCEMENT_SENDER',
-                'actions': [
-                  {}
-                ]
-              }
-            ],
-            'name': 'Announcement Sender',
-            'id': 'ANNOUNCEMENT_SENDER'
-          },
-          {
-            'actionGroups': [
-              {
                 'name': 'Content Creation',
                 'id': 'CONTENT_CREATION',
                 'actions': [

@@ -3,7 +3,7 @@ import { OrgDetailsService, FrameworkService, ChannelService } from '@sunbird/co
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { skipWhile, mergeMap, first, map } from 'rxjs/operators';
 import * as _ from 'lodash-es';
-
+const requiredCategories = { categories: 'board,gradeLevel,medium,class,subject' };
 @Injectable({ providedIn: 'root' })
 export class ContentSearchService {
   private channelId: string;
@@ -17,7 +17,8 @@ export class ContentSearchService {
     board: [],
     medium: [],
     gradeLevel: [],
-    subject: []
+    subject: [],
+    publisher: []
   };
   get filters() {
     return _.cloneDeep(this._filters);
@@ -41,29 +42,32 @@ export class ContentSearchService {
   }
   private fetchChannelData() {
     return this.channelService.getFrameWork(this.channelId)
-    .pipe(mergeMap((channelDetails) => {
-      if (this.custodianOrg) {
-        this._filters.board = _.get(channelDetails, 'result.channel.frameworks') || [{
-          name: _.get(channelDetails, 'result.channel.defaultFramework'),
-          identifier: _.get(channelDetails, 'result.channel.defaultFramework')
-        }]; // framework array is empty assigning defaultFramework as only board
-        const selectedBoard = this._filters.board.find((board) => board.name === this.defaultBoard) || this._filters.board[0];
-        this._frameworkId = _.get(selectedBoard, 'identifier');
-      } else {
-        this._frameworkId = _.get(channelDetails, 'result.channel.defaultFramework');
-      }
-      return this.frameworkService.getFrameworkCategories(this._frameworkId);
-    }), map(frameworkDetails => {
-      const frameworkCategories: any[] = _.get(frameworkDetails, 'result.framework.categories');
-      frameworkCategories.forEach(category => {
-        if (['medium', 'gradeLevel', 'subject'].includes(category.code)) {
-          this._filters[category.code] = category.terms || [];
-        } else if (!this.custodianOrg && category.code === 'board') {
-          this._filters[category.code] = category.terms || [];
+      .pipe(mergeMap((channelDetails) => {
+        if (this.custodianOrg) {
+          this._filters.board = _.get(channelDetails, 'result.channel.frameworks') || [{
+            name: _.get(channelDetails, 'result.channel.defaultFramework'),
+            identifier: _.get(channelDetails, 'result.channel.defaultFramework')
+          }]; // framework array is empty assigning defaultFramework as only board
+          const selectedBoard = this._filters.board.find((board) => board.name === this.defaultBoard) || this._filters.board[0];
+          this._frameworkId = _.get(selectedBoard, 'identifier');
+        } else {
+          this._frameworkId = _.get(channelDetails, 'result.channel.defaultFramework');
         }
-      });
-      return true;
-    }), first());
+        if (_.get(channelDetails, 'result.channel.publisher')) {
+          this._filters.publisher = JSON.parse(_.get(channelDetails, 'result.channel.publisher'));
+        }
+        return this.frameworkService.getSelectedFrameworkCategories(this._frameworkId, requiredCategories);
+      }), map(frameworkDetails => {
+        const frameworkCategories: any[] = _.get(frameworkDetails, 'result.framework.categories');
+        frameworkCategories.forEach(category => {
+          if (['medium', 'gradeLevel', 'subject'].includes(category.code)) {
+            this._filters[category.code] = category.terms || [];
+          } else if (!this.custodianOrg && category.code === 'board') {
+            this._filters[category.code] = category.terms || [];
+          }
+        });
+        return true;
+      }), first());
   }
   public fetchFilter(boardName?) {
     if (!this.custodianOrg || !boardName) {
@@ -72,7 +76,7 @@ export class ContentSearchService {
     const selectedBoard = this._filters.board.find((board) => board.name === boardName)
       || this._filters.board.find((board) => board.name === this.defaultBoard) || this._filters.board[0];
     this._frameworkId = this._frameworkId = _.get(selectedBoard, 'identifier');
-    return this.frameworkService.getFrameworkCategories(this._frameworkId).pipe(map(frameworkDetails => {
+    return this.frameworkService.getSelectedFrameworkCategories(this._frameworkId, requiredCategories).pipe(map(frameworkDetails => {
       const frameworkCategories: any[] = _.get(frameworkDetails, 'result.framework.categories');
       frameworkCategories.forEach(category => {
         if (['medium', 'gradeLevel', 'subject'].includes(category.code)) {
@@ -83,5 +87,23 @@ export class ContentSearchService {
       });
       return this.filters;
     }), first());
+  }
+
+  get getCategoriesMapping() {
+    return {
+      subject: 'se_subjects',
+      medium: 'se_mediums',
+      gradeLevel: 'se_gradeLevels',
+      board: 'se_boards'
+    };
+  } 
+
+  public mapCategories({ filters = {}, groupByKey = 'subject' }) {
+    if (_.toLower(groupByKey) === 'subject') return filters;
+    return _.reduce(filters, (acc, value, key) => {
+      const mappedValue = _.get(this.getCategoriesMapping, [key]);
+      if (mappedValue) { acc[mappedValue] = value; delete acc[key]; }
+      return acc;
+    }, filters);
   }
 }

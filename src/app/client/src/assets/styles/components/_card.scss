@@ -1,39 +1,37 @@
 // Card component
 $sb-card-width: calculateRem(292px);
-$sb-card-height: calculateRem(208px);
 $sb-card-body-height: calculateRem(204px);
 $sb-card-progressbar-height: calculateRem(4px);
 $sb-card-hover-movement: calculateRem(3px);
-$sb-card-padding: calculateRem(16px) calculateRem(16px) calculateRem(8px)
-  calculateRem(16px);
+$sb-card-padding: calculateRem(16px) calculateRem(16px) calculateRem(8px) calculateRem(16px);
 $sb-card-border-radius: calculateRem(4px);
-$sb-card-border: calculateRem(1px) solid #dedede;
-$sb-card-box-shadow: 0 calculateRem(2px) calculateRem(7px) 0 rgba(0, 0, 0, 0.16);
-$sb-card-bg-color: $white-color;
+$sb-card-border: calculateRem(1px) solid var(--rc-dedede);
+$sb-card-box-shadow: 0 calculateRem(2px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.16);
+$sb-card-bg-color: var(--white);
 $sb-card-image-height: calculateRem(92px);
 $sb-card-image-width: calculateRem(70px);
 $sb-card-image-border-radius: calculateRem(2px);
 $sb-card-image-border: calculateRem(1px) solid $gray-100;
-$sb-card-image-bg-color: $gray-0;
+$sb-card-image-bg-color: var(--gray-0);
 $sb-card-label-font-size: calculateRem(11px);
-$sb-card-label-color: $primary-color;
+$sb-card-label-color: var(--primary-color);
 $sb-card-label-border: calculateRem(1px) solid $primary-color;
 $sb-card-label-border-radius: calculateRem(2px);
-$sb-card-label-padding: calculateRem(4px) $base-block-space;
+$sb-card-label-padding: calculateRem(4px) calculateRem(8px);
 $sb-card-label-height: calculateRem(24px);
 $sb-card-badge-height: calculateRem(30px);
 $sb-card-badge-width: calculateRem(30px);
 $sb-card-meta-width: calculateRem(172px);
-$sb-card-meta-color: $gray-400;
-$sb-card-meta-font-size: $font-size-sm;
+$sb-card-meta-color: var(--gray-400);
+$sb-card-meta-font-size: var(--font-size-sm);
 $sb-card-meta-line-height: calculateRem(17px);
-$sb-card-title-color: $primary-color;
-$sb-card-title-font-size: $h6-font-size;
-$sb-card-title-line-height: ($sb-card-title-font-size * 1.25);
-$sb-card-title-height: ($sb-card-title-line-height * 2);
-$sb-card-title-font-weight: $font-weight-bold;
+$sb-card-title-color: var(--primary-color);
+$sb-card-title-font-size: var(--h6-font-size);
+$sb-card-title-line-height: calc(var(--h6-font-size) * 1.25);
+$sb-card-title-height: calc((var(--h6-font-size) * 1.25) * 2);
+$sb-card-title-font-weight: var(--font-weight-bold);
 $sb-card-title-spacing: calculateRem(16px) 0 calculateRem(8px) 0;
-$sb-card-meta-org-font-size: $h6-font-size;
+$sb-card-meta-org-font-size: var(--h6-font-size);
 $sb-card-progressbar-border-radius: 0 calculateRem(4px) calculateRem(4px)
   calculateRem(4px);
 // Tamil
@@ -46,13 +44,11 @@ $sb-card-label-font-size-ur: calculateRem(9px);
 $sb-card-meta-font-size-ur: calculateRem(10px);
 $sb-card-title-font-size-ur: $font-size-sm;
 $sb-card-meta-org-font-size-ur: $font-size-sm;
-
 /* sb card styles */
 .sb-card {
   width: $sb-card-width;
-  // max-width: $sb-card-width;
-  background-color: $sb-card-bg-color;
-  border: $sb-card-border;
+  background-color: var(--sb-card-bg);
+  border: var(--sb-card-border);
   border-radius: $sb-card-border-radius;
   cursor: pointer;
   position: relative;
@@ -70,12 +66,10 @@ $sb-card-meta-org-font-size-ur: $font-size-sm;
     padding: $sb-card-padding;
     overflow: hidden;
   }
-
   .sb-card-metas {
     display: flex;
     align-items: flex-end;
   }
-
   .sb-card-image {
     width: $sb-card-image-width;
     height: $sb-card-image-height;
@@ -84,15 +78,13 @@ $sb-card-meta-org-font-size-ur: $font-size-sm;
     border-radius: $sb-card-image-border-radius;
     box-sizing: border-box;
     overflow: hidden;
-    margin: 0 ($base-block-space * 2) 0 0;
-
+    margin: 0 calculateRem(16px) 0 0;
     img {
       width: $sb-card-image-width;
       height: $sb-card-image-height;
       object-fit: cover;
     }
   }
-
   .sb-card-meta {
     height: $sb-card-image-height;
     width: $sb-card-meta-width;
@@ -101,7 +93,6 @@ $sb-card-meta-org-font-size-ur: $font-size-sm;
     flex-direction: column;
     overflow: hidden;
   }
-
   .sb-card-label {
     color: $sb-card-label-color;
     font-size: $sb-card-label-font-size;
@@ -110,21 +101,18 @@ $sb-card-meta-org-font-size-ur: $font-size-sm;
     padding: $sb-card-label-padding;
     height: $sb-card-label-height;
   }
-
   .sb-card-badge {
     height: $sb-card-badge-height;
     width: $sb-card-badge-width;
     object-fit: contain;
     margin: 0 0 0 auto;
   }
-
   .sb-card-meta-item {
     font-size: $sb-card-meta-font-size;
-    color: $sb-card-meta-color;
+    color: var(--sb-card-text);
     width: $sb-card-meta-width;
     line-height: $sb-card-meta-line-height;
   }
-
   .sb-card-title {
     color: $sb-card-title-color;
     font-size: $sb-card-title-font-size;
@@ -134,46 +122,37 @@ $sb-card-meta-org-font-size-ur: $font-size-sm;
     margin: $sb-card-title-spacing;
     overflow: hidden;
   }
-
   .sb-card-org {
     font-size: $sb-card-meta-org-font-size;
-    color: $sb-card-meta-color;
+    color: var(--sb-card-text);
   }
-
   .sb-card-progressbar {
     height: $sb-card-progressbar-height;
-
     .ui.progress .bar {
       border-radius: $sb-card-progressbar-border-radius;
     }
   }
-
   .sb-card-hover {
     position: absolute;
     top: 0;
     max-width: calculateRem(292px);
     width: 100%;
     height: 100%;
-    background-color: rgba(2, 79, 157, 0.85);
+    background-color: rgba(var(--rc-rgba-primary), 0.85);
     display: none;
-
     .sb-card-hover-content {
       display: flex;
       align-items: center;
       height: 100%;
       justify-content: center;
     }
-
     &.sb-card-hover-grey {
-      background: rgba(153, 153, 153, .95);
-      
+      background:  rgba(var(--rc-rgba-gray-300), 0.95);
       .sb-exclamation-icon, p {
-        color: white;
+        color: var(--white);
       }
-
     }
   }
-
   &:hover {
     .sb-card-hover {
       display: block;
@@ -181,27 +160,22 @@ $sb-card-meta-org-font-size-ur: $font-size-sm;
     box-shadow: $sb-card-box-shadow;
   }
 }
-
 app-card[lang="ta"] {
   .sb-card {
     .sb-card-label {
       font-size: $sb-card-label-font-size-ta;
     }
-
     .sb-card-meta-item {
       font-size: $sb-card-meta-font-size-ta;
     }
-
     .sb-card-title {
       font-size: $sb-card-title-font-size-ta;
     }
-
     .sb-card-org {
       font-size: $sb-card-meta-org-font-size-ta;
     }
   }
 }
-
 app-card[lang="ur"] {
   .sb-card {
     .sb-card-label {
@@ -220,29 +194,25 @@ app-card[lang="ur"] {
       margin: 0 auto 0 0;
     }
     .sb-card-image {
-      margin: 0 0 0 ($base-block-space * 2);
+      margin: 0 0 0 calculateRem(16px);
     }
   }
 }
-
 // workspace cards
-
 .sb-wspace-card {
-  height: $base-block-space*16;
+  height: calculateRem(128px);
   max-width: $sb-card-width;
   @include border(border, 0.5px, $gray-0);
   @include border(border-left, 4px, $white);
-  border-radius: $base-block-space/2;
+  border-radius: calculateRem(4px);
   background: $white;
-  padding: $base-block-space*2 $base-block-space*3;
+  padding: calculateRem(16px) calculateRem(24px);
   margin: 0px calculateRem(24px) calculateRem(24px) 0;
-
   .sb-wspace-title {
-    margin-bottom: $base-block-space;
+    margin-bottom: calculateRem(8px);
     font-size: $h5-font-size;
     font-weight: $font-weight-bold;
   }
-
   .sb-wspace-description {
     font-size: $font-size-sm;
     overflow: hidden;
@@ -250,7 +220,6 @@ app-card[lang="ur"] {
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
   }
-
   &:hover,
   &.active {
     .sb-wspace-title {
@@ -258,27 +227,22 @@ app-card[lang="ur"] {
     }
     border-left: calculateRem(4px) solid $secondary-200;
     cursor: pointer;
-    box-shadow: calculateRem(2px) calculateRem(5px) calculateRem(7px) 0 rgba(0, 0, 0, 0.2);
+    box-shadow: calculateRem(2px) calculateRem(5px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.2);
   }
 }
-
 // QR Card
-
 .sb-card-qr {
   .sb-btn {
     border-radius: 0;
     width: 100%;
   }
-
   &:hover {
     .sb-btn {
       background: $secondary-400;
     }
   }
 }
-
 // Batch Card
-
 .ui.card.sb-batch-card {
   border: 1px solid $primary-200;
   box-shadow: none;
@@ -290,7 +254,7 @@ app-card[lang="ur"] {
   }
   & > .sb-batch-card-content {
     padding: 0 1rem;
-    border-top: calculateRem(1px) solid rgba(34, 36, 38, 0.1);
+    border-top: calculateRem(1px) solid rgba(var(--rc-rgba-gray-300), 0.1);
   }
 }
 .sb-batch-card {
@@ -305,7 +269,49 @@ app-card[lang="ur"] {
 .sb-no-batch-found {
   background-color: $tertiary-0;
   border: 1px solid $tertiary-100;
-  padding: ($base-block-space $base-block-space * 2);
+  padding: calculateRem(8px) calculateRem(16px);
   border-radius: calculateRem(4px);
   font-size: calculateRem(12px);
+}
+
+// activity-search hover card scss //
+
+.sb--card{
+  width: 100%;
+  border-radius: .125rem;
+  // background-color: var(--white);
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  position: relative;
+  margin-top: 0;
+  border: 0;
+  contain: content;
+
+  .card-hover{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0; 
+    transition: 0.3s ease;
+    background-color: var(--primary-400);
+    cursor: pointer;
+    
+    .action-container{
+      width: 100%;
+      height: 100%;
+    }
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.sb--card.sb--card--theme2 .sb--card__meta1 .data_1, .sb--card.sb--card--theme2 .sb--card__meta1 .data_2{
+  text-overflow: ellipsis;
+  overflow: hidden;
 }

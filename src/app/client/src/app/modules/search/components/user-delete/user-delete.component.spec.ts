@@ -11,12 +11,11 @@ import {
 import { SearchService, UserService, LearnerService, ContentService } from '@sunbird/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
 import { UserDeleteComponent } from './user-delete.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './user-delete.component.spec.data';
-
+import { configureTestSuite } from '@sunbird/test-util';
 
 
 describe('UserDeleteComponent', () => {
@@ -40,7 +39,7 @@ describe('UserDeleteComponent', () => {
     'url': observableOf({ 'path': 'search/Users/1' }),
     'params': observableOf({ 'userId': '6d4da241-a31b-4041-bbdb-dd3a898b3f85' })
   };
-
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), RouterTestingModule],

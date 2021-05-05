@@ -6,10 +6,19 @@ import { ResourceService } from './resource.service';
 import { ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { CacheService } from 'ng2-cache-service';
 import {mockRes} from './resource.service.spec.data';
+import { configureTestSuite } from '@sunbird/test-util';
+import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
+
 describe('ResourceService', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule],
+      imports: [HttpClientModule,TranslateModule.forRoot({
+                  loader: {
+                    provide: TranslateLoader,
+                    useClass: TranslateFakeLoader
+                  }
+                })],
       providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService]
     });
   });

@@ -8,7 +8,9 @@ import { UserService } from '@sunbird/core';
 import { BatchService } from '../../services';
 import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
-import * as moment from 'moment';
+import dayjs from 'dayjs';
+import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
+
 @Component({
   selector: 'app-update-batch',
   templateUrl: './update-batch.component.html',
@@ -16,7 +18,13 @@ import * as moment from 'moment';
 })
 export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  @ViewChild('updateBatchModal') private updateBatchModal;
+  private updateBatchModal;
+  @ViewChild('updateBatchModal', {static: false}) set setBatchModal(element) {
+    if (element) {
+      this.updateBatchModal = element;
+    }
+    this.initDropDown();
+  };
   /**
   * batchId
   */
@@ -92,6 +100,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   public unsubscribe = new Subject<void>();
 
   public courseCreator = false;
+  public courseDetails;
 
   updateBatchInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
@@ -109,7 +118,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     resourceService: ResourceService, userService: UserService,
     batchService: BatchService,
     toasterService: ToasterService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService,  private lazzyLoadScriptService: LazzyLoadScriptService) {
     this.resourceService = resourceService;
     this.router = route;
     this.activatedRoute = activatedRoute;
@@ -137,6 +146,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         this.batchService.getCourseHierarchy(this.courseId).subscribe((courseDetails) => {
           if (courseDetails.createdBy === this.userService.userid) {
             this.courseCreator = true;
+            this.courseDetails = courseDetails;
           }
         });
         this.showUpdateModal = true;
@@ -152,7 +162,6 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         this.mentorList = userList.mentorList;
         this.initializeUpdateForm();
         this.fetchParticipantDetails();
-        this.initDropDown();
       }, (err) => {
         if (err.error && err.error.params && err.error.params.errmsg) {
           this.toasterService.error(err.error.params.errmsg);
@@ -163,11 +172,11 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
   private fetchBatchDetails() {
+    const participants = {};
     return combineLatest(
       this.batchService.getUserList(),
       this.batchService.getUpdateBatchDetails(this.batchId),
-      this.batchService.getParticipantList({'request': {'batch': {'batchId': this.batchId}}}),
-      (userDetails, batchDetails, participants) => ({userDetails, batchDetails, participants})
+      (userDetails, batchDetails) => ({userDetails, batchDetails, participants})
     );
   }
   /**
@@ -176,7 +185,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   private initializeUpdateForm(): void {
     const endDate = this.batchDetails.endDate ? new Date(this.batchDetails.endDate) : null;
     const enrollmentEndDate = this.batchDetails.enrollmentEndDate ? new Date(this.batchDetails.enrollmentEndDate) : null;
-    if (!moment(this.batchDetails.startDate).isBefore(moment(this.pickerMinDate).format('YYYY-MM-DD'))) {
+    if (!dayjs(this.batchDetails.startDate).isBefore(dayjs(this.pickerMinDate).format('YYYY-MM-DD'))) {
       this.pickerMinDateForEnrollmentEndDate = new Date(new Date(this.batchDetails.startDate).setHours(0, 0, 0, 0));
     } else {
       this.pickerMinDateForEnrollmentEndDate = this.pickerMinDate;
@@ -200,9 +209,9 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.batchUpdateForm.get('startDate').valueChanges.subscribe(value => {
-      const startDate: any = moment(value);
+      const startDate: any = dayjs(value);
       if (startDate.isValid()) {
-        if (!moment(startDate).isBefore(moment(this.pickerMinDate).format('YYYY-MM-DD'))) {
+        if (!dayjs(startDate).isBefore(dayjs(this.pickerMinDate).format('YYYY-MM-DD'))) {
           this.pickerMinDateForEnrollmentEndDate = new Date(new Date(startDate).setHours(0, 0, 0, 0));
         } else {
           this.pickerMinDateForEnrollmentEndDate = this.pickerMinDate;
@@ -229,9 +238,6 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       this.batchService.getUserList(request).pipe(takeUntil(this.unsubscribe))
         .subscribe((res) => {
           this.processParticipantDetails(res);
-          const userList = this.sortUsers(res);
-          this.participantList = userList.participantList;
-          this.mentorList = userList.mentorList;
         }, (err) => {
           if (err.error && err.error.params.errmsg) {
             this.toasterService.error(err.error.params.errmsg);
@@ -292,8 +298,8 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     };
   }
   private initDropDown() {
-    const count = this.batchDetails.participants ? this.batchDetails.participants.length : 0;
-    setTimeout(() => {
+    const count = _.get(this.batchDetails, 'participants') ? _.get(this.batchDetails, 'participants.length') : 0;
+    this.lazzyLoadScriptService.loadScript('semanticDropdown.js').subscribe(() => {
       $('#participant').dropdown({
         forceSelection: false,
         fullTextSearch: true,
@@ -316,7 +322,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       $('#mentors input.search').on('keyup', (e) => {
         this.getUserListWithQuery($('#mentors input.search').val(), 'mentor');
       });
-    }, 0);
+    });
   }
   private getUserListWithQuery(query, type) {
     if (this.userSearchTime) {
@@ -360,8 +366,8 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.batchUpdateForm.value.enrollmentType !== 'open') {
       participants = $('#participant').dropdown('get value') ? $('#participant').dropdown('get value').split(',') : [];
     }
-    const startDate = moment(this.batchUpdateForm.value.startDate).format('YYYY-MM-DD');
-    const endDate = this.batchUpdateForm.value.endDate && moment(this.batchUpdateForm.value.endDate).format('YYYY-MM-DD');
+    const startDate = dayjs(this.batchUpdateForm.value.startDate).format('YYYY-MM-DD');
+    const endDate = this.batchUpdateForm.value.endDate && dayjs(this.batchUpdateForm.value.endDate).format('YYYY-MM-DD');
     const requestBody = {
       id: this.batchId,
       courseId: this.courseId,
@@ -374,7 +380,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       mentors: _.compact(mentors)
     };
     if (this.batchUpdateForm.value.enrollmentType === 'open' && this.batchUpdateForm.value.enrollmentEndDate) {
-      requestBody['enrollmentEndDate'] = moment(this.batchUpdateForm.value.enrollmentEndDate).format('YYYY-MM-DD');
+      requestBody['enrollmentEndDate'] = dayjs(this.batchUpdateForm.value.enrollmentEndDate).format('YYYY-MM-DD');
     }
     const selected = [];
     _.forEach(this.selectedMentors, (value) => {

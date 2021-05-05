@@ -16,7 +16,7 @@ import * as _ from 'lodash-es';
 })
 export class UserEditComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
   userId: string;
   allRoles: Array<RolesAndPermissions>;
   userDetailsForm: FormGroup;
@@ -81,10 +81,8 @@ export class UserEditComponent implements OnInit, OnDestroy, AfterViewInit {
       this.userId = params.userId;
     });
     this.populateUserDetails();
-    this.permissionService.permissionAvailable$.subscribe(params => {
-      if (params === 'success') {
-        this.allRoles = this.permissionService.allRoles;
-      }
+    this.permissionService.availableRoles$.subscribe(params => {
+      this.allRoles = this.permissionService.allRoles;
       this.allRoles = _.filter(this.allRoles, (role) => {
         return role.role !== 'ORG_ADMIN' && role.role !== 'SYSTEM_ADMINISTRATION' && role.role !== 'ADMIN';
       });
@@ -246,28 +244,15 @@ export class UserEditComponent implements OnInit, OnDestroy, AfterViewInit {
   updateProfile() {
     // create school and roles data
     const roles = !_.isEmpty(this.userDetailsForm.value.role) ? this.userDetailsForm.value.role : ['PUBLIC'];
-    const orgArray = [];
+    const orgId = this.userDetails.rootOrgId;
     const newRoles = [...roles];
     const mainRoles = ['ORG_ADMIN', 'SYSTEM_ADMINISTRATION', 'ADMIN', 'SYSTEM_ADMIN'];
     _.remove(newRoles, (role) => {
         return _.includes(mainRoles, role);
     });
-    orgArray.push({organisationId: this.userDetails.rootOrgId, roles: _.concat(newRoles, _.intersection(mainRoles, this.rootOrgRoles))});
-     _.forEach(this.userDetails.organisations, (org) => {
-        if (org.organisationId !== this.userDetails.rootOrgId) {
-          orgArray.push({organisationId: org.organisationId, roles: _.concat(newRoles, _.intersection(mainRoles, org.roles))});
-        }
-      });
-    if (this.userDetailsForm.value.school) {
-      orgArray.push({organisationId: this.userDetailsForm.value.school, roles: roles});
-    }
-    // create location data
-    this.locationCodes = [];
-    if (this.userDetailsForm.value.district) { this.locationCodes.push(this.userDetailsForm.value.district); }
-    if (this.userDetailsForm.value.block) { this.locationCodes.push(this.userDetailsForm.value.block); }
-
-    const data = { userId: this.userId, locationCodes: this.locationCodes, organisations: orgArray };
-    this.profileService.updatePrivateProfile(data)
+    const rolesAdded =  _.concat(newRoles, _.intersection(mainRoles, this.rootOrgRoles));
+    const data = { userId: this.userId,  orgId: orgId, roles: rolesAdded};
+    this.userSearchService.updateRoles(data)
     .subscribe(
       (apiResponse: ServerResponse) => {
         this.toasterService.success(this.resourceService.messages.smsg.m0049);
@@ -339,4 +324,3 @@ export class UserEditComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 }
-

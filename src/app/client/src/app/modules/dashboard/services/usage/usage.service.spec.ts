@@ -3,8 +3,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed, inject } from '@angular/core/testing';
 import { UsageService } from './usage.service';
 import { HttpClient } from '@angular/common/http';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('UsageService', () => {
+  configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [UsageService, HttpClient],

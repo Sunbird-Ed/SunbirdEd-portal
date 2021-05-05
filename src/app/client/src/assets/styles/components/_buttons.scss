@@ -1,5 +1,17 @@
 @import "../mixins/mixins";
 
+// Dashed Buttons
+$sb-btn-dashed-border: 0.5 solid $primary-color;
+$sb-btn-dashed-background-color: $white-color;
+$sb-btn-dashed-color: $primary-400;
+// Button groups
+$sb-btn-group-border-width: 0.0625rem;
+$sb-btn-group-border-width: 1px;
+$sb-btn-group-border-color: $gray-100;
+$sb-btn-group-btn-background: $white-color;
+$sb-btn-group-btn-color: $primary-400;
+$sb-btn-group-btn-active-background-color: $primary-100;
+
 /* buttons sytle guide */
 input[type="submit"],
 input[type="reset"],
@@ -8,6 +20,7 @@ input[type="button"] {
     width: 100%;
   }
 }
+
 // anchor button style
 a.sb-btn {
   text-align: center;
@@ -15,6 +28,13 @@ a.sb-btn {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+  &:hover{
+    text-decoration: none;
+  }
+}
+
+button.sb-btn:focus {
+  outline: none;
 }
 
 .sb-btn {
@@ -23,60 +43,67 @@ a.sb-btn {
   user-select: none;
   outline: 0;
   display: inline-block;
-  border: 1px solid;
-  // color: $white-color;
+  border: calculateRem(1px) solid;
   cursor: pointer;
-  min-width: ($base-block-space * 8);
+  min-width: calculateRem(64px);
   @include border-radius(0.125rem);
   position: relative;
-  line-height: 1.15;
+  line-height: 1;
+
   text: {
-    transform: capitalize;
+    transform: inherit;
     decoration: none;
   }
+
   &:hover {
     opacity: 1;
   }
+
   &:after {
     content: "";
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 3px;
-    height: 3px;
+    width: calculateRem(3px);
+    height: calculateRem(3px);
     background: $primary-600;
     opacity: 0;
     border-radius: 50%;
     transform: scale(1, 1) translate(-50%);
     transform-origin: 50% 50%;
   }
+
   &.flat {
     border-radius: 0;
   }
+
   &.sb-btn-radius {
     border-radius: 2rem;
   }
 }
+
 // Create button color classess from the below list
 // btnname basecolor hovercolor outlinecolor
-$btns: "gray" var(--gray-200) var(--gray-400) var(--gray-100),
-  "primary" var(--primary-400) var(--primary-800) var(--primary-100),
-  "secondary" var(--secondary-200) var(--secondary-400) var(--secondary-0),
-  "tertiary" var(--tertiary-100) var(--tertiary-400) var(--tertiary-0),
-  "red" var(--red-100) var(--red-400) var(--red-0),
-  "info" var(--primary-400) var(--primary-800) var(--primary-100),
-  "success" var(--secondary-200) var(--secondary-400) var(--secondary-100),
-  "warning" var(--tertiary-100) var(--tertiary-400) var(--tertiary-0),
-  "error" var(--red-100) var(--red-400) var(--red-0);
+$btns: "gray"var(--gray-200) var(--gray-400) var(--gray-100),
+"primary"var(--primary-400) var(--primary-800) var(--primary-100),
+"secondary"var(--secondary-200) var(--secondary-400) var(--secondary-0),
+"tertiary"var(--tertiary-100) var(--tertiary-400) var(--tertiary-0),
+"red"var(--red-100) var(--red-400) var(--red-0),
+"info"var(--primary-400) var(--primary-800) var(--primary-100),
+"success"var(--secondary-200) var(--secondary-400) var(--secondary-100),
+"warning"var(--tertiary-100) var(--tertiary-400) var(--tertiary-0),
+"error"var(--red-100) var(--red-400) var(--red-0);
+
 @each $btn in $btns {
   $btntypes: btn btn-outline btn-dashed btn-link btn-square;
 
   @each $btntype in $btntypes {
     .sb-#{nth($btntype, 1)}-#{nth($btn, 1)} {
-      @if $btntype == btn {
+      @if $btntype==btn {
         background-color: #{nth($btn, 2)};
         border-color: #{nth($btn, 2)};
         color: var(--white);
+
         &:hover,
         &:active,
         &.active {
@@ -84,31 +111,40 @@ $btns: "gray" var(--gray-200) var(--gray-400) var(--gray-100),
           border: 1px solid transparent;
           color: var(--white);
         }
-      } @else if $btntype == btn-outline {
+      }
+
+      @else if $btntype==btn-outline {
         background-color: var(--white);
         color: #{nth($btn, 2)};
         border-color: #{nth($btn, 2)};
+
         &:hover,
         &:active,
         &.active {
           color: #{nth($btn, 3)};
           background-color: #{nth($btn, 4)};
         }
-      } @else if $btntype == btn-link {
+      }
+
+      @else if $btntype==btn-link {
         background: none;
         border: 0px;
         color: #{nth($btn, 2)};
+
         &:hover,
         &:active,
         &.active {
           background-color: #{nth($btn, 4)};
         }
-      } @else if $btntype == btn-dashed {
+      }
+
+      @else if $btntype==btn-dashed {
         border-style: dashed;
-        border-width: 1px;
-        background-color: #fff;
+        border-width: calculateRem(1px);
+        background-color: var(--white);
         border-color: #{nth($btn, 2)};
         color: #{nth($btn, 2)};
+
         &:hover,
         &:active,
         &.active {
@@ -118,12 +154,16 @@ $btns: "gray" var(--gray-200) var(--gray-400) var(--gray-100),
     }
   }
 }
+
 // Create button sizes classess from the below list
 // class height padding fontsize width
-$btnsizes: "xs" 1.5rem "0.25rem 0.5rem" 0.75rem null,
-  "normal" 2rem "0.5rem 1rem" 0.75rem null, "sm" 2.5rem "0.5rem 1rem" 1rem null,
-  "md" 3rem "0.5rem 1rem" 1remrem null, "lg" 3.5rem "1rem 1.5rem" 1.25rem null,
-  "full" 1.5rem "0.5rem 1rem" 1.25rem 100%;
+$btnsizes: "xs"1.5rem "0.25rem 0.5rem"0.75rem null,
+"normal"2rem "0.5rem 1rem"0.75rem null,
+"sm"2.5rem "0.5rem 1rem"1rem null,
+"md"3rem "0.5rem 1rem"1rem null,
+"lg"3.5rem "1rem 1.5rem"1.25rem null,
+"full"1.5rem "0.5rem 1rem"1.25rem 100%;
+
 @each $btn in $btnsizes {
   .sb-btn-#{nth($btn, 1)} {
     height: #{nth($btn, 2)};
@@ -132,33 +172,41 @@ $btnsizes: "xs" 1.5rem "0.25rem 0.5rem" 0.75rem null,
     width: #{nth($btn, 5)};
   }
 }
+
 // Create button square classess from the below list
 // class height width fontsize padding
-$btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
-  "sm" 3rem 3rem 0.75rem null, "md" 4rem 4rem 1rem null,
-  "lg" 8rem 8rem 1.25rem null;
+$btnSquaresizes: "xs"1.5rem 1.5rem 1rem null,
+"normal"4rem 4rem 0.75rem null,
+"sm"3rem 3rem 0.75rem null,
+"md"4rem 4rem 1rem null,
+"lg"8rem 8rem 1.25rem null;
+
 @each $btn in $btnSquaresizes {
   .sb-btn-square {
     &.sb-btn-#{nth($btn, 1)} {
       height: #{nth($btn, 2)};
       width: #{nth($btn, 3)};
       font-size: #{nth($btn, 4)};
+
       //width: #{nth($btn, 5)};
       i.icon {
         margin: 0 0 0 0;
         font-size: 2em;
       }
+
       span {
         margin: 0.5rem 0 0 0;
       }
     }
   }
 }
+
 .sb-btn-white {
-  box-shadow: 0 calculateRem(-1px) calculateRem(4px) 0 rgba(0, 0, 0, 0.1),
-    0 3px 4px 0 rgba(0, 0, 0, 0.2);
-  border: 0px solid #ddd;
+  box-shadow: 0 calculateRem(-1px) calculateRem(4px) 0 rgba(var(--rc-rgba-black), 0.1),
+    0 calculateRem(3px) calculateRem(4px) 0 rgba(var(--rc-rgba-black), 0.2);
+  border: 0px solid var(--rc-dddddd);
 }
+
 .sb-btn-square {
   display: inline-flex;
   flex-direction: column;
@@ -167,93 +215,85 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
   font-size: 0.75rem;
   padding: 0.5rem;
 }
-.sb-btn-disabled {
-  background-color: var(--gray-100);
-  border: 1px solid var(--gray-100);
-  color: var(--gray-200);
-  cursor: default;
-}
+
+.sb-btn-disabled,
 .sb-btn-outline-disabled {
-  background-color: var(--white);
-  border: 1px solid var(--gray-100);
-  color: var(--gray-200);
   cursor: default;
   font-weight: normal;
 }
+
+.sb-btn-disabled {
+  background-color: var(--gray-100);
+  border: calculateRem(1px) solid var(--gray-100);
+
+  &:hover {
+    background-color: var(--gray-100) !important;
+    color: var(--gray-200) !important;
+  }
+}
+
+.sb-btn-outline-disabled {
+  background-color: var(--white);
+  border: calculateRem(1px) solid var(--gray-100);
+
+  &:hover {
+    background-color: var(--white) !important;
+    ;
+    border: calculateRem(1px) solid var(--gray-100) !important;
+    color: var(--gray-200) !important;
+  }
+}
+
 // button link
 .sb-btn-link {
   background: none;
   border: 0;
-  &:hover {
-    // font-weight: $font-weight-bold;
-  }
 }
 
-.sb-btn-download {
-  transition: all 1.2s ease-in-out;
-  i::after {
-    content: "\f019";
-    font-size: calculateRem(13px);
-    color: var(--white);
-  }
-  &:hover {
-    animation: pulse 0.2s 2 both;
-  }
-  &.loading {
-    i {
-      animation: loading 2s infinite linear;
-      &::after {
-        content: "\f1ce";
-      }
-    }
-  }
-  &.success {
-    i::after {
-      content: "\f00c";
-      color: transparent;
-      animation: change-icon 1s 0.6s linear both;
-    }
-  }
-}
+
 
 // Buttons with icon
 .sb-right-icon-btn {
-  padding: $base-block-space $base-block-space $base-block-space
-    $base-block-space;
+  padding: calculateRem(8px);
+
   i.icon {
-    margin-left: $base-block-space;
+    margin-left: calculateRem(8px);
     margin-right: 0;
   }
+
   html[dir="rtl"] & {
-    padding: $base-block-space $base-block-space $base-block-space
-      $base-block-space;
+    padding: calculateRem(8px);
+
     i.icon {
-      margin-right: ($base-block-space / 2);
+      margin-right: calculateRem(4px);
       margin-right: 0;
     }
   }
 }
+
 .sb-left-icon-btn {
-  padding: $base-block-space $base-block-space $base-block-space
-    $base-block-space;
+  padding: calculateRem(8px);
+
   i.icon {
-    margin-right: $base-block-space;
+    margin-right: calculateRem(4px);
   }
+
   html[dir="rtl"] & {
-    padding: $base-block-space $base-block-space $base-block-space
-      $base-block-space;
+    padding: calculateRem(8px);
+
     i.icon {
-      margin-left: $base-block-space;
+      margin-left: calculateRem(8px);
     }
   }
 }
+
 .sb-left-icon-btn.sb-btn-xs {
-  padding: ($base-block-space * 0) ($base-block-space * 1)
-    ($base-block-space * 0) ($base-block-space * 1);
+  padding: 0 calculateRem(8px);
 }
+
 //Buttons toggle
 .ui.toggle.checkbox.sb-toggle {
-  min-height: ($base-block-space * 3);
+  min-height: calculateRem(24px);
   position: relative;
   display: inline-block;
   -webkit-backface-visibility: hidden;
@@ -261,12 +301,13 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
   outline: 0;
   vertical-align: baseline;
   font-style: normal;
-  min-height: ($base-block-space * 2);
+  min-height: calculateRem(16px);
   font-size: 1rem;
-  min-width: ($base-block-space * 2);
+  min-width: calculateRem(16px);
+
   input {
-    width: ($base-block-space * 8);
-    height: ($base-block-space * 3);
+    width: calculateRem(64px);
+    height: calculateRem(24px);
     cursor: pointer;
     position: absolute;
     top: 0;
@@ -274,21 +315,24 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
     opacity: 0;
     outline: 0;
     z-index: 3;
-    &:focus:checked ~ label:before,
-    &:focus:checked ~ .box:before,
-    &:checked ~ .box:before,
-    &:checked ~ label:before {
-      background-color: #024f9d !important;
+
+    &:focus:checked~label:before,
+    &:focus:checked~.box:before,
+    &:checked~.box:before,
+    &:checked~label:before {
+      background-color: var(--primary-color) !important;
     }
   }
+
   label {
-    min-height: ($base-block-space * 2);
-    padding-left: ($base-block-space * 9);
-    color: rgba(0, 0, 0, 0.87);
+    min-height: calculateRem(16px);
+    padding-left: calculateRem(72px);
+    color: rgba(var(--rc-rgba-black), 0.87);
     position: relative;
     display: block;
     outline: 0;
     font-size: 1rem;
+
     &:before {
       display: block;
       position: absolute;
@@ -298,40 +342,43 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
       border: none;
       top: 1px;
       left: 0;
-      background: rgba(0, 0, 0, 0.05);
+      background: rgba(var(--rc-rgba-black), 0.05);
       box-shadow: none;
-      width: ($base-block-space * 8);
-      height: ($base-block-space * 3);
+      width: calculateRem(64px);
+      height: calculateRem(24px);
       border-radius: 500rem;
       @include btn-theme($primary-color);
       transition: border 0.1s ease, opacity 0.1s ease, transform 0.1s ease,
         box-shadow 0.1s ease, -webkit-transform 0.1s ease;
     }
+
     &:after {
-      background: var(--white) linear-gradient(transparent, rgba(0, 0, 0, 0.05));
+      background: var(--white) linear-gradient(transparent, rgba(var(--rc-rgba-black), 0.05));
       position: absolute;
       content: "" !important;
       opacity: 1;
       z-index: 2;
       border: none;
-      width: (($base-block-space * 3) - 4);
-      height: (($base-block-space * 3) - 4);
-      top: 3px;
+      width: calculateRem(20px);
+      height: calculateRem(20px);
+      top: calculateRem(3px);
       left: 0;
       border-radius: 500rem;
-      -webkit-transition: background 0.3s ease, left 0.3s ease;
       transition: background 0.3s ease, left 0.3s ease;
     }
   }
-  input ~ label:after {
+
+  input~label:after {
     left: 0.1rem;
     box-shadow: none;
   }
-  input:checked ~ label:after {
+
+  input:checked~label:after {
     left: calculateRem(41px);
     box-shadow: none;
   }
 }
+
 // button groups
 .btn-group {
   border: $sb-btn-group-border-width solid $sb-btn-group-border-color;
@@ -342,6 +389,7 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
   flex-direction: row;
   font-size: 0;
   vertical-align: baseline;
+
   .sb-btn {
     background: $sb-btn-group-btn-background;
     border-left: $sb-btn-group-border-width solid $sb-btn-group-border-color;
@@ -351,164 +399,23 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
     margin: 0;
     border: 0;
     color: $sb-btn-group-btn-color;
-    min-width: ($base-block-space * 5);
+    min-width: calculateRem(40px);
+
     &:first-child {
       border-left: none;
       margin-left: 0;
     }
+
     &:active,
     &.active {
       background-color: $sb-btn-group-btn-active-background-color;
       color: $sb-btn-group-btn-color;
     }
+
     .icon {
       margin: 0;
       vertical-align: top;
     }
-  }
-}
-
-.sb-btn-loading-spinner {
-  padding: ($base-block-space * 1) ($base-block-space * 2)
-    ($base-block-space * 1) ($base-block-space * 1);
-}
-
-@keyframes spinner-border {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.sb-loading-spinner {
-  width: 1rem;
-  height: 1rem;
-  margin-right: 8px;
-  border-width: 0.2em;
-  display: inline-block;
-  vertical-align: text-bottom;
-  border: 0.15em solid currentColor;
-  border-right-color: transparent;
-  border-radius: 50%;
-  -webkit-animation: spinner-border 0.75s linear infinite;
-  animation: spinner-border 0.75s linear infinite;
-}
-
-.sb-btn-loading:before {
-  position: absolute;
-  content: "";
-  top: 50%;
-  left: 50%;
-  margin: -0.64285714em 0 0 -0.64285714em;
-  width: 1.28571429em;
-  height: 1.28571429em;
-  border-radius: 500rem;
-  border: 0.2em solid rgba(0, 0, 0, 0.15);
-}
-
-.sb-btn-loading:after {
-  position: absolute;
-  content: "";
-  top: 50%;
-  left: 50%;
-  margin: -0.64285714em 0 0 -0.64285714em;
-  width: 1.28571429em;
-  height: 1.28571429em;
-  -webkit-animation: button-spin 0.6s linear;
-  animation: button-spin 0.6s linear;
-  -webkit-animation-iteration-count: infinite;
-  animation-iteration-count: infinite;
-  border-radius: 500rem;
-  border-color: #fff transparent transparent;
-  border-style: solid;
-  border-width: 0.2em;
-  -webkit-box-shadow: 0 0 0 1px transparent;
-  box-shadow: 0 0 0 1px transparent;
-}
-/*Create ripple effec*/
-.ripple {
-  position: relative;
-  overflow: hidden;
-  transform: translate3d(0, 0, 0);
-}
-.ripple:after {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
-  background-repeat: no-repeat;
-  background-position: 50%;
-  transform: scale(10, 10);
-  opacity: 0;
-  transition: transform 0.5s, opacity 1s;
-}
-.ripple:active:after {
-  transform: scale(0, 0);
-  opacity: 0.3;
-  transition: 0s;
-}
-
-//download button animation
-.sb-btn-download {
-  transition: all 1.2s ease-in-out;
-  i::after {
-    content: "\f019";
-    font-size: 13px;
-    color: #fff;
-  }
-  &:hover {
-    animation: pulse 0.2s 2 both;
-  }
-  &.loading {
-    i {
-      animation: loading 2s infinite linear;
-      &::after {
-        content: "\f1ce";
-      }
-    }
-  }
-  &.success {
-    i::after {
-      content: "\f00c";
-      color: transparent;
-      animation: change-icon 1s 0.6s linear both;
-    }
-  }
-}
-
-@keyframes loading {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-  100% {
-    -webkit-transform: rotate(359deg);
-    transform: rotate(359deg);
-  }
-}
-
-@keyframes change-icon {
-  0% {
-    color: transparent;
-  }
-  100% {
-    color: #fff;
-  }
-}
-
-@keyframes pulse {
-  from {
-    transform: scale3d(1, 1, 1);
-  }
-  50% {
-    transform: scale3d(1.05, 1.05, 1.05);
-  }
-  to {
-    transform: scale3d(1, 1, 1);
   }
 }
 
@@ -519,3 +426,10 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
 *[lang="hi"] .sb-btn-normal {
   line-height: 1.5;
 }
+
+.sb-btn-icon-fix {
+  display:flex;
+  align-items: center;
+  line-height: normal;
+}
+

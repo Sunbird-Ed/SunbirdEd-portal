@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ConfigService, RequestParam, ServerResponse, HttpOptions } from '@sunbird/shared';
 import { LearnerService } from '../../../core/services/learner/learner.service';
 import { Observable } from 'rxjs';
@@ -18,7 +18,6 @@ export class ManageService {
   * reference of learner service.
   */
   public learnerService: LearnerService;
-
   /**
   * for making upload api calls
   * @param {RequestParam} requestParam interface
@@ -59,8 +58,17 @@ export class ManageService {
     return this.learnerService.get(options);
   }
 
-  public getData(slug: any, fileNmae: any): Observable<any> {
-    return this.httpClient.get('/admin-reports/' + slug + '/' + fileNmae)
+  public getData(slug: any, fileName: any, downloadFileName?: string): Observable<any> {
+    let headers: HttpHeaders = new HttpHeaders();
+    if (downloadFileName) {
+      headers = new HttpHeaders({
+        'Content-Disposition': 'attachment',
+        'filename': downloadFileName
+      });
+    }
+    return this.httpClient.get('/admin-reports/' + slug + '/' + fileName, {
+      headers: headers
+    })
       .pipe(
         map(res => {
           const result = {

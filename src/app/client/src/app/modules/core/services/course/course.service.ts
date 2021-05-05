@@ -1,12 +1,12 @@
 import { catchError, map, skipWhile } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { LearnerService } from './../learner/learner.service';
 import { UserService } from './../user/user.service';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
 import { IEnrolledCourses, ICourses } from './../../interfaces';
 import { ContentService } from '../content/content.service';
-import {throwError as observableThrowError } from 'rxjs';
+import {throwError as observableThrowError, of } from 'rxjs';
 import * as _ from 'lodash-es';
 /**
  *  Service for course API calls.
@@ -28,10 +28,8 @@ export class CoursesService {
    *  To get url, app configs.
    */
   private config: ConfigService;
-  /**
-   * user id
-   */
-  userid: string;
+
+  sectionId: any;
   /**
    * BehaviorSubject Containing enrolled courses.
    */
@@ -45,6 +43,7 @@ export class CoursesService {
    * Notification message for external content onclick of Resume course button
    */
   showExtContentMsg = false;
+  public revokeConsent = new EventEmitter<void>();
   /**
   * the "constructor"
   *
@@ -57,14 +56,13 @@ export class CoursesService {
     this.config = config;
     this.userService = userService;
     this.learnerService = learnerService;
-    this.userid = this.userService.userid;
   }
   /**
    *  api call for enrolled courses.
    */
   public getEnrolledCourses() {
     const option = {
-      url: this.config.urlConFig.URLS.COURSE.GET_ENROLLED_COURSES + '/' + this.userid,
+      url: this.config.urlConFig.URLS.COURSE.GET_ENROLLED_COURSES + '/' + this.userService.userid,
       param: { ...this.config.appConfig.Course.contentApiQueryParams, ...this.config.urlConFig.params.enrolledCourses }
     };
     return this.learnerService.get(option).pipe(
@@ -84,6 +82,21 @@ export class CoursesService {
   public initialize() {
     this.getEnrolledCourses().subscribe((date) => {
     });
+  }
+  public getCourseSectionDetails() {
+    if (this.sectionId) {
+      return of(this.sectionId);
+    }
+    return this.getCourseSection().pipe(map(sectionId => {
+      this.sectionId = sectionId;
+      return sectionId;
+    }));
+  }
+  public getCourseSection() {
+    const systemSetting = {
+      url: this.config.urlConFig.URLS.SYSTEM_SETTING.SSO_COURSE_SECTION,
+    };
+    return this.learnerService.get(systemSetting);
   }
 
    /**
@@ -125,8 +138,8 @@ export class CoursesService {
       if (cur.courseId !== courseId) { // course donst match return
         return acc;
       }
-      if (cur.batch.enrollmentType === 'invite-only') { // invite-only batch
-        if (cur.batch.status === 2) { // && (!acc.invite.ended || latestCourse(acc.invite.ended.enrolledDate, cur.enrolledDate))
+      if (_.get(cur, 'batch.enrollmentType') === 'invite-only') { // invite-only batch
+        if (_.get(cur, 'batch.status') === 2) { // && (!acc.invite.ended || latestCourse(acc.invite.ended.enrolledDate, cur.enrolledDate))
           acc.inviteOnlyBatch.expired.push(cur);
           acc.expiredBatchCount = acc.expiredBatchCount + 1;
         } else {
@@ -134,7 +147,7 @@ export class CoursesService {
           acc.inviteOnlyBatch.ongoing.push(cur);
         }
       } else {
-        if (cur.batch.status === 2) {
+        if (_.get(cur, 'batch.status') === 2) {
           acc.expiredBatchCount = acc.expiredBatchCount + 1;
           acc.openBatch.expired.push(cur);
         } else {

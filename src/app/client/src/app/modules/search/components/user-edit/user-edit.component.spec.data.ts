@@ -1,4 +1,159 @@
 export const Response = {
+  districtList: [{
+    'code': '2725',
+    'name': 'Pune',
+    'id': '34b8ac6b-d6c9-4ab1-9fd0-cfb0ec1a2a81',
+    'type': 'district',
+    'parentId': '37809706-8f0e-4009-bf67-87bf04f220fa'
+  },
+  {
+    'code': '2724',
+    'name': 'Raigad',
+    'id': '9ab6d64a-1db0-47a6-81df-fa1a360c6802',
+    'type': 'district',
+    'parentId': '37809706-8f0e-4009-bf67-87bf04f220fa'
+  }],
+  orgDetails: {
+    'id': 'api.org.search',
+    'ver': 'v1',
+    'ts': '2018-11-28 11:47:03:633+0000',
+    'params': {
+      'resmsgid': null,
+      'msgid': 'db87eb37-392a-6815-4c07-f10f0d7c8182',
+      'err': null,
+      'status': 'success',
+      'errmsg': null
+    },
+    'responseCode': 'OK',
+    'result': {
+      'response': {
+        'count': 2,
+        'content': [ {
+            'dateTime': null,
+            'preferredLanguage': null,
+            'approvedBy': null,
+            'channel': 'FT_Org_Channel_1536169440',
+            'description': null,
+            'updatedDate': null,
+            'addressId': null,
+            'orgType': null,
+            'provider': null,
+            'locationId': null,
+            'orgCode': null,
+            'theme': null,
+            'id': '01258430492140339266',
+            'communityId': null,
+            'isApproved': null,
+            'slug': 'ft_org_channel_1536169440',
+            'identifier': '01258430492140339266',
+            'thumbnail': null,
+            'orgName': 'FT_Org_Name_2634431769',
+            'updatedBy': null,
+            'locationIds': [],
+            'externalId': null,
+            'isRootOrg': true,
+            'rootOrgId': '01258430492140339266',
+            'approvedDate': null,
+            'imgUrl': null,
+            'homeUrl': null,
+            'orgTypeId': null,
+            'isDefault': null,
+            'contactDetail': [],
+            'createdDate': '2018-09-05 17:44:00:827+0000',
+            'createdBy': '3d5778a6-0447-4bb1-acb2-51bcf4f587f3',
+            'parentOrgId': null,
+            'hashTagId': '01258430492140339266',
+            'noOfMembers': null,
+            'status': 1
+          },
+          {
+            'dateTime': null,
+            'preferredLanguage': null,
+            'approvedBy': null,
+            'channel': 'ft_channel_new_7857193050',
+            'description': null,
+            'updatedDate': null,
+            'addressId': null,
+            'orgType': null,
+            'provider': null,
+            'locationId': null,
+            'orgCode': null,
+            'theme': null,
+            'id': '01258430450937036873',
+            'communityId': null,
+            'isApproved': null,
+            'slug': 'ft_channel_new_7857193050',
+            'identifier': '01258430450937036873',
+            'thumbnail': null,
+            'orgName': 'ft_org_new_9201011672',
+            'updatedBy': null,
+            'locationIds': [],
+            'externalId': null,
+            'isRootOrg': true,
+            'rootOrgId': '01258430450937036873',
+            'approvedDate': null,
+            'imgUrl': null,
+            'homeUrl': null,
+            'orgTypeId': null,
+            'isDefault': null,
+            'contactDetail': [],
+            'createdDate': '2018-09-05 17:44:24:320+0000',
+            'createdBy': '3d5778a6-0447-4bb1-acb2-51bcf4f587f3',
+            'parentOrgId': null,
+            'hashTagId': '01258430450937036873',
+            'noOfMembers': null,
+            'status': 1
+          }]
+        }
+
+}
+},
+  getUserLocationResponse : {
+    'id': 'api.location.search',
+    'ver': 'v1',
+    'ts': '2020-05-07 06:35:51:902+0000',
+    'params': {
+      'resmsgid': null,
+      'msgid': null,
+      'err': null,
+      'status': 'success',
+      'errmsg': null
+    },
+    'responseCode': 'OK',
+    'result': {
+      'response': [
+        {
+          'code': '2725',
+          'name': 'Pune',
+          'id': '34b8ac6b-d6c9-4ab1-9fd0-cfb0ec1a2a81',
+          'type': 'district',
+          'parentId': '37809706-8f0e-4009-bf67-87bf04f220fa'
+        },
+        {
+          'code': '2724',
+          'name': 'Raigad',
+          'id': '9ab6d64a-1db0-47a6-81df-fa1a360c6802',
+          'type': 'district',
+          'parentId': '37809706-8f0e-4009-bf67-87bf04f220fa'
+        },
+        {
+          'code': '2732',
+          'name': 'Ratnagiri',
+          'id': '6287ab42-f6e8-4acf-a798-6173cb0a88d8',
+          'type': 'district',
+          'parentId': '37809706-8f0e-4009-bf67-87bf04f220fa'
+        },
+        {
+          'code': '2735',
+          'name': 'Sangli',
+          'id': '7fc4840b-ad66-4b5e-8232-9837beff3128',
+          'type': 'district',
+          'parentId': '37809706-8f0e-4009-bf67-87bf04f220fa'
+        },
+      ],
+      'count': 36
+    }
+  },
   successData:
   {
     'id': 'api.user.read',
@@ -358,10 +513,6 @@ export const Response = {
           {
             'name': 'Flag Reviewer',
             'id': 'FLAG_REVIEWER'
-          },
-          {
-            'name': 'Announcement Sender',
-            'id': 'ANNOUNCEMENT_SENDER'
           },
           {
             'name': 'Flag Reviewer',

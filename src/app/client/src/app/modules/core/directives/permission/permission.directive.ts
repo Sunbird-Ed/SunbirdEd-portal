@@ -1,5 +1,5 @@
 import { PermissionService } from './../../services';
-import { Directive, ElementRef, Input, OnInit } from '@angular/core';
+import { Directive, ElementRef, Input, OnInit} from '@angular/core';
 
 /**
  * Permission validator Directive
@@ -8,6 +8,7 @@ import { Directive, ElementRef, Input, OnInit } from '@angular/core';
   selector: '[appPermission]'
 })
 export class PermissionDirective implements OnInit {
+
   /**
    * Permission to validate
    */
@@ -24,8 +25,8 @@ export class PermissionDirective implements OnInit {
    * constructor
    */
   constructor(elementRef: ElementRef, permissionService: PermissionService) {
-      this.elementRef = elementRef;
-      this.permissionService = permissionService;
+  this.elementRef = elementRef;
+  this.permissionService = permissionService;
   }
   ngOnInit() {
     this.permissionService.permissionAvailable$.subscribe(

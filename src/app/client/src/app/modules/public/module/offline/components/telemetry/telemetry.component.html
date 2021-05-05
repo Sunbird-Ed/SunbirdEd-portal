@@ -1,0 +1,68 @@
+<div class="sb-single-resource">
+  <div class="ui container" [appTelemetryImpression]="telemetryImpression">
+    <div class="my-16">
+      <div class="sb-bg-color-white py-16 relative9">
+        <div class="d-flex profile-telemetry-title sb-bg-color-white px-16 pb-8">
+          {{resourceService?.frmelmnts?.lbl?.desktop?.syncTelemetry}}</div>
+        <div class="d-flex flex-jc-space-between p-16">
+          <a
+            class="profile-telemetry-subtitle cursor-pointer">{{resourceService?.frmelmnts?.lbl?.desktop?.automaticSyncTelemetry}}</a>
+        </div>
+        <div class="d-flex flex-dc flex-w-wrap">
+          <div class="d-flex sb-radio-btn-checkbox sb-radio-btn-primary px-16 pb-8">
+            <input type="radio" id="alwaysOn" name="radio-group" [checked]="syncStatus" (change)="handleSyncStatus(true)">
+            <label for="alwaysOn">{{resourceService?.frmelmnts?.lbl?.desktop?.alwaysOn}}</label>
+          </div>
+          <div class="d-flex sb-radio-btn-checkbox sb-radio-btn-primary px-16 pb-8">
+            <input type="radio" id="off" name="radio-group" [checked]="!syncStatus" (change)="handleSyncStatus(false)" >
+            <label for="off">{{resourceService?.frmelmnts?.lbl?.desktop?.Off}}</label>
+          </div>
+        </div>
+        <div class="d-flex flex-w-wrap px-16">
+          <div>
+            <button type="button" class="sb-btn sb-btn-primary sb-btn-normal my-8" [disabled]="disableSync"  (click)="syncTelemetry()" appOnlineOnly>
+              {{resourceService?.frmelmnts?.lbl?.desktop?.syncTelemetry}}   ({{telemetryInfo?.totalSize | filesize}})</button>
+              <dl class="my-0 profile-description">
+                  <dd class="multiline-list-value profile-description-title" *ngIf="showSyncStatus">
+                    {{resourceService?.messages?.imsg?.desktop?.m002}}</dd>
+                </dl>
+              <dl class="my-0" *ngIf="forceSyncInfo?.lastSyncedOn">
+              <dt class="multiline-list-key">{{resourceService?.frmelmnts?.lbl?.desktop?.lastSynced}}</dt>
+              <dd class="multiline-list-value">{{forceSyncInfo?.lastSyncedOn |
+                date: 'd MMMM y'}} at {{forceSyncInfo?.lastSyncedOn | date:
+                'h:mm a'}}</dd>
+            </dl>
+          </div>
+          <div class="share-tele-btn">
+  
+            <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal
+              my-8" (click)="exportTelemetry()" [disabled]="disableExport" *ngIf="telemetryInfo?.totalSize">
+              {{resourceService?.frmelmnts?.btn?.desktop?.shareTelemetry}}
+             ({{telemetryInfo?.totalSize | filesize}})
+            </button>
+  
+            <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal
+              my-8" (click)="exportTelemetry()" [disabled]="disableExport" *ngIf="!telemetryInfo?.totalSize">
+              {{resourceService?.frmelmnts?.btn?.desktop?.shareTelemetry}}
+              ({{telemetryInfo?.totalSize | filesize}})
+            </button>
+  
+            <dl class="my-0 profile-description" *ngIf="telemetryInfo?.lastExportedOn">
+              <dt class="multiline-list-key">{{resourceService?.frmelmnts?.lbl?.desktop?.lastShared}}</dt>
+              <dd class="multiline-list-value"> {{telemetryInfo?.lastExportedOn |
+                date: 'd MMMM y'}} at {{telemetryInfo?.lastExportedOn | date:
+                'h:mm a'}}
+              </dd>
+            </dl>
+            
+            <dl class="my-0 profile-description">
+              <dd class="multiline-list-value profile-description-title" *ngIf="!telemetryInfo?.totalSize">
+                {{resourceService?.messages?.imsg?.desktop?.m001}}</dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-telemetry-import> </app-telemetry-import>
+  </div>
+</div>

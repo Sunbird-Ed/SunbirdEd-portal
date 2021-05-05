@@ -11,12 +11,12 @@ import { SearchService, UserService, LearnerService, ContentService, CoreModule,
 import { UserSearchService } from './../../services';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { IPagination } from '@sunbird/announcement';
 import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UserSearchComponent } from './user-search.component';
 import { Response } from './user-search.component.spec.data';
 import { TelemetryService } from '@sunbird/telemetry';
+import { configureTestSuite } from '@sunbird/test-util';
 
 describe('UserSearchComponent', () => {
   let component: UserSearchComponent;
@@ -60,6 +60,7 @@ describe('UserSearchComponent', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
   }
+  configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot()],
@@ -163,6 +164,15 @@ describe('UserSearchComponent', () => {
     fixture.detectChanges();
     expect(component.populateUserSearch).toHaveBeenCalled();
     expect(component.pageNumber).toEqual(1);
+  });
+
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.unsubscribe$, 'complete');
+    spyOn(component.unsubscribe$, 'next');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
+    expect(component.unsubscribe$.next).toHaveBeenCalled();
   });
 });
 
