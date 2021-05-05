@@ -45,7 +45,9 @@ export default class User {
     public async read(req, res) {
         try {
             const userData = await this.userSDK.read();
-            const locationData = await this.settingSDK.get("location").catch((error) => { logger.error("Error while getting location data from setting SDK", error); });
+            const locationData = await this.settingSDK.get("location").catch((error) => { 
+                this.standardLog.error({ id: 'USER_DB_READ_FAILED', message: 'Received error while fetching location', error });
+            });
             userData.location = locationData;
             logger.info(`ReqId = "${req.headers["X-msgid"]}": result: ${userData} found from desktop app update api`);
             return res.send(Response.success("api.desktop.user.read", userData, req));

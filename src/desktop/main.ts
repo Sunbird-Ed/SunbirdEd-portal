@@ -434,7 +434,6 @@ async function createWindow() {
           await shell.openExternal(url);
         } catch(error) {
           standardLog.error({ id: 'MAIN_LINK_OPEN_FAILED', message: 'Error while opening link', error });
-
         }
       })
     

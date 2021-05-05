@@ -31,6 +31,7 @@ export default (app, proxyURL) => {
                     await userSDK.insertLoggedInUser(user);
                     res.status(res.statusCode).send(res.body);
                 } catch (err) {
+                    standardLog.debug({ id: 'AUTH_DB_READ_FAILED', message: 'Unable to get the user token', error: err });
                     await userSDK.updateLoggedInUser(user);
                     res.status(res.statusCode).send(res.body);
                 }

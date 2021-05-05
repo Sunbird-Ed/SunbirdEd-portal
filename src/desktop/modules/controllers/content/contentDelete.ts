@@ -46,7 +46,8 @@ export default class ContentDelete {
                 });
             contentsToDelete = await this.getContentsToDelete(contentsToDelete.docs);
             let deleted = await this.databaseSdk.bulk("content", contentsToDelete).catch((err) => {
-                    failed.push(err.message || err.errMessage);
+                this.standardLog.error({id: 'CONTENT_DELETE_BULK_UPDATE_FAILED', message: `Received Error while deleting contents in a bulk`, error: err });
+                failed.push(err.message || err.errMessage);
             });
             deleted =  _.map(deleted, (content) => content.id);
             const contentPaths: string[] = _.map(deleted, (id) => {

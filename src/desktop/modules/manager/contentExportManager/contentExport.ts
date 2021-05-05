@@ -57,8 +57,8 @@ export class ExportContent {
       logger.info("Ecar exported successfully with", data);
       this.cb(null, data);
     } catch (error) {
-      this.cb(error, null);
       this.standardLog.error({ id: 'CONTENT_EXPORT_FAILED', message: `Error while exporting content, ${this.ecarName}, ${this.corruptContents}`, error });
+      this.cb(error, null);
     }
   }
   private async loadParentCollection(): Promise<boolean> {

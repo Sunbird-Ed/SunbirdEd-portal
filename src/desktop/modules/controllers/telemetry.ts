@@ -104,6 +104,7 @@ export default class Telemetry {
   }
 
   public async sync(req, res) {
+    const standardLog = containerAPI.getStandardLoggerInstance();
     try {
       const type = _.get(req, "body.request.type");
       if (type === undefined || !_.isArray(type)) {
@@ -115,6 +116,7 @@ export default class Telemetry {
       res.status(200);
       return res.send(Response.success("api.desktop.sync", { response: data }, req));
     } catch (err) {
+      standardLog.error({ id: 'TELEMETRY_FORCE_SYNC_FAILED', mid: req.headers["X-msgid"], message: 'Received error syncing telemetry forcefully', error: err });
       res.status(err.status || 500);
       return res.send(Response.error("api.desktop.sync", err.status || 500, err.errMessage || err.message, err.code));
     }
@@ -136,6 +138,7 @@ export default class Telemetry {
   }
 
   public async import(req: any, res: any) {
+    const standardLog = containerAPI.getStandardLoggerInstance();
     const filePaths = req.body;
     if (!filePaths) {
       return res.status(400).send(Response.error(`api.telemetry.import`, 400, "MISSING_FILE_PATHS"));
@@ -145,17 +148,20 @@ export default class Telemetry {
         importedJobIds: jobIds,
       }, req));
     }).catch((err) => {
+      standardLog.error({ id: 'TELEMETRY_IMPORT_FAILED', mid: req.headers["X-msgid"], message: 'Received error importing telemetry', error: err });
       res.status(500);
       res.send(Response.error(`api.telemetry.import`, 500, err.errMessage || err.message, err.code));
     });
   }
 
   public async retryImport(req: any, res: any) {
+    const standardLog = containerAPI.getStandardLoggerInstance();
     this.telemetryImportManager.retryImport(req.params.importId).then((jobIds) => {
       res.send(Response.success("api.telemetry.import.retry", {
         jobIds,
       }, req));
     }).catch((err) => {
+      standardLog.error({ id: 'TELEMETRY_IMPORT_RETRY_FAILED', mid: req.headers["X-msgid"], message: 'Received error retrying import', error: err });
       res.status(500);
       res.send(Response.error(`api.telemetry.import.retry`, 400, err.message));
     });

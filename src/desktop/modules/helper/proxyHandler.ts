@@ -23,8 +23,12 @@ const decorateRequest = async (request, options) => {
   }
 
   if (options.isUserTokenRequired) {
-    const loggedInUserSession: any = await userSDK.getUserSession().catch(error => { logger.debug("User not logged in", error); })
-    const userToken: any = await userSDK.getUserToken().catch(error => { logger.debug("Unable to get the user token", error); })
+    const loggedInUserSession: any = await userSDK.getUserSession().catch(error => { 
+      standardLog.error({ id: 'PROXY_HELPER_FETCH_USER_SESSION_FAILED', message: 'Received error while fetching current user session', error });
+    });
+    const userToken: any = await userSDK.getUserToken().catch(error => { 
+      standardLog.error({ id: 'PROXY_HELPER_FETCH_USER_TOKEN_FAILED', message: 'Received error while fetching current user token', error });
+    })
     if (loggedInUserSession) {
       const userId = loggedInUserSession.userId;
       if (loggedInUserSession.userId) {
@@ -35,6 +39,7 @@ const decorateRequest = async (request, options) => {
       }
     }
   }
+  
 
   if (options.isAuthTokenRequired) {
     const apiKey = await containerAPI.getDeviceSdkInstance().getToken().catch((err) => {
