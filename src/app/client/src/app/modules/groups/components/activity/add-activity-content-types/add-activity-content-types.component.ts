@@ -3,12 +3,13 @@ import { GroupsService } from '../../../services';
 import { ResourceService, ToasterService, NavigationHelperService, LayoutService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ADD_ACTIVITY_TO_GROUP } from '../../../interfaces';
+import { ADD_ACTIVITY_TO_GROUP} from '../../../interfaces';
 import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 import { CsGroupSupportedActivitiesFormField } from '@project-sunbird/client-services/services/group/interface';
 import { TelemetryService, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { CONTENT_CATEGORIES, SELECT_CATEGORY } from '../../../interfaces/telemetryConstants';
 
 
 
@@ -54,7 +55,7 @@ export class AddActivityContentTypesComponent implements OnInit, AfterViewInit, 
   }
 
   ngAfterViewInit() {
-    this.setTelemetryImpressionData({type: 'content-categories'});
+    this.setTelemetryImpressionData({type: CONTENT_CATEGORIES});
   }
 
   fetchActivityList() {
@@ -80,7 +81,7 @@ export class AddActivityContentTypesComponent implements OnInit, AfterViewInit, 
         contentType: cardData.activityType
       }
     });
-    this.sendInteractData({id: `${cardData.activityType}-card`}, {type: 'select-category'} );
+    this.sendInteractData({id: `${cardData.activityType}-card`}, {type: SELECT_CATEGORY} );
     this.router.navigate([`${ADD_ACTIVITY_TO_GROUP}`, cardData.activityType , 1], { relativeTo: this.activatedRoute });
   }
 

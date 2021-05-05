@@ -8,6 +8,7 @@ import { GroupsService } from '../../services';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { NavigationHelperService } from '@sunbird/shared';
+import { POPUP_LOADED, CREATE_GROUP, SELECT_CLOSE, CLOSE_ICON, SELECT_RESET } from '../../interfaces/telemetryConstants';
 @Component({
   selector: 'app-create-edit-group',
   templateUrl: './create-edit-group.component.html',
@@ -23,6 +24,9 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy, AfterViewIni
   disableBtn = false;
   private unsubscribe$ = new Subject<void>();
   public telemetryImpression: IImpressionEventInput;
+  public SELECT_CLOSE = SELECT_CLOSE;
+  public CLOSE_ICON = CLOSE_ICON;
+  public SELECT_RESET = SELECT_RESET;
 
   constructor(public resourceService: ResourceService,
               private toasterService: ToasterService,
@@ -46,10 +50,8 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy, AfterViewIni
    * @description - It will trigger impression telemetry event once the view is ready.
    */
   ngAfterViewInit() {
-    if (this.groupId) {
-      this.setTelemetryImpression({type: 'edit-popup'});
-    } else {
-      this.setTelemetryImpression({type: 'popup-loaded'});
+    if (!this.groupId) {
+      this.setTelemetryImpression({type: POPUP_LOADED});
     }
   }
   private initializeForm() {
@@ -74,7 +76,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy, AfterViewIni
 
   onSubmitForm() {
     this.disableBtn = true;
-    this.addTelemetry('submit-group-form', '', { type: 'create-group'} );
+    this.addTelemetry('submit-group-form', '', { type: CREATE_GROUP} );
     if (this.groupForm.valid) {
       const request = _.omit(this.groupForm.value, 'groupToc');
       request.name = _.trim(request.name);

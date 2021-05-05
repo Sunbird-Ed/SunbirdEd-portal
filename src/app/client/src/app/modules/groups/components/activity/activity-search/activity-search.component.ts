@@ -19,6 +19,7 @@ import { CacheService } from 'ng2-cache-service';
 import { GroupsService } from '../../../services/groups/groups.service';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
+import { VIEW_ACTIVITY, CATEGORY_SEARCH } from '../../../interfaces/telemetryConstants';
 
 
 @Component({
@@ -110,7 +111,8 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
       this.dataDrivenFilters = {};
       this.fetchContentOnParamChange();
       this.setNoResultMessage();
-      this.telemetryImpression = this.groupsService.getImpressionObject(this.activatedRoute.snapshot, this.router.url, {type: 'category-search'});
+      // tslint:disable-next-line:max-line-length
+      this.telemetryImpression = this.groupsService.getImpressionObject(this.activatedRoute.snapshot, this.router.url, {type: CATEGORY_SEARCH});
     }, error => {
       this.toasterService.error(this.resourceService.messages.fmsg.m0002);
     });
@@ -320,7 +322,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     this.groupAddableBlocData.pageIds = [_.get(activityCard, 'primaryCategory').toLowerCase(), ADD_ACTIVITY_TO_GROUP];
     this.csGroupAddableBloc.updateState(this.groupAddableBlocData);
     const cdata = [{ id: _.get(activityCard, 'identifier'), type: _.get(activityCard, 'primaryCategory') }];
-    this.addTelemetry('activity-course-card', cdata, '', {type: 'view-activity'});
+    this.addTelemetry('activity-course-card', cdata, '', {type: VIEW_ACTIVITY});
     const isTrackable = this.courseConsumptionService.isTrackableCollection(activityCard);
     const contentMimeType = _.get(activityCard, 'mimeType');
 

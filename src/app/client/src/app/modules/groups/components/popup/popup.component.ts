@@ -6,6 +6,7 @@ import * as _ from 'lodash-es';
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NavigationHelperService } from '@sunbird/shared';
+import { DELETE_POPUP, POP_DEACTIVATE} from '../../interfaces/telemetryConstants';
 @Component({
   selector: 'app-modal',
   templateUrl: './popup.component.html',
@@ -56,10 +57,10 @@ export class PopupComponent implements AfterViewInit {
    */
   ngAfterViewInit() {
     if (this.name === 'delete') {
-      this.setTelemetryImpression({type: 'delete-popup'});
+      this.setTelemetryImpression({type: DELETE_POPUP});
     }
     if (this.name === 'deActivate') {
-      this.setTelemetryImpression({type: 'pop-deActivate'});
+      this.setTelemetryImpression({type: POP_DEACTIVATE});
     }
   }
 

@@ -11,6 +11,7 @@ import { Subject } from 'rxjs';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { RecaptchaComponent } from 'ng-recaptcha';
 import { TelemetryService } from '@sunbird/telemetry';
+import { VERIFY_USER, USER_SEARCH } from '../../interfaces/telemetryConstants';
 @Component({
   selector: 'app-add-member',
   templateUrl: './add-member.component.html',
@@ -36,6 +37,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   googleCaptchaSiteKey = '';
   isCaptchEnabled = false;
   layoutConfiguration: any;
+  public VERIFY_USER = VERIFY_USER;
 
   constructor(public resourceService: ResourceService, private groupsService: GroupsService,
     private toasterService: ToasterService,
@@ -56,7 +58,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
     this.initRecaptcha();
     this.instance = _.upperCase(this.resourceService.instance);
     this.membersList = this.groupsService.addFieldsToMember(_.get(this.groupData, 'members'));
-    this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url, {type: 'popup-loaded'});
+    this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url, {type: USER_SEARCH});
   }
 
    initLayout() {

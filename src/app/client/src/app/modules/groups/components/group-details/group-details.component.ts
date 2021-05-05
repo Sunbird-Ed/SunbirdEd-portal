@@ -9,6 +9,7 @@ import { takeUntil } from 'rxjs/operators';
 import { GroupsService } from '../../services';
 import { IGroupMemberConfig, IGroupCard, IGroupMember, ADD_ACTIVITY_CONTENT_TYPES } from '../../interfaces';
 import { IImpressionEventInput } from '@sunbird/telemetry';
+import { ADD_ACTIVITY, PAGE_LOADED} from '../../interfaces/telemetryConstants';
 
 @Component({
   selector: 'app-group-details',
@@ -30,6 +31,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
   layoutConfiguration: any;
   activityList;
   showMemberPopup = false;
+  public ADD_ACTIVITY = ADD_ACTIVITY;
 
   config: IGroupMemberConfig = {
     showMemberCount: true,
@@ -61,7 +63,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     this.groupService.updateEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((status: GroupEntityStatus) => {
       this.groupData.active = this.groupService.updateGroupStatus(this.groupData, status);
     });
-    this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url, {type: 'page-loaded'});
+    this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url, {type: PAGE_LOADED});
   }
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();

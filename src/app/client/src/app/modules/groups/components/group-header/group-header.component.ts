@@ -11,6 +11,7 @@ import { takeUntil } from 'rxjs/operators';
 import { UserService } from '@sunbird/core';
 import { DiscussionService } from '../../../discussion/services/discussion/discussion.service';
 import { DiscussionTelemetryService } from '../../../shared/services/discussion-telemetry/discussion-telemetry.service';
+import { UPDATE_GROUP, SELECT_DELETE, SELECT_DEACTIVATE, SELECT_NO, DELETE_SUCCESS } from '../../interfaces/telemetryConstants';
 @Component({
   selector: 'app-group-header',
   templateUrl: './group-header.component.html',
@@ -32,6 +33,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   forumIds: Array<number> = [];
   createForumRequest: any;
+  public UPDATE_GROUP = UPDATE_GROUP;
 
     /**
    * input data to fetch forum Ids
@@ -110,11 +112,11 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
     this.name = name;
     switch (name) {
       case actions.DELETE:
-        this.addTelemetry('delete-group', {status: _.get(this.groupData, 'status')}, {type: 'select-delete'});
+        this.addTelemetry('delete-group', {status: _.get(this.groupData, 'status')}, {type: SELECT_DELETE});
         this.assignModalStrings(this.resourceService.frmelmnts.lbl.deleteGroup, this.resourceService.messages.imsg.m0082, '{groupName}');
         break;
       case actions.DEACTIVATE:
-        this.addTelemetry('deactivate-group', {status: _.get(this.groupData, 'status')}, {type: 'select-deactivate'});
+        this.addTelemetry('deactivate-group', {status: _.get(this.groupData, 'status')}, {type: SELECT_DEACTIVATE});
         this.assignModalStrings(this.resourceService.frmelmnts.lbl.deactivategrpques, this.resourceService.frmelmnts.msg.deactivategrpmsg);
         break;
       case actions.ACTIVATE:
@@ -138,7 +140,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
     this.showModal = false;
     this.showLoader = event.action;
     if (!event.action) {
-      this.addTelemetry(`cancel-${event.name}-group`, {status: _.get(this.groupData, 'status')}, {type: 'select-no'});
+      this.addTelemetry(`cancel-${event.name}-group`, {status: _.get(this.groupData, 'status')}, {type: SELECT_NO});
       return;
     }
     switch (event.name) {
@@ -178,7 +180,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   deleteGroup() {
       this.groupService.deleteGroupById(_.get(this.groupData, 'id')).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
         // tslint:disable-next-line:max-line-length
-        this.addTelemetry('confirm-delete-group', {status: 'inactive', prevstatus: _.get(this.groupData, 'status')}, {type: 'delete-success'});
+        this.addTelemetry('confirm-delete-group', {status: 'inactive', prevstatus: _.get(this.groupData, 'status')}, {type: DELETE_SUCCESS});
         this.toasterService.success(this.resourceService.messages.smsg.grpdeletesuccess);
         this.navigateToPreviousPage();
       }, err => {

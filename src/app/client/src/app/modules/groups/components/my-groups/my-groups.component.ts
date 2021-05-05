@@ -9,7 +9,7 @@ import { Subject, combineLatest, of, BehaviorSubject } from 'rxjs';
 import { takeUntil, delay, map, switchMap } from 'rxjs/operators';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { CsGroupSearchCriteria } from '@project-sunbird/client-services/services/group/interface';
-
+import { SELECT_CREATE_GROUP, PAGE_LOADED, SELECT_GROUP } from '../../interfaces/telemetryConstants';
 @Component({
   selector: 'app-my-groups',
   templateUrl: './my-groups.component.html',
@@ -28,6 +28,7 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
   selectedGroup: {};
   isTncAccepted = true;
   isContentLoaded = new EventEmitter();
+  public SELECT_CREATE_GROUP = SELECT_CREATE_GROUP;
 
   constructor(public groupService: GroupsService,
     public router: Router,
@@ -43,7 +44,7 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
     this.showModal = !localStorage.getItem('login_ftu_groups');
     this.initLayout();
     this.getMyGroupList();
-    this.setTelemetryImpression({type: 'page-loaded'});
+    this.setTelemetryImpression({type: PAGE_LOADED});
     this.groupService.closeForm.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       this.getMyGroupList();
     });
@@ -107,7 +108,7 @@ export class MyGroupsComponent implements OnInit, OnDestroy {
 
     (_.get(event, 'data.status') === 'suspended') ?
     this.addTelemetry('suspended-group-card', _.get(event, 'data.id')) :
-    this.addTelemetryWithData('group-card', { type: 'select-group'}, _.get(event, 'data.id'));
+    this.addTelemetryWithData('group-card', { type: SELECT_GROUP}, _.get(event, 'data.id'));
 
     this.selectedType = acceptTnc.GROUP;
     this.selectedGroup = event.data;
