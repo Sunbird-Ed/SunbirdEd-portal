@@ -5,8 +5,7 @@ const proxy = require('express-http-proxy');
 
 export default (app, proxyURL) => {
 const form = new Form(manifest);
-    app.post(
-        "/api/data/v1/form/read",
+    app.post(["/api/data/v1/form/read", "/learner/data/v1/form/read" ],
         proxy(proxyURL, {
             proxyReqPathResolver(req) {
                 return `/api/data/v1/form/read`;
