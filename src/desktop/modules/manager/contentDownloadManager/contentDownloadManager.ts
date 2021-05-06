@@ -41,7 +41,7 @@ export class ContentDownloadManager {
       const apiContentResponse = await HTTPService.get(`${this.ContentReadUrl}/${contentId}`, {}).toPromise();
       const apiContentDetail = apiContentResponse.data.result.content;
       if(apiContentDetail.pkgVersion <= dbContentDetails.pkgVersion){
-        this.standardLog.debug({ id: 'CONTENT_UPDATE_UNAVAILABLE', message: `${reqId} Content update not available for contentId: ${contentId} with parentId: ${parentId}, ${apiContentDetail.pkgVersion}, ${dbContentDetails.pkgVersion}` });
+        this.standardLog.debug({ id: 'CONTENT_DM_UPDATE_UNAVAILABLE', message: `${reqId} Content update not available for contentId: ${contentId} with parentId: ${parentId}, ${apiContentDetail.pkgVersion}, ${dbContentDetails.pkgVersion}` });
         res.status(400);
         return res.send(Response.error("api.content.update", 400, "Update not available"));
       }
@@ -117,7 +117,7 @@ export class ContentDownloadManager {
       logger.debug(`${reqId} Content update request added to queue`, insertData);
       return res.send(Response.success("api.content.download", { downloadId: id }, req));
     } catch (error) {
-      this.standardLog.error({ id: 'CONTENT_UPDATE_FAILED', message: `Content update request failed for contentId: ${contentId}`, error });
+      this.standardLog.error({ id: 'CONTENT_DM_UPDATE_FAILED', message: `Content update request failed for contentId: ${contentId}`, error });
       if (_.get(error, "code") === "LOW_DISK_SPACE") {
         res.status(507);
         return res.send(Response.error("api.content.update", 507, "Low disk space", "LOW_DISK_SPACE"));
@@ -189,7 +189,7 @@ export class ContentDownloadManager {
 
     } catch (error) {
       const traceId = _.get(error, 'data.params.msgid');
-      this.standardLog.error({ id: 'CONTENT_DOWNLOAD_FAILED', message: `Content download request failed for contentId: ${contentId}, trace Id: ${traceId}`, error });
+      this.standardLog.error({ id: 'CONTENT_DM_DOWNLOAD_FAILED', message: `Content download request failed for contentId: ${contentId}, trace Id: ${traceId}`, error });
       if (_.get(error, "code") === "LOW_DISK_SPACE") {
         res.status(507);
         return res.send(Response.error("api.content.download", 507, "Low disk space", "LOW_DISK_SPACE"));
@@ -205,6 +205,7 @@ export class ContentDownloadManager {
       await this.systemQueue.pause(downloadId);
       return res.send(Response.success("api.content.pause.download", downloadId, req));
     } catch (error) {
+      this.standardLog.error({ id: 'CONTENT_DM_PAUSE_FAILED', message: `Error while pausing download process`, error, mid: reqId });
       const status = _.get(error, "status") || 500;
       res.status(status);
       return res.send(Response.error("api.content.pause.download", status,
@@ -219,6 +220,7 @@ export class ContentDownloadManager {
       await this.systemQueue.resume(downloadId);
       return res.send(Response.success("api.content.resume.download", downloadId, req));
     } catch (error) {
+      this.standardLog.error({ id: 'CONTENT_DM_RESUME_FAILED', message: `Error while resuming download process`, error, mid: reqId });
       const status = _.get(error, "status") || 500;
       res.status(status);
       return res.send( Response.error("api.content.resume.download", status, _.get(error, "message"), _.get(error, "code")));
@@ -232,6 +234,7 @@ export class ContentDownloadManager {
       await this.systemQueue.cancel(downloadId);
       return res.send(Response.success("api.content.pause.download", downloadId, req));
     } catch (error) {
+      this.standardLog.error({ id: 'CONTENT_DM_CANCEL_FAILED', message: `Error while cancelling download process`, error, mid: reqId });
       const status = _.get(error, "status") || 500;
       res.status(status);
       return res.send( Response.error("api.content.cancel.download", status, _.get(error, "message"), _.get(error, "code")));
@@ -245,6 +248,7 @@ export class ContentDownloadManager {
       await this.systemQueue.retry(downloadId);
       return res.send(Response.success("api.content.retry.download", downloadId, req));
     } catch (error) {
+      this.standardLog.error({ id: 'CONTENT_DM_RETRY_FAILED', message: `Error while retrying download process`, error, mid: reqId });
       const status = _.get(error, "status") || 500;
       res.status(status);
       return res.send( Response.error("api.content.retry.download", status,

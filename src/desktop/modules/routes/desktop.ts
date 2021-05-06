@@ -18,6 +18,7 @@ export default (app, proxyURL) => {
         ticketSDK.createTicket(req.body).then((successRes) => {
             res.send(Response.success("api.report.issue", successRes, req));
         }).catch(({status, message, code}) => {
+            standardLog.error({ id: 'DESKTOP_REPORT_ISSUE_FAILED', message: 'Received error while reporting a issue', mid: req.headers["X-msgid"], error: message });
             res.status(status || 500).send(Response.error("api.report.issue", status, message, code));
         });
     });
