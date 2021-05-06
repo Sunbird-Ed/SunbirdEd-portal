@@ -86,7 +86,7 @@
     "jsonwebtoken": "7.4.1",
     "kafka-node": "3.0.1",
     "keycloak-connect": "git+https://github.com/project-sunbird/keycloak-nodejs-connect.git#release-2.5.0",
-    "lodash": "4.17.15",
+    "lodash": "4.17.19",
     "mathjax-full": "3.0.0",
     "mobile-detect": "1.4.2",
     "morgan": "^1.10.0",
