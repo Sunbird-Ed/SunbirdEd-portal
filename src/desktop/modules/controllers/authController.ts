@@ -1,4 +1,3 @@
-import { logger } from "@project-sunbird/logger";
 import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import * as jwt from "jsonwebtoken";
 import { ILoggedInUser } from '../../OpenRAP/interfaces/IUser';
@@ -29,11 +28,7 @@ export default class AuthController {
         try {
             this.deviceId = await containerAPI.getSystemSDKInstance(manifest.id).getDeviceId();
         } catch (err) {
-            logger.error({
-                msg: "appUpdate:getDeviceId caught exception while fetching device id with error",
-                errorMessage: err.message,
-                error: err,
-            });
+            this.standardLog.error({ id: 'AUTH_CONTROLLER_DEVICE_ID_FETCH_FAILED', message: 'appUpdate:getDeviceId caught exception while fetching device id', error: err });
         }
     }
 
@@ -96,6 +91,7 @@ export default class AuthController {
             EventManager.emit('user:switched', 'anonymous');
             return res.send({ status: 'success' });
         } catch(err) {
+            this.standardLog.error({ id: 'AUTH_CONTROLLER_END_SESSION_FAILED', message: 'Error while closing session', error: err });
             let status = err.status || 500;
             res.status(status);
             return res.send(Response.error('api.user.endSession', status, err.message));

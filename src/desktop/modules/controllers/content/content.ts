@@ -242,7 +242,6 @@ export default class Content {
                 return res.send(responseObj);
             })
             .catch(err => {
-                console.log(err);
                 this.standardLog.error({ id: 'CONTENT_SEARCH_FAILED', mid: req.headers['X-msgid'], message: 'Received error while searching content', error: err.message });
                 if (err.status === 404) {
                     res.status(404);
@@ -598,6 +597,7 @@ export default class Content {
                 importedJobIds: jobIds,
             }, req));
         }).catch((err) => {
+            this.standardLog.error({ id: 'CONTENT_IMPORT_FAILED', message: 'Received error while importing a content', mid: req.headers['X-msgid'], error: err });
             res.status(500);
             res.send(Response.error(`api.content.import`, 400, err.errMessage || err.message, err.code));
         });
@@ -608,6 +608,7 @@ export default class Content {
                 jobIds,
             }, req));
         }).catch((err) => {
+            this.standardLog.error({ id: 'CONTENT_IMPORT_PAUSE_FAILED', message: 'Received error while pausing a content import', mid: req.headers['X-msgid'], error: err });
             res.status(500);
             res.send(Response.error(`api.content.import`, 400, err.message));
         });
@@ -618,6 +619,7 @@ export default class Content {
                 jobIds,
             }, req));
         }).catch((err) => {
+            this.standardLog.error({ id: 'CONTENT_IMPORT_RESUME_FAILED', message: 'Received error while resuming a content import', mid: req.headers['X-msgid'], error: err });
             res.status(500);
             res.send(Response.error(`api.content.import`, 400, err.message));
         });
@@ -628,6 +630,7 @@ export default class Content {
                 jobIds,
             }, req));
         }).catch((err) => {
+            this.standardLog.error({ id: 'CONTENT_IMPORT_CANCEL_FAILED', message: 'Received error while canceling content import process', mid: req.headers['X-msgid'], error: err });
             res.status(500);
             res.send(Response.error(`api.content.import`, 400, err.message));
         });
@@ -638,6 +641,7 @@ export default class Content {
                 jobIds,
             }, req));
         }).catch((err) => {
+            this.standardLog.error({ id: 'CONTENT_IMPORT_RETRY_FAILED', message: 'Received error while retrying content import process', mid: req.headers['X-msgid'], error: err });
             res.status(500);
             res.send(Response.error(`api.content.retry`, 400, err.message));
         });
@@ -755,7 +759,7 @@ export default class Content {
             contents = await this.changeContentStatus(offlineContents.docs, reqId, contents);
             return contents;
         } catch (err) {
-            logger.error(`ReqId = "${reqId}": Received  error err.message: ${err.message} ${err}`);
+            this.standardLog.error({id: 'CONTENT_DECORATE_FAILED', message: 'Received  error while decorating content', mid: reqId, error: err});
             return contents;
         }
     }

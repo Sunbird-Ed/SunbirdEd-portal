@@ -1,4 +1,3 @@
-import { logger } from "@project-sunbird/logger";
 import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import { EventManager } from "@project-sunbird/OpenRAP/managers/EventManager";
 import * as _ from "lodash";
@@ -55,7 +54,7 @@ export class Server {
     await this.setContentStorageLocations(app);
     const response = await this.settingSDK.get(`${process.env.APP_VERSION}_configured`)
     .catch((err) => {
-      this.standardLog.info({ id: `${manifest.id}_CONFIGURATION_MISSING`, message: `${manifest.id} not configured for version ${process.env.APP_VERSION}`, error: err });
+      this.standardLog.error({ id: `${manifest.id}_CONFIGURATION_MISSING`, message: `${manifest.id} not configured for version ${process.env.APP_VERSION}`, error: err });
     });
     if (!response) {
       this.standardLog.debug({ id: 'SERVER_DEVICE_TOKEN_REMOVE', message: "removing old device_token" });
@@ -63,9 +62,9 @@ export class Server {
         this.standardLog.error({ id: 'SERVER_DEVICE_TOKEN_DELETE_FAILED', message: 'Error while deleting device_token from setting', error }));
       await this.insertConfig();    // insert meta data for app
       this.settingSDK.put(`${process.env.APP_VERSION}_configured`, { dataInserted: true});
-      logger.info(`${manifest.id} configured for version ${process.env.APP_VERSION} and settingSdk updated`);
+      this.standardLog.info({ id: `SERVER_PLUGIN_CONFIGURED`, message: `${manifest.id} configured for version ${process.env.APP_VERSION} and settingSdk updated` });
     } else {
-      logger.info(`${manifest.id} configured for version ${process.env.APP_VERSION}, skipping configuration`);
+      this.standardLog.info({ id: `SERVER_PLUGIN_CONFIGURED`, message: `${manifest.id} configured for version ${process.env.APP_VERSION}, skipping configuration` });
     }
     const pluginConfig = {
       pluginVer: manifest.version,

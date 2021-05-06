@@ -5,6 +5,7 @@ import * as fs from "fs";
 import * as fse from "fs-extra";
 import  { Server }   from './modules/server'
 import { LoginSessionProvider } from './helper/login-session-provider'
+import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
 const startTime = Date.now();
 let envs: any = {};
 const getFilesPath = () => {
@@ -77,6 +78,7 @@ expressApp.use(bodyParser.json());
 let fileSDK = containerAPI.getFileSDKInstance("");
 let systemSDK = containerAPI.getSystemSDKInstance();
 let deviceSDK = containerAPI.getDeviceSdkInstance();
+const standardLog: StandardLogger = containerAPI.getStandardLoggerInstance();
 deviceSDK.initialize({key: envs.APP_BASE_URL_TOKEN});
 global['childLoginWindow'];
 let deeplinkingUrl;
@@ -126,7 +128,7 @@ const importTelemetryFiles = async () => {
 };
 const makeTelemetryImportApiCall = async (telemetryFiles: Array<string>) => {
   if(_.isEmpty(telemetryFiles)){
-    logger.error('Telemetry import api call error', 'Reason: makeTelemetryImportApiCall called with empty array');
+    standardLog.error({ id: 'MAIN_TELEMETRY_IMPORT_FAILED', message: 'Telemetry import api call error', error: 'makeTelemetryImportApiCall called with empty array' });
     return;
   }
   await HTTPService.post(`${appBaseUrl}/api/telemetry/v1/import`, telemetryFiles)
@@ -136,15 +138,10 @@ const makeTelemetryImportApiCall = async (telemetryFiles: Array<string>) => {
         var event = new Event("telemetry:import", {bubbles: true});
         document.dispatchEvent(event);
       `);
-      logger.info("Telemetry import started successfully", telemetryFiles);
+      standardLog.info({ id: 'MAIN_TELEMETRY_IMPORT_SUCCESS', message: `Telemetry import started successfully, ${telemetryFiles}` });
     })
     .catch(error =>
-      logger.error(
-        "Telemetry import failed with",
-        _.get(error, 'response.data') || error.message,
-        "for ",
-        telemetryFiles
-      )
+      standardLog.error({ id: 'MAIN_TELEMETRY_IMPORT_FAILED', message: `Telemetry import failed for ${telemetryFiles}`, error })
     );
 };
 const importContent = async () => {
@@ -178,9 +175,9 @@ expressApp.use("/dialog/content/export", async (req, res) => {
 expressApp.use("/dialog/telemetry/export", async (req, res) => {
   let destFolder = await showFileExplorer();
   if (destFolder && destFolder[0]) {
-    fse.access(destFolder[0], fs.constants.F_OK | fs.constants.W_OK, (err) => {
+    fse.access(destFolder[0], fs.constants.F_OK | fs.constants.W_OK, (err: any) => {
       if (err) {
-        logger.error("Folder does not have write permission", err);
+        standardLog.error({ id: 'MAIN_NO_WRITE_ACCESS', message: 'Permission Denied: no write access', error: err });
         res.status(500).send({ message: "Folder does not have write permission", responseCode: "OPERATION_NOT_PERMITTED" });
       } else {
         res.send({
@@ -274,7 +271,7 @@ const startApp = async () => {
   return new Promise((resolve, reject) => {
     new Server(expressApp)
     expressApp.listen(process.env.APPLICATION_PORT, () => {
-        logger.info("app is started on port " + process.env.APPLICATION_PORT);
+        standardLog.info({ id: 'MAIN_APP_START_SUCCESS', message: `App is started on port ${process.env.APPLICATION_PORT}` });
         resolve();
       })
     });
@@ -288,7 +285,9 @@ const waitForDBToLoad = () => {
 // start loading all the dependencies
 const bootstrapDependencies = async () => {
   console.log("============> bootstrap started");
-  await startCrashReporter().catch(error => logger.error("unable to start crash reporter", error));
+  await startCrashReporter().catch(error => 
+    standardLog.error({id: 'MAIN_CRASH_REPORTER_FAILED', error, message: 'Unable to start crash reporter'})
+  );
   await copyPluginsMetaData();
   console.log("============> copy plugin done");
   await setAvailablePort();
@@ -330,7 +329,7 @@ async function initLogger() {
 }
 
 const onMainWindowCrashed = async (err) => {
-    logger.error('App got crashed', err)
+    standardLog.error({ id: 'MAIN_APP_CRASHED', message: 'App got crashed', error: err });
     let telemetryInstance = containerAPI
       .getTelemetrySDKInstance()
       .getInstance();
@@ -420,7 +419,7 @@ async function createWindow() {
     
     if (process.platform === 'win32') {
       const windowIcon = path.join(__dirname, "build", "icons", "win", "icon.ico");
-      logger.debug(`WINDOW ICON PATH: ${windowIcon}`);
+      standardLog.debug({ id: 'MAIN_WINDOWS_ICON_PATH', message: `WINDOW ICON PATH: ${windowIcon}` });
       registerProtocolHandlerWin32(app_protocol, `URL: ${process.env.APP_NAME} URL`, windowIcon, process.execPath)
     }
 
@@ -434,7 +433,7 @@ async function createWindow() {
           if (!['https:', 'http:'].includes(new URL(url).protocol)) return;
           await shell.openExternal(url);
         } catch(error) {
-          logger.error("Error while opening link",error);
+          standardLog.error({ id: 'MAIN_LINK_OPEN_FAILED', message: 'Error while opening link', error });
         }
       })
     
@@ -442,9 +441,9 @@ async function createWindow() {
     let perfLogger = containerAPI.getPerfLoggerInstance();
     const startUpDuration = (Date.now() - startTime) / 1000  
     if(startUpDuration > 10) {
-      logger.error(`App took ${startUpDuration} sec to start`);
+      standardLog.debug({ id: 'MAIN_APP_STARTUP_TIME', message: `App took ${startUpDuration} sec to start`});
     } else {
-      logger.info(`App took ${startUpDuration} sec to start`);
+      standardLog.info({ id: 'MAIN_APP_STARTUP_TIME', message: `App took ${startUpDuration} sec to start`});
     }
     perfLogger.log({
       type: 'APP_STARTUP',
@@ -486,7 +485,7 @@ async function createWindow() {
         // win.webContents.openDevTools();
       })
       .catch(err => {
-        logger.error("unable to start the app ", err);
+        standardLog.error({ id: 'MAIN_APP_START_FAILED', message: 'Unable to start the app', error: err });
       });
     // Emitted when the window is closed.
     win.on("closed", () => {
@@ -505,9 +504,7 @@ if (!gotTheLock) {
   app.quit();
 } else {
   app.on("second-instance", (event, commandLine, workingDirectory) => {
-    logger.info(
-      `trying to open second-instance of the app ${JSON.stringify(commandLine)}`
-    );
+    standardLog.info({ id: 'MAIN_OPEN_SECOND_INSTANCE', message: `Trying to open second-instance of the app ${JSON.stringify(commandLine)}` });
     // if the OS is windows file open call will come here when app is already open
     let interval = setInterval(() => {
       if (appBaseUrl) {
@@ -553,7 +550,7 @@ app.on("window-all-closed", () => {
 });
 
 function registerProtocolHandlerWin32 (protocol, name, icon, command) {
-  logger.debug(`registerProtocolHandlerWin32 called`);
+  standardLog.debug({ id: 'MAIN_CALLED_METHOD_registerProtocolHandlerWin32', message: 'registerProtocolHandlerWin32 called' });
   var Registry = require('winreg')
 
   var protocolKey = new Registry({
@@ -574,7 +571,7 @@ function registerProtocolHandlerWin32 (protocol, name, icon, command) {
     key: '\\Software\\Classes\\' + protocol + '\\shell\\open\\command'
   })
   commandKey.set('', Registry.REG_SZ, '"' + command + '" "%1"', callback)
-  logger.debug(`registerProtocolHandlerWin32 called finish`);
+  standardLog.debug({ id: 'MAIN_CALLED_METHOD_registerProtocolHandlerWin32', message: 'registerProtocolHandlerWin32 called finished' });
   function callback (err) {
     if (err) console.error(err.message || err)
   }
@@ -615,12 +612,12 @@ app.on("activate", () => {
 // to handle ecar file open in MAC OS
 app.on("open-file", (e, path) => {
   e.preventDefault();
-  logger.info(`trying to open content with path ${path}`);
+  standardLog.info({ id: 'MAIN_OPEN_CONTENT_PATH', message: `Trying to open content with path ${path}` });
   checkForOpenFile([path]);
 });
 const makeImportApiCall = async (contents: Array<string>) => {
   if(_.isEmpty(contents)){
-    logger.error('Content import api call error', 'Reason: makeImportApiCall called with empty array');
+    standardLog.error({ id: 'MAIN_CONTENT_IMPORT_FAILED', message: `Content import api call error`, error: 'makeImportApiCall called with empty array' });  
     return;
   }
   await HTTPService.post(`${appBaseUrl}/api/content/v1/import`, contents)
@@ -630,15 +627,11 @@ const makeImportApiCall = async (contents: Array<string>) => {
         var event = new Event("content:import", {bubbles: true});
         document.dispatchEvent(event);
       `);
-      logger.info("Content import started successfully", contents);
+      standardLog.info({id: 'MAIN_CONTENT_IMPORT_SUCCESS', message: `Content import started successfully for contents ${contents}`});
     })
-    .catch(error =>
-      logger.error(
-        "Content import failed with",
-        _.get(error, 'response.data') || error.message,
-        "for contents",
-        contents
-      )
+    .catch(error => {
+      standardLog.error({ id: 'MAIN_CONTENT_IMPORT_FAILED', message: `Content import failed for ${contents}`, error });
+    }
     );
 };
 // to handle ecar file open in windows and linux
@@ -657,9 +650,7 @@ const checkForOpenFile = (files?: string[]) => {
     if (appBaseUrl) {
       makeImportApiCall(openFileContents);
     }
-    logger.info(
-      `Got request to open the  ecars : ${JSON.stringify(openFileContents)}`
-    );
+    standardLog.info({ id: 'MAIN_REQUEST_TO_OPEN_ECAR', message: `Got request to open the  ecars : ${JSON.stringify(openFileContents)}` });
   }
 };
 
@@ -682,10 +673,10 @@ const handleUserAuthentication = async () => {
 }
 
 process
-  .on("unhandledRejection", (reason, p) => {
-    logger.error(reason, "Unhandled Rejection at Promise", p);
+  .on("unhandledRejection", (reason: any, p: any) => {
+    standardLog.error({ id: 'MAIN_UNHANDLED_REJECTION', message: `Unhandled Rejection at Promise ${p}`, error: reason });
   })
-  .on("uncaughtException", err => {
-    logger.error(err, "Uncaught Exception thrown");
+  .on("uncaughtException", (err: any) => {
+    standardLog.error({ id: 'MAIN_UNCAUGHT_EXCEPTION', message: `Uncaught Exception thrown`, error: err });
     process.exit(1);
   });

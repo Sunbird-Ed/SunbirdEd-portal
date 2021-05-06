@@ -1,4 +1,3 @@
-import { logger } from "@project-sunbird/logger";
 import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import { NetworkQueue } from "@project-sunbird/OpenRAP/services/queue";
 import * as _ from 'lodash';
@@ -93,9 +92,9 @@ export default class ContentStatus {
   async update(req, res) {
     const standardLog = containerAPI.getStandardLoggerInstance();
     this.deviceId = this.deviceId || await containerAPI.getSystemSDKInstance(manifest.id).getDeviceId();
-    const userToken: any = await userSDK.getUserToken().catch(error => { logger.debug("Unable to get the user token", error); });
-    const loggedInUserSession: any = await userSDK.getUserSession().catch(error => { logger.debug("User not logged in", error); });
-    const currentUser: any = await userSDK.getLoggedInUser(loggedInUserSession.userId, true).catch(error => { logger.debug("Unable to get the user token", error); });
+    const userToken: any = await userSDK.getUserToken().catch(error => { standardLog.debug({ id: 'CONTENT_STATUS_GET_USER_TOKEN_FAILED', message: 'Unable to get the user token', error }); });
+    const loggedInUserSession: any = await userSDK.getUserSession().catch(error => { standardLog.debug({ id: 'CONTENT_STATUS_USER_NOT_LOGGED_IN', message: 'User not logged in', error }); });
+    const currentUser: any = await userSDK.getLoggedInUser(loggedInUserSession.userId, true).catch(error => { standardLog.debug({ id: 'CONTENT_STATUS_GET_USER_TOKEN_FAILED', message: 'Unable to get the user token', error }); });
 
     let headers = {
       "Content-Type": "application/json",
@@ -118,7 +117,7 @@ export default class ContentStatus {
     };
 
     this.networkQueue.add(request).then(async (data) => {
-      logger.info("Added in queue");
+      standardLog.info({ id: 'CONTENT_STATUS_INSERTED_IN_QUEUE', message: 'Added in queue' });
       const contents = _.get(req, 'body.request.contents');
       const contentIds = _.map(contents, item => item.contentId);
       const result = contentIds.reduce((o, key) => ({ ...o, [key]: 'SUCCESS' }), {});

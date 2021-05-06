@@ -3,7 +3,6 @@ import Response from "./../utils/response";
 import { manifest } from "./../manifest";
 import AuthController from "../controllers/authController";
 import { containerAPI } from '@project-sunbird/OpenRAP/api';
-import { logger } from '@project-sunbird/logger';
 const uuidv1 = require('uuid/v1');
 import { ILoggedInUser } from '../../OpenRAP/interfaces/IUser';
 import { customProxy } from '../helper/proxyHandler';
@@ -32,6 +31,7 @@ export default (app, proxyURL) => {
                     await userSDK.insertLoggedInUser(user);
                     res.status(res.statusCode).send(res.body);
                 } catch (err) {
+                    standardLog.debug({ id: 'AUTH_DB_READ_FAILED', message: 'Unable to get the user token', error: err });
                     await userSDK.updateLoggedInUser(user);
                     res.status(res.statusCode).send(res.body);
                 }

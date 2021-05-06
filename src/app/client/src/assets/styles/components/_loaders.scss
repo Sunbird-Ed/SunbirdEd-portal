@@ -5,11 +5,11 @@
   transform: translate(-50%, -50%);
   &:after {
     content: '';
-    width: $base-block-space * 4;
-    height: $base-block-space * 4;
+    width: calculateRem(32px);
+    height: calculateRem(32px);
     border-radius: 50%;
     border: calculateRem(2px) solid;
-    border-color: $teal $teal transparent;
+    border-color: var(--teal) var(--teal) transparent;
     animation: loader 0.5s infinite;
     position: absolute;
     top: 50%;
