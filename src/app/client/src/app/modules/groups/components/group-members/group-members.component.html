@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <div  *ngIf="showAddMember()" (click)="addMember();addTelemetry('add-member-btn')">
+    <div  *ngIf="showAddMember()" (click)="addMember();addTelemetry('add-member-btn', '', { type: ADD_MEMBER})">
       <div class="cursor-pointer mb-8 fnormal px-8">
         <img alt="admin" src="./assets/images/add-member-1.png" width="32">
         {{resourceService?.frmelmnts?.lbl?.addMember}}
