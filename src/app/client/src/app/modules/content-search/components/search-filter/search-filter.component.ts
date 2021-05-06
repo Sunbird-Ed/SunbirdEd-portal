@@ -68,6 +68,13 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       multiple: true
     },
     {
+      category: 'subject',
+      type: 'dropdown',
+      labelText: 'Subject',
+      placeholderText: 'Select Subject',
+      multiple: true
+    },
+    {
       category: 'publisher',
       type: 'dropdown',
       labelText: 'Published by',
@@ -192,6 +199,9 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
               this.pushNewFilter({ type, index });
             }
           } else {
+            if (type === 'subject') {
+              this.selectedNgModels['selected_subjects'] = event;
+            }
             this.pushNewFilter({
               type, updatedValues: _.map(event || [],
                 selectedValue => _.findIndex(this.allValues[type], val => val === selectedValue))
@@ -266,13 +276,16 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
         }
         this.selectedFilters[filterKey] = selectedIndices;
         this.selectedNgModels[filterKey] = _.map(selectedIndices, index => this.allValues[filterKey][index]);
+        if (filterKey === 'subject') {
+          this.selectedNgModels['selected_subjects'] = filterValuesFromQueryParams;
+        }
       }
     });
   }
   private updateRoute(resetFilters?: boolean) {
     const selectedTab = _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook';
     this.router.navigate([], {
-      queryParams: resetFilters ? { selectedTab } : _.omit(this.getSelectedFilter() || {}, ['audienceSearchFilterValue']),
+      queryParams: resetFilters ? { ...this.defaultFilters, selectedTab} : _.omit(this.getSelectedFilter() || {}, ['audienceSearchFilterValue']),
       relativeTo: this.activatedRoute.parent
     });
   }
@@ -288,6 +301,9 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     });
     if (_.has(this.selectedFilters, 'publisher')) {
       filters['channel'] = _.compact(_.map(this.selectedFilters['publisher'], publisher => this.getChannelId(publisher)));
+    }
+    if (_.has(this.selectedNgModels, 'selected_subjects')) {
+      filters['subject'] = this.selectedNgModels['selected_subjects'] || [];
     }
     if (_.has(this.selectedFilters, 'audience')) {
       filters['audienceSearchFilterValue'] = _.flatten(_.compact(_.map(filters['audience'] || {}, audienceType => {

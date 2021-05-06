@@ -7,14 +7,9 @@
     (statusChanges)="statusChanged($event)">
   </sb-form>
   
-  <div class="sb-g">
-    <div class="sb-g-col-xs-12 sb-g-col-md-6 sb-g-col-lg-9 sb-g-col-xxxl-22">
-      <p>{{faqData?.constants?.triggerEmailMsg}}</p>
-    </div>
-    <div class="sb-g-col-xs-12 sb-g-col-md-6 sb-g-col-lg-3 sb-g-col-xxxl-10">
-      <button class="sb-btn sb-btn-primary sb-btn-normal submit-feedback" (click)="faqReportSubmit()">
-        {{faqData?.constants?.submitButton}}
-      </button>
-    </div>
+  <div>
+    <button class="sb-btn sb-btn-primary sb-btn-normal submit-feedback" (click)="faqReportSubmit()">
+      {{faqData?.constants?.submitButton}}
+    </button>
   </div>
 </div>
