@@ -20,12 +20,6 @@
     </div>
     <div class="profile-user-label font-w-bold d-flex text-center relative position">{{userProfile.firstName | titlecase}} {{userProfile.lastName |
       titlecase}}
-      <div class="computer only">
-        <i  *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupPlacement]="'bottom left'" [popupInverted]="true" class="name-info"></i>
-    </div>
-    <div class="mobile only name-info-mobile">
-        <i *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupPlacement]="'bottom right'" [popupInverted]="true" class="name-info"></i>
-    </div>
     </div>
     <div class="mt-8 mb-16 d-flex flex-jc-center">
       <div class="fnormal">{{resourceService?.frmelmnts?.lbl?.instacnceId | interpolate:'{instance}': instance}} :</div>
@@ -69,13 +63,6 @@
     </div>
   </div>
     <div class="fs-1-5 font-w-bold d-flex mb-8 text-center org-info" *ngIf=" orgDetails && orgDetails.orgName">{{orgDetails.orgName}}
-      <div class="computer only">
-          <i *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupInverted]="true" [popupPlacement]="'bottom left'" class="name-info"></i>
-      </div>
-      <div class="mobile only">
-          <i *ngIf="!isCustodianOrgUser" suiPopup popupText="{{resourceService.frmelmnts.lbl.stateRecord}}" [popupInverted]="true" [popupPlacement]="'bottom right'" class="name-info"></i>
-      </div>
-
     </div>
 
     <!-- add state and district -->
@@ -299,7 +286,7 @@
   <app-profile-badge *ngIf="userProfile.badgeAssertions && userProfile.badgeAssertions.length > 0"></app-profile-badge>
   <!-- my badges section ends -->
 
-  <div class="pt-30" *ngIf="isConnected">
+  <div class="pt-30">
     <div class="sb-profile-page-container" [ngClass]="layoutConfiguration ? 'sbt-center-container' : 'ui container'">
       <!--contributions view starts-->
       <div class="fs-1-7 font-w-bold pl-20 mobile only" *ngIf="contributions && contributions.length > 0">

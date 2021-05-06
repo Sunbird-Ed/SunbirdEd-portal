@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {
-  CreateOrgTypeComponent, ViewOrgTypeComponent, OrganizationUploadComponent,
-  UserUploadComponent, BulkUploadComponent, StatusComponent
+  CreateOrgTypeComponent, ViewOrgTypeComponent, OrganizationUploadComponent, StatusComponent
 } from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 const telemetryEnv = 'org-management';
@@ -35,12 +34,6 @@ const routes: Routes = [
       },
       { path: '**', redirectTo: '' }
     ]
-  },
-  {
-    path: 'userUpload', component: UserUploadComponent, canActivate: [AuthGuard],
-    data: {
-      roles: 'rootOrgAdmin'
-    }
   }
 ];
 @NgModule({

@@ -24,6 +24,13 @@ const routes: Routes = [
                 env: 'public', pageid: 'play-collection', type: 'view', subtype: 'paginate'
             }
         }
+    },
+    {
+        path: 'questionset/:contentId', component: ContentPlayerComponent, data: {
+            telemetry: {
+                env: 'public', pageid: 'play-questionset', type: 'view', subtype: 'paginate'
+            }
+        }
     }
 ];
 @NgModule({

@@ -19,7 +19,11 @@ export default () => {
 }
 
 const addPerfLogForDelete = (data: ISystemQueue)  => {
-    //TODO: need to be implemented
+    perfLogger.log({
+      type: _.get(data, 'type'),
+      time: _.get(data, 'runTime'),
+      metaData: _.get(data, 'metaData')
+    });
   } 
 
 const addPerfLogForImportAndDownload = (data: ISystemQueue) => {
@@ -32,3 +36,12 @@ const addPerfLogForImportAndDownload = (data: ISystemQueue) => {
       metaData: {},
     });
   }
+
+export const addPerfLogForAPICall = (data:any) => {
+  perfLogger.log({
+    type: 'API',
+    time: data.time,
+    metaData: data.metaData
+  });
+}
+

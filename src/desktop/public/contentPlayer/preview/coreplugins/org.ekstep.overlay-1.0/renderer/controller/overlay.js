@@ -230,7 +230,21 @@ app.controllerProvider.register("OverlayController", function($scope, $rootScope
          * @fires renderer:content:replay
          * @memberof EkstepRendererEvents
          */
-        EkstepRendererAPI.dispatchEvent('renderer:content:replay');
+        if (content.primaryCategory && content.primaryCategory.toLowerCase() === 'course assessment'){
+            org.ekstep.service.content.checkMaxLimit(content).then(function(response){
+                if(response){
+                    window.postMessage({
+                        event: 'renderer:maxLimitExceeded',
+                        data: {
+                        }
+                    })
+                } else{
+                    EkstepRendererAPI.dispatchEvent('renderer:content:replay');
+                }
+            });
+        }else{
+            EkstepRendererAPI.dispatchEvent('renderer:content:replay');
+        }
     }
 
     $scope.init();
@@ -239,7 +253,7 @@ app.controllerProvider.register("OverlayController", function($scope, $rootScope
 app.compileProvider.directive('mute', function($rootScope) {
     return {
         restrict: 'E',
-        template: '<div ng-click="toggleMute()"><img ng-src="{{muteImg}}"/><span>Sound {{AppLables.mute}} </span></div>',
+        template: '<div ng-click="toggleMute()"><img ng-src="{{muteImg}}"/><span> Turn {{AppLables.mute}} Sound </span></div>',
         link: function(scope, url) {
 
             /**
@@ -251,7 +265,7 @@ app.compileProvider.directive('mute', function($rootScope) {
 
             EkstepRendererAPI.addEventListener('renderer:overlay:unmute', function() {
                 scope.muteImg = scope.imageBasePath + "audio_icon.png";
-                AppLables.mute = "on";
+                AppLables.mute = "Off";
                 AudioManager.unmute();
             });
 
@@ -264,7 +278,7 @@ app.compileProvider.directive('mute', function($rootScope) {
             EkstepRendererAPI.addEventListener('renderer:overlay:mute', function() {
                     AudioManager.mute();
                     scope.muteImg = scope.imageBasePath + "audio_mute_icon.png";
-                    AppLables.mute = "off";
+                    AppLables.mute = "On";
             });
             EkstepRendererAPI.dispatchEvent('renderer:overlay:unmute');
             scope.toggleMute = function() {

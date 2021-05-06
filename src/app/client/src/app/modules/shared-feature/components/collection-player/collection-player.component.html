@@ -37,7 +37,6 @@
               <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADED')" (click)="exportCollection(collectionData)">{{resourceService?.frmelmnts?.lbl?.saveToPenDrive}}</button>
               <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOAD')" (click)="isYoutubeContentPresent(collectionData)">{{resourceService?.frmelmnts?.lbl?.desktop?.downloadBook}}</button>
               <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('DOWNLOADING')">{{resourceService?.frmelmnts?.lbl?.downloading}}</button>
-              <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8 sb-btn-disabled" *ngIf="checkStatus('DOWNLOADED')">{{resourceService?.messages?.stmsg?.m0139}}</button>
               <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal mr-8" *ngIf="checkStatus('PAUSED')">{{resourceService.frmelmnts?.lbl?.downloadingPaused}}</button>
             </div>
 
@@ -136,7 +135,7 @@
 
           <div [hidden]="isSelectChapter" class="main-side-toc-content">
             <sb-toc-item [selectAll]="selectAll" [selectMode]="isCopyAsCourseClicked"
-              [activeMimeTypeFilter]="activeMimeTypeFilter" [tocData]="collectionData"
+              [activeMimeTypeFilter]="activeMimeTypeFilter" [tocData]="collectionData" [noContentMessage]="noContentMessage"
               (tocCardClick)="tocCardClickHandler($event)" [activeContent]="activeContent"
               (noContent)="showNoContent($event)" (selectedItem)="handleSelectedItem($event)" appTelemetryInteract
               [telemetryInteractEdata]="tocTelemetryInteractEdata" [telemetryInteractCdata]="tocTelemetryInteractCdata"[platform]="PlatformType.PORTAL"

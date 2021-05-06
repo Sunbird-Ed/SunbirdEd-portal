@@ -26,7 +26,7 @@ describe('GroupHeaderComponent', () => {
 
   const resourceBundle = {
     messages: {
-      smsg: { m002: '' },
+      smsg: { m002: '' , grpdeletesuccess: 'Group deleted successfully'},
       emsg: {
         m003: '' ,
         m0005: 'Something went wrong, try again later'
@@ -177,7 +177,7 @@ describe('GroupHeaderComponent', () => {
     fixture.detectChanges();
     fixture.whenStable().then(() => {
       component['groupService'].deleteGroupById('123').subscribe(response => {
-        expect(component['toasterService'].success).toHaveBeenCalledWith(resourceBundle.messages.smsg.m002);
+        expect(component['toasterService'].success).toHaveBeenCalledWith(resourceBundle.messages.smsg.grpdeletesuccess);
         expect(component.navigateToPreviousPage).toHaveBeenCalled();
       });
     });

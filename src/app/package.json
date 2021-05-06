@@ -1,7 +1,7 @@
 {
   "name": "player",
   "author": "sunbird",
-  "version": "3.7.2",
+  "version": "3.8.1",
   "buildNumber": "1",
   "private": true,
   "devDependencies": {
@@ -60,7 +60,7 @@
   },
   "dependencies": {
     "@project-sunbird/discussion-service": "0.0.6",
-    "@project-sunbird/ext-framework-server": "0.1.27",
+    "@project-sunbird/ext-framework-server": "0.1.28",
     "@project-sunbird/form-service": "0.0.13",
     "@project-sunbird/logger": "^0.0.9",
     "@project-sunbird/review-comment": "0.0.8",
