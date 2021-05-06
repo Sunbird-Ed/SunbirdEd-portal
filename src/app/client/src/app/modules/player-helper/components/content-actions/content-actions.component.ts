@@ -95,7 +95,7 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
           if (this.contentData &&
             (contentDownloadStatus[this.contentData.identifier] === 'COMPLETED' ||
             contentDownloadStatus[this.contentData.identifier] === 'DOWNLOADED'
-            ) && !this.router.url.includes('browse')) {
+            ) && this.router.url.includes('mydownloads')) {
             this.contentDownloaded.emit(this.contentData);
           }
           this.changeContentStatus();
