@@ -42,11 +42,11 @@ export default class ContentDelete {
                     },
                 };
             let contentsToDelete = await this.databaseSdk.find("content", dbFilter).catch((error) => {
-                    this.standardLog.error({id: 'CONTENT_DELETE_SEARCH_FAILED', message: `Received Error while finding contents (isAvailable : false)`, error });
+                    this.standardLog.error({id: 'CONTENT_DELETE_DB_SEARCH_FAILED', message: `Received Error while finding contents (isAvailable : false)`, error });
                 });
             contentsToDelete = await this.getContentsToDelete(contentsToDelete.docs);
             let deleted = await this.databaseSdk.bulk("content", contentsToDelete).catch((err) => {
-                this.standardLog.error({id: 'CONTENT_DELETE_BULK_UPDATE_FAILED', message: `Received Error while deleting contents in a bulk`, error: err });
+                this.standardLog.error({id: 'CONTENT_DELETE_DB_BULK_UPDATE_FAILED', message: `Received Error while deleting contents in a bulk`, error: err });
                 failed.push(err.message || err.errMessage);
             });
             deleted =  _.map(deleted, (content) => content.id);
