@@ -64,7 +64,7 @@
 }
 
 .name-info {
-  background-color: $gray-400;
+  background-color: var(--gray-400);
   -webkit-mask-image: url(../../../../../assets/images/info-icon.svg);
   mask-image: url(../../../../../assets/images/info-icon.svg);
   -webkit-mask-size: contain;

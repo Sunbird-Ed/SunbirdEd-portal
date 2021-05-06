@@ -2,32 +2,12 @@
 @import "mixins/mixins";
 
 
-// Mobile Device
-$sb-mobileDevice-width-mobile: 360px;
-$sb-mobileDevice-height-mobile: 202.5px;
-$sb-mobileDevice-width-tablet: 680px;
-$sb-mobileDevice-height-tablet: 340px;
-$sb-mobileDevice-width-desktop: 800px;
-$sb-mobileDevice-height-desktop: 400px;
-$sb-mobileDevice-border: 10px solid $black;
-$sb-mobileDevice-border-radius: 15px;
-$sb-mobileDevice-sensors-background: $black;
-$sb-mobileDevice-sensors-padding: 10px 5px 10px 0;
-$sb-mobileDevice-sensors-border-radius: 25px;
-$sb-mobileDevice-sensor-background: #252525;
-$sb-mobileDevice-sensor-size: 8px;
-$sb-mobileDevice-speaker-height: 74px;
-$sb-mobileDevice-speaker-width: 5px;
-$sb-mobileDevice-speaker-border-radius: 10px;
-$sb-mobileDevice-speaker-padding: 10px 0 10px 1px;
-$sb-mobileDevice-videoScreen-border-radius: 5px;
-
 .sb-mobileDevice {
     .sb-mobileDevice-screen {
-      height: $sb-mobileDevice-height-mobile;
-      width: $sb-mobileDevice-width-mobile;
-      border: $sb-mobileDevice-border;
-      border-radius: $sb-mobileDevice-border-radius;
+      height: calvulteRem(202.5px);
+      width: calculateRem(360px);
+      border: calculateRem(10px) solid var(--black);
+      border-radius: calculateRem(15px);
       margin: 0 auto;
       position: relative;
       overflow: hidden;
@@ -38,38 +18,38 @@ $sb-mobileDevice-videoScreen-border-radius: 5px;
         transform: translateY(-50%);
         margin: auto;
         left: 0;
-        background: $sb-mobileDevice-sensors-background;
-        padding: $sb-mobileDevice-sensors-padding;
-        border-top-right-radius: $sb-mobileDevice-sensors-border-radius;
-        border-bottom-right-radius: $sb-mobileDevice-sensors-border-radius;
+        background: var(--black);
+        padding: calculateRem(10px) calculateRem(5px) calculateRem(10px) 0;
+        border-top-right-radius: calculateRem(25px);
+        border-bottom-right-radius: calculateRem(25px);
         .sb-mobileDevice-sensor {
-          width: $sb-mobileDevice-sensor-size;
-          height: $sb-mobileDevice-sensor-size;
-          background: $sb-mobileDevice-sensor-background;
+          width: calculateRem(8px);
+          height: calculateRem(8px);
+          background: var(--rc-252525);
           border-radius: 50%;
         }
         .sb-mobileDevice-speaker {
-          width: $sb-mobileDevice-speaker-width;
-          height: $sb-mobileDevice-speaker-height;
-          background: $sb-mobileDevice-sensor-background;
-          border-radius: $sb-mobileDevice-speaker-border-radius;
-          margin: $sb-mobileDevice-speaker-padding;
+          width: calculateRem(5px);
+          height: calculateRem(74px);
+          background: var(--rc-252525);
+          border-radius: calculateRem(10px);
+          margin: calculateRem(10px) 0 calculateRem(10px) calculateRem(1px);
         }
       }
       .sb-mobileDevice-videoScreen {
         width: 100%;
         height: 100%;
         cursor: pointer;
-        border-radius: $sb-mobileDevice-videoScreen-border-radius;
+        border-radius: calculateRem(5px);
         border: none;
       }
       @media only screen and (min-width: 540px) {
-        height: $sb-mobileDevice-height-tablet;
-        width: $sb-mobileDevice-width-tablet;
+        height: calculateRem(340px);
+        width: calculateRem(680px);
       }
       @media only screen and (min-width: 769px) {
-        height: $sb-mobileDevice-height-desktop;
-        max-width: $sb-mobileDevice-width-desktop;
+        height: calculateRem(400px);
+        max-width: calculateRem(800px);
       }
     }
   }
