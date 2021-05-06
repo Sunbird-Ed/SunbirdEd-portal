@@ -6,9 +6,9 @@
     dt,
     dd {
       line-height: calculateRem(22px);
-      font-size: $font-size-normal;
+      font-size: var(--font-size-base);
       text-transform: inherit;
-      padding: ($base-block-space/2) ($base-block-space/2);
+      padding: calculateRem(4px) calculateRem(4px);
     }
 
     dt {
@@ -62,7 +62,7 @@
       flex-direction: column;
       margin: calculateRem(8px) 0px;
       flex-basis: 20%;
-      padding-right: ($base-block-space * 2);
+      padding-right: calculateRem(16px);
     }
 
     .sb-meta-data {
@@ -201,7 +201,7 @@
     }
 
     dd {
-      margin-bottom: ($base-block-space);
+      margin-bottom: calculateRem(8px);
     }
   }
 
