@@ -530,7 +530,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.logTelemetry('delete-collection');
     const request = {request: {contents: [collectionData.identifier]}};
     this.contentManagerService.deleteContent(request).pipe(takeUntil(this.unsubscribe)).subscribe(data => {
-      this.toasterService.success(this.resourceService.messages.stmsg.desktop.deleteTextbookSuccessMessage);
+      this.toasterService.success(this.resourceService.messages.stmsg.desktop.deleteCourseSuccessMessage);
       collectionData['downloadStatus'] = 'DOWNLOAD';
       collectionData['desktopAppMetadata.isAvailable'] = false;
       this.goBack();
