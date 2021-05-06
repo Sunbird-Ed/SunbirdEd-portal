@@ -110,6 +110,7 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       takeUntil(this.unsubscribe))
       .subscribe((data) => {
         this.disableSubmitBtn = true;
+        this.toasterService.success(this.resourceService.messages.smsg.m0036);
         this.fetchEnrolledCourseData();
         this.telemetryLogEvents(true);
       }, (err) => {
@@ -127,7 +128,6 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         .subscribe(() => {
           this.disableSubmitBtn = false;
           this.showLoader = false;
-          this.toasterService.success(this.resourceService.messages.smsg.m0036);
           this.router.navigate(['/learn/course', this.batchDetails.courseId, 'batch', this.batchDetails.identifier],
           { queryParams: { consent: true , textbook: this.tocId || undefined} }).then(() => {
             window.location.reload();

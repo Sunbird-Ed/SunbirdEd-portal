@@ -8,7 +8,7 @@ import uuid = require("uuid");
 import NetworkSDK from "./../../sdks/NetworkSDK";
 import { EventManager } from "./../../managers/EventManager";
 import { retry, mergeMap, catchError } from 'rxjs/operators';
-import { of, throwError } from 'rxjs';
+import { of, throwError, defer } from 'rxjs';
 import SystemSDK from "../../sdks/SystemSDK";
 import { DataBaseSDK } from "../../sdks/DataBaseSDK";
 import SettingSDK from '../../sdks/SettingSDK';
@@ -113,7 +113,7 @@ export class NetworkQueue extends Queue {
             const currentQueue = this.queueList.shift();
             currentQueue.requestHeaderObj['Authorization'] = currentQueue.bearerToken ? `Bearer ${this.apiKey}` : '';
             let requestBody = _.get(currentQueue, 'requestHeaderObj.Content-Encoding') === 'gzip' ? Buffer.from(currentQueue.requestBody.data) : currentQueue.requestBody;
-            this.makeHTTPCall(currentQueue.requestHeaderObj, requestBody, currentQueue.pathToApi)
+            this.makeHTTPCall(currentQueue.requestHeaderObj, requestBody, currentQueue.pathToApi, currentQueue.requestMethod)
                 .then(async resp => {
                     // For new API if success comes with new responseCode, add responseCode to successResponseCode
                     const traceId = _.get(resp, 'data.params.msgid');
@@ -155,12 +155,16 @@ export class NetworkQueue extends Queue {
         }
     }
 
-    private async makeHTTPCall(headers: object, body: object, pathToApi: string) {
-        return await HTTPService.post(
-            pathToApi,
-            body,
-            { headers: headers }
-        ).pipe(mergeMap((data) => {
+    private async makeHTTPCall(headers: object, body: object, pathToApi: string, requestMethod = "POST") {
+        return await defer(() => {
+            switch (requestMethod) {
+                case "POST": return HTTPService.post(pathToApi, body, { headers: headers })
+                case "PATCH": return HTTPService.patch(pathToApi, body, { headers: headers })
+                default: {
+                    return HTTPService.post(pathToApi, body, { headers: headers })
+                }
+              }
+        }).pipe(mergeMap((data) => {
             return of(data);
         }), catchError((error) => {
             if (_.get(error, 'response.status') >= 500 && _.get(error, 'response.status') < 599) {
@@ -232,7 +236,7 @@ export class NetworkQueue extends Queue {
             currentQueue.requestHeaderObj['Authorization'] = currentQueue.bearerToken ? `Bearer ${this.apiKey}` : '';
             let requestBody = _.get(currentQueue, 'requestHeaderObj.Content-Encoding') === 'gzip' ? Buffer.from(currentQueue.requestBody.data) : currentQueue.requestBody;
             try {
-                let resp = await this.makeHTTPCall(currentQueue.requestHeaderObj, requestBody, currentQueue.pathToApi);
+                let resp = await this.makeHTTPCall(currentQueue.requestHeaderObj, requestBody, currentQueue.pathToApi, currentQueue.requestMethod);
                 const traceId = _.get(resp, 'data.params.msgid');
                 if (_.includes(successResponseCode, _.toLower(_.get(resp, 'data.responseCode')))) {
                     logger.info(`Network Queue synced for id = ${currentQueue._id}, with trace Id = ${traceId}`);
@@ -274,4 +278,5 @@ export interface NetworkQueueReq {
     requestHeaderObj: object;
     requestBody: any;
     count?: number;
+    requestMethod?: string;
 }

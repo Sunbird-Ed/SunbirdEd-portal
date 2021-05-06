@@ -2,6 +2,7 @@
 :root {
     --visit-helpcenter-bg:var(--white);
 }
+
 :host::ng-deep {
 
     .help-page {
@@ -17,6 +18,10 @@
                     padding: calculateRem(16px);
                 }
             }
+            ul li {
+                margin-bottom: auto;
+                list-style: initial;
+            }
         }
 
         &__visit-helpcenter {
@@ -26,6 +31,13 @@
                     flex-basis: 50%;
                 }
             }
+        }
+
+        code {
+            background-color: #eee;
+            border-radius: 3px;
+            font-family: courier, monospace;
+            padding: 0 3px;
         }
     }
 

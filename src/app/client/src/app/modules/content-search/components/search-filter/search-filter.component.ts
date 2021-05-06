@@ -49,7 +49,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     public layoutService: LayoutService, private formService: FormService) { }
 
   get filterData() {
-    return _.get(this.pageData, 'metaData.filters') || ['medium', 'gradeLevel', 'board', 'channel', 'subject', 'audience', 'publisher'];
+    return _.get(this.pageData, 'metaData.filters') || ['medium', 'gradeLevel', 'board', 'channel', 'subject', 'audience', 'publisher', 'se_subjects', 'se_boards', 'se_gradeLevels', 'se_mediums'];
   }
   public getChannelId(index) {
     const { publisher: publishers = [] } = this.filters || {};
@@ -148,6 +148,9 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
               this.pushNewFilter({ type, index });
             }
           } else {
+            if (type === 'subject') {
+              this.selectedNgModels['selected_subjects'] = event;
+            }
             this.pushNewFilter({
               type, updatedValues: _.map(event || [],
                 selectedValue => _.findIndex(this.allValues[type], val => val === selectedValue))
@@ -222,6 +225,9 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
         }
         this.selectedFilters[filterKey] = selectedIndices;
         this.selectedNgModels[filterKey] = _.map(selectedIndices, index => this.allValues[filterKey][index]);
+        if (filterKey === 'subject') {
+          this.selectedNgModels['selected_subjects'] = filterValuesFromQueryParams;
+        }
       }
     });
   }
@@ -244,6 +250,9 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     });
     if (_.has(this.selectedFilters, 'publisher')) {
       filters['channel'] = _.compact(_.map(this.selectedFilters['publisher'], publisher => this.getChannelId(publisher)));
+    }
+    if (_.has(this.selectedNgModels, 'selected_subjects')) {
+      filters['subject'] = this.selectedNgModels['selected_subjects'] || [];
     }
     if (_.has(this.selectedFilters, 'audience')) {
       filters['audienceSearchFilterValue'] = _.flatten(_.compact(_.map(filters['audience'] || {}, audienceType => {
@@ -303,6 +312,11 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   private getFacets() {
     return this.facets$.pipe(tap(filters => {
       filters = this.filters = { ...this.filters, ...this.sortFilters({ filters }) };
+      const categoryMapping = Object.entries(this.contentSearchService.getCategoriesMapping);
+      filters = _.mapKeys(filters, (value, filterKey) => {
+        const [key = null] = categoryMapping.find(([category, mappedValue]) => mappedValue === filterKey) || [];
+        return key || filterKey;
+      });
       this.updateFiltersList({ filters });
       this.hardRefreshFilter();
     }));

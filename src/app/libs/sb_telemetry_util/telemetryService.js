@@ -1,5 +1,6 @@
 var Telemetry = require('@project-sunbird/telemetry-sdk')
 var telemetrySyncManager = require('./telemetrySyncManager.js')
+const _ = require('lodash')
 
 var default_config = {
   'runningEnv': 'server',
@@ -314,5 +315,27 @@ telemetryService.prototype.generateApiCallLogEvent = function (data) {
     object: telemetryData && telemetryData.object
   })
 }
-
+/**
+ * This function used to generate api_ERROR log event
+ */
+telemetryService.prototype.getTelemetryAPIError = function (data, res, context) {
+  try {
+  if ( (data.responseCode !== 'OK' && data.responseCode !== 200) || res.statusCode !== 200) {
+  const result = data.params;
+  if (result) {
+  const edata = {
+    err: data.responseCode  || res.statusCode,
+    errtype: result.err || res.statusMessage,
+    requestid:  result.resmsgid || 'null',
+    errmsg: result.errmsg  || 'null',
+  }
+  const option = {edata, context}
+ return option;
+ }
+}
+return ;
+} catch (error) {
+  console.log('error', error)
+ }
+}
 module.exports = telemetryService

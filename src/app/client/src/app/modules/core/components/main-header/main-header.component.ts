@@ -593,10 +593,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.layoutService.initiateSwitchLayout();
     this.generateInteractTelemetry();
   }
-  switchToAccessibleLayout(){
-    this.layoutService.switchToAccessibleLayout();
-    // this.generateInteractTelemetry();
-  }
 
   generateInteractTelemetry() {
     const interactData = {

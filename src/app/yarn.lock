@@ -112,17 +112,17 @@
     lodash "^4.17.10"
     uuid "^3.3.2"
 
-"@project-sunbird/ext-framework-server@0.1.27":
-  version "0.1.27"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/ext-framework-server/-/ext-framework-server-0.1.27.tgz#8b30558959eb912c7f40b93a509dd1465fc52128"
-  integrity sha512-YgPUM0WleYYva2Mbi7dakeUYhh0+60JHiIeeDhzcNPgU8UZyK9qqseFpwYVLBcVmX074yqFqLmlX7hDdr2EC/w==
+"@project-sunbird/ext-framework-server@0.1.28":
+  version "0.1.28"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/ext-framework-server/-/ext-framework-server-0.1.28.tgz#baa8edad70e34cf74509f8b4ff85a9ee7bfd8680"
+  integrity sha512-agFe9r+p3b6K4zoMjFVTyJQ4ywN6O6PN/Ce2l+xfYXtP8S4SnmAcVj5AyGBnV7L+e1ZCsdc5U+IM7ukemqC7rw==
   dependencies:
     "@project-sunbird/telemetry-sdk" "^0.0.7"
     axios "^0.18.0"
     continuation-local-storage "^3.2.1"
     elasticsearch "^14.1.0"
     express "^4.16.2"
-    express-cassandra "^2.2.2"
+    express-cassandra "2.2.2"
     glob "^7.1.2"
     hashids "^1.1.4"
     keycloak-connect "^4.0.0-beta.2"
@@ -2369,10 +2369,10 @@ express-cassandra@2.1.0:
     readline-sync "^1.4.4"
     semver "^5.4.1"
 
-express-cassandra@^2.2.2:
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/express-cassandra/-/express-cassandra-2.3.2.tgz#edf744da7e2522395ca0219a684812d7da4a53c3"
-  integrity sha512-Bte+Ks6teFpnlPLcniyOwyML+emvbynergI1hFGrT1ukn47MEDANNzBeYHtThhPXGTCxCLgI8udAn8O0P8oyVw==
+express-cassandra@2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/express-cassandra/-/express-cassandra-2.2.2.tgz#0b534fd70739e752581dfba998c0a3482c34c9d8"
+  integrity sha512-cOLMvgJyHe4iI/MvAqNEyPEdARrlxYpnlry58A4dpFZ6tZzpLX4o3AcrcIwjD0riZSkCT2Yz28aL7G2Jxp7fXA==
   dependencies:
     JSONStream "^1.3.1"
     async "^1.5.2"
@@ -2383,7 +2383,7 @@ express-cassandra@^2.2.2:
     check-types "^7.4.0"
     debug "^3.1.0"
     deep-diff "^0.3.4"
-    lodash "^4.17.15"
+    lodash "^4.17.10"
     object-hash "1.1.4"
     readdirp "^2.1.0"
     readline-sync "^1.4.4"

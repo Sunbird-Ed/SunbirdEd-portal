@@ -1,0 +1,9 @@
+@import "variables";
+@import "mixins/mixins";
+
+.system-warning-section {
+  border-radius: calculateRem(24px);
+  background-color: var(--white);
+  position: relative;
+  z-index: 9;
+}

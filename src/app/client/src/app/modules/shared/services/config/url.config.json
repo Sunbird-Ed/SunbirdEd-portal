@@ -37,7 +37,7 @@
     },
     "contentGet": "ageGroup,appIcon,artifactUrl,attributions,attributions,audience,author,badgeAssertions,board,body,channel,code,concepts,contentCredits,contentType,contributors,copyright,copyrightYear,createdBy,createdOn,creator,creators,description,displayScore,domain,editorState,flagReasons,flaggedBy,flags,framework,gradeLevel,identifier,itemSetPreviewUrl,keywords,language,languageCode,lastUpdatedOn,license,mediaType,medium,mimeType,name,originData,osId,owner,pkgVersion,publisher,questions,resourceType,scoreDisplayConfig,status,streamingUrl,subject,template,templateId,totalQuestions,totalScore,versionKey,visibility,year,primaryCategory,additionalCategories",
     "enrolledCourses": {
-      "fields": "contentType,topic,name,channel,mimeType,appIcon,gradeLevel,resourceType,identifier,medium,pkgVersion,board,subject,trackable",
+      "fields": "contentType,topic,name,channel,mimeType,appIcon,gradeLevel,resourceType,identifier,medium,pkgVersion,board,subject,trackable,primaryCategory",
       "batchDetails": "name,endDate,startDate,status,enrollmentType,createdBy,certificates"
     },
     "objectCategory": {
@@ -210,8 +210,7 @@
       "BULK": {
         "USERS_UPLOAD": "user/v2/upload",
         "ORGANIZATIONS_UPLOAD": "org/v1/upload",
-        "STATUS": "data/v1/upload/status",
-        "USER_UPLOAD_SHADOW": "user/v2/bulk/upload"
+        "STATUS": "data/v1/upload/status"
       },
       "DELETE_USER": "user/v1/block",
       "UPDATE_USER_ORG_ROLES": "user/v1/role/assign"

@@ -65,6 +65,13 @@
       "url": "tenant/info",
       "message": "Called tenant info",
       "env": "tenant"
+    },
+    "learner/group": {
+      "title": "group info",
+      "category": "groupinfo",
+      "url": "learner/group",
+      "message": "Called group info",
+      "env": "groups"
     }
   }
 }
