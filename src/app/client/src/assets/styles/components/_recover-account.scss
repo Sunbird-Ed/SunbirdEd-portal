@@ -25,46 +25,46 @@
     overflow: hidden;
     padding-right: calculateRem(30px);
     &::placeholder {
-      color: $gray-200;
+      color: var(--gray-200);
       opacity: 1; 
     }
   }
   .sb-field-group {
     .sb-account-recoverpage-label {
-      font-size: $font-size-normal;
+      font-size: var(--font-size-base);
       font-weight: normal;
     }
   }
   .sb-field-verified{
-    color: $green;
+    color: var(--secondary-color);
     position: absolute;
     top: calculateRem(32px);
     right: calculateRem(8px);
     display: block;
-    font-size: $font-size-normal;
+    font-size: var(--font-size-base);
   }
   .sb-account-recover-page-radio{
     .sb-account-recover-page-radio-label{
-      font-size: $font-size-normal;
+      font-size: var(--font-size-base);
       line-height:calculateRem(24px);
     }
   }
   .sb-account-recover-page-otp-text{
-    font-size: $font-size-normal;
+    font-size: var(--font-size-base);
     line-height: calculateRem(24px);
-    color: $gray-200;
+    color: var(--gray-200);
     span{
-      color: $black;
+      color: var(--black);
     }
   }
   .sb-account-recover-page-info-msg{
-    font-size: $font-size-normal;
+    font-size: var(--font-size-base);
     line-height: calculateRem(24px);
-    color: $black;
+    color: var(--black);
   }
   .sb-account-recover-page-otp-success-msg{
-    color: $secondary-200;
-    font-size: $font-size-normal;
+    color: var(--secondary-200);
+    font-size: var(--font-size-base);
   }
   
 }

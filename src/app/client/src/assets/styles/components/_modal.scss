@@ -22,6 +22,7 @@
     .sb-modal-content {
       min-height: 100px;
       padding: calculateRem(16px);
+      
       overflow-y: auto;
       background: var(--white);
     }
