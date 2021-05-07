@@ -2,62 +2,62 @@
 
 .sb-sidebar-menu {
   h5 {
-    font-weight: $font-weight-bold;
-    padding: $base-block-space * 2 0;
+    font-weight: var(--font-weight-bold);
+    padding: calculateRem(16px) 0;
   }
   ul {
     list-style-type: none;
     padding-left: 0;
 
     li {
-      padding: calculateRem(12px) $base-block-space * 2;
-      font-size: $font-size-sm;
+      padding: calculateRem(12px) calculateRem(16px);
+      font-size: var(--font-size-sm);
       color: var(--gray-800);
       cursor: pointer;
       &.active {
-        background: $primary-0;
-        border-left: calculateRem(2px) solid $primary-600;
-        color: $primary-800;
-        font-weight: $font-weight-bold;
+        background: var(--primary-0);
+        border-left: calculateRem(2px) solid var(--primary-600);
+        color: var(--primary-800);
+        font-weight: var(--font-weight-bold);
       }
       &:hover {
-        background: $primary-0;
-        color: $primary-800;
+        background: var(--primary-0);
+        color: var(--primary-800);
       }
     }
   }
 }
 .sb-sideview-tab-container {
-  padding: $base-block-space * 3 $base-block-space * 3;
-  background: $primary-0;
+  padding: calculateRem(24px) calculateRem(24px);
+  background: var(--primary-0);
   min-height: calc(100vh - 288px);
 }
 
 .sb-dotmenu {
-  width: $base-block-space/2;
-  height: $base-block-space/2;
+  width: calculateRem(4px);
+  height: calculateRem(4px);
   border-radius: 50%;
-  background-color: $gray-200;
-  box-shadow: 0px calculateRem(-6px) 0px $gray-200, 0px calculateRem(6px) 0px $gray-200;
+  background-color: var(--gray-200);
+  box-shadow: 0px calculateRem(-6px) 0px var(--gray-200), 0px calculateRem(6px) 0px var(--gray-200);
   display: inline-block;
   cursor: pointer;
 }
 
 .sb-tabset-menu {
-    background: $gray-0;
+    background: var(--gray-0);
     width: 100%;
     min-height: calculateRem(40px);
     display: flex;
 
     .sb-item {
-        font-size: $font-size-base;
-        color: $gray-800;
-        padding: ($base-block-space*2) ($base-block-space*3);
+        font-size: var(--font-size-base);
+        color: var(--gray-800);
+        padding: calculateRem(16px) calculateRem(24px);
         cursor: pointer;
 
         &.active {
-            color: $primary-color;
-            border-bottom: calculateRem(2px) solid $primary-color;
+            color: var(--primary-color);
+            border-bottom: calculateRem(2px) solid var(--primary-color);
         }
     }
 }

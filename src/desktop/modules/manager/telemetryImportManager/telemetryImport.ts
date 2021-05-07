@@ -9,8 +9,7 @@ import * as  _ from "lodash";
 import { Observer } from "rxjs";
 import TelemetryHelper from "../../helper/telemetryHelper";
 import { NetworkQueue } from "@project-sunbird/OpenRAP/services/queue";
-
-import { ClassLogger} from "@project-sunbird/logger/decorator";
+import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
 /*@ClassLogger({
   logLevel: "debug",
   logTime: true,
@@ -26,8 +25,10 @@ export class ImportTelemetry implements ITaskExecuter {
   private networkQueue: NetworkQueue;
   private progress: number = 0;
   private skippedFiles: ITelemetrySkipped[] = [];
+  private standardLog: StandardLogger;
   constructor() {
     this.networkQueue = containerAPI.getNetworkQueueInstance();
+    this.standardLog = containerAPI.getStandardLoggerInstance();
     this.getDeviceId();
   }
   public async getDeviceId() {
@@ -85,7 +86,7 @@ export class ImportTelemetry implements ITaskExecuter {
         this.observer.next(this.telemetryImportData);
       }
     } catch (err) {
-      logger.error(this.telemetryImportData._id, "Error while saving to db ", err);
+      this.standardLog.error({ id: `TELEMETRY_IMPORT_DB_INSERTION_FAILED`, message: `Error while saving to db `, error: err });
       this.observer.next(this.telemetryImportData);
       this.observer.error(err);
     }
