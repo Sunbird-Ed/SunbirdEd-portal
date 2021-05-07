@@ -101,7 +101,7 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
   }
 
   checkContentDownloading(event) {
-    if (this.isDesktopApp && !this.router.url.includes('mydownloads')) {
+    if (this.isDesktopApp) {
       this.contentDeleted = false;
       const contentDetails = {
         contentId: event.identifier,
