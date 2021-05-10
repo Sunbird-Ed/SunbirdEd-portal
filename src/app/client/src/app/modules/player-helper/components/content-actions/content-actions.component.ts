@@ -88,8 +88,8 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges) {
     // console.log(changes.contentData);
     this.contentPrintable();
-    if (this.isDesktopApp && !changes.contentData.firstChange) {
-      this.contentData = changes.contentData.currentValue;
+    if (this.isDesktopApp && !_.get(changes, 'contentData.firstChange')) {
+      this.contentData = _.get(changes, 'contentData.currentValue');
         this.contentManagerService.contentDownloadStatus$.pipe(takeUntil(this.unsubscribe$)).subscribe( contentDownloadStatus => {
           this.contentDownloadStatus = contentDownloadStatus;
           if (this.contentData &&

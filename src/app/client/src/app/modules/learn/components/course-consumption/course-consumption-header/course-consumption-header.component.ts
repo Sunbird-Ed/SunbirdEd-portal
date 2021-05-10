@@ -536,7 +536,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
       this.goBack();
     }, err => {
       this.disableDelete = false;
-      this.toasterService.error(this.resourceService.messages.etmsg.desktop.deleteTextbookErrorMessage);
+      this.toasterService.error(this.resourceService.messages.etmsg.desktop.deleteCourseErrorMessage);
     });
   }
 }
