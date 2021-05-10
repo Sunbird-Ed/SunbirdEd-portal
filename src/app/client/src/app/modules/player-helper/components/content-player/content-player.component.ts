@@ -101,7 +101,7 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
   }
 
   checkContentDownloading(event) {
-    if (this.isDesktopApp) {
+    if (this.isDesktopApp && !_.get(this.contentData, 'desktopAppMetadata.isAvailable')) {
       this.contentDeleted = false;
       const contentDetails = {
         contentId: event.identifier,

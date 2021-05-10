@@ -20,12 +20,12 @@ const resourceServiceMockData = {
     stmsg: {
       m0009: 'error', activityAddFail: 'Unable to add activity, please try again',
       desktop: {
-        deleteTextbookSuccessMessage: 'Textbook deleted successfully'
+        deleteCourseSuccessMessage: 'Course deleted successfully'
       }
     },
     etmsg: {
       desktop: {
-        'deleteTextbookErrorMessage': 'Unable to delete textbook. Please try again..',
+        'deleteCourseErrorMessage': 'Unable to delete course. Please try again..',
       }
     },
     emsg: { noAdminRole: `You don't have permission to add activity to the group`, m0005: 'error' },
@@ -235,7 +235,7 @@ describe('PublicCourseConsumptionPageComponent', () => {
     const contentService = TestBed.get(ContentManagerService);
     spyOn(contentService, 'deleteContent').and.returnValue(of(MockResponseData.contentHeaderData.deleteCollection.success));
     component.deleteCollection(MockResponseData.contentHeaderData.collectionData);
-    expect(component.toasterService.success(resourceServiceMockData.messages.stmsg.desktop.deleteTextbookSuccessMessage));
+    expect(component.toasterService.success(resourceServiceMockData.messages.stmsg.desktop.deleteCourseSuccessMessage));
   });
   it('should call delete collection and error while deleting collection ', () => {
     component.courseHierarchy = MockResponseData.contentHeaderData.collectionData;
@@ -244,6 +244,6 @@ describe('PublicCourseConsumptionPageComponent', () => {
     spyOn(contentService, 'deleteContent').and.returnValue(throwError(MockResponseData.contentHeaderData.deleteCollection.error));
     component.deleteCollection(MockResponseData.contentHeaderData.collectionData);
     expect(component.disableDelete).toBeFalsy();
-    expect(component.toasterService.error(resourceServiceMockData.messages.etmsg.desktop.deleteTextbookErrorMessage));
+    expect(component.toasterService.error(resourceServiceMockData.messages.etmsg.desktop.deleteCourseErrorMessage));
   });
 });
