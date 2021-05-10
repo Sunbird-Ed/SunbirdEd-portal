@@ -136,6 +136,10 @@ export class LibraryComponent implements OnInit, OnDestroy {
             this.svgToDisplay = imageName;
             this.globalSearchFacets = _.get(this.currentPageData, 'search.facets');
             this.globalSearchFacets = [
+            //     "board",
+            //     "gradeLevel",
+            //     "medium",
+            //     "subject",
                 "se_boards",
                 "se_gradeLevels",
                 "se_subjects",
@@ -355,6 +359,26 @@ export class LibraryComponent implements OnInit, OnDestroy {
             if (searchRes) {
                 const facets = this.searchService.updateFacetsData(_.get(searchRes, 'result.facets'));
                 this.facets = facets.filter(facet => facet.values.length > 0);
+                // this.facets = facets.filter(facet => {
+                //     if (facet.values.length) {
+                //         switch (facet.name) {
+                //             case 'board':
+                //                 facet.name = 'se_boards';
+                //                 break;
+                //             case 'medium':
+                //                 facet.name = 'se_mediums';
+                //                 break;
+                //             case 'gradeLevel':
+                //                 facet.name = 'se_gradeLevels';
+                //                 break;
+                //             case 'subject':
+                //                 facet.name = 'se_subjects';
+                //                 break;
+                //         }
+                //         return facet;
+                //     }
+                // });
+
                 const filteredContents = _.omit(_.groupBy(searchRes['result'].content, 'subject'), ['undefined']);
                 const otherContents = _.filter(searchRes['result'].content, (content) => !content.subject );
                 // Check for multiple subjects

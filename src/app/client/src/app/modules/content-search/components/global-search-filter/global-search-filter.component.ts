@@ -115,6 +115,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
   }
 
   public resetFilters() {
+    console.log("reset done!!!");
     this.selectedFilters = _.pick(this.selectedFilters, ['key', 'selectedTab']);
     if (this.utilService.isDesktopApp) {
       const userPreferences: any = this.userService.anonymousUserPreference;
@@ -256,12 +257,8 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
       queryParams: {
         ...(() => {
           const queryParams = _.cloneDeep(this.activatedRoute.snapshot.queryParams);
-
-          if (this.supportedFilterAttributes && this.supportedFilterAttributes.length) {
-            this.supportedFilterAttributes.forEach((attr) => delete queryParams[attr]);
-            return queryParams;
-          }
-
+          const queryFilters = [...this.supportedFilterAttributes, ...['board', 'medium', 'gradeLevel']];
+          queryFilters.forEach((attr) => delete queryParams[attr]);
           return queryParams;
         })()
       },
