@@ -26,7 +26,8 @@ const resourceServiceMockData = {
     stmsg: {
       m0009: 'error', activityAddFail: 'Unable to add activity, please try again',
       desktop: {
-        deleteTextbookSuccessMessage: 'Textbook deleted successfully'
+        deleteTextbookSuccessMessage: 'Textbook deleted successfully',
+        deleteCourseSuccessMessage: 'Course deleted successfully'
       }
     },
     etmsg: {
