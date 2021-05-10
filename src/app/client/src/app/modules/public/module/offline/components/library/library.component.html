@@ -14,6 +14,7 @@
         </div>
         <app-global-search-filter [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true'
           *ngIf="initFilters" (filterChange)="getFilters($event)">
+          <!-- [supportedFilterAttributes]="['board', 'medium', 'gradeLevel', 'subject', 'primaryCategory', 'mediaType']" -->
         </app-global-search-filter>
       </div>
     </div>

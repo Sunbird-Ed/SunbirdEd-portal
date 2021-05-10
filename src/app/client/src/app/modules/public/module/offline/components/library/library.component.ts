@@ -135,6 +135,15 @@ export class LibraryComponent implements OnInit, OnDestroy {
             this.formData = formData;
             this.svgToDisplay = imageName;
             this.globalSearchFacets = _.get(this.currentPageData, 'search.facets');
+            this.globalSearchFacets = [
+                "se_boards",
+                "se_gradeLevels",
+                "se_subjects",
+                "se_mediums",
+                "primaryCategory",
+                "mimeType"
+              ];
+            console.log("globalSearchFacets", this.globalSearchFacets);
             this.getOrgDetails();
         }, error => {
             this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
@@ -228,7 +237,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.unsubscribe$.complete();
     }
     public getFilters(filters) {
-        const filterData = filters && filters.filters || {};
+        let filterData = filters && filters.filters || {};
         if (filterData.channel && this.facets) {
         const channelIds = [];
         const facetsData = _.find(this.facets, { 'name': 'channel' });
@@ -245,12 +254,41 @@ export class LibraryComponent implements OnInit, OnDestroy {
         const userPreference: any = this.userService.anonymousUserPreference;
         if (userPreference) {
             _.forEach(['board', 'medium', 'gradeLevel'], (item) => {
-                if (!_.has(filterData, item)) {
-                    filterData[item] = _.isArray(userPreference.framework[item]) ?
-                        userPreference.framework[item] : _.split(userPreference.framework[item], ', ');
+                // if (!_.has(filterData, item)) {
+                //     filterData[item] = _.isArray(userPreference.framework[item]) ?
+                //         userPreference.framework[item] : _.split(userPreference.framework[item], ', ');
+                // }
+
+                switch (item) {
+                    case 'board':
+                    case 'se_boards':
+                        filterData['se_boards'] = filterData['se_boards'] ? filterData['se_boards'] : (filterData['board'] ? filterData['board'] : userPreference.framework[item]);
+                        break;
+                    case 'medium':
+                    case 'se_mediums':
+                        filterData['se_mediums'] = filterData['se_mediums'] ? filterData['se_mediums'] : (filterData['medium'] ? filterData['medium'] : userPreference.framework[item]);
+                        break;
+                    case 'gradeLevel':
+                    case 'se_gradeLevels':
+                        filterData['se_gradeLevels'] = filterData['se_gradeLevels'] ? filterData['se_gradeLevels'] : (filterData['gradeLevel'] ? filterData['gradeLevel'] : userPreference.framework[item]);
+                        break;
                 }
             });
         }
+
+        if (_.get(this.facets, 'length')) {
+            this.facets.forEach((item) => {
+                if (_.has(filterData, item.name) && _.get(item, 'values.length')) {
+                    item.values.forEach((element: any) => {
+                        if (!filterData[item.name].includes(element.name)) {
+                            filterData[item.name]  = filterData[item.name].filter(value => value === element.name);
+                        }
+                    });
+                }
+            });
+        }
+        console.log("filterData", filterData);
+        
         this.selectedFilters = filterData;
         const defaultFilters = _.reduce(filters, (collector: any, element) => {
             if (element.code === 'board') {
@@ -260,7 +298,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
         }, {});
         this.dataDrivenFilterEvent.emit(defaultFilters);
         this.carouselMasterData = [];
-        this.pageSections = [];
+        // this.pageSections = [];
     }
 
     constructSearchRequest() {
@@ -271,7 +309,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
         return o.name === (selectedMediaType || 'all');
         });
         const pageType = _.get(this.queryParams, 'pageTitle');
-        const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType']);
+        const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType', 'board', 'medium', 'gradeLevel', 'subject']);
         if (!filters.channel) {
             filters.channel = this.hashTagId;
         }
@@ -362,6 +400,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
                 if (!this.carouselMasterData.length) {
                     return; // no page section
                 }
+
                 this.pageSections = _.cloneDeep(this.carouselMasterData);
                 this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
                     this.addHoverData();
