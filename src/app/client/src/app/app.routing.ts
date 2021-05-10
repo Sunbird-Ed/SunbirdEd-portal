@@ -56,6 +56,9 @@ const appRoutes: Routes = [
     path: NOTIFICATION, loadChildren: 'app/modules/notification/notification.module#NotificationModule'
   },
   {
+    path: 'observation', loadChildren: 'app/modules/observation/observation.module#ObservationModule'
+  },
+  {
     path: 'error', component: ErrorPageComponent
   },
   {
