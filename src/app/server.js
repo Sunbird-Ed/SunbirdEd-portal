@@ -87,7 +87,7 @@ app.all([
   '/learner/*', '/content/*', '/user/*', '/merge/*', '/action/*', '/courseReports/*', '/course-reports/*', '/admin-reports/*',
   '/certreg/*', '/device/*', '/google/*', '/report/*', '/reports/*', '/v2/user/*', '/v1/sso/*', '/migrate/*', '/plugins/*', '/content-plugins/*',
   '/content-editor/telemetry','/discussion/*', '/collection-editor/telemetry', '/v1/user/*', '/sessionExpired', '/logoff', '/logout', '/assets/public/*', '/endSession',
-  '/sso/sign-in/*','/v1/desktop/handleGauth', '/v1/desktop/google/auth/success', '/clearSession'
+  '/sso/sign-in/*','/v1/desktop/handleGauth', '/v1/desktop/google/auth/success', '/clearSession','/kendra/*', '/assessment/*'
 ],
   session({
     secret: envHelper.PORTAL_SESSION_SECRET_KEY,
@@ -230,6 +230,8 @@ app.all(['/content-editor/telemetry', '/collection-editor/telemetry'], bodyParse
 require('./routes/groupRoutes.js')(app) // group api routes
 
 require('./routes/learnerRoutes.js')(app) // learner api routes
+
+require('./routes/mlRoutes.js')(app) // observation api routes
 
 //cert-reg routes
 require('./routes/certRegRoutes.js')(app);
