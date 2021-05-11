@@ -1,6 +1,6 @@
 <sui-accordion class="styled fluid sb-single-pannel-accordion sb-content-manager-panel sb-desktop-content-manager"
   [ngClass]="{'sb-single-pannel-accordion-fixed': isOpen === true, 'hide': visibility === false}" *ngIf="contentResponse?.length">
-  <sui-accordion-panel [(isOpen)]="isOpen" (click)="getContentList()">
+  <sui-accordion-panel [isOpen]="isOpen" (click)="getContentList()">
     <div title class="p-0">
       <div class="sb-single-pannel-accordion-heading" appTelemetryInteract
         [telemetryInteractEdata]="getTelemetryInteractData()">
