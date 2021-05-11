@@ -287,12 +287,12 @@ describe('CourseConsumptionHeaderComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(['/learn']);
   });
 
-  it('should call goBack and return to learn page while previousPageUrl is undefiened', () => {
+  it('should call goBack and return to learn page while previousPageUrl is undefined', () => {
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
     const router = TestBed.get(Router);
     courseConsumptionService.coursePagePreviousUrl = '';
     component.goBack();
-    expect(router.navigate).toHaveBeenCalledWith(['/learn']);
+    expect(router.navigate).toHaveBeenCalledWith(['/resources'], { queryParams: { selectedTab: 'course' }});
   });
 
   it('should call goBack and return to previous page with query params', () => {
