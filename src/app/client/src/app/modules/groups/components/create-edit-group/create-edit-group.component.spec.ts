@@ -32,7 +32,7 @@ describe('CreateEditGroupComponent', () => {
         },
       },
       'emsg': {m005: '', m001: '', },
-      smsg: {m001: '', m003: ''}
+      smsg: {m001: '', m003: '', grpcreatesuccess: 'Group created successfully'}
     },
     frmelmnts: {
       lbl: {
@@ -93,7 +93,7 @@ describe('CreateEditGroupComponent', () => {
     spyOn(component['toasterService'], 'success');
     component.onSubmitForm();
     component.groupService.createGroup(component.groupForm.value).subscribe(group => {
-      expect(component['toasterService'].success).toHaveBeenCalledWith(resourceBundle.messages.smsg.m001);
+      expect(component['toasterService'].success).toHaveBeenCalledWith(resourceBundle.messages.smsg.grpcreatesuccess);
     });
   });
 

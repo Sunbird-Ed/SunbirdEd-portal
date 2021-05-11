@@ -20,7 +20,7 @@
         </div>
         <div class="d-flex flex-w-wrap px-16">
           <div>
-            <button type="button" class="sb-btn sb-btn-primary sb-btn-normal my-8" [disabled]="disableSync"  (click)="syncTelemetry()" appOnlineOnly>
+            <button type="button" [class.sb-btn-disabled]="disableSync" class="sb-btn sb-btn-primary sb-btn-normal my-8" [disabled]="disableSync" (click)="syncTelemetry()" appOnlineOnly>
               {{resourceService?.frmelmnts?.lbl?.desktop?.syncTelemetry}}   ({{telemetryInfo?.totalSize | filesize}})</button>
               <dl class="my-0 profile-description">
                   <dd class="multiline-list-value profile-description-title" *ngIf="showSyncStatus">

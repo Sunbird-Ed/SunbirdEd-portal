@@ -65,12 +65,19 @@ export class PerfLogger {
         await this.updateLastSyncDate(currentEndTime); // update last processed time
     }
 
+    private filterLogs(logs) {
+        let apiLogs = _.uniqBy(_.filter(logs, item => item.type === 'API'), 'metaData.url');
+        let otherLogs = _.filter(logs, item => item.type !== 'API');
+        return _.orderBy([...apiLogs, ...otherLogs], 'createdOn');
+    }
+
     private getUnProcessedLogsIterator({startTime, endTime}, limit){
         const that = this;
         const generatorFunction = async function* () {
             let lastProcessedContent: any = {};
             while(true) {
                 let logs = await that.getLogsFromDB({startTime, endTime}, {limit});
+                logs = that.filterLogs(logs);
                 const lastProcessedContentIndex = _.findIndex(logs, { _id: lastProcessedContent._id});
                 if (lastProcessedContentIndex !== -1) {
                     logs = logs.slice(lastProcessedContentIndex + 1); // slice off already processed data

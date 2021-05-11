@@ -27,3 +27,4 @@ export * from './tnc/tnc.service';
 export * from './managed-user/managed-user.service';
 export * from './generalisedLable/generaliseLable.service';
 export * from './electron/electron.service';
+export * from './schema/schema.service';

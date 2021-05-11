@@ -43,6 +43,7 @@ describe('CollectionPlayerComponent', () => {
         'm0118': 'No content to play',
         'm0138': 'FAILED',
         'm0140': 'DOWNLOADING',
+        'm0121': 'Content not added yet',
         'desktop': {
             'deleteTextbookSuccessMessage': 'Textbook deleted successfully'
           }

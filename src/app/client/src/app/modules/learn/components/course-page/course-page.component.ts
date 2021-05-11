@@ -10,10 +10,12 @@ import {
 } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
-import { IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { PublicPlayerService } from '@sunbird/public';
 import { takeUntil, map, mergeMap, filter, catchError, tap, pluck, switchMap, delay } from 'rxjs/operators';
+import { OfflineCardService } from '@sunbird/shared';
+import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
 
 @Component({
   templateUrl: './course-page.component.html'
@@ -71,13 +73,20 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   });
   _courseSearchResponse: any;
-  isPageAssemble: boolean = true;
-  isDesktopApp: boolean = false;
+  isPageAssemble = true;
+  isDesktopApp = false;
+  contentDownloadStatus = {};
+  showModal = false;
+  showDownloadLoader = false;
+  contentName;
+  contentData;
+  downloadIdentifier: string;
 
   @HostListener('window:scroll', []) onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
       && this.pageSections.length < this.carouselMasterData.length) {
       this.pageSections.push(this.carouselMasterData[this.pageSections.length]);
+      this.addHoverData();
     }
   }
   constructor(private pageApiService: PageApiService, private toasterService: ToasterService,
@@ -86,7 +95,9 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     private publicPlayerService: PublicPlayerService, private cacheService: CacheService,
     private browserCacheTtlService: BrowserCacheTtlService, private userService: UserService, public formService: FormService,
     public navigationhelperService: NavigationHelperService, public layoutService: LayoutService, private coursesService: CoursesService,
-    private frameworkService: FrameworkService, private playerService: PlayerService, private searchService: SearchService) {
+    private frameworkService: FrameworkService, private playerService: PlayerService, private searchService: SearchService,
+    private offlineCardService: OfflineCardService, public contentManagerService: ContentManagerService,
+    public telemetryService: TelemetryService) {
     this.setTelemetryData();
   }
 
@@ -148,6 +159,11 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.initialize();
     this.subscription$ = this.mergeObservables();
     this.isDesktopApp = this.utilService.isDesktopApp;
+    this.getLanguageChange().pipe(takeUntil(this.unsubscribe$)).subscribe();
+    this.contentManagerService.contentDownloadStatus$.subscribe(contentDownloadStatus => {
+      this.contentDownloadStatus = contentDownloadStatus;
+      this.addHoverData();
+  });
   }
 
   private mergeObservables() {
@@ -368,6 +384,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
               return; // no page section
             }
             this.pageSections = this.carouselMasterData.slice(0, 4);
+            this.addHoverData();
           }))
         }));
   }
@@ -527,6 +544,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.telemetryImpression.edata.subtype = 'pageexit';
     this.telemetryImpression = Object.assign({}, this.telemetryImpression);
   }
+
   public playContent(event, sectionType?) {
     if (!this.isUserLoggedIn()) {
       this.publicPlayerService.playContent(event);
@@ -551,10 +569,106 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       if (onGoingBatchCount === 1) { // play course if only one open batch is present
         metaData.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
         return this.playerService.playContent(metaData);
+      } else if (onGoingBatchCount === 0 && expiredBatchCount === 1) {
+        metaData.batchId = openBatch.expired.length ? openBatch.expired[0].batchId : inviteOnlyBatch.expired[0].batchId;
+        return this.playerService.playContent(metaData);
       }
       this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: metaData.identifier };
       this.showBatchInfo = true;
     }
+  }
+
+  addHoverData() {
+    _.each(this.pageSections, (pageSection) => {
+      _.forEach(pageSection.contents, contents => {
+        if (this.contentDownloadStatus[contents.identifier]) {
+          contents['downloadStatus'] = this.contentDownloadStatus[contents.identifier];
+        }
+      });
+      this.pageSections[pageSection] = this.utilService.addHoverData(pageSection.contents, true);
+    });
+  }
+
+  hoverActionClicked(event) {
+    event['data'] = event.content;
+    this.contentName = event.content.name;
+    this.contentData = event.data;
+    const type = _.toUpper(_.get(event, 'hover.type'));
+    if (type === 'OPEN') {
+      this.playContent(event);
+      this.logTelemetry(this.contentData, 'play-content');
+    } else if (type === 'DOWNLOAD') {
+      this.downloadIdentifier = _.get(event, 'content.identifier');
+      this.showModal = this.offlineCardService.isYoutubeContent(this.contentData);
+      if (!this.showModal) {
+          this.showDownloadLoader = true;
+          this.downloadContent(this.downloadIdentifier);
+      }
+      this.logTelemetry(this.contentData, 'download-trackable-collection');
+    }
+  }
+
+  callDownload() {
+    this.showDownloadLoader = true;
+    this.downloadContent(this.downloadIdentifier);
+}
+  downloadContent(contentId) {
+    this.contentManagerService.downloadContentId = contentId;
+    this.contentManagerService.downloadContentData = this.contentData;
+    this.contentManagerService.failedContentName = this.contentName;
+    this.contentManagerService.startDownload({})
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(data => {
+        this.downloadIdentifier = '';
+        this.contentManagerService.downloadContentId = '';
+        this.contentManagerService.downloadContentData = {};
+        this.contentManagerService.failedContentName = '';
+        this.showDownloadLoader = false;
+      }, error => {
+        this.downloadIdentifier = '';
+        this.contentManagerService.downloadContentId = '';
+        this.contentManagerService.downloadContentData = {};
+        this.contentManagerService.failedContentName = '';
+        this.showDownloadLoader = false;
+        _.each(this.pageSections, (pageSection) => {
+          _.each(pageSection.contents, (pageData) => {
+            pageData['downloadStatus'] = this.resourceService.messages.stmsg.m0138;
+          });
+        });
+        if (!(error.error.params.err === 'LOW_DISK_SPACE')) {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0090);
+        }
+      });
+  }
+
+  logTelemetry(content, actionId) {
+    const telemetryInteractObject = {
+      id: content.identifier,
+      type: content.contentType,
+      ver: content.pkgVersion ? content.pkgVersion.toString() : '1.0'
+    };
+
+    const appTelemetryInteractData: any = {
+      context: {
+        env: _.get(this.activatedRoute, 'snapshot.root.firstChild.data.telemetry.env') ||
+          _.get(this.activatedRoute, 'snapshot.data.telemetry.env') ||
+          _.get(this.activatedRoute.snapshot.firstChild, 'children[0].data.telemetry.env')
+      },
+      edata: {
+        id: actionId,
+        type: 'click',
+        pageid: this.router.url.split('/')[1] || 'explore-page'
+      }
+    };
+
+    if (telemetryInteractObject) {
+      if (telemetryInteractObject.ver) {
+        telemetryInteractObject.ver = _.isNumber(telemetryInteractObject.ver) ?
+          _.toString(telemetryInteractObject.ver) : telemetryInteractObject.ver;
+      }
+      appTelemetryInteractData.object = telemetryInteractObject;
+    }
+    this.telemetryService.interact(appTelemetryInteractData);
   }
 
   processOrgData(channels) {
@@ -628,6 +742,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
     const facetsData = [];
     _.forEach(facets, (facet, key) => {
       switch (key) {
+        case 'se_boards':
         case 'board':
           const boardData = {
             index: '1',
@@ -638,6 +753,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
           };
           facetsData.push(boardData);
           break;
+        case 'se_mediums':
         case 'medium':
           const mediumData = {
             index: '2',
@@ -648,6 +764,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
           };
           facetsData.push(mediumData);
           break;
+        case 'se_gradeLevels':
         case 'gradeLevel':
           const gradeLevelData = {
             index: '3',
@@ -658,6 +775,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
           };
           facetsData.push(gradeLevelData);
           break;
+        case 'se_subjects':
         case 'subject':
           const subjectData = {
             index: '4',
@@ -747,6 +865,9 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
           if (_.get(this.enrolledSection, 'name')) {
             this.enrolledSection.name = _.get(this.resourceService, 'frmelmnts.lbl.mytrainings');
           }
+          if (_.get(this.pageSections, 'length') && this.isDesktopApp) {
+            this.addHoverData();
+        }
         })
       );
   }

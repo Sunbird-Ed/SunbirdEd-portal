@@ -18,40 +18,6 @@ mock('../../../../helpers/environmentVariablesHelper.js', mockEnv);
 const userHelper = require('../../../../helpers/userHelper');
 
 describe('User Helper Test Cases', () => {
-
-  it('should update login time', (done) => {
-    const req = generic.constructReqBody({
-      session: {
-        userId: testData.userId
-      }
-    });
-    req['kauth'] = {
-      grant: {
-        access_token: {
-          token: testData.token
-        }
-      }
-    };
-    userHelper.updateLoginTime(req, (err, res) => {
-      expect(err).to.be.eql(null);
-      done();
-    });
-  });
-
-  it('should prepare request body', (done) => {
-    const req = generic.constructReqBody({
-      session: {
-        userId: testData.userId
-      }
-    });
-    const res = userHelper.prepareRequestBody(req);
-    expect(res).to.be.an('object');
-    expect(res).to.haveOwnProperty('request');
-    expect(res['request']).to.haveOwnProperty('userId');
-    expect(res['request']['userId']).to.eql(testData.userId);
-    done();
-  });
-
   it('should get user details', (done) => {
     userHelper.getUserDetails(testData.userId, testData.token).then((data) => {
       if (data) expect(data).to.be.eql.apply('OK');

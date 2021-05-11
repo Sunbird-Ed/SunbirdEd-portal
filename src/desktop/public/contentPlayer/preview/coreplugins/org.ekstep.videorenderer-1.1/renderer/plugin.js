@@ -12,12 +12,13 @@ org.ekstep.contentrenderer.baseLauncher.extend({
         unsupportedVideo: "Video URL not accessible"
     },
     currentTime: 1,
+    bufferToAchieveProgress:10, //  percentage
     videoPlayer: undefined,
     stageId: undefined,
     heartBeatData: {},
     enableHeartBeatEvent: false,
     _constants: {
-        mimeType: ["video/mp4", "video/webm"],
+        mimeType: ["video/mp4", "video/webm", "audio/mp3"],
         events: {
             launchEvent: "renderer:launch:video"
         }
@@ -27,24 +28,75 @@ org.ekstep.contentrenderer.baseLauncher.extend({
         EkstepRendererAPI.addEventListener("renderer:overlay:mute", this.onOverlayAudioMute, this);
         EkstepRendererAPI.addEventListener("renderer:overlay:unmute", this.onOverlayAudioUnmute, this);
     },
+    validateUrlPath : function(path) {
+        return jQuery.ajax({
+            url : path,
+            type: "GET",
+            async: false,
+            success: function()
+            {
+                return true;
+            },
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+               return jqXHR
+            }
+        }).responseText;
+    },
     start: function () {
+        let skipValidation = false;
         this._super();
         var data = _.clone(content);
         this.heartBeatData.stageId = content.mimeType === 'video/x-youtube' ? 'youtubestage' : 'videostage';
         var globalConfigObj = EkstepRendererAPI.getGlobalConfig();
-        if (window.cordova || !isbrowserpreview) {
+        if(content.mimeType === "audio/mp3") {
+            skipValidation = true;
+            data.streamingUrl = false;
+            var regex = new RegExp("^(http|https)://", "i");
+            if (!regex.test(globalConfigObj.basepath)) {
+                var prefix_url = globalConfigObj.basepath || '';
+                path = prefix_url ? prefix_url + "/" + data.artifactUrl : data.artifactUrl;
+            } else {
+                path = data.artifactUrl;
+            }
+        } else if (window.cordova || !isbrowserpreview) {
             var regex = new RegExp("^(http|https)://", "i");
             if (!regex.test(globalConfigObj.basepath)) {
                 var prefix_url = globalConfigObj.basepath || '';
                 path = prefix_url ? prefix_url + "/" + data.artifactUrl : data.artifactUrl;
                 data.streamingUrl = false;
+                skipValidation = true;
             } else
                 path = data.streamingUrl;
         } else {
+            skipValidation = true;
             path = data.artifactUrl;
         }
+        path = this.checkForValidStreamingUrl(path,data,skipValidation);
         this.createVideo(path, data);
         this.configOverlay();
+    },
+    checkForValidStreamingUrl(path,data,skipValidation) {
+        if(!skipValidation) {
+            if(this.validateUrlPath(path)) {
+            } else {
+                EkstepRendererAPI.logErrorEvent('Streaming Url Not Supported', {
+                    'type': 'content',
+                    'action': 'play',
+                    'severity': 'error'
+                });
+                var globalConfigObj = EkstepRendererAPI.getGlobalConfig();
+                var prefix_url = globalConfigObj.basepath || '';
+                data.streamingUrl = false;
+                var regex = new RegExp("^(http|https)://", "i");
+                if ((window.cordova || !isbrowserpreview) && !regex.test(globalConfigObj.basepath)) {
+                    path = prefix_url ? prefix_url + "/" + data.artifactUrl : data.artifactUrl;
+                } else {
+                    path = data.artifactUrl;
+                }
+            }
+        }
+        return path;
     },
     createVideo: function (path, data) {
         // User has to long press to play/pause or mute/unmute the video in mobile view.
@@ -57,8 +109,8 @@ org.ekstep.contentrenderer.baseLauncher.extend({
         video.style.position = 'absolute';
         video.id = "videoElement";
         video.autoplay = true;
-        video.className = 'vjs-default-skin';
-		document.body.appendChild(video);
+        video.className = 'vjs-default-skin vjs-big-play-centered';
+        document.body.appendChild(video);
 
         EkstepRendererAPI.dispatchEvent("renderer:content:start");
 
@@ -78,11 +130,6 @@ org.ekstep.contentrenderer.baseLauncher.extend({
     _loadVideo: function (path, data) {
         var instance = this;
         if (data.streamingUrl && !navigator.onLine) {
-            EkstepRendererAPI.logErrorEvent('No internet', {
-                'type': 'content',
-                'action': 'play',
-                'severity': 'error'
-            });
             instance.throwError({ message: instance.messages.noInternetConnection });
             if (typeof cordova !== "undefined") exitApp();
             return false;
@@ -357,6 +404,41 @@ org.ekstep.contentrenderer.baseLauncher.extend({
         totalDuration = (this.currentTime < totalDuration) ? Math.floor(totalDuration) : Math.ceil(totalDuration);
         var progress = this.progres(this.currentTime, totalDuration);
         return progress === 0 ? 1 : progress;  // setting default value of progress=1 when video opened
+    },
+
+    getTotalDuration: function () {
+        var totalDuration = 0;
+        if (this.videoPlayer){
+            if (_.isFunction(this.videoPlayer.duration)) {
+                totalDuration = this.videoPlayer.duration();
+            } else {
+                totalDuration = this.videoPlayer.duration;
+            }
+        }
+        return totalDuration = (this.currentTime < totalDuration) ? Math.floor(totalDuration) : Math.ceil(totalDuration);
+    },
+
+    setExpectedLengthCovergae: function () {
+        var totalDuration = this.getTotalDuration()
+        return Number(totalDuration) - ((Number(this.bufferToAchieveProgress) / 100) * Number(totalDuration));
+    },
+
+    contentPlaySummary: function () {
+        var playSummary =  [
+            {
+              "totallength": this.getTotalDuration()
+            },
+            {
+              "visitedlength": this.videoPlayer.currentTime()
+            },
+            {
+              "visitedcontentend": (this.videoPlayer.currentTime() >= this.setExpectedLengthCovergae()) ? true : false
+            },
+            {
+              "totalseekedlength": (this.videoPlayer.currentTime() - this.currentTime)
+            }
+        ]
+        return playSummary;
     },
     onOverlayAudioMute: function () {
         if (!this.videoPlayer) return false

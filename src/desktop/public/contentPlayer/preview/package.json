@@ -1,31 +1,32 @@
 {
-  "_from": "@project-sunbird/content-player@2.9.2",
-  "_id": "@project-sunbird/content-player@2.9.2",
+  "_from": "@project-sunbird/content-player",
+  "_id": "@project-sunbird/content-player@3.3.3",
   "_inBundle": false,
-  "_integrity": "sha512-XHyHMWKTjDeIC2hWuqIQKgpDh09LqyPhBlSyloXI7HNDWmAe7dZadKi/WEJgTG4fXlBP4ap1lOSBzvgirYavvg==",
+  "_integrity": "sha512-fuBQcAr+23u93pAfNiNomx0nh51yKbPGTrZLfdJ+CSFJKFx3yn0JN6SHD9L3dVbzF/f84m0Vi03ID8Bvi8sr+w==",
   "_location": "/@project-sunbird/content-player",
   "_phantomChildren": {},
   "_requested": {
-    "type": "version",
+    "type": "tag",
     "registry": true,
-    "raw": "@project-sunbird/content-player@2.9.2",
+    "raw": "@project-sunbird/content-player",
     "name": "@project-sunbird/content-player",
     "escapedName": "@project-sunbird%2fcontent-player",
     "scope": "@project-sunbird",
-    "rawSpec": "2.9.2",
+    "rawSpec": "",
     "saveSpec": null,
-    "fetchSpec": "2.9.2"
+    "fetchSpec": "latest"
   },
   "_requiredBy": [
-    "#USER"
+    "#USER",
+    "/"
   ],
-  "_resolved": "https://registry.npmjs.org/@project-sunbird/content-player/-/content-player-2.9.2.tgz",
-  "_shasum": "e5c2cf3f52491181e15dca0077e7e52a409a35a2",
-  "_spec": "@project-sunbird/content-player@2.9.2",
-  "_where": "C:\\Users\\ASUS\\Documents\\GitHub\\SunbirdEd-portal\\src\\desktop",
+  "_resolved": "https://registry.npmjs.org/@project-sunbird/content-player/-/content-player-3.3.3.tgz",
+  "_shasum": "aec6dc0f1c8eed615ca5420d134e502e801fe5f8",
+  "_spec": "@project-sunbird/content-player",
+  "_where": "/Users/kartheek/Documents/Workspace/npm-publish",
   "author": {
-    "name": "Manjunath Davanam",
-    "email": "manjunathd@ilimi.in"
+    "name": "Rahul Shukla",
+    "email": "rahul.shukla@ilimi.in"
   },
   "bugs": {
     "url": "https://github.com/project-sunbird/sunbird-content-player"
@@ -163,7 +164,7 @@
     "test-renderer": "npm run build-preview && grunt renderer-test",
     "watch": "npm-watch"
   },
-  "version": "2.9.2",
+  "version": "3.7.1",
   "watch": {
     "build-preview-windows": {
       "patterns": [

@@ -6,12 +6,12 @@ import { PlayerConfig } from '@sunbird/shared';
 import { Router } from '@angular/router';
 import { ToasterService, ResourceService, ContentUtilsServiceService } from '@sunbird/shared';
 const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub'];
-import { Subject } from 'rxjs';
+import { forkJoin, of, Subject } from 'rxjs';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { UserService, FormService } from '../../../core/services';
 import { OnDestroy } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { catchError, takeUntil } from 'rxjs/operators';
 import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
 import { ContentService } from '@sunbird/core';
 import { PublicPlayerService } from '@sunbird/public';
@@ -25,6 +25,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   @Input() playerConfig: PlayerConfig;
   @Output() assessmentEvents = new EventEmitter<any>();
   @Output() questionScoreSubmitEvents = new EventEmitter<any>();
+  @Output() questionScoreReviewEvents = new EventEmitter<any>();
   @ViewChild('contentIframe', {static: false}) contentIframe: ElementRef;
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
   @Output() sceneChangeEvent = new EventEmitter<any>();
@@ -39,7 +40,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   CONSTANT = {
     ACCESSEVENT: 'renderer:question:submitscore',
     ISLASTATTEMPT: 'renderer:selfassess:lastattempt',
-    MAXATTEMPT: 'renderer:maxLimitExceeded'
+    MAXATTEMPT: 'renderer:maxLimitExceeded',
+    ACCESSREVIEWEVENT: 'renderer:question:reviewAssessment'
   };
   @Input() overlayImagePath: string;
   @Input() isSingleContent: boolean;
@@ -62,6 +64,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   mobileViewDisplay = 'block';
   playerType: string;
   isDesktopApp = false;
+  showQumlPlayer = false;
 
   /**
  * Dom element reference of contentRatingModal
@@ -95,6 +98,16 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   ngOnInit() {
+    if (_.get(this.playerConfig, 'metadata.mimeType') === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
+      this.playerConfig.config.sideMenu.showDownload = false;
+      this.playerService.getQuestionSetRead(_.get(this.playerConfig, 'metadata.identifier')).subscribe((data: any) => {
+        this.playerConfig.metadata.instructions = _.get(data, 'result.questionset.instructions');
+        this.showQumlPlayer = true;
+      }, (error) => {
+        this.showQumlPlayer = true;
+      });
+    }
+    
     // If `sessionStorage` has UTM data; append the UTM data to context.cdata
     if (this.playerConfig && sessionStorage.getItem('UTM')) {
       let utmData;
@@ -223,11 +236,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         let isNewPlayer = false;
         _.forEach(data, (value) => {
           if (_.includes(_.get(value, 'mimeType'), this.playerConfig.metadata.mimeType) && _.get(value, 'version') === 2) {
+            this.playerConfig.context.threshold = _.get(value, 'threshold');
             this.playerType = _.get(value, 'type');
             isNewPlayer = true;
           }
         });
-
         if (isNewPlayer) {
           this.playerLoaded = false;
           this.loadNewPlayer();
@@ -245,7 +258,12 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.showNewPlayer = false;
     if (this.isDesktopApp) {
       this.updateMetadataForDesktop();
-      this.loadDefaultPlayer(this.configService.appConfig.PLAYER_CONFIG.localBaseUrl);
+      const downloadStatus = Boolean(_.get(this.playerConfig, 'metadata.desktopAppMetadata.isAvailable'));
+      let playerUrl = this.configService.appConfig.PLAYER_CONFIG.localBaseUrl;
+      if (!downloadStatus) {
+        playerUrl = `${playerUrl}webview=true`;
+      }
+      this.loadDefaultPlayer(playerUrl);
       return;
     }
     if (this.isMobileOrTab) {
@@ -310,10 +328,20 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     if (event.data.toLowerCase() === (this.CONSTANT.MAXATTEMPT).toLowerCase()) {
       this.selfAssessLastAttempt.emit(event);
     }
+    if (event.data.toLowerCase() === (this.CONSTANT.ACCESSREVIEWEVENT).toLowerCase()) {
+      this.questionScoreReviewEvents.emit(event);
+    }
   }
   eventHandler(event) {
     if (_.get(event, 'edata.type') === 'SHARE') {
       this.contentUtilsServiceService.contentShareEvent.emit('open');
+      this.mobileViewDisplay = 'none';
+    }
+    if (_.get(event, 'edata.type') === 'PRINT') {
+      let windowFrame = window.document.querySelector('pdf-viewer iframe');
+      if (windowFrame) {
+        windowFrame['contentWindow'].print()
+      }
       this.mobileViewDisplay = 'none';
     }
   }
@@ -325,7 +353,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     if (newPlayerEvent) {
       event = { detail: {telemetryData: event}};
     }
-    const eid = event.detail.telemetryData.eid;
+    const eid = _.get(event, 'detail.telemetryData.eid');
     if (eid && (eid === 'START' || eid === 'END')) {
       this.showRatingPopup(event);
       if (this.contentProgressEvents$) {
@@ -453,7 +481,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
           const userProfile = user.userProfile;
           this.playerConfig.context['userData'] = {
             firstName: userProfile.firstName ? userProfile.firstName : 'anonymous',
-            lastName: userProfile.lastName ? userProfile.lastName : 'anonymous'
+            lastName: userProfile.lastName ? userProfile.lastName : ''
           };
         }
       });

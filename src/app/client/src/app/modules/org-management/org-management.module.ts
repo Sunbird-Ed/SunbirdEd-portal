@@ -5,8 +5,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { ResourceService, ToasterService, RouterNavigationService, SharedModule } from '@sunbird/shared';
 import { OrgTypeService, OrgManagementService } from './services';
 import {
-  CreateOrgTypeComponent, ViewOrgTypeComponent, OrganizationUploadComponent,
-  UserUploadComponent, BulkUploadComponent, StatusComponent
+  CreateOrgTypeComponent, ViewOrgTypeComponent, OrganizationUploadComponent, StatusComponent
 } from './components';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CoreModule } from '@sunbird/core';
@@ -26,9 +25,7 @@ import { NgInviewModule } from 'angular-inport';
     TelemetryModule,
     NgInviewModule
   ],
-  declarations: [CreateOrgTypeComponent, ViewOrgTypeComponent, OrganizationUploadComponent,
-    UserUploadComponent, BulkUploadComponent, StatusComponent],
-  exports: [BulkUploadComponent],
+  declarations: [CreateOrgTypeComponent, ViewOrgTypeComponent, OrganizationUploadComponent, StatusComponent],
   providers: [ResourceService, ToasterService, RouterNavigationService, OrgTypeService, OrgManagementService]
 })
 export class OrgManagementModule { }

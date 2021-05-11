@@ -94,7 +94,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   userLocation: {};
   persona: {};
   subPersona: string;
-  isConnected: Boolean = true;
+  isConnected = true;
 
   constructor(@Inject('CS_COURSE_SERVICE') private courseCService: CsCourseService, private cacheService: CacheService,
   public resourceService: ResourceService, public coursesService: CoursesService,
@@ -283,6 +283,10 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   downloadCert(course) {
+    if (this.isDesktopApp && !this.isConnected) {
+      this.toasterService.error(this.resourceService.messages.desktop.emsg.cannotAccessCertificate);
+      return;
+    }
     // Check for V2
     if (_.get(course, 'issuedCertificates.length')) {
       this.toasterService.success(_.get(this.resourceService, 'messages.smsg.certificateGettingDownloaded'));

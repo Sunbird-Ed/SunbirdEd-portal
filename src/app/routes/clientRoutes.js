@@ -289,7 +289,11 @@ const redirectTologgedInPage = (req, res) => {
 		if (_.get(redirectRoutes, req.originalUrl)) {
 			const routes = _.get(redirectRoutes, req.originalUrl);
 			res.redirect(routes)
-		} else {
+		} else if (_.get(redirectRoutes, ((req.originalUrl).substring(0,(req.originalUrl).indexOf('?'))))) {
+      let routes = _.get(redirectRoutes, ((req.originalUrl).substring(0,(req.originalUrl).indexOf('?'))));
+      routes = routes + ((req.originalUrl).substring((req.originalUrl).indexOf('?')));
+			res.redirect(routes)
+    } else {
       const urlWithOutSlug = req.params.slug ? req.originalUrl.replace('/' + req.params.slug, '') : req.originalUrl;
       const courseUrl = urlWithOutSlug.includes('/explore-course/course/');
       if (courseUrl) {

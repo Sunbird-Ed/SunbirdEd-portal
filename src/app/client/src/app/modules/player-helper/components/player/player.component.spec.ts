@@ -4,11 +4,21 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import { RouterTestingModule } from '@angular/router/testing';
 import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
 import { FormService, UserService } from '@sunbird/core';
-import { NavigationHelperService, SharedModule, UtilService } from '@sunbird/shared';
+import { NavigationHelperService, SharedModule, UtilService, ToasterService, ResourceService } from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
 import { of, Subject, throwError } from 'rxjs';
 import { PlayerComponent } from './player.component';
 import { playerData } from './player.component.data.spec';
+import  { printEvent } from './player.component.data.spec';
+import { PublicPlayerService } from '@sunbird/public';
+
+const resourceBundle = {
+  'messages': {
+    'emsg': {
+      'm0005': 'Something went wrong, try later'
+    }
+  }
+};
 
 const startEvent = {
   detail: {
@@ -48,7 +58,7 @@ describe('PlayerComponent', () => {
     TestBed.configureTestingModule({
       imports: [SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
       declarations: [PlayerComponent],
-      providers: [{ provide: UserService, useValue: {} }, CsContentProgressCalculator, FormService],
+      providers: [{ provide: ResourceService, useValue: resourceBundle }, { provide: UserService, useValue: {} }, CsContentProgressCalculator, FormService, PublicPlayerService, ToasterService],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -454,5 +464,20 @@ describe('PlayerComponent', () => {
     expect(formService.getFormConfig).toHaveBeenCalled();
     expect(component.loadOldPlayer).toHaveBeenCalled();
   });
+
+  it('should handle event for print' , () => {
+     component.playerConfig = playerConfig;
+     const url = component.playerConfig['metadata']['streamingUrl'];
+     const mockFrameValue = {
+       contentWindow: {
+         print: () => {}
+       }
+     }
+     spyOn(mockFrameValue.contentWindow, 'print').and.stub();
+     spyOn(window.document , 'querySelector').and.returnValue(mockFrameValue);
+     component.eventHandler(printEvent);
+     expect(mockFrameValue.contentWindow.print).toHaveBeenCalled();
+     expect(component.mobileViewDisplay).toBe('none');
+  })
 });
 
