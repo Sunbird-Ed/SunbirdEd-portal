@@ -289,7 +289,11 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
       let path;
       if (mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
         if (typeof _.get(data, 'trackable') === 'string') {
-          data.trackable = JSON.parse(data.trackable);
+          try {
+            data.trackable = JSON.parse(data.trackable);
+          } catch (error) {
+            console.error('Error while json parse', error);
+          }
         }
 
         if (_.toUpper(_.get(data, 'contentType')) === 'COURSE' || _.toUpper(_.get(data, 'trackable.enabled')) === 'YES') {
