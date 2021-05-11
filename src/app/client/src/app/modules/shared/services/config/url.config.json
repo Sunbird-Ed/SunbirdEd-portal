@@ -63,6 +63,8 @@
     "PAGE_PREFIX": "data/v1/page/assemble",
     "DIAL_ASSEMBLE_PREFIX": "data/v1/dial/assemble",
     "GET_GENERALISED_RESOURCE": "getGeneralisedResourcesBundles",
+    "OBSERVATION_PREFIX":"/assessment/",
+    "KENDRA_PREFIX":"/kendra/",
     "REPORT": {
       "READ": "/get",
       "LIST": "/list",
@@ -343,6 +345,12 @@
     },
     "OBJECTCATEGORY": {
       "READ": "object/category/definition/v1/read"
+    },
+    "OBSERVATION": {
+      "MANDATORY_ENTITIES_FOR_SUB_ROLE":"v1/users/entityTypesByLocationAndRole/bc75cc99-9205-463e-a722-5326857838f8?role=DEO"
+    },
+    "KENDRA": {
+
     }
   }
 }
