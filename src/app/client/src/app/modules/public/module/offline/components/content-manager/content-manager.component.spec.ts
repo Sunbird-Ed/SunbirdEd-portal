@@ -15,7 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../../../../core/services/user/user.service';
 
 
-fdescribe('ContentManagerComponent', () => {
+describe('ContentManagerComponent', () => {
   let component: ContentManagerComponent;
   let fixture: ComponentFixture<ContentManagerComponent>;
   let contentManagerService: ContentManagerService;
