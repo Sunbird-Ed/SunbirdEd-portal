@@ -20,7 +20,7 @@ getTestBed().initTestEnvironment(
 
 // then we find all the tests.
 const filterRegExp = (tags) ? new RegExp(tags, 'g') : /\.spec\.ts$/,
-  context = require.context('./app/', true, /user-onboarding.component\.spec\.ts$/),
+  context = require.context('./app/', true, /\.spec\.ts$/),
   specFiles = context.keys().filter(path => filterRegExp.test(path));
 // and load the modules.
 specFiles.map(context);
