@@ -387,7 +387,7 @@ export class AppComponent implements OnInit, OnDestroy {
             } else {
               userType = localStorage.getItem('userType');
             }
-            this.showUserTypePopup = _.get(this.userService, 'loggedIn') ? (!_.get(this.userService, 'userProfile.userType') || !userType) : !userType;
+            this.showUserTypePopup = _.get(this.userService, 'loggedIn') ? (!_.get(this.userService, 'userProfile.profileUserType.type') || !userType) : !userType;
           }
         }
       });
