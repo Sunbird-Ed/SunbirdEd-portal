@@ -604,10 +604,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v8@3.7.8":
-  version "3.7.8"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v8/-/common-consumption-v8-3.7.8.tgz#6ff53a643dd962eb113759c3fba7b4910b971d12"
-  integrity sha512-o8oMaQSa8daxvzc5+utai44AzLwUh4ejmYz9w2gZOdDJLiw3BIA5Je5i2SJ7PgWdGvQIL75Ay5xAkjl0nP2Qrw==
+"@project-sunbird/common-consumption-v8@3.9.4":
+  version "3.9.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v8/-/common-consumption-v8-3.9.4.tgz#e79b828095f24b37cbe09f9d03266e42b851ad51"
+  integrity sha512-KfUJkHqg0L1craKoYNWawb0kLBREs8NpcxFPbKC+IAD9J4am677bywG+Nod66UQluUFWJWc4d2finE2DtSjJvQ==
   dependencies:
     tslib "^1.9.0"
 
@@ -623,10 +623,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.6.tgz#15a88937fb643d5eb33a81c8d28ece00b56d5aa0"
   integrity sha512-rK87rHdagadIS7UrWju7HDolIfWlO5CbK+tIJrEApO+QPMi+k8KuWoLc8MxEprrsJxUt6r44O4uGiO0hgI5plA==
 
-"@project-sunbird/sunbird-collection-editor@0.0.47":
-  version "0.0.47"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-0.0.47.tgz#73cb1418f43eb72c4dd3df1962ce704e5de43aba"
-  integrity sha512-X1NCNUZqm+tLcPbLevfQV1C/CJNL56c9usOhyOytogSbJ+39fTVPNIIwHPn6wgRX2yzwCHrh89ytMS0C5e2/yQ==
+"@project-sunbird/sunbird-collection-editor@3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-3.8.0.tgz#1e2e855fabf2d9a4bc435b888f61b02b0fb15866"
+  integrity sha512-7W8mz+KNM9hAxntEEzUdQq0qxFRyF2fwjZgaFgcaMebR3R5tLqVXpEsVYiYFbZT8SgSFI6+WAZCc5NbNHdbC4Q==
   dependencies:
     tslib "^1.9.0"
 
