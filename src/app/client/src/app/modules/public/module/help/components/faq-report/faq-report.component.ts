@@ -46,6 +46,11 @@ export class FaqReportComponent implements OnInit {
 
   valueChanged(event) {
     this.formValues = event;
+    if (event.category === 'otherissues') {
+      this.faqReportConfig[1].templateOptions.hidden = true;
+    } else {
+      this.faqReportConfig[1].templateOptions.hidden = false;
+    }
   }
 
   statusChanged(event) {
