@@ -1,67 +1,30 @@
 // Topic Picker
-$sb-treePicker-selectionTab-width: 400px;
-$sb-treePicker-selectedTab-width: calc(100% - 400px);
-$sb-treePicker-selectionTab-padding: ($base-block-space * 2);
-$sb-treePicker-selectedTab-padding: ($base-block-space * 2);
-$sb-treePicker-searchbox-max-width: 392px;
-$sb-treePicker-searchbox-tree-space: 0 0 (2 * $base-block-space) 0;
-$sb-treePicker-searchbox-width: 100%;
-$sb-treePicker-searchbox-border: calculateRem(0.5px) solid $primary-300;
-$sb-treePicker-searchbox-iconColor-search: var(--rc-aaaaaa);
-$sb-treePicker-selected-color: $secondary-100;
-$sb-treePicker-tabs-divider-border-color: $gray-100;
-$sb-treePicker-tabs-divider-border-mobile: 0 0 calculateRem(1px) 0;
-$sb-treePicker-tabs-divider-border-desktop: 0 calculateRem(1px) 0 0;
-$sb-treePicker-tabs-divider-border-desktop-rtl: 0 0 0 calculateRem(1px);
-$sb-treePicker-nodes-between-spacing: 0 0 $base-block-space 0;
-$sb-treePicker-nodes-icon-title-spacing: 0 $base-block-space 0 0;
-$sb-treePicker-nodes-icon-title-spacing-rtl: 0 0 0 $base-block-space;
-$sb-treePicker-checked-nodes-icon-title-spacing: 0 calculateRem(10px) 0 0;
-$sb-treePicker-checked-nodes-icon-title-spacing-rtl: 0 0 0 calculateRem(10px);
-$sb-treePicker-nodes-icons-font-size: calculateRem(10px);
-$sb-treePicker-nodes-icons-line-height: calculateRem(11px);
-$sb-treePicker-nodes-icons-border-radius: calculateRem(4px);
-$sb-treePicker-nodes-icons-border: calculateRem(1px) solid $primary-200;
-$sb-treePicker-nodes-icons-padding: calculateRem(2px);
-$sb-treePicker-nodes-icons-height: ($base-block-space * 2);
-$sb-treePicker-nodes-icons-width: ($base-block-space * 2);
-$sb-treePicker-nodes-icons-color: $primary-200;
-$sb-treePicker-not-selected-node-icons-size: ($base-block-space * 2);
-$sb-treePicker-nodes-name-color: $gray-400;
-$sb-treePicker-opened-node-name-color: $gray-800;
-$sb-treePicker-node-min-height: ($base-block-space * 2);
-$sb-treePicker-nodes-childlist-border: calculateRem(1px) dotted $gray-100;
-$sb-treePicker-nodes-childlist-padding: 0 $base-block-space;
-$sb-treePicker-nodes-childlist-margin: $base-block-space;
-$sb-treePicker-nodes-disabled-opacity: 0.3;
-$sb-treePicker-search-query-highlight-color: $yellow;
-
 .sb-treePicker-body {
     display: flex;
     flex-wrap: wrap;
     height: 100%;
     
     .sb-treePicker-selectionSection {
-        width: $sb-treePicker-selectionTab-width;
-        padding: $sb-treePicker-selectionTab-padding;
-        border-width: $sb-treePicker-tabs-divider-border-desktop;
-        border-color: $sb-treePicker-tabs-divider-border-color;
+        width: calculateRem(400px);
+        padding: calculateRem(16px);
+        border-width: 0 calculateRem(1px) 0 0;
+        border-color: var(--gray-100);
         border-style: solid;
         
         .sb-search-box {
-            max-width: $sb-treePicker-searchbox-max-width;
-            width: $sb-treePicker-searchbox-width;
-            margin: $sb-treePicker-searchbox-tree-space;
+            max-width: calculateRem(392px);
+            width: 100%;
+            margin: 0 0 calculateRem(16px) 0;
 
             .sb-search-icon {
-                color: $sb-treePicker-searchbox-iconColor-search;
+                color: var(--rc-aaaaaa);
             }
         }
     }
 
     .sb-treePicker-selectedSection {
-        width: $sb-treePicker-selectedTab-width;
-        padding: $sb-treePicker-selectedTab-padding;
+        width: calc(100% - 400px);
+        padding: calculateRem(16px);
         .list {
             .node {
                 display: none;
@@ -74,15 +37,15 @@ $sb-treePicker-search-query-highlight-color: $yellow;
             }
         }
         .sb-treePicker-selected-count {
-            color: $sb-treePicker-selected-color;
+            color: var(--secondary-100);
         }
     }
 
     .tree,
     .list {
         .node {
-            margin: $sb-treePicker-nodes-between-spacing;
-            min-height: $sb-treePicker-node-min-height;
+            margin: 0 0 calculateRem(8px) 0;
+            min-height: calculateRem(16px);
 
             .head {
                 display: flex;
@@ -96,54 +59,54 @@ $sb-treePicker-search-query-highlight-color: $yellow;
             }
 
             .icon {
-                margin: $sb-treePicker-nodes-icon-title-spacing;
+                margin: 0 calculateRem(8px) 0 0;
             }
 
             .name {
-                color: $sb-treePicker-nodes-name-color;
+                color: var(--gray-400);
             }
 
             .disabled {
-                opacity: $sb-treePicker-nodes-disabled-opacity;
+                opacity: 0.3;
                 cursor: default;
             }
 
             .content {
                 display: none;
-                border-left: $sb-treePicker-nodes-childlist-border;
+                border-left: calculateRem(1px) dotted var(--gray-100);
                 border-right: 0;
-                margin: $sb-treePicker-nodes-childlist-margin;
-                padding: $sb-treePicker-nodes-childlist-padding;
+                margin: calculateRem(8px);
+                padding:  0 calculateRem(8px);
             }
 
             .sb-treePicker-searchedQuery {
-                background: $sb-treePicker-search-query-highlight-color;
+                background: var(--yellow);
             }
 
             .add.icon:before,
             .minus.icon:before,
             .checkmark:before {
-                font-size: $sb-treePicker-nodes-icons-font-size;
-                line-height: $sb-treePicker-nodes-icons-line-height;
-                border-radius: $sb-treePicker-nodes-icons-border-radius;
-                border: $sb-treePicker-nodes-icons-border;
-                height: $sb-treePicker-nodes-icons-height;
-                width: $sb-treePicker-nodes-icons-width;
-                padding: $sb-treePicker-nodes-icons-padding;
-                color: $sb-treePicker-nodes-icons-color;
+                font-size: calculateRem(10px);
+                line-height: calculateRem(11px);
+                border-radius: calculateRem(4px);
+                border: calculateRem(1px) solid var(--primary-200);
+                height: calculateRem(16px);
+                width: calculateRem(16px);
+                padding: calculateRem(2px);
+                color: var(--primary-200);
                 display: inline-block;
                 vertical-align: middle;
             }
 
             .checkmark:before {
-                color: $white-color;
-                background: $sb-treePicker-selected-color !important;
-                border-color: $sb-treePicker-selected-color;
+                color: var(--white);
+                background: var(--secondary-100) !important;
+                border-color: var(--secondary-100);
             }
 
             .square {
-                color: $sb-treePicker-nodes-icons-color;
-                font-size: $sb-treePicker-not-selected-node-icons-size;
+                color: var(--primary-200);
+                font-size: calculateRem(16px);
             }
 
             .square,
@@ -155,7 +118,7 @@ $sb-treePicker-search-query-highlight-color: $yellow;
             &.opened>.head {
 
                 .name {
-                    color: $sb-treePicker-opened-node-name-color;
+                    color: var(--gray-800);
                 }
 
                 .add {
@@ -187,7 +150,7 @@ $sb-treePicker-search-query-highlight-color: $yellow;
             &.picked {
                 .checkmark {
                     display: inline-block;
-                    margin: $sb-treePicker-checked-nodes-icon-title-spacing;
+                    margin: 0 calculateRem(10px) 0 0;
                 }
                 .head .square {
                     display: none;
@@ -198,7 +161,7 @@ $sb-treePicker-search-query-highlight-color: $yellow;
     .tree {
         .picked {
             .name {
-                color: $sb-treePicker-selected-color;
+                color: var(--secondary-100);
             }
         }
     }
@@ -208,7 +171,7 @@ $sb-treePicker-search-query-highlight-color: $yellow;
     .sb-treePicker {
         .sb-treePicker-selectionSection {
             width: 100%;
-            border-width: $sb-treePicker-tabs-divider-border-mobile;
+            border-width: 0 0 calculateRem(1px) 0;
         }
         .sb-treePicker-selectedSection {
             width: 100%;
@@ -218,17 +181,17 @@ $sb-treePicker-search-query-highlight-color: $yellow;
 
 [dir="rtl"] .sb-treePicker-body {
     .sb-treePicker-selectionSection {
-        border-width: $sb-treePicker-tabs-divider-border-desktop-rtl;
+        border-width: 0 0 0 calculateRem(1px);
     }
     .tree,
     .list {
         .node {
             .icon {
-                margin: $sb-treePicker-nodes-icon-title-spacing-rtl;
+                margin: 0 0 0 calculateRem(8px);
             }
             .content {
                 border-left: 0;
-                border-right: $sb-treePicker-nodes-childlist-border;
+                border-right: calculateRem(1px) dotted var(--gray-100);
             }
         }
     }

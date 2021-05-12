@@ -37,6 +37,7 @@ export default class BatchDetails {
   }
 
   public async get(req, res) {
+    const standardLog = containerAPI.getStandardLoggerInstance();
     try {
       const batchId = req.params.batchId;
       let batchData = {};
@@ -59,12 +60,13 @@ export default class BatchDetails {
         res.status(500).send(Response.error(API_ID, 500));
       }
     } catch (error) {
-      logger.error(`Error while fetching content status from database with error message = ${error.message}`);
+      standardLog.error({ id: 'BATCH_DETAILS_FETCH_FAILED', message: `Error while fetching content status from database`, error });
       res.status(500).send(Response.error(API_ID, 500));
     }
   }
 
   public async save(batchData) {
+    const standardLog = containerAPI.getStandardLoggerInstance();
     try {
       const resp = await this.findBatch(batchData.identifier);
 
@@ -74,7 +76,7 @@ export default class BatchDetails {
         await this.databaseSdk.insert(DB_NAME, batchData);
       }
     } catch (error) {
-      logger.error(`Error while inserting content status in database with error message = ${error.message}`);
+      standardLog.error({ id: 'BATCH_DETAILS_DB_INSERT_FAILED', message: `Error while inserting content status in database`, error });
     }
   }
 }

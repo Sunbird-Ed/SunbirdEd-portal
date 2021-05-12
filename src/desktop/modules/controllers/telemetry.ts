@@ -49,9 +49,7 @@ export default class Telemetry {
           return res.send(Response.error("api.telemetry", 500));
         });
     } else {
-      logger.error(
-        `ReqId = "${req.headers["X-msgid"]}": Received err and err.res.status: 400`,
-      );
+      standardLog.error({id: 'TELEMETRY_DB_INSERTION_FAILED', message: `Received err and status: 400`, error: 'Empty events provided'});
       res.status(400);
       return res.send(Response.error("api.telemetry", 400));
     }
@@ -106,6 +104,7 @@ export default class Telemetry {
   }
 
   public async sync(req, res) {
+    const standardLog = containerAPI.getStandardLoggerInstance();
     try {
       const type = _.get(req, "body.request.type");
       if (type === undefined || !_.isArray(type)) {
@@ -117,6 +116,7 @@ export default class Telemetry {
       res.status(200);
       return res.send(Response.success("api.desktop.sync", { response: data }, req));
     } catch (err) {
+      standardLog.error({ id: 'TELEMETRY_FORCE_SYNC_FAILED', mid: req.headers["X-msgid"], message: 'Received error syncing telemetry forcefully', error: err });
       res.status(err.status || 500);
       return res.send(Response.error("api.desktop.sync", err.status || 500, err.errMessage || err.message, err.code));
     }
@@ -138,6 +138,7 @@ export default class Telemetry {
   }
 
   public async import(req: any, res: any) {
+    const standardLog = containerAPI.getStandardLoggerInstance();
     const filePaths = req.body;
     if (!filePaths) {
       return res.status(400).send(Response.error(`api.telemetry.import`, 400, "MISSING_FILE_PATHS"));
@@ -147,23 +148,27 @@ export default class Telemetry {
         importedJobIds: jobIds,
       }, req));
     }).catch((err) => {
+      standardLog.error({ id: 'TELEMETRY_IMPORT_FAILED', mid: req.headers["X-msgid"], message: 'Received error importing telemetry', error: err });
       res.status(500);
       res.send(Response.error(`api.telemetry.import`, 500, err.errMessage || err.message, err.code));
     });
   }
 
   public async retryImport(req: any, res: any) {
+    const standardLog = containerAPI.getStandardLoggerInstance();
     this.telemetryImportManager.retryImport(req.params.importId).then((jobIds) => {
       res.send(Response.success("api.telemetry.import.retry", {
         jobIds,
       }, req));
     }).catch((err) => {
+      standardLog.error({ id: 'TELEMETRY_IMPORT_RETRY_FAILED', mid: req.headers["X-msgid"], message: 'Received error retrying import', error: err });
       res.status(500);
       res.send(Response.error(`api.telemetry.import.retry`, 400, err.message));
     });
   }
 
   public async list(req: any, res: any) {
+    const standardLog = containerAPI.getStandardLoggerInstance();
     try {
       let dbData = await this.systemQueue.query({ type: ImportTelemetry.taskType });
       dbData = _.map(dbData.docs, (data) => ({
@@ -184,7 +189,7 @@ export default class Telemetry {
         },
       }, req));
     } catch (error) {
-      logger.error(`ReqId = "${req.headers["X-msgid"]}": Error while processing the telemetry import list request and err.message: ${error.message}`);
+      standardLog.error({ id: 'TELEMETRY_DB_READ_FAILED', message: 'Error while processing the telemetry import list request', mid: req.headers["X-msgid"], error });
       res.status(500);
       return res.send(Response.error("api.telemetry.list", 500));
     }

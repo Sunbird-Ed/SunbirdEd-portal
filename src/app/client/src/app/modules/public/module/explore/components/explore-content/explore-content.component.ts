@@ -183,7 +183,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     const pageType = _.get(this.queryParams, 'pageTitle');
     const filters: any = this.schemaService.schemaValidator({
       inputObj: this.queryParams || {}, properties: _.get(this.schemaService.getSchema('content'), 'properties') || {},
-      omitKeys: ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType', 'utm_source']
+      omitKeys: ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType', 'contentType', 'utm_source']
     });
     if (!filters.channel) {
       filters.channel = this.hashTagId;

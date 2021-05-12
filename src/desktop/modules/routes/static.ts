@@ -87,7 +87,6 @@ export default (app, contentFilesPath, ecarsFolderPath ) => {
       .getDeviceId();
     const userSDK = containerAPI.getUserSdkInstance();
     const loggedInUserSession: any = await userSDK.getUserSession().catch(error => { 
-      logger.debug("unable to get the user session data", error);
       standardLog.error({ id: 'STATIC_USER_SESSION_FETCH_FAILED', message: 'Unable to get the user session data', error });
     })
     const locals: any = {};

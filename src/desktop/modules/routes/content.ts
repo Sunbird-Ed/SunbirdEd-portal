@@ -64,10 +64,7 @@ export default (app, proxyURL, contentDownloadManager) => {
                   resolve(proxyData);
                 })
                 .catch((err) => {
-                  logger.error(
-                    `ReqId = "${req.headers["X-msgid"]}": Received error err.message`,
-                    err,
-                  );
+                  standardLog.error({id: 'CONTENT_READ_FAILED', message: `Received error`, error: err, mid: req.headers["X-msgid"] });
                   resolve(proxyData);
                 });
             } else {
@@ -92,7 +89,7 @@ export default (app, proxyURL, contentDownloadManager) => {
         const online = Boolean(_.get(req, "query.online") && req.query.online.toLowerCase() === "true");
         const isProxyEnabled = _.has(req, "query.online") ? online : enableProxy(req);
         const offlineData = await content.getOfflineContents([req.params.id], req.headers["X-msgid"]).catch((error) => {
-          logger.error(`ReqId = "${req.headers["X-msgid"]}": Received while getting data from course hierarchy`, error);
+          standardLog.error({id: 'CONTENT_GET_HIERARCHY_FAILED', message: `Received ERROR while getting data from course hierarchy`, error, mid: req.headers["X-msgid"] });
         });
         if (isProxyEnabled && offlineData.docs.length <= 0 ) {
           logger.info(`Proxy is Enabled`);
@@ -133,10 +130,7 @@ export default (app, proxyURL, contentDownloadManager) => {
                   resolve(proxyData);
                 })
                 .catch((err) => {
-                  logger.error(
-                    `ReqId = "${req.headers["X-msgid"]}": Received error err.message`,
-                    err,
-                  );
+                  standardLog.error({id: 'CONTENT_GET_ONLINE_HIERARCHY_FAILED', message: `Received ERROR while getting data from course hierarchy`, error: err, mid: req.headers["X-msgid"] });
                   resolve(proxyData);
                 });
             } else {
@@ -203,10 +197,7 @@ export default (app, proxyURL, contentDownloadManager) => {
                     resolve(proxyData);
                   })
                   .catch((err) => {
-                    logger.error(
-                      `ReqId = "${req.headers["X-msgid"]}": Received error err.message`,
-                      err,
-                    );
+                    standardLog.error({id: 'CONTENT_SEARCH_ONLINE_FAILED', message: `Received ERROR while searching content online`, error: err, mid: req.headers["X-msgid"] });
                     resolve(proxyData);
                   });
               } else {

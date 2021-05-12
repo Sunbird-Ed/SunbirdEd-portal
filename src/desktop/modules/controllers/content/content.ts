@@ -164,6 +164,8 @@ export default class Content {
                     failedCode: _.get(data, 'failedCode'),
                     failedReason: _.get(data, 'failedReason'),
                     addedUsing: _.toLower(_.get(data, 'type')),
+                    contentType: _.get(data, 'metaData.contentType'),
+                    trackable: _.get(data, 'metaData.trackable'),
                     contentDownloadList: _.map(_.get(data, 'metaData.contentDownloadList'),
                     (doc) => _.omit(doc, ["url"])),
 
@@ -185,7 +187,7 @@ export default class Content {
     search(req: any, res: any): any {
         logger.debug(`ReqId = "${req.headers['X-msgid']}": Called content search method`);
         let reqBody = req.body;
-        let pageReqFilter = _.get(reqBody, 'request.filters');
+        let pageReqFilter = this.getFilters(_.get(reqBody, 'request.filters'));
         let contentSearchFields = config.get('CONTENT_SEARCH_FIELDS').split(',');
         const mode = _.get(reqBody, 'request.mode');
         logger.info(`ReqId = "${req.headers['X-msgid']}": picked filters from the request`);
@@ -242,7 +244,6 @@ export default class Content {
                 return res.send(responseObj);
             })
             .catch(err => {
-                console.log(err);
                 this.standardLog.error({ id: 'CONTENT_SEARCH_FAILED', mid: req.headers['X-msgid'], message: 'Received error while searching content', error: err.message });
                 if (err.status === 404) {
                     res.status(404);
@@ -598,6 +599,7 @@ export default class Content {
                 importedJobIds: jobIds,
             }, req));
         }).catch((err) => {
+            this.standardLog.error({ id: 'CONTENT_IMPORT_FAILED', message: 'Received error while importing a content', mid: req.headers['X-msgid'], error: err });
             res.status(500);
             res.send(Response.error(`api.content.import`, 400, err.errMessage || err.message, err.code));
         });
@@ -608,6 +610,7 @@ export default class Content {
                 jobIds,
             }, req));
         }).catch((err) => {
+            this.standardLog.error({ id: 'CONTENT_IMPORT_PAUSE_FAILED', message: 'Received error while pausing a content import', mid: req.headers['X-msgid'], error: err });
             res.status(500);
             res.send(Response.error(`api.content.import`, 400, err.message));
         });
@@ -618,6 +621,7 @@ export default class Content {
                 jobIds,
             }, req));
         }).catch((err) => {
+            this.standardLog.error({ id: 'CONTENT_IMPORT_RESUME_FAILED', message: 'Received error while resuming a content import', mid: req.headers['X-msgid'], error: err });
             res.status(500);
             res.send(Response.error(`api.content.import`, 400, err.message));
         });
@@ -628,6 +632,7 @@ export default class Content {
                 jobIds,
             }, req));
         }).catch((err) => {
+            this.standardLog.error({ id: 'CONTENT_IMPORT_CANCEL_FAILED', message: 'Received error while canceling content import process', mid: req.headers['X-msgid'], error: err });
             res.status(500);
             res.send(Response.error(`api.content.import`, 400, err.message));
         });
@@ -638,6 +643,7 @@ export default class Content {
                 jobIds,
             }, req));
         }).catch((err) => {
+            this.standardLog.error({ id: 'CONTENT_IMPORT_RETRY_FAILED', message: 'Received error while retrying content import process', mid: req.headers['X-msgid'], error: err });
             res.status(500);
             res.send(Response.error(`api.content.retry`, 400, err.message));
         });
@@ -755,7 +761,7 @@ export default class Content {
             contents = await this.changeContentStatus(offlineContents.docs, reqId, contents);
             return contents;
         } catch (err) {
-            logger.error(`ReqId = "${reqId}": Received  error err.message: ${err.message} ${err}`);
+            this.standardLog.error({id: 'CONTENT_DECORATE_FAILED', message: 'Received  error while decorating content', mid: reqId, error: err});
             return contents;
         }
     }
@@ -847,6 +853,18 @@ export default class Content {
             return offlineContents;
         }
         return offlineContents;
+    }
+
+    private getFilters(filters) {
+        // Update BMG filter names
+        const bmgFilters =  _.intersection(Object.keys(filters), ["se_boards", "se_gradeLevels", "se_mediums"]);
+        let keyMap = new Map([["se_boards", 'board'], ["se_gradeLevels", "gradeLevel"], ["se_mediums", "medium"]]);
+        bmgFilters.forEach(newKey => {
+            const oldKey = keyMap.get(newKey);
+            delete Object.assign(filters, { [oldKey]: filters[newKey] })[newKey];
+        });
+
+        return filters;
     }
 
 }
