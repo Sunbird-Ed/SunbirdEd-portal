@@ -103,9 +103,22 @@ describe('userService', () => {
   it('should call getAnonymousUserPreference', () => {
     const userService = TestBed.get(UserService);
     const publicDataService = TestBed.get(PublicDataService);
-    spyOn(publicDataService, 'get').and.returnValue(of({result: { board: 'CBSE' }}));
+    spyOn(publicDataService, 'get').and.returnValue(of({ result: { board: 'CBSE' } }));
     userService.getAnonymousUserPreference();
     expect(publicDataService.get).toHaveBeenCalled();
-    expect(userService.anonymousUserPreference).toEqual({ board: 'CBSE' });
+  });
+  it('should call updateAnonymousUserDetails', () => {
+    const userService = TestBed.get(UserService);
+    const publicDataService = TestBed.get(PublicDataService);
+    spyOn(publicDataService, 'post').and.returnValue(of({ result: { board: 'CBSE' } }));
+    userService.updateAnonymousUserDetails();
+    expect(publicDataService.post).toHaveBeenCalled();
+  });
+  it('should call createAnonymousUser', () => {
+    const userService = TestBed.get(UserService);
+    const publicDataService = TestBed.get(PublicDataService);
+    spyOn(publicDataService, 'post').and.returnValue(of({ result: { board: 'CBSE' } }));
+    userService.createAnonymousUser();
+    expect(publicDataService.post).toHaveBeenCalled();
   });
 });

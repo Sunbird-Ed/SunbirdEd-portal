@@ -481,6 +481,15 @@ export class SearchService {
     return this.formService.getFormConfig(formServiceInputParams, '*').pipe(map((response) => {
       const allTabData = _.find(response, (o) => o.title === 'frmelmnts.tab.all');
       this.mimeTypeList = _.map(_.get(allTabData, 'search.filters.mimeType'), 'name');
+
+      if (this.user.isDesktopApp) {
+        _.forEach(response, (item) => {
+          if (_.get(item, 'search.fields')) {
+            item.search.fields.push('downloadUrl');
+          }
+        });
+      }
+
       return response;
     }));
   }

@@ -32,6 +32,7 @@ export class ImportContent implements ITaskExecuter {
   private observer: Observer<ISystemQueue>;
   private contentLocation: any;
   private contentFolderPath: string;
+  @Inject private standardLog = containerAPI.getStandardLoggerInstance();
   constructor() {
     this.dbSDK.initialize(manifest.id);
     this.fileSDK = containerAPI.getFileSDKInstance(manifest.id);
@@ -93,9 +94,13 @@ export class ImportContent implements ITaskExecuter {
 
   public cleanUpAfterErrorOrCancel() {
     const fileSDKEcarInstance = containerAPI.getFileSDKInstance(manifest.id);
-    fileSDKEcarInstance.remove(path.join("ecars", this.contentImportData._id + ".ecar")).catch((err) => logger.debug(`Error while deleting file ${path.join("ecars", this.contentImportData._id + ".ecar")}`));
+    fileSDKEcarInstance.remove(path.join("ecars", this.contentImportData._id + ".ecar")).catch((err) => {
+      this.standardLog.debug({ id: 'CONTENT_IMPORT_FILE_DELETE_FAILED', message: `Error while deleting file ${path.join("ecars", this.contentImportData._id + ".ecar")}`, error: err });
+    });
 
-    this.fileSDK.remove(path.join(this.contentFolderPath, this.contentImportData._id)).catch((err) => logger.debug(`Error while deleting folder ${path.join("content", this.contentImportData._id)}`));
+    this.fileSDK.remove(path.join(this.contentFolderPath, this.contentImportData._id)).catch((err) => {
+      this.standardLog.debug({ id: 'CONTENT_IMPORT_FOLDER_DELETE_FAILED', message: `Error while deleting folder ${path.join("content", this.contentImportData._id)}`, error: err });
+    });
     // TODO: delete content folder if there"s no record in db;
   }
 
@@ -205,7 +210,7 @@ export class ImportContent implements ITaskExecuter {
         path.join(path.join(this.fileSDK.getAbsPath(""), this.contentImportData.metaData.contentId), "hierarchy.json"));
       hierarchy = _.get(hierarchy, 'content');
     } catch (error) {
-      logger.debug("Error while reading Hierarchy", error);
+      this.standardLog.debug({ id: 'CONTENT_IMPORT_HIERARCHY_READ_FAILED', message: 'Error while reading Hierarchy', error });
     }
     const resources = _.reduce(_.get(this.manifestJson, "archive.items"), (acc, item) => {
       const parentContent = item.identifier === this.contentImportData.metaData.contentId;

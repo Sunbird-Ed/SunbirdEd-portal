@@ -2,7 +2,7 @@ import { ConfigService, ServerResponse, IUserProfile, IUserData, IOrganization, 
 import { LearnerService } from './../learner/learner.service';
 import { ContentService } from './../content/content.service';
 import { Injectable, Inject, EventEmitter } from '@angular/core';
-import { Observable, BehaviorSubject, iif, of } from 'rxjs';
+import { Observable, BehaviorSubject, iif, of, throwError } from 'rxjs';
 import { map, mergeMap, shareReplay } from 'rxjs/operators';
 import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash-es';
@@ -12,6 +12,7 @@ import { skipWhile, tap } from 'rxjs/operators';
 import { APP_BASE_HREF } from '@angular/common';
 import { CacheService } from 'ng2-cache-service';
 import { DataService } from './../data/data.service';
+import { environment } from '@sunbird/environment';
 
 
 /**
@@ -93,14 +94,18 @@ export class UserService {
 
   public organizationsDetails: Array<IOrganization>;
   public createManagedUser = new EventEmitter();
-
+  public isDesktopApp = false;
+  private _guestData$ = new BehaviorSubject<any>(undefined);
+  private guestUserProfile;
+  public readonly guestData$: Observable<any> = this._guestData$.asObservable()
+    .pipe(skipWhile(data => data === undefined || data === null));
   /**
    * Reference of public data service.
    */
   public publicDataService: PublicDataService;
   private _slug = '';
   public _isCustodianUser: boolean;
-  public anonymousUserPreference: boolean;
+  public anonymousUserPreference;
   public readonly userOrgDetails$ = this.userData$.pipe(
     mergeMap(data => iif(() =>
       !this._userProfile.organisationIds, of([]), this.getOrganizationDetails(this._userProfile.organisationIds))),
@@ -118,6 +123,7 @@ export class UserService {
     this.learnerService = learner;
     this.contentService = contentService;
     this.publicDataService = publicDataService;
+    this.isDesktopApp = environment.isDesktopApp;
     try {
       this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
       DataService.userId = this._userid;
@@ -267,6 +273,8 @@ export class UserService {
     if (!this._userProfile.managedBy) {
       this.cacheService.set('userProfile', this._userProfile);
     }
+    window['TagManager'].SBTagService.pushTag({userLoocation:profileData.userLocations},'USERLOCATION_', true)
+    window['TagManager'].SBTagService.pushTag(profileData.framework,'USERFRAMEWORK_', true);
   }
   setOrgDetailsToRequestHeaders() {
     this.learnerService.rootOrgId = this._rootOrgId;
@@ -398,7 +406,7 @@ export class UserService {
 
   registerUser(data) {
     const options = {
-      url: this.config.urlConFig.URLS.USER.SIGN_UP_V4,
+      url: this.config.urlConFig.URLS.USER.SIGN_UP_MANAGED_USER,
       data: data
     };
     return this.learnerService.post(options).pipe(
@@ -428,13 +436,81 @@ export class UserService {
     return this.learnerService.getWithHeaders(option);
   }
 
-  getAnonymousUserPreference() {
+  getAnonymousUserPreference(): Observable<ServerResponse> {
     const options = {
       url: this.config.urlConFig.URLS.OFFLINE.READ_USER
     };
-    this.publicDataService.get(options).subscribe((response: ServerResponse) => {
-      this.anonymousUserPreference = response.result;
-    });
+    return this.publicDataService.get(options).pipe(map((response: ServerResponse) => {
+      this.anonymousUserPreference = _.get(response, 'result');
+      return response;
+    }));
+  }
+
+  updateAnonymousUserDetails(request): Observable<ServerResponse> {
+    const options = {
+      url: this.config.urlConFig.URLS.OFFLINE.UPDATE_USER,
+      data: request
+    };
+    return this.publicDataService.post(options);
+  }
+
+  createAnonymousUser(request): Observable<ServerResponse> {
+    const options = {
+      url: this.config.urlConFig.URLS.OFFLINE.CREATE_USER,
+      data: request
+    };
+    return this.publicDataService.post(options).pipe(map((response: ServerResponse) => {
+      this.getAnonymousUserPreference().subscribe();
+      return response;
+    }));
+  }
+
+  getGuestUser(): Observable<any> {
+    if (this.isDesktopApp) {
+      return this.getAnonymousUserPreference().pipe(map((response: ServerResponse) => {
+        this.guestUserProfile = _.get(response, 'result');
+        this._guestData$.next({ userProfile: this.guestUserProfile });
+        return this.guestUserProfile;
+      }));
+    } else {
+      const guestUserDetails = localStorage.getItem('guestUserDetails');
+
+      if (guestUserDetails) {
+        this.guestUserProfile = JSON.parse(guestUserDetails);
+        this._guestData$.next({ userProfile: this.guestUserProfile });
+        return of(this.guestUserProfile);
+      } else {
+        return throwError(undefined);
+      }
+    }
+  }
+
+  updateGuestUser(userDetails, formValue): Observable<any> {
+    window['TagManager'].SBTagService.pushTag(formValue,'USERLOCATION_', true);
+    window['TagManager'].SBTagService.pushTag(userDetails,'USERFRAMEWORK_', true);
+    if (this.isDesktopApp) {
+      userDetails.identifier = userDetails._id;
+      const userType = localStorage.getItem('userType');
+
+      if (userType) {
+        userDetails.role = userType;
+      }
+      const req = { request: userDetails };
+      return this.updateAnonymousUserDetails(req);
+    } else {
+      localStorage.setItem('guestUserDetails', JSON.stringify(userDetails));
+      return of({});
+    }
+  }
+
+  createGuestUser(userDetails): Observable<any> {
+    if (this.isDesktopApp) {
+      const req = { request: userDetails };
+      return this.createAnonymousUser(req);
+    } else {
+      localStorage.setItem('guestUserDetails', JSON.stringify(userDetails));
+      return of({});
+    }
   }
 
   get defaultFrameworkFilters() {
@@ -443,5 +519,4 @@ export class UserService {
     const userFramework = (isUserLoggedIn && framework && _.pick(framework, ['medium', 'gradeLevel', 'board'])) || {};
     return { board: ['CBSE'], gradeLevel: isUserLoggedIn ? [] : ['Class 10'], medium: [], ...userFramework };
   }
-
 }

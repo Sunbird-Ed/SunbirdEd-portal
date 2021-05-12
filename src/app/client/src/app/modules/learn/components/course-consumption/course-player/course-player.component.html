@@ -164,13 +164,16 @@
 
       <!-- 2. Course Progress bar -->
         <div class="sb-bg-color-white certified-course__progress p-16 mb-16" *ngIf="enrolledCourse && !addToGroup && !courseMentor">
+          <div class="fsmall relative9 relative">
+            <div class="kabab-menu pull-right" *ngIf="progressToDisplay === 100 && showForceSync && isConnected" (click)="dropdownMenu();"></div>
+            <div class="kabab-menu-dropdown-content" [hidden]="dropdownContent">
+              <div class="d-flex flex-ai-center list p-8 w-100" (click)="forceSync()">{{resourceService?.frmelmnts?.lbl?.forceSync}}</div>
+            </div>
+          </div>
           <div class="fsmall">{{generaliseLabelService?.frmelmnts?.lbl?.courseProgress}}</div>
           <div class="sb-color-primary fnormal font-weight-bold mt-8">{{progressToDisplay}}%
             {{resourceService?.frmelmnts?.lbl?.completed}}</div>
           <sui-progress [value]="progressToDisplay" [maximum]="100" class="mb-0 mr-0 mt-8 tiny"></sui-progress>
-          <!-- <div class="fsmall mt-8" *ngIf="enrolledBatchInfo?.cert_templates">
-            {{resourceService?.frmelmnts?.lbl?.completeForCertificate}}
-          </div> -->
         </div>
 
         <!-- 3. Join batch, leave batch and show batch popup-->

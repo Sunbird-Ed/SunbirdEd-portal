@@ -3,7 +3,7 @@ import { actions } from './../../interfaces/group';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, ViewChild, Input, Renderer2, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { ResourceService, NavigationHelperService, ToasterService } from '@sunbird/shared';
-import { MY_GROUPS, GROUP_DETAILS, IGroupCard, EDIT_GROUP } from './../../interfaces';
+import { MY_GROUPS, GROUP_DETAILS, IGroupCard, IFetchForumId, EDIT_GROUP, IFetchForumConfig } from './../../interfaces';
 import { GroupsService } from '../../services';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
@@ -30,8 +30,18 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   public msg: string;
   public name: string;
   private unsubscribe$ = new Subject<void>();
-  forumIds = [];
+  forumIds: Array<number> = [];
   createForumRequest: any;
+
+    /**
+   * input data to fetch forum Ids
+   */
+  fetchForumIdReq: IFetchForumId;
+
+  /**
+   * To fetch create-forum request payload for groups
+   */
+  fetchForumConfigReq: Array<IFetchForumConfig>;
 
   constructor(private renderer: Renderer2, public resourceService: ResourceService, private router: Router,
     private groupService: GroupsService, private navigationHelperService: NavigationHelperService, private toasterService: ToasterService,
@@ -45,7 +55,12 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit () {
+    this.fetchForumIdReq = {
+      type: 'group',
+      identifier: [ this.groupData.id ]
+    };
     this.fetchForumConfig();
+    this.fetchForumIds(this.groupData.id);
     this.creator = _.capitalize(_.get(_.find(this.groupData['members'], {userId: this.groupData['createdBy']}), 'name'));
     this.groupService.showMenu.subscribe(data => {
       this.dropdownContent = data !== 'group';
@@ -57,7 +72,6 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
     this.groupService.updateEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((status: GroupEntityStatus) => {
       this.groupData.active = this.groupService.updateGroupStatus(this.groupData, status);
     });
-    this.fetchForumIds(this.groupData.id);
   }
 
   navigateToPreviousPage() {
@@ -121,7 +135,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
     this.showModal = false;
     this.showLoader = event.action;
     if (!event.action) {
-      this.addTelemetry(`cancel-${event.name}-group`, {status: _.get(this.groupData, 'status')})
+      this.addTelemetry(`cancel-${event.name}-group`, {status: _.get(this.groupData, 'status')});
       return;
     }
     switch (event.name) {
@@ -199,47 +213,19 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   }
 
   fetchForumConfig() {
-    const groupContext = [{
+    this.fetchForumConfigReq = [{
       type: 'group',
       identifier: this.groupData.id
-    }];
+  }];
     const subType = 'group';
     this.discussionService.fetchForumConfig(subType).subscribe((formData: any) => {
       this.createForumRequest = formData[0];
-      this.createForumRequest['category']['context'] = groupContext;
+      this.createForumRequest['category']['context'] =  this.fetchForumConfigReq;
     }, error => {
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
   }
-  navigateToDiscussionForum() {
-    this.showLoader = true;
-    const data = {
-      username: _.get(this.userService.userProfile, 'userName'),
-      identifier: _.get(this.userService.userProfile, 'userId'),
-    };
-    this.discussionTelemetryService.contextCdata = [
-      {
-        id: this.groupData.id,
-        type: 'Group'
-      }
-    ];
-    this.navigationHelperService.setNavigationUrl({url: this.router.url});
-    this.discussionService.registerUser(data).subscribe(response => {
-      this.showLoader = false;
-      const userName = _.get(response, 'result.userSlug');
-      const result = this.forumIds;
-      console.log(JSON.stringify({ result }));
-      this.router.navigate(['/discussion-forum'], {
-        queryParams: {
-          categories: JSON.stringify({ result }),
-          userName: userName
-        }
-      });
-    }, error => {
-      this.showLoader = false;
-      this.toasterService.error(this.resourceService.messages.emsg.m0005);
-    });
-  }
+
     fetchForumIds(groupId: string) {
       const request = {
         identifier: [ groupId ],
@@ -280,6 +266,18 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
       }, error => {
         this.showLoader = false;
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      });
+    }
+    /**
+     * @description - navigate to the DF Page when the event is emited from the access-discussion component
+     * @param  {} routerData
+     */
+    assignForumData(routerData) {
+      this.router.navigate(['/discussion-forum'], {
+        queryParams: {
+          categories: JSON.stringify({ result: routerData.forumIds }),
+          userName: routerData.userName
+        }
       });
     }
 

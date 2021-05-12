@@ -36,6 +36,7 @@
       "fields": "rootOrgId,rootOrgName"
     },
     "contentGet": "ageGroup,appIcon,artifactUrl,attributions,attributions,audience,author,badgeAssertions,board,body,channel,code,concepts,contentCredits,contentType,contributors,copyright,copyrightYear,createdBy,createdOn,creator,creators,description,displayScore,domain,editorState,flagReasons,flaggedBy,flags,framework,gradeLevel,identifier,itemSetPreviewUrl,keywords,language,languageCode,lastUpdatedOn,license,mediaType,medium,mimeType,name,originData,osId,owner,pkgVersion,publisher,questions,resourceType,scoreDisplayConfig,status,streamingUrl,subject,template,templateId,totalQuestions,totalScore,versionKey,visibility,year,primaryCategory,additionalCategories",
+    "questionSetRead": "instructions",
     "enrolledCourses": {
       "fields": "contentType,topic,name,channel,mimeType,appIcon,gradeLevel,resourceType,identifier,medium,pkgVersion,board,subject,trackable,primaryCategory",
       "batchDetails": "name,endDate,startDate,status,enrollmentType,createdBy,certificates"
@@ -91,8 +92,8 @@
     "USER": {
       "SIGNUP": "user/v1/create",
       "TNC_ACCEPT": "user/v1/tnc/accept",
-      "UPDATE_USER_PROFILE": "user/v1/update",
-      "GET_PROFILE": "user/v3/read/",
+      "UPDATE_USER_PROFILE": "user/v2/update",
+      "GET_PROFILE": "user/v4/read/",
       "TENANT_LOGO": "get/tenant/logo",
       "SKILLS": "data/v1/skills",
       "ENDORSE_SKILLS": "user/v1/skill/endorse/add",
@@ -102,7 +103,7 @@
       "GET_USER_BY_KEY": "user/v1/get",
       "CHECK_USER_EXISTS": "user/v1/exists",
       "CREATE_V2": "user/v2/create",
-      "SIGN_UP_V1": "user/v1/signup",
+      "SIGN_UP_V1": "user/v2/signup",
       "LOCATION_SEARCH": "data/v1/location/search",
       "TYPE": "user/v1/type/list",
       "VALIDATE_CERTIFICATE": "certreg/v1/certs/validate",
@@ -111,7 +112,8 @@
       "USER_MIGRATE": "user/v1/migrate",
       "TNC_ACCEPT_LOGIN": "user/v2/accept/tnc",
       "SIGN_UP_V4": "user/v4/create",
-      "SEARCH_USER": "user/v1/search",
+      "SIGN_UP_MANAGED_USER": "user/v1/managed/create",
+      "SEARCH_USER": "user/v2/search",
       "SWITCH_USER": "user/v1/switch",
       "END_SESSION": "endSession",
       "GET_MANAGED_USER": "user/v1/managed",
@@ -121,7 +123,7 @@
     },
     "CERTIFICATE": {
       "FETCH_CERTIFICATES": "v1/certs/search",
-      "FETCH_USER": "v1/user/search",
+      "FETCH_USER": "v2/user/search",
       "REISSUE_CERTIFICATE": "v1/cert/reissue",
       "ADD_CERTIFICATE" : "v1/add/template",
       "ATTACH_CERTIFICATE": "v1/template/add",
@@ -204,8 +206,8 @@
       "REMOVE_USERS": "course/v1/batch/user/remove"
     },
     "ADMIN": {
-      "USER_SEARCH": "user/v1/search",
-      "ORG_SEARCH": "org/v1/search",
+      "USER_SEARCH": "user/v2/search",
+      "ORG_SEARCH": "org/v2/search",
       "ORG_EXT_SEARCH": "org/v1/ext/search",
       "BULK": {
         "USERS_UPLOAD": "user/v2/upload",

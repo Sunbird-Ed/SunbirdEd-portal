@@ -1,19 +1,33 @@
-import { enableLogger, getLogs, logLevels } from "@project-sunbird/logger";
+import { enableLogger, getLogs, logLevels, logger } from "@project-sunbird/logger";
+import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import * as _ from "lodash";
 import * as path from "path";
 import { ErrorObj, getErrorObj, ILogAPIFormat } from "./ILogSync";
+import { manifest } from "../../manifest";
 
 const MAX_LOG_LENGTH = 30; // Number of entries
 const MAX_DAYS_TO_TRACE_TIMESTAMP = 10 * 24 * 60 * 60 * 1000; // 10 days
 
-const getAllLogs = () => {
+const getAllLogs = async () => {
+  const deviceId = await containerAPI.getSystemSDKInstance(manifest.id).getDeviceId().catch(error => { logger.error('Error while getting deviceID'); });
   enableLogger({
     logBasePath: path.join(process.env.FILES_PATH, "logs"),
     logLevel: process.env.LOG_LEVEL as logLevels,
-    context: { src: "desktop" },
-    adopterConfig: {
-      adopter: "winston",
+    context: {
+      context: {
+        channel: process.env.CHANNEL,
+        env: 'desktop',
+        did: deviceId,
+        pdata: {
+          id: process.env.APP_ID,
+          ver: process.env.APP_VERSION,
+          pid: 'sunbird-desktop'
+        }
+      }
     },
+    adopterConfig: {
+      adopter: 'winston'
+    }
   });
   const date = new Date();
   const fromDay = new Date(date.getTime() - MAX_DAYS_TO_TRACE_TIMESTAMP);

@@ -1,4 +1,3 @@
-import { logger } from "@project-sunbird/logger";
 import * as _ from "lodash";
 import { containerAPI, ISystemQueueInstance, SystemQueueReq } from "@project-sunbird/OpenRAP/api";
 import * as path from "path";
@@ -8,7 +7,7 @@ import DatabaseSDK from "../../sdk/database";
 import Response from "../../utils/response";
 import { ContentDeleteHelper } from "./contentDeleteHelper";
 import { IContentDelete } from "./IContent";
-
+import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
 
 /*@ClassLogger({
   logLevel: "debug",
@@ -18,17 +17,19 @@ export default class ContentDelete {
     @Inject
     private databaseSdk: DatabaseSDK;
     private systemQueue: ISystemQueueInstance;
+    @Inject private standardLog: StandardLogger;
     constructor(manifest) {
         this.databaseSdk.initialize(manifest.id);
         this.systemQueue = containerAPI.getSystemQueueInstance(manifest.id);
         this.systemQueue.register(ContentDeleteHelper.taskType, ContentDeleteHelper);
+        this.standardLog = containerAPI.getStandardLoggerInstance();
     }
 
     public async delete(req, res) {
         const reqId = req.headers["X-msgid"];
         const contentIDS: string[] = _.get(req.body, "request.contents");
         if (!contentIDS) {
-            logger.error(`${reqId}: Error: content Ids not found`);
+            this.standardLog.error({id: 'CONTENT_DELETE_ID_NOT_FOUND', message: `${reqId}: Error: content Ids not found`, error: `content Id not found`});
             return res.status(400).send(Response.error(`api.content.delete`, 400, "MISSING_CONTENTS"));
         }
         try {
@@ -41,11 +42,12 @@ export default class ContentDelete {
                     },
                 };
             let contentsToDelete = await this.databaseSdk.find("content", dbFilter).catch((error) => {
-                    logger.error(`Received Error while finding contents (isAvailable : false) Error: ${error.stack}`);
+                    this.standardLog.error({id: 'CONTENT_DELETE_DB_SEARCH_FAILED', message: `Received Error while finding contents (isAvailable : false)`, error });
                 });
             contentsToDelete = await this.getContentsToDelete(contentsToDelete.docs);
             let deleted = await this.databaseSdk.bulk("content", contentsToDelete).catch((err) => {
-                    failed.push(err.message || err.errMessage);
+                this.standardLog.error({id: 'CONTENT_DELETE_DB_BULK_UPDATE_FAILED', message: `Received Error while deleting contents in a bulk`, error: err });
+                failed.push(err.message || err.errMessage);
             });
             deleted =  _.map(deleted, (content) => content.id);
             const contentPaths: string[] = _.map(deleted, (id) => {
@@ -58,7 +60,7 @@ export default class ContentDelete {
             }
             res.send(Response.success("api.content.delete", {deleted, failed}, req));
             } catch (err) {
-                logger.error(`Received Error while Deleting content `, err);
+                this.standardLog.error({ id: 'CONTENT_DELETE_FAILED', message: 'Received Error while Deleting content', error: err });
                 res.status(500);
                 res.send(Response.error(`api.content.delete`, 500, err.errMessage || err.message, err.code));
             }
@@ -123,7 +125,7 @@ export default class ContentDelete {
                 ],
             },
         };
-        logger.info(`finding all child contents of a collection`);
+        this.standardLog.info({ id: 'CONTENT_DELETE_FIND_CHILDREN', message: `finding all child contents of a collection` });
         return await this.databaseSdk.find("content", dbFilter);
     }
 }

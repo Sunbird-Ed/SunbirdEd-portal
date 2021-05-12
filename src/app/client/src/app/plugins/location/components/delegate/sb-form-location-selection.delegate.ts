@@ -35,6 +35,7 @@ export class SbFormLocationSelectionDelegate {
   private stateChangeSubscription?: Subscription;
 
   private changesMap: {} = {};
+  private guestUserDetails;
 
   constructor(
     private userService: UserService,
@@ -110,7 +111,7 @@ export class SbFormLocationSelectionDelegate {
 
       const subPersonaFormControl = this.formGroup.get('children.persona.subPersona');
       if (subPersonaFormControl && !subPersonaFormControl.value) {
-        subPersonaFormControl.patchValue((_.get(this.userService.userProfile, 'userSubType') || '') || null);
+        subPersonaFormControl.patchValue((_.get(this.userService.userProfile.profileUserType, 'subType') || '') || null);
       }
 
       if (!this.stateChangeSubscription) {
@@ -201,7 +202,7 @@ export class SbFormLocationSelectionDelegate {
       const formValue = this.formGroup.value;
       const payload: any = {
         userId: _.get(this.userService, 'userid'),
-        locationCodes: locationDetails,
+        profileLocation: locationDetails,
         ...(_.get(formValue, 'name') ? { firstName: _.get(formValue, 'name') } : {} ),
         ...(_.get(formValue, 'persona') ? { userType: _.get(formValue, 'persona') } : {} ),
         ...(_.get(formValue, 'children.persona.subPersona') ? { userSubType: _.get(formValue, 'children.persona.subPersona') } : {} ),
@@ -211,6 +212,16 @@ export class SbFormLocationSelectionDelegate {
         .then(() => ({ userProfile: 'success' }))
         .catch(() => ({ userProfile: 'fail' }));
       tasks.push(task);
+    }
+
+    if (!this.userService.loggedIn && this.guestUserDetails) {
+      const formValue = this.formGroup.value;
+      const user = { ...this.guestUserDetails, formatedName: _.get(formValue, 'name') };
+
+      if (_.get(formValue, 'persona')) {
+        localStorage.setItem('userType', formValue.persona);
+      }
+      this.userService.updateGuestUser(user, formValue).subscribe();
     }
 
     return await Promise.all(tasks).then((result) => {
@@ -239,12 +250,16 @@ export class SbFormLocationSelectionDelegate {
     this.isLocationFormLoading = true;
     const tempLocationFormConfig: FieldConfig<any>[] = await this.formService.getFormConfig(formInputParams)
       .toPromise();
+    this.guestUserDetails = await this.userService.getGuestUser().toPromise();
 
     for (const config of tempLocationFormConfig) {
       if (config.code === 'name') {
         if (this.userService.loggedIn) {
           config.templateOptions.hidden = false;
           config.default = (_.get(this.userService.userProfile, 'firstName') || '') || null;
+        } else if (this.guestUserDetails) {
+          config.templateOptions.hidden = false;
+          config.default = (_.get(this.guestUserDetails, 'formatedName') || 'Guest');
         } else {
           config.validations = [];
         }
@@ -255,6 +270,7 @@ export class SbFormLocationSelectionDelegate {
           config.templateOptions.hidden = false;
           config.default = (_.get(this.userService.userProfile, 'userType') || '').toLowerCase() || 'teacher';
         } else {
+          config.templateOptions.hidden = false;
           config.default = (localStorage.getItem('userType') || '').toLowerCase() || 'teacher';
         }
       }
@@ -303,7 +319,7 @@ export class SbFormLocationSelectionDelegate {
             switch (personaLocationConfig.templateOptions['dataSrc']['marker']) {
               case 'SUBPERSONA_LIST': {
                 if (this.userService.loggedIn) {
-                  personaLocationConfig.default = (_.get(this.userService.userProfile, 'userSubType') || '') || null;
+                  personaLocationConfig.default = (_.get(this.userService.userProfile.profileUserType, 'subType') || '') || null;
                 }
                 break;
               }
@@ -403,8 +419,8 @@ export class SbFormLocationSelectionDelegate {
         this.shouldDeviceProfileLocationUpdate = true;
 
         suggestions = [
-          { type: 'state', name: this.deviceProfile.ipLocation.state },
-          { type: 'district', name: this.deviceProfile.ipLocation.district }
+          { type: 'state', name: _.get(this.deviceProfile, 'ipLocation.state') },
+          { type: 'district', name: _.get(this.deviceProfile, 'ipLocation.district') }
         ];
       } else {
         // render using userDeclaredLocation

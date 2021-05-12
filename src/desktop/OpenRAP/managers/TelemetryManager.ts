@@ -7,18 +7,16 @@ import { Inject, Singleton } from "typescript-ioc";
 import * as _ from "lodash";
 import SystemSDK from "../sdks/SystemSDK";
 import { UserSDK } from "../sdks/UserSDK";
-import { logger } from "@project-sunbird/logger";
-import { ClassLogger } from '@project-sunbird/logger/decorator';
 import * as zlib from "zlib";
 import * as path from "path";
 import * as fs from "fs";
 import FileSDK from "../sdks/FileSDK";
 import uuid = require("uuid");
 import { TelemetryInstance } from "../services/telemetry/telemetryInstance";
-import { HTTPService } from "../services/httpService";
 import SettingSDK from "../sdks/SettingSDK";
 import { NetworkQueue, NETWORK_SUBTYPE } from '../services/queue/networkQueue';
 import { EventManager } from "./EventManager";
+import { StandardLogger } from '../services/standardLogger/standardLogger';
 
 @Singleton
 export class TelemetryManager {
@@ -32,6 +30,8 @@ export class TelemetryManager {
   private userSDK: UserSDK;
   @Inject
   private telemetryInstance: TelemetryInstance;
+  @Inject
+  private standardLog: StandardLogger;
   private settingSDK = new SettingSDK('openrap-sunbirded-plugin');
   private TELEMETRY_PACKET_SIZE =
     parseInt(process.env.TELEMETRY_PACKET_SIZE) || 200;
@@ -70,18 +70,18 @@ export class TelemetryManager {
             // Inserting to Queue DB
             await this.networkQueue.add(dbData, _.get(packet, '_id'))
               .then(async data => {
-                logger.info('Adding to Queue db successful from telemetry packet db');
+                this.standardLog.info({ id: 'TELEMETRY_MANAGER_ADDED_TO_QUEUE_DB', message: `Adding to Queue db successful from telemetry packet db` });
                 let resp = await this.databaseSdk.updateDoc("telemetry_packets", packet._id, { syncStatus: true, _deleted: true });
                 return resp;
               })
               .catch(err => {
-                logger.error("Adding to queue Db failed while migrating from telemetry packet db", err);
+                this.standardLog.error({ id: 'TELEMETRY_MANAGER_ADD_TO_QUEUE_DB_FAILED', message: 'Adding to queue Db failed while migrating from telemetry packet db', error: err });
               });
           }
         });
       }
     } catch (error) {
-      logger.error(`Got error while migrating telemetry packet db data to queue db ${error}`);
+      this.standardLog.error({ id: 'TELEMETRY_MANAGER_MIGRATION_FAILED', message: 'Got error while migrating telemetry packet db data to queue db', error });
       this.networkQueue.logTelemetryError(error);
     }
   }
@@ -89,7 +89,9 @@ export class TelemetryManager {
   async batchJob() {
     try {
       let loggedInUser;
-      loggedInUser = await this.userSDK.getUserSession().catch(err => logger.error("Error while getting user session", err));
+      loggedInUser = await this.userSDK.getUserSession().catch(err => {
+        this.standardLog.error({ id: 'TELEMETRY_MANAGER_USER_SESSION_FETCH_FAILED', message: 'Error while getting user session', error: err });
+      });
       const userId = _.get(loggedInUser, 'userId') || '';
       let did = await this.systemSDK.getDeviceId();
       let dbFilters = {
@@ -98,9 +100,7 @@ export class TelemetryManager {
       };
       let telemetryEvents = await this.databaseSdk.find("telemetry", dbFilters);
       if (telemetryEvents.docs.length === 0) return;
-      logger.info(
-        `Batching telemetry events size ${telemetryEvents.docs.length} of chunk size each ${this.TELEMETRY_PACKET_SIZE}`
-      );
+      this.standardLog.info({ id: 'TELEMETRY_MANAGER_BATCHING_TELEMETRY', message: `Batching telemetry events size ${telemetryEvents.docs.length} of chunk size each ${this.TELEMETRY_PACKET_SIZE}` });
       let updateDIDFlag = process.env.MODE === "standalone";
       let formatedEvents = _.map(telemetryEvents.docs, doc => {
         let omittedDoc = _.omit(doc, ["_id", "_rev"]);
@@ -138,15 +138,15 @@ export class TelemetryManager {
               bearerToken: true
             };
             await this.networkQueue.add(dbData, id);
-            logger.info(`Added telemetry packets to queue DB of size ${packets.length}`);
+            this.standardLog.info({ id: 'TELEMETRY_MANAGER_PACKETS_ADDED_TO_QUEUE_DB', message: `Added telemetry packets to queue DB of size ${packets.length}` });
             const deleteEvents = _.map(telemetryEvents.docs, data => ({ _id: data._id, _rev: data._rev, _deleted: true }));
             telemetryEvents = await this.databaseSdk.bulkDocs("telemetry", deleteEvents);
-            logger.info(`Deleted telemetry events of size ${deleteEvents.length} from telemetry db`);
+            this.standardLog.info({ id: 'TELEMETRY_MANAGER_EVENTS_DELETED_FROM_DB', message: `Deleted telemetry events of size ${deleteEvents.length} from telemetry db` });
           }
         });
       }
     } catch (error) {
-      logger.error(`Error while batching the telemetry events = ${error}`);
+      this.standardLog.error({ id: 'TELEMETRY_MANAGER_BATCHING_FAILED', message: `Error while batching the telemetry events`, error });
       this.networkQueue.logTelemetryError(error);
     }
   }
@@ -154,7 +154,7 @@ export class TelemetryManager {
   async archive() {
     EventManager.subscribe("telemetry-synced", async (data) => {
       let { requestBody, _id, size } = data;
-      logger.info(`Archiving telemetry started with id = ${_id}`);
+      this.standardLog.info({id: 'TELEMETRY_MANAGER_ARCHIVE', message: `Archiving telemetry started with id = ${_id}`});
       let bufferData = Buffer.from(requestBody.data);
       let fileSDK = new FileSDK("");
       await fileSDK.mkdir("telemetry_archived");
@@ -165,7 +165,7 @@ export class TelemetryManager {
       wstream.write(bufferData);
       wstream.end();
       wstream.on("finish", () => {
-        logger.info(`${bufferData.length} events are wrote to file ${filePath} and  deleting events from telemetry database`);
+        this.standardLog.info({ id: 'TELEMETRY_MANAGER_EVENTS_WROTE', message: `${bufferData.length} events are wrote to file ${filePath} and  deleting events from telemetry database` });
       });
       const logEvent = {
         context: {
@@ -185,7 +185,7 @@ export class TelemetryManager {
       fs.readdir(archiveFolderPath, (error, files) => {
         //filter gz files
         if (error) {
-          logger.error(`While filtering gz files = ${error}`);
+          this.standardLog.error({ id: 'TELEMETRY_MANAGER_FILTERING_GZ_FAILED', message: `While filtering gz files = ${error}` });
           this.networkQueue.logTelemetryError(error);
         } else if (files.length !== 0) {
           let now = Date.now();
@@ -195,7 +195,7 @@ export class TelemetryManager {
 
             let createdOn = Number(fileArr[fileArr.length - 2]);
             if ((now - createdOn) / 1000 > expiry) {
-              logger.info(`deleting file ${file} which is created on ${createdOn}`);
+              this.standardLog.info({ id: 'TELEMETRY_MANAGER_DELETING_FILE', message: `deleting file ${file} which is created on ${createdOn}` });
               fileSDK.remove(path.join("telemetry_archived", file));
             }
           }

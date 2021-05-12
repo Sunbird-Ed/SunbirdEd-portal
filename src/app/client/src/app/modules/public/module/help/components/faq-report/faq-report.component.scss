@@ -1,0 +1,95 @@
+@import "mixins/mixins";
+
+h6 {
+  color: #333333;
+  font-size: 1.125rem;
+  font-weight: bold;
+}
+
+p {
+  color: #666666;
+  font-size: 0.75rem;
+}
+
+sb-form.faq-sbforms {}
+
+::ng-deep {
+  .multi-select-container .list-border {
+    background: var(--white);
+    border: 0px solid #ddd !important;
+  }
+
+  .sb-textarea {
+    border-radius: 1rem !important;
+  }
+
+  .sb-modal-dropdown-web ul {
+    border: 0 solid #ddd !important;
+  }
+
+  sb-form.faq-sbforms>div:first-child {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: auto;
+
+    @include respond-above(sm) {
+      grid-template-columns: auto auto;
+
+      div:nth-child(1) {
+        grid-column-start: 1;
+        grid-column-end: 2;
+      }
+
+      div:nth-child(2) {
+        grid-column-start: 2;
+        grid-column-end: 2;
+      }
+
+      div:nth-child(3) {
+        grid-column-start: 1;
+        grid-column-end: 3;
+      }
+    }
+
+  }
+
+  sb-form{
+    sb-multiple-dropdown{
+      .list-border{
+        ul{
+          padding: 0;
+        }
+        height: 3rem !important;
+      }
+    }
+
+    .sb-modal-dropdown-web {
+      ul{
+        top: auto !important;
+        border-radius: 2rem;
+        padding: 0 1rem;
+        overflow-y: auto !important;
+        overflow: hidden;
+      }
+      li {
+        margin: 0 !important;
+        padding: 0 !important;
+
+        > div {
+          cursor: pointer;
+          padding: 16px;
+        }
+      }
+    }
+
+    sb-textarea{
+      textarea{
+        height: 16rem;
+      }
+    }
+  }
+}
+
+.submit-feedback{
+  float:right;
+}

@@ -122,6 +122,8 @@ export class PublicPlayerService {
       url: `${this.configService.urlConFig.URLS.COURSE.HIERARCHY}/${identifier}`,
       param: option.params
     };
+     // add the content id to the tag array here
+    // window['TagManger'].SBTagService.pushTag(identifier, 'CONTENT_', false);
     return this.publicDataService.get(req).pipe(map((response: ServerResponse) => {
       if (response.result.content) {
         response.result.content = this.utilService.sortChildrenWithIndex(response.result.content);
@@ -212,7 +214,7 @@ export class PublicPlayerService {
   }
 
   getQuestionSetRead(contentId: string, option: any = { params: {} }): Observable<ServerResponse> {
-    const param = { fields: this.configService.editorConfig.DEFAULT_PARAMS_FIELDS };
+    const param = { fields: this.configService.urlConFig.params.questionSetRead };
     const req = {
         url: `${this.configService.urlConFig.URLS.QUESTIONSET.READ}/${contentId}`,
         param: { ...param, ...option.params }

@@ -1,4 +1,3 @@
-import { logger } from "@project-sunbird/logger";
 import * as _ from "lodash";
 import { containerAPI, ISystemQueue, ITaskExecuter } from "@project-sunbird/OpenRAP/api";
 import * as os from "os";
@@ -22,6 +21,7 @@ export class ContentDeleteHelper implements ITaskExecuter {
   private fileSDK = containerAPI.getFileSDKInstance(manifest.id);
   private settingSDK = containerAPI.getSettingSDKInstance(manifest.id);
   private prefixPath = this.fileSDK.getAbsPath("");
+  private standardLog = containerAPI.getStandardLoggerInstance();
 
   public async start(contentDeleteData: ISystemQueue, observer: import("rxjs").Observer<ISystemQueue>) {
     this.observer  = observer;
@@ -55,7 +55,7 @@ export class ContentDeleteHelper implements ITaskExecuter {
                 },
                 error: (err) => {
                     this.observer.error(err);
-                    logger.error(`error while deleting the content ${err.stack} and retried for 5 times`);
+                    this.standardLog.error({ id: 'CONTENT_DELETE_FAILED', message: `error while deleting the content and retried for 5 times`, error: err });
                 },
               });
     }
@@ -70,7 +70,8 @@ export class ContentDeleteHelper implements ITaskExecuter {
           let i = 0;
           while (_.get(locationList, "location.length") && i < locationList.location.length) {
             const folderPath = path.join(locationList.location[i], filePath);
-            const isDirExist = await this.fileSDK.isDirectoryExists(folderPath).catch((err) => console.log("Error while checking directory path"));
+            const isDirExist = await this.fileSDK.isDirectoryExists(folderPath).catch((err) => this.standardLog.error({ id: 'CONTENT_DELETE_HELPER_DIR_DOES_NOT_EXIST', message: 'No such file or directory', error: err }));
+
             if (isDirExist) {
               this.prefixPath = locationList.location[i];
               break;
@@ -80,6 +81,7 @@ export class ContentDeleteHelper implements ITaskExecuter {
 
           return this.prefixPath && !_.includes(this.queue, filePath);
         } catch (error) {
+          this.standardLog.error({ id: 'CONTENT_DELETE_HELPER_CHECK_PATH_FAILED', message: 'Error while checking content location path', error });
           return this.prefixPath && !_.includes(this.queue, filePath);
         }
       } else {

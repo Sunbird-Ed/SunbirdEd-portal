@@ -10,6 +10,7 @@ import { ContentImportManager } from "../../manager/contentImportManager";
 import DatabaseSDK from "../../sdk/database";
 import Response from "../../utils/response";
 import { containerAPI, ISystemQueueInstance } from "@project-sunbird/OpenRAP/api";
+import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
 const sessionStartTime = Date.now();
 const ContentSearchUrl = `${process.env.APP_BASE_URL}/api/content/v1/search`;
 const DefaultRequestOptions = { headers: { "Content-Type": "application/json" } };
@@ -34,12 +35,14 @@ export default class Content {
     private systemQueue: ISystemQueueInstance;
 
     private fileSDK;
+    @Inject private standardLog: StandardLogger;
 
     constructor(private manifest) {
         this.contentImportManager.initialize();
         this.databaseSdk.initialize(manifest.id);
         this.fileSDK = containerAPI.getFileSDKInstance(manifest.id);
         this.systemQueue = containerAPI.getSystemQueueInstance(manifest.id);
+        this.standardLog = containerAPI.getStandardLoggerInstance();
         this.getDeviceId();
     }
 
@@ -48,7 +51,7 @@ export default class Content {
             if (k !== 'query') return ({ '$in': v })
         });
         delete modifiedFilters['query'];
-        logger.info(`ReqId = "${reqId}": Deleted 'query' in modifiedFilters`);
+        this.standardLog.info({ id: 'CONTENT_FILTER_QUERY_REMOVED', message: "Deleted 'query' in modifiedFilters", mid: reqId });
         if (_.get(filters, 'query')) {
             modifiedFilters['name'] = {
                 "$regex": new RegExp(_.get(filters, 'query'), 'i')
@@ -116,9 +119,7 @@ export default class Content {
                 return res.send(Response.error('api.content.read', 404));
             }
             } catch (error) {
-                logger.error(
-                    `ReqId = "${req.headers['X-msgid']}": Received error while getting the data from content database and err.message: ${error}`
-                );
+                this.standardLog.error({ id: 'CONTENT_DB_READ_FAILED', message: 'Received error while getting the data from content database', error, mid: req.headers['X-msgid'] });
                 if (error.status === 404) {
                     res.status(404);
                     return res.send(Response.error('api.content.read', 404));
@@ -178,7 +179,7 @@ export default class Content {
                 },
             }, req));
         } catch (error) {
-            logger.error(`ReqId = "${req.headers['X-msgid']}": Error while processing the content list request and err.message: ${error.message}`);
+            this.standardLog.error({id: 'CONTENT_PROCESS_FAILED', message: 'Error while processing the content list request', error: error.message, mid: req.headers['X-msgid']});
             res.status(500);
             return res.send(Response.error("api.content.list", 500));
         }
@@ -243,12 +244,7 @@ export default class Content {
                 return res.send(responseObj);
             })
             .catch(err => {
-                console.log(err);
-                logger.error(
-                    `ReqId = "${req.headers['X-msgid']}":  Received error while searching content - err.message: ${
-                    err.message
-                    } ${err}`
-                );
+                this.standardLog.error({ id: 'CONTENT_SEARCH_FAILED', mid: req.headers['X-msgid'], message: 'Received error while searching content', error: err.message });
                 if (err.status === 404) {
                     res.status(404);
                     return res.send(Response.error('api.content.search', 404));
@@ -271,11 +267,7 @@ export default class Content {
             );
             return await this.getMimeTypeCollections(dialcode);
         } catch (err) {
-            logger.error(
-                `ReqId = " Received error while searching QR code content from searchForDialCodeContent - err.message: ${
-                err.message
-                } ${err}`
-            );
+            this.standardLog.error({ id: 'CONTENT_QRCODE_SEARCH_FAILED', message: 'Received error while searching QR code content from searchForDialCodeContent', error: err.message });
             return [];
         }
     }
@@ -340,11 +332,7 @@ export default class Content {
             );
             return res.send(Response.success(`api.page.assemble`, resObj, req.body.request));
         } catch (err) {
-            logger.error(
-                `ReqId = "${req.headers['X-msgid']}":  Received error while searching content - err.message: ${
-                err.message
-                } ${err}`
-            );
+            this.standardLog.error({ id: 'CONTENT_DIALCODE_SEARCH_FAILED', mid: req.headers['X-msgid'], message: 'Received error while searching content', error: err.message });
             if (err.status === 404) {
                 res.status(404);
                 return res.send(Response.error(`api.page.assemble`, 404));
@@ -611,6 +599,7 @@ export default class Content {
                 importedJobIds: jobIds,
             }, req));
         }).catch((err) => {
+            this.standardLog.error({ id: 'CONTENT_IMPORT_FAILED', message: 'Received error while importing a content', mid: req.headers['X-msgid'], error: err });
             res.status(500);
             res.send(Response.error(`api.content.import`, 400, err.errMessage || err.message, err.code));
         });
@@ -621,6 +610,7 @@ export default class Content {
                 jobIds,
             }, req));
         }).catch((err) => {
+            this.standardLog.error({ id: 'CONTENT_IMPORT_PAUSE_FAILED', message: 'Received error while pausing a content import', mid: req.headers['X-msgid'], error: err });
             res.status(500);
             res.send(Response.error(`api.content.import`, 400, err.message));
         });
@@ -631,6 +621,7 @@ export default class Content {
                 jobIds,
             }, req));
         }).catch((err) => {
+            this.standardLog.error({ id: 'CONTENT_IMPORT_RESUME_FAILED', message: 'Received error while resuming a content import', mid: req.headers['X-msgid'], error: err });
             res.status(500);
             res.send(Response.error(`api.content.import`, 400, err.message));
         });
@@ -641,6 +632,7 @@ export default class Content {
                 jobIds,
             }, req));
         }).catch((err) => {
+            this.standardLog.error({ id: 'CONTENT_IMPORT_CANCEL_FAILED', message: 'Received error while canceling content import process', mid: req.headers['X-msgid'], error: err });
             res.status(500);
             res.send(Response.error(`api.content.import`, 400, err.message));
         });
@@ -651,6 +643,7 @@ export default class Content {
                 jobIds,
             }, req));
         }).catch((err) => {
+            this.standardLog.error({ id: 'CONTENT_IMPORT_RETRY_FAILED', message: 'Received error while retrying content import process', mid: req.headers['X-msgid'], error: err });
             res.status(500);
             res.send(Response.error(`api.content.retry`, 400, err.message));
         });
@@ -746,10 +739,7 @@ export default class Content {
         try {
             proxyData = JSON.parse(proxyResData.toString('utf8'));
         } catch (e) {
-            console.log(e);
-            logger.error(
-                `ReqId = "${req.headers['X-msgid']}": Received error while parsing the Bufferdata to json: ${e}`
-            );
+            this.standardLog.error({ id: 'CONTENT_JSON_PARSE_ERROR', message: 'Received error while parsing the Buffer data to json', mid: req.headers['X-msgid'], error: e });
             return proxyResData;
         }
         logger.info(`ReqId = "${req.headers['X-msgid']}": Succesfully converted Bufferdata to json`)
@@ -771,7 +761,7 @@ export default class Content {
             contents = await this.changeContentStatus(offlineContents.docs, reqId, contents);
             return contents;
         } catch (err) {
-            logger.error(`ReqId = "${reqId}": Received  error err.message: ${err.message} ${err}`);
+            this.standardLog.error({id: 'CONTENT_DECORATE_FAILED', message: 'Received  error while decorating content', mid: reqId, error: err});
             return contents;
         }
     }
@@ -808,7 +798,7 @@ export default class Content {
                 await this.databaseSdk.update('content', offlineContent.identifier, offlineContent);
                 resolve(offlineContent);
             } catch (err) {
-                logger.error(`ReqId = "${req.headers['X-msgid']}": Error occured while checking content update : ${err}`);
+                this.standardLog.error({ id: 'CONTENT_UPDATE_CHECK_FAILED', mid: req.headers['X-msgid'], message: "Error occurred while checking content update", error: err });
                 resolve(offlineContent);
             }
         })

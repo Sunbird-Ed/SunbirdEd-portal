@@ -11,6 +11,7 @@ const fileSDK = containerAPI.getFileSDKInstance(manifest.id);
 import ContentLocation from "../../controllers/contentLocation";
 
 import { ClassLogger } from "@project-sunbird/logger/decorator";
+import { Inject } from 'typescript-ioc';
 // @ClassLogger({
 //   logLevel: "debug",
 //   logTime: true,
@@ -24,6 +25,7 @@ export class ExportContent {
   private startTime = Date.now();
   private cb;
   private settingSDK = containerAPI.getSettingSDKInstance(manifest.id);
+  @Inject private standardLog = containerAPI.getStandardLoggerInstance();
   constructor(private destFolder, private dbParentNode, private dbChildNodes) { }
   public async export(cb) {
     const contentLocation = new ContentLocation(manifest.id);
@@ -55,8 +57,8 @@ export class ExportContent {
       logger.info("Ecar exported successfully with", data);
       this.cb(null, data);
     } catch (error) {
+      this.standardLog.error({ id: 'CONTENT_EXPORT_FAILED', message: `Error while exporting content, ${this.ecarName}, ${this.corruptContents}`, error });
       this.cb(error, null);
-      logger.error("Error while exporting content", this.ecarName, error, this.corruptContents);
     }
   }
   private async loadParentCollection(): Promise<boolean> {
@@ -98,7 +100,7 @@ export class ExportContent {
     for (const child of childNodes) {
       const dbChildDetails = _.find(this.dbChildNodes, { identifier: child });
       const childManifest = await fileSDK.readJSON(path.join(this.contentBaseFolder, child, "manifest.json"))
-        .catch((err) => logger.error(`Error while reading content: ${child} for content import for ${this.dbParentNode.identifier}`));
+        .catch((err) => this.standardLog.error({ id: 'CONTENT_EXPORT_CONTENT_READ_FAILED', message: `Error while reading content: ${child} for content import for ${this.dbParentNode.identifier}`, error: err }));
       if (childManifest) {
         const childDetails = _.get(childManifest, "archive.items[0]");
         if (childDetails) {
@@ -271,7 +273,7 @@ export class ExportContent {
           i++;
         }
       } catch (error) {
-        logger.error("Error while exporting content", error);
+        this.standardLog.error({ id: 'CONTENT_EXPORT_FAILED', message: `Error while exporting content`, error });
       }
     }
   }

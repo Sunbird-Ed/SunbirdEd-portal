@@ -1,4 +1,3 @@
-import { logger } from "@project-sunbird/logger";
 import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import { NetworkQueue } from "@project-sunbird/OpenRAP/services/queue";
 import * as _ from 'lodash';
@@ -38,6 +37,7 @@ export default class ContentStatus {
   }
 
   public async getLocalContentStatusList(req, res) {
+    const standardLog = containerAPI.getStandardLoggerInstance();
     try {
       const currentUserId = await this.getCurrentUserId();
       const request = _.get(req, 'body.request');
@@ -53,12 +53,13 @@ export default class ContentStatus {
 
       res.status(200).send(Response.success(API_ID, { contentList }, req));
     } catch (error) {
-      logger.error(`Error while fetching content status from database with error message = ${error.message}`);
+      standardLog.error({id: 'CONTENT_STATUS_DB_READ_FAILED', message: 'Error while fetching content status from database', error});
       res.status(500).send(Response.error(API_ID, 500));
     }
   }
 
   public async saveContentStatus(contentStatusList = []) {
+    const standardLog = containerAPI.getStandardLoggerInstance();
     return new Promise(async(resolve, reject) => {
       try {
         const userId = await this.getCurrentUserId();
@@ -82,17 +83,18 @@ export default class ContentStatus {
           resolve({});
         });
       } catch (error) {
-        logger.error(`Error while inserting content status in database with error message = ${error.message}`);
+        standardLog.error({ id: 'CONTENT_STATUS_DB_INSERT_FAILED', message: 'Error while inserting content status in database', error });
         resolve({});
       }
     });
   }
 
   async update(req, res) {
+    const standardLog = containerAPI.getStandardLoggerInstance();
     this.deviceId = this.deviceId || await containerAPI.getSystemSDKInstance(manifest.id).getDeviceId();
-    const userToken: any = await userSDK.getUserToken().catch(error => { logger.debug("Unable to get the user token", error); });
-    const loggedInUserSession: any = await userSDK.getUserSession().catch(error => { logger.debug("User not logged in", error); });
-    const currentUser: any = await userSDK.getLoggedInUser(loggedInUserSession.userId, true).catch(error => { logger.debug("Unable to get the user token", error); });
+    const userToken: any = await userSDK.getUserToken().catch(error => { standardLog.debug({ id: 'CONTENT_STATUS_GET_USER_TOKEN_FAILED', message: 'Unable to get the user token', error }); });
+    const loggedInUserSession: any = await userSDK.getUserSession().catch(error => { standardLog.debug({ id: 'CONTENT_STATUS_USER_NOT_LOGGED_IN', message: 'User not logged in', error }); });
+    const currentUser: any = await userSDK.getLoggedInUser(loggedInUserSession.userId, true).catch(error => { standardLog.debug({ id: 'CONTENT_STATUS_GET_USER_TOKEN_FAILED', message: 'Unable to get the user token', error }); });
 
     let headers = {
       "Content-Type": "application/json",
@@ -115,14 +117,14 @@ export default class ContentStatus {
     };
 
     this.networkQueue.add(request).then(async (data) => {
-      logger.info("Added in queue");
+      standardLog.info({ id: 'CONTENT_STATUS_INSERTED_IN_QUEUE', message: 'Added in queue' });
       const contents = _.get(req, 'body.request.contents');
       const contentIds = _.map(contents, item => item.contentId);
       const result = contentIds.reduce((o, key) => ({ ...o, [key]: 'SUCCESS' }), {});
       await this.saveContentStatus(contents);
       res.status(200).send(Response.success("api.content.state.update", { result }, req));
     }).catch((error) => {
-      logger.error("Error while adding to Network queue", error);
+      standardLog.error({ id: 'CONTENT_STATUS_NETWORKQUEUE_INSERT_FAILED', message: "Error while adding to Network queue", error });
       res.status(500).send(Response.error("api.content.state.update", 500));
     });
   }

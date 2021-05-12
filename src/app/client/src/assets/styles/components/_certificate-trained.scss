@@ -82,12 +82,12 @@
     @include respond-below(md) {
       margin-bottom: calculateRem(20px) !important;
       flex: 1 1 50%;
-      font-size: $font-size-base;
+      font-size: var(--font-size-base);
     }
   }
   .list-date {
     text-transform: uppercase;
-    font-size: $font-size-base;
+    font-size: var(--font-size-base);
     color: var(--sb-list-data);
   }
   .list-items__bar {
