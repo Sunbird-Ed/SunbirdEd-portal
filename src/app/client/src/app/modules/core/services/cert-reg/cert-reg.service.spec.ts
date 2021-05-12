@@ -68,7 +68,7 @@ describe('CertRegService', () => {
       }
     };
     certRegService.getUserCertList('testUser', '123', 'user1');
-    const options = { url: 'v1/user/search', data: params };
+    const options = { url: 'v2/user/search', data: params };
     expect(certRegService.post).toHaveBeenCalledWith(options);
   });
 

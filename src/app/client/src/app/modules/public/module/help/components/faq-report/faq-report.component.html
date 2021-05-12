@@ -1,0 +1,15 @@
+<div class="faq-report-container">
+  <h6 class="pb-16">{{faqData?.constants?.tellMoreMsg}}</h6>
+  <sb-form class="faq-sbforms" *ngIf="faqReportConfig"
+    [config]='faqReportConfig' 
+    [platform]="'web'" 
+    (valueChanges)="valueChanged($event)"   
+    (statusChanges)="statusChanged($event)">
+  </sb-form>
+  
+  <div>
+    <button class="sb-btn sb-btn-primary sb-btn-normal submit-feedback" (click)="faqReportSubmit()">
+      {{faqData?.constants?.submitButton}}
+    </button>
+  </div>
+</div>

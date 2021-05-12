@@ -126,13 +126,13 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
       /* istanbul ignore else */
       if (user.userProfile) {
         this.userProfile = user.userProfile;
-        const role: string = (!this.userProfile.userType ||
-          (this.userProfile.userType && this.userProfile.userType === 'OTHER')) ? '' : this.userProfile.userType;
+        const role: string = (!this.userProfile.profileUserType.type ||
+          (this.userProfile.profileUserType.type && this.userProfile.profileUserType.type === 'OTHER')) ? '' : this.userProfile.profileUserType.type;
         this.userLocation = this.getUserLocation(this.userProfile);
         this.getPersonaConfig(role).then((val) => {
           this.persona = val;
         });
-        this.getSubPersonaConfig(this.userProfile.userSubType, role.toLowerCase(), this.userLocation).then((val) => {
+        this.getSubPersonaConfig(this.userProfile.profileUserType.subType, role.toLowerCase(), this.userLocation).then((val) => {
           this.subPersona = val;
         });
         this.userFrameWork = this.userProfile.framework ? _.cloneDeep(this.userProfile.framework) : {};

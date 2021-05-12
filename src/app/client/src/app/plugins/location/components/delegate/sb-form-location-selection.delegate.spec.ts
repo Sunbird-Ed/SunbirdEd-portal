@@ -20,6 +20,9 @@ describe('SbFormLocationSelectionDelegate', () => {
     },
     get loggedIn(): boolean {
       return true;
+    },
+    getGuestUser(): Observable<any> {
+      return of({} as any);
     }
   };
   const mockLocationService: Partial<LocationService> = {
@@ -324,9 +327,10 @@ describe('SbFormLocationSelectionDelegate', () => {
 
             // assert
             expect(sbFormLocationSelectionDelegate.locationFormConfig).toEqual(jasmine.arrayContaining([
-              jasmine.objectContaining({
+              {
                 'code': 'name',
                 'type': 'input',
+                'default': 'Guest',
                 'templateOptions': {
                   'labelHtml': {
                     'contents': '<span>$0&nbsp;<span class="required-asterisk">*</span></span>',
@@ -334,12 +338,16 @@ describe('SbFormLocationSelectionDelegate', () => {
                       '$0': 'Name'
                     }
                   },
-                  'hidden': true,
+                  'hidden': false,
                   'placeHolder': 'Enter Name',
                   'multiple': false
                 },
-                'validations': []
-              }) as any
+                'validations': [
+                  {
+                    'type': 'required'
+                  }
+                ]
+              } as any
             ]));
           });
         });
@@ -350,8 +358,9 @@ describe('SbFormLocationSelectionDelegate', () => {
           it('should mark field visible and set default value to user\'s userType', async () => {
             // arrange
             spyOnProperty(mockUserService, 'loggedIn', 'get').and.returnValue(true);
-            spyOnProperty(mockUserService, 'userProfile', 'get').and.returnValue({
-              userType: 'teacher'
+            spyOnProperty(mockUserService, 'userProfile', 'get').and.returnValue({profileUserType: {
+              type: 'teacher'
+              }
             });
             spyOn(mockFormService, 'getFormConfig').and.returnValue(of(_.cloneDeep(sampleProfileConfig)));
 
@@ -409,7 +418,7 @@ describe('SbFormLocationSelectionDelegate', () => {
                 'type': 'nested_select',
                 'default': 'teacher',
                 'templateOptions': {
-                  'hidden': true,
+                  'hidden': false,
                   'labelHtml': {
                     'contents': '<span>$0&nbsp;<span class="required-asterisk">*</span></span>',
                     'values': {
@@ -457,7 +466,7 @@ describe('SbFormLocationSelectionDelegate', () => {
               'type': 'nested_select',
               'default': 'teacher',
               'templateOptions': {
-                'hidden': true,
+                'hidden': false,
                 'labelHtml': {
                   'contents': '<span>$0&nbsp;<span class="required-asterisk">*</span></span>',
                   'values': {
@@ -509,7 +518,7 @@ describe('SbFormLocationSelectionDelegate', () => {
               'type': 'nested_select',
               'default': 'teacher',
               'templateOptions': {
-                'hidden': true,
+                'hidden': false,
                 'labelHtml': {
                   'contents': '<span>$0&nbsp;<span class="required-asterisk">*</span></span>',
                   'values': {
@@ -723,10 +732,11 @@ describe('SbFormLocationSelectionDelegate', () => {
         // assert
         expect(mockLocationService.updateProfile).toHaveBeenCalledWith({
           userId: 'SOME_USER_ID',
-          locationCodes: [
+          profileLocation: [
             jasmine.objectContaining({code: 'SOME_SELECTED_STATE_CODE'}),
             jasmine.objectContaining({code: 'SOME_SELECTED_DISTRICT_CODE'})
-          ]
+          ],
+          profileUserType: {}
         });
       });
 
@@ -765,10 +775,12 @@ describe('SbFormLocationSelectionDelegate', () => {
         // assert
         expect(mockLocationService.updateProfile).toHaveBeenCalledWith({
           firstName: 'SOME_ENTERED_NAME',
-          userType: 'SOME_SELECTED_PERSONA',
-          userSubType: 'SOME_SELECTED_SUB_PERSONA',
+          profileUserType: {
+            type: 'SOME_SELECTED_PERSONA',
+            subType: 'SOME_SELECTED_SUB_PERSONA'
+          },
           userId: 'SOME_USER_ID',
-          locationCodes: [
+          profileLocation: [
             jasmine.objectContaining({code: 'SOME_SELECTED_STATE_CODE'}),
             jasmine.objectContaining({code: 'SOME_SELECTED_DISTRICT_CODE'})
           ]

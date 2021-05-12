@@ -4,9 +4,9 @@
 }
 
 :host::ng-deep {
-
+​
     .help-page {
-
+​
         &__content {
             margin-top: calculateRem(24px);
             .panel {
@@ -23,7 +23,7 @@
                 list-style: initial;
             }
         }
-
+​
         &__visit-helpcenter {
             background-color: var(--visit-helpcenter-bg);
             .visit-helpcenter__text {
@@ -40,7 +40,7 @@
             padding: 0 3px;
         }
     }
-
+​
     .extraTemplate {
         @include respond-below(sm) {
             flex-wrap: wrap;
@@ -51,5 +51,81 @@
                 margin-top: 16px;
             }
         }
+    }
+
+    sb-list {
+        .listView-compt{
+            section.mt-24{
+                button{
+                    text-transform: uppercase;
+                    font-weight: bold;
+                    img{
+                        height: 1rem;
+                    }
+                }
+            }
+        }
+    }
+
+    sb-faq {
+        .panel {
+            ul {
+                list-style: disc;
+                margin-top: 1rem;
+                margin-bottom: 1rem;
+            }
+            ul li {
+                margin-bottom: auto;
+            }
+            code {
+                background-color: #eee;
+                border-radius: 3px;
+                font-family: courier, monospace;
+                padding: 0 3px;
+            }
+        }
+    }
+}
+.faq_title {
+    color: var(--carousel-title);
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: 1.5rem;
+  }
+.sbhelp_container {
+    .category-list-mobile{
+        width:100%; 
+        display: block;
+    }
+    .faq-section-mobile{
+        width:100%; 
+        float:none;
+    }
+    .category-list-web{
+        display: inline-block;
+    }
+    display: flex;
+    align-items: flex-start;
+    &__left {
+        min-width: calculateRem(312px);
+        flex:1;
+        padding:1.5rem;
+        min-height: 8rem;
+        background: var(--sbfaq-compt-bg);
+        transition: all ease-in-out .3s;
+    }
+    &__right {
+        padding-left: 2rem;
+        width: calc(100% - 19.5rem);
+        transition: all ease-in-out .3s;
+        @include respond-below(sm) {
+            padding-left: 0rem;
+        }
+    }
+    &__faq {
+        background: var(--sbfaq-compt-bg);
+        padding: 1.5rem;
+        border-radius: 1.5rem;
     }
 }

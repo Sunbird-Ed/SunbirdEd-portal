@@ -20,18 +20,18 @@
             <h4 class="sb-pageSection-title m-0 mr-5 sb-pagesection-activity">
               {{resourceService?.frmelmnts?.lbl?.activities}}</h4>
               <button type="button" class="sb-btn sb-btn-primary sb-btn-normal ml-auto" *ngIf="isAdmin && groupData?.active"
-              (click)="navigateToAddActivity(); addTelemetry('add-activity')">
+              (click)="navigateToAddActivity(); addTelemetry('add-activity', '', {type: ADD_ACTIVTY})">
               <i class="plus icon" aria-hidden="true"></i>
               {{resourceService?.frmelmnts?.btn?.addActivity}}
             </button>
           </div>
         </div>
-        <div class="d-flex flex-jc-space-between my-16 p-8 group-status" *ngIf="!groupData?.active">
-          <div class="d-flex fnormal flex-ai-center group-status__label">
+        <div class="my-16 p-8 group-status" *ngIf="!groupData?.active">
+          <div class="fnormal group-status__label">
           <img class="mr-8" src="assets/images/exclamation.svg" width="18px">
            {{resourceService?.messages?.imsg?.m001}}
           </div>
-         <button *ngIf="groupData?.isAdmin" class="sb-btn sb-btn-primary sb-btn-normal" type="button" (click)="handleEvent()">{{resourceService?.frmelmnts?.lbl?.activategrp}}</button>
+         <button *ngIf="groupData?.isAdmin" class="sb-btn sb-btn-primary sb-btn-normal mt-8" type="button" (click)="handleEvent()">{{resourceService?.frmelmnts?.lbl?.activategrp}}</button>
         </div>
         <app-add-activity *ngIf="!showActivityList"></app-add-activity>
         <app-activity-list *ngIf="showActivityList" [groupData]="groupData" [activityList]="activityList"></app-activity-list>

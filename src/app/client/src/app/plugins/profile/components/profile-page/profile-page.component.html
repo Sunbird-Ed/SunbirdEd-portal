@@ -50,60 +50,9 @@
       </span>
     </div>
     <div class="ui container">
-      <div *ngIf="persona?.name" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
-        <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.role}} :</div>
-        <div class="fmedium ml-5 font-w-bold text-center">
-          {{persona.name}} </div>
-      </div>
-
-    <div *ngIf="subPersona" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
-      <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.subRole}} :</div>
-      <div class="fmedium ml-5 font-w-bold text-center">
-        {{subPersona}} </div>
-    </div>
+      
   </div>
     <div class="fs-1-5 font-w-bold d-flex mb-8 text-center org-info" *ngIf=" orgDetails && orgDetails.orgName">{{orgDetails.orgName}}
-    </div>
-
-    <!-- add state and district -->
-    <div class="ui container">
-      <div *ngIf="userLocation?.school && userLocation?.school?.name" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
-        <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.school}} :</div>
-        <div class="fmedium ml-5 font-w-bold text-center">
-          {{userLocation.school.name}} </div>
-      </div>
-      <div *ngIf="userLocation?.cluster && userLocation?.cluster?.name" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
-        <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.cluster}} :</div>
-        <div class="fmedium ml-5 font-w-bold text-center">
-          {{userLocation.cluster.name}} </div>
-      </div>
-      <div *ngIf="userLocation?.block && userLocation?.block?.name" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
-        <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.block}} :</div>
-        <div class="fmedium ml-5 font-w-bold text-center">
-          {{userLocation.block.name}} </div>
-      </div>
-      <div *ngIf="userLocation?.district && userLocation?.district?.name" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
-        <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.district}} :</div>
-        <div class="fmedium ml-5 font-w-bold text-center">
-          {{userLocation.district.name}} </div>
-      </div>
-      <div *ngIf="userLocation?.state && userLocation?.state?.name" class="d-flex mb-5 flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
-        <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.state}} :</div>
-        <div class="fmedium ml-5 font-w-bold text-center">
-          {{userLocation.state.name}}</div>
-      </div>
-      <div class="d-flex flex-dc flex-jcc-center flex-ai-center">
-        <button appTelemetryInteract appOnlineOnly
-          [telemetryInteractEdata]="editProfileInteractEdata"
-          class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border my-16"
-          (click)="showEditUserDetailsPopup=true">{{resourceService.frmelmnts.lbl.edit}}</button>
-        <button appTelemetryInteract appOnlineOnly
-                [telemetryInteractEdata]="submitTeacherDetailsInteractEdata"
-                *ngIf="!declarationDetails && isCustodianOrgUser"
-                (click)="navigate('/profile/teacher-declaration','submit')"
-                class="no-text-transform sb-btn sb-btn-normal sb-btn-secondary sb-right-icon-btn mx-8 mb-8 px-24" type="submit">
-        {{resourceService?.frmelmnts?.lbl?.iAmStateTeacher}} </button>
-      </div>
     </div>
     <!-- <div class="ui container" *ngIf="!isCustodianOrgUser">
       <div class="d-flex flex-dc flex-jcc-center flex-ai-center">
@@ -144,56 +93,60 @@
     </div> -->
   </section>
 
-  <section class="pt-30 pb-30 d-flex flex-jc-center profile-bg-c-3" *ngIf="userProfile.email || userProfile.phone">
-    <div class="d-flex flex-dc">
-      <div class="d-flex flex-jc-center">
-        <div appOnlineOnly (click)="showContactPopup=true;contactType='phone'"
-          class="ui semi-circular dodger-blue basic label mb-15 cursor-pointer" *ngIf="userProfile.phone"
-          appTelemetryInteract
-          [telemetryInteractEdata]="editMobileInteractEdata">
-          <i class="phone blue icon mr-5"></i> &#x200E;+91 {{userProfile.phone}}
+  <section class="d-flex flex-ai-center flex-dc pb-24 content-preference">
+    <h3 class="content-header-info font-weight-bold mb-16">{{resourceService.frmelmnts.lbl.profiledetails}}</h3>
+    <!-- add state and district -->
+      <div class="ui container content-preference__info pt-16">
+        <div *ngIf="persona?.name" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+          <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.role}} :</div>
+          <div class="fmedium ml-5 font-w-bold text-center">{{persona.name}}</div>
         </div>
-        <div appOnlineOnly (click)="showContactPopup=true;contactType='phone'"
-          class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.phone"
-          appTelemetryInteract
-          [telemetryInteractEdata]="editMobileInteractEdata">
-          <i class="phone icon mr-5"></i> {{resourceService?.frmelmnts?.lbl?.addPhoneNo}}
+        <div *ngIf="subPersona" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+          <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.subRole}} :</div>
+          <div class="fmedium ml-5 font-w-bold text-center">{{subPersona}}</div>
+        </div>
+        <div *ngIf="userLocation?.district && userLocation?.district?.name" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+          <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.district}} :</div>
+          <div class="fmedium ml-5 font-w-bold text-center">
+            {{userLocation.district.name}} </div>
+        </div>
+        <div *ngIf="userLocation?.state && userLocation?.state?.name" class="d-flex mb-5 flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+          <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.state}} :</div>
+          <div class="fmedium ml-5 font-w-bold text-center">
+            {{userLocation.state.name}}</div>
+        </div>
+        <div *ngIf="userLocation?.block && userLocation?.block?.name" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+          <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.block}} :</div>
+          <div class="fmedium ml-5 font-w-bold text-center">
+            {{userLocation.block.name}} </div>
+        </div>
+        <div *ngIf="userLocation?.cluster && userLocation?.cluster?.name" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+          <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.cluster}} :</div>
+          <div class="fmedium ml-5 font-w-bold text-center">
+            {{userLocation.cluster.name}} </div>
+        </div>
+        <div *ngIf="userLocation?.school && userLocation?.school?.name" class="mb-0 d-flex flex-jc-center m-responsive-flex-dc m-responsive-mt-15">
+          <div class="fmedium text-center">{{resourceService.frmelmnts.lbl.school}} :</div>
+          <div class="fmedium ml-5 font-w-bold text-center">
+            {{userLocation.school.name}} </div>
+        </div>
+        
+        <div class="d-flex flex-dc flex-jcc-center flex-ai-center">
+          <button appTelemetryInteract appOnlineOnly
+            [telemetryInteractEdata]="editProfileInteractEdata"
+            class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border my-16"
+            (click)="showEditUserDetailsPopup=true">{{resourceService.frmelmnts.lbl.edit}}</button>
+          <button appTelemetryInteract appOnlineOnly
+                  [telemetryInteractEdata]="submitTeacherDetailsInteractEdata"
+                  *ngIf="!declarationDetails && isCustodianOrgUser"
+                  (click)="navigate('/profile/teacher-declaration','submit')"
+                  class="no-text-transform sb-btn sb-btn-normal sb-btn-secondary sb-right-icon-btn mx-8 mb-8 px-24" type="submit">
+          {{resourceService?.frmelmnts?.lbl?.iAmStateTeacher}} </button>
         </div>
       </div>
-     <div class="d-flex flex-jc-center">
-      <div appOnlineOnly (click)="showContactPopup=true;contactType='email'"
-      class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 " *ngIf="userProfile.email" appTelemetryInteract
-      [telemetryInteractEdata]="editEmailInteractEdata">
-      <i class="mail blue icon mr-5"></i> {{userProfile.email}}
-    </div>
-    <div appOnlineOnly (click)="showContactPopup=true;contactType='email'"
-      class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.email"
-      appTelemetryInteract
-      [telemetryInteractEdata]="editEmailInteractEdata">
-      <i class="mail icon mr-5"></i> {{resourceService?.frmelmnts?.lbl?.addEmailID}}
-    </div>
-     </div>
-
-      <!-- Add/edit recovery email/phone-->
-    <div class="d-flex flex-jc-center">
-      <div appOnlineOnly *ngIf="userProfile.recoveryEmail || userProfile.recoveryPhone" (click)="showRecoveryId=true; mode='edit'" class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 d-flex"
-      appTelemetryInteract
-      [telemetryInteractEdata]="editRecoveryIdInteractEdata">
-        <div class="recovery-img mr-5"></div>
-        <span *ngIf="userProfile.recoveryEmail">{{userProfile.recoveryEmail}}</span>
-        <span *ngIf="userProfile.recoveryPhone">{{userProfile.recoveryPhone}}</span>
-       </div>
-       <div appOnlineOnly *ngIf="!(userProfile.recoveryEmail || userProfile.recoveryPhone)" (click)="showRecoveryId=true; mode='add'" class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal d-flex"
-      appTelemetryInteract
-      [telemetryInteractEdata]="addRecoveryIdInteractEdata">
-        <div class="recovery-img mr-5"></div>
-       <span>{{resourceService?.frmelmnts?.lbl?.addRecoveryAccount}}</span>
-       </div>
-     </div>
-    </div>
   </section>
-
-  <section class="d-flex flex-ai-center flex-dc pt-30 pb-30 profile-bg-c-4">
+  
+  <section class="d-flex flex-ai-center flex-dc pt-30 pb-30 profile-bg-c-4 content-preference">
     <!-- User info computer view starts-->
     <div class="ui container">
       <div class="d-flex flex-jc-center flex-ai-center flex-dc" *ngIf="userProfile && userProfile.framework ">
@@ -257,6 +210,57 @@
     </div>
     <!-- User info mobile view ends-->
   </section>
+
+  <section class="pt-30 pb-30 d-flex flex-jc-center profile-bg-c-3" *ngIf="userProfile.email || userProfile.phone">
+    <div class="d-flex flex-dc">
+      <div class="d-flex flex-jc-center">
+        <div appOnlineOnly (click)="showContactPopup=true;contactType='phone'"
+          class="ui semi-circular dodger-blue basic label mb-15 cursor-pointer" *ngIf="userProfile.phone"
+          appTelemetryInteract
+          [telemetryInteractEdata]="editMobileInteractEdata">
+          <i class="phone blue icon mr-5"></i> &#x200E;+91 {{userProfile.phone}}
+        </div>
+        <div appOnlineOnly (click)="showContactPopup=true;contactType='phone'"
+          class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.phone"
+          appTelemetryInteract
+          [telemetryInteractEdata]="editMobileInteractEdata">
+          <i class="phone icon mr-5"></i> {{resourceService?.frmelmnts?.lbl?.addPhoneNo}}
+        </div>
+      </div>
+     <div class="d-flex flex-jc-center">
+      <div appOnlineOnly (click)="showContactPopup=true;contactType='email'"
+      class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 " *ngIf="userProfile.email" appTelemetryInteract
+      [telemetryInteractEdata]="editEmailInteractEdata">
+      <i class="mail blue icon mr-5"></i> {{userProfile.email}}
+    </div>
+    <div appOnlineOnly (click)="showContactPopup=true;contactType='email'"
+      class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.email"
+      appTelemetryInteract
+      [telemetryInteractEdata]="editEmailInteractEdata">
+      <i class="mail icon mr-5"></i> {{resourceService?.frmelmnts?.lbl?.addEmailID}}
+    </div>
+     </div>
+
+      <!-- Add/edit recovery email/phone-->
+    <div class="d-flex flex-jc-center">
+      <div appOnlineOnly *ngIf="userProfile.recoveryEmail || userProfile.recoveryPhone" (click)="showRecoveryId=true; mode='edit'" class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 d-flex"
+      appTelemetryInteract
+      [telemetryInteractEdata]="editRecoveryIdInteractEdata">
+        <div class="recovery-img mr-5"></div>
+        <span *ngIf="userProfile.recoveryEmail">{{userProfile.recoveryEmail}}</span>
+        <span *ngIf="userProfile.recoveryPhone">{{userProfile.recoveryPhone}}</span>
+       </div>
+       <div appOnlineOnly *ngIf="!(userProfile.recoveryEmail || userProfile.recoveryPhone)" (click)="showRecoveryId=true; mode='add'" class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal d-flex"
+      appTelemetryInteract
+      [telemetryInteractEdata]="addRecoveryIdInteractEdata">
+        <div class="recovery-img mr-5"></div>
+       <span>{{resourceService?.frmelmnts?.lbl?.addRecoveryAccount}}</span>
+       </div>
+     </div>
+    </div>
+  </section>
+
+  
 
   <!-- 4 section start teacher profile-->
   <section class="pt-30 pb-30 d-flex flex-jc-center profile-bg-c-3" *ngIf="declarationDetails && !userProfile.stateValidated">
