@@ -72,7 +72,7 @@
 
             <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
               [telemetryInteractEdata]="cancelInteractEdata" href="javascript:void(0)"
-              *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && isCopyAsCourseClicked"
+              *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && isCopyAsCourseClicked"
               appPermission [permission]="['CONTENT_CREATOR']" (click)="clearSelection()"
               class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
               {{resourceService?.frmelmnts?.btn?.cancel}}
@@ -82,7 +82,7 @@
               [disabled]="!(selectedItems.length > 0)" type="button" appTelemetryInteract
               [telemetryInteractObject]="collectionInteractObject" [telemetryInteractEdata]="createCourseInteractEdata"
               href="javascript:void(0)"
-              *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && isCopyAsCourseClicked"
+              *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && isCopyAsCourseClicked"
               appPermission [permission]="['CONTENT_CREATOR']" (click)="createCourse()"
               class="sb-btn sb-btn-normal sb-btn-primary">
               {{generaliseLabelService?.frmelmnts?.btn?.create}}
