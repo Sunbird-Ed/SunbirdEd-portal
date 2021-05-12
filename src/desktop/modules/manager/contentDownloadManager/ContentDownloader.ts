@@ -264,6 +264,10 @@ export class ContentDownloader implements ITaskExecuter {
       metaData.visibility = "Parent";
     }
     await this.databaseSdk.upsert("content", metaData.identifier, metaData);
+
+    if (_.get(metaData, 'trackable')) {
+      this.contentDownloadData.metaData.trackable = metaData.trackable;
+    }
     contentDetails.step = "INDEX";
     this.observer.next(this.contentDownloadData);
   }

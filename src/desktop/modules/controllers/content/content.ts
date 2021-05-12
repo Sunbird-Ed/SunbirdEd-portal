@@ -164,6 +164,8 @@ export default class Content {
                     failedCode: _.get(data, 'failedCode'),
                     failedReason: _.get(data, 'failedReason'),
                     addedUsing: _.toLower(_.get(data, 'type')),
+                    contentType: _.get(data, 'metaData.contentType'),
+                    trackable: _.get(data, 'metaData.trackable'),
                     contentDownloadList: _.map(_.get(data, 'metaData.contentDownloadList'),
                     (doc) => _.omit(doc, ["url"])),
 
