@@ -21,7 +21,7 @@
                 {{resourceService?.frmelmnts?.lbl?.share}}
             </a>
 
-            <button type="button" *ngIf='permissionService.permissionAvailable' appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']"
+            <button type="button" *ngIf='!isDesktopApp && permissionService?.permissionAvailable ' appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']"
             (click)="copyContent(contentData)" appTelemetryInteract [telemetryInteractEdata]="copyContentInteractEdata" [telemetryInteractObject]="objectInteract"
            class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
             <i class="blue clone outline icon"></i> {{resourceService?.frmelmnts?.lbl?.copy}}
