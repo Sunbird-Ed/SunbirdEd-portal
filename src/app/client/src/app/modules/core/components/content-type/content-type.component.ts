@@ -157,36 +157,6 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
         "loggedInUserRoute": {
             "route": "/observation",
             'queryParam': 'observation'
-        },
-        "search": {
-            "facets": [
-                "board",
-                "gradeLevel",
-                "medium"
-            ],
-            "fields": [
-                "name",
-                "appIcon",
-                "mimeType",
-                "gradeLevel",
-                "identifier",
-                "medium",
-                "pkgVersion",
-                "board",
-                "subject",
-                "resourceType",
-                "primaryCategory",
-                "channel",
-                "organisation",
-                "trackable"
-            ],
-            "filters": {
-                "primaryCategory": [
-                    "PracticeResource",
-                    "PreviousBoardExamPapers",
-                    "PracticeQuestionSet"
-                ]
-            }
         }
     };
     data.push(obj);

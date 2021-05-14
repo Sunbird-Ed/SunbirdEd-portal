@@ -116,12 +116,12 @@ export class ObservationListingComponent
   ngOnInit() {
 
     this.initLayout();
-    this.getMandatoryFields();
+    this.fetchContentList();
     
     
   }
 
-  getMandatoryFields(page=1) {
+  fetchContentList(page=1) {
     const paramOption = {
       url: this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_LISTING,
       param: { page: page, limit: 20, search: "" },
@@ -155,7 +155,7 @@ export class ObservationListingComponent
     if (page < 1 || page > this.paginationDetails.totalPages) {
       return;
     }
-    this.getMandatoryFields(page);
+    this.fetchContentList(page);
   }
 
   setFormat(data) {
@@ -165,17 +165,15 @@ export class ObservationListingComponent
     data.forEach((value) => {
       let obj = {
         name: value.name,
-        gradeLevel: "",
         contentType: "observation",
         metaData: {
           identifier: value.solutionId,
         },
-        cardImg: "assets/images/book.png",
-        resourceType: ["Study Material"],
-        board: "",
         identifier: value.solutionId,
         solutionId: value.solutionId,
-        medium: ["English"]
+        medium: value.language,
+        organization:value.creator,
+        _id:value._id
       };
       result.push(obj);
       this.contentList = result;
