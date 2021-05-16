@@ -136,18 +136,13 @@ export class LibraryComponent implements OnInit, OnDestroy {
             this.svgToDisplay = imageName;
             this.globalSearchFacets = _.get(this.currentPageData, 'search.facets');
             this.globalSearchFacets = [
-            //     "board",
-            //     "gradeLevel",
-            //     "medium",
-            //     "subject",
-                "se_boards",
-                "se_gradeLevels",
-                "se_subjects",
-                "se_mediums",
-                "primaryCategory",
-                "mimeType"
+                'se_boards',
+                'se_gradeLevels',
+                'se_subjects',
+                'se_mediums',
+                'primaryCategory',
+                'mimeType'
               ];
-            console.log("globalSearchFacets", this.globalSearchFacets);
             this.getOrgDetails();
         }, error => {
             this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
@@ -243,41 +238,17 @@ export class LibraryComponent implements OnInit, OnDestroy {
     public getFilters(filters) {
         let filterData = filters && filters.filters || {};
         if (filterData.channel && this.facets) {
-        const channelIds = [];
-        const facetsData = _.find(this.facets, { 'name': 'channel' });
-        _.forEach(filterData.channel, (value, index) => {
-            const data = _.find(facetsData.values, { 'identifier': value });
-            if (data) {
-            channelIds.push(data.name);
-            }
-        });
-        if (channelIds && Array.isArray(channelIds) && channelIds.length > 0) {
-            filterData.channel = channelIds;
-        }
-        }
-        const userPreference: any = this.userService.anonymousUserPreference;
-        if (userPreference) {
-            _.forEach(['board', 'medium', 'gradeLevel'], (item) => {
-                // if (!_.has(filterData, item)) {
-                //     filterData[item] = _.isArray(userPreference.framework[item]) ?
-                //         userPreference.framework[item] : _.split(userPreference.framework[item], ', ');
-                // }
-
-                switch (item) {
-                    case 'board':
-                    case 'se_boards':
-                        filterData['se_boards'] = filterData['se_boards'] ? filterData['se_boards'] : (filterData['board'] ? filterData['board'] : userPreference.framework[item]);
-                        break;
-                    case 'medium':
-                    case 'se_mediums':
-                        filterData['se_mediums'] = filterData['se_mediums'] ? filterData['se_mediums'] : (filterData['medium'] ? filterData['medium'] : userPreference.framework[item]);
-                        break;
-                    case 'gradeLevel':
-                    case 'se_gradeLevels':
-                        filterData['se_gradeLevels'] = filterData['se_gradeLevels'] ? filterData['se_gradeLevels'] : (filterData['gradeLevel'] ? filterData['gradeLevel'] : userPreference.framework[item]);
-                        break;
+            const channelIds = [];
+            const facetsData = _.find(this.facets, { 'name': 'channel' });
+            _.forEach(filterData.channel, (value, index) => {
+                const data = _.find(facetsData.values, { 'identifier': value });
+                if (data) {
+                    channelIds.push(data.name);
                 }
             });
+            if (channelIds && Array.isArray(channelIds) && channelIds.length > 0) {
+                filterData.channel = channelIds;
+            }
         }
 
         if (_.get(this.facets, 'length')) {
@@ -291,8 +262,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
                 }
             });
         }
-        console.log("filterData", filterData);
-        
+
         this.selectedFilters = filterData;
         const defaultFilters = _.reduce(filters, (collector: any, element) => {
             if (element.code === 'board') {
@@ -359,26 +329,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
             if (searchRes) {
                 const facets = this.searchService.updateFacetsData(_.get(searchRes, 'result.facets'));
                 this.facets = facets.filter(facet => facet.values.length > 0);
-                // this.facets = facets.filter(facet => {
-                //     if (facet.values.length) {
-                //         switch (facet.name) {
-                //             case 'board':
-                //                 facet.name = 'se_boards';
-                //                 break;
-                //             case 'medium':
-                //                 facet.name = 'se_mediums';
-                //                 break;
-                //             case 'gradeLevel':
-                //                 facet.name = 'se_gradeLevels';
-                //                 break;
-                //             case 'subject':
-                //                 facet.name = 'se_subjects';
-                //                 break;
-                //         }
-                //         return facet;
-                //     }
-                // });
-
                 const filteredContents = _.omit(_.groupBy(searchRes['result'].content, 'subject'), ['undefined']);
                 const otherContents = _.filter(searchRes['result'].content, (content) => !content.subject );
                 // Check for multiple subjects

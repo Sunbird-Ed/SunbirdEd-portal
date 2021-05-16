@@ -99,8 +99,6 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
           multiple: true
         };
       });
-      console.log("filterFormTemplateConfig", this.filterFormTemplateConfig);
-      console.log("facets", this.facets);
     }
   }
 
@@ -115,7 +113,6 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
   }
 
   public resetFilters() {
-    console.log("reset done!!!");
     this.selectedFilters = _.pick(this.selectedFilters, ['key', 'selectedTab']);
     if (this.utilService.isDesktopApp) {
       const userPreferences: any = this.userService.anonymousUserPreference;
@@ -149,8 +146,6 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
   private fetchSelectedFilterAndFilterOption() {
     this.activatedRoute.queryParams.pipe(takeUntil(this.unsubscribe$),
       map((queryParams) => {
-        console.log("queryParams", queryParams);
-        
         const queryFilters: any = {};
         _.forIn(queryParams, (value, key) => {
           if (['medium', 'gradeLevel', 'board', 'channel', 'subject', 'primaryCategory', 'key', 'mediaType', 'se_boards', 'se_mediums', 'se_gradeLevels', 'se_subjects'].includes(key)) {
@@ -171,7 +166,6 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
         this.selectedFilters = _.cloneDeep(filters);
         this.emitFilterChangeEvent(true);
         this.hardRefreshFilter();
-        console.log("selectedFilters", this.selectedFilters);
       }, error => {
         console.error('fetching filter data failed', error);
       });
