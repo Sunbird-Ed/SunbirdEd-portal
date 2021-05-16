@@ -262,7 +262,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
                 }
             });
         }
-
         this.selectedFilters = filterData;
         const defaultFilters = _.reduce(filters, (collector: any, element) => {
             if (element.code === 'board') {
@@ -272,7 +271,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
         }, {});
         this.dataDrivenFilterEvent.emit(defaultFilters);
         this.carouselMasterData = [];
-        // this.pageSections = [];
     }
 
     constructSearchRequest() {
@@ -374,7 +372,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
                 if (!this.carouselMasterData.length) {
                     return; // no page section
                 }
-
                 this.pageSections = _.cloneDeep(this.carouselMasterData);
                 this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
                     this.addHoverData();
