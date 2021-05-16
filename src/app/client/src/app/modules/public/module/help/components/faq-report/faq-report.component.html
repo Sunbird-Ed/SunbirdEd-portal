@@ -1,6 +1,6 @@
 <div class="faq-report-container">
   <h6 class="pb-16">{{faqData?.constants?.tellMoreMsg}}</h6>
-  <sb-form class="faq-sbforms" *ngIf="faqReportConfig"
+  <sb-form class="faq-sbforms" [ngClass]="{'other-issue': formValues?.category === 'otherissues', '': formValues?.category !== 'otherissues'}" *ngIf="faqReportConfig"
     [config]='faqReportConfig' 
     [platform]="'web'" 
     (valueChanges)="valueChanged($event)"   

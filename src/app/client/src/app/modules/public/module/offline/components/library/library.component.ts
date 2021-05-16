@@ -313,7 +313,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
         return o.name === (selectedMediaType || 'all');
         });
         const pageType = _.get(this.queryParams, 'pageTitle');
-        const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType', 'board', 'medium', 'gradeLevel', 'subject']);
+        const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType', 'contentType', 'board', 'medium', 'gradeLevel', 'subject']);
         if (!filters.channel) {
             filters.channel = this.hashTagId;
         }
