@@ -26,12 +26,13 @@ const resourceServiceMockData = {
     stmsg: {
       m0009: 'error', activityAddFail: 'Unable to add activity, please try again',
       desktop: {
-        deleteTextbookSuccessMessage: 'Textbook deleted successfully'
+        deleteTextbookSuccessMessage: 'Textbook deleted successfully',
+        deleteCourseSuccessMessage: 'Course deleted successfully'
       }
     },
     etmsg: {
       desktop: {
-        'deleteTextbookErrorMessage': 'Unable to delete textbook. Please try again..',
+        'deleteCourseErrorMessage': 'Unable to delete course. Please try again..',
       }
     },
     emsg: { m0005: 'Something went wrong, try again later', noAdminRole: `You don't have permission to add activity to the group` },
@@ -486,7 +487,7 @@ describe('CourseConsumptionHeaderComponent', () => {
     spyOn(contentService, 'deleteContent').and.returnValue(throwError(MockResponseData.contentHeaderData.deleteCollection.error));
     component.deleteCollection(MockResponseData.contentHeaderData.collectionData);
     expect(component.disableDelete).toBeFalsy();
-    expect(component.toasterService.error(resourceServiceMockData.messages.etmsg.desktop.deleteTextbookErrorMessage));
+    expect(component.toasterService.error(resourceServiceMockData.messages.etmsg.desktop.deleteCourseErrorMessage));
   });
   it('should navigate to discussion Forum', () => {
     const routerData = {
