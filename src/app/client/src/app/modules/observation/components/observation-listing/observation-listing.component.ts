@@ -60,7 +60,7 @@ import { KendraService } from "@sunbird/core";
 export class ObservationListingComponent
   implements OnInit, OnDestroy, AfterViewInit
 {
-  pageTitleSrc = "Observataion";
+  pageTitleSrc = "resourceService?.frmelmnts?.lbl?.observation";
   svgToDisplay = "textbooks-banner-img.svg";
   contentList: any = [];
   public unsubscribe$ = new Subject<void>();
@@ -79,10 +79,12 @@ export class ObservationListingComponent
   SECOND_PANEL_LAYOUT;
   public allTabData;
   config;
+  searchData: any = "";
   public numberOfSections = new Array(
     this.configService.appConfig.SEARCH.PAGE_LIMIT
   );
   public paginationDetails: IPagination;
+  queryParam: any = {};
   constructor(
     public searchService: SearchService,
     public router: Router,
@@ -110,21 +112,26 @@ export class ObservationListingComponent
   ) {
     this.config = config;
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
-    this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
+    this.paginationDetails = this.paginationService.getPager(0,1,this.configService.appConfig.SEARCH.PAGE_LIMIT);
   }
 
   ngOnInit() {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      if (params["key"]) {
+        this.searchData = params["key"];
+        return this.fetchContentList();
+      }
+      this.searchData="";
+      this.fetchContentList();
+    });
 
     this.initLayout();
-    this.fetchContentList();
-    
-    
   }
 
-  fetchContentList(page=1) {
+  fetchContentList(page = 1) {
     const paramOption = {
       url: this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_LISTING,
-      param: { page: page, limit: 20, search: "" },
+      param: { page: page, limit: 20, search: this.searchData },
       data: {
         block: "0abd4d28-a9da-4739-8132-79e0804cd73e",
         district: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
@@ -135,11 +142,14 @@ export class ObservationListingComponent
     };
 
     this.kendraService.post(paramOption).subscribe(
-      (data:any) => {
+      (data: any) => {
         this.totalCount = data.result.count;
-        this.paginationDetails.currentPage=page;
-        this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
-          this.configService.appConfig.SEARCH.PAGE_LIMIT);
+        this.paginationDetails.currentPage = page;
+        this.paginationDetails = this.paginationService.getPager(
+          data.result.count,
+          this.paginationDetails.currentPage,
+          this.configService.appConfig.SEARCH.PAGE_LIMIT
+        );
         this.setFormat(data.result.data);
       },
       (error) => {}
@@ -147,7 +157,7 @@ export class ObservationListingComponent
     window.scroll({
       top: 0,
       left: 0,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
   }
 
@@ -160,20 +170,23 @@ export class ObservationListingComponent
 
   setFormat(data) {
     let result = [];
-    this.contentList=[];
+    this.contentList = [];
 
     data.forEach((value) => {
+      let solution_name:string = value.name;
+      solution_name = solution_name[0].toUpperCase() + solution_name.slice(1);
       let obj = {
-        name: value.name,
-        contentType: "observation",
+        name: solution_name,
+        contentType: "Observation",
         metaData: {
           identifier: value.solutionId,
         },
         identifier: value.solutionId,
         solutionId: value.solutionId,
+        programId: value.programId,
         medium: value.language,
-        organization:value.creator,
-        _id:value._id
+        organization: value.creator,
+        _id: value._id
       };
       result.push(obj);
       this.contentList = result;
@@ -257,6 +270,16 @@ export class ObservationListingComponent
   }
 
   playContent(event) {
+    let data = event.data;
+    this.queryParam = {
+      programId: data.programId,
+      solutionId: data.solutionId,
+      observationId: data._id,
+      solutionName: data.name
+    };
+    this.router.navigate(["observation/details"], {
+      queryParams: this.queryParam,
+    });
   }
 
   public inView(event) {

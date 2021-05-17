@@ -1,4 +1,4 @@
-<app-landing-section [textToDisplay]="pageTitleSrc" [svgToDisplay]="svgToDisplay"
+<app-landing-section [textToDisplay]="resourceService?.frmelmnts?.lbl?.observation" [svgToDisplay]="svgToDisplay"
 [layoutConfiguration]="layoutConfiguration"></app-landing-section>
 <div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
   <div [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'">
@@ -23,7 +23,7 @@
         <div class="content-grid relative9">
           <div class="sb-pageSection" *ngIf="!showLoader && totalCount > 0">
             <div class="sb-pageSection-header">
-                <h4 class="sb-pageSection-title m-0 mr-5" >Observation </h4> 
+                <h4 class="sb-pageSection-title m-0 mr-5" [innerHTML]="resourceService?.frmelmnts?.lbl?.observation"></h4> 
                 <span class="badge">{{totalCount}}</span>
             </div>
             <br/>
