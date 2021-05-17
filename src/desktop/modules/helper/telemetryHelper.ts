@@ -9,8 +9,11 @@ import { ClassLogger } from "@project-sunbird/logger/decorator";
 })*/
 export default class TelemetryHelper {
 
+    telemetryInstance;
     public logShareEvent(shareItems: object[], dir: string, telemetryEnv: string) {
-        const telemetryInstance = containerAPI.getTelemetrySDKInstance().getInstance();
+        if(!this.telemetryInstance) {
+            this.telemetryInstance = containerAPI.getTelemetrySDKInstance().getInstance();
+        }
         const telemetryEvent: any = {
             context: {
                 env: telemetryEnv,
@@ -21,11 +24,13 @@ export default class TelemetryHelper {
                 items: shareItems,
             },
         };
-        telemetryInstance.share(telemetryEvent);
+        this.telemetryInstance.share(telemetryEvent);
     }
 
     public logSearchEvent(edata: {}, telemetryEnv: string) {
-        const telemetryInstance = containerAPI.getTelemetrySDKInstance().getInstance();
+        if(!this.telemetryInstance) {
+            this.telemetryInstance = containerAPI.getTelemetrySDKInstance().getInstance();
+        }
         const telemetryEvent: any = {
             context: {
                 env: telemetryEnv,
@@ -40,6 +45,6 @@ export default class TelemetryHelper {
                 topn:  _.get(edata, "topn") || [{}],
             },
         };
-        telemetryInstance.search(telemetryEvent);
+        this.telemetryInstance.search(telemetryEvent);
     }
 }
