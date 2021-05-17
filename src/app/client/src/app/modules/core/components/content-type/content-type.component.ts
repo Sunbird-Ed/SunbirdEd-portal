@@ -99,7 +99,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : 'textbook';
     } else if (url.indexOf('mydownloads') >= 0) {
       this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : 'mydownloads';
-    }else if (url.indexOf('observation') >= 0) {
+    }else if (url.indexOf('observation') >= 0) {   
       this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : 'observation';
     }else {
       this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : null;
@@ -148,7 +148,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
             "textColor": "",
             "supportingColor": "",
             "className": "tests",
-            "imageName": "tests.svg"
+            "imageName": "observation.svg"
         },
         "anonumousUserRoute": {
             "route": "/observation",
