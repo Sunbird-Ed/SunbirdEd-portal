@@ -247,6 +247,11 @@ export class TelemetryHelper {
    * @memberof TelemetryService
    */
   private getEventData(eventInput: any) {
+    if (!_.get(this.context, 'config.pdata.id') || !_.get(this.context, 'config.pdata.ver')) {
+      this.context.config.pdata.id = process.env.APP_ID;
+      this.context.config.pdata.ver = process.env.APP_VERSION;
+    }
+
     const event: ITelemetryEvent = {
       edata: eventInput.edata,
       options: {
@@ -289,8 +294,8 @@ export class TelemetryHelper {
    * @returns
    * @memberof TelemetryService
    */
-  private getEventContext(eventInput: any) {
-    const eventContextData: ITelemetryContextData = {
+  private getEventContext(eventInput: any): ITelemetryContextData {
+    return {
       channel: eventInput.edata.channel || this.context.config.channel,
       pdata: eventInput.edata.pdata || this.context.config.pdata,
       env: eventInput.context.env || this.context.config.env,
@@ -299,7 +304,6 @@ export class TelemetryHelper {
       cdata: eventInput.context.cdata || [],
       rollup: this.getRollUpData(this.context.userOrgDetails.organisationIds)
     };
-    return eventContextData;
   }
 
   /**
