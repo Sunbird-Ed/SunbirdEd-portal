@@ -8,7 +8,7 @@ import FileSDK from "../../sdks/FileSDK";
 import { Readable } from 'stream';
 import SettingSDK from '../../sdks/SettingSDK'
 import SystemSDK from "../../sdks/SystemSDK";
-import { TelemetryInstance } from './../telemetry/telemetryInstance';
+import { TelemetryInstance } from './telemetryInstance';
 
 @Singleton
 export class TelemetryExport {
