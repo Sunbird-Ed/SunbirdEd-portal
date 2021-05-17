@@ -1,17 +1,17 @@
 import * as _ from "lodash";
 import { containerAPI } from "@project-sunbird/OpenRAP/api";
-const telemetryInstance = containerAPI.getTelemetrySDKInstance().getInstance();
 
 import { ClassLogger } from "@project-sunbird/logger/decorator";
 
 /*@ClassLogger({
   logLevel: "debug",
   logTime: true,
-
+    
 })*/
 export default class TelemetryHelper {
 
     public logShareEvent(shareItems: object[], dir: string, telemetryEnv: string) {
+        const telemetryInstance = containerAPI.getTelemetrySDKInstance().getInstance();
         const telemetryEvent: any = {
             context: {
                 env: telemetryEnv,
@@ -26,6 +26,7 @@ export default class TelemetryHelper {
     }
 
     public logSearchEvent(edata: {}, telemetryEnv: string) {
+        const telemetryInstance = containerAPI.getTelemetrySDKInstance().getInstance();
         const telemetryEvent: any = {
             context: {
                 env: telemetryEnv,
