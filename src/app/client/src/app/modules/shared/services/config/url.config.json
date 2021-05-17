@@ -347,7 +347,8 @@
       "READ": "object/category/definition/v1/read"
     },
     "OBSERVATION": {
-      "MANDATORY_ENTITIES_FOR_SUB_ROLE":"v1/users/entityTypesByLocationAndRole/bc75cc99-9205-463e-a722-5326857838f8?role=DEO"
+      "MANDATORY_ENTITIES_FOR_SUB_ROLE":"v1/users/entityTypesByLocationAndRole/bc75cc99-9205-463e-a722-5326857838f8?role=DEO",
+      "OBSERVATION_LISTING":"v1/solutions/targetedSolutions?type=observation"
     },
     "KENDRA": {
 
