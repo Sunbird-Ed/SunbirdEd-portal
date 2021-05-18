@@ -209,7 +209,7 @@ describe('AddToGroupDirective', () => {
       },
       edata: {
         id: 'add-to-group-button',
-        type: 'CLICK',
+        type: 'select-activity',
         pageid: directive.pageId
       },
       object: {
@@ -221,7 +221,7 @@ describe('AddToGroupDirective', () => {
     spyOn(telemetryService, 'interact');
 
     /** Act */
-    directive.sendInteractData('add-to-group-button');
+    directive.sendInteractData('add-to-group-button', {type: 'select-activity'});
 
     /** Assert */
     expect(telemetryService.interact).toHaveBeenCalledWith(telemetryData);

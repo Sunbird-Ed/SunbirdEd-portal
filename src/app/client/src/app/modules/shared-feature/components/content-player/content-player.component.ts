@@ -45,7 +45,8 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
   public objectRollup = {};
   isGroupAdmin: boolean;
   groupId: string;
-  isQuestionSet:boolean = false;
+  isQuestionSet = false;
+  isDesktopApp = false;
 
   @HostListener('window:beforeunload')
     canDeactivate() {
@@ -69,6 +70,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
 
   ngOnInit() {
     this.isQuestionSet = _.includes(this.router.url, 'questionset');
+    this.isDesktopApp = this.userService.isDesktopApp;
     this.initLayout();
     this.activatedRoute.params.subscribe((params) => {
       this.showPlayer = false;

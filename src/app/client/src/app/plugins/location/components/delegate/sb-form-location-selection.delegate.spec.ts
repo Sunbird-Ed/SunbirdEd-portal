@@ -358,8 +358,9 @@ describe('SbFormLocationSelectionDelegate', () => {
           it('should mark field visible and set default value to user\'s userType', async () => {
             // arrange
             spyOnProperty(mockUserService, 'loggedIn', 'get').and.returnValue(true);
-            spyOnProperty(mockUserService, 'userProfile', 'get').and.returnValue({
-              userType: 'teacher'
+            spyOnProperty(mockUserService, 'userProfile', 'get').and.returnValue({profileUserType: {
+              type: 'teacher'
+              }
             });
             spyOn(mockFormService, 'getFormConfig').and.returnValue(of(_.cloneDeep(sampleProfileConfig)));
 
@@ -734,7 +735,8 @@ describe('SbFormLocationSelectionDelegate', () => {
           profileLocation: [
             jasmine.objectContaining({code: 'SOME_SELECTED_STATE_CODE'}),
             jasmine.objectContaining({code: 'SOME_SELECTED_DISTRICT_CODE'})
-          ]
+          ],
+          profileUserType: {}
         });
       });
 
@@ -773,8 +775,10 @@ describe('SbFormLocationSelectionDelegate', () => {
         // assert
         expect(mockLocationService.updateProfile).toHaveBeenCalledWith({
           firstName: 'SOME_ENTERED_NAME',
-          userType: 'SOME_SELECTED_PERSONA',
-          userSubType: 'SOME_SELECTED_SUB_PERSONA',
+          profileUserType: {
+            type: 'SOME_SELECTED_PERSONA',
+            subType: 'SOME_SELECTED_SUB_PERSONA'
+          },
           userId: 'SOME_USER_ID',
           profileLocation: [
             jasmine.objectContaining({code: 'SOME_SELECTED_STATE_CODE'}),
