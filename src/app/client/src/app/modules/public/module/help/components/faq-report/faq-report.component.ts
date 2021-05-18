@@ -37,6 +37,7 @@ export class FaqReportComponent implements OnInit {
   fetchFaqReportConfig() {
     // FormAPI call
     this.profileService.getFaqReportIssueForm().pipe(takeUntil(this.unsubscribe)).subscribe(formConfig => {
+      this.formStatus = undefined;
       this.faqReportConfig = formConfig;
     }, error => {
       console.error('Unable to fetch form', error);
