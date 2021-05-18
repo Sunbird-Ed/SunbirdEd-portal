@@ -63,8 +63,8 @@
     "PAGE_PREFIX": "data/v1/page/assemble",
     "DIAL_ASSEMBLE_PREFIX": "data/v1/dial/assemble",
     "GET_GENERALISED_RESOURCE": "getGeneralisedResourcesBundles",
-    "OBSERVATION_PREFIX":"/assessment/",
-    "KENDRA_PREFIX":"/kendra/",
+    "OBSERVATION_PREFIX": "/assessment/",
+    "KENDRA_PREFIX": "/kendra/",
     "REPORT": {
       "READ": "/get",
       "LIST": "/list",
@@ -127,7 +127,7 @@
       "FETCH_CERTIFICATES": "v1/certs/search",
       "FETCH_USER": "v2/user/search",
       "REISSUE_CERTIFICATE": "v1/cert/reissue",
-      "ADD_CERTIFICATE" : "v1/add/template",
+      "ADD_CERTIFICATE": "v1/add/template",
       "ATTACH_CERTIFICATE": "v1/template/add",
       "CREATE_CERT_TEMPLATE": "asset/v1/create",
       "UPLOAD_CERT_TEMPLATE": "asset/v1/upload"
@@ -335,7 +335,7 @@
     "RECAPTCHA": {
       "VALIDATE": "/validate/recaptcha"
     },
-    "TENANT_PREFERENCE" : {
+    "TENANT_PREFERENCE": {
       "READ": "org/v2/preferences/read"
     },
     "QUESTIONSET": {
@@ -347,10 +347,14 @@
       "READ": "object/category/definition/v1/read"
     },
     "OBSERVATION": {
-      "MANDATORY_ENTITIES_FOR_SUB_ROLE":"v1/users/entityTypesByLocationAndRole/bc75cc99-9205-463e-a722-5326857838f8?role=DEO"
+      "MANDATORY_ENTITIES_FOR_SUB_ROLE": "v1/users/entityTypesByLocationAndRole/bc75cc99-9205-463e-a722-5326857838f8?role=DEO",
+      "OBSERVATION_ENTITIES": "v1/observations/entities",
+      "GET_OBSERVATION_SUBMISSIONS": "v1/observationSubmissions/list/",
+      "SEARCH_ENTITY": "v2/observations/searchEntities",
+      "OBSERVATION_UPDATE_ENTITES": "v1/observations/updateEntities/"
     },
     "KENDRA": {
-
+      "TARGETTED_ENTITY_TYPES": "v1/users/targetedEntity/"
     }
   }
 }
