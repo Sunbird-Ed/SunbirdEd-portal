@@ -316,7 +316,7 @@ async function runApp() {
 const fetchDefaultChannelDetails = (callback) => {
   const options = {
     method: 'POST',
-    url: envHelper.LEARNER_URL + 'org/v1/search',
+    url: envHelper.LEARNER_URL + 'org/v2/search',
     headers: {
       'x-msgid': uuid(),
       'ts': dateFormat(new Date(), 'yyyy-mm-dd HH:MM:ss:lo'),

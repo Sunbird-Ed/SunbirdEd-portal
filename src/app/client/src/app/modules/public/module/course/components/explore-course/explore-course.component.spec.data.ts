@@ -220,7 +220,7 @@ export const Response = {
         'state': 'AP'
       },
       'externalId': null,
-      'isRootOrg': true,
+      'isTenant': true,
       'rootOrgId': 'ORG_001',
       'approvedDate': null,
       'imgUrl': null,
