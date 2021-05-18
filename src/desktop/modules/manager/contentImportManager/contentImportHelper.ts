@@ -101,6 +101,9 @@ const parseEcar = async () => {
     contentImportData.metaData.contentType = parent.contentType;
     contentImportData.metaData.pkgVersion = _.toString(parent.pkgVersion) || "1.0";
     if (contentImportData.metaData.mimeType === "application/vnd.ekstep.content-collection") {
+      if (_.get(parent, 'trackable')) {
+        contentImportData.metaData.trackable = parent.trackable;
+      }
       contentImportData.metaData.childNodes = _.filter(_.get(manifestJson, "archive.items"),
         (item) => (item.mimeType !== "application/vnd.ekstep.content-collection"))
         .map((item) => item.identifier);
