@@ -245,7 +245,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       const channelList = this.getChannelList(_.get(orgList, 'contentData.result.facets'));
       const rootOrgIds = this.processOrgData(channelList);
       return this.orgDetailsService.searchOrgDetails({
-        filters: { isRootOrg: true, rootOrgId: rootOrgIds },
+        filters: { isTenant: true, id: rootOrgIds },
         fields: ['slug', 'identifier', 'orgName']
       });
     } else {

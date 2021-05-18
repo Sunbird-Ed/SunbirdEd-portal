@@ -268,7 +268,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
             let facetsList: any = this.utilService.processData(_.get(data, 'sections'), option['facets']);
             const rootOrgIds = this.processOrgData(facetsList.channel);
             return this.searchOrgDetails({
-              filters: { isRootOrg: true, rootOrgId: rootOrgIds },
+              filters: { isTenant: true, id: rootOrgIds },
               fields: ['slug', 'identifier', 'orgName']
             }).pipe(
               tap(orgDetails => {
@@ -370,7 +370,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
           let facetsList: any = this.utilService.processCourseFacetData(_.get(this._courseSearchResponse, 'result'), option.facets);
           const rootOrgIds = this.processOrgData(facetsList.channel);
           return this.orgDetailsService.searchOrgDetails({
-            filters: { isRootOrg: true, rootOrgId: rootOrgIds },
+            filters: { isTenant: true, id: rootOrgIds },
             fields: ['slug', 'identifier', 'orgName']
           }).pipe(tap((orgDetails) => {
             this.showLoader = false;

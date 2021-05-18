@@ -640,7 +640,7 @@ export class AppComponent implements OnInit, OnDestroy {
       const anonymousTelemetryContextData = {
         userOrgDetails: {
           userId: 'anonymous',
-          rootOrgId: this.orgDetails.rootOrgId,
+          rootOrgId: this.orgDetails.id,
           organisationIds: [this.orgDetails.hashTagId]
         },
         config: {
