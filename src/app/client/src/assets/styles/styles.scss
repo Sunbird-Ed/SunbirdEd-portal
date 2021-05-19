@@ -12,19 +12,20 @@
 @import "./fonts/noto-nastaliqurdu/notonastaliqurdu.css";
 
 
-// base structure
+// base structure @import "~@project-sunbird/sb-styles/assets/mixins/mixins";
 @import "./mixins/mixins";
-@import "./variables";
-@import "./base/base";
+@import "~@project-sunbird/sb-styles/assets/variables";
+// @import "./base/base";
 @import "./layout/layout";
 @import "./semantic/semantic-overrides";
 @import "./semantic/semantic-rtl";
 @import "./vendors/vendors";
 @import "./components/components";
+@import "~@project-sunbird/sb-styles/assets/buttons";
 @import "./legacy";
 @import "./global";
 @import "./pages/sbt-dropdown";
-@import "./themes";
+// @import "./themes";
 
 
 // @import '~@swimlane/ngx-datatable/src/themes/material';

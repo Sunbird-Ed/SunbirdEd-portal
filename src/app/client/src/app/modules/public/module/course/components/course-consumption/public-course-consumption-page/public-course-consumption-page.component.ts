@@ -239,13 +239,13 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
     this.logTelemetry('delete-collection');
     const request = {request: {contents: [collectionData.identifier]}};
     this.contentManagerService.deleteContent(request).pipe(takeUntil(this.unsubscribe)).subscribe(data => {
-      this.toasterService.success(this.resourceService.messages.stmsg.desktop.deleteTextbookSuccessMessage);
+      this.toasterService.success(this.resourceService.messages.stmsg.desktop.deleteCourseSuccessMessage);
       collectionData['downloadStatus'] = 'DOWNLOAD';
       collectionData['desktopAppMetadata.isAvailable'] = false;
       this.redirectToExplore();
     }, err => {
       this.disableDelete = false;
-      this.toasterService.error(this.resourceService.messages.etmsg.desktop.deleteTextbookErrorMessage);
+      this.toasterService.error(this.resourceService.messages.etmsg.desktop.deleteCourseErrorMessage);
     });
   }
   ngOnDestroy() {
