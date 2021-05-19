@@ -689,7 +689,7 @@ html[dir="rtl"] {
 
 
 html.PlayerMediaQueryClass {
-  @include respond-above(xxl) {
+  @include respond-above(xl) {
     font-size: calc(12px + (18 - 12) * ((100vw - 320px) / (1920 - 320)));
   }
 }
