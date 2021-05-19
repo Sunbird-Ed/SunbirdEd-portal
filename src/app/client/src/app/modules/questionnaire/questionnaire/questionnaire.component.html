@@ -22,21 +22,24 @@
             [questions]="questions"
             [questionnaireForm]="questionnaireForm"
           ></question-generic-inputs>
-          {{ questionnaireForm.value | json }}
-          <button
-            class="sb-btn sb-btn-normal sb-btn-primary"
-            type="button"
-            (click)="onSubmit()"
-          >
-            Submit
-          </button>
+          <div class="d-flex flex-jc-space-evenly m-32">
+            <button
+              class="sb-btn sb-btn-normal sb-btn-primary"
+              type="button"
+              (click)="alert('save')"
+            >
+              {{ resourceService?.frmelmnts?.btn?.save | translate }}
+            </button>
+            <button
+              class="sb-btn sb-btn-normal sb-btn-primary"
+              type="button"
+              (click)="onSubmit()"
+            >
+              {{ resourceService?.frmelmnts?.btn?.submit | translate }}
+            </button>
+          </div>
         </form>
       </div>
     </div>
   </div>
-  <!-- <app-offline-banner
-  *ngIf="!isUserLoggedIn()"
-  [slug]="userService.slug"
-></app-offline-banner> -->
-  <!-- Show Modal if content has any YouTube data-->
 </div>

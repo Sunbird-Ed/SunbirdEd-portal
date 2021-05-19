@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { COLUMN_TYPE, LayoutService } from "@sunbird/shared";
+import { COLUMN_TYPE, LayoutService, ResourceService } from "@sunbird/shared";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { QuestionnaireService } from "../questionnaire.service";
 
@@ -19,7 +19,8 @@ export class QuestionnaireComponent implements OnInit {
   constructor(
     public layoutService: LayoutService,
     public fb: FormBuilder,
-    public qService: QuestionnaireService
+    public qService: QuestionnaireService,
+    public resourceService: ResourceService
   ) {}
 
   ngOnInit() {

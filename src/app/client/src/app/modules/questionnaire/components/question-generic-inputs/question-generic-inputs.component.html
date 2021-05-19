@@ -1,9 +1,9 @@
 <div class="ui card" *ngFor="let question of questions; let qi = index">
   <div class="content">
     <div *ngFor="let q of question.question; let qai = index" class="my-15">
-      <div class="sb-h4">{{ qai == 0 ? qi + 1 + ")" : "" }}{{ q }}</div>
+      <div class="sb-h4">{{ qai == 0 ? qi + 1 + ")" : "" }}&nbsp;{{ q }}</div>
     </div>
-    {{ question._id }}
+    <!-- {{ question._id }} -->
     <input-type-text
       *ngIf="question.responseType == 'text'"
       [questionnaireForm]="questionnaireForm"

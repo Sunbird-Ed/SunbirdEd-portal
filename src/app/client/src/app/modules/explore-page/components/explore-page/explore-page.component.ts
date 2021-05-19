@@ -145,7 +145,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnInit() {
-        debugger
         this.isDesktopApp = this.utilService.isDesktopApp;
         this.initConfiguration();
 

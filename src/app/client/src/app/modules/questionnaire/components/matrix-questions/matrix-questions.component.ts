@@ -8,7 +8,7 @@ import {
 import { ResourceService } from "@sunbird/shared";
 export interface IContext {
   questions: any;
-  // data: string;
+  heading: string;
 }
 @Component({
   selector: "matrix-questions",
@@ -51,6 +51,7 @@ export class MatrixQuestionsComponent implements OnInit {
     config.closeResult = "closed!";
     config.context = {
       questions: this.question.value[i],
+      heading: `${this.question.instanceIdentifier} ${i + 1}`,
     };
     this.context = config.context;
     this.showBadgeAssingModel = true;

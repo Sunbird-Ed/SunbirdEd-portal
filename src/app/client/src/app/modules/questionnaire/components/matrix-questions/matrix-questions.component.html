@@ -1,7 +1,9 @@
-
-<button class="sb-btn sb-btn-normal sb-btn-primary" (click)="addInstances()">
-  {{ "buttons.add" | translate }} {{ question.instanceIdentifier }}
-</button>
+<div class="d-flex flex-jc-flex-end">
+  <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="addInstances()">
+    {{ resourceService.frmelmnts.btn.add | translate }}
+    {{ question.instanceIdentifier }}
+  </button>
+</div>
 
 <div class="ui card" *ngFor="let instance of question?.value; let i = index">
   <div class="content">
@@ -16,70 +18,62 @@
     > -->
       <!-- todo -->
     </div>
-    <!-- <div
-      name="trash"
-      class="deletOption"
-      item-end
-      margin-right
-      (click)="deleteInstanceAlert(i)"
-    >
-      todo delete
-    </div> -->
-    <button
-      class="sb-btn sb-btn-normal sb-btn-outline-primary"
-      type="button"
-      (click)="deleteInstanceAlert(i)"
-    >
-      {{ resourceService.frmelmnts.btn.delete | translate }}
-    </button>
+    <div>
+      <button
+        class="sb-btn sb-btn-normal sb-btn-outline-primary"
+        type="button"
+        (click)="deleteInstanceAlert(i)"
+      >
+        {{ resourceService.frmelmnts.btn.delete | translate }}
+      </button>
+    </div>
   </div>
+
+  <sui-modal
+    [mustScroll]="true"
+    [isClosable]="true"
+    [transitionDuration]="0"
+    [size]="'small'"
+    class="sb-modal"
+    appBodyScroll
+    (dismissed)="showBadgeAssingModel = false"
+    *ngIf="showBadgeAssingModel"
+    #modal
+  >
+    <!--Header-->
+    <div class="sb-modal-header">
+      {{ context?.heading }}
+    </div>
+    <!--/Header-->
+
+    <!--Content-->
+    <div class="sb-modal-content">
+      <question-generic-inputs
+        [questions]="context.questions"
+        [questionnaireForm]="matrixForm"
+      ></question-generic-inputs>
+
+      {{ matrixForm.value | json }}
+    </div>
+    <!--/Content-->
+
+    <!--Actions-->
+    <div class="sb-modal-actions">
+      <button
+        class="sb-btn sb-btn-normal sb-btn-primary"
+        type="button"
+        (click)="matrixSubmit()"
+      >
+        {{ resourceService?.frmelmnts?.btn?.submit | translate }}
+      </button>
+      <button
+        class="sb-btn sb-btn-normal sb-btn-outline-primary"
+        type="button"
+        (click)="showBadgeAssingModel = false"
+      >
+        {{ resourceService.frmelmnts.btn.cancel | translate }}
+      </button>
+    </div>
+    <!--/Actions-->
+  </sui-modal>
 </div>
-
-<sui-modal
-  [mustScroll]="true"
-  [isClosable]="true"
-  [transitionDuration]="0"
-  [size]="'small'"
-  class="sb-modal"
-  appBodyScroll
-  (dismissed)="showBadgeAssingModel = false"
-  *ngIf="showBadgeAssingModel"
-  #modal
->
-  <!--Header-->
-  <div class="sb-modal-header">
-    <!-- {{resourceService?.frmelmnts?.lbl?.markas}} '{{badge.name | uppercase}}' -->
-    todo
-  </div>
-  <!--/Header-->
-
-  <!--Content-->
-  <div class="sb-modal-content">
-    <question-generic-inputs
-      [questions]="context.questions"
-      [questionnaireForm]="matrixForm"
-    ></question-generic-inputs>
-
-    {{ matrixForm.value | json }}
-  </div>
-  <!--/Content-->
-
-  <!--Actions-->
-  <div class="sb-modal-actions">
-    <button
-      class="sb-btn sb-btn-normal sb-btn-primary"
-      type="button"
-      (click)="matrixSubmit()"
-    >
-      {{ resourceService?.frmelmnts?.btn?.submit | translate }}
-    </button>
-    <button
-      class="sb-btn sb-btn-normal sb-btn-outline-primary"
-      type="button"
-      (click)="showBadgeAssingModel = false"
-    >
-      {{ resourceService.frmelmnts.btn.cancel | translate }}
-    </button>
-  </div>
-  <!--/Actions-->
-</sui-modal>
