@@ -7,7 +7,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ObservationRoutingModule } from './observation-routing.module';
 import { ObservationListingComponent } from './components/observation-listing/observation-listing.component';
 import { ObservationDetailsComponent } from './components/observation-details/observation-details.component';
-
 import { MlGuard } from './guards';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
@@ -17,7 +16,6 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8'
 import { ContentSearchModule } from '@sunbird/content-search';
 import { TranslateModule } from '@ngx-translate/core';
 import { AddEntityComponent } from './components';
-
 @NgModule({
   declarations: [ObservationListingComponent, ObservationDetailsComponent, AddEntityComponent],
   imports: [
@@ -27,8 +25,17 @@ import { AddEntityComponent } from './components';
     CoreModule,
     FormsModule,
     SuiModule,
-    SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
-    SuiProgressModule, SuiRatingModule, SuiCollapseModule, TranslateModule, SuiDimmerModule, SuiTabsModule,
+    SuiSelectModule, 
+    SuiModalModule, 
+    SuiAccordionModule, 
+    SuiPopupModule, 
+    SuiDropdownModule,
+    SuiProgressModule, 
+    SuiRatingModule, 
+    SuiCollapseModule, 
+    TranslateModule, 
+    SuiDimmerModule, 
+    SuiTabsModule,
     ContentSearchModule,
     CommonConsumptionModule,
     SharedFeatureModule,
