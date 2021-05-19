@@ -201,7 +201,7 @@ module.exports = (app) => {
 
   app.get(successUrl, async (req, res) => { // to support mobile sso flow
     if (_.get(req, 'cookies.redirectPath')){
-      res.redirect(VDNURL+'/v1/sourcing/sso/success/redirect?obj='+encrypt(_.get(req, 'cookies.userDetails')));
+      res.redirect(VDNURL+'/v1/sourcing/sso/success/redirect?obj='+(_.get(req, 'cookies.userDetails')));
     } else {
       res.status(200).sendFile('./success_loader.html', {root: __dirname})
     }
