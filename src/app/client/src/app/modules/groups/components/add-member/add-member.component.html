@@ -30,7 +30,7 @@
               </div>
             </div>
             <re-captcha class="recaptcha" *ngIf="isCaptchEnabled" #captchaRef="reCaptcha" (resolved)="$event && captchaResolved($event)" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
-            <button type="button" class="sb-btn sb-btn-normal sb-btn-nolayer" [ngClass]="{'sb-btn-primary': memberId?.trim(), 'sb-btn-disabled': !memberId?.trim()}" [disabled]="!memberId?.trim()" (click)="onVerifyMember();setInteractData('verify-member', {searchQuery: memberId})">{{resourceService?.frmelmnts?.btn?.verify}}</button>
+            <button type="button" class="sb-btn sb-btn-normal sb-btn-nolayer" [ngClass]="{'sb-btn-primary': memberId?.trim(), 'sb-btn-disabled': !memberId?.trim()}" [disabled]="!memberId?.trim()" (click)="onVerifyMember();setInteractData('verify-member', {searchQuery: memberId}, '', {type: VERIFY_USER})">{{resourceService?.frmelmnts?.btn?.verify}}</button>
           </div>
         </div>
 

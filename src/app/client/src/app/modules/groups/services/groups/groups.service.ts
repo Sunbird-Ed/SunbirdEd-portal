@@ -198,8 +198,10 @@ getActivity(groupId, activity, mergeGroup) {
     }
 
 
-  addTelemetry(eid: {id: string, extra?: {}}, routeData, cdata, groupId?, obj?) {
+  addTelemetry(eid: {id: string, extra?: {}, edata?: {type: string, subtype?: string}}, routeData, cdata, groupId?, obj?) {
     const id = _.get(routeData, 'params.groupId') || groupId;
+    // Overridding the default edata properties if user is passing
+    const  type = (_.defaults({}, eid.edata, {type: 'click'})).type;
     const interactData: IInteractEventInput = {
       context: {
         env: _.get(routeData, 'data.telemetry.env'),
@@ -207,11 +209,14 @@ getActivity(groupId, activity, mergeGroup) {
       },
       edata: {
         id: eid.id,
-        type: 'click',
+        type: type,
         pageid: _.get(routeData, 'data.telemetry.pageid'),
       }
     };
 
+    if (eid.edata) {
+      interactData.edata.subtype = eid.edata.subtype;
+    }
     if (!_.isEmpty(eid.extra)) {
       interactData.edata.extra = eid.extra;
     }
@@ -227,15 +232,18 @@ getActivity(groupId, activity, mergeGroup) {
 
   }
 
-  getImpressionObject(routeData, url): IImpressionEventInput {
+  getImpressionObject(routeData, url, edata?): IImpressionEventInput {
+    // Overridding the default edata properties if user is passing
+    const type = (_.defaults({},  edata, { type: _.get(routeData, 'data.telemetry.type')})).type;
+    const subtype = (_.defaults({},  edata, { subtype: _.get(routeData, 'data.telemetry.subtype')})).subtype;
     const impressionObj = {
       context: {
         env: _.get(routeData, 'data.telemetry.env')
       },
       edata: {
-        type: _.get(routeData, 'data.telemetry.type'),
+        type: type,
         pageid: _.get(routeData, 'data.telemetry.pageid'),
-        subtype: _.get(routeData, 'data.telemetry.subtype'),
+        subtype: subtype,
         uri: url,
         duration: this.navigationhelperService.getPageLoadTime()
       },
