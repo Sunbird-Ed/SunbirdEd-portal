@@ -1,0 +1,21 @@
+<!-- <input
+  formControlName="authoritySignature_1"
+  id="authoritySignature_1-input"
+  [ngClass]="
+    createTemplateForm.controls.authoritySignature_1.touched &&
+    createTemplateForm.controls.authoritySignature_1.invalid
+      ? 'is-invalid'
+      : 'is-valid'
+  "
+  class="sb-form-control"
+  [placeholder]="resourceService?.frmelmnts?.cert?.lbl?.designation"
+/> -->
+<div [formGroup]="questionnaireForm">
+  <input
+    type="text"
+    [formControlName]="question?._id"
+    [ngClass]="isValid && isTouched ? 'is-invalid' : is-valid"
+    class="sb-form-control"
+    [placeholder]="'Enter your respsonse'"
+  />
+</div>

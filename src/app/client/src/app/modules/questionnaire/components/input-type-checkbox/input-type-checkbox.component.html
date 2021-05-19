@@ -1,0 +1,5 @@
+<div class="field" *ngFor="let o of options" [formGroup]="questionnaireForm" class="my-24">
+  <sui-checkbox (checkChange)="onChange(o.value, $event)" >
+    {{ o.label }}
+  </sui-checkbox>
+</div>

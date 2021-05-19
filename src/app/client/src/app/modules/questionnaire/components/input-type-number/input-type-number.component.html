@@ -1,0 +1,9 @@
+<div [formGroup]="questionnaireForm">
+  <input
+    type="number"
+    [formControlName]="question?._id"
+    [ngClass]="isValid && isTouched ? 'is-invalid' : is - valid"
+    class="sb-form-control"
+    [placeholder]="'Enter your respsonse'"
+  />
+</div>
