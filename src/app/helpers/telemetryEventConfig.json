@@ -31,10 +31,10 @@
       "message": "Calling update login time for user",
       "env": "user"
     },
-    "org/v1/search": {
+    "org/v2/search": {
       "title": "Org search",
       "category": "orgsearch",
-      "url": "org/v1/search",
+      "url": "org/v2/search",
       "message": "Calling org search",
       "env": "org"
     },

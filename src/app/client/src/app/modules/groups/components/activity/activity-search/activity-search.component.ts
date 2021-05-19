@@ -19,6 +19,7 @@ import { CacheService } from 'ng2-cache-service';
 import { GroupsService } from '../../../services/groups/groups.service';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
+import { VIEW_ACTIVITY, CATEGORY_SEARCH } from '../../../interfaces/telemetryConstants';
 
 
 @Component({
@@ -110,7 +111,8 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
       this.dataDrivenFilters = {};
       this.fetchContentOnParamChange();
       this.setNoResultMessage();
-      this.telemetryImpression = this.groupsService.getImpressionObject(this.activatedRoute.snapshot, this.router.url);
+      // tslint:disable-next-line:max-line-length
+      this.telemetryImpression = this.groupsService.getImpressionObject(this.activatedRoute.snapshot, this.router.url, {type: CATEGORY_SEARCH});
     }, error => {
       this.toasterService.error(this.resourceService.messages.fmsg.m0002);
     });
@@ -251,7 +253,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
           if (channelFacet) {
             const rootOrgIds = this.orgDetailsService.processOrgData(_.get(channelFacet, 'values'));
             return this.orgDetailsService.searchOrgDetails({
-              filters: { isRootOrg: true, rootOrgId: rootOrgIds },
+              filters: { isTenant: true, id: rootOrgIds },
               fields: ['slug', 'identifier', 'orgName']
             }).pipe(
               mergeMap(orgDetails => {
@@ -320,7 +322,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     this.groupAddableBlocData.pageIds = [_.get(activityCard, 'primaryCategory').toLowerCase(), ADD_ACTIVITY_TO_GROUP];
     this.csGroupAddableBloc.updateState(this.groupAddableBlocData);
     const cdata = [{ id: _.get(activityCard, 'identifier'), type: _.get(activityCard, 'primaryCategory') }];
-    this.addTelemetry('activity-course-card', cdata);
+    this.addTelemetry('activity-course-card', cdata, '', {type: VIEW_ACTIVITY});
     const isTrackable = this.courseConsumptionService.isTrackableCollection(activityCard);
     const contentMimeType = _.get(activityCard, 'mimeType');
 
@@ -342,8 +344,12 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     }
   }
 
-  addTelemetry(id, cdata, extra?) {
-    this.groupsService.addTelemetry({ id, extra }, this.activatedRoute.snapshot, cdata || [], this.groupId);
+  /**
+   * @description - To set the telemetry Intract event data
+   * @param  {} edata? - it's an object to specify the type and subtype of edata
+   */
+  addTelemetry(id, cdata, extra?, edata?) {
+    this.groupsService.addTelemetry({ id, extra, edata}, this.activatedRoute.snapshot, cdata || [], this.groupId);
   }
 
   private setNoResultMessage() {

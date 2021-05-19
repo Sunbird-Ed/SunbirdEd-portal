@@ -27,6 +27,9 @@
                 <div *ngIf="showLoader">
                   <app-loader [data]='loaderMessage'></app-loader>
                 </div>
+                <app-global-search-selected-filter [facets]="facets" [selectedFilters]="selectedFilters"
+                  *ngIf="initFilters && facets && layoutConfiguration" (filterChange)="getFilters($event)">
+                </app-global-search-selected-filter>
                 <section *ngFor="let section of pageSections; let index=index;">
                   <div class="sb-desktop-library-card">
                     <sb-library-cards-grid *ngIf="section?.name !== 'Recently Added'" [layoutConfig]="layoutConfiguration"

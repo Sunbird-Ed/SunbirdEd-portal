@@ -101,8 +101,8 @@ describe("Test Organisation with and without referrer", () => {
 
     it("#organisation", (done) => {
         supertest(app)
-            .post("/api/org/v1/search")
-            .send({ request: { filters: { slug: "sunbird", isRootOrg: true } } })
+            .post("/api/org/v2/search")
+            .send({ request: { filters: { slug: "sunbird", isTenant: true } } })
             .expect(200)
             .end((err, res) => {
                 if (res.statusCode >= 500) { logger.error(err); return done(); }
@@ -119,9 +119,9 @@ describe("Test Organisation with and without referrer", () => {
 
     it("#Set referrer for Organisation", (done) => {
         supertest(app)
-            .post("/api/org/v1/search")
+            .post("/api/org/v2/search")
             .set("Referer", `${process.env.APP_BASE_URL}/browse`)
-            .send({ request: { filters: { slug: "sunbird", isRootOrg: true } } })
+            .send({ request: { filters: { slug: "sunbird", isTenant: true } } })
             .expect(200)
             .end((err, res) => {
                 if (res.statusCode >= 500) { logger.error(err); return done(); }
@@ -138,7 +138,7 @@ describe("Test Organisation with and without referrer", () => {
 
     it("#organistion (ERROR)", (done) => {
         supertest(app)
-            .post("/api/org/v1/search")
+            .post("/api/org/v2/search")
             .send({})
             .expect(500)
             .end((err, res) => {

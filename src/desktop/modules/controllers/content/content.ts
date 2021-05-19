@@ -164,6 +164,8 @@ export default class Content {
                     failedCode: _.get(data, 'failedCode'),
                     failedReason: _.get(data, 'failedReason'),
                     addedUsing: _.toLower(_.get(data, 'type')),
+                    contentType: _.get(data, 'metaData.contentType'),
+                    trackable: _.get(data, 'metaData.trackable'),
                     contentDownloadList: _.map(_.get(data, 'metaData.contentDownloadList'),
                     (doc) => _.omit(doc, ["url"])),
 
@@ -185,7 +187,7 @@ export default class Content {
     search(req: any, res: any): any {
         logger.debug(`ReqId = "${req.headers['X-msgid']}": Called content search method`);
         let reqBody = req.body;
-        let pageReqFilter = _.get(reqBody, 'request.filters');
+        let pageReqFilter = this.getFilters(_.get(reqBody, 'request.filters'));
         let contentSearchFields = config.get('CONTENT_SEARCH_FIELDS').split(',');
         const mode = _.get(reqBody, 'request.mode');
         logger.info(`ReqId = "${req.headers['X-msgid']}": picked filters from the request`);
@@ -847,6 +849,18 @@ export default class Content {
             return offlineContents;
         }
         return offlineContents;
+    }
+
+    private getFilters(filters) {
+        // Update BMG filter names
+        const bmgFilters =  _.intersection(Object.keys(filters), ["se_boards", "se_gradeLevels", "se_mediums"]);
+        let keyMap = new Map([["se_boards", 'board'], ["se_gradeLevels", "gradeLevel"], ["se_mediums", "medium"]]);
+        bmgFilters.forEach(newKey => {
+            const oldKey = keyMap.get(newKey);
+            delete Object.assign(filters, { [oldKey]: filters[newKey] })[newKey];
+        });
+
+        return filters;
     }
 
 }

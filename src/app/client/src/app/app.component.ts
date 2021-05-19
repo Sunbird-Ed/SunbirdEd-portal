@@ -387,7 +387,7 @@ export class AppComponent implements OnInit, OnDestroy {
             } else {
               userType = localStorage.getItem('userType');
             }
-            this.showUserTypePopup = _.get(this.userService, 'loggedIn') ? (!_.get(this.userService, 'userProfile.userType') || !userType) : !userType;
+            this.showUserTypePopup = _.get(this.userService, 'loggedIn') ? (!_.get(this.userService, 'userProfile.profileUserType.type') || !userType) : !userType;
           }
         }
       });
@@ -640,7 +640,7 @@ export class AppComponent implements OnInit, OnDestroy {
       const anonymousTelemetryContextData = {
         userOrgDetails: {
           userId: 'anonymous',
-          rootOrgId: this.orgDetails.rootOrgId,
+          rootOrgId: this.orgDetails.id,
           organisationIds: [this.orgDetails.hashTagId]
         },
         config: {

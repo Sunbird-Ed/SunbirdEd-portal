@@ -44,7 +44,8 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy 
   public objectRollup = {};
   isGroupAdmin: boolean;
   groupId: string;
-  isQuestionSet:boolean = false;
+  isQuestionSet = false;
+  isDesktopApp = false;
 
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
@@ -61,6 +62,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy 
 
   ngOnInit() {
     this.isQuestionSet = _.includes(this.router.url, 'questionset');
+    this.isDesktopApp = this.userService.isDesktopApp;
     this.initLayout();
     this.activatedRoute.params.subscribe((params) => {
       this.showPlayer = false;
