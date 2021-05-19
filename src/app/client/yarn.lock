@@ -855,10 +855,10 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@3.9.5":
-  version "3.9.5"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.9.5.tgz#c9e56d2ec1ca636184f275446e4b820f2739afb8"
-  integrity sha512-v9L3pfVSs5TDv+psO/jlzvO++SpWhLxHRMUoOnPAH7DIBaOO0pWOLUvMQ7aTfg2IDnzpixFyR+8BiupnoW6wSQ==
+"@project-sunbird/client-services@4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.0.1.tgz#e99cad733d30d120bb495559c10e12db6139dd00"
+  integrity sha512-ipOUI29HPcVfGhkHGeHD9TmmrkfD6EYPSEJjrnYUdPXs92OsYoG7MjXyZ5qh6bYvR4NLgVr2O+uWaAwd1a7qcQ==
   dependencies:
     "@project-sunbird/telemetry-sdk" "0.0.26"
     inversify "^5.0.1"
@@ -901,10 +901,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.5.tgz#2d8d02ab6c91fadca0343b9553f4e24d0a52cb96"
   integrity sha512-RItUthSLN6UHocCSNcA8tJP1e426YQPoT4diHDm9Ijt8nVHvap9madbFHElsXHdjbKTqQlUXubo9zJmLioLk1g==
 
-"@project-sunbird/sunbird-collection-editor@3.9.14":
-  version "3.9.14"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-3.9.14.tgz#787b4e84a8b07abe07c143f8637aadea91b77abd"
-  integrity sha512-v10HSCIFRQdiTII5fZDTcOqQqZoYbuLpKxFy/3jZ1AnVtKUihGF3RKa4qIPhv6KBo7D5/RxJpekAGNhsAl8fgw==
+"@project-sunbird/sunbird-collection-editor@3.9.16":
+  version "3.9.16"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-3.9.16.tgz#3e942e96a56ac0869d9084c2db6a64162c532efa"
+  integrity sha512-B+BFxc4Uc1BUltadr2l3ISaDsADvwpn6MRy7OifSmyxjfRSmoOoyuzDHCDWk9r6Ydz8rFFdAmi1aVIcCM2ZrzQ==
   dependencies:
     tslib "^1.9.0"
 
@@ -931,6 +931,13 @@
   dependencies:
     tslib "^1.9.0"
 
+"@project-sunbird/sunbird-player-sdk-v8@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v8/-/sunbird-player-sdk-v8-4.0.0.tgz#88704e4ba8653fdd2c1a9b1a2e89cbebbd56d7eb"
+  integrity sha512-Q8fOpOljo9JzHD0RhlUHaPOVp08yxVEJsjdoFbfgN6cBAzTLyrbErO/0Lg6klcyaNMIEVhN+9NletEJiBepHdw==
+  dependencies:
+    tslib "^1.9.0"
+
 "@project-sunbird/sunbird-player-sdk-v8@4.0.3":
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v8/-/sunbird-player-sdk-v8-4.0.3.tgz#c1d4c40383b2087d530fffc1abae98a7b2c88ee4"
@@ -952,12 +959,12 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v8@3.9.26":
-  version "3.9.26"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v8/-/sunbird-quml-player-v8-3.9.26.tgz#d0cb09e2495654deafcdd396d58b6d161dfefb4b"
-  integrity sha512-Fac8MDqLKTI6+g9rH4zfqdSfPAZR5bYJSWSCA6DFZ1w0kQIBCBxLo9QJjpoF6DXWheWE5LsjZByHbdTb2eRYPA==
+"@project-sunbird/sunbird-quml-player-v8@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v8/-/sunbird-quml-player-v8-4.0.0.tgz#4a6942c06e31bf3c903e3df348f802bddee6b8b6"
+  integrity sha512-qoTsuoRuioFqbLuce/o+8IpJlcFi23+gdKAIjcxHXOWio5fZoE0YLqqcjn6sIvKo+xnFEdc/e9En76u+FN+LZA==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v8" "3.9.4"
+    "@project-sunbird/sunbird-player-sdk-v8" "4.0.0"
     tslib "^1.9.0"
 
 "@project-sunbird/sunbird-quml-player@3.8.0":
@@ -3079,10 +3086,10 @@ commander@^2.11.0, commander@^2.12.1, commander@^2.19.0, commander@^2.20.0, comm
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
 
-common-form-elements@^3.9.11:
-  version "3.9.11"
-  resolved "https://registry.yarnpkg.com/common-form-elements/-/common-form-elements-3.9.11.tgz#9532ba32ff3a4831440555841f792120db098b62"
-  integrity sha512-9qh3vuBprfiteKyDQOmhBZ3eQ4eSFOhvSpDbd+aFYW2/+xBP6Wu6QDhn6Rpd3eqYlQUivXvJZeYhMZekbfa2vg==
+common-form-elements@^3.9.13:
+  version "3.9.14"
+  resolved "https://registry.yarnpkg.com/common-form-elements/-/common-form-elements-3.9.14.tgz#8e9eade61dc531ffbc8eaa63e14af9e106e08f8f"
+  integrity sha512-QolYK+sJyb75MweTJlm60FRq1HtQpMKv+BbOFxv2FjqQMEir39hD5+ZNUr4qp1WVsR2Adw3X+Onum7U21M9iew==
   dependencies:
     "@project-sunbird/ckeditor-build-classic" "0.0.4"
     immutable "^4.0.0-rc.12"
