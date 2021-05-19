@@ -5,7 +5,7 @@
     margin: 15px 0px;
 }
 .entity-list{
-    background: #fff;
+    background: var(--white);
     padding: 10px 15px;;
     border-radius: 30px;
     margin: 15px 0px;
@@ -14,7 +14,7 @@
     }
 }
 .submissions{
-    background: #fff;
+    background: var(--white);
     border-radius: 24px;
     padding: 15px;
     h5{
@@ -30,3 +30,10 @@
         padding: 8px 24px;
     }
 }
+.icon-svg{
+    background: none;
+    box-shadow: none;
+  }
+  .sbaccordion__panel-header__title{
+    color: var(--gray-400);
+  }

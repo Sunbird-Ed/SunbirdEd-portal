@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ObservationService } from '@sunbird/core';
-import { ConfigService } from '@sunbird/shared';
+import { ConfigService,  ResourceService} from '@sunbird/shared';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-observation-details',
@@ -11,15 +12,27 @@ export class ObservationDetailsComponent implements OnInit {
   config;
   entities;
   programId;
-  solutionId ='609d28adb2f70d503e36f354';
+  solutionId;
+  solution;
   observationId;
   selectedEntity: any;
   submissions;
   showDownloadModal: boolean = false;
   constructor(
     private observationService: ObservationService,
-    config: ConfigService) {
+    config: ConfigService,
+    private router : Router,
+    private routerParam : ActivatedRoute,
+    public resourceService: ResourceService
+    ) {
     this.config = config;
+    routerParam.queryParams.subscribe(data=>{
+      console.log(data,"parameters");
+        this.programId = data.programId;
+        this.solutionId = data.solutionId;
+        this.observationId = data.observationId;
+        this.solution = data.solutionName
+    })
   }
 
   ngOnInit() {
@@ -29,7 +42,7 @@ export class ObservationDetailsComponent implements OnInit {
     const paramOptions = {
       url: this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_ENTITIES,
       param: {
-        solutionId: '609d28adb2f70d503e36f354'
+        solutionId: this.solutionId
       },
       data: {
         block: "0abd4d28-a9da-4739-8132-79e0804cd73e",
@@ -54,8 +67,8 @@ export class ObservationDetailsComponent implements OnInit {
     const paramOptions = {
       url: this.config.urlConFig.URLS.OBSERVATION.GET_OBSERVATION_SUBMISSIONS + `${this.entities._id}?entityId=${this.selectedEntity._id}`,
       param: {
-        solutionId: '609d28adb2f70d503e36f354',
-        programId: '607d320de9cce45e22ce90c0',
+        solutionId: this.solutionId,
+        programId: this.programId,
         observationId: this.entities._id,
         entityId: this.selectedEntity._id,
         entityName: this.selectedEntity.name,
@@ -82,5 +95,8 @@ export class ObservationDetailsComponent implements OnInit {
   modalClose() {
     this.showDownloadModal = false;
     this.getEntities();
+  }
+  goBack(){
+    this.router.navigate(['/observation']);
   }
 }

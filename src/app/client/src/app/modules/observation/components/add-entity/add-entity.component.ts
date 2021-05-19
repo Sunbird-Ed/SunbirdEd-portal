@@ -19,7 +19,7 @@ export class AddEntityComponent implements OnInit {
     page = 1;
     count = 0;
     entities;
-    showDownloadModal : boolean = true;
+    showDownloadModal: boolean = true;
     constructor(private observationService: ObservationService,
         private kendraService: KendraService,
         config: ConfigService) {
@@ -47,24 +47,20 @@ export class AddEntityComponent implements OnInit {
             },
         };
         this.kendraService.post(paramOptions).subscribe(data => {
-            // this.entities = data.result;
-            console.log(data, "59");
             this.targetEntity = data.result;
+            this.entities = [];
             this.search();
+
         }, error => {
         })
 
     }
     selectEntity(event) {
-        event.selected = !event.selected;
-        console.log(event.selected, ".isChecked");
-        console.log(this.entities, "this.entities");
-    }
-    onEnter(key) {
-        console.log(key, "key");
+        if (!event.isSelected) {
+            event.selected = !event.selected;
+        }
     }
     search() {
-        console.log(this.targetEntity, "this.targetEntity", "this.searchQuery");
         let url = this.config.urlConFig.URLS.OBSERVATION.SEARCH_ENTITY + '?observationId=' + this.observationId + '&search=' + encodeURIComponent(this.searchQuery ? this.searchQuery : '') + '&page=' + this.page + '&limit=' + this.limit;
         const paramOptions = {
             url: url + `&parentEntityId=${encodeURIComponent(
@@ -81,17 +77,26 @@ export class AddEntityComponent implements OnInit {
         };
         this.observationService.post(paramOptions).subscribe(data => {
             // this.entities = data.result;
-            console.log(data, "97");
             for (let i = 0; i < data.result[0].data.length; i++) {
                 data.result[0].data[i].isSelected = data.result[0].data[i].selected;
                 data.result[0].data[i].preSelected = data.result[0].data[i].selected ? true : false;
             }
-            this.entities = data.result[0].data;
-            this.count = data.result[0].count
+            this.entities = this.entities.concat(data.result[0].data);
+            this.count = data.result[0].count;
+
         }, error => {
         })
     }
 
+    searchEntity() {
+        this.entities = [];
+        this.page = this.page + 1;
+        this.search();
+    }
+    loadMore() {
+        this.page = this.page + 1;
+        this.search();
+    }
     submit() {
         let selectedSchools = [];
         this.entities.forEach((element) => {
@@ -99,7 +104,6 @@ export class AddEntityComponent implements OnInit {
                 selectedSchools.push(element._id);
             }
         });
-        console.log(selectedSchools, "selectedSchools");
         const paramOptions = {
             url: this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_UPDATE_ENTITES + `${this.observationId}`,
             param: {},
@@ -113,7 +117,6 @@ export class AddEntityComponent implements OnInit {
             },
         };
         this.observationService.post(paramOptions).subscribe(data => {
-            console.log(data, "data 4567");
             this.closeModal();
         }, error => {
         })

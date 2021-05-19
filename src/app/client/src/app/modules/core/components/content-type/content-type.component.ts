@@ -99,7 +99,9 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : 'textbook';
     } else if (url.indexOf('mydownloads') >= 0) {
       this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : 'mydownloads';
-    } else {
+    }else if (url.indexOf('observation') >= 0) {   
+      this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : 'observation';
+    }else {
       this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : null;
     }
   }
@@ -132,6 +134,32 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       contentType: 'global'
     };
     this.formService.getFormConfig(formServiceInputParams).subscribe((data: any) => {
+      
+      let obj = {
+        "index": 9,
+        "title": "frmelmnts.lbl.observation",
+        "desc": "frmelmnts.lbl.observation",
+        "menuType": "Content",
+        "contentType": "observation",
+        "isEnabled": true,
+        "isOnlineOnly": true,
+        "theme": {
+            "baseColor": "",
+            "textColor": "",
+            "supportingColor": "",
+            "className": "tests",
+            "imageName": "observation.svg"
+        },
+        "anonumousUserRoute": {
+            "route": "/observation",
+            'queryParam': 'observation'
+        },
+        "loggedInUserRoute": {
+            "route": "/observation",
+            'queryParam': 'observation'
+        }
+    };
+    data.push(obj);
       this.processFormData(data);
       this.setContentTypeOnUrlChange();
     });

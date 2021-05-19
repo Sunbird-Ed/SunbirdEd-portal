@@ -1,42 +1,349 @@
-import { Component, OnInit } from '@angular/core';
-import { KendraService } from '@sunbird/core';
-import {  ConfigService } from '@sunbird/shared';
+import {
+  PaginationService,
+  ResourceService,
+  ConfigService,
+  ToasterService,
+  INoResultMessage,
+  ICard,
+  ILoaderMessage,
+  UtilService,
+  BrowserCacheTtlService,
+  NavigationHelperService,
+  IPagination,
+  LayoutService,
+  COLUMN_TYPE,
+  OfflineCardService,
+} from "@sunbird/shared";
+import {
+  SearchService,
+  PlayerService,
+  CoursesService,
+  UserService,
+  ISort,
+  OrgDetailsService,
+  SchemaService,
+} from "@sunbird/core";
+import { combineLatest, Subject, of } from "rxjs";
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  EventEmitter,
+  ChangeDetectorRef,
+  AfterViewInit,
+} from "@angular/core";
+import { Router, ActivatedRoute } from "@angular/router";
+import * as _ from "lodash-es";
+import {
+  IInteractEventEdata,
+  IImpressionEventInput,
+  TelemetryService,
+} from "@sunbird/telemetry";
+import {
+  takeUntil,
+  map,
+  delay,
+  first,
+  debounceTime,
+  tap,
+  mergeMap,
+} from "rxjs/operators";
+import { CacheService } from "ng2-cache-service";
+import { ContentManagerService } from "../../../public/module/offline/services/content-manager/content-manager.service";
+import { KendraService } from "@sunbird/core";
 
 @Component({
-  selector: 'app-observation-listing',
-  templateUrl: './observation-listing.component.html',
-  styleUrls: ['./observation-listing.component.scss']
+  selector: "app-observation-listing",
+  templateUrl: "./observation-listing.component.html",
+  styleUrls: ["./observation-listing.component.scss"],
 })
-export class ObservationListingComponent implements OnInit {
-
+export class ObservationListingComponent
+  implements OnInit, OnDestroy, AfterViewInit
+{
+  pageTitleSrc = "resourceService?.frmelmnts?.lbl?.observation";
+  svgToDisplay = "textbooks-banner-img.svg";
+  contentList: any = [];
+  public unsubscribe$ = new Subject<void>();
+  layoutConfiguration: any;
+  contentData;
+  contentName: string;
+  public inViewLogs = [];
+  public telemetryImpression: IImpressionEventInput;
+  public cardIntractEdata: IInteractEventEdata;
+  public showLoader = true;
+  public initFilters = false;
+  isDesktopApp = false;
+  selectedFilters: any;
+  totalCount: any = 0;
+  FIRST_PANEL_LAYOUT;
+  SECOND_PANEL_LAYOUT;
+  public allTabData;
   config;
-
-  constructor( private kendraService: KendraService, config: ConfigService) {
+  searchData: any = "";
+  public numberOfSections = new Array(
+    this.configService.appConfig.SEARCH.PAGE_LIMIT
+  );
+  public paginationDetails: IPagination;
+  queryParam: any = {};
+  constructor(
+    public searchService: SearchService,
+    public router: Router,
+    public activatedRoute: ActivatedRoute,
+    public paginationService: PaginationService,
+    public resourceService: ResourceService,
+    public toasterService: ToasterService,
+    public changeDetectorRef: ChangeDetectorRef,
+    public configService: ConfigService,
+    public utilService: UtilService,
+    public coursesService: CoursesService,
+    private playerService: PlayerService,
+    public userService: UserService,
+    public cacheService: CacheService,
+    public browserCacheTtlService: BrowserCacheTtlService,
+    public orgDetailsService: OrgDetailsService,
+    public navigationhelperService: NavigationHelperService,
+    public layoutService: LayoutService,
+    private schemaService: SchemaService,
+    public contentManagerService: ContentManagerService,
+    public telemetryService: TelemetryService,
+    private offlineCardService: OfflineCardService,
+    private kendraService: KendraService,
+    config: ConfigService
+  ) {
     this.config = config;
-   }
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.paginationDetails = this.paginationService.getPager(0,1,this.configService.appConfig.SEARCH.PAGE_LIMIT);
+  }
 
   ngOnInit() {
-    // this.getMandatoryFields().subscribe(data => {
-    //   debugger
-    //   console.log("sampleee")
-    // })
-    this.getMandatoryFields();
+    this.activatedRoute.queryParams.subscribe((params) => {
+      if (params["key"]) {
+        this.searchData = params["key"];
+        return this.fetchContentList();
+      }
+      this.searchData="";
+      this.fetchContentList();
+    });
+
+    this.initLayout();
   }
 
-  getMandatoryFields() {
-    
-    const paramOptions = {
-      url: this.config.urlConFig.URLS.OBSERVATION.MANDATORY_ENTITIES_FOR_SUB_ROLE ,
-      param: {}
+  fetchContentList(page = 1) {
+    const paramOption = {
+      url: this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_LISTING,
+      param: { page: page, limit: 20, search: this.searchData },
+      data: {
+        block: "0abd4d28-a9da-4739-8132-79e0804cd73e",
+        district: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
+        role: "DEO",
+        school: "8be7ecb5-4e35-4230-8746-8b2694276343",
+        state: "bc75cc99-9205-463e-a722-5326857838f8",
+      },
     };
 
-    this.kendraService.get(paramOptions).subscribe(data => {
-      debugger
-      console.log("========================== observation lis ====================");
-      console.log(data)
-    }, error => {
-      debugger
-    })
+    this.kendraService.post(paramOption).subscribe(
+      (data: any) => {
+        this.totalCount = data.result.count;
+        this.paginationDetails.currentPage = page;
+        this.paginationDetails = this.paginationService.getPager(
+          data.result.count,
+          this.paginationDetails.currentPage,
+          this.configService.appConfig.SEARCH.PAGE_LIMIT
+        );
+        this.setFormat(data.result.data);
+      },
+      (error) => {}
+    );
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
   }
 
+  public navigateToPage(page: number): void {
+    if (page < 1 || page > this.paginationDetails.totalPages) {
+      return;
+    }
+    this.fetchContentList(page);
+  }
+
+  setFormat(data) {
+    let result = [];
+    this.contentList = [];
+
+    data.forEach((value) => {
+      let solution_name:string = value.name;
+      solution_name = solution_name[0].toUpperCase() + solution_name.slice(1);
+      let obj = {
+        name: solution_name,
+        contentType: "Observation",
+        metaData: {
+          identifier: value.solutionId,
+        },
+        identifier: value.solutionId,
+        solutionId: value.solutionId,
+        programId: value.programId,
+        medium: value.language,
+        organization: value.creator,
+        _id: value._id
+      };
+      result.push(obj);
+      this.contentList = result;
+    });
+    this.showLoader = false;
+  }
+
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.redoLayout();
+    this.layoutService
+      .switchableLayout()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((layoutConfig) => {
+        if (layoutConfig != null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        }
+        this.redoLayout();
+      });
+  }
+  redoLayout() {
+    if (this.layoutConfiguration != null) {
+      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(
+        0,
+        this.layoutConfiguration,
+        COLUMN_TYPE.threeToNine,
+        true
+      );
+      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(
+        1,
+        this.layoutConfiguration,
+        COLUMN_TYPE.threeToNine,
+        true
+      );
+    } else {
+      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(
+        0,
+        null,
+        COLUMN_TYPE.fullLayout
+      );
+      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(
+        1,
+        null,
+        COLUMN_TYPE.fullLayout
+      );
+    }
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.setTelemetryData();
+    });
+  }
+
+  private setTelemetryData() {
+    this.inViewLogs = []; // set to empty every time filter or page changes
+    this.telemetryImpression = {
+      context: {
+        env: this.activatedRoute.snapshot.data.telemetry.env,
+      },
+      edata: {
+        type: this.activatedRoute.snapshot.data.telemetry.type,
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+        uri: this.userService.slug
+          ? "/" + this.userService.slug + this.router.url
+          : this.router.url,
+        subtype: this.activatedRoute.snapshot.data.telemetry.subtype,
+        duration: this.navigationhelperService.getPageLoadTime(),
+      },
+    };
+    this.cardIntractEdata = {
+      id: "content-card",
+      type: "click",
+      pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
+    };
+  }
+
+  playContent(event) {
+    let data = event.data;
+    this.queryParam = {
+      programId: data.programId,
+      solutionId: data.solutionId,
+      observationId: data._id,
+      solutionName: data.name
+    };
+    this.router.navigate(["observation/details"], {
+      queryParams: this.queryParam,
+    });
+  }
+
+  public inView(event) {
+    _.forEach(event.inview, (elem, key) => {
+      const obj = _.find(this.inViewLogs, {
+        objid: elem.data.metaData.identifier,
+      });
+      if (!obj) {
+        this.inViewLogs.push({
+          objid: elem.data.metaData.identifier,
+          objtype: elem.data.metaData.contentType || "content",
+          index: elem.id,
+        });
+      }
+    });
+    if (this.telemetryImpression) {
+      this.telemetryImpression.edata.visits = this.inViewLogs;
+      this.telemetryImpression.edata.subtype = "pageexit";
+      this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+    }
+  }
+
+  hoverActionClicked(event) {
+    event["data"] = event.content;
+    this.contentName = event.content.name;
+    this.contentData = event.data;
+    let telemetryButtonId: any;
+  }
+
+  logTelemetry(content, actionId) {
+    const telemetryInteractObject = {
+      id: content.identifier,
+      type: content.contentType,
+      ver: content.pkgVersion ? content.pkgVersion.toString() : "1.0",
+    };
+
+    const appTelemetryInteractData: any = {
+      context: {
+        env:
+          _.get(
+            this.activatedRoute,
+            "snapshot.root.firstChild.data.telemetry.env"
+          ) ||
+          _.get(this.activatedRoute, "snapshot.data.telemetry.env") ||
+          _.get(
+            this.activatedRoute.snapshot.firstChild,
+            "children[0].data.telemetry.env"
+          ),
+      },
+      edata: {
+        id: actionId,
+        type: "click",
+        pageid: this.router.url.split("/")[1] || "Search-page",
+      },
+    };
+
+    if (telemetryInteractObject) {
+      if (telemetryInteractObject.ver) {
+        telemetryInteractObject.ver = _.isNumber(telemetryInteractObject.ver)
+          ? _.toString(telemetryInteractObject.ver)
+          : telemetryInteractObject.ver;
+      }
+      appTelemetryInteractData.object = telemetryInteractObject;
+    }
+    this.telemetryService.interact(appTelemetryInteractData);
+  }
 }

@@ -1,33 +1,25 @@
+import { CoreModule } from '@sunbird/core';
+import { SharedModule } from '@sunbird/shared';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SuiModule, SuiModalModule, SuiSelectModule, SuiAccordionModule, SuiPopupModule, SuiDimmerModule, SuiTabsModule, SuiDropdownModule, SuiProgressModule, SuiRatingModule, SuiCollapseModule } from 'ng2-semantic-ui';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ObservationRoutingModule } from './observation-routing.module';
-import {ObservationDetailsComponent,ObservationListingComponent,AddEntityComponent} from './components';
-import { SharedModule } from '@sunbird/shared';
-import { CoreModule } from '@sunbird/core';
-import { SuiModule } from 'ng2-semantic-ui/dist';
-import {
-  SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
-  SuiProgressModule, SuiRatingModule, SuiCollapseModule
-} from 'ng2-semantic-ui';
-import { FormsModule } from '@angular/forms';
-import { CsModule } from '@project-sunbird/client-services';
-import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
+import { ObservationListingComponent } from './components/observation-listing/observation-listing.component';
+import { ObservationDetailsComponent } from './components/observation-details/observation-details.component';
 
+import { MlGuard } from './guards';
+import { TelemetryModule } from '@sunbird/telemetry';
+import { NgInviewModule } from 'angular-inport';
+import { AvatarModule } from 'ngx-avatar';
+import { SharedFeatureModule } from '@sunbird/shared-feature';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
+import { ContentSearchModule } from '@sunbird/content-search';
+import { TranslateModule } from '@ngx-translate/core';
+import { AddEntityComponent } from './components';
 
-export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
-  if (!CsModule.instance.isInitialised) {
-    csLibInitializerService.initializeCs();
-  }
-  return CsModule.instance.userService;
-};
-export const csCourseServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
-  if (!CsModule.instance.isInitialised) {
-    csLibInitializerService.initializeCs();
-  }
-  return CsModule.instance.courseService;
-};
 @NgModule({
-  declarations: [ObservationListingComponent, ObservationDetailsComponent,AddEntityComponent],
+  declarations: [ObservationListingComponent, ObservationDetailsComponent, AddEntityComponent],
   imports: [
     CommonModule,
     ObservationRoutingModule,
@@ -36,12 +28,19 @@ export const csCourseServiceFactory = (csLibInitializerService: CsLibInitializer
     FormsModule,
     SuiModule,
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
-    SuiProgressModule, SuiRatingModule, SuiCollapseModule,
-
+    SuiProgressModule, SuiRatingModule, SuiCollapseModule, TranslateModule, SuiDimmerModule, SuiTabsModule,
+    ContentSearchModule,
+    CommonConsumptionModule,
+    SharedFeatureModule,
+    AvatarModule,
+    NgInviewModule,
+    TelemetryModule,
+    SuiModule,
+    FormsModule,
+    ReactiveFormsModule,
+    SharedModule,
+    CoreModule
   ],
-  providers: [
-    { provide: 'CS_USER_SERVICE', useFactory: csUserServiceFactory, deps: [CsLibInitializerService] },
-    { provide: 'CS_COURSE_SERVICE', useFactory: csCourseServiceFactory, deps: [CsLibInitializerService] }
-  ],
+  providers: [MlGuard]
 })
 export class ObservationModule { }
