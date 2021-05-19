@@ -9,9 +9,6 @@ import { containerAPI, ISystemQueueInstance, ISystemQueue, SystemQueueReq, Syste
 import { manifest } from "../../manifest";
 import TelemetryHelper from "../../helper/telemetryHelper";
 import { ImportContent } from "./contentImport";
-const telemetryEnv = "Content";
-const telemetryInstance = containerAPI.getTelemetrySDKInstance().getInstance();
-
 import { ClassLogger } from "@project-sunbird/logger/decorator";
 // @ClassLogger({
 //   logLevel: "debug",
