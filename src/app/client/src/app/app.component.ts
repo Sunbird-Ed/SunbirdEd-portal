@@ -352,10 +352,10 @@ export class AppComponent implements OnInit, OnDestroy {
       zip(this.tenantService.tenantData$, this.getOrgDetails(false)).subscribe((res) => {
         if (_.get(res[0], 'tenantData')) {
           const orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
-          if (_.get(orgDetailsFromSlug, 'slug') !== this.tenantService.slugForIgot) {
-            const userType = localStorage.getItem('userType');
-            this.showUserTypePopup = _.get(this.userService, 'loggedIn') ? (!_.get(this.userService, 'userProfile.userType') || !userType) : !userType;
-          }
+          // if (_.get(orgDetailsFromSlug, 'slug') !== this.tenantService.slugForIgot) {
+          const userType = localStorage.getItem('userType');
+          this.showUserTypePopup = _.get(this.userService, 'loggedIn') ? (!_.get(this.userService, 'userProfile.userType') || !userType) : !userType;
+          // }
         }
       });
     }, (err) => {
