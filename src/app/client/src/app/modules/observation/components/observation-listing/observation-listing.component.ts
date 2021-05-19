@@ -51,6 +51,8 @@ import {
 import { CacheService } from "ng2-cache-service";
 import { ContentManagerService } from "../../../public/module/offline/services/content-manager/content-manager.service";
 import { KendraService } from "@sunbird/core";
+import { ObservationUtilService } from "../../service";
+import {Location} from '@angular/common';
 
 @Component({
   selector: "app-observation-listing",
@@ -85,6 +87,9 @@ export class ObservationListingComponent
   );
   public paginationDetails: IPagination;
   queryParam: any = {};
+  showEditUserDetailsPopup:any= true;
+  userData:any;
+  payload:any;
   constructor(
     public searchService: SearchService,
     public router: Router,
@@ -108,14 +113,32 @@ export class ObservationListingComponent
     public telemetryService: TelemetryService,
     private offlineCardService: OfflineCardService,
     private kendraService: KendraService,
-    config: ConfigService
+    config: ConfigService,
+    private observationUtil:ObservationUtilService,
+    private location:Location
   ) {
     this.config = config;
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.paginationDetails = this.paginationService.getPager(0,1,this.configService.appConfig.SEARCH.PAGE_LIMIT);
   }
 
-  ngOnInit() {
+  async ngOnInit(){
+    this.initLayout();
+    this.showEditUserDetailsPopup = await this.observationUtil.getProfileData();
+    console.log(this.showEditUserDetailsPopup);
+    if(!this.showEditUserDetailsPopup){
+      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0018'));
+      return;
+    }
+
+    this.showEditUserDetailsPopup=await this.observationUtil.getMandatoryEntities();
+    console.log(this.showEditUserDetailsPopup);
+    if(!this.showEditUserDetailsPopup){
+      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0018'));
+      return;
+    }
+
+
     this.activatedRoute.queryParams.subscribe((params) => {
       if (params["key"]) {
         this.searchData = params["key"];
@@ -125,20 +148,48 @@ export class ObservationListingComponent
       this.fetchContentList();
     });
 
-    this.initLayout();
+    
   }
 
-  fetchContentList(page = 1) {
+  async closeModal(){
+    this.showEditUserDetailsPopup=!this.showEditUserDetailsPopup;
+    console.log(this.showEditUserDetailsPopup);
+    this.userData=JSON.parse(sessionStorage.getItem("CacheServiceuserProfile"));
+
+    if(this.userData.value.profileUserType.subType == null){
+      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0018'));
+      this.back();
+      return;
+    }
+
+    this.showEditUserDetailsPopup=await this.observationUtil.getMandatoryEntities();
+    console.log(this.showEditUserDetailsPopup);
+    if(!this.showEditUserDetailsPopup){
+      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0018'));
+      this.back();
+      return;
+    }
+    this.fetchContentList();
+  }
+
+
+  getDataParam(){
+    this.observationUtil.getProfileDataList()
+    .then((result:any)=>{
+      this.payload=result;
+    })
+  }
+
+  back():void{
+    this.location.back();
+  }
+
+  async fetchContentList(page = 1) {
+    await this.getDataParam();
     const paramOption = {
       url: this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_LISTING,
       param: { page: page, limit: 20, search: this.searchData },
-      data: {
-        block: "0abd4d28-a9da-4739-8132-79e0804cd73e",
-        district: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
-        role: "DEO",
-        school: "8be7ecb5-4e35-4230-8746-8b2694276343",
-        state: "bc75cc99-9205-463e-a722-5326857838f8",
-      },
+      data: this.payload
     };
 
     this.kendraService.post(paramOption).subscribe(

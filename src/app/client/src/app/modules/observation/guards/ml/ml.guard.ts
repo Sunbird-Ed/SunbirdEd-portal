@@ -17,7 +17,7 @@ export class MlGuard implements CanActivate {
       if (profileData
         && profileData.userProfile
         && profileData.userProfile['profileUserType']
-        && profileData.userProfile['profileUserType']['type'] === "administrator"
+        && (profileData.userProfile['profileUserType']['type'] === "administrator"||profileData.userProfile['profileUserType']['type'] === "leader")
       ) {
         return true
       } else {

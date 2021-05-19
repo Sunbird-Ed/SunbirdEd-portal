@@ -79,4 +79,11 @@
 </div>
 </div>
 
+<app-location-selection
+(close)="closeModal()"
+*ngIf="!this.showEditUserDetailsPopup">
 
+<div slot="popup-sub-header">
+  <p class="subtitle">{{resourceService?.frmelmnts?.lbl?.editPersonalDetails}}&lrm;</p>
+</div>
+</app-location-selection>
