@@ -1,4 +1,4 @@
-<div class="range-wrap mt-30" [formGroup]="questionnaireForm">
+<div class="d-flex flex-ai-center flex-dc mt-30 ng-dirty ng-invalid ng-touched range-wrap" [formGroup]="questionnaireForm">
   <div class="range-value" id="rangeV"></div>
   <input
     id="range"
@@ -8,5 +8,6 @@
     [ngClass]="isValid && isTouched ? 'is-invalid' : is - valid"
     step="1"
     [formControlName]="question?._id"
+    class="w-100"
   />
 </div>

@@ -1,4 +1,4 @@
-<div *ngFor="let o of options" [formGroup]="questionnaireForm">
+<div *ngFor="let o of options" [formGroup]="questionnaireForm" class="my-24">
   <input
     type="radio"
     (change)="onChange(o.value)"

@@ -17,7 +17,7 @@
           layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'
         "
       >
-        <form [formGroup]="questionnaireForm">
+        <form [formGroup]="questionnaireForm" class="m-40">
           <question-generic-inputs
             [questions]="questions"
             [questionnaireForm]="questionnaireForm"
@@ -39,6 +39,7 @@
             </button>
           </div>
         </form>
+        <!-- {{questionnaireForm.value |json}} -->
       </div>
     </div>
   </div>
