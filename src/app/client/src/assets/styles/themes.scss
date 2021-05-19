@@ -3219,3 +3219,10 @@ html[accessable-theme=accessible][layout=joy]{
     color: var(--black);
   }
 } 
+
+html[layout=joy] {
+  .sb-activity {
+    position: relative;
+    z-index: 2;
+  }
+}

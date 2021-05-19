@@ -11,6 +11,15 @@
           <div>{{resourceService?.frmelmnts?.lbl?.groupCreatedBy | interpolate:'{name}': creator}}</div>
         </div>
       </div>
+
+      <!--Activity Dashboard-->
+      <button *ngIf="groupData?.isAdmin" (click)="navigateToActivityDashboard()"
+        class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix" title="Forum">
+        <img src="assets/images/forum.svg" width="20px" class="mr-8"
+          alt="{{resourceService?.frmelmnts?.lbl?.discussionForum}}">
+        Activity Dashbord
+      </button>
+      
       <!--Forum Icon-->
       <app-access-discussion [forumIds]="forumIds" [fetchForumIdReq]="fetchForumIdReq" (routerData)="assignForumData($event)"> </app-access-discussion>
       <div class="d-flex flex-ai-center flex-w-wrap content-header__buttons">

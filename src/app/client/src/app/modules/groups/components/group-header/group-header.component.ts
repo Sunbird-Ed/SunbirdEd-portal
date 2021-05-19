@@ -3,7 +3,7 @@ import { actions } from './../../interfaces/group';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, ViewChild, Input, Renderer2, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { ResourceService, NavigationHelperService, ToasterService } from '@sunbird/shared';
-import { MY_GROUPS, GROUP_DETAILS, IGroupCard, IFetchForumId, EDIT_GROUP, IFetchForumConfig } from './../../interfaces';
+import { MY_GROUPS, GROUP_DETAILS, IGroupCard, IFetchForumId, EDIT_GROUP, IFetchForumConfig, ACTIVITY_DASHBOARD } from './../../interfaces';
 import { GroupsService } from '../../services';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
@@ -11,6 +11,7 @@ import { takeUntil } from 'rxjs/operators';
 import { UserService } from '@sunbird/core';
 import { DiscussionService } from '../../../discussion/services/discussion/discussion.service';
 import { DiscussionTelemetryService } from '../../../shared/services/discussion-telemetry/discussion-telemetry.service';
+
 @Component({
   selector: 'app-group-header',
   templateUrl: './group-header.component.html',
@@ -46,7 +47,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   constructor(private renderer: Renderer2, public resourceService: ResourceService, private router: Router,
     private groupService: GroupsService, private navigationHelperService: NavigationHelperService, private toasterService: ToasterService,
     private activatedRoute: ActivatedRoute, private userService: UserService, private discussionService: DiscussionService, 
-    public discussionTelemetryService: DiscussionTelemetryService) {
+    public discussionTelemetryService: DiscussionTelemetryService, public activateRoute: ActivatedRoute) {
     this.renderer.listen('window', 'click', (e: Event) => {
       if (e.target['tabIndex'] === -1 && e.target['id'] !== 'group-actions') {
         this.dropdownContent = true;
@@ -280,6 +281,13 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
         }
       });
     }
+
+  /**
+   * @description - navigate to activity dashboard page
+   */
+  navigateToActivityDashboard() {
+      this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, this.groupData.id, `${ACTIVITY_DASHBOARD}`]);
+  }
 
   ngOnDestroy() {
     this.unsubscribe$.next();
