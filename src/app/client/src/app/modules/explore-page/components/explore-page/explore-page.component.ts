@@ -145,6 +145,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnInit() {
+        debugger
         this.isDesktopApp = this.utilService.isDesktopApp;
         this.initConfiguration();
 
@@ -255,6 +256,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         if (!filters || status === 'FETCHING') { return; }
         this.showLoader = true;
         const currentPageData = this.getCurrentPageData();
+        debugger
         this.selectedFilters = pick(filters, ['board', 'medium', 'gradeLevel', 'channel', 'subject', 'audience']);
         if (has(filters, 'audience') || (localStorage.getItem('userType') && currentPageData.contentType !== 'all')) {
             const userTypes = get(filters, 'audience') || [localStorage.getItem('userType')];

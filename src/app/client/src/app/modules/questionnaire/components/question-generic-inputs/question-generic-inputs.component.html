@@ -1,0 +1,50 @@
+<div class="ui card" *ngFor="let question of questions; let qi = index">
+  <div class="content">
+    <div *ngFor="let q of question.question; let qai = index" class="my-15">
+      <div class="sb-h4">{{ qai == 0 ? qi + 1 + ")" : "" }}{{ q }}</div>
+    </div>
+    {{ question._id }}
+    <input-type-text
+      *ngIf="question.responseType == 'text'"
+      [questionnaireForm]="questionnaireForm"
+      [question]="question"
+    ></input-type-text>
+    <input-type-number
+      *ngIf="question.responseType == 'number'"
+      [questionnaireForm]="questionnaireForm"
+      [question]="question"
+    ></input-type-number>
+    <input-type-range
+      *ngIf="question.responseType == 'slider'"
+      [questionnaireForm]="questionnaireForm"
+      [question]="question"
+    ></input-type-range>
+    <input-type-date-picker
+      *ngIf="question.responseType == 'date'"
+      [questionnaireForm]="questionnaireForm"
+      [question]="question"
+    ></input-type-date-picker>
+    <input-type-radio
+      *ngIf="question.responseType == 'radio'"
+      [questionnaireForm]="questionnaireForm"
+      [question]="question"
+      [options]="question.options"
+    ></input-type-radio>
+    <input-type-checkbox
+      *ngIf="question.responseType == 'multiselect'"
+      [questionnaireForm]="questionnaireForm"
+      [question]="question"
+      [options]="question.options"
+    ></input-type-checkbox>
+    <page-questions
+      *ngIf="question.responseType == 'pageQuestions'"
+      [questionnaireForm]="questionnaireForm"
+      [question]="question"
+    ></page-questions>
+    <matrix-questions
+      *ngIf="question.responseType == 'matrix'"
+      [questionnaireForm]="questionnaireForm"
+      [question]="question"
+    ></matrix-questions>
+  </div>
+</div>

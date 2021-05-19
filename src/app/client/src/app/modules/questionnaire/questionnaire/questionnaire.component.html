@@ -1,0 +1,42 @@
+<app-landing-section
+  [textToDisplay]="pageTitleSrc"
+  [svgToDisplay]="svgToDisplay"
+  [layoutConfiguration]="layoutConfiguration"
+></app-landing-section>
+<div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg' : ''">
+  <div
+    class="sb-g"
+    [ngClass]="
+      layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'
+    "
+  >
+    <div [ngClass]="FIRST_PANEL_LAYOUT">Sections...</div>
+    <div [ngClass]="SECOND_PANEL_LAYOUT">
+      <div
+        [ngClass]="
+          layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'
+        "
+      >
+        <form [formGroup]="questionnaireForm">
+          <question-generic-inputs
+            [questions]="questions"
+            [questionnaireForm]="questionnaireForm"
+          ></question-generic-inputs>
+          {{ questionnaireForm.value | json }}
+          <button
+            class="sb-btn sb-btn-normal sb-btn-primary"
+            type="button"
+            (click)="onSubmit()"
+          >
+            Submit
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- <app-offline-banner
+  *ngIf="!isUserLoggedIn()"
+  [slug]="userService.slug"
+></app-offline-banner> -->
+  <!-- Show Modal if content has any YouTube data-->
+</div>
