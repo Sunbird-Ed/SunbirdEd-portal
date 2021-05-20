@@ -81,7 +81,7 @@
                   </div>
                 </div>
                 <div class="certified-course__btn ng-star-inserted">
-                  <button *ngIf="evidance.status == 'notstarted'"
+                  <button (click)="redirectToQuestions()"
                     class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.btn?.start}}
                   </button>
                 </div>
