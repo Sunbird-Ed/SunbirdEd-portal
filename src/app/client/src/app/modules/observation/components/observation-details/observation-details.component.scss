@@ -1,0 +1,39 @@
+.observation-detail-box{
+    display: inline-flex;
+    max-width: 100%;
+    min-width: 100%;
+    margin: 15px 0px;
+}
+.entity-list{
+    background: var(--white);
+    padding: 10px 15px;;
+    border-radius: 30px;
+    margin: 15px 0px;
+    label{
+        margin-bottom:0px;
+    }
+}
+.submissions{
+    background: var(--white);
+    border-radius: 24px;
+    padding: 15px;
+    h5{
+        font-weight: 600;
+    }
+    .evidences-list{
+        min-width: 100%;
+        max-width: 100%;
+        display: inline-flex;
+        margin: 5px 0px;
+        background: var(--sbt-compt-bg) !important;
+        border-radius: var(--sbt-bradius-24);
+        padding: 8px 24px;
+    }
+}
+.icon-svg{
+    background: none;
+    box-shadow: none;
+  }
+  .sbaccordion__panel-header__title{
+    color: var(--gray-400);
+  }
