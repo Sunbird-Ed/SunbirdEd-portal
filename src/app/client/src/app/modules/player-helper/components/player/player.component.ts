@@ -141,8 +141,10 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       const root: HTMLElement = document.getElementsByTagName( 'html' )[0];
       if (isFullScreen) {
         root.classList.add('PlayerMediaQueryClass');
+        document.body.classList.add('o-y-hidden');
       } else {
         root.classList.remove('PlayerMediaQueryClass');
+        document.body.classList.remove('o-y-hidden');
       }
       if (this.isDesktopApp) {
         const hideCM = isFullScreen ? true : false;

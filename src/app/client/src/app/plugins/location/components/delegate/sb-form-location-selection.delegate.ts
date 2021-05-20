@@ -202,11 +202,12 @@ export class SbFormLocationSelectionDelegate {
       const formValue = this.formGroup.value;
       const payload: any = {
         userId: _.get(this.userService, 'userid'),
-        profileUserType:{"type":_.get(formValue, 'persona'),"subType":_.get(formValue, 'children.persona.subPersona')},
         profileLocation: locationDetails,
+        profileUserType: {
+          ...(_.get(formValue, 'persona') ? { type: _.get(formValue, 'persona') } : {} ),
+          ...(_.get(formValue, 'children.persona.subPersona') ? { subType: _.get(formValue, 'children.persona.subPersona') } : {} ),
+        },
         ...(_.get(formValue, 'name') ? { firstName: _.get(formValue, 'name') } : {} )
-        // ...(_.get(formValue, 'persona') ? { userType: _.get(formValue, 'persona') } : {} ),
-        // ...(_.get(formValue, 'children.persona.subPersona') ? { userSubType: _.get(formValue, 'children.persona.subPersona') } : {} ),
       };
 
       const task = this.locationService.updateProfile(payload).toPromise()
@@ -251,7 +252,9 @@ export class SbFormLocationSelectionDelegate {
     this.isLocationFormLoading = true;
     const tempLocationFormConfig: FieldConfig<any>[] = await this.formService.getFormConfig(formInputParams)
       .toPromise();
-    this.guestUserDetails = await this.userService.getGuestUser().toPromise();
+    if (!this.userService.loggedIn) {
+      this.guestUserDetails = await this.userService.getGuestUser().toPromise();
+    }
 
     for (const config of tempLocationFormConfig) {
       if (config.code === 'name') {
@@ -269,7 +272,7 @@ export class SbFormLocationSelectionDelegate {
       if (config.code === 'persona') {
         if (this.userService.loggedIn) {
           config.templateOptions.hidden = false;
-          config.default = (_.get(this.userService.userProfile, 'userType') || '').toLowerCase() || 'teacher';
+          config.default = (_.get(this.userService.userProfile.profileUserType, 'type') || '').toLowerCase() || 'teacher';
         } else {
           config.templateOptions.hidden = false;
           config.default = (localStorage.getItem('userType') || '').toLowerCase() || 'teacher';
