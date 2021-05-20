@@ -931,13 +931,6 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-player-sdk-v8@4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v8/-/sunbird-player-sdk-v8-4.0.0.tgz#88704e4ba8653fdd2c1a9b1a2e89cbebbd56d7eb"
-  integrity sha512-Q8fOpOljo9JzHD0RhlUHaPOVp08yxVEJsjdoFbfgN6cBAzTLyrbErO/0Lg6klcyaNMIEVhN+9NletEJiBepHdw==
-  dependencies:
-    tslib "^1.9.0"
-
 "@project-sunbird/sunbird-player-sdk-v8@4.0.3":
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v8/-/sunbird-player-sdk-v8-4.0.3.tgz#c1d4c40383b2087d530fffc1abae98a7b2c88ee4"
@@ -959,12 +952,12 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v8@4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v8/-/sunbird-quml-player-v8-4.0.0.tgz#4a6942c06e31bf3c903e3df348f802bddee6b8b6"
-  integrity sha512-qoTsuoRuioFqbLuce/o+8IpJlcFi23+gdKAIjcxHXOWio5fZoE0YLqqcjn6sIvKo+xnFEdc/e9En76u+FN+LZA==
+"@project-sunbird/sunbird-quml-player-v8@4.0.2":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v8/-/sunbird-quml-player-v8-4.0.2.tgz#463777014c149225d7129bf3c8022c0686cfd17d"
+  integrity sha512-jakjS+JD2+cb4ODrpwGInyxUXAUVoycP+a07KKTu4/+OquJWHMmxrSM1fReOtO69hMPPlfp5zXa7ml+lTjaRVw==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v8" "4.0.0"
+    "@project-sunbird/sunbird-player-sdk-v8" "4.0.3"
     tslib "^1.9.0"
 
 "@project-sunbird/sunbird-quml-player@3.8.0":
@@ -988,6 +981,14 @@
   version "0.0.26"
   resolved "https://registry.yarnpkg.com/@project-sunbird/telemetry-sdk/-/telemetry-sdk-0.0.26.tgz#15a7776e0d94da3c844161b1400612303756a830"
   integrity sha512-8r8tf+YN+z8A4KHBmL8/wxDIKGkASDHMMxyhlI9/iWv83sueoN5qHB6QnqgtIRyEdFjt4Tum5u18/oB71Bb0PQ==
+  dependencies:
+    grunt-karma "^0.12.2"
+    karma "^3.0.0"
+
+"@project-sunbird/telemetry-sdk@0.0.29":
+  version "0.0.29"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/telemetry-sdk/-/telemetry-sdk-0.0.29.tgz#1c10e89ea5eca2480722be660dc4cd9c9cc433c6"
+  integrity sha512-aFCBEikBdfAfA1bSwwlFmQvzbjd2BaK9JjJ01nGN5KnwkCGwduCngkAs0ns6S1X+o0/f3qyTUkL0NB/tKZ6Pjg==
   dependencies:
     grunt-karma "^0.12.2"
     karma "^3.0.0"
