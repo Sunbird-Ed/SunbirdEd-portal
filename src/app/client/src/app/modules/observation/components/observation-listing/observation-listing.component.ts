@@ -140,6 +140,7 @@ export class ObservationListingComponent
   }
 
   async closeModal(){
+    this.showEditUserDetailsPopup=!this.showEditUserDetailsPopup
     this.showEditUserDetailsPopup=await this.observationUtil.getProfileInfo();
     if(!this.showEditUserDetailsPopup){
       this.showEditUserDetailsPopup=false;
