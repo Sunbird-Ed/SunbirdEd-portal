@@ -4,7 +4,6 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "prod": "ng build --prod",
     "start": "ng build --deployUrl dist/ && mv ../dist/index.html ../dist/index.ejs",
     "start-desktop": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng build --output-path=../../desktop/public/portal --watch=true --configuration=desktop-staging && mv ../../desktop/public/portal/index.html ../../desktop/public/portal/index.ejs",
     "prod-desktop": "node --max_old_space_size=8096 ./node_modules/@angular/cli/bin/ng build --prod --output-path=../../desktop/public/portal --configuration=desktop-production && mv ../../desktop/public/portal/index.html ../../desktop/public/portal/index.ejs",
