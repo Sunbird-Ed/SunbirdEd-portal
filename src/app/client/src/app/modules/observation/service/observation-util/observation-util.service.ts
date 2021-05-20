@@ -59,7 +59,6 @@ export class ObservationUtilService {
             const val = this.profile.userLocations.filter((element)=>{
               return element.type == field
             });
-            console.log(val);
             if (!val) {
               allFieldsPresent = false;
               break
@@ -80,6 +79,21 @@ export class ObservationUtilService {
         // reject()
       })
     })
+  }
+
+  async getProfileInfo(): Promise<any> {
+   
+    return new Promise(async (resolve, reject) => {
+      const profileData=await this.getProfileData();
+      if(!profileData){
+        resolve(false);
+        return;
+      }
+
+      const mandatoryFields = await this.getMandatoryEntities();
+      mandatoryFields ? resolve(true) : resolve(false);
+    });
+
   }
 
   getProfileDataList(){

@@ -88,7 +88,6 @@ export class ObservationListingComponent
   public paginationDetails: IPagination;
   queryParam: any = {};
   showEditUserDetailsPopup:any= true;
-  userData:any;
   payload:any;
   constructor(
     public searchService: SearchService,
@@ -124,22 +123,13 @@ export class ObservationListingComponent
 
   async ngOnInit(){
     this.initLayout();
-    this.showEditUserDetailsPopup = await this.observationUtil.getProfileData();
-    console.log(this.showEditUserDetailsPopup);
-    if(!this.showEditUserDetailsPopup){
+  
+    this.showEditUserDetailsPopup=await this.observationUtil.getProfileInfo();
+     if(!this.showEditUserDetailsPopup){
       this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0018'));
       return;
-    }
-
-    this.showEditUserDetailsPopup=await this.observationUtil.getMandatoryEntities();
-    console.log(this.showEditUserDetailsPopup);
-    if(!this.showEditUserDetailsPopup){
-      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0018'));
-      return;
-    }
-
-
-    this.activatedRoute.queryParams.subscribe((params) => {
+     }
+     this.activatedRoute.queryParams.subscribe((params) => {
       if (params["key"]) {
         this.searchData = params["key"];
         return this.fetchContentList();
@@ -147,31 +137,27 @@ export class ObservationListingComponent
       this.searchData="";
       this.fetchContentList();
     });
-
-    
   }
 
   async closeModal(){
-    this.showEditUserDetailsPopup=!this.showEditUserDetailsPopup;
-    console.log(this.showEditUserDetailsPopup);
-    this.userData=JSON.parse(sessionStorage.getItem("CacheServiceuserProfile"));
-
-    if(this.userData.value.profileUserType.subType == null){
-      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0018'));
-      this.back();
-      return;
-    }
-
-    this.showEditUserDetailsPopup=await this.observationUtil.getMandatoryEntities();
-    console.log(this.showEditUserDetailsPopup);
+    this.showEditUserDetailsPopup=await this.observationUtil.getProfileInfo();
     if(!this.showEditUserDetailsPopup){
+      this.showEditUserDetailsPopup=false;
       this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0018'));
-      this.back();
       return;
-    }
+     }
+
+    this.searchData="";
     this.fetchContentList();
+    
   }
 
+  async getProfileCheck(){
+    await this.observationUtil.getProfileInfo()
+    .then((result:any)=>{
+      return result;
+    });
+  }
 
   getDataParam(){
     this.observationUtil.getProfileDataList()
