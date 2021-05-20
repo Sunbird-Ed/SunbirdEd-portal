@@ -4,9 +4,9 @@ import { ConfigService,  ResourceService} from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-observation-details',
-  templateUrl: './observation-details.component.html',
-  styleUrls: ['./observation-details.component.scss']
+  selector: "app-observation-details",
+  templateUrl: "./observation-details.component.html",
+  styleUrls: ["./observation-details.component.scss"],
 })
 export class ObservationDetailsComponent implements OnInit {
   config;
@@ -21,18 +21,18 @@ export class ObservationDetailsComponent implements OnInit {
   constructor(
     private observationService: ObservationService,
     config: ConfigService,
-    private router : Router,
-    private routerParam : ActivatedRoute,
+    private router: Router,
+    private routerParam: ActivatedRoute,
     public resourceService: ResourceService
-    ) {
+  ) {
     this.config = config;
-    routerParam.queryParams.subscribe(data=>{
-      console.log(data,"parameters");
-        this.programId = data.programId;
-        this.solutionId = data.solutionId;
-        this.observationId = data.observationId;
-        this.solution = data.solutionName
-    })
+    routerParam.queryParams.subscribe((data) => {
+      console.log(data, "parameters");
+      this.programId = data.programId;
+      this.solutionId = data.solutionId;
+      this.observationId = data.observationId;
+      this.solution = data.solutionName;
+    });
   }
 
   ngOnInit() {
@@ -42,7 +42,7 @@ export class ObservationDetailsComponent implements OnInit {
     const paramOptions = {
       url: this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_ENTITIES,
       param: {
-        solutionId: this.solutionId
+        solutionId: this.solutionId,
       },
       data: {
         block: "0abd4d28-a9da-4739-8132-79e0804cd73e",
@@ -52,20 +52,24 @@ export class ObservationDetailsComponent implements OnInit {
         state: "bc75cc99-9205-463e-a722-5326857838f8",
       },
     };
-    this.observationService.post(paramOptions).subscribe(data => {
-      this.entities = data.result;
-      console.log(this.entities,"this.entities");
-      console.log(this.entities.entities[0],"this.entities.entities[0]");
-      this.selectedEntity = this.entities.entities[0];
-      this.observationId = this.entities._id;
-      this.getObservationForm();
-    }, error => {
-    })
+    this.observationService.post(paramOptions).subscribe(
+      (data) => {
+        this.entities = data.result;
+        console.log(this.entities, "this.entities");
+        console.log(this.entities.entities[0], "this.entities.entities[0]");
+        this.selectedEntity = this.entities.entities[0];
+        this.observationId = this.entities._id;
+        this.getObservationForm();
+      },
+      (error) => {}
+    );
   }
 
   getObservationForm() {
     const paramOptions = {
-      url: this.config.urlConFig.URLS.OBSERVATION.GET_OBSERVATION_SUBMISSIONS + `${this.entities._id}?entityId=${this.selectedEntity._id}`,
+      url:
+        this.config.urlConFig.URLS.OBSERVATION.GET_OBSERVATION_SUBMISSIONS +
+        `${this.entities._id}?entityId=${this.selectedEntity._id}`,
       param: {
         solutionId: this.solutionId,
         programId: this.programId,
@@ -81,9 +85,9 @@ export class ObservationDetailsComponent implements OnInit {
         state: "bc75cc99-9205-463e-a722-5326857838f8",
       },
     };
-    this.observationService.post(paramOptions).subscribe(data => {
+    this.observationService.post(paramOptions).subscribe((data) => {
       this.submissions = data.result;
-    })
+    });
   }
   addEntity() {
     this.showDownloadModal = true;
@@ -96,13 +100,15 @@ export class ObservationDetailsComponent implements OnInit {
     this.showDownloadModal = false;
     this.getEntities();
   }
-  goBack(){
-    this.router.navigate(['/observation']);
+  goBack() {
+    this.router.navigate(["/observation"]);
   }
 
-  observeAgain(){
-    const paramOptions = { 
-      url: this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_SUBMISSION_CREATE + `${this.observationId}?entityId=${this.selectedEntity._id}`,
+  observeAgain() {
+    const paramOptions = {
+      url:
+        this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_SUBMISSION_CREATE +
+        `${this.observationId}?entityId=${this.selectedEntity._id}`,
       param: {},
       data: {
         block: "0abd4d28-a9da-4739-8132-79e0804cd73e",
@@ -112,9 +118,21 @@ export class ObservationDetailsComponent implements OnInit {
         state: "bc75cc99-9205-463e-a722-5326857838f8",
       },
     };
-    this.observationService.post(paramOptions).subscribe(data => {
-      console.log(data,"data 122");
-     this.getObservationForm();
-    })
+    this.observationService.post(paramOptions).subscribe((data) => {
+      console.log(data, "data 122");
+      this.getObservationForm();
+    });
+  }
+
+  redirectToQuestions() {
+    //TODO: add params
+    this.router.navigate([`/questionnaire`], {
+    queryParams: {
+      observationId: "",
+      entityId: "",
+      submissionNumber: "",
+      evidenceCode:""
+    }
+  });
   }
 }

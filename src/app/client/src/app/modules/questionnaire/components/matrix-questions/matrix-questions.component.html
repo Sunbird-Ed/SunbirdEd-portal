@@ -33,7 +33,7 @@
     [mustScroll]="true"
     [isClosable]="true"
     [transitionDuration]="0"
-    [size]="'small'"
+    [size]="'normal'"
     class="sb-modal"
     appBodyScroll
     (dismissed)="showBadgeAssingModel = false"
@@ -53,7 +53,7 @@
         [questionnaireForm]="matrixForm"
       ></question-generic-inputs>
 
-      {{ matrixForm.value | json }}
+      <!-- {{ matrixForm.value | json }} -->
     </div>
     <!--/Content-->
 
