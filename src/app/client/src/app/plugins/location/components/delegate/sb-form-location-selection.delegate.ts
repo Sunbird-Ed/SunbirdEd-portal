@@ -202,10 +202,11 @@ export class SbFormLocationSelectionDelegate {
       const formValue = this.formGroup.value;
       const payload: any = {
         userId: _.get(this.userService, 'userid'),
+        profileUserType:{"type":_.get(formValue, 'persona'),"subType":_.get(formValue, 'children.persona.subPersona')},
         profileLocation: locationDetails,
-        ...(_.get(formValue, 'name') ? { firstName: _.get(formValue, 'name') } : {} ),
-        ...(_.get(formValue, 'persona') ? { userType: _.get(formValue, 'persona') } : {} ),
-        ...(_.get(formValue, 'children.persona.subPersona') ? { userSubType: _.get(formValue, 'children.persona.subPersona') } : {} ),
+        ...(_.get(formValue, 'name') ? { firstName: _.get(formValue, 'name') } : {} )
+        // ...(_.get(formValue, 'persona') ? { userType: _.get(formValue, 'persona') } : {} ),
+        // ...(_.get(formValue, 'children.persona.subPersona') ? { userSubType: _.get(formValue, 'children.persona.subPersona') } : {} ),
       };
 
       const task = this.locationService.updateProfile(payload).toPromise()

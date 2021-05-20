@@ -348,7 +348,8 @@
     },
     "OBSERVATION": {
       "MANDATORY_ENTITIES_FOR_SUB_ROLE":"v1/users/entityTypesByLocationAndRole/bc75cc99-9205-463e-a722-5326857838f8?role=DEO",
-      "OBSERVATION_LISTING":"v1/solutions/targetedSolutions?type=observation"
+      "OBSERVATION_LISTING":"v1/solutions/targetedSolutions?type=observation",
+      "MANDATORY_ENTITY_TYPES_FOR_ROLES":"v1/users/entityTypesByLocationAndRole/"
     },
     "KENDRA": {
 
