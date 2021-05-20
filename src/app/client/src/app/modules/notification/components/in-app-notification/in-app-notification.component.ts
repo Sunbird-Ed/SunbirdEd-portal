@@ -38,7 +38,7 @@ export class InAppNotificationComponent implements OnInit, OnDestroy {
       title: _.get(this.resourceService, 'frmelmnts.lbl.notification'),
       subTitle: _.get(this.resourceService, 'frmelmnts.lbl.newNotification'),
       clearText: _.get(this.resourceService, 'frmelmnts.btn.clear'),
-      moreText: _.get(this.resourceService, 'rmelmnts.btn.seeMore'),
+      moreText: _.get(this.resourceService, 'frmelmnts.btn.seeMore'),
       lessText: _.get(this.resourceService, 'frmelmnts.btn.seeLess'),
       minNotificationViewCount: 5
     };
