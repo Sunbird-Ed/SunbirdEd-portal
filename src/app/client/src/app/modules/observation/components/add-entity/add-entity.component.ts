@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Input, EventEmitter, Output } from '@angular/core';
 import { ObservationService, KendraService } from '@sunbird/core';
-import { ConfigService } from '@sunbird/shared';
+import { ConfigService,ResourceService } from '@sunbird/shared';
 import * as _ from 'underscore';
 @Component({
     selector: 'add-entity',
@@ -22,6 +22,7 @@ export class AddEntityComponent implements OnInit {
     showDownloadModal: boolean = true;
     constructor(private observationService: ObservationService,
         private kendraService: KendraService,
+        public resourceService: ResourceService,
         config: ConfigService) {
         this.config = config;
         this.search = _.debounce(this.search, 1000)
@@ -90,7 +91,6 @@ export class AddEntityComponent implements OnInit {
 
     searchEntity() {
         this.entities = [];
-        this.page = this.page + 1;
         this.search();
     }
     loadMore() {

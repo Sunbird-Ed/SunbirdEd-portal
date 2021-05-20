@@ -352,7 +352,8 @@
       "GET_OBSERVATION_SUBMISSIONS": "v1/observationSubmissions/list/",
       "SEARCH_ENTITY": "v2/observations/searchEntities",
       "OBSERVATION_UPDATE_ENTITES": "v1/observations/updateEntities/",
-      "OBSERVATION_LISTING":"v1/solutions/targetedSolutions?type=observation"
+      "OBSERVATION_LISTING":"v1/solutions/targetedSolutions?type=observation",
+      "OBSERVATION_SUBMISSION_CREATE": "v1/observationSubmissions/create/"
     },
     "KENDRA": {
       "TARGETTED_ENTITY_TYPES": "v1/users/targetedEntity/"

@@ -3,7 +3,7 @@
     <div class="sb-onboard">
         <div class="sb-onboard__container">
             <div class="sb-onboard__header">
-                Add entity
+                {{resourceService.frmelmnts?.btn?.addEntity}}
             </div>
 
             <div class="sb-onboard__content">
@@ -21,23 +21,27 @@
                 <div *ngFor="let entity of entities">
                     <div class="sb-checkbox sb-checkbox-secondary pt-24">
                         <input value="{{entity._id}}" type="checkbox" id="{{entity._id}}"
-                            (change)="selectEntity(entity)" [disabled]="entity.isSelected" [checked]="entity.selected">
+                            [ngClass]="{'disabled-checkbox' :entity.selected }" (change)="selectEntity(entity)"
+                            [disabled]="entity.isSelected" [checked]="entity.selected">
                         <label for="{{entity._id}}" class="text-left fsmall">{{entity.name}}</label>
                     </div>
                 </div>
                 <div class="load-mr-bt-center">
-                <button type="button" class="sb-btn sb-btn-sm load-mr-btn sb-btn-primary flex-basis-1"  *ngIf="count > entities.length"
-                    (click)="loadMore()">Load more
-                </button>
+                    <button type="button" class="sb-btn sb-btn-sm load-mr-btn sb-btn-primary flex-basis-1"
+                        *ngIf="count > entities.length" (click)="loadMore()">
+                        {{resourceService.frmelmnts?.btn?.loadMore}}
+                    </button>
                 </div>
             </div>
             <div class="sb-onboard__footer d-flex">
                 <button type="button" class="sb-btn sb-btn-sm sb-btn-white text-uppercase flex-basis-1" type="submit"
-                    (click)="closeModal()">Clear
+                    (click)="closeModal()">
+                    {{resourceService.frmelmnts?.btn?.clear}}
                 </button>
                 <div class="w-10"></div>
                 <button type="button" class="sb-btn sb-btn-sm sb-btn-primary text-uppercase flex-basis-1" type="submit"
-                    (click)="submit()">Submit
+                    (click)="submit()">
+                    {{resourceService.frmelmnts?.btn?.submit}}
                 </button>
             </div>
         </div>
