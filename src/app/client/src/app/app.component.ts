@@ -434,7 +434,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.orgDetailsService.getCustodianOrgDetails().subscribe((custodianOrg) => {
           if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') !== _.get(custodianOrg, 'result.response.value')) {
             // Check for non custodian user and show global consent pop up
-            this.consentConfig = { tncLink: this.resourceService.frmelmnts.lbl.privacyPolicy, tncText: this.resourceService.frmelmnts.lbl.nonCustodianTC };
+            this.consentConfig = { tncLink: _.get(this.resourceService, 'frmelmnts.lbl.privacyPolicy'), tncText: _.get(this.resourceService, 'frmelmnts.lbl.nonCustodianTC') };
             this.showGlobalConsentPopUpSection = true;
           } else {
             this.checkFrameworkSelected();
@@ -492,7 +492,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.orgDetailsService.getCustodianOrgDetails().subscribe((custodianOrg) => {
         if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') !== _.get(custodianOrg, 'result.response.value')) {
           // Check for non custodian user and show global consent pop up
-          this.consentConfig = { tncLink: this.resourceService.frmelmnts.lbl.privacyPolicy, tncText: this.resourceService.frmelmnts.lbl.nonCustodianTC };
+          this.consentConfig = { tncLink: _.get(this.resourceService, 'frmelmnts.lbl.privacyPolicy'), tncText: _.get(this.resourceService, 'frmelmnts.lbl.nonCustodianTC') };
           this.showGlobalConsentPopUpSection = true;
         } else {
           this.checkFrameworkSelected();
