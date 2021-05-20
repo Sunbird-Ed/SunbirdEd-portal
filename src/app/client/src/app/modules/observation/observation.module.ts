@@ -16,6 +16,8 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8'
 import { ContentSearchModule } from '@sunbird/content-search';
 import { TranslateModule } from '@ngx-translate/core';
 import { AddEntityComponent } from './components';
+import { LocationModule } from '../../plugins/location/location.module';
+import { ObservationUtilService } from './service';
 @NgModule({
   declarations: [ObservationListingComponent, ObservationDetailsComponent, AddEntityComponent],
   imports: [
@@ -46,8 +48,11 @@ import { AddEntityComponent } from './components';
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    CoreModule
+    CoreModule,
+    SharedFeatureModule,
+    LocationModule
   ],
-  providers: [MlGuard]
+  providers: [MlGuard,ObservationUtilService]
+
 })
 export class ObservationModule { }

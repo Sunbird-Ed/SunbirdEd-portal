@@ -347,13 +347,14 @@
       "READ": "object/category/definition/v1/read"
     },
     "OBSERVATION": {
-      "MANDATORY_ENTITIES_FOR_SUB_ROLE": "v1/users/entityTypesByLocationAndRole/bc75cc99-9205-463e-a722-5326857838f8?role=DEO",
       "OBSERVATION_ENTITIES": "v1/observations/entities",
       "GET_OBSERVATION_SUBMISSIONS": "v1/observationSubmissions/list/",
       "SEARCH_ENTITY": "v2/observations/searchEntities",
       "OBSERVATION_UPDATE_ENTITES": "v1/observations/updateEntities/",
+      "OBSERVATION_SUBMISSION_CREATE": "v1/observationSubmissions/create/",
+      "MANDATORY_ENTITIES_FOR_SUB_ROLE":"v1/users/entityTypesByLocationAndRole/bc75cc99-9205-463e-a722-5326857838f8?role=DEO",
       "OBSERVATION_LISTING":"v1/solutions/targetedSolutions?type=observation",
-      "OBSERVATION_SUBMISSION_CREATE": "v1/observationSubmissions/create/"
+      "MANDATORY_ENTITY_TYPES_FOR_ROLES":"v1/users/entityTypesByLocationAndRole/"
     },
     "KENDRA": {
       "TARGETTED_ENTITY_TYPES": "v1/users/targetedEntity/"

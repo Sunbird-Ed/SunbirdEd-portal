@@ -1,0 +1,11 @@
+<div class="ui left icon input" [formGroup]="questionnaireForm">
+  <i class="calendar icon"></i>
+  <input
+    suiDatepicker
+    [pickerMode]="'date'"
+    [pickerFirstDayOfWeek]="firstDayOfWeek"
+    [pickerUseNativeOnMobile]="false"
+    [formControlName]="question?._id"
+  />
+  <!-- todo:add validation -->
+</div>

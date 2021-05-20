@@ -1,0 +1,46 @@
+<app-landing-section
+  [textToDisplay]="pageTitleSrc"
+  [svgToDisplay]="svgToDisplay"
+  [layoutConfiguration]="layoutConfiguration"
+></app-landing-section>
+<div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg' : ''">
+  <div
+    class="sb-g"
+    [ngClass]="
+      layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'
+    "
+  >
+    <div [ngClass]="FIRST_PANEL_LAYOUT">Sections...</div>
+    <div [ngClass]="SECOND_PANEL_LAYOUT">
+      <div
+        [ngClass]="
+          layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'
+        "
+      >
+        <form [formGroup]="questionnaireForm" class="m-40">
+          <question-generic-inputs
+            [questions]="questions"
+            [questionnaireForm]="questionnaireForm"
+          ></question-generic-inputs>
+          <div class="d-flex flex-jc-space-evenly m-32">
+            <button
+              class="sb-btn sb-btn-normal sb-btn-primary"
+              type="button"
+              (click)="alert('save')"
+            >
+              {{ resourceService?.frmelmnts?.btn?.save | translate }}
+            </button>
+            <button
+              class="sb-btn sb-btn-normal sb-btn-primary"
+              type="button"
+              (click)="onSubmit()"
+            >
+              {{ resourceService?.frmelmnts?.btn?.submit | translate }}
+            </button>
+          </div>
+        </form>
+        <!-- {{questionnaireForm.value |json}} -->
+      </div>
+    </div>
+  </div>
+</div>

@@ -60,6 +60,9 @@ const appRoutes: Routes = [
     path: 'observation', loadChildren: 'app/modules/observation/observation.module#ObservationModule', canActivate: [MlGuard]
   },
   {
+    path: 'questionnaire', loadChildren: 'app/modules/questionnaire/questionnaire.module#QuestionnaireModule'
+  },
+  {
     path: 'error', component: ErrorPageComponent
   },
   {
