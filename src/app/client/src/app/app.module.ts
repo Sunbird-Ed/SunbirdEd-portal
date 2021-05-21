@@ -23,7 +23,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateStore } from '@ngx-translate/core';
 import { SbSearchFilterModule } from 'common-form-elements';
-import { NotificationModule } from 'notification';
+import { SbNotificationModule } from 'notification';
 import { NotificationServiceImpl } from './modules/notification/services/notification/notification-service-impl';
 
 @NgModule({
@@ -48,7 +48,7 @@ import { NotificationServiceImpl } from './modules/notification/services/notific
     }),
     DeviceDetectorModule.forRoot(),
     SbSearchFilterModule.forRoot('web'),
-    NotificationModule,
+    SbNotificationModule,
     ChatLibModule,
     SharedFeatureModule,
     ...PluginModules,
