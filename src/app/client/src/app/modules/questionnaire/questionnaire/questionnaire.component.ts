@@ -16,6 +16,7 @@ export class QuestionnaireComponent implements OnInit {
   SECOND_PANEL_LAYOUT;
   questionnaireForm: FormGroup;
   sections;
+  evidence: any;
 
   constructor(
     public layoutService: LayoutService,
@@ -27,8 +28,8 @@ export class QuestionnaireComponent implements OnInit {
   ngOnInit() {
     this.initConfiguration();
     this.questionnaireForm = this.fb.group({});
-    let evidence = this.data.result.assessment.evidences[0];
-    this.sections = evidence.sections;
+    this.evidence = this.data.result.assessment.evidences[0];
+    this.sections = this.evidence.sections;
   }
 
   private initConfiguration() {
@@ -64,13 +65,13 @@ export class QuestionnaireComponent implements OnInit {
     }
   }
 
-  // onSubmit() {
-  //   let data = this.qService.createpayload(
-  //     this.questions,
-  //     this.questionnaireForm.value
-  //   );
-  //   console.log(data);
-  // }
+  onSubmit() {
+    let data = this.qService.getEvidenceData(
+      this.evidence,
+      this.questionnaireForm.value
+    );
+    console.log(data);
+  }
 
   questions = [
     {
@@ -1983,6 +1984,63 @@ export class QuestionnaireComponent implements OnInit {
                         file: "",
                       },
                       {
+                        _id: "6054abd9823d601f0af5c391-p",
+                        question: ["Enter the date of observation", ""],
+                        isCompleted: false,
+                        showRemarks: false,
+                        options: [],
+                        sliderOptions: [],
+                        children: [],
+                        questionGroup: ["A1"],
+                        fileName: [],
+                        instanceQuestions: [],
+                        isAGeneralQuestion: false,
+                        autoCapture: false,
+                        allowAudioRecording: false,
+                        prefillFromEntityProfile: false,
+                        entityFieldName: "",
+                        isEditable: true,
+                        showQuestionInPreview: false,
+                        deleted: false,
+                        remarks: "",
+                        value: "",
+                        usedForScoring: "",
+                        questionType: "auto",
+                        canBeNotApplicable: "false",
+                        visibleIf: "",
+                        validation: {
+                          required: true,
+                          max: "",
+                          min: "",
+                        },
+                        dateFormat: "",
+                        externalId: "Q1_1616157220157-1616161753196",
+                        tip: "",
+                        hint: "",
+                        responseType: "date",
+                        modeOfCollection: "onfield",
+                        accessibility: "No",
+                        rubricLevel: "",
+                        sectionHeader: "",
+                        page: "p1",
+                        questionNumber: "1",
+                        updatedAt: "2021-03-19T13:49:13.223Z",
+                        createdAt: "2021-03-19T12:33:46.588Z",
+                        __v: 0,
+                        createdFromQuestionId: "60549a2a823d601f0af5c367",
+                        evidenceMethod: "OB",
+                        payload: {
+                          criteriaId: "6054abd9823d601f0af5c39e",
+                          responseType: "date",
+                          evidenceMethod: "OB",
+                          rubricLevel: "",
+                        },
+                        startTime: "",
+                        endTime: "",
+                        gpsLocation: "",
+                        file: "",
+                      },
+                      {
                         _id: "609282b6eb30104968c5e86a",
                         question: ["Comments and Reflection:", ""],
                         isCompleted: false,
@@ -2838,7 +2896,6 @@ export class QuestionnaireComponent implements OnInit {
   };
 
   scrollToContent(id) {
-    debugger;
     document
       .getElementById(id)
       .scrollIntoView({ behavior: "smooth", block: "start" });

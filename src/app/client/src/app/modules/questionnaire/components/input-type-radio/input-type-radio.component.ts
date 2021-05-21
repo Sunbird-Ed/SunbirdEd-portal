@@ -28,7 +28,9 @@ export class InputTypeRadioComponent implements OnInit {
     return this.questionnaireForm.controls[this.question._id].touched;
   }
 
-  onChange(x) {
-    this.questionnaireForm.controls[this.question._id].setValue(x);
+  onChange(value) {
+    this.questionnaireForm.controls[this.question._id].setValue(value);
+    this.question.value = value;
+    console.log(this.question);
   }
 }

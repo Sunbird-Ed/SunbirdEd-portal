@@ -1,5 +1,5 @@
 <div
-  [ngClass]="{ 'ui card question-card': question.responseType != 'pageQuestions' }"
+  [ngClass]="{ 'ui card question-card sb--card': question.responseType != 'pageQuestions' }"
   *ngFor="let question of questions; let qi = index"
 >
   <div [ngClass]="{ content: question.responseType != 'pageQuestions' }">

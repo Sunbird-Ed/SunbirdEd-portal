@@ -29,6 +29,9 @@ export class InputTypeCheckboxComponent implements OnInit {
       let index = formArray.controls.findIndex((ctrl) => ctrl.value == oid);
       formArray.removeAt(index);
     }
+    this.question.value =
+      this.questionnaireForm.controls[this.question._id].value;
+    console.log(this.question)
   }
 
   get isValid() {

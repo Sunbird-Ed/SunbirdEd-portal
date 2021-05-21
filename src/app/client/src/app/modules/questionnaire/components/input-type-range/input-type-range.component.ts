@@ -34,6 +34,12 @@ export class InputTypeRangeComponent implements OnInit {
     range.addEventListener("input", setValue);
   }
 
+  onChange(e) {
+    let value = e.target.value;
+    this.question.value = value;
+    console.log(this.question);
+  }
+
   get isValid() {
     return this.questionnaireForm.controls[this.question._id].valid;
   }

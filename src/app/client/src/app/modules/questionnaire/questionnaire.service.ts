@@ -31,55 +31,76 @@ export class QuestionnaireService {
     return regex.test(value);
   }
 
-  createpayload(questions, values) {
+  getEvidenceData(evidence, formValues) {
+    let sections = evidence.sections;
+    let answers = this.getSectionData(sections, formValues);
+    let payloadData = {
+      externalid: "OB", //todo
+      answers: answers,
+      // startTime: 1620977187792, //todo
+      // endTime: 1620977187792, //todo
+    };
+    return payloadData;
+  }
+
+  getSectionData(sections, formValues) {
+    let answers = {};
+    for (let index = 0; index < sections.length; index++) {
+      answers = {
+        ...answers,
+        ...this.createpayload(sections[index].questions, formValues),
+      };
+    }
+    return answers;
+  }
+
+  createpayload(questions, formValues) {
     let answers = {};
     for (let index = 0; index < questions.length; index++) {
       let currentQuestion = questions[index];
       if (currentQuestion.responseType == "pageQuestions") {
         answers = {
           ...answers,
-          ...this.createpayload(currentQuestion.pageQuestions, values),
+          ...this.createpayload(currentQuestion.pageQuestions, formValues),
         };
         continue;
       }
       if (currentQuestion.responseType == "matrix") {
         for (let index = 0; index < currentQuestion.value.length; index++) {
-          values[currentQuestion._id][index] = this.createpayload(
+          formValues[currentQuestion._id][index] = this.createpayload(
             currentQuestion.value[index],
-            values[currentQuestion._id][index]
+            formValues[currentQuestion._id][index]
           );
         }
       }
 
-      let perQuestionData = {
-        qid: currentQuestion._id,
-        value: values[currentQuestion._id],
-        remarks: "", // todo :
-        fileName: [], //todo,
-        gpsLocation: "",
-        payload: {
-          question: currentQuestion.question,
-          labels: values[currentQuestion._id],
-          responseType: currentQuestion.responseType,
-          filesNotUploaded: [], //todo
-        },
-        startTime: 1620977188671, //todo
-        endTime: "",
-        criteriaId: currentQuestion.payload.criteriaId,
-        responseType: currentQuestion.responseType,
-        evidenceMethod: "OB", //todo
-        rubricLevel: "",
-      };
-      if (currentQuestion.responseType == "multiselect") {
-        // check value field is array format or not
-      }
-      // Array.isArray(perQuestionData.payload.labels)
-      //   ? null
-      //   : (perQuestionData.payload.labels = [perQuestionData.payload.labels]);
+      let perQuestionData = this.formatToPayload(currentQuestion, formValues);
       answers[currentQuestion._id] = perQuestionData;
     }
 
     return answers;
+  }
+
+  formatToPayload(currentQuestion, formValues) {
+    return {
+      qid: currentQuestion._id,
+      value: formValues[currentQuestion._id],
+      remarks: "", // todo :
+      fileName: [], //todo,
+      gpsLocation: "",
+      payload: {
+        question: currentQuestion.question,
+        labels: formValues[currentQuestion._id],
+        responseType: currentQuestion.responseType,
+        filesNotUploaded: [], //todo
+      },
+      startTime: 1620977188671, //todo
+      endTime: "",
+      criteriaId: currentQuestion.payload.criteriaId,
+      responseType: currentQuestion.responseType,
+      evidenceMethod: "OB", //todo
+      rubricLevel: "",
+    };
   }
 
   x() {
