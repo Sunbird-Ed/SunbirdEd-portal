@@ -24,6 +24,24 @@ export default (app, proxyURL) => {
         res.status(res.statusCode).send(res.body);
     });
 
+    app.patch("/learner/group/v1/update", customProxy(proxyURL, defaultProxyConfig), (req, res) => {
+        res.status(res.statusCode).send(res.body);
+    });
+
+    app.post("/learner/group/v1/delete", customProxy(proxyURL, defaultProxyConfig), (req, res) => {
+        res.status(res.statusCode).send(res.body);
+    });
+
+    app.post("/learner/data/v1/group/activity/agg", customProxy(proxyURL, defaultProxyConfig), (req, res) => {
+        res.status(res.statusCode).send(res.body);
+    });
+
+
+    // Group Member
+    app.get("/learner/user/v2/exists/userName/:memberId", customProxy(proxyURL, defaultProxyConfig), (req,  res) => {
+        res.status(res.statusCode).send(res.body);
+    });
+
     // Discussion
     app.post("/discussion/forum/v3/create", customProxy(proxyURL, defaultProxyConfig), (req, res) => {
         res.status(res.statusCode).send(res.body);
