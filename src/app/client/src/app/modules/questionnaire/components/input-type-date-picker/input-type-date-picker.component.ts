@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, Input, OnInit } from "@angular/core";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
 
 @Component({
   selector: "input-type-date-picker",
@@ -17,5 +17,10 @@ export class InputTypeDatePickerComponent implements OnInit {
       this.question._id,
       new FormControl(0, Validators.required)
     );
+  }
+
+  onChange(e) {
+    let value = e.target.value;
+    this.question.value = value;
   }
 }

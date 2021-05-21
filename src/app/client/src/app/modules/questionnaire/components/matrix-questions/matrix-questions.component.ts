@@ -43,7 +43,6 @@ export class MatrixQuestionsComponent implements OnInit {
   viewInstance(i): void {
     this.matrixForm.reset();
 
-    console.log("open modal");
     const config = new TemplateModalConfig<IContext, string, string>(
       this.modalTemplate
     );

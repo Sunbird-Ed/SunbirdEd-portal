@@ -22,6 +22,10 @@ export class InputTypeNumberComponent implements OnInit {
       ])
     );
   }
+  onChange(e) {
+    let value = e.target.value;
+    this.question.value = value;
+  }
 
   get isValid() {
     return this.questionnaireForm.controls[this.question._id].valid;

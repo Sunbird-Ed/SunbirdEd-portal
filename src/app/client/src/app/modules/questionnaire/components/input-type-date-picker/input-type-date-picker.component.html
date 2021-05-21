@@ -6,6 +6,8 @@
     [pickerFirstDayOfWeek]="firstDayOfWeek"
     [pickerUseNativeOnMobile]="false"
     [formControlName]="question?._id"
+     (change)="onChange($event)"
+     class="question-date-input"
   />
   <!-- todo:add validation -->
 </div>
