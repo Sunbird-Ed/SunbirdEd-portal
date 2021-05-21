@@ -97,6 +97,73 @@ describe('CourseConsumptionPageComponent', () => {
     spyOn(toasterService, 'error').and.returnValue('');
     activatedRouteStub.snapshot.firstChild.params = { courseId: 'do_212347136096788480178', batchId: 'do_112498388508524544160'};
   });
+  it('should navigate to enroll course page if batch and autoEnroll available in queryParams', () => {
+    activatedRouteStub.snapshot.firstChild.params = {courseId: 'do_212347136096788480178', batchId: ''};
+    activatedRouteStub.snapshot.queryParams = {batch: 'do_112498388508524544160', autoEnroll: 'true'};
+    spyOn(learnerService, 'get').and.returnValue(of({}));
+    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
+    spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(of(enrolledBatch));
+    courseService.initialize();
+    component.ngOnInit();
+    const routedURL = ['learn/course/do_212347136096788480178/enroll/batch/do_112498388508524544160'];
+    const reqParams = {
+      queryParams: { autoEnroll: 'true' }
+    };
+    expect(component.router.navigate).toHaveBeenCalledWith(routedURL, reqParams);
+  });
+  xit('should refresh component with updated batch details when user selects another batch', () => {
+    const spy = spyOn<any>(component['fetchEnrolledCourses$'], 'next');
+    component.refreshComponent(true);
+    expect(spy).toHaveBeenCalled();
+    expect(component.showBatchInfo).toBeFalsy();
+  });
+  it('should fetch course details if it not enrolled course and should not fetch enrolled batch details', fakeAsync(() => {
+    activatedRouteStub.snapshot.firstChild.params = {courseId: 'do_123'};
+    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
+    spyOn(learnerService, 'get').and.returnValue(of(enrolledCourse.courseSuccessEnroll));
+    courseService.initialize();
+    component.ngOnInit();
+    tick(200);
+    expect(component.courseHierarchy).toBeDefined();
+  }));    
+  it('should navigate to course view page if batchId/courseId combination dint match any enrolled course list', () => {
+    activatedRouteStub.snapshot.firstChild.params = {courseId: 'do_123',  batchId: '123'};
+    spyOn(learnerService, 'get').and.returnValue(of(enrolledCourse.courseSuccessEnroll));
+    courseService.initialize();
+    component.ngOnInit();
+    expect(component.navigationHelperService.navigateToResource).toHaveBeenCalledWith('/learn');
+  });
+  it('should unsubscribe from all observable subscriptions', () => {
+    spyOn(component.unsubscribe$, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
+  });
+  it('should throw error if getEnrolledBatchDetails api fails', () => {
+    spyOn(learnerService, 'get').and.returnValue(of(enrolledCourse.courseSuccessEnroll));
+    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
+    spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(throwError(enrolledBatch));
+    courseService.initialize();
+    component.ngOnInit();
+    expect(component.courseHierarchy).toBeUndefined();
+    expect(component.toasterService.error).toHaveBeenCalled();
+  });
+  it('should throw error if courseHierarchy api fails', () => {
+    spyOn(learnerService, 'get').and.returnValue(of(enrolledCourse.courseSuccessEnroll));
+    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(throwError(CourseHierarchyGetMockResponse.result.content));
+    courseService.initialize();
+    component.ngOnInit();
+    expect(component.courseHierarchy).toBeUndefined();
+    expect(component.toasterService.error).toHaveBeenCalled();
+  });
+  it('should navigate to course consumption page if batch from route dint match but course found in enroll list', () => {
+    activatedRouteStub.snapshot.firstChild.params = {courseId: 'do_212347136096788480178',  batchId: '123'};
+    spyOn(learnerService, 'get').and.returnValue(of(enrolledCourse.courseSuccessEnroll));
+    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
+    spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(of(enrolledBatch));
+    courseService.initialize();
+    component.ngOnInit();
+    expect(component.router.navigate).toHaveBeenCalledWith(['learn/course/do_212347136096788480178/batch/do_112498388508524544160']);
+  });
   it('should fetch courseHierarchy,EnrolledBatchDetails if course is enrolled', fakeAsync(() => {
     spyOn(learnerService, 'get').and.returnValue(of(enrolledCourse.courseSuccessEnroll));
     spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(of(enrolledBatch));
@@ -121,78 +188,4 @@ describe('CourseConsumptionPageComponent', () => {
     expect(component.enrolledBatchInfo).toBeDefined();
     expect(component.courseHierarchy).toBeDefined();
   }));
-  it('should navigate to course view page if fetching enrolled course fails', () => {
-    spyOn(learnerService, 'get').and.returnValue(throwError(enrolledCourse.courseSuccessEnroll));
-    courseService.initialize();
-    component.ngOnInit();
-    expect(component.toasterService.error).toHaveBeenCalled();
-    expect(component.navigationHelperService.navigateToResource).toHaveBeenCalledWith('/learn');
-  });
-  it('should fetch course details if it not enrolled course and should not fetch enrolled batch details', fakeAsync(() => {
-    activatedRouteStub.snapshot.firstChild.params = {courseId: 'do_123'};
-    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
-    spyOn(learnerService, 'get').and.returnValue(of(enrolledCourse.courseSuccessEnroll));
-    courseService.initialize();
-    component.ngOnInit();
-    tick(200);
-    expect(component.courseHierarchy).toBeDefined();
-  }));
-  it('should navigate to course view page if batchId/courseId combination dint match any enrolled course list', () => {
-    activatedRouteStub.snapshot.firstChild.params = {courseId: 'do_123',  batchId: '123'};
-    spyOn(learnerService, 'get').and.returnValue(of(enrolledCourse.courseSuccessEnroll));
-    courseService.initialize();
-    component.ngOnInit();
-    expect(component.navigationHelperService.navigateToResource).toHaveBeenCalledWith('/learn');
-  });
-  it('should navigate to course consumption page if batch from route dint match but course found in enroll list', () => {
-    activatedRouteStub.snapshot.firstChild.params = {courseId: 'do_212347136096788480178',  batchId: '123'};
-    spyOn(learnerService, 'get').and.returnValue(of(enrolledCourse.courseSuccessEnroll));
-    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
-    spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(of(enrolledBatch));
-    courseService.initialize();
-    component.ngOnInit();
-    expect(component.router.navigate).toHaveBeenCalledWith(['learn/course/do_212347136096788480178/batch/do_112498388508524544160']);
-  });
-  it('should throw error if courseHierarchy api fails', () => {
-    spyOn(learnerService, 'get').and.returnValue(of(enrolledCourse.courseSuccessEnroll));
-    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(throwError(CourseHierarchyGetMockResponse.result.content));
-    courseService.initialize();
-    component.ngOnInit();
-    expect(component.courseHierarchy).toBeUndefined();
-    expect(component.toasterService.error).toHaveBeenCalled();
-  });
-  it('should throw error if getEnrolledBatchDetails api fails', () => {
-    spyOn(learnerService, 'get').and.returnValue(of(enrolledCourse.courseSuccessEnroll));
-    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
-    spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(throwError(enrolledBatch));
-    courseService.initialize();
-    component.ngOnInit();
-    expect(component.courseHierarchy).toBeUndefined();
-    expect(component.toasterService.error).toHaveBeenCalled();
-  });
-  it('should unsubscribe from all observable subscriptions', () => {
-    spyOn(component.unsubscribe$, 'complete');
-    component.ngOnDestroy();
-    expect(component.unsubscribe$.complete).toHaveBeenCalled();
-  });
-  it('should navigate to enroll course page if batch and autoEnroll available in queryParams', () => {
-    activatedRouteStub.snapshot.firstChild.params = {courseId: 'do_212347136096788480178', batchId: ''};
-    activatedRouteStub.snapshot.queryParams = {batch: 'do_112498388508524544160', autoEnroll: 'true'};
-    spyOn(learnerService, 'get').and.returnValue(of({}));
-    spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
-    spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(of(enrolledBatch));
-    courseService.initialize();
-    component.ngOnInit();
-    const routedURL = ['learn/course/do_212347136096788480178/enroll/batch/do_112498388508524544160'];
-    const reqParams = {
-      queryParams: { autoEnroll: 'true' }
-    };
-    expect(component.router.navigate).toHaveBeenCalledWith(routedURL, reqParams);
-  });
-  it('should refresh component with updated batch details when user selects another batch', () => {
-    const spy = spyOn<any>(component['fetchEnrolledCourses$'], 'next');
-    component.refreshComponent(true);
-    expect(spy).toHaveBeenCalled();
-    expect(component.showBatchInfo).toBeFalsy();
-  });
 });
