@@ -6,7 +6,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SharedModule, ResourceService, ConnectionService } from '@sunbird/shared';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
-import { NotificationService } from '../../services/notification/notification.service';
+import { NotificationServiceImpl } from '../../services/notification/notification-service-impl';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
 import { of as observableOf, of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -50,7 +50,7 @@ describe('InAppNotificationComponent', () => {
       declarations: [InAppNotificationComponent],
       imports: [SuiModule, SharedModule.forRoot(), CommonConsumptionModule, HttpClientTestingModule, TelemetryModule.forRoot()],
       providers: [
-        NotificationService,
+        NotificationServiceImpl,
         { provide: 'CS_USER_SERVICE', useValue: MockCSService },
         {
         provide: APP_BASE_HREF,
@@ -135,7 +135,7 @@ describe('InAppNotificationComponent', () => {
 
     it('should fetch the notification list and get unread notification count', () => {
       // arrange
-      const notificationService: NotificationService = TestBed.get(NotificationService);
+      const notificationService: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
       spyOn(notificationService, 'fetchInAppNotifications').and.returnValue(notificationList);
       // act
       component.fetchNotificationList();
@@ -145,7 +145,7 @@ describe('InAppNotificationComponent', () => {
 
     it('should fetch the notification list and when the list is empty', () => {
       // arrange
-      const notificationService: NotificationService = TestBed.get(NotificationService);
+      const notificationService: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
       spyOn(notificationService, 'fetchInAppNotifications').and.returnValue([]);
       // act
       component.fetchNotificationList();
@@ -175,7 +175,7 @@ describe('InAppNotificationComponent', () => {
     it('should mark the notification as read status', async () => {
       // arrange
       spyOn(component, 'generateInteractEvent');
-      const notificationService: NotificationService = TestBed.get(NotificationService);
+      const notificationService: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
       spyOn(notificationService, 'updateNotificationRead').and.returnValue(notificationList);
       // act
       await component.markNotificationAsRead(notificationData);
@@ -270,7 +270,7 @@ describe('InAppNotificationComponent', () => {
           id: 'notification_id'
         }
       };
-      const notificationService: NotificationService = TestBed.get(NotificationService);
+      const notificationService: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
       spyOn(notificationService, 'deleteNotification');
       spyOn(component, 'generateInteractEvent');
       spyOn(component, 'fetchNotificationList');
@@ -291,7 +291,7 @@ describe('InAppNotificationComponent', () => {
       const event = {
         data: notificationList
       };
-      const notificationService: NotificationService = TestBed.get(NotificationService);
+      const notificationService: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
       spyOn(notificationService, 'deleteAllNotifications').and.returnValue(true);
       spyOn(component, 'generateInteractEvent');
       spyOn(component, 'fetchNotificationList');
@@ -308,7 +308,7 @@ describe('InAppNotificationComponent', () => {
       const event = {
         data: []
       };
-      const notificationService: NotificationService = TestBed.get(NotificationService);
+      const notificationService: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
       spyOn(component, 'generateInteractEvent');
       // act
       await component.clearAllNotifationsHandler(event);

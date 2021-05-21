@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { CsUserServiceConfig } from '@project-sunbird/client-services';
 import { CsUserService } from '@project-sunbird/client-services/services/user/interface';
-import { NotificationService as SbNotificationService , Notification, NotificationFeedEntry } from 'notification';
+import { NotificationService , Notification, NotificationFeedEntry } from 'notification';
 import { ToasterService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
 import { Subject, BehaviorSubject } from 'rxjs';
@@ -13,7 +13,7 @@ import * as _ from 'lodash-es';
 @Injectable({
   providedIn: 'root'
 })
-export class NotificationService implements SbNotificationService {
+export class NotificationServiceImpl implements NotificationService {
 
   private config: CsUserServiceConfig = {
     apiPath: '/learner/user/v1'

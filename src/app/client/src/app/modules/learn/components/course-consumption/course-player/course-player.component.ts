@@ -17,7 +17,7 @@ import { CourseBatchService, CourseConsumptionService, CourseProgressService } f
 import { ContentUtilsServiceService, ConnectionService } from '@sunbird/shared';
 import { MimeTypeMasterData } from '@project-sunbird/common-consumption-v8/lib/pipes-module/mime-type';
 import dayjs from 'dayjs';
-import { NotificationService } from '../../../../notification/services/notification/notification.service';
+import { NotificationServiceImpl } from '../../../../notification/services/notification/notification-service-impl';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 
 @Component({
@@ -119,7 +119,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     public generaliseLabelService: GeneraliseLabelService,
     private connectionService: ConnectionService,
     @Inject('CS_COURSE_SERVICE') private CsCourseService: CsCourseService,
-    @Inject('NOTIFICATION_SERVICE') private notificationService: NotificationService
+    @Inject('NOTIFICATION_SERVICE') private notificationService: NotificationServiceImpl
   ) {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;

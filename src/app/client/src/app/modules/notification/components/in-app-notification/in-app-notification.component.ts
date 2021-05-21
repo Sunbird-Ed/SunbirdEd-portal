@@ -1,6 +1,6 @@
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NotificationService } from '../../services/notification/notification.service';
+import { NotificationServiceImpl } from '../../services/notification/notification-service-impl';
 import * as _ from 'lodash-es';
 import { UserFeedStatus } from '@project-sunbird/client-services/models';
 import { NotificationViewConfig } from '@project-sunbird/common-consumption-v8';
@@ -27,7 +27,7 @@ export class InAppNotificationComponent implements OnInit, OnDestroy {
   unsubscribe$ = new Subject<void>();
 
   constructor(
-    @Inject('NOTIFICATION_SERVICE') private notificationService: NotificationService,
+    @Inject('NOTIFICATION_SERVICE') private notificationService: NotificationServiceImpl,
     private router: Router,
     public resourceService: ResourceService,
     private telemetryService: TelemetryService,

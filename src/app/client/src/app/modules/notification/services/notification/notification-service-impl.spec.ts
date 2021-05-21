@@ -1,14 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import { SharedModule } from '@sunbird/shared';
-import { NotificationService } from './notification.service';
+import { NotificationServiceImpl } from './notification-service-impl';
 import { of as observableOf, throwError as observableThrowError } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule } from '@sunbird/core';
 
-import { notificationData, notificationList } from './notification.service.spec.data';
+import { notificationData, notificationList } from './notification-service-impl.spec.data';
 
-describe('NotificationService', () => {
+describe('NotificationServiceImpl', () => {
   configureTestSuite();
 
   const MockCSService = {
@@ -21,14 +21,14 @@ describe('NotificationService', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
       providers: [
-        NotificationService,
+        NotificationServiceImpl,
         { provide: 'CS_USER_SERVICE', useValue: MockCSService }
       ]
     });
   });
 
   it('should be created', () => {
-    const service: NotificationService = TestBed.get(NotificationService);
+    const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
     expect(service).toBeTruthy();
   });
 
@@ -36,11 +36,11 @@ describe('NotificationService', () => {
 
     it('should return the user feed notifications', async () => {
       // arrange
-      const service: NotificationService = TestBed.get(NotificationService);
+      const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
       const csUserService = TestBed.get('CS_USER_SERVICE');
       spyOn(csUserService, 'getUserFeed').and.returnValue(observableOf(notificationList));
       // act
-      const resp = await service.fetchInAppNotifications();
+      const resp = await service.fetchNotificationList();
       // assert
       expect(csUserService.getUserFeed).toHaveBeenCalled();
       expect(resp).toEqual([notificationData] as any);
@@ -48,11 +48,11 @@ describe('NotificationService', () => {
 
     it('should return empty array when an error is occured while fetching notificationList', async () => {
       // arrange
-      const service: NotificationService = TestBed.get(NotificationService);
+      const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
       const csUserService = TestBed.get('CS_USER_SERVICE');
       spyOn(csUserService, 'getUserFeed').and.returnValue(observableThrowError({ message: 'error' }));
       // act
-      const resp = await service.fetchInAppNotifications();
+      const resp = await service.fetchNotificationList();
       // assert
       expect(csUserService.getUserFeed).toHaveBeenCalled();
       expect(resp).toEqual([] as any);
@@ -64,7 +64,7 @@ describe('NotificationService', () => {
 
     it('should return true when notification status is updated as read', async () => {
       // arrange
-      const service: NotificationService = TestBed.get(NotificationService);
+      const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
       const csUserService = TestBed.get('CS_USER_SERVICE');
       spyOn(csUserService, 'updateUserFeedEntry').and.returnValue(observableOf({message: 'success'}));
       // act
@@ -76,7 +76,7 @@ describe('NotificationService', () => {
 
     it('should return false when an error is occured while updating', async () => {
       // arrange
-      const service: NotificationService = TestBed.get(NotificationService);
+      const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
       const csUserService = TestBed.get('CS_USER_SERVICE');
       spyOn(csUserService, 'updateUserFeedEntry').and.returnValue(observableThrowError({ message: 'error' }));
       // act
@@ -92,7 +92,7 @@ describe('NotificationService', () => {
 
     it('should return true when notification is deleted', async () => {
       // arrange
-      const service: NotificationService = TestBed.get(NotificationService);
+      const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
       const csUserService = TestBed.get('CS_USER_SERVICE');
       spyOn(csUserService, 'deleteUserFeedEntry').and.returnValue(observableOf({message: 'success'}));
       // act
@@ -104,7 +104,7 @@ describe('NotificationService', () => {
 
     it('should return false when an error is occured while deleting', async () => {
       // arrange
-      const service: NotificationService = TestBed.get(NotificationService);
+      const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
       const csUserService = TestBed.get('CS_USER_SERVICE');
       spyOn(csUserService, 'deleteUserFeedEntry').and.returnValue(observableThrowError({ message: 'error' }));
       // act
@@ -120,7 +120,7 @@ describe('NotificationService', () => {
 
     it('should return true when all notifications are deleted', async () => {
       // arrange
-      const service: NotificationService = TestBed.get(NotificationService);
+      const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
       const csUserService = TestBed.get('CS_USER_SERVICE');
       spyOn(csUserService, 'deleteUserFeedEntry').and.returnValue(observableOf({message: 'success'}));
       spyOn(service, 'deleteNotification').and.returnValue(true);
