@@ -350,7 +350,9 @@
       "MANDATORY_ENTITIES_FOR_SUB_ROLE":"v1/users/entityTypesByLocationAndRole/bc75cc99-9205-463e-a722-5326857838f8?role=DEO"
     },
     "KENDRA": {
-
+      "ML_ROLES":"v1/user-extension/platformRoles"
     }
+    
+
   }
 }

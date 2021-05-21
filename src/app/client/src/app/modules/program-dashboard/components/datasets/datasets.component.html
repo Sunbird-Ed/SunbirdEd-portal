@@ -1,0 +1,124 @@
+
+<app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration">
+</app-landing-section>
+<div style="
+background-color: #E9E8D9;
+padding: 30px;
+height: 93px;
+margin-bottom: 36px;
+text-align: left;">
+  <h2> Program Datasets </h2>
+</div>
+<div class="sbt-container relative9 main-container">
+
+    <div class="ui stackable grid relative9">
+        <div class="three wide column pl-0 pr-0">
+          <div class="sidebar">
+
+            <div class="ui segment mb-0" style="min-height: 300px;">
+            <div class='ui stackable grid mt-0'>
+              <div class="twelve wide column pt-0">
+                
+                <div class="two wide column sb-sidebar-menu p-0">
+                  <!-- <h5 class="p-16">{{resourceService.frmelmnts?.lnk?.dashboard}}</h5> -->
+                  <ul class="m-0">
+                    <li appTelemetryInteract class="item m-0 active" >
+                      Course </li>
+                  </ul>
+                </div>
+
+
+              </div>
+            </div>
+        </div>
+
+          </div>
+        </div>
+        <div class="nine wide column" [formGroup]="reportForm">
+          <div>
+            <router-outlet>
+
+              <div class="ui segment pb-0">
+              <div class='ui stackable grid mt-0'>
+                <div class="twelve wide column pt-0">
+                  <div class="d-flex flex-ai-center pd-10 " >
+                    <div class="ml-10">
+                      <sui-select formControlName="programName" [(ngModel)]="programSelected" class="selection course-dashboard-select pd-10" style="padding: 11px;" placeholder="Select Program"  (selectedOptionChange)="selectDropdown()">
+                        <sui-select-option *ngFor="let program of programs" [value]="program">
+                        </sui-select-option>
+                      </sui-select>
+                    </div>
+
+                      <div class="ml-10" *ngIf="programSelected">
+                        <sui-select formControlName="solution"   class="selection course-dashboard-select pd-10" style="padding: 11px;" placeholder="Select Solution"  (selectedOptionChange)="selectDropdown()">
+                          <sui-select-option *ngFor="let solution of solutions" [value]="solution">
+                          </sui-select-option>
+                        </sui-select>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+
+
+
+            <sui-tabset class="batch-report-tabs">
+                    <div class="ui pointing secondary menu">
+                      <!-- <a class="item" (click)="summaryReport(1)" suiTabHeader="1">{{resourceService?.frmelmnts?.lbl?.stateWiseReport}}</a> -->
+                      <a class="item" (click)="loadOndemandReports(2)" suiTabHeader="2">Details Reports</a>
+                    </div>
+                    <div class="ui segment mb-0" suiTabContent="1">
+                      <div class="ui stackable grid">
+                        <div class="nine wide column py-0">
+                        <p class="fsmall mt-8 mb-0 summary-text" >{{resourceService?.frmelmnts?.lbl?.summaryReportNote}}
+                          <span class="font-weight-bold" >{{resourceService?.frmelmnts?.lbl?.summaryReportUpdateNote}}</span>
+                        </p>  
+                      </div>
+                      </div>
+                    </div>
+                   
+                    <div class="ui segment mb-0" suiTabContent="2">
+                      
+                        <div class='ui stackable grid mt-0'>
+                            <div class="twelve wide column pt-0">
+                                   <div class="d-flex flex-ai-center pd-10 ">
+                                    <div class="ml-10">
+                                      <sui-select formControlName="reportType" class="selection course-dashboard-select pd-10" style="padding: 11px;" placeholder="Select Report">
+                                        <sui-select-option *ngFor="let type of reportTypes" [value]="type.name">
+                                        </sui-select-option>
+                                      </sui-select>
+                                    </div>
+                
+                               <div class="sb-field filterTable mx-16 mb-0">
+                                    <input class="sb-form-control" type="text" formControlName="password" placeholder="Enter password" aria-label="enter password">
+                                  </div>
+                                  <button type="button" 
+                                  class="sb-btn sb-btn-normal sb-btn-primary">
+                                    {{resourceService?.frmelmnts?.lbl?.request}}
+                                  </button>
+                                </div>
+                                <!-- <div *ngIf="isProcessed" class="d-flex">
+                                  <div class="information-icon">
+                                    <img src="assets/images/error-icon.svg" width="18px"></div>
+                                  <p class="fsmall note-text my-8 administrator-text">{{resourceService.frmelmnts?.lbl?.reportStatus}}</p>
+                                </div> -->
+
+                                <p class="fsmall note-text my-8 administrator-text" > 
+                                 {{resourceService?.frmelmnts?.lbl?.pswdRule}}
+                                  </p>
+                               
+                                  <sb-datatable [name]="fileName" [message]="message" [data]="data" [columns]="columns"
+                                  [downloadCSV]="false"  ></sb-datatable>
+                                
+                              
+                            </div>
+                          </div>
+
+                    </div>
+                  </sui-tabset>
+            </router-outlet>
+          </div>
+        </div>
+      </div>
+</div>

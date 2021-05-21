@@ -98,7 +98,10 @@ export class PermissionService {
     this.userService.userData$.subscribe((user: IUserData) => {
       if (user && !user.err) {
         this.userRoles = user.userProfile.userRoles;
+        debugger;
+        // this.userRoles = ["PUBLIC","REPORT_VIEWER","REPORT_ADMIN","PROGRAM_MANAGER"];
         _.forEach(this.userRoles, (role) => {
+          console.log("this.rolesAndPermissions",this.rolesAndPermissions);
           const roleActions = _.filter(this.rolesAndPermissions, { role: role });
           if (_.isArray(roleActions) && roleActions.length > 0) {
             this.userRoleActions = _.concat(this.userRoleActions, _.map(roleActions[0].actions, 'id'));
@@ -117,6 +120,7 @@ export class PermissionService {
    * @param {Array<string>}  roles roles to validate.
    */
   public checkRolesPermissions(roles: Array<string>): boolean {
+    debugger;
     if ((_.intersection(roles, this.userRoles).length)) {
       return true;
     }

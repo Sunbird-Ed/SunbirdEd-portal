@@ -76,6 +76,7 @@ export class SbDatatableComponent implements OnInit, OnChanges {
   filterDataTable() {
     this.tableData = multiFilter(this.data, this.listFilter);
   }
+  
   ngOnChanges() {
     this.tableMessage = {
       'emptyMessage': this.message

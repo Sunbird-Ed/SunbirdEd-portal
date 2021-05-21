@@ -44,6 +44,9 @@ const appRoutes: Routes = [
     path: 'manage', loadChildren: 'app/modules/manage/manage.module#ManageModule'
   },
   {
+    path: 'program', loadChildren: 'app/modules/program-dashboard/program-dashboard.module#programDashboardModule'
+  },
+  {
     path: '', loadChildren: 'app/modules/public/public.module#PublicModule'
   },
   {

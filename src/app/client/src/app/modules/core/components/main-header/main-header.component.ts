@@ -53,6 +53,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   myActivityRole: Array<string>;
   orgAdminRole: Array<string>;
   orgSetupRole: Array<string>;
+  programManagerRole: Array<string>;
   avtarMobileStyle = {
     backgroundColor: 'transparent',
     color: '#AAAAAA',
@@ -165,10 +166,13 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       this.exploreButtonVisibility = 'false';
       this.reportsListVersion = 'v1';
     }
+
     this.adminDashboard = this.config.rolesConfig.headerDropdownRoles.adminDashboard;
     this.myActivityRole = this.config.rolesConfig.headerDropdownRoles.myActivityRole;
     this.orgSetupRole = this.config.rolesConfig.headerDropdownRoles.orgSetupRole;
     this.orgAdminRole = this.config.rolesConfig.headerDropdownRoles.orgAdminRole;
+    this.programManagerRole = this.config.rolesConfig.headerDropdownRoles.programManagerRole;
+
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
     this.workSpaceRole = this.config.rolesConfig.headerDropdownRoles.workSpaceRole;
@@ -592,6 +596,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
 
   navigateToWorkspace() {
     const authroles = this.permissionService.getWorkspaceAuthRoles();
+    console.log("authroles",authroles);
     if (authroles) {
       return authroles.url;
     }
