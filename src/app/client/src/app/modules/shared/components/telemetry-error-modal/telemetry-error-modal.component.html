@@ -1,0 +1,4 @@
+<app-data-table [options]="reportsList.table.options" [columnDefinations]="reportsList.table.defs"
+            (rowClickEvent)="rowClickEventHandler($event)" [tableId]="'list-all-reports'"
+            [headerData]="reportsList.table.header" [rowsData]="reportsList.table.data">
+          </app-data-table>
