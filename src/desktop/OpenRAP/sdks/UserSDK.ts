@@ -151,10 +151,10 @@ export class UserSDK {
 
   public async deleteAllLoggedInUsers() {
     let docs = await this.getAllLoggedInUsers();
-    docs = _.map(docs.rows, (row) => {
+    docs = _.map(docs, (doc) => {
       return {
-        _id: row.id,
-        _rev: row.value.rev,
+        _id: doc._id,
+        _rev: doc._rev,
         _deleted: true
       }
     });
