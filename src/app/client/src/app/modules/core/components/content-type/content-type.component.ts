@@ -68,22 +68,19 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
 
   showContentType(data) {
     this.generateTelemetry(data.contentType);
+    let params = _.cloneDeep(this.activatedRoute.snapshot.queryParams);
+
+    // All and myDownloads Tab should not carry any filters from other tabs / user can apply fresh filters
+    if (data.contentType === 'mydownloads' || data.contentType === 'all') {
+      params = _.omit(params, ['board', 'medium', 'gradeLevel', 'subject', 'se_boards', 'se_mediums', 'se_gradeLevels', 'se_subjects']);
+    }
+
     if (this.userService.loggedIn) {
-      if (data.contentType === 'course') {
-        this.router.navigate([data.loggedInUserRoute.route],
-          { queryParams: {  ...this.activatedRoute.snapshot.queryParams, selectedTab: data.loggedInUserRoute.queryParam } });
-      } else {
-        this.router.navigate([data.loggedInUserRoute.route],
-          { queryParams: { ...this.activatedRoute.snapshot.queryParams, selectedTab: data.loggedInUserRoute.queryParam } });
-      }
+      this.router.navigate([data.loggedInUserRoute.route],
+        { queryParams: { ...params, selectedTab: data.loggedInUserRoute.queryParam } });
     } else {
-      if (data.contentType === 'course' || data.contentType === 'mydownloads') {
-        this.router.navigate([data.anonumousUserRoute.route],
-          { queryParams: {  ...this.activatedRoute.snapshot.queryParams, selectedTab: data.anonumousUserRoute.queryParam } });
-      } else {
-        this.router.navigate([data.anonumousUserRoute.route],
-          { queryParams: { ...this.activatedRoute.snapshot.queryParams, selectedTab: data.anonumousUserRoute.queryParam } });
-      }
+      this.router.navigate([data.anonumousUserRoute.route],
+        { queryParams: { ...params, selectedTab: data.anonumousUserRoute.queryParam } });
     }
   }
 
