@@ -114,7 +114,7 @@ export class ObservationListingComponent
     private kendraService: KendraService,
     config: ConfigService,
     private observationUtil:ObservationUtilService,
-    private location:Location
+    private location:Location,
   ) {
     this.config = config;
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -126,7 +126,7 @@ export class ObservationListingComponent
   
     this.showEditUserDetailsPopup=await this.observationUtil.getProfileInfo();
      if(!this.showEditUserDetailsPopup){
-      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0018'));
+      this.observationUtil.showPopupAlert();
       return;
      }
      this.activatedRoute.queryParams.subscribe((params) => {
@@ -137,20 +137,6 @@ export class ObservationListingComponent
       this.searchData="";
       this.fetchContentList();
     });
-  }
-
-  async closeModal(){
-    this.showEditUserDetailsPopup=!this.showEditUserDetailsPopup
-    this.showEditUserDetailsPopup=await this.observationUtil.getProfileInfo();
-    if(!this.showEditUserDetailsPopup){
-      this.showEditUserDetailsPopup=false;
-      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0018'));
-      return;
-     }
-
-    this.searchData="";
-    this.fetchContentList();
-    
   }
 
   async getProfileCheck(){
@@ -213,6 +199,8 @@ export class ObservationListingComponent
     data.forEach((value) => {
       let solution_name:string = value.name;
       solution_name = solution_name[0].toUpperCase() + solution_name.slice(1);
+      const subject:any=[];
+      subject.push(value.programName.toString())
       let obj = {
         name: solution_name,
         contentType: "Observation",
@@ -224,7 +212,8 @@ export class ObservationListingComponent
         programId: value.programId,
         medium: value.language,
         organization: value.creator,
-        _id: value._id
+        _id: value._id,
+        subject:subject
       };
       result.push(obj);
       this.contentList = result;
@@ -384,4 +373,5 @@ export class ObservationListingComponent
     }
     this.telemetryService.interact(appTelemetryInteractData);
   }
+
 }

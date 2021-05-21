@@ -1,0 +1,7 @@
+<div class="popup">
+    <div class="popup-header" *ngIf="modal.context.title"><b>{{ modal.context.title }}</b></div>
+    <div class="popup-content" *ngIf="modal.context.message">{{ modal.context.message }}</div>
+    <div class="popup-button">
+    <button class="popup-btn blue" *ngIf="modal.context.button1" (click)="modal.approve()" autofocus>{{ modal.context.button1 }}</button>
+    </div>
+</div>

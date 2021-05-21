@@ -1,8 +1,12 @@
 import { Injectable } from "@angular/core";
 import { UserService } from "@sunbird/core";
-import { IUserData, ConfigService } from "@sunbird/shared";
+import { IUserData, ConfigService,ResourceService } from "@sunbird/shared";
 import { take } from "rxjs/operators";
 import { KendraService } from "@sunbird/core";
+import { AlertModal } from "../../components/alert-modal/alert-modal.component";
+import {SuiModalService} from "ng2-semantic-ui";
+import { Router } from "@angular/router";
+
 
 @Injectable({
   providedIn: "root",
@@ -16,7 +20,11 @@ export class ObservationUtilService {
   constructor(
     public userService: UserService,
     config: ConfigService,
-    private kendraService: KendraService
+    private kendraService: KendraService,
+    public modalService:SuiModalService,
+    public resourceService: ResourceService,
+    public router: Router
+    
   ) {
     this.config = config;
   }
@@ -56,10 +64,7 @@ export class ObservationUtilService {
           this.requiredFields = data.result;
           let allFieldsPresent = true;
           for (const field of this.requiredFields) {
-            const val = this.profile.userLocations.filter((element)=>{
-              return element.type == field
-            });
-            if (!val) {
+            if (!this.dataParam[field]) {
               allFieldsPresent = false;
               break
             }
@@ -82,7 +87,6 @@ export class ObservationUtilService {
   }
 
   async getProfileInfo(): Promise<any> {
-   
     return new Promise(async (resolve, reject) => {
       const profileData=await this.getProfileData();
       if(!profileData){
@@ -116,6 +120,19 @@ export class ObservationUtilService {
   }
   
 
+  showPopupAlert(){
+
+    this.modalService.open(new AlertModal(this.resourceService.frmelmnts.alert.updateProfileContent,this.resourceService.frmelmnts.alert.updateProfileTitle,this.resourceService.frmelmnts.btn.update))
+    .onApprove(() =>{
+      let queryParam = {
+        showEditUserDetailsPopup:true
+      }
+     this.router.navigate(['profile'],{queryParams:queryParam})
+    })
+    .onDeny(() =>{
+  
+    });
+  }
 
 
 }
