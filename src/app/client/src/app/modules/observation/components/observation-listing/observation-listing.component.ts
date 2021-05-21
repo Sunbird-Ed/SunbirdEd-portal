@@ -53,8 +53,6 @@ import { ContentManagerService } from "../../../public/module/offline/services/c
 import { KendraService } from "@sunbird/core";
 import { ObservationUtilService } from "../../service";
 import {Location} from '@angular/common';
-import { AlertModal } from "../alert-modal/alert-modal.component";
-import {SuiModalService} from "ng2-semantic-ui";
 
 @Component({
   selector: "app-observation-listing",
@@ -117,7 +115,6 @@ export class ObservationListingComponent
     config: ConfigService,
     private observationUtil:ObservationUtilService,
     private location:Location,
-    public modalService:SuiModalService
   ) {
     this.config = config;
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -129,7 +126,7 @@ export class ObservationListingComponent
   
     this.showEditUserDetailsPopup=await this.observationUtil.getProfileInfo();
      if(!this.showEditUserDetailsPopup){
-      this.showPopupAlert();
+      this.observationUtil.showPopupAlert();
       return;
      }
      this.activatedRoute.queryParams.subscribe((params) => {
@@ -376,21 +373,5 @@ export class ObservationListingComponent
     }
     this.telemetryService.interact(appTelemetryInteractData);
   }
-
-
-showPopupAlert(){
-
-  this.modalService.open(new AlertModal(this.resourceService.frmelmnts.alert.updateProfileContent,this.resourceService.frmelmnts.alert.updateProfileTitle,this.resourceService.frmelmnts.btn.update))
-  .onApprove(() =>{
-    let queryParam = {
-      showEditUserDetailsPopup:true
-    }
-   this.router.navigate(['profile'],{queryParams:queryParam})
-  })
-  .onDeny(() =>{
-
-  });
-}
-
 
 }

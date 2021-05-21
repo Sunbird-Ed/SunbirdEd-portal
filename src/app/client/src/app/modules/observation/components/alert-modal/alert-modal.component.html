@@ -2,7 +2,6 @@
     <div class="popup-header" *ngIf="modal.context.title"><b>{{ modal.context.title }}</b></div>
     <div class="popup-content" *ngIf="modal.context.message">{{ modal.context.message }}</div>
     <div class="popup-button">
-        <!-- <button class="ui blue button" style="position:relative;margin:0 auto;border-radius: 50%;text-align: center;" (click)="modal.approve(undefined)" autofocus>{{ modal.context.button }}</button> -->
     <button class="popup-btn blue" *ngIf="modal.context.button1" (click)="modal.approve()" autofocus>{{ modal.context.button1 }}</button>
     </div>
 </div>

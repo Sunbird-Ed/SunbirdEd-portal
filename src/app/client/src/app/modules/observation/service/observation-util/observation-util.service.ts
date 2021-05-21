@@ -1,8 +1,12 @@
 import { Injectable } from "@angular/core";
 import { UserService } from "@sunbird/core";
-import { IUserData, ConfigService } from "@sunbird/shared";
+import { IUserData, ConfigService,ResourceService } from "@sunbird/shared";
 import { take } from "rxjs/operators";
 import { KendraService } from "@sunbird/core";
+import { AlertModal } from "../../components/alert-modal/alert-modal.component";
+import {SuiModalService} from "ng2-semantic-ui";
+import { Router } from "@angular/router";
+
 
 @Injectable({
   providedIn: "root",
@@ -17,6 +21,9 @@ export class ObservationUtilService {
     public userService: UserService,
     config: ConfigService,
     private kendraService: KendraService,
+    public modalService:SuiModalService,
+    public resourceService: ResourceService,
+    public router: Router
     
   ) {
     this.config = config;
@@ -113,6 +120,19 @@ export class ObservationUtilService {
   }
   
 
+  showPopupAlert(){
+
+    this.modalService.open(new AlertModal(this.resourceService.frmelmnts.alert.updateProfileContent,this.resourceService.frmelmnts.alert.updateProfileTitle,this.resourceService.frmelmnts.btn.update))
+    .onApprove(() =>{
+      let queryParam = {
+        showEditUserDetailsPopup:true
+      }
+     this.router.navigate(['profile'],{queryParams:queryParam})
+    })
+    .onDeny(() =>{
+  
+    });
+  }
 
 
 }

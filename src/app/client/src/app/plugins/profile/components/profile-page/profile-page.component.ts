@@ -115,7 +115,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.isDesktopApp = this.utilService.isDesktopApp;
 
     this.activatedRoute.queryParams.subscribe((params) => {
-      console.log(params)
       if (params["showEditUserDetailsPopup"]) {
         this.showEditUserDetailsPopup=true;
       }
