@@ -126,7 +126,59 @@ export class ObservationListingComponent
   
     this.showEditUserDetailsPopup=await this.observationUtil.getProfileInfo();
      if(!this.showEditUserDetailsPopup){
-      this.observationUtil.showPopupAlert();
+       let metaData=this.observationUtil.getAlertMetaData();
+       console.log(metaData);
+       metaData.type="update profile"
+       metaData.content.title=this.resourceService.frmelmnts.alert.updateProfileTitle;
+       metaData.content.body.type="text";
+        metaData.content.body.data=this.resourceService.frmelmnts.alert.updateProfileContent;
+       metaData.buttons.push(
+        {
+          type:"accept",
+          returnValue:true,
+          buttonText:this.resourceService.frmelmnts.btn.update,
+          className:"popup-btn"
+        }
+        );
+
+        // metaData.buttons.push(
+        //   {
+        //     type:"accept",
+        //     returnValue:true,
+        //     buttonText:this.resourceService.frmelmnts.btn.yes,
+        //     className:"popup-btn-confirm"
+        //   },
+        //   {
+        //     type:"cancel",
+        //     returnValue:false,
+        //     buttonText:this.resourceService.frmelmnts.btn.no,
+        //     className:"popup-btn-confirm"
+        //   }
+        //   );
+
+        // metaData.buttons.push(
+        //   {
+        //     type:"accept",
+        //     returnValue:true,
+        //     buttonText:"Upload",
+        //     className:"popup-btn-upload"
+        //   },
+        //   {
+        //     type:"cancel",
+        //     returnValue:false,
+        //     buttonText:"Do not Upload",
+        //     className:"popup-btn-upload"
+        //   }
+        //   );
+
+
+      let returnData=await this.observationUtil.showPopupAlert(metaData);
+      if(returnData){
+        let queryParam = {
+          showEditUserDetailsPopup:true
+        }
+       this.router.navigate(['profile'],{queryParams:queryParam});
+      }
       return;
      }
      this.activatedRoute.queryParams.subscribe((params) => {

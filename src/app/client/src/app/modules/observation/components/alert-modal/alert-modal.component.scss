@@ -2,6 +2,8 @@
     padding: 30px;
     position: relative;
     height: 200px;
+    border-radius: none !important;
+   
 }
 .popup-header{
     position: relative;
@@ -10,12 +12,24 @@
     color:#000;
 }
 
-.popup-content{
+.popup-body{
     position: relative;
     top:20px;
     font-size:1.2em;
     font-weight: 500;
     color:grey;
+    width:auto;
+    white-space: pre-wrap;
+}
+.popup-body-checkbox{
+    position: relative;
+    top:5px;
+    left:20px;
+    font-size:15px;
+    font-weight: 500;
+    color:grey;
+    width:auto;
+    white-space: pre-wrap;
 }
 
 .popup-button{
@@ -29,14 +43,80 @@
     top:30px;
     margin: 0 auto;
     border-radius: 30px;
-    background-color: blue;
+    background-color:#024f9d;
     border: none;
     color: white;
     display: block;
     text-align: center;
-    font-size: 16px;
+    font-size: 15px;
+    text-transform: capitalize;
     height: 37px;
     width: 120px;
     bottom: 20px;
     cursor: pointer;
 }
+
+.popup-btn-confirm{
+    position: relative;
+    top:30px;
+    margin: 0 auto;
+    border-radius:50%;
+    background-color: #024f9d;
+    border: none;
+    color: white;
+    display: block;
+    text-align: center;
+    font-size: 15px;
+    text-transform: capitalize;
+    height: 50px;
+    width: 50px;
+    bottom: 20px;
+    cursor: pointer;
+}
+
+.popup-btn-upload{
+    position: relative;
+    top:10px;
+    margin: 0 auto;
+    border-radius:5px;
+    background-color:#024f9d;
+    border: none;
+    color: white;
+    display: block;
+    text-align: center;
+    font-size: 15px;
+    height: 37px;
+    width: 120px;
+    bottom: 20px;
+    cursor: pointer;
+}
+
+.disable-btn-upload{
+    position: relative;
+    top:10px;
+    margin: 0 auto;
+    border-radius:5px;
+    border:2px solid #024f9d;
+    background-color: white;
+    color: #024f9d;
+    display: block;
+    text-align: center;
+    font-size: 15px;
+    height: 37px;
+    width: 120px;
+    bottom: 20px;
+    cursor: pointer;
+}
+
+.column {
+    float: right;
+    width: 30%;
+    
+  }
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
