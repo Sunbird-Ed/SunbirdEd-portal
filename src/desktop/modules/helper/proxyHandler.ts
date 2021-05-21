@@ -160,6 +160,8 @@ export const customProxy = (host, options = {}) => {
       res.body = _.get(response, 'data') || {};
       res.headers = _.get(response, 'headers');
       res.statusCode = _.get(response, 'status');
+      res.ok = false;
+      res.statusText = _.get(response, 'statusText');
 
       if (_.isEmpty(res.body) && !res.statusCode) {
         res.body = Response.error(apiId, 500);
