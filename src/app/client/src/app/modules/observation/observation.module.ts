@@ -18,8 +18,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AddEntityComponent } from './components';
 import { LocationModule } from '../../plugins/location/location.module';
 import { ObservationUtilService } from './service';
+import { AlertModalComponent } from './components/alert-modal/alert-modal.component';
 @NgModule({
-  declarations: [ObservationListingComponent, ObservationDetailsComponent, AddEntityComponent],
+  declarations: [ObservationListingComponent, ObservationDetailsComponent, AddEntityComponent,AlertModalComponent],
   imports: [
     CommonModule,
     ObservationRoutingModule,
@@ -52,7 +53,8 @@ import { ObservationUtilService } from './service';
     SharedFeatureModule,
     LocationModule
   ],
-  providers: [MlGuard,ObservationUtilService]
+  providers: [MlGuard,ObservationUtilService],
+  entryComponents: [AlertModalComponent]
 
 })
 export class ObservationModule { }

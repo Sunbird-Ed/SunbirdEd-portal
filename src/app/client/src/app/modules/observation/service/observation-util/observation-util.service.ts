@@ -16,7 +16,8 @@ export class ObservationUtilService {
   constructor(
     public userService: UserService,
     config: ConfigService,
-    private kendraService: KendraService
+    private kendraService: KendraService,
+    
   ) {
     this.config = config;
   }
@@ -56,10 +57,7 @@ export class ObservationUtilService {
           this.requiredFields = data.result;
           let allFieldsPresent = true;
           for (const field of this.requiredFields) {
-            const val = this.profile.userLocations.filter((element)=>{
-              return element.type == field
-            });
-            if (!val) {
+            if (!this.dataParam[field]) {
               allFieldsPresent = false;
               break
             }
@@ -82,7 +80,6 @@ export class ObservationUtilService {
   }
 
   async getProfileInfo(): Promise<any> {
-   
     return new Promise(async (resolve, reject) => {
       const profileData=await this.getProfileData();
       if(!profileData){

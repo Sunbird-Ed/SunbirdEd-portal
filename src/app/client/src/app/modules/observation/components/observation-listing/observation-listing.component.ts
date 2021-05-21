@@ -53,6 +53,8 @@ import { ContentManagerService } from "../../../public/module/offline/services/c
 import { KendraService } from "@sunbird/core";
 import { ObservationUtilService } from "../../service";
 import {Location} from '@angular/common';
+import { AlertModal } from "../alert-modal/alert-modal.component";
+import {SuiModalService} from "ng2-semantic-ui";
 
 @Component({
   selector: "app-observation-listing",
@@ -114,7 +116,8 @@ export class ObservationListingComponent
     private kendraService: KendraService,
     config: ConfigService,
     private observationUtil:ObservationUtilService,
-    private location:Location
+    private location:Location,
+    public modalService:SuiModalService
   ) {
     this.config = config;
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -126,7 +129,7 @@ export class ObservationListingComponent
   
     this.showEditUserDetailsPopup=await this.observationUtil.getProfileInfo();
      if(!this.showEditUserDetailsPopup){
-      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0018'));
+      this.showPopupAlert();
       return;
      }
      this.activatedRoute.queryParams.subscribe((params) => {
@@ -137,20 +140,6 @@ export class ObservationListingComponent
       this.searchData="";
       this.fetchContentList();
     });
-  }
-
-  async closeModal(){
-    this.showEditUserDetailsPopup=!this.showEditUserDetailsPopup
-    this.showEditUserDetailsPopup=await this.observationUtil.getProfileInfo();
-    if(!this.showEditUserDetailsPopup){
-      this.showEditUserDetailsPopup=false;
-      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0018'));
-      return;
-     }
-
-    this.searchData="";
-    this.fetchContentList();
-    
   }
 
   async getProfileCheck(){
@@ -213,6 +202,8 @@ export class ObservationListingComponent
     data.forEach((value) => {
       let solution_name:string = value.name;
       solution_name = solution_name[0].toUpperCase() + solution_name.slice(1);
+      const subject:any=[];
+      subject.push(value.programName.toString())
       let obj = {
         name: solution_name,
         contentType: "Observation",
@@ -224,7 +215,8 @@ export class ObservationListingComponent
         programId: value.programId,
         medium: value.language,
         organization: value.creator,
-        _id: value._id
+        _id: value._id,
+        subject:subject
       };
       result.push(obj);
       this.contentList = result;
@@ -384,4 +376,21 @@ export class ObservationListingComponent
     }
     this.telemetryService.interact(appTelemetryInteractData);
   }
+
+
+showPopupAlert(){
+
+  this.modalService.open(new AlertModal(this.resourceService.frmelmnts.alert.updateProfileContent,this.resourceService.frmelmnts.alert.updateProfileTitle,this.resourceService.frmelmnts.btn.update))
+  .onApprove(() =>{
+    let queryParam = {
+      showEditUserDetailsPopup:true
+    }
+   this.router.navigate(['profile'],{queryParams:queryParam})
+  })
+  .onDeny(() =>{
+
+  });
+}
+
+
 }

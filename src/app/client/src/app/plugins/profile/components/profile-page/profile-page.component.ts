@@ -113,6 +113,14 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.isDesktopApp = this.utilService.isDesktopApp;
+
+    this.activatedRoute.queryParams.subscribe((params) => {
+      console.log(params)
+      if (params["showEditUserDetailsPopup"]) {
+        this.showEditUserDetailsPopup=true;
+      }
+      });
+
     if(this.isDesktopApp) {
       this.connectionService.monitor()
       .pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
