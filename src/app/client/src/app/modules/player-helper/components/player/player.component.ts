@@ -237,7 +237,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       (data: any) => {
         let isNewPlayer = false;
         _.forEach(data, (value) => {
-          if (_.includes(_.get(value, 'mimeType'), this.playerConfig.metadata.mimeType) && _.get(value, 'version') === 2) {
+          if (_.includes(_.get(value, 'mimeType'), _.get(this.playerConfig, 'metadata.mimeType')) && _.get(value, 'version') === 2) {
             this.playerConfig.context.threshold = _.get(value, 'threshold');
             this.playerType = _.get(value, 'type');
             isNewPlayer = true;
