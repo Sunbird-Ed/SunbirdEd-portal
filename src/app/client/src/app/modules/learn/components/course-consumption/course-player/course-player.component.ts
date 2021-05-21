@@ -117,9 +117,9 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     private contentUtilsServiceService: ContentUtilsServiceService,
     public layoutService: LayoutService,
     public generaliseLabelService: GeneraliseLabelService,
-    private notificationService: NotificationService,
     private connectionService: ConnectionService,
-    @Inject('CS_COURSE_SERVICE') private CsCourseService: CsCourseService
+    @Inject('CS_COURSE_SERVICE') private CsCourseService: CsCourseService,
+    @Inject('NOTIFICATION_SERVICE') private notificationService: NotificationService
   ) {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
@@ -150,7 +150,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         if (this.activatedRoute.snapshot.queryParams.showCourseCompleteMessage === 'true') {
           this.showCourseCompleteMessage = this.progress >= 100 ? true : false;
           if (this.showCourseCompleteMessage) {
-            this.notificationService.refreshNotification$.next(true);
+            this.notificationService.fetchNotificationList();
           }
           const queryParams = this.tocId ? { textbook: this.tocId } : {};
           this.router.navigate(['.'], { relativeTo: this.activatedRoute, queryParams, replaceUrl: true });

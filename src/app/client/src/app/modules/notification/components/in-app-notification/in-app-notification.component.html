@@ -17,14 +17,11 @@
   (dismissed)="showNotificationModel=false" 
   *ngIf="showNotificationModel">
   <div>
-    <sb-in-app-notification
+    <sb-notification
     [notificationList]="notificationList"
     [inAppNotificationConfig]="inAppNotificationConfig"
-    (notificationClick)="notificationHandler($event)"
-    (deleteNotificationClick)="deleteNotificationHandler($event)"
-    (clearAllClick)="clearAllNotifationsHandler($event)"
     (showMore)="handleShowMore($event)"
     (showLess)="handleShowLess($event)"
-    ></sb-in-app-notification>
+    ></sb-notification>
   </div>
 </sui-modal>

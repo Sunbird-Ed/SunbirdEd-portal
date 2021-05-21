@@ -1,5 +1,5 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
+import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '../../services/notification/notification.service';
 import * as _ from 'lodash-es';
 import { UserFeedStatus } from '@project-sunbird/client-services/models';
@@ -27,7 +27,7 @@ export class InAppNotificationComponent implements OnInit, OnDestroy {
   unsubscribe$ = new Subject<void>();
 
   constructor(
-    private notificationService: NotificationService,
+    @Inject('NOTIFICATION_SERVICE') private notificationService: NotificationService,
     private router: Router,
     public resourceService: ResourceService,
     private telemetryService: TelemetryService,
@@ -49,26 +49,21 @@ export class InAppNotificationComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribe$), delay(2000)).subscribe(isConnected => {
       this.isConnected = isConnected;
       if (this.isConnected) {
-        this.notificationService.refreshNotification$.next(true);
+        this.notificationService.fetchNotificationList();
       }
     });
 
     this.fetchNotificationList();
-    this.notificationService.refreshNotification$
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(refresh => {
-      if (refresh) {
-        this.fetchNotificationList();
-      }
-    });
   }
 
   async fetchNotificationList() {
-    const notificationData = await this.notificationService.fetchInAppNotifications();
-    this.notificationCount = 0;
-    this.notificationList = notificationData;
-    this.notificationList.forEach(e => this.notificationCount += (e.status === UserFeedStatus.UNREAD) ? 1 : 0);
-    this.inAppNotificationConfig['subTitle'] = `${this.notificationCount} ${this.resourceService.frmelmnts.lbl.newNotification}`;
+    this.notificationService.notificationList$
+      .subscribe(notificationListData => {
+        this.notificationCount = 0;
+        this.notificationList = notificationListData;
+        this.notificationList.forEach(e => this.notificationCount += (e.status === UserFeedStatus.UNREAD) ? 1 : 0);
+        this.inAppNotificationConfig['subTitle'] = `${this.notificationCount} ${this.resourceService.frmelmnts.lbl.newNotification}`;
+      });
   }
 
   toggleInAppNotifications() {
@@ -79,68 +74,7 @@ export class InAppNotificationComponent implements OnInit, OnDestroy {
     this.showNotificationModel = !this.showNotificationModel;
   }
 
-  async notificationHandler(event) {
-    if (!event || !event.data) {
-      return false;
-    }
-    const navigationDetails = this.getNavigationPath(event);
-    const path = navigationDetails.path || '';
-    const navigationExtras: NavigationExtras = navigationDetails.navigationExtras || {};
-
-    if (path) {
-      this.showNotificationModel = false;
-      this.router.navigate([path], navigationExtras);
-      await this.markNotificationAsRead(event.data);
-      this.fetchNotificationList();
-    }
-  }
-
-  getNavigationPath(event) {
-    if (_.get(event, 'data.data.actionData.actionType') === 'certificateUpdate') {
-      return {
-        path: '/profile',
-        navigationExtras: { state: { scrollToId: 'learner-passbook' } }
-      }
-    }
-
-    const navigationLink = _.get(event, 'data.data.actionData.contentURL') || _.get(event, 'data.data.actionData.deepLink');
-    if (navigationLink) {
-      return { path: navigationLink.replace((new URL(navigationLink)).origin, '') };
-    }
-
-    return {};
-  }
-
-  async markNotificationAsRead(notificationDetails) {
-    if (notificationDetails.id) {
-      this.generateInteractEvent('notification-read', { id: notificationDetails.id, type: 'notificationId' });
-      await this.notificationService.updateNotificationRead(notificationDetails.id);
-    }
-  }
-
-  async deleteNotificationHandler(event) {
-    const notificationDetails = _.get(event, 'data');
-    if (notificationDetails.id) {
-      this.generateInteractEvent('delete-notification', { id: notificationDetails.id, type: 'notificationId' });
-      await this.notificationService.deleteNotification(notificationDetails.id);
-    }
-    this.fetchNotificationList();
-  }
-
-  async clearAllNotifationsHandler(event) {
-    this.generateInteractEvent('clear-all-notification');
-    const notificationArray = _.get(event, 'data');
-    if (_.get(notificationArray, 'length')) {
-      if (await this.notificationService.deleteAllNotifications(notificationArray)) {
-        this.showNotificationModel = false;
-        setTimeout(() => {
-          this.fetchNotificationList();
-        }, 1000);
-      }
-    }
-  }
-
-  generateInteractEvent(id, notificatioData?) {
+  private generateInteractEvent(id, notificatioData?) {
     const data = {
       context: {
         env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env') || 'main-header',
