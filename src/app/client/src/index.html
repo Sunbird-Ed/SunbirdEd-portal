@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr" data-theme="Default" accessable-theme="accessible" data-mode="" layout="old" >
 
 <head>
   <meta charset="utf-8">
@@ -7,6 +7,7 @@
   <base href="/<%=slug%>">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon">
+  
 </head>
 
 <body>
@@ -125,6 +126,31 @@
   <% } %>
   <% if (botServiceURL) { %>
     <input type="hidden" id="botServiceURL" value="<%=botServiceURL%>" />
+  <% } %>
+  <% if (superAdminSlug) { %>
+    <input type="hidden" id="superAdminSlug" value="<%=superAdminSlug%>" />
+  <% } %>
+  <% if (p1reCaptchaEnabled == "true" || p1reCaptchaEnabled == true) { %>
+    <input type="hidden" id="p1reCaptchaEnabled" value="true" />
+  <% } else { %>
+      <input type="hidden" id="p1reCaptchaEnabled" value="false" />
+  <% } %> 
+  <% if (p2reCaptchaEnabled == "true" || p2reCaptchaEnabled == true) { %>
+    <input type="hidden" id="p2reCaptchaEnabled" value="true" />
+  <% } else { %>
+    <input type="hidden" id="p2reCaptchaEnabled" value="false" />
+  <% } %>
+  <% if (p3reCaptchaEnabled == "true" || p3reCaptchaEnabled == true) { %>
+    <input type="hidden" id="p3reCaptchaEnabled" value="true>" />
+  <% } else { %>
+    <input type="hidden" id="p3reCaptchaEnabled" value="false" />
+  <% } %>
+    <input type="hidden" id="enableSSO" value="<%=enableSSO%>" />
+  <% if (reportsListVersion) { %>
+  <input type="hidden" id="reportsListVersion" value="<%=reportsListVersion%>" />
+  <% } %>
+  <% if (baseUrl) { %>
+    <input type="hidden" id="baseUrl" value="<%=baseUrl%>" />
   <% } %>
   <app-root></app-root>
 </body>

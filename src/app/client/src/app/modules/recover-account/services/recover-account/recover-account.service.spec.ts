@@ -20,6 +20,7 @@ describe('RecoverAccountService', () => {
     expect(service).toBeTruthy();
   });
 
+
   it('should call resetPassword API', inject([],
     () => {
       const certificateService = TestBed.get(RecoverAccountService);
@@ -38,7 +39,7 @@ describe('RecoverAccountService', () => {
       const params = { 'request': { 'type': 'user', 'key': 'testKey', 'userId': 'testUserId' } };
       spyOn(learnerService, 'post').and.returnValue(observableOf({}));
       certificateService.generateOTP(params);
-      const options = { url: 'otp/v1/generate', data: params };
+      const options = { url: 'anonymous/otp/v1/generate?captchaResponse=undefined', data: params };
       expect(learnerService.post).toHaveBeenCalledWith(options);
     }));
 
@@ -73,7 +74,7 @@ describe('RecoverAccountService', () => {
       };
       spyOn(learnerService, 'post').and.returnValue(observableOf({}));
       certificateService.fuzzyUserSearch(params);
-      const options = { url: 'user/v1/fuzzy/search', data: params };
+      const options = { url: 'user/v1/fuzzy/search?captchaResponse=undefined', data: params };
       expect(learnerService.post).toHaveBeenCalledWith(options);
     }));
 });

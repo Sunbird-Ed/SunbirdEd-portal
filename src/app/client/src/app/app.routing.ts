@@ -1,3 +1,4 @@
+import { MY_GROUPS, NOTIFICATION } from './modules/groups';
 import { NgModule } from '@angular/core';
 import { ErrorPageComponent, AuthGuard } from '@sunbird/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -17,9 +18,6 @@ const appRoutes: Routes = [
   },
   {
     path: 'workspace', loadChildren: 'app/modules/workspace/workspace.module#WorkspaceModule'
-  },
-  {
-    path: 'contribute', loadChildren: 'app/modules/program/program.module#ProgramModule'
   },
   {
     path: 'org', loadChildren: 'app/modules/org-management/org-management.module#OrgManagementModule'
@@ -47,6 +45,15 @@ const appRoutes: Routes = [
   },
   {
     path: '', loadChildren: 'app/modules/public/public.module#PublicModule'
+  },
+  {
+    path: 'discussion-forum', loadChildren: 'app/modules/discussion/discussion.module#DiscussionModule'
+  },
+  {
+    path: MY_GROUPS, loadChildren: 'app/modules/groups/groups.module#GroupsModule'
+  },
+  {
+    path: NOTIFICATION, loadChildren: 'app/modules/notification/notification.module#NotificationModule'
   },
   {
     path: 'error', component: ErrorPageComponent

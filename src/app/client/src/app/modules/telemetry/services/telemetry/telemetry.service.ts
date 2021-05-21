@@ -6,6 +6,7 @@ import {
   IStartEventInput, IImpressionEventInput, IExDataEventInput,
   IInteractEventInput, IShareEventInput, IErrorEventInput, IEndEventInput, ILogEventInput, ITelemetryContext, IFeedBackEventInput
 } from './../../interfaces/telemetry';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 export const TELEMETRY_PROVIDER = new InjectionToken('telemetryProvider');
 /**
@@ -59,9 +60,9 @@ export class TelemetryService {
   sessionId;
   public UTMparam;
   userSid;
+  private deviceType: string;
 
   constructor() {
-    // , { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }
     this.telemetryProvider = EkTelemetry;
     this.sessionId = (<HTMLInputElement>document.getElementById('sessionId'))
     ? (<HTMLInputElement>document.getElementById('sessionId')).value : undefined;
@@ -70,6 +71,7 @@ export class TelemetryService {
     }
     this.userSid = (<HTMLInputElement>document.getElementById('userSid'))
     ? (<HTMLInputElement>document.getElementById('userSid')).value : undefined;
+    this.deviceType = this.getDeviceType();
   }
 
   /**
@@ -307,6 +309,14 @@ export class TelemetryService {
         type: 'UserSession'
       });
     }
+    eventContextData.cdata.push({
+      id: this.deviceType,
+      type: 'Device'
+    });
+    eventContextData.cdata.push({
+      id: localStorage.getItem('layoutType') || 'default',
+      type: 'Theme',
+    });
     return eventContextData;
   }
 
@@ -341,7 +351,7 @@ export class TelemetryService {
 
   public makeUTMSession(params) {
     this.UTMparam = _.toPairs(params).
-    filter(([key, value]) => value && UTM_PARAMS[key]).map(([key, value]) => ({id: value, type: UTM_PARAMS[key]}));
+    filter(([key, value]) => value && _.isString(value) && UTM_PARAMS[key]).map(([key, value]) => ({id: value, type: UTM_PARAMS[key]}));
     sessionStorage.setItem('UTM', JSON.stringify(this.UTMparam));
   }
 
@@ -366,5 +376,18 @@ export class TelemetryService {
 
   public setSessionIdentifier(value) {
     this.userSid = value;
+  }
+
+  public getDeviceType() {
+    const deviceDetectorService = new DeviceDetectorService('browser');
+    let device = '';
+    if (deviceDetectorService.isMobile()) {
+      device = 'Mobile';
+    } else if (deviceDetectorService.isTablet()) {
+      device = 'Tab';
+    } else if (deviceDetectorService.isDesktop()) {
+      device = 'Desktop';
+    }
+    return device;
   }
 }

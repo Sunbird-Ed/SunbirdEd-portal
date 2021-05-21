@@ -26,16 +26,47 @@
               "src/favicon.png",
               {
                 "glob": "**/*.*",
-                "input": "./node_modules/@project-sunbird/common-consumption/assets",
+                "input": "./node_modules/@project-sunbird/common-consumption-v8/assets",
                 "output": "./assets/common-consumption"
+              },
+              {
+                "glob": "**/*.*",
+                "input": "./node_modules/@project-sunbird/discussions-ui-v8/assets",
+                "output": "./assets/discussion-ui"
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@project-sunbird/sunbird-pdf-player-v8/lib/assets/",
+                "output": "/assets/"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/@project-sunbird/sunbird-video-player-v8/lib/assets/",
+                "output": "/assets/"
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@project-sunbird/sunbird-collection-editor/lib/assets/",
+                "output": "/assets/"
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@project-sunbird/sunbird-quml-player-v8/lib/assets/",
+                "output": "/assets/"
               }
             ],
             "styles": [
+              "src/assets/quml-styles/quml-carousel.css",
               "node_modules/datatables.net-dt/css/jquery.dataTables.min.css",
               "src/assets/styles/semantic/semantic.min.css",
               "node_modules/font-awesome/css/font-awesome.css",
+              "./node_modules/@project-sunbird/sb-styles/assets/_styles.scss",
+              "./node_modules/leaflet/dist/leaflet.css",
               "src/assets/styles/styles.scss",
-              "./node_modules/common-consumption-styles/assets/_styles.scss"
+              "node_modules/video.js/dist/video-js.min.css",
+              "./node_modules/@project-sunbird/discussions-ui-v8/assets/styles/global.scss",
+              "node_modules/katex/dist/katex.min.css",
+              "./node_modules/@project-sunbird/sb-themes/themes/themes-portal.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -43,15 +74,16 @@
               ]
             },
             "scripts": [
+              "node_modules/epubjs/dist/epub.js",
               "src/assets/libs/iziToast/iziToast.min.js",
               "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/slick-carousel/slick/slick.min.js",
               "node_modules/@project-sunbird/telemetry-sdk/index.js",
               "src/assets/libs/semantic-ui/sidebar.min.js",
-              {
-                "input": "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js",
-                "lazy": true,
-                "bundleName": "fancytree-all-deps"
-              },
+              "node_modules/leaflet/dist/leaflet.js",
+              "./node_modules/katex/dist/katex.min.js",
+              "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js",
+              "src/assets/libs/semantic-ui/modal.min.js",
               {
                 "input": "src/assets/libs/semantic-ui/transition.min.js",
                 "lazy": true,
@@ -76,6 +108,26 @@
                 "input": "src/assets/libs/semantic-ui/modal.min.js",
                 "lazy": true,
                 "bundleName": "semanticModal"
+              },
+              {
+                "input": "src/assets/libs/semantic-ui/transition.min.js",
+                "lazy": true,
+                "bundleName": "semanticTreePicker"
+              },
+              {
+                "input": "src/assets/libs/semantic-ui/dimmer.min.js",
+                "lazy": true,
+                "bundleName": "semanticTreePicker"
+              },
+              {
+                "input": "src/assets/libs/semantic-ui/modal.min.js",
+                "lazy": true,
+                "bundleName": "semanticTreePicker"
+              },
+              {
+                "input": "src/assets/libs/semantic-ui-tree-picker/semantic-ui-tree-picker.js",
+                "lazy": true,
+                "bundleName": "semanticTreePicker"
               }
             ]
           },
@@ -113,6 +165,40 @@
                   "with": "src/environments/environment.staging.ts"
                 }
               ]
+            },
+            "desktop-production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": false,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.desktop.prod.ts"
+                }
+              ]
+            },
+            "desktop-staging": {
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "extractCss": false,
+              "namedChunks": true,
+              "aot": false,
+              "extractLicenses": false,
+              "vendorChunk": false,
+              "buildOptimizer": false,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.desktop.staging.ts"
+                }
+              ]
             }
           }
         },
@@ -140,15 +226,18 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "src/test.ts",
-            "karmaConfig": "./karma.conf.js",
+            "karmaConfig": "karma.conf.js",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
+            "sourceMap": true,
             "scripts": [
+              "node_modules/epubjs/dist/epub.js",
               "src/assets/libs/iziToast/iziToast.min.js",
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/@project-sunbird/telemetry-sdk/index.js",
               "src/assets/libs/semantic.min.js",
-              "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js"
+              "node_modules/jquery.fancytree/dist/jquery.fancytree-all-deps.min.js",
+              "node_modules/leaflet/dist/leaflet.js"
             ],
             "styles": [
               "src/assets/styles/semantic/semantic.min.css",
@@ -168,7 +257,16 @@
             "codeCoverageExclude": [
               "src/assets/**",
               "src/thidparty/**",
-              "src/app/modules/offline/**"
+              "src/app/modules/offline/**",
+              "src/app/modules/**/**/index.ts",
+              "src/app/plugins/profile/index.ts",
+              "src/app/plugins/profile/services/index.ts",
+              "src/app/testUtil/index.ts",
+              "src/app/client/src/**/*.spec.ts",
+              "src/app/client/src/**/*.spec.data.ts",
+              "src/app/client/src/**/*.module.ts",
+              "src/app/modules/cbse-program/**/**"
+
             ]
           }
         },

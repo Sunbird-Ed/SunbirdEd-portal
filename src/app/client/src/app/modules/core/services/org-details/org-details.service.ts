@@ -38,7 +38,7 @@ export class OrgDetailsService {
 
   getOrgDetails(slug?: string): Observable<ServerResponse> {
     const option = {
-      url: this.configService.urlConFig.URLS.ADMIN.ORG_SEARCH,
+      url: this.configService.urlConFig.URLS.ADMIN.ORG_SEARCH, // commonly used search request, cached at proxy
       data: {
         request: {
           filters: {
@@ -85,16 +85,16 @@ export class OrgDetailsService {
   }
   setOrgDetailsToRequestHeaders() {
     this.learnerService.rootOrgId = this.orgDetails.rootOrgId;
-    this.learnerService.channelId = this.orgDetails.channel;
+    this.learnerService.channelId = this.orgDetails.hashTagId;
     this.contentService.rootOrgId = this.orgDetails.rootOrgId;
-    this.contentService.channelId = this.orgDetails.channel;
+    this.contentService.channelId = this.orgDetails.hashTagId;
     this.publicDataService.rootOrgId = this.orgDetails.rootOrgId;
-    this.publicDataService.channelId = this.orgDetails.channel;
+    this.publicDataService.channelId = this.orgDetails.hashTagId;
   }
 
   searchOrg() {
     const option = {
-      url: this.configService.urlConFig.URLS.ADMIN.ORG_SEARCH,
+      url: this.configService.urlConFig.URLS.ADMIN.ORG_SEARCH, // commonly used search request, cached at proxy
       data: {
         request: {
           filters: {
@@ -114,6 +114,21 @@ export class OrgDetailsService {
         }
       }));
     }
+  }
+
+
+  searchOrgDetails(request) {
+    const option = {
+      url: this.configService.urlConFig.URLS.ADMIN.ORG_SEARCH,
+      data: {
+        request: request
+      }
+    };
+    return this.publicDataService.post(option).pipe(mergeMap((data: ServerResponse) => {
+      if (_.get(data, 'result.response.count') > 0) {
+        return of(_.get(data, 'result.response'));
+      }
+    }));
   }
 
   setOrgDetails(data) {
@@ -196,13 +211,22 @@ export class OrgDetailsService {
 
   fetchOrgs(filters) {
     const option = {
-      url: this.configService.urlConFig.URLS.ADMIN.ORG_SEARCH,
+      url: this.configService.urlConFig.URLS.ADMIN.ORG_EXT_SEARCH,
       data: {
         request: filters
       }
     };
 
     return this.publicDataService.post(option);
+  }
+  processOrgData(channels) {
+    const rootOrgIds = [];
+    _.forEach(channels, (channelData) => {
+      if (channelData.name) {
+        rootOrgIds.push(channelData.name);
+      }
+    });
+    return rootOrgIds;
   }
 }
 

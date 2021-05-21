@@ -19,7 +19,7 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
   templateUrl: './uploaded.component.html'
 })
 export class UploadedComponent extends WorkSpace implements OnInit, AfterViewInit {
-  @ViewChild('modalTemplate')
+  @ViewChild('modalTemplate', {static: false})
   public modalTemplate: ModalTemplate<{ data: string }, string, string>;
   /**
   * state for content editior

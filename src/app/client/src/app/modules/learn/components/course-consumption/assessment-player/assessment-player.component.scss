@@ -4,36 +4,40 @@
 
 :host {
   .header-shadow {
-    min-height: 80px;
-    background-color: #fafafa;
-    box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.25);
+    min-height: calculateRem(80px);
+    background-color: var(--rc-FAFAFA);
+    box-shadow: 0 calculateRem(10px) calculateRem(10px) calculateRem(-10px) rgba(var(--rc-rgba-black), 0.25);
     z-index: 99;
     position: relative;
   }
   .chapter-box {
-    border: 0.03125rem solid var(--primary-300);
-    padding: 16px;
-    background: var(--gray-0);
+    border-bottom: .0625rem solid var(--gray-100);
+    padding: 0 calculateRem(16px);
+    &:last-child{
+      border-bottom: 0px solid var(--gray-100);
+    }
   }
   .side-toc-content {
-    max-height: 100vh;
-    overflow-y: scroll;
+    max-height: calc(100vh - 320px);
+    overflow-y: auto;
+    padding-bottom: calculateRem(24px);
   }
+
   //sbchapter css
   .sbchapter {
-    border-bottom: calculateRem(1px) solid #ddd;
+    border-bottom: calculateRem(1px) solid var(--rc-dddddd);
     padding: calculateRem(16px) calculateRem(16px) calculateRem(8px);
     h4 {
-      font-size: $font-size-xs;
+      font-size: var(--font-size-xs);
       line-height: calculateRem(18px);
       color: var(--gray-800);
       margin-bottom: calculateRem(8px);
     }
     &__item {
       background: var(--white);
-      border: calculateRem(1px) solid #ddd;
-      box-shadow: 0 calculateRem(3px) calculateRem(4px) 0 rgba(2, 79, 157, 0.1);
-      border: calculateRem(0.5px) solid rgba(47, 66, 114, 0.5);
+      border: calculateRem(1px) solid var(--rc-dddddd);
+      box-shadow: 0 calculateRem(3px) calculateRem(4px) 0 rgba(var(--rc-rgba-primary), 0.1);
+      border: calculateRem(0.5px) solid rgba(var(--rc-rgba-primary-300), 0.5);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -42,7 +46,7 @@
       cursor: pointer;
       min-height: calculateRem(56px);
       h4 {
-        font-size: $font-size-sm;
+        font-size: var(--font-size-sm);
         line-height: calculateRem(20px);
         color: var(--primary-400);
         margin: 0px;
@@ -80,5 +84,96 @@
               }
           }
       }
+  }
+}
+
+.header-block {
+  display: none;
+}
+
+.back-btn-container {
+  z-index: 1;
+
+  .modulebtn-divider {
+      width: calculateRem(1px);
+      height: calculateRem(24px);
+      background: var(--gray-200);
+      display: inline-block;
+      margin: 0 calculateRem(8px);
+  }
+}
+
+
+.textbook {
+  &-container {
+      box-shadow: 0 0 calculateRem(10px) 0 rgba(var(--black), 0.25);
+      position: relative;
+      background-color: var(--rc-FAFAFA);
+  }
+
+  &__details {
+      flex: 1;
+      min-width: 0;
+  }
+
+  &__bookimg {
+    width: calculateRem(48px);
+    height: calculateRem(48px);
+    img {
+        width: calculateRem(48px);
+        height: calculateRem(48px);
+    }
+  }
+
+  &__heading {
+      min-width: 0;
+
+      .textbook__title {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+      }
+  }
+
+  &__addbtn {
+      white-space: nowrap;
+  }
+}
+
+:host::ng-deep {
+  .certified-course__progress {
+    .ui.progress .bar {
+      height: calculateRem(8px) !important;
+      background: var(--secondary-color);
+    }
+  }
+  .sbchapter__item__score {
+    display: none !important;
+  }
+}
+
+.cc-player__list {
+  background-color: var(--gray-0);
+  padding: 0 calculateRem(16px);
+  box-shadow: 0 calculateRem(3px) calculateRem(4px) 0 rgba(var(--rc-rgba-primary), 0.1);
+}
+
+.certified-course {
+  align-self: center;;
+}
+
+@include respond-below(sm) {
+  .certified-course__progress {
+    margin-top: calculateRem(8px);
+  }
+}
+
+.module-complete-content {
+  background-color: var(--rc-bfe1cf);
+  .complete-content-image {
+    width: calculateRem(64px);
+    img {
+      max-width: 100%;
+    }
   }
 }

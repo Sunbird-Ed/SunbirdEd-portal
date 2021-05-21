@@ -2,17 +2,50 @@ import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {
   OrganisationComponent, CourseConsumptionComponent, CourseProgressComponent, UsageReportsComponent,
-  ReportComponent, ListAllReportsComponent
+  ReportComponent, ListAllReportsComponent, CourseDashboardComponent, ReIssueCertificateComponent,
+  DashboardSidebarComponent
 } from './components/';
 import { AuthGuard } from '../core/guard/auth-gard.service';
-
+const telemetryEnv = 'course-dashboard';
 const routes: Routes = [
   {
-    path: '', component: CourseProgressComponent, canActivate: [AuthGuard],
+    path: '', component: DashboardSidebarComponent, canActivate: [AuthGuard],
     data: {
-      roles: 'courseBatchRoles',
-      telemetry: { env: 'Course', pageid: 'course-stats', type: 'view', object: { ver: '1.0', type: 'course' } }
-    }
+      roles: 'createBatchRole',
+      telemetry: { env: 'Course', pageid: 'course-dashboard', type: 'view', object: { ver: '1.0', type: 'course' } }
+    },
+    children: [
+      {
+        path: 'course-stats', component: CourseDashboardComponent, canActivate: [AuthGuard],
+        data: {
+          roles: 'createBatchRole',
+          telemetry: {
+            env: telemetryEnv, pageid: 'course-stats', uri: '/dashboard/course-stats',
+            type: 'view', object: { ver: '1.0', type: 'course' }
+          }
+        }
+      },
+      {
+        path: 'batches', component: CourseProgressComponent, canActivate: [AuthGuard],
+        data: {
+          roles: 'createBatchRole',
+          telemetry: {
+            env: telemetryEnv, pageid: 'batches', uri: '/dashboard/batches',
+            type: 'view', object: { ver: '1.0', type: 'course' }
+          }
+        }
+      },
+      {
+        path: 'certificates', component: ReIssueCertificateComponent, canActivate: [AuthGuard],
+        data: {
+          roles: 'createBatchRole',
+          telemetry: {
+            env: telemetryEnv, pageid: 'certificates', uri: '/dashboard/certificates',
+            type: 'view', object: { ver: '1.0', type: 'course' }
+          }
+        }
+      },
+    ]
   },
   {
     path: 'myActivity', component: CourseConsumptionComponent,
@@ -50,14 +83,23 @@ const routes: Routes = [
   {
     path: 'reports', component: ListAllReportsComponent, data: {
       roles: 'reportViewerRole',
-      telemetry: { env: 'dashboard', pageid: 'list-all-reports', type: 'view' }
+      telemetry: { env: 'reports', pageid: 'reports-list', type: 'view' }
     }
   },
   {
     path: 'reports/:reportId', component: ReportComponent,
     data: {
       roles: 'reportViewerRole',
-      telemetry: { env: 'dashboard', pageid: 'report-page', type: 'view' },
+      telemetry: { env: 'reports', pageid: 'report-chart', type: 'view' },
+      breadcrumbs: [{ label: 'Home', url: '/home' },
+      { label: 'Profile', url: '/profile' }, { label: 'Report Page', url: '' }]
+    }
+  },
+  {
+    path: 'reports/:reportId/:hash', component: ReportComponent,
+    data: {
+      roles: 'reportViewerRole',
+      telemetry: { env: 'reports', pageid: 'report-chart', type: 'view' },
       breadcrumbs: [{ label: 'Home', url: '/home' },
       { label: 'Profile', url: '/profile' }, { label: 'Report Page', url: '' }]
     }

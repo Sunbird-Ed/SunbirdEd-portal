@@ -8,3 +8,45 @@ export let mockLatestReportSummary = [
         'summary': '<p>Testing comment</p>'
     }
 ];
+
+export let mockReportObj = {
+    'reportid': 'a8971368-34a4-412d-8532-eea6c0fd9e70',
+    'title': 'Board wise Report',
+    'description': 'National Quiz Reports',
+    'authorizedroles': [
+        'ORG_ADMIN'
+    ],
+    'status': 'draft',
+    'type': 'public',
+    'createdon': '2020-07-07T13:06:47.847Z',
+    'updatedon': '2020-07-07T13:06:47.847Z',
+    'createdby': 'ravinder kumar',
+    'reportconfig': {},
+    'templateurl': null,
+    'slug': 'sunbird',
+    'reportgenerateddate': '2020-04-12T00:00:00.000Z',
+    'reportduration': {
+        'enddate': 'Thu May 7 2020',
+        'startdate': 'Thu May 7 2020'
+    },
+    'tags': [
+        'Consumption',
+        'Engagement'
+    ],
+    'updatefrequency': 'DAILY',
+    'parameters': [
+        '$board'
+    ],
+    'children': [],
+    'isParameterized': true,
+    'hashed_val': '123'
+};
+
+export let filters =  [{
+    "controlType": "multi-select",
+    "displayName": "Select state",
+    "options": ["01285019302823526477", "013016492159606784174", "0130385861180866561", "b00bc992ef25f1a9a8d", "b00bc992ef25f1a9a8d63291e20efc8d"],
+    "reference": "state"
+}];
+
+export let chartData = [{ state: "01285019302823526477", Plays: "10", Date: "2020-04-28" }];

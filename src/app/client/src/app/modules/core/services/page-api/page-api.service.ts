@@ -71,7 +71,9 @@ export class PageApiService {
           source: requestParam.source,
           name: requestParam.name,
           filters: requestParam.filters,
+          fields: requestParam.fields || [],
           sort_by: requestParam.sort_by,
+          facets: requestParam.facets || [],
           softConstraints: requestParam.softConstraints,
           mode: requestParam.mode
         }

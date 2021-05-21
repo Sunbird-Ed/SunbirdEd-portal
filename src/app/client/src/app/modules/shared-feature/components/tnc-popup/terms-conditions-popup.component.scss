@@ -1,22 +1,12 @@
-@import "variables";
+
 @import "mixins/mixins";
 
-.ui.light-sea-green.button {
-  background: #2ca58d;
-  color: var(--white);
-  height: calculateRem(38px) !important;
+.terms-and-cond-form{
+  height: calc(100vh - 350px);
+ iframe{
+   height: 100%;
+ }
 }
-
-.ui.grey.button {
-  background: #9B9B9B;
-  color: var(--white);
-  height: calculateRem(38px) !important;
-}
-
-.width-310 {
-  width: calculateRem(310px) !important;
-}
-
 @include respond-below(sm) {
 
   ::ng-deep {
@@ -35,11 +25,6 @@
             overflow: hidden;
           }
         }
-
-        .ui.form.terms-and-cond-form {
-          height: calc(100% - 88px);
-        }
-
         .toc-page { 
           height: 100%;
         }

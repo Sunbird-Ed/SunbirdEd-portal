@@ -23,10 +23,7 @@ const encrypt = (text) => {
  * @returns {string}
  */
 const decrypt = (text) => {
-  console.log('object to decrypt', JSON.stringify(text));
-  console.log('encryption key', key);
   let iv = Buffer.from(text.iv, 'hex');
-  console.log('iv captured', iv);
   let encryptedText = Buffer.from(text.encryptedData, 'hex');
   let decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(key), iv);
   let decrypted = decipher.update(encryptedText);

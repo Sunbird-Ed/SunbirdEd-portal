@@ -1,103 +1,131 @@
-<div class="ui container" [appTelemetryImpression]="telemetryImpression">
-  <div class="content-grid py-24">
-    <div class="row">
-    </div>
-    <div class="row" *ngIf="showLoader">
-      <div class="twelve wide column">
-        <div class="sb-grid">
-          <div in-view-item [id]="i" [data]=[] class="sb-grid--item" *ngFor="let i of numberOfSections">
-            <sb-library-card [type]="'portal_qrcode_flatresult'" [btnlabel]="resourceService.frmelmnts?.lbl?.play" [isLoading]="true"></sb-library-card>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="dial-code-section-result">
-      <div class="sb-pageSection" *ngIf="!showLoader && searchResults.length > 0">
-        <div class="sb-pageSection-header">
-          <h4 class="sb-pageSection-title m-0 mr-5">{{resourceService.frmelmnts?.lbl?.dialCode}} -</h4>
-          <span class="sb-pageSection-count sb-label sb-label-xs sb-label-error mr-5">{{dialCode}}</span>
-          <span class="header-label">{{resourceService.frmelmnts?.lbl?.linkedContents}}
-            ({{searchResults.length}})</span>
-          <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata"
-            [telemetryInteractCdata]="telemetryCdata"
-            class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn computer only" type="button" (click)="handleCloseButton()">
-            {{resourceService?.frmelmnts?.btn?.close}}
-            <i class="close icon"></i></button>
-        </div>
-      </div>
-      <div *ngIf="showSelectChapter && !showLoader && searchResults.length > 0" class="mb-24">
-        <button appTelemetryInteract [telemetryInteractEdata]="selectChapterInteractEdata" [telemetryInteractCdata]="selectChapterTelemetryCdata"
-        (click)="redirectToDetailsPage(dialContentId)" class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn" type="button">{{resourceService.frmelmnts?.lbl?.selectChapter}}<i class="icon chevron circle right"></i></button>
-          <span class="ml-8 fmedium">{{resourceService.frmelmnts?.lbl?.fromTheTextBook}}&nbsp;<b>"{{chapterName}}"</b></span>
-      </div>
-    </div>
-    <div class="row" [appTelemetryImpression]="dialResultImpression">
-      <div infinite-scroll [infiniteScrollDistance]="scrollDistance" [infiniteScrollThrottle]="throttle"
-        (scrolled)="onScrollDown()">
-        <div *ngIf="!showLoader && itemsToDisplay.length" in-view-container (inview)="inview($event)"
-          [throttle]="[1000]" [trigger]="itemsToDisplay" class="masonry-grid dynamic-section-card">
-          <div in-view-item [id]="i" [data]="content" class="masonry-item"
-            *ngFor="let content of itemsToDisplay;let i = index;">
+<app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration">
+</app-landing-section>
 
-            <app-card *ngIf="content.contentType.toLowerCase() === 'course'" appContentDirection (clickEvent)="playCourse($event)" [dialCode]="dialCode" [data]="content"></app-card>
-
-            <!-- <app-dial-code-card *ngIf="content.contentType.toLowerCase() !== 'course'" appContentDirection [dialCode]="dialCode" [data]="content" (clickEvent)="getEvent($event)"  [singleContentRedirect]="singleContentRedirect"></app-dial-code-card> -->
-
-          </div>
-        </div>
-      </div>
-      <div class="row sb-placeholder">
-          <div *ngIf="!showLoader && !searchResults.length">
-            <app-comming-soon></app-comming-soon>
-          </div>
-      </div>
-    </div>
-
-    <!-- START - CCD for DIAL Code search result(s) -->
-    <div class="row" [appTelemetryImpression]="dialResultImpression">
-      <div infinite-scroll [infiniteScrollDistance]="scrollDistance" [infiniteScrollThrottle]="throttle"
-        (scrolled)="onScrollDown()">
-        <div *ngIf="!showLoader && itemsToDisplay.length" in-view-container (inview)="inview($event)" [throttle]="[1000]"
-          [trigger]="itemsToDisplay" class="twelve wide column">
-          <div class="sb-grid">
-            <div in-view-item [id]="i" [data]="content" class="sb-grid--item"
-              *ngFor="let content of itemsToDisplay;let i = index;">
-
-              <!-- START - Results page -->
-              <sb-library-card 
-                *ngIf="content.contentType.toLowerCase() !== 'course' && content.metaData.childTextbookUnit" (cardClick)="getEvent($event)"
-                [content]="content" [cardImg]="content?.image || 'assets/images/book.png'" appTelemetryInteract
-                appContentDirection [data]="content"
-                [telemetryInteractObject]="{id:content.metaData.identifier,type:content.contentType,ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0'}"
-                [telemetryInteractEdata]="content.telemetryInteractEdata"
-                [telemetryInteractCdata]="[{ 'type': 'DialCode', 'id': dialCode}]">
-              </sb-library-card>
-              <!-- END - Results page -->
-
-              <!-- START - Flattened page -->
-              <sb-library-card [type]="'portal_qrcode_flatresult'" [btnlabel]="resourceService.frmelmnts?.lbl?.play"
-                *ngIf="content.contentType.toLowerCase() !== 'course' && !content.metaData.childTextbookUnit" (cardClick)="getEvent($event)"
-                [content]="content" [cardImg]="content?.image || 'assets/images/book.png'" appTelemetryInteract
-                appContentDirection [data]="content"
-                [telemetryInteractObject]="{id:content.metaData.identifier,type:content.contentType,ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0'}"
-                [telemetryInteractEdata]="content.telemetryInteractEdata"
-                [telemetryInteractCdata]="[{ 'type': 'DialCode', 'id': dialCode}]">
-              </sb-library-card>
-              <!-- END - Flattened page -->
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- END - CCD for DIAL Code search result(s) -->
-
+<div [ngClass]="layoutConfiguration ? 'sbt-center-container relative9 sbt-dial-code':''" >
+<!-- Back button -->
+<div class="sb-bg-color-white sb-back-btn-panel">
+  <div class="ui container py-8">
+    <button type="button" appTelemetryInteract [telemetryInteractEdata]="backInteractEdata"
+      [telemetryInteractCdata]="telemetryCdata" class="sb-btn sb-btn-normal sb-btn-link
+      sb-btn-link-primary sb-left-icon-btn px-0" (click)="goBack()">
+      <i class="icon-svg icon-svg--xxs icon-back mr-4" aria-hidden="true">
+        <svg class="icon icon-svg--primary">
+          <use xlink:href="./assets/images/sprite.svg#arrow-long-left"></use>
+        </svg>
+      </i> {{resourceService?.frmelmnts?.btn?.back}}
+    </button>
   </div>
 </div>
-<div class="mobile-popup-dimmer" *ngIf= "showMobilePopup" (click)="closeMobileAppPopup()" [ngClass]="{'bottom-0': showMobilePopup}">
+
+<!-- Main container -->
+<div class="ui container py-24" [appTelemetryImpression]="telemetryImpression">
+  <div class="sb-grid" *ngIf="showLoader">
+    <div in-view-item [id]="i" [data]=[] class="sb-grid--item" *ngFor="let i of numberOfSections">
+      <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" [type]="'portal_qrcode_flatresult'" [isLoading]="true"></sb-library-card>
+    </div>
+  </div>
+  <div class="dial-code-section-result">
+    <div class="sb-pageSection" *ngIf="!showLoader && searchResults.length > 0">
+      <div class="section-header">
+        <p>
+          {{resourceService?.frmelmnts?.lbl?.showingResultsForWithCount | interpolate:'{resultCount}' : searchResults.length}}&nbsp;"<strong>{{dialCode}}</strong>"
+        </p>
+      </div>
+    </div>
+    <div *ngIf="showSelectChapter && !showLoader && searchResults?.length > 0" class="my-24">
+      <button appTelemetryInteract [telemetryInteractEdata]="selectChapterInteractEdata"
+        [telemetryInteractCdata]="selectChapterTelemetryCdata" (click)="redirectToDetailsPage(dialContentId)"
+        class="sb-btn sb-btn-normal sb-btn-primary sb-right-icon-btn"
+        type="button">{{resourceService.frmelmnts?.lbl?.selectChapter}}
+        <i class="icon chevron circle right" aria-hidden="true"></i></button>
+      <span class="ml-8 fmedium">{{resourceService.frmelmnts?.lbl?.fromTheTextBook}}&nbsp;
+        <strong>"{{chapterName}}"</strong>
+      </span>
+    </div>
+  </div>
+
+  <!-- START - CCD for DIAL Code search result(s) For Textbooks -->
+  <div [appTelemetryImpression]="dialResultImpression">
+    <div infinite-scroll [infiniteScrollDistance]="scrollDistance" [infiniteScrollThrottle]="throttle"
+      (scrolled)="onScrollDown()">
+      <div *ngIf="!showLoader && textbookList?.length" in-view-container (inview)="inview($event)" [throttle]="[1000]"
+        [trigger]="textbookList" class="twelve wide column mb-16">
+        <div class="header" *ngIf="!isTextbookDetailsPage">
+          <div class="title">
+            {{resourceService?.frmelmnts?.lbl?.textbooks}}
+            <span class="badge">{{textbookList?.length}}</span>
+          </div>
+        </div>
+        <div class="sb-grid mt-16">
+          <div in-view-item [id]="i" [data]="content" class="sb-grid--item grey-background"
+            *ngFor="let content of textbookList;let i = index;">
+
+            <!-- START - Results page -->
+            <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" *ngIf="content.contentType.toLowerCase() !== 'course' && !isTextbookDetailsPage"
+              (cardClick)="getEvent($event)" [content]="content" [cardImg]="content?.image || 'assets/images/book.png'"
+              appTelemetryInteract appContentDirection [data]="content" [type]="'qrcode_result'"
+              [moreInfoLabel]="resourceService?.frmelmnts?.lbl?.section"
+              [section]="content?.metaData?.childTextbookUnit?.name || ''"
+              [telemetryInteractObject]="{id:content.metaData.identifier,type:content.contentType,ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0'}"
+              [telemetryInteractEdata]="content.telemetryInteractEdata"
+              [telemetryInteractCdata]="[{ 'type': 'DialCode', 'id': dialCode}]">
+            </sb-library-card>
+            <!-- END - Results page -->
+
+            <!-- START - Flattened page -->
+            <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" [type]="'portal_qrcode_flatresult'" [btnlabel]="resourceService.frmelmnts?.lbl?.play"
+              *ngIf="content.contentType.toLowerCase() !== 'course' && !content.metaData.childTextbookUnit && isTextbookDetailsPage"
+              (cardClick)="getEvent($event)" [content]="content" [cardImg]="content?.image || 'assets/images/book.png'"
+              appTelemetryInteract appContentDirection [data]="content"
+              [telemetryInteractObject]="{id:content.metaData.identifier,type:content.contentType,ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0'}"
+              [telemetryInteractEdata]="content.telemetryInteractEdata"
+              [telemetryInteractCdata]="[{ 'type': 'DialCode', 'id': dialCode}]">
+            </sb-library-card>
+            <!-- END - Flattened page -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END - CCD for DIAL Code search result(s) -->
+
+  <div [appTelemetryImpression]="dialResultImpression">
+    <div infinite-scroll [infiniteScrollDistance]="scrollDistance" [infiniteScrollThrottle]="throttle"
+      (scrolled)="onScrollDown()" class="content-grid">
+      <div *ngIf="!showLoader && courseList?.length" in-view-container (inview)="inview($event)" [throttle]="[1000]"
+        [trigger]="courseList" class="twelve wide column">
+        <div class="header" *ngIf="!isTextbookDetailsPage">
+          <div class="title">
+            {{resourceService?.frmelmnts?.tab?.courses}}
+            <span class="badge">{{courseList?.length}}</span>
+          </div>
+        </div>
+        <div class="sb-card-grid mt-16">
+          <div in-view-item [id]="i" [data]="content" *ngFor="let content of courseList;let i = index;">
+            <sb-course-card appContentDirection [data]="content" class="sb-card-grid__item" [course]="content"
+              [cardImg]="content?.image || 'assets/images/book.png'" (cardClick)="playCourse($event)" [section]="null"
+              appTelemetryInteract [telemetryInteractCdata]="[{ 'type': 'DialCode', 'id': dialCode}]"
+              [telemetryInteractObject]="{id:content.metaData.identifier,type:content.contentType,ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0'}"
+              [telemetryInteractEdata]="content.telemetryInteractEdata">
+            </sb-course-card>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sb-placeholder">
+      <div *ngIf="!showLoader && !searchResults.length">
+        <app-comming-soon></app-comming-soon>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mobile-popup-dimmer" *ngIf="showMobilePopup" (click)="closeMobileAppPopup()"
+  [ngClass]="{'bottom-0': showMobilePopup}">
   <div class="mobile-app-popup" [ngClass]="{'bottom-0': showMobilePopup}">
     <div class="download-mobile-app">
       <div class="mobile-app-popup-close">
-        <i class="close icon"></i>
+        <i class="close icon" aria-hidden="true"></i>
       </div>
       <div class="download-mobile-app-logo p-15" (click)="redirectToDikshaApp()">
         <div class="mobile-circles">
@@ -106,7 +134,8 @@
           <div class="small-box border-round border-r50 ml-16 mr-8"></div>
           <div class="small-box border-round border-r50"></div>
         </div>
-        <label class="d-block text-center">{{resourceService?.frmelmnts?.lbl?.downloadDikshaForMobile | interpolate:'{instance}': instance}}</label>
+        <label
+          class="d-block text-center">{{resourceService?.frmelmnts?.lbl?.downloadDikshaForMobile | interpolate:'{instance}': instance}}</label>
         <a id='app-download-mobile' class="d-block pb-10 text-center app-download">
           <img class="playStore-img" src="assets/images/google_playstore.png"
             alt="{{resourceService?.frmelmnts?.lbl?.dikshaForMobile | interpolate:'{instance}':instance}}"
@@ -118,6 +147,6 @@
     </div>
   </div>
 </div>
-
-<app-batch-info *ngIf="showBatchInfo" [enrolledBatchInfo]="selectedCourseBatches" (modelClose)="showBatchInfo = false"></app-batch-info>
-
+</div>
+<app-batch-info *ngIf="showBatchInfo" [enrolledBatchInfo]="selectedCourseBatches" (modelClose)="showBatchInfo = false">
+</app-batch-info>

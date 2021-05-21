@@ -1,6 +1,5 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { UserUploadComponent } from '../user-upload/user-upload.component';
 import { UserService } from '../../../core/services/user/user.service';
 import { ManageService } from '../../services/manage/manage.service';
 import { SuiModule } from 'ng2-semantic-ui';
@@ -11,9 +10,11 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { UserOrgManagementComponent } from './user-org-management.component';
 import { throwError as observableThrowError, of as observableOf, of } from 'rxjs';
 import { mockManageData } from './user-org-management.mock.spec';
-import { CoreModule } from '@sunbird/core';
+import { CoreModule, TncService } from '@sunbird/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { configureTestSuite } from '@sunbird/test-util';
+import { mockRes } from './user-org-management.mock.spec';
+
 
 const fakeActivatedRoute = {
   snapshot: {
@@ -32,7 +33,8 @@ const resourceMockData = {
   frmelmnts: {
     btn: {
       viewdetails: 'View Details',
-      viewless: 'View less'
+      viewless: 'View less',
+      selectCsvFile: 'Select CSV'
     },
     lbl: {
       admindshheader: {
@@ -41,8 +43,33 @@ const resourceMockData = {
         blocks: 'Blocks',
         schools: 'Schools',
         teachers: 'Regd. Teachers'
-      }
-    }
+      },
+      fileUploadSuccessMessage: 'file upload success',
+      uploadFileError: 'uploda file error'
+    },
+
+  }
+};
+const event = {
+  target: {
+    files: [{
+      name: 'test.csv',
+      lastModified: 1593411651030,
+      lastModifiedDate: new Date(),
+      size: 4343,
+      type: 'text/csv'
+    }]
+  }
+};
+const eventText = {
+  target: {
+    files: [{
+      name: 'test.txt',
+      lastModified: 1593411651030,
+      lastModifiedDate: new Date(),
+      size: 4343,
+      type: 'text/csv'
+    }]
   }
 };
 
@@ -61,11 +88,12 @@ describe('UserOrgManagementComponent', () => {
         SuiModule, CoreModule
       ],
       declarations: [
-        UserOrgManagementComponent, UserUploadComponent
+        UserOrgManagementComponent
       ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         UserService,
+        TncService,
         ManageService,
         ToasterService,
         NavigationHelperService,
@@ -187,4 +215,154 @@ describe('UserOrgManagementComponent', () => {
     expect(window.open).toHaveBeenCalledWith('a', '_blank');
   });
 
+  it('should fetch submit teacher details csv', () => {
+    const manageService = TestBed.get(ManageService);
+    const userService = TestBed.get(UserService);
+    spyOn(manageService, 'getData').and.returnValue(of({
+      result: { signedUrl: 'signedUrl' }
+    }));
+    spyOn(window, 'open');
+    component.slug = 'sunbird';
+    component.userJSON = 'user';
+    userService._userData$.next({ err: null, userProfile: { rootOrg: { channel: 'MOCKCHANNEL' } } });
+    component.fetchDeclaredUserDetails();
+    expect(component.userDeclaredDetailsUrl).toBe('signedUrl');
+  });
+
+  it('should download file', () => {
+    const manageService = TestBed.get(ManageService);
+    spyOn(manageService, 'getData').and.returnValue(of({
+      result: {
+        signedUrl: 'a'
+      }
+    }));
+    spyOn(window, 'open');
+    component.downloadFile('user.zip');
+    expect(window.open).toHaveBeenCalled();
+    expect(window.open).toHaveBeenCalledWith('user.zip', '_blank');
+  });
+
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.unsubscribe$, 'complete');
+    spyOn(component.unsubscribe$, 'next');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
+    expect(component.unsubscribe$.next).toHaveBeenCalled();
+  });
+
+  it('should call fileChanged method', () => {
+    component.fileChanged(event);
+    expect(component.fileUpload).toBe(event.target.files[0]);
+  });
+  it('should call interact telemetry while closing upload user validation status modal', () => {
+    spyOn(component.telemetryService, 'interact');
+    const activatedRoute = TestBed.get(ActivatedRoute);
+    const interactData = {
+      context: {
+        env: activatedRoute.snapshot.data.telemetry.env,
+        cdata: []
+      },
+      edata: {
+        id: 'close-upload-validation-status-modal',
+        type: 'click',
+        pageid: activatedRoute.snapshot.data.telemetry.pageid
+      }
+    };
+    component.closeUserValidationModal();
+    expect(component.showUploadUserModal).toBeFalsy();
+    expect(component.telemetryService.interact).toHaveBeenCalledWith(interactData);
+  });
+  it('should call geoTableView and update geoTabledata array', () => {
+    component.geoButtonText = resourceMockData.frmelmnts.btn.viewdetails;
+    component.geoSummary = [
+      {
+        index: '0',
+        districtName: 'District 1',
+        blocks: 'Block 1',
+        schools: 'School 1'
+      },
+      {
+        index: '1',
+        districtName: 'District 2',
+        blocks: 'Block 2',
+        schools: 'School 2'
+      }
+    ];
+    spyOn(component, 'renderGeoDetails').and.callThrough();
+    component.geoTableView();
+    expect(component.geoButtonText).toEqual('View less');
+    expect(component.geoTabledata.length).toEqual(2);
+    expect(component.renderGeoDetails).toHaveBeenCalled();
+  });
+
+  it('should call geoTableView and set appropriate button text', () => {
+    component.geoButtonText = resourceMockData.frmelmnts.btn.viewless;
+    component.geoTableView();
+    expect(component.geoButtonText).toEqual('View Details');
+  });
+
+  it('should call teachersTableView and update userTabledata  array', () => {
+    component.teachersButtonText = resourceMockData.frmelmnts.btn.viewdetails;
+    component.validatedUserSummary = [
+      {
+        index: '0',
+        districtName: 'District 1',
+        blocks: 'Block 1',
+        schools: 'School 1',
+        registered: true
+      },
+      {
+        index: '1',
+        districtName: 'District 2',
+        blocks: 'Block 2',
+        schools: 'School 2',
+        registered: true
+      }
+    ];
+    spyOn(component, 'renderUserDetails').and.callThrough();
+    component.teachersTableView();
+    expect(component.teachersButtonText).toEqual('View less');
+    expect(component.userTabledata.length).toEqual(2);
+    expect(component.renderUserDetails).toHaveBeenCalled();
+  });
+
+  it('should call teachersTableView and set appropriate button text', () => {
+    component.teachersButtonText = resourceMockData.frmelmnts.btn.viewless;
+    component.teachersTableView();
+    expect(component.teachersButtonText).toEqual('View Details');
+  });
+
+  it('should open modal', () => {
+    component.openModal();
+    expect(component.showModal).toBeFalsy();
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      expect(component.showModal).toBeTruthy();
+    });
+  });
+
+  it('should download csv file', () => {
+    const manageService = TestBed.get(ManageService);
+    spyOn(manageService, 'getData').and.returnValue(of({
+      result: {
+        signedUrl: 'blob.com/signedURL'
+      }
+    }));
+    spyOn(window, 'open').and.callThrough();
+    component.downloadCSVFile('validated', 'valid', 'downloadedCSVFIle');
+    expect(window.open).toHaveBeenCalled();
+  });
+  it('should call the getAdminPolicyTnC method', () => {
+    const tncService = TestBed.get(TncService);
+    spyOn(tncService, 'getAdminTnc').and.returnValue(observableOf(mockRes.tncConfig));
+    component.getAdminPolicyTnC();
+    expect(component.showAdminTnC ).toBeTruthy();
+  });
+  it('should call the getAdminPolicyTnC method with out data', () => {
+    const tncService = TestBed.get(TncService);
+    spyOn(tncService, 'getAdminTnc').and.returnValue(observableOf(mockRes.tncConfigObj));
+    component.getAdminPolicyTnC();
+    expect(component.showAdminTnC ).toBeFalsy();
+  });
 });

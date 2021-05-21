@@ -8,9 +8,9 @@ import { RouterNavigationService, ResourceService, ToasterService, ServerRespons
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '@sunbird/core';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
-import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
+import { IImpressionEventInput, IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
 
 @Component({
@@ -19,7 +19,14 @@ import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
 })
 export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  @ViewChild('updateBatchModal') private updateBatchModal;
+  private updateBatchModal;
+
+  @ViewChild('updateBatchModal', {static: false}) set setBatchModal(element) {
+    if (element) {
+      this.updateBatchModal = element;
+    }
+    this.initDropDown();
+  };
   /**
   * batchId
   */
@@ -113,6 +120,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   telemetryInteractObject: IInteractEventObject;
   clearButtonInteractEdata: IInteractEventEdata;
   telemetryCdata: Array<{}> = [];
+  isCertificateIssued: string;
 
   /**
    * Constructor to create injected service(s) object
@@ -128,7 +136,8 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     courseBatchService: CourseBatchService,
     toasterService: ToasterService,
     courseConsumptionService: CourseConsumptionService,
-    public navigationhelperService: NavigationHelperService, private lazzyLoadScriptService: LazzyLoadScriptService) {
+    public navigationhelperService: NavigationHelperService, private lazzyLoadScriptService: LazzyLoadScriptService,
+    private telemetryService: TelemetryService) {
     this.resourceService = resourceService;
     this.router = route;
     this.activatedRoute = activatedRoute;
@@ -178,7 +187,6 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
         }
         this.initializeUpdateForm();
         this.fetchParticipantDetails();
-        this.initDropDown();
       }, (err) => {
         if (err.error && err.error.params.errmsg) {
           this.toasterService.error(err.error.params.errmsg);
@@ -233,6 +241,8 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   * initializes form fields and apply field level validation
   */
   private initializeUpdateForm(): void {
+    this.isCertificateIssued = _.get(this.batchDetails, 'cert_templates') &&
+    Object.keys(_.get(this.batchDetails, 'cert_templates')).length ? 'yes' : 'no';
     const endDate = this.batchDetails.endDate ? new Date(this.batchDetails.endDate) : null;
     const enrollmentEndDate = this.batchDetails.enrollmentEndDate ? new Date(this.batchDetails.enrollmentEndDate) : null;
     if (!dayjs(this.batchDetails.startDate).isBefore(dayjs(this.pickerMinDate).format('YYYY-MM-DD'))) {
@@ -249,7 +259,8 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       endDate: new FormControl(endDate),
       mentors: new FormControl(),
       users: new FormControl(),
-      enrollmentEndDate: new FormControl(enrollmentEndDate)
+      enrollmentEndDate: new FormControl(enrollmentEndDate),
+      issueCertificate: new FormControl(this.isCertificateIssued, [Validators.required])
     });
 
     this.batchUpdateForm.get('startDate').valueChanges.subscribe(value => {
@@ -380,7 +391,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     }, 1000);
   }
   private initDropDown() {
-    const count = this.batchDetails.participants ? this.batchDetails.participants.length : 0;
+    const count = _.get(this.batchDetails, 'participants') ? _.get(this.batchDetails, 'participants.length') : 0;
     this.lazzyLoadScriptService.loadScript('semanticDropdown.js').subscribe(() => {
       $('#participant').dropdown({
         forceSelection: false,
@@ -398,6 +409,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
         onAdd: () => {
         }
       });
+      $("#mentors input.search").attr("aria-label", "select batch mentor");//fix accessibility on screen reader
       $('#participant input.search').on('keyup', (e) => {
         this.getUserListWithQuery($('#participant input.search').val(), 'participant');
       });
@@ -512,6 +524,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       this.disableSubmitBtn = false;
       this.toasterService.success(this.resourceService.messages.smsg.m0034);
       this.reload();
+      this.checkIssueCertificate(this.batchId);
     }, (err) => {
       this.disableSubmitBtn = false;
       if (err.error && err.error.params && err.error.params.errmsg) {
@@ -520,6 +533,16 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
         this.toasterService.error(this.resourceService.messages.fmsg.m0052);
       }
     });
+  }
+
+  /**
+   * @since - release-3.2.10
+   * @param  {string} batchId
+   * @description - It will emit an event;
+   */
+  checkIssueCertificate(batchId) {
+    this.courseBatchService.updateEvent.emit({ event: 'issueCert', value: this.batchUpdateForm.value.issueCertificate,
+    mode: 'edit', batchId: batchId });
   }
   public redirect() {
     this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent });
@@ -603,5 +626,26 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     } else {
       this.batchUpdateForm.reset();
     }
+  }
+
+  handleInputChange(inputType) {
+    const telemetryData = {
+      context: {
+        env:  this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: [{
+          id: this.courseId,
+          type: 'Course'
+        }, {
+          id: this.batchId,
+          type: 'Batch'
+        }]
+      },
+      edata: {
+        id: `issue-certificate-${inputType}`,
+        type: 'click',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      }
+    };
+    this.telemetryService.interact(telemetryData);
   }
 }

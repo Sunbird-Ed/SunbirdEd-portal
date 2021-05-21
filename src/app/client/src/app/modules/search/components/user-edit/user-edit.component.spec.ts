@@ -19,6 +19,7 @@ import { TelemetryService, TelemetryModule } from '@sunbird/telemetry';
 import { By } from '@angular/platform-browser';
 import { FormBuilder } from '@angular/forms';
 import { configureTestSuite } from '@sunbird/test-util';
+import { ProfileService } from '@sunbird/profile';
 
 describe('UserEditComponent', () => {
   let component: UserEditComponent;
@@ -30,11 +31,13 @@ describe('UserEditComponent', () => {
         'm0007': 'Please search for something else.'
       },
       'emsg': {
-        'm0005': 'deleting user is failed'
+        'm0005': 'deleting user is failed',
+        'm0020': 'Updating user failed. Try again later'
       },
       'smsg': {
         'm0028': 'Updated successfully',
-        'm0029': 'deleted sucessfully'
+        'm0029': 'deleted sucessfully',
+        'm0049': 'User updated successfully'
       }
     }
   };
@@ -254,12 +257,115 @@ describe('UserEditComponent', () => {
     expect(modalHeader).toBeNull();
   });
 
-  it('should show roles from all the organizations' , () => {
+  it('should show roles from all the organizations', () => {
     const searchService = TestBed.get(UserSearchService);
     spyOn(searchService, 'getUserById').and.returnValue(observableOf(Response.successData));
     component.populateUserDetails();
     expect(component.selectedOrgUserRoles).toContain('ORG_ADMIN');
     expect(component.selectedOrgUserRoles).toContain('SYSTEM_ADMINISTRATION');
     expect(component.selectedOrgUserRoles).toContain('BOOK_CREATOR');
+  });
+
+  it('should call getBlock', () => {
+    const profileService = TestBed.get(ProfileService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callFake(() => { });
+    component.userDetails = Response.userData.result.response;
+    component.initializeFormFields();
+    spyOn(profileService, 'getUserLocation').and.returnValue(observableOf(Response.getUserLocationResponse));
+    component.getBlock('37809706-8f0e-4009-bf67-87bf04f220fa');
+    expect(component.blockLoader).toBeFalsy();
+  });
+
+  it('should call getBlock error case', () => {
+    component.userDetails = Response.userData.result.response;
+    const profileService = TestBed.get(ProfileService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callFake(() => { });
+    component.initializeFormFields();
+    spyOn(profileService, 'getUserLocation').and.returnValue(observableThrowError('sorry'));
+    component.getBlock('37809706-8f0e-4009-bf67-87bf04f220fa');
+    expect(toasterService.error).toHaveBeenCalledWith('deleting user is failed');
+  });
+  it('should call onSubmitForm', () => {
+    spyOn(component, 'updateProfile');
+    component.onSubmitForm();
+    expect(component.updateProfile).toHaveBeenCalled();
+  });
+  it('should call getSchool', () => {
+    component.userDetails = Response.userData.result.response;
+    const orgDetailsService = TestBed.get(OrgDetailsService);
+    component.initializeFormFields();
+    spyOn(orgDetailsService, 'fetchOrgs').and.returnValue(observableOf(Response.orgDetails));
+    component.getSchool('37809706-8f0e-4009-bf67-87bf04f220fa');
+    expect(component.schoolLoader).toBeFalsy();
+  });
+
+  it('should call getSchool error case', () => {
+    const orgDetailsService = TestBed.get(OrgDetailsService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callFake(() => { });
+    spyOn(component, 'redirect');
+    component.initializeFormFields();
+    spyOn(orgDetailsService, 'fetchOrgs').and.returnValue(observableThrowError('sorry'));
+    component.getSchool('37809706-8f0e-4009-bf67-87bf04f220fa');
+    expect(toasterService.error).toHaveBeenCalledWith('deleting user is failed');
+    expect(component.redirect).toHaveBeenCalled();
+  });
+  it('should call getDistrict', () => {
+    const profileService = TestBed.get(ProfileService);
+    component.userDetails = Response.userData.result.response;
+    component.stateId = '1';
+    component.initializeFormFields();
+    spyOn(profileService, 'getUserLocation').and.returnValue(observableOf(Response.getUserLocationResponse));
+    component.getDistrict();
+    expect(component.showMainLoader).toBeFalsy();
+  });
+  it('should call getDistrict error case', () => {
+    const profileService = TestBed.get(ProfileService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.callFake(() => { });
+    spyOn(component, 'redirect');
+    component.stateId = '1';
+    component.userDetails = Response.userData.result.response;
+    component.initializeFormFields();
+    spyOn(profileService, 'getUserLocation').and.returnValue(observableThrowError('sorry'));
+    component.getDistrict();
+    expect(toasterService.error).toHaveBeenCalledWith('deleting user is failed');
+    expect(component.redirect).toHaveBeenCalled();
+  });
+  it('should call onDistrictChange', () => {
+    component.initializeFormFields();
+    component.allDistricts = Response.districtList;
+    component.userDetailsForm.patchValue({ district: '2725' });
+    component.onDistrictChange();
+  });
+  it('should call updateProfile', () => {
+    const serverResponse = {
+      id: '1',
+      params: {},
+      responseCode: '200',
+      result: {},
+      ts: '20-01-2020',
+      ver: '3'
+    };
+    const toasterService = TestBed.get(ToasterService);
+    const userSearchService = TestBed.get(UserSearchService);
+    spyOn(toasterService, 'success').and.callFake(() => { });
+    spyOn(userSearchService, 'updateRoles').and.returnValue(observableOf(serverResponse));
+    component.userDetails = Response.userData;
+    component.initializeFormFields();
+    component.updateProfile();
+    expect(toasterService.success).toHaveBeenCalledWith('User updated successfully');
+  });
+  it('should call updateProfile error case', () => {
+    const toasterService = TestBed.get(ToasterService);
+    const userSearchService = TestBed.get(UserSearchService);
+    spyOn(toasterService, 'error').and.callFake(() => { });
+    spyOn(userSearchService, 'updateRoles').and.returnValue(observableThrowError('sorry'));
+    component.userDetails = Response.userData;
+    component.initializeFormFields();
+    component.updateProfile();
+    expect(toasterService.error).toHaveBeenCalledWith('Updating user failed. Try again later');
   });
 });

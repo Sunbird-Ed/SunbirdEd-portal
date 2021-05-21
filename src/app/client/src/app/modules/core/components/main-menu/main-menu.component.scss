@@ -1,32 +1,36 @@
 @import "variables";
 @import "mixins/mixins";
 
+
 .divider {
-  color: $gray-100;
+  color: var(--gray-100);
 
   &:hover {
-    color: $gray-100;
+    color: var(--gray-100);
   }
 }
 
 .close {
-  font-size: $h4-font-size;
-  color: $primary-color;
+  font-size: var(--h4-font-size);
+  color: var(--primary-color);
 }
 
-.ui.menu {
+.ui.text.menu .active.item, .ui.text.menu .item:hover {
+  color: var(--primary-color);
+  outline: none;
+}
+.ui.menu {  
   &.text {
     .item {
-      // padding: $base-block-space $base-block-space*3 $base-block-space 0;
-      color: $gray-400;
+      color: var(--gray-400);
       &:hover {
-        color: $primary-color;
+        color: var(--primary-color);
         outline: none;
       }
 
       &.active {
         font-weight: bold;
-        color: $primary-color;
+        color: var(--primary-color);
 
         &:hover,
         &:focus {
@@ -37,8 +41,8 @@
   }
   &.vertical {
     .active.item {
-      color: $primary-color;
-      font-weight: $font-weight-bold;
+      color: var(--primary-color);
+      font-weight: var(--font-weight-bold);
       background: none;
     }
   }
@@ -48,8 +52,32 @@
   position: fixed !important;
   bottom: 0;
   width: 100%;
-  font-weight: $font-weight-bold !important;
-  color: $primary-color !important;
-  background-color: $white-color;
-  border-top: calculateRem(1px) solid $gray-100 !important;
+  font-weight: var(--font-weight-bold) !important;
+  color: var(--primary-color) !important;
+  background-color: var(--white);
+  border-top: calculateRem(1px) solid var(--gray-100) !important;
+}
+
+.group__type {
+  margin-left: 1.5rem;
+  background: var(--red-100);
+  position: relative;
+  height: 1.25rem;
+  padding: 0 .25rem 0 0.5rem;
+  color: var(--white);
+  margin-right: -.5rem;
+  font-size: .6875rem;
+  display: flex;
+  align-items: center;
+  font-weight: normal;
+}
+.group__type:after {
+  content: "";
+  width: 0;
+  height: 0;
+  border-width: .625rem .3125rem;
+  border-style: solid;
+  border-color: var(--red-100) transparent var(--red-100) var(--red-100);
+  position: absolute;
+  right: -.625rem;
 }

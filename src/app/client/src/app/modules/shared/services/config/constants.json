@@ -17,5 +17,6 @@
   "VIEW": {
     "HORIZONTAL": "horizontal",
     "VERTICAL": "vertical"
-  }
+  },
+  "DEFAULT_THEME": "joy"
 }

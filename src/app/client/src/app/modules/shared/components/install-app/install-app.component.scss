@@ -7,29 +7,27 @@
   display: flex !important;
   align-content: flex-start;
 }
-.appPopup-header .small{
+
+.appPopup-header .small {
   font-size: 0.7857rem;
   line-height: 1.3;
 }
-.appPopup-computer .appPopup-header {
-  font-size: 1rem !important;
-}
-.appPopup-computer .appPopup-header .small {
-  font-size: 0.8571rem !important;
-}
-.appPopup-logo{
+.appPopup-logo {
   width: calculateRem(65px);
   height: calculateRem(65px);
   float: left;
 }
+
 .appPopup-cover .ui .actions {
   background: transparent !important;
-  justify-content: center!important;
+  justify-content: center !important;
   display: flex;
 }
-.appPopup-mobile .modal .header{
-  padding-right: 1rem!important;
+
+.appPopup-mobile .modal .header {
+  padding-right: 1rem !important;
 }
+
 .appPopup-mobile .ui.button {
   font-weight: 600;
   width: calculateRem(135px);
@@ -37,60 +35,60 @@
   line-height: calculateRem(38px);
   margin-left: 0.25em !important;
 }
+
 .appPopup-computer .ui.button {
   font-weight: 600;
   min-width: calculateRem(170px);
 }
-.text-lightGray{
-  color: #979797 !important;
+
+.text-lightGray {
+  color: var(--rc-979797) !important;
 }
-.bg-white {
-  background-color: var(--white) !important;
-}
-.bg-lightGray {
-  background-color: #fafafa !important;
-}
-.bg-blue{
-  background-color: $primary-color;
-}
-.box-shadow-1{
-  box-shadow: 0 calculateRem(1px) calculateRem(2px) 0 rgba(0,0,0,0.54) !important;
-}
-.border-1 {
-  border-bottom: calculateRem(1px) solid #eee;
-}
+
 .ui.basic.button,
 .ui.basic.buttons .button {
   background-color: var(--white) !important;
 }
+
 .ui.positive.button,
 .ui.positive.buttons .button {
-  background-color: $secondary-color;
+  background-color: var(--secondary-color);
 }
+
 .ui.positive.button:hover,
 .ui.positive.buttons .button:hover {
   opacity: 0.9;
 }
+
 .ui.basic.positive.button,
 .ui.basic.positive.buttons .button {
-  border-color: $secondary-color !important;
-  color: $secondary-color !important;
+  border-color: var(--secondary-color) !important;
+  color: var(--secondary-color) !important;
 }
+
 .ui.basic.positive.button:hover,
 .ui.basic.positive.buttons .button:hover {
   opacity: 0.9;
 }
+
 .img-cover {
-  border: calculateRem(1px) solid #bbb;
+  border: calculateRem(1px) solid var(--rc-bbbbbb);
   border-radius: calculateRem(2px);
-  background-color: #fafafa;
+  background-color: var(--rc-FAFAFA);
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
+
 .img-cover img {
   max-width: 100%;
   max-height: 100%;
   height: auto;
   width: auto;
+}
+
+.modal.mini.fixed-small {
+  max-width: calculateRem(320px);
+  width: 100%;
+  transform: translate(-50%, -50%);
 }

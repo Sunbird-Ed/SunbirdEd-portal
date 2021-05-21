@@ -20,7 +20,7 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
   enableSubmitBtn = false;
   showUniqueError = '';
   showForm = true;
-  @ViewChild('contactTypeModal') contactTypeModal;
+  @ViewChild('contactTypeModal', {static: true}) contactTypeModal;
   otpData: any;
   submitInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
@@ -87,7 +87,7 @@ export class UpdateContactDetailsComponent implements OnInit, OnDestroy {
     const value = this.contactType === 'phone' ?
       this.contactTypeForm.controls.phone.value.toString() : this.contactTypeForm.controls.email.value;
     const uri = this.contactType + '/' + value;
-    this.userService.getUserByKey(uri).subscribe(
+    this.userService.getIsUserExistsUserByKey(uri).subscribe(
       (data: ServerResponse) => {
         if (this.userService.userid === data.result.response.id) {
           this.showUniqueError = this.contactType === 'phone' ?

@@ -13,12 +13,12 @@ export class AddSummaryModalComponent implements OnInit, OnDestroy, AfterViewIni
   @Output() submitButtonEvent = new EventEmitter();
   @Input() input: ISummaryObject;
   @Output() closeModalEvent = new EventEmitter();
-  @ViewChild('modal') modal;
-  @ViewChild('editor') public editorRef: ElementRef;
+  @ViewChild('modal', {static: false}) modal;
+  @ViewChild('editor', {static: false}) public editorRef: ElementRef;
   public editorInstance: any;
 
   private toolbarItems = ['undo', 'redo', 'bold', 'italic', 'blockQuote', 'heading', 'link', 'numberedList', 'bulletedList', 'fontFamily',
-    'fontSize', 'fontColor', 'fontBackgroundColor', 'underline', 'subscript', 'superscript'];
+    'fontSize', 'fontColor', 'fontBackgroundColor', 'underline', 'subscript', 'superscript', 'insertTable', 'tableColumn', 'tableRow', 'mergeTableCells'];
 
   public summaryFormGroup: FormGroup;
 

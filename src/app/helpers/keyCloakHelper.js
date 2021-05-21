@@ -7,7 +7,7 @@ const async = require('async')
 const telemetryHelper = require('./telemetryHelper.js')
 const userHelper = require('./userHelper.js')
 let memoryStore = null;
-const logger = require('sb_logger_util_v2');
+const { logger } = require('@project-sunbird/logger');
 
 const getKeyCloakClient = (config, store) => {
   const keycloak = new Keycloak({ store: store || memoryStore }, config);
@@ -36,20 +36,13 @@ const authenticated = function (request, next) {
   postLoginRequest.push(function (callback) {
     permissionsHelper.getCurrentUserRoles(request, callback)
   });
-  console.log('value of updateLoginTimeEnabled-->', envHelper.sunbird_portal_updateLoginTimeEnabled);
-  console.log('if condition value-->' + JSON.parse(envHelper.sunbird_portal_updateLoginTimeEnabled || 'false'));
-  if (JSON.parse(envHelper.sunbird_portal_updateLoginTimeEnabled || 'false')) {
-    postLoginRequest.push(function (callback) {
-      userHelper.updateLoginTime(request, callback)
-    });
-  }
-  telemetryHelper.logSessionStart(request);
   async.series(postLoginRequest, function (err, results) {
+    telemetryHelper.logSessionStart(request);
     if (err) {
       logger.error({msg: 'error loggin in user', error: err});
       next(err, null);
     } else {
-      logger.error({msg: 'keycloack authenticated successfully'});
+      logger.info({msg: 'keycloack authenticated successfully'});
       next(null, 'loggedin');
     }
   })

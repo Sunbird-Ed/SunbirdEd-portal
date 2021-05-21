@@ -1,5 +1,6 @@
 @import "variables";
 @import "mixins/mixins";
+@import 'pages/sign_in_up';
 
 .ui.raised.shadow.container.segment {
   margin: calculateRem(24px) auto !important;
@@ -13,7 +14,7 @@
   .ui.raised.shadow.container.segment {
     width: calculateRem(944px) !important;
     padding: calculateRem(24px);
-    box-shadow: 0 calculateRem(2px) calculateRem(16px) 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 calculateRem(2px) calculateRem(16px) 0 rgba(var(--rc-rgba-black), 0.2);
   }
 }
 @media only screen and (max-width: 767px) {
@@ -41,10 +42,4 @@
       pointer-events: none;
     }
   }
-}
-.signup-background {
-  background: url('/assets/images/bg.svg') no-repeat center center fixed;
-  background-size: cover;
-  width: 100%;
-  position: fixed;
 }

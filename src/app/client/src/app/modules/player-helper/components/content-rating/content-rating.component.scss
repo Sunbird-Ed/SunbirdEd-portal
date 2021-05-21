@@ -4,26 +4,24 @@
 ::ng-deep {
 
   .sb-rating.ui.star.rating {
-
     .icon {
       margin-right: calculateRem(4px);
     }
 
     .active.icon,
     .icon.selected {
-      color: #0b4f9d !important;
+      color: var(--primary-300) !important;
       text-shadow: none !important;
     }
-
   }
 }
 
 .sb-content-rating-container {
   width: 100%;
-  border-top: 1px solid #ccc;
+  border-top: calculateRem(1px) solid var(--gray-100);
 
   .sb-content-rating {
-    max-width: 360px;
+    max-width: calculateRem(360px);
     width: 100%;
   }
 }
@@ -40,5 +38,22 @@
   .sb-modal-actions {
     justify-content: center;
   }
+}
 
+// Rating Modal
+@include respond-below(sm) {
+  .sb-rating-modal {
+    &.sb-modal {
+      .ui.modal.normal {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 100% !important;
+
+        .sb-modal-content {
+          min-height: calc(100% - 96px);
+          max-height: 100%;
+        }
+      }
+    }
+  }
 }

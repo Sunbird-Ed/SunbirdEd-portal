@@ -1,5 +1,5 @@
 import { catchError, map, skipWhile } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { LearnerService } from './../learner/learner.service';
 import { UserService } from './../user/user.service';
@@ -43,6 +43,7 @@ export class CoursesService {
    * Notification message for external content onclick of Resume course button
    */
   showExtContentMsg = false;
+  public revokeConsent = new EventEmitter<void>();
   /**
   * the "constructor"
   *
@@ -137,8 +138,8 @@ export class CoursesService {
       if (cur.courseId !== courseId) { // course donst match return
         return acc;
       }
-      if (cur.batch.enrollmentType === 'invite-only') { // invite-only batch
-        if (cur.batch.status === 2) { // && (!acc.invite.ended || latestCourse(acc.invite.ended.enrolledDate, cur.enrolledDate))
+      if (_.get(cur, 'batch.enrollmentType') === 'invite-only') { // invite-only batch
+        if (_.get(cur, 'batch.status') === 2) { // && (!acc.invite.ended || latestCourse(acc.invite.ended.enrolledDate, cur.enrolledDate))
           acc.inviteOnlyBatch.expired.push(cur);
           acc.expiredBatchCount = acc.expiredBatchCount + 1;
         } else {
@@ -146,7 +147,7 @@ export class CoursesService {
           acc.inviteOnlyBatch.ongoing.push(cur);
         }
       } else {
-        if (cur.batch.status === 2) {
+        if (_.get(cur, 'batch.status') === 2) {
           acc.expiredBatchCount = acc.expiredBatchCount + 1;
           acc.openBatch.expired.push(cur);
         } else {

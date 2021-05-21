@@ -10,6 +10,7 @@ const envHelper = require('./environmentVariablesHelper.js');
 const generateAuthToken = async (code, redirectUri) => {
   const options = {
     method: 'POST',
+    forever: true,
     url: `${envHelper.PORTAL_AUTH_SERVER_URL}/realms/${envHelper.PORTAL_REALM}/protocol/openid-connect/token`,
     headers: getHeaders(),
     form: {

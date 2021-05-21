@@ -185,6 +185,7 @@ export const mockUpdateContactData = {
       level: 'SUCCESS',
       message: 'fetch-terms-condition success'
     }
-  }
+  },
+  captchaToken: '3AGdBq25UpSe5i7AFyfS78B19CoQAdUNbZZDadCc6TuaMhGffNYC42'
 };
 

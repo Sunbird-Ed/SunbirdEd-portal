@@ -12,3 +12,19 @@
       display: none;
     }
   } 
+
+  :host{
+    .ui.tabular.menu.report-menu .item{
+      width: 50%;
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  :host::ng-deep {
+    .listallreports-section {
+      .dataTables_wrapper .dataTables_filter input {
+        outline: 0;
+      }
+    }
+  }

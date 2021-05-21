@@ -1,9 +1,8 @@
-
 import { filter } from 'rxjs/operators';
-import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy, Input } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { UserService } from './../../services';
-import { ResourceService, ConfigService, IUserProfile } from '@sunbird/shared';
+import { ResourceService, ConfigService, IUserProfile, LayoutService, UtilService, ConnectionService } from '@sunbird/shared';
 import { Subscription } from 'rxjs';
 import * as _ from 'lodash-es';
 /**
@@ -62,6 +61,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   searchPlaceHolderValue: string;
 
   searchDisplayValueMappers: object;
+  isDesktopApp = false;
+  isConnected = true;
 
   /**
    * reference of UserService service.
@@ -76,6 +77,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   * To send activatedRoute.snapshot to router navigation
   * service for redirection to parent component
   */
+  @Input() layoutConfiguration: any;
   private activatedRoute: ActivatedRoute;
   /**
      * Constructor to create injected service(s) object
@@ -84,22 +86,20 @@ export class SearchComponent implements OnInit, OnDestroy {
      * @param {ActivatedRoute} activatedRoute Reference of ActivatedRoute
    */
   constructor(route: Router, activatedRoute: ActivatedRoute, userService: UserService,
-    resourceService: ResourceService, config: ConfigService,
-    private cdr: ChangeDetectorRef) {
+    resourceService: ResourceService, config: ConfigService, public utilService: UtilService,
+    private cdr: ChangeDetectorRef, public layoutService: LayoutService, public connectionService: ConnectionService) {
     this.route = route;
     this.activatedRoute = activatedRoute;
     this.resourceService = resourceService;
     this.config = config;
     this.userService = userService;
     this.searchDisplayValueMappers = {
-      'All': 'all',
-      'Library': 'resources',
-      'Courses': 'courses',
       'Users': 'users'
     };
   }
 
   ngOnInit() {
+    this.isDesktopApp = this.utilService.isDesktopApp;
     this.showInput = true;
     this.activatedRoute.queryParams.subscribe(queryParams => {
       this.queryParam = { ...queryParams };
@@ -124,6 +124,9 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.setSearchPlaceHolderValue();
       }
     );
+    this.connectionService.monitor().subscribe(isConnected => {
+        this.isConnected = isConnected;
+    });
   }
 
   /**
@@ -143,7 +146,9 @@ export class SearchComponent implements OnInit, OnDestroy {
    */
   setSearchPlaceHolderValue () {
     const keyName = this.searchDisplayValueMappers[this.selectedOption];
-    this.searchPlaceHolderValue = this.resourceService.frmelmnts['tab'] ? this.resourceService.frmelmnts.tab[keyName]  : '';
+    if (keyName) {
+      this.searchPlaceHolderValue = this.selectedOption;
+    }
   }
 
   /**
@@ -164,15 +169,17 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (this.selectedOption) {
       redirectUrl = this.search[this.selectedOption];
     } else {
-      if (url.indexOf('/explore-course') !== -1) {
-        redirectUrl = url.substring(0, url.indexOf('explore-course')) + 'explore-course';
-      } else {
-        redirectUrl = url.substring(0, url.indexOf('explore')) + 'explore';
-      }
+      redirectUrl = url.substring(0, url.indexOf('explore')) + 'explore';
     }
-    this.route.navigate([redirectUrl, 1], {
-      queryParams: this.queryParam
-    });
+    
+    if (!_.includes(['Users', 'profile'], this.selectedOption)) {
+      this.queryParam['selectedTab'] = this.isDesktopApp && !this.isConnected ? 'mydownloads' : 'all';
+    }
+    if(this.isDesktopApp && !this.isConnected) {
+      this.route.navigate(['mydownloads'], { queryParams: this.queryParam });
+    } else {
+      this.route.navigate([redirectUrl, 1], { queryParams: this.queryParam });
+    }
   }
 
   setFilters() {
@@ -222,5 +229,8 @@ export class SearchComponent implements OnInit, OnDestroy {
       };
     }
     return searchInteractEdata;
+  }
+  isLayoutAvailable() {
+    return this.layoutService.isLayoutAvailable(this.layoutConfiguration);
   }
 }

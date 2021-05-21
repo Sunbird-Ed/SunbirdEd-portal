@@ -1,5 +1,5 @@
 {
-    "DEFAULT_PARAMS_FIELDS": "createdBy,status,mimeType,contentType,resourceType,collaborators,contentDisposition",
+    "DEFAULT_PARAMS_FIELDS": "createdBy,status,mimeType,contentType,resourceType,collaborators,contentDisposition,primaryCategory,framework,targetFWIds",
     "COLLECTION_EDITOR": {
         "WINDOW_CONFIG": {
             "editorConfig": {
@@ -113,7 +113,8 @@
                     "ExplanationReadingMaterial",
                     "LearningActivity",
                     "PreviousBoardExamPapers",
-                    "LessonPlanResource"
+                    "LessonPlanResource",
+                    "TVLesson"
                 ],
                 "addType": ["Editor"],
                 "iconClass": "fa fa-folder-o"
@@ -318,6 +319,15 @@
             {
                 "type": "LessonPlanResource",
                 "label": "LessonPlanResource",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "TVLesson",
+                "label": "TVLesson",
                 "isRoot": false,
                 "editable": false,
                 "childrenTypes": [],
@@ -550,13 +560,13 @@
                 "isRoot": true,
                 "editable": true,
                 "childrenTypes": [
-                  "CourseUnit",
-                  "Collection",
-                  "Resource"
+                    "CourseUnit",
+                    "Collection",
+                    "Resource"
                 ],
                 "addType": ["Editor"],
                 "iconClass": "fa fa-book"
-              },
+            },
             {
                 "type": "CourseUnit",
                 "label": "Course Unit",
@@ -700,6 +710,7 @@
                 "childrenTypes": [
                     "TextBookUnit",
                     "Collection",
+                    "Course",
                     "Resource",
                     "FocusSpot",
                     "LearningOutcomeDefinition",
@@ -720,10 +731,20 @@
                     "ExplanationReadingMaterial",
                     "LearningActivity",
                     "PreviousBoardExamPapers",
-                    "LessonPlanResource"
+                    "LessonPlanResource",
+                    "TVLesson"
                 ],
                 "addType": ["Editor"],
                 "iconClass": "fa fa-folder-o"
+            },
+            {
+                "type": "Course",
+                "label": "Course",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": "Browser",
+                "iconClass": "fa fa-file-o"
             },
             {
                 "type": "Collection",
@@ -931,6 +952,15 @@
                 "childrenTypes": [],
                 "addType": ["Browser"],
                 "iconClass": "fa fa-file-o"
+            },
+            {
+                "type": "TVLesson",
+                "label": "TVLesson",
+                "isRoot": false,
+                "editable": false,
+                "childrenTypes": [],
+                "addType": ["Browser"],
+                "iconClass": "fa fa-file-o"
             }
         ],
         "collectionState": [
@@ -940,7 +970,8 @@
             "flagged",
             "limitedPublish",
             "flagreviewer",
-            "collaborating-on"
+            "collaborating-on",
+            "alltextbooks"
         ],
         "collectionStatus": [
             "Review",
@@ -1081,6 +1112,22 @@
                 },
                 "showEndPage": false
             }
-        }
+        },
+        "contentState": [
+            "upForReview",
+            "review",
+            "published",
+            "limitedPublish",
+            "flagreviewer",
+            "collaborating-on"
+        ],
+        "contentStatus": [
+            "Review",
+            "Draft",
+            "Live",
+            "Unlisted",
+            "FlagDraft",
+            "FlagReview"
+        ]
     }
 }

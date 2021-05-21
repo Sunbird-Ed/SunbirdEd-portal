@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import {combineLatest } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
-import { SearchService, UserService } from '@sunbird/core';
+import { SearchService, UserService, FrameworkService } from '@sunbird/core';
 import {
     ServerResponse, PaginationService, ConfigService, ToasterService, IPagination,
     ResourceService, IContents, ILoaderMessage, INoResultMessage, ICard, NavigationHelperService
@@ -23,7 +23,7 @@ import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry'
 })
 export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
 
-    @ViewChild('modalTemplate')
+    @ViewChild('modalTemplate', {static: false})
     public modalTemplate: ModalTemplate<{ data: string }, string, string>;
     /**
      * state for content editior
@@ -158,6 +158,7 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
     */
     constructor(public modalService: SuiModalService, public searchService: SearchService,
         public workSpaceService: WorkSpaceService,
+        public frameworkService: FrameworkService,
         paginationService: PaginationService,
         activatedRoute: ActivatedRoute,
         route: Router, userService: UserService,
@@ -201,6 +202,7 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
         this.draftList = [];
         this.totalCount = 0;
         this.noResult = false;
+        const primaryCategories = _.concat(this.frameworkService['_channelData'].contentPrimaryCategories, this.frameworkService['_channelData'].collectionPrimaryCategories);
         if (bothParams['queryParams'].sort_by) {
             const sort_by = bothParams['queryParams'].sort_by;
             const sortType = bothParams['queryParams'].sortType;
@@ -214,7 +216,8 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
             filters: {
                 status: ['Draft', 'FlagDraft'],
                 createdBy: this.userService.userid,
-                contentType: _.get(bothParams, 'queryParams.contentType') || this.config.appConfig.WORKSPACE.contentType,
+                // tslint:disable-next-line:max-line-length
+                primaryCategory: _.get(bothParams, 'queryParams.primaryCategory') || primaryCategories || this.config.appConfig.WORKSPACE.primaryCategory,
                 mimeType: this.config.appConfig.WORKSPACE.mimeType,
                 board: bothParams['queryParams'].board,
                 subject: bothParams['queryParams'].subject,

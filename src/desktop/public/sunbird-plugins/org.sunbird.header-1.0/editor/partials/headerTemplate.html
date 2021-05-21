@@ -1,0 +1,89 @@
+<style>
+#sunbirdLogo {
+    background: white;
+}
+
+#sunbirdConfig {
+    padding: 2%;
+}
+
+#iconStyle {
+    font-size: 20px !important
+}
+
+#customlink {
+    font-size: 10px !important;
+    color: #2e9fd9;
+    font-weight: bold;
+}
+
+.headerClose {
+    margin-left: 97%;
+    margin-top: 5px;
+}
+</style>
+<div ng-app="org.sunbird.header:headerApp" ng-controller="mainController" class="ui masthead vertical segment content-masterhead">
+    <!-- new header code start -->
+    <div class="ui grid fluid container custom-container" style="padding: 1%">
+        <!-- header part 1 -->
+        <div class="one wide centered column custom-1-wide" id="sunbirdLogo">
+            <img class="ui centered image" src="{{sunbirdLogo}}" />
+        </div>
+        <!-- header part 1 -->
+        <!-- header part 2 -->
+        <div class="six wide column custom-6-wide">
+            <!-- content title -->
+            <div class="row custom-row-1">
+                <label class="content-title" ng-bind="contentDetails.contentTitle | limitTo:30">
+                    <span ng-if="contentDetails.contentTitle.length > 30">...</span></label>
+            </div>
+            <!-- content title -->
+            <!-- edit lesson details -->
+            <div class="row custom-row-2" style="font-weight: bold">
+                <a class="btn at-btn at-btn-ok" ng-click="editContentMeta(); fireToolbarTelemetry({id: 'editMeta'}, 'editMetaButton')">
+                    <i class="edit icon link"></i>&nbsp;Edit Lesson Details
+                </a>
+            </div>
+            <!-- edit lesson details -->
+        </div>
+        <!-- header part 2 -->
+        <!-- header part 3 -->
+        <div class="five wide column custom-5-wide">
+            <!-- header part 3 upper deck -->
+            <!-- header part 3 upper deck -->
+            <!-- header part 3 lower deck -->
+            <div class="row header-icon-container" id="sunbirdConfig">
+                <div class="custom-row-2">
+                    <div class="icon-group-2">
+                        <div class="icon-box popup-item" data-content="Send for review" data-variation="tiny inverted" data-position="top center">
+                            <i class="send icon custom-icon" id="iconStyle" ng-click="fireEvent({id: 'org.ekstep.review:review'}); sendForReview(contentId)"></i>
+                        </div>
+                        <div class="preview-icon-group">
+                            <div class="icon-box popup-item" data-content="Preview" data-variation="tiny inverted" data-position="top center">
+                                <i class="fa fa-eye custom-icon" id="iconStyle" ng-click="previewContent(); fireTelemetry({id: 'preview'}, 'previewButton');"></i>
+                            </div>
+                            <div class="ui pointing dropdown icon-box">
+                                <i class="caret down icon custom-icon"></i>
+                                <div class="menu">
+                                    <div class="item" id="customlink" ng-click="previewContent('start'); fireTelemetry({id: 'previewFromBeginning'}, 'previewButton')">
+                                        Preview from begining
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="icon-box popup-item" data-content="Save content" data-variation="tiny inverted" data-position="top center">
+                            <i class="ui primary icon-save custom-icon" id="iconStyle" ng-class="saveBtnEnabled ? 'ui' : 'ui disabled'" ng-click="saveContent(); fireToolbarTelemetry({id: 'save'}, 'saveButton')" ng-disabled="!contentId"></i>
+                        </div>
+                        <div class="icon-box popup-item " data-content="Close Me" data-variation="tiny inverted" data-position="top center" style="position: relative;top: -12px;">
+                            <button class="ui basic icon circular button" ng-click="closeEditor()" style="position: relative;line-height: 0.9;">
+                                <i class="icon remove" style="display: inline-block;position: absolute;top: 0;bottom: 0;left: 0;right: 0;margin: auto!important;"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- header part 3 lower deck -->
+        </div>
+        <!-- header part 3 -->
+    </div>
+</div>

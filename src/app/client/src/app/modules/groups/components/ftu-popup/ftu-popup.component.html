@@ -1,0 +1,46 @@
+
+<div class="sb-group-page-container" *ngIf="showWelcomePopup">
+  <div class="sb-group-container sb-group-container--sm sb-bg-color-white">
+    <a class="close" (click)="closeModal();addTelemetry('ftu-close')"><i class="icon-svg icon-svg--xs icon-close"><svg class="icon icon-svg--primary">
+      <use xlink:href="./assets/images/sprite.svg#close"></use></svg></i></a>
+    <!-- below content comes from CC -->
+    <h4 class="sb-group-container__title">{{ resourceService?.frmelmnts?.lbl?.groupWelcomeTitle }}</h4>
+    <img src="./assets/images/groups.png" class="sb-group-container__img" alt="{{ resourceService?.frmelmnts?.lbl?.groupWelcomeTitle }}" />
+    <p class="sb-group-container__description">{{ resourceService?.frmelmnts?.lbl?.groupWelcomeMsg }}</p>
+  </div>
+</div>
+
+<div class="sb-group-page-container" *ngIf="showMemberPopup">
+  <div class="sb-group-container sb-group-container--md sb-bg-color-white">
+    <a class="close" (click)="closeMemberPopup(false);addTelemetry('member-ftu-close')"><i class="icon-svg icon-svg--xs icon-close"><svg class="icon icon-svg--primary">
+      <use xlink:href="./assets/images/sprite.svg#close"></use></svg></i></a>
+    <!-- below content comes from CC -->
+    <div class="sb-bg-color-white sb-modal-content w-100 text-left pb-16">
+      <h4 class="mb-8">{{ resourceService?.frmelmnts?.lbl?.addingMembertoGroup | interpolate:'{instance}': instance }}</h4>
+      <p class="mb-16">{{ resourceService?.frmelmnts?.lbl?.MembersInstanceId | interpolate:'{instance}': instance }}</p>
+      <ngx-slick class="carousel modal-custom-carousel" [config]="slideConfig1">
+        <div ngxSlickItem class="item-help">
+          <div class="sb-g">
+            <div class="sb-g-col-xs-12 sb-g-col-md-6 sb-g-col-lg-6">
+          <h6>{{ resourceService?.frmelmnts?.lbl?.step1 }}</h6>
+          <p class="fnormal mt-8 mb-16">{{ resourceService?.frmelmnts?.lbl?.clickOnProfileIcon }}</p>
+          <img src="./assets/images/step_1.png" alt="{{ resourceService?.frmelmnts?.lbl?.clickOnProfileIcon }}">
+            </div>
+            <div class="sb-g-col-xs-12 sb-g-col-md-6 sb-g-col-lg-6 column-2">
+          <h6>{{ resourceService?.frmelmnts?.lbl?.step2 }}</h6>
+          <p class="fnormal mt-8 mb-16">{{ resourceService?.frmelmnts?.lbl?.SelectProfileMenu }}</p>
+          <img src="./assets/images/step_2.png" alt="{{ resourceService?.frmelmnts?.lbl?.SelectProfileMenu }}">
+            </div>
+          </div>
+        </div>
+        <div ngxSlickItem  class="item-help">
+          <h6>{{ resourceService?.frmelmnts?.lbl?.step3 }}</h6>
+          <p class="fnormal mt-8 mb-16">{{ resourceService?.frmelmnts?.lbl?.SeetheInstanceIDhere | interpolate:'{instance}': instance }}</p>
+            <img src="./assets/images/step_3.png" alt="">
+          </div>
+      </ngx-slick>
+      
+    
+    </div>
+  </div>
+</div>

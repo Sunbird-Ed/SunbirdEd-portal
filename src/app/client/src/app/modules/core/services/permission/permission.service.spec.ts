@@ -8,6 +8,7 @@ import { PermissionService } from './permission.service';
 import { LearnerService, UserService, CoreModule } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { configureTestSuite } from '@sunbird/test-util';
+import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 const mockUserRoles = {
   userRoles: ['PUBLIC']
 };
@@ -20,7 +21,12 @@ describe('PermissionService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, CoreModule],
+      imports: [HttpClientTestingModule, CoreModule, TranslateModule.forRoot({
+                  loader: {
+                    provide: TranslateLoader,
+                    useClass: TranslateFakeLoader
+                  }
+                })],
       providers: [ResourceService, ToasterService, PermissionService, ConfigService, LearnerService, UserService,
         BrowserCacheTtlService]
     });

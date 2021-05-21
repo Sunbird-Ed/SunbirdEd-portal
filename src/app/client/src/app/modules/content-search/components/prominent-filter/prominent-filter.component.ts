@@ -12,7 +12,8 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
 import { first, mergeMap, map, tap, catchError, filter } from 'rxjs/operators';
 @Component({
   selector: 'app-prominent-filter',
-  templateUrl: './prominent-filter.component.html'
+  templateUrl: './prominent-filter.component.html',
+  styleUrls: ['./prominent-filter.component.scss']
 })
 export class ProminentFilterComponent implements OnInit, OnDestroy {
   @Input() filterEnv: string;
@@ -26,6 +27,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   @Output() filters = new EventEmitter();
   @Input() frameworkName: string;
   @Input() formAction: string;
+  @Input() layoutConfiguration;
   @Output() prominentFilter = new EventEmitter();
   public resetFilterInteractEdata: IInteractEventEdata;
   /**
@@ -113,6 +115,10 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // screen size
+    if (window.innerWidth <= 992 ) {
+      this.accordionDefaultOpen = false;
+    }
     this.resourceDataSubscription = this.resourceService.languageSelected$
       .subscribe(item => {
         this.selectedLanguage = item.value;
@@ -241,7 +247,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
         _.forEach(this.formInputData.channel, (value, key) => {
           const orgDetails = _.find(this.formFieldProperties, { code: 'channel' });
           const range = _.find(orgDetails['range'], { 'identifier': value });
-          channel.push(range['name']);
+          channel.push(range['identifier']);
         });
         this.formInputData['channel'] = channel;
       }
@@ -261,6 +267,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
 
   resetFilters() {
     if (!_.isEmpty(this.ignoreQuery)) {
+      this.ignoreQuery.push('selectedTab');
       this.formInputData = _.pick(this.formInputData, this.ignoreQuery);
     } else {
       this.formInputData = {};
@@ -307,7 +314,7 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     const channel = [];
     _.forEach(data, (value, key) => {
       const orgDetails = _.find(this.formFieldProperties, { code: 'channel' });
-      const range = _.find(orgDetails['range'], { name: value });
+      const range = _.find(orgDetails['range'], { identifier : value });
       channel.push(range['identifier']);
     });
     return channel;
@@ -332,6 +339,17 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
         return [];
       }));
   }
+
+  public removeFilterSelection(field, item) {
+    const itemIndex = this.formInputData[field].indexOf(item);
+    if (itemIndex !== -1) {
+      this.formInputData[field].splice(itemIndex, 1);
+      this.formInputData = _.pickBy(this.formInputData);
+      this.router.navigate([], { relativeTo: this.activatedRoute.parent, queryParams: this.formInputData });
+      this.hardRefreshFilter();
+      this.setFilterInteractData();
+    }
+  }
   ngOnDestroy() {
     if (this.frameworkDataSubscription) {
       this.frameworkDataSubscription.unsubscribe();
@@ -339,5 +357,10 @@ export class ProminentFilterComponent implements OnInit, OnDestroy {
     if (this.resourceDataSubscription) {
       this.resourceDataSubscription.unsubscribe();
     }
+  }
+  channelData(item) {
+    const orgDetails = _.find(this.formFieldProperties, { code: 'channel' });
+    const range = _.find(orgDetails['range'], { identifier: item });
+    return range['name'];
   }
 }

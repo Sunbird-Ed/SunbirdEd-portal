@@ -18,4 +18,18 @@ export class TncService {
     };
     return this.learnerService.get(options);
   }
+
+  getGroupsTnc() {
+    const options = {
+      url: this.configService.urlConFig.URLS.SYSTEM_SETTING.GROUPS_TNC
+    };
+    return this.learnerService.get(options);
+  }
+
+  getAdminTnc() {
+    const options = {
+      url: this.configService.urlConFig.URLS.SYSTEM_SETTING.ORG_ADMIN_URL
+    };
+    return this.learnerService.get(options);
+  }
 }

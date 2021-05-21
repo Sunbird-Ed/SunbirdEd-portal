@@ -1,26 +1,35 @@
+<app-landing-section [textToDisplay]="" 
+[layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
 <!-- welcome screen -->
-<div class="sb-group-welcome-page-container" *ngIf="showWelcomePopup">
-  <div class="sb-group-welcome-container">
-    <a class="close" (click)="showWelcomePopup = false"><i class="icon-svg icon-svg--xxs icon-back"><svg class="icon icon-svg--white">
-      <use xlink:href="./assets/images/libdemo/sprite.svg#close"></use>
-    </svg></i></a>
-    <h4 class="sb-group-welcome-container__title">{{ resourceService.frmelmnts.lbl.groupWelcomeTitle }}</h4>
-    <img src="./assets/images/welcome-group-img.png" class="sb-group-welcome-container__img" />
-    <p class="sb-group-welcome-container__description">{{ resourceService.frmelmnts.lbl.groupWelcomeMsg }}</p>
-    <button type="button" class="sb-btn sb-btn-sm sb-btn-primary text-uppercase w-100" (click)="redirectTologin()">{{ resourceService.frmelmnts.lbl.getStarted }}<span
-      class='arrow-icon pull-right'><i class="icon-svg icon-svg--xxs icon-back">
-        <svg class="icon icon-svg--white">
-          <use xlink:href="./assets/images/libdemo/sprite.svg#arrow-long-right"></use>
-        </svg></i></span></button>
+  <app-explore-ftu-popup *ngIf="showWelcomePopup" (close)="showFtuPopup(false)"></app-explore-ftu-popup>
+
+  <div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-groups-login' : ''"> 
+<!-- login screen -->
+<div class="content-header sb-bg-color-white relative9" [appTelemetryImpression]="telemetryImpression">
+  <div class="ui container py-16">
+    <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
+      <div class="flex-basis-1 mr-32">
+        <div class="content-header__title font-weight-bold sb__ellipsis sb__ellipsis--one d-flex">
+            <div>{{resourceService?.frmelmnts?.tab?.mygroups}}</div>
+        </div>
+      </div>
+      <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
+        <button class="sb-btn sb-btn-normal sb-btn-link-primary min-w-auto p-0 px-8" aria-label="showFtuPopup" type="button" (click)="showFtuPopup(true);addTelemetry('group-info')">
+          <i class="icon-svg icon-svg--sm icon-info"><svg class="icon icon-svg--primary">
+            <use xlink:href="./assets/images/sprite.svg#info"></use>
+          </svg></i>
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- login screen -->
-      <div class="flex-dc d-flex flex-jc-center p-24 login-to-create-group-container">
-        <div class="my-48 p-16 d-flex flex-jc-center flex-as-center">
-          <div class="d-flex flex-dc flex-jc-center text-center flex-ai-center">
-            <div><img src="./assets/images/noun_School.svg" width="91px" height="162px"></div>
-            <div class="mt-8 fs-1">{{ resourceService.frmelmnts.lbl.loginToCreateGroup }}</div>
-            <button class="sb-btn sb-btn-primary sb-btn-md mt-16 mb-8 w-50" type="button"  (click)="redirectTologin()">{{ resourceService.frmelmnts.btn.login }}</button>
-          </div>
+<div class="flex-ai-jc-center mt-48 sb-group-container sb-group-container--sm">
+   <!-- content comes from CC -->
+   <img alt="{{ resourceService?.frmelmnts?.lbl?.loginToCreateGroup }}" src="./assets/images/mygroups.svg" width="220">
+  <div class="mt-8 fs-1">{{ resourceService?.frmelmnts?.lbl?.loginToCreateGroup }}</div>
+  <button class="sb-btn sb-btn-primary sb-btn-normal mt-16 mb-8 w-50" type="button"  (click)="redirectTologin();addTelemetry('group-login')">{{ resourceService.frmelmnts.btn.login }}</button>
+   <!-- content comes from CC -->
 
+</div>
+</div>

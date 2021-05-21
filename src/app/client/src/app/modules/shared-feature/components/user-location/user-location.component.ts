@@ -22,9 +22,9 @@ export class UserLocationComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() deviceProfile: any;
   @Input() isCustodianOrgUser: any;
   @Input() userProfile: any;
-  @ViewChild('userLocationModal') userLocationModal;
-  @ViewChild('stateDiv') stateDiv;
-  @ViewChild('districtDiv') districtDiv;
+  @ViewChild('userLocationModal', {static: false}) userLocationModal;
+  @ViewChild('stateDiv', {static: false}) stateDiv;
+  @ViewChild('districtDiv', {static: false}) districtDiv;
   userDetailsForm: FormGroup;
   public processedDeviceLocation: any = {};
   selectedState;
@@ -278,7 +278,7 @@ export class UserLocationComponent implements OnInit, OnDestroy, AfterViewInit {
       locationCodes.push(this.userDetailsForm.value.district);
       locationDetails.districtCode = this.userDetailsForm.value.district;
     }
-    const data = {locationCodes: locationCodes};
+    const data = {profileLocation: locationCodes};
     let districtData, stateData, changeType = '';
     if (locationDetails.stateCode) {
       stateData = _.find(this.allStates, (states) => {

@@ -13,6 +13,8 @@ import { ResourceService} from '@sunbird/shared';
 import {of as observableOf, Observable, throwError as observableThrowError} from 'rxjs';
 import {TenantService, UserService, OtpService, OrgDetailsService} from '@sunbird/core';
 import {mockUpdateContactData} from './update-contact.mock.spec.data';
+import { RecaptchaModule } from 'ng-recaptcha';
+
 import { configureTestSuite } from '@sunbird/test-util';
 
 describe('UpdateContactComponent', () => {
@@ -29,8 +31,8 @@ describe('UpdateContactComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SharedModule.forRoot(), CoreModule, FormsModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(),
-        RouterTestingModule],
+      imports: [SharedModule.forRoot(), RecaptchaModule, CoreModule, FormsModule, HttpClientTestingModule,
+        SuiModule, TelemetryModule.forRoot(), RouterTestingModule],
       declarations: [UpdateContactComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [{provide: ActivatedRoute, useValue: fakeActivatedRoute},
@@ -319,4 +321,25 @@ describe('UpdateContactComponent', () => {
     expect(component.showTncPopup).toBe(false);
   });
 
+  it('should submit form when captcha enabled', () => {
+    component.isP1CaptchaEnabled = 'true';
+    spyOn(component, 'resetGoogleCaptcha').and.callThrough();
+    spyOn(component, 'resolved').and.callFake(() => true);
+    component.submitForm();
+    expect(component.resetGoogleCaptcha).toHaveBeenCalled();
+  });
+
+  it('should submit form when captcha is not enabled', () => {
+    component.isP1CaptchaEnabled = 'false';
+    spyOn(component, 'onFormUpdate').and.callThrough();
+    component.submitForm();
+    expect(component.onFormUpdate).toHaveBeenCalled();
+  });
+
+  it('should receive response from captcha', () => {
+    component.isP1CaptchaEnabled = 'true';
+    spyOn(component, 'onFormUpdate').and.callFake(() => true);
+    component.resolved(mockUpdateContactData.captchaToken);
+    expect(component.onFormUpdate).toHaveBeenCalledWith(mockUpdateContactData.captchaToken);
+  });
 });

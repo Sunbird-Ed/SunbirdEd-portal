@@ -1,0 +1,134 @@
+<html>
+    <body>
+        <iframe id="youtubeIframe" width="100%" height="100%" frameborder="0"></iframe>
+    </body>
+    <script type="text/javascript">
+        let params = (new URL(document.location)).searchParams;
+        var youtubeSrc = "https://www.youtube.com/embed/"+params.get('id')+"?enablejsapi=1";
+        if(params.get('origin')){
+            youtubeSrc = youtubeSrc + "&origin=" + params.get('origin');   
+        }
+        document.getElementById('youtubeIframe').setAttribute('allowfullscreen', '');
+        document.getElementById('youtubeIframe').setAttribute('src', youtubeSrc);
+
+        var tag = document.createElement('script');
+        tag.id = 'iframe-demo';
+        tag.src = 'https://www.youtube.com/iframe_api';
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        var player;
+
+        window.addEventListener('message', function(event){
+            if(event.data == "pause.youtube") {
+                player.pauseVideo();
+            }
+            if(event.data == "status.youtube") {
+                postEvent({
+                    eid: "status",
+                    from: "youtube",
+                    type: "events",
+                    info: player.playerInfo,
+                    duration: Math.floor(player.getDuration()),
+                    time: (Math.floor(player.getCurrentTime()) * 1000),
+                    event: event
+                });
+            }
+        });
+        
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtubeIframe', {
+                playerVars: { 
+                    autoplay: 1 
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onStateChange,
+                    'onPlaybackQualityChange': onPlaybackQualityChange
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            player.playVideo();
+            postEvent({
+                eid: "onReady",
+                from: "youtube",
+                type: "events",
+                event: event
+            });
+        }
+        function onStateChange(e) {
+            var state = e.data;
+            if (state === this.lastState || this.errorNumber) {
+                return;
+            }
+            this.lastState = state;
+            switch (state) {
+                case -1:
+                    postEvent({
+                        eid: "paly",
+                        from: "youtube",
+                        type: "events",
+                        info: player.playerInfo,
+                        duration: Math.floor(player.getDuration()),
+                        time: (Math.floor(player.getCurrentTime()) * 1000),
+                        event: event
+                    });
+                    break;
+
+                case YT.PlayerState.ENDED:
+                    postEvent({
+                        eid: "end",
+                        from: "youtube",
+                        type: "events",
+                        info: player.playerInfo,
+                        duration: Math.floor(player.getDuration()),
+                        time: (Math.floor(player.getCurrentTime()) * 1000),
+                        event: event
+                    });
+                    break;
+
+                case YT.PlayerState.PLAYING:
+                    postEvent({
+                        eid: "paly",
+                        from: "youtube",
+                        type: "events",
+                        info: player.playerInfo,
+                        duration: Math.floor(player.getDuration()),
+                        time: (Math.floor(player.getCurrentTime()) * 1000),
+                        event: event
+                    });
+                    break;
+
+                case YT.PlayerState.PAUSED:
+                    postEvent({
+                        eid: "pause",
+                        from: "youtube",
+                        type: "events",
+                        info: player.playerInfo,
+                        duration: Math.floor(player.getDuration()),
+                        time: (Math.floor(player.getCurrentTime()) * 1000),
+                        event: event
+                    });
+                    break;
+                case YT.PlayerState.BUFFERING:
+                    break;
+            }
+        }
+
+        function onPlaybackQualityChange(event){
+            postEvent({
+                eid: "qualityChange",
+                from: "youtube",
+                type: "events",
+                duration: Math.floor(player.getDuration()),
+                resolutionVal: event.data,
+                event: event
+            });
+        }
+
+        function postEvent(event) {
+            window.parent.postMessage(JSON.stringify(event),'*');
+        }
+      </script>
+</html>

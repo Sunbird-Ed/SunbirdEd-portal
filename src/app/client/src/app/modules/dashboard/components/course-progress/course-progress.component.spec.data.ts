@@ -1,4 +1,38 @@
 export const mockUserData = {
+  reportTypes: [
+    {
+      "title": " Course progress exhaust",
+      "dataset": "progress-exhaust",
+      "lang_key": "frmelmnts.lbl.progressExhaustReport",
+      "encrypt": "false"
+    },
+    {
+      "title": "User profile exhaust",
+      "dataset": "userinfo-exhaust",
+      "lang_key": "frmelmnts.lbl.userExhaustReport",
+      "encrypt": "true"
+    },
+    {
+      "title": "Question set report",
+      "dataset": "response-exhaust",
+      "lang_key": "frmelmnts.lbl.qsResponseReport",
+      "encrypt": "false"
+    }
+  ], 
+  reportTypesMentor: [
+    {
+      "title": " Course progress exhaust",
+      "dataset": "progress-exhaust",
+      "lang_key": "frmelmnts.lbl.progressExhaustReport",
+      "encrypt": "false"
+    },
+    {
+      "title": "Question set report",
+      "dataset": "response-exhaust",
+      "lang_key": "frmelmnts.lbl.qsResponseReport",
+      "encrypt": "false"
+    }
+  ],
    frombeginng: {
       'id': 'api.dashboard.progress.course',
       'ver': 'v1',
@@ -398,5 +432,21 @@ export const mockUserData = {
             'reportname': 'assessment-reports'
           }
       }
-   }
+   },
+   currentBatchDataBefore: {
+      'identifier': '0130597187015311369',
+      'endDate': '2020-09-30',
+      'enrollmentEndDate': '2020-07-30',
+      'startDate': '2020-07-08',
+      'status': 1
+    },
+    currentBatchDataWithCount: {
+      'identifier': '0130597187015311369',
+      'endDate': '2020-09-30',
+      'enrollmentEndDate': '2020-07-30',
+      'startDate': '2020-07-08',
+      'status': 1,
+      'completedCount': 4,
+      'participantCount': 2
+    }
 };

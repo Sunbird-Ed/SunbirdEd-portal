@@ -44,8 +44,8 @@
 }
 .sb-card-secrtion{
     padding: 0.45rem 1rem;
-    background: #FAFAFA;
-    border-top: calculateRem(1px) solid #dedede;
+    background: var(--rc-FAFAFA);
+    border-top: calculateRem(1px) solid var(--rc-dedede);
     .sb-label-value{
         font-weight: bold;
         word-break: break-all;

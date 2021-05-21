@@ -13,11 +13,12 @@ import { PopupControlService } from '../../../../service/popup-control.service';
   templateUrl: './profile-framework-popup.component.html'
 })
 export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
   @Input() showCloseIcon: boolean;
   @Input() buttonLabel: string;
   @Input() formInput: any = {};
   @Input() isClosable = false;
+  @Input() isGuestUser = false;
   @Output() submit = new EventEmitter<any>();
   @Output() close = new EventEmitter<any>();
   public allowedFields = ['board', 'medium', 'gradeLevel', 'subject'];
@@ -34,6 +35,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   submitInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
   private editMode: boolean;
+  guestUserHashTagId;
   constructor(private router: Router, private userService: UserService, private frameworkService: FrameworkService,
     private formService: FormService, public resourceService: ResourceService, private cacheService: CacheService,
     private toasterService: ToasterService, private channelService: ChannelService, private orgDetailsService: OrgDetailsService,
@@ -42,6 +44,16 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.popupControlService.changePopupStatus(false);
     this.selectedOption = _.pickBy(_.cloneDeep(this.formInput), 'length') || {}; // clone selected field inputs from parent
+    if (this.isGuestUser) {
+      this.orgDetailsService.getOrgDetails(this.userService.slug).subscribe((data: any) => {
+        this.guestUserHashTagId = data.hashTagId;
+      });
+      this.allowedFields = ['board', 'medium', 'gradeLevel'];
+    }
+    // Replacing CBSE with CBSE/NCERT
+    if (_.toLower(_.get(this.selectedOption, 'board')) === 'cbse') {
+      this.selectedOption['board'] = ['CBSE/NCERT'];
+    }
     this.editMode = _.some(this.selectedOption, 'length') || false ;
     this.unsubscribe = this.isCustodianOrgUser().pipe(
       mergeMap((custodianOrgUser: boolean) => {
@@ -93,7 +105,11 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     }));
   }
   private getFormatedFilterDetails() {
-    this.frameworkService.initialize(this.frameWorkId);
+    if (this.isGuestUser) {
+      this.frameworkService.initialize(this.frameWorkId, this.guestUserHashTagId);
+    } else {
+      this.frameworkService.initialize(this.frameWorkId);
+    }
     return this.frameworkService.frameworkData$.pipe(
       filter((frameworkDetails) => { // wait to get the framework name if passed as input
       if (!frameworkDetails.err) {
@@ -206,12 +222,20 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       contentType: 'framework',
       framework: this.frameWorkId
     };
-    return this.formService.getFormConfig(formServiceInputParams, this.userService.hashTagId);
+    const hashTagId = this.isGuestUser ? this.guestUserHashTagId : _.get(this.userService, 'hashTagId');
+    return this.formService.getFormConfig(formServiceInputParams, hashTagId);
   }
   onSubmitForm() {
     const selectedOption = _.cloneDeep(this.selectedOption);
     selectedOption.board = _.get(this.selectedOption, 'board') ? [this.selectedOption.board] : [];
     selectedOption.id = this.frameWorkId;
+    if (selectedOption.board) {
+      _.forEach(selectedOption.board, (data, index) => {
+        if (data === 'CBSE/NCERT') {
+          selectedOption.board[index] = 'CBSE';
+        }
+      });
+    }
     this.submit.emit(selectedOption);
   }
   private enableSubmitButton() {

@@ -1,20 +1,18 @@
-@import "radiobutton";
 // Checkbox
 $sb-checkbox-primary-background: $primary-color;
-$sb-checkbox-secondary-background: $secondary-100;
-$sb-checkbox-warning-background: $tertiary-100;
-$sb-checkbox-error-background: $red-100;
 $sb-radio-btn-primary-border: $primary-color;
-$sb-radio-btn-secondary-border: $secondary-100;
-$sb-radio-btn-warning-border: $tertiary-100;
-$sb-radio-btn-error-border: $red-100;
 $sb-checkbox-border-width: calculateRem(1px);
-$sb-checkbox-background-color: $secondary-100;
 $sb-checkbox-label-font-size: 0.8571rem;
 $sb-checkbox-border-radius: calculateRem(4px);
 $sb-checkbox-after-checked-color: $white-color;
 $sb-checkbox-before-checked-background-color: $white-color;
+
+// Radio buttons
+$sb-radio-btn-border: calculateRem(1px); //width of the border
+$sb-radio-btn-border-radius: 100%;
+$sb-radio-btn-disabled-opacity: 0.5;
 $sb-radio-btn-border-color: $primary-300;
+$sb-radio-btn-border-disabled-color: $gray-100;
 
 .sb-checkbox,
 .sb-radio-btn-checkbox {
@@ -101,40 +99,17 @@ $sb-radio-btn-border-color: $primary-300;
       input:checked~label {
         color: $primary-color;
       }
+      label {
+        padding: 0 calculateRem(24px) 0 0;
+        margin-right: 0;
+      }
+      label:before, input:checked~label:before, input:checked~label:after {
+        left: unset;
+        right: 0;
+      }
     }
   }
 
-  &.sb-checkbox-secondary {
-    input:checked~label:before {
-      background-color: $sb-checkbox-secondary-background;
-      border-color: $sb-radio-btn-secondary-border;
-    }
-  }
-
-  &.sb-checkbox-warning {
-    input:checked~label:before {
-      background-color: $sb-checkbox-warning-background;
-      border-color: $sb-radio-btn-warning-border;
-    }
-  }
-
-  &.sb-checkbox-error {
-    input:checked~label:before {
-      background-color: $sb-checkbox-error-background;
-      border-color: $sb-radio-btn-error-border;
-    }
-  }
-
-  &.sb-checkbox-rightaligned {
-    label {
-      padding: 0 calculateRem(24px) 0 0;
-      margin-right: 0;
-    }
-    label:before, input:checked~label:before, input:checked~label:after {
-      left: unset;
-      right: 0;
-    }
-  }
 
   input:checked~label:before {
     background-color: $sb-checkbox-primary-background;
@@ -167,9 +142,10 @@ $sb-radio-btn-border-color: $primary-300;
     opacity: 1;
   }
 
+  
   input:checked~.box:after,
   input:checked~label:after {
-    content: '✔';
+    content: "\2713";
     border-radius: $sb-checkbox-border-radius;
     font-weight: normal;
   }
@@ -192,36 +168,6 @@ $sb-radio-btn-border-color: $primary-300;
     }
   }
 
-  &.sb-radio-btn-secondary {
-    label:before {
-      border: calculateRem(1px) solid $sb-radio-btn-secondary-border;
-    }
-
-    input:checked~label:after {
-      background-color: $sb-checkbox-secondary-background;
-    }
-  }
-
-  &.sb-radio-btn-warning {
-    label:before {
-      border: 1px solid $sb-radio-btn-warning-border;
-    }
-
-    input:checked~label:after {
-      background-color: $sb-checkbox-warning-background;
-    }
-
-  }
-
-  &.sb-radio-btn-error {
-    label:before {
-      border: 1px solid $sb-radio-btn-error-border;
-    }
-
-    input:checked~label:after {
-      background: $sb-checkbox-error-background;
-    }
-  }
 
   label:before {
     border-radius: 50%;
@@ -244,48 +190,6 @@ $sb-radio-btn-border-color: $primary-300;
   }
 }
 
-.sb-chapterlist-modal {
-
-  .sb-checkbox label,
-  .sb-radio-btn-checkbox label {
-    padding-left: 0;
-    padding-right: calculateRem(24px);
-    margin-bottom: 0;
-    &:before {
-      left: unset;
-      right: 0;
-    }
-
-    &:after {
-      left: unset;
-      right: calculateRem(4px);
-    }
-  }
-
-  .sb-checkbox label:before {
-    left: unset;
-    right: 0;
-  }
-
-  .chapter-lists--item {
-    .sb-radio-btn-checkbox label {
-      &::before,
-      &::after {
-        top: 50%;
-        transform: translateY(-50%);
-      }
-
-      &::before {
-        right: calculateRem(16px);
-      }
-
-      &::after {
-        right: calculateRem(20px);
-      }
-    }
-  }
-}
-
 .ui.checkbox {
   font-size:calculateRem(14px);
 }
@@ -305,4 +209,7 @@ $sb-radio-btn-border-color: $primary-300;
       right: calculateRem(4px);
     }
   }
+}
+sb-form .sb-checkbox label:before {
+  display: none;
 }

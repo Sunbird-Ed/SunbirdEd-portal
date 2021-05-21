@@ -13,7 +13,7 @@
         margin: calculateRem(50px) auto !important;
         width: calculateRem(944px) !important;
         padding: calculateRem(20px);
-        box-shadow: 0 calculateRem(2px) calculateRem(16px) 0 rgba(0,0,0,0.2);
+        box-shadow: 0 calculateRem(2px) calculateRem(16px) 0 rgba(var(--rc-rgba-black), 0.2);
     }
 }
 @media only screen and (max-width: 767px) {
@@ -30,23 +30,23 @@
 .ui.form.borderd input[type=url],
 .ui.form.borderd input:not([type]),
 .ui.form.borderd input:not([type]):focus {
-    border: calculateRem(1px) solid $form-input-border-color;
+    border: calculateRem(1px) solid var(--gray-300);
     padding: 0.8em 0 0.8em 1em;
     border-radius: calculateRem(4px);
 }
 .ui.form.borderd input:focus {
-    border-color: $form-input-border-active-color !important;
+    border-color: var(--primary-400) !important;
 }
 .ui.light-sea-green.button {
-    background: $signup-btn-bg-active-color;
-    color: $white-color;
+    background: var(--secondary-400);
+    color: var(--white);
 }
 .ui.grey.button {
-    background: $signup-btn-bg-not-active-color;
-    color: $white-color;
+    background: var(--gray-200);
+    color: var(--white);
     pointer-events: none !important;
     cursor: not-allowed !important; 
-    font-size: $font-size-sm;
+    font-size: var(--font-size-sm);
     height: calculateRem(32px);
 }
 .ui.button.sb-btn-primary{
@@ -54,30 +54,30 @@
     background-color: var(--primary-color);
     color: var(--white);
     height: calculateRem(32px);
-    font-size: $font-size-sm;
+    font-size: var(--font-size-sm);
 }
 .grey-text{
     color: var(--gray-300) !important;
     font-size: calculateRem(12px) !important;
 }
 .grey.text {
-    color:$black;
+    color: var(--black);
     pointer-events: none !important;
     cursor: not-allowed !important;
     font-size: calculateRem(14px);
 }
 .orange.text {
-    color: $danger-color;
+    color: var(--red-100);
 }
 .orange-border {
-    border-color: $danger-color !important;
+    border-color: var(--red-100) !important;
 }
 .blue.text {
-    color: $primary-color;
+    color: var(--primary-color);
 }
 .ui.basic.blue.navigation.label {
-    background: $white-color !important;
-    color: $primary-color !important;
+    background: var(--white) !important;
+    color: var(--primary-color) !important;
     border: 0  !important;
     padding-left: 0;
     font-size: 1rem;
@@ -85,8 +85,8 @@
     padding: calculateRem(10px) 0;
 }
 .ui.basic.error.label {
-    background: $white-color !important;
-    color: $danger-color !important;
+    background: none !important;
+    color: var(--red-100) !important;
     border: 0 !important;
     padding-left: 0;
     font-size: 1rem;
@@ -127,19 +127,19 @@ input[type=number]::-webkit-inner-spin-button {
     top: 0;
     width: calculateRem(16px);
     height: calculateRem(16px);
-    border: calculateRem(2px) solid $form-input-border-color !important;
+    border: calculateRem(2px) solid var(--gray-300) !important;
     border-radius: 100%;
-    background: $white-color;
+    background: var(--white);
 }
 .ui.form.borderd [type="radio"]:checked + label:before {
-    border: calculateRem(2px) solid $form-input-border-active-color !important;
+    border: calculateRem(2px) solid var(--primary-400) !important;
 }
 .ui.form.borderd [type="radio"]:checked + label:after,
 .ui.form.borderd [type="radio"]:not(:checked) + label:after {
     content: '';
     width: calculateRem(8px);
     height: calculateRem(8px);
-    background: $form-input-border-active-color !important;
+    background: var(--primary-400) !important;
     position: absolute;
     top: calculateRem(4px);
     left: calculateRem(4px);
@@ -176,4 +176,8 @@ input[type=number]::-webkit-inner-spin-button {
 }
 .otp-label{
     line-height: 1.8;
+}
+.resend-disable {
+    background-color: var(--gray-100) !important;
+    color: var(--gray-200) !important;
 }

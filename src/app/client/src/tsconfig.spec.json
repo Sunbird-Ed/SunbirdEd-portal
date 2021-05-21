@@ -63,7 +63,7 @@
       ],
       "@sunbird/content-search": [
         "app/modules/content-search"
-      ],     
+      ],
       "CsLibInitializer": [
         "app/service/CsLibInitializer/cs-lib-initializer.service.ts"
       ],
@@ -72,6 +72,9 @@
       ],
       "@sunbird/test-util": [
         "app/testUtil/"
+      ],
+      "@sunbird/groups": [
+        "app/modules/groups"
       ]
     },
     "module": "es2015",

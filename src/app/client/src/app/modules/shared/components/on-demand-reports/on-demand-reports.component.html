@@ -1,0 +1,43 @@
+<div class='ui stackable grid mt-0'>
+  <div class="twelve wide column pt-0">
+    <div class="d-flex flex-dc">
+      <!-- <label class="request-report-label font-weight-normal">{{resourceService?.frmelmnts?.lbl?.requestReport}}</label> -->
+      <div [formGroup]="reportForm" class="d-flex flex-ai-center">
+        <label>
+        <sui-select [isSearchable]="false" formControlName="reportType" class="selection course-dashboard-select" placeholder="Choose your report"
+                    [options]="reportTypes" labelField="title" valueField="title" #select>
+          <sui-select-option *ngFor="let report of reportTypes" [value]="report" (click)="reportChanged(report);">
+          </sui-select-option>
+        </sui-select></label>
+
+        <div class="sb-field filterTable mx-16 mb-0">
+          <input class="sb-form-control" type="text" formControlName="password" placeholder="Enter password" aria-label="enter password">
+        </div>
+        <button type="button" [disabled]="(!selectedReport || (selectedReport?.encrypt === 'true' && !reportForm.valid))"
+        [ngClass]="{'sb-btn-disabled': (!selectedReport || (selectedReport?.encrypt === 'true' && !reportForm.valid))}"
+        (click)="submitRequest()" class="sb-btn sb-btn-normal sb-btn-primary">
+          {{resourceService?.frmelmnts?.lbl?.request}}
+        </button>
+      </div>
+      <!-- <p *ngIf="!isProcessed" class="fnormal note-text mt-8 mb-24 administrator-text">{{resourceService.frmelmnts?.lbl?.downloadReqNote}}</p> -->
+      <div *ngIf="isProcessed" class="d-flex">
+        <div class="information-icon">
+          <img src="assets/images/error-icon.svg" width="18px"></div>
+        <p class="fsmall note-text my-8 administrator-text">{{resourceService.frmelmnts?.lbl?.reportStatus}}</p>
+      </div>
+      <!-- <p class="administrator-text">{{resourceService.frmelmnts?.lbl?.ondemandReportNote | interpolate:'{instance}': instance}}</p> -->
+
+      <p class="fsmall note-text my-8 administrator-text" *ngIf="!isProcessed"> 
+       {{resourceService?.frmelmnts?.lbl?.pswdRule}}
+        </p>
+     
+         
+    </div>
+  </div>
+</div>
+<div class="fsmall font-weight-bold download-section-text">{{resourceService.frmelmnts?.lbl?.downloadSectionNote}}</div>
+<p class="fsmall mt-8 mb-16 administrator-text">{{resourceService?.frmelmnts?.lbl?.repgenAdminNote | interpolate:'{instance_course_terms}': instance}}</p>
+
+<sb-datatable [name]="fileName" [message]="message" [data]="onDemandReportData" [columns]="columns"
+              [downloadCSV]="isDownloadReport" (downloadLink)="onDownloadLinkFail($event)" ></sb-datatable>
+

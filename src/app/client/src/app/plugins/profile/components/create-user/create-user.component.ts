@@ -44,6 +44,7 @@ export class CreateUserComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.navigationhelperService.setNavigationUrl();
     this.setTelemetryData();
     this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
     this.getFormDetails();
@@ -123,7 +124,7 @@ export class CreateUserComponent implements OnInit {
   }
 
   onCancel() {
-    this.navigationhelperService.navigateToPreviousUrl('/profile');
+    this.navigationhelperService.navigateToLastUrl();
   }
 
   onSubmitForm() {
@@ -135,7 +136,9 @@ export class CreateUserComponent implements OnInit {
       }
     };
     this.managedUserService.getParentProfile().subscribe((userProfileData) => {
-      createUserRequest.request['locationCodes'] = _.map(_.get(userProfileData, 'userLocations'), 'code');
+      if (!_.isEmpty(_.get(userProfileData, 'userLocations'))) {
+        createUserRequest.request['profileLocation'] = _.map(_.get(userProfileData, 'userLocations'), function(location){ return {code: location.code, type: location.type}});
+      }
       if (_.get(userProfileData, 'framework') && !_.isEmpty(_.get(userProfileData, 'framework'))) {
         createUserRequest.request['framework'] = _.get(userProfileData, 'framework');
       }

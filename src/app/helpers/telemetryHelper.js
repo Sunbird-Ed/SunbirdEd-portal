@@ -19,6 +19,8 @@ const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 telemtryEventConfig['pdata']['id'] = appId
 telemtryEventConfig['pdata']['ver'] = packageObj.version
 telemtryEventConfig['pdata']['pid'] = appId
+// TODO: handle telemetry event config
+const pdata = {id: envHelper.APPID, ver: packageObj.version, pid: 'sunbird-portal-backend'};
 
 module.exports = {
   /**
@@ -44,7 +46,10 @@ module.exports = {
     dims = dims ? _.concat(dims, channel) : channel
     const edata = telemetry.startEventData('session')
     edata.uaspec = this.getUserSpec(req)
-    const context = telemetry.getContextData({channel: channel, env: 'user', cdata: this.getTelemetryCdata(req, cdata)})
+    const context = telemetry.getContextData({
+      channel: channel, env: 'user', cdata: this.getTelemetryCdata(req, cdata),
+      pdata: pdata
+    });
     context.sid = req.sessionID
     context.did = req.session.deviceId
     context.rollup = telemetry.getRollUpData(dims)
@@ -66,7 +71,10 @@ module.exports = {
     const actor = telemetry.getActorData(req.session.userId, 'user');
     var dims = _.clone(req.session.orgs || []);
     var channel = req.session.rootOrghashTagId || _.get(req, 'headers.X-Channel-Id');
-    const context = telemetry.getContextData({channel: channel, env: 'user', cdata: this.getTelemetryCdata(req, cdata)});
+    const context = telemetry.getContextData({
+      channel: channel, env: 'user', cdata: this.getTelemetryCdata(req, cdata),
+      pdata: pdata
+    });
     context.sid = req.sessionID;
     context.did = req.session.deviceId;
     console.log('logging session end event', context.did);
@@ -156,7 +164,6 @@ module.exports = {
     if (req.id && req.type) {
       object = telemetry.getObjectData({ id: req.id, type: req.type, ver: req.version, rollup: req.rollup })
     }
-
     req.reqObj.session.orgs = _.compact(req.reqObj.session.orgs)
     var channel = req.reqObj.session.rootOrghashTagId || _.get(req, 'headers.X-Channel-Id')
     if (channel) {
@@ -168,7 +175,6 @@ module.exports = {
       }
       context.rollup = telemetry.getRollUpData(dims)
       const actor = telemetry.getActorData(req.userId, 'user')
-      console.log('logAPICallEvent')
       telemetry.log({
         edata: edata,
         context: context,
@@ -199,7 +205,6 @@ module.exports = {
     context.rollup = telemetry.getRollUpData(dims)
     const object = telemetry.getObjectData({ id: req.userId, type: 'user' })
     const actor = telemetry.getActorData(req.userId, 'user')
-    console.log('logAPICallEvent')
     telemetry.log({
       edata: edata,
       context: context,
@@ -259,7 +264,6 @@ module.exports = {
     if (req.id && req.type) {
       object = telemetry.getObjectData({ id: req.id, type: req.type, ver: req.version, rollup: req.rollup })
     }
-
     req.reqObj.session.orgs = _.compact(req.reqObj.session.orgs)
     var channel = req.reqObj.session.rootOrghashTagId || _.get(req, 'headers.X-Channel-Id')
 
@@ -287,16 +291,20 @@ module.exports = {
     const edata = {
       err: options.edata.err || 'API_CALL_ERROR',
       errtype: options.edata.type || 'SERVER_ERROR',
-      stacktrace: options.edata.stacktrace || 'unhandled error'
+      stacktrace: options.edata.stacktrace || 'unhandled error',
+      requestid: options.edata.msgid || 'null',
+      errmsg: options.edata.errmsg || 'null'
     }
+
     let channel = req.session.rootOrghashTagId || req.get('x-channel-id') || envHelper.defaultChannelId
+   
     let dims = _.compact(_.concat(req.session.orgs, channel))
     const context = {
       channel: options.context.channel || channel,
       env: options.context.env || apiConfig.env,
       cdata: options.context.cdata,
       rollup: options.context.rollup || telemetry.getRollUpData(dims),
-      did: options.context.did,
+      did: options.context.did || req.context.did,
       sid: req.sessionID || uuidv1()
     }
     const actor = {
@@ -309,7 +317,7 @@ module.exports = {
       return;
     }
     telemetry.error({
-      edata: _.pickBy(edata, value => !_.isEmpty(value)),
+      edata: edata,
       context: _.pickBy(context, value => !_.isEmpty(value)),
       object: _.pickBy(object, value => !_.isEmpty(value)),
       actor: _.pickBy(actor, value => !_.isEmpty(value)),
@@ -379,7 +387,6 @@ module.exports = {
       console.log('logAuditEvent failed due to no channel')
       return;
     }
-    console.log(edata, context, object, actor);
     telemetry.impression({
       edata: _.pickBy(edata, value => !_.isEmpty(value)),
       context: _.pickBy(context, value => !_.isEmpty(value)),

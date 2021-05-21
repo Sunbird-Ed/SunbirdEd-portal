@@ -33,7 +33,7 @@ describe('CopyContentService', () => {
       );
     }));
 
-  it('should copy textbook as a curriculum course', inject([], () => {
+  it('should copy textbook as a course', inject([], () => {
     const service = TestBed.get(CopyContentService);
     const userService = TestBed.get(UserService);
     const contentService = TestBed.get(ContentService);
@@ -42,31 +42,52 @@ describe('CopyContentService', () => {
     const userData = userService._userProfile;
     const params = {
       request: {
-        source: contentData.identifier,
         course: {
           name: 'Copy of ' + contentData.name,
           description: contentData.description,
           organisation: userService.orgNames,
           createdFor: userData.organisationIds,
           createdBy: userData.userId,
-          framework: contentData.framework
-        }
+          framework: contentData.framework,
+          code: contentData.identifier,
+          mimeType: 'application/vnd.ekstep.content-collection',
+          contentType: 'Course'
+        },
+        hierarchy: contentData.children
       }
     };
     const option = {
-      url: 'course/v1/create',
-      data: params
+      data: params,
+      url: 'course/v1/create'
     };
+    spyOn(service, 'openCollectionEditor').and.stub();
     spyOn(contentService, 'post').and.callFake(() => observableOf(testData.mockRes.copyContentSuccess));
-    service.copyAsCourse(contentData);
-    expect(contentService.post).toHaveBeenCalledWith(option);
+    service.copyAsCourse(contentData).subscribe( (response) => {
+      expect(service['openCollectionEditor']).toHaveBeenCalledWith('NCFCOPY', 'do_11302157861002444811');
+    });
   }));
 
-  it('should open collection editor when a textbook is copied as curriculum course', inject([], () => {
+  it('should open collection editor when a textbook is copied as a course', inject([], () => {
     const service = TestBed.get(CopyContentService);
     const router = TestBed.get(Router);
     const url = `/workspace/content/edit/collection/do_11302157861002444811/Course/draft/NCFCOPY/Draft`;
     service.openCollectionEditor('NCFCOPY', 'do_11302157861002444811');
     expect(router.navigate).toHaveBeenCalledWith([url]);
+  }));
+
+  it('should call the formatData', inject([], () => {
+    const service = TestBed.get(CopyContentService);
+    const router = TestBed.get(Router);
+    spyOn(service, 'formatData');
+    service.formatData();
+    expect(service.formatData).toHaveBeenCalled();
+  }));
+
+  it('should call the redirectToEditor', inject([], () => {
+    const service = TestBed.get(CopyContentService);
+    const router = TestBed.get(Router);
+    spyOn(service, 'redirectToEditor');
+    service.redirectToEditor();
+    expect(service.redirectToEditor).toHaveBeenCalled();
   }));
 });

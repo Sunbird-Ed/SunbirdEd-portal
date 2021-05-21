@@ -7,7 +7,7 @@ import { UserService, TenantService, FrameworkService } from '@sunbird/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '@sunbird/environment';
 import { EditorService, WorkSpaceService } from '../../../services';
-import { tap, delay, map, first } from 'rxjs/operators';
+import { tap, delay, map, first, mergeMap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 jQuery.fn.iziModal = iziModal;
 
@@ -110,8 +110,8 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
       resourceId : contentInfo.identifier,
       resourceType : 'Content',
       resourceInfo : JSON.stringify(contentInfo),
-      creatorInfo : JSON.stringify({'name': this.userService.userProfile.firstName, 'id': this.userService.userProfile.identifier}),
-      createdBy : this.userService.userProfile.identifier
+      creatorInfo : JSON.stringify({'name': this.userService.userProfile.firstName, 'id': this.userService.userProfile.id}),
+      createdBy : this.userService.userProfile.id
     };
     return this.workspaceService.lockContent(input).pipe(tap((data) => {
       this.queryParams = data.result;
@@ -120,19 +120,42 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
   }
   private getContentDetails() {
     if (this.routeParams.contentId) {
-    return this.editorService.getContent(this.routeParams.contentId).
-      pipe(map((data) => {
-        if (data) {
+      const options: any = { params: { mode: 'edit' } };
+      return this.editorService.getContent(this.routeParams.contentId, options).
+        pipe(mergeMap((data) => {
           this.contentDetails = data.result.content;
-          return of(data);
-        } else  {
-          return throwError(data);
-        }
-      }));
+          if (this.validateRequest()) {
+            return of(data);
+          } else {
+            return throwError('NO_PERMISSION');
+          }
+        }));
     } else {
       return of({});
     }
   }
+
+  /**
+   * checks the permission using state, status and userId
+   */
+  private validateRequest() {
+    const validStatus = _.indexOf(this.configService.editorConfig.GENERIC_EDITOR.contentStatus, this.contentDetails.status) > -1;
+    const validState = _.indexOf(this.configService.editorConfig.GENERIC_EDITOR.contentState, this.routeParams.state) > -1;
+    if (_.indexOf(this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.genericMimeType, this.contentDetails.mimeType) > -1 && validStatus) {
+      if (validState && this.contentDetails.createdBy !== this.userService.userid) {
+        return true;
+      } else if (validState && this.contentDetails.createdBy === this.userService.userid) {
+        return true;
+      } else if (validState && _.includes(this.contentDetails.collaborators, this.userService.userid)) {
+        return true;
+      } else if (this.contentDetails.createdBy === this.userService.userid) {
+        return true;
+      }
+      return false;
+    }
+    return false;
+  }
+
   /**
    *Launch Generic Editor in the modal
    */
@@ -181,7 +204,8 @@ export class GenericEditorComponent implements OnInit, OnDestroy {
       env: 'generic-editor',
       framework: this.routeParams.framework,
       ownershipType: this.ownershipType,
-      timeDiff: this.userService.getServerTimeDiff
+      timeDiff: this.userService.getServerTimeDiff,
+      primaryCategories: _.without(this.frameworkService['_channelData'].contentPrimaryCategories, 'Course Assessment')
     };
     if (this.isLargeFileUpload || (_.get(this.contentDetails, 'contentDisposition') === 'online-only')) {
       window.context['uploadInfo'] = {

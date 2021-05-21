@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { SignupService } from './../../services';
 import { ResourceService, ServerResponse, UtilService, ConfigService } from '@sunbird/shared';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { IEndEventInput, IInteractEventEdata, TelemetryService } from '@sunbird/telemetry';
+import { RecaptchaComponent } from 'ng-recaptcha';
 
 @Component({
   selector: 'app-otp',
@@ -13,10 +14,11 @@ import { IEndEventInput, IInteractEventEdata, TelemetryService } from '@sunbird/
   styleUrls: ['./otp.component.scss']
 })
 export class OtpComponent implements OnInit {
-
+  @ViewChild('captchaRef', {static: false}) captchaRef: RecaptchaComponent;
   @Input() signUpdata: any;
   @Input() isMinor: boolean;
   @Input() tncLatestVersion: any;
+  @Input() yearOfBirth: string;
   @Output() redirectToParent = new EventEmitter();
   otpForm: FormGroup;
   disableSubmitBtn = true;
@@ -42,6 +44,8 @@ export class OtpComponent implements OnInit {
   counter;
   resendOtpCounter = 1;
   maxResendTry = 4;
+  googleCaptchaSiteKey: string;
+  isP2CaptchaEnabled: any;
   constructor(public resourceService: ResourceService, public signupService: SignupService,
     public activatedRoute: ActivatedRoute, public telemetryService: TelemetryService,
     public deviceDetectorService: DeviceDetectorService, public router: Router,
@@ -61,8 +65,15 @@ export class OtpComponent implements OnInit {
     this.setInteractEvent();
     this.instance = _.upperCase(this.resourceService.instance);
     this.resendOtpEnablePostTimer();
+    try {
+      this.googleCaptchaSiteKey = (<HTMLInputElement>document.getElementById('googleCaptchaSiteKey')).value;
+    } catch (error) {
+      this.googleCaptchaSiteKey = '';
+    }
+    this.isP2CaptchaEnabled = (<HTMLInputElement>document.getElementById('p2reCaptchaEnabled'))
+      ? (<HTMLInputElement>document.getElementById('p2reCaptchaEnabled')).value : 'true';
   }
-resendOtpEnablePostTimer(){
+resendOtpEnablePostTimer() {
   this.counter = 20;
   this.disableResendButton = false;
   setTimeout(() => {
@@ -86,7 +97,7 @@ resendOtpEnablePostTimer(){
         'key': this.mode === 'phone' ? this.signUpdata.controls.phone.value.toString() :
           this.signUpdata.controls.email.value,
         'type': this.mode,
-        'otp': this.otpForm.controls.otp.value
+        'otp': _.trim(this.otpForm.controls.otp.value)
       }
     };
     this.signupService.verifyOTP(request).subscribe(
@@ -144,6 +155,7 @@ resendOtpEnablePostTimer(){
       'request': {
         'firstName': _.trim(this.signUpdata.controls.name.value),
         'password': _.trim(this.signUpdata.controls.password.value),
+        'dob': this.yearOfBirth,
       }
     };
     if (this.mode === 'phone') {
@@ -219,7 +231,7 @@ resendOtpEnablePostTimer(){
     };
   }
 
-  resendOTP() {
+  resendOTP(captchaResponse?) {
     this.resendOtpCounter = this.resendOtpCounter + 1 ;
     if (this.resendOtpCounter >= this.maxResendTry) {
       this.disableResendButton = false;
@@ -237,7 +249,7 @@ resendOtpEnablePostTimer(){
     if (this.isMinor) {
       request.request['templateId'] = this.configService.constants.TEMPLATES.VERIFY_OTP_MINOR;
     }
-    this.signupService.generateOTP(request).subscribe(
+    this.signupService.generateOTPforAnonymousUser(request, captchaResponse).subscribe(
       (data: ServerResponse) => {
         this.resendOtpEnablePostTimer();
         this.errorMessage = '';
@@ -250,6 +262,26 @@ resendOtpEnablePostTimer(){
         this.telemetryService.interact(this.generateOTPErrorInteractEdata);
       }
     );
+  }
+
+  resolved(captchaResponse: string) {
+    if (captchaResponse) {
+      this.resendOTP(captchaResponse);
+    }
+  }
+
+  resetGoogleCaptcha() {
+    const element: HTMLElement = document.getElementById('resetGoogleCaptcha') as HTMLElement;
+    element.click();
+  }
+
+  generateResendOTP() {
+    if (this.isP2CaptchaEnabled === 'true') {
+      this.resetGoogleCaptcha();
+      this.captchaRef.execute();
+    } else {
+      this.resendOTP();
+    }
   }
 
   logGenerateOtpError(error) {

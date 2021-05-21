@@ -9,7 +9,7 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
   templateUrl: './qr-code-modal.component.html'
 })
 export class QrCodeModalComponent implements OnInit {
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
   @Output() closeQrModal = new EventEmitter<any>();
   instance: string;
   public submitDialCodeInteractEdata: IInteractEventEdata;
@@ -34,6 +34,7 @@ export class QrCodeModalComponent implements OnInit {
     if (!_.isEmpty(dialCode)) {
       this.setsubmitDialCodeInteractEdata(dialCodeVal);
       this.modal.approve();
+      sessionStorage.removeItem('l1parent');  // l1parent value is removed (SB-19982)
       this.router.navigate(['/get/dial/', dialCode]);
     }
   }

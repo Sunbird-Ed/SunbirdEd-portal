@@ -1,13 +1,13 @@
 
 import { takeUntil } from 'rxjs/operators';
-import { CourseBatchService } from '@sunbird/learn';
+import { CourseBatchService, CourseConsumptionService } from '@sunbird/learn';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { ResourceService, ServerResponse, ToasterService, BrowserCacheTtlService } from '@sunbird/shared';
+import { ResourceService, ServerResponse, ToasterService, BrowserCacheTtlService, UtilService, ConfigService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
-import * as dayjs from 'dayjs';
-import { UserService } from '@sunbird/core';
+import dayjs from 'dayjs';
+import { UserService, GeneraliseLabelService, ElectronService } from '@sunbird/core';
 import { CacheService } from 'ng2-cache-service';
 import { IInteractEventObject, IInteractEventEdata, TelemetryService } from '@sunbird/telemetry';
 
@@ -37,14 +37,25 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
   enrollBatchIntractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
   enrollToBatch: any;
+  tocId = '';
   constructor(private browserCacheTtlService: BrowserCacheTtlService, private cacheService: CacheService,
     public resourceService: ResourceService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
     public router: Router, public userService: UserService, public telemetryService: TelemetryService,
-    public activatedRoute: ActivatedRoute) {
+    public activatedRoute: ActivatedRoute, public courseConsumptionService: CourseConsumptionService,
+    public generaliseLabelService: GeneraliseLabelService, public utilService: UtilService, private config: ConfigService,
+    public electronService: ElectronService) {
     this.batchStatus = this.statusOptions[0].value;
   }
 
   ngOnInit() {
+    this.tocId = _.get(this.activatedRoute, 'snapshot.queryParams.textbook');
+    this.courseConsumptionService.showJoinCourseModal
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe((data) => {
+      this.baseUrl = `/learn/course/${this.courseId}`;
+      this.showLoginModal = data;
+    });
+
     this.getAllBatchDetails();
     this.setTelemetryData();
   }
@@ -116,7 +127,7 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
         this.showLoginModal = true;
         this.enrollToBatch = batchId;
     } else {
-      this.router.navigate([this.baseUrl]);
+      this.router.navigate([this.baseUrl], { queryParams: { textbook: this.tocId || undefined } });
     }
   }
   setTelemetryData() {
@@ -140,5 +151,14 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
+  }
+
+  setUrlToCourse() {
+    const queryParam = this.tocId ? `?textbook=${this.tocId}` : '';
+    if(this.utilService.isDesktopApp) {
+      this.electronService.get({ url: `${this.config.urlConFig.URLS.OFFLINE.LOGIN}?redirectTo=${this.baseUrl + queryParam}`}).subscribe();
+    } else {
+      window.location.href = this.baseUrl + queryParam;
+    }
   }
 }

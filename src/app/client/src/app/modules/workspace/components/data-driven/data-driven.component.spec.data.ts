@@ -1637,5 +1637,282 @@ export const mockFrameworkData = {
       'value': 'TPD'
      }
     }
-   }
+   },
+   channelData: {
+    'id': 'api.channel.read',
+    'params': {
+      'status': 'successful',
+      'err': null
+    },
+    'responseCode': 'OK',
+    'result': {
+      'channel': {
+        'identifier': 'b00bc992ef25f1a9a8d63291e20efc8d',
+        'code': 'b00bc992ef25f1a9a8d63291e20efc8d',
+        'defaultLicense': 'CC BY-NC 4.0',
+        'frameworks': [
+          {
+            'identifier': 'NCF101',
+            'name': 'NCF101'
+          },
+          {
+            'identifier': 'NCF',
+            'name': 'State (Uttar Pradesh)'
+          }
+        ],
+        'defaultCourseFramework': 'TPD',
+        'status': 'Live',
+        'defaultFramework': 'NCFCOPY'
+      }
+    }
+  },
+  userChannelData: {
+    'result': {
+        'channel': {
+            'code': '01309282781705830427',
+            'apoc_json': '{"batch": true}',
+            'frameworks': [
+                {
+                    'name': 'nit_tpd',
+                    'relation': 'hasSequenceMember',
+                    'identifier': 'nit_tpd',
+                    'description': 'nit_tpd Framework',
+                    'objectType': 'Framework',
+                    'status': 'Live',
+                    'type': 'TPD'
+                }
+            ],
+            'channel': 'in.ekstep',
+            'description': 'Preprod Kayal Org',
+            'createdOn': '2020-08-24T05:00:51.381+0000',
+            'objectType': 'Channel',
+            'apoc_text': 'APOC',
+            'appId': '@ignore@',
+            'name': 'NIT123',
+            'defaultCourseFramework': 'TPD',
+            'status': 'Live',
+            'defaultFramework': 'ekstep_ncert_k-12'
+        }
+    }
+},
+successCategory: {
+    'id': 'api.object.category.definition.read',
+    'ver': '3.0',
+    'ts': '2021-02-24T08:06:08ZZ',
+    'params': {
+      'resmsgid': '4e4a7b07-0e9d-4d33-8287-b6d38a3c2765',
+      'msgid': null,
+      'err': null,
+      'status': 'successful',
+      'errmsg': null
+    },
+    'responseCode': 'OK',
+    'result': {
+      'objectCategoryDefinition': {
+        'identifier': 'obj-cat:course_collection_all',
+        'objectMetadata': {
+          'config': {
+            'frameworkMetadata': {'orgFWType': 'K-12', 'targetFWType': 'K-12'},
+          },
+          'schema': {
+            'properties': {
+                'framework': {
+                  'default': 'TPD'
+                },
+                'targetFWIds': {
+                  'default': 'nit_k-12'
+                }
+              }
+            }
+        },
+        'languageCode': [],
+        'name': 'Course',
+      }
+    }
+},
+frameworkDataByType : {
+    'id': 'api.v1.search',
+    'ver': '1.0',
+    'ts': '2021-02-24T08:09:34.325Z',
+    'params': {
+      'resmsgid': 'a13d0a50-7677-11eb-9624-f93ee942e604',
+      'msgid': '992d7c94-a5d6-c940-0af4-9104ef87b1f1',
+      'status': 'successful',
+      'err': null,
+      'errmsg': null
+    },
+    'responseCode': 'OK',
+    'result': {
+      'count': 1,
+      'Framework': [
+        {
+          'identifier': 'nit_k-12'
+        }
+      ]
+    }
+  },
+objectCategoryDefinitionFrameworkData: {
+  'result': {
+    'objectCategoryDefinition': {
+      'identifier': 'obj-cat:course_collection_01309282781705830427',
+      'objectMetadata': {
+        'config': {
+          'frameworkMetadata': {
+            'orgFWType': [
+              'K-12',
+              'TPD'
+            ],
+            'targetFWType': [
+              'K-12'
+            ]
+          }
+        },
+        'schema': {
+          'properties': {}
+        }
+      },
+      'languageCode': [],
+      'name': 'Course',
+      'forms': {}
+    }
+  }
+},
+frameworkSearchByType: {
+    'result': {
+        'count': 2,
+        'Framework': [
+            {
+                'owner': '0127920770478571522',
+                'identifier': 'ekstep_ncert_k-12',
+                'code': 'ekstep_ncert_k-12',
+                'channel': '0127920770478571522',
+                'type': 'K-12',
+                'objectType': 'Framework',
+                'systemDefault': 'Yes',
+                'channels': [
+                    '0127920770478571522'
+                ],
+                'name': 'Centre',
+                'categories': [
+                    'ekstep_ncert_k-12_board',
+                    'ekstep_ncert_k-12_medium',
+                    'ekstep_ncert_k-12_gradelevel',
+                    'ekstep_ncert_k-12_subject',
+                    'ekstep_ncert_k-12_topic',
+                    'ekstep_ncert_k-12_learningoutcome'
+                ]
+            },
+            {
+                'identifier': 'TPD',
+                'code': 'TPD',
+                'channel': 'in.ekstep',
+                'description': 'TPD Framework',
+                'type': 'TPD',
+                'objectType': 'Framework',
+                'name': 'TPD',
+                'lastUpdatedOn': '2021-04-08T15:50:39.492+0000',
+                'categories': [
+                    'tpd_topic',
+                    'tpd_subject',
+                    'tpd_purpose',
+                    'tpd_gradelevel',
+                    'tpd_medium'
+                ]
+            }
+        ]
+    }
+},
+frameworkSearchByTypeCountZero: {
+    'result': {
+        'count': 0
+    }
+},
+userChannelDataEmptyFramework: {
+    'result': {
+        'channel': {
+            'code': '01309282781705830427',
+            'apoc_json': '{"batch": true}',
+            'frameworks': [
+            ],
+            'channel': 'in.ekstep',
+            'description': 'Preprod Kayal Org',
+            'createdOn': '2020-08-24T05:00:51.381+0000',
+            'objectType': 'Channel',
+            'apoc_text': 'APOC',
+            'appId': '@ignore@',
+            'name': 'NIT123',
+            'defaultCourseFramework': 'TPD',
+            'status': 'Live',
+            'defaultFramework': 'ekstep_ncert_k-12'
+        }
+    }
+},
+objectCategoryDefinitionSchemaFrameworkData: {
+    'result': {
+      'objectCategoryDefinition': {
+        'identifier': 'obj-cat:course_collection_01309282781705830427',
+        'objectMetadata': {
+          'config': {
+            'frameworkMetadata': {
+              'orgFWType': [
+                'K-12',
+                'TPD'
+              ],
+              'targetFWType': [
+                'K-12'
+              ]
+            }
+          },
+          'schema': {
+            'properties': {
+                'framework': {
+                    'enum': ['nit_k-12', 'nit_tpd']
+                }
+            }
+          }
+        },
+        'languageCode': [],
+        'name': 'Course',
+        'forms': {}
+      }
+    }
+},
+userChannelDataWithFrameworkSameAsCategoryDefinition: {
+    'result': {
+        'channel': {
+            'code': '01309282781705830427',
+            'apoc_json': '{"batch": true}',
+            'frameworks': [
+                {
+                    'name': 'nit_k-12',
+                    'relation': 'hasSequenceMember',
+                    'identifier': 'nit_k-12',
+                    'description': 'nit_k-12 Framework',
+                    'objectType': 'Framework',
+                    'status': 'Live',
+                    'type': 'K-12'
+                },
+                {
+                    'name': 'nit_tpd',
+                    'relation': 'hasSequenceMember',
+                    'identifier': 'nit_tpd',
+                    'description': 'nit_tpd Framework',
+                    'objectType': 'Framework',
+                    'status': 'Live',
+                    'type': 'TPD'
+                }
+            ],
+            'channel': 'in.ekstep',
+            'description': 'Preprod Kayal Org',
+            'createdOn': '2020-08-24T05:00:51.381+0000',
+            'objectType': 'Channel',
+            'apoc_text': 'APOC',
+            'appId': '@ignore@',
+            'name': 'NIT123',
+            'defaultCourseFramework': 'TPD',
+            'status': 'Live',
+            'defaultFramework': 'ekstep_ncert_k-12'
+        }
+    }
+},
 };

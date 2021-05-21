@@ -30,7 +30,8 @@ export class ToasterService {
    */
   success(message: string) {
     this.iziToast.success({
-      title: message
+      title: message,
+      class: 'sb-toaster sb-toast-success'
     });
   }
 
@@ -41,7 +42,8 @@ export class ToasterService {
    */
   info(message: string) {
     this.iziToast.info({
-      title: message
+      title: message,
+      class: 'sb-toaster sb-toast-info'
     });
   }
 
@@ -52,7 +54,8 @@ export class ToasterService {
    */
   error(message: string) {
     this.iziToast.error({
-      title: message
+      title: message,
+      class: 'sb-toaster sb-toast-error'
     });
   }
 
@@ -63,7 +66,8 @@ export class ToasterService {
    */
   warning(message: string) {
     this.iziToast.warning({
-      title: message
+      title: message,
+      class: 'sb-toaster sb-toast-warning'
     });
   }
 

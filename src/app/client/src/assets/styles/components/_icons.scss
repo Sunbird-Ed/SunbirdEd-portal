@@ -30,9 +30,6 @@
 .sb-icon-preview:before {
   content: "\e909";
 }
-.sb-icon-refresh:before {
-  content: "\e90c";
-}
 .sb-icon-reviewer:before {
   content: "\e90a";
 }
@@ -44,9 +41,6 @@
 }
 .sb-icon-send:before {
   content: "\e90b";
-}
-.sb-icon-book:before {
-  content: "\e900";
 }
 .sb-icon-content:before {
   content: "\e901";
@@ -60,44 +54,23 @@
 .sb-icon-mp3:before {
   content: "\e905";
 }
-.sb-icon-open-book:before {
-  content: "\e906";
-}
 .sb-icon-video:before {
   content: "\e907";
 }
-.sb-lock-icon {
-  cursor: pointer;
-}
-/*[class*="sb-icon-"] {
-  -webkit-mask-size: contain;
-  -webkit-mask-position: 50% 50%;
-  -webkit-mask-repeat: no-repeat;
-  mask-size: contain;
-  mask-position: 50% 50%;
-  mask-repeat: no-repeat;
-  background-color: $primary-color;
-  width: 16px;
-  height: 16px;
-  display: inline-block;
-  cursor: pointer;
-}
-*/
-
 [class*="sb-icon-primary"] {
-  background-color: $primary-color;
+  background-color: var(--primary-color);
 }
 
 [class*="sb-icon-secondary"] {
-  background-color: $secondary-color;
+  background-color: var(--secondary-color);
 }
 
 [class*="sb-icon-warning"] {
-  background-color: $tertiary-color;
+  background-color: var(--tertiary-color);
 }
 
 [class*="sb-icon-error"] {
-  background-color: $red;
+  background-color: var(--red);
 }
 
 [class*="sb-icon-edit-user"] {
@@ -116,7 +89,7 @@
 }
 
 .info-icon {
-  background-color: $gray-400;
+  background-color: var(--gray-400);
   -webkit-mask-size: contain;
   -webkit-mask-position: 50% 50%;
   -webkit-mask-repeat: no-repeat;

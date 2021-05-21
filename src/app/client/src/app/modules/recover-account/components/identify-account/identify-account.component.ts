@@ -15,7 +15,7 @@ import { RecaptchaComponent } from 'ng-recaptcha';
 export class IdentifyAccountComponent implements OnInit {
 
   disableFormSubmit = true;
-  @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
+  @ViewChild('captchaRef', {static: false}) captchaRef: RecaptchaComponent;
   googleCaptchaSiteKey: string;
   nameNotExist = false;
   identiferStatus = '';
@@ -29,14 +29,18 @@ export class IdentifyAccountComponent implements OnInit {
     id: 'SB-13755',
     type: 'Task'
   }];
+  isP1CaptchaEnabled: any;
+
   constructor(public activatedRoute: ActivatedRoute, public resourceService: ResourceService, public formBuilder: FormBuilder,
     public toasterService: ToasterService, public router: Router, public recoverAccountService: RecoverAccountService,
     public recaptchaService: RecaptchaService, public telemetryService: TelemetryService) {
-      try {
-        this.googleCaptchaSiteKey = (<HTMLInputElement>document.getElementById('googleCaptchaSiteKey')).value;
-      } catch (error) {
-        this.googleCaptchaSiteKey = '';
-      }
+    try {
+      this.googleCaptchaSiteKey = (<HTMLInputElement>document.getElementById('googleCaptchaSiteKey')).value;
+    } catch (error) {
+      this.googleCaptchaSiteKey = '';
+    }
+    this.isP1CaptchaEnabled = (<HTMLInputElement>document.getElementById('p1reCaptchaEnabled'))
+      ? (<HTMLInputElement>document.getElementById('p1reCaptchaEnabled')).value : 'true';
   }
 
   ngOnInit() {
@@ -60,27 +64,15 @@ export class IdentifyAccountComponent implements OnInit {
     this.form.controls.identifier.valueChanges.subscribe(val => this.identiferStatus = '');
   }
   handleNext(captchaResponse?: string) {
-    if (captchaResponse) {
-      this.disableFormSubmit = true;
-      this.recaptchaService.validateRecaptcha(captchaResponse).subscribe((data: any) => {
-        if (_.get(data, 'result.success')) {
-          this.initiateFuzzyUserSearch();
-        }
-      }, (error) => {
-        const telemetryErrorData = {
-          env: this.activatedRoute.snapshot.data.telemetry.env,
-          errorMessage: _.get(error, 'error.params.errmsg') || '',
-          errorType: 'SYSTEM', pageid: this.activatedRoute.snapshot.data.telemetry.pageid,
-          stackTrace: JSON.stringify((error && error.error) || '')
-        };
-        this.telemetryService.generateErrorEvent(telemetryErrorData);
-        this.resetGoogleCaptcha();
-      });
+    if (captchaResponse && this.isP1CaptchaEnabled === 'true') {
+      this.initiateFuzzyUserSearch(captchaResponse);
+    } else {
+      this.initiateFuzzyUserSearch();
     }
   }
 
-  initiateFuzzyUserSearch() {
-    this.recoverAccountService.fuzzyUserSearch(this.form.value).subscribe(response => {
+  initiateFuzzyUserSearch(captchaResponse?: string) {
+    this.recoverAccountService.fuzzyUserSearch(this.form.value, captchaResponse).subscribe(response => {
       if (_.get(response, 'result.response.count') > 0) { // both match
         this.navigateToNextStep(response);
       } else { // both dint match
@@ -91,6 +83,9 @@ export class IdentifyAccountComponent implements OnInit {
       this.resetGoogleCaptcha();
       if (error.responseCode === 'PARTIAL_SUCCESS_RESPONSE') {
         this.identiferStatus = 'MATCHED';
+        this.handleError(error);
+      } else if (error.status === 418) {
+        this.identiferStatus = 'VALIDATING_FAILED';
         this.handleError(error);
       } else {
         this.identiferStatus = 'NOT_MATCHED';

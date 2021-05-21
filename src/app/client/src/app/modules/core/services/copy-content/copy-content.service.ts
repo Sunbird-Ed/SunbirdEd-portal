@@ -74,23 +74,29 @@ export class CopyContentService {
     }));
   }
   /**
-   * @since - #SH-66.
+   * @since - 1.#SH-66 || 2.#SH-362
    * @param  {ContentData} contentData
-   * @description - API to copy a textbook as a curriculum course.
+   * @description - API to copy a textbook as a course.
    */
-  copyAsCourse(contentData: ContentData) {
+  copyAsCourse(collectionData: ContentData) {
     const userData = this.userService.userProfile;
+    const selectedData =  collectionData['children'].filter((item) => {
+      return item['selected'] === true;
+    });
     const requestData = {
       request: {
-        source: contentData.identifier,
         course: {
-          name: 'Copy of ' + contentData.name,
-          description: contentData.description,
+          name: 'Copy of ' + collectionData.name,
+          description: collectionData.description,
           organisation: _.uniq(this.userService.orgNames),
           createdFor: userData.organisationIds,
           createdBy: userData.userId,
-          framework: contentData.framework
-        }
+          framework: collectionData.framework,
+          code: collectionData.identifier,
+          mimeType: 'application/vnd.ekstep.content-collection',
+          contentType: 'Course'
+        },
+        hierarchy: selectedData
       }
     };
 
@@ -101,7 +107,7 @@ export class CopyContentService {
 
     return this.contentService.post(option).pipe(map((response: ServerResponse) => {
       const courseIdentifier = _.get(response, 'result.identifier');
-      this.openCollectionEditor(contentData.framework, courseIdentifier);
+      this.openCollectionEditor(collectionData.framework, courseIdentifier);
       return response;
     }));
   }

@@ -1,15 +1,40 @@
+
+// Filters
+$sb-prominent-filter-background-color: $white-color;
+$sb-prominent-filter-padding: $base-block-space * 2 $base-block-space * 2;
+$sb-prominent-filter-header-font-weight: bold;
+$sb-prominent-filter-header-margin: ($base-block-space) 0
+  ($base-block-space * 2) 0;
+$sb-prominent-filter-header-color: $primary-color;
+$sb-prominent-filter-field-width-below-sm: 50%;
+$sb-prominent-filter-field-width-above-sm: 33.3333%;
+$sb-prominent-filter-field-width-above-md: 25%;
+$sb-prominent-filter-field-width-above-lg: 20%;
+$sb-prominent-filter-field-bottom-spacing: ($base-block-space * 2);
+$sb-prominent-filter-field-side-spacing: ($base-block-space * 2);
+$sb-prominent-filter-field-label-font-size: calculateRem(14px);
+$sb-prominent-filter-field-label-font-weight: normal;
+$sb-prominent-filter-field-label-color: $gray-800;
+$sb-prominent-filter-field-label-margin: 0 0 $base-block-space 0;
+$sb-prominent-filter-field-font-size: calculateRem(12px);
+$sb-prominent-filter-field-color: var(--rc-4a4a4a);
+$sb-prominent-filter-field-border: calculateRem(1px) solid var(--gray-200);
+$sb-prominent-filter-field-border-radius: calculateRem(3px);
+$sb-prominent-filter-field-height: calculateRem(32px);
+$sb-prominent-filter-field-width: 100%;
+$sb-prominent-filter-field-input-padding: calculateRem(8px);
+$sb-prominent-filter-dropdown-font-size: calculateRem(12px);
+$sb-prominent-filter-dropdown-header-font-weight: 500;
+$sb-prominent-filter-dropdown-item-active-color: $primary-color;
+$sb-prominent-filter-dropdown-item-active-font-weight: 700;
+
 .sb-prominent-filter {
-  background: $sb-prominent-filter-background-color;
+  background: var(--sb-prominent-filter-bg);
   padding: calculateRem(8px) 0px 0px 0px;
 
   .sb-prominent-filter-header {
     font-weight: $sb-prominent-filter-header-font-weight;
     margin: $sb-prominent-filter-header-margin;
-  }
-
-  .sb-data-driven-filter-header {
-    font-weight: $sb-prominent-filter-header-font-weight;
-    color: $sb-prominent-filter-header-color;
   }
 
   .sb-prominent-filter-container {
@@ -58,6 +83,10 @@
         border-radius: $sb-prominent-filter-field-border-radius;
         padding: 0;
         display: flex;
+        color: var(--sb-dropdown-menu-text);
+        &:hover{
+          border-color: var(--sb-multiple-dropdown-border-hover);
+        }
         .divider{
           margin: 0;
         }
@@ -67,7 +96,7 @@
           align-items: center;
           width: $sb-prominent-filter-field-width;
           padding: $sb-prominent-filter-dropdown-font-size;
-          color: $sb-prominent-filter-field-color;
+          color: var(--sb-dropdown-menu-item);
           font-size: $sb-prominent-filter-field-font-size;
 
           &.header {
@@ -81,7 +110,7 @@
           }
           &:hover{
             background: $primary-250;
-            color: $blue;
+            color: var(--sb-filter-selected-dropdown-hover);
           }
           i.icon.square.outline{
             height: ($base-block-space * 2);
@@ -109,7 +138,7 @@
           text-transform: lowercase;
           text-overflow: ellipsis;
           overflow: hidden;
-          color: $sb-prominent-filter-field-color;
+          color:var(--sb-prominent-filter-field-color);
           margin: 0;
           padding: $sb-prominent-filter-field-input-padding;
           font-size: $sb-prominent-filter-field-font-size;
@@ -237,14 +266,25 @@
   }
 }
 
-.sb-prominent-offline-filter.sb-prominent-filter .sb-prominent-filter-container .sb-prominent-filter-field{
-  width: 100% !important;
-}
-.sb-prominent-offline-filter{
-  .sb-field .ui.selection.dropdown .text{
-    line-height: 1.2 !important;
-  }
-  .text{
-    line-height: 1.2;
+.ui.selection.dropdown.sbt-dropdown-tick,
+.sb-prominent-filter-field .ui.selection.dropdown.sbt-dropdown-tick {
+  .menu {
+    >div >.item, >.item{
+      &.active::after {
+        content: '';
+        display: inline-block;
+        transform: rotate(45deg);
+        height: calculateRem(12px);
+        width: calculateRem(6px);
+        position: absolute;
+        right: calculateRem(16px);
+        border-bottom: calculateRem(2px) solid var(--black);
+        border-right: calculateRem(2px) solid var(--black);
+        html[dir="rtl"] & {
+          left: calculateRem(24px);
+          right: inherit;
+        }
+      }
+    }
   }
 }

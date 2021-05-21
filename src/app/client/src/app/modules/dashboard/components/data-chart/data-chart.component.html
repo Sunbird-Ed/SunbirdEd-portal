@@ -1,79 +1,78 @@
 <div class="graph-filters" #chartRootElement>
-  <form [formGroup]="filtersFormGroup" class="ui form" *ngIf="showChart && showFilters"
-    [ngClass]="{'hide': hideElements}">
-    <div class="d-flex flex-w-wrap reset-filter-section">
-      <div *ngIf="showGraphStats" class="d-flex flex-ai-center">{{resourceService?.frmelmnts?.lbl?.graphStat }}:
-        <sui-checkbox class="toggle ml-8" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-          [telemetryInteractEdata]="setTelemetryInteractEdata('graph-statistics')"
-          [telemetryInteractCdata]="telemetryCdata" (checkChange)="showStats = $event; "></sui-checkbox>
+
+  <div class="d-flex pb-10">
+    <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0"> 
+      <label class="pad5 col-6 chart-title"> {{ this.chartOptions?.title?.text  }} </label>
+      <div class="sb-last-update-status" *ngIf="showLastUpdatedOn && lastUpdatedOn">
+        <span >{{resourceService?.frmelmnts?.lbl?.lastUpdatedOn}}&nbsp;: </span> &nbsp; {{lastUpdatedOn}}
       </div>
-      <div class="mr-8" *ngIf="chartType === 'bar' || chartType === 'line'">
-        <button (click)="addChartSummary()" *ngIf="chartConfig.id && isUserReportAdmin" type="button"
+    </div>
+    <div class="d-flex flex-w-wrap selection-block">
+
+
+      <div class="d-flex flex-w-wrap reset-filter-section">
+        <div *ngIf="showGraphStats" class="d-flex flex-ai-center">{{resourceService?.frmelmnts?.lbl?.graphStat }}:
+          <sui-checkbox class="toggle ml-8" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+            [telemetryInteractEdata]="setTelemetryInteractEdata('graph-statistics')"
+            [telemetryInteractCdata]="telemetryCdata" (checkChange)="graphStatsChange($event)"></sui-checkbox>
+        </div>
+      </div>
+
+      <div class="mr-8" *ngIf="chartType === 'bar' || chartType === 'line'" [ngClass]="{'hide': hideElements}">
+        <!-- <button (click)="addChartSummary()" *ngIf="chartConfig.id && isUserReportAdmin" type="button"
+          appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+          [telemetryInteractCdata]="[{id: chartConfig?.id, type: 'Chart'}]"
+          [telemetryInteractEdata]="{id: 'report-chart', type: 'chart-summary', pageid: activatedRoute.snapshot.data.telemetry.pageid}"
           class="mr-8 sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn"><i class="add icon"></i>Add
-          {{ resourceService?.frmelmnts?.lbl?.chartSummary}}</button>
+          {{ resourceService?.frmelmnts?.lbl?.chartSummary}}</button> -->
+          <label>
         <sui-select class="selection" [placeholder]="'Select ChartType'"
           (selectedOptionChange)="changeChartType($event)">
           <sui-select-option appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
             [telemetryInteractEdata]="setTelemetryInteractEdata('chart-type-filter')"
             [telemetryInteractCdata]="telemetryCdata" *ngFor="let option of availableChartTypeOptions" [value]="option">
           </sui-select-option>
-        </sui-select>
+        </sui-select></label>
       </div>
-      <div class="field">
-        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-          [telemetryInteractEdata]="setTelemetryInteractEdata('reset-filters')"
-          [telemetryInteractCdata]="telemetryCdata" class="sb-btn sb-btn-outline-primary sb-btn-normal"
-          *ngIf="filters.length" (click)="resetFilter()">
-          {{resourceService?.frmelmnts?.btn?.reset}} {{resourceService?.frmelmnts?.lbl?.filters  }}
-        </button>
-      </div>
-    </div>
-    <sui-accordion class="styled fluid" [closeOthers]="false">
-      <sui-accordion-panel [isOpen]="true">
-        <div title>
-          <i class="dropdown icon"></i>
-          {{resourceService?.frmelmnts?.lbl?.filters }}
-        </div>
-        <div content>
+   
+    <button *ngIf="isUserReportAdmin && chartConfig.id" [ngClass]="{'hide': hideElements}" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+      [telemetryInteractCdata]="[{id: chartConfig?.id, type: 'Chart'}]"
+      [telemetryInteractEdata]="{id: 'report-chart', type: 'chart-summary', pageid: activatedRoute.snapshot.data.telemetry.pageid}"
+      (click)="addChartSummary()" type="button"
+      class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8"><i class="add icon"></i>
+      {{ chartSummarylabel }}
+    </button>
+  
+  
 
-          <div class="sb-prominent-filter p-0">
-            <div class="sb-prominent-filter-container pt-8 pb-0">
-              <div class="sb-prominent-filter-field" *ngFor="let filter of filters">
-                <label>{{filter.displayName}}</label>
-                <div *ngIf="filter.controlType === 'multi-select'">
-                  <sui-multi-select [hasLabels]="false" class="selection sb-select-searchfilter"
-                    [placeholder]="filter.displayName" [formControlName]="filter.reference">
-                    <sui-select-option appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-                      [telemetryInteractEdata]="setTelemetryInteractEdata(filter.reference + '-filter')"
-                      [telemetryInteractCdata]="telemetryCdata" *ngFor="let option of filter.options" [value]="option | titlecase">
-                    </sui-select-option>
-                  </sui-multi-select>
-                </div>
-                <div *ngIf="filter.controlType === 'select'">
-                  <sui-select class="selection sb-select-searchfilter" [placeholder]="filter.displayName"
-                    [formControlName]="filter.reference">
-                    <sui-select-option appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-                      [telemetryInteractEdata]="setTelemetryInteractEdata(filter.reference + '-filter')"
-                      [telemetryInteractCdata]="telemetryCdata" *ngFor="let option of filter.options" [value]="option">
-                    </sui-select-option>
-                  </sui-select>
-                </div>
-                <div *ngIf="filter.controlType === 'date'">
-                  <input appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-                    [telemetryInteractEdata]="setTelemetryInteractEdata('date-filter')"
-                    [telemetryInteractCdata]="telemetryCdata" #datePickerForFilters class="form-control" type="text"
-                    [placeholder]="filter.displayName" ngxDaterangepickerMd [showCustomRangeLabel]="true"
-                    [locale]="datePickerConfig" [alwaysShowCalendars]="true" [ranges]="ranges" [linkedCalendars]="true"
-                    [minDate]="pickerMinDate" [maxDate]="pickerMaxDate"
-                    (change)="getDateRange($event,filter.reference)" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </sui-accordion-panel>
-    </sui-accordion>
-  </form>
+  <button class="sb-btn sb-btn-normal sb-btn-primary filter-btn" (click)="filterModalPopup(true)" *ngIf="filters?.length > 0" [ngClass]="{'hide': hideElements}" >
+    {{ resourceService?.frmelmnts?.lbl?.filters }}
+  </button>
+ </div>
+  </div>
+
+  <div class="sb-filter-label pt-16 pb-8" *ngIf="currentFilters" >
+    <div *ngFor="let key of loadash.keys(currentFilters)" class="d-inline-flex flex-w-wrap pr-10" >
+      
+      <span *ngIf="checkFilterReferance(key)">
+        <span 
+        class="sb-label-name mb-4" >{{key}}:</span>
+          <span  class="date-range-label"
+          *ngIf="currentFilters[key]?.length>0">
+              {{currentFilters[key][0]}} - {{currentFilters[key][currentFilters[key].length-1]}} 
+          </span>
+      </span>
+      <span *ngIf="!checkFilterReferance(key)">
+        <span 
+        class="sb-label-name mb-4" >{{key}}:</span><span  class="sb-label-value"
+        *ngFor="let val of currentFilters[key]">{{val}}
+        <!-- <i class="close icon mr-0 pl-4"></i> -->
+      </span>
+      </span>
+      
+    </div>
+  </div>
+
   <div *ngIf="showStats">
     <div _ngcontent-c14="" class="graph-statistics py-16" *ngFor="let stat of loadash.keys(resultStatistics)">
       {{stat}} <div class="sb-label sb-label-table sb-label-primary-100 mr-4"
@@ -82,29 +81,17 @@
     </div>
   </div>
 
-  <div class="sb-filter-label pt-16 pb-8" *ngIf="selectedFilters">
-    <div *ngFor="let key of loadash.keys(selectedFilters)" class="d-inline-flex flex-w-wrap"><span
-        class="sb-label-name mb-4">{{key}}:</span><span class="sb-label-value"
-        *ngFor="let val of selectedFilters[key]">{{val}}
-        <!-- <i class="close icon mr-0 pl-4"></i> -->
-      </span>
-    </div>
-  </div>
-  <div *ngIf="!showFilters && isUserReportAdmin && chartConfig.id" [ngClass]="{'hide': hideElements}"
-    class="d-flex flex-jc-flex-end  mt-8 mr-8 sb-last-update-status">
-    <button (click)="addChartSummary()" type="button"
-      class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn"><i class="add icon"></i>Add
-      {{ resourceService?.frmelmnts?.lbl?.chartSummary}}</button>
-  </div>
+  
+
+ 
+
+  
   <div class="dashboard-graph-statistics py-24" *ngIf="bigNumberCharts.length">
     <div class="graph-stat-block" *ngFor="let bigNumberChart of bigNumberCharts">
       <div class="graph-stat-label">{{bigNumberChart?.header}}</div>
       <div class="graph-stat-value">{{bigNumberChart?.data}} </div>
       <div class="graph-stat-info"> {{bigNumberChart?.footer}} </div>
     </div>
-  </div>
-  <div class="d-flex flex-jc-flex-end  mt-8 mr-8 sb-last-update-status" *ngIf="showLastUpdatedOn && lastUpdatedOn">
-    <span class="font-italic">{{resourceService?.frmelmnts?.lbl?.lastUpdatedOn}}&nbsp;: </span> &nbsp; {{lastUpdatedOn}}
   </div>
   <ng-container *ngIf="showChart && !iframeDetails">
     <canvas #chartCanvas baseChart [datasets]="datasets" [labels]="chartLabels" [options]="chartOptions"
@@ -118,3 +105,28 @@
     <app-report-summary *ngIf="summary.length" [inputData]="summary"></app-report-summary>
   </div>
 </div>
+
+<sui-modal [mustScroll]="true" [transitionDuration]="0" [size]="'normal'" class="sb-modal sb-filter-modal"
+  (dismissed)="filterModalPopup(false)"  *ngIf="filterPopup" >
+<div class="sb-filter">
+  <div class="filter-select-title mb-0 px-20 mt-20 py-0"> {{ resourceService?.frmelmnts?.lbl?.selectFilters }} </div> 
+  <div class="sb-filter__container">
+    <div class="sb-filter__content">
+      <app-filter [filterType] ="filterType" [resetFilters]="resetFilters"  [hideElements]="hideElements" [selectedFilter]="selectedFilters" [filters]="filters" (filterChanged)="filterChanged($event)" [chartData]="chartData"
+      [telemetryInteractObject]="telemetryInteractObject">
+     </app-filter>
+    </div>
+
+    <div class="sb-modal-actions p-0">
+      <button (click)="resetForm()" class="sb-btn sb-btn-normal sb-btn-outline-primary">
+        {{resourceService?.frmelmnts?.btn?.reset}} {{resourceService?.frmelmnts?.lbl?.filters  }}
+      </button>
+    </div>
+
+  </div>
+  
+</div>
+</sui-modal>
+ 
+  <!--  -->
+

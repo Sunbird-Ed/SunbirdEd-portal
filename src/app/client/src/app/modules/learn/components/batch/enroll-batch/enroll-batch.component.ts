@@ -1,6 +1,6 @@
 
 import { takeUntil } from 'rxjs/operators';
-import { UserService, CoursesService } from '@sunbird/core';
+import { UserService, CoursesService, GeneraliseLabelService } from '@sunbird/core';
 import { ResourceService, ToasterService, ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { CourseBatchService } from './../../../services';
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
@@ -14,11 +14,12 @@ import { Subject } from 'rxjs';
   templateUrl: './enroll-batch.component.html'
 })
 export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('enrollBatch') enrollBatch;
+  @ViewChild('enrollBatch', {static: false}) enrollBatch;
   batchId: string;
   batchDetails: any;
   showEnrollDetails = false;
   readMore = false;
+  showLoader = false;
   disableSubmitBtn = false;
   public unsubscribe = new Subject<void>();
   telemetryCdata: Array<{}>;
@@ -29,11 +30,12 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 	*/
   telemetryImpression: IImpressionEventInput;
   public modalVisibility = true;
+  tocId = '';
   constructor(public router: Router, public activatedRoute: ActivatedRoute, public courseBatchService: CourseBatchService,
     public resourceService: ResourceService, public toasterService: ToasterService, public userService: UserService,
     public configService: ConfigService, public coursesService: CoursesService,
     private telemetryService: TelemetryService,
-    public navigationhelperService: NavigationHelperService) { }
+    public navigationhelperService: NavigationHelperService, public generaliseLabelService: GeneraliseLabelService) { }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
@@ -44,11 +46,12 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
           this.batchDetails = data;
           this.setTelemetryData();
           if (this.batchDetails.enrollmentType !== 'open') {
-            this.toasterService.error(this.resourceService.messages.fmsg.m0082);
+            this.toasterService.error(this.generaliseLabelService.messages.fmsg.m0082);
             this.redirect();
           }
           if (this.activatedRoute.queryParams) {
             this.activatedRoute.queryParams.subscribe((queryParams) => {
+              this.tocId = queryParams && queryParams.textbook;
               if (queryParams.autoEnroll) {
                 this.modalVisibility = false;
                 this.enrollToCourse(this.batchId);
@@ -69,7 +72,8 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.unsubscribe.complete();
   }
   redirect() {
-    this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent });
+    const queryParams = this.tocId ? { textbook: this.tocId } : {};
+    this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent, queryParams });
   }
   telemetryLogEvents(status: boolean) {
     let level = 'ERROR';
@@ -106,6 +110,7 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       takeUntil(this.unsubscribe))
       .subscribe((data) => {
         this.disableSubmitBtn = true;
+        this.toasterService.success(this.resourceService.messages.smsg.m0036);
         this.fetchEnrolledCourseData();
         this.telemetryLogEvents(true);
       }, (err) => {
@@ -116,13 +121,15 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
   fetchEnrolledCourseData() {
+    this.showLoader = true;
     setTimeout(() => {
       this.coursesService.getEnrolledCourses().pipe(
         takeUntil(this.unsubscribe))
         .subscribe(() => {
           this.disableSubmitBtn = false;
-          this.toasterService.success(this.resourceService.messages.smsg.m0036);
-          this.router.navigate(['/learn/course', this.batchDetails.courseId, 'batch', this.batchDetails.identifier]).then(() => {
+          this.showLoader = false;
+          this.router.navigate(['/learn/course', this.batchDetails.courseId, 'batch', this.batchDetails.identifier],
+          { queryParams: { consent: true , textbook: this.tocId || undefined} }).then(() => {
             window.location.reload();
           });
         }, (err) => {

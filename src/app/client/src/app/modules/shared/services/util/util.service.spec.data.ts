@@ -251,6 +251,122 @@ export const servicemockRes = {
   }
 };
 
+export const processedOutputData = {
+  'gradeLevel': [
+    {
+      'name': 'class 9',
+      'count': 1
+    },
+    {
+      'name': 'class 8',
+      'count': 1
+    },
+    {
+      'name': 'class 10',
+      'count': 1
+    }
+  ],
+  'subject': [
+    {
+      'name': 'mathematics',
+      'count': 1
+    }
+  ],
+  'channel': [
+    {
+      'name': '0128325322816552960',
+      'count': 3
+    }
+  ],
+  'medium': [
+    {
+      'name': 'english',
+      'count': 2
+    }
+  ]
+};
+
+export const processData = [
+  {
+    'updatedBy': '0b96635f-fe2b-4ab0-a511-05cfce8faa3f',
+    'display': '{\'name\':{\'en\':\'Student courses\'}}',
+    'alt': null,
+    'description': null,
+    'index': 1,
+    'updatedDate': '2020-09-01 05:17:05:007+0000',
+    'sectionDataType': 'Content',
+    'imgUrl': null,
+    'createdDate': '2020-08-13 05:40:35:741+0000',
+    'createdBy': '0b96635f-fe2b-4ab0-a511-05cfce8faa3f',
+    'searchQuery': '{\'request\':{\'filters\':{\'objectType\':\'Content\',\'contentType\':\'Course\',\'status\':[\'Live\'],\'batches.enrollmentType\':\'open\',\'batch.status\':1},\'exists\':[\'board\',\'batches.batchId\'],\'sort_by\':{\'me_averageRating\':\'desc\',\'batches.startDate\':\'desc\'},\'limit\':10}}',
+    'name': 'Student courses',
+    'id': '01308506478808268857',
+    'dynamicFilters': null,
+    'dataSource': null,
+    'status': 1,
+    'group': 2
+  },
+  {
+    'display': '{\'name\':{\'en\':\'Teacher courses\'}}',
+    'alt': null,
+    'count': 3,
+    'description': null,
+    'index': 1,
+    'sectionDataType': 'Content',
+    'facets': [
+      {
+        'values': [
+          {
+            'name': 'class 9',
+            'count': 1
+          },
+          {
+            'name': 'class 8',
+            'count': 1
+          },
+          {
+            'name': 'class 10',
+            'count': 1
+          }
+        ],
+        'name': 'gradeLevel'
+      },
+      {
+        'values': [
+          {
+            'name': 'mathematics',
+            'count': 1
+          }
+        ],
+        'name': 'subject'
+      },
+      {
+        'values': [
+          {
+            'name': '0128325322816552960',
+            'count': 3
+          }
+        ],
+        'name': 'channel'
+      },
+      {
+        'values': [
+          {
+            'name': 'english',
+            'count': 2
+          }
+        ],
+        'name': 'medium'
+      }
+    ],
+    'imgUrl': null,
+    'resmsgId': 'f547a0f0-ed20-11ea-9382-4bb882f48321',
+    'searchQuery': '{\'request\':{\'filters\':{\'contentType\':[\'Course\'],\'status\':[\'Live\'],\'objectType\':[\'Content\'],\'batches.enrollmentType\':\'open\',\'batches.status\':1,\'channel\':[\'0128325322816552960\']},\'exists\':[\'batches.batchId\'],\'sort_by\':{\'me_averageRating\':\'desc\',\'batches.startDate\':\'desc\'},\'limit\':10,\'organisationId\':\'01268904781886259221\',\'fields\':[],\'facets\':[\'topic\',\'purpose\',\'medium\',\'gradeLevel\',\'subject\',\'channel\']}}',
+    'name': 'Teacher courses',
+    'id': '01301948911576678460',
+  }
+];
+
 export const contentList = [
   {
     'name': 'PHET Simulations Test',
@@ -551,6 +667,46 @@ export const contentListWithHoverData = [
   }
 ];
 
+export const duplicateData = {
+  'purpose': [
+    {
+      'name': 'concepts understanding',
+      'count': 1
+    },
+    {
+      'name': 'concepts understanding',
+      'count': 1
+    }
+  ],
+  'channel': [
+    {
+      'identifier': '01272777697873100812',
+      'orgName': 'diksha_ntptest_org',
+      'slug': 'disha_ntptest'
+    },
+    {
+      'identifier': '01272777697873100812',
+      'orgName': 'First Org',
+      'slug': 'firstorg'
+    }
+  ]
+};
+
+export const nonDuplicateData = {
+  'purpose': [
+    {
+      'name': 'concepts understanding',
+      'count': 1
+    }
+  ],
+  'channel': [
+    {
+      'identifier': '01272777697873100812',
+      'orgName': 'diksha_ntptest_org',
+      'slug': 'disha_ntptest'
+    }
+  ]
+};
 export const contentHierarchyDateSet1 = {
   before: {
     mimeType: 'application/vnd.ekstep.content-collection',
@@ -666,3 +822,66 @@ export const contentHierarchyDateSet1 = {
     'identifier': 'do_312774554650435584110464'
   }
 };
+export const courseSectionFacetData = {
+  'facets': [
+    {
+      'name': 'gradeLevel',
+      'values': [
+        { 'name': 'class 10', 'count': 84 }, { 'name': 'class 1', 'count': 313 }
+      ]
+    },
+    {
+      'name': 'board',
+      'values': [
+        { 'name': 'class 10', 'count': 84 }, { 'name': 'class 1', 'count': 313 }
+      ]
+    },
+    {
+      'name': 'subject',
+      'values': [
+        { 'name': 'class 10', 'count': 84 }, { 'name': 'class 1', 'count': 313 }
+      ]
+    }
+  ],
+  'keys': ['board']
+};
+export const parsedCourseFacetData = {
+  'board': [
+    { 'name': 'class 10', 'count': 84 },
+    { 'name': 'class 1', 'count': 313 }
+  ]
+};
+export const courseFilters = {
+  'objectType': 'Content',
+  'contentType': 'Course',
+  'status': ['Live'],
+  'batches.enrollmentType': 'open',
+  'batches.status': 1,
+  'audience': ['Student', 'Teacher']
+};
+
+export const requiredProperties = {
+  'mimeType': 'application/vnd.ekstep.content-collection',
+  'children': [
+    {
+      'mimeType': 'application/vnd.ekstep.content-collection',
+      'children': [
+        {
+          'mimeType': 'text/x-url',
+          'contentType': 'Resource',
+          'identifier': 'do_1125110622654464001294',
+          'visibility': 'Default',
+          'name': 'A5 ext link'
+        }
+      ],
+      'contentType': 'CourseUnit',
+      'identifier': 'do_1125110676518584321298',
+      'visibility': 'Parent',
+      'name': 'Untitled Course Unit'
+    }
+  ],
+  'contentType': 'Course',
+  'identifier': 'do_1125110672521134081296',
+  'visibility': 'Default',
+  'name': 'A5 ext course'
+}

@@ -1,7 +1,6 @@
 const proxyUtils = require('./proxyUtils.js')
 const proxy = require('express-http-proxy')
 const bodyParser = require('body-parser')
-const permissionsHelper = require('./../helpers/permissionsHelper.js')
 const envHelper = require('./../helpers/environmentVariablesHelper.js')
 const contentProxyUrl = envHelper.CONTENT_PROXY_URL
 const learnerServiceBaseUrl = envHelper.LEARNER_URL
@@ -10,15 +9,16 @@ const contentServiceBaseUrl = envHelper.CONTENT_URL
 const reqDataLimitOfContentUpload = '30mb'
 const telemetryHelper = require('../helpers/telemetryHelper')
 const learnerURL = envHelper.LEARNER_URL
+const isAPIWhitelisted = require('../helpers/apiWhiteList');
 
 module.exports = function (app) {
 
   const proxyReqPathResolverMethod = function (req) {
     return require('url').parse(contentProxyUrl + req.originalUrl).path
   }
-  app.use('/plugins/v1/search', proxy(contentServiceBaseUrl, {
+  app.all('/plugins/v1/search', proxy(contentServiceBaseUrl, {
     preserveHostHdr: true,
-    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentServiceBaseUrl),
     proxyReqPathResolver: function (req) {
       var originalUrl = req.originalUrl
       originalUrl = originalUrl.replace('/', '')
@@ -26,38 +26,37 @@ module.exports = function (app) {
     }
   }))
 
-  app.use('/content-plugins/*', proxy(contentProxyUrl, {
+  app.all('/content-plugins/*', proxy(contentProxyUrl, {
     preserveHostHdr: true,
-    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
     proxyReqPathResolver: proxyReqPathResolverMethod
   }))
 
-  app.use('/plugins/*', proxy(contentProxyUrl, {
+  app.all('/plugins/*', proxy(contentProxyUrl, {
     preserveHostHdr: true,
-    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
     proxyReqPathResolver: proxyReqPathResolverMethod
   }))
 
-  app.use('/assets/public/*', proxy(contentProxyUrl, {
+  app.all('/assets/public/*', proxy(contentProxyUrl, {
     preserveHostHdr: true,
-    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
     proxyReqPathResolver: proxyReqPathResolverMethod
   }))
 
-  app.use('/content/preview/*', proxy(contentProxyUrl, {
+  app.all('/content/preview/*', proxy(contentProxyUrl, {
     preserveHostHdr: true,
-    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
     proxyReqPathResolver: proxyReqPathResolverMethod
   }))
 
-  // Log telemetry for action api's
-  app.all('/action/*', telemetryHelper.generateTelemetryForProxy)
-
-  app.use('/action/content/v3/unlisted/publish/:contentId', permissionsHelper.checkPermission(),
-    bodyParser.json(), proxy(contentProxyUrl, {
+  app.all('/action/content/v3/unlisted/publish/:contentId',
+    bodyParser.json(),
+    isAPIWhitelisted.isAllowed(),
+    proxy(contentProxyUrl, {
       preserveHostHdr: true,
       limit: reqDataLimitOfContentUpload,
-      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
       proxyReqPathResolver: proxyReqPathResolverMethod,
       proxyReqBodyDecorator: function (bodyContent, srcReq) {
         if (bodyContent && bodyContent.request && bodyContent.request.content) {
@@ -67,8 +66,10 @@ module.exports = function (app) {
       }
     }))
 
-  app.use('/action/data/v1/page/assemble', proxy(learnerServiceBaseUrl, {
-    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+  app.all('/action/data/v1/page/assemble',
+  isAPIWhitelisted.isAllowed(),
+  proxy(learnerServiceBaseUrl, {
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerServiceBaseUrl),
     proxyReqPathResolver: function (req) {
       var originalUrl = req.originalUrl
       originalUrl = originalUrl.replace('/action/', '')
@@ -77,8 +78,10 @@ module.exports = function (app) {
   }))
 
 
-  app.use('/action/data/v1/form/read', proxy(contentServiceBaseUrl, {
-    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+  app.all('/action/data/v1/form/read',
+  isAPIWhitelisted.isAllowed(),
+  proxy(contentServiceBaseUrl, {
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentServiceBaseUrl),
     proxyReqPathResolver: function (req) {
       var originalUrl = req.originalUrl
       originalUrl = originalUrl.replace('/action/', '')
@@ -91,7 +94,7 @@ module.exports = function (app) {
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,PATCH,DELETE,OPTIONS')
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization,' +
       'cid, user-id, x-auth, Cache-Control, X-Requested-With, *')
-  
+
     if (req.method === 'OPTIONS') {
       res.sendStatus(200)
     } else {
@@ -99,16 +102,21 @@ module.exports = function (app) {
     };
   }
 
-  app.use('/action/review/comment/*', addCorsHeaders,
+  app.all('/action/review/comment/*',
+  isAPIWhitelisted.isAllowed(),
+  addCorsHeaders,
   proxy(envHelper.PORTAL_EXT_PLUGIN_URL, {
     proxyReqPathResolver: req => {
       return req.originalUrl.replace('/action', '/plugin')
     },
     userResDecorator: userResDecorator
   }))
-  app.use('/action/textbook/v1/toc/*', addCorsHeaders,
+
+  app.all('/action/textbook/v1/toc/*',
+  isAPIWhitelisted.isAllowed(),
+  addCorsHeaders,
   proxy(learnerURL, {
-    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
     proxyReqPathResolver: (req) => {
       var originalUrl = req.originalUrl
       originalUrl = originalUrl.replace('/action/textbook/v1/', 'textbook/v1/')
@@ -116,29 +124,127 @@ module.exports = function (app) {
     },
     userResDecorator: userResDecorator
   }))
+
   app.post('/action/user/v1/search',
+    isAPIWhitelisted.isAllowed(),
     addCorsHeaders,
     proxyUtils.verifyToken(),
-    permissionsHelper.checkPermission(),
     proxy(learnerURL, {
       limit: reqDataLimitOfContentUpload,
-      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
       proxyReqPathResolver: function (req) {
         let originalUrl = req.originalUrl.replace('/action/', '')
         return require('url').parse(learnerURL + originalUrl).path
       },
       userResDecorator: userResDecorator
-  }))
+    })
+  )
 
-  app.use('/action/*', permissionsHelper.checkPermission(), proxy(contentProxyUrl, {
+  // Question & QuestionSet API's START
+
+  app.get([
+    '/action/questionset/v1/read/:do_id',
+    '/action/question/v1/read/:do_id',
+    '/action/questionset/v1/hierarchy/:do_id',
+    ],
+    isAPIWhitelisted.isAllowed(),
+    addCorsHeaders,
+    proxyUtils.verifyToken(),
+    proxy(learnerURL, {
+      limit: reqDataLimitOfContentUpload,
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
+      proxyReqPathResolver: function (req) {
+        let originalUrl = req.originalUrl.replace('/action/', '')
+        return require('url').parse(learnerURL + originalUrl).path
+      },
+      userResDecorator: userResDecorator
+    })
+  )
+
+  app.post([
+    '/action/questionset/v1/create',
+    '/action/questionset/v1/review/:do_id',
+    '/action/questionset/v1/publish/:do_id',
+    '/action/questionset/v1/reject/:do_id',
+    '/action/question/v1/create',
+    '/action/question/v1/review/:do_id',
+    '/action/question/v1/publish/:do_id'
+    ],
+    isAPIWhitelisted.isAllowed(),
+    addCorsHeaders,
+    proxyUtils.verifyToken(),
+    proxy(learnerURL, {
+      limit: reqDataLimitOfContentUpload,
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
+      proxyReqPathResolver: function (req) {
+        let originalUrl = req.originalUrl.replace('/action/', '')
+        return require('url').parse(learnerURL + originalUrl).path
+      },
+      userResDecorator: userResDecorator
+    })
+  )
+
+  app.patch([
+    '/action/questionset/v1/hierarchy/update',
+    '/action/questionset/v1/update/:do_id',
+    '/action/questionset/v1/add',
+    '/action/question/v1/update/:do_id'
+    ],
+    isAPIWhitelisted.isAllowed(),
+    addCorsHeaders,
+    proxyUtils.verifyToken(),
+    proxy(learnerURL, {
+      limit: reqDataLimitOfContentUpload,
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
+      proxyReqPathResolver: function (req) {
+        let originalUrl = req.originalUrl.replace('/action/', '')
+        return require('url').parse(learnerURL + originalUrl).path
+      },
+      userResDecorator: userResDecorator
+    })
+  )
+
+  app.post('/action/object/category/definition/v1/read',
+    isAPIWhitelisted.isAllowed(),
+    addCorsHeaders,
+    proxyUtils.verifyToken(),
+    proxy(learnerURL, {
+      limit: reqDataLimitOfContentUpload,
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
+      proxyReqPathResolver: function (req) {
+        let originalUrl = req.originalUrl.replace('/action/', '')
+        return require('url').parse(learnerURL + originalUrl).path
+      },
+      userResDecorator: userResDecorator
+    })
+  )
+
+  // Question & QuestionSet API's END
+
+  app.post('/action/content/v3/upload/*',
+    isAPIWhitelisted.isAllowed(),
+    proxy(contentProxyUrl, {
+      preserveHostHdr: true,
+      limit: reqDataLimitOfContentUpload,
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
+      proxyReqPathResolver: proxyReqPathResolverMethod,
+      userResDecorator: userResDecorator
+    })
+  )
+
+  app.all('/action/*',
+  bodyParser.json({ limit: '50mb' }),
+  isAPIWhitelisted.isAllowed(),
+  telemetryHelper.generateTelemetryForProxy,
+  proxy(contentProxyUrl, {
     preserveHostHdr: true,
     limit: reqDataLimitOfContentUpload,
-    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(contentProxyUrl),
     proxyReqPathResolver: proxyReqPathResolverMethod,
     userResDecorator: userResDecorator
   }))
 
-  app.use('/v1/url/fetchmeta', proxy(contentProxyUrl, {
+  app.all('/v1/url/fetchmeta', proxy(contentProxyUrl, {
     proxyReqPathResolver: proxyReqPathResolverMethod
   }))
 }

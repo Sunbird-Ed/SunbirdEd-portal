@@ -1,7 +1,7 @@
 import { ResourceRoutingModule } from './resource-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ResourceComponent, CurriculumCoursesComponent } from './components';
+import { CurriculumCoursesComponent } from './components';
 import { SharedModule } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { SlickModule } from 'ngx-slick';
@@ -10,9 +10,8 @@ import { CoreModule } from '@sunbird/core';
 import { NgInviewModule } from 'angular-inport';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
 import { ContentSearchModule } from '@sunbird/content-search';
-import { CurriculumCourseDetailsComponent } from './components/curriculum-course-details/curriculum-course-details.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -28,7 +27,7 @@ import { CurriculumCourseDetailsComponent } from './components/curriculum-course
     CommonConsumptionModule,
     ContentSearchModule
   ],
-  declarations: [ResourceComponent, CurriculumCoursesComponent, CurriculumCourseDetailsComponent]
+  declarations: [CurriculumCoursesComponent]
 })
 export class ResourceModule {
   }

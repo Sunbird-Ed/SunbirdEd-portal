@@ -3,7 +3,7 @@
 
     <!--Header-->
     <h5 class="sb-prominent-filter-header">
-      {{resourceService.frmelmnts?.lbl?.userFilterForm}}
+      {{resourceService.frmelmnts?.lbl?.userFilterForm | translate}}
       <i class="mobile only large angle down icon link right-floated" 
         [ngStyle]="{'transform': collapse === true ? 'rotate(0deg)' : 'rotate(180deg)'}"
         (click)="collapse = !collapse"
@@ -17,66 +17,66 @@
     <div class="ui active sb-prominent-filter-container" [suiCollapse]="collapse">
       
       <div *ngIf="allUserType" class="sb-prominent-filter-field">
-        <label>{{resourceService.frmelmnts?.lbl?.userType}}</label>
-        <app-custom-multi-select [inputData]="inputData.Usertype" [field]="allUserType" [valueField]="valueField" (selectedValue)="selectedValue($event, allUserType.code);">
+        <label>{{resourceService.frmelmnts?.lbl?.userType | translate}}</label>
+        <app-custom-multi-select [inputData]="inputData.Usertype" [field]="allUserType" (selectedValue)="selectedValue($event, allUserType.code);">
         </app-custom-multi-select>
       </div>
 
       <div *ngIf="medium" class="sb-prominent-filter-field">
-        <label>{{resourceService.frmelmnts?.lbl?.medium}}</label>
+        <label>{{resourceService.frmelmnts?.lbl?.medium | translate}}</label>
         <app-custom-multi-select [inputData]="inputData.medium" [field]="medium" (selectedValue)="selectedValue($event, medium.code);"></app-custom-multi-select>
       </div>
 
       <div *ngIf="class" class="sb-prominent-filter-field">
-        <label>{{resourceService.frmelmnts?.lbl?.class}}</label>
+        <label>{{resourceService.frmelmnts?.lbl?.class | translate}}</label>
         <app-custom-multi-select [inputData]="inputData.gradeLevel" [field]="class" (selectedValue)="selectedValue($event, class.code);"></app-custom-multi-select>
       </div>
 
       <div *ngIf="subject" class="sb-prominent-filter-field">
-        <label>{{resourceService.frmelmnts?.lbl?.subject}}</label>
+        <label>{{resourceService.frmelmnts?.lbl?.subject | translate}}</label>
         <app-custom-multi-select [inputData]="inputData.subject" [field]="subject" (selectedValue)="selectedValue($event, subject.code);"></app-custom-multi-select>
       </div>
 
       <div class="sb-prominent-filter-field">
-        <label>{{resourceService.frmelmnts?.lbl?.district}}</label>
+        <label>{{resourceService.frmelmnts?.lbl?.district | translate}}</label>
         <sui-select [(ngModel)]="selectedDistrict" (ngModelChange)="onDistrictChange($event)" [isSearchable]="true" class="selection"
-          [options]="allDistricts" labelField="name" valueField="id" name="district" placeholder="{{resourceService?.frmelmnts?.lbl?.selectDistrict}}"
+          [options]="allDistricts" labelField="name" valueField="id" name="district" placeholder="{{resourceService?.frmelmnts?.lbl?.selectDistrict | translate}}"
           #districtDiv>
           <sui-select-option *ngFor="let district of districtDiv.filteredOptions | slice:0:100" [value]="district"></sui-select-option>
         </sui-select>
       </div>
 
       <div class="sb-prominent-filter-field">
-        <label>{{resourceService.frmelmnts?.lbl?.block}}</label>
+        <label>{{resourceService.frmelmnts?.lbl?.block | translate}}</label>
         <sui-select [(ngModel)]="selectedBlock" (ngModelChange)="onBlockChange($event)" [isSearchable]="true" class="selection" [options]="allBlocks"
-          labelField="name" valueField="id" name="block" placeholder="{{resourceService.frmelmnts?.lbl?.selectBlock}}"
+          labelField="name" valueField="id" name="block" placeholder="{{resourceService.frmelmnts?.lbl?.selectBlock | translate}}"
           #blockDiv>
           <sui-select-option *ngFor="let block of blockDiv.filteredOptions | slice:0:100" [value]="block"></sui-select-option>
         </sui-select>
       </div>
 
       <div class="sb-prominent-filter-field">
-        <label>{{resourceService.frmelmnts?.lbl?.school}}</label>
+        <label>{{resourceService.frmelmnts?.lbl?.school | translate}}</label>
         <sui-select [(ngModel)]="selectedSchool" (ngModelChange)="onSchoolChange($event)" [isSearchable]="true" class="selection"
-          [options]="allSchools" labelField="orgName" valueField="identifier" name="school" placeholder="{{resourceService.frmelmnts?.lbl?.selectSchool}}"
+          [options]="allSchools" labelField="orgName" valueField="identifier" name="school" placeholder="{{resourceService.frmelmnts?.lbl?.selectSchool | translate}}"
           #schoolDiv>
           <sui-select-option *ngFor="let school of schoolDiv.filteredOptions | slice:0:100" [value]="school"></sui-select-option>
         </sui-select>
       </div>
 
       <div *ngIf="allRoles" class="sb-prominent-filter-field">
-        <label>{{resourceService.frmelmnts?.lbl?.role}}</label>
+        <label>{{resourceService.frmelmnts?.lbl?.role | translate}}</label>
         <app-custom-multi-select [inputData]="inputData.Roles" [field]="allRoles" (selectedValue)="selectedValue($event, allRoles.code);"></app-custom-multi-select>
       </div>
 
       <div class="sb-prominent-filter-field">
         <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="resetInteractEdata" 
           class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="resetFilters()">
-            {{resourceService.frmelmnts?.btn?.reset}}
+            {{resourceService.frmelmnts?.btn?.reset | translate}}
         </button>
         <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="submitInteractEdata" 
           class="sb-btn sb-btn-normal sb-btn-primary ml-8" (click)="applyFilters()">
-            {{resourceService.frmelmnts?.btn?.submit}}
+            {{resourceService.frmelmnts?.btn?.submit | translate}}
         </button>
       </div>
 

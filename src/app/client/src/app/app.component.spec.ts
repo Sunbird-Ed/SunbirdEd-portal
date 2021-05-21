@@ -1,7 +1,9 @@
 
-import { Observable, of } from 'rxjs';
-import { ConfigService, ToasterService, ResourceService, SharedModule, NavigationHelperService,
-  BrowserCacheTtlService } from '@sunbird/shared';
+import { Observable, of, throwError } from 'rxjs';
+import {
+  ConfigService, ToasterService, ResourceService, SharedModule, NavigationHelperService,
+  BrowserCacheTtlService, LayoutService
+} from '@sunbird/shared';
 import { UserService, LearnerService, CoursesService, PermissionService, TenantService,
   PublicDataService, SearchService, ContentService, CoreModule, OrgDetailsService, DeviceRegisterService
 } from '@sunbird/core';
@@ -9,7 +11,7 @@ import { TelemetryService, TELEMETRY_PROVIDER } from '@sunbird/telemetry';
 import { TestBed, async, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { mockData } from './app.component.spec.data';
 import { AppComponent } from './app.component';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ElementRef, NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import * as _ from 'lodash-es';
@@ -18,6 +20,8 @@ import { CacheService } from 'ng2-cache-service';
 import { animate, AnimationBuilder, AnimationMetadata, AnimationPlayer, style } from '@angular/animations';
 import { configureTestSuite } from '@sunbird/test-util';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
+import { UtilService } from '@sunbird/shared';
 
 class RouterStub {
   public navigationEnd = new NavigationEnd(0, '/explore', '/explore');
@@ -28,6 +32,11 @@ class RouterStub {
     observer.complete();
   });
 }
+
+class MockElementRef {
+  nativeElement: {};
+}
+
 const fakeActivatedRoute = {
   snapshot: {
     root: { firstChild: { params: { slug: 'sunbird' } } }
@@ -48,13 +57,14 @@ describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule,
-        RouterTestingModule],
+        RouterTestingModule, TranslateModule.forRoot()],
       declarations: [
         AppComponent
       ],
       providers: [
         { provide: Router, useClass: RouterStub},
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: ElementRef, useValue: new MockElementRef() },
         ToasterService, TenantService, CacheService, AnimationBuilder,
         UserService, ConfigService, LearnerService, BrowserCacheTtlService,
         PermissionService, ResourceService, CoursesService, OrgDetailsService, ProfileService,
@@ -164,7 +174,37 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     };
     expect(telemetryService.initialize).toHaveBeenCalledWith(jasmine.objectContaining({userOrgDetails: config.userOrgDetails}));
   });
-
+  it('Should call beforeunloadHandler method', () => {
+    const event = {};
+    spyOn(component, 'beforeunloadHandler');
+    component.beforeunloadHandler(event);
+    expect(component.beforeunloadHandler).toHaveBeenCalledWith(event);
+  });
+  it('Should call handleLogin method', () => {
+    spyOn(component, 'handleLogin');
+    component.handleLogin();
+    expect(component.handleLogin).toHaveBeenCalled();
+  });
+  it('Check if bot diplayed for route ', () => {
+    spyOn(component, 'isBotdisplayforRoute');
+    component.isBotdisplayforRoute();
+    expect(component.isBotdisplayforRoute).toHaveBeenCalled();
+  });
+  it('Set theme color ', () => {
+    spyOn(component, 'storeThemeColour');
+    component.storeThemeColour('#ffff');
+    expect(component.storeThemeColour).toHaveBeenCalled();
+  });
+  it('Check location pop up is required ', () => {
+    spyOn(component, 'isLocationStatusRequired');
+    component.isLocationStatusRequired();
+    expect(component.isLocationStatusRequired).toHaveBeenCalled();
+  });
+  it('Check location status pop up is required ', () => {
+    spyOn(component, 'checkLocationStatus');
+    component.checkLocationStatus();
+    expect(component.checkLocationStatus).toHaveBeenCalled();
+  });
   it('Should subscribe to tenant service and retrieve title and favicon details', () => {
     const orgDetailsService = TestBed.get(OrgDetailsService);
     const publicDataService = TestBed.get(PublicDataService);
@@ -173,6 +213,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     spyOn(publicDataService, 'post').and.returnValue(of({}));
     orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
     component.ngOnInit();
+    component.ngAfterViewInit();
     expect(document.title).toEqual(mockData.tenantResponse.result.titleName);
     expect(document.querySelector).toHaveBeenCalledWith('link[rel*=\'icon\']');
   });
@@ -221,5 +262,214 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     spyOn(orgDetailsService, 'getCustodianOrgDetails').and.returnValue(of({result: {response: {content: 'data'}}}));
     component.getUserFeedData();
     expect(userService.getFeedData).not.toHaveBeenCalled();
+  });
+  it('Check logExData called ', () => {
+    spyOn(component, 'logExData');
+    component.logExData('IMPRESSION', {});
+    expect(component.logExData).toHaveBeenCalled();
+  });
+  it('Check onLocationSubmit called ', () => {
+    spyOn(component, 'onLocationSubmit');
+    component.showYearOfBirthPopup = false;
+    component.onLocationSubmit();
+    expect(component.onLocationSubmit).toHaveBeenCalled();
+  });
+  it('Check interpolateInstance called ', () => {
+    spyOn(component, 'interpolateInstance');
+    component.interpolateInstance('check the data');
+    expect(component.interpolateInstance).toHaveBeenCalled();
+  });
+
+  it('should close joy theme popup and trigger furthur popup flow', () => {
+    spyOn(component, 'checkTncAndFrameWorkSelected');
+    component.onCloseJoyThemePopup();
+    expect(component.showJoyThemePopUp).toBe(false);
+    expect(component.checkTncAndFrameWorkSelected).toHaveBeenCalled();
+  });
+
+  it('should show tnc popup second time', () => {
+    spyOn(localStorage, 'getItem').and.returnValue('true');
+    spyOn(component, 'checkTncAndFrameWorkSelected');
+    component.joyThemePopup();
+    expect(component.checkTncAndFrameWorkSelected).toHaveBeenCalled();
+  });
+
+  it('should close joy theme popup and trigger furthur popup flow', () => {
+    spyOn(component, 'checkTncAndFrameWorkSelected');
+    component.onCloseJoyThemePopup();
+    expect(component.showJoyThemePopUp).toBe(false);
+    expect(component.checkTncAndFrameWorkSelected).toHaveBeenCalled();
+  });
+  it('should unsubscribe from all observable subscriptions', () => {
+    spyOn(component.unsubscribe$, 'next');
+    spyOn(component.unsubscribe$, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.next).toHaveBeenCalled();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
+  });
+
+  it('Should subscribe to layout service and retrieve layout config', () => {
+    const orgDetailsService = TestBed.get(OrgDetailsService);
+    const publicDataService = TestBed.get(PublicDataService);
+    const tenantService = TestBed.get(TenantService);
+    const layoutService = TestBed.get(LayoutService);
+    spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
+    spyOn(layoutService, 'switchableLayout').and.returnValue(of({layout: 'new layout'}));
+    spyOn(publicDataService, 'post').and.returnValue(of({}));
+    orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
+    component.ngOnInit();
+    expect(document.title).toEqual(mockData.tenantResponse.result.titleName);
+    expect(component.layoutConfiguration).toEqual('new layout');
+    expect(document.querySelector).toHaveBeenCalledWith('link[rel*=\'icon\']');
+  });
+
+  it('should check if font size if stored in system or not', () => {
+    spyOn(localStorage, 'getItem').and.returnValue(16);
+    spyOn(component, 'isDisableFontSize');
+    component.getLocalFontSize();
+    expect(component.fontSize).toBe(16);
+    expect(component.isDisableFontSize).toHaveBeenCalledWith(16);
+  });
+
+  it('should reset font size of the browser to 16px', () => {
+    spyOn(localStorage, 'getItem').and.returnValue(16);
+    spyOn(component, 'setLocalFontSize');
+    component.changeFontSize('reset');
+    expect(component.fontSize).toBe(16);
+    expect(component.setLocalFontSize).toHaveBeenCalledWith(16);
+  });
+
+  it('should increase font size of the browser by 2px', () => {
+    spyOn(localStorage, 'getItem').and.returnValue(18);
+    spyOn(component, 'setLocalFontSize');
+    component.changeFontSize('increase');
+    expect(component.fontSize).toBe(20);
+    expect(component.setLocalFontSize).toHaveBeenCalledWith(20);
+  });
+
+  it('should decrease font size of the browser by 2px', () => {
+    spyOn(localStorage, 'getItem').and.returnValue(14);
+    spyOn(component, 'setLocalFontSize');
+    component.changeFontSize('decrease');
+    expect(component.fontSize).toBe(12);
+    expect(component.setLocalFontSize).toHaveBeenCalledWith(12);
+  });
+
+  it('should call isDisableFontSize with the value 12', () => {
+    spyOn(localStorage, 'setItem');
+    spyOn(component, 'isDisableFontSize');
+    component.setLocalFontSize(12);
+    expect(component.isDisableFontSize).toHaveBeenCalledWith(12);
+  });
+
+  it('should call isDisableFontSize with the value 12', () => {
+    const setAttributeSpy = spyOn<any>(component['renderer'], 'setAttribute');
+    const removeAttributeSpy = spyOn<any>(component['renderer'], 'removeAttribute');
+    const increaseFontSize = component.increaseFontSize = TestBed.get(ElementRef);
+    const decreaseFontSize = component.decreaseFontSize  = TestBed.get(ElementRef);
+    const resetFontSize = component.resetFontSize  = TestBed.get(ElementRef);
+
+    component.isDisableFontSize(20);
+    expect(setAttributeSpy).toHaveBeenCalledWith(increaseFontSize.nativeElement, 'disabled', 'true');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(resetFontSize.nativeElement, 'disabled');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(decreaseFontSize.nativeElement, 'disabled');
+
+    component.isDisableFontSize(12);
+    expect(setAttributeSpy).toHaveBeenCalledWith(decreaseFontSize.nativeElement, 'disabled', 'true');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(resetFontSize.nativeElement, 'disabled');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(increaseFontSize.nativeElement, 'disabled');
+
+    component.isDisableFontSize(16);
+    expect(setAttributeSpy).toHaveBeenCalledWith(resetFontSize.nativeElement, 'disabled', 'true');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(increaseFontSize.nativeElement, 'disabled');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(decreaseFontSize.nativeElement, 'disabled');
+
+    component.isDisableFontSize(14);
+    expect(removeAttributeSpy).toHaveBeenCalledWith(increaseFontSize.nativeElement, 'disabled');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(resetFontSize.nativeElement, 'disabled');
+    expect(removeAttributeSpy).toHaveBeenCalledWith(decreaseFontSize.nativeElement, 'disabled');
+
+  });
+
+  it('should get Local Theme', () => {
+    spyOn(localStorage, 'getItem').and.returnValue('true');
+    spyOn(component, 'setLocalTheme');
+    component.getLocalTheme();
+    expect(component.setLocalTheme).toHaveBeenCalled();
+  });
+  it('should change Theme to Dark mode', () => {
+    component.dataThemeAttribute = 'Darkmode';
+    spyOn(component, 'changeTheme');
+    component.changeTheme();
+    expect(component.changeTheme).toHaveBeenCalled();
+  });
+  it('should set the Local Theme', () => {
+    component.dataThemeAttribute = 'Darkmode';
+    spyOn(component, 'setLocalTheme');
+    component.setLocalTheme(component.dataThemeAttribute);
+    expect(component.setLocalTheme).toHaveBeenCalled();
+  });
+  it('should call skipToMainContent', () => {
+    spyOn(component, 'skipToMainContent');
+    component.skipToMainContent();
+    expect(component.skipToMainContent).toHaveBeenCalled();
+  });
+  it('should close framework popup', () => {
+    component.frameWorkPopUp = { modal: {
+        deny: jasmine.createSpy('deny')
+      }
+    };
+    component.closeFrameworkPopup();
+    expect(component.frameWorkPopUp.modal.deny).toHaveBeenCalled();
+    expect(component.showFrameWorkPopUp).toBe(false);
+  });
+
+  it('should update framework for logged In user', () => {
+    const event = { board: ['CBSE'], medium: ['English'], gradeLevel: ['Class 1'], subject: ['English'] };
+    component.isGuestUser = false;
+    const profileService = TestBed.get(ProfileService);
+    const utilService = TestBed.get(UtilService);
+    spyOn(profileService, 'updateProfile').and.returnValue(of({}));
+    spyOn(component, 'closeFrameworkPopup');
+    spyOn(component, 'checkLocationStatus');
+    spyOn(userService, 'setUserFramework');
+    spyOn(utilService, 'toggleAppPopup');
+    component.updateFrameWork(event);
+    expect(profileService.updateProfile).toHaveBeenCalled();
+    expect(component.closeFrameworkPopup).toHaveBeenCalled();
+    expect(component.checkLocationStatus).toHaveBeenCalled();
+    expect(userService.setUserFramework).toHaveBeenCalled();
+    expect(utilService.toggleAppPopup).toHaveBeenCalled();
+  });
+  it('should not update framework for logged In user', () => {
+    const event = { board: ['CBSE'], medium: ['English'], gradeLevel: ['Class 1'], subject: ['English'] };
+    component.isGuestUser = false;
+    const profileService = TestBed.get(ProfileService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(profileService, 'updateProfile').and.returnValue(throwError({}));
+    component.updateFrameWork(event);
+    expect(profileService.updateProfile).toHaveBeenCalled();
+  });
+  it('should update framework for guest user', () => {
+    const event = { board: ['CBSE'], medium: ['English'], gradeLevel: ['Class 1'], subject: ['English'] };
+    component.isGuestUser = true;
+    component.guestUserDetails = undefined;
+    component.isDesktopApp = false;
+    spyOn(component, 'closeFrameworkPopup');
+    spyOn(component, 'checkLocationStatus');
+    component.updateFrameWork(event);
+    expect(component.closeFrameworkPopup).toHaveBeenCalled();
+    expect(component.checkLocationStatus).toHaveBeenCalled();
+  });
+  it('should update framework for guest user/desktop', () => {
+    const event = { board: ['CBSE'], medium: ['English'], gradeLevel: ['Class 1'], subject: ['English'] };
+    component.isGuestUser = true;
+    component.guestUserDetails = undefined;
+    component.isDesktopApp = true;
+    spyOn(component, 'closeFrameworkPopup');
+    spyOn(component, 'checkLocationStatus');
+    component.updateFrameWork(event);
+    expect(component.closeFrameworkPopup).toHaveBeenCalled();
+    expect(component.checkLocationStatus).toHaveBeenCalled();
   });
 });

@@ -1,53 +1,69 @@
-.ui.secondary.pointing.menu.sb-tabs__header {
-  height:56px;
+.ui.secondary.pointing.menu {
+  &.sb-tabs__header {
+    height: calculateRem(56px);
+
+    .item {
+      margin: 0 0 0px;
+    }
+
+    .active.item,
+    .item:hover {
+      color: var(--primary-400);
+    }
+  }
+
+  .active.item {
+    border-color: var(--primary--600);
+    color: var(--primary--600);
+
+    &:hover {
+      border-color: var(--primary-600);
+      color: var(--primary--600);
+    }
+  }
+
+  &.pointing-tab {
+    border: calculateRem(1px) solid var(--rc-dededf); //TODO design team need to add this in color scheme
+    border-radius: calculateRem(4px);
+    box-shadow: 0 calculateRem(1px) calculateRem(2px) 0 rgba(var(--rc-rgba-black), 0.15);
+    min-height: 2.285714em;
+
+    .item {
+      border-right: calculateRem(1px) solid var(--rc-dededf);
+
+      &:last-child {
+        border-right: 0;
+
+      }
+    }
+
+    .active.item {
+      border: 0;
+      margin: 0;
+      background-color: var(--primary-100);
+
+      &:after {
+        content: '';
+        position: absolute;
+        display: block;
+        top: 100%;
+        left: 50%;
+        right: 0;
+        width: 0;
+        height: 0;
+        border-top: solid calculateRem(8px) var(--primary-100);
+        border-right: solid calculateRem(8px) transparent;
+      }
+
+      &:hover {
+        border: 0;
+        margin: 0;
+        background-color: var(--primary-100);
+      }
+    }
+  }
 }
-.ui.secondary.pointing.menu.sb-tabs__header .item {
-  margin: 0 0 0px;
+
+.ui.tabular.menu .active.item {
+  color: var(--primary--600);
 }
-.ui.secondary.pointing.menu.sb-tabs__header .active.item, .ui.secondary.pointing.menu.sb-tabs__header .item:hover {
-  color: var(--primary-400);
-}
-
-.ui.secondary.pointing.menu .active.item,
-.ui.secondary.pointing.menu .active.item:hover {
-    border-color: $sb-tabs-border-active-color;
-    color: $sb-tabs-color;
-  }
-  
-  .ui.tabular.menu .active.item {
-    color: $sb-tabs-color;
-  }
-
-  .ui.secondary.pointing.menu.pointing-tab .active.item:after {
-    content: '';
-    position: absolute;
-    display: block;
-    top: 100%;
-    left: 50%;
-    right: 0;
-    width: 0;
-    height: 0;
-    border-top: solid $base-block-space $primary-100;
-    border-right: solid $base-block-space transparent;
-  }
-
-  .ui.secondary.pointing.menu.pointing-tab .active.item,
-  .ui.secondary.pointing.menu.pointing-tab .active.item:hover {
-    border:0;
-    margin:0;
-    background-color: $primary-100;
-  }
-
-  .ui.secondary.pointing.menu.pointing-tab {
-    border:  calculateRem(1px) solid $sb-pointing-tabs-border;
-    border-radius: $sb-pointing-tabs-border-radius;
-    box-shadow: 0  calculateRem(1px)  calculateRem(2px) 0 rgba(0,0,0,0.15);
-    min-height: $sb-pointing-tabs-min-width;
-  }
-
-  .ui.secondary.pointing.menu.pointing-tab .item {
-    border-right:  calculateRem(1px) solid $sb-pointing-tabs-border;
-  }
-  .ui.secondary.pointing.menu.pointing-tab .item:last-child {
-    border-right: 0;
-  }

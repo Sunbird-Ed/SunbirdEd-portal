@@ -4,8 +4,8 @@
 .content-header {
     &__img {
       overflow: hidden;
-      width: 48px;
-      height:48px;
+      width: calculateRem(48px);
+      height:calculateRem(48px);
       img {
       height: 100%;
     }
@@ -30,7 +30,7 @@
 }
 .header-shadow {
     min-height: calculateRem(80px);
-    background-color: #fafafa;
-    box-shadow: 0 calculateRem(10px) calculateRem(10px) calculateRem(-10px) rgba(0, 0, 0, 0.25);
+    background-color: var(--rc-FAFAFA);
+    box-shadow: 0 calculateRem(10px) calculateRem(10px) calculateRem(-10px) rgba(var(--rc-rgba-black), 0.25);
     z-index: 99;
   }

@@ -34,17 +34,17 @@ const routes: Routes = [
       {
         path: ':courseId/dashboard', loadChildren: './../dashboard/dashboard.module#DashboardModule', canActivate: [AuthGuard],
         data: {
-          roles: 'courseBatchRoles',
+          roles: 'createBatchRole',
           telemetry: { env: telemetryEnv, pageid: 'course-stats', type: 'view', object: { ver: '1.0', type: 'course' } }
         }
       },
       {
         path: ':courseId/batch/:batchId', component: CoursePlayerComponent,
         data: {
-          routeReuse: {
-            reuse: true,
-            path: 'learn/course/play'
-          },
+          // routeReuse: {
+          //   reuse: true,
+          //   path: 'learn/course/play'
+          // },
           telemetry: { env: telemetryEnv, pageid: 'course-read', type: 'workflow', object: { ver: '1.0', type: 'course' } },
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }]
         },

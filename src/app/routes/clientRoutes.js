@@ -7,7 +7,6 @@ _ = require('lodash'),
 path = require('path'),
 envHelper = require('../helpers/environmentVariablesHelper.js'),
 tenantHelper = require('../helpers/tenantHelper.js'),
-logger = require('sb_logger_util_v2'),
 defaultTenantIndexStatus = tenantHelper.getDefaultTenantIndexState(),
 oneDayMS = 86400000,
 pathMap = {},
@@ -16,6 +15,7 @@ proxyUtils = require('../proxy/proxyUtils.js')
 const CONSTANTS = require('../helpers/constants');
 const { memoryStore } = require('../helpers/keyCloakHelper')
 const session = require('express-session');
+const { logger } = require('@project-sunbird/logger');
 
 logger.info({msg:`CDN index file exist: ${cdnIndexFileExist}`});
 
@@ -36,11 +36,7 @@ const setZipConfig = (req, res, type, encoding, dist = '../') => {
         return true
     } else {
       pathMap[req.path + type] = 'notExist';
-      logger.info({msg:'zip file not exist' ,
-      additionalInfo: {
-        url: req.url,
-        type: type
-      }})
+      // logger.info({ msg: 'zip file not exist', additionalInfo: { url: req.url, type: type } });
       return false;
     }
 }
@@ -90,6 +86,7 @@ module.exports = (app, keycloak) => {
   })
 
   app.all('/play/quiz/*', playContent);
+  app.all('/manage-learn/*', MLContent);
 
   app.all('/get/dial/:dialCode',(req,res,next) => {
       if (_.get(req, 'query.channel')) {
@@ -101,11 +98,14 @@ module.exports = (app, keycloak) => {
 
   app.all(['/announcement', '/announcement/*', '/search', '/search/*',
   '/orgType', '/orgType/*', '/dashBoard', '/dashBoard/*',
-  '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources',
-  '/resources/*', '/myActivity', '/myActivity/*', '/org/*', '/manage', '/contribute','/contribute/*','/groups','/groups/*'], 
+  '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources', '/discussion-forum/*',
+  '/resources/*', '/myActivity', '/myActivity/*', '/org/*', '/manage', '/contribute','/contribute/*','/groups','/groups/*', '/my-groups','/my-groups/*','/certs/configure/*'], 
   session({
-    secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
+    secret: envHelper.PORTAL_SESSION_SECRET_KEY,
     resave: false,
+    cookie: {
+      maxAge: envHelper.sunbird_session_ttl 
+    },
     saveUninitialized: false,
     store: memoryStore
   }), keycloak.middleware({ admin: '/callback', logout: '/logout' }), keycloak.protect(), indexPage(true));
@@ -116,8 +116,11 @@ module.exports = (app, keycloak) => {
     '/:slug/explore-course', '/:slug/explore-course/*', '/:slug/signup', '/signup', '/:slug/sign-in/*',
     '/sign-in/*', '/download/*', '/accountMerge/*','/:slug/accountMerge/*', '/:slug/download/*', '/certs/*', '/:slug/certs/*', '/recover/*', '/:slug/recover/*', '/explore-groups'], 
     session({
-      secret: '717b3357-b2b1-4e39-9090-1c712d1b8b64',
+      secret: envHelper.PORTAL_SESSION_SECRET_KEY,
       resave: false,
+      cookie: {
+        maxAge: envHelper.sunbird_session_ttl 
+      },
       saveUninitialized: false,
       store: memoryStore
     }),
@@ -151,6 +154,7 @@ function getLocals(req) {
     locals.sessionId = null
     locals.userSid = null;
   }
+  locals.userName = _.get(req, 'session.userName') || null;
   locals.cdnUrl = envHelper.PORTAL_CDN_URL
   locals.theme = envHelper.sunbird_theme
   locals.defaultPortalLanguage = envHelper.sunbird_default_language
@@ -186,6 +190,13 @@ function getLocals(req) {
   locals.genericEditorURL = envHelper.CONTENT_EDITORS_URL.GENERIC_EDITOR;
   locals.botConfigured = envHelper.sunbird_bot_configured;
   locals.botServiceURL = envHelper.sunbird_bot_service_URL;
+  locals.superAdminSlug = envHelper.sunbird_super_admin_slug;
+  locals.p1reCaptchaEnabled = envHelper.sunbird_p1_reCaptcha_enabled;
+  locals.p2reCaptchaEnabled = envHelper.sunbird_p2_reCaptcha_enabled;
+  locals.p3reCaptchaEnabled = envHelper.sunbird_p3_reCaptcha_enabled;
+  locals.enableSSO = envHelper.sunbird_enable_sso;
+  locals.reportsListVersion = envHelper.reportsListVersion;
+  locals.baseUrl = null;
   return locals
 }
 
@@ -274,7 +285,11 @@ const redirectTologgedInPage = (req, res) => {
 		if (_.get(redirectRoutes, req.originalUrl)) {
 			const routes = _.get(redirectRoutes, req.originalUrl);
 			res.redirect(routes)
-		} else {
+		} else if (_.get(redirectRoutes, ((req.originalUrl).substring(0,(req.originalUrl).indexOf('?'))))) {
+      let routes = _.get(redirectRoutes, ((req.originalUrl).substring(0,(req.originalUrl).indexOf('?'))));
+      routes = routes + ((req.originalUrl).substring((req.originalUrl).indexOf('?')));
+			res.redirect(routes)
+    } else {
       const urlWithOutSlug = req.params.slug ? req.originalUrl.replace('/' + req.params.slug, '') : req.originalUrl;
       const courseUrl = urlWithOutSlug.includes('/explore-course/course/');
       if (courseUrl) {
@@ -299,6 +314,13 @@ const redirectTologgedInPage = (req, res) => {
 const playContent = (req, res) => {
   if (req.path.includes('/play/quiz') && fs.existsSync(path.join(__dirname, '../tenant/quiz/', 'index.html'))){
     res.sendFile(path.join(__dirname, '../tenant/quiz/', 'index.html'));
+  } else {
+    renderDefaultIndexPage(req, res);
+  }
+}
+const MLContent = (req, res) => {
+  if (req.path.includes('/manage-learn/') && fs.existsSync(path.join(__dirname, '../tenant/manage-learn/', 'index.html'))){
+    res.sendFile(path.join(__dirname, '../tenant/manage-learn/', 'index.html'));
   } else {
     renderDefaultIndexPage(req, res);
   }

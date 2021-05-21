@@ -81,5 +81,27 @@ describe('UpforreviewContentplayerComponent', () => {
     expect(component.showError).toBeFalsy();
     expect(component.showLoader).toBeFalsy();
   });
+  it('should call handleSceneChangeEvent', () => {
+    component.stageId = '1';
+    const data = {
+      stageId: '2'
+    };
+    spyOn(component, 'handleSceneChangeEvent').and.callThrough();
+    component.handleSceneChangeEvent(data);
+    expect(component.handleSceneChangeEvent).toHaveBeenCalledWith(data);
+    expect(component.stageId).toBe('2');
+  });
+  it('should redo layout on render', () => {
+    component.layoutConfiguration = {};
+    spyOn(component, 'initLayout').and.callThrough();
+    component.ngOnInit();
+    expect(component.initLayout).toHaveBeenCalled();
+  });
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.unsubscribe$, 'complete');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
+  });
 
 });

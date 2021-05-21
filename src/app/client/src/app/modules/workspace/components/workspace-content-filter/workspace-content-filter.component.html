@@ -1,64 +1,66 @@
-<div class="ui grid padded">
-  <div class="seven wide column pt-0 pl-0">
-    <div class="ui fluid icon input left action" id="search-input-container">
-      <div class="searchfilterinput ui search">
-        <div class="searchicon ui icon input ">
-          <input class="upForReviewSearchBox" type="text" name="filter_search" 
-            [(ngModel)]="query" (keyup)="keyup(query)"
-            placeholder="{{resourceService?.frmelmnts?.prmpt?.searchContent}}"
-            title="Search" autocomplete="off" spellcheck="false" dir="auto" />
-          <i class="circular search link icon"></i>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="two wide column pt-10" id="showFilterButton">
-    <span class="browse item cursor-pointer" suiPopup [popupPlacement]="position" [popupTemplate]="popupTemplate" popupTrigger="outsideClick">
-      {{resourceService?.frmelmnts?.lbl?.showFilters}}
-      <i class="dropdown icon"  appTelemetryInteract [telemetryInteractEdata]="filterIntractEdata"></i>
-    </span>
-  </div>
-  <div class="three wide column pt-5">
-    <div class="twelve wide column">
-      <div class="field">
-        <div class="content dropdown-content">
-         <span class="ShowFilterSubTitle">{{resourceService?.frmelmnts?.lbl?.sortby}}:&nbsp;</span>
-          <div class="ui inline dropdown search-dropdown content-filter-sort" id="sortByDropDown">
-            <sui-select class="inline" (selectedOptionChange)= "applySorting($event)" [(ngModel)]="sortByOption" [options]="sortingOptions"
-            valueField="field"
-        labelField="name"  #selectSort>
-              <sui-select-option *ngFor="let option of selectSort.filteredOptions" [value]="option" >
-              </sui-select-option>
-            </sui-select>
+<div class="sbt-page-gap">
+  <div class="ui grid padded">
+    <div class="seven wide column pt-0 pl-0">
+      <div class="ui fluid icon input left action" id="search-input-container">
+        <div class="searchfilterinput ui search">
+          <div class="searchicon ui icon input ">
+            <input class="upForReviewSearchBox" type="text" name="filter_search" 
+              [(ngModel)]="query" (keyup)="keyup(query)"
+              placeholder="{{resourceService?.frmelmnts?.prmpt?.searchContent}}"
+              title="Search" autocomplete="off" spellcheck="false" dir="auto" />
+            <i class="circular search link icon"></i>
           </div>
-          <i *ngIf="sortByOption && sortByOption.length > 0" [ngClass]=" sortIcon === false ? 'sort content ascending icon' : 'sort content descending icon' "
-            class="link" (click)="applySorting(sortByOption)">
-          </i>
+        </div>
+      </div>
+    </div>
+    <div class="two wide column pt-10" id="showFilterButton">
+      <span class="browse item cursor-pointer" suiPopup [popupPlacement]="position" [popupTemplate]="popupTemplate" popupTrigger="outsideClick">
+        {{resourceService?.frmelmnts?.lbl?.showFilters}}
+        <i class="dropdown icon"  appTelemetryInteract [telemetryInteractEdata]="filterIntractEdata"></i>
+      </span>
+    </div>
+    <div class="three wide column pt-5">
+      <div class="twelve wide column">
+        <div class="field">
+          <div class="content dropdown-content">
+           <span class="ShowFilterSubTitle">{{resourceService?.frmelmnts?.lbl?.sortby}}:&nbsp;</span>
+            <div class="ui inline dropdown search-dropdown content-filter-sort" id="sortByDropDown">
+              <sui-select class="inline" (selectedOptionChange)= "applySorting($event)" [(ngModel)]="sortByOption" [options]="sortingOptions"
+              valueField="field"
+          labelField="name"  #selectSort>
+                <sui-select-option *ngFor="let option of selectSort.filteredOptions" [value]="option" >
+                </sui-select-option>
+              </sui-select>
+            </div>
+            <i *ngIf="sortByOption && sortByOption.length > 0" [ngClass]=" sortIcon === false ? 'sort content ascending icon' : 'sort content descending icon' "
+              class="link" (click)="applySorting(sortByOption)">
+            </i>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-
-<ng-template let-popup #popupTemplate>
-  <div class="popup-content">
-      <app-data-driven-filter [pageId]="'all-my-content-page'" [ignoreQuery]="['key','sortType','sort_by','query']" *ngIf="filterType" [filterEnv]="filterType"
-      [accordionDefaultOpen]=true [isShowFilterLabel]=false [showSearchedParam]=false></app-data-driven-filter>
-    </div>
-</ng-template>
-<div class="ui grid">
-    <div class="twelve wide column content" *ngIf='queryParams != undefined'>
-        <span *ngFor="let value of label">
-          <span class="padded chip pr-5" *ngIf='queryParams[value.id] && queryParams[value.id].length > 0'>
-            {{value.name}}:
-            <span *ngFor="let item of queryParams[value.id] ">
-              <a class="ui label mt-5 mr-5">
-                {{item}}
-                <i class="delete icon" (click)="removeFilterSelection(value.id,item)"></i>
-              </a>
+  
+  <ng-template let-popup #popupTemplate>
+    <div class="popup-content">
+        <app-data-driven-filter [pageId]="'all-my-content-page'" [ignoreQuery]="['key','sortType','sort_by','query']" *ngIf="filterType" [filterEnv]="filterType"
+        [accordionDefaultOpen]=true [isShowFilterLabel]=false [showSearchedParam]=false></app-data-driven-filter>
+      </div>
+  </ng-template>
+  <div class="ui grid">
+      <div class="twelve wide column content" *ngIf='queryParams != undefined'>
+          <span *ngFor="let value of label">
+            <span class="padded chip pr-5" *ngIf='queryParams[value.id] && queryParams[value.id].length > 0'>
+              {{value.name}}:
+              <span *ngFor="let item of queryParams[value.id] ">
+                <a class="ui label mt-5 mr-5">
+                  {{item}}
+                  <i class="delete icon" (click)="removeFilterSelection(value.id,item)"></i>
+                </a>
+              </span>
             </span>
           </span>
-        </span>
-    </div>
+      </div>
+  </div>
+    
 </div>
-  

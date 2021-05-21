@@ -1,26 +1,36 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { PublicCollectionPlayerComponent, PublicContentPlayerComponent } from './components';
+import { ContentPlayerComponent, CollectionPlayerComponent } from '@sunbird/shared-feature';
+import { PendingchangesGuard } from './../../services';
+
 const routes: Routes = [
     {
-        path: 'content/:contentId', component: PublicContentPlayerComponent, data: {
-            routeReuse: {
-                reuse: true,
-                path: '/play/content'
-              },
+        path: 'content/:contentId', component: ContentPlayerComponent, data: {
+            // routeReuse: {
+            //     reuse: true,
+            //     path: '/play/content'
+            //   },
             telemetry: {
                 env: 'public', pageid: 'play-content', type: 'view', subtype: 'paginate'
             }
         }
     },
     {
-        path: 'collection/:collectionId', component: PublicCollectionPlayerComponent, data: {
-            routeReuse: {
-                reuse: true,
-                path: '/play/collection'
-              },
+        path: 'collection/:collectionId', component: CollectionPlayerComponent, data: {
+            // routeReuse: {
+            //     reuse: true,
+            //     path: '/play/collection'
+            //   },
             telemetry: {
                 env: 'public', pageid: 'play-collection', type: 'view', subtype: 'paginate'
+            }
+        }
+    },
+    {
+        path: 'questionset/:contentId', component: ContentPlayerComponent, canDeactivate: [PendingchangesGuard],
+        data: {
+            telemetry: {
+                env: 'public', pageid: 'play-questionset', type: 'view', subtype: 'paginate'
             }
         }
     }

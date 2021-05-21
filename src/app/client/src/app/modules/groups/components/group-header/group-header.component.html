@@ -1,29 +1,88 @@
-<!--  add back button, group name, edit , show past members and delete -->
+<app-back-button></app-back-button>
 
-<div class="sb-bg-color-white">
-    <div class="ui container py-8">
-      <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0">
-        <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
-            <use xlink:href="./assets/images/sprite.svg#arrow-long-left"></use>
-          </svg></i> Back</button>
-    </div>
-  </div>
-  
-  <div class="content-header">
-    <div class="ui container py-16">
-      <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
-        <div class="flex-basis-1 mr-32">
-          <div class="content-header__title font-weight-bold sb__ellipsis sb__ellipsis--one">
-            <div>Group Name 123</div>
-          </div>
+<div class="content-header">
+  <div class="ui container pb-16">
+    <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
+      <div class="flex-basis-1 mr-32">
+        <div class="content-header__title font-weight-bold sb__ellipsis sb__ellipsis--one d-flex">
+          <div>{{groupData?.name}}</div>
         </div>
-        <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
-          <button class="sb-btn sb-btn-outline-error sb-left-icon-btn sb-btn-normal flex-ai-jc-center mr-8">
-            <img src="./assets/images/icon_delete.svg" class="mr-4" width="16" /> Delete</button>
-          <button type="button" class="sb-btn sb-btn-outline-primary sb-left-icon-btn sb-btn-normal mr-8 flex-ai-jc-center">
-          <img src="./assets/images/icon_members.svg" class="mr-4" width="16" /> Show Past members</button>
-          <button class="sb-btn sb-btn-primary sb-btn-normal sb-left-icon-btn flex-ai-jc-center"><img  width="16"  class="mr-4" src="./assets/images/icon_edit.svg" /> Edit</button>
+        <div class="d-flex flex-ai-center content-header__info">
+          <div>{{resourceService?.frmelmnts?.lbl?.groupCreatedBy | interpolate:'{name}': creator}}</div>
+        </div>
+      </div>
+      <!--Forum Icon-->
+      <app-access-discussion [forumIds]="forumIds" [fetchForumIdReq]="fetchForumIdReq" (routerData)="assignForumData($event)"> </app-access-discussion>
+      <div class="d-flex flex-ai-center flex-w-wrap content-header__buttons">
+        <!-- <button class="sb-btn sb-btn-normal sb-btn-link-primary min-w-auto p-0 px-8" type="button"
+          (click)="toggleFtuModal(true);addTelemetry('member-ftu-popup')">
+          <i class="icon-svg icon-svg--sm icon-info" aria-hidden="true">
+            <svg class="icon icon-svg--primary">
+              <use xlink:href="./assets/images/sprite.svg#info"></use>
+            </svg>
+          </i>
+        </button> -->
+        <div class="kabab-menu" id="group-actions" (click)="dropdownMenu();addTelemetry('kebab-menu')"></div>
+        <div class="kabab-menu-dropdown-content" [hidden]="dropdownContent">
+
+
+          <!-- dropdownContent btn Labels -->
+          <!-- admin -->
+          <div *ngIf="groupData?.isAdmin">
+                  <!-- when group is active -->
+              <div *ngIf="groupData?.active">
+                    <div class="d-flex flex-ai-center list p-8 w-100" (click)="editGroup();addTelemetry('edit-group', '', { type: UPDATE_GROUP})">
+                      {{resourceService?.frmelmnts?.lbl?.editGroup}}
+                    </div>
+                    <div class="d-flex flex-ai-center list p-8 w-100 fnormal" (click)="toggleModal(true, 'deActivate')">
+                      {{resourceService?.frmelmnts?.btn?.deactivategrp}}
+                    </div>
+                    <div class="d-flex flex-ai-center list p-8 w-100 fnormal" *ngIf="forumIds.length === 0" (click)="enableDiscussionForum()">
+                      {{resourceService?.frmelmnts?.lbl?.enableDiscussionForum}}
+                    </div>
+                    <div class="d-flex flex-ai-center list p-8 w-100 fnormal" *ngIf="forumIds.length > 0" (click)="toggleModal(true, 'disableDiscussionForum')">
+                      {{resourceService?.frmelmnts?.lbl?.disableDiscussionForum}}
+                    </div>
+              </div>
+
+                  <!-- when group is suspended -->
+              <div *ngIf="!groupData?.active">
+                    <div class="d-flex flex-ai-center list p-8 w-100 fnormal" (click)="toggleModal(true, 'activate');">
+                      {{resourceService?.frmelmnts.lbl.activategrp}}
+                    </div>
+              </div>
+          </div>
+          
+            <!-- member -->
+          <div *ngIf="!groupData?.isCreator">
+                    <div class="d-flex flex-ai-center list sb-color-error p-8 w-100" (click)="showLeaveGroupModal=true;dropdownMenu()">
+                        {{resourceService?.frmelmnts?.lbl?.leaveGroup}}
+                    </div>
+          </div>
+
+                    <!-- creator -->
+          <div *ngIf="groupData?.isCreator">
+                      <div class="d-flex flex-ai-center list sb-color-error p-8 w-100"
+                        (click)="toggleModal(true, 'delete');">{{resourceService?.frmelmnts?.lbl?.deleteGroup}}
+                      </div>
+          </div>
+
+          <!-- end dropdownContent btn Labels -->
+
         </div>
       </div>
     </div>
   </div>
+</div>
+
+<app-modal *ngIf="showModal" [title]="title" [msg]="msg" [name]="name" (handleEvent)="handleEvent($event)"></app-modal>
+
+
+<app-member-actions *ngIf="showLeaveGroupModal" [action]="'leaveFromGroup'" [groupName]="groupData?.name"
+  (modalClose)="showLeaveGroupModal=false" (actionConfirm)="leaveGroup()"></app-member-actions>
+
+<sui-dimmer class="page" *ngIf="showLoader" [isDimmed]="showLoader">
+  <div class="ui text loader">
+    <h2>{{resourceService?.messages?.fmsg?.m0087}}</h2>
+  </div>
+</sui-dimmer>

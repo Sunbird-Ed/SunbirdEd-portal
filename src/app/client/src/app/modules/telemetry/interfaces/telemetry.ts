@@ -38,6 +38,7 @@ export interface IAuditEventEData {
   'props': string[];
   'state': string;
   'prevstate': string;
+  'type'?: string;
 }
 export interface IShareEventData {
   'type': string;
@@ -169,6 +170,7 @@ export interface IAuditEventInput {
     'id': string;
     'type': string;
     'ver'?: string;
+    'rollup'?: {};
   };
   'edata': IAuditEventEData;
 }

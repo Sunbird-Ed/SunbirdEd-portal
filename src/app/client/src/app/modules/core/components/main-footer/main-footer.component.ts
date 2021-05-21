@@ -1,5 +1,16 @@
-import { Component, OnInit, ViewChild, ElementRef, Renderer2, ChangeDetectorRef,  HostListener, AfterViewInit} from '@angular/core';
-import { ResourceService, ConfigService } from '@sunbird/shared';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  Renderer2,
+  ChangeDetectorRef,
+  HostListener,
+  AfterViewInit,
+  Input,
+  OnDestroy
+} from '@angular/core';
+import { ResourceService, ConfigService, LayoutService, COLUMN_TYPE, NavigationHelperService, UtilService } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { IInteractEventEdata } from '@sunbird/telemetry';
 import { combineLatest as observableCombineLatest, Subject } from 'rxjs';
@@ -11,8 +22,9 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './main-footer.component.html',
   styleUrls: ['./main-footer.component.scss']
 })
-export class MainFooterComponent implements OnInit, AfterViewInit {
-  @ViewChild('footerFix') footerFix: ElementRef;
+export class MainFooterComponent implements OnInit, AfterViewInit, OnDestroy {
+  @Input() layoutConfiguration;
+  @ViewChild('footerFix', {static: false}) footerFix: ElementRef;
   /**
    * reference of resourceService service.
    */
@@ -31,14 +43,30 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
   tenantFooter: any;
   defaultFooterConfig: any;
   public unsubscribe$ = new Subject<void>();
+
+  FIRST_PANEL_LAYOUT: string;
+  SECOND_PANEL_LAYOUT: string;
+  isFullScreenView;
+  isDesktopApp = false;
+  appBaseUrl: string;
+
   constructor(resourceService: ResourceService, public router: Router, public activatedRoute: ActivatedRoute,
     public configService: ConfigService, private renderer: Renderer2, private cdr: ChangeDetectorRef, public userService: UserService,
-      public tenantService: TenantService
+      public tenantService: TenantService, public layoutService: LayoutService,
+      public navigationHelperService: NavigationHelperService, private utilService: UtilService
     ) {
     this.resourceService = resourceService;
   }
 
   ngOnInit() {
+    this.initlayout();
+    this.checkFullScreenView();
+    this.isDesktopApp = this.utilService.isDesktopApp;
+
+    if (this.isDesktopApp) {
+      this.getBaseUrl();
+    }
+
     this.instance = _.upperCase(this.resourceService.instance);
     this.tenantService.tenantSettings$.subscribe((data) => {
       this.tenantFooter = data;
@@ -48,13 +76,37 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
       helpDeskEmail: 'support@' + _.lowerCase(this.instance) + '-ncte.freshdesk.com'
     };
   }
+
+  getBaseUrl() {
+    this.appBaseUrl = this.utilService.getAppBaseUrl();
+  }
+
+  checkFullScreenView() {
+    this.navigationHelperService.contentFullScreenEvent.pipe(takeUntil(this.unsubscribe$)).subscribe(isFullScreen => {
+      this.isFullScreenView = isFullScreen;
+    });
+  }
+
+  initlayout() {
+    this.redoLayout();
+  }
+
  ngAfterViewInit() {
-    this.footerAlign();
+    // this.footerAlign();
   }
   @HostListener('window:resize', ['$event'])
   onResize(event) {
-    this.footerAlign();
+    // this.footerAlign();
   }
+
+  setTelemetryInteractEdata(type): IInteractEventEdata {
+    return {
+      id: type,
+      type: 'click',
+      pageid: _.get(this.activatedRoute, 'root.firstChild.snapshot.data.telemetry.pageid')
+    };
+  }
+
   // footer dynamic height
   footerAlign() {
     const footerHeight = $('footer').outerHeight();
@@ -67,6 +119,16 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
       (document.querySelector('.footer-fix') as HTMLElement).style.minHeight = bodyHeight - footerHeight + 'px';
       (document.querySelector('.download-mobile-app-logo') as HTMLElement).style.minHeight = footerHeight + 'px';
       (document.querySelector('.download-mobile-app') as HTMLElement).style.bottom = 0 + 'px';
+    }
+  }
+
+  redoLayout() {
+    if (this.layoutConfiguration != null) {
+      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
+      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
+    } else {
+      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
+      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
     }
   }
 
@@ -107,14 +169,15 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
   }
 
   redirect(url) {
-    window.location.href = url;
+    if (this.isDesktopApp) {
+      window.open(url, '_blank');
+    } else {
+      window.location.href = url;
+    }
   }
 
-  setTelemetryInteractEdata(type): IInteractEventEdata {
-    return {
-      id: type,
-      type: 'click',
-      pageid: _.get(this.activatedRoute, 'root.firstChild.snapshot.data.telemetry.pageid')
-    };
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

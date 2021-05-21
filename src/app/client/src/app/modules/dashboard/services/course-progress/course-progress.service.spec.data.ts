@@ -245,5 +245,15 @@ export const mockRes = {
             'reportname': 'assessment-reports'
           }
     }
- }
+ },
+ getFileMetaDataInput: [
+  {
+      'id': 'first',
+      'path': '/reports/fetch/hawk-eye/daily_plays_by_mode.json'
+  },
+  {
+      'id': 'second',
+      'path': '/reports/fetch/hawk-eye/daily_quiz_play_by_lang.json'
+  }
+]
 };

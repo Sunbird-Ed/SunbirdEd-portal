@@ -1,0 +1,51 @@
+<sui-modal [mustScroll]="true" [isClosable]="isClosable" [transitionDuration]="0" [size]="'normal'" class="sb-modal sb-onboard-modal"
+  #onboardingModal (dismissed)="closeModal()">
+<div class="sb-onboard">
+  <div class="sb-onboard__container">
+    <div class="sb-onboard__header">
+      <ng-content select="[slot=popup-header]"></ng-content>
+    </div>
+
+    <div class="sb-onboard__content">
+      <ng-content select="[slot=popup-sub-header]"></ng-content>
+    </div>
+
+    <div class="sb-onboard__content">
+      <div class="schooling-location" [appTelemetryImpression]="telemetryImpression">
+        <label class="w-100">
+        <sb-form *ngIf="sbFormLocationSelectionDelegate.locationFormConfig && sbFormLocationSelectionDelegate.locationFormConfig.length"
+                 [config]="sbFormLocationSelectionDelegate.locationFormConfig"
+                 (initialize)="sbFormLocationSelectionDelegate.onFormInitialize($event)"
+                 (valueChanges)="sbFormLocationSelectionDelegate.onFormValueChange($event)"
+                 (dataLoadStatus)="sbFormLocationSelectionDelegate.onDataLoadStatusChange($event)">
+        </sb-form></label>
+      </div>
+    </div>
+
+    <div class="sb-onboard__footer">
+      <ng-content select="[slot=popup-footer]"></ng-content>
+    </div>
+
+    <div class="sb-onboard__footer d-flex">
+      <button type="button" class="sb-btn sb-btn-sm sb-btn-white text-uppercase flex-basis-1" type="submit"
+              [class.sb-btn-disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading"
+              [disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading"
+              (click)="clearUserLocationSelections()">{{resourceService?.frmelmnts?.btn?.clear}}
+      </button>
+      <div class="w-10"></div>
+      <button type="button" class="sb-btn sb-btn-sm sb-btn-primary text-uppercase flex-basis-1" type="submit"
+              [class.sb-btn-disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading || sbFormLocationSelectionDelegate.formGroup?.invalid"
+              [disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading || sbFormLocationSelectionDelegate.formGroup?.invalid"
+              (click)="updateUserLocation()">{{resourceService?.frmelmnts?.btn?.submit}}
+        <span class='arrow-icon'>
+          <em class="icon-svg icon-svg--xxs icon-back">
+            <svg class="icon icon-svg--white">
+              <use xlink:href="assets/images/sprite.svg#arrow-long-right"></use>
+            </svg>
+          </em>
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+</sui-modal>

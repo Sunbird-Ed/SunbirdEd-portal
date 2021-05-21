@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { ResourceService, ConfigService, BrowserCacheTtlService, SharedModule } from '@sunbird/shared';
+import { ResourceService, ConfigService, BrowserCacheTtlService, SharedModule, LayoutService } from '@sunbird/shared';
 import { SuiModule } from 'ng2-semantic-ui';
 import { async, ComponentFixture, TestBed, fakeAsync, tick, inject} from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -40,7 +40,7 @@ describe('SearchComponent', () => {
       declarations: [ ],
       imports: [SharedModule.forRoot(), TelemetryModule.forRoot(),
         CoreModule, SuiModule, FormsModule, RouterTestingModule, HttpClientTestingModule],
-      providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, UserService, LearnerService,
+      providers: [ResourceService, ConfigService, CacheService, LayoutService, BrowserCacheTtlService, UserService, LearnerService, LayoutService,
       ContentService, { provide: Router, useClass: MockRouter},
          { provide: ActivatedRoute, useValue: {queryParams: {
           subscribe: (fn: (value: Params) => void) => fn({
@@ -55,6 +55,7 @@ describe('SearchComponent', () => {
     location = TestBed.get(Location);
     fixture = TestBed.createComponent(SearchComponent);
     component = fixture.componentInstance;
+    component.layoutConfiguration = {};
   });
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -113,5 +114,23 @@ describe('SearchComponent', () => {
     component.ngOnInit();
     expect(component.selectedOption).toEqual('Users');
   });
-
+  xit('should call search redo layout', () => {
+    component.isLayoutAvailable();
+    expect(component).toBeTruthy();
+  });
+  it('should call setSearchPlaceHolderValue method', () => {
+    component.selectedOption = 'Users';
+    component.searchDisplayValueMappers = {User: 'user'};
+    spyOn(component, 'setSearchPlaceHolderValue');
+    component.setSearchPlaceHolderValue();
+    expect(component.setSearchPlaceHolderValue).toHaveBeenCalled();
+  });
+  it('should call onEnter method and redirect to mydownloads page when user is offline', ( ) => {
+    component.isDesktopApp = true;
+    component.isConnected = false;
+    const key = 'hello';
+    component.queryParam['key'] = key;
+    component.onEnter(key);
+    expect(router.navigate).toHaveBeenCalledWith(['mydownloads'], {queryParams:  component.queryParam});
+  });
 });

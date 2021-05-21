@@ -300,5 +300,60 @@ export const mockRes = {
             'expires': 1534405277659,
             'maxAge': 600
         }
-    }
+    },
+    searchedCollection: {
+        'id': 'api.search-service.search',
+        'ver': '3.0',
+        'ts': '2020-09-07T13:44:30ZZ',
+        'params': {
+            'resmsgid': '15ce98a8-4b85-4b2a-bef8-57e0422d121c',
+            'msgid': null,
+            'err': null,
+            'status': 'successful',
+            'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+            'count': 1,
+            'content': [
+                {
+                    'subject': [
+                        'Mathematics'
+                    ],
+                    'channel': '0124784842112040965',
+                    'gradeLevel': [
+                        'Class 10'
+                    ],
+                    'contentType': 'TextBook',
+                    'name': 'book1',
+                    'medium': [
+                        'Hindi'
+                    ],
+                    'board': 'State (Rajasthan)'
+                }
+            ]
+        }
+     },
+     channelDetail: {
+        'id': 'api.search-service.search',
+        'ver': '3.0',
+        'ts': '2020-09-07T13:44:30ZZ',
+        'params': {
+            'resmsgid': '15ce98a8-4b85-4b2a-bef8-57e0422d121c',
+            'msgid': null,
+            'err': null,
+            'status': 'successful',
+            'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+            'count': 1,
+            'channel': [
+                {
+                    'code': '0124784842112040965',
+                    'name': 'Sunbird'
+                }
+            ]
+        }
+     }
 };

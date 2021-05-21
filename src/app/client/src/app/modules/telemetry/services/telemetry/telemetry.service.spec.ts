@@ -2,13 +2,14 @@ import { TestBed, inject } from '@angular/core/testing';
 import { TelemetryService, TELEMETRY_PROVIDER } from './telemetry.service';
 import { mockData } from './telemetry.service.spec.data';
 import { configureTestSuite } from '@sunbird/test-util';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 describe('TelemetryService', () => {
     configureTestSuite();
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [],
-            providers: [TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }]
+            providers: [TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, DeviceDetectorService]
         });
     });
 

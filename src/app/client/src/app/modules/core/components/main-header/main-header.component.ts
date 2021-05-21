@@ -1,11 +1,11 @@
-import {first, takeUntil} from 'rxjs/operators';
+import { filter, first, takeUntil } from 'rxjs/operators';
 import {
   UserService,
   PermissionService,
   TenantService,
   OrgDetailsService,
   FormService,
-  ManagedUserService, ProgramsService, CoursesService
+  ManagedUserService, ProgramsService, CoursesService, DeviceRegisterService, ElectronService
 } from './../../services';
 import { Component, OnInit, ChangeDetectorRef, Input, OnDestroy } from '@angular/core';
 import {
@@ -14,24 +14,28 @@ import {
   IUserProfile,
   UtilService,
   ToasterService,
-  IUserData,
+  IUserData, LayoutService,
+  NavigationHelperService, ConnectionService
 } from '@sunbird/shared';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import * as _ from 'lodash-es';
-import {IInteractEventObject, IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
+import { IInteractEventObject, IInteractEventEdata, TelemetryService } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
-import {environment} from '@sunbird/environment';
-import {Subject, zip} from 'rxjs';
+import { environment } from '@sunbird/environment';
+import { Subject, zip, forkJoin } from 'rxjs';
+import { EXPLORE_GROUPS, MY_GROUPS } from '../../../public/module/group/components/routerLinks';
 
 declare var jQuery: any;
+type reportsListVersionType = 'v1' | 'v2';
 
 @Component({
   selector: 'app-header',
   templateUrl: './main-header.component.html',
-styleUrls: ['./main-header.component.scss']
+  styleUrls: ['./main-header.component.scss']
 })
 export class MainHeaderComponent implements OnInit, OnDestroy {
   @Input() routerEvents;
+  @Input() layoutConfiguration;
   languageFormQuery = {
     formType: 'content',
     formAction: 'search',
@@ -61,25 +65,35 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     width: '38px'
   };
   avtarDesktopStyle = {
-    backgroundColor: 'transparent',
-    color: '#AAAAAA',
+    backgroundColor: '#ffffff',
+    color: '#333333',
     fontFamily: 'inherit',
     fontSize: '17px',
     lineHeight: '38px',
-    border: '1px solid #e8e8e8',
+    border: '1px solid #E8E8E8',
     borderRadius: '50%',
     height: '38px',
     width: '38px'
   };
+  SbtavtarDesktopStyle = {
+    backgroundColor: '#ffffff',
+    color: '#333333',
+    fontFamily: 'inherit',
+    fontSize: '24px',
+    lineHeight: '48px',
+    border: '1px solid #E8E8E8',
+    borderRadius: '50%',
+    height: '48px',
+    width: '48px'
+  };
   public signUpInteractEdata: IInteractEventEdata;
   public enterDialCodeInteractEdata: IInteractEventEdata;
-  public telemetryInteractObject: IInteractEventObject;
   pageId: string;
   searchBox = {
     'center': false,
     'smallBox': false,
     'mediumBox': false,
-    'largeBox': false
+    'largeBox': true
   };
   languages: Array<any>;
   showOfflineHelpCentre = false;
@@ -104,29 +118,85 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   libraryMenuIntractEdata: IInteractEventEdata;
   learnMenuIntractEdata: IInteractEventEdata;
   contributeMenuEdata: IInteractEventEdata;
+  myGroupIntractEData: IInteractEventEdata;
+  aboutUsEdata: IInteractEventEdata;
   showContributeTab: boolean;
+  hideHeader = false;
+  ShowStudentDropdown = false;
+  routerLinks = {explore: `/${EXPLORE_GROUPS}`, groups: `/${MY_GROUPS}`};
   public unsubscribe = new Subject<void>();
-
+  selected = [];
+  userTypes = [{id: 1, type: 'Teacher'}, {id: 2, type: 'Student'}];
+  groupsMenuIntractEdata: IInteractEventEdata;
+  workspaceMenuIntractEdata: IInteractEventEdata;
+  helpMenuIntractEdata: IInteractEventEdata;
+  themeSwitchInteractEdata: IInteractEventEdata;
+  signInIntractEdata: IInteractEventEdata;
+  hrefPath = '/resources';
+  helpLinkVisibility: string;
+  isFullScreenView;
+  public unsubscribe$ = new Subject<void>();
+  /**
+   * Workspace access roles
+   */
+  workSpaceRole: Array<string>;
+  reportsListVersion: reportsListVersionType;
+  showLocationPopup: boolean = false;
+  locationTenantInfo: any = {};
+  deviceProfile: any;
+  isCustodianUser: boolean;
+  isConnected = false;
+  isDesktopApp = false;
+  showLoadContentModal = false;
+  guestUser;
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
     public orgDetailsService: OrgDetailsService, public formService: FormService,
     private managedUserService: ManagedUserService, public toasterService: ToasterService,
     private telemetryService: TelemetryService, private programsService: ProgramsService,
-    private courseService: CoursesService, private utilService: UtilService,
-    public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef) {
-      try {
-        this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
-      } catch (error) {
-        this.exploreButtonVisibility = 'false';
-      }
-      this.adminDashboard = this.config.rolesConfig.headerDropdownRoles.adminDashboard;
-      this.myActivityRole = this.config.rolesConfig.headerDropdownRoles.myActivityRole;
-      this.orgSetupRole = this.config.rolesConfig.headerDropdownRoles.orgSetupRole;
-      this.orgAdminRole = this.config.rolesConfig.headerDropdownRoles.orgAdminRole;
-      this.instance = (<HTMLInputElement>document.getElementById('instance'))
+    private courseService: CoursesService, private utilService: UtilService, public layoutService: LayoutService,
+    public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef,
+    public navigationHelperService: NavigationHelperService, private deviceRegisterService: DeviceRegisterService,
+    private connectionService: ConnectionService, public electronService: ElectronService) {
+    try {
+      this.exploreButtonVisibility = (<HTMLInputElement>document.getElementById('exploreButtonVisibility')).value;
+      this.reportsListVersion = (<HTMLInputElement>document.getElementById('reportsListVersion')).value as reportsListVersionType;
+    } catch (error) {
+      this.exploreButtonVisibility = 'false';
+      this.reportsListVersion = 'v1';
+    }
+    this.adminDashboard = this.config.rolesConfig.headerDropdownRoles.adminDashboard;
+    this.myActivityRole = this.config.rolesConfig.headerDropdownRoles.myActivityRole;
+    this.orgSetupRole = this.config.rolesConfig.headerDropdownRoles.orgSetupRole;
+    this.orgAdminRole = this.config.rolesConfig.headerDropdownRoles.orgAdminRole;
+    this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
+    this.workSpaceRole = this.config.rolesConfig.headerDropdownRoles.workSpaceRole;
+    this.updateHrefPath(this.router.url);
+    router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      this.updateHrefPath(event.url);
+    });
   }
 
+  updateHrefPath(url) {
+    if (url.indexOf('explore-course') >= 0) {
+      this.hrefPath = url.replace('explore-course', 'learn');
+    } else if (url.indexOf('explore-groups') >= 0) {
+      this.hrefPath = url.replace('explore-groups', MY_GROUPS);
+    } else if (url.indexOf('explore') >= 0) {
+      if (url.indexOf('explore/') >= 0) {
+        this.hrefPath = url.replace('explore', 'search/Library');
+      } else {
+        this.hrefPath = url.replace('explore', 'resources');
+      }
+    } else if (url.indexOf('play') >= 0) {
+      this.hrefPath = '/resources' + url;
+    } else {
+      this.hrefPath = '/resources';
+    }
+  }
   getTelemetryContext() {
     const userProfile = this.userService.userProfile;
     const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
@@ -179,7 +249,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.formService.getFormConfig(formServiceInputParams, channelId).subscribe((data: any) => {
       this.languages = data[0].range;
     }, (err: any) => {
-      this.languages = [{ 'value': 'en', 'label': 'English', 'dir': 'ltr' }];
+      this.languages = [{ 'value': 'en', 'label': 'English', 'dir': 'ltr','accessibleText':'English' }];
     });
   }
   navigateToHome() {
@@ -233,6 +303,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       let currentRoute = this.activatedRoute.root;
       this.showAccountMergemodal = false; // to remove popup on browser back button click
       this.contributeTabActive = this.router.isActive('/contribute', true);
+      this.hideHeader = (_.includes(this.router.url, 'explore-groups') || _.includes(this.router.url, 'my-groups'));
       if (currentRoute.children) {
         while (currentRoute.children.length > 0) {
           const child: ActivatedRoute[] = currentRoute.children;
@@ -257,15 +328,30 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   setInteractEventData() {
+    this.groupsMenuIntractEdata = {
+      id: 'groups-tab',
+      type: 'click',
+      pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') || 'groups'
+    };
+    this.signInIntractEdata = {
+      id: ' signin-tab',
+      type: 'click',
+      pageid: this.router.url
+    };
+    this.workspaceMenuIntractEdata = {
+      id: 'workspace-menu-button',
+      type: 'click',
+      pageid: 'workspace'
+    };
+    this.helpMenuIntractEdata = {
+      id: 'help-menu-tab',
+      type: 'click',
+      pageid: 'help'
+    };
     this.signUpInteractEdata = {
       id: 'signup',
       type: 'click',
       pageid: 'public'
-    };
-    this.telemetryInteractObject = {
-      id: '',
-      type: 'signup',
-      ver: '1.0'
     };
     this.enterDialCodeInteractEdata = {
       id: 'click-dial-code',
@@ -287,6 +373,16 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       type: 'click',
       pageid: 'contribute'
     };
+    this.myGroupIntractEData = {
+      id: 'groups-tab',
+      type: 'click',
+      pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') || 'groups'
+    };
+    this.aboutUsEdata = {
+      id: 'about-us-tab',
+      type: 'click',
+      pageid: 'about-us'
+    };
   }
 
   getFeatureId(featureId, taskId) {
@@ -299,16 +395,16 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       requests.push(this.managedUserService.getParentProfile());
     }
     zip(...requests).subscribe((data) => {
-        let userListToProcess = _.get(data[0], 'result.response.content');
-        if (data && data[1]) {
-          userListToProcess = [data[1]].concat(userListToProcess);
-        }
-        const processedUserList = this.managedUserService.processUserList(userListToProcess, this.userService.userid);
-        this.userListToShow = processedUserList.slice(0, 2);
-        this.totalUsersCount = processedUserList && Array.isArray(processedUserList) && processedUserList.length;
-      }, (err) => {
-        this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+      let userListToProcess = _.get(data[0], 'result.response.content');
+      if (data && data[1]) {
+        userListToProcess = [data[1]].concat(userListToProcess);
       }
+      const processedUserList = this.managedUserService.processUserList(userListToProcess, this.userService.userid);
+      this.userListToShow = processedUserList.slice(0, 2);
+      this.totalUsersCount = processedUserList && Array.isArray(processedUserList) && processedUserList.length;
+    }, (err) => {
+      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+    }
     );
   }
 
@@ -321,10 +417,12 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   toggleSideMenu(value: boolean) {
-    if (value) {
-      this.fetchManagedUsers();
+    this.showSideMenu = !this.showSideMenu;
+    if (this.userService.loggedIn) {
+      if (this.showSideMenu) {
+        this.fetchManagedUsers();
+      }
     }
-    this.showSideMenu = value;
   }
 
   logout() {
@@ -382,34 +480,40 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       isManagedUser: selectedUser.managedBy ? true : false
     };
     this.managedUserService.initiateSwitchUser(switchUserRequest).subscribe((data: any) => {
-        this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.userSid'));
-        userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
-          if (user && !user.err && user.userProfile.userId === userId) {
+      this.managedUserService.setSwitchUserData(userId, _.get(data, 'result.userSid'));
+      userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
+        if (user && !user.err && user.userProfile.userId === userId) {
+          if (this.utilService.isDesktopApp && !this.isConnected) {
+            this.initializeManagedUser(selectedUser);
+          } else {
             this.courseService.getEnrolledCourses().subscribe((enrolledCourse) => {
-              this.telemetryService.setInitialization(false);
-              this.telemetryService.initialize(this.getTelemetryContext());
-              this.toasterService.custom({
-                message: this.managedUserService.getMessage(_.get(this.resourceService, 'messages.imsg.m0095'),
-                  selectedUser.firstName),
-                class: 'sb-toaster sb-toast-success sb-toast-normal'
-              });
-              this.toggleSideMenu(false);
-              if (userSubscription) {
-                userSubscription.unsubscribe();
-              }
-              setTimeout(() => {
-                this.utilService.redirect('/resources');
-              }, 5100);
+              this.initializeManagedUser(selectedUser);
             });
           }
-        });
-      }, (err) => {
-        this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
-      }
+          if (userSubscription) {
+            userSubscription.unsubscribe();
+          }
+        }
+      });
+    }, (err) => {
+      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+    }
     );
   }
 
   ngOnInit() {
+    this.isDesktopApp = this.utilService.isDesktopApp;
+    this.connectionService.monitor()
+    .pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
+      this.isConnected = isConnected;
+    });
+    this.getGuestUser();
+    this.checkFullScreenView();
+    try {
+      this.helpLinkVisibility = (<HTMLInputElement>document.getElementById('helpLinkVisibility')).value;
+    } catch (error) {
+      this.helpLinkVisibility = 'false';
+    }
     if (this.userService.loggedIn) {
       this.userService.userData$.subscribe((user: any) => {
         if (user && !user.err) {
@@ -418,7 +522,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
           this.userProfile = user.userProfile;
           this.getLanguage(this.userService.channel);
           this.isCustodianOrgUser();
-          document.title = _.get(user, 'userProfile.rootOrgName');
+          document.title = _.get(this.userService, 'rootOrgName');
         }
       });
       this.programsService.allowToContribute$.subscribe((showTab: boolean) => {
@@ -442,9 +546,128 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.setWindowConfig();
   }
 
+  checkFullScreenView() {
+    this.navigationHelperService.contentFullScreenEvent.pipe(takeUntil(this.unsubscribe$)).subscribe(isFullScreen => {
+      this.isFullScreenView = isFullScreen;
+    });
+  }
+
+  getGuestUser() {
+    this.userService.guestData$.subscribe((data) => {
+      this.guestUser = data.userProfile;
+    });
+  }
+
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+
+  /**
+   * Used to hide language change dropdown for specific route
+   * restrictedRoutes[] => routes where do not require language change dropdown
+   */
+  showLanguageDropdown() {
+    const restrictedRoutes = ['workspace', 'manage'];
+    let showLanguageChangeDropdown = true;
+    for (const route of restrictedRoutes) {
+      if (this.router.isActive(route, false)) {
+        showLanguageChangeDropdown = false;
+        break;
+      }
+    }
+    return showLanguageChangeDropdown;
+  }
+
+  navigateToGroups() {
+    return !this.userService.loggedIn ? EXPLORE_GROUPS : MY_GROUPS ;
+  }
+
+  isLayoutAvailable() {
+    return this.layoutService.isLayoutAvailable(this.layoutConfiguration);
+  }
+
+  navigateToWorkspace() {
+    const authroles = this.permissionService.getWorkspaceAuthRoles();
+    if (authroles) {
+      return authroles.url;
+    }
+  }
+
+  switchLayout() {
+    this.layoutService.initiateSwitchLayout();
+    this.generateInteractTelemetry();
+  }
+
+  generateInteractTelemetry() {
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env') || 'main-header',
+        cdata: []
+      },
+      edata: {
+        id: 'switch-theme',
+        type: 'click',
+        pageid: this.router.url,
+        subtype: this.layoutConfiguration ? 'joy' : 'classic'
+      }
+    };
+    this.telemetryService.interact(interactData);
+  }
+
+  manageLocation() {
+    this.showLocationPopup = false;
+    this.tenantService.tenantData$.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+      /* istanbul ignore else*/
+      if (_.get(data, 'tenantData')) {
+        this.locationTenantInfo = data.tenantData;
+        this.locationTenantInfo.titleName = data.tenantData.titleName || this.resourceService.instance;
+      }
+    });
+    const deviceRegister = this.deviceRegisterService.fetchDeviceProfile();
+    const custodianOrgDetails = this.orgDetailsService.getCustodianOrgDetails();
+    forkJoin([deviceRegister, custodianOrgDetails]).subscribe((res) => {
+      const deviceProfile = res[0];
+      this.deviceProfile = deviceProfile;
+      if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') === _.get(res[1], 'result.response.value')) {
+        // non state user
+        this.isCustodianUser = true;
+        this.deviceProfile = deviceProfile;
+      } else {
+        // state user
+        this.isCustodianUser = false;
+      }
+      this.deviceProfile = _.get(deviceProfile, 'result');
+      this.showLocationPopup = true;
+    }, (err) => { 
+      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+    });
+  }
+
+  locationSubmit() {
+    this.showLocationPopup = false;
+  }
+
+  doLogin() {
+    this.electronService.get({ url: this.config.urlConFig.URLS.OFFLINE.LOGIN}).subscribe();
+  }
+
+  initializeManagedUser(selectedUser) {
+    this.telemetryService.setInitialization(false);
+    this.telemetryService.initialize(this.getTelemetryContext());
+    this.toasterService.custom({
+      message: this.managedUserService.getMessage(_.get(this.resourceService, 'messages.imsg.m0095'),
+        selectedUser.firstName),
+      class: 'sb-toaster sb-toast-success sb-toast-normal'
+    });
+    this.toggleSideMenu(false);
+
+    setTimeout(() => {
+      this.utilService.redirect('/resources');
+    }, 5100);
   }
 
 }

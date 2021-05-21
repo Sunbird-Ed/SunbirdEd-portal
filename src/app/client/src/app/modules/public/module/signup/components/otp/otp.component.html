@@ -4,32 +4,32 @@
 
 
 <!-- <div class="grey text text-center pt-16">{{resourceService.frmelmnts.lbl.OTPhasbeensent}} {{resourceService.frmelmnts.lbl.toYourEmailPhone}}</div>-->
-
-
 <div class="grey text text-center otp-label">
   <span *ngIf="emailAddress">{{resourceService.frmelmnts.lbl.OTPhasbeensentToEmail}}:<br>{{emailAddress}} </span>
   <span *ngIf="phoneNumber">{{resourceService.frmelmnts.lbl.OTPhasbeensentToPhone}}:<br>{{phoneNumber}} </span>
 </div>
-<div class="grey text text-center mt-16 grey-text">{{resourceService.frmelmnts.lbl.OTPvalid}}</div>
+<div class="grey text text-center my-16 grey-text">{{resourceService.frmelmnts.lbl.OTPvalid}}</div>
 
-<div *ngIf="showSignUpLink" class="orange text fs-1 text-center mb-50 line-height-1-3">{{unabletoVerifyErrorMessage}}<br>  Please
+<div *ngIf="showSignUpLink" class="orange text fs-1 text-center mb-32 line-height-1-3">{{unabletoVerifyErrorMessage}}<br>  Please
   <span (click)="redirectToSignUp()" class="fs-1 blue text font-weight-bold cursor-pointer" role="button" tabindex="0">{{resourceService.frmelmnts.lbl.signUp}}</span>
   again</div>
 <div *ngIf="!infoMessage" class="fs-1 text-left mb-8 mt-24 font-weight-bold">{{resourceService.frmelmnts.lbl.oneTimePassword}}</div>
-<form class="sb-form borderd mb-20" [formGroup]="otpForm">
+<form class="sb-form borderd mb-16" [formGroup]="otpForm">
   <div class="sb-field-group mb-16 text-left">
-      <label *ngIf="errorMessage" class="ui basic label text-center error d-inline-block line-height-1-3">{{errorMessage  | interpolate: '{remainingAttempt}': remainingAttempt}}</label>
+      <label *ngIf="errorMessage" class="sb-text-error d-inline-block line-height-1-3">{{errorMessage  | interpolate: '{remainingAttempt}': remainingAttempt}}</label>
       <label *ngIf="infoMessage" class="text-center mb-10 d-inline-block line-height-1-3">{{infoMessage}}</label>
       <div class="sb-field">
         <input class="sb-form-control" [ngClass]="{'orange-border': errorMessage}" formControlName="otp" type="text" name="otp"  placeholder="{{resourceService.frmelmnts.lbl.enterOTP}}">
       </div>
   </div>
+  <re-captcha *ngIf="isP2CaptchaEnabled === 'true'" #captchaRef="reCaptcha" (resolved)="$event && resolved($event) && captchaRef.reset()" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
   <div class="assessment-action-buttons mt-8 d-flex flex-jc-center flex-ai-center">
        
        <input appTelemetryInteract [telemetryInteractEdata]="submitResendOtpInteractEdata"  [telemetryInteractCdata]="telemetryCdata"
-        class="sb-btn sb-btn-normal button sb-btn-outline-primary mr-8 w-50" tabindex="2"
-       [ngClass]="{'sb-btn-disabled': !disableResendButton}" [disabled]="!disableResendButton" (click)="resendOTP();" type="button" value="{{resendOTPbtn}}"/>
-       <input  appTelemetryInteract [telemetryInteractEdata]="submitOtpInteractEdata" [telemetryInteractCdata]="telemetryCdata"
-       class="ui button w-50" [ngClass]="{'grey':disableSubmitBtn, 'sb-btn-primary':!disableSubmitBtn}"  tabindex="1"  type=submit (click)="verifyOTP()"/>
+        class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8 w-50" tabindex="2"
+       [ngClass]="{'sb-btn-disabled resend-disable': !disableResendButton}" [disabled]="!disableResendButton" (click)="generateResendOTP();" type="button" value="{{resendOTPbtn}}"/>
+       <input type="submit" appTelemetryInteract [telemetryInteractEdata]="submitOtpInteractEdata" [telemetryInteractCdata]="telemetryCdata"
+       class="sb-btn sb-btn-normal w-50" [ngClass]="{'sb-btn-disabled':disableSubmitBtn, 'sb-btn-primary':!disableSubmitBtn}"  tabindex="1"  type=submit (click)="verifyOTP()"/>
       </div>
+      <a (click)="captchaRef.reset()" id="resetGoogleCaptcha"></a>
 </form>

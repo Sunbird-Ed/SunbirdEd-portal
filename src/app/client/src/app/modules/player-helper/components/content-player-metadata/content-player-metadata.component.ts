@@ -4,7 +4,8 @@ import { ContentData, ResourceService } from '@sunbird/shared';
 
 @Component({
   selector: 'app-content-player-metadata',
-  templateUrl: './content-player-metadata.component.html'
+  templateUrl: './content-player-metadata.component.html',
+  styleUrls: ['./content-player-metadata.component.scss']
 })
 export class ContentPlayerMetadataComponent implements OnInit {
   readMore = false;
@@ -27,7 +28,7 @@ export class ContentPlayerMetadataComponent implements OnInit {
 
   validateContent() {
     this.fieldData = ['language', 'gradeLevel', 'subject', 'flagReasons', 'flaggedBy', 'flags', 'keywords',
-      'resourceTypes', 'attributions'];
+      'resourceTypes', 'attributions', 'primaryCategory', 'additionalCategories'];
     _.forEach(this.metadata, (value, key) => {
       if (_.compact(key) && _.includes(this.fieldData, key)) {
         if (_.isString(value)) {

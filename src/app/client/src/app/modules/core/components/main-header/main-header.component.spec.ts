@@ -1,4 +1,4 @@
-import {of as observableOf, throwError as observableThrowError} from 'rxjs';
+import {of as observableOf, of, throwError as observableThrowError} from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockUserData } from './../../services/user/user.mock.spec.data';
 import {async, ComponentFixture, TestBed, tick} from '@angular/core/testing';
@@ -10,7 +10,9 @@ import {
   ToasterService,
   SharedModule,
   BrowserCacheTtlService,
-  UtilService
+  UtilService,
+  LayoutService,
+  NavigationHelperService
 } from '@sunbird/shared';
 import {
   UserService,
@@ -18,14 +20,14 @@ import {
   PermissionService,
   TenantService,
   CoreModule,
-  ManagedUserService, CoursesService
+  ManagedUserService, CoursesService, ElectronService
 } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {AnimationBuilder} from '@angular/animations';
 import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
 import {CacheService} from 'ng2-cache-service';
 import {mockData} from './main-header.component.spec.data';
-import {CommonConsumptionModule} from '@project-sunbird/common-consumption';
+import {CommonConsumptionModule} from '@project-sunbird/common-consumption-v8';
 import { configureTestSuite } from '@sunbird/test-util';
 
 describe('MainHeaderComponent', () => {
@@ -48,11 +50,24 @@ describe('MainHeaderComponent', () => {
         useInstanceAs: 'user {instance}',
         addUser: 'Add user',
         switchUser: 'switchUser',
-        cancel: 'cancel'
+        cancel: 'cancel',
+        notification: 'Notification',
+        newNotification: 'New Notification'
+      },
+      btn: {
+        clear: 'Clear',
+        seeMore: 'See more',
+        seeLess: 'See less'
       }
     }
   };
   configureTestSuite();
+  const MockCSService = {
+    getUserFeed() { return of({}); },
+    updateUserFeedEntry() { return of({}); },
+    deleteUserFeedEntry() { return of({}); }
+  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule,
@@ -60,10 +75,10 @@ describe('MainHeaderComponent', () => {
       declarations: [],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [ToasterService, TenantService, CacheService, BrowserCacheTtlService,
-        PermissionService, ManagedUserService, UtilService,
+        PermissionService, ManagedUserService, UtilService, LayoutService, NavigationHelperService,
         {provide: ResourceService, useValue: resourceBundle},
-        UserService, ConfigService, AnimationBuilder,
-        LearnerService, CoursesService]
+        UserService, ConfigService, AnimationBuilder, ElectronService,
+        LearnerService, CoursesService, { provide: 'CS_USER_SERVICE', useValue: MockCSService }]
     })
       .compileComponents();
   }));
@@ -122,7 +137,7 @@ describe('MainHeaderComponent', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     userService._authenticated = false;
-    spyOn(learnerService, 'getWithHeaders')
+    spyOn(learnerService, 'getWithHeaders');
     const managedUserService = TestBed.get(ManagedUserService);
     spyOn(managedUserService, 'fetchManagedUserList');
     component.ngOnInit();
@@ -182,6 +197,9 @@ describe('MainHeaderComponent', () => {
   });
 
   it('should turn on the side menu', () => {
+    component.showSideMenu = false;
+    const userService = TestBed.get(UserService);
+    userService._authenticated = true;
     spyOn(component, 'fetchManagedUsers');
     component.toggleSideMenu(true);
     expect(component.showSideMenu).toEqual(true);
@@ -189,8 +207,13 @@ describe('MainHeaderComponent', () => {
   });
 
   it('should not turn on the side menu', () => {
+    component.showSideMenu = true;
+    const userService = TestBed.get(UserService);
+    spyOn(component, 'fetchManagedUsers');
+    userService._authenticated = false;
     component.toggleSideMenu(false);
     expect(component.showSideMenu).toEqual(false);
+    expect(component.fetchManagedUsers).not.toHaveBeenCalled();
   });
 
   xit('should switch selected user', () => {
@@ -223,4 +246,130 @@ describe('MainHeaderComponent', () => {
     expect(telemetryService.initialize).toHaveBeenCalled();
   });
 
+  it('should give login redirection path for explore course', () => {
+    component.updateHrefPath('/explore-course');
+    expect(component.hrefPath).toBe('/learn');
+  });
+
+  it('should give login redirection path for explore', () => {
+    component.updateHrefPath('/explore');
+    expect(component.hrefPath).toBe('/resources');
+  });
+
+  it('should give login redirection path for group course', () => {
+    component.updateHrefPath('/explore-groups');
+    expect(component.hrefPath).toBe('/my-groups');
+  });
+
+  it('should give login redirection path for play content', () => {
+    component.updateHrefPath('/play');
+    expect(component.hrefPath).toBe('/resources/play');
+  });
+
+  it('should give login redirection path for default cases', () => {
+    component.updateHrefPath('/some_random_url');
+    expect(component.hrefPath).toBe('/resources');
+  });
+
+  it('should set telemetry data on init', () => {
+    spyOn(document, 'getElementById').and.returnValue('true');
+    const service = TestBed.get(TenantService);
+    spyOn(service, 'get').and.returnValue(observableOf(mockUserData.tenantSuccess));
+    service.getTenantInfo('Sunbird');
+    component.ngOnInit();
+    expect(component.groupsMenuIntractEdata).toEqual({
+      id: 'groups-tab', type: 'click', pageid: 'groups'
+    });
+    expect(component.workspaceMenuIntractEdata).toEqual({
+      id: 'workspace-menu-button', type: 'click', pageid: 'workspace'
+    });
+    expect(component.helpMenuIntractEdata).toEqual({
+      id: 'help-menu-tab', type: 'click', pageid: 'help'
+    });
+  });
+
+  it('should tell is layout is available', () => {
+    const layoutService = TestBed.get(LayoutService);
+    spyOn(layoutService, 'isLayoutAvailable').and.returnValue(true);
+    const layoutData = component.isLayoutAvailable();
+    expect(layoutData).toBe(true);
+  });
+
+  it('should make isFullScreenView to FALSE', () => {
+    component.isFullScreenView = true;
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(observableOf({data: false}));
+    component.ngOnInit();
+    navigationHelperService.emitFullScreenEvent(false);
+    expect(component.isFullScreenView).toBe(false);
+  });
+
+  it('should make isFullScreenView to true', () => {
+    component.isFullScreenView = false;
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'contentFullScreenEvent').and.returnValue(observableOf({data: true}));
+    component.ngOnInit();
+    navigationHelperService.emitFullScreenEvent(true);
+    expect(component.isFullScreenView).toBe(true);
+  });
+
+  it('should unsubscribe from all observable subscriptions', () => {
+    component.ngOnInit();
+    spyOn(component.unsubscribe$, 'complete');
+    spyOn(component.unsubscribe$, 'next');
+    component.ngOnDestroy();
+    expect(component.unsubscribe$.complete).toHaveBeenCalled();
+    expect(component.unsubscribe$.next).toHaveBeenCalled();
+  });
+
+  it('should switch layout and generate telemetry for classic', () => {
+    const layoutService = TestBed.get(LayoutService);
+    const telemetryService = TestBed.get(TelemetryService);
+    component.layoutConfiguration = null;
+    spyOn(layoutService, 'initiateSwitchLayout').and.callFake(() => {
+    });
+    spyOn(telemetryService, 'interact').and.callFake(() => {
+    });
+    component.switchLayout();
+    expect(telemetryService.interact).toHaveBeenCalledWith(mockData.telemetryEventClassic);
+  });
+
+  it('should switch layout and generate telemetry for classic', () => {
+    const layoutService = TestBed.get(LayoutService);
+    component.layoutConfiguration = null;
+    expect(layoutService).toBeTruthy();
+  });
+
+  it('should switch layout and generate telemetry for joy', () => {
+    const layoutService = TestBed.get(LayoutService);
+    const telemetryService = TestBed.get(TelemetryService);
+    component.layoutConfiguration = {options: 'option1'};
+    spyOn(layoutService, 'initiateSwitchLayout').and.callFake(() => {
+    });
+    spyOn(telemetryService, 'interact').and.callFake(() => {
+    });
+    component.switchLayout();
+    expect(telemetryService.interact).toHaveBeenCalledWith(mockData.telemetryEventJoy);
+  });
+
+  it('should call login method for desktop app', () => {
+    const electronService = TestBed.get(ElectronService);
+    spyOn(electronService, 'get').and.returnValue(observableOf({status: 'success'}));
+    component.doLogin();
+    expect(electronService.get).toHaveBeenCalled();
+  });
+
+  it('should call getGuestUser for desktop app', () => {
+    const userService = TestBed.get(UserService);
+    userService._guestUserProfile = { name: 'test' };
+    userService._guestData$.next({ userProfile: { name: 'test' } });
+    component.getGuestUser();
+    expect(component.guestUser).toBeDefined();
+  });
+
+  it('should call getGuestUser', () => {
+    component.isDesktopApp = true;
+    spyOn(Object.getPrototypeOf(localStorage), 'getItem').and.returnValue('{"name":"Guest"}');
+    component.getGuestUser();
+  });
 });

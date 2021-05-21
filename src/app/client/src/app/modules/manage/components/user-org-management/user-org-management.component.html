@@ -1,5 +1,34 @@
+<app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration">
+</app-landing-section>
+<div [ngClass]="layoutConfiguration ? 'sbt-container sbt-user-management relative9':''" >
 <div class="sb-manage-section" [appTelemetryImpression]="telemetryImpression">
-  <div class="ui container sb-multi-rows">
+  <div class="sb-multi-rows py-16">
+    <div class="d-flex flex-ai-center flex-jc-space-between ui container">
+      <div class="d-flex flex-ai-center">
+        <h4 class="sb-manage-section-title m-0">{{resourceService.frmelmnts?.lbl?.selfDeclaredDetails}}</h4>
+        <button [disabled]="!userDeclaredDetailsUrl" appTelemetryInteract [telemetryInteractEdata]="userDeclaredDetailsEdata"
+                [ngClass]="{'disabled':!userDeclaredDetailsUrl, 'sb-btn-secondary':userDeclaredDetailsUrl}"
+                type="button" class="sb-btn sb-btn-secondary sb-btn-normal ml-24"
+                (click)="downloadFile(userDeclaredDetailsUrl)">
+          {{resourceService.frmelmnts?.btn?.download}}
+        </button>
+        <!-- <span *ngIf="!userDeclaredDetailsUrl">{{resourceService.frmelmnts?.lbl?.noDataAvailable}}</span> -->
+        <div class="d-flex flex-ai-center ml-8" *ngIf="!userDeclaredDetailsUrl">
+          <img src="./assets/images/icon-info.svg" height="16px">
+          <label class="no-data-label font-weight-normal ml-4">{{resourceService.frmelmnts?.lbl?.noDataAvailable}}</label>
+        </div>
+      </div>
+      <!-- <button type="button" (click) = "openModel()" class="sb-btn sb-btn-outline-primary sb-btn-normal" appTelemetryInteract 
+      [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="openUploadModalInteractEdata">{{resourceService.frmelmnts?.lbl?.uploadValidationStatus}}</button> -->
+    </div>
+    <div class="d-flex flex-ai-center ml-8 py-8" *ngIf="showAdminTnC">
+      <label class="d-flex flex-ai-center">
+        <span class="font-weight-normal fnormal">{{resourceService?.frmelmnts?.imsg?.admintnc | interpolate:'{instance}': instance }} <a class="sb-color-primary cursor-pointer" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" 
+          [telemetryInteractEdata]="adminPolicyDetailsInteractEdata" (click)=openAdminPolicyPopup()>{{resourceService?.frmelmnts?.lnk?.adminPolicy}}</a></span>
+      </label>
+    </div>
+  </div>
+  <div class="ui container">
     <h4 class="sb-manage-section-title py-16 m-0">User & Org Management</h4>
   </div>
   <div class="sb-pageSection sb-multi-rows">
@@ -44,7 +73,6 @@
       </div>
    </div>
   </div>
-
   <div class="sb-pageSection sb-multi-rows">
       <div class="ui container py-20">
         <div class="sb-pageSection-content">
@@ -95,47 +123,51 @@
          </div>
       </div>
     </div>
-
-  <div class="sb-pageSection sb-multi-rows" *ngIf="userProfile && userProfile['rootOrg'] && !(userProfile['rootOrg']['isSSOEnabled'])">
-    <div class="ui container py-20">
-      <div class="sb-pageSection-header sb-user-list">
-        <h4 class="sb-pageSection-title">
-          User List Upload
-        </h4>
-      </div>
-      <div class="sb-pageSection-content">
-        <div class="d-inline-flex flex-ai-center">
-          <span class="sb-label-name">Upload file with list of users:</span>
-          <div class="sb-btn sb-btn-outline-primary sb-btn-normal ml-8 sb-upload-file" (click)="openModal();" appTelemetryInteract [telemetryInteractEdata]="selectFileInteractEdata"> Select file </div>
-        </div>
-        <div class="pt-32">
-          <div class="sb-label-name pb-8" *ngIf="uploadedDetails['total_uploaded'] && uploadedDetails['total_uploaded'] != 0">
-            <h4 class="sb-pageSection-title">Teacher details uploaded : </h4><span>{{ uploadedDetails['total_uploaded'] }}</span>
-          </div>
-          <div class="pt-8" *ngIf="uploadedDetails['accounts_validated'] && uploadedDetails['accounts_validated'] != 0">
-            <a (click)="downloadCSVFile(userCSV, 'CLAIMED', slug + '.csv')" target="_blank"  class="cursor-pointer text-underline">Validated</a><span> : {{ uploadedDetails['accounts_validated'] }}</span>
-          </div>
-          <div class="pt-8" *ngIf="uploadedDetails['accounts_rejected'] && uploadedDetails['accounts_rejected'] != 0">
-            <a (click)="downloadCSVFile(userCSV, 'REJECTED', slug + '.csv')" target="_blank"  class="cursor-pointer text-underline">Rejected</a><span> : {{ uploadedDetails['accounts_rejected'] }}</span>
-          </div>
-          <div class="pt-8" *ngIf="uploadedDetails['accounts_failed'] && uploadedDetails['accounts_failed'] != 0">
-            <a (click)="downloadCSVFile(userCSV, 'FAILED', slug + '.csv')" target="_blank"  class="cursor-pointer text-underline">Failed</a><span> : {{ uploadedDetails['accounts_failed'] }}</span>
-          </div>
-          <div class="pt-8" *ngIf="uploadedDetails['accounts_duplicate'] && uploadedDetails['accounts_duplicate'] != 0">
-            <a (click)="downloadCSVFile(userCSV, 'MULTIMATCH', slug + '.csv')" target="_blank"  class="cursor-pointer text-underline">Duplicate phone numbers/email ID</a><span> : {{ uploadedDetails['accounts_duplicate'] }}</span>
-          </div>
-          <div class="pt-8" *ngIf="uploadedDetails['accounts_unclaimed'] && uploadedDetails['accounts_unclaimed'] != 0">
-            <a (click)="downloadCSVFile(userCSV, 'UNCLAIMED', slug + '.csv')" target="_blank"  class="cursor-pointer text-underline">Unclaimed</a><span> : {{ uploadedDetails['accounts_unclaimed'] }}</span>
-          </div>
-          <div class="pt-8" *ngIf="uploadedDetails['accounts_eligible'] && uploadedDetails['accounts_eligible'] != 0">
-            <a (click)="downloadCSVFile(userCSV, 'ELIGIBLE', slug + '.csv')" target="_blank"  class="cursor-pointer text-underline">Eligible</a><span> : {{ uploadedDetails['accounts_eligible'] }}</span>
-          </div>
-        </div>
-      </div>
+</div>
+</div>
+<!-- Upload validation status modal -->
+<sui-modal *ngIf="showUploadUserModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+[size]="'normal'" class="sb-modal" appBodyScroll (dismissed)="closeUserValidationModal()" #modal>
+<div class="sb-modal-header">
+  {{resourceService?.frmelmnts?.lbl?.uploadingValidationStatusHeader}}
+</div>
+<div class="sb-modal-content">
+  <div class="m-0">
+    <span class="m-0 mr-16">{{resourceService?.frmelmnts?.lbl?.uploadcsvfile}}</span>
+  </div>
+  <div class="sb-btn sb-btn-tertiary sb-btn-normal mt-8 sb-bulk-upload-btn">
+    {{uploadButton}}
+    <input type="file" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" 
+    [telemetryInteractEdata]="selectUserValidationFileInteractEdata" class="sb-btn-upload upload-btn" (change)="fileChanged($event)"  />
+  </div>
+  <div *ngIf="fileUpload">
+    <span> {{resourceService?.frmelmnts?.lbl?.upldfile }} :</span>
+    <label>{{fileUpload.name}}</label>
+  </div>
+  <div class="ui info message">
+    <div class="header">
+      {{resourceService?.frmelmnts?.scttl?.instructions}}
     </div>
-
-  <app-user-upload *ngIf="showModal"></app-user-upload>
+    <ol class="ui list">
+      <li class="self-users-list">{{resourceService?.frmelmnts?.instn?.t0107}} </li>
+      <li class="self-users-list">{{resourceService?.frmelmnts?.instn?.t0108}} </li>
+      <li class="self-users-list">{{resourceService?.frmelmnts?.instn?.t0109}} </li>
+      <li class="self-users-list">{{resourceService?.frmelmnts?.instn?.t0110}} </li>
+        <li class="self-users-list">{{resourceService?.frmelmnts?.instn?.t0111}} </li>
+        <li class="self-users-list">{{resourceService?.frmelmnts?.instn?.t0112}}  </li>
+    </ol>
+  </div>
 </div>
-
+<div class="sb-modal-actions">
+  <button class="sb-btn sb-btn-normal sb-btn-primary" appTelemetryInteract 
+  [telemetryInteractObject]="telemetryInteractObject" 
+  [telemetryInteractEdata]="userValidationUploadInteractEdata" [ngClass]="{'sb-btn-disabled': !fileUpload}"
+  [disabled]="disableBtn">
+    {{resourceService?.frmelmnts?.btn?.uploadusrscsv}}
+  </button>
 </div>
+</sui-modal>
 
+
+<app-tnc-popup (close)="openAdminPolicyPopup(true)" [showAcceptTnc]="showTncPopup" [adminTncVersion]="adminTncVersion" [tncUrl]="adminTncUrl" #termsAndCondPopUp *ngIf="showTncPopup">
+</app-tnc-popup>

@@ -1,0 +1,187 @@
+<div class="font-lato gc-ep-cont" ng-app="sunbird-endpage" ng-controller="endPageController"     id='endpage' ng-show="showEndPage">
+    <div ng-switch="templateToRender">
+        <!-- Self access view start -->
+        <div ng-switch-when="assessment">
+            <div class="ps-wrapper">
+                <div class="ps-content">
+                    <div class="ps-body">
+                        <div class="ps-nav left contentButton" ng-class="previousContent[content.identifier] ? 'buttonVisible' : 'buttonHide'" ng-click="contentLaunch('previous',content.identifier)">
+                            <a class="ps-nav-header textdeco-none">
+                                <img ng-src="{{leftArrowIcon}}" alt="prev" class="ps-arrow">
+                                <div class="ps-nav-wrappe ps-text-right">
+                                    <p class="ps-nav-subtitle">Go to</p>
+                                    <h2 class="ps-nav-title">Previous</h2>
+                                </div>
+                            </a>
+                            <div class="ps-nav-body ps-text-right">
+                                <p class="ps-chapter-text chapter-section multiline-ellipsis ellipsis-three-line" >{{ previousContent[content.identifier].content.contentData.name.length > 40 ? previousContent[content.identifier].content.contentData.name.substring(0,40)+"..." : previousContent[content.identifier].content.contentData.name}}</p>
+                            </div>
+                        </div>
+                        <div class="assessment-content assessment-score-content">
+                            <div class="assessment-content-title" ng-if="displayScore">Your score is {{userScore}}/{{totalScore}}</div>
+                            <div class="assessment-content-description">
+                                <div ng-if="displayScore" class="text-center">
+                                    You can redo the assessment to improve your score.
+                                </div>
+                                <div ng-if="!displayScore" class="text-center">
+                                    Your responses have been recorded.
+                                </div>
+                            </div>
+                            <div class="assessment-action-buttons mt-24">
+                                <button class="sb-btn sb-btn-normal sb-btn-outline-primary sb-btn-responsive mr-24" ng-click="replayContent()"> Redo
+                                </button>
+                                <button class="sb-btn sb-btn-primary sb-btn-normal sb-btn-responsive" ng-show="isCordova" ng-click="openGenie()">Exit </button>
+                            </div>
+                        </div>
+                        <div class="ps-nav right contentButton" ng-class="nextContent[content.identifier] ? 'buttonVisible' : 'buttonHide'" ng-click="contentLaunch('next',content.identifier)">
+                            <a class="ps-nav-header textdeco-none">
+                                <div class="ps-nav-wrapper">
+                                    <p class="ps-nav-subtitle">Go to</p>
+                                    <h2 class="ps-nav-title">Next</h2>
+                                </div>
+                                <img ng-src="{{rightArrowIcon}}" alt="prev" class="ps-arrow">
+                            </a>
+                            <div class="ps-nav-body ps-text-left">
+                                <p class="ps-chapter-text chapter-section multiline-ellipsis ellipsis-three-line">{{ nextContent[content.identifier].content.contentData.name.length > 40 ? nextContent[content.identifier].content.contentData.name.substring(0,40)+"..." : nextContent[content.identifier].content.contentData.name}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Self access view End -->
+        <!-- Other content type start-->
+        <div ng-switch-default>
+            <div class="ps-wrapper">
+                <div class="ps-content">
+                    <div class="ps-header">
+                        <h2 class="ps-heading">You just completed</h2>
+                        <p class="ps-subheading" ng-if="content.name">{{content.name}}</p>
+                        <p class="ps-author" ng-if="content.owner">Author: <span>{{content.owner}}</span></p>
+                    </div>
+                    <div class="ps-body">
+                        <div class="ps-nav left contentButton" ng-class="previousContent[content.identifier] ? 'buttonVisible' : 'buttonHide'" ng-click="contentLaunch('previous',content.identifier)">
+                            <a class="ps-nav-header textdeco-none">
+                                <img ng-src="{{leftArrowIcon}}" alt="prev" class="ps-arrow">
+                                <div class="ps-nav-wrappe ps-text-right">
+                                    <p class="ps-nav-subtitle">Go to</p>
+                                    <h2 class="ps-nav-title">Previous</h2>
+                                </div>
+                            </a>
+                            <div class="ps-nav-body ps-text-right">
+                                <p class="ps-chapter-text chapter-section multiline-ellipsis ellipsis-three-line">{{ previousContent[content.identifier].content.contentData.name.length > 40 ? previousContent[content.identifier].content.contentData.name.substring(0,40)+"..." : previousContent[content.identifier].content.contentData.name}}</p>
+                            </div>
+                        </div>
+                        <div class="ps-score">
+                            <div class="ps-score-content" ng-switch="scoreDisplayConfig">
+                                <ul ng-switch-when="ScoreObtained" class="ps-score-list">
+                                    <li ng-if="(userScore >= 0) && totalScore" class="ps-score-list__item">
+                                        <div class="ps-score-item">
+                                            <img ng-src="{{scoreIcon}}" class="ps-score-icon">
+                                            <div class="ps-score-detail">
+                                                <h2 class="ps-score-heading">SCORE</h2>
+                                                <ul>
+                                                    <li class="ps-score-data endpage-score ps-score-data-padding-top">{{userScore}}</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="ps-vertical-line">
+                                        <div class="vertical-line"></div>
+                                    </li>
+                                    <li class="ps-score-list__item">
+                                        <div class="ps-score-item">
+                                            <img ng-src="{{clockIcon}}" class="ps-score-icon">
+                                            <div class="ps-score-detail">
+                                                <h2 class="ps-score-heading">TIME</h2>
+                                                <p class="ps-score-data">{{totalTimeSpent}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <ul ng-switch-when="No" class="ps-score-list">
+                                    <li class="ps-score-list__item">
+                                        <div class="ps-score-item">
+                                            <img ng-src="{{clockIcon}}" class="ps-score-icon">
+                                            <div class="ps-score-detail">
+                                                <h2 class="ps-score-heading">TIME</h2>
+                                                <p class="ps-score-data">{{totalTimeSpent}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <ul ng-switch-default class="ps-score-list">
+                                    <li ng-if="(userScore >= 0) && totalScore" class="ps-score-list__item">
+                                        <div class="ps-score-item">
+                                            <img ng-src="{{scoreIcon}}" class="ps-score-icon">
+                                            <div class="ps-score-detail">
+                                                <h2 class="ps-score-heading">SCORE</h2>
+                                                <ul>
+                                                    <li class="ps-score-data endpage-score ps-score-data-padding-top">{{userScore}}</li>
+                                                    <li class="ui divider ps-score-divider"></li>
+                                                    <li class="ps-score-data endpage-score ps-score-data-padding-top">{{totalScore}}</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="ps-vertical-line">
+                                        <div class="vertical-line"></div>
+                                    </li>
+                                    <li class="ps-score-list__item">
+                                        <div class="ps-score-item">
+                                            <img ng-src="{{clockIcon}}" class="ps-score-icon">
+                                            <div class="ps-score-detail">
+                                                <h2 class="ps-score-heading">TIME</h2>
+                                                <p class="ps-score-data">{{totalTimeSpent}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="ps-nav right contentButton" ng-class="nextContent[content.identifier] ? 'buttonVisible' : 'buttonHide'" ng-click="contentLaunch('next',content.identifier)">
+                            <a class="ps-nav-header textdeco-none">
+                                <div class="ps-nav-wrapper">
+                                    <p class="ps-nav-subtitle">Go to</p>
+                                    <h2 class="ps-nav-title">Next</h2>
+                                </div>
+                                <img ng-src="{{rightArrowIcon}}" alt="prev" class="ps-arrow">
+                            </a>
+                            <div class="ps-nav-body ps-text-left">
+                                <p class="ps-chapter-text chapter-section multiline-ellipsis ellipsis-three-line">{{ nextContent[content.identifier].content.contentData.name.length > 40 ? nextContent[content.identifier].content.contentData.name.substring(0,40)+"..." : nextContent[content.identifier].content.contentData.name}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ps-actions">
+                        <ul class="ps-action-list">
+                            <li class="ps-action-list__item">
+                                <a href="javascript:void(0);" class="ps-btn ps-btn--orange endpage-icons" ng-click="replayContent()">
+                                    <img ng-src="{{replayIcon}}" class="ps-btn-icon">
+                                </a>
+                                <p class="ps-action-text">Replay</p>
+                            </li>
+                            <li class="ps-action-list__item"><a class="ps-btn ps-btn--blue"><span class="user-name">{{currentPlayerFirstChar}}</span></a>
+                                <div class="ps-action-data">
+                                    <p class="ps-action-text">{{currentPlayer}}</p>
+                                </div>
+                            </li>
+                            <li ng-if="!isCordova" class="ps-action-list__item">
+                                <a class="ps-btn ps-btn--black"><img ng-src="{{genieIcon}}" class="ps-exit-icon"></a>
+                                <p class="ps-action-text">Exit</p>
+                            </li>
+                            <li ng-if="isCordova" class="ps-action-list__item" ng-click="openGenie()">
+                                <a href="javascript:void(0);" class="ps-btn ps-btn--black"><img ng-src="{{genieIcon}}" class="ps-exit-icon"></a>
+                                <p class="ps-action-text">Exit</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="ps-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Other content type start-->
+    </div>
+</div>
+<sunbird-userswitcher></sunbird-userswitcher>

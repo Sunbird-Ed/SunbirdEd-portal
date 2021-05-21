@@ -2,9 +2,9 @@
 @import 'mixins/mixins';
 
 .content-metadeta {
-   &__content{
+  &__content {
     border-bottom: calculateRem(1px) solid var(--gray-100);
-   }
+  }
 
   &__title {
     color: var(--gray-200);
@@ -26,7 +26,7 @@
 
   .ui.styled.accordion .active.title,
   .ui.styled.accordion .accordion .active.title {
-    padding: ($base-block-space * 2) ($base-block-space * 2) $base-block-space  ($base-block-space * 2) !important;
+    padding: calculateRem(16px) calculateRem(16px) calculateRem(8px) calculateRem(16px) !important;
   }
 
   .ui.accordion .active.title .chevron.down.icon {
@@ -37,30 +37,35 @@
 }
 
 .contentdata-description {
-  border-bottom: 0.5px solid #979797;
+  border-bottom: calculateRem(0.5px) solid var(--rc-979797);
 }
 
 .credits-section {
   background-color: var(--white);
   padding: calculateRem(16px);
+
   .title {
     color: var(--gray-200);
     font-size: calculateRem(10px);
     font-weight: bold;
-    word-wrap: break-word; 
+    word-wrap: break-word;
   }
+
   .description {
     color: var(--gray-800);
     font-size: calculateRem(14px);
-    word-wrap: break-word; 
+    word-wrap: break-word;
   }
+
   .sub-section {
     color: var(--primary-color);
     font-size: calculateRem(14px);
     word-wrap: break-word;
   }
 
-  .title, .description, .sub-section {
+  .title,
+  .description,
+  .sub-section {
     line-height: inherit;
   }
 }

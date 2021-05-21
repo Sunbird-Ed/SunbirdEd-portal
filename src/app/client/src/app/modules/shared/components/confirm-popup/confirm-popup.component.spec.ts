@@ -6,6 +6,7 @@ import { CacheService } from 'ng2-cache-service';
 import { configureTestSuite } from '@sunbird/test-util';
 
 import { ConfirmPopupComponent } from './confirm-popup.component';
+import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 
 describe('ConfirmPopupComponent', () => {
   let component: ConfirmPopupComponent;
@@ -14,7 +15,12 @@ describe('ConfirmPopupComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ConfirmPopupComponent],
-      imports: [SuiModule, HttpClientTestingModule],
+      imports: [SuiModule, HttpClientTestingModule,TranslateModule.forRoot({
+         loader: {
+            provide: TranslateLoader,
+            useClass: TranslateFakeLoader
+         }
+      }),],
       providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService]
     })
       .compileComponents();

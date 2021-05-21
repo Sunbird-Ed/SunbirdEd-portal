@@ -2,12 +2,13 @@ import { Component, OnInit, OnDestroy, OnChanges, Input, EventEmitter, Output } 
 import { ActivatedRoute, Router, NavigationStart, NavigationEnd } from '@angular/router';
 import {
   ConfigService, NavigationHelperService, PlayerConfig, ContentData, ToasterService, ResourceService,
-  UtilService
+  UtilService, LayoutService
 } from '@sunbird/shared';
 import { Subject } from 'rxjs';
 import { takeUntil, filter, map } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
+import { PublicPlayerService } from '@sunbird/public';
 
 @Component({
   selector: 'app-contentplayer-page',
@@ -25,8 +26,10 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
 
   @Output() assessmentEvents = new EventEmitter<any>();
   @Output() questionScoreSubmitEvents = new EventEmitter<any>();
+  @Output() questionScoreReviewEvents = new EventEmitter<any>();
   @Output() contentDownloaded = new EventEmitter();
   @Output() deletedContent = new EventEmitter();
+
 
   unsubscribe$ = new Subject<void>();
   contentId: string;
@@ -35,6 +38,8 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
   isConnected;
   isContentDeleted: Subject<any> = new Subject();
   playerOption: any;
+  layoutConfiguration;
+  isDesktopApp = false;
 
   constructor(private activatedRoute: ActivatedRoute,
     private configService: ConfigService,
@@ -43,10 +48,14 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
     public toasterService: ToasterService,
     public resourceService: ResourceService,
     private utilService: UtilService,
-    private telemetryService: TelemetryService
+    private telemetryService: TelemetryService,
+    public layoutService: LayoutService,
+    private playerService: PublicPlayerService
   ) { }
 
   ngOnInit() {
+    this.isDesktopApp = this.utilService.isDesktopApp;
+    this.initLayout();
     this.utilService.emitHideHeaderTabsEvent(true);
     this.contentType = this.activatedRoute.snapshot.queryParams.contentType;
     this.getContentIdFromRoute();
@@ -69,6 +78,15 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
     }
   }
 
+  initLayout() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.layoutService.switchableLayout().
+        pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
+        if (layoutConfig != null) {
+          this.layoutConfiguration = layoutConfig.layout;
+        }
+      });
+  }
   ngOnChanges() {
     if (this.contentDetails && this.tocPage) {
       this.contentId = this.contentDetails.identifier;
@@ -89,7 +107,23 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
 
   getContent() {
     const options: any = { dialCode: this.dialCode };
-    const params = { params: this.configService.appConfig.PublicPlayer.contentApiQueryParams };
+    if (this.isDesktopApp) {
+      const params = { params: this.configService.appConfig.PublicPlayer.contentApiQueryParams };
+      this.playerService.getContent(this.contentId, params)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(response => {
+          this.contentDetails = _.get(response, 'result.content');
+          const status = !_.has(this.contentDetails, 'desktopAppMetadata.isAvailable') ? false :
+          !_.get(this.contentDetails, 'desktopAppMetadata.isAvailable');
+          this.isContentDeleted.next({value: status});
+          this.getContentConfigDetails(this.contentId, options);
+          this.setTelemetryData();
+        }, error => {
+          this.contentDetails = {};
+          this.isContentDeleted.next({value: true});
+          this.setTelemetryData();
+        });
+    }
   }
 
   getContentConfigDetails(contentId, options) {
@@ -101,7 +135,7 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
   }
 
   checkContentDeleted(event) {
-    if (event && this.isConnected && !this.router.url.includes('browse')) {
+    if (this.isDesktopApp && event) {
       this.isContentDeleted.next({ value: true });
       this.deletedContent.emit(this.contentDetails);
     }
@@ -181,7 +215,9 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
   onQuestionScoreSubmitEvents(event) {
     this.questionScoreSubmitEvents.emit(event);
   }
-
+  onQuestionScoreReviewEvents(event) {
+    this.questionScoreReviewEvents.emit(event);
+  }
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();

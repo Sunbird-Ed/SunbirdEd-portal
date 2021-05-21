@@ -9,6 +9,7 @@ import { CardComponent } from './card.component';
 import { CacheService } from 'ng2-cache-service';
 import { CdnprefixPipe } from '../../pipes/cdnprefix.pipe';
 import { configureTestSuite } from '@sunbird/test-util';
+import { TranslateModule, TranslateLoader, TranslateFakeLoader } from '@ngx-translate/core';
 
 describe('CardComponent', () => {
   let component: CardComponent;
@@ -23,7 +24,12 @@ describe('CardComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule,TranslateModule.forRoot({
+         loader: {
+            provide: TranslateLoader,
+            useClass: TranslateFakeLoader
+         }
+      })],
       declarations: [ CardComponent, CdnprefixPipe ],
       providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: FakeActivatedRoute }],

@@ -1,32 +1,49 @@
-<div class="sb-pageSection my-24 ui container" [appTelemetryImpression]="telemetryImpression">
+<app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration">
 
-  <ng-container *ngIf="(reportsList$ | async ) as reportsList else loading">
+</app-landing-section>
 
-    <div class="sb-pageSection-header" *ngIf="reportsList.count > 0">
-      <h4 class="sb-pageSection-title sb-pageSection-sentenceCase m-0 mr-16"><span class="mr-8"> View All Reports</span>
-      </h4>
-    </div>
+<div [ngClass]="layoutConfiguration ? 'sbt-container relative9':''">
+  <div class="sb-pageSection my-24 ui container listallreports-section">
 
-    <div class="sb-pageSection-content">
+    <ng-container *ngIf="(reportsList$ | async ) as reportsList else loading">
 
-      <ng-container *ngIf="reportsList.count > 0 else noResult">
-        <div class="ui bottom attached small p-0 b-0 no-bg py-24">
-          <app-data-table [options]="reportsList.table.options" [columnDefinations]="reportsList.table.defs"
-            (rowClickEvent)="rowClickEventHandler($event)" [tableId]="'list-all-reports'"
-            [headerData]="reportsList.table.header" [rowsData]="reportsList.table.data">
-          </app-data-table>
-        </div>
-      </ng-container>
+      <div class="sb-pageSection-content">
 
-      <ng-template #noResult>
-        <app-no-result [data]="{messageText: noResultFoundError}"></app-no-result>
-      </ng-template>
-    </div>
-  </ng-container>
+        <ng-container *ngIf="reportsList.count > 0 else noResult">
+          <div
+            [appTelemetryImpression]="getTelemetryImpression({type: 'page-loaded', cdata: reportService?.isUserReportAdmin() ? [{id: '' + reportsList?.reportsArr?.length, type: 'CountReports'},
+             {id: '' + reportsList?.datasetsArr?.length, type: 'CountDatasets'}] : [{id: '' + reportsList?.reportsArr?.length, type: 'CountReports'}]})">
+            <sui-tabset>
+              <div class="ui top attached tabular menu report-menu">
+                <a class="item" suiTabHeader="1"><i class="icon chart line alternate"></i> Reports</a>
+                <a *ngIf="reportService?.isUserReportAdmin()" class="item" suiTabHeader="2"><i
+                    class="icon download alternate"></i>Datasets</a>
+              </div>
+              <div class="ui bottom attached segment" suiTabContent="1">
+                <div class="ui bottom attached small p-0 b-0 no-bg py-24">
+                  <table #all_reports class="sb-table sb-table-hover sb-table-striped sb-table-sortable width-100">
+                  </table>
+                </div>
+              </div>
 
-  <ng-template #loading>
-    <app-loader></app-loader>
-  </ng-template>
+              <div *ngIf="reportService?.isUserReportAdmin()" class="ui bottom attached segment" suiTabContent="2">
+                <div class="ui bottom attached small p-0 b-0 no-bg py-24">
+                  <table #all_datasets class="sb-table sb-table-hover sb-table-striped sb-table-sortable width-100">
+                  </table>
+                </div>
+              </div>
+            </sui-tabset>
+          </div>
+        </ng-container>
 
+        <ng-template #noResult>
+          <app-no-result [data]="{messageText: noResultFoundError}"></app-no-result>
+        </ng-template>
+      </div>
+    </ng-container>
 
+    <ng-template #loading>
+      <app-loader></app-loader>
+    </ng-template>
+  </div>
 </div>

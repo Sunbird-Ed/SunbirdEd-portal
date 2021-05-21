@@ -2,8 +2,7 @@
 @import "./mixins/mixins";
 
 .sb-explore-qr-page-cover {
-  //background: $var(--white);
-  padding: ($base-block-space * 4) 0 0 0;
+  padding: calculateRem(32px) 0 0 0;
   min-height: calc(100vh - 230px);
 }
 
@@ -25,11 +24,11 @@
     transition: opacity .1s ease;
 }
 .get-page-background {
-  background: linear-gradient(-90deg, #5C8DB7, #91AECC);
+  background: linear-gradient(-90deg, var(--rc-5c8db7), var(--rc-91aecc));
   height: 100vh;
 }
 .dailcode-page-background {
-  background: #f9f9f9;
+  background: var(--rc-f9f9f9);
   height: 100vh;
 }
 .bars.icon.mobile.sunbird-hamburger-menu {
@@ -94,7 +93,7 @@
   }
 }
 .menu-public-header{
-  border-top: calculateRem(2px) solid rgba(134, 106, 106, 0.13);
+  border-top: calculateRem(2px) solid rgba(var(--rc-rgba-866a6a), 0.13);
 }
 
 
@@ -104,14 +103,14 @@
   align-content: space-between;
 
   .dial-section-column {
-    border-right:calculateRem(1px) solid rgba(51, 51, 51,0.1);
+    border-right:calculateRem(1px) solid rgba(var(--rc-rgba-gray), 0.1);
     flex:50%;
     padding-left: 0;
     h1 {
-      color: $gray-800;	font-size: $font-size-md;	
+      color: var(--gray-800);	font-size: var(--h5-font-size);	
     }
     p {
-      color: $gray-800;font-size: $font-size-normal;
+      color: var(--gray-800);font-size: var(--font-size-base);
     }
   }
   .dial-scan-column {

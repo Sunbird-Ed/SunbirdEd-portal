@@ -1,5 +1,5 @@
 
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute, NavigationStart } from '@angular/router';
 import { CacheService } from 'ng2-cache-service';
 import * as _ from 'lodash-es';
@@ -36,6 +36,10 @@ export class NavigationHelperService {
    * Name used to store previous url in session
    */
   private cacheServiceName = 'previousUrl';
+  contentFullScreenEvent = new EventEmitter<any>();
+  handleCMvisibility = new EventEmitter<any>();
+  previousNavigationUrl;
+
   constructor(
     public router: Router,
     public activatedRoute: ActivatedRoute,
@@ -204,4 +208,30 @@ export class NavigationHelperService {
     this._history = [];
   }
 
+  emitFullScreenEvent(value) {
+    this.contentFullScreenEvent.emit(value);
+  }
+
+  handleContentManagerOnFullscreen(value) {
+    this.handleCMvisibility.emit(value);
+  }
+
+  setNavigationUrl(navigationUrl?: UrlHistory) {
+    const urlToNavigate = navigationUrl ? navigationUrl : this.getPreviousUrl();
+    if (urlToNavigate && !(_.includes(urlToNavigate.url, 'create-managed-user') || _.includes(urlToNavigate.url, 'choose-managed-user'))) {
+      this.previousNavigationUrl = urlToNavigate;
+    }
+  }
+
+  navigateToLastUrl() {
+    if (this.previousNavigationUrl) {
+      if (this.previousNavigationUrl.queryParams) {
+        this.router.navigate([this.previousNavigationUrl.url], {queryParams: this.previousNavigationUrl.queryParams});
+      } else {
+        this.router.navigate([this.previousNavigationUrl.url]);
+      }
+    } else {
+      this.router.navigate(['/resources']);
+    }
+  }
 }

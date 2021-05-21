@@ -149,14 +149,14 @@ describe('AllContentComponent', () => {
   it('should call delete api and get success response', inject([SuiModalService, WorkSpaceService, ActivatedRoute],
     (modalService, workSpaceService, activatedRoute, http) => {
       spyOn(workSpaceService, 'deleteContent').and.callFake(() => observableOf(Response.deleteSuccess));
-      spyOn(component, 'deleteConfirmModal').and.callThrough();
+      spyOn(component, 'deleteContent').and.callThrough();
       spyOn(modalService, 'open').and.callThrough();
       spyOn(component, 'delete').and.callThrough();
       const DeleteParam = {
         contentIds: ['do_2124645735080755201259']
       };
-      component.deleteConfirmModal('do_2124645735080755201259');
-      expect(component.deleteConfirmModal).toHaveBeenCalledWith('do_2124645735080755201259');
+      component.deleteContent('do_2124645735080755201259');
+      expect(component.deleteContent).toHaveBeenCalledWith('do_2124645735080755201259');
       workSpaceService.deleteContent(DeleteParam).subscribe(
         apiResponse => {
           expect(apiResponse.responseCode).toBe('OK');
@@ -164,4 +164,33 @@ describe('AllContentComponent', () => {
         }
       );
     }));
+    it('should call search content and get channel and get success response', inject([SuiModalService, WorkSpaceService],
+      (modalService, workSpaceService) => {
+        spyOn(workSpaceService, 'searchContent').and.callFake(() => observableOf(Response.searchedCollection));
+        spyOn(workSpaceService, 'getChannel').and.callFake(() => observableOf(Response.channelDetail));
+        spyOn(component, 'checkLinkedCollections').and.callThrough();
+        spyOn(modalService, 'open').and.callThrough();
+        component.checkLinkedCollections(undefined);
+        expect(component.checkLinkedCollections).toHaveBeenCalledWith(undefined);
+      }));
+
+    it('should call deleteConfirmModal for deleting content', () => {
+      const data = {'identifier': 'do_112485749070602240134', 'mimeType': 'TextBook'};
+      // Arrange
+      spyOn(component, 'deleteConfirmModal');
+      // Act
+      component.deleteConfirmModal(data.identifier, data.mimeType);
+      // Assert
+      expect(component.deleteConfirmModal).toHaveBeenCalledWith(data.identifier, data.mimeType);
+
+      });
+
+    it('should call deleteConfirmModal if content not found', () => {
+      // Arrange
+      spyOn(component, 'deleteConfirmModal');
+      // Act
+      component.deleteConfirmModal(undefined, undefined);
+      // Assert
+      expect(component.deleteConfirmModal).toHaveBeenCalledWith(undefined, undefined);
+      });
 });

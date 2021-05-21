@@ -32,4 +32,13 @@ describe('TncService', () => {
       expect(err).toBe(mockError);
     });
   }));
+
+  it('should fetch tnc List', inject([TncService], (service: TncService) => {
+    const mockData = { success: 'success' };
+    const learnerService = TestBed.get(LearnerService);
+    spyOn(learnerService, 'get').and.returnValue(observableOf(mockData));
+    service.getGroupsTnc().subscribe((data: any) => {
+      expect(data).toBe(mockData);
+    });
+  }));
 });

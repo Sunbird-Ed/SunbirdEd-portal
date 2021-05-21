@@ -22,13 +22,13 @@
             sb__ellipsis--one" [ngStyle]="!defaultBg  && {'color': selectedCourse?.titleColor}">
             <div>{{title}}</div>
           </div>
-          <div class="d-flex flex-ai-center content-header__info fsmall mt-4"> {{courseList.length}} {{(resourceService?.frmelmnts?.lbl?.courses).toUpperCase()}}</div>
+          <div class="d-flex flex-ai-center content-header__info fsmall mt-4" *ngIf="courseList?.length"> {{courseList.length}} {{(resourceService?.frmelmnts?.lbl?.courses).toUpperCase()}}</div>
         </div>
       </div>
     </div>
   </div>
   
-  <div class="ui container mt-24 sb-library-cards">
+  <div class="ui container mt-24 sb-library-cards right-flower-position-adjust-container">
       <div class="sbgrid">
         <div *ngFor="let course of courseList">
           <sb-course-card [course]="course" [cardImg]="course.appIcon" (cardClick)="navigateToCourse($event); getInteractData($event)" [section]="null"></sb-course-card>

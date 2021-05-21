@@ -1,27 +1,30 @@
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import {
-  ResourceService, ConfigService, ToasterService, ServerResponse, IUserData, IUserProfile, Framework,
+  ResourceService, ConfigService, ToasterService, ServerResponse, Framework,
   ILoaderMessage, NavigationHelperService , BrowserCacheTtlService
 } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EditorService } from './../../services';
-import { SearchService, UserService, FrameworkService, FormService } from '@sunbird/core';
+import { SearchService, UserService, FrameworkService, FormService, PublicDataService, ContentService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
 import { DefaultTemplateComponent } from '../content-creation-default-template/content-creation-default-template.component';
-import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
+import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { WorkSpace } from '../../classes/workspace';
 import { WorkSpaceService } from '../../services';
-import { combineLatest, Subscription, Subject, of, throwError } from 'rxjs';
-import { takeUntil, first, mergeMap, map, tap , filter, catchError} from 'rxjs/operators';
+import { Subject, forkJoin, of } from 'rxjs';
+import { mergeMap, takeUntil} from 'rxjs/operators';
+import { UUID } from 'angular2-uuid';
+
 @Component({
   selector: 'app-data-driven',
-  templateUrl: './data-driven.component.html'
+  templateUrl: './data-driven.component.html',
+  styleUrls: ['./data-driven.component.scss']
 })
 export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('formData') formData: DefaultTemplateComponent;
-  @ViewChild('modal') modal;
+  @ViewChild('formData', {static: false}) formData: DefaultTemplateComponent;
+  @ViewChild('modal', {static: false}) modal;
 
   /**
 	 * This variable hepls to show and hide page loader.
@@ -104,7 +107,22 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
 	*/
   telemetryImpression: IImpressionEventInput;
 
+  public showFrameworkSelection: boolean;
+
+  public frameworkCardData = [];
+
+  public selectedCard: any;
+
+  public enableCreateButton = false;
+
+  public isSubmit = false;
+  public orgFWType;
+  public targetFWType;
+
   public unsubscribe = new Subject<void>();
+  public targetFramework: string;
+  public primaryCategory: string;
+  public userChannelData;
   constructor(
     public searchService: SearchService,
     public workSpaceService: WorkSpaceService,
@@ -119,7 +137,10 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     formService: FormService,
     private _cacheService: CacheService,
     public navigationHelperService: NavigationHelperService,
-    public browserCacheTtlService: BrowserCacheTtlService
+    public browserCacheTtlService: BrowserCacheTtlService,
+    public telemetryService: TelemetryService,
+    public publicDataService: PublicDataService,
+    public contentService: ContentService
   ) {
     super(searchService, workSpaceService, userService);
     this.activatedRoute = activatedRoute;
@@ -141,12 +162,15 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
    this.configService.appConfig.contentDescription[this.contentType] : 'Untitled';
   }
   ngOnInit() {
+    this.activatedRoute.queryParams.subscribe(queryParams => {
+      this.showFrameworkSelection = _.get(queryParams, 'showFrameworkSelection');
+    });
     this.userService.userOrgDetails$.subscribe(() => { // wait for user organization details
       this.checkForPreviousRouteForRedirect();
-      if (_.lowerCase(this.contentType) === 'course') {
-        this.frameworkService.getDefaultCourseFramework().pipe(takeUntil(this.unsubscribe)).subscribe(data => {
-          this.framework = data;
-          this.fetchFrameworkMetaData();
+      if (this.showFrameworkSelection) {
+        this.frameworkService.getChannel(this.userService.hashTagId).pipe(takeUntil(this.unsubscribe)).subscribe(data => {
+          this.userChannelData = data;
+          this.selectFramework();
         }, err => {
           this.toasterService.error(this.resourceService.messages.emsg.m0005);
         });
@@ -156,7 +180,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
        */
         this.fetchFrameworkMetaData();
       }
-    })
+    });
   }
 
   ngOnDestroy() {
@@ -175,30 +199,47 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
         if (_.lowerCase(this.contentType) !== 'course') {
           this.framework = frameworkData.frameworkdata['defaultFramework'].code;
         }
-        /**
-        * isCachedDataExists will check data is exists in cache or not. If exists should not call
-        * form api otherwise call form api and get form data
-        */
-        this.isCachedDataExists = this._cacheService.exists(this.contentType + this.formAction);
-        if (this.isCachedDataExists) {
-          const data: any | null = this._cacheService.get(this.contentType + this.formAction);
-          this.formFieldProperties = data;
+        if (_.lowerCase(this.contentType) === 'questionset') {
+          const reqData = this.generateQuestionSetData();
+          this.workSpaceService.createQuestionSet(reqData).subscribe(res => {
+            // tslint:disable-next-line:max-line-length
+            this.router.navigate(['workspace/edit/', 'QuestionSet', res.result.identifier, 'allcontent', 'Draft']);
+          }, err => {
+            this.toasterService.error(this.resourceService.messages.fmsg.m0102);
+          });
         } else {
-          const formServiceInputParams = {
-            formType: this.formType,
-            formAction: this.formAction,
-            contentType: this.contentType,
-            framework: this.framework
+          const categoryList = {
+            'code' : 'primaryCategory',
+            'identifier': 'sb_primaryCategory',
+            'description': 'Primary Category',
+            'terms' : this.getCategoryList(this.contentType)
           };
-          this.formService.getFormConfig(formServiceInputParams).subscribe(
-            (data: ServerResponse) => {
-              this.formFieldProperties = data;
-              this.getFormConfig();
-            },
-            (err: ServerResponse) => {
-              this.toasterService.error(this.resourceService.messages.emsg.m0005);
-            }
-          );
+          this.categoryMasterList.push(categoryList);
+          /**
+          * isCachedDataExists will check data is exists in cache or not. If exists should not call
+          * form api otherwise call form api and get form data
+          */
+          this.isCachedDataExists = this._cacheService.exists(this.contentType + this.formAction);
+          if (this.isCachedDataExists) {
+            const data: any | null = this._cacheService.get(this.contentType + this.formAction);
+            this.formFieldProperties = data;
+          } else {
+            const formServiceInputParams = {
+              formType: this.formType,
+              formAction: this.formAction,
+              contentType: this.contentType,
+              framework: this.framework
+            };
+            this.formService.getFormConfig(formServiceInputParams).subscribe(
+              (data: ServerResponse) => {
+                this.formFieldProperties = data;
+                this.getFormConfig();
+              },
+              (err: ServerResponse) => {
+                this.toasterService.error(this.resourceService.messages.emsg.m0005);
+              }
+            );
+          }
         }
       } else if (frameworkData && frameworkData.err) {
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
@@ -244,13 +285,18 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
       requestData.createdBy = this.userService.userProfile.id,
       requestData.organisation = _.uniq(this.userService.orgNames),
       requestData.createdFor = this.userService.userProfile.organisationIds,
-      requestData.contentType = this.configService.appConfig.contentCreateTypeForEditors[this.contentType],
+      requestData.contentType = this.configService.appConfig.contentCreateTypeForEditors[this.contentType];
+    if (this.framework) {
       requestData.framework = this.framework;
+    }
     if (this.contentType === 'studymaterial' && data.contentType) {
       requestData.contentType = data.contentType;
     }
     if (requestData.year) {
       requestData.year = requestData.year.toString();
+    }
+    if (requestData.maxAttempts) {
+      requestData.maxAttempts = _.parseInt(requestData.maxAttempts);
     }
     if (this.contentType === 'studymaterial' || this.contentType === 'assessment') {
       requestData.mimeType = this.configService.appConfig.CONTENT_CONST.CREATE_LESSON;
@@ -267,13 +313,32 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     } else {
       requestData.creator = this.userService.userProfile.firstName;
     }
+
+    if (this.targetFramework) {
+      requestData.targetFWIds = _.castArray(this.targetFramework);
+    }
+    if (this.primaryCategory) {
+      requestData.primaryCategory = this.primaryCategory;
+    }
+
     return requestData;
   }
 
-  createContent() {
+  createContent(modal) {
+    let requiredFields = [];
+    requiredFields = _.map(_.filter(this.formFieldProperties, { 'required': true }), field => field.code );
     const requestData = {
       content: this.generateData(_.pickBy(this.formData.formInputData))
     };
+    for (let i = 0; i < requiredFields.length; i++) {
+      if (_.isUndefined(requestData.content[requiredFields[i]])) {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0101);
+        return;
+      }
+    }
+    if (!_.isUndefined(modal)) {
+      modal.deny();
+    }
     if (this.contentType === 'studymaterial' || this.contentType === 'assessment') {
       this.editorService.create(requestData).subscribe(res => {
         this.createLockAndNavigateToEditor({identifier: res.result.content_id});
@@ -294,10 +359,13 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     const framework = this.framework;
     if (this.contentType === 'studymaterial' || this.contentType === 'assessment') {
       this.router.navigate(['/workspace/content/edit/content/', content.identifier, state, framework, 'Draft']);
+    }  else if (this.contentType === 'course') {
+      this.router.navigate(['workspace/edit/', 'Course', content.identifier, state, 'Draft']);
     } else {
       const type = this.configService.appConfig.contentCreateTypeForEditors[this.contentType];
       this.router.navigate(['/workspace/content/edit/collection', content.identifier, type, state, framework, 'Draft']);
     }
+    this.logTelemetry(content.identifier);
   }
 
   /**
@@ -308,7 +376,95 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     if (previousUrlObj && previousUrlObj.url && (previousUrlObj.url !== '/workspace/content/create')) {
       this.redirect();
     }
-}
+  }
+
+  setTargetFramework(categoryDefinitionData, targetFWIdentifiers, channelFrameworksType, channelFrameworks) {
+    if (_.isEmpty(targetFWIdentifiers)) {
+      this.targetFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.targetFWType');
+      const difference =  _.difference(this.targetFWType, _.uniq(channelFrameworksType));
+
+      if (this.targetFWType && channelFrameworksType && _.isEmpty(difference)) {
+          this.targetFramework =  _.get(_.first(_.filter(channelFrameworks, framework => {
+            return framework.type === _.first(this.targetFWType);
+          })), 'identifier');
+          if (_.isEmpty(this.targetFramework)) {
+            this.showCategoryConfigError();
+          } else {
+            this.createContent(undefined);
+          }
+      } else if ((this.targetFWType && channelFrameworksType && !_.isEmpty(difference))  || _.isEmpty(channelFrameworksType)) {
+        this.getFrameworkDataByType(undefined, difference, undefined, 'Yes').subscribe(
+          (targetResponse) => {
+            this.targetFramework = _.get(_.first(_.get(targetResponse, 'result.Framework')), 'identifier');
+            if (_.isEmpty(this.targetFramework)) {
+              this.showCategoryConfigError();
+            } else {
+              this.createContent(undefined);
+            }
+          }, (error) => {
+            this.showCategoryConfigError();
+          }
+        );
+      }
+      if (_.isEmpty(this.orgFWType) || _.isEmpty(this.targetFWType)) {
+        this.showCategoryConfigError();
+      }
+    } else {
+      this.targetFramework = _.isArray(targetFWIdentifiers) ? _.first(targetFWIdentifiers) : targetFWIdentifiers;
+      this.createContent(undefined);
+    }
+  }
+
+  showCategoryConfigError() {
+    this.toasterService.error(`Unknown framework category ${this.primaryCategory || 'Course'}. Please check the configuration.`);
+    this.redirect();
+    return ;
+  }
+
+/**
+   * @since - #SH-403
+   * @param  {} cardData
+   * @description - 1. It selects a card from the framework selection popup
+   *                shown while creating any resource (only course as of now)
+   *                2. It also logs interact telemetry on card click.
+   */
+  selectFramework() {
+    this.primaryCategory = 'Course';
+    this.workSpaceService.getCategoryDefinition('Collection', this.primaryCategory, this.userService.channel)
+    .subscribe(categoryDefinitionData => {
+      this.orgFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.schema.properties.framework.enum') ||
+      _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.schema.properties.framework.default');
+      const targetFWIdentifiers = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.schema.properties.targetFWIds.default');
+      const channelFrameworks = _.get(this.userChannelData, 'result.channel.frameworks');
+      const channelFrameworksType = _.compact(_.map(channelFrameworks, 'type'));
+
+      if (_.isEmpty(this.orgFWType)) {
+        this.orgFWType = _.get(categoryDefinitionData, 'result.objectCategoryDefinition.objectMetadata.config.frameworkMetadata.orgFWType');
+        const difference = _.difference(this.orgFWType, _.uniq(channelFrameworksType));
+
+        if ((!_.isEmpty(this.orgFWType) && !_.isEmpty(channelFrameworksType) && !_.isEmpty(difference)) ||
+        _.isEmpty(channelFrameworksType)) {
+          this.getFrameworkDataByType(undefined, difference, undefined, 'Yes').subscribe(
+            (response) => {
+              if (!_.get(response, 'result.count')) {
+                this.showCategoryConfigError();
+              } else {
+                this.setTargetFramework(categoryDefinitionData, targetFWIdentifiers, channelFrameworksType, channelFrameworks);
+              }
+            }, (error) => {
+              this.showCategoryConfigError();
+            }
+          );
+        } else {
+          this.setTargetFramework(categoryDefinitionData, targetFWIdentifiers, channelFrameworksType, channelFrameworks);
+        }
+      } else {
+        this.setTargetFramework(categoryDefinitionData, targetFWIdentifiers, channelFrameworksType, channelFrameworks);
+      }
+    }, err => {
+      this.toasterService.error(this.resourceService.messages.emsg.m0024);
+    });
+  }
 
   redirect() {
     this.router.navigate(['/workspace/content/create']);
@@ -329,5 +485,114 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
         }
       };
     });
+  }
+
+  getFrameworkDataByType(channel?, type?, identifer?, systemDefault?) {
+    const option = {
+      url: `${this.configService.urlConFig.URLS.COMPOSITE.SEARCH}`,
+      data: {
+        request: {
+            filters: {
+                objectType: 'Framework',
+                status: ['Live'],
+                ...(type && {type}),
+                ...(identifer && {identifer}),
+                ...(channel && {channel}),
+                ...(systemDefault && {systemDefault})
+            }
+        }
+    }
+      };
+      return this.contentService.post(option);
+  }
+
+
+  /**
+   * @since - #SH-403
+   * @param  {string} contentId
+   * @description - it triggers an interact event when Start creating button is clicked.
+   */
+  logTelemetry(contentId) {
+    const telemetryData = {
+      context: {
+        env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env'),
+        cdata: [{
+          type: 'framework',
+          id: this.framework
+        }]
+      },
+      edata: {
+        id: 'start-creating-' + this.contentType,
+        type: 'click',
+        pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid')
+      },
+      object: {
+        id: contentId,
+        type: this.contentType,
+        ver: '1.0',
+        rollup: {},
+      }
+    };
+    if (this.targetFramework) {
+      telemetryData.context.cdata.push({
+        type: 'targetFW',
+        id: this.targetFramework
+      });
+    }
+    this.telemetryService.interact(telemetryData);
+  }
+
+  getCategoryList(type: string): object {
+    const primaryCategoryList = [];
+      if (type === 'collection' || type === 'lessonplan') {
+        if (!_.isEmpty(this.frameworkService['_channelData'].collectionPrimaryCategories)) {
+          _.forEach(this.frameworkService['_channelData'].collectionPrimaryCategories, (field) => {
+            if (_.lowerCase(field) === _.lowerCase('Course')) {
+              return;
+            }
+            const categoryTemplateObject = {
+               'identifier' : field,
+               'name' : field,
+               'description': field
+            };
+            primaryCategoryList.push(categoryTemplateObject);
+        });
+        }
+      } else if (type === 'studymaterial' || type === 'assessment') {
+        if (!_.isEmpty(this.frameworkService['_channelData'].contentPrimaryCategories)) {
+          _.forEach(this.frameworkService['_channelData'].contentPrimaryCategories, (field) => {
+            if (_.lowerCase(field) === _.lowerCase('Course Assessment')) {
+              return;
+            }
+            const categoryTemplateObject = {
+               'identifier' : field,
+               'name' : field,
+               'description': field
+            };
+            primaryCategoryList.push(categoryTemplateObject);
+        });
+      }
+    }
+    return primaryCategoryList;
+  }
+
+  generateQuestionSetData() {
+    let name = this.userService.userProfile.firstName;
+    if (!_.isEmpty(this.userService.userProfile.lastName)) {
+      name = this.userService.userProfile.firstName + ' ' + this.userService.userProfile.lastName;
+    }
+    return {
+        'questionset': {
+          name: 'Untitled QuestionSet',
+          mimeType: 'application/vnd.sunbird.questionset',
+          primaryCategory: 'Practice Question Set',
+          createdBy: this.userService.userProfile.id,
+          // organisation: _.uniq(this.userService.orgNames),
+          createdFor: this.userService.userProfile.organisationIds,
+          framework: this.framework,
+          // creator: name,
+          code: UUID.UUID()
+        }
+    };
   }
 }

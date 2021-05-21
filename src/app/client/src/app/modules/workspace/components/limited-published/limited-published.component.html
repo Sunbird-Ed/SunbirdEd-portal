@@ -1,73 +1,75 @@
 <!-- Loader -->
-<div class="twelve wide column mt-20" *ngIf="showLoader">
-  <app-loader [data]="loaderMessage"></app-loader>
-</div>
-
-<div class="ui grid" *ngIf="!showLoader">
-  <div class="twelve wide column" [appTelemetryImpression]="telemetryImpression">
-    <div class="ui stackable three column grid" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="limitedPublishList">
-      <div in-view-item *ngFor="let content of limitedPublishList;let i = index;" [id]="i" [data]="content" class="column py-5 pb-5 pl-10">
-         <app-card-creation [data]="content" (clickEvent)="contentClick($event)"></app-card-creation>
-      </div>
-    </div>
-    <div *ngIf="noResult">
-      <app-no-result [data]="noResultMessage"></app-no-result>
-    </div>
+<div class="sbt-page-gap">
+  <div class="twelve wide column mt-20" *ngIf="showLoader">
+    <app-loader [data]="loaderMessage"></app-loader>
   </div>
-</div>
-<div class="ui grid">
-  <div class="two wide column"></div>
-  <div class="ten wide column pt-0">
-    <div class="pb-10" *ngIf="limitedPublishList && totalCount > config.appConfig.WORKSPACE.PAGE_LIMIT && !showLoader && !showError">
-      <div class="ui pagination menu mt-10 right-floated pt-0" *ngIf="pager.pages.length ">
-        <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(1) ">First</a>
-        <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(pager.currentPage - 1)">Previous</a>
-        <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" (click)="navigateToPage(page)" class="item">{{page}}</a>
-        <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.currentPage + 1)" class="item">Next</a>
-        <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.totalPages)" class="item ">Last</a>
+  
+  <div class="ui grid my-0" *ngIf="!showLoader">
+    <div class="twelve wide column" [appTelemetryImpression]="telemetryImpression">
+      <div class="ui stackable three column grid" in-view-container (inview)="inview($event)" [throttle]="[1000]" [trigger]="limitedPublishList">
+        <div in-view-item *ngFor="let content of limitedPublishList;let i = index;" [id]="i" [data]="content" class="column py-5 pb-5 pl-10">
+           <app-card-creation [data]="content" (clickEvent)="contentClick($event)"></app-card-creation>
+        </div>
+      </div>
+      <div *ngIf="noResult">
+        <app-no-result [data]="noResultMessage"></app-no-result>
       </div>
     </div>
   </div>
-</div>
-
-<ng-template let-context let-modal="modal" #modalTemplate>
-  <div class="sb-modal sb-error">
-    <div class="ui modal visible active small">
-      <i class="icon close" (click)="modal.deny('denied')" tabindex="0"></i>
-
-      <!--Header-->
-      <div class="sb-modal-header">
-        {{resourceService?.frmelmnts?.lbl?.deletecontent}}
+  <div class="ui grid">
+    <div class="two wide column"></div>
+    <div class="ten wide column pt-0">
+      <div class="pb-10" *ngIf="limitedPublishList && totalCount > config.appConfig.WORKSPACE.PAGE_LIMIT && !showLoader && !showError">
+        <div class="ui pagination menu mt-10 right-floated pt-0" *ngIf="pager.pages.length ">
+          <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(1) ">First</a>
+          <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(pager.currentPage - 1)">Previous</a>
+          <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" (click)="navigateToPage(page)" class="item">{{page}}</a>
+          <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.currentPage + 1)" class="item">Next</a>
+          <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.totalPages)" class="item ">Last</a>
+        </div>
       </div>
-      <!--/Header-->
-
-      <!--Content-->
-      <div class="sb-modal-content">
-        <p>{{resourceService?.frmelmnts?.lbl?.deleteconfirm}}</p>
-      </div>
-      <!--/Content-->
-
-      <!--Actions-->
-      <div class="sb-modal-actions">
-        <button 
-          class="sb-btn sb-btn-normal sb-btn-error" 
-          (click)="modal.approve('approved')" 
-          autofocus
-        >
-          {{resourceService?.frmelmnts?.btn?.yes}}
-        </button>
-        <button 
-          class="sb-btn sb-btn-normal sb-btn-outline-error" 
-          (click)="modal.deny('denied')"
-        >
-          {{resourceService?.frmelmnts?.btn?.no}}
-        </button>
-      </div>
-      <!--/Actions-->
-
     </div>
   </div>
-</ng-template>
+  
+  <ng-template let-context let-modal="modal" #modalTemplate>
+    <div class="sb-modal sb-error">
+      <div class="ui modal visible active small">
+        <i class="icon close" (click)="modal.deny('denied')" tabindex="0"></i>
+  
+        <!--Header-->
+        <div class="sb-modal-header">
+          {{resourceService?.frmelmnts?.lbl?.deletecontent}}
+        </div>
+        <!--/Header-->
+  
+        <!--Content-->
+        <div class="sb-modal-content">
+          <p>{{resourceService?.frmelmnts?.lbl?.deleteconfirm}}</p>
+        </div>
+        <!--/Content-->
+  
+        <!--Actions-->
+        <div class="sb-modal-actions">
+          <button 
+            class="sb-btn sb-btn-normal sb-btn-error" 
+            (click)="modal.approve('approved')" 
+            autofocus
+          >
+            {{resourceService?.frmelmnts?.btn?.yes}}
+          </button>
+          <button 
+            class="sb-btn sb-btn-normal sb-btn-outline-error" 
+            (click)="modal.deny('denied')"
+          >
+            {{resourceService?.frmelmnts?.btn?.no}}
+          </button>
+        </div>
+        <!--/Actions-->
+  
+      </div>
+    </div>
+  </ng-template>
+</div>
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf ="sharelinkModal" 
 (close)="sharelinkModal = false">
 </app-share-link>

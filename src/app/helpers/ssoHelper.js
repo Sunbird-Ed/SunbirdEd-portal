@@ -5,7 +5,7 @@ const request = require('request-promise'); //  'request' npm package with Promi
 const uuid = require('uuid/v1')
 const dateFormat = require('dateformat')
 const kafkaService = require('../helpers/kafkaHelperService');
-const logger = require('sb_logger_util_v2');
+const { logger } = require('@project-sunbird/logger');
 const {getUserIdFromToken} = require('../helpers/jwtHelper');
 const {getUserDetails} = require('../helpers/userHelper');
 const {isDate} = require('../helpers/utilityService');
@@ -31,9 +31,19 @@ const keycloakTrampolineAndroid = getKeyCloakClient({
     secret: envHelper.KEYCLOAK_TRAMPOLINE_ANDROID_CLIENT.secret
   }
 })
+const keycloakTrampolineDesktop = getKeyCloakClient({
+  resource: envHelper.KEYCLOAK_TRAMPOLINE_DESKTOP_CLIENT.clientId,
+  bearerOnly: true,
+  serverUrl: envHelper.PORTAL_AUTH_SERVER_URL,
+  realm: envHelper.PORTAL_REALM,
+  credentials: {
+    secret: envHelper.KEYCLOAK_TRAMPOLINE_DESKTOP_CLIENT.secret
+  }
+})
 const verifySignature = async (token) => {
   let options = {
     method: 'GET',
+    forever: true,
     url: envHelper.PORTAL_ECHO_API_URL + 'test',
     'rejectUnauthorized': false,
     headers: {
@@ -144,7 +154,7 @@ const createUser = async (req, jwtPayload) => {
   }
   const options = {
     method: 'POST',
-    url: envHelper.LEARNER_URL + 'user/v3/create',
+    url: envHelper.LEARNER_URL + 'user/v1/sso/create',
     headers: getHeaders(req),
     body: {
       params: {
@@ -171,6 +181,9 @@ const createSession = async (loginId, client_id, req, res) => {
   let scope = 'openid';
   if (client_id === 'android') {
     keycloakClient = keycloakTrampolineAndroid;
+    scope = 'offline_access';
+  } else if (client_id === 'desktop') {
+    keycloakClient = keycloakTrampolineDesktop;
     scope = 'offline_access';
   }
   grant = await keycloakClient.grantManager.obtainDirectly(loginId, undefined, undefined, scope);
@@ -421,6 +434,32 @@ const getIdentifier = (identifier) => {
   }
 };
 
+const orgSearch = (id, req) => {
+  const options = {
+    method: 'POST',
+    url: envHelper.LEARNER_URL + 'org/v1/search',
+    headers: getHeaders(req),
+    body: {
+      request: {
+        filters: {externalId: id}
+      }
+    },
+    json: true
+  };
+  logger.info({msg: 'SsoHelpers.orgSearchorg search org', additionalInfo: {id: id}});
+  return request(options).then(data => {
+    if (data.responseCode === 'OK') {
+      return data;
+    } else {
+      logger.error({
+        msg: 'fetching org details errored',
+        error: JSON.stringify(data)
+      });
+      throw new Error(_.get(data, 'params.errmsg') || _.get(data, 'params.err'));
+    }
+  })
+};
+
 module.exports = {
   verifySignature,
   verifyToken,
@@ -434,5 +473,6 @@ module.exports = {
   freeUpUser,
   verifyIdentifier,
   fetchUserDetails,
-  getIdentifier
+  getIdentifier,
+  orgSearch
 };

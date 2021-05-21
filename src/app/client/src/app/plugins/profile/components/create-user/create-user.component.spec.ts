@@ -85,10 +85,13 @@ describe('CreateUserComponent', () => {
   });
 
   it('should call ngOnInit', () => {
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    spyOn(navigationHelperService, 'setNavigationUrl');
     spyOn(component, 'getFormDetails');
     component.ngOnInit();
     expect(component.instance).toEqual('SUNBIRD');
     expect(component.getFormDetails).toHaveBeenCalled();
+    expect(navigationHelperService.setNavigationUrl).toHaveBeenCalled();
   });
 
   it('should call getFormDetails with success', () => {
@@ -167,9 +170,9 @@ describe('CreateUserComponent', () => {
 
   it('should redirect to profile page on cancel', () => {
     const navigationHelperService = TestBed.get(NavigationHelperService);
-    spyOn(navigationHelperService, 'navigateToPreviousUrl').and.callThrough();
+    spyOn(navigationHelperService, 'navigateToLastUrl');
     component.onCancel();
-    expect(navigationHelperService.navigateToPreviousUrl).toHaveBeenCalledWith('/profile');
+    expect(navigationHelperService.navigateToLastUrl).toHaveBeenCalled();
   });
   it('should throw error as max user creation limit excees', () => {
     const userService = TestBed.get(UserService);

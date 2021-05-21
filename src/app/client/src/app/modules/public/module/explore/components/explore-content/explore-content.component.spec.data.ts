@@ -83,6 +83,56 @@ export const Response = {
           'compatibilityLevel': 1,
           'node_id': 96096
         }
+      ],
+      'facets': [
+          {
+            'values': [
+              {
+                'name': 'grade 7',
+                'count': 8
+              },
+              {
+                'name': 'class 2',
+                'count': 85
+              }
+            ],
+            'name': 'gradeLevel'
+          },
+          {
+            'values': [
+              {
+                'name': 'chemistry',
+                'count': 2
+              },
+              {
+                'name': 'marathi',
+                'count': 9
+              }
+            ],
+            'name': 'subject'
+          },
+          {
+            'values': [
+              {
+                'name': 'explanation content',
+                'count': 2
+              },
+              {
+                'name': 'learning resource',
+                'count': 9
+              },
+              {
+                'name': 'course assessment',
+                'count': 2
+              },
+              {
+                'name': 'course',
+                'count': 9
+              }
+            ],
+            'name': 'primaryCategory'
+          }
+          
       ]
     }
   },
@@ -317,7 +367,7 @@ export const Response = {
         ],
         'name': 'board'
       }
-    ],
+  ],
   filters: [
       {
         'code': 'board',
@@ -586,5 +636,120 @@ export const Response = {
               userName: '',
           }
       }
-  }
+  },
+  formData: [{
+    'index': 1,
+    'title': 'frmelmnts.tab.courses',
+    'desc': 'frmelmnts.tab.courses',
+    'menuType': 'Content',
+    'isEnabled': true,
+    'theme': {
+      'baseColor': '',
+      'textColor': '',
+      'supportingColor': ''
+    },
+    'search': {
+      'facets': ['topic', 'purpose', 'medium', 'gradeLevel', 'subject', 'channel'],
+      'fields': [],
+      'filters': {
+        'contentType': ['Course']
+      },
+      'limit': 20
+    }
+  }, {
+    'index': 0,
+    'title': 'frmelmnts.lbl.textbooks',
+    'desc': 'frmelmnts.lbl.textbooks',
+    'menuType': 'Content',
+    'isEnabled': true,
+    'theme': {
+      'baseColor': '',
+      'textColor': '',
+      'supportingColor': ''
+    },
+    'search': {
+      'facets': ['board', 'gradeLevel', 'subject', 'medium', 'contentType', 'concepts'],
+      'fields': ['name', 'appIcon', 'mimeType', 'gradeLevel', 'identifier', 'medium', 'pkgVersion', 'board', 'subject', 'resourceType', 'contentType', 'channel', 'organisation'],
+      'filters': {
+        'contentType': ['TextBook']
+      },
+      'limit': 100
+    }
+  }, {
+    'index': 2,
+    'title': 'frmelmnts.tab.all',
+    'desc': 'frmelmnts.tab.all',
+    'menuType': 'Content',
+    'isEnabled': false,
+    'theme': {
+      'baseColor': '',
+      'textColor': '',
+      'supportingColor': ''
+    },
+    'search': {
+      'facets': ['board', 'gradeLevel', 'subject', 'medium', 'contentType', 'concepts'],
+      'fields': ['name', 'appIcon', 'mimeType', 'gradeLevel', 'identifier', 'medium', 'pkgVersion', 'board', 'subject', 'resourceType', 'contentType', 'channel', 'organisation'],
+      'filters': {
+        'contentType': ['Collection', 'TextBook', 'LessonPlan', 'Resource', 'SelfAssess', 'PracticeResource', 'LearningOutcomeDefinition', 'ExplanationResource', 'CurriculumCourse', 'Course']
+      },
+      'limit': 100
+    }
+  }],
+  hoverActionsData: {
+    'event': {
+        'isTrusted': true
+    },
+    'content': {
+        'name': '10sep book UT',
+        'image': 'https://ntpstagingall.blob8521957.thumb.jpg',
+        'description': 'Enter description for TextBook',
+        'rating': '0',
+        'subject': 'English',
+        'medium': 'Assamese',
+        'orgDetails': {},
+        'gradeLevel': 'Class 5',
+        'contentType': 'TextBook',
+        'topic': '',
+        'subTopic': '',
+        'metaData': {
+            'identifier': 'do_2128458518662184961150',
+            'mimeType': 'application/vnd.ekstep.content-collection',
+            'framework': 'as_k-12',
+            'contentType': 'TextBook'
+        },
+        'completionPercentage': 0,
+        'mimeTypesCount': '{\'application/vnd.ekstep.content-collection\':1,\'application/vnd.ekstep.ecml-archive\':1}',
+        'cardImg': 'https://ntpstagingall.blob8521957.thumb.jpg',
+        'resourceType': 'Book',
+        'organisation': ['Chhattisgarh', 'Chhattisgarh'],
+        'hoverData': {
+            'note': '',
+            'actions': [{
+                'type': 'download',
+                'label': 'Download',
+                'disabled': false
+            }, {
+                'type': 'open',
+                'label': 'Open'
+            }]
+        },
+        'board': 'State (Assam)',
+        'identifier': 'do_2128458518662184961150',
+        'mimeType': 'application/vnd.ekstep.content-collection',
+        'action': {
+            'onImage': {
+                'eventName': 'onImage'
+            }
+        },
+        'ribbon': {
+            'left': {
+                'class': 'ui circular label  card-badges-image'
+            },
+            'right': {
+                'name': 'Book',
+                'class': 'ui black right ribbon label'
+            }
+        }
+    }
+  },
 };

@@ -1,44 +1,39 @@
-// Certificate
+/* Certificate */
 $sb-certificatePage-bg-color: var(--white);
 $sb-certificatePage-padding: calculateRem(16px);
 $sb-certificatePage-max-width: calculateRem(320px);
 $sb-certificatePage-min-height: calculateRem(560px);
 $sb-certificatePage-margin: 0 auto calculateRem(48px) auto;
 $sb-certificatePage-logo-height: calculateRem(56px);
-$sb-certificatePage-desc-background: #e5edf5;
+$sb-certificatePage-desc-background:  var(--rc-E5EDF5);
 $sb-certificatePage-desc-padding: calculateRem(24px);
 $sb-certificatePage-desc-margin-mobile: 0;
 $sb-certificatePage-desc-margin-desktop: 0 calculateRem(16px);
 $sb-certificatePage-desc-img-width: calculateRem(197px);
 $sb-certificatePage-label-font-size: calculateRem(12px);
 $sb-certificatePage-label-line-height: calculateRem(17px);
-$sb-certificatePage-label-color: var(--gray-800);
 $sb-certificatePage-field-width: calculateRem(215px);
 $sb-certificatePage-field-margin: 0 auto calculateRem(36px) auto;
 $sb-certificatePage-input-height: calculateRem(30px);
 $sb-certificatePage-input-width: calculateRem(215px);
-$sb-certificatePage-input-background: linear-gradient(
-  to left,
-  #333333 70%,
-  rgba(255, 255, 255, 0) 0%
-);
+$sb-certificatePage-input-background: linear-gradient(to left,var(--gray-800) 70%, rgba(var(--rc-rgba-white), 0) 0%);
 $sb-certificatePage-input-background-size: calculateRem(35px) calculateRem(1px);
 $sb-certificatePage-input-font-size: calculateRem(16px);
 $sb-certificatePage-input-letter-spacing: calculateRem(24px);
 $sb-certificatePage-input-color: var(--gray-800);
-$sb-certificatePage-input-placeholder-color: $gray-0;
+$sb-certificatePage-input-placeholder-color: var(--gray-0);
 $sb-certificatePage-input-padding: 0 0 0 calculateRem(15px);
 $sb-certificatePage-holder-details-padding: calculateRem(16px);
 $sb-certificatePage-holder-desc-font-size: calculateRem(12px);
 $sb-certificatePage-holder-desc-line-height: calculateRem(18px);
 $sb-certificatePage-holder-desc-color: var(--gray-800);
-$sb-certificatePage-holder-desc-primary-color: $primary-color;
+$sb-certificatePage-holder-desc-primary-color: var(--primary-color);
 $sb-certificatePage-holder-name-font-size: calculateRem(22px);
 $sb-certificatePage-holder-name-line-height: calculateRem(30px);
 $sb-certificatePage-holder-name-color: var(--gray-800);
 $sb-certificatePage-holder-name-margin: calculateRem(8px) 0 calculateRem(24px) 0;
 $sb-certificatePage-holder-margin: 0 0 calculateRem(14px) 0;
-$sb-certificatePage-overlay-background: rgba(255, 255, 255, 0.5);
+$sb-certificatePage-overlay-background: rgba(var(--rc-rgba-white), 0.5);
 $sb-certificatePage-loader-img-height: calculateRem(30px);
 $sb-certificatePage-loader-img-width: calculateRem(30px);
 

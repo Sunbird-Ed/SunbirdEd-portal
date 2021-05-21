@@ -1,7 +1,7 @@
 
 import { of as observableOf, Observable } from 'rxjs';
 import { mergeMap, map } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ContentService } from './../content/content.service';
 import { UserService } from './../user/user.service';
 import { Injectable } from '@angular/core';
@@ -31,7 +31,7 @@ export class PlayerService {
   previewCdnUrl: string;
   constructor(public userService: UserService, public contentService: ContentService,
     public configService: ConfigService, public router: Router, public navigationHelperService: NavigationHelperService,
-    public publicDataService: PublicDataService, private utilService: UtilService) {
+    public publicDataService: PublicDataService, private utilService: UtilService, private activatedRoute: ActivatedRoute) {
       this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
       ? (<HTMLInputElement>document.getElementById('previewCdnUrl')).value : undefined;
   }
@@ -90,7 +90,7 @@ export class PlayerService {
     configuration.context.sid = this.userService.sessionId;
     configuration.context.uid = this.userService.userid;
     configuration.context.timeDiff = this.userService.getServerTimeDiff;
-    configuration.context.contextRollup = this.getRollUpData(this.userService.userProfile.hashTagIds);
+    configuration.context.contextRollup = this.getRollUpData(_.get(this.userService, 'userProfile.hashTagIds'));
     configuration.context.channel = this.userService.channel;
     const deviceId = (<HTMLInputElement>document.getElementById('deviceId'));
     configuration.context.did = deviceId ? deviceId.value : '';
@@ -108,7 +108,7 @@ export class PlayerService {
       configuration.context.dims = cloneDims;
     }
     const tags = [];
-    _.forEach(this.userService.userProfile.organisations, (org) => {
+    _.forEach(_.get(this.userService, 'userProfile.organisations'), (org) => {
       if (org.hashTagId) {
         tags.push(org.hashTagId);
       }
@@ -153,6 +153,8 @@ export class PlayerService {
       url: `${this.configService.urlConFig.URLS.COURSE.HIERARCHY}/${identifier}`,
       param: option.params
     };
+    // add the content id to the tag array here
+    // window['TagManger'].SBTagService.pushTag(identifier, 'CONTENT_', false);
     return this.publicDataService.get(req).pipe(map((response: ServerResponse) => {
       if (response.result.content) {
         response.result.content = this.utilService.sortChildrenWithIndex(response.result.content);
@@ -199,22 +201,36 @@ export class PlayerService {
     return JSON.stringify(parsedData);
   }
 
-  playContent(content) {
+  playContent(content, queryParams?) {
     this.navigationHelperService.storeResourceCloseUrl();
     setTimeout(() => { // setTimeOut is used to trigger telemetry interact event as changeDetectorRef.detectChanges() not working.
-      if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-        if (content.contentType !== this.configService.appConfig.PLAYER_CONFIG.contentType.Course) {
-          this.router.navigate(['/resources/play/collection', content.identifier], {queryParams: {contentType: content.contentType}});
-        } else if (content.batchId) {
-          this.router.navigate(['/learn/course', content.courseId || content.identifier, 'batch', content.batchId]);
-        } else {
-          this.router.navigate(['/learn/course', content.identifier]);
-        }
+      if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection ||
+        _.get(content, 'metaData.mimeType') === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
+          if (!content.trackable && content.contentType !== 'Course') {
+            this.handleNavigation(content, false, queryParams);
+          } else {
+            const isTrackable = content.trackable && content.trackable.enabled === 'No' ? false : true;
+            this.handleNavigation(content, isTrackable, queryParams);
+          }
       } else if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.ecmlContent) {
         this.router.navigate(['/resources/play/content', content.identifier]);
+      } else if (content.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
+        this.router.navigate(['/resources/play/questionset', content.identifier]);
       } else {
         this.router.navigate(['/resources/play/content', content.identifier]);
       }
     }, 0);
+  }
+
+  handleNavigation(content, isTrackable, queryParams?) {
+    if (!isTrackable) {
+      this.router.navigate(['/resources/play/collection', content.courseId || content.identifier],
+      {queryParams: {contentType: content.contentType}});
+    } else if (content.batchId) {
+      this.router.navigate(['/learn/course', content.courseId || content.identifier, 'batch', content.batchId],
+        { queryParams });
+    } else {
+      this.router.navigate(['/learn/course', content.identifier], { queryParams });
+    }
   }
 }

@@ -1,9 +1,5 @@
-@import "variables";
-@import "mixins/mixins";
 
-.ui.cards>.card.workspace-card {
-    width: calculateRem(240px);
-}
+@import "mixins/mixins";
 
 .ui.image {
     height: calculateRem(150px);
@@ -13,13 +9,12 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(var(--rc-rgba-black), 0.2);
     color: var(--white);
     width: 100%;
     margin: 0;
     padding: calculateRem(10px) calculateRem(16px);
     height: calculateRem(40px);
-    
 }
 .batch-content-description {
     text-transform: capitalize;
@@ -28,16 +23,14 @@
     font-size: 1em;
 }
 .batch-content-meta {
-    color: #7c7b7b;
+    color: var(--rc-7c7b7b);
     .batch-course-name {
-        font-weight: $font-weight-bold;
+        font-weight: 700;
         color: var(--gray-400);
     }
 }
 
-.slick-slider .slick-list{
-    padding-bottom: calculateRem(2px);
-}
+
 .batch-card-ellipsis {
     text-overflow: ellipsis;
     overflow: hidden;
@@ -48,7 +41,7 @@
 }
 
 .bcard-bg-image {
-    background-color: #BCBEC0;
+    background-color: var(--rc-BCBEC0);
     height: 100%;
 }
 .link.cards{
@@ -63,7 +56,4 @@
 }
 .w-200 {
     width: calculateRem(200px);
-}
-.w-300 {
-    width: calculateRem(300px);
 }

@@ -17,7 +17,7 @@ import {
   UpforreviewContentplayerComponent, FlagConentplayerComponent, ReviewsubmissionsContentplayerComponent,
   PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
   AllContentComponent, FlagReviewerComponent, CollaboratingOnComponent,
-  CollaborationContentFilterComponent, WorkspaceContentFilterComponent
+  CollaborationContentFilterComponent, WorkspaceContentFilterComponent, AllTextbooksComponent, NewCollectionEditorComponent
 } from './components';
 import { DateFilterXtimeAgoPipe } from './pipes';
 import { NgInviewModule } from 'angular-inport';
@@ -26,6 +26,8 @@ import { ReviewCommentsComponent } from './components/review-comments/review-com
 import { OrderModule } from 'ngx-order-pipe';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { ContentSearchModule } from '@sunbird/content-search';
+import { CollectionEditorLibraryModule } from '@project-sunbird/sunbird-collection-editor';
+
 
 @NgModule({
   imports: [
@@ -41,7 +43,8 @@ import { ContentSearchModule } from '@sunbird/content-search';
     TelemetryModule,
     OrderModule,
     PlayerHelperModule,
-    ContentSearchModule
+    ContentSearchModule,
+    CollectionEditorLibraryModule
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent, DateFilterXtimeAgoPipe,
     CreateContentComponent, DraftComponent, ReviewSubmissionsComponent,
@@ -56,12 +59,14 @@ import { ContentSearchModule } from '@sunbird/content-search';
     RequestChangesPopupComponent,
     LimitedPublishedComponent,
     AllContentComponent,
+    AllTextbooksComponent,
     FlagReviewerComponent,
     CollaboratingOnComponent,
     CollaborationContentFilterComponent,
     ReviewCommentsComponent,
     CollaborationContentFilterComponent,
-    WorkspaceContentFilterComponent
+    WorkspaceContentFilterComponent,
+    NewCollectionEditorComponent
   ],
   providers: [WorkSpaceService, EditorService, BatchService, ReviewCommentsService, DateFilterXtimeAgoPipe]
 })

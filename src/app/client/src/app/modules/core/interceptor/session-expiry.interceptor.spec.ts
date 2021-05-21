@@ -6,6 +6,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { CoreModule } from '@sunbird/core';
 import { configureTestSuite } from '@sunbird/test-util';
+import { UtilService } from '../../shared/services/util/util.service';
 
 describe('Session Expiry Interceptor', () => {
 
@@ -17,6 +18,9 @@ describe('Session Expiry Interceptor', () => {
         const http = TestBed.get(HttpClient);
         return http.get(mockUrl);
     };
+    const mockUtilService = {
+        isDesktopApp: false
+    };
     configureTestSuite();
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -25,7 +29,7 @@ describe('Session Expiry Interceptor', () => {
                 provide: HTTP_INTERCEPTORS,
                 useClass: SessionExpiryInterceptor,
                 multi: true,
-            }]
+            }, { provide: UtilService, useValue: mockUtilService }]
         });
         sessionExpiryInterceptor = TestBed.get(SessionExpiryInterceptor);
         httpMock = TestBed.get(HttpTestingController);
@@ -49,9 +53,9 @@ describe('Session Expiry Interceptor', () => {
 
     it('should handle session expiry when status code is 401 and user is logged in ', () => {
         spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
+        spyOn(userService, 'endSession');
         spyOn(sessionExpiryInterceptor, 'handleSessionExpiry').and.callThrough();
         makeApiCall().subscribe(null, err => {
-            expect(err.error).toEqual({ responseCode: 'SESSION_EXPIRED' });
             expect(sessionExpiryInterceptor.sessionExpired).toBeTruthy();
             expect(sessionExpiryInterceptor.handleSessionExpiry).toHaveBeenCalled();
         });

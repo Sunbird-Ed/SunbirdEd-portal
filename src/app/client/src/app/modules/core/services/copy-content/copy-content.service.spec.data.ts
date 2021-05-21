@@ -24,7 +24,8 @@ export const mockRes = {
     'audience': ['Learner'], 'visibility': 'Default', 'libraries': [], 'mediaType': 'content',
     'ageGroup': ['6-7', '8-10'], 'osId': 'org.ekstep.quiz.app', 'languageCode': 'en', 'userId': 's', 'userName': 'sourav',
     'versionKey': '1497009185536', 'tags': ['elephant'], 'concepts': [], 'createdBy': 'EkStep',
-    'name': 'Elephant and the Monkey', 'me_averageRating': 'd', 'publisher': 'EkStep', 'usedByContent': [], 'status': 'Live', 'path': ''
+    'name': 'Elephant and the Monkey', 'me_averageRating': 'd', 'publisher': 'EkStep', 'usedByContent': [], 'status': 'Live', 'path': '',
+    'primaryCategory': 'Learning Resource'
   },
   userData: {
     'firstName': 'Sourav',
@@ -53,8 +54,26 @@ export const mockRes = {
     },
     copyCourseContentData : {
       identifier: 'do_112598807704158208111',
-      name: 'Demo curriculum course',
+      name: 'Demo course',
       description: '',
-      framework: 'NCFCOPY'
+      framework: 'NCFCOPY',
+      children: [{
+        'ownershipType': [
+          'createdBy'
+        ],
+        'parent': 'do_11303070829060915211',
+        'code': '8981daac-6d18-4322-81b3-5da1c284119b',
+        'channel': 'b00bc992ef25f1a9a8d63291e20efc8d',
+        'description': 'test',
+        'language': [
+          'English'
+        ],
+        'mimeType': 'application/vnd.ekstep.content-collection',
+        'idealScreenSize': 'normal',
+        'createdOn': '2020-05-28T10:45:47.259+0000',
+        'objectType': 'Content',
+        'visibility': 'Parent',
+        'selected': true
+      }]
     }
 };

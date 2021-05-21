@@ -1,0 +1,93 @@
+@import "variables";
+@import "mixins/mixins";
+@import "components/video";
+
+// sb card css
+.sbcard {
+  width: 100%;
+  border-radius: 0px;
+  background-color: var(--white);
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  position: relative;
+  border-bottom: calculateRem(1px) solid var(--gray-0);
+  box-shadow: 0 calculateRem(3px) calculateRem(5px) 0 rgba(0, 0, 0, 0.12);
+  contain: content;
+  &.active {
+    background: var(--primary-100);
+  }
+  @include respond-above(sm) {
+    border-radius: calculateRem(2px);
+    box-shadow: 0 calculateRem(2px) calculateRem(7px) 0 rgba(0, 0, 0, 0.16);
+    border-bottom: 0px solid var(--gray-0);
+  }
+  &__main-area {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 5.5rem;
+    // border-bottom: calculateRem(1px) solid var(--gray-0);
+  }
+  &__img {
+    height: calculateRem(72px);
+    width: calculateRem(72px);
+    overflow: hidden;
+    /* margin-right: 8px; */
+    flex: 0 0 calculateRem(72px);
+    padding: calculateRem(8px);
+
+    .img-container {
+      display: flex;
+      align-items: center;
+      background-color: var(--gray-100);
+      height: 4.5rem;
+      width: 4.5rem;
+
+      img {
+        width: 100%;
+        backdrop-filter: brightness(93%) opacity(85%) blur(3px) contrast(110%);
+      }
+    }
+  }
+  &__title {
+    color: var(--gray-800);
+    font-size: var(--font-size-base);
+    margin: 0px;
+    line-height: normal;
+    line-height: calculateRem(20px);
+    word-break: break-word;
+  }
+  &__meta1 {
+    color: var(--gray-300);
+    font-size: var(--font-size-sm);
+    display: inline-flex;
+    align-items: center;
+    line-height: calculateRem(20px);
+  }
+  &--recently-viewed {
+    .sbcard__img {
+      width: calculateRem(88px);
+      height: calculateRem(88px);
+      flex: 0 0 calculateRem(88px);
+
+      .img-container {
+        display: flex;
+        align-items: center;
+        background-color: var(--gray-100);
+        margin: calculateRem(-8px);
+        height: 5.5rem;
+        width: 5.5rem;
+      }
+    }
+    .sbcard__info {
+      padding: calculateRem(8px);
+    }
+  }
+  &:last-child {
+    margin-bottom: 0px !important;
+  }
+  &:hover h4.sbcard__title {
+    color: var(--primary-400);
+  }
+}

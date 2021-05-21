@@ -10,10 +10,10 @@
   }
   .offline-download-card {
     background-color: var(--white);
-    box-shadow: 0 calculateRem(10px) calculateRem(10px) 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 calculateRem(10px) calculateRem(10px) 0 rgba(var(--rc-rgba-black), 0.1);
     padding: calculateRem(40px);
     &__heading {
-      color: $primary-color;
+      color: var(--primary-color);
       font-size: calculateRem(18px);
       font-weight: bold;
     }
@@ -22,7 +22,7 @@
       color:var(--gray-800);
     }
   &__extra {
-      color: $primary-color;
+      color: var(--primary-color);
       font-size: calculateRem(12px);
     }
   }

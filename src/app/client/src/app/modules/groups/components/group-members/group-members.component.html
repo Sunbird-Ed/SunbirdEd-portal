@@ -1,0 +1,77 @@
+<div class="flex-dc d-flex p-8 py-24 sb-bg-color-white br-4 sb-groups-members-card">
+  <div class="title mb-16 font-weight-bold px-8">
+    {{resourceService?.frmelmnts?.lbl?.members}}
+    <span *ngIf="config?.showMemberCount" class="badge">{{groupData?.members?.length}}</span>
+  </div>
+
+  <div class="sb-library-cards">
+    <div class="px-8" *ngIf="config?.showSearchBox">
+      <div class="sb-search-box no-btn mb-16">
+        <div class="input-div relative">
+          <i class="search icon" aria-hidden="true"></i>
+          <label for="search-within-group" class="hide">{{resourceService?.frmelmnts?.lbl?.searchWithinGroup}}</label>
+          <input class="sb-search-input" id="search-within-group" type="text" #searchInputBox (input)="search(searchInputBox.value)"
+            [placeholder]="resourceService?.frmelmnts?.lbl?.searchWithinGroup" />
+        </div>
+        <button class="sb-btn sb-btn-normal">{{resourceService?.frmelmnts?.lbl?.search}}</button>
+      </div>
+    </div>
+
+    <div  *ngIf="showAddMember()" (click)="addMember();addTelemetry('add-member-btn', '', { type: ADD_MEMBER})">
+      <div class="cursor-pointer mb-8 fnormal px-8">
+        <img alt="admin" src="./assets/images/add-member-1.png" width="32">
+        {{resourceService?.frmelmnts?.lbl?.addMember}}
+      </div>
+      <div class="devided-line m-8"></div>
+    </div>
+
+    <div class="d-flex flex-dc" *ngIf="memberListToShow?.length && !showLoader">
+      <div *ngFor="let member of memberListToShow" class="relative">
+        <sb-member-card [title]="member?.title" [identifier]="member?.identifier" [config]="memberCardConfig"
+          [isAdmin]="member?.isAdmin" [isMenu]="member?.isMenu && groupData?.active" [indexOfMember]="member?.indexOfMember"
+          [initial]="member?.initial" (menuClick)="getMenuData($event, member)">
+        </sb-member-card>
+        <div class="kabab-menu-dropdown-content"
+          *ngIf="showKebabMenu && selectedMember?.identifier === member?.identifier">
+          <div class="list mb-8" (click)="openModal('promoteAsAdmin')" *ngIf="!member?.isAdmin">
+            <span>{{resourceService?.frmelmnts?.btn?.makeAdmin}}</span>
+          </div>
+          <div class="list mb-8" (click)="openModal('dismissAsAdmin')" *ngIf="member?.isAdmin && !member?.isCreator">
+            <span>{{resourceService?.frmelmnts?.btn?.dismissAdmin}}</span>
+          </div>
+          <div class="list sb-color-error" (click)="openModal('removeFromGroup')" *ngIf="!member?.isCreator">
+            <span>{{resourceService?.frmelmnts?.btn?.removeMember}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex flex-dc" *ngIf="showLoader"><!--showLoader && !memberListToShow?.length -->
+      <div *ngFor="let item of [0,1,2,3]">
+        <sb-member-card [isLoading]="true" [config]="memberCardConfig"></sb-member-card>
+      </div>
+    </div>
+
+    <!--No Group member except admin-->
+    <div class="d-flex flex-dc flex-jc-center flex-ai-center text-center my-24"
+      *ngIf="memberListToShow?.length < 2 && !showSearchResults">
+      <img width="197" alt="" src="./assets/images/add-member@2x.svg">
+    </div>
+
+    <!--No search results -->
+    <div class="member-no-result pt-32" *ngIf="showSearchResults && !memberListToShow?.length">
+      <div class="d-flex flex-dc flex-jc-center flex-ai-center text-center">
+        <img alt="" height="165" width="206" src="./assets/images/group-search-empty.svg">
+        <div class="mt-16 no-result-text">
+          {{resourceService?.frmelmnts?.lbl?.NoSerchGroupMemberResults}}
+        </div>
+        <div class="my-8 no-result-desc hide">
+          <div>{{resourceService?.frmelmnts?.lbl?.checkYourSpelling}}</div>
+          <div>{{resourceService?.frmelmnts?.lbl?.similarButDiffName}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-member-actions *ngIf="showModal" [action]="memberAction" [member]="selectedMember" (modalClose)="onModalClose()"
+  (actionConfirm)="onActionConfirm($event)"></app-member-actions>

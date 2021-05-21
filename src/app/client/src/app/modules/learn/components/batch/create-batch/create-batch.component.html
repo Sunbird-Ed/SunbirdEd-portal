@@ -1,13 +1,5 @@
-<sui-modal 
-  [mustScroll]="true" 
-  [isClosable]="false" 
-  [transitionDuration]="0" 
-  [size]="'normal'" 
-  class="sb-modal sb-batch-modal"
-  appBodyScroll 
-  *ngIf='showCreateModal' 
-  (dismissed)="redirect()" 
-  #createBatchModel>
+<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'normal'"
+  class="sb-modal sb-batch-modal" appBodyScroll *ngIf='showCreateModal' (dismissed)="redirect()" #createBatchModel>
 
   <!--Header-->
   <i class="close icon" (click)="redirect()"></i>
@@ -18,33 +10,64 @@
 
   <!--Content-->
   <div class="sb-modal-content o-y-visible" [appTelemetryImpression]="telemetryImpression">
-    <form [formGroup]="createBatchForm" class="sb-form batchAddUserForm">
-      <div class="sb-field-group"
-        [ngClass]="createBatchForm.controls['name'].invalid && createBatchForm.controls['name'].errors.required && !createBatchForm.controls['name'].pristine ? 'error': ''">
-        <label class="required">{{resourceService?.frmelmnts?.lbl?.batchname}}</label>
-        <div class="sb-field">
-          <input type="text" name="name" formControlName="name" class="sb-form-control" autofocus>
+    <form [formGroup]="createBatchForm" class="sb-form batchAddUserForm pt-8 px-8">
+      <div class="sb-color-primary font-weight-bold pb-24">Batch Details</div>
+      <div class="ui stackable grid">
+        <div class="eight wide column">
+          <div class="sb-field-group"
+            [ngClass]="createBatchForm.controls['name'].invalid && createBatchForm.controls['name'].errors.required && !createBatchForm.controls['name'].pristine ? 'error': ''">
+            <label class="required">{{resourceService?.frmelmnts?.lbl?.batchname}}</label>
+            <div class="sb-field">
+              <input type="text" name="name" formControlName="name" class="sb-form-control" autofocus>
+            </div>
+            <div class="mt-0 mb-8 ui pointing red basic label below"
+              *ngIf="createBatchForm.controls.name.invalid && createBatchForm.controls['name'].errors.required && !createBatchForm.controls['name'].pristine">
+              {{resourceService?.messages?.stmsg?.m0114}}
+            </div>
+          </div>
         </div>
-        <div class="mt-0 mb-8 ui pointing red basic label below" *ngIf="createBatchForm.controls.name.invalid && createBatchForm.controls['name'].errors.required && !createBatchForm.controls['name'].pristine">
-          {{resourceService?.messages?.stmsg?.m0114}}
+        <div class="sb-field-group">
+          <div class="four wide column">
+            <div>
+              <label class="required">{{resourceService?.frmelmnts?.cert?.lbl?.issueCertificate}}</label>
+              <div class="d-flex py-8 flex-w-wrap">
+                <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
+                  <input (change)="handleInputChange('yes')" formControlName="issueCertificate" value="yes" type="radio" id="yes">
+                  <label for="yes">{{resourceService?.frmelmnts?.btn?.yes}}</label>
+                </div>
+                <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
+                  <input (change)="handleInputChange('no')" formControlName="issueCertificate" value="no" type="radio" id="no">
+                  <label for="no">{{resourceService?.frmelmnts?.btn?.no}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="sb-field-group">
-        <div class="sb-field">
-          <label>{{resourceService?.frmelmnts?.lbl?.aboutbatch}}</label>
-          <input type="text" name="description" formControlName="description" class="sb-form-control">
+
+      <div class="ui stackable grid mt-0">
+        <div class="eight wide column">
+          <div class="sb-field-group">
+            <div class="sb-field">
+              <label>{{resourceService?.frmelmnts?.lbl?.aboutbatch}}</label>
+              <textarea rows="4" name="description" formControlName="description" class="sb-form-control"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="four wide column">
+          <div class="d-flex flex-dc flex-w-wrap" *ngIf="courseCreator">
+            <div class="mr-8">
+              <label for="Enrollment Type">{{resourceService?.frmelmnts?.lbl?.natureofbatch}}</label>
+            </div>
+            <div class="sb-radio-btn-checkbox sb-radio-btn-primary py-8">
+              <input id="create-open" type="radio" value='open' name="enrollmentType" formControlName="enrollmentType">
+              <label for="create-open">{{resourceService?.frmelmnts?.lbl?.open}}</label>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="d-flex flex-w-wrap" *ngIf="courseCreator">
-        <div class="mr-8">
-          <label for="Enrollment Type">{{resourceService?.frmelmnts?.lbl?.natureofbatch}}</label>
-        </div>
-        <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
-          <input id="create-open" type="radio" value='open' name="enrollmentType" formControlName="enrollmentType">
-          <label for="create-open">{{resourceService?.frmelmnts?.lbl?.open}}</label>
-        </div>
-      </div>
-      <div class="d-flex flex-w-wrap">
+
+      <div class="d-flex flex-w-wrap my-16">
         <div class="sb-field-group pr-8"
           [ngClass]="createBatchForm.controls['startDate'].invalid && createBatchForm.controls['startDate'].errors.required && !createBatchForm.controls['startDate'].pristine ? 'error': ''">
           <label class="required">{{resourceService?.frmelmnts?.lbl?.startdate}}</label>
@@ -70,12 +93,15 @@
             </div>
           </div>
         </div>
-        <div class="sb-field-group pl-8" *ngIf="createBatchForm.value.enrollmentType === 'open'" [ngClass]="(createBatchForm.controls['enrollmentEndDate'].invalid && !createBatchForm.controls['enrollmentEndDate'].pristine) ? 'error': ''">
+        <div class="sb-field-group pl-8" *ngIf="createBatchForm.value.enrollmentType === 'open'"
+          [ngClass]="(createBatchForm.controls['enrollmentEndDate'].invalid && !createBatchForm.controls['enrollmentEndDate'].pristine) ? 'error': ''">
           <label>{{resourceService?.frmelmnts?.lbl?.enrollmentenddate | uppercase}}</label>
           <div class="ui read-only calendar rangeenrollMentEnd" id="rangeenrollMentEnd">
             <div class="sb-field ui left icon input" [ngClass]="{'disabled': !createBatchForm.value.startDate}">
               <i class="calendar icon date-calendar"></i>
-              <input (click)="setTelemetryCData([{id:'course:enrollment:endDate',type:'Feature'},{id:'SB-13073',type:'Task'}])" class="sb-form-control" [pickerMinDate]='createBatchForm.value.startDate'
+              <input
+                (click)="setTelemetryCData([{id:'course:enrollment:endDate',type:'Feature'},{id:'SB-13073',type:'Task'}])"
+                class="sb-form-control" [pickerMinDate]='createBatchForm.value.startDate'
                 [pickerMaxDate]='createBatchForm.value.endDate' suiDatepicker formControlName="enrollmentEndDate"
                 [pickerMode]="'date'">
             </div>
@@ -88,13 +114,15 @@
       </div>
       <div class="sb-field-group mb-8">
         <label>{{resourceService?.frmelmnts?.lbl?.batchmentors}}</label>
-        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors" ng-class="batch.isUserSearch === 1 ? 'loading' : undefined">
-          <input id="mentorSelList">
+        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="mentors"
+          ng-class="batch.isUserSearch === 1 ? 'loading' : undefined">
+          <input id="mentorSelList" aria-label="mentor list">
           <i class="dropdown icon"></i>
           <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0005}}</div>
           <div class="menu">
             <div class="item" [attr.data-value]="mentor.id" *ngFor="let mentor of mentorList">
-              <img class="ui mini avatar image" src="{{mentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> {{mentor.name}}{{mentor.otherDetail}}
+              <img class="ui mini avatar image" src="{{mentor.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" alt="avatar image">
+              {{mentor.name}}{{mentor.otherDetail}}
             </div>
           </div>
         </div>
@@ -102,39 +130,45 @@
 
       <div class="sb-field-group " *ngIf="createBatchForm.value.enrollmentType !== 'open'">
         <label>{{resourceService?.frmelmnts?.lbl?.bacthmembers}}</label>
-        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="participants" ng-class="batch.isUserSearch === 1 ? 'loading' : undefined">
+        <div class="createbatchdropdown ui fluid multiple search selection dropdown" id="participants"
+          ng-class="batch.isUserSearch === 1 ? 'loading' : undefined">
           <input id="userSelList">
           <i class="dropdown icon"></i>
           <div class="default text">{{resourceService?.frmelmnts?.intxt?.t0006}}</div>
           <div class="menu">
             <div class="item" *ngFor="let user of participantList" [attr.data-value]="user.id">
-              <img class="ui mini avatar image" src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}"> {{user.name}}{{user.otherDetail}}
+              <img class="ui mini avatar image" src="{{user.avatar || 'assets/images/user_logo.png' | cdnprefixurl}}" alt="avatar image">
+              {{user.name}}{{user.otherDetail}}
             </div>
           </div>
         </div>
       </div>
+
+      <div class="sb-field mt-24 mb-8" >
+        <label class="d-flex flex-ai-center">
+          <input type="checkbox" formControlName="tncCheck" role="checkbox" class="mr-8 cursor-pointer">
+          <span class="font-weight-normal fnormal">
+            {{resourceService?.frmelmnts?.lbl?.agreeCourseToc  | interpolate:'{instance}': instance }}<a href="{{url}}/term-of-use.html#courseGuidelines" target="_blank" class="sb-color-primary">{{resourceService?.frmelmnts?.lbl?.courseGuidelines}}</a></span>
+        </label>
+        <small class="line-height-normal d-block message sb-color-error font-weight-bold mt-8 pl-20"
+         *ngIf="!createBatchForm.get('tncCheck').valid && this.createBatchForm.get('tncCheck').dirty">{{resourceService?.frmelmnts?.lbl?.courseToc}}</small>
+      </div>
+
     </form>
   </div>
   <!--/Content-->
 
   <!--Actions-->
   <div class="sb-modal-actions">
-    <button 
-      class="sb-btn sb-btn-normal sb-btn-primary"
-      [ngClass]="{'sb-btn-disabled': disableSubmitBtn}"
-      id="submitbutton" 
-      [disabled]="disableSubmitBtn"
-      (click)="createBatch()"
-      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-      [telemetryInteractEdata]="createBatchInteractEdata" [telemetryInteractCdata]="telemetryCdata">
+    <button class="sb-btn sb-btn-normal sb-btn-primary" [ngClass]="{'sb-btn-disabled': disableSubmitBtn}"
+      id="submitbutton" [disabled]="disableSubmitBtn" (click)="createBatch()" appTelemetryInteract
+      [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="createBatchInteractEdata"
+      [telemetryInteractCdata]="telemetryCdata">
       {{resourceService?.frmelmnts?.btn?.create}}
     </button>
-    <button 
-      appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+    <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
       [telemetryInteractEdata]="clearButtonInteractEdata" [telemetryInteractCdata]="telemetryCdata"
-      class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" 
-      (click)="createBatchForm.reset()"
-      >
+      class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" (click)="createBatchForm.reset()">
       {{resourceService?.frmelmnts?.btn?.clear}}
     </button>
 

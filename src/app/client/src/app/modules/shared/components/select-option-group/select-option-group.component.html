@@ -1,0 +1,34 @@
+<ng-container *ngIf="!layoutConfiguration">
+  <sui-select class="selection state-selection sbt-dropdown-tick" [(ngModel)]="preSelectedValue">
+    <div class="state-selection__section" *ngFor="let group of optionData">
+      <div class="header">{{group.label | translate}}</div>
+      <sui-select-option class="active" *ngFor="let option of group.option"
+                         [value]="option.name | interpolate: 'CBSE': 'CBSE/NCERT'"
+        (click)="onChange({label: group.label, value: group.value, selectedOption: option.value })"></sui-select-option>
+    </div>
+  </sui-select>
+</ng-container>
+
+<ng-container *ngIf="layoutConfiguration">
+  <div class="sb-field mb-8 w-100">
+    <label class="fnormal font-weight-bold d-flex">{{title}}</label>
+  <label class="w-100">
+    <sui-select class="selection sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg " [(ngModel)]="preSelectedValue">
+      <div class="sbt-dropdown-section" *ngIf="showHeader">
+        <div *ngFor="let group of optionData">
+          <!-- <div class="header">{{group.label}}</div> -->
+          <sui-select-option class="active" *ngFor="let option of group.option"
+                             [value]="option.name | interpolate: 'CBSE': 'CBSE/NCERT'"
+            (click)="onChange({label: group.label, value: group.value, selectedOption: option.value })"></sui-select-option>
+        </div>
+      </div>
+      <div class="sbt-dropdown-section"  *ngIf="!showHeader">
+        <div *ngFor="let option of optionData; let i=index">
+          <sui-select-option class="active" [value]="option"
+            (click)="onChange({label: i, value: option , selectedOption: option })"></sui-select-option>
+        </div>
+      </div>
+    </sui-select>
+  </label>
+  </div>
+</ng-container>

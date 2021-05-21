@@ -10,18 +10,7 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
 @Component({
   selector: 'app-workspace-content-filter',
   templateUrl: './workspace-content-filter.component.html',
-  styles: [`
-     >>> .ui.dropdown:not(.button)>.default.text {
-      display: none;
-       }
-      .ui.inline.dropdown.search-dropdown {
-       margin-left: 5px;
-       box-sizing: border-box;
-       }
-      .popup-content{
-        width: 850px !important;
-       }
-   `]
+  styleUrls: ['./workspace-content-filter.component.scss']
 })
 export class WorkspaceContentFilterComponent implements OnInit {
   modelChanged: Subject<string> = new Subject<string>();
@@ -135,6 +124,9 @@ export class WorkspaceContentFilterComponent implements OnInit {
     } else if (_.includes(this.route.url, 'draft')) {
       this.filterType = this.config.appConfig.draft.filterType;
       this.redirectUrl = this.config.appConfig.draft.inPageredirectUrl;
+    } else if (_.includes(this.route.url, 'alltextbooks')) {
+      this.filterType = this.config.appConfig.alltextbooks.filterType;
+      this.redirectUrl = this.config.appConfig.alltextbooks.inPageredirectUrl;
     } else {
       this.filterType = this.config.appConfig.allmycontent.filterType;
       this.redirectUrl = this.config.appConfig.allmycontent.inPageredirectUrl;

@@ -14,8 +14,10 @@ import { PopupControlService } from '../../../../service/popup-control.service';
 })
 
 export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
   @Input() tncUrl: string;
+  @Input() showAcceptTnc: boolean;
+  @Input() adminTncVersion: any;
   @Output() close = new EventEmitter<any>();
 
   /**
@@ -71,11 +73,15 @@ export class TermsAndConditionsPopupComponent implements OnInit, OnDestroy {
   public onSubmitTnc() {
     const requestBody = {
       request: {
-        version: this.userProfile.tncLatestVersion
+        version: _.get(this.userProfile, 'tncLatestVersion')
       }
     };
     if (this.userService.userProfile.managedBy) {
       requestBody.request['userId'] = this.userService.userid;
+    }
+    if (this.adminTncVersion) {
+      requestBody.request['version'] = this.adminTncVersion;
+      requestBody.request['tncType'] = 'orgAdminTnc';
     }
     this.disableContinueBtn = true;
     this.userService.acceptTermsAndConditions(requestBody).subscribe(res => {

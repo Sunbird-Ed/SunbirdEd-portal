@@ -1,7 +1,7 @@
 {
     "headerDropdownRoles":{
         "workSpaceRole" : ["CONTENT_CREATOR" , "CONTENT_CREATION" , "CONTENT_REVIEWER" , "CONTENT_REVIEW" , "FLAG_REVIEWER" , "COURSE_MENTOR" ,"BOOK_REVIEWER", "BOOK_CREATOR"],
-        "adminDashboard" : ["ORG_ADMIN","SYSTEM_ADMINISTRATION","REPORT_VIEWER"],
+        "adminDashboard" : ["ORG_ADMIN","SYSTEM_ADMINISTRATION","REPORT_VIEWER", "REPORT_ADMIN"],
         "announcementRole" : ["ANNOUNCEMENT_SENDER"],
         "myActivityRole" : ["CONTENT_CREATOR"],
         "orgSetupRole" : ["SYSTEM_ADMINISTRATION"],
@@ -28,7 +28,8 @@
        "contentUploadRole":["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW"],
        "assessmentRole": ["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW"],
        "allContentRole": ["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
-       "collaboratingRole": ["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"]  
+       "collaboratingRole": ["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
+       "alltextbookRole": ["ORG_ADMIN"]
     },
     "organizationRole":{
 
@@ -46,6 +47,7 @@
        "alluploadsRole":["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW"],
        "upForReviewRole":["CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_REVIEWER"],
        "courseBatchRoles":["COURSE_MENTOR"],
+       "createBatchRole":["CONTENT_CREATOR", "COURSE_MENTOR"],
        "flaggedRole":["FLAG_REVIEWER"],
        "limitedPublishingRole":["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
        "bulkUpload": ["ORG_ADMIN","SYSTEM_ADMINISTRATION"],
@@ -53,13 +55,18 @@
        "allContentRole": ["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
        "flagReviewerRole": ["FLAG_REVIEWER"],
        "collaboratingRole": ["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
-       "dashboardRole": ["ORG_ADMIN", "REPORT_VIEWER"],
-       "reportViewerRole": ["REPORT_VIEWER", "REPORT_ADMIN"]
+       "dashboardRole": ["ORG_ADMIN", "REPORT_VIEWER", "REPORT_ADMIN"],
+       "reportViewerRole": ["REPORT_VIEWER", "REPORT_ADMIN"],
+       "alltextbookRole": ["ORG_ADMIN"]
     }
     ,"WORKSPACEAUTHGARDROLES":[
     {
         "roles":["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],
         "roleName":"createRole","url":"workspace/content/create","tab":"CREATE"
+    },
+    {
+        "roles":["ORG_ADMIN"],
+        "roleName":"alltextbookRole","url":"workspace/content/alltextbooks","tab":"ALLTEXTBOOKS"
     },
     {
         "roles":["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],

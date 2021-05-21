@@ -1,8 +1,24 @@
-import { servicemockRes, contentList, contentListWithHoverData, contentHierarchyDateSet1 } from './util.service.spec.data';
-import { TestBed, inject } from '@angular/core/testing';
+import {
+  servicemockRes,
+  contentList,
+  contentListWithHoverData,
+  contentHierarchyDateSet1,
+  processData,
+  processedOutputData,
+  duplicateData,
+  nonDuplicateData,
+  courseSectionFacetData,
+  parsedCourseFacetData,
+  courseFilters,
+  requiredProperties
+} from './util.service.spec.data';
+import {TestBed, inject } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import { UtilService } from './util.service';
 import { ResourceService } from '../resource/resource.service';
+import { ExportToCsv } from 'export-to-csv';
+import * as _ from 'lodash-es';
+import { ToasterService } from '@sunbird/shared';
 
 const resourceBundle = {
   messages: {
@@ -29,7 +45,7 @@ describe('UtilService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [UtilService, { provide: ResourceService, useValue: resourceBundle }]
+      providers: [UtilService, { provide: ResourceService, useValue: resourceBundle }, ToasterService]
     });
   });
 
@@ -259,5 +275,67 @@ describe('UtilService', () => {
   it('should return  sorted tree', inject([UtilService], (service: UtilService) => {
       const data = service.sortChildrenWithIndex(contentHierarchyDateSet1.before);
       expect(data).toEqual(contentHierarchyDateSet1.after);
+  }));
+
+  it('should return  process data', inject([UtilService], (service: UtilService) => {
+    const data = service.processData(processData, ['channel', 'gradeLevel', 'subject', 'medium']);
+    expect(data).toEqual(processedOutputData);
+  }));
+
+  it('should return process unique data', inject([UtilService], (service: UtilService) => {
+    const data = service.removeDuplicateData([{'x': 1}, {'x': 2}, {'x': 1}], 'x');
+    expect(data).toEqual([{'x': 1}, {'x': 2}]);
+  }));
+
+  it('should return process unique data and return non unique data', inject([UtilService], (service: UtilService) => {
+    const data = service.removeDuplicate(duplicateData);
+    expect(data).toEqual(nonDuplicateData);
+  }));
+
+  it('should return processed course facet data', inject([UtilService], (service: UtilService) => {
+    const data = service.processCourseFacetData(courseSectionFacetData, courseSectionFacetData.keys);
+    expect(data).toEqual(parsedCourseFacetData);
+  }));
+
+  it ('should return only required properties', inject([UtilService], (service: UtilService) => {
+    const content = service.reduceTreeProps(requiredProperties, ['mimeType', 'visibility', 'identifier', 'selected', 'name', 'contentType', 'children',
+    'primaryCategory', 'additionalCategory', 'parent']);
+    expect(content).toEqual(requiredProperties);
+  }));
+
+  it ('should create instance of ExportToCsv', inject([UtilService], (service: UtilService)  => {
+    const data = [{
+      identifier: '87cb1e5b-16cf-4160-9a2c-7384da0ae97f',
+      indexOfMember: 0,
+      initial: 'C',
+      progress: '0',
+      title: 'Content Creactor(You)'
+    }];
+    service.downloadCSV(contentList[0], data);
+    expect(service['csvExporter'] instanceof ExportToCsv).toBeTruthy();
+  }));
+
+  it('should call isDesktopApp', inject([UtilService], (service: UtilService)  => {
+    service['_isDesktopApp'] = true;
+    expect(service.isDesktopApp).toBe(true);
+  }));
+
+  it('should call clearSearchQuery', inject([UtilService], (service: UtilService)  => {
+    spyOn(service['searchQuery'], 'next');
+    service.clearSearchQuery();
+    expect(service['searchQuery'].next).toHaveBeenCalled();
+  }));
+
+  it('should call getAppBaseUrl', inject([UtilService], (service: UtilService)  => {
+    const dummyElement = document.createElement('input');
+    dummyElement.value = 'http://localhost:3000';
+    spyOn(document, 'getElementById').and.returnValue(dummyElement);
+    const origin = service.getAppBaseUrl();
+    expect(origin).toEqual('http://localhost:3000');
+  }));
+
+  it('should call getAppBaseUrl', inject([UtilService], (service: UtilService)  => {
+    const origin = service.getAppBaseUrl();
+    expect(origin).toEqual('http://localhost:9876');
   }));
 });

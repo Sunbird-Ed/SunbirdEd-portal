@@ -1,0 +1,31 @@
+@import "variables";
+@import "mixins/mixins";
+
+.notification-bell{
+  box-shadow: var(--sbt-box-shadow-6px);
+  border-radius: 50%;
+  background-color: var(--sb-notification-bg);
+  width: calculateRem(40px);
+  height: calculateRem(40px);
+  .icon-svg{
+    width: 1.5rem;
+  }
+  .bell-icon{
+    fill: var(--bell-icon);
+  }
+}
+.notification-count{
+  font-size: calculateRem(11px);
+  color: var(--white);
+  position: absolute;
+  width: calculateRem(18px);
+  height: calculateRem(18px);
+  border-radius: 50%;
+  background: var(--orange);
+  top: calculateRem(5px);
+  left: calculateRem(2px);
+  text-align: center;
+}
+.notification-disable{
+  opacity: 0.5;
+}

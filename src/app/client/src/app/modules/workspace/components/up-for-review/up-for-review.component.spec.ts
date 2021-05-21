@@ -144,7 +144,7 @@ describe('UpForReviewComponent', () => {
     const ContentType = ['Collection', 'Course', 'LessonPlan', 'Resource', 'SelfAssess', 'PracticeResource',
       'LearningOutcomeDefinition',
       'ExplanationResource',
-      'ExperientialResource', 'eTextBook'];
+      'ExperientialResource', 'eTextBook', 'TVLesson'];
     expect(returnContentType).toEqual(ContentType);
   }));
   it('should call setpage method and set proper page number', inject([ConfigService, Router],

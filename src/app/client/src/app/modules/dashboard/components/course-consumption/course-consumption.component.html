@@ -49,15 +49,15 @@
     </div>
     <!-- Select course div -->
     <div class="ui warning message tweleve wide column" *ngIf="myCoursesList && myCoursesList.length > 1 && !showLoader" [ngStyle]="{'display': showDashboard ? 'none' : '' }">
-      <div class="header" [appTelemetryImpression]="telemetryImpression">{{resourceService?.frmelmnts?.lbl?.dashboardnocourseselected}}</div>
-      {{resourceService?.frmelmnts?.lbl?.dashboardnocourseselecteddesc}}
+      <div class="header" [appTelemetryImpression]="telemetryImpression">{{generaliseLabelService?.frmelmnts?.lbl?.dashboardnocourseselected}}</div>
+      {{generaliseLabelService?.frmelmnts?.lbl?.dashboardnocourseselecteddesc}}
     </div>
     <!-- Empty course -->
     <div *ngIf="!showLoader" class="mt-20">
       <div class="ui info message" *ngIf="myCoursesList && myCoursesList.length === 0">
         <div class="header" [appTelemetryImpression]="telemetryImpression">{{resourceService?.frmelmnts?.instn?.t0061}}</div>
         <ul class="list">
-          <li>{{resourceService?.frmelmnts?.instn?.t0063}}</li>
+          <li>{{generaliseLabelService?.frmelmnts?.instn?.t0063}}</li>
         </ul>
       </div>
     </div>

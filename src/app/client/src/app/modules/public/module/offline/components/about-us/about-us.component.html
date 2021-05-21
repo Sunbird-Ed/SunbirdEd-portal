@@ -1,0 +1,34 @@
+<div class="relative9 about-page pt-32" [appTelemetryImpression]="telemetryImpression">
+  <div class="mt-24 sb-bg-color-white ui container">
+    <div class="sb-about-title">
+      <div class="font-weight-bold pt-16 px-16 pb-8 fmedium text-left">{{resourceService?.frmelmnts?.lbl?.desktop?.app | interpolate:'{instance}': instance}}</div>
+    </div>
+
+    <div class="d-flex flex-ai-center p-16 flex-w-wrap">
+      <!-- left container -->
+      <div class="d-flex flex-dc">
+        <dl class="sb-left-content mt-8 mb-0">
+            <dt class="font-weight-bold fs-0-92">{{resourceService?.frmelmnts?.lbl?.versionKey}}:</dt>
+            <dd class="list-value fs-0-92 ml-8">{{appInfo?.version}}</dd>
+        </dl>
+        <dl class="sb-left-content mt-8 mb-0">
+            <dt class="font-weight-bold fs-0-92">{{resourceService?.frmelmnts?.lbl?.releaseDateKey}}:</dt>
+            <dd class="list-value fs-0-92 ml-8" id="date">{{appInfo?.releaseDate | date: 'dd/MM/yyyy'}}</dd>
+        </dl>
+        <dl class="sb-left-content mt-8 mb-0">
+            <dt class="font-weight-bold fs-0-92">{{resourceService?.frmelmnts?.lbl?.supportedLanguages}}:</dt>
+            <dd class="list-value fs-0-92 ml-8">{{appInfo?.languages}}</dd>
+        </dl>
+        <dl class="sb-left-content mt-8 mb-0">
+              <dt class="font-weight-bold fs-0-92">{{resourceService?.frmelmnts?.lbl?.deviceId}}:</dt>
+              <dd class="list-value fs-0-92 ml-8">{{appInfo?.deviceId}}</dd>
+          </dl>
+      </div>
+      <!-- right container -->
+      <div class="ml-auto d-flex flex-dc flex-ai-end flex-as-flex-end mt-16" *ngIf="appInfo?.updateInfo?.updateAvailable">
+        <button class="sb-btn sb-btn-secondary sb-btn-normal" (click)="updateApp(appInfo?.updateInfo?.url)" appTelemetryInteract [telemetryInteractEdata]="telemetryInteractButtonEData">{{resourceService?.frmelmnts?.lbl?.desktop?.update | interpolate:'{instance}': instance}}</button>
+        <span  class="mt-8 text-right update-link">{{resourceService?.frmelmnts?.lbl?.desktop?.updateAvailable}} {{appInfo?.updateInfo?.version}}</span>
+      </div>
+    </div>
+  </div>
+</div>

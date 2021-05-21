@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, Input, EventEmitter, OnDestroy, AfterViewInit } from '@angular/core';
 import * as _ from 'lodash-es';
-import { Subscription } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { ResourceService } from '@sunbird/shared';
 import * as  treePicker from './../../../../../assets/libs/semantic-ui-tree-picker/semantic-ui-tree-picker';
 import { tap } from 'rxjs/operators';
@@ -86,7 +86,8 @@ export class TopicPickerComponent implements OnInit, AfterViewInit, OnDestroy {
     }));
   }
   private initTopicPicker(data: Array<TopicTreeNode>) {
-    this.lazzyLoadScriptService.loadScript('fancytree-all-deps.js').subscribe(() => {
+    combineLatest(this.lazzyLoadScriptService.loadScript('fancytree-all-deps.js'),
+    this.lazzyLoadScriptService.loadScript('semanticModal.js')).subscribe(() => {
       jQuery('.topic-picker-selector').treePicker({
         data: data,
         name: this.resourceService.frmelmnts.lbl.topics,

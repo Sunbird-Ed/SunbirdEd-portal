@@ -5,11 +5,11 @@
   max-height: calculateRem(200px);
 
   .batch-name {
-    color: $gray-400;
+    color: var(--gray-400);
   }
   .batch-date{
       span {
-          font-size:$font-size-md;
+          font-size: var(--h5-font-size);
       }
   }
 
@@ -17,13 +17,13 @@
 
 .ui {
   &.divider {
-    margin-left: $block-margin-xl-minus;
-    margin-right: $block-margin-xr-minus;
+    margin-left: calculateRem(-16px);
+    margin-right: calculateRem(-16px);
   }
 }
 
 .h4-title {
-  color: $primary-color;
+  color: var(--primary-color);
 }
 
 

@@ -1,18 +1,25 @@
-import { throwError as observableThrowError, of as observableOf, Observable, throwError } from 'rxjs';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SharedModule, ResourceService, UtilService, ConfigService, ToasterService, NavigationHelperService } from '@sunbird/shared';
-import { SearchService, OrgDetailsService, UserService } from '@sunbird/core';
-import { CoreModule } from '@sunbird/core';
-import { FormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { DialCodeComponent } from './dial-code.component';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Response } from './dial-code.component.spec.data';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CoreModule, OrgDetailsService, SearchService, UserService, CoursesService, PlayerService } from '@sunbird/core';
+import { PublicPlayerService } from '@sunbird/public';
+import {
+  ConfigService,
+  NavigationHelperService,
+  ResourceService,
+  SharedModule,
+  ToasterService,
+  UtilService,
+  LayoutService
+} from '@sunbird/shared';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
-import { DialCodeService } from '../../services/dial-code/dial-code.service';
-import { mockData } from '../../services';
 import { configureTestSuite } from '@sunbird/test-util';
+import { of as observableOf, throwError, of } from 'rxjs';
+import { mockData } from '../../services';
+import { DialCodeService } from '../../services/dial-code/dial-code.service';
+import { DialCodeComponent } from './dial-code.component';
+import { Response } from './dial-code.component.spec.data';
 
 describe('DialCodeComponent', () => {
   let component: DialCodeComponent;
@@ -83,7 +90,7 @@ describe('DialCodeComponent', () => {
       providers: [SearchService, UtilService, ConfigService, OrgDetailsService, UserService,
         { provide: ResourceService, useValue: resourceBundle },
         { provide: Router, useClass: RouterStub },
-        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute }, LayoutService,
         DialCodeService, TelemetryService, ToasterService, NavigationHelperService]
     })
       .compileComponents();
@@ -209,7 +216,7 @@ describe('DialCodeComponent', () => {
   });
 
   it('should append the items to display list', () => {
-    component.searchResults = ['one', 'two'];
+    component.searchResults = [{ name: 'textbook', contentType: 'textbook' }, { name: 'Course', contentType: 'course' }];
     component.appendItems(0, 1);
     fixture.detectChanges();
     expect(component.itemsToDisplay).toBeDefined();
@@ -295,7 +302,7 @@ describe('DialCodeComponent', () => {
     spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(false);
     component.redirectToDetailsPage('do_212925261140451328114');
     expect(component.router.navigate).toHaveBeenCalledWith(['/play/collection', 'do_212925261140451328114'],
-    { queryParams: { contentType: 'TextBook', 'dialCode': 'T4S6T3' } });
+      { queryParams: { contentType: 'TextBook', 'dialCode': 'T4S6T3' } });
   });
 
   it('should redirect to flattened DIAL page with /resource ', () => {
@@ -303,10 +310,10 @@ describe('DialCodeComponent', () => {
     spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
     component.redirectToDetailsPage('do_212925261140451328114');
     expect(component.router.navigate).toHaveBeenCalledWith(['/resources/play/collection', 'do_212925261140451328114'],
-    {
-      queryParams: { contentType: 'TextBook', 'dialCode': 'T4S6T3' },
-      state: { action: 'dialcode' }
-    });
+      {
+        queryParams: { contentType: 'TextBook', 'dialCode': 'T4S6T3' },
+        state: { action: 'dialcode' }
+      });
   });
 
   it('should unsubscribe from all observable subscriptions', () => {
@@ -314,4 +321,131 @@ describe('DialCodeComponent', () => {
     expect(component.unsubscribe$.complete).toHaveBeenCalled();
   });
 
+  it('should navigate to back page on click of back button', () => {
+    spyOn(navigationHelperService, 'getPreviousUrl').and.returnValue({ url: '/get' });
+    activatedRoute.snapshot.queryParams['textbook'] = '123';
+    dialCodeService['dialSearchResults'] = { count: 2 };
+    component.goBack();
+    expect(router.navigate).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith(['/get/dial', fakeActivatedRoute.snapshot.params.dialCode]);
+  });
+  it('should navigate to back resources page on click of back button', () => {
+    spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
+    component.goBack();
+    expect(router.navigate).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith(['/resources']);
+  });
+  it('should navigate to back to explore page on click of back button', () => {
+    spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(false);
+    component.goBack();
+    expect(router.navigate).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith(['/explore']);
+  });
+  it('should play content', () => {
+    const publicPlayerService = TestBed.get(PublicPlayerService);
+    spyOn(publicPlayerService, 'playContent');
+    spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(false);
+    component.playCourse({ section: {}, data: {} });
+    expect(publicPlayerService.playContent).toHaveBeenCalled();
+  });
+  it('should play content from explore page, while logged in', () => {
+    const publicPlayerService = TestBed.get(PublicPlayerService);
+    const coursesService = TestBed.get(CoursesService);
+    spyOn(publicPlayerService, 'playContent');
+    spyOn(coursesService, 'getEnrolledCourses').and.returnValue(throwError({}));
+    spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
+    component.playCourse({ section: {}, data: {} });
+    expect(publicPlayerService.playContent).toHaveBeenCalled();
+  });
+  it('should play content from explore page, while logged in', () => {
+    const publicPlayerService = TestBed.get(PublicPlayerService);
+    const coursesService = TestBed.get(CoursesService);
+    spyOn(publicPlayerService, 'playContent');
+    spyOn(coursesService, 'getEnrolledCourses').and.returnValue(throwError({}));
+    spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
+    component.playCourse({ section: {}, data: {} });
+    expect(publicPlayerService.playContent).toHaveBeenCalled();
+  });
+  it('should play content from explore page, while logged in, for onGoingBatch', () => {
+    const publicPlayerService = TestBed.get(PublicPlayerService);
+    const coursesService = TestBed.get(CoursesService);
+    const playerService = TestBed.get(PlayerService);
+    const returnValue = {
+      onGoingBatchCount: 1,
+      expiredBatchCount: 0,
+      openBatch: {
+        ongoing: [{ batchId: 1213421 }]
+      },
+      inviteOnlyBatch: false
+    };
+    spyOn(coursesService, 'getEnrolledCourses').and.returnValue(of({}));
+    spyOn(playerService, 'playContent');
+    spyOn(coursesService, 'findEnrolledCourses').and.returnValue(returnValue);
+    spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
+    component.playCourse({ section: {}, data: {} });
+    expect(playerService.playContent).toHaveBeenCalled();
+  });
+  it('should play content from explore page, while logged in, non enrolled user', () => {
+    const publicPlayerService = TestBed.get(PublicPlayerService);
+    const coursesService = TestBed.get(CoursesService);
+    const playerService = TestBed.get(PlayerService);
+    const returnValue = {
+      onGoingBatchCount: 0,
+      expiredBatchCount: 0,
+      openBatch: true,
+      inviteOnlyBatch: false
+    };
+    spyOn(coursesService, 'getEnrolledCourses').and.returnValue(of({}));
+    spyOn(playerService, 'playContent');
+    spyOn(coursesService, 'findEnrolledCourses').and.returnValue(returnValue);
+    spyOnProperty(userService, 'loggedIn', 'get').and.returnValue(true);
+    component.playCourse({ section: {}, data: {} });
+    expect(playerService.playContent).toHaveBeenCalled();
+  });
+  it('should log all viewport items', () => {
+    const event = {
+      inview: Response.inview
+    };
+    component.inview(event);
+    expect(component.telemetryImpression).toBeDefined();
+  });
+  it('should navigate to player page for non-collection type', () => {
+    const event = {
+      data: {
+        metaData: {
+          mimeType: 'application/pdf'
+        }
+      }
+    };
+    component.getEvent(event);
+    expect(component.redirectCollectionUrl).toEqual('play/collection');
+    expect(component.redirectContentUrl).toEqual('play/content');
+    expect(router.navigate).toHaveBeenCalled();
+  });
+  it('should navigate to player page for collection type', () => {
+    const event = {
+      data: {
+        metaData: {
+          mimeType: 'application/vnd.ekstep.content-collection'
+        }
+      }
+    };
+    component.getEvent(event);
+    expect(component.redirectCollectionUrl).toEqual('play/collection');
+    expect(component.redirectContentUrl).toEqual('play/content');
+    expect(router.navigate).toHaveBeenCalled();
+  });
+
+  it('should call init layout on component intilization', () => {
+    spyOn(component, 'initLayout');
+    component.ngOnInit();
+    expect(component.initLayout).toHaveBeenCalled();
+  });
+
+  it('should call init layout on component intilization for old layout', () => {
+    const layoutService = TestBed.get(LayoutService);
+    spyOn(layoutService, 'switchableLayout').and.returnValue(of({layout: {data: 'data'}}));
+    component.ngOnInit();
+    expect(component.layoutConfiguration).toEqual({data: 'data'});
+  });
 });

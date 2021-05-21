@@ -540,6 +540,200 @@ export const courseConsumptionServiceMockData = {
         ],
         'downloadUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1130272760292638721197/test_curriculumcourse_1590243684943_do_1130272760292638721197_1.0_spine.ecar',
         'variants': '{"online":{"ecarUrl":"https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1130272760292638721197/test_curriculumcourse_1590243685852_do_1130272760292638721197_1.0_online.ecar","size":8533.0},"spine":{"ecarUrl":"https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1130272760292638721197/test_curriculumcourse_1590243684943_do_1130272760292638721197_1.0_spine.ecar","size":130702.0}}'
+      },
+      {
+        'ownershipType': [
+          'createdBy'
+        ],
+        'parent': 'do_1130272760359485441199',
+        'code': '63a59a33-b0c1-4c97-aebf-89a191bcd476',
+        'channel': '013016492159606784174',
+        'language': [
+          'English'
+        ],
+        'mimeType': 'application/vnd.ekstep.content-collection',
+        'idealScreenSize': 'normal',
+        'createdOn': '2020-05-23T14:20:56.733+0000',
+        'objectType': 'Content',
+        'children': [
+          {
+            'ownershipType': [
+              'createdBy'
+            ],
+            'copyright': 'Sunbird',
+            'previewUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/ecml/do_112832506508320768123-latest',
+            'subject': [
+              'Math'
+            ],
+            'downloadUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_112832506508320768123/all-layout-test_1566470079195_do_112832506508320768123_1.0.ecar',
+            'channel': 'b00bc992ef25f1a9a8d63291e20efc8d',
+            'questions': [
+              {
+                'identifier': 'do_112832509661282304131',
+                'name': 'Layout 6',
+                'objectType': 'AssessmentItem',
+                'relation': 'associatedTo',
+                'status': 'Live'
+              },
+              {
+                'identifier': 'do_112832508956418048127',
+                'name': 'Layout 2',
+                'objectType': 'AssessmentItem',
+                'relation': 'associatedTo',
+                'status': 'Live'
+              },
+              {
+                'identifier': 'do_112832509152608256128',
+                'name': 'Layout 3',
+                'objectType': 'AssessmentItem',
+                'relation': 'associatedTo',
+                'status': 'Live'
+              },
+              {
+                'identifier': 'do_112832509827088384132',
+                'name': 'MCQ: Layout 7',
+                'objectType': 'AssessmentItem',
+                'relation': 'associatedTo',
+                'status': 'Live'
+              },
+              {
+                'identifier': 'do_112832508676530176126',
+                'name': 'Layout 1',
+                'objectType': 'AssessmentItem',
+                'relation': 'associatedTo',
+                'status': 'Live'
+              },
+              {
+                'identifier': 'do_112832509506158592130',
+                'name': 'Layout 5',
+                'objectType': 'AssessmentItem',
+                'relation': 'associatedTo',
+                'status': 'Live'
+              },
+              {
+                'identifier': 'do_112832509348167680129',
+                'name': 'Layout 4',
+                'objectType': 'AssessmentItem',
+                'relation': 'associatedTo',
+                'status': 'Live'
+              }
+            ],
+            'organisation': [
+              'Sunbird'
+            ],
+            'language': [
+              'English'
+            ],
+            'variants': {
+              'spine': {
+                'ecarUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_112832506508320768123/all-layout-test_1566470079644_do_112832506508320768123_1.0_spine.ecar',
+                'size': 39084
+              }
+            },
+            'mimeType': 'application/vnd.ekstep.ecml-archive',
+            'editorState': '{"plugin":{"noOfExtPlugins":7,"extPlugins":[{"plugin":"org.ekstep.contenteditorfunctions","version":"1.2"},{"plugin":"org.ekstep.keyboardshortcuts","version":"1.0"},{"plugin":"org.ekstep.richtext","version":"1.0"},{"plugin":"org.ekstep.iterator","version":"1.0"},{"plugin":"org.ekstep.navigation","version":"1.0"},{"plugin":"org.ekstep.reviewercomments","version":"1.0"},{"plugin":"org.ekstep.mathtext","version":"1.0"}]},"stage":{"noOfStages":1,"currentStage":"6e13b055-7036-4811-8e0a-c7bc3378d82d","selectedPluginObject":"0a0338e3-8ae0-4be7-b162-dab8258502a2"},"sidebar":{"selectedMenu":"settings"}}',
+            'appIcon': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_112832506508320768123/artifact/1_1562560799900.thumb.jpg',
+            'gradeLevel': [
+              'Kindergarten'
+            ],
+            'appId': 'dev.sunbird.portal',
+            'contentEncoding': 'gzip',
+            'artifactUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_112832506508320768123/artifact/1566470078137_do_112832506508320768123.zip',
+            'me_totalPlaySessionCount': '{"portal":3}',
+            'lockKey': '00f1d51d-75ad-4939-b8c1-78be1fa5a885',
+            'contentType': 'Resource',
+            'lastUpdatedBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+            'identifier': 'do_112832506508320768123',
+            'audience': [
+              'Learner'
+            ],
+            'visibility': 'Default',
+            'author': 'b00bc992ef25f1a9a8d63291e20efc8d',
+            'consumerId': '4e525af6-2362-4edc-acf5-9ef9d3f72b3b',
+            'mediaType': 'content',
+            'osId': 'org.ekstep.quiz.app',
+            'lastPublishedBy': 'Sunbird',
+            'version': 2,
+            'license': 'CC BY-NC 4.0',
+            'prevState': 'Review',
+            'size': 707844,
+            'lastPublishedOn': '2019-08-22T10:34:39.173+0000',
+            'name': 'ALL layout test',
+            'status': 'Live',
+            'totalQuestions': 7,
+            'code': 'org.sunbird.Pzk1tN',
+            'description': 'Enter description for Resource',
+            'streamingUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/ecml/do_112832506508320768123-latest',
+            'medium': [
+              'English'
+            ],
+            'posterImage': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/content/do_112800498067488768120/artifact/1_1562560799900.jpg',
+            'idealScreenSize': 'normal',
+            'createdOn': '2019-08-22T10:01:19.629+0000',
+            'contentDisposition': 'inline',
+            'lastUpdatedOn': '2019-08-22T10:34:24.066+0000',
+            'SYS_INTERNAL_LAST_UPDATED_ON': '2020-02-25T12:31:29.774+0000',
+            'dialcodeRequired': 'No',
+            'creator': 'Creation',
+            'createdFor': [
+              'ORG_001'
+            ],
+            'lastStatusChangedOn': '2019-08-22T10:34:43.343+0000',
+            'os': [
+              'All'
+            ],
+            'totalScore': 7,
+            'pkgVersion': 1,
+            'versionKey': '1566470064066',
+            'me_totalTimeSpent': '{"portal":126}',
+            'idealScreenDensity': 'hdpi',
+            's3Key': 'ecar_files/do_112832506508320768123/all-layout-test_1566470079195_do_112832506508320768123_1.0.ecar',
+            'framework': 'NCFCOPY',
+            'lastSubmittedOn': '2019-08-22T10:10:51.081+0000',
+            'createdBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
+            'compatibilityLevel': 2,
+            'board': 'NCERT',
+            'resourceType': 'Learn',
+            'index': 1,
+            'depth': 3,
+            'parent': 'do_1130272760359567361201'
+          }
+        ],
+        'contentDisposition': 'inline',
+        'lastUpdatedOn': '2020-05-23T14:21:24.225+0000',
+        'contentEncoding': 'gzip',
+        'contentType': 'CourseUnit',
+        'identifier': 'do_1130272760359567361207',
+        'lastStatusChangedOn': '2020-05-23T14:20:56.733+0000',
+        'audience': [
+          'Learner'
+        ],
+        'os': [
+          'All'
+        ],
+        'visibility': 'Parent',
+        'index': 2,
+        'mediaType': 'content',
+        'osId': 'org.ekstep.launcher',
+        'languageCode': [
+          'en'
+        ],
+        'versionKey': '1590243656733',
+        'license': 'CC BY 4.0',
+        'idealScreenDensity': 'hdpi',
+        'framework': 'NCFCOPY',
+        'depth': 2,
+        'name': 'U1.2',
+        'status': 'Live',
+        'compatibilityLevel': 1,
+        'lastPublishedOn': '2020-05-23T14:21:24.596+0000',
+        'pkgVersion': 1,
+        'leafNodesCount': 1,
+        'leafNodes': [
+          'do_112832506508320768123'
+        ],
+        'downloadUrl': 'https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1130272760292638721197/test_curriculumcourse_1590243684943_do_1130272760292638721197_1.0_spine.ecar',
+        'variants': '{"online":{"ecarUrl":"https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1130272760292638721197/test_curriculumcourse_1590243685852_do_1130272760292638721197_1.0_online.ecar","size":8533.0},"spine":{"ecarUrl":"https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1130272760292638721197/test_curriculumcourse_1590243684943_do_1130272760292638721197_1.0_spine.ecar","size":130702.0}}'
       }
     ],
     'mediaType': 'content',
@@ -588,10 +782,41 @@ export const courseConsumptionServiceMockData = {
     'variants': '{"online":{"ecarUrl":"https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1130272760292638721197/test_curriculumcourse_1590243685852_do_1130272760292638721197_1.0_online.ecar","size":8533.0},"spine":{"ecarUrl":"https://sunbirddev.blob.core.windows.net/sunbird-content-dev/ecar_files/do_1130272760292638721197/test_curriculumcourse_1590243684943_do_1130272760292638721197_1.0_spine.ecar","size":130702.0}}',
     'index': 1,
     'pkgVersion': 1,
-    'idealScreenDensity': 'hdpi'
+    'idealScreenDensity': 'hdpi',
+    'trackable': {
+      'enabled': 'Yes',
+    },
+    createdBy: '9ad90eb4-b8d2-4e99-805f'
   },
   parseChildrenResult: [
     'do_11287204084174028818',
+    'do_112832506508320768123',
     'do_112832506508320768123'
-  ]
+  ],
+  contentStatus: [{
+    'lastAccessTime': '2020-07-09 08:43:18:777+0000',
+    'contentId': 'domain_68491',
+    'progress': 0,
+    'viewCount': null,
+    'completedCount': null,
+    'batchId': '0130561869763952643',
+    'courseId': 'do_1130305681847500801321',
+    'lastCompletedTime': null,
+    'status': 1
+  }, {
+    'contentId': 'domain_68601',
+    'status': 0,
+    'courseId': 'do_1130305681847500801321',
+    'batchId': '0130561869763952643'
+  }, {
+    'contentId': 'do_11279225695206604811695',
+    'status': 0,
+    'courseId': 'do_1130305681847500801321',
+    'batchId': '0130561869763952643'
+  }, {
+    'contentId': 'do_11279228637435494412323',
+    'status': 0,
+    'courseId': 'do_1130305681847500801321',
+    'batchId': '0130561869763952643'
+  }]
 };

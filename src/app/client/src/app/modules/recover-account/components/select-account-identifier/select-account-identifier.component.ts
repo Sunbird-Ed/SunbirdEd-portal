@@ -1,16 +1,17 @@
 import { RecoverAccountService } from './../../services';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {ResourceService, ToasterService, ConfigService} from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput, IEndEventInput, IStartEventInput, IInteractEventObject, IInteractEventEdata } from '@sunbird/telemetry';
-
+import { RecaptchaComponent } from 'ng-recaptcha';
 
 @Component({
   templateUrl: './select-account-identifier.component.html',
   styleUrls: ['./select-account-identifier.component.scss']
 })
 export class SelectAccountIdentifierComponent implements OnInit {
+  @ViewChild('captchaRef', {static: false}) captchaRef: RecaptchaComponent;
   selectedAccountIdentifier: any = {};
   validIdentifiers = [];
   errorCount = 0;
@@ -23,6 +24,8 @@ export class SelectAccountIdentifierComponent implements OnInit {
     id: 'SB-13755',
     type: 'Task'
   }];
+  googleCaptchaSiteKey: string;
+  isP2CaptchaEnabled: any;
   constructor(public activatedRoute: ActivatedRoute, public resourceService: ResourceService,
     public toasterService: ToasterService, public router: Router, public recoverAccountService: RecoverAccountService,
               public configService: ConfigService) {
@@ -33,12 +36,35 @@ export class SelectAccountIdentifierComponent implements OnInit {
       this.initializeForm();
     }
     this.setTelemetryImpression();
+    try {
+      this.googleCaptchaSiteKey = (<HTMLInputElement>document.getElementById('googleCaptchaSiteKey')).value;
+    } catch (error) {
+      this.googleCaptchaSiteKey = '';
+    }
+    this.isP2CaptchaEnabled = (<HTMLInputElement>document.getElementById('p2reCaptchaEnabled'))
+      ? (<HTMLInputElement>document.getElementById('p2reCaptchaEnabled')).value : 'true';
   }
   setSelectIdentifier(selectedAccountIdentifier) {
     this.disableFormSubmit = false;
     this.selectedAccountIdentifier = selectedAccountIdentifier;
   }
-  handleGenerateOtp() {
+
+  resolved(captchaResponse: string) {
+    if (captchaResponse) {
+      this.handleGenerateOtp(captchaResponse);
+    }
+  }
+
+  submitSelection() {
+    if (this.isP2CaptchaEnabled === 'true') {
+      this.captchaRef.reset();
+      this.captchaRef.execute();
+    } else {
+      this.handleGenerateOtp();
+    }
+  }
+
+  handleGenerateOtp(captchaResponse?) {
     const request = {
       request: {
         type: this.selectedAccountIdentifier.type,
@@ -47,7 +73,7 @@ export class SelectAccountIdentifierComponent implements OnInit {
         templateId: this.configService.constants.TEMPLATES.RESET_PASSWORD_TEMPLATE
       }
     };
-    this.recoverAccountService.generateOTP(request).subscribe(response => {
+    this.recoverAccountService.generateOTP(request, captchaResponse).subscribe(response => {
       this.navigateToNextStep();
     }, error => {
       this.handleError(error);

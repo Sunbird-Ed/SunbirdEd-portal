@@ -1,5 +1,7 @@
 import { DateFilterXtimeAgoPipe } from './date-filter-xtime-ago.pipe';
-import * as moment from 'moment';
+import dayjs from 'dayjs';
+import * as relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime)
 
 describe('DateFilterXtimeAgoPipe', () => {
   describe('#transform', () => {
@@ -7,8 +9,8 @@ describe('DateFilterXtimeAgoPipe', () => {
       const pipe = new DateFilterXtimeAgoPipe();
       const date = new Date();
       const result = pipe.transform(date, '');
-      const local = moment(date).local().format('YYYY-MM-DD HH:mm:ss');
-      const ans = moment(local).fromNow();
+      const local = dayjs(date).format('YYYY-MM-DD HH:mm:ss');
+      const ans = dayjs(local).fromNow();
       expect(result).toBe(ans);
     });
 
@@ -16,8 +18,8 @@ describe('DateFilterXtimeAgoPipe', () => {
       const pipe = new DateFilterXtimeAgoPipe();
       const date = new Date();
       const result = pipe.transform(date, 'YYYY-MM-DD HH:mm:ss');
-      const local = moment(date).local().format('YYYY-MM-DD HH:mm:ss');
-      const ans = moment(local).fromNow();
+      const local = dayjs(date).format('YYYY-MM-DD HH:mm:ss');
+      const ans = dayjs(local).fromNow();
       expect(result).toBe(ans);
     });
 

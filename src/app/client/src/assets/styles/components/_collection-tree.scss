@@ -1,3 +1,49 @@
+
+// TOC or Collection Tree
+$sb-collectionTree-border-radius: ($base-block-space / 2);
+$sb-collectionTree-border: 1px solid $primary-200;
+$sb-collectionTree-padding: ($base-block-space * 2);
+$sb-collectionTree-margin: $base-block-space 0 0 0;
+$sb-collectionTree-background-color: $white-color;
+$sb-collectionTree-title-color: $gray-800;
+$sb-collectionTree-title-font-size: $h6-font-size;
+$sb-collectionTree-title-line-height: 20px;
+$sb-collectionTree-title-font-weight: 400;
+$sb-collectionTree-active-title-color: $primary-color;
+$sb-collectionTree-active-title-font-weight: bold;
+$sb-collectionTree-title-icon-color: $tertiary-100;
+$sb-collectionTree-title-icon-font-size: 20px;
+$sb-collectionTree-title-icon-line-height: 20px;
+$sb-collectionTree-title-icon-height: 20px;
+$sb-collectionTree-title-icon-font-weight: 500;
+$sb-collectionTree-title-toggle-icon-color: $primary-color;
+$sb-collectionTree-title-toggle-icon-font-size: $font-size-sm;
+$sb-collectionTree-title-toggle-icon-line-height: 20px;
+$sb-collectionTree-title-toggle-icon-height: 20px;
+$sb-collectionTree-title-toggle-icon-font-weight: 500;
+$sb-collectionTree-disabled-border: 1px solid $gray-100;
+$sb-collectionTree-disabled-title-icon-color: $gray-100;
+
+// Fancy Tree
+$sb-fancyTree-margin-ltr: 0 0 0 ($base-block-space * 1.25);
+$sb-fancyTree-margin-rtl: 0 ($base-block-space * 1.25) 0 0;
+$sb-fancyTree-padding: ($base-block-space * 2) 0 0 0;
+$sb-fancyTree-list-border-color: $primary-200;
+$sb-fancyTree-list-border-width: 1px;
+$sb-fancyTree-list-item-margin: 0 0 (2 * $base-block-space) 0;
+$sb-fancyTree-list-item-padding-ltr: 0 0 0 ($base-block-space * 1.75);
+$sb-fancyTree-list-item-padding-rtl: 0 ($base-block-space * 1.75) 0 0;
+$sb-fancyTree-list-item-border-text-spacing: ($base-block-space * 1.75);
+$sb-fancyTree-list-item-icon-size: 20px;
+$sb-fancyTree-default-list-item-icon-color: $tertiary-100;
+$sb-fancyTree-completed-list-item-icon-color: $success-color;
+$sb-fancyTree-inprogress-list-item-icon-color: $primary-color;
+$sb-fancyTree-disabled-list-item-icon-color: $gray-100;
+$sb-fancyTree-list-item-title-padding: 0 ($base-block-space);
+$sb-fancyTree-list-item-title-font-size: $h6-font-size;
+$sb-fancyTree-list-item-title-commingSoonMessage-spacing: 0
+  ($base-block-space / 2);
+  
 .sb-collectionTree {
   width: 100%;
   border-radius: $sb-collectionTree-border-radius;

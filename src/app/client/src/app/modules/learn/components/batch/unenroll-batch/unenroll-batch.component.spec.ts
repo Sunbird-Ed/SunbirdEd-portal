@@ -9,7 +9,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { UnEnrollBatchComponent } from './unenroll-batch.component';
 import { SuiModule } from 'ng2-semantic-ui';
 import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
-import { CoreModule } from '@sunbird/core';
+import { CoreModule, GeneraliseLabelService } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
@@ -66,12 +66,9 @@ describe('UnEnrollBatchComponent', () => {
         DashboardModule, HttpClientTestingModule],
       providers: [
         UserService,
-        {
-          provide: ActivatedRoute, useValue: fakeActivatedRoute
-        },
-        {
-          provide: ResourceService, useValue: fakeResourceService
-        },
+        { provide: ActivatedRoute, useValue: fakeActivatedRoute },
+        { provide: ResourceService, useValue: fakeResourceService },
+        { provide: GeneraliseLabelService, useValue: fakeResourceService },
         { provide: Router, useClass: RouterStub }]
     })
       .compileComponents();

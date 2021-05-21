@@ -1,5 +1,6 @@
 @import "variables";
 @import "mixins/mixins";
+@import "pages/sign_in_up";
 
 .ui.raised.shadow.container.segment {
     margin: calculateRem(20px) auto !important;
@@ -14,7 +15,7 @@
         margin: calculateRem(35px) auto !important;
         width: calculateRem(944px) !important;
         padding: calculateRem(20px);
-        box-shadow: 0 calculateRem(2px) calculateRem(16px) 0 rgba(0,0,0,0.2);
+        box-shadow: 0 calculateRem(2px) calculateRem(16px) 0 rgba(var(--rc-rgba-black), 0.2);
     }
 }
 @media only screen and (max-width: 767px) {
@@ -31,40 +32,40 @@
 .ui.form.borderd input[type=url],
 .ui.form.borderd input:not([type]),
 .ui.form.borderd input:not([type]):focus {
-    border: calculateRem(1px) solid $form-input-border-color;
+    border: calculateRem(1px) solid var(--gray-300);
     padding: 0.8em 0 0.8em 1em;
     border-radius: calculateRem(4px);
 }
 .ui.form.borderd input:focus {
-    border-color: $form-input-border-active-color !important;
+    border-color: var(--primary-400) !important;
 }
 .ui.light-sea-green.button {
-    background: $signup-btn-bg-active-color;
-    color: $white-color;
+    background: var(--secondary-400);
+    color: var(--white);
     height: calculateRem(38px) !important;
 }
 .ui.grey.button {
-    background: $signup-btn-bg-not-active-color;
-    color: $white-color;
+    background: var(--gray-200);
+    color: var(--white);
     pointer-events: none !important;
     cursor: not-allowed !important; 
     height: calculateRem(38px) !important;
 }
 .grey.text {
-    color: $signup-thankyou-text-color;
+    color: var(--gray-400);
 }
 .orange.text {
-    color: $danger-color;
+    color: var(--red-100);
 }
 .orange-border {
-    border-color: $danger-color !important;
+    border-color: var(--red-100) !important;
 }
 .blue.text {
-    color: $primary-color;
+    color: var(--primary-color);
 }
 .ui.basic.blue.navigation.label {
-    background: $white-color !important;
-    color: $primary-color !important;
+    background: var(--white) !important;
+    color: var(--primary-color) !important;
     border: 0  !important;
     padding-left: 0;
     font-size: 1rem;
@@ -72,8 +73,8 @@
     padding:calculateRem(10px) 0;
 }
 .ui.basic.error.label {
-    background: $white-color !important;
-    color: $danger-color !important;
+    background: none !important;
+    color: var(--red-100) !important;
     border: 0 !important;
     padding-left: 0;
     font-size: 1rem;
@@ -120,11 +121,4 @@ input[type=number]::-webkit-inner-spin-button {
 }
 .opacity-1 {
     opacity: 1 !important;
-}
-
-.signup-background {
-  background: url('/assets/images/bg.svg') no-repeat center center fixed;
-  background-size: cover;
-  width: 100%;
-  position: fixed;
 }

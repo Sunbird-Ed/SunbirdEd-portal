@@ -81,4 +81,5 @@ export interface SearchParam {
 
  fields?: string[];
  locationIds?: string[];
+ isRootOrg?: boolean;
 }

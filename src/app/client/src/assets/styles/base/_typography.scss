@@ -1,15 +1,16 @@
 /* typography styles */
+@import "./variables";
+
 $line-height-value: 1.61803398875;
 
 // Headings
-
 $typography: 
-h1 $h1-font-size ($h1-font-size * $line-height-value), // 32px
-h2 $h2-font-size ($h2-font-size * $line-height-value), // 28px
-h3 $h3-font-size ($h3-font-size * $line-height-value), // 24px
-h4 $h4-font-size ($h4-font-size * $line-height-value), // 20px
-h5 $h5-font-size ($h5-font-size * $line-height-value), // 16px
-h6 $h6-font-size ($h6-font-size * $line-height-value); // 14px
+h1 var(--h1-font-size) calc(var(--h1-font-size) * $line-height-value), // 32px
+h2 var(--h2-font-size) calc(var(--h2-font-size) * $line-height-value), // 28px
+h3 var(--h3-font-size) calc(var(--h3-font-size) * $line-height-value), // 24px
+h4 var(--h4-font-size) calc(var(--h4-font-size) * $line-height-value), // 20px
+h5 var(--h5-font-size) calc(var(--h5-font-size) * $line-height-value), // 16px
+h6 var(--h6-font-size) calc(var(--h6-font-size) * $line-height-value); // 14px
 
 @each $name, $font-size, $line-height in $typography {
   #{$name}, .sb-#{$name} {
@@ -20,7 +21,7 @@ h6 $h6-font-size ($h6-font-size * $line-height-value); // 14px
 
 // Font sizes
 
-$font-size: ('medium': $font-size-md, 'normal': $font-size-normal, 'small': $font-size-sm, 'xsmall': $font-size-xs);
+$font-size: ('medium': var(--font-size-md), 'normal': var(--font-size-normal), 'small': var(--font-size-sm), 'xsmall': var(--font-size-xs));
 
 @each $name, $size in $font-size {
   .f#{$name} {
@@ -108,8 +109,8 @@ h6 {
 
 p,
 .sb-para {
-  font-size: $p-font-size; //14px
-  line-height: ($p-font-size * 1.61803398875); //* 1.618
+  font-size: var(--p-font-size); //14px
+  line-height: calc(var(--p-font-size) * 1.61803398875); //* 1.618
 }
 
 .font-italic {
@@ -117,9 +118,9 @@ p,
 }
 
 a {
-  color: $primary-color;
+  color: var(--primary-color);
   &:hover {
-    color: $primary-color;
+    color: var(--primary-color);
   }
   &:focus {
     outline: 0;
@@ -150,7 +151,7 @@ a {
 
 .sb-section-title,
 .sb-pageSection-title {
-  font-size: $h5-font-size;
+  font-size: var(--h5-font-size);
   display: inline;
   font-weight: 600;
   &.sb-pageSection-sentenceCase {
@@ -195,6 +196,14 @@ a {
   text-decoration: underline !important;
 }
 
-.lineHeight-normal {
+.line-height-normal {
   line-height: normal !important;
 }
+
+/* typography styles ends */
+
+.sb-modal.custom-lg-modal  .modal.large{max-width: 70.25rem !important;}
+
+.w-10{width:10% !important;max-width:10% !important;}
+.w-20{width:20% !important;max-width:20% !important;}
+.w-30{width:30% !important;max-width:30% !important;}

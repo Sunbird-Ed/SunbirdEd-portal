@@ -1,32 +1,114 @@
-@import "variables";
-@import "mixins/mixins";
+@import './mixins/mixins';
 
-.title{
-    color:var(--gray-800);
+.title {
+	color: var(--gray-800);
 }
 
-.sb-field{
-    .message{
-        font-size: calculateRem(10px);
-    }
+.icon-input-close {
+	position: absolute;
+	top: calculateRem(4px);
+	right: calculateRem(4px);
+	cursor: pointer;
+	width: calculateRem(24px);
+	height: calculateRem(24px);
+
+	html[dir="rtl"] & {
+		left: calculateRem(8px);
+		right: inherit;
+	}
 }
 
-.add-member-content{
-    width: 100%;
-    height:100%;
-    background: #E5EDF5;
-    .add-member-text{
-      max-height: 132px;
-      .oval{
-        height: calculateRem(36px);
-        width: calculateRem(36px);
-        justify-content: center;
-        align-items: center;
-        display: inline-flex;
-        border-radius: 50%;
-        border: calculateRem(6px) solid var(--white);
-        background-color: var(--white);
-        box-shadow: 0 0 calculateRem(6px) 0 rgba(0, 0, 0, 0.1);
-    }
-    }
+.add-member-content {
+	width: 100%;
+	background: var(--rc-E5EDF5);
+	flex-direction: row;
+	@include respond-below(sm) {
+		flex-direction: column;
+		button {
+			margin-top: calculateRem(16px);
+		}
+	}
+
+	.add-member-text {
+		margin: calculateRem(8px) calculateRem(8px) calculateRem(8px) 0px;
+		html[dir="rtl"] & {
+			margin: calculateRem(8px) 0px calculateRem(8px) calculateRem(8px);
+		}
+		@include respond-below(sm) {
+			align-self: self-start;
+			margin: 0px;
+			width: 100%;
+		}
+	}
+}
+
+.textbook-container {
+	box-shadow: 0 0 calculateRem(10px) 0 rgba(var(--rc-rgba-black), 0.25);
+	position: relative;
+}
+
+.textbook {
+	&__details {
+		flex: 1;
+		min-width: 0;
+	}
+
+	&__bookimg {
+		width: calculateRem(48px);
+		height: calculateRem(48px);
+	}
+
+	&__heading {
+		min-width: 0;
+
+		.textbook__title {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+	}
+
+	&__addbtn {
+		white-space: nowrap;
+	}
+}
+
+.sb-field {
+	.message {
+		font-size: calculateRem(10px);
+		display: flex;
+
+		@include respond-below(sm) {
+			margin: 0.5rem 0;
+		}
+	}
+}
+
+.instance-id-verify {
+	button {
+		margin-top: calculateRem(32px);
+		margin-left: calculateRem(8px);
+		align-self: normal;
+		@include respond-below(sm) {
+			margin-top: calculateRem(8px);
+			margin-left: 0px;
+		}
+	}
+
+	& > div {
+      @include respond-below(sm) {
+			flex-direction: column;
+			margin-bottom: calculateRem(24px);
+		}
+	}
+}
+
+.recaptcha {
+	z-index: 1;
+}
+
+.sb-members-column {
+	@include respond-below(sm) {
+		margin-top: calculateRem(16px);
+	}
 }

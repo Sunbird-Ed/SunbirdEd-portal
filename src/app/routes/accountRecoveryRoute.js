@@ -5,17 +5,20 @@ const dateFormat = require('dateformat');
 const uuidv1 = require('uuid/v1');
 const proxy = require('express-http-proxy');
 const proxyUtils = require('../proxy/proxyUtils.js');
-const logger = require('sb_logger_util_v2');
-const { encriptWithTime } = require('../helpers/crypto');
+const { logger } = require('@project-sunbird/logger');
+const { encriptWithTime, encrypt } = require('../helpers/crypto');
 const { decodeNChkTime } = require('../helpers/utilityService');
+const googleService = require('../helpers/googleService');
 
 module.exports = (app) => {
 
-  app.post('/learner/user/v1/fuzzy/search', proxy(envHelper.learner_Service_Local_BaseUrl, {
-    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+  app.post('/learner/user/v1/fuzzy/search',
+  googleService.validateRecaptcha,
+  proxy(envHelper.learner_Service_Local_BaseUrl, {
+    proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(envHelper.learner_Service_Local_BaseUrl),
     proxyReqPathResolver: (req) => {
       logger.info({ msg: `${req.url} called`});
-      return '/private/user/v1/search';
+    return '/private/user/v1/search';
     }
   }))
 
@@ -48,7 +51,7 @@ module.exports = (app) => {
       }
     },
     proxy(envHelper.learner_Service_Local_BaseUrl, {
-      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(envHelper.learner_Service_Local_BaseUrl),
       proxyReqPathResolver: (req) => {
         return '/private/user/v1/password/reset'; // /private/user/v1/reset/password
       }
@@ -57,7 +60,7 @@ module.exports = (app) => {
   app.all('/learner/otp/v1/verify',
     bodyParser.urlencoded({ extended: false }), bodyParser.json({ limit: '10mb' }),
     proxy(envHelper.LEARNER_URL, {
-      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(),
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(envHelper.LEARNER_URL),
       proxyReqPathResolver: (req) => {
         return require('url').parse(envHelper.LEARNER_URL + req.originalUrl.replace('/learner/', '')).path
       },
@@ -67,14 +70,18 @@ module.exports = (app) => {
           const data = JSON.parse(proxyResData.toString('utf8'));
           if (data.responseCode === 'OK') {
             req.session.otpVerifiedFor = req.body;
-            const encrypt = {
+            const _encrypt = {
               key: req.body.request.key
             }
             if (req.body.request.userId) {
-              encrypt['id'] = req.body.request.userId
+              _encrypt['id'] = req.body.request.userId
             }
             var timeInMin = 5;
-            var validator = encriptWithTime(encrypt, timeInMin);
+            var validator = encriptWithTime(_encrypt, timeInMin);
+            const reqType = req.body.request.type;
+            const dataToEncrypt = {};
+            dataToEncrypt[reqType] = req.body.request.key;
+            req.session.otpEncryptedInfo = encrypt(JSON.stringify(dataToEncrypt));
             data['reqData'] = validator;
           }
           return data;

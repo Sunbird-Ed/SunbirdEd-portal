@@ -23,7 +23,7 @@
     min-height: calculateRem(10px) !important;
     resize: none !important;
     padding-right: 2.67142857em !important;
-    border: calculateRem(1px) solid #9B9B9B !important;
+    border: calculateRem(1px) solid var(--rc-9b9b9b) !important;
     border-radius: calculateRem(4px) !important;
 }
 .icon.sb-icon-send:before {
@@ -33,17 +33,17 @@
 .sb-icon-comment:before {
     font-size: calculateRem(72px);
     width: calculateRem(72px);
-    color: $secondary-color;
+    color: var(--secondary-color);
 }
 .icon.sb-icon-reviewer:before {
     font-size: calculateRem(30px);
-    color: $primary-color;
+    color: var(--primary-color);
 }
 textarea:focus+i.icon.sb-icon-send:before {
-    color: $primary-color;
+    color: var(--primary-color);
 }
 .ui.form textarea:focus {
-    border-color:$primary-color !important;
+    border-color:var(--primary-color) !important;
 }
 .comment:after {
     content: ""; 

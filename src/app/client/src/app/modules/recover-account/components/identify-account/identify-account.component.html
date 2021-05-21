@@ -3,7 +3,7 @@
     {{resourceService?.frmelmnts?.lbl?.enterEmailPhoneAsRegisteredInAccount | interpolate:'{instance}': resourceService.instance}},
     {{resourceService?.frmelmnts?.lbl?.enternameAsRegisteredInAccount | interpolate:'{instance}': resourceService.instance}}
   </div> -->
-  <form [formGroup]="form" class="sb-form mt-48" autocomplete="off">
+  <form [formGroup]="form" class="sb-form mt-24" autocomplete="off">
     <div class="sb-field-group mb-16 text-left">
       <div class="sb-field">
         <label
@@ -25,6 +25,9 @@
         <span class="sb-color-error fxsmall mt-8" *ngIf="identiferStatus === 'NOT_MATCHED'">
           {{resourceService?.frmelmnts?.lbl?.emailPhonenotRegistered | interpolate:'{instance}': resourceService.instance}}
         </span>
+        <span class="sb-color-error fxsmall mt-8" *ngIf="identiferStatus === 'VALIDATING_FAILED'">
+          {{resourceService?.frmelmnts?.lbl?.captchaValidationFailed}}
+        </span>
       </div>
     </div>
     <div class="sb-field-group mb-16 text-left">
@@ -42,11 +45,11 @@
         </span>
       </div>
     </div>
-    <re-captcha *ngIf="googleCaptchaSiteKey" #captchaRef="reCaptcha" (resolved)="$event && handleNext($event)" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
-    <button class="sb-btn sb-btn-normal width-100 sb-btn-secondary" [disabled]="disableFormSubmit" tabindex="0"
+    <re-captcha *ngIf="isP1CaptchaEnabled === 'true' && googleCaptchaSiteKey" #captchaRef="reCaptcha" (resolved)="$event && handleNext($event)" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
+    <button class="sb-btn sb-btn-normal width-100 sb-btn-primary" [disabled]="disableFormSubmit" tabindex="0"
       appTelemetryInteract [telemetryInteractCdata]="telemetryCdata"
       [telemetryInteractEdata]="{id: 'submit', type: 'click', pageid: 'identify-account', extra: {form: form.value} }"
-      (click)="googleCaptchaSiteKey ? captchaRef.execute() : handleNext()">
+      (click)="(isP1CaptchaEnabled === 'true' && googleCaptchaSiteKey) ? captchaRef.execute() : handleNext()">
       {{resourceService?.frmelmnts?.lbl?.next}}</button>
   </form>
 </div>

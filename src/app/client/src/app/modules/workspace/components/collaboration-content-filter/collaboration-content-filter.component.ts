@@ -9,18 +9,7 @@ import { IInteractEventEdata, IInteractEventInput, IInteractEventObject, IProduc
 @Component({
   selector: 'app-collaboration-content-filter',
   templateUrl: './collaboration-content-filter.component.html',
-  styles: [`
-     >>> .ui.dropdown:not(.button)>.default.text {
-      display: none;
-       }
-      .ui.inline.dropdown.search-dropdown {
-       margin-left: 5px;
-       box-sizing: border-box;
-       }
-      .popup-content{
-        width: 850px !important;
-       }
-   `]
+  styleUrls: ['./collaboration-content-filter.component.scss']
 })
 export class CollaborationContentFilterComponent implements OnInit {
   modelChanged: Subject<string> = new Subject<string>();

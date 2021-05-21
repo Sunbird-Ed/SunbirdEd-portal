@@ -4,6 +4,7 @@ import { ResourceService } from '../../services';
 interface InputType {
   title: string;
   body: string;
+  event: string;
 }
 
 @Component({
@@ -15,7 +16,7 @@ export class ConfirmPopupComponent {
 
   @Input() input: InputType;
   @Output() confirmation = new EventEmitter<boolean>();
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
 
   constructor(public resourceService: ResourceService) {
 

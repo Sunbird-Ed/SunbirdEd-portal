@@ -1,3 +1,8 @@
+<app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration">
+
+</app-landing-section>
+
+<div [ngClass]="layoutConfiguration ? 'sbt-container relative9':''" >
 <div class="ui" [appTelemetryImpression]="telemetryImpression">
   <div class="twelve wide column px-0 sb-workspace-bg">
     <div class="ui container stackable grid m-0 sb-mid-container-min-height dashboard-body-scroll" *ngIf="!noResult">
@@ -10,7 +15,7 @@
             {{report.label || report.title}}</li>
         </ul>
       </div>
-      <div class="ten wide column sb-sideview-tab-container pl-40 pr-0 pt-72 pb-48" *ngIf="currentReport">
+      <div class="ten wide column sb-sideview-tab-container pl-40 pt-72 pb-48" *ngIf="currentReport">
         <h2 class="ui small header">
           {{currentReport?.title || currentReport?.label}}
         </h2>
@@ -38,9 +43,9 @@
             </div>
             <div class="ui bottom attached segment p-0 b-0 no-bg my-24" suiTabContent="files">
               <div class="sb-graph-section p-24 my-24">
-                <table *ngIf="isFileDataLoaded" id="downloadTable" class="sb-table sb-table-striped sb-table-sortable sb-table-fixed"
+                <table *ngIf="isFileDataLoaded" id="downloadTable" class="sb-table sb-table-striped sb-table-sortable sb-table-fixed sb-table-course-dashboard"
                 cellspacing="0">
-                <thead class="sb-table-header sb-table-thead-gray">
+                <thead>
                   <tr>
                     <th>
                       <div class="cursor-pointer">
@@ -141,4 +146,5 @@
       <app-no-result [data]="noResultMessage"></app-no-result>
     </div>
   </div>
+</div>
 </div>

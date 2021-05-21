@@ -1,15 +1,21 @@
-import { ConfigService, NavigationHelperService } from '@sunbird/shared';
+import { ConfigService, NavigationHelperService, UtilService } from '@sunbird/shared';
 import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter,
-OnChanges, HostListener, OnInit } from '@angular/core';
+OnChanges, HostListener, OnInit, ChangeDetectorRef } from '@angular/core';
 import * as _ from 'lodash-es';
 import { PlayerConfig } from '@sunbird/shared';
 import { Router } from '@angular/router';
-import { ToasterService, ResourceService } from '@sunbird/shared';
-const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub', 'video/webm', 'video/mp4', 'application/pdf'];
-import { Subject } from 'rxjs';
+import { ToasterService, ResourceService, ContentUtilsServiceService } from '@sunbird/shared';
+const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub'];
+import { forkJoin, of, Subject } from 'rxjs';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { IInteractEventEdata } from '@sunbird/telemetry';
+import { UserService, FormService } from '../../../core/services';
 import { OnDestroy } from '@angular/core';
+import { catchError, takeUntil } from 'rxjs/operators';
+import { CsContentProgressCalculator } from '@project-sunbird/client-services/services/content/utilities/content-progress-calculator';
+import { ContentService } from '@sunbird/core';
+import { PublicPlayerService } from '@sunbird/public';
+
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
@@ -19,7 +25,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   @Input() playerConfig: PlayerConfig;
   @Output() assessmentEvents = new EventEmitter<any>();
   @Output() questionScoreSubmitEvents = new EventEmitter<any>();
-  @ViewChild('contentIframe') contentIframe: ElementRef;
+  @Output() questionScoreReviewEvents = new EventEmitter<any>();
+  @ViewChild('contentIframe', {static: false}) contentIframe: ElementRef;
   @Output() playerOnDestroyEvent = new EventEmitter<any>();
   @Output() sceneChangeEvent = new EventEmitter<any>();
   @Input() contentProgressEvents$: Subject<any>;
@@ -27,29 +34,53 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   buildNumber: string;
   @Input() playerOption: any;
   contentRatingModal = false;
+  showRatingModalAfterClose = false;
   previewCdnUrl: string;
   isCdnWorking: string;
   CONSTANT = {
-    ACCESSEVENT: 'renderer:question:submitscore'
+    ACCESSEVENT: 'renderer:question:submitscore',
+    ISLASTATTEMPT: 'renderer:selfassess:lastattempt',
+    MAXATTEMPT: 'renderer:maxLimitExceeded',
+    ACCESSREVIEWEVENT: 'renderer:question:reviewAssessment'
   };
-
   @Input() overlayImagePath: string;
   @Input() isSingleContent: boolean;
   @Input() telemetryObject: {};
   @Input() pageId: string;
+  @Input() contentData;
+  @Input() isContentDeleted: Subject<any>;
   @Output() closePlayerEvent = new EventEmitter<any>();
+  @Output() ratingPopupClose = new EventEmitter<any>();
+  @Output() selfAssessLastAttempt = new EventEmitter<any>();
+  contentDeleted = false;
   isMobileOrTab: boolean;
   showPlayIcon = true;
   closeButtonInteractEdata: IInteractEventEdata;
   loadPlayerInteractEdata: IInteractEventEdata;
   playerOverlayImage: string;
+  isFullScreenView = false;
+  public unsubscribe = new Subject<void>();
+  public showNewPlayer = false;
+  mobileViewDisplay = 'block';
+  playerType: string;
+  isDesktopApp = false;
+  showQumlPlayer = false;
+
   /**
  * Dom element reference of contentRatingModal
  */
-  @ViewChild('modal') modal;
+  @ViewChild('modal', {static: false}) modal;
+
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
+    this.closeContentFullScreen();
+  }
+
   constructor(public configService: ConfigService, public router: Router, private toasterService: ToasterService,
     public resourceService: ResourceService, public navigationHelperService: NavigationHelperService,
-    private deviceDetectorService: DeviceDetectorService) {
+    private deviceDetectorService: DeviceDetectorService, private userService: UserService, public formService: FormService
+    , public contentUtilsServiceService: ContentUtilsServiceService, private contentService: ContentService,
+    private cdr: ChangeDetectorRef, public playerService: PublicPlayerService, private utilService: UtilService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
     this.previewCdnUrl = (<HTMLInputElement>document.getElementById('previewCdnUrl'))
@@ -67,6 +98,16 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   ngOnInit() {
+    if (_.get(this.playerConfig, 'metadata.mimeType') === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
+      this.playerConfig.config.sideMenu.showDownload = false;
+      this.playerService.getQuestionSetRead(_.get(this.playerConfig, 'metadata.identifier')).subscribe((data: any) => {
+        this.playerConfig.metadata.instructions = _.get(data, 'result.questionset.instructions');
+        this.showQumlPlayer = true;
+      }, (error) => {
+        this.showQumlPlayer = true;
+      });
+    }
+    
     // If `sessionStorage` has UTM data; append the UTM data to context.cdata
     if (this.playerConfig && sessionStorage.getItem('UTM')) {
       let utmData;
@@ -83,12 +124,42 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         this.playerConfig.context.cdata = _.union(this.playerConfig.context.cdata, utmData);
       }
     }
+    this.isDesktopApp = this.utilService.isDesktopApp;
+    // Check for loggedIn user; and append user data to context object
+    // User data (`firstName` and `lastName`) is used to show at the end of quiz
+    if (this.playerConfig) {
+        this.addUserDataToContext();
+    }
     this.isMobileOrTab = this.deviceDetectorService.isMobile() || this.deviceDetectorService.isTablet();
     if (this.isSingleContent === false) {
       this.showPlayIcon = false;
     }
     this.setTelemetryData();
+    this.navigationHelperService.contentFullScreenEvent.
+    pipe(takeUntil(this.unsubscribe)).subscribe(isFullScreen => {
+      this.isFullScreenView = isFullScreen;
+      const root: HTMLElement = document.getElementsByTagName( 'html' )[0];
+      if (isFullScreen) {
+        root.classList.add('PlayerMediaQueryClass');
+        document.body.classList.add('o-y-hidden');
+      } else {
+        root.classList.remove('PlayerMediaQueryClass');
+        document.body.classList.remove('o-y-hidden');
+      }
+      if (this.isDesktopApp) {
+        const hideCM = isFullScreen ? true : false;
+        this.navigationHelperService.handleContentManagerOnFullscreen(hideCM);
+      }
+      this.loadPlayer();
+    });
+
+    this.contentUtilsServiceService.contentShareEvent.pipe(takeUntil(this.unsubscribe)).subscribe(data => {
+      if (this.isMobileOrTab && data === 'close') {
+        this.mobileViewDisplay = 'block';
+      }
+    });
   }
+
   /**
    * loadPlayer method will be called
    */
@@ -100,6 +171,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   ngOnChanges(changes) {
     this.contentRatingModal = false;
+    this.showNewPlayer = false;
+    this.cdr.detectChanges();
     if (this.playerConfig) {
       this.playerOverlayImage = this.overlayImagePath ? this.overlayImagePath : _.get(this.playerConfig, 'metadata.appIcon');
       this.loadPlayer();
@@ -113,12 +186,15 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       playerElement.onload = (event) => {
         try {
           this.adjustPlayerHeight();
-          this.playerLoaded = true;
           playerElement.contentWindow.initializePreview(this.playerConfig);
+          if (this.playerLoaded) {
+            playerElement.removeEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
+            window.frames['contentPlayer'].removeEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
+          }
+          this.playerLoaded = true;
           playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
           window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
         } catch (err) {
-          console.log('loading cdn player failed', err);
           this.loadDefaultPlayer();
         }
       };
@@ -132,12 +208,15 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       playerElement.onload = (event) => {
         try {
           this.adjustPlayerHeight();
-          this.playerLoaded = true;
           playerElement.contentWindow.initializePreview(this.playerConfig);
+          if (this.playerLoaded) {
+            playerElement.removeEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
+            window.frames['contentPlayer'].removeEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
+          }
+          this.playerLoaded = true;
           playerElement.addEventListener('renderer:telemetry:event', telemetryEvent => this.generateContentReadEvent(telemetryEvent));
           window.frames['contentPlayer'].addEventListener('message', accessEvent => this.generateScoreSubmitEvent(accessEvent), false);
         } catch (err) {
-          console.log('loading default player failed', err);
           const prevUrls = this.navigationHelperService.history;
           if (this.isCdnWorking.toLowerCase() === 'yes' && prevUrls[prevUrls.length - 2]) {
             history.back();
@@ -146,11 +225,49 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       };
     }, 0);
   }
-  /**
-   * Initializes player with given config and emits player telemetry events
-   * Emits event when content starts playing and end event when content was played/read completely
-   */
+
   loadPlayer() {
+    this.playerType = null;
+    const formReadInputParams = {
+      formType: 'content',
+      formAction: 'play',
+      contentType: 'player'
+    };
+    this.formService.getFormConfig(formReadInputParams).subscribe(
+      (data: any) => {
+        let isNewPlayer = false;
+        _.forEach(data, (value) => {
+          if (_.includes(_.get(value, 'mimeType'), _.get(this.playerConfig, 'metadata.mimeType')) && _.get(value, 'version') === 2) {
+            this.playerConfig.context.threshold = _.get(value, 'threshold');
+            this.playerType = _.get(value, 'type');
+            isNewPlayer = true;
+          }
+        });
+        if (isNewPlayer) {
+          this.playerLoaded = false;
+          this.loadNewPlayer();
+        } else {
+          this.loadOldPlayer();
+        }
+      },
+      (error) => {
+        this.loadOldPlayer();
+      }
+    );
+  }
+
+  loadOldPlayer() {
+    this.showNewPlayer = false;
+    if (this.isDesktopApp) {
+      this.updateMetadataForDesktop();
+      const downloadStatus = Boolean(_.get(this.playerConfig, 'metadata.desktopAppMetadata.isAvailable'));
+      let playerUrl = this.configService.appConfig.PLAYER_CONFIG.localBaseUrl;
+      if (!downloadStatus) {
+        playerUrl = `${playerUrl}webview=true`;
+      }
+      this.loadDefaultPlayer(playerUrl);
+      return;
+    }
     if (this.isMobileOrTab) {
       this.rotatePlayer();
     }
@@ -158,15 +275,47 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.loadCdnPlayer();
       return;
     }
+
     this.loadDefaultPlayer();
   }
+
+  loadNewPlayer() {
+    const downloadStatus = Boolean(_.get(this.playerConfig, 'metadata.desktopAppMetadata.isAvailable'));
+    const artifactUrl = _.get(this.playerConfig, 'metadata.artifactUrl');
+    if (downloadStatus && artifactUrl && !_.startsWith(artifactUrl, 'http://')) {
+      this.playerConfig.metadata.artifactUrl = `${location.origin}/${artifactUrl}`;
+    }
+    this.addUserDataToContext();
+    if (this.isMobileOrTab) {
+      this.isFullScreenView = true;
+      this.rotatePlayer();
+    }
+    this.showNewPlayer = true;
+  }
+
+  // Update ArtifactUrl for old Player
+  updateMetadataForDesktop() {
+    const downloadStatus = Boolean(_.get(this.playerConfig, 'metadata.desktopAppMetadata.isAvailable'));
+    if (downloadStatus) {
+      this.playerConfig.data = '';
+      if (_.get(this.playerConfig, 'metadata.artifactUrl')
+        && _.includes(OFFLINE_ARTIFACT_MIME_TYPES, this.playerConfig.metadata.mimeType)) {
+        const artifactFileName = this.playerConfig.metadata.artifactUrl.split('/');
+        this.playerConfig.metadata.artifactUrl = artifactFileName[artifactFileName.length - 1];
+      }
+    }
+  }
+
   /**
    * Adjust player height after load
    */
   adjustPlayerHeight() {
     const playerWidth = $('#contentPlayer').width();
     if (playerWidth) {
-      const height = playerWidth * (9 / 16);
+      let height = playerWidth * (9 / 16);
+      if (_.get(screen, 'orientation.type') === 'landscape-primary' && this.isMobileOrTab) {
+        height = window.innerHeight;
+      }
       $('#contentPlayer').css('height', height + 'px');
     }
   }
@@ -175,13 +324,43 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     if (event.data.toLowerCase() === (this.CONSTANT.ACCESSEVENT).toLowerCase()) {
       this.questionScoreSubmitEvents.emit(event);
     }
+    if (event.data.toLowerCase() === (this.CONSTANT.ISLASTATTEMPT).toLowerCase()) {
+      this.selfAssessLastAttempt.emit(event);
+    }
+    if (event.data.toLowerCase() === (this.CONSTANT.MAXATTEMPT).toLowerCase()) {
+      this.selfAssessLastAttempt.emit(event);
+    }
+    if (event.data.toLowerCase() === (this.CONSTANT.ACCESSREVIEWEVENT).toLowerCase()) {
+      this.questionScoreReviewEvents.emit(event);
+    }
+  }
+  eventHandler(event) {
+    if (_.get(event, 'edata.type') === 'SHARE') {
+      this.contentUtilsServiceService.contentShareEvent.emit('open');
+      this.mobileViewDisplay = 'none';
+    }
+    if (_.get(event, 'edata.type') === 'PRINT') {
+      let windowFrame = window.document.querySelector('pdf-viewer iframe');
+      if (windowFrame) {
+        windowFrame['contentWindow'].print()
+      }
+      this.mobileViewDisplay = 'none';
+    }
   }
 
-  generateContentReadEvent(event: any) {
-    const eid = event.detail.telemetryData.eid;
+  generateContentReadEvent(event: any, newPlayerEvent?) {
+    if (!event) {
+      return;
+    }
+    if (newPlayerEvent) {
+      event = { detail: {telemetryData: event}};
+    }
+    const eid = _.get(event, 'detail.telemetryData.eid');
     if (eid && (eid === 'START' || eid === 'END')) {
       this.showRatingPopup(event);
-      this.contentProgressEvents$.next(event);
+      if (this.contentProgressEvents$) {
+        this.contentProgressEvents$.next(event);
+      }
     } else if (eid && (eid === 'IMPRESSION')) {
       this.emitSceneChangeEvent();
     }
@@ -191,9 +370,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
   emitSceneChangeEvent(timer = 0) {
     setTimeout(() => {
-      const stageId = this.contentIframe.nativeElement.contentWindow.EkstepRendererAPI.getCurrentStageId();
-      const eventData = { stageId };
-      this.sceneChangeEvent.emit(eventData);
+      if (_.get(this, 'contentIframe.nativeElement')) {
+        const stageId = this.contentIframe.nativeElement.contentWindow.EkstepRendererAPI.getCurrentStageId();
+        const eventData = { stageId };
+        this.sceneChangeEvent.emit(eventData);
+      }
     }, timer); // waiting for player to load, then fetching stageId (if we dont wait stageId will be undefined)
   }
 
@@ -201,10 +382,12 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     let contentProgress;
     const playerSummary: Array<any> = _.get(event, 'detail.telemetryData.edata.summary');
     if (playerSummary) {
-      contentProgress = _.find(event.detail.telemetryData.edata.summary, 'progress');
+      const contentMimeType = this.playerConfig.metadata.mimeType;
+      contentProgress = CsContentProgressCalculator.calculate(playerSummary, contentMimeType);
     }
-    if (event.detail.telemetryData.eid === 'END' && contentProgress.progress === 100) {
-      this.contentRatingModal = true;
+    if (event.detail.telemetryData.eid === 'END' && contentProgress === 100) {
+      this.contentRatingModal = !this.isFullScreenView;
+      this.showRatingModalAfterClose = true;
       if (this.modal) {
         this.modal.showContentRatingModal = true;
       }
@@ -257,6 +440,13 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     } else if (document['msExitFullscreen']) { /* IE/Edge */
       document['msExitFullscreen']();
     }
+
+    if (this.showRatingModalAfterClose) {
+      this.contentRatingModal = true;
+      if (this.modal) {
+        this.modal.showContentRatingModal = true;
+      }
+    }
      /** to change the view of the content-details page */
     this.showPlayIcon = true;
     this.closePlayerEvent.emit();
@@ -276,9 +466,47 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     };
   }
 
-  ngOnDestroy() {
-    if (this.contentIframe.nativeElement) {
-      this.contentIframe.nativeElement.remove();
+  closeContentFullScreen() {
+    this.navigationHelperService.emitFullScreenEvent(false);
+    this.loadPlayer();
+  }
+
+  closeModal() {
+    this.ratingPopupClose.emit({});
+  }
+
+  public addUserDataToContext() {
+    this.playerConfig.context['userData'] = { firstName: 'anonymous', lastName: 'anonymous' };
+    if (this.userService.loggedIn) {
+      this.userService.userData$.subscribe((user: any) => {
+        if (user && !user.err) {
+          const userProfile = user.userProfile;
+          this.playerConfig.context['userData'] = {
+            firstName: userProfile.firstName ? userProfile.firstName : 'anonymous',
+            lastName: userProfile.lastName ? userProfile.lastName : ''
+          };
+        }
+      });
     }
+  }
+
+  ngOnDestroy() {
+    const playerElement = _.get(this.contentIframe, 'nativeElement');
+    if (playerElement) {
+      if (_.get(playerElement, 'contentWindow.telemetry_web.tList.length')) {
+        const request = {
+          url: this.configService.urlConFig.URLS.TELEMETRY.SYNC,
+          data: {
+            'id': 'api.sunbird.telemetry',
+            'ver': '3.0',
+            'events': playerElement.contentWindow.telemetry_web.tList.map(item => JSON.parse(item))
+          }
+        };
+        this.contentService.post(request).subscribe();
+      }
+      playerElement.remove();
+    }
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 }

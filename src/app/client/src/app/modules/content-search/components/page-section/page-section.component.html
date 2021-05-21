@@ -10,7 +10,7 @@
         <!--/Section Title-->
         <!--View all button-->
         <button class="sb-btn sb-btn-xs sb-btn-secondary ml-auto" type="button"
-            *ngIf="section.contents.length >= 10 && section.name != 'My Trainings'" (click)="navigateToViewAll(section)"
+            *ngIf="section.contents.length >= 10" (click)="navigateToViewAll(section)"
             appTelemetryInteract
             [telemetryInteractEdata]="{id:'viewall-button' , type:'click' ,pageid:pageid , extra : {section: section.name}}">
             {{ resourceService.frmelmnts.lnk.viewall}}
@@ -22,7 +22,7 @@
     <!--Content-->
     <div *ngIf="refresh" class="sb-pageSection-content pt-8">
         <ngx-slick (afterChange)="handleAfterChange($event)" class="carousel" #slickModal="slick-modal" [config]="slideConfig">
-            <div ngxSlickItem *ngFor="let content of contentList" class="mr-16">
+            <div ngxSlickItem *ngFor="let content of contentList; let i=index" class="mr-16">
                 <!--Batch Card-->
                 <app-batch-card appTelemetryInteract [telemetryInteractEdata]="cardInteractEdata"
                     [telemetryInteractObject]="{id:content.metaData.identifier}"
@@ -32,12 +32,21 @@
                 <!--/Batch Card-->
                 <!--Course & Resourse Card-->
                 <ng-template #contentcard>
-                    <app-card appContentDirection [data]="content" appTelemetryInteract
-                        [telemetryInteractEdata]="cardInteractEdata"
+                    <ng-container *ngIf="!layoutConfiguration">
+                        <app-card appContentDirection appTelemetryInteract
+                            [telemetryInteractEdata]="cardInteractEdata"
+                            [telemetryInteractCdata]="telemetryInteractCdata"
+                            [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0', rollup: getObjectRollup(content)}"
+                            (clickEvent)="playContent($event)" [hideProgress]="hideProgress" [data]="content" class="d-block" [class.last-card]="mr-0">
+                        </app-card>
+                    </ng-container>
+                    <ng-container *ngIf="layoutConfiguration">
+                        <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration"
+                        appTelemetryInteract [telemetryInteractEdata]="cardInteractEdata"
                         [telemetryInteractCdata]="telemetryInteractCdata"
-                        [telemetryInteractObject]="{id:content.metaData.identifier || content.metaData.courseId,type:content.metaData.contentType || 'Course',ver:content.metaData.pkgVersion ? content.metaData.pkgVersion.toString():'1.0', rollup: getObjectRollup(content)}"
-                        (clickEvent)="playContent($event)" [hideProgress]="hideProgress" [data]="content" class="d-block" [class.last-card]="mr-0">
-                    </app-card>
+                        [telemetryInteractObject]="{id:content.identifier,type:content.contentType || 'content',ver:content.pkgVersion ? content.pkgVersion.toString():'1.0'}" 
+                        (cardClick)="playContent($event)" [content]="content" [cardImg]="content?.image || 'assets/images/book.png'" ></sb-library-card>
+                    </ng-container>
                 </ng-template>
                 <!--/Course & Resourse Card-->
             </div>

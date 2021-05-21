@@ -2,7 +2,7 @@ import { ConfigService, ServerResponse, IUserProfile, IUserData, IOrganization, 
 import { LearnerService } from './../learner/learner.service';
 import { ContentService } from './../content/content.service';
 import { Injectable, Inject, EventEmitter } from '@angular/core';
-import { Observable, BehaviorSubject, iif, of } from 'rxjs';
+import { Observable, BehaviorSubject, iif, of, throwError } from 'rxjs';
 import { map, mergeMap, shareReplay } from 'rxjs/operators';
 import { UUID } from 'angular2-uuid';
 import * as _ from 'lodash-es';
@@ -10,7 +10,9 @@ import { HttpClient } from '@angular/common/http';
 import { PublicDataService } from './../public-data/public-data.service';
 import { skipWhile, tap } from 'rxjs/operators';
 import { APP_BASE_HREF } from '@angular/common';
-import {CacheService} from 'ng2-cache-service';
+import { CacheService } from 'ng2-cache-service';
+import { DataService } from './../data/data.service';
+import { environment } from '@sunbird/environment';
 
 
 /**
@@ -48,7 +50,7 @@ export class UserService {
    * Read only observable Containing user profile.
    */
   public readonly userData$: Observable<IUserData> = this._userData$.asObservable()
-  .pipe(skipWhile(data => data === undefined || data === null));
+    .pipe(skipWhile(data => data === undefined || data === null));
   /**
    * reference of config service.
    */
@@ -92,16 +94,21 @@ export class UserService {
 
   public organizationsDetails: Array<IOrganization>;
   public createManagedUser = new EventEmitter();
-
+  public isDesktopApp = false;
+  private _guestData$ = new BehaviorSubject<any>(undefined);
+  private guestUserProfile;
+  public readonly guestData$: Observable<any> = this._guestData$.asObservable()
+    .pipe(skipWhile(data => data === undefined || data === null));
   /**
    * Reference of public data service.
    */
   public publicDataService: PublicDataService;
   private _slug = '';
   public _isCustodianUser: boolean;
+  public anonymousUserPreference;
   public readonly userOrgDetails$ = this.userData$.pipe(
     mergeMap(data => iif(() =>
-    !this._userProfile.organisationIds, of([]), this.getOrganizationDetails(this._userProfile.organisationIds))),
+      !this._userProfile.organisationIds, of([]), this.getOrganizationDetails(this._userProfile.organisationIds))),
     shareReplay(1));
 
   /**
@@ -111,18 +118,22 @@ export class UserService {
   */
   constructor(config: ConfigService, learner: LearnerService, private cacheService: CacheService,
     private http: HttpClient, contentService: ContentService, publicDataService: PublicDataService,
-    @Inject(APP_BASE_HREF) baseHref: string) {
+    @Inject(APP_BASE_HREF) baseHref: string, private dataService: DataService) {
     this.config = config;
     this.learnerService = learner;
     this.contentService = contentService;
     this.publicDataService = publicDataService;
+    this.isDesktopApp = environment.isDesktopApp;
     try {
       this._userid = (<HTMLInputElement>document.getElementById('userId')).value;
+      DataService.userId = this._userid;
       this._sessionId = (<HTMLInputElement>document.getElementById('sessionId')).value;
+      DataService.sessionId = this._sessionId;
       this._authenticated = true;
     } catch (error) {
       this._authenticated = false;
       this._anonymousSid = UUID.UUID();
+      DataService.sessionId = this._anonymousSid;
     }
     try {
       this._appId = (<HTMLInputElement>document.getElementById('appId')).value;
@@ -137,9 +148,9 @@ export class UserService {
   get anonymousSid() {
     return this._anonymousSid;
   }
-    /**
-   * returns login status.
-   */
+  /**
+ * returns login status.
+ */
   get loggedIn(): boolean {
     return this._authenticated;
   }
@@ -214,7 +225,7 @@ export class UserService {
     const hashTagIds = [];
     this._channel = _.get(profileData, 'rootOrg.hashTagId');
     this._slug = _.get(profileData, 'rootOrg.slug');
-    profileData.skills = _.get(profileData, 'skills' ) || [];
+    profileData.skills = _.get(profileData, 'skills') || [];
     hashTagIds.push(this._channel);
     let organisationIds = [];
     if (profileData.rootOrgId) {
@@ -252,16 +263,18 @@ export class UserService {
     this._userProfile.hashTagIds = _.uniq(hashTagIds);
     this._userProfile.userId = this.userid; // this line is added to handle userId not returned from user service
     this._rootOrgId = this._userProfile.rootOrgId;
-    this._hashTagId = this._userProfile.rootOrg.hashTagId;
+    this._hashTagId = _.get(this._userProfile, 'rootOrg.hashTagId');
     this.setRoleOrgMap(profileData);
     this.setOrgDetailsToRequestHeaders();
     this._userData$.next({ err: null, userProfile: this._userProfile });
-    this.rootOrgName = this._userProfile.rootOrg.orgName;
+    this.rootOrgName = _.get(this._userProfile, 'rootOrg.orgName');
 
     // Storing profile details of stroger credentials user in cache
     if (!this._userProfile.managedBy) {
       this.cacheService.set('userProfile', this._userProfile);
     }
+    window['TagManager'].SBTagService.pushTag({userLoocation:profileData.userLocations},'USERLOCATION_', true)
+    window['TagManager'].SBTagService.pushTag(profileData.framework,'USERFRAMEWORK_', true);
   }
   setOrgDetailsToRequestHeaders() {
     this.learnerService.rootOrgId = this._rootOrgId;
@@ -279,7 +292,7 @@ export class UserService {
    */
   private getOrganizationDetails(organisationIds) {
     const option = {
-      url: this.config.urlConFig.URLS.ADMIN.ORG_SEARCH,
+      url: this.config.urlConFig.URLS.ADMIN.ORG_EXT_SEARCH,
       data: {
         request: {
           filters: {
@@ -289,7 +302,7 @@ export class UserService {
       }
     };
     return this.publicDataService.post(option)
-    .pipe(tap((data: ServerResponse) => {
+      .pipe(tap((data: ServerResponse) => {
         this.organizationsDetails = _.get(data, 'result.response.content');
         this.orgNames = _.map(this.organizationsDetails, org => org.orgName);
       }));
@@ -374,17 +387,26 @@ export class UserService {
     this.http.get(url).subscribe();
   }
 
+  public endSession() {
+    const url = this.config.urlConFig.URLS.USER.END_SESSION;
+    return this.http.get(url);
+  }
+
   getUserByKey(key) {
-    return this.learnerService.get({ url: this.config.urlConFig.URLS.USER.GET_USER_BY_KEY + '/' + key});
+    return this.learnerService.get({ url: this.config.urlConFig.URLS.USER.GET_USER_BY_KEY + '/' + key });
+  }
+
+  getIsUserExistsUserByKey(key) {
+    return this.learnerService.get({ url: this.config.urlConFig.URLS.USER.USER_EXISTS_GET_USER_BY_KEY + '/' + key });
   }
 
   getFeedData() {
-    return this.learnerService.get({ url: this.config.urlConFig.URLS.USER.GET_USER_FEED + '/' + this.userid});
+    return this.learnerService.get({ url: this.config.urlConFig.URLS.USER.GET_USER_FEED + '/' + this.userid });
   }
 
   registerUser(data) {
     const options = {
-      url: this.config.urlConFig.URLS.USER.SIGN_UP_V4,
+      url: this.config.urlConFig.URLS.USER.SIGN_UP_MANAGED_USER,
       data: data
     };
     return this.learnerService.post(options).pipe(
@@ -412,5 +434,89 @@ export class UserService {
       param: this.config.urlConFig.params.userReadParam
     };
     return this.learnerService.getWithHeaders(option);
+  }
+
+  getAnonymousUserPreference(): Observable<ServerResponse> {
+    const options = {
+      url: this.config.urlConFig.URLS.OFFLINE.READ_USER
+    };
+    return this.publicDataService.get(options).pipe(map((response: ServerResponse) => {
+      this.anonymousUserPreference = _.get(response, 'result');
+      return response;
+    }));
+  }
+
+  updateAnonymousUserDetails(request): Observable<ServerResponse> {
+    const options = {
+      url: this.config.urlConFig.URLS.OFFLINE.UPDATE_USER,
+      data: request
+    };
+    return this.publicDataService.post(options);
+  }
+
+  createAnonymousUser(request): Observable<ServerResponse> {
+    const options = {
+      url: this.config.urlConFig.URLS.OFFLINE.CREATE_USER,
+      data: request
+    };
+    return this.publicDataService.post(options).pipe(map((response: ServerResponse) => {
+      this.getAnonymousUserPreference().subscribe();
+      return response;
+    }));
+  }
+
+  getGuestUser(): Observable<any> {
+    if (this.isDesktopApp) {
+      return this.getAnonymousUserPreference().pipe(map((response: ServerResponse) => {
+        this.guestUserProfile = _.get(response, 'result');
+        this._guestData$.next({ userProfile: this.guestUserProfile });
+        return this.guestUserProfile;
+      }));
+    } else {
+      const guestUserDetails = localStorage.getItem('guestUserDetails');
+
+      if (guestUserDetails) {
+        this.guestUserProfile = JSON.parse(guestUserDetails);
+        this._guestData$.next({ userProfile: this.guestUserProfile });
+        return of(this.guestUserProfile);
+      } else {
+        return throwError(undefined);
+      }
+    }
+  }
+
+  updateGuestUser(userDetails, formValue): Observable<any> {
+    window['TagManager'].SBTagService.pushTag(formValue,'USERLOCATION_', true);
+    window['TagManager'].SBTagService.pushTag(userDetails,'USERFRAMEWORK_', true);
+    if (this.isDesktopApp) {
+      userDetails.identifier = userDetails._id;
+      const userType = localStorage.getItem('userType');
+
+      if (userType) {
+        userDetails.role = userType;
+      }
+      const req = { request: userDetails };
+      return this.updateAnonymousUserDetails(req);
+    } else {
+      localStorage.setItem('guestUserDetails', JSON.stringify(userDetails));
+      return of({});
+    }
+  }
+
+  createGuestUser(userDetails): Observable<any> {
+    if (this.isDesktopApp) {
+      const req = { request: userDetails };
+      return this.createAnonymousUser(req);
+    } else {
+      localStorage.setItem('guestUserDetails', JSON.stringify(userDetails));
+      return of({});
+    }
+  }
+
+  get defaultFrameworkFilters() {
+    const isUserLoggedIn = this.loggedIn || false;
+    const { framework = null } = this.userProfile || {};
+    const userFramework = (isUserLoggedIn && framework && _.pick(framework, ['medium', 'gradeLevel', 'board'])) || {};
+    return { board: ['CBSE'], gradeLevel: isUserLoggedIn ? [] : ['Class 10'], medium: [], ...userFramework };
   }
 }

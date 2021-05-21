@@ -39,6 +39,8 @@ export class FrameworkService {
         }, err => {
           this._frameworkData$.next({ err: err, frameworkdata: null });
       });
+      } else if (_.get(this._frameworkData, framework)) {
+        this._frameworkData$.next({ err: null, frameworkdata: this._frameworkData });
       } else {
         if (!_.get(this._frameworkData, 'defaultFramework')) {
           this.getChannel(hashTagId ? hashTagId : this.userService.hashTagId)
@@ -58,7 +60,7 @@ export class FrameworkService {
         }
       }
     }
-  private getChannel(hashTagId) {
+  public getChannel(hashTagId) {
     const channelOptions = {
       url: this.configService.urlConFig.URLS.CHANNEL.READ + '/' + hashTagId
     };
@@ -106,5 +108,10 @@ export class FrameworkService {
       }));
     // }
   }
+
+  getSortedFilters(filters, type) {
+    return (type === 'gradeLevel' || _.lowerCase(type) === 'class') ?
+   _.sortBy(filters, ['index', 'name']) : _.sortBy(filters, 'name');
+ }
 
 }

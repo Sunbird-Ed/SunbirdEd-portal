@@ -1,12 +1,11 @@
 
-import {throwError as observableThrowError, of as observableOf,  Observable, of } from 'rxjs';
-import { mockUserData } from './user.mock.spec.data';
-import { ConfigService, ToasterService, SharedModule} from '@sunbird/shared';
-import { TestBed, inject } from '@angular/core/testing';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { LearnerService, UserService, PermissionService, CoreModule } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { inject, TestBed } from '@angular/core/testing';
+import { CoreModule, LearnerService, PublicDataService, UserService } from '@sunbird/core';
+import { ConfigService, SharedModule } from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
+import { of as observableOf, of, throwError as observableThrowError } from 'rxjs';
+import { mockUserData } from './user.mock.spec.data';
 describe('userService', () => {
   configureTestSuite();
   beforeEach(() => {
@@ -80,7 +79,7 @@ describe('userService', () => {
     userService.registerUser(reqData).subscribe(apiResponse => {
       expect(apiResponse.responseCode).toBe('OK');
       expect(apiResponse.result.response).toBe('SUCCESS');
-      expect(userService.createManagedUser.emit).toHaveBeenCalledWith('0008ccab-2103-46c9-adba-6cdf84d37f06')
+      expect(userService.createManagedUser.emit).toHaveBeenCalledWith('0008ccab-2103-46c9-adba-6cdf84d37f06');
     });
   });
   it('should migrate custodian user', () => {
@@ -99,5 +98,27 @@ describe('userService', () => {
     userService.userMigrate(params);
     const options = { url: 'user/v1/migrate', data: params};
     expect(learnerService.post).toHaveBeenCalledWith(options);
+  });
+
+  it('should call getAnonymousUserPreference', () => {
+    const userService = TestBed.get(UserService);
+    const publicDataService = TestBed.get(PublicDataService);
+    spyOn(publicDataService, 'get').and.returnValue(of({ result: { board: 'CBSE' } }));
+    userService.getAnonymousUserPreference();
+    expect(publicDataService.get).toHaveBeenCalled();
+  });
+  it('should call updateAnonymousUserDetails', () => {
+    const userService = TestBed.get(UserService);
+    const publicDataService = TestBed.get(PublicDataService);
+    spyOn(publicDataService, 'post').and.returnValue(of({ result: { board: 'CBSE' } }));
+    userService.updateAnonymousUserDetails();
+    expect(publicDataService.post).toHaveBeenCalled();
+  });
+  it('should call createAnonymousUser', () => {
+    const userService = TestBed.get(UserService);
+    const publicDataService = TestBed.get(PublicDataService);
+    spyOn(publicDataService, 'post').and.returnValue(of({ result: { board: 'CBSE' } }));
+    userService.createAnonymousUser();
+    expect(publicDataService.post).toHaveBeenCalled();
   });
 });

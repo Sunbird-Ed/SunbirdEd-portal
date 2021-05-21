@@ -180,5 +180,103 @@ export const Response = {
             },
           },
         },
+  enrolledCourseData: {
+    'err': null,
+    'enrolledCourses': [
+      {
+        'dateTime': 1595396969322,
+        'lastReadContentStatus': null,
+        'completionpercentage': null,
+        'enrolledDate': '2020-07-22 05:49:29:322+0000',
+        'addedBy': '0fb7dda9-3d8b-7f06-3d19-232b96efe3fa',
+        'contentId': 'do_2130595997829611521527',
+        'batch': {
+          'endDate': null,
+          'createdBy': 'ab467e6e-1f32-453c-b1d8-c6b5fa6c7b9e',
+          'name': 'Batch 4',
+          'batchId': '01306904167088128055',
+          'enrollmentType': 'open',
+          'startDate': '2020-07-22',
+          'status': 1
+        },
+        'active': true,
+        'description': 'Book testing 1 - 0708 - desc',
+        'batchId': '01306904167088128055',
+        'userId': 'dd0a9b97-ba4a-452f-be74-781c9e0a62b5',
+        'content': {
+          'identifier': 'do_2130595997829611521527',
+          'leafNodesCount': 12,
+          'channel': '0124784842112040965',
+          'name': 'Copy of Book testing 1 - 0708',
+          'description': 'Book testing 1 - 0708 - desc',
+          'contentType': 'Course',
+          'objectType': 'Content'
+        },
+        'courseName': 'Copy of Book testing 1 - 0708',
+        'certificates': [],
+        'completedOn': null,
+        'leafNodesCount': 12,
+        'progress': 0,
+        'lastReadContentId': null,
+        'courseId': 'do_2130595997829611521527',
+        'status': 0
+      },
+      {
+        'dateTime': 1595397078583,
+        'lastReadContentStatus': null,
+        'completionpercentage': null,
+        'enrolledDate': '2020-07-22 05:51:18:583+0000',
+        'addedBy': '8ad209c4-5261-303d-7fde-9d7bb3130201',
+        'contentId': 'do_213068136968904704184',
+        'batch': {
+          'endDate': null,
+          'createdBy': 'ab467e6e-1f32-453c-b1d8-c6b5fa6c7b9e',
+          'name': 'Swetha-physics(nested course test)-20-jul-2020',
+          'batchId': '01306892379524300849',
+          'enrollmentType': 'open',
+          'startDate': '2020-07-21',
+          'status': 1
+        },
+        'active': true,
+        'batchId': '01306892379524300849',
+        'userId': 'dd0a9b97-ba4a-452f-be74-781c9e0a62b5',
+        'content': {
+          'identifier': 'do_213068136968904704184',
+          'leafNodesCount': 1,
+          'channel': '0124784842112040965',
+          'name': 'Swetha-physics(nested course test)-20-jul-2020',
+          'description': 'Enter description for Course',
+          'contentType': 'Course',
+          'objectType': 'Content'
+        },
+        'courseName': 'Swetha-physics(nested course test)-20-jul-2020',
+        'certificates': [],
+        'completedOn': null,
+        'leafNodesCount': 1,
+        'progress': 0,
+        'lastReadContentId': null,
+        'courseId': 'do_213068136968904704184',
+        'status': 0
+      }
+    ]
+  },
+  paramsData: {
+    'params': {
+      'section': 'My-courses',
+      'pageNumber': '1'
+    },
+    'queryParams': {
+      'contentType': [
+        'Course'
+      ],
+      'objectType': [
+        'Content'
+      ],
+      'status': [
+        'Live'
+      ],
+      'defaultSortBy': '{\'lastPublishedOn\':\'desc\'}'
+    }
+  }
 
 };

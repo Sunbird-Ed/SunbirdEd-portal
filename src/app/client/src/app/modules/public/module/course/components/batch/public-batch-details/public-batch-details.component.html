@@ -1,71 +1,18 @@
-<div class="rightSideSectionCards ui card sb-course-batch-card">
-    <div class="header batchCardAlign p-16">
-        <span class="header headerBatchCard">{{resourceService?.frmelmnts?.lbl?.batches}}</span>
-        <a class="opacity-1 ml-auto">
-            <sui-select (selectedOptionChange)="getAllBatchDetails()" class="batchCardDropDown"
-                [(ngModel)]="batchStatus" [options]="statusOptions" valueField="value" labelField="name"
-                #batchStatusSelect>
-                <sui-select-option *ngFor="let option of batchStatusSelect.filteredOptions" [value]="option">
-                </sui-select-option>
-            </sui-select>
-        </a>
-    </div>
-    <div class="content" id="batchcardList">
-        <div class="description annannouncement-description">
-            <div *ngIf="showBatchList" class="ui divided list">
-                <div class="item py-10" *ngFor="let batch of batchList">
-                    <i class="calendar outline icon"></i>
-                    <div class="content width-100">
-                        <button [disabled]="isEnrollmentAllowed(batch.enrollmentEndDate)"
-                            [ngClass]="{'sb-btn-disabled': isEnrollmentAllowed(batch.enrollmentEndDate), 'sb-btn-primary': !isEnrollmentAllowed(batch.enrollmentEndDate)}"
-                            class="ui right floated sb-btn sb-btn-normal enrollBtn" appTelemetryInteract
-                            [telemetryInteractEdata]="enrollBatchIntractEdata"
-                            [telemetryInteractObject]="{id:batch.identifier,type:'CourseBatch',ver:'1',rollup:{l1:courseId}}"
-                            (click)="enrollBatch(batch.identifier)">{{resourceService.frmelmnts.btn.enroll}}</button>
-                        <span class="header"> {{batch.startDate | dateFormat}} - </span>
-                        <span *ngIf="batch.endDate" class="header pb-5"> {{batch.endDate | dateFormat}} </span>
-                        <span *ngIf="isValidEnrollmentEndDate(batch.enrollmentEndDate)">
-                            <span class="sb-label-12size"
-                                *ngIf="!isEnrollmentAllowed(batch.enrollmentEndDate)">{{resourceService.messages.stmsg.m0136}}
-                                {{batch.enrollmentEndDate | dateFormat}}</span>
-                            <span class="sb-label-status-error"
-                                *ngIf="isEnrollmentAllowed(batch.enrollmentEndDate)">{{resourceService.messages.stmsg.m0134}}</span>
-                        </span>
-                    </div>
-                </div>
-                <div class="content my-15" *ngIf="batchList.length <= 0">
-                    <div class="sb-no-batch-found">{{resourceService.messages.stmsg.m0081}}</div>
-                </div>
-            </div>
-            <div *ngIf="showError">
-                <div class="sb-no-batch-found">{{resourceService.messages.stmsg.m0081}}</div>
-            </div>
-        </div>
-    </div>
-</div>
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
     appBodyScroll (dismissed)="closeLoginModal()" #modal *ngIf="showLoginModal">
-
-    <!--Header-->
     <div class="sb-modal-header">
-        {{resourceService?.frmelmnts?.lbl?.signinenrollTitle}}
+        {{generaliseLabelService?.frmelmnts?.lbl?.accessCourse}}
     </div>
-    <!--/Header-->
-    <!--Content-->
-    <div class="sb-modal-content">
-        <div class="ui center aligned segment">
-            <p>{{resourceService?.frmelmnts?.lbl?.signinenrollTitle}}</p>
+    <div class="sb-modal-content sb-join-modal-content">
+        <div class="fsmall px-0 py-8">
+            {{generaliseLabelService?.frmelmnts?.lbl?.accessToLogin}}
         </div>
     </div>
-    <!--/Content-->
-
-    <!--Actions-->
     <div class="sb-modal-actions">
         <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-            [telemetryInteractEdata]="signInInteractEdata" (click)="setTelemetryData()" href={{baseUrl}}
+            [telemetryInteractEdata]="signInInteractEdata" (click)="setTelemetryData(); setUrlToCourse();"
             class="sb-btn sb-btn-normal sb-btn-primary">
-            {{resourceService.frmelmnts?.btn?.signin}}
+            {{resourceService.frmelmnts?.btn?.login}}
         </a>
     </div>
-    <!--/Actions-->
 </sui-modal>

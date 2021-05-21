@@ -70,6 +70,18 @@
       ],
       "LazzyLoadScriptService": [
         "app/service/LazzyLoadScript/lazzy-load-script.service.ts"
+      ],
+      "@sunbird/groups": [
+        "app/modules/groups"
+      ],
+      "@sunbird/location": [
+        "app/modules/location"
+      ],
+      "sunbird-collection-editor": [
+        "../node_modules/@project-sunbird/sunbird-collection-editor"
+      ],
+      "sunbird-collection-editor/*": [
+        "../node_modules/@project-sunbird/sunbird-collection-editor/*"
       ]
     },
     "module": "es2015",

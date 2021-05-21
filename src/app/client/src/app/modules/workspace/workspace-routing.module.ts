@@ -7,7 +7,7 @@ import {
   BatchListComponent, BatchPageSectionComponent, UpdateBatchComponent,
   UpforreviewContentplayerComponent, ReviewsubmissionsContentplayerComponent,
   FlagConentplayerComponent, PublishedPopupComponent, RequestChangesPopupComponent, LimitedPublishedComponent,
-  AllContentComponent, FlagReviewerComponent, CollaboratingOnComponent } from './components';
+  AllContentComponent, FlagReviewerComponent, CollaboratingOnComponent, AllTextbooksComponent, NewCollectionEditorComponent } from './components';
 import { AuthGuard } from '../core/guard/auth-gard.service';
 const telemetryEnv = 'workspace';
 const objectType = 'workspace';
@@ -49,7 +49,7 @@ const routes: Routes = [
             path: 'course', component: DataDrivenComponent,
             data: {
               telemetry: {
-                env: telemetryEnv, pageid: 'worksapce-create-course', subtype: 'paginate', uri: '/workspace/content/create/course',
+                env: telemetryEnv, pageid: 'workspace-create-course', subtype: 'paginate', uri: '/workspace/content/create/course',
                 type: 'view', mode: 'create', object: { type: objectType, ver: '1.0' }
               }, breadcrumbs: [{ label: 'Home', url: '/home' },
               { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
@@ -90,6 +90,16 @@ const routes: Routes = [
             data: {
               telemetry: {
                 env: telemetryEnv, pageid: 'workspace-create-assessment', subtype: 'paginate', uri: '/workspace/content/create/assessment',
+                type: 'view', mode: 'create', object: { type: objectType, ver: '1.0' }
+              }, breadcrumbs: [{ label: 'Home', url: '/home' },
+              { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+            }
+          },
+          {
+            path: 'questionset', component: DataDrivenComponent,
+            data: {
+              telemetry: {
+                env: telemetryEnv, pageid: 'workspace-create-questionset', uri: '/workspace/content/create/questionset',
                 type: 'view', mode: 'create', object: { type: objectType, ver: '1.0' }
               }, breadcrumbs: [{ label: 'Home', url: '/home' },
               { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
@@ -232,6 +242,16 @@ const routes: Routes = [
         }
       },
       {
+        path: 'alltextbooks/:pageNumber', component: AllTextbooksComponent, canActivate: [AuthGuard],
+        data: {
+          telemetry: {
+            env: telemetryEnv, pageid: 'workspace-content-alltextbooks', subtype: 'paginate', uri: 'workspace/content/alltextbooks',
+            type: 'list', mode: 'create', object: { type: objectType, ver: '1.0' }
+          }, roles: 'alltextbookRole',
+          breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }]
+        }
+      },
+      {
         path: 'flagreviewer/:pageNumber', component: FlagReviewerComponent, canActivate: [AuthGuard],
         data: {
           telemetry: {
@@ -253,6 +273,14 @@ const routes: Routes = [
         }
       }
     ]
+  },
+  {
+    path: 'edit/:type/:contentId/:state/:contentStatus', component: NewCollectionEditorComponent, canActivate: [AuthGuard],
+    data: {
+      roles: 'workspace',
+      breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Profile', url: '/profile' }, { label: 'My Workspace', url: '' }],
+      hideHeaderNFooter: true
+    }
   },
   {
     path: 'content/upForReview/content/:contentId', component: UpforreviewContentplayerComponent, canActivate: [AuthGuard],

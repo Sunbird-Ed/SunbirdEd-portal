@@ -1,98 +1,67 @@
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'" class="sb-modal"
-  appBodyScroll (dismissed)="closeModal();" #userDetailsModal>
-  <div class="sb-modal-header" *ngIf="formAction === 'submit'">
-    {{resourceService?.frmelmnts?.lbl?.provideTeacherDetails}} </div>
-  <div class="sb-modal-header" *ngIf="formAction === 'update'"> {{resourceService?.frmelmnts?.lbl?.updateDetails}}
+<div class="mt-24 sb-md-container">
+  <div class="sb-modal-header teacher-header font-weight-bold px-24 py-16">
+    <span *ngIf="formAction === 'submit'">{{resourceService?.frmelmnts?.lbl?.provideTeacherDetails}} </span>
+    <span *ngIf="formAction === 'update'">{{resourceService?.frmelmnts?.lbl?.updateDetails}}</span>
   </div>
-  <div class="sb-modal-content" *ngIf="showLoader">
-    <app-loader></app-loader>
-  </div>
-  <div class="sb-modal-content" *ngIf="!showLoader">
-    <p class="fsmall">{{resourceService?.frmelmnts?.lbl?.stateValidationDetails}}</p>
-    <form class="sb-form my-16" [formGroup]="userDetailsForm">
-      <div class="ui stackable grid" *ngFor="let field of formData">
-        <div class="twelve wide column p-0 mx-16" *ngIf="field.code==='state' && field.visible===true">
-          <div class="fields-selection p-0">
-            <label>{{field.label}}<span *ngIf="field.required">*</span></label>
-            <div class="sb-field field-focus mb-8">
-              <sui-select [isSearchable]="false" class="selection"
-                [ngClass]="{'orange-border': userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors}"
-                formControlName="{{field.code}}" [options]="allStates" labelField="name" name="code"
-                placeholder="{{field.description}}" #stateDiv>
-                <sui-select-option *ngFor="let state of stateDiv.filteredOptions | slice:0:100" [value]="state">
-                </sui-select-option>
-              </sui-select>
-            </div>
-          </div>
-        </div>
-        <div class="twelve wide column p-0 mx-16" *ngIf="field.code==='district' && field.visible===true">
-          <div class="fields-selection p-0">
-            <div class="ui segment width-100" *ngIf="showDistrictDivLoader">
-              <div class="ui active inverted dimmer">
-                <div class="ui mini text loader">{{resourceService?.messages?.stmsg?.m0130}}</div>
-              </div>
-            </div>
-            <div *ngIf="!showDistrictDivLoader">
-              <label *ngIf="!(userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors)"
-              >{{field.label}}<span *ngIf="field.required">*</span></label>
-              <div class="sb-field field-focus mb-8">
-                <sui-select [isSearchable]="false" class="selection"
-                  [ngClass]="{'orange-border': userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors}"
-                  formControlName="{{field.code}}" [options]="allDistricts" labelField="name" valueField="code"
-                  name="code" placeholder="{{field.description}}" #districtDiv>
-                  <sui-select-option *ngFor="let district of districtDiv.filteredOptions | slice:0:100"
-                    [value]="district"></sui-select-option>
-                </sui-select>
-              </div>
 
-              <label class="font-weight-normal orange text"
-                *ngIf="userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors">
-                {{ resourceService?.frmelmnts?.lbl?.requiredField | interpolate:'{field}': field.label }}
-              </label>
-              <div *ngFor="let validation of field.validation">
-                <label class="font-weight-normal orange text"
-                  *ngIf="validation.message && userDetailsForm.controls[field.code].errors && userDetailsForm.controls[field.code].errors[validation.type]">
-                  {{ validation.message}}
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="twelve wide column p-0 mx-16" *ngIf="field.inputType==='input' && field.visible===true">
-          <div class="fields-selection p-0">
-            <label *ngIf="!(userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors)"
-              >{{field.label}}<span *ngIf="field.required">*</span></label>
-            <div class="sb-field field-focus mb-8">
-              <input class="sb-form-control"
-                [ngClass]="{'orange-border': userDetailsForm.controls[field.code].touched && userDetailsForm.controls[field.code].errors}"
-                formControlName="{{field.code}}" type="text" name="code" placeholder="{{field.description}}">
+  <div class="py-16 px-32">
+    <div *ngIf="showLoader">
+      <app-loader></app-loader>
+    </div>
 
-              <div *ngFor="let validation of field.validation">
-                <label class="font-weight-normal orange text"
-                  *ngIf="validation.message && userDetailsForm.controls[field.code].errors && userDetailsForm.controls[field.code].errors[validation.type]">
-                  {{ validation.message}}
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div *ngIf="!showLoader">
+      <sb-form *ngIf="tenantPersonaForm" [config]="tenantPersonaForm" [platform]="'web'"
+        (initialize)="tenantPersonaFormValueChanges($event?.value); tenantPersonaFormStatusChanges($event);"
+        (valueChanges)="tenantPersonaFormValueChanges($event)" (statusChanges)="tenantPersonaFormStatusChanges($event)">
+      </sb-form>
+
+      <sb-form *ngIf=" teacherDetailsForm?.length" [config]="teacherDetailsForm" [platform]="'web'"
+        (valueChanges)="declarationFormValueChanges($event)" (statusChanges)="declarationFormStatusChanges($event)"
+        (linkClicked)="linkClicked($event)">
+      </sb-form>
+
+      <div class="teacher-buttons text-right">
+        <button *ngIf="formAction === 'submit'" appTelemetryInteract [telemetryInteractEdata]="submitInteractEdata"
+          [ngClass]="{'sb-btn-disabled': !isTenantPersonaFormValid || !isDeclarationFormValid}"
+          class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="!isTenantPersonaFormValid || !isDeclarationFormValid"
+          (click)="submit()">
+          {{resourceService?.frmelmnts?.btn?.submit}}
+        </button>
+        <button *ngIf="formAction === 'update'" appTelemetryInteract [telemetryInteractEdata]="getUpdateTelemetry()"
+          [ngClass]="{'sb-btn-disabled': !isTenantPersonaFormValid || !isDeclarationFormValid}"
+          class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="!isTenantPersonaFormValid || !isDeclarationFormValid"
+          (click)="submit()">
+          {{resourceService?.frmelmnts?.btn?.update}}
+        </button>
       </div>
-    </form>
+    </div>
+  </div>
+</div>
+
+<!-- information submitted modal in TEACHER Profile-->
+<sui-modal *ngIf="showSuccessModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'"
+  class="sb-modal sb-success" appBodyScroll (dismissed)="closeSuccessModal()" #modal>
+  <div class="sb-modal-header font-weight-normal">
+    {{resourceService?.frmelmnts?.lbl?.thankyouForSubmittingDetails}}
+  </div>
+  <div class="sb-modal-content text-center">
+    <div class="my-16">{{resourceService?.frmelmnts?.lbl?.editProfileInfo}}</div>
   </div>
   <div class="sb-modal-actions">
-    <button *ngIf="formAction === 'submit'" appTelemetryInteract [telemetryInteractEdata]="submitInteractEdata"
-      [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}" class="sb-btn sb-btn-normal sb-btn-primary"
-      [disabled]="!enableSubmitBtn" (click)="onSubmitForm(); showEditModal = !showEditModal">
-      {{resourceService?.frmelmnts?.btn?.submit}}
-    </button>
-    <button *ngIf="formAction === 'update'" appTelemetryInteract [telemetryInteractEdata]="getUpdateTelemetry()"
-      [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}" class="sb-btn sb-btn-normal sb-btn-primary"
-      [disabled]="!enableSubmitBtn" (click)="onSubmitForm(); showEditModal = !showEditModal">
-      {{resourceService?.frmelmnts?.btn?.update}}
-    </button>
-    <button (click)="closeModal();" appTelemetryInteract [telemetryInteractEdata]="cancelInteractEdata"
-      class="sb-btn sb-btn-normal sb-btn-outline-primary">
-      {{resourceService?.frmelmnts?.btn?.cancel}}
+    <button class="sb-btn sb-btn-normal sb-btn-success" appTelemetryInteract
+      [telemetryInteractEdata]="submitDetailsInteractEdata" (click)="closeSuccessModal()">
+      {{resourceService?.frmelmnts?.btn?.ok}}
     </button>
   </div>
+</sui-modal>
+
+<app-tnc-popup (close)="showAndHidePopup(false)" [tncUrl]="termsAndConditionLink" *ngIf="showTncPopup">
+</app-tnc-popup>
+
+<sui-modal *ngIf="isOtpVerificationRequired" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0"
+  [size]="'small'" class="sb-modal sb-modal-white sb-success" appBodyScroll (dismissed)="onOtpPopupClose()" #modal>
+
+  <app-otp-popup [otpData]="otpData" [redirectToLogin]="false" (verificationSuccess)="onVerificationSuccess($event)"
+    (closeContactForm)="onOtpPopupClose()" (redirectToParent)="onOtpVerificationError($event)">
+  </app-otp-popup>
 </sui-modal>
