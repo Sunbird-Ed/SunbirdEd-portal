@@ -3,22 +3,23 @@ import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { CsUserServiceConfig } from '@project-sunbird/client-services';
 import { CsUserService } from '@project-sunbird/client-services/services/user/interface';
-import { AbstractNotificationService, Notification, NotificationFeedEntry } from 'notification';
+import { NotificationService as SbNotificationService , Notification, NotificationFeedEntry } from 'notification';
 import { ToasterService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
-import { BehaviorSubject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { UserService } from '../../../core/services/user/user.service';
 import * as _ from 'lodash-es';
 
 @Injectable({
   providedIn: 'root'
 })
-export class NotificationService extends AbstractNotificationService {
+export class NotificationService implements SbNotificationService {
 
   private config: CsUserServiceConfig = {
     apiPath: '/learner/user/v1'
   };
   notificationList$ = new BehaviorSubject([]);
+  showNotificationModel$ = new Subject<boolean>();
 
   constructor(
     @Inject('CS_USER_SERVICE') private csUserService: CsUserService,
@@ -28,7 +29,6 @@ export class NotificationService extends AbstractNotificationService {
     private telemetryService: TelemetryService,
     private activatedRoute: ActivatedRoute,
   ) {
-    super();
     this.fetchNotificationList()
   }
 
@@ -56,7 +56,7 @@ export class NotificationService extends AbstractNotificationService {
     const navigationExtras: NavigationExtras = navigationDetails.navigationExtras || {};
 
     if (path) {
-      // TODO ________ this.showNotificationModel = false;
+      this.showNotificationModel$.next(false);
       this.router.navigate([path], navigationExtras);
       await this.markNotificationAsRead(notificationData.data);
       this.fetchNotificationList();
@@ -84,7 +84,7 @@ export class NotificationService extends AbstractNotificationService {
       const notificationArray = _.get(notificationListData, 'data');
       if (_.get(notificationArray, 'length')) {
         if (await this.deleteAllNotifications(notificationArray)) {
-          // this.showNotificationModel = false;
+          this.showNotificationModel$.next(false);
           setTimeout(() => {
             this.fetchNotificationList();
           }, 1000);

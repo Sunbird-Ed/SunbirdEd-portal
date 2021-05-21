@@ -57,6 +57,9 @@ export class InAppNotificationComponent implements OnInit, OnDestroy {
   }
 
   async fetchNotificationList() {
+    this.notificationService.showNotificationModel$.subscribe(data => {
+      this.showNotificationModel = data;
+    })
     this.notificationService.notificationList$
       .subscribe(notificationListData => {
         this.notificationCount = 0;
