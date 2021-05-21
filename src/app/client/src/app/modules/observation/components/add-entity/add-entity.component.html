@@ -1,0 +1,49 @@
+<sui-modal [mustScroll]="true" [isClosable]="isClosable" [transitionDuration]="0" [size]="'normal'"
+    *ngIf="showDownloadModal" class="sb-modal sb-onboard-modal" #modal (dismissed)="closeModal()">
+    <div class="sb-onboard">
+        <div class="sb-onboard__container">
+            <div class="sb-onboard__header">
+                {{resourceService.frmelmnts?.btn?.addEntity}}
+            </div>
+
+            <div class="sb-onboard__content">
+                <div class="sbt-search-box">
+                    <div class="input-div relative" id="search-input-container">
+                        <!-- <img src="assets/images/search-icon.svg" class="search icon" alt="Search Icon"> -->
+                        <!-- Updated input tag -->
+                        <input type="text" id="keyword" name="filter_search" class="sb-search-input"
+                            [(ngModel)]="searchQuery" (keyup)="searchEntity()" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="sb-onboard__content" *ngIf="entities?.length">
+                <div *ngFor="let entity of entities">
+                    <div class="sb-checkbox sb-checkbox-secondary pt-24">
+                        <input value="{{entity._id}}" type="checkbox" id="{{entity._id}}"
+                            [ngClass]="{'disabled-checkbox' :entity.selected }" (change)="selectEntity(entity)"
+                            [disabled]="entity.isSelected" [checked]="entity.selected">
+                        <label for="{{entity._id}}" class="text-left fsmall">{{entity.name}}</label>
+                    </div>
+                </div>
+                <div class="load-mr-bt-center">
+                    <button type="button" class="sb-btn sb-btn-sm load-mr-btn sb-btn-primary flex-basis-1"
+                        *ngIf="count > entities.length" (click)="loadMore()">
+                        {{resourceService.frmelmnts?.btn?.loadMore}}
+                    </button>
+                </div>
+            </div>
+            <div class="sb-onboard__footer d-flex">
+                <button type="button" class="sb-btn sb-btn-sm sb-btn-white text-uppercase flex-basis-1" type="submit"
+                    (click)="closeModal()">
+                    {{resourceService.frmelmnts?.btn?.clear}}
+                </button>
+                <div class="w-10"></div>
+                <button type="button" class="sb-btn sb-btn-sm sb-btn-primary text-uppercase flex-basis-1" type="submit"
+                    (click)="submit()">
+                    {{resourceService.frmelmnts?.btn?.submit}}
+                </button>
+            </div>
+        </div>
+    </div>
+</sui-modal>

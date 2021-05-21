@@ -2,6 +2,7 @@ import { MY_GROUPS, NOTIFICATION } from './modules/groups';
 import { NgModule } from '@angular/core';
 import { ErrorPageComponent, AuthGuard } from '@sunbird/core';
 import { RouterModule, Routes } from '@angular/router';
+import { MlGuard } from './modules/observation/guards';
 
 const appRoutes: Routes = [
   {
@@ -59,7 +60,10 @@ const appRoutes: Routes = [
     path: NOTIFICATION, loadChildren: 'app/modules/notification/notification.module#NotificationModule'
   },
   {
-    path: 'observation', loadChildren: 'app/modules/observation/observation.module#ObservationModule'
+    path: 'observation', loadChildren: 'app/modules/observation/observation.module#ObservationModule', canActivate: [MlGuard]
+  },
+  {
+    path: 'questionnaire', loadChildren: 'app/modules/questionnaire/questionnaire.module#QuestionnaireModule'
   },
   {
     path: 'error', component: ErrorPageComponent

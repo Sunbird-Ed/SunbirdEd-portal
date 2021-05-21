@@ -31,7 +31,7 @@
           <div *ngIf="groupData?.isAdmin">
                   <!-- when group is active -->
               <div *ngIf="groupData?.active">
-                    <div class="d-flex flex-ai-center list p-8 w-100" (click)="editGroup();addTelemetry('edit-group')">
+                    <div class="d-flex flex-ai-center list p-8 w-100" (click)="editGroup();addTelemetry('edit-group', '', { type: UPDATE_GROUP})">
                       {{resourceService?.frmelmnts?.lbl?.editGroup}}
                     </div>
                     <div class="d-flex flex-ai-center list p-8 w-100 fnormal" (click)="toggleModal(true, 'deActivate')">

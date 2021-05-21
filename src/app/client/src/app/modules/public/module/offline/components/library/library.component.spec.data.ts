@@ -69,9 +69,6 @@ export const response = {
     },
     constructSearchRequestWithFilter: {
         'filters': {
-            'medium': [ 'English' ],
-            'gradeLevel': [ 'Class 10' ],
-            'board': [ 'State (Andhra Pradesh)' ],
             'channel': '01231711180382208027',
             'mimeType':['application/vnd.ekstep.ecml-archive','application/vnd.ekstep.html-archive','audio/x-wav','audio/wav']
         },
@@ -98,13 +95,12 @@ export const response = {
             'channel': 100
         },
         'facets': [
-            'board',
-            'gradeLevel',
-            'subject',
-            'medium',
+            'se_boards',
+            'se_gradeLevels',
+            'se_subjects',
+            'se_mediums',
             'primaryCategory',
-            'mimeType',
-            'publisher'
+            'mimeType'
         ],
         'params': {
             'orgdetails': 'orgName,email'

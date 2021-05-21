@@ -1,0 +1,64 @@
+<app-landing-section
+  [textToDisplay]="pageTitleSrc"
+  [svgToDisplay]="svgToDisplay"
+  [layoutConfiguration]="layoutConfiguration"
+></app-landing-section>
+<div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg' : ''">
+  <div
+    class="sb-g"
+    [ngClass]="
+      layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'
+    "
+  >
+    <div [ngClass]="FIRST_PANEL_LAYOUT">
+      <h5 class="m-20">Section name</h5>
+      <div class="sbt-page-content-area sections">
+        <div *ngFor="let section of sections" class="section-list">
+          <a
+            [routerLink]=""
+            class="item item--tests"
+            (click)="scrollToContent(section.code)"
+          >
+            {{ section.name }}
+          </a>
+        </div>
+      </div>
+    </div>
+    <div [ngClass]="SECOND_PANEL_LAYOUT">
+      <div *ngFor="let section of sections" [id]="section.code">
+        <div class="sbt-page-content-area my-20">
+          <h4>{{ section.name }}</h4>
+        </div>
+        <div
+          [ngClass]="
+            layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'
+          "
+        >
+          <form [formGroup]="questionnaireForm" class="m-40">
+            <question-generic-inputs
+              [questions]="section.questions"
+              [questionnaireForm]="questionnaireForm"
+            ></question-generic-inputs>
+          </form>
+          <!-- {{questionnaireForm.value |json}} -->
+        </div>
+      </div>
+      <div class="d-flex flex-jc-space-evenly m-32">
+        <button
+          class="sb-btn sb-btn-normal sb-btn-primary"
+          type="button"
+          (click)="alert('save')"
+        >
+          {{ resourceService?.frmelmnts?.btn?.save | translate }}
+        </button>
+        <button
+          class="sb-btn sb-btn-normal sb-btn-primary"
+          type="button"
+          (click)="onSubmit()"
+        >
+          {{ resourceService?.frmelmnts?.btn?.submit | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

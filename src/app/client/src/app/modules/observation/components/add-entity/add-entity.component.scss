@@ -1,0 +1,88 @@
+@import "variables";
+@import "mixins/mixins";
+
+.sb-onboard {
+  &__container {
+    width: 100%;
+    height: 100vh;
+    background: var(--primary-100);
+    padding: calculateRem(24px);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+
+    @include respond-above(sm) {
+      border-radius: calculateRem(8px);
+      max-width: calculateRem(1008px);
+      min-height: calculateRem(610px);
+      height: auto;
+    }
+  }
+
+  &__header {
+    width: 100%;
+    margin: 20px 0px;
+    padding-left : 15px;
+  }
+
+  &__content {
+    width: calculateRem(648px);
+    max-width: 100%;
+    margin-bottom: auto;
+    overflow: hidden;
+    overflow-y: auto;
+  }
+
+  &__footer {
+    margin-top: calculateRem(16px);
+    width: 100%;
+    text-align: center;
+  }
+}
+
+::ng-deep {
+  .sb-onbrd-modal {
+    @include respond-below(sm) {
+      .ui.modal {
+        width: 95%;
+        margin: 0 0 0 0;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+      }
+
+      .ui.modal.scroll {
+        position: fixed !important;
+        margin-top: o !important;
+        margin-bottom: 0px !important;
+        top: 0;
+        width: 100%;
+        left: 0px;
+        right: 0px;
+        margin: 0 !important;
+      }
+    }
+  }
+}
+  .sbt-search-box{
+    box-shadow: none;
+    margin: 0;
+  }
+  .load-mr-btn{
+    height: 2rem;
+    font-size: 1rem;
+    padding: 0.5rem 2rem;
+  }
+  .load-mr-bt-center{
+    text-align:center
+}
+.disabled-checkbox{
+  background: #ccc;
+  border: #ccc;
+
+}
