@@ -31,7 +31,6 @@ export class InputTypeCheckboxComponent implements OnInit {
     }
     this.question.value =
       this.questionnaireForm.controls[this.question._id].value;
-    console.log(this.question)
   }
 
   get isValid() {

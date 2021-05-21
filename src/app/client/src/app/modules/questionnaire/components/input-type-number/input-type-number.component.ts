@@ -25,7 +25,6 @@ export class InputTypeNumberComponent implements OnInit {
   onChange(e) {
     let value = e.target.value;
     this.question.value = value;
-    console.log(this.question);
   }
 
   get isValid() {

@@ -70,7 +70,6 @@ export class QuestionnaireComponent implements OnInit {
       this.evidence,
       this.questionnaireForm.value
     );
-    console.log(data);
   }
 
   questions = [
