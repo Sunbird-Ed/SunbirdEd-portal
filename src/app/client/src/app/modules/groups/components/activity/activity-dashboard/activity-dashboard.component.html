@@ -18,6 +18,7 @@
         <!--activity Filter-->
         <label class="mb-20 label">
           <sui-select class="selection sbt-dropdown sbt-dropdown--md sbt-green sbt-dropdown-tick"
+          [placeholder]="'Select Activity'"
             [(ngModel)]="selectedActivity" labelField="label" valueField="value">
             <sui-select-option *ngFor="let type of filterTypes" [value]="type" role="img"
               (click)="onActivitySelection(type.label)">
@@ -27,16 +28,14 @@
         <!--activity list-->
         <div class="chapter-box">
           <div *ngFor="let type of activityCardTypes">
-            <div *ngIf="type?.items?.length > 0">
               <div class="pb-15 pt-5">{{ type?.title }}</div>
               <div *ngFor="let item of type?.items">
                 <sb-toc-card [content]="item.activityInfo"
-                  (tocCardClick)="navigateToContent($event, item?.activityInfo)"
+                  (tocCardClick)="navigateToDashboard($event, item?.activityInfo)"
                   [type]="item?.activityInfo?.trackable?.enabled === 'Yes' ? item?.activityInfo?.contentType.toLowerCase() : 'non_trackable'"
                   [disabled]="'disabled-toc-card'" [activeContent]="selectedActivityType">
                 </sb-toc-card>
               </div>
-            </div>
           </div>
         </div>
       </div>

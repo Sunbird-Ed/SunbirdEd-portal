@@ -1,15 +1,17 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GroupsService } from '../../../services';
 import { IGroupCard } from '../../../interfaces';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CsGroup } from '@project-sunbird/client-services/models';
-import { UserService, SearchService } from '@sunbird/core';
+import { SearchService } from '@sunbird/core';
 import { ToasterService, ResourceService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { ActivatedRoute } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption-v8';
+import { ConfigService } from '@sunbird/shared';
+import { CourseConsumptionService } from '@sunbird/learn';
 
 @Component({
   selector: 'app-activity-dashboard',
@@ -20,8 +22,7 @@ export class ActivityDashboardComponent implements OnInit {
 
   selectedActivityType = {};
   groupData: IGroupCard;
-  private groupId: string;
-  showActivityList = false;
+  groupId: string;
   telemetryImpression: IImpressionEventInput;
   isLoader = true;
   filterTypes = [];
@@ -36,40 +37,38 @@ export class ActivityDashboardComponent implements OnInit {
   public message = 'There is no data available';
   ActivityWiseData = [];
   isDownloadReport = false;
-  columns = [
-    { name: 'Name', isSortable: true, prop: 'name', placeholder: 'Filter name' },
-    { name: 'Progress', isSortable: true, prop: 'progress', placeholder: 'Filter progress' },
-    { name: 'Assesment1', isSortable: false, prop: 'assesment', placeholder: 'Filter assesment1' }];
+  public coursehierarchy: any;
 
-  constructor(private groupService: GroupsService,
-    private userService: UserService,
+  constructor(
+    private groupService: GroupsService,
     private toasterService: ToasterService,
     public resourceService: ResourceService,
     private activatedRoute: ActivatedRoute,
-    public searchService: SearchService) { }
+    public searchService: SearchService,
+    public configService: ConfigService,
+    public courseConsumptionService: CourseConsumptionService) { }
 
   ngOnInit() {
     this.filterTypes.push({ label: 'All activities' });
     this.selectedActivity = this.filterTypes[0].label;
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
+    console.log(this.groupId, 'xxxx');
     this.getGroupData();
   }
 
   getGroupData() {
     this.isLoader = true;
     this.groupService.getGroupById(this.groupId, true, true, true).pipe(takeUntil(this.unsubscribe$)).subscribe((groupData: CsGroup) => {
-      const user = _.find(_.get(groupData, 'members'), (m) => _.get(m, 'userId') === this.userService.userid);
-      if (!user || _.get(groupData, 'status') === 'inactive') {
-        this.groupService.goBack();
-      }
       this.groupService.groupData = groupData;
       this.groupData = this.groupService.addGroupFields(groupData);
       this.isLoader = false;
       const activityList = this.groupData.activitiesGrouped;
       activityList.forEach(element => {
+        if (element.items.length > 0) {
         this.filterTypes.push({ label: element.title });
         this.activityCardTypes.push(element);
         this.allActivityTypes.push(element);
+        }
       });
     }, err => {
       this.isLoader = false;
@@ -82,23 +81,30 @@ export class ActivityDashboardComponent implements OnInit {
     this.allActivityTypes.forEach(type => {
       if (type['title'] === value.toString()) {
         this.activityCardTypes = [type];
+        this.setUniqueIdentifierForCC(type.items[0].activityInfo);
       }
       if (value === 'All activities') {
         this.activityCardTypes = this.allActivityTypes;
+        this.setUniqueIdentifierForCC(this.allActivityTypes[0].items[0].activityInfo);
       }
     });
   }
 
-  public navigateToContent(event, activities: any): void {
+  public navigateToDashboard(event, activities: any): void {
+    console.log(activities);
+    if (activities.trackable && activities.trackable.enabled === 'Yes') {
+      const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
+      this.courseConsumptionService.getCourseHierarchy(activities.identifier, inputParams).subscribe(response => {
+        this.coursehierarchy = response;
+        console.log(this.coursehierarchy);
+      });
+    }
     this.ActivityWiseData = [{
       name: activities.name,
       progress: '',
       Assesment1: ''
     }];
-    this.selectedActivityType = activities;
-    this.selectedActivityType['sbUniqueIdentifier'] = activities.identifier;
-    activities['sbUniqueIdentifier'] = activities.identifier;
-    this.onSelectedActivity = this.isContentTrackable(this.selectedActivityType);
+    this.setUniqueIdentifierForCC(activities);
   }
 
   isContentTrackable(content) {
@@ -110,5 +116,15 @@ export class ActivityDashboardComponent implements OnInit {
 
   showActivityType(type) {
     return _.lowerCase(type);
+  }
+
+  setUniqueIdentifierForCC(activities) {
+    this.selectedActivityType = activities;
+    this.selectedActivityType['sbUniqueIdentifier'] = activities.identifier;
+    activities['sbUniqueIdentifier'] = activities.identifier;
+    this.onSelectedActivity = this.isContentTrackable(this.selectedActivityType);
+  }
+  eventListener(event) {
+    console.log('event', event);
   }
 }

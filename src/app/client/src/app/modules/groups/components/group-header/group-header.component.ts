@@ -291,7 +291,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
    * @description - navigate to activity dashboard page
    */
   navigateToActivityDashboard() {
-      this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, this.groupData.id, `${ACTIVITY_DASHBOARD}`]);
+      this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`,  _.get(this.groupData, 'id'), `${ACTIVITY_DASHBOARD}`]);
   }
 
   ngOnDestroy() {

@@ -1,7 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
-import { ActivityDashboardComponent } from './activity-dashboard.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CoreModule, UserService } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
@@ -11,10 +10,11 @@ import { GroupsService } from '../../../services/groups/groups.service';
 import { configureTestSuite } from '@sunbird/test-util';
 import { courseHierarchy, nestedCourse, activityData, groupData, content } from './activity-details.component.spec.data';
 import * as _ from 'lodash-es';
+import { ActivityDetailsComponent } from './activity-details.component';
 
-describe('ActivityDashboardComponent', () => {
-  let component: ActivityDashboardComponent;
-  let fixture: ComponentFixture<ActivityDashboardComponent>;
+describe('ActivityDetailsComponent', () => {
+  let component: ActivityDetailsComponent;
+  let fixture: ComponentFixture<ActivityDetailsComponent>;
   let activatedRoute;
 
   class FakeActivatedRoute {
@@ -64,7 +64,7 @@ describe('ActivityDashboardComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ActivityDashboardComponent],
+      declarations: [ActivityDetailsComponent],
       imports: [SharedModule.forRoot(), HttpClientTestingModule, CoreModule, TelemetryModule.forRoot()],
       providers: [
         { provide: ResourceService, useValue: resourceBundle },
@@ -76,7 +76,7 @@ describe('ActivityDashboardComponent', () => {
       .compileComponents();
   }));
   beforeEach(() => {
-    fixture = TestBed.createComponent(ActivityDashboardComponent);
+    fixture = TestBed.createComponent(ActivityDetailsComponent);
     component = fixture.componentInstance;
     activatedRoute = TestBed.get(ActivatedRoute);
     fixture.detectChanges();
