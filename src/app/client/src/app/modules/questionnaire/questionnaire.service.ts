@@ -7,24 +7,31 @@ import { AbstractControl, ValidatorFn } from "@angular/forms";
 export class QuestionnaireService {
   constructor() {}
 
-  validate(data): ValidatorFn {
+  validate = (data): ValidatorFn => {
     return (control: AbstractControl): { [key: string]: any } | null => {
+      debugger;
       if (!data.validation.required) {
         return null;
       }
       if (data.validation.regex) {
         const forbidden = this.testRegex(data.validation.regex, control.value);
-        return forbidden ? { err: "Only alphabets allowed" } : null;
+        return forbidden ? null : { err: "Only alphabets allowed" };
       }
 
       if (data.validation.IsNumber) {
         const forbidden = !isNaN(control.value);
-        return forbidden ? { err: "Only numbers allowed" } : null;
+        return forbidden ? null : { err: "Only numbers allowed" };
+      }
+
+      if (data.validation.required) {
+        if (!control.value || !control.value.length) {
+          return { err: "Required field" };
+        }
       }
 
       return null;
     };
-  }
+  };
 
   public testRegex(rege, value): boolean {
     const regex = new RegExp(rege);
@@ -35,10 +42,10 @@ export class QuestionnaireService {
     let sections = evidence.sections;
     let answers = this.getSectionData(sections, formValues);
     let payloadData = {
-      externalid: "OB", //todo
+      externalId: evidence.externalId,
       answers: answers,
-      // startTime: 1620977187792, //todo
-      // endTime: 1620977187792, //todo
+      startTime: evidence.startTime,
+      endTime: Date.now(),
     };
     return payloadData;
   }
@@ -94,11 +101,11 @@ export class QuestionnaireService {
         responseType: currentQuestion.responseType,
         filesNotUploaded: [], //todo
       },
-      startTime: 1620977188671, //todo
-      endTime: "",
+      startTime: currentQuestion.startTime,
+      endTime: currentQuestion.endTime,
       criteriaId: currentQuestion.payload.criteriaId,
       responseType: currentQuestion.responseType,
-      evidenceMethod: "OB", //todo
+      evidenceMethod: currentQuestion.evidenceMethod,
       rubricLevel: "",
     };
   }

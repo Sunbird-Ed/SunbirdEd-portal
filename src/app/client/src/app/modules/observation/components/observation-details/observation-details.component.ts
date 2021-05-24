@@ -124,15 +124,15 @@ export class ObservationDetailsComponent implements OnInit {
     });
   }
 
-  redirectToQuestions() {
-    //TODO: add params
+  redirectToQuestions(submissionNumber,evidenceCode) {    
+    console.log(this.selectedEntity)
     this.router.navigate([`/questionnaire`], {
-    queryParams: {
-      observationId: "",
-      entityId: "",
-      submissionNumber: "",
-      evidenceCode:""
-    }
-  });
+      queryParams: {
+        observationId: this.observationId,
+        entityId: this.selectedEntity._id,
+        submissionNumber: submissionNumber,
+        evidenceCode: evidenceCode,
+      },
+    });
   }
 }

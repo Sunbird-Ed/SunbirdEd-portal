@@ -25,6 +25,10 @@ export class InputTypeNumberComponent implements OnInit {
   onChange(e) {
     let value = e.target.value;
     this.question.value = value;
+    this.question.startTime = this.question.startTime
+      ? this.question.startTime
+      : Date.now();
+    this.question.endTime = Date.now();
   }
 
   get isValid() {
