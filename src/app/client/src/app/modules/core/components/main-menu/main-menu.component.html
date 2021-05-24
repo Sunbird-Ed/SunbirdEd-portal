@@ -56,7 +56,7 @@
 				</div>
 			</div>
 			<div class="ui divider mt-0"></div>
-			<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive(routerLinks?.groups)" 
+			<a appOnlineOnly class="item py-8 pl-0 pr-24" [class.active]="router.isActive(routerLinks?.groups)" 
 			*ngIf="!router.isActive('', true)" (click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
 			[routerLink]="[navigateToGroups()]"> {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span> </a>	
 
@@ -96,7 +96,7 @@
 				*ngIf="!router.isActive('', true)">
 				{{resourceService?.frmelmnts?.tab?.courses}}
 			</a>
-			<a class="item d-flex flex-ai-center" [class.active]="router.isActive(routerLinks?.explore)" 
+			<a appOnlineOnly class="item d-flex flex-ai-center" [class.active]="router.isActive(routerLinks?.explore)" 
 			*ngIf="!router.isActive('', true)" (click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
 			[routerLink]="[navigateToGroups()]"> {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span> </a>
 
@@ -139,7 +139,7 @@
 				routerLink="/learn">
 				{{resourceService?.frmelmnts?.tab?.courses}}
 			</a>
-			<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive(routerLinks?.groups)" appTelemetryInteract
+			<a appOnlineOnly class="item py-8 pl-0 pr-24" [class.active]="router.isActive(routerLinks?.groups)" appTelemetryInteract
 		[telemetryInteractEdata]="groupsMenuIntractEdata" [routerLink]="[navigateToGroups()]">
 		{{resourceService?.frmelmnts?.tab?.mygroups}} <span class="group__type mx-8">New</span>
 			</a>
@@ -179,7 +179,7 @@
 				*ngIf="!router.isActive('', true)">
 				{{resourceService?.frmelmnts?.tab?.courses}}
 			</a>
-			<a class="item d-flex flex-ai-center" [class.active]="router.isActive(routerLinks?.explore)" 
+			<a appOnlineOnly class="item d-flex flex-ai-center" [class.active]="router.isActive(routerLinks?.explore)" 
 			*ngIf="!router.isActive('', true)" (click)="showSideBar()" appTelemetryInteract [telemetryInteractEdata]="groupsMenuIntractEdata"
 			[routerLink]="[navigateToGroups()]"> {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span> </a>
 			
