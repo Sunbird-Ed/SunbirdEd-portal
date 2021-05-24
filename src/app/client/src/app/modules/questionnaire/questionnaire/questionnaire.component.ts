@@ -1,7 +1,14 @@
 import { Component, OnInit } from "@angular/core";
-import { COLUMN_TYPE, LayoutService, ResourceService } from "@sunbird/shared";
+import {
+  COLUMN_TYPE,
+  LayoutService,
+  ResourceService,
+  ConfigService,
+} from "@sunbird/shared";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { QuestionnaireService } from "../questionnaire.service";
+import { ActivatedRoute } from "@angular/router";
+import { ObservationService } from "@sunbird/core";
 
 @Component({
   selector: "app-questionnaire",
@@ -17,19 +24,45 @@ export class QuestionnaireComponent implements OnInit {
   questionnaireForm: FormGroup;
   sections;
   evidence: any;
+  queryParams: any;
+  assessmentInfo: any;
 
   constructor(
     public layoutService: LayoutService,
     public fb: FormBuilder,
     public qService: QuestionnaireService,
-    public resourceService: ResourceService
+    public resourceService: ResourceService,
+    private activatedRoute: ActivatedRoute,
+    private config: ConfigService,
+    private observationService: ObservationService
   ) {}
 
   ngOnInit() {
     this.initConfiguration();
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.queryParams = params;
+      this.getQuestionnare();
+    });
     this.questionnaireForm = this.fb.group({});
-    this.evidence = this.data.result.assessment.evidences[0];
-    this.sections = this.evidence.sections;
+    // this.evidence = this.data.result.assessment.evidences[0];
+    // this.sections = this.evidence.sections;
+  }
+
+  getQuestionnare() {
+    const paramOptions = {
+      url:
+        this.config.urlConFig.URLS.OBSERVATION.GET_ASSESSMENT +
+        `${this.queryParams.observationId}?entityId=${this.queryParams.entityId}&submissionNumber=${this.queryParams.submissionNumber}&ecmMethod=${this.queryParams.evidenceCode}`,
+    };
+    this.observationService.post(paramOptions).subscribe(
+      (data) => {
+        this.assessmentInfo = data.result;
+        this.evidence = data.result.assessment.evidences[0];
+        this.evidence.startTime = Date.now();
+        this.sections = this.evidence.sections;
+      },
+      (error) => {}
+    );
   }
 
   private initConfiguration() {
@@ -65,11 +98,36 @@ export class QuestionnaireComponent implements OnInit {
     }
   }
 
-  onSubmit() {
-    let data = this.qService.getEvidenceData(
+  onSubmit(save?) {
+    let payload = this.qService.getEvidenceData(
       this.evidence,
       this.questionnaireForm.value
     );
+
+    console.log(payload);
+  }
+
+  submitEvidence() {
+    const paramOptions = {
+      url:
+        this.config.urlConFig.URLS.OBSERVATION_SUBMISSION_UPDATE +
+        `${this.assessmentInfo.assessment.submissionId}`,
+      data: {
+        block: "0abd4d28-a9da-4739-8132-79e0804cd73e",
+        district: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
+        role: "DEO",
+        school: "8be7ecb5-4e35-4230-8746-8b2694276343",
+        state: "bc75cc99-9205-463e-a722-5326857838f8",
+      },
+    };
+    // this.observationService.post(paramOptions).subscribe(
+    //   (data) => {
+    //     this.evidence = data.result.assessment.evidences[0];
+    //     this.evidence.startTime = Date.now();
+    //     this.sections = this.evidence.sections;
+    //   },
+    //   (error) => {}
+    // );
   }
 
   questions = [
