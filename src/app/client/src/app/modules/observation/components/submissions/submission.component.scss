@@ -1,0 +1,33 @@
+.submissions{
+    border-radius: 24px;
+    margin:0.5rem 0;
+    h5{
+        font-weight: 600;
+    }
+    .icon{
+    font-size: 1.5rem !important;;
+    }
+    .evidences-list{
+        min-width: 100%;
+        max-width: 100%;
+        display: inline-flex;
+        margin: 5px 0px;
+        background: var(--sbt-compt-bg) !important;
+        border-radius: var(--sbt-bradius-24);
+        padding: 8px 24px;
+    }
+}
+
+:host ::ng-deep { 
+    .ui.styled.accordion .title{
+    background: var(--white) !important;
+ }
+
+}
+.content-submission{
+    background:var(--white) !important;
+    padding: 1rem 1.5rem !important;
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+    border-radius: var(--sbt-bradius-24);
+}

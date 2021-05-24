@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild, Input, EventEmitter, Output } from '@angular/core';
 import { ObservationService, KendraService } from '@sunbird/core';
-import { ConfigService,ResourceService } from '@sunbird/shared';
+import { ConfigService, ResourceService, ILoaderMessage, INoResultMessage } from '@sunbird/shared';
 import * as _ from 'underscore';
+import { ObservationUtilService } from '../../service';
 @Component({
     selector: 'add-entity',
     templateUrl: './add-entity.component.html',
@@ -19,16 +20,27 @@ export class AddEntityComponent implements OnInit {
     page = 1;
     count = 0;
     entities;
+    payload;
     showDownloadModal: boolean = true;
+    showLoader: boolean = true;
+    public loaderMessage: ILoaderMessage;
+    public noResultMessage: INoResultMessage;
     constructor(private observationService: ObservationService,
         private kendraService: KendraService,
         public resourceService: ResourceService,
+        public observationUtilService: ObservationUtilService,
         config: ConfigService) {
         this.config = config;
         this.search = _.debounce(this.search, 1000)
     }
     ngOnInit() {
-        this.getTargettedEntityType();
+        this.getProfileData();
+    }
+    getProfileData() {
+        this.observationUtilService.getProfileDataList().then(data => {
+            this.payload = data;
+            this.getTargettedEntityType();
+        })
     }
     public closeModal() {
         this.modal.approve();
@@ -36,16 +48,11 @@ export class AddEntityComponent implements OnInit {
         this.closeEvent.emit();
     }
     getTargettedEntityType() {
+        this.showLoader = true;
         const paramOptions = {
             url: this.config.urlConFig.URLS.KENDRA.TARGETTED_ENTITY_TYPES + this.solutionId,
             param: {},
-            data: {
-                block: "0abd4d28-a9da-4739-8132-79e0804cd73e",
-                district: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
-                role: "DEO",
-                school: "8be7ecb5-4e35-4230-8746-8b2694276343",
-                state: "bc75cc99-9205-463e-a722-5326857838f8",
-            },
+            data:this.payload,
         };
         this.kendraService.post(paramOptions).subscribe(data => {
             this.targetEntity = data.result;
@@ -53,6 +60,7 @@ export class AddEntityComponent implements OnInit {
             this.search();
 
         }, error => {
+            this.showLoader = false;
         })
 
     }
@@ -62,19 +70,14 @@ export class AddEntityComponent implements OnInit {
         }
     }
     search() {
+        this.showLoader = true;
         let url = this.config.urlConFig.URLS.OBSERVATION.SEARCH_ENTITY + '?observationId=' + this.observationId + '&search=' + encodeURIComponent(this.searchQuery ? this.searchQuery : '') + '&page=' + this.page + '&limit=' + this.limit;
         const paramOptions = {
             url: url + `&parentEntityId=${encodeURIComponent(
                 this.targetEntity._id
             )}`,
             param: {},
-            data: {
-                block: "0abd4d28-a9da-4739-8132-79e0804cd73e",
-                district: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
-                role: "DEO",
-                school: "8be7ecb5-4e35-4230-8746-8b2694276343",
-                state: "bc75cc99-9205-463e-a722-5326857838f8",
-            },
+            data: this.payload,
         };
         this.observationService.post(paramOptions).subscribe(data => {
             // this.entities = data.result;
@@ -84,8 +87,9 @@ export class AddEntityComponent implements OnInit {
             }
             this.entities = this.entities.concat(data.result[0].data);
             this.count = data.result[0].count;
-
+            this.showLoader = false;
         }, error => {
+            this.showLoader = false;
         })
     }
 
@@ -98,6 +102,7 @@ export class AddEntityComponent implements OnInit {
         this.search();
     }
     submit() {
+        this.showLoader = true;
         let selectedSchools = [];
         this.entities.forEach((element) => {
             if (element.selected && !element.preSelected) {
@@ -107,18 +112,13 @@ export class AddEntityComponent implements OnInit {
         const paramOptions = {
             url: this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_UPDATE_ENTITES + `${this.observationId}`,
             param: {},
-            data: {
-                block: "0abd4d28-a9da-4739-8132-79e0804cd73e",
-                district: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
-                role: "DEO",
-                school: "8be7ecb5-4e35-4230-8746-8b2694276343",
-                state: "bc75cc99-9205-463e-a722-5326857838f8",
-                data: selectedSchools
-            },
+            data:this.payload,
         };
         this.observationService.post(paramOptions).subscribe(data => {
             this.closeModal();
+            this.showLoader = false;
         }, error => {
+            this.showLoader = false;
         })
     }
 }

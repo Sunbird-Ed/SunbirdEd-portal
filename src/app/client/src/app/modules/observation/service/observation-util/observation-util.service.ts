@@ -117,5 +117,18 @@ export class ObservationUtilService {
   
 
 
-
+  getAlertMetaData() {
+    let obj = {
+      type: "",
+      content: {
+        title: "",
+        body: {
+          type: "",
+          data: "",
+        },
+      },
+      buttons: [],
+    };
+    return obj;
+  }
 }

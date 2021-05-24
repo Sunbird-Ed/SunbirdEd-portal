@@ -728,7 +728,7 @@ html[layout='joy'] {
   }
 
   .sb-accordion-content.sb-bg-color-white {
-    background: var(--sbt-compt-bg) !important;
+    background: var(--sbt-compt-bg);
     padding: calculateRem(24px) calculateRem(24px) !important;
   }
 
