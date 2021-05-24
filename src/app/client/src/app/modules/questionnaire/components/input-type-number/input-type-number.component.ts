@@ -21,13 +21,14 @@ export class InputTypeNumberComponent implements OnInit {
         this.qService.validate(this.question),
       ])
     );
+    this.question.startTime = this.question.startTime
+      ? this.question.startTime
+      : Date.now();
   }
   onChange(e) {
     let value = e.target.value;
     this.question.value = value;
-    this.question.startTime = this.question.startTime
-      ? this.question.startTime
-      : Date.now();
+
     this.question.endTime = Date.now();
   }
 

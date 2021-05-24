@@ -18,6 +18,10 @@ export class InputTypeRadioComponent implements OnInit {
       this.question._id,
       new FormControl(null, Validators.required)
     );
+
+    this.question.startTime = this.question.startTime
+      ? this.question.startTime
+      : Date.now();
   }
 
   get isValid() {
@@ -31,9 +35,7 @@ export class InputTypeRadioComponent implements OnInit {
   onChange(value) {
     this.questionnaireForm.controls[this.question._id].setValue(value);
     this.question.value = value;
-    this.question.startTime = this.question.startTime
-      ? this.question.startTime
-      : Date.now();
+
     this.question.endTime = Date.now();
   }
 }

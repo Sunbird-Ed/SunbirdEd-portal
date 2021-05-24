@@ -41,7 +41,6 @@ export class QuestionnaireComponent implements OnInit {
     this.initConfiguration();
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParams = params;
-      // this.configurationMode = _.get(this.queryParams, "type");
       this.getQuestionnare();
     });
     this.questionnaireForm = this.fb.group({});
@@ -113,6 +112,13 @@ export class QuestionnaireComponent implements OnInit {
       url:
         this.config.urlConFig.URLS.OBSERVATION_SUBMISSION_UPDATE +
         `${this.assessmentInfo.assessment.submissionId}`,
+      data: {
+        block: "0abd4d28-a9da-4739-8132-79e0804cd73e",
+        district: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
+        role: "DEO",
+        school: "8be7ecb5-4e35-4230-8746-8b2694276343",
+        state: "bc75cc99-9205-463e-a722-5326857838f8",
+      },
     };
     // this.observationService.post(paramOptions).subscribe(
     //   (data) => {

@@ -125,7 +125,6 @@ export class ObservationDetailsComponent implements OnInit {
   }
 
   redirectToQuestions(submissionNumber,evidenceCode) {    
-    console.log(this.selectedEntity)
     this.router.navigate([`/questionnaire`], {
       queryParams: {
         observationId: this.observationId,

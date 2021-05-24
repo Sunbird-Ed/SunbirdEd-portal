@@ -16,6 +16,9 @@ export class InputTypeRangeComponent implements OnInit {
       this.question._id,
       new FormControl(0, Validators.required)
     );
+    this.question.startTime = this.question.startTime
+      ? this.question.startTime
+      : Date.now();
     this.initRange();
   }
   initRange() {
@@ -37,9 +40,6 @@ export class InputTypeRangeComponent implements OnInit {
   onChange(e) {
     let value = e.target.value;
     this.question.value = value;
-    this.question.startTime = this.question.startTime
-      ? this.question.startTime
-      : Date.now();
     this.question.endTime = Date.now();
   }
 

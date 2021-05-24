@@ -17,6 +17,9 @@ export class InputTypeCheckboxComponent implements OnInit {
       this.question._id,
       new FormArray([], Validators.required)
     );
+    this.question.startTime = this.question.startTime
+      ? this.question.startTime
+      : Date.now();
   }
 
   onChange(oid: string, isChecked: boolean) {
@@ -31,9 +34,6 @@ export class InputTypeCheckboxComponent implements OnInit {
     }
     this.question.value =
       this.questionnaireForm.controls[this.question._id].value;
-    this.question.startTime = this.question.startTime
-      ? this.question.startTime
-      : Date.now();
     this.question.endTime = Date.now();
   }
 
