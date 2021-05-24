@@ -358,8 +358,8 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     const formServiceInputParams = { formType: 'config', formAction: 'get', contentType: 'userType', component: 'portal' };
     return this.formService.getFormConfig(formServiceInputParams).pipe(
       map(response => _.map(_.filter(response, 'visibility'), value => {
-        const { code, searchFilter } = value;
-        return { name: code, searchFilter };
+        const { name, searchFilter } = value;
+        return { name: name, searchFilter };
       })),
       tap(mapping => { this.audienceList = mapping; }),
       retry(5),

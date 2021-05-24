@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ContentPlayerComponent, CollectionPlayerComponent } from '@sunbird/shared-feature';
+import { PendingchangesGuard } from '@sunbird/public';
 const telemetryEnv = 'library';
 
 const routes: Routes = [
@@ -39,7 +40,7 @@ const routes: Routes = [
         }
     },
     {
-        path: 'questionset/:contentId', component: ContentPlayerComponent,
+        path: 'questionset/:contentId', component: ContentPlayerComponent, canDeactivate: [PendingchangesGuard],
         data: {
             telemetry: {
                 env: telemetryEnv, pageid: 'quml-player', type: 'play'

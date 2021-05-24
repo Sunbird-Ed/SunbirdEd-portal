@@ -333,7 +333,8 @@
           </li>
 
           <li class="list-item" appOnlineOnly (click)="toggleSideMenu(false)"
-            [class.active]="router.isActive(routerLinks?.groups)" tabindex="0" *ngIf="!router.isActive('', true) && !isDesktopApp"
+
+            [class.active]="router.isActive(routerLinks?.groups)" tabindex="0" *ngIf="!router.isActive('', true)"
             [routerLink]="[navigateToGroups()]" appTelemetryInteract [telemetryInteractEdata]="myGroupIntractEData">
             <i class="icon-svg icon-svg--sm icon-groups mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#groups"></use>
@@ -412,8 +413,8 @@
                 </svg></i>
               {{resourceService.frmelmnts?.lnk?.profile}}
             </li>
-            <li appOnlineOnly class="list-item" tabindex="0" (click)="toggleSideMenu(false)" [class.active]="router.isActive(routerLinks?.explore)"
-              *ngIf="!router.isActive('', true) && !isDesktopApp" [routerLink]="[navigateToGroups()]" appTelemetryInteract
+            <li appOnlineOnly class="list-item" tabindex="0"  (click)="toggleSideMenu(false)" [class.active]="router.isActive(routerLinks?.explore)"
+              *ngIf="!router.isActive('', true)" [routerLink]="[navigateToGroups()]" appTelemetryInteract
               [telemetryInteractEdata]="myGroupIntractEData">
               <i class="icon-svg icon-svg--sm icon-groups mr-8"><svg class="icon icon-svg--primary">
                   <use xlink:href="./assets/images/sprite.svg#groups"></use>
