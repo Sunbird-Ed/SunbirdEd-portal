@@ -1,4 +1,4 @@
-import { Component, Input, Output, OnInit, ViewChild, EventEmitter, ElementRef } from '@angular/core';
+import { Component, Input, Output, OnInit, ViewChild, EventEmitter, ElementRef, OnDestroy } from '@angular/core';
 import { ToasterService, ResourceService} from '@sunbird/shared';
 import { UserService, LearnerService } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -10,7 +10,7 @@ import { IInteractEventObject } from '@sunbird/telemetry';
   templateUrl: './certificate-name-update-popup.component.html',
   styleUrls: ['./certificate-name-update-popup.component.scss']
 })
-export class CertificateNameUpdatePopupComponent implements OnInit {
+export class CertificateNameUpdatePopupComponent implements OnInit, OnDestroy {
   @Input() showProfileUpdatePopup;
   @Input() profileInfo;
   @ViewChild('modal', {static: false}) modal;
@@ -79,5 +79,11 @@ export class CertificateNameUpdatePopupComponent implements OnInit {
       this.disableContinueBtn = false;
       this.toasterService.error(this.resourceService.messages.fmsg.m0085);
     });
+  }
+
+  ngOnDestroy() {
+    if (_.get(this.modal, 'deny')) {
+      this.modal.deny();
+    }
   }
 }
