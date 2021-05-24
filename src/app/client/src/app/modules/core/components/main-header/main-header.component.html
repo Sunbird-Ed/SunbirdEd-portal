@@ -52,8 +52,11 @@
           <!--Avtar Dropdown-->
           <a class="profile-avtar p-0" tabindex="0">
             <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
-              <div class="" name="Guest" *ngIf='!userProfile' (click)="toggleSideMenu(true)"><img
+              <div class="" name="Guest" *ngIf='!userProfile && !guestUser' (click)="toggleSideMenu(true)"><img
                 src="./assets/images/profile-icon.svg" alt="Guest User" width="48"></div>
+              <ngx-avatar *ngIf='!userProfile && guestUser' (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle" [size]="38"
+                initialsSize="1" name="{{guestUser?.formatedName || 'Guest'}}">
+              </ngx-avatar>
               <ngx-avatar *ngIf='userProfile' (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle" [size]="38"
                 initialsSize="1" name="{{userProfile?.firstName}}">
               </ngx-avatar>
@@ -184,8 +187,11 @@
               <!--Avtar Dropdown-->
               <a class="profile-avtar p-0" tabindex="0">
                 <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
-                  <div class="sbt-guest-profile" name="Guest" *ngIf='!userProfile' (click)="toggleSideMenu(true)"><img
+                  <div class="sbt-guest-profile" name="Guest" *ngIf='!userProfile && !guestUser' (click)="toggleSideMenu(true)"><img
                       src="./assets/images/profile-icon.svg" alt="Guest User" width="48"></div>
+                  <ngx-avatar *ngIf='!userProfile && guestUser' (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle" [size]="38" initialsSize="1"
+                        name="{{guestUser?.formatedName || 'Guest'}}">
+                  </ngx-avatar>
                   <ngx-avatar *ngIf='userProfile' (click)="toggleSideMenu(true)" [style]="SbtavtarDesktopStyle" [size]="48"
                     initialsSize="1" name="{{userProfile?.firstName}}">
                   </ngx-avatar>
@@ -217,8 +223,11 @@
             <!--Avtar Dropdown-->
             <a class="profile-avtar p-0 ml-16" tabindex="0">
               <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
-                <div class="sbt-guest-profile" name="Guest" *ngIf='!userProfile' (click)="toggleSideMenu(true)"><img
+                 <div class="sbt-guest-profile" name="Guest" *ngIf='!userProfile && !guestUser' (click)="toggleSideMenu(true)"><img
                     src="./assets/images/profile-icon.svg" alt="Guest User" width="48"></div>
+                <ngx-avatar *ngIf='!userProfile && guestUser' (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle" [size]="38"
+                    initialsSize="1" name="{{guestUser?.formatedName || 'Guest'}}">
+                </ngx-avatar>
                 <ngx-avatar *ngIf='userProfile' (click)="toggleSideMenu(true)" [style]="SbtavtarDesktopStyle" [size]="48"
                   initialsSize="1" name="{{userProfile?.firstName}}">
                 </ngx-avatar>
