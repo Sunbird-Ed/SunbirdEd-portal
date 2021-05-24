@@ -127,12 +127,13 @@ export class ObservationListingComponent
     this.showEditUserDetailsPopup=await this.observationUtil.getProfileInfo();
      if(!this.showEditUserDetailsPopup){
        let metaData=this.observationUtil.getAlertMetaData();
-       console.log(metaData);
-       metaData.type="update profile"
+       metaData.type="update profile";
+       metaData.size="mini";
        metaData.content.title=this.resourceService.frmelmnts.alert.updateProfileTitle;
        metaData.content.body.type="text";
-        metaData.content.body.data=this.resourceService.frmelmnts.alert.updateProfileContent;
-       metaData.buttons.push(
+       metaData.content.body.data=this.resourceService.frmelmnts.alert.updateProfileContent;
+       metaData.footer.className="single-btn"
+       metaData.footer.buttons.push(
         {
           type:"accept",
           returnValue:true,
@@ -140,38 +141,6 @@ export class ObservationListingComponent
           className:"popup-btn"
         }
         );
-
-        // metaData.buttons.push(
-        //   {
-        //     type:"accept",
-        //     returnValue:true,
-        //     buttonText:this.resourceService.frmelmnts.btn.yes,
-        //     className:"popup-btn-confirm"
-        //   },
-        //   {
-        //     type:"cancel",
-        //     returnValue:false,
-        //     buttonText:this.resourceService.frmelmnts.btn.no,
-        //     className:"popup-btn-confirm"
-        //   }
-        //   );
-
-        // metaData.buttons.push(
-        //   {
-        //     type:"accept",
-        //     returnValue:true,
-        //     buttonText:"Upload",
-        //     className:"popup-btn-upload"
-        //   },
-        //   {
-        //     type:"cancel",
-        //     returnValue:false,
-        //     buttonText:"Do not Upload",
-        //     className:"popup-btn-upload"
-        //   }
-        //   );
-
-
       let returnData=await this.observationUtil.showPopupAlert(metaData);
       if(returnData){
         let queryParam = {

@@ -129,7 +129,6 @@ export class ObservationUtilService {
   }
 
   showPopupAlert(alertData) {
-    console.log(alertData);
     return new Promise((resolve, reject) => {
       this.modalService
         .open(new AlertModal(alertData))
@@ -145,14 +144,26 @@ export class ObservationUtilService {
   getAlertMetaData() {
     let obj = {
       type: "",
+      size:"",
       content: {
-        title: "",
+        title: "", 
         body: {
-          type: "",
+          type: "",//text,checkbox
           data: "",
         },
       },
-      buttons: [],
+      footer:{
+      className:"", //single-btn,double-btn,double-btn-circle
+      buttons: [
+      /*  
+       {
+          type:"accept/cancel",
+          returnValue:true/false,
+          buttonText:"",
+        } 
+      */
+      ],
+    },
     };
     return obj;
   }

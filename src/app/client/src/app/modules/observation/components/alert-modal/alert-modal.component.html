@@ -1,16 +1,8 @@
-<!-- <div class="popup">
-    <div class="popup-header" *ngIf="modal.context.title"><b>{{ modal.context.title }}</b></div>
-    <div class="popup-content" *ngIf="modal.context.message">{{ modal.context.message }}</div>
-    <div class="popup-button">
-    <button class="popup-btn blue" *ngIf="modal.context.button1" (click)="modal.approve()" autofocus>{{ modal.context.button1 }}</button>
-    </div>
-</div> -->
-
 <div class="popup">
   <div class="popup-header" *ngIf="modal.context.data.content.title">
     <b>{{ modal.context.data.content.title }}</b>
   </div>
-  <div *ngIf="modal.context.data.content.body.type != 'text'">
+  <div *ngIf="modal.context.data.content.body.type == 'checkbox'">
     <input type="checkbox" id="myCheck" [(ngModel)]="isChecked" (change)="checkValue(isChecked?true:false)" class="popup-body" />
     <label for="myCheck" class="popup-body-checkbox">{{
       modal.context.data.content.body.data
@@ -22,42 +14,17 @@
       {{ modal.context.data.content.body.data }}
     </div>
   </div>
-  <div class="popup-button" *ngIf="modal.context.data.buttons.length == 1">
-    <button
-      class={{modal.context.data.buttons[0].className}}
-      (click)="modal.approve(modal.context.data.buttons[0].returnValue)"
-      autofocus
-    >
-      {{ modal.context.data.buttons[0].buttonText }}
-    </button>
-  </div>
 
-  <div class="popup-button" *ngIf="modal.context.data.buttons.length > 1">
-    <div class="row">
-      <div class="column" *ngFor="let btn of modal.context.data.buttons">
+  <div class={{modal.context.data.footer.className}} >
+       <div  *ngFor="let btn of modal.context.data.footer.buttons">
         <button
-        class={{btn.className}}
-        (click)="modal.deny(btn.returnValue)"
-        *ngIf="btn.type=='cancel'"
-        autofocus>
-        {{ btn.buttonText }}
-        </button>
-        <button
-          class={{btn.className}}
-          (click)="modal.approve(btn.returnValue)"
-          *ngIf="btn.type=='accept' && modal.context.data.content.body.type == 'text'"
-          autofocus>
-          {{ btn.buttonText }}
-        </button>
-        <button
-        [ngClass]="[ isDisabled ? 'disable-btn-upload' : btn.className]"
-        [disabled]="isDisabled"
-        (click)="modal.approve(btn.returnValue)"
-        *ngIf="btn.type=='accept'&& modal.context.data.content.body.type != 'text'"
+        [ngClass]="{'sb-btn sb-btn-normal sb-btn-primary':true,'sb-btn-disabled':isChecked == false && btn.type =='accept' && modal.context.data.content.body.type == 'checkbox'}"
+        [disabled]="!isChecked && modal.context.data.content.body.type == 'checkbox' && btn.type=='accept'"
+        (click)="getMethod(btn)"
         autofocus>
         {{ btn.buttonText }}
       </button>
       </div>
     </div>
-  </div>
+
 </div>

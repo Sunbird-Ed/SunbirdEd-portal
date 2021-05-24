@@ -11,31 +11,42 @@ interface IAlertModalContext {
   styleUrls: ["./alert-modal.component.scss"],
 })
 export class AlertModalComponent {
-  isChecked = false;
-  isDisabled = true;
+  isChecked=false;
   constructor(public modal: SuiModal<IAlertModalContext, void, void>) {}
-  checkValue(event: any) {
-    if (event == true) {
-      this.isDisabled = false;
+
+  getMethod(data){
+    if(data.type=="cancel"){
+      this.modal.deny(data.returnValue);
       return;
     }
-    this.isDisabled = true;
+    this.modal.approve(data.returnValue);
   }
+
 }
 
 export class AlertModal extends ComponentModalConfig<IAlertModalContext, void, void> {
-  isDisabled = false;
   constructor(data: any) {
     super(AlertModalComponent, { data });
 
     this.transitionDuration = 200;
     this.isClosable = false;
     
-    if(data.content.body.type=='text'){
-    this.size = ModalSize.Mini;
-    }
-    else{
-      this.size = ModalSize.Tiny;
+    switch (data.size) {
+      case "mini":
+        this.size = ModalSize.Mini;
+        break;
+      case "tiny":
+        this.size = ModalSize.Tiny;
+        break;
+      case "small":
+        this.size = ModalSize.Small;
+        break;
+      case "normal":
+        this.size = ModalSize.Normal;
+        break;
+      case "large":
+        this.size = ModalSize.Large;
+        break;
     }
   }
   

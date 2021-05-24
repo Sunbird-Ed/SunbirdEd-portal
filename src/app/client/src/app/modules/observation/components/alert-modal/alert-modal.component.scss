@@ -1,122 +1,69 @@
-.popup{
-    padding: 30px;
-    position: relative;
-    height: 200px;
-    border-radius: none !important;
-   
+.popup {
+  padding: 30px;
+  position: relative;
+  height: 200px;
+  border-radius: none !important;
 }
-.popup-header{
-    position: relative;
-    font-size: 1.2em;
-    font-weight: bold;
-    color:#000;
-}
-
-.popup-body{
-    position: relative;
-    top:20px;
-    font-size:1.2em;
-    font-weight: 500;
-    color:grey;
-    width:auto;
-    white-space: pre-wrap;
-}
-.popup-body-checkbox{
-    position: relative;
-    top:5px;
-    left:20px;
-    font-size:15px;
-    font-weight: 500;
-    color:grey;
-    width:auto;
-    white-space: pre-wrap;
+.popup-header {
+  position: relative;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #000;
 }
 
-.popup-button{
-    position: relative;
-    top:30px;
-    margin: 0 auto;
+.popup-body {
+  position: relative;
+  top: 20px;
+  font-size: 1.2em;
+  font-weight: 500;
+  color: grey;
+  width: auto;
+  white-space: pre-wrap;
+}
+.popup-body-checkbox {
+  position: relative;
+  top: 5px;
+  left: 20px;
+  font-size: 15px;
+  font-weight: 500;
+  color: grey;
+  width: auto;
+  white-space: pre-wrap;
 }
 
-.popup-btn{
-    position: relative;
-    top:30px;
-    margin: 0 auto;
-    border-radius: 30px;
-    background-color:#024f9d;
-    border: none;
-    color: white;
-    display: block;
-    text-align: center;
-    font-size: 15px;
-    text-transform: capitalize;
-    height: 37px;
-    width: 120px;
-    bottom: 20px;
-    cursor: pointer;
+.single-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 70px;
 }
 
-.popup-btn-confirm{
-    position: relative;
-    top:30px;
-    margin: 0 auto;
-    border-radius:50%;
-    background-color: #024f9d;
-    border: none;
-    color: white;
-    display: block;
-    text-align: center;
-    font-size: 15px;
-    text-transform: capitalize;
-    height: 50px;
-    width: 50px;
-    bottom: 20px;
-    cursor: pointer;
-}
+.double-btn {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 15px;
 
-.popup-btn-upload{
-    position: relative;
-    top:10px;
-    margin: 0 auto;
-    border-radius:5px;
-    background-color:#024f9d;
-    border: none;
-    color: white;
-    display: block;
-    text-align: center;
-    font-size: 15px;
-    height: 37px;
-    width: 120px;
-    bottom: 20px;
-    cursor: pointer;
-}
-
-.disable-btn-upload{
-    position: relative;
-    top:10px;
-    margin: 0 auto;
-    border-radius:5px;
-    border:2px solid #024f9d;
-    background-color: white;
-    color: #024f9d;
-    display: block;
-    text-align: center;
-    font-size: 15px;
-    height: 37px;
-    width: 120px;
-    bottom: 20px;
-    cursor: pointer;
-}
-
-.column {
-    float: right;
-    width: 30%;
-    
+  button{
+      margin-right:15px;
   }
-  
-  /* Clear floats after the columns */
-  .row:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
+}
+
+.double-btn-circle{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 70px;
+    text-transform: capitalize;
+    font-size: 15px;
+
+    button{
+        margin-right:15px;
+        border-radius:50%;
+        height: 50px;
+        width: 50px;
+    }
+
+}
+
+
