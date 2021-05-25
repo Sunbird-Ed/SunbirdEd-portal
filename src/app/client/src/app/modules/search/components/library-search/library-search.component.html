@@ -9,9 +9,9 @@
         </app-global-search-filter>
       </ng-container>
     </div>
-    <div [ngClass]="SECOND_PANEL_LAYOUT">
+    <div [ngClass]="SECOND_PANEL_LAYOUT" class = "px-16" >
       <div [appTelemetryImpression]="telemetryImpression"
-        [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
+        [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : ' mt-24'">
         <div class="content-grid relative9">
           <div class="sb-pageSection">
             <div class="sb-pageSection-header" *ngIf="!showLoader && totalCount > 0">
