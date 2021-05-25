@@ -36,7 +36,7 @@ mock('jsonwebtoken', jsonwebtoken);
 
 const testData = {
   userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79 Safari/537.36',
-  uri: 'org/v1/search',
+  uri: 'org/v2/search',
   options: {
     headers: {
       ts: new Date().getTime()
