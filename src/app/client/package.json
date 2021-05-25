@@ -96,6 +96,7 @@
     "ng2-charts": "2.2.5",
     "ng2-semantic-ui": "github:project-sunbird/ng2-semantic-ui",
     "ngx-avatar": "^3.7.0",
+    "ngx-chips": "^2.2.2",
     "ngx-daterangepicker-material": "2.1.3",
     "ngx-device-detector": "1.3.5",
     "ngx-infinite-scroll": "^8.0.2",

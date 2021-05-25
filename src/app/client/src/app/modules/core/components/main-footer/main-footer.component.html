@@ -1,46 +1,13 @@
-<div *ngIf="showFooter">
-  <footer class="footer" #footerFix *ngIf="!layoutConfiguration" [ngClass]="{'player-fullscreen-footer': isFullScreenView}">
-    <div  class="ui container">
+<!-- <div *ngIf="showFooter">
+  <footer class="footer" #footerFix *ngIf="!layoutConfiguration"
+    [ngClass]="{'player-fullscreen-footer': isFullScreenView}">
+    <div class="ui container">
       <div class="ui grid stackable">
         <div class="four wide column footerMenu mr-auto">
-          <!-- default links if tenant settings is not available -->
-          <!-- <ul class="p-0 m-0" *ngIf="!(tenantFooter | keyvalue)?.length">
-            <li class="mb-16">
-              <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')"
-                href="{{defaultFooterConfig.helpCenterLink}}">
-                {{resourceService.frmelmnts?.lnk?.footerHelpCenter}}
-              </a>
-            </li>
-            <li>
-              <label class="d-block mb-0">
-                {{resourceService.frmelmnts?.lnk?.footerContact}}
-              </label>
-              <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('fresh-desk')"
-                class="d-block mb-0" href="mailto:{{defaultFooterConfig.helpDeskEmail}}">
-                {{defaultFooterConfig.helpDeskEmail}}
-              </a>
-            </li>
-          </ul> -->
-  
-          <!-- <ul class="p-0 m-0" *ngIf="(tenantFooter | keyvalue)?.length">
-            <li class="mb-16" *ngIf="tenantFooter?.helpCenterLink">
-              <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')"
-                href="{{tenantFooter?.helpCenterLink}}">
-                {{resourceService.frmelmnts?.lnk?.footerHelpCenter}}
-              </a>
-            </li>
-           <li *ngIf="tenantFooter?.helpDeskEmail">
-              <label class="d-block mb-0">
-                {{resourceService.frmelmnts?.lnk?.footerContact}}
-              </label>
-              <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('fresh-desk')" class="d-block mb-0"
-                href="mailto:{{tenantFooter?.helpDeskEmail}}">{{tenantFooter?.helpDeskEmail}}</a>
-            </li>
-          </ul>-->
-          
-       
+         
+
         </div>
-  
+
         <div class="download-mobile-app">
           <div class="download-mobile-app-logo p-16">
             <div class="mobile-circles">
@@ -50,7 +17,8 @@
               <div class="small-box border-round border-r50"></div>
             </div>
             <label
-              class="d-block text-center font-weight-bold">{{resourceService?.frmelmnts?.lbl?.downloadDikshaForMobile | interpolate:'{instance}': instance}}</label>
+              class="d-block text-center font-weight-bold">{{resourceService?.frmelmnts?.lbl?.downloadDikshaForMobile |
+              interpolate:'{instance}': instance}}</label>
             <a class="d-block app-download" (click)="redirectToMobileApp()">
               <img class="playStore-img cursor-pointer" src="/assets/images/google_playstore.png"
                 alt="{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile | interpolate:'{instance}':  instance}}">
@@ -59,21 +27,25 @@
           </div>
         </div>
         <div class="four wide column contantDetails">
-          <label class="d-block mb-16">
-            <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')" href="/term-of-use.html">
+          <div class="d-block mb-16">
+            <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"
+              href="/term-of-use.html">
               {{resourceService.frmelmnts?.lnk?.footerTnC}}
             </a>
             <span>| &copy; {{date | date:'yyyy'}}, {{instance}}</span>
-          </label>
+          </div>
+          
           <label class="sb-footer-license">
-            <span><img src="/assets/images/CCby.svg">&nbsp;&nbsp;{{resourceService.frmelmnts?.lbl?.CCbyLicense}}</span>
+            <span><img alt="{{resourceService.frmelmnts?.lbl?.CCbyLicense}}"
+                src="/assets/images/CCby.svg">&nbsp;&nbsp;{{resourceService.frmelmnts?.lbl?.CCbyLicense}}</span>
           </label>
         </div>
       </div>
     </div>
   </footer>
-  
-  <footer class="new-layout-footer" #footerFix *ngIf="layoutConfiguration" [ngClass]="{'player-fullscreen-footer': isFullScreenView}">
+
+  <footer class="new-layout-footer" #footerFix *ngIf="layoutConfiguration"
+    [ngClass]="{'player-fullscreen-footer': isFullScreenView}">
     <div class="sb-g sbt-fluid-content-bg sbt-footer-container relative">
       <div [ngClass]="FIRST_PANEL_LAYOUT"></div>
       <div [ngClass]="SECOND_PANEL_LAYOUT"></div>
@@ -85,55 +57,31 @@
         <div class="ui grid stackable px-72">
           <div class="six wide column contantDetails px-0">
             <div class="footerMenu text-left">
-              <!-- <ul class="p-0 m-0" *ngIf="!(tenantFooter | keyvalue)?.length">
-                <li class="help-center">
-                  <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')"
-                    href="{{defaultFooterConfig.helpCenterLink}}">
-                    {{resourceService.frmelmnts?.lnk?.footerHelpCenter}}
-                  </a>
-                </li>
-                <li class="contact-info">
-                  <label class="d-block contact-info-title mb-0">
-                    {{resourceService.frmelmnts?.lnk?.footerContact}}
-                  </label>
-                  <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('fresh-desk')"
-                    class="d-block mb-0" href="mailto:{{defaultFooterConfig.helpDeskEmail}}">
-                    {{defaultFooterConfig.helpDeskEmail}}
-                  </a>
-                </li> 
-              </ul>-->
-              <!-- <ul class="p-0 m-0" *ngIf="(tenantFooter | keyvalue)?.length">
-                <li class="mb-16 help-cente" *ngIf="tenantFooter?.helpCenterLink">
-                  <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')"
-                    href="{{tenantFooter?.helpCenterLink}}">
-                    {{resourceService.frmelmnts?.lnk?.footerHelpCenter}}
-                  </a>
-                </li>
-               <li class="contact-info" *ngIf="tenantFooter?.helpDeskEmail">
-                  <label class="d-block contact-info-title mb-0">
-                    {{resourceService.frmelmnts?.lnk?.footerContact}}
-                  </label>
-                  <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('fresh-desk')"
-                    class="d-block mb-0"
-                    href="mailto:{{tenantFooter?.helpDeskEmail}}">{{tenantFooter?.helpDeskEmail}}</a>
-                </li>
-              </ul> -->
+              
             </div>
             <div>
-            <label class="d-block footer-terms-info text-left font-weight-normal">
-              <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"
-                href="/term-of-use.html">{{resourceService.frmelmnts?.lnk?.footerTnC}}</a>
-              <span>| &copy; {{date | date:'yyyy'}}, {{instance}}</span>
-            </label>
-            <label class="d-block text-left fsmall">
-              <span>{{resourceService.frmelmnts?.lbl?.CCbyLicense}}&nbsp;&nbsp;<img src="/assets/images/CCby.svg"></span>
-            </label>
-          </div>
+              <label class="d-block footer-terms-info text-left font-weight-normal">
+                <a *ngIf="!isDesktopApp" appTelemetryInteract
+                  [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"
+                  href="/term-of-use.html">{{resourceService.frmelmnts?.lnk?.footerTnC}}</a>
+                <span>| &copy; {{date | date:'yyyy'}}, {{instance}}</span>
+                <a *ngIf="isDesktopApp" appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"
+                  href="{{appBaseUrl}}/term-of-use.html"
+                  target="_blank">{{resourceService.frmelmnts?.lnk?.footerTnC}}</a>
+                <span>| &copy; {{date | date:'yyyy'}}, {{instance}}</span>
+              </label>
+              <label class="d-block text-left fsmall">
+                <span>{{resourceService.frmelmnts?.lbl?.CCbyLicense}}&nbsp;&nbsp;<img
+                    alt="{{resourceService.frmelmnts?.lbl?.CCbyLicense}}" src="/assets/images/CCby.svg"></span>
+              </label>
+            </div>
           </div>
           <div class="six wide column p-0 d-flex sbt-footer-download-app">
             <div class="sbt-footer-bg relative">
               <img class="sbt-footer-bg-img cursor-pointer" src="/assets/images/footer-flower-set.svg" alt="">
-              <label class="d-block text-center font-weight-bold sbt-footer-title">{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile | interpolate:'{instance}':  instance}}</label>
+              <label
+                class="d-block text-center font-weight-bold sbt-footer-title">{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile
+                | interpolate:'{instance}': instance}}</label>
               <a class="d-block app-download" (click)="redirectToMobileApp()">
                 <img class="playStore-img cursor-pointer" src="/assets/images/google_playstore.png"
                   alt="{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile | interpolate:'{instance}':  instance}}">
@@ -144,4 +92,135 @@
       </div>
     </div>
   </footer>
+</div>
+
+<extension-point *appDesktopOnly [name]="'content-manager'"></extension-point> -->
+
+
+
+
+
+<div id="display-item" class="mat-toolbar footer-container px-2 sm:px-10 py-1 sm:py-5"
+  [ngClass]="{ 'mat-primary': !isXSmall, 'mat-primarylight': isXSmall }">
+  <div class="mat-body flex" id="display">
+    <!-- <mat-grid-list cols="2" rowHeight="133px"> -->
+    <!-- <mat-grid-tile class="font-semibold text-xs md:text-sm xl:text-sm" i18n> -->
+    <div class="col-1">
+      <p class="text-style">
+        Ekstep Foundation</p>
+      <p class="text-style"> Quorum, No. 85, 7th Cross, 4th Block</p>
+      <p class="text-style"> Koramangala, Bangalore - 560034</p>
+      <p class="text-style"> Karnataka, INDIA</p>
+      <p class="text-style"><a class="mail-style body-font-size-secondary"
+          href="mailto:space@societalplatform.org">space@societalplatform.org</a><br>
+      </p>
+    </div>
+    <!-- </mat-grid-tile> -->
+    <!-- <mat-grid-tile> -->
+    <div class="col-2">
+      <p class="policy-text-style policy-footer"> <a routerLink="/public/dataprivacy"
+          class="text-style policy font-size-14px" name="helpAndContactButtonHomePage" i18n>Data
+          Privacy</a></p>
+      <p class="policy-text-style policy-footer"><a routerLink="public/termsofuse"
+          class="text-style policy font-size-14px" name="helpAndContactButtonHomePage" i18n>Terms &
+          Conditions</a></p>
+      <p class="policy-text-style policy-footer"><a routerLink="/public/content-policy-and-community-guidelines"
+          class="text-style policy font-size-14px" name="helpAndContactButtonHomePage" i18n>Content Policy and Community
+          Guidelines
+          <!-- Process -->
+        </a></p>
+      <!-- </div> -->
+      <!-- <div class="mat-body" id="display"> -->
+      <p class="policy-text-style policy-footer"><a routerLink="/public/licencepolicy"
+          class="text-style policy font-size-14px" name="termOfUseButtonHomePage" i18n>License Policy</a>
+      </p>
+      <p class="policy-text-style policy-footer"><a routerLink="/public/assetguidelines"
+          class="text-style policy font-size-14px" name="termOfUseButtonHomePage" i18n>Asset
+          Guidelines</a>
+      </p>
+      <!-- <a routerLink="/public/contact" name="helpAndContactButtonHomePage" i18n>Contact Us</a> -->
+      <!-- </div> -->
+    </div>
+    <!-- </mat-grid-tile> -->
+    <!-- </mat-grid-list> -->
+    <div class="col-3 footer-playstore-buttons">
+      <div class="rectangle" (click)="navigateToOuterSource('https://apps.apple.com/us/app/id1530333275')">
+        <a class="flex">
+          <div class="appleIcon">
+            <img src="assets/images/appleIcon.png">
+          </div>
+          <div class="appStore-icon">
+            <p class="icon-text">Available on the</p>
+            <p class="appstore-text">App Store</p>
+          </div>
+        </a>
+      </div>
+      <div class="rectangle"
+        (click)="navigateToOuterSource('https://play.google.com/store/apps/details?id=ekstep.societal.space')">
+        <a class="flex">
+          <div class="playStore">
+            <img src="assets/images/playStore.png">
+          </div>
+          <div class="appStore-icon">
+            <p class="icon-text">Get it on</p>
+            <p class="appstore-text">Google Play</p>
+          </div>
+        </a>
+      </div>
+    </div>
   </div>
+</div>
+<div id="display-responsive" class="mat-toolbar px-2 sm:px-10 py-1 sm:py-4"
+  [ngClass]="{ 'mat-primary': !isXSmall, 'mat-primarylight': isXSmall }">
+
+  <!-- <div>
+    <p class="display-style">
+      <a routerLink="/public/dataprivacy" name="helpAndContactButtonHomePage" i18n>Data Privacy</a> |
+    </p>
+    <p class="display-style">
+      <a routerLink="public/termsofuse" name="helpAndContactButtonHomePage" i18n>Terms & Conditions</a> |
+    </p>
+    <p class="display-style">
+      <a routerLink="/public/licencepolicy" name="termOfUseButtonHomePage" i18n>License Policy</a>
+    </p>
+  </div>
+  <div>
+    <p class="display-style">
+      <a routerLink="/public/content-policy-and-community-guidelines" name="helpAndContactButtonHomePage" i18n>Content
+        Policy & Community Guidelines
+    
+      </a> |
+    </p>
+    <p class="display-style">
+      <a routerLink="/public/assetguidelines" name="termOfUseButtonHomePage" i18n>Asset Guidelines</a> |
+    </p>
+    <p class="display-style">
+      <a routerLink="/public/contact" name="helpAndContactButtonHomePage" i18n>Contact Us</a>
+    </p>
+  </div> -->
+  <div class="col-3 footer-playstore-buttons">
+    <div class="rectangle" (click)="navigateToOuterSource('https://apps.apple.com/us/app/id1530333275')">
+      <a class="flex">
+        <div class="appleIcon">
+          <img src="/assets/instances/space/banners/appleIcon.png">
+        </div>
+        <div class="appStore-icon">
+          <p class="icon-text">Available on the</p>
+          <p class="appstore-text">App Store</p>
+        </div>
+      </a>
+    </div>
+    <div class="rectangle"
+      (click)="navigateToOuterSource('https://play.google.com/store/apps/details?id=ekstep.societal.space')">
+      <a class="flex">
+        <div class="playStore">
+          <img src="/assets/instances/space/banners/playStore.png">
+        </div>
+        <div class="appStore-icon">
+          <p class="icon-text">Get it on</p>
+          <p class="appstore-text">Google Play</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>

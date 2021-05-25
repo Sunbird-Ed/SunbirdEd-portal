@@ -19,7 +19,7 @@
         </div>
         <div class="seven wide column p-0 d-flex flex-jc-flex-end flex-ai-center">
           <!--Hamburger Icon-->
-<!--
+          <!--
           <i class="large bars icon link primary-color mobile only" (click)="showSideBar()" tabindex="0"></i>
 -->
           <!--/Hamburger Icon-->
@@ -31,7 +31,7 @@
           <a class="profile-avtar p-0" tabindex="0">
             <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
               <div class="" name="Guest" *ngIf='!userProfile' (click)="toggleSideMenu(true)"><img
-                src="./assets/images/profile-icon.svg" alt="Guest User" width="48"></div>
+                  src="./assets/images/profile-icon.svg" alt="Guest User" width="48"></div>
               <ngx-avatar *ngIf='userProfile' (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle" [size]="38"
                 initialsSize="1" name="{{userProfile?.firstName}}">
               </ngx-avatar>
@@ -40,6 +40,9 @@
           <!--/Avtar Dropdown-->
         </div>
       </div>
+    </div>
+    <div>
+      <img class="w-100" src="{{'assets/images/dashboard_header_1920.png'}} " />
     </div>
     <!--Header White Section-->
     <!--Header Blue Section-->
@@ -81,7 +84,8 @@
               <img src="assets/images/search-icon.svg" alt="Search Icon" class="search icon">
               <input type="text" id="keyword" name="filter_search" class="sb-search-input"
                 title="{{resourceService?.frmelmnts?.prmpt?.search}}" [(ngModel)]='queryParam.key'
-                placeholder="{{resourceService?.frmelmnts?.prmpt?.searchOrQr}}" (keyup.enter)="onEnter(queryParam.key)" />
+                placeholder="{{resourceService?.frmelmnts?.prmpt?.searchOrQr}}"
+                (keyup.enter)="onEnter(queryParam.key)" />
               <!-- <i class="close icon"></i> [(ngModel)]="key"
                 <div class="sb-loader"></div> -->
             </div>
@@ -128,7 +132,8 @@
   </div>
 </div>
 
-<div *ngIf="layoutConfiguration" class="sbt-sticky sbt-sticky-topbar" [ngClass]="{'player-fullscreen-header': isFullScreenView}">
+<div *ngIf="layoutConfiguration" class="sbt-sticky sbt-sticky-topbar"
+  [ngClass]="{'player-fullscreen-header': isFullScreenView}">
   <div class="sbt-header sbt-fluid-header-bg">
     <div class="sbt-container">
       <!--Header section-->
@@ -146,8 +151,8 @@
               <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
                 <div class="sbt-guest-profile" name="Guest" *ngIf='!userProfile' (click)="toggleSideMenu(true)"><img
                     src="./assets/images/profile-icon.svg" alt="Guest User" width="48"></div>
-                <ngx-avatar *ngIf='userProfile' (click)="toggleSideMenu(true)" [style]="SbtavtarDesktopStyle" [size]="48"
-                  initialsSize="1" name="{{userProfile?.firstName}}">
+                <ngx-avatar *ngIf='userProfile' (click)="toggleSideMenu(true)" [style]="SbtavtarDesktopStyle"
+                  [size]="48" initialsSize="1" name="{{userProfile?.firstName}}">
                 </ngx-avatar>
               </div>
             </a>
@@ -174,8 +179,8 @@
               <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
                 <div class="sbt-guest-profile" name="Guest" *ngIf='!userProfile' (click)="toggleSideMenu(true)"><img
                     src="./assets/images/profile-icon.svg" alt="Guest User" width="48"></div>
-                <ngx-avatar *ngIf='userProfile' (click)="toggleSideMenu(true)" [style]="SbtavtarDesktopStyle" [size]="48"
-                  initialsSize="1" name="{{userProfile?.firstName}}">
+                <ngx-avatar *ngIf='userProfile' (click)="toggleSideMenu(true)" [style]="SbtavtarDesktopStyle"
+                  [size]="48" initialsSize="1" name="{{userProfile?.firstName}}">
                 </ngx-avatar>
               </div>
             </a>
@@ -194,7 +199,9 @@
     </div>
   </div>
 </div>
-
+<div *ngIf="layoutConfiguration">
+  <img class="w-100 mb-16" src="{{'assets/images/dashboard_header_1920.png'}} " />
+</div>
 
 <div class="overlay-sidebar" *ngIf="showSideMenu">
   <div class="overlay-sidebar__menu">
@@ -252,7 +259,8 @@
         </div>
         <ul class="profile__actions__list pl-0">
           <div class="mobile only" *ngIf="!layoutConfiguration">
-            <app-content-type [layoutConfiguration]="layoutConfiguration" (closeSideMenu)="toggleSideMenu(false)"></app-content-type>
+            <app-content-type [layoutConfiguration]="layoutConfiguration" (closeSideMenu)="toggleSideMenu(false)">
+            </app-content-type>
           </div>
 
           <li class="list-item" (click)="toggleSideMenu(false)" routerLink="profile">
@@ -262,7 +270,8 @@
             {{resourceService.frmelmnts?.lnk?.profile}}
           </li>
           <li class="list-item" *ngIf='permissionService.permissionAvailable' appPermission
-            [permission]='adminDashboard' (click)="toggleSideMenu(false)" [routerLink]="reportsListVersion === 'v2' ? 'dashBoard/reports': 'dashBoard/organization' ">
+            [permission]='adminDashboard' (click)="toggleSideMenu(false)"
+            [routerLink]="reportsListVersion === 'v2' ? 'dashBoard/reports': 'dashBoard/organization' ">
             <i class="icon-svg icon-svg--sm icon-dashboard mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#dashboard"></use>
               </svg></i>
@@ -287,9 +296,9 @@
             {{resourceService.frmelmnts?.lbl?.manage}}
           </li>
 
-          <li class="list-item" (click)="toggleSideMenu(false)"
-            [class.active]="router.isActive(routerLinks?.groups)" *ngIf="!router.isActive('', true)"
-            [routerLink]="[navigateToGroups()]" appTelemetryInteract [telemetryInteractEdata]="myGroupIntractEData">
+          <li class="list-item" (click)="toggleSideMenu(false)" [class.active]="router.isActive(routerLinks?.groups)"
+            *ngIf="!router.isActive('', true)" [routerLink]="[navigateToGroups()]" appTelemetryInteract
+            [telemetryInteractEdata]="myGroupIntractEData">
             <i class="icon-svg icon-svg--sm icon-groups mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#groups"></use>
               </svg></i>
@@ -306,16 +315,16 @@
             {{resourceService?.frmelmnts?.tab?.workspace}}
           </li>
           <li class="list-item" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata"
-             (click)="toggleSideMenu(false);navigate('/faq')">
-              <i class="icon-svg icon-svg--sm icon-help mr-8"><svg class="icon icon-svg--primary">
+            (click)="toggleSideMenu(false);navigate('/faq')">
+            <i class="icon-svg icon-svg--sm icon-help mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#help"></use>
               </svg></i>
             {{resourceService?.frmelmnts?.tab?.help}}
           </li>
           <li class="list-item" (click)="toggleSideMenu(false);switchLayout()">
             <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
-              <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
-            </svg></i>
+                <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
+              </svg></i>
             <span *ngIf="layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToOldLayout}}</span>
             <span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToJoyLayout}}</span>
             <span class="group__type mx-8">New</span>
@@ -336,8 +345,8 @@
           <ul class="profile__actions__list pl-0">
 
             <div class="mobile only" *ngIf="!layoutConfiguration">
-              <app-content-type [layoutConfiguration]="layoutConfiguration"
-                                (closeSideMenu)="toggleSideMenu(false)"></app-content-type>
+              <app-content-type [layoutConfiguration]="layoutConfiguration" (closeSideMenu)="toggleSideMenu(false)">
+              </app-content-type>
             </div>
 
             <li class="list-item" (click)="toggleSideMenu(false)" [class.active]="router.isActive(routerLinks?.explore)"
@@ -350,25 +359,25 @@
             </li>
             <li class="list-item" (click)="toggleSideMenu(false);switchLayout()">
               <i class="icon-svg icon-svg--sm icon-login mr-8"><svg class="icon icon-svg--primary">
-                <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
-              </svg></i>
+                  <use xlink:href="./assets/images/sprite.svg#switchlayout"></use>
+                </svg></i>
               <span *ngIf="layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToOldLayout}}</span>
               <span *ngIf="!layoutConfiguration">{{resourceService?.frmelmnts?.lbl?.switchToJoyLayout}}</span>
               <span class="group__type mx-8">New</span>
             </li>
             <li class="list-item" (click)="toggleSideMenu(false);manageLocation()">
               <i class="icon-svg icon-svg--sm icon-manage mr-8"><svg class="icon icon-svg--primary">
-                <use xlink:href="./assets/images/sprite.svg#manage"></use>
-              </svg></i>
+                  <use xlink:href="./assets/images/sprite.svg#manage"></use>
+                </svg></i>
               <span>{{resourceService?.frmelmnts?.lbl?.manageLocation}}</span>
             </li>
             <li class="list-item" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata"
-             (click)="toggleSideMenu(false);navigate('/faq')">
+              (click)="toggleSideMenu(false);navigate('/faq')">
               <i class="icon-svg icon-svg--sm icon-help mr-8"><svg class="icon icon-svg--primary">
-                <use xlink:href="./assets/images/sprite.svg#help"></use>
-              </svg></i>
-            {{resourceService?.frmelmnts?.tab?.help}}
-          </li>
+                  <use xlink:href="./assets/images/sprite.svg#help"></use>
+                </svg></i>
+              {{resourceService?.frmelmnts?.tab?.help}}
+            </li>
             <li class="list-item p-0" (click)="toggleSideMenu(false)" appTelemetryInteract
               [telemetryInteractEdata]="signInIntractEdata">
               <a href={{hrefPath}} class="d-flex flex-ai-center list-item-a">
@@ -386,7 +395,7 @@
 </div>
 
 <!-- Manage location for an anonymous user -->
-<app-onboarding-location  *ngIf="showLocationPopup" [tenantInfo]="locationTenantInfo"
-[isCustodianOrgUser]="isCustodianUser" [deviceProfile]="deviceProfile" (close)="locationSubmit()">
+<app-onboarding-location *ngIf="showLocationPopup" [tenantInfo]="locationTenantInfo"
+  [isCustodianOrgUser]="isCustodianUser" [deviceProfile]="deviceProfile" (close)="locationSubmit()">
 </app-onboarding-location>
 <!-- Manage location for an anonymous user -->

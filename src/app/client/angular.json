@@ -12,6 +12,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "../dist",
+            "preserveSymlinks": true,
             "index": "src/index.html",
             "main": "src/main.ts",
             "tsConfig": "src/tsconfig.app.json",
@@ -187,7 +188,6 @@
               "src/app/client/src/**/*.spec.data.ts",
               "src/app/client/src/**/*.module.ts",
               "src/app/modules/cbse-program/**/**"
-
             ]
           }
         },
