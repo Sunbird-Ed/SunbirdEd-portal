@@ -56,7 +56,7 @@
                             <sui-multi-select [hasLabels]="false" [(ngModel)]="selectedNgModels['publisher']"
                                 (selectedOptionsChange)="filterChangeEvent.next({ event: $event, type: 'publisher'})"
                                 defaultSelectionText={{resourceService?.frmelmnts?.lbl?.publishedBy}}
-                                zeroSelectionText={{resourceService.frmelmnts.lbl.Select}}
+                                zeroSelectionText={{resourceService?.frmelmnts?.lbl?.Select}}
                                 class="selection sbt-dropdown-tick text-cencapitalize"
                                 [ngClass]="!layoutConfiguration ? 'state-selection' : 'sbt-dropdown sbt-dropdown-bold sbt-dropdown--sm sbt-purple--lbg'">
                                 <div

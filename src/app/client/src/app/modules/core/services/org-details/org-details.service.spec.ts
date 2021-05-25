@@ -111,7 +111,7 @@ describe('OrgDetailsService', () => {
 
   it('Call setOrgDetailsToRequestHeaders', () => {
     const service = TestBed.get(OrgDetailsService);
-    service.orgDetails = { rootOrgId: '12345' };
+    service.orgDetails = { id: '12345' };
     const learnerService = TestBed.get(LearnerService);
     service.setOrgDetailsToRequestHeaders();
     expect(learnerService.rootOrgId).toEqual('12345');

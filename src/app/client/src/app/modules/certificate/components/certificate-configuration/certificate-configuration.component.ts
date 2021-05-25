@@ -144,17 +144,17 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   initializeLabels() {
     this.config = {
       select: {
-        label: this.resourceService.frmelmnts.lbl.Select,
+        label: _.get(this.resourceService, 'frmelmnts.lbl.Select'),
         name: 'Select',
         show: true
       },
       preview: {
-        label: this.resourceService.frmelmnts.cert.lbl.preview,
+        label: _.get(this.resourceService, 'frmelmnts.cert.lbl.preview'),
         name: 'Preview',
         show: true
       },
       remove: {
-        label: this.resourceService.frmelmnts.cert.lbl.unselect,
+        label: _.get(this.resourceService, 'frmelmnts.cert.lbl.unselect'),
         name: 'Remove',
         show: false
       }
@@ -323,9 +323,9 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     this.certRegService.addCertificateTemplate(request).subscribe(data => {
       this.isTemplateChanged = false;
       if (this.configurationMode === 'add') {
-        this.toasterService.success(this.resourceService.frmelmnts.cert.lbl.certAddSuccess);
+        this.toasterService.success(_.get(this.resourceService, 'frmelmnts.cert.lbl.certAddSuccess'));
       } else {
-        this.toasterService.success(this.resourceService.frmelmnts.cert.lbl.certUpdateSuccess);
+        this.toasterService.success(_.get(this.resourceService, 'frmelmnts.cert.lbl.certUpdateSuccess'));
       }
       this.certificateService.getBatchDetails(_.get(this.queryParams, 'batchId')).subscribe(batchDetails => {
         this.batchDetails = _.get(batchDetails, 'result.response');
@@ -336,9 +336,9 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       });
     }, error => {
       if (this.configurationMode === 'add') {
-        this.toasterService.error(this.resourceService.frmelmnts.cert.lbl.certAddError);
+        this.toasterService.error(_.get(this.resourceService, 'frmelmnts.cert.lbl.certAddError'));
       } else {
-        this.toasterService.error(this.resourceService.frmelmnts.cert.lbl.certEditError);
+        this.toasterService.error(_.get(this.resourceService, 'frmelmnts.cert.lbl.certEditError'));
       }
     });
   }
