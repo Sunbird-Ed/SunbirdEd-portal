@@ -52,6 +52,15 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     public searchAll;
     public allMimeType;
     showBatchInfo: boolean;
+
+    public newContentList: any;
+    public newContentList1: any;
+    public filteredContent: any;
+    public resultData: any;
+    public cardCount = 3;
+    maxCardCount = 5;
+    viewAllEnabled = []
+
     selectedCourseBatches: { onGoingBatchCount: any; expiredBatchCount: any; openBatch: any; inviteOnlyBatch: any; courseId: any; };
     constructor(public searchService: SearchService, public router: Router, private playerService: PlayerService,
         public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
@@ -59,7 +68,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         public configService: ConfigService, public utilService: UtilService,
         public navigationHelperService: NavigationHelperService, public userService: UserService,
         public cacheService: CacheService, public frameworkService: FrameworkService, private coursesService: CoursesService,
-        public navigationhelperService: NavigationHelperService, public layoutService: LayoutService,  public orgDetailsService: OrgDetailsService) {
+        public navigationhelperService: NavigationHelperService, public layoutService: LayoutService, public orgDetailsService: OrgDetailsService) {
         this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
         this.filterType = this.configService.appConfig.library.filterType;
         this.redirectUrl = this.configService.appConfig.library.searchPageredirectUrl;
@@ -82,7 +91,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         this.initLayout();
         this.frameworkService.channelData$.pipe(takeUntil(this.unsubscribe$)).subscribe((channelData) => {
             if (!channelData.err) {
-              this.frameworkId = _.get(channelData, 'channelData.defaultFramework');
+                this.frameworkId = _.get(channelData, 'channelData.defaultFramework');
             }
         });
         this.userService.userData$.subscribe(userData => {
@@ -96,7 +105,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
                 this.fetchContentOnParamChange();
                 this.setNoResultMessage();
             });
-            this.searchAll = this.resourceService.frmelmnts.lbl.allContent;
+        this.searchAll = this.resourceService.frmelmnts.lbl.allContent;
     }
     initLayout() {
         this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -121,17 +130,17 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     public getFilters(filters) {
         const filterData = filters && filters.filters || {};
         if (filterData.channel && this.facets) {
-          const channelIds = [];
-          const facetsData = _.find(this.facets, { 'name': 'channel' });
-          _.forEach(filterData.channel, (value, index) => {
-            const data = _.find(facetsData.values, { 'identifier': value });
-            if (data) {
-              channelIds.push(data.name);
+            const channelIds = [];
+            const facetsData = _.find(this.facets, { 'name': 'channel' });
+            _.forEach(filterData.channel, (value, index) => {
+                const data = _.find(facetsData.values, { 'identifier': value });
+                if (data) {
+                    channelIds.push(data.name);
+                }
+            });
+            if (channelIds && Array.isArray(channelIds) && channelIds.length > 0) {
+                filterData.channel = channelIds;
             }
-          });
-          if (channelIds && Array.isArray(channelIds) && channelIds.length > 0) {
-            filterData.channel = channelIds;
-          }
         }
         this.selectedFilters = filterData;
         const defaultFilters = _.reduce(filters, (collector: any, element) => {
@@ -148,7 +157,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
                 tap(data => this.inView({ inview: [] })), // trigger pageexit if last filter resulted 0 contents
                 delay(10), // to trigger pageexit telemetry event
                 tap(data => {
-                this.setTelemetryData();
+                    this.setTelemetryData();
                 }),
                 map(result => ({ params: { pageNumber: Number(result[0].pageNumber) }, queryParams: result[1] })),
                 takeUntil(this.unsubscribe$)
@@ -201,24 +210,24 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
             option.params.framework = this.frameworkId;
         }
         this.searchService.contentSearch(option)
-        .pipe(
-            mergeMap(data => {
-              const channelFacet = _.find(_.get(data, 'result.facets') || [], facet => _.get(facet, 'name') === 'channel')
-              if(channelFacet){
-                const rootOrgIds =  this.processOrgData(_.get(channelFacet, 'values'));
-                return this.orgDetailsService.searchOrgDetails({
-                  filters: { isRootOrg: true, rootOrgId: rootOrgIds },
-                  fields: ['slug', 'identifier', 'orgName']
-                }).pipe(
-                  mergeMap(orgDetails => {
-                    channelFacet.values = _.get(orgDetails, 'content');
+            .pipe(
+                mergeMap(data => {
+                    const channelFacet = _.find(_.get(data, 'result.facets') || [], facet => _.get(facet, 'name') === 'channel')
+                    if (channelFacet) {
+                        const rootOrgIds = this.processOrgData(_.get(channelFacet, 'values'));
+                        return this.orgDetailsService.searchOrgDetails({
+                            filters: { isRootOrg: true, rootOrgId: rootOrgIds },
+                            fields: ['slug', 'identifier', 'orgName']
+                        }).pipe(
+                            mergeMap(orgDetails => {
+                                channelFacet.values = _.get(orgDetails, 'content');
+                                return of(data);
+                            })
+                        )
+                    }
                     return of(data);
-                  })
-                ) 
-              }
-              return of(data);
-            })
-          )
+                })
+            )
             .subscribe(data => {
                 this.showLoader = false;
                 this.facets = this.searchService.updateFacetsData(_.get(data, 'result.facets'));
@@ -226,6 +235,26 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
                 this.paginationDetails = this.paginationService.getPager(data.result.count, this.paginationDetails.currentPage,
                     this.configService.appConfig.SEARCH.PAGE_LIMIT);
                 this.contentList = _.get(data, 'result.content') ? this.getOrderedData(_.get(data, 'result.content')) : [];
+
+
+                const newContentList = this.contentList.map((data1) => ({ contentType: data1.contentType, content: [data1] }));
+                let result = [];
+                newContentList.forEach((elem, i) => {
+                    let match = result.find(r => r.contentType === elem.contentType);
+                    if (match && result) {
+                        result.forEach(data => {
+                            if (data && (data.contentType === elem.contentType)) {
+                                data.content.push(...elem.content)
+                            }
+                        })
+                    } else {
+                        result.push(elem);
+                    }
+                });
+                console.log("pushedData", result);
+                this.resultData = result;
+
+
                 this.totalCount = data.result.count;
             }, err => {
                 this.showLoader = false;
@@ -291,9 +320,9 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
             }
         });
         if (this.telemetryImpression) {
-        this.telemetryImpression.edata.visits = this.inViewLogs;
-        this.telemetryImpression.edata.subtype = 'pageexit';
-        this.telemetryImpression = Object.assign({}, this.telemetryImpression);
+            this.telemetryImpression.edata.visits = this.inViewLogs;
+            this.telemetryImpression.edata.subtype = 'pageexit';
+            this.telemetryImpression = Object.assign({}, this.telemetryImpression);
         }
     }
     public playContent(event) {
@@ -309,7 +338,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: identifier };
         this.showBatchInfo = true;
     }
-    ngAfterViewInit () {
+    ngAfterViewInit() {
         setTimeout(() => {
             this.telemetryImpression = {
                 context: {
@@ -331,28 +360,43 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     }
     private setNoResultMessage() {
         this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$))
-          .subscribe(item => {
-            let title = this.resourceService.frmelmnts.lbl.noBookfoundTitle;
-            if(this.queryParams.key) {
-              const title_part1 = _.replace(this.resourceService.frmelmnts.lbl.desktop.yourSearch, '{key}', this.queryParams.key);
-              const title_part2 = this.resourceService.frmelmnts.lbl.desktop.notMatchContent;
-              title = title_part1 + ' ' + title_part2;
-            }
-            this.noResultMessage = {
-              'title': title,
-              'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
-              'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
-              'showExploreContentButton': false
-            };
-          });
-      }
-      processOrgData(channels) {
+            .subscribe(item => {
+                let title = this.resourceService.frmelmnts.lbl.noBookfoundTitle;
+                if (this.queryParams.key) {
+                    const title_part1 = _.replace(this.resourceService.frmelmnts.lbl.desktop.yourSearch, '{key}', this.queryParams.key);
+                    const title_part2 = this.resourceService.frmelmnts.lbl.desktop.notMatchContent;
+                    title = title_part1 + ' ' + title_part2;
+                }
+                this.noResultMessage = {
+                    'title': title,
+                    'subTitle': this.resourceService.frmelmnts.lbl.noBookfoundSubTitle,
+                    'buttonText': this.resourceService.frmelmnts.lbl.noBookfoundButtonText,
+                    'showExploreContentButton': false
+                };
+            });
+    }
+    processOrgData(channels) {
         const rootOrgIds = [];
         _.forEach(channels, (channelData) => {
-          if (channelData.name) {
-            rootOrgIds.push(channelData.name);
-          }
+            if (channelData.name) {
+                rootOrgIds.push(channelData.name);
+            }
         });
         return rootOrgIds;
-      }
+    }
+
+
+
+
+    viewAll(content) {
+        if (content.contentType && this.viewAllEnabled && !this.viewAllEnabled.includes(content.contentType)) {
+            this.viewAllEnabled.push(content.contentType)
+        }
+    }
+    getMaxCardCount(contentData) {
+        if (contentData && this.viewAllEnabled.length && this.viewAllEnabled.includes(contentData.contentType)) {
+            return contentData.length
+        }
+        return this.maxCardCount
+    }
 }
