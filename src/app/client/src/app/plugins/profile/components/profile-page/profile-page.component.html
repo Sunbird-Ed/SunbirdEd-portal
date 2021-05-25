@@ -411,7 +411,7 @@
 </div>
 </div>
 <app-popup *ngIf="showEdit" #profileModal [formInput]="userFrameWork" [showCloseIcon]="true" [isClosable]="true"
-  [buttonLabel]="resourceService.frmelmnts.btn.submit" (submit)="updateProfile($event)" (close)="showEdit = !showEdit">
+  [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" (submit)="updateProfile($event)" (close)="showEdit = !showEdit">
 </app-popup>
 <app-update-contact-details *ngIf="showContactPopup" (close)="showContactPopup = !showContactPopup"
   [contactType]="contactType"></app-update-contact-details>

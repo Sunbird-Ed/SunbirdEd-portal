@@ -138,8 +138,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
     // Set consetnt pop up configuration here
     this.consentConfig = {
-      tncLink: this.resourceService.frmelmnts.lbl.tncLabelLink,
-      tncText: this.resourceService.frmelmnts.lbl.agreeToShareDetails
+      tncLink: _.get(this.resourceService, 'frmelmnts.lbl.tncLabelLink'),
+      tncText: _.get(this.resourceService, 'frmelmnts.lbl.agreeToShareDetails')
     };
     this.initLayout();
     this.courseProgressService.courseProgressData.pipe(
@@ -360,7 +360,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       id: id
     };
     if (_.get(event, 'event.isDisabled')) {
-      return this.toasterService.error(this.resourceService.frmelmnts.lbl.selfAssessMaxAttempt);
+      return this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.selfAssessMaxAttempt'));
     } else if (_.get(event, 'event.isLastAttempt')) {
       this.showLastAttemptsModal = true;
     } else {
