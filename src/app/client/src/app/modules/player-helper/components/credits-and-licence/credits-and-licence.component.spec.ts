@@ -47,9 +47,4 @@ describe('CreditsAndLicenceComponent', () => {
   it('should check the content data is defined or not ', () => {
     expect(component.contentData).toBeTruthy();
   });
-  it('should check the attributions', () => {
-    component.contentData = contentInformation.contentData;
-    component.ngOnInit();
-    expect(component.attributions).toEqual(contentInformation.contentData.attributions);
-  });
 });
