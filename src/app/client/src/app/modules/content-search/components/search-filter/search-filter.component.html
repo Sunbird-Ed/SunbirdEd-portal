@@ -104,11 +104,11 @@
 
 <div *ngIf="isLayoutAvailable()" class="sbt-filter" tabindex="-1">
 
-    <div class="sbt-filter-switcher-container cursor-pointer mobile only" tabindex="0" (click)="isOpen = !isOpen">
+    <div class="sbt-filter-switcher-container cursor-pointer mobile only" (click)="isOpen = !isOpen">
         <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
         <div class="sbt-filter-text">{{resourceService.frmelmnts?.lbl?.filters | translate}}</div>
     </div>
-    <div class="sbt-filter-switcher-container cursor-pointer computer only" tabindex="0">
+    <div class="sbt-filter-switcher-container cursor-pointer computer only">
         <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
         <div class="sbt-filter-text">{{resourceService.frmelmnts?.lbl?.filters | translate}}</div>
     </div>
