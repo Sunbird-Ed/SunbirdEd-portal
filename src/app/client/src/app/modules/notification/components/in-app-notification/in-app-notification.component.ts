@@ -35,11 +35,11 @@ export class InAppNotificationComponent implements OnInit, OnDestroy {
     private connectionService: ConnectionService
   ) {
     this.inAppNotificationConfig = {
-      title: this.resourceService.frmelmnts.lbl.notification,
-      subTitle: this.resourceService.frmelmnts.lbl.newNotification,
-      clearText: this.resourceService.frmelmnts.btn.clear,
-      moreText: this.resourceService.frmelmnts.btn.seeMore,
-      lessText: this.resourceService.frmelmnts.btn.seeLess,
+      title: _.get(this.resourceService, 'frmelmnts.lbl.notification'),
+      subTitle: _.get(this.resourceService, 'frmelmnts.lbl.newNotification'),
+      clearText: _.get(this.resourceService, 'frmelmnts.btn.clear'),
+      moreText: _.get(this.resourceService, 'frmelmnts.btn.seeMore'),
+      lessText: _.get(this.resourceService, 'frmelmnts.btn.seeLess'),
       minNotificationViewCount: 5
     };
   }

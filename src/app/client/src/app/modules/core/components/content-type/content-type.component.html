@@ -37,13 +37,13 @@
 <ng-container *ngIf="isLayoutAvailable()">
   <div class="sb-linkmenu m-0 d-flex flex-ai-center">
     <ng-container *ngFor="let contentType of contentTypes">
-      <a *ngIf="contentType.isEnabled && contentType?.isOnlineOnly" (click)="showContentType(contentType)" appOnlineOnly
+      <a *ngIf="contentType.isEnabled && contentType?.isOnlineOnly" tabindex="0" (click)="showContentType(contentType)" appOnlineOnly
          [ngClass]="{'active': selectedContentType === contentType.contentType}"
          class="item {{'item--' + getIcon(contentType)}}">
         <span [ngClass]="'sb-icon sb-icon--sm mr-8 sb-icon__'+ getIcon(contentType)"></span>
         {{getTitle(contentType)}}
       </a>
-      <a *ngIf="contentType.isEnabled && !contentType?.isOnlineOnly && isDesktopApp" (click)="showContentType(contentType)"
+      <a *ngIf="contentType.isEnabled && !contentType?.isOnlineOnly && isDesktopApp" tabindex="0" (click)="showContentType(contentType)"
         [ngClass]="{'active': selectedContentType === contentType.contentType}"
         class="item {{'item--' + getIcon(contentType)}}">
         <span [ngClass]="'sb-icon sb-icon--sm mr-8 sb-icon__'+ getIcon(contentType)"></span>
