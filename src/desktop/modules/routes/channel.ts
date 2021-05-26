@@ -13,7 +13,7 @@ export default (app, proxyURL) => {
                 return `/api/channel/v1/read/${req.params.id}`;
             },
             proxyErrorHandler: function (err, res, next) {
-                standardLog.warn({ id: 'CHANNEL_FETCH_FAILED', message: 'Error while getting channel data from online', error: err });
+                standardLog.warn({ id: 'CHANNEL_READ_FAILED', message: 'Error while getting channel data from online', error: err });
                 next();
             },
             userResDecorator: function (proxyRes, proxyResData) {

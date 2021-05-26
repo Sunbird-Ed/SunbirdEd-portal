@@ -103,7 +103,7 @@
     }
 
     &__panel-header__title {
-      font-size: $font-size-normal;
+      font-size: var(--font-size-base);
       font-weight: normal;
       color: var(--primary-400);
       margin: 0px;
@@ -133,7 +133,7 @@
   padding: calculateRem(16px);
 
   h4 {
-    font-size: $font-size-xs;
+    font-size: var(--font-size-xs);
     color: var(--gray-800);
     margin-left: calculateRem(16px);
   }
@@ -152,7 +152,7 @@
     min-height: calculateRem(56px);
 
     h4 {
-      font-size: $font-size-sm;
+      font-size: var(--font-size-sm);
       color: var(--primary-400);
       margin: 0px;
       padding: 0px;
@@ -185,7 +185,7 @@
 
   &__title {
     //@extend .sbaccordion__panel-header__tilte;
-    font-size: $font-size-normal;
+    font-size: var(--font-size-base);
     font-weight: bold;
     color: var(--primary-400);
     margin: 0px;
@@ -198,14 +198,14 @@
   }
 
   &__topics__title {
-    font-size: $font-size-normal;
+    font-size: var(--font-size-base);
     margin: 0px 0px calculateRem(8px) 0px;
     color: var(--primary-400);
     padding: 0px calculateRem(16px);
   }
 
   &__topic {
-    font-size: $font-size-sm;
+    font-size: var(--font-size-sm);
     padding: calculateRem(8px) calculateRem(32px);
     margin: 0px;
     color: var(--primary-400);

@@ -32,32 +32,9 @@
     }
   }
 
-  .chapter-box {
-    background: white;
-    padding: 1rem 0.5rem;
-    border-radius: 1.5rem;
-    box-shadow: var(--sbt-box-shadow-6px) !important;
-    border-bottom: .0625rem solid var(--gray-100);
-  }
-
-  .sb-no-activity-found {
-    background: var(--sbt-compt-bg) !important;
-    border-radius: var(--sbt-bradius-24);
-    padding: 1rem;
-  }
-
-  .label {
-    width: -webkit-fill-available;
-  }
-
   .group-name {
     font-family: Noto Sans Regular;
     line-height: 24px;
     color: #024F9D;
     font-size: 1.25rem;
-  }
-
-  .sbt-black {
-    background: var(--sbt-green-bg);
-    color: var(--sb-language-dropdown-item);
   }

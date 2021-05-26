@@ -125,7 +125,7 @@
   font-size: calculateRem(12px);
   line-height: 1.15;
   .qrcode {
-    color: $primary-color !important;
+    color: var(--primary-color) !important;
     font-size: 1.3em;
   }
 }
@@ -173,11 +173,11 @@
   .ui.menu .language-selector {
     font-size: 0.86rem;
     @include respond-above(md) {
-      color: $white-color;
+      color: var(--white);
     }
     .ui.dropdown {
-      border: calculateRem(1px) solid $gray-100;
-      color: $primary-color;
+      border: calculateRem(1px) solid var(--gray-100);
+      color: var(--primary-color);
       font-size: 0.86rem;
       border-radius: calculateRem(3px);
       font-weight: bold;
@@ -186,7 +186,7 @@
         margin: 0 0 0 calculateRem(8px);
       }
       @media screen and (min-width: 1024px) {
-        color: $white-color;
+        color: var(--white);
         border: 0;
         font-weight: 500;
         padding: calculateRem(8px) 0 calculateRem(8px) calculateRem(8px);
@@ -204,7 +204,7 @@
           }
         }
         & > .active.item {
-          color: $primary-color !important;
+          color: var(--primary-color) !important;
           background: var(--sb-language-dropdown-item-active) !important;
         }
       }
@@ -213,7 +213,7 @@
   *[dir="rtl"] {
     .ui.menu .language-selector .ui.dropdown {
       & > .dropdown.icon {
-        margin: 0 $base-block-space 0 0;
+        margin: 0 calculateRem(8px) 0 0;
       }
       @media screen and (min-width: 1024px) {
         padding: calculateRem(8px) calculateRem(8px) calculateRem(8px) 0;

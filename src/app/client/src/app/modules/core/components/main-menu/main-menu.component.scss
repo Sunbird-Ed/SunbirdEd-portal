@@ -11,7 +11,7 @@
 }
 
 .close {
-  font-size: $h4-font-size;
+  font-size: var(--h4-font-size);
   color: var(--primary-color);
 }
 
@@ -22,7 +22,6 @@
 .ui.menu {  
   &.text {
     .item {
-      // padding: $base-block-space $base-block-space*3 $base-block-space 0;
       color: var(--gray-400);
       &:hover {
         color: var(--primary-color);
@@ -43,7 +42,7 @@
   &.vertical {
     .active.item {
       color: var(--primary-color);
-      font-weight: $font-weight-bold;
+      font-weight: var(--font-weight-bold);
       background: none;
     }
   }
@@ -53,7 +52,7 @@
   position: fixed !important;
   bottom: 0;
   width: 100%;
-  font-weight: $font-weight-bold !important;
+  font-weight: var(--font-weight-bold) !important;
   color: var(--primary-color) !important;
   background-color: var(--white);
   border-top: calculateRem(1px) solid var(--gray-100) !important;

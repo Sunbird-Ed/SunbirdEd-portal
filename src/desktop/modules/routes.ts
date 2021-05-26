@@ -1,4 +1,3 @@
-import { logger } from "@project-sunbird/logger";
 import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import * as _ from "lodash";
 import { Inject } from "typescript-ioc";
@@ -22,6 +21,7 @@ import { manifest } from "./manifest";
 import Response from './utils/response';
 import { addPerfLogForAPICall } from './loaders/logger';
 import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
+import groups from "./routes/groups";
 const proxy = require('express-http-proxy');
 
 export class Router {
@@ -42,10 +42,10 @@ export class Router {
         const elapsedTime =
           (elapsedHrTime[0] * 1000 + elapsedHrTime[1] / 1e6) / 1000;
         if (elapsedTime > 1) {
-          logger.warn(
-            `${req.headers["X-msgid"] || ""} path: ${req.path
-            } took ${elapsedTime}s`,
-          );
+          this.standardLog.warn({
+            id: 'ROUTES_REQUEST_COMPLETED',
+            message: `${req.headers["X-msgid"] || ""} path: ${req.path} took ${elapsedTime}s`
+          });
         }
 
         if (res.statusCode >= 200 && res.statusCode <= 300) {
@@ -174,7 +174,7 @@ export class Router {
     courseRoutes(app, proxyUrl);
     telemetryRoutes(app)
     playerProxyRoutes(app, proxyUrl);
-
+    groups(app, proxyUrl);
     app.all("*", (req, res) => res.redirect("/"));
   }
 }

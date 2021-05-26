@@ -1,11 +1,4 @@
 /* Search Component */
-$sb-search-box-shadow-color: var(--primary-300);
-$sb-search-input-font-size: $font-size-sm;
-$sb-search-border-color: var(--primary-300);
-$sb-search-btn-bg: var(--primary-100);
-$sb-search-btn-font-size: $font-size-sm;
-$sb-search-close-btn-bg: var(--blue);
-$sb-search-close-btn-color: var(--white);
 .sb-search-box {
   display: flex;
   align-items: center;
@@ -27,7 +20,7 @@ $sb-search-close-btn-color: var(--white);
   }
 
   &:focus-within {
-    box-shadow: 0px 0px calculateRem(2px) calculateRem(1px) $sb-search-box-shadow-color;
+    box-shadow: 0px 0px calculateRem(2px) calculateRem(1px) var(--primary-300);
     border-radius: calculateRem(3px);
   }
 
@@ -60,10 +53,10 @@ $sb-search-close-btn-color: var(--white);
 
   .sb-search-input {
     width: 100%;
-    font-size: $sb-search-input-font-size;
+    font-size: var(--font-size-sm);
     min-height: calculateRem(32px);
     border: 0;
-    border-right: calculateRem(0.5px) solid $sb-search-border-color;
+    border-right: calculateRem(0.5px) solid var(--primary-300);
     outline: 0;
     border-radius: 0px;
     padding: calculateRem(4px) calculateRem(4px) calculateRem(4px) calculateRem(32px);
@@ -79,7 +72,7 @@ $sb-search-close-btn-color: var(--white);
     white-space: nowrap;
     border-radius: 0 calculateRem(3px) calculateRem(3px) 0 !important;
     color: var(--sb-search-btn-text);
-    font-size: $sb-search-btn-font-size;
+    font-size: var(--font-size-sm);
     font-weight: bold;
     margin: 0 !important;
   }
@@ -99,10 +92,10 @@ $sb-search-close-btn-color: var(--white);
       top: calculateRem(8px);
       right: calculateRem(8px);
       cursor: pointer;
-      background: $sb-search-close-btn-bg;
-      color: $sb-search-close-btn-color;
+      background: var(--blue);
+      color: var(--white);
       border-radius: 50%;
-      font-size: $font-size-sm;
+      font-size: var(--font-size-sm);
       padding: calculateRem(2px) 0 0 calculateRem(1px);
     }
   }
@@ -130,7 +123,7 @@ $sb-search-close-btn-color: var(--white);
   .sb-search-box {
     .sb-search-input {
       border-radius: 0 calculateRem(3px) calculateRem(3px) 0;
-      border-left: calculateRem(0.5px) solid $sb-search-border-color;
+      border-left: calculateRem(0.5px) solid var(--primary-300);
       border-right:0px;
       padding:  calculateRem(4px) calculateRem(32px) calculateRem(4px) calculateRem(4px);
     }
@@ -260,7 +253,7 @@ select:-internal-autofill-selected {
     white-space: nowrap;
     border-radius: calculateRem(28px);
     color: var(--sb-search-btn-text);
-    font-size: $font-size-sm;
+    font-size: var(--font-size-sm);
     margin: 0 !important;
     position: absolute;
     right: 8px;

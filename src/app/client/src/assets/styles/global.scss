@@ -1,4 +1,4 @@
-@import "./variables";
+@import "~@project-sunbird/sb-styles/assets/variables";
 @import "./mixins/mixins";
 
 html,
@@ -10,7 +10,7 @@ body {
 body {
   background: var(--sbt-body-bg) !important;
   position: relative;
-  font-family: $font-stack-en !important;
+  font-family: var(--font-stack-en) !important;
   letter-spacing: 0.2px;
   height: auto;
   color: var(--gray-800);
@@ -34,7 +34,7 @@ body {
   body {
     .sb-mid-container-min-height {
       min-height: calc(100vh - 288px);
-      margin-bottom: -($base-block-space * 4) !important;
+      margin-bottom: -2rem !important;
     }
   }
 }
@@ -46,15 +46,15 @@ body {
 }
 
 *[lang="en"] body {
-  font-family: $font-stack-en !important;
+  font-family: var(--font-stack-en) !important;
 }
 
 *[lang="hi"] body {
-  font-family: $font-stack-hi !important;
+  font-family: var(--font-stack-hi) !important;
 }
 
 *[lang="ur"] body {
-  font-family: $font-stack-ur !important;
+  font-family: var(--font-stack-ur) !important;
 }
 
 .publicmenusection.ui.secondary.menu .active.item {
@@ -93,7 +93,7 @@ body {
 
 .description.annannouncement-description {
   .sb-label-status-error {
-    color: $sb-label-status-error-color;
+    color: var(--tertiary-color);
     font-size: calculateRem(11px);
   }
 
@@ -689,7 +689,7 @@ html[dir="rtl"] {
 
 
 html.PlayerMediaQueryClass {
-  @include respond-above(xxl) {
+  @include respond-above(xl) {
     font-size: calc(12px + (18 - 12) * ((100vw - 320px) / (1920 - 320)));
   }
 }

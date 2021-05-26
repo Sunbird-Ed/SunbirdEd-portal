@@ -245,6 +245,7 @@ export class ContentDownloader implements ITaskExecuter {
         const hierarchy = await this.fileSDK.readJSON(path.join(contentPath, contentDetails.identifier, "hierarchy.json"));
         metaData = _.get(hierarchy, 'content') ? hierarchy.content : metaData;
       } catch(error) {
+        this.standardLog.error({ id: 'CONTENT_DOWNLOADER_JSON_READ_FAILED', message: `Failed to read JSON file`, error });
         metaData.children = this.createHierarchy(_.cloneDeep(_.get(manifestJson, "archive.items")), metaData);
       }
     }

@@ -154,7 +154,8 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       });
 
     if (!_.get(this.activatedRoute, 'snapshot.queryParams["board"]')) {
-      this.router.navigate([], { queryParams: this.defaultFilters, relativeTo: this.activatedRoute } );
+      const queryParams = { ...this.defaultFilters, selectedTab: _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook' };
+      this.router.navigate([], { queryParams, relativeTo: this.activatedRoute } );
     }
   }
   private boardChangeHandler() {
@@ -358,8 +359,8 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     const formServiceInputParams = { formType: 'config', formAction: 'get', contentType: 'userType', component: 'portal' };
     return this.formService.getFormConfig(formServiceInputParams).pipe(
       map(response => _.map(_.filter(response, 'visibility'), value => {
-        const { code, searchFilter } = value;
-        return { name: code, searchFilter };
+        const { name, searchFilter } = value;
+        return { name: name, searchFilter };
       })),
       tap(mapping => { this.audienceList = mapping; }),
       retry(5),

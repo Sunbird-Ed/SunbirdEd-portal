@@ -550,7 +550,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       this.publicPlayerService.playContent(event);
     } else {
       if (sectionType) {
-        event.section = this.resourceService.frmelmnts.lbl.mytrainings;
+        event.section = _.get(this.resourceService, 'frmelmnts.lbl.mytrainings');
         event.data.identifier = _.get(event, 'data.metaData.courseId');
       }
       const { section, data } = event;
