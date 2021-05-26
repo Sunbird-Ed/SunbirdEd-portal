@@ -9,7 +9,7 @@ import { concatMap, debounceTime, delay, map, takeUntil, tap } from 'rxjs/operat
 import { GroupsService } from './../../../services';
 import { IActivity } from '../activity-list/activity-list.component';
 import { PublicPlayerService } from '@sunbird/public';
-
+import { ACTIVITY_DASHBOARD, MY_GROUPS, GROUP_DETAILS } from '../../../interfaces/routerLinks';
 @Component({
   selector: 'app-activity-details',
   templateUrl: './activity-details.component.html',
@@ -41,6 +41,7 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
   dropdownContent = true;
   parentId: string;
   public csvExporter: any;
+  activityType: string;
 
   constructor(
     public resourceService: ResourceService,
@@ -53,7 +54,7 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
     private playerService: PublicPlayerService,
     private searchService: SearchService,
     private utilService: UtilService,
-    private configService: ConfigService
+    private configService: ConfigService,
   ) { }
 
   ngOnInit() {
@@ -84,8 +85,8 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
         this.queryParams = { ...queryParams };
         this.groupId = params.groupId;
         this.activityId = params.activityId;
-        const type = _.get(this.queryParams, 'primaryCategory') || 'Course';
-        this.fetchActivity(type);
+        this.activityType = _.get(this.queryParams, 'primaryCategory') || 'Course';
+        this.fetchActivity(this.activityType);
       });
   }
 
@@ -291,6 +292,18 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
     });
     this.utilService.downloadCSV(this.selectedCourse, data);
   }
+
+
+  /**
+   * @description - navigate to activity dashboard page
+   */
+  navigateToActivityDashboard() {
+    const options = { relativeTo: this.activatedRoute, queryParams: { primaryCategory: this.activityType,
+    title: this.activityType, mimeType: _.get(this.activity, 'mimeType'), groupId: _.get(this.groupData, 'id')}};
+    this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, _.get(this.groupData, 'id'), `${ACTIVITY_DASHBOARD}`, _.get(this.activity, 'identifier')],
+     {queryParams: options.queryParams});
+}
+
 
   ngOnDestroy() {
     this.unsubscribe$.next();

@@ -5,50 +5,23 @@
       <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
         <div class="flex-basis-1 mr-32">
           <div class="content-header__title pl-12 font-weight-bold sb__ellipsis sb__ellipsis--one d-flex">
-            <div class="group-name">{{groupData?.name}}</div>
+            <div class="group-name" *ngIf="activity && activity.name">{{activity?.name}}</div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="ui-container">
-    <div class="sb-g">
-      <div
-        class="sb-activity my-16 flex-ai-center sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 ">
-        <!--activity Filter-->
-        <label class="mb-20 label">
-          <sui-select class="selection sbt-dropdown sbt-dropdown--md sbt-green sbt-dropdown-tick"
-          [placeholder]="'Select Activity'"
-            [(ngModel)]="selectedActivity" labelField="label" valueField="value">
-            <sui-select-option *ngFor="let type of filterTypes" [value]="type" role="img"
-              (click)="onActivitySelection(type.label)">
-            </sui-select-option>
-          </sui-select>
-        </label>
-        <!--activity list-->
-        <div class="chapter-box">
-          <div *ngFor="let type of activityCardTypes">
-              <div class="pb-15 pt-5">{{ type?.title }}</div>
-              <div *ngFor="let item of type?.items">
-                <sb-toc-card [content]="item.activityInfo"
-                  (tocCardClick)="navigateToDashboard($event, item?.activityInfo)"
-                  [type]="item?.activityInfo?.trackable?.enabled === 'Yes' ? item?.activityInfo?.contentType.toLowerCase() : 'non_trackable'"
-                  [disabled]="'disabled-toc-card'" [activeContent]="selectedActivityType">
-                </sb-toc-card>
+  <div class="ui container py-16" *ngIf="isLoader">
+    <app-loader [data]='loaderMessage'></app-loader>
+  </div>
+  <div class="ui-container" *ngIf="!isLoader && data.values && data.values.length > 0">
+      <sb-dashlet [type]="'table'" [data]="data" [config]="config" #lib>
+          <ng-template sbTemplateRef="header" let-config>
+              <div role="alert">
+                <button type="button" class="btn btn-outline-primary float-end"
+                  (click)="lib?.instance?.exportAs('csv')">DownloadCSV</button>
               </div>
-          </div>
-        </div>
-      </div>
-      <div class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12 mx-16 my-16">
-        <div *ngIf="!onSelectedActivity" class="pb-16"><span
-            class="note-color">{{resourceService?.frmelmnts?.lbl?.note}}</span>
-          {{resourceService?.frmelmnts.lbl.noProgress | interpolate:'{type}': (showActivityType(selectedActivityType.contentType))}}
-        </div>
-        <div *ngIf="onSelectedActivity" class="my-50">
-          <sb-datatable [name]="fileName" [message]="message" [data]="ActivityWiseData" [columns]="columns"
-            [downloadCSV]="isDownloadReport"></sb-datatable>
-        </div>
-      </div>
-    </div>
+            </ng-template>
+      </sb-dashlet>
   </div>
 </div>

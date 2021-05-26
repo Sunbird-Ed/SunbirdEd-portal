@@ -1,6 +1,5 @@
 <app-landing-section [textToDisplay]="" 
 [layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
-
 <div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-back-header sbt-mygroups-details relative9' : ''">
 <app-back-button></app-back-button>
 <div class="ui container py-16" *ngIf="showLoader">
@@ -22,6 +21,14 @@
             </div>
           </div>
         </div>
+           <!--Activity Dashboard-->
+           <button  (click)="navigateToActivityDashboard()"
+           [ngClass]="{'disabled': !isContentTrackable(activity, activity?.contentType)}"
+           class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix" title="Forum">
+           <img src="assets/images/forum.svg" width="20px" class="mr-8"
+             alt="{{resourceService?.frmelmnts?.lbl?.discussionForum}}">
+           Activity Dashbord
+         </button>
         <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons hide">
           <button class="sb-btn sb-btn-outline-secondary sb-btn-normal mr-8"></button>
           <div class="kabab-menu"></div>

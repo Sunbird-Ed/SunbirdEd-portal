@@ -16,6 +16,7 @@ export interface IActivity {
   subject: string;
   type: string;
   contentType?: string;
+  trackable?: { enabled: string };
 }
 @Component({
   selector: 'app-activity-list',

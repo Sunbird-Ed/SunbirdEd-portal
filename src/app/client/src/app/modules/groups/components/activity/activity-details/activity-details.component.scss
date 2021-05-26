@@ -121,3 +121,8 @@
   font-weight:normal;
   font-family: 'Noto Sans Bold';
 }
+
+.disabled {
+  background-color: var(--gray-100) !important;
+  border: 0.0625rem solid var(--gray-100) !important;
+}

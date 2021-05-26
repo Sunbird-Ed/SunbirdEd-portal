@@ -67,10 +67,10 @@ const routes: Routes = [
     },
   },
   {
-    path: `${WORKSPACE.GROUP_ID}/${ACTIVITY_DASHBOARD}`,
+    path: `${WORKSPACE.GROUP_ID}/${ACTIVITY_DASHBOARD}/:activityId`,
     component: ActivityDashboardComponent,
     data: {
-      telemetry: { env: telemetryEnv, pageid: ADD_ACTIVITY_TO_GROUP, type: type, subtype: subtype },
+      telemetry: { env: telemetryEnv, pageid: ACTIVITY_DASHBOARD, type: type, subtype: subtype },
     },
   },
 ];

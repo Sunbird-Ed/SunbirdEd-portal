@@ -78,6 +78,7 @@
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/slick-carousel/slick/slick.min.js",
               "node_modules/@project-sunbird/telemetry-sdk/index.js",
+              "node_modules/datatables.net/js/jquery.dataTables.js",
               "src/assets/libs/semantic-ui/sidebar.min.js",
               "node_modules/leaflet/dist/leaflet.js",
               "./node_modules/katex/dist/katex.min.js",

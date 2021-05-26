@@ -369,4 +369,7 @@ getActivity(groupId, activity, mergeGroup) {
   updateGroupGuidelines(request: CsGroupUpdateGroupGuidelinesRequest) {
   return this.groupCservice.updateGroupGuidelines(request);
   }
+  getDashletData(courseHeirarchyData, aggData) {
+    return this.groupCservice.activityService.getDataForDashlets(courseHeirarchyData, aggData);
+  }
 }

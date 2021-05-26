@@ -3,7 +3,7 @@ import { actions } from './../../interfaces/group';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, ViewChild, Input, Renderer2, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { ResourceService, NavigationHelperService, ToasterService } from '@sunbird/shared';
-import { MY_GROUPS, GROUP_DETAILS, IGroupCard, IFetchForumId, EDIT_GROUP, IFetchForumConfig, ACTIVITY_DASHBOARD } from './../../interfaces';
+import { MY_GROUPS, GROUP_DETAILS, IGroupCard, IFetchForumId, EDIT_GROUP, IFetchForumConfig } from './../../interfaces';
 import { GroupsService } from '../../services';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
@@ -286,13 +286,6 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
         }
       });
     }
-
-  /**
-   * @description - navigate to activity dashboard page
-   */
-  navigateToActivityDashboard() {
-      this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`,  _.get(this.groupData, 'id'), `${ACTIVITY_DASHBOARD}`]);
-  }
 
   ngOnDestroy() {
     this.unsubscribe$.next();

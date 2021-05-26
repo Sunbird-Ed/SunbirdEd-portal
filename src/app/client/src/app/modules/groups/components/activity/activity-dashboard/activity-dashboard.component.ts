@@ -1,17 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { GroupsService } from '../../../services';
-import { IGroupCard } from '../../../interfaces';
 import { IImpressionEventInput } from '@sunbird/telemetry';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { debounceTime, delay, map, takeUntil, tap } from 'rxjs/operators';
 import { CsGroup } from '@project-sunbird/client-services/models';
-import { SearchService } from '@sunbird/core';
 import { ToasterService, ResourceService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { ActivatedRoute } from '@angular/router';
-import { TocCardType } from '@project-sunbird/common-consumption-v8';
 import { ConfigService } from '@sunbird/shared';
 import { CourseConsumptionService } from '@sunbird/learn';
+import { combineLatest, Subject } from 'rxjs';
+import { IActivity } from '../activity-list/activity-list.component';
 
 @Component({
   selector: 'app-activity-dashboard',
@@ -19,57 +17,73 @@ import { CourseConsumptionService } from '@sunbird/learn';
   styleUrls: ['./activity-dashboard.component.scss']
 })
 export class ActivityDashboardComponent implements OnInit {
-
-  selectedActivityType = {};
-  groupData: IGroupCard;
+  queryParams: any;
+  activityId: any;
+  activityType: string;
+  groupData: any;
   groupId: string;
   telemetryImpression: IImpressionEventInput;
   isLoader = true;
-  filterTypes = [];
-  activityCardTypes = [];
-  allActivityTypes = [];
-  noActivity = { name: 'Data is not Available' };
   public unsubscribe$ = new Subject<void>();
-  cardType: TocCardType = TocCardType.COURSE;
-  selectedActivity: string;
-  onSelectedActivity = false;
-  fileName = 'Activity Dashboard';
-  public message = 'There is no data available';
-  ActivityWiseData = [];
-  isDownloadReport = false;
   public coursehierarchy: any;
+  aggregateData: any;
+  activity: IActivity;
+  dashletData: any;
+  data = { values: [] };
+  config = { columnConfig: [] };
+  loaderMessage = this.resourceService.messages.fmsg.m0087;
 
   constructor(
     private groupService: GroupsService,
     private toasterService: ToasterService,
     public resourceService: ResourceService,
     private activatedRoute: ActivatedRoute,
-    public searchService: SearchService,
     public configService: ConfigService,
     public courseConsumptionService: CourseConsumptionService) { }
 
   ngOnInit() {
-    this.filterTypes.push({ label: 'All activities' });
-    this.selectedActivity = this.filterTypes[0].label;
-    this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
-    console.log(this.groupId, 'xxxx');
-    this.getGroupData();
+    this.fetchActivityOnParamChange();
   }
 
-  getGroupData() {
-    this.isLoader = true;
-    this.groupService.getGroupById(this.groupId, true, true, true).pipe(takeUntil(this.unsubscribe$)).subscribe((groupData: CsGroup) => {
-      this.groupService.groupData = groupData;
-      this.groupData = this.groupService.addGroupFields(groupData);
-      this.isLoader = false;
-      const activityList = this.groupData.activitiesGrouped;
-      activityList.forEach(element => {
-        if (element.items.length > 0) {
-        this.filterTypes.push({ label: element.title });
-        this.activityCardTypes.push(element);
-        this.allActivityTypes.push(element);
-        }
+  /**
+   * @description - To fetch the data from activatedRoute
+   */
+  private fetchActivityOnParamChange() {
+    combineLatest([this.activatedRoute.params, this.activatedRoute.queryParams])
+      .pipe(debounceTime(5), // to sync params and queryParams events
+        delay(10), // to trigger page exit telemetry event
+        tap(data => {
+          this.isLoader = true;
+        }),
+        map((result) => ({ params: { groupId: result[0].groupId, activityId: result[0].activityId }, queryParams: result[1] })),
+        takeUntil(this.unsubscribe$))
+      .subscribe(({ params, queryParams }) => {
+        this.queryParams = { ...queryParams };
+        this.groupId = params.groupId;
+        this.activityId = params.activityId;
+        this.activityType = _.get(this.queryParams, 'primaryCategory') || 'Course';
+        this.fetchActivity();
       });
+  }
+
+  /**
+   * @description - get activity data based activityId
+   */
+  getActivityInfo() {
+    const activityData = _.find(this.groupData.activities, ['id', this.activityId]);
+    this.activity = _.get(activityData, 'activityInfo');
+  }
+
+  /**
+   * @description - fetch group activitydata based on groupId
+   */
+  fetchActivity() {
+    this.isLoader = true;
+    this.groupService.getGroupById(this.groupId, true, true).pipe(takeUntil(this.unsubscribe$)).subscribe((groupData: CsGroup) => {
+      this.groupData = groupData;
+      this.isLoader = false;
+      this.getActivityInfo();
+      this.getHierarchy();
     }, err => {
       this.isLoader = false;
       this.groupService.goBack();
@@ -77,54 +91,59 @@ export class ActivityDashboardComponent implements OnInit {
     });
   }
 
-  onActivitySelection(value) {
-    this.allActivityTypes.forEach(type => {
-      if (type['title'] === value.toString()) {
-        this.activityCardTypes = [type];
-        this.setUniqueIdentifierForCC(type.items[0].activityInfo);
-      }
-      if (value === 'All activities') {
-        this.activityCardTypes = this.allActivityTypes;
-        this.setUniqueIdentifierForCC(this.allActivityTypes[0].items[0].activityInfo);
-      }
+  /**
+   * @description - get courseheirarchy data for tracable activities
+   */
+  getHierarchy() {
+    this.isLoader = true;
+    const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
+    this.courseConsumptionService.getCourseHierarchy(this.activityId, inputParams).subscribe(response => {
+      this.coursehierarchy = response.children;
+      this.isLoader = false;
+      this.getAggData();
+    }, err => {
+      this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+      this.isLoader = false;
+      this.navigateBack();
     });
   }
 
-  public navigateToDashboard(event, activities: any): void {
-    console.log(activities);
-    if (activities.trackable && activities.trackable.enabled === 'Yes') {
-      const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
-      this.courseConsumptionService.getCourseHierarchy(activities.identifier, inputParams).subscribe(response => {
-        this.coursehierarchy = response;
-        console.log(this.coursehierarchy);
+  /**
+   * @description - get aggregateData for tracable activities
+   */
+  getAggData() {
+    this.isLoader = true;
+    const activityData = { id: this.activityId, type: 'Course' };
+    this.groupService.getActivity(this.groupId, activityData, this.groupData)
+      .subscribe((data) => {
+        this.aggregateData = data;
+        this.isLoader = false;
+        this.getDashletData();
+      }, err => {
+        this.isLoader = false;
+        this.toasterService.error(this.resourceService.messages.fmsg.m0051);
+        this.navigateBack();
       });
+  }
+
+   /**
+   * @description - get dashlet data for dashlet library
+   */
+  getDashletData() {
+    this.isLoader = true;
+    this.dashletData = this.groupService.getDashletData(this.coursehierarchy, this.aggregateData);
+    if (this.dashletData) {
+      this.isLoader = false;
+      this.data.values = this.dashletData.rows;
+      this.config.columnConfig = this.dashletData.columns;
     }
-    this.ActivityWiseData = [{
-      name: activities.name,
-      progress: '',
-      Assesment1: ''
-    }];
-    this.setUniqueIdentifierForCC(activities);
+  }
+  /**
+   * @description - it will navigate to the previous page when an error occurs while calling any API's
+   */
+  navigateBack() {
+    this.toasterService.error(this.resourceService.messages.emsg.m0005);
+    this.groupService.goBack();
   }
 
-  isContentTrackable(content) {
-    if (content.trackable && content.trackable.enabled === 'Yes') {
-      return true;
-    }
-    return false;
-  }
-
-  showActivityType(type) {
-    return _.lowerCase(type);
-  }
-
-  setUniqueIdentifierForCC(activities) {
-    this.selectedActivityType = activities;
-    this.selectedActivityType['sbUniqueIdentifier'] = activities.identifier;
-    activities['sbUniqueIdentifier'] = activities.identifier;
-    this.onSelectedActivity = this.isContentTrackable(this.selectedActivityType);
-  }
-  eventListener(event) {
-    console.log('event', event);
-  }
 }

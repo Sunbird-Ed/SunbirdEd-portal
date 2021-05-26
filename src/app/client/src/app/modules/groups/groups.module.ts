@@ -20,6 +20,7 @@ import { ContentSearchModule } from '@sunbird/content-search';
 import { SlickModule } from 'ngx-slick';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { DiscussionModule } from '../discussion/discussion.module';
+import { DashletModule } from 'sb-dashlets';
 import { ActivityDetailsComponent } from './components/activity/activity-details/activity-details.component';
 
 @NgModule({
@@ -40,7 +41,8 @@ import { ActivityDetailsComponent } from './components/activity/activity-details
     SuiModalModule,
     SuiRatingModule,
     RecaptchaModule,
-    DiscussionModule
+    DiscussionModule,
+    DashletModule
   ],
   providers: [GroupsService],
   declarations: [ MyGroupsComponent, AddMemberComponent,
@@ -55,7 +57,8 @@ import { ActivityDetailsComponent } from './components/activity/activity-details
     GroupDetailsComponent,
     AddActivityContentTypesComponent,
     PopupComponent,
-    ActivityDetailsComponent]
+    ActivityDetailsComponent,
+    ]
 })
 export class GroupsModule {
   constructor(private csLibInitializerService: CsLibInitializerService) {
