@@ -78,8 +78,9 @@
   }
   .logo {
     img {
-      height: calculateRem(56px);
+      // height: calculateRem(56px);
       max-height: calculateRem(56px);
+      max-width: 295px;
     }
 
     &:hover,
