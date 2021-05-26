@@ -3220,3 +3220,18 @@ html[accessable-theme=accessible][layout=joy]{
   }
 } 
 
+/* Remove blue ring around focused url's */
+
+.custom-select {
+  position: relative;
+  font-family: Oswald;
+}
+*[tabindex]:focus {
+  outline: 2px green solid;
+}
+*:focus {
+  outline: 2px green solid !important;
+}
+button:focus{
+  outline: 2px green solid;
+}
