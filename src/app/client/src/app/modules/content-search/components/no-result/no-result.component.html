@@ -4,10 +4,10 @@
       <div>
         <img alt="{{title}}" src="./assets/images/group.svg" width="90px" height="90px">
       </div>
-      <div class="fmedium board-title pt-24 font-weight-bold">{{title}}</div>
+      <div tabindex="0" class="fmedium board-title pt-24 font-weight-bold">{{title}}</div>
       <!-- <p class="fs-0-92 mt-8 text-center board-text"></p> -->
-      <div *ngIf="showExploreContentButton && subTitle" class="fs-0-785 sub-title py-24">{{subTitle | interpolate:'{instance}': instance}}</div>
-      <button appTelemetryInteract [telemetryInteractEdata]="exploreMoreContentEdata" *ngIf="showExploreContentButton" type="button" id="browse" class="sb-btn sb-btn-primary sb-btn-normal mb-8" (click)="handleEvent()">
+      <div tabindex="0" *ngIf="showExploreContentButton && subTitle" class="fs-0-785 sub-title py-24">{{subTitle | interpolate:'{instance}': instance}}</div>
+      <button tabindex="0" appTelemetryInteract [telemetryInteractEdata]="exploreMoreContentEdata" *ngIf="showExploreContentButton" type="button" id="browse" class="sb-btn sb-btn-primary sb-btn-normal mb-8" (click)="handleEvent()">
         {{buttonText}}
       </button> 
     </div>
