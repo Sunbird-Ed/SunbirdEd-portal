@@ -1,0 +1,20 @@
+.edit-sub-modal{
+    .header{
+        padding:15px;
+    }
+    .edit-sub-input{
+        width: 100%;
+        border: none;
+        height: 2rem;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+    }
+    .footer{
+        display: flex;
+        border:none;
+    } 
+}
+.ui.small.modal{
+    width:40% !important;
+}

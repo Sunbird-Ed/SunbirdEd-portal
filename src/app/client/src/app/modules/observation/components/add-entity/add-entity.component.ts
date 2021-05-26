@@ -15,6 +15,7 @@ export class AddEntityComponent implements OnInit {
     @Input() solutionId;
     config;
     targetEntity;
+    selectedListCount = 0;
     searchQuery;
     limit = 10;
     page = 1;
@@ -25,7 +26,8 @@ export class AddEntityComponent implements OnInit {
     showLoader: boolean = true;
     public loaderMessage: ILoaderMessage;
     public noResultMessage: INoResultMessage;
-    constructor(private observationService: ObservationService,
+    constructor(
+        private observationService: ObservationService,
         private kendraService: KendraService,
         public resourceService: ResourceService,
         public observationUtilService: ObservationUtilService,
@@ -52,7 +54,7 @@ export class AddEntityComponent implements OnInit {
         const paramOptions = {
             url: this.config.urlConFig.URLS.KENDRA.TARGETTED_ENTITY_TYPES + this.solutionId,
             param: {},
-            data:this.payload,
+            data: this.payload,
         };
         this.kendraService.post(paramOptions).subscribe(data => {
             this.targetEntity = data.result;
@@ -68,6 +70,7 @@ export class AddEntityComponent implements OnInit {
         if (!event.isSelected) {
             event.selected = !event.selected;
         }
+        event.selected ? this.selectedListCount++ : this.selectedListCount--;
     }
     search() {
         this.showLoader = true;
@@ -81,13 +84,15 @@ export class AddEntityComponent implements OnInit {
         };
         this.observationService.post(paramOptions).subscribe(data => {
             // this.entities = data.result;
-            for (let i = 0; i < data.result[0].data.length; i++) {
-                data.result[0].data[i].isSelected = data.result[0].data[i].selected;
-                data.result[0].data[i].preSelected = data.result[0].data[i].selected ? true : false;
-            }
-            this.entities = this.entities.concat(data.result[0].data);
-            this.count = data.result[0].count;
             this.showLoader = false;
+            if (data.result[0].data.length) {
+                for (let i = 0; i < data.result[0].data.length; i++) {
+                    data.result[0].data[i].isSelected = data.result[0].data[i].selected;
+                    data.result[0].data[i].preSelected = data.result[0].data[i].selected ? true : false;
+                }
+                this.entities = this.entities.concat(data.result[0].data);
+                this.count = data.result[0].count;
+            }
         }, error => {
             this.showLoader = false;
         })
@@ -109,10 +114,11 @@ export class AddEntityComponent implements OnInit {
                 selectedSchools.push(element._id);
             }
         });
+        this.payload.data = selectedSchools;
         const paramOptions = {
             url: this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_UPDATE_ENTITES + `${this.observationId}`,
             param: {},
-            data:this.payload,
+            data: this.payload,
         };
         this.observationService.post(paramOptions).subscribe(data => {
             this.closeModal();

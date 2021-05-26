@@ -46,7 +46,8 @@
         </button>
         <div class="w-10"></div>
         <button type="button" class="sb-btn sb-btn-sm sb-btn-primary text-uppercase flex-basis-1" type="submit"
-            (click)="submit()">
+            (click)="submit()" [disabled]="selectedListCount == 0"
+            [ngClass]="{'sb-btn-disabled' : selectedListCount == 0}">
             {{resourceService.frmelmnts?.btn?.submit}}
         </button>
     </div>

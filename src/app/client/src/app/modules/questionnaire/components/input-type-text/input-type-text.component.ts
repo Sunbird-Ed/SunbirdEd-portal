@@ -1,9 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
-import {
-  FormGroup,
-  FormControl,
-  Validators,
-} from "@angular/forms";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { QuestionnaireService } from "../../questionnaire.service";
 
 @Component({
@@ -11,7 +7,7 @@ import { QuestionnaireService } from "../../questionnaire.service";
   templateUrl: "./input-type-text.component.html",
   styleUrls: ["./input-type-text.component.scss"],
 })
-export class InputTypeTextComponent implements OnInit  {
+export class InputTypeTextComponent implements OnInit {
   text: any;
   @Input() questionnaireForm: FormGroup;
   @Input() question: any;
@@ -25,6 +21,17 @@ export class InputTypeTextComponent implements OnInit  {
         this.qService.validate(this.question),
       ])
     );
+
+    this.question.startTime = this.question.startTime
+      ? this.question.startTime
+      : Date.now();
+  }
+
+  onChange(e) {
+    let value = e.target.value;
+    this.question.value = value;
+
+    this.question.endTime = Date.now();
   }
 
   get isValid() {

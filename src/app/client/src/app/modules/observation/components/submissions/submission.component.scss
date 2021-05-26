@@ -4,9 +4,12 @@
     h5{
         font-weight: 600;
     }
-    .icon{
-    font-size: 1.5rem !important;;
+    .dropdown{
+        .ellipsis{
+            font-size: 1.5rem !important;;
+            }
     }
+  
     .evidences-list{
         min-width: 100%;
         max-width: 100%;
@@ -30,4 +33,8 @@
     border-top-left-radius: 0px !important;
     border-top-right-radius: 0px !important;
     border-radius: var(--sbt-bradius-24);
+}
+.icon{
+    color: var(--primary-400) !important;
+    padding-left: 15px;
 }

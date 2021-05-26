@@ -40,7 +40,11 @@
             </div>
           </div>
           <div *ngIf="entities">
-            <entity-list [entities]="entities.entities" [selectedEntity]="selectedEntity" (onDelete)="delete($event)" (onSelect)="changeEntity($event)"> </entity-list>
+            <entity-list [entities]="entities.entities" [selectedEntity]="selectedEntity" (onDelete)="delete($event)"
+              (onSelect)="changeEntity($event)"> </entity-list>
+          </div>
+          <div class="twelve wide column" *ngIf="entities?.length === 0 && !showLoader">
+            <app-no-result [data]="noResultMessage"></app-no-result>
           </div>
           <div class="observation-detail-box">
             <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
@@ -62,7 +66,9 @@
             <div class="twelve wide column" *ngIf="submissions?.length === 0 && !showLoader">
               <app-no-result [data]="noResultMessage"></app-no-result>
             </div>
-            <submission [submissions]="submissions" *ngIf="submissions?.length && !showLoader"> </submission>
+            <submission [submissions]="submissions" *ngIf="submissions?.length && !showLoader"
+              (selectedSubmission)="openObservation($event)" (onDelete)="deleteSubmission($event)"
+              (onEdit)="openEditSubmission($event)"> </submission>
           </div>
         </div>
       </div>
@@ -83,4 +89,7 @@
 </div>
 <div *ngIf="showDownloadModal">
   <add-entity (closeEvent)="modalClose()" [observationId]="observationId" [solutionId]="solutionId"> </add-entity>
+</div>
+<div *ngIf="openEditModal.show">
+  <app-edit-submission [submission]="openEditModal.data" (closeEvent)="closeEditModal()" (editEvent)="closeEditModal($event)"> </app-edit-submission>
 </div>

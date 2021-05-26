@@ -1,0 +1,69 @@
+.popup {
+  padding: 30px;
+  position: relative;
+  height: 220px;
+  border-radius: none !important;
+}
+.popup-header {
+  position: relative;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #000;
+}
+
+.popup-body {
+  position: relative;
+  top: 20px;
+  font-size: 1.2em;
+  font-weight: 500;
+  color: grey;
+  width: auto;
+  white-space: pre-wrap;
+}
+.popup-body-checkbox {
+  position: relative;
+  top: 5px;
+  left: 20px;
+  font-size: 15px;
+  font-weight: 500;
+  color: grey;
+  width: auto;
+  white-space: pre-wrap;
+}
+
+.single-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 70px;
+}
+
+.double-btn {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 15px;
+
+  button{
+      margin-right:15px;
+  }
+}
+
+.double-btn-circle{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 60px;
+    text-transform: capitalize;
+    font-size: 15px;
+
+    button{
+        margin-right:15px;
+        border-radius:50%;
+        height: 60px;
+        width: 60px;
+    }
+
+}
+
+

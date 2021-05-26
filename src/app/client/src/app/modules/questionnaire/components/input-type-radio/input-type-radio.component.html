@@ -1,9 +1,13 @@
-<div *ngFor="let o of options" [formGroup]="questionnaireForm" class="my-24">
+<div
+  *ngFor="let o of options"
+  [formGroup]="questionnaireForm"
+  class="my-24 sb-radio-btn-checkbox  sb-radio-btn-primary"
+>
   <input
     type="radio"
     (change)="onChange(o.value)"
     [name]="question._id"
     [ngClass]="isValid && isTouched ? 'is-invalid' : is - valid"
   />
-  {{ o.label }}
+  <label>{{ o.label }}</label>
 </div>

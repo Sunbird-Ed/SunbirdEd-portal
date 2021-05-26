@@ -3,7 +3,19 @@
     <sui-accordion-panel [isOpen]="false" class="sb-accordion-title submission-title">
         <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
             <span>{{submission.title}}</span>
-            <i class="dropdown icon" role="img" title="expand"></i>
+            <div>
+                <i class="dropdown large icon" role="img" title="expand"></i>
+                <div class="ui dropdown" suiDropdown>
+                    <i class="ellipsis vertical icon large"
+                        *ngIf="submission.status != 'completed' && submission.status !='ratingPending'"></i>
+                    <div class="menu" suiDropdownMenu>
+                        <div class="item" (click)="actionEvent(submission,action.type)" *ngFor="let action of actions">
+                            {{action.name}}
+                            <span class="description"><i class="{{action.icon}}"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div content class="content-submission sb-bg-color-white pt-0 pb-8">
             <div *ngFor="let evidance of submission?.evidencesStatus" class="evidences-list cc-player__content-header">
@@ -14,10 +26,16 @@
                     </div>
                 </div>
                 <div class="certified-course__btn ng-star-inserted">
-                    <button *ngIf="evidance.status == 'notstarted'"
-                        class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.btn?.start}} ooo
+                    <button *ngIf="evidance.status == 'notstarted'" (click)="open(evidance)"
+                        class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.btn?.start}}
                     </button>
-                    
+                    <button *ngIf="evidance.status != 'notstarted' && evidance.status != 'draft'"
+                        (click)="open(evidance)"
+                        class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.lbl?.continue }}
+                    </button>
+                    <button *ngIf="evidance.status != 'notstarted'" (click)="open(evidance)"
+                        class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.lbl?.view }}
+                    </button>
                 </div>
             </div>
         </div>

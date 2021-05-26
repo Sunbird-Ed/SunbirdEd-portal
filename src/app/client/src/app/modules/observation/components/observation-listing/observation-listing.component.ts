@@ -114,7 +114,7 @@ export class ObservationListingComponent
     private kendraService: KendraService,
     config: ConfigService,
     private observationUtil:ObservationUtilService,
-    private location:Location
+    private location:Location,
   ) {
     this.config = config;
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -126,7 +126,28 @@ export class ObservationListingComponent
   
     this.showEditUserDetailsPopup=await this.observationUtil.getProfileInfo();
      if(!this.showEditUserDetailsPopup){
-      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0018'));
+       let metaData=this.observationUtil.getAlertMetaData();
+       metaData.type="update profile";
+       metaData.size="mini";
+       metaData.content.title=this.resourceService.frmelmnts.alert.updateProfileTitle;
+       metaData.content.body.type="text";
+       metaData.content.body.data=this.resourceService.frmelmnts.alert.updateProfileContent;
+       metaData.footer.className="single-btn"
+       metaData.footer.buttons.push(
+        {
+          type:"accept",
+          returnValue:true,
+          buttonText:this.resourceService.frmelmnts.btn.update,
+          className:"popup-btn"
+        }
+        );
+      let returnData=await this.observationUtil.showPopupAlert(metaData);
+      if(returnData){
+        let queryParam = {
+          showEditUserDetailsPopup:true
+        }
+       this.router.navigate(['profile'],{queryParams:queryParam});
+      }
       return;
      }
      this.activatedRoute.queryParams.subscribe((params) => {
@@ -137,20 +158,6 @@ export class ObservationListingComponent
       this.searchData="";
       this.fetchContentList();
     });
-  }
-
-  async closeModal(){
-    this.showEditUserDetailsPopup=!this.showEditUserDetailsPopup
-    this.showEditUserDetailsPopup=await this.observationUtil.getProfileInfo();
-    if(!this.showEditUserDetailsPopup){
-      this.showEditUserDetailsPopup=false;
-      this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0018'));
-      return;
-     }
-
-    this.searchData="";
-    this.fetchContentList();
-    
   }
 
   async getProfileCheck(){
@@ -213,6 +220,8 @@ export class ObservationListingComponent
     data.forEach((value) => {
       let solution_name:string = value.name;
       solution_name = solution_name[0].toUpperCase() + solution_name.slice(1);
+      const subject:any=[];
+      subject.push(value.programName.toString())
       let obj = {
         name: solution_name,
         contentType: "Observation",
@@ -224,7 +233,8 @@ export class ObservationListingComponent
         programId: value.programId,
         medium: value.language,
         organization: value.creator,
-        _id: value._id
+        _id: value._id,
+        subject:subject
       };
       result.push(obj);
       this.contentList = result;
@@ -384,4 +394,5 @@ export class ObservationListingComponent
     }
     this.telemetryService.interact(appTelemetryInteractData);
   }
+
 }

@@ -1,5 +1,5 @@
 <div
-  [ngClass]="{ 'ui card question-card': question.responseType != 'pageQuestions' }"
+  [ngClass]="{ 'ui card question-card sb--card': question.responseType != 'pageQuestions' }"
   *ngFor="let question of questions; let qi = index"
 >
   <div [ngClass]="{ content: question.responseType != 'pageQuestions' }">
@@ -7,7 +7,8 @@
       <div class="sb-h4">{{ qai == 0 ? qi + 1 + ")" : "" }}&nbsp;{{ q }}</div>
     </div>
     <!-- {{ question._id }} -->
-    <input-type-text
+    <div class="sbt-page-content-area'">
+ <input-type-text
       *ngIf="question.responseType == 'text'"
       [questionnaireForm]="questionnaireForm"
       [question]="question"
@@ -49,5 +50,7 @@
       [questionnaireForm]="questionnaireForm"
       [question]="question"
     ></matrix-questions>
+    </div>
+   
   </div>
 </div>

@@ -1,6 +1,5 @@
-.ui.card {
-  width: 100%;
-}
+@import "../../../../../../node_modules/@project-sunbird/sb-styles/assets/mixins/mixins";
+@import "../../../../../../node_modules/@project-sunbird/sb-styles/assets/mixins/custom-mixins";
 
 .question-card {
   border-radius: 28px;
@@ -11,4 +10,37 @@
 
 .question-card:last-child {
   margin-bottom: 50px;
+}
+
+:host {
+  .question-card.sb--card,
+  .sb-radio-btn-checkbox {
+    width: 100%;
+    background-color: var(--sb-card-bg);
+    color: var(--primary-color);
+  }
+  label {
+    color: var(--body-color);
+  }
+}
+
+:host ::ng-deep {
+  .question-card {
+    .sb-checkbox label,
+    .sb-radio-btn-checkbox label {
+      color: var(--body-color);
+      font-weight: normal;
+    }
+
+    #range {
+      background-color: var(--sb-card-bg);
+    }
+
+    .student-card {
+      background-color: var(--sb-card-bg);
+    }
+    .question-date-input{
+      background: var(--cc-sbcard-data1-bg);
+    }
+  }
 }
