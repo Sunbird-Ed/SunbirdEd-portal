@@ -1,6 +1,6 @@
-<app-landing-section *ngIf="allTabData" [textToDisplay]="resourceService?.frmelmnts?.tab?.all"
+src/app/client/src/app/modules/core/components/main-header/main-header.component.scsssrc/app/client/src/app/modules/core/components/main-header/main-header.component.scss<app-landing-section *ngIf="allTabData" [textToDisplay]="resourceService?.frmelmnts?.tab?.all"
   [layoutConfiguration]="layoutConfiguration" [svgToDisplay]="allTabData?.theme?.imageName"></app-landing-section>
-<div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
+<div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''" class = "px-32	">
   <div [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'">
     <div [ngClass]="FIRST_PANEL_LAYOUT">
       <ng-container>
@@ -9,7 +9,7 @@
         </app-global-search-filter>
       </ng-container>
     </div>
-    <div [ngClass]="SECOND_PANEL_LAYOUT" class = "px-16" >
+    <div [ngClass]="SECOND_PANEL_LAYOUT" >
       <div [appTelemetryImpression]="telemetryImpression"
         [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : ' mt-24'">
         <div class="content-grid relative9">

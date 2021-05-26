@@ -3,8 +3,6 @@
     display: flex;
     align-items: center;
     margin : calculateRem(16px) 0 calculateRem(16px) 0;
-    padding-left: 1rem;
-    padding-right: 1rem;
     &.sb-pageSection-header-compact{
      margin: 0 0 calculateRem(8px) 0 ;
     }
