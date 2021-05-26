@@ -29,6 +29,7 @@
             <div class='ui stackable grid mt-0'>
               <div class="twelve wide column">
                   <div class="sb-field mb-0">
+                      <label>{{resourceService?.frmelmnts?.cert?.lbl?.certtitle}}<span class="asterik">*</span></label>
                     <label for="certificateTitle-input" class="hide">{{resourceService?.frmelmnts?.cert?.prmpt?.certtitle}}</label>
                     <input formControlName="certificateTitle" id="certificateTitle-input" [ngClass]="(createTemplateForm.controls.certificateTitle.touched && createTemplateForm.controls.certificateTitle.invalid) ? 'is-invalid' : 'is-valid'" class="sb-form-control" [placeholder]="resourceService?.frmelmnts?.cert?.prmpt?.certtitle">
                   </div>
