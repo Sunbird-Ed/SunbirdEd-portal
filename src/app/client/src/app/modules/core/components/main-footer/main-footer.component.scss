@@ -207,16 +207,15 @@
   .rectangle{
     border: 1px solid #C6BCB8;
     border-radius: 10px;
-    // width: 164px;
-    // height: 52px;
-    width: 200px;
-    height: 83px;
+    width: 164px;
+    height: 52px;
     display:flex;
     align-items: center;
     cursor: pointer;
     a{
       align-items: center;
       padding:0px 16px;
+      display:flex;
     }
     &:first-child{
       margin-right: 20px;
