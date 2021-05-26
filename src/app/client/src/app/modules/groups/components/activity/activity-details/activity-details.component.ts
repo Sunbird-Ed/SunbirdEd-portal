@@ -33,7 +33,7 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
   membersCount: number;
   members;
   telemetryImpression: IImpressionEventInput;
-  loaderMessage = this.resourceService.messages.fmsg.m0087;
+  loaderMessage = _.get(this.resourceService.messages.fmsg, 'm0087');
   layoutConfiguration: any;
   memberListUpdatedOn: string;
   nestedCourses = [];
@@ -142,7 +142,6 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
     this.enrolmentCount = _.get(enrolmentInfo, 'value');
     this.membersCount = _.get(aggResponse, 'members.length');
     this.memberListUpdatedOn = _.max(_.get(aggResponse, 'activity.agg').map(agg => agg.lastUpdatedOn));
-
     this.members = aggResponse.members.map((item, index) => {
       /* istanbul ignore else */
       if (_.get(item, 'status') === 'active') {
@@ -298,6 +297,7 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
    * @description - navigate to activity dashboard page
    */
   navigateToActivityDashboard() {
+    this.addTelemetry('activity-detail', [{id: _.get(this.activity, 'identifier'), type: _.get(this.activity, 'resourceType')}]);
     const options = { relativeTo: this.activatedRoute, queryParams: { primaryCategory: this.activityType,
     title: this.activityType, mimeType: _.get(this.activity, 'mimeType'), groupId: _.get(this.groupData, 'id')}};
     this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, _.get(this.groupData, 'id'), `${ACTIVITY_DASHBOARD}`, _.get(this.activity, 'identifier')],

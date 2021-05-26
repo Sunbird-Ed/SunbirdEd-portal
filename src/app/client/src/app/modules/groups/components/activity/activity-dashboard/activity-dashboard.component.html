@@ -19,7 +19,7 @@
           <ng-template sbTemplateRef="header" let-config>
               <div role="alert">
                 <button type="button" class="btn btn-outline-primary float-end"
-                  (click)="lib?.instance?.exportAs('csv')">DownloadCSV</button>
+                  (click)="lib?.instance?.exportAs('csv');downloadCSV()">DownloadCSV</button>
               </div>
             </ng-template>
       </sb-dashlet>

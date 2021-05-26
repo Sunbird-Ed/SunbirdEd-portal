@@ -146,4 +146,14 @@ export class ActivityDashboardComponent implements OnInit {
     this.groupService.goBack();
   }
 
+  addTelemetry(id, cdata, extra?, obj?) {
+    this.groupService.addTelemetry({id, extra}, this.activatedRoute.snapshot, cdata, this.groupId, obj);
+  }
+
+  downloadCSV() {
+    this.addTelemetry('download-csv', [], {},
+    { id: _.get(this.activity, 'identifier'),
+      type: _.get(this.activity, 'primaryCategory'), ver: (_.get(this.activity, 'pkgVersion').toString())});
+  }
+
 }
