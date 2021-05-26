@@ -7,7 +7,7 @@
 <div *ngIf="!layoutConfiguration">
   <div class="ui relative main menu bs-0 d-block" [ngClass]="{'player-fullscreen-header': isFullScreenView}">
     <!--Header White Section-->
-    <div class="ui container sb-header-ui-container">
+    <div class="sb-header-ui-container">
       <div class="ui grid padded width-100">
         <div class="five wide column p-0">
           <!--Logo-->
@@ -47,7 +47,7 @@
     <!--Header White Section-->
     <!--Header Blue Section-->
     <!--Computer-->
-    <div class="sb-bg-color-primary p-8 px-16"
+    <div class="sb-bg-color-primary p-8 padding-header"
       *ngIf="(showExploreHeader || userService.loggedIn && !showOfflineHelpCentre) && !router.url.includes('/contribute/program')">
       <ng-container *ngIf="contributeTabActive else defaultView">
         <div class="ui container d-flex flex-ai-center mx-0 px-8">
@@ -55,7 +55,7 @@
         </div>
       </ng-container>
       <ng-template #defaultView>
-        <div class="ui container d-flex flex-ai-center mx-0">
+        <div class="d-flex flex-ai-center mx-0">
           <!--QR Button-->
           <button class="ui button qr-code-btn d-flex flex-ai-center computer only mr-0" appTelemetryInteract
             [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrmodal = true;"
