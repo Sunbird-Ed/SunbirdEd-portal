@@ -16,6 +16,7 @@ import { PageQuestionsComponent } from './components/page-questions/page-questio
 import { MatrixQuestionsComponent } from './components/matrix-questions/matrix-questions.component';
 import { QuestionGenericInputsComponent } from './components/question-generic-inputs/question-generic-inputs.component';
 import { QuestionnaireService } from "./questionnaire.service";
+import { RemarksComponent } from './components/remarks/remarks.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { QuestionnaireService } from "./questionnaire.service";
     PageQuestionsComponent,
     MatrixQuestionsComponent,
     QuestionGenericInputsComponent,
+    RemarksComponent,
   
   ],
   imports: [
