@@ -2,12 +2,12 @@
 <div class="input-div relative" id="search-input-container">
   <img src="assets/images/search-icon.svg" class="search icon" alt="Search Icon">
   <!-- Updated input tag -->
-  <input type="text" id="keyword" name="filter_search" class="sb-search-input" title="{{resourceService.frmelmnts?.lbl?.SearchIn | interpolate:'{searchContentType}':searchPlaceHolderValue}}"
+  <input type="text" id="keyword" name="filter_search" tabindex="9" class="sb-search-input" title="{{resourceService.frmelmnts?.lbl?.SearchIn | interpolate:'{searchContentType}':searchPlaceHolderValue}}"
   placeholder="{{!searchPlaceHolderValue ? resourceService.frmelmnts?.lbl?.searchOrQr : resourceService.frmelmnts?.lbl?.SearchIn | interpolate:'{searchContentType}':searchPlaceHolderValue}}" [(ngModel)]="key"
   (keyup.enter)="onEnter(key)" [disabled]="!showInput"
   [ngClass]="{'disabled': !showInput }" />
 </div>
-<button class="sb-btn sb-btn-normal" appTelemetryInteract [telemetryInteractEdata]="getInteractEdata(key)" [ngClass]="{'disabled': !showInput }" (click)="onEnter(key)" title="{{resourceService.frmelmnts?.lbl?.SearchIn | interpolate:'{searchContentType}':searchPlaceHolderValue}}">{{resourceService.frmelmnts?.lbl?.search}}</button>
+<button class="sb-btn sb-btn-normal" tabindex="10" appTelemetryInteract [telemetryInteractEdata]="getInteractEdata(key)" [ngClass]="{'disabled': !showInput }" (click)="onEnter(key)" title="{{resourceService.frmelmnts?.lbl?.SearchIn | interpolate:'{searchContentType}':searchPlaceHolderValue}}">{{resourceService.frmelmnts?.lbl?.search}}</button>
 </ng-container>
 <ng-container *ngIf="isLayoutAvailable()">
     <div class="input-div relative" id="search-input-container">
@@ -24,10 +24,10 @@
     </svg>
         <!-- <img src="assets/images/search-icon.svg" class="search icon" alt="Search Icon"> -->
         <!-- Updated input tag -->
-        <input type="text" id="keyword" name="filter_search" class="sb-search-input" title="{{resourceService.frmelmnts?.lbl?.searchOrQr}}"
+        <input type="text" id="keyword" tabindex="9"  name="filter_search" class="sb-search-input" title="{{resourceService.frmelmnts?.lbl?.searchOrQr}}"
           placeholder="{{resourceService.frmelmnts?.lbl?.searchOrQr}}" [(ngModel)]="key"
           (keyup.enter)="onEnter(key)" [disabled]="!showInput"
           [ngClass]="{'disabled': !showInput }" />
-          <button class="sb-btn sb-btn-md" appTelemetryInteract [telemetryInteractEdata]="getInteractEdata(key)" [ngClass]="{'disabled': !showInput }" (click)="onEnter(key)" title="{{resourceService.frmelmnts?.lbl?.SearchIn | interpolate:'{searchContentType}':searchPlaceHolderValue}}">{{resourceService.frmelmnts?.lbl?.search}}</button>	      
+          <button class="sb-btn sb-btn-md" tabindex="10" appTelemetryInteract [telemetryInteractEdata]="getInteractEdata(key)" [ngClass]="{'disabled': !showInput }" (click)="onEnter(key)" title="{{resourceService.frmelmnts?.lbl?.SearchIn | interpolate:'{searchContentType}':searchPlaceHolderValue}}">{{resourceService.frmelmnts?.lbl?.search}}</button>	      
       </div>
 </ng-container>
