@@ -1607,7 +1607,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR]
     },
-    '/dataset/v1/request/list/:tag': {
+    '/api/dataset/v1/request/list/:tag': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR]
     },
@@ -1615,7 +1615,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR]
     },
-    '/dataset/v1/request/read/:tag': {
+    '/api/dataset/v1/request/read/:tag': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR]
     },
@@ -1623,7 +1623,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR]
     },
-    '/dataset/v1/request/submit': {
+    '/api/dataset/v1/request/submit': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR]
     }
@@ -1733,8 +1733,8 @@ const API_LIST = {
     '/action/question/v1/publish/:do_id',
     '/action/question/v1/update/:do_id',
     '/report/request/list/:tag',
-    '/dataset/v1/request/list/:tag',
-    '/dataset/v1/request/read/:tag',
+    '/api/dataset/v1/request/list/:tag',
+    '/api/dataset/v1/request/read/:tag',
     '/report/request/read/:tag'
   ]
 };
