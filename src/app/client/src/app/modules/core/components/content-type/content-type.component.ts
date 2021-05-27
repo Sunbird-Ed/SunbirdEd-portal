@@ -79,8 +79,9 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       this.router.navigate([data.loggedInUserRoute.route],
         { queryParams: { ...params, selectedTab: data.loggedInUserRoute.queryParam } });
     } else {
-      this.router.navigate([data.anonumousUserRoute.route],
-        { queryParams: { ...params, selectedTab: data.anonumousUserRoute.queryParam } });
+      !data.isLoginMandatory ? 
+        this.router.navigate([data.anonumousUserRoute.route],
+          { queryParams: { ...params, selectedTab: data.anonumousUserRoute.queryParam } }): null;
     }
   }
 
@@ -149,12 +150,11 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
         },
         "anonumousUserRoute": {
             "route": "/observation",
-            'queryParam': 'observation'
         },
         "loggedInUserRoute": {
             "route": "/observation",
-            'queryParam': 'observation'
-        }
+        },
+       "isLoginMandatory": true
     };
     data.push(obj);
       this.processFormData(data);
