@@ -57,19 +57,21 @@
       </div>
     </div>
   </div>
-
-  <div class="textbook-container cc-player__content-header relative9" [ngClass]="{'header-block': isFullScreenView}">
+  <!--added a pre check to avoid empty div spacing-->
+<ng-container *ngIf="(totalContents > 0 && !isUnitCompleted) || isUnitCompleted">
+  <div class="textbook-container bg-color-white cc-player__content-header relative9" [ngClass]="{'header-block': isFullScreenView}">
     <div class="ui container">
       <div class="textbook py-16 sb-g">
-        <div class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12">
-          <!-- Textbook details -->
+        <!--textbook details is commented because we are showing it in above tool bar-->
+        <!-- <div class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12">
+          <!-- Textbook details 
           <div class="textbook__details d-flex flex-ai-center">
-            <!-- Textbook image -->
+            <!-- Textbook image 
             <div class="textbook__heading">
-              <!-- Textbook title -->
+              <!-- Textbook title 
               <h5 class="textbook__title sb-color-primary font-weight-bold mb-0">{{courseHierarchy?.name | titlecase}}
               </h5>
-              <!-- Textbook Rating with share icon -->
+              <!-- Textbook Rating with share icon 
               <div class="textbook__rating mt-4">
                 <button (click)="onShareLink();shareLinkModal=true;"
                   class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn">
@@ -81,7 +83,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 certified-course">
           <!-- Module Progress bar -->
@@ -102,6 +104,7 @@
       </div>
     </div>
   </div>
+</ng-container>
 
   <!-- CC-Player Video -->
   <div class="ui container" style="border: 2px red solid;">
