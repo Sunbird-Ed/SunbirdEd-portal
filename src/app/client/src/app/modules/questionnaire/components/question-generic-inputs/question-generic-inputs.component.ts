@@ -24,8 +24,7 @@ deleteRemarks(data,i){
   data["isRemarkClicked"]=false;
 }
 
-saveclicked(event,data) {
-  console.log(event.value);
+saveClicked(event,data) {
   data["isRemarkClicked"]=false;
 }
 
