@@ -3,9 +3,19 @@
 <div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
   <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'"
     [appTelemetryImpression]="telemetryImpression">
-    <div [ngClass]="FIRST_PANEL_LAYOUT">
+    <!-- Filter for web version -->
+    <!-- `isFilterEnabled` reference from current page data -->
+    <div *ngIf="!isDesktopApp && isFilterEnabled" [ngClass]="FIRST_PANEL_LAYOUT">
+      <div [ngClass]="isDesktopApp ? 'sb-desktop-filter-section' : ''">
+        <app-search-filter [facets$]="facets$" [layoutConfiguration]="layoutConfiguration" [isOpen]='true' *ngIf="initFilter"
+        (filterChange)="getFilters($event)" [pageData]="getCurrentPageData()" [pageId]="isUserLoggedIn() ? 'resource-page' : 'explore-page'" [defaultFilters]="defaultFilters">
+      </app-search-filter>
+    </div>
+  </div>
+  <!-- Filter for desktop version -->
+    <div *ngIf="isDesktopApp" [ngClass]="FIRST_PANEL_LAYOUT">
         <div *ngIf="layoutConfiguration">
-          <div *ngIf="isDesktopApp">
+          <div>
             <app-network-status></app-network-status>
             <app-load-offline-content></app-load-offline-content>
             <app-system-warning></app-system-warning>
@@ -36,22 +46,63 @@
             <h4 class="sb-categories-title text-left mt-16" *ngIf="apiContentList.length">
               {{resourceService?.frmelmnts?.lbl?.textbooks}}</h4>
           </div>
-          <div class="twelve wide column relative9" *ngIf="enrolledSection?.contents?.length && isUserLoggedIn()">
+          <div class="twelve wide column relative9" *ngIf="enrolledSection?.contents?.length && isUserLoggedIn() && !_currentPageData?.sections">
             <app-page-section [hideProgress]="true" (visits)="prepareVisits($event)" [section]="enrolledSection"
               (playEvent)="playEnrolledContent($event, 'My courses')" (viewAll)="viewAll($event)"></app-page-section>
           </div>
-          <div *ngFor="let section of pageSections; let last = last" [ngClass]="{'last mb-0':last}">
-            <sb-library-cards-grid *ngIf="!isDesktopApp" [layoutConfig]="layoutConfiguration" [type]="'infinite_card_grid'"
-              [title]="section.name" [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3"
-              (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)">
-            </sb-library-cards-grid>
-            <div class="sb-desktop-library-card">
-              <sb-library-cards-grid *ngIf="isDesktopApp" [layoutConfig]="layoutConfiguration" [type]="'infinite_card_grid_with_hover'" 
-              [title]="section?.name" [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3" 
-              (hoverActionClick)="hoverActionClicked($event)" (viewMoreClick)="viewAll(section)">
+
+          <!-- Template for displaying sections based on form configuration -->
+          <div *ngIf="_currentPageData?.sections && !isDesktopApp">
+            <div *ngIf="getSelectedTab() === 'home'" class="sb-section-preference pl-16">
+              <div class="preference">
+                <p class="header title">{{resourceService?.frmelmnts?.lbl?.yourPreferences}}</p>
+                <p>{{resourceService?.frmelmnts?.lbl?.preferencesheader | interpolate:'{instance}': instance}}</p>
+                <span class="title" *ngIf="userPreference?.board?.length">{{resourceService?.frmelmnts?.lbl?.boards}}&nbsp;</span>
+                <span *ngIf="userPreference?.board?.length">{{convertToString(userPreference?.board)}}</span><br/>
+                <span class="title" *ngIf="userPreference?.medium?.length">{{resourceService?.frmelmnts?.lbl?.medium}}&nbsp;</span>
+                <span *ngIf="userPreference?.medium?.length">{{convertToString(userPreference?.medium)}}</span><br/>
+                <span class="title" *ngIf="userPreference?.gradeLevel?.length">{{resourceService?.frmelmnts?.lbl?.classes}}&nbsp;</span>
+                <span *ngIf="userPreference?.gradeLevel?.length">{{convertToString(userPreference?.gradeLevel)}}</span>
+              </div>
+              <div>
+                <button class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border my-16"
+                  (click)="showEdit = !showEdit">{{resourceService?.frmelmnts?.lbl?.changePreferences}}</button>
+              </div>
+            </div>
+            <div *ngFor="let section of facetSections">
+              <sb-pills-grid *ngIf="section?.section?.isEnabled"
+                [title]="getSectionTitle(section?.section?.title)"
+                [minDisplayCount]="section?.section?.theme?.limit || 5"
+                [viewMoreText]="resourceService?.frmelmnts?.lbl?.viewmore"
+                [viewLessText]="resourceService?.frmelmnts?.lbl?.viewless" [pillSize]="'medium'" [platform]="'portal'"
+                [pillBorder]="'semi_round'" [pillsMultiRow]="'double_view_row'" (select)="handlePillSelect($event, section.name)">
+                <sb-pill-item *ngFor="let pillData of section.data" [name]="pillData?.name | titlecase"
+                  [icon]="utilService.getSectionPillIcon(section?.section?.theme?.icons, pillData?.value)" [value]="pillData"
+                  [theme]="utilService.getRandomColor(section?.section?.theme?.colorMapping)"></sb-pill-item>
+              </sb-pills-grid>
+            </div>
+            <div *ngIf="searchResponse?.length && getSelectedTab() === 'home'" [ngClass]="{'last mb-0':last}">
+              <sb-library-cards-grid [layoutConfig]="layoutConfiguration" [title]="resourceService?.frmelmnts?.lbl?.suggested"
+                [contentList]="searchResponse | sortBy:'name':'asc'" [maxCardCount]="4" (viewMoreClick)="sectionViewAll()"
+                (cardClick)="playContent($event, 'Suggested')">
               </sb-library-cards-grid>
             </div>
-            
+          </div>
+          <!-- Template for displaying page sections -->
+
+          <div *ngIf="!_currentPageData?.sections">
+            <div *ngFor="let section of pageSections; let last = last" [ngClass]="{'last mb-0':last}">
+              <sb-library-cards-grid *ngIf="!isDesktopApp" [layoutConfig]="layoutConfiguration" [type]="'infinite_card_grid'"
+                [title]="section.name" [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3"
+                (viewMoreClick)="viewAll(section)" (cardClick)="playContent($event, section.name)">
+              </sb-library-cards-grid>
+              <div class="sb-desktop-library-card">
+                <sb-library-cards-grid *ngIf="isDesktopApp" [layoutConfig]="layoutConfiguration" [type]="'infinite_card_grid_with_hover'" 
+                [title]="section?.name" [contentList]="section.contents | sortBy:'name':'asc'" [maxCardCount]="3" 
+                (hoverActionClick)="hoverActionClicked($event)" (viewMoreClick)="viewAll(section)">
+                </sb-library-cards-grid>
+              </div>
+            </div>
           </div>
           <div *ngIf="showLoader">
             <sb-library-cards-grid [layoutConfig]="layoutConfiguration" *ngFor="let i of numberOfSections"
@@ -92,3 +143,8 @@
 <app-batch-info *ngIf="showBatchInfo && isUserLoggedIn()" [enrolledBatchInfo]="selectedCourseBatches"
   (modelClose)="showBatchInfo = false">
 </app-batch-info>
+
+<app-popup *ngIf="showEdit" #frameworkModal [formInput]="userPreference?.framework" [showCloseIcon]="true"
+  [isClosable]="true" [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" [isGuestUser]="true"
+  (submit)="updateProfile($event)" (close)="showEdit = !showEdit">
+</app-popup>
