@@ -40,53 +40,34 @@
             </div>
           </div>
           <div *ngIf="entities">
-            <div class="d-flex flex-dc flex-w-wrap entity-list" *ngFor="let entity of entities?.entities">
-              <div class="d-flex sb-radio-btn-checkbox sb-radio-btn-primary">
-                <input type="radio" id="{{entity._id}}" name="radio-group" [checked]="entity._id == selectedEntity._id"
-                  value="{{entity._id}}" (change)="changeEntity(entity)">
-                <label for="{{entity._id}}">
-                  {{entity?.name}}
-                </label>
-              </div>
-            </div>
+            <entity-list [entities]="entities.entities" [selectedEntity]="selectedEntity" (onAction)="actionOnEntity($event)"> </entity-list>
+          </div>
+          <div class="twelve wide column" *ngIf="entities?.length === 0 && !showLoader">
+            <app-no-result [data]="noResultMessage"></app-no-result>
           </div>
           <div class="observation-detail-box">
             <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
               <div class="content-header__title font-weight-bold ellipsis text-left">
-                {{resourceService.frmelmnts?.lbl?.observationForm}}</div>
+                {{resourceService.frmelmnts?.lbl?.observationForm}}
+              </div>
             </div>
             <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons"
               *ngIf="entities?.allowMultipleAssessemts">
               <button class="sb-btn sb-btn-primary sb-btn-normal mr-8" (click)="observeAgain()">
-                {{resourceService.frmelmnts?.lbl?.observeAgaian}}
+                {{resourceService.frmelmnts?.btn?.observeAgaian}}
               </button>
             </div>
           </div>
-          <div class="submissions" *ngIf="submissions?.length">
-            <div *ngFor="let submission of submissions">
-              <div class="observation-detail-box">
-                <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
-                  <div class="content-header__title font-weight-bold ellipsis text-left">{{submission.title}}</div>
-                </div>
-                <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
-                  <i class="fas fa-caret-right" class="sb-btn-primary"></i>
-                </div>
-              </div>
-              <div *ngFor="let evidance of submission?.evidencesStatus"
-                class="evidences-list cc-player__content-header">
-                <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
-                  <div class="content-header__title font-weight-bold ellipsis text-left">
-                    <div>{{evidance.name}} </div>
-                    <small>Status : {{evidance.status}}</small>
-                  </div>
-                </div>
-                <div class="certified-course__btn ng-star-inserted">
-                  <button (click)="redirectToQuestions()"
-                    class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.btn?.start}}
-                  </button>
-                </div>
-              </div>
+          <div class="submissions">
+            <div class="twelve wide column margin-btm" *ngIf="showLoader">
+              <app-loader [data]='loaderMessage'></app-loader>
             </div>
+            <div class="twelve wide column" *ngIf="submissions?.length === 0 && !showLoader">
+              <app-no-result [data]="noResultMessage"></app-no-result>
+            </div>
+            <submission [submissions]="submissions" *ngIf="submissions?.length && !showLoader"
+              (selectedSubmission)="redirectToQuestions($event)"
+              (onAction)="actionOnSubmission($event)"> </submission>
           </div>
         </div>
       </div>
@@ -107,4 +88,7 @@
 </div>
 <div *ngIf="showDownloadModal">
   <add-entity (closeEvent)="modalClose()" [observationId]="observationId" [solutionId]="solutionId"> </add-entity>
+</div>
+<div *ngIf="openEditModal.show">
+  <app-edit-submission [submission]="openEditModal.data" (onAction)="closeEditModal($event)"> </app-edit-submission>
 </div>

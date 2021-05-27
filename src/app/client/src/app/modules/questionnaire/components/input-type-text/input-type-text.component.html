@@ -14,7 +14,7 @@
   <input
     type="text"
     [formControlName]="question?._id"
-    [ngClass]="isValid && isTouched ? 'is-invalid' : is-valid"
+    [ngClass]="!isValid && isTouched ? 'is-invalid ' : 'is-valid'"
     class="sb-form-control"
     [placeholder]="'Enter your respsonse'"
     (change)="onChange($event)"

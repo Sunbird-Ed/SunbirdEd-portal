@@ -39,8 +39,18 @@
     .student-card {
       background-color: var(--sb-card-bg);
     }
-    .question-date-input{
+    .question-date-input {
       background: var(--cc-sbcard-data1-bg);
     }
   }
+}
+
+.remarks{
+  margin-top: 15px;
+.alignleft {
+	float: left;
+}
+.alignright {
+	float: right;
+}
 }

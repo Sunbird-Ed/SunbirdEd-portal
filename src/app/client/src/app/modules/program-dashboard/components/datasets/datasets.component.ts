@@ -781,6 +781,8 @@ export class DatasetsComponent implements OnInit {
 
   ngOnInit() {
 
+    this.submitRequest();
+    this.loadReports();
     this.userDataSubscription = this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
@@ -791,9 +793,13 @@ export class DatasetsComponent implements OnInit {
         }
       });
 
+
+
     this.initLayout();
-    this.getProgramsList();
-    this.getFormDetails();
+    // this.getProgramsList();
+    // this.getFormDetails();
+
+  
     
 
   }
@@ -881,6 +887,8 @@ export class DatasetsComponent implements OnInit {
     // if (this.batch) {
       this.onDemandReportService.getReportList("this.tag").subscribe((data) => {
         if (data) {
+
+          console.log("loadReports",data)
           // const reportData = _.get(data, 'result.jobs');
           // this.data = _.map(reportData, (row) => this.dataModification(row));
           // this.data = [...this.onDemandReportData];
@@ -900,7 +908,7 @@ export class DatasetsComponent implements OnInit {
     // if (isRequestAllowed) {
       // this.isProcessed = false;
 
-      console.log("this.reportForm.value",this.reportForm.value);
+      console.log("this.reportForm.value");
       const request = {
         request: {
           tag: "PROGRAM-REPORT",

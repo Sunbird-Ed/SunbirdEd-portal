@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ObservationService } from '@sunbird/core';
-import { ConfigService,  ResourceService} from '@sunbird/shared';
+import { ConfigService, ResourceService, ILoaderMessage, INoResultMessage } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { ObservationUtilService } from "../../service";
 @Component({
   selector: "app-observation-details",
   templateUrl: "./observation-details.component.html",
@@ -14,80 +14,97 @@ export class ObservationDetailsComponent implements OnInit {
   programId;
   solutionId;
   solution;
+  payload;
   observationId;
-  selectedEntity: any;
+  selectedEntity: any = {};
   submissions;
   showDownloadModal: boolean = false;
+  openEditModal = {
+    show: false,
+    data: ''
+  };
+  showLoader: boolean = false;
+  public loaderMessage: ILoaderMessage;
+  public noResultMessage: INoResultMessage;
+
+
   constructor(
     private observationService: ObservationService,
     config: ConfigService,
     private router: Router,
     private routerParam: ActivatedRoute,
-    public resourceService: ResourceService
+    public resourceService: ResourceService,
+    public observationUtilService: ObservationUtilService
   ) {
     this.config = config;
-    routerParam.queryParams.subscribe((data) => {
-      console.log(data, "parameters");
+    routerParam.queryParams.subscribe(data => {
       this.programId = data.programId;
       this.solutionId = data.solutionId;
       this.observationId = data.observationId;
-      this.solution = data.solutionName;
-    });
+      this.solution = data.solutionName
+    })
   }
 
   ngOnInit() {
-    this.getEntities();
+    this.getProfileData();
+  }
+  getProfileData() {
+    this.showLoader = true;
+    this.observationUtilService.getProfileDataList().then(data => {
+      this.payload = data;
+      this.showLoader = false;
+      this.getEntities();
+    }, error => {
+      this.showLoader = false;
+    })
   }
   getEntities() {
+    this.showLoader = true;
     const paramOptions = {
       url: this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_ENTITIES,
       param: {
         solutionId: this.solutionId,
       },
-      data: {
-        block: "0abd4d28-a9da-4739-8132-79e0804cd73e",
-        district: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
-        role: "DEO",
-        school: "8be7ecb5-4e35-4230-8746-8b2694276343",
-        state: "bc75cc99-9205-463e-a722-5326857838f8",
-      },
+      data: this.payload,
     };
-    this.observationService.post(paramOptions).subscribe(
-      (data) => {
+    this.observationService.post(paramOptions).subscribe(data => {
+      this.showLoader = false;
+      if (data.result.entities && data.result.entities.length) {
         this.entities = data.result;
-        console.log(this.entities, "this.entities");
-        console.log(this.entities.entities[0], "this.entities.entities[0]");
-        this.selectedEntity = this.entities.entities[0];
+        if (!this.selectedEntity._id) {
+          this.selectedEntity = this.entities.entities[0];
+        }
         this.observationId = this.entities._id;
         this.getObservationForm();
-      },
-      (error) => {}
-    );
-  }
+      } else {
+        this.entities = [];
+      }
 
+    }, error => {
+      this.showLoader = false;
+    })
+  }
+  actionOnEntity(event) {
+    console.log(event, "event");
+    if (event.action == "delete") {
+      this.delete(event.data);
+    } else if (event.action == "change") {
+      this.changeEntity(event.data);
+    }
+  }
   getObservationForm() {
+    this.showLoader = true;
     const paramOptions = {
-      url:
-        this.config.urlConFig.URLS.OBSERVATION.GET_OBSERVATION_SUBMISSIONS +
-        `${this.entities._id}?entityId=${this.selectedEntity._id}`,
-      param: {
-        solutionId: this.solutionId,
-        programId: this.programId,
-        observationId: this.entities._id,
-        entityId: this.selectedEntity._id,
-        entityName: this.selectedEntity.name,
-      },
-      data: {
-        block: "0abd4d28-a9da-4739-8132-79e0804cd73e",
-        district: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
-        role: "DEO",
-        school: "8be7ecb5-4e35-4230-8746-8b2694276343",
-        state: "bc75cc99-9205-463e-a722-5326857838f8",
-      },
+      url: this.config.urlConFig.URLS.OBSERVATION.GET_OBSERVATION_SUBMISSIONS + `${this.observationId}?entityId=${this.selectedEntity._id}`,
+      param: {},
+      data: this.payload,
     };
-    this.observationService.post(paramOptions).subscribe((data) => {
+    this.observationService.post(paramOptions).subscribe(data => {
+      this.showLoader = false;
       this.submissions = data.result;
-    });
+    }, error => {
+      this.showLoader = false;
+    })
   }
   addEntity() {
     this.showDownloadModal = true;
@@ -101,38 +118,153 @@ export class ObservationDetailsComponent implements OnInit {
     this.getEntities();
   }
   goBack() {
-    this.router.navigate(["/observation"]);
+    this.router.navigate(['/observation']);
   }
 
-  observeAgain() {
-    const paramOptions = {
-      url:
-        this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_SUBMISSION_CREATE +
-        `${this.observationId}?entityId=${this.selectedEntity._id}`,
-      param: {},
-      data: {
-        block: "0abd4d28-a9da-4739-8132-79e0804cd73e",
-        district: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
-        role: "DEO",
-        school: "8be7ecb5-4e35-4230-8746-8b2694276343",
-        state: "bc75cc99-9205-463e-a722-5326857838f8",
+  async observeAgain() {
+    let metaData = await this.observationUtilService.getAlertMetaData();
+    metaData.content.body.data = this.resourceService.frmelmnts.lbl.createObserveAgain;
+    metaData.content.body.type = "text";
+    metaData.content.title = this.resourceService.frmelmnts.btn.observeAgain;
+    metaData.size = "mini";
+    metaData.footer.buttons.push({
+      type: "cancel",
+      returnValue: false,
+      buttonText: this.resourceService.frmelmnts.btn.no
+    });
+    metaData.footer.buttons.push({
+      type: "accept",
+      returnValue: true,
+      buttonText: this.resourceService.frmelmnts.btn.yes
+    })
+    metaData.footer.className = "double-btn-circle";
+    let returnData = await this.observationUtilService.showPopupAlert(metaData);
+    if (returnData) {
+      this.showLoader = true;
+      const paramOptions = {
+        url: this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_SUBMISSION_CREATE + `${this.observationId}?entityId=${this.selectedEntity._id}`,
+        param: {},
+        data: this.payload,
+      };
+      this.observationService.post(paramOptions).subscribe(data => {
+        this.showLoader = false;
+        this.getEntities();
+      }, error => {
+        this.showLoader = false;
+      })
+    }
+  }
+  redirectToQuestions(evidence) {
+    this.router.navigate([`/questionnaire`], {
+      queryParams: {
+        observationId: this.observationId,
+        entityId: this.selectedEntity._id,
+        submissionNumber: evidence.submissionNumber,
+        evidenceCode: evidence.code,
       },
-    };
-    this.observationService.post(paramOptions).subscribe((data) => {
-      console.log(data, "data 122");
-      this.getObservationForm();
     });
   }
 
-  redirectToQuestions() {
-    //TODO: add params
-    this.router.navigate([`/questionnaire`], {
-    queryParams: {
-      observationId: "",
-      entityId: "",
-      submissionNumber: "",
-      evidenceCode:""
+  async delete(entity) {
+    let metaData = await this.observationUtilService.getAlertMetaData();
+    metaData.content.body.data = this.resourceService.frmelmnts.lbl.deleteConfirm;
+    metaData.content.body.type = "text";
+    metaData.content.title = this.resourceService.frmelmnts.btn.delete;
+    metaData.size = "mini";
+    metaData.footer.buttons.push({
+      type: "cancel",
+      returnValue: false,
+      buttonText: this.resourceService.frmelmnts.btn.no
+    });
+    metaData.footer.buttons.push({
+      type: "accept",
+      returnValue: true,
+      buttonText: this.resourceService.frmelmnts.btn.yes
+    })
+    metaData.footer.className = "double-btn-circle";
+    let returnData = await this.observationUtilService.showPopupAlert(metaData);
+    if (returnData) {
+      this.showLoader = true;
+      this.payload.data = [
+        entity._id
+      ]
+      const paramOptions = {
+        url: this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_UPDATE_ENTITES + this.observationId,
+        param: {},
+        data: this.payload,
+      };
+      if (this.selectedEntity._id == entity._id) {
+        this.selectedEntity = {};
+      }
+      this.observationService.delete(paramOptions).subscribe(data => {
+        this.showLoader = false;
+        this.getEntities();
+      }, error => {
+        this.showLoader = false;
+      })
     }
-  });
+  }
+
+  openEditSubmission(event) {
+    this.openEditModal.show = true;
+    this.openEditModal.data = event;
+  }
+
+  async deleteSubmission(event) {
+    let metaData = await this.observationUtilService.getAlertMetaData();
+    metaData.content.body.data = this.resourceService.frmelmnts.lbl.deleteSubmission;
+    metaData.content.body.type = "text";
+    metaData.content.title = this.resourceService.frmelmnts.btn.delete;
+    metaData.size = "mini";
+    metaData.footer.buttons.push({
+      type: "cancel",
+      returnValue: false,
+      buttonText: this.resourceService.frmelmnts.btn.no
+    });
+    metaData.footer.buttons.push({
+      type: "accept",
+      returnValue: true,
+      buttonText: this.resourceService.frmelmnts.btn.yes
+    })
+    metaData.footer.className = "double-btn-circle";
+    let returnData = await this.observationUtilService.showPopupAlert(metaData);
+    if (returnData) {
+      this.showLoader = true;
+      const config = {
+        url: this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_SUBMISSION_UPDATE + `${event._id}`,
+        param: {},
+        payload: this.payload,
+      };
+      this.observationService.delete(config).subscribe(data => {
+        this.showLoader = false;
+        this.getEntities();
+      }, error => {
+        this.showLoader = false;
+      })
+    }
+  }
+
+  closeEditModal(event?) {
+    this.openEditModal.show = false;
+    event.data ? this.updateSubmission(event.data) : '';
+  }
+
+  updateSubmission(event) {
+    this.showLoader = true;
+    this.payload.title = event.title;
+    const paramOptions = {
+      url: this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_SUBMISSION_UPDATE + event._id,
+      param: {},
+      data: this.payload,
+    };
+    this.observationService.post(paramOptions).subscribe(data => {
+      this.showLoader = false;
+      this.getEntities();
+    }, error => {
+      this.showLoader = false;
+    })
+  }
+  actionOnSubmission(event) {
+    event.action == 'edit' ? this.openEditSubmission(event.data) : this.deleteSubmission(event.data)
   }
 }

@@ -1,0 +1,8 @@
+<div class="text-area">
+    <textarea rows="3" class="alignleft" [(ngModel)]="remark" [readonly]='isEditable'>
+    </textarea>
+    <button class="sb-btn sb-btn-normal sb-btn-primary alignright" (click)="saveRemark()">
+        {{resourceService.frmelmnts.btn.save }}
+    </button>
+</div>
+
