@@ -116,7 +116,7 @@ export default (app, proxyURL) => {
         res.status(res.statusCode).send(res.body);
     });
 
-    app.post("/learner/user/v4/create", customProxy(proxyURL, defaultProxyConfig),async (req, res) => {
+    app.post(["/learner/user/v4/create", "/learner/user/v1/managed/create"], customProxy(proxyURL, defaultProxyConfig),async (req, res) => {
         const userSDK: any = containerAPI.getUserSdkInstance();
         const userId = _.get(res, 'body.result.userId');
         const userToken: string = await userSDK.getUserToken().catch(error => { 
