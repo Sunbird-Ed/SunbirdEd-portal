@@ -215,3 +215,15 @@
   background-color: #925eb0;
   color: white;
 }
+.parent-content-glance{
+    display: flex;
+    justify-content: flex-end;
+    margin: auto;
+    width: 85%;
+
+}
+.content-glance{
+    border-radius: 10px;
+    max-height: 1000px;
+    // overflow-y: scroll;
+}

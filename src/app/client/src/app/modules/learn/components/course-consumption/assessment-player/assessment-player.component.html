@@ -7,33 +7,38 @@
     <div class="container">
       <div class="py-8 d-flex flex-ai-center">
         <!-- Back button -->
-        <div class = "wrap-btn-text d-flex">
-        <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-text-color-white sb-left-icon-btn mr-auto"
-          (click)="goBack(); logTelemetry('back-track', courseHierarchy)">
-          <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--white">
-              <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
-            </svg></i>
-          <!-- {{resourceService?.frmelmnts?.btn?.back}} -->
-        </button>
-         
-        <span class="text-left text-truncate text-white body-font-size-secondary font-montserrat" *ngIf="courseHierarchy" >
-       <ng-container *ngIf = "courseHierarchy">
-           <ul class = "breadcrumbs">
-             <div class = "main-div-breadcrumbs-item">
-              {{courseHierarchy?.name | titlecase}}
-              <ng-container *ngIf= "courseHierarchy?.children?.length">
-             <div *ngFor = "let data of courseHierarchy?.children; let i = index">
-               <li class = "breadcrumbs_child">
-              <div><mat-icon  class="icon-display">navigate_next</mat-icon></div>
-               <div  [ngClass]= "(courseHierarchy.length-1 === i) ? 'text-style-last-child': 'text-style-parent'">{{data.name}}</div>
-             </li>
-         </div>
-        </ng-container>
-           </div>
-           </ul>
-         </ng-container>
-         </span>
-        </div>     
+        <div class="wrap-btn-text d-flex">
+          <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-text-color-white sb-left-icon-btn mr-auto"
+            (click)="goBack(); logTelemetry('back-track', courseHierarchy)">
+            <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--white">
+                <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+              </svg></i>
+            <!-- {{resourceService?.frmelmnts?.btn?.back}} -->
+          </button>
+
+          <span class="text-left text-truncate text-white body-font-size-secondary font-montserrat"
+            *ngIf="courseHierarchy">
+            <ng-container *ngIf="courseHierarchy">
+              <ul class="breadcrumbs">
+                <div class="main-div-breadcrumbs-item">
+                  {{courseHierarchy?.name | titlecase}}
+                  <ng-container *ngIf="courseHierarchy?.children?.length">
+                    <div *ngFor="let data of courseHierarchy?.children; let i = index">
+                      <li class="breadcrumbs_child">
+                        <div>
+                          <mat-icon class="icon-display">navigate_next</mat-icon>
+                        </div>
+                        <div
+                          [ngClass]="(courseHierarchy.length-1 === i) ? 'text-style-last-child': 'text-style-parent'">
+                          {{data.name}}</div>
+                      </li>
+                    </div>
+                  </ng-container>
+                </div>
+              </ul>
+            </ng-container>
+          </span>
+        </div>
         <div class="d-flex flex-ai-center">
           <!-- Previous module button -->
           <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-left-icon-btn" *ngIf="prevModule"
@@ -104,10 +109,10 @@
   </div>
 
   <!-- CC-Player Video -->
-  <div class="ui container" style="border: 2px red solid;">
-    <div class="cc-player sb-g" style="border: 2px green solid;">
+  <div class="ui container">
+    <div class="cc-player sb-g">
 
-      <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4" style="border: 2px orange solid;">
+      <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4">
         <div class="cc-player__list px-0">
           <h5 class="p-0 mb-0 font-weight-bold background-header-list">
             {{resourceService?.frmelmnts?.lbl?.contentsLabel}}</h5>
@@ -144,8 +149,8 @@
           </div>
         </div>
       </section>
-      <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12 cc-player__video sb-toc-player-column"
-        style="border: 2px yellow solid;">
+      <section
+        class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12 cc-player__video sb-toc-player-column">
         <div class="toc-content text-left">
           <div class="content-video">
             <section class="content-video__player" id="player-area-height">
@@ -169,9 +174,10 @@
       </section>
     </div>
   </div>
-
-  <div class="mt-8">
-    <app-credits-and-licence *ngIf="activeContent" [contentData]="activeContent"></app-credits-and-licence>
+  <div class="parent-content-glance">
+    <div class="mt-8 content-glance">
+      <app-credits-and-licence *ngIf="activeContent" [contentData]="activeContent"></app-credits-and-licence>
+    </div>
   </div>
 
 
