@@ -50,6 +50,7 @@
       [questionnaireForm]="questionnaireForm"
       [question]="question"
     ></matrix-questions>
+      <div class="remarks">
         <h5 class="alignleft">Remarks</h5>
         <button  [ngClass]="question.isRemarkClicked ? 'sb-btn sb-btn-normal sb-btn-red alignright':'sb-btn sb-btn-normal sb-btn-primary alignright'"
         (click)="question.isRemarkClicked ? deleteRemarks(question,qi):openRemark(question,qi)">
