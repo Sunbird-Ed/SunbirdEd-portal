@@ -5,7 +5,7 @@
 .popup {
   padding: 30px;
   position: relative;
-  height: 200px;
+  height: 220px;
   border-radius: none !important;
   background: var(--sb-modal-content-bg);
   color: var(--sb-text);
@@ -62,14 +62,12 @@
     margin-top: 60px;
     text-transform: capitalize;
     font-size: 15px;
-
     button{
         margin-right:15px;
         border-radius:50%;
-        height: 50px;
-        width: 50px;
+        height: 60px;
+        width: 60px;
     }
-
 }
 
 

@@ -1,32 +1,30 @@
 <div class="sb-modal">
-<div class="popup">
-  <div class="popup-header" *ngIf="modal.context.data.content.title">
-    <b>{{ modal.context.data.content.title }}</b>
-  </div>
-  <div *ngIf="modal.context.data.content.body.type == 'checkbox'">
-    <input type="checkbox" id="myCheck" [(ngModel)]="isChecked" (change)="checkValue(isChecked?true:false)" class="popup-body" />
-    <label for="myCheck" class="popup-body-checkbox">{{
-      modal.context.data.content.body.data
-    }}</label
-    ><br />
-  </div>
-  <div *ngIf="modal.context.data.content.body.type == 'text'">
-    <div class="popup-body" *ngIf="modal.context.data.content.body.data">
-      {{ modal.context.data.content.body.data }}
+  <div class="popup">
+    <div class="popup-header" *ngIf="modal.context.data.content.title">
+      <b>{{ modal.context.data.content.title }}</b>
     </div>
-  </div>
-
-  <div class={{modal.context.data.footer.className}} >
-       <div  *ngFor="let btn of modal.context.data.footer.buttons">
-        <button
-        [ngClass]="{'sb-btn sb-btn-normal sb-btn-primary':true,'sb-btn-disabled':isChecked == false && btn.type =='accept' && modal.context.data.content.body.type == 'checkbox'}"
-        [disabled]="!isChecked && modal.context.data.content.body.type == 'checkbox' && btn.type=='accept'"
-        (click)="getMethod(btn)"
-        autofocus>
-        {{ btn.buttonText }}
-      </button>
+    <div *ngIf="modal.context.data.content.body.type == 'checkbox'">
+      <input type="checkbox" id="myCheck" [(ngModel)]="isChecked" (change)="checkValue(isChecked?true:false)"
+        class="popup-body" />
+      <label for="myCheck" class="popup-body-checkbox">{{
+      modal.context.data.content.body.data
+    }}</label><br />
+    </div>
+    <div *ngIf="modal.context.data.content.body.type == 'text'">
+      <div class="popup-body" *ngIf="modal.context.data.content.body.data">
+        {{ modal.context.data.content.body.data }}
       </div>
     </div>
 
-</div>
+    <div class={{modal.context.data.footer.className}}>
+      <div *ngFor="let btn of modal.context.data.footer.buttons">
+        <button
+          [ngClass]="{'sb-btn sb-btn-normal sb-btn-primary':true,'sb-btn-disabled':isChecked == false && btn.type =='accept' && modal.context.data.content.body.type == 'checkbox'}"
+          [disabled]="!isChecked && modal.context.data.content.body.type == 'checkbox' && btn.type=='accept'"
+          (click)="getMethod(btn)" autofocus>
+          {{ btn.buttonText }}
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
