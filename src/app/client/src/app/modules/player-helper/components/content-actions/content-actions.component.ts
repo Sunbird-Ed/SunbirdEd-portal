@@ -74,77 +74,77 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
     this.contentPrintable();
   }
   onActionButtonClick(event, content) {
-      switch (event.data.name.toUpperCase()) {
-        case 'RATE':
-          this.contentRatingModal = true;
-          this.logTelemetry('rate-content', content);
-          break;
-        case 'SHARE':
-          this.shareContent(content);
-          break;
-        case 'PRINT':
-          this.printPdf(content);
-          this.logTelemetry('print-content', content);
-          break;
-        case 'FULLSCREEN':
-          this.navigationHelperService.emitFullScreenEvent(true);
-          this.logTelemetry('fullscreen-content', content);
-          break;
-        case 'MINIMIZE':
-          this.navigationHelperService.emitFullScreenEvent(false);
-          this.logTelemetry('minimize-screen-content', content);
-          break;
-      }
+    switch (event.data.name.toUpperCase()) {
+      case 'RATE':
+        this.contentRatingModal = true;
+        this.logTelemetry('rate-content', content);
+        break;
+      case 'SHARE':
+        this.shareContent(content);
+        break;
+      case 'PRINT':
+        this.printPdf(content);
+        this.logTelemetry('print-content', content);
+        break;
+      case 'FULLSCREEN':
+        this.navigationHelperService.emitFullScreenEvent(true);
+        this.logTelemetry('fullscreen-content', content);
+        break;
+      case 'MINIMIZE':
+        this.navigationHelperService.emitFullScreenEvent(false);
+        this.logTelemetry('minimize-screen-content', content);
+        break;
+    }
   }
 
   shareContent(content) {
     this.sharelinkModal = true;
-          const param = {
-            identifier: _.get(content, 'identifier'),
-            type: _.get(content, 'contentType'),
-          };
-          this.setTelemetryShareData(param);
-          this.shareLink = this.collectionId && _.get(content, 'identifier') ?
-            this.contentUtilsServiceService.getPublicShareUrl(_.get(content, 'identifier'), _.get(content, 'mimeType'), this.collectionId) :
-            this.contentUtilsServiceService.getPublicShareUrl(_.get(content, 'identifier'), _.get(content, 'mimeType'));
-          this.logTelemetry('share-content', content);
+    const param = {
+      identifier: _.get(content, 'identifier'),
+      type: _.get(content, 'contentType'),
+    };
+    this.setTelemetryShareData(param);
+    this.shareLink = this.collectionId && _.get(content, 'identifier') ?
+      this.contentUtilsServiceService.getPublicShareUrl(_.get(content, 'identifier'), _.get(content, 'mimeType'), this.collectionId) :
+      this.contentUtilsServiceService.getPublicShareUrl(_.get(content, 'identifier'), _.get(content, 'mimeType'));
+    this.logTelemetry('share-content', content);
   }
 
   printPdf(content: any) {
     const pdfUrl = _.get(content, 'itemSetPreviewUrl');
     window.open(pdfUrl, '_blank');
   }
-    setTelemetryShareData(param) {
-      this.telemetryShareData = [{
-        id: param.identifier,
-        type: param.contentType,
-        ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
-      }];
-    }
+  setTelemetryShareData(param) {
+    this.telemetryShareData = [{
+      id: param.identifier,
+      type: param.contentType,
+      ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
+    }];
+  }
 
-    logTelemetry(id, content) {
-      const interactData = {
-        context: {
-          env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
-          cdata: []
-        },
-        edata: {
-          id: id,
-          type: 'click',
-          pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'play-content',
-        },
-        object: {
-          id: content['identifier'],
-          type: content['contentType'],
-          ver: `${content['pkgVersion']}`,
-          rollup: this.objectRollUp,
-        }
-      };
-      this.telemetryService.interact(interactData);
-    }
+  logTelemetry(id, content) {
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
+        cdata: []
+      },
+      edata: {
+        id: id,
+        type: 'click',
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'play-content',
+      },
+      object: {
+        id: content['identifier'],
+        type: content['contentType'],
+        ver: `${content['pkgVersion']}`,
+        rollup: this.objectRollUp,
+      }
+    };
+    this.telemetryService.interact(interactData);
+  }
   contentPrintable() {
     // selectedContent?.model?.itemSetPreviewUrl
-   // console.log('------>', this.contentData);
+    // console.log('------>', this.contentData);
     _.forEach(this.actionButtons, data => {
       if (data.name === 'print') {
         if (this.contentData.itemSetPreviewUrl) {
@@ -165,9 +165,9 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-    ngOnDestroy() {
-      if (this.subscription.unsubscribe) {
-        this.subscription.unsubscribe();
-      }
+  ngOnDestroy() {
+    if (this.subscription.unsubscribe) {
+      this.subscription.unsubscribe();
     }
   }
+}

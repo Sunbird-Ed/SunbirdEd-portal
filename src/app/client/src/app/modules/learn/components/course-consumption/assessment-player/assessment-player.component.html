@@ -162,13 +162,20 @@
               </app-content-actions>
             </section>
           </div>
-          <div class="mt-8">
+          <!-- <div class="mt-8">
             <app-credits-and-licence *ngIf="activeContent" [contentData]="activeContent"></app-credits-and-licence>
-          </div>
+          </div> -->
         </div>
       </section>
     </div>
   </div>
+
+  <div class="mt-8">
+    <app-credits-and-licence *ngIf="activeContent" [contentData]="activeContent"></app-credits-and-licence>
+  </div>
+
+
+
 </div>
 <div class="ui container py-16" *ngIf="showLoader">
   <app-loader [data]='loaderMessage'></app-loader>
