@@ -1,27 +1,24 @@
 @import "variables";
 @import "mixins/mixins";
 
-.sb-onboard {
-  &__container {
-    width: 100%;
-    height: 100vh;
-    background: var(--primary-100);
-    padding: calculateRem(24px);
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    position: relative;
-
-    @include respond-above(sm) {
-      border-radius: calculateRem(8px);
-      max-width: calculateRem(1008px);
-      min-height: calculateRem(610px);
-      height: auto;
-    }
+.add-entity-modal{
+  .content{
+    max-height: 65vh;
   }
+  .footer{
+    margin-top: calculateRem(16px);
+    width: 100%;
+    text-align: center;
+    display: flex;
+    background: var(--sb-card-bg);
+    border-top: none;
+  }
+  .search-box{
+    margin-top: 15px;
+  }
+}
 
+.sb-onboard {
   &__header {
     width: 100%;
     margin: 20px 0px;
@@ -81,8 +78,13 @@
   .load-mr-bt-center{
     text-align:center
 }
-.disabled-checkbox{
-  background: #ccc;
-  border: #ccc;
 
+// .sb-checkbox .disabled-checkbox input:checked ~ .box:after, .sb-checkbox .disabled-checkbox input:checked ~ label:after {
+//   background: #ccc;
+//   border: #ccc;
+// }
+
+input[type=checkbox][disabled] {
+  background: var(--sb-card-bg);
+  border: #ccc;
 }
