@@ -14,13 +14,15 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8'
 import { ContentSearchModule } from '@sunbird/content-search';
 import { TranslateModule } from '@ngx-translate/core';
 import {
-   ObservationListingComponent
+  AddEntityComponent, SubmissionsComponent, ObservationListingComponent, ObservationDetailsComponent,
+  EntityListComponent, EditSubmissionComponent
 } from './components';
 import { LocationModule } from '../../plugins/location/location.module';
 import { ObservationUtilService } from './service';
 import { AlertModalComponent } from './components/alert-modal/alert-modal.component';
 @NgModule({
-  declarations: [ObservationListingComponent,AlertModalComponent],
+  declarations: [ObservationListingComponent, ObservationDetailsComponent, AddEntityComponent, SubmissionsComponent,
+    EntityListComponent,AlertModalComponent, EditSubmissionComponent],
   imports: [
     CommonModule,
     ObservationRoutingModule,
