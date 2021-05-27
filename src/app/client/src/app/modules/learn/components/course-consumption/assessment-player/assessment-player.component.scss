@@ -232,3 +232,8 @@
     max-height: 1000px;
     // overflow-y: scroll;
 }
+.reduce-space-between{
+  display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-column-gap: 0px;
+}

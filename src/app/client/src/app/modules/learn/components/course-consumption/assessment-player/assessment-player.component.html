@@ -1,4 +1,5 @@
-<app-landing-section [textToDisplay]="" [showBanner]="false" [layoutConfiguration]="layoutConfiguration" [noTitle]="true">
+<app-landing-section [textToDisplay]="" [showBanner]="false" [layoutConfiguration]="layoutConfiguration"
+  [noTitle]="true">
 </app-landing-section>
 <div *ngIf="!showLoader" [appTelemetryImpression]="telemetryPlayerPageImpression" class="text-left relative9">
 
@@ -63,12 +64,13 @@
     </div>
   </div>
   <!--added a pre check to avoid empty div spacing-->
-<ng-container *ngIf="(totalContents > 0 && !isUnitCompleted) || isUnitCompleted">
-  <div class="textbook-container bg-color-white cc-player__content-header relative9" [ngClass]="{'header-block': isFullScreenView}">
-    <div class="ui container">
-      <div class="textbook py-16 sb-g">
-        <!--textbook details is commented because we are showing it in above tool bar-->
-        <!-- <div class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12">
+  <ng-container *ngIf="(totalContents > 0 && !isUnitCompleted) || isUnitCompleted">
+    <div class="textbook-container bg-color-white cc-player__content-header relative9"
+      [ngClass]="{'header-block': isFullScreenView}">
+      <div class="ui container">
+        <div class="textbook py-16 sb-g">
+          <!--textbook details is commented because we are showing it in above tool bar-->
+          <!-- <div class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12">
           <!-- Textbook details 
           <div class="textbook__details d-flex flex-ai-center">
             <!-- Textbook image 
@@ -90,30 +92,30 @@
           </div>
         </div> -->
 
-        <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 certified-course">
-          <!-- Module Progress bar -->
-          <div class="certified-course__progress" *ngIf="totalContents > 0 && !isUnitCompleted">
-            <div class="fsmall">{{generaliseLabelService?.frmelmnts?.lbl?.moduleProgress}}</div>
-            <div class="sb-color-primary fnormal font-weight-bold mt-4">{{consumedContents}}/{{totalContents}}
-              {{resourceService?.frmelmnts?.lbl?.completed}}</div>
-            <sui-progress [value]="consumedContents" [maximum]="totalContents" class="mb-0 mr-0 mt-8 tiny">
-            </sui-progress>
-          </div>
+          <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 certified-course">
+            <!-- Module Progress bar -->
+            <div class="certified-course__progress" *ngIf="totalContents > 0 && !isUnitCompleted">
+              <div class="fsmall">{{generaliseLabelService?.frmelmnts?.lbl?.moduleProgress}}</div>
+              <div class="sb-color-primary fnormal font-weight-bold mt-4">{{consumedContents}}/{{totalContents}}
+                {{resourceService?.frmelmnts?.lbl?.completed}}</div>
+              <sui-progress [value]="consumedContents" [maximum]="totalContents" class="mb-0 mr-0 mt-8 tiny">
+              </sui-progress>
+            </div>
 
-          <div class="module-complete-content d-flex flex-ai-center py-8 px-16" *ngIf="isUnitCompleted">
-            <div class="mr-16 complete-content-image"><img src="./assets/images/badge-complete.svg" alt=""></div>
-            <label
-              class="font-weight-bold mb-0 sb-color-secondary fnormal">{{generaliseLabelService?.frmelmnts?.lbl?.moduleFinish}}</label>
+            <div class="module-complete-content d-flex flex-ai-center py-8 px-16" *ngIf="isUnitCompleted">
+              <div class="mr-16 complete-content-image"><img src="./assets/images/badge-complete.svg" alt=""></div>
+              <label
+                class="font-weight-bold mb-0 sb-color-secondary fnormal">{{generaliseLabelService?.frmelmnts?.lbl?.moduleFinish}}</label>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</ng-container>
+  </ng-container>
 
   <!-- CC-Player Video -->
   <div class="ui container">
-    <div class="cc-player sb-g">
+    <div class="cc-player reduce-space-between">
 
       <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4">
         <div class="cc-player__list px-0">
