@@ -11,7 +11,7 @@ import { ResourceService } from '../../services';
   styleUrls: ['./app-landing-section.component.scss']
 })
 export class AppLandingSectionComponent implements OnInit {
-
+ @Input() showBanner = true
   @Input() textToDisplay;
 
   @Input() svgToDisplay;
