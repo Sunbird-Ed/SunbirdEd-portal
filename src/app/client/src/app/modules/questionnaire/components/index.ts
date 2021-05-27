@@ -8,3 +8,4 @@ export * from './input-type-text/input-type-text.component';
 export * from './matrix-questions/matrix-questions.component';
 export * from './page-questions/page-questions.component';
 export * from './question-generic-inputs/question-generic-inputs.component';
+export * from './remarks/remarks.component';
