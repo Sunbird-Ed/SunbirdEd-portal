@@ -12,13 +12,14 @@
   }
   .chapter-box {
     border-bottom: .0625rem solid var(--gray-100);
-    padding: 0 calculateRem(16px);
+    // padding: 0 calculateRem(16px);
     &:last-child{
       border-bottom: 0px solid var(--gray-100);
     }
   }
   .side-toc-content {
-    max-height: calc(100vh - 320px);
+    // max-height: calc(100vh - 320px);
+    max-height:100%;
     overflow-y: auto;
     padding-bottom: calculateRem(24px);
   }
@@ -184,9 +185,10 @@
 }
 
 .cc-player__list {
-  background-color: var(--gray-0);
+  // background-color: var(--gray-0);
+
   padding: 0 calculateRem(16px);
-  box-shadow: 0 calculateRem(3px) calculateRem(4px) 0 rgba(var(--rc-rgba-primary), 0.1);
+  // box-shadow: 0 calculateRem(3px) calculateRem(4px) 0 rgba(var(--rc-rgba-primary), 0.1);
 }
 
 .certified-course {
@@ -207,4 +209,9 @@
       max-width: 100%;
     }
   }
+}
+
+.background-header-list{
+  background-color: #925eb0;
+  color: white;
 }

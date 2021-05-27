@@ -1,5 +1,5 @@
-<app-landing-section [textToDisplay]="" 
-[layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
+<app-landing-section [textToDisplay]="" [layoutConfiguration]="layoutConfiguration" [noTitle]="true">
+</app-landing-section>
 <div *ngIf="!showLoader" [appTelemetryImpression]="telemetryPlayerPageImpression" class="text-left relative9">
 
   <!-- Header: Back Button Previous Module & Next Module button -->
@@ -38,14 +38,19 @@
           <!-- Previous module button -->
           <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-left-icon-btn" *ngIf="prevModule"
             (click)="navigateToPlayerPage(prevModule); logTelemetry('previous-module', prevModule, true);">
-            <i class="icon-svg icon-svg--xxs icon-back mr-4 rotate-90"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>{{generaliseLabelService?.frmelmnts?.lbl?.prevModule | translate}}
+            <i class="icon-svg icon-svg--xxs icon-back mr-4 rotate-90"><svg class="icon icon-svg--primary">
+                <use xlink:href="assets/images/sprite.svg#arrow-up"></use>
+              </svg></i>{{generaliseLabelService?.frmelmnts?.lbl?.prevModule | translate}}
           </button>
           <!-- Previous Module button -->
           <div class="modulebtn-divider" *ngIf="prevModule && nextModule"></div>
           <!-- Next Module button -->
           <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-right-icon-btn" *ngIf="nextModule"
             (click)="navigateToPlayerPage(nextModule); logTelemetry('next-module', nextModule, true)">
-            {{generaliseLabelService?.frmelmnts?.lbl?.nextModule | translate}}<i class="icon-svg icon-svg--xxs icon-back ml-4 rotate90"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>
+            {{generaliseLabelService?.frmelmnts?.lbl?.nextModule | translate}}<i
+              class="icon-svg icon-svg--xxs icon-back ml-4 rotate90"><svg class="icon icon-svg--primary">
+                <use xlink:href="assets/images/sprite.svg#arrow-up"></use>
+              </svg></i>
           </button>
           <!-- Next Module button -->
         </div>
@@ -69,8 +74,8 @@
                 <button (click)="onShareLink();shareLinkModal=true;"
                   class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn">
                   <i class="icon-svg icon-svg--xxs icon-share mr-4"><svg class="icon icon-svg--primary">
-                    <use xlink:href="assets/images/sprite.svg#share"></use>
-                  </svg></i>
+                      <use xlink:href="assets/images/sprite.svg#share"></use>
+                    </svg></i>
                   {{resourceService?.frmelmnts?.lbl?.share}}
                 </button>
               </div>
@@ -81,14 +86,17 @@
         <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 certified-course">
           <!-- Module Progress bar -->
           <div class="certified-course__progress" *ngIf="totalContents > 0 && !isUnitCompleted">
-            <div class="fsmall">{{generaliseLabelService?.frmelmnts?.lbl?.moduleProgress}}</div>         
-            <div class="sb-color-primary fnormal font-weight-bold mt-4">{{consumedContents}}/{{totalContents}} {{resourceService?.frmelmnts?.lbl?.completed}}</div>
-            <sui-progress [value]="consumedContents" [maximum]="totalContents" class="mb-0 mr-0 mt-8 tiny"></sui-progress>
+            <div class="fsmall">{{generaliseLabelService?.frmelmnts?.lbl?.moduleProgress}}</div>
+            <div class="sb-color-primary fnormal font-weight-bold mt-4">{{consumedContents}}/{{totalContents}}
+              {{resourceService?.frmelmnts?.lbl?.completed}}</div>
+            <sui-progress [value]="consumedContents" [maximum]="totalContents" class="mb-0 mr-0 mt-8 tiny">
+            </sui-progress>
           </div>
 
           <div class="module-complete-content d-flex flex-ai-center py-8 px-16" *ngIf="isUnitCompleted">
             <div class="mr-16 complete-content-image"><img src="./assets/images/badge-complete.svg" alt=""></div>
-            <label class="font-weight-bold mb-0 sb-color-secondary fnormal">{{generaliseLabelService?.frmelmnts?.lbl?.moduleFinish}}</label>
+            <label
+              class="font-weight-bold mb-0 sb-color-secondary fnormal">{{generaliseLabelService?.frmelmnts?.lbl?.moduleFinish}}</label>
           </div>
         </div>
       </div>
@@ -96,9 +104,48 @@
   </div>
 
   <!-- CC-Player Video -->
-  <div class="ui container">
-    <div class="cc-player sb-g">
-      <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12 cc-player__video sb-toc-player-column">
+  <div class="ui container" style="border: 2px red solid;">
+    <div class="cc-player sb-g" style="border: 2px green solid;">
+
+      <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4" style="border: 2px orange solid;">
+        <div class="cc-player__list px-0">
+          <h5 class="p-0 mb-0 font-weight-bold background-header-list">
+            {{resourceService?.frmelmnts?.lbl?.contentsLabel}}</h5>
+          <div class="side-toc-content chapter-box">
+            <div *ngFor="let item of courseHierarchy?.children; let index = index;">
+              <p *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection'" class="title">{{item?.name}}</p>
+              <div *ngIf="item;else noContent">
+                <div *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection' && !item?.children?.length">
+                  <div class="child-content-padding">
+                    <sb-toc-card [content]="item" (tocCardClick)="onTocCardClick($event, 'toc-card')" [type]="cardType"
+                      [contentStatus]="contentStatus">
+                    </sb-toc-card>
+                  </div>
+                </div>
+                <div *ngIf="item?.children?.length">
+                  <div *ngFor="let child of item?.children">
+                    <div class="toc-child-item">
+                      <sb-toc-child-item [activeContent]="activeContent" [childData]="child"
+                        (tocCardClick)="onTocCardClick($event, 'child-item')" [contentStatus]="contentStatus"
+                        [type]="cardType">
+                      </sb-toc-child-item>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <ng-template #noContent>
+                <div class="heading">{{noContentMessage}}</div>
+              </ng-template>
+            </div>
+            <sb-toc-card [content]="courseHierarchy"
+              *ngIf="courseHierarchy?.mimeType !== 'application/vnd.ekstep.content-collection'"
+              (tocCardClick)="onTocCardClick($event)" [type]="cardType" [contentStatus]="contentStatus">
+            </sb-toc-card>
+          </div>
+        </div>
+      </section>
+      <section class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12 cc-player__video sb-toc-player-column"
+        style="border: 2px yellow solid;">
         <div class="toc-content text-left">
           <div class="content-video">
             <section class="content-video__player" id="player-area-height">
@@ -108,7 +155,8 @@
                   (questionScoreSubmitEvents)="onQuestionScoreSubmitEvents($event)"
                   (ratingPopupClose)="onRatingPopupClose()"></app-player>
               </div>
-              <app-content-actions *ngIf="isFullScreenView" class="player-fullscreen-action-items" [isFullScreen]="true" [contentData]="activeContent" [objectRollUp]="objectRollUp">
+              <app-content-actions *ngIf="isFullScreenView" class="player-fullscreen-action-items" [isFullScreen]="true"
+                [contentData]="activeContent" [objectRollUp]="objectRollUp">
               </app-content-actions>
               <app-content-actions *ngIf="activeContent" [contentData]="activeContent" [objectRollUp]="objectRollUp">
               </app-content-actions>
@@ -119,41 +167,6 @@
           </div>
         </div>
       </section>
-      <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4">
-        <div class="cc-player__list px-0">
-        <h5 class="p-16 mb-0 font-weight-bold">{{resourceService?.frmelmnts?.lbl?.contentsLabel}}</h5>
-        <div class="side-toc-content chapter-box">
-          <div *ngFor="let item of courseHierarchy?.children; let index = index;">
-            <p *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection'" class="title">{{item?.name}}</p>
-            <div *ngIf="item;else noContent">
-              <div *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection' && !item?.children?.length">
-                <div class="child-content-padding">
-                  <sb-toc-card [content]="item" (tocCardClick)="onTocCardClick($event, 'toc-card')" [type]="cardType"
-                    [contentStatus]="contentStatus">
-                  </sb-toc-card>
-                </div>
-              </div>
-              <div *ngIf="item?.children?.length">
-                <div *ngFor="let child of item?.children">
-                  <div class="toc-child-item">
-                    <sb-toc-child-item [activeContent]="activeContent" [childData]="child" (tocCardClick)="onTocCardClick($event, 'child-item')"
-                      [contentStatus]="contentStatus" [type]="cardType">
-                    </sb-toc-child-item>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <ng-template #noContent>
-              <div class="heading">{{noContentMessage}}</div>
-            </ng-template>
-          </div>
-          <sb-toc-card [content]="courseHierarchy"
-            *ngIf="courseHierarchy?.mimeType !== 'application/vnd.ekstep.content-collection'"
-            (tocCardClick)="onTocCardClick($event)" [type]="cardType" [contentStatus]="contentStatus">
-          </sb-toc-card>
-        </div>
-      </div>
-      </section>
     </div>
   </div>
 </div>
@@ -163,4 +176,5 @@
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="shareLinkModal"
   (close)="shareLinkModal = false">
 </app-share-link>
-<app-course-completion *ngIf="showCourseCompleteMessage" [certificateDescription]="certificateDescription" (close)="onCourseCompleteClose()"></app-course-completion>
+<app-course-completion *ngIf="showCourseCompleteMessage" [certificateDescription]="certificateDescription"
+  (close)="onCourseCompleteClose()"></app-course-completion>
