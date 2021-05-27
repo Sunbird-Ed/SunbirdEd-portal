@@ -10,7 +10,7 @@
     width: 100%;
     text-align: center;
     display: flex;
-    background: #E9E8D9;
+    background: var(--sb-card-bg);
     border-top: none;
   }
   .search-box{
@@ -85,6 +85,6 @@
 // }
 
 input[type=checkbox][disabled] {
-  background: #ccc;
+  background: var(--sb-card-bg);
   border: #ccc;
 }

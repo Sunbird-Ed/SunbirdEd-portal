@@ -23,12 +23,17 @@
 
 :host ::ng-deep { 
     .ui.styled.accordion .title{
-    background: var(--white) !important;
+    background:var(--sb-card-bg) !important;
  }
-
+ .ui.dropdown .menu>.item{
+    color: var(--sb-linkmenu-text);
+ }
+ .ui.dropdown .menu{
+    background: var(--sb-card-bg);
+ }
 }
 .content-submission{
-    background:var(--white) !important;
+    background:var(--sb-card-bg) !important;
     padding: 1rem 1.5rem !important;
     border-top-left-radius: 0px !important;
     border-top-right-radius: 0px !important;

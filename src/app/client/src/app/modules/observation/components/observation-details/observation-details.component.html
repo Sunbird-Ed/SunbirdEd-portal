@@ -67,7 +67,7 @@
               <app-no-result [data]="noResultMessage"></app-no-result>
             </div>
             <submission [submissions]="submissions" *ngIf="submissions?.length && !showLoader"
-              (selectedSubmission)="openObservation($event)" (onDelete)="deleteSubmission($event)"
+              (selectedSubmission)="redirectToQuestions($event)" (onDelete)="deleteSubmission($event)"
               (onEdit)="openEditSubmission($event)"> </submission>
           </div>
         </div>

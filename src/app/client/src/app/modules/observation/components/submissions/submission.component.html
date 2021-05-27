@@ -26,14 +26,14 @@
                     </div>
                 </div>
                 <div class="certified-course__btn ng-star-inserted">
-                    <button *ngIf="evidance.status == 'notstarted'" (click)="open(evidance)"
+                    <button *ngIf="evidance?.status === 'notstarted'" (click)="open(submission.submissionNumber,evidance)"
                         class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.btn?.start}}
                     </button>
-                    <button *ngIf="evidance.status != 'notstarted' && evidance.status != 'draft'"
-                        (click)="open(evidance)"
+                    <button *ngIf="evidance?.status === 'draft'"
+                        (click)="open(submission.submissionNumber,evidance)"
                         class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.lbl?.continue }}
                     </button>
-                    <button *ngIf="evidance.status != 'notstarted'" (click)="open(evidance)"
+                    <button *ngIf="evidance?.status === 'completed' || evidence?.status === 'ratingPending'" (click)="open(submission.submissionNumber,evidance)"
                         class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.lbl?.view }}
                     </button>
                 </div>

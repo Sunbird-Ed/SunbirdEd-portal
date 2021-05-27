@@ -27,7 +27,8 @@ export class SubmissionsComponent implements OnInit {
     ) { }
     ngOnInit() { }
 
-    open(data) {
+    open(sbnum,data) {
+        data.submissionNumber = sbnum;
         this.selectedSubmission.emit(data);
     }
     actionEvent(data, type) {

@@ -127,7 +127,6 @@ export class ObservationDetailsComponent implements OnInit {
     })
     metaData.footer.className = "double-btn-circle";
     let returnData = await this.observationUtilService.showPopupAlert(metaData);
-    console.log(returnData, "returnData")
     if (returnData) {
       this.showLoader = true;
       const paramOptions = {
@@ -144,14 +143,14 @@ export class ObservationDetailsComponent implements OnInit {
       })
     }
   }
-  openObservation(event) {
+  redirectToQuestions(evidence) {
     this.router.navigate([`/questionnaire`], {
       queryParams: {
         observationId: this.observationId,
         entityId: this.selectedEntity._id,
-        submissionNumber: event.code
-        // evidenceCode:""
-      }
+        submissionNumber: evidence.submissionNumber,
+        evidenceCode: evidence.code,
+      },
     });
   }
 
