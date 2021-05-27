@@ -62,7 +62,7 @@ module.exports = function (app) {
       limit: reqDataLimitOfContentUpload,
       proxyReqOptDecorator: proxyUtils.overRideRequestHeaders(sunbird_data_product_service, {'X-Channel-Id': true}),
       proxyReqPathResolver: function (req) {
-        let urlParam = req.originalUrl.replace('/report/', 'dataset/v1/');
+        let urlParam = req.originalUrl.replace('/report/', 'api/dataset/v1/');
         let query = require('url').parse(req.url).query;
         if (query) {
           return require('url').parse(sunbird_data_product_service + urlParam).path
