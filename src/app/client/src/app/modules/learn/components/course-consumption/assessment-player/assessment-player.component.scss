@@ -93,6 +93,8 @@
 
 .back-btn-container {
   z-index: 1;
+  height: 56px;
+  
 
   .modulebtn-divider {
       width: calculateRem(1px);
@@ -101,6 +103,38 @@
       display: inline-block;
       margin: 0 calculateRem(8px);
   }
+  .container{
+    height: 100%;
+    display: flex;
+    .flex-ai-center{
+      .wrap-btn-text{
+        align-items: center;
+      }
+    .body-font-size-secondary{
+      font-weight: bold !important;
+      .breadcrumbs{
+        padding-inline-start: unset !important;
+        margin-bottom: 0rem !important;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        .main-div-breadcrumbs-item{
+          display: flex;
+          font-size: 14px;
+          font-weight: 400;
+          padding-top: 8px;
+        }
+      }
+      .breadcrumbs_child{
+        display: flex;
+        font-size:  16px;
+        font-weight: 700;
+        margin-bottom: 0rem !important;
+      }
+    }
+  
+  }
+}
 }
 
 

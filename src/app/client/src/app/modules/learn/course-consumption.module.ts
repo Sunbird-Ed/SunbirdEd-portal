@@ -23,6 +23,7 @@ import { CourseCompletionComponent } from './components/course-consumption/cours
 import { CourseDetailsComponent } from './components/course-consumption/course-details/course-details.component';
 import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
+import { MatIconModule } from '@angular/material/icon';
 
 export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
   if (!CsModule.instance.isInitialised) {
@@ -42,7 +43,8 @@ export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerSe
     CoreModule,
     TelemetryModule,
     PlayerHelperModule,
-    CommonConsumptionModule
+    CommonConsumptionModule,MatIconModule,
+
   ],
   providers: [{ provide: 'CS_USER_SERVICE', useFactory: csUserServiceFactory, deps: [CsLibInitializerService] }],
   declarations: [CoursePlayerComponent, CourseConsumptionHeaderComponent, AssessmentPlayerComponent,

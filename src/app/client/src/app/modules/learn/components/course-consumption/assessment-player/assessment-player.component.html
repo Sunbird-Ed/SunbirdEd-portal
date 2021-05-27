@@ -3,17 +3,37 @@
 <div *ngIf="!showLoader" [appTelemetryImpression]="telemetryPlayerPageImpression" class="text-left relative9">
 
   <!-- Header: Back Button Previous Module & Next Module button -->
-  <div class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9">
-    <div class="ui container">
+  <div class="sb-bg-color-purple sb-text-color-white relative position back-btn-container cc-player__btn-back">
+    <div class="container">
       <div class="py-8 d-flex flex-ai-center">
         <!-- Back button -->
-        <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto"
+        <div class = "wrap-btn-text flex">
+        <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-text-color-white sb-left-icon-btn mr-auto"
           (click)="goBack(); logTelemetry('back-track', courseHierarchy)">
-          <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+          <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--white">
               <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
             </svg></i>
-          {{resourceService?.frmelmnts?.btn?.back}}
+          <!-- {{resourceService?.frmelmnts?.btn?.back}} -->
         </button>
+         
+        <span class="text-left text-truncate text-white body-font-size-secondary font-montserrat" *ngIf="courseHierarchy" >
+       <ng-container *ngIf = "courseHierarchy">
+           <ul class = "breadcrumbs">
+             <div class = "main-div-breadcrumbs-item">
+              {{courseHierarchy?.name | titlecase}}
+              <ng-container *ngIf= "courseHierarchy?.children?.length">
+             <div *ngFor = "let data of courseHierarchy?.children; let i = index">
+               <li class = "breadcrumbs_child">
+              <div><mat-icon  class="icon-display">navigate_next</mat-icon></div>
+               <div  [ngClass]= "(courseHierarchy.length-1 === i) ? 'text-style-last-child': 'text-style-parent'">{{data.name}}</div>
+             </li>
+         </div>
+        </ng-container>
+           </div>
+           </ul>
+         </ng-container>
+         </span>
+        </div>     
         <div class="d-flex flex-ai-center">
           <!-- Previous module button -->
           <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-left-icon-btn" *ngIf="prevModule"
