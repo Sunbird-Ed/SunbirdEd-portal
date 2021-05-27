@@ -1,13 +1,15 @@
-.text-area{
-    position: relative;
-    top: 20px;
-    border-color: lightgray;
+.text-area {
+  display: flex;
+  border-color: lightgray;
   .alignleft {
-      float: left;
-      border-radius: 5px;
-      width: 85%;
+    margin-top: 20px;
+    align-items: flex-start;
+    border-radius: 5px;
+    width: 100%;
   }
   .alignright {
-      float: right;
+    margin-top: 35px;
+    left: 70px;
+    align-items: flex-end;
   }
-  }
+}
