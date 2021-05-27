@@ -9,20 +9,17 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { DatasetsComponent } from './components/datasets/datasets.component';
-import { ProgramDatasetsComponent } from './components/program-datasets/program-datasets.component';
+import { programManagerService } from './services/program-dashboard/program-dashboard'
 
 
 @NgModule({
   declarations: [
-  DatasetsComponent,
-  ProgramDatasetsComponent,
-  // SbDatatableComponent
+  DatasetsComponent
 ],
   imports: [
     CommonModule,
     SharedModule,
     SharedFeatureModule,
-    // SbDatatableComponent,
     SuiModule,
     HttpClientModule,
     TelemetryModule,
@@ -34,7 +31,7 @@ import { ProgramDatasetsComponent } from './components/program-datasets/program-
   providers: [
     ResourceService,
     ToasterService,
-    // ManageService
+    programManagerService
   ]
 })
 export class programDashboardModule {

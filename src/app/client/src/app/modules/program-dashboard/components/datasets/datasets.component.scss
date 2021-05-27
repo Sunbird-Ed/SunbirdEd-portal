@@ -1,3 +1,5 @@
+@import "./mixins/mixins";
+
 .ui.dropdown.selection {
     padding: 0.5rem 0.75rem !important;
 }
@@ -7,4 +9,25 @@
     padding: 10px;
     background: aliceblue;
     border: none;
+}
+::ng-deep{
+    // sui-select.selection.pd-10.ui.dropdown.ng-valid.ng-dirty.ng-touched {
+    //     border-radius: 0px !important;
+    //     border: 1px solid #cccc;
+    // }
+}
+.sb-btn-normal {
+    // border-radius: 0px !important;
+
+}
+.sb-modal-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.sb-modal .ui.modal {
+    margin-top: 15% !important;
+}
+.ngx-datatable.fixed-header .datatable-header {
+    padding: 10px;
 }

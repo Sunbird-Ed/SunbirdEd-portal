@@ -357,8 +357,10 @@
       "MANDATORY_ENTITY_TYPES_FOR_ROLES":"v1/users/entityTypesByLocationAndRole/"
     },
     "KENDRA": {
-      "ML_ROLES":"v1/user-extension/platformRoles",
-      "TARGETTED_ENTITY_TYPES": "v1/users/targetedEntity/"
+      "PLATFORM_ROLES":"v1/user-extension/platformRoles",
+      "TARGETTED_ENTITY_TYPES": "v1/users/targetedEntity/",
+      "PROGRAMS_BY_PLATFORM_ROLES": "v1/user-extension/programsByPlatformRoles",
+      "SOLUTIONS_BY_PROGRAMID": "v1/user-extension/solutions"
     }
     
 

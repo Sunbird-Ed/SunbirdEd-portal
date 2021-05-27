@@ -1,1 +1,1 @@
-export * from 'program-dashboard';
+export * from './program-dashboard/program-dashboard';

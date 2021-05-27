@@ -1,29 +1,20 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DatasetsComponent } from './components/datasets/datasets.component';
-import { ProgramDatasetsComponent } from './components/program-datasets/program-datasets.component';
-// import { AuthGuard } from '@sunbird/core';
-import { programManagerGuard  } from './guard';
+// import { programManagerGuard  } from './guard';
+import { AuthGuard } from '../core/guard/auth-gard.service';
 const telemetryEnv = 'program-dashboard';
 
 const routes: Routes = [
   {
     path: '',
     component: DatasetsComponent,
-    canActivate: [programManagerGuard],
+    canActivate: [AuthGuard],
     data: {
       roles: 'programManagerRole',
       telemetry: {
         env: telemetryEnv, pageid: 'program-datasets', type: 'view'
       }
-    }
-  },
-  {
-    path: 'datasets',
-    component: ProgramDatasetsComponent,
-    data: {
-      roles: 'programManagerRole',
-      telemetry: { env: telemetryEnv, pageid: 'datasets', type: 'view' },
     }
   }
 ];
