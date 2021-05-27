@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild, EventEmitter, Output } from '@angular/core';
-import { ConfigService, ResourceService, ILoaderMessage, INoResultMessage } from '@sunbird/shared';
+import { ResourceService } from '@sunbird/shared';
 
 @Component({
     selector: "app-edit-submission",
@@ -10,23 +10,18 @@ import { ConfigService, ResourceService, ILoaderMessage, INoResultMessage } from
 export class EditSubmissionComponent implements OnInit {
     @ViewChild('modal', { static: false }) modal;
     @Input() submission;
-    @Output() closeEvent = new EventEmitter<any>();
-    @Output() editEvent = new EventEmitter<any>();
-    
-    data;
+    @Output() onAction = new EventEmitter<any>();
     constructor(
         public resourceService: ResourceService,
     ) { }
-    ngOnInit() {
-        this.data = JSON.parse(JSON.stringify(this.submission));
-    }
+    ngOnInit() { }
 
     closeModal() {
         this.modal.deny();
-        this.closeEvent.emit();
+        this.onAction.emit({ action: 'edit', data: {} });
     }
     submit() {
         this.modal.approve();
-        this.editEvent.emit(this.data);
+        this.onAction.emit({ action: 'edit', data: this.submission });
     }
 }

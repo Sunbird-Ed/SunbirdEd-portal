@@ -10,8 +10,7 @@ export class SubmissionsComponent implements OnInit {
     @Input() submissions;
     showPopOver = true;
     @Output() selectedSubmission = new EventEmitter();
-    @Output() onDelete = new EventEmitter();
-    @Output() onEdit = new EventEmitter();
+    @Output() onAction = new EventEmitter();
     actions = [{
         name: this.resourceService.frmelmnts.lbl.edit,
         icon: 'pencil alternate large icon',
@@ -32,6 +31,6 @@ export class SubmissionsComponent implements OnInit {
         this.selectedSubmission.emit(data);
     }
     actionEvent(data, type) {
-        type == 'edit' ? this.onEdit.emit(data) : this.onDelete.emit(data)
+       this.onAction.emit({action:type,data:data})
     }
 }

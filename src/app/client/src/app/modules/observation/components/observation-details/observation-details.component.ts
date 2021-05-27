@@ -16,7 +16,7 @@ export class ObservationDetailsComponent implements OnInit {
   solution;
   payload;
   observationId;
-  selectedEntity: any;
+  selectedEntity: any = {};
   submissions;
   showDownloadModal: boolean = false;
   openEditModal = {
@@ -38,7 +38,6 @@ export class ObservationDetailsComponent implements OnInit {
   ) {
     this.config = config;
     routerParam.queryParams.subscribe(data => {
-      console.log(data, "parameters");
       this.programId = data.programId;
       this.solutionId = data.solutionId;
       this.observationId = data.observationId;
@@ -50,9 +49,13 @@ export class ObservationDetailsComponent implements OnInit {
     this.getProfileData();
   }
   getProfileData() {
+    this.showLoader = true;
     this.observationUtilService.getProfileDataList().then(data => {
       this.payload = data;
+      this.showLoader = false;
       this.getEntities();
+    }, error => {
+      this.showLoader = false;
     })
   }
   getEntities() {
@@ -68,7 +71,7 @@ export class ObservationDetailsComponent implements OnInit {
       this.showLoader = false;
       if (data.result.entities && data.result.entities.length) {
         this.entities = data.result;
-        if (!this.selectedEntity) {
+        if (!this.selectedEntity._id) {
           this.selectedEntity = this.entities.entities[0];
         }
         this.observationId = this.entities._id;
@@ -81,7 +84,14 @@ export class ObservationDetailsComponent implements OnInit {
       this.showLoader = false;
     })
   }
-
+  actionOnEntity(event) {
+    console.log(event, "event");
+    if (event.action == "delete") {
+      this.delete(event.data);
+    } else if (event.action == "change") {
+      this.changeEntity(event.data);
+    }
+  }
   getObservationForm() {
     this.showLoader = true;
     const paramOptions = {
@@ -183,8 +193,10 @@ export class ObservationDetailsComponent implements OnInit {
         param: {},
         data: this.payload,
       };
+      if (this.selectedEntity._id == entity._id) {
+        this.selectedEntity = {};
+      }
       this.observationService.delete(paramOptions).subscribe(data => {
-        console.log(data, "data 122");
         this.showLoader = false;
         this.getEntities();
       }, error => {
@@ -216,7 +228,6 @@ export class ObservationDetailsComponent implements OnInit {
     })
     metaData.footer.className = "double-btn-circle";
     let returnData = await this.observationUtilService.showPopupAlert(metaData);
-    console.log(returnData, "returnData");
     if (returnData) {
       this.showLoader = true;
       const config = {
@@ -225,7 +236,6 @@ export class ObservationDetailsComponent implements OnInit {
         payload: this.payload,
       };
       this.observationService.delete(config).subscribe(data => {
-        console.log(data, "data 122");
         this.showLoader = false;
         this.getEntities();
       }, error => {
@@ -236,7 +246,7 @@ export class ObservationDetailsComponent implements OnInit {
 
   closeEditModal(event?) {
     this.openEditModal.show = false;
-    event ? this.updateSubmission(event) : '';
+    event.data ? this.updateSubmission(event.data) : '';
   }
 
   updateSubmission(event) {
@@ -253,5 +263,8 @@ export class ObservationDetailsComponent implements OnInit {
     }, error => {
       this.showLoader = false;
     })
+  }
+  actionOnSubmission(event) {
+    event.action == 'edit' ? this.openEditSubmission(event.data) : this.deleteSubmission(event.data)
   }
 }

@@ -85,13 +85,15 @@ export class AddEntityComponent implements OnInit {
         this.observationService.post(paramOptions).subscribe(data => {
             // this.entities = data.result;
             this.showLoader = false;
-            if (data.result[0].data.length) {
-                for (let i = 0; i < data.result[0].data.length; i++) {
-                    data.result[0].data[i].isSelected = data.result[0].data[i].selected;
-                    data.result[0].data[i].preSelected = data.result[0].data[i].selected ? true : false;
+            debugger
+            let resp = data.result[0];
+            if (resp.data.length) {
+                for (let i = 0; i < resp.data.length; i++) {
+                    resp.data[i].isSelected = resp.data[i].selected;
+                    resp.data[i].preSelected = resp.data[i].selected ? true : false;
                 }
-                this.entities = this.entities.concat(data.result[0].data);
-                this.count = data.result[0].count;
+                this.entities = this.entities.concat(resp.data);
+                this.count = resp.count;
             }
         }, error => {
             this.showLoader = false;

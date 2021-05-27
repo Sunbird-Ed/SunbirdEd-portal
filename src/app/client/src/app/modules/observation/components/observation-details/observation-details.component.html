@@ -40,8 +40,7 @@
             </div>
           </div>
           <div *ngIf="entities">
-            <entity-list [entities]="entities.entities" [selectedEntity]="selectedEntity" (onDelete)="delete($event)"
-              (onSelect)="changeEntity($event)"> </entity-list>
+            <entity-list [entities]="entities.entities" [selectedEntity]="selectedEntity" (onAction)="actionOnEntity($event)"> </entity-list>
           </div>
           <div class="twelve wide column" *ngIf="entities?.length === 0 && !showLoader">
             <app-no-result [data]="noResultMessage"></app-no-result>
@@ -55,7 +54,7 @@
             <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons"
               *ngIf="entities?.allowMultipleAssessemts">
               <button class="sb-btn sb-btn-primary sb-btn-normal mr-8" (click)="observeAgain()">
-                {{resourceService.frmelmnts?.lbl?.observeAgaian}}
+                {{resourceService.frmelmnts?.btn?.observeAgaian}}
               </button>
             </div>
           </div>
@@ -67,8 +66,8 @@
               <app-no-result [data]="noResultMessage"></app-no-result>
             </div>
             <submission [submissions]="submissions" *ngIf="submissions?.length && !showLoader"
-              (selectedSubmission)="redirectToQuestions($event)" (onDelete)="deleteSubmission($event)"
-              (onEdit)="openEditSubmission($event)"> </submission>
+              (selectedSubmission)="redirectToQuestions($event)"
+              (onAction)="actionOnSubmission($event)"> </submission>
           </div>
         </div>
       </div>
@@ -91,5 +90,5 @@
   <add-entity (closeEvent)="modalClose()" [observationId]="observationId" [solutionId]="solutionId"> </add-entity>
 </div>
 <div *ngIf="openEditModal.show">
-  <app-edit-submission [submission]="openEditModal.data" (closeEvent)="closeEditModal()" (editEvent)="closeEditModal($event)"> </app-edit-submission>
+  <app-edit-submission [submission]="openEditModal.data" (onAction)="closeEditModal($event)"> </app-edit-submission>
 </div>

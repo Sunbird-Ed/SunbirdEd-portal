@@ -3,12 +3,14 @@
   position: relative;
   height: 220px;
   border-radius: none !important;
+  background: var(--sb-modal-content-bg);
+  color: var(--sb-text);
 }
 .popup-header {
   position: relative;
   font-size: 1.2em;
   font-weight: bold;
-  color: #000;
+  color: var(--sb-text);
 }
 
 .popup-body {
@@ -16,7 +18,7 @@
   top: 20px;
   font-size: 1.2em;
   font-weight: 500;
-  color: grey;
+  color: var(--sb-text);
   width: auto;
   white-space: pre-wrap;
 }
@@ -26,7 +28,7 @@
   left: 20px;
   font-size: 15px;
   font-weight: 500;
-  color: grey;
+  color: var(--sb-text);
   width: auto;
   white-space: pre-wrap;
 }
@@ -56,14 +58,12 @@
     margin-top: 60px;
     text-transform: capitalize;
     font-size: 15px;
-
     button{
         margin-right:15px;
         border-radius:50%;
         height: 60px;
         width: 60px;
     }
-
 }
 
 
