@@ -123,7 +123,7 @@
     },
     "CERTIFICATE": {
       "FETCH_CERTIFICATES": "v1/certs/search",
-      "FETCH_USER": "v2/user/search",
+      "FETCH_USER": "v1/user/search",
       "REISSUE_CERTIFICATE": "v1/cert/reissue",
       "ADD_CERTIFICATE" : "v1/add/template",
       "ATTACH_CERTIFICATE": "v1/template/add",

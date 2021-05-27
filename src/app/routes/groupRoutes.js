@@ -31,7 +31,7 @@ function proxyObj() {
         limit: reqDataLimitOfContentUpload,
         proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(learnerURL),
         proxyReqPathResolver: function (req) {
-            let urlParam = req.originalUrl.replace('/learner/', '')
+            let urlParam = req.path.replace('/learner/', '')
             let query = require('url').parse(req.url).query
             if (query) {
                 return require('url').parse(learnerURL + urlParam + '?' + query).path

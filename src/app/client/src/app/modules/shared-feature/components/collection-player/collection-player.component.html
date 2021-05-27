@@ -21,7 +21,7 @@
     <div class="content-header cc-player__content-header" *ngIf="collectionData">
       <div class="ui container py-16">
         <div class="content-header__content">
-          <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
+          <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0 content-header__content__title">
             <div class="content-header__title font-weight-bold ellipsis text-left">{{collectionData.name}}</div>
             <div class="d-flex flex-ai-center content-header__info mt-4" *ngIf="collectionTreeNodes">
               <span *ngIf="collectionTreeNodes?.data?.subject">{{collectionTreeNodes?.data?.subject}}</span>
@@ -72,7 +72,7 @@
 
             <button type="button" appTelemetryInteract [telemetryInteractObject]="collectionInteractObject"
               [telemetryInteractEdata]="cancelInteractEdata" href="javascript:void(0)"
-              *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && isCopyAsCourseClicked"
+              *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && isCopyAsCourseClicked"
               appPermission [permission]="['CONTENT_CREATOR']" (click)="clearSelection()"
               class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
               {{resourceService?.frmelmnts?.btn?.cancel}}
@@ -82,7 +82,7 @@
               [disabled]="!(selectedItems.length > 0)" type="button" appTelemetryInteract
               [telemetryInteractObject]="collectionInteractObject" [telemetryInteractEdata]="createCourseInteractEdata"
               href="javascript:void(0)"
-              *ngIf="permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && isCopyAsCourseClicked"
+              *ngIf="!isDesktopApp && permissionService.permissionAvailable && collectionTreeNodes.data.contentType === 'TextBook' && isCopyAsCourseClicked"
               appPermission [permission]="['CONTENT_CREATOR']" (click)="createCourse()"
               class="sb-btn sb-btn-normal sb-btn-primary">
               {{generaliseLabelService?.frmelmnts?.btn?.create}}

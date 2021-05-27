@@ -437,7 +437,7 @@ const getIdentifier = (identifier) => {
 const orgSearch = (id, req) => {
   const options = {
     method: 'POST',
-    url: envHelper.LEARNER_URL + 'org/v1/search',
+    url: envHelper.LEARNER_URL + 'org/v2/search',
     headers: getHeaders(req),
     body: {
       request: {

@@ -11,6 +11,7 @@ import { Subject } from 'rxjs';
 import { CsGroupService } from '@project-sunbird/client-services/services/group/interface';
 import { CsModule } from '@project-sunbird/client-services';
 import { TelemetryService } from '@sunbird/telemetry';
+import { SELECT_ACTIVITY } from '../../../groups/interfaces/telemetryConstants';
 
 
 // tslint:disable-next-line:only-arrow-functions
@@ -62,7 +63,7 @@ export class AddToGroupDirective implements OnInit {
   }
 
   addActivityToGroup() {
-    this.sendInteractData('add-to-group-button');
+    this.sendInteractData('add-to-group-button', {type: SELECT_ACTIVITY});
     const isActivityAdded = _.find(_.get(this.groupAddableBlocData, 'params.groupData.activities'), {id: this.identifier});
     if ( _.isEmpty(isActivityAdded)) {
       const request = {
@@ -72,10 +73,10 @@ export class AddToGroupDirective implements OnInit {
         this.goBack();
         if (_.get(response, 'error.activities[0].errorCode') === 'EXCEEDED_ACTIVITY_MAX_LIMIT') {
           this.showErrorMsg(this.resourceService.messages.groups.emsg.m003);
-          this.sendInteractData('exceeded-activity-max-limit', {activities_count:
+          this.sendInteractData('exceeded-activity-max-limit', {type: 'max-limit'}, {activities_count:
             (_.get(this.groupAddableBlocData, 'params.groupData.activities')).length});
         } else {
-          this.toasterService.success(this.resourceService.messages.imsg.activityAddedSuccess)
+          this.toasterService.success(this.resourceService.messages.imsg.activityAddedSuccess);
         }
 
       }, error => {
@@ -90,7 +91,7 @@ export class AddToGroupDirective implements OnInit {
     }
   }
 
-  sendInteractData(id, extra?) {
+  sendInteractData(id, edata, extra?) {
     console.log('nc,mvbdf', this.activatedRoute);
     const data = {
       context: {
@@ -109,7 +110,7 @@ export class AddToGroupDirective implements OnInit {
       },
       edata: {
         id: id,
-        type: 'CLICK',
+        type: edata.type || 'CLICK',
         pageid: this.pageId
       },
       object: {

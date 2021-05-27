@@ -53,6 +53,15 @@ sb-form.faq-sbforms {}
 
   }
 
+  sb-form.faq-sbforms.other-issue>div:first-child {
+    @include respond-above(sm) {
+      div:nth-child(2) {
+        grid-column-start: 1;
+        grid-column-end: 3;
+      }
+    }
+  }
+
   sb-form{
     sb-multiple-dropdown{
       .list-border{

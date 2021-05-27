@@ -135,6 +135,14 @@ export class LibraryComponent implements OnInit, OnDestroy {
             this.formData = formData;
             this.svgToDisplay = imageName;
             this.globalSearchFacets = _.get(this.currentPageData, 'search.facets');
+            this.globalSearchFacets = [
+                'se_boards',
+                'se_gradeLevels',
+                'se_subjects',
+                'se_mediums',
+                'primaryCategory',
+                'mimeType'
+              ];
             this.getOrgDetails();
         }, error => {
             this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
@@ -228,26 +236,29 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.unsubscribe$.complete();
     }
     public getFilters(filters) {
-        const filterData = filters && filters.filters || {};
+        let filterData = filters && filters.filters || {};
         if (filterData.channel && this.facets) {
-        const channelIds = [];
-        const facetsData = _.find(this.facets, { 'name': 'channel' });
-        _.forEach(filterData.channel, (value, index) => {
-            const data = _.find(facetsData.values, { 'identifier': value });
-            if (data) {
-            channelIds.push(data.name);
+            const channelIds = [];
+            const facetsData = _.find(this.facets, { 'name': 'channel' });
+            _.forEach(filterData.channel, (value, index) => {
+                const data = _.find(facetsData.values, { 'identifier': value });
+                if (data) {
+                    channelIds.push(data.name);
+                }
+            });
+            if (channelIds && Array.isArray(channelIds) && channelIds.length > 0) {
+                filterData.channel = channelIds;
             }
-        });
-        if (channelIds && Array.isArray(channelIds) && channelIds.length > 0) {
-            filterData.channel = channelIds;
         }
-        }
-        const userPreference: any = this.userService.anonymousUserPreference;
-        if (userPreference) {
-            _.forEach(['board', 'medium', 'gradeLevel'], (item) => {
-                if (!_.has(filterData, item)) {
-                    filterData[item] = _.isArray(userPreference.framework[item]) ?
-                        userPreference.framework[item] : _.split(userPreference.framework[item], ', ');
+
+        if (_.get(this.facets, 'length')) {
+            this.facets.forEach((item) => {
+                if (_.has(filterData, item.name) && _.get(item, 'values.length')) {
+                    item.values.forEach((element: any) => {
+                        if (!filterData[item.name].includes(element.name)) {
+                            filterData[item.name]  = filterData[item.name].filter(value => value === element.name);
+                        }
+                    });
                 }
             });
         }
@@ -260,7 +271,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
         }, {});
         this.dataDrivenFilterEvent.emit(defaultFilters);
         this.carouselMasterData = [];
-        this.pageSections = [];
     }
 
     constructSearchRequest() {
@@ -271,7 +281,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
         return o.name === (selectedMediaType || 'all');
         });
         const pageType = _.get(this.queryParams, 'pageTitle');
-        const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType', 'contentType']);
+        const filters: any = _.omit(this.queryParams, ['key', 'sort_by', 'sortType', 'appliedFilters', 'softConstraints', 'selectedTab', 'mediaType', 'contentType', 'board', 'medium', 'gradeLevel', 'subject']);
         if (!filters.channel) {
             filters.channel = this.hashTagId;
         }

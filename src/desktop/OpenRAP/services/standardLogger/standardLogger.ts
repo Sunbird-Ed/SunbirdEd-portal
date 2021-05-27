@@ -57,7 +57,7 @@ export interface ILogData {
   id: string;
   mid?: string;
   message?: string;
-  error?: string;
+  error?: any;
   object?: {
     id: string;   // eg. content/collection/group id
     type: string; // eg. Content, Course, Textbook etc

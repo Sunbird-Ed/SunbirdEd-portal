@@ -211,7 +211,7 @@ describe('GroupHeaderComponent', () => {
   it('should call addTelemetry', () => {
     component.addTelemetry('ftu-popup');
     expect(component['groupService'].addTelemetry).toHaveBeenCalledWith(
-      {id: 'ftu-popup', extra: undefined}, fakeActivatedRoute.snapshot, [], '123');
+      {id: 'ftu-popup', extra: undefined, edata: undefined}, fakeActivatedRoute.snapshot, [], '123');
   });
 
   it('should call leaveGroup on success', () => {

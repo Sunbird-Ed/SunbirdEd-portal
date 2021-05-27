@@ -10,7 +10,7 @@
   class="sb-modal" 
   appBodyScroll 
   #createGroupModal 
-  (dismissed)="closeModal();addTelemetry('close-group-form')"
+  (dismissed)="closeModal();addTelemetry('close-group-form', '', { type: SELECT_CLOSE, subtype: CLOSE_ICON })"
   >
   <div class="sb-modal-header" *ngIf="groupId">{{resourceService?.frmelmnts?.lbl?.editGroup}}</div>
   <div class="sb-modal-header" *ngIf="!groupId">{{ resourceService?.frmelmnts?.lbl?.createGroup }}</div>
@@ -58,7 +58,7 @@
       {{resourceService?.frmelmnts?.btn?.submit}}
     </button>
     <button *ngIf="groupId" class="sb-btn sb-btn-outline-primary sb-btn-normal flex-ai-jc-center" type="button"
-    (click)="reset();addTelemetry('reset-group-form')">
+    (click)="reset();addTelemetry('reset-group-form', '', {type: SELECT_RESET})">
       {{resourceService?.frmelmnts?.btn?.reset}}
     </button>
   </div>

@@ -121,7 +121,7 @@
             </button>
           </div>
 
-          <div class="ml-auto text-right mt-8" *ngIf="permissionService?.permissionAvailable && !enrolledCourse && viewDashboard && router.url.includes('/dashboard')"
+          <div class="ml-auto text-right mt-8" *ngIf="!isDesktopApp && permissionService?.permissionAvailable && !enrolledCourse && viewDashboard && router.url.includes('/dashboard')"
           appPermission [permission]="dashboardPermission">
           <button appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
             [telemetryInteractEdata]="{id:'close-course-dashboard' , type: 'click' , pageid:'course-consumption'}"

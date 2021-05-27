@@ -7,7 +7,7 @@ import {
   ConfigService, ResourceService, ToasterService, WindowScrollService, NavigationHelperService,
   PlayerConfig, ContentData, ContentUtilsServiceService, ITelemetryShare, LayoutService
 } from '@sunbird/shared';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { PopupControlService } from '../../../../service/popup-control.service';
 import { takeUntil, mergeMap } from 'rxjs/operators';
 import { Subject, of, throwError } from 'rxjs';
@@ -45,13 +45,15 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
   public objectRollup = {};
   isGroupAdmin: boolean;
   groupId: string;
-  isQuestionSet:boolean = false;
+  isQuestionSet = false;
+  isDesktopApp = false;
 
   @HostListener('window:beforeunload')
     canDeactivate() {
       // returning true will navigate without confirmation
       // returning false will show a confirm dialog before navigating away
-      return this.isQuestionSet ? false: true;
+      let deviceType = this.telemetryService.getDeviceType();
+      return deviceType === 'Desktop' && this.isQuestionSet ? false: true;
     }
 
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
@@ -61,7 +63,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
     public copyContentService: CopyContentService, public permissionService: PermissionService,
     public contentUtilsServiceService: ContentUtilsServiceService, public popupControlService: PopupControlService,
     private configService: ConfigService, public navigationhelperService: NavigationHelperService,
-    public layoutService: LayoutService) {
+    public layoutService: LayoutService, public telemetryService: TelemetryService) {
     this.playerOption = {
       showContentRating: true
     };
@@ -69,6 +71,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
 
   ngOnInit() {
     this.isQuestionSet = _.includes(this.router.url, 'questionset');
+    this.isDesktopApp = this.userService.isDesktopApp;
     this.initLayout();
     this.activatedRoute.params.subscribe((params) => {
       this.showPlayer = false;

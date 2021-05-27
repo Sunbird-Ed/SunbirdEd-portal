@@ -21,6 +21,7 @@ import { manifest } from "./manifest";
 import Response from './utils/response';
 import { addPerfLogForAPICall } from './loaders/logger';
 import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
+import groups from "./routes/groups";
 const proxy = require('express-http-proxy');
 
 export class Router {
@@ -173,7 +174,7 @@ export class Router {
     courseRoutes(app, proxyUrl);
     telemetryRoutes(app)
     playerProxyRoutes(app, proxyUrl);
-
+    groups(app, proxyUrl);
     app.all("*", (req, res) => res.redirect("/"));
   }
 }

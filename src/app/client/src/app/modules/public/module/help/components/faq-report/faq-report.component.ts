@@ -37,6 +37,7 @@ export class FaqReportComponent implements OnInit {
   fetchFaqReportConfig() {
     // FormAPI call
     this.profileService.getFaqReportIssueForm().pipe(takeUntil(this.unsubscribe)).subscribe(formConfig => {
+      this.formStatus = undefined;
       this.faqReportConfig = formConfig;
     }, error => {
       console.error('Unable to fetch form', error);
@@ -46,6 +47,14 @@ export class FaqReportComponent implements OnInit {
 
   valueChanged(event) {
     this.formValues = event;
+    if (!(_.get(this.faqReportConfig, '1.templateOptions'))) {
+      return;
+    }
+    if (event.category === 'otherissues') {
+      this.faqReportConfig[1].templateOptions.hidden = true;
+    } else {
+      this.faqReportConfig[1].templateOptions.hidden = false;
+    }
   }
 
   statusChanged(event) {

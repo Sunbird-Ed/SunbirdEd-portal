@@ -11,6 +11,7 @@ import { Subject } from 'rxjs';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { RecaptchaComponent } from 'ng-recaptcha';
 import { TelemetryService } from '@sunbird/telemetry';
+import { VERIFY_USER, USER_SEARCH } from '../../interfaces/telemetryConstants';
 @Component({
   selector: 'app-add-member',
   templateUrl: './add-member.component.html',
@@ -36,6 +37,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   googleCaptchaSiteKey = '';
   isCaptchEnabled = false;
   layoutConfiguration: any;
+  public VERIFY_USER = VERIFY_USER;
 
   constructor(public resourceService: ResourceService, private groupsService: GroupsService,
     private toasterService: ToasterService,
@@ -56,10 +58,10 @@ export class AddMemberComponent implements OnInit, OnDestroy {
     this.initRecaptcha();
     this.instance = _.upperCase(this.resourceService.instance);
     this.membersList = this.groupsService.addFieldsToMember(_.get(this.groupData, 'members'));
-    this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url);
+    this.telemetryImpression = this.groupService.getImpressionObject(this.activatedRoute.snapshot, this.router.url, {type: USER_SEARCH});
   }
 
-  initLayout() {
+   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
       if (layoutConfig != null) {
@@ -198,7 +200,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
     this.showModal = visibility;
   }
 
-  setInteractData (id, extra?, Cdata?) {
+  setInteractData (id, extra?, Cdata?, edata?) {
     const interactData = {
       context: {
         env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env'),
@@ -216,7 +218,9 @@ export class AddMemberComponent implements OnInit, OnDestroy {
       },
       object: {}
     };
-
+    if (edata) {
+      interactData.edata.type = edata.type;
+    }
     if (extra) {
       interactData.edata['extra'] = extra;
     }
@@ -226,7 +230,6 @@ export class AddMemberComponent implements OnInit, OnDestroy {
 
     this.telemetryService.interact(interactData);
   }
-
 
   ngOnDestroy() {
     this.unsubscribe$.next();

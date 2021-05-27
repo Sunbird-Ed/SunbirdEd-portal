@@ -26,9 +26,9 @@
               </span>
             </div>
             <div class="sbt-filter-scrollable pr-24">
-              <div class="fsmall my-8 text-left filter-pref-text">{{resourceService.frmelmnts?.lbl?.basedOnPref | translate}}</div>
+              <div class="fsmall my-8 text-left filter-pref-text" tabindex="0">{{resourceService.frmelmnts?.lbl?.basedOnPref | translate}}</div>
               <sb-search-facet-filter *ngIf="filterFormTemplateConfig"
-                                      [supportedFilterAttributes]="['se_boards', 'se_mediums', 'se_gradeLevels', 'se_subjects', 'primaryCategory', 'mediaType']"
+                                      [supportedFilterAttributes]="supportedFilterAttributes"
                                       [searchResultFacets]="facets"
                                       [filterFormTemplateConfig]="filterFormTemplateConfig"
                                       (searchFilterChange)="this.selectedFilters = $event; emitFilterChangeEvent(true)"

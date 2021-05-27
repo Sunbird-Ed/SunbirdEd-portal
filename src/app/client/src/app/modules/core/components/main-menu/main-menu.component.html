@@ -15,7 +15,7 @@
 			{{resourceService?.frmelmnts?.tab?.workspace}}
 		</a>
 		<a class="item py-8 pl-0 pr-24" appTelemetryInteract [telemetryInteractEdata]="helpMenuIntractEdata"
-			*ngIf='permissionService.permissionAvailable && helpLinkVisibility.toLowerCase() === "true"' appPermission
+			*ngIf='!isDesktopApp && permissionService.permissionAvailable && helpLinkVisibility.toLowerCase() === "true"' appPermission
 			[permission]='workSpaceRole' href="/help/creator/content-lifecycle/index.html" target="_blank">
 			{{resourceService?.frmelmnts?.tab?.help}}
 		</a>

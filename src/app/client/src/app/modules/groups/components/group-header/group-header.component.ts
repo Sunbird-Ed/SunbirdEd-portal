@@ -11,6 +11,7 @@ import { takeUntil } from 'rxjs/operators';
 import { UserService } from '@sunbird/core';
 import { DiscussionService } from '../../../discussion/services/discussion/discussion.service';
 import { DiscussionTelemetryService } from '../../../shared/services/discussion-telemetry/discussion-telemetry.service';
+import { UPDATE_GROUP, SELECT_DELETE, SELECT_DEACTIVATE, SELECT_NO, DELETE_SUCCESS } from '../../interfaces/telemetryConstants';
 @Component({
   selector: 'app-group-header',
   templateUrl: './group-header.component.html',
@@ -32,6 +33,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   forumIds: Array<number> = [];
   createForumRequest: any;
+  public UPDATE_GROUP = UPDATE_GROUP;
 
     /**
    * input data to fetch forum Ids
@@ -97,21 +99,24 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
     this.handleFtuModal.emit(visibility);
   }
 
-  addTelemetry(id, extra?) {
-    this.groupService.addTelemetry({id, extra}, this.activatedRoute.snapshot, [], _.get(this.groupData, 'id'));
+   /**
+   * @description - To set the telemetry Intract event data
+   * @param  {} edata? - it's an object to specify the type and subtype of edata
+   */
+  addTelemetry(id, extra?, edata?) {
+    this.groupService.addTelemetry({id, extra, edata}, this.activatedRoute.snapshot, [], _.get(this.groupData, 'id'));
   }
-
   toggleModal(visibility = false, name?: string, eventName?: string) {
     this.showModal = visibility;
     this.groupService.emitMenuVisibility('group');
     this.name = name;
     switch (name) {
       case actions.DELETE:
-        this.addTelemetry('delete-group', {status: _.get(this.groupData, 'status')});
+        this.addTelemetry('delete-group', {status: _.get(this.groupData, 'status')}, {type: SELECT_DELETE});
         this.assignModalStrings(this.resourceService.frmelmnts.lbl.deleteGroup, this.resourceService.messages.imsg.m0082, '{groupName}');
         break;
       case actions.DEACTIVATE:
-        this.addTelemetry('deactivate-group', {status: _.get(this.groupData, 'status')});
+        this.addTelemetry('deactivate-group', {status: _.get(this.groupData, 'status')}, {type: SELECT_DEACTIVATE});
         this.assignModalStrings(this.resourceService.frmelmnts.lbl.deactivategrpques, this.resourceService.frmelmnts.msg.deactivategrpmsg);
         break;
       case actions.ACTIVATE:
@@ -135,7 +140,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
     this.showModal = false;
     this.showLoader = event.action;
     if (!event.action) {
-      this.addTelemetry(`cancel-${event.name}-group`, {status: _.get(this.groupData, 'status')});
+      this.addTelemetry(`cancel-${event.name}-group`, {status: _.get(this.groupData, 'status')}, {type: SELECT_NO});
       return;
     }
     switch (event.name) {
@@ -174,7 +179,8 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
 
   deleteGroup() {
       this.groupService.deleteGroupById(_.get(this.groupData, 'id')).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-        this.addTelemetry('confirm-delete-group', {status: 'inactive', prevstatus: _.get(this.groupData, 'status')});
+        // tslint:disable-next-line:max-line-length
+        this.addTelemetry('confirm-delete-group', {status: 'inactive', prevstatus: _.get(this.groupData, 'status')}, {type: DELETE_SUCCESS});
         this.toasterService.success(this.resourceService.messages.smsg.grpdeletesuccess);
         this.navigateToPreviousPage();
       }, err => {

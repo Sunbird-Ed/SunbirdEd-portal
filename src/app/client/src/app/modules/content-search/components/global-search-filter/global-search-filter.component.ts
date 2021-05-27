@@ -27,6 +27,7 @@ import { IFacetFilterFieldTemplateConfig } from 'common-form-elements';
 export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy {
   @Input() facets;
   @Input() queryParamsToOmit;
+  @Input() supportedFilterAttributes = ['se_boards', 'se_mediums', 'se_gradeLevels', 'se_subjects', 'primaryCategory', 'mediaType'];
   public filterLayout = LibraryFiltersLayout;
   public selectedMediaTypeIndex = 0;
   public selectedMediaType: string;
@@ -66,7 +67,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['facets'] && changes['facets'].currentValue) {
+    if (_.get(changes, 'facets.currentValue.length')) {
       const updatedFacets = changes['facets'].currentValue;
 
       this.filterFormTemplateConfig = [...updatedFacets].sort((a, b) => {
@@ -246,6 +247,17 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
     if (this.searchFacetFilterComponent) {
       this.searchFacetFilterComponent.resetFilter();
     }
+    this.router.navigate([], {
+      queryParams: {
+        ...(() => {
+          const queryParams = _.cloneDeep(this.activatedRoute.snapshot.queryParams);
+          const queryFilters = [...this.supportedFilterAttributes, ...['board', 'medium', 'gradeLevel']];
+          queryFilters.forEach((attr) => delete queryParams[attr]);
+          return queryParams;
+        })()
+      },
+      relativeTo: this.activatedRoute.parent
+    });
   }
 
   ngOnDestroy() {
