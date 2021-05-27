@@ -34,7 +34,7 @@
     "ext": "png,jpeg,js,ts,html,json,css,scss"
   },
   "scripts": {
-    "server": "gulp update:index:file && node --inspect server",
+    "server": "gulp update:index:file && node server",
     "validate": "npm ls",
     "precommit": "lint-staged",
     "resource-bundles": "node helpers/resourceBundles/build.js",
