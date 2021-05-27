@@ -50,7 +50,6 @@
       [questionnaireForm]="questionnaireForm"
       [question]="question"
     ></matrix-questions>
-      <div class="remarks" *ngIf="question.showRemarks === false">
         <h5 class="alignleft">Remarks</h5>
         <button  [ngClass]="question.isRemarkClicked ? 'sb-btn sb-btn-normal sb-btn-red alignright':'sb-btn sb-btn-normal sb-btn-primary alignright'"
         (click)="question.isRemarkClicked ? deleteRemarks(question,qi):openRemark(question,qi)">
@@ -60,7 +59,5 @@
       </div>
       <app-remarks *ngIf="question.isRemarkClicked" (saveClicked)="saveClicked($event,question)"></app-remarks>
     <!-- <app-input-type-attachment></app-input-type-attachment> -->
-    </div>
-  </div>
  
 </div>
