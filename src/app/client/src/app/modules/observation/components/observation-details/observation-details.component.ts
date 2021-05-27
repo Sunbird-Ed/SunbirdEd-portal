@@ -68,7 +68,9 @@ export class ObservationDetailsComponent implements OnInit {
       this.showLoader = false;
       if (data.result.entities && data.result.entities.length) {
         this.entities = data.result;
-        this.selectedEntity = this.entities.entities[0];
+        if (!this.selectedEntity) {
+          this.selectedEntity = this.entities.entities[0];
+        }
         this.observationId = this.entities._id;
         this.getObservationForm();
       } else {
@@ -135,9 +137,8 @@ export class ObservationDetailsComponent implements OnInit {
         data: this.payload,
       };
       this.observationService.post(paramOptions).subscribe(data => {
-        console.log(data, "data 122");
         this.showLoader = false;
-        this.getObservationForm();
+        this.getEntities();
       }, error => {
         this.showLoader = false;
       })

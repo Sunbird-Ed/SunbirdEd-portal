@@ -22,18 +22,21 @@
                 <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
                     <div class="content-header__title font-weight-bold ellipsis text-left">
                         <div>{{evidance.name}} </div>
-                        <small>Status : {{evidance.status}}</small>
+                        <small *ngIf="evidance.status == 'notstarted'">Status :
+                            {{resourceService.frmelmnts?.lbl?.notstarted}}</small>
+                        <small *ngIf="evidance.status != 'notstarted'">Status : {{evidance.status}}</small>
                     </div>
                 </div>
                 <div class="certified-course__btn ng-star-inserted">
-                    <button *ngIf="evidance?.status === 'notstarted'" (click)="open(submission.submissionNumber,evidance)"
+                    <button *ngIf="evidance?.status === 'notstarted'"
+                        (click)="open(submission.submissionNumber,evidance)"
                         class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.btn?.start}}
                     </button>
-                    <button *ngIf="evidance?.status === 'draft'"
-                        (click)="open(submission.submissionNumber,evidance)"
+                    <button *ngIf="evidance?.status === 'draft'" (click)="open(submission.submissionNumber,evidance)"
                         class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.lbl?.continue }}
                     </button>
-                    <button *ngIf="evidance?.status === 'completed' || evidence?.status === 'ratingPending'" (click)="open(submission.submissionNumber,evidance)"
+                    <button *ngIf="evidance?.status === 'completed' || evidence?.status === 'ratingPending'"
+                        (click)="open(submission.submissionNumber,evidance)"
                         class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.lbl?.view }}
                     </button>
                 </div>
