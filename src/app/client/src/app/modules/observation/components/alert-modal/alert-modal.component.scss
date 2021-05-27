@@ -1,14 +1,20 @@
+.ui.mini.modal {
+    border-radius: 24px;
+}
+
 .popup {
   padding: 30px;
   position: relative;
   height: 200px;
   border-radius: none !important;
+  background: var(--sb-modal-content-bg);
+  color: var(--sb-text);
 }
 .popup-header {
   position: relative;
   font-size: 1.2em;
   font-weight: bold;
-  color: #000;
+  color: var(--sb-text);
 }
 
 .popup-body {
@@ -16,7 +22,7 @@
   top: 20px;
   font-size: 1.2em;
   font-weight: 500;
-  color: grey;
+  color: var(--sb-text);
   width: auto;
   white-space: pre-wrap;
 }
@@ -26,7 +32,7 @@
   left: 20px;
   font-size: 15px;
   font-weight: 500;
-  color: grey;
+  color: var(--sb-text);
   width: auto;
   white-space: pre-wrap;
 }
@@ -53,7 +59,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    margin-top: 70px;
+    margin-top: 60px;
     text-transform: capitalize;
     font-size: 15px;
 
