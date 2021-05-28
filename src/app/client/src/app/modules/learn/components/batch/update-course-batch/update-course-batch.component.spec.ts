@@ -472,9 +472,9 @@ describe('UpdateCourseBatchComponent', () => {
   });
 
   it('should show enabled discussion options', () => {
-    const courseBatchService = TestBed.get(CourseBatchService);
-    spyOn(courseBatchService, 'getUpdateBatchDetails').and.returnValue(observableOf(updateBatchDetails));
-    spyOn(courseBatchService, 'updateBatch').and.returnValue(observableOf(updateBatchDetails));
+    // const courseBatchService = TestBed.get(CourseBatchService);
+    // spyOn(courseBatchService, 'getUpdateBatchDetails').and.returnValue(observableOf(updateBatchDetails));
+    // spyOn(courseBatchService, 'updateBatch').and.returnValue(observableOf(updateBatchDetails));
     component.batchUpdateForm = new FormGroup({
       enableDiscussions: new FormControl('true')
     });
