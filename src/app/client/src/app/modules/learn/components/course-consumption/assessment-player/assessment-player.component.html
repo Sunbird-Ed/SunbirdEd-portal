@@ -115,10 +115,10 @@
 
   <!-- CC-Player Video -->
   <!-- <div class="ui container"> -->
-    <div class="px-20">
+  <div class="px-20">
     <div class="cc-player reduce-space-between">
 
-      <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 bg-pink" >
+      <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 bg-pink">
         <div class="cc-player__list px-0">
           <h5 class="p-0 mb-0 font-weight-bold background-header-list">
             {{resourceService?.frmelmnts?.lbl?.contentsLabel}}</h5>
@@ -180,11 +180,6 @@
       </section>
     </div>
   </div>
-  <div class="parent-content-glance">
-    <div class="mt-8 content-glance">
-      <app-credits-and-licence *ngIf="activeContent" [contentData]="activeContent"></app-credits-and-licence>
-    </div>
-  </div>
 
 
 
@@ -197,3 +192,13 @@
 </app-share-link>
 <app-course-completion *ngIf="showCourseCompleteMessage" [certificateDescription]="certificateDescription"
   (close)="onCourseCompleteClose()"></app-course-completion>
+
+
+<div class="parent-content-glance">
+  <div class="discussion-container">
+    <input class="sb-form-control-discussion input-container" type="text" placeholder="discussion">
+  </div>
+  <div class="mt-8 content-glance">
+    <app-credits-and-licence *ngIf="activeContent" [contentData]="activeContent"></app-credits-and-licence>
+  </div>
+</div>
