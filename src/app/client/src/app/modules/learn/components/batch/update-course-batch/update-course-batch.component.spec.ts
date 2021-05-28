@@ -14,6 +14,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
+import { DiscussionService } from '../../../../../../app/modules/discussion/services/discussion/discussion.service';
+import { MockResponseData } from './update-course-batch.component.data';
 import {
   getUserList,
   updateBatchDetails,
@@ -75,7 +77,7 @@ describe('UpdateCourseBatchComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       imports: [SharedModule.forRoot(), CoreModule, SuiModule, RouterTestingModule,
         HttpClientTestingModule, LearnModule],
-      providers: [ToasterService, ResourceService, UserService, TelemetryService, { provide: Router, useClass: RouterStub },
+      providers: [ToasterService, ResourceService, UserService, TelemetryService, DiscussionService, { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
     });
   }));
@@ -454,4 +456,32 @@ describe('UpdateCourseBatchComponent', () => {
     expect(courseBatchService.removeUsersFromBatch).toHaveBeenCalled();
   });
 
+  it('should generate data for discussion forum', () => {
+    component.generateDataForDF();
+    expect(component.fetchForumIdReq).toEqual({
+      'type': 'batch',
+      'identifier': [undefined]
+    });
+  });
+
+  it('should fetch form config for batc discussion forum', () => {
+    const discussionService = TestBed.get(DiscussionService);
+    spyOn(discussionService, 'fetchForumConfig').and.returnValue(observableOf(MockResponseData.forumConfig));
+    component.fetchForumConfig();
+    expect(component.createForumRequest).toEqual(MockResponseData.forumConfig[0]);
+  });
+
+  it('should show enabled discussion options', () => {
+    const courseBatchService = TestBed.get(CourseBatchService);
+    spyOn(courseBatchService, 'getUpdateBatchDetails').and.returnValue(observableOf(updateBatchDetails));
+    spyOn(courseBatchService, 'updateBatch').and.returnValue(observableOf(updateBatchDetails));
+    component.batchUpdateForm = new FormGroup({
+      enableDiscussions: new FormControl('true')
+    });
+    const discussionService = TestBed.get(DiscussionService);
+    spyOn(discussionService, 'createForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForum));
+    component.batchUpdateForm.value.enableDiscussions = 'true';
+    component.checkEnableDiscussions('SOME_BATCH_ID');
+    expect(discussionService.createForum).toHaveBeenCalled();
+  });
 });
