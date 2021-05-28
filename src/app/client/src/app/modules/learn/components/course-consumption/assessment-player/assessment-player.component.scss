@@ -262,12 +262,15 @@
   // }
 }
 .discussion-container{
-  // border: 2px orange solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 60%;
   border-radius: 10px;
-    max-height: 1055px;
-    overflow-y: scroll;
-    background: rgba(146,94,176,.24)!important;
+  max-height: 1055px;
+  min-height: 188px;
+  // overflow-y: scroll;
+  background: rgba(146,94,176,.24)!important;
 }
 .input-container{
   min-height: 67px;
@@ -276,7 +279,5 @@
     box-sizing: border-box;
     border-radius: 8px;
     width: 80%;
-    // margin: auto;
-    margin-top: 3rem;
     background: transparent;
 }
