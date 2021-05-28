@@ -14,7 +14,8 @@ import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
 import { FormsModule } from '@angular/forms';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
-import {SunbirdPdfPlayerModule} from '@project-sunbird/sunbird-pdf-player';
+import { SunbirdPdfPlayerModule } from '@project-sunbird/sunbird-pdf-player';
+import { MatDividerModule, MatIconModule, MatCardModule, MatButtonModule } from '@angular/material';
 
 @NgModule({
   imports: [
@@ -25,7 +26,11 @@ import {SunbirdPdfPlayerModule} from '@project-sunbird/sunbird-pdf-player';
     CoreModule,
     FormsModule,
     CommonConsumptionModule,
-    SunbirdPdfPlayerModule
+    SunbirdPdfPlayerModule,
+    MatIconModule,
+    MatCardModule,
+    MatButtonModule,
+    MatDividerModule
   ],
   declarations: [ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
     CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent,
