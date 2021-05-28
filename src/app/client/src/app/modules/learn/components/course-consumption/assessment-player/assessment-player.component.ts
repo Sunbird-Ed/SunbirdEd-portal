@@ -144,7 +144,15 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     if (_.get(this.activatedRoute, 'snapshot.queryParams.textbook')) {
       paramas['textbook'] = _.get(this.activatedRoute, 'snapshot.queryParams.textbook');
     }
-    this.router.navigate(['/learn/course', this.courseId, 'batch', this.batchId], {queryParams: paramas});
+    // this.router.navigate(['/learn/course', this.courseId, 'batch', this.batchId], {queryParams: paramas});
+    //update the url only if it has batch id, or use default url 
+    if(!this.courseId && !this.batchId){
+    this.router.navigate(['/learn'], {queryParams: paramas});
+  }
+    else {
+    const url =  this.batchId ? `/learn/course/${this.courseId}/batch/${this.batchId}`: `/learn/course/${this.courseId}`
+    this.router.navigate([url], {queryParams: paramas});
+  }
   }
 
   private subscribeToQueryParam() {
