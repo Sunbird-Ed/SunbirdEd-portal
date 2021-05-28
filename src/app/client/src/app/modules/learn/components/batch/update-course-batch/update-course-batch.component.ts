@@ -685,6 +685,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   checkEnableDiscussions(batchId) {
     if (this.batchUpdateForm.value.enableDiscussions === 'true') {
       this.discussionService.createForum(this.createForumRequest).subscribe(resp => {
+        this.handleEnableDFChange('Yes');
         this.toasterService.success('Enabled discussion forum successfully');
       }, error => {
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
@@ -701,6 +702,27 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
       });
     }
+  }
+
+  handleEnableDFChange(inputType) {
+    const telemetryData = {
+      context: {
+        env:  this.activatedRoute.snapshot.data.telemetry.env,
+        cdata: [{
+          id: this.courseId,
+          type: 'Course'
+        }, {
+          id: this.batchId,
+          type: 'Batch'
+        }]
+      },
+      edata: {
+        id: `enable-DF-${inputType}`,
+        type: 'click',
+        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+      }
+    };
+    this.telemetryService.interact(telemetryData);
   }
 
   handleInputChange(inputType) {

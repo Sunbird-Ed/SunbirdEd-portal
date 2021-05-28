@@ -484,4 +484,29 @@ describe('UpdateCourseBatchComponent', () => {
     component.checkEnableDiscussions('SOME_BATCH_ID');
     expect(discussionService.createForum).toHaveBeenCalled();
   });
+
+  it('should log enabled-DF-yes interact telemetry on changing input to yes', () => {
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact');
+    const activatedRoute = TestBed.get(ActivatedRoute);
+    const telemetryData = {
+      context: {
+        env:  activatedRoute.snapshot.data.telemetry.env,
+        cdata: [{
+          id: component['courseId'],
+          type: 'Course'
+        }, {
+          id: component['batchId'],
+          type: 'Batch'
+        }]
+      },
+      edata: {
+        id: `enabled-DF-yes`,
+        type: 'click',
+        pageid: activatedRoute.snapshot.data.telemetry.pageid
+      }
+    };
+    component.handleEnableDFChange('yes');
+    expect(telemetryService.interact).toHaveBeenCalledWith(telemetryData);
+  });
 });
