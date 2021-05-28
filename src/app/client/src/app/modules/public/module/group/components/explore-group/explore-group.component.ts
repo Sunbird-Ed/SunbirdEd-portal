@@ -6,6 +6,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { UtilService } from '../../../../../shared/services/util/util.service';
+import { ElectronService } from '../../../../../core/services/electron/electron.service';
+import { ConfigService } from '../../../../../shared/services/config/config.service';
 @Component({
   selector: 'app-explore-group',
   templateUrl: './explore-group.component.html',
@@ -15,13 +18,21 @@ export class ExploreGroupComponent implements OnInit {
   showWelcomePopup = true;
   telemetryImpression: IImpressionEventInput;
   layoutConfiguration;
+  isDesktopApp = false;
   public unsubscribe$ = new Subject<void>();
-  constructor(public resourceService: ResourceService, private activatedRoute: ActivatedRoute,
+  constructor(
+    public resourceService: ResourceService, private activatedRoute: ActivatedRoute,
     private telemetryService: TelemetryService, private router: Router,
-    private navigationhelperService: NavigationHelperService, public layoutService: LayoutService) { }
+    private navigationhelperService: NavigationHelperService, public layoutService: LayoutService,
+    private utilService: UtilService, private electronService: ElectronService, private config: ConfigService
+  ) { }
 
   redirectTologin() {
-    window.location.href = MY_GROUPS;
+    if (this.isDesktopApp)  {
+      this.electronService.get({ url: this.config.urlConFig.URLS.OFFLINE.LOGIN}).subscribe();
+    } else {
+      window.location.href = MY_GROUPS;
+    }
   }
 
   showFtuPopup(visibility: boolean = false) {
@@ -29,6 +40,7 @@ export class ExploreGroupComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isDesktopApp = this.utilService.isDesktopApp;
     this.showWelcomePopup = !localStorage.getItem('anonymous_ftu_groups');
     this.initLayout();
     this.telemetryImpression = {

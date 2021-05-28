@@ -7,8 +7,7 @@ import { containerAPI } from '@project-sunbird/OpenRAP/api';
 export default (app, proxyURL) => {
 const standardLog = containerAPI.getStandardLoggerInstance();
 const form = new Form(manifest);
-    app.post(
-        "/api/data/v1/form/read",
+    app.post(["/api/data/v1/form/read", "/learner/data/v1/form/read" ],
         proxy(proxyURL, {
             proxyReqPathResolver(req) {
                 return `/api/data/v1/form/read`;

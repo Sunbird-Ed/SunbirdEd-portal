@@ -10,6 +10,9 @@ const uuid = require('uuid/v1')
 const bodyParser = require('body-parser');
 const REQUIRED_STATE_FIELD = ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type', 'version', 'merge_account_process'];
 const envHelper = require('../helpers/environmentVariablesHelper.js');
+const { GOOGLE_OAUTH_CONFIG } = require('../helpers/environmentVariablesHelper.js')
+const {OAuth2Client} = require('google-auth-library');
+
 /**
  * keycloack adds this string to track auth redirection and
  * with this it triggers auth code verification to get token and create session
@@ -37,8 +40,7 @@ module.exports = (app) => {
 
   app.post('/google/auth/android', bodyParser.json(), async (req, res) => {
     let errType, newUserDetails = {}
-    const {OAuth2Client} = require('google-auth-library');
-    const CLIENT_ID = '525350998139-cjr1m4a2p1i296p588vff7qau924et79.apps.googleusercontent.com'
+    const CLIENT_ID = GOOGLE_OAUTH_CONFIG.clientId;
     const client = new OAuth2Client(CLIENT_ID);
     async function verify() {
       const ticket = await client.verifyIdToken({
@@ -68,7 +70,12 @@ module.exports = (app) => {
        }
        const keyCloakToken = await createSession(emailId, {client_id: 'google-auth'}, req, res).catch(handleCreateSessionError);
        res.send(keyCloakToken);
-     }).catch(console.error);
+     }).catch((err) => {
+       res.status(400).send({
+         msg: 'unable to create session'
+       });
+       throw err;
+     });
   });
   /**
    * steps to be followed in callback url

@@ -9,6 +9,7 @@ import * as _ from 'lodash-es';
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { NavigationHelperService } from '@sunbird/shared';
 import { POPUP_LOADED, CREATE_GROUP, SELECT_CLOSE, CLOSE_ICON, SELECT_RESET } from '../../interfaces/telemetryConstants';
+import { UtilService } from '../../../shared/services/util/util.service';
 @Component({
   selector: 'app-create-edit-group',
   templateUrl: './create-edit-group.component.html',
@@ -22,6 +23,7 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy, AfterViewIni
   url = document.location.origin;
   instance: string;
   disableBtn = false;
+  isDesktopApp = false;
   private unsubscribe$ = new Subject<void>();
   public telemetryImpression: IImpressionEventInput;
   public SELECT_CLOSE = SELECT_CLOSE;
@@ -36,14 +38,20 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy, AfterViewIni
               private telemetryService: TelemetryService,
               public router: Router,
               public navigationHelperService: NavigationHelperService,
+              public utilService: UtilService
     ) { }
 
   ngOnInit() {
     this.instance = _.upperCase(this.resourceService.instance);
+    this.isDesktopApp = this.utilService.isDesktopApp;
     this.groupId = _.get(this.activatedRoute, 'parent.snapshot.params.groupId');
     this.groupId ? (this.groupService.groupData ? (this.groupDetails = this.groupService.groupData) :
     this.groupService.goBack()) : this.groupDetails = {};
     this.initializeForm();
+
+    if (this.isDesktopApp) {
+      this.url = this.utilService.getAppBaseUrl();
+    }
   }
 
   /**

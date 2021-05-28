@@ -1,4 +1,3 @@
-@import "./mixins/mixins";
 
 .ui.dropdown.selection {
     padding: 0.5rem 0.75rem !important;
@@ -11,14 +10,19 @@
     border: none;
 }
 ::ng-deep{
-    // sui-select.selection.pd-10.ui.dropdown.ng-valid.ng-dirty.ng-touched {
-    //     border-radius: 0px !important;
-    //     border: 1px solid #cccc;
-    // }
-}
-.sb-btn-normal {
-    // border-radius: 0px !important;
-
+    
+    .ui.selection.dropdown {
+        padding: 11px;
+    }
+    .datatable-body-cell-label {
+        padding: 10px !important;
+    }
+    .sb-field-group {
+        padding: 10px !important;
+    }
+    .sb-modal-actions {
+        justify-content: center;
+    }
 }
 .sb-modal-actions {
     display: flex;
@@ -30,4 +34,10 @@
 }
 .ngx-datatable.fixed-header .datatable-header {
     padding: 10px;
+}
+.sidebar-block {
+    min-height: 400px;
+}
+.justify-flex-end {
+    justify-content: flex-end;
 }

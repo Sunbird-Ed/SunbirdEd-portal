@@ -43,7 +43,7 @@ export class OrgDetailsService {
         request: {
           filters: {
             slug: slug || (<HTMLInputElement>document.getElementById('defaultTenant')).value,
-            isRootOrg: true
+            isTenant: true
           }
         }
       }
@@ -58,7 +58,7 @@ export class OrgDetailsService {
         }
         if (data.result.response.count > 0) {
           this.orgDetails = data.result.response.content[0];
-          this._rootOrgId = this.orgDetails.rootOrgId;
+          this._rootOrgId = this.orgDetails.id;
           this.setOrgDetailsToRequestHeaders();
           this._orgDetails$.next({ err: null, orgDetails: this.orgDetails });
           return of(data.result.response.content[0]);
@@ -67,7 +67,7 @@ export class OrgDetailsService {
           return this.publicDataService.post(option).pipe(mergeMap((responseData: ServerResponse) => {
             if (responseData.result.response.count > 0) {
               this.orgDetails = responseData.result.response.content[0];
-              this._rootOrgId = this.orgDetails.rootOrgId;
+              this._rootOrgId = this.orgDetails.id;
               this.setOrgDetailsToRequestHeaders();
               this._orgDetails$.next({ err: null, orgDetails: this.orgDetails });
               return of(responseData.result.response.content[0]);
@@ -84,11 +84,11 @@ export class OrgDetailsService {
     }
   }
   setOrgDetailsToRequestHeaders() {
-    this.learnerService.rootOrgId = this.orgDetails.rootOrgId;
+    this.learnerService.rootOrgId = this.orgDetails.id;
     this.learnerService.channelId = this.orgDetails.hashTagId;
-    this.contentService.rootOrgId = this.orgDetails.rootOrgId;
+    this.contentService.rootOrgId = this.orgDetails.id;
     this.contentService.channelId = this.orgDetails.hashTagId;
-    this.publicDataService.rootOrgId = this.orgDetails.rootOrgId;
+    this.publicDataService.rootOrgId = this.orgDetails.id;
     this.publicDataService.channelId = this.orgDetails.hashTagId;
   }
 
@@ -98,7 +98,7 @@ export class OrgDetailsService {
       data: {
         request: {
           filters: {
-            isRootOrg: true
+            isTenant: true
           }
         }
       }

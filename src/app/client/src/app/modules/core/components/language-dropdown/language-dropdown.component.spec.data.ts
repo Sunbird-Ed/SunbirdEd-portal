@@ -14,7 +14,7 @@ export const Response = {
                     'addressId': null, 'orgType': null, 'provider': null, 'orgCode': null, 'theme': null,
                     'id': '0123166374296453124', 'communityId': null, 'isApproved': null, 'slug': 'tn',
                     'identifier': '0123166374296453124', 'thumbnail': null, 'orgName': 'Test Org 1',
-                    'updatedBy': null, 'externalId': null, 'isRootOrg': true, 'rootOrgId': 'ORG_001',
+                    'updatedBy': null, 'externalId': null, 'isTenant': true, 'rootOrgId': 'ORG_001',
                     'approvedDate': null, 'imgUrl': null, 'homeUrl': null, 'isDefault': null, 'contactDetail': null,
                     'createdDate': '2017-08-23 13:38:07:272+0000', 'createdBy': null, 'parentOrgId': null,
                     'hashTagId': '0123166374296453124', 'noOfMembers': null, 'status': null

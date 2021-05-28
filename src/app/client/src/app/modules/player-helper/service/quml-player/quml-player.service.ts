@@ -23,7 +23,7 @@ export class QumlPlayerService implements QuestionCursor, EditorCursor {
     if (question) {
         return of({questions : _.castArray(question)});
     } else {
-        return this.contentCsService.getQuestionList([questionId]);
+        return this.contentCsService.getQuestionList(_.castArray(questionId));
     }
   }
 

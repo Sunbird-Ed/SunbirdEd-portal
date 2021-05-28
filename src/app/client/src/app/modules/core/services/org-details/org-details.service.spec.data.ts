@@ -17,7 +17,7 @@ export const serverRes = {
                         'userId': null, 'zipcode': '123456', 'addType': null, 'createdDate': '2017-08-23 13:29:09:359+0000',
                         'isDeleted': null, 'createdBy': '{{user_id}}', 'addressLine1': null, 'addressLine2': null,
                         'id': '0123166355817267202', 'state': 'AP'
-                    }, 'externalId': null, 'isRootOrg': true,
+                    }, 'externalId': null, 'isTenant': true,
                     'rootOrgId': 'ORG_001', 'approvedDate': null, 'imgUrl': null, 'homeUrl': null, 'isDefault': null,
                     'contactDetail': null, 'createdDate': '2017-08-23 13:29:09:359+0000', 'createdBy': '{{user_id}}',
                     'parentOrgId': null, 'hashTagId': '0123166367624478721', 'noOfMembers': null, 'status': null
@@ -75,7 +75,7 @@ export const serverRes = {
                 'updatedBy': null,
                 'locationIds': [],
                 'externalId': null,
-                'isRootOrg': true,
+                'isTenant': true,
                 'rootOrgId': '01258430492140339266',
                 'approvedDate': null,
                 'imgUrl': null,
@@ -113,7 +113,7 @@ export const serverRes = {
                 'updatedBy': null,
                 'locationIds': [],
                 'externalId': null,
-                'isRootOrg': true,
+                'isTenant': true,
                 'rootOrgId': '01258430450937036873',
                 'approvedDate': null,
                 'imgUrl': null,

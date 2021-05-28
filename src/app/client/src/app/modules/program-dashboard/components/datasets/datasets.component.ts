@@ -1,15 +1,13 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
-
-import { ToasterService,  IUserData, IUserProfile, LayoutService, ResourceService,ConfigService,OnDemandReportService } from '@sunbird/shared';
-import {  TelemetryService } from '@sunbird/telemetry';
-import { from, Subject,Subscription } from 'rxjs';
-import { TncService,KendraService,UserService,FormService } from '@sunbird/core';
-import { first, takeUntil } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
-import { FormGroup, FormControl,Validators } from '@angular/forms';
+import { ToasterService, IUserData, IUserProfile, LayoutService, ResourceService, ConfigService, OnDemandReportService } from '@sunbird/shared';
+import { TelemetryService } from '@sunbird/telemetry';
+import { Subject, Subscription } from 'rxjs';
+import { KendraService, UserService, FormService } from '@sunbird/core';
+import { takeUntil } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import * as _ from 'lodash-es';
-// import { programManagerService } from ''
 
 
 @Component({
@@ -18,112 +16,30 @@ import * as _ from 'lodash-es';
   styleUrls: ['./datasets.component.scss']
 })
 
-
-
 export class DatasetsComponent implements OnInit {
 
   public activatedRoute: ActivatedRoute;
   public showConfirmationModal = false;
-  public confirmationPopupInput = { title: "Do you want to continue", event: 'ok', body: "string" };
+
   config;
   reportTypes = [];
   programs = [];
   solutions = [];
-  @ViewChild('modal', {static: false}) modal;
-  popup:boolean  = false;
-  awaitPopUp:boolean =false;
+  @ViewChild('modal', { static: false }) modal;
+  popup: boolean = false;
+  awaitPopUp: boolean = false;
+  reportStatus = {
+    'submitted': 'SUBMITTED',
+    'processing': 'PROCESSING',
+    'failed': 'FAILED',
+    'success': 'SUCCESS',
+  };
 
-  // formData = {
-  //   "improvementproject": [
-  //     {
-  //       "datasetId":"",
-  //       "name": "Task Detail Report",
-  //       "encrypt": true,
-  //       "accessableTo": [
-  //         "PM"
-  //       ]
-  //     },
-  //     {
-  //       "datasetId":"",
-  //       "name": "Status Report",
-  //       "encrypt": false,
-  //       "accessableTo": [
-  //         "PM",
-  //         "PD"
-  //       ]
-  //     }
-  //   ],
-  //   "observation": [
-  //     {
-  //       "datasetId":"",
-  //       "name": "Question Report",
-  //       "encrypt": true,
-  //       "accessableTo": [
-  //         "PM"
-  //       ]
-  //     },
-  //     {
-  //       "datasetId":"",
-  //       "name": "Status Report",
-  //       "encrypt": false,
-  //       "accessableTo": [
-  //         "PM",
-  //         "PD"
-  //       ]
-  //     }
-  //   ],
-  //   "observation_with_rubric": [
-  //     {
-  //       "datasetId":"",
-  //       "name": "Task Detail Report",
-  //       "encrypt": true,
-  //       "accessableTo": [
-  //         "PM"
-  //       ]
-  //     },
-  //     {
-  //       "datasetId":"",
-  //       "name": "Status Report",
-  //       "encrypt": false,
-  //       "accessableTo": [
-  //         "PM",
-  //         "PD"
-  //       ]
-  //     },
-  //     {
-  //       "datasetId":"",
-  //       "name": "Domain Criteria Report",
-  //       "encrypt": false,
-  //       "accessableTo": [
-  //         "PM",
-  //         "DM"
-  //       ]
-  //     }
-  //   ],
-  //   "survey": [
-  //     {
-  //       "datasetId":"",
-  //       "name": "Task Detail Report",
-  //       "encrypt": true,
-  //       "accessableTo": [
-  //         "PM"
-  //       ]
-  //     },
-  //     {
-  //       "datasetId":"",
-  //       "name": "Status Report",
-  //       "encrypt": false,
-  //       "accessableTo": [
-  //         "PM",
-  //         "PD"
-  //       ]
-  //     }
-  //   ]
-  // };
+  public isProcessed = false;
 
-  formData:Object;
+  formData: Object;
   public columns = [
-    { name: 'Report type', isSortable: true, prop: 'request_id', placeholder: 'Filter report type' },
+    { name: 'Report type', isSortable: true, prop: 'datasetConfig.title', placeholder: 'Filter report type' },
     { name: 'Request date', isSortable: true, prop: 'jobStats.dtJobSubmitted', placeholder: 'Filter request date', type: 'date' },
     { name: 'Status', isSortable: false, prop: 'status', placeholder: 'Filter status' },
     { name: 'Report link', isSortable: false, prop: 'downloadUrls', placeholder: 'Filter download link' },
@@ -131,9 +47,9 @@ export class DatasetsComponent implements OnInit {
     // { name: 'Requested by', isSortable: true, prop: 'requested_by', placeholder: 'Filter request by' },
   ];
 
-  public data =  [
+  public onDemandReportData = [
     {
-      
+
       'request_id': 'AE3DDC23B3F189ED2A57B567D6434BE7',
       'tag': 'test-tag:in.ekstep',
       'job_id': 'progress-exhaust',
@@ -701,33 +617,34 @@ export class DatasetsComponent implements OnInit {
   ]
 
   downloadCSV = true;
-  name = "";
-  public message = 'There is no data available';
   isColumnsSearchable = false;
+  tag: string = "PROGRAM-REPORT1";
 
   reportForm = new FormGroup({
-    programName: new FormControl('',[Validators.required]),
-    solution: new FormControl('',[Validators.required]),
+    programName: new FormControl('', [Validators.required]),
+    solution: new FormControl('', [Validators.required]),
     reportType: new FormControl('', [Validators.required])
   });
 
   passwordForm = new FormGroup({
-    password : new FormControl('', [Validators.minLength(8), Validators.required, Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$')])
+    password: new FormControl('', [Validators.minLength(8), Validators.required, Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$')])
   });
 
   programSelected: any;
+
 
   constructor(
     activatedRoute: ActivatedRoute,
     public layoutService: LayoutService,
     public telemetryService: TelemetryService,
     public resourceService: ResourceService,
-    public kendraService:KendraService,
+    public kendraService: KendraService,
     public userService: UserService,
-    public onDemandReportService:OnDemandReportService,
+    public onDemandReportService: OnDemandReportService,
     config: ConfigService,
-    public toasterService:ToasterService,
-    public formService:FormService
+    public toasterService: ToasterService,
+    public formService: FormService,
+    public router: Router
   ) {
     this.config = config;
     this.activatedRoute = activatedRoute;
@@ -744,44 +661,48 @@ export class DatasetsComponent implements OnInit {
    * all user role
    */
   private userRoles: Array<string> = [];
-  public userId:string;
+  public userId: string;
   public selectedReport;
 
   getProgramsList() {
+
+    // const paramOptions = {
+    //   url:
+    //     this.config.urlConFig.URLS.KENDRA.PROGRAMS_BY_PLATFORM_ROLES+"?role="+this.userRoles.toString()
+    // };
+
     const paramOptions = {
       url:
         this.config.urlConFig.URLS.KENDRA.PROGRAMS_BY_PLATFORM_ROLES
     };
-    console.log(":data.result");
     this.kendraService.get(paramOptions).subscribe(data => {
-      if(data && data.result){
-        console.log("programs --",data.result);
+      if (data && data.result) {
         this.programs = data.result;
       }
     }, error => {
+      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
     })
 
- }
- 
- getSolutionList(program) {
-  
-  const paramOptions = {
-    url:
-      this.config.urlConFig.URLS.KENDRA.SOLUTIONS_BY_PROGRAMID+"/"+program._id+"?role="+program.role
-  };
-  this.kendraService.get(paramOptions).subscribe(data => {
-    if(data && data.result){
-      console.log("solutions----------- ",data.result);
-      this.solutions = data.result;
-    }
-  }, error => {
-  })
+  }
 
- }
+  getSolutionList(program) {
+
+    const paramOptions = {
+      url:
+        this.config.urlConFig.URLS.KENDRA.SOLUTIONS_BY_PROGRAMID + "/" + program._id + "?role=" + program.role
+    };
+    this.kendraService.get(paramOptions).subscribe(data => {
+      if (data && data.result) {
+        this.solutions = data.result;
+      }
+    }, error => {
+      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+    })
+
+  }
 
   ngOnInit() {
 
-    this.submitRequest();
     this.loadReports();
     this.userDataSubscription = this.userService.userData$.subscribe(
       (user: IUserData) => {
@@ -789,19 +710,11 @@ export class DatasetsComponent implements OnInit {
           this.userProfile = user.userProfile;
           this.userRoles = user.userProfile.userRoles;
           this.userId = user.userProfile.id;
-         console.log("this.userRoles",user); 
         }
       });
-
-
-
     this.initLayout();
-    // this.getProgramsList();
-    // this.getFormDetails();
-
-  
-    
-
+    this.getProgramsList();
+    this.getFormDetails();
   }
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -812,91 +725,82 @@ export class DatasetsComponent implements OnInit {
     });
   }
 
-  public programSelection($event){
+  public programSelection($event) {
 
-    let program = this.programs.filter( data =>{
-        if(data._id==$event){  
-          return data
-         }
-       })
+    let program = this.programs.filter(data => {
+      if (data._id == $event) {
+        return data
+      }
+    })
 
     this.solutions = [];
-    this.reportTypes =[];
+    this.reportTypes = [];
     this.getSolutionList(program[0]);
-    
+
   }
   public selectSolution($event) {
-    
+
     if (this.programSelected && this.reportForm.value && this.reportForm.value['solution']) {
-      let solution = this.solutions.filter( data =>{
-        if(data._id==$event){  
+      let solution = this.solutions.filter(data => {
+        if (data._id == $event) {
           return data
-         }
-       })
-      this.reportTypes = this.formData[solution[0].type];
+        }
+      });
+      if (solution[0].isRubricDriven == true && solution[0].type == "observation") {
+        let type = solution[0].type + "_with_rubric";
+        this.reportTypes = this.formData[type];
+      } else {
+        this.reportTypes = this.formData[solution[0].type];
+      }
+
     }
   }
 
   public closeModal(): void {
-    // if (this.modal) {
-    //   this.modal.deny();
-    // }
-    this.popup =false;
-    // this.closeModalEvent.emit(true);
+    this.popup = false;
   }
 
-  public csvRequest(){
-
-    this.popup =false; 
+  public csvRequest() {
+    this.popup = false;
     this.submitRequest();
-    this.awaitPopUp =true;
   }
-  
-  public requestDataset(){
 
-    if(this.selectedReport.encrypt==true){
-      this.popup =true; 
+  public requestDataset() {
+    if (this.selectedReport.encrypt == true) {
+      this.popup = true;
     } else {
-      this.showConfirmationModal =true;
+      this.showConfirmationModal = true;
     }
-    
   }
 
   private closeConfirmationModal() {
     this.showConfirmationModal = false;
   }
 
+  goBack() {
+    this.router.navigate([`/`]);
+  }
+
   public handleConfirmationEvent(event: boolean) {
     this.closeConfirmationModal();
-    if (event ==true) {
-      
+    if (event == true) {
       this.submitRequest();
-      this.awaitPopUp =true;
-      
-    } 
-  }
-  public closeConfirmModal(){
-    this.awaitPopUp =false;
-  }
-
-  loadReports(batchDetails?: any) {
-    if(batchDetails){
-      // this.batch = batchDetails;
-      // this.tag = batchDetails.courseId+'_'+batchDetails.batchId;
     }
-    // if (this.batch) {
-      this.onDemandReportService.getReportList("this.tag").subscribe((data) => {
-        if (data) {
+  }
+  public closeConfirmModal() {
+    this.awaitPopUp = false;
+  }
 
-          console.log("loadReports",data)
-          // const reportData = _.get(data, 'result.jobs');
-          // this.data = _.map(reportData, (row) => this.dataModification(row));
-          // this.data = [...this.onDemandReportData];
-        }
-      }, error => {
-        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-      });
-    // }
+  loadReports() {
+    this.onDemandReportService.getReportList(this.tag).subscribe((data) => {
+      if (data) {
+        const reportData = _.get(data, 'result.jobs');
+        this.onDemandReportData = _.map(reportData, (row) => this.dataModification(row));
+        this.onDemandReportData = [...this.onDemandReportData];
+      }
+    }, error => {
+      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+    });
   }
 
   reportChanged(ev) {
@@ -904,70 +808,118 @@ export class DatasetsComponent implements OnInit {
   }
 
   submitRequest() {
-    // const isRequestAllowed = this.checkStatus();
-    // if (isRequestAllowed) {
-      // this.isProcessed = false;
-
-      console.log("this.reportForm.value");
-      const request = {
+    const isRequestAllowed = this.checkStatus();
+    if (isRequestAllowed) {
+      this.isProcessed = false;
+      let config = {
+        batchId: this.programSelected,
+        reportType: this.reportForm.controls.reportType.value,
+        solution: this.reportForm.controls.solution.value,
+        title: this.selectedReport.name
+      }
+      let request = {
         request: {
-          tag: "PROGRAM-REPORT",
+          tag: this.tag,
           requestedBy: this.userId,
-          dataset: "ml-observation",
-          datasetConfig: {
-            // batchId: this.batch.batchId
-          },
+          dataset: this.selectedReport['datasetId'],
+          datasetConfig: config,
           output_format: 'csv'
+
         }
       };
-      // if (this.selectedReport.encrypt === 'true') {
-      //   request.request['encryptionKey'] = this.reportForm.controls.password.value;
-      // }
-      console.log('submit the report',request);
+      if (this.selectedReport.encrypt === true) {
+        request.request['encryptionKey'] = this.passwordForm.controls.password.value;
+      }
+
       this.onDemandReportService.submitRequest(request).subscribe((data: any) => {
         if (data && data.result) {
-
-          console.log("submit request",data.result);
-          // if (data.result.status === this.reportStatus.failed) {
-          //   const error = _.get(data, 'result.statusMessage') || _.get(this.resourceService, 'frmelmnts.lbl.requestFailed');
-          //   this.toasterService.error(error);
-          // }
-          // data = this.dataModification(data['result']);
-          // const updatedReportList = [data, ...this.onDemandReportData];
-          // this.onDemandReportData = _.slice(updatedReportList, 0, 10);
+          if (data.result.status === this.reportStatus.failed) {
+            const error = _.get(data, 'result.statusMessage') || _.get(this.resourceService, 'frmelmnts.lbl.requestFailed');
+            this.toasterService.error(error);
+          }
+          data = this.dataModification(data['result']);
+          const updatedReportList = [data, ...this.onDemandReportData];
+          this.onDemandReportData = _.slice(updatedReportList, 0, 10);
         }
-        // this.reportForm.reset();
       }, error => {
-        // this.reportForm.reset();
         this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
       });
-    // } else {
-    //   this.isProcessed = true;
-    //   setTimeout(()=>{
-    //     this.isProcessed = false;
-    //   }, 5000)
-    //   this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.requestFailed'));
-    // }
+      this.awaitPopUp = true;
+      this.reportForm.reset();
+      this.passwordForm.reset();
+    } else {
+      this.popup = false;
+      this.isProcessed = true;
+      setTimeout(() => {
+        this.isProcessed = false;
+      }, 5000)
+      this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.requestFailed'));
+      this.reportForm.reset();
+      this.passwordForm.reset();
+    }
   }
 
   public getFormDetails() {
+
     const formServiceInputParams = {
       formType: 'program-dashboard',
       formAction: 'reportData',
       contentType: "csv-dataset",
       component: 'portal'
-     };
-    
-     this.formService.getFormConfig(formServiceInputParams).subscribe((formData) => {
+    };
 
-      if(formData){
+    this.formService.getFormConfig(formServiceInputParams).subscribe((formData) => {
+      if (formData) {
         this.formData = formData;
       }
-      // fields.forEach(item => { item.title = this.resourceService.frmelmnts.lbl[item.title]; });
     }, error => {
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
 
+  }
+  dataModification(row) {
+    const dataSet = _.find(this.reportTypes, { dataset: row.dataset }) || {};
+    row.title = dataSet.title;
+    return row;
+  }
+
+  checkStatus() {
+    let requestStatus = true;
+     const selectedReportList = [];
+    _.forEach(this.onDemandReportData, (value) => {
+      if (value.dataset === this.selectedReport.datasetId) {
+        selectedReportList.push(value);
+      }
+    });
+    const sortedReportList = _.sortBy(selectedReportList, [(data) => {
+      return data && data.jobStats && data.jobStats.dtJobSubmitted;
+    }]);
+    const reportListData = _.last(sortedReportList) || {};
+    if (!_.isEmpty(reportListData)) { // checking the report is already created or not
+      let isInProgress = this.onDemandReportService.isInProgress(reportListData, this.reportStatus); // checking the report is in SUBMITTED/PROCESSING state 
+      if (!isInProgress) {
+        requestStatus = true;
+      } else {
+        requestStatus = false; // report is in SUBMITTED/PROCESSING state and can not create new report
+      }
+    }
+    return requestStatus;
+  }
+  onDownloadLinkFail(data) {
+    const tagId = data && data.tag && data.tag.split(':');
+    this.onDemandReportService.getReport(_.head(tagId), data.requestId).subscribe((data: any) => {
+      if (data) {
+        const downloadUrls = _.get(data, 'result.downloadUrls') || [];
+        const downloadPath = _.head(downloadUrls);
+        if (downloadPath) {
+          window.open(downloadPath, '_blank');
+        } else {
+          this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+        }
+      }
+    }, error => {
+      this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+    });
   }
 
 }
