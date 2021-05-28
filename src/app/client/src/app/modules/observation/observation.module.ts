@@ -47,7 +47,6 @@ import { AlertModalComponent } from './components/alert-modal/alert-modal.compon
     AvatarModule,
     NgInviewModule,
     TelemetryModule,
-    SuiModule,
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
