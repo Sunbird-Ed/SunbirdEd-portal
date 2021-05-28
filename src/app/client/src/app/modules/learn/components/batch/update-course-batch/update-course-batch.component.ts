@@ -692,7 +692,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     } else {
       const requestBody = {
         'sbType': 'batch',
-        'sbIdentifier': this.batchId,
+        'sbIdentifier': batchId,
         'cid': this.forumIds
       };
       this.discussionService.removeForum(requestBody).subscribe(resp => {
