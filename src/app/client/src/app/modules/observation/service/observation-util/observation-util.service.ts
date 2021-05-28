@@ -145,6 +145,7 @@ export class ObservationUtilService {
     let obj = {
       type: "",
       size:"",
+      isClosed:false,
       content: {
         title: "", 
         body: {
