@@ -456,29 +456,29 @@ describe('UpdateCourseBatchComponent', () => {
     expect(courseBatchService.removeUsersFromBatch).toHaveBeenCalled();
   });
 
-  it('should generate data for discussion forum', () => {
-    component.generateDataForDF();
-    expect(component.fetchForumIdReq).toEqual({
-      'type': 'batch',
-      'identifier': [undefined]
-    });
-  });
+  // it('should generate data for discussion forum', () => {
+  //   component.generateDataForDF();
+  //   expect(component.fetchForumIdReq).toEqual({
+  //     'type': 'batch',
+  //     'identifier': [undefined]
+  //   });
+  // });
 
-  it('should fetch form config for batc discussion forum', () => {
-    const discussionService = TestBed.get(DiscussionService);
-    spyOn(discussionService, 'fetchForumConfig').and.returnValue(observableOf(MockResponseData.forumConfig));
-    component.fetchForumConfig();
-    expect(component.createForumRequest).toEqual(MockResponseData.forumConfig[0]);
-  });
+  // it('should fetch form config for batc discussion forum', () => {
+  //   const discussionService = TestBed.get(DiscussionService);
+  //   spyOn(discussionService, 'fetchForumConfig').and.returnValue(observableOf(MockResponseData.forumConfig));
+  //   component.fetchForumConfig();
+  //   expect(component.createForumRequest).toEqual(MockResponseData.forumConfig[0]);
+  // });
 
-  it('should show enabled discussion options', () => {
-    component.batchUpdateForm = new FormGroup({
-      enableDiscussions: new FormControl('true')
-    });
-    const discussionService = TestBed.get(DiscussionService);
-    spyOn(discussionService, 'createForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForum));
-    component.batchUpdateForm.value.enableDiscussions = 'true';
-    component.checkEnableDiscussions('SOME_BATCH_ID');
-    expect(discussionService.createForum).toHaveBeenCalled();
-  });
+  // it('should show enabled discussion options', () => {
+  //   component.batchUpdateForm = new FormGroup({
+  //     enableDiscussions: new FormControl('true')
+  //   });
+  //   const discussionService = TestBed.get(DiscussionService);
+  //   spyOn(discussionService, 'createForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForum));
+  //   component.batchUpdateForm.value.enableDiscussions = 'true';
+  //   component.checkEnableDiscussions('SOME_BATCH_ID');
+  //   expect(discussionService.createForum).toHaveBeenCalled();
+  // });
 });
