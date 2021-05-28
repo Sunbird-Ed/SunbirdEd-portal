@@ -1,7 +1,7 @@
 <div
   *ngFor="let o of options; let i = index"
   [formGroup]="questionnaireForm"
-  class="my-24 sb-checkbox sb-checkbox-secondary"
+  class="mb-15 sb-checkbox sb-checkbox-secondary"
 >
   <div [formArrayName]="question._id">
     <sui-checkbox

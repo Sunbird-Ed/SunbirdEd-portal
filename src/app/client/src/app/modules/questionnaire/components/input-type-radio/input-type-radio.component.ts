@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, Output, EventEmitter } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 
 @Component({
@@ -10,6 +10,7 @@ export class InputTypeRadioComponent implements OnInit {
   @Input() options: any;
   @Input() questionnaireForm: FormGroup;
   @Input() question: any;
+  @Output() dependentParent = new EventEmitter();
 
   constructor() {}
 
@@ -36,5 +37,8 @@ export class InputTypeRadioComponent implements OnInit {
     this.questionnaireForm.controls[this.question._id].setValue(value);
     this.question.value = value;
     this.question.endTime = Date.now();
+    if (this.question.children.length) {
+      this.dependentParent.emit(this.question);
+    }
   }
 }
