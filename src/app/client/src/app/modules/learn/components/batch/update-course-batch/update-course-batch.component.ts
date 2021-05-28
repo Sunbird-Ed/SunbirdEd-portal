@@ -12,6 +12,10 @@ import { IImpressionEventInput, IInteractEventObject, TelemetryService } from '@
 import * as _ from 'lodash-es';
 import dayjs from 'dayjs';
 import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
+import { CsModule } from '@project-sunbird/client-services';
+import { CsLibInitializerService } from '../../../../../service/CsLibInitializer/cs-lib-initializer.service';
+import { IFetchForumConfig } from '../../../../groups/interfaces';
+import { DiscussionService } from '../../../../../../app/modules/discussion/services/discussion/discussion.service';
 
 @Component({
   selector: 'app-update-course-batch',
@@ -47,6 +51,16 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   private userSearchTime: any;
   private removedUsers: any = [];
 
+  forumIds: Array<number>;
+  fetchForumIdReq: any;
+  private discussionCsService: any;
+  createForumRequest: any;
+  showDiscussionForum: string;
+
+  /**
+   * To fetch create-forum request payload for batch
+   */
+   fetchForumConfigReq: Array<IFetchForumConfig>;
   /**
 	 * This variable hepls to show and hide loader.
    * It is kept true by default as at first when we comes
@@ -121,6 +135,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   clearButtonInteractEdata: IInteractEventEdata;
   telemetryCdata: Array<{}> = [];
   isCertificateIssued: string;
+  isEnableDiscussions: string;
 
   /**
    * Constructor to create injected service(s) object
@@ -137,7 +152,9 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     toasterService: ToasterService,
     courseConsumptionService: CourseConsumptionService,
     public navigationhelperService: NavigationHelperService, private lazzyLoadScriptService: LazzyLoadScriptService,
-    private telemetryService: TelemetryService) {
+    private telemetryService: TelemetryService,
+    private csLibInitializerService: CsLibInitializerService,
+    private discussionService: DiscussionService) {
     this.resourceService = resourceService;
     this.router = route;
     this.activatedRoute = activatedRoute;
@@ -145,6 +162,10 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     this.courseBatchService = courseBatchService;
     this.toasterService = toasterService;
     this.courseConsumptionService = courseConsumptionService;
+    if (!CsModule.instance.isInitialised) {
+      this.csLibInitializerService.initializeCs();
+    }
+    this.discussionCsService = CsModule.instance.discussionService;
   }
 
   /**
@@ -164,6 +185,9 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
         takeUntil(this.unsubscribe)
       )
       .subscribe((data) => {
+        this.showDiscussionForum = _.get(data.courseDetails, 'discussionForum.enabled');
+        this.generateDataForDF();
+        this.fetchForumConfig();
         this.showUpdateModal = true;
         if (data.courseDetails.createdBy === this.userService.userid) {
           this.courseCreator = true;
@@ -186,6 +210,13 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
           });
         }
         this.initializeUpdateForm();
+        this.discussionCsService.getForumIds(this.fetchForumIdReq).subscribe(forumDetails => {
+          this.forumIds = _.map(_.get(forumDetails, 'result'), 'cid');
+          this.isEnableDiscussions = (this.forumIds && this.forumIds.length > 0) ? 'true' : 'false';
+          this.initializeUpdateForm();
+        }, error => {
+          this.toasterService.error(this.resourceService.messages.emsg.m0005);
+        });
         this.fetchParticipantDetails();
       }, (err) => {
         if (err.error && err.error.params.errmsg) {
@@ -260,7 +291,8 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       mentors: new FormControl(),
       users: new FormControl(),
       enrollmentEndDate: new FormControl(enrollmentEndDate),
-      issueCertificate: new FormControl(this.isCertificateIssued, [Validators.required])
+      issueCertificate: new FormControl(this.isCertificateIssued, [Validators.required]),
+      enableDiscussions: new FormControl(this.isEnableDiscussions, [Validators.required])
     });
 
     this.batchUpdateForm.get('startDate').valueChanges.subscribe(value => {
@@ -525,6 +557,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       this.toasterService.success(this.resourceService.messages.smsg.m0034);
       this.reload();
       this.checkIssueCertificate(this.batchId);
+      this.checkEnableDiscussions(this.batchId);
     }, (err) => {
       this.disableSubmitBtn = false;
       if (err.error && err.error.params && err.error.params.errmsg) {
@@ -625,6 +658,48 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       this.batchUpdateForm.controls['endDate'].reset();
     } else {
       this.batchUpdateForm.reset();
+    }
+  }
+
+  generateDataForDF() {
+    this.fetchForumIdReq = {
+      type: 'batch',
+      identifier: [this.batchId]
+    };
+  }
+
+  fetchForumConfig() {
+    this.fetchForumConfigReq = [{
+      type: 'batch',
+      identifier: this.batchId
+  }];
+    const subType = 'batch';
+    this.discussionService.fetchForumConfig(subType).subscribe((formData: any) => {
+      this.createForumRequest = formData[0];
+      this.createForumRequest['category']['context'] =  this.fetchForumConfigReq;
+    }, error => {
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
+    });
+  }
+
+  checkEnableDiscussions(batchId) {
+    if (this.batchUpdateForm.value.enableDiscussions === 'true') {
+      this.discussionService.createForum(this.createForumRequest).subscribe(resp => {
+        this.toasterService.success('Enabled discussion forum successfully');
+      }, error => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      });
+    } else {
+      const requestBody = {
+        'sbType': 'batch',
+        'sbIdentifier': this.batchId,
+        'cid': this.forumIds
+      };
+      this.discussionService.removeForum(requestBody).subscribe(resp => {
+        this.toasterService.success('Disabled discussion forum successfully');
+      }, error => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      });
     }
   }
 
