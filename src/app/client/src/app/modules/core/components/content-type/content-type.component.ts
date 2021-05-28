@@ -40,7 +40,11 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
         if(this.userService.loggedIn){
           this.userService.userData$
           .subscribe((profileData:IUserData) => {
-            this.utilService.updateRoleChange(profileData.userProfile["profileUserType"]["type"]);
+            if(profileData.userProfile["profileUserType"] &&
+            profileData.userProfile["profileUserType"]["type"] === null){
+              return;
+            }
+            this.userType=profileData.userProfile["profileUserType"]["type"];
           });
           }
       }
