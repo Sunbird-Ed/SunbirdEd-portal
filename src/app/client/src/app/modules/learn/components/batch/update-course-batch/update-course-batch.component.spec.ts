@@ -501,7 +501,7 @@ describe('UpdateCourseBatchComponent', () => {
         }]
       },
       edata: {
-        id: `enabled-DF-yes`,
+        id: `enable-DF-yes`,
         type: 'click',
         pageid: activatedRoute.snapshot.data.telemetry.pageid
       }
