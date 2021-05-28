@@ -1,11 +1,14 @@
 @import "~@project-sunbird/sb-styles/assets/variables";
 @import "./mixins/mixins";
 
+:root {
+  font-size:16px;
+}
+
 html,
 body {
   height: 100%;
 }
-
 
 body {
   background: var(--sbt-body-bg) !important;
@@ -1320,3 +1323,28 @@ html[data-theme='Darkmode'][layout='joy'] {
 button:focus{
   outline: 2px green solid;
 }
+
+// player SB-24647 changes
+.notVisible {
+  top:0rem !important;
+  position: relative !important;
+}
+
+.contentViewerIframeShadow sunbird-pdf-player sb-player-side-menu-icon.notVisible, #playerFullscreen.player-fullscreen sunbird-pdf-player sb-player-side-menu-icon.notVisible {
+  top: 0 !important;
+  position: absolute !important;
+}
+
+.contentViewerIframeShadow sunbird-pdf-player pdf-viewer iframe {
+  height:calc(100% - 3rem) !important;
+}
+
+.contentViewerIframeShadow.player-fullscreen sunbird-pdf-player pdf-viewer iframe {
+  height:calc(100% - 7rem) !important;
+}
+
+iframe#contentPlayer.player-fullscreen {
+  height: calc(100% - 64px) !important;
+  top: calc(50% - 2rem);
+}
+// ends
