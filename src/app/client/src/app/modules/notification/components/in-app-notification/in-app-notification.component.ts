@@ -27,7 +27,7 @@ export class InAppNotificationComponent implements OnInit, OnDestroy {
   unsubscribe$ = new Subject<void>();
 
   constructor(
-    @Inject('NOTIFICATION_SERVICE') private notificationService: NotificationServiceImpl,
+    @Inject('SB_NOTIFICATION_SERVICE') private notificationService: NotificationServiceImpl,
     private router: Router,
     public resourceService: ResourceService,
     private telemetryService: TelemetryService,

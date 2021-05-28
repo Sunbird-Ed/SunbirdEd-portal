@@ -93,7 +93,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     public generaliseLabelService: GeneraliseLabelService,
     private CourseProgressService: CourseProgressService,
     @Inject('CS_COURSE_SERVICE') private CsCourseService: CsCourseService,
-    @Inject('NOTIFICATION_SERVICE') private notificationService: NotificationServiceImpl
+    @Inject('SB_NOTIFICATION_SERVICE') private notificationService: NotificationServiceImpl
   ) {
     this.playerOption = {
       showContentRating: true
