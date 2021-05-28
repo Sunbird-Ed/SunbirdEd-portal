@@ -685,8 +685,8 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   checkEnableDiscussions(batchId) {
     if (this.batchUpdateForm.value.enableDiscussions === 'true') {
       this.discussionService.createForum(this.createForumRequest).subscribe(resp => {
-        this.handleEnableDFChange('Yes');
-        this.toasterService.success('Enabled discussion forum successfully');
+        this.handleInputChange('enable-DF-yes');
+        this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0065'));
       }, error => {
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
       });
@@ -697,14 +697,14 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
         'cid': this.forumIds
       };
       this.discussionService.removeForum(requestBody).subscribe(resp => {
-        this.toasterService.success('Disabled discussion forum successfully');
+        this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0066'));
       }, error => {
         this.toasterService.error(this.resourceService.messages.emsg.m0005);
       });
     }
   }
 
-  handleEnableDFChange(inputType) {
+  handleInputChange(inputId) {
     const telemetryData = {
       context: {
         env:  this.activatedRoute.snapshot.data.telemetry.env,
@@ -717,28 +717,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
         }]
       },
       edata: {
-        id: `enable-DF-${inputType}`,
-        type: 'click',
-        pageid: this.activatedRoute.snapshot.data.telemetry.pageid
-      }
-    };
-    this.telemetryService.interact(telemetryData);
-  }
-
-  handleInputChange(inputType) {
-    const telemetryData = {
-      context: {
-        env:  this.activatedRoute.snapshot.data.telemetry.env,
-        cdata: [{
-          id: this.courseId,
-          type: 'Course'
-        }, {
-          id: this.batchId,
-          type: 'Batch'
-        }]
-      },
-      edata: {
-        id: `issue-certificate-${inputType}`,
+        id: inputId,
         type: 'click',
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid
       }
