@@ -177,8 +177,8 @@ describe('ActivityDashboardComponent', () => {
     spyOn(component['groupService'], 'getDashletData').and.returnValue(of(dashletData));
     component.getDashletData();
     component['groupService'].getDashletData(courseHierarchy, activityData).subscribe(data => {
-      expect(component.data).toBeDefined();
-      expect(component.config).toBeDefined();
+      expect(component.Dashletdata).toBeDefined();
+      expect(component.columnConfig).toBeDefined();
     });
   });
 
@@ -189,4 +189,20 @@ describe('ActivityDashboardComponent', () => {
     expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
     expect(component['groupService'].goBack).toHaveBeenCalled();
   });
+
+  it('should call addTelemetry', () => {
+    const groupService = TestBed.get(GroupsService);
+    component.groupId = '123';
+    spyOn(groupService, 'addTelemetry');
+    component.addTelemetry('download-csv', [], {}, { id: 'abc', type: 'Course', version: '1.0' });
+    expect(groupService.addTelemetry).toHaveBeenCalledWith({ id: 'download-csv', extra: {} },
+      { params: {}, data: { telemetry: {} } }, [], '123', { id: 'abc', type: 'Course', version: '1.0' });
+  });
+
+  it('should call downloadCSV()', () => {
+    spyOn(component, 'addTelemetry');
+    component.downloadCSV();
+    expect(component.addTelemetry).toHaveBeenCalled();
+  });
+
 });

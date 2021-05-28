@@ -11,6 +11,12 @@ import { CourseConsumptionService } from '@sunbird/learn';
 import { combineLatest, Subject } from 'rxjs';
 import { IActivity } from '../activity-list/activity-list.component';
 
+export interface IColumnConfig {
+  columnConfig: [{
+    title: string;
+    data: string;
+  }];
+}
 @Component({
   selector: 'app-activity-dashboard',
   templateUrl: './activity-dashboard.component.html',
@@ -28,10 +34,10 @@ export class ActivityDashboardComponent implements OnInit {
   public coursehierarchy: any;
   aggregateData: any;
   activity: IActivity;
-  dashletData: any;
-  data = { values: [] };
-  config = { columnConfig: [] };
-  loaderMessage = this.resourceService.messages.fmsg.m0087;
+  Dashletdata: any;
+  columnConfig: IColumnConfig;
+  loaderMessage = _.get(this.resourceService.messages.fmsg, 'm0087');
+  memberListUpdatedOn: string;
 
   constructor(
     private groupService: GroupsService,
@@ -117,6 +123,7 @@ export class ActivityDashboardComponent implements OnInit {
     this.groupService.getActivity(this.groupId, activityData, this.groupData)
       .subscribe((data) => {
         this.aggregateData = data;
+        this.memberListUpdatedOn = _.max(_.get(data, 'activity.agg').map(agg => agg.lastUpdatedOn));
         this.isLoader = false;
         this.getDashletData();
       }, err => {
@@ -126,18 +133,20 @@ export class ActivityDashboardComponent implements OnInit {
       });
   }
 
-   /**
+  /**
    * @description - get dashlet data for dashlet library
    */
   getDashletData() {
     this.isLoader = true;
-    this.dashletData = this.groupService.getDashletData(this.coursehierarchy, this.aggregateData);
-    if (this.dashletData) {
+    this.groupService.getDashletData(this.coursehierarchy, this.aggregateData).subscribe(data => {
       this.isLoader = false;
-      this.data.values = this.dashletData.rows;
-      this.config.columnConfig = this.dashletData.columns;
-    }
+      // const column = Object.keys( data.rows).sort().reduce((r, k) => (r[k] =  data.rows[k], r), {});
+      // console.log(column, 'col');
+      this.Dashletdata = { values: data.rows };
+      this.columnConfig = { columnConfig: data.columns };
+    });
   }
+
   /**
    * @description - it will navigate to the previous page when an error occurs while calling any API's
    */
@@ -146,14 +155,19 @@ export class ActivityDashboardComponent implements OnInit {
     this.groupService.goBack();
   }
 
+  /**
+   * @description - To set the telemetry Intract event data
+   * @param  {} id - group identifier
+   */
   addTelemetry(id, cdata, extra?, obj?) {
-    this.groupService.addTelemetry({id, extra}, this.activatedRoute.snapshot, cdata, this.groupId, obj);
+    this.groupService.addTelemetry({ id, extra }, this.activatedRoute.snapshot, cdata, this.groupId, obj);
   }
 
   downloadCSV() {
     this.addTelemetry('download-csv', [], {},
-    { id: _.get(this.activity, 'identifier'),
-      type: _.get(this.activity, 'primaryCategory'), ver: (_.get(this.activity, 'pkgVersion').toString())});
+      {
+        id: _.get(this.activity, 'identifier'),
+        type: _.get(this.activity, 'primaryCategory')
+      });
   }
-
 }
