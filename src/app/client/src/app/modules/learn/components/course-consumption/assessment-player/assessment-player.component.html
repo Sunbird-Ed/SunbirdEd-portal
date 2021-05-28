@@ -23,17 +23,9 @@
               <ul class="breadcrumbs">
                 <div class="main-div-breadcrumbs-item">
                   {{courseHierarchy?.name | titlecase}}
-                  <ng-container *ngIf="courseHierarchy?.children?.length">
-                    <div *ngFor="let data of courseHierarchy?.children; let i = index">
-                      <li class="breadcrumbs_child">
-                        <div>
-                          <mat-icon class="icon-display">navigate_next</mat-icon>
-                        </div>
-                        <div
-                          [ngClass]="(courseHierarchy.length-1 === i) ? 'text-style-last-child': 'text-style-parent'">
-                          {{data.name}}</div>
-                      </li>
-                    </div>
+                  <ng-container *ngIf="activeContent">
+                      <mat-icon class="icon-display">navigate_next</mat-icon>
+                      {{activeContent.name}}
                   </ng-container>
                 </div>
               </ul>
