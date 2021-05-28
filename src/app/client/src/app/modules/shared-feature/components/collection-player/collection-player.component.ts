@@ -120,10 +120,10 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
     this.playerOption = { showContentRating: true };
     this.mimeTypeFilters = [
-      { text: this.resourceService.frmelmnts.btn.all, value: 'all' },
-      { text: this.resourceService.frmelmnts.btn.video, value: 'video' },
-      { text: this.resourceService.frmelmnts.btn.interactive, value: 'interactive' },
-      { text: this.resourceService.frmelmnts.btn.docs, value: 'docs' }
+      { text: _.get(this.resourceService, 'frmelmnts.btn.all', 'All'), value: 'all' },
+      { text: _.get(this.resourceService, 'frmelmnts.btn.video', 'Video'), value: 'video' },
+      { text: _.get(this.resourceService, 'frmelmnts.btn.interactive', 'Interactive'), value: 'interactive' },
+      { text: _.get(this.resourceService, 'frmelmnts.btn.docs', 'Docs'), value: 'docs' }
     ];
     this.activeMimeTypeFilter = ['all'];
   }

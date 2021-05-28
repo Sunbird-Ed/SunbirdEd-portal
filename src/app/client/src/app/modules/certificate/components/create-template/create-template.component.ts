@@ -127,7 +127,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
   getSVGTemplate() {
     this.uploadCertificateService.getSvg(this.selectedCertificate.artifactUrl).then(res => {
       const svgFile = res;
-      this.logoHtml = this.sanitizer.bypassSecurityTrustHtml(svgFile);
+      this.logoHtml = this.sanitizeHTML(svgFile);
       this.previewCertificate();
     });
   }
@@ -314,6 +314,11 @@ urltoFile(url, filename, mimeType) {
     .then((file) => {
       this.finalSVGurl = file;
     });
+  }
+
+
+  sanitizeHTML(html){
+    return this.sanitizer.bypassSecurityTrustHtml(html);
   }
 
   getImagePath() {

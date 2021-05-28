@@ -64,9 +64,9 @@
               "./node_modules/leaflet/dist/leaflet.css",
               "src/assets/styles/styles.scss",
               "node_modules/video.js/dist/video-js.min.css",
-              "./node_modules/@project-sunbird/discussions-ui-v8/assets/styles/global.scss",
               "node_modules/katex/dist/katex.min.css",
-              "./node_modules/@project-sunbird/sb-themes/themes/themes-portal.scss"
+              "./node_modules/@project-sunbird/sb-themes/themes/themes-portal.scss",
+              "./node_modules/@project-sunbird/discussions-ui-v8/assets/styles/global.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [

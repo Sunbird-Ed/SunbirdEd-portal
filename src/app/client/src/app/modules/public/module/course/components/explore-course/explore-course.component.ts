@@ -216,7 +216,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
                     if (channelFacet) {
                         const rootOrgIds = this.orgDetailsService.processOrgData(_.get(channelFacet, 'values'));
                         return this.orgDetailsService.searchOrgDetails({
-                            filters: { isRootOrg: true, rootOrgId: rootOrgIds },
+                            filters: { isTenant: true, id: rootOrgIds },
                             fields: ['slug', 'identifier', 'orgName']
                         }).pipe(
                             mergeMap(orgDetails => {

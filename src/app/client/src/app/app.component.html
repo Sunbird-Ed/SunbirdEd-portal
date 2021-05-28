@@ -12,20 +12,20 @@
             <div class="pull-right dk-top-head-ul">
               <ul>
                 <li class="mb-0" *ngIf="!hideHeaderNFooter"><a href="javascript:void(0);"
-                    title="{{resourceService?.frmelmnts?.lbl?.accessibilitytskip}}" (click)="skipToMainContent()"
+                    title="{{resourceService?.frmelmnts?.lbl?.accessibilitytskip}}" tabindex="1" (click)="skipToMainContent()"
                     class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.accessibilitytskip}}</a></li>
                 <li *ngIf="!hideHeaderNFooter" class="mx-4 mb-0">|</li>
-                <li class="screen-reader-link"><a href="/screenreaderaccess.html"
+                <li class="screen-reader-link"><a href="/screenreaderaccess.html" tabindex="2"
                     title="{{resourceService?.frmelmnts?.lbl?.accessibility}}">{{resourceService?.frmelmnts?.lbl?.accessibility}}</a>
                 </li>
                 <li class="mx-4">|</li>
                 <li class="mb-0">
                   <ng-container *ngIf="userService.loggedIn">
-                    <a title="{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}" href="/sitemap.html?session=true"
+                    <a title="{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}" tabindex="3" href="/sitemap.html?session=true"
                       class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}</a>
                   </ng-container>
                   <ng-container *ngIf="!userService.loggedIn">
-                    <a title="{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}" href="/sitemap.html"
+                    <a title="{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}" tabindex="3" href="/sitemap.html"
                       class="cursor-pointer">{{resourceService?.frmelmnts?.lbl?.accessibilitytext}}</a>
                   </ng-container>
                 </li>
@@ -34,19 +34,19 @@
               <ul>
                 <li>
                   <div class="fontResize-container d-flex flex-ai-center pull-right">
-                    <button type="button" role="img" class="fontResizeBtn fontResizeBtn_A-"
+                    <button type="button" role="img" tabindex="4" class="fontResizeBtn fontResizeBtn_A-"
                       title="{{resourceService?.frmelmnts?.lbl?.accessibilityfont}}"
                       (click)="changeFontSize('decrease');" #decreaseFontSize>A-</button>
-                    <button type="button" role="img" class="fontResizeBtn fontResizeBtn_A"
+                    <button type="button" role="img" tabindex="5" class="fontResizeBtn fontResizeBtn_A"
                       title="{{resourceService?.frmelmnts?.lbl?.accessibilityfntdflt}}"
                       (click)="changeFontSize('reset');" #resetFontSize>A</button>
-                    <button type="button" role="img" class="fontResizeBtn fontResizeBtn_A+"
+                    <button type="button" role="img" tabindex="6" class="fontResizeBtn fontResizeBtn_A+"
                       title="{{resourceService?.frmelmnts?.lbl?.accessibilitytextsize}}"
                       (click)="changeFontSize('increase');" #increaseFontSize>A+</button>
                   </div>
                 </li>
                 <li class="mx-4">|</li>
-                <li><button id="dark-mode-toggle" class="dark-mode-toggle"
+                <li><button id="dark-mode-toggle" class="dark-mode-toggle" tabindex="7"
                     title="{{resourceService?.frmelmnts?.lbl?.accessibilitytheme}}" (click)="changeTheme()">
                     <svg width="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 496">
                       <path fill="var(--white)"

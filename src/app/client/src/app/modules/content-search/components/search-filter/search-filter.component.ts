@@ -154,7 +154,8 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       });
 
     if (!_.get(this.activatedRoute, 'snapshot.queryParams["board"]')) {
-      this.router.navigate([], { queryParams: this.defaultFilters, relativeTo: this.activatedRoute } );
+      const queryParams = { ...this.defaultFilters, selectedTab: _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook' };
+      this.router.navigate([], { queryParams, relativeTo: this.activatedRoute } );
     }
   }
   private boardChangeHandler() {
