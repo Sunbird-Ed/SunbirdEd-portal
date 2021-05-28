@@ -51,7 +51,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   private userSearchTime: any;
   private removedUsers: any = [];
 
-  forumIds: Array<number>;
+  forumIds: any;
   fetchForumIdReq: any;
   private discussionCsService: any;
   createForumRequest: any;
