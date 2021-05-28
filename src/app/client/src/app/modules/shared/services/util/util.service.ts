@@ -252,11 +252,11 @@ export class UtilService {
     this.searchKeyword.emit(keyword);
   }
 
-  updateRoleChange() {
-    setTimeout(()=>{
-    const profile = JSON.parse(sessionStorage.getItem("CacheServiceuserProfile"));
-     this.roleChanged.next(profile.value.profileUserType.type);
-    },3500);
+  updateRoleChange(type) {
+    if(type){  
+      this.roleChanged.next(type);
+    }
+
   }
 
   /* This will add hover data in card content */

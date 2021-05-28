@@ -86,11 +86,11 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
 
   async updateUserLocation() {
     try {
-      const result = await this.sbFormLocationSelectionDelegate.updateUserLocation();
+      const result:any = await this.sbFormLocationSelectionDelegate.updateUserLocation();
 
       /* istanbul ignore else */
       if (result.userProfile) {
-        this.utilService.updateRoleChange();
+        this.utilService.updateRoleChange(result.type);
         this.telemetryLogEvents('User Profile', result.userProfile === 'success');
       }
 

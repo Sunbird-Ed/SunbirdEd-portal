@@ -1,7 +1,7 @@
 import {Component, Input, OnDestroy, OnInit, Output, EventEmitter} from '@angular/core';
 import {FormService, UserService} from './../../services';
 import * as _ from 'lodash-es';
-import { LayoutService, ResourceService, UtilService } from '@sunbird/shared';
+import { LayoutService, ResourceService, UtilService,IUserData} from '@sunbird/shared';
 import {Router, ActivatedRoute} from '@angular/router';
 import {combineLatest, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
@@ -21,6 +21,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
   isDesktopApp = false;
   public unsubscribe$ = new Subject<void>();
   subscription: any;
+  userType:any;
   constructor(
     public formService: FormService,
     public resourceService: ResourceService,
@@ -29,15 +30,22 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     private telemetryService: TelemetryService,
     public activatedRoute: ActivatedRoute,
     public layoutService: LayoutService,
-    private utilService: UtilService
+    private utilService: UtilService,
   ) {
-    this.subscription = this.utilService.currentRole.subscribe((result) => {
+    this.subscription = this.utilService.currentRole.subscribe(async (result) => {
       if (result) {
-        this.updateForm(result);
-      } else {
-        this.utilService.updateRoleChange();
-        this.getContentTypes();
+        this.userType=result;
+      } 
+      else{
+        if(this.userService.loggedIn){
+          this.userService.userData$
+          .subscribe((profileData:IUserData) => {
+            this.utilService.updateRoleChange(profileData.userProfile["profileUserType"]["type"]);
+          });
+          }
       }
+      this.getContentTypes();
+
     });
   }
 
@@ -124,10 +132,10 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateForm(type) {
+  updateForm(data) {
     let finalData = [];
-    finalData = this.utilService.formData;
-      if (type != "administrator") {
+    finalData = data;
+      if (this.userType != "administrator") {
         finalData = finalData.filter((obj) => obj.contentType != "observation");
         this.processFormData(finalData);
       } else {
@@ -161,7 +169,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
         if(!this.userService.loggedIn){
           data = data.filter((obj) => obj.contentType != "observation");
         }
-        this.processFormData(data);
+        this.updateForm(data);
         this.setContentTypeOnUrlChange();
       });
   }
