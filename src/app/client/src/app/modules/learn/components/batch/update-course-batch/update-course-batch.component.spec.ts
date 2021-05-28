@@ -472,12 +472,8 @@ describe('UpdateCourseBatchComponent', () => {
   });
 
   it('should show enabled discussion options', () => {
-    component.batchUpdateForm = new FormGroup({
-      enableDiscussions: new FormControl('true')
-    });
     const discussionService = TestBed.get(DiscussionService);
     spyOn(discussionService, 'createForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForum));
-    component.batchUpdateForm.value.enableDiscussions = 'true';
     component.checkEnableDiscussions('SOME_BATCH_ID');
     expect(discussionService.createForum).toHaveBeenCalled();
   });
