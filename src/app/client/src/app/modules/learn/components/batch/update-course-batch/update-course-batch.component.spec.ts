@@ -456,13 +456,13 @@ describe('UpdateCourseBatchComponent', () => {
     expect(courseBatchService.removeUsersFromBatch).toHaveBeenCalled();
   });
 
-  // it('should generate data for discussion forum', () => {
-  //   component.generateDataForDF();
-  //   expect(component.fetchForumIdReq).toEqual({
-  //     'type': 'batch',
-  //     'identifier': [undefined]
-  //   });
-  // });
+  it('should generate data for discussion forum', () => {
+    component.generateDataForDF();
+    expect(component.fetchForumIdReq).toEqual({
+      'type': 'batch',
+      'identifier': [undefined]
+    });
+  });
 
   // it('should fetch form config for batc discussion forum', () => {
   //   const discussionService = TestBed.get(DiscussionService);
