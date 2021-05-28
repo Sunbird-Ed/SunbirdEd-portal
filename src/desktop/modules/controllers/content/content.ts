@@ -866,4 +866,5 @@ export default class Content {
 
         return filters;
     }
+
 }
