@@ -47,7 +47,7 @@ export class NewCollectionEditorComponent implements OnInit {
     this.userProfile = this.userService.userProfile;
     this.getCollectionDetails().subscribe(data => {
         this.switchLayout();
-        this.collectionDetails = data.result.content;
+        this.collectionDetails = data.result.content || data.result.questionset;
         this.showQuestionEditor = this.collectionDetails.mimeType === 'application/vnd.sunbird.questionset' ? true : false;
         this.getFrameWorkDetails();
       });
@@ -68,7 +68,11 @@ export class NewCollectionEditorComponent implements OnInit {
   private getCollectionDetails() {
     const options: any = { params: {} };
     options.params.mode = 'edit';
-    return this.editorService.getContent(this.routeParams.contentId, options);
+    if (this.routeParams.type && this.routeParams.type === 'QuestionSet') {
+      return this.workSpaceService.getQuestion(this.routeParams.contentId, options);
+    } else {
+      return this.editorService.getContent(this.routeParams.contentId, options);
+    }
   }
 
   getFrameWorkDetails() {
