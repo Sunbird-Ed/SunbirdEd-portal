@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { ActivityDashboardComponent } from './activity-dashboard.component';
-import { DashletModule } from 'sb-dashlets';
+import { DashletModule } from '@project-sunbird/sb-dashlet';
 import { GroupsService } from '../../../services';
 import { ConfigService } from '@sunbird/shared';
 import { CourseConsumptionService } from '@sunbird/learn';
