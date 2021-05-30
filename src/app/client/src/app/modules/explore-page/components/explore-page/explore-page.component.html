@@ -52,7 +52,7 @@
           </div>
 
           <!-- Template for displaying sections based on form configuration -->
-          <div *ngIf="_currentPageData?.sections && !isDesktopApp">
+          <div *ngIf="_currentPageData?.sections && _currentPageData?.isEnabled && !isDesktopApp">
             <div *ngIf="getSelectedTab() === 'home'" class="sb-section-preference pl-16">
               <div class="preference">
                 <p class="header title">{{resourceService?.frmelmnts?.lbl?.yourPreferences}}</p>
@@ -81,11 +81,15 @@
                   [theme]="utilService.getRandomColor(section?.section?.theme?.colorMapping)"></sb-pill-item>
               </sb-pills-grid>
             </div>
-            <div *ngIf="searchResponse?.length && getSelectedTab() === 'home'" [ngClass]="{'last mb-0':last}">
-              <sb-library-cards-grid [layoutConfig]="layoutConfiguration" [title]="resourceService?.frmelmnts?.lbl?.suggested"
+            <div *ngIf="getSelectedTab() === 'home'" class="sb-library-cards relative9">
+              <div class="twelve wide column relative9">
+              <!-- <sb-library-cards-grid [layoutConfig]="layoutConfiguration" [title]="resourceService?.frmelmnts?.lbl?.suggested"
                 [contentList]="searchResponse | sortBy:'name':'asc'" [maxCardCount]="4" (viewMoreClick)="sectionViewAll()"
                 (cardClick)="playContent($event, 'Suggested')">
-              </sb-library-cards-grid>
+              </sb-library-cards-grid> -->
+              <app-page-section [hideProgress]="true" (visits)="prepareVisits($event)" [section]="enrolledSection"
+              (playEvent)="playEnrolledContent($event, 'My courses')" (viewAll)="viewAll($event)"></app-page-section>
+            </div>
             </div>
           </div>
           <!-- Template for displaying page sections -->
@@ -104,7 +108,7 @@
               </div>
             </div>
           </div>
-          <div *ngIf="showLoader">
+          <div *ngIf="showLoader && getSelectedTab() !== 'explore'">
             <sb-library-cards-grid [layoutConfig]="layoutConfiguration" *ngFor="let i of numberOfSections"
               [type]="'infinite_card_grid'" [isLoading]="true" [maxCardCount]="!isUserLoggedIn() ? 4: 3"></sb-library-cards-grid>
           </div>
