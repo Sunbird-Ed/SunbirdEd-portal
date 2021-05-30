@@ -14,6 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
+import * as _ from 'lodash-es';
 import { DiscussionService } from '../../../../../../app/modules/discussion/services/discussion/discussion.service';
 import { MockResponseData } from './update-course-batch.component.data';
 import {
@@ -464,20 +465,27 @@ describe('UpdateCourseBatchComponent', () => {
     });
   });
 
-  it('should show enabled discussion options', () => {
-    component.batchUpdateForm = new FormGroup({
-      enableDiscussions: new FormControl('true')
-    });
+   it('should fetch form config for batch discussion forum', () => {
     const discussionService = TestBed.get(DiscussionService);
-    spyOn(discussionService, 'createForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForum));
-    component.checkEnableDiscussions('SOME_BATCH_ID');
-    expect(discussionService.createForum).toHaveBeenCalled();
+    spyOn(discussionService, 'fetchForumConfig').and.returnValue(observableOf(MockResponseData.forumConfig));
+    component.fetchForumConfig();
+    expect(component.createForumRequest).toEqual(MockResponseData.forumConfig[0]);
   });
 
-  //  it('should fetch form config for batch discussion forum', () => {
-  //   const discussionService = TestBed.get(DiscussionService);
-  //   spyOn(discussionService, 'fetchForumConfig').and.returnValue(observableOf(MockResponseData.forumConfig));
-  //   component.fetchForumConfig();
-  //   expect(component.createForumRequest).toEqual(MockResponseData.forumConfig[0]);
-  // });
+  it('should enabled discussion options', () => {
+    const discussionService = TestBed.get(DiscussionService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(component, 'handleInputChange');
+    spyOn(discussionService, 'createForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForum));
+    spyOn(toasterService, 'success').and.stub();
+    component.enableDiscussionForum();
+    expect(component.handleInputChange).toHaveBeenCalled();
+  });
+
+  it('should disabled discussion options', () => {
+    const discussionService = TestBed.get(DiscussionService);
+    spyOn(discussionService, 'removeForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForum));
+    component.disableDiscussionForum('SOME_BATCH_ID');
+    expect(discussionService.removeForum).toHaveBeenCalled();
+  });
 });

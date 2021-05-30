@@ -684,24 +684,32 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
 
   checkEnableDiscussions(batchId) {
     if (this.batchUpdateForm.value.enableDiscussions === 'true') {
-      this.discussionService.createForum(this.createForumRequest).subscribe(resp => {
-        this.handleInputChange('enable-DF-yes');
-        this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0065'));
-      }, error => {
-        this.toasterService.error(this.resourceService.messages.emsg.m0005);
-      });
+      this.enableDiscussionForum();
     } else {
-      const requestBody = {
-        'sbType': 'batch',
-        'sbIdentifier': batchId,
-        'cid': this.forumIds
-      };
-      this.discussionService.removeForum(requestBody).subscribe(resp => {
-        this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0066'));
-      }, error => {
-        this.toasterService.error(this.resourceService.messages.emsg.m0005);
-      });
+      this.disableDiscussionForum(batchId);
     }
+  }
+
+  enableDiscussionForum() {
+    this.discussionService.createForum(this.createForumRequest).subscribe(resp => {
+      this.handleInputChange('enable-DF-yes');
+      this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0065'));
+    }, error => {
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
+    });
+  }
+
+  disableDiscussionForum(batchId) {
+    const requestBody = {
+      'sbType': 'batch',
+      'sbIdentifier': batchId,
+      'cid': this.forumIds
+    };
+    this.discussionService.removeForum(requestBody).subscribe(resp => {
+      this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0066'));
+    }, error => {
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
+    });
   }
 
   handleInputChange(inputId) {
