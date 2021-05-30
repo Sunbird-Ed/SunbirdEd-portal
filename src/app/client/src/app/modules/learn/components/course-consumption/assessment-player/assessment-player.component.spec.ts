@@ -87,6 +87,10 @@ describe('AssessmentPlayerComponent', () => {
     fixture.detectChanges();
   });
 
+  afterAll(() => {
+    TestBed.resetTestingModule();
+  });
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
