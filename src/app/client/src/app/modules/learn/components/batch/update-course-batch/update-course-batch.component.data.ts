@@ -1690,7 +1690,7 @@ export const MockResponseData = {
     'result': null
   },
 
-  enableDiscussionForum: {
+  enableDiscussionForumData: {
     'id': 'api.discussions.category.forum',
     'ver': '1.0',
     'ets': 1613118934398,

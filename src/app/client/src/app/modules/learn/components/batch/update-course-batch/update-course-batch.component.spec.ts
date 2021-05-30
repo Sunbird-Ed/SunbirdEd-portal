@@ -262,6 +262,7 @@ describe('UpdateCourseBatchComponent', () => {
   it('should call resetForm method  and reset the form when batchDetails status is not 1)', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const discussionService = TestBed.get(DiscussionService);
     spyOn(courseBatchService, 'getUserList').and.callFake((request) => {
       if (request) {
         return observableOf(getUserDetails);
@@ -473,20 +474,30 @@ describe('UpdateCourseBatchComponent', () => {
     expect(component.createForumRequest).toEqual(MockResponseData.forumConfig[0]);
   });
 
+  it('should check enable disable discussion', () => {
+    spyOn(component, 'enableDiscussionForum');
+    component.batchUpdateForm = new FormGroup({
+      enableDiscussions: new FormControl('true')
+    });
+    const courseBatchService = TestBed.get(CourseBatchService);
+    spyOn(courseBatchService.updateEvent, 'emit');
+    component.checkEnableDiscussions('SOME_BATCH_ID');
+    expect(component.enableDiscussionForum).toHaveBeenCalled();
+  });
+
   it('should enabled discussion options', () => {
     const discussionService = TestBed.get(DiscussionService);
     const toasterService = TestBed.get(ToasterService);
-    spyOn(component, 'enableDiscussionForum');
-    spyOn(discussionService, 'createForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForum));
+    spyOn(discussionService, 'createForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForumData));
     spyOn(toasterService, 'success').and.stub();
     component.enableDiscussionForum();
-    expect(component.enableDiscussionForum).toHaveBeenCalled();
+    expect(discussionService.createForum).toHaveBeenCalled();
   });
 
   it('should disabled discussion options', () => {
     const discussionService = TestBed.get(DiscussionService);
     const toasterService = TestBed.get(ToasterService);
-    spyOn(discussionService, 'removeForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForum));
+    spyOn(discussionService, 'removeForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForumData));
     spyOn(toasterService, 'success').and.stub();
     component.disableDiscussionForum('SOME_BATCH_ID');
     expect(discussionService.removeForum).toHaveBeenCalled();
