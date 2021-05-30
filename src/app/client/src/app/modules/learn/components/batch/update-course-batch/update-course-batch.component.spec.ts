@@ -503,6 +503,31 @@ describe('UpdateCourseBatchComponent', () => {
     expect(discussionService.removeForum).toHaveBeenCalled();
   });
 
+  // it('should get discussion forum ids', () => {
+  //   const discussionService = TestBed.get(DiscussionService);
+  //   spyOn(discussionService, 'getForumIds').and.returnValue(observableOf(MockResponseData.fetchForumResponse));
+  //   component.getEnabledForumIds();
+  //   expect(discussionService.getForumIds).toHaveBeenCalled();
+  // });
+
+  it('should show error in create forum request failed', () => {
+    const discussionService = TestBed.get(DiscussionService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(discussionService, 'createForum').and.returnValue(observableThrowError({}));
+    spyOn(toasterService, 'error');
+    component.enableDiscussionForum();
+    expect(toasterService.error).toHaveBeenCalledWith('discussion forum error');
+  });
+
+  it('should show error in fetch forum ids request failed', () => {
+    const discussionService = TestBed.get(DiscussionService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(discussionService, 'fetchForumConfig').and.returnValue(observableThrowError({}));
+    spyOn(toasterService, 'error');
+    component.fetchForumConfig();
+    expect(toasterService.error).toHaveBeenCalledWith('discussion forum error');
+  });
+
   afterAll(() => {
     TestBed.resetTestingModule();
   });
