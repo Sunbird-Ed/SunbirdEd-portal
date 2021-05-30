@@ -237,6 +237,7 @@ describe('UpdateCourseBatchComponent', () => {
   it('should call resetForm method  and reset the form except start date', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    spyOn(component['discussionCsService'], 'getForumIds').and.returnValue(observableOf(MockResponseData.fetchForumResponse));
     spyOn(courseBatchService, 'getUserList').and.callFake((request) => {
       if (request) {
         return observableOf(getUserDetails);
@@ -257,6 +258,7 @@ describe('UpdateCourseBatchComponent', () => {
     expect(component.batchUpdateForm.controls['name'].value).toBeNull();
     expect(component.batchUpdateForm.controls['description'].value).toBeNull();
     expect(component.batchUpdateForm.controls['endDate'].value).toBeNull();
+    expect(component.forumIds).toEqual([9]);
   });
 
   it('should call resetForm method  and reset the form when batchDetails status is not 1)', () => {
@@ -502,13 +504,6 @@ describe('UpdateCourseBatchComponent', () => {
     component.disableDiscussionForum('SOME_BATCH_ID');
     expect(discussionService.removeForum).toHaveBeenCalled();
   });
-
-  // it('should get discussion forum ids', () => {
-  //   const discussionService = TestBed.get(DiscussionService);
-  //   spyOn(discussionService, 'getForumIds').and.returnValue(observableOf(MockResponseData.fetchForumResponse));
-  //   component.getEnabledForumIds();
-  //   expect(discussionService.getForumIds).toHaveBeenCalled();
-  // });
 
   it('should show error in create forum request failed', () => {
     const discussionService = TestBed.get(DiscussionService);
