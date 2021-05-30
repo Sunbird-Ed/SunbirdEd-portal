@@ -89,6 +89,10 @@ describe('UpdateCourseBatchComponent', () => {
     spyOn(component['lazzyLoadScriptService'], 'loadScript').and.returnValue(observableOf({}));
   });
 
+  afterAll(() => {
+    TestBed.resetTestingModule();
+  });
+
   it('should fetch batch details and show update Form model', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
