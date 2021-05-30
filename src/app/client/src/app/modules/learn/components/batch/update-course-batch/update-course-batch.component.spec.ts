@@ -78,7 +78,8 @@ describe('UpdateCourseBatchComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       imports: [SharedModule.forRoot(), CoreModule, SuiModule, RouterTestingModule,
         HttpClientTestingModule, LearnModule],
-      providers: [ToasterService, ResourceService, UserService, TelemetryService, DiscussionService, { provide: Router, useClass: RouterStub },
+      providers: [ToasterService, ResourceService, UserService, TelemetryService,
+        DiscussionService, { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
     });
   }));
