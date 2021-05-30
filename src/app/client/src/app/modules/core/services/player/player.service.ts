@@ -69,6 +69,9 @@ export class PlayerService {
       licenseDetails: 'name,description,url'
     };
     let param = { fields: this.configService.urlConFig.params.contentGet };
+    if (this.userService.isDesktopApp) {
+      param.fields = `${param.fields},downloadUrl`;
+    }
     param = { ...param, ...option.params, ...licenseParam};
     const req = {
       url: `${this.configService.urlConFig.URLS.CONTENT.GET}/${contentId}`,

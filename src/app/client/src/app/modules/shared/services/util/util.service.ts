@@ -75,8 +75,8 @@ export class UtilService {
       board: data.board || '',
       identifier: data.identifier,
       mimeType: data.mimeType,
-      primaryCategory: data.primaryCategory
-
+      primaryCategory: data.primaryCategory,
+      downloadUrl: data.downloadUrl
     };
     if (data.trackable) {
       content.trackable = data.trackable;
