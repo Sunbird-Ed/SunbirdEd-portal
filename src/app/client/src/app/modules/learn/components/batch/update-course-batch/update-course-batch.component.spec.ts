@@ -90,10 +90,6 @@ describe('UpdateCourseBatchComponent', () => {
     spyOn(component['lazzyLoadScriptService'], 'loadScript').and.returnValue(observableOf({}));
   });
 
-  afterAll(() => {
-    TestBed.resetTestingModule();
-  });
-
   it('should fetch batch details and show update Form model', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
@@ -480,7 +476,7 @@ describe('UpdateCourseBatchComponent', () => {
   it('should enabled discussion options', () => {
     const discussionService = TestBed.get(DiscussionService);
     const toasterService = TestBed.get(ToasterService);
-    // spyOn(component, 'handleInputChange');
+    spyOn(component, 'enableDiscussionForum');
     spyOn(discussionService, 'createForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForum));
     spyOn(toasterService, 'success').and.stub();
     component.enableDiscussionForum();
@@ -489,8 +485,14 @@ describe('UpdateCourseBatchComponent', () => {
 
   it('should disabled discussion options', () => {
     const discussionService = TestBed.get(DiscussionService);
+    const toasterService = TestBed.get(ToasterService);
     spyOn(discussionService, 'removeForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForum));
+    spyOn(toasterService, 'success').and.stub();
     component.disableDiscussionForum('SOME_BATCH_ID');
     expect(discussionService.removeForum).toHaveBeenCalled();
+  });
+
+  afterAll(() => {
+    TestBed.resetTestingModule();
   });
 });
