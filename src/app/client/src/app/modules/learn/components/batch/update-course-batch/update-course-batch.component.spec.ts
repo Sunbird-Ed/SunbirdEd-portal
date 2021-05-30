@@ -36,7 +36,7 @@ const resourceServiceMockData = {
     imsg: { m0027: 'Something went wrong' },
     stmsg: { m0009: 'error' },
     fmsg: {m0054 : 'error', m0056: 'error', m0052: 'error'},
-    smsg: {m0033: 'success', m0034: 'success'},
+    smsg: {m0033: 'success', m0034: 'success', m0065: 'enabled', m0066: 'disabled'},
     emsg: {m0005: 'discussion forum error'}
   },
   frmelmnts: {
