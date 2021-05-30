@@ -480,11 +480,11 @@ describe('UpdateCourseBatchComponent', () => {
   it('should enabled discussion options', () => {
     const discussionService = TestBed.get(DiscussionService);
     const toasterService = TestBed.get(ToasterService);
-    spyOn(component, 'handleInputChange');
+    // spyOn(component, 'handleInputChange');
     spyOn(discussionService, 'createForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForum));
     spyOn(toasterService, 'success').and.stub();
     component.enableDiscussionForum();
-    expect(component.handleInputChange).toHaveBeenCalled();
+    expect(component.enableDiscussionForum).toHaveBeenCalled();
   });
 
   it('should disabled discussion options', () => {
