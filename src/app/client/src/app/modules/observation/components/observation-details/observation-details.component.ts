@@ -102,6 +102,9 @@ export class ObservationDetailsComponent implements OnInit {
     this.observationService.post(paramOptions).subscribe(data => {
       this.showLoader = false;
       this.submissions = data.result;
+      if (!this.submissions.length && !this.entities.allowMultipleAssessemts) {
+        this.observeAgain();
+      }
     }, error => {
       this.showLoader = false;
     })
@@ -121,7 +124,7 @@ export class ObservationDetailsComponent implements OnInit {
     this.router.navigate(['/observation']);
   }
 
-  async observeAgain() {
+  async observeAgainConfirm() {
     let metaData = await this.observationUtilService.getAlertMetaData();
     metaData.content.body.data = this.resourceService.frmelmnts.lbl.createObserveAgain;
     metaData.content.body.type = "text";
@@ -139,20 +142,21 @@ export class ObservationDetailsComponent implements OnInit {
     })
     metaData.footer.className = "double-btn-circle";
     let returnData = await this.observationUtilService.showPopupAlert(metaData);
-    if (returnData) {
-      this.showLoader = true;
-      const paramOptions = {
-        url: this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_SUBMISSION_CREATE + `${this.observationId}?entityId=${this.selectedEntity._id}`,
-        param: {},
-        data: this.payload,
-      };
-      this.observationService.post(paramOptions).subscribe(data => {
-        this.showLoader = false;
-        this.getEntities();
-      }, error => {
-        this.showLoader = false;
-      })
-    }
+    returnData ? this.observeAgain() : '';
+  }
+  observeAgain() {
+    this.showLoader = true;
+    const paramOptions = {
+      url: this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_SUBMISSION_CREATE + `${this.observationId}?entityId=${this.selectedEntity._id}`,
+      param: {},
+      data: this.payload,
+    };
+    this.observationService.post(paramOptions).subscribe(data => {
+      this.showLoader = false;
+      this.getEntities();
+    }, error => {
+      this.showLoader = false;
+    })
   }
   redirectToQuestions(evidence) {
     this.router.navigate([`/questionnaire`], {

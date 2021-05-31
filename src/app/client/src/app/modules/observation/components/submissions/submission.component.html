@@ -5,7 +5,7 @@
             <span>{{submission.title}}</span>
             <div>
                 <i class="dropdown large icon" role="img" title="expand"></i>
-                <div class="ui dropdown" suiDropdown>
+                <div class="ui dropdown" suiDropdown *ngIf="allowMultipleAssessemts" (click)="$event.stopPropagation()">
                     <i class="ellipsis vertical icon large"
                         *ngIf="submission.status != 'completed' && submission.status !='ratingPending'"></i>
                     <div class="menu" suiDropdownMenu>
@@ -22,9 +22,9 @@
                 <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
                     <div class="content-header__title font-weight-bold ellipsis text-left">
                         <div>{{evidance.name}} </div>
-                        <small *ngIf="evidance.status == 'notstarted'">Status :
+                        <small *ngIf="evidance.status == 'notstarted'" class="txt-transform">Status :
                             {{resourceService.frmelmnts?.lbl?.notstarted}}</small>
-                        <small *ngIf="evidance.status != 'notstarted'">Status : {{evidance.status}}</small>
+                        <small *ngIf="evidance.status != 'notstarted'" class="txt-transform">Status : {{evidance.status}}</small>
                     </div>
                 </div>
                 <div class="certified-course__btn ng-star-inserted">

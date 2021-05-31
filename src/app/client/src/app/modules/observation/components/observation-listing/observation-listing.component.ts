@@ -128,6 +128,7 @@ export class ObservationListingComponent
      if(!this.showEditUserDetailsPopup){
        let metaData=this.observationUtil.getAlertMetaData();
        metaData.type="update profile";
+       metaData.isClosed=true;
        metaData.size="mini";
        metaData.content.title=this.resourceService.frmelmnts.alert.updateProfileTitle;
        metaData.content.body.type="text";

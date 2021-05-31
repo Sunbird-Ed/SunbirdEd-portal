@@ -24,14 +24,16 @@
   font-weight: 500;
   color: var(--sb-text);
   width: auto;
+  line-height: 1.3em;
   white-space: pre-wrap;
 }
 .popup-body-checkbox {
   position: relative;
-  top: 5px;
+  top: 0px;
   left: 20px;
   font-size: 15px;
   font-weight: 500;
+  line-height: 1.4em;
   color: var(--sb-text);
   width: auto;
   white-space: pre-wrap;
@@ -70,4 +72,8 @@
     }
 }
 
+.alignRight{
+  float: right;
+  color:#e82520;
+}
 

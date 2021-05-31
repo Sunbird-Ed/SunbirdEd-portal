@@ -3,7 +3,7 @@
     <!--Header-->
     <div class="sb-modal-header">
         <h4> {{resourceService.frmelmnts?.btn?.addEntity}} </h4>
-        <div class="sbt-search-box search-box" *ngIf="entities?.length">
+        <div class="sbt-search-box search-box">
             <div class="input-div relative" id="search-input-container">
                 <!-- <img src="assets/images/search-icon.svg" class="search icon" alt="Search Icon"> -->
                 <!-- Updated input tag -->
@@ -17,7 +17,7 @@
     <div class="sb-modal-content content">
         <div *ngIf="entities?.length">
             <div *ngFor="let entity of entities">
-                <div class="sb-checkbox sb-checkbox-secondary pt-24">
+                <div class="sb-checkbox sb-checkbox-secondary pt-24 ui checkbox">
                     <input value="{{entity._id}}" type="checkbox" id="{{entity._id}}"
                         [ngClass]="{'disabled-checkbox' :entity.isSelected}" (change)="selectEntity(entity)"
                         [disabled]="entity.isSelected" [checked]="entity.selected">
@@ -42,7 +42,7 @@
     <div class="actions footer">
         <button type="button" class="sb-btn sb-btn-sm sb-btn-white text-uppercase flex-basis-1" type="submit"
             (click)="closeModal()">
-            {{resourceService.frmelmnts?.btn?.clear}}
+            {{resourceService.frmelmnts?.btn?.close}}
         </button>
         <div class="w-10"></div>
         <button type="button" class="sb-btn sb-btn-sm sb-btn-primary text-uppercase flex-basis-1" type="submit"
