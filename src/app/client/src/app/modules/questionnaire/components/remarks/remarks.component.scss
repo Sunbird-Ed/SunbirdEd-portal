@@ -1,15 +1,15 @@
 .text-area {
   display: flex;
   border-color: lightgray;
+  margin-top: 70px;
+  gap: 15px;
   .alignleft {
-    margin-top: 20px;
     align-items: flex-start;
     border-radius: 5px;
     width: 100%;
   }
   .alignright {
-    margin-top: 35px;
-    left: 70px;
+    margin-top:20px;
     align-items: flex-end;
   }
 }
