@@ -97,13 +97,7 @@
     <!-- CC-Player Video -->
     <div class="ui container">
       <div class="cc-player sb-g">
-        <section
-          class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12 cc-player__video sb-toc-player-column"
-          [appTelemetryImpression]="telemetryImpression" *ngIf="collectionData">
-          <app-contentplayer-page [playerConfig]="playerConfig | async" [tocPage]="true"
-            [contentDetails]="activeContent" [isContentPresent]="isContentPresent" [objectRollUp]="objectRollUp">
-          </app-contentplayer-page>
-        </section>
+
         <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 cc-player__list mb-16 relative9"
           *ngIf="collectionData">
           <div class="toc-box-shadow mb-2" *ngIf="isCopyAsCourseClicked">
@@ -129,7 +123,8 @@
               (tocCardClick)="tocCardClickHandler($event)" [activeContent]="activeContent"
               (noContent)="showNoContent($event)" (selectedItem)="handleSelectedItem($event)" appTelemetryInteract
               [telemetryInteractEdata]="tocTelemetryInteractEdata" [platform]="PlatformType.PORTAL"
-              [type]="TocCardType.TRACKABLE" [trackableDefaultImage]="'assets/images/mask-image/courses.svg'"></sb-toc-item>
+              [type]="TocCardType.TRACKABLE" [trackableDefaultImage]="'assets/images/mask-image/courses.svg'">
+            </sb-toc-item>
           </div>
           <div [hidden]="!isSelectChapter">
             <span>
@@ -141,6 +136,15 @@
             <app-content-licence [content]="collectionData"></app-content-licence>
           </div>
         </section>
+
+        <section
+          class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12 cc-player__video sb-toc-player-column"
+          [appTelemetryImpression]="telemetryImpression" *ngIf="collectionData">
+          <app-contentplayer-page [playerConfig]="playerConfig | async" [tocPage]="true"
+            [contentDetails]="activeContent" [isContentPresent]="isContentPresent" [objectRollUp]="objectRollUp">
+          </app-contentplayer-page>
+        </section>
+
       </div>
     </div>
   </div>
