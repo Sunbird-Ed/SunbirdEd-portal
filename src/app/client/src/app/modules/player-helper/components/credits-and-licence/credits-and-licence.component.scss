@@ -78,5 +78,65 @@
 }
 .content-description{
   display: flex !important;
-  justify-content: space-between;
+
 }
+.viewer-version{
+    border-radius: 10px;
+    max-height: 1000px;
+    // overflow-y: scroll;
+    // border: 2px green solid;
+    width: 100%;
+    background: #925EB01F;
+}
+.content-description-allign{
+  flex: 1;
+
+}
+
+
+
+
+.info-container {
+  // padding: $size-s $size-m;
+  // margin-bottom: $size-m;
+
+  padding: 32px 64px!important;
+    // border-radius: 0;
+    // background: rgba(146,94,176,.12)!important;
+
+  // .info-item {
+  //   display: flex;
+  //   align-items: center;
+  //   padding: $size-xs 0;
+  //   box-sizing: border-box;
+
+  //   h3 {
+  //     margin: 0;
+  //   }
+
+  //   .item-heading {
+  //     width: 50%;
+  //     min-width: 80px;
+  //     max-width: 140px;
+  //   }
+
+  //   // .item-icon {
+  //   //   $icon-size: 20px;
+  //   //   width: $icon-size;
+  //   //   height: $icon-size;
+  //   //   font-size: $icon-size;
+  //   //   margin-left: $size-xs;
+  //   // }
+  // }
+}
+.break-word {
+  word-wrap: break-word;
+  hyphens: auto;
+}
+.pt-40{
+  padding: 31px 40px!important;
+}
+.w-full {
+  width: 100%;
+}
+

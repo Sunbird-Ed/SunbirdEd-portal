@@ -1,80 +1,96 @@
-<mat-card class="content-glance">
-  <div *ngIf="contentData.description" class="content-metadeta  mt-8 text-left">
-    <div class="mx-16 py-16 content-metadeta__content">
-      <div class="content-metadeta__title fnormal font-weight-bold">
-        {{resourceService?.frmelmnts?.lbl?.description}}</div>
-      <p class="content-metadeta__text fnormal pt-8">
-        {{contentData?.description}}
-      </p>
+<div class="w-full section-right pb-4 md:pb-0 atglancecard md:w-1/3">
+  <mat-card
+    class="viewer-version font-montserrat ws-mat-primary-lite-background-on-day info-container break-word pt-40 mat-card ng-star-inserted">
+    <div *ngIf="contentData.description" class="content-metadeta  mt-8 text-left">
+      <div class="py-16 content-metadeta__content">
+        <div class="content-metadeta__title fnormal font-weight-bold">
+          {{resourceService?.frmelmnts?.lbl?.description}}</div>
+        <p class="content-metadeta__text fnormal pt-8">
+          {{contentData?.description}}
+        </p>
+      </div>
+
     </div>
 
-  </div>
-
-  <div class="styled fluid sb-accordion about-content">
-    <!-- <sui-accordion-panel> -->
-    <div title class="sb-accordion-title fnormal">
-      {{resourceService?.frmelmnts?.lbl?.aboutTheContent}}
-      <!-- <i class="chevron down icon ml-8"></i> -->
-    </div>
-    <div content class="sb-accordion-content pt-0 pb-8">
+    <div class="styled fluid sb-accordion about-content">
+      <!-- <sui-accordion-panel> -->
+      <div title class="sb-accordion-title fnormal px-4">
+        {{resourceService?.frmelmnts?.lbl?.aboutTheContent}}
+        <!-- <i class="chevron down icon ml-8"></i> -->
+      </div>
+      <div content class="sb-accordion-content pt-0 pb-8 px-4">
 
 
-      <div class="py-8 content-description" *ngIf="contentData?.author">
-        <div class="content-metadeta__title  fxsmall mb-4">{{resourceService?.frmelmnts?.lbl?.author}}</div>
-        <div class="content-metadeta__text  fnormal">{{contentData?.author}}</div>
-      </div>
-      <div class="py-8 content-description" *ngIf="attributions">
-        <div class="content-metadeta__title  fxsmall mb-4">{{resourceService?.frmelmnts?.lbl?.attributions}}</div>
-        <div class="content-metadeta__text  fnormal">{{attributions}}</div>
-      </div>
-      <div class="py-8 content-description" *ngIf="contentData?.license">
-        <div class="content-metadeta__title  fxsmall mb-4">{{resourceService?.frmelmnts?.lbl?.licenseTerms}}</div>
-        <div class="content-metadeta__text  fnormal">{{contentData.license}}</div>
-      </div>
-      <div class="py-8 content-description" *ngIf="contentData?.licenseDetails?.name">
-        <div class="content-metadeta__title  fxsmall mb-4"></div>
-        <div class="content-metadeta__text  fnormal" *ngIf="contentData?.licenseDetails?.name">
-          {{contentData.licenseDetails['name']}} {{contentData.licenseDetails['description']}}&#x200E; <br />
-          <span *ngIf="contentData.licenseDetails['url']">
-            <a href="{{contentData.licenseDetails['url']}}" class="break-all"
-              target="_blank">{{contentData.licenseDetails['url']}}</a>
-          </span>
+        <div class="py-8 content-description" *ngIf="contentData?.author">
+          <div class="content-metadeta__title  fxsmall mb-4 content-description-allign">
+            {{resourceService?.frmelmnts?.lbl?.author}}</div>
+          <div class="content-metadeta__text  fnormal content-description-allign">{{contentData?.author}}</div>
         </div>
-      </div>
-      <div class="py-8 content-description" *ngIf="contentData?.copyright">
-        <div class="content-metadeta__title  fxsmall mb-4">{{resourceService?.frmelmnts?.lbl?.copyRight}}</div>
-        <div class="content-metadeta__text  fnormal">{{contentData?.copyright}}<span
-            *ngIf="contentData?.copyrightYear">,&nbsp;{{contentData?.copyrightYear}}</span></div>
-      </div>
-      <div class="content-description" *ngIf="contentData.originData">
-        <div class="content-metadeta__text fnormal sb-color-primary-400" *ngIf="contentData?.originData">
-          {{resourceService?.frmelmnts?.lbl?.contentcopiedtitle}}</div>
-        <div class="py-8" *ngIf="contentData?.originData?.name">
-          <div class="content-metadeta__title  fxsmall mb-4">{{resourceService?.frmelmnts?.lbl?.desktop.content}}</div>
-          <div class="content-metadeta__text  fnormal">{{contentData?.originData?.name}}</div>
+        <div class="py-8 content-description" *ngIf="attributions">
+          <div class="content-metadeta__title  fxsmall mb-4 content-description-allign">
+            {{resourceService?.frmelmnts?.lbl?.attributions}}</div>
+          <div class="content-metadeta__text  fnormal content-description-allign">{{attributions}}</div>
         </div>
-        <div class="py-8" *ngIf="contentData?.originData?.author">
-          <div class="content-metadeta__title  fxsmall mb-4">
-            {{resourceService?.frmelmnts?.lbl?.desktop.authorOfSourceContent}}</div>
-          <div class="content-metadeta__text  fnormal">{{contentData?.originData?.author}}</div>
+        <div class="py-8 content-description" *ngIf="contentData?.license">
+          <div class="content-metadeta__title  fxsmall mb-4 content-description-allign">
+            {{resourceService?.frmelmnts?.lbl?.licenseTerms}}</div>
+          <div class="content-metadeta__text  fnormal content-description-allign">{{contentData.license}}</div>
         </div>
-        <div class="py-8" *ngIf="contentData?.originData?.license">
-          <div class="content-metadeta__title  fxsmall mb-4">{{resourceService?.frmelmnts?.lbl?.licenseTerms}}</div>
-          <div class="content-metadeta__text  fnormal">{{contentData?.originData?.license}}</div>
-        </div>
-        <div class="py-8" *ngIf="contentData?.originData?.organisation">
-          <div class="content-metadeta__title  fxsmall mb-4"
-            [innerHTML]="resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance">
+        <div class="py-8 content-description" *ngIf="contentData?.licenseDetails?.name">
+          <div class="content-metadeta__title  fxsmall mb-4 content-description-allign"></div>
+          <div class="content-metadeta__text  fnormal content-description-allign"
+            *ngIf="contentData?.licenseDetails?.name">
+            {{contentData.licenseDetails['name']}} {{contentData.licenseDetails['description']}}&#x200E; <br />
+            <span *ngIf="contentData.licenseDetails['url']">
+              <a href="{{contentData.licenseDetails['url']}}" class="break-all"
+                target="_blank">{{contentData.licenseDetails['url']}}</a>
+            </span>
           </div>
-          <div class="content-metadeta__text  fnormal" *ngIf="contentData?.originData?.organisation">
-            {{contentData?.originData?.organisation.join(', ')}}</div>
-          <a *ngIf="contentData?.orgDetails?.email"
-            href="mailto:{{contentData.orgDetails?.email}}?subject={{contentData.name}}">{{contentData.orgDetails?.email}}</a>
         </div>
+        <div class="py-8 content-description" *ngIf="contentData?.copyright">
+          <div class="content-metadeta__title  fxsmall mb-4 content-description-allign">
+            {{resourceService?.frmelmnts?.lbl?.copyRight}}</div>
+          <div class="content-metadeta__text  fnormal content-description-allign">{{contentData?.copyright}}<span
+              *ngIf="contentData?.copyrightYear content-description-allign">,&nbsp;{{contentData?.copyrightYear}}</span>
+          </div>
+        </div>
+        <div class="content-description" *ngIf="contentData.originData">
+          <div class="content-metadeta__text fnormal sb-color-primary-400 content-description-allign"
+            *ngIf="contentData?.originData">
+            {{resourceService?.frmelmnts?.lbl?.contentcopiedtitle}}</div>
+          <div class="py-8 content-description" *ngIf="contentData?.originData?.name">
+            <div class="content-metadeta__title  fxsmall mb-4 content-description-allign">
+              {{resourceService?.frmelmnts?.lbl?.desktop.content}}
+            </div>
+            <div class="content-metadeta__text  fnormal content-description-allign">{{contentData?.originData?.name}}
+            </div>
+          </div>
+          <div class="py-8 content-description" *ngIf="contentData?.originData?.author">
+            <div class="content-metadeta__title  fxsmall mb-4 content-description-allign">
+              {{resourceService?.frmelmnts?.lbl?.desktop.authorOfSourceContent}}</div>
+            <div class="content-metadeta__text  fnormal content-description-allign">{{contentData?.originData?.author}}
+            </div>
+          </div>
+          <div class="py-8 content-description" *ngIf="contentData?.originData?.license">
+            <div class="content-metadeta__title  fxsmall mb-4 content-description-allign">
+              {{resourceService?.frmelmnts?.lbl?.licenseTerms}}</div>
+            <div class="content-metadeta__text  fnormal content-description-allign">{{contentData?.originData?.license}}
+            </div>
+          </div>
+          <div class="py-8 content-description" *ngIf="contentData?.originData?.organisation">
+            <div class="content-metadeta__title  fxsmall mb-4 content-description-allign"
+              [innerHTML]="resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance">
+            </div>
+            <div class="content-metadeta__text  fnormal" *ngIf="contentData?.originData?.organisation">
+              {{contentData?.originData?.organisation.join(', ')}}</div>
+            <a *ngIf="contentData?.orgDetails?.email"
+              href="mailto:{{contentData.orgDetails?.email}}?subject={{contentData.name}}">{{contentData.orgDetails?.email}}</a>
+          </div>
+        </div>
+
+
       </div>
-
-
+      <!-- </sui-accordion-panel> -->
     </div>
-    <!-- </sui-accordion-panel> -->
-  </div>
-</mat-card>
+  </mat-card>
+</div>
