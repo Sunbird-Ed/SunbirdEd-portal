@@ -188,7 +188,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   private subscribeToQueryParam() {
-
     combineLatest([this.activatedRoute.params, this.activatedRoute.queryParams])
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(([params, queryParams]) => {
