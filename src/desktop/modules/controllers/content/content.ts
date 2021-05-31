@@ -17,10 +17,6 @@ const DefaultRequestOptions = { headers: { "Content-Type": "application/json" } 
 
 const INTERVAL_TO_CHECKUPDATE = 1
 
-// @ClassLogger({
-//   logLevel: "debug",
-//   logTime: true
-// })
 export default class Content {
     private deviceId: string;
     private contentsFilesPath: string = 'content';
@@ -817,7 +813,7 @@ export default class Content {
                         ]
             },
         };
-        return await this.databaseSdk.find("content", dbFilter);
+        return this.databaseSdk.find("content", dbFilter);
     }
 
     // tslint:disable-next-line:member-ordering
@@ -829,7 +825,7 @@ export default class Content {
                         }
             },
         };
-        return await this.databaseSdk.find("content", dbFilter);
+        return this.databaseSdk.find("content", dbFilter);
     }
 
     // tslint:disable-next-line:member-ordering
@@ -850,7 +846,6 @@ export default class Content {
                     return content;
                 }
             });
-            return offlineContents;
         }
         return offlineContents;
     }
