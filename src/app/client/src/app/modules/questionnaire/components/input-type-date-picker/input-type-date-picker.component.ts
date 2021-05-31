@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { Question } from "../../Interface/assessmentDetails";
 
 @Component({
   selector: "input-type-date-picker",
@@ -9,14 +10,14 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 export class InputTypeDatePickerComponent implements OnInit {
   date: any;
   @Input() questionnaireForm: FormGroup;
-  @Input() question: any;
+  @Input() question: Question;
   constructor() {}
 
   ngOnInit() {
     this.questionnaireForm.addControl(
       this.question._id,
       new FormControl(
-        this.question.value ? new Date(this.question.value) : null,
+        this.question.value ? new Date(this.question.value as string) : null,
         Validators.required
       )
     );
@@ -26,7 +27,7 @@ export class InputTypeDatePickerComponent implements OnInit {
       : Date.now();
   }
 
-  onChange(e) {
+  onChange(e: string) {
     let value = e;
     this.question.value = value;
     this.question.endTime = Date.now();

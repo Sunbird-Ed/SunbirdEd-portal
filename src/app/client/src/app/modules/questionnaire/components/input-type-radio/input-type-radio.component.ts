@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { Question } from "../../Interface/assessmentDetails";
 
 @Component({
   selector: "input-type-radio",
@@ -9,8 +10,8 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 export class InputTypeRadioComponent implements OnInit {
   @Input() options: any;
   @Input() questionnaireForm: FormGroup;
-  @Input() question: any;
-  @Output() dependentParent = new EventEmitter();
+  @Input() question: Question;
+  @Output() dependentParent = new EventEmitter<Question>();
 
   constructor() {}
 
@@ -25,11 +26,11 @@ export class InputTypeRadioComponent implements OnInit {
       : Date.now();
   }
 
-  get isValid() {
+  get isValid(): boolean {
     return this.questionnaireForm.controls[this.question._id].valid;
   }
 
-  get isTouched() {
+  get isTouched(): boolean {
     return this.questionnaireForm.controls[this.question._id].touched;
   }
 

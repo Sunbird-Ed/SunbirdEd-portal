@@ -13,77 +13,60 @@
       >
         <div class="sb-h5">{{ qai == 0 ? qi + 1 + ")" : "" }}&nbsp;{{ q }}</div>
       </div>
-      <!-- {{ question._id }} -->
+      <!-- {{ question.children | json }}
+      {{ question._id | json }} -->
+
       <div class="sbt-page-content-questionnaireFormarea'">
         <input-type-text
-          *ngIf="question.responseType == 'text'"
+          *ngIf="question.responseType == reponseType.TEXT"
           [questionnaireForm]="questionnaireForm"
           [question]="question"
         ></input-type-text>
         <input-type-number
-          *ngIf="question.responseType == 'number'"
+          *ngIf="question.responseType == reponseType.NUMBER"
           [questionnaireForm]="questionnaireForm"
           [question]="question"
         ></input-type-number>
         <input-type-range
-          *ngIf="question.responseType == 'slider'"
+          *ngIf="question.responseType == reponseType.SLIDER"
           [questionnaireForm]="questionnaireForm"
           [question]="question"
         ></input-type-range>
         <input-type-date-picker
-          *ngIf="question.responseType == 'date'"
+          *ngIf="question.responseType == reponseType.DATE"
           [questionnaireForm]="questionnaireForm"
           [question]="question"
         ></input-type-date-picker>
         <input-type-radio
-          *ngIf="question.responseType == 'radio'"
+          *ngIf="question.responseType == reponseType.RADIO"
           [questionnaireForm]="questionnaireForm"
           [question]="question"
           [options]="question.options"
           (dependentParent)="toggleQuestion($event)"
         ></input-type-radio>
         <input-type-checkbox
-          *ngIf="question.responseType == 'multiselect'"
+          *ngIf="question.responseType == reponseType.MULTISELECT"
           [questionnaireForm]="questionnaireForm"
           [question]="question"
           [options]="question.options"
+           (dependentParent)="toggleQuestion($event)"
         ></input-type-checkbox>
         <page-questions
-          *ngIf="question.responseType == 'pageQuestions'"
+          *ngIf="
+            question.responseType == reponseType.PAGEQUESTIONS;
+            pageQuestions
+          "
           [questionnaireForm]="questionnaireForm"
           [question]="question"
         ></page-questions>
         <matrix-questions
-          *ngIf="question.responseType == 'matrix'"
+          *ngIf="question.responseType == reponseType.MATRIX"
           [questionnaireForm]="questionnaireForm"
           [question]="question"
         ></matrix-questions>
-        <div class="remarks" *ngIf="question.showRemarks === false">
-          <h5 class="alignleft">Remarks</h5>
-          <button
-            [ngClass]="
-              question.isRemarkClicked
-                ? 'sb-btn sb-btn-normal sb-btn-red alignright'
-                : 'sb-btn sb-btn-normal sb-btn-primary alignright'
-            "
-            (click)="
-              question.isRemarkClicked
-                ? deleteRemarks(question, qi)
-                : openRemark(question, qi)
-            "
-          >
-            <span *ngIf="!question.isRemarkClicked">
-              {{ resourceService.frmelmnts.btn.add }}</span
-            >
-            <span *ngIf="question.isRemarkClicked"
-              ><i class="trash large icon"></i
-            ></span>
-          </button>
-        </div>
-        <br />
         <app-remarks
-          *ngIf="question.isRemarkClicked"
-          (saveClicked)="saveClicked($event, question)"
+          [question]="question"
+          *ngIf="question.showRemarks"
         ></app-remarks>
         <app-input-type-attachment
           [data]="attachmentData"

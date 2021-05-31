@@ -10,6 +10,13 @@ import { QuestionnaireService } from "../questionnaire.service";
 import { ActivatedRoute } from "@angular/router";
 import { ObservationService } from "@sunbird/core";
 import { Location } from "@angular/common";
+import {
+  AssessmentInfo,
+  Evidence,
+  IAssessmentDetails,
+  Section,
+} from "../Interface/assessmentDetails";
+import { ObservationUtilService } from "../../observation/service";
 
 @Component({
   selector: "app-questionnaire",
@@ -23,10 +30,10 @@ export class QuestionnaireComponent implements OnInit {
   FIRST_PANEL_LAYOUT;
   SECOND_PANEL_LAYOUT;
   questionnaireForm: FormGroup;
-  sections;
-  evidence: any;
+  sections: Section[];
+  evidence: Evidence;
   queryParams: any;
-  assessmentInfo: any;
+  assessmentInfo: AssessmentInfo;
 
   constructor(
     public layoutService: LayoutService,
@@ -36,7 +43,8 @@ export class QuestionnaireComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private config: ConfigService,
     private observationService: ObservationService,
-    private location:Location
+    private location: Location,
+    private observationUtilService: ObservationUtilService
   ) {}
 
   ngOnInit() {
@@ -48,6 +56,10 @@ export class QuestionnaireComponent implements OnInit {
     this.questionnaireForm = this.fb.group({});
     // this.evidence = this.data.result.assessment.evidences[0];
     // this.sections = this.evidence.sections;
+    this.questionnaireForm.valueChanges.subscribe(res => {
+      console.log(this.questionnaireForm);
+     
+    })
   }
 
   getQuestionnare() {
@@ -57,7 +69,7 @@ export class QuestionnaireComponent implements OnInit {
         `${this.queryParams.observationId}?entityId=${this.queryParams.entityId}&submissionNumber=${this.queryParams.submissionNumber}&ecmMethod=${this.queryParams.evidenceCode}`,
     };
     this.observationService.post(paramOptions).subscribe(
-      (data) => {
+      (data: IAssessmentDetails) => {
         this.assessmentInfo = data.result;
         this.assessmentInfo = this.qService.mapSubmissionToAssessment(
           this.assessmentInfo
@@ -119,6 +131,8 @@ export class QuestionnaireComponent implements OnInit {
   }
 
   submitEvidence(payload) {
+    this.openAlert()
+    return
     const paramOptions = {
       url:
         this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_SUBMISSION_UPDATE +
@@ -127,11 +141,30 @@ export class QuestionnaireComponent implements OnInit {
     };
     this.observationService.post(paramOptions).subscribe(
       (data) => {
-        console.log(data);
-        this.location.back()
+        this.openAlert();
+        this.location.back();
       },
-      (error) => {}
+      (error) => {
+        console.log(error);
+      }
     );
+  }
+
+  async openAlert() {
+    alert('saved')//TODO: fix alertModal
+    // let alertMetaData = await this.observationUtilService.getAlertMetaData();
+    // alertMetaData.content.body.data =
+    //   this.resourceService.frmelmnts.lbl.createObserveAgain;
+    // alertMetaData.content.body.type = "text";
+    // alertMetaData.content.title = this.resourceService.frmelmnts.btn.observeAgain;
+    // alertMetaData.size = "mini";
+    // alertMetaData.footer.buttons.push({
+    //   type: "accept",
+    //   returnValue: true,
+    //   buttonText: this.resourceService.frmelmnts.btn.ok,
+    // });
+    // alertMetaData.footer.className = "single-btn";
+    // let returnData = await this.observationUtilService.showPopupAlert(alertMetaData);
   }
 
   questions = [
