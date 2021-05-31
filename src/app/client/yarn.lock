@@ -948,7 +948,7 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sb-dashlet@^1.0.3":
+"@project-sunbird/sb-dashlet@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-dashlet/-/sb-dashlet-1.0.0.tgz#75046150417f52cf3f6c6e76bb2b35d2e8a7d2dc"
   integrity sha512-V16mmKT0LUTJzdy3lg3zUdj7HdzuArOMijwXu2p4Gk7npdibNmGSjgd/Brc85+nLkcLp67SdRUMYIVQ3nZuCqg==
