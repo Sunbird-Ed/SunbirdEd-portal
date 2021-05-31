@@ -644,7 +644,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     });
   }
   sideNavOpenAndClose(){
-  console.log("this.showSideNav", this.showSideNav, "  this.sideNavClose",   this.sideNavClose)
   this.showSideNav = !this.showSideNav
   this.sideNavClose = !this.sideNavClose
 }
