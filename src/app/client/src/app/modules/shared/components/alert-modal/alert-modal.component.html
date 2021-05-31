@@ -5,11 +5,9 @@
       <div class="alignRight" *ngIf="modal.context.data.isClosed==true" (click)="navigatePrevious(modal.context.data)"><i class="close medium icon"></i></div>
     </div>
     <div *ngIf="modal.context.data.content.body.type == 'checkbox'">
-      <input type="checkbox" id="myCheck" [(ngModel)]="isChecked" (change)="checkValue(isChecked?true:false)"
+      <input type="checkbox" id="myCheck" [(ngModel)]="isChecked"
         class="popup-body" />
-      <label for="myCheck" class="popup-body-checkbox">{{
-      modal.context.data.content.body.data
-    }}</label><br />
+      <label for="myCheck" class="popup-body-checkbox" [innerHtml]="modal.context.data.content.body.data"></label><br />
     </div>
     <div *ngIf="modal.context.data.content.body.type == 'text'">
       <div class="popup-body" *ngIf="modal.context.data.content.body.data">

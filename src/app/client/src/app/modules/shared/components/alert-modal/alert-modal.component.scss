@@ -29,13 +29,14 @@
 }
 .popup-body-checkbox {
   position: relative;
-  top: 0px;
-  left: 20px;
-  font-size: 15px;
+  top: -18px;
+  left: 10px;
+  font-size: 14px;
   font-weight: 500;
-  line-height: 1.4em;
+  line-height: 1.45em;
   color: var(--sb-text);
   width: auto;
+  text-align: justify;
   white-space: pre-wrap;
 }
 
@@ -50,7 +51,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin-top: 15px;
+  margin-top: -35px;
 
   button{
       margin-right:15px;
