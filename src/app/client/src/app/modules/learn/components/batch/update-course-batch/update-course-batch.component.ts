@@ -210,13 +210,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
           });
         }
         this.initializeUpdateForm();
-        this.discussionCsService.getForumIds(this.fetchForumIdReq).subscribe(forumDetails => {
-          this.forumIds = _.map(_.get(forumDetails, 'result'), 'cid');
-          this.isEnableDiscussions = (this.forumIds && this.forumIds.length > 0) ? 'true' : 'false';
-          this.initializeUpdateForm();
-        }, error => {
-          this.toasterService.error(this.resourceService.messages.emsg.m0005);
-        });
+        this.getEnabledForumId();
         this.fetchParticipantDetails();
       }, (err) => {
         if (err.error && err.error.params.errmsg) {
@@ -659,6 +653,16 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     } else {
       this.batchUpdateForm.reset();
     }
+  }
+
+  getEnabledForumId() {
+    this.discussionCsService.getForumIds(this.fetchForumIdReq).subscribe(forumDetails => {
+      this.forumIds = _.map(_.get(forumDetails, 'result'), 'cid');
+      this.isEnableDiscussions = (this.forumIds && this.forumIds.length > 0) ? 'true' : 'false';
+      this.initializeUpdateForm();
+    }, error => {
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
+    });
   }
 
   generateDataForDF() {
