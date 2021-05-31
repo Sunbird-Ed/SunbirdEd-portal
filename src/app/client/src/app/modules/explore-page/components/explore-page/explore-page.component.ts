@@ -380,7 +380,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                         forEach(facets[facet.facetKey], _facet => {
                                             _facetArray.push({
                                                 name: _facet['name'],
-                                                value: _facet['name']
+                                                value: _facet['name'],
+                                                theme: this.utilService.getRandomColor(facet.theme.colorMapping)
                                             });
                                         });
                                         this.facetSections.push({

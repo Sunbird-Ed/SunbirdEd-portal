@@ -1,5 +1,6 @@
-<app-landing-section [textToDisplay]="pageTitleSrc" [svgToDisplay]="svgToDisplay"
-  [layoutConfiguration]="layoutConfiguration"></app-landing-section>
+<app-landing-section [noTitle]="getSelectedTab() === 'home' || getSelectedTab() === 'explore'"
+  [textToDisplay]="pageTitleSrc" [svgToDisplay]="svgToDisplay" [layoutConfiguration]="layoutConfiguration">
+</app-landing-section>
 <div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
   <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'"
     [appTelemetryImpression]="telemetryImpression">
@@ -53,7 +54,7 @@
 
           <!-- Template for displaying sections based on form configuration -->
           <div *ngIf="_currentPageData?.sections && _currentPageData?.isEnabled && !isDesktopApp">
-            <div *ngIf="getSelectedTab() === 'home'" class="sb-section-preference pl-16">
+            <div *ngIf="getSelectedTab() === 'home'" class="sb-section-preference">
               <div class="preference">
                 <p class="header title">{{resourceService?.frmelmnts?.lbl?.yourPreferences}}</p>
                 <p>{{resourceService?.frmelmnts?.lbl?.preferencesheader | interpolate:'{instance}': instance}}</p>
@@ -78,8 +79,9 @@
                 [pillBorder]="'semi_round'" [pillsMultiRow]="'double_view_row'" (select)="handlePillSelect($event, section.name)">
                 <sb-pill-item *ngFor="let pillData of section.data" [name]="pillData?.name | titlecase"
                   [icon]="utilService.getSectionPillIcon(section?.section?.theme?.icons, pillData?.value)" [value]="pillData"
-                  [theme]="utilService.getRandomColor(section?.section?.theme?.colorMapping)"></sb-pill-item>
+                  [theme]="pillData?.theme"></sb-pill-item>
               </sb-pills-grid>
+              <hr *ngIf="section?.section?.isEnabled" class="section-hr my-32" />
             </div>
             <div *ngIf="getSelectedTab() === 'home'" class="sb-library-cards relative9">
               <div class="twelve wide column relative9">
