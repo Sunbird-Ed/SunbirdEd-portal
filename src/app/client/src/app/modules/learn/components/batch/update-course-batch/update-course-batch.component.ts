@@ -168,39 +168,10 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     this.discussionCsService = CsModule.instance.discussionService;
   }
 
-  private fetchBatchDetails() {
-    if (this.enrolmentType === 'open') {
-      const requestBody = {
-        filters: { 'status': '1' },
-      };
-      const participantList = {};
-      return combineLatest(
-        this.courseBatchService.getUserList(requestBody),
-        this.courseConsumptionService.getCourseHierarchy(this.courseId),
-        this.courseBatchService.getUpdateBatchDetails(this.batchId),
-        (userDetails, courseDetails, batchDetails) => (
-          { userDetails, courseDetails, batchDetails, participantList}
-        ));
-    } else {
-      const requestBody = {
-        filters: { 'status': '1' },
-      };
-      return combineLatest(
-        this.courseBatchService.getUserList(requestBody),
-        this.courseConsumptionService.getCourseHierarchy(this.courseId),
-        this.courseBatchService.getUpdateBatchDetails(this.batchId),
-        this.courseBatchService.getParticipantList(
-          { 'request': { 'batch': { 'batchId': this.batchId } } }),
-        (userDetails, courseDetails, batchDetails, participantList) => (
-          { userDetails, courseDetails, batchDetails, participantList }
-        ));
-    }
-  }
-
   /**
    * Initialize form fields and getuserlist
   */
-   ngOnInit() {
+  ngOnInit() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.parent.params,
       this.activatedRoute.queryParams,
       (params, parentParams, queryParams) => ({ ...params, ...parentParams, ...queryParams })).pipe(
@@ -256,7 +227,35 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
         this.redirect();
       });
   }
-  
+
+  private fetchBatchDetails() {
+    if (this.enrolmentType === 'open') {
+      const requestBody = {
+        filters: { 'status': '1' },
+      };
+      const participantList = {};
+      return combineLatest(
+        this.courseBatchService.getUserList(requestBody),
+        this.courseConsumptionService.getCourseHierarchy(this.courseId),
+        this.courseBatchService.getUpdateBatchDetails(this.batchId),
+        (userDetails, courseDetails, batchDetails) => (
+          { userDetails, courseDetails, batchDetails, participantList}
+        ));
+    } else {
+      const requestBody = {
+        filters: { 'status': '1' },
+      };
+      return combineLatest(
+        this.courseBatchService.getUserList(requestBody),
+        this.courseConsumptionService.getCourseHierarchy(this.courseId),
+        this.courseBatchService.getUpdateBatchDetails(this.batchId),
+        this.courseBatchService.getParticipantList(
+          { 'request': { 'batch': { 'batchId': this.batchId } } }),
+        (userDetails, courseDetails, batchDetails, participantList) => (
+          { userDetails, courseDetails, batchDetails, participantList }
+        ));
+    }
+  }
   private isSubmitBtnDisable(batchForm): boolean {
     const batchFormControls = ['name', 'description', 'enrollmentType', 'mentors', 'startDate', 'endDate', 'users'];
     for (let i = 0; i < batchFormControls.length; i++) {
