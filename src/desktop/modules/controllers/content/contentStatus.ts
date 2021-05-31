@@ -1,3 +1,4 @@
+import { logger } from "@project-sunbird/logger";
 import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import { NetworkQueue } from "@project-sunbird/OpenRAP/services/queue";
 import * as _ from 'lodash';
