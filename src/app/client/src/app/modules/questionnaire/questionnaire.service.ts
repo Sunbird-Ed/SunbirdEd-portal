@@ -2,12 +2,13 @@ import { Injectable } from "@angular/core";
 import { AbstractControl, ValidatorFn } from "@angular/forms";
 import { ConfigService } from "@sunbird/shared";
 import { KendraService } from "@sunbird/core";
+import { Evidence } from "./Interface/assessmentDetails";
 
 @Injectable({
   providedIn: "root",
 })
 export class QuestionnaireService {
-  private _submissionId: any;
+  private _submissionId: string;
   constructor(
     private config: ConfigService,
     private kendraService: KendraService
@@ -38,12 +39,12 @@ export class QuestionnaireService {
     };
   };
 
-  public testRegex(rege, value): boolean {
-    const regex = new RegExp(rege);
+  public testRegex(regexExpression: RegExp, value: string): boolean {
+    const regex = new RegExp(regexExpression);
     return regex.test(value);
   }
 
-  getEvidenceData(evidence, formValues) {
+  getEvidenceData(evidence: Evidence, formValues: object) {
     let sections = evidence.sections;
     let answers = this.getSectionData(sections, formValues);
     let payloadData = {

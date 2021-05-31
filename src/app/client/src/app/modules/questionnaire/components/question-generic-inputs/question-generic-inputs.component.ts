@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { QuestionnaireService } from "../../questionnaire.service";
 import { ResourceService } from "@sunbird/shared";
+import { Question, ResponseType } from "../../Interface/assessmentDetails";
+import { FormGroup } from "@angular/forms";
 
 @Component({
   selector: "question-generic-inputs",
@@ -8,10 +10,10 @@ import { ResourceService } from "@sunbird/shared";
   styleUrls: ["./question-generic-inputs.component.scss"],
 })
 export class QuestionGenericInputsComponent implements OnInit {
-  @Input() questions: any;
-  @Input() questionnaireForm: any;
+  @Input() questions: Array<Question>;
+  @Input() questionnaireForm: FormGroup;
   attachmentData = { submissionId: this.qService.getSubmissionId() };
-  selectedIndex: any;
+  selectedIndex: number;
   constructor(
     public resourceService: ResourceService,
     private qService: QuestionnaireService
@@ -19,19 +21,9 @@ export class QuestionGenericInputsComponent implements OnInit {
 
   ngOnInit() {}
 
-  openRemark(data, i) {
-    this.selectedIndex = i;
-    data["isRemarkClicked"] = true;
+  public get reponseType(): typeof ResponseType {
+    return ResponseType;
   }
-
-  deleteRemarks(data, i) {
-    data["isRemarkClicked"] = false;
-  }
-
-  saveClicked(event, data) {
-    data["isRemarkClicked"] = false;
-  }
-
   toggleQuestion(parent) {
     const { children } = parent;
 
@@ -43,8 +35,11 @@ export class QuestionGenericInputsComponent implements OnInit {
     });
   }
 
-  canDisplayChildQ(currentQuestion, currentQuestionIndex) {
+  canDisplayChildQ(currentQuestion: Question, currentQuestionIndex: number) {
     let display = true;
+    if (typeof currentQuestion.visibleIf == "string" || null || undefined) {
+      return false; //if condition not present
+    }
     for (const question of this.questions) {
       for (const condition of currentQuestion.visibleIf) {
         if (condition._id === question._id) {

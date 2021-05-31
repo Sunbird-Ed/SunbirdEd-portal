@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { Question } from "../../Interface/assessmentDetails";
 
 @Component({
   selector: "input-type-range",
@@ -8,12 +9,10 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 })
 export class InputTypeRangeComponent implements OnInit {
   @Input() questionnaireForm: FormGroup;
-  @Input() question: any;
+  @Input() question: Question;
   constructor() {}
 
   ngOnInit() {
-    console.log("matrix");
-    console.log(this.question);
     this.questionnaireForm.addControl(
       this.question._id,
       new FormControl(this.question.value || 0, Validators.required)
@@ -39,17 +38,17 @@ export class InputTypeRangeComponent implements OnInit {
     range.addEventListener("input", setValue);
   }
 
-  onChange(e) {
-    let value = e.target.value;
+  onChange(e: Event) {
+    let value = (e.target as HTMLInputElement).value;
     this.question.value = value;
     this.question.endTime = Date.now();
   }
 
-  get isValid() {
+  get isValid(): boolean {
     return this.questionnaireForm.controls[this.question._id].valid;
   }
 
-  get isTouched() {
+  get isTouched(): boolean {
     return this.questionnaireForm.controls[this.question._id].touched;
   }
 }

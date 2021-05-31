@@ -1,23 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from "@angular/core";
 import { ResourceService } from "@sunbird/shared";
-import { Output, EventEmitter } from '@angular/core';
+import { Output, EventEmitter } from "@angular/core";
+import { Question } from "../../Interface/assessmentDetails";
 
 @Component({
-  selector: 'app-remarks',
-  templateUrl: './remarks.component.html',
-  styleUrls: ['./remarks.component.scss']
+  selector: "app-remarks",
+  templateUrl: "./remarks.component.html",
+  styleUrls: ["./remarks.component.scss"],
 })
 export class RemarksComponent implements OnInit {
-  remark="";
-  isEditable=false;
+  remark = "";
+  isEditable = false;
   @Output() saveClicked = new EventEmitter();
-  constructor(public resourceService: ResourceService) { }
+  @Input() question: Question;
+  constructor(public resourceService: ResourceService) {}
 
   ngOnInit() {
+    this.remark = this.question.remarks;
   }
 
-  saveRemark(){
-  this.saveClicked.emit({value:this.remark});
-}
+  saveRemark() {
+    this.question.remarks = this.remark;
+    this.saveClicked.emit({ value: this.remark });
+  }
 
+  deleteRemark() {
+    this.remark = "";
+    this.saveRemark();
+  }
 }
