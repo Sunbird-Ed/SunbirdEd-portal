@@ -10,6 +10,7 @@ import {
   InputTypeRadioComponent, InputTypeRangeComponent, InputTypeTextComponent, PageQuestionsComponent, MatrixQuestionsComponent, QuestionGenericInputsComponent,
   RemarksComponent
 } from './components';
+import { ObservationUtilService } from "../observation/service";
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import {
     ReactiveFormsModule,
     SuiModule
   ],
-  providers: []
+  providers:[ObservationUtilService]
+
 })
 export class QuestionnaireModule { }

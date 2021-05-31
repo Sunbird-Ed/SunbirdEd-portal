@@ -1,5 +1,11 @@
 import { Component, Input, OnInit, ViewChild } from "@angular/core";
-import { FormArray, FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from "@angular/forms";
 import {
   SuiModalService,
   TemplateModalConfig,
@@ -7,6 +13,7 @@ import {
 } from "ng2-semantic-ui";
 import { ResourceService } from "@sunbird/shared";
 import { MatrixQuestion, Question } from "../../Interface/assessmentDetails";
+import { ObservationUtilService } from "../../../observation/service";
 export interface IContext {
   questions: Question[];
   heading: string;
@@ -28,13 +35,16 @@ export class MatrixQuestionsComponent implements OnInit {
   constructor(
     public modalService: SuiModalService,
     public fb: FormBuilder,
-    public resourceService: ResourceService
+    public resourceService: ResourceService,
+    public observationUtilService: ObservationUtilService
   ) {}
 
   ngOnInit() {
     this.matrixForm = this.fb.group({});
-    debugger
-    this.questionnaireForm.addControl(this.question._id, new FormArray([]));
+    this.questionnaireForm.addControl(
+      this.question._id,
+      new FormArray([], [Validators.required])
+    );
     this.initializeMatrix();
   }
 
@@ -111,7 +121,29 @@ export class MatrixQuestionsComponent implements OnInit {
     this.formAsArray.push(new FormControl(this.matrixForm.value));
   }
 
-  deleteInstanceAlert(index) {
+  async deleteInstanceAlert(index) {
+    let metaData = await this.observationUtilService.getAlertMetaData();
+    metaData.content.body.data =
+      this.resourceService.frmelmnts.lbl.deleteSubmission;
+    metaData.content.body.type = "text";
+    metaData.content.title = this.resourceService.frmelmnts.btn.delete;
+    metaData.size = "mini";
+    metaData.footer.buttons.push({
+      type: "cancel",
+      returnValue: false,
+      buttonText: this.resourceService.frmelmnts.btn.no,
+    });
+    metaData.footer.buttons.push({
+      type: "accept",
+      returnValue: true,
+      buttonText: this.resourceService.frmelmnts.btn.yes,
+    });
+    metaData.footer.className = "double-btn-circle";
+    const accepted = await this.observationUtilService.showPopupAlert(metaData);
+    if (!accepted) {
+      return;
+    }
+
     this.question.value.splice(index, 1);
     (this.questionnaireForm.controls[this.question._id] as FormArray).removeAt(
       index
