@@ -1,9 +1,8 @@
 import { Injectable } from "@angular/core";
 import { UserService } from "@sunbird/core";
-import { IUserData, ConfigService,ResourceService } from "@sunbird/shared";
+import { IUserData, ConfigService,ResourceService,AlertModal } from "@sunbird/shared";
 import { take } from "rxjs/operators";
 import { KendraService } from "@sunbird/core";
-import { AlertModal } from "../../components/alert-modal/alert-modal.component";
 import {SuiModalService} from "ng2-semantic-ui";
 import { Router } from "@angular/router";
 
