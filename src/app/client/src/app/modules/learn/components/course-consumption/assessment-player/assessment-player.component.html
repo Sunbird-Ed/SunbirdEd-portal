@@ -16,7 +16,7 @@
               </svg></i>
             <!-- {{resourceService?.frmelmnts?.btn?.back}} -->
           </button>
-
+          <!--added breadcrumbs for tool bar-->
           <span class="text-left text-truncate text-white body-font-size-secondary font-montserrat"
             *ngIf="courseHierarchy">
             <ng-container *ngIf="courseHierarchy">
@@ -109,7 +109,7 @@
   <!-- <div class="ui container"> -->
   <div class="px-20">
     <div class="cc-player reduce-space-between">
-
+     <ng-container *ngIf="showSideNav">
       <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 bg-pink">
         <div class="cc-player__list px-0">
           <h5 class="p-0 mb-0 font-weight-bold background-header-list">
@@ -147,8 +147,16 @@
           </div>
         </div>
       </section>
+    </ng-container>
+      <!-- combining the content and sidenav icon -->
       <section
         class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12 cc-player__video sb-toc-player-column">
+        <button *ngIf="sideNavClose" mat-icon-button aria-label="Navbar Toggle button" class="toggleBtn side-nav-button-opened"  (click)="sideNavOpenAndClose()" >
+          <mat-icon class="dehaze-icon reverse" >double_arrow</mat-icon>
+        </button>
+        <button *ngIf="!sideNavClose" mat-icon-button aria-label="Navbar Toggle button" color="primary" class="toggleBtn side-nav-button-closed" (click)="sideNavOpenAndClose()">
+          <mat-icon class="dehaze-icon">double_arrow</mat-icon>
+        </button>
         <div class="toc-content text-left">
           <div class="content-video">
             <section class="content-video__player" id="player-area-height">
@@ -170,7 +178,7 @@
           </div> -->
         </div>
       </section>
-    </div>
+      </div>
   </div>
 
 

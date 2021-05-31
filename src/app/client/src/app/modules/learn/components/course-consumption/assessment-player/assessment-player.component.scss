@@ -281,3 +281,42 @@
     width: 80%;
     background: transparent;
 }
+
+.toggleBtn {
+  margin-left: 2px;
+  margin-top: 3px;
+  position: absolute;
+  z-index: 100;
+  padding: 0px;
+  border-radius: 50%;
+  background-color: #925eb0 !important;
+  border-color: #925eb0 !important;
+  color: white;
+  &.side-nav-button-opened {
+    width: 25px;
+    height: 25px;
+    line-height: 27px;
+    .dehaze-icon {
+      line-height: 28px;
+      font-size: 20px;
+      color: white;
+    }
+  }
+  &.side-nav-button-closed {
+    width: 35px !important;
+    height: 35px !important;
+    font-size: 23px !important;
+    line-height: 1px !important;
+    .mat-button-wrapper {
+      font-size: inherit !important;
+      line-height: inherit !important;
+      mat-icon {
+        line-height: auto !important;
+        font-size: auto !important;
+      }
+    }
+  }
+}
+.reverse {
+  transform: rotate(180deg);
+}
