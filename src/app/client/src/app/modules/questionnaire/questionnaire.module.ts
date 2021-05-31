@@ -35,6 +35,7 @@ import { ObservationUtilService } from "../observation/service";
     ReactiveFormsModule,
     SuiModule
   ],
-  providers: [ObservationUtilService]
+  providers:[ObservationUtilService]
+
 })
 export class QuestionnaireModule { }
