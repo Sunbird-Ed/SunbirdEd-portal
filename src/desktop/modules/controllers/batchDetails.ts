@@ -1,4 +1,3 @@
-import { logger } from "@project-sunbird/logger";
 import * as _ from 'lodash';
 import { Inject } from "typescript-ioc";
 import DatabaseSDK from "../sdk/database/index";
@@ -9,7 +8,6 @@ import { containerAPI } from "@project-sunbird/OpenRAP/api";
 
 const DB_NAME = "batch_details";
 const API_ID = "api.course.batch.read";
-
 const course = new Course(manifestObj);
 const userSDK = containerAPI.getUserSdkInstance();
 
@@ -23,9 +21,7 @@ export default class BatchDetails {
   // Get logged in user ID
   private async getCurrentUserId() {
     const currentUserSession = await userSDK.getUserSession();
-    const currentUserId = _.get(currentUserSession, 'userId');
-
-    return currentUserId;
+    return _.get(currentUserSession, 'userId');
   }
 
   private async findBatch(identifier: string) {
