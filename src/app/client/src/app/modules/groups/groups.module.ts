@@ -20,8 +20,8 @@ import { ContentSearchModule } from '@sunbird/content-search';
 import { SlickModule } from 'ngx-slick';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { DiscussionModule } from '../discussion/discussion.module';
-import { DashletModule } from '@project-sunbird/sb-dashlet';
 import { ActivityDetailsComponent } from './components/activity/activity-details/activity-details.component';
+import { DashletModule } from '@project-sunbird/sb-dashlet';
 
 @NgModule({
   imports: [
