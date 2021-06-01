@@ -6,7 +6,7 @@
   <!-- Header: Back Button Previous Module & Next Module button -->
   <div class="sb-bg-color-purple sb-text-color-white relative position back-btn-container cc-player__btn-back">
     <div class="container">
-      <div class="py-8 d-flex flex-ai-center">
+      <div class="py-8 d-flex flex-ai-center width-full flex-jc-sb ">
         <!-- Back button -->
         <div class="wrap-btn-text d-flex">
           <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-text-color-white sb-left-icon-btn mr-auto"
@@ -36,7 +36,7 @@
           <!-- Previous module button -->
           <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-left-icon-btn" *ngIf="prevModule"
             (click)="navigateToPlayerPage(prevModule); logTelemetry('previous-module', prevModule, true);">
-            <i class="icon-svg icon-svg--xxs icon-back mr-4 rotate-90"><svg class="icon icon-svg--primary">
+            <i class="icon-svg icon-svg--xxs icon-back mr-4 rotate-90"><svg class="icon icon-white">
                 <use xlink:href="assets/images/sprite.svg#arrow-up"></use>
               </svg></i>{{generaliseLabelService?.frmelmnts?.lbl?.prevModule | translate}}
           </button>
@@ -46,7 +46,7 @@
           <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-right-icon-btn" *ngIf="nextModule"
             (click)="navigateToPlayerPage(nextModule); logTelemetry('next-module', nextModule, true)">
             {{generaliseLabelService?.frmelmnts?.lbl?.nextModule | translate}}<i
-              class="icon-svg icon-svg--xxs icon-back ml-4 rotate90"><svg class="icon icon-svg--primary">
+              class="icon-svg icon-svg--xxs icon-back ml-4 rotate90"><svg class="icon icon-white">
                 <use xlink:href="assets/images/sprite.svg#arrow-up"></use>
               </svg></i>
           </button>
