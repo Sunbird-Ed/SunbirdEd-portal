@@ -1395,10 +1395,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v8@4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v8/-/common-consumption-v8-4.0.0.tgz#a36d9bdc34b2ecb8e681f7ed858eaa9e649a8743"
-  integrity sha512-FNFQIuK6ftLg7EDW4x+isboiwOTCmuxZaz2Bt+RL7XjZ+aLBZFACZBCR4yrpMj/Po8Jfy8PyKrgmwYhbdzu25Q==
+"@project-sunbird/common-consumption-v8@4.0.4":
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v8/-/common-consumption-v8-4.0.4.tgz#7bb59b2a6967cd2054d908644c9d92a0b4e98a0e"
+  integrity sha512-nZSKE4kbCkSke6tKwklhnp31LrQv/Z90LEKJj5xFkQKI+FsUARK2q61s9dHYjqG0dpsyVtEZZPyZrInQGW4Uww==
   dependencies:
     tslib "^1.9.0"
 
@@ -3631,10 +3631,10 @@ commander@^2.11.0, commander@^2.12.1, commander@^2.19.0, commander@^2.20.0, comm
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
 
-common-form-elements@4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/common-form-elements/-/common-form-elements-4.0.0.tgz#20eb6b1185109208f5f263823439c097355df7fe"
-  integrity sha512-fl/KOnm2+ZAVXC0a8qP0mN/VhIiEV46DHrZLcO9LQ5AXF2lEptIrGlJI2aKy5uW66Nwxlg6WxCZWFZusZBEL5A==
+common-form-elements@4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/common-form-elements/-/common-form-elements-4.0.2.tgz#94585393dfba9293be8db057c1355979e093b99e"
+  integrity sha512-1sf6PX40DDLjkLFv+uhQZqNrrsVMzAI5zexx3c0j8u6M7I+IamubNJYbicRIm8H3tXVMpUCYwAqy2FsxElS+Zg==
   dependencies:
     "@project-sunbird/ckeditor-build-classic" "0.0.4"
     immutable "^4.0.0-rc.12"
