@@ -5,14 +5,7 @@ import * as path from "path";
 import { Inject } from "typescript-ioc";
 import DatabaseSDK from "../sdk/database/index";
 import Response from "../utils/response";
-
-import { ClassLogger } from "@project-sunbird/logger/decorator";
 import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
-
-// @ClassLogger({
-//   logLevel: "debug",
-//   logTime: true,
-// })
 export class Channel {
   @Inject
   private databaseSdk: DatabaseSDK;

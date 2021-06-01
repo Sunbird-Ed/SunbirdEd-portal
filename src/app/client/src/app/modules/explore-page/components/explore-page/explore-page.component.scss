@@ -1,0 +1,28 @@
+.course-card-width {
+  width: 280px !important;
+}
+.sb-section-preference {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #dad9cb;
+  padding: 2rem;
+  border-radius: 1.5rem;
+    .preference {
+      .header {
+        font-size: 1rem;
+      }
+      p, span {
+        font-size: 0.8rem;
+      }
+      p {
+        margin-bottom: 0;
+      }
+      .title {
+        font-weight: bold;
+      }
+    }
+}
+.section-hr {
+  border: 0.5px solid #dad9cb;
+}

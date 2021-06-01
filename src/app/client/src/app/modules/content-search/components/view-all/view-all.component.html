@@ -1,7 +1,7 @@
 <app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration"></app-landing-section>
 <div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
     <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'" [appTelemetryImpression]="telemetryImpression">
-    <div [ngClass]="FIRST_PANEL_LAYOUT">
+    <div [ngClass]="FIRST_PANEL_LAYOUT" style="display: none;">
       <app-global-search-filter [queryParamsToOmit]="facetsList" [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true'
                                 *ngIf="initFilters" (filterChange)="getFilters($event)">
       </app-global-search-filter>

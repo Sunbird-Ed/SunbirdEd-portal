@@ -95,6 +95,8 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       this.selectedContentType = null;
     } else if (url.indexOf('resources') >= 0 || url.indexOf('explore') >= 0) {
       this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : 'textbook';
+    } else if (url.indexOf('home') >= 0) {
+      this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : 'home';
     } else if (url.indexOf('mydownloads') >= 0) {
       this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : 'mydownloads';
     }else if (url.indexOf('observation') >= 0) {   
@@ -114,7 +116,8 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
 
   processFormData(formData) {
     this.contentTypes = _.sortBy(formData, 'index');
-    this.selectedContentType = this.activatedRoute.snapshot.queryParams.selectedTab || 'textbook';
+    const defaultTab = _.find(this.contentTypes, ['default', true]);
+    this.selectedContentType = this.activatedRoute.snapshot.queryParams.selectedTab || _.get(defaultTab, 'contentType') || 'textbook';
   }
 
   getTitle(contentType) {
