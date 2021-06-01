@@ -22,12 +22,12 @@
   <div class="content-grid relative9">
     <div class="sb-pageSection" *ngIf="!showLoader && contentList.length">
         <div  class="sb-pageSection-header">
-                <h4 class="sb-pageSection-title m-0 mr-5"> {{resourceService.frmelmnts?.lbl?.showingResults | translate}}
+                <h4 class="sb-pageSection-title mb-10 mr-5"> {{resourceService.frmelmnts?.lbl?.showingResults | translate}}
                     <span class="text-lowercase" *ngIf="this.queryParams.key" appHighlightText [config]="{'resourcePath': 'frmelmnts.lbl.forSearch', 'key': '{searchString}', 'value': queryParams?.key}"></span>
                       {{resourceService.frmelmnts?.lbl?.inAll | translate}}
                 </h4>
-            <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata"  class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" type="button"  [routerLink]="['/profile']">
-              {{resourceService?.frmelmnts?.btn?.close | translate}} <i class="close icon"></i></button>
+            <!-- <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata"  class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" type="button"  [routerLink]="['/profile']">
+              {{resourceService?.frmelmnts?.btn?.close | translate}} <i class="close icon"></i></button> -->
         </div>
     </div>
     <div class="twelve wide column">
