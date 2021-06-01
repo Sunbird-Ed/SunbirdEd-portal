@@ -8,7 +8,7 @@ import { QuestionnaireService } from "../../questionnaire.service";
 })
 export class InputTypeAttachmentComponent implements OnInit {
   @Input() data;
-
+  formData;
   td = [
     {
       name: "xyz.png",
@@ -25,17 +25,18 @@ export class InputTypeAttachmentComponent implements OnInit {
       sourcePath: "http://www.pdf995.com/samples/pdf.pdf",
     },
   ];
-  constructor(private qService: QuestionnaireService) {}
+  constructor(private qService: QuestionnaireService) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   basicUpload(files: File[]) {
-    var formData = new FormData();
-    Array.from(files).forEach((f) => formData.append("file", f));
-    this.preSignedUrl(this.getFileNames(formData));
+    this.formData = new FormData();
+    Array.from(files).forEach((f) => this.formData.append('file', f));
+    this.preSignedUrl(this.getFileNames(this.formData));
   }
 
   getFileNames(formData) {
+    debugger
     let files = [];
     formData.forEach((element) => {
       files.push(element.name);
@@ -44,6 +45,7 @@ export class InputTypeAttachmentComponent implements OnInit {
   }
 
   preSignedUrl(files) {
+    debugger
     let payload = {};
     payload["ref"] = "survey";
     payload["request"] = {};
@@ -51,8 +53,20 @@ export class InputTypeAttachmentComponent implements OnInit {
       files: files,
     };
     this.qService.getPreSingedUrls(payload).subscribe(
-      (data) => {
-        console.log(data);
+      (imageData) => {
+        debugger
+        const uploadPayload = {
+          url: imageData['result'][this.data.submissionId].files[0].url,
+          data: this.formData
+        }
+        this.formData.append('url', imageData['result'][this.data.submissionId].files[0].url)
+
+        this.qService.cloudStorageUpload(this.formData).subscribe(success => {
+          debugger
+        }, error => {
+          debugger
+        })
+        // console.log(data);
       },
       (error) => {
         console.log(error);

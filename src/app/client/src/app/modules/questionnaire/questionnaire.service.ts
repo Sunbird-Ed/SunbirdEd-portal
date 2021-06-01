@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
 import { AbstractControl, ValidatorFn } from "@angular/forms";
 import { ConfigService } from "@sunbird/shared";
-import { KendraService } from "@sunbird/core";
+import { KendraService, CloudService } from "@sunbird/core";
+import { HttpClient } from "@angular/common/http";
 
 @Injectable({
   providedIn: "root",
@@ -10,8 +11,10 @@ export class QuestionnaireService {
   private _submissionId: any;
   constructor(
     private config: ConfigService,
-    private kendraService: KendraService
-  ) {}
+    private kendraService: KendraService,
+    private cloudServ: CloudService,
+    private http: HttpClient
+  ) { }
 
   validate = (data): ValidatorFn => {
     return (control: AbstractControl): { [key: string]: any } | null => {
@@ -138,10 +141,10 @@ export class QuestionnaireService {
                   questions.responseType !== "matrix"
                     ? validSubmission.answers[questions._id].value
                     : this.constructMatrixValue(
-                        validSubmission,
-                        questions,
-                        evidence.externalId
-                      );
+                      validSubmission,
+                      questions,
+                      evidence.externalId
+                    );
                 questions.remarks = validSubmission.answers[question._id]
                   ? validSubmission.answers[question._id].remarks
                   : "";
@@ -154,10 +157,10 @@ export class QuestionnaireService {
                 question.responseType !== "matrix"
                   ? validSubmission.answers[question._id].value
                   : this.constructMatrixValue(
-                      validSubmission,
-                      question,
-                      evidence.externalId
-                    );
+                    validSubmission,
+                    question,
+                    evidence.externalId
+                  );
               question.remarks = validSubmission.answers[question._id]
                 ? validSubmission.answers[question._id].remarks
                 : "";
@@ -218,4 +221,17 @@ export class QuestionnaireService {
     };
     return this.kendraService.post(paramOptions);
   }
+
+  cloudStorageUpload(payload) {
+    const paramOptions = {
+      url: 'upload',
+      data: payload,
+      // header:{
+      //   "Content-Type": "multipart/form-data",
+      // }
+    };
+    return this.cloudServ.put(paramOptions)
+    // return this.http.put(payload['url'], payload.data)
+  }
+
 }
