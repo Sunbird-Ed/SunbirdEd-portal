@@ -9,11 +9,6 @@ import { containerAPI, ISystemQueueInstance, ISystemQueue, SystemQueueReq, Syste
 import { manifest } from "../../manifest";
 import TelemetryHelper from "../../helper/telemetryHelper";
 import { ImportContent } from "./contentImport";
-import { ClassLogger } from "@project-sunbird/logger/decorator";
-// @ClassLogger({
-//   logLevel: "debug",
-//   logTime: true,
-// })
 @Singleton
 export class ContentImportManager {
   @Inject private dbSDK: DatabaseSDK;

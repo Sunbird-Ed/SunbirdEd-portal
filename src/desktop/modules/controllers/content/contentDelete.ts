@@ -9,10 +9,6 @@ import { ContentDeleteHelper } from "./contentDeleteHelper";
 import { IContentDelete } from "./IContent";
 import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
 
-/*@ClassLogger({
-  logLevel: "debug",
-  logTime: true,
-})*/
 export default class ContentDelete {
     @Inject
     private databaseSdk: DatabaseSDK;
@@ -126,6 +122,6 @@ export default class ContentDelete {
             },
         };
         this.standardLog.info({ id: 'CONTENT_DELETE_FIND_CHILDREN', message: `finding all child contents of a collection` });
-        return await this.databaseSdk.find("content", dbFilter);
+        return this.databaseSdk.find("content", dbFilter);
     }
 }

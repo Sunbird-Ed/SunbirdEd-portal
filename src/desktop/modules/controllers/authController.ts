@@ -8,12 +8,6 @@ import { EventManager } from "@project-sunbird/OpenRAP/managers/EventManager";
 import { Inject } from 'typescript-ioc';
 const uuidv1 = require('uuid/v1');
 
-
-// @ClassLogger({
-//     logLevel: "debug",
-//     logTime: true,
-//     logMethods: ["getDeviceId", "getDesktopAppUpdate", "getAppInfo" ],
-//   })
 export default class AuthController {
     private deviceId;
     private userSDK;

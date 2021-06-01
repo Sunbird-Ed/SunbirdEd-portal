@@ -60,12 +60,10 @@ export class GeneralizedResources {
 
   public async fetchOffline(language, req): Promise<any> {
     const docId = `generalized_${language}`;
-    let resources: any = await this.databaseSdk.get(GEN_RESOURCE_DB, docId).then((doc) => doc.data).catch((err) => {
+    return this.databaseSdk.get(GEN_RESOURCE_DB, docId).then((doc) => doc.data).catch((err) => {
       this.standardLog.error({ id: 'GENERALIZED_RESOURCE_DB_READ_FAILED', message: `Error while reading Generalized resources from DB for language: ${language}`, mid: req.get("x-msgid"), error: err });
       return undefined;
     });
-
-    return resources;
   }
 
   public async fetchOnline(language, req): Promise<any> {
@@ -74,7 +72,7 @@ export class GeneralizedResources {
         "content-type": "application/json",
       },
     };
-    return await HTTPService.get(`${process.env.APP_BASE_URL}/getGeneralisedResourcesBundles/${language}/all_labels_${language}.json`, config).toPromise()
+    return HTTPService.get(`${process.env.APP_BASE_URL}/getGeneralisedResourcesBundles/${language}/all_labels_${language}.json`, config).toPromise()
       .then((data: any) => {
         const resources = _.get(data, "data.result");
         if (resources) {

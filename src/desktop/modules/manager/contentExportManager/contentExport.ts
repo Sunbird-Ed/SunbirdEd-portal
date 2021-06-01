@@ -9,13 +9,7 @@ import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import { logger } from "@project-sunbird/logger";
 const fileSDK = containerAPI.getFileSDKInstance(manifest.id);
 import ContentLocation from "../../controllers/contentLocation";
-
-import { ClassLogger } from "@project-sunbird/logger/decorator";
 import { Inject } from 'typescript-ioc';
-// @ClassLogger({
-//   logLevel: "debug",
-//   logTime: true,
-// })
 export class ExportContent {
   private contentBaseFolder;
   private parentArchive;
