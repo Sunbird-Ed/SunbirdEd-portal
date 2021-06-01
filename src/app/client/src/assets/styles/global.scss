@@ -664,3 +664,7 @@ app-workspace {
 html.PlayerMediaQueryClass {
   font-size: calc(12px + (32 - 12) * ((100vw - 320px) / (1920 - 320)));
 }
+
+.width-full{
+  width: 100%;
+}
