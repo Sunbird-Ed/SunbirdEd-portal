@@ -1,4 +1,10 @@
-import { Component, Input, OnInit } from "@angular/core";
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+} from "@angular/core";
 import { QuestionnaireService } from "../../questionnaire.service";
 import { ResourceService } from "@sunbird/shared";
 import { Question, ResponseType } from "../../Interface/assessmentDetails";
@@ -9,17 +15,19 @@ import { FormGroup } from "@angular/forms";
   templateUrl: "./question-generic-inputs.component.html",
   styleUrls: ["./question-generic-inputs.component.scss"],
 })
-export class QuestionGenericInputsComponent implements OnInit {
+export class QuestionGenericInputsComponent implements AfterViewInit {
   @Input() questions: Array<Question>;
   @Input() questionnaireForm: FormGroup;
   attachmentData = { submissionId: this.qService.getSubmissionId() };
   selectedIndex: number;
   constructor(
     public resourceService: ResourceService,
-    private qService: QuestionnaireService
+    private qService: QuestionnaireService,
+    private cdr: ChangeDetectorRef
   ) {}
-
-  ngOnInit() {}
+  ngAfterViewInit(): void {
+    this.cdr.detectChanges();
+  }
 
   public get reponseType(): typeof ResponseType {
     return ResponseType;

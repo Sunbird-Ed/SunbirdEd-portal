@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, HostListener, OnInit } from "@angular/core";
 import {
   COLUMN_TYPE,
   LayoutService,
@@ -169,9 +169,6 @@ export class QuestionnaireComponent implements OnInit {
       buttonText: this.resourceService.frmelmnts.btn.ok,
     });
     alertMetaData.footer.className = "single-btn";
-    let returnData = await this.observationUtilService.showPopupAlert(
-      alertMetaData
-    );
   }
 
   scrollToContent(id) {

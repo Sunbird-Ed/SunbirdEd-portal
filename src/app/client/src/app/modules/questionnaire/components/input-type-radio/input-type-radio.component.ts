@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, Output, EventEmitter } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Question } from "../../Interface/assessmentDetails";
+import { QuestionnaireService } from "../../questionnaire.service";
 
 @Component({
   selector: "input-type-radio",
@@ -13,12 +14,15 @@ export class InputTypeRadioComponent implements OnInit {
   @Input() question: Question;
   @Output() dependentParent = new EventEmitter<Question>();
 
-  constructor() {}
+  constructor(public qService: QuestionnaireService) {}
 
   ngOnInit() {
     this.questionnaireForm.addControl(
       this.question._id,
-      new FormControl(this.question.value || null, Validators.required)
+      new FormControl(
+        this.question.value || null,
+        this.qService.validate(this.question)
+      )
     );
 
     this.question.startTime = this.question.startTime

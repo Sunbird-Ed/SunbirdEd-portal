@@ -25,7 +25,11 @@
       </div>
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT">
-      <div *ngFor="let section of sections" [id]="section.code">
+      <div
+        *ngFor="let section of sections"
+        [id]="section.code"
+        [ngClass]="{ 'evidence-completed': evidence?.isSubmitted }"
+      >
         <div class="sbt-page-content-area my-20">
           <h4>{{ section.name }}</h4>
         </div>
@@ -43,7 +47,9 @@
           <!-- {{questionnaireForm.value |json}} -->
         </div>
       </div>
-      <div class="d-flex flex-jc-space-evenly m-32">
+      <div
+        [ngClass]="{ 'd-flex flex-jc-space-evenly m-32':true,'evidence-completed': evidence?.isSubmitted }"
+      >
         <button
           class="sb-btn sb-btn-normal sb-btn-primary"
           type="button"

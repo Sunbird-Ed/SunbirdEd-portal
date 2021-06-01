@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormGroup, FormControl, Validators, FormArray } from "@angular/forms";
 import { Question } from "../../Interface/assessmentDetails";
+import { QuestionnaireService } from "../../questionnaire.service";
 
 @Component({
   selector: "input-type-checkbox",
@@ -13,7 +14,7 @@ export class InputTypeCheckboxComponent implements OnInit {
   @Input() question: Question;
   @Output() dependentParent = new EventEmitter<Question>();
 
-  constructor() {}
+  constructor(public qService: QuestionnaireService) {}
 
   ngOnInit() {
     const optionControl = this.options.map((v) => {
@@ -28,7 +29,7 @@ export class InputTypeCheckboxComponent implements OnInit {
 
     this.questionnaireForm.addControl(
       this.question._id,
-      new FormArray(optionControl, Validators.required)
+      new FormArray(optionControl, this.qService.validate(this.question))
     );
 
     this.question.startTime = this.question.startTime

@@ -9,7 +9,10 @@
     <div [ngClass]="{ content: question.responseType != 'pageQuestions' }">
       <div
         *ngFor="let q of question.question; let qai = index"
-        [ngClass]="{ 'mb-20': q.length }"
+        [ngClass]="{
+          'mb-20': q.length,
+          'valid-response': questionnaireForm?.controls[question._id]?.valid
+        }"
       >
         <div class="sb-h5">{{ qai == 0 ? qi + 1 + ")" : "" }}&nbsp;{{ q }}</div>
       </div>

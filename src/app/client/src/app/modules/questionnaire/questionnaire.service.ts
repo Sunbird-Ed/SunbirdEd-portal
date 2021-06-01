@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { AbstractControl, ValidatorFn } from "@angular/forms";
 import { ConfigService } from "@sunbird/shared";
 import { KendraService } from "@sunbird/core";
-import { Evidence } from "./Interface/assessmentDetails";
+import { Evidence, Question, ResponseType } from "./Interface/assessmentDetails";
 
 @Injectable({
   providedIn: "root",
@@ -14,17 +14,24 @@ export class QuestionnaireService {
     private kendraService: KendraService
   ) {}
 
-  validate = (data): ValidatorFn => {
+  validate = (data:Question): ValidatorFn => {
     return (control: AbstractControl): { [key: string]: any } | null => {
+      
+      if (typeof data.validation == 'string') {
+        return null;
+      }
       if (!data.validation.required) {
         return null;
       }
       if (data.validation.regex) {
         const forbidden = this.testRegex(data.validation.regex, control.value);
-        return forbidden ? null : { err: "Only alphabets allowed" };
+        return forbidden ? null : { err: "Invalid character found" };
       }
 
       if (data.validation.IsNumber) {
+        if (!control.value) {
+          return { err: "Number not entered" };
+        }
         const forbidden = !isNaN(control.value);
         return forbidden ? null : { err: "Only numbers allowed" };
       }
@@ -33,9 +40,12 @@ export class QuestionnaireService {
         if (!control.value || !control.value.length) {
           return { err: "Required field" };
         }
+
+        if (data.responseType == ResponseType.MULTISELECT) {
+           return control.value.some(v=>v !='') ? null:{err:'Select at least one option'}
+        }
       }
 
-      return null;
     };
   };
 

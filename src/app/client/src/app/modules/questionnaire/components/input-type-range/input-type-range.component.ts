@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Question } from "../../Interface/assessmentDetails";
+import { QuestionnaireService } from "../../questionnaire.service";
 
 @Component({
   selector: "input-type-range",
@@ -10,12 +11,12 @@ import { Question } from "../../Interface/assessmentDetails";
 export class InputTypeRangeComponent implements OnInit {
   @Input() questionnaireForm: FormGroup;
   @Input() question: Question;
-  constructor() {}
+  constructor(public qService: QuestionnaireService) {}
 
   ngOnInit() {
     this.questionnaireForm.addControl(
       this.question._id,
-      new FormControl(this.question.value || 0, Validators.required)
+      new FormControl(this.question.value || null, [Validators.required])
     );
     this.question.startTime = this.question.startTime
       ? this.question.startTime

@@ -3,9 +3,16 @@
   height: auto;
 }
 
-
-.section-list{
+.section-list {
   margin-bottom: 20px;
   z-index: 9;
   position: relative;
+}
+
+.evidence-completed {
+  pointer-events: none;
+  button{
+    pointer-events: none;
+  }
+
 }
