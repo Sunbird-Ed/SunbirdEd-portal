@@ -16,6 +16,7 @@ export interface IActivity {
   subject: string;
   type: string;
   contentType?: string;
+  trackable?: { enabled: string };
 }
 @Component({
   selector: 'app-activity-list',
@@ -136,7 +137,6 @@ export class ActivityListComponent implements OnInit, OnDestroy {
   }
 
   addTelemetry (id, cdata?, extra?, obj?) {
-
     this.groupService.addTelemetry({id, extra}, this.activateRoute.snapshot, cdata || [], _.get(this.groupData, 'id'), obj);
   }
 
