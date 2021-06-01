@@ -52,4 +52,18 @@ export class InputTypeRangeComponent implements OnInit {
   get isTouched(): boolean {
     return this.questionnaireForm.controls[this.question._id].touched;
   }
+
+  get min() {
+    if (typeof this.question.validation == "string") {
+      return null;
+    }
+    return this.question.validation.min;
+  }
+
+  get max() {
+    if (typeof this.question.validation == "string") {
+      return null;
+    }
+    return this.question.validation.max;
+  }
 }
