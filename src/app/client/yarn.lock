@@ -896,10 +896,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.6.tgz#15a88937fb643d5eb33a81c8d28ece00b56d5aa0"
   integrity sha512-rK87rHdagadIS7UrWju7HDolIfWlO5CbK+tIJrEApO+QPMi+k8KuWoLc8MxEprrsJxUt6r44O4uGiO0hgI5plA==
 
-"@project-sunbird/sunbird-collection-editor@3.9.19":
-  version "3.9.19"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-3.9.19.tgz#03a06e0d2e594c10f39c6c91312e58615e5da0ec"
-  integrity sha512-+ahskcK4GRhm2vCuG30coEeJeJyUQnqBTEqfdjmRA1Ra263lP33VFFR4bifTXdtW9oefgsNHhLyJHRazxTtXQQ==
+"@project-sunbird/sunbird-collection-editor@3.9.20":
+  version "3.9.20"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-3.9.20.tgz#32ee2b474520f98fa72cf034732b279f924f2543"
+  integrity sha512-DAY8KdzfAWmlsuWzYF8yUq3kKuCA4/7Kdpfcw6U/AJkqHoIMvFpNF0jIUTlc1RToMFNRUByBCrQxFuxIrXkj8g==
   dependencies:
     "@project-sunbird/ckeditor-build-classic" "0.0.4"
     tslib "^1.9.0"
@@ -3068,11 +3068,12 @@ commander@^2.11.0, commander@^2.12.1, commander@^2.19.0, commander@^2.20.0, comm
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
 
-common-form-elements@3.9.16:
-  version "3.9.16"
-  resolved "https://registry.yarnpkg.com/common-form-elements/-/common-form-elements-3.9.16.tgz#ca5f8d807e14c0e7fa413d71a4c5ace267942f0c"
-  integrity sha512-Pb41eRwkATom+fBdXxeME7hnO+WTjaQ1am20XmXoVLIdSRlB1Hfcw6Y/GzH2QaSYC+yx+J+7+Funm6MMjcpQlw==
+common-form-elements@3.9.15:
+  version "3.9.15"
+  resolved "https://registry.yarnpkg.com/common-form-elements/-/common-form-elements-3.9.15.tgz#4d4f8d8659d6af69af18e0411c1859dac0cd4bc7"
+  integrity sha512-i1EbLqQUjthLlKf/EED6/ljl3YVp95iC8n+bYVZ1dJoqI9YgeC69Duv97AmnJhlUTKOW7xw/X+LTc5DE7l+6gQ==
   dependencies:
+    "@project-sunbird/ckeditor-build-classic" "0.0.4"
     immutable "^4.0.0-rc.12"
     moment "^2.29.1"
     tslib "^1.9.0"
