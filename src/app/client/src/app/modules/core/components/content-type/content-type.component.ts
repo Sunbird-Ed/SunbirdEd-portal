@@ -35,21 +35,18 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     this.subscription = this.utilService.currentRole.subscribe(async (result) => {
       if (result) {
         this.userType=result;
+        this.getContentTypes();
       } 
       else{
-        if(this.userService.loggedIn){
-          this.userService.userData$
-          .subscribe((profileData:IUserData) => {
-            if(profileData.userProfile["profileUserType"] &&
-            profileData.userProfile["profileUserType"]["type"] === null){
+        if(await this.userService.loggedIn){
+          const profileData = JSON.parse(sessionStorage.getItem("CacheServiceuserProfile"));
+          if(profileData.value.profileUserType.type === null){
               return;
             }
-            this.userType=profileData.userProfile["profileUserType"]["type"];
-          });
+            this.userType=profileData.value.profileUserType.type;
           }
-      }
-      this.getContentTypes();
-
+          this.getContentTypes();
+      }      
     });
   }
 
@@ -168,11 +165,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     };
     this.formService
       .getFormConfig(formServiceInputParams)
-      .subscribe((data: any) => {
-        this.utilService.formData = data;
-        if(!this.userService.loggedIn){
-          data = data.filter((obj) => obj.contentType != "observation");
-        }
+      .subscribe(async (data: any) => {
         this.updateForm(data);
         this.setContentTypeOnUrlChange();
       });
