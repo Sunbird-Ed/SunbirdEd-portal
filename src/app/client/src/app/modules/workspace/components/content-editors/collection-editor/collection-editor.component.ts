@@ -43,7 +43,7 @@ export class CollectionEditorComponent implements OnInit, OnDestroy {
   collectionEditorURL: string = (<HTMLInputElement>document.getElementById('collectionEditorURL')) ?
   (<HTMLInputElement>document.getElementById('collectionEditorURL')).value : '';
   /**
-  * Default method of class CollectionEditorComponent
+  * Default method of classs CollectionEditorComponent
   * @param {ResourceService} resourceService To get language constant
   * @param {EditorService} editorService To provide the api services
   * @param {ConfigService} config Reference of ConfigService
