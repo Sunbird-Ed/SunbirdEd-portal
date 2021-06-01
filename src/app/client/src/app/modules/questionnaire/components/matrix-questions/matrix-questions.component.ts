@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from "@angular/core";
+import { ChangeDetectorRef, Component, Input, OnInit, ViewChild } from "@angular/core";
 import {
   FormArray,
   FormBuilder,
@@ -38,7 +38,8 @@ export class MatrixQuestionsComponent implements OnInit {
     public fb: FormBuilder,
     public resourceService: ResourceService,
     public observationUtilService: ObservationUtilService,
-    public qService: QuestionnaireService
+    public qService: QuestionnaireService,
+    private cdr:ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -91,25 +92,7 @@ export class MatrixQuestionsComponent implements OnInit {
     };
     this.context = config.context;
     this.showBadgeAssingModel = true;
-    // const obj = {
-    //   selectedIndex: i,
-    //   data: JSON.parse(JSON.stringify(this.data)),
-    //   evidenceId: this.evidenceId,
-    //   schoolId: this.schoolId,
-    //   generalQuestion: this.generalQuestion,
-    //   submissionId: this.submissionId,
-    //   questionIndex: this.inputIndex,
-    //   enableQuestionReadOut: this.enableQuestionReadOut,
-    // };
-    // let matrixModal = this.modalCntrl.create(MatrixActionModalPage, obj);
-    // matrixModal.onDidDismiss((instanceValue) => {
-    //   if (this.enableGps) {
-    //     this.checkForGpsLocation(i, instanceValue);
-    //   } else {
-    //     this.updateInstance(i, instanceValue);
-    //   }
-    // });
-    // matrixModal.present();
+    this.cdr.detectChanges()
   }
 
   get formAsArray() {

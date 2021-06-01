@@ -39,8 +39,13 @@ export class QuestionGenericInputsComponent implements AfterViewInit {
       if (children.includes(q._id)) {
         let child = this.questions[i];
         child["canDisplay"] = this.canDisplayChildQ(child, i);
+        if (child["canDisplay"] == false) {
+          child.value = ""
+          this.questionnaireForm.removeControl(child._id)
+        }
       }
     });
+    this.cdr.detectChanges();
   }
 
   canDisplayChildQ(currentQuestion: Question, currentQuestionIndex: number) {

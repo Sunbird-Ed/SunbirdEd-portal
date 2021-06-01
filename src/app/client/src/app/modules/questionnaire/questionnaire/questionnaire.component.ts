@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, HostListener, OnInit } from "@angular/core";
 import {
   COLUMN_TYPE,
   LayoutService,
@@ -17,6 +17,7 @@ import {
   Section,
 } from "../Interface/assessmentDetails";
 import { ObservationUtilService } from "../../observation/service";
+import { ChangeDetectionStrategy } from "@angular/compiler/src/compiler_facade_interface";
 
 @Component({
   selector: "app-questionnaire",
@@ -44,7 +45,8 @@ export class QuestionnaireComponent implements OnInit {
     private config: ConfigService,
     private observationService: ObservationService,
     private location: Location,
-    private observationUtilService: ObservationUtilService
+    private observationUtilService: ObservationUtilService,
+    private cdr:ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -56,9 +58,6 @@ export class QuestionnaireComponent implements OnInit {
     this.questionnaireForm = this.fb.group({});
     // this.evidence = this.data.result.assessment.evidences[0];
     // this.sections = this.evidence.sections;
-    this.questionnaireForm.valueChanges.subscribe((res) => {
-      console.log(this.questionnaireForm);
-    });
   }
 
   getQuestionnare() {
@@ -79,6 +78,7 @@ export class QuestionnaireComponent implements OnInit {
         this.evidence = data.result.assessment.evidences[0];
         this.evidence.startTime = Date.now();
         this.sections = this.evidence.sections;
+        this.cdr.detectChanges()
       },
       (error) => {}
     );
@@ -169,6 +169,7 @@ export class QuestionnaireComponent implements OnInit {
       buttonText: this.resourceService.frmelmnts.btn.ok,
     });
     alertMetaData.footer.className = "single-btn";
+    this.observationUtilService.showPopupAlert(alertMetaData)
   }
 
   scrollToContent(id) {
