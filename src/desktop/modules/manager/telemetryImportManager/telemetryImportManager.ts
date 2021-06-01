@@ -7,12 +7,6 @@ import { logger } from "@project-sunbird/logger";
 import { containerAPI, ISystemQueueInstance, SystemQueueReq } from "@project-sunbird/OpenRAP/api";
 import { manifest } from "../../manifest";
 import { ImportTelemetry } from "./telemetryImport";
-
-import { ClassLogger } from "@project-sunbird/logger/decorator";
-// @ClassLogger({
-//   logLevel: "debug",
-//   logTime: true,
-// })
 @Singleton
 export class TelemetryImportManager {
   private systemQueue: ISystemQueueInstance;

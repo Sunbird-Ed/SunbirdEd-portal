@@ -38,6 +38,7 @@ export class ActivityDashboardComponent implements OnInit {
   columnConfig: IColumnConfig;
   loaderMessage = _.get(this.resourceService.messages.fmsg, 'm0087');
   memberListUpdatedOn: string;
+  lastUpdated = _.get(this.resourceService.frmelmnts.lbl, 'LastUpdated');
 
   constructor(
     private groupService: GroupsService,
@@ -141,7 +142,6 @@ export class ActivityDashboardComponent implements OnInit {
     this.groupService.getDashletData(this.coursehierarchy, this.aggregateData).subscribe(data => {
       this.isLoader = false;
       // const column = Object.keys( data.rows).sort().reduce((r, k) => (r[k] =  data.rows[k], r), {});
-      // console.log(column, 'col');
       this.Dashletdata = { values: data.rows };
       this.columnConfig = { columnConfig: data.columns };
     });

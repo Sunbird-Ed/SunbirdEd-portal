@@ -4,8 +4,6 @@ import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import * as os from "os";
 import config from "../config";
 import Response from "../utils/response";
-
-import { ClassLogger } from "@project-sunbird/logger/decorator";
 import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
 import { Inject } from 'typescript-ioc';
 
@@ -20,11 +18,6 @@ const systemInfo = {
     linux: "linux",
 };
 
-// @ClassLogger({
-//     logLevel: "debug",
-//     logTime: true,
-//     logMethods: ["getDeviceId", "getDesktopAppUpdate", "getAppInfo" ],
-//   })
 export default class Appupdate {
     private deviceId;
     @Inject private standardLog: StandardLogger;

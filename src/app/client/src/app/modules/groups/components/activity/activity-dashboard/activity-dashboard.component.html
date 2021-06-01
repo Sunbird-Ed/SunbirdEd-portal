@@ -19,9 +19,9 @@
       <app-loader [data]='loaderMessage'></app-loader>
     </div>
     <div *ngIf="memberListUpdatedOn">
-      <span class="fxsmall"> {{ resourceService?.frmelmnts?.lbl?.LastUpdated }}: {{memberListUpdatedOn | date:'MMM d, y, h:mm a'}} </span>
+      <span class="fxsmall"> {{ lastUpdated }}: {{memberListUpdatedOn | date:'MMM d, y, h:mm a'}} </span>
     </div>
-    <div class="ui-container" *ngIf="!isLoader && Dashletdata.values && columnConfig.columnConfig">
+    <div class="ui-container" *ngIf="!isLoader">
       <sb-dashlet [type]="'table'" [data]="Dashletdata" [config]="columnConfig" #lib>
         <ng-template sbTemplateRef="header" let-config>
           <div role="alert">
