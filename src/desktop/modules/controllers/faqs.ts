@@ -7,14 +7,9 @@ import { Inject } from "typescript-ioc";
 import DatabaseSDK from "../sdk/database/index";
 import Response from "../utils/response";
 import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
+
 const FAQS_DB = "faqs";
 
-import { ClassLogger } from "@project-sunbird/logger/decorator";
-
-/*@ClassLogger({
-  logLevel: "debug",
-  logTime: true,
-})*/
 export class Faqs {
 
   @Inject private databaseSdk: DatabaseSDK;
@@ -77,7 +72,7 @@ export class Faqs {
           "content-type": "application/json",
       },
     };
-    return await HTTPService.get(`${process.env.FAQ_BLOB_URL}faq-${language}.json`, config).toPromise()
+    return HTTPService.get(`${process.env.FAQ_BLOB_URL}faq-${language}.json`, config).toPromise()
     .then((data: any) => {
       const faqsData = _.get(data, "data");
       if (faqsData) {

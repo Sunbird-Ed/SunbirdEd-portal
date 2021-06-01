@@ -14,6 +14,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '@sunbird/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
+import * as _ from 'lodash-es';
+import { DiscussionService } from '../../../../../../app/modules/discussion/services/discussion/discussion.service';
+import { MockResponseData } from './update-course-batch.component.data';
 import {
   getUserList,
   updateBatchDetails,
@@ -33,7 +36,8 @@ const resourceServiceMockData = {
     imsg: { m0027: 'Something went wrong' },
     stmsg: { m0009: 'error' },
     fmsg: {m0054 : 'error', m0056: 'error', m0052: 'error'},
-    smsg: {m0033: 'success', m0034: 'success'}
+    smsg: {m0033: 'success', m0034: 'success', m0065: 'enabled', m0066: 'disabled'},
+    emsg: {m0005: 'discussion forum error'}
   },
   frmelmnts: {
     btn: {
@@ -74,7 +78,8 @@ describe('UpdateCourseBatchComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       imports: [SharedModule.forRoot(), CoreModule, SuiModule, RouterTestingModule,
         HttpClientTestingModule, LearnModule],
-      providers: [ToasterService, ResourceService, UserService, TelemetryService, { provide: Router, useClass: RouterStub },
+      providers: [ToasterService, ResourceService, UserService, TelemetryService,
+        DiscussionService, { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
     });
   }));
@@ -232,6 +237,7 @@ describe('UpdateCourseBatchComponent', () => {
   it('should call resetForm method  and reset the form except start date', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    spyOn(component['discussionCsService'], 'getForumIds').and.returnValue(observableOf(MockResponseData.fetchForumResponse));
     spyOn(courseBatchService, 'getUserList').and.callFake((request) => {
       if (request) {
         return observableOf(getUserDetails);
@@ -252,11 +258,13 @@ describe('UpdateCourseBatchComponent', () => {
     expect(component.batchUpdateForm.controls['name'].value).toBeNull();
     expect(component.batchUpdateForm.controls['description'].value).toBeNull();
     expect(component.batchUpdateForm.controls['endDate'].value).toBeNull();
+    expect(component.forumIds).toEqual([9]);
   });
 
   it('should call resetForm method  and reset the form when batchDetails status is not 1)', () => {
     const courseBatchService = TestBed.get(CourseBatchService);
     const courseConsumptionService = TestBed.get(CourseConsumptionService);
+    const discussionService = TestBed.get(DiscussionService);
     spyOn(courseBatchService, 'getUserList').and.callFake((request) => {
       if (request) {
         return observableOf(getUserDetails);
@@ -382,7 +390,7 @@ describe('UpdateCourseBatchComponent', () => {
         pageid: activatedRoute.snapshot.data.telemetry.pageid
       }
     };
-    component.handleInputChange('yes');
+    component.handleInputChange('issue-certificate-yes');
     expect(telemetryService.interact).toHaveBeenCalledWith(telemetryData);
   });
 
@@ -453,4 +461,69 @@ describe('UpdateCourseBatchComponent', () => {
     expect(courseBatchService.removeUsersFromBatch).toHaveBeenCalled();
   });
 
+  it('should generate data for discussion forum', () => {
+    component.generateDataForDF();
+    expect(component.fetchForumIdReq).toEqual({
+      'type': 'batch',
+      'identifier': [undefined]
+    });
+  });
+
+   it('should fetch form config for batch discussion forum', () => {
+    const discussionService = TestBed.get(DiscussionService);
+    spyOn(discussionService, 'fetchForumConfig').and.returnValue(observableOf(MockResponseData.forumConfig));
+    component.fetchForumConfig();
+    expect(component.createForumRequest).toEqual(MockResponseData.forumConfig[0]);
+  });
+
+  it('should check enable disable discussion', () => {
+    spyOn(component, 'enableDiscussionForum');
+    component.batchUpdateForm = new FormGroup({
+      enableDiscussions: new FormControl('true')
+    });
+    const courseBatchService = TestBed.get(CourseBatchService);
+    spyOn(courseBatchService.updateEvent, 'emit');
+    component.checkEnableDiscussions('SOME_BATCH_ID');
+    expect(component.enableDiscussionForum).toHaveBeenCalled();
+  });
+
+  it('should enabled discussion options', () => {
+    const discussionService = TestBed.get(DiscussionService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(discussionService, 'createForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForumData));
+    spyOn(toasterService, 'success').and.stub();
+    component.enableDiscussionForum();
+    expect(discussionService.createForum).toHaveBeenCalled();
+  });
+
+  it('should disabled discussion options', () => {
+    const discussionService = TestBed.get(DiscussionService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(discussionService, 'removeForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForumData));
+    spyOn(toasterService, 'success').and.stub();
+    component.disableDiscussionForum('SOME_BATCH_ID');
+    expect(discussionService.removeForum).toHaveBeenCalled();
+  });
+
+  it('should show error in create forum request failed', () => {
+    const discussionService = TestBed.get(DiscussionService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(discussionService, 'createForum').and.returnValue(observableThrowError({}));
+    spyOn(toasterService, 'error');
+    component.enableDiscussionForum();
+    expect(toasterService.error).toHaveBeenCalledWith('discussion forum error');
+  });
+
+  it('should show error in fetch forum ids request failed', () => {
+    const discussionService = TestBed.get(DiscussionService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(discussionService, 'fetchForumConfig').and.returnValue(observableThrowError({}));
+    spyOn(toasterService, 'error');
+    component.fetchForumConfig();
+    expect(toasterService.error).toHaveBeenCalledWith('discussion forum error');
+  });
+
+  afterAll(() => {
+    TestBed.resetTestingModule();
+  });
 });
