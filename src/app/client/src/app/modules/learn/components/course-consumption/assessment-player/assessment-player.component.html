@@ -109,52 +109,56 @@
   <!-- <div class="ui container"> -->
   <div class="px-20">
     <div class="cc-player reduce-space-between">
-     <ng-container *ngIf="showSideNav">
-      <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 bg-pink">
-        <div class="cc-player__list px-0">
-          <h5 class="p-0 mb-0 font-weight-bold background-header-list">
-            {{resourceService?.frmelmnts?.lbl?.contentsLabel}}</h5>
-          <div class="side-toc-content chapter-box">
-            <div *ngFor="let item of courseHierarchy?.children; let index = index;">
-              <p *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection'" class="title">{{item?.name}}</p>
-              <div *ngIf="item;else noContent">
-                <div *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection' && !item?.children?.length">
-                  <div class="child-content-padding">
-                    <sb-toc-card [content]="item" (tocCardClick)="onTocCardClick($event, 'toc-card')" [type]="cardType"
-                      [contentStatus]="contentStatus">
-                    </sb-toc-card>
+      <ng-container *ngIf="showSideNav">
+        <section class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 bg-pink">
+          <div class="cc-player__list px-0">
+            <h5 class="p-0 mb-0 font-weight-bold background-header-list">
+              {{resourceService?.frmelmnts?.lbl?.contentsLabel}}</h5>
+            <div class="side-toc-content chapter-box">
+              <div *ngFor="let item of courseHierarchy?.children; let index = index;">
+                <p *ngIf="item?.mimeType === 'application/vnd.ekstep.content-collection'" class="title">{{item?.name}}
+                </p>
+                <div *ngIf="item;else noContent">
+                  <div
+                    *ngIf="item?.mimeType !== 'application/vnd.ekstep.content-collection' && !item?.children?.length">
+                    <div class="child-content-padding">
+                      <sb-toc-card [content]="item" (tocCardClick)="onTocCardClick($event, 'toc-card')"
+                        [type]="cardType" [contentStatus]="contentStatus">
+                      </sb-toc-card>
+                    </div>
                   </div>
-                </div>
-                <div *ngIf="item?.children?.length">
-                  <div *ngFor="let child of item?.children">
-                    <div class="toc-child-item">
-                      <sb-toc-child-item [activeContent]="activeContent" [childData]="child"
-                        (tocCardClick)="onTocCardClick($event, 'child-item')" [contentStatus]="contentStatus"
-                        [type]="cardType">
-                      </sb-toc-child-item>
+                  <div *ngIf="item?.children?.length">
+                    <div *ngFor="let child of item?.children">
+                      <div class="toc-child-item">
+                        <sb-toc-child-item [activeContent]="activeContent" [childData]="child"
+                          (tocCardClick)="onTocCardClick($event, 'child-item')" [contentStatus]="contentStatus"
+                          [type]="cardType">
+                        </sb-toc-child-item>
+                      </div>
                     </div>
                   </div>
                 </div>
+                <ng-template #noContent>
+                  <div class="heading">{{noContentMessage}}</div>
+                </ng-template>
               </div>
-              <ng-template #noContent>
-                <div class="heading">{{noContentMessage}}</div>
-              </ng-template>
+              <sb-toc-card [content]="courseHierarchy"
+                *ngIf="courseHierarchy?.mimeType !== 'application/vnd.ekstep.content-collection'"
+                (tocCardClick)="onTocCardClick($event)" [type]="cardType" [contentStatus]="contentStatus">
+              </sb-toc-card>
             </div>
-            <sb-toc-card [content]="courseHierarchy"
-              *ngIf="courseHierarchy?.mimeType !== 'application/vnd.ekstep.content-collection'"
-              (tocCardClick)="onTocCardClick($event)" [type]="cardType" [contentStatus]="contentStatus">
-            </sb-toc-card>
           </div>
-        </div>
-      </section>
-    </ng-container>
+        </section>
+      </ng-container>
       <!-- combining the content and sidenav icon -->
       <section
         class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12 cc-player__video sb-toc-player-column">
-        <button *ngIf="sideNavClose" mat-icon-button aria-label="Navbar Toggle button" class="toggleBtn side-nav-button-opened"  (click)="sideNavOpenAndClose()" >
-          <mat-icon class="dehaze-icon reverse" >double_arrow</mat-icon>
+        <button *ngIf="sideNavClose" mat-icon-button aria-label="Navbar Toggle button"
+          class="toggleBtn side-nav-button-opened" (click)="sideNavOpenAndClose()">
+          <mat-icon class="dehaze-icon reverse">double_arrow</mat-icon>
         </button>
-        <button *ngIf="!sideNavClose" mat-icon-button aria-label="Navbar Toggle button" color="primary" class="toggleBtn side-nav-button-closed" (click)="sideNavOpenAndClose()">
+        <button *ngIf="!sideNavClose" mat-icon-button aria-label="Navbar Toggle button" color="primary"
+          class="toggleBtn side-nav-button-closed" (click)="sideNavOpenAndClose()">
           <mat-icon class="dehaze-icon">double_arrow</mat-icon>
         </button>
         <div class="toc-content text-left">
@@ -173,12 +177,12 @@
               </app-content-actions>
             </section>
           </div>
-          <!-- <div class="mt-8">
+          <div class="mt-8">
             <app-credits-and-licence *ngIf="activeContent" [contentData]="activeContent"></app-credits-and-licence>
-          </div> -->
+          </div>
         </div>
       </section>
-      </div>
+    </div>
   </div>
 
 
@@ -194,11 +198,19 @@
   (close)="onCourseCompleteClose()"></app-course-completion>
 
 
-<div class="parent-content-glance">
-  <div class="discussion-container">
+<!-- <div class="parent-content-glance"> -->
+<!-- <div class="discussion-container">
+
     <input class="sb-form-control-discussion input-container" type="text" placeholder="discussion">
-  </div>
-  <div class="mt-8 content-glance">
+
+
+
+
+    <mat-icon>send</mat-icon>
+
+  </div> -->
+
+<!-- <div class="mt-8 content-glance">
     <app-credits-and-licence *ngIf="activeContent" [contentData]="activeContent"></app-credits-and-licence>
   </div>
-</div>
+</div> -->
