@@ -136,21 +136,21 @@ describe('InAppNotificationComponent', () => {
     it('should fetch the notification list and get unread notification count', () => {
       // arrange
       const notificationService: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
-      spyOn(notificationService, 'fetchInAppNotifications').and.returnValue(notificationList);
+      spyOn(notificationService, 'fetchNotificationList').and.returnValue(notificationList);
       // act
       component.fetchNotificationList();
       // assert
-      expect(notificationService.fetchInAppNotifications).toHaveBeenCalled();
+      expect(notificationService.fetchNotificationList).toHaveBeenCalled();
     });
 
     it('should fetch the notification list and when the list is empty', () => {
       // arrange
       const notificationService: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
-      spyOn(notificationService, 'fetchInAppNotifications').and.returnValue([]);
+      spyOn(notificationService, 'fetchNotificationList').and.returnValue([]);
       // act
       component.fetchNotificationList();
       // assert
-      expect(notificationService.fetchInAppNotifications).toHaveBeenCalled();
+      expect(notificationService.fetchNotificationList).toHaveBeenCalled();
       expect(component.notificationCount).toEqual(0);
     });
 
@@ -169,152 +169,6 @@ describe('InAppNotificationComponent', () => {
       expect(component.showNotificationModel).toBeFalsy();
     });
 
-  });
-
-  describe('markNotificationAsRead', async () => {
-    it('should mark the notification as read status', async () => {
-      // arrange
-      spyOn(component, 'generateInteractEvent');
-      const notificationService: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
-      spyOn(notificationService, 'updateNotificationRead').and.returnValue(notificationList);
-      // act
-      await component.markNotificationAsRead(notificationData);
-      // assert
-      expect(component.generateInteractEvent).toHaveBeenCalledWith('notification-read',
-        { id: notificationData.id, type: 'notificationId' });
-      expect(notificationService.updateNotificationRead).toHaveBeenCalledWith(notificationData.id);
-    });
-  });
-
-  describe('notificationHandler', async () => {
-    it('should return null if the event data is null', async () => {
-      //  arrange
-      const event = {};
-      // act
-      const resp = await component.notificationHandler(event);
-      // assert
-      expect(resp).toBeFalsy();
-    });
-
-    it('should navigate to the url linked with notification', async () => {
-      //  arrange
-      const event = {
-        data: {
-          id: 'notification_id',
-          data: {
-            actionData: {
-              deepLink: 'https://url.com/resource/course'
-            }
-          }
-        }
-      };
-      const router = TestBed.get(Router);
-      spyOn(component, 'markNotificationAsRead');
-      spyOn(component, 'fetchNotificationList');
-      // act
-      await component.notificationHandler(event);
-      // assert
-      expect(component.showNotificationModel).toBeFalsy();
-      expect(router.navigate).toHaveBeenCalledWith(['/resource/course'], {});
-      expect(component.markNotificationAsRead).toHaveBeenCalledWith(event.data);
-      expect(component.fetchNotificationList).toHaveBeenCalled();
-    });
-
-    it('should navigate to the profiles page if course certificate notification is clicked', async () => {
-      //  arrange
-      const event = {
-        data: {
-          id: 'notification_id',
-          data: {
-            actionData: {
-              actionType: 'certificateUpdate'
-            }
-          }
-        }
-      };
-      const router = TestBed.get(Router);
-      spyOn(component, 'markNotificationAsRead');
-      spyOn(component, 'fetchNotificationList');
-      // act
-      await component.notificationHandler(event);
-      // assert
-      expect(component.showNotificationModel).toBeFalsy();
-      expect(router.navigate).toHaveBeenCalledWith(['/profile'], { state: { scrollToId: 'learner-passbook' } });
-      expect(component.markNotificationAsRead).toHaveBeenCalledWith(event.data);
-      expect(component.fetchNotificationList).toHaveBeenCalled();
-    });
-
-    it('should skip navigation if deeplink or course certificate is not available', async () => {
-      //  arrange
-      const event = {
-        data: {
-          id: 'notification_id',
-          data: {
-          }
-        }
-      };
-      spyOn(component, 'markNotificationAsRead');
-      spyOn(component, 'fetchNotificationList');
-      // act
-      await component.notificationHandler(event);
-      // assert
-      expect(component.showNotificationModel).toBeFalsy();
-    });
-  });
-
-  describe('deleteNotificationHandler', async () => {
-    it('should delete the notification', async () => {
-      //  arrange
-      const event = {
-        data: {
-          id: 'notification_id'
-        }
-      };
-      const notificationService: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
-      spyOn(notificationService, 'deleteNotification');
-      spyOn(component, 'generateInteractEvent');
-      spyOn(component, 'fetchNotificationList');
-      // act
-      await component.deleteNotificationHandler(event);
-      // assert
-      expect(component.showNotificationModel).toBeFalsy();
-      expect(component.generateInteractEvent).toHaveBeenCalledWith('delete-notification',
-        { id: event.data.id, type: 'notificationId' });
-      expect(notificationService.deleteNotification).toHaveBeenCalledWith(event.data.id);
-      expect(component.fetchNotificationList).toHaveBeenCalled();
-    });
-  });
-
-  describe('clearAllNotifationsHandler', async () => {
-    it('should delete all the notification', async () => {
-      //  arrange
-      const event = {
-        data: notificationList
-      };
-      const notificationService: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
-      spyOn(notificationService, 'deleteAllNotifications').and.returnValue(true);
-      spyOn(component, 'generateInteractEvent');
-      spyOn(component, 'fetchNotificationList');
-      // act
-      await component.clearAllNotifationsHandler(event);
-      // assert
-      expect(component.generateInteractEvent).toHaveBeenCalledWith('clear-all-notification');
-      expect(component.showNotificationModel).toBeFalsy();
-      expect(notificationService.deleteAllNotifications).toHaveBeenCalledWith(event.data);
-    });
-
-    it('should skip clear all notifications if there are no notifications', async () => {
-      //  arrange
-      const event = {
-        data: []
-      };
-      const notificationService: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
-      spyOn(component, 'generateInteractEvent');
-      // act
-      await component.clearAllNotifationsHandler(event);
-      // assert
-      expect(component.generateInteractEvent).toHaveBeenCalledWith('clear-all-notification');
-    });
   });
 
   describe('handleShowMore', async () => {

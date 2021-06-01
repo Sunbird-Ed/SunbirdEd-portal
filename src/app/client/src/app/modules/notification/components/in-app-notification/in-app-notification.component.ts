@@ -77,7 +77,7 @@ export class InAppNotificationComponent implements OnInit, OnDestroy {
     this.showNotificationModel = !this.showNotificationModel;
   }
 
-  private generateInteractEvent(id, notificatioData?) {
+  generateInteractEvent(id, notificatioData?) {
     const data = {
       context: {
         env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env') || 'main-header',

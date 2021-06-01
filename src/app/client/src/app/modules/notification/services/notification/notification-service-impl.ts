@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { CsUserServiceConfig } from '@project-sunbird/client-services';
 import { CsUserService } from '@project-sunbird/client-services/services/user/interface';
-import { SbNotificationService , Notification, NotificationFeedEntry } from 'notification';
+import { SbNotificationService , Notification, NotificationFeedEntry } from 'sb-notification';
 import { ToasterService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
 import { Subject, BehaviorSubject } from 'rxjs';
@@ -35,6 +35,7 @@ export class NotificationServiceImpl implements SbNotificationService {
   async fetchNotificationList(): Promise<NotificationFeedEntry<Notification>[]> {
     try {
       const notificationData: UserFeedEntry[] = await this.csUserService.getUserFeed(_.get(this.userService, 'userid'), this.config).toPromise();
+      console.log(notificationData);
       notificationData
         .filter(e => e.category === UserFeedCategory.NOTIFICATION)
         .sort(((a, b) => (new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime())));
