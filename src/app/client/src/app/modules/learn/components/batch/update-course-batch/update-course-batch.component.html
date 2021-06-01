@@ -32,11 +32,11 @@
             <label>{{resourceService?.frmelmnts?.cert?.lbl?.issueCertificate}}</label>
             <div class="d-flex py-8 flex-w-wrap">
               <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
-                <input (change)="handleInputChange('yes')" formControlName="issueCertificate" type="radio" id="yes" value="yes">
+                <input (change)="handleInputChange('issue-certificate-yes')" formControlName="issueCertificate" type="radio" id="yes" value="yes">
                 <label for="yes">{{resourceService?.frmelmnts?.btn?.yes}}</label>
               </div>
               <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
-                <input (change)="handleInputChange('no')" formControlName="issueCertificate" type="radio" id="no" value="no">
+                <input (change)="handleInputChange('issue-certificate-no')" formControlName="issueCertificate" type="radio" id="no" value="no">
                 <label for="no">{{resourceService?.frmelmnts?.btn?.no}}</label>
               </div>
             </div>
@@ -54,6 +54,19 @@
           </div>
         </div>
         <div class="four wide column">
+          <div *ngIf="showDiscussionForum === 'Yes'">
+            <label>{{resourceService?.frmelmnts?.lbl?.enableDiscussions}}</label>
+            <div class="d-flex py-8 flex-w-wrap">
+              <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
+                <input formControlName="enableDiscussions" type="radio" id="true" value="true">
+                <label for="yes">{{resourceService?.frmelmnts?.btn?.yes}}</label>
+              </div>
+              <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
+                <input formControlName="enableDiscussions" type="radio" id="false" value="false">
+                <label for="no">{{resourceService?.frmelmnts?.btn?.no}}</label>
+              </div>
+            </div>
+          </div>
           <div class="d-flex flex-dc flex-w-wrap" *ngIf="courseCreator">
             <div class="mr-8">
               <label for="Enrollment Type">{{resourceService?.frmelmnts?.lbl?.natureofbatch}}</label>
