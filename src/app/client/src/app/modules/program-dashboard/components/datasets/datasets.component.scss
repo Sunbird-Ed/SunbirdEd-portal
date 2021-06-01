@@ -13,6 +13,8 @@
     
     .ui.selection.dropdown {
         padding: 11px;
+        display: block !important;
+        min-width: 260px !important;
     }
     .datatable-body-cell-label {
         padding: 10px !important;
@@ -22,7 +24,11 @@
     }
     .sb-modal-actions {
         justify-content: center;
-    }
+    } 
+   .sb-btn-normal {
+    min-width: 140px;
+   }
+    
 }
 .sb-modal-actions {
     display: flex;
