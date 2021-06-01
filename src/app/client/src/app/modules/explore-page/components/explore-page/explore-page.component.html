@@ -5,7 +5,7 @@
   <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'"
     [appTelemetryImpression]="telemetryImpression">
     <!-- Filter for web version -->
-    <!-- `isFilterEnabled` reference from current page data -->
+    <!-- `isFilterEnabled` reference from current page data --> 
     <div *ngIf="!isDesktopApp && isFilterEnabled" [ngClass]="FIRST_PANEL_LAYOUT">
       <div [ngClass]="isDesktopApp ? 'sb-desktop-filter-section' : ''">
         <app-search-filter [facets$]="facets$" [layoutConfiguration]="layoutConfiguration" [isOpen]='true' *ngIf="initFilter"
