@@ -16,7 +16,9 @@ export class InputTypeRangeComponent implements OnInit {
   ngOnInit() {
     this.questionnaireForm.addControl(
       this.question._id,
-      new FormControl(this.question.value || null, [Validators.required])
+      new FormControl(this.question.value || null, [
+        this.qService.validate(this.question),
+      ])
     );
     this.question.startTime = this.question.startTime
       ? this.question.startTime
