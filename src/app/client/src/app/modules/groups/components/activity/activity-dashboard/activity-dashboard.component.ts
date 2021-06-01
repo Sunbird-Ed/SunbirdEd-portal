@@ -38,7 +38,7 @@ export class ActivityDashboardComponent implements OnInit {
   columnConfig: IColumnConfig;
   loaderMessage = _.get(this.resourceService.messages.fmsg, 'm0087');
   memberListUpdatedOn: string;
-  lastUpdated = _.get(this.resourceService.frmelmnts.lbl, 'LastUpdated');
+  lastUpdated = 'Last update';
 
   constructor(
     private groupService: GroupsService,
