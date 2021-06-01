@@ -1,4 +1,8 @@
-<div class="ui left icon input" [formGroup]="questionnaireForm">
+<div
+  class="ui left icon input"
+  [formGroup]="questionnaireForm"
+  *ngIf="questionnaireForm?.contains(question._id)"
+>
   <i class="calendar icon"></i>
   <input
     suiDatepicker

@@ -17,24 +17,26 @@ export class InputTypeCheckboxComponent implements OnInit {
   constructor(public qService: QuestionnaireService) {}
 
   ngOnInit() {
-    const optionControl = this.options.map((v) => {
-      if (
-        this.question.value &&
-        (this.question.value as Array<string>).find((_v) => _v == v.value)
-      ) {
-        return new FormControl(v.value);
-      }
-      return new FormControl("");
+    setTimeout(() => {
+      const optionControl = this.options.map((v) => {
+        if (
+          this.question.value &&
+          (this.question.value as Array<string>).find((_v) => _v == v.value)
+        ) {
+          return new FormControl(v.value);
+        }
+        return new FormControl("");
+      });
+
+      this.questionnaireForm.addControl(
+        this.question._id,
+        new FormArray(optionControl, this.qService.validate(this.question))
+      );
+
+      this.question.startTime = this.question.startTime
+        ? this.question.startTime
+        : Date.now();
     });
-
-    this.questionnaireForm.addControl(
-      this.question._id,
-      new FormArray(optionControl, this.qService.validate(this.question))
-    );
-
-    this.question.startTime = this.question.startTime
-      ? this.question.startTime
-      : Date.now();
   }
 
   onChange(oId: string, isChecked: boolean, oIndex: number) {

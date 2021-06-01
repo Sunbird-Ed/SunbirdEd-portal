@@ -14,31 +14,17 @@ export class InputTypeRangeComponent implements OnInit {
   constructor(public qService: QuestionnaireService) {}
 
   ngOnInit() {
-    this.questionnaireForm.addControl(
-      this.question._id,
-      new FormControl(this.question.value || null, [
-        this.qService.validate(this.question),
-      ])
-    );
-    this.question.startTime = this.question.startTime
-      ? this.question.startTime
-      : Date.now();
-    this.initRange();
-  }
-  initRange() {
-    const range = document.getElementById("range"),
-      rangeV = document.getElementById("rangeV"),
-      setValue = () => {
-        const newValue = Number(
-            ((range["value"] - range["min"]) * 100) /
-              (range["max"] - range["min"])
-          ),
-          newPosition = 10 - newValue * 0.2;
-        rangeV.innerHTML = `<span>${range["value"]}</span>`;
-        rangeV.style.left = `calc(${newValue}% + (${newPosition}px))`;
-      };
-    document.addEventListener("DOMContentLoaded", setValue);
-    range.addEventListener("input", setValue);
+    setTimeout(() => {
+      this.questionnaireForm.addControl(
+        this.question._id,
+        new FormControl(this.question.value || null, [
+          this.qService.validate(this.question),
+        ])
+      );
+      this.question.startTime = this.question.startTime
+        ? this.question.startTime
+        : Date.now();     
+    });
   }
 
   onChange(e: Event) {

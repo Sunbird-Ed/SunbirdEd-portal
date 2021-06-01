@@ -14,17 +14,19 @@ export class InputTypeDatePickerComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    this.questionnaireForm.addControl(
-      this.question._id,
-      new FormControl(
-        this.question.value ? new Date(this.question.value as string) : null,
-        Validators.required
-      )
-    );
+    setTimeout(() => {
+      this.questionnaireForm.addControl(
+        this.question._id,
+        new FormControl(
+          this.question.value ? new Date(this.question.value as string) : null,
+          Validators.required
+        )
+      );
 
-    this.question.startTime = this.question.startTime
-      ? this.question.startTime
-      : Date.now();
+      this.question.startTime = this.question.startTime
+        ? this.question.startTime
+        : Date.now();
+    });
   }
 
   onChange(e: string) {

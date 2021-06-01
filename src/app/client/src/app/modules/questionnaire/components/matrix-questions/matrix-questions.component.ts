@@ -1,4 +1,9 @@
-import { ChangeDetectorRef, Component, Input, OnInit, ViewChild } from "@angular/core";
+import {
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+} from "@angular/core";
 import {
   FormArray,
   FormBuilder,
@@ -39,16 +44,17 @@ export class MatrixQuestionsComponent implements OnInit {
     public resourceService: ResourceService,
     public observationUtilService: ObservationUtilService,
     public qService: QuestionnaireService,
-    private cdr:ChangeDetectorRef
   ) {}
 
   ngOnInit() {
-    this.matrixForm = this.fb.group({}, Validators.required);
-    this.questionnaireForm.addControl(
-      this.question._id,
-      new FormArray([], [Validators.required])
-    );
-    this.initializeMatrix();
+    setTimeout(() => {
+      this.matrixForm = this.fb.group({}, Validators.required);
+      this.questionnaireForm.addControl(
+        this.question._id,
+        new FormArray([], [Validators.required])
+      );
+      this.initializeMatrix();
+    });
   }
 
   initializeMatrix() {
@@ -92,7 +98,6 @@ export class MatrixQuestionsComponent implements OnInit {
     };
     this.context = config.context;
     this.showBadgeAssingModel = true;
-    this.cdr.detectChanges()
   }
 
   get formAsArray() {
