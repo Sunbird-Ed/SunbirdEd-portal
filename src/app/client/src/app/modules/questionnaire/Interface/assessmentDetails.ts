@@ -101,7 +101,7 @@ export interface Question {
   questionType: string;
   canBeNotApplicable: string;
   visibleIf: VisibleIfUnion;
-  validation: string;
+  validation: string | Validation;
   dateFormat: string;
   externalId: string;
   tip: string;
@@ -174,6 +174,7 @@ export interface Validation {
   max?: string;
   min?: string;
   IsNumber?: string;
+  regex:RegExp
 }
 
 export interface Option {

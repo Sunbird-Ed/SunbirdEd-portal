@@ -14,6 +14,7 @@ import {
 import { ResourceService } from "@sunbird/shared";
 import { MatrixQuestion, Question } from "../../Interface/assessmentDetails";
 import { ObservationUtilService } from "../../../observation/service";
+import { QuestionnaireService } from "../../questionnaire.service";
 export interface IContext {
   questions: Question[];
   heading: string;
@@ -36,11 +37,12 @@ export class MatrixQuestionsComponent implements OnInit {
     public modalService: SuiModalService,
     public fb: FormBuilder,
     public resourceService: ResourceService,
-    public observationUtilService: ObservationUtilService
+    public observationUtilService: ObservationUtilService,
+    public qService: QuestionnaireService
   ) {}
 
   ngOnInit() {
-    this.matrixForm = this.fb.group({});
+    this.matrixForm = this.fb.group({}, Validators.required);
     this.questionnaireForm.addControl(
       this.question._id,
       new FormArray([], [Validators.required])
@@ -69,11 +71,13 @@ export class MatrixQuestionsComponent implements OnInit {
     );
 
     // this.checkForValidation();//TODO
+    this.matrixForm.reset();
+    this.formAsArray.push(new FormControl(null, [Validators.required]));
   }
 
   viewInstance(i): void {
     this.matrixForm.reset();
-    if (this.formAsArray.controls[i]) {
+    if (this.formAsArray.controls[i].value) {
       this.matrixForm.patchValue(this.formAsArray.controls[i].value);
     }
     const config = new TemplateModalConfig<IContext, string, string>(
@@ -114,11 +118,10 @@ export class MatrixQuestionsComponent implements OnInit {
 
   matrixSubmit(index) {
     this.showBadgeAssingModel = false;
-    if (this.formAsArray.controls[index]) {
-      this.formAsArray.at(index).patchValue(this.matrixForm.value);
-      return;
+    this.formAsArray.at(index).patchValue(this.matrixForm.value);
+    if (this.matrixForm.invalid) {
+      this.formAsArray.at(index).setErrors({ err: "Matrix reposne not valid" });
     }
-    this.formAsArray.push(new FormControl(this.matrixForm.value));
   }
 
   async deleteInstanceAlert(index) {

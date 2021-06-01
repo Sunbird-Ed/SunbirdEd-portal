@@ -60,6 +60,11 @@
       class="sb-btn sb-btn-normal sb-btn-primary"
       type="button"
       (click)="matrixSubmit(context.index)"
+       [ngClass]="{
+            'sb-btn sb-btn-normal': true,
+            'sb-btn-primary': matrixForm?.valid,
+            'sb-btn-disabled': !matrixForm?.valid
+          }"
     >
       {{ resourceService?.frmelmnts?.btn?.submit | translate }}
     </button>

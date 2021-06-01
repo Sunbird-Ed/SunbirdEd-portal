@@ -18,7 +18,6 @@ export class InputTypeNumberComponent implements OnInit {
     this.questionnaireForm.addControl(
       this.question._id,
       new FormControl(this.question.value || null, [
-        Validators.required,
         this.qService.validate(this.question),
       ])
     );

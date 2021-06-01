@@ -10,7 +10,7 @@ import { Question } from "../../Interface/assessmentDetails";
 })
 export class RemarksComponent implements OnInit {
   remark = "";
-  isEditable = false;
+  showRemarks;
   @Output() saveClicked = new EventEmitter();
   @Input() question: Question;
   constructor(public resourceService: ResourceService) {}

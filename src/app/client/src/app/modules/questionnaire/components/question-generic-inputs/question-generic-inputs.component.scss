@@ -55,11 +55,8 @@
 
 .remarks {
   margin-top: 15px;
-.alignleft {
-  margin-top: 10px;
-	float: left;
 }
-.alignright {
-	float: right;
-}
+
+.valid-response {
+  color: var(--green);
 }
