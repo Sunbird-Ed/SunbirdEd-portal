@@ -1313,6 +1313,16 @@ html[data-theme='Darkmode'][layout='joy'] {
     width:50%;
   }
 }
+// tab index css 
+*[tabindex]:focus {
+  outline: 2px green solid;
+}
+*:focus {
+  outline: 2px green solid !important;
+}
+button:focus{
+  outline: 2px green solid;
+}
 
 // player SB-24647 changes
 .notVisible {
