@@ -6,10 +6,6 @@ import { Observer, of } from "rxjs";
 import { retry } from "rxjs/operators";
 import { manifest } from "../../manifest";
 
-/*@ClassLogger({
-  logLevel: "debug",
-  logTime: true,
-})*/
 export class ContentDeleteHelper implements ITaskExecuter {
   public static taskType = "DELETE";
   public concurrency = 1;

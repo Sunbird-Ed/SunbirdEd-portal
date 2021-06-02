@@ -82,7 +82,7 @@
   &.player-fullscreen {
     width: 100%;
     height: calc(100vh - 4rem) !important;
-    position:fixed;
+    position:fixed !important;
     top:calculateRem(0px);//50px
     left:0;
     bottom:0; 

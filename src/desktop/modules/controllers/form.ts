@@ -8,11 +8,6 @@ import Response from "../utils/response";
 const Hashids = require('hashids/cjs')
 import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
 
-
-/*@ClassLogger({
-  logLevel: "debug",
-  logTime: true,
-})*/
 export class Form {
   @Inject
   private databaseSdk: DatabaseSDK;

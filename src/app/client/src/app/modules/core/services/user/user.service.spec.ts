@@ -67,7 +67,7 @@ describe('userService', () => {
     const learnerService = TestBed.get(LearnerService);
     spyOn(learnerService, 'get').and.returnValue(mockUserData.feedSuccessResponse);
     userService.getFeedData();
-    const url = {url : 'user/v1/feed/' + userService.userId};
+    const url = { url: 'user/v1/feed/' + userService.userId };
     expect(learnerService.get).toHaveBeenCalledWith(url);
   });
   it('should call registerUser method', () => {
@@ -86,7 +86,7 @@ describe('userService', () => {
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
     const params = {
-      'request' : {
+      'request': {
         'userId': '12345',
         'action': 'accept',
         'userExtId': 'bt240',
@@ -96,7 +96,7 @@ describe('userService', () => {
     };
     spyOn(learnerService, 'post').and.returnValue(mockUserData.migrateSuccessResponse);
     userService.userMigrate(params);
-    const options = { url: 'user/v1/migrate', data: params};
+    const options = { url: 'user/v1/migrate', data: params };
     expect(learnerService.post).toHaveBeenCalledWith(options);
   });
 
@@ -121,4 +121,33 @@ describe('userService', () => {
     userService.createAnonymousUser();
     expect(publicDataService.post).toHaveBeenCalled();
   });
+  it('should call createGuestUser', () => {
+    const userService = TestBed.get(UserService);
+    userService.isDesktopApp = true;
+    spyOn(userService, 'createAnonymousUser').and.returnValue(of({}));
+    userService.createGuestUser();
+    expect(userService.createAnonymousUser).toHaveBeenCalled();
+  });
+  it('should call createGuestUser for portal', () => {
+    const userService = TestBed.get(UserService);
+    userService.isDesktopApp = false;
+    spyOn(userService, 'getGuestUser').and.returnValue(of({}));
+    const resp = userService.createGuestUser({});
+    expect(userService.getGuestUser).toHaveBeenCalled();
+  });
+  it('should call updateGuestUser for desktop', () => {
+    const userService = TestBed.get(UserService);
+    userService.isDesktopApp = true;
+    spyOn(userService, 'updateAnonymousUserDetails');
+    userService.updateGuestUser({ _id: 'abcd', name: 'Guest' });
+    expect(userService.updateAnonymousUserDetails).toHaveBeenCalled();
+  });
+  it('should call updateGuestUser for portal', () => {
+    const userService = TestBed.get(UserService);
+    userService.isDesktopApp = false;
+    spyOn(userService, 'getGuestUser').and.returnValue(of({}));
+    userService.updateGuestUser({ _id: 'abcd', name: 'Guest' });
+    expect(userService.getGuestUser).toHaveBeenCalled();
+  });
+
 });
