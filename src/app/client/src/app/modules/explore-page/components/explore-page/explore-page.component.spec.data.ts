@@ -1714,7 +1714,8 @@ export const RESPONSE = {
     'theme': {
       'baseColor': '',
       'textColor': '',
-      'supportingColor': ''
+      'supportingColor': '',
+      'imageName': 'courses-banner-img.svg'
     },
     'filter': {
       'isEnabled': true

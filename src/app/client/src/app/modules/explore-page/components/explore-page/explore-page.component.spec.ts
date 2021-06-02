@@ -140,6 +140,7 @@ describe('ExplorePageComponent', () => {
     spyOn(component, 'isUserLoggedIn').and.returnValue(false);
     const formService = TestBed.get(FormService);
     spyOn(formService, 'getFormConfig').and.returnValue(observableOf(RESPONSE.mockCurrentPageData));
+    spyOn(localStorage, 'getItem').and.returnValue('{\'framework\':{\'board\':\'CBSE\'}}');
     const contentSearchService = TestBed.get(ContentSearchService);
     component.activatedRoute.snapshot.params.slug = 'tn';
     spyOnProperty(userService, 'slug', 'get').and.returnValue('tn');
@@ -147,6 +148,7 @@ describe('ExplorePageComponent', () => {
     spyOn<any>(contentSearchService, 'initialize').and.returnValues(of({}));
     component['fetchChannelData']().subscribe(_ => {
       expect(component.initFilter).toBeTruthy();
+      expect(component.defaultFilters).toBe({ 'board': 'CBSE' });
       done();
     });
   });
@@ -515,20 +517,36 @@ describe('ExplorePageComponent', () => {
       expect(component.apiContentList.length).toBe(1);
       expect(component.redoLayout).toHaveBeenCalled();
       expect(component.isFilterEnabled).toBe(true);
+      expect(component.svgToDisplay).toBe('courses-banner-img.svg');
       done();
     });
     component['fetchContents$'].next(RESPONSE.mockCurrentPageData);
+  });
+
+  it('should fetch explore page sections data', done => {
+    sendPageApi = false;
+    spyOn(component, 'redoLayout');
+    spyOn(component, 'getCurrentPageData').and.returnValue(RESPONSE.explorePageData);
+    spyOn(component, 'getExplorePageSections').and.callThrough();
+    component['fetchContents']().subscribe(res => {
+      expect(component.redoLayout).toHaveBeenCalled();
+      expect(component.isFilterEnabled).toBe(false);
+      expect(component.svgToDisplay).toBe('courses-banner-img.svg');
+      done();
+    });
+    component['fetchContents$'].next(RESPONSE.explorePageData);
   });
 
   it('should fetch enrolled courses for logged in users', done => {
     const utilService = TestBed.get(UtilService);
     const coursesService = TestBed.get(CoursesService);
     spyOn(utilService, 'processContent').and.callThrough();
-    spyOn(component, 'getCurrentPageData').and.returnValue({ contentType: 'course' });
+    spyOn(component, 'getCurrentPageData').and.returnValue({ contentType: 'course', filter: { isEnabled: false } });
     spyOn(component, 'isUserLoggedIn').and.returnValue(true);
     component['fetchEnrolledCoursesSection']().subscribe(res => {
       expect(utilService.processContent).toHaveBeenCalled();
       expect(component.enrolledSection).toBeDefined();
+      expect(component.isFilterEnabled).toBe(true);
       done();
     }, err => {
       done();

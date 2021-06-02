@@ -126,7 +126,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.channelId = channelId;
                     this.custodianOrg = custodianOrg;
                     this.formData = formConfig;
-                    const currentPage = this.getCurrentPageData();
                     if (this.isUserLoggedIn()) {
                         this.defaultFilters = this.userService.defaultFrameworkFilters;
                     } else if (!this.isDesktopApp) {
