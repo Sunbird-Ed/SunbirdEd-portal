@@ -23,7 +23,6 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateStore } from '@ngx-translate/core';
 import { SbSearchFilterModule } from 'common-form-elements';
-import { NotificationServiceImpl } from './modules/notification/services/notification/notification-service-impl';
 
 @NgModule({
   declarations: [
@@ -62,8 +61,7 @@ import { NotificationServiceImpl } from './modules/notification/services/notific
     TranslateStore,
     { provide: CacheStorageAbstract, useClass: CacheSessionStorage },
     { provide: HTTP_INTERCEPTORS, useClass: SessionExpiryInterceptor, multi: true },
-    { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy },
-    { provide: 'SB_NOTIFICATION_SERVICE', useClass: NotificationServiceImpl }
+    { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy }
   ]
 })
 export class AppModule {

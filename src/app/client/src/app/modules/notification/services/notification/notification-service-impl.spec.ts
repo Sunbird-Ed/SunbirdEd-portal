@@ -6,7 +6,6 @@ import { of as observableOf, throwError as observableThrowError } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule } from '@sunbird/core';
 import { SbNotificationModule } from 'sb-notification';
-import { Router } from '@angular/router';
 import { notificationData, notificationList } from './notification-service-impl.spec.data';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
