@@ -1,7 +1,7 @@
 @import 'mixins/mixins';
 
 .content-header {
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     background: var(--groups-content-header);
     min-height: calculateRem(14px);
   
@@ -78,6 +78,7 @@
       border-bottom: 0px !important;
       background: white;
       border: 1px solid #ddd;
+      text-transform: capitalize;
   }
   table.dataTable tbody th,
   table.dataTable tbody td {
@@ -123,15 +124,17 @@ table {
 }
   .datatable-update {
     display: flex;
+    align-items: center;
     justify-content: space-between;
+    margin: 1rem 0rem;
     .last-update-label {
-        font-size: 0.75rem;
+        font-size: 0.87rem;
         color: #969696;
-        margin: 0 0.5rem 0.75rem 0.5rem;
+        margin-bottom: 0;
     }
     .download-csv {
         color: #024F9D;
-        font-size: 12px;
+        font-size: 0.87rem;
         font-weight: bold;
         .download-icon{
             margin:0 0.5rem;

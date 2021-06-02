@@ -10,6 +10,8 @@ import { ConfigService } from '@sunbird/shared';
 import { CourseConsumptionService } from '@sunbird/learn';
 import { combineLatest, Subject } from 'rxjs';
 import { IActivity } from '../activity-list/activity-list.component';
+import * as $ from 'jquery';
+import 'datatables.net';
 
 export interface IColumnConfig {
   columnConfig: [{
@@ -55,7 +57,6 @@ export class ActivityDashboardComponent implements OnInit {
         'paging': true,
         'autoWidth': true,
     });
-    console.log('function');
     });
     this.fetchActivityOnParamChange();
   }
