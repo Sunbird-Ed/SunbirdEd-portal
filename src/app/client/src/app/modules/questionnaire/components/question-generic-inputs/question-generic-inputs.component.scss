@@ -3,13 +3,13 @@
 
 .question-card {
   border-radius: 28px;
-  padding: 50px;
+  padding: 20px;
   width: 100%;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
 }
 
 .question-card:last-child {
-  margin-bottom: 50px;
+  margin-bottom: 20px;
 }
 
 :host {
@@ -32,6 +32,11 @@
       font-weight: normal;
     }
 
+    input:focus,
+    input:focus ~ label {
+      color: var(--body-color);
+    }
+
     #range {
       background-color: var(--sb-card-bg);
     }
@@ -39,18 +44,19 @@
     .student-card {
       background-color: var(--sb-card-bg);
     }
-    .question-date-input {
+    .question-date-input,
+    input:active.question-date-input,
+    input:focus.question-date-input {
       background: var(--cc-sbcard-data1-bg);
+      color: var(--sb-prominent-filter-title);
     }
   }
 }
 
-.remarks{
+.remarks {
   margin-top: 15px;
-.alignleft {
-	float: left;
 }
-.alignright {
-	float: right;
-}
+
+.valid-response {
+  color: var(--green);
 }

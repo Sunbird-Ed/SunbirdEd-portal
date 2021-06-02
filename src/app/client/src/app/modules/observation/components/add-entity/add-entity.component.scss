@@ -4,6 +4,12 @@
 .add-entity-modal{
   .content{
     max-height: 65vh;
+    label{
+      color: var(--sb-prominent-filter-title);
+    }
+    label:hover{
+      cursor: pointer;
+    }
   }
   .footer{
     margin-top: calculateRem(16px);

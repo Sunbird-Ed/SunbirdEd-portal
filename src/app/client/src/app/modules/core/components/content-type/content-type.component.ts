@@ -9,9 +9,9 @@ import { TelemetryService } from '@sunbird/telemetry';
 
 
 @Component({
-  selector: 'app-content-type',
-  templateUrl: './content-type.component.html',
-  styleUrls: ['./content-type.component.scss']
+  selector: "app-content-type",
+  templateUrl: "./content-type.component.html",
+  styleUrls: ["./content-type.component.scss"],
 })
 export class ContentTypeComponent implements OnInit, OnDestroy {
   @Output() closeSideMenu = new EventEmitter<any>();
@@ -20,15 +20,38 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
   selectedContentType;
   isDesktopApp = false;
   public unsubscribe$ = new Subject<void>();
-
-  constructor(public formService: FormService, public resourceService: ResourceService,
-    public router: Router, public userService: UserService, private telemetryService: TelemetryService,
-    public activatedRoute: ActivatedRoute, public layoutService: LayoutService,
-    private utilService: UtilService) {
+  subscription: any;
+  userType:any;
+  constructor(
+    public formService: FormService,
+    public resourceService: ResourceService,
+    public router: Router,
+    public userService: UserService,
+    private telemetryService: TelemetryService,
+    public activatedRoute: ActivatedRoute,
+    public layoutService: LayoutService,
+    private utilService: UtilService,
+  ) {
+    this.subscription = this.utilService.currentRole.subscribe(async (result) => {
+      if (result) {
+        this.userType=result;
+        this.getContentTypes();
+      } 
+      else{
+        if(await this.userService.loggedIn){
+          const profileData = JSON.parse(sessionStorage.getItem("CacheServiceuserProfile"));
+          if(profileData.value.profileUserType.type === null){
+              return;
+            }
+            this.userType=profileData.value.profileUserType.type;
+          }
+          this.getContentTypes();
+      }      
+    });
   }
 
+
   ngOnInit() {
-    this.getContentTypes();
     this.isDesktopApp = this.utilService.isDesktopApp;
     this.layoutService.updateSelectedContentType
       .subscribe((data) => {
@@ -44,7 +67,6 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
         this.setSelectedContentType(this.router.url, result[0], result[1]);
       });
   }
-
 
   ngOnDestroy() {
     this.unsubscribe$.next();
@@ -85,7 +107,6 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     }
   }
 
-
   setSelectedContentType(url, queryParams, pathParams) {
     if (url.indexOf('play') >= 0) {
       this.selectedContentType = queryParams.contentType ? queryParams.contentType.toLowerCase() : null;
@@ -108,8 +129,19 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     if (ct) {
       this.selectedContentType = ct.contentType;
     } else {
-      this.selectedContentType = 'all';
+      this.selectedContentType = "all";
     }
+  }
+
+  updateForm(data) {
+    let finalData = [];
+    finalData = data;
+      if (this.userType != "administrator") {
+        finalData = finalData.filter((obj) => obj.contentType != "observation");
+        this.processFormData(finalData);
+      } else {
+        this.processFormData(finalData);
+      }
   }
 
   processFormData(formData) {

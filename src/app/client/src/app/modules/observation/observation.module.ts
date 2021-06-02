@@ -19,10 +19,10 @@ import {
 } from './components';
 import { LocationModule } from '../../plugins/location/location.module';
 import { ObservationUtilService } from './service';
-import { AlertModalComponent } from './components/alert-modal/alert-modal.component';
+
 @NgModule({
   declarations: [ObservationListingComponent, ObservationDetailsComponent, AddEntityComponent, SubmissionsComponent,
-    EntityListComponent,AlertModalComponent, EditSubmissionComponent],
+    EntityListComponent, EditSubmissionComponent],
   imports: [
     CommonModule,
     ObservationRoutingModule,
@@ -47,7 +47,6 @@ import { AlertModalComponent } from './components/alert-modal/alert-modal.compon
     AvatarModule,
     NgInviewModule,
     TelemetryModule,
-    SuiModule,
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
@@ -55,8 +54,7 @@ import { AlertModalComponent } from './components/alert-modal/alert-modal.compon
     SharedFeatureModule,
     LocationModule
   ],
-  providers: [MlGuard,ObservationUtilService],
-  entryComponents: [AlertModalComponent]
+  providers: [MlGuard,ObservationUtilService]
 
 })
 export class ObservationModule { }

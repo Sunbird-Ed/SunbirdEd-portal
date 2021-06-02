@@ -128,10 +128,11 @@ export class ObservationListingComponent
      if(!this.showEditUserDetailsPopup){
        let metaData=this.observationUtil.getAlertMetaData();
        metaData.type="update profile";
+       metaData.isClosed=true;
        metaData.size="mini";
-       metaData.content.title=this.resourceService.frmelmnts.alert.updateProfileTitle;
+       metaData.content.title=this.resourceService.frmelmnts.alert.updateprofiletitle;
        metaData.content.body.type="text";
-       metaData.content.body.data=this.resourceService.frmelmnts.alert.updateProfileContent;
+       metaData.content.body.data=this.resourceService.frmelmnts.alert.updateprofilecontent;
        metaData.footer.className="single-btn"
        metaData.footer.buttons.push(
         {

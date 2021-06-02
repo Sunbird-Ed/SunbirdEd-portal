@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SuiModal, ComponentModalConfig, ModalSize } from "ng2-semantic-ui";
+import { Location } from '@angular/common';
 
 interface IAlertModalContext {
     data:any;
@@ -12,7 +13,7 @@ interface IAlertModalContext {
 })
 export class AlertModalComponent {
   isChecked=false;
-  constructor(public modal: SuiModal<IAlertModalContext, void, void>) {}
+  constructor(public modal: SuiModal<IAlertModalContext, void, void>,private location:Location) {}
 
   getMethod(data){
     if(data.type=="cancel"){
@@ -20,6 +21,12 @@ export class AlertModalComponent {
       return;
     }
     this.modal.approve(data.returnValue);
+  }
+
+  navigatePrevious(data){
+    data.footer.buttons[0].returnValue=false;
+    this.modal.deny(data.footer.buttons[0].returnValue);
+    this.location.back();    
   }
 
 }
