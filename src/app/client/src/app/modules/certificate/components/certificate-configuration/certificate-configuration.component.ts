@@ -556,6 +556,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     this.arrayValue['range']=arr;
   }
   removeRule(){
+    this.userPreference.value['scoreRange'] = null;
     this.addScoreRule = false;
   }
 }
