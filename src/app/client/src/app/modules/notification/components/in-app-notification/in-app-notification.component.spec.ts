@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core
 import { InAppNotificationComponent } from './in-app-notification.component';
 
 import { configureTestSuite } from '@sunbird/test-util';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModalModule, SuiModule } from 'ng2-semantic-ui';
 import { SharedModule, ResourceService, ConnectionService } from '@sunbird/shared';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { NotificationServiceImpl } from '../../services/notification/notification-service-impl';
@@ -12,7 +12,8 @@ import { of as observableOf, of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { notificationList, notificationData } from './in-app-notification.component.spec.data';
+import { notificationList } from './in-app-notification.component.spec.data';
+import { SbNotificationModule } from 'sb-notification';
 
 describe('InAppNotificationComponent', () => {
   let component: InAppNotificationComponent;
@@ -45,12 +46,22 @@ describe('InAppNotificationComponent', () => {
     deleteUserFeedEntry() { return observableOf({}); }
   };
 
+  const MockNotificationServiceImpl = {
+    fetchNotificationList() { return {} as any },
+    handleNotificationClick() {},
+    deleteNotification() { return false },
+    clearAllNotifications() { return false },
+    showNotificationModel$: observableOf(true),
+    notificationList$: observableOf([]),
+  }
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [InAppNotificationComponent],
-      imports: [SuiModule, SharedModule.forRoot(), CommonConsumptionModule, HttpClientTestingModule, TelemetryModule.forRoot()],
+      imports: [SuiModule, SuiModalModule, SharedModule.forRoot(), CommonConsumptionModule, HttpClientTestingModule, TelemetryModule.forRoot(), SbNotificationModule],
       providers: [
         NotificationServiceImpl,
+        { provide: 'SB_NOTIFICATION_SERVICE', useValue: MockNotificationServiceImpl},
         { provide: 'CS_USER_SERVICE', useValue: MockCSService },
         {
         provide: APP_BASE_HREF,
@@ -108,50 +119,37 @@ describe('InAppNotificationComponent', () => {
       expect(telemetryService.interact).toHaveBeenCalledWith(data);
     });
 
-    it('should generate the interact telemetry event with valid cdata', () => {
-      // arrange
-      const telemetryService: TelemetryService = TestBed.get(TelemetryService);
-      const data = {
-        context: {
-          env: 'main-header',
-          cdata: [{ type: 'notificationId', id: 'notity_ID' }]
-        },
-        edata: {
-          id: 'event_id',
-          type: 'click',
-          pageid: 'in-app-notification',
-        }
-      };
-      spyOn(telemetryService, 'interact');
-      // act
-      component.generateInteractEvent('event_id', { type: 'notificationId', id: 'notity_ID' });
-      // assert
-      expect(telemetryService.interact).toHaveBeenCalledWith(data);
-    });
-
   });
 
   describe('fetchNotificationList', () => {
 
-    it('should fetch the notification list and get unread notification count', () => {
+
+    it('should fetch the notification list and get unread notification count', (done) => {
       // arrange
       const notificationService: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
-      spyOn(notificationService, 'fetchNotificationList').and.returnValue(notificationList);
+      notificationService.showNotificationModel$.next(false);
+      notificationService.notificationList$.next(notificationList);
       // act
       component.fetchNotificationList();
       // assert
-      expect(notificationService.fetchNotificationList).toHaveBeenCalled();
+      notificationService.notificationList$.subscribe(data => {
+        expect(component.notificationCount).toEqual(0);
+        done();
+      })
     });
 
-    it('should fetch the notification list and when the list is empty', () => {
+    it('should fetch the notification list and the list is empty', (done) => {
       // arrange
       const notificationService: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
-      spyOn(notificationService, 'fetchNotificationList').and.returnValue([]);
+      notificationService.showNotificationModel$.next(true);
+      notificationService.notificationList$.next([]);
       // act
       component.fetchNotificationList();
       // assert
-      expect(notificationService.fetchNotificationList).toHaveBeenCalled();
-      expect(component.notificationCount).toEqual(0);
+      notificationService.notificationList$.subscribe(data => {
+        expect(component.notificationCount).toEqual(0);
+        done()
+      })
     });
 
   });

@@ -1,3 +1,4 @@
+import { ProfilePageComponent } from './../../../../plugins/profile/components/profile-page/profile-page.component';
 import { TestBed } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import { SharedModule } from '@sunbird/shared';
@@ -24,8 +25,7 @@ describe('NotificationServiceImpl', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, SbNotificationModule, RouterTestingModule, TelemetryModule.forRoot()],
       providers: [
-        { provide: 'CS_USER_SERVICE', useValue: MockCSService },
-        TelemetryService
+        { provide: 'CS_USER_SERVICE', useValue: MockCSService }
       ]
     });
   });
@@ -35,7 +35,7 @@ describe('NotificationServiceImpl', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('fetchInAppNotifications()', () => {
+  describe('fetchNotificationList()', () => {
 
     it('should return the user feed notifications', async () => {
       // arrange
@@ -61,78 +61,140 @@ describe('NotificationServiceImpl', () => {
       expect(resp).toEqual([] as any);
     });
 
-  });
-
-  describe('updateNotificationRead()', () => {
-
-    it('should return true when notification status is updated as read', async () => {
+    it('should return empty array if the getuserfeed does not return array', async () => {
       // arrange
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
       const csUserService = TestBed.get('CS_USER_SERVICE');
-      spyOn(csUserService, 'updateUserFeedEntry').and.returnValue(observableOf({message: 'success'}));
+      spyOn(csUserService, 'getUserFeed').and.returnValue(observableOf({}));
       // act
-      const resp = await service['updateNotificationRead']('notification_id');
+      const resp = await service.fetchNotificationList();
       // assert
-      expect(csUserService.updateUserFeedEntry).toHaveBeenCalled();
-      expect(resp).toEqual(true);
+      expect(csUserService.getUserFeed).toHaveBeenCalled();
+      expect(resp).toEqual([] as any);
     });
 
-    it('should return false when an error is occured while updating', async () => {
-      // arrange
+  });
+
+  describe('handleNotificationClick', () => {
+    it('should return false if the notification data is empty', async () => {
+      // arrage
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
-      const csUserService = TestBed.get('CS_USER_SERVICE');
-      spyOn(csUserService, 'updateUserFeedEntry').and.returnValue(observableThrowError({ message: 'error' }));
+      const data = {
+        // data: notificationData
+      }
       // act
-      const resp = await service['updateNotificationRead']('notification_id');
+      const resp = await service.handleNotificationClick(data);
       // assert
-      expect(csUserService.updateUserFeedEntry).toHaveBeenCalled();
       expect(resp).toEqual(false);
     });
 
-  });
+    it('should return false if the notification data is empty', async () => {
+      // arrage
+      const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
+      const csUserService = TestBed.get('CS_USER_SERVICE');
+      spyOn(csUserService, 'updateUserFeedEntry').and.returnValue(observableOf({}));
+      spyOn(service, 'fetchNotificationList');
+      const data = {
+        data: notificationData
+      }
+      data.data.data.actionData.actionType = 'certificateUpdate'
+      // act
+      await service.handleNotificationClick(data);
+      // assert
+      expect(service.fetchNotificationList).toHaveBeenCalled();
+    });
+  })
 
   describe('deleteNotification()', () => {
 
-    it('should return true when notification is deleted', async () => {
+    it('should return false when notification data is empty', async () => {
       // arrange
+      const data = {}
+      const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
+      // act
+      const resp = await service.deleteNotification(data);
+      // assert
+      expect(resp).toEqual(false);
+    });
+
+    it('should delete the notification and return true', async () => {
+      // arrange
+      const data = {
+        data: notificationData
+      }
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
       const csUserService = TestBed.get('CS_USER_SERVICE');
-      const telemertyService = TestBed.get('TelemetryService');
-      spyOn(csUserService, 'generateInteractEvent').and.returnValue(observableOf({message: 'success'}));
-      spyOn(csUserService, 'deleteUserFeedEntry').and.returnValue(observableOf({message: 'success'}));
+      const telemertyService = TestBed.get(TelemetryService);
+      spyOn(telemertyService, 'interact');
+      spyOn(csUserService, 'deleteUserFeedEntry').and.returnValue(observableOf({ message: 'success' }));
+      spyOn(service, 'fetchNotificationList');
       // act
-      const resp = await service.deleteNotification('notification_id');
+      const resp = await service.deleteNotification(data);
       // assert
+      expect(telemertyService.interact).toHaveBeenCalled();
       expect(csUserService.deleteUserFeedEntry).toHaveBeenCalled();
+      expect(service.fetchNotificationList).toHaveBeenCalled();
       expect(resp).toEqual(true);
     });
 
     it('should return false when an error is occured while deleting', async () => {
       // arrange
+      const data = {
+        data: notificationData
+      }
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
       const csUserService = TestBed.get('CS_USER_SERVICE');
+      const telemertyService = TestBed.get(TelemetryService);
+      spyOn(telemertyService, 'interact');
       spyOn(csUserService, 'deleteUserFeedEntry').and.returnValue(observableThrowError({ message: 'error' }));
+      spyOn(service, 'fetchNotificationList');
       // act
-      const resp = await service.deleteNotification('notification_id');
+      const resp = await service.deleteNotification(data);
       // assert
-      expect(csUserService.deleteUserFeedEntry).toHaveBeenCalled();
       expect(resp).toEqual(false);
     });
 
   });
 
-  describe('deleteAllNotifications()', () => {
+  describe('clearAllNotifications()', () => {
+
+    it('should return false if the notification list is empty', async () => {
+      // arrange
+      const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
+      const csUserService = TestBed.get('CS_USER_SERVICE');
+      const telemertyService = TestBed.get(TelemetryService);
+      spyOn(telemertyService, 'interact');
+      spyOn(csUserService, 'deleteUserFeedEntry').and.returnValue(observableOf({message: 'success'}));
+      spyOn(service, 'deleteNotification').and.returnValue(true);
+      // act
+      const resp = await service.clearAllNotifications({data: []});
+      // assert
+      expect(resp).toEqual(false);
+    });
 
     it('should return true when all notifications are deleted', async () => {
       // arrange
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
       const csUserService = TestBed.get('CS_USER_SERVICE');
+      const telemertyService = TestBed.get(TelemetryService);
+      spyOn(telemertyService, 'interact');
       spyOn(csUserService, 'deleteUserFeedEntry').and.returnValue(observableOf({message: 'success'}));
-      spyOn(service, 'deleteNotification').and.returnValue(true);
       // act
-      const resp = await service['deleteAllNotifications'](notificationList);
+      const resp = await service.clearAllNotifications({data: notificationList});
       // assert
-      expect(service.deleteNotification).toHaveBeenCalled();
+      expect(resp).toEqual(true);
+    });
+
+    it('should return true when all notifications are deleted', async () => {
+      // arrange
+      const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
+      const csUserService = TestBed.get('CS_USER_SERVICE');
+      const telemertyService = TestBed.get(TelemetryService);
+      spyOn(telemertyService, 'interact');
+      spyOn(csUserService, 'deleteUserFeedEntry').and.returnValue(observableThrowError({ message: 'error' }));
+      // act
+      const resp = await service.clearAllNotifications({data: notificationList});
+      // assert
       expect(resp).toEqual(true);
     });
 

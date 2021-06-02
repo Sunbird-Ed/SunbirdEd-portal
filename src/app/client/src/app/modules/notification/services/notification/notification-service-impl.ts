@@ -35,7 +35,9 @@ export class NotificationServiceImpl implements SbNotificationService {
   async fetchNotificationList(): Promise<NotificationFeedEntry<Notification>[]> {
     try {
       const notificationData: UserFeedEntry[] = await this.csUserService.getUserFeed(_.get(this.userService, 'userid'), this.config).toPromise();
-      console.log(notificationData);
+      if (!Array.isArray(notificationData)) {
+        return [];
+      }
       notificationData
         .filter(e => e.category === UserFeedCategory.NOTIFICATION)
         .sort(((a, b) => (new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime())));
@@ -67,9 +69,12 @@ export class NotificationServiceImpl implements SbNotificationService {
   async deleteNotification(notificationData): Promise<boolean> {
     try {
       const notificationDetails = _.get(notificationData, 'data');
-      if (notificationDetails.id) {
-        this.generateInteractEvent('delete-notification', { id: notificationDetails.id, type: 'notificationId' });
-        await this.deleteNotificationData(notificationDetails.id);
+      if (!notificationDetails || !notificationDetails.id) {
+        return false;
+      }
+      this.generateInteractEvent('delete-notification', { id: notificationDetails.id, type: 'notificationId' });
+      if (!await this.deleteNotificationData(notificationDetails.id)) {
+        return false;
       }
       this.fetchNotificationList();
       return true;
@@ -81,15 +86,16 @@ export class NotificationServiceImpl implements SbNotificationService {
 
   async clearAllNotifications(notificationListData: any): Promise<boolean> {
     try {
-      this.generateInteractEvent('clear-all-notification');
       const notificationArray = _.get(notificationListData, 'data');
-      if (_.get(notificationArray, 'length')) {
-        if (await this.deleteAllNotifications(notificationArray)) {
-          this.showNotificationModel$.next(false);
-          setTimeout(() => {
-            this.fetchNotificationList();
-          }, 1000);
-        }
+      if (!_.get(notificationArray, 'length')) {
+        return false;
+      }
+      this.generateInteractEvent('clear-all-notification');
+      if (await this.deleteAllNotifications(notificationArray)) {
+        this.showNotificationModel$.next(false);
+        setTimeout(() => {
+          this.fetchNotificationList();
+        }, 1000);
       }
       return true;
     } catch (e) {
