@@ -69,7 +69,10 @@
           *ngIf="question.showRemarks"
         ></app-remarks>
         <app-input-type-attachment
-          [data]="attachmentData"
+          [data]="{
+            submissionId: qService.getSubmissionId(),
+            files: question.fileName
+          }"
           *ngIf="question.file"
         ></app-input-type-attachment>
       </div>
