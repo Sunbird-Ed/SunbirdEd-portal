@@ -1,39 +1,35 @@
-.ui.mini.modal {
-    border-radius: 24px;
-}
-
 .popup {
-  padding: 30px;
-  position: relative;
-  height: 220px;
   border-radius: none !important;
   background: var(--sb-modal-content-bg);
   color: var(--sb-text);
 }
 .popup-header {
-  position: relative;
-  font-size: 1.2em;
-  font-weight: bold;
+  padding: 15px 20px;
   color: var(--sb-text);
+  b {
+    justify-content: flex-start;
+    font-size: 1.2em;
+  }
+}
+
+.alignRight {
+  float: right;
+  color: #e82520;
 }
 
 .popup-body {
-  position: relative;
-  top: 20px;
-  font-size: 1.2em;
-  font-weight: 500;
   color: var(--sb-text);
-  width: auto;
-  line-height: 1.3em;
-  white-space: pre-wrap;
+  line-height: 1.2em;
+  padding: 25px 20px;
 }
+
 .popup-body-checkbox {
   display: flex;
   gap: 10px;
-  margin-top: 5px;
+  padding: 20px 15px;
 
-  input{
-    margin-top:18px;
+  input {
+    margin-top: 2px;
   }
 
   label {
@@ -41,24 +37,20 @@
     font-weight: 500;
     line-height: 1.3em;
     color: var(--sb-text);
-    width: auto;
     text-align: justify;
-    white-space: pre-wrap;
   }
 }
 
 .single-btn {
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin-top: 70px;
+  padding: 10px 10px;
 }
 
 .double-btn {
   display: flex;
   justify-content: flex-end;
-  align-items: center;
-  margin-top: 0px;
+  padding: 10px 10px;
 
   button {
     margin-right: 15px;
@@ -68,19 +60,12 @@
 .double-btn-circle {
   display: flex;
   justify-content: flex-end;
-  align-items: center;
-  margin-top: 60px;
-  text-transform: capitalize;
-  font-size: 15px;
+  font-size: 14px;
+  padding: 10px 10px;
   button {
-    margin-right: 15px;
+    margin-right: 14px;
     border-radius: 50%;
     height: 60px;
     width: 60px;
   }
-}
-
-.alignRight {
-  float: right;
-  color: #e82520;
 }
