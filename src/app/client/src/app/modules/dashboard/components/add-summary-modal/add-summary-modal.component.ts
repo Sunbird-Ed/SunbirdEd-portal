@@ -1,6 +1,6 @@
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit, EventEmitter, Output, Input, OnDestroy, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
-import * as ClassicEditor from '@project-sunbird/ckeditor-build-font';
+import * as ClassicEditor from '@project-sunbird/ckeditor-build-classic';
 import { ISummaryObject } from '../../interfaces';
 
 @Component({

@@ -22,9 +22,9 @@
         <div class="content-metadeta__title  fxsmall mb-4">{{resourceService?.frmelmnts?.lbl?.author}}</div>
         <div class="content-metadeta__text  fnormal">{{contentData?.author}}</div>
       </div>
-      <div class="py-8" *ngIf="attributions">
+      <div class="py-8" *ngIf="contentData?.attributions">
         <div class="content-metadeta__title  fxsmall mb-4">{{resourceService?.frmelmnts?.lbl?.attributions}}</div>
-        <div class="content-metadeta__text  fnormal">{{attributions}}</div>
+        <div class="content-metadeta__text  fnormal">{{contentData?.attributions}}</div>
       </div>
       <div class="py-8" *ngIf="contentData?.license">
         <div class="content-metadeta__title  fxsmall mb-4">{{resourceService?.frmelmnts?.lbl?.licenseTerms}}</div>
