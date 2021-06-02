@@ -689,6 +689,27 @@ describe('ExplorePageComponent', () => {
       expect(component.frameworkModal.modal.deny).toHaveBeenCalled();
     });
 
+    it('should get selected tab', () => {
+      const activatedRoute = TestBed.get(ActivatedRoute);
+      activatedRoute.changeSnapshotQueryParams({ subject: ['English'], key: 'test', selectedTab: 'explore' });
+      const selectedTab = component.getSelectedTab();
+      expect(selectedTab).toEqual('explore');
+    });
+
+    it('should prepare page sections data array', () => {
+      component._currentPageData = RESPONSE.explorePageData;
+      spyOn(component, 'getCurrentPageData').and.returnValue(RESPONSE.explorePageData);
+      const sectionData = component.getExplorePageSections();
+      sectionData.subscribe((data) => {
+        expect(data.length).toEqual(2);
+      });
+    });
+
+    it('should return section page title', () => {
+      const sectionTitle = component.getSectionTitle('frmelmnts.lbl.board');
+      expect(sectionTitle).toEqual('Browse by Board');
+    });
+
     it('should update profile for logged in users', () => {
       component.frameworkModal = {
         modal: {
@@ -711,25 +732,5 @@ describe('ExplorePageComponent', () => {
       expect(toasterService.success).toHaveBeenCalledWith(resourceBundle.messages.smsg.m0058);
     });
 
-    it('should get selected tab', () => {
-      const activatedRoute = TestBed.get(ActivatedRoute);
-      activatedRoute.changeSnapshotQueryParams({ subject: ['English'], key: 'test', selectedTab: 'explore' });
-      const selectedTab = component.getSelectedTab();
-      expect(selectedTab).toEqual('explore');
-    });
-
-    it('should prepare page sections data array', () => {
-      component._currentPageData = RESPONSE.explorePageData;
-      spyOn(component, 'getCurrentPageData').and.returnValue(RESPONSE.explorePageData);
-      const sectionData = component.getExplorePageSections();
-      sectionData.subscribe((data) => {
-        expect(data.length).toEqual(2);
-      });
-    });
-
-    it('should return section page title', () => {
-      const sectionTitle = component.getSectionTitle('frmelmnts.lbl.board');
-      expect(sectionTitle).toEqual('Browse by Board');
-    }); 
   })
 });

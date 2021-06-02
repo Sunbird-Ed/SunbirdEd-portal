@@ -836,6 +836,14 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.router.navigate(['explore', 1], { queryParams: params });
     }
 
+    getSectionTitle (title) {
+        return get(this.resourceService, 'frmelmnts.lbl.browseBy') + ' ' + get(this.resourceService, title);
+    }
+
+    getSelectedTab () {
+        return get(this.activatedRoute, 'snapshot.queryParams.selectedTab');
+    }
+
     updateProfile(event) {
         this.frameworkModal.modal.deny();
         this.showEdit = !this.showEdit;
@@ -857,10 +865,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.fetchContents$.next(this._currentPageData);
     }
 
-    getSelectedTab () {
-        return get(this.activatedRoute, 'snapshot.queryParams.selectedTab');
-    }
-
     getExplorePageSections () {
         return of(forEach(this.getCurrentPageData().sections, facet => {
             let _facetArray = [];
@@ -876,9 +880,5 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 section: facet
             });
         }));
-    }
-
-    getSectionTitle (title) {
-        return get(this.resourceService, 'frmelmnts.lbl.browseBy') + ' ' + get(this.resourceService, title);
     }
 }
