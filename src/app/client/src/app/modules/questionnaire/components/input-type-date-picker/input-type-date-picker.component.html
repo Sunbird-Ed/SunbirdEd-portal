@@ -1,0 +1,16 @@
+<div
+  class="ui left icon input"
+  [formGroup]="questionnaireForm"
+  *ngIf="questionnaireForm?.contains(question._id)"
+>
+  <i class="calendar icon"></i>
+  <input
+    suiDatepicker
+    [pickerMode]="'date'"
+    [pickerUseNativeOnMobile]="false"
+    [formControlName]="question?._id"
+    (pickerSelectedDateChange)="onChange($event)"
+    class="question-date-input"
+  />
+  <!-- todo:add validation -->
+</div>
