@@ -17,7 +17,7 @@ import {
   Section,
 } from "../Interface/assessmentDetails";
 import { ObservationUtilService } from "../../observation/service";
-import { ComponentCanDeactivate } from "../guard/component-can-deactivate";
+import { ComponentDeactivate } from "../guard/can-deactivate.guard";
 
 @Component({
   selector: "app-questionnaire",
@@ -25,7 +25,7 @@ import { ComponentCanDeactivate } from "../guard/component-can-deactivate";
   styleUrls: ["./questionnaire.component.scss"],
 })
 export class QuestionnaireComponent
-  extends ComponentCanDeactivate
+  extends ComponentDeactivate
   implements OnInit
 {
   pageTitleSrc: string = "Observation Form";
