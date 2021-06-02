@@ -75,8 +75,8 @@ export class UtilService {
       board: data.board || '',
       identifier: data.identifier,
       mimeType: data.mimeType,
-      primaryCategory: data.primaryCategory
-
+      primaryCategory: data.primaryCategory,
+      downloadUrl: data.downloadUrl
     };
     if (data.trackable) {
       content.trackable = data.trackable;
@@ -422,5 +422,21 @@ export class UtilService {
     let origin = (<HTMLInputElement>document.getElementById('baseUrl'))
       ? (<HTMLInputElement>document.getElementById('baseUrl')).value : document.location.origin;
     return origin;
+  }
+
+  getRandomColor(colorSet) {
+    if (colorSet.length > 0) {
+      const randomColor = _.sample(colorSet);
+      return {
+        iconBgColor: randomColor.primary,
+        pillBgColor: randomColor.secondary
+      }
+    } else {
+      return null;
+    }
+  }
+
+  getSectionPillIcon(iconObj, pillValue) {
+    return _.get(iconObj, pillValue) || _.get(iconObj, 'default');
   }
 }

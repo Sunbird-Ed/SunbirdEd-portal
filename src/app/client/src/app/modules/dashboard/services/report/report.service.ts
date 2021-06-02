@@ -259,7 +259,8 @@ export class ReportService {
    * @memberof ReportService
    */
   public overlayMultipleDataSources<T, U extends keyof T>(dataSources: (T[])[], commonDimension: U) {
-    return _.values(_.merge(..._.map(dataSources, dataSource => _.keyBy(dataSource, commonDimension))));
+    // return _.values(_.merge(..._.map(dataSources, dataSource => _.keyBy(dataSource, commonDimension))));
+    return _.flatten(dataSources);
   }
 
   /**

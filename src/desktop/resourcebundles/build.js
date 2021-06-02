@@ -7,7 +7,11 @@ var sunbird_primary_bundle_language = 'en';
 const resBundlesArr = [
   {
     name: "consumption",
-    path: path.join(__dirname, "/./data/consumption/"),
+    path: path.join(__dirname, "/./../../app/resourcebundles/data/consumption/"),
+    dest: path.join(__dirname, "/./../openrap-sunbirded-plugin/data/resourceBundles/")
+  },{
+    name: "creation",
+    path: path.join(__dirname, "/./../../app/resourcebundles/data/consumption/"),
     dest: path.join(__dirname, "/./../openrap-sunbirded-plugin/data/resourceBundles/")
   }
 ];

@@ -1,6 +1,6 @@
 import HardDiskInfo from "../../utils/hardDiskInfo";
 import * as childProcess from "child_process";
-import { ErrorObj, IContentImportData, ImportSteps } from "./IContentImport";
+import { ErrorObj, ImportSteps } from "./IContentImport";
 import { Inject } from "typescript-ioc";
 import * as path from "path";
 import DatabaseSDK from "../../sdk/database";
@@ -11,14 +11,8 @@ import { IAddedUsingType } from "../../controllers/content/IContent";
 import * as  _ from "lodash";
 import { Observer } from "rxjs";
 import TelemetryHelper from "../../helper/telemetryHelper";
-
-import { ClassLogger } from "@project-sunbird/logger/decorator";
 import ContentLocation from "../../controllers/contentLocation";
 
-/*@ClassLogger({
-  logLevel: "debug",
-  logTime: true,
-})*/
 export class ImportContent implements ITaskExecuter {
   private deviceId: string;
   public static taskType = "IMPORT";

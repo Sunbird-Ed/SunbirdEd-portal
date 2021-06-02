@@ -10,10 +10,6 @@ import { Observer } from "rxjs";
 import TelemetryHelper from "../../helper/telemetryHelper";
 import { NetworkQueue } from "@project-sunbird/OpenRAP/services/queue";
 import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
-/*@ClassLogger({
-  logLevel: "debug",
-  logTime: true,
-})*/
 export class ImportTelemetry implements ITaskExecuter {
   public static taskType = "TELEMETRY_IMPORT";
   private deviceId: string;
