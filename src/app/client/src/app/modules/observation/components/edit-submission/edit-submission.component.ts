@@ -12,6 +12,7 @@ export class EditSubmissionComponent implements OnInit {
     @Input() submission;
     @Output() onAction = new EventEmitter<any>();
     selectedListCount=0;
+    showPopup;
     constructor(
         public resourceService: ResourceService,
     ) { }
