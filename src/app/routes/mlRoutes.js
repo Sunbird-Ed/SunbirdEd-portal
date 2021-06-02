@@ -46,8 +46,8 @@ module.exports = function (app) {
       // console.log(JSON.parse(fields.url))
       console.log(JSON.stringify(fields.url[0]))
       console.log(files['file'][0]['path'])
-      let writer = fs.createWriteStream(files['file'][0]['path'], files['file'][0]['originalFilename']) 
-      debugger
+      // let writer = fs.createWriteStream(files['file'][0]['path'], files['file'][0]['originalFilename']) 
+      // debugger
 
       // fs.createReadStream(files['file'][0]['path']).pipe(() => {
       //   const options = {
@@ -86,7 +86,7 @@ module.exports = function (app) {
         }
       }, (err, response) => {
         debugger
-        const data = fs.createReadStream(files['file'][0]['path'])
+        // const data = fs.createReadStream(files['file'][0]['path'])
         debugger
       });
       let form = formData.form();
