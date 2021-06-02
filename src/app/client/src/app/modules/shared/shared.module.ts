@@ -33,6 +33,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import {TitleCasePipe} from '@angular/common';
 import { NetworkStatusComponent } from './components/network-status/network-status.component';
 import { LoadOfflineContentComponent } from './components/load-offline-content/load-offline-content.component';
+import { TelemetryEventsDirective } from './directives/telemetry-events.directive';
 @NgModule({
   imports: [
     CommonModule,
@@ -50,7 +51,8 @@ import { LoadOfflineContentComponent } from './components/load-offline-content/l
     ConfirmPopupComponent, AddToGroupDirective, SelectOptionGroupComponent, AppLandingSectionComponent, MarkdownDirective,
     SbDatatableComponent,OnDemandReportsComponent,SbDataTablePipe, NetworkStatusComponent, LoadOfflineContentComponent,
     DesktopAppUpdateComponent,
-    SystemWarningComponent],
+    SystemWarningComponent,
+    TelemetryEventsDirective],
   exports: [AppLoaderComponent, DateFormatPipe, TranslateModule,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,

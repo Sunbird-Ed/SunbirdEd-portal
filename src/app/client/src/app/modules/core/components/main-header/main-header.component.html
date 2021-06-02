@@ -175,6 +175,11 @@
               <img (click)="navigateToHome()" class="cursor-pointer" alt={{tenantInfo.titleName}}
                 src="{{tenantInfo.logo}}">
             </a>
+            <div class="six wide column p-0 d-flex" >
+              <button class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8 ng-star-inserted" type="button" (click)="showTelemetryEventsModal = true">
+                <i _ngcontent-mrt-c56="" class="blue share alternate icon"></i> Errors 
+              </button>
+            </div>
             <!--/Logo-->
             <div class="d-flex flex-ai-center sb-responsive-header">
               <!-- Notification dropdown -->
@@ -486,3 +491,6 @@
 </div>
 
 <app-load-offline-content [hideLoadButton]="true" (close)="showLoadContentModal=false"  *ngIf="showLoadContentModal"></app-load-offline-content>
+
+<app-telemetry-error-modal *ngIf="showTelemetryEventsModal"
+(close)="showTelemetryEventsModal = false"></app-telemetry-error-modal>

@@ -423,4 +423,30 @@ export class UtilService {
       ? (<HTMLInputElement>document.getElementById('baseUrl')).value : document.location.origin;
     return origin;
   }
+
+  
+  /**
+   * @param  {} ob 
+   * ex: ob = {id:1, user: {id: 123, name: "SomeUser"}}
+   * returns obj = {id:1, user.id:123, user.name: "someUser"}
+   */
+  flattenObject(ob) {
+    var toReturn = {};
+    
+    for (var i in ob) {
+      if (!ob.hasOwnProperty(i)) continue;
+      
+      if ((typeof ob[i]) == 'object' && ob[i] !== null) {
+        var flatObject = this.flattenObject(ob[i]);
+        for (var x in flatObject) {
+          if (!flatObject.hasOwnProperty(x)) continue;
+          
+          toReturn[i + '.' + x] = flatObject[x];
+        }
+      } else {
+        toReturn[i] = ob[i];
+      }
+    }
+    return toReturn;
+  }
 }

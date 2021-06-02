@@ -7,7 +7,7 @@ import {
   FormService,
   ManagedUserService, ProgramsService, CoursesService, DeviceRegisterService, ElectronService
 } from './../../services';
-import { Component, OnInit, ChangeDetectorRef, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Input, OnDestroy, ViewChild } from '@angular/core';
 import {
   ConfigService,
   ResourceService,
@@ -36,6 +36,10 @@ type reportsListVersionType = 'v1' | 'v2';
 export class MainHeaderComponent implements OnInit, OnDestroy {
   @Input() routerEvents;
   @Input() layoutConfiguration;
+
+  // Telemetry events modal 
+  @ViewChild('TelemetryEventsModal', { static: false }) TelemetryEventsModal;
+
   languageFormQuery = {
     formType: 'content',
     formAction: 'search',
@@ -149,6 +153,10 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   isDesktopApp = false;
   showLoadContentModal = false;
   guestUser;
+
+  // Show/Hide telemetry events popup component
+  showTelemetryEventsModal:boolean = false;
+  
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
     public orgDetailsService: OrgDetailsService, public formService: FormService,

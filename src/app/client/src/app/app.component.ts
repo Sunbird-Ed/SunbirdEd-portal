@@ -149,6 +149,28 @@ export class AppComponent implements OnInit, OnDestroy {
     this.telemetryService.syncEvents(false);
     this.ngOnDestroy();
   }
+
+  @HostListener('document:TelemetryEvent', ['$event'])
+  public telemetryEventHandler(event) {    
+    let telemetryEvents = this.telemetryService.telemetryEvents;
+    let latestEvent = telemetryEvents && telemetryEvents[0];
+    if(event && event.detail) {
+      let teleEvent = event.detail;
+      if(latestEvent && (latestEvent.mid == teleEvent.mid)){
+        // Avoid duplicate events adding to the list
+        return;
+      }
+
+      // To add only Error events to the list
+      if(teleEvent.eid && (teleEvent.eid.toLowerCase() === "interact")) {
+        let flatJson = this.utilService.flattenObject(teleEvent);
+        this.telemetryService.telemetryEvents.push(flatJson);       
+      }
+
+      console.log(event);
+    }
+  }
+
   handleLogin() {
     window.location.replace('/sessionExpired');
     this.cacheService.removeAll();

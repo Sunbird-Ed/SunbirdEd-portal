@@ -1,4 +1,10 @@
-<app-data-table [options]="reportsList.table.options" [columnDefinations]="reportsList.table.defs"
-            (rowClickEvent)="rowClickEventHandler($event)" [tableId]="'list-all-reports'"
-            [headerData]="reportsList.table.header" [rowsData]="reportsList.table.data">
-          </app-data-table>
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'large'"
+  class="sb-modal sb-modal-addsummary" appBodyScroll #modal (dismissed)="modal.deny(); close.emit();">
+  <div class="sb-modal-header">
+    {{input?.title}}
+  </div>
+  <div class="sb-modal-content o-x-hide">
+    <sb-datatable [name]="'Telemetry events'" [message]="" [data]="telemetryEventsArr" [columns]="columns"
+              [downloadCSV]="true" (downloadLink)="onDownloadLinkFail($event)" ></sb-datatable>
+  </div>
+</sui-modal>
