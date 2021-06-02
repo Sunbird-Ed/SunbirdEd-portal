@@ -16,7 +16,8 @@ import { ContentSearchService } from '@sunbird/content-search';
 import { configureTestSuite } from '@sunbird/test-util';
 import { ContentManagerService } from '../../../public/module/offline/services';
 import { CacheService } from 'ng2-cache-service';
-
+import { ProfileService } from '@sunbird/profile';
+import { result } from 'lodash';
 
 describe('ExplorePageComponent', () => {
   let component: ExplorePageComponent;
@@ -91,7 +92,7 @@ describe('ExplorePageComponent', () => {
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(), SlickModule],
       declarations: [ExplorePageComponent],
       providers: [PublicPlayerService, { provide: ResourceService, useValue: resourceBundle },
-        FormService, ContentManagerService,
+        FormService, ProfileService, ContentManagerService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
@@ -313,10 +314,15 @@ describe('ExplorePageComponent', () => {
 
   it('should redo layout on render', () => {
     component.layoutConfiguration = {};
+    spyOn(component, 'getCurrentPageData').and.returnValue(RESPONSE.explorePageData);
+    const fetchContentsSpy = spyOn<any>(component['fetchContents$'], 'next');
     component.ngOnInit();
     component.redoLayout();
     component.layoutConfiguration = null;
     component.redoLayout();
+    expect(component.isFilterEnabled).toBe(true);
+    component['fetchContents$'].next(RESPONSE.explorePageData);
+    expect(fetchContentsSpy).toHaveBeenCalled();
   });
 
   xit('should call the getFilter Method and set audience type as filters', () => {
@@ -500,12 +506,15 @@ describe('ExplorePageComponent', () => {
 
   it('should fetch contents', done => {
     sendPageApi = false;
+    spyOn(component, 'redoLayout');
     component['fetchContents']().subscribe(res => {
       expect(component.showLoader).toBeFalsy();
       expect(component.apiContentList).toBeDefined();
       expect(component.pageSections).toBeDefined();
       expect(pageApiService.contentSearch).toHaveBeenCalled();
       expect(component.apiContentList.length).toBe(1);
+      expect(component.redoLayout).toHaveBeenCalled();
+      expect(component.isFilterEnabled).toBe(true);
       done();
     });
     component['fetchContents$'].next(RESPONSE.mockCurrentPageData);
@@ -664,7 +673,7 @@ describe('ExplorePageComponent', () => {
       expect(cacheService.set).toHaveBeenCalled();
     });
 
-    it('should update profile', () => {
+    it('should update profile for non logged in users', () => {
       component.frameworkModal = {
         modal: {
           deny: jasmine.createSpy('deny')
@@ -672,11 +681,34 @@ describe('ExplorePageComponent', () => {
       };
       component.showEdit = true;
       spyOn(component, 'setUserPreferences').and.callThrough();
+      spyOn(component, 'isUserLoggedIn').and.returnValue(false);
       const event = { board: ['CBSE'], medium: ['English'], gradeLevel: ['Class 1'], subject: ['English'] };
       component.userPreference = { framework: {} };
       component.updateProfile(event);
       expect(component.setUserPreferences).toHaveBeenCalled();
       expect(component.frameworkModal.modal.deny).toHaveBeenCalled();
+    });
+
+    it('should update profile for logged in users', () => {
+      component.frameworkModal = {
+        modal: {
+          deny: jasmine.createSpy('deny')
+        }
+      };
+      component.showEdit = true;
+      spyOn(component, 'setUserPreferences').and.callThrough();
+      spyOn(component, 'isUserLoggedIn').and.returnValue(true);
+      const profileService = TestBed.get(ProfileService);
+      spyOn(profileService, 'updateProfile').and.returnValue(of({}));
+      const toasterService = TestBed.get(ToasterService);
+      spyOn(toasterService, 'success');
+      const event = { board: ['CBSE'], medium: ['English'], gradeLevel: ['Class 1'], subject: ['English'] };
+      component.userPreference = { framework: {} };
+      component.updateProfile(event);
+      expect(profileService.updateProfile).toHaveBeenCalled();
+      expect(component.setUserPreferences).toHaveBeenCalled();
+      expect(component.frameworkModal.modal.deny).toHaveBeenCalled();
+      expect(toasterService.success).toHaveBeenCalledWith(resourceBundle.messages.smsg.m0058);
     });
 
     it('should get selected tab', () => {
