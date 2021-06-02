@@ -46,10 +46,14 @@ export default (app, proxyURL) => {
         res.status(res.statusCode).send(res.body);
     });
 
+    app.post("/learner/user/v2/search", customProxy(proxyURL, defaultProxyConfig), (req, res) => {
+        res.status(res.statusCode).send(res.body);
+    });
+
 
     app.post("/content/course/v1/content/state/read", customProxy(proxyURL, defaultProxyConfig), async (req, res) => {
         const contentList = _.get(res, 'body.result.contentList');
-        if (contentList) {
+        if (_.get(contentList, 'length')) {
             await contentStatus.saveContentStatus(contentList);
             await contentStatus.getLocalContentStatusList(req, res);
         } else {
