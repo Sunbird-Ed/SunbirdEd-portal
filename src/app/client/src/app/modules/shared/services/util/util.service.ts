@@ -2,7 +2,7 @@ import * as TreeModel from 'tree-model';
 import { Injectable, EventEmitter } from '@angular/core';
 import * as _ from 'lodash-es';
 import { ICard, ILanguage } from '@sunbird/shared';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { ResourceService } from '../resource/resource.service';
 import dayjs from 'dayjs';
 import { ExportToCsv } from 'export-to-csv';
@@ -19,6 +19,9 @@ export class UtilService {
   public searchKeyword = new EventEmitter<string>();
   private csvExporter: any;
   private _isDesktopApp = false;
+  public formData:any;
+  public roleChanged = new BehaviorSubject('');
+  public currentRole = this.roleChanged.asObservable();
 
   constructor(private resourceService: ResourceService) {
     if (!UtilService.singletonInstance) {
@@ -75,8 +78,8 @@ export class UtilService {
       board: data.board || '',
       identifier: data.identifier,
       mimeType: data.mimeType,
-      primaryCategory: data.primaryCategory
-
+      primaryCategory: data.primaryCategory,
+      downloadUrl: data.downloadUrl
     };
     if (data.trackable) {
       content.trackable = data.trackable;
@@ -247,6 +250,13 @@ export class UtilService {
 
   updateSearchKeyword(keyword: string) {
     this.searchKeyword.emit(keyword);
+  }
+
+  updateRoleChange(type) {
+    if(type){  
+      this.roleChanged.next(type);
+    }
+
   }
 
   /* This will add hover data in card content */
@@ -422,5 +432,21 @@ export class UtilService {
     let origin = (<HTMLInputElement>document.getElementById('baseUrl'))
       ? (<HTMLInputElement>document.getElementById('baseUrl')).value : document.location.origin;
     return origin;
+  }
+
+  getRandomColor(colorSet) {
+    if (colorSet.length > 0) {
+      const randomColor = _.sample(colorSet);
+      return {
+        iconBgColor: randomColor.primary,
+        pillBgColor: randomColor.secondary
+      }
+    } else {
+      return null;
+    }
+  }
+
+  getSectionPillIcon(iconObj, pillValue) {
+    return _.get(iconObj, pillValue) || _.get(iconObj, 'default');
   }
 }

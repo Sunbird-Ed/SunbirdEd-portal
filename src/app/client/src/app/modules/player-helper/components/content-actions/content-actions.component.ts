@@ -239,7 +239,7 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
         } else {
           data.label = 'Download';
         }
-        data.disabled = !_.includes(disableButton, data.label);
+        data.disabled = _.get(this.contentData, 'downloadUrl') ?  !_.includes(disableButton, data.label) : true;
       } else if (data.name === 'update') {
         data.label = _.capitalize(data.name);
         data.disabled =

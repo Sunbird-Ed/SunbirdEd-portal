@@ -1,17 +1,17 @@
-import {Component, Input, OnDestroy, OnInit, Output, EventEmitter} from '@angular/core';
-import {FormService, UserService} from './../../services';
+import { Component, Input, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
+import { FormService, UserService } from './../../services';
 import * as _ from 'lodash-es';
 import { LayoutService, ResourceService, UtilService } from '@sunbird/shared';
-import {Router, ActivatedRoute} from '@angular/router';
-import {combineLatest, Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
-import {TelemetryService} from '@sunbird/telemetry';
+import { Router, ActivatedRoute } from '@angular/router';
+import { combineLatest, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { TelemetryService } from '@sunbird/telemetry';
 
 
 @Component({
-  selector: 'app-content-type',
-  templateUrl: './content-type.component.html',
-  styleUrls: ['./content-type.component.scss']
+  selector: "app-content-type",
+  templateUrl: "./content-type.component.html",
+  styleUrls: ["./content-type.component.scss"],
 })
 export class ContentTypeComponent implements OnInit, OnDestroy {
   @Output() closeSideMenu = new EventEmitter<any>();
@@ -20,20 +20,43 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
   selectedContentType;
   isDesktopApp = false;
   public unsubscribe$ = new Subject<void>();
-
-  constructor(public formService: FormService, public resourceService: ResourceService,
-              public router: Router, public userService: UserService, private telemetryService: TelemetryService,
-              public activatedRoute: ActivatedRoute, public layoutService: LayoutService,
-              private utilService: UtilService) {
+  subscription: any;
+  userType:any;
+  constructor(
+    public formService: FormService,
+    public resourceService: ResourceService,
+    public router: Router,
+    public userService: UserService,
+    private telemetryService: TelemetryService,
+    public activatedRoute: ActivatedRoute,
+    public layoutService: LayoutService,
+    private utilService: UtilService,
+  ) {
+    this.subscription = this.utilService.currentRole.subscribe(async (result) => {
+      if (result) {
+        this.userType=result;
+        this.getContentTypes();
+      } 
+      else{
+        if(await this.userService.loggedIn){
+          const profileData = JSON.parse(sessionStorage.getItem("CacheServiceuserProfile"));
+          if(profileData.value.profileUserType.type === null){
+              return;
+            }
+            this.userType=profileData.value.profileUserType.type;
+          }
+          this.getContentTypes();
+      }      
+    });
   }
 
+
   ngOnInit() {
-    this.getContentTypes();
     this.isDesktopApp = this.utilService.isDesktopApp;
     this.layoutService.updateSelectedContentType
-    .subscribe((data) => {
-      this.updateSelectedContentType(data);
-    });
+      .subscribe((data) => {
+        this.updateSelectedContentType(data);
+      });
   }
 
 
@@ -44,7 +67,6 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
         this.setSelectedContentType(this.router.url, result[0], result[1]);
       });
   }
-
 
   ngOnDestroy() {
     this.unsubscribe$.next();
@@ -79,12 +101,11 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       this.router.navigate([data.loggedInUserRoute.route],
         { queryParams: { ...params, selectedTab: data.loggedInUserRoute.queryParam } });
     } else {
-      !data.isLoginMandatory ? 
+      !data.isLoginMandatory ?
         this.router.navigate([data.anonumousUserRoute.route],
-          { queryParams: { ...params, selectedTab: data.anonumousUserRoute.queryParam } }): window.location.href = data.loggedInUserRoute.route ;
+          { queryParams: { ...params, selectedTab: data.anonumousUserRoute.queryParam } }) : window.location.href = data.loggedInUserRoute.route;
     }
   }
-
 
   setSelectedContentType(url, queryParams, pathParams) {
     if (url.indexOf('play') >= 0) {
@@ -97,9 +118,9 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : 'textbook';
     } else if (url.indexOf('mydownloads') >= 0) {
       this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : 'mydownloads';
-    }else if (url.indexOf('observation') >= 0) {   
+    } else if (url.indexOf('observation') >= 0) {
       this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : 'observation';
-    }else {
+    } else {
       this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : null;
     }
   }
@@ -108,8 +129,19 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     if (ct) {
       this.selectedContentType = ct.contentType;
     } else {
-      this.selectedContentType = 'all';
+      this.selectedContentType = "all";
     }
+  }
+
+  updateForm(data) {
+    let finalData = [];
+    finalData = data;
+      if (this.userType != "administrator") {
+        finalData = finalData.filter((obj) => obj.contentType != "observation");
+        this.processFormData(finalData);
+      } else {
+        this.processFormData(finalData);
+      }
   }
 
   processFormData(formData) {
@@ -132,31 +164,6 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       contentType: 'global'
     };
     this.formService.getFormConfig(formServiceInputParams).subscribe((data: any) => {
-      
-      let obj = {
-        "index": 9,
-        "title": "frmelmnts.lbl.observation",
-        "desc": "frmelmnts.lbl.observation",
-        "menuType": "Content",
-        "contentType": "observation",
-        "isEnabled": true,
-        "isOnlineOnly": true,
-        "theme": {
-            "baseColor": "",
-            "textColor": "",
-            "supportingColor": "",
-            "className": "tests",
-            "imageName": "observation.svg"
-        },
-        "anonumousUserRoute": {
-            "route": "/observation",
-        },
-        "loggedInUserRoute": {
-            "route": "/observation",
-        },
-       "isLoginMandatory": true
-    };
-    data.push(obj);
       this.processFormData(data);
       this.setContentTypeOnUrlChange();
     });

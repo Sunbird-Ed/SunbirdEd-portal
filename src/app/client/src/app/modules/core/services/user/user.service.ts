@@ -454,7 +454,10 @@ export class UserService {
       url: this.config.urlConFig.URLS.OFFLINE.UPDATE_USER,
       data: request
     };
-    return this.publicDataService.post(options);
+    return this.publicDataService.post(options).pipe(map((response: ServerResponse) => {
+      this.getGuestUser().subscribe();
+      return response;
+    }));
   }
 
   createAnonymousUser(request): Observable<ServerResponse> {
@@ -463,7 +466,7 @@ export class UserService {
       data: request
     };
     return this.publicDataService.post(options).pipe(map((response: ServerResponse) => {
-      this.getAnonymousUserPreference().subscribe();
+      this.getGuestUser().subscribe();
       return response;
     }));
   }
@@ -504,6 +507,7 @@ export class UserService {
       return this.updateAnonymousUserDetails(req);
     } else {
       localStorage.setItem('guestUserDetails', JSON.stringify(userDetails));
+      this.getGuestUser().subscribe();
       return of({});
     }
   }
@@ -514,6 +518,7 @@ export class UserService {
       return this.createAnonymousUser(req);
     } else {
       localStorage.setItem('guestUserDetails', JSON.stringify(userDetails));
+      this.getGuestUser().subscribe();
       return of({});
     }
   }

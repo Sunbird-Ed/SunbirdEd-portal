@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ObservationUtilService } from '../observation-util.service';
+import { ObservationUtilService } from './observation-util.service';
 
 describe('ObservationUtilService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));

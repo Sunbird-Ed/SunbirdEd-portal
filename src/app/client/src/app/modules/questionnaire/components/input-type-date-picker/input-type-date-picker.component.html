@@ -1,9 +1,12 @@
-<div class="ui left icon input" [formGroup]="questionnaireForm">
+<div
+  class="ui left icon input"
+  [formGroup]="questionnaireForm"
+  *ngIf="questionnaireForm?.contains(question._id)"
+>
   <i class="calendar icon"></i>
   <input
     suiDatepicker
     [pickerMode]="'date'"
-    [pickerFirstDayOfWeek]="firstDayOfWeek"
     [pickerUseNativeOnMobile]="false"
     [formControlName]="question?._id"
     (pickerSelectedDateChange)="onChange($event)"

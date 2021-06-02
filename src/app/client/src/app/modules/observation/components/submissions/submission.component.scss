@@ -38,6 +38,9 @@
     border-top-left-radius: 0px !important;
     border-top-right-radius: 0px !important;
     border-radius: var(--sbt-bradius-24);
+    .txt-transform{
+        text-transform: capitalize;
+    }
 }
 .icon{
     color: var(--primary-400) !important;
