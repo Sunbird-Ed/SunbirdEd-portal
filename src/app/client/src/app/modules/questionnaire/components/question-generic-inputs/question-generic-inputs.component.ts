@@ -18,11 +18,10 @@ import { FormGroup } from "@angular/forms";
 export class QuestionGenericInputsComponent {
   @Input() questions: Array<Question>;
   @Input() questionnaireForm: FormGroup;
-  attachmentData = { submissionId: this.qService.getSubmissionId() };
   selectedIndex: number;
   constructor(
     public resourceService: ResourceService,
-    private qService: QuestionnaireService,
+    public qService: QuestionnaireService,
   ) {}
   
 
