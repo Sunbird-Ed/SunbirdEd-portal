@@ -11,6 +11,7 @@ import {
   RemarksComponent
 } from './components';
 import { ObservationUtilService } from "../observation/service";
+import {CanDeactivateGuard} from "./guard/can-deactivate.guard"
 
 @NgModule({
   declarations: [
@@ -35,7 +36,7 @@ import { ObservationUtilService } from "../observation/service";
     ReactiveFormsModule,
     SuiModule
   ],
-  providers:[ObservationUtilService]
+  providers:[ObservationUtilService,CanDeactivateGuard]
 
 })
 export class QuestionnaireModule { }

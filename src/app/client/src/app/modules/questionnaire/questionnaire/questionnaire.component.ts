@@ -20,13 +20,14 @@ import {
   Section,
 } from "../Interface/assessmentDetails";
 import { ObservationUtilService } from "../../observation/service";
+import { ComponentCanDeactivate } from "../guard/component-can-deactivate";
 
 @Component({
   selector: "app-questionnaire",
   templateUrl: "./questionnaire.component.html",
   styleUrls: ["./questionnaire.component.scss"],
 })
-export class QuestionnaireComponent implements OnInit {
+export class QuestionnaireComponent extends ComponentCanDeactivate implements OnInit {
   pageTitleSrc: string = "Observation Form";
   svgToDisplay: string = "textbooks-banner-img.svg";
   layoutConfiguration: any;
@@ -37,7 +38,7 @@ export class QuestionnaireComponent implements OnInit {
   evidence: Evidence;
   queryParams: any;
   assessmentInfo: AssessmentInfo;
-
+  canLeave:boolean=false;
   constructor(
     public layoutService: LayoutService,
     public fb: FormBuilder,
@@ -48,9 +49,23 @@ export class QuestionnaireComponent implements OnInit {
     private observationService: ObservationService,
     private location: Location,
     private observationUtilService: ObservationUtilService,
-  ) {}
+  ) {
+    super();
+  }
+
+  canDeactivate() {
+    if(this.questionnaireForm){
+    if(this.questionnaireForm.dirty && !this.canLeave){
+      return false;
+    }
+    else{
+      return true;
+    }
+    }
+   }
 
   ngOnInit() {
+    
     this.initConfiguration();
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParams = params;
@@ -143,6 +158,7 @@ export class QuestionnaireComponent implements OnInit {
             ? this.resourceService.frmelmnts.alert.successfullySaved
             : this.resourceService.frmelmnts.alert.successfullySubmitted
         );
+        this.canLeave=true;
         this.location.back();
       },
       (error) => {
