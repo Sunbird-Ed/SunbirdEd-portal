@@ -1,23 +1,28 @@
-import { Injectable } from "@angular/core";
+import { HostListener, Injectable } from "@angular/core";
 import { CanDeactivate } from "@angular/router";
-import { ComponentCanDeactivate } from "./component-can-deactivate";
 import { ResourceService } from '@sunbird/shared';
 
 @Injectable()
 export class CanDeactivateGuard
-  implements CanDeactivate<ComponentCanDeactivate>
+  implements CanDeactivate<ComponentDeactivate>
 {
   constructor(public resourceService: ResourceService){}
-  canDeactivate(component: ComponentCanDeactivate): boolean {
+  canDeactivate(component: ComponentDeactivate): boolean {
     if (!component.canDeactivate()) {
       if (
         confirm(this.resourceService.frmelmnts.alert.confirmBackClick)
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    }
+	@@ -21,3 +20,15 @@ export class CanDeactivateGuard
     return true;
+  }
+}
+
+export abstract class ComponentDeactivate {
+  abstract canDeactivate(): boolean;
+
+  @HostListener('window:beforeunload', ['$event'])
+  unloadNotification($event: any) {
+    if (!this.canDeactivate()) {
+      $event.returnValue = true;
+    }
   }
 }
