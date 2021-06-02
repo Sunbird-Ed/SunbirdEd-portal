@@ -1,4 +1,3 @@
-import { ProfilePageComponent } from './../../../../plugins/profile/components/profile-page/profile-page.component';
 import { TestBed } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import { SharedModule } from '@sunbird/shared';
