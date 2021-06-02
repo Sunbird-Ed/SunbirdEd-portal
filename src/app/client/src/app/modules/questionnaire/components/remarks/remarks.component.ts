@@ -17,6 +17,7 @@ export class RemarksComponent implements OnInit {
 
   ngOnInit() {
     this.remark = this.question.remarks;
+    this.remark ? this.showRemarks = true : false
   }
 
   saveRemark() {
@@ -27,5 +28,6 @@ export class RemarksComponent implements OnInit {
   deleteRemark() {
     this.remark = "";
     this.saveRemark();
+    this.showRemarks=false
   }
 }

@@ -15,16 +15,18 @@ export class InputTypeTextComponent implements OnInit {
   constructor(public qService: QuestionnaireService) {}
 
   ngOnInit() {
-    this.questionnaireForm.addControl(
-      this.question._id,
-      new FormControl(this.question.value || null, [
-        this.qService.validate(this.question),
-      ])
-    );
+    setTimeout(() => {
+      this.questionnaireForm.addControl(
+        this.question._id,
+        new FormControl(this.question.value || null, [
+          this.qService.validate(this.question),
+        ])
+      );
 
-    this.question.startTime = this.question.startTime
-      ? this.question.startTime
-      : Date.now();
+      this.question.startTime = this.question.startTime
+        ? this.question.startTime
+        : Date.now();
+    });
   }
 
   onChange(e: Event) {

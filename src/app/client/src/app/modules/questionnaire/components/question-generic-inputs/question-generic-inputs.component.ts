@@ -15,7 +15,7 @@ import { FormGroup } from "@angular/forms";
   templateUrl: "./question-generic-inputs.component.html",
   styleUrls: ["./question-generic-inputs.component.scss"],
 })
-export class QuestionGenericInputsComponent implements AfterViewInit {
+export class QuestionGenericInputsComponent {
   @Input() questions: Array<Question>;
   @Input() questionnaireForm: FormGroup;
   attachmentData = { submissionId: this.qService.getSubmissionId() };
@@ -23,11 +23,8 @@ export class QuestionGenericInputsComponent implements AfterViewInit {
   constructor(
     public resourceService: ResourceService,
     private qService: QuestionnaireService,
-    private cdr: ChangeDetectorRef
   ) {}
-  ngAfterViewInit(): void {
-    this.cdr.detectChanges();
-  }
+  
 
   public get reponseType(): typeof ResponseType {
     return ResponseType;
@@ -39,6 +36,10 @@ export class QuestionGenericInputsComponent implements AfterViewInit {
       if (children.includes(q._id)) {
         let child = this.questions[i];
         child["canDisplay"] = this.canDisplayChildQ(child, i);
+        if (child["canDisplay"] == false) {
+          child.value = ""
+          this.questionnaireForm.removeControl(child._id)
+        }
       }
     });
   }

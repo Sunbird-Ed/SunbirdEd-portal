@@ -1,4 +1,7 @@
-import { Component, HostListener, OnInit } from "@angular/core";
+import {
+  Component,
+  OnInit,
+} from "@angular/core";
 import {
   COLUMN_TYPE,
   LayoutService,
@@ -44,7 +47,7 @@ export class QuestionnaireComponent implements OnInit {
     private config: ConfigService,
     private observationService: ObservationService,
     private location: Location,
-    private observationUtilService: ObservationUtilService
+    private observationUtilService: ObservationUtilService,
   ) {}
 
   ngOnInit() {
@@ -56,9 +59,6 @@ export class QuestionnaireComponent implements OnInit {
     this.questionnaireForm = this.fb.group({});
     // this.evidence = this.data.result.assessment.evidences[0];
     // this.sections = this.evidence.sections;
-    this.questionnaireForm.valueChanges.subscribe((res) => {
-      console.log(this.questionnaireForm);
-    });
   }
 
   getQuestionnare() {
@@ -169,6 +169,7 @@ export class QuestionnaireComponent implements OnInit {
       buttonText: this.resourceService.frmelmnts.btn.ok,
     });
     alertMetaData.footer.className = "single-btn";
+    this.observationUtilService.showPopupAlert(alertMetaData);
   }
 
   scrollToContent(id) {
