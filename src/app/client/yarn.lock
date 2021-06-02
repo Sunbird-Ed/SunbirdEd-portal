@@ -657,10 +657,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v8@3.9.3":
-  version "3.9.3"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v8/-/common-consumption-v8-3.9.3.tgz#d513f8c86a518aa30d82bfc9a60987c6f1339572"
-  integrity sha512-K1ikCGtwLxHFtGVNBUd0zwU6HgtVfpExxvU8fBRFu33ZfGoGUt1/TkEQV6EyNmg6U6+YHC5IrwWCQLR+G9N03A==
+"@project-sunbird/common-consumption-v8@3.9.4":
+  version "3.9.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v8/-/common-consumption-v8-3.9.4.tgz#e79b828095f24b37cbe09f9d03266e42b851ad51"
+  integrity sha512-KfUJkHqg0L1craKoYNWawb0kLBREs8NpcxFPbKC+IAD9J4am677bywG+Nod66UQluUFWJWc4d2finE2DtSjJvQ==
   dependencies:
     tslib "^1.9.0"
 
