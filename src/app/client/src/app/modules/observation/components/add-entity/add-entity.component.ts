@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild, Input, EventEmitter, Output } from '@angular/core';
 import { ObservationService, KendraService } from '@sunbird/core';
 import { ConfigService, ResourceService, ILoaderMessage, INoResultMessage } from '@sunbird/shared';
-import * as _ from 'underscore';
 import { ObservationUtilService } from '../../service';
+import { debounceTime, map } from 'rxjs/operators';
+import { fromEvent } from 'rxjs';
+
 @Component({
     selector: 'add-entity',
     templateUrl: './add-entity.component.html',
@@ -26,6 +28,7 @@ export class AddEntityComponent implements OnInit {
     showLoader: boolean = true;
     public loaderMessage: ILoaderMessage;
     public noResultMessage: INoResultMessage;
+    showDownloadSuccessModal;
     constructor(
         private observationService: ObservationService,
         private kendraService: KendraService,
@@ -33,9 +36,15 @@ export class AddEntityComponent implements OnInit {
         public observationUtilService: ObservationUtilService,
         config: ConfigService) {
         this.config = config;
-        this.search = _.debounce(this.search, 1000)
     }
     ngOnInit() {
+        const searchBox = document.getElementById('entitySearch');
+        const keyup$ = fromEvent(searchBox, 'keyup')
+        keyup$.pipe(
+            map((i: any) => i.currentTarget.value),
+            debounceTime(500)
+        )
+            .subscribe((text: string) => this.searchEntity());
         this.getProfileData();
     }
     getProfileData() {

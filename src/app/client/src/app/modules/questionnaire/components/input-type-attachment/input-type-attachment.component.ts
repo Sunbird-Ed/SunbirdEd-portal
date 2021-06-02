@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { QuestionnaireService } from "../../questionnaire.service";
 import { ObservationUtilService } from "../../../observation/service";
-import { ResourceService }from "@sunbird/shared";
+import { ResourceService } from "@sunbird/shared";
 @Component({
   selector: "app-input-type-attachment",
   templateUrl: "./input-type-attachment.component.html",
@@ -10,27 +10,11 @@ import { ResourceService }from "@sunbird/shared";
 export class InputTypeAttachmentComponent implements OnInit {
   @Input() data;
 
-  td = [
-    {
-      name: "xyz.png",
-      sourcePath:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/1200px-Visual_Studio_Code_1.35_icon.svg.png",
-    },
-    {
-      name: "abc.jpg",
-      sourcePath:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/1200px-Visual_Studio_Code_1.35_icon.svg.png",
-    },
-    {
-      name: "example.pdf",
-      sourcePath: "http://www.pdf995.com/samples/pdf.pdf",
-    },
-  ];
   constructor(
     private qService: QuestionnaireService,
-    private observationUtil:ObservationUtilService,
+    private observationUtil: ObservationUtilService,
     public resourceService: ResourceService
-    ) {}
+  ) {}
 
   ngOnInit() {}
 
@@ -69,39 +53,37 @@ export class InputTypeAttachmentComponent implements OnInit {
     return name.split(".").pop();
   }
   openFile(file) {
-    window.open(file.sourcePath, "_blank");
+    window.open(file.url, "_blank");
   }
 
-  async onAddApproval(file){
-    let metaData=this.observationUtil.getAlertMetaData();
-    metaData.type="upload evidence";
-    metaData.size="tiny";
-    metaData.content.title=this.resourceService.frmelmnts.alert.uploadevidencetitle;
-    metaData.content.body.type="checkbox";
-    let html =
-    `
+  async onAddApproval(file) {
+    let metaData = this.observationUtil.getAlertMetaData();
+    metaData.type = "upload evidence";
+    metaData.size = "tiny";
+    metaData.content.title =
+      this.resourceService.frmelmnts.alert.uploadevidencetitle;
+    metaData.content.body.type = "checkbox";
+    let html = `
     ${this.resourceService.frmelmnts.alert.evidence_content_policy}<a href='https://diksha.gov.in/term-of-use.html' target="_blank">${this.resourceService.frmelmnts.alert.evidence_content_policy_label}</a> .${this.resourceService.frmelmnts.alert.uploadevidencecontent}
     `;
-    metaData.content.body.data=html;
-    metaData.footer.className="double-btn"
+    metaData.content.body.data = html;
+    metaData.footer.className = "double-btn";
     metaData.footer.buttons.push(
       {
-        type:"cancel",
-        returnValue:false,
-        buttonText:this.resourceService.frmelmnts.btn.donotupload,
+        type: "cancel",
+        returnValue: false,
+        buttonText: this.resourceService.frmelmnts.btn.donotupload,
       },
       {
-       type:"accept",
-       returnValue:true,
-       buttonText:this.resourceService.frmelmnts.btn.upload,
-     }
-     );
-   let returnData=await this.observationUtil.showPopupAlert(metaData);
-   if(!returnData){
-     return;
-   }
-   file.click();
+        type: "accept",
+        returnValue: true,
+        buttonText: this.resourceService.frmelmnts.btn.upload,
+      }
+    );
+    let returnData = await this.observationUtil.showPopupAlert(metaData);
+    if (!returnData) {
+      return;
+    }
+    file.click();
   }
-
-
 }

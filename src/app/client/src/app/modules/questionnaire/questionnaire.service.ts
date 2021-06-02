@@ -168,6 +168,9 @@ export class QuestionnaireService {
                 questions.remarks = validSubmission.answers[questions._id]
                   ? validSubmission.answers[questions._id].remarks
                   : "";
+                questions.fileName = validSubmission.answers[questions._id]
+                  ? validSubmission.answers[questions._id].fileName
+                  : [];
               }
             } else if (
               validSubmission.answers &&
@@ -184,6 +187,9 @@ export class QuestionnaireService {
               question.remarks = validSubmission.answers[question._id]
                 ? validSubmission.answers[question._id].remarks
                 : "";
+              question.fileName = validSubmission.answers[question._id]
+                ? validSubmission.answers[question._id].fileName
+                : [];
             }
           }
         }
@@ -217,7 +223,13 @@ export class QuestionnaireService {
                 question._id
               ].value;
             question.remarks =
-              validSubmission.answers[matrixQuestion._id].value[index].remarks;
+              validSubmission.answers[matrixQuestion._id].value[index][
+                question._id
+              ].remarks;
+            question.fileName =
+              validSubmission.answers[matrixQuestion._id].value[index][
+                question._id
+              ].fileName;
           }
         });
       });
