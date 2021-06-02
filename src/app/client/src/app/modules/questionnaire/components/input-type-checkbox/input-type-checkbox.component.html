@@ -1,0 +1,16 @@
+<div *ngIf="questionnaireForm?.contains(question._id)">
+  <div
+    *ngFor="let o of options; let i = index"
+    [formGroup]="questionnaireForm"
+    class="mb-15 sb-checkbox sb-checkbox-secondary"
+  >
+    <div [formArrayName]="question._id">
+      <sui-checkbox
+        (checkChange)="onChange(o.value, $event, i)"
+        [formControlName]="i"
+      >
+        {{ o.label }}
+      </sui-checkbox>
+    </div>
+  </div>
+</div>

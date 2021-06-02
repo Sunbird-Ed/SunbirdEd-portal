@@ -1,0 +1,15 @@
+.card {
+  width: 100%;
+  border-radius: 90px;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.ui.card > .content:after,
+.ui.cards > .card > .content:after {
+  content: none;
+}
