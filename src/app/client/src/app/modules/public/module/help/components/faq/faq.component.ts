@@ -143,6 +143,7 @@ export class FaqComponent implements OnInit {
     if (_.get(data, 'categories.length')) {
       this.faqData = this.prepareFaqData(data);
       this.selectedFaqCategory = _.get(this.faqData, 'categories.0');
+      this.selectedFaqCategory['constants'] = _.get(this.faqData, 'constants');
         setTimeout(() => {
           if (this.sbFaqCategoryList && this.sbFaqCategoryList.selectedIndex !== undefined) {
             this.sbFaqCategoryList.selectedIndex = 0

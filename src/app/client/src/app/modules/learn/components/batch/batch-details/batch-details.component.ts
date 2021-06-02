@@ -59,6 +59,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   showMessageModal = false;
   tocId = '';
   isConnected = false;
+  isDesktopApp = false;
 
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
     public userService: UserService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
@@ -92,6 +93,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.isDesktopApp = this.userService.isDesktopApp;
     this.connectionService.monitor()
     .pipe(takeUntil(this.unsubscribe)).subscribe(isConnected => {
       this.isConnected = isConnected;
@@ -156,7 +158,9 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
            }
         }, (err) => {
           this.showError = true;
-          this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+          if (!this.isDesktopApp || (this.isDesktopApp && this.isConnected)) {
+            this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+          }
         });
      } else {
        searchParams.filters.enrollmentType = 'open';
@@ -173,7 +177,9 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
         },
         (err: ServerResponse) => {
           this.showError = true;
-          this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+          if (!this.isDesktopApp || (this.isDesktopApp && this.isConnected)) {
+            this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+          }
         });
      }
   }
@@ -214,7 +220,9 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
           }
         }, (err) => {
           this.showAllBatchError = true;
-          this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+          if (!this.isDesktopApp || (this.isDesktopApp && this.isConnected)) {
+            this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+          }
         });
   }
 
