@@ -26,6 +26,7 @@ export class AddEntityComponent implements OnInit {
     showLoader: boolean = true;
     public loaderMessage: ILoaderMessage;
     public noResultMessage: INoResultMessage;
+    showDownloadSuccessModal;
     constructor(
         private observationService: ObservationService,
         private kendraService: KendraService,
