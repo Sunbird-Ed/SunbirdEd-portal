@@ -11,7 +11,12 @@ export class CanDeactivateGuard
     if (!component.canDeactivate()) {
       if (
         confirm(this.resourceService.frmelmnts.alert.confirmBackClick)
-	@@ -21,3 +20,15 @@ export class CanDeactivateGuard
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    }
     return true;
   }
 }
