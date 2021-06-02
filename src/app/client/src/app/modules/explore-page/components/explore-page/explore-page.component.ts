@@ -42,7 +42,6 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     formData: any;
     FIRST_PANEL_LAYOUT;
     SECOND_PANEL_LAYOUT;
-    pageTitle;
     svgToDisplay;
     pageTitleSrc;
     private fetchContents$ = new BehaviorSubject(null);
@@ -93,10 +92,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         public telemetryService: TelemetryService, public layoutService: LayoutService,
         private formService: FormService, private playerService: PlayerService, private coursesService: CoursesService,
         private utilService: UtilService, private offlineCardService: OfflineCardService,
-        public contentManagerService: ContentManagerService, private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService) { 
-            this.instance = (<HTMLInputElement>document.getElementById('instance'))
+        public contentManagerService: ContentManagerService, private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService) {
+        this.instance = (<HTMLInputElement>document.getElementById('instance'))
             ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
-        }
+    }
 
 
     private initConfiguration() {
@@ -125,10 +124,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.channelId = channelId;
                     this.custodianOrg = custodianOrg;
                     this.formData = formConfig;
-                    const { defaultFilters = {} } = _.get(this.getCurrentPageData(), 'metaData') || {};
-                    this._currentPageData = {};
-                    this._currentPageData = this.getCurrentPageData();
-                    this.pageTitleSrc = get(this.resourceService, 'RESOURCE_CONSUMPTION_ROOT') + get(this._currentPageData, 'title');
+                    const currentPage = this.getCurrentPageData();
                     if (this.isUserLoggedIn()) {
                         this.defaultFilters = this.userService.defaultFrameworkFilters;
                     } else if (!this.isDesktopApp) {
@@ -164,17 +160,27 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.initConfiguration();
 
         const enrolledSection$ = this.getQueryParams().pipe(
-                tap(() => {
-                    if (!_.get(this._currentPageData, 'filter.isEnabled') || true) {
-                        this.fetchContents$.next(this._currentPageData);
-                    }
+            tap(() => {
+                const currentPage = this._currentPageData = this.getCurrentPageData();
+                this.pageTitleSrc = get(this.resourceService, 'RESOURCE_CONSUMPTION_ROOT') + get(currentPage, 'title');
+                this.isFilterEnabled = true;
+                if (_.get(currentPage, 'filter')) {
+                    this.isFilterEnabled = _.get(currentPage, 'filter.isEnabled')
+                }
+                if ((_.get(currentPage, 'filter') && !_.get(currentPage, 'filter.isEnabled'))) {
+                    this.fetchContents$.next(currentPage);
+                }
             }),
             switchMap(this.fetchEnrolledCoursesSection.bind(this))
         );
 
         this.subscription$ = merge(concat(this.fetchChannelData(), enrolledSection$), this.initLayout(), this.fetchContents())
             .pipe(
-                takeUntil(this.unsubscribe$)
+                takeUntil(this.unsubscribe$),
+                catchError((err: any) => {
+                    console.error(err);
+                    return of({});
+                })
             );
         this.listenLanguageChange();
         this.contentManagerService.contentDownloadStatus$.subscribe(contentDownloadStatus => {
@@ -232,7 +238,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     redoLayout() {
-        const contentType = _.get(this._currentPageData, 'contentType');
+        const contentType = _.get(this.getCurrentPageData(), 'contentType');
         if (this.layoutConfiguration != null && (contentType !== 'home' && contentType !== 'explore')) {
             this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
             this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
@@ -286,28 +292,24 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         if (this.utilService.isDesktopApp) {
             this.setDesktopFilters(false);
         }
-        this.apiContentList = [];
-        this.pageSections = [];
-        this.pageTitle = get(this.resourceService, get(currentPageData, 'title'));
-        this.svgToDisplay = get(currentPageData, 'theme.imageName');
         this.fetchContents$.next(currentPageData);
     }
 
     setDesktopFilters(isDefaultFilters) {
         const userPreferences: any = this.userService.anonymousUserPreference;
-            if (userPreferences) {
-                _.forEach(['board', 'medium', 'gradeLevel', 'subject'], (item) => {
-                    if (!_.has(this.selectedFilters, item) || !_.get(this.selectedFilters[item], 'length')) {
-                         const itemData = _.isArray(userPreferences.framework[item]) ?
-                            userPreferences.framework[item] : _.split(userPreferences.framework[item], ', ');
-                        if (isDefaultFilters) {
-                            this.defaultFilters[item] = itemData;
-                        } else {
-                            this.selectedFilters[item] = itemData;
-                        }
+        if (userPreferences) {
+            _.forEach(['board', 'medium', 'gradeLevel', 'subject'], (item) => {
+                if (!_.has(this.selectedFilters, item) || !_.get(this.selectedFilters[item], 'length')) {
+                    const itemData = _.isArray(userPreferences.framework[item]) ?
+                        userPreferences.framework[item] : _.split(userPreferences.framework[item], ', ');
+                    if (isDefaultFilters) {
+                        this.defaultFilters[item] = itemData;
+                    } else {
+                        this.selectedFilters[item] = itemData;
                     }
-                });
-            }
+                }
+            });
+        }
     }
 
     private fetchContents() {
@@ -315,108 +317,141 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             .pipe(
                 skipWhile(data => data === undefined || data === null),
                 switchMap(currentPageData => {
+
                     this.facetSections = [];
-                    if (_.get(currentPageData, 'filter')) {
-                        this.isFilterEnabled = _.get(currentPageData, 'filter.isEnabled')
-                    }
-                    if(_.get(currentPageData, 'contentType') === 'explore') {
-                        this.getExplorePageSections();
+                    this.apiContentList = [];
+                    this.pageSections = [];
+
+                    this.svgToDisplay = get(currentPageData, 'theme.imageName');
+
+                    if (_.get(currentPageData, 'contentType') === 'explore') {
+                        return this.getExplorePageSections();
                     } else {
-                        const { search: { fields = [], filters = {}, facets = ['subject'] } = {}, metaData: { groupByKey = 'subject' } = {} } = currentPageData || {};
-                    const request = {
-                      filters: this.contentSearchService.mapCategories({ filters: { ...this.selectedFilters, ...filters } }),
-                        fields,
-                        isCustodianOrg: this.custodianOrg,
-                        channelId: this.channelId,
-                        frameworkId: this.contentSearchService.frameworkId,
-                        ...(this.isUserLoggedIn() && { limit: get(currentPageData, 'limit') }),
-                        ...(get(facets, 'length') && { facets })
-                    };
-                    if (!this.isUserLoggedIn() && get(this.selectedFilters, 'channel') && get(this.selectedFilters, 'channel.length') > 0) {
-                        request.channelId = this.selectedFilters['channel'];
-                    }
-                    const option = this.searchService.getSearchRequest(request, get(filters, 'primaryCategory'));
-                    return this.searchService.contentSearch(option)
-                        .pipe(
-                            map((response) => {
-                                const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
-                                this._facets$.next(request.facets ? this.utilService.processCourseFacetData(_.get(response, 'result'), _.get(request, 'facets')) : {});
-                                this.searchResponse = get(response, 'result.content');
-                                const filteredContents = omit(groupBy(get(response, 'result.content'), content => {
-                                    return content[groupByKey] || content['subject'] || 'Others';
-                                }), ['undefined']);
-                                for (const [key, value] of Object.entries(filteredContents)) {
-                                    const isMultipleSubjects = key && key.split(',').length > 1;
-                                    if (isMultipleSubjects) {
-                                        const subjects = key && key.split(',');
-                                        subjects.forEach((subject) => {
-                                            if (filteredContents[subject]) {
-                                                filteredContents[subject] = uniqBy(filteredContents[subject].concat(value), 'identifier');
-                                            } else {
-                                                filteredContents[subject] = value;
-                                            }
-                                        });
-                                        delete filteredContents[key];
-                                    }
-                                }
-                                const sections = [];
-                                for (const section in filteredContents) {
-                                    if (section) {
-                                        if (selectedSubjects.length && !(find(selectedSubjects, selectedSub => toLower(selectedSub) === toLower(section)))) {
-                                            continue;
+                        let { search: { fields = [], filters = {}, facets = ['subject'] } = {}, metaData: { groupByKey = 'subject' } = {} } = currentPageData || {};
+                        filters = {
+                            "channel": [],
+                            "subject": [],
+                            "audience": [],
+                            "primaryCategory": [
+                                "Digital Textbook",
+                                "eTextbook",
+                                "Course"
+                            ],
+                            "board": [
+                                "State (Tamil Nadu)"
+                            ],
+                            "medium": [
+                                "English"
+                            ],
+                            "gradeLevel": [
+                                "Class 1",
+                                "Class 10",
+                                "Class 11",
+                                "Class 2",
+                                "Class 3",
+                                "Class 4",
+                                "Class 5",
+                                "Class 6",
+                                "Class 7",
+                                "Class 8",
+                                "Class 9"
+                            ]
+                        };
+
+                        const request = {
+                            filters: this.contentSearchService.mapCategories({ filters: { ...this.selectedFilters, ...filters } }),
+                            fields,
+                            isCustodianOrg: this.custodianOrg,
+                            channelId: this.channelId,
+                            frameworkId: this.contentSearchService.frameworkId,
+                            ...(this.isUserLoggedIn() && { limit: get(currentPageData, 'limit') }),
+                            ...(get(facets, 'length') && { facets })
+                        };
+                        if (!this.isUserLoggedIn() && get(this.selectedFilters, 'channel') && get(this.selectedFilters, 'channel.length') > 0) {
+                            request.channelId = this.selectedFilters['channel'];
+                        }
+                        const option = this.searchService.getSearchRequest(request, get(filters, 'primaryCategory'));
+                        return this.searchService.contentSearch(option)
+                            .pipe(
+                                map((response) => {
+                                    const { subject: selectedSubjects = [] } = (this.selectedFilters || {}) as { subject: [] };
+                                    this._facets$.next(request.facets ? this.utilService.processCourseFacetData(_.get(response, 'result'), _.get(request, 'facets')) : {});
+                                    this.searchResponse = get(response, 'result.content');
+                                    const filteredContents = omit(groupBy(get(response, 'result.content'), content => {
+                                        return content[groupByKey] || content['subject'] || 'Others';
+                                    }), ['undefined']);
+                                    for (const [key, value] of Object.entries(filteredContents)) {
+                                        const isMultipleSubjects = key && key.split(',').length > 1;
+                                        if (isMultipleSubjects) {
+                                            const subjects = key && key.split(',');
+                                            subjects.forEach((subject) => {
+                                                if (filteredContents[subject]) {
+                                                    filteredContents[subject] = uniqBy(filteredContents[subject].concat(value), 'identifier');
+                                                } else {
+                                                    filteredContents[subject] = value;
+                                                }
+                                            });
+                                            delete filteredContents[key];
                                         }
-                                        sections.push({
-                                            name: section,
-                                            contents: filteredContents[section]
-                                        });
                                     }
-                                }
-                                // Construct data array for sections
-                                if (_.get(this._currentPageData, 'sections') && _.get(this._currentPageData, 'sections').length > 0) {
-                                    const facetKeys = _.map(this._currentPageData.sections, (section) => { return section.facetKey });
-                                    const facets = this.utilService.processCourseFacetData(_.get(response, 'result'), facetKeys);
-                                    forEach(this._currentPageData.sections, facet => {
-                                        let _facetArray = [];
-                                        forEach(facets[facet.facetKey], _facet => {
-                                            _facetArray.push({
-                                                name: _facet['name'],
-                                                value: _facet['name'],
-                                                theme: this.utilService.getRandomColor(facet.theme.colorMapping)
+                                    const sections = [];
+                                    for (const section in filteredContents) {
+                                        if (section) {
+                                            if (selectedSubjects.length && !(find(selectedSubjects, selectedSub => toLower(selectedSub) === toLower(section)))) {
+                                                continue;
+                                            }
+                                            sections.push({
+                                                name: section,
+                                                contents: filteredContents[section]
+                                            });
+                                        }
+                                    }
+                                    // Construct data array for sections
+                                    if (_.get(currentPageData, 'sections') && _.get(currentPageData, 'sections').length > 0) {
+                                        const facetKeys = _.map(currentPageData.sections, (section) => { return section.facetKey });
+                                        const facets = this.utilService.processCourseFacetData(_.get(response, 'result'), facetKeys);
+                                        forEach(currentPageData.sections, facet => {
+                                            let _facetArray = [];
+                                            forEach(facets[facet.facetKey], _facet => {
+                                                _facetArray.push({
+                                                    name: _facet['name'],
+                                                    value: _facet['name'],
+                                                    theme: this.utilService.getRandomColor(facet.theme.colorMapping)
+                                                });
+                                            });
+                                            this.facetSections.push({
+                                                name: facet.facetKey,
+                                                data: _facetArray,
+                                                section: facet
                                             });
                                         });
-                                        this.facetSections.push({
-                                            name: facet.facetKey,
-                                            data: _facetArray,
-                                            section: facet
+                                    }
+                                    return _map(sections, (section) => {
+                                        forEach(section.contents, contents => {
+                                            contents.cardImg = contents.appIcon || 'assets/images/book.png';
                                         });
+                                        return section;
                                     });
-                                }
-                                return _map(sections, (section) => {
-                                    forEach(section.contents, contents => {
-                                        contents.cardImg = contents.appIcon || 'assets/images/book.png';
+                                }), tap(data => {
+                                    this.showLoader = false;
+                                    const userProfileSubjects = _.get(this.userService, 'userProfile.framework.subject') || [];
+                                    const [userSubjects, notUserSubjects] = partition(sortBy(data, ['name']), value => {
+                                        const { name = null } = value || {};
+                                        if (!name) { return false; }
+                                        return find(userProfileSubjects, subject => toLower(subject) === toLower(name));
                                     });
-                                    return section;
-                                });
-                            }), tap(data => {
-                                this.showLoader = false;
-                                const userProfileSubjects = _.get(this.userService, 'userProfile.framework.subject') || [];
-                                const [userSubjects, notUserSubjects] = partition(sortBy(data, ['name']), value => {
-                                    const { name = null } = value || {};
-                                    if (!name) { return false; }
-                                    return find(userProfileSubjects, subject => toLower(subject) === toLower(name));
-                                });
-                                this.apiContentList = [...userSubjects, ...notUserSubjects];
-                                if (!this.apiContentList.length) {
-                                    return;
-                                }
-                                this.pageSections = this.apiContentList.slice(0, 4);
-                                this.addHoverData();
-                            }, err => {
-                                this.showLoader = false;
-                                this.apiContentList = [];
-                                this.pageSections = [];
-                                this.toasterService.error(this.resourceService.messages.fmsg.m0004);
-                            }));
+                                    this.apiContentList = [...userSubjects, ...notUserSubjects];
+                                    if (!this.apiContentList.length) {
+                                        return;
+                                    }
+                                    this.pageSections = this.apiContentList.slice(0, 4);
+                                    this.addHoverData();
+                                }, err => {
+                                    this.showLoader = false;
+                                    this.apiContentList = [];
+                                    this.pageSections = [];
+                                    this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+                                }));
                     }
                 })
             );
@@ -519,7 +554,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             ...this.selectedFilters,
             appliedFilters: false,
             ...(!this.isUserLoggedIn() && {
-                pageTitle: this.pageTitle,
+                pageTitle: get(this.resourceService, get(this.getCurrentPageData(), 'title'));,
                 softConstraints: JSON.stringify({ badgeAssertions: 100, channel: 99, gradeLevel: 98, medium: 97, board: 96 })
             })
         };
@@ -745,30 +780,30 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.cacheService.set('pageSection', event, { maxAge: this.browserCacheTtlService.browserCacheTtl });
         const queryParams = { ...searchQueryParams, ...this.queryParams };
         const sectionUrl = _.get(this.router, 'url.split') && this.router.url.split('?')[0] + '/view-all/' + event.name.replace(/\s/g, '-');
-        this.router.navigate([sectionUrl, 1], { queryParams: queryParams, state: { currentPageData: this.getCurrentPageData()} });
+        this.router.navigate([sectionUrl, 1], { queryParams: queryParams, state: { currentPageData: this.getCurrentPageData() } });
     }
 
-  private getSectionName(selectedTab) {
-    let sectionName;
-    switch (_.toLower(selectedTab)) {
-      case 'textbook': {
-        sectionName = _.get(this.resourceService, 'tbk.trk.frmelmnts.lbl.mytrainings');
-        break;
-      }
-      case 'course': {
-        sectionName = _.get(this.resourceService, 'crs.trk.frmelmnts.lbl.mytrainings');
-        break;
-      }
-      case 'tvProgram': {
-        sectionName = _.get(this.resourceService, 'tvc.trk.frmelmnts.lbl.mytrainings');
-        break;
-      }
-      default: {
-        sectionName = _.get(this.resourceService, 'frmelmnts.lbl.myEnrolledCollections')
-      }
+    private getSectionName(selectedTab) {
+        let sectionName;
+        switch (_.toLower(selectedTab)) {
+            case 'textbook': {
+                sectionName = _.get(this.resourceService, 'tbk.trk.frmelmnts.lbl.mytrainings');
+                break;
+            }
+            case 'course': {
+                sectionName = _.get(this.resourceService, 'crs.trk.frmelmnts.lbl.mytrainings');
+                break;
+            }
+            case 'tvProgram': {
+                sectionName = _.get(this.resourceService, 'tvc.trk.frmelmnts.lbl.mytrainings');
+                break;
+            }
+            default: {
+                sectionName = _.get(this.resourceService, 'frmelmnts.lbl.myEnrolledCollections')
+            }
+        }
+        return sectionName;
     }
-    return sectionName;
-  }
 
     sectionViewAll() {
         const searchQueryParams: any = {};
@@ -831,13 +866,12 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
     }
 
-    getSelectedTab () {
+    getSelectedTab() {
         return get(this.activatedRoute, 'snapshot.queryParams.selectedTab');
     }
 
-    getExplorePageSections () {
-        this.facetSections = [];
-        return of(forEach(this._currentPageData.sections, facet => {
+    getExplorePageSections() {
+        return of(forEach(this.getCurrentPageData().sections, facet => {
             let _facetArray = [];
             forEach(facet.data, _facet => {
                 _facetArray.push({
@@ -853,7 +887,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         }));
     }
 
-    getSectionTitle (title) {
+    getSectionTitle(title) {
         return get(this.resourceService, 'frmelmnts.lbl.browseBy') + ' ' + get(this.resourceService, title);
     }
 }
