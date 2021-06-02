@@ -177,13 +177,12 @@ describe('ExplorePageComponent', () => {
   it('should navigate to search page if user is not logged in', () => {
     spyOn(component, 'isUserLoggedIn').and.returnValue(false);
     component.selectedFilters = RESPONSE.selectedFilters;
-    component.pageTitle = RESPONSE.selectedFilters.pageTitle;
     const router = TestBed.get(Router);
     component.navigateToExploreContent();
     expect(router.navigate).toHaveBeenCalledWith(['explore', 1], {
       queryParams: {
         ...component.selectedFilters,
-        pageTitle: RESPONSE.selectedFilters.pageTitle,
+        pageTitle: undefined,
         appliedFilters: false,
         softConstraints: JSON.stringify({ badgeAssertions: 100, channel: 99, gradeLevel: 98, medium: 97, board: 96 })
       }
@@ -689,6 +688,7 @@ describe('ExplorePageComponent', () => {
 
     it('should prepare page sections data array', () => {
       component._currentPageData = RESPONSE.explorePageData;
+      spyOn(component, 'getCurrentPageData').and.returnValue(RESPONSE.explorePageData);
       const sectionData = component.getExplorePageSections();
       sectionData.subscribe((data) => {
         expect(data.length).toEqual(2);
