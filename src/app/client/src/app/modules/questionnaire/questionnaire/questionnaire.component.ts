@@ -1,7 +1,4 @@
-import {
-  Component,
-  OnInit,
-} from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import {
   COLUMN_TYPE,
   LayoutService,
@@ -27,7 +24,10 @@ import { ComponentCanDeactivate } from "../guard/component-can-deactivate";
   templateUrl: "./questionnaire.component.html",
   styleUrls: ["./questionnaire.component.scss"],
 })
-export class QuestionnaireComponent extends ComponentCanDeactivate implements OnInit {
+export class QuestionnaireComponent
+  extends ComponentCanDeactivate
+  implements OnInit
+{
   pageTitleSrc: string = "Observation Form";
   svgToDisplay: string = "textbooks-banner-img.svg";
   layoutConfiguration: any;
@@ -38,7 +38,7 @@ export class QuestionnaireComponent extends ComponentCanDeactivate implements On
   evidence: Evidence;
   queryParams: any;
   assessmentInfo: AssessmentInfo;
-  canLeave:boolean=false;
+  canLeave: boolean = false;
   constructor(
     public layoutService: LayoutService,
     public fb: FormBuilder,
@@ -48,24 +48,22 @@ export class QuestionnaireComponent extends ComponentCanDeactivate implements On
     private config: ConfigService,
     private observationService: ObservationService,
     private location: Location,
-    private observationUtilService: ObservationUtilService,
+    private observationUtilService: ObservationUtilService
   ) {
     super();
   }
 
   canDeactivate() {
-    if(this.questionnaireForm){
-    if(this.questionnaireForm.dirty && !this.canLeave){
-      return false;
+    if (this.questionnaireForm) {
+      if (this.questionnaireForm.dirty && !this.canLeave) {
+        return false;
+      } else {
+        return true;
+      }
     }
-    else{
-      return true;
-    }
-    }
-   }
+  }
 
   ngOnInit() {
-    
     this.initConfiguration();
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParams = params;
@@ -132,7 +130,14 @@ export class QuestionnaireComponent extends ComponentCanDeactivate implements On
     }
   }
 
-  onSubmit(save?) {
+  async onSubmit(save?) {
+    let msg = save
+      ? this.resourceService.frmelmnts.alert.saveConfirm
+      : this.resourceService.frmelmnts.alert.submitConfirm;
+    let userConfirm = await this.openAlert(msg, true);
+    if (!userConfirm) {
+      return;
+    }
     let evidenceData = this.qService.getEvidenceData(
       this.evidence,
       this.questionnaireForm.value
@@ -158,7 +163,7 @@ export class QuestionnaireComponent extends ComponentCanDeactivate implements On
             ? this.resourceService.frmelmnts.alert.successfullySaved
             : this.resourceService.frmelmnts.alert.successfullySubmitted
         );
-        this.canLeave=true;
+        this.canLeave = true;
         this.location.back();
       },
       (error) => {
@@ -172,7 +177,7 @@ export class QuestionnaireComponent extends ComponentCanDeactivate implements On
     );
   }
 
-  async openAlert(msg) {
+  async openAlert(msg, showCancel = false) {
     let alertMetaData = await this.observationUtilService.getAlertMetaData();
     alertMetaData.content.body.data = msg;
     alertMetaData.content.body.type = "text";
@@ -182,10 +187,21 @@ export class QuestionnaireComponent extends ComponentCanDeactivate implements On
     alertMetaData.footer.buttons.push({
       type: "accept",
       returnValue: true,
-      buttonText: this.resourceService.frmelmnts.btn.ok,
+      buttonText: showCancel
+        ? this.resourceService.frmelmnts.btn.yes
+        : this.resourceService.frmelmnts.btn.ok,
     });
     alertMetaData.footer.className = "single-btn";
-    this.observationUtilService.showPopupAlert(alertMetaData);
+
+    if (showCancel) {
+      alertMetaData.footer.buttons.push({
+        type: "cancel",
+        returnValue: false,
+        buttonText: this.resourceService.frmelmnts.btn.no,
+      });
+      alertMetaData.footer.className = "double-btn";
+    }
+    return this.observationUtilService.showPopupAlert(alertMetaData);
   }
 
   scrollToContent(id) {
