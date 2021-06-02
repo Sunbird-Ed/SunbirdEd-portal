@@ -49,6 +49,14 @@ export class ActivityDashboardComponent implements OnInit {
     public courseConsumptionService: CourseConsumptionService) { }
 
   ngOnInit() {
+    $(document).ready(() => {
+      // DataTable initialisation
+      $('#table').DataTable({
+        'paging': true,
+        'autoWidth': true,
+    });
+    console.log('function');
+    });
     this.fetchActivityOnParamChange();
   }
 
