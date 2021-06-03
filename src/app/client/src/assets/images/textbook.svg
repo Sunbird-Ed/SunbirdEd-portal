@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="21px" viewBox="0 0 24 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>BAE6FC20-0D24-4F56-A15B-935497954365</title>
+    <g id="Final-layouts" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Home-page-your-preferences" transform="translate(-42.000000, -734.000000)" stroke="#0091FF" stroke-width="1.5">
+            <g id="Group-12" transform="translate(8.000000, 258.000000)">
+                <g id="Group-2" transform="translate(8.000000, 431.000000)">
+                    <g id="Group-15" transform="translate(27.000000, 46.000000)">
+                        <path d="M22,4.71428571 L22,18.8571429 L0,18.8571429 L0,4.71428571 L3.14285714,4.71428571 L3.14285714,15.7142857 L4.34761905,15.7142857 C6.65238095,15.7142857 8.93619048,16.2485714 11,17.2857143 C13.0638095,16.2485714 15.347619,15.7142857 17.652381,15.7142857 L18.8571429,15.7142857 L18.8571429,4.71428571 L22,4.71428571 Z" id="Stroke-1"></path>
+                        <path d="M11,4.71428571 L11,17.2857143 C8.93619048,16.2485714 6.65238095,15.7142857 4.34761905,15.7142857 L3.14285714,15.7142857 L3.14285714,0 C6.08666667,0 8.84190476,1.47714286 10.4761905,3.91809524 L11,4.71428571 Z" id="Stroke-3"></path>
+                        <path d="M18.8571429,0 L18.8571429,15.7142857 L17.652381,15.7142857 C15.347619,15.7142857 13.0638095,16.2485714 11,17.2857143 L11,4.71428571 L11.5238095,3.91809524 C13.1580952,1.47714286 15.9133333,0 18.8571429,0 Z" id="Stroke-5"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -67,10 +67,9 @@ const getNewAuthToken = async () => {
   const standardLog = containerAPI.getStandardLoggerInstance();
   await containerAPI.getDeviceSdkInstance().clearToken();
   await containerAPI.getDeviceSdkInstance().getToken();
-  const apiKey = await containerAPI.getDeviceSdkInstance().getToken().catch((err) => {
+  return containerAPI.getDeviceSdkInstance().getToken().catch((err) => {
     standardLog.error({ id: 'PROXY_HANDLER_AUTH_TOKEN_FETCH_FAILED', message: 'Received error while fetching api key in getUser', error: err });
   });
-  return apiKey;
 }
 
 const addAgent = (proxyURL, config) => {

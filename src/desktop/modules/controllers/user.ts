@@ -2,16 +2,8 @@ import { logger } from "@project-sunbird/logger";
 import * as _ from "lodash";
 import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import Response from "../utils/response";
-
-import { ClassLogger } from "@project-sunbird/logger/decorator";
 import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
 import { Inject } from 'typescript-ioc';
-
-/*@ClassLogger({
-  logLevel: "debug",
-  logTime: true,
-
-})*/
 export default class User {
     private userSDK;
     private settingSDK;

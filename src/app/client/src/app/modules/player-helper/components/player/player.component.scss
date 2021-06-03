@@ -66,24 +66,36 @@
 }
 
 .player-fullscreen {
-    position:fixed;
-    top:calculateRem(0px);
-    left:0;
-    bottom:0; 
-    right:0;
+    position:fixed !important;
     border:none; 
     margin:0;
     padding:0; 
     overflow:hidden; 
     z-index:9999;
-    height: calc(100% - 4rem) !important;
+    // height: calc(100% - 4rem) !important;
     background:var(--white);
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    border: none;
 } 
 
 .contentViewerIframeShadow {
   width: 100%;
   border: 0;
   height: 100%;
+  left:50%;
+  top:50%;
+  right:50%;
+  bottom:50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  transition: all ease .3s;
+  iframe {
+    height: calc(100vh - 4rem) !important;
+  border:10px solid rebeccapurple;
+  }
 } 
 
 .close-button {

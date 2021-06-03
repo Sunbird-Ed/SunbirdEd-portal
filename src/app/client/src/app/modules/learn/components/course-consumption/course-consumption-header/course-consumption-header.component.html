@@ -65,7 +65,7 @@
               </button>
 
                <!-- Discussion Forum -->
-               <app-access-discussion [fetchForumIdReq]="fetchForumIdReq" (routerData)="assignForumData($event)"> </app-access-discussion>
+               <app-access-discussion *ngIf="isConnected" [fetchForumIdReq]="fetchForumIdReq" (routerData)="assignForumData($event)"> </app-access-discussion>
             </div>
           </div>
         </div>
