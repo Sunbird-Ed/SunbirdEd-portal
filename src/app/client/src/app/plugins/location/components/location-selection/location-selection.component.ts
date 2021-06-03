@@ -96,6 +96,9 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
 
       /* istanbul ignore else */
       if (result.deviceProfile) {
+        if (!result.type) {
+          this.utilService.updateRoleChange(localStorage.getItem("userType"));
+        }
         this.telemetryLogEvents('Device Profile', result.userProfile === 'success');
       }
 
