@@ -1,20 +1,36 @@
-<app-landing-section [textToDisplay]="" [layoutConfiguration]="layoutConfiguration" [noTitle]="true">
+<app-landing-section [textToDisplay]="" [showBanner]="false" [layoutConfiguration]="layoutConfiguration"
+  [noTitle]="true">
 </app-landing-section>
 <div [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
   <div *ngIf="collectionData" class="relative9" [style.display]="!showLoader ? 'block' : 'none'"
     [appTelemetryImpression]="telemetryContentImpression">
     <!--CC-Player Back button -->
 
-    <div class="sb-bg-white relative position cc-player__btn-back">
+    <div class="sb-bg-color-purple sb-text-color-white sb-bg-white relative position cc-player__btn-back ">
       <div class="ui container py-8 px-0">
-        <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0"
+        <button type="button" class="sb-btn sb-btn-normal sb-btn-link  sb-left-icon-btn px-0"
           (click)="closeCollectionPlayer()">
-          <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+          <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--white">
               <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
             </svg></i>
-          {{resourceService?.frmelmnts?.btn?.back}}
+          <!-- {{resourceService?.frmelmnts?.btn?.back}} -->
         </button>
+
+        <!--added breadcrumbs for tool bar-->
+        <span class="text-left text-truncate text-white body-font-size-secondary font-montserrat"
+          *ngIf="collectionData">
+          <ul class="breadcrumbs">
+            <div class="main-div-breadcrumbs-item">
+              {{collectionData?.name | titlecase}}
+              <ng-container *ngIf="activeContent">
+                <mat-icon class="icon-display">navigate_next</mat-icon>
+                {{activeContent.name}}
+              </ng-container>
+            </div>
+          </ul>
+        </span>
       </div>
+
     </div>
 
     <!--CC-Player Content Header -->

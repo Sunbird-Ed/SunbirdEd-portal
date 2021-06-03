@@ -83,3 +83,29 @@
   max-height: 515px;
   overflow-y: scroll;
 }
+.container{
+  height: 100%;
+  display: flex;
+  .body-font-size-secondary{
+    font-weight: bold !important;
+    .breadcrumbs{
+      padding-inline-start: unset !important;
+      margin-bottom: 0rem !important;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      .main-div-breadcrumbs-item{
+        display: flex;
+        font-size: 14px;
+        font-weight: 400;
+        padding-top: 8px;
+      }
+    }
+    // .breadcrumbs_child{
+    //   display: flex;
+    //   font-size:  16px;
+    //   font-weight: 700;
+    //   margin-bottom: 0rem !important;
+    // }
+  }
+}
