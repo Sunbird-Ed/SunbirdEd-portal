@@ -1,9 +1,4 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  ViewChild,
-} from "@angular/core";
+import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import {
   FormArray,
   FormBuilder,
@@ -20,6 +15,7 @@ import { ResourceService } from "@sunbird/shared";
 import { MatrixQuestion, Question } from "../../Interface/assessmentDetails";
 import { ObservationUtilService } from "../../../observation/service";
 import { QuestionnaireService } from "../../questionnaire.service";
+import { isEmpty } from "underscore";
 export interface IContext {
   questions: Question[];
   heading: string;
@@ -43,7 +39,7 @@ export class MatrixQuestionsComponent implements OnInit {
     public fb: FormBuilder,
     public resourceService: ResourceService,
     public observationUtilService: ObservationUtilService,
-    public qService: QuestionnaireService,
+    public qService: QuestionnaireService
   ) {}
 
   ngOnInit() {
@@ -58,17 +54,27 @@ export class MatrixQuestionsComponent implements OnInit {
   }
 
   initializeMatrix() {
+    let valid = true;
     if (this.question.value.length) {
       this.question.value.map((v) => {
         let obj = {};
         v.forEach((ques) => {
+          if (!ques.value) return;
           obj[ques._id] = ques.value;
         });
         (this.questionnaireForm.controls[this.question._id] as FormArray).push(
           new FormControl(obj)
         );
+        if (isEmpty(obj)) {
+          valid = false;
+        }
       });
     }
+
+    if (!valid)
+      this.questionnaireForm.controls[this.question._id].setErrors({
+        err: "Matrix reposne not valid",
+      });
   }
 
   addInstances(): void {
@@ -76,10 +82,8 @@ export class MatrixQuestionsComponent implements OnInit {
     this.question.value.push(
       JSON.parse(JSON.stringify(this.question.instanceQuestions))
     );
-
-    // this.checkForValidation();//TODO
     this.matrixForm.reset();
-    this.formAsArray.push(new FormControl(null, [Validators.required]));
+    this.formAsArray.push(new FormControl([], [Validators.required]));
   }
 
   viewInstance(i): void {

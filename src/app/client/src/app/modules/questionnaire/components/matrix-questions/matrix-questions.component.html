@@ -42,7 +42,6 @@
     {{ context?.heading }}
   </div>
   <!--/Header-->
-
   <!--Content-->
   <div class="sb-modal-content">
     <question-generic-inputs
@@ -55,7 +54,7 @@
   <!--Actions-->
   <div class="sb-modal-actions">
     <button
-      class="sb-btn sb-btn-normal sb-btn-primary"
+      [disabled]="!matrixForm?.valid"
       type="button"
       (click)="matrixSubmit(context.index)"
        [ngClass]="{
