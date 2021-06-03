@@ -177,9 +177,9 @@
               </app-content-actions>
             </section>
           </div>
-          <div class="mt-8">
+          <!-- <div class="mt-8">
             <app-credits-and-licence *ngIf="activeContent" [contentData]="activeContent"></app-credits-and-licence>
-          </div>
+          </div> -->
         </div>
       </section>
     </div>
@@ -214,3 +214,8 @@
     <app-credits-and-licence *ngIf="activeContent" [contentData]="activeContent"></app-credits-and-licence>
   </div>
 </div> -->
+
+<div class="mt-8 about-content">
+  <app-credits-and-licence *ngIf="activeContent" class="about-card" [contentData]="activeContent">
+  </app-credits-and-licence>
+</div>

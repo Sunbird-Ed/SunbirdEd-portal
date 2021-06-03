@@ -329,3 +329,14 @@
 .reverse {
   transform: rotate(180deg);
 }
+
+.about-content{
+  width: 100%;
+  
+  padding-right: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+.about-card{
+  width: 66%;
+}

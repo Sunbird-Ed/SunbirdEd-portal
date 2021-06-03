@@ -57,6 +57,24 @@
               *ngIf="contentData?.copyrightYear content-description-allign">,&nbsp;{{contentData?.copyrightYear}}</span>
           </div>
         </div>
+
+
+        <div class="py-8 content-description" *ngIf="contentData?.createdOn">
+          <div class="fxsmall mb-4 content-description-allign font-design">
+            {{resourceService?.frmelmnts?.lbl?.createdon}}</div>
+          <div class="content-metadeta__text  fnormal content-description-allign font-design">
+            {{contentData?.createdOn | dateFormat}}</div>
+        </div>
+        <div class="py-8 content-description" *ngIf="contentData?.lastUpdatedOn">
+          <div class="fxsmall mb-4 content-description-allign font-design">
+            {{resourceService?.frmelmnts?.lbl?.updatedon}}</div>
+          <div class="content-metadeta__text  fnormal content-description-allign font-design">
+            {{contentData?.lastUpdatedOn | dateFormat}}
+          </div>
+
+        </div>
+
+
         <div class="content-description" *ngIf="contentData.originData">
           <div class="content-metadeta__text fnormal sb-color-primary-400 content-description-allign font-design"
             *ngIf="contentData?.originData">
@@ -83,6 +101,10 @@
               {{contentData?.originData?.license}}
             </div>
           </div>
+
+
+
+
           <div class="py-8 content-description" *ngIf="contentData?.originData?.organisation">
             <div class="fxsmall mb-4 content-description-allign font-design"
               [innerHTML]="resourceService.frmelmnts.lbl?.publishedOnInstanceName | interpolate:'{instance}': instance">
