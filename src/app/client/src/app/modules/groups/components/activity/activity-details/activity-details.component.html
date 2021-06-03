@@ -24,11 +24,11 @@
            <!--Activity Dashboard-->
            <button  (click)="navigateToActivityDashboard()"
            [disabled]="!isContentTrackable(activity, activity?.contentType)"
-           [ngClass]="{'disabled': !isContentTrackable(activity, activity?.contentType)}"
-           class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix" title="Forum">
-           <img src="assets/images/forum.svg" width="20px" class="mr-8"
-             alt="{{resourceService?.frmelmnts?.lbl?.discussionForum}}">
-           Activity Dashbord
+           [ngClass]="{'dt-disabled-btn': !isContentTrackable(activity, activity?.contentType)}"
+           class="sb-btn sb-btn-normal sb-btn-link  sb-left-icon-btn ml-8 sb-btn-icon-fix disabled sb-btn-link-primary sb-activity-dashboard-btn" title="Activity Dashboard">
+           <img src="assets/images/Activity_icon.svg" width="20px" class="mr-8"
+             alt="Activity Dashboard">
+           Activity Dashboard
          </button>
         <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons hide">
           <button class="sb-btn sb-btn-outline-secondary sb-btn-normal mr-8"></button>
