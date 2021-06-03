@@ -10,7 +10,9 @@ import {
   courseSectionFacetData,
   parsedCourseFacetData,
   courseFilters,
-  requiredProperties
+  requiredProperties,
+  colorSet,
+  iconObj
 } from './util.service.spec.data';
 import {TestBed, inject } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -338,4 +340,26 @@ describe('UtilService', () => {
     const origin = service.getAppBaseUrl();
     expect(origin).toEqual('http://localhost:9876');
   }));
+
+  it('should get random color', inject([UtilService], (service: UtilService)  => {
+    const randomColor = service.getRandomColor(colorSet);
+    expect(Object.keys(randomColor)).toContain('iconBgColor');
+    expect(Object.keys(randomColor)).toContain('pillBgColor');
+  }));
+
+  it('should return random color as null', inject([UtilService], (service: UtilService)  => {
+    const randomColor = service.getRandomColor([]);
+    expect(randomColor).toBeNull();
+  }));
+
+  it('should return icon for selected pill', inject([UtilService], (service: UtilService)  => {
+    const icon = service.getSectionPillIcon(iconObj, 'english');
+    expect(icon).toEqual('assets/images/book_english.svg');
+  }));
+
+  it('should return default icon for selected pill', inject([UtilService], (service: UtilService)  => {
+    const icon = service.getSectionPillIcon(iconObj, 'random');
+    expect(icon).toEqual('assets/images/book_default.svg');
+  }));
+
 });

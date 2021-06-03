@@ -63,25 +63,29 @@ export default class ContentStatus {
     return new Promise(async(resolve, reject) => {
       try {
         const userId = await this.getCurrentUserId();
-        contentStatusList.forEach(async (element) => {
-          const resp = await this.findContentStatus(
-            element.contentId,
-            element.batchId,
-            element.courseId,
-            userId
-          );
+        if (_.get(contentStatusList, 'length')) {
+          contentStatusList.forEach(async (element) => {
+            const resp = await this.findContentStatus(
+              element.contentId,
+              element.batchId,
+              element.courseId,
+              userId
+            );
 
-          if (_.get(resp, 'docs.length')) { // upsert if found
-            const content = resp.docs[0];
-            if (element.status >= content.status) {
-              await this.databaseSdk.upsert(DB_NAME, resp.docs[0]._id, element);
+            if (_.get(resp, 'docs.length')) { // upsert if found
+              const content = resp.docs[0];
+              if (element.status >= content.status) {
+                await this.databaseSdk.upsert(DB_NAME, resp.docs[0]._id, element);
+              }
+            } else { // insert if not found
+              element.userId = userId;
+              await this.databaseSdk.insert(DB_NAME, element);
             }
-          } else { // insert if not found
-            element.userId = userId;
-            await this.databaseSdk.insert(DB_NAME, element);
-          }
+            resolve({});
+          });
+        } else {
           resolve({});
-        });
+        }
       } catch (error) {
         standardLog.error({ id: 'CONTENT_STATUS_DB_INSERT_FAILED', message: 'Error while inserting content status in database', error });
         resolve({});

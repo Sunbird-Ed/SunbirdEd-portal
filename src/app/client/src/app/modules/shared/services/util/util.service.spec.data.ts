@@ -885,3 +885,45 @@ export const requiredProperties = {
   'visibility': 'Default',
   'name': 'A5 ext course'
 }
+
+export const colorSet = [
+  {
+    primary: 'rgba(255,139,46,1)',
+    secondary: 'rgba(255,139,46,0.3)'
+  },
+  {
+    primary: 'rgba(163,99,255,1)',
+    secondary: 'rgba(163,99,255,0.3)'
+  },
+  {
+    primary: 'rgba(34,139,255,1)',
+    secondary: 'rgba(34,139,255,0.3)'
+  },
+  {
+    primary: 'rgba(95,192,32,1)',
+    secondary: 'rgba(95,192,32,0.3)'
+  },
+  {
+    primary: 'rgba(255,128,47,1)',
+    secondary: 'rgba(255,128,47,0.3)'
+  },
+  {
+    primary: 'rgba(251,70,70,1)',
+    secondary: 'rgba(251,70,70,0.3)'
+  },
+  {
+    primary: 'rgba(83,109,252,1)',
+    secondary: 'rgba(83,109,252,0.3)'
+  },
+  {
+    primary: 'rgba(15,186,208,1)',
+    secondary: 'rgba(15,186,208,0.3)'
+  }
+];
+
+export const iconObj = {
+  'english': 'assets/images/book_english.svg',
+  'mathematics': 'assets/images/calculator.svg',
+  'science': 'assets/images/globe.svg',
+  'default': 'assets/images/book_default.svg'
+};
