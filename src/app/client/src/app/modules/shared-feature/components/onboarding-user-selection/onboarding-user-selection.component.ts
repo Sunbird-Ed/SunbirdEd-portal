@@ -152,6 +152,8 @@ export class OnboardingUserSelectionComponent implements OnInit, OnDestroy {
     if (this.userService.loggedIn) {
       this.updateUserSelection$.next(code);
     } else {
+      const { name } = this.selectedUserType;
+      localStorage.setItem('guestUserType', name);
       this.userSelect.emit(true);
     }
   }
