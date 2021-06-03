@@ -299,6 +299,9 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
 
   attachCertificateToBatch() {
     this.sendInteractData({ id: this.configurationMode === 'add' ? 'attach-certificate' : 'confirm-template-change' });
+    if(this.addScoreRule === false) {
+      this.userPreference.value['scoreRange'] = null;
+    }
     const request = {
       'request': {
         'batch': {
@@ -556,7 +559,9 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     this.arrayValue['range']=arr;
   }
   removeRule(){
-    this.userPreference.value['scoreRange'] = null;
+    setTimeout(() => {
+      this.userPreference.value['scoreRange'] = null;
+    }, 500);
     this.addScoreRule = false;
   }
 }
