@@ -28,6 +28,7 @@
       &__title {
           color: var(--primary-400);
           font-size: calculateRem(18px);
+          padding-left: .8rem;
       }
       &__info {
         color: var(--gray-800);
