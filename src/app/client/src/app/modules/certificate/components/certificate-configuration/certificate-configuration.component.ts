@@ -347,7 +347,7 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   }
 
   processCertificateDetails(certTemplateDetails) {
-    const templateData = _.pick(_.get(certTemplateDetails, Object.keys(certTemplateDetails)), ['criteria', 'previewUrl', 'artifactUrl', 'identifier', 'data', 'issuer', 'signatoryList','name']);
+    const templateData = _.pick(_.get(certTemplateDetails, Object.keys(certTemplateDetails)), ['criteria', 'previewUrl', 'artifactUrl', 'identifier', 'data', 'issuer', 'signatoryList','name', 'url']);
     this.templateIdentifier = _.get(templateData, 'identifier');
     this.selectedTemplate = { 
       'name': _.get(templateData, 'name'), 
@@ -358,6 +358,10 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       'signatoryList': JSON.stringify(_.get(templateData, 'signatoryList')),
       'artifactUrl':_.get(templateData, 'artifactUrl')
      };
+     if(!_.get(templateData, 'previewUrl') && _.get(templateData, 'url')) {
+      this.selectedTemplate['previewUrl'] = _.get(templateData, 'url');
+      templateData['previewUrl'] = _.get(templateData, 'url');
+     }
     // if (!_.isEmpty(this.newTemplateIdentifier)) {
     //   this.templateIdentifier = this.newTemplateIdentifier;
     //   this.selectedTemplate = null;
