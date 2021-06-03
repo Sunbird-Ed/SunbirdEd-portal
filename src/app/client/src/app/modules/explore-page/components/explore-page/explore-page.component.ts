@@ -387,7 +387,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                     const facetKeys = _.map(currentPageData.sections, (section) => { return section.facetKey });
                                     const facets = this.utilService.processCourseFacetData(_.get(response, 'result'), facetKeys);
                                     forEach(currentPageData.sections, facet => {
-                                        if (_.get(facets, facet.facetKey).length > 0) {
+                                        if (_.get(facets, facet.facetKey) && _.get(facets, facet.facetKey).length > 0) {
                                             let _facetArray = [];
                                             forEach(facets[facet.facetKey], _facet => {
                                                 _facetArray.push({
@@ -419,7 +419,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                     return find(userProfileSubjects, subject => toLower(subject) === toLower(name));
                                 });
                                 this.apiContentList = [...userSubjects, ...notUserSubjects];
-                                if (!this.apiContentList.length) {
+                                if (this.apiContentList !== undefined && !this.apiContentList.length) {
                                     return;
                                 }
                                 this.pageSections = this.apiContentList.slice(0, 4);

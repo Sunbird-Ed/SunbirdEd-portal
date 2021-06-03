@@ -514,7 +514,7 @@ describe('ExplorePageComponent', () => {
       expect(component.apiContentList).toBeDefined();
       expect(component.pageSections).toBeDefined();
       expect(pageApiService.contentSearch).toHaveBeenCalled();
-      expect(component.apiContentList.length).toBe(1);
+      expect(component.apiContentList.length).toBe(4);
       expect(component.redoLayout).toHaveBeenCalled();
       expect(component.isFilterEnabled).toBe(true);
       expect(component.svgToDisplay).toBe('courses-banner-img.svg');
@@ -748,6 +748,43 @@ describe('ExplorePageComponent', () => {
       expect(component.setUserPreferences).toHaveBeenCalled();
       expect(component.frameworkModal.modal.deny).toHaveBeenCalled();
       expect(toasterService.success).toHaveBeenCalledWith(resourceBundle.messages.smsg.m0058);
+    });
+
+    it('should fetch contents with section', done => {
+      sendPageApi = false;
+      spyOn(component, 'redoLayout');
+      component['fetchContents']().subscribe(res => {
+        expect(component.showLoader).toBeFalsy();
+        expect(component.apiContentList).toBeDefined();
+        expect(component.pageSections).toBeDefined();
+        expect(pageApiService.contentSearch).toHaveBeenCalled();
+        expect(component.apiContentList.length).toBe(4);
+        expect(component.redoLayout).toHaveBeenCalled();
+        expect(component.isFilterEnabled).toBe(false);
+        expect(component.svgToDisplay).toBe('courses-banner-img.svg');
+        done();
+      });
+      component['fetchContents$'].next(RESPONSE.currentPageData);
+    });
+
+    it('call the converttoString method', () => {
+      const convertedString = component.convertToString(['English', 'Tamil', 'Hindi', 'Kannada']);
+      const convertedStringundefined = component.convertToString('English');
+      expect(convertedString).toEqual('English, Tamil, Hindi, Kannada');
+      expect(convertedStringundefined).toEqual(undefined);
+    });
+
+    it('call the handlePillSelect method', () => {
+      const router = TestBed.get(Router);
+      const output = component.handlePillSelect({}, 'subject');
+      expect(output).toEqual(undefined);
+      component.handlePillSelect({ data: [{ value: { value: 'english' } }] }, 'subject');
+      expect(router.navigate).toHaveBeenCalledWith(['explore', 1], {
+        queryParams: {
+            subject: 'english',
+            selectedTab: 'all'
+        }
+      });
     });
 
   })
