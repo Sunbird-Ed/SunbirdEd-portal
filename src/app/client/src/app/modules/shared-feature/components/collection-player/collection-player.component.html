@@ -7,31 +7,61 @@
     <!--CC-Player Back button -->
 
     <div class="sb-bg-color-purple sb-text-color-white sb-bg-white relative position cc-player__btn-back ">
-      <div class="ui container py-8 px-0">
-        <button type="button" class="sb-btn sb-btn-normal sb-btn-link  sb-left-icon-btn px-0"
-          (click)="closeCollectionPlayer()">
-          <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--white">
-              <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
-            </svg></i>
-          <!-- {{resourceService?.frmelmnts?.btn?.back}} -->
-        </button>
+      <div class="container">
+        <div class="py-8 d-flex flex-ai-center width-full flex-jc-sb">
+          <div class="wrap-btn-text d-flex">
+            <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-text-color-white sb-left-icon-btn mr-auto"
+              (click)="closeCollectionPlayer()">
+              <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--white">
+                  <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+                </svg></i>
+              <!-- {{resourceService?.frmelmnts?.btn?.back}} -->
+            </button>
 
-        <!--added breadcrumbs for tool bar-->
-        <span class="text-left text-truncate text-white body-font-size-secondary font-montserrat"
-          *ngIf="collectionData">
-          <ul class="breadcrumbs">
-            <div class="main-div-breadcrumbs-item">
-              {{collectionData?.name | titlecase}}
-              <ng-container *ngIf="activeContent">
-                <mat-icon class="icon-display">navigate_next</mat-icon>
-                {{activeContent.name}}
-              </ng-container>
-            </div>
-          </ul>
-        </span>
+            <!--added breadcrumbs for tool bar-->
+            <span class="text-left text-truncate text-white body-font-size-secondary font-montserrat"
+              *ngIf="collectionData">
+              <ul class="breadcrumbs">
+                <div class="main-div-breadcrumbs-item">
+                  {{collectionData?.name | titlecase}}
+                  <ng-container *ngIf="activeContent">
+                    <mat-icon class="icon-display">navigate_next</mat-icon>
+                    {{activeContent.name}}
+                  </ng-container>
+                </div>
+              </ul>
+            </span>
+          </div>
+        </div>
       </div>
-
     </div>
+
+
+    <span class="text-left text-truncate text-white body-font-size-secondary font-montserrat" *ngIf="courseHierarchy">
+      <ng-container *ngIf="courseHierarchy">
+        <ul class="breadcrumbs">
+          <div class="main-div-breadcrumbs-item">
+            {{courseHierarchy?.name | titlecase}}
+            <ng-container *ngIf="activeContent">
+              <mat-icon class="icon-display">navigate_next</mat-icon>
+              {{activeContent.name}}
+            </ng-container>
+          </div>
+        </ul>
+      </ng-container>
+    </span>
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!--CC-Player Content Header -->
     <div class="content-header cc-player__content-header" *ngIf="collectionData">
