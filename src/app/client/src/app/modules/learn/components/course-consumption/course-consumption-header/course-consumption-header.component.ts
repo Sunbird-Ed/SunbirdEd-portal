@@ -356,35 +356,25 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.telemetryService.interact(interactData);
   }
   generateDataForDF() {
-        // const isCreator = this.userService.userid === _.get(this.courseHierarchy, 'createdBy');
-        // const isMentor = this.permissionService.checkRolesPermissions(['COURSE_MENTOR']);
-        this.fetchForumIdReq = {
-              type: 'course',
-              identifier: [this.courseId]
-          };
-        if (this.enrolledCourse) {
-            this.fetchForumIdReq = {
-              type: 'batch',
-              identifier: [this.batchId]
-          };
-    // TODO: need to check with sudip for this repeating code
-        // if (isCreator) {
-        //   this.fetchForumIdReq = {
-        //     type: 'course',
-        //     identifier: [this.courseId]
-        // };
-        // } else if (this.enrolledCourse) {
-        //   this.fetchForumIdReq = {
-        //     type: 'batch',
-        //     identifier: [this.batchId]
-        // };
-        // } else if (isMentor) {
-        //   // TODO: make getBatches() api call;
-        //   this.fetchForumIdReq = {
-        //     type: 'course',
-        //     identifier: [this.courseId]
-        // };
-      }
+    const isCreator = this.userService.userid === _.get(this.courseHierarchy, 'createdBy');
+    const isMentor = this.permissionService.checkRolesPermissions(['COURSE_MENTOR']);
+    if (isCreator) {
+      this.fetchForumIdReq = {
+        type: 'course',
+        identifier: [this.courseId]
+      };
+    } else if (this.enrolledCourse) {
+      this.fetchForumIdReq = {
+        type: 'batch',
+        identifier: [this.batchId]
+      };
+    } else if (isMentor) {
+      // TODO: make getBatches() api call;
+      this.fetchForumIdReq = {
+        type: 'course',
+        identifier: [this.courseId]
+      };
+    }
   }
   async goBack() {
     const previousPageUrl: any = this.courseConsumptionService.getCoursePagePreviousUrl;
