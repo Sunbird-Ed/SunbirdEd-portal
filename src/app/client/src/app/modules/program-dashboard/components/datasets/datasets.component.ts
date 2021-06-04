@@ -110,11 +110,9 @@ export class DatasetsComponent implements OnInit {
     };
     this.kendraService.get(paramOptions).subscribe(data => {
       if (data && data.result) {
-        console.log("data",data);
         this.programs = data.result;
       }
     }, error => {
-      console.log("data error");
       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
     })
 
@@ -142,7 +140,6 @@ export class DatasetsComponent implements OnInit {
     this.userDataSubscription = this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
-          console.log("user profile");
           this.userProfile = user.userProfile;
           this.userRoles = user.userProfile.userRoles;
           this.userId = user.userProfile.id;
@@ -168,7 +165,6 @@ export class DatasetsComponent implements OnInit {
         return data
       }
     })
-
     this.solutions = [];
     this.reportTypes = [];
     this.getSolutionList(program[0]);
@@ -269,6 +265,8 @@ export class DatasetsComponent implements OnInit {
 
       this.onDemandReportService.submitRequest(request).subscribe((data: any) => {
         if (data && data.result) {
+
+          
           if (data.result.status === this.reportStatus.failed) {
             const error = _.get(data, 'result.statusMessage') || _.get(this.resourceService, 'frmelmnts.lbl.requestFailed');
             this.toasterService.error(error);
@@ -306,7 +304,6 @@ export class DatasetsComponent implements OnInit {
 
     this.formService.getFormConfig(formServiceInputParams).subscribe((formData) => {
       if (formData) {
-        console.log("---",JSON.stringify(formData));
         this.formData = formData;
       }
     }, error => {
@@ -315,8 +312,8 @@ export class DatasetsComponent implements OnInit {
 
   }
   dataModification(row) {
-    const dataSet = _.find(this.reportTypes, { dataset: row.dataset }) || {};
-    row.title = dataSet.title;
+    const dataSet = _.find(this.reportTypes, { datasetId: row.dataset }) || {};
+    row.title = dataSet.name;
     return row;
   }
 

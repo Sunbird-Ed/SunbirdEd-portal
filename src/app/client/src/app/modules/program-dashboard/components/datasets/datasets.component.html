@@ -119,7 +119,7 @@
                     <button [disabled]="(!reportForm.valid)" 
                     [ngClass]="{'sb-btn-disabled': (!reportForm.valid )}"
                     type="button" class="sb-field sb-btn sb-btn-normal sb-btn-primary" (click)="requestDataset()">
-                      {{resourceService?.frmelmnts?.lbl?.request}}
+                      {{resourceService?.frmelmnts?.btn?.requestReport}}
                     </button>
                   </div>
 
@@ -184,7 +184,7 @@
 
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'"
   class="sb-modal" appBodyScroll (dismissed)="closeConfirmModal()" #modal *ngIf="awaitPopUp">
-  <div class="sb-modal-header">
+  <div class="sb-modal-content">
     
     {{resourceService?.frmelmnts?.lbl?.datasetRequestSuccess}}
   </div>
