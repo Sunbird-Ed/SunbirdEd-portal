@@ -36,7 +36,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     this.subscription = this.utilService.currentRole.subscribe(async (result) => {
       if (result) {
         this.userType = result;
-        this.updateForm();
+        this.makeFormChange();
       }
     });
   }
@@ -131,15 +131,19 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
           if(profileData.userProfile["profileUserType"]["type"] !== null){
           this.userType = profileData.userProfile["profileUserType"]["type"];
           }
+          this.makeFormChange();
         });
       }
       else {
         let user = localStorage.getItem("userType");
         if (user) {
           this.userType = user;
+          this.makeFormChange();
         }
       }
     }
+  }
+  makeFormChange(){
     let index=this.contentTypes.findIndex(cty=>cty.contentType==="observation");
     if (this.userType != "administrator") {
       this.contentTypes[index].isEnabled = false;
