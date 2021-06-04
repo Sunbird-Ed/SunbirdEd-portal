@@ -123,7 +123,7 @@ export interface Question {
   endTime: number;
   gpsLocation: string;
   file: string;
-  pageQuestions: string;
+  pageQuestions: Question[];
 }
 
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
