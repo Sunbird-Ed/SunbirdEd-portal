@@ -334,8 +334,16 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         return this.getExplorePageSections();
                     } else {
                         const { search: { fields = [], filters = {}, facets = ['subject'] } = {}, metaData: { groupByKey = 'subject' } = {} } = currentPageData || {};
+                    let _reqFilters;
+                    // If home or explore page; take filters from user preferences
+                    if (_.get(currentPageData, 'contentType') === 'home') {
+                        _reqFilters = this.contentSearchService.mapCategories({ filters: _.get(this.userPreference, 'framework') });
+                        delete _reqFilters['id'];
+                    } else {
+                        _reqFilters = this.contentSearchService.mapCategories({ filters: { ...this.selectedFilters, ...filters } });
+                    }
                     const request = {
-                      filters: this.contentSearchService.mapCategories({ filters: { ...this.selectedFilters, ...filters } }),
+                      filters: _reqFilters,
                         fields,
                         isCustodianOrg: this.custodianOrg,
                         channelId: this.channelId,
@@ -398,7 +406,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                             });
                                             this.facetSections.push({
                                                 name: facet.facetKey,
-                                                data: _facetArray,
+                                                data: _.sortBy(_facetArray, ['name']),
                                                 section: facet
                                             });
                                         }
@@ -411,6 +419,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                     return section;
                                 });
                             }), tap(data => {
+                                this.userPreference = this.setUserPreferences();
                                 this.showLoader = false;
                                 const userProfileSubjects = _.get(this.userService, 'userProfile.framework.subject') || [];
                                 const [userSubjects, notUserSubjects] = partition(sortBy(data, ['name']), value => {
