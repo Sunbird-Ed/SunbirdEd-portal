@@ -18,6 +18,17 @@ export class ObservationDetailsComponent implements OnInit {
   observationId;
   selectedEntity: any = {};
   submissions;
+  
+  actions = [{
+    name: this.resourceService.frmelmnts.lbl.edit,
+    icon: 'pencil alternate large icon',
+    type: 'edit'
+  },
+  {
+    name: this.resourceService.frmelmnts.lbl.delete,
+    icon: 'trash  large icon',
+    type: 'delete'
+  }]
   showDownloadModal: boolean = false;
   openEditModal = {
     show: false,
@@ -168,7 +179,10 @@ export class ObservationDetailsComponent implements OnInit {
       },
     });
   }
-
+  open(sbnum, data) {
+    data.submissionNumber = sbnum;
+    this.redirectToQuestions(data);
+  }
   async delete(entity) {
     let metaData = await this.observationUtilService.getAlertMetaData();
     metaData.content.body.data = this.resourceService.frmelmnts.lbl.deleteConfirm;
@@ -270,5 +284,12 @@ export class ObservationDetailsComponent implements OnInit {
   }
   actionOnSubmission(event) {
     event.action == 'edit' ? this.openEditSubmission(event.data) : this.deleteSubmission(event.data)
+  }
+  dropDownAction(submission, type) {
+    let data = {
+      action: type,
+      data: submission
+    }
+    this.actionOnSubmission(data);
   }
 }

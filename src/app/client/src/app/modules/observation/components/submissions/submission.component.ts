@@ -7,7 +7,7 @@ import { ConfigService, ResourceService } from '@sunbird/shared';
     styleUrls: ['./submission.component.scss']
 })
 export class SubmissionsComponent implements OnInit {
-    @Input() submissions;
+    @Input() submission;
     @Input() allowMultipleAssessemts;
     showPopOver = true;
     @Output() selectedSubmission = new EventEmitter();
