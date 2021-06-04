@@ -1231,10 +1231,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sb-dashlet@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-dashlet/-/sb-dashlet-1.0.3.tgz#7df0ffd60703674ed24627dd7a61565d851ee1a2"
-  integrity sha512-x4SznT9ccchkhRDG0nLVfZMCLpAWELC0V3CmtYZ9bVl8EDnp26PuM2AOu6NPKGny7ZOZuX66W0STyr3zSnlj7g==
+"@project-sunbird/sb-dashlet@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-dashlet/-/sb-dashlet-1.0.4.tgz#4280587cbd235a1bdb5b0b05a0c0e703e4fd49b8"
+  integrity sha512-sewcXgt7LayN/IcfjLU0Z/tt9TULPvdtdds0q94H1bewNcq1aDJ1ry8VBLG5JoQEa/V1ymMLzW1/vnuUg/6fYg==
   dependencies:
     "@types/datatables.net" "1.10.19"
     angular-datatables "8.1.0"
