@@ -29,19 +29,21 @@ describe('ProfilePageComponent', () => {
           object: { type: '', ver: '1.0' }
         }
       }
-    };
+    }
     getCurrentNavigation = () => {
       return { state: {} };
     }
   }
   const env = 'profile';
   class ActivatedRouteStub {
+    queryParams = observableOf({'showEditUserDetailsPopup': true});
     snapshot = {
       root: { firstChild: { data: { telemetry: { env: env } } } },
       data: {
         telemetry: { env: env }
       }
     };
+    
   }
   class MockDomToImage {
     toPng() { }
@@ -151,7 +153,7 @@ describe('ProfilePageComponent', () => {
     component = fixture.componentInstance;
   });
 
-  xit('should call user service', () => {
+  it('should call user service', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.frelmnts = resourceBundle.frmelmnts;
     resourceService.messages = resourceBundle.messages;
@@ -205,7 +207,7 @@ describe('ProfilePageComponent', () => {
     expect(component.attendedTraining).toBeDefined();
   });
 
-  xit('should display root org location if org location is empty', () => {
+  it('should display root org location if org location is empty', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.frelmnts = resourceBundle.frmelmnts;
     resourceService.messages = resourceBundle.messages;
@@ -320,7 +322,7 @@ describe('ProfilePageComponent', () => {
     expect(telemetryService.interact).toHaveBeenCalledWith(telemetryData);
     expect(router.navigate).toHaveBeenCalledWith(['learn/course/do_1234']);
   });
-  xit('should assign location data to nonCustodianUserLocation through setNonCustodianUserLocation', () => {
+  it('should assign location data to nonCustodianUserLocation through setNonCustodianUserLocation', () => {
     component.userProfile = Response.userData;
     component.setNonCustodianUserLocation();
     expect(component.nonCustodianUserLocation['block']).toBe('MUNGER SADAR');
@@ -367,7 +369,7 @@ describe('ProfilePageComponent', () => {
   });
 
 
-  xit('should check user is custodian user of not', () => {
+  it('should check user is custodian user of not', () => {
     const userService = TestBed.get(UserService);
     userService._userData$.next({ err: null, userProfile: Response.userData });
     const orgDetailsService = TestBed.get(OrgDetailsService);
@@ -395,7 +397,7 @@ describe('ProfilePageComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(['/profile/teacher-declaration'], { queryParams: { formaction: 'submit' } });
   });
 
-  xit('should not show self declared information if declaration is not available', () => {
+  it('should not show self declared information if declaration is not available', () => {
     const userService = TestBed.get(UserService);
     userService._userData$.next({ err: null, userProfile: Response.userData });
     spyOn(component, 'getSelfDeclaredDetails').and.callThrough();
@@ -404,7 +406,7 @@ describe('ProfilePageComponent', () => {
     expect(component.getSelfDeclaredDetails).toHaveBeenCalled();
   });
 
-  xit('should get self declared details', () => {
+  it('should get self declared details', () => {
     const userService = TestBed.get(UserService);
     userService._userData$.next({ err: null, userProfile: Response.userData });
     const profileService = TestBed.get(ProfileService);
