@@ -21,15 +21,18 @@
             <!--added breadcrumbs for tool bar-->
             <span class="text-left text-truncate text-white body-font-size-secondary font-montserrat"
               *ngIf="collectionData">
-              <ul class="breadcrumbs">
-                <div class="main-div-breadcrumbs-item">
-                  {{collectionData?.name | titlecase}}
-                  <ng-container *ngIf="activeContent">
-                    <mat-icon class="icon-display">navigate_next</mat-icon>
-                    {{activeContent.name}}
-                  </ng-container>
-                </div>
+            <ng-container *ngIf = "activePathHierarchy && activePathHierarchy?.length">
+              <ul class = "breadcrumbs">
+                <div class = "main-div-breadcrumbs-item">
+                <div *ngFor = "let data of activePathHierarchy;let i = index">
+                  <li class = "breadcrumbs_child">
+                  <div>{{data.name}}</div>
+                 <div><mat-icon *ngIf="activePathHierarchy.length-1 > i" class="icon-display">navigate_next</mat-icon></div>
+                </li>
+            </div>
+              </div>
               </ul>
+            </ng-container>
             </span>
           </div>
         </div>

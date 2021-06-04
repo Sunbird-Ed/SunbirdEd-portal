@@ -99,13 +99,13 @@
         font-size: 14px;
         font-weight: 400;
         padding-top: 8px;
+        .breadcrumbs_child{
+          display: flex;
+          font-size:  16px;
+          font-weight: 700;
+          margin-bottom: 0rem !important;
+        }
       }
     }
-    // .breadcrumbs_child{
-    //   display: flex;
-    //   font-size:  16px;
-    //   font-weight: 700;
-    //   margin-bottom: 0rem !important;
-    // }
   }
 }

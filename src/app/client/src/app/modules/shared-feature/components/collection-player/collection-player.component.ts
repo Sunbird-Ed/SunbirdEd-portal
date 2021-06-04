@@ -18,11 +18,16 @@ import { PublicPlayerService } from '@sunbird/public';
 import { TocCardType, PlatformType } from '@project-sunbird/common-consumption';
 import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
 
+interface IRecursiveData {
+  identifier: string
+  children: null | IRecursiveData[]
+}
 @Component({
   selector: 'app-collection-player',
   templateUrl: './collection-player.component.html',
   styleUrls: ['./collection-player.component.scss']
 })
+
 export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewInit {
   telemetryImpression: IImpressionEventInput;
   telemetryContentImpression: IImpressionEventInput;
@@ -90,6 +95,9 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   TocCardType = TocCardType;
   PlatformType = PlatformType;
   isGroupAdmin: boolean;
+
+
+  activePathHierarchy:any;
 
   constructor(public route: ActivatedRoute, public playerService: PlayerService,
     private windowScrollService: WindowScrollService, public router: Router, public navigationHelperService: NavigationHelperService,
@@ -452,8 +460,44 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       this.objectRollUp = this.getContentRollUp(event.rollup);
       this.initPlayer(_.get(this.activeContent, 'identifier'));
     }
+    this.activePathHierarchy = this.getPath(this.collectionData, event.data)
+  }
+  getPath<T extends IRecursiveData>(node: T, activeContent: any): T[] {
+    const path: T[] = []
+    this.hasPath(node, path, activeContent)
+    return path
   }
 
+  private hasPath<T extends IRecursiveData>(node: T, pathArr: T[], activeContent: any): boolean {
+    if (node == null) {
+      return false
+    }
+    pathArr.push(node)
+    const pathArrlength = pathArr.length
+    if (node.identifier === activeContent.identifier || `${node.identifier}.img` === activeContent.identifier) {
+      if(activeContent.parent === pathArr[pathArrlength-2].identifier){
+        return true
+      }
+      else{
+        pathArr.pop()
+        return false
+      }
+    }
+    const children = node.children || []
+    if (children.some(u => this.hasPath(u, pathArr, activeContent))) {
+      return true
+    }
+    pathArr.pop()
+    return false
+  }
+
+  setHeaderName(event) {
+    if (event.data.identifier !== _.get(this.activeContent, 'identifier')) {
+      this.isContentPresent = true;
+      this.activeContent = event;
+      this.objectRollUp = this.getContentRollUp(event.rollup);
+    }
+  }
   setTelemetryInteractData() {
     this.tocTelemetryInteractEdata = {
       id: 'library-toc',
@@ -480,7 +524,11 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
         this.publicPlayerService.playContent(event, { textbook: this.collectionData.identifier });
       }
     } else {
-      this.callinitPlayer(event);
+      // if(event.fromHeader){
+      //   this.setHeader()
+      // }
+      // this.callinitPlayer(event);
+        this.callinitPlayer(event);
     }
   }
 
@@ -655,5 +703,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       this.selectedItems = [];
     }
   }
+  
 }
 
