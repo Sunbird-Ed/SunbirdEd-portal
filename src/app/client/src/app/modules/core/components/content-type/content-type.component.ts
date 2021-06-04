@@ -40,10 +40,15 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       else{
         if(await this.userService.loggedIn){
           const profileData = JSON.parse(sessionStorage.getItem("CacheServiceuserProfile"));
-          if(profileData.value.profileUserType.type === null){
-              return;
+          if (profileData && profileData.value.profileUserType.type != null) {
+            this.userType = profileData.value.profileUserType.type;
+          }
+          }
+          else{
+            let user = localStorage.getItem("userType");
+            if (user) {
+              this.userType = user;
             }
-            this.userType=profileData.value.profileUserType.type;
           }
           this.getContentTypes();
       }      
@@ -164,7 +169,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       contentType: 'global'
     };
     this.formService.getFormConfig(formServiceInputParams).subscribe((data: any) => {
-      this.processFormData(data);
+      this.updateForm(data);
       this.setContentTypeOnUrlChange();
     });
   }
