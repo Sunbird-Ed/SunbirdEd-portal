@@ -5,6 +5,7 @@ import { UtilService } from '@sunbird/shared';
  * Reference links:
  * https://www.tektutorialshub.com/angular/renderer2-angular/
  * https://medium.com/claritydesignsystem/four-ways-of-listening-to-dom-events-in-angular-part-3-renderer2-listen-14c6fe052b59
+ * https://medium.com/claritydesignsystem/four-ways-of-listening-to-dom-events-in-angular-part-3-renderer2-listen-14c6fe052b59
  */
 @Directive({
   selector: '[telemetryEventsButton]'
