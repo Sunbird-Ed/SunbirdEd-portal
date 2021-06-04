@@ -27,7 +27,7 @@
             <label class="last-update-label"> {{ lastUpdated }}: {{memberListUpdatedOn | date:'MMM d, y, h:mm a'}}
             </label>
           </div>
-          <button class="download-csv" (click)="lib?.instance?.exportAs('csv');downloadCSV()">
+          <button class="download-csv" (click)="lib?.instance?.exportAs('csv', {'strict': true});downloadCSV()">
             Download as CSV<img src="assets/images/download-icon.svg" class="download-icon"></button>
           <!-- <button type="button" class="btn btn-outline-primary float-end"
               (click)="lib?.instance?.exportAs('csv');downloadCSV()">DownloadCSV</button> -->
