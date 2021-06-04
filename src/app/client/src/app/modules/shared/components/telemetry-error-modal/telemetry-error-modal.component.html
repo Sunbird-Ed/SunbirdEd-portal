@@ -1,5 +1,11 @@
-<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'large'"
-  class="sb-modal sb-modal-addsummary" appBodyScroll #modal (dismissed)="modal.deny(); close.emit();">
+<div class="six wide column p-0" telemetryEventsButton>
+  <button class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8 ng-star-inserted" type="button" (click)="modal.deny();openModal()">
+    <i _ngcontent-mrt-c56="" class="blue share alternate icon"></i> Errors 
+  </button>
+</div>
+
+<sui-modal *ngIf="showTelemetryEventsModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'large'"
+  class="sb-modal sb-modal-addsummary" appBodyScroll #modal (dismissed)="closeModal()">
   <div class="sb-modal-header">
     {{input?.title}}
   </div>

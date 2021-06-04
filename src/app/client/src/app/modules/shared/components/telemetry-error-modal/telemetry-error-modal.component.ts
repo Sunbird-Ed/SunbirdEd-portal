@@ -3,6 +3,12 @@ import { UtilService } from '../../services/util/util.service';
 import { TelemetryService } from '@sunbird/telemetry';
 import { EventEmitter } from '@angular/core';
 
+/**
+ * This is to show the telemetry events generated
+ * Trigger the below command from broser console to enable/show the telemetry button
+ * 
+ * document.dispatchEvent(new CustomEvent('TelemetryEvent:show', {detail: {show: true}}));
+ */
 @Component({
   selector: 'app-telemetry-error-modal',
   templateUrl: './telemetry-error-modal.component.html',
@@ -12,7 +18,7 @@ export class TelemetryErrorModalComponent implements OnInit {
 
   constructor(private utilService: UtilService, private telemetryService: TelemetryService) { }
 
-  @Output() close = new EventEmitter();
+  // @Output() close = new EventEmitter();
 
   // Array of telemetry errors events 
   telemetryEventsArr = [];
@@ -33,8 +39,26 @@ export class TelemetryErrorModalComponent implements OnInit {
   // Latest event pushed to telemetryEventsArr. This is to avoid duplication of events adding to telemetryEventsArr
   latestEvent = undefined;
 
+  // To show/hide the telemetry events modal 
+  showTelemetryEventsModal = false;
+
   ngOnInit() {
     // this.listenTelemetryEvents();          
     this.telemetryEventsArr = this.telemetryService.telemetryEvents;
+  }
+
+  /**
+   * This is to close the modal window
+   */
+  openModal() {
+    this.showTelemetryEventsModal = true;
+  }
+
+  /**
+   * This is to close the modal window
+   */
+  closeModal() {
+    // this.close.emit();
+    this.showTelemetryEventsModal = false;
   }
 }

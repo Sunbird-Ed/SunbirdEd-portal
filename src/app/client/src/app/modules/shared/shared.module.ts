@@ -16,7 +16,7 @@ import {
   PaginationService, RouterNavigationService, NavigationHelperService, UtilService, ContentUtilsServiceService, ExternalUrlPreviewService,
   OfflineCardService, RecaptchaService, LayoutService, ConnectionService
 } from './services';
-import { ContentDirectionDirective, MarkdownDirective } from './directives';
+import { ContentDirectionDirective, HighlightTextDirective, MarkdownDirective, TelemetryEventsDirective } from './directives';
 import { CommonModule } from '@angular/common';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import {DateFormatPipe, FilterPipe, InterpolatePipe, SortByPipe, SbDataTablePipe} from './pipes';
@@ -25,7 +25,6 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CdnprefixPipe } from './pipes/cdnprefix.pipe';
-import { HighlightTextDirective } from './directives/highlight-text/highlight-text.directive';
 import { AppLandingSectionComponent } from './components/app-landing-section/app-landing-section.component';
 import { TranslateModule, TranslateStore } from '@ngx-translate/core';
 import { AddToGroupDirective } from './directives/add-to-group/add-to-group.directive';
@@ -33,7 +32,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import {TitleCasePipe} from '@angular/common';
 import { NetworkStatusComponent } from './components/network-status/network-status.component';
 import { LoadOfflineContentComponent } from './components/load-offline-content/load-offline-content.component';
-import { TelemetryEventsDirective } from './directives/telemetry-events.directive';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -52,7 +51,8 @@ import { TelemetryEventsDirective } from './directives/telemetry-events.directiv
     SbDatatableComponent,OnDemandReportsComponent,SbDataTablePipe, NetworkStatusComponent, LoadOfflineContentComponent,
     DesktopAppUpdateComponent,
     SystemWarningComponent,
-    TelemetryEventsDirective],
+    TelemetryEventsDirective
+  ],
   exports: [AppLoaderComponent, DateFormatPipe, TranslateModule,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
@@ -60,7 +60,7 @@ import { TelemetryEventsDirective } from './directives/telemetry-events.directiv
     ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent,
     CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
     MarkdownDirective, AddToGroupDirective, SbDatatableComponent, OnDemandReportsComponent, NgxDatatableModule,SbDataTablePipe, 
-    InterpolatePipe,NetworkStatusComponent,LoadOfflineContentComponent, DesktopAppUpdateComponent, SystemWarningComponent]
+    InterpolatePipe,NetworkStatusComponent,LoadOfflineContentComponent, DesktopAppUpdateComponent, SystemWarningComponent, TelemetryEventsDirective]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {
