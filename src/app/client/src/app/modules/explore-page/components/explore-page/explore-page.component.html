@@ -138,7 +138,7 @@
             <sb-library-cards-grid [layoutConfig]="layoutConfiguration" *ngFor="let i of numberOfSections"
               [type]="'infinite_card_grid'" [isLoading]="true" [maxCardCount]="!isUserLoggedIn() ? 4: 3"></sb-library-cards-grid>
           </div>
-          <div *ngIf="apiContentList.length === 0 && !showLoader">
+          <div *ngIf="apiContentList.length === 0 && !showLoader && (getSelectedTab() !== 'home' && getSelectedTab() !== 'explore')">
             <app-no-result-found (exploreMoreContent)="navigateToExploreContent()" [filters]="selectedFilters"
               [title]="noResultMessage?.title" [subTitle]="noResultMessage?.subTitle"
               [buttonText]="noResultMessage?.buttonText"
