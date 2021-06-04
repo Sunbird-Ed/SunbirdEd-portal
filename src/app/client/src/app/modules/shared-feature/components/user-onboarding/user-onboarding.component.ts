@@ -52,11 +52,11 @@ export class UserOnboardingComponent implements OnInit {
           this.tenantInfo.titleName = data.tenantData.titleName || this.resourceService.instance;
           const orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
 
-          /* istanbul ignore else */
-          if (_.get(orgDetailsFromSlug, 'slug') === this.tenantService.slugForIgot) {
-            this.tenantInfo.titleName = _.upperCase(orgDetailsFromSlug.slug);
-            this.stage = Stage.LOCATION_SELECTION;
-          }
+          // /* istanbul ignore else */
+          // if (_.get(orgDetailsFromSlug, 'slug') === this.tenantService.slugForIgot) {
+          //   this.tenantInfo.titleName = _.upperCase(orgDetailsFromSlug.slug);
+          //   this.stage = Stage.LOCATION_SELECTION;
+          // }
         }
       });
   }
