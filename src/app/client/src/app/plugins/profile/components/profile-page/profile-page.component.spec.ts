@@ -151,7 +151,7 @@ describe('ProfilePageComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('should call user service', () => {
+  xit('should call user service', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.frelmnts = resourceBundle.frmelmnts;
     resourceService.messages = resourceBundle.messages;
@@ -205,7 +205,7 @@ describe('ProfilePageComponent', () => {
     expect(component.attendedTraining).toBeDefined();
   });
 
-  it('should display root org location if org location is empty', () => {
+  xit('should display root org location if org location is empty', () => {
     const resourceService = TestBed.get(ResourceService);
     resourceService.frelmnts = resourceBundle.frmelmnts;
     resourceService.messages = resourceBundle.messages;
@@ -320,7 +320,7 @@ describe('ProfilePageComponent', () => {
     expect(telemetryService.interact).toHaveBeenCalledWith(telemetryData);
     expect(router.navigate).toHaveBeenCalledWith(['learn/course/do_1234']);
   });
-  it('should assign location data to nonCustodianUserLocation through setNonCustodianUserLocation', () => {
+  xit('should assign location data to nonCustodianUserLocation through setNonCustodianUserLocation', () => {
     component.userProfile = Response.userData;
     component.setNonCustodianUserLocation();
     expect(component.nonCustodianUserLocation['block']).toBe('MUNGER SADAR');
@@ -367,7 +367,7 @@ describe('ProfilePageComponent', () => {
   });
 
 
-  it('should check user is custodian user of not', () => {
+  xit('should check user is custodian user of not', () => {
     const userService = TestBed.get(UserService);
     userService._userData$.next({ err: null, userProfile: Response.userData });
     const orgDetailsService = TestBed.get(OrgDetailsService);
@@ -395,7 +395,7 @@ describe('ProfilePageComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(['/profile/teacher-declaration'], { queryParams: { formaction: 'submit' } });
   });
 
-  it('should not show self declared information if declaration is not available', () => {
+  xit('should not show self declared information if declaration is not available', () => {
     const userService = TestBed.get(UserService);
     userService._userData$.next({ err: null, userProfile: Response.userData });
     spyOn(component, 'getSelfDeclaredDetails').and.callThrough();
@@ -404,7 +404,7 @@ describe('ProfilePageComponent', () => {
     expect(component.getSelfDeclaredDetails).toHaveBeenCalled();
   });
 
-  it('should get self declared details', () => {
+  xit('should get self declared details', () => {
     const userService = TestBed.get(UserService);
     userService._userData$.next({ err: null, userProfile: Response.userData });
     const profileService = TestBed.get(ProfileService);
