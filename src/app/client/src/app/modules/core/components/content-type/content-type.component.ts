@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormService, UserService } from './../../services';
 import * as _ from 'lodash-es';
-import { LayoutService, ResourceService, UtilService } from '@sunbird/shared';
+import { LayoutService, ResourceService, UtilService,IUserData} from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -32,26 +32,12 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     public layoutService: LayoutService,
     private utilService: UtilService,
   ) {
+    this.getContentTypes();
     this.subscription = this.utilService.currentRole.subscribe(async (result) => {
       if (result) {
-        this.userType=result;
-        this.getContentTypes();
-      } 
-      else{
-        if(await this.userService.loggedIn){
-          const profileData = JSON.parse(sessionStorage.getItem("CacheServiceuserProfile"));
-          if (profileData && profileData.value.profileUserType.type != null) {
-            this.userType = profileData.value.profileUserType.type;
-          }
-          }
-          else{
-            let user = localStorage.getItem("userType");
-            if (user) {
-              this.userType = user;
-            }
-          }
-          this.getContentTypes();
-      }      
+        this.userType = result;
+        this.makeFormChange();
+      }
     });
   }
 
@@ -138,15 +124,32 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateForm(data) {
-    let finalData = [];
-    finalData = data;
-      if (this.userType != "administrator") {
-        finalData = finalData.filter((obj) => obj.contentType != "observation");
-        this.processFormData(finalData);
-      } else {
-        this.processFormData(finalData);
+  async updateForm() {
+    if (!this.userType) {
+      if (await this.userService.loggedIn) {
+        this.userService.userData$.subscribe((profileData: IUserData) => {
+          if(profileData.userProfile["profileUserType"]["type"] !== null){
+          this.userType = profileData.userProfile["profileUserType"]["type"];
+          }
+          this.makeFormChange();
+        });
       }
+      else {
+        let user = localStorage.getItem("userType");
+        if (user) {
+          this.userType = user;
+          this.makeFormChange();
+        }
+      }
+    }
+  }
+  makeFormChange(){
+    let index=this.contentTypes.findIndex(cty=>cty.contentType==="observation");
+    if (this.userType != "administrator") {
+      this.contentTypes[index].isEnabled = false;
+    } else {
+      this.contentTypes[index].isEnabled = true;
+    }
   }
 
   processFormData(formData) {
@@ -169,7 +172,8 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       contentType: 'global'
     };
     this.formService.getFormConfig(formServiceInputParams).subscribe((data: any) => {
-      this.updateForm(data);
+      this.processFormData(data);
+      this.updateForm();
       this.setContentTypeOnUrlChange();
     });
   }
