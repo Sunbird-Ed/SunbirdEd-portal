@@ -28,6 +28,7 @@
       &__title {
           color: var(--primary-400);
           font-size: calculateRem(18px);
+          padding-left: .8rem;
       }
       &__info {
         color: var(--gray-800);
@@ -136,6 +137,10 @@ table {
         color: #024F9D;
         font-size: 0.87rem;
         font-weight: bold;
+        border: none;
+        background: transparent;
+        outline: none !important;
+        cursor: pointer;
         .download-icon{
             margin:0 0.5rem;
             width: 1rem;
