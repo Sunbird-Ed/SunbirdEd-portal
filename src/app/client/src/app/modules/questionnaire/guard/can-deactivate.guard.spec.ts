@@ -2,7 +2,7 @@ import { TestBed, async, inject } from '@angular/core/testing';
 
 import { CanDeactivateGuard } from './can-deactivate.guard';
 
-describe('CanDeactivateGuard', () => {
+xdescribe('CanDeactivateGuard', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [CanDeactivateGuard]

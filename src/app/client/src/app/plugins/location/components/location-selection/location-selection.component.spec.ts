@@ -1,7 +1,7 @@
 import { Route } from '@angular/compiler/src/core';
 import { Router } from '@angular/router';
 import { UserService, DeviceRegisterService, FormService, OrgDetailsService } from '../../../../modules/core/services';
-import { ResourceService, ToasterService, NavigationHelperService, ServerResponse } from '@sunbird/shared';
+import { ResourceService, ToasterService, NavigationHelperService, ServerResponse, UtilService } from '@sunbird/shared';
 import { IInteractEventInput, ILogEventInput, TelemetryService } from '@sunbird/telemetry';
 import { PopupControlService } from '../../../../service/popup-control.service';
 import { LocationService } from '../..';
@@ -44,6 +44,7 @@ describe('LocationSelectionComponent', () => {
     const mockRouter: Partial<Route> = {};
     const mockUserService: Partial<UserService> = {};
     const mockOrgDetailsService: Partial<OrgDetailsService> = {};
+    const mockUtilsService: Partial<UtilService> = {}
     beforeAll(() => {
         locationSelectionComponent = new LocationSelectionComponent(
             mockResourceService as ResourceService,
@@ -56,7 +57,8 @@ describe('LocationSelectionComponent', () => {
             mockPopupControlService as PopupControlService,
             mockTelemetryService as TelemetryService,
             mockFormService as FormService,
-            mockOrgDetailsService as OrgDetailsService
+            mockOrgDetailsService as OrgDetailsService,
+            mockUtilsService as UtilService
         );
     });
 
