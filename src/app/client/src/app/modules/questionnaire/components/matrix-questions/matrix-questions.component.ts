@@ -15,7 +15,8 @@ import { ResourceService } from "@sunbird/shared";
 import { MatrixQuestion, Question } from "../../Interface/assessmentDetails";
 import { ObservationUtilService } from "../../../observation/service";
 import { QuestionnaireService } from "../../questionnaire.service";
-import { isEmpty } from "underscore";
+import * as _ from 'lodash-es';
+
 export interface IContext {
   questions: Question[];
   heading: string;
@@ -65,7 +66,7 @@ export class MatrixQuestionsComponent implements OnInit {
         (this.questionnaireForm.controls[this.question._id] as FormArray).push(
           new FormControl(obj)
         );
-        if (isEmpty(obj)) {
+        if (_.isEmpty(obj)) {
           valid = false;
         }
       });
