@@ -31,4 +31,3 @@ export abstract class ComponentDeactivate {
     }
   }
 }
-
