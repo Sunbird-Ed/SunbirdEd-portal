@@ -50,7 +50,7 @@
   .sb-onbrd-modal {
     @include respond-below(sm) {
       .ui.modal {
-        width: 95%;
+        width: 80%;
         margin: 0 0 0 0;
         top: 0;
         left: 0;
