@@ -14,7 +14,6 @@ const isAPIWhitelisted = require('../helpers/apiWhiteList');
 const reqDataLimitOfContentUpload = '50mb'
 const { logger } = require('@project-sunbird/logger');
 const request = require('request');
-// import * as fs from "fs";
 const fs = require('fs');
 const multiparty = require('multiparty');
 
