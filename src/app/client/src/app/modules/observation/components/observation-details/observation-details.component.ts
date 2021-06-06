@@ -57,6 +57,11 @@ export class ObservationDetailsComponent implements OnInit {
     }, error => {
       this.showLoader = false;
     })
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
   }
   getEntities() {
     this.showLoader = true;

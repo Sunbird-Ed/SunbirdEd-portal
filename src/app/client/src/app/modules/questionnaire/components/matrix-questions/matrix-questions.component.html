@@ -8,7 +8,7 @@
   class="ui card student-card"
   *ngFor="let instance of question?.value; let i = index"
 >
-  <div class="content">
+  <div class="content flex-jc-space-between">
     <div (click)="viewInstance(i)">
       <span
         [ngClass]="{ _validQuestion: question?.completedInstance?.includes(i) }"
