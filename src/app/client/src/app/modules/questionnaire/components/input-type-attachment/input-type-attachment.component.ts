@@ -48,7 +48,7 @@ export class InputTypeAttachmentComponent implements OnInit {
       (imageData) => {
         const presignedUrlData = imageData['result'][this.data.submissionId].files[0];
         this.formData.append('url', presignedUrlData.url)
-        this.qService.cloudStorageUpload(this.formData).subscribe(success => {
+        this.qService.cloudStorageUpload(this.formData).subscribe((success:any) => {
           if (success.status === 200) {
             const obj = {
               name: this.getFileNames(this.formData)[0],

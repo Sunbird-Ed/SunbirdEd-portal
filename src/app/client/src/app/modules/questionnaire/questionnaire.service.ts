@@ -217,7 +217,7 @@ export class QuestionnaireService {
             validSubmission.answers[matrixQuestion._id] &&
             validSubmission.answers[matrixQuestion._id].value[index][
               question._id
-            ].value
+            ]
           ) {
             question.value =
               validSubmission.answers[matrixQuestion._id].value[index][
