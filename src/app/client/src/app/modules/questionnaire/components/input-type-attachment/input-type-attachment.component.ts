@@ -1,7 +1,9 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { QuestionnaireService } from "../../questionnaire.service";
 import { ObservationUtilService } from "../../../observation/service";
-import { ResourceService } from "@sunbird/shared";
+import { ResourceService, ToasterService } from "@sunbird/shared";
+import * as _ from 'lodash-es';
+
 @Component({
   selector: "app-input-type-attachment",
   templateUrl: "./input-type-attachment.component.html",
@@ -14,7 +16,8 @@ export class InputTypeAttachmentComponent implements OnInit {
   constructor(
     private qService: QuestionnaireService,
     private observationUtil: ObservationUtilService,
-    public resourceService: ResourceService
+    public resourceService: ResourceService,
+    private toastService: ToasterService
   ) { }
 
   ngOnInit() { }
@@ -35,28 +38,32 @@ export class InputTypeAttachmentComponent implements OnInit {
   }
 
   preSignedUrl(files) {
-    debugger
     let payload = {};
-    payload["ref"] = "survey";
+    payload["ref"] = "observation";
     payload["request"] = {};
     payload["request"][this.data.submissionId] = {
       files: files,
     };
     this.qService.getPreSingedUrls(payload).subscribe(
       (imageData) => {
-        debugger
-        const uploadPayload = {
-          url: imageData['result'][this.data.submissionId].files[0].url,
-          data: this.formData
-        }
-        this.formData.append('url', imageData['result'][this.data.submissionId].files[0].url)
-
+        const presignedUrlData = imageData['result'][this.data.submissionId].files[0];
+        this.formData.append('url', presignedUrlData.url)
         this.qService.cloudStorageUpload(this.formData).subscribe(success => {
-          debugger
+          if (success.status === 200) {
+            const obj = {
+              name: this.getFileNames(this.formData)[0],
+              url: presignedUrlData.url.split('?')[0]
+            }
+            for (const key of Object.keys(presignedUrlData.payload)) {
+              obj[key] = presignedUrlData['payload'][key]
+            }
+            this.data.files.push(obj)
+          } else {
+            this.toastService.error(_.get(this.resourceService, 'frmelmnts.message.unableToUpload'));
+          }
         }, error => {
-          debugger
+          this.toastService.error(_.get(this.resourceService, 'frmelmnts.message.unableToUpload'));
         })
-        // console.log(data);
       },
       (error) => {
         console.log(error);

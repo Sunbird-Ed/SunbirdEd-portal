@@ -126,7 +126,7 @@ export class QuestionnaireService {
       qid: currentQuestion._id,
       value: value,
       remarks: currentQuestion.remarks,
-      fileName: [], //todo,
+      fileName: currentQuestion.fileName, //todo,
       gpsLocation: "",
       payload: {
         question: currentQuestion.question,
