@@ -29,6 +29,7 @@ export interface Solution {
   scoringSystem: null;
   isRubricDriven: boolean;
   pageHeading: string;
+  criteriaLevelReport?:boolean
 }
 
 export interface Program {
