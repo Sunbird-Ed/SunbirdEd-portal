@@ -65,6 +65,7 @@
 	}
 }
 
+
 .content-player-landscape {
   position: absolute;
 }
@@ -72,3 +73,24 @@
 .header-block {
 	display: none !important;
   }
+  .back-btn-container {
+    z-index: 1;
+    height: 56px;
+  .body-font-size-secondary{
+    font-weight: bold !important;
+    .breadcrumbs{
+      padding-inline-start: unset !important;
+      margin-bottom: 0rem !important;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      .main-div-breadcrumbs-item{
+        display: flex;
+        font-size:  16px;
+        font-weight: 700;
+        padding-top: 8px;
+      }
+    }
+  }
+}
+  
