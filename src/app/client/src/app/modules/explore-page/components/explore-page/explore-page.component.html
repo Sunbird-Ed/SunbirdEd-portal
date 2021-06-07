@@ -96,7 +96,7 @@
                 [minDisplayCount]="section?.section?.theme?.limit || 4"
                 [viewMoreText]="resourceService?.frmelmnts?.lbl?.viewmore"
                 [viewLessText]="resourceService?.frmelmnts?.lbl?.viewless" [pillSize]="'medium'" [platform]="'portal'"
-                [pillBorder]="'semi_round'" [pillsMultiRow]="'double_view_row'" (select)="handlePillSelect($event, section.name)">
+                [pillBorder]="'semi_round'" [pillsMultiRow]="'auto_responsive'" [pillTextElipsis]="'two_line'" (select)="handlePillSelect($event, section.name)">
                 <sb-pill-item *ngFor="let pillData of section.data" [name]="pillData?.name | titlecase"
                   [icon]="utilService.getSectionPillIcon(section?.section?.theme?.icons, pillData?.value)" [value]="pillData"
                   [theme]="pillData?.theme"></sb-pill-item>

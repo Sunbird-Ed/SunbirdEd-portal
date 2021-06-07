@@ -61,7 +61,7 @@ import { SbSearchFilterModule } from 'common-form-elements';
     TranslateStore,
     { provide: CacheStorageAbstract, useClass: CacheSessionStorage },
     { provide: HTTP_INTERCEPTORS, useClass: SessionExpiryInterceptor, multi: true },
-    { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy },
+    { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy }
   ]
 })
 export class AppModule {

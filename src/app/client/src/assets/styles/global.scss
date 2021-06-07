@@ -1443,4 +1443,11 @@ html[layout="old"] sunbird-pdf-player .sb-player-splash-container .loading-text 
   height: calc(100% - 4rem)!important;
 }
 
+sb-pills-grid{
+  .sb-label-grid.show-ellipsis .item label {
+    @supports (-webkit-box-orient: vertical) {
+      -webkit-box-orient: vertical !important;
+    }
+  }
+}
 // ends
