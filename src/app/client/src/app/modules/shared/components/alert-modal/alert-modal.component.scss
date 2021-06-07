@@ -4,7 +4,7 @@
   color: var(--sb-text);
 }
 .popup-header {
-  padding: 15px 20px;
+  padding: 10px 20px;
   color: var(--sb-text);
   b {
     justify-content: flex-start;
@@ -19,8 +19,9 @@
 
 .popup-body {
   color: var(--sb-text);
+  font-size: 15px;
   line-height: 1.2em;
-  padding: 25px 20px;
+  padding: 20px 20px;
 }
 
 .popup-body-checkbox {
@@ -65,7 +66,7 @@
   button {
     margin-right: 14px;
     border-radius: 50%;
-    height: 60px;
-    width: 60px;
+    height: 55px;
+    width: 50px;
   }
 }

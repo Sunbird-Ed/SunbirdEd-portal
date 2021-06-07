@@ -124,9 +124,9 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     }
   }
 
-  async updateForm() {
+  updateForm() {
     if (!this.userType) {
-      if (await this.userService.loggedIn) {
+      if (this.userService.loggedIn) {
         this.userService.userData$.subscribe((profileData: IUserData) => {
           if(profileData.userProfile["profileUserType"]["type"] !== null){
           this.userType = profileData.userProfile["profileUserType"]["type"];
