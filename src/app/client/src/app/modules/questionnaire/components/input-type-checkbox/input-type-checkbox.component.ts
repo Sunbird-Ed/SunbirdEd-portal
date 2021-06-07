@@ -14,6 +14,8 @@ export class InputTypeCheckboxComponent implements OnInit {
   @Input() questionnaireForm: FormGroup;
   @Input() question: Question;
   @Output() dependentParent = new EventEmitter<Question>();
+  isDimmed: any;
+  hind: any;
 
   constructor(
     public qService: QuestionnaireService,

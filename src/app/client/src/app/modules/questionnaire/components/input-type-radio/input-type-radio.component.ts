@@ -14,6 +14,8 @@ export class InputTypeRadioComponent implements OnInit {
   @Input() questionnaireForm: FormGroup;
   @Input() question: Question;
   @Output() dependentParent = new EventEmitter<Question>();
+  isDimmed: any
+  hint:any
 
   constructor(
     public qService: QuestionnaireService,
