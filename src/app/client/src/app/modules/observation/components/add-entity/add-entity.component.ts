@@ -24,6 +24,7 @@ export class AddEntityComponent implements OnInit {
     payload;
     showDownloadModal: boolean = true;
     showLoader: boolean = true;
+    showDownloadSuccessModal: boolean = false;
     public loaderMessage: ILoaderMessage;
     public noResultMessage: INoResultMessage;
     constructor(
