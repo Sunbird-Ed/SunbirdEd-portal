@@ -11,6 +11,9 @@ import dayjs from 'dayjs';
 import { Subject, combineLatest } from 'rxjs';
 import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
 import { ConfigService } from '@sunbird/shared';
+import { CsModule } from '@project-sunbird/client-services';
+import { CsLibInitializerService } from '../../../../../service/CsLibInitializer/cs-lib-initializer.service';
+import { DiscussionService } from '../../../../../../app/modules/discussion/services/discussion/discussion.service';
 
 @Component({
   selector: 'app-create-batch',
@@ -96,6 +99,10 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   url = document.location.origin;
   instance: string;
 
+  private discussionCsService: any;
+  createForumRequest: any;
+  showDiscussionForum: string;
+
   /**
 	 * Constructor to create injected service(s) object
 	 * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
@@ -112,7 +119,9 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     public configService: ConfigService,
     courseConsumptionService: CourseConsumptionService,
     public navigationhelperService: NavigationHelperService, private lazzyLoadScriptService: LazzyLoadScriptService,
-    private telemetryService: TelemetryService) {
+    private telemetryService: TelemetryService,
+    private csLibInitializerService: CsLibInitializerService,
+    private discussionService: DiscussionService) {
     this.resourceService = resourceService;
     this.router = route;
     this.activatedRoute = activatedRoute;
@@ -120,6 +129,10 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.courseBatchService = courseBatchService;
     this.toasterService = toasterService;
     this.courseConsumptionService = courseConsumptionService;
+    if (!CsModule.instance.isInitialised) {
+      this.csLibInitializerService.initializeCs();
+    }
+    this.discussionCsService = CsModule.instance.discussionService;
   }
 
   /**
@@ -131,11 +144,13 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       this.courseId = params.courseId;
       this.initializeFormFields();
       this.setTelemetryInteractData();
+      this.fetchForumConfig();
       this.showCreateModal = true;
       return this.fetchBatchDetails();
     }),
       takeUntil(this.unsubscribe))
       .subscribe((data) => {
+        this.showDiscussionForum = _.get(data.courseDetails, 'discussionForum.enabled');
         if (data.courseDetails.createdBy === this.userService.userid) {
           this.courseCreator = true;
         }
@@ -177,7 +192,8 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       users: new FormControl(),
       enrollmentEndDate: new FormControl(),
       issueCertificate: new FormControl(null, [Validators.required]),
-      tncCheck: new FormControl(false, [Validators.requiredTrue])
+      tncCheck: new FormControl(false, [Validators.requiredTrue]),
+      enableDiscussions: new FormControl('false', [Validators.required])
     });
     this.createBatchForm.valueChanges.subscribe(val => {
       if (this.createBatchForm.status === 'VALID') {
@@ -252,6 +268,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
           this.toasterService.success(this.resourceService.messages.smsg.m0033);
           this.reload();
           this.checkIssueCertificate(response.result.batchId);
+          this.checkEnableDiscussions(response.result.batchId);
         }
       },
         (err) => {
@@ -413,7 +430,47 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.unsubscribe.complete();
   }
 
-  handleInputChange(inputType) {
+  fetchForumConfig() {
+    this.discussionService.fetchForumConfig('batch').subscribe((formData: any) => {
+      this.createForumRequest = formData[0];
+    }, error => {
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
+    });
+  }
+
+  checkEnableDiscussions(batchId) {
+    if (this.createBatchForm.value.enableDiscussions === 'true') {
+      this.enableDiscussionForum(batchId);
+    } else {
+      this.handleInputChange('enable-DF-no', {
+        id: batchId,
+        type: 'Batch'
+      });
+    }
+  }
+
+  enableDiscussionForum(batchId) {
+    const fetchForumConfigReq = [{
+      type: 'batch',
+      identifier: batchId
+    }];
+    if (this.createForumRequest) {
+      this.createForumRequest['category']['context'] =  fetchForumConfigReq;
+      this.discussionService.createForum(this.createForumRequest).subscribe(resp => {
+        this.handleInputChange('enable-DF-yes', {
+          id: batchId,
+          type: 'Batch'
+        });
+        this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0065'));
+      }, error => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      });
+    } else {
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
+    }
+  }
+
+  handleInputChange(inputId, cdata) {
     const telemetryData = {
       context: {
         env:  this.activatedRoute.snapshot.data.telemetry.env,
@@ -423,11 +480,14 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         }]
       },
       edata: {
-        id: `issue-certificate-${inputType}`,
+        id: inputId,
         type: 'click',
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid
       }
     };
+    if (cdata){
+      telemetryData.context.cdata.push(cdata);
+    }
     this.telemetryService.interact(telemetryData);
   }
 }

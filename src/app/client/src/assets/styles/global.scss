@@ -1430,4 +1430,23 @@ html[layout=joy] #playerFullscreen .contentViewerIframeShadow {
   border-radius: 0px !important;
 }
 
+html[layout="joy"] .contentViewerIframeShadow {
+  overflow: hidden;
+}
+
+html[layout="old"] sunbird-pdf-player .sb-player-splash-container .loading-text {
+  color:var(--white);
+}
+
+.contentViewerIframeShadow.player-fullscreen.content-full-video sunbird-pdf-player .player-endpage, .contentViewerIframeShadow.player-fullscreen.content-full-video sunbird-pdf-player .sb-player-splash-container {
+  height: calc(100% - 4rem)!important;
+}
+
+sb-pills-grid{
+  .sb-label-grid.show-ellipsis .item label {
+    @supports (-webkit-box-orient: vertical) {
+      -webkit-box-orient: vertical !important;
+    }
+  }
+}
 // ends
