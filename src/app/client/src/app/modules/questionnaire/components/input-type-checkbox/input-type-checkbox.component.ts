@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormGroup, FormControl, Validators, FormArray } from "@angular/forms";
 import { Question } from "../../Interface/assessmentDetails";
 import { QuestionnaireService } from "../../questionnaire.service";
+import { ResourceService } from "@sunbird/shared";
 
 @Component({
   selector: "input-type-checkbox",
@@ -14,7 +15,10 @@ export class InputTypeCheckboxComponent implements OnInit {
   @Input() question: Question;
   @Output() dependentParent = new EventEmitter<Question>();
 
-  constructor(public qService: QuestionnaireService) {}
+  constructor(
+    public qService: QuestionnaireService,
+    public resourceService: ResourceService
+  ) {}
 
   ngOnInit() {
     setTimeout(() => {
@@ -36,6 +40,11 @@ export class InputTypeCheckboxComponent implements OnInit {
       this.question.startTime = this.question.startTime
         ? this.question.startTime
         : Date.now();
+      if (this.question.value.length) {
+        if (this.question.children.length) {
+          this.dependentParent.emit(this.question);
+        }
+      }
     });
   }
 
