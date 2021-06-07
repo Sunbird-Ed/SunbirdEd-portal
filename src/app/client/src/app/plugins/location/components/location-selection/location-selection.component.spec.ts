@@ -8,7 +8,7 @@ import { LocationService } from '../..';
 import { LocationSelectionComponent } from './location-selection.component';
 import { of, Observable, throwError } from 'rxjs';
 
-fdescribe('LocationSelectionComponent', () => {
+describe('LocationSelectionComponent', () => {
     let locationSelectionComponent: LocationSelectionComponent;
     const mockDeviceRegisterService: Partial<DeviceRegisterService> = {};
     const mockFormService: Partial<FormService> = {};
