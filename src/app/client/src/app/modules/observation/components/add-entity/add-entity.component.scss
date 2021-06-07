@@ -44,7 +44,6 @@
   .sb-onbrd-modal {
     @include respond-below(sm) {
       .ui.modal {
-        width: 95%;
         margin: 0 0 0 0;
         top: 0;
         left: 0;
@@ -55,8 +54,6 @@
 
       .ui.modal.scroll {
         position: fixed !important;
-        margin-top: o !important;
-        margin-bottom: 0px !important;
         top: 0;
         width: 100%;
         left: 0px;

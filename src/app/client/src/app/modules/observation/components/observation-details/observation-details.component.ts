@@ -246,7 +246,7 @@ export class ObservationDetailsComponent implements OnInit {
 
   closeEditModal(event?) {
     this.openEditModal.show = false;
-    event.data ? this.updateSubmission(event.data) : '';
+    if (event.data) { this.updateSubmission(event.data) };
   }
 
   updateSubmission(event) {
