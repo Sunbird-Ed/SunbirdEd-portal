@@ -20,7 +20,7 @@ export class InputTypeAttachmentComponent implements OnInit {
     private toastService: ToasterService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   basicUpload(files: File[]) {
     this.formData = new FormData();
@@ -29,6 +29,7 @@ export class InputTypeAttachmentComponent implements OnInit {
   }
 
   getFileNames(formData) {
+    debugger
     let files = [];
     formData.forEach((element) => {
       files.push(element.name);
