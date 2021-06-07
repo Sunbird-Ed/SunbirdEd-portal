@@ -10,20 +10,6 @@ export class InputTypeAttachmentComponent implements OnInit {
   @Input() data;
 
   td = [
-    {
-      name: "xyz.png",
-      sourcePath:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/1200px-Visual_Studio_Code_1.35_icon.svg.png",
-    },
-    {
-      name: "abc.jpg",
-      sourcePath:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Visual_Studio_Code_1.35_icon.svg/1200px-Visual_Studio_Code_1.35_icon.svg.png",
-    },
-    {
-      name: "example.pdf",
-      sourcePath: "http://www.pdf995.com/samples/pdf.pdf",
-    },
   ];
   constructor(private qService: QuestionnaireService) {}
 
