@@ -267,7 +267,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
         objectType: this.config.appConfig.WORKSPACE.objectType,
         // tslint:disable-next-line:max-line-length
         primaryCategory: _.get(bothParams, 'queryParams.primaryCategory') || (!_.isEmpty(primaryCategories) ? primaryCategories : this.config.appConfig.WORKSPACE.primaryCategory),
-        mimeType: this.config.appConfig.WORKSPACE.mimeType,
+        // mimeType: this.config.appConfig.WORKSPACE.mimeType,
         board: bothParams['queryParams'].board,
         subject: bothParams['queryParams'].subject,
         medium: bothParams['queryParams'].medium,
