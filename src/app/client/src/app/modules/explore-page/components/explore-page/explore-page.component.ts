@@ -73,6 +73,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     selectedFacet: { facet: any; value: any; };
     showEdit = false;
     isFilterEnabled: boolean = true;
+    defaultTab = 'Textbook'
 
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
@@ -274,11 +275,13 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     public getPageData(input) {
+        const contentTypes = _.sortBy(this.formData, 'index');
+        this.defaultTab = _.find(contentTypes, ['default', true]);
         return find(this.formData, data => data.contentType === input);
     }
 
     public getCurrentPageData() {
-        return this.getPageData(get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook');
+        return this.getPageData(get(this.activatedRoute, 'snapshot.queryParams.selectedTab')|| _.get(this.defaultTab, 'contentType') || 'textbook');
     }
 
     public getFilters({ filters, status }) {

@@ -5,7 +5,7 @@ import {
   UtilService, ResourceService, ToasterService, IUserData, IUserProfile,
   NavigationHelperService, ConfigService, BrowserCacheTtlService, LayoutService
 } from '@sunbird/shared';
-import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, AfterViewInit, ChangeDetectorRef, ElementRef, Renderer2 } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, ChangeDetectorRef, ElementRef, Renderer2, NgZone } from '@angular/core';
 import {
   UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService,
   SessionExpiryInterceptor, FormService, ProgramsService, GeneraliseLabelService
@@ -129,7 +129,7 @@ export class AppComponent implements OnInit, OnDestroy {
     public formService: FormService, private programsService: ProgramsService,
     @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
     public changeDetectorRef: ChangeDetectorRef, public layoutService: LayoutService,
-    public generaliseLabelService: GeneraliseLabelService, private renderer: Renderer2) {
+    public generaliseLabelService: GeneraliseLabelService, private renderer: Renderer2, private zone: NgZone) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
     const layoutType = localStorage.getItem('layoutType') || '';
@@ -507,26 +507,28 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.isLocationStatusRequired()) {
       return;
     }
-    const frameWorkPopUp: boolean = this.cacheService.get('showFrameWorkPopUp');
-    if (frameWorkPopUp) {
-      this.showFrameWorkPopUp = false;
-      this.checkLocationStatus();
-    } else {
-      if (this.userService.loggedIn && _.isEmpty(_.get(this.userProfile, 'framework'))) {
-        this.showFrameWorkPopUp = true;
-      } else if (this.isGuestUser) {
-        if (!this.guestUserDetails) {
-          this.userService.getGuestUser().subscribe((response) => {
-            this.guestUserDetails = response;
-            this.showFrameWorkPopUp = false;
-          }, error => {
-            this.showFrameWorkPopUp = true;
-          });
-        }
-      } else {
+    this.zone.run(() => {
+      const frameWorkPopUp: boolean = this.cacheService.get('showFrameWorkPopUp');
+      if (frameWorkPopUp) {
+        this.showFrameWorkPopUp = false;
         this.checkLocationStatus();
+      } else {
+        if (this.userService.loggedIn && _.isEmpty(_.get(this.userProfile, 'framework'))) {
+          this.showFrameWorkPopUp = true;
+        } else if (this.isGuestUser) {
+          if (!this.guestUserDetails) {
+            this.userService.getGuestUser().subscribe((response) => {
+              this.guestUserDetails = response;
+              this.showFrameWorkPopUp = false;
+            }, error => {
+              this.showFrameWorkPopUp = true;
+            });
+          }
+        } else {
+          this.checkLocationStatus();
+        }
       }
-    }
+    });
   }
 
   /**

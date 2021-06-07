@@ -1380,18 +1380,17 @@ html[data-theme='Darkmode'][layout='joy'] {}
   }
 }
 
-// tab index css 
-*[tabindex]:focus {
-  outline: 2px green solid;
+// tab index css
+*:focus-visible {
+  border: 1px #fe0000 solid !important;
+  border-radius: 5px;
+  outline: none;
 }
-
-*:focus {
-  outline: 2px green solid !important;
+*:focus:not(:focus-visible){
+  outline: none;
+  border-style:none;
 }
-
-button:focus {
-  outline: 2px green solid;
-}
+// tab index css end
 
 // player SB-24647 changes
 .notVisible {
