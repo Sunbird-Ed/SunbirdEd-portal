@@ -6,7 +6,7 @@
     [appTelemetryImpression]="telemetryContentImpression">
     <!--CC-Player Back button -->
 
-    <div class="sb-bg-color-purple sb-text-color-white sb-bg-white relative position cc-player__btn-back ">
+    <div class="sb-bg-color-purple sb-text-color-white sb-bg-white relative position cc-player__btn-back  tool-bar-container">
       <div class="container">
         <div class="py-8 d-flex flex-ai-center width-full flex-jc-sb">
           <div class="wrap-btn-text d-flex">
@@ -19,17 +19,17 @@
             </button>
 
             <!--added breadcrumbs for tool bar-->
-            <span class="text-left text-truncate text-white body-font-size-secondary font-montserrat"
+            <span class="text-left text-truncate text-white font-montserrat breadcrumbs-main-container"
               *ngIf="collectionData">
             <ng-container *ngIf = "activePathHierarchy && activePathHierarchy?.length">
               <ul class = "breadcrumbs">
                 <div class = "main-div-breadcrumbs-item">
-                <div *ngFor = "let data of activePathHierarchy;let i = index">
+                <ng-container *ngFor = "let data of activePathHierarchy;let i = index">
                   <li class = "breadcrumbs_child">
                   <div>{{data.name}}</div>
                  <div><mat-icon *ngIf="activePathHierarchy.length-1 > i" class="icon-display">navigate_next</mat-icon></div>
                 </li>
-            </div>
+                </ng-container>
               </div>
               </ul>
             </ng-container>
@@ -38,33 +38,6 @@
         </div>
       </div>
     </div>
-
-
-    <span class="text-left text-truncate text-white body-font-size-secondary font-montserrat" *ngIf="courseHierarchy">
-      <ng-container *ngIf="courseHierarchy">
-        <ul class="breadcrumbs">
-          <div class="main-div-breadcrumbs-item">
-            {{courseHierarchy?.name | titlecase}}
-            <ng-container *ngIf="activeContent">
-              <mat-icon class="icon-display">navigate_next</mat-icon>
-              {{activeContent.name}}
-            </ng-container>
-          </div>
-        </ul>
-      </ng-container>
-    </span>
-
-
-
-
-
-
-
-
-
-
-
-
 
     <!--CC-Player Content Header -->
     <div class="content-header cc-player__content-header" *ngIf="collectionData">

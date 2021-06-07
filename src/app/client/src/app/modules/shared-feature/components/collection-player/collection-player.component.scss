@@ -83,14 +83,17 @@
   max-height: 515px;
   overflow-y: scroll;
 }
+.tool-bar-container{
+  height: 56px;
 .container{
   height: 100%;
   display: flex;
-  .body-font-size-secondary{
+  .breadcrumbs-main-container{
     font-weight: bold !important;
+    padding-top: 4px;
+    height: 24px;
     .breadcrumbs{
       padding-inline-start: unset !important;
-      margin-bottom: 0rem !important;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -98,14 +101,21 @@
         display: flex;
         font-size: 14px;
         font-weight: 400;
-        padding-top: 8px;
         .breadcrumbs_child{
           display: flex;
-          font-size:  16px;
-          font-weight: 700;
+          font-size: 14px;
+          font-weight: 400;
           margin-bottom: 0rem !important;
+          .icon-display{
+            padding-top: 4px !important;
+            font-size:16px !important;
+          }
+        }& :last-child{
+          font-size: 16px !important;
+          font-weight: 700 !important;
         }
       }
     }
   }
+}
 }
