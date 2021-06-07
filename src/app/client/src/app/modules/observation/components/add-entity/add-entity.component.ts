@@ -15,6 +15,8 @@ export class AddEntityComponent implements OnInit {
     @Output() closeEvent = new EventEmitter<any>();
     @Input() observationId;
     @Input() solutionId;
+    public throttle = 50;
+    public scrollDistance = 2;
     config;
     targetEntity;
     selectedListCount = 0;
@@ -25,7 +27,7 @@ export class AddEntityComponent implements OnInit {
     entities;
     payload;
     showDownloadModal: boolean = true;
-    showLoader: boolean = true;
+    showLoaderBox: boolean = false;
     public loaderMessage: ILoaderMessage;
     public noResultMessage: INoResultMessage;
     showDownloadSuccessModal;
@@ -59,7 +61,6 @@ export class AddEntityComponent implements OnInit {
         this.closeEvent.emit();
     }
     getTargettedEntityType() {
-        this.showLoader = true;
         const paramOptions = {
             url: this.config.urlConFig.URLS.KENDRA.TARGETTED_ENTITY_TYPES + this.solutionId,
             param: {},
@@ -71,7 +72,6 @@ export class AddEntityComponent implements OnInit {
             this.search();
 
         }, error => {
-            this.showLoader = false;
         })
 
     }
@@ -82,7 +82,7 @@ export class AddEntityComponent implements OnInit {
         event.selected ? this.selectedListCount++ : this.selectedListCount--;
     }
     search() {
-        this.showLoader = true;
+        // this.showLoaderBox = true;
         let url = this.config.urlConFig.URLS.OBSERVATION.SEARCH_ENTITY + '?observationId=' + this.observationId + '&search=' + encodeURIComponent(this.searchQuery ? this.searchQuery : '') + '&page=' + this.page + '&limit=' + this.limit;
         const paramOptions = {
             url: url + `&parentEntityId=${encodeURIComponent(
@@ -93,7 +93,7 @@ export class AddEntityComponent implements OnInit {
         };
         this.observationService.post(paramOptions).subscribe(data => {
             // this.entities = data.result;
-            this.showLoader = false;
+            // this.showLoaderBox = false;
             let resp = data.result[0];
             if (resp.data.length) {
                 for (let i = 0; i < resp.data.length; i++) {
@@ -104,7 +104,7 @@ export class AddEntityComponent implements OnInit {
                 this.count = resp.count;
             }
         }, error => {
-            this.showLoader = false;
+            // this.showLoaderBox = false;
         })
     }
 
@@ -113,11 +113,12 @@ export class AddEntityComponent implements OnInit {
         this.search();
     }
     loadMore() {
-        this.page = this.page + 1;
-        this.search();
+        if(this.count > this.entities.length){
+            this.page = this.page + 1;
+            this.search();
+        }
     }
     submit() {
-        this.showLoader = true;
         let selectedSchools = [];
         this.entities.forEach((element) => {
             if (element.selected && !element.preSelected) {
@@ -132,9 +133,13 @@ export class AddEntityComponent implements OnInit {
         };
         this.observationService.post(paramOptions).subscribe(data => {
             this.closeModal();
-            this.showLoader = false;
         }, error => {
-            this.showLoader = false;
         })
     }
+
+    // onScrollDown() {
+    //     const startIndex = this.itemsToLoad;
+    //     this.itemsToLoad = this.itemsToLoad + this.numOfItemsToAddOnScroll;
+    //     this.appendItems(startIndex, this.itemsToLoad);
+    //   }
 }

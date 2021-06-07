@@ -1,4 +1,4 @@
-<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'large'"
+<sui-modal [mustScroll]="false" [isClosable]="false" [transitionDuration]="0" [size]="'large'"
     class="sb-modal sb-success add-entity-modal" (dismissed)="showDownloadSuccessModal = false" #modal>
     <!--Header-->
     <div class="sb-modal-header">
@@ -7,33 +7,29 @@
             <div class="input-div relative" id="search-input-container">
                 <!-- <img src="assets/images/search-icon.svg" class="search icon" alt="Search Icon"> -->
                 <!-- Updated input tag -->
-                <input type="text" id="entitySearch" name="filter_search" class="sb-search-input" [(ngModel)]="searchQuery" />
+                <input type="text" id="entitySearch" name="filter_search" class="sb-search-input"
+                    [(ngModel)]="searchQuery" />
             </div>
         </div>
     </div>
     <!--/Header-->
     <!--Content-->
-    <div class="sb-modal-content content">
-        <div *ngIf="entities?.length">
-            <div *ngFor="let entity of entities">
-                <div class="sb-checkbox sb-checkbox-secondary pt-24 ui checkbox">
-                    <input value="{{entity._id}}" type="checkbox" id="{{entity._id}}"
-                        [ngClass]="{'disabled-checkbox' :entity.isSelected}" (change)="selectEntity(entity)"
-                        [disabled]="entity.isSelected" [checked]="entity.selected">
-                    <label for="{{entity._id}}" class="text-left fsmall">{{entity.name}}</label>
+    <div class="sb-modal-content content search-results" infinite-scroll [infiniteScrollDistance]="scrollDistance" [scrollWindow]="false"
+    [infiniteScrollThrottle]="throttle" (scrolled)="loadMore()">
+            <div *ngIf="entities?.length">
+                <div *ngFor="let entity of entities">
+                    <div class="sb-checkbox sb-checkbox-secondary pt-24 ui checkbox">
+                        <input value="{{entity._id}}" type="checkbox" id="{{entity._id}}"
+                            [ngClass]="{'disabled-checkbox' :entity.isSelected}" (change)="selectEntity(entity)"
+                            [disabled]="entity.isSelected" [checked]="entity.selected">
+                        <label for="{{entity._id}}" class="text-left fsmall">{{entity.name}}</label>
+                    </div>
                 </div>
             </div>
-            <div class="load-mr-bt-center">
-                <button type="button" class="sb-btn sb-btn-sm load-mr-btn sb-btn-primary flex-basis-1"
-                    *ngIf="count > entities.length" (click)="loadMore()">
-                    {{resourceService.frmelmnts?.btn?.loadMore}}
-                </button>
-            </div>
-        </div>
-        <div class="twelve wide column margin-btm" *ngIf="showLoader">
+        <!-- <div class="twelve wide column margin-btm" *ngIf="showLoaderBox">
             <app-loader [data]='loaderMessage'></app-loader>
-        </div>
-        <div class="twelve wide column" *ngIf="entities?.length === 0 && !showLoader">
+        </div> -->
+        <div class="twelve wide column" *ngIf="entities?.length === 0">
             <app-no-result [data]="noResultMessage"></app-no-result>
         </div>
     </div>
@@ -51,6 +47,6 @@
         </button>
     </div>
 </sui-modal>
-<div class="twelve wide column" *ngIf="showLoader">
+<div class="twelve wide column" *ngIf="showLoaderBox">
     <app-loader [data]='loaderMessage'></app-loader>
 </div>

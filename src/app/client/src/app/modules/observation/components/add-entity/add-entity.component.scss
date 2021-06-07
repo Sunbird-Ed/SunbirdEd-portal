@@ -2,6 +2,9 @@
 @import "mixins/mixins";
 
 .add-entity-modal{
+  .sb-modal-content {
+    height: calc(100vh - 350px) !important;
+    }
   .content{
     max-height: 65vh;
     label{
@@ -12,7 +15,6 @@
     }
   }
   .footer{
-    margin-top: calculateRem(16px);
     width: 100%;
     text-align: center;
     display: flex;
@@ -94,3 +96,5 @@ input[type=checkbox][disabled] {
   background: var(--sb-card-bg);
   border: #ccc;
 }
+.search-results{ height : 100%; overflow-y: scroll; }
+

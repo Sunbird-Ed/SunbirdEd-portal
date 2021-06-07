@@ -18,7 +18,7 @@ export class ObservationDetailsComponent implements OnInit {
   observationId;
   selectedEntity: any = {};
   submissions;
-  
+  programName;
   actions = [{
     name: this.resourceService.frmelmnts.lbl.edit,
     icon: 'pencil alternate large icon',
@@ -36,8 +36,9 @@ export class ObservationDetailsComponent implements OnInit {
   };
   showLoader: boolean = false;
   public loaderMessage: ILoaderMessage;
-  public noResultMessage: INoResultMessage;
-
+  public noResultMessageForEntity: INoResultMessage= {
+    'messageText': 'frmelmnts.msg.noEntityFound'
+  };
 
   constructor(
     private observationService: ObservationService,
@@ -52,7 +53,8 @@ export class ObservationDetailsComponent implements OnInit {
       this.programId = data.programId;
       this.solutionId = data.solutionId;
       this.observationId = data.observationId;
-      this.solution = data.solutionName
+      this.solution = data.solutionName;
+      this.programName = data.programName
     })
   }
 
@@ -60,13 +62,13 @@ export class ObservationDetailsComponent implements OnInit {
     this.getProfileData();
   }
   getProfileData() {
-    this.showLoader = true;
+    // this.showLoader = true;
     this.observationUtilService.getProfileDataList().then(data => {
       this.payload = data;
-      this.showLoader = false;
+      // this.showLoader = false;
       this.getEntities();
     }, error => {
-      this.showLoader = false;
+      // this.showLoader = false;
     })
   }
   getEntities() {
@@ -96,7 +98,6 @@ export class ObservationDetailsComponent implements OnInit {
     })
   }
   actionOnEntity(event) {
-    console.log(event, "event");
     if (event.action == "delete") {
       this.delete(event.data);
     } else if (event.action == "change") {
