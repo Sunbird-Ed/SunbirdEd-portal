@@ -193,7 +193,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       enrollmentEndDate: new FormControl(),
       issueCertificate: new FormControl(null, [Validators.required]),
       tncCheck: new FormControl(false, [Validators.requiredTrue]),
-      enableDiscussions: new FormControl(false, [Validators.required])
+      enableDiscussions: new FormControl('false', [Validators.required])
     });
     this.createBatchForm.valueChanges.subscribe(val => {
       if (this.createBatchForm.status === 'VALID') {
@@ -441,6 +441,11 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
   checkEnableDiscussions(batchId) {
     if (this.createBatchForm.value.enableDiscussions === 'true') {
       this.enableDiscussionForum(batchId);
+    } else {
+      this.handleInputChange('enable-DF-no', {
+        id: batchId,
+        type: 'Batch'
+      });
     }
   }
 
