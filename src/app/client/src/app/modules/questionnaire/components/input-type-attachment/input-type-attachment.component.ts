@@ -23,6 +23,11 @@ export class InputTypeAttachmentComponent implements OnInit {
   ngOnInit() {}
 
   basicUpload(files: File[]) {
+    let sizeMB = +(files[0].size / 1000 / 1000).toFixed(4);
+    if (sizeMB > 20) {
+      this.fileLimitCross();
+      return
+    }
     this.formData = new FormData();
     Array.from(files).forEach((f) => this.formData.append("file", f));
     this.preSignedUrl(this.getFileNames(this.formData));
@@ -31,6 +36,7 @@ export class InputTypeAttachmentComponent implements OnInit {
   getFileNames(formData) {
     let files = [];
     formData.forEach((element) => {
+      debugger;
       files.push(element.name);
     });
     return files;
@@ -38,7 +44,7 @@ export class InputTypeAttachmentComponent implements OnInit {
 
   preSignedUrl(files) {
     let payload = {};
-    payload["ref"] = "observation";
+    payload["ref"] = "survey";
     payload["request"] = {};
     payload["request"][this.data.submissionId] = {
       files: files,
@@ -151,6 +157,22 @@ export class InputTypeAttachmentComponent implements OnInit {
   }
 
   deleteAttachment(fileIndex) {
-    this.data.files.splice(fileIndex,1)
+    this.data.files.splice(fileIndex, 1);
+  }
+
+  fileLimitCross() {
+    let metaData = this.observationUtil.getAlertMetaData();
+    metaData.type = "fileSizeLimit";
+    metaData.size = "tiny";
+    metaData.content.body.type = "text";
+    metaData.content.body.data =
+      this.resourceService.frmelmnts.alert.file_limit_cross_20;
+    metaData.footer.className = "single-btn";
+    metaData.footer.buttons.push({
+      type: "accept",
+      returnValue: true,
+      buttonText: this.resourceService.frmelmnts.btn.ok,
+    });
+    this.observationUtil.showPopupAlert(metaData);
   }
 }
