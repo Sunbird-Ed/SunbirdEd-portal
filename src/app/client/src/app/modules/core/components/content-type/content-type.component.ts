@@ -32,7 +32,6 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     public layoutService: LayoutService,
     private utilService: UtilService,
   ) {
-    this.getContentTypes();
     this.subscription = this.utilService.currentRole.subscribe(async (result) => {
       if (result) {
         this.userType = result;
@@ -43,6 +42,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+    this.getContentTypes();
     this.isDesktopApp = this.utilService.isDesktopApp;
     this.layoutService.updateSelectedContentType
       .subscribe((data) => {
