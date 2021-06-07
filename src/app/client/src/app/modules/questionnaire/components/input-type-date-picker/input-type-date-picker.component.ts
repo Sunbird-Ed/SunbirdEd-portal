@@ -11,6 +11,7 @@ export class InputTypeDatePickerComponent implements OnInit {
   @Input() questionnaireForm: FormGroup;
   @Input() question: any;
   constructor() {}
+  firstDayOfWeek
 
   ngOnInit() {
     this.questionnaireForm.addControl(

@@ -15,7 +15,7 @@
     type="range"
     [min]="question.validation.min"
     [max]="question.validation.max"
-    [ngClass]="isValid && isTouched ? 'is-invalid' : is - valid"
+    [ngClass]="isValid && isTouched ? 'is-invalid' : 'is-valid'"
     step="1"
     [formControlName]="question?._id"
     class="w-100"
