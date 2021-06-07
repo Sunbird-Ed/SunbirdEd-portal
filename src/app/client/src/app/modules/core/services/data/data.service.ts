@@ -26,9 +26,9 @@ export class DataService {
    * Contains channel Id
    */
   channelId: string;
-   /**
-   * Contains appId
-   */
+  /**
+  * Contains appId
+  */
   appId: string;
   /**
    * Contains devoce Id
@@ -65,9 +65,9 @@ export class DataService {
       observe: 'response'
     };
     return this.http.get(this.baseUrl + requestParam.url, httpOptions).pipe(
-      mergeMap(({body, headers}: any) => {
+      mergeMap(({ body, headers }: any) => {
         // replace ts time with header date , this value is used in telemetry
-        body.ts =  this.getDateDiff((headers.get('Date')));
+        body.ts = this.getDateDiff((headers.get('Date')));
         if (body.responseCode !== 'OK') {
           return observableThrowError(body);
         }
@@ -107,9 +107,9 @@ export class DataService {
       observe: 'response'
     };
     return this.http.post(this.baseUrl + requestParam.url, requestParam.data, httpOptions).pipe(
-      mergeMap(({body, headers}: any) => {
+      mergeMap(({ body, headers }: any) => {
         // replace ts time with header date , this value is used in telemetry
-        body.ts =  this.getDateDiff((headers.get('Date')));
+        body.ts = this.getDateDiff((headers.get('Date')));
         if (body.responseCode !== 'OK') {
           return observableThrowError(body);
         }
@@ -175,6 +175,24 @@ export class DataService {
   }
 
   /**
+ * for making PUT api calls
+ * @param {RequestParam} requestParam interface
+ */
+  put(requestParam: RequestParam): Observable<ServerResponse> {
+    const httpOptions: HttpOptions = {
+      headers: requestParam.header,
+      params: requestParam.param,
+    };
+    debugger
+    return this.http.put(this.baseUrl + requestParam.url,requestParam.data, httpOptions).pipe(
+      mergeMap((data: ServerResponse) => {
+        if (data.responseCode !== 'OK') {
+          return observableThrowError(data);
+        }
+        return observableOf(data);
+      }));
+  }
+  /**
    * for preparing headers
    */
   private getHeader(headers?: HttpOptions['headers']): HttpOptions['headers'] {
@@ -215,11 +233,11 @@ export class DataService {
     }
   }
 
-  private getDateDiff (serverdate): number {
+  private getDateDiff(serverdate): number {
     const currentdate: any = new Date();
     const serverDate: any = new Date(serverdate);
     if (serverdate) {
-      return ( serverDate - currentdate ) / 1000;
+      return (serverDate - currentdate) / 1000;
     } else {
       return 0;
     }
