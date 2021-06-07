@@ -46,7 +46,7 @@ module.exports = function (app) {
         'url': fields.url[0],
         'headers': {
           'x-ms-blob-type': 'BlockBlob',
-          'Content-Type': 'image/jpeg'
+          'Content-Type': files['file'][0]['headers']['content-type']
         },
         body: fileStream
       };
