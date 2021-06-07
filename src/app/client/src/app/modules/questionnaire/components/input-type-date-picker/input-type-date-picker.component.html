@@ -12,11 +12,13 @@
       [formControlName]="question?._id"
       (pickerSelectedDateChange)="onChange($event)"
       class="question-date-input"
+      [pickerMinDate]="min"
+      [pickerMaxDate]="max"
     />
   </div>
-  <div>
+  <div *ngIf="question?.autoCapture && !question?.value">
     <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="autoCapture()">
-   {{resourceService?.frmelmnts?.btn?.auto_capture | translate}}
+      {{ resourceService?.frmelmnts?.btn?.auto_capture | translate }}
     </button>
   </div>
 </div>

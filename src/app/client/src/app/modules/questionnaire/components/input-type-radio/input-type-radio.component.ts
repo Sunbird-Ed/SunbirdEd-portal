@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { ResourceService } from "@sunbird/shared";
 import { Question } from "../../Interface/assessmentDetails";
 import { QuestionnaireService } from "../../questionnaire.service";
 
@@ -13,8 +14,13 @@ export class InputTypeRadioComponent implements OnInit {
   @Input() questionnaireForm: FormGroup;
   @Input() question: Question;
   @Output() dependentParent = new EventEmitter<Question>();
+  isDimmed: any
+  hint:any
 
-  constructor(public qService: QuestionnaireService) {}
+  constructor(
+    public qService: QuestionnaireService,
+    public resourceService: ResourceService
+  ) {}
 
   ngOnInit() {
     setTimeout(() => {
@@ -29,6 +35,11 @@ export class InputTypeRadioComponent implements OnInit {
       this.question.startTime = this.question.startTime
         ? this.question.startTime
         : Date.now();
+      if (this.question.value) {
+        if (this.question.children.length) {
+          this.dependentParent.emit(this.question);
+        }
+      }
     });
   }
 

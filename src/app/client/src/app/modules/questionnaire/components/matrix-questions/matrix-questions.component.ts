@@ -134,7 +134,7 @@ export class MatrixQuestionsComponent implements OnInit {
       returnValue: true,
       buttonText: this.resourceService.frmelmnts.btn.yes,
     });
-    metaData.footer.className = "double-btn-circle";
+    metaData.footer.className = "double-btn";
     const accepted = await this.observationUtilService.showPopupAlert(metaData);
     if (!accepted) {
       return;

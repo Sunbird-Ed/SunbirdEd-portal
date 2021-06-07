@@ -154,7 +154,7 @@ export class ObservationDetailsComponent implements OnInit {
       returnValue: true,
       buttonText: this.resourceService.frmelmnts.btn.yes
     })
-    metaData.footer.className = "double-btn-circle";
+    metaData.footer.className = "double-btn";
     let returnData = await this.observationUtilService.showPopupAlert(metaData);
     returnData ? this.observeAgain() : '';
   }
@@ -202,7 +202,7 @@ export class ObservationDetailsComponent implements OnInit {
       returnValue: true,
       buttonText: this.resourceService.frmelmnts.btn.yes
     })
-    metaData.footer.className = "double-btn-circle";
+    metaData.footer.className = "double-btn";
     let returnData = await this.observationUtilService.showPopupAlert(metaData);
     if (returnData) {
       this.showLoader = true;
@@ -247,7 +247,7 @@ export class ObservationDetailsComponent implements OnInit {
       returnValue: true,
       buttonText: this.resourceService.frmelmnts.btn.yes
     })
-    metaData.footer.className = "double-btn-circle";
+    metaData.footer.className = "double-btn";
     let returnData = await this.observationUtilService.showPopupAlert(metaData);
     if (returnData) {
       this.showLoader = true;
