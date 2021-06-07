@@ -24,6 +24,7 @@ export class AddEntityComponent implements OnInit {
     payload;
     showDownloadModal: boolean = true;
     showLoader: boolean = true;
+    showDownloadSuccessModal: boolean = false;
     public loaderMessage: ILoaderMessage;
     public noResultMessage: INoResultMessage;
     constructor(
@@ -85,7 +86,6 @@ export class AddEntityComponent implements OnInit {
         this.observationService.post(paramOptions).subscribe(data => {
             // this.entities = data.result;
             this.showLoader = false;
-            debugger
             let resp = data.result[0];
             if (resp.data.length) {
                 for (let i = 0; i < resp.data.length; i++) {

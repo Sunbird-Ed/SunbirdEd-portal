@@ -22,6 +22,7 @@ import {
   ISort,
   OrgDetailsService,
   SchemaService,
+  KendraService
 } from "@sunbird/core";
 import { combineLatest, Subject, of } from "rxjs";
 import {
@@ -50,7 +51,6 @@ import {
 } from "rxjs/operators";
 import { CacheService } from "ng2-cache-service";
 import { ContentManagerService } from "../../../public/module/offline/services/content-manager/content-manager.service";
-import { KendraService } from "@sunbird/core";
 import { ObservationUtilService } from "../../service";
 import {Location} from '@angular/common';
 
@@ -219,7 +219,7 @@ export class ObservationListingComponent
 
     data.forEach((value) => {
       let solution_name:string = value.name;
-      solution_name = solution_name[0].toUpperCase() + solution_name.slice(1);
+      solution_name = (solution_name && solution_name.length) ? solution_name[0].toUpperCase() + solution_name.slice(1) :"";
       const subject:any=[];
       subject.push(value.programName.toString())
       let obj = {

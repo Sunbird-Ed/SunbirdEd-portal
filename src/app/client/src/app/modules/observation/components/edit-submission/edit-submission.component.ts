@@ -11,6 +11,8 @@ export class EditSubmissionComponent implements OnInit {
     @ViewChild('modal', { static: false }) modal;
     @Input() submission;
     @Output() onAction = new EventEmitter<any>();
+    selectedListCount;
+    showPopup;
     constructor(
         public resourceService: ResourceService,
     ) { }
