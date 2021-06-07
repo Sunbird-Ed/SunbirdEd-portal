@@ -710,6 +710,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       'cid': this.forumIds
     };
     this.discussionService.removeForum(requestBody).subscribe(resp => {
+      this.handleInputChange('enable-DF-no');
       this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0066'));
     }, error => {
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
