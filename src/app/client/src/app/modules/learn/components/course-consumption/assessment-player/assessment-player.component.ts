@@ -119,7 +119,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.showSideNav = true
     this.initLayout();
     this.subscribeToQueryParam();
     this.subscribeToContentProgressEvents().subscribe(data => { });
