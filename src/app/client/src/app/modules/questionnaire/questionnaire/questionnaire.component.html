@@ -11,16 +11,23 @@
     "
   >
     <div [ngClass]="FIRST_PANEL_LAYOUT">
-      <h5 class="m-20">Section name</h5>
-      <div class="sbt-page-content-area sections">
-        <div *ngFor="let section of sections" class="section-list">
-          <a
-            [routerLink]=""
-            class="item item--tests"
-            (click)="scrollToContent(section.code)"
-          >
-            {{ section.name }}
-          </a>
+      <div
+        *ngIf="
+          assessmentInfo?.solution?.criteriaLevelReport &&
+          assessmentInfo?.solution?.isRubricDriven
+        "
+      >
+        <h5 class="m-20">Section name</h5>
+        <div class="sbt-page-content-area sections">
+          <div *ngFor="let section of sections" class="section-list">
+            <a
+              [routerLink]=""
+              class="item item--tests"
+              (click)="scrollToContent(section.code)"
+            >
+              {{ section.name }}
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -48,7 +55,10 @@
         </div>
       </div>
       <div
-        [ngClass]="{ 'd-flex flex-jc-space-evenly':true,'evidence-completed': evidence?.isSubmitted }"
+        [ngClass]="{
+          'd-flex flex-jc-space-evenly': true,
+          'evidence-completed': evidence?.isSubmitted
+        }"
         class="sticky-footer"
       >
         <button

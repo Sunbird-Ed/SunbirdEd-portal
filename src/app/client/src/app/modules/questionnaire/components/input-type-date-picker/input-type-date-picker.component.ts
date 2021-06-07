@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Question } from "../../Interface/assessmentDetails";
+import { ResourceService } from "@sunbird/shared";
 
 @Component({
   selector: "input-type-date-picker",
@@ -11,7 +12,7 @@ export class InputTypeDatePickerComponent implements OnInit {
   date: any;
   @Input() questionnaireForm: FormGroup;
   @Input() question: Question;
-  constructor() {}
+  constructor(public resourceService: ResourceService) {}
 
   ngOnInit() {
     setTimeout(() => {
@@ -33,5 +34,11 @@ export class InputTypeDatePickerComponent implements OnInit {
     let value = e;
     this.question.value = value;
     this.question.endTime = Date.now();
+  }
+
+  autoCapture() {
+    this.questionnaireForm.controls[this.question._id].patchValue(
+      new Date(Date.now())
+    );
   }
 }

@@ -18,18 +18,18 @@ export class InputTypeAttachmentComponent implements OnInit {
     private observationUtil: ObservationUtilService,
     public resourceService: ResourceService,
     private toastService: ToasterService
-  ) { }
+  ) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   basicUpload(files: File[]) {
     this.formData = new FormData();
-    Array.from(files).forEach((f) => this.formData.append('file', f));
+    Array.from(files).forEach((f) => this.formData.append("file", f));
     this.preSignedUrl(this.getFileNames(this.formData));
   }
 
   getFileNames(formData) {
-    debugger
+    debugger;
     let files = [];
     formData.forEach((element) => {
       files.push(element.name);
@@ -46,24 +46,33 @@ export class InputTypeAttachmentComponent implements OnInit {
     };
     this.qService.getPreSingedUrls(payload).subscribe(
       (imageData) => {
-        const presignedUrlData = imageData['result'][this.data.submissionId].files[0];
-        this.formData.append('url', presignedUrlData.url)
-        this.qService.cloudStorageUpload(this.formData).subscribe((success:any) => {
-          if (success.status === 200) {
-            const obj = {
-              name: this.getFileNames(this.formData)[0],
-              url: presignedUrlData.url.split('?')[0]
+        const presignedUrlData =
+          imageData["result"][this.data.submissionId].files[0];
+        this.formData.append("url", presignedUrlData.url);
+        this.qService.cloudStorageUpload(this.formData).subscribe(
+          (success: any) => {
+            if (success.status === 200) {
+              const obj = {
+                name: this.getFileNames(this.formData)[0],
+                url: presignedUrlData.url.split("?")[0],
+              };
+              for (const key of Object.keys(presignedUrlData.payload)) {
+                obj[key] = presignedUrlData["payload"][key];
+              }
+              this.data.files.push(obj);
+              this.uploadedToast();
+            } else {
+              this.toastService.error(
+                _.get(this.resourceService, "frmelmnts.message.unableToUpload")
+              );
             }
-            for (const key of Object.keys(presignedUrlData.payload)) {
-              obj[key] = presignedUrlData['payload'][key]
-            }
-            this.data.files.push(obj)
-          } else {
-            this.toastService.error(_.get(this.resourceService, 'frmelmnts.message.unableToUpload'));
+          },
+          (error) => {
+            this.toastService.error(
+              _.get(this.resourceService, "frmelmnts.message.unableToUpload")
+            );
           }
-        }, error => {
-          this.toastService.error(_.get(this.resourceService, 'frmelmnts.message.unableToUpload'));
-        })
+        );
       },
       (error) => {
         console.log(error);
@@ -104,8 +113,41 @@ export class InputTypeAttachmentComponent implements OnInit {
     );
     let returnData = await this.observationUtil.showPopupAlert(metaData);
     if (!returnData) {
+      this.notAccepted();
       return;
     }
     file.click();
+  }
+
+  notAccepted(): void {
+    let metaData = this.observationUtil.getAlertMetaData();
+    metaData.type = "notAccepted";
+    metaData.size = "tiny";
+    metaData.content.body.type = "text";
+    metaData.content.body.data =
+      this.resourceService.frmelmnts.alert.upload_terms_rejected;
+    metaData.footer.className = "single-btn";
+    metaData.footer.buttons.push({
+      type: "accept",
+      returnValue: true,
+      buttonText: this.resourceService.frmelmnts.btn.ok,
+    });
+    this.observationUtil.showPopupAlert(metaData);
+  }
+
+  uploadedToast(): void {
+    let metaData = this.observationUtil.getAlertMetaData();
+    metaData.type = "uploaded";
+    metaData.size = "tiny";
+    metaData.content.body.type = "text";
+    metaData.content.body.data =
+      this.resourceService.frmelmnts.alert.evidence_uploaded;
+    metaData.footer.className = "single-btn";
+    metaData.footer.buttons.push({
+      type: "accept",
+      returnValue: true,
+      buttonText: this.resourceService.frmelmnts.btn.ok,
+    });
+    this.observationUtil.showPopupAlert(metaData);
   }
 }
