@@ -1,7 +1,9 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { QuestionnaireService } from "../../questionnaire.service";
 import { ObservationUtilService } from "../../../observation/service";
-import { ResourceService } from "@sunbird/shared";
+import { ResourceService, ToasterService } from "@sunbird/shared";
+import * as _ from 'lodash-es';
+
 @Component({
   selector: "app-input-type-attachment",
   templateUrl: "./input-type-attachment.component.html",
@@ -9,22 +11,25 @@ import { ResourceService } from "@sunbird/shared";
 })
 export class InputTypeAttachmentComponent implements OnInit {
   @Input() data;
+  formData;
 
   constructor(
     private qService: QuestionnaireService,
     private observationUtil: ObservationUtilService,
-    public resourceService: ResourceService
-  ) {}
+    public resourceService: ResourceService,
+    private toastService: ToasterService
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   basicUpload(files: File[]) {
-    var formData = new FormData();
-    Array.from(files).forEach((f) => formData.append("file", f));
-    this.preSignedUrl(this.getFileNames(formData));
+    this.formData = new FormData();
+    Array.from(files).forEach((f) => this.formData.append('file', f));
+    this.preSignedUrl(this.getFileNames(this.formData));
   }
 
   getFileNames(formData) {
+    debugger
     let files = [];
     formData.forEach((element) => {
       files.push(element.name);
@@ -34,14 +39,31 @@ export class InputTypeAttachmentComponent implements OnInit {
 
   preSignedUrl(files) {
     let payload = {};
-    payload["ref"] = "survey";
+    payload["ref"] = "observation";
     payload["request"] = {};
     payload["request"][this.data.submissionId] = {
       files: files,
     };
     this.qService.getPreSingedUrls(payload).subscribe(
-      (data) => {
-        console.log(data);
+      (imageData) => {
+        const presignedUrlData = imageData['result'][this.data.submissionId].files[0];
+        this.formData.append('url', presignedUrlData.url)
+        this.qService.cloudStorageUpload(this.formData).subscribe((success:any) => {
+          if (success.status === 200) {
+            const obj = {
+              name: this.getFileNames(this.formData)[0],
+              url: presignedUrlData.url.split('?')[0]
+            }
+            for (const key of Object.keys(presignedUrlData.payload)) {
+              obj[key] = presignedUrlData['payload'][key]
+            }
+            this.data.files.push(obj)
+          } else {
+            this.toastService.error(_.get(this.resourceService, 'frmelmnts.message.unableToUpload'));
+          }
+        }, error => {
+          this.toastService.error(_.get(this.resourceService, 'frmelmnts.message.unableToUpload'));
+        })
       },
       (error) => {
         console.log(error);

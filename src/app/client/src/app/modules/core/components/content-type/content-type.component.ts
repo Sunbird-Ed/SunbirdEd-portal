@@ -32,17 +32,17 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     public layoutService: LayoutService,
     private utilService: UtilService,
   ) {
-    this.getContentTypes();
     this.subscription = this.utilService.currentRole.subscribe(async (result) => {
       if (result) {
         this.userType = result;
-        this.updateForm();
+        this.makeFormChange();
       }
     });
   }
 
 
   ngOnInit() {
+    this.getContentTypes();
     this.isDesktopApp = this.utilService.isDesktopApp;
     this.layoutService.updateSelectedContentType
       .subscribe((data) => {
@@ -124,22 +124,26 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     }
   }
 
-  async updateForm() {
+  updateForm() {
     if (!this.userType) {
-      if (await this.userService.loggedIn) {
+      if (this.userService.loggedIn) {
         this.userService.userData$.subscribe((profileData: IUserData) => {
           if(profileData.userProfile["profileUserType"]["type"] !== null){
           this.userType = profileData.userProfile["profileUserType"]["type"];
           }
+          this.makeFormChange();
         });
       }
       else {
         let user = localStorage.getItem("userType");
         if (user) {
           this.userType = user;
+          this.makeFormChange();
         }
       }
     }
+  }
+  makeFormChange(){
     let index=this.contentTypes.findIndex(cty=>cty.contentType==="observation");
     if (this.userType != "administrator") {
       this.contentTypes[index].isEnabled = false;

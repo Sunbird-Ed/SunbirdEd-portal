@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InputTypeRadioComponent } from './input-type-radio.component';
 
-describe('InputTypeRadioComponent', () => {
+xdescribe('InputTypeRadioComponent', () => {
   let component: InputTypeRadioComponent;
   let fixture: ComponentFixture<InputTypeRadioComponent>;
 

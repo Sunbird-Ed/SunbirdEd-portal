@@ -1675,6 +1675,10 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
+    '/cloudUpload/upload': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
   },
   URL_PATTERN: [
     '/learner/user/v1/feed/delete',

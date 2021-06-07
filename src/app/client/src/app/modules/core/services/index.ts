@@ -30,3 +30,4 @@ export * from './electron/electron.service';
 export * from './schema/schema.service';
 export * from './kendra/kendra.service';
 export * from './observation/observation.service';
+export * from './cloud/cloud.service';
