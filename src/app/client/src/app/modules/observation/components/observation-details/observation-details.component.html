@@ -65,9 +65,6 @@
             <div class="twelve wide column margin-btm" *ngIf="showLoader">
               <app-loader [data]='loaderMessage'></app-loader>
             </div>
-            <!-- <div class="twelve wide column" *ngIf="submissions?.length === 0 && !showLoader">
-              <app-no-result ></app-no-result>
-            </div> -->
             <div *ngFor="let submission of submissions">
               <!-- Observation With Rubric -->
               <submission [submission]="submission" [allowMultipleAssessemts]="entities?.allowMultipleAssessemts"

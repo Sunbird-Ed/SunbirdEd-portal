@@ -82,7 +82,6 @@ export class AddEntityComponent implements OnInit {
         event.selected ? this.selectedListCount++ : this.selectedListCount--;
     }
     search() {
-        // this.showLoaderBox = true;
         let url = this.config.urlConFig.URLS.OBSERVATION.SEARCH_ENTITY + '?observationId=' + this.observationId + '&search=' + encodeURIComponent(this.searchQuery ? this.searchQuery : '') + '&page=' + this.page + '&limit=' + this.limit;
         const paramOptions = {
             url: url + `&parentEntityId=${encodeURIComponent(
@@ -92,8 +91,6 @@ export class AddEntityComponent implements OnInit {
             data: this.payload,
         };
         this.observationService.post(paramOptions).subscribe(data => {
-            // this.entities = data.result;
-            // this.showLoaderBox = false;
             let resp = data.result[0];
             if (resp.data.length) {
                 for (let i = 0; i < resp.data.length; i++) {
@@ -104,7 +101,6 @@ export class AddEntityComponent implements OnInit {
                 this.count = resp.count;
             }
         }, error => {
-            // this.showLoaderBox = false;
         })
     }
 
@@ -136,10 +132,4 @@ export class AddEntityComponent implements OnInit {
         }, error => {
         })
     }
-
-    // onScrollDown() {
-    //     const startIndex = this.itemsToLoad;
-    //     this.itemsToLoad = this.itemsToLoad + this.numOfItemsToAddOnScroll;
-    //     this.appendItems(startIndex, this.itemsToLoad);
-    //   }
 }

@@ -62,13 +62,10 @@ export class ObservationDetailsComponent implements OnInit {
     this.getProfileData();
   }
   getProfileData() {
-    // this.showLoader = true;
     this.observationUtilService.getProfileDataList().then(data => {
       this.payload = data;
-      // this.showLoader = false;
       this.getEntities();
     }, error => {
-      // this.showLoader = false;
     })
     window.scroll({
       top: 0,
