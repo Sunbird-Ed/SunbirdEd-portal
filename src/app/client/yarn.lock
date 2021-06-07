@@ -943,7 +943,7 @@
   dependencies:
     ckeditor5 "^27.1.0"
 
-"@ckeditor/ckeditor5-core@^27.1.0":
+"@ckeditor/ckeditor5-core@>=23.0.0", "@ckeditor/ckeditor5-core@^27.1.0":
   version "27.1.0"
   resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-core/-/ckeditor5-core-27.1.0.tgz#1c436fda93620e21800e11a074cecd25815a21b5"
   integrity sha512-4K30Qw2jYHMt6Yk4+Covi4b39XO3znM7/VPRh7mcq/MBbHxK4dTrX/UBWtsYrgFBg6KPteNKU03aT9GDMsbvBw==
@@ -952,6 +952,15 @@
     "@ckeditor/ckeditor5-ui" "^27.1.0"
     "@ckeditor/ckeditor5-utils" "^27.1.0"
     lodash-es "^4.17.15"
+
+"@ckeditor/ckeditor5-core@^12.3.0":
+  version "12.3.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-core/-/ckeditor5-core-12.3.0.tgz#8b230c86fce19ffd76b46f45fff5f8a50a7f3ef9"
+  integrity sha512-uUK+snI1G9b/kHOqULpEM+b3PCppQOOGkBg+eP/xggn3WPn33u2eh44RPpArsjx80dg5GWx+uj6E7OFdPylHLA==
+  dependencies:
+    "@ckeditor/ckeditor5-engine" "^14.0.0"
+    "@ckeditor/ckeditor5-utils" "^14.0.0"
+    lodash-es "^4.17.10"
 
 "@ckeditor/ckeditor5-easy-image@^27.0.0":
   version "27.1.0"
@@ -968,13 +977,21 @@
     ckeditor5 "^27.1.0"
     lodash-es "^4.17.15"
 
-"@ckeditor/ckeditor5-engine@^27.1.0":
+"@ckeditor/ckeditor5-engine@>=23.0.0", "@ckeditor/ckeditor5-engine@^27.1.0":
   version "27.1.0"
   resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-engine/-/ckeditor5-engine-27.1.0.tgz#35cf758a80845d013c2b5def7e3e68dea2ef32a2"
   integrity sha512-lGvIYexhhCTo5lZqf8EqS25hCpayPY/wQZXvnReFylB24aztUacOBYK2sgNOmwBnzKjpv90Y7GKEpdDL/8CDSg==
   dependencies:
     "@ckeditor/ckeditor5-utils" "^27.1.0"
     lodash-es "^4.17.15"
+
+"@ckeditor/ckeditor5-engine@^14.0.0":
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-engine/-/ckeditor5-engine-14.0.0.tgz#45547ef8a9951bd568607e046751c9b60d99dd2d"
+  integrity sha512-Y9EWmWwJ6anckAdSDhAFkMryz494y2LsBlF9o/wY3ChwfpEODpaaADBh22yFqQp6PXrFvk4LmAOJeOyTeA13FA==
+  dependencies:
+    "@ckeditor/ckeditor5-utils" "^14.0.0"
+    lodash-es "^4.17.10"
 
 "@ckeditor/ckeditor5-enter@^27.1.0":
   version "27.1.0"
@@ -991,6 +1008,15 @@
   integrity sha512-BneCm9uOD4ir+Tji2ADgYVwHWE54bJ6OpZza8UNIKvo9koGaFB5jmT6M2xXwK508RusiRlvgGrd2M4qa7CWM0A==
   dependencies:
     ckeditor5 "^27.1.0"
+
+"@ckeditor/ckeditor5-font@^11.1.0":
+  version "11.2.2"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-font/-/ckeditor5-font-11.2.2.tgz#5bd6e935dda3a906b2bc41f26610285cc52f978e"
+  integrity sha512-iFnGuHiy8TZ01JfYZUBpYKYPw5yWmnsVgB1UPUsRFhD6oFAzaTS8LqNcLDgbH5hmwyoEeLJ1iDENDtEU4vI7xA==
+  dependencies:
+    "@ckeditor/ckeditor5-core" "^12.3.0"
+    "@ckeditor/ckeditor5-ui" "^14.0.0"
+    "@ckeditor/ckeditor5-utils" "^14.0.0"
 
 "@ckeditor/ckeditor5-heading@^27.0.0":
   version "27.1.0"
@@ -1081,7 +1107,7 @@
     "@ckeditor/ckeditor5-utils" "^27.1.0"
     lodash-es "^4.17.15"
 
-"@ckeditor/ckeditor5-ui@^27.1.0":
+"@ckeditor/ckeditor5-ui@>=23.0.0", "@ckeditor/ckeditor5-ui@^27.1.0":
   version "27.1.0"
   resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-ui/-/ckeditor5-ui-27.1.0.tgz#8506aa3075400c6c0edd745c64cfd15340382f82"
   integrity sha512-rGzGjgxSZjKFpkUB0MjpvYqQW9lZNVinBpBgOD/j0Q8OZ/HohLIJJBRaQbEKLJgIR0BXPNPQSC4NQt44Vc1YBw==
@@ -1089,6 +1115,15 @@
     "@ckeditor/ckeditor5-utils" "^27.1.0"
     ckeditor5 "^27.1.0"
     lodash-es "^4.17.15"
+
+"@ckeditor/ckeditor5-ui@^14.0.0":
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-ui/-/ckeditor5-ui-14.0.0.tgz#5444c1fd863486e87089b15fd86fc6f937f80ce9"
+  integrity sha512-zV4o4K5zUMcDr2q3Mmohisb2VTNFFsJ4BvhUt6jCNgM0kD6M4BwalmG7XdaXWMqOh15iqLC4f0p93/6DloyD+Q==
+  dependencies:
+    "@ckeditor/ckeditor5-core" "^12.3.0"
+    "@ckeditor/ckeditor5-utils" "^14.0.0"
+    lodash-es "^4.17.10"
 
 "@ckeditor/ckeditor5-undo@^27.1.0":
   version "27.1.0"
@@ -1108,6 +1143,14 @@
     "@ckeditor/ckeditor5-ui" "^27.1.0"
     "@ckeditor/ckeditor5-utils" "^27.1.0"
 
+"@ckeditor/ckeditor5-utils@^14.0.0":
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-utils/-/ckeditor5-utils-14.0.0.tgz#9eba9b30a00e2b1011ffc954dd206fcb8a193e20"
+  integrity sha512-JC9sDlRbvmhL+Gqpq4HPZkrnpMFgEwlkVNUd2RKD/heOvzdpMfpLnIFpdXi1ohx/LQHDC9GZce0t6NJM5PbGoA==
+  dependencies:
+    ckeditor5 "^12.4.0"
+    lodash-es "^4.17.10"
+
 "@ckeditor/ckeditor5-utils@^27.1.0":
   version "27.1.0"
   resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-utils/-/ckeditor5-utils-27.1.0.tgz#55006f0b137db23d047c426d39933b3da18a93e0"
@@ -1115,7 +1158,7 @@
   dependencies:
     lodash-es "^4.17.15"
 
-"@ckeditor/ckeditor5-widget@^27.1.0":
+"@ckeditor/ckeditor5-widget@>=23.0.0", "@ckeditor/ckeditor5-widget@^27.1.0":
   version "27.1.0"
   resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-widget/-/ckeditor5-widget-27.1.0.tgz#e463923579164e889f646623b65234e22332b028"
   integrity sha512-DpdwcWjXKHxoOZmFmc+2vIq8Nr4hA5140zxO3IIMrUiydcZJyOp2atHiPV7idBi5gR8ct+asQ3nW+cwVELQuhQ==
@@ -1195,6 +1238,14 @@
     "@ckeditor/ckeditor5-word-count" "^27.0.0"
     file-loader "^6.2.0"
 
+"@project-sunbird/ckeditor-build-font@^1.0.8":
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/ckeditor-build-font/-/ckeditor-build-font-1.0.8.tgz#696216aa58ee2d640cb5250b3ade5a49ad887523"
+  integrity sha512-+xNOx4vu+UprOQD17TmtRQP28Eb14EHM/28e7zUi8h5KmvhrgWPuJpnzVszfCO+n93yoFFUzLspdbw0tCVDGeg==
+  dependencies:
+    "@ckeditor/ckeditor5-font" "^11.1.0"
+    "@wiris/mathtype-ckeditor5" "^7.13.0"
+
 "@project-sunbird/client-services@4.0.3":
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.0.3.tgz#b3e146bac0fbb1fef2d312148ec7d82d5559c4c4"
@@ -1217,10 +1268,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v8@4.0.4":
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v8/-/common-consumption-v8-4.0.4.tgz#7bb59b2a6967cd2054d908644c9d92a0b4e98a0e"
-  integrity sha512-nZSKE4kbCkSke6tKwklhnp31LrQv/Z90LEKJj5xFkQKI+FsUARK2q61s9dHYjqG0dpsyVtEZZPyZrInQGW4Uww==
+"@project-sunbird/common-consumption-v8@4.0.5":
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v8/-/common-consumption-v8-4.0.5.tgz#60225d67fe13c87ecfd1906db51b8e972930dee5"
+  integrity sha512-0qKnRHeTieumtvX3WJrffe60uJYtcpi1/ciuszvKFumdyzlC6vmCp87lafX2qSq9ZI4um6CZQxjpvnGGY7hLiA==
   dependencies:
     tslib "^1.9.0"
 
@@ -1231,10 +1282,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sb-dashlet@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-dashlet/-/sb-dashlet-1.0.3.tgz#7df0ffd60703674ed24627dd7a61565d851ee1a2"
-  integrity sha512-x4SznT9ccchkhRDG0nLVfZMCLpAWELC0V3CmtYZ9bVl8EDnp26PuM2AOu6NPKGny7ZOZuX66W0STyr3zSnlj7g==
+"@project-sunbird/sb-dashlet@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-dashlet/-/sb-dashlet-1.0.4.tgz#4280587cbd235a1bdb5b0b05a0c0e703e4fd49b8"
+  integrity sha512-sewcXgt7LayN/IcfjLU0Z/tt9TULPvdtdds0q94H1bewNcq1aDJ1ry8VBLG5JoQEa/V1ymMLzW1/vnuUg/6fYg==
   dependencies:
     "@types/datatables.net" "1.10.19"
     angular-datatables "8.1.0"
@@ -1259,10 +1310,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.5.tgz#2d8d02ab6c91fadca0343b9553f4e24d0a52cb96"
   integrity sha512-RItUthSLN6UHocCSNcA8tJP1e426YQPoT4diHDm9Ijt8nVHvap9madbFHElsXHdjbKTqQlUXubo9zJmLioLk1g==
 
-"@project-sunbird/sunbird-collection-editor@4.0.10":
-  version "4.0.10"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-4.0.10.tgz#927d54433d5502ce87c6f8fb172f8c96e38cbcae"
-  integrity sha512-dnL39TBIxtQffNCR5Oqv58avP+4fxCl9OxfJZl7wpx2f2y5Jw+NDbajjAHWrWvzuqUU9enaML+wOP3IyM9xJsg==
+"@project-sunbird/sunbird-collection-editor@4.0.11":
+  version "4.0.11"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-4.0.11.tgz#ea996c96d8ae0c8e1c7d409f2ae9dca1a7173efe"
+  integrity sha512-0v/wNwaVbUf+aBhjnzz3HiwIF+yDH2OKozv/W7DQuK0pkak4o5e9uqik8WfmVElZq7jfmteCy2CQsYf1/T8byQ==
   dependencies:
     tslib "^1.9.0"
 
@@ -1310,10 +1361,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v8@4.0.7":
-  version "4.0.7"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v8/-/sunbird-quml-player-v8-4.0.7.tgz#0df65a1df6ae47515a26904de74c841daa4b38d3"
-  integrity sha512-ITUMwTPK9cUXikitM/czdV3c2jLsoEBjSZCSfvncLHbGWVy3HpKAeuq2nYbpJk+cSpZOYe59BVrIyrbHekHJFw==
+"@project-sunbird/sunbird-quml-player-v8@4.0.11":
+  version "4.0.11"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v8/-/sunbird-quml-player-v8-4.0.11.tgz#6c1bca7b3e2530f4f82e557779b12fd68ec141d8"
+  integrity sha512-zs05W6EB2BGh0aqRRcC+YU6TRXvE0/7/MGSC+luvxSIcKfd+eHZ3/zGKoMmSXuBdmtniyEh2D1dLN/3c1SaKvQ==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v8" "4.0.6"
     tslib "^1.9.0"
@@ -1731,6 +1782,25 @@
     "@webassemblyjs/ast" "1.8.5"
     "@webassemblyjs/wast-parser" "1.8.5"
     "@xtuc/long" "4.2.2"
+
+"@wiris/mathtype-ckeditor5@^7.13.0":
+  version "7.26.1"
+  resolved "https://registry.yarnpkg.com/@wiris/mathtype-ckeditor5/-/mathtype-ckeditor5-7.26.1.tgz#37b422a26deed0c7546a1f2bd8c1f862421011ea"
+  integrity sha512-kqvEJ1hqnP/GwMyCAYd4yXuFHI/auavO6dbv1FrYeoJaAEfb5w+rsfsIiczSvK+m0kKft4RhxFGJ7AONs8Cq/g==
+  dependencies:
+    "@ckeditor/ckeditor5-core" ">=23.0.0"
+    "@ckeditor/ckeditor5-engine" ">=23.0.0"
+    "@ckeditor/ckeditor5-ui" ">=23.0.0"
+    "@ckeditor/ckeditor5-widget" ">=23.0.0"
+    "@wiris/mathtype-html-integration-devkit" "1.5.1"
+
+"@wiris/mathtype-html-integration-devkit@1.5.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@wiris/mathtype-html-integration-devkit/-/mathtype-html-integration-devkit-1.5.1.tgz#1ef7c3663e0c7f7293187806cdf3f8037493437e"
+  integrity sha512-nB2iM/5gjNxQkjNJppqHGkRVlP3iBOFBbXifUo/ODN4WGbfeV1iO7Q77gfbqIL0bBVcWVUFz7sMwVfuracP3Ig==
+  dependencies:
+    raw-loader "^4.0.2"
+    uuid "^8.3.2"
 
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
@@ -3249,6 +3319,11 @@ circular-json@^0.5.4, circular-json@^0.5.5:
   version "0.5.9"
   resolved "https://registry.yarnpkg.com/circular-json/-/circular-json-0.5.9.tgz#932763ae88f4f7dead7a0d09c8a51a4743a53b1d"
   integrity sha512-4ivwqHpIFJZBuhN3g/pEcdbnGUywkBblloGbkglyloVjjR3uT6tieI89MVOfbP2tHX5sgb01FuLgAOzebNlJNQ==
+
+ckeditor5@^12.4.0:
+  version "12.4.0"
+  resolved "https://registry.yarnpkg.com/ckeditor5/-/ckeditor5-12.4.0.tgz#60bfc4848d29f6c9d5915fa588017152fbd3db60"
+  integrity sha512-gd6PGm3pId5KibAZNvACc5NN657xP0IEyqziRI0tBFnLyXgDjw3e8Uu2zkIEUbxPR2vXG1J7PoqS9ZxJuE9XTQ==
 
 ckeditor5@^27.1.0:
   version "27.1.0"
@@ -4999,7 +5074,7 @@ file-loader@^6.2.0:
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
 
-"file-saver@github:eligrey/FileSaver.js#1.3.8":
+file-saver@eligrey/FileSaver.js#1.3.8:
   version "1.3.8"
   resolved "https://codeload.github.com/eligrey/FileSaver.js/tar.gz/e865e37af9f9947ddcced76b549e27dc45c1cb2e"
 
@@ -7536,10 +7611,15 @@ locate-path@^6.0.0:
   dependencies:
     p-locate "^5.0.0"
 
-lodash-es@4.17.21, lodash-es@^4.17.11, lodash-es@^4.17.15:
+lodash-es@4.17.21, lodash-es@^4.17.10, lodash-es@^4.17.11:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
   integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==
+
+lodash-es@^4.17.15:
+  version "4.17.20"
+  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.20.tgz#29f6332eefc60e849f869c264bc71126ad61e8f7"
+  integrity sha512-JD1COMZsq8maT6mnuz1UMV0jvYD0E0aUsSOdrr1/nAG3dhqQXwRRgeW0cSqH1U43INKcqxaiVIQNOUDld7gRDA==
 
 lodash._basecopy@^3.0.0:
   version "3.0.1"
@@ -9796,6 +9876,14 @@ raw-loader@3.1.0:
     loader-utils "^1.1.0"
     schema-utils "^2.0.1"
 
+raw-loader@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/raw-loader/-/raw-loader-4.0.2.tgz#1aac6b7d1ad1501e66efdac1522c73e59a584eb6"
+  integrity sha512-ZnScIV3ag9A4wPX/ZayxL/jZH+euYb6FcUinPcgiQW0+UBtEv0O6Q3lGd3cqJ+GHH+rksEv3Pj99oxJ3u3VIKA==
+  dependencies:
+    loader-utils "^2.0.0"
+    schema-utils "^3.0.0"
+
 rc@^1.2.7:
   version "1.2.8"
   resolved "https://registry.yarnpkg.com/rc/-/rc-1.2.8.tgz#cd924bf5200a075b83c188cd6b9e211b7fc0d3ed"
@@ -10408,6 +10496,13 @@ sax@>=0.6.0, sax@^1.1.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
+
+sb-notification@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/sb-notification/-/sb-notification-0.0.1.tgz#a250c584397bf165fa56f08b4683d8f8e14a286e"
+  integrity sha512-lHgwse7WaXcYBv2hVETYlGeI7EppiPDFX53J7ifL7491q6l6yg0A5yjgAOBLbW5xri+2xW1tqVW75Ado/0Srdg==
+  dependencies:
+    tslib "^1.9.0"
 
 sb-svg2pdf@0.0.9:
   version "0.0.9"
@@ -12103,6 +12198,11 @@ uuid@^3.0.0, uuid@^3.0.1, uuid@^3.3.2:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
+
+uuid@^8.3.2:
+  version "8.3.2"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
+  integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
 uws@~9.14.0:
   version "9.14.0"

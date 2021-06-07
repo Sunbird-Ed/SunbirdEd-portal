@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InputTypeDatePickerComponent } from './input-type-date-picker.component';
 
-describe('InputTypeDatePickerComponent', () => {
+xdescribe('InputTypeDatePickerComponent', () => {
   let component: InputTypeDatePickerComponent;
   let fixture: ComponentFixture<InputTypeDatePickerComponent>;
 

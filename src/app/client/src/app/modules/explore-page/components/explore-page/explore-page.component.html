@@ -1,7 +1,7 @@
 <app-landing-section [noTitle]="getSelectedTab() === 'home' || getSelectedTab() === 'explore'"
   [textToDisplay]="pageTitleSrc" [svgToDisplay]="svgToDisplay" [layoutConfiguration]="layoutConfiguration">
 </app-landing-section>
-<div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
+<div [ngClass]="[layoutConfiguration ? 'sbt-fluid-content-bg':'', (getSelectedTab() === 'home' || getSelectedTab() === 'explore') ? 'no-background': '']">
   <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'"
     [appTelemetryImpression]="telemetryImpression">
     <!-- Filter for web version -->
@@ -9,11 +9,11 @@
     <div *ngIf="!isDesktopApp && isFilterEnabled" [ngClass]="FIRST_PANEL_LAYOUT">
       <div [ngClass]="isDesktopApp ? 'sb-desktop-filter-section' : ''">
         <app-search-filter [facets$]="facets$" [layoutConfiguration]="layoutConfiguration" [isOpen]='true' *ngIf="initFilter"
-        (filterChange)="getFilters($event)" [pageData]="getCurrentPageData()" [pageId]="isUserLoggedIn() ? 'resource-page' : 'explore-page'" [defaultFilters]="defaultFilters">
+        (filterChange)="getFilters($event)" [defaultTab]="defaultTab" [pageData]="getCurrentPageData()" [pageId]="isUserLoggedIn() ? 'resource-page' : 'explore-page'" [defaultFilters]="defaultFilters">
       </app-search-filter>
     </div>
   </div>
-  <!-- Filter for desktop version -->
+    <!-- Filter for desktop version -->
     <div *ngIf="isDesktopApp" [ngClass]="FIRST_PANEL_LAYOUT">
         <div *ngIf="layoutConfiguration">
           <div>
@@ -30,7 +30,7 @@
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT" *ngIf="subscription$ | async">
       <div [appTelemetryImpression]="telemetryImpression"
-        [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
+        [ngClass]="[layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24', (getSelectedTab() === 'home' || getSelectedTab() === 'explore') ? 'home-container': '']">
         <div *ngIf="false" [ngClass]="{'relative9': isUserLoggedIn()}">
           <div class="sb-bg-color-white py-16 mb-24">
             <h4 class="sb-categories-title text-left">{{resourceService?.frmelmnts?.lbl?.courses}}</h4>
@@ -43,10 +43,10 @@
           </div>
         </div>
         <div class="sb-library-cards relative9">
-          <div *ngIf="!layoutConfiguration">
-            <h4 class="sb-categories-title text-left mt-16" *ngIf="apiContentList.length">
-              {{resourceService?.frmelmnts?.lbl?.textbooks}}</h4>
-          </div>
+            <div *ngIf="!layoutConfiguration && (getSelectedTab() !== 'home' && getSelectedTab() !== 'explore')">
+              <h4 class="sb-categories-title text-left mt-16" *ngIf="apiContentList.length">
+                {{resourceService?.frmelmnts?.lbl?.textbooks}}</h4>
+            </div>
           <div class="twelve wide column relative9" *ngIf="enrolledSection?.contents?.length && isUserLoggedIn() && !_currentPageData?.sections">
             <app-page-section [hideProgress]="true" (visits)="prepareVisits($event)" [section]="enrolledSection"
               (playEvent)="playEnrolledContent($event, 'My courses')" (viewAll)="viewAll($event)"></app-page-section>
@@ -58,40 +58,64 @@
               <div class="preference">
                 <p class="header title">{{resourceService?.frmelmnts?.lbl?.yourPreferences}}</p>
                 <p>{{resourceService?.frmelmnts?.lbl?.preferencesheader | interpolate:'{instance}': instance}}</p>
-                <span class="title" *ngIf="userPreference?.board?.length">{{resourceService?.frmelmnts?.lbl?.boards}}&nbsp;</span>
-                <span *ngIf="userPreference?.board?.length">{{convertToString(userPreference?.board)}}</span><br/>
-                <span class="title" *ngIf="userPreference?.medium?.length">{{resourceService?.frmelmnts?.lbl?.medium}}&nbsp;</span>
-                <span *ngIf="userPreference?.medium?.length">{{convertToString(userPreference?.medium)}}</span><br/>
-                <span class="title" *ngIf="userPreference?.gradeLevel?.length">{{resourceService?.frmelmnts?.lbl?.classes}}&nbsp;</span>
-                <span *ngIf="userPreference?.gradeLevel?.length">{{convertToString(userPreference?.gradeLevel)}}</span>
+                <p>
+                  <span *ngIf="userPreference?.framework?.board?.length" class="title mr-4">{{resourceService?.frmelmnts?.lbl?.boards}}</span>
+                  <span *ngIf="userPreference?.framework?.board?.length">{{convertToString(userPreference?.framework?.board)}}</span>
+                </p>
+                <p>
+                  <span *ngIf="userPreference?.framework?.medium?.length" class="title mr-4">{{resourceService?.frmelmnts?.lbl?.medium}}</span>
+                  <span *ngIf="userPreference?.framework?.medium?.length">{{convertToString(userPreference?.framework?.medium)}}</span>
+                </p>
+                <p>
+                  <span *ngIf="userPreference?.framework?.gradeLevel?.length" class="title mr-4">{{resourceService?.frmelmnts?.lbl?.classes}}</span>
+                  <span *ngIf="userPreference?.framework?.gradeLevel?.length">{{convertToString(userPreference?.framework?.gradeLevel)}}</span>
+                </p>
               </div>
-              <div>
-                <button class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border my-16"
+              <div class="change-preference">
+                <button class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border"
                   (click)="showEdit = !showEdit">{{resourceService?.frmelmnts?.lbl?.changePreferences}}</button>
               </div>
+              <svg _ngcontent-hnb-c0="" xmlns:xlink="http://www.w3.org/1999/xlink"
+                class="sbt-theme-bg-img computer only" height="358px" version="1.1" viewBox="0 0 332 358" width="332px"
+                xmlns="http://www.w3.org/2000/svg">
+                <g _ngcontent-hnb-c0="" fill="none" fill-rule="evenodd" id="Illustration-&amp;-colour-palette-"
+                  stroke="none" stroke-width="1">
+                  <g _ngcontent-hnb-c0="" class="st0" id="Textbooks" transform="translate(106.000000, -390.000000)">
+                    <g _ngcontent-hnb-c0="" id="Group-8" transform="translate(-106.000000, 390.000000)">
+                      <path _ngcontent-hnb-c0=""
+                        d="M118.918045,0.564535521 C154.339379,5.57509002 108.755811,52.1143659 108.755811,52.1143659 C108.755811,52.1143659 185.339755,-2.23575328 230.549812,15.5417727 C275.757394,33.3168228 187.673287,114.572323 187.673287,114.572323 C187.673287,114.572323 287.217863,85.2828923 327.147644,127.129789 C367.077425,168.976685 101.348714,205.62258 101.348714,205.62258 C101.348714,205.62258 148.828363,288.592959 141.567958,311.1744 C141.567958,311.1744 127.106556,361.690251 56.4047156,265.925614 C56.4047156,265.925614 57.4676522,364.523693 19.8774293,357.393721 C-17.71032,350.261277 10.076548,243.873629 10.076548,243.873629 L2.56785415,83.5788451 L2.66395147,83.4746638 C5.78661141,80.0950646 84.2002875,-4.34581014 118.918045,0.564535521 Z M185.066826,37.6429976 L78.104636,142.528307 L77.8957176,143.177194 C72.4179048,160.682299 83.0348258,169.5 109.307095,169.5 C135.085318,169.5 176.196991,161.104755 232.667135,144.317206 L232.667135,144.317206 L236.143681,143.278911 L235.856319,142.321089 L234.115849,142.84208 C176.838582,159.948371 135.227065,168.5 109.307095,168.5 L109.307095,168.5 L108.533441,168.497459 C83.4175642,168.331435 73.6662583,160.0296 78.8533181,143.465566 L78.8533181,143.465566 L78.979,143.071 L185.766967,38.3570024 L185.066826,37.6429976 Z"
+                        id="Combined-Shape"></path>
+                    </g>
+                  </g>
+                </g>
+              </svg>
             </div>
             <div *ngFor="let section of facetSections">
               <sb-pills-grid *ngIf="section?.section?.isEnabled"
                 [title]="getSectionTitle(section?.section?.title)"
-                [minDisplayCount]="section?.section?.theme?.limit || 5"
+                [minDisplayCount]="section?.section?.theme?.limit || 4"
                 [viewMoreText]="resourceService?.frmelmnts?.lbl?.viewmore"
                 [viewLessText]="resourceService?.frmelmnts?.lbl?.viewless" [pillSize]="'medium'" [platform]="'portal'"
-                [pillBorder]="'semi_round'" [pillsMultiRow]="'double_view_row'" (select)="handlePillSelect($event, section.name)">
+                [pillBorder]="'semi_round'" [pillsMultiRow]="'auto_responsive'" [pillTextElipsis]="'two_line'" (select)="handlePillSelect($event, section.name)">
                 <sb-pill-item *ngFor="let pillData of section.data" [name]="pillData?.name | titlecase"
                   [icon]="utilService.getSectionPillIcon(section?.section?.theme?.icons, pillData?.value)" [value]="pillData"
                   [theme]="pillData?.theme"></sb-pill-item>
               </sb-pills-grid>
-              <hr *ngIf="section?.section?.isEnabled" class="section-hr my-32" />
+              <hr *ngIf="section?.section?.isEnabled && section?.data?.length" class="section-hr my-32" />
             </div>
-            <div *ngIf="getSelectedTab() === 'home'" class="sb-library-cards relative9">
+            <div *ngIf="facetSections.length === 0 && !showLoader">
+              <app-no-result-found (exploreMoreContent)="navigateToExploreContent()" [filters]="selectedFilters"
+                [title]="noResultMessage?.title" [subTitle]="noResultMessage?.subTitle"
+                [buttonText]="noResultMessage?.buttonText"
+                [showExploreContentButton]="noResultMessage?.showExploreContentButton"
+                [telemetryInteractEdataObject]="exploreMoreButtonEdata"></app-no-result-found>
+            </div>
+            <div *ngIf="getSelectedTab() === 'home' && enrolledSection?.contents?.length && isUserLoggedIn()" class="sb-library-cards relative9">
               <div class="twelve wide column relative9">
-              <!-- <sb-library-cards-grid [layoutConfig]="layoutConfiguration" [title]="resourceService?.frmelmnts?.lbl?.suggested"
-                [contentList]="searchResponse | sortBy:'name':'asc'" [maxCardCount]="4" (viewMoreClick)="sectionViewAll()"
-                (cardClick)="playContent($event, 'Suggested')">
-              </sb-library-cards-grid> -->
-              <app-page-section [hideProgress]="true" (visits)="prepareVisits($event)" [section]="enrolledSection"
-              (playEvent)="playEnrolledContent($event, 'My courses')" (viewAll)="viewAll($event)"></app-page-section>
-            </div>
+                <app-page-section [hideProgress]="true" (visits)="prepareVisits($event)" [section]="enrolledSection"
+                  (playEvent)="playEnrolledContent($event, 'My courses')" (viewAll)="viewAll($event)">
+                </app-page-section>
+              </div>
             </div>
           </div>
           <!-- Template for displaying page sections -->
@@ -114,7 +138,7 @@
             <sb-library-cards-grid [layoutConfig]="layoutConfiguration" *ngFor="let i of numberOfSections"
               [type]="'infinite_card_grid'" [isLoading]="true" [maxCardCount]="!isUserLoggedIn() ? 4: 3"></sb-library-cards-grid>
           </div>
-          <div *ngIf="apiContentList.length === 0 && !showLoader">
+          <div *ngIf="apiContentList.length === 0 && !showLoader && (getSelectedTab() !== 'home' && getSelectedTab() !== 'explore')">
             <app-no-result-found (exploreMoreContent)="navigateToExploreContent()" [filters]="selectedFilters"
               [title]="noResultMessage?.title" [subTitle]="noResultMessage?.subTitle"
               [buttonText]="noResultMessage?.buttonText"

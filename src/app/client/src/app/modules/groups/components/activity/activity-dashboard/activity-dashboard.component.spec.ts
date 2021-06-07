@@ -15,6 +15,8 @@ import { BehaviorSubject, of, throwError } from 'rxjs';
 import { groupData, courseHierarchy, activityData, dashletData } from './activity-dashboard.component.spec.data';
 import * as _ from 'lodash-es';
 import { ToasterService } from '@sunbird/shared';
+import * as $ from 'jquery';
+import 'datatables.net';
 
 describe('ActivityDashboardComponent', () => {
   let component: ActivityDashboardComponent;

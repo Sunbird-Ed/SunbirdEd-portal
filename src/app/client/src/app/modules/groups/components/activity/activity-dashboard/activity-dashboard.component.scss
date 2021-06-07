@@ -1,7 +1,7 @@
 @import 'mixins/mixins';
 
 .content-header {
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     background: var(--groups-content-header);
     min-height: calculateRem(14px);
   
@@ -28,6 +28,7 @@
       &__title {
           color: var(--primary-400);
           font-size: calculateRem(18px);
+          padding-left: .8rem;
       }
       &__info {
         color: var(--gray-800);
@@ -49,3 +50,106 @@
     color: #024F9D;
     font-size: 1.25rem;
   }
+
+  ::ng-deep {
+    .dataTables_wrapper {
+      overflow-x: auto;
+  }
+  table thead .sorting_asc {
+      background-image: url(http://www.miankoutu.com/uploadfiles/2015-9-24/2015924141740312.png);
+      background-size: 20px 20px;
+  }
+  table thead .sorting_desc {
+      background-image: url(http://www.miankoutu.com/uploadfiles/2015-9-24/2015924141733340.png);
+      background-size: 20px 20px;
+  }
+  table.sorting {
+      background-image: url(assets/images/sort.svg) !important;
+      background-size: 20px 10px;
+  }
+  table.dataTable.no-footer {
+      width: 100% !important;
+      margin: 0 auto;
+      clear: both;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: .875rem;
+      border-radius: 1.5rem;
+      box-shadow: 0.375rem 0.375rem 0.125rem 0 rgb(0 0 0 / 10%);
+      border-bottom: 0px !important;
+      background: white;
+      border: 1px solid #ddd;
+      text-transform: capitalize;
+  }
+  table.dataTable tbody th,
+  table.dataTable tbody td {
+      padding: 12px 24px;
+  }
+  thead {
+      text-align: left;
+      background: none !important;
+      white-space: nowrap;
+  }
+
+  table.dataTable thead .sorting,
+  table.dataTable thead .sorting_asc,
+  table.dataTable thead .sorting_desc,
+  table.dataTable thead .sorting_asc_disabled,
+  table.dataTable thead .sorting_desc_disabled {
+      cursor: pointer;
+      background-repeat: no-repeat !important;
+      background-position: center left !important;
+  }
+
+  table.dataTable thead th, table.dataTable thead td {
+      padding: 12px 24px;
+      border-bottom: none !important;
+  }
+  table.dataTable.row-border tbody th,
+  table.dataTable.row-border tbody td,
+  table.dataTable.display tbody th,
+  table.dataTable.display tbody td {
+      border-top: none !important;
+  }
+  table.dataTable.hover tbody tr:nth-child(odd),
+  table.dataTable.display tbody tr:nth-child(odd) {
+      background-color: #f6f6f6;
+  }
+  table.dataTable thead th {
+    background-color: none !important;
+    border-bottom: 0.0625rem solid var(--gray-100);
+}
+table {
+  border-radius: 25px;
+}
+}
+  .datatable-update {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 1rem 0rem;
+    .last-update-label {
+        font-size: 0.87rem;
+        color: #969696;
+        margin-bottom: 0;
+    }
+    .download-csv {
+        color: #024F9D;
+        font-size: 0.87rem;
+        font-weight: bold;
+        border: none;
+        background: transparent;
+        outline: none !important;
+        cursor: pointer;
+        .download-icon{
+            margin:0 0.5rem;
+            width: 1rem;
+            height: 1rem;
+        }
+    }
+}
+
+.sb-dashlet-table {
+    z-index: 2;
+    position: relative;
+} 

@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InputTypeNumberComponent } from './input-type-number.component';
 
-describe('InputTypeNumberComponent', () => {
+xdescribe('InputTypeNumberComponent', () => {
   let component: InputTypeNumberComponent;
   let fixture: ComponentFixture<InputTypeNumberComponent>;
 

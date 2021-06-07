@@ -158,10 +158,12 @@ export class QuestionnaireComponent
     };
     this.observationService.post(paramOptions).subscribe(
       (data) => {
+        if (payload.evidence.status == "draft") {
+          this.backOrContinue();
+          return;
+        }
         this.openAlert(
-          payload.evidence.status == "draft"
-            ? this.resourceService.frmelmnts.alert.successfullySaved
-            : this.resourceService.frmelmnts.alert.successfullySubmitted
+          this.resourceService.frmelmnts.alert.successfullySubmitted
         );
         this.canLeave = true;
         this.location.back();
@@ -175,6 +177,31 @@ export class QuestionnaireComponent
         console.log(error);
       }
     );
+  }
+
+  async backOrContinue() {
+    let alertMetaData = await this.observationUtilService.getAlertMetaData();
+    alertMetaData.content.body.data =
+      this.resourceService.frmelmnts.alert.successfullySaved;
+    alertMetaData.content.body.type = "text";
+    alertMetaData.size = "mini";
+    alertMetaData.footer.buttons.push({
+      type: "accept",
+      returnValue: true,
+      buttonText: this.resourceService.frmelmnts.btn.back,
+    });
+    alertMetaData.footer.buttons.push({
+      type: "cancel",
+      returnValue: false,
+      buttonText: this.resourceService.frmelmnts.lbl.continue,
+    });
+    alertMetaData.footer.className = "double-btn";
+
+    const response = await this.observationUtilService.showPopupAlert(alertMetaData);
+    if (response) {
+      this.canLeave = true;
+      this.location.back();
+    }
   }
 
   async openAlert(msg, showCancel = false) {
