@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from "@angular/core";
 import { QuestionnaireService } from "../../questionnaire.service";
 import { ObservationUtilService } from "../../../observation/service";
 import { ResourceService, ToasterService } from "@sunbird/shared";
-import * as _ from 'lodash-es';
+import * as _ from "lodash-es";
 
 @Component({
   selector: "app-input-type-attachment",
@@ -29,7 +29,6 @@ export class InputTypeAttachmentComponent implements OnInit {
   }
 
   getFileNames(formData) {
-    debugger;
     let files = [];
     formData.forEach((element) => {
       files.push(element.name);
@@ -149,5 +148,9 @@ export class InputTypeAttachmentComponent implements OnInit {
       buttonText: this.resourceService.frmelmnts.btn.ok,
     });
     this.observationUtil.showPopupAlert(metaData);
+  }
+
+  deleteAttachment(fileIndex) {
+    this.data.files.splice(fileIndex,1)
   }
 }

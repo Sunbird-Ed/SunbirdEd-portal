@@ -9,8 +9,8 @@
   <div class="bs-1 p-20" (click)="onAddApproval(file)">
     <i class="plus icon"></i>
   </div>
-  <div *ngFor="let item of data.files" (click)="openFile(item)" class="area">
-    <a class="remove-image" href="#">&#215;</a>
+  <div *ngFor="let item of data.files;let i=index" (click)="openFile(item)" class="area">
+    <a class="remove-image"(click)="$event.stopPropagation();deleteAttachment(i)">&#215;</a>
     <div *ngIf="extension(item.name) == 'png'" class="mx-10">
       <i class="file image outline icon"></i>
     </div>
