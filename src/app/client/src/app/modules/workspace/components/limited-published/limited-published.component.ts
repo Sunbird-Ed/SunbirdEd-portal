@@ -190,7 +190,7 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit, Afte
     this.pageNumber = pageNumber;
     this.pageLimit = limit;
     const primaryCategory = _.compact(_.concat(this.frameworkService['_channelData'].contentPrimaryCategories,
-+        this.frameworkService['_channelData'].collectionPrimaryCategories));
+      this.frameworkService['_channelData'].collectionPrimaryCategories));
     const searchParams = {
       filters: {
         status: ['Unlisted'],
