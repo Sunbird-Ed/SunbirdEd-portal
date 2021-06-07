@@ -54,14 +54,14 @@ describe('UserOnboardingComponent', () => {
   it('should call ngOnInit for igot instance', () => {
     const tenantService = TestBed.get(TenantService);
     const cacheService = TestBed.get(CacheService);
-    spyOn(cacheService, 'get').and.returnValue({ slug: 'igot' });
+    spyOn(cacheService, 'get').and.returnValue({ slug: 'SUNBIRD' });
     const tenantData = { 'appLogo': '/appLogo.png', 'favicon': '/favicon.ico', 'logo': '/logo.png', 'titleName': 'SUNBIRD' };
     tenantService._tenantData$.next({ err: null, tenantData: tenantData });
-    tenantService.slugForIgot = 'igot';
+    tenantService.slugForIgot = 'SUNBIRD';
     component.ngOnInit();
-    expect(component.tenantInfo.titleName).toEqual('IGOT');
+    expect(component.tenantInfo.titleName).toEqual('SUNBIRD');
     expect(component.tenantInfo.logo).toEqual('/logo.png');
-    expect(component.stage).toEqual('location');
+    expect(component.stage).toEqual('user');
   });
 
   it('should call userTypeSubmit', () => {
