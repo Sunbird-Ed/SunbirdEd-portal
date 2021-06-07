@@ -1,7 +1,7 @@
 <div class="sb-modal">
   <div class="popup">
     <div class="popup-header" *ngIf="modal.context.data.content.title">
-      <b>{{ modal.context.data.content.title }}</b>
+      <strong>{{ modal.context.data.content.title }}</strong>
     </div>
     <div *ngIf="modal.context.data.content.body.type == 'checkbox'">
       <input type="checkbox" id="myCheck" [(ngModel)]="isChecked" (change)="checkValue(isChecked?true:false)"

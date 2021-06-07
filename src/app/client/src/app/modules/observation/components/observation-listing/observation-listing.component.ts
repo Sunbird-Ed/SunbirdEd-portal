@@ -219,7 +219,7 @@ export class ObservationListingComponent
 
     data.forEach((value) => {
       let solution_name:string = value.name;
-      solution_name = solution_name[0].toUpperCase() + solution_name.slice(1);
+      solution_name = (solution_name && solution_name.length) ? solution_name[0].toUpperCase() + solution_name.slice(1) :"";
       const subject:any=[];
       subject.push(value.programName.toString())
       let obj = {
