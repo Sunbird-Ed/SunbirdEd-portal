@@ -36,7 +36,6 @@ export class InputTypeAttachmentComponent implements OnInit {
   getFileNames(formData) {
     let files = [];
     formData.forEach((element) => {
-      debugger;
       files.push(element.name);
     });
     return files;
