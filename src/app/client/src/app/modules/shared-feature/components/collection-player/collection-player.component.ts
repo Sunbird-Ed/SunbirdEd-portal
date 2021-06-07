@@ -95,7 +95,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   TocCardType = TocCardType;
   PlatformType = PlatformType;
   isGroupAdmin: boolean;
-
+  showSideNav = true
+  sideNavClose = true
 
   activePathHierarchy:any;
 
@@ -703,6 +704,9 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       this.selectedItems = [];
     }
   }
-  
+  sideNavOpenAndClose(){
+    this.showSideNav = !this.showSideNav
+    this.sideNavClose = !this.sideNavClose
+  }
 }
 

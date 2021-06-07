@@ -120,7 +120,7 @@
     <!-- CC-Player Video -->
     <div class="ui px-32">
       <div class="cc-player sb-g">
-
+        <ng-container *ngIf="showSideNav">
         <section
           class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-4 cc-player__list mb-16 relative9 bg-pink sidebar-height"
           *ngIf="collectionData">
@@ -160,10 +160,18 @@
             <app-content-licence [content]="collectionData"></app-content-licence>
           </div> -->
         </section>
-
+      </ng-container>
         <section
-          class="sb-g-col-xs-12 sb-g-col-md-8 sb-g-col-lg-8 sb-g-col-xxxl-12 cc-player__video sb-toc-player-column"
-          [appTelemetryImpression]="telemetryImpression" *ngIf="collectionData">
+          class="sb-g-col-xxxl-12 cc-player__video sb-toc-player-column"
+          [appTelemetryImpression]="telemetryImpression" *ngIf="collectionData" [ngClass]="{'sb-g-col-xs-12':!sideNavClose ,'sb-g-col-lg-8, sb-g-col-md-8':sideNavClose }">
+          <button *ngIf="sideNavClose" mat-icon-button aria-label="Navbar Toggle button"
+          class="toggleBtn side-nav-button-opened" (click)="sideNavOpenAndClose()">
+          <mat-icon class="dehaze-icon reverse">double_arrow</mat-icon>
+        </button>
+        <button *ngIf="!sideNavClose" mat-icon-button aria-label="Navbar Toggle button"
+          class="toggleBtn side-nav-button-closed" (click)="sideNavOpenAndClose()">
+          <mat-icon class="dehaze-icon">double_arrow</mat-icon>
+        </button>
           <app-contentplayer-page [playerConfig]="playerConfig | async" [tocPage]="true"
             [contentDetails]="activeContent" [isContentPresent]="isContentPresent" [objectRollUp]="objectRollUp">
           </app-contentplayer-page>
