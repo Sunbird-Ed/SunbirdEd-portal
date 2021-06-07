@@ -6,8 +6,9 @@
     [appTelemetryImpression]="telemetryContentImpression">
     <!--CC-Player Back button -->
 
-    <div class="sb-bg-color-purple sb-text-color-white sb-bg-white relative position cc-player__btn-back  tool-bar-container">
-      <div class="container px-32">
+    <div
+      class="sb-bg-color-purple sb-text-color-white sb-bg-white relative position cc-player__btn-back  tool-bar-container">
+      <div class="container px-16">
         <div class="py-8 d-flex flex-ai-center width-full flex-jc-sb">
           <div class="wrap-btn-text d-flex">
             <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-text-color-white sb-left-icon-btn mr-auto"
@@ -21,15 +22,17 @@
             <!--added breadcrumbs for tool bar-->
             <span class="text-left text-truncate text-white font-montserrat breadcrumbs-main-container"
               *ngIf="activePathHierarchy && activePathHierarchy?.length">
-              <ul class = "breadcrumbs">
-                <div class = "main-div-breadcrumbs-item">
-                <ng-container *ngFor = "let data of activePathHierarchy;let i = index">
-                  <li class = "breadcrumbs_child">
-                  <div>{{data.name}}</div>
-                 <div><mat-icon *ngIf="activePathHierarchy.length-1 > i" class="icon-display">navigate_next</mat-icon></div>
-                </li>
-                </ng-container>
-              </div>
+              <ul class="breadcrumbs">
+                <div class="main-div-breadcrumbs-item">
+                  <ng-container *ngFor="let data of activePathHierarchy;let i = index">
+                    <li class="breadcrumbs_child">
+                      <div>{{data.name}}</div>
+                      <div>
+                        <mat-icon *ngIf="activePathHierarchy.length-1 > i" class="icon-display">navigate_next</mat-icon>
+                      </div>
+                    </li>
+                  </ng-container>
+                </div>
               </ul>
             </span>
           </div>
