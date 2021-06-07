@@ -43,10 +43,10 @@
           </div>
         </div>
         <div class="sb-library-cards relative9">
-          <div *ngIf="!layoutConfiguration">
-            <h4 class="sb-categories-title text-left mt-16" *ngIf="apiContentList.length">
-              {{resourceService?.frmelmnts?.lbl?.textbooks}}</h4>
-          </div>
+            <div *ngIf="!layoutConfiguration && (getSelectedTab() !== 'home' && getSelectedTab() !== 'explore')">
+              <h4 class="sb-categories-title text-left mt-16" *ngIf="apiContentList.length">
+                {{resourceService?.frmelmnts?.lbl?.textbooks}}</h4>
+            </div>
           <div class="twelve wide column relative9" *ngIf="enrolledSection?.contents?.length && isUserLoggedIn() && !_currentPageData?.sections">
             <app-page-section [hideProgress]="true" (visits)="prepareVisits($event)" [section]="enrolledSection"
               (playEvent)="playEnrolledContent($event, 'My courses')" (viewAll)="viewAll($event)"></app-page-section>
@@ -138,7 +138,7 @@
             <sb-library-cards-grid [layoutConfig]="layoutConfiguration" *ngFor="let i of numberOfSections"
               [type]="'infinite_card_grid'" [isLoading]="true" [maxCardCount]="!isUserLoggedIn() ? 4: 3"></sb-library-cards-grid>
           </div>
-          <div *ngIf="apiContentList.length === 0 && !showLoader">
+          <div *ngIf="apiContentList.length === 0 && !showLoader && (getSelectedTab() !== 'home' && getSelectedTab() !== 'explore')">
             <app-no-result-found (exploreMoreContent)="navigateToExploreContent()" [filters]="selectedFilters"
               [title]="noResultMessage?.title" [subTitle]="noResultMessage?.subTitle"
               [buttonText]="noResultMessage?.buttonText"

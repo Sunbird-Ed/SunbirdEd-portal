@@ -6,7 +6,7 @@
   .sb-linkmenu {
     .item {
       html[dir="rtl"] & {
-      margin-left: calculateRem(24px);
+      margin-left: calculateRem(12px);
       margin-right: inherit;
       }
     }
@@ -31,7 +31,7 @@
     box-shadow: var(--sbt-box-shadow-6px);
     font-size: calculateRem(12px);
     font-weight: bold;
-    margin-right: calculateRem(24px);
+    margin-right: calculateRem(12px);
     height: calculateRem(48px);
     transition: all ease .3s;
     display: flex;
