@@ -73,6 +73,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     selectedFacet: { facet: any; value: any; };
     showEdit = false;
     isFilterEnabled: boolean = true;
+    defaultTab = 'Textbook'
 
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
@@ -242,12 +243,17 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     redoLayout() {
         const contentType = _.get(this.getCurrentPageData(), 'contentType');
-        if (this.layoutConfiguration != null && (contentType !== 'home' && contentType !== 'explore')) {
+        if (this.isDesktopApp) {
             this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
             this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
         } else {
-            this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
-            this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
+            if (this.layoutConfiguration != null && (contentType !== 'home' && contentType !== 'explore')) {
+                this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
+                this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
+            } else {
+                this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
+                this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
+            }
         }
     }
 
@@ -274,11 +280,13 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     public getPageData(input) {
+        const contentTypes = _.sortBy(this.formData, 'index');
+        this.defaultTab = _.find(contentTypes, ['default', true]);
         return find(this.formData, data => data.contentType === input);
     }
 
     public getCurrentPageData() {
-        return this.getPageData(get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook');
+        return this.getPageData(get(this.activatedRoute, 'snapshot.queryParams.selectedTab')|| _.get(this.defaultTab, 'contentType') || 'textbook');
     }
 
     public getFilters({ filters, status }) {
@@ -334,8 +342,16 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         return this.getExplorePageSections();
                     } else {
                         const { search: { fields = [], filters = {}, facets = ['subject'] } = {}, metaData: { groupByKey = 'subject' } = {} } = currentPageData || {};
+                    let _reqFilters;
+                    // If home or explore page; take filters from user preferences
+                    if (_.get(currentPageData, 'contentType') === 'home') {
+                        _reqFilters = this.contentSearchService.mapCategories({ filters: _.get(this.userPreference, 'framework') });
+                        delete _reqFilters['id'];
+                    } else {
+                        _reqFilters = this.contentSearchService.mapCategories({ filters: { ...this.selectedFilters, ...filters } });
+                    }
                     const request = {
-                      filters: this.contentSearchService.mapCategories({ filters: { ...this.selectedFilters, ...filters } }),
+                      filters: _reqFilters,
                         fields,
                         isCustodianOrg: this.custodianOrg,
                         channelId: this.channelId,
@@ -398,7 +414,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                             });
                                             this.facetSections.push({
                                                 name: facet.facetKey,
-                                                data: _facetArray,
+                                                data: _.sortBy(_facetArray, ['name']),
                                                 section: facet
                                             });
                                         }
@@ -411,6 +427,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                     return section;
                                 });
                             }), tap(data => {
+                                this.userPreference = this.setUserPreferences();
                                 this.showLoader = false;
                                 const userProfileSubjects = _.get(this.userService, 'userProfile.framework.subject') || [];
                                 const [userSubjects, notUserSubjects] = partition(sortBy(data, ['name']), value => {

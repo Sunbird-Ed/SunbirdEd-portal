@@ -1,0 +1,14 @@
+<div
+  [formGroup]="questionnaireForm"
+  *ngIf="questionnaireForm?.contains(question._id)"
+>
+  <input
+    type="text"
+    [formControlName]="question?._id"
+    [ngClass]="!isValid && isTouched ? 'is-invalid ' : 'is-valid'"
+    class="sb-form-control"
+    [placeholder]="'Enter your respsonse'"
+    (change)="onChange($event)"
+    [value]="question.value"
+  />
+</div>

@@ -1,0 +1,97 @@
+@import "variables";
+@import "mixins/mixins";
+
+.add-entity-modal{
+  .sb-modal-content {
+    height: calc(100vh - 350px) !important;
+    }
+  .content{
+    max-height: 65vh;
+    label{
+      color: var(--sb-prominent-filter-title);
+    }
+    label:hover{
+      cursor: pointer;
+    }
+  }
+  .footer{
+    width: 100%;
+    text-align: center;
+    display: flex;
+    background: var(--sb-card-bg);
+    border-top: none;
+  }
+  .search-box{
+    margin-top: 15px;
+  }
+}
+
+.sb-onboard {
+  &__header {
+    width: 100%;
+    margin: 20px 0px;
+    padding-left : 15px;
+  }
+
+  &__content {
+    width: calculateRem(648px);
+    max-width: 100%;
+    margin-bottom: auto;
+    overflow: hidden;
+    overflow-y: auto;
+  }
+
+  &__footer {
+    margin-top: calculateRem(16px);
+    width: 100%;
+    text-align: center;
+  }
+}
+
+::ng-deep {
+  .sb-onbrd-modal {
+    @include respond-below(sm) {
+      .ui.modal {
+        margin: 0 0 0 0;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+      }
+
+      .ui.modal.scroll {
+        position: fixed !important;
+        top: 0;
+        width: 100%;
+        left: 0px;
+        right: 0px;
+        margin: 0 !important;
+      }
+    }
+  }
+}
+  .sbt-search-box{
+    box-shadow: none;
+    margin: 0;
+  }
+  .load-mr-btn{
+    height: 2rem;
+    font-size: 1rem;
+    padding: 0.5rem 2rem;
+  }
+  .load-mr-bt-center{
+    text-align:center
+}
+
+// .sb-checkbox .disabled-checkbox input:checked ~ .box:after, .sb-checkbox .disabled-checkbox input:checked ~ label:after {
+//   background: #ccc;
+//   border: #ccc;
+// }
+
+input[type=checkbox][disabled] {
+  background: var(--sb-card-bg);
+  border: #ccc;
+}
+.search-results{ height : 100%; overflow-y: scroll; }
+

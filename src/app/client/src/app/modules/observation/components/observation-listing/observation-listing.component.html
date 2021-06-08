@@ -1,0 +1,81 @@
+<app-landing-section [textToDisplay]="resourceService?.frmelmnts?.lbl?.observation" [svgToDisplay]="svgToDisplay"
+[layoutConfiguration]="layoutConfiguration"></app-landing-section>
+<div [ngClass]="layoutConfiguration ? 'sbt-fluid-content-bg':''">
+  <div [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'">
+    <div [ngClass]="FIRST_PANEL_LAYOUT">
+      <div *ngIf="layoutConfiguration">
+        <ng-container *ngIf="isDesktopApp">
+          <app-network-status></app-network-status>
+          <app-load-offline-content></app-load-offline-content>
+          <app-system-warning></app-system-warning>
+        </ng-container>
+    </div>
+        <div [ngClass]="isDesktopApp ? 'sb-desktop-filter-section' : ''">
+          <ng-container>
+          <app-global-search-filter [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true'
+              *ngIf="initFilters && allTabData" (filterChange)="getFilters($event)">
+            </app-global-search-filter>
+          </ng-container>
+        </div>
+    </div>
+    <div [ngClass]="SECOND_PANEL_LAYOUT" class="w-100">
+      <div [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
+        <div class="content-grid relative9">
+          <div class="sb-pageSection" *ngIf="!showLoader && totalCount > 0">
+            <div class="sb-pageSection-header">
+                <h4 class="sb-pageSection-title m-0 mr-5" [innerHTML]="resourceService?.frmelmnts?.lbl?.observation"></h4> 
+                <span class="badge">{{totalCount}}</span>
+            </div>
+            <br/>
+          </div>
+      
+          <div [appTelemetryImpression]="telemetryImpression" class="twelve wide column" in-view-container
+            (inview)="inView($event)" *ngIf="!showLoader && contentList.length">
+            <app-global-search-selected-filter [facets]="facets" [selectedFilters]="selectedFilters"
+              *ngIf="initFilters && facets && layoutConfiguration" (filterChange)="getFilters($event)"></app-global-search-selected-filter>
+            <div class="sb-grid">
+              <div in-view-item [id]="i" [data]="content" class="sb-grid--item"
+              *ngFor="let content of contentList;let i = index;">
+              <sb-library-card [indexToDisplay]="i" [layoutConfig]="layoutConfiguration" *ngIf="!isDesktopApp;else desktopCard"
+              appContentDirection appTelemetryInteract [telemetryInteractEdata]="cardIntractEdata" [telemetryInteractObject]="{id:content.metaData.identifier,type:content.metaData.contentType||'Content',ver:'1.0'}"
+              (cardClick)="playContent($event)" [content]="content" [cardImg]="'assets/images/book.png'" ></sb-library-card>
+            </div>
+            </div>
+          </div>
+
+          <div [appTelemetryImpression]="telemetryImpression" class="twelve wide column"
+            *ngIf="contentList.length === 0 && !showLoader">
+            <app-no-result-found [title]="noResultMessage?.title" [subTitle]="noResultMessage?.subTitle" 
+            [buttonText]="noResultMessage?.buttonText" [showExploreContentButton]="noResultMessage?.showExploreContentButton"></app-no-result-found>
+          </div>
+          <div class="twelve wide column" *ngIf="showLoader">
+            <div class="sb-grid">
+              <div in-view-item [id]="i" [data]="content" class="sb-grid--item"
+                *ngFor="let i of numberOfSections">
+                <sb-library-card [layoutConfig]="layoutConfiguration" [isLoading]="true"></sb-library-card>
+              </div>
+            </div>
+          </div>
+          <div class="twelve wide column right aligned"
+            *ngIf="paginationDetails.totalItems > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader">
+            <div class="sb-pagination-container flex-jc-flex-end mt-16" *ngIf="paginationDetails.pages.length">
+              <div class="sb-pagination my-0">
+                <a [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item "
+                  (click)="navigateToPage(1) ">&laquo;</a>
+                <a [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item "
+                  (click)="navigateToPage(paginationDetails.currentPage - 1)">&lt;</a>
+                <a *ngFor="let page of paginationDetails.pages" [ngClass]="{active:paginationDetails.currentPage===page}"
+                  (click)="navigateToPage(page)" class="sb-item">{{page}}</a>
+                <a [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}"
+                  (click)="navigateToPage(paginationDetails.currentPage + 1)" class="sb-item">&gt;</a>
+                <a [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}"
+                  (click)="navigateToPage(paginationDetails.totalPages)" class="sb-item ">&raquo;</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+</div>
+

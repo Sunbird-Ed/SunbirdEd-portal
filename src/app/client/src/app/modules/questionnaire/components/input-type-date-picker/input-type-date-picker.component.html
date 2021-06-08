@@ -1,0 +1,24 @@
+<div
+  [formGroup]="questionnaireForm"
+  *ngIf="questionnaireForm?.contains(question._id)"
+  class="d-flex flex-ai-center flex-jc-space-between"
+>
+  <div class="ui left icon input">
+    <i class="calendar icon"></i>
+    <input
+      suiDatepicker
+      [pickerMode]="'date'"
+      [pickerUseNativeOnMobile]="false"
+      [formControlName]="question?._id"
+      (pickerSelectedDateChange)="onChange($event)"
+      class="question-date-input"
+      [pickerMinDate]="min"
+      [pickerMaxDate]="max"
+    />
+  </div>
+  <div *ngIf="question?.autoCapture && !question?.value">
+    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="autoCapture()">
+      {{ resourceService?.frmelmnts?.btn?.auto_capture | translate }}
+    </button>
+  </div>
+</div>

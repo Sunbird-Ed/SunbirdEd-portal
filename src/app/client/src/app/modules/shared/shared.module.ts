@@ -9,7 +9,7 @@ import {
   CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, BatchCardComponent, AccountMergeModalComponent,
   OfflineBannerComponent,
   OfflineApplicationDownloadComponent, FullPageModalComponent, ConfirmPopupComponent, SelectOptionGroupComponent,SbDatatableComponent,
-  OnDemandReportsComponent, DesktopAppUpdateComponent, SystemWarningComponent
+  OnDemandReportsComponent, DesktopAppUpdateComponent, SystemWarningComponent,AlertModalComponent
 } from './components';
 import {
   ConfigService, ResourceService, ToasterService, WindowScrollService, BrowserCacheTtlService,
@@ -49,7 +49,7 @@ import { LoadOfflineContentComponent } from './components/load-offline-content/l
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
     ConfirmPopupComponent, AddToGroupDirective, SelectOptionGroupComponent, AppLandingSectionComponent, MarkdownDirective,
     SbDatatableComponent,OnDemandReportsComponent,SbDataTablePipe, NetworkStatusComponent, LoadOfflineContentComponent,
-    DesktopAppUpdateComponent,
+    DesktopAppUpdateComponent,AlertModalComponent,
     SystemWarningComponent],
   exports: [AppLoaderComponent, DateFormatPipe, TranslateModule,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe,
@@ -58,7 +58,8 @@ import { LoadOfflineContentComponent } from './components/load-offline-content/l
     ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent,
     CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
     MarkdownDirective, AddToGroupDirective, SbDatatableComponent, OnDemandReportsComponent, NgxDatatableModule,SbDataTablePipe, 
-    InterpolatePipe,NetworkStatusComponent,LoadOfflineContentComponent, DesktopAppUpdateComponent, SystemWarningComponent]
+    InterpolatePipe, NetworkStatusComponent, LoadOfflineContentComponent, DesktopAppUpdateComponent, SystemWarningComponent, AlertModalComponent],
+  entryComponents:[AlertModalComponent]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {
