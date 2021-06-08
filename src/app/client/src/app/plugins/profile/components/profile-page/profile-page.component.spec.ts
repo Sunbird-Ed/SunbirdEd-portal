@@ -29,19 +29,21 @@ describe('ProfilePageComponent', () => {
           object: { type: '', ver: '1.0' }
         }
       }
-    };
+    }
     getCurrentNavigation = () => {
       return { state: {} };
     }
   }
   const env = 'profile';
   class ActivatedRouteStub {
+    queryParams = observableOf({'showEditUserDetailsPopup': true});
     snapshot = {
       root: { firstChild: { data: { telemetry: { env: env } } } },
       data: {
         telemetry: { env: env }
       }
     };
+    
   }
   class MockDomToImage {
     toPng() { }
