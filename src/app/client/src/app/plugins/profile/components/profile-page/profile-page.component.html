@@ -138,7 +138,7 @@
             (click)="showEditUserDetailsPopup=true">{{resourceService.frmelmnts.lbl.edit}}</button>
           <button appTelemetryInteract appOnlineOnly
                   [telemetryInteractEdata]="submitTeacherDetailsInteractEdata"
-                  *ngIf="!declarationDetails && isCustodianOrgUser"
+                  *ngIf="!declarationDetails && isCustodianOrgUser && !userProfile.isMinor"
                   (click)="navigate('/profile/teacher-declaration','submit')"
                   class="no-text-transform sb-btn sb-btn-normal sb-btn-secondary sb-right-icon-btn mx-8 mb-8 px-24" type="submit">
           {{resourceService?.frmelmnts?.lbl?.iAmStateTeacher}} </button>
@@ -411,7 +411,7 @@
 </div>
 </div>
 <app-popup *ngIf="showEdit" #profileModal [formInput]="userFrameWork" [showCloseIcon]="true" [isClosable]="true"
-  [buttonLabel]="resourceService.frmelmnts.btn.submit" (submit)="updateProfile($event)" (close)="showEdit = !showEdit">
+  [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" (submit)="updateProfile($event)" (close)="showEdit = !showEdit">
 </app-popup>
 <app-update-contact-details *ngIf="showContactPopup" (close)="showContactPopup = !showContactPopup"
   [contactType]="contactType"></app-update-contact-details>

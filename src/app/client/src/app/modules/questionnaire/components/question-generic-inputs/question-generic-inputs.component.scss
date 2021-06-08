@@ -1,0 +1,62 @@
+@import "../../../../../../node_modules/@project-sunbird/sb-styles/assets/mixins/mixins";
+@import "../../../../../../node_modules/@project-sunbird/sb-styles/assets/mixins/custom-mixins";
+
+.question-card {
+  border-radius: 28px;
+  padding: 20px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.question-card:last-child {
+  margin-bottom: 20px;
+}
+
+:host {
+  .question-card.sb--card,
+  .sb-radio-btn-checkbox {
+    width: 100%;
+    background-color: var(--sb-card-bg);
+    color: var(--primary-color);
+  }
+  label {
+    color: var(--body-color);
+  }
+}
+
+:host ::ng-deep {
+  .question-card {
+    .sb-checkbox label,
+    .sb-radio-btn-checkbox label {
+      color: var(--body-color);
+      font-weight: normal;
+    }
+
+    input:focus,
+    input:focus ~ label {
+      color: var(--body-color);
+    }
+
+    #range {
+      background-color: var(--sb-card-bg);
+    }
+
+    .student-card {
+      background-color: var(--sb-card-bg);
+    }
+    .question-date-input,
+    input:active.question-date-input,
+    input:focus.question-date-input {
+      background: var(--cc-sbcard-data1-bg);
+      color: var(--sb-prominent-filter-title);
+    }
+  }
+}
+
+.remarks {
+  margin-top: 15px;
+}
+
+.valid-response {
+  color: var(--green);
+}

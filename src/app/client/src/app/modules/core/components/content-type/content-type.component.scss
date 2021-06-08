@@ -6,7 +6,7 @@
   .sb-linkmenu {
     .item {
       html[dir="rtl"] & {
-      margin-left: calculateRem(24px);
+      margin-left: calculateRem(12px);
       margin-right: inherit;
       }
     }
@@ -31,7 +31,7 @@
     box-shadow: var(--sbt-box-shadow-6px);
     font-size: calculateRem(12px);
     font-weight: bold;
-    margin-right: calculateRem(24px);
+    margin-right: calculateRem(12px);
     height: calculateRem(48px);
     transition: all ease .3s;
     display: flex;
@@ -174,8 +174,8 @@
   }
 
   &__tests {
-    -webkit-mask-image: url(/assets/images/mask-image/tests.svg);
-    mask-image: url(/assets/images/mask-image/tests.svg);
+    -webkit-mask-image: url(/assets/images/mask-image/observation.svg);
+    mask-image: url(/assets/images/mask-image/observation.svg);
   }
 
   &__stories {
@@ -205,5 +205,13 @@
   &__myDownloads   {
     -webkit-mask-image: url(/assets/images/mask-image/download.svg);
     mask-image: url(/assets/images/mask-image/download.svg);
+  }
+  &__home   {
+    -webkit-mask-image: url(/assets/images/mask-image/home.svg);
+    mask-image: url(/assets/images/mask-image/home.svg);
+  }
+  &__explore {
+    -webkit-mask-image: url(/assets/images/mask-image/explore.svg);
+    mask-image: url(/assets/images/mask-image/explore.svg);
   }
 }

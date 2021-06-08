@@ -728,7 +728,7 @@ html[layout='joy'] {
   }
 
   .sb-accordion-content.sb-bg-color-white {
-    background: var(--sbt-compt-bg) !important;
+    background: var(--sbt-compt-bg);
     padding: calculateRem(24px) calculateRem(24px) !important;
   }
 
@@ -2009,7 +2009,7 @@ html[data-theme=Darkmode] {
   }
 
   .back-btn-container.cc-player__btn-back {
-    background: var(--sbt-compt-bg) !important;
+    background: var(--sbt-compt-bg);
   }
 
   .cc-player__content-header {
@@ -3218,4 +3218,7 @@ html[accessable-theme=accessible][layout=joy]{
   .sb-modal.sb-error .ui.modal .sb-modal-actions>button.sb-btn{
     color: var(--black);
   }
-} 
+}
+
+
+

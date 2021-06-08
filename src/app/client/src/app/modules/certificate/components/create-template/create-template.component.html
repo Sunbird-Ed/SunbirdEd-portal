@@ -60,7 +60,7 @@
                   </button>
                 </div>
                 <div class="d-flex flex-dc">
-                  <small *ngIf="!(images?.LOGO1?.name)" class="pl-4 py-4 fsmall">{{resourceService?.frmelmnts?.cert?.intxt?.imgdimensions}}</small>
+                  <small *ngIf="!(images?.LOGO1?.name)" class="pl-4 py-4 fsmall" [innerHTML]="sanitizeHTML(resourceService?.frmelmnts?.cert?.intxt?.imgdimensions)"></small>
                   <small *ngIf="(images?.LOGO1?.name)" class="pl-4 py-4 fsmall">{{images?.LOGO1?.name}} <span  class="pl-8">
                   <img (click)="removeImage('LOGO1')" src="assets/images/close.svg" width="12px"></span></small>
                 </div>
@@ -73,7 +73,7 @@
                   </button>
                 </div>
                 <div class="d-flex flex-dc">
-                  <small *ngIf="!(images?.LOGO2?.name)"  class="pl-4 py-4 fsmall">{{resourceService?.frmelmnts?.cert?.intxt?.imgdimensions}}</small>
+                  <small *ngIf="!(images?.LOGO2?.name)"  class="pl-4 py-4 fsmall" [innerHTML]="sanitizeHTML(resourceService?.frmelmnts?.cert?.intxt?.imgdimensions)"></small>
                   <small *ngIf="(images?.LOGO2?.name)" class="pl-4 py-4 fsmall">{{images?.LOGO2?.name}}<span  class="pl-8">
                   <img (click)="removeImage('LOGO2')" src="assets/images/close.svg" width="12px"></span></small>
                 </div>

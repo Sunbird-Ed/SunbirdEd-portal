@@ -12,12 +12,6 @@ import Response from "../../utils/response";
 import uuid from "uuid/v4";
 const DefaultRequestOptions = { headers: { "Content-Type": "application/json" } };
 import HardDiskInfo from "../../utils/hardDiskInfo";
-
-// @ClassLogger({
-//   logLevel: "debug",
-//   logTime: true,
-
-// })
 @Singleton
 export class ContentDownloadManager {
   @Inject private dbSDK: DatabaseSDK;
@@ -304,21 +298,19 @@ export class ContentDownloadManager {
     }
   }
   private getAddedAndUpdatedContents(liveContents, localContents) {
-    const contents = _.filter(liveContents, data => {
+    return _.filter(liveContents, data => {
       const found = _.find(localContents, {
         _id: data.identifier,
         pkgVersion: data.pkgVersion
       });
       return found ? false : true;
     });
-    return contents;
   }
 
   private getDeletedContents(localContents, liveContents) {
-    const contents = _.filter(localContents, data => {
+    return _.filter(localContents, data => {
       const found = _.find(liveContents, { identifier: data._id });
       return found ? false : true;
     });
-    return contents;
   }
 }

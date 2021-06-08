@@ -173,7 +173,7 @@ const API_LIST = {
 
     '/content/v3/update': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.CONTENT_CREATOR,  ROLE.COURSE_CREATOR, ROLE.BOOK_CREATOR]
+      ROLE_CHECK: [ROLE.CONTENT_CREATOR, ROLE.COURSE_CREATOR, ROLE.BOOK_CREATOR]
     },
     '/content/v3/review': {
       checksNeeded: ['ROLE_CHECK'],
@@ -708,7 +708,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR]
     },
-    '/course/batch/cert/v1/template/remove' : {
+    '/course/batch/cert/v1/template/remove': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.COURSE_MENTOR, ROLE.CONTENT_CREATOR]
     },
@@ -1495,11 +1495,11 @@ const API_LIST = {
     },
     '/v1/sso/create/session': {
       description: 'Desktop API',
-      checksNeeded:[]
+      checksNeeded: []
     },
     '/api/data/v1/form/read': {
       description: 'Desktop API',
-      checksNeeded:[]
+      checksNeeded: []
     },
     // Question & QuestionSet API's
     '/action/questionset/v1/create': {
@@ -1602,7 +1602,83 @@ const API_LIST = {
     '/learner/user/v1/role/assign': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ORG_ADMIN]
-    }
+    },
+    '/report/request/list/:tag': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR]
+    },
+    '/dataset/v1/request/list/:tag': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR]
+    },
+    '/report/request/read/:tag': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR]
+    },
+    '/dataset/v1/request/read/:tag': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR]
+    },
+    '/report/request/submit': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR]
+    },
+    '/dataset/v1/request/submit': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR]
+    },
+    '/kendra/v1/users/entityTypesByLocationAndRole/:stateId': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/kendra/v1/solutions/targetedSolutions': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/assessment/v1/observations/entities': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/assessment/v1/observationSubmissions/list/:id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/kendra/v1/users/targetedEntity/:id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/assessment/v2/observations/searchEntities': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/assessment/v1/observationSubmissions/create/:id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/assessment/v2/observations/assessment/:id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/kendra/v1/cloud-services/files/preSignedUrls': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/assessment/v1/observationSubmissions/list/:id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/assessment/v1/observations/updateEntities/:id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/assessment/v1/observationSubmissions/update/:id': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/cloudUpload/upload': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
   },
   URL_PATTERN: [
     '/learner/user/v1/feed/delete',
@@ -1707,7 +1783,19 @@ const API_LIST = {
     '/action/question/v1/read/:do_id',
     '/action/question/v1/review/:do_id',
     '/action/question/v1/publish/:do_id',
-    '/action/question/v1/update/:do_id'
+    '/action/question/v1/update/:do_id',
+    '/report/request/list/:tag',
+    '/dataset/v1/request/list/:tag',
+    '/dataset/v1/request/read/:tag',
+    '/report/request/read/:tag',
+    '/kendra/v1/users/entityTypesByLocationAndRole/:stateId',
+    '/assessment/v1/observationSubmissions/list/:id',
+    '/kendra/v1/users/targetedEntity/:id',
+    '/assessment/v1/observationSubmissions/create/:id',
+    '/assessment/v2/observations/assessment/:id',
+    '/assessment/v1/observationSubmissions/list/:id',
+    '/assessment/v1/observations/updateEntities/:id',
+    '/assessment/v1/observationSubmissions/update/:id'
   ]
 };
 module.exports = API_LIST;

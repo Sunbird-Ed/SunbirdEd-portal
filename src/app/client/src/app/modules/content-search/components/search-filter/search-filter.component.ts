@@ -39,6 +39,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   @Input() layoutConfiguration;
   @Input() pageData;
   @Input() facets$ = new BehaviorSubject({});
+  @Input() defaultTab = {};
   selectedFilters = {};
   allValues = {};
   selectedNgModels = {};
@@ -154,7 +155,8 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       });
 
     if (!_.get(this.activatedRoute, 'snapshot.queryParams["board"]')) {
-      this.router.navigate([], { queryParams: this.defaultFilters, relativeTo: this.activatedRoute } );
+      const queryParams = { ...this.defaultFilters, selectedTab: _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'textbook' };
+      this.router.navigate([], { queryParams, relativeTo: this.activatedRoute } );
     }
   }
   private boardChangeHandler() {
@@ -283,7 +285,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     });
   }
   private updateRoute(resetFilters?: boolean) {
-    const selectedTab = _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook';
+    const selectedTab = _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'textbook';
     this.router.navigate([], {
       queryParams: resetFilters ? { ...this.defaultFilters, selectedTab} : _.omit(this.getSelectedFilter() || {}, ['audienceSearchFilterValue']),
       relativeTo: this.activatedRoute.parent
@@ -312,7 +314,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       })));
     }
     filters['board'] = _.get(this.selectedBoard, 'selectedOption') ? [this.selectedBoard.selectedOption] : [];
-    filters['selectedTab'] = _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook';
+    filters['selectedTab'] = _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'textbook';
     return filters;
   }
   private emitFilterChangeEvent(skipUrlUpdate = false) {

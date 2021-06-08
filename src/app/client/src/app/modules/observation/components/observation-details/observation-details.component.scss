@@ -1,0 +1,42 @@
+.observation-detail-box{
+    display: inline-flex;
+    max-width: 100%;
+    min-width: 100%;
+    margin: 15px 0px;
+}
+.submissions{
+    h5{
+        font-weight: 600;
+    }
+    .evidences-list{
+        min-width: 100%;
+        max-width: 100%;
+        display: inline-flex;
+        margin: 5px 0px;
+        background:  var(--sb-card-bg) !important;
+        border-radius: var(--sbt-bradius-24);
+        padding: 8px 24px;
+    }
+}
+.icon-svg{
+    background: none;
+    box-shadow: none;
+  }
+  .sbaccordion__panel-header__title{
+    color: var(--gray-400);
+  }
+  .margin-btm{
+    margin-bottom: 2rem;
+  }
+  :host ::ng-deep { 
+ .ui.dropdown .menu>.item{
+    color: var(--sb-linkmenu-text);
+ }
+ .ui.dropdown .menu{
+    background: var(--sb-card-bg);
+ }
+}
+.icon{
+  color: var(--primary-400) !important;
+  padding-left: 15px;
+}

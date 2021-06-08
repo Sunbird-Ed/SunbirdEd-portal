@@ -126,26 +126,26 @@
             <div>
             <label class="d-flex footer-terms-info text-left font-weight-normal flex-w-wrap">
               <ul class="d-flex flex-ai-center fsmall mb-0 mobile only pl-0">
-                <li class="mb-0"><a href="/screenreaderaccess.html" class="cursor-pointer">Screen Reader Access</a></li><li class="mx-4 mb-0">|</li>
-                <li class="mb-0"><a href="/sitemap.html" class="cursor-pointer">Sitemap</a></li><li class="mx-4 mb-0">|</li>
+                <li class="mb-0" tabindex="0"><a href="/screenreaderaccess.html" class="cursor-pointer">Screen Reader Access</a></li><li class="mx-4 mb-0">|</li>
+                <li class="mb-0" tabindex="0"><a href="/sitemap.html" class="cursor-pointer">Sitemap</a></li><li class="mx-4 mb-0">|</li>
               </ul>
-              <a *ngIf="!isDesktopApp" appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"
+              <a *ngIf="!isDesktopApp" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"
                 href="/term-of-use.html">{{resourceService.frmelmnts?.lnk?.footerTnC}}</a>
-              <a *ngIf="isDesktopApp" appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"
+              <a *ngIf="isDesktopApp" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')"
                 href="{{appBaseUrl}}/term-of-use.html" target="_blank">{{resourceService.frmelmnts?.lnk?.footerTnC}}</a>
-              <span>| &copy; {{date | date:'yyyy'}}, {{instance}}</span>
+              <span tabindex="0">| &copy; {{date | date:'yyyy'}}, {{instance}}</span>
             </label>
-            <label class="d-block text-left fsmall">
+            <label class="d-block text-left fsmall" tabindex="0">
               <span>{{resourceService.frmelmnts?.lbl?.CCbyLicense}}&nbsp;&nbsp;<img alt="{{resourceService.frmelmnts?.lbl?.CCbyLicense}}" src="/assets/images/CCby.svg"></span>
             </label>
           </div>
           </div>
           <div class="six wide column p-0 d-flex sbt-footer-download-app">
             <div class="sbt-footer-bg relative">
-              <img class="sbt-footer-bg-img cursor-pointer" src="/assets/images/footer-flower-set.svg" alt="">
+              <img class="sbt-footer-bg-img cursor-pointer" tabindex="0" src="/assets/images/footer-flower-set.svg" alt="">
               <label class="d-block text-center font-weight-bold sbt-footer-title">{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile | interpolate:'{instance}':  instance}}</label>
               <a class="d-block app-download" (click)="redirectToMobileApp()">
-                <img class="playStore-img cursor-pointer" src="/assets/images/google_playstore.png"
+                <img tabindex="0" class="playStore-img cursor-pointer" src="/assets/images/google_playstore.png"
                   alt="{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile | interpolate:'{instance}':  instance}}">
               </a>
             </div>

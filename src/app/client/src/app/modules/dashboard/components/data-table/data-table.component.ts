@@ -1,7 +1,7 @@
 import { IColDefination, IDataTableOptions } from './../../interfaces';
 import { Component, Input, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import * as $ from 'jquery';
-import * as datatable from 'datatables.net';
+import 'datatables.net';
 import * as naturalSortDataTablePlugin from './../../../../../assets/libs/naturalSortDataTablePlugin';
 import * as moment from 'moment';
 const GRADE_HEADER = 'Grade';
@@ -21,8 +21,8 @@ export class DataTableComponent implements AfterViewInit {
     @Input() options: IDataTableOptions = {};
 
     ngAfterViewInit() {
-        jQuery['fn']['dataTableExt'] = datatable.ext; // added dataTableExt to jquery
-        naturalSortDataTablePlugin(); // adds natural sorting plugin to dataTableExt
+        // tslint:disable-next-line:no-unused-expression
+        this.rowsData && naturalSortDataTablePlugin(); // adds natural sorting plugin to dataTableExt
         const columnDefs: any = [{
             'targets': 0,
             'render': (data) => {

@@ -17,10 +17,6 @@ const DefaultRequestOptions = { headers: { "Content-Type": "application/json" } 
 
 const INTERVAL_TO_CHECKUPDATE = 1
 
-// @ClassLogger({
-//   logLevel: "debug",
-//   logTime: true
-// })
 export default class Content {
     private deviceId: string;
     private contentsFilesPath: string = 'content';
@@ -566,7 +562,8 @@ export default class Content {
                 });
                 resolve(facetData);
             } else {
-                    _.forEach(facets, (facet) => {
+                    const extendedFacets = [...facets, ...["board", "medium", "gradeLevel", "subject"]];
+                    _.forEach(extendedFacets, (facet) => {
                         let eachFacetData = _.map(contents, (content) => _.get(content, facet));
                         const arrayData = [];
                         _.forEach(eachFacetData, (data) => {
@@ -582,7 +579,27 @@ export default class Content {
                                 return ({ name: data[0], count: data.length});
                             }
                         });
-                        facetData.push({ name: facet, values: _.compact(result) || [] });
+
+                        if (facet === 'board' || facet === 'se_boards') {
+                            facet = 'se_boards'
+                        } else if (facet === 'gradeLevel' || facet === 'se_gradeLevels') {
+                            facet = 'se_gradeLevels';
+                        } else if (facet === 'medium' || facet === 'se_mediums') {
+                            facet = 'se_mediums';
+                        } else if (facet === 'subject' || facet === 'se_subjects') {
+                            facet = 'se_subjects';
+                        }
+
+                        const facetList = facetData.map(item => item.name);
+                        if (facetList.length && facetList.includes(facet)) {
+                            _.each(facetData, (facetItem) => {
+                                if(facetItem.name === facet) {
+                                    facetItem.values = _.merge(facetItem.values, _.compact(result));
+                                }
+                            })
+                        } else {
+                            facetData.push({ name: facet, values: _.compact(result) || [] });
+                        }
                     });
                     resolve(facetData);
                 }
@@ -817,7 +834,7 @@ export default class Content {
                         ]
             },
         };
-        return await this.databaseSdk.find("content", dbFilter);
+        return this.databaseSdk.find("content", dbFilter);
     }
 
     // tslint:disable-next-line:member-ordering
@@ -829,7 +846,7 @@ export default class Content {
                         }
             },
         };
-        return await this.databaseSdk.find("content", dbFilter);
+        return this.databaseSdk.find("content", dbFilter);
     }
 
     // tslint:disable-next-line:member-ordering
@@ -850,15 +867,14 @@ export default class Content {
                     return content;
                 }
             });
-            return offlineContents;
         }
         return offlineContents;
     }
 
     private getFilters(filters) {
         // Update BMG filter names
-        const bmgFilters =  _.intersection(Object.keys(filters), ["se_boards", "se_gradeLevels", "se_mediums"]);
-        let keyMap = new Map([["se_boards", 'board'], ["se_gradeLevels", "gradeLevel"], ["se_mediums", "medium"]]);
+        const bmgFilters =  _.intersection(Object.keys(filters), ["se_boards", "se_gradeLevels", "se_mediums", "se_subjects"]);
+        let keyMap = new Map([["se_boards", 'board'], ["se_gradeLevels", "gradeLevel"], ["se_mediums", "medium"], ["se_subjects", "subject"]]);
         bmgFilters.forEach(newKey => {
             const oldKey = keyMap.get(newKey);
             delete Object.assign(filters, { [oldKey]: filters[newKey] })[newKey];

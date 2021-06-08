@@ -273,8 +273,11 @@ export class UserService {
     if (!this._userProfile.managedBy) {
       this.cacheService.set('userProfile', this._userProfile);
     }
-    window['TagManager'].SBTagService.pushTag({userLoocation:profileData.userLocations},'USERLOCATION_', true)
-    window['TagManager'].SBTagService.pushTag(profileData.framework,'USERFRAMEWORK_', true);
+
+    if (window['TagManager']) {
+      window['TagManager'].SBTagService.pushTag({ userLoocation: profileData.userLocations }, 'USERLOCATION_', true)
+      window['TagManager'].SBTagService.pushTag(profileData.framework, 'USERFRAMEWORK_', true);
+    }
   }
   setOrgDetailsToRequestHeaders() {
     this.learnerService.rootOrgId = this._rootOrgId;
@@ -451,7 +454,10 @@ export class UserService {
       url: this.config.urlConFig.URLS.OFFLINE.UPDATE_USER,
       data: request
     };
-    return this.publicDataService.post(options);
+    return this.publicDataService.post(options).pipe(map((response: ServerResponse) => {
+      this.getGuestUser().subscribe();
+      return response;
+    }));
   }
 
   createAnonymousUser(request): Observable<ServerResponse> {
@@ -460,7 +466,7 @@ export class UserService {
       data: request
     };
     return this.publicDataService.post(options).pipe(map((response: ServerResponse) => {
-      this.getAnonymousUserPreference().subscribe();
+      this.getGuestUser().subscribe();
       return response;
     }));
   }
@@ -486,8 +492,10 @@ export class UserService {
   }
 
   updateGuestUser(userDetails, formValue): Observable<any> {
-    window['TagManager'].SBTagService.pushTag(formValue,'USERLOCATION_', true);
-    window['TagManager'].SBTagService.pushTag(userDetails,'USERFRAMEWORK_', true);
+    if (window['TagManager']) {
+      window['TagManager'].SBTagService.pushTag(formValue, 'USERLOCATION_', true);
+      window['TagManager'].SBTagService.pushTag(userDetails, 'USERFRAMEWORK_', true);
+    }
     if (this.isDesktopApp) {
       userDetails.identifier = userDetails._id;
       const userType = localStorage.getItem('userType');
@@ -499,6 +507,7 @@ export class UserService {
       return this.updateAnonymousUserDetails(req);
     } else {
       localStorage.setItem('guestUserDetails', JSON.stringify(userDetails));
+      this.getGuestUser().subscribe();
       return of({});
     }
   }
@@ -509,6 +518,7 @@ export class UserService {
       return this.createAnonymousUser(req);
     } else {
       localStorage.setItem('guestUserDetails', JSON.stringify(userDetails));
+      this.getGuestUser().subscribe();
       return of({});
     }
   }

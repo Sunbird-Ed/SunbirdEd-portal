@@ -146,7 +146,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     const tenantService = TestBed.get(TenantService);
     spyOn(tenantService, 'get').and.returnValue(of(mockData.tenantResponse));
     spyOn(publicDataService, 'post').and.returnValue(of(maockOrgDetails));
-    orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654'};
+    orgDetailsService.orgDetails = {hashTagId: '1235654', rootOrgId: '1235654', id: '1235654'};
     component.ngOnInit();
     const config = {
       userOrgDetails: {

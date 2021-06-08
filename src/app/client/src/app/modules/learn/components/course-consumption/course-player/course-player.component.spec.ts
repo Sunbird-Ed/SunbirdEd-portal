@@ -8,7 +8,7 @@ import { ContentUtilsServiceService, ResourceService, SharedModule, ToasterServi
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 import { BehaviorSubject, of } from 'rxjs';
-import { NotificationService } from '../../../../notification/services/notification/notification.service';
+import { NotificationServiceImpl } from '../../../../notification/services/notification/notification-service-impl';
 import { assessmentPlayerMockData } from '../assessment-player/assessment-player.component.data.spec';
 import { CoursesService } from './../../../../core/services/course/course.service';
 import { enrolledBatch } from './../../batch/batch-details/batch-details.component.data';
@@ -163,7 +163,7 @@ describe('CoursePlayerComponent', () => {
         ContentUtilsServiceService, TelemetryService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
-        NotificationService,
+        NotificationServiceImpl,
         { provide: 'CS_USER_SERVICE', useValue: MockCSService },
         { provide: 'CS_COURSE_SERVICE', useValue: MockCSService },
       ],

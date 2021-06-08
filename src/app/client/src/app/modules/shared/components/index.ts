@@ -23,3 +23,4 @@ export * from './load-offline-content/load-offline-content.component';
 export * from './desktop-app-update/desktop-app-update.component';
 export * from './system-warning/system-warning.component';
 export * from './telemetry-error-modal/telemetry-error-modal.component';
+export * from './alert-modal/alert-modal.component'

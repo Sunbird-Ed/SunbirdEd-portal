@@ -245,7 +245,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       const channelList = this.getChannelList(_.get(orgList, 'contentData.result.facets'));
       const rootOrgIds = this.processOrgData(channelList);
       return this.orgDetailsService.searchOrgDetails({
-        filters: { isRootOrg: true, rootOrgId: rootOrgIds },
+        filters: { isTenant: true, id: rootOrgIds },
         fields: ['slug', 'identifier', 'orgName']
       });
     } else {
@@ -375,10 +375,16 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       requestParams['facets'] = this.facetsList;
     }
 
-    return combineLatest(
-      this.searchService.contentSearch(requestParams),
-      this.coursesService.enrolledCourseData$,
-      this.getCurrentPageData()).pipe(map(data => ({ contentData: data[0], enrolledCourseData: data[1], currentPageData: data[2] })));
+    if (this.userService.loggedIn) {
+      return combineLatest(
+        this.searchService.contentSearch(requestParams),
+        this.coursesService.enrolledCourseData$,
+        this.getCurrentPageData()).pipe(map(data => ({ contentData: data[0], enrolledCourseData: data[1], currentPageData: data[2] })));
+    } else {
+      return combineLatest(
+        this.searchService.contentSearch(requestParams),
+        this.getCurrentPageData()).pipe(map(data => ({ contentData: data[0], currentPageData: data[1] })));
+    }
   }
 
   private formatSearchresults(sectionData) {
@@ -495,13 +501,8 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   redoLayout() {
-    if (this.layoutConfiguration) {
-      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
-      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
-    } else {
-      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
-      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
-    }
+    this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
+    this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
   }
 
   processOrgData(channels) {

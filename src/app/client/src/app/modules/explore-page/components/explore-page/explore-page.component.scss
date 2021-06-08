@@ -1,0 +1,56 @@
+.course-card-width {
+  width: 280px !important;
+}
+.sb-section-preference {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #dad9cb;
+  padding: 2rem;
+  border-radius: 1.5rem;
+  position: relative;
+  overflow: hidden;
+    .preference {
+      position: relative;
+      z-index: 1;
+      .header {
+        font-size: 1rem;
+      }
+      p, span {
+        font-size: 0.8rem;
+      }
+      p {
+        margin-bottom: 0;
+      }
+      .title {
+        font-weight: bold;
+      }
+    }
+    .change-preference {
+      position: relative;
+      z-index: 1;
+    }
+    svg {
+      position: absolute;
+      right: 32px;
+      left: inherit;
+      top: inherit;
+      bottom: -16px;
+      opacity: 0.55;
+      width: 180px;
+      height: auto;
+      transform: rotate(-90deg);
+      z-index: 0;
+      display: block !important;
+    }
+}
+.section-hr {
+  border: 0.5px solid #dad9cb;
+}
+.no-background {
+  background: none;
+}
+.home-container {
+  padding:1.5rem;
+  border-radius:2.5rem;
+}

@@ -80,13 +80,13 @@ export class CourseDashboardComponent implements OnInit, OnDestroy {
     const batches = _.get(batchList, 'content');
     if (batches) {
       this.dashBoardItems.push({
-        title: this.resourceService.frmelmnts.lbl.totalBatches,
+        title: _.get(this.resourceService, 'frmelmnts.lbl.totalBatches'),
         count: _.get(batchList, 'count'),
         type: 'small',
       });
       _.forEach(batches, batch => {
-        this.updateDashBoardItems(this.resourceService.frmelmnts.lbl.totalCompletions, _.get(batch, 'completedCount'), 'large');
-        this.updateDashBoardItems(this.resourceService.frmelmnts.lbl.totalEnrollments, _.get(batch, 'participantCount'), 'small');
+        this.updateDashBoardItems(_.get(this.resourceService, 'frmelmnts.lbl.totalCompletions'), _.get(batch, 'completedCount'), 'large');
+        this.updateDashBoardItems(_.get(this.resourceService, 'frmelmnts.lbl.totalEnrollments'), _.get(batch, 'participantCount'), 'small');
         });
     }
   }

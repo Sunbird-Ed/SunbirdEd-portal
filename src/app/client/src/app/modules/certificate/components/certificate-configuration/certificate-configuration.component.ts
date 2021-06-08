@@ -144,17 +144,17 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   initializeLabels() {
     this.config = {
       select: {
-        label: this.resourceService.frmelmnts.lbl.Select,
+        label: _.get(this.resourceService, 'frmelmnts.lbl.Select'),
         name: 'Select',
         show: true
       },
       preview: {
-        label: this.resourceService.frmelmnts.cert.lbl.preview,
+        label: _.get(this.resourceService, 'frmelmnts.cert.lbl.preview'),
         name: 'Preview',
         show: true
       },
       remove: {
-        label: this.resourceService.frmelmnts.cert.lbl.unselect,
+        label: _.get(this.resourceService, 'frmelmnts.cert.lbl.unselect'),
         name: 'Remove',
         show: false
       }
@@ -299,6 +299,9 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
 
   attachCertificateToBatch() {
     this.sendInteractData({ id: this.configurationMode === 'add' ? 'attach-certificate' : 'confirm-template-change' });
+    if(this.addScoreRule === false) {
+      this.userPreference.value['scoreRange'] = null;
+    }
     const request = {
       'request': {
         'batch': {
@@ -323,9 +326,9 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     this.certRegService.addCertificateTemplate(request).subscribe(data => {
       this.isTemplateChanged = false;
       if (this.configurationMode === 'add') {
-        this.toasterService.success(this.resourceService.frmelmnts.cert.lbl.certAddSuccess);
+        this.toasterService.success(_.get(this.resourceService, 'frmelmnts.cert.lbl.certAddSuccess'));
       } else {
-        this.toasterService.success(this.resourceService.frmelmnts.cert.lbl.certUpdateSuccess);
+        this.toasterService.success(_.get(this.resourceService, 'frmelmnts.cert.lbl.certUpdateSuccess'));
       }
       this.certificateService.getBatchDetails(_.get(this.queryParams, 'batchId')).subscribe(batchDetails => {
         this.batchDetails = _.get(batchDetails, 'result.response');
@@ -336,15 +339,15 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       });
     }, error => {
       if (this.configurationMode === 'add') {
-        this.toasterService.error(this.resourceService.frmelmnts.cert.lbl.certAddError);
+        this.toasterService.error(_.get(this.resourceService, 'frmelmnts.cert.lbl.certAddError'));
       } else {
-        this.toasterService.error(this.resourceService.frmelmnts.cert.lbl.certEditError);
+        this.toasterService.error(_.get(this.resourceService, 'frmelmnts.cert.lbl.certEditError'));
       }
     });
   }
 
   processCertificateDetails(certTemplateDetails) {
-    const templateData = _.pick(_.get(certTemplateDetails, Object.keys(certTemplateDetails)), ['criteria', 'previewUrl', 'artifactUrl', 'identifier', 'data', 'issuer', 'signatoryList','name']);
+    const templateData = _.pick(_.get(certTemplateDetails, Object.keys(certTemplateDetails)), ['criteria', 'previewUrl', 'artifactUrl', 'identifier', 'data', 'issuer', 'signatoryList','name', 'url']);
     this.templateIdentifier = _.get(templateData, 'identifier');
     this.selectedTemplate = { 
       'name': _.get(templateData, 'name'), 
@@ -355,6 +358,10 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       'signatoryList': JSON.stringify(_.get(templateData, 'signatoryList')),
       'artifactUrl':_.get(templateData, 'artifactUrl')
      };
+     if(!_.get(templateData, 'previewUrl') && _.get(templateData, 'url')) {
+      this.selectedTemplate['previewUrl'] = _.get(templateData, 'url');
+      templateData['previewUrl'] = _.get(templateData, 'url');
+     }
     // if (!_.isEmpty(this.newTemplateIdentifier)) {
     //   this.templateIdentifier = this.newTemplateIdentifier;
     //   this.selectedTemplate = null;
@@ -556,6 +563,9 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     this.arrayValue['range']=arr;
   }
   removeRule(){
+    setTimeout(() => {
+      this.userPreference.value['scoreRange'] = null;
+    }, 500);
     this.addScoreRule = false;
   }
 }

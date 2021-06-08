@@ -9,11 +9,6 @@ import DatabaseSDK from "../sdk/database/index";
 import Response from "../utils/response";
 import { ILocation } from "./ILocation";
 import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
-
-/*@ClassLogger({
-  logLevel: "debug",
-  logTime: true,
-})*/
 export class Location {
     @Inject private databaseSdk: DatabaseSDK;
     @Inject private telemetryHelper: TelemetryHelper;
