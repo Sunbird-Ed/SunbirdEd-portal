@@ -65,6 +65,7 @@
     "GET_GENERALISED_RESOURCE": "getGeneralisedResourcesBundles",
     "OBSERVATION_PREFIX": "/assessment/",
     "KENDRA_PREFIX": "/kendra/",
+    "CLOUD_PREFIX":"/cloudUpload/",
     "REPORT": {
       "READ": "/get",
       "LIST": "/list",
