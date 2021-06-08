@@ -1,4 +1,4 @@
-import { Directive, HostListener, OnInit, Input, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { Directive, OnInit, Input, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import { UtilService } from '@sunbird/shared';
 /**
@@ -12,14 +12,6 @@ import { UtilService } from '@sunbird/shared';
 })
 export class TelemetryEventsDirective implements OnInit {
 
-  //Component
-  // @ViewChild('telemetryButton', { static: false }) telButton: ElementRef;
-
-  // @Input() set telemetryEventsButton(showButton:boolean) {
-  //   this.showButton = showButton;
-  //   console.log("Show telemetry events button: ", this.showButton);
-  // } 
-
   constructor(private elementRef: ElementRef, 
     private telemetryService: TelemetryService, 
     private utilService: UtilService,
@@ -27,7 +19,6 @@ export class TelemetryEventsDirective implements OnInit {
 
   }
 
-  // showButton = false;
   unlistenTelemetryEventShow;
   unlistenTelemetryEvent;
   

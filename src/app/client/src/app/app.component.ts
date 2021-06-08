@@ -150,8 +150,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.ngOnDestroy();
   }
 
-
-
   handleLogin() {
     window.location.replace('/sessionExpired');
     this.cacheService.removeAll();
