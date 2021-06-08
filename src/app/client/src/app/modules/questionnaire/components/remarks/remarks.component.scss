@@ -1,0 +1,15 @@
+.text-area {
+  display: flex;
+  border-color: lightgray;
+  .alignleft {
+    margin-top: 20px;
+    align-items: flex-start;
+    border-radius: 5px;
+    width: 100%;
+  }
+  .alignright {
+    margin-top: 35px;
+    left: 70px;
+    align-items: flex-end;
+  }
+}

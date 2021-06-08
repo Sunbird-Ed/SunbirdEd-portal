@@ -1,0 +1,94 @@
+<div class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9">
+  <div class="ui container">
+    <div class="py-8 d-flex flex-ai-center">
+      <!-- /* Back button */ -->
+      <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto"
+        (click)="goBack()">
+        <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+            <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+          </svg></i>
+        {{resourceService.frmelmnts?.btn?.back}}
+      </button>
+    </div>
+  </div>
+</div>
+<div class="content-header cc-player__content-header">
+  <div class="ui container py-16">
+    <div class="content-header__content">
+      <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
+        <div class="content-header__title font-weight-bold ellipsis text-left">{{solution}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="ui container">
+  <div class="sb-course-details sb-g sb-g--gap24 py-16 text-left course-consumption-container">
+    <div class="sb-course-details__training sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
+      <div class="training-info">
+        <h4 class="font-weight-bold">{{resourceService.frmelmnts?.lbl?.observationDetails}} </h4>
+        <div class="training-relevant my-16 content-header__content">
+          <div class="observation-detail-box">
+            <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
+              <div class="content-header__title font-weight-bold ellipsis text-left">
+                {{resourceService.frmelmnts?.lbl?.selectEntity}}
+              </div>
+            </div>
+            <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
+              <button class="sb-btn sb-btn-primary sb-btn-normal mr-8" (click)="addEntity()">
+                {{resourceService.frmelmnts?.btn?.addEntity}}
+              </button>
+            </div>
+          </div>
+          <div *ngIf="entities">
+            <entity-list [entities]="entities.entities" [selectedEntity]="selectedEntity" (onAction)="actionOnEntity($event)"> </entity-list>
+          </div>
+          <div class="twelve wide column" *ngIf="entities?.length === 0 && !showLoader">
+            <app-no-result [data]="noResultMessage"></app-no-result>
+          </div>
+          <div class="observation-detail-box">
+            <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
+              <div class="content-header__title font-weight-bold ellipsis text-left">
+                {{resourceService.frmelmnts?.lbl?.observationForm}}
+              </div>
+            </div>
+            <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons"
+              *ngIf="entities?.allowMultipleAssessemts">
+              <button class="sb-btn sb-btn-primary sb-btn-normal mr-8" (click)="observeAgain()">
+                {{resourceService.frmelmnts?.btn?.observeAgaian}}
+              </button>
+            </div>
+          </div>
+          <div class="submissions">
+            <div class="twelve wide column margin-btm" *ngIf="showLoader">
+              <app-loader [data]='loaderMessage'></app-loader>
+            </div>
+            <div class="twelve wide column" *ngIf="submissions?.length === 0 && !showLoader">
+              <app-no-result [data]="noResultMessage"></app-no-result>
+            </div>
+            <submission [submissions]="submissions" *ngIf="submissions?.length && !showLoader"
+              (selectedSubmission)="redirectToQuestions($event)"
+              (onAction)="actionOnSubmission($event)"> </submission>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sb-course-details__info sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4">
+      <sui-accordion class="styled fluid sb-accordion sb-new-theme-accordion">
+        <sui-accordion-panel [isOpen]="false">
+          <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
+            <span>{{resourceService.frmelmnts?.lbl?.desktop?.creditsAndLicenceInfo}}</span>
+            <i class="chevron down icon" role="img" title="expand"></i>
+          </div>
+          <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-8">
+          </div>
+        </sui-accordion-panel>
+      </sui-accordion>
+    </div>
+  </div>
+</div>
+<div *ngIf="showDownloadModal">
+  <add-entity (closeEvent)="modalClose()" [observationId]="observationId" [solutionId]="solutionId"> </add-entity>
+</div>
+<div *ngIf="openEditModal.show">
+  <app-edit-submission [submission]="openEditModal.data" (onAction)="closeEditModal($event)"> </app-edit-submission>
+</div>
