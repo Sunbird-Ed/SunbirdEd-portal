@@ -60,6 +60,7 @@
           'evidence-completed': evidence?.isSubmitted
         }"
         class="sticky-footer"
+        *ngIf="!evidence?.isSubmitted"
       >
         <button
           class="sb-btn sb-btn-normal sb-btn-primary"

@@ -26,7 +26,7 @@ export class InputTypeAttachmentComponent implements OnInit {
     let sizeMB = +(files[0].size / 1000 / 1000).toFixed(4);
     if (sizeMB > 20) {
       this.fileLimitCross();
-      return
+      return;
     }
     this.formData = new FormData();
     Array.from(files).forEach((f) => this.formData.append("file", f));
@@ -155,7 +155,28 @@ export class InputTypeAttachmentComponent implements OnInit {
     this.observationUtil.showPopupAlert(metaData);
   }
 
-  deleteAttachment(fileIndex) {
+  async deleteAttachment(fileIndex) {
+    let metaData = await this.observationUtil.getAlertMetaData();
+    metaData.content.body.data =
+      this.resourceService.frmelmnts.alert.confirm_evidence_delete;
+    metaData.content.body.type = "text";
+    metaData.content.title = this.resourceService.frmelmnts.btn.delete;
+    metaData.size = "mini";
+    metaData.footer.buttons.push({
+      type: "cancel",
+      returnValue: false,
+      buttonText: this.resourceService.frmelmnts.btn.no,
+    });
+    metaData.footer.buttons.push({
+      type: "accept",
+      returnValue: true,
+      buttonText: this.resourceService.frmelmnts.btn.yes,
+    });
+    metaData.footer.className = "double-btn";
+    const accepted = await this.observationUtil.showPopupAlert(metaData);
+    if (!accepted) {
+      return;
+    }
     this.data.files.splice(fileIndex, 1);
   }
 
