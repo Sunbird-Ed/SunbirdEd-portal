@@ -1,0 +1,26 @@
+<div
+  class="
+    d-flex
+    flex-ai-center flex-dc
+    mt-30
+    ng-dirty ng-invalid ng-touched
+    range-wrap
+  "
+  [formGroup]="questionnaireForm"
+  *ngIf="questionnaireForm?.contains(question._id)"
+>
+  <div class="range-value" id="rangeV">{{ this.question.value }}</div>
+
+  <input
+    id="range"
+    type="range"
+    [min]="min"
+    [max]="max"
+    [ngClass]="isValid && isTouched ? 'is-invalid' : 'is-valid'"
+    step="1"
+    [formControlName]="question?._id"
+    class="w-100"
+    (change)="onChange($event)"
+    [value]="question.value"
+  />
+</div>

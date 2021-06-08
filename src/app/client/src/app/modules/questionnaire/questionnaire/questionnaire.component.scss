@@ -1,0 +1,31 @@
+@import "mixins/mixins";
+
+.sections {
+  width: 80%;
+  height: auto;
+}
+
+.sticky-footer{
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  background-color: var(--sb-card-bg);
+  padding: 15px 0;
+  border-radius: 5px;
+  margin: 15px 0;
+}
+
+.section-list {
+  margin-bottom: 20px;
+  z-index: 9;
+  position: relative;
+}
+
+.evidence-completed {
+  pointer-events: none;
+
+  button {
+    pointer-events: none;
+  }
+
+}
