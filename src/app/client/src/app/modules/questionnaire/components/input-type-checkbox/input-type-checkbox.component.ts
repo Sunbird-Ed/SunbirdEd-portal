@@ -1,5 +1,8 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormGroup, FormControl, Validators, FormArray } from "@angular/forms";
+import { Question } from "../../Interface/assessmentDetails";
+import { QuestionnaireService } from "../../questionnaire.service";
+import { ResourceService } from "@sunbird/shared";
 
 @Component({
   selector: "input-type-checkbox",
@@ -9,25 +12,42 @@ import { FormGroup, FormControl, Validators, FormArray } from "@angular/forms";
 export class InputTypeCheckboxComponent implements OnInit {
   @Input() options;
   @Input() questionnaireForm: FormGroup;
-  @Input() question: any;
-  constructor() {}
+  @Input() question: Question;
+  @Output() dependentParent = new EventEmitter<Question>();
+  isDimmed: any;
+  hint: any;
+
+  constructor(
+    public qService: QuestionnaireService,
+    public resourceService: ResourceService
+  ) {}
 
   ngOnInit() {
-    const optionControl = this.options.map((v) => {
-      if (this.question.value && this.question.value.find((_v) => _v == v.value)) {
-        return new FormControl(v.value);
+    setTimeout(() => {
+      const optionControl = this.options.map((v) => {
+        if (
+          this.question.value &&
+          (this.question.value as Array<string>).find((_v) => _v == v.value)
+        ) {
+          return new FormControl(v.value);
+        }
+        return new FormControl("");
+      });
+
+      this.questionnaireForm.addControl(
+        this.question._id,
+        new FormArray(optionControl, this.qService.validate(this.question))
+      );
+
+      this.question.startTime = this.question.startTime
+        ? this.question.startTime
+        : Date.now();
+      if (this.question.value.length) {
+        if (this.question.children.length) {
+          this.dependentParent.emit(this.question);
+        }
       }
-      return new FormControl("");
     });
-
-    this.questionnaireForm.addControl(
-      this.question._id,
-      new FormArray(optionControl, Validators.required)
-    );
-
-    this.question.startTime = this.question.startTime
-      ? this.question.startTime
-      : Date.now();
   }
 
   onChange(oId: string, isChecked: boolean, oIndex: number) {
@@ -39,15 +59,20 @@ export class InputTypeCheckboxComponent implements OnInit {
     }
     this.question.value =
       this.questionnaireForm.controls[this.question._id].value;
-    this.question.value = this.question.value.filter(Boolean);
+    this.question.value = (this.question.value as Array<string>).filter(
+      Boolean
+    );
     this.question.endTime = Date.now();
+    if (this.question.children.length) {
+      this.dependentParent.emit(this.question);
+    }
   }
 
-  get isValid() {
+  get isValid(): boolean {
     return this.questionnaireForm.controls[this.question._id].valid;
   }
 
-  get isTouched() {
+  get isTouched(): boolean {
     return this.questionnaireForm.controls[this.question._id].touched;
   }
 }

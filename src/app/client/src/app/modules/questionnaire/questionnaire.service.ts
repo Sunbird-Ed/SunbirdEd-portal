@@ -1,49 +1,73 @@
 import { Injectable } from "@angular/core";
 import { AbstractControl, ValidatorFn } from "@angular/forms";
 import { ConfigService } from "@sunbird/shared";
-import { KendraService } from "@sunbird/core";
+import { KendraService, CloudService } from "@sunbird/core";
+import {
+  Evidence,
+  Question,
+  ResponseType,
+} from "./Interface/assessmentDetails";
 
 @Injectable({
   providedIn: "root",
 })
 export class QuestionnaireService {
-  private _submissionId: any;
+  private _submissionId: string;
   constructor(
     private config: ConfigService,
-    private kendraService: KendraService
-  ) {}
+    private kendraService: KendraService,
+    private cloudServ: CloudService,
+  ) { }
 
-  validate = (data): ValidatorFn => {
+  validate = (data: Question): ValidatorFn => {
     return (control: AbstractControl): { [key: string]: any } | null => {
+      if (typeof data.validation == "string") {
+        return null;
+      }
       if (!data.validation.required) {
         return null;
       }
       if (data.validation.regex) {
         const forbidden = this.testRegex(data.validation.regex, control.value);
-        return forbidden ? null : { err: "Only alphabets allowed" };
+        return forbidden ? null : { err: "Invalid character found" };
       }
 
       if (data.validation.IsNumber) {
+        if (!control.value) {
+          return { err: "Number not entered" };
+        }
         const forbidden = !isNaN(control.value);
         return forbidden ? null : { err: "Only numbers allowed" };
       }
 
       if (data.validation.required) {
-        if (!control.value || !control.value.length) {
+        if (!control.value ) {
           return { err: "Required field" };
         }
-      }
 
-      return null;
+        if (data.responseType == ResponseType.MULTISELECT) {
+          return control.value.some((v) => v != "")
+            ? null
+            : { err: "Select at least one option" };
+        }
+
+        if (data.responseType == ResponseType.SLIDER) {
+          let min = data.validation.min;
+          let max = data.validation.max;
+          return min <= control.value && control.value <= max
+            ? null
+            : { err: "Selected value  not within range" };
+        }
+      }
     };
   };
 
-  public testRegex(rege, value): boolean {
-    const regex = new RegExp(rege);
+  public testRegex(regexExpression: RegExp, value: string): boolean {
+    const regex = new RegExp(regexExpression);
     return regex.test(value);
   }
 
-  getEvidenceData(evidence, formValues) {
+  getEvidenceData(evidence: Evidence, formValues: object) {
     let sections = evidence.sections;
     let answers = this.getSectionData(sections, formValues);
     let payloadData = {
@@ -101,8 +125,8 @@ export class QuestionnaireService {
     return {
       qid: currentQuestion._id,
       value: value,
-      remarks: "", // todo :
-      fileName: [], //todo,
+      remarks: currentQuestion.remarks,
+      fileName: currentQuestion.fileName, //todo,
       gpsLocation: "",
       payload: {
         question: currentQuestion.question,
@@ -142,9 +166,12 @@ export class QuestionnaireService {
                         questions,
                         evidence.externalId
                       );
-                questions.remarks = validSubmission.answers[question._id]
-                  ? validSubmission.answers[question._id].remarks
+                questions.remarks = validSubmission.answers[questions._id]
+                  ? validSubmission.answers[questions._id].remarks
                   : "";
+                questions.fileName = validSubmission.answers[questions._id]
+                  ? validSubmission.answers[questions._id].fileName
+                  : [];
               }
             } else if (
               validSubmission.answers &&
@@ -154,13 +181,16 @@ export class QuestionnaireService {
                 question.responseType !== "matrix"
                   ? validSubmission.answers[question._id].value
                   : this.constructMatrixValue(
-                      validSubmission,
-                      question,
-                      evidence.externalId
-                    );
+                    validSubmission,
+                    question,
+                    evidence.externalId
+                  );
               question.remarks = validSubmission.answers[question._id]
                 ? validSubmission.answers[question._id].remarks
                 : "";
+              question.fileName = validSubmission.answers[question._id]
+                ? validSubmission.answers[question._id].fileName
+                : [];
             }
           }
         }
@@ -187,14 +217,20 @@ export class QuestionnaireService {
             validSubmission.answers[matrixQuestion._id] &&
             validSubmission.answers[matrixQuestion._id].value[index][
               question._id
-            ].value
+            ]
           ) {
             question.value =
               validSubmission.answers[matrixQuestion._id].value[index][
                 question._id
               ].value;
             question.remarks =
-              validSubmission.answers[matrixQuestion._id].value[index].remarks;
+              validSubmission.answers[matrixQuestion._id].value[index][
+                question._id
+              ].remarks;
+            question.fileName =
+              validSubmission.answers[matrixQuestion._id].value[index][
+                question._id
+              ].fileName;
           }
         });
       });
@@ -218,4 +254,17 @@ export class QuestionnaireService {
     };
     return this.kendraService.post(paramOptions);
   }
+
+  cloudStorageUpload(payload) {
+    const paramOptions = {
+      url: 'upload',
+      data: payload,
+      // header:{
+      //   "Content-Type": "multipart/form-data",
+      // }
+    };
+    return this.cloudServ.put(paramOptions)
+    // return this.http.put(payload['url'], payload.data)
+  }
+
 }

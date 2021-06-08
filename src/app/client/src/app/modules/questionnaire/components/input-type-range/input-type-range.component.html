@@ -7,14 +7,15 @@
     range-wrap
   "
   [formGroup]="questionnaireForm"
+  *ngIf="questionnaireForm?.contains(question._id)"
 >
-  <div class="range-value" id="rangeV">{{this.question.value}}</div>
-  
+  <div class="range-value" id="rangeV">{{ this.question.value }}</div>
+
   <input
     id="range"
     type="range"
-    [min]="question.validation.min"
-    [max]="question.validation.max"
+    [min]="min"
+    [max]="max"
     [ngClass]="isValid && isTouched ? 'is-invalid' : 'is-valid'"
     step="1"
     [formControlName]="question?._id"

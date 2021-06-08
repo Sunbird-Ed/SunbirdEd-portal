@@ -128,10 +128,11 @@ export class ObservationListingComponent
      if(!this.showEditUserDetailsPopup){
        let metaData=this.observationUtil.getAlertMetaData();
        metaData.type="update profile";
+       metaData.isClosed=true;
        metaData.size="mini";
-       metaData.content.title=this.resourceService.frmelmnts.alert.updateProfileTitle;
+       metaData.content.title=this.resourceService.frmelmnts.alert.updateprofiletitle;
        metaData.content.body.type="text";
-       metaData.content.body.data=this.resourceService.frmelmnts.alert.updateProfileContent;
+       metaData.content.body.data=this.resourceService.frmelmnts.alert.updateprofilecontent;
        metaData.footer.className="single-btn"
        metaData.footer.buttons.push(
         {
@@ -219,7 +220,7 @@ export class ObservationListingComponent
 
     data.forEach((value) => {
       let solution_name:string = value.name;
-      solution_name = (solution_name && solution_name.length) ? solution_name[0].toUpperCase() + solution_name.slice(1) :"";
+      solution_name = (solution_name && solution_name.length) ? solution_name[0].toUpperCase() + solution_name.slice(1): "";
       const subject:any=[];
       subject.push(value.programName.toString())
       let obj = {
@@ -323,7 +324,8 @@ export class ObservationListingComponent
       programId: data.programId,
       solutionId: data.solutionId,
       observationId: data._id,
-      solutionName: data.name
+      solutionName: data.name,
+      programName:data.subject[0]
     };
     this.router.navigate(["observation/details"], {
       queryParams: this.queryParam,

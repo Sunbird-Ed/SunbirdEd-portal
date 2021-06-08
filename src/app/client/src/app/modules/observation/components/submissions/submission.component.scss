@@ -36,6 +36,9 @@
     background:var(--sb-card-bg) !important;
     padding: 1rem 1.5rem !important;
     border-radius: var(--sbt-bradius-24);
+    .txt-transform{
+        text-transform: capitalize;
+    }
 }
 .icon{
     color: var(--primary-400) !important;

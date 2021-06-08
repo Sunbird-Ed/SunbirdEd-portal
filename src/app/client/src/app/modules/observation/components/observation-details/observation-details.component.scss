@@ -28,3 +28,15 @@
   .margin-btm{
     margin-bottom: 2rem;
   }
+  :host ::ng-deep { 
+ .ui.dropdown .menu>.item{
+    color: var(--sb-linkmenu-text);
+ }
+ .ui.dropdown .menu{
+    background: var(--sb-card-bg);
+ }
+}
+.icon{
+  color: var(--primary-400) !important;
+  padding-left: 15px;
+}

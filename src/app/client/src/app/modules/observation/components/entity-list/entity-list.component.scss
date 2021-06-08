@@ -9,4 +9,7 @@
     .icon {
         color: var(--primary-400) !important;;
         }
+        .icon:hover{
+            cursor: pointer;
+          }
 }
