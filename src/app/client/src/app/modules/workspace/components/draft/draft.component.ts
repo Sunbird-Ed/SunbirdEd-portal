@@ -202,7 +202,7 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
         this.draftList = [];
         this.totalCount = 0;
         this.noResult = false;
-        const primaryCategories = _.concat(this.frameworkService['_channelData'].contentPrimaryCategories, this.frameworkService['_channelData'].collectionPrimaryCategories);
+        const primaryCategories = _.compact(_.concat(this.frameworkService['_channelData'].contentPrimaryCategories, this.frameworkService['_channelData'].collectionPrimaryCategories));
         if (bothParams['queryParams'].sort_by) {
             const sort_by = bothParams['queryParams'].sort_by;
             const sortType = bothParams['queryParams'].sortType;
@@ -217,7 +217,7 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
                 status: ['Draft', 'FlagDraft'],
                 createdBy: this.userService.userid,
                 // tslint:disable-next-line:max-line-length
-                primaryCategory: _.get(bothParams, 'queryParams.primaryCategory') || primaryCategories || this.config.appConfig.WORKSPACE.primaryCategory,
+                primaryCategory: _.get(bothParams, 'queryParams.primaryCategory') || (!_.isEmpty(primaryCategories) ? primaryCategories : this.config.appConfig.WORKSPACE.primaryCategory),
                 mimeType: this.config.appConfig.WORKSPACE.mimeType,
                 board: bothParams['queryParams'].board,
                 subject: bothParams['queryParams'].subject,
