@@ -1,7 +1,5 @@
 import { Component, OnInit, ViewChild, Output } from '@angular/core';
-import { UtilService } from '../../services/util/util.service';
 import { TelemetryService } from '@sunbird/telemetry';
-import { EventEmitter } from '@angular/core';
 
 /**
  * This is to show the telemetry events generated
@@ -16,7 +14,7 @@ import { EventEmitter } from '@angular/core';
 })
 export class TelemetryErrorModalComponent implements OnInit {
 
-  constructor(private utilService: UtilService, private telemetryService: TelemetryService) { }
+  constructor( private telemetryService: TelemetryService) { }
 
   // @Output() close = new EventEmitter();
 
@@ -31,19 +29,10 @@ export class TelemetryErrorModalComponent implements OnInit {
     { name: 'edata.stacktrace', isSortable: false, prop: 'edata.stacktrace', placeholder: 'Filter by string' }
   ];
 
-  CONSTANTS = {
-    TEL_ERROR: "ERROR"
-  }
-  
-
-  // Latest event pushed to telemetryEventsArr. This is to avoid duplication of events adding to telemetryEventsArr
-  latestEvent = undefined;
-
   // To show/hide the telemetry events modal 
   showTelemetryEventsModal = false;
 
-  ngOnInit() {
-    // this.listenTelemetryEvents();          
+  ngOnInit() {         
     this.telemetryEventsArr = this.telemetryService.telemetryEvents;
   }
 
