@@ -2,6 +2,9 @@
 @import "mixins/mixins";
 
 .add-entity-modal{
+  .sb-modal-content {
+    height: calc(100vh - 350px) !important;
+    }
   .content{
     max-height: 65vh;
     label{
@@ -12,7 +15,6 @@
     }
   }
   .footer{
-    margin-top: calculateRem(16px);
     width: 100%;
     text-align: center;
     display: flex;
@@ -50,7 +52,6 @@
   .sb-onbrd-modal {
     @include respond-below(sm) {
       .ui.modal {
-        width: 80%;
         margin: 0 0 0 0;
         top: 0;
         left: 0;
@@ -61,8 +62,6 @@
 
       .ui.modal.scroll {
         position: fixed !important;
-        margin-top: o !important;
-        margin-bottom: 0px !important;
         top: 0;
         width: 100%;
         left: 0px;
@@ -94,3 +93,5 @@ input[type=checkbox][disabled] {
   background: var(--sb-card-bg);
   border: #ccc;
 }
+.search-results{ height : 100%; overflow-y: scroll; }
+

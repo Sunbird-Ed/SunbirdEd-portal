@@ -22,6 +22,7 @@ import {
   ISort,
   OrgDetailsService,
   SchemaService,
+  KendraService
 } from "@sunbird/core";
 import { combineLatest, Subject, of } from "rxjs";
 import {
@@ -50,7 +51,6 @@ import {
 } from "rxjs/operators";
 import { CacheService } from "ng2-cache-service";
 import { ContentManagerService } from "../../../public/module/offline/services/content-manager/content-manager.service";
-import { KendraService } from "@sunbird/core";
 import { ObservationUtilService } from "../../service";
 import {Location} from '@angular/common';
 
@@ -324,7 +324,8 @@ export class ObservationListingComponent
       programId: data.programId,
       solutionId: data.solutionId,
       observationId: data._id,
-      solutionName: data.name
+      solutionName: data.name,
+      programName:data.subject[0]
     };
     this.router.navigate(["observation/details"], {
       queryParams: this.queryParam,

@@ -7,12 +7,10 @@
     <!-- Filter for web version -->
     <!-- `isFilterEnabled` reference from current page data --> 
     <div *ngIf="!isDesktopApp && isFilterEnabled" [ngClass]="FIRST_PANEL_LAYOUT">
-      <div [ngClass]="isDesktopApp ? 'sb-desktop-filter-section' : ''">
         <app-search-filter [facets$]="facets$" [layoutConfiguration]="layoutConfiguration" [isOpen]='true' *ngIf="initFilter"
-        (filterChange)="getFilters($event)" [pageData]="getCurrentPageData()" [pageId]="isUserLoggedIn() ? 'resource-page' : 'explore-page'" [defaultFilters]="defaultFilters">
+        (filterChange)="getFilters($event)" [defaultTab]="defaultTab" [pageData]="getCurrentPageData()" [pageId]="isUserLoggedIn() ? 'resource-page' : 'explore-page'" [defaultFilters]="defaultFilters">
       </app-search-filter>
     </div>
-  </div>
     <!-- Filter for desktop version -->
     <div *ngIf="isDesktopApp" [ngClass]="FIRST_PANEL_LAYOUT">
         <div *ngIf="layoutConfiguration">
@@ -22,7 +20,7 @@
             <app-system-warning></app-system-warning>
           </div>
         </div>
-      <div [ngClass]="isDesktopApp ? 'sb-desktop-filter-section' : ''">
+      <div class="sb-desktop-filter-section" *ngIf="isFilterEnabled">
         <app-search-filter [facets$]="facets$" [layoutConfiguration]="layoutConfiguration" [isOpen]='true' *ngIf="initFilter"
           (filterChange)="getFilters($event)" [pageData]="getCurrentPageData()" [pageId]="isUserLoggedIn() ? 'resource-page' : 'explore-page'" [defaultFilters]="defaultFilters">
         </app-search-filter>
@@ -43,17 +41,17 @@
           </div>
         </div>
         <div class="sb-library-cards relative9">
-          <div *ngIf="!layoutConfiguration">
-            <h4 class="sb-categories-title text-left mt-16" *ngIf="apiContentList.length">
-              {{resourceService?.frmelmnts?.lbl?.textbooks}}</h4>
-          </div>
+            <div *ngIf="!layoutConfiguration && (getSelectedTab() !== 'home' && getSelectedTab() !== 'explore')">
+              <h4 class="sb-categories-title text-left mt-16" *ngIf="apiContentList.length">
+                {{resourceService?.frmelmnts?.lbl?.textbooks}}</h4>
+            </div>
           <div class="twelve wide column relative9" *ngIf="enrolledSection?.contents?.length && isUserLoggedIn() && !_currentPageData?.sections">
             <app-page-section [hideProgress]="true" (visits)="prepareVisits($event)" [section]="enrolledSection"
               (playEvent)="playEnrolledContent($event, 'My courses')" (viewAll)="viewAll($event)"></app-page-section>
           </div>
 
           <!-- Template for displaying sections based on form configuration -->
-          <div *ngIf="_currentPageData?.sections && _currentPageData?.isEnabled && !isDesktopApp">
+          <div *ngIf="_currentPageData?.sections && _currentPageData?.isEnabled">
             <div *ngIf="getSelectedTab() === 'home'" class="sb-section-preference">
               <div class="preference">
                 <p class="header title">{{resourceService?.frmelmnts?.lbl?.yourPreferences}}</p>
@@ -96,7 +94,7 @@
                 [minDisplayCount]="section?.section?.theme?.limit || 4"
                 [viewMoreText]="resourceService?.frmelmnts?.lbl?.viewmore"
                 [viewLessText]="resourceService?.frmelmnts?.lbl?.viewless" [pillSize]="'medium'" [platform]="'portal'"
-                [pillBorder]="'semi_round'" [pillsMultiRow]="'double_view_row'" (select)="handlePillSelect($event, section.name)">
+                [pillBorder]="'semi_round'" [pillsMultiRow]="'auto_responsive'" [pillTextElipsis]="'two_line'" (select)="handlePillSelect($event, section.name)">
                 <sb-pill-item *ngFor="let pillData of section.data" [name]="pillData?.name | titlecase"
                   [icon]="utilService.getSectionPillIcon(section?.section?.theme?.icons, pillData?.value)" [value]="pillData"
                   [theme]="pillData?.theme"></sb-pill-item>
@@ -138,7 +136,7 @@
             <sb-library-cards-grid [layoutConfig]="layoutConfiguration" *ngFor="let i of numberOfSections"
               [type]="'infinite_card_grid'" [isLoading]="true" [maxCardCount]="!isUserLoggedIn() ? 4: 3"></sb-library-cards-grid>
           </div>
-          <div *ngIf="apiContentList.length === 0 && !showLoader">
+          <div *ngIf="apiContentList.length === 0 && !showLoader && (getSelectedTab() !== 'home' && getSelectedTab() !== 'explore')">
             <app-no-result-found (exploreMoreContent)="navigateToExploreContent()" [filters]="selectedFilters"
               [title]="noResultMessage?.title" [subTitle]="noResultMessage?.subTitle"
               [buttonText]="noResultMessage?.buttonText"

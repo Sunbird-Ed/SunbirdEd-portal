@@ -1,11 +1,9 @@
 import { Injectable } from "@angular/core";
-import { UserService } from "@sunbird/core";
-import { IUserData, ConfigService,ResourceService,AlertModal } from "@sunbird/shared";
+import { UserService, KendraService } from "@sunbird/core";
+import { IUserData, ConfigService, ResourceService, AlertModal } from "@sunbird/shared";
 import { take } from "rxjs/operators";
-import { KendraService } from "@sunbird/core";
-import {SuiModalService} from "ng2-semantic-ui";
+import { SuiModalService } from "ng2-semantic-ui";
 import { Router } from "@angular/router";
-
 
 @Injectable({
   providedIn: "root",
@@ -42,14 +40,10 @@ export class ObservationUtilService {
           return true;
         }
       })
-      .catch((error) => {});
+      .catch((error) => { });
   }
 
   async getMandatoryEntities(): Promise<any> {
-    const profile = JSON.parse(
-      sessionStorage.getItem("CacheServiceuserProfile")
-    );
-    this.profile = profile.value;
     await this.getProfileDataList();
     return new Promise((resolve, reject) => {
       const config = {
@@ -104,9 +98,14 @@ export class ObservationUtilService {
 
   getProfileDataList() {
     return new Promise((resolve, reject) => {
-      const profileData = JSON.parse(
-        sessionStorage.getItem("CacheServiceuserProfile")
-      );
+      let profileData
+      try {
+        profileData = JSON.parse(
+          sessionStorage.getItem("CacheServiceuserProfile")
+        );
+      } catch {
+        reject()
+      }
       const obj = {};
       for (const location of profileData.value["userLocations"]) {
         obj[location.type] = location.id;
@@ -119,7 +118,7 @@ export class ObservationUtilService {
 
       obj["role"] =
         profileData.value["profileUserType"] &&
-        profileData.value["profileUserType"]["subType"]
+          profileData.value["profileUserType"]["subType"]
           ? profileData.value["profileUserType"]["subType"].toUpperCase()
           : null;
       this.dataParam = obj;
@@ -131,10 +130,10 @@ export class ObservationUtilService {
     return new Promise((resolve, reject) => {
       this.modalService
         .open(new AlertModal(alertData))
-        .onApprove((val:any) => {
+        .onApprove((val: any) => {
           resolve(val);
         })
-        .onDeny((val:any) => {
+        .onDeny((val: any) => {
           resolve(val);
         });
     });
@@ -143,27 +142,27 @@ export class ObservationUtilService {
   getAlertMetaData() {
     let obj = {
       type: "",
-      size:"",
-      isClosed:false,
+      size: "",
+      isClosed: false,
       content: {
-        title: "", 
+        title: "",
         body: {
           type: "",//text,checkbox
           data: "",
         },
       },
-      footer:{
-      className:"", //single-btn,double-btn,double-btn-circle
-      buttons: [
-      /*  
-       {
-          type:"accept/cancel",
-          returnValue:true/false,
-          buttonText:"",
-        } 
-      */
-      ],
-    },
+      footer: {
+        className: "", //single-btn,double-btn,double-btn-circle
+        buttons: [
+          /*  
+           {
+              type:"accept/cancel",
+              returnValue:true/false,
+              buttonText:"",
+            } 
+          */
+        ],
+      },
     };
     return obj;
   }
