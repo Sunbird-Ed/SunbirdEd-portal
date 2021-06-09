@@ -1,0 +1,140 @@
+<div class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9">
+  <div class="ui container">
+    <div class="py-8 d-flex flex-ai-center">
+      <!-- /* Back button */ -->
+      <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto"
+        (click)="goBack()">
+        <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+            <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+          </svg></i>
+        {{resourceService.frmelmnts?.btn?.back}}
+      </button>
+    </div>
+  </div>
+</div>
+<div class="content-header cc-player__content-header">
+  <div class="ui container py-16">
+    <div class="content-header__content">
+      <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
+        <div class="content-header__title font-weight-bold ellipsis text-left sb-color-primary">{{solution}}</div>
+        <small class="content-header__title font-weight-bold ellipsis text-left">{{programName}} </small>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="ui container">
+  <div class="sb-course-details sb-g sb-g--gap24 py-16 text-left course-consumption-container">
+    <div class="sb-course-details__training sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12">
+      <div class="training-info">
+        <h4 class="font-weight-bold">{{resourceService.frmelmnts?.lbl?.observationDetails}} </h4>
+        <div class="training-relevant my-16 content-header__content">
+          <div class="observation-detail-box">
+            <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
+              <div class="content-header__title font-weight-bold ellipsis text-left">
+                {{resourceService.frmelmnts?.lbl?.selectEntity}}
+              </div>
+            </div>
+            <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons">
+              <button class="sb-btn sb-btn-primary sb-btn-normal mr-8" (click)="addEntity()">
+                {{resourceService.frmelmnts?.btn?.addEntity}}
+              </button>
+            </div>
+          </div>
+          <div *ngIf="entities?.entities?.length">
+            <entity-list [entities]="entities?.entities" [selectedEntity]="selectedEntity"
+              (onAction)="actionOnEntity($event)"> </entity-list>
+          </div>
+          <div class="twelve wide column" *ngIf="entities?.length === 0 && !showLoader">
+            <app-no-result [data]="noResultMessageForEntity"></app-no-result>
+          </div>
+          <div class="observation-detail-box" *ngIf="entities?.entities?.length">
+            <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
+              <div class="content-header__title font-weight-bold ellipsis text-left">
+                {{resourceService.frmelmnts?.lbl?.observationForm}}
+              </div>
+            </div>
+            <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons"
+              *ngIf="entities?.allowMultipleAssessemts">
+              <button class="sb-btn sb-btn-primary sb-btn-normal mr-8" (click)="observeAgainConfirm()">
+                {{resourceService.frmelmnts?.btn?.observeAgain}}
+              </button>
+            </div>
+          </div>
+
+          <div class="submissions">
+            <div class="twelve wide column margin-btm" *ngIf="showLoader">
+              <app-loader [data]='loaderMessage'></app-loader>
+            </div>
+            <div *ngFor="let submission of submissions">
+              <!-- Observation With Rubric -->
+              <submission [submission]="submission" [allowMultipleAssessemts]="entities?.allowMultipleAssessemts"
+                *ngIf="submission?.evidencesStatus?.length > 1  || (submission.criteriaLevelReport && submission.isRubricDriven)"
+                (selectedSubmission)="redirectToQuestions($event)" (onAction)="actionOnSubmission($event)">
+              </submission>
+              <!-- Observation Without Rubric -->
+              <div content class="pt-0 pb-8" *ngIf="submission?.evidencesStatus?.length == 1">
+                <div *ngFor="let evidance of submission?.evidencesStatus"
+                  class="evidences-list cc-player__content-header">
+                  <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
+                    <div class="content-header__title font-weight-bold ellipsis text-left">
+                      <div>{{submission.title}} </div>
+                      <small *ngIf="evidance.status == 'notstarted'" class="txt-transform">Status :
+                        {{resourceService.frmelmnts?.lbl?.notstarted}}</small>
+                      <small *ngIf="evidance.status != 'notstarted'" class="txt-transform">Status :
+                        {{evidance.status}}</small>
+                    </div>
+                  </div>
+                  <div class="certified-course__btn ng-star-inserted">
+                    <button *ngIf="evidance?.status === 'notstarted'"
+                      (click)="open(submission.submissionNumber,evidance)"
+                      class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.btn?.start}}
+                    </button>
+                    <button *ngIf="evidance?.status === 'draft'" (click)="open(submission.submissionNumber,evidance)"
+                      class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.lbl?.continue }}
+                    </button>
+                    <button *ngIf="evidance?.status === 'completed' || evidence?.status === 'ratingPending'"
+                      (click)="open(submission.submissionNumber,evidance)"
+                      class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.lbl?.view }}
+                    </button>
+                    <div class="ui dropdown" suiDropdown *ngIf="entities?.allowMultipleAssessemts"
+                      (click)="$event.stopPropagation()">
+                      <i class="ellipsis vertical icon large"
+                        *ngIf="submission.status != 'completed' && submission.status !='ratingPending'"></i>
+                      <div class="menu" suiDropdownMenu>
+                        <div class="item" (click)="dropDownAction(submission,action.type)"
+                          *ngFor="let action of actions">
+                          {{action.name}}
+                          <span class="description"><i class="{{action.icon}}"></i></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sb-course-details__info sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4">
+      <!-- <sui-accordion class="styled fluid sb-accordion sb-new-theme-accordion">
+        <sui-accordion-panel [isOpen]="false">
+          <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
+            <span>{{resourceService.frmelmnts?.lbl?.desktop?.creditsAndLicenceInfo}}</span>
+            <i class="chevron down icon" role="img" title="expand"></i>
+          </div>
+          <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-8">
+          </div>
+        </sui-accordion-panel>
+      </sui-accordion> -->
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showDownloadModal">
+  <add-entity (closeEvent)="modalClose()" [observationId]="observationId" [solutionId]="solutionId"> </add-entity>
+</div>
+
+<div *ngIf="openEditModal.show">
+  <app-edit-submission [submission]="openEditModal.data" (onAction)="closeEditModal($event)"> </app-edit-submission>
+</div>
