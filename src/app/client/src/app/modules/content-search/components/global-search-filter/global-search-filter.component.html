@@ -103,7 +103,7 @@
                   [(ngModel)]="selectedFilters[facet.name]" (ngModelChange)="onChange(facet)">
                   <div *ngIf="facet.name !== 'gradeLevel' else gradeLevel">
                     <sui-select-option class="text-capitalize"
-                      *ngFor="let dropdownValue of facet.values | sortBy:'name':'asc'" [value]="dropdownValue">
+                      *ngFor="let dropdownValue of facet?.values | sortBy:'name':'asc'" [value]="dropdownValue">
                     </sui-select-option>
                   </div>
                   <ng-template #gradeLevel>

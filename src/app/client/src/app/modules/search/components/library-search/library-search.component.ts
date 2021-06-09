@@ -10,6 +10,7 @@ import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, first, debounceTime, tap, delay, mergeMap } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
+import { FACETS } from '../../../constant';
 
 const DEFAULT_FRAMEWORK = 'CBSE';
 @Component({
@@ -81,7 +82,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
             this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
             this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
-            this.globalSearchFacets = ["primaryCategory","mission"];
+            this.globalSearchFacets = FACETS.values
             console.log(" this.globalSearchFacets",  this.globalSearchFacets)
             this.setNoResultMessage();
             this.initFilters = true;
@@ -211,9 +212,11 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         if (this.frameworkId) {
             option.params.framework = this.frameworkId;
         }
+
         this.searchService.contentSearch(option)
             .pipe(
                 mergeMap(data => {
+                    console.log("on library search", data)
                     const channelFacet = _.find(_.get(data, 'result.facets') || [], facet => _.get(facet, 'name') === 'channel')
                     if (channelFacet) {
                         const rootOrgIds = this.processOrgData(_.get(channelFacet, 'values'));
