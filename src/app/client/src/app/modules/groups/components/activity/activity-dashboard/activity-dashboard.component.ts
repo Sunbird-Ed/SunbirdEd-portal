@@ -11,6 +11,7 @@ import { combineLatest, Subject } from 'rxjs';
 import * as $ from 'jquery';
 import 'datatables.net';
 import { CsGroup } from '@project-sunbird/client-services/models';
+import { IActivity } from '../activity-list/activity-list.component';
 
 export interface IColumnConfig {
   // scrollX: boolean;
@@ -36,12 +37,8 @@ export class ActivityDashboardComponent implements OnInit {
   columnConfig: IColumnConfig;
   loaderMessage = _.get(this.resourceService.messages.fmsg, 'm0087');
   memberListUpdatedOn: string;
-  activity = {
-    identifier: '',
-    name: '',
-    primaryCategory: ''
-  };
-
+  activity: IActivity;
+  groupId: string;
   constructor(
     private groupService: GroupsService,
     private toasterService: ToasterService,
@@ -74,6 +71,7 @@ export class ActivityDashboardComponent implements OnInit {
         map((result) => ({ params: { groupId: result[0].groupId, activityId: result[0].activityId }, queryParams: result[1] })),
         takeUntil(this.unsubscribe$))
       .subscribe(({ params }) => {
+        this.groupId = params.groupId;
         this.fetchActivity(params.groupId, params.activityId);
       });
   }
@@ -100,9 +98,7 @@ export class ActivityDashboardComponent implements OnInit {
     this.isLoader = true;
     const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
     this.courseConsumptionService.getCourseHierarchy(activityId, inputParams).subscribe(response => {
-      this.activity.name = response.name;
-      this.activity.identifier = response.identifier;
-      this.activity.primaryCategory = response.primaryCategory;
+      this.activity = response;
       const coursehierarchy = response.children;
       this.isLoader = false;
       this.getAggData(activityId, coursehierarchy, groupData, response.leafNodesCount);
@@ -161,11 +157,10 @@ export class ActivityDashboardComponent implements OnInit {
    * @param  {} id - group identifier
    */
   addTelemetry(id, cdata, extra?, obj?) {
-    this.groupService.addTelemetry({ id, extra }, this.activatedRoute.snapshot, cdata, _.get(this.groupService.groupData, 'id'), obj);
+    this.groupService.addTelemetry({ id, extra }, this.activatedRoute.snapshot, cdata, this.groupId, obj);
   }
 
-  downloadCSV(event) {
-    console.log(event);
+  downloadCSV() {
     this.addTelemetry('download-csv', [], {},
       {
         id: _.get(this.activity, 'identifier'),
@@ -173,7 +168,6 @@ export class ActivityDashboardComponent implements OnInit {
       });
     const fileName = _.get(this.activity, 'name') + '.csv';
     this.lib.instance.exportCsv({ 'strict': true }).then((csvData) => {
-      console.log('exportCSVdata', csvData);
       const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
