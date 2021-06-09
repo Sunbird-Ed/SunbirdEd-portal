@@ -212,6 +212,18 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy 
       ver: param.pkgVersion ? param.pkgVersion.toString() : '1.0'
     }];
   }
+
+  goBackToPreviousPage(){
+  const { url, queryParams: { textbook = null } = {} } = this.navigationHelperService.getPreviousUrl();
+  if(url){
+  const navigateUrl = this.userService.loggedIn ? '/search/Library' : '/explore';
+  this.router.navigate([navigateUrl, 1], { queryParams: { key: textbook } });
+  }
+  else {
+    let url = this.userService.loggedIn ? '/resources' : '/explore';
+      this.navigationHelperService.navigateToPreviousUrl(url);
+  }
+  }
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
