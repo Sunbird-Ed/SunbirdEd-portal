@@ -128,7 +128,6 @@ describe('TelemetryEventsDirective', () => {
     expect(telemetryService.telemetryEvents.length).toEqual(0);
   });
 
-  
   function rendererListenMock(target, evnetName, callback: (event: any) => boolean | void) {
     // console.log("event handler", event);
     callback(event);

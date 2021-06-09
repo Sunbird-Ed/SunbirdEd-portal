@@ -59,22 +59,9 @@ describe('TelemetryErrorModalComponent', () => {
     });
   })
 
-  it('should open telemetry events popup on telemetry button click', () => {
-    let buttonElement = fixture.debugElement.query(By.css('#telemetry-btn'));
-    buttonElement.triggerEventHandler('click', null);
-    fixture.detectChanges();
-    
-    fixture.whenStable().then(() => {
-      expect(component.showTelemetryEventsModal).toBeTruthy();
-    });
-  })
 
   it('should close telemetry events popup on popup close button click', () => {
-    // let buttonElement = fixture.debugElement.query(By.css('#telemetry-btn'));
-    // buttonElement.triggerEventHandler('click', null);
-    // fixture.detectChanges();
     component.closeModal();
     expect(component.showTelemetryEventsModal).not.toBeTruthy();
-    
   })
 });

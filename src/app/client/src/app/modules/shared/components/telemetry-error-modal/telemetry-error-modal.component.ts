@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TelemetryService } from '@sunbird/telemetry';
 
 /**
@@ -15,9 +15,6 @@ import { TelemetryService } from '@sunbird/telemetry';
 export class TelemetryErrorModalComponent implements OnInit {
 
   constructor( private telemetryService: TelemetryService) { }
-
-  // @Output() close = new EventEmitter();
-
   // Array of telemetry errors events 
   telemetryEventsArr = [];
   columns = [

@@ -7,7 +7,7 @@ import {
   FormService,
   ManagedUserService, ProgramsService, CoursesService, DeviceRegisterService, ElectronService
 } from './../../services';
-import { Component, OnInit, ChangeDetectorRef, Input, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Input, OnDestroy } from '@angular/core';
 import {
   ConfigService,
   ResourceService,

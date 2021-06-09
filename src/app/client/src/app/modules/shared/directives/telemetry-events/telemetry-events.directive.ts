@@ -1,16 +1,16 @@
-import { Directive, OnInit, Input, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { Directive, OnInit, ElementRef, Renderer2, OnDestroy } from '@angular/core';
 import { TelemetryService } from '@sunbird/telemetry';
 import { UtilService } from '@sunbird/shared';
 /**
  * Reference links:
  * https://www.tektutorialshub.com/angular/renderer2-angular/
  * https://medium.com/claritydesignsystem/four-ways-of-listening-to-dom-events-in-angular-part-3-renderer2-listen-14c6fe052b59
- * https://medium.com/claritydesignsystem/four-ways-of-listening-to-dom-events-in-angular-part-3-renderer2-listen-14c6fe052b59
  */
 @Directive({
   selector: '[telemetryEventsButton]'
 })
-export class TelemetryEventsDirective implements OnInit {
+
+export class TelemetryEventsDirective implements OnInit, OnDestroy {
 
   constructor(private elementRef: ElementRef, 
     private telemetryService: TelemetryService, 
@@ -75,6 +75,15 @@ export class TelemetryEventsDirective implements OnInit {
         this.telemetryService.telemetryEvents.push(flatJson);       
       }
     }
+  }
+
+  /**
+   * Destroy all the listeners on destroying of the component
+   * Because ngOnInit it will add the new listerners again
+   */
+  ngOnDestroy() {
+    this.unlistenTelemetryEventShow.unsubscribe();
+    this.unlistenTelemetryEvent.unsubscribe();
   }
 
 }
