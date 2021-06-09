@@ -4,6 +4,16 @@
   </button>
 </div>
 
+<!-- Floating Social Media bar Starts -->
+<div class="telemetry-cont">
+  <div class="telemetry-float-icon float-icon">
+  <img class="chat-icon" src="../../../../../assets/images/telemetry.svg" alt="telemetry chat icon">
+    <a href="" target="_blank"> Chat with us!</a>
+  </div> 
+</div>
+
+<!-- Floating Social Media bar Ends -->
+
 <sui-modal *ngIf="showTelemetryEventsModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'large'"
   class="sb-modal sb-modal-addsummary" appBodyScroll #modal (dismissed)="modal.deny();closeModal()">
   <div class="sb-modal-header">
