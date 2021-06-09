@@ -689,7 +689,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   checkEnableDiscussions(batchId) {
     if (this.batchUpdateForm.value.enableDiscussions === 'true') {
       this.enableDiscussionForum();
-    } else {
+    } else if (!_. isEmpty(this.forumIds)) {
       this.disableDiscussionForum(batchId);
     }
   }
