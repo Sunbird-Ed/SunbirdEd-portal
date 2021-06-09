@@ -10,6 +10,7 @@ import { LearnerService } from './../learner/learner.service';
 import { PublicDataService } from './../public-data/public-data.service';
 import * as _ from 'lodash-es';
 import { FormService } from './../form/form.service';
+import { facets } from '../../../../constant';
 /**
  * Service to search content
  */
@@ -454,6 +455,7 @@ export class SearchService {
   }
 
   updateFacetsData(facets) {
+    console.log("facets",facets )
     return _.map(facets, facet => {
       switch (_.get(facet, 'name')) {
         case 'board':
@@ -501,6 +503,12 @@ export class SearchService {
           facet['label'] = _.get(this.resourceService, 'frmelmnts.lbl.orgname');
           facet['placeholder'] =  _.get(this.resourceService, 'frmelmnts.lbl.orgname');
           facet['values'] = _.map(facet.values || [], value => ({ ...value, name: value.orgName }));
+          break;
+        case 'mission':
+          facet['index'] = '9';
+          facet['label'] =  _.get(this.resourceService, 'frmelmnts.lbl.mission'),
+          facet['placeholder'] =  _.get(this.resourceService, 'frmelmnts.lbl.selectMission'),
+          facet['values'] = facets.mission;
           break;
       }
       return facet;

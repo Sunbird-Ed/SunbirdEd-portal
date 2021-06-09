@@ -81,6 +81,8 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
             this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
             this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
+            this.globalSearchFacets = ["primaryCategory","mission"];
+            console.log(" this.globalSearchFacets",  this.globalSearchFacets)
             this.setNoResultMessage();
             this.initFilters = true;
         }, error => {
