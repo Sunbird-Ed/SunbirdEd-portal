@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { UserService } from '@sunbird/core';
 import { IUserData,ToasterService,ResourceService } from '@sunbird/shared';
@@ -11,7 +11,7 @@ import * as _ from "lodash-es";
 })
 export class MlGuard implements CanActivate {
   constructor(public userService: UserService,public resourceService: ResourceService,
-    public toasterService: ToasterService) { }
+    public toasterService: ToasterService,public router: Router) { }
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
@@ -24,6 +24,10 @@ export class MlGuard implements CanActivate {
         return true
       } else {
         this.toasterService.error(_.get(this.resourceService, 'messages.stmsg.m0145'));
+        let queryParam = {
+          showEditUserDetailsPopup:true
+        }
+       this.router.navigate(['profile'],{queryParams:queryParam});
         return false
       }
     }).catch(error => {
