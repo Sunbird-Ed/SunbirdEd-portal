@@ -54,7 +54,7 @@
 
           <!-- Template for displaying sections based on form configuration -->
           <div *ngIf="_currentPageData?.sections && _currentPageData?.isEnabled && !isDesktopApp">
-            <div *ngIf="getSelectedTab() === 'home'" class="sb-section-preference">
+            <div *ngIf="getSelectedTab() === 'home'" class="sb-section-preference" tabindex="0">
               <div class="preference">
                 <p class="header title">{{resourceService?.frmelmnts?.lbl?.yourPreferences}}</p>
                 <p>{{resourceService?.frmelmnts?.lbl?.preferencesheader | interpolate:'{instance}': instance}}</p>
@@ -71,7 +71,7 @@
                   <span *ngIf="userPreference?.framework?.gradeLevel?.length">{{convertToString(userPreference?.framework?.gradeLevel)}}</span>
                 </p>
               </div>
-              <div class="change-preference">
+              <div class="change-preference" tabindex="0">
                 <button class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border"
                   (click)="showEdit = !showEdit">{{resourceService?.frmelmnts?.lbl?.changePreferences}}</button>
               </div>
