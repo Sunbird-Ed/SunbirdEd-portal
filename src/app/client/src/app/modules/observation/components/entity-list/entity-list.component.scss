@@ -1,0 +1,15 @@
+.entity-list{
+    background: var(--sb-card-bg);
+    padding: 10px 24px;;
+    border-radius: 30px;
+    margin: 15px 0px;
+    label{
+        margin-bottom:0px;
+    }
+    .icon {
+        color: var(--primary-400) !important;;
+        }
+        .icon:hover{
+            cursor: pointer;
+          }
+}

@@ -1268,10 +1268,10 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v8@4.0.4":
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v8/-/common-consumption-v8-4.0.4.tgz#7bb59b2a6967cd2054d908644c9d92a0b4e98a0e"
-  integrity sha512-nZSKE4kbCkSke6tKwklhnp31LrQv/Z90LEKJj5xFkQKI+FsUARK2q61s9dHYjqG0dpsyVtEZZPyZrInQGW4Uww==
+"@project-sunbird/common-consumption-v8@4.0.6":
+  version "4.0.6"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v8/-/common-consumption-v8-4.0.6.tgz#ee300d0d7c75021e4b5bae52dc59a639fcd8274c"
+  integrity sha512-BwV2u8Idzqplmn8Qd6aeS9cLOLR38eeqcsLtY7N6v23YnKvJQXY9X2u1EQSvRpCL2atg3o12lxIE9zjtI4219g==
   dependencies:
     tslib "^1.9.0"
 
@@ -1361,10 +1361,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v8@4.0.8":
-  version "4.0.8"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v8/-/sunbird-quml-player-v8-4.0.8.tgz#17a37b20fd333003f0f372bd3ce8747f928dfbe3"
-  integrity sha512-bZJYQce+Xl1GluJUiDxiyUQCkWmMTRdtXRCUbqrcS9/UL++v+xXi+mavDsTy4AK8iBIu31hqWTxGzgCU2yTatw==
+"@project-sunbird/sunbird-quml-player-v8@4.0.11":
+  version "4.0.11"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v8/-/sunbird-quml-player-v8-4.0.11.tgz#6c1bca7b3e2530f4f82e557779b12fd68ec141d8"
+  integrity sha512-zs05W6EB2BGh0aqRRcC+YU6TRXvE0/7/MGSC+luvxSIcKfd+eHZ3/zGKoMmSXuBdmtniyEh2D1dLN/3c1SaKvQ==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v8" "4.0.6"
     tslib "^1.9.0"
@@ -10496,6 +10496,13 @@ sax@>=0.6.0, sax@^1.1.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
+
+sb-notification@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/sb-notification/-/sb-notification-0.0.1.tgz#a250c584397bf165fa56f08b4683d8f8e14a286e"
+  integrity sha512-lHgwse7WaXcYBv2hVETYlGeI7EppiPDFX53J7ifL7491q6l6yg0A5yjgAOBLbW5xri+2xW1tqVW75Ado/0Srdg==
+  dependencies:
+    tslib "^1.9.0"
 
 sb-svg2pdf@0.0.9:
   version "0.0.9"

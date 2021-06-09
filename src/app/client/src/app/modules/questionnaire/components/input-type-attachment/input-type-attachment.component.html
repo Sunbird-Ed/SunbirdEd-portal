@@ -1,0 +1,27 @@
+<label for="file-upload" class="custom-file-upload"></label>
+<input
+  id="file-upload"
+  type="file"
+  #file
+  (change)="basicUpload($event.target.files)"
+/>
+<div class="d-flex">
+  <div class="bs-1 p-20" (click)="onAddApproval(file)">
+    <i class="plus icon"></i>
+  </div>
+  <div *ngFor="let item of data.files;let i=index" (click)="openFile(item)" class="area">
+    <a class="remove-image"(click)="$event.stopPropagation();deleteAttachment(i)">&#215;</a>
+    <div *ngIf="extension(item.name) == 'png'" class="mx-10">
+      <i class="file image outline icon"></i>
+    </div>
+    <div *ngIf="extension(item.name) == 'jpg'" class="mx-10">
+      <i class="file image outline icon"></i>
+    </div>
+    <div *ngIf="extension(item.name) == 'jpeg'" class="mx-10">
+      <i class="file image outline icon"></i>
+    </div>
+    <div *ngIf="extension(item.name) == 'pdf'" class="mx-10">
+      <i class="file pdf outline icon"></i>
+    </div>
+  </div>
+</div>
