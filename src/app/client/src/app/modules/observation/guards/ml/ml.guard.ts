@@ -24,7 +24,7 @@ export class MlGuard implements CanActivate {
         return true
       } else {
         this.toasterService.error(_.get(this.resourceService, 'messages.stmsg.m0145'));
-        let queryParam = {
+        const queryParam = {
           showEditUserDetailsPopup:true
         }
        this.router.navigate(['profile'],{queryParams:queryParam});
