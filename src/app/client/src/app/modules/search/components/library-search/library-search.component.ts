@@ -10,7 +10,7 @@ import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, first, debounceTime, tap, delay, mergeMap } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
-import { FACETS } from '../../../constant';
+import { FACETS, requiredFacets } from '../../../constant';
 
 const DEFAULT_FRAMEWORK = 'CBSE';
 @Component({
@@ -82,7 +82,8 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
             this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
             this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
-            this.globalSearchFacets = FACETS.values
+            const facetValue = FACETS.values
+            this.globalSearchFacets = this.filterFacets(facetValue)
             console.log(" this.globalSearchFacets",  this.globalSearchFacets)
             this.setNoResultMessage();
             this.initFilters = true;
@@ -359,10 +360,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
             };
         });
     }
-    ngOnDestroy() {
-        this.unsubscribe$.next();
-        this.unsubscribe$.complete();
-    }
+
     private setNoResultMessage() {
         this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$))
             .subscribe(item => {
@@ -403,5 +401,15 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
             return contentData.length
         }
         return this.maxCardCount
+    }
+    filterFacets(facets){
+    return facets.filter(eachFacet=>
+        requiredFacets.includes(eachFacet))
+    }
+
+
+    ngOnDestroy() {
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
     }
 }

@@ -168,6 +168,8 @@ export namespace CollectionHierarchyAPI {
     usedByContent?: any[];
     board?: string;
     status?: string;
+    mission?:string;
+    contributorOrg?:string;
   }
 
 }
