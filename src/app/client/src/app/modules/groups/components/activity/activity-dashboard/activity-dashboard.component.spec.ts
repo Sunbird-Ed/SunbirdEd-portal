@@ -4,12 +4,12 @@ import { DashletModule } from '@project-sunbird/sb-dashlet';
 import { GroupsService } from '../../../services';
 import { ConfigService } from '@sunbird/shared';
 import { CourseConsumptionService } from '@sunbird/learn';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
 import { SharedModule } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { RouterModule, ActivatedRoute, Router } from '@angular/router';
+import { RouterModule, ActivatedRoute, Router, Params } from '@angular/router';
 import { ResourceService } from '@sunbird/shared';
 import { BehaviorSubject, of, throwError } from 'rxjs';
 import { groupData, courseHierarchy, activityData, dashletData } from './activity-dashboard.component.spec.data';
@@ -17,6 +17,8 @@ import * as _ from 'lodash-es';
 import { ToasterService } from '@sunbird/shared';
 import * as $ from 'jquery';
 import 'datatables.net';
+import { By } from '@angular/platform-browser';
+
 
 describe('ActivityDashboardComponent', () => {
   let component: ActivityDashboardComponent;
@@ -93,53 +95,43 @@ describe('ActivityDashboardComponent', () => {
     component['fetchActivityOnParamChange']();
     activatedRoute.changeParams({ groupId: 'abcd12322', activityId: 'do_34534' });
     tick(100);
-    expect(component.queryParams).toBeDefined();
     expect(component.groupId).toBeDefined();
-    expect(component.activityId).toBeDefined();
-    expect(component.activityType).toBeDefined();
     expect(component.fetchActivity).toHaveBeenCalled();
   }));
 
   it('should fetch activity', () => {
-    component.groupId = 'abcd12343';
+    const activityId = 'do_2127638382202880001645';
+    const groupId = 'abc123';
     component.isLoader = true;
     const groupService = TestBed.get(GroupsService);
     spyOn(groupService, 'getGroupById').and.returnValue(of({ groupName: 'name', groupDescription: 'description' }));
-    spyOn(component, 'getActivityInfo');
     spyOn(component, 'getHierarchy');
-    component.fetchActivity();
-    expect(component.groupData).toBeDefined();
-    expect(component.getActivityInfo).toHaveBeenCalled();
+    component.fetchActivity(groupId, activityId);
     expect(component.getHierarchy).toHaveBeenCalled();
     expect(component.isLoader).toBe(false);
   });
 
-  it('should call getActivityInfo', () => {
-    component.groupData = groupData;
-    component.activityId = 'do_1234';
-    component.getActivityInfo();
-    expect(component.activity).toBeDefined();
-  });
-
   it('should call getHierarchy()', () => {
-    component.activityId = 'do_2127638382202880001645';
+    const activityId = 'do_2127638382202880001645';
     const inputParams = { params: component.configService.appConfig.CourseConsumption.contentApiQueryParams };
     spyOn(component['courseConsumptionService'], 'getCourseHierarchy').and.returnValue(of(courseHierarchy));
     spyOn(component, 'getAggData');
-    component.getHierarchy();
+    component.getHierarchy(activityId, groupData);
     component['courseConsumptionService'].getCourseHierarchy('do_2127638382202880001645', inputParams).subscribe(data => {
+      expect(component.activity).toBeDefined();
       expect(component.getAggData).toHaveBeenCalled();
     });
+
     // expect(component.coursehierarchy).toBeDefined();
   });
 
   it('should throw error in getHierarchy()', () => {
-    component.activityId = 'do_2127638382202880001645';
+    const activityId = 'do_2127638382202880001645';
     const inputParams = { params: component.configService.appConfig.CourseConsumption.contentApiQueryParams };
     spyOn(component['courseConsumptionService'], 'getCourseHierarchy').and.returnValue(throwError({}));
     spyOn(component['toasterService'], 'error');
     spyOn(component, 'navigateBack');
-    component.getHierarchy();
+    component.getHierarchy(activityId, groupData);
     component['courseConsumptionService'].getCourseHierarchy('do_2127638382202880001645', inputParams).subscribe(data => {
     }, err => {
       expect(component['toasterService'].error).toHaveBeenCalledWith(resourceBundle.messages.fmsg.m0051);
@@ -149,24 +141,25 @@ describe('ActivityDashboardComponent', () => {
 
 
   it('should call getAggData()', () => {
-    component.activityId = 'do_2127638382202880001645';
+   const activityId = 'do_2127638382202880001645';
+   const leafNodesCount = 5;
     spyOn(component['groupService'], 'getActivity').and.returnValue(of(activityData));
     spyOn(component, 'getDashletData');
-    component.getAggData();
+    component.getAggData(activityId, courseHierarchy, groupData, leafNodesCount);
     component['groupService'].getActivity('ddebb90c-59b5-4e82-9805-0fbeabed9389',
       { id: 'do_2125636421522554881918', type: 'Course' }, groupData).subscribe(data => {
-        expect(component.aggregateData).toBeDefined();
         expect(component.getDashletData).toHaveBeenCalled();
       });
     expect(component['groupService'].getActivity).toHaveBeenCalledWith('ddebb90c-59b5-4e82-9805-0fbeabed9389',
       { id: 'do_2125636421522554881918', type: 'Course' }, groupData);
   });
   it('should throw error in getAggData()', () => {
-    component.activityId = 'do_2127638382202880001645';
+    const activityId = 'do_2127638382202880001645';
+    const leafNodesCount = 5;
     spyOn(component['groupService'], 'getActivity').and.returnValue(throwError({}));
     spyOn(component['toasterService'], 'error');
     spyOn(component, 'navigateBack');
-    component.getAggData();
+    component.getAggData(activityId, courseHierarchy, groupData, leafNodesCount);
     component['groupService'].getActivity('ddebb90c-59b5-4e82-9805-0fbeabed9389',
       { id: 'do_2125636421522554881918', type: 'Course' }, groupData).subscribe(data => {
       }, err => {
@@ -177,7 +170,7 @@ describe('ActivityDashboardComponent', () => {
 
   it('should call getDashletData()', () => {
     spyOn(component['groupService'], 'getDashletData').and.returnValue(of(dashletData));
-    component.getDashletData();
+    component.getDashletData(courseHierarchy, activityData);
     component['groupService'].getDashletData(courseHierarchy, activityData).subscribe(data => {
       expect(component.Dashletdata).toBeDefined();
       expect(component.columnConfig).toBeDefined();
@@ -201,10 +194,15 @@ describe('ActivityDashboardComponent', () => {
       { params: {}, data: { telemetry: {} } }, [], '123', { id: 'abc', type: 'Course', version: '1.0' });
   });
 
-  it('should call downloadCSV()', () => {
-    spyOn(component, 'addTelemetry');
-    component.downloadCSV();
-    expect(component.addTelemetry).toHaveBeenCalled();
-  });
+  // fit('should call downloadCSV()', () => {
+  //   component.lib = {
+  //     instance: {
+  //         exportCsv: (fn: (value: Params) => void) => fn( Promise.resolve('csv data'))
+  //     }
+  // };
+  //   spyOn(component, 'addTelemetry');
+  //   component.downloadCSV();
+  //   expect(component.addTelemetry).toHaveBeenCalled();
+  // });
 
 });

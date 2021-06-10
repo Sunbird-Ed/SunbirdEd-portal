@@ -847,6 +847,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             return;
         }
         let params = {};
+        const contentType = _.get(this.getCurrentPageData(), 'contentType');
+        if(contentType === 'home') {
+            params = _.omit(this.queryParams, ['id', 'selectedTab']);
+        }
         params[facetName] = event.data[0].value.value;
         params['selectedTab'] = 'all';
         this.router.navigate(['explore', 1], { queryParams: params });
