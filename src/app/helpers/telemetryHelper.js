@@ -219,7 +219,6 @@ module.exports = {
    */
   logAPIAccessEvent: function (req) {
     const apiConfig = telemtryEventConfig.URL[req.uri] || {}
-
     let object = {}
     let params = []
     if (req.options) {
