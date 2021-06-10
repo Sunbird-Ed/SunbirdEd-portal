@@ -93,7 +93,7 @@ export class NavigationHelperService {
         this.router.navigate([this._resourceCloseUrl.url]);
       }
     } else {
-      this.router.navigate([defaultUrl]);
+      this.router.navigateByUrl(defaultUrl);
     }
   }
 
