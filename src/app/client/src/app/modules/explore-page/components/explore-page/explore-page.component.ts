@@ -16,6 +16,7 @@ import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
 import { ProfileService } from '@sunbird/profile';
 
+
 @Component({
     selector: 'app-explore-page-component',
     templateUrl: './explore-page.component.html',
@@ -759,6 +760,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
+
     public viewAll(event) {
         let searchQuery;
         if (this.isUserLoggedIn() && !_.get(event, 'searchQuery')) {
@@ -862,7 +864,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         params[facetName] = event.data[0].value.value;
         params['selectedTab'] = 'all';
-        this.router.navigate(['explore', 1], { queryParams: params });
+        if(this.isUserLoggedIn()){
+            this.router.navigate(['search/Library', 1], { queryParams: params });
+        } else{
+            this.router.navigate(['explore', 1], { queryParams: params });
+        }
     }
 
     getSectionTitle (title) {
