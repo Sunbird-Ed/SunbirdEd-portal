@@ -98,7 +98,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         public contentManagerService: ContentManagerService, private cacheService: CacheService,
         private browserCacheTtlService: BrowserCacheTtlService, private profileService: ProfileService) {
             this.instance = (<HTMLInputElement>document.getElementById('instance'))
-            ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
+            ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
         }
 
 
