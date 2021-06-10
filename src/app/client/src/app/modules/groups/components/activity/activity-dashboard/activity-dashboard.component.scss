@@ -62,20 +62,10 @@
     overflow-x: auto;
   }
 
-  table thead .sorting_asc {
-    background-image: url(http://www.miankoutu.com/uploadfiles/2015-9-24/2015924141740312.png);
-    background-size: 20px 20px;
-  }
-
-  table thead .sorting_desc {
-    background-image: url(http://www.miankoutu.com/uploadfiles/2015-9-24/2015924141733340.png);
-    background-size: 20px 20px;
-  }
-
-  table.sorting {
+  table.dataTable thead .sorting {
     background-image: url(assets/images/sort.svg) !important;
     background-size: 20px 10px;
-  }
+}
 
   table.dataTable.no-footer {
     width: 100% !important;
@@ -98,7 +88,7 @@
     padding: 12px 24px;
   }
 
-  thead {
+  table.dataTable thead {
     text-align: left;
     background: none !important;
     white-space: nowrap;
