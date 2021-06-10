@@ -27,9 +27,6 @@
       "dom"
     ]
   },
-  "include": [
-    "src/typings.d.ts"
-  ],
   "exclude": [
     "**/*.spec.data.ts"
   ]
