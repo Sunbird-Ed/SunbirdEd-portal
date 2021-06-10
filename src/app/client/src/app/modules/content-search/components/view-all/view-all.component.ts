@@ -11,7 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { takeUntil, first, mergeMap, map, tap, filter } from 'rxjs/operators';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
-import { CourseBatchService } from '@sunbird/learn';
+
 
 @Component({
   selector: 'app-view-all',
@@ -150,8 +150,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     resourceService: ResourceService, toasterService: ToasterService, private publicPlayerService: PublicPlayerService,
     configService: ConfigService, coursesService: CoursesService, public utilService: UtilService,
     private orgDetailsService: OrgDetailsService, userService: UserService, private browserCacheTtlService: BrowserCacheTtlService,
-    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService,
-    private courseBatchService: CourseBatchService) {
+    public navigationhelperService: NavigationHelperService, public layoutService: LayoutService) {
     this.searchService = searchService;
     this.router = router;
     this.activatedRoute = activatedRoute;
@@ -428,59 +427,59 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   handleCourseRedirection({ data }) {
     const { metaData } = data;
     const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } = this.coursesService.findEnrolledCourses(metaData.identifier);
-    this.getBatchList(metaData);
-    // if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
-    //   return this.playerService.playContent(metaData);
-    // }
+    // this.getBatchList(metaData);
+    if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
+      return this.playerService.playContent(metaData);
+    }
 
-    // if (onGoingBatchCount === 1) { // play course if only one open batch is present
-    //   metaData.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
-    //   return this.playerService.playContent(metaData);
-    // } else if (onGoingBatchCount === 0 && expiredBatchCount === 1) {
-    //   metaData.batchId = openBatch.expired.length ? openBatch.expired[0].batchId : inviteOnlyBatch.expired[0].batchId;
-    //   return this.playerService.playContent(metaData);
-    // }
-    // this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: metaData.identifier };
-    // this.showBatchInfo = true;
+    if (onGoingBatchCount === 1) { // play course if only one open batch is present
+      metaData.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
+      return this.playerService.playContent(metaData);
+    } else if (onGoingBatchCount === 0 && expiredBatchCount === 1) {
+      metaData.batchId = openBatch.expired.length ? openBatch.expired[0].batchId : inviteOnlyBatch.expired[0].batchId;
+      return this.playerService.playContent(metaData);
+    }
+    this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: metaData.identifier };
+    this.showBatchInfo = true;
   }
 
-  public getBatchList (metaData){
-    let { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } =
-    this.coursesService.findEnrolledCourses(metaData.identifier);
-    let batchList = [];
-    const searchParams: any = {
-      filters: {
-        status: 1,
-        courseId: metaData.identifier
-      },
-      offset: 0,
-      sort_by: { createdDate: 'desc' }
-    };
-    searchParams.filters.enrollmentType = 'open';
-    this.courseBatchService.getAllBatchDetails(searchParams).pipe(takeUntil(this.unsubscribe))
-    .subscribe((data) => {
-      if (data.result.response.content && data.result.response.content.length > 0) {
-        batchList = data.result.response.content;
-      }
-      if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
-        return this.playerService.playContent(metaData);
-      }
+  // public getBatchList (metaData){
+  //   let { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } =
+  //   this.coursesService.findEnrolledCourses(metaData.identifier);
+  //   let batchList = [];
+  //   const searchParams: any = {
+  //     filters: {
+  //       status: 1,
+  //       courseId: metaData.identifier
+  //     },
+  //     offset: 0,
+  //     sort_by: { createdDate: 'desc' }
+  //   };
+  //   searchParams.filters.enrollmentType = 'open';
+  //   this.courseBatchService.getAllBatchDetails(searchParams).pipe(takeUntil(this.unsubscribe))
+  //   .subscribe((data) => {
+  //     if (data.result.response.content && data.result.response.content.length > 0) {
+  //       batchList = data.result.response.content;
+  //     }
+  //     if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
+  //       return this.playerService.playContent(metaData);
+  //     }
   
-      if (onGoingBatchCount === 1) { // play course if only one open batch is present
-        metaData.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
-        return this.playerService.playContent(metaData);
-      } else if (onGoingBatchCount === 0 && expiredBatchCount === 1 && batchList.length === 0){
-        metaData.batchId = openBatch.expired.length ? openBatch.expired[0].batchId : inviteOnlyBatch.expired[0].batchId;
-        return this.playerService.playContent(metaData);
-      }
-      this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: metaData.identifier };
-      this.showBatchInfo = true;
+  //     if (onGoingBatchCount === 1) { // play course if only one open batch is present
+  //       metaData.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
+  //       return this.playerService.playContent(metaData);
+  //     } else if (onGoingBatchCount === 0 && expiredBatchCount === 1 && batchList.length === 0){
+  //       metaData.batchId = openBatch.expired.length ? openBatch.expired[0].batchId : inviteOnlyBatch.expired[0].batchId;
+  //       return this.playerService.playContent(metaData);
+  //     }
+  //     this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: metaData.identifier };
+  //     this.showBatchInfo = true;
       
       
-    }, (err) => {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0004);
-    });
-  }
+  //   }, (err) => {
+  //         this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+  //   });
+  // }
   getChannelId() {
     this.orgDetailsService.getOrgDetails()
       .subscribe(
