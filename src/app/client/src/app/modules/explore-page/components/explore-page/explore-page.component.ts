@@ -96,8 +96,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         private formService: FormService, private playerService: PlayerService, private coursesService: CoursesService,
         private utilService: UtilService, private offlineCardService: OfflineCardService,
         public contentManagerService: ContentManagerService, private cacheService: CacheService,
-        private browserCacheTtlService: BrowserCacheTtlService, private profileService: ProfileService,
-        private courseBatchService: CourseBatchService) {
+        private browserCacheTtlService: BrowserCacheTtlService, private profileService: ProfileService) {
             this.instance = (<HTMLInputElement>document.getElementById('instance'))
             ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
         }
