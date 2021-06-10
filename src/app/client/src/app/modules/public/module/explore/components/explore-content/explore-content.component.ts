@@ -116,6 +116,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       this.addHoverData();
     });
     this.checkForBack();
+    this.moveToTop();
   }
   goback(){
     if (this.navigationhelperService['_history'].length > 1) {
@@ -299,17 +300,20 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     });
     this.contentList = this.utilService.addHoverData(this.contentList, true);
   }
+  moveToTop() {
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+  }
   public navigateToPage(page: number): void {
     if (page < 1 || page > this.paginationDetails.totalPages) {
       return;
     }
     const url = this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString());
     this.router.navigate([url], { queryParams: this.queryParams });
-    window.scroll({
-      top: 0,
-      left: 0,
-      behavior: 'smooth'
-    });
+    this.moveToTop();
   }
   private setTelemetryData() {
     this.inViewLogs = []; // set to empty every time filter or page changes
