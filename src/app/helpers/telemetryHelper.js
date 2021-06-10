@@ -136,7 +136,7 @@ module.exports = {
     let params = [
       { 'title': apiConfig && apiConfig.title },
       { 'category': apiConfig && apiConfig.category },
-      { 'url': apiConfig && apiConfig.url },
+      { 'url': options.path || apiConfig && apiConfig.url },
       { 'duration': Date.now() - new Date(options.headers.ts) },
       { 'status': statusCode },
       { 'protocol': 'https' },
@@ -225,6 +225,7 @@ module.exports = {
     if (req.options) {
       params = this.getParamsData(req.options, req.statusCode, req.resp, req.uri)
     }
+    console.log('param=====', params);
     const edata = telemetry.logEventData('api_access', 'INFO', apiConfig.message, params)
     if (req.id && req.type) {
       object = telemetry.getObjectData({ id: req.id, type: req.type, ver: req.version, rollup: req.rollup })
@@ -529,5 +530,23 @@ module.exports = {
       type: 'UserSession'
     });
     return cdata;
+  },
+
+/**
+ * This function used to generate api_access log event
+ */
+  getTelemetryAPISuceess: function(result, req, uri) {
+  const actor =  this.getTelemetryActorData(req);
+    const telemetryData = {
+      reqObj: req,
+      statusCode: '200',
+      resp: result,
+      type: actor.type,
+      userId: actor.id,
+      uri: uri,
+      channel: req.get('x-channel-id'),
+      options: req
+    }
+    this.logAPIAccessEvent(telemetryData)
   }
 }
