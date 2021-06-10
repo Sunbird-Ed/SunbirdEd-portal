@@ -23,8 +23,8 @@ import { UUID } from 'angular2-uuid';
   styleUrls: ['./data-driven.component.scss']
 })
 export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('formData', {static: false}) formData: DefaultTemplateComponent;
-  @ViewChild('modal', {static: false}) modal;
+  @ViewChild('formData') formData: DefaultTemplateComponent;
+  @ViewChild('modal') modal;
 
   /**
 	 * This variable hepls to show and hide page loader.

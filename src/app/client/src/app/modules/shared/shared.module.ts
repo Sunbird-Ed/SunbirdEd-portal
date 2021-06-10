@@ -62,7 +62,7 @@ import { LoadOfflineContentComponent } from './components/load-offline-content/l
   entryComponents:[AlertModalComponent]
 })
 export class SharedModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<SharedModule> {
     return {
       ngModule: SharedModule,
       providers: [ResourceService, ConfigService, ToasterService, PaginationService, RecaptchaService,

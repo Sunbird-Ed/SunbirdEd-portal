@@ -23,7 +23,7 @@ import { ContentIDParam } from '../../interfaces/delteparam';
 
 export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterViewInit {
 
-  @ViewChild('modalTemplate', {static: false})
+  @ViewChild('modalTemplate')
   public modalTemplate: ModalTemplate<{ data: string }, string, string>;
   /**
      * state for content editior

@@ -23,7 +23,7 @@ import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry'
 })
 export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
 
-    @ViewChild('modalTemplate', {static: false})
+    @ViewChild('modalTemplate')
     public modalTemplate: ModalTemplate<{ data: string }, string, string>;
     /**
      * state for content editior

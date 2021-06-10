@@ -13,7 +13,7 @@ import { TelemetryInteractDirective,  TelemetryStartDirective, TelemetryEndDirec
     TelemetryImpressionDirective, TelemetryShareDirective, TelemetryErrorDirective]
 })
 export class TelemetryModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<TelemetryModule> {
     return {
       ngModule: TelemetryModule,
       providers: [TelemetryService]
