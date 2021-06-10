@@ -37,12 +37,6 @@ describe('TelemetryErrorModalComponent', () => {
   it('should not show any elements by default ', () => {
     let telemetryService = TestBed.get(TelemetryService);
     telemetryService.telemetryEvents = [telemetryEventMock];
-    let buttonElement = fixture.debugElement.query(By.css('#telemetry-btn'));
-    fixture.detectChanges();
-    
-    fixture.whenStable().then(() => {
-      // expect((buttonElement.nativeElement as HTMLElement).style.display).toBe('none');
-    });
 
     component.ngOnInit();
     expect(component.showTelemetryEventsModal).not.toBeTruthy();

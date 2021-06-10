@@ -16,7 +16,6 @@ export class TelemetryEventsDirective implements OnInit, OnDestroy {
     private telemetryService: TelemetryService, 
     private utilService: UtilService,
     private renderer2: Renderer2) { 
-
   }
 
   unlistenTelemetryEventShow;
@@ -51,7 +50,6 @@ export class TelemetryEventsDirective implements OnInit, OnDestroy {
    * 
    */
   showOrHideElement(show:boolean) {
-    console.log('showOrHideElement: ', show);
     this.renderer2.setStyle(this.elementRef.nativeElement, "display", show? "block" : "none");
   }
 
@@ -85,5 +83,4 @@ export class TelemetryEventsDirective implements OnInit, OnDestroy {
     this.unlistenTelemetryEventShow.unsubscribe();
     this.unlistenTelemetryEvent.unsubscribe();
   }
-
 }
