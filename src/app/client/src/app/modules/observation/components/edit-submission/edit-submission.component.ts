@@ -8,7 +8,7 @@ import { ResourceService } from '@sunbird/shared';
 })
 
 export class EditSubmissionComponent implements OnInit {
-    @ViewChild('modal', { static: false }) modal;
+    @ViewChild('modal') modal;
     @Input() submission;
     @Output() onAction = new EventEmitter<any>();
     showPopup;

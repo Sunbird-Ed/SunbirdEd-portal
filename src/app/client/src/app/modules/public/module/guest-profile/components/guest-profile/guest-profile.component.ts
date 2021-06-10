@@ -16,7 +16,7 @@ const USER_DETAILS_KEY = 'guestUserDetails';
 })
 
 export class GuestProfileComponent implements OnInit {
-  @ViewChild('frameworkModal', { static: false }) frameworkModal;
+  @ViewChild('frameworkModal') frameworkModal;
   avatarStyle = {
     backgroundColor: '#ffffff',
     border: '1px solid #fff',

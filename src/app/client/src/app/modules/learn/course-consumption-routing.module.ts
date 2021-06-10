@@ -28,11 +28,11 @@ const routes: Routes = [
           breadcrumbs: [{ label: 'Home', url: '/home' }, { label: 'Courses', url: '/learn' }]
         },
         children: [{
-          path: '', loadChildren: './batch.module#BatchModule'
+          path: '', loadChildren: () => import('./batch.module').then(m => m.BatchModule)
         }]
       },
       {
-        path: ':courseId/dashboard', loadChildren: './../dashboard/dashboard.module#DashboardModule', canActivate: [AuthGuard],
+        path: ':courseId/dashboard', loadChildren: () => import('./../dashboard/dashboard.module').then(m => m.DashboardModule), canActivate: [AuthGuard],
         data: {
           roles: 'createBatchRole',
           telemetry: { env: telemetryEnv, pageid: 'course-stats', type: 'view', object: { ver: '1.0', type: 'course' } }

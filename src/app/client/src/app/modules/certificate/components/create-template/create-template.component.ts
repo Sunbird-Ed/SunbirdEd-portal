@@ -17,7 +17,7 @@ import dayjs from 'dayjs';
 })
 export class CreateTemplateComponent implements OnInit, OnDestroy {
 
-  @ViewChild(BrowseImagePopupComponent, {static: false})
+  @ViewChild(BrowseImagePopupComponent)
   public browseImage: BrowseImagePopupComponent;
 
   public unsubscribe$ = new Subject<void>();

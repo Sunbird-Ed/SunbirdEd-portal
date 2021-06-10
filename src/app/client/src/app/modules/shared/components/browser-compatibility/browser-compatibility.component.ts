@@ -7,7 +7,7 @@ import { ResourceService } from '../../services/index';
   styleUrls: ['./browser-compatibility.component.scss']
 })
 export class BrowserCompatibilityComponent implements OnInit {
-  @ViewChild('modal', {static: false}) modal;
+  @ViewChild('modal') modal;
   @Input() showModal = false;
   browserCompatible: boolean;
   isChrome = false;

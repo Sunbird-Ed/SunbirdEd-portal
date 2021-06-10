@@ -76,14 +76,14 @@ export class DataChartComponent implements OnInit, OnDestroy {
   filterOpen:Boolean =false;
   chartSummarylabel:string;
   currentFilters:Array<{}>;
-  @ViewChild('datePickerForFilters', {static: false}) datepicker: ElementRef;
-  @ViewChild('chartRootElement', {static: false}) chartRootElement;
-  @ViewChild('chartCanvas', {static: false}) chartCanvas;
+  @ViewChild('datePickerForFilters') datepicker: ElementRef;
+  @ViewChild('chartRootElement') chartRootElement;
+  @ViewChild('chartCanvas') chartCanvas;
   filterType:string = "chart-filter";
   dateFilters:Array<string>;
  
 
-  @ViewChild(BaseChartDirective, {static: false}) chartDirective: BaseChartDirective;
+  @ViewChild(BaseChartDirective) chartDirective: BaseChartDirective;
   constructor(public resourceService: ResourceService, private fb: FormBuilder, private cdr: ChangeDetectorRef,
     private toasterService: ToasterService, public activatedRoute: ActivatedRoute, private sanitizer: DomSanitizer,
     private usageService: UsageService, private reportService: ReportService) {

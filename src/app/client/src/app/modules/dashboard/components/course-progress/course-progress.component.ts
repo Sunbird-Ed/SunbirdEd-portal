@@ -26,7 +26,7 @@ import dayjs from 'dayjs';
 export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit {
   modelChanged: Subject<string> = new Subject<string>();
 
-  @ViewChild(OnDemandReportsComponent, {static: false})
+  @ViewChild(OnDemandReportsComponent)
   public onDemandReports: OnDemandReportsComponent;
   /**
    * Variable to gather and unsubscribe all observable subscriptions in this component.

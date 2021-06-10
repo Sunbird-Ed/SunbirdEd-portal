@@ -22,7 +22,7 @@ export class GlobalConsentPiiComponent implements OnInit {
   @Input() consentConfig;
   @Input() isglobalConsent;
   @Input() profileInfo;
-  @ViewChild('profileDetailsModal', {static: false}) profileDetailsModal;
+  @ViewChild('profileDetailsModal') profileDetailsModal;
   @Output() close = new EventEmitter<any>();
   instance: string;
   consentPii = 'Yes';

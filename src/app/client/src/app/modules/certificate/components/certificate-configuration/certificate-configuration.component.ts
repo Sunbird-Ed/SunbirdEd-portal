@@ -23,10 +23,10 @@ export interface IConfigLabels {
   styleUrls: ['./certificate-configuration.component.scss']
 })
 export class CertificateConfigurationComponent implements OnInit, OnDestroy {
-  @ViewChild('selectCertType', {static: false}) selectCertType;
-  @ViewChild('selectRecipient', {static: false}) selectRecipient;
-  @ViewChild('templateChangeModal', {static: false}) templateChangeModal;
-  @ViewChild('selectScoreRange', {static: false}) selectScoreRange;
+  @ViewChild('selectCertType') selectCertType;
+  @ViewChild('selectRecipient') selectRecipient;
+  @ViewChild('templateChangeModal') templateChangeModal;
+  @ViewChild('selectScoreRange') selectScoreRange;
 
   public unsubscribe$ = new Subject<void>();
   showPreviewModal;

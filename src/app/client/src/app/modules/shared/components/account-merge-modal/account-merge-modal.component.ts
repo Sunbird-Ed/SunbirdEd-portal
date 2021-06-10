@@ -11,7 +11,7 @@ import {HttpClient} from '@angular/common/http';
 })
 export class AccountMergeModalComponent implements OnInit, OnDestroy {
   @Output() closeAccountMergeModal = new EventEmitter<any>();
-  @ViewChild('modal', {static: false}) modal;
+  @ViewChild('modal') modal;
   instance: string;
   mergeIntractEdata: IInteractEventEdata;
   public telemetryCdata: Array<{}> = [];

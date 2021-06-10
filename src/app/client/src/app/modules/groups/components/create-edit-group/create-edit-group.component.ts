@@ -16,7 +16,7 @@ import { UtilService } from '../../../shared/services/util/util.service';
   styleUrls: ['./create-edit-group.component.scss']
 })
 export class CreateEditGroupComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('createGroupModal', {static: false}) createGroupModal;
+  @ViewChild('createGroupModal') createGroupModal;
   groupForm: FormGroup;
   groupDetails: {};
   groupId: string;

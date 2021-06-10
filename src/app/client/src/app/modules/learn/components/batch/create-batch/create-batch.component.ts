@@ -21,7 +21,7 @@ import { DiscussionService } from '../../../../../../app/modules/discussion/serv
 })
 export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  @ViewChild('createBatchModel', {static: false}) private createBatchModel;
+  @ViewChild('createBatchModel') private createBatchModel;
 
   private userSearchTime: any;
 
