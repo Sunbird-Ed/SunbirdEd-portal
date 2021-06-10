@@ -120,6 +120,14 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         return this.formService.getFormConfig(input);
     }
 
+    private _addFiltersInTheQueryParams() {
+        this.getCurrentPageData();
+        if (!_.get(this.activatedRoute, 'snapshot.queryParams["board"]')) {
+            const queryParams = { ...this.defaultFilters, selectedTab: _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'textbook' };
+            this.router.navigate([], { queryParams, relativeTo: this.activatedRoute });
+        }
+    }
+
     private fetchChannelData() {
         return forkJoin(this.getChannelId(), this.getFormConfig())
             .pipe(
@@ -137,6 +145,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                             this.defaultFilters = guestUserDetails.framework ? guestUserDetails.framework : this.defaultFilters;
                         }
                     }
+                    this._addFiltersInTheQueryParams();
                     return this.contentSearchService.initialize(this.channelId, this.custodianOrg, get(this.defaultFilters, 'board[0]'));
                 }),
                 tap(data => {
@@ -855,7 +864,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         params[facetName] = event.data[0].value.value;
         params['selectedTab'] = 'all';
-        this.router.navigate(['explore', 1], { queryParams: params });
+        if(this.isUserLoggedIn()){
+            this.router.navigate(['search/Library', 1], { queryParams: params });
+        } else{
+            this.router.navigate(['explore', 1], { queryParams: params });
+        }
     }
 
     getSectionTitle (title) {

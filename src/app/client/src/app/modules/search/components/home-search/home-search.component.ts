@@ -57,6 +57,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   contentData;
   contentName: string;
   showModal = false;
+  showBackButton = false;
 
   constructor(public searchService: SearchService, public router: Router,
     public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
@@ -103,6 +104,16 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         error => {
           this.toasterService.error(this.resourceService.messages.fmsg.m0002);
         });
+        this.checkForBack();
+  }
+  checkForBack(){
+    if(this.navigationhelperService['_history'] && this.navigationhelperService['_history'].length > 1){
+      const length = this.navigationhelperService['_history'].length-1;
+      const previousTab = _.get(this.navigationhelperService['_history'][length-1], 'queryParams.selectedTab');
+      if(previousTab === 'home' || previousTab === 'explore'){
+        this.showBackButton = true;
+      }
+    }
   }
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -271,7 +282,11 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       behavior: 'smooth'
     });
   }
-
+  goback(){
+    if (this.navigationhelperService['_history'].length > 1) {
+      this.navigationhelperService.goBack();
+    }
+  }
 
   public playContent({ data }) {
     const { metaData } = data;
