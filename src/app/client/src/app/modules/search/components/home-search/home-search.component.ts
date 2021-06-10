@@ -12,6 +12,7 @@ import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@s
 import { takeUntil, map, delay, first, debounceTime, tap, mergeMap } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { ContentManagerService } from '../../../public/module/offline/services/content-manager/content-manager.service';
+import { CourseBatchService } from '@sunbird/learn';
 
 @Component({
   templateUrl: './home-search.component.html'
@@ -66,7 +67,8 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     public browserCacheTtlService: BrowserCacheTtlService, public orgDetailsService: OrgDetailsService,
     public navigationhelperService: NavigationHelperService, public layoutService: LayoutService, private schemaService: SchemaService,
     public contentManagerService: ContentManagerService, public telemetryService: TelemetryService,
-    private offlineCardService: OfflineCardService) {
+    private offlineCardService: OfflineCardService,
+    private courseBatchService: CourseBatchService) {
     this.paginationDetails = this.paginationService.getPager(0, 1, this.configService.appConfig.SEARCH.PAGE_LIMIT);
     this.filterType = this.configService.appConfig.home.filterType;
     // this.redirectUrl = this.configService.appConfig.courses.searchPageredirectUrl;
@@ -271,25 +273,67 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       behavior: 'smooth'
     });
   }
+
+  public getBatchList (metaData){
+    let { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } =
+    this.coursesService.findEnrolledCourses(metaData.identifier);
+    let batchList = [];
+    const searchParams: any = {
+      filters: {
+        status: 1,
+        courseId: metaData.identifier
+      },
+      offset: 0,
+      sort_by: { createdDate: 'desc' }
+    };
+    searchParams.filters.enrollmentType = 'open';
+    this.courseBatchService.getAllBatchDetails(searchParams).pipe(takeUntil(this.unsubscribe$))
+    .subscribe((data) => {
+      if (data.result.response.content && data.result.response.content.length > 0) {
+        batchList = data.result.response.content;
+      }
+      if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
+        return this.playerService.playContent(metaData);
+      }
+  
+      if (onGoingBatchCount === 1) { // play course if only one open batch is present
+        metaData.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
+        return this.playerService.playContent(metaData);
+      } else if (onGoingBatchCount === 0 && expiredBatchCount === 1 && batchList.length === 0){
+        metaData.batchId = openBatch.expired.length ? openBatch.expired[0].batchId : inviteOnlyBatch.expired[0].batchId;
+        return this.playerService.playContent(metaData);
+      }
+      this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: metaData.identifier };
+      this.showBatchInfo = true;
+      
+      
+    }, (err) => {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+    });
+  }
+
+
+
+
   public playContent({ data }) {
     const { metaData } = data;
     this.changeDetectorRef.detectChanges();
     const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } =
     this.coursesService.findEnrolledCourses(metaData.identifier);
+    this.getBatchList(metaData);
+    // if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
+    //   return this.playerService.playContent(metaData);
+    // }
 
-    if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
-      return this.playerService.playContent(metaData);
-    }
-
-    if (onGoingBatchCount === 1) { // play course if only one open batch is present
-      metaData.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
-      return this.playerService.playContent(metaData);
-    } else if (onGoingBatchCount === 0 && expiredBatchCount === 1){
-      metaData.batchId = openBatch.expired.length ? openBatch.expired[0].batchId : inviteOnlyBatch.expired[0].batchId;
-      return this.playerService.playContent(metaData);
-    }
-    this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: metaData.identifier };
-    this.showBatchInfo = true;
+    // if (onGoingBatchCount === 1) { // play course if only one open batch is present
+    //   metaData.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
+    //   return this.playerService.playContent(metaData);
+    // } else if (onGoingBatchCount === 0 && expiredBatchCount === 1){
+    //   metaData.batchId = openBatch.expired.length ? openBatch.expired[0].batchId : inviteOnlyBatch.expired[0].batchId;
+    //   return this.playerService.playContent(metaData);
+    // }
+    // this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: metaData.identifier };
+    // this.showBatchInfo = true;
   }
   public inView(event) {
     _.forEach(event.inview, (elem, key) => {
