@@ -225,7 +225,6 @@ module.exports = {
     if (req.options) {
       params = this.getParamsData(req.options, req.statusCode, req.resp, req.uri)
     }
-    console.log('param=====', params);
     const edata = telemetry.logEventData('api_access', 'INFO', apiConfig.message, params)
     if (req.id && req.type) {
       object = telemetry.getObjectData({ id: req.id, type: req.type, ver: req.version, rollup: req.rollup })
