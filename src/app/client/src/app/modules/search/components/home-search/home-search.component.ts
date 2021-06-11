@@ -108,12 +108,8 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         this.moveToTop();
   }
   checkForBack(){
-    if(this.navigationhelperService['_history'] && this.navigationhelperService['_history'].length > 1){
-      const length = this.navigationhelperService['_history'].length-1;
-      const previousTab = _.get(this.navigationhelperService['_history'][length-1], 'queryParams.selectedTab');
-      if(previousTab === 'home' || previousTab === 'explore'){
-        this.showBackButton = true;
-      }
+    if(_.get(this.activatedRoute, 'snapshot.queryParams["showClose"]') === 'true'){
+      this.showBackButton = true;
     }
   }
   initLayout() {
