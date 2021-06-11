@@ -27,6 +27,8 @@
                 interpolate:'{searchString}':this.queryParams.key !=null?this.queryParams.key:searchAll "></h4> 
                 <span class="badge">{{totalCount}}</span>
               </div>
+              <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" *ngIf="showBackButton" class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" type="button"  (click)= "goback()">
+                {{resourceService?.frmelmnts?.btn?.close | translate}} <i class="close icon"></i></button>
             </div>
           </div>
       
