@@ -222,7 +222,7 @@ export class ObservationListingComponent
       let solution_name:string = value.name;
       solution_name = (solution_name && solution_name.length) ? solution_name[0].toUpperCase() + solution_name.slice(1): "";
       const subject:any=[];
-      subject.push(value.programName.toString())
+      subject.push(value.programName)
       let obj = {
         name: solution_name,
         contentType: "Observation",
@@ -350,51 +350,6 @@ export class ObservationListingComponent
       this.telemetryImpression.edata.subtype = "pageexit";
       this.telemetryImpression = Object.assign({}, this.telemetryImpression);
     }
-  }
-
-  hoverActionClicked(event) {
-    event["data"] = event.content;
-    this.contentName = event.content.name;
-    this.contentData = event.data;
-    let telemetryButtonId: any;
-  }
-
-  logTelemetry(content, actionId) {
-    const telemetryInteractObject = {
-      id: content.identifier,
-      type: content.contentType,
-      ver: content.pkgVersion ? content.pkgVersion.toString() : "1.0",
-    };
-
-    const appTelemetryInteractData: any = {
-      context: {
-        env:
-          _.get(
-            this.activatedRoute,
-            "snapshot.root.firstChild.data.telemetry.env"
-          ) ||
-          _.get(this.activatedRoute, "snapshot.data.telemetry.env") ||
-          _.get(
-            this.activatedRoute.snapshot.firstChild,
-            "children[0].data.telemetry.env"
-          ),
-      },
-      edata: {
-        id: actionId,
-        type: "click",
-        pageid: this.router.url.split("/")[1] || "Search-page",
-      },
-    };
-
-    if (telemetryInteractObject) {
-      if (telemetryInteractObject.ver) {
-        telemetryInteractObject.ver = _.isNumber(telemetryInteractObject.ver)
-          ? _.toString(telemetryInteractObject.ver)
-          : telemetryInteractObject.ver;
-      }
-      appTelemetryInteractData.object = telemetryInteractObject;
-    }
-    this.telemetryService.interact(appTelemetryInteractData);
   }
 
 }
