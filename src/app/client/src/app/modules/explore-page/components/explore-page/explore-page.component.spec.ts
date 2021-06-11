@@ -782,7 +782,8 @@ describe('ExplorePageComponent', () => {
       expect(router.navigate).toHaveBeenCalledWith(['explore', 1], {
         queryParams: {
             subject: 'english',
-            selectedTab: 'all'
+            selectedTab: 'all',
+            showClose: 'true'
         }
       });
     });

@@ -862,6 +862,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         params[facetName] = event.data[0].value.value;
         params['selectedTab'] = 'all';
+        params['showClose'] = 'true';
         if(this.isUserLoggedIn()){
             this.router.navigate(['search/Library', 1], { queryParams: params });
         } else{
