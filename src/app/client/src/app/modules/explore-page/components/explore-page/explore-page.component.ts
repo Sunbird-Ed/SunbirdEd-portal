@@ -16,6 +16,7 @@ import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
 import { ProfileService } from '@sunbird/profile';
 
+
 @Component({
     selector: 'app-explore-page-component',
     templateUrl: './explore-page.component.html',
@@ -97,7 +98,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         public contentManagerService: ContentManagerService, private cacheService: CacheService,
         private browserCacheTtlService: BrowserCacheTtlService, private profileService: ProfileService) {
             this.instance = (<HTMLInputElement>document.getElementById('instance'))
-            ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
+            ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
         }
 
 
@@ -119,6 +120,14 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         return this.formService.getFormConfig(input);
     }
 
+    private _addFiltersInTheQueryParams() {
+        this.getCurrentPageData();
+        if (!_.get(this.activatedRoute, 'snapshot.queryParams["board"]')) {
+            const queryParams = { ...this.defaultFilters, selectedTab: _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'textbook' };
+            this.router.navigate([], { queryParams, relativeTo: this.activatedRoute });
+        }
+    }
+
     private fetchChannelData() {
         return forkJoin(this.getChannelId(), this.getFormConfig())
             .pipe(
@@ -136,6 +145,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                             this.defaultFilters = guestUserDetails.framework ? guestUserDetails.framework : this.defaultFilters;
                         }
                     }
+                    this._addFiltersInTheQueryParams();
                     return this.contentSearchService.initialize(this.channelId, this.custodianOrg, get(this.defaultFilters, 'board[0]'));
                 }),
                 tap(data => {
@@ -750,6 +760,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
+
     public viewAll(event) {
         let searchQuery;
         if (this.isUserLoggedIn() && !_.get(event, 'searchQuery')) {
@@ -853,7 +864,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         params[facetName] = event.data[0].value.value;
         params['selectedTab'] = 'all';
-        this.router.navigate(['explore', 1], { queryParams: params });
+        if(this.isUserLoggedIn()){
+            this.router.navigate(['search/Library', 1], { queryParams: params });
+        } else{
+            this.router.navigate(['explore', 1], { queryParams: params });
+        }
     }
 
     getSectionTitle (title) {

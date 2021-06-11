@@ -107,7 +107,7 @@ describe('PublicCourseConsumptionPageComponent', () => {
     spyOn(component, 'redirectToExplore').and.callThrough();
     component.ngOnInit();
     expect(component.redirectToExplore).toHaveBeenCalled();
-    expect(component.navigationHelperService.navigateToResource).toHaveBeenCalledWith('explore-course');
+    expect(component.navigationHelperService.navigateToResource).toHaveBeenCalledWith('explore?selectedTab=course');
   });
 
   it('should open share link popup and share url should be of anonymous explore course page', () => {
