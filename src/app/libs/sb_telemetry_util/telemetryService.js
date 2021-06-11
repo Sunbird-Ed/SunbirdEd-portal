@@ -17,12 +17,16 @@ function telemetryService() {
  */
 telemetryService.prototype.config = {}
 telemetryService.prototype.context = []
+
+/**
+ * @description -  This function is used to log the api events
+ */
 function SyncManager() {
   this.init = function (event) {
-    console.log('SynManager ===', event);
+    console.log(event);
   },
     this.dispatch = function (event) {
-      console.log('Telemetry Event ===', event);
+      console.log(event);
     }
 }
 telemetryService.prototype.init = function (config) {

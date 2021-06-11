@@ -64,7 +64,7 @@ function proxyObj() {
                 if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
                 else return proxyUtils.handleSessionExpiry(proxyRes, data, req, res, data);
             } catch (err) {
-                console.log('error=====', err.message);
+                logger.error({ msg: 'group route : userResDecorator json parse error:', proxyResData })
                 return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
             }
         }
