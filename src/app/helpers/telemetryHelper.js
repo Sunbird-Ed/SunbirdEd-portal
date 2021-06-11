@@ -131,7 +131,7 @@ module.exports = {
   /**
    * This function helps to get params data for log event
    */
-  getParamsData: function (options, statusCode, resp, uri) {
+  getParamsData: function (options, statusCode, resp, uri, traceid) {
     const apiConfig = telemtryEventConfig.URL[uri]
     let params = [
       { 'title': apiConfig && apiConfig.title },
@@ -141,6 +141,7 @@ module.exports = {
       { 'status': statusCode },
       { 'protocol': 'https' },
       { 'method': options.method },
+      { 'traceid': traceid},
       { 'req': options.body }
     ]
     if (resp) {
@@ -291,10 +292,10 @@ module.exports = {
       err: options.edata.err || 'API_CALL_ERROR',
       errtype: options.edata.type || 'SERVER_ERROR',
       stacktrace: options.edata.stacktrace || 'unhandled error',
-      requestid: options.edata.msgid || 'null',
-      errmsg: options.edata.errmsg || 'null'
+      traceid: options.edata.msgid || 'null',
+      errmsg: options.edata.errmsg || 'null',
+      params: [{url: req.path}]
     }
-
     let channel = req.session.rootOrghashTagId || req.get('x-channel-id') || envHelper.defaultChannelId
    
     let dims = _.compact(_.concat(req.session.orgs, channel))
@@ -533,9 +534,9 @@ module.exports = {
 /**
  * This function used to generate api_access log event
  */
-  getTelemetryAPISuceess: function(result, req, uri) {
+  getTelemetryAPISuceessData: function(result, req, uri) {
   const actor =  this.getTelemetryActorData(req);
-    const telemetryData = {
+    const log = {
       reqObj: req,
       statusCode: '200',
       resp: result,
@@ -543,8 +544,8 @@ module.exports = {
       userId: actor.id,
       uri: uri,
       channel: req.get('x-channel-id'),
-      options: req
+      options: req,
     }
-    this.logAPIAccessEvent(telemetryData)
+    this.logAPIAccessEvent(log)
   }
 }

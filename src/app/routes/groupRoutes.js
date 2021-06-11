@@ -42,10 +42,12 @@ function proxyObj() {
         userResDecorator: function (proxyRes, proxyResData, req, res) {
             let resData = proxyResData.toString('utf8');
             try {
-                logger.info({ msg: 'req is coming from' + req.path });
+                const uri = 'learner/group'
+                const context = {
+                    env: telemtryEventConfig.URL[uri].env || 'group'
+                }
                 let data = JSON.parse(resData);
                 let response = data.result.response;
-                const uri = 'learner/group'
                 data.result.response = { id: '', rootOrgId: '' };
                 if (data.responseCode === 'OK' || data.responseCode === 200) {
                     if (response && response.id) {
@@ -53,20 +55,16 @@ function proxyObj() {
                         data.result.response.rootOrgId = response.rootOrgId;
                     }
                     // generate success event log
-                    telemetryHelper.getTelemetryAPISuceess(proxyResData, req, uri);
+                    telemetryHelper.getTelemetryAPISuceessData(proxyResData, req, uri);
                 } else {
-                    const context = {
-                        env: telemtryEventConfig.URL[uri].env || 'group'
-                    }
                     // generate error event log
-                    const option = telemetry.getTelemetryAPIError(JSON.parse(resData), proxyRes, context);
+                    const option = telemetry.getTelemetryAPIError(data, res, context);
                     telemetryHelper.logApiErrorEventV2(req, option);
                 }
                 if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
                 else return proxyUtils.handleSessionExpiry(proxyRes, data, req, res, data);
             } catch (err) {
                 console.log('error=====', err.message);
-                logger.error({ msg: 'learner route : userResDecorator json parse error:', proxyResData })
                 return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
             }
         }

@@ -68,9 +68,9 @@
     },
     "learner/group": {
       "title": "group API",
-      "category": "api access",
+      "category": "api log",
       "url": "learner/group",
-      "message": "group API info",
+      "message": "API Log",
       "env": "groups"
     }
   }
