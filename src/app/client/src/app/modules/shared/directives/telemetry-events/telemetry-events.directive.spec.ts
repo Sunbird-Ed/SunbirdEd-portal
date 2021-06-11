@@ -10,7 +10,7 @@ describe('TelemetryEventsDirective', () => {
   let telDirective: TelemetryEventsDirective;
 
   configureTestSuite();
-  const renderer2Stub = { listen: rendererListenMock,  setStyle: () => ({}) };
+  const renderer2Stub = { listen: () => ({}),  setStyle: () => ({}) };
   
   const telemetryEventMock = {"eid":"ERROR","ets":1594271968355,"ver":"3.0","mid":"INTERACT:2bc0d36dcd4721df6639d213a66c5077","actor":{"id":"c1526b161339fe4fc544be6b78f2ae66","type":"User"},"context":{"channel":"0123166374296453124","pdata":{"id":"dev.sunbird.portal","ver":"3.1.0","pid":"sunbird-portal"},"env":"groups","sid":"ce3e4e47-1041-9ced-27fd-bb7e7f6c6b49","did":"c1526b161339fe4fc544be6b78f2ae66","cdata":[{"id":"Desktop","type":"Device"}],"rollup":{"l1":"0123166374296453124"}},"object":{},"tags":["0123166374296453124"],"edata":{"err":"PBK-CRT01","errType":"Invalid data","traceid":"rs3e4e47-1041-9ced-27fd-bb7e7f6c56bc", "stacktrace": "Error: Unkknown error at server.js"}}
   const resourceBundleStub = { };
