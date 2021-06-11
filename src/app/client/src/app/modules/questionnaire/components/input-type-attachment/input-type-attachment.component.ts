@@ -129,7 +129,7 @@ export class InputTypeAttachmentComponent implements OnInit {
     metaData.size = "tiny";
     metaData.content.body.type = "text";
     metaData.content.body.data =
-      this.resourceService.frmelmnts.alert.upload_terms_rejected;
+      this.resourceService.frmelmnts.alert.uploadTermsRejected;
     metaData.footer.className = "single-btn";
     metaData.footer.buttons.push({
       type: "accept",
@@ -145,7 +145,7 @@ export class InputTypeAttachmentComponent implements OnInit {
     metaData.size = "tiny";
     metaData.content.body.type = "text";
     metaData.content.body.data =
-      this.resourceService.frmelmnts.alert.evidence_uploaded;
+      this.resourceService.frmelmnts.alert.evidenceUploaded;
     metaData.footer.className = "single-btn";
     metaData.footer.buttons.push({
       type: "accept",
@@ -158,7 +158,7 @@ export class InputTypeAttachmentComponent implements OnInit {
   async deleteAttachment(fileIndex) {
     let metaData = await this.observationUtil.getAlertMetaData();
     metaData.content.body.data =
-      this.resourceService.frmelmnts.alert.confirm_evidence_delete;
+      this.resourceService.frmelmnts.alert.confirmEvidenceDelete;
     metaData.content.body.type = "text";
     metaData.content.title = this.resourceService.frmelmnts.btn.delete;
     metaData.size = "mini";
@@ -186,7 +186,7 @@ export class InputTypeAttachmentComponent implements OnInit {
     metaData.size = "tiny";
     metaData.content.body.type = "text";
     metaData.content.body.data =
-      this.resourceService.frmelmnts.alert.file_limit_cross_20;
+      this.resourceService.frmelmnts.alert.fileLimitCross20;
     metaData.footer.className = "single-btn";
     metaData.footer.buttons.push({
       type: "accept",
