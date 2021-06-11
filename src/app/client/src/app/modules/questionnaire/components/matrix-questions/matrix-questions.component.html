@@ -1,0 +1,77 @@
+<div class="d-flex flex-jc-flex-end">
+  <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="addInstances()">
+    {{ resourceService.frmelmnts.btn.add | translate }}
+    {{ question?.instanceIdentifier }}
+  </button>
+</div>
+<div
+  class="ui card student-card"
+  *ngFor="let instance of question?.value; let i = index"
+>
+  <div class="content flex-jc-space-between">
+    <div (click)="viewInstance(i)">
+      <span
+        [ngClass]="{ _validQuestion: question?.completedInstance?.includes(i) }"
+      >
+        {{ question?.instanceIdentifier }} {{ i + 1 }}</span
+      >
+      <!-- <span class="modified" *ngIf="getLastModified(instance)"
+      >Last Modified {{ "todo" }}</span
+    > -->
+      <!-- todo -->
+    </div>
+    <div>
+      <i class="trash large icon" (click)="deleteInstanceAlert(i)"></i>
+    </div>
+  </div>
+</div>
+
+<sui-modal
+  [mustScroll]="true"
+  [isClosable]="true"
+  [transitionDuration]="0"
+  [size]="'normal'"
+  class="sb-modal"
+  appBodyScroll
+  (dismissed)="showBadgeAssingModel = false"
+  *ngIf="showBadgeAssingModel"
+  #modal
+>
+  <!--Header-->
+  <div class="sb-modal-header">
+    {{ context?.heading }}
+  </div>
+  <!--/Header-->
+  <!--Content-->
+  <div class="sb-modal-content">
+    <question-generic-inputs
+      [questions]="context.questions"
+      [questionnaireForm]="matrixForm"
+    ></question-generic-inputs>
+  </div>
+  <!--/Content-->
+
+  <!--Actions-->
+  <div class="sb-modal-actions">
+    <button
+      [disabled]="!matrixForm?.valid"
+      type="button"
+      (click)="matrixSubmit(context.index)"
+       [ngClass]="{
+            'sb-btn sb-btn-normal': true,
+            'sb-btn-primary': matrixForm?.valid,
+            'sb-btn-disabled': !matrixForm?.valid
+          }"
+    >
+      {{ resourceService?.frmelmnts?.btn?.submit | translate }}
+    </button>
+    <button
+      class="sb-btn sb-btn-normal sb-btn-outline-primary"
+      type="button"
+      (click)="showBadgeAssingModel = false"
+    >
+      {{ resourceService.frmelmnts.btn.cancel | translate }}
+    </button>
+  </div>
+  <!--/Actions-->
+</sui-modal>

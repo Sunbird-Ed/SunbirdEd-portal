@@ -59,6 +59,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   contentData;
   showModal = false;
   isDesktopApp = false;
+  showBackButton = false;
+
   constructor(public searchService: SearchService, public router: Router,
     public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
     public resourceService: ResourceService, public toasterService: ToasterService,
@@ -86,7 +88,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
       this.navigationhelperService.goBack();
     });
-
+    
     this.initLayout();
     this.frameworkService.channelData$.pipe(takeUntil(this.unsubscribe$)).subscribe((channelData) => {
       if (!channelData.err) {
@@ -113,6 +115,22 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       this.contentDownloadStatus = contentDownloadStatus;
       this.addHoverData();
     });
+    this.checkForBack();
+  }
+  goback(){
+    if (this.navigationhelperService['_history'].length > 1) {
+      this.navigationhelperService.goBack();
+    }
+  }
+
+  checkForBack(){
+    if(this.navigationhelperService['_history'] && this.navigationhelperService['_history'].length > 1){
+      const length = this.navigationhelperService['_history'].length-1;
+      const previousTab = _.get(this.navigationhelperService['_history'][length-1], 'queryParams.selectedTab');
+      if(previousTab === 'home' || previousTab === 'explore'){
+        this.showBackButton = true;
+      }
+    }
   }
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();

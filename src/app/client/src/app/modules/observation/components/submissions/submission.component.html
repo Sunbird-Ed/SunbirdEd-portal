@@ -1,0 +1,45 @@
+<sui-accordion class="styled fluid sb-accordion sb-new-theme-accordion submissions">
+    <sui-accordion-panel [isOpen]="false" class="sb-accordion-title submission-title">
+        <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
+            <span>{{submission.title}}</span>
+            <div>
+                <i class="dropdown large icon" role="img" title="expand"></i>
+                <div class="ui dropdown" suiDropdown *ngIf="allowMultipleAssessemts" (click)="$event.stopPropagation()">
+                    <i class="ellipsis vertical icon large"
+                        *ngIf="submission.status != 'completed' && submission.status !='ratingPending'"></i>
+                    <div class="menu" suiDropdownMenu>
+                        <div class="item" (click)="actionEvent(submission,action.type)" *ngFor="let action of actions">
+                            {{action.name}}
+                            <span class="description"><i class="{{action.icon}}"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div content class="content-submission sb-bg-color-white pt-0 pb-8">
+            <div *ngFor="let evidance of submission?.evidencesStatus" class="evidences-list cc-player__content-header">
+                <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
+                    <div class="content-header__title font-weight-bold ellipsis text-left">
+                        <div>{{evidance.name}} </div>
+                        <small *ngIf="evidance.status == 'notstarted'" class="txt-transform">Status :
+                            {{resourceService.frmelmnts?.lbl?.notstarted}}</small>
+                        <small *ngIf="evidance.status != 'notstarted'" class="txt-transform">Status : {{evidance.status}}</small>
+                    </div>
+                </div>
+                <div class="certified-course__btn ng-star-inserted">
+                    <button *ngIf="evidance?.status === 'notstarted'"
+                        (click)="open(submission.submissionNumber,evidance)"
+                        class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.btn?.start}}
+                    </button>
+                    <button *ngIf="evidance?.status === 'draft'" (click)="open(submission.submissionNumber,evidance)"
+                        class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.lbl?.continue }}
+                    </button>
+                    <button *ngIf="evidance?.status === 'completed' || evidence?.status === 'ratingPending'"
+                        (click)="open(submission.submissionNumber,evidance)"
+                        class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.lbl?.view }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </sui-accordion-panel>
+</sui-accordion>

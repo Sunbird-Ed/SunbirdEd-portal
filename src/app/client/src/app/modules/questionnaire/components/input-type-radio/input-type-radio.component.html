@@ -1,0 +1,41 @@
+<div *ngIf="questionnaireForm?.contains(question._id)">
+  <div
+    *ngFor="let o of options; let optionIndex = index"
+    [formGroup]="questionnaireForm"
+    class="
+      mb-15
+      sb-radio-btn-checkbox sb-radio-btn-primary
+      d-flex
+      flex-ai-baseline
+    "
+  >
+    <input
+      type="radio"
+      (change)="onChange(o.value)"
+      [name]="question._id"
+      [ngClass]="isValid && isTouched ? 'is-invalid' : is - valid"
+      [value]="o.value"
+      [formControlName]="question._id"
+    />
+    <label>{{ o.label }}</label>
+    <div *ngIf="question?.option && question?.option[optionIndex]?.hint">
+      <i
+        class="icon large lightbulb"
+        (click)="
+          isDimmed = !isDimmed; hint = question?.option[optionIndex]?.hint
+        "
+      ></i>
+    </div>
+  </div>
+</div>
+
+<sui-dimmer [(isDimmed)]="isDimmed" [isClickable]="true">
+  <h4 class="ui inverted header">{{hint}}</h4>
+  <button
+    type="button"
+    class="sb-btn sb-btn-sm sb-btn-white text-uppercase flex-basis-1"
+    type="submit"
+  >
+    {{ resourceService.frmelmnts?.btn?.close }}
+  </button>
+</sui-dimmer>

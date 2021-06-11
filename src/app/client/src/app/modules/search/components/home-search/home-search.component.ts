@@ -57,6 +57,7 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
   contentData;
   contentName: string;
   showModal = false;
+  showBackButton = false;
 
   constructor(public searchService: SearchService, public router: Router,
     public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
@@ -103,6 +104,16 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
         error => {
           this.toasterService.error(this.resourceService.messages.fmsg.m0002);
         });
+        this.checkForBack();
+  }
+  checkForBack(){
+    if(this.navigationhelperService['_history'] && this.navigationhelperService['_history'].length > 1){
+      const length = this.navigationhelperService['_history'].length-1;
+      const previousTab = _.get(this.navigationhelperService['_history'][length-1], 'queryParams.selectedTab');
+      if(previousTab === 'home' || previousTab === 'explore'){
+        this.showBackButton = true;
+      }
+    }
   }
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -271,12 +282,17 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
       behavior: 'smooth'
     });
   }
+  goback(){
+    if (this.navigationhelperService['_history'].length > 1) {
+      this.navigationhelperService.goBack();
+    }
+  }
+
   public playContent({ data }) {
     const { metaData } = data;
     this.changeDetectorRef.detectChanges();
     const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } =
     this.coursesService.findEnrolledCourses(metaData.identifier);
-
     if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
       return this.playerService.playContent(metaData);
     }
@@ -284,10 +300,11 @@ export class HomeSearchComponent implements OnInit, OnDestroy, AfterViewInit {
     if (onGoingBatchCount === 1) { // play course if only one open batch is present
       metaData.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
       return this.playerService.playContent(metaData);
-    } else if (onGoingBatchCount === 0 && expiredBatchCount === 1){
-      metaData.batchId = openBatch.expired.length ? openBatch.expired[0].batchId : inviteOnlyBatch.expired[0].batchId;
-      return this.playerService.playContent(metaData);
-    }
+    } 
+    // else if (onGoingBatchCount === 0 && expiredBatchCount === 1){
+    //   metaData.batchId = openBatch.expired.length ? openBatch.expired[0].batchId : inviteOnlyBatch.expired[0].batchId;
+    //   return this.playerService.playContent(metaData);
+    // }
     this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: metaData.identifier };
     this.showBatchInfo = true;
   }

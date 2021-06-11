@@ -1,0 +1,25 @@
+<sui-modal [mustScroll]="true" [isClosable]="false" [transitionDuration]="0" [size]="'small'"
+    (dismissed)="showPopup = false" #modal class="sb-modal edit-sub-modal">
+    <!--Header-->
+    <div class="header">
+        <h4> {{resourceService.frmelmnts?.lbl?.instanceName}} </h4>
+    </div>
+    <!--/Header-->
+    <!--Content-->
+    <div class="sb-modal-content content">
+
+        <input type="text" [(ngModel)]="submission.title" class="edit-sub-input">
+    </div>
+    <!--/Content-->
+    <div class="actions footer">
+        <button type="button" class=" ui sb-btn sb-btn-sm sb-btn-white text-uppercase flex-basis-1" type="submit"
+            (click)="closeModal()">
+            {{resourceService.frmelmnts?.btn?.cancel}}
+        </button>
+        <div class="w-10"></div>
+        <button type="button" class="ui sb-btn sb-btn-sm sb-btn-primary text-uppercase flex-basis-1" type="submit"
+            (click)="submit()" [disabled]="!submission.title" [ngClass]="{'sb-btn-disabled' : !submission.title}">
+            {{resourceService.frmelmnts?.btn?.update}}
+        </button>
+    </div>
+</sui-modal>
