@@ -111,19 +111,16 @@ describe('LimitedPublishedComponent', () => {
       'Unlisted'
     ],
     'createdBy': userService._userProfile.userid,
-    'contentType': [
-      'Collection',
-      'TextBook',
+    'primaryCategory': [
       'Course',
-      'LessonPlan',
-      'Resource',
-      'SelfAssess',
-      'PracticeResource',
-      'LearningOutcomeDefinition',
-      'ExplanationResource',
-      'ExperientialResource',
-      'eTextBook',
-      'TVLesson'
+      'Digital Textbook',
+      'Content Playlist',
+      'Explanation Content',
+      'Learning Resource',
+      'Practice Question Set',
+      'eTextbook',
+      'Teacher Resource',
+      'Course Assessment'
     ],
     'objectType': 'Content'
     },

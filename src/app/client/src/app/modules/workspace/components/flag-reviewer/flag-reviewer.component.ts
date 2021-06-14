@@ -3,7 +3,7 @@ import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
 import { WorkSpace } from './../../classes/workspace';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SearchService, UserService, PermissionService } from '@sunbird/core';
+import { SearchService, UserService, PermissionService, FrameworkService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ConfigService, ToasterService,
   ResourceService, IContents, ILoaderMessage, INoResultMessage, IUserData,
@@ -145,6 +145,7 @@ export class FlagReviewerComponent extends WorkSpace implements OnInit, AfterVie
   */
   constructor(public modalService: SuiModalService, public searchService: SearchService,
     public workSpaceService: WorkSpaceService,
+    public frameworkService: FrameworkService,
     paginationService: PaginationService,
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
@@ -203,6 +204,8 @@ export class FlagReviewerComponent extends WorkSpace implements OnInit, AfterVie
       this.sort = { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn };
     }
     const rolesMap = this.userService.RoleOrgMap;
+    const primaryCategories = _.compact(_.concat(this.frameworkService['_channelData'].contentPrimaryCategories,
+        this.frameworkService['_channelData'].collectionPrimaryCategories));
     const searchParams = {
       filters: {
         status: ['FlagReview'],
@@ -214,7 +217,9 @@ export class FlagReviewerComponent extends WorkSpace implements OnInit, AfterVie
         subject: bothParams.queryParams.subject,
         medium: bothParams.queryParams.medium,
         gradeLevel: bothParams.queryParams.gradeLevel,
-        contentType: bothParams.queryParams.contentType ? bothParams.queryParams.contentType : this.config.appConfig.WORKSPACE.contentType
+        primaryCategory: bothParams.queryParams.primaryCategory ?
+        bothParams.queryParams.primaryCategory : (!_.isEmpty(primaryCategories) ? primaryCategories :
+        this.config.appConfig.WORKSPACE.primaryCategory),
       },
       limit: limit,
       offset: (pageNumber - 1) * (limit),
