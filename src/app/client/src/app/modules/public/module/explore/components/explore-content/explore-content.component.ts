@@ -116,20 +116,16 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       this.addHoverData();
     });
     this.checkForBack();
+    this.moveToTop();
   }
   goback(){
     if (this.navigationhelperService['_history'].length > 1) {
       this.navigationhelperService.goBack();
     }
   }
-
   checkForBack(){
-    if(this.navigationhelperService['_history'] && this.navigationhelperService['_history'].length > 1){
-      const length = this.navigationhelperService['_history'].length-1;
-      const previousTab = _.get(this.navigationhelperService['_history'][length-1], 'queryParams.selectedTab');
-      if(previousTab === 'home' || previousTab === 'explore'){
-        this.showBackButton = true;
-      }
+    if(_.get(this.activatedRoute, 'snapshot.queryParams["showClose"]') === 'true'){
+      this.showBackButton = true;
     }
   }
   initLayout() {
@@ -299,17 +295,20 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     });
     this.contentList = this.utilService.addHoverData(this.contentList, true);
   }
+  moveToTop() {
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+  }
   public navigateToPage(page: number): void {
     if (page < 1 || page > this.paginationDetails.totalPages) {
       return;
     }
     const url = this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString());
     this.router.navigate([url], { queryParams: this.queryParams });
-    window.scroll({
-      top: 0,
-      left: 0,
-      behavior: 'smooth'
-    });
+    this.moveToTop();
   }
   private setTelemetryData() {
     this.inViewLogs = []; // set to empty every time filter or page changes
