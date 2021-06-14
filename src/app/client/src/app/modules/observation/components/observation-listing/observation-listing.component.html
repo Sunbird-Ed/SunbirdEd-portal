@@ -44,7 +44,7 @@
           </div>
 
           <div [appTelemetryImpression]="telemetryImpression" class="twelve wide column"
-            *ngIf="contentList.length === 0 && !showLoader">
+            *ngIf="contentList.length === 0 && !showLoader && noResultMessage">
             <app-no-result-found [title]="noResultMessage?.title" [subTitle]="noResultMessage?.subTitle" 
             [buttonText]="noResultMessage?.buttonText" [showExploreContentButton]="noResultMessage?.showExploreContentButton"></app-no-result-found>
           </div>
