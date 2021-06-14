@@ -41,12 +41,12 @@ function proxyObj() {
         },
         userResDecorator: function (proxyRes, proxyResData, req, res) {
             let resData = proxyResData.toString('utf8');
+            let data = JSON.parse(resData);
+            const uri = 'learner/group'
+            const context = {
+                env: telemtryEventConfig.URL[uri].env || 'group'
+            }
             try {
-                const uri = 'learner/group'
-                const context = {
-                    env: telemtryEventConfig.URL[uri].env || 'group'
-                }
-                let data = JSON.parse(resData);
                 let response = data.result.response;
                 data.result.response = { id: '', rootOrgId: '' };
                 if (data.responseCode === 'OK' || data.responseCode === 200) {
@@ -64,7 +64,9 @@ function proxyObj() {
                 if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
                 else return proxyUtils.handleSessionExpiry(proxyRes, data, req, res, data);
             } catch (err) {
-                logger.error({ msg: 'group route : userResDecorator json parse error:', proxyResData })
+                const result = data.params
+                const option = {errmsg: err.message, context , traceid: (result ? result.msgid : '') }
+                telemetryHelper.logApiErrorEventV2(req, option, true);
                 return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
             }
         }

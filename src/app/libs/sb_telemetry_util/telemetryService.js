@@ -336,8 +336,8 @@ telemetryService.prototype.getTelemetryAPIError = function (data, res, context) 
       const edata = {
         msgid: result.msgid || 'null',
         err: result.err || res.statusMessage,
-        status: result.status,
-        errmsg: result.errmsg,
+        status: result.status || '',
+        errmsg: result.errmsg || '',
         type: data.responseCode || res.statusCode
       }
       const option = { edata, context }
