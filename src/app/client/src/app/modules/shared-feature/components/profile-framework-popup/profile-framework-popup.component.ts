@@ -181,7 +181,11 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       this.enableSubmitButton();
       return;
     }
-    this.frameWorkId = _.get(_.find(field.range, { name: _.get(this.selectedOption, field.code)}), 'identifier');
+    if(_.get(this.selectedOption, field.code) === 'CBSE/NCERT') {
+      this.frameWorkId = _.get(_.find(field.range, { name: 'CBSE'}), 'identifier');
+    } else {
+      this.frameWorkId = _.get(_.find(field.range, { name: _.get(this.selectedOption, field.code)}), 'identifier');
+    }
     if (this.unsubscribe) { // cancel if any previous api call in progress
       this.unsubscribe.unsubscribe();
     }
