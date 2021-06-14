@@ -176,7 +176,7 @@ export class ObservationListingComponent
 }
 
   private setNoResultMessage() {
-    let {  noContentfoundSubTitle} = get(this.resourceService, 'frmelmnts.lbl');
+    let {  noContentfoundSubTitle} = _.get(this.resourceService, 'frmelmnts.lbl');
     const title = _.get(this.resourceService,'messages.stmsg.m0006')
     this.noResultMessage = { title, noContentfoundSubTitle };
   }
