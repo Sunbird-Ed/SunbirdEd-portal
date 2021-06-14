@@ -863,6 +863,19 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         params[facetName] = event.data[0].value.value;
         params['selectedTab'] = 'all';
         params['showClose'] = 'true';
+
+        const updatedCategoriesMapping = _.mapKeys(params, (_, key) => {
+            const mappedValue = get(this.contentSearchService.getCategoriesMapping, [key]);
+            return mappedValue || key;
+        });
+
+        const paramValuesInLowerCase = _.mapValues(updatedCategoriesMapping, value => {
+            if (_.toLower(value) === 'cbse') return 'CBSE/NCERT';
+            return Array.isArray(value) ? _.map(value, _.toLower) : _.toLower(value);
+        });
+
+        params = paramValuesInLowerCase;
+
         if(this.isUserLoggedIn()){
             this.router.navigate(['search/Library', 1], { queryParams: params });
         } else{

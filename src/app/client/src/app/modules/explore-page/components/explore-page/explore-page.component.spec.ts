@@ -781,7 +781,7 @@ describe('ExplorePageComponent', () => {
       component.handlePillSelect({ data: [{ value: { value: 'english' } }] }, 'subject');
       expect(router.navigate).toHaveBeenCalledWith(['explore', 1], {
         queryParams: {
-            subject: 'english',
+            se_subjects: 'english',
             selectedTab: 'all',
             showClose: 'true'
         }
