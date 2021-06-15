@@ -1259,10 +1259,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.5.tgz#2d8d02ab6c91fadca0343b9553f4e24d0a52cb96"
   integrity sha512-RItUthSLN6UHocCSNcA8tJP1e426YQPoT4diHDm9Ijt8nVHvap9madbFHElsXHdjbKTqQlUXubo9zJmLioLk1g==
 
-"@project-sunbird/sunbird-collection-editor@4.0.10":
-  version "4.0.10"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-4.0.10.tgz#927d54433d5502ce87c6f8fb172f8c96e38cbcae"
-  integrity sha512-dnL39TBIxtQffNCR5Oqv58avP+4fxCl9OxfJZl7wpx2f2y5Jw+NDbajjAHWrWvzuqUU9enaML+wOP3IyM9xJsg==
+"@project-sunbird/sunbird-collection-editor@^4.0.16":
+  version "4.0.16"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-4.0.16.tgz#58e01b051137a30bdad59de3f9087828335910d6"
+  integrity sha512-/x5V0eexMnXcUeGkR0ZjNY2V1FBLJGQZqvDIz/8aLqvh64/o3dHQljE6aWX/x6kJfYPt3AtQYGeH3e3eMcDIwQ==
   dependencies:
     tslib "^1.9.0"
 
@@ -3463,10 +3463,10 @@ commander@^2.11.0, commander@^2.12.1, commander@^2.19.0, commander@^2.20.0, comm
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
 
-common-form-elements@4.0.4:
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/common-form-elements/-/common-form-elements-4.0.4.tgz#738c5daec7911c0d4e5434564702ddc647563b05"
-  integrity sha512-9uiNTAp8uwdPEsWK1P9U9O3YzGIzvX5AVisu51oDVpGh0HIA4isXJLLY1MKA8GF1H3eFeMjK1CY+KfM2tJrQ/Q==
+common-form-elements@^4.0.10:
+  version "4.0.10"
+  resolved "https://registry.yarnpkg.com/common-form-elements/-/common-form-elements-4.0.10.tgz#83289913ded4b2a181125fa37febc62a3bbb4a6c"
+  integrity sha512-zp97GRox+k2X9PGowkkBSBvEHu9QhNizZxaXziG21VA4LI29TLIFPq8TOEB/wNP4wMJh9C7X6oLTlGjCCTli+Q==
   dependencies:
     immutable "^4.0.0-rc.12"
     moment "^2.29.1"
@@ -4999,7 +4999,7 @@ file-loader@^6.2.0:
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
 
-"file-saver@github:eligrey/FileSaver.js#1.3.8":
+file-saver@eligrey/FileSaver.js#1.3.8:
   version "1.3.8"
   resolved "https://codeload.github.com/eligrey/FileSaver.js/tar.gz/e865e37af9f9947ddcced76b549e27dc45c1cb2e"
 
