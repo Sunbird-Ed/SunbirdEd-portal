@@ -1,0 +1,22 @@
+.edit-sub-modal{
+    .header{
+        padding:15px;
+        background: var(--sb-modal-content-bg);
+        color: var(--sb-linkmenu-text);
+    }
+    .edit-sub-input{
+        width: 100%;
+        height: 2rem;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+    }
+    .footer{
+        display: flex;
+        border:none;
+        background:var(--sb-modal-content-bg);
+    } 
+}
+.ui.small.modal{
+    width:40% !important;
+}

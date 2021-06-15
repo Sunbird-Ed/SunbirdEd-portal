@@ -49,7 +49,7 @@ let envVariables = {
   sunbird_kid_public_key_base_path: env.sunbird_kid_public_key_base_path || '/keys/',
   reportsListVersion: env.reportsListVersion || 'v1',
   sunbird_data_product_service: env.sunbird_data_product_service || 'https://staging.ntp.net.in/',
-
+  ML_SERVICE_BASE_URL: env.ML_SERVICE_BASE_URL || "https://survey.preprod.ntp.net.in/staging",
 
   // TTL and Intervals
   CONFIG_REFRESH_INTERVAL: env.config_refresh_interval || 10,
@@ -194,7 +194,12 @@ let envVariables = {
     phrase_fileformat: env.phrase_fileformat || 'json'
   },
   // Temporary Variable
-  sunbird_enable_sso: env.sunbird_enable_sso
+  sunbird_enable_sso: env.sunbird_enable_sso,
+
+  //ML URLs
+  ML_URL: {
+    OBSERVATION_URL: ''
+  }
 }
 
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')

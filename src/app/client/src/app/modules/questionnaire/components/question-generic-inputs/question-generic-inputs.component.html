@@ -1,0 +1,105 @@
+<div *ngFor="let question of questions; let qi = index">
+  <div
+    [ngClass]="{
+      'ui card question-card sb--card relative9':
+        question.responseType != 'pageQuestions'
+    }"
+    *ngIf="!question.visibleIf.length || question.canDisplay == true"
+  >
+    <div [ngClass]="{ content: question.responseType != 'pageQuestions' }">
+      <div class="d-flex flex-ai-flex-start flex-jc-space-between">
+        <div
+          *ngFor="let q of question.question; let qai = index"
+          [ngClass]="{
+            'mb-20': q.length,
+            'valid-response': questionnaireForm?.controls[question._id]?.valid
+          }"
+        >
+          <div class="sb-h5">
+            {{ qai == 0 ? qi + 1 + ")" : "" }}&nbsp;{{ q }}
+          </div>
+        </div>
+        <div *ngIf="question?.hint">
+          <i
+            class="icon large lightbulb"
+            (click)="dimmerIndex=qi;isDimmed = !isDimmed"
+          ></i>
+        </div>
+      </div>
+      <div *ngIf="question?.tip" class="mb-10">
+        <small class="mb-10">{{ question?.tip }}</small>
+      </div>
+      <div class="sbt-page-content-questionnaireFormarea'">
+        <input-type-text
+          *ngIf="question.responseType == reponseType.TEXT"
+          [questionnaireForm]="questionnaireForm"
+          [question]="question"
+        ></input-type-text>
+        <input-type-number
+          *ngIf="question.responseType == reponseType.NUMBER"
+          [questionnaireForm]="questionnaireForm"
+          [question]="question"
+        ></input-type-number>
+        <input-type-range
+          *ngIf="question.responseType == reponseType.SLIDER"
+          [questionnaireForm]="questionnaireForm"
+          [question]="question"
+        ></input-type-range>
+        <input-type-date-picker
+          *ngIf="question.responseType == reponseType.DATE"
+          [questionnaireForm]="questionnaireForm"
+          [question]="question"
+        ></input-type-date-picker>
+        <input-type-radio
+          *ngIf="question.responseType == reponseType.RADIO"
+          [questionnaireForm]="questionnaireForm"
+          [question]="question"
+          [options]="question.options"
+          (dependentParent)="toggleQuestion($event)"
+        >
+        </input-type-radio>
+        <input-type-checkbox
+          *ngIf="question.responseType == reponseType.MULTISELECT"
+          [questionnaireForm]="questionnaireForm"
+          [question]="question"
+          [options]="question.options"
+          (dependentParent)="toggleQuestion($event)"
+        ></input-type-checkbox>
+        <page-questions
+          *ngIf="
+            question.responseType == reponseType.PAGEQUESTIONS;
+            pageQuestions
+          "
+          [questionnaireForm]="questionnaireForm"
+          [question]="question"
+        ></page-questions>
+        <matrix-questions
+          *ngIf="question.responseType == reponseType.MATRIX"
+          [questionnaireForm]="questionnaireForm"
+          [question]="question"
+        ></matrix-questions>
+        <app-remarks
+          [question]="question"
+          *ngIf="question.showRemarks"
+        ></app-remarks>
+        <app-input-type-attachment
+          [data]="{
+            submissionId: qService.getSubmissionId(),
+            files: question.fileName
+          }"
+          *ngIf="question.file"
+        ></app-input-type-attachment>
+      </div>
+      <sui-dimmer [(isDimmed)]="isDimmed" [isClickable]="true" *ngIf="dimmerIndex==qi && question?.hint">
+        <h4 class="ui inverted header">{{ question?.hint }}</h4>
+        <button
+          type="button"
+          class="sb-btn sb-btn-sm sb-btn-white text-uppercase flex-basis-1"
+          type="submit"
+        >
+          {{ resourceService.frmelmnts?.btn?.close }}
+        </button>
+      </sui-dimmer>
+    </div>
+  </div>
+</div>

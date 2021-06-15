@@ -167,16 +167,19 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
   }
 
   getSortedMembers() {
-    const sortMembersByProgress = [];
-    const sortMembersByName = [];
-    _.map(_.cloneDeep(this.members), member => {
-      if (_.get(member, 'identifier') !== this.userService.userid) {
-        _.get(member, 'progress') > 0 ? sortMembersByProgress.push(member) :  sortMembersByName.push(member);
-      }
-    });
-    const currentUser = _.find(this.members, {identifier: this.userService.userid});
-    const sortedMembers = _.sortBy(sortMembersByProgress, 'progress', 'dsc').concat(_.sortBy(sortMembersByName, 'title', 'asc'));
-    sortedMembers.unshift(currentUser);
+    // sorting by name - alpha order
+    const sortedMembers = this.members.sort((a, b) =>
+    ((a.title).toLowerCase() > (b.title).toLowerCase()) ? 1 : (((b.title).toLowerCase() > (a.title).toLowerCase()) ? -1 : 0));
+    // const sortMembersByProgress = [];
+    // const sortMembersByName = [];
+    // _.map(_.cloneDeep(this.members), member => {
+    //   if (_.get(member, 'identifier') !== this.userService.userid) {
+    //     _.get(member, 'progress') > 0 ? sortMembersByProgress.push(member) :  sortMembersByName.push(member);
+    //   }
+    // });
+    // const currentUser = _.find(this.members, {identifier: this.userService.userid});
+    // const sortedMembers = _.sortBy(sortMembersByProgress, 'progress', 'dsc').concat(_.sortBy(sortMembersByName, 'title', 'asc'));
+    // sortedMembers.unshift(currentUser);
     return sortedMembers || [];
   }
 

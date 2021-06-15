@@ -1,0 +1,52 @@
+<sui-modal [mustScroll]="false" [isClosable]="false" [transitionDuration]="0" [size]="'normal'"
+    class="sb-modal sb-success add-entity-modal" (dismissed)="showDownloadSuccessModal = false" #modal>
+    <!--Header-->
+    <div class="sb-modal-header">
+        <h4> {{resourceService.frmelmnts?.btn?.addEntity}} </h4>
+        <div class="sbt-search-box search-box">
+            <div class="input-div relative" id="search-input-container">
+                <img src="assets/images/search-icon.svg" class="search icon" alt="Search Icon">
+                <!-- Updated input tag -->
+                <input type="text" id="entitySearch" name="filter_search" class="sb-search-input" [(ngModel)]="searchQuery" 
+                placeholder="{{resourceService.frmelmnts.lbl.searchEntity}}" />
+            </div>
+        </div>
+    </div>
+    <!--/Header-->
+    <!--Content-->
+    <div class="sb-modal-content content search-results" infinite-scroll [infiniteScrollDistance]="scrollDistance" [scrollWindow]="false"
+    [infiniteScrollThrottle]="throttle" (scrolled)="loadMore()">
+            <div *ngIf="entities?.length">
+                <div *ngFor="let entity of entities">
+                    <div class="sb-checkbox sb-checkbox-secondary pt-24 ui checkbox">
+                        <input value="{{entity._id}}" type="checkbox" id="{{entity._id}}"
+                            [ngClass]="{'disabled-checkbox' :entity.isSelected}" (change)="selectEntity(entity)"
+                            [disabled]="entity.isSelected" [checked]="entity.selected">
+                        <label for="{{entity._id}}" class="text-left fsmall">{{entity.name}}</label>
+                    </div>
+                </div>
+            </div>
+        <!-- <div class="twelve wide column margin-btm" *ngIf="showLoaderBox">
+            <app-loader [data]='loaderMessage'></app-loader>
+        </div> -->
+        <div class="twelve wide column" *ngIf="entities?.length === 0">
+            <app-no-result [data]="noResultMessage"></app-no-result>
+        </div>
+    </div>
+    <!--/Content-->
+    <div class="actions footer">
+        <button type="button" class="sb-btn sb-btn-sm sb-btn-white text-uppercase flex-basis-1" type="submit"
+            (click)="closeModal()">
+            {{resourceService.frmelmnts?.btn?.close}}
+        </button>
+        <div class="w-10"></div>
+        <button type="button" class="sb-btn sb-btn-sm sb-btn-primary text-uppercase flex-basis-1" type="submit"
+            (click)="submit()" [disabled]="selectedListCount == 0"
+            [ngClass]="{'sb-btn-disabled' : selectedListCount == 0}">
+            {{resourceService.frmelmnts?.btn?.submit}}
+        </button>
+    </div>
+</sui-modal>
+<div class="twelve wide column" *ngIf="showLoaderBox">
+    <app-loader [data]='loaderMessage'></app-loader>
+</div>

@@ -24,11 +24,11 @@
            <!--Activity Dashboard-->
            <button  (click)="navigateToActivityDashboard()"
            [disabled]="!isContentTrackable(activity, activity?.contentType)"
-           [ngClass]="{'disabled': !isContentTrackable(activity, activity?.contentType)}"
-           class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix" title="Forum">
-           <img src="assets/images/forum.svg" width="20px" class="mr-8"
-             alt="{{resourceService?.frmelmnts?.lbl?.discussionForum}}">
-           Activity Dashbord
+           [ngClass]="{'dt-disabled-btn': !isContentTrackable(activity, activity?.contentType)}"
+           class="sb-btn sb-btn-normal sb-btn-link  sb-left-icon-btn ml-8 sb-btn-icon-fix disabled sb-btn-link-primary sb-activity-dashboard-btn" title="Activity Dashboard">
+           <img src="assets/images/Activity_icon.svg" width="20px" class="mr-8"
+             alt="Activity Dashboard">
+           Activity Dashboard
          </button>
         <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons hide">
           <button class="sb-btn sb-btn-outline-secondary sb-btn-normal mr-8"></button>
@@ -74,12 +74,12 @@
         </div>
       </div>
       <div class="d-flex flex-ai-center px-16 py-8 flex-jc-space-between" *ngIf="isContentTrackable(activity, activity?.contentType)">
+        <div  *ngIf="parentId !== selectedCourse?.identifier"></div>
+        <span class="fxsmall"> {{ resourceService?.frmelmnts?.lbl?.LastUpdated }}: {{memberListUpdatedOn | date:'MMM d, y, h:mm a'}} </span>
         <div class="cursor-pointer" *ngIf="parentId === selectedCourse?.identifier" (click)="downloadCSVFile()">
           <i class="download icon sb-color-primary"></i>
           <span class="download-text">{{resourceService?.frmelmnts?.lbl?.downloadAsCSV}}</span>
           </div>
-        <div  *ngIf="parentId !== selectedCourse?.identifier"></div>
-        <span class="fxsmall"> {{ resourceService?.frmelmnts?.lbl?.LastUpdated }}: {{memberListUpdatedOn | date:'MMM d, y, h:mm a'}} </span>
       </div>
         <div class="px-24">
       </div>
