@@ -44,7 +44,7 @@ function proxyObj() {
             let data = JSON.parse(resData);
             const uri = 'learner/group'
             const context = {
-                env: telemtryEventConfig.URL[uri].env || 'group'
+                env: telemtryEventConfig.URL[uri].env
             }
             try {
                 let response = data.result.response;
@@ -55,18 +55,25 @@ function proxyObj() {
                         data.result.response.rootOrgId = response.rootOrgId;
                     }
                     // generate success event log
-                    telemetryHelper.getTelemetryAPISuceessData(proxyResData, req, uri);
+                    telemetryHelper.logAPIAccessEvent(req, proxyResData, uri);
                 } else {
                     // generate error event log
-                    const option = telemetry.getTelemetryAPIError(data, res, context);
-                    telemetryHelper.logApiErrorEventV2(req, option);
+                    telemetryHelper.logApiErrorEventV2(req, res, data, { context });
                 }
                 if (req.method === 'GET' && proxyRes.statusCode === 404 && (typeof data.message === 'string' && data.message.toLowerCase() === 'API not found with these values'.toLowerCase())) res.redirect('/')
                 else return proxyUtils.handleSessionExpiry(proxyRes, data, req, res, data);
             } catch (err) {
                 const result = data.params
-                const option = {errmsg: err.message, context , traceid: (result ? result.msgid : '') }
-                telemetryHelper.logApiErrorEventV2(req, option, true);
+                const option = {
+                    edata: {
+                        err: 'Uncaught Exception',
+                        errtype: 'Exception',
+                        traceid: result ? result.msgid : '',
+                        status: 'failed',
+                        errmsg: err.message
+                    }, context
+                }
+                telemetryHelper.logApiErrorEventV2(req, res, data, option);
                 return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
             }
         }

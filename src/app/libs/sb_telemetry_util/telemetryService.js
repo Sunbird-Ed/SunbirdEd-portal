@@ -329,23 +329,35 @@ telemetryService.prototype.generateApiCallLogEvent = function (data) {
 /**
  * This function used to generate api_ERROR log event
  */
-telemetryService.prototype.getTelemetryAPIError = function (data, res, context) {
+telemetryService.prototype.getTelemetryAPIError = function (data, res, req, options) {
   try {
-    const result = data.params;
-    if (result) {
-      const edata = {
-        msgid: result.msgid || 'null',
-        err: result.err || res.statusMessage,
-        status: result.status || '',
-        errmsg: result.errmsg || '',
-        type: data.responseCode || res.statusCode
-      }
-      const option = { edata, context }
-      return option;
+    const result = options ? options : data.params
+    const edata = {
+      err: result.err || res.statusMessage,
+      errtype: result.errtype || data.responseCode || res.statusCode,
+      traceid: result.msgid || 'null',
+      status: result.status || '',
+      errmsg: result.errmsg || '',
+      params: JSON.stringify([{ url: req.path }])
     }
+    return { edata };
   } catch (error) {
     console.log('error', error)
   }
+}
+
+/**
+ * This function used to generate api_call log telemetryData
+ */
+telemetryService.prototype.getTelemetryAPISuceessData = function (req, result, uri) {
+  const telemetryData = {
+    reqObj: req,
+    statusCode: '200',
+    resp: result,
+    uri: uri,
+    channel: req.get('x-channel-id') || ''
+  }
+  return telemetryData;
 }
 
 module.exports = telemetryService

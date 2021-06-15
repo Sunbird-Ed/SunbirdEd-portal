@@ -20,7 +20,7 @@ telemtryEventConfig['pdata']['id'] = appId
 telemtryEventConfig['pdata']['ver'] = packageObj.version
 telemtryEventConfig['pdata']['pid'] = appId
 // TODO: handle telemetry event config
-const pdata = {id: envHelper.APPID, ver: packageObj.version, pid: 'sunbird-portal-backend'};
+const pdata = { id: envHelper.APPID, ver: packageObj.version, pid: 'sunbird-portal-backend' };
 
 module.exports = {
   /**
@@ -141,8 +141,7 @@ module.exports = {
       { 'status': statusCode },
       { 'protocol': 'https' },
       { 'method': options.method },
-      { 'traceid': traceid },
-      { 'req': options.body },
+      { 'traceid': traceid }
     ]
     if (resp) {
       params.push(
@@ -158,7 +157,7 @@ module.exports = {
    */
   logAPICallEvent: function (req) { // function call is commented in all files    
     const apiConfig = telemtryEventConfig.URL[req.uri] || {}
-
+    
     let object = {}
     const params = this.getParamsData(req.options, req.statusCode, req.resp, req.uri)
     const edata = telemetry.logEventData('api_call', 'INFO', apiConfig.message, params)
@@ -218,15 +217,17 @@ module.exports = {
   /**
    * This function helps to log API access event
    */
-  logAPIAccessEvent: function (req) {
-    const apiConfig = telemtryEventConfig.URL[req.uri] || {}
+  logAPIAccessEvent: function (req, result, uri) {
+    req = telemetry.getTelemetryAPISuceessData(req, result, uri)
+    req.channel = req.channel ? req.channel : envHelper.DEFAULT_CHANNEL
+    const apiConfig = telemtryEventConfig.URL[uri] || {}
     let object = {}
     let params = []
-    if (req.options) {
-      params = this.getParamsData(req.options, req.statusCode, req.resp, req.uri)
+    if (req.reqObj) {
+      params = this.getParamsData(req.reqObj, req.statusCode, req.resp, uri)
     }
 
-    const edata = telemetry.logEventData('api_access', 'INFO', apiConfig.message, JSON.stringify(params))
+    const edata = telemetry.logEventData('api_access', 'INFO', apiConfig.message,JSON.stringify(params))
 
     if (req.id && req.type) {
       object = telemetry.getObjectData({ id: req.id, type: req.type, ver: req.version, rollup: req.rollup })
@@ -243,7 +244,7 @@ module.exports = {
       }
 
       context.rollup = telemetry.getRollUpData(dims)
-      const actor = telemetry.getActorData(req.userId, req.type)
+      const actor = this.getTelemetryActorData(req.reqObj);
 
       telemetry.log({
         edata: edata,
@@ -289,25 +290,10 @@ module.exports = {
       })
     }
   },
-  logApiErrorEventV2: function (req, options, exception = false) {
+  logApiErrorEventV2: function (req, res, result, options) {
+    const edata = telemetry.getTelemetryAPIError(result, res, req, options.edata);
     const apiConfig = telemtryEventConfig.URL[req.uri] || {}
     let object = options.obj || {}
-    let edata = {  params:  JSON.stringify[{ url: req.path }] }
-    if (exception) {
-      edata = {
-        errtype: 'Uncaught Exception',
-        errmsg: options.errmsg,
-        traceid: options.traceid,
-      }
-    } else {
-      edata = {
-        err: options.edata.err || 'API_CALL_ERROR',
-        errtype: options.edata.type || 'SERVER_ERROR',
-        stacktrace: options.edata.stacktrace || '',
-        traceid: options.edata.msgid || 'null',
-        errmsg: options.edata.errmsg || 'null',
-      }
-    }
 
     let channel = req.session.rootOrghashTagId || req.get('x-channel-id') || envHelper.defaultChannelId
 
@@ -321,15 +307,9 @@ module.exports = {
       did: options.context.did || req.context.did,
       sid: req.sessionID || uuidv1()
     }
-    const actor = {
-      id: req.userId ? req.userId.toString() : 'anonymous',
-      type: 'user'
-    }
-    if (actor.id === 'anonymous') {
-      const actorData = this.getTelemetryActorData(req);
-      actor.id = actorData.id;
-      actor.type = actorData.type;
-    }
+
+    const actor = this.getTelemetryActorData(req);
+  
     /* istanbul ignore if  */
     if (!channel) {
       console.log('logApiErrorEventV2 failed due to no channel')
@@ -549,23 +529,5 @@ module.exports = {
       type: 'UserSession'
     });
     return cdata;
-  },
-
-  /**
-   * This function used to generate api_access log event
-   */
-  getTelemetryAPISuceessData: function (result, req, uri) {
-    const actor = this.getTelemetryActorData(req);
-    const log = {
-      reqObj: req,
-      statusCode: '200',
-      resp: result,
-      type: actor.type,
-      userId: actor.id,
-      uri: uri,
-      channel: req.get('x-channel-id'),
-      options: req,
-    }
-    this.logAPIAccessEvent(log)
   }
 }
