@@ -4,7 +4,7 @@
     type="number"
     [formControlName]="question?._id"
     class="sb-form-control"
-    [placeholder]="'Enter your respsonse'"
+    placeholder="{{resourceService?.frmelmnts?.lbl?.enterResponse}}"
     (change)="onChange($event)"
     [value]="question.value"
   />

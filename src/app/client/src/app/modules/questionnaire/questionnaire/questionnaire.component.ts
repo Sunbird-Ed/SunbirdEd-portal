@@ -70,6 +70,11 @@ export class QuestionnaireComponent
       this.getQuestionnare();
     });
     this.questionnaireForm = this.fb.group({});
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
     // this.evidence = this.data.result.assessment.evidences[0];
     // this.sections = this.evidence.sections;
   }
@@ -144,7 +149,11 @@ export class QuestionnaireComponent
     );
 
     save ? (evidenceData["status"] = "draft") : null;
-    let payload = { evidence: evidenceData };
+    let profile:Object = await this.observationUtilService.getProfileDataList()
+    if (!profile) {
+      return
+    }
+    let payload = {...profile, ...{evidence: evidenceData} };
 
     this.submitEvidence(payload);
   }
@@ -232,8 +241,17 @@ export class QuestionnaireComponent
   }
 
   scrollToContent(id) {
-    document
-      .getElementById(id)
-      .scrollIntoView({ behavior: "smooth", block: "start" });
+    const element =  document.getElementById(id);
+    const headerOffset = 200;
+    const elementPosition = element.getBoundingClientRect().top;
+    const offsetPosition = elementPosition - headerOffset;
+    window.scrollTo({
+         top: offsetPosition,
+         behavior: "smooth"
+    });
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

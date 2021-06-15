@@ -40,7 +40,7 @@
     white-space: nowrap;
     color: var(--sb-linkmenu-text);
     @include respond-above(md){
-      min-width: calculateRem(180px);
+      flex: 0 0 10%;
     }
     &.active,
     &:hover {
@@ -207,7 +207,11 @@
     mask-image: url(/assets/images/mask-image/download.svg);
   }
   &__home   {
-    -webkit-mask-image: url(/assets/images/home.png);
-    mask-image: url(/assets/images/home.png);
+    -webkit-mask-image: url(/assets/images/mask-image/home.svg);
+    mask-image: url(/assets/images/mask-image/home.svg);
+  }
+  &__explore {
+    -webkit-mask-image: url(/assets/images/mask-image/explore.svg);
+    mask-image: url(/assets/images/mask-image/explore.svg);
   }
 }

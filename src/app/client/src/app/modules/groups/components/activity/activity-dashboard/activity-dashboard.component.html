@@ -24,13 +24,11 @@
       <ng-template sbTemplateRef="header" let-config>
         <div role="alert" class="datatable-update">
           <div *ngIf="memberListUpdatedOn">
-            <label class="last-update-label"> {{ lastUpdated }}: {{memberListUpdatedOn | date:'MMM d, y, h:mm a'}}
+            <label class="last-update-label px-8"> Last update : {{memberListUpdatedOn | date:'MMM d, y, h:mm a'}}
             </label>
           </div>
-          <button class="download-csv" (click)="lib?.instance?.exportAs('csv', {'strict': true});downloadCSV()">
+          <button class="download-csv" (click)="downloadCSV($event)">
             Download as CSV<img src="assets/images/download-icon.svg" class="download-icon"></button>
-          <!-- <button type="button" class="btn btn-outline-primary float-end"
-              (click)="lib?.instance?.exportAs('csv');downloadCSV()">DownloadCSV</button> -->
         </div>
       </ng-template>
     </sb-dashlet>

@@ -76,7 +76,6 @@ export class ObservationDetailsComponent implements OnInit {
     });
   }
 
-
   public getEntities() {
     this.showLoader = true;
     const paramOptions = {
@@ -103,11 +102,9 @@ export class ObservationDetailsComponent implements OnInit {
       this.showLoader = false;
     })
   }
-
-
-
+ 
   public getObservationForm() {
-    this.showLoader = true;
+    // this.showLoader = true;
     const paramOptions = {
       url: this.config.urlConFig.URLS.OBSERVATION.GET_OBSERVATION_SUBMISSIONS + `${this.observationId}?entityId=${this.selectedEntity._id}`,
       param: {},
@@ -131,10 +128,6 @@ export class ObservationDetailsComponent implements OnInit {
       this.changeEntity(event.data);
     }
   }
-
-
-
-
 
   public addEntity() {
     this.showDownloadModal = true;
@@ -209,15 +202,15 @@ export class ObservationDetailsComponent implements OnInit {
     metaData.content.title = this.resourceService.frmelmnts.btn.delete;
     metaData.size = "mini";
     metaData.footer.buttons.push({
+      type: "accept",
+      returnValue: true,
+      buttonText: this.resourceService.frmelmnts.btn.yes
+    });
+    metaData.footer.buttons.push({
       type: "cancel",
       returnValue: false,
       buttonText: this.resourceService.frmelmnts.btn.no
     });
-    metaData.footer.buttons.push({
-      type: "accept",
-      returnValue: true,
-      buttonText: this.resourceService.frmelmnts.btn.yes
-    })
     metaData.footer.className = "double-btn";
     let returnData = await this.observationUtilService.showPopupAlert(metaData);
     if (returnData) {
@@ -266,17 +259,14 @@ export class ObservationDetailsComponent implements OnInit {
     metaData.footer.className = "double-btn";
     let returnData = await this.observationUtilService.showPopupAlert(metaData);
     if (returnData) {
-      this.showLoader = true;
       const config = {
         url: this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_SUBMISSION_UPDATE + `${event._id}`,
         param: {},
         payload: this.payload,
       };
-      this.observationService.delete(config).subscribe(() => {
-        this.showLoader = false;
-        this.getEntities();
+      this.observationService.delete(config).subscribe(data => {
+        this.getObservationForm();
       }, error => {
-        this.showLoader = false;
       })
     }
   }
