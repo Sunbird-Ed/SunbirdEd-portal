@@ -838,7 +838,7 @@ quml-player {
 
 
     .lanscape-mode-right {
-      height: calc(100% - 56px);
+      // height: calc(100% - 56px);
 
       ul::before {
         z-index: 0 !important;
@@ -1216,7 +1216,7 @@ quml-player {
     }
 
     .lanscape-mode-right {
-      height: calc(100% - 56px);
+      // height: calc(100% - 56px);
 
       ul::before {
         z-index: 0 !important;
