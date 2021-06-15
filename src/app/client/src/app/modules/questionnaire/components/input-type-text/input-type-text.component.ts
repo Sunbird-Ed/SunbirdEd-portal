@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Question } from "../../Interface/assessmentDetails";
 import { QuestionnaireService } from "../../questionnaire.service";
+import { ResourceService } from "@sunbird/shared";
 
 @Component({
   selector: "input-type-text",
@@ -12,7 +13,10 @@ export class InputTypeTextComponent implements OnInit {
   text: string;
   @Input() questionnaireForm: FormGroup;
   @Input() question: Question;
-  constructor(public qService: QuestionnaireService) {}
+  constructor(
+    public qService: QuestionnaireService,
+    public resourceService: ResourceService,
+  ) {}
 
   ngOnInit() {
     setTimeout(() => {

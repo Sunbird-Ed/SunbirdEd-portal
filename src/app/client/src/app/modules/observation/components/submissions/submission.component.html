@@ -21,9 +21,9 @@
                 <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
                     <div class="content-header__title font-weight-bold ellipsis text-left">
                         <div>{{evidance.name}} </div>
-                        <small *ngIf="evidance.status == 'notstarted'" class="txt-transform">Status :
+                        <small *ngIf="evidance.status == 'notstarted'" class="txt-transform">{{resourceService?.frmelmnts.lbl.dashboardsortbystatus}} :
                             {{resourceService.frmelmnts?.lbl?.notstarted}}</small>
-                        <small *ngIf="evidance.status != 'notstarted'" class="txt-transform">Status : {{evidance.status}}</small>
+                        <small *ngIf="evidance.status != 'notstarted'" class="txt-transform">{{resourceService?.frmelmnts.lbl.dashboardsortbystatus}} : {{evidance.status}}</small>
                     </div>
                 </div>
                 <div class="certified-course__btn ng-star-inserted">

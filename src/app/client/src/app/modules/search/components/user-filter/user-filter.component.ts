@@ -1,7 +1,7 @@
 import { ResourceService, IUserData, ToasterService } from '@sunbird/shared';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { UserService, OrgDetailsService, RolesAndPermissions, PermissionService, FrameworkService } from '@sunbird/core';
+import { UserService, OrgDetailsService, RolesAndPermissions, PermissionService, FrameworkService, FormService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
 import { map, catchError } from 'rxjs/operators';
@@ -38,13 +38,15 @@ export class UserFilterComponent implements OnInit {
   telemetryInteractObject: IInteractEventObject;
   districtIds: any;
   blockIds: any;
+  userTypeList: any;
 
   constructor(private cdr: ChangeDetectorRef, public resourceService: ResourceService,
     private router: Router, private activatedRoute: ActivatedRoute,
     public userService: UserService, public toasterService: ToasterService,
     public profileService: ProfileService, public orgDetailsService: OrgDetailsService,
     public permissionService: PermissionService, public frameworkService: FrameworkService,
-    public userSearchService: UserSearchService) {
+    public userSearchService: UserSearchService,
+    private formService: FormService) {
     this.router.onSameUrlNavigation = 'reload';
   }
 
@@ -87,11 +89,12 @@ export class UserFilterComponent implements OnInit {
   }
 
   getUserType() {
-    return this.userSearchService.getUserType().pipe(map((res: any) => {
+    const formServiceInputParams = { formType: 'config', formAction: 'get', contentType: 'userType', component: 'portal' };
+    return this.formService.getFormConfig(formServiceInputParams).pipe(map((res: any) => {
       this.allUserType['code'] = 'Usertype';
       this.allUserType['label'] = this.resourceService.frmelmnts.lbl.userType;
       const userTypeArray = [];
-      _.forEach(res.result.response, (type) => {
+      _.forEach(_.filter(res, 'visibility'), (type) => {
         userTypeArray.push({ code: type.name, name: type.name });
       });
       this.allUserType['range'] = this.sortAndCapitaliseFilters(userTypeArray);
