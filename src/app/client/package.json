@@ -97,8 +97,8 @@
     "lodash-es": "^4.17.15",
     "marked": "1.1.1",
     "md5": "2.2.1",
-    "moment": "^2.25.3",
-    "moment-duration-format": "^2.3.2",
+    "moment": "2.25.3",
+    "moment-duration-format": "2.3.2",
     "ng-recaptcha": "^5.0.0",
     "ng2-ace-editor": "0.3.9",
     "ng2-cache-service": "1.1.1",
@@ -148,5 +148,8 @@
     "ts-node": "^4.1.0",
     "tslint": "^5.9.1",
     "typescript": "~3.8.3"
+  },
+  "resolutions": {
+    "moment": "2.25.3"
   }
 }
