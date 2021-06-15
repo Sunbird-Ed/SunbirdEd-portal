@@ -980,4 +980,10 @@ describe('CertificateConfigurationComponent', () => {
     component.navigateToCreateTemplate();
     expect(router.navigate).toHaveBeenCalledWith(['/certs/configure/create-template'], {queryParams: { type: 'edit', courseId: 'do_456789', batchId: '124631256' }});
   });
+  it('should redo layout on render', () => {
+    component.layoutConfiguration = {};
+    component.redoLayout();
+    component.layoutConfiguration = null;
+    component.redoLayout();
+  });
 });
