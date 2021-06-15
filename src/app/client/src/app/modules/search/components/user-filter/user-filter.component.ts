@@ -94,7 +94,7 @@ export class UserFilterComponent implements OnInit {
       this.allUserType['code'] = 'Usertype';
       this.allUserType['label'] = this.resourceService.frmelmnts.lbl.userType;
       const userTypeArray = [];
-      _.forEach(res, (type) => {
+      _.forEach(_.filter(res, 'visibility'), (type) => {
         userTypeArray.push({ code: type.name, name: type.name });
       });
       this.allUserType['range'] = this.sortAndCapitaliseFilters(userTypeArray);
