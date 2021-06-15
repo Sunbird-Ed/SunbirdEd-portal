@@ -104,7 +104,7 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
   }
 
   redirectToExplore() {
-    this.navigationHelperService.navigateToResource('explore-course');
+    this.navigationHelperService.navigateToResource('explore?selectedTab=course');
   }
 
   closeSharePopup(id) {

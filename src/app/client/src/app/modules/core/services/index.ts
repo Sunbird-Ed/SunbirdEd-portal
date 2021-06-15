@@ -28,3 +28,6 @@ export * from './managed-user/managed-user.service';
 export * from './generalisedLable/generaliseLable.service';
 export * from './electron/electron.service';
 export * from './schema/schema.service';
+export * from './kendra/kendra.service';
+export * from './observation/observation.service';
+export * from './cloud/cloud.service';

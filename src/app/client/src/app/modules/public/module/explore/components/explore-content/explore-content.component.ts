@@ -59,6 +59,8 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
   contentData;
   showModal = false;
   isDesktopApp = false;
+  showBackButton = false;
+
   constructor(public searchService: SearchService, public router: Router,
     public activatedRoute: ActivatedRoute, public paginationService: PaginationService,
     public resourceService: ResourceService, public toasterService: ToasterService,
@@ -86,7 +88,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
       this.navigationhelperService.goBack();
     });
-
+    
     this.initLayout();
     this.frameworkService.channelData$.pipe(takeUntil(this.unsubscribe$)).subscribe((channelData) => {
       if (!channelData.err) {
@@ -113,6 +115,18 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       this.contentDownloadStatus = contentDownloadStatus;
       this.addHoverData();
     });
+    this.checkForBack();
+    this.moveToTop();
+  }
+  goback(){
+    if (this.navigationhelperService['_history'].length > 1) {
+      this.navigationhelperService.goBack();
+    }
+  }
+  checkForBack(){
+    if(_.get(this.activatedRoute, 'snapshot.queryParams["showClose"]') === 'true'){
+      this.showBackButton = true;
+    }
   }
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -281,17 +295,20 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     });
     this.contentList = this.utilService.addHoverData(this.contentList, true);
   }
+  moveToTop() {
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+  }
   public navigateToPage(page: number): void {
     if (page < 1 || page > this.paginationDetails.totalPages) {
       return;
     }
     const url = this.router.url.split('?')[0].replace(/[^\/]+$/, page.toString());
     this.router.navigate([url], { queryParams: this.queryParams });
-    window.scroll({
-      top: 0,
-      left: 0,
-      behavior: 'smooth'
-    });
+    this.moveToTop();
   }
   private setTelemetryData() {
     this.inViewLogs = []; // set to empty every time filter or page changes

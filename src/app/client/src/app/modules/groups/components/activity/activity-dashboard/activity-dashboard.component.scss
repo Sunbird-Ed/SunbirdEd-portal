@@ -1,10 +1,8 @@
 @import 'mixins/mixins';
-
 .content-header {
     margin-bottom: 24px;
     background: var(--groups-content-header);
     min-height: calculateRem(14px);
-  
       &__content{
           display:flex;
           align-items: center;
@@ -13,7 +11,6 @@
             display: block;
           }
       }
-
       &__img {
         width: calculateRem(48px);
         height: calculateRem(48px);
@@ -24,7 +21,6 @@
           width:100%;
         }
       }
-      
       &__title {
           color: var(--primary-400);
           font-size: calculateRem(18px);
@@ -43,33 +39,24 @@
       }
     }
   }
-
   .group-name {
     font-family: Noto Sans Regular;
     line-height: 24px;
     color: #024F9D;
     font-size: 1.25rem;
   }
-
   ::ng-deep {
     .dataTables_wrapper {
-      overflow-x: auto;
-  }
-  table thead .sorting_asc {
-      background-image: url(http://www.miankoutu.com/uploadfiles/2015-9-24/2015924141740312.png);
-      background-size: 20px 20px;
-  }
-  table thead .sorting_desc {
-      background-image: url(http://www.miankoutu.com/uploadfiles/2015-9-24/2015924141733340.png);
-      background-size: 20px 20px;
-  }
-  table.sorting {
-      background-image: url(assets/images/sort.svg) !important;
-      background-size: 20px 10px;
-  }
+      white-space: nowrap;
+      // height: calc(100vh - 100px);
+      display: block;
+      overflow: auto;
+  } 
   table.dataTable.no-footer {
+      display: table;
+      overflow: hidden;
       width: 100% !important;
-      margin: 0 auto;
+      margin: 0 auto 1rem auto;
       clear: both;
       border-collapse: separate;
       border-spacing: 0;
@@ -77,20 +64,24 @@
       border-radius: 1.5rem;
       box-shadow: 0.375rem 0.375rem 0.125rem 0 rgb(0 0 0 / 10%);
       border-bottom: 0px !important;
-      background: white;
+      background:#fff;
       border: 1px solid #ddd;
-      text-transform: capitalize;
+      cursor:pointer;
   }
-  table.dataTable tbody th,
+  table.dataTable thead .sorting {
+    background-image: url(assets/images/sort.svg) !important;
+    background-size: 20px 10px;
+}
   table.dataTable tbody td {
-      padding: 12px 24px;
+      padding: 8px 40px;
   }
-  thead {
+  thead tr th {
       text-align: left;
-      background: none !important;
-      white-space: nowrap;
   }
-
+  table.dataTable thead th {
+      padding: 8px 24px !important;
+      border-bottom: none !important;
+  }
   table.dataTable thead .sorting,
   table.dataTable thead .sorting_asc,
   table.dataTable thead .sorting_desc,
@@ -99,11 +90,9 @@
       cursor: pointer;
       background-repeat: no-repeat !important;
       background-position: center left !important;
-  }
-
-  table.dataTable thead th, table.dataTable thead td {
-      padding: 12px 24px;
-      border-bottom: none !important;
+      position: relative !important;
+      left: 1rem !important;
+      right: 1rem !important;
   }
   table.dataTable.row-border tbody th,
   table.dataTable.row-border tbody td,
@@ -111,17 +100,13 @@
   table.dataTable.display tbody td {
       border-top: none !important;
   }
-  table.dataTable.hover tbody tr:nth-child(odd),
-  table.dataTable.display tbody tr:nth-child(odd) {
-      background-color: #f6f6f6;
+  table.dataTable tbody tr:nth-child(odd) {
+      background-color: #f6f6f6 !important;
   }
-  table.dataTable thead th {
-    background-color: none !important;
-    border-bottom: 0.0625rem solid var(--gray-100);
-}
-table {
-  border-radius: 25px;
-}
+  table.dataTable.display tbody tr:hover,
+  table.dataTable.hover tbody tr:hover {
+    background-color: transparent;
+  }
 }
   .datatable-update {
     display: flex;
@@ -148,8 +133,7 @@ table {
         }
     }
 }
-
 .sb-dashlet-table {
     z-index: 2;
     position: relative;
-} 
+}

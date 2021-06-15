@@ -1,0 +1,33 @@
+<div *ngIf="questionnaireForm?.contains(question._id)">
+  <div
+    *ngFor="let o of options; let i = index"
+    [formGroup]="questionnaireForm"
+    class="mb-15 sb-checkbox sb-checkbox-secondary d-flex flex-ai-baseline"
+  >
+    <div [formArrayName]="question._id">
+      <sui-checkbox
+        (checkChange)="onChange(o.value, $event, i)"
+        [formControlName]="i"
+      >
+        {{ o.label }}
+      </sui-checkbox>
+    </div>
+    <div *ngIf="question?.option && question?.option[i]?.hint">
+      <i
+        class="icon large lightbulb"
+        (click)="isDimmed = !isDimmed; hint = question?.option[i]?.hint"
+      ></i>
+    </div>
+  </div>
+</div>
+
+<sui-dimmer [(isDimmed)]="isDimmed" [isClickable]="true">
+  <h4 class="ui inverted header">{{ hint }}</h4>
+  <button
+    type="button"
+    class="sb-btn sb-btn-sm sb-btn-white text-uppercase flex-basis-1"
+    type="submit"
+  >
+    {{ resourceService.frmelmnts?.btn?.close }}
+  </button>
+</sui-dimmer>
