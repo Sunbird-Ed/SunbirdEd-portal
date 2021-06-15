@@ -1,5 +1,5 @@
 import { FormBuilder, Validators } from '@angular/forms';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CreateEditGroupComponent } from './create-edit-group.component';

@@ -1,5 +1,5 @@
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { SuiModalModule, SuiPopupModule } from 'ng2-semantic-ui';
+import { SuiModalModule, SuiPopupModule } from 'ng2-semantic-ui-v9';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, ResourceService } from '@sunbird/shared';

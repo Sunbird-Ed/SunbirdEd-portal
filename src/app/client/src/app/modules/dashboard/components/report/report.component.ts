@@ -31,7 +31,7 @@ export class ReportComponent implements OnInit {
   public reportObj: any;
   public isUserReportAdmin = false;
   @ViewChildren(DataChartComponent) chartsComponentList: QueryList<DataChartComponent>;
-  @ViewChild('reportElement', {static: false}) reportElement;
+  @ViewChild('reportElement') reportElement;
   public hideElements: boolean;
   public reportExportInProgress = false;
   public exportOptions = ['Pdf', 'Img'];

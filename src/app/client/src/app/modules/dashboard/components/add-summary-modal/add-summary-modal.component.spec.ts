@@ -1,7 +1,7 @@
 import { SharedModule } from '@sunbird/shared';
 import { ISummaryObject } from './../../interfaces';
 import { ReactiveFormsModule } from '@angular/forms';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { configureTestSuite } from '@sunbird/test-util';
 import { AddSummaryModalComponent } from './add-summary-modal.component';

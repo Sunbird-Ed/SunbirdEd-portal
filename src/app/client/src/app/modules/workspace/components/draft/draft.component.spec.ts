@@ -4,7 +4,7 @@ import {throwError as observableThrowError, of as observableOf,  Observable } fr
 import { async, ComponentFixture, TestBed, inject, tick, fakeAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SuiModalService } from 'ng2-semantic-ui';
+import { SuiModalService } from 'ng2-semantic-ui-v9';
 // Import services
 import { DraftComponent } from './draft.component';
 import { SharedModule, PaginationService, ToasterService, ResourceService, ConfigService } from '@sunbird/shared';

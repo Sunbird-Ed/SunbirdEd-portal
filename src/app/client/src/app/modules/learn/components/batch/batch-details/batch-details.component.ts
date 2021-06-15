@@ -48,7 +48,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   telemetryCdata: Array<{}> = [];
   @Output() allBatchDetails = new EventEmitter();
   allowBatchCreation: boolean;
-  @ViewChild('batchListModal', {static: false}) batchListModal;
+  @ViewChild('batchListModal') batchListModal;
   isTrackable = false;
   courseCreator = false;
   viewBatch = false;

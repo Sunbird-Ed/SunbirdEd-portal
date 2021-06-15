@@ -23,7 +23,7 @@ import { ProfileService } from '@sunbird/profile';
     styleUrls: ['./explore-page.component.scss']
 })
 export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
-    @ViewChild('frameworkModal', { static: false }) frameworkModal;
+    @ViewChild('frameworkModal') frameworkModal;
     public initFilter = false;
     public inViewLogs = [];
     public showLoader = true;

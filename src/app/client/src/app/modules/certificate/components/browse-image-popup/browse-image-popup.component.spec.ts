@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule, FormGroup, FormControl } from '@angul
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import * as _ from 'lodash-es';
 import { BrowseImagePopupComponent } from './browse-image-popup.component';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { BrowserCacheTtlService, ConfigService, ToasterService, UtilService, ResourceService } from '@sunbird/shared';
 import { TranslateService, TranslateStore } from '@ngx-translate/core';
 import { MockData } from './../create-template/create-template.component.spec.data';

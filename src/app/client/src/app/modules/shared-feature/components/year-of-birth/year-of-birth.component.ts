@@ -11,7 +11,7 @@ export class YearOfBirthComponent implements OnInit {
     selectedYearOfBirth: number;
     birthYearOptions: Array<number> = [];
     showYearOfBirthPopup = false;
-    @ViewChild('modal', { static: false }) modal;
+    @ViewChild('modal') modal;
 
     constructor(
         private profileService: ProfileService,

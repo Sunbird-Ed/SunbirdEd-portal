@@ -13,10 +13,10 @@ import { IInteractEventObject } from '@sunbird/telemetry';
 export class CertificateNameUpdatePopupComponent implements OnInit, OnDestroy {
   @Input() showProfileUpdatePopup;
   @Input() profileInfo;
-  @ViewChild('modal', {static: false}) modal;
+  @ViewChild('modal') modal;
   @Output() close = new EventEmitter();
-  @ViewChild('crtFirstName', {static: false}) fNameInputEl: ElementRef;
-  @ViewChild('crtLastName', {static: false}) lNameInputEl: ElementRef;
+  @ViewChild('crtFirstName') fNameInputEl: ElementRef;
+  @ViewChild('crtLastName') lNameInputEl: ElementRef;
 
 
   disableContinueBtn = false;

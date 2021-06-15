@@ -12,7 +12,7 @@ import {
 import { ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import {
   of as observableOf,
   throwError as observableThrowError

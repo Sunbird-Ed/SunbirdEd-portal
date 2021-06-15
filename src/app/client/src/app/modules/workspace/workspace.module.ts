@@ -4,7 +4,7 @@ import { CoreModule } from '@sunbird/core';
 import { WorkspaceRoutingModule } from './workspace-routing.module';
 import { SharedModule } from '@sunbird/shared';
 import { SlickModule } from 'ngx-slick';
-import { SuiModule } from 'ng2-semantic-ui/dist';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
 import { WorkSpaceService, EditorService , BatchService, ReviewCommentsService} from './services';
 import {
