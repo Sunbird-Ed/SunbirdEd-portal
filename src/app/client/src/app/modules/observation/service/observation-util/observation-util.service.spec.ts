@@ -1,7 +1,13 @@
 import { async, fakeAsync, TestBed } from "@angular/core/testing";
 import { ObservationUtilService } from "./observation-util.service";
 import { UserService, KendraService } from "@sunbird/core";
-import { ModalConfig, ModalControls, SuiModal, SuiModalModule, SuiModalService } from "ng2-semantic-ui";
+import {
+  ModalConfig,
+  ModalControls,
+  SuiModal,
+  SuiModalModule,
+  SuiModalService,
+} from "ng2-semantic-ui";
 import { HttpClient } from "@angular/common/http";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { configureTestSuite } from "@sunbird/test-util";
@@ -24,10 +30,15 @@ import {
 } from "rxjs";
 
 describe("ObservationUtilService", () => {
-  let baseHref, kendraService, userService,modalService;
+  let baseHref, kendraService, userService, modalService;
   let service: ObservationUtilService;
   let requiredFields, data, allFieldsPresent, originalTimeout;
   let mockModalRef: SuiModalService;
+
+  const fakeModalService = {
+    approve: () => true,
+    context: data,
+  };
   configureTestSuite();
   beforeEach(() =>
     TestBed.configureTestingModule({
@@ -49,20 +60,14 @@ describe("ObservationUtilService", () => {
     service = TestBed.get(ObservationUtilService);
     userService = TestBed.get(UserService);
     kendraService = TestBed.get(KendraService);
-    modalService=TestBed.get(SuiModalService);
-    originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
-  });
-
-  afterEach(() => {
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+    modalService = TestBed.get(SuiModalService);
   });
 
   it("should be created", () => {
     expect(service).toBeTruthy();
   });
 
-  it("should run #getProfileData() not null", async () => {
+  it("should run #getProfileData() not null", async (done) => {
     userService.userData$ = observableOf({
       userProfile: {
         profileUserType: {
@@ -72,11 +77,15 @@ describe("ObservationUtilService", () => {
       },
     });
     spyOn(service, "getProfileData").and.callThrough();
-    service.getProfileData();
+    let value = await service.getProfileData();
+    setTimeout(() => {
+      expect(service.getProfileData).toHaveBeenCalled();
+      expect(value).toEqual(true);
+      done();
+    });
   });
-  
 
-  it("should run #getProfileData() null", async () => {
+  it("should run #getProfileData() null", async (done) => {
     userService.userData$ = observableOf({
       userProfile: {
         profileUserType: {
@@ -86,28 +95,19 @@ describe("ObservationUtilService", () => {
       },
     });
     spyOn(service, "getProfileData").and.callThrough();
-    service.getProfileData();
-  });
-
-  it("it should capture any error in getProfileData", () => {
-    userService.userData$ = observableThrowError({});
-    service.getProfileData();
+    let value = await service.getProfileData();
+    setTimeout(() => {
+      expect(service.getProfileData).toHaveBeenCalled();
+      expect(value).toEqual(false);
+      done();
+    });
   });
 
   it("should run #getProfileDataList()", async () => {
+    spyOn(service, "getProfileDataList").and.returnValue(
+      observableThrowError({})
+    );
     service.getProfileDataList();
-
-    let mySpy = spyOn(service, "getProfileDataList").and.callFake(() => {
-      return Promise.resolve({
-        result: ProfileDataList,
-      }).catch((error)=>{
-        return Promise.reject({
-          result:false
-        });
-      });
-    });
-    service.dataParam = ProfileDataList;
-    expect(mySpy).toBeDefined();
   });
 
   it("should run #getProfileInfo() success", fakeAsync(() => {
@@ -127,13 +127,12 @@ describe("ObservationUtilService", () => {
       });
     });
     service.getProfileDataList();
-    let mySpy = spyOn(kendraService, "get").and.returnValue(of(EntityResponse));
+    spyOn(kendraService, "get").and.returnValue(of(EntityResponse));
     service.requiredFields = EntityResponse;
     service.getMandatoryEntities();
-    expect(mySpy).toBeDefined();
-    expect(KendraService).toBeDefined();
-    expect(kendraService).toBeTruthy();
+    spyOn(service, "getProfileInfo").and.callThrough();
     service.getProfileInfo();
+    expect(service.getProfileInfo).toHaveBeenCalled();
   }));
 
   it("should run #getProfileInfo() failed", fakeAsync(() => {
@@ -157,10 +156,9 @@ describe("ObservationUtilService", () => {
     EntityResponse.result = ["test"];
     let mySpy = spyOn(kendraService, "get").and.returnValue(of(EntityResponse));
     service.getMandatoryEntities();
-    expect(mySpy).toBeDefined();
-    expect(KendraService).toBeDefined();
-    expect(kendraService).toBeTruthy();
+    spyOn(service, "getProfileInfo").and.callThrough();
     service.getProfileInfo();
+    expect(service.getProfileInfo).toHaveBeenCalled();
   }));
 
   it("should run #getProfileInfo() no entity", fakeAsync(() => {
@@ -184,12 +182,10 @@ describe("ObservationUtilService", () => {
     EntityResponse.result = [];
     let mySpy = spyOn(kendraService, "get").and.returnValue(of(EntityResponse));
     service.getMandatoryEntities();
-    expect(mySpy).toBeDefined();
-    expect(KendraService).toBeDefined();
-    expect(kendraService).toBeTruthy();
+    spyOn(service, "getProfileInfo").and.callThrough();
     service.getProfileInfo();
+    expect(service.getProfileInfo).toHaveBeenCalled();
   }));
-
 
   it("should run #getProfileInfo() throw error", fakeAsync(() => {
     userService.userData$ = observableOf({
@@ -200,7 +196,9 @@ describe("ObservationUtilService", () => {
         },
       },
     });
-    spyOn(service, "getProfileData").and.callFake(() => Promise.resolve(false));
+    spyOn(service, "getProfileData").and.callFake(() =>
+      Promise.resolve({ result: false })
+    );
     service.getProfileData();
     service.dataParam = ProfileDataList;
     spyOn(service, "getProfileDataList").and.callFake(() => {
@@ -209,25 +207,37 @@ describe("ObservationUtilService", () => {
       });
     });
     service.getProfileDataList();
-    let mySpy = spyOn(kendraService, "get").and.returnValue(observableThrowError({}));
+    spyOn(kendraService, "get").and.returnValue(observableThrowError({}));
     service.getMandatoryEntities();
-    expect(mySpy).toBeDefined();
-    expect(KendraService).toBeDefined();
-    expect(kendraService).toBeTruthy();
+    spyOn(service, "getProfileInfo").and.callThrough();
     service.getProfileInfo();
+    expect(service.getProfileInfo).toHaveBeenCalled();
   }));
 
-  it("should run #getProfileDataList()", async () => {
-    spyOn(service, "getProfileDataList").and.returnValue(observableThrowError({}));
+  it("should run #getProfileDataList on success", async () => {
+    service.dataParam = observableOf({
+      result: ProfileDataList,
+    });
+    spyOn(service, "getProfileDataList").and.callThrough();
     service.getProfileDataList();
+    expect(service.getProfileDataList).toHaveBeenCalled();
+  });
+
+  it("should run #getProfileDataList on fail", async () => {
+    service.dataParam = observableThrowError({});
+    spyOn(service, "getProfileDataList").and.returnValue(Promise.reject());
+    service.getProfileDataList();
+    expect(service.getProfileDataList).toHaveBeenCalled();
   });
 
   it("should run #showPopupAlert()", async () => {
-    let mySpy = spyOn(modalService, "open").and.callFake(()=>{
+    spyOn(modalService, "open").and.callFake(() => {
       return Promise.resolve(true);
-    })
+    });
+    
+    spyOn(service, "showPopupAlert").and.callThrough();
     service.showPopupAlert(metaData);
-    expect(mySpy).toBeDefined();
+    expect(service.showPopupAlert).toHaveBeenCalled();
   });
 
   it("should call the getAlertMetaData", () => {

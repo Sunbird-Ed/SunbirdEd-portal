@@ -54,12 +54,12 @@ describe("MlGuard", () => {
     toastService = TestBed.get(ToasterService);
   });
 
-  it("should ...", inject([MlGuard], (guard: MlGuard) => {
+  it("should call the canActivate", inject([MlGuard], (guard: MlGuard) => {
     const res = guard.canActivate(null, null);
     expect(guard).toBeTruthy();
   }));
 
-  it("should run #getProfileData() for adminstrator", async () => {
+  it("should run #getProfileData() for adminstrator", async (done) => {
     userService.userData$ = observableOf({
       userProfile: {
         profileUserType: {
@@ -69,10 +69,15 @@ describe("MlGuard", () => {
       },
     });
     spyOn(guard, "canActivate").and.callThrough();
-    guard.canActivate().catch((error) => {});
+    let value = await guard.canActivate();
+    setTimeout(() => {
+      expect(guard.canActivate).toHaveBeenCalled();
+      expect(value).toEqual(true);
+      done();
+    });
   });
 
-  it("should run #getProfileData() for leader", async () => {
+  it("should run #getProfileData() for leader", async (done) => {
     userService.userData$ = observableOf({
       userProfile: {
         profileUserType: {
@@ -82,10 +87,15 @@ describe("MlGuard", () => {
       },
     });
     spyOn(guard, "canActivate").and.callThrough();
-    guard.canActivate().catch((error) => {});
+    let value = await guard.canActivate();
+    setTimeout(() => {
+      expect(guard.canActivate).toHaveBeenCalled();
+      expect(value).toEqual(true);
+      done();
+    });
   });
 
-  it("should run #getProfileData() for leader", async () => {
+  it("should run #getProfileData() not any role", async (done) => {
     userService.userData$ = observableOf({
       userProfile: {
         profileUserType: {
@@ -95,11 +105,22 @@ describe("MlGuard", () => {
       },
     });
     spyOn(guard, "canActivate").and.callThrough();
-    guard.canActivate();
+    let value = await guard.canActivate();
+    setTimeout(() => {
+      expect(guard.canActivate).toHaveBeenCalled();
+      expect(value).toEqual(false);
+      done();
+    });
   });
 
-  it("it should capture any error in canActivate", () => {
+  it("it should capture any error in canActivate", async (done) => {
     userService.userData$ = observableThrowError({});
-    guard.canActivate();
+    spyOn(guard, "canActivate").and.callThrough();
+    let value = await guard.canActivate();
+    setTimeout(() => {
+      expect(guard.canActivate).toHaveBeenCalled();
+      expect(value).toEqual(false);
+      done();
+    });
   });
 });
