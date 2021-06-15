@@ -11,7 +11,7 @@ import { WorkSpaceService } from '../../services';
 import { UserService, LearnerService, CoursesService, PermissionService } from '@sunbird/core';
 import {
   SuiModalService, TemplateModalConfig, ModalTemplate
-} from 'ng2-semantic-ui';
+} from 'ng2-semantic-ui-v9';
 import { mockUserData } from './../../../core/services/user/user.mock.spec.data';
 // Import Module
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';

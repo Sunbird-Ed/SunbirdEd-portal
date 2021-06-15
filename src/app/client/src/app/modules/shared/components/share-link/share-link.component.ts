@@ -1,7 +1,7 @@
 import { IShareEventData, IShareEventInput } from '@sunbird/telemetry';
 import { Component, OnInit, Input, EventEmitter, ElementRef, ViewChild, Output, Renderer2 } from '@angular/core';
 import { ResourceService } from '../../services/index';
-import { IPopup } from 'ng2-semantic-ui';
+import { IPopup } from 'ng2-semantic-ui-v9';
 import { ISharelink, ITelemetryShare } from './../../interfaces';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 @Component({

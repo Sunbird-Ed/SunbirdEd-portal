@@ -16,7 +16,7 @@ import {
 import { TelemetryModule } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 import { CacheService } from 'ng2-cache-service';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { SlickModule } from 'ngx-slick';
 import { BehaviorSubject, Observable, of as observableOf, of, throwError } from 'rxjs';
 import { ContentManagerService, SystemInfoService } from '../../services';

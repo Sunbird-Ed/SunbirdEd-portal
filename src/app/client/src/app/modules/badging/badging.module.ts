@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
 import { ContentBadgeComponent, AssignBadgesContentComponent } from './components';

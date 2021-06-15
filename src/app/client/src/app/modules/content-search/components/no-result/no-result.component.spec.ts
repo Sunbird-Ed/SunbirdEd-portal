@@ -4,7 +4,7 @@ import { NoResultComponent } from './no-result.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SharedModule, ResourceService, ConfigService, BrowserCacheTtlService, } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { FormsModule } from '@angular/forms';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { PlayerHelperModule } from '@sunbird/player-helper';

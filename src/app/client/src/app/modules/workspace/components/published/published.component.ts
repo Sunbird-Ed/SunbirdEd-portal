@@ -18,7 +18,7 @@ import { ContentIDParam } from '../../interfaces/delteparam';
  * Interface for passing the configuartion for modal
 */
 
-import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui';
+import { SuiModalService, TemplateModalConfig, ModalTemplate } from 'ng2-semantic-ui-v9';
 
 /**
  * The published  component search for all the published component

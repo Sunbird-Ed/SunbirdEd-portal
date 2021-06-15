@@ -16,7 +16,7 @@ import * as mockData from './published.component.spec.data';
 const testData = mockData.mockRes;
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
-import { SuiModule, SuiModalService } from 'ng2-semantic-ui';
+import { SuiModule, SuiModalService } from 'ng2-semantic-ui-v9';
 import { CoreModule } from '@sunbird/core';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { configureTestSuite } from '@sunbird/test-util';

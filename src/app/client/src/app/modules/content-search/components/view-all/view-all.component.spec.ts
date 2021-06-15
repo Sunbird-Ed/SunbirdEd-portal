@@ -9,7 +9,7 @@ import {throwError as observableThrowError, of as observableOf, Observable, of }
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Response } from './view-all.component.spec.data';
 import { PublicPlayerService } from '@sunbird/public';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { configureTestSuite } from '@sunbird/test-util';
 import * as _ from 'lodash-es';
 

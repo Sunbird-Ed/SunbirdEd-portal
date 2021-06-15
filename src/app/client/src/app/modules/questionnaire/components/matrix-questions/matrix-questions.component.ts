@@ -10,7 +10,7 @@ import {
   SuiModalService,
   TemplateModalConfig,
   ModalTemplate,
-} from "ng2-semantic-ui";
+} from 'ng2-semantic-ui-v9';
 import { ResourceService } from "@sunbird/shared";
 import { MatrixQuestion, Question } from "../../Interface/assessmentDetails";
 import { ObservationUtilService } from "../../../observation/service";

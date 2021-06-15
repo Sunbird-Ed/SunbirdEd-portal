@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { CourseCompletionComponent } from './course-completion.component';
 
 describe('CourseCompletionComponent', () => {
