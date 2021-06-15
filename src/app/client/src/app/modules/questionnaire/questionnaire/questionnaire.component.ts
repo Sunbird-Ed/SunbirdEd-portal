@@ -246,4 +246,8 @@ export class QuestionnaireComponent
          behavior: "smooth"
     });
   }
+
+  goBack() {
+    this.location.back();
+  }
 }
