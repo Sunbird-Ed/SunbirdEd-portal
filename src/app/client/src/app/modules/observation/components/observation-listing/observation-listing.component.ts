@@ -74,6 +74,7 @@ export class ObservationListingComponent
   public cardIntractEdata: IInteractEventEdata;
   public showLoader = true;
   public initFilters = false;
+  public noResultMessage;
   isDesktopApp = false;
   selectedFilters: any;
   totalCount: any = 0;
@@ -123,7 +124,6 @@ export class ObservationListingComponent
 
   async ngOnInit(){
     this.initLayout();
-  
     this.showEditUserDetailsPopup=await this.observationUtil.getProfileInfo();
      if(!this.showEditUserDetailsPopup){
        let metaData=this.observationUtil.getAlertMetaData();
@@ -159,6 +159,7 @@ export class ObservationListingComponent
       this.searchData="";
       this.fetchContentList();
     });
+    this.listenLanguageChange();
   }
 
   async getProfileCheck(){
@@ -166,6 +167,18 @@ export class ObservationListingComponent
     .then((result:any)=>{
       return result;
     });
+  }
+
+  private listenLanguageChange() {
+    this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe((languageData) => {
+        this.setNoResultMessage();
+    });
+}
+
+  private setNoResultMessage() {
+    let {  noContentfoundSubTitle} = _.get(this.resourceService, 'frmelmnts.lbl');
+    const title = _.get(this.resourceService,'messages.stmsg.m0006')
+    this.noResultMessage = { title, noContentfoundSubTitle };
   }
 
   getDataParam(){

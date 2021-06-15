@@ -9,7 +9,7 @@
   *ngFor="let instance of question?.value; let i = index"
 >
   <div class="content flex-jc-space-between">
-    <div (click)="viewInstance(i)">
+    <div (click)="viewInstance(i)" style="flex: 1;">
       <span
         [ngClass]="{ _validQuestion: question?.completedInstance?.includes(i) }"
       >
