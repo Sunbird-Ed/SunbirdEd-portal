@@ -277,7 +277,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
         status: bothParams.queryParams.status ? bothParams.queryParams.status : preStatus,
         createdBy: this.userService.userid,
         // tslint:disable-next-line:max-line-length
-        primaryCategory: _.get(bothParams, 'queryParams.primaryCategory') || primaryCategories || this.config.appConfig.WORKSPACE.primaryCategory,
+        primaryCategory: _.get(bothParams, 'queryParams.primaryCategory') || (!_.isEmpty(primaryCategories) ? primaryCategories : this.config.appConfig.WORKSPACE.primaryCategory),
         board: bothParams.queryParams.board,
         subject: bothParams.queryParams.subject,
         medium: bothParams.queryParams.medium,

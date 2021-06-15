@@ -58,7 +58,9 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     this.unsubscribe = this.isCustodianOrgUser().pipe(
       mergeMap((custodianOrgUser: boolean) => {
         this.custodianOrg = custodianOrgUser;
-        if (custodianOrgUser) {
+        if(this.isGuestUser){
+          return this.getFormOptionsForCustodianOrgForGuestUser();
+        } else if (custodianOrgUser) {
           return this.getFormOptionsForCustodianOrg();
         } else {
           return this.getFormOptionsForOnboardedUser();
@@ -71,6 +73,41 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       });
 
       this.setInteractEventData();
+  }
+  private getFormOptionsForCustodianOrgForGuestUser() {
+    return this.getCustodianOrgDataForGuest().pipe(mergeMap((data) => {
+      this.custodianOrgBoard = data;
+      const boardObj = _.cloneDeep(this.custodianOrgBoard);
+      boardObj.range = _.sortBy(boardObj.range, 'index');
+      const board = boardObj;
+      if (_.get(this.selectedOption, 'board[0]')) { // update mode, get 1st board framework and update all fields
+        this.selectedOption.board = _.get(this.selectedOption, 'board[0]');
+        this.frameWorkId = _.get(_.find(this.custOrgFrameworks, { 'name': this.selectedOption.board }), 'identifier');
+        return this.getFormatedFilterDetails().pipe(map((formFieldProperties) => {
+          this._formFieldProperties = formFieldProperties;
+          this.mergeBoard(); // will merge board from custodian org and board from selected framework data
+          return this.getUpdatedFilters(board, true);
+        }));
+      } else {
+        const fieldOptions = [ board,
+          { code: 'medium', label: 'Medium', index: 2 },
+          { code: 'gradeLevel', label: 'Class', index: 3 },
+          { code: 'subject', label: 'Subject', index: 4 } ];
+        return of(fieldOptions);
+      }
+    }));
+  }
+  private getCustodianOrgDataForGuest() {
+    return this.channelService.getFrameWork(this.guestUserHashTagId).pipe(map((channelData: any) => {
+      this.custOrgFrameworks =  _.get(channelData, 'result.channel.frameworks') || [];
+      this.custOrgFrameworks = _.sortBy(this.custOrgFrameworks, 'index');
+      return {
+          range: this.custOrgFrameworks,
+          label: 'Board',
+          code: 'board',
+          index: 1
+        };
+    }));
   }
   private getFormOptionsForCustodianOrg() {
     return this.getCustodianOrgData().pipe(mergeMap((data) => {
@@ -139,12 +176,16 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     }), first());
   }
   public handleFieldChange(event, field) {
-    if (!this.custodianOrg || field.index !== 1) { // no need to fetch data, just rearrange fields
+    if ((!this.isGuestUser || field.index !== 1) && (!this.custodianOrg || field.index !== 1)) { // no need to fetch data, just rearrange fields
       this.formFieldOptions = this.getUpdatedFilters(field);
       this.enableSubmitButton();
       return;
     }
-    this.frameWorkId = _.get(_.find(field.range, { name: _.get(this.selectedOption, field.code)}), 'identifier');
+    if(_.get(this.selectedOption, field.code) === 'CBSE/NCERT') {
+      this.frameWorkId = _.get(_.find(field.range, { name: 'CBSE'}), 'identifier');
+    } else {
+      this.frameWorkId = _.get(_.find(field.range, { name: _.get(this.selectedOption, field.code)}), 'identifier');
+    }
     if (this.unsubscribe) { // cancel if any previous api call in progress
       this.unsubscribe.unsubscribe();
     }

@@ -2,7 +2,7 @@ import { FormsModule } from '@angular/forms';
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
-import { SearchService, UserService } from '@sunbird/core';
+import { SearchService, UserService, FrameworkService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ConfigService, ToasterService,
   ResourceService, IContents, ILoaderMessage, INoResultMessage, IPagination,
@@ -152,6 +152,7 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit, Afte
   */
   constructor(public modalService: SuiModalService, public searchService: SearchService,
     public workSpaceService: WorkSpaceService,
+    public frameworkService: FrameworkService,
     paginationService: PaginationService,
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
@@ -188,11 +189,13 @@ export class LimitedPublishedComponent extends WorkSpace implements OnInit, Afte
     this.showLoader = true;
     this.pageNumber = pageNumber;
     this.pageLimit = limit;
+    const primaryCategory = _.compact(_.concat(this.frameworkService['_channelData'].contentPrimaryCategories,
+      this.frameworkService['_channelData'].collectionPrimaryCategories));
     const searchParams = {
       filters: {
         status: ['Unlisted'],
         createdBy: this.userService.userid,
-        contentType: this.config.appConfig.WORKSPACE.contentType,
+        primaryCategory: (!_.isEmpty(primaryCategory) ? primaryCategory : this.config.appConfig.WORKSPACE.primaryCategory),
         objectType: 'Content'
       },
       limit: this.pageLimit,

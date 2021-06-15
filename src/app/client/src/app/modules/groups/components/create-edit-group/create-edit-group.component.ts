@@ -98,9 +98,9 @@ export class CreateEditGroupComponent implements OnInit, OnDestroy, AfterViewIni
         this.closeModal();
     }, err => {
         this.disableBtn = false;
-        const errMsg: string = _.get(err, 'response.body.params.err') || _.get(err, 'params.err');
+        const errCode: string = _.get(err, 'response.body.params.err') || _.get(err, 'params.err');
 
-        if (errMsg === 'EXCEEDED_GROUP_MAX_LIMIT') {
+        if (errCode === 'GS_CRT04') {
           this.toasterService.error(this.resourceService.messages.groups.emsg.m001);
           this.addTelemetry('exceeded-group-max-limit', {group_count: this.groupService.groupListCount});
         } else {

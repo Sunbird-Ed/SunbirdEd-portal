@@ -105,6 +105,7 @@ export class AddEntityComponent implements OnInit {
     }
 
     searchEntity() {
+        this.page = 1;
         this.entities = [];
         this.search();
     }

@@ -150,8 +150,8 @@ export class GroupsService {
     return this.userCservice.checkUserExists({key: 'userName', value: memberId}, captchaToken);
   }
 
-getActivity(groupId, activity, mergeGroup) {
-    return this.groupCservice.activityService.getDataAggregation(groupId, activity, mergeGroup);
+getActivity(groupId, activity, mergeGroup, leafNodesCount?) {
+    return this.groupCservice.activityService.getDataAggregation(groupId, activity, mergeGroup, leafNodesCount);
   }
 
   set groupData(group: IGroupCard) {

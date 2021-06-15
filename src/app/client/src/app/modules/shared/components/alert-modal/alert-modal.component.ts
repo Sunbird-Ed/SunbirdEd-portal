@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SuiModal, ComponentModalConfig, ModalSize } from 'ng2-semantic-ui-v9';
 import { Location } from '@angular/common';
+import {ResourceService} from '@sunbird/shared';
+import * as _ from 'lodash-es';
 
 interface IAlertModalContext {
     data:any;
@@ -13,7 +15,12 @@ interface IAlertModalContext {
 })
 export class AlertModalComponent {
   isChecked=false;
-  constructor(public modal: SuiModal<IAlertModalContext, void, void>,private location:Location) {}
+  public resourceService: ResourceService;
+  instance:string
+  constructor(public modal: SuiModal<IAlertModalContext, void, void>,private location:Location,resourceService: ResourceService) {
+    this.resourceService = resourceService;
+    this.instance = _.upperCase(this.resourceService.instance);
+  }
 
   getMethod(data){
     if(data.type=="cancel"){

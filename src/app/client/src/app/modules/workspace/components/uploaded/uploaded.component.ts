@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
-import { SearchService, UserService } from '@sunbird/core';
+import { SearchService, UserService, FrameworkService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ConfigService, ToasterService, IPagination,
   ResourceService, IContents, ILoaderMessage, INoResultMessage, NavigationHelperService
@@ -139,6 +139,7 @@ export class UploadedComponent extends WorkSpace implements OnInit, AfterViewIni
   */
   constructor(public modalService: SuiModalService, public searchService: SearchService,
     public workSpaceService: WorkSpaceService,
+    public frameworkService: FrameworkService,
     paginationService: PaginationService,
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
@@ -166,11 +167,14 @@ export class UploadedComponent extends WorkSpace implements OnInit, AfterViewIni
     this.showLoader = true;
     this.pageNumber = pageNumber;
     this.pageLimit = limit;
+    const primaryCategories = _.compact(_.concat(this.frameworkService['_channelData'].contentPrimaryCategories,
+      this.frameworkService['_channelData'].collectionPrimaryCategories));
+
     const searchParams = {
       filters: {
         status: ['Draft'],
         createdBy: this.userService.userid,
-        contentType: this.config.appConfig.WORKSPACE.contentType,
+        primaryCategory: (!_.isEmpty(primaryCategories) ? primaryCategories : this.config.appConfig.WORKSPACE.primaryCategory),
         mimeType: ['application/pdf', 'video/x-youtube', 'application/vnd.ekstep.html-archive',
           'application/epub', 'application/vnd.ekstep.h5p-archive', 'video/mp4', 'video/webm', 'text/x-url'],
       },

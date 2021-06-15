@@ -16,6 +16,7 @@ import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
 import { ProfileService } from '@sunbird/profile';
 
+
 @Component({
     selector: 'app-explore-page-component',
     templateUrl: './explore-page.component.html',
@@ -97,7 +98,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         public contentManagerService: ContentManagerService, private cacheService: CacheService,
         private browserCacheTtlService: BrowserCacheTtlService, private profileService: ProfileService) {
             this.instance = (<HTMLInputElement>document.getElementById('instance'))
-            ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
+            ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
         }
 
 
@@ -119,6 +120,12 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         return this.formService.getFormConfig(input);
     }
 
+    private _addFiltersInTheQueryParams(updatedFilters = {}) {
+        this.getCurrentPageData();
+        const queryParams = { ...this.defaultFilters, selectedTab: _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'textbook', ...updatedFilters };
+        this.router.navigate([], { queryParams, relativeTo: this.activatedRoute });
+    }
+
     private fetchChannelData() {
         return forkJoin(this.getChannelId(), this.getFormConfig())
             .pipe(
@@ -136,6 +143,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                             this.defaultFilters = guestUserDetails.framework ? guestUserDetails.framework : this.defaultFilters;
                         }
                     }
+                    this._addFiltersInTheQueryParams();
                     return this.contentSearchService.initialize(this.channelId, this.custodianOrg, get(this.defaultFilters, 'board[0]'));
                 }),
                 tap(data => {
@@ -750,6 +758,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
+
     public viewAll(event) {
         let searchQuery;
         if (this.isUserLoggedIn() && !_.get(event, 'searchQuery')) {
@@ -847,9 +856,31 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             return;
         }
         let params = {};
+        const contentType = _.get(this.getCurrentPageData(), 'contentType');
+        if(contentType === 'home') {
+            params = _.omit(this.queryParams, ['id', 'selectedTab']);
+        }
         params[facetName] = event.data[0].value.value;
         params['selectedTab'] = 'all';
-        this.router.navigate(['explore', 1], { queryParams: params });
+        params['showClose'] = 'true';
+
+        const updatedCategoriesMapping = _.mapKeys(params, (_, key) => {
+            const mappedValue = get(this.contentSearchService.getCategoriesMapping, [key]);
+            return mappedValue || key;
+        });
+
+        const paramValuesInLowerCase = _.mapValues(updatedCategoriesMapping, value => {
+            if (_.toLower(value) === 'cbse') return 'CBSE/NCERT';
+            return Array.isArray(value) ? _.map(value, _.toLower) : _.toLower(value);
+        });
+
+        params = paramValuesInLowerCase;
+
+        if(this.isUserLoggedIn()){
+            this.router.navigate(['search/Library', 1], { queryParams: params });
+        } else{
+            this.router.navigate(['explore', 1], { queryParams: params });
+        }
     }
 
     getSectionTitle (title) {
@@ -867,6 +898,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             this.profileService.updateProfile({ framework: event }).subscribe(res => {
                 this.userPreference.framework = event;
                 this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
+                this._addFiltersInTheQueryParams(event);
             }, err => {
                 this.toasterService.warning(this.resourceService.messages.emsg.m0012);
             });
@@ -876,9 +908,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 localStorage.setItem('guestUserDetails', JSON.stringify(this.userPreference));
             }
             this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
+            this._addFiltersInTheQueryParams(event);
         }
-        this.setUserPreferences();
-        this.fetchContents$.next(this._currentPageData);
+        // this.setUserPreferences();
+        // this.fetchContents$.next(this._currentPageData);
     }
 
     getExplorePageSections () {
