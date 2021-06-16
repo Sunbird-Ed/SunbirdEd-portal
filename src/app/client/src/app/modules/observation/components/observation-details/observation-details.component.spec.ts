@@ -49,7 +49,7 @@ class MockRouter {
   url = jasmine.createSpy("url");
 }
 let routerSpy = { navigate: jasmine.createSpy('navigate') };
-describe('ObservationDetailsComponent', () => {
+fdescribe('ObservationDetailsComponent', () => {
   let component: ObservationDetailsComponent;
   let fixture: ComponentFixture<ObservationDetailsComponent>;
   let observationUtilService, observationService, activatedRouteStub;
@@ -134,6 +134,7 @@ describe('ObservationDetailsComponent', () => {
     spyOn(observationService, 'post').and.returnValue(observableThrowError({}));
     spyOn(component, 'getEntities').and.callThrough();
     component.getEntities();
+    expect(component.getEntities).toHaveBeenCalled();
   })
 
 
@@ -149,27 +150,20 @@ describe('ObservationDetailsComponent', () => {
   })
 
 
-  it('Should Delete Entity', async () => {
+  it('Should Delete Entity', () => {
     spyOn(observationUtilService, "getAlertMetaData").and.callFake(() => AlertMetaData);
     spyOn(observationUtilService, "showPopupAlert").and.callFake(() => Promise.resolve(true))
     spyOn(observationService, 'delete').and.callFake(() => of(true));
     spyOn(component, "delete").and.callThrough();
-    spyOn(observationUtilService, "getProfileDataList").and.callFake(() => Promise.resolve(ProfileData));
+    // spyOn(observationUtilService, "getProfileDataList").and.callFake(() => Promise.resolve(ProfileData));
     component.payload = ProfileData;
     component.payload.data = Entity.data._id;
-    await component.delete(Entity.data);
-    // component.getEntities();
-    setTimeout(() => {
-      expect(observationUtilService).toBeDefined();
-      expect(observationService).toBeDefined();
-    }, 10)
-
+    component.delete(Entity.data);
+      expect(component.delete).toHaveBeenCalled();
+      expect(observationUtilService.getAlertMetaData).toHaveBeenCalled();
   });
 
-
-
   it('Should Open Submission Name edit modal', () => {
-
     component.openEditSubmission(EventForSubmission.data);
     component.openEditModal.show = true;
     // component.openEditModal.data = EventForSubmission.data;
