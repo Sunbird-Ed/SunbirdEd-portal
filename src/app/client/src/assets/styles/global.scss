@@ -327,37 +327,14 @@ app-workspace {
 
 
 /* new theme */
-.sbt-fluid-header-bg {
-  display: none;
-  background: none;
 
-  @include respond-above(sm) {
-    background: linear-gradient(to right, var(--sbt-body-bg) 0%, var(--sbt-body-bg) 35%, var(--sbt-header-bg) 60%, var(--sbt-header-bg) 84%, var(--sbt-header-bg) 100%);
-
-    html[dir="rtl"] & {
-      background: linear-gradient(to left, var(--sbt-body-bg) 0%, var(--sbt-body-bg) 35%, var(--sbt-header-bg) 60%, var(--sbt-header-bg) 84%, var(--sbt-header-bg) 100%);
-    }
-  }
-}
-
-.sbt-fluid-content-bg {
-  background: none;
-
-  @include respond-above(sm) {
-    background: linear-gradient(to right, var(--sbt-body-bg) 0%, var(--sbt-body-bg) 35%, var(--sbt-body-bg2) 60%, var(--sbt-body-bg2) 84%, var(--sbt-body-bg2) 100%);
-
-    html[dir="rtl"] & {
-      background: linear-gradient(to left, var(--sbt-body-bg) 0%, var(--sbt-body-bg) 35%, var(--sbt-body-bg2) 60%, var(--sbt-body-bg2) 84%, var(--sbt-body-bg2) 100%);
-    }
-  }
-}
 
 .sbt-container {
   width: 100%;
   margin: 0 auto;
 
   @include respond-above(sm) {
-    padding: 0 2%;
+    // padding: 0 5% 0 3%;
   }
 }
 
@@ -418,16 +395,16 @@ app-workspace {
   background: none;
   border-radius: calculateRem(40px) 0 0 calculateRem(40px);
   height: 100%;
-  padding: calculateRem(16px) calculateRem(24px) calculateRem(24px) calculateRem(24px);
+  padding: calculateRem(16px) calculateRem(24px) calculateRem(24px) 0;
 
   html[dir="rtl"] & {
     border-radius: 0 calculateRem(40px) 0 0px;
-    padding: calculateRem(16px) calculateRem(24px) calculateRem(24px) calculateRem(8px);
+    padding: calculateRem(16px) 0 calculateRem(24px) calculateRem(8px);
   }
 
   @include respond-above(sm) {
     background: var(--sbt-body-bg2);
-    padding: calculateRem(16px) calculateRem(8px) calculateRem(24px) calculateRem(24px);
+    padding: calculateRem(16px) 0 calculateRem(24px) 0;
   }
 
 
@@ -572,10 +549,10 @@ app-workspace {
 }
 
 /* my groups */
-.sbt-center-container {
-  width: calc(100% - 4%);
-  margin: 0 auto;
-}
+// .sbt-center-container {
+//   width: calc(100% - 4%);
+//   margin: 0 auto;
+// }
 
 .sbt-mygroups {
   .sb-bg-color-white {
@@ -805,11 +782,7 @@ html.PlayerMediaQueryClass {
   top: 0;
 
   &.sbt-container {
-    padding: 0;
-
-    html[layout="joy"] & {
-      padding: 0 2%;
-    }
+    padding: 0 5%;
   }
 
   @include respond-below(sm) {
@@ -1393,13 +1366,16 @@ html[data-theme='Darkmode'][layout='joy'] {}
 // tab index css end
 
 // player SB-24647 changes
+.contentViewerIframeShadow.player-fullscreen.content-full-video epub-viewer {
+  height: calc(100% - 7rem);
+}
 .notVisible {
   top: 0rem !important;
   position: relative !important;
 }
 
 .contentViewerIframeShadow sunbird-pdf-player sb-player-side-menu-icon.notVisible,
-#playerFullscreen.player-fullscreen sunbird-pdf-player sb-player-side-menu-icon.notVisible {
+#playerFullscreen.player-fullscreen sunbird-pdf-player sb-player-side-menu-icon.notVisible, .contentViewerIframeShadow sunbird-epub-player sb-player-side-menu-icon.notVisible {
   top: 0 !important;
   position: absolute !important;
 }
@@ -1437,8 +1413,10 @@ html[layout="joy"] .contentViewerIframeShadow {
 html[layout="old"] sunbird-pdf-player .sb-player-splash-container .loading-text {
   color:var(--white);
 }
-
-.contentViewerIframeShadow.player-fullscreen.content-full-video sunbird-pdf-player .player-endpage, .contentViewerIframeShadow.player-fullscreen.content-full-video sunbird-pdf-player .sb-player-splash-container {
+sunbird-epub-player .sb-player-splash-container {
+  
+}
+.contentViewerIframeShadow.player-fullscreen.content-full-video sunbird-pdf-player .player-endpage, .contentViewerIframeShadow.player-fullscreen.content-full-video sunbird-pdf-player .sb-player-splash-container, .contentViewerIframeShadow.player-fullscreen.content-full-video sunbird-epub-player .sb-player-splash-container {
   height: calc(100% - 4rem)!important;
 }
 

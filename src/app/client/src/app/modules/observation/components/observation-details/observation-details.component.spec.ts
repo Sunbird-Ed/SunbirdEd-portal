@@ -22,4 +22,8 @@ xdescribe('ObservationDetailsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  it('should redo layout on render', () => {
+    component.layoutConfiguration = {};
+    component.layoutConfiguration = null;
+  });
 });

@@ -246,4 +246,8 @@ describe('PublicCourseConsumptionPageComponent', () => {
     expect(component.disableDelete).toBeFalsy();
     expect(component.toasterService.error(resourceServiceMockData.messages.etmsg.desktop.deleteCourseErrorMessage));
   });
+  it('should redo layout on render', () => {
+    component.layoutConfiguration = {};
+    component.layoutConfiguration = null;
+  });
 });
