@@ -12,7 +12,7 @@
     <div (click)="viewInstance(i)" style="flex: 1;">
       <div [ngClass]="{ _validQuestion: question?.completedInstance?.includes(i) }">
         {{ question?.instanceIdentifier }} {{ i + 1 }}</div>
-      <div class="modified">{{resourceService?.frmelmnts.lbl.lastModifiedOn }}: {{question?.updatedAt | date:'short'}}</div>
+      <!-- <div class="modified">{{resourceService?.frmelmnts.lbl.lastModifiedOn }}: {{question[i]?.updatedAt | date:'short'}}</div> -->
     </div>
     <div>
       <i class="trash large icon" (click)="deleteInstanceAlert(i)"></i>
