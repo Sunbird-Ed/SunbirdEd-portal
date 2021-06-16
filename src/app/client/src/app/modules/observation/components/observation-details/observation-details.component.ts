@@ -3,6 +3,7 @@ import { ObservationService } from '@sunbird/core';
 import { ConfigService, ResourceService, ILoaderMessage, INoResultMessage, ToasterService } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ObservationUtilService } from "../../service";
+import { Location } from '@angular/common';
 @Component({
   selector: "app-observation-details",
   templateUrl: "./observation-details.component.html",
@@ -42,11 +43,12 @@ export class ObservationDetailsComponent implements OnInit {
 
   constructor(
     private observationService: ObservationService,
-    config: ConfigService,
+    private config: ConfigService,
     private router: Router,
     private routerParam: ActivatedRoute,
     public resourceService: ResourceService,
     public observationUtilService: ObservationUtilService,
+    private location : Location,
     public toasterService: ToasterService,
   ) {
     this.config = config;
@@ -74,6 +76,7 @@ export class ObservationDetailsComponent implements OnInit {
       behavior: "smooth",
     });
   }
+
   getEntities() {
     this.showLoader = true;
     const paramOptions = {
@@ -100,13 +103,7 @@ export class ObservationDetailsComponent implements OnInit {
       this.showLoader = false;
     })
   }
-  actionOnEntity(event) {
-    if (event.action == "delete") {
-      this.delete(event.data);
-    } else if (event.action == "change") {
-      this.changeEntity(event.data);
-    }
-  }
+ 
   getObservationForm() {
     // this.showLoader = true;
     const paramOptions = {
@@ -124,6 +121,15 @@ export class ObservationDetailsComponent implements OnInit {
       this.showLoader = false;
     })
   }
+
+ actionOnEntity(event) {
+    if (event.action == "delete") {
+      this.delete(event.data);
+    } else if (event.action == "change") {
+      this.changeEntity(event.data);
+    }
+  }
+
   addEntity() {
     this.showDownloadModal = true;
   }
@@ -136,7 +142,7 @@ export class ObservationDetailsComponent implements OnInit {
     this.getEntities();
   }
   goBack() {
-    this.router.navigate(['/observation']);
+   this.location.back();
   }
 
   async observeAgainConfirm() {
@@ -173,6 +179,7 @@ export class ObservationDetailsComponent implements OnInit {
       this.showLoader = false;
     })
   }
+
   redirectToQuestions(evidence) {
     this.router.navigate([`/questionnaire`], {
       queryParams: {
@@ -183,10 +190,12 @@ export class ObservationDetailsComponent implements OnInit {
       },
     });
   }
+
   open(sbnum, data) {
     data.submissionNumber = sbnum;
     this.redirectToQuestions(data);
   }
+
   async delete(entity) {
     let metaData = await this.observationUtilService.getAlertMetaData();
     metaData.content.body.data = this.resourceService.frmelmnts.lbl.deleteConfirm;
@@ -284,9 +293,11 @@ export class ObservationDetailsComponent implements OnInit {
       this.showLoader = false;
     })
   }
+
   actionOnSubmission(event) {
     event.action == 'edit' ? this.openEditSubmission(event.data) : this.deleteSubmission(event.data)
   }
+  
   dropDownAction(submission, type) {
     let data = {
       action: type,
