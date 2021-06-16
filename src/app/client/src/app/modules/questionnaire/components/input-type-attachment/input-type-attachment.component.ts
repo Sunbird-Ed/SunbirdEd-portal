@@ -99,7 +99,7 @@ export class InputTypeAttachmentComponent implements OnInit {
       this.resourceService.frmelmnts.alert.uploadevidencetitle;
     metaData.content.body.type = "checkbox";
     let html = `
-    ${this.resourceService.frmelmnts.alert.evidence_content_policy}<a href='/term-of-use.html' target="_blank">${this.resourceService.frmelmnts.alert.evidence_content_policy_label}</a> .${this.resourceService.frmelmnts.alert.uploadevidencecontent}
+    ${this.resourceService.frmelmnts.alert.evidence_content_policy}<a href='/term-of-use.html' target="_blank">${this.resourceService.frmelmnts.alert.evidence_content_policy_label}</a>. ${this.resourceService.frmelmnts.alert.uploadevidencecontent}
     `;
     metaData.content.body.data = html;
     metaData.footer.className = "double-btn";

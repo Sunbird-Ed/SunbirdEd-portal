@@ -95,9 +95,10 @@ export class MatrixQuestionsComponent implements OnInit {
     const config = new TemplateModalConfig<IContext, string, string>(
       this.modalTemplate
     );
-    config.closeResult = "closed!";
+	config.closeResult = "closed!";
+	let deepClonedQuestion= _.cloneDeep(this.question.value[i])  
     config.context = {
-      questions: this.question.value[i],
+      questions: deepClonedQuestion,
       heading: `${this.question.instanceIdentifier} ${i + 1}`,
       index: i,
     };
@@ -111,6 +112,7 @@ export class MatrixQuestionsComponent implements OnInit {
 
   matrixSubmit(index) {
     this.showBadgeAssingModel = false;
+    this.question.value[index]=this.context.questions
     this.formAsArray.at(index).patchValue(this.matrixForm.value);
     if (this.matrixForm.invalid) {
       this.formAsArray.at(index).setErrors({ err: "Matrix reposne not valid" });
