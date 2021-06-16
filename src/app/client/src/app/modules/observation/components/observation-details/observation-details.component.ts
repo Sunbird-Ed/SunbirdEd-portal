@@ -63,7 +63,7 @@ export class ObservationDetailsComponent implements OnInit {
   ngOnInit() {
     this.getProfileData();
   }
-  public getProfileData() {
+  getProfileData() {
     this.observationUtilService.getProfileDataList().then(data => {
       this.payload = data;
       this.getEntities();
@@ -76,7 +76,7 @@ export class ObservationDetailsComponent implements OnInit {
     });
   }
 
-  public getEntities() {
+  getEntities() {
     this.showLoader = true;
     const paramOptions = {
       url: this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_ENTITIES,
@@ -103,7 +103,7 @@ export class ObservationDetailsComponent implements OnInit {
     })
   }
  
-  public getObservationForm() {
+  getObservationForm() {
     // this.showLoader = true;
     const paramOptions = {
       url: this.config.urlConFig.URLS.OBSERVATION.GET_OBSERVATION_SUBMISSIONS + `${this.observationId}?entityId=${this.selectedEntity._id}`,
@@ -121,7 +121,7 @@ export class ObservationDetailsComponent implements OnInit {
     })
   }
 
-  public actionOnEntity(event) {
+ actionOnEntity(event) {
     if (event.action == "delete") {
       this.delete(event.data);
     } else if (event.action == "change") {
@@ -129,22 +129,22 @@ export class ObservationDetailsComponent implements OnInit {
     }
   }
 
-  public addEntity() {
+  addEntity() {
     this.showDownloadModal = true;
   }
-  public changeEntity(event) {
+  changeEntity(event) {
     this.selectedEntity = event;
     this.getObservationForm();
   }
-  public modalClose() {
+  modalClose() {
     this.showDownloadModal = false;
     this.getEntities();
   }
-  public goBack() {
+  goBack() {
    this.location.back();
   }
 
-  public async observeAgainConfirm() {
+  async observeAgainConfirm() {
     let metaData = await this.observationUtilService.getAlertMetaData();
     metaData.content.body.data = this.resourceService.frmelmnts.lbl.createObserveAgain;
     metaData.content.body.type = "text";
@@ -164,7 +164,7 @@ export class ObservationDetailsComponent implements OnInit {
     let returnData = await this.observationUtilService.showPopupAlert(metaData);
     returnData ? this.observeAgain() : '';
   }
-  public observeAgain() {
+  observeAgain() {
     this.showLoader = true;
     const paramOptions = {
       url: this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_SUBMISSION_CREATE + `${this.observationId}?entityId=${this.selectedEntity._id}`,
@@ -179,7 +179,7 @@ export class ObservationDetailsComponent implements OnInit {
     })
   }
 
-  public redirectToQuestions(evidence) {
+  redirectToQuestions(evidence) {
     this.router.navigate([`/questionnaire`], {
       queryParams: {
         observationId: this.observationId,
@@ -190,12 +190,12 @@ export class ObservationDetailsComponent implements OnInit {
     });
   }
 
-  public open(sbnum, data) {
+  open(sbnum, data) {
     data.submissionNumber = sbnum;
     this.redirectToQuestions(data);
   }
 
-  public async delete(entity) {
+  async delete(entity) {
     let metaData = await this.observationUtilService.getAlertMetaData();
     metaData.content.body.data = this.resourceService.frmelmnts.lbl.deleteConfirm;
     metaData.content.body.type = "text";
@@ -235,7 +235,7 @@ export class ObservationDetailsComponent implements OnInit {
     }
   }
 
-  public openEditSubmission(event) {
+  openEditSubmission(event) {
     this.openEditModal.show = true;
     this.openEditModal.data = event;
   }
@@ -271,12 +271,12 @@ export class ObservationDetailsComponent implements OnInit {
     }
   }
 
-  public closeEditModal(event?) {
+  closeEditModal(event?) {
     this.openEditModal.show = false;
     if (event.data) { this.updateSubmission(event.data) };
   }
 
-  public updateSubmission(event) {
+  updateSubmission(event) {
     this.showLoader = true;
     this.payload.title = event.title;
     const paramOptions = {
@@ -292,11 +292,11 @@ export class ObservationDetailsComponent implements OnInit {
     })
   }
 
-  public actionOnSubmission(event) {
+  actionOnSubmission(event) {
     event.action == 'edit' ? this.openEditSubmission(event.data) : this.deleteSubmission(event.data)
   }
   
-  public dropDownAction(submission, type) {
+  dropDownAction(submission, type) {
     let data = {
       action: type,
       data: submission
