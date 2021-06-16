@@ -1,8 +1,9 @@
 
 <div class="ui grid sb-form m-0 sb-workspace-modal p-16">
-  <div *ngFor="let field of formFieldProperties;let i = index" class="{{field.renderingHints.semanticColumnWidth || 'twelve'}} wide column">
-
-    <div *ngIf="field.inputType==='text' || field.inputType==='number'" class="sb-field-group" [ngClass]="{ 'disabled':!field.editable}">
+  <ng-container *ngFor="let field of formFieldProperties;let i = index" >
+    
+    <div *ngIf="field.inputType==='text' || field.inputType==='number'" class="{{field.renderingHints.semanticColumnWidth || 'twelve'}} wide column" >
+    <div  class="sb-field-group" [ngClass]="{ 'disabled':!field.editable}">
       <label>
         {{field.label}}
       </label>
@@ -11,8 +12,10 @@
         <input class="sb-form-control" name={{field.code}} type={{field.inputType}} [(ngModel)]="formInputData[field.code]" placeholder={{field.placeholder}} autofocus>
       </div>
     </div>
-
-    <div *ngIf="field.inputType==='select' && field.code!='year' && field.code!='contentType'" class="sb-field-group" [ngClass]="{ 'disabled':!field.editable}">
+  </div>
+   
+  <div *ngIf="field.inputType==='select' && field.code!='year' && field.code!='contentType'" class="{{field.renderingHints.semanticColumnWidth || 'twelve'}} wide column" >
+    <div  class="sb-field-group" [ngClass]="{ 'disabled':!field.editable}">
       <label>{{field.label}}</label><span class="sb-color-red" *ngIf="(field.required == true)">*</span>
       <div class="sb-field">
         <sui-select id={{field.code}}  name={{field.code}} class="selection" [(ngModel)]="formInputData[field.code]" (ngModelChange)="updateForm({index:i, field:field, value:formInputData[field.code],formData:formInputData})">
@@ -20,7 +23,9 @@
         </sui-select>
       </div>
     </div>
-    <div *ngIf="field.inputType==='select' && field.code==='contentType'"  class="sb-field-group" [ngClass]="{ 'disabled':!field.editable}">
+  </div>
+  <div *ngIf="field.inputType==='select' && field.code==='contentType'" class="{{field.renderingHints.semanticColumnWidth || 'twelve'}} wide column"> 
+    <div class="sb-field-group" [ngClass]="{ 'disabled':!field.editable}">
       <label>{{field.label}}</label><span class="sb-color-red" *ngIf="(field.required == true)">*</span>
       <div class="sb-field">
         <sui-select id={{field.code}} [options]="categoryList[field.code]"
@@ -29,7 +34,9 @@
         </sui-select>
       </div>
     </div>
-    <div *ngIf="field.inputType==='multiSelect'" class="sb-field-group" [ngClass]="{ 'disabled':!field.editable}">
+  </div>
+  <div *ngIf="field.inputType==='multiSelect'" class="{{field.renderingHints.semanticColumnWidth || 'twelve'}} wide column" >
+    <div  class="sb-field-group" [ngClass]="{ 'disabled':!field.editable}">
       <label>{{field.label}}</label><span class="sb-color-red" *ngIf="(field.required == true)">*</span>
       <div class="sb-field">
         <sui-multi-select id={{field.code}} name={{field.code}} class="selection" [(ngModel)]="formInputData[field.code]" 
@@ -40,7 +47,9 @@
         </sui-multi-select>
       </div>
     </div>
-    <div *ngIf="field.code==='year'" class="sb-field-group" [ngClass]="{ 'disabled':!field.editable}">
+  </div>
+  <div *ngIf="field.code==='year'" class="{{field.renderingHints.semanticColumnWidth || 'twelve'}} wide column">
+    <div class="sb-field-group" [ngClass]="{ 'disabled':!field.editable}">
       <label>{{field.label}}</label><span class="sb-color-red" *ngIf="(field.required == true)">*</span>
       <div class="sb-field">
         <sui-select id={{field.code}}  name={{field.code}} class="selection" [(ngModel)]="formInputData[field.code]">
@@ -48,11 +57,12 @@
         </sui-select>
       </div>
     </div>
+  </div>
     <!-- <div *ngIf="field.code==='concept'" class="field" [ngClass]="{ 'disabled':!field.editable}">
         <form class="conceptSelector ui form">
             <label>{{field.label}}</label>
           <app-concept-picker [selectedConcepts]="formInputData[field.code]" [conceptPickerClass]="'content-creation-concept-picker'" (Concepts)="concepts($event)"></app-concept-picker>
         </form>
       </div> -->
-  </div>
+  </ng-container>
 </div>

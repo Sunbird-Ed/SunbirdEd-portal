@@ -331,6 +331,8 @@ export class DefaultTemplateComponent implements OnInit {
 * @param {String} key              - Field uniq code
 */
   mapMasterCategoryList(key) {
+
+    console.log("this.formFieldProperties", this.formFieldProperties,"key", key)
     _.forEach(this.formFieldProperties, (field, value) => {
       if (key) {
         if (field.code === key) {

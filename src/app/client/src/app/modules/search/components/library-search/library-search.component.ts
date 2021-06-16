@@ -82,9 +82,9 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
             this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
             this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
+            //need to remove after inserting the new facet in form api.
             const facetValue = FACETS.values
             this.globalSearchFacets = this.filterFacets(facetValue)
-            console.log(" this.globalSearchFacets",  this.globalSearchFacets)
             this.setNoResultMessage();
             this.initFilters = true;
         }, error => {

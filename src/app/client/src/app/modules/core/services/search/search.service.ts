@@ -507,13 +507,11 @@ export class SearchService {
           facet['index'] = '9';
           facet['label'] = 'Mission'
           facet['placeholder'] =  _.get(this.resourceService, 'frmelmnts.lbl.selectMission')
-          facet['values'] = FACETS? FACETS.mission:[]
           break;
         case 'contributorsOrg':
           facet['index'] = '10'
           facet['label'] = 'Contributor org'
           facet['placeholder'] = 'Contributor org'
-          facet['values'] = FACETS? FACETS.contributor_org:[]
       }
       return facet;
     });

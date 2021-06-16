@@ -185,6 +185,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
 
     this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
       if (!frameworkData.err) {
+        console.log("frameworkData", frameworkData)
         this.categoryMasterList = _.cloneDeep(frameworkData.frameworkdata['defaultFramework'].categories);
         if (_.lowerCase(this.contentType) !== 'course') {
           this.framework = frameworkData.frameworkdata['defaultFramework'].code;
@@ -196,6 +197,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
           'terms' : this.getCategoryList(this.contentType)
         };
         this.categoryMasterList.push(categoryList);
+        
         /**
         * isCachedDataExists will check data is exists in cache or not. If exists should not call
         * form api otherwise call form api and get form data
@@ -214,6 +216,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
           this.formService.getFormConfig(formServiceInputParams).subscribe(
             (data: ServerResponse) => {
               this.formFieldProperties = data;
+              console.log("data in form config", data)
               this.getFormConfig();
             },
             (err: ServerResponse) => {
