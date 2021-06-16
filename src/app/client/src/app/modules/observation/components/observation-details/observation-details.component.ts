@@ -43,7 +43,7 @@ export class ObservationDetailsComponent implements OnInit {
 
   constructor(
     private observationService: ObservationService,
-    private config: ConfigService,
+    config: ConfigService,
     private router: Router,
     private routerParam: ActivatedRoute,
     public resourceService: ResourceService,
