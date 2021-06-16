@@ -4,7 +4,7 @@ import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/
 import { CertificateService, UserService, PlayerService, CertRegService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ResourceService, NavigationHelperService, ToasterService } from '@sunbird/shared';
+import { ResourceService, NavigationHelperService, ToasterService, LayoutService, COLUMN_TYPE } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { combineLatest, of, Subject } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
@@ -59,6 +59,9 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   arrayValue={};
   scoreRange: any;
   isSingleAssessment=false;
+layoutConfiguration: any;
+FIRST_PANEL_LAYOUT;
+SECOND_PANEL_LAYOUT;
 
   constructor(
     private certificateService: CertificateService,
@@ -72,7 +75,8 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private toasterService: ToasterService,
     private router: Router,
-    private telemetryService: TelemetryService) { }
+    private telemetryService: TelemetryService,
+    public layoutService: LayoutService) { }
   /**
    * @description - It will handle back button click.
    */
@@ -89,6 +93,8 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
    */
   ngOnInit() {
     this.initializeLabels();
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
+    this.redoLayout();
     this.currentState = this.screenStates.default;
     this.uploadCertificateService.certificate.subscribe(res => {
       if (res && !_.isEmpty(res)) {
@@ -567,5 +573,14 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
       this.userPreference.value['scoreRange'] = null;
     }, 500);
     this.addScoreRule = false;
+  }
+  redoLayout() {
+    if (this.layoutConfiguration != null) {
+      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
+      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine);
+    } else {
+      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
+      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
+    }
   }
 }
