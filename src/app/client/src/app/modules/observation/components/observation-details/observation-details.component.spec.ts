@@ -49,7 +49,7 @@ class MockRouter {
   url = jasmine.createSpy("url");
 }
 let routerSpy = { navigate: jasmine.createSpy('navigate') };
-describe('ObservationDetailsComponent', () => {
+fdescribe('ObservationDetailsComponent', () => {
   let component: ObservationDetailsComponent;
   let fixture: ComponentFixture<ObservationDetailsComponent>;
   let observationUtilService, observationService, activatedRouteStub;
@@ -150,7 +150,7 @@ describe('ObservationDetailsComponent', () => {
   })
 
 
-  it('Should Delete Entity', () => {
+  it('Should Delete Entity', (done) => {
     spyOn(observationUtilService, "getAlertMetaData").and.callFake(() => AlertMetaData);
     spyOn(observationUtilService, "showPopupAlert").and.callFake(() => Promise.resolve(true))
     spyOn(observationService, 'delete').and.callFake(() => of(true));
@@ -159,17 +159,21 @@ describe('ObservationDetailsComponent', () => {
     component.payload = ProfileData;
     component.payload.data = Entity.data._id;
     component.delete(Entity.data);
+    setTimeout(() =>{
       expect(component.delete).toHaveBeenCalled();
       expect(observationUtilService.getAlertMetaData).toHaveBeenCalled();
+      expect(observationUtilService.showPopupAlert).toHaveBeenCalled();
+      done();
+    },10)
   });
 
   it('Should Open Submission Name edit modal', () => {
+    spyOn(component, "openEditSubmission").and.callThrough();
     component.openEditSubmission(EventForSubmission.data);
     component.openEditModal.show = true;
-    // component.openEditModal.data = EventForSubmission.data;
     expect(component.openEditModal.show).toBeDefined();
     expect(component.openEditModal.show).toBeTruthy();
-    expect(component.openEditModal.data).toBeDefined();
+    expect(component.openEditSubmission).toHaveBeenCalled();
   })
 
 
