@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ObservationService } from '@sunbird/core';
-import { ConfigService, ResourceService, ILoaderMessage, INoResultMessage } from '@sunbird/shared';
+import { ConfigService, ResourceService, ILoaderMessage, INoResultMessage, ToasterService } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ObservationUtilService } from "../../service";
 @Component({
@@ -46,7 +46,8 @@ export class ObservationDetailsComponent implements OnInit {
     private router: Router,
     private routerParam: ActivatedRoute,
     public resourceService: ResourceService,
-    public observationUtilService: ObservationUtilService
+    public observationUtilService: ObservationUtilService,
+    public toasterService: ToasterService,
   ) {
     this.config = config;
     routerParam.queryParams.subscribe(data => {
@@ -258,6 +259,7 @@ export class ObservationDetailsComponent implements OnInit {
       this.observationService.delete(config).subscribe(data => {
         this.getObservationForm();
       }, error => {
+        this.toasterService.error(error.error.message);
       })
     }
   }
