@@ -49,7 +49,7 @@ class MockRouter {
   url = jasmine.createSpy("url");
 }
 let routerSpy = { navigate: jasmine.createSpy('navigate') };
-fdescribe('ObservationDetailsComponent', () => {
+describe('ObservationDetailsComponent', () => {
   let component: ObservationDetailsComponent;
   let fixture: ComponentFixture<ObservationDetailsComponent>;
   let observationUtilService, observationService, activatedRouteStub;
