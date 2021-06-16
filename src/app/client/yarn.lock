@@ -1325,10 +1325,10 @@
     "@project-sunbird/sunbird-player-sdk-v8" "4.0.6"
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-pdf-player-v8@4.0.8":
-  version "4.0.8"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-pdf-player-v8/-/sunbird-pdf-player-v8-4.0.8.tgz#6f4214c0a2b6fccc58cbb681b1d6000081f14df4"
-  integrity sha512-tleIoBMy4bPSju3+hBjswPd0SzVGXSMHNKMtj/jS/0Pf6z6cjpuntPpZ2iaTtF1tILnZlDnjtY7HxJDHJDilYA==
+"@project-sunbird/sunbird-pdf-player-v8@4.0.9":
+  version "4.0.9"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-pdf-player-v8/-/sunbird-pdf-player-v8-4.0.9.tgz#5a0e25ba7b02102b9b427ea3d670738f4f823022"
+  integrity sha512-MwDPQfg6/JlId8OJfp98hR7C9iJNXrxqLGXhM1W3D8+4Zx1pTEsH0eKd0fmkWGNI3FawxEo0ov8s3JFtlUZU/A==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v8" "4.0.6"
     tslib "^1.9.0"
@@ -1354,10 +1354,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v8@4.0.13":
-  version "4.0.13"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v8/-/sunbird-quml-player-v8-4.0.13.tgz#6d4ec00aaa5d793268f328bb28335cf0d62ac699"
-  integrity sha512-eTu0dnIZMHmxevchrHGkFqvs7XhjAHr8LA6V2Zm+Y09vbsRJLf4iTLEWVscdXxhJ3YcaaIczNV2uikw1TIEKcw==
+"@project-sunbird/sunbird-quml-player-v8@4.0.14":
+  version "4.0.14"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v8/-/sunbird-quml-player-v8-4.0.14.tgz#04dd86a4a4ade8bd42fc3f81c00fda9eb36369fc"
+  integrity sha512-wEjPK0jFOnNHEDuvbfI9n37O31G2QeWzxSdHr6l8zGqnFC8MHD8rAmBGK68Bc6pkzER14A7Eg6qcNhyz515YIQ==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v8" "4.0.6"
     tslib "^1.9.0"
@@ -1371,10 +1371,10 @@
     "@project-sunbird/sunbird-player-sdk" "0.0.16"
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-video-player-v8@4.0.6":
-  version "4.0.6"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v8/-/sunbird-video-player-v8-4.0.6.tgz#5c45f4893ff3c2672e2cb2b93bd0af49ba69a623"
-  integrity sha512-n6wdodVRfcuIEDP6FZpxHiPu+sENaHUROqnWrGBDFQNuvuDiV+5h+bGtrlvTclmurlAKJQC2TiVlKO6NoqjzDw==
+"@project-sunbird/sunbird-video-player-v8@4.0.7":
+  version "4.0.7"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v8/-/sunbird-video-player-v8-4.0.7.tgz#9cd4fa4e8a9ca73b4abdb3b82979caadea41846e"
+  integrity sha512-KS2s9ZJsPYv8qeUnkJDS2drnA3pcdv4QtH9gecBgj9A6L9PjJwUO3s1Zb1KLK8Tng1ie3NOXpvM/Jtdh+A1s7Q==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v8" "4.0.6"
     tslib "^1.9.0"
