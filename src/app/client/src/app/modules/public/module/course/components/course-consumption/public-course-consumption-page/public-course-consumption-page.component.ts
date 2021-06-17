@@ -20,6 +20,7 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
   public showLoader = true;
   public showError = false;
   public courseHierarchy: any;
+  layoutConfiguration: any;
   sharelinkModal: boolean;
   shareLink: string;
   public telemetryCourseImpression: IImpressionEventInput;
@@ -59,6 +60,7 @@ export class PublicCourseConsumptionPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.isDesktopApp = this.utilService.isDesktopApp;
     if (this.isDesktopApp) {
       this.connectionService.monitor().pipe(takeUntil(this.unsubscribe)).subscribe(isConnected => {

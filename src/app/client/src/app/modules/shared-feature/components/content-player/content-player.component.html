@@ -1,6 +1,7 @@
 <app-landing-section [textToDisplay]="" 
 [layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
-<div class="relative9" [style.display]="!showLoader ? 'block' : 'none'" *ngIf="contentData">
+<div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''">
+<div  class="relative9" [style.display]="!showLoader ? 'block' : 'none'" *ngIf="contentData">
 
   <!--CC-Player Content Header -->
   <div class="content-header cc-player__content-header d-flex flex-ai-center relative position cc-player__border-fix" [ngClass]="{'header-block': isFullScreenView}">
@@ -39,7 +40,6 @@
     </div>
   </div>
 
-
     <!-- CC-Player Video -->
     <div class="sb-single-resource">
     <div class="ui container">
@@ -56,6 +56,8 @@
     <div class="twelve wide column" *ngIf="showLoader">
         <app-loader [data]='loaderMessage'></app-loader>
     </div>
+
     <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal" (close)="sharelinkModal = false">
     </app-share-link>
+</div>
 </div>
