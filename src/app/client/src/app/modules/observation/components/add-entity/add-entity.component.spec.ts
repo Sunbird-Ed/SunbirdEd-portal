@@ -168,6 +168,9 @@ describe("AddEntityComponent", () => {
     component.entities = finalEntityService;
     component.payload = profileData;
     component.showDownloadModal = false;
+    component.modal = {
+      approve:()=>{}
+    }
     spyOn(observationService, "post").and.returnValue(of(SubmitResult));
     spyOn(component, "submit").and.callThrough();
     component.submit();
@@ -175,3 +178,7 @@ describe("AddEntityComponent", () => {
     expect(SubmitResult.status).toBe(200);
   });
 });
+
+
+
+
