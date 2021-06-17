@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FullPageLoaderComponent } from './full-page-loader.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-fdescribe('FullPageLoaderComponent', () => {
+describe('FullPageLoaderComponent', () => {
   let component: FullPageLoaderComponent;
   let fixture: ComponentFixture<FullPageLoaderComponent>;
 
