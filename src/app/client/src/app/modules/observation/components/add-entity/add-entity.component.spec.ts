@@ -32,11 +32,8 @@ import {
   finalEntityService,
 } from "./add-entity.component.spec.data";
 import {
-  of as observableOf,
   throwError as observableThrowError,
-  Observable,
-  of,
-  observable,
+  of
 } from "rxjs";
 
 describe("AddEntityComponent", () => {
