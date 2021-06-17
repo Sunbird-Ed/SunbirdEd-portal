@@ -21,7 +21,7 @@ import { SlickModule } from 'ngx-slick';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { DiscussionModule } from '../discussion/discussion.module';
 import { ActivityDetailsComponent } from './components/activity/activity-details/activity-details.component';
-import { DashletModule } from '@project-sunbird/sb-dashlet';
+import { DashletModule } from '@project-sunbird/sb-dashlet-v9';
 
 @NgModule({
   imports: [
