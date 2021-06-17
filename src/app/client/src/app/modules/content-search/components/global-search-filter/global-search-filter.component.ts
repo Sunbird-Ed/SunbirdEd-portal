@@ -104,6 +104,10 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
       });
   }
 
+
+  ngOnChanges(){
+    console.log("facets", this.facets)
+  }
   private handleFilterChange() {
     this.filterChangeEvent.pipe(
       filter(({type, event}) => {

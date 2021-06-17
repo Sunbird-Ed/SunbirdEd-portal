@@ -35,7 +35,6 @@ export class ContentEditorComponent implements OnInit, OnDestroy {
   public videoMaxSize: any;
   contentEditorURL: string = (<HTMLInputElement>document.getElementById('contentEditorURL')) ?
   (<HTMLInputElement>document.getElementById('contentEditorURL')).value : '';
-
   /**
   * Default method of class ContentEditorComponent
   */
