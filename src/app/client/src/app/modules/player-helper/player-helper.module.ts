@@ -14,11 +14,11 @@ import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
 import { FormsModule } from '@angular/forms';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
-import {SunbirdPdfPlayerModule} from '@project-sunbird/sunbird-pdf-player-v8';
-import { SunbirdVideoPlayerModule } from '@project-sunbird/sunbird-video-player-v8';
-import { SunbirdEpubPlayerModule } from '@project-sunbird/sunbird-epub-player-v8';
+import {SunbirdPdfPlayerModule} from '@project-sunbird/sunbird-pdf-player-v9';
+import { SunbirdVideoPlayerModule } from '@project-sunbird/sunbird-video-player-v9';
+import { SunbirdEpubPlayerModule } from '@project-sunbird/sunbird-epub-player-v9';
 import { QumlPlayerService } from './service/quml-player/quml-player.service';
-import { QumlLibraryModule, QuestionCursor } from '@project-sunbird/sunbird-quml-player-v8';
+import { QumlLibraryModule, QuestionCursor } from '@project-sunbird/sunbird-quml-player-v9';
 import { EditorCursor } from '@project-sunbird/sunbird-collection-editor';
 
 
