@@ -7,7 +7,7 @@ import {
 import { ViewAllComponent } from '@sunbird/content-search';
 const routes: Routes = [
   {
-    path: '', loadChildren: '../../../learn/learn.module#LearnModule'
+    path: '', loadChildren: () => import('../../../learn/learn.module').then(m => m.LearnModule)
   },
   {
     path: 'view-all/:section/:pageNumber', component: ViewAllComponent,

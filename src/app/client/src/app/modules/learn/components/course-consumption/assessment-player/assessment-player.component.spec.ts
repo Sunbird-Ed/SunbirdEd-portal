@@ -14,7 +14,7 @@ import {
 } from '@sunbird/shared';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { of, throwError } from 'rxjs';
 import { NotificationServiceImpl } from '../../../../notification/services/notification/notification-service-impl';
 import { AssessmentScoreService } from '../../../services/assessment/assessment-score.service';

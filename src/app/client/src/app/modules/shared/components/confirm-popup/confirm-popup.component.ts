@@ -16,7 +16,7 @@ export class ConfirmPopupComponent {
 
   @Input() input: InputType;
   @Output() confirmation = new EventEmitter<boolean>();
-  @ViewChild('modal', {static: false}) modal;
+  @ViewChild('modal') modal;
 
   constructor(public resourceService: ResourceService) {
 

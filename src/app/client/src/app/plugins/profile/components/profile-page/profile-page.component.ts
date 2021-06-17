@@ -39,8 +39,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   { formType: 'config', formAction: 'get', contentType: 'userType', component: 'portal' };
   private static readonly DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST =
   { formType: 'profileConfig', contentType: 'default', formAction: 'get' };
-  @ViewChild('profileModal', {static: false}) profileModal;
-  @ViewChild('slickModal', {static: false}) slickModal;
+  @ViewChild('profileModal') profileModal;
+  @ViewChild('slickModal') slickModal;
   userProfile: any;
   contributions = [];
   totalContributions: Number;

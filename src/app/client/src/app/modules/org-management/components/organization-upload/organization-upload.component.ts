@@ -17,8 +17,8 @@ import * as _ from 'lodash-es';
   templateUrl: './organization-upload.component.html'
 })
 export class OrganizationUploadComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('inputbtn', {static: false}) inputbtn: ElementRef;
-  @ViewChild('modal', {static: false}) modal;
+  @ViewChild('inputbtn') inputbtn: ElementRef;
+  @ViewChild('modal') modal;
   /**
 * reference for ActivatedRoute
 */

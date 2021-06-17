@@ -1,4 +1,4 @@
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { SignupComponent } from './signup.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';

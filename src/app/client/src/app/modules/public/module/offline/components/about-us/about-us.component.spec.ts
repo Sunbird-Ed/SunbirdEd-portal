@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResourceService, SharedModule } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { SuiModalModule } from 'ng2-semantic-ui';
+import { SuiModalModule } from 'ng2-semantic-ui-v9';
 import { of } from 'rxjs';
 import { AppUpdateService } from '../../../../../core/services/app-update/app-update.service';
 import { AboutUsComponent } from './about-us.component';

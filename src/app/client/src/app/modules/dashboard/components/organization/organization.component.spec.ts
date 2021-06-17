@@ -5,7 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 // Modules
 import { ChartsModule } from 'ng2-charts';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { FormsModule } from '@angular/forms';
 import { SharedModule, ConfigService, ResourceService, ToasterService } from '@sunbird/shared';
 // Services

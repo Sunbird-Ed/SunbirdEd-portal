@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SignupComponent, OtpComponent } from './components';
 import { SignupRoutingModule } from './signup-routing.module';
-import { SuiModule } from 'ng2-semantic-ui/dist';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { SignupService } from './services';

@@ -27,7 +27,7 @@ import { SBTagModule } from 'sb-tag-manager';
   styles: ['.header-block { display: none;}']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  @ViewChild('frameWorkPopUp', { static: false }) frameWorkPopUp;
+  @ViewChild('frameWorkPopUp') frameWorkPopUp;
   /**
    * user profile details.
    */
@@ -115,9 +115,9 @@ export class AppComponent implements OnInit, OnDestroy {
   isGuestUser = true;
   guestUserDetails;
   showYearOfBirthPopup = false;
-  @ViewChild('increaseFontSize', { static: false }) increaseFontSize: ElementRef;
-  @ViewChild('decreaseFontSize', { static: false }) decreaseFontSize: ElementRef;
-  @ViewChild('resetFontSize', { static: false }) resetFontSize: ElementRef;
+  @ViewChild('increaseFontSize') increaseFontSize: ElementRef;
+  @ViewChild('decreaseFontSize') decreaseFontSize: ElementRef;
+  @ViewChild('resetFontSize') resetFontSize: ElementRef;
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,

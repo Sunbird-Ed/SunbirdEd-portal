@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class ContentManagerInfoPopUpComponent implements OnInit {
 
-  @ViewChild('modal', {static: false}) modal;
+  @ViewChild('modal') modal;
   @Input() failedList;
   @Input() showContentChangeWarning: boolean;
   @Input() drives: any;

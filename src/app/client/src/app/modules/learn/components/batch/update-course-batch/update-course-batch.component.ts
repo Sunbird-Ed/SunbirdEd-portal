@@ -25,7 +25,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
 
   private updateBatchModal;
 
-  @ViewChild('updateBatchModal', {static: false}) set setBatchModal(element) {
+  @ViewChild('updateBatchModal') set setBatchModal(element) {
     if (element) {
       this.updateBatchModal = element;
     }

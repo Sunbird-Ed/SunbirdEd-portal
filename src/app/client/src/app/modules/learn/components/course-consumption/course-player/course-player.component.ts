@@ -26,7 +26,7 @@ import { CsCourseService } from '@project-sunbird/client-services/services/cours
   styleUrls: ['course-player.component.scss']
 })
 export class CoursePlayerComponent implements OnInit, OnDestroy {
-  @ViewChild('modal', {static: false}) modal;
+  @ViewChild('modal') modal;
   public courseInteractObject: IInteractEventObject;
   public contentInteractObject: IInteractEventObject;
   public closeContentIntractEdata: IInteractEventEdata;
@@ -86,7 +86,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   public batchMessage: any;
   showDataSettingSection = false;
   assessmentMaxAttempts: number;
-  @ViewChild('joinTrainingModal', {static: false}) joinTrainingModal;
+  @ViewChild('joinTrainingModal') joinTrainingModal;
   showJoinModal = false;
   tocId;
   groupId;
