@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { ConnectionService } from './connection.service';
 import { of as observableOf, of } from 'rxjs';
-import { UtilService } from '@sunbird/shared';
+import { ToasterService, ResourceService, UtilService } from '@sunbird/shared';
 import { Router } from '@angular/router';
 
 describe('ConnectionService', () => {
@@ -9,8 +9,16 @@ describe('ConnectionService', () => {
     navigate = jasmine.createSpy('navigate');
     url = 'explore-course/course/do_213129030425993216112'
   }
+  const resourceMockData = {
+    messages: {
+      fmsg: { m0097: 'Something went wrong' },
+      stmsg: { desktop: { onlineStatus: 'You are online' } },
+      emsg: { desktop: { onlineStatus: 'You are offline' } }
+    }
+  };
   beforeEach(() => TestBed.configureTestingModule({
-    providers: [{ provide: Router, useClass: RouterStub }, UtilService]
+    providers: [{ provide: ResourceService, useValue: resourceMockData },
+      { provide: Router, useClass: RouterStub }, UtilService]
   }));
 
   it('to make the connection status true', () => {
