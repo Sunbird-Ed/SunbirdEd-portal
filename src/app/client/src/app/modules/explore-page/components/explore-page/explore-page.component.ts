@@ -353,7 +353,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     let _reqFilters;
                     // If home or explore page; take filters from user preferences
                     if (_.get(currentPageData, 'contentType') === 'home') {
-                        _reqFilters = this.contentSearchService.mapCategories({ filters: _.get(this.userPreference, 'framework') });
+                        _reqFilters = this.contentSearchService.mapCategories({ filters: {..._.get(this.userPreference, 'framework')} });
                         delete _reqFilters['id'];
                     } else {
                         _reqFilters = this.contentSearchService.mapCategories({ filters: { ...this.selectedFilters, ...filters } });
@@ -435,7 +435,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                     return section;
                                 });
                             }), tap(data => {
-                                this.userPreference = this.setUserPreferences();
+                                // this.userPreference = this.setUserPreferences();
                                 this.showLoader = false;
                                 const userProfileSubjects = _.get(this.userService, 'userProfile.framework.subject') || [];
                                 const [userSubjects, notUserSubjects] = partition(sortBy(data, ['name']), value => {
@@ -863,6 +863,19 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         params[facetName] = event.data[0].value.value;
         params['selectedTab'] = 'all';
         params['showClose'] = 'true';
+
+        const updatedCategoriesMapping = _.mapKeys(params, (_, key) => {
+            const mappedValue = get(this.contentSearchService.getCategoriesMapping, [key]);
+            return mappedValue || key;
+        });
+
+        const paramValuesInLowerCase = _.mapValues(updatedCategoriesMapping, value => {
+            if (_.toLower(value) === 'cbse') return 'CBSE/NCERT';
+            return Array.isArray(value) ? _.map(value, _.toLower) : _.toLower(value);
+        });
+
+        params = paramValuesInLowerCase;
+
         if(this.isUserLoggedIn()){
             this.router.navigate(['search/Library', 1], { queryParams: params });
         } else{
