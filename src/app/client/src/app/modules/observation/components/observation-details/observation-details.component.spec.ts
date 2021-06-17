@@ -4,7 +4,7 @@ import { of, Observable } from 'rxjs';
 import { throwError as observableThrowError, of as observableOf } from 'rxjs';
 import { ConfigService, ResourceService, SharedModule, ILoaderMessage, INoResultMessage } from '@sunbird/shared';
 import { Router, NavigationEnd, ActivatedRoute, RouterModule } from '@angular/router';
-import { ProfileData, EntityList, ObservationForm, Entity, AlertMetaData, EventForSubmission } from './observation-details.component.mock.data';
+import { ProfileData, EntityList, ObservationForm, Entity, AlertMetaData, EventForSubmission } from './Observation-details.component.mock.data';
 import { ObservationService } from '@sunbird/core';
 import { ObservationUtilService } from '../../service';
 import { EntityListComponent } from '../entity-list/entity-list.component';
