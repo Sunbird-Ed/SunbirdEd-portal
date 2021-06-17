@@ -169,6 +169,14 @@ export class UserSearchComponent implements OnInit, AfterViewInit, OnDestroy {
       pageNumber: this.pageNumber,
       query: this.queryParams.key
     };
+    if(_.get(searchParams, 'filters.userType')){
+      const index = _.indexOf(searchParams.filters.userType, 'School head or officials');
+      if(index >= 0){
+        searchParams.filters.userType[index] = 'administrator';
+      } else if (searchParams.filters.userType === 'School head or officials') {
+        searchParams.filters.userType = ['administrator'];
+      }
+    }
     if (!_.isEmpty(this.selectedRoles)) { searchParams.filters['organisations.roles'] = this.selectedRoles; }
     if (this.queryParams.School) {
       searchParams.filters['organisations.organisationId'] = this.queryParams.School;
