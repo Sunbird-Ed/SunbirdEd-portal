@@ -1521,24 +1521,6 @@
     ngx-daterangepicker-material "4.0.1"
     tslib "^1.10.0"
 
-"@project-sunbird/sb-dashlet@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-dashlet/-/sb-dashlet-1.0.4.tgz#4280587cbd235a1bdb5b0b05a0c0e703e4fd49b8"
-  integrity sha512-sewcXgt7LayN/IcfjLU0Z/tt9TULPvdtdds0q94H1bewNcq1aDJ1ry8VBLG5JoQEa/V1ymMLzW1/vnuUg/6fYg==
-  dependencies:
-    "@types/datatables.net" "1.10.19"
-    angular-datatables "8.1.0"
-    chart.js "2.9.4"
-    datatables.net "1.10.20"
-    datatables.net-dt "1.10.20"
-    jquery "3.4.1"
-    jsonexport "3.2.0"
-    lodash-es "4.17.21"
-    ng-multiselect-dropdown "0.2.3"
-    ng2-charts "2.4.2"
-    ngx-daterangepicker-material "4.0.1"
-    tslib "^1.9.0"
-
 "@project-sunbird/sb-styles@0.0.8":
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.8.tgz#66c11fc6cdcf2761680b8ccd76af929a5a0226a7"
@@ -2258,13 +2240,6 @@ angular-datatables@8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/angular-datatables/-/angular-datatables-8.0.0.tgz#5ed344fe183422f081560162748855931c08524c"
   integrity sha512-J/aJr0CBROpZJheFnixYtFjax8+EsFa6fJjk8n5SA/JqfrpQqcYB3n716HW33X/SM4UtJgQMOUEGa77+FHgnVA==
-  dependencies:
-    "@angular/cli" "^8.0.2"
-
-angular-datatables@8.1.0:
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/angular-datatables/-/angular-datatables-8.1.0.tgz#793cd45d3475e31cfb05360695bb47bdc1bfb5d7"
-  integrity sha512-UJmF8qLdxIALyabwslvMvJ8zjkJWIfn/IfzEKO1vv6z+DhwfHlTS7oFOF40x0ZbSGfq0E1Yyscl7MOl71AulHw==
   dependencies:
     "@angular/cli" "^8.0.2"
 
@@ -8644,13 +8619,6 @@ next-tick@~1.0.0:
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
   integrity sha1-yobR/ogoFpsBICCOPchCS524NCw=
 
-ng-multiselect-dropdown@0.2.3:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/ng-multiselect-dropdown/-/ng-multiselect-dropdown-0.2.3.tgz#32f18b1f01fba7854524496c1639183adaeb6fa8"
-  integrity sha512-xY//BPXxiApzhGxVTDaSKiiW245GKBuZFCka7W9mG/2sWWIi3Geie7k0XtZv+1ItclFL+OxFZATHBYW5QULgvg==
-  dependencies:
-    tslib "^1.7.1"
-
 ng-multiselect-dropdown@0.3.4:
   version "0.3.4"
   resolved "https://registry.yarnpkg.com/ng-multiselect-dropdown/-/ng-multiselect-dropdown-0.3.4.tgz#134fa9c4deda7f7bc7774abe4bb1a3dbc4cdcd1c"
@@ -12165,7 +12133,7 @@ tslib@1.10.0:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.10.0.tgz#c3c19f95973fb0a62973fb09d90d961ee43e5c8a"
   integrity sha512-qOebF53frne81cf0S9B41ByenJ3/IuH8yJKngAX35CmiZySA0khhkovshKK+jGCaMnVomla7gVlIcc3EvKPbTQ==
 
-tslib@^1.10.0, tslib@^1.7.1, tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0:
+tslib@^1.10.0, tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
