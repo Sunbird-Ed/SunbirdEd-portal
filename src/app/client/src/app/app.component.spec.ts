@@ -57,7 +57,7 @@ describe('AppComponent', () => {
     messages: {
       fmsg: { m0097: 'Something went wrong' },
       stmsg: { desktop: { onlineStatus: 'You are online' } },
-      emsg: { desktop: { onlineStatus: 'You are offline' } }
+      emsg: { desktop: { offlineStatus: 'You are offline' } }
     },
     initialize: () => ({}),
     languageSelected$: of({ value: 'en', dir: 'ltr' })
@@ -498,6 +498,7 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     spyOn(toasterService, 'info');
     spyOn(connectionService, 'monitor').and.returnValue(of(false));
     component.notifyNetworkChange();
+    expect(toasterService.info).toHaveBeenCalledWith('You are offline');
     expect(router.navigate).toHaveBeenCalledWith(['mydownloads'], {queryParams: { selectedTab: 'mydownloads' }});
   });
 });
