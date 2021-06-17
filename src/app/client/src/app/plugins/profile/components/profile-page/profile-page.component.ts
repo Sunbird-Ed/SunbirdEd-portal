@@ -633,7 +633,7 @@ public onLocationModalClose() {
   setTimeout(()=> {
     this.showFullScreenLoader = false;
     this.toasterService.error(this.resourceService.messages.emsg.m0005);
-  }, 10000)
+  }, 5000)
 }
 
 }
