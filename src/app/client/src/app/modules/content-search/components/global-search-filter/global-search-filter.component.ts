@@ -33,27 +33,27 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
     let channelData;
     if (this.selectedFilters.channel) {
       const channelIds = [];
-      const facetsData = _.find(this.facets, {'name': 'channel'});
+      const facetsData = _.find(this.facets, { 'name': 'channel' });
       _.forEach(this.selectedFilters.channel, (value, index) => {
-        channelData = _.find(facetsData.values, {'identifier': value});
+        channelData = _.find(facetsData.values, { 'identifier': value });
         if (!channelData) {
-          channelData = _.find(facetsData.values, {'name': value});
+          channelData = _.find(facetsData.values, { 'name': value });
         }
         channelIds.push(channelData.name);
       });
       this.selectedFilters.channel = channelIds;
     }
-    this.filterChangeEvent.next({event: this.selectedFilters[facet.name], type: facet.name});
+    this.filterChangeEvent.next({ event: this.selectedFilters[facet.name], type: facet.name });
   }
 
   ngOnInit() {
     this.setResetFilterInteractData();
     this.fetchSelectedFilterAndFilterOption();
     this.handleFilterChange();
-        // screen size
-        if (window.innerWidth <= 992 ) {
-          this.isOpen = false;
-        }
+    // screen size
+    if (window.innerWidth <= 992) {
+      this.isOpen = false;
+    }
   }
 
   public resetFilters() {
@@ -67,7 +67,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
     }
     if (this.queryParamsToOmit) {
       queryFilters = _.omit(_.get(this.activatedRoute, 'snapshot.queryParams'), this.queryParamsToOmit);
-      queryFilters = {...queryFilters, ...this.selectedFilters};
+      queryFilters = { ...queryFilters, ...this.selectedFilters };
     }
     redirectUrl = decodeURI(redirectUrl);
     this.router.navigate([redirectUrl], {
@@ -81,11 +81,11 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
       map((queryParams) => {
         const queryFilters: any = {};
         _.forIn(queryParams, (value, key) => {
-          if (['medium', 'gradeLevel', 'board', 'channel', 'subject', 'primaryCategory', 'key', 'mediaType'].includes(key)) {
+          if (['medium', 'gradeLevel', 'board', 'channel', 'subject', 'primaryCategory', 'key', 'mediaType', 'mission', 'contributorOrg'].includes(key)) {
             queryFilters[key] = key === 'key' || _.isArray(value) ? value : [value];
           }
         });
-        if (queryParams.selectedTab){
+        if (queryParams.selectedTab) {
           queryFilters['selectedTab'] = queryParams.selectedTab;
         }
         if (queryParams.mediaType) {
@@ -105,36 +105,36 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
   }
 
 
-  ngOnChanges(){
+  ngOnChanges() {
     console.log("facets", this.facets)
   }
   private handleFilterChange() {
     this.filterChangeEvent.pipe(
-      filter(({type, event}) => {
+      filter(({ type, event }) => {
         if (type === 'mediaType' && this.selectedMediaTypeIndex !== event.data.index) {
           this.selectedMediaTypeIndex = event.data.index;
         }
         return true;
       }),
       debounceTime(1000)).subscribe(({ type, event }) => {
-      this.emitFilterChangeEvent();
-    });
+        this.emitFilterChangeEvent();
+      });
   }
 
   public updateRoute() {
     let queryFilters = _.get(this.activatedRoute, 'snapshot.queryParams');
     if (this.selectedFilters.channel) {
       const channelIds = [];
-      const facetsData = _.find(this.facets, {'name': 'channel'});
+      const facetsData = _.find(this.facets, { 'name': 'channel' });
       _.forEach(this.selectedFilters.channel, (value, index) => {
-        const data = _.find(facetsData.values, {'name': value});
+        const data = _.find(facetsData.values, { 'name': value });
         channelIds.push(data.identifier);
       });
       this.selectedFilters.channel = channelIds;
     }
     if (this.queryParamsToOmit) {
       queryFilters = _.omit(_.get(this.activatedRoute, 'snapshot.queryParams'), this.queryParamsToOmit);
-      queryFilters = {...queryFilters, ...this.selectedFilters};
+      queryFilters = { ...queryFilters, ...this.selectedFilters };
     }
     this.router.navigate([], {
       queryParams: this.queryParamsToOmit ? queryFilters : this.selectedFilters,

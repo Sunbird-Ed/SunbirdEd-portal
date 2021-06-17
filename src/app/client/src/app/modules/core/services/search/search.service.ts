@@ -500,20 +500,20 @@ export class SearchService {
         case 'channel':
           facet['index'] = '1';
           facet['label'] = _.get(this.resourceService, 'frmelmnts.lbl.orgname');
-          facet['placeholder'] =  _.get(this.resourceService, 'frmelmnts.lbl.orgname');
+          facet['placeholder'] = _.get(this.resourceService, 'frmelmnts.lbl.orgname');
           facet['values'] = _.map(facet.values || [], value => ({ ...value, name: value.orgName }));
           break;
         case 'mission':
           facet['index'] = '9';
           facet['label'] = 'Mission'
-          facet['placeholder'] =  _.get(this.resourceService, 'frmelmnts.lbl.selectMission')
-          facet['values'] = FACETS.mission? FACETS.mission:[]
+          facet['placeholder'] = _.get(this.resourceService, 'frmelmnts.lbl.selectMission')
+          facet['values'] = FACETS.mission ? FACETS.mission : []
           break;
-        case 'contributorsOrg':
+        case 'contributorOrg':
           facet['index'] = '10'
           facet['label'] = 'Contributor org'
           facet['placeholder'] = 'Contributor org'
-          facet['values'] = FACETS.contributor_org ? FACETS.contributor_org:[]
+          facet['values'] = FACETS.contributor_org ? FACETS.contributor_org : []
       }
       return facet;
     });
