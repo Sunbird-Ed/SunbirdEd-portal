@@ -32,11 +32,8 @@ import {
   finalEntityService,
 } from "./add-entity.component.spec.data";
 import {
-  of as observableOf,
   throwError as observableThrowError,
-  Observable,
-  of,
-  observable,
+  of
 } from "rxjs";
 
 describe("AddEntityComponent", () => {
@@ -171,6 +168,9 @@ describe("AddEntityComponent", () => {
     component.entities = finalEntityService;
     component.payload = profileData;
     component.showDownloadModal = false;
+    component.modal = {
+      approve:()=>{}
+    }
     spyOn(observationService, "post").and.returnValue(of(SubmitResult));
     spyOn(component, "submit").and.callThrough();
     component.submit();
@@ -178,3 +178,7 @@ describe("AddEntityComponent", () => {
     expect(SubmitResult.status).toBe(200);
   });
 });
+
+
+
+
