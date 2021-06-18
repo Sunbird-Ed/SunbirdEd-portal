@@ -112,15 +112,13 @@ describe('TelemetryEventsDirective', () => {
   });
 
   it('should destroy all listeners component close',  () => {
-    telDirective.unlistenTelemetryEvent = of(true).subscribe();
-    telDirective.unlistenTelemetryEventShow = of(true).subscribe();
-
+    telDirective.unlistenTelemetryEvent = function() {};
+    telDirective.unlistenTelemetryEventShow = function() {};
+    spyOn(telDirective, "unlistenTelemetryEvent").and.callThrough();
+    spyOn(telDirective, "unlistenTelemetryEventShow").and.callThrough();
+  
     telDirective.ngOnDestroy();
-    expect(telDirective.unlistenTelemetryEvent.closed).toBeTruthy();
-    expect(telDirective.unlistenTelemetryEventShow.closed).toBeTruthy();
+    expect(telDirective.unlistenTelemetryEvent).toHaveBeenCalled();
+    expect(telDirective.unlistenTelemetryEventShow).toHaveBeenCalled();
   });
-
-  function rendererListenMock(target, evnetName, callback: (event: any) => boolean | void) {
-    callback(event);
-  }
 });
