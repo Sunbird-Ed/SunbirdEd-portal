@@ -207,7 +207,7 @@ export class NewCollectionEditorComponent implements OnInit {
 
   private getEditorMode() {
     const contentStatus = this.collectionDetails.status.toLowerCase();
-    if (contentStatus === 'draft' || contentStatus === 'live') {
+    if (contentStatus === 'draft' || contentStatus === 'live' || contentStatus === 'unlisted') {
       return 'edit';
     }
     if (contentStatus === 'review') {
