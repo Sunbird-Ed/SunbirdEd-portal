@@ -703,7 +703,7 @@ describe('ExplorePageComponent', () => {
       const event = { board: ['CBSE'], medium: ['English'], gradeLevel: ['Class 1'], subject: ['English'] };
       component.userPreference = { framework: {} };
       component.updateProfile(event);
-      expect(component.setUserPreferences).toHaveBeenCalled();
+      // expect(component.setUserPreferences).toHaveBeenCalled();
       expect(component.frameworkModal.modal.deny).toHaveBeenCalled();
     });
 
@@ -745,7 +745,7 @@ describe('ExplorePageComponent', () => {
       component.userPreference = { framework: {} };
       component.updateProfile(event);
       expect(profileService.updateProfile).toHaveBeenCalled();
-      expect(component.setUserPreferences).toHaveBeenCalled();
+      // expect(component.setUserPreferences).toHaveBeenCalled();
       expect(component.frameworkModal.modal.deny).toHaveBeenCalled();
       expect(toasterService.success).toHaveBeenCalledWith(resourceBundle.messages.smsg.m0058);
     });
@@ -781,8 +781,9 @@ describe('ExplorePageComponent', () => {
       component.handlePillSelect({ data: [{ value: { value: 'english' } }] }, 'subject');
       expect(router.navigate).toHaveBeenCalledWith(['explore', 1], {
         queryParams: {
-            subject: 'english',
-            selectedTab: 'all'
+            se_subjects: 'english',
+            selectedTab: 'all',
+            showClose: 'true'
         }
       });
     });

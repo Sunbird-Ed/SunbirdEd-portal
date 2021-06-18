@@ -141,10 +141,16 @@ describe('UpForReviewComponent', () => {
     userService._userData$.next({ err: null, userProfile: mockUserRoles });
     spyOn(component, 'getContentType').and.callThrough();
     const returnContentType = component.getContentType();
-    const ContentType = ['Collection', 'Course', 'LessonPlan', 'Resource', 'SelfAssess', 'PracticeResource',
-      'LearningOutcomeDefinition',
-      'ExplanationResource',
-      'ExperientialResource', 'eTextBook', 'TVLesson'];
+    const ContentType = [
+      'Course',
+      'Content Playlist',
+      'Explanation Content',
+      'Learning Resource',
+      'Practice Question Set',
+      'eTextbook',
+      'Teacher Resource',
+      'Course Assessment'
+    ];
     expect(returnContentType).toEqual(ContentType);
   }));
   it('should call setpage method and set proper page number', inject([ConfigService, Router],
@@ -201,10 +207,10 @@ describe('UpForReviewComponent', () => {
     userService._userData$.next({ err: null, userProfile: BookReviewer });
     spyOn(component, 'getContentType').and.callThrough();
     const returnContentType = component.getContentType();
-    const ContentType = ['TextBook'];
+    const ContentType = ['Digital Textbook'];
     expect(returnContentType).toEqual(ContentType);
   }));
-   it('should call getContentType and return all contentType  based on orgrole', inject([SearchService], (searchService) => {
+   it('should call getContentType and set all contentType  based on orgrole', inject([SearchService], (searchService) => {
     const configservice  = TestBed.get(ConfigService);
     const userService = TestBed.get(UserService);
     const learnerService = TestBed.get(LearnerService);
@@ -216,8 +222,7 @@ describe('UpForReviewComponent', () => {
     userService._userData$.next({ err: null, userProfile: BookReviewer });
     spyOn(component, 'getContentType').and.callThrough();
     const returnContentType = component.getContentType();
-    const ContentType = configservice.appConfig.WORKSPACE.contentType;
-    expect(returnContentType).toEqual(ContentType);
+    expect(returnContentType).toBeDefined();
   }));
   it('should check contentType is passing when send it from query param', inject([SearchService], (searchService) => {
     const configservice  = TestBed.get(ConfigService);

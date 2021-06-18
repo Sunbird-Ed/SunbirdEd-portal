@@ -40,7 +40,7 @@
     white-space: nowrap;
     color: var(--sb-linkmenu-text);
     @include respond-above(md){
-      min-width: calculateRem(180px);
+      flex: 0 0 10%;
     }
     &.active,
     &:hover {
