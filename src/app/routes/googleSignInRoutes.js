@@ -29,7 +29,8 @@ module.exports = (app) => {
       return
     }
     const googleSignInData = _.pick(req.query, REQUIRED_STATE_FIELD)
-    logger.info({msg: 'google auth called with req object need to remove this log-->',req});
+    const query = JSON.stringify(req.query)
+    logger.info({msg: 'google auth called with req object need to remove this log-->', query});
     googleSignInData.redirect_uri = Buffer.from(googleSignInData.redirect_uri).toString('base64');
     const state = JSON.stringify(googleSignInData);
     logger.info({ reqId: req.get('X-Request-ID'), msg: 'query params state', googleSignInData});
