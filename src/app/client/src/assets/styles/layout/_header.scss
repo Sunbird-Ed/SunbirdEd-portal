@@ -202,7 +202,8 @@
         color: var(--white);
         border: 0;
         font-weight: 500;
-        padding: calculateRem(8px) 0 calculateRem(8px) calculateRem(8px);
+        padding: calculateRem(8px) 0;
+        top:0.25rem;
       }
       .menu {
         width: 100%;

@@ -1,27 +1,32 @@
+@import "mixins/mixins";
+
 .popup {
   border-radius: none !important;
   background: var(--sb-modal-content-bg);
   color: var(--sb-text);
+  padding: 1rem;
 }
 .popup-header {
-  padding: 10px 20px;
   color: var(--sb-text);
-  b {
+  span {
     justify-content: flex-start;
-    font-size: 1.2em;
+    font-size: 1em;
+    font-weight: bold;
   }
 }
 
 .alignRight {
   float: right;
   color: #e82520;
+  i.icon {
+    margin: 0;
+  }
 }
 
 .popup-body {
   color: var(--sb-text);
-  font-size: 15px;
-  line-height: 1.2em;
-  padding: 20px 20px;
+  font-size: 0.875rem;
+  padding: 1rem 0 1.5rem;
 }
 
 .popup-body-checkbox {

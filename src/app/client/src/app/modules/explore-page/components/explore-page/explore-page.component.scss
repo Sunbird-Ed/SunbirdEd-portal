@@ -11,6 +11,10 @@
   position: relative;
   overflow: hidden;
   margin-top:2rem;
+
+  @media screen and (max-width: 768px){
+    flex-wrap: wrap;
+  }
     .preference {
       position: relative;
       z-index: 1;
@@ -30,6 +34,9 @@
     .change-preference {
       position: relative;
       z-index: 1;
+      @media screen and (max-width: 768px){
+        padding-top: 0.5rem;
+      }
     }
     svg {
       position: absolute;
@@ -51,7 +58,9 @@
 .no-background {
   background: none;
 }
+
 .home-container {
   padding:0;
   // border-radius:2.5rem;
 }
+
