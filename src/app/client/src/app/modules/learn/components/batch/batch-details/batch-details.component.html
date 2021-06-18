@@ -48,20 +48,6 @@
               <div class="sb-color-primary fmedium font-weight-bold"><i class="calendar outline icon"></i>
                 {{batch.startDate | dateFormat}}
                 <span *ngIf="batch.endDate"> - {{batch.endDate | dateFormat}} </span></div>
-
-              <!-- <div class="batch-details__edit d-flex flex-ai-center">
-                                <div class="sb-color-primary fmedium font-weight-bold"><i
-                                        class="calendar outline icon"></i> {{batch.startDate | dateFormat}}
-                                    <span *ngIf="batch.endDate"> - {{batch.endDate | dateFormat}} </span></div>
-                                <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal ml-auto"
-                                    (click)="batchUpdate(batch); logTelemetry('update-batch', courseHierarchy, batch?.identifier);">
-                                    <i class="icon-svg icon-svg--xxs icon-edit mr-4"><svg class="icon icon-svg--primary">
-                                        <use xlink:href="assets/images/sprite.svg#edit"></use>
-                                      </svg></i> 
-                                    {{resourceService?.frmelmnts?.lbl?.edit}}
-                                </button>
-                            </div> -->
-
               <div class="batch-details__edit d-flex flex-ai-center py-8">
                 <div *ngIf="allowBatchCreation && allowCertCreation">
                   <div *ngIf="!isCertAdded(batch)" class="sb-color-primary fnormal font-weight-bold">
@@ -72,7 +58,10 @@
                   </div>
                 </div>
                 <button class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto"
-                  (click)="batchUpdate(batch); logTelemetry('update-batch', courseHierarchy, batch?.identifier);">
+                  (click)="batchUpdate(batch); logTelemetry('update-batch', courseHierarchy, batch?.identifier);"
+                  [ngClass]="{'sb-btn-disabled': (!isExpiredBatchEditable && batch.status === 2)}"
+                  [disabled]="(!isExpiredBatchEditable && batch.status === 2)"
+                   >
                   {{resourceService?.frmelmnts?.lbl?.edit}}
                 </button>
               </div>
