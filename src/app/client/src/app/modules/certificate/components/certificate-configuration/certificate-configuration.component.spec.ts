@@ -45,7 +45,7 @@ describe('CertificateConfigurationComponent', () => {
   const resourceBundle = {
     frmelmnts: {
       lbl: {
-        Select: 'Select',
+        Select: 'Select'
       },
       cert: {
         lbl: {
@@ -268,7 +268,7 @@ describe('CertificateConfigurationComponent', () => {
     component.getCertConfigFields();
 
     /** Assert */
-    expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, try again later');
+    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
   });
 
   it('should fetch the list of certificate templates from preference api', () => {
