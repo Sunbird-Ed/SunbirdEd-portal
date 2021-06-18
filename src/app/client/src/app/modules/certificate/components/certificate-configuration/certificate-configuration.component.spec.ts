@@ -55,14 +55,14 @@ describe('CertificateConfigurationComponent', () => {
           certAddError: 'Failed to add the certificate. Try again later.',
           certEditError: 'Failed to edit the certificate. Try again later.'
         }
+      }
+    },
+    messages: {
+      emsg: {
+        m0005: 'Something went wrong, try again later'
+      }
     }
-  },
-  messages: {
-    emsg: {
-      m0005: 'Something went wrong, try again later'
-    }
-  }
-};
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
