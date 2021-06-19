@@ -28,14 +28,21 @@ module.exports = (app) => {
       res.redirect('/library')
       return
     }
-    const googleSignInData = _.pick(req.query, REQUIRED_STATE_FIELD)
+    const googleSignInData = _.pick(req.query, REQUIRED_STATE_FIELD);
+    /* need to delete post debugging*/
     const query = JSON.stringify(req.query)
     logger.info({msg: 'google auth called with req object need to remove this log-->', query});
+    /* need to delete post debugging*/
     googleSignInData.redirect_uri = Buffer.from(googleSignInData.redirect_uri).toString('base64');
     const state = JSON.stringify(googleSignInData);
     logger.info({ reqId: req.get('X-Request-ID'), msg: 'query params state', googleSignInData});
     let googleAuthUrl = googleOauth.generateAuthUrl(req) + '&state=' + state
     logger.info({ reqId: req.get('X-Request-ID'), msg: 'redirect google to' + JSON.stringify(googleAuthUrl)});
+    /* need to delete post debugging*/
+    let bufferObj = Buffer.from(googleSignInData.redirect_uri, "base64");
+    const obj = (bufferObj).toString('utf8');
+    logger.info({msg: 'google auth called with googleAuthUrl -->',obj});
+    /* need to delete post debugging*/
     res.redirect(googleAuthUrl)
     logImpressionEvent(req);
   });
