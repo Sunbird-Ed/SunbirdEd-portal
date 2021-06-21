@@ -32,7 +32,7 @@ export class AddMemberComponent implements OnInit, OnDestroy {
   telemetryImpression: IImpressionEventInput;
   public unsubscribe$ = new Subject<void>();
   @Output() members = new EventEmitter<any>();
-  @ViewChild('captchaRef', {static: false}) captchaRef: RecaptchaComponent;
+  @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
   captchaResponse = '';
   googleCaptchaSiteKey = '';
   isCaptchEnabled = false;

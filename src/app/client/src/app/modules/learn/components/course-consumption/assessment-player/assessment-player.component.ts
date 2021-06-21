@@ -25,7 +25,7 @@ const ACCESSEVENT = 'renderer:question:submitscore';
   styleUrls: ['./assessment-player.component.scss']
 })
 export class AssessmentPlayerComponent implements OnInit, OnDestroy {
-  @ViewChild('modal', {static: false}) modal;
+  @ViewChild('modal') modal;
   private unsubscribe = new Subject<void>();
   contentProgressEvents$ = new Subject();
   batchId: string;
@@ -141,6 +141,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.initLayout();
     this.subscribeToQueryParam();
     this.subscribeToContentProgressEvents().subscribe(data => { });

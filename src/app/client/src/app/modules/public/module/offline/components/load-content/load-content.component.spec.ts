@@ -2,7 +2,7 @@ import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { SharedModule, ResourceService, ConnectionService } from '@sunbird/shared';
-import { SuiModalModule } from 'ng2-semantic-ui';
+import { SuiModalModule } from 'ng2-semantic-ui-v9';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import * as _ from 'lodash-es';
 import { LoadContentComponent } from './load-content.component';

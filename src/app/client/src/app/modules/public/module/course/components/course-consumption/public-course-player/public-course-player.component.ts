@@ -41,7 +41,7 @@ export class PublicCoursePlayerComponent implements OnInit, OnDestroy, AfterView
   shareLinkModal = false;
   telemetryShareData: Array<ITelemetryShare>;
   shareLink: string;
-  @ViewChild('joinTrainingModal', {static: false}) joinTrainingModal;
+  @ViewChild('joinTrainingModal') joinTrainingModal;
   isExpandedAll: boolean;
 
   constructor(

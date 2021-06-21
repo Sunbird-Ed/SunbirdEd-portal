@@ -17,7 +17,7 @@ import { ACTIVITY_DASHBOARD, MY_GROUPS, GROUP_DETAILS } from '../../../interface
 })
 export class ActivityDetailsComponent implements OnInit, OnDestroy {
 
-  @ViewChild('searchInputBox', {static: false}) searchInputBox;
+  @ViewChild('searchInputBox') searchInputBox;
   unsubscribe$ = new Subject<void>();
   showLoader = true;
   queryParams;

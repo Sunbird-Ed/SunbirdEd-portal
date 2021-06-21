@@ -2,7 +2,7 @@ import { ContentManagerService } from './services';
 import {
     SuiModalModule, SuiProgressModule, SuiAccordionModule,
     SuiTabsModule, SuiSelectModule, SuiDimmerModule, SuiCollapseModule, SuiDropdownModule
-} from 'ng2-semantic-ui';
+} from 'ng2-semantic-ui-v9';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CoreModule } from '@sunbird/core';

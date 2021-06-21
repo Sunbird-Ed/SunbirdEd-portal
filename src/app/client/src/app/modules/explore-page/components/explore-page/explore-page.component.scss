@@ -5,11 +5,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #dad9cb;
+  background-color:var(--sbt-body-bg);
   padding: 2rem;
   border-radius: 1.5rem;
   position: relative;
   overflow: hidden;
+  margin-top:2rem;
     .preference {
       position: relative;
       z-index: 1;
@@ -51,6 +52,6 @@
   background: none;
 }
 .home-container {
-  padding:1.5rem;
-  border-radius:2.5rem;
+  padding:0;
+  // border-radius:2.5rem;
 }

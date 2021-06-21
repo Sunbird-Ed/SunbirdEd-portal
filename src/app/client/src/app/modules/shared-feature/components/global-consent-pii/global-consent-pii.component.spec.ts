@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CoreModule, TncService, UserService, GeneraliseLabelService } from '@sunbird/core';
 import { ResourceService, SharedModule, ToasterService } from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { BehaviorSubject, of, throwError } from 'rxjs';
 import { MockData } from './global-consent-pii.component.spec.data';
 // import {  } from '../../../core/services/generalisedLable/generaliseLable.service';

@@ -14,7 +14,7 @@ import {
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 import { CacheService } from 'ng2-cache-service';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { of as observableOf, of, Subject, throwError } from 'rxjs';
 import { SubmitTeacherDetailsComponent } from './submit-teacher-details.component';

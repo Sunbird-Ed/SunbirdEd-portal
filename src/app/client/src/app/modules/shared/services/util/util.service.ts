@@ -54,7 +54,7 @@ export class UtilService {
 
   processContent(data, staticData, dynamicFields, metaData) {
     let fieldValue: any;
-    const content: any = {
+    let content: any = {
       name: data.name || data.courseName,
       image: data.appIcon || data.courseLogoUrl,
       downloadStatus: data.downloadStatus,
@@ -93,6 +93,7 @@ export class UtilService {
       content['subTopic'] = this.getTopicSubTopic('subTopic', data.content.topic);
       content['contentType'] = _.get(data.content, 'contentType') || '';
       content['orgDetails'] = _.get(data.content, 'orgDetails') || {};
+      content = { ...content, ..._.pick(data.content, ['subject', 'medium', 'gradeLevel']) };
     }
 
     if (data.gradeLevel && data.gradeLevel.length) {
@@ -253,7 +254,7 @@ export class UtilService {
   }
 
   updateRoleChange(type) {
-    if(type){  
+    if(type){
       this.roleChanged.next(type);
     }
 

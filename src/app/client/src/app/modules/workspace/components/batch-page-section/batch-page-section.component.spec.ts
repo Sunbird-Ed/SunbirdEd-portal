@@ -5,7 +5,7 @@ import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing'
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { SharedModule, PaginationService, ToasterService, ResourceService, BatchCardComponent } from '@sunbird/shared';
 import { UserService, LearnerService, SearchService, CoreModule } from '@sunbird/core';
 import { WorkSpaceService, BatchService } from '../../services';

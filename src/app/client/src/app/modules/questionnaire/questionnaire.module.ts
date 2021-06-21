@@ -4,7 +4,7 @@ import { QuestionnaireComponent } from "./questionnaire/questionnaire.component"
 import { QuestionnaireRoutingModule } from "./questionnaire-routing.module";
 import { SharedModule } from "@sunbird/shared";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { SuiModule } from "ng2-semantic-ui";
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import {
   InputTypeAttachmentComponent, InputTypeCheckboxComponent, InputTypeDatePickerComponent, InputTypeNumberComponent,
   InputTypeRadioComponent, InputTypeRangeComponent, InputTypeTextComponent, PageQuestionsComponent, MatrixQuestionsComponent, QuestionGenericInputsComponent,

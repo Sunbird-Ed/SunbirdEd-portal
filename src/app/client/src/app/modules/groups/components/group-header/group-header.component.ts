@@ -19,7 +19,7 @@ import { UPDATE_GROUP, SELECT_DELETE, SELECT_DEACTIVATE, SELECT_NO, DELETE_SUCCE
 })
 export class GroupHeaderComponent implements OnInit, OnDestroy {
   dropdownContent = true;
-  @ViewChild('modal', {static: false}) modal;
+  @ViewChild('modal') modal;
   @Input() groupData: IGroupCard;
   @Output() handleFtuModal = new EventEmitter();
   showModal = false;

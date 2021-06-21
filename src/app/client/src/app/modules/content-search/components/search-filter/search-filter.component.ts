@@ -45,7 +45,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   selectedNgModels = {};
   private audienceList;
 
-  @ViewChild('sbSearchFrameworkFilterComponent', { static: false }) searchFrameworkFilterComponent: any;
+  @ViewChild('sbSearchFrameworkFilterComponent') searchFrameworkFilterComponent: any;
   filterFormTemplateConfig: IFrameworkCategoryFilterFieldTemplateConfig[] = [
     {
       category: 'board',

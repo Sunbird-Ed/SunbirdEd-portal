@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AccountRecoveryInfoComponent } from './account-recovery-info.component';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { ResourceService, SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';

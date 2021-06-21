@@ -116,5 +116,8 @@ describe('ContentPlayerComponent', () => {
       expect(component.isFullScreenView).toBeFalsy();
     });
   });
-
+  it('should redo layout on render', () => {
+    component.layoutConfiguration = {};
+    component.layoutConfiguration = null;
+  });
 });

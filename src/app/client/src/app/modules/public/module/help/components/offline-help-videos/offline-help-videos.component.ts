@@ -19,8 +19,8 @@ export class OfflineHelpVideosComponent implements OnInit, OnDestroy, AfterViewI
 
   @Output() closeVideoModal = new EventEmitter<any>();
 
-  @ViewChild('aspectRatio', {static: false}) aspectRatio: ElementRef;
-  @ViewChild('playerInfo', {static: false}) playerInfo: ElementRef;
+  @ViewChild('aspectRatio') aspectRatio: ElementRef;
+  @ViewChild('playerInfo') playerInfo: ElementRef;
   videoContainerHeight: number;
   aspectRatioHeight: number;
   playerInfoHeight: number;

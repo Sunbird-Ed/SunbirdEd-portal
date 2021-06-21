@@ -13,7 +13,7 @@ import { IInteractEventEdata } from '@sunbird/telemetry';
   styleUrls: ['./load-content.component.scss']
 })
 export class LoadContentComponent implements OnInit, OnDestroy {
-  @ViewChild('modal', {static: false}) modal;
+  @ViewChild('modal') modal;
   isConnected;
   selectedValue;
   @Output() close = new EventEmitter();
