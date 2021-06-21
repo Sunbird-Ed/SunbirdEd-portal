@@ -79,7 +79,7 @@
             <div class="sb-field ui left icon input">
               <i class="calendar icon date-calendar"></i>
               <input class="sb-form-control"
-                [attr.disabled]="(batchDetails.status === 2 || showFormInViewMode ) ? true : null"
+                [attr.disabled]="( showFormInViewMode ) ? true : null"
                 [pickerMinDate]='pickerMinDateForEndDate' suiDatepicker formControlName="endDate" [pickerMode]="'date'">
             </div>
           </div>

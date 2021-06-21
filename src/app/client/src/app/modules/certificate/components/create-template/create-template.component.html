@@ -1,3 +1,4 @@
+<div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''">
 <!-- Header section-->
 <div class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9">
   <div class="ui container">
@@ -197,5 +198,5 @@
       </div>
     </div>
 </div>
-
+</div>
 <browse-image-popup  (assetData)="assetData($event)" (close)="close()" [showUploadUserModal]="showUploadUserModal" [showSelectImageModal]="showSelectImageModal" [logoType]="logoType" ></browse-image-popup>

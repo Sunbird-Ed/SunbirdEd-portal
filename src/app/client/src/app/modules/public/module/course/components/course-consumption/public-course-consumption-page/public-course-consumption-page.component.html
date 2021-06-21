@@ -1,3 +1,4 @@
+<div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''">
 <!-- Back Button Previous Module & Next Module button -->
 <div class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9">
     <div class="ui container">
@@ -70,7 +71,7 @@
         </div>
     </div>
 </div>
-
+</div>
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="sharelinkModal"
     (close)="closeSharePopup('close-share-link-popup')">
 </app-share-link>

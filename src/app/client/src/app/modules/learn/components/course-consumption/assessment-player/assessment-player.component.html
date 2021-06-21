@@ -1,6 +1,7 @@
+
 <app-landing-section [textToDisplay]="" 
 [layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
-<div *ngIf="!showLoader" [appTelemetryImpression]="telemetryPlayerPageImpression" class="text-left relative9">
+<div *ngIf="!showLoader" [appTelemetryImpression]="telemetryPlayerPageImpression" [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''" class="text-left relative9">
 
   <!-- Header: Back Button Previous Module & Next Module button -->
   <div class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9">
@@ -151,9 +152,10 @@
       </section>
     </div>
   </div>
-</div>
-<div class="ui container py-16" *ngIf="showLoader">
-  <app-loader [data]='loaderMessage'></app-loader>
+
+  <div class="ui container py-16" *ngIf="showLoader">
+    <app-loader [data]='loaderMessage'></app-loader>
+  </div>
 </div>
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="shareLinkModal"
   (close)="shareLinkModal = false">

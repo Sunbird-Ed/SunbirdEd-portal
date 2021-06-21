@@ -700,5 +700,8 @@ describe('AssessmentPlayerComponent', () => {
     component.getCourseCompletionStatus(true);
     expect(component.showMaxAttemptsModal).toBe(false);
   });
-
+  it('should redo layout on render', () => {
+    component.layoutConfiguration = {};
+    component.layoutConfiguration = null;
+  });
 });
