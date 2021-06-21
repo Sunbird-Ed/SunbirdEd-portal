@@ -50,6 +50,7 @@ let envVariables = {
   reportsListVersion: env.reportsListVersion || 'v1',
   sunbird_data_product_service: env.sunbird_data_product_service || 'https://staging.ntp.net.in/',
   ML_SERVICE_BASE_URL: env.ML_SERVICE_BASE_URL || "https://survey.preprod.ntp.net.in/staging",
+  SUNBIRD_PROTO: env.sunbird_base_proto,
 
   // TTL and Intervals
   CONFIG_REFRESH_INTERVAL: env.config_refresh_interval || 10,
