@@ -293,6 +293,12 @@ export class AppComponent implements OnInit, OnDestroy {
     this.botObject['imageUrl'] = image.imageUrl;
     this.botObject['title'] = this.botObject['header'] = this.title;
     this.generaliseLabelService.getGeneraliseResourceBundle();
+  //keyboard accessibility enter key click event
+    document.onkeydown = function(e) {
+      if(e.keyCode === 13) { // The Enter/Return key
+        (document.activeElement  as HTMLElement).click();
+      }
+    };
   }
 
   onCloseJoyThemePopup() {
