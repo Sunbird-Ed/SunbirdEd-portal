@@ -203,7 +203,7 @@
         border: 0;
         font-weight: 500;
         padding: calculateRem(8px) 0;
-        top:0.25rem;
+        top:calculateRem(4px);
       }
       .menu {
         width: 100%;
