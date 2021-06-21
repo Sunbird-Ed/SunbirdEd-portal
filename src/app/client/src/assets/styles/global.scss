@@ -1428,3 +1428,21 @@ sb-pills-grid{
   }
 }
 // ends
+
+//epup player splash
+sunbird-epub-player .sunbird-epub-container {
+  div:first-child{
+    height: inherit;
+    sb-player-start-page{
+      .sb-player-splash-container{
+        height: 100% !important;
+      }
+    }
+  }
+  .epub-container sb-player-sidebar .navBlock .player-nav-unit{
+    height: auto !important;
+  }
+}
+.contentViewerIframeShadow.player-fullscreen.content-full-video sunbird-epub-player .sb-player-splash-container{
+  height: 100% !important;
+}
