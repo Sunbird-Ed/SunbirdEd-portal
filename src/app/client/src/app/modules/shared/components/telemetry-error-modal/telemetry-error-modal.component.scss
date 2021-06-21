@@ -7,22 +7,25 @@
 }
 
 .telemetry-float-icon {
-    background:#000;
-    text-transform: uppercase;
+    background: #cce4ff;
     letter-spacing: 3px;
     padding: 4px;
-    width: 190px;
+    width: 200px;
     position: fixed;
     right: -128px;
     z-index: 1000;
-    font: normal normal 10px Arial;
-    -webkit-transition: all .25s ease;
-    -moz-transition: all .25s ease;
-    -ms-transition: all .25s ease;
-    -o-transition: all .25s ease;
-    transition: all .25s ease;
-    border-radius:24px;
+    transition: all 0.25s ease;
+    border-radius: 24px 0px 0px 24px;
+    box-shadow: var(--sbt-box-shadow-6px);
+    cursor: pointer;
+    border: #034f9d solid 4px;
+    border-right-width: 0px;
     cursor:pointer;
+  }
+
+  .telemetry-btn-label {
+    color: var(--sb-linkmenu-text);
+    font-weight: bold;
   }
   
   .telemetry-float-icon:hover {
