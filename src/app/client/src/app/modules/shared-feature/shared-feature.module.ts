@@ -21,6 +21,8 @@ import { PlayerHelperModule } from '@sunbird/player-helper';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
 import { CommonFormElementsModule } from 'common-form-elements';
 import { LocationModule } from '../../plugins/location';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { DashletModule } from '@project-sunbird/sb-dashlet';
 
 export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
   if (!CsModule.instance.isInitialised) {
@@ -43,7 +45,8 @@ export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerSe
     PlayerHelperModule,
     CommonConsumptionModule,
     CommonFormElementsModule,
-    LocationModule
+    LocationModule,
+    DashletModule
   ],
   providers:  [{ provide: 'CS_USER_SERVICE', useFactory: csUserServiceFactory, deps: [CsLibInitializerService] }],
   declarations: [ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
@@ -52,12 +55,12 @@ export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerSe
     UserOnboardingComponent,
     OnboardingUserSelectionComponent,
     ConfirmationPopupComponent, CertPreviewPopupComponent, ContentPlayerComponent, GlobalConsentPiiComponent,
-     CollectionPlayerComponent, YearOfBirthComponent
+     CollectionPlayerComponent, YearOfBirthComponent, DashboardComponent
   ],
   exports: [ProfileFrameworkPopupComponent, TermsAndConditionsPopupComponent,
     OtpPopupComponent, BatchInfoComponent, SsoMergeConfirmationComponent, ValidateTeacherIdentifierPopupComponent,
     UserLocationComponent, UserOnboardingComponent, OnboardingUserSelectionComponent,
-    ConfirmationPopupComponent, CertPreviewPopupComponent,
+    ConfirmationPopupComponent, CertPreviewPopupComponent, DashboardComponent,
      ContentPlayerComponent, GlobalConsentPiiComponent, CollectionPlayerComponent, YearOfBirthComponent]
 })
 export class SharedFeatureModule { }
