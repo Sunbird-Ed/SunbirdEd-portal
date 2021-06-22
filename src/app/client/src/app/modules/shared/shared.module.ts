@@ -9,7 +9,7 @@ import {
   CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, BatchCardComponent, AccountMergeModalComponent,
   OfflineBannerComponent,
   OfflineApplicationDownloadComponent, FullPageModalComponent, ConfirmPopupComponent, SelectOptionGroupComponent,SbDatatableComponent,
-  OnDemandReportsComponent, DesktopAppUpdateComponent, SystemWarningComponent,AlertModalComponent
+  OnDemandReportsComponent, DesktopAppUpdateComponent, SystemWarningComponent,AlertModalComponent, FullPageLoaderComponent
 } from './components';
 import {
   ConfigService, ResourceService, ToasterService, WindowScrollService, BrowserCacheTtlService,
@@ -50,7 +50,8 @@ import { LoadOfflineContentComponent } from './components/load-offline-content/l
     ConfirmPopupComponent, AddToGroupDirective, SelectOptionGroupComponent, AppLandingSectionComponent, MarkdownDirective,
     SbDatatableComponent,OnDemandReportsComponent,SbDataTablePipe, NetworkStatusComponent, LoadOfflineContentComponent,
     DesktopAppUpdateComponent,AlertModalComponent,
-    SystemWarningComponent],
+    SystemWarningComponent,
+    FullPageLoaderComponent],
   exports: [AppLoaderComponent, DateFormatPipe, TranslateModule,
     BatchCardComponent, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe,
     OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent, SortByPipe,
@@ -58,7 +59,8 @@ import { LoadOfflineContentComponent } from './components/load-offline-content/l
     ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent,
     CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
     MarkdownDirective, AddToGroupDirective, SbDatatableComponent, OnDemandReportsComponent, NgxDatatableModule,SbDataTablePipe, 
-    InterpolatePipe, NetworkStatusComponent, LoadOfflineContentComponent, DesktopAppUpdateComponent, SystemWarningComponent, AlertModalComponent],
+    InterpolatePipe, NetworkStatusComponent, LoadOfflineContentComponent, DesktopAppUpdateComponent, SystemWarningComponent, AlertModalComponent,
+    FullPageLoaderComponent],
   entryComponents:[AlertModalComponent]
 })
 export class SharedModule {
