@@ -152,6 +152,6 @@
     "typescript": "~3.8.3"
   },
   "resolutions": {
-    "moment": "2.25.3"
+    "moment": "2.22.1"
   }
 }
