@@ -1,7 +1,7 @@
 export const FACETS = {
     values: ["primaryCategory", "mission", "contributorOrg", "subject", "medium", "board", "gradeLevel", "mimeType"],
-    mission: [{ name: "Water Resource", count: 2 }, { name: "Flood Relief", count: 3 }],
-    contributor_org: [{ name: "Ekstep", count: 2 }, { name: "SPace", count: 3 }],
+    mission: [{ name: "Child Educations", count: 1 }, { name: "Flood Relief", count: 3 }],
+    contributor_org: [{ name: "Ashoka", count: 1 }, { name: "Societal", count: 1 }],
 }
 export const requiredFacets = ["primaryCategory", "mission", "contributorOrg"]
 export const additionalCategoryList = [{
