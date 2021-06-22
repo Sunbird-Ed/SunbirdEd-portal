@@ -393,4 +393,8 @@ describe('CollectionPlayerComponent', () => {
     expect(component.disableDelete).toBeFalsy();
     expect(component.toasterService.error(resourceBundle.messages.etmsg.desktop.deleteTextbookErrorMessage));
   });
+  it('should redo layout on render', () => {
+    component.layoutConfiguration = {};
+    component.layoutConfiguration = null;
+  });
 });

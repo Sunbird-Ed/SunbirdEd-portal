@@ -47,6 +47,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   collectionStatus: string;
   contentId: string;
   collectionTreeNodes: any;
+  layoutConfiguration: any;
   collectionTitle: string;
   contentTitle: string;
   playerConfig: Observable<any>;
@@ -83,7 +84,6 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   isCopyAsCourseClicked: Boolean = false;
   selectAll: Boolean = false;
   selectedItems = [];
-  layoutConfiguration: any;
   loaderMessage: ILoaderMessage = {
     headerMessage: 'Please wait...',
     loaderMessage: 'Fetching content details!'
@@ -129,6 +129,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   ngOnInit() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.isDesktopApp = this.utilService.isDesktopApp;
     this.noContentMessage = _.get(this.resourceService, 'messages.stmsg.m0121');
     this.playerServiceReference = this.userService.loggedIn ? this.playerService : this.publicPlayerService;
