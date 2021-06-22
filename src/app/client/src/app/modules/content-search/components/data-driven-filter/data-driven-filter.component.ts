@@ -8,6 +8,7 @@ import { FrameworkService, FormService, PermissionService, UserService, OrgDetai
 import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
 import { IInteractEventEdata } from '@sunbird/telemetry';
+import { requiredFacets } from '../../../constant';
 
 @Component({
   selector: 'app-data-driven-filter',
@@ -103,7 +104,9 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
         this.framework = frameworkDetails.code;
         return this.getFormDetails();
       }),
-      mergeMap((formData: any) => {
+      mergeMap((formDataDetails: any) => {
+        //filter the required data to be shown in filter-popup
+         const formData = this.filterFormData(formDataDetails) 
         if (_.find(formData, { code: 'channel' })) {
           return this.getOrgSearch().pipe(map((channelData: any) => {
             const data = _.filter(channelData, 'hashTagId');
@@ -334,6 +337,11 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
         return [];
       }));
   }
+
+  filterFormData(formFieldProperties) {
+    return formFieldProperties.filter(data =>
+      requiredFacets.includes(data.code))
+    }
   ngOnDestroy() {
     if (this.resourceDataSubscription) {
       this.resourceDataSubscription.unsubscribe();
