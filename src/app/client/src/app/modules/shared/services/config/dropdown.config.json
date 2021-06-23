@@ -280,7 +280,6 @@
                 {
                     "field": "contentType",
                     "name": "Content Type"
-
                 },
                 {
                     "field": "createdOn",
@@ -301,7 +300,6 @@
                 {
                     "field": "status",
                     "name": "Status"
-
                 }
             ]
         },
@@ -399,6 +397,14 @@
                 {
                     "id": "primaryCategory",
                     "name": "Content Types"
+                },
+                {
+                    "id": "mission",
+                    "name": "Mission"
+                },
+                {
+                    "id": "contributorOrg",
+                    "name": "Contributor Org"
                 }
             ]
         }
