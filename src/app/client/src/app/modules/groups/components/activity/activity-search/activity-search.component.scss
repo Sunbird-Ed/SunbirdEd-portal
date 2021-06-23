@@ -10,12 +10,12 @@
     text-overflow: ellipsis;
     overflow: hidden;
     flex: 1;
-    height: 1.5rem;
+    height: calculateRem(24px);
     color: var(--primary-color);
-    font-size: 1.125rem;
+    font-size: calculateRem(18px);
     font-weight: 700;
     text-transform: capitalize;
-    line-height: 1.625rem;
+    line-height: calculateRem(26px);
     display: flex;
     align-items: center;
     .badge {
@@ -23,11 +23,11 @@
       background: var(--sbt-badge-bg);
     color: var(--sbt-badge-text);
       text-align: center;
-      padding: 0 0.75rem;
-      border-radius: 0.25rem;
-      height: 1.5rem;
-      line-height: 1.5rem;
-      font-size: 1rem;
+      padding: 0 calculateRem(12px);
+      border-radius: calculateRem(4px);
+      height: calculateRem(24px);
+      line-height: calculateRem(24px);
+      font-size: calculateRem(16px);
       font-weight: 400;
       margin-left: calculateRem(8px);
       html[dir="rtl"] & {
@@ -91,9 +91,14 @@
   &__info {
     color: var(--gray-800);
     font-size: calculateRem(14px);
+    align-items: center;
     @include respond-below(sm) {
       flex-direction: column;
       margin-top: calculateRem(8px) !important;
+      align-items: flex-start;
+      button{
+        margin-top: calculateRem(8px);
+      }
     }
   }
 }
