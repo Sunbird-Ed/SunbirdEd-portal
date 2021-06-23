@@ -267,7 +267,9 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
         board: bothParams['queryParams'].board,
         subject: bothParams['queryParams'].subject,
         medium: bothParams['queryParams'].medium,
-        gradeLevel: bothParams['queryParams'].gradeLevel
+        gradeLevel: bothParams['queryParams'].gradeLevel,
+        mission: bothParams['queryParams'].mission,
+        contributorOrg: bothParams['queryParams'].contributorOrg
       },
       limit: this.pageLimit,
       offset: (this.pageNumber - 1) * (this.pageLimit),

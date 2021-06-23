@@ -203,7 +203,9 @@ export class UpForReviewComponent extends WorkSpace implements OnInit, AfterView
         board: bothParams.queryParams.board,
         subject: bothParams.queryParams.subject,
         medium: bothParams.queryParams.medium,
-        gradeLevel: bothParams.queryParams.gradeLevel
+        gradeLevel: bothParams.queryParams.gradeLevel,
+        mission: bothParams.queryParams.mission,
+        contributorOrg: bothParams.queryParams.contributorOrg
       },
       limit: limit,
       offset: (pageNumber - 1) * (limit),

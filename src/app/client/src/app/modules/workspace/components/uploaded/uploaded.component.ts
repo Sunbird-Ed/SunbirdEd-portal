@@ -121,11 +121,11 @@ export class UploadedComponent extends WorkSpace implements OnInit, AfterViewIni
   /**
      * lock popup data for locked contents
     */
-   lockPopupData: object;
-   /**
-     * To show content locked modal
-    */
-   showLockedContentModal = false;
+  lockPopupData: object;
+  /**
+    * To show content locked modal
+   */
+  showLockedContentModal = false;
 
   /**
     * Constructor to create injected service(s) object
@@ -274,7 +274,7 @@ export class UploadedComponent extends WorkSpace implements OnInit, AfterViewIni
     this.route.navigate(['workspace/content/uploaded', this.pageNumber]);
   }
 
-  ngAfterViewInit () {
+  ngAfterViewInit() {
     setTimeout(() => {
       this.telemetryImpression = {
         context: {

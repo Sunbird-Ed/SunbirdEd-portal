@@ -1,7 +1,8 @@
 import { of, throwError, Subscription, Subject } from 'rxjs';
 import { first, mergeMap, map, tap, catchError, filter, takeUntil } from 'rxjs/operators';
 import {
-  ConfigService, ResourceService, Framework, BrowserCacheTtlService, UtilService, LayoutService} from '@sunbird/shared';
+  ConfigService, ResourceService, Framework, BrowserCacheTtlService, UtilService, LayoutService
+} from '@sunbird/shared';
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, OnChanges, OnDestroy, ViewRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FrameworkService, FormService, PermissionService, UserService, OrgDetailsService } from '@sunbird/core';
@@ -67,10 +68,10 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
-        // screen size
-        if (window.innerWidth <= 992 ) {
-          this.isOpen = false;
-        }
+    // screen size
+    if (window.innerWidth <= 992) {
+      this.isOpen = false;
+    }
     this.resourceDataSubscription = this.resourceService.languageSelected$
       .subscribe(item => {
         this.selectedLanguage = item.value;
@@ -106,7 +107,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
       }),
       mergeMap((formDataDetails: any) => {
         //filter the required data to be shown in filter-popup
-         const formData = this.filterFormData(formDataDetails) 
+        const formData = this.filterFormData(formDataDetails)
         if (_.find(formData, { code: 'channel' })) {
           return this.getOrgSearch().pipe(map((channelData: any) => {
             const data = _.filter(channelData, 'hashTagId');
@@ -271,7 +272,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
       if (!_.includes(['channel', 'contentType', 'topic'], enrichField.code)) {
         enrichField.range = _.filter(this.enrichFilters[enrichField.code],
           (field) => {
-            return _.find(eachFields.range, { name: _.get(field, 'name')});
+            return _.find(eachFields.range, { name: _.get(field, 'name') });
           });
       }
       return enrichField;
@@ -300,18 +301,18 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
     setTimeout(() => { // wait for model to change
       const filters = _.pickBy(this.formInputData, (val, key) =>
         (!_.isEmpty(val) || typeof val === 'number')
-          && _.map(this.formFieldProperties, field => field.code).includes(key));
+        && _.map(this.formFieldProperties, field => field.code).includes(key));
       this.applyFilterInteractEdata = {
         id: 'apply-filter',
         type: 'click',
         pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid'),
-        extra: {filters: filters}
+        extra: { filters: filters }
       };
       this.resetFilterInteractEdata = {
         id: 'reset-filter',
         type: 'click',
         pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid'),
-        extra: {filters: filters}
+        extra: { filters: filters }
       };
       this.filterInteractEdata = {
         id: 'filter-accordion',
@@ -320,14 +321,14 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
       };
     }, 5);
     const pageSection = this.cacheService.get('pageSection');
-    if (_.get(pageSection, 'id' )) {
+    if (_.get(pageSection, 'id')) {
       this.telemetryCdata = [{ 'type': 'page-section', 'id': pageSection.id }];
     }
   }
   private hardRefreshFilter() {
     this.refresh = false;
-    if (!(this.cdr as ViewRef).destroyed ) {
-          this.cdr.detectChanges();
+    if (!(this.cdr as ViewRef).destroyed) {
+      this.cdr.detectChanges();
     }
     this.refresh = true;
   }
@@ -341,7 +342,7 @@ export class DataDrivenFilterComponent implements OnInit, OnChanges, OnDestroy {
   filterFormData(formFieldProperties) {
     return formFieldProperties.filter(data =>
       requiredFacets.includes(data.code))
-    }
+  }
   ngOnDestroy() {
     if (this.resourceDataSubscription) {
       this.resourceDataSubscription.unsubscribe();

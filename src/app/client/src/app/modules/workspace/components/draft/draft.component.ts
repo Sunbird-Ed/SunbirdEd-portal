@@ -207,9 +207,9 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
             this.sort = {
               [sort_by]: _.toString(sortType)
             };
-          } else {
+        } else {
             this.sort = { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn };
-          }
+        }
         const searchParams = {
             filters: {
                 status: ['Draft', 'FlagDraft'],
@@ -219,7 +219,9 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
                 board: bothParams['queryParams'].board,
                 subject: bothParams['queryParams'].subject,
                 medium: bothParams['queryParams'].medium,
-                gradeLevel: bothParams['queryParams'].gradeLevel
+                gradeLevel: bothParams['queryParams'].gradeLevel,
+                mission: bothParams['queryParams'].mission,
+                contributorOrg: bothParams['queryParams'].contributorOrg
             },
             limit: this.pageLimit,
             offset: (this.pageNumber - 1) * (this.pageLimit),
@@ -274,7 +276,7 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
         }
     }
 
-    public onCloseLockInfoPopup () {
+    public onCloseLockInfoPopup() {
         this.showLockedContentModal = false;
     }
 
@@ -328,7 +330,7 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
         this.route.navigate(['workspace/content/draft', this.pageNumber], { queryParams: this.queryParams });
     }
 
-    ngAfterViewInit () {
+    ngAfterViewInit() {
         setTimeout(() => {
             this.telemetryImpression = {
                 context: {

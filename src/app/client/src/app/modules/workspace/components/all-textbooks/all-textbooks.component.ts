@@ -232,7 +232,7 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
       this.activatedRoute.queryParams).pipe(
         debounceTime(10),
         map(([params, queryParams]) => ({ params, queryParams })
-      ))
+        ))
       .subscribe(bothParams => {
         if (bothParams.params.pageNumber) {
           this.pageNumber = Number(bothParams.params.pageNumber);
@@ -245,7 +245,7 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
   /**
   * This method sets the make an api call to get all textbooks with page No and offset
   */
- fetchAllTextBooks(limit: number, pageNumber: number, bothParams) {
+  fetchAllTextBooks(limit: number, pageNumber: number, bothParams) {
     this.showLoader = true;
     if (bothParams.queryParams.sort_by) {
       const sort_by = bothParams.queryParams.sort_by;
@@ -266,13 +266,16 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
         board: bothParams.queryParams.board,
         subject: bothParams.queryParams.subject,
         medium: bothParams.queryParams.medium,
-        gradeLevel: bothParams.queryParams.gradeLevel
+        gradeLevel: bothParams.queryParams.gradeLevel,
+        mission: bothParams.queryParams.mission,
+        contributorOrg: bothParams.queryParams.contributorOrg
       },
       limit: limit,
       offset: (pageNumber - 1) * (limit),
       query: _.toString(bothParams.queryParams.query),
       sort_by: this.sort
     };
+    console.log("textBook", searchParams.filters)
     this.searchContentWithLockStatus(searchParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.count && data.result.content.length > 0) {
@@ -337,18 +340,18 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
         });
         const channelMapping = {};
         forkJoin(_.map(channels, (channel: string) => {
-            return this.getChannelDetails(channel);
-          })).subscribe((forkResponse) => {
-            this.collectionData = [];
-            _.forEach(forkResponse, channelResponse => {
-              const channelId = _.get(channelResponse, 'result.channel.code');
-              const channelName = _.get(channelResponse, 'result.channel.name');
-              channelMapping[channelId] = channelName;
-            });
-            _.forEach(collections, collection => {
-              const obj = _.pick(collection, ['contentType', 'board', 'medium', 'name', 'gradeLevel', 'subject', 'channel']);
-              obj['channel'] = channelMapping[obj.channel];
-              this.collectionData.push(obj);
+          return this.getChannelDetails(channel);
+        })).subscribe((forkResponse) => {
+          this.collectionData = [];
+          _.forEach(forkResponse, channelResponse => {
+            const channelId = _.get(channelResponse, 'result.channel.code');
+            const channelName = _.get(channelResponse, 'result.channel.name');
+            channelMapping[channelId] = channelName;
+          });
+          _.forEach(collections, collection => {
+            const obj = _.pick(collection, ['contentType', 'board', 'medium', 'name', 'gradeLevel', 'subject', 'channel']);
+            obj['channel'] = channelMapping[obj.channel];
+            this.collectionData.push(obj);
           });
           this.headers = {
             type: 'Type',
@@ -358,17 +361,17 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
             medium: 'Medium',
             board: 'Board',
             channel: 'Tenant Name'
-            };
-            if (!_.isUndefined(modal)) {
-              this.deleteModal.deny();
-            }
+          };
+          if (!_.isUndefined(modal)) {
+            this.deleteModal.deny();
+          }
           this.collectionListModal = true;
-          },
+        },
           (error) => {
             this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0014'));
             console.log(error);
           });
-        },
+      },
         (error) => {
           this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0015'));
           console.log(error);
@@ -378,24 +381,24 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
   * This method deletes content using the content id.
   */
   deleteContent(contentId) {
-        this.showLoader = true;
-        this.loaderMessage = {
-          'loaderMessage': this.resourceService.messages.stmsg.m0034,
-        };
-        this.delete(contentId).subscribe(
-          (data: ServerResponse) => {
-            this.showLoader = false;
-            this.alltextbooks = this.removeAllMyContent(this.alltextbooks, contentId);
-            if (this.alltextbooks.length === 0) {
-              this.ngOnInit();
-            }
-            this.toasterService.success(this.resourceService.messages.smsg.m0006);
-          },
-          (err: ServerResponse) => {
-            this.showLoader = false;
-            this.toasterService.error(this.resourceService.messages.fmsg.m0022);
-          }
-        );
+    this.showLoader = true;
+    this.loaderMessage = {
+      'loaderMessage': this.resourceService.messages.stmsg.m0034,
+    };
+    this.delete(contentId).subscribe(
+      (data: ServerResponse) => {
+        this.showLoader = false;
+        this.alltextbooks = this.removeAllMyContent(this.alltextbooks, contentId);
+        if (this.alltextbooks.length === 0) {
+          this.ngOnInit();
+        }
+        this.toasterService.success(this.resourceService.messages.smsg.m0006);
+      },
+      (err: ServerResponse) => {
+        this.showLoader = false;
+        this.toasterService.error(this.resourceService.messages.fmsg.m0022);
+      }
+    );
     if (!_.isUndefined(this.deleteModal)) {
       this.deleteModal.deny();
     }
@@ -421,8 +424,8 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
   contentClick(content) {
     console.log(content);
     if (_.size(content.lockInfo)) {
-        this.lockPopupData = content;
-        this.showLockedContentModal = true;
+      this.lockPopupData = content;
+      this.showLockedContentModal = true;
     } else {
       const status = content.status.toLowerCase();
       if (status === 'processing') {
@@ -437,11 +440,11 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
   }
 
 
-  public onCloseLockInfoPopup () {
+  public onCloseLockInfoPopup() {
     this.showLockedContentModal = false;
   }
 
-  ngAfterViewInit () {
+  ngAfterViewInit() {
     setTimeout(() => {
       this.telemetryImpression = {
         context: {

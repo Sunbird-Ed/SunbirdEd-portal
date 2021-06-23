@@ -385,8 +385,8 @@ export class SearchService {
     subjects = _.values(_.groupBy(_.compact(subjects))).map((subject) => {
       return ({
         title: subject[0], count: subject.length === 1 ?
-          `${subject.length} ${_.upperCase(this.resourceService.frmelmnts.lbl.oneCourse)}`
-          : `${subject.length} ${_.upperCase(this.resourceService.frmelmnts.lbl.courses)}`, contents: []
+          `${ subject.length } ${ _.upperCase(this.resourceService.frmelmnts.lbl.oneCourse) }`
+          : `${ subject.length } ${ _.upperCase(this.resourceService.frmelmnts.lbl.courses) }`, contents: []
       });
     });
 
@@ -507,13 +507,13 @@ export class SearchService {
           facet['index'] = '9';
           facet['label'] = 'Mission'
           facet['placeholder'] = _.get(this.resourceService, 'frmelmnts.lbl.selectMission')
-          facet['values'] = FACETS.mission ? FACETS.mission : []
+          // facet['values'] = FACETS.mission ? FACETS.mission : []
           break;
         case 'contributorOrg':
           facet['index'] = '10'
           facet['label'] = 'Contributor org'
           facet['placeholder'] = 'Contributor org'
-          facet['values'] = FACETS.contributor_org ? FACETS.contributor_org : []
+        // facet['values'] = FACETS.contributor_org ? FACETS.contributor_org : []
       }
       return facet;
     });

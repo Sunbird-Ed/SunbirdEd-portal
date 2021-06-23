@@ -46,16 +46,16 @@ export class WorkSpace {
                     }
                 };
                 return this.workSpaceService.getContentLockList(inputParams)
-                    .pipe(map((lockList: ServerResponse) => ({contentList, lockList})));
+                    .pipe(map((lockList: ServerResponse) => ({ contentList, lockList })));
             } else {
-                return observableOf({contentList, lockList: undefined});
+                return observableOf({ contentList, lockList: undefined });
             }
-        }), map(({contentList, lockList}) => {
+        }), map(({ contentList, lockList }) => {
             const contents = contentList.result.content;
             if (_.get(lockList, 'result.count')) {
                 const lockDataKeyByContentId = _.keyBy(lockList.result.data, 'resourceId');
                 _.each(contents, (eachContent, index) => {
-                    const lockInfo = { ...lockDataKeyByContentId[eachContent.identifier]};
+                    const lockInfo = { ...lockDataKeyByContentId[eachContent.identifier] };
                     if (!_.isEmpty(lockInfo) && eachContent.status !== 'Live') {
                         lockInfo.creatorInfo = JSON.parse(lockInfo.creatorInfo);
                         contents[index].lockInfo = lockInfo;

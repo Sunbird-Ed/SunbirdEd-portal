@@ -1,4 +1,4 @@
-import {combineLatest as observableCombineLatest,  Observable } from 'rxjs';
+import { combineLatest as observableCombineLatest, Observable } from 'rxjs';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
@@ -53,7 +53,7 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit, After
   /**
      * lock popup data for locked contents
     */
-    lockPopupData: object;
+  lockPopupData: object;
 
   /**
    * To show / hide error
@@ -131,7 +131,7 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit, After
   /**
   * column name which we want to sort
   */
-  column = '' ;
+  column = '';
   /**
   * sortDirection
   */
@@ -139,7 +139,7 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit, After
   /**
   *reverse
   */
-   reverse = false;
+  reverse = false;
   /**
     * Constructor to create injected service(s) object
     Default method of Draft Component class
@@ -218,7 +218,9 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit, After
         board: bothParams.queryParams.board,
         subject: bothParams.queryParams.subject,
         medium: bothParams.queryParams.medium,
-        gradeLevel: bothParams.queryParams.gradeLevel
+        gradeLevel: bothParams.queryParams.gradeLevel,
+        mission: bothParams.queryParams.mission,
+        contributorOrg: bothParams.queryParams.contributorOrg
       },
       limit: limit,
       offset: (pageNumber - 1) * (limit),
@@ -267,8 +269,8 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit, After
 
   contentClick(content) {
     if (_.size(content.lockInfo) && this.userService.userid !== content.lockInfo.createdBy) {
-        this.lockPopupData = content;
-        this.showLockedContentModal = true;
+      this.lockPopupData = content;
+      this.showLockedContentModal = true;
     } else {
       if (content.status.toLowerCase() === 'draft') {  // only draft state contents need to be locked
         this.workSpaceService.navigateToContent(content, this.state);
@@ -276,7 +278,7 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit, After
     }
   }
 
-  public onCloseLockInfoPopup () {
+  public onCloseLockInfoPopup() {
     this.showLockedContentModal = false;
   }
 
@@ -303,7 +305,7 @@ export class CollaboratingOnComponent extends WorkSpace implements OnInit, After
     this.reverse = !this.reverse;
   }
 
-  ngAfterViewInit () {
+  ngAfterViewInit() {
     setTimeout(() => {
       this.telemetryImpression = {
         context: {
