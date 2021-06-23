@@ -22,7 +22,7 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8'
 import { CommonFormElementsModule } from 'common-form-elements';
 import { LocationModule } from '../../plugins/location';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { DashletModule } from '@project-sunbird/sb-dashlet';
+import { DashletModule } from  '@project-sunbird/sb-dashlet-v9'
 
 export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
   if (!CsModule.instance.isInitialised) {
