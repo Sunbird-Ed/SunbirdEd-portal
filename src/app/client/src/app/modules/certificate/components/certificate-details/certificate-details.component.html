@@ -21,7 +21,7 @@
       </label>
       <div class="sb-certificatePage-field sb-field" id="certificate">
         <input #codeInputField (keyup)="getCodeLength($event)" (keydown.space)="$event.preventDefault();" [(ngModel)]="certificateCode" type="text" maxlength="6" pattern="^[-a-zA-Z0-9@\.+_]+$" required autofocus name="certificate" class="sb-form-control text-center"/>
-        <button [disabled]="!enableVerifyButton" type="button" class="sb-btn sb-btn-primary sb-btn-normal width-100 mt-32" (click)="certificateVerify()"
+        <button [disabled]="!enableVerifyButton" type="button" class="sb-btn sb-btn-primary sb-btn-normal width-100 mt-32" (click)="certificateVerify()" tabindex="0"
         appTelemetryInteract [telemetryInteractEdata]="{id:'verify-certificate-button' , type:'click' , pageid:pageId }"
         [telemetryInteractCdata]="telemetryCdata">
           {{resourceService?.frmelmnts?.btn?.verify}}
@@ -60,7 +60,7 @@
         <div class="sb-mobileDevice-speaker"></div>
         <div class="sb-mobileDevice-sensor"></div>
       </div>
-      <div class="player-thumbnail" appTelemetryInteract [telemetryInteractEdata]="{id:'watch-video-button' , type:'click' , pageid:pageId }" (click)="playContent(contentId)" *ngIf="showVideoThumbnail"></div>
+      <div class="player-thumbnail" appTelemetryInteract [telemetryInteractEdata]="{id:'watch-video-button' , type:'click' , pageid:pageId }" (click)="playContent(contentId)" tabindex="0" *ngIf="showVideoThumbnail"></div>
       <div class="h-100 certificate-area-player" *ngIf="!showVideoThumbnail">
         <app-player class="content-player" [overlayImagePath]="'assets/images/featured-content.jpg'" [pageId]="pageId" [isSingleContent]="false" [playerConfig]="playerConfig"></app-player>
     </div>
@@ -69,7 +69,7 @@
   
   <div  class="sb-certificatePage sb-certificate-view min-height-auto">
     <div class="sb-certificatePage-holder-details">
-      <a appTelemetryInteract [telemetryInteractEdata]="{id:'return-to-courses-button' , type:'click' , pageid:pageId }" (click)="navigateToCoursesPage()" class="mt-32 width-100 d-flex flex-jc-space-between p-8 cursor-pointer sb-btn-arrow" title="Return to Courses">
+      <a appTelemetryInteract [telemetryInteractEdata]="{id:'return-to-courses-button' , type:'click' , pageid:pageId }" (click)="navigateToCoursesPage()" tabindex="0" class="mt-32 width-100 d-flex flex-jc-space-between p-8 cursor-pointer sb-btn-arrow" title="Return to Courses">
         {{resourceService?.frmelmnts?.lbl?.returnToCourses}} <i class="angle right icon"></i>
       </a>
     </div>

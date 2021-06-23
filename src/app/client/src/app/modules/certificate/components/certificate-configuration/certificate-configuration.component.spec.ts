@@ -254,8 +254,7 @@ describe('CertificateConfigurationComponent', () => {
     ]);
   });
 
-  
-  it('should fetch the list of certificate templates from preference api', () => {
+  xit('should fetch the list of certificate templates from preference api', () => {
     /** Arrange */
     const userService = TestBed.get(UserService);
     const certificateService  = TestBed.get(CertificateService);
