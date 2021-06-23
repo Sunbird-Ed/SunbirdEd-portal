@@ -2,7 +2,7 @@
 <div class="twelve wide column mt-0 pt-0" *ngIf="allBadgeList && allBadgeList.length > 0">
   <span>{{resourceService?.frmelmnts?.lbl?.markas}}:</span>
   <button appTelemetryInteract [telemetryInteractObject]="{id:badge.badgeId,type:'Badge',ver:'1.0'}" 
-  [telemetryInteractEdata]="badgeInteractEdata" class="ui small basic primary compact button ml-10 mt-10" 
+  [telemetryInteractEdata]="badgeInteractEdata" tabindex="0" class="ui small basic primary compact button ml-10 mt-10" 
   *ngFor="let badge of allBadgeList" (click)="setBadge(badge);showBadgeAssingModel=true;">{{badge.name | uppercase}}</button>
 </div>
 </div>
@@ -37,11 +37,11 @@
       [telemetryInteractObject]="{id:badge.badgeId,type:'Badge',ver:'1.0'}" 
       [telemetryInteractEdata]="assignBadgeInteractEdata" 
       class="sb-btn sb-btn-normal sb-btn-primary" 
-      (click)="assignBadge(badge)"
+      (click)="assignBadge(badge)" tabindex="0"
     >
       {{resourceService?.frmelmnts?.btn?.yesiamsure}}
     </button>
-    <button 
+    <button tabindex="0"
       appTelemetryInteract 
       [telemetryInteractObject]="{id:badge.badgeId,type:'Badge',ver:'1.0'}" 
       [telemetryInteractEdata]="cancelBadgeInteractEdata" 
