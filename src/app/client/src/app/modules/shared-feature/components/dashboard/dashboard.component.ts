@@ -17,9 +17,9 @@ export interface IColumnConfig {
 })
 export class DashboardComponent implements OnInit {
 
-  @Input() lastUpdatedOn: any;
+  @Input() lastUpdatedOn: string;
   @Input() dashletData: any;
-  @Input() fileName: any;
+  @Input() fileName: string;
   DashletRowData = { values: [] };
   columnConfig: IColumnConfig;
 

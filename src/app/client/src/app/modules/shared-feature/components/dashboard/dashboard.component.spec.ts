@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DashboardComponent } from './dashboard.component';
 import { GroupsService } from '@sunbird/groups';
 import { ToasterService, SharedModule, ConfigService, ResourceService } from '@sunbird/shared';
-import { DashletModule } from '@project-sunbird/sb-dashlet';
+import { DashletModule } from '@project-sunbird/sb-dashlet-v9';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CoreModule } from '@sunbird/core';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';

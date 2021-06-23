@@ -15,7 +15,7 @@ export class ActivityDashboardComponent implements OnInit {
   hierarchyData: any;
   dashletData: any;
   activity: any;
-  memberListUpdatedOn: any;
+  memberListUpdatedOn: string;
 
   constructor(
     private groupService: GroupsService,
