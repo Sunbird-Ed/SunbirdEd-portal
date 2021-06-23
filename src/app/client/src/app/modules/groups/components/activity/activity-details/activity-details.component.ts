@@ -109,10 +109,7 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
     const activityData = { id: this.activityId, type };
     this.groupService.getGroupById(this.groupId, true, true).subscribe(res => {
       this.validateUser(res);
-      // }), concatMap(res => {
       this.groupData = res;
-      //   return this.groupService.getActivity(this.groupId, activityData, res);
-      // })).subscribe(data => {
       this.getActivityInfo();
       if (_.get(this.queryParams, 'mimeType') === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
         this.checkForNestedCourses(res, activityData);
@@ -196,8 +193,12 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
   addTelemetry(id, cdata, extra?, obj?) {
     this.groupService.addTelemetry({ id, extra }, this.activatedRoute.snapshot, cdata, this.groupId, obj);
   }
-
-  checkForNestedCourses(res, activityData) {
+  /**
+   * @description - To get the course hierarchy Data
+   * @param  {} groupData
+   * @param  {} activityData
+   */
+  checkForNestedCourses(groupData, activityData) {
     this.playerService.getCollectionHierarchy(this.activityId, {})
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((data) => {
@@ -205,7 +206,7 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
         this.parentId = _.get(this.courseHierarchy, 'identifier');
         this.leafNodesCount = this.courseHierarchy.leafNodesCount;
         this.updateArray(this.courseHierarchy);
-        this.getUpdatedActivityData(res, activityData);
+        this.getUpdatedActivityData(groupData, activityData);
         const childCourses = this.flattenDeep(this.courseHierarchy.children).filter(c => c.contentType === 'Course');
         if (childCourses.length > 0) {
           childCourses.map((course) => {
@@ -218,10 +219,15 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
         this.navigateBack();
       });
   }
-
-  getUpdatedActivityData(res, activityData) {
+  
+  /**
+   * @description - get updated activity progress data
+   * @param  {} groupData 
+   * @param  {} activityData
+   */
+  getUpdatedActivityData(groupData, activityData) {
     this.showLoader = true;
-    this.groupService.getActivity(this.groupId, activityData, res, this.leafNodesCount).subscribe(data => {
+    this.groupService.getActivity(this.groupId, activityData, groupData, this.leafNodesCount).subscribe(data => {
       this.processData(data);
       this.showLoader = false;
       this.activityDetails = data;
