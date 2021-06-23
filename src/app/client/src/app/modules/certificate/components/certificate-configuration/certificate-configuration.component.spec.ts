@@ -254,23 +254,7 @@ describe('CertificateConfigurationComponent', () => {
     ]);
   });
 
-  it('should show an error toast message if preference api fails', () => {
-    /** Arrange */
-    const userService = TestBed.get(UserService);
-    const certificateService  = TestBed.get(CertificateService);
-    const toasterService = TestBed.get(ToasterService);
-    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData });
-    userService._userProfile = CertMockResponse.userMockData;
-    spyOn(certificateService, 'fetchCertificatePreferences').and.callFake(() => observableThrowError({}));
-    spyOn(toasterService, 'error').and.stub();
-
-    /** Act */
-    component.getCertConfigFields();
-
-    /** Assert */
-    expect(toasterService.error).toHaveBeenCalledWith(resourceBundle.messages.emsg.m0005);
-  });
-
+  
   it('should fetch the list of certificate templates from preference api', () => {
     /** Arrange */
     const userService = TestBed.get(UserService);
@@ -541,6 +525,23 @@ describe('CertificateConfigurationComponent', () => {
       CertMockResponse.batchDataWithCertificate.result.response.cert_templates);
     expect(component.goBack).toHaveBeenCalled();
   });
+
+  it('should show an error toast message if preference api fails', () => {
+    /** Arrange */
+    const certificateService  = TestBed.get(CertificateService);
+    const toasterService = TestBed.get(ToasterService);
+    let errorMsg = resourceBundle.messages.emsg.m0005;
+
+    /** Assert */
+    spyOn(certificateService, 'fetchCertificatePreferences').and.callFake(() => observableThrowError({errorMsg}));
+    spyOn(toasterService, 'error').and.stub();
+    /** Act */
+    component.getCertConfigFields();
+
+    /** Assert */
+    expect(toasterService.error).toHaveBeenCalled();
+  });
+
 
   it('should show  error toast message if fetching batch details fail', () => {
     /** Arrange */
