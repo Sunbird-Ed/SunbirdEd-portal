@@ -275,7 +275,6 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
       query: _.toString(bothParams.queryParams.query),
       sort_by: this.sort
     };
-    console.log("textBook", searchParams.filters)
     this.searchContentWithLockStatus(searchParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.count && data.result.content.length > 0) {
