@@ -149,7 +149,11 @@ export class QuestionnaireComponent
     );
 
     save ? (evidenceData["status"] = "draft") : null;
-    let payload = { evidence: evidenceData };
+    let profile:Object = await this.observationUtilService.getProfileDataList()
+    if (!profile) {
+      return
+    }
+    let payload = {...profile, ...{evidence: evidenceData} };
 
     this.submitEvidence(payload);
   }
@@ -245,5 +249,9 @@ export class QuestionnaireComponent
          top: offsetPosition,
          behavior: "smooth"
     });
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

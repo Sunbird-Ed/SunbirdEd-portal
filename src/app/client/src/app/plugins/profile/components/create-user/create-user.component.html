@@ -31,12 +31,12 @@
     </form>
     <div class="user-profile-box__actions pb-16 px-16">
       <button appTelemetryInteract appOnlineOnly [telemetryInteractEdata]="submitInteractEdata" [disabled]="!enableSubmitBtn"
-        (click)="onSubmitForm()" type="submit" [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}"
+        (click)="onSubmitForm()" tabindex="0" type="submit" [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}"
         class="sb-btn sb-btn-normal sb-btn-primary">
         {{resourceService?.frmelmnts?.lbl?.addUser}}
       </button>
       <button appTelemetryInteract [telemetryInteractEdata]="submitCancelInteractEdata" appTelemetryInteract
-        type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" (click)="onCancel()">
+        type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" tabindex="0" (click)="onCancel()">
         {{resourceService?.frmelmnts.btn.cancel}}</button>
     </div>
   </div>

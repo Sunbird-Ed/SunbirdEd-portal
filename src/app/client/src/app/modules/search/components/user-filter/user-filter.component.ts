@@ -72,6 +72,14 @@ export class UserFilterComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParams = params;
       this.inputData = {};
+      if(_.get(params, 'Usertype')){
+        const index = _.indexOf(params.Usertype, 'administrator');
+        if(index >= 0){
+          params.Usertype[index] = 'School head or officials';
+        } else if (params.Usertype === 'administrator') {
+          params.Usertype = ['School head or officials'];
+        }
+      }
       _.forIn(params, (value, key) => this.inputData[key] = typeof value === 'string' && key !== 'key' ? [value] : value);
       this.hardRefreshFilter();
     });
@@ -94,8 +102,8 @@ export class UserFilterComponent implements OnInit {
       this.allUserType['code'] = 'Usertype';
       this.allUserType['label'] = this.resourceService.frmelmnts.lbl.userType;
       const userTypeArray = [];
-      _.forEach(res, (type) => {
-        userTypeArray.push({ code: type.name, name: type.name });
+      _.forEach(_.filter(res, 'visibility'), (type) => {
+        userTypeArray.push({ code: type.code, name: type.name });
       });
       this.allUserType['range'] = this.sortAndCapitaliseFilters(userTypeArray);
       return 'User type API success';
