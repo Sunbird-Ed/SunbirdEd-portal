@@ -805,7 +805,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
             });
             const _contentIndex = _.findIndex(this.contentStatus, { contentId: _.get(this.playerConfig, 'context.contentId') });
             this.playerConfig['metadata']['maxAttempt'] = _.get(this.activeContent, 'maxAttempts');
-            let _currentAttempt = _contentIndex > 0 ? _.get(this.contentStatus[_contentIndex], 'score.length') : 0;
+            let _currentAttempt = _.get(this.contentStatus[_contentIndex], 'score.length') || 0;
             this.playerConfig['metadata']['currentAttempt'] = _currentAttempt == undefined ? 0 : _currentAttempt;
             this.showLoader = false;
           }, (err) => {
@@ -838,10 +838,10 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   onSelfAssessLastAttempt(event) {
-    if (_.get(event, 'data') === 'renderer:selfassess:lastattempt') {
+    if (_.get(event, 'data') === 'renderer:selfassess:lastattempt' || _.get(event, 'data') === 'questionset:lastattempt') {
       this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.selfAssessLastAttempt'));
     }
-    if (_.get(event, 'data') === 'renderer:maxLimitExceeded') {
+    if (_.get(event, 'data') === 'renderer:maxLimitExceeded' || _.get(event, 'data') === 'questionset:maxLimitExceeded') {
       this.showMaxAttemptsModal = true;
     }
   }

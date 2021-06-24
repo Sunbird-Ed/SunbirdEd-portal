@@ -43,6 +43,11 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     MAXATTEMPT: 'renderer:maxLimitExceeded',
     ACCESSREVIEWEVENT: 'renderer:question:reviewAssessment'
   };
+  QS_CONSTANT = {
+    ACCESSEVENT: 'questionset:submitscore',
+    ISLASTATTEMPT: 'questionset:lastattempt',
+    MAXATTEMPT: 'questionset:maxLimitExceeded'
+  };
   @Input() overlayImagePath: string;
   @Input() isSingleContent: boolean;
   @Input() telemetryObject: {};
@@ -324,7 +329,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
   }
 
-  generateScoreSubmitEvent(event: any) {
+  generateScoreSubmitEvent(event: any) {    
     if (event.data.toLowerCase() === (this.CONSTANT.ACCESSEVENT).toLowerCase()) {
       this.questionScoreSubmitEvents.emit(event);
     }
@@ -338,7 +343,19 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.questionScoreReviewEvents.emit(event);
     }
   }
+
+  generatelimitedAttemptEvent(event) {
+    if (_.get(event, 'data') === this.QS_CONSTANT.ACCESSEVENT) {
+      this.questionScoreSubmitEvents.emit(event);
+    } else if (_.get(event, 'data') === this.QS_CONSTANT.ISLASTATTEMPT) {
+      this.selfAssessLastAttempt.emit(event);
+    } else if (_.get(event, 'data') === this.QS_CONSTANT.MAXATTEMPT) {
+      this.selfAssessLastAttempt.emit(event);
+    }
+  }
+
   eventHandler(event) {
+    this.generatelimitedAttemptEvent(event);
     if (_.get(event, 'edata.type') === 'SHARE') {
       this.contentUtilsServiceService.contentShareEvent.emit('open');
       this.mobileViewDisplay = 'none';
@@ -358,6 +375,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
     if (newPlayerEvent) {
       event = { detail: {telemetryData: event}};
+      // this.questionScoreSubmitEvents.emit(event);
     }
     const eid = _.get(event, 'detail.telemetryData.eid');
     if (eid && (eid === 'START' || eid === 'END')) {
@@ -371,6 +389,10 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     if (eid && (eid === 'ASSESS') || eid === 'START' || eid === 'END') {
       this.assessmentEvents.emit(event);
     }
+    if (newPlayerEvent && eid && (eid === 'END')) {
+      // this.questionScoreSubmitEvents.emit(event);
+    }
+
   }
   emitSceneChangeEvent(timer = 0) {
     setTimeout(() => {
