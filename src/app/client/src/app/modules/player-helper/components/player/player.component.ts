@@ -329,7 +329,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
   }
 
-  generateScoreSubmitEvent(event: any) {    
+  generateScoreSubmitEvent(event: any) {
     if (event.data.toLowerCase() === (this.CONSTANT.ACCESSEVENT).toLowerCase()) {
       this.questionScoreSubmitEvents.emit(event);
     }
