@@ -389,10 +389,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     if (eid && (eid === 'ASSESS') || eid === 'START' || eid === 'END') {
       this.assessmentEvents.emit(event);
     }
-    if (newPlayerEvent && eid && (eid === 'END')) {
-      // this.questionScoreSubmitEvents.emit(event);
-    }
-
   }
   emitSceneChangeEvent(timer = 0) {
     setTimeout(() => {
