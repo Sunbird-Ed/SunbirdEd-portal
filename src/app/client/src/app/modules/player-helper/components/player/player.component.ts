@@ -375,7 +375,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
     if (newPlayerEvent) {
       event = { detail: {telemetryData: event}};
-      // this.questionScoreSubmitEvents.emit(event);
     }
     const eid = _.get(event, 'detail.telemetryData.eid');
     if (eid && (eid === 'START' || eid === 'END')) {
