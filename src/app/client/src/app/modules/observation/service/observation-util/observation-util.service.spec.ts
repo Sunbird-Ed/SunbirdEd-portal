@@ -7,7 +7,7 @@ import {
   SuiModal,
   SuiModalModule,
   SuiModalService,
-} from "ng2-semantic-ui";
+} from "ng2-semantic-ui-v9";
 import { HttpClient } from "@angular/common/http";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { configureTestSuite } from "@sunbird/test-util";
