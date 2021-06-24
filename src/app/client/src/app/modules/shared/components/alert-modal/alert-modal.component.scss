@@ -1,41 +1,47 @@
+@import "variables";
+@import "mixins/mixins";
+
 .popup {
   border-radius: none !important;
   background: var(--sb-modal-content-bg);
   color: var(--sb-text);
+  padding: calculateRem(16px);
 }
 .popup-header {
-  padding: 10px 20px;
   color: var(--sb-text);
-  b {
+  span {
     justify-content: flex-start;
-    font-size: 1.2em;
+    font-size: calculateRem(16px);
+    font-weight: bold;
   }
 }
 
 .alignRight {
   float: right;
-  color: #e82520;
+  color: var(--red-400);
+  i.icon {
+    margin: 0;
+  }
 }
 
 .popup-body {
   color: var(--sb-text);
-  font-size: 15px;
-  line-height: 1.2em;
-  padding: 20px 20px;
+  font-size: calculateRem(14px);
+  padding: calculateRem(16px) 0 calculateRem(24px);
 }
 
 .popup-body-checkbox {
   display: flex;
-  gap: 10px;
-  padding: 20px 15px;
+  gap: calculateRem(10px);
+  padding: calculateRem(20px) calculateRem(15px);
 
   input {
-    margin-top: 2px;
-    margin-right: 10px;
+    margin-top: calculateRem(2px);
+    margin-right: calculateRem(10px);
   }
 
   label {
-    font-size: 13px;
+    font-size: calculateRem(14px);
     font-weight: 500;
     line-height: 1.3em;
     color: var(--sb-text);
@@ -46,28 +52,28 @@
 .single-btn {
   display: flex;
   justify-content: center;
-  padding: 10px 10px;
+  padding: calculateRem(10px) calculateRem(10px);
 }
 
 .double-btn {
   display: flex;
   justify-content: flex-end;
-  padding: 10px 10px;
+  padding: calculateRem(10px) calculateRem(10px);
 
   button {
-    margin-right: 15px;
+    margin-right: calculateRem(15px);
   }
 }
 
 .double-btn-circle {
   display: flex;
   justify-content: flex-end;
-  font-size: 14px;
-  padding: 10px 10px;
+  font-size: calculateRem(14px);
+  padding: calculateRem(10px) calculateRem(10px);
   button {
-    margin-right: 14px;
+    margin-right: calculateRem(14px);
     border-radius: 50%;
-    height: 55px;
-    width: 50px;
+    height: calculateRem(55px);
+    width: calculateRem(50px);
   }
 }
