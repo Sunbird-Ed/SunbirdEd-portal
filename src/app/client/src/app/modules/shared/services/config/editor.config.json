@@ -1034,6 +1034,11 @@
                     "id": "org.ekstep.reviewercomments",
                     "ver": "1.0",
                     "type": "plugin"
+                },
+                {
+                    "id": "org.ekstep.zoom.video",
+                    "ver": "1.0",
+                    "type": "plugin"
                 }
             ],
             "dispatcher": "local",
