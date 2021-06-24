@@ -185,6 +185,10 @@
       }
     }
   }
+
+  .modals.dimmer .ui.scrolling.modal {
+    position: fixed !important;
+  }
 }
 
 [dir="rtl"] .sb-modal {
@@ -322,3 +326,4 @@
     }
   }
 }
+
