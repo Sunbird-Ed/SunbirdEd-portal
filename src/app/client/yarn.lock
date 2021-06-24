@@ -1478,10 +1478,10 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@4.0.3":
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.0.3.tgz#b3e146bac0fbb1fef2d312148ec7d82d5559c4c4"
-  integrity sha512-JHo5d9LSlADGDNDZjyYUEybWAA1/IFDKYnLkpUdGaF7affLQzKb5+DXMgD0DKQ4Vq/j21IE2ezpDKP3n1zIZtw==
+"@project-sunbird/client-services@4.0.5":
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.0.5.tgz#fe55b9828e44b090fe146b66c856e9aea3078f0b"
+  integrity sha512-pJsPiVZc3wj+xc04M0sYxD66EP+AllSb4zKkYV+ozAgxCrKz22vVo30ugqc0/SLdaICtQB2wxcALZeMX5xIBMA==
   dependencies:
     "@project-sunbird/telemetry-sdk" "0.0.26"
     inversify "^5.0.1"
@@ -1526,10 +1526,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.8.tgz#66c11fc6cdcf2761680b8ccd76af929a5a0226a7"
   integrity sha512-CU7lkBEg7J3b9urACPY5jf8GJa6ccyCLETncvssXUO7Kco7uhMvlUXr3HHc5mS+Zw1G3ZtcCN8fp2XszukNA2A==
 
-"@project-sunbird/sb-themes@0.0.8":
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.8.tgz#99aa16ceb2bc630e69999edcb581f89c2a670112"
-  integrity sha512-jd3XZgCRJoWPTaANMTHy4LoF7TdsB4U/nqALliZ7uGaCFIQoFiZLfJnqoOiCRw4ivI0wCsPu1/Kfp2YAOhyVfg==
+"@project-sunbird/sb-themes@0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.9.tgz#cb036e64ae1f2ed4a25638c6702e5e5e1c4f5f9d"
+  integrity sha512-VqwmIskeGCp3/qd8JY3RZJGEwPA4ai/ot5gHkxOfCQvcqGUiVFuJxZAHbggvw1nd7gXtB14UrsWkfwR5JaNRRg==
 
 "@project-sunbird/sunbird-collection-editor@4.0.14":
   version "4.0.14"
@@ -3716,10 +3716,10 @@ commander@^2.11.0, commander@^2.12.1, commander@^2.19.0, commander@^2.20.0, comm
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
 
-common-form-elements@4.0.9:
-  version "4.0.9"
-  resolved "https://registry.yarnpkg.com/common-form-elements/-/common-form-elements-4.0.9.tgz#957cd2fa76de73e9cb0d8c1080d75211483437e5"
-  integrity sha512-c1v8qCYBP+0YWFhrqSFIw+M146OhLbfwt4N+2t3Fk42FAiQ4sbV4IpatAumZj2u4yvjdn/NMsteKWzoG7bJL2w==
+common-form-elements@4.0.16:
+  version "4.0.16"
+  resolved "https://registry.yarnpkg.com/common-form-elements/-/common-form-elements-4.0.16.tgz#fa7f93c8481f9151bf63a6aaa1b404e616db5748"
+  integrity sha512-R9JAL+gbz1gJCN7RWfdK5gokWFqwkuoonKBrI1nimsM73yZGkXXAzzetIFKtuaa6VQXuSLttWgOGMDrHUpgYaQ==
   dependencies:
     immutable "^4.0.0-rc.12"
     moment "^2.29.1"
@@ -5255,7 +5255,7 @@ file-loader@^6.2.0:
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
 
-"file-saver@github:eligrey/FileSaver.js#1.3.8":
+file-saver@eligrey/FileSaver.js#1.3.8:
   version "1.3.8"
   resolved "https://codeload.github.com/eligrey/FileSaver.js/tar.gz/e865e37af9f9947ddcced76b549e27dc45c1cb2e"
 

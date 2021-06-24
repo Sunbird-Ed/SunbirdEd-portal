@@ -67,10 +67,10 @@
       "env": "tenant"
     },
     "learner/group": {
-      "title": "group info",
-      "category": "groupinfo",
+      "title": "group API",
+      "category": "api log",
       "url": "learner/group",
-      "message": "Called group info",
+      "message": "API Log",
       "env": "groups"
     }
   }
