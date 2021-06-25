@@ -31,7 +31,7 @@
         </div>
       </div>
     </div>
-    <div class="twelve wide column" *ngIf="solution.entities?.length === 0">
+    <div class="twelve wide column" *ngIf="!solution.entities?.length">
       <app-no-result [data]="noResultMessage"></app-no-result>
     </div>
   </div>

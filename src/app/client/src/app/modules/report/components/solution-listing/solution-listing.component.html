@@ -8,7 +8,7 @@
   <div class="sb-pageSection my-24 ui container listallreports-section">
     <ng-container>
       <div class="sb-pageSection-content">
-        <ng-container *ngIf="solutionList.length>0">
+        <ng-container *ngIf="solutionList.length">
           <div>
             <sui-tabset>
               <div class="ui top attached tabular menu report-menu">
@@ -40,20 +40,20 @@
                   >
                   <thead>
                     <tr>
-                      <th class="header-section">Serial No</th>
+                      <th class="header-section">{{resourceService?.frmelmnts?.lbl?.serialno}}</th>
                       <th class="header-section"></th>
-                      <th>Title</th>
-                      <th>Last Published Date</th>
+                      <th>{{resourceService?.frmelmnts?.lbl?.title}}</th>
+                      <th>{{resourceService?.frmelmnts?.lbl?.latestSubmission}}</th>
                     </tr>
                   </thead>
                   <tbody>
                    <tr *ngFor="let solution of solutionList;let i=index" (click)="(solution?.entities?.length >1) ? goToEntityList(solution) : goToReports(solution)">
                          <td class="header-section">{{i+1}}</td>
-                         <td><button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-btn-square" aria-label="file-icon">
-                          <i class="icon copy outline alternate"></i></button></td>
+                         <td><button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal" aria-label="file-icon">
+                          <i class="icon copy outline alternate large"></i></button></td>
                          <td><div class="sb-media"><div class="sb-media-body"><h6 class="p-0">
                           {{solution.name}}</h6> <p class="media-description sb__ellipsis"> {{solution.programName}}</p></div></div></td>
-                          <td>2021/06/23</td>
+                          <td></td>
                      </tr>
                   </tbody>
                  
@@ -85,7 +85,7 @@
       </div>
     </ng-container>
 
-    <div class="twelve wide column" *ngIf="solutionList?.length === 0">
+    <div class="twelve wide column" *ngIf="!solutionList.length">
       <app-no-result [data]="noResultMessage"></app-no-result>
   </div>
 

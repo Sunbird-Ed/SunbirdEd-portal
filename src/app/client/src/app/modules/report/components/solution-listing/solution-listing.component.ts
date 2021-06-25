@@ -53,7 +53,6 @@ export class SolutionListingComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isUserReportAdmin();
     this.dtOptions = {
       autoWidth: true,
       searching:false,
@@ -63,16 +62,6 @@ export class SolutionListingComponent implements OnInit {
     this.selectedEntity="selected";
     this.initLayout();
     this.getProfileData();
-  }
-
-  isUserReportAdmin(): boolean {
-    if (this.userService.userProfile) {
-      return _.includes(
-        _.get(this.userService, "userProfile.userRoles"),
-        "REPORT_ADMIN"
-      );
-    }
-    return false;
   }
 
   getProfileData() {
@@ -123,11 +112,9 @@ export class SolutionListingComponent implements OnInit {
     }
     this.pageNo=page;
     this.getSolutions();
-    console.log(page);
   }
 
   getDataByEntity(e) {
-    console.log(e);
     this.selectedEntity = e.target.value;
     this.entityType=this.selectedEntity;
     this.pageNo=1;
@@ -142,9 +129,7 @@ export class SolutionListingComponent implements OnInit {
     this.observationService.post(paramOptions).subscribe(
       (data) => {
         this.solutionList =
-          data && data.result ? this.solutionList.concat(data.result.data) : [];
-        // this.filters = data && data.result && !this.filters.length ? data.result.entityType : this.filters;
-       
+          data && data.result ? this.solutionList.concat(data.result.data) : [];       
         this.paginationDetails.currentPage = this.pageNo;
         this.paginationDetails = this.paginationService.getPager(
           data.result.count,
@@ -176,8 +161,8 @@ export class SolutionListingComponent implements OnInit {
       entityId: solution.entities[0]._id,
       entityType: solution.entityType,
       observationId: solution.observationId,
-      solution:solution,
-      entity:solution.entities[0]
+      // solution:solution,
+      // entity:solution.entities[0]
     };
     if (solution.isRubricDriven) {
       state.scores = true;
@@ -202,8 +187,8 @@ export class SolutionListingComponent implements OnInit {
       entityId: entity._id,
       entityType: solutionDetails.entityType,
       observationId:solutionDetails.observationId,
-      solution:solutionDetails,
-      entity:entity
+      // solution:solutionDetails,
+      // entity:entity
     };
     if (solutionDetails.isRubricDriven) {
       state.scores = true;

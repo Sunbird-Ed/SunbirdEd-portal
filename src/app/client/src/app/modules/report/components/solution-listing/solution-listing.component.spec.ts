@@ -58,8 +58,6 @@ describe("SolutionListingComponent", () => {
   it("should call ngonInit()", () => {
     spyOn(component, "ngOnInit").and.callThrough();
     component.ngOnInit();
-    spyOn(component,"isUserReportAdmin").and.callThrough();
-    component.isUserReportAdmin();
     expect(component.ngOnInit).toHaveBeenCalled();
   });
 
