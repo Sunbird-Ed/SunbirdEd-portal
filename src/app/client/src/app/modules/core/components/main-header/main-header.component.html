@@ -315,6 +315,14 @@
               </svg></i>
             {{resourceService.frmelmnts?.lnk?.profile}}
           </li>
+
+          <li class="list-item" *ngIf="userType=='administrator'" tabindex="0" [routerLink]="['/reports/solution-listing']" (click)="toggleSideMenu(false);" >
+            <i class="icon-svg icon-svg--sm icon-profileuser mr-8"><svg class="icon icon-svg--primary">
+              <use xlink:href="./assets/images/statistics.svg#Layer_1"></use>
+            </svg></i>
+            {{resourceService.frmelmnts?.lnk?.report}}
+          </li>
+
           <li class="list-item" tabindex="0" *ngIf='!isDesktopApp && permissionService.permissionAvailable' appPermission
             [permission]='adminDashboard' (click)="toggleSideMenu(false)" [routerLink]="reportsListVersion === 'v2' ? 'dashBoard/reports': 'dashBoard/organization' ">
             <i class="icon-svg icon-svg--sm icon-dashboard mr-8"><svg class="icon icon-svg--primary">
@@ -385,6 +393,7 @@
             </svg></i>
             {{resourceService?.frmelmnts?.lbl?.accessible}}
           </li>
+
           <li appOnlineOnly class="list-item" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
             (click)="toggleSideMenu(false);logout()">
             <i class="icon-svg icon-svg--sm icon-logout mr-8"><svg class="icon icon-svg--primary">
