@@ -350,6 +350,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   eventHandler(event) {
     if (event.eid === 'exdata') {
       this.generatelimitedAttemptEvent(event);
+      return;
     }
     if (_.get(event, 'edata.type') === 'SHARE') {
       this.contentUtilsServiceService.contentShareEvent.emit('open');
