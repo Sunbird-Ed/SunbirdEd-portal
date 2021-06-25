@@ -435,25 +435,25 @@ export class UtilService {
   }
 
   /**
-   * @param  {} ob 
-   * ex: ob = {id:1, user: {id: 123, name: "SomeUser"}}
-   * returns obj = {id:1, user.id:123, user.name: "someUser"}
-   */
-  flattenObject(ob) {
-    var toReturn = {};
-    
-    for (var i in ob) {
-      if (!ob.hasOwnProperty(i)) continue;
-      
-      if ((typeof ob[i]) == 'object' && ob[i] !== null) {
-        var flatObject = this.flattenObject(ob[i]);
-        for (var x in flatObject) {
+ * Parse the nested object & convert to flattern object(key, value)
+ * @param {JSON object} data 
+ * ex: {user: {id: 1, name: xyz}} it will convert to {user.id: 1, user.name:}
+ */
+   flattenObject(jsonObj) {
+    let toReturn = {};
+
+    for (let i in jsonObj) {
+      if (!jsonObj.hasOwnProperty(i)) continue;
+
+      if ((typeof jsonObj[i]) == 'object' && jsonObj[i] !== null) {
+        let flatObject = this.flattenObject(jsonObj[i]);
+        for (let x in flatObject) {
           if (!flatObject.hasOwnProperty(x)) continue;
-          
+
           toReturn[i + '.' + x] = flatObject[x];
         }
       } else {
-        toReturn[i] = ob[i];
+        toReturn[i] = jsonObj[i];
       }
     }
     return toReturn;

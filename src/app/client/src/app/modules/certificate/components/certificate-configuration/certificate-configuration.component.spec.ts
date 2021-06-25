@@ -254,23 +254,6 @@ describe('CertificateConfigurationComponent', () => {
     ]);
   });
 
-  it('should show an error toast message if preference api fails', () => {
-    /** Arrange */
-    const userService = TestBed.get(UserService);
-    const certificateService  = TestBed.get(CertificateService);
-    const toasterService = TestBed.get(ToasterService);
-    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData });
-    userService._userProfile = CertMockResponse.userMockData;
-    spyOn(certificateService, 'fetchCertificatePreferences').and.callFake(() => observableThrowError({}));
-    spyOn(toasterService, 'error').and.stub();
-
-    /** Act */
-    component.getCertConfigFields();
-
-    /** Assert */
-    expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, try again later');
-  });
-
   it('should fetch the list of certificate templates from preference api', () => {
     /** Arrange */
     const userService = TestBed.get(UserService);
@@ -578,6 +561,23 @@ describe('CertificateConfigurationComponent', () => {
 
     /** Assert */
     expect(toasterService.error).toHaveBeenCalledWith('Failed to add the certificate. Try again later.');
+  });
+
+  it('should show an error toast message if preference api fails', () => {
+    /** Arrange */
+    const userService = TestBed.get(UserService);
+    const certificateService  = TestBed.get(CertificateService);
+    const toasterService = TestBed.get(ToasterService);
+    userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData });
+    userService._userProfile = CertMockResponse.userMockData;
+    spyOn(certificateService, 'fetchCertificatePreferences').and.callFake(() => observableThrowError({}));
+    spyOn(toasterService, 'error').and.stub();
+
+    /** Act */
+    component.getCertConfigFields();
+
+    /** Assert */
+    expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, try again later');
   });
 
   it('should show error toast message if updating certificate fails', () => {
