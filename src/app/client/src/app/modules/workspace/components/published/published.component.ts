@@ -259,15 +259,15 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
       this.sort = { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn };
     }
     // tslint:disable-next-line:max-line-length
-    const primaryCategories = _.concat(this.frameworkService['_channelData'].contentPrimaryCategories, this.frameworkService['_channelData'].collectionPrimaryCategories);
+    const primaryCategories = _.compact(_.concat(this.frameworkService['_channelData'].contentPrimaryCategories, this.frameworkService['_channelData'].collectionPrimaryCategories));
     const searchParams = {
       filters: {
         status: ['Live'],
         createdBy: this.userService.userid,
         objectType: this.config.appConfig.WORKSPACE.objectType,
         // tslint:disable-next-line:max-line-length
-        primaryCategory: _.get(bothParams, 'queryParams.primaryCategory') || primaryCategories || this.config.appConfig.WORKSPACE.primaryCategory,
-        mimeType: this.config.appConfig.WORKSPACE.mimeType,
+        primaryCategory: _.get(bothParams, 'queryParams.primaryCategory') || (!_.isEmpty(primaryCategories) ? primaryCategories : this.config.appConfig.WORKSPACE.primaryCategory),
+        // mimeType: this.config.appConfig.WORKSPACE.mimeType,
         board: bothParams['queryParams'].board,
         subject: bothParams['queryParams'].subject,
         medium: bothParams['queryParams'].medium,

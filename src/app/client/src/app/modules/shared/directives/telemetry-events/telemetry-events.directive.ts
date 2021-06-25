@@ -80,7 +80,7 @@ export class TelemetryEventsDirective implements OnInit, OnDestroy {
    * Because ngOnInit it will add the new listerners again
    */
   ngOnDestroy() {
-    this.unlistenTelemetryEventShow.unsubscribe();
-    this.unlistenTelemetryEvent.unsubscribe();
+    this.unlistenTelemetryEvent && this.unlistenTelemetryEventShow();
+    this.unlistenTelemetryEvent && this.unlistenTelemetryEvent();
   }
 }

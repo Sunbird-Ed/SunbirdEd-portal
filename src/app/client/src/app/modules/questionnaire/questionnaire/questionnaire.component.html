@@ -17,11 +17,10 @@
           assessmentInfo?.solution?.isRubricDriven
         "
       >
-        <h5 class="m-20">Section name</h5>
+        <h5 class="m-20">{{frmelmnts?.lbl?.sectionName}}</h5>
         <div class="sbt-page-content-area sections">
           <div *ngFor="let section of sections" class="section-list">
             <a
-              [routerLink]=""
               class="item item--tests"
               (click)="scrollToContent(section.code)"
             >
@@ -32,12 +31,27 @@
       </div>
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT">
+      <div>
+        <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto"
+        (click)="goBack()">
+        <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+            <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+          </svg></i>
+        {{resourceService.frmelmnts?.btn?.back}}
+      </button>
+      </div>
+
       <div
         *ngFor="let section of sections"
         [id]="section.code"
         [ngClass]="{ 'evidence-completed': evidence?.isSubmitted }"
       >
-        <div class="sbt-page-content-area my-20">
+        <div 
+          *ngIf="
+          assessmentInfo?.solution?.criteriaLevelReport &&
+          assessmentInfo?.solution?.isRubricDriven
+        "
+        class="sbt-page-content-area my-20">
           <h4>{{ section.name }}</h4>
         </div>
         <div

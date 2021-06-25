@@ -1,47 +1,44 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { GroupsService } from '../../../services';
 import { IImpressionEventInput } from '@sunbird/telemetry';
 import { debounceTime, delay, map, takeUntil, tap } from 'rxjs/operators';
-import { CsGroup } from '@project-sunbird/client-services/models';
 import { ToasterService, ResourceService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { ActivatedRoute } from '@angular/router';
 import { ConfigService } from '@sunbird/shared';
 import { CourseConsumptionService } from '@sunbird/learn';
 import { combineLatest, Subject } from 'rxjs';
-import { IActivity } from '../activity-list/activity-list.component';
 import * as $ from 'jquery';
 import 'datatables.net';
+import { CsGroup } from '@project-sunbird/client-services/models';
+import { IActivity } from '../activity-list/activity-list.component';
 
 export interface IColumnConfig {
+  // scrollX: boolean;
+  // scrollY: boolean;
   columnConfig: [{
     title: string;
     data: string;
   }];
 }
+
 @Component({
   selector: 'app-activity-dashboard',
   templateUrl: './activity-dashboard.component.html',
   styleUrls: ['./activity-dashboard.component.scss']
 })
 export class ActivityDashboardComponent implements OnInit {
-  queryParams: any;
-  activityId: any;
-  activityType: string;
-  groupData: any;
-  groupId: string;
+
+  @ViewChild('lib', { static: false }) lib: any;
   telemetryImpression: IImpressionEventInput;
   isLoader = true;
   public unsubscribe$ = new Subject<void>();
-  public coursehierarchy: any;
-  aggregateData: any;
-  activity: IActivity;
   Dashletdata: any;
   columnConfig: IColumnConfig;
   loaderMessage = _.get(this.resourceService.messages.fmsg, 'm0087');
   memberListUpdatedOn: string;
-  lastUpdated = 'Last update';
-
+  activity: IActivity;
+  groupId: string;
   constructor(
     private groupService: GroupsService,
     private toasterService: ToasterService,
@@ -56,7 +53,7 @@ export class ActivityDashboardComponent implements OnInit {
       $('#table').DataTable({
         'paging': true,
         'autoWidth': true,
-    });
+      });
     });
     this.fetchActivityOnParamChange();
   }
@@ -73,33 +70,20 @@ export class ActivityDashboardComponent implements OnInit {
         }),
         map((result) => ({ params: { groupId: result[0].groupId, activityId: result[0].activityId }, queryParams: result[1] })),
         takeUntil(this.unsubscribe$))
-      .subscribe(({ params, queryParams }) => {
-        this.queryParams = { ...queryParams };
+      .subscribe(({ params }) => {
         this.groupId = params.groupId;
-        this.activityId = params.activityId;
-        this.activityType = _.get(this.queryParams, 'primaryCategory') || 'Course';
-        this.fetchActivity();
+        this.fetchActivity(params.groupId, params.activityId);
       });
-  }
-
-  /**
-   * @description - get activity data based activityId
-   */
-  getActivityInfo() {
-    const activityData = _.find(this.groupData.activities, ['id', this.activityId]);
-    this.activity = _.get(activityData, 'activityInfo');
   }
 
   /**
    * @description - fetch group activitydata based on groupId
    */
-  fetchActivity() {
+  fetchActivity(groupId, activityId) {
     this.isLoader = true;
-    this.groupService.getGroupById(this.groupId, true, true).pipe(takeUntil(this.unsubscribe$)).subscribe((groupData: CsGroup) => {
-      this.groupData = groupData;
+    this.groupService.getGroupById(groupId, true, true).pipe(takeUntil(this.unsubscribe$)).subscribe((groupData: CsGroup) => {
       this.isLoader = false;
-      this.getActivityInfo();
-      this.getHierarchy();
+      this.getHierarchy(activityId, groupData);
     }, err => {
       this.isLoader = false;
       this.groupService.goBack();
@@ -110,13 +94,14 @@ export class ActivityDashboardComponent implements OnInit {
   /**
    * @description - get courseheirarchy data for tracable activities
    */
-  getHierarchy() {
+  getHierarchy(activityId, groupData) {
     this.isLoader = true;
     const inputParams = { params: this.configService.appConfig.CourseConsumption.contentApiQueryParams };
-    this.courseConsumptionService.getCourseHierarchy(this.activityId, inputParams).subscribe(response => {
-      this.coursehierarchy = response.children;
+    this.courseConsumptionService.getCourseHierarchy(activityId, inputParams).subscribe(response => {
+      this.activity = response;
+      const coursehierarchy = response.children;
       this.isLoader = false;
-      this.getAggData();
+      this.getAggData(activityId, coursehierarchy, groupData, response.leafNodesCount);
     }, err => {
       this.toasterService.error(this.resourceService.messages.fmsg.m0051);
       this.isLoader = false;
@@ -127,15 +112,15 @@ export class ActivityDashboardComponent implements OnInit {
   /**
    * @description - get aggregateData for tracable activities
    */
-  getAggData() {
+  getAggData(activityId, coursehierarchy, groupData, leafNodesCount) {
     this.isLoader = true;
-    const activityData = { id: this.activityId, type: 'Course' };
-    this.groupService.getActivity(this.groupId, activityData, this.groupData)
+    const activityData = { id: activityId, type: 'Course' };
+    this.groupService.getActivity(_.get(groupData, 'id'), activityData, groupData, leafNodesCount)
       .subscribe((data) => {
-        this.aggregateData = data;
+        const aggregateData = data;
         this.memberListUpdatedOn = _.max(_.get(data, 'activity.agg').map(agg => agg.lastUpdatedOn));
         this.isLoader = false;
-        this.getDashletData();
+        this.getDashletData(coursehierarchy, aggregateData);
       }, err => {
         this.isLoader = false;
         this.toasterService.error(this.resourceService.messages.fmsg.m0051);
@@ -146,13 +131,16 @@ export class ActivityDashboardComponent implements OnInit {
   /**
    * @description - get dashlet data for dashlet library
    */
-  getDashletData() {
+  getDashletData(coursehierarchy, aggregateData) {
     this.isLoader = true;
-    this.groupService.getDashletData(this.coursehierarchy, this.aggregateData).subscribe(data => {
+    this.groupService.getDashletData(coursehierarchy, aggregateData).subscribe(data => {
       this.isLoader = false;
-      // const column = Object.keys( data.rows).sort().reduce((r, k) => (r[k] =  data.rows[k], r), {});
       this.Dashletdata = { values: data.rows };
-      this.columnConfig = { columnConfig: data.columns };
+      this.columnConfig = {
+        // scrollX: true,
+        // scrollY: true,
+        columnConfig: data.columns
+      };
     });
   }
 
@@ -178,5 +166,16 @@ export class ActivityDashboardComponent implements OnInit {
         id: _.get(this.activity, 'identifier'),
         type: _.get(this.activity, 'primaryCategory')
       });
+    const fileName = _.get(this.activity, 'name') + '.csv';
+    this.lib.instance.exportCsv({ 'strict': true }).then((csvData) => {
+      const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', fileName);
+      link.click();
+    }).catch((err) => {
+      this.toasterService.error('There is an problem occurs while downloading CSV');
+    });
   }
 }

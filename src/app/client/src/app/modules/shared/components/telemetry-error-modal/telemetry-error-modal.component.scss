@@ -10,7 +10,7 @@
     background: #cce4ff;
     letter-spacing: 3px;
     padding: 4px;
-    width: 190px;
+    width: 200px;
     position: fixed;
     right: -128px;
     z-index: 1000;
@@ -21,6 +21,11 @@
     border: #034f9d solid 4px;
     border-right-width: 0px;
     cursor:pointer;
+  }
+
+  .telemetry-btn-label {
+    color: var(--sb-linkmenu-text);
+    font-weight: bold;
   }
   
   .telemetry-btn-label {
