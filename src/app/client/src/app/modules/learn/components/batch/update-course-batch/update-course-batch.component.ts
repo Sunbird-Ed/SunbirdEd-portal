@@ -550,7 +550,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       this.disableSubmitBtn = false;
       this.toasterService.success(this.resourceService.messages.smsg.m0034);
       this.reload();
-      this.checkIssueCertificate(this.batchId);
+      this.checkIssueCertificate(this.batchId, this.batchDetails);
       this.checkEnableDiscussions(this.batchId);
     }, (err) => {
       this.disableSubmitBtn = false;
@@ -565,11 +565,16 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   /**
    * @since - release-3.2.10
    * @param  {string} batchId
+   * @param {Object} batchDetails
    * @description - It will emit an event;
    */
-  checkIssueCertificate(batchId) {
+  checkIssueCertificate(batchId, batchDetails? : any) {
+    let isCertInBatch = true
+    if(batchDetails && _.get(batchDetails, 'cert_templates')){
+      isCertInBatch = _.isEmpty(_.get(batchDetails, 'cert_templates')) ? false : true;
+    }
     this.courseBatchService.updateEvent.emit({ event: 'issueCert', value: this.batchUpdateForm.value.issueCertificate,
-    mode: 'edit', batchId: batchId });
+    mode: 'edit', batchId: batchId , isCertInBatch : isCertInBatch});
   }
   public redirect() {
     this.router.navigate(['./'], { relativeTo: this.activatedRoute.parent });

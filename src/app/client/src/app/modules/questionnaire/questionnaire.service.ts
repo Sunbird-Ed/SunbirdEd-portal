@@ -7,6 +7,7 @@ import {
   Question,
   ResponseType,
 } from "./Interface/assessmentDetails";
+import * as _ from 'lodash-es';
 
 @Injectable({
   providedIn: "root",
@@ -117,20 +118,25 @@ export class QuestionnaireService {
     return answers;
   }
 
-  formatToPayload(currentQuestion, formValues) {
-    let value =
-      currentQuestion.responseType != "matrix"
-        ? currentQuestion.value
-        : formValues[currentQuestion._id];
+  formatToPayload(currentQuestion, formValues) {   
+    let value, labels;
+    if (currentQuestion.responseType == "matrix") {
+      value = formValues[currentQuestion._id];
+      labels = currentQuestion.value
+    } else {
+      value = currentQuestion.value;
+      labels = formValues[currentQuestion._id];
+    }
+
     return {
       qid: currentQuestion._id,
       value: value,
       remarks: currentQuestion.remarks,
-      fileName: currentQuestion.fileName, //todo,
+      fileName: currentQuestion.fileName,
       gpsLocation: "",
       payload: {
         question: currentQuestion.question,
-        labels: formValues[currentQuestion._id],
+        labels: this.convertToArray(labels),
         responseType: currentQuestion.responseType,
         filesNotUploaded: [], //todo
       },
@@ -141,6 +147,18 @@ export class QuestionnaireService {
       evidenceMethod: currentQuestion.evidenceMethod,
       rubricLevel: "",
     };
+  }
+
+  convertToArray(arr) {
+    if (!arr) {
+      return arr
+    }
+    let clonedArr=_.cloneDeep(arr)
+    if (Array.isArray(clonedArr)) {
+      return arr
+    } else {
+      return [clonedArr]
+    }
   }
 
   mapSubmissionToAssessment(data) {

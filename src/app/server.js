@@ -337,7 +337,7 @@ const fetchDefaultChannelDetails = (callback) => {
 }
 
 telemetry.init({
-  pdata: { id: envHelper.APPID, ver: packageObj.version },
+  pdata: { id: envHelper.APPID, ver: packageObj.version, pid: 'sunbird-portal-backend' },
   method: 'POST',
   batchsize: process.env.sunbird_telemetry_sync_batch_size || 200,
   endpoint: telemetryEventConfig.endpoint,
