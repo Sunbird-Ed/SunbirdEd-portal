@@ -21,7 +21,7 @@ import { animate, AnimationBuilder, AnimationMetadata, AnimationPlayer, style } 
 import { configureTestSuite } from '@sunbird/test-util';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { UtilService } from '@sunbird/shared';
+import { UtilService, ConnectionService } from '@sunbird/shared';
 
 class RouterStub {
   public navigationEnd = new NavigationEnd(0, '/explore', '/explore');
@@ -53,6 +53,15 @@ describe('AppComponent', () => {
   let userService;
   let timerCallback;
   let resourceService;
+  const resourceMockData = {
+    messages: {
+      fmsg: { m0097: 'Something went wrong' },
+      stmsg: { desktop: { onlineStatus: 'You are online' } },
+      emsg: { desktop: { offlineStatus: 'You are offline' } }
+    },
+    initialize: () => ({}),
+    languageSelected$: of({ value: 'en', dir: 'ltr' })
+  };
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -67,8 +76,9 @@ describe('AppComponent', () => {
         { provide: ElementRef, useValue: new MockElementRef() },
         ToasterService, TenantService, CacheService, AnimationBuilder,
         UserService, ConfigService, LearnerService, BrowserCacheTtlService,
-        PermissionService, ResourceService, CoursesService, OrgDetailsService, ProfileService,
-        TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, SearchService, ContentService],
+        PermissionService, CoursesService, OrgDetailsService, ProfileService,
+        TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, SearchService, ContentService,
+        { provide: ResourceService, useValue: resourceMockData }],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));
@@ -471,5 +481,24 @@ const maockOrgDetails = { result: { response: { content: [{hashTagId: '1235654',
     component.updateFrameWork(event);
     expect(component.closeFrameworkPopup).toHaveBeenCalled();
     expect(component.checkLocationStatus).toHaveBeenCalled();
+  });
+  it('should call notifyNetworkChange', () => {
+    const connectionService = TestBed.get(ConnectionService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'info');
+    spyOn(connectionService, 'monitor').and.returnValue(of(true));
+    component.notifyNetworkChange();
+    expect(toasterService.info).toHaveBeenCalledWith('You are online');
+  });
+
+  it('should navigate to my download page if network is not available', () => {
+    const connectionService = TestBed.get(ConnectionService);
+    const router = TestBed.get(Router);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'info');
+    spyOn(connectionService, 'monitor').and.returnValue(of(false));
+    component.notifyNetworkChange();
+    expect(toasterService.info).toHaveBeenCalledWith('You are offline');
+    expect(router.navigate).toHaveBeenCalledWith(['mydownloads'], {queryParams: { selectedTab: 'mydownloads' }});
   });
 });

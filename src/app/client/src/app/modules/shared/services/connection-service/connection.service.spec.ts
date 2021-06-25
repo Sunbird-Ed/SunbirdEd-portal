@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { ConnectionService } from './connection.service';
 import { of as observableOf, of } from 'rxjs';
 import { ToasterService, ResourceService, UtilService } from '@sunbird/shared';
@@ -18,7 +17,7 @@ describe('ConnectionService', () => {
     }
   };
   beforeEach(() => TestBed.configureTestingModule({
-    providers: [ToasterService, { provide: ResourceService, useValue: resourceMockData },
+    providers: [{ provide: ResourceService, useValue: resourceMockData },
       { provide: Router, useClass: RouterStub }, UtilService]
   }));
 
@@ -50,26 +49,4 @@ describe('ConnectionService', () => {
       expect(data).toBe(true);
     });
   });
-
-  it('should call notifyNetworkChange', () => {
-    const service: ConnectionService = TestBed.get(ConnectionService);
-    const toasterService = TestBed.get(ToasterService);
-    const utilService = TestBed.get(UtilService);
-    utilService._isDesktopApp = true;
-    spyOn(toasterService, 'info');
-    service['connectionMonitor'] = of(true);
-    service.notifyNetworkChange();
-    expect(toasterService.info).toHaveBeenCalledWith('You are online');
-  });
-
-  it('should navigate to my download page if network is not available', () => {
-    const service: ConnectionService = TestBed.get(ConnectionService);
-    const router = TestBed.get(Router);
-    const toasterService = TestBed.get(ToasterService);
-    spyOn(toasterService, 'info');
-    service['connectionMonitor'] = of(false);
-    service.notifyNetworkChange();
-    expect(router.navigate).toHaveBeenCalledWith(['mydownloads'], {queryParams: { selectedTab: 'mydownloads' }});
-  });
-
 });

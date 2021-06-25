@@ -49,7 +49,7 @@
       <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
       [telemetryInteractEdata]="submitInteractEdata"
         [ngClass]="{'disabled':!enableSubmitBtn}" 
-        (click)="onSubmitForm()" 
+        (click)="onSubmitForm()" tabindex="0"
         class="sb-btn sb-btn-normal sb-btn-primary">
           {{resourceService?.frmelmnts?.btn?.submit}}
         </button>

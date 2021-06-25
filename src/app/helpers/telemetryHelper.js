@@ -20,7 +20,7 @@ telemtryEventConfig['pdata']['id'] = appId
 telemtryEventConfig['pdata']['ver'] = packageObj.version
 telemtryEventConfig['pdata']['pid'] = appId
 // TODO: handle telemetry event config
-const pdata = {id: envHelper.APPID, ver: packageObj.version, pid: 'sunbird-portal-backend'};
+const pdata = { id: envHelper.APPID, ver: packageObj.version, pid: 'sunbird-portal-backend' };
 
 module.exports = {
   /**
@@ -54,7 +54,7 @@ module.exports = {
     context.did = req.session.deviceId
     context.rollup = telemetry.getRollUpData(dims)
     const actor = telemetry.getActorData(req.session.userId, 'user')
-   console.log('logging session start event', context.did);
+    console.log('logging session start event', context.did);
     telemetry.start({
       edata: edata,
       context: context,
@@ -131,17 +131,17 @@ module.exports = {
   /**
    * This function helps to get params data for log event
    */
-  getParamsData: function (options, statusCode, resp, uri) {
+  getParamsData: function (options, statusCode, resp, uri, traceid) {
     const apiConfig = telemtryEventConfig.URL[uri]
     let params = [
       { 'title': apiConfig && apiConfig.title },
       { 'category': apiConfig && apiConfig.category },
-      { 'url': apiConfig && apiConfig.url },
+      { 'url': options.path || apiConfig && apiConfig.url },
       { 'duration': Date.now() - new Date(options.headers.ts) },
       { 'status': statusCode },
       { 'protocol': 'https' },
       { 'method': options.method },
-      { 'req': options.body }
+      { 'traceid': traceid }
     ]
     if (resp) {
       params.push(
@@ -157,7 +157,7 @@ module.exports = {
    */
   logAPICallEvent: function (req) { // function call is commented in all files    
     const apiConfig = telemtryEventConfig.URL[req.uri] || {}
-
+    
     let object = {}
     const params = this.getParamsData(req.options, req.statusCode, req.resp, req.uri)
     const edata = telemetry.logEventData('api_call', 'INFO', apiConfig.message, params)
@@ -217,15 +217,18 @@ module.exports = {
   /**
    * This function helps to log API access event
    */
-  logAPIAccessEvent: function (req) {
-    const apiConfig = telemtryEventConfig.URL[req.uri] || {}
-
+  logAPIAccessEvent: function (req, result, uri) {
+    req = telemetry.getTelemetryAPISuceessData(req, result, uri)
+    req.channel = req.channel ? req.channel : envHelper.DEFAULT_CHANNEL
+    const apiConfig = telemtryEventConfig.URL[uri] || {}
     let object = {}
     let params = []
-    if (req.options) {
-      params = this.getParamsData(req.options, req.statusCode, req.resp, req.uri)
+    if (req.reqObj) {
+      params = this.getParamsData(req.reqObj, req.statusCode, req.resp, uri)
     }
-    const edata = telemetry.logEventData('api_access', 'INFO', apiConfig.message, params)
+
+    const edata = telemetry.logEventData('api_access', 'INFO', apiConfig.message,JSON.stringify(params))
+
     if (req.id && req.type) {
       object = telemetry.getObjectData({ id: req.id, type: req.type, ver: req.version, rollup: req.rollup })
     }
@@ -234,13 +237,15 @@ module.exports = {
       req.channel || _.get(req, 'headers.X-Channel-Id')
     if (channel) {
       var dims = _.clone(_.get(req, 'reqObj.session.orgs') || [])
-      dims = dims ? _.concat(dims, channel) : channel
+      dims = [...new Set(dims ? _.concat(dims, channel) : channel)]
       const context = telemetry.getContextData({ channel: channel, env: apiConfig.env })
       if (req && req.reqObj && req.reqObj.sessionID) {
         context.sid = req.reqObj.sessionID
       }
+
       context.rollup = telemetry.getRollUpData(dims)
-      const actor = telemetry.getActorData(req.userId, req.type)
+      const actor = this.getTelemetryActorData(req.reqObj);
+
       telemetry.log({
         edata: edata,
         context: context,
@@ -285,20 +290,15 @@ module.exports = {
       })
     }
   },
-  logApiErrorEventV2: function (req, options) {
+  logApiErrorEventV2: function (req, res, result, options) {
+    const edata = telemetry.getTelemetryAPIError(result, res, req, options.edata);
     const apiConfig = telemtryEventConfig.URL[req.uri] || {}
     let object = options.obj || {}
-    const edata = {
-      err: options.edata.err || 'API_CALL_ERROR',
-      errtype: options.edata.type || 'SERVER_ERROR',
-      stacktrace: options.edata.stacktrace || 'unhandled error',
-      requestid: options.edata.msgid || 'null',
-      errmsg: options.edata.errmsg || 'null'
-    }
 
     let channel = req.session.rootOrghashTagId || req.get('x-channel-id') || envHelper.defaultChannelId
-   
-    let dims = _.compact(_.concat(req.session.orgs, channel))
+
+    let dims = [...new Set(_.compact(_.concat(req.session.orgs, channel)))]
+
     const context = {
       channel: options.context.channel || channel,
       env: options.context.env || apiConfig.env,
@@ -307,15 +307,15 @@ module.exports = {
       did: options.context.did || req.context.did,
       sid: req.sessionID || uuidv1()
     }
-    const actor = {
-      id: req.userId ? req.userId.toString() : 'anonymous',
-      type: 'user'
-    }
+
+    const actor = this.getTelemetryActorData(req);
+  
     /* istanbul ignore if  */
-    if(!channel){
+    if (!channel) {
       console.log('logApiErrorEventV2 failed due to no channel')
       return;
     }
+
     telemetry.error({
       edata: edata,
       context: _.pickBy(context, value => !_.isEmpty(value)),
@@ -327,7 +327,7 @@ module.exports = {
   logAuditEvent: function (req, options) {
     const apiConfig = telemtryEventConfig.URL[req.uri] || {}
     let object = options.obj || {}
-    const edata =  {
+    const edata = {
       props: options.edata.props,
       state: options.edata.state,
       prevstate: options.edata.prevstate
@@ -347,7 +347,7 @@ module.exports = {
       type: 'user'
     }
     /* istanbul ignore if  */
-    if(!channel){
+    if (!channel) {
       console.log('logAuditEvent failed due to no channel')
       return;
     }
@@ -362,7 +362,7 @@ module.exports = {
   logImpressionEvent: function (req, options) {
     const apiConfig = telemtryEventConfig.URL[req.uri] || {}
     let object = options.obj || {}
-    const edata =  {
+    const edata = {
       type: options.edata.type,
       subtype: options.edata.subtype,
       pageid: options.edata.pageid,
@@ -383,7 +383,7 @@ module.exports = {
       id: req.userId ? req.userId.toString() : 'anonymous',
       type: 'user'
     }
-    if(!channel){
+    if (!channel) {
       console.log('logAuditEvent failed due to no channel')
       return;
     }
@@ -470,7 +470,7 @@ module.exports = {
     var actor = {}
     if (req.session && req.session.userId) {
       actor.id = req.session && req.session.userId
-      actor.type = 'user'
+      actor.type = 'User'
     } else {
       actor.id = req.headers['x-consumer-id'] || telemtryEventConfig.default_userid
       actor.type = req.headers['x-consumer-username'] || telemtryEventConfig.default_username

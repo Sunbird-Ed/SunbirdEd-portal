@@ -257,8 +257,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       setTimeout(() => {
         if (_.get(event, 'event') === 'issueCert' && _.get(event, 'value') === 'yes') {
           this.createdBatchId = _.get(event, 'batchId');
-          this.showConfirmationPopup = true;
-          this.popupMode = _.get(event, 'mode');
+          if(!_.get(event, 'isCertInBatch')) {
+            this.showConfirmationPopup = true;
+            this.popupMode = _.get(event, 'mode');
+          }
         }
       }, 1000);
     });
