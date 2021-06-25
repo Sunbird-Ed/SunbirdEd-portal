@@ -57,7 +57,7 @@ export class CourseConsumptionService {
     const treeModel: any = model.parse(courseHierarchy);
     const contentIds = [];
     treeModel.walk((node) => {
-      if (node.model.mimeType !== 'application/vnd.ekstep.content-collection') {
+      if (node.model.mimeType !== 'application/vnd.ekstep.content-collection' && node.model.mimeType !== 'application/vnd.sunbird.question') {
         mimeTypeCount[node.model.mimeType] = mimeTypeCount[node.model.mimeType] + 1 || 1;
         contentIds.push(node.model.identifier);
       }
