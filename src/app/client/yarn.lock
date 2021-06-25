@@ -1478,10 +1478,10 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@4.0.3":
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.0.3.tgz#b3e146bac0fbb1fef2d312148ec7d82d5559c4c4"
-  integrity sha512-JHo5d9LSlADGDNDZjyYUEybWAA1/IFDKYnLkpUdGaF7affLQzKb5+DXMgD0DKQ4Vq/j21IE2ezpDKP3n1zIZtw==
+"@project-sunbird/client-services@4.0.5":
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.0.5.tgz#fe55b9828e44b090fe146b66c856e9aea3078f0b"
+  integrity sha512-pJsPiVZc3wj+xc04M0sYxD66EP+AllSb4zKkYV+ozAgxCrKz22vVo30ugqc0/SLdaICtQB2wxcALZeMX5xIBMA==
   dependencies:
     "@project-sunbird/telemetry-sdk" "0.0.26"
     inversify "^5.0.1"
@@ -1526,10 +1526,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.8.tgz#66c11fc6cdcf2761680b8ccd76af929a5a0226a7"
   integrity sha512-CU7lkBEg7J3b9urACPY5jf8GJa6ccyCLETncvssXUO7Kco7uhMvlUXr3HHc5mS+Zw1G3ZtcCN8fp2XszukNA2A==
 
-"@project-sunbird/sb-themes@0.0.8":
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.8.tgz#99aa16ceb2bc630e69999edcb581f89c2a670112"
-  integrity sha512-jd3XZgCRJoWPTaANMTHy4LoF7TdsB4U/nqALliZ7uGaCFIQoFiZLfJnqoOiCRw4ivI0wCsPu1/Kfp2YAOhyVfg==
+"@project-sunbird/sb-themes@0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.9.tgz#cb036e64ae1f2ed4a25638c6702e5e5e1c4f5f9d"
+  integrity sha512-VqwmIskeGCp3/qd8JY3RZJGEwPA4ai/ot5gHkxOfCQvcqGUiVFuJxZAHbggvw1nd7gXtB14UrsWkfwR5JaNRRg==
 
 "@project-sunbird/sunbird-collection-editor@4.0.14":
   version "4.0.14"
@@ -1595,10 +1595,10 @@
     "@project-sunbird/sunbird-player-sdk-v8" "4.0.6"
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.1.2":
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.1.2.tgz#a92e6f373322ad4d1615b1603c432290ce444068"
-  integrity sha512-LS9kYiZg32oE3DA4/i8AwP3IuUD8WarWCzoZyzOBSvLvxwsI577J07hTBbX+sfCb54ToFkmO4U9zpecL98OvLA==
+"@project-sunbird/sunbird-quml-player-v9@4.1.3":
+  version "4.1.3"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.1.3.tgz#68c1a47984bfb880c590ba24e7ee4fa614810256"
+  integrity sha512-AXmRT/WbKRFmusl9D9PHjtHOWtydWzCi2qKuC2/dRz8qJqphZB1m7SFR1YsuqyRC9oxrCQRGbC1UOf82AN2BkQ==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "4.1.0"
 
@@ -5255,7 +5255,7 @@ file-loader@^6.2.0:
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
 
-"file-saver@github:eligrey/FileSaver.js#1.3.8":
+file-saver@eligrey/FileSaver.js#1.3.8:
   version "1.3.8"
   resolved "https://codeload.github.com/eligrey/FileSaver.js/tar.gz/e865e37af9f9947ddcced76b549e27dc45c1cb2e"
 

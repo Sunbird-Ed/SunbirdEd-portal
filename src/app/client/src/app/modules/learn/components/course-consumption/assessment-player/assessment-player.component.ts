@@ -838,10 +838,10 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   onSelfAssessLastAttempt(event) {
-    if (_.get(event, 'data') === 'renderer:selfassess:lastattempt' || _.get(event, 'data') === 'questionset:lastattempt') {
+    if (_.get(event, 'data') === 'renderer:selfassess:lastattempt' || _.get(event, 'edata.isLastAttempt')) {
       this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.selfAssessLastAttempt'));
     }
-    if (_.get(event, 'data') === 'renderer:maxLimitExceeded' || _.get(event, 'data') === 'questionset:maxLimitExceeded') {
+    if (_.get(event, 'data') === 'renderer:maxLimitExceeded' || _.get(event, 'edata.maxLimitExceeded')) {
       this.showMaxAttemptsModal = true;
     }
   }

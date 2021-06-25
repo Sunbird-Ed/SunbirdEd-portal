@@ -43,11 +43,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     MAXATTEMPT: 'renderer:maxLimitExceeded',
     ACCESSREVIEWEVENT: 'renderer:question:reviewAssessment'
   };
-  QS_CONSTANT = {
-    ACCESSEVENT: 'questionset:submitscore',
-    ISLASTATTEMPT: 'questionset:lastattempt',
-    MAXATTEMPT: 'questionset:maxLimitExceeded'
-  };
   @Input() overlayImagePath: string;
   @Input() isSingleContent: boolean;
   @Input() telemetryObject: {};
@@ -345,17 +340,17 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   generatelimitedAttemptEvent(event) {
-    if (_.get(event, 'data') === this.QS_CONSTANT.ACCESSEVENT) {
-      this.questionScoreSubmitEvents.emit(event);
-    } else if (_.get(event, 'data') === this.QS_CONSTANT.ISLASTATTEMPT) {
+    if (_.get(event, 'edata.isLastAttempt')) {
       this.selfAssessLastAttempt.emit(event);
-    } else if (_.get(event, 'data') === this.QS_CONSTANT.MAXATTEMPT) {
+    } else if (_.get(event, 'edata.maxLimitExceeded')) {
       this.selfAssessLastAttempt.emit(event);
     }
   }
 
   eventHandler(event) {
-    this.generatelimitedAttemptEvent(event);
+    if (event.eid === 'exdata') {
+      this.generatelimitedAttemptEvent(event);
+    }
     if (_.get(event, 'edata.type') === 'SHARE') {
       this.contentUtilsServiceService.contentShareEvent.emit('open');
       this.mobileViewDisplay = 'none';
@@ -387,6 +382,10 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
     if (eid && (eid === 'ASSESS') || eid === 'START' || eid === 'END') {
       this.assessmentEvents.emit(event);
+    }
+
+    if (_.get(this.playerConfig, 'metadata.mimeType') === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset && eid === 'END') {
+      // this.questionScoreSubmitEvents.emit(event);
     }
   }
   emitSceneChangeEvent(timer = 0) {
