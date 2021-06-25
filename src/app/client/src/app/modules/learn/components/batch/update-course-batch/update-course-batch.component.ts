@@ -187,7 +187,9 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       .subscribe((data) => {
         this.showDiscussionForum = _.get(data.courseDetails, 'discussionForum.enabled');
         this.generateDataForDF();
-        this.fetchForumConfig();
+        if (this.showDiscussionForum === 'Yes') {
+          this.fetchForumConfig();
+        }
         this.showUpdateModal = true;
         if (data.courseDetails.createdBy === this.userService.userid) {
           this.courseCreator = true;
