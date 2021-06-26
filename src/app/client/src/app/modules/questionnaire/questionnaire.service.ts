@@ -12,7 +12,7 @@ import {
   providedIn: "root",
 })
 export class QuestionnaireService {
-  private _submissionId: string;
+   _submissionId: string;
   constructor(
     private config: ConfigService,
     private kendraService: KendraService,

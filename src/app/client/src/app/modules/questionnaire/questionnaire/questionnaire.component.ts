@@ -102,7 +102,7 @@ export class QuestionnaireComponent
     );
   }
 
-  private initConfiguration() {
+  initConfiguration() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.redoLayout();
   }
