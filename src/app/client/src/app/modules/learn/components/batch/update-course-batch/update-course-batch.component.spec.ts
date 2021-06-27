@@ -506,7 +506,7 @@ describe('UpdateCourseBatchComponent', () => {
     expect(discussionService.removeForum).toHaveBeenCalled();
   });
 
-  it('when DF is disabled and forum id does not exists the DF API should not call', () => {
+  it('when DF is disabled and forum id does not exists, the DF API should not call', () => {
     const discussionService = TestBed.get(DiscussionService);
     const toasterService = TestBed.get(ToasterService);
     component.forumIds = [];
