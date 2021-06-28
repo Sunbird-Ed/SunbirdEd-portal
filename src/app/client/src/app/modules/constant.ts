@@ -1,9 +1,10 @@
 export const FACETS = {
-    values: ["primaryCategory", "mission", "contributorOrg", "subject", "medium", "board", "gradeLevel", "mimeType"],
+    values: ["primaryCategory", "mission", "contributorOrg", "subject", "medium", "board", "gradeLevel", "mimeType", "geo", "department", "topic", "contentType"],
     mission: [{ name: "Child Educations", count: 1 }, { name: "Flood Relief", count: 3 }],
     contributor_org: [{ name: "Ashoka", count: 1 }, { name: "Societal", count: 1 }],
 }
-export const requiredFacets = ["primaryCategory", "mission", "contributorOrg", "contentType"]
+export const requiredFacets = ["primaryCategory", "contentType", "mission", "contributorOrg"]
+export const requiredFacets2 = ["primaryCategory", "geo", "department", "topic", "contentType", "medium"]
 export const additionalCategoryList = [{
     "identifier": "ncf_mission",
     "code": "mission",
@@ -55,4 +56,24 @@ export const additionalCategoryList = [{
     "index": 7,
     "status": "Live"
 }
+]
+
+
+
+export const currentFrameworkData = [
+    {
+
+        "rootOrgName": 'NIIT-2',
+        "requiredFacets": ["primaryCategory", "mission", "contributorOrg"]
+    },
+    {
+        "rootOrgName": 'NIIT Demo',
+        "requiredFacets": ["geo", "department", "topic", "contentType", "medium"]
+    },
+    {
+        "rootOrgName": '*',
+        "requiredFacets": ["primaryCategory", "mission", "contributorOrg"]
+    }
+
+
 ]

@@ -81,7 +81,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnDestroy {
       map((queryParams) => {
         const queryFilters: any = {};
         _.forIn(queryParams, (value, key) => {
-          if (['medium', 'gradeLevel', 'board', 'channel', 'subject', 'primaryCategory', 'key', 'mediaType', 'mission', 'contributorOrg'].includes(key)) {
+          if (['medium', 'gradeLevel', 'board', 'channel', 'subject', 'primaryCategory', 'key', 'mediaType', 'mission', 'contributorOrg', 'geo', 'department', 'topic', 'contentType'].includes(key)) {
             queryFilters[key] = key === 'key' || _.isArray(value) ? value : [value];
           }
         });

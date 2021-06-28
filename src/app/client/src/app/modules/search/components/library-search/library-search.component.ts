@@ -1,6 +1,6 @@
 import {
     PaginationService, ResourceService, ConfigService, ToasterService, INoResultMessage,
-    ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination, LayoutService, COLUMN_TYPE
+    ICard, ILoaderMessage, UtilService, NavigationHelperService, IPagination, LayoutService, COLUMN_TYPE, Framework
 } from '@sunbird/shared';
 import { SearchService, PlayerService, UserService, FrameworkService, OrgDetailsService, CoursesService } from '@sunbird/core';
 import { combineLatest, Subject, of } from 'rxjs';
@@ -10,7 +10,10 @@ import * as _ from 'lodash-es';
 import { IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
 import { takeUntil, map, first, debounceTime, tap, delay, mergeMap } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
-import { FACETS, requiredFacets } from '../../../constant';
+import { FACETS, currentFrameworkData, requiredFacets } from '../../../constant';
+
+
+
 
 const DEFAULT_FRAMEWORK = 'CBSE';
 @Component({
@@ -61,6 +64,10 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     public cardCount = 3;
     maxCardCount = 5;
     viewAllEnabled = []
+    public frameworkDetails: any;
+    public showFrameworkSelection: boolean;
+    public frameworkCardData = [];
+    public testFramework: any
 
     selectedCourseBatches: { onGoingBatchCount: any; expiredBatchCount: any; openBatch: any; inviteOnlyBatch: any; courseId: any; };
     constructor(public searchService: SearchService, public router: Router, private playerService: PlayerService,
@@ -78,13 +85,24 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     ngOnInit() {
         this.activatedRoute.queryParams.pipe(takeUntil(this.unsubscribe$)).subscribe(queryParams => {
             this.queryParams = { ...queryParams };
+
         });
+
+
+        // this.activatedRoute.queryParams.subscribe(queryParams => {
+        //     this.showFrameworkSelection = _.get(queryParams, 'showFrameworkSelection');
+
+
         this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
+            console.log("FormDATA", formData);
             this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
             this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
             //need to remove after inserting the new facet in form api.
             const facetValue = FACETS.values
-            this.globalSearchFacets = this.filterFacets(facetValue)
+            // this.globalSearchFacets = this.filterFacets(facetValue)
+            this.checkframeworkData(facetValue);
+            this.globalSearchFacets = this.testFramework;
+            console.log("checkframeworkData", this.globalSearchFacets);
             this.setNoResultMessage();
             this.initFilters = true;
         }, error => {
@@ -99,10 +117,13 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
             }
         });
         this.userService.userData$.subscribe(userData => {
+            console.log("USERDATA", userData)
             if (userData && !userData.err) {
                 this.frameworkData = _.get(userData.userProfile, 'framework');
             }
+
         });
+
         this.dataDrivenFilterEvent.pipe(first()).
             subscribe((filters: any) => {
                 this.dataDrivenFilters = filters;
@@ -110,6 +131,10 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
                 this.setNoResultMessage();
             });
         this.searchAll = this.resourceService.frmelmnts.lbl.allContent;
+
+
+
+
     }
     initLayout() {
         this.layoutConfiguration = this.layoutService.initlayoutConfig();
@@ -402,10 +427,40 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         }
         return this.maxCardCount
     }
-    filterFacets(facets){
-    return facets.filter(eachFacet=>
-        requiredFacets.includes(eachFacet))
+
+
+    // filterFacets(facets) {
+    //     console.log("FACETS", facets);
+
+    //     if (facets)
+    //         return facets.filter(eachFacet =>
+    //             requiredFacets.includes(eachFacet))
+    // }
+
+    checkframeworkData(facets) {
+        console.log("*******************USERSERVICE", this.userService.userProfile);
+        // this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
+        let frameworkDataCode = this.userService.userProfile ? this.userService.userProfile['rootOrgName'] : '*'
+        console.log("frameworkData++++++", frameworkDataCode);
+        // const frameworkDataCode = frameworkData.frameworkdata['defaultFramework'] && frameworkData.frameworkdata['defaultFramework'].code ?
+        //     frameworkData.frameworkdata['defaultFramework'].code : '*'
+        console.log("currentFrameworkData", currentFrameworkData);
+        const currentFrameworkDetails = currentFrameworkData.filter(data => data.rootOrgName === frameworkDataCode)
+        console.log("currentFrameworkDetails", currentFrameworkDetails);
+        if (currentFrameworkDetails && currentFrameworkDetails[0]['requiredFacets']) {
+            let requiredFacets1 = currentFrameworkDetails[0]['requiredFacets']
+            console.log("requiredFacets1", requiredFacets1)
+            this.testFramework = facets.filter(eachFacet =>
+                requiredFacets1.includes(eachFacet))
+        }
+        // console.log("currentFrameworkDetails", currentFrameworkDetails);
+        // })
+        console.log("testFramework$", this.testFramework);
+
+
     }
+
+
 
 
     ngOnDestroy() {

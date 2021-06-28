@@ -385,8 +385,8 @@ export class SearchService {
     subjects = _.values(_.groupBy(_.compact(subjects))).map((subject) => {
       return ({
         title: subject[0], count: subject.length === 1 ?
-          `${ subject.length } ${ _.upperCase(this.resourceService.frmelmnts.lbl.oneCourse) }`
-          : `${ subject.length } ${ _.upperCase(this.resourceService.frmelmnts.lbl.courses) }`, contents: []
+          `${subject.length} ${_.upperCase(this.resourceService.frmelmnts.lbl.oneCourse)}`
+          : `${subject.length} ${_.upperCase(this.resourceService.frmelmnts.lbl.courses)}`, contents: []
       });
     });
 
@@ -513,7 +513,29 @@ export class SearchService {
           facet['index'] = '10'
           facet['label'] = 'Contributor org'
           facet['placeholder'] = 'Contributor org'
-        // facet['values'] = FACETS.contributor_org ? FACETS.contributor_org : []
+          // facet['values'] = FACETS.contributor_org ? FACETS.contributor_org : []
+          break;
+        case 'geo':
+          facet['index'] = '11'
+          facet['label'] = 'Geo'
+          facet['placeholder'] = 'Geo'
+          break;
+        case 'department':
+          facet['index'] = '12'
+          facet['label'] = 'Department'
+          facet['placeholder'] = 'Department'
+          break;
+        case 'topic':
+          facet['index'] = '13'
+          facet['label'] = 'Topic'
+          facet['placeholder'] = 'Topic'
+          break;
+        case 'contentType':
+          facet['index'] = '14'
+          facet['label'] = 'Content Type'
+          facet['placeholder'] = 'Content Type'
+          break;
+
       }
       return facet;
     });
