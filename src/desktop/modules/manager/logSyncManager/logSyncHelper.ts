@@ -1,15 +1,12 @@
 import { enableLogger, getLogs, logLevels, logger } from "@project-sunbird/logger";
-import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import * as _ from "lodash";
 import * as path from "path";
 import { ErrorObj, getErrorObj, ILogAPIFormat } from "./ILogSync";
-import { manifest } from "../../manifest";
 
 const MAX_LOG_LENGTH = 30; // Number of entries
 const MAX_DAYS_TO_TRACE_TIMESTAMP = 10 * 24 * 60 * 60 * 1000; // 10 days
 
 const getAllLogs = async () => {
-  const deviceId = await containerAPI.getSystemSDKInstance(manifest.id).getDeviceId().catch(error => { logger.error('Error while getting deviceID'); });
   enableLogger({
     logBasePath: path.join(process.env.FILES_PATH, "logs"),
     logLevel: process.env.LOG_LEVEL as logLevels,
@@ -17,7 +14,6 @@ const getAllLogs = async () => {
       context: {
         channel: process.env.CHANNEL,
         env: 'desktop',
-        did: deviceId,
         pdata: {
           id: process.env.APP_ID,
           ver: process.env.APP_VERSION,
@@ -33,7 +29,7 @@ const getAllLogs = async () => {
   const fromDay = new Date(date.getTime() - MAX_DAYS_TO_TRACE_TIMESTAMP);
   type OrderType = "asc" | "desc";
   const options: any = {
-    fields: ["message", "timestamp", "src", "level"],
+    fields: ["message", "timestamp", "id", "level"],
     from: fromDay, // 10 days back
     until: new Date(), // today
     start: 0,
@@ -59,18 +55,17 @@ const getAllLogs = async () => {
   }
 };
 
-const formatLogs = (logs: any[]) => {
-  const errorLogs = _.filter(logs, (item) => item.level === "error").slice(0, MAX_LOG_LENGTH);
-  const logList: ILogAPIFormat[] = _.map(errorLogs, (log) => {
+const formatLogs = (logs: any[]): ILogAPIFormat[] => {
+  let allLogs = process.env.LOG_LEVEL === 'error' ? _.filter(logs, (item) => item.level === "error") : logs;
+  allLogs = allLogs.slice(0, MAX_LOG_LENGTH);
+  return _.map(allLogs, (log) => {
     return {
       appver: process.env.APP_VERSION,
-      pageid: log.src,
+      pageid: log.id,
       ts: new Date(log.timestamp).getTime(),
       log: log.message,
     };
   });
-
-  return logList;
 };
 
 const sendMessage = (message: string, logs = [], err?: ErrorObj) => {

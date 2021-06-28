@@ -56,7 +56,7 @@ const initializeEnv = () => {
 };
 initializeEnv();
 import { containerAPI } from "@project-sunbird/OpenRAP/api/index";
-import { logger,logLevels, enableLogger } from '@project-sunbird/logger';
+import { logger,logLevels, enableLogger, getLogs } from '@project-sunbird/logger';
 import { EventManager } from "@project-sunbird/OpenRAP/managers/EventManager";
 import express from "express";
 import portscanner from "portscanner";
@@ -304,7 +304,7 @@ async function initLogger() {
   await setDeviceId();
   let logLevel: logLevels = 'error';
   if(!app.isPackaged){
-    logLevel = 'debug';
+    logLevel = 'error';
   }
   process.env.LOG_LEVEL = logLevel;
   enableLogger({
@@ -326,6 +326,28 @@ async function initLogger() {
       adopter: 'winston'
     }
   });
+
+  const from: any  = new Date().valueOf() - 24 * 60 * 60 * 1000;
+  type OrderType = "asc" | "desc";
+  const options = {
+    from: from,
+    until:  new Date,
+    limit:  10,
+    start:  0,
+    order:  "desc" as OrderType,
+    fields: ['message']
+};
+  getLogs(options)
+    .then((logs) => {
+      console.log("logs", logs);
+      if (_.get(logs, "dailyRotateFile.length")) {
+      } else {
+        console.log("logs else", logs);
+      }
+    })
+    .catch((error) => {
+      console.log("logs catch");
+    });
 }
 
 const onMainWindowCrashed = async (err) => {

@@ -22,6 +22,8 @@ import Response from './utils/response';
 import { addPerfLogForAPICall } from './loaders/logger';
 import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
 import groups from "./routes/groups";
+import { enableDebugMode } from "@project-sunbird/logger";
+import { LogSyncManager } from './manager/logSyncManager/logSyncManager';
 const proxy = require('express-http-proxy');
 
 export class Router {
@@ -162,7 +164,27 @@ export class Router {
         return res.send(Response.error('analytics.device-register', status));
       }
     });
-      
+
+    app.get('/enableDebugMode', async (req, res) => {
+      const logSyncManager = new LogSyncManager();
+      const logLevel = req.query.logLevel || "debug";
+      let timeInterval = req.query.timeInterval ? parseInt(req.query.timeInterval) : 1000 * 60 * 10;
+      enableDebugMode(timeInterval, logLevel);
+      try {
+        setTimeout(async () => {
+          const oldLogLevel = process.env.LOG_LEVEL;
+          process.env.LOG_LEVEL = 'debug';
+          await logSyncManager.start(true, timeInterval);
+          process.env.LOG_LEVEL = oldLogLevel;
+        }, timeInterval);
+        res.send(Response.success('enabledDebugMode', { enabled: true }, req));
+      } catch (error) {
+        this.standardLog.error({ id: `SERVER_ERROR_LOGS_SYNC_FAILED`, message: `Error while syncing error logs`, error });
+        res.status(500).send(Response.error('enabledDebugMode', 500, 'Unable to start debug Mode'));
+      }
+    });
+
+
     authRoutes(app, proxyUrl);
     contentRoutes(app, proxyUrl, this.contentDownloadManager)
     dataRoutes(app, proxyUrl);

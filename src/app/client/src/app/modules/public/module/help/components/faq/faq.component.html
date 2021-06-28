@@ -36,6 +36,11 @@
             (itemClick)="onCategorySelect($event)"
             (btnClick)="enableFaqReport($event)">
           </sb-list>
+          <div class="mt-8">
+          <button class="sb-btn sb-btn-tertiary sb-btn-normal w-100 debug-btn" (click)="enableDebugMode($event)">
+              Enable Debug Mode
+            </button>
+          </div>
         </section>
     
         <section class="sbhelp_container__right" [ngClass]="{'faq-section-mobile':isMobileView, 'faq-section-web':!isMobileView}" *ngIf="(isMobileView && !showOnlyFaqCategory) || !isMobileView">

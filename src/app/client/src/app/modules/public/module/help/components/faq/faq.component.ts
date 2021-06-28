@@ -11,7 +11,9 @@ import { Subject } from 'rxjs';
 import { Location } from '@angular/common';
 import { FaqService } from '../../services/faq/faq.service';
 import { VideoConfig } from './faq-data';
+import { HttpOptions } from '../../../../../shared/interfaces/httpOptions';
 
+const TEN_MINUTES = 1000 * 60 * 10;
 @Component({
   selector: 'app-faq',
   templateUrl: './faq.component.html',
@@ -278,4 +280,19 @@ export class FaqComponent implements OnInit {
     }
   }
 
+  enableDebugMode(event) {
+    // Use System setting or form config to get, debugMode info such as to show/hide and time
+    const httpOptions: HttpOptions = {
+      params: {
+        logLevel: 'debug',
+        timeInterval: String(TEN_MINUTES)
+      }
+    };
+    this.http.get('/enableDebugMode', httpOptions).subscribe((res) => {
+      this.toasterService.success('Debug mode enabled successfully');
+    }, error => {
+      console.error('Error while enabling debug mode');
+      this.toasterService.error('Unable to enable debug mode');
+    });
+  }
 }
