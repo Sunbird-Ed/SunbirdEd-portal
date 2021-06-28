@@ -1,6 +1,6 @@
 <app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration">
 </app-landing-section>
-<div [ngClass]="layoutConfiguration ? 'sbt-container sbt-user-management relative9':''" >
+<div [ngClass]="layoutConfiguration ? 'sbt-container sbt-user-management relative9 sbt-inside-page-container':''" > 
 <div class="sb-manage-section" [appTelemetryImpression]="telemetryImpression">
   <div class="sb-multi-rows py-16">
     <div class="d-flex flex-ai-center flex-jc-space-between ui container">
@@ -21,7 +21,7 @@
       <!-- <button type="button" (click) = "openModel()" class="sb-btn sb-btn-outline-primary sb-btn-normal" appTelemetryInteract 
       [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="openUploadModalInteractEdata">{{resourceService.frmelmnts?.lbl?.uploadValidationStatus}}</button> -->
     </div>
-    <div class="d-flex flex-ai-center ml-8 py-8" *ngIf="showAdminTnC">
+    <div class="d-flex flex-ai-center ml-8 py-8 ui container" *ngIf="showAdminTnC">
       <label class="d-flex flex-ai-center">
         <span class="font-weight-normal fnormal">{{resourceService?.frmelmnts?.imsg?.admintnc | interpolate:'{instance}': instance }} <a class="sb-color-primary cursor-pointer" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" 
           [telemetryInteractEdata]="adminPolicyDetailsInteractEdata" (click)=openAdminPolicyPopup()>{{resourceService?.frmelmnts?.lnk?.adminPolicy}}</a></span>
