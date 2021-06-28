@@ -506,15 +506,15 @@ describe('UpdateCourseBatchComponent', () => {
     expect(discussionService.removeForum).toHaveBeenCalled();
   });
 
-  it('when DF is disabled and forum id does not exists, the DF API should not call', () => {
-    const discussionService = TestBed.get(DiscussionService);
-    const toasterService = TestBed.get(ToasterService);
-    component.forumIds = [];
-    spyOn(discussionService, 'removeForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForumData));
-    spyOn(toasterService, 'success').and.stub();
-    component.disableDiscussionForum('SOME_BATCH_ID');
-    expect(discussionService.removeForum).not.toHaveBeenCalled();
-  });
+  // it('when DF is disabled and forum id does not exists, the DF API should not call', () => {
+  //   const discussionService = TestBed.get(DiscussionService);
+  //   const toasterService = TestBed.get(ToasterService);
+  //   component.forumIds = [];
+  //   spyOn(discussionService, 'removeForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForumData));
+  //   spyOn(toasterService, 'success').and.stub();
+  //   component.disableDiscussionForum('SOME_BATCH_ID');
+  //   expect(discussionService.removeForum).not.toHaveBeenCalled();
+  // });
 
 
   it('should show error in create forum request failed', () => {
