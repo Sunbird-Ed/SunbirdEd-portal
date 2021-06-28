@@ -435,6 +435,31 @@ export class UtilService {
     return origin;
   }
 
+  /**
+ * Parse the nested object & convert to flattern object(key, value)
+ * @param {JSON object} data 
+ * ex: {user: {id: 1, name: xyz}} it will convert to {user.id: 1, user.name:}
+ */
+   flattenObject(jsonObj) {
+    let toReturn = {};
+
+    for (let i in jsonObj) {
+      if (!jsonObj.hasOwnProperty(i)) continue;
+
+      if ((typeof jsonObj[i]) == 'object' && jsonObj[i] !== null) {
+        let flatObject = this.flattenObject(jsonObj[i]);
+        for (let x in flatObject) {
+          if (!flatObject.hasOwnProperty(x)) continue;
+
+          toReturn[i + '.' + x] = flatObject[x];
+        }
+      } else {
+        toReturn[i] = jsonObj[i];
+      }
+    }
+    return toReturn;
+  }
+
   getRandomColor(colorSet) {
     if (colorSet.length > 0) {
       const randomColor = _.sample(colorSet);

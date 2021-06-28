@@ -366,7 +366,8 @@ describe('UpdateCourseBatchComponent', () => {
       event: 'issueCert',
       value: 'yes',
       mode: 'edit',
-      batchId: '13456789'
+      batchId: '13456789',
+      isCertInBatch: true
     });
   });
   it('should log issue-certificate-yes interact telemetry on changing input to yes', () => {
