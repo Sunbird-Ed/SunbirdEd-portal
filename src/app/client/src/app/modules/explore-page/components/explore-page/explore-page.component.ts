@@ -859,11 +859,13 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         const contentType = _.get(this.getCurrentPageData(), 'contentType');
         if(contentType === 'home') {
             params = _.omit(this.queryParams, ['id', 'selectedTab']);
+            params['returnTo'] = 'home';
         }
         params[facetName] = event.data[0].value.value;
         params['selectedTab'] = 'all';
         params['showClose'] = 'true';
-
+        params['isInside'] = event.data[0].value.value;
+        
         const updatedCategoriesMapping = _.mapKeys(params, (_, key) => {
             const mappedValue = get(this.contentSearchService.getCategoriesMapping, [key]);
             return mappedValue || key;
