@@ -107,19 +107,9 @@ module.exports = {
     })
   },
   getSucessResponse: function (res, id, result, req) {
-    const userId = req.headers['x-consumer-id'] || telemtryEventConfig.default_userid
-    const type = req.headers['x-consumer-username'] || telemtryEventConfig.default_username
     let tenantId = req.tenantId
-    const telemetryData = {
-      reqObj: req,
-      statusCode: successResponseStatusCode,
-      resp: result,
-      uri: 'tenant/info',
-      type: type,
-      userId: userId,
-      channel: envHelper.DEFAULT_CHANNEL
-    }
-    telemetryHelper.logAPIAccessEvent(telemetryData)
+    const  uri = 'tenant/info'
+    telemetryHelper.logAPIAccessEvent(req, result, uri)
     res.status(successResponseStatusCode)
     let response = {
       'id': id,

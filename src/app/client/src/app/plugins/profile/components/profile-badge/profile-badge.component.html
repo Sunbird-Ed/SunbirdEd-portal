@@ -6,7 +6,7 @@
       </div>
     </div>
     <div *ngIf="badgeArray.length > defaultLimit">
-    <button class="ui semi-circular dodger-blue button mt-30" *ngIf="viewMore" (click)="toggle(true)"> {{resourceService?.frmelmnts?.btn?.viewmore}} <i class="chevron down icon ml-5 mr-0"></i></button>
-    <button class="ui semi-circular dodger-blue button mt-30" (click)="toggle(false)" *ngIf="!viewMore">{{resourceService?.frmelmnts?.btn?.viewless}} <i class="chevron up icon ml-5 mr-0" ></i></button>
+    <button class="ui semi-circular dodger-blue button mt-30" tabindex="0" *ngIf="viewMore" (click)="toggle(true)"> {{resourceService?.frmelmnts?.btn?.viewmore}} <i class="chevron down icon ml-5 mr-0"></i></button>
+    <button class="ui semi-circular dodger-blue button mt-30" tabindex="0" (click)="toggle(false)" *ngIf="!viewMore">{{resourceService?.frmelmnts?.btn?.viewless}} <i class="chevron up icon ml-5 mr-0" ></i></button>
   </div>
   </section>

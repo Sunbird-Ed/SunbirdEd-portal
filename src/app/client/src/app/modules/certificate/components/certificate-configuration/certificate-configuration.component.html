@@ -10,7 +10,7 @@
     <div class="ui container">
       <div class="py-8 d-flex flex-ai-center">
         <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto" id="goBack"
-          type="button" (click)="goBack()">
+          type="button" tabindex="0" (click)="goBack()">
           <i class="icon-svg icon-svg--xxs icon-back mr-4">
             <svg class="icon icon-svg--primary">
               <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
@@ -91,7 +91,7 @@
               <p class="no-template-text pt-16 pb-24 mb-0">{{resourceService?.frmelmnts?.cert?.lbl?.noCertificate}}
                 <b>{{resourceService?.frmelmnts?.cert?.lbl?.addCert }}</b>
                 {{ resourceService?.frmelmnts?.cert?.lbl?.button}}</p>
-              <button type="button" id="addNewCert" (click)="certificateCreation()"
+              <button type="button" id="addNewCert" tabindex="0" (click)="certificateCreation()"
                 class="sb-btn sb-btn-normal sb-btn-outline-primary px-24">
                 {{resourceService?.frmelmnts?.cert?.lbl?.addCert }}
                 <img src="assets/images/plus-icon.svg" alt=" Add certificate " width="8px"
@@ -115,7 +115,7 @@
                     <div class="d-flex flex-ai-center flex-jc-space-between w-100 pt-16">
                       <div class="d-flex flex-ai-center ml-auto d-flex">
                         <button type="button" [ngClass]="{'sb-btn-disabled': !certEditable }" [disabled]="!certEditable"
-                          (click)="editCertificate()"
+                          (click)="editCertificate()" tabindex="0"
                           class="sb-btn sb-btn-primary sb-btn-normal">{{resourceService?.frmelmnts?.lbl?.edit}}</button>
                       </div>
                     </div>
@@ -202,7 +202,7 @@
               <div class="progess-add-content" *ngIf="isSingleAssessment">
                 <div class="left-border"></div>
                 <button type="button" class="add-score-btn py-8 px-16 fsmall font-weight-bold" *ngIf="addScoreRule" >And</button>
-                <button type="button" class="d-flex flex-ai-center flex-jc-center plus-btn" *ngIf="!addScoreRule" (click)="addRule()"><img src="assets/images/plus-icon.svg"></button>
+                <button type="button" class="d-flex flex-ai-center flex-jc-center plus-btn" *ngIf="!addScoreRule" tabindex="0" (click)="addRule()"><img src="assets/images/plus-icon.svg"></button>
                 <div class="left-border" *ngIf="addScoreRule"></div>
               </div>
 
@@ -231,7 +231,7 @@
                         </p>
                       </div>
                     </div>
-                    <div class="close-score" (click)="removeRule()"><img src="assets/images/close.svg"></div>
+                    <div class="close-score" tabindex="0" (click)="removeRule()"><img src="assets/images/close.svg"></div>
                   </div>
                 </div>
               </div>
@@ -302,14 +302,14 @@
       <div class="ui stackable grid m-0">
         <div class="twelve wide column px-0">
           <div class="d-flex flex-ai-center flex-jc-flex-end sb-bg-color-white p-24">
-            <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
+            <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
               (click)="cancelSelection()">{{resourceService?.frmelmnts?.btn?.cancel}}</button>
             <button [ngClass]="{'sb-btn-disabled': disableAddCertificate }" *ngIf="configurationMode === 'add'"
-              [disabled]="disableAddCertificate" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24"
+              [disabled]="disableAddCertificate" tabindex="0" class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24"
               (click)="attachCertificateToBatch()">{{resourceService?.frmelmnts?.cert?.lbl?.addCert}}</button>
             <button id="update-certificate" [ngClass]="{'sb-btn-disabled': disableAddCertificate }"
               *ngIf="configurationMode === 'edit'" [disabled]="disableAddCertificate"
-              class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24"
+              class="sb-btn sb-btn-normal sb-btn-primary ml-8 px-24" tabindex="0"
               (click)="updateCertificate()">{{resourceService?.frmelmnts?.cert?.lbl?.updateCert}}</button>
           </div>
         </div>
@@ -338,10 +338,10 @@
     </div>
   </div>
   <div class="sb-modal-actions">
-    <button (click)="attachCertificateToBatch()" class="sb-btn sb-btn-normal sb-btn-primary">
+    <button (click)="attachCertificateToBatch()" tabindex="0" class="sb-btn sb-btn-normal sb-btn-primary">
       {{resourceService?.frmelmnts?.lbl?.continue}}
     </button>
-    <button (click)="closeTemplateDetectModal()" class="sb-btn sb-btn-normal sb-btn-outline-primary">
+    <button (click)="closeTemplateDetectModal()" tabindex="0" class="sb-btn sb-btn-normal sb-btn-outline-primary">
       {{resourceService?.frmelmnts?.btn?.cancel}}
     </button>
   </div>
