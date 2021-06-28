@@ -78,10 +78,10 @@
         "app/modules/location"
       ],
       "sunbird-collection-editor": [
-        "../node_modules/@project-sunbird/sunbird-collection-editor"
+        "../node_modules/@project-sunbird/sunbird-collection-editor-v9"
       ],
       "sunbird-collection-editor/*": [
-        "../node_modules/@project-sunbird/sunbird-collection-editor/*"
+        "../node_modules/@project-sunbird/sunbird-collection-editor-v9/*"
       ]
     },
     "types": []
