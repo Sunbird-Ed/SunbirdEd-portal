@@ -12,6 +12,7 @@ import { Location } from '@angular/common';
 import { FaqService } from '../../services/faq/faq.service';
 import { VideoConfig } from './faq-data';
 import { HttpOptions } from '../../../../../shared/interfaces/httpOptions';
+import { FormService } from '../../../../../core/services/form/form.service';
 
 const TEN_MINUTES = 1000 * 60 * 10;
 @Component({
@@ -54,7 +55,7 @@ export class FaqComponent implements OnInit {
     private router: Router, private telemetryService: TelemetryService,
     private faqService: FaqService, private toasterService: ToasterService,
     private configService: ConfigService, private publicDataService: PublicDataService,
-    public contentUtilsServiceService: ContentUtilsServiceService) {
+    public contentUtilsServiceService: ContentUtilsServiceService, public formService: FormService) {
   }
 
   ngOnInit() {
@@ -280,19 +281,36 @@ export class FaqComponent implements OnInit {
     }
   }
 
-  enableDebugMode(event) {
-    // Use System setting or form config to get, debugMode info such as to show/hide and time
+  private async getDebugTimeInterval(): Promise<string> {
+    let timeInterval = String(TEN_MINUTES);
+    try {
+      const params = { formType: 'config', formAction: 'get', contentType: 'debugMode', component: 'portal' };
+      const formFields = await this.formService.getFormConfig(params).toPromise();
+      const field = formFields.filter(item => item.timeInterval);
+
+      if (field.length) {
+        timeInterval = field[0].timeInterval;
+      }
+    } catch (error) {
+      timeInterval = String(TEN_MINUTES);
+    }
+
+    return new Promise((resolve) => resolve(timeInterval));
+  }
+
+  async enableDebugMode(event) {
+    const timeInterval = await this.getDebugTimeInterval();
     const httpOptions: HttpOptions = {
       params: {
         logLevel: 'debug',
-        timeInterval: String(TEN_MINUTES)
+        timeInterval
       }
     };
     this.http.get('/enableDebugMode', httpOptions).subscribe((res) => {
-      this.toasterService.success('Debug mode enabled successfully');
+      this.toasterService.success(_.get(this.resourceService, 'frmelmnts.alert.debugModeEnabledSuccess'));
     }, error => {
       console.error('Error while enabling debug mode');
-      this.toasterService.error('Unable to enable debug mode');
+      this.toasterService.error(_.get(this.resourceService, 'frmelmnts.alert.debugModeEnabledFailed'));
     });
   }
 }

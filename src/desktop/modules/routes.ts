@@ -168,13 +168,13 @@ export class Router {
     app.get('/enableDebugMode', async (req, res) => {
       const logSyncManager = new LogSyncManager();
       const logLevel = req.query.logLevel || "debug";
-      let timeInterval = req.query.timeInterval ? parseInt(req.query.timeInterval) : 1000 * 60 * 10;
-      enableDebugMode(timeInterval, logLevel);
+      let timeInterval = req.query.timeInterval ? parseInt(req.query.timeInterval) : 1000 * 60 * 10; // Default to 10 minutes
+      enableDebugMode(timeInterval, logLevel, true);
       try {
         setTimeout(async () => {
           const oldLogLevel = process.env.LOG_LEVEL;
           process.env.LOG_LEVEL = 'debug';
-          await logSyncManager.start(true, timeInterval);
+          await logSyncManager.start(true);
           process.env.LOG_LEVEL = oldLogLevel;
         }, timeInterval);
         res.send(Response.success('enabledDebugMode', { enabled: true }, req));

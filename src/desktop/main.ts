@@ -326,28 +326,6 @@ async function initLogger() {
       adopter: 'winston'
     }
   });
-
-  const from: any  = new Date().valueOf() - 24 * 60 * 60 * 1000;
-  type OrderType = "asc" | "desc";
-  const options = {
-    from: from,
-    until:  new Date,
-    limit:  10,
-    start:  0,
-    order:  "desc" as OrderType,
-    fields: ['message']
-};
-  getLogs(options)
-    .then((logs) => {
-      console.log("logs", logs);
-      if (_.get(logs, "dailyRotateFile.length")) {
-      } else {
-        console.log("logs else", logs);
-      }
-    })
-    .catch((error) => {
-      console.log("logs catch");
-    });
 }
 
 const onMainWindowCrashed = async (err) => {
