@@ -1,11 +1,11 @@
 import { Location } from '@angular/common';
 import { TelemetryService, IAuditEventInput, IImpressionEventInput } from '@sunbird/telemetry';
-import { Component, OnInit, OnDestroy, ViewChild, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Inject, HostListener } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption-v8';
 import { UserService, GeneraliseLabelService, PlayerService } from '@sunbird/core';
 import { AssessmentScoreService, CourseBatchService, CourseConsumptionService, CourseProgressService } from '@sunbird/learn';
-import { PublicPlayerService } from '@sunbird/public';
+import { PublicPlayerService, ComponentCanDeactivate } from '@sunbird/public';
 import { ConfigService, ResourceService, ToasterService, NavigationHelperService,
   ContentUtilsServiceService, ITelemetryShare, LayoutService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
@@ -24,7 +24,7 @@ const ACCESSEVENT = 'renderer:question:submitscore';
   templateUrl: './assessment-player.component.html',
   styleUrls: ['./assessment-player.component.scss']
 })
-export class AssessmentPlayerComponent implements OnInit, OnDestroy {
+export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
   @ViewChild('modal') modal;
   private unsubscribe = new Subject<void>();
   contentProgressEvents$ = new Subject();
@@ -74,6 +74,13 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   showLastAttemptsModal: boolean = false;
   navigationObj: { event: any; id: any; };
   showPlayer = false;
+
+  @HostListener('window:beforeunload')
+  canDeactivate() {
+    // returning true will navigate without confirmation
+    // returning false will show a confirm dialog before navigating away
+    return _.get(this.activeContent, 'mimeType') === 'application/vnd.sunbird.questionset' ? false: true;
+  } 
 
   constructor(
     public resourceService: ResourceService,
