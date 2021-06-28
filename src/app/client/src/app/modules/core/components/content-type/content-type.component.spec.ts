@@ -3,7 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoreModule, FormService, UserService } from '@sunbird/core';
-import { BrowserCacheTtlService, ConfigService, LayoutService, ResourceService, UtilService , IUserData} from '@sunbird/shared';
+import { BrowserCacheTtlService, ConfigService, LayoutService, ResourceService, UtilService , IUserData, InterpolatePipe} from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { of as observableOf } from 'rxjs';
@@ -37,7 +37,7 @@ describe('ContentTypeComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, TelemetryModule.forRoot()],
-      declarations: [ContentTypeComponent, OnlineOnlyDirective],
+      declarations: [ContentTypeComponent, OnlineOnlyDirective, InterpolatePipe],
       providers: [{ provide: ResourceService, useValue: resourceBundle }, CacheService,
       { provide: ActivatedRoute, useValue: fakeActivatedRoute }, LayoutService, UtilService,
       { provide: APP_BASE_HREF, useValue: '/' }, BrowserCacheTtlService,
