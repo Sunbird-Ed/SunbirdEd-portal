@@ -14,7 +14,7 @@ import {
   Evidence,
   FormValue,
   Answer,
-  NumberValidation,
+  NumberValidation,Validation,
   Questionnaire,
   Questionnaire1,
   Regex,
@@ -23,6 +23,8 @@ import {
   MatrixQuestion
 } from "./questionnaire.service.mock";
 import { AbstractControl } from "@angular/forms";
+import { FormGroup, FormBuilder,FormControl } from "@angular/forms";
+
 import * as _ from "lodash-es";
 import {
   of as observableOf,
@@ -32,8 +34,9 @@ import {
   observable
 } from "rxjs";
 
+
 describe("QuestionnaireService", () => {
-  let baseHref, kendraService, userService, modalService;
+  let baseHref, kendraService, userService, modalService, fb :FormBuilder = new FormBuilder;
   let service: QuestionnaireService;
   configureTestSuite();
   beforeEach(() =>
@@ -58,7 +61,7 @@ describe("QuestionnaireService", () => {
   it("should be created", () => {
     expect(service).toBeTruthy();
   });
-  
+
   it("Should validate the data", () => {
     spyOn(service, "validate").and.callThrough();
     service.validate(<any>Question);
@@ -66,18 +69,51 @@ describe("QuestionnaireService", () => {
   });
 
   it("Should validate the Number", () => {
+    let form = fb.group({});
+    form.addControl('number', new FormControl(456,[
+      service.validate(<any>NumberValidation)
+    ]));
     spyOn(service, "validate").and.callThrough();
     service.validate(<any>NumberValidation);
     expect(service.validate).toHaveBeenCalled();
   });
-  it("Should return null if no validation required", () => {
+
+  it("Should validate the Number with empty value", () => {
+    let form = fb.group({});
+    form.addControl('number', new FormControl('',[
+      service.validate(<any>NumberValidation)
+    ]));
     spyOn(service, "validate").and.callThrough();
-    service.validate(<any>NoValidation);
+    service.validate(<any>NumberValidation);
     expect(service.validate).toHaveBeenCalled();
   });
-  it("Should validate the Regex", () => {
+
+  it("Should return null if no validation required", () => {
+    let form = fb.group({});
+    form.addControl('no validation', new FormControl('',[
+      service.validate(<any>NoValidation)
+    ]));
     spyOn(service, "validate").and.callThrough();
-    service.validate(<any>Question);
+    service.validate(<any>NoValidation);  
+    expect(service.validate).toHaveBeenCalled();
+  });
+  it("Should validate the validation",() =>{
+    let form = fb.group({});
+    form.addControl('validation', new FormControl('',[
+      service.validate(<any>Validation)
+    ]));
+    spyOn(service, "validate").and.callThrough();
+    service.validate(<any>Validation);  
+    expect(service.validate).toHaveBeenCalled();
+  })
+
+  it("Should validate the Regex", () => {
+    let form = fb.group({});
+    form.addControl('Regrex', new FormControl('Regrex test',[
+      service.validate(<any>Regex)
+    ]));
+    spyOn(service, "validate").and.callThrough();
+    service.validate(<any>Regex);
     expect(service.validate).toHaveBeenCalled();
   });
 
@@ -85,12 +121,12 @@ describe("QuestionnaireService", () => {
     let submissionId = "60c89137b66fbd53b9c52dfb";
     spyOn(service, "setSubmissionId").and.callThrough();
     service.setSubmissionId(submissionId);
-    expect(service._submissionId).toBe(submissionId);
     expect(service.setSubmissionId).toHaveBeenCalled();
+    expect(service['_submissionId']).toEqual(submissionId);
   });
 
+
   it("Should return submission Id", () => {
-    let submissionId = "60c89137b66fbd53b9c52dfb";
     spyOn(service, "getSubmissionId").and.callThrough();
     service.getSubmissionId();
     expect(service.getSubmissionId).toHaveBeenCalled();
@@ -135,7 +171,6 @@ describe("QuestionnaireService", () => {
     expect(service.cloudStorageUpload).toHaveBeenCalled();
   });
 
-  
   it("Should return matrix value", () => {
     spyOn(service, "constructMatrixValue").and.callThrough();
     service.constructMatrixValue(ValidSubmission, MatrixQuestion, "OB");
@@ -148,9 +183,12 @@ describe("QuestionnaireService", () => {
     expect(service.mapSubmissionToAssessment).toHaveBeenCalled();
   });
 
-  it("Should format the payload", () =>{
+  it("Should format the payload", () => {
     spyOn(service, "formatToPayload").and.callThrough();
-    service.formatToPayload(Questionnaire.result.assessment.evidences[0].sections[0].questions[0], FormValue);
+    service.formatToPayload(
+      Questionnaire.result.assessment.evidences[0].sections[0].questions[0],
+      FormValue
+    );
     expect(service.formatToPayload).toHaveBeenCalled();
-  })
+  });
 });

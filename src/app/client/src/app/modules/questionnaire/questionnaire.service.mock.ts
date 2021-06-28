@@ -898,6 +898,13 @@ export const Question = {
       required:false
    },
  }
+
+ export const Validation ={
+   validation:{
+      required:true
+   },
+ }
+
  export const Questionnaire = {
    "message":"Assessment fetched successfully",
    "status":200,
