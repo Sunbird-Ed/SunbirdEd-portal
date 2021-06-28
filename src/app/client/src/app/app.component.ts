@@ -150,6 +150,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.telemetryService.syncEvents(false);
     this.ngOnDestroy();
   }
+
   handleLogin() {
     window.location.replace('/sessionExpired');
     this.cacheService.removeAll();
