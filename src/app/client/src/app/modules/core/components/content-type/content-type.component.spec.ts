@@ -214,6 +214,24 @@ describe('ContentTypeComponent', () => {
     expect(component.updateSelectedContentType).toHaveBeenCalled();
     expect(component.selectedContentType).toEqual('textbook');
   });
-
-
+  it('should set selected content type for explore page', () => {
+    component.setSelectedContentType(`explore/1?se_boards=state%20(tamil%20nadu)
+    &se_mediums=english&se_mediums=tamil&se_gradeLevels=class%207
+    &se_gradeLevels=class%204&se_gradeLevels=class%201&se_gradeLevels=class%202
+    &se_gradeLevels=class%203&se_gradeLevels=class%205&se_gradeLevels=class%209
+    &se_gradeLevels=class%208&se_subjects=english&returnTo=home&selectedTab=all
+    &showClose=true&isInside=english
+    `, {
+      se_subjects: 'english',
+      selectedTab: 'all',
+      showClose: 'true',
+      isInside: 'english'
+    }, {});
+    expect(component.selectedContentType).toBe('all');
+    expect(component.showBackButton).toBeTruthy();
+  });
+  it('should call goback method', () => {
+    component.goBack();
+    expect(component.showBackButton).toBeFalsy();
+  });
 });
