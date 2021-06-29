@@ -19,7 +19,7 @@ import { debounceTime, map } from "rxjs/operators";
 import { AddEntityComponent } from "./add-entity.component";
 import { configureTestSuite } from "@sunbird/test-util";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
-import { SuiModule } from "ng2-semantic-ui";
+import { SuiModule } from "ng2-semantic-ui-v9";
 import { RouterTestingModule } from "@angular/router/testing";
 import { Router } from "@angular/router";
 import { NO_ERRORS_SCHEMA } from "@angular/core";

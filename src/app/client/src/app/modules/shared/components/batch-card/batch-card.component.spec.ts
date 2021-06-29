@@ -2,7 +2,7 @@ import { BatchCardComponent } from './batch-card.component';
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { PaginationService, ToasterService, ResourceService } from '../../services/index';
 import { CoreModule } from '@sunbird/core';

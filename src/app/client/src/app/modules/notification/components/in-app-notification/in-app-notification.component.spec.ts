@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core
 import { InAppNotificationComponent } from './in-app-notification.component';
 
 import { configureTestSuite } from '@sunbird/test-util';
-import { SuiModalModule, SuiModule } from 'ng2-semantic-ui';
+import { SuiModalModule, SuiModule } from 'ng2-semantic-ui-v9';
 import { SharedModule, ResourceService, ConnectionService } from '@sunbird/shared';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { NotificationServiceImpl } from '../../services/notification/notification-service-impl';

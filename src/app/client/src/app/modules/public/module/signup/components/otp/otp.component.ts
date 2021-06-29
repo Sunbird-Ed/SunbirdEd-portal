@@ -14,7 +14,7 @@ import { RecaptchaComponent } from 'ng-recaptcha';
   styleUrls: ['./otp.component.scss']
 })
 export class OtpComponent implements OnInit {
-  @ViewChild('captchaRef', {static: false}) captchaRef: RecaptchaComponent;
+  @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
   @Input() signUpdata: any;
   @Input() isMinor: boolean;
   @Input() tncLatestVersion: any;

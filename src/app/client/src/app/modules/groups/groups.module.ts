@@ -3,7 +3,7 @@ import { GroupsRoutingModule } from './groups-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '@sunbird/shared';
-import { SuiModule, SuiModalModule, SuiRatingModule } from 'ng2-semantic-ui/dist';
+import { SuiModule, SuiModalModule, SuiRatingModule } from 'ng2-semantic-ui-v9';
 import { NgInviewModule } from 'angular-inport';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MyGroupsComponent, AddMemberComponent, GroupHeaderComponent, NoGroupResultComponent,
@@ -21,7 +21,6 @@ import { SlickModule } from 'ngx-slick';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { DiscussionModule } from '../discussion/discussion.module';
 import { ActivityDetailsComponent } from './components/activity/activity-details/activity-details.component';
-import { DashletModule } from '@project-sunbird/sb-dashlet';
 
 @NgModule({
   imports: [
@@ -42,7 +41,7 @@ import { DashletModule } from '@project-sunbird/sb-dashlet';
     SuiRatingModule,
     RecaptchaModule,
     DiscussionModule,
-    DashletModule
+    SharedFeatureModule
   ],
   providers: [GroupsService],
   declarations: [ MyGroupsComponent, AddMemberComponent,

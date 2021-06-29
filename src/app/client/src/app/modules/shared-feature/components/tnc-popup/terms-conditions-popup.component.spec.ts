@@ -6,7 +6,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TermsAndConditionsPopupComponent } from './terms-conditions-popup.component';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { tNcMockResponse } from './terms-conditions-popup.component.spec.data';
 import { UserService, TenantService } from '@sunbird/core';

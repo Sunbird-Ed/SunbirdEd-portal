@@ -6,7 +6,7 @@ import { SharedModule } from '@sunbird/shared';
 import { ChartsModule } from 'ng2-charts';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { DataChartComponent } from './data-chart.component';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { ReactiveFormsModule } from '@angular/forms';
 import { mockChartData } from './data-chart.component.spec.data';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';

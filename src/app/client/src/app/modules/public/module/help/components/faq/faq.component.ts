@@ -34,7 +34,7 @@ export class FaqComponent implements OnInit {
   isMobileView = false;
   showFaqReport: boolean;
   showOnlyFaqCategory = true;
-  @ViewChild('sbFaqCategoryList', { static: false }) sbFaqCategoryList;
+  @ViewChild('sbFaqCategoryList') sbFaqCategoryList;
   @ViewChildren('videoPlayer') videoPlayer;
   showVideoModal = false;
   playerConfig: any;

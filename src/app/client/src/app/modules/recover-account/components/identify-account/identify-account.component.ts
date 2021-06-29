@@ -15,7 +15,7 @@ import { RecaptchaComponent } from 'ng-recaptcha';
 export class IdentifyAccountComponent implements OnInit {
 
   disableFormSubmit = true;
-  @ViewChild('captchaRef', {static: false}) captchaRef: RecaptchaComponent;
+  @ViewChild('captchaRef') captchaRef: RecaptchaComponent;
   googleCaptchaSiteKey: string;
   nameNotExist = false;
   identiferStatus = '';

@@ -18,7 +18,7 @@ import { Subject } from 'rxjs';
   templateUrl: './status.component.html'
 })
 export class StatusComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('modal', {static: false}) modal;
+  @ViewChild('modal') modal;
   /**
 * reference for ActivatedRoute
 */

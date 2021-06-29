@@ -2,7 +2,7 @@ import { of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PageSectionComponent } from './page-section.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { SlickModule } from 'ngx-slick';
 import { SharedModule,ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { NO_ERRORS_SCHEMA } from '@angular/core';

@@ -14,7 +14,7 @@ import { Subject } from 'rxjs';
   templateUrl: './enroll-batch.component.html'
 })
 export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('enrollBatch', {static: false}) enrollBatch;
+  @ViewChild('enrollBatch') enrollBatch;
   batchId: string;
   batchDetails: any;
   showEnrollDetails = false;

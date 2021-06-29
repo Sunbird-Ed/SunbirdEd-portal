@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ObservationService } from '@sunbird/core';
-import { ConfigService, ResourceService, ILoaderMessage, INoResultMessage, ToasterService } from '@sunbird/shared';
+import { ConfigService, ResourceService, ILoaderMessage, INoResultMessage, LayoutService, ToasterService } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ObservationUtilService } from "../../service";
+import { ObservationUtilService } from '../../service';
 import { Location } from '@angular/common';
 @Component({
   selector: "app-observation-details",
@@ -18,6 +18,7 @@ export class ObservationDetailsComponent implements OnInit {
   payload;
   observationId;
   selectedEntity: any = {};
+  layoutConfiguration: any;
   submissions;
   programName;
   actions = [{
@@ -48,7 +49,8 @@ export class ObservationDetailsComponent implements OnInit {
     private routerParam: ActivatedRoute,
     public resourceService: ResourceService,
     public observationUtilService: ObservationUtilService,
-    private location : Location,
+    public layoutService: LayoutService,
+    private location: Location,
     public toasterService: ToasterService,
   ) {
     this.config = config;
@@ -57,11 +59,12 @@ export class ObservationDetailsComponent implements OnInit {
       this.solutionId = data.solutionId;
       this.observationId = data.observationId;
       this.solution = data.solutionName;
-      this.programName = data.programName
-    })
+      this.programName = data.programName;
+    });
   }
 
   ngOnInit() {
+    this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.getProfileData();
   }
   getProfileData() {

@@ -13,7 +13,7 @@ import { PopupControlService } from '../../../../service/popup-control.service';
   templateUrl: './profile-framework-popup.component.html'
 })
 export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
-  @ViewChild('modal', {static: false}) modal;
+  @ViewChild('modal') modal;
   @Input() showCloseIcon: boolean;
   @Input() buttonLabel: string;
   @Input() formInput: any = {};

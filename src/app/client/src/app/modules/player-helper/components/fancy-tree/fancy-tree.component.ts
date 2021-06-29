@@ -17,7 +17,7 @@ export class FancyTreeComponent implements AfterViewInit {
   @Input() public rootNode;
   @Input() public telemetryInteractData;
   @Output() public itemSelect: EventEmitter<Fancytree.FancytreeNode> = new EventEmitter();
-  @ViewChild(TelemetryInteractDirective, {static: false}) telemetryInteractDirective: TelemetryInteractDirective;
+  @ViewChild(TelemetryInteractDirective) telemetryInteractDirective: TelemetryInteractDirective;
   constructor(public activatedRoute: ActivatedRoute, private lazzyLoadScriptService: LazzyLoadScriptService) { }
   ngAfterViewInit() {
     let options: any = {

@@ -1,0 +1,57 @@
+.telemetry-cont {
+    display: block;
+    position: fixed;
+    right: 0;
+    bottom: 16%;
+    z-index: 999;
+}
+
+.telemetry-float-icon {
+    background: #cce4ff;
+    letter-spacing: 3px;
+    padding: 4px;
+    width: 200px;
+    position: fixed;
+    right: -128px;
+    z-index: 1000;
+    transition: all 0.25s ease;
+    border-radius: 24px 0px 0px 24px;
+    box-shadow: var(--sbt-box-shadow-6px);
+    cursor: pointer;
+    border: #034f9d solid 4px;
+    border-right-width: 0px;
+    cursor:pointer;
+  }
+
+  .telemetry-btn-label {
+    color: var(--sb-linkmenu-text);
+    font-weight: bold;
+  }
+  
+  .telemetry-btn-label {
+    color: var(--sb-linkmenu-text);
+    font-weight: bold;
+  }
+
+  .telemetry-float-icon:hover {
+    right: 0;
+  }
+  
+  .telemetry-float-icon a {
+       color: #fff !important;
+      text-decoration: none;
+      text-align: center;
+  }
+  
+  .float-icon {
+   bottom:16%;
+  }
+  
+  .chat-icon {
+      font-size: 20px;
+      color: #fff;
+      padding: 10px 0;
+      width: 40px;
+      margin: 0 8px;
+  }
+  

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import * as _ from 'lodash-es';
-import { QuestionCursor } from '@project-sunbird/sunbird-quml-player-v8';
-import { EditorCursor } from '@project-sunbird/sunbird-collection-editor';
+import { QuestionCursor } from '@project-sunbird/sunbird-quml-player-v9';
+import { EditorCursor } from '@project-sunbird/sunbird-collection-editor-v9';
 import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from './../../../../service/CsLibInitializer/cs-lib-initializer.service';
 @Injectable({ providedIn: 'root' })

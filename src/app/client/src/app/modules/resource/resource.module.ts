@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CurriculumCoursesComponent } from './components';
 import { SharedModule } from '@sunbird/shared';
-import { SuiModule } from 'ng2-semantic-ui/dist';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { SlickModule } from 'ngx-slick';
 import { FormsModule } from '@angular/forms';
 import { CoreModule } from '@sunbird/core';

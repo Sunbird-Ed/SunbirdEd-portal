@@ -1,6 +1,6 @@
 <app-landing-section [noTitle]="true" [layoutConfiguration]="layoutConfiguration">
 </app-landing-section>
-<div [ngClass]="layoutConfiguration ? 'sbt-container sbt-user-management relative9':''" >
+<div [ngClass]="layoutConfiguration ? 'sbt-container sbt-user-management relative9 sbt-inside-page-container':''" > 
 <div class="sb-manage-section" [appTelemetryImpression]="telemetryImpression">
   <div class="sb-multi-rows py-16">
     <div class="d-flex flex-ai-center flex-jc-space-between ui container">
@@ -21,7 +21,7 @@
       <!-- <button type="button" (click) = "openModel()" class="sb-btn sb-btn-outline-primary sb-btn-normal" appTelemetryInteract 
       [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="openUploadModalInteractEdata">{{resourceService.frmelmnts?.lbl?.uploadValidationStatus}}</button> -->
     </div>
-    <div class="d-flex flex-ai-center ml-8 py-8" *ngIf="showAdminTnC">
+    <div class="d-flex flex-ai-center ml-8 py-8 ui container" *ngIf="showAdminTnC">
       <label class="d-flex flex-ai-center">
         <span class="font-weight-normal fnormal">{{resourceService?.frmelmnts?.imsg?.admintnc | interpolate:'{instance}': instance }} <a class="sb-color-primary cursor-pointer" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" 
           [telemetryInteractEdata]="adminPolicyDetailsInteractEdata" (click)=openAdminPolicyPopup()>{{resourceService?.frmelmnts?.lnk?.adminPolicy}}</a></span>
@@ -73,56 +73,6 @@
       </div>
    </div>
   </div>
-  <div class="sb-pageSection sb-multi-rows">
-      <div class="ui container py-20">
-        <div class="sb-pageSection-content">
-          <div class="d-inline-flex">
-            <span class="sb-label-name">Validated State Teachers:</span>
-          </div>
-          <div class="sb-meta-data-container pt-16 sb-meta-data-column d-flex flex-w-wrap">
-            <dl class="sb-meta-data">
-              <dt>{{ validatedUser['districts'] }}</dt>
-              <dd>Districts</dd>
-            </dl>
-            <dl class="sb-meta-data">
-              <dt>{{ validatedUser['blocks'] }}</dt>
-              <dd>Blocks</dd>
-            </dl>
-            <dl class="sb-meta-data">
-              <dt>{{ validatedUser['schools'] }}</dt>
-              <dd>Schools</dd>
-            </dl>
-            <dl class="sb-meta-data">
-              <dt>{{ validatedUser['subOrgRegistered'] }}</dt>
-              <dd>School teacher accounts</dd>
-            </dl>
-            <dl class="sb-meta-data">
-              <dt>{{ validatedUser['rootOrgRegistered'] }}</dt>
-              <dd>State accounts</dd>
-            </dl>
-           <div class="ml-auto" *ngIf="validatedUserSummary && validatedUserSummary.length">
-              <button class="sb-btn sb-btn-normal" [ngClass]="(teachersButtonText == 'View Less') ? 'sb-btn-outline-primary' : 'sb-btn-primary'" (click)="teachersTableView()" appTelemetryInteract [telemetryInteractEdata]="userViewInteractEdata">{{teachersButtonText}}</button>
-              <button type="button" class="sb-btn sb-btn-secondary sb-btn-normal ml-16" (click)="downloadZipFile(userZip, slug + '.zip')" appTelemetryInteract [telemetryInteractEdata]="userDownloadInteractEdata"> {{resourceService.frmelmnts.btn.download}} </button>
-           </div>
-          </div>
-        </div>
-      </div>
-      <div class="sb-manage-table-section" *ngIf="teachersButtonText === resourceService.frmelmnts.btn.viewless">
-         <div class="ui container">
-             <div class="sb-table-responsive">
-                 <div class="sb-table-container">
-                    <table [attr.id]="userTableId" class="sb-table sb-table-hover sb-table-striped sb-table-sortable br-0 width-100">
-                        <thead>
-                          <tr>
-                            <th *ngFor="let header of userTableHeader">{{header}}</th>
-                          </tr>
-                        </thead>
-                    </table>
-                 </div>
-               </div>
-         </div>
-      </div>
-    </div>
 </div>
 </div>
 <!-- Upload validation status modal -->

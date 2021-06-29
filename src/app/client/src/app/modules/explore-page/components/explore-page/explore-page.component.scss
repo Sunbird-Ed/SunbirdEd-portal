@@ -1,23 +1,31 @@
+@import "variables";
+@import "mixins/mixins";
+
 .course-card-width {
-  width: 280px !important;
+  width: calculateRem(280px) !important;
 }
 .sb-section-preference {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #dad9cb;
-  padding: 2rem;
-  border-radius: 1.5rem;
+  background-color:var(--sbt-body-bg);
+  padding: calculateRem(32px);
+  border-radius: calculateRem(24px);
   position: relative;
   overflow: hidden;
+  margin-top:calculateRem(32px);
+
+  @include respond-below(sm) {
+    flex-wrap: wrap;
+  }
     .preference {
       position: relative;
       z-index: 1;
       .header {
-        font-size: 1rem;
+        font-size: calculateRem(16px);
       }
       p, span {
-        font-size: 0.8rem;
+        font-size:calculateRem(12px);
       }
       p {
         margin-bottom: 0;
@@ -29,13 +37,16 @@
     .change-preference {
       position: relative;
       z-index: 1;
+      @include respond-below(sm) {
+        padding-top: calculateRem(8px);
+      }
     }
     svg {
       position: absolute;
-      right: 32px;
+      right: calculateRem(32px);
       left: inherit;
       top: inherit;
-      bottom: -16px;
+      bottom: calculateRem(-16px);
       opacity: 0.55;
       width: 180px;
       height: auto;
@@ -45,12 +56,14 @@
     }
 }
 .section-hr {
-  border: 0.5px solid #dad9cb;
+  border: calculateRem(0.5px) solid var(--rc-dad9cb);
 }
 .no-background {
   background: none;
 }
+
 .home-container {
-  padding:1.5rem;
-  border-radius:2.5rem;
+  padding:0;
+  // border-radius:2.5rem;
 }
+

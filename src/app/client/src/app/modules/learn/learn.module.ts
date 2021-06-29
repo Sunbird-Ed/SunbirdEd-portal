@@ -14,7 +14,7 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8'
 import {
   SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
   SuiRatingModule, SuiCollapseModule
-} from 'ng2-semantic-ui';
+} from 'ng2-semantic-ui-v9';
 
 @NgModule({
   imports: [

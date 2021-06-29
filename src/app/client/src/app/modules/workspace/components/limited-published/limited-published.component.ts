@@ -12,7 +12,7 @@ import { WorkSpaceService } from '../../services';
 import * as _ from 'lodash-es';
 import {
   SuiModalService, TemplateModalConfig, ModalTemplate
-} from 'ng2-semantic-ui';
+} from 'ng2-semantic-ui-v9';
 import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 
 /**
@@ -25,7 +25,7 @@ import { IInteractEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 })
 export class LimitedPublishedComponent extends WorkSpace implements OnInit, AfterViewInit {
 
-  @ViewChild('modalTemplate', {static: false})
+  @ViewChild('modalTemplate')
   public modalTemplate: ModalTemplate<{ data: string }, string, string>;
   /**
    * To navigate to other pages

@@ -16,7 +16,7 @@ import { ADD_MEMBER } from '../../interfaces/telemetryConstants';
   styleUrls: ['./group-members.component.scss']
 })
 export class GroupMembersComponent implements OnInit, OnDestroy {
-  @ViewChild('searchInputBox', {static: false}) searchInputBox: ElementRef;
+  @ViewChild('searchInputBox') searchInputBox: ElementRef;
   @Input() config: IGroupMemberConfig = {
     showMemberCount: false,
     showSearchBox: false,

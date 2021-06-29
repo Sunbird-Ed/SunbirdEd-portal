@@ -12,7 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class CourseCompletionComponent implements OnDestroy {
 
-  @ViewChild('modal', {static: false}) modal;
+  @ViewChild('modal') modal;
   @Input() certificateDescription;
   @Output() close = new EventEmitter<void>();
   constructor(
