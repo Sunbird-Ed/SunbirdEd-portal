@@ -373,7 +373,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     if (newPlayerEvent) {
       eventCopy = { detail: {telemetryData: eventCopy}};
     }
-    
     const eid = _.get(eventCopy, 'detail.telemetryData.eid');
     if (eid && (eid === 'START' || eid === 'END')) {
       this.showRatingPopup(eventCopy);
