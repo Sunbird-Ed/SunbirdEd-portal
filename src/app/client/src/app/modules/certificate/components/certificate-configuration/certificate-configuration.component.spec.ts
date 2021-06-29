@@ -260,7 +260,7 @@ describe('CertificateConfigurationComponent', () => {
     const certificateService  = TestBed.get(CertificateService);
     userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData });
     userService._userProfile = CertMockResponse.userMockData;
-    spyOn(certificateService, 'fetchCertificatePreferences').and.callFake(() => observableThrowError({}));
+    spyOn(certificateService, 'fetchCertificatePreferences').and.returnValue(observableThrowError({}));
 
     /** Act */
     component.getTemplateList();
