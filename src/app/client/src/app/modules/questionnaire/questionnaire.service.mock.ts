@@ -882,7 +882,7 @@ export const Question = {
  export const Regex ={
    validation :{
       required:true,
-      regex : '^[A-Za-z]+$'
+      regex : '^[a-zA-Z ]{2,30}$'
    }
  }
 

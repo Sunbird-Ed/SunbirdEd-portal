@@ -70,22 +70,25 @@ describe("QuestionnaireService", () => {
 
   it("Should validate the Number", () => {
     let form = fb.group({});
-    form.addControl('number', new FormControl(456,[
+    let value = 456;
+    form.addControl('number', new FormControl(value,[
       service.validate(<any>NumberValidation)
     ]));
-    spyOn(service, "validate").and.callThrough();
-    service.validate(<any>NumberValidation);
+   spyOn(service, "validate").and.callThrough();
+   service.validate(<any>NumberValidation);
     expect(service.validate).toHaveBeenCalled();
+    expect(form.controls['number'].valid).toBe(true);
   });
 
   it("Should validate the Number with empty value", () => {
     let form = fb.group({});
-    form.addControl('number', new FormControl('',[
+    form.addControl('numberWithEmptyVal', new FormControl('',[
       service.validate(<any>NumberValidation)
     ]));
     spyOn(service, "validate").and.callThrough();
     service.validate(<any>NumberValidation);
     expect(service.validate).toHaveBeenCalled();
+    expect(form.controls['numberWithEmptyVal'].valid).toBe(false);
   });
 
   it("Should return null if no validation required", () => {
@@ -96,7 +99,9 @@ describe("QuestionnaireService", () => {
     spyOn(service, "validate").and.callThrough();
     service.validate(<any>NoValidation);  
     expect(service.validate).toHaveBeenCalled();
+    expect(form.controls['no validation'].valid).toBe(true);
   });
+
   it("Should validate the validation",() =>{
     let form = fb.group({});
     form.addControl('validation', new FormControl('',[
@@ -105,6 +110,7 @@ describe("QuestionnaireService", () => {
     spyOn(service, "validate").and.callThrough();
     service.validate(<any>Validation);  
     expect(service.validate).toHaveBeenCalled();
+    expect(form.controls['validation'].valid).toBe(false);
   })
 
   it("Should validate the Regex", () => {
@@ -115,6 +121,7 @@ describe("QuestionnaireService", () => {
     spyOn(service, "validate").and.callThrough();
     service.validate(<any>Regex);
     expect(service.validate).toHaveBeenCalled();
+    expect(form.controls['Regrex'].valid).toBe(true);
   });
 
   it("Should set Submission Id", () => {
