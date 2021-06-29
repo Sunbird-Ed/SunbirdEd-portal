@@ -1,6 +1,6 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoreModule, FormService, UserService } from '@sunbird/core';
 import { BrowserCacheTtlService, ConfigService, LayoutService,
@@ -229,9 +229,19 @@ describe('ContentTypeComponent', () => {
     }, {});
     expect(component.selectedContentType).toBe('all');
     expect(component.showBackButton).toBeTruthy();
+    expect(component.showingResult).toBe('');
   });
   it('should call goback method', () => {
     component.goBack();
     expect(component.showBackButton).toBeFalsy();
   });
+  it('should set selected content type for mydownloads page', () => {
+    component.setSelectedContentType('/mydownloads', {}, {});
+    expect(component.selectedContentType).toBe('mydownloads');
+  });
+  it('should set selected content type for observation page', () => {
+    component.setSelectedContentType('/observation', {}, {});
+    expect(component.selectedContentType).toBe('observation');
+  });
+ 
 });
