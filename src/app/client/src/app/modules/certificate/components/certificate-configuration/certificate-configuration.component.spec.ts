@@ -255,17 +255,12 @@ describe('CertificateConfigurationComponent', () => {
   });
 
   it('should return empty observable if preference api fails to fetch cert template list', () => {
-    /** Arrange */
     const userService = TestBed.get(UserService);
     const certificateService  = TestBed.get(CertificateService);
     userService._userData$.next({ err: null, userProfile: CertMockResponse.userMockData });
     userService._userProfile = CertMockResponse.userMockData;
     spyOn(certificateService, 'fetchCertificatePreferences').and.callFake(() => observableThrowError({}));
-
-    /** Act */
     component.getTemplateList();
-
-    /** Assert */
     component.getTemplateList().subscribe( data => {
       expect(component.getTemplateList).toEqual(jasmine.objectContaining({}));
     });
