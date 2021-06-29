@@ -1,4 +1,4 @@
-import { FieldConfigInputType } from 'common-form-elements';
+import { FieldConfigInputType } from 'common-form-elements-v9';
 
 export const mockRes = {
   orgSearch: {
