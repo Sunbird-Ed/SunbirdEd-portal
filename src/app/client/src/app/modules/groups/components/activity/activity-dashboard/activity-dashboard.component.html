@@ -1,5 +1,5 @@
-<div class="sbt-back-header sbt-center-container">
-  <app-back-button></app-back-button>
+<div class="sbt-back-header sbt-center-container sb-dashlet-table">
+  <app-back-button class="group-back"></app-back-button>
   <div class="content-header">
     <div class="ui container pb-16">
       <div class="d-flex flex-ai-center flex-jc-space-between flex-w-wrap">
@@ -19,7 +19,7 @@
       <app-loader [data]='loaderMessage'></app-loader>
     </div>
   </div>
-  <div class="ui container sb-dashlet-table" *ngIf="!isLoader">
+  <div class="ui container" *ngIf="!isLoader">
     <sb-dashlet [type]="'table'" [data]="Dashletdata" [config]="columnConfig" id="table" #lib>
       <ng-template sbTemplateRef="header" let-config>
         <div role="alert" class="datatable-update">
