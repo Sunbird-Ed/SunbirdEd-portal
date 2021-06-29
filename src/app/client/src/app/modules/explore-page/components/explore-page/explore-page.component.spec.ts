@@ -783,7 +783,8 @@ describe('ExplorePageComponent', () => {
         queryParams: {
             se_subjects: 'english',
             selectedTab: 'all',
-            showClose: 'true'
+            showClose: 'true',
+            isInside: 'english'
         }
       });
     });
