@@ -4,7 +4,7 @@ import { QuestionnaireComponent } from "./questionnaire.component";
 import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { SharedModule } from "@sunbird/shared";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { SuiModule } from "ng2-semantic-ui";
+import { SuiModule } from "ng2-semantic-ui-v9";
 import {
   InputTypeAttachmentComponent,
   InputTypeCheckboxComponent,
