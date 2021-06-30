@@ -1,11 +1,11 @@
 import { Location } from '@angular/common';
 import { TelemetryService, IAuditEventInput, IImpressionEventInput } from '@sunbird/telemetry';
-import { Component, OnInit, OnDestroy, ViewChild, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Inject, HostListener } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption-v8';
 import { UserService, GeneraliseLabelService, PlayerService } from '@sunbird/core';
 import { AssessmentScoreService, CourseBatchService, CourseConsumptionService, CourseProgressService } from '@sunbird/learn';
-import { PublicPlayerService } from '@sunbird/public';
+import { PublicPlayerService, ComponentCanDeactivate } from '@sunbird/public';
 import { ConfigService, ResourceService, ToasterService, NavigationHelperService,
   ContentUtilsServiceService, ITelemetryShare, LayoutService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
@@ -24,7 +24,7 @@ const ACCESSEVENT = 'renderer:question:submitscore';
   templateUrl: './assessment-player.component.html',
   styleUrls: ['./assessment-player.component.scss']
 })
-export class AssessmentPlayerComponent implements OnInit, OnDestroy {
+export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
   @ViewChild('modal') modal;
   private unsubscribe = new Subject<void>();
   contentProgressEvents$ = new Subject();
@@ -74,6 +74,13 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   showLastAttemptsModal: boolean = false;
   navigationObj: { event: any; id: any; };
   showPlayer = false;
+
+  @HostListener('window:beforeunload')
+  canDeactivate() {
+    // returning true will navigate without confirmation
+    // returning false will show a confirm dialog before navigating away
+    return _.get(this.activeContent, 'mimeType') === 'application/vnd.sunbird.questionset' ? false: true;
+  } 
 
   constructor(
     public resourceService: ResourceService,
@@ -410,11 +417,13 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
         } else {
           const _contentIndex = _.findIndex(this.contentStatus, {contentId: request.contentId});
           const _resIndex =  _.findIndex(updatedRes.content, {contentId: request.contentId});
+          if(_resIndex !== -1) {
           // Update the available status data object
-          this._routerStateContentStatus['progress'] = _.get(updatedRes, 'progress');
-          this.contentStatus[_contentIndex]['status'] = _.get(updatedRes.content[_resIndex], 'status');
-          this._routerStateContentStatus['totalCount'] = _.get(updatedRes, 'totalCount');
-          this._routerStateContentStatus['completedCount'] = _.get(updatedRes, 'completedCount');
+            this._routerStateContentStatus['progress'] = _.get(updatedRes, 'progress');
+            this.contentStatus[_contentIndex]['status'] = _.get(updatedRes.content[_resIndex], 'status');
+            this._routerStateContentStatus['totalCount'] = _.get(updatedRes, 'totalCount');
+            this._routerStateContentStatus['completedCount'] = _.get(updatedRes, 'completedCount');
+          }
         }
         /* istanbul ignore else */
         if (!this.isUnitCompleted) {
@@ -805,7 +814,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
             });
             const _contentIndex = _.findIndex(this.contentStatus, { contentId: _.get(this.playerConfig, 'context.contentId') });
             this.playerConfig['metadata']['maxAttempt'] = _.get(this.activeContent, 'maxAttempts');
-            let _currentAttempt = _contentIndex > 0 ? _.get(this.contentStatus[_contentIndex], 'score.length') : 0;
+            let _currentAttempt = _.get(this.contentStatus[_contentIndex], 'score.length') || 0;
             this.playerConfig['metadata']['currentAttempt'] = _currentAttempt == undefined ? 0 : _currentAttempt;
             this.showLoader = false;
           }, (err) => {
@@ -838,10 +847,10 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   onSelfAssessLastAttempt(event) {
-    if (_.get(event, 'data') === 'renderer:selfassess:lastattempt') {
+    if (_.get(event, 'data') === 'renderer:selfassess:lastattempt' || _.get(event, 'edata.isLastAttempt')) {
       this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.selfAssessLastAttempt'));
     }
-    if (_.get(event, 'data') === 'renderer:maxLimitExceeded') {
+    if (_.get(event, 'data') === 'renderer:maxLimitExceeded' || _.get(event, 'edata.maxLimitExceeded')) {
       this.showMaxAttemptsModal = true;
     }
   }
