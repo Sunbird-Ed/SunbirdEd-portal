@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { TelemetryService } from '@sunbird/telemetry';
 import { TelemetryErrorModalComponent } from './telemetry-error-modal.component';
 import { configureTestSuite } from '@sunbird/test-util';
