@@ -24,6 +24,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
   userType:any;
   showBackButton = false;
   showingResult:string;
+  returnTo:string
   constructor(
     public formService: FormService,
     public resourceService: ResourceService,
@@ -122,7 +123,8 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       const filterPipe = new InterpolatePipe();
       const successMessage = filterPipe.transform(_.get(this.resourceService, 'frmelmnts.lbl.showingResultsFor'),
           '{searchString}', queryParams.isInside);
-      this.showingResult =successMessage
+      this.showingResult =successMessage;
+      this.returnTo = _.get(queryParams, 'returnTo');
     } else {
       this.showBackButton = false;
     }
@@ -194,12 +196,12 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
   isLayoutAvailable() {
     return this.layoutService.isLayoutAvailable(this.layoutConfiguration);
   }
+
   goBack(){
     this.showBackButton = false;
-    if (this.navigationhelperService['_history'].length > 1) {
-      this.navigationhelperService.goBack();
-    } else {
-      this.router.navigate(['/explore']);
+    // console.log('---->',this.returnTo)
+    if(this.returnTo){
+      this.router.navigate(['/explore'],{ queryParams: { selectedTab: this.returnTo } });
     }
   }
 

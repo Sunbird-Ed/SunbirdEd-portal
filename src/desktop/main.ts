@@ -56,7 +56,7 @@ const initializeEnv = () => {
 };
 initializeEnv();
 import { containerAPI } from "@project-sunbird/OpenRAP/api/index";
-import { logger,logLevels, enableLogger } from '@project-sunbird/logger';
+import { logger,logLevels, enableLogger, getLogs } from '@project-sunbird/logger';
 import { EventManager } from "@project-sunbird/OpenRAP/managers/EventManager";
 import express from "express";
 import portscanner from "portscanner";
@@ -304,7 +304,7 @@ async function initLogger() {
   await setDeviceId();
   let logLevel: logLevels = 'error';
   if(!app.isPackaged){
-    logLevel = 'debug';
+    logLevel = 'error';
   }
   process.env.LOG_LEVEL = logLevel;
   enableLogger({
