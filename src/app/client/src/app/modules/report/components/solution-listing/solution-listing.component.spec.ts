@@ -3,7 +3,7 @@ import { SharedModule } from "@sunbird/shared";
 import { SolutionListingComponent } from "./solution-listing.component";
 import { CoreModule, ObservationService,UserService } from "@sunbird/core";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
-import { SuiModule } from "ng2-semantic-ui";
+import { SuiModule } from "ng2-semantic-ui-v9";
 import { TelemetryModule } from "@sunbird/telemetry";
 import { RouterTestingModule } from "@angular/router/testing";
 import { DataTablesModule } from "angular-datatables";

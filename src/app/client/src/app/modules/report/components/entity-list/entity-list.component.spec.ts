@@ -9,7 +9,7 @@ import {
   INoResultMessage
 } from "@sunbird/shared";
 import {CoreModule} from '@sunbird/core'
-import { SuiModule } from "ng2-semantic-ui";
+import { SuiModalModule } from "ng2-semantic-ui-v9";
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import {
   ObservationData
@@ -34,7 +34,7 @@ describe('EntityListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports:[SuiModule,SharedModule,CoreModule,InfiniteScrollModule],
+      imports:[SuiModalModule,SharedModule,CoreModule,InfiniteScrollModule],
       declarations: [ EntityListComponent ],
       providers:[{ provide: ResourceService,useValue: resourceBundle }]
     })
