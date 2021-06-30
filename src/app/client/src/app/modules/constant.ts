@@ -3,7 +3,7 @@ export const FACETS = {
     mission: [{ name: "Child Educations", count: 1 }, { name: "Flood Relief", count: 3 }],
     contributor_org: [{ name: "Ashoka", count: 1 }, { name: "Societal", count: 1 }],
 }
-export const requiredFacets = ["primaryCategory", "contentType", "mission", "contributorOrg"]
+export const requiredFacets = ["primaryCategory", "contentType", "mission", "contributorOrg", "geo", "department", "topic", "contentType", "medium"]
 export const requiredFacets2 = ["primaryCategory", "geo", "department", "topic", "contentType", "medium"]
 export const additionalCategoryList = [{
     "identifier": "ncf_mission",

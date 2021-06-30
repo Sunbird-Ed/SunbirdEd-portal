@@ -438,15 +438,15 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
     // }
 
     checkframeworkData(facets) {
-        console.log("*******************USERSERVICE", this.userService.userProfile);
+        // console.log("*******************USERSERVICE", this.userService.userProfile);
         // this.frameworkService.frameworkData$.subscribe((frameworkData: Framework) => {
         let frameworkDataCode = this.userService.userProfile ? this.userService.userProfile['rootOrgName'] : '*'
-        console.log("frameworkData++++++", frameworkDataCode);
+        // console.log("frameworkData++++++", frameworkDataCode);
         // const frameworkDataCode = frameworkData.frameworkdata['defaultFramework'] && frameworkData.frameworkdata['defaultFramework'].code ?
         //     frameworkData.frameworkdata['defaultFramework'].code : '*'
-        console.log("currentFrameworkData", currentFrameworkData);
+        // console.log("currentFrameworkData", currentFrameworkData);
         const currentFrameworkDetails = currentFrameworkData.filter(data => data.rootOrgName === frameworkDataCode)
-        console.log("currentFrameworkDetails", currentFrameworkDetails);
+        // console.log("currentFrameworkDetails", currentFrameworkDetails);
         if (currentFrameworkDetails && currentFrameworkDetails[0]['requiredFacets']) {
             let requiredFacets1 = currentFrameworkDetails[0]['requiredFacets']
             console.log("requiredFacets1", requiredFacets1)

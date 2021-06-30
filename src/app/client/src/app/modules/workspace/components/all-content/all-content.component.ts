@@ -138,8 +138,8 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
   */
   sort: object;
   /**
-	 * inviewLogs
-	*/
+   * inviewLogs
+  */
   inviewLogs = [];
   /**
 * value typed
@@ -156,8 +156,8 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
   */
   private toasterService: ToasterService;
   /**
-	 * telemetryImpression
-	*/
+   * telemetryImpression
+  */
   telemetryImpression: IImpressionEventInput;
   /**
   * To call resource service which helps to use language constant
@@ -239,7 +239,7 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
       this.activatedRoute.queryParams).pipe(
         debounceTime(10),
         map(([params, queryParams]) => ({ params, queryParams })
-      ))
+        ))
       .subscribe(bothParams => {
         if (bothParams.params.pageNumber) {
           this.pageNumber = Number(bothParams.params.pageNumber);
@@ -275,7 +275,10 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
         medium: bothParams.queryParams.medium,
         gradeLevel: bothParams.queryParams.gradeLevel,
         mission: bothParams.queryParams.mission,
-        contributorOrg: bothParams.queryParams.contributorOrg
+        contributorOrg: bothParams.queryParams.contributorOrg,
+        department: bothParams.queryParams.department,
+        geo: bothParams.queryParams.geo,
+        topic: bothParams.queryParams.topic
       },
       limit: limit,
       offset: (pageNumber - 1) * (limit),
@@ -349,19 +352,19 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
         });
         const channelMapping = {};
         forkJoin(_.map(channels, (channel: string) => {
-            return this.getChannelDetails(channel);
-          })).subscribe((forkResponse) => {
-            this.collectionData = [];
-            _.forEach(forkResponse, channelResponse => {
-              const channelId = _.get(channelResponse, 'result.channel.code');
-              const channelName = _.get(channelResponse, 'result.channel.name');
-              channelMapping[channelId] = channelName;
-            });
+          return this.getChannelDetails(channel);
+        })).subscribe((forkResponse) => {
+          this.collectionData = [];
+          _.forEach(forkResponse, channelResponse => {
+            const channelId = _.get(channelResponse, 'result.channel.code');
+            const channelName = _.get(channelResponse, 'result.channel.name');
+            channelMapping[channelId] = channelName;
+          });
 
-            _.forEach(collections, collection => {
-              const obj = _.pick(collection, ['contentType', 'board', 'medium', 'name', 'gradeLevel', 'subject', 'channel']);
-              obj['channel'] = channelMapping[obj.channel];
-              this.collectionData.push(obj);
+          _.forEach(collections, collection => {
+            const obj = _.pick(collection, ['contentType', 'board', 'medium', 'name', 'gradeLevel', 'subject', 'channel']);
+            obj['channel'] = channelMapping[obj.channel];
+            this.collectionData.push(obj);
           });
 
           this.headers = {
@@ -372,17 +375,17 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
             medium: 'Medium',
             board: 'Board',
             channel: 'Tenant Name'
-            };
-            if (!_.isUndefined(modal)) {
-              this.deleteModal.deny();
-            }
+          };
+          if (!_.isUndefined(modal)) {
+            this.deleteModal.deny();
+          }
           this.collectionListModal = true;
-          },
+        },
           (error) => {
             this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0014'));
             console.log(error);
           });
-        },
+      },
         (error) => {
           this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0015'));
           console.log(error);
@@ -420,11 +423,11 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
    * This method helps to navigate to different pages.
    * If page number is less than 1 or page number is greater than total number
    * of pages is less which is not possible, then it returns.
-	 *
-	 * @param {number} page Variable to know which page has been clicked
-	 *
-	 * @example navigateToPage(1)
-	 */
+   *
+   * @param {number} page Variable to know which page has been clicked
+   *
+   * @example navigateToPage(1)
+   */
   navigateToPage(page: number): undefined | void {
     if (page < 1 || page > this.pager.totalPages) {
       return;
@@ -435,8 +438,8 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
 
   contentClick(content) {
     if (_.size(content.lockInfo) && this.userService.userid !== content.lockInfo.createdBy) {
-        this.lockPopupData = content;
-        this.showLockedContentModal = true;
+      this.lockPopupData = content;
+      this.showLockedContentModal = true;
     } else {
       const status = content.status.toLowerCase();
       if (status === 'processing') {
@@ -450,11 +453,11 @@ export class AllContentComponent extends WorkSpace implements OnInit, AfterViewI
     }
   }
 
-  public onCloseLockInfoPopup () {
+  public onCloseLockInfoPopup() {
     this.showLockedContentModal = false;
   }
 
-  ngAfterViewInit () {
+  ngAfterViewInit() {
     setTimeout(() => {
       this.telemetryImpression = {
         context: {

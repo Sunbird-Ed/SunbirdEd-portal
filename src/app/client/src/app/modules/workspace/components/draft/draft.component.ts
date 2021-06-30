@@ -1,6 +1,6 @@
 import { debounceTime, map } from 'rxjs/operators';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import {combineLatest } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService } from '@sunbird/core';
@@ -49,7 +49,7 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
     /**
      * Contains static data of popup like header label , submit button label etc
     */
-    lockInfoPopupContent: object = {headerTitle: ''};
+    lockInfoPopupContent: object = { headerTitle: '' };
 
     /**
      * Contains list of published course(s) of logged-in user
@@ -132,7 +132,7 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
    */
     public resourceService: ResourceService;
 
-    private telemetryInteractObject: IInteractEventObject ;
+    private telemetryInteractObject: IInteractEventObject;
     /**
      * inviewLogs
     */
@@ -179,16 +179,16 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
         combineLatest(
             this.activatedRoute.params,
             this.activatedRoute.queryParams).pipe(
-              debounceTime(100),
-              map(([params, queryParams]) => ({ params, queryParams })
-            ))
+                debounceTime(100),
+                map(([params, queryParams]) => ({ params, queryParams })
+                ))
             .subscribe(bothParams => {
-              if (bothParams.params.pageNumber) {
-                this.pageNumber = Number(bothParams.params.pageNumber);
-              }
-              this.queryParams = bothParams.queryParams;
-              this.query = this.queryParams['query'];
-              this.fetchDrafts(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber, bothParams);
+                if (bothParams.params.pageNumber) {
+                    this.pageNumber = Number(bothParams.params.pageNumber);
+                }
+                this.queryParams = bothParams.queryParams;
+                this.query = this.queryParams['query'];
+                this.fetchDrafts(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber, bothParams);
             });
     }
     /**
@@ -205,7 +205,7 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
             const sort_by = bothParams['queryParams'].sort_by;
             const sortType = bothParams['queryParams'].sortType;
             this.sort = {
-              [sort_by]: _.toString(sortType)
+                [sort_by]: _.toString(sortType)
             };
         } else {
             this.sort = { lastUpdatedOn: this.config.appConfig.WORKSPACE.lastUpdatedOn };
@@ -221,7 +221,10 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
                 medium: bothParams['queryParams'].medium,
                 gradeLevel: bothParams['queryParams'].gradeLevel,
                 mission: bothParams['queryParams'].mission,
-                contributorOrg: bothParams['queryParams'].contributorOrg
+                contributorOrg: bothParams['queryParams'].contributorOrg,
+                department: bothParams['queryParams'].department,
+                geo: bothParams['queryParams'].geo,
+                topic: bothParams['queryParams'].topic
             },
             limit: this.pageLimit,
             offset: (this.pageNumber - 1) * (this.pageLimit),

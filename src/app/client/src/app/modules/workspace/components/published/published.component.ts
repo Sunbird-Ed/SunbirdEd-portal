@@ -119,20 +119,20 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
   */
   public resourceService: ResourceService;
   /**
-	 * telemetryImpression
-	*/
+   * telemetryImpression
+  */
   telemetryImpression: IImpressionEventInput;
   /**
-	 * inviewLogs
-	*/
+   * inviewLogs
+  */
   inviewLogs = [];
   queryParams: object;
   query: string;
   sort: object;
 
-   /**
-  * To store all the collection details to be shown in collection modal
-  */
+  /**
+ * To store all the collection details to be shown in collection modal
+ */
   public collectionData: Array<any>;
 
   /**
@@ -200,7 +200,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
       this.activatedRoute.queryParams).pipe(
         debounceTime(100),
         map(([params, queryParams]) => ({ params, queryParams })
-      ))
+        ))
       .subscribe(bothParams => {
         if (bothParams.params.pageNumber) {
           this.pageNumber = Number(bothParams.params.pageNumber);
@@ -209,7 +209,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
         this.query = this.queryParams['query'];
         this.fetchPublishedContent(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber, bothParams);
       });
-      this.isPublishedCourse();
+    this.isPublishedCourse();
   }
   isPublishedCourse() {
     const searchParams = {
@@ -221,22 +221,22 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
       },
       sort_by: { lastUpdatedOn: 'desc' }
     };
-      this.searchService.compositeSearch(searchParams).subscribe((data: ServerResponse) => {
-       if (data.result.content.length > 0) {
-         this.showCourseQRCodeBtn = true;
-       }
-      });
+    this.searchService.compositeSearch(searchParams).subscribe((data: ServerResponse) => {
+      if (data.result.content.length > 0) {
+        this.showCourseQRCodeBtn = true;
+      }
+    });
   }
   getCourseQRCsv() {
     this.coursesService.getQRCodeFile().subscribe((data: any) => {
       const FileURL = _.get(data, 'result.fileUrl');
       if (FileURL) {
-        window.open (FileURL, '_blank');
+        window.open(FileURL, '_blank');
       }
     },
-    (err: ServerResponse) => {
-      this.toasterService.error(this.resourceService.messages.fmsg.m0095);
-    });
+      (err: ServerResponse) => {
+        this.toasterService.error(this.resourceService.messages.fmsg.m0095);
+      });
   }
   /**
     * This method sets the make an api call to get all Published content with page No and offset
@@ -269,7 +269,10 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
         medium: bothParams['queryParams'].medium,
         gradeLevel: bothParams['queryParams'].gradeLevel,
         mission: bothParams['queryParams'].mission,
-        contributorOrg: bothParams['queryParams'].contributorOrg
+        contributorOrg: bothParams['queryParams'].contributorOrg,
+        department: bothParams['queryParams'].department,
+        geo: bothParams['queryParams'].geo,
+        topic: bothParams['queryParams'].topic
       },
       limit: this.pageLimit,
       offset: (this.pageNumber - 1) * (this.pageLimit),
@@ -354,42 +357,42 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
         });
         const channelMapping = {};
         forkJoin(_.map(channels, (channel: string) => {
-            return this.getChannelDetails(channel);
-          })).subscribe((forkResponse) => {
-            this.collectionData = [];
-            _.forEach(forkResponse, channelResponse => {
-              const channelId = _.get(channelResponse, 'result.channel.code');
-              const channelName = _.get(channelResponse, 'result.channel.name');
-              channelMapping[channelId] = channelName;
-            });
+          return this.getChannelDetails(channel);
+        })).subscribe((forkResponse) => {
+          this.collectionData = [];
+          _.forEach(forkResponse, channelResponse => {
+            const channelId = _.get(channelResponse, 'result.channel.code');
+            const channelName = _.get(channelResponse, 'result.channel.name');
+            channelMapping[channelId] = channelName;
+          });
 
-            _.forEach(collections, collection => {
-              const obj = _.pick(collection, ['contentType', 'board', 'medium', 'name', 'gradeLevel', 'subject', 'channel']);
-              obj['channel'] = channelMapping[obj.channel];
-              this.collectionData.push(obj);
+          _.forEach(collections, collection => {
+            const obj = _.pick(collection, ['contentType', 'board', 'medium', 'name', 'gradeLevel', 'subject', 'channel']);
+            obj['channel'] = channelMapping[obj.channel];
+            this.collectionData.push(obj);
           });
 
           this.headers = {
-             type: 'Type',
-             name: 'Name',
-             subject: 'Subject',
-             grade: 'Grade',
-             medium: 'Medium',
-             board: 'Board',
-             channel: 'Tenant Name'
-             };
-             if (!_.isUndefined(this.deleteModal)) {
-              this.deleteModal.deny();
-            }
+            type: 'Type',
+            name: 'Name',
+            subject: 'Subject',
+            grade: 'Grade',
+            medium: 'Medium',
+            board: 'Board',
+            channel: 'Tenant Name'
+          };
+          if (!_.isUndefined(this.deleteModal)) {
+            this.deleteModal.deny();
+          }
           this.collectionListModal = true;
-          },
+        },
           (error) => {
-           this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0014'));
+            this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0014'));
             console.log(error);
           });
-        },
+      },
         (error) => {
-         this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0015'));
+          this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0015'));
           console.log(error);
         });
   }
@@ -398,27 +401,27 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
   * This method deletes content using the content id.
   */
   public deleteContent(contentIds) {
-        this.showLoader = true;
-        this.loaderMessage = {
-          'loaderMessage': this.resourceService.messages.stmsg.m0034,
-        };
-        this.delete(contentIds).subscribe(
-          (data: ServerResponse) => {
-            this.showLoader = false;
-            this.publishedContent = this.removeContent(this.publishedContent, contentIds);
-            if (this.publishedContent.length === 0) {
-              this.fetchPublishedContent(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
-            }
-            this.toasterService.success(this.resourceService.messages.smsg.m0006);
-          },
-          (err: ServerResponse) => {
-            this.showLoader = false;
-            this.toasterService.success(this.resourceService.messages.fmsg.m0022);
-          }
-        );
-        if (!_.isUndefined(this.deleteModal)) {
-          this.deleteModal.deny();
+    this.showLoader = true;
+    this.loaderMessage = {
+      'loaderMessage': this.resourceService.messages.stmsg.m0034,
+    };
+    this.delete(contentIds).subscribe(
+      (data: ServerResponse) => {
+        this.showLoader = false;
+        this.publishedContent = this.removeContent(this.publishedContent, contentIds);
+        if (this.publishedContent.length === 0) {
+          this.fetchPublishedContent(this.config.appConfig.WORKSPACE.PAGE_LIMIT, this.pageNumber);
         }
+        this.toasterService.success(this.resourceService.messages.smsg.m0006);
+      },
+      (err: ServerResponse) => {
+        this.showLoader = false;
+        this.toasterService.success(this.resourceService.messages.fmsg.m0022);
+      }
+    );
+    if (!_.isUndefined(this.deleteModal)) {
+      this.deleteModal.deny();
+    }
   }
 
   /**
@@ -447,7 +450,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
     this.route.navigate(['workspace/content/published', this.pageNumber], { queryParams: this.queryParams });
   }
 
-  ngAfterViewInit () {
+  ngAfterViewInit() {
     setTimeout(() => {
       this.telemetryImpression = {
         context: {

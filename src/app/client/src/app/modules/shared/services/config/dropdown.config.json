@@ -405,6 +405,18 @@
                 {
                     "id": "contributorOrg",
                     "name": "Contributor Org"
+                },
+                {
+                    "id": "department",
+                    "name": "Department"
+                },
+                {
+                    "id": "geo",
+                    "name": "Geo"
+                },
+                {
+                    "id": "topic",
+                    "name": "Topic"
                 }
             ]
         }
