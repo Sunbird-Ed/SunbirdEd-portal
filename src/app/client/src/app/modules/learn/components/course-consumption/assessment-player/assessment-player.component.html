@@ -124,7 +124,7 @@
               <div *ngIf="item?.mimeType === 'application/vnd.sunbird.questionset'">
                 <div class="child-content-padding">
                   <sb-toc-card [content]="item" (tocCardClick)="navigateToInitPlayer($event, 'toc-card')" [type]="cardType"
-                    [contentStatus]="contentStatus">
+                    [contentStatus]="contentStatus" [maxAttempts]="item?.maxAttempts" [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
                   </sb-toc-card>
                 </div>
               </div>

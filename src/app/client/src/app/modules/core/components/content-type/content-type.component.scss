@@ -215,3 +215,8 @@
     mask-image: url(/assets/images/mask-image/explore.svg);
   }
 }
+html[layout=joy] .help-page .help-page__header {
+  border-radius: 1.5rem 1.5rem 0 0 !important;
+  width: 100%;
+  background: var(--sbt-page-header-bg) !important;
+}
