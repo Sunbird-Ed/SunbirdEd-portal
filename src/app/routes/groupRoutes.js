@@ -47,13 +47,7 @@ function proxyObj() {
                 env: telemtryEventConfig.URL[uri].env
             }
             try {
-                let response = data.result.response;
-                data.result.response = { id: '', rootOrgId: '' };
                 if (data.responseCode === 'OK' || data.responseCode === 200) {
-                    if (response && response.id) {
-                        data.result.response.id = response.id;
-                        data.result.response.rootOrgId = response.rootOrgId;
-                    }
                     // generate success event log
                     telemetryHelper.logAPIAccessEvent(req, proxyResData, uri);
                 } else {
