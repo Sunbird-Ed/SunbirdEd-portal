@@ -3,7 +3,7 @@ import { combineLatest,  Observable } from 'rxjs';
 import { WorkSpace } from './../../classes/workspace';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SearchService, UserService, PermissionService } from '@sunbird/core';
+import { SearchService, UserService, PermissionService, FrameworkService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ConfigService, ToasterService,
   ResourceService, IContents, ILoaderMessage, INoResultMessage, IUserData,
@@ -138,6 +138,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit, AfterView
   */
   constructor(public modalService: SuiModalService, public searchService: SearchService,
     public workSpaceService: WorkSpaceService,
+    public frameworkService: FrameworkService,
     paginationService: PaginationService,
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
@@ -210,7 +211,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit, AfterView
       query: _.toString(bothParams.queryParams.query),
       sort_by: this.sort
     };
-    searchParams.filters['contentType'] = _.get(bothParams, 'queryParams.contentType') || this.getContentType();
+    searchParams.filters['primaryCategory'] = _.get(bothParams, 'queryParams.primaryCategory') || this.getContentType();
     this.search(searchParams).subscribe(
       (data: ServerResponse) => {
         if (data.result.count && data.result.content.length > 0) {
@@ -297,18 +298,28 @@ export class UpForReviewComponent extends WorkSpace implements OnInit, AfterView
       (user: IUserData) => {
         this.userRoles = user.userProfile.userRoles;
       });
-    let contentType = [];
-
+    let primaryCategory = [];
+    const contentAndCollectionPrimaryCategories = _.compact(_.concat(this.frameworkService['_channelData'].contentPrimaryCategories,
+        this.frameworkService['_channelData'].collectionPrimaryCategories));
     if (_.indexOf(this.userRoles, 'BOOK_REVIEWER') !== -1) {
-      contentType = ['TextBook'];
+      primaryCategory = ['Digital Textbook'];
     }
+
     if (_.indexOf(this.userRoles, 'CONTENT_REVIEWER') !== -1) {
-     contentType = _.without(this.config.appConfig.WORKSPACE.contentType, 'TextBook');
+      if (!_.isEmpty(contentAndCollectionPrimaryCategories)) {
+        primaryCategory = _.without(contentAndCollectionPrimaryCategories, 'Digital Textbook');
+      } else {
+        primaryCategory = _.without(this.config.appConfig.WORKSPACE.primaryCategory, 'Digital Textbook')
+      }
     }
     if (_.indexOf(this.userRoles, 'CONTENT_REVIEWER') !== -1 &&
       _.indexOf(this.userRoles, 'BOOK_REVIEWER') !== -1) {
-        contentType = this.config.appConfig.WORKSPACE.contentType;
+        if (!_.isEmpty(contentAndCollectionPrimaryCategories)) {
+          primaryCategory = contentAndCollectionPrimaryCategories;
+        } else {
+          primaryCategory = _.without(this.config.appConfig.WORKSPACE.primaryCategory, 'Digital Textbook');
+        }
     }
-    return contentType;
+    return primaryCategory;
   }
 }

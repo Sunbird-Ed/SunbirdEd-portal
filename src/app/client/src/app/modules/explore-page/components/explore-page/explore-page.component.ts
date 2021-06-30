@@ -120,12 +120,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         return this.formService.getFormConfig(input);
     }
 
-    private _addFiltersInTheQueryParams() {
+    private _addFiltersInTheQueryParams(updatedFilters = {}) {
         this.getCurrentPageData();
-        if (!_.get(this.activatedRoute, 'snapshot.queryParams["board"]')) {
-            const queryParams = { ...this.defaultFilters, selectedTab: _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'textbook' };
-            this.router.navigate([], { queryParams, relativeTo: this.activatedRoute });
-        }
+        const queryParams = { ...this.defaultFilters, selectedTab: _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'textbook', ...updatedFilters };
+        this.router.navigate([], { queryParams, relativeTo: this.activatedRoute });
     }
 
     private fetchChannelData() {
@@ -355,7 +353,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     let _reqFilters;
                     // If home or explore page; take filters from user preferences
                     if (_.get(currentPageData, 'contentType') === 'home') {
-                        _reqFilters = this.contentSearchService.mapCategories({ filters: _.get(this.userPreference, 'framework') });
+                        _reqFilters = this.contentSearchService.mapCategories({ filters: {..._.get(this.userPreference, 'framework')} });
                         delete _reqFilters['id'];
                     } else {
                         _reqFilters = this.contentSearchService.mapCategories({ filters: { ...this.selectedFilters, ...filters } });
@@ -437,7 +435,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                     return section;
                                 });
                             }), tap(data => {
-                                this.userPreference = this.setUserPreferences();
+                                // this.userPreference = this.setUserPreferences();
                                 this.showLoader = false;
                                 const userProfileSubjects = _.get(this.userService, 'userProfile.framework.subject') || [];
                                 const [userSubjects, notUserSubjects] = partition(sortBy(data, ['name']), value => {
@@ -864,6 +862,20 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         params[facetName] = event.data[0].value.value;
         params['selectedTab'] = 'all';
+        params['showClose'] = 'true';
+
+        const updatedCategoriesMapping = _.mapKeys(params, (_, key) => {
+            const mappedValue = get(this.contentSearchService.getCategoriesMapping, [key]);
+            return mappedValue || key;
+        });
+
+        const paramValuesInLowerCase = _.mapValues(updatedCategoriesMapping, value => {
+            if (_.toLower(value) === 'cbse') return 'CBSE/NCERT';
+            return Array.isArray(value) ? _.map(value, _.toLower) : _.toLower(value);
+        });
+
+        params = paramValuesInLowerCase;
+
         if(this.isUserLoggedIn()){
             this.router.navigate(['search/Library', 1], { queryParams: params });
         } else{
@@ -886,6 +898,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             this.profileService.updateProfile({ framework: event }).subscribe(res => {
                 this.userPreference.framework = event;
                 this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
+                this._addFiltersInTheQueryParams(event);
             }, err => {
                 this.toasterService.warning(this.resourceService.messages.emsg.m0012);
             });
@@ -895,9 +908,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 localStorage.setItem('guestUserDetails', JSON.stringify(this.userPreference));
             }
             this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
+            this._addFiltersInTheQueryParams(event);
         }
-        this.setUserPreferences();
-        this.fetchContents$.next(this._currentPageData);
+        // this.setUserPreferences();
+        // this.fetchContents$.next(this._currentPageData);
     }
 
     getExplorePageSections () {

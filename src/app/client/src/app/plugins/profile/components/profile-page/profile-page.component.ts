@@ -95,6 +95,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   persona: {};
   subPersona: string;
   isConnected = true;
+  showFullScreenLoader: boolean = false;
 
   constructor(@Inject('CS_COURSE_SERVICE') private courseCService: CsCourseService, private cacheService: CacheService,
   public resourceService: ResourceService, public coursesService: CoursesService,
@@ -131,6 +132,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getCustodianOrgUser();
     this.userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
       /* istanbul ignore else */
+      this.showFullScreenLoader = false;
       if (user.userProfile) {
         this.userProfile = user.userProfile;
         const role: string = (!this.userProfile.profileUserType.type ||
@@ -623,6 +625,15 @@ private async getSubPersonaConfig(subPersonaCode: string, persona: string, userL
   const subPersonaFieldConfigOption = (subPersonaConfig.templateOptions.options as FieldConfigOption<any>[]).
               find(option => option.value === subPersonaCode);
   return subPersonaFieldConfigOption ? subPersonaFieldConfigOption.label : undefined;
+}
+
+public onLocationModalClose() {
+  this.showEditUserDetailsPopup = !this.showEditUserDetailsPopup;
+  this.showFullScreenLoader = true;
+  setTimeout(()=> {
+    this.showFullScreenLoader = false;
+    this.toasterService.error(this.resourceService.messages.emsg.m0005);
+  }, 5000)
 }
 
 }

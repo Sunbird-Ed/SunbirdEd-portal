@@ -8,7 +8,7 @@ var default_config = {
   'batchsize': 200
 }
 
-function telemetryService () {
+function telemetryService() {
 }
 
 /**
@@ -18,8 +18,19 @@ function telemetryService () {
 telemetryService.prototype.config = {}
 telemetryService.prototype.context = []
 
+/**
+ * @description -  This function is used to log the api events
+ */
+function SyncManager() {
+  this.init = function (event) {
+    console.log(event);
+  },
+    this.dispatch = function (event) {
+      console.log(event);
+    }
+}
 telemetryService.prototype.init = function (config) {
-  default_config.dispatcher = new telemetrySyncManager()
+  default_config.dispatcher = new SyncManager()
   config['host'] = config['host'] || process.env.sunbird_telemetry_service_local_url;
   default_config.dispatcher.init(config)
   this.config = Object.assign({}, config, default_config)
@@ -38,7 +49,7 @@ telemetryService.prototype.start = function (data) {
     object: data.object,
     actor: data.actor,
     tags: data.tags,
-    sid: this.config.sid                                                                                                                                                                                                                                         
+    sid: this.config.sid
   })
 }
 
@@ -136,7 +147,7 @@ telemetryService.prototype.startEventData = function (type, pageid, mode, durati
     mode: mode,
     duration: duration,
     pageid: pageid,
-    uaspec: uaspec    
+    uaspec: uaspec
   }
   return JSON.parse(JSON.stringify(startEventData))
 }
@@ -235,7 +246,7 @@ telemetryService.prototype.getActorData = function (userId, type) {
   if (!userId || !type) {
     console.log("Required params are missing for actor")
     return;
-    }
+  }
   return {
     id: userId.toString(),
     type: type
@@ -252,7 +263,7 @@ telemetryService.prototype.pData = function (id, version, pid) {
   if (!id || !version) {
     console.log("Required params are missing for p data")
     return
-    }
+  }
   const pData = {
     id: id,
     pid: pid,
@@ -270,7 +281,7 @@ telemetryService.prototype.getObjectData = function (data) {
   if (data && (!data.id || !data.type)) {
     console.log("Required params are missing for object data")
     return
-    }
+  }
   obj.id = data.id
   obj.type = data.type
   obj.ver = data.ver
@@ -318,24 +329,35 @@ telemetryService.prototype.generateApiCallLogEvent = function (data) {
 /**
  * This function used to generate api_ERROR log event
  */
-telemetryService.prototype.getTelemetryAPIError = function (data, res, context) {
+telemetryService.prototype.getTelemetryAPIError = function (data, res, req, options) {
   try {
-  if ( (data.responseCode !== 'OK' && data.responseCode !== 200) || res.statusCode !== 200) {
-  const result = data.params;
-  if (result) {
-  const edata = {
-    err: data.responseCode  || res.statusCode,
-    errtype: result.err || res.statusMessage,
-    requestid:  result.resmsgid || 'null',
-    errmsg: result.errmsg  || 'null',
+    const result = options ? options : data.params
+    const edata = {
+      err: result.err || res.statusMessage,
+      errtype: result.errtype || data.responseCode || res.statusCode,
+      traceid: result.msgid || 'null',
+      status: result.status || '',
+      errmsg: result.errmsg || '',
+      params: JSON.stringify([{ url: req.path }])
+    }
+    return { edata };
+  } catch (error) {
+    console.log('error', error)
   }
-  const option = {edata, context}
- return option;
- }
 }
-return ;
-} catch (error) {
-  console.log('error', error)
- }
+
+/**
+ * This function used to generate api_call log telemetryData
+ */
+telemetryService.prototype.getTelemetryAPISuceessData = function (req, result, uri) {
+  const telemetryData = {
+    reqObj: req,
+    statusCode: '200',
+    resp: result,
+    uri: uri,
+    channel: req.get('x-channel-id') || ''
+  }
+  return telemetryData;
 }
+
 module.exports = telemetryService

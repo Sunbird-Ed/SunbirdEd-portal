@@ -21,7 +21,7 @@
       <div [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
         <div class="content-grid relative9">
           <div class="sb-pageSection" *ngIf="!showLoader && totalCount > 0">
-            <div class="sb-pageSection-header">
+            <div class="sb-pageSection-header mb-10">
               <div class="">
                 <h4 class="sb-pageSection-title m-0 mr-5" [innerHTML]="resourceService.frmelmnts?.lbl?.showingResultsFor |
                 interpolate:'{searchString}':this.queryParams.key !=null?this.queryParams.key:searchAll "></h4> 
