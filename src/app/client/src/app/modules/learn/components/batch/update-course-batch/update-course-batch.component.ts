@@ -187,7 +187,9 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       .subscribe((data) => {
         this.showDiscussionForum = _.get(data.courseDetails, 'discussionForum.enabled');
         this.generateDataForDF();
-        this.fetchForumConfig();
+        if (this.showDiscussionForum === 'Yes') {
+          this.fetchForumConfig();
+        }
         this.showUpdateModal = true;
         if (data.courseDetails.createdBy === this.userService.userid) {
           this.courseCreator = true;
@@ -709,17 +711,19 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   }
 
   disableDiscussionForum(batchId) {
-    const requestBody = {
-      'sbType': 'batch',
-      'sbIdentifier': batchId,
-      'cid': this.forumIds
-    };
-    this.discussionService.removeForum(requestBody).subscribe(resp => {
-      this.handleInputChange('enable-DF-no');
-      this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0066'));
-    }, error => {
-      this.toasterService.error(this.resourceService.messages.emsg.m0005);
-    });
+    if (this.forumIds && this.forumIds.length > 0) {
+      const requestBody = {
+        'sbType': 'batch',
+        'sbIdentifier': batchId,
+        'cid': this.forumIds
+      };
+      this.discussionService.removeForum(requestBody).subscribe(resp => {
+        this.handleInputChange('enable-DF-no');
+        this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0066'));
+      }, error => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      });
+    }
   }
 
   handleInputChange(inputId) {

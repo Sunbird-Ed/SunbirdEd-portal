@@ -109,7 +109,6 @@ describe('GroupMembersComponent', () => {
 
   it('should create', () => {
     component.groupId = '123';
-    spyOn(component, 'getUpdatedGroupData');
     const expectedMemberList = members.map(item => { item.isMenu = false; return item; });
     console.log('expectedMemberList', expectedMemberList);
     component.showKebabMenu = true;
@@ -117,7 +116,6 @@ describe('GroupMembersComponent', () => {
     document.body.dispatchEvent(new Event('click'));
     component.ngOnInit();
     expect(component).toBeTruthy();
-    expect(component.getUpdatedGroupData).toHaveBeenCalled();
   });
 
   it('should call getMenuData', () => {
