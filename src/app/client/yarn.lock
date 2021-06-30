@@ -1246,10 +1246,10 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@4.0.5":
-  version "4.0.5"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.0.5.tgz#fe55b9828e44b090fe146b66c856e9aea3078f0b"
-  integrity sha512-pJsPiVZc3wj+xc04M0sYxD66EP+AllSb4zKkYV+ozAgxCrKz22vVo30ugqc0/SLdaICtQB2wxcALZeMX5xIBMA==
+"@project-sunbird/client-services@4.0.6":
+  version "4.0.6"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.0.6.tgz#65e94e304e326d6cd1971f28308fcd462cf0a114"
+  integrity sha512-30YJXrQ0/9a3y1EK/y1O/yAoDFtCwGlngbtfYUFevWEoowB3I5Ic8elFsS7Hf37xpM1taItRYKMkPM/k5ZhetA==
   dependencies:
     "@project-sunbird/telemetry-sdk" "0.0.26"
     inversify "^5.0.1"
@@ -1310,10 +1310,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.5.tgz#2d8d02ab6c91fadca0343b9553f4e24d0a52cb96"
   integrity sha512-RItUthSLN6UHocCSNcA8tJP1e426YQPoT4diHDm9Ijt8nVHvap9madbFHElsXHdjbKTqQlUXubo9zJmLioLk1g==
 
-"@project-sunbird/sunbird-collection-editor@4.0.21":
-  version "4.0.21"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-4.0.21.tgz#32e036dae0744a67f07dce0e09242ed6eee5962e"
-  integrity sha512-Dqp54criZoOy+lObjzks6Z31VDtc7Ucc+BwYQaOOch5A13Z55ARKeeqf/pGXCS8IHFI83Jz63O3Oc5LegVTLUw==
+"@project-sunbird/sunbird-collection-editor@4.0.25":
+  version "4.0.25"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor/-/sunbird-collection-editor-4.0.25.tgz#a353399b3367741087741e45e2d885ff0a502004"
+  integrity sha512-3w7czLfkpmgHn+wlZcqAI64seENIIcCC604zzYUlHX3xiDb3NRFXbk73/duiCwP6+5q1C+tRw490G7bzGjVDRw==
   dependencies:
     tslib "^1.9.0"
 
