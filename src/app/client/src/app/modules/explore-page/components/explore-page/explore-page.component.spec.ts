@@ -784,7 +784,8 @@ describe('ExplorePageComponent', () => {
             se_subjects: 'english',
             selectedTab: 'all',
             showClose: 'true',
-            isInside: 'english'
+            isInside: 'english',
+            returnTo: ''
         }
       });
     });
