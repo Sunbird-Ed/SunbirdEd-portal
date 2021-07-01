@@ -112,7 +112,6 @@ export class NewCollectionEditorComponent implements OnInit {
 
   private getDetails() {
     const lockInfo = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
-    console.log('lockInfo', lockInfo);
     if (_.isEmpty(lockInfo)) {
       return combineLatest(
         this.getCollectionDetails(),

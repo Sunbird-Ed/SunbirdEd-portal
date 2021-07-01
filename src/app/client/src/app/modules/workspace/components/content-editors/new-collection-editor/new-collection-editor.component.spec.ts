@@ -99,6 +99,24 @@ describe('NewCollectionEditorComponent', () => {
       expect(component.getFrameWorkDetails).not.toHaveBeenCalled();
     }));
 
+    it('should throw error if getting content details fails',
+  inject([EditorService, UserService, Router, ToasterService, ResourceService],
+    (editorService, userService, router, toasterService, resourceService) => {
+      spyOn(editorService, 'getContent').and.returnValue(throwError(mockRes.successResult));
+      spyOn(toasterService, 'error').and.callFake(() => {});
+      component.ngOnInit();
+      expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0004);
+    }));
+
+    it('should throw error if dont have permission to edit this content',
+    inject([EditorService, UserService, Router, ToasterService, ResourceService],
+      (editorService, userService, router, toasterService, resourceService) => {
+        spyOn(editorService, 'getContent').and.returnValue(throwError('NO_PERMISSION'));
+        spyOn(toasterService, 'error').and.callFake(() => {});
+        component.ngOnInit();
+        expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0013);
+      }));
+
   it('should fetch framework details if api return data',
     inject([WorkSpaceService], (workSpaceService) => {
       component.collectionDetails = mockRes.successResult.result.content;
