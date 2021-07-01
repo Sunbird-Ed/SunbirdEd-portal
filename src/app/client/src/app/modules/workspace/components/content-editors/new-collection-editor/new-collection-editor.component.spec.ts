@@ -131,6 +131,7 @@ describe('NewCollectionEditorComponent', () => {
         spyOn(editorService, 'getContent').and.returnValue(observableOf(mockRes.successResult));
         spyOn(editorService, 'getOwnershipType').and.returnValue(observableOf(['CreatedBy', 'CreatedFor']));
         component.ngOnInit();
+        expect(component['routeParams']).toBeDefined();
         expect(component.collectionDetails).toBeDefined();
     }));
 
@@ -157,6 +158,7 @@ describe('NewCollectionEditorComponent', () => {
         spyOn(editorService, 'getContent').and.returnValue(throwError('NO_PERMISSION'));
         spyOn(toasterService, 'error').and.callFake(() => {});
         component.ngOnInit();
+        expect(component['routeParams']).toBeDefined();
         expect(toasterService.error).toHaveBeenCalled();
       }));
 
@@ -231,6 +233,7 @@ describe('NewCollectionEditorComponent', () => {
       component.collectionDetails = mockRes.successResult.result.content;
       component.showQuestionEditor = true;
       component.ngOnInit();
+      expect(component['routeParams']).toBeDefined();
       component.setEditorConfig();
       expect(frameworkService.getDefaultLicense).toHaveBeenCalled();
       expect(Object.keys(component.editorConfig)).toEqual(['context', 'config']);
@@ -240,19 +243,23 @@ describe('NewCollectionEditorComponent', () => {
     inject([NavigationHelperService], (navigationHelperService) => {
       spyOn(navigationHelperService, 'navigateToWorkSpace').and.callFake(() => { });
       component.ngOnInit();
+      expect(component['routeParams']).toBeDefined();
       component.redirectToWorkSpace();
       expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('/workspace/content/allcontent/1');
       const activatedRoute = TestBed.get(ActivatedRoute);
       activatedRoute.snapshot.params = {state: 'collaborating-on'};
       component.ngOnInit();
+      expect(component['routeParams']).toBeDefined();
       component.redirectToWorkSpace();
       expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('/workspace/content/collaborating-on/1');
       activatedRoute.snapshot.params = {state: 'upForReview'};
       component.ngOnInit();
+      expect(component['routeParams']).toBeDefined();
       component.redirectToWorkSpace();
       expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('/workspace/content/upForReview/1');
       activatedRoute.snapshot.params = {state: ''};
       component.ngOnInit();
+      expect(component['routeParams']).toBeDefined();
       component.redirectToWorkSpace();
       expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('/workspace/content/draft/1');
     }));
@@ -335,5 +342,47 @@ describe('NewCollectionEditorComponent', () => {
       spyOn(component, 'validateRequest').and.callThrough();
       const validation = component.validateRequest();
       expect(validation).toBeFalsy();
+    });
+
+    it('#ngOnInit() should call the methods on success', () => {
+      component.collectionDetails = {mimeType : 'application/vnd.sunbird.questionset'};
+      spyOn(component, 'getDetails').and.returnValue(observableOf(mockRes.getDetailsReturnData));
+      spyOn(component, 'ngOnInit').and.callThrough();
+      spyOn(component, 'switchLayout').and.callFake(() => { });
+      spyOn(component, 'getFrameWorkDetails').and.callFake(() => { });
+      spyOn(component, 'loadScripts').and.callFake(() => { });
+      component.ngOnInit();
+      expect(component.switchLayout).toHaveBeenCalled();
+      expect(component.showLoader).toBeTruthy();
+      expect(component.showQuestionEditor).toBeTruthy();
+      expect(component.getFrameWorkDetails).toHaveBeenCalled();
+      expect(component.loadScripts).toHaveBeenCalled();
+    });
+
+    it('#ngOnInit() should call  redirectToWorkSpace methods on NO_PERMISSION error', () => {
+      component.collectionDetails = {mimeType : 'application/vnd.sunbird.questionset'};
+      spyOn(component, 'getDetails').and.returnValue(throwError('NO_PERMISSION'));
+      spyOn(component, 'ngOnInit').and.callThrough();
+      spyOn(component, 'redirectToWorkSpace').and.callFake(() => { });
+      component.ngOnInit();
+      expect(component.redirectToWorkSpace).toHaveBeenCalled();
+    });
+
+    it('#ngOnInit() should call retireLock when get api error', () => {
+      component.collectionDetails = {mimeType : 'application/vnd.sunbird.questionset'};
+      spyOn(component, 'getDetails').and.returnValue(throwError(mockRes.lockError));
+      spyOn(component, 'ngOnInit').and.callThrough();
+      spyOn(component, 'retireLock').and.callFake(() => { });
+      component.ngOnInit();
+      expect(component.retireLock).toHaveBeenCalled();
+    });
+
+    xit('#ngOnInit() should call redirectToWorkSpace when get error', () => {
+      component.collectionDetails = {mimeType : 'application/vnd.sunbird.questionset'};
+      spyOn(component, 'getDetails').and.returnValue(throwError({}));
+      spyOn(component, 'ngOnInit').and.callThrough();
+      spyOn(component, 'redirectToWorkSpace').and.callFake(() => { });
+      component.ngOnInit();
+      expect(component.redirectToWorkSpace).toHaveBeenCalled();
     });
 });
