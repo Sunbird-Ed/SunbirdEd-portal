@@ -91,7 +91,7 @@
                         </div>
                     </div>
                     <button (click)="resetFilters()" appTelemetryInteract
-                    [telemetryInteractEdata]="getInteractEdata()"
+                    [telemetryInteractEdata]="getInteractEdata()" tabindex="0"
                     class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto">{{resourceService.frmelmnts?.btn?.reset | translate}}
                 </button>
                 </div>
@@ -104,7 +104,7 @@
 
 <div *ngIf="isLayoutAvailable()" class="sbt-filter" tabindex="-1">
 
-    <div class="sbt-filter-switcher-container cursor-pointer mobile only" (click)="isOpen = !isOpen">
+    <div class="sbt-filter-switcher-container cursor-pointer mobile only" (click)="isOpen = !isOpen" tabindex="0">
         <div class="sbt-filter-switcher"><i class="sliders horizontal icon"></i></div>
         <div class="sbt-filter-text">{{resourceService.frmelmnts?.lbl?.filters | translate}}</div>
     </div>
@@ -117,12 +117,12 @@
             <ng-container content>
                 <div [hidden]="!((boards.length || emptyBoard) && refresh)" class="sbt-filter-bar mr-16 pl-24">
                     <div class="sbt-reset-bar d-flex flex-ai-center flex-ai-jc-center" tabindex="0">
-                        <button (click)="onSearchFrameworkFilterReset()" appTelemetryInteract
+                        <button (click)="onSearchFrameworkFilterReset()" tabindex="0" appTelemetryInteract
                             [telemetryInteractEdata]="getInteractEdata()"
                             class="sb-btn sb-btn-xs sb-btn-link-primary pull-right sbt-btn-reset cursor-pointer">{{resourceService.frmelmnts?.btn?.reset | translate}}
                             <i class="icon undo"></i></button>
                         <span class="sbt-filter-close"><i class="icon-svg icon-svg--xxs icon-close cursor-pointer"
-                                (click)="isOpen = !isOpen">
+                                (click)="isOpen = !isOpen" tabindex="0">
                                 <svg class="icon icon-svg--red">
                                     <use xlink:href="./assets/images/sprite.svg#close"></use>
                                 </svg>

@@ -134,7 +134,7 @@
       [telemetryInteractObject]="telemetryInteractObject" 
       [telemetryInteractEdata]="checkStatusInteractEdata" 
       [disabled]="!statusForm.value.processId"  
-      class="sb-btn sb-btn-normal sb-btn-primary"
+      class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
       (click)="getBulkUploadStatus(statusForm.value)"
       >
         {{resourceService?.frmelmnts?.btn?.chksts}}
