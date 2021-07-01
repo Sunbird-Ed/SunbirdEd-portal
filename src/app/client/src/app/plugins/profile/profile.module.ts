@@ -21,7 +21,7 @@ import {CommonConsumptionModule} from '@project-sunbird/common-consumption-v8';
 import { CertificateDirectivesModule } from 'sb-svg2pdf';
 import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
-import { CommonFormElementsModule } from 'common-form-elements';
+import { CommonFormElementsModule } from 'common-form-elements-v9';
 import {LocationModule} from "../location";
 
 export const csCourseServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
