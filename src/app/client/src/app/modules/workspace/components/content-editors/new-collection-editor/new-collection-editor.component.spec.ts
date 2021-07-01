@@ -84,16 +84,19 @@ describe('NewCollectionEditorComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  xit('should fetch collection details if api return data',
-    inject([EditorService], (editorService) => {
-      spyOn(editorService, 'getContent').and.returnValue(observableOf(mockRes.successResult));
-      spyOn(component, 'getFrameWorkDetails').and.callFake(() => { });
-      component.collectionDetails = 'application/vnd.sunbird.questionset';
-      component.ngOnInit();
-      expect(component.collectionDetails).toBeDefined();
-      expect(component.showQuestionEditor).toBeTruthy();
-      expect(component.getFrameWorkDetails).toHaveBeenCalled();
-    }));
+  it('#getFrameWorkDetails() workSpaceService.getCategoryDefinition and call setEditorConfig',
+    inject([EditorService, WorkSpaceService], (editorService, workSpaceService) => {
+      component.collectionDetails = {
+        mimeType: 'application/vnd.ekstep.content-collection',
+        primaryCategory: 'Course'
+      };
+      spyOn(workSpaceService, 'getCategoryDefinition').and.returnValue(observableOf(mockRes.categoryRead));
+      spyOn(component, 'setEditorConfig').and.callFake(() => { });
+      component.getFrameWorkDetails();
+      expect(component.hierarchyConfig).toBeDefined();
+      expect(component.showQuestionEditor).toBeFalsy();
+      expect(component.setEditorConfig).toHaveBeenCalled();
+  }));
 
   xit('should throw error if getting collection details fails',
     inject([EditorService], (editorService) => {
@@ -103,64 +106,55 @@ describe('NewCollectionEditorComponent', () => {
       expect(component.collectionDetails).toBeUndefined();
       expect(component.showQuestionEditor).toBeFalsy();
       expect(component.getFrameWorkDetails).not.toHaveBeenCalled();
-    }));
+  }));
 
-    it('#getCollectionDetails() should call editorService.getContent when type is course',
-    inject([EditorService],
-      (editorService) => {
-        component['routeParams'] = {type: 'Course'};
-        spyOn(editorService, 'getContent').and.returnValue(observableOf(mockRes.successResult));
-        spyOn(component, 'getCollectionDetails').and.callThrough();
-        component.getCollectionDetails();
-        expect(editorService.getContent).toHaveBeenCalled();
-    }));
+  xit('#getCollectionDetails() should call editorService.getContent when type is course',
+  inject([EditorService],
+    (editorService) => {
+      component['routeParams'] = {type: 'Course'};
+      spyOn(editorService, 'getContent').and.returnValue(observableOf(mockRes.getContentSucessRes));
+      spyOn(component, 'getCollectionDetails').and.callThrough();
+      component.getCollectionDetails();
+      expect(editorService.getContent).toHaveBeenCalled();
+  }));
 
-    it('#getCollectionDetails() should call workspaceService.getQuestion when type is QuestionSet',
-    inject([WorkSpaceService],
-      (workspaceService) => {
-        component['routeParams'] = {type: 'QuestionSet'};
-        spyOn(workspaceService, 'getQuestion').and.returnValue(observableOf(mockRes.questionsetSuccessResult));
-        spyOn(component, 'getCollectionDetails').and.callThrough();
-        component.getCollectionDetails();
-        expect(workspaceService.getQuestion).toHaveBeenCalled();
-    }));
+  it('#getCollectionDetails() should call workspaceService.getQuestion when type is QuestionSet',
+  inject([WorkSpaceService],
+    (workspaceService) => {
+      component['routeParams'] = {type: 'QuestionSet'};
+      spyOn(workspaceService, 'getQuestion').and.returnValue(observableOf(mockRes.questionsetSuccessResult));
+      spyOn(component, 'getCollectionDetails').and.callThrough();
+      component.getCollectionDetails();
+      expect(workspaceService.getQuestion).toHaveBeenCalled();
+  }));
 
-    it('should fetch collection details and set collection details if success',
-    inject([EditorService],
-      (editorService) => {
-        spyOn(editorService, 'getContent').and.returnValue(observableOf(mockRes.successResult));
-        spyOn(editorService, 'getOwnershipType').and.returnValue(observableOf(['CreatedBy', 'CreatedFor']));
-        component.ngOnInit();
-        expect(component['routeParams']).toBeDefined();
-        expect(component.collectionDetails).toBeDefined();
-    }));
+  it('should fetch collection details and set collection details if success',
+  inject([EditorService],
+    (editorService) => {
+      spyOn(editorService, 'getContent').and.returnValue(observableOf(mockRes.successResult));
+      spyOn(editorService, 'getOwnershipType').and.returnValue(observableOf(['CreatedBy', 'CreatedFor']));
+      component.ngOnInit();
+      expect(component['routeParams']).toBeDefined();
+      expect(component.collectionDetails).toBeDefined();
+  }));
 
-    it('should navigate to draft', inject([Router, NavigationHelperService], (router, navigationHelperService) => () => {
-      component['routeParams'] = {state: 'xyz'};
-      spyOn(navigationHelperService, 'navigateToWorkSpace').and.callFake(() => { });
-      component.redirectToWorkSpace();
-      // expect(component.redirectToWorkSpace).toHaveBeenCalled();
-      expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('workspace/content/draft/1');
-    }));
+  it('should navigate to draft', inject([Router, NavigationHelperService], (router, navigationHelperService) => () => {
+    component['routeParams'] = {state: 'xyz'};
+    spyOn(navigationHelperService, 'navigateToWorkSpace').and.callFake(() => { });
+    component.redirectToWorkSpace();
+    // expect(component.redirectToWorkSpace).toHaveBeenCalled();
+    expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('workspace/content/draft/1');
+  }));
 
-    xit('should throw error if getting content details fails',
-    inject([EditorService, UserService, Router, ToasterService, ResourceService],
-      (editorService, userService, router, toasterService, resourceService) => {
-        spyOn(editorService, 'getContent').and.returnValue(throwError({}));
-        spyOn(toasterService, 'error').and.callFake(() => {});
-        component.ngOnInit();
-        expect(toasterService.error).toHaveBeenCalled();
-      }));
-
-    it('should throw error if dont have permission to edit this content',
-    inject([EditorService, UserService, Router, ToasterService, ResourceService],
-      (editorService, userService, router, toasterService, resourceService) => {
-        spyOn(editorService, 'getContent').and.returnValue(throwError('NO_PERMISSION'));
-        spyOn(toasterService, 'error').and.callFake(() => {});
-        component.ngOnInit();
-        expect(component['routeParams']).toBeDefined();
-        expect(toasterService.error).toHaveBeenCalled();
-      }));
+  it('should throw error if dont have permission to edit this content',
+  inject([EditorService, UserService, Router, ToasterService, ResourceService],
+    (editorService, userService, router, toasterService, resourceService) => {
+      spyOn(editorService, 'getContent').and.returnValue(throwError('NO_PERMISSION'));
+      spyOn(toasterService, 'error').and.callFake(() => {});
+      component.ngOnInit();
+      expect(component['routeParams']).toBeDefined();
+      expect(toasterService.error).toHaveBeenCalled();
+  }));
 
   it('should fetch framework details if api return data',
     inject([WorkSpaceService], (workSpaceService) => {
@@ -173,7 +167,7 @@ describe('NewCollectionEditorComponent', () => {
       expect(component.setEditorConfig).toHaveBeenCalled();
       expect(component.getPrimaryCategoryData).toHaveBeenCalled();
       expect(component.showLoader).toBeFalsy();
-    }));
+  }));
 
   it('should throw error if getting framework details fails',
     inject([WorkSpaceService, ToasterService], (workSpaceService, toasterService) => {
@@ -182,7 +176,7 @@ describe('NewCollectionEditorComponent', () => {
       spyOn(toasterService, 'error').and.callThrough();
       component.getFrameWorkDetails();
       expect(toasterService.error).toHaveBeenCalledWith(mockResourceService.messages.emsg.m0015);
-    }));
+  }));
 
   it('#switchLayout() should switch theme if layoutType is #joy',
     inject([LayoutService], ( layoutService ) => {
@@ -190,7 +184,7 @@ describe('NewCollectionEditorComponent', () => {
       component.layoutType = 'joy';
       component.switchLayout();
       expect(layoutService.initiateSwitchLayout).toHaveBeenCalled();
-    }));
+  }));
 
   it('#switchLayout() should not switch theme if layoutType is not #joy',
     inject([LayoutService], ( layoutService ) => {
@@ -198,7 +192,7 @@ describe('NewCollectionEditorComponent', () => {
       component.layoutType = '';
       component.switchLayout();
       expect(layoutService.initiateSwitchLayout).not.toHaveBeenCalled();
-    }));
+  }));
 
   it('#getPrimaryCategoryData() should return valid Categories', () => {
     let result = component.getPrimaryCategoryData({ Question: [] });
@@ -227,162 +221,162 @@ describe('NewCollectionEditorComponent', () => {
     expect(component.retireLock).toHaveBeenCalled();
   });
 
-    it('#setEditorConfig() should set editor config',
-    inject([FrameworkService], (frameworkService) => {
-      spyOn(frameworkService, 'getDefaultLicense').and.callFake( () => {});
-      component.collectionDetails = mockRes.successResult.result.content;
-      component.showQuestionEditor = true;
-      component.ngOnInit();
-      expect(component['routeParams']).toBeDefined();
-      component.setEditorConfig();
-      expect(frameworkService.getDefaultLicense).toHaveBeenCalled();
-      expect(Object.keys(component.editorConfig)).toEqual(['context', 'config']);
-    }));
+  it('#setEditorConfig() should set editor config',
+  inject([FrameworkService], (frameworkService) => {
+    spyOn(frameworkService, 'getDefaultLicense').and.callFake( () => {});
+    component.collectionDetails = mockRes.successResult.result.content;
+    component.showQuestionEditor = true;
+    component.ngOnInit();
+    expect(component['routeParams']).toBeDefined();
+    component.setEditorConfig();
+    expect(frameworkService.getDefaultLicense).toHaveBeenCalled();
+    expect(Object.keys(component.editorConfig)).toEqual(['context', 'config']);
+  }));
 
-    it('#redirectToWorkSpace() should redirect to workspace with valid #URL',
-    inject([NavigationHelperService], (navigationHelperService) => {
-      spyOn(navigationHelperService, 'navigateToWorkSpace').and.callFake(() => { });
-      component.ngOnInit();
-      expect(component['routeParams']).toBeDefined();
-      component.redirectToWorkSpace();
-      expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('/workspace/content/allcontent/1');
-      const activatedRoute = TestBed.get(ActivatedRoute);
-      activatedRoute.snapshot.params = {state: 'collaborating-on'};
-      component.ngOnInit();
-      expect(component['routeParams']).toBeDefined();
-      component.redirectToWorkSpace();
-      expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('/workspace/content/collaborating-on/1');
-      activatedRoute.snapshot.params = {state: 'upForReview'};
-      component.ngOnInit();
-      expect(component['routeParams']).toBeDefined();
-      component.redirectToWorkSpace();
-      expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('/workspace/content/upForReview/1');
-      activatedRoute.snapshot.params = {state: ''};
-      component.ngOnInit();
-      expect(component['routeParams']).toBeDefined();
-      component.redirectToWorkSpace();
-      expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('/workspace/content/draft/1');
-    }));
+  it('#redirectToWorkSpace() should redirect to workspace with valid #URL',
+  inject([NavigationHelperService], (navigationHelperService) => {
+    spyOn(navigationHelperService, 'navigateToWorkSpace').and.callFake(() => { });
+    component.ngOnInit();
+    expect(component['routeParams']).toBeDefined();
+    component.redirectToWorkSpace();
+    expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('/workspace/content/allcontent/1');
+    const activatedRoute = TestBed.get(ActivatedRoute);
+    activatedRoute.snapshot.params = {state: 'collaborating-on'};
+    component.ngOnInit();
+    expect(component['routeParams']).toBeDefined();
+    component.redirectToWorkSpace();
+    expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('/workspace/content/collaborating-on/1');
+    activatedRoute.snapshot.params = {state: 'upForReview'};
+    component.ngOnInit();
+    expect(component['routeParams']).toBeDefined();
+    component.redirectToWorkSpace();
+    expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('/workspace/content/upForReview/1');
+    activatedRoute.snapshot.params = {state: ''};
+    component.ngOnInit();
+    expect(component['routeParams']).toBeDefined();
+    component.redirectToWorkSpace();
+    expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('/workspace/content/draft/1');
+  }));
 
-    it('#getDetails() should call lockContent method if lockInfo is empty',
-    inject([EditorService], (editorService) => {
-      component['queryParams'] = {};
-      component['routeParams'] = {
-        contentId: 'do_12345',
-        type: 'course',
-        framework: undefined
-      };
-      spyOn(editorService, 'getContent').and.returnValue(observableOf(mockRes.successResult));
-      spyOn(editorService, 'getOwnershipType').and.returnValue(observableOf(['CreatedBy', 'CreatedFor']));
-      spyOn(component, 'lockContent').and.callFake(() => { });
-      component.getDetails();
-      expect(editorService.getOwnershipType).toHaveBeenCalled();
-      expect(component.lockContent).toHaveBeenCalled();
-    }));
+  it('#getDetails() should call lockContent method if lockInfo is empty',
+  inject([EditorService], (editorService) => {
+    component['queryParams'] = {};
+    component['routeParams'] = {
+      contentId: 'do_12345',
+      type: 'course',
+      framework: undefined
+    };
+    spyOn(editorService, 'getContent').and.returnValue(observableOf(mockRes.successResult));
+    spyOn(editorService, 'getOwnershipType').and.returnValue(observableOf(['CreatedBy', 'CreatedFor']));
+    spyOn(component, 'lockContent').and.callFake(() => { });
+    component.getDetails();
+    expect(editorService.getOwnershipType).toHaveBeenCalled();
+    expect(component.lockContent).toHaveBeenCalled();
+  }));
 
-    it('#getDetails() should not call lockContent method if lockInfo is not empty',
-    inject([EditorService], (editorService) => {
-      component['queryParams'] = {lockKey: '59bee37d-1ace-4d2d-92d7-f0c49148dc0d',
-      expiresAt: '2021-07-01T12:03:45.375Z',
-      expiresIn: 60};
-      component['routeParams'] = {
-        contentId: 'do_12345',
-        type: 'course',
-        framework: undefined
-      };
-      spyOn(editorService, 'getContent').and.returnValue(observableOf(mockRes.successResult));
-      spyOn(editorService, 'getOwnershipType').and.returnValue(observableOf(['CreatedBy', 'CreatedFor']));
-      spyOn(component, 'lockContent').and.callFake(() => { });
-      component.getDetails();
-      expect(editorService.getOwnershipType).toHaveBeenCalled();
-      expect(component.lockContent).not.toHaveBeenCalled();
-    }));
+  it('#getDetails() should not call lockContent method if lockInfo is not empty',
+  inject([EditorService], (editorService) => {
+    component['queryParams'] = {lockKey: '59bee37d-1ace-4d2d-92d7-f0c49148dc0d',
+    expiresAt: '2021-07-01T12:03:45.375Z',
+    expiresIn: 60};
+    component['routeParams'] = {
+      contentId: 'do_12345',
+      type: 'course',
+      framework: undefined
+    };
+    spyOn(editorService, 'getContent').and.returnValue(observableOf(mockRes.successResult));
+    spyOn(editorService, 'getOwnershipType').and.returnValue(observableOf(['CreatedBy', 'CreatedFor']));
+    spyOn(component, 'lockContent').and.callFake(() => { });
+    component.getDetails();
+    expect(editorService.getOwnershipType).toHaveBeenCalled();
+    expect(component.lockContent).not.toHaveBeenCalled();
+  }));
 
-    it('#lockContent() should call worspaceService.lockContent',
-    inject([WorkSpaceService], (workSpaceService) => {
-      component['routeParams'] = {
-        contentId: 'do_12345',
-        type: 'course',
-        framework: undefined
-      };
-      component.editorConfig = mockRes.editorConfig;
-      spyOn(component, 'redirectToWorkSpace').and.returnValue(observableOf({}));
-      spyOn(workSpaceService, 'lockContent').and.returnValue(observableOf({}));
-      component.lockContent();
-      expect(workSpaceService.lockContent).toHaveBeenCalled();
-    }));
+  it('#lockContent() should call worspaceService.lockContent',
+  inject([WorkSpaceService], (workSpaceService) => {
+    component['routeParams'] = {
+      contentId: 'do_12345',
+      type: 'course',
+      framework: undefined
+    };
+    component.editorConfig = mockRes.editorConfig;
+    spyOn(component, 'redirectToWorkSpace').and.returnValue(observableOf({}));
+    spyOn(workSpaceService, 'lockContent').and.returnValue(observableOf({}));
+    component.lockContent();
+    expect(workSpaceService.lockContent).toHaveBeenCalled();
+  }));
 
-    it('#retireLock() should call #redirectToWorkSpace() method if success',
-    inject([WorkSpaceService], (workSpaceService) => {
-      component['routeParams'] = {contentId: 'do_12345'};
-      component.editorConfig = mockRes.editorConfig;
-      spyOn(workSpaceService, 'retireLock').and.returnValue(observableOf({}));
-      spyOn(component, 'redirectToWorkSpace').and.callThrough();
-      component.retireLock();
-      expect(workSpaceService.retireLock).toHaveBeenCalled();
-      expect(component.redirectToWorkSpace).toHaveBeenCalled();
-    }));
+  it('#retireLock() should call #redirectToWorkSpace() method if success',
+  inject([WorkSpaceService], (workSpaceService) => {
+    component['routeParams'] = {contentId: 'do_12345'};
+    component.editorConfig = mockRes.editorConfig;
+    spyOn(workSpaceService, 'retireLock').and.returnValue(observableOf({}));
+    spyOn(component, 'redirectToWorkSpace').and.callThrough();
+    component.retireLock();
+    expect(workSpaceService.retireLock).toHaveBeenCalled();
+    expect(component.redirectToWorkSpace).toHaveBeenCalled();
+  }));
 
-    it('#retireLock() should call worspaceService.retireLock method if success',
-    inject([WorkSpaceService], (workSpaceService) => {
-      component['routeParams'] = {contentId: 'do_12345'};
-      component.editorConfig = mockRes.editorConfig;
-      spyOn(workSpaceService, 'retireLock').and.returnValue(throwError({}));
-      spyOn(component, 'redirectToWorkSpace').and.callThrough();
-      component.retireLock();
-      expect(workSpaceService.retireLock).toHaveBeenCalled();
-      expect(component.redirectToWorkSpace).toHaveBeenCalled();
-    }));
+  it('#retireLock() should call worspaceService.retireLock method if success',
+  inject([WorkSpaceService], (workSpaceService) => {
+    component['routeParams'] = {contentId: 'do_12345'};
+    component.editorConfig = mockRes.editorConfig;
+    spyOn(workSpaceService, 'retireLock').and.returnValue(throwError({}));
+    spyOn(component, 'redirectToWorkSpace').and.callThrough();
+    component.retireLock();
+    expect(workSpaceService.retireLock).toHaveBeenCalled();
+    expect(component.redirectToWorkSpace).toHaveBeenCalled();
+  }));
 
-    it('#validateRequest() should return false', () => {
-      component.collectionDetails = {status: 'Draft',
-      createdBy: '68777b59-b28b-4aee-88d6-50d46e4c350956',
-      mimeType: 'application/vnd.sunbird.questionset'};
-      component['routeParams'] = {state: 'allcontent'};
-      spyOn(component, 'validateRequest').and.callThrough();
-      const validation = component.validateRequest();
-      expect(validation).toBeFalsy();
-    });
+  it('#validateRequest() should return false', () => {
+    component.collectionDetails = {status: 'Draft',
+    createdBy: '68777b59-b28b-4aee-88d6-50d46e4c350956',
+    mimeType: 'application/vnd.sunbird.questionset'};
+    component['routeParams'] = {state: 'allcontent'};
+    spyOn(component, 'validateRequest').and.callThrough();
+    const validation = component.validateRequest();
+    expect(validation).toBeFalsy();
+  });
 
-    it('#ngOnInit() should call the methods on success', () => {
-      component.collectionDetails = {mimeType : 'application/vnd.sunbird.questionset'};
-      spyOn(component, 'getDetails').and.returnValue(observableOf(mockRes.getDetailsReturnData));
-      spyOn(component, 'ngOnInit').and.callThrough();
-      spyOn(component, 'switchLayout').and.callFake(() => { });
-      spyOn(component, 'getFrameWorkDetails').and.callFake(() => { });
-      spyOn(component, 'loadScripts').and.callFake(() => { });
-      component.ngOnInit();
-      expect(component.switchLayout).toHaveBeenCalled();
-      expect(component.showLoader).toBeTruthy();
-      expect(component.showQuestionEditor).toBeTruthy();
-      expect(component.getFrameWorkDetails).toHaveBeenCalled();
-      expect(component.loadScripts).toHaveBeenCalled();
-    });
+  it('#ngOnInit() should call the methods on success', () => {
+    component.collectionDetails = {mimeType : 'application/vnd.sunbird.questionset'};
+    spyOn(component, 'getDetails').and.returnValue(observableOf(mockRes.getDetailsReturnData));
+    spyOn(component, 'ngOnInit').and.callThrough();
+    spyOn(component, 'switchLayout').and.callFake(() => { });
+    spyOn(component, 'getFrameWorkDetails').and.callFake(() => { });
+    spyOn(component, 'loadScripts').and.callFake(() => { });
+    component.ngOnInit();
+    expect(component.switchLayout).toHaveBeenCalled();
+    expect(component.showLoader).toBeTruthy();
+    expect(component.showQuestionEditor).toBeTruthy();
+    expect(component.getFrameWorkDetails).toHaveBeenCalled();
+    expect(component.loadScripts).toHaveBeenCalled();
+  });
 
-    it('#ngOnInit() should call  redirectToWorkSpace methods on NO_PERMISSION error', () => {
-      component.collectionDetails = {mimeType : 'application/vnd.sunbird.questionset'};
-      spyOn(component, 'getDetails').and.returnValue(throwError('NO_PERMISSION'));
-      spyOn(component, 'ngOnInit').and.callThrough();
-      spyOn(component, 'redirectToWorkSpace').and.callFake(() => { });
-      component.ngOnInit();
-      expect(component.redirectToWorkSpace).toHaveBeenCalled();
-    });
+  it('#ngOnInit() should call  redirectToWorkSpace methods on NO_PERMISSION error', () => {
+    component.collectionDetails = {mimeType : 'application/vnd.sunbird.questionset'};
+    spyOn(component, 'getDetails').and.returnValue(throwError('NO_PERMISSION'));
+    spyOn(component, 'ngOnInit').and.callThrough();
+    spyOn(component, 'redirectToWorkSpace').and.callFake(() => { });
+    component.ngOnInit();
+    expect(component.redirectToWorkSpace).toHaveBeenCalled();
+  });
 
-    it('#ngOnInit() should call retireLock when get api error', () => {
-      component.collectionDetails = {mimeType : 'application/vnd.sunbird.questionset'};
-      spyOn(component, 'getDetails').and.returnValue(throwError(mockRes.lockError));
-      spyOn(component, 'ngOnInit').and.callThrough();
-      spyOn(component, 'retireLock').and.callFake(() => { });
-      component.ngOnInit();
-      expect(component.retireLock).toHaveBeenCalled();
-    });
+  it('#ngOnInit() should call retireLock when get api error', () => {
+    component.collectionDetails = {mimeType : 'application/vnd.sunbird.questionset'};
+    spyOn(component, 'getDetails').and.returnValue(throwError(mockRes.lockError));
+    spyOn(component, 'ngOnInit').and.callThrough();
+    spyOn(component, 'retireLock').and.callFake(() => { });
+    component.ngOnInit();
+    expect(component.retireLock).toHaveBeenCalled();
+  });
 
-    xit('#ngOnInit() should call redirectToWorkSpace when get error', () => {
-      component.collectionDetails = {mimeType : 'application/vnd.sunbird.questionset'};
-      spyOn(component, 'getDetails').and.returnValue(throwError({}));
-      spyOn(component, 'ngOnInit').and.callThrough();
-      spyOn(component, 'redirectToWorkSpace').and.callFake(() => { });
-      component.ngOnInit();
-      expect(component.redirectToWorkSpace).toHaveBeenCalled();
-    });
+  it('#ngOnInit() should call redirectToWorkSpace when get error', () => {
+    component.collectionDetails = {mimeType : 'application/vnd.sunbird.questionset'};
+    spyOn(component, 'getDetails').and.returnValue(throwError({}));
+    spyOn(component, 'ngOnInit').and.callThrough();
+    spyOn(component, 'redirectToWorkSpace').and.callFake(() => { });
+    component.ngOnInit();
+    expect(component.redirectToWorkSpace).toHaveBeenCalled();
+  });
 });

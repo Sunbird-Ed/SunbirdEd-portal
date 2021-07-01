@@ -174,5 +174,125 @@ export const mockRes = {
         'responseCode': 'CLIENT_ERROR',
         'result': {}
     }
+  },
+  getContentSucessRes: {
+    'id': 'api.content.read',
+    'ver': '1.0',
+    'ts': '2021-07-01T15:47:43.281Z',
+    'params': {
+        'resmsgid': 'ac651a10-da83-11eb-8f0d-5b69b763f5d8',
+        'msgid': '2fb8cbe1-f25e-0640-e94c-ba3dbb25faf0',
+        'status': 'successful',
+        'err': null,
+        'errmsg': null
+    },
+    'responseCode': 'OK',
+    'result': {
+        'content': {
+            'mimeType': 'application/vnd.ekstep.content-collection',
+            'objectType': 'Content',
+            'primaryCategory': 'Course',
+            'contentType': 'Course',
+            'identifier': 'do_113312376536465408181',
+            'languageCode': [
+                'en'
+            ],
+            'status': 'Draft',
+            'contentDisposition': 'inline',
+            'targetFWIds': [
+                'nit_k-12'
+            ],
+            'framework': 'nit_k-12',
+            'createdBy': '5a587cc1-e018-4859-a0a8-e842650b9d64',
+            'resourceType': 'Course'
+        }
+    }
+},
+categoryRead: {
+  'id': 'api.object.category.definition.read',
+  'ver': '3.0',
+  'ts': '2021-07-01T17:08:11ZZ',
+  'params': {
+      'resmsgid': '11eb6fbc-a357-4dc2-8a62-4572bd2af643',
+      'msgid': null,
+      'err': null,
+      'status': 'successful',
+      'errmsg': null
+  },
+  'responseCode': 'OK',
+  'result': {
+      'objectCategoryDefinition': {
+          'identifier': 'obj-cat:course_collection_01309282781705830427',
+          'objectMetadata': {
+              'config': {
+                  'frameworkMetadata': {
+                      'orgFWType': [
+                          'K-12',
+                          'TPD'
+                      ],
+                      'targetFWType': [
+                          'K-12'
+                      ]
+                  },
+                  'sourcingSettings': {
+                      'collection': {
+                          'maxDepth': 4,
+                          'objectType': 'Collection',
+                          'primaryCategory': 'Course',
+                          'isRoot': true,
+                          'iconClass': 'fa fa-book',
+                          'children': {},
+                          'hierarchy': {
+                              'level1': {
+                                  'name': 'Course Unit',
+                                  'type': 'Unit',
+                                  'mimeType': 'application/vnd.ekstep.content-collection',
+                                  'contentType': 'CourseUnit',
+                                  'primaryCategory': 'Course Unit',
+                                  'iconClass': 'fa fa-folder-o',
+                                  'children': {}
+                              },
+                              'level2': {
+                                  'name': 'Course Unit',
+                                  'type': 'Unit',
+                                  'mimeType': 'application/vnd.ekstep.content-collection',
+                                  'contentType': 'CourseUnit',
+                                  'primaryCategory': 'Course Unit',
+                                  'iconClass': 'fa fa-folder-o',
+                                  'children': {
+                                      'Content': []
+                                  }
+                              },
+                              'level3': {
+                                  'name': 'Course Unit',
+                                  'type': 'Unit',
+                                  'mimeType': 'application/vnd.ekstep.content-collection',
+                                  'contentType': 'CourseUnit',
+                                  'primaryCategory': 'Course Unit',
+                                  'iconClass': 'fa fa-folder-o',
+                                  'children': {
+                                      'Content': []
+                                  }
+                              },
+                              'level4': {
+                                  'name': 'Course Unit',
+                                  'type': 'Unit',
+                                  'mimeType': 'application/vnd.ekstep.content-collection',
+                                  'contentType': 'CourseUnit',
+                                  'primaryCategory': 'Course Unit',
+                                  'iconClass': 'fa fa-folder-o',
+                                  'children': {
+                                      'Content': []
+                                  }
+                              }
+                          }
+                      }
+                  }
+              },
+          },
+          'languageCode': [],
+          'name': 'Course',
+      }
+  }
 }
 };
