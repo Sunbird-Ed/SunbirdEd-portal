@@ -108,7 +108,7 @@ describe('NewCollectionEditorComponent', () => {
       expect(component.getFrameWorkDetails).not.toHaveBeenCalled();
   }));
 
-  xit('#getCollectionDetails() should call editorService.getContent when type is course',
+  it('#getCollectionDetails() should call editorService.getContent when type is course',
   inject([EditorService],
     (editorService) => {
       component['routeParams'] = {type: 'Course'};
