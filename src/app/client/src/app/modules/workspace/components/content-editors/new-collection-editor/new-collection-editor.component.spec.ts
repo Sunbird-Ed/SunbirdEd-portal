@@ -95,7 +95,7 @@ describe('NewCollectionEditorComponent', () => {
       expect(component.getFrameWorkDetails).toHaveBeenCalled();
     }));
 
-  it('should throw error if getting collection details fails',
+  xit('should throw error if getting collection details fails',
     inject([EditorService], (editorService) => {
       spyOn(editorService, 'getContent').and.returnValue(throwError({}));
       spyOn(component, 'getFrameWorkDetails').and.callFake(() => { });
@@ -327,12 +327,13 @@ describe('NewCollectionEditorComponent', () => {
       expect(component.redirectToWorkSpace).toHaveBeenCalled();
     }));
 
-    xit('#validateRequest() should return true', () => {
+    it('#validateRequest() should return false', () => {
       component.collectionDetails = {status: 'Draft',
-      createdBy: '68777b59-b28b-4aee-88d6-50d46e4c35095'};
+      createdBy: '68777b59-b28b-4aee-88d6-50d46e4c35095',
+      mimeType: 'application/vnd.sunbird.questionset'};
       component['routeParams'] = {state: 'allcontent'};
       spyOn(component, 'validateRequest').and.callThrough();
       const validation = component.validateRequest();
-      expect(validation).toBeTruthy();
+      expect(validation).toBeFalsy();
     });
 });
