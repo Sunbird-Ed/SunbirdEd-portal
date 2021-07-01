@@ -31,7 +31,10 @@ class NavigationHelperServiceStub { navigateToWorkSpace() { } }
 const mockUserService = {
   userOrgDetails$: observableOf({}),
   userProfile: {
+    id: '68777b59-b28b-4aee-88d6-50d46e4c35090',
+    firstName: 'N11',
     userId: '68777b59-b28b-4aee-88d6-50d46e4c35090',
+    rootOrgAdmin: true
   },
   channel: 'sunbird'
 };
@@ -75,10 +78,11 @@ describe('NewCollectionEditorComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should fetch collection details if api return data',
+  xit('should fetch collection details if api return data',
     inject([EditorService], (editorService) => {
       spyOn(editorService, 'getContent').and.returnValue(observableOf(mockRes.successResult));
       spyOn(component, 'getFrameWorkDetails').and.callFake(() => { });
+      component.collectionDetails = 'application/vnd.sunbird.questionset';
       component.ngOnInit();
       expect(component.collectionDetails).toBeDefined();
       expect(component.showQuestionEditor).toBeTruthy();
@@ -146,8 +150,18 @@ describe('NewCollectionEditorComponent', () => {
 
   it('#editorEventListener() should call #redirectToWorkSpace method', () => {
     spyOn(component, 'redirectToWorkSpace').and.callFake(() => { });
+    component['routeParams'] = {
+      contentStatus: 'Published'};
     component.editorEventListener({});
     expect(component.redirectToWorkSpace).toHaveBeenCalled();
+  });
+
+  it('#editorEventListener() should call #retireLock method', () => {
+    spyOn(component, 'retireLock').and.callFake(() => { });
+    component['routeParams'] = {
+      contentStatus: 'Draft'};
+    component.editorEventListener({});
+    expect(component.retireLock).toHaveBeenCalled();
   });
 
     it('#setEditorConfig() should set editor config',
@@ -182,4 +196,39 @@ describe('NewCollectionEditorComponent', () => {
       expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('/workspace/content/draft/1');
     }));
 
+    it('#lockContent() should call worspaceService.lockContent',
+    inject([WorkSpaceService], (workSpaceService) => {
+      component['routeParams'] = {
+        contentId: 'do_12345',
+        type: 'course',
+        framework: undefined
+      };
+      component.editorConfig = mockRes.editorConfig;
+      spyOn(component, 'redirectToWorkSpace').and.returnValue(observableOf({}));
+      spyOn(workSpaceService, 'lockContent').and.returnValue(observableOf({}));
+      component.lockContent();
+      expect(workSpaceService.lockContent).toHaveBeenCalled();
+    }));
+
+    it('#retireLock() should call #redirectToWorkSpace() method if success',
+    inject([WorkSpaceService], (workSpaceService) => {
+      component['routeParams'] = {contentId: 'do_12345'};
+      component.editorConfig = mockRes.editorConfig;
+      spyOn(workSpaceService, 'retireLock').and.returnValue(observableOf({}));
+      spyOn(component, 'redirectToWorkSpace').and.callThrough();
+      component.retireLock();
+      expect(workSpaceService.retireLock).toHaveBeenCalled();
+      expect(component.redirectToWorkSpace).toHaveBeenCalled();
+    }));
+
+    it('#retireLock() should call worspaceService.retireLock method if success',
+    inject([WorkSpaceService], (workSpaceService) => {
+      component['routeParams'] = {contentId: 'do_12345'};
+      component.editorConfig = mockRes.editorConfig;
+      spyOn(workSpaceService, 'retireLock').and.returnValue(throwError({}));
+      spyOn(component, 'redirectToWorkSpace').and.callThrough();
+      component.retireLock();
+      expect(workSpaceService.retireLock).toHaveBeenCalled();
+      expect(component.redirectToWorkSpace).toHaveBeenCalled();
+    }));
 });
