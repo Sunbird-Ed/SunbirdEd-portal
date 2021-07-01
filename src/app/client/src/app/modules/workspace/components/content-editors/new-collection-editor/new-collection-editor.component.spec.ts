@@ -16,7 +16,13 @@ document.body.innerHTML = document.body.innerHTML +
   + ' type="hidden" />' + '<input id="buildNumber" value="3.7.0.fa504a4"'
   + ' type="hidden" />';
 
-const mockResourceService = { messages: { emsg: { m0015: '1000' } } };
+const mockResourceService = { messages: {
+  emsg: {
+    m0015: '1000',
+    m0004: 'Cannot preview now. Try again later',
+    m0013: 'You dont have permission to edit this content'}
+  }
+};
 const mockActivatedRoute = {
   snapshot: {
     params: {
@@ -89,7 +95,7 @@ describe('NewCollectionEditorComponent', () => {
       expect(component.getFrameWorkDetails).toHaveBeenCalled();
     }));
 
-  xit('should throw error if getting collection details fails',
+  it('should throw error if getting collection details fails',
     inject([EditorService], (editorService) => {
       spyOn(editorService, 'getContent').and.returnValue(throwError({}));
       spyOn(component, 'getFrameWorkDetails').and.callFake(() => { });
@@ -99,14 +105,51 @@ describe('NewCollectionEditorComponent', () => {
       expect(component.getFrameWorkDetails).not.toHaveBeenCalled();
     }));
 
-    it('should throw error if getting content details fails',
-  inject([EditorService, UserService, Router, ToasterService, ResourceService],
-    (editorService, userService, router, toasterService, resourceService) => {
-      spyOn(editorService, 'getContent').and.returnValue(throwError(mockRes.successResult));
-      spyOn(toasterService, 'error').and.callFake(() => {});
-      component.ngOnInit();
-      expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0004);
+    it('#getCollectionDetails() should call editorService.getContent when type is course',
+    inject([EditorService],
+      (editorService) => {
+        component['routeParams'] = {type: 'Course'};
+        spyOn(editorService, 'getContent').and.returnValue(observableOf(mockRes.successResult));
+        spyOn(component, 'getCollectionDetails').and.callThrough();
+        component.getCollectionDetails();
+        expect(editorService.getContent).toHaveBeenCalled();
     }));
+
+    it('#getCollectionDetails() should call workspaceService.getQuestion when type is QuestionSet',
+    inject([WorkSpaceService],
+      (workspaceService) => {
+        component['routeParams'] = {type: 'QuestionSet'};
+        spyOn(workspaceService, 'getQuestion').and.returnValue(observableOf(mockRes.questionsetSuccessResult));
+        spyOn(component, 'getCollectionDetails').and.callThrough();
+        component.getCollectionDetails();
+        expect(workspaceService.getQuestion).toHaveBeenCalled();
+    }));
+
+    it('should fetch collection details and set collection details if success',
+    inject([EditorService],
+      (editorService) => {
+        spyOn(editorService, 'getContent').and.returnValue(observableOf(mockRes.successResult));
+        spyOn(editorService, 'getOwnershipType').and.returnValue(observableOf(['CreatedBy', 'CreatedFor']));
+        component.ngOnInit();
+        expect(component.collectionDetails).toBeDefined();
+    }));
+
+    it('should navigate to draft', inject([Router, NavigationHelperService], (router, navigationHelperService) => () => {
+      component['routeParams'] = {state: 'xyz'};
+      spyOn(navigationHelperService, 'navigateToWorkSpace').and.callFake(() => { });
+      component.redirectToWorkSpace();
+      // expect(component.redirectToWorkSpace).toHaveBeenCalled();
+      expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('workspace/content/draft/1');
+    }));
+
+    xit('should throw error if getting content details fails',
+    inject([EditorService, UserService, Router, ToasterService, ResourceService],
+      (editorService, userService, router, toasterService, resourceService) => {
+        spyOn(editorService, 'getContent').and.returnValue(throwError({}));
+        spyOn(toasterService, 'error').and.callFake(() => {});
+        component.ngOnInit();
+        expect(toasterService.error).toHaveBeenCalled();
+      }));
 
     it('should throw error if dont have permission to edit this content',
     inject([EditorService, UserService, Router, ToasterService, ResourceService],
@@ -114,7 +157,7 @@ describe('NewCollectionEditorComponent', () => {
         spyOn(editorService, 'getContent').and.returnValue(throwError('NO_PERMISSION'));
         spyOn(toasterService, 'error').and.callFake(() => {});
         component.ngOnInit();
-        expect(toasterService.error).toHaveBeenCalledWith(resourceService.messages.emsg.m0013);
+        expect(toasterService.error).toHaveBeenCalled();
       }));
 
   it('should fetch framework details if api return data',
@@ -212,6 +255,40 @@ describe('NewCollectionEditorComponent', () => {
       component.ngOnInit();
       component.redirectToWorkSpace();
       expect(navigationHelperService.navigateToWorkSpace).toHaveBeenCalledWith('/workspace/content/draft/1');
+    }));
+
+    it('#getDetails() should call lockContent method if lockInfo is empty',
+    inject([EditorService], (editorService) => {
+      component['queryParams'] = {};
+      component['routeParams'] = {
+        contentId: 'do_12345',
+        type: 'course',
+        framework: undefined
+      };
+      spyOn(editorService, 'getContent').and.returnValue(observableOf(mockRes.successResult));
+      spyOn(editorService, 'getOwnershipType').and.returnValue(observableOf(['CreatedBy', 'CreatedFor']));
+      spyOn(component, 'lockContent').and.callFake(() => { });
+      component.getDetails();
+      expect(editorService.getOwnershipType).toHaveBeenCalled();
+      expect(component.lockContent).toHaveBeenCalled();
+    }));
+
+    it('#getDetails() should not call lockContent method if lockInfo is not empty',
+    inject([EditorService], (editorService) => {
+      component['queryParams'] = {lockKey: '59bee37d-1ace-4d2d-92d7-f0c49148dc0d',
+      expiresAt: '2021-07-01T12:03:45.375Z',
+      expiresIn: 60};
+      component['routeParams'] = {
+        contentId: 'do_12345',
+        type: 'course',
+        framework: undefined
+      };
+      spyOn(editorService, 'getContent').and.returnValue(observableOf(mockRes.successResult));
+      spyOn(editorService, 'getOwnershipType').and.returnValue(observableOf(['CreatedBy', 'CreatedFor']));
+      spyOn(component, 'lockContent').and.callFake(() => { });
+      component.getDetails();
+      expect(editorService.getOwnershipType).toHaveBeenCalled();
+      expect(component.lockContent).not.toHaveBeenCalled();
     }));
 
     it('#lockContent() should call worspaceService.lockContent',

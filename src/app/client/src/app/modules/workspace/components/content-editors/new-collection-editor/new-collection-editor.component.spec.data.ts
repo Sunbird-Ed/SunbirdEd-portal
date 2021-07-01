@@ -4,31 +4,37 @@ export const mockRes = {
     config: {}
   },
   successResult: {
-      'id': 'api.content.read',
-      'ver': '1.0',
-      'ts': '2018-04-10T13:02:45.415Z',
-      'params': {
-          'resmsgid': '76311b70-3cbf-11e8-8758-7f5b4fe67033',
-          'msgid': '762582b0-3cbf-11e8-bfb0-2527c99bf99d',
-          'status': 'successful',
-          'err': null,
-          'errmsg': null
-      },
-      'responseCode': 'OK',
-      'result': {
-          'content': {
-            'contentDisposition': 'inline',
-            'contentType': 'PracticeResource',
-            'createdBy': '874ed8a5-782e-4f6c-8f36-e0288455901e',
-            'framework': 'NCFCOPY',
-            'identifier': 'do_1132132802225602561165',
-            'languageCode': ['en'],
-            'mimeType': 'application/vnd.sunbird.questionset',
+    'id': 'api.content.read',
+    'ver': '1.0',
+    'ts': '2021-07-01T11:03:45.354Z',
+    'params': {
+        'resmsgid': '00ffc2a0-da5c-11eb-8f0d-5b69b763f5d8',
+        'msgid': 'd1400790-324e-a5ff-9683-51db545b734c',
+        'status': 'successful',
+        'err': null,
+        'errmsg': null
+    },
+    'responseCode': 'OK',
+    'result': {
+        'content': {
+            'mimeType': 'application/vnd.ekstep.content-collection',
             'objectType': 'Content',
-            'primaryCategory': 'Practice Question Set',
+            'primaryCategory': 'Course',
+            'contentType': 'Course',
+            'identifier': 'do_113312376536465408181',
+            'languageCode': [
+                'en'
+            ],
             'status': 'Draft',
-          }
-      }
+            'contentDisposition': 'inline',
+            'targetFWIds': [
+                'nit_k-12'
+            ],
+            'framework': 'nit_k-12',
+            'createdBy': '5a587cc1-e018-4859-a0a8-e842650b9d64',
+            'resourceType': 'Course'
+        }
+    }
   },
   frameworkSuccessResult: {
     'id': 'api.object.category.definition.read',
@@ -75,6 +81,33 @@ export const mockRes = {
         'languageCode': [],
         'name': 'Practice Question Set',
       }
+    }
+  },
+  questionsetSuccessResult: {
+    'id': 'api.questionset.read',
+    'ver': '3.0',
+    'ts': '2021-07-01T12:28:24ZZ',
+    'params': {
+        'resmsgid': 'c5a3bf09-107c-49f4-ab30-0fb1f9914882',
+        'msgid': null,
+        'err': null,
+        'status': 'successful',
+        'errmsg': null
+    },
+    'responseCode': 'OK',
+    'result': {
+        'questionset': {
+            'mimeType': 'application/vnd.sunbird.questionset',
+            'primaryCategory': 'Practice Question Set',
+            'contentDisposition': 'inline',
+            'identifier': 'do_1133131668609925121264',
+            'languageCode': [
+                'en'
+            ],
+            'framework': 'ekstep_ncert_k-12',
+            'createdBy': '5a587cc1-e018-4859-a0a8-e842650b9d64',
+            'status': 'Draft'
+        }
     }
   }
 };

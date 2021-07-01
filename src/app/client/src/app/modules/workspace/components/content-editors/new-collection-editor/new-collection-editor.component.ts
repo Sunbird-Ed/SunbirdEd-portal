@@ -83,13 +83,13 @@ export class NewCollectionEditorComponent implements OnInit {
     combineLatest(this.lazzyLoadScriptService.loadScript('semanticTreePicker.js'));
   }
 
-  private getCollectionDetails() {
+  public getCollectionDetails() {
     const options: any = { params: {} };
     options.params.mode = 'edit';
     if (this.routeParams.type && this.routeParams.type === 'QuestionSet') {
       return this.workSpaceService.getQuestion(this.routeParams.contentId, options).
       pipe(mergeMap((data) => {
-        this.collectionDetails = data.result.content;
+        this.collectionDetails = data.result.questionset;
         if (this.validateRequest()) {
           return of(data);
         } else {
@@ -99,11 +99,7 @@ export class NewCollectionEditorComponent implements OnInit {
     } else {
       return this.editorService.getContent(this.routeParams.contentId, options).
       pipe(mergeMap((data) => {
-        if (this.routeParams.type === 'QuestionSet') {
-          this.collectionDetails = data.result.questionset;
-        } else {
-          this.collectionDetails = data.result.content;
-        }
+        this.collectionDetails = data.result.content;
         if (this.validateRequest()) {
           return of(data);
         } else {
@@ -113,7 +109,7 @@ export class NewCollectionEditorComponent implements OnInit {
     }
   }
 
-  private getDetails() {
+  public getDetails() {
     const lockInfo = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
     if (_.isEmpty(lockInfo)) {
       return combineLatest(
@@ -165,7 +161,7 @@ export class NewCollectionEditorComponent implements OnInit {
   /**
    *Validate the request
    */
-   private validateRequest() {
+   public validateRequest() {
     const validStatus = _.indexOf(this.config.editorConfig.COLLECTION_EDITOR.collectionStatus, this.collectionDetails.status) > -1;
     const validState = _.indexOf(this.config.editorConfig.COLLECTION_EDITOR.collectionState, this.routeParams.state) > -1;
     if (this.collectionDetails.mimeType === this.config.editorConfig.COLLECTION_EDITOR.mimeCollection && validStatus) {
