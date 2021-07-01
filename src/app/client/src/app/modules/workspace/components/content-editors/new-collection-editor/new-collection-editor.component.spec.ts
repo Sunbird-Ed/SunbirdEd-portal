@@ -329,7 +329,7 @@ describe('NewCollectionEditorComponent', () => {
 
     it('#validateRequest() should return false', () => {
       component.collectionDetails = {status: 'Draft',
-      createdBy: '68777b59-b28b-4aee-88d6-50d46e4c35095',
+      createdBy: '68777b59-b28b-4aee-88d6-50d46e4c350956',
       mimeType: 'application/vnd.sunbird.questionset'};
       component['routeParams'] = {state: 'allcontent'};
       spyOn(component, 'validateRequest').and.callThrough();
