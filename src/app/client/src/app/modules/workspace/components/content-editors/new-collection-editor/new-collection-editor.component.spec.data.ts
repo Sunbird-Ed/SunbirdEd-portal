@@ -194,9 +194,6 @@ export const mockRes = {
             'primaryCategory': 'Course',
             'contentType': 'Course',
             'identifier': 'do_113312376536465408181',
-            'languageCode': [
-                'en'
-            ],
             'status': 'Draft',
             'contentDisposition': 'inline',
             'targetFWIds': [
