@@ -326,4 +326,13 @@ describe('NewCollectionEditorComponent', () => {
       expect(workSpaceService.retireLock).toHaveBeenCalled();
       expect(component.redirectToWorkSpace).toHaveBeenCalled();
     }));
+
+    xit('#validateRequest() should return true', () => {
+      component.collectionDetails = {status: 'Draft',
+      createdBy: '68777b59-b28b-4aee-88d6-50d46e4c35095'};
+      component['routeParams'] = {state: 'allcontent'};
+      spyOn(component, 'validateRequest').and.callThrough();
+      const validation = component.validateRequest();
+      expect(validation).toBeTruthy();
+    });
 });
