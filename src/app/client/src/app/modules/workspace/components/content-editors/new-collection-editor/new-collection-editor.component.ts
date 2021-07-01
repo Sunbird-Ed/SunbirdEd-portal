@@ -100,7 +100,11 @@ export class NewCollectionEditorComponent implements OnInit {
     } else {
       return this.editorService.getContent(this.routeParams.contentId, options).
       pipe(mergeMap((data) => {
-        this.collectionDetails = data.result.content;
+        if (this.routeParams.type === 'QuestionSet') {
+          this.collectionDetails = data.result.questionset;
+        } else {
+          this.collectionDetails = data.result.content;
+        }
         if (this.validateRequest()) {
           return of(data);
         } else {
