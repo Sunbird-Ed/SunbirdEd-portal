@@ -6,7 +6,7 @@ import { EditorService, WorkSpaceService } from './../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _ from 'lodash-es';
 import { combineLatest, of, throwError } from 'rxjs';
-import { map, mergeMap, tap, delay, first } from 'rxjs/operators';
+import { map, mergeMap, tap, first } from 'rxjs/operators';
 import { LazzyLoadScriptService } from 'LazzyLoadScriptService';
 
 @Component({
@@ -84,7 +84,6 @@ export class NewCollectionEditorComponent implements OnInit {
   }
 
   private getCollectionDetails() {
-    const lockInfo = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
     const options: any = { params: {} };
     options.params.mode = 'edit';
     if (this.routeParams.type && this.routeParams.type === 'QuestionSet') {
@@ -166,7 +165,7 @@ export class NewCollectionEditorComponent implements OnInit {
   /**
    *Validate the request
    */
-   private validateRequest(): Boolean {
+   private validateRequest() {
     const validStatus = _.indexOf(this.config.editorConfig.COLLECTION_EDITOR.collectionStatus, this.collectionDetails.status) > -1;
     const validState = _.indexOf(this.config.editorConfig.COLLECTION_EDITOR.collectionState, this.routeParams.state) > -1;
     if (this.collectionDetails.mimeType === this.config.editorConfig.COLLECTION_EDITOR.mimeCollection && validStatus) {
