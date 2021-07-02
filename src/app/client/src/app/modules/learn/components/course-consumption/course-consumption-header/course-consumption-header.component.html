@@ -156,11 +156,11 @@
     <p>{{resourceService?.messages?.stmsg?.m0137}}</p>
   </div>
   <div class="sb-modal-actions">
-    <button  class="sb-btn sb-btn-normal sb-btn-primary"
+    <button  class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
       (click)="downloadCollection(courseHierarchy); showModal = !showModal;">
       {{resourceService.frmelmnts?.btn?.download}}
     </button>
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
       (click)="logTelemetry('cancel-download-collection'); showModal = !showModal;">
       {{resourceService.frmelmnts?.btn?.cancel}}
     </button>
@@ -176,11 +176,11 @@
       <p>{{resourceService?.frmelmnts?.lbl?.desktop?.deleteCourse | interpolate:'{name}': courseHierarchy?.name}}</p>
     </div>
     <div class="sb-modal-actions">
-      <button class="sb-btn sb-btn-normal sb-btn-primary"
+      <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
         (click)="deleteCollection(courseHierarchy); showDeleteModal = !showDeleteModal;">
         {{resourceService?.frmelmnts?.lbl?.delete}}
       </button>
-      <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
+      <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
         (click)="logTelemetry('cancel-delete-collection'); showDeleteModal = !showDeleteModal;">
         {{resourceService.frmelmnts?.btn?.cancel}}
       </button>
