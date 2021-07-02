@@ -45,8 +45,8 @@
             ><svg class="icon icon-svg--primary">
               <use
                 xlink:href="assets/images/sprite.svg#arrow-long-left"
-              ></use></svg
-          ></i>
+              ></use></svg>
+            </i>
           {{ resourceService.frmelmnts?.btn?.back }}
         </button>
       </div>
@@ -73,7 +73,7 @@
                 : 'ui container mt-24'
             "
           >
-            <form [formGroup]="questionnaireForm" class="m-40">
+            <form [formGroup]="questionnaireForm" class="adjust">
               <question-generic-inputs
                 [questions]="section.questions"
                 [questionnaireForm]="questionnaireForm"

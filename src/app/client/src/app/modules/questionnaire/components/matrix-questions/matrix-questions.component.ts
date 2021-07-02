@@ -1,4 +1,10 @@
-import { Component, Input, OnInit, ViewChild } from "@angular/core";
+import {
+  Component,
+  HostListener,
+  Input,
+  OnInit,
+  ViewChild,
+} from "@angular/core";
 import {
   FormArray,
   FormBuilder,
@@ -15,7 +21,7 @@ import { ResourceService } from "@sunbird/shared";
 import { MatrixQuestion, Question } from "../../Interface/assessmentDetails";
 import { ObservationUtilService } from "../../../observation/service";
 import { QuestionnaireService } from "../../questionnaire.service";
-import * as _ from 'lodash-es';
+import * as _ from "lodash-es";
 
 export interface IContext {
   questions: Question[];
@@ -28,6 +34,10 @@ export interface IContext {
   styleUrls: ["./matrix-questions.component.scss"],
 })
 export class MatrixQuestionsComponent implements OnInit {
+  @HostListener("window:popstate", ["$event"])
+  onPopState(event) {
+    this.showBadgeAssingModel = false;
+  }
   @Input() questionnaireForm: FormGroup;
   @Input() question: MatrixQuestion;
   matrixForm: FormGroup;
@@ -95,8 +105,8 @@ export class MatrixQuestionsComponent implements OnInit {
     const config = new TemplateModalConfig<IContext, string, string>(
       this.modalTemplate
     );
-	config.closeResult = "closed!";
-	let deepClonedQuestion= _.cloneDeep(this.question.value[i])  
+    config.closeResult = "closed!";
+    let deepClonedQuestion = _.cloneDeep(this.question.value[i]);
     config.context = {
       questions: deepClonedQuestion,
       heading: `${this.question.instanceIdentifier} ${i + 1}`,
@@ -112,7 +122,7 @@ export class MatrixQuestionsComponent implements OnInit {
 
   matrixSubmit(index) {
     this.showBadgeAssingModel = false;
-    this.question.value[index]=this.context.questions
+    this.question.value[index] = this.context.questions;
     this.formAsArray.at(index).patchValue(this.matrixForm.value);
     if (this.matrixForm.invalid) {
       this.formAsArray.at(index).setErrors({ err: "Matrix reposne not valid" });

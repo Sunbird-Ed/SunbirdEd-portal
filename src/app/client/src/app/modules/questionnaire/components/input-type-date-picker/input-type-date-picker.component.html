@@ -1,9 +1,9 @@
 <div
   [formGroup]="questionnaireForm"
   *ngIf="questionnaireForm?.contains(question._id)"
-  class="d-flex flex-ai-center flex-jc-space-between"
+  class="sb-g sb-g-col-xs-12"
 >
-  <div class="ui left icon input">
+  <div class="ui left icon input sb-g-col-xs-12 sb-g-col-md-8">
     <i class="calendar icon"></i>
     <input
       suiDatepicker
@@ -16,7 +16,7 @@
       [pickerMaxDate]="max"
     />
   </div>
-  <div *ngIf="question?.autoCapture && !question?.value">
+  <div *ngIf="question?.autoCapture && !question?.value" class="d-flex sb-g-col-xs-12  sb-g-col-md-4 margin">
     <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="autoCapture()">
       {{ resourceService?.frmelmnts?.btn?.autoCapture | translate }}
     </button>
