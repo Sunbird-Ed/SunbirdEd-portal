@@ -94,7 +94,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
 
 
         this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
-            console.log("FormDATA", formData);
+            // console.log("FormDATA", formData);
             this.allTabData = _.find(formData, (o) => o.title === 'frmelmnts.tab.all');
             this.globalSearchFacets = _.get(this.allTabData, 'search.facets');
             //need to remove after inserting the new facet in form api.
@@ -102,7 +102,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
             // this.globalSearchFacets = this.filterFacets(facetValue)
             this.checkframeworkData(facetValue);
             this.globalSearchFacets = this.testFramework;
-            console.log("checkframeworkData", this.globalSearchFacets);
+            // console.log("checkframeworkData", this.globalSearchFacets);
             this.setNoResultMessage();
             this.initFilters = true;
         }, error => {
@@ -282,7 +282,7 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
                         result.push(elem);
                     }
                 });
-                console.log("pushedData", result);
+                // console.log("pushedData", result);
                 this.resultData = result;
 
 
@@ -449,13 +449,13 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
         // console.log("currentFrameworkDetails", currentFrameworkDetails);
         if (currentFrameworkDetails && currentFrameworkDetails[0]['requiredFacets']) {
             let requiredFacets1 = currentFrameworkDetails[0]['requiredFacets']
-            console.log("requiredFacets1", requiredFacets1)
+            // console.log("requiredFacets1", requiredFacets1)
             this.testFramework = facets.filter(eachFacet =>
                 requiredFacets1.includes(eachFacet))
         }
         // console.log("currentFrameworkDetails", currentFrameworkDetails);
         // })
-        console.log("testFramework$", this.testFramework);
+        // console.log("testFramework$", this.testFramework);
 
 
     }
