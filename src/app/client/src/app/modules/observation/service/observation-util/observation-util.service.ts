@@ -4,7 +4,8 @@ import { IUserData, ConfigService, ResourceService, AlertModal } from "@sunbird/
 import { take } from "rxjs/operators";
 import { SuiModalService } from 'ng2-semantic-ui-v9';
 import { Router } from "@angular/router";
-import { SlUtilsService } from "sl-questionnaire";
+import { SlUtilsService } from "@shikshalokam/sl-questionnaire";
+
 
 @Injectable({
   providedIn: "root",
@@ -21,10 +22,11 @@ export class ObservationUtilService {
     public modalService: SuiModalService,
     public resourceService: ResourceService,
     public router: Router,
-    public slUtil:SlUtilsService
+    public slUtil: SlUtilsService,
   ) {
     this.config = config;
-    this.slUtil.alert = this.showPopupAlert
+    this.slUtil.openAlert = this.showPopupAlert
+    
   }
 
   getProfileData() {

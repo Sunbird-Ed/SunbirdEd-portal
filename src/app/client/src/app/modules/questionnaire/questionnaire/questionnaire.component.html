@@ -49,13 +49,12 @@
             layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'
           "
         >
-          <form [formGroup]="questionnaireForm" class="m-40">
-            <question-generic-inputs
+          <form [formGroup]="questionnaireForm" class="m-40">  
+            <sl-input
               [questions]="section.questions"
               [questionnaireForm]="questionnaireForm"
-            ></question-generic-inputs>
+            ></sl-input>
           </form>
-          <!-- {{questionnaireForm.value |json}} -->
         </div>
       </div>
       <div
@@ -73,7 +72,6 @@
         >
           {{ resourceService?.frmelmnts?.btn?.save | translate }}
         </button>
-        <!-- class="sb-btn sb-btn-normal sb-btn-primary" -->
         <button
           [ngClass]="{
             'sb-btn sb-btn-normal': true,
