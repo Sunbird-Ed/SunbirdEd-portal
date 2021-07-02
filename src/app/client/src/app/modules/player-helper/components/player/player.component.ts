@@ -338,7 +338,20 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.questionScoreReviewEvents.emit(event);
     }
   }
+
+  generatelimitedAttemptEvent(event) {
+    if (_.get(event, 'edata.isLastAttempt')) {
+      this.selfAssessLastAttempt.emit(event);
+    } else if (_.get(event, 'edata.maxLimitExceeded')) {
+      this.selfAssessLastAttempt.emit(event);
+    }
+  }
+
   eventHandler(event) {
+    if (event.eid === 'exdata') {
+      this.generatelimitedAttemptEvent(event);
+      return;
+    }
     if (_.get(event, 'edata.type') === 'SHARE') {
       this.contentUtilsServiceService.contentShareEvent.emit('open');
       this.mobileViewDisplay = 'none';
@@ -353,23 +366,28 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   generateContentReadEvent(event: any, newPlayerEvent?) {
-    if (!event) {
+    let eventCopy = _.cloneDeep(event)
+    if (!eventCopy) {
       return;
     }
     if (newPlayerEvent) {
-      event = { detail: {telemetryData: event}};
+      eventCopy = { detail: {telemetryData: eventCopy}};
     }
-    const eid = _.get(event, 'detail.telemetryData.eid');
+    const eid = _.get(eventCopy, 'detail.telemetryData.eid');
     if (eid && (eid === 'START' || eid === 'END')) {
-      this.showRatingPopup(event);
+      this.showRatingPopup(eventCopy);
       if (this.contentProgressEvents$) {
-        this.contentProgressEvents$.next(event);
+        this.contentProgressEvents$.next(eventCopy);
       }
     } else if (eid && (eid === 'IMPRESSION')) {
       this.emitSceneChangeEvent();
     }
     if (eid && (eid === 'ASSESS') || eid === 'START' || eid === 'END') {
-      this.assessmentEvents.emit(event);
+      this.assessmentEvents.emit(eventCopy);
+    }
+
+    if (_.get(this.playerConfig, 'metadata.mimeType') === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset && eid === 'END') {
+      this.questionScoreSubmitEvents.emit(event);
     }
   }
   emitSceneChangeEvent(timer = 0) {
