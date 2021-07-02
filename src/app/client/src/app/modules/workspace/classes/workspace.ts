@@ -80,7 +80,7 @@ export class WorkSpace {
                 });
             }
             contentList.result.content = contents;
-            contentList.result.content.QuestionSet = questionSets;
+            contentList.result.QuestionSet = questionSets;
             return contentList;
         }));
     }
