@@ -2,7 +2,7 @@ import { environment } from '@sunbird/environment';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { TelemetryService, ITelemetryContext } from '@sunbird/telemetry';
 import {
-  UtilService, ResourceService, ToasterService, IUserData, IUserProfile,
+  UtilService, ResourceService, ToasterService, IUserData, IUserProfile, ConnectionService,
   NavigationHelperService, ConfigService, BrowserCacheTtlService, LayoutService
 } from '@sunbird/shared';
 import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, ChangeDetectorRef, ElementRef, Renderer2, NgZone } from '@angular/core';
@@ -13,7 +13,7 @@ import {
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
 import { Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin, zip, Subject } from 'rxjs';
-import { first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil } from 'rxjs/operators';
+import { first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil, debounceTime } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/common';
 import { image } from '../assets/images/tara-bot-icon';
@@ -129,7 +129,8 @@ export class AppComponent implements OnInit, OnDestroy {
     public formService: FormService, private programsService: ProgramsService,
     @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
     public changeDetectorRef: ChangeDetectorRef, public layoutService: LayoutService,
-    public generaliseLabelService: GeneraliseLabelService, private renderer: Renderer2, private zone: NgZone) {
+    public generaliseLabelService: GeneraliseLabelService, private renderer: Renderer2, private zone: NgZone,
+    private connectionService: ConnectionService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
     const layoutType = localStorage.getItem('layoutType') || '';
@@ -149,6 +150,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.telemetryService.syncEvents(false);
     this.ngOnDestroy();
   }
+
   handleLogin() {
     window.location.replace('/sessionExpired');
     this.cacheService.removeAll();
@@ -217,6 +219,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.isDesktopApp = this.utilService.isDesktopApp;
     if (this.isDesktopApp) {
       this._document.body.classList.add('desktop-app');
+      this.notifyNetworkChange();
     }
     this.checkFullScreenView();
     this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
@@ -293,6 +296,12 @@ export class AppComponent implements OnInit, OnDestroy {
     this.botObject['imageUrl'] = image.imageUrl;
     this.botObject['title'] = this.botObject['header'] = this.title;
     this.generaliseLabelService.getGeneraliseResourceBundle();
+  //keyboard accessibility enter key click event
+    document.onkeydown = function(e) {
+      if(e.keyCode === 13) { // The Enter/Return key
+        (document.activeElement  as HTMLElement).click();
+      }
+    };
   }
 
   onCloseJoyThemePopup() {
@@ -908,5 +917,14 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   setLocalTheme(value: string) {
     document.documentElement.setAttribute('data-theme', value);
+  }
+  notifyNetworkChange() {
+    this.connectionService.monitor().pipe(debounceTime(5000)).subscribe((status: boolean) => {
+      const message = status ? _.get(this.resourceService, 'messages.stmsg.desktop.onlineStatus') : _.get(this.resourceService, 'messages.emsg.desktop.offlineStatus');
+      this.toasterService.info(message);
+      if (!status && this.router.url.indexOf('mydownloads') <= 0) {
+        this.router.navigate(['mydownloads'], { queryParams: { selectedTab: 'mydownloads' } });
+      }
+    });
   }
 }

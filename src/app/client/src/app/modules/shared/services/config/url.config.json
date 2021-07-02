@@ -356,7 +356,8 @@
       "OBSERVATION_LISTING":"v1/solutions/targetedSolutions?type=observation",
       "MANDATORY_ENTITY_TYPES_FOR_ROLES":"v1/users/entityTypesByLocationAndRole/",
       "OBSERVATION_SUBMISSION_UPDATE":"v1/observationSubmissions/update/",
-      "GET_ASSESSMENT": "v2/observations/assessment/"
+      "GET_ASSESSMENT": "v2/observations/assessment/",
+      "OBSERVATION_REPORT_SOLUTION_LIST": "v1/observationSubmissions/solutionList?"
     },
     "KENDRA": {
       "TARGETTED_ENTITY_TYPES": "v1/users/targetedEntity/",

@@ -177,7 +177,22 @@ app.get('/enableDebugMode', (req, res, next) => {
   const timeInterval = req.query.timeInterval ? parseInt(req.query.timeInterval) : 1000 * 60 * 10;
   console.log("enable debug mode called", logLevel, timeInterval);
   enableDebugMode(timeInterval, logLevel)
-  res.send('debug enabled');
+  res.send({
+    id: "enabledDebugMode",
+    ver: "1.0",
+    ts: new Date().toISOString(),
+    params: {
+      resmsgid: uuid(),
+      msgid: uuid(),
+      status: "successful",
+      err: null,
+      errmsg: null,
+    },
+    responseCode: "OK",
+    result: {
+      enabled: true
+    }
+  });
 });
 
 app.all('/sessionExpired', endSession, (req, res) => {
@@ -337,7 +352,7 @@ const fetchDefaultChannelDetails = (callback) => {
 }
 
 telemetry.init({
-  pdata: { id: envHelper.APPID, ver: packageObj.version },
+  pdata: { id: envHelper.APPID, ver: packageObj.version, pid: 'sunbird-portal-backend' },
   method: 'POST',
   batchsize: process.env.sunbird_telemetry_sync_batch_size || 200,
   endpoint: telemetryEventConfig.endpoint,

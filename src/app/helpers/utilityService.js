@@ -63,18 +63,18 @@ const isDateExpired = function (toDate, fromDate = Date.now()) {
  * @param {JSON object} data 
  */
 const flattenObject = function(data) {
-  var result = {};
+  let result = {};
   function recurse (cur, prop) {
       if (Object(cur) !== cur) {
           result[prop] = cur;
       } else if (Array.isArray(cur)) {
-           for(var i=0, l=cur.length; i<l; i++)
+           for(let i=0, l=cur.length; i<l; i++)
                recurse(cur[i], prop + "[" + i + "]");
           if (l == 0)
               result[prop] = [];
       } else {
-          var isEmpty = true;
-          for (var p in cur) {
+          let isEmpty = true;
+          for (let p in cur) {
               isEmpty = false;
               recurse(cur[p], prop ? prop+"."+p : p);
           }

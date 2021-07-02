@@ -257,8 +257,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       setTimeout(() => {
         if (_.get(event, 'event') === 'issueCert' && _.get(event, 'value') === 'yes') {
           this.createdBatchId = _.get(event, 'batchId');
-          this.showConfirmationPopup = true;
-          this.popupMode = _.get(event, 'mode');
+          if(!_.get(event, 'isCertInBatch')) {
+            this.showConfirmationPopup = true;
+            this.popupMode = _.get(event, 'mode');
+          }
         }
       }, 1000);
     });
@@ -566,7 +568,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
           /* istanbul ignore else */
           if (_.get(unit, 'children.length')) {
-            flattenDeepContents = this.courseConsumptionService.flattenDeep(unit.children).filter(item => item.mimeType !== 'application/vnd.ekstep.content-collection');
+            flattenDeepContents = this.courseConsumptionService.flattenDeep(unit.children).filter(item => item.mimeType !== 'application/vnd.ekstep.content-collection' && item.mimeType !== 'application/vnd.sunbird.question');
             /* istanbul ignore else */
             if (this.contentStatus.length) {
               consumedContents = flattenDeepContents.filter(o => {

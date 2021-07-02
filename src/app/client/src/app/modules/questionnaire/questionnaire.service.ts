@@ -2,7 +2,6 @@ import { Injectable } from "@angular/core";
 import { ConfigService, ToasterService } from "@sunbird/shared";
 import { KendraService, CloudService } from "@sunbird/core";
 import { SlUtilsService } from "@shikshalokam/sl-questionnaire";
-
 @Injectable({
   providedIn: "root",
 })

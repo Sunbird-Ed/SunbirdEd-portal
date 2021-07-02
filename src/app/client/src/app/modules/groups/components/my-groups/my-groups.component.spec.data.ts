@@ -10,3 +10,24 @@ export const mockGroupList = [
           'members': [{userId: '123', role: 'admin'}]
         }
     ];
+
+  export const tncData = {
+      'id': 'api.system.settings.get.groupsTnc',
+      'ver': 'v1',
+      'ts': '2021-06-24 07:30:20:462+0000',
+      'params': {
+        'resmsgid': null,
+        'msgid': 'b3042cf7-a07e-7bbe-75fe-f860c0ff945e',
+        'err': null,
+        'status': 'success',
+        'errmsg': null
+      },
+      'responseCode': 'OK',
+      'result': {
+        'response': {
+          'id': 'groupsTnc',
+          'field': 'groupsTnc',
+          'value': '{\'latestVersion\':\'3.5.0\',\'3.5.0\':{\'url\':\'https://sunbirdstagingpublic.blob.core.windows.net/termsandcondtions/terms-and-conditions-v9.html#groupGuidelines\'}}'
+        }
+      }
+  };

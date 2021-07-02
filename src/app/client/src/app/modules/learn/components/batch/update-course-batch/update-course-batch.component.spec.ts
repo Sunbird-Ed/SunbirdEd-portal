@@ -366,7 +366,8 @@ describe('UpdateCourseBatchComponent', () => {
       event: 'issueCert',
       value: 'yes',
       mode: 'edit',
-      batchId: '13456789'
+      batchId: '13456789',
+      isCertInBatch: true
     });
   });
   it('should log issue-certificate-yes interact telemetry on changing input to yes', () => {
@@ -496,14 +497,26 @@ describe('UpdateCourseBatchComponent', () => {
     expect(discussionService.createForum).toHaveBeenCalled();
   });
 
-  it('should disabled discussion options', () => {
+  it('should disabled discussion options if forum id exists', () => {
     const discussionService = TestBed.get(DiscussionService);
     const toasterService = TestBed.get(ToasterService);
+    component.forumIds = MockResponseData.fetchForumResponse.result;
     spyOn(discussionService, 'removeForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForumData));
     spyOn(toasterService, 'success').and.stub();
     component.disableDiscussionForum('SOME_BATCH_ID');
     expect(discussionService.removeForum).toHaveBeenCalled();
   });
+
+  it('when DF is disabled and forum id does not exists, the DF API should not call', () => {
+    const discussionService = TestBed.get(DiscussionService);
+    const toasterService = TestBed.get(ToasterService);
+    component.forumIds = [];
+    spyOn(discussionService, 'removeForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForumData));
+    spyOn(toasterService, 'success').and.stub();
+    component.disableDiscussionForum('SOME_BATCH_ID');
+    expect(discussionService.removeForum).not.toHaveBeenCalled();
+  });
+
 
   it('should show error in create forum request failed', () => {
     const discussionService = TestBed.get(DiscussionService);
