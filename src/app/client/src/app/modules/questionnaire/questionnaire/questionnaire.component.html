@@ -17,13 +17,10 @@
           assessmentInfo?.solution?.isRubricDriven
         "
       >
-        <h5 class="m-20">{{frmelmnts?.lbl?.sectionName}}</h5>
+        <h5 class="m-20">{{ frmelmnts?.lbl?.sectionName }}</h5>
         <div class="sbt-page-content-area sections">
           <div *ngFor="let section of sections" class="section-list">
-            <a
-              class="item item--tests"
-              (click)="scrollToContent(section.code)"
-            >
+            <a class="item item--tests" (click)="scrollToContent(section.code)">
               {{ section.name }}
             </a>
           </div>
@@ -32,42 +29,61 @@
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT">
       <div>
-        <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto"
-        (click)="goBack()">
-        <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
-            <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
-          </svg></i>
-        {{resourceService.frmelmnts?.btn?.back}}
-      </button>
+        <button
+          type="button"
+          class="
+            sb-btn
+            sb-btn-normal
+            sb-btn-link
+            sb-btn-link-primary
+            sb-left-icon-btn
+            mr-auto
+          "
+          (click)="goBack()"
+        >
+          <i class="icon-svg icon-svg--xxs icon-back mr-4"
+            ><svg class="icon icon-svg--primary">
+              <use
+                xlink:href="assets/images/sprite.svg#arrow-long-left"
+              ></use></svg>
+            </i>
+          {{ resourceService.frmelmnts?.btn?.back }}
+        </button>
+      </div>
+      <div style="position: relative">
+        <div class="overlay" *ngIf="evidence?.isSubmitted"></div>
+        <div
+          *ngFor="let section of sections"
+          [id]="section.code"
+          [ngClass]="{ 'evidence-completed': evidence?.isSubmitted }"
+        >
+          <div
+            *ngIf="
+              assessmentInfo?.solution?.criteriaLevelReport &&
+              assessmentInfo?.solution?.isRubricDriven
+            "
+            class="sbt-page-content-area my-20"
+          >
+            <h4>{{ section.name }}</h4>
+          </div>
+          <div
+            [ngClass]="
+              layoutConfiguration
+                ? 'sbt-page-content-area'
+                : 'ui container mt-24'
+            "
+          >
+            <form [formGroup]="questionnaireForm" class="adjust">
+              <question-generic-inputs
+                [questions]="section.questions"
+                [questionnaireForm]="questionnaireForm"
+              ></question-generic-inputs>
+            </form>
+            <!-- {{questionnaireForm.value |json}} -->
+          </div>
+        </div>
       </div>
 
-      <div
-        *ngFor="let section of sections"
-        [id]="section.code"
-        [ngClass]="{ 'evidence-completed': evidence?.isSubmitted }"
-      >
-        <div 
-          *ngIf="
-          assessmentInfo?.solution?.criteriaLevelReport &&
-          assessmentInfo?.solution?.isRubricDriven
-        "
-        class="sbt-page-content-area my-20">
-          <h4>{{ section.name }}</h4>
-        </div>
-        <div
-          [ngClass]="
-            layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'
-          "
-        >
-          <form [formGroup]="questionnaireForm" class="m-40">
-            <question-generic-inputs
-              [questions]="section.questions"
-              [questionnaireForm]="questionnaireForm"
-            ></question-generic-inputs>
-          </form>
-          <!-- {{questionnaireForm.value |json}} -->
-        </div>
-      </div>
       <div
         [ngClass]="{
           'd-flex flex-jc-space-evenly': true,
