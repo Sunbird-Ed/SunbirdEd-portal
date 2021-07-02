@@ -164,7 +164,8 @@ export class NewCollectionEditorComponent implements OnInit {
    public validateRequest() {
     const validStatus = _.indexOf(this.config.editorConfig.COLLECTION_EDITOR.collectionStatus, this.collectionDetails.status) > -1;
     const validState = _.indexOf(this.config.editorConfig.COLLECTION_EDITOR.collectionState, this.routeParams.state) > -1;
-    if (this.collectionDetails.mimeType === this.config.editorConfig.COLLECTION_EDITOR.mimeCollection && validStatus) {
+    if ((this.collectionDetails.mimeType === this.config.editorConfig.COLLECTION_EDITOR.mimeCollection
+    || this.collectionDetails.mimeType === this.config.editorConfig.QUESTIONSET_EDITOR.mimeCollection) && validStatus) {
       if (validState && this.collectionDetails.createdBy !== this.userService.userid) {
         return true; // we need to remove this case or validState should be changed
       } else if (validState && _.includes(this.collectionDetails.collaborators, this.userService.userid)) {
