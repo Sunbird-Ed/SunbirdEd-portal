@@ -52,12 +52,12 @@
           <!--Avtar Dropdown-->
           <a class="profile-avtar p-0" tabindex="0">
             <div class="ui dropdown right top pointing" id="dropdown-menu-list-header">
-              <div class="" name="Guest" *ngIf='!userProfile && !guestUser' (click)="toggleSideMenu(true)"><img
+              <div class="" name="Guest" *ngIf='!userProfile && !guestUser' tabindex="0" (click)="toggleSideMenu(true)"><img
                 src="./assets/images/profile-icon.svg" alt="Guest User" width="48"></div>
-              <ngx-avatar *ngIf='!userProfile && guestUser' (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle" [size]="38"
+              <ngx-avatar tabindex="0" *ngIf='!userProfile && guestUser' (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle" [size]="38"
                 initialsSize="1" name="{{guestUser?.formatedName || 'Guest'}}">
               </ngx-avatar>
-              <ngx-avatar *ngIf='userProfile' (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle" [size]="38"
+              <ngx-avatar tabindex="0" *ngIf='userProfile' (click)="toggleSideMenu(true)" [style]="avtarDesktopStyle" [size]="38"
                 initialsSize="1" name="{{userProfile?.firstName}}">
               </ngx-avatar>
             </div>
@@ -81,7 +81,7 @@
           <!--QR Button-->
           <button class="ui button qr-code-btn d-flex flex-ai-center computer only mr-0" appTelemetryInteract
             [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrmodal = true;"
-            title="{{resourceService.frmelmnts?.lbl?.enterQrCode}}" *ngIf="!hideHeader">
+            title="{{resourceService.frmelmnts?.lbl?.enterQrCode}}" tabindex="0" *ngIf="!hideHeader">
             <i class="icon-svg icon-svg--xxs icon-qrcode mr-4"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#qr-code-icon"></use>
               </svg></i>
@@ -120,7 +120,7 @@
            <!--Load content -->
            <div class="computer only d-flex" *appDesktopOnly>
             <span class="search-qrcode-divider"></span>
-            <button class="ui button qr-code-btn d-flex flex-ai-center sb-load-content-btn" type="button" (click)="showLoadContentModal=true" > {{resourceService?.frmelmnts?.btn?.loadContent}} </button>
+            <button class="ui button qr-code-btn d-flex flex-ai-center sb-load-content-btn" type="button" (click)="showLoadContentModal=true" tabindex="0" > {{resourceService?.frmelmnts?.btn?.loadContent}} </button>
           </div>
            <!--/Load content -->
           <!--Language Dropdown-->
@@ -139,7 +139,7 @@
        <div class="mr-auto d-flex">
         <!--QR Button-->
         <button class="ui button qr-code-btn d-flex flex-ai-center" appTelemetryInteract
-          [telemetryInteractEdata]="enterDialCodeInteractEdata" (click)="showQrmodal = true;">
+          [telemetryInteractEdata]="enterDialCodeInteractEdata" tabindex="0" (click)="showQrmodal = true;">
           <i class="icon-svg icon-svg--xxs icon-qrcode mr-4"><svg class="icon icon-svg--primary">
               <use xlink:href="./assets/images/sprite.svg#qr-code-icon"></use>
             </svg></i>

@@ -52,21 +52,21 @@
 
   <div class="sb-modal-actions">
     <div class="action-btns" *ngIf="!processValidation">
-      <button appTelemetryInteract [telemetryInteractEdata]="{id:'ext-user-verify-reject' , type:'click' , pageid: pageId }"
+      <button tabindex="0" appTelemetryInteract [telemetryInteractEdata]="{id:'ext-user-verify-reject' , type:'click' , pageid: pageId }"
       [telemetryInteractCdata]="telemetryCdata" [telemetryInteractObject]="telemetryInteractObject" type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8" (click)="verifyExtId('reject'); closeModal()">
         {{resourceService?.frmelmnts?.btn?.no}}
       </button>
-      <button appTelemetryInteract [telemetryInteractEdata]="{id:'ext-user-verify-confirm' , type:'click' , pageid: pageId }"
+      <button tabindex="0" appTelemetryInteract [telemetryInteractEdata]="{id:'ext-user-verify-confirm' , type:'click' , pageid: pageId }"
       [telemetryInteractCdata]="telemetryCdata" [telemetryInteractObject]="telemetryInteractObject" 
       type="button" class="sb-btn sb-btn-normal sb-btn-primary" (click)="navigateToValidateId()">
         {{resourceService?.frmelmnts?.btn?.yes}}
       </button>
     </div>
-    <button appTelemetryInteract [telemetryInteractEdata]="{id:'ext-user-verify-submit' , type:'click' , pageid: pageId }"
+    <button tabindex="0" appTelemetryInteract [telemetryInteractEdata]="{id:'ext-user-verify-submit' , type:'click' , pageid: pageId }"
     [telemetryInteractCdata]="telemetryCdata" [telemetryInteractObject]="telemetryInteractObject" [disabled]="!enableSubmitButton" *ngIf="processValidation && !(extIdVerified || extIdFailed)" type="submit" class="sb-btn sb-btn-normal sb-btn-primary" (click)="verifyExtId('accept')" >
       {{resourceService?.frmelmnts?.btn?.submit}}
     </button>
-    <button appTelemetryInteract [telemetryInteractEdata]="closeInteractEdata" [telemetryInteractCdata]="telemetryCdata" [telemetryInteractObject]="telemetryInteractObject" 
+    <button tabindex="0" appTelemetryInteract [telemetryInteractEdata]="closeInteractEdata" [telemetryInteractCdata]="telemetryCdata" [telemetryInteractObject]="telemetryInteractObject" 
     *ngIf="extIdVerified || extIdFailed" [ngClass]="{'sb-btn-error' : extIdFailed, 'sb-btn-success' : extIdVerified }" type="button" class="sb-btn sb-btn-normal" (click)="closeModal()">  <!--sb-btn-success-->
       {{resourceService?.frmelmnts?.btn?.ok}}
     </button>

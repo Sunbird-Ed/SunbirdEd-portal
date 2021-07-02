@@ -6,7 +6,7 @@
           <!--Toggle Header-->
           <div *ngIf="isShowFilterLabel" title class="sb-data-driven-filter-header" appTelemetryInteract
             [telemetryInteractEdata]="filterInteractEdata" [telemetryInteractCdata]="telemetryCdata"
-            (click)="accordionDefaultOpen = !accordionDefaultOpen">
+            (click)="accordionDefaultOpen = !accordionDefaultOpen" tabindex="0">
             <i class="icon filter"></i>
             {{resourceService.frmelmnts?.lbl?.filters}}
             <i class="dropdown icon"></i>
@@ -23,18 +23,18 @@
                   <ng-container *ngFor="let item of formInputData[field.code]">
                     <a class="ui label mt-8 mr-8" *ngIf='!item?.name && field.code !== "channel"'>
                       {{item}}
-                      <i class="delete icon" (click)="removeFilterSelection(field.code,item)"></i>
+                      <i class="delete icon" tabindex="0" (click)="removeFilterSelection(field.code,item)"></i>
                     </a>
                     <a class="ui label mt-8 mr-8" *ngIf='item?.name && field.code !== "channel"'>
                       {{item.name}}
-                      <i class="delete icon" (click)="removeFilterSelection(field.code,item)"></i>
+                      <i class="delete icon" tabindex="0" (click)="removeFilterSelection(field.code,item)"></i>
                     </a>
                   </ng-container>
 
                   <ng-container *ngFor="let item of formInputData[field.code]">
                     <a class="ui label mt-8 mr-8" *ngIf='item && field.code === "channel"'>
                       {{channelData(item)}}
-                      <i class="delete icon" (click)="removeFilterSelection(field.code,item)"></i>
+                      <i class="delete icon" tabindex="0" (click)="removeFilterSelection(field.code,item)"></i>
                     </a>
                   </ng-container>
 
@@ -79,11 +79,11 @@
               </div>
 
               <div class="sb-prominent-filter-field">
-                <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="resetFilters()"
+                <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0" (click)="resetFilters()"
                   appTelemetryInteract [telemetryInteractEdata]="resetFilterInteractEdata">
                   {{resourceService.frmelmnts?.btn?.reset}}
                 </button>
-                <button class="sb-btn sb-btn-normal sb-btn-primary ml-8" (click)="applyFilters()" appTelemetryInteract
+                <button class="sb-btn sb-btn-normal sb-btn-primary ml-8" tabindex="0" (click)="applyFilters()" appTelemetryInteract
                   [telemetryInteractEdata]="applyFilterInteractEdata">
                   {{resourceService.frmelmnts?.btn?.apply}}
                 </button>
@@ -122,7 +122,7 @@
                 (click)="resetFilters()" appTelemetryInteract
                 [telemetryInteractEdata]="resetFilterInteractEdata">{{resourceService.frmelmnts?.btn?.reset}} <i
                   class="icon undo"></i></button>
-                  <span class="sbt-filter-close"><i class="icon-svg icon-svg--xxs icon-close cursor-pointer" (click)="accordionDefaultOpen = !accordionDefaultOpen">	
+                  <span class="sbt-filter-close"><i class="icon-svg icon-svg--xxs icon-close cursor-pointer" tabindex="0" (click)="accordionDefaultOpen = !accordionDefaultOpen">	
                     <svg class="icon icon-svg--red">	
                         <use xlink:href="./assets/images/sprite.svg#close"></use>	
                     </svg>	
@@ -150,7 +150,7 @@
                     <ng-container *ngFor="let item of formInputData[field.code]">
                       <a class="ui label mt-8 mr-8" *ngIf='item && field.code === "channel"'>
                         {{channelData(item)}}
-                        <i class="delete icon" (click)="removeFilterSelection(field.code,item)"></i>
+                        <i class="delete icon" tabindex="0" (click)="removeFilterSelection(field.code,item)"></i>
                       </a>
                     </ng-container>
 
@@ -202,7 +202,7 @@
                           [telemetryInteractEdata]="resetFilterInteractEdata">
                           {{resourceService.frmelmnts?.btn?.reset}}
                         </button> -->
-                  <button class="sb-btn sb-btn-normal sb-btn-primary ml-8" (click)="applyFilters()" appTelemetryInteract
+                  <button class="sb-btn sb-btn-normal sb-btn-primary ml-8" tabindex="0" (click)="applyFilters()" appTelemetryInteract
                     [telemetryInteractEdata]="applyFilterInteractEdata">
                     {{resourceService.frmelmnts?.btn?.apply}}
                   </button>

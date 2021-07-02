@@ -29,7 +29,7 @@
   <!--Actions-->
   <div class="sb-modal-actions">
     <button class="sb-btn sb-btn-normal sb-btn-primary" [ngClass]="tncChecked ? '' : 'sb-btn-disabled'"
-      [disabled]="!disableContinueBtn" (click)="onSubmitTnc()" *ngIf="!tncUrl || showAcceptTnc">
+      [disabled]="!disableContinueBtn" (click)="onSubmitTnc()" tabindex="0" *ngIf="!tncUrl || showAcceptTnc">
       {{resourceService?.frmelmnts?.lbl?.continue}}
     </button>
   </div>
