@@ -9,15 +9,15 @@ import { FormGroup, FormBuilder } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import { ObservationService } from "@sunbird/core";
 import { Location } from "@angular/common";
-import {
-  AssessmentInfo,
-  Evidence,
-  IAssessmentDetails,
-  Section,
-} from "../Interface/assessmentDetails";
+// import {
+//   AssessmentInfo,
+//   Evidence,
+//   IAssessmentDetails,
+//   Section,
+// } from "../Interface/assessmentDetails";
 import { ObservationUtilService } from "../../observation/service";
 import { ComponentDeactivate } from "../guard/can-deactivate.guard";
-import { SlQuestionnaireService } from "@shikshalokam/sl-questionnaire";
+import { AssessmentInfo, Evidence, IAssessmentDetails, Section, SlQuestionnaireService } from "@shikshalokam/sl-questionnaire";
 import { QuestionnaireService } from "../questionnaire.service";
 
 @Component({
