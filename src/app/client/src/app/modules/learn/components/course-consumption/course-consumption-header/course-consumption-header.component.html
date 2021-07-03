@@ -1,10 +1,10 @@
-
 <!-- Back Button -->
 <div class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9">
   <div class="ui container">
     <div class="py-8 d-flex flex-ai-center">
       <!-- /* Back button */ -->
-      <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto" (click)="goBack()">
+      <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto"
+        (click)="goBack()">
         <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
             <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
           </svg></i>
@@ -38,8 +38,8 @@
               <button (click)="onShareLink();sharelinkModal=true;"
                 class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix">
                 <i class="icon-svg icon-svg--xs icon-share mr-8"><svg class="icon icon-svg--primary">
-                  <use xlink:href="assets/images/sprite.svg#share"></use>
-                </svg></i>
+                    <use xlink:href="assets/images/sprite.svg#share"></use>
+                  </svg></i>
                 {{resourceService?.frmelmnts?.lbl?.share}}
               </button>
 
@@ -50,21 +50,22 @@
                 [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']" (click)="copyContent(courseHierarchy)"
                 title="{{resourceService?.frmelmnts?.lbl?.copy}}">
                 <i class="icon-svg icon-svg--xs icon-edit mr-8"><svg class="icon icon-svg--primary">
-                  <use xlink:href="assets/images/sprite.svg#copy-alternate"></use>
-                </svg></i>
+                    <use xlink:href="assets/images/sprite.svg#copy-alternate"></use>
+                  </svg></i>
                 {{resourceService?.frmelmnts?.lbl?.copy}}
               </button>
 
-               <!-- Discussion Forum -->
-               <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix" 	
-               appTelemetryInteract [telemetryInteractObject]="courseInteractObject"	
-               [telemetryInteractEdata]="{id:'discussion' , type: 'click' , pageid:'course-consumption'}" 	
-               [telemetryInteractCdata]="[{id: courseHierarchy?.identifier, type: 'Course'}]"	
-               (click)="openDiscussionForum()" *ngIf="forumId && (enrolledCourse || (courseConsumptionService?.userCreatedAnyBatch | async))"	
-               title="Forum">	
-                  <img src="assets/images/forum.svg" width="16px" class="mr-8">	
-                  {{resourceService?.frmelmnts?.lbl?.discussionForum}}	
-               </button>
+              <!-- Discussion Forum -->
+              <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix"
+                appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
+                [telemetryInteractEdata]="{id:'discussion' , type: 'click' , pageid:'course-consumption'}"
+                [telemetryInteractCdata]="[{id: courseHierarchy?.identifier, type: 'Course'}]"
+                (click)="openDiscussionForum()"
+                *ngIf="forumId && (enrolledCourse || (courseConsumptionService?.userCreatedAnyBatch | async))"
+                title="Forum">
+                <img src="assets/images/forum.svg" width="16px" class="mr-8">
+                {{resourceService?.frmelmnts?.lbl?.discussionForum}}
+              </button>
             </div>
           </div>
         </div>
@@ -81,15 +82,17 @@
 
       <div class="sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4 certified-course">
         <div class="certified-course__btn" *ngIf="showAddGroup">
-          <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
-          appAddToGroup [identifier]="courseHierarchy?.identifier" [pageId]="courseHierarchy?.primaryCategory.toLowerCase()">
-          {{resourceService?.frmelmnts?.lbl?.AddtoGroup}}</button>
+          <button class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn" appAddToGroup
+            [identifier]="courseHierarchy?.identifier" [pageId]="courseHierarchy?.primaryCategory.toLowerCase()">
+            {{resourceService?.frmelmnts?.lbl?.AddtoGroup}}</button>
         </div>
-        <!-- join course, start learning, continue learning, view dashboard buttons -->  
+        <!-- join course, start learning, continue learning, view dashboard buttons -->
         <div *ngIf="!showAddGroup && isTrackable">
           <div class="certified-course__btn" *ngIf="!enrolledCourse && !viewDashboard">
-            <button  [disabled]="!(courseConsumptionService.enableCourseEntrollment | async)"  [ngClass]="{'sb-btn-disabled': !(courseConsumptionService.enableCourseEntrollment | async)}" class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
-              (click)="showJoinModal(true); this.logTelemetry('join-course', courseHierarchy)">{{generaliseLabelService?.frmelmnts?.btn?.enroll}}</button>
+            <button [disabled]="!(courseConsumptionService.enableCourseEntrollment | async)"
+              [ngClass]="{'sb-btn-disabled': !(courseConsumptionService.enableCourseEntrollment | async)}"
+              class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn"
+              (click)="showJoinModal(true); this.logTelemetry('join-course', courseHierarchy)">{{resourceService?.frmelmnts?.btn?.enroll}}</button>
           </div>
 
           <div class="certified-course__btn" *ngIf="enrolledCourse && progress===0 && !viewDashboard">
@@ -97,29 +100,32 @@
               (click)="resumeCourse(true); this.logTelemetry('course-start', courseHierarchy)">{{resourceService?.frmelmnts?.lbl?.startLearning}}</button>
           </div>
 
-        <div class="certified-course__btn" *ngIf="enrolledCourse && progress>0 && !viewDashboard">
-          <button class="sb-btn sb-btn-secondary sb-btn-normal textbook__addbtn ml-8 sb-btn-icon-fix"
-            [disabled]="showResumeCourse" (click)="resumeCourse(true); this.logTelemetry('course-resume', courseHierarchy)">
-            <i class="icon-svg icon-svg--xs icon-play mr-8"><svg class="icon icon-svg--primary">
-              <use xlink:href="assets/images/sprite.svg#play-continue"></use>
-            </svg></i>{{resourceService?.frmelmnts?.btn?.continueLearning}}</button>
-        </div>
-          <div class="ml-auto text-right mt-8" *ngIf="!enrolledCourse && viewDashboard && !router.url.includes('/dashboard')">
+          <div class="certified-course__btn" *ngIf="enrolledCourse && progress>0 && !viewDashboard">
+            <button class="sb-btn sb-btn-secondary sb-btn-normal textbook__addbtn ml-8 sb-btn-icon-fix"
+              [disabled]="showResumeCourse"
+              (click)="resumeCourse(true); this.logTelemetry('course-resume', courseHierarchy)">
+              <i class="icon-svg icon-svg--xs icon-play mr-8"><svg class="icon icon-svg--primary">
+                  <use xlink:href="assets/images/sprite.svg#play-continue"></use>
+                </svg></i>{{resourceService?.frmelmnts?.btn?.continueLearning}}</button>
+          </div>
+          <div class="ml-auto text-right mt-8"
+            *ngIf="!enrolledCourse && viewDashboard && !router.url.includes('/dashboard')">
             <button appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
               [telemetryInteractEdata]="{id:'viewCourseDashboard' , type: 'click' , pageid:'course-consumption'}"
               class="sb-btn sb-btn-secondary sb-btn-normal" (click)="showDashboard()">
-              {{generaliseLabelService?.frmelmnts?.btn?.viewCourseStatsDashboard}}
+              {{resourceService?.frmelmnts?.btn?.viewCourseStatsDashboard}}
             </button>
           </div>
 
-          <div class="ml-auto text-right mt-8" *ngIf="permissionService?.permissionAvailable && !enrolledCourse && viewDashboard && router.url.includes('/dashboard')"
-          appPermission [permission]="dashboardPermission">
-          <button appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
-            [telemetryInteractEdata]="{id:'close-course-dashboard' , type: 'click' , pageid:'course-consumption'}"
-            class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="closeDashboard()">
-            Close dashboard
-          </button>
-        </div>
+          <div class="ml-auto text-right mt-8"
+            *ngIf="permissionService?.permissionAvailable && !enrolledCourse && viewDashboard && router.url.includes('/dashboard')"
+            appPermission [permission]="dashboardPermission">
+            <button appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
+              [telemetryInteractEdata]="{id:'close-course-dashboard' , type: 'click' , pageid:'course-consumption'}"
+              class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="closeDashboard()">
+              Close dashboard
+            </button>
+          </div>
 
         </div>
       </div>

@@ -208,7 +208,8 @@ export class UpForReviewComponent extends WorkSpace implements OnInit, AfterView
         contributorOrg: bothParams.queryParams.contributorOrg,
         department: bothParams.queryParams.department,
         geo: bothParams.queryParams.geo,
-        topic: bothParams.queryParams.topic
+        topic: bothParams.queryParams.topic,
+        contentType: bothParams.queryParams.contentType
       },
       limit: limit,
       offset: (pageNumber - 1) * (limit),

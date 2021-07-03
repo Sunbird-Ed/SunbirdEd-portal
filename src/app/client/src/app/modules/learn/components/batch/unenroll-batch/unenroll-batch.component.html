@@ -1,12 +1,5 @@
-<sui-modal
-    [mustScroll]="true" 
-    [isClosable]="true"
-    [transitionDuration]="0"
-    [size]="'small'"
-    class="sb-modal sb-error"
-    appBodyScroll
-    #unenrollBatch 
-    (dismissed)="redirect()">
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal sb-error"
+    appBodyScroll #unenrollBatch (dismissed)="redirect()">
 
     <!--Header-->
     <div class="sb-modal-header">
@@ -22,21 +15,16 @@
 
     <!--Actions-->
     <div class="sb-modal-actions">
-        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="submitInteractEdata"  [telemetryInteractCdata]="telemetryCdata"
-            class="sb-btn sb-btn-normal sb-btn-error"
-            [disabled]="disableSubmitBtn"
-            id="unenrollFromCourse" 
-            (click)="unenrollFromCourse()"
-        >
-            {{generaliseLabelService?.frmelmnts?.btn?.unenroll}}
+        <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+            [telemetryInteractEdata]="submitInteractEdata" [telemetryInteractCdata]="telemetryCdata"
+            class="sb-btn sb-btn-normal sb-btn-error" [disabled]="disableSubmitBtn" id="unenrollFromCourse"
+            (click)="unenrollFromCourse()">
+            {{resourceService?.frmelmnts?.btn?.unenroll}}
         </button>
-        <button 
-            class="sb-btn sb-btn-normal sb-btn-outline-error" 
-            (click)="unenrollBatch.deny();"
-        >
+        <button class="sb-btn sb-btn-normal sb-btn-outline-error" (click)="unenrollBatch.deny();">
             {{resourceService.frmelmnts.btn.cancel}}
         </button>
-        
+
     </div>
     <!--/Actions-->
- </sui-modal>
+</sui-modal>

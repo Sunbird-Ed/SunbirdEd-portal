@@ -261,7 +261,7 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
     const searchParams = {
       filters: {
         status: bothParams.queryParams.status ? bothParams.queryParams.status : preStatus,
-        contentType: this.config.appConfig.WORKSPACE.adminHandledContentType,
+        // contentType: this.config.appConfig.WORKSPACE.adminHandledContentType,
         objectType: this.config.appConfig.WORKSPACE.objectType,
         board: bothParams.queryParams.board,
         subject: bothParams.queryParams.subject,
@@ -272,6 +272,7 @@ export class AllTextbooksComponent extends WorkSpace implements OnInit, AfterVie
         department: bothParams.queryParams.department,
         geo: bothParams.queryParams.geo,
         topic: bothParams.queryParams.topic,
+        contentType: bothParams.queryParams.contentType
 
       },
       limit: limit,

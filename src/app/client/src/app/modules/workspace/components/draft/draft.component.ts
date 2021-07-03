@@ -224,7 +224,8 @@ export class DraftComponent extends WorkSpace implements OnInit, AfterViewInit {
                 contributorOrg: bothParams['queryParams'].contributorOrg,
                 department: bothParams['queryParams'].department,
                 geo: bothParams['queryParams'].geo,
-                topic: bothParams['queryParams'].topic
+                topic: bothParams['queryParams'].topic,
+                contentType: bothParams['queryParams'].contentType
             },
             limit: this.pageLimit,
             offset: (this.pageNumber - 1) * (this.pageLimit),

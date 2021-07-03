@@ -122,10 +122,10 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   showContributeTab: boolean;
   hideHeader = false;
   ShowStudentDropdown = false;
-  routerLinks = {explore: `/${EXPLORE_GROUPS}`, groups: `/${MY_GROUPS}`};
+  routerLinks = { explore: `/${EXPLORE_GROUPS}`, groups: `/${MY_GROUPS}` };
   public unsubscribe = new Subject<void>();
   selected = [];
-  userTypes = [{id: 1, type: 'Teacher'}, {id: 2, type: 'Student'}];
+  userTypes = [{ id: 1, type: 'Teacher' }, { id: 2, type: 'Student' }];
   groupsMenuIntractEdata: IInteractEventEdata;
   workspaceMenuIntractEdata: IInteractEventEdata;
   helpMenuIntractEdata: IInteractEventEdata;
@@ -188,7 +188,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     } else if (url.indexOf('play') >= 0) {
       this.hrefPath = '/resources' + url;
     } else {
-      this.hrefPath = '/resources';
+      this.hrefPath = '/search/Library/1?selectedTab=all';
     }
   }
   getTelemetryContext() {
@@ -250,7 +250,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     if (this.userService.loggedIn) {
       this.router.navigate(['resources']);
     } else {
-      window.location.href = this.userService.slug ? this.userService.slug + '/explore'  : '/explore';
+      window.location.href = this.userService.slug ? this.userService.slug + '/explore' : '/explore';
     }
   }
   onEnter(key) {
@@ -375,7 +375,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   getFeatureId(featureId, taskId) {
-    return [{id: featureId, type: 'Feature'}, {id: taskId, type: 'Task'}];
+    return [{ id: featureId, type: 'Feature' }, { id: taskId, type: 'Task' }];
   }
 
   fetchManagedUsers() {
@@ -526,7 +526,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     }
     this.getUrl();
     this.activatedRoute.queryParams.subscribe(queryParams => this.queryParam = { ...queryParams });
-    this.tenantService.tenantData$.subscribe(({tenantData}) => {
+    this.tenantService.tenantData$.subscribe(({ tenantData }) => {
       this.tenantInfo.logo = tenantData ? tenantData.logo : undefined;
       this.tenantInfo.titleName = (tenantData && tenantData.titleName) ? tenantData.titleName.toUpperCase() : undefined;
     });
@@ -566,7 +566,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   }
 
   navigateToGroups() {
-    return !this.userService.loggedIn ? EXPLORE_GROUPS : MY_GROUPS ;
+    return !this.userService.loggedIn ? EXPLORE_GROUPS : MY_GROUPS;
   }
 
   isLayoutAvailable() {
@@ -625,7 +625,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       }
       this.deviceProfile = _.get(deviceProfile, 'result');
       this.showLocationPopup = true;
-    }, (err) => { 
+    }, (err) => {
       this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
     });
   }

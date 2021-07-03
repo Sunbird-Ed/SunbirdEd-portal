@@ -3,7 +3,7 @@ import { ConfigService, ResourceService, IUserData, IUserProfile, LayoutService 
 import { Component, OnInit, Input } from '@angular/core';
 import { UserService, PermissionService, ProgramsService } from '../../services';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import {IInteractEventObject, IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
+import { IInteractEventObject, IInteractEventEdata, TelemetryService } from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
 import { first, filter, tap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
@@ -68,7 +68,7 @@ export class MainMenuComponent implements OnInit {
   signInIntractEdata: IInteractEventEdata;
   showContributeTab: boolean;
   hrefPath = '/resources';
-  routerLinks = {explore: `/${EXPLORE_GROUPS}`, groups: `/${MY_GROUPS}`};
+  routerLinks = { explore: `/${EXPLORE_GROUPS}`, groups: `/${MY_GROUPS}` };
   /*
   * constructor
   */
@@ -89,15 +89,15 @@ export class MainMenuComponent implements OnInit {
     });
   }
   updateHrefPath(url) {
-      if (url.indexOf('explore-course') >= 0) {
-        this.hrefPath = url.replace('explore-course', 'learn');
-      } else if (url.indexOf('explore') >= 0) {
-        this.hrefPath = url.replace('explore', 'resources');
-      } else if (url.indexOf('play') >= 0) {
-        this.hrefPath = '/resources' + url;
-      } else {
-        this.hrefPath = '/resources';
-      }
+    if (url.indexOf('explore-course') >= 0) {
+      this.hrefPath = url.replace('explore-course', 'learn');
+    } else if (url.indexOf('explore') >= 0) {
+      this.hrefPath = url.replace('explore', 'resources');
+    } else if (url.indexOf('play') >= 0) {
+      this.hrefPath = '/resources' + url;
+    } else {
+      this.hrefPath = '/search/Library/1?selectedTab=all';
+    }
   }
   ngOnInit() {
     try {
@@ -202,11 +202,11 @@ export class MainMenuComponent implements OnInit {
   }
 
   getFeatureId(featureId, taskId) {
-    return [{id: featureId, type: 'Feature'}, {id: taskId, type: 'Task'}];
+    return [{ id: featureId, type: 'Feature' }, { id: taskId, type: 'Task' }];
   }
 
   navigateToGroups() {
-    return !this.userService.loggedIn ? EXPLORE_GROUPS : MY_GROUPS ;
+    return !this.userService.loggedIn ? EXPLORE_GROUPS : MY_GROUPS;
   }
   isLayoutAvailable() {
     return this.layoutService.isLayoutAvailable(this.layoutConfiguration);
