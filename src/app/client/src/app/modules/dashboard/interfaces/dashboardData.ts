@@ -62,3 +62,8 @@ export interface IDashboardItems {
     count: number;
     type: string;
 }
+
+export interface IForumContext {
+    identifier: Array<string>;
+    type: string;
+}
