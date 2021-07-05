@@ -9,6 +9,7 @@ import { Observable, BehaviorSubject, of } from 'rxjs';
 import { skipWhile, mergeMap, tap, map } from 'rxjs/operators';
 import { PublicDataService } from './../public-data/public-data.service';
 import * as _ from 'lodash-es';
+import { FormService } from '../form/form.service';
 const frameWorkPrefix = 'framework_';
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,8 @@ export class FrameworkService {
   constructor(private browserCacheTtlService: BrowserCacheTtlService,
     private userService: UserService, private configService: ConfigService,
     public toasterService: ToasterService, public resourceService: ResourceService,
-    private publicDataService: PublicDataService, public learnerService: LearnerService
+    private publicDataService: PublicDataService, public learnerService: LearnerService,
+    public formService: FormService
   ) { }
 
   public initialize(framework?: string, hashTagId?: string) {
@@ -113,5 +115,15 @@ export class FrameworkService {
     return (type === 'gradeLevel' || _.lowerCase(type) === 'class') ?
    _.sortBy(filters, ['index', 'name']) : _.sortBy(filters, 'name');
  }
+
+ async getSegmentationCommands() {
+
+  const formRequest = {
+    formType: 'config',
+    contentType: 'segmentation',
+    formAction: 'get'
+  };
+  return (await this.formService.getFormConfig(formRequest).toPromise() as any);
+}
 
 }
