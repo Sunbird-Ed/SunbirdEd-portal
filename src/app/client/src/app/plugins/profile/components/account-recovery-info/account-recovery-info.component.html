@@ -13,11 +13,11 @@
       <p>{{resourceService?.frmelmnts?.lbl?.accountRecoveryDescription}}</p>
       <div class="d-flex flex-w-wrap">
         <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
-          <input type="radio" id="email" (change)="onItemChange()" [(ngModel)]="contactType" name="contactType" value="emailId" checked>
+          <input type="radio" id="email" tabindex="0" (change)="onItemChange()" [(ngModel)]="contactType" name="contactType" value="emailId" checked>
           <label for="email">{{resourceService?.frmelmnts?.lbl?.emailAddress}}</label>
         </div>
         <div class="sb-radio-btn-checkbox sb-radio-btn-primary">
-          <input type="radio" id="phone" (change)="onItemChange()" [(ngModel)]="contactType" name="contactType" value="phoneNo">
+          <input type="radio" tabindex="0" id="phone" (change)="onItemChange()" [(ngModel)]="contactType" name="contactType" value="phoneNo">
           <label for="phone">{{resourceService?.frmelmnts?.lbl?.phoneNumber}}</label>
         </div>
       </div>
@@ -47,7 +47,7 @@
 
   <!--Actions-->
   <div class="sb-modal-actions">
-    <button [ngClass]="{'sb-btn-disabled': !enableSubmitButton, 'sb-btn-primary': enableSubmitButton}" class="sb-btn sb-btn-normal" (click)="updateRecoveryId()"
+    <button [ngClass]="{'sb-btn-disabled': !enableSubmitButton, 'sb-btn-primary': enableSubmitButton}" class="sb-btn sb-btn-normal" tabindex="0" (click)="updateRecoveryId()"
     appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [disabled]="!enableSubmitButton"
       [telemetryInteractEdata]="submitInteractEdata" [telemetryInteractCdata]="telemetryCdata" [attr.disabled]="!enableSubmitButton ? 'disabled' : null">
       {{resourceService?.frmelmnts?.btn?.submit}}

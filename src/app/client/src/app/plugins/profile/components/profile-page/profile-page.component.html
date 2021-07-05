@@ -214,13 +214,13 @@
   <section class="pt-30 pb-30 d-flex flex-jc-center profile-bg-c-3" *ngIf="userProfile.email || userProfile.phone">
     <div class="d-flex flex-dc">
       <div class="d-flex flex-jc-center">
-        <div appOnlineOnly (click)="showContactPopup=true;contactType='phone'"
+        <div appOnlineOnly (click)="showContactPopup=true;contactType='phone'" tabindex="0"
           class="ui semi-circular dodger-blue basic label mb-15 cursor-pointer" *ngIf="userProfile.phone"
           appTelemetryInteract
           [telemetryInteractEdata]="editMobileInteractEdata">
           <i class="phone blue icon mr-5"></i> &#x200E;+91 {{userProfile.phone}}
         </div>
-        <div appOnlineOnly (click)="showContactPopup=true;contactType='phone'"
+        <div appOnlineOnly (click)="showContactPopup=true;contactType='phone'" tabindex="0"
           class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.phone"
           appTelemetryInteract
           [telemetryInteractEdata]="editMobileInteractEdata">
@@ -228,12 +228,12 @@
         </div>
       </div>
      <div class="d-flex flex-jc-center">
-      <div appOnlineOnly (click)="showContactPopup=true;contactType='email'"
+      <div appOnlineOnly (click)="showContactPopup=true;contactType='email'" tabindex="0"
       class="ui semi-circular dodger-blue basic label cursor-pointer mb-15 " *ngIf="userProfile.email" appTelemetryInteract
       [telemetryInteractEdata]="editEmailInteractEdata">
       <i class="mail blue icon mr-5"></i> {{userProfile.email}}
     </div>
-    <div appOnlineOnly (click)="showContactPopup=true;contactType='email'"
+    <div appOnlineOnly (click)="showContactPopup=true;contactType='email'" tabindex="0"
       class="ui semi-circular update basic label mb-15 cursor-pointer font-weight-normal" *ngIf="!userProfile.email"
       appTelemetryInteract
       [telemetryInteractEdata]="editEmailInteractEdata">
@@ -276,7 +276,7 @@
       </div>
       <div class="my-8">
         <button appTelemetryInteract appOnlineOnly
-        [telemetryInteractEdata]="updateTeacherDetailsInteractEdata" type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary sb-btn-border"
+        [telemetryInteractEdata]="updateTeacherDetailsInteractEdata" tabindex="0" type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary sb-btn-border"
         (click)="navigate('/profile/teacher-declaration','update')">{{resourceService.frmelmnts?.btn?.update}}</button>
       </div>
 
