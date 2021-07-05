@@ -92,7 +92,7 @@ export class UtilService {
       content['topic'] = this.getTopicSubTopic('topic', data.content.topic);
       content['subTopic'] = this.getTopicSubTopic('subTopic', data.content.topic);
       content['contentType'] = _.get(data.content, 'contentType') || '';
-      content['orgDetails'] = _.get(data.content, 'orgDetails') || {};
+      content['organisation'] = _.get(data.content, 'orgDetails.orgName') || {};
       content = { ...content, ..._.pick(data.content, ['subject', 'medium', 'gradeLevel']) };
     }
 
