@@ -356,7 +356,4 @@ export class UserEditComponent implements OnInit, OnDestroy, AfterViewInit {
       this.modal.deny();
     }
   }
-  onChangeSelect(val) {
-    console.log('----- ', val); // TODO: log!
-  }
 }
