@@ -7,7 +7,7 @@ import { Subject, merge, of, zip, BehaviorSubject } from 'rxjs';
 import { debounceTime, map, tap, switchMap, takeUntil, retry, catchError } from 'rxjs/operators';
 import { ContentSearchService } from '../../services';
 import { FormService } from '@sunbird/core';
-import {IFrameworkCategoryFilterFieldTemplateConfig} from 'common-form-elements';
+import {IFrameworkCategoryFilterFieldTemplateConfig} from 'common-form-elements-v9';
 
 
 @Component({
