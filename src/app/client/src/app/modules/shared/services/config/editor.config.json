@@ -1129,5 +1129,8 @@
             "FlagDraft",
             "FlagReview"
         ]
-    }
+    },
+    "QUESTIONSET_EDITOR": {
+        "mimeCollection": "application/vnd.sunbird.questionset"
+      }
 }
