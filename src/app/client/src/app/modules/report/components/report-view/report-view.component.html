@@ -53,12 +53,12 @@
                       </div>
                     </div>
                     <div class="dropdown">
-                      <button class="sb-btn sb-btn-normal sb-btn-primary filter-btn filter-modal-button"
+                      <button class="sb-btn sb-btn-normal sb-btn-primary filter-btn "
                         *ngIf="!segmentfilter">
                         {{this.resourceService?.frmelmnts.btn.exportAs}}
                       </button>
                       <div class="dropdown-content">
-                        <button class="sb-btn sb-btn-normal sb-btn-outline-primary filter-btn filter-modal-button"
+                        <button class="sb-btn sb-btn-normal sb-btn-outline-primary filter-btn"
                           (click)="download()">
                           Pdf
                         </button>
@@ -83,12 +83,12 @@
                         <div class="double-btn">
                           <div class="column-btn">
                             <div class="dropdown">
-                              <button class="sb-btn sb-btn-normal sb-btn-primary filter-btn filter-modal-button">
+                              <button class="sb-btn sb-btn-normal sb-btn-primary filter-btn">
                                 {{this.resourceService?.frmelmnts.btn.exportAs}}
                               </button>
                               <div class="dropdown-content">
                                 <button
-                                  class="sb-btn sb-btn-normal sb-btn-outline-primary filter-btn filter-modal-button"
+                                  class="sb-btn sb-btn-normal sb-btn-outline-primary filter-btn"
                                   (click)="download()">
                                   Pdf
                                 </button>
@@ -97,7 +97,7 @@
                           </div>
                           <div class="column-btn">
                             <div *ngFor="let filter of filters">
-                              <button class="sb-btn sb-btn-normal sb-btn-primary filter-btn filter-modal-button"
+                              <button class="sb-btn sb-btn-normal sb-btn-primary filter-btn "
                                 *ngIf="filter.filter.type=='modal'"
                                 (click)="filterModalPopup(filter.filter.data, filter.filter.keyToSend)">
                                 {{ resourceService?.frmelmnts?.lbl?.filters }}
@@ -189,40 +189,28 @@
                                         <strong>{{i+1}}) {{ data?.question }}</strong>
                                         <sl-bar-chart [data]="data" class="bar-chart-container"></sl-bar-chart>
                                       </div>
-                                      <div *ngIf="matrixShowMore" class="card-align">
+                                      <div  class="card-align">
                                         <div *ngFor="let e of data.evidences" class="thumbnail-card">
                                           <sl-attachments [url]="e.url" [extension]="e.extension"></sl-attachments>
                                         </div>
                                         <button *ngIf="data.evidence_count > 3"
                                           class="sb-btn sb-btn-normal sb-btn-outline-primary filter-btn filter-modal-button"
-                                          (click)="getAllEvidence(data)"
-                                          (click)="(matrixShowMore=false)(showMore=true)">
+                                          (click)="getAllEvidence(data)">
                                           View More
                                         </button>
-                                      </div>
-                                      <div *ngIf="!matrixShowMore && data.order==this.questionId" class="card-align">
-                                        <div *ngFor="let data of evidenceData" class="thumbnail-card">
-                                          <sl-attachments [url]="data.url" [extension]="data.extension">
-                                          </sl-attachments>
-                                        </div>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
-                                <div *ngIf="showMore" class="card-align">
+                                <div  class="card-align">
                                   <div *ngFor="let e of element.evidences" class="thumbnail-card">
                                     <sl-attachments [url]="e.url" [extension]="e.extension"></sl-attachments>
                                   </div>
                                   <button *ngIf="element.evidence_count > 3"
                                     class="sb-btn sb-btn-normal sb-btn-outline-primary filter-btn filter-modal-button"
-                                    (click)="getAllEvidence(element)" (click)="(showMore=false)(matrixShowMore=true)">
+                                    (click)="getAllEvidence(element)">
                                     View More
                                   </button>
-                                </div>
-                                <div *ngIf="!showMore && element.order==this.questionId" class="card-align">
-                                  <div *ngFor="let data of evidenceData" class="thumbnail-card">
-                                    <sl-attachments [url]="data.url" [extension]="data.extension"></sl-attachments>
-                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -231,9 +219,9 @@
                       </div>
                     </div>
 
-                    <div *ngIf="!reportSections">
+                    <!-- <div *ngIf="!reportSections">
                       <app-no-result [data]="noResultMessage"></app-no-result>
-                    </div>
+                    </div> -->
                   </sui-tabset>
                 </div>
               </div>
@@ -244,7 +232,7 @@
     </div>
     <!-- <sl-generic-chart [reportSections]="reportSections"></sl-generic-chart> -->
   </div>
-  <div class="twelve wide column" *ngIf="!data">
+  <div class="twelve wide column" *ngIf="noResult">
     <app-no-result [data]="noResultMessage"></app-no-result>
   </div>
 </div>
@@ -272,3 +260,5 @@
     </button>
   </div>
 </sui-modal>
+
+<app-all-evidence *ngIf="showEvidence" [data]="evidenceParam" (closeEvent)="modalClose($event)"></app-all-evidence>

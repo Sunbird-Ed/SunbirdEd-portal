@@ -14,10 +14,12 @@ import { SolutionListingComponent,EntityListComponent,ReportViewComponent } from
 import {DataTablesModule} from 'angular-datatables';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import {DashletModule} from '@project-sunbird/sb-dashlet-v9';
-import {SlReportsLibraryModule} from 'sl-reports-library';
+import {SlReportsLibraryModule} from '@shikshalokam/sl-reports-library';
+import { AllEvidenceComponent } from './components/all-evidence/all-evidence.component';
+
 
 @NgModule({
-  declarations: [SolutionListingComponent, EntityListComponent, ReportViewComponent],
+  declarations: [SolutionListingComponent, EntityListComponent, ReportViewComponent, AllEvidenceComponent],
   imports: [
     CommonModule,
     SharedModule,

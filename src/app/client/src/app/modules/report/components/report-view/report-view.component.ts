@@ -7,10 +7,11 @@ import {
   LayoutService,
   INoResultMessage,
   ResourceService,
-  ToasterService
+  ToasterService,
 } from "@sunbird/shared";
 import * as _ from "lodash-es";
 import { ChangeDetectorRef } from "@angular/core";
+import { Subject } from "rxjs";
 
 @Component({
   selector: "app-report-view",
@@ -26,7 +27,6 @@ export class ReportViewComponent implements OnInit {
   reportSections: any;
   filters: any;
   layoutConfiguration: any;
-  todayDate = "26/01/2021";
   public noResultMessage: INoResultMessage;
   public showComponent = true;
   public segmentfilter = false;
@@ -37,23 +37,18 @@ export class ReportViewComponent implements OnInit {
   filterdata = [];
   name = ["filter"];
   modalFilterData: any;
-  filteredData: any;
+  filteredData: any=[];
   key: any;
-  remarks: any;
-  images: any;
-  videos: any;
-  documents: any;
-  audios: any;
-  public showMore: boolean = true;
-  public matrixShowMore: boolean = true;
   questionId: any;
   public active: boolean[] = [];
   public tabs: { header: string }[] = [
     { header: this.resourceService?.frmelmnts.lbl.question },
   ];
   public noResult: boolean = false;
-  public showPdf:boolean=false;
-  evidenceData: any = [];
+  public showPdf: boolean = false;
+  public showEvidence: boolean = false;
+  evidenceParam:any;
+  public unsubscribe$ = new Subject<void>();
   constructor(
     private dhitiService: DhitiService,
     config: ConfigService,
@@ -83,12 +78,15 @@ export class ReportViewComponent implements OnInit {
         ? (this.state["observation"] = true)
         : (this.state["observation"] = false);
     });
-    this.noResultMessage = {
-      messageText: "messages.stmsg.reportNotReady",
-    };
+    
   }
   ngAfterViewChecked() {
     this.cdref.detectChanges();
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   ngOnInit() {
@@ -100,7 +98,6 @@ export class ReportViewComponent implements OnInit {
     });
     this.segmentValue = "Questions";
     this.state["pdf"] = false;
-    this.cdref.detectChanges();
     this.getReport();
   }
 
@@ -126,6 +123,7 @@ export class ReportViewComponent implements OnInit {
         if (success.result === true && success.reportSections) {
           this.data = success;
           this.reportSections = this.filterBySegment();
+
           if (this.data.filters && !this.filters) {
             this.filters = this.data.filters;
           }
@@ -142,6 +140,10 @@ export class ReportViewComponent implements OnInit {
             });
           }
         } else {
+          this.noResult=true
+          this.noResultMessage = {
+            messageText: "messages.stmsg.reportNotReady",
+          };
         }
         this.filters.forEach((element) => {
           if (element.filter.type == "segment") {
@@ -158,8 +160,14 @@ export class ReportViewComponent implements OnInit {
       (error) => {
         this.reportSections = [];
         this.error = error;
+        if(!this.error.result){
+          this.noResult=true
+          this.noResultMessage = {
+            messageText: "messages.stmsg.reportNotReady",
+          };
+        }
       }
-    );
+    ); 
   }
 
   gotoSolutionListPage() {
@@ -207,8 +215,6 @@ export class ReportViewComponent implements OnInit {
     this.state.filter = null;
     this.modalFilterData = null;
     this.segmentValue = segment;
-    this.matrixShowMore = true;
-    this.showMore = true;
     this.getReport();
   }
 
@@ -248,9 +254,12 @@ export class ReportViewComponent implements OnInit {
   }
 
   applyFilter() {
-    if (!this.filteredData.length) {
-      let msgData = (this.segmentValue == "Questions") ? "messages.smsg.selectquestions" : "messages.smsg.selectcriteria"
-       this.toasterService.error(_.get(this.resourceService, msgData));
+    if (!this.filteredData){
+      let msgData =
+        this.segmentValue == "Questions"
+          ? "messages.smsg.selectquestions"
+          : "messages.smsg.selectcriteria";
+      this.toasterService.error(_.get(this.resourceService, msgData));
     } else {
       this.state.filter = {};
       this.state.filter[this.key] = this.filteredData;
@@ -281,7 +290,6 @@ export class ReportViewComponent implements OnInit {
   }
 
   async getAllEvidence(element) {
-    this.evidenceData = [];
     this.questionId = element.order;
     const payload = {
       submissionId: this.state.submissionId,
@@ -291,34 +299,40 @@ export class ReportViewComponent implements OnInit {
       entityType: this.state.entityType,
       solutionId: this.state.solutionId,
     };
-    const config = {
-      url: this.config.urlConFig.URLS.DHITI.ALL_EVIDENCE,
-      data: payload,
-    };
-    this.dhitiService.post(config).subscribe(
-      (success: any) => {
-        if (success.result === true && success.data) {
-          this.images = success.data.images;
-          this.videos = success.data.videos;
-          this.documents = success.data.documents;
-          this.remarks = success.data.remarks;
-          this.audios = success.data.audios;
-          if (this.images) {
-            this.images.map((d) => this.evidenceData.push(d));
-          }
-          if (this.videos) {
-            this.videos.map((d) => this.evidenceData.push(d));
-          }
-          if (this.documents) {
-            this.documents.map((d) => this.evidenceData.push(d));
-          }
-          if (this.audios) {
-            this.audios.map((d) => this.evidenceData.push(d));
-          }
-          console.log(this.evidenceData);
-        }
-      },
-      (error) => {}
-    );
+    this.evidenceParam = payload;
+    this.showEvidence = true;
+    // const config = {
+    //   url: this.config.urlConFig.URLS.DHITI.ALL_EVIDENCE,
+    //   data: payload,
+    // };
+    // this.dhitiService.post(config).subscribe(
+    //   (success: any) => {
+    //     if (success.result === true && success.data) {
+    //       this.images = success.data.images;
+    //       this.videos = success.data.videos;
+    //       this.documents = success.data.documents;
+    //       this.remarks = success.data.remarks;
+    //       this.audios = success.data.audios;
+    //       if (this.images) {
+    //         this.images.map((d) => this.evidenceData.push(d));
+    //       }
+    //       if (this.videos) {
+    //         this.videos.map((d) => this.evidenceData.push(d));
+    //       }
+    //       if (this.documents) {
+    //         this.documents.map((d) => this.evidenceData.push(d));
+    //       }
+    //       if (this.audios) {
+    //         this.audios.map((d) => this.evidenceData.push(d));
+    //       }
+    //       console.log(this.evidenceData);
+    //     }
+    //   },
+    //   (error) => {}
+    // );
+  }
+
+  modalClose(event) {
+    this.showEvidence = false;
   }
 }
