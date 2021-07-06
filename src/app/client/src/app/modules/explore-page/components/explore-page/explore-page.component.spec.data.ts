@@ -24,8 +24,8 @@ export const RESPONSE = {
             'testing lessons',
             'key'
           ],
-          'subject': 'English',
-          'se_subjects': ['English'],
+          'subject': ['English', 'Hindi', 'Tamil', 'Kannada'],
+          'se_subjects': ['English', 'Hindi', 'Tamil', 'Kannada'],
           'channel': '012530141516660736208',
           'downloadUrl': 'https://ntpstagingr_fi1/assam-text-book_1576731343811_do_212916581536096256131_1.0_spine.ecar',
           'organisation': [
@@ -160,8 +160,8 @@ export const RESPONSE = {
             'createdBy'
           ],
           'copyright': 'Chhattisgarh',
-          'subject': 'English',
-          'se_subjects': ['English'],
+          'subject': ['English', 'Hindi', 'Tamil', 'Kannada'],
+          'se_subjects': ['English', 'Hindi', 'Tamil', 'Kannada'],
           'downloadUrl': 'https://ntpstagido_21285725285052416011433/test-k12-book_1569489359437_do_21285725285052416011433_1.0_spine.ecar',
           'channel': '01258043108936908899',
           'organisation': [
@@ -1714,7 +1714,11 @@ export const RESPONSE = {
     'theme': {
       'baseColor': '',
       'textColor': '',
-      'supportingColor': ''
+      'supportingColor': '',
+      'imageName': 'courses-banner-img.svg'
+    },
+    'filter': {
+      'isEnabled': true
     },
     'search': {
       'facets': ['board', 'gradeLevel', 'subject', 'medium', 'contentType', 'concepts'],
@@ -1882,4 +1886,1074 @@ export const RESPONSE = {
         }
     }
   },
+  currentPageData: {
+    'index': 0,
+    'title': 'frmelmnts.lbl.home',
+    'desc': 'frmelmnts.lbl.home',
+    'menuType': 'Content',
+    'contentType': 'home',
+    'isEnabled': true,
+    'isOnlineOnly': true,
+    'theme': {
+      'baseColor': '',
+      'textColor': '',
+      'supportingColor': '',
+      'className': 'home',
+      'imageName': 'courses-banner-img.svg'
+    },
+    'anonumousUserRoute': {
+      'route': '/home',
+      'queryParam': 'home'
+    },
+    'loggedInUserRoute': {
+      'route': '/explore',
+      'queryParam': 'home'
+    },
+    'metaData': {
+      'filters': [
+        'board',
+        'gradeLevel',
+        'subject',
+        'medium',
+        'publisher',
+        'audience',
+        'channel'
+      ],
+      'groupByKey': 'subject',
+      'defaultFilters': {
+        'board': [
+          'CBSE'
+        ],
+        'gradeLevel': [
+          'Class 10'
+        ],
+        'medium': []
+      }
+    },
+    'search': {
+      'facets': [
+        'se_subjects',
+        'primaryCategory',
+        'medium'
+      ],
+      'fields': [
+        'name',
+        'appIcon',
+        'medium',
+        'subject',
+        'resourceType',
+        'contentType',
+        'organisation',
+        'topic',
+        'mimeType',
+        'trackable',
+        'gradeLevel',
+        'se_boards',
+        'se_subjects',
+        'se_mediums',
+        'se_gradeLevels'
+      ],
+      'filters': {
+        'channel': [],
+        'subject': [],
+        'audience': [],
+        'primaryCategory': [
+          'Digital Textbook',
+          'eTextbook'
+        ],
+        'se_boards': [
+          'State (Tamil Nadu)'
+        ],
+        'se_mediums': [
+          'English'
+        ],
+        'se_gradeLevels': [
+          'Class 1',
+          'Class 10',
+          'Class 11',
+          'Class 2',
+          'Class 3',
+          'Class 4',
+          'Class 5',
+          'Class 6',
+          'Class 7',
+          'Class 8',
+          'Class 9'
+        ]
+      }
+    },
+    'filter': {
+      'isEnabled': false,
+      'type': 'facet'
+    },
+    'sections': [
+      {
+        'index': 0,
+        'title': 'frmelmnts.lbl.subjects',
+        'desc': 'Section for subjects',
+        'facetKey': 'se_subjects',
+        'isEnabled': true,
+        'apiConfig': {
+          'url': '',
+          'method': '',
+          'req': {},
+          'params': '',
+          'contextKey': 'res.facet.subject'
+        },
+        'theme': {
+          'component': 'sb-pills-grid',
+          'limit': 10,
+          'infiniteCard': false,
+          'colorMapping': [
+            {
+              primary: 'rgba(255,139,46,1)',
+              secondary: 'rgba(255,139,46,0.3)'
+            },
+            {
+              primary: 'rgba(163,99,255,1)',
+              secondary: 'rgba(163,99,255,0.3)'
+            },
+            {
+              primary: 'rgba(34,139,255,1)',
+              secondary: 'rgba(34,139,255,0.3)'
+            },
+            {
+              primary: 'rgba(95,192,32,1)',
+              secondary: 'rgba(95,192,32,0.3)'
+            },
+            {
+              primary: 'rgba(255,128,47,1)',
+              secondary: 'rgba(255,128,47,0.3)'
+            },
+            {
+              primary: 'rgba(251,70,70,1)',
+              secondary: 'rgba(251,70,70,0.3)'
+            },
+            {
+              primary: 'rgba(83,109,252,1)',
+              secondary: 'rgba(83,109,252,0.3)'
+            },
+            {
+              primary: 'rgba(15,186,208,1)',
+              secondary: 'rgba(15,186,208,0.3)'
+            }
+          ],
+          'icons': {
+            'english': 'assets/images/book_english.svg',
+            'mathematics': 'assets/images/calculator.svg',
+            'science': 'assets/images/globe.svg',
+            'default': 'assets/images/book_default.svg'
+          }
+        },
+        'anonumousUserRoute': {
+          'route': '/explore-course',
+          'queryParam': 'course'
+        },
+        'loggedInUserRoute': {
+          'route': '/learn',
+          'queryParam': 'course'
+        }
+      },
+      {
+        'index': 1,
+        'title': 'frmelmnts.lbl.dscfrmctgries',
+        'desc': 'Section for category',
+        'facetKey': 'primaryCategory',
+        'isEnabled': true,
+        'apiConfig': {
+          'url': '',
+          'method': '',
+          'req': {},
+          'params': '',
+          'contextKey': 'res.facet.primaryCategory'
+        },
+        'theme': {
+          'component': 'sb-pills-grid',
+          'limit': 10,
+          'infiniteCard': false,
+          'colorMapping': [
+            {
+              primary: 'rgba(255,139,46,1)',
+              secondary: 'rgba(255,139,46,0.3)'
+            },
+            {
+              primary: 'rgba(163,99,255,1)',
+              secondary: 'rgba(163,99,255,0.3)'
+            },
+            {
+              primary: 'rgba(34,139,255,1)',
+              secondary: 'rgba(34,139,255,0.3)'
+            },
+            {
+              primary: 'rgba(95,192,32,1)',
+              secondary: 'rgba(95,192,32,0.3)'
+            },
+            {
+              primary: 'rgba(255,128,47,1)',
+              secondary: 'rgba(255,128,47,0.3)'
+            },
+            {
+              primary: 'rgba(251,70,70,1)',
+              secondary: 'rgba(251,70,70,0.3)'
+            },
+            {
+              primary: 'rgba(83,109,252,1)',
+              secondary: 'rgba(83,109,252,0.3)'
+            },
+            {
+              primary: 'rgba(15,186,208,1)',
+              secondary: 'rgba(15,186,208,0.3)'
+            }
+          ],
+          'icons': {
+            'digital textbooks': 'assets/images/textbook.svg',
+            'courses': 'assets/images/course.svg',
+            'tv programs': 'assets/images/tv.svg',
+            'documents': 'assets/images/documents.svg',
+            'videos': 'assets/images/videos.svg',
+            'default': 'assets/images/all_content.svg'
+          }
+        },
+        'anonumousUserRoute': {
+          'route': '/explore-course',
+          'queryParam': 'course'
+        },
+        'loggedInUserRoute': {
+          'route': '/learn',
+          'queryParam': 'course'
+        }
+      },
+      {
+        'index': 2,
+        'title': 'frmelmnts.lbl.medium',
+        'desc': 'Section for medium',
+        'facetKey': 'medium',
+        'isEnabled': false,
+        'apiConfig': {
+          'url': '',
+          'method': '',
+          'req': {},
+          'params': '',
+          'contextKey': 'res.facet.medium'
+        },
+        'theme': {
+          'component': 'sb-pills-grid',
+          'limit': 10,
+          'infiniteCard': false,
+          'colorMapping': [
+            {
+              primary: 'rgba(255,139,46,1)',
+              secondary: 'rgba(255,139,46,0.3)'
+            },
+            {
+              primary: 'rgba(163,99,255,1)',
+              secondary: 'rgba(163,99,255,0.3)'
+            },
+            {
+              primary: 'rgba(34,139,255,1)',
+              secondary: 'rgba(34,139,255,0.3)'
+            },
+            {
+              primary: 'rgba(95,192,32,1)',
+              secondary: 'rgba(95,192,32,0.3)'
+            },
+            {
+              primary: 'rgba(255,128,47,1)',
+              secondary: 'rgba(255,128,47,0.3)'
+            },
+            {
+              primary: 'rgba(251,70,70,1)',
+              secondary: 'rgba(251,70,70,0.3)'
+            },
+            {
+              primary: 'rgba(83,109,252,1)',
+              secondary: 'rgba(83,109,252,0.3)'
+            },
+            {
+              primary: 'rgba(15,186,208,1)',
+              secondary: 'rgba(15,186,208,0.3)'
+            }
+          ]
+        },
+        'anonumousUserRoute': {
+          'route': '/home',
+          'queryParam': 'course'
+        },
+        'loggedInUserRoute': {
+          'route': '/learn',
+          'queryParam': 'course'
+        }
+      }
+    ]
+  },
+  explorePageData: {
+    'index': 1,
+    'title': 'frmelmnts.lbl.explore',
+    'desc': 'frmelmnts.lbl.explore',
+    'menuType': 'Content',
+    'contentType': 'explore',
+    'isEnabled': true,
+    'isOnlineOnly': true,
+    'theme': {
+      'baseColor': '',
+      'textColor': '',
+      'supportingColor': '',
+      'className': 'courses',
+      'imageName': 'courses-banner-img.svg'
+    },
+    'anonumousUserRoute': {
+      'route': '/explore',
+      'queryParam': 'explore'
+    },
+    'loggedInUserRoute': {
+      'route': '/explore',
+      'queryParam': 'explore'
+    },
+    'metaData': {
+      'filters': [
+        'board',
+        'gradeLevel',
+        'subject',
+        'medium',
+        'publisher',
+        'audience',
+        'channel'
+      ],
+      'groupByKey': 'subject',
+      'defaultFilters': {
+        'board': [
+          'CBSE'
+        ],
+        'gradeLevel': [
+          'Class 10'
+        ],
+        'medium': []
+      }
+    },
+    'search': {
+      'facets': [
+        'primaryCategory',
+        'se_boards'
+      ],
+      'fields': [
+        'name',
+        'appIcon',
+        'medium',
+        'subject',
+        'resourceType',
+        'contentType',
+        'organisation',
+        'topic',
+        'mimeType',
+        'trackable',
+        'gradeLevel',
+        'se_boards',
+        'se_subjects',
+        'se_mediums',
+        'se_gradeLevels'
+      ],
+      'filters': {
+        'channel': [],
+        'subject': [],
+        'audience': [],
+        'primaryCategory': [
+          'Digital Textbook',
+          'eTextbook'
+        ],
+        'se_boards': [
+          'State (Tamil Nadu)'
+        ],
+        'se_mediums': [
+          'English'
+        ],
+        'se_gradeLevels': [
+          'Class 1',
+          'Class 10',
+          'Class 11',
+          'Class 2',
+          'Class 3',
+          'Class 4',
+          'Class 5',
+          'Class 6',
+          'Class 7',
+          'Class 8',
+          'Class 9'
+        ]
+      }
+    },
+    'filter': {
+      'isEnabled': false,
+      'type': 'facet'
+    },
+    'sections': [
+      {
+        'index': 0,
+        'title': 'frmelmnts.lbl.dscfrmctgries',
+        'desc': 'Section for category',
+        'facetKey': 'primaryCategory',
+        'isEnabled': true,
+        'apiConfig': {
+          'url': '',
+          'method': '',
+          'req': {},
+          'params': '',
+          'contextKey': 'res.facet.primaryCategory'
+        },
+        'data': [
+          {
+            'index': 0,
+            'name': 'Digital Textbooks',
+            'value': 'digital textbooks',
+            'searchCriteria': {
+              'facets': [],
+              'primaryCategories': [
+                'Digital Textbook'
+              ],
+              'mode': 'soft',
+              'searchType': 'search'
+            }
+          },
+          {
+            'index': 1,
+            'name': 'Courses',
+            'value': 'courses',
+            'searchCriteria': {
+              'facets': [],
+              'primaryCategories': [
+                'Course'
+              ],
+              'mode': 'soft',
+              'searchType': 'search'
+            }
+          },
+          {
+            'index': 2,
+            'name': 'Tv Classes',
+            'value': 'tv classes',
+            'searchCriteria': {
+              'facets': [],
+              'primaryCategories': [
+                'Explanation Content'
+              ],
+              'mode': 'soft',
+              'searchType': 'search'
+            }
+          },
+          {
+            'index': 3,
+            'name': 'Videos',
+            'value': 'videos',
+            'searchCriteria': {
+              'facets': [],
+              'mimeType': [
+                'video/avi',
+                'video/mpeg',
+                'video/quicktime',
+                'video/3gpp',
+                'video/mpeg',
+                'video/mp4',
+                'video/ogg',
+                'video/webm'
+              ],
+              'mode': 'soft',
+              'searchType': 'search'
+            }
+          },
+          {
+            'index': 5,
+            'name': 'Interactive Content',
+            'value': 'Interactive Content',
+            'searchCriteria': {
+              'facets': [],
+              'mimeType': [
+                'application/vnd.ekstep.ecml-archive',
+                'application/vnd.ekstep.h5p-archive',
+                'application/vnd.ekstep.html-archive'
+              ],
+              'mode': 'soft',
+              'searchType': 'search'
+            }
+          },
+          {
+            'index': 4,
+            'name': 'Audio',
+            'value': 'Audio',
+            'searchCriteria': {
+              'facets': [],
+              'mimeType': [
+                'audio/mp3',
+                'audio/mp4',
+                'audio/mpeg',
+                'audio/ogg',
+                'audio/webm',
+                'audio/x-wav',
+                'audio/wav'
+              ],
+              'mode': 'soft',
+              'searchType': 'search'
+            }
+          }
+        ],
+        'theme': {
+          'component': 'sb-pills-grid',
+          'limit': 10,
+          'infiniteCard': false,
+          'colorMapping': [],
+          'icons': {
+            'digital textbooks': 'assets/images/textbook.svg',
+            'courses': 'assets/images/course.svg',
+            'tv classes': 'assets/images/tv.svg',
+            'documents': 'assets/images/documents.svg',
+            'videos': 'assets/images/videos.svg',
+            'default': 'assets/images/all_content.svg'
+          }
+        },
+        'anonumousUserRoute': {
+          'route': '/explore-course',
+          'queryParam': 'course'
+        },
+        'loggedInUserRoute': {
+          'route': '/learn',
+          'queryParam': 'course'
+        }
+      },
+      {
+        'index': 0,
+        'title': 'frmelmnts.lbl.boards',
+        'desc': 'Section for explore',
+        'facetKey': 'se_boards',
+        'isEnabled': true,
+        'apiConfig': {
+          'url': '',
+          'method': '',
+          'req': {},
+          'params': '',
+          'contextKey': 'res.facet.subject'
+        },
+        'data': [
+          {
+            'index': 0,
+            'name': 'CBSE/NCERT',
+            'value': 'ekstep_ncert_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'CBSE'
+              ]
+            }
+          },
+          {
+            'index': 1,
+            'name': 'IGOT-Health',
+            'value': 'igot_health',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'IGOT-Health'
+              ]
+            }
+          },
+          {
+            'index': 2,
+            'name': 'State (Arunachal Pradesh)',
+            'value': 'ar_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Arunachal Pradesh)'
+              ]
+            }
+          },
+          {
+            'index': 3,
+            'name': 'State (Andhra Pradesh)',
+            'value': 'ap_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Andhra Pradesh)'
+              ]
+            }
+          },
+          {
+            'index': 4,
+            'name': 'State (Assam)',
+            'value': 'as_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Assam)'
+              ]
+            }
+          },
+          {
+            'index': 5,
+            'name': 'State (Bihar)',
+            'value': 'br_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Bihar)'
+              ]
+            }
+          },
+          {
+            'index': 6,
+            'name': 'State (Chandigarh)',
+            'value': 'ch_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Chandigarh)'
+              ]
+            }
+          },
+          {
+            'index': 7,
+            'name': 'State (Chhattisgarh)',
+            'value': 'cg_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Chhattisgarh)'
+              ]
+            }
+          },
+          {
+            'index': 8,
+            'name': 'State (Delhi)',
+            'value': 'dl_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Delhi)'
+              ]
+            }
+          },
+          {
+            'index': 9,
+            'name': 'State (Goa)',
+            'value': 'ga_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Goa)'
+              ]
+            }
+          },
+          {
+            'index': 10,
+            'name': 'State (Gujarat)',
+            'value': 'gj_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Gujarat)'
+              ]
+            }
+          },
+          {
+            'index': 11,
+            'name': 'State (Haryana)',
+            'value': 'hr_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Haryana)'
+              ]
+            }
+          },
+          {
+            'index': 12,
+            'name': 'State (Himachal Pradesh)',
+            'value': 'hp_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Himachal Pradesh)'
+              ]
+            }
+          },
+          {
+            'index': 13,
+            'name': 'State (Jammu And Kashmir)',
+            'value': 'jk_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Jammu And Kashmir)'
+              ]
+            }
+          },
+          {
+            'index': 14,
+            'name': 'State (Jharkhand)',
+            'value': 'jh_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Jharkhand)'
+              ]
+            }
+          },
+          {
+            'index': 15,
+            'name': 'State (Karnataka)',
+            'value': 'ka_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Karnataka)'
+              ]
+            }
+          },
+          {
+            'index': 16,
+            'name': 'State (Kerala)',
+            'value': 'kl_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Kerala)'
+              ]
+            }
+          },
+          {
+            'index': 17,
+            'name': 'State (Madhya Pradesh)',
+            'value': 'mp_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Madhya Pradesh)'
+              ]
+            }
+          },
+          {
+            'index': 18,
+            'name': 'State (Maharashtra)',
+            'value': 'mh_k-12_1',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Maharashtra)'
+              ]
+            }
+          },
+          {
+            'index': 19,
+            'name': 'State (Manipur)',
+            'value': 'mn_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Manipur)'
+              ]
+            }
+          },
+          {
+            'index': 20,
+            'name': 'State (Meghalya)',
+            'value': 'ml_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Meghalya)'
+              ]
+            }
+          },
+          {
+            'index': 21,
+            'name': 'State (Mizoram)',
+            'value': 'mz_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Mizoram)'
+              ]
+            }
+          },
+          {
+            'index': 22,
+            'name': 'State (Nagaland)',
+            'value': 'nl_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Nagaland)'
+              ]
+            }
+          },
+          {
+            'index': 23,
+            'name': 'State (Odisha)',
+            'value': 'od_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Odisha)'
+              ]
+            }
+          },
+          {
+            'index': 24,
+            'name': 'State (Punjab)',
+            'value': 'pb_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Punjab)'
+              ]
+            }
+          },
+          {
+            'index': 25,
+            'name': 'State (Rajasthan)',
+            'value': 'rj_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Rajasthan)'
+              ]
+            }
+          },
+          {
+            'index': 26,
+            'name': 'State (Sikkim)',
+            'value': 'sk_k-12_1',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Sikkim)'
+              ]
+            }
+          },
+          {
+            'index': 27,
+            'name': 'State (Tamil Nadu)',
+            'value': 'tn_k-12_5',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Tamil Nadu)'
+              ]
+            }
+          },
+          {
+            'index': 28,
+            'name': 'State (Telangana)',
+            'value': 'ts_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Telangana)'
+              ]
+            }
+          },
+          {
+            'index': 29,
+            'name': 'State (Tripura)',
+            'value': 'tp_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Tripura)'
+              ]
+            }
+          },
+          {
+            'index': 30,
+            'name': 'State (Uttar Pradesh)',
+            'value': 'up_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Uttar Pradesh)'
+              ]
+            }
+          },
+          {
+            'index': 31,
+            'name': 'State (Uttarakhand)',
+            'value': 'uk_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'State (Uttarakhand)'
+              ]
+            }
+          },
+          {
+            'index': 32,
+            'name': 'UT (Andaman and Nicobar Islands)',
+            'value': 'an_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'UT (Andaman and Nicobar Islands)'
+              ]
+            }
+          },
+          {
+            'index': 33,
+            'name': 'UT (DNH and DD)',
+            'value': 'dd_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'UT (DNH and DD)'
+              ]
+            }
+          },
+          {
+            'index': 34,
+            'name': 'UT (Ladakh)',
+            'value': 'ld_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'UT (Ladakh)'
+              ]
+            }
+          },
+          {
+            'index': 35,
+            'name': 'UT (Puducherry)',
+            'value': 'py_k-12',
+            'searchCriteria': {
+              'facets': [
+                'board'
+              ],
+              'board': [
+                'UT (Puducherry)'
+              ]
+            }
+          }
+        ],
+        'theme': {
+          'component': 'sb-pills-grid',
+          'limit': 10,
+          'infiniteCard': false,
+          'colorMapping': [],
+          'icons': {
+            'ekstep_ncert_k-12': 'https://diksha.gov.in/cbse/cbse-logo.png',
+            'igot_health': 'https://diksha.gov.in/igot/logo.png',
+            'ar_k-12': 'https://diksha.gov.in/ar/logo.png',
+            'ap_k-12': 'https://diksha.gov.in/ap/logo.png',
+            'as_k-12': 'https://diksha.gov.in/as/logo.png',
+            'br_k-12': 'https://diksha.gov.in/br/logo.png',
+            'ch_k-12': 'https://diksha.gov.in/logo.png',
+            'cg_k-12': 'https://diksha.gov.in/cg/logo.png',
+            'dl_k-12': 'https://diksha.gov.in/dl/logo.png',
+            'ga_k-12': 'https://diksha.gov.in/ga/logo.png',
+            'gj_k-12': 'https://diksha.gov.in/gj/logo.png',
+            'hr_k-12': 'https://diksha.gov.in/hr/logo.png',
+            'hp_k-12': 'https://diksha.gov.in/logo.png',
+            'jk_k-12': 'https://diksha.gov.in/jk/logo.png',
+            'jh_k-12': 'https://diksha.gov.in/jh/logo.png',
+            'ka_k-12': 'https://diksha.gov.in/ka/appLogo.png',
+            'kl_k-12': 'https://diksha.gov.in/logo.png',
+            'mp_k-12': 'https://diksha.gov.in/mp/logo.png',
+            'mh_k-12_1': 'https://diksha.gov.in/mh/logo.png',
+            'mn_k-12': 'https://diksha.gov.in/mn/appLogo.png',
+            'ml_k-12': 'https://diksha.gov.in/ml/logo.png',
+            'mz_k-12': 'https://diksha.gov.in/mz/logo.png',
+            'nl_k-12': 'https://diksha.gov.in/nl/logo.png',
+            'od_k-12': 'https://diksha.gov.in/od/appLogo.png',
+            'pb_k-12': 'https://diksha.gov.in/pb/appLogo.png',
+            'rj_k-12': 'https://diksha.gov.in/rj/appLogo.png',
+            'sk_k-12_1': 'https://diksha.gov.in/sk/logo.png',
+            'tn_k-12_5': 'https://diksha.gov.in/tn/appLogo.png',
+            'ts_k-12': 'https://diksha.gov.in/ts/logo.png',
+            'tp_k-12': 'https://diksha.gov.in/logo.png',
+            'up_k-12': 'https://diksha.gov.in/up/appLogo.png',
+            'uk_k-12': 'https://diksha.gov.in/logo.png',
+            'an_k-12': 'https://diksha.gov.in/an/logo.png',
+            'dd_k-12': 'https://diksha.gov.in/dd/appLogo.png',
+            'ld_k-12': 'https://diksha.gov.in/ld/appLogo.png',
+            'py_k-12': 'https://diksha.gov.in/py/appLogo.png',
+            'default': 'assets/images/default_circle.png'
+          }
+        },
+        'anonumousUserRoute': {
+          'route': '/explore-course',
+          'queryParam': 'course'
+        },
+        'loggedInUserRoute': {
+          'route': '/learn',
+          'queryParam': 'course'
+        }
+      }
+    ]
+  }
 };

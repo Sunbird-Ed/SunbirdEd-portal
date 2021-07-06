@@ -10,7 +10,7 @@ import {
   NavigationHelperService, IPagination, OnDemandReportsComponent
 } from '@sunbird/shared';
 import { CourseProgressService, UsageService } from './../../services';
-import { ICourseProgressData, IBatchListData } from './../../interfaces';
+import { ICourseProgressData, IBatchListData, IForumContext } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { OnDemandReportService } from './../../../shared/services/on-demand-report/on-demand-report.service';
 import dayjs from 'dayjs';
@@ -131,6 +131,11 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   * which is needed to show the pagination on inbox view
     */
   pager: IPagination;
+  /**
+   * input data for fetchforum Ids
+   */
+   fetchForumIdReq: IForumContext;
+
   /**
    * To send activatedRoute.snapshot to router navigation
    * service for redirection to parent component
@@ -254,6 +259,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
           this.queryParams.batchIdentifier = this.batchlist[0].id;
           this.selectedOption = this.batchlist[0].id;
           this.currentBatch = this.batchlist[0];
+          this.generateDataForDF(this.currentBatch);
           this.setBatchId(this.currentBatch);
           this.populateCourseDashboardData(this.batchlist[0]);
         } else {
@@ -689,6 +695,26 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       }
     }, error => {
       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+    });
+  }
+  generateDataForDF(batchId) {
+    if (batchId) {
+      this.fetchForumIdReq = {
+        type: 'batch',
+        identifier: [batchId.id]
+      };
+    }
+  }
+  /**
+     * @description - navigate to the DF Page when the event is emited from the access-discussion component
+     * @param  {} routerData
+     */
+   assignForumData(routerData) {
+    this.route.navigate(['/discussion-forum'], {
+      queryParams: {
+        categories: JSON.stringify({ result: routerData.forumIds }),
+        userName: routerData.userName
+      }
     });
   }
 }

@@ -22,6 +22,7 @@ import {
   ISort,
   OrgDetailsService,
   SchemaService,
+  KendraService
 } from "@sunbird/core";
 import { combineLatest, Subject, of } from "rxjs";
 import {
@@ -50,7 +51,6 @@ import {
 } from "rxjs/operators";
 import { CacheService } from "ng2-cache-service";
 import { ContentManagerService } from "../../../public/module/offline/services/content-manager/content-manager.service";
-import { KendraService } from "@sunbird/core";
 import { ObservationUtilService } from "../../service";
 import {Location} from '@angular/common';
 
@@ -74,6 +74,7 @@ export class ObservationListingComponent
   public cardIntractEdata: IInteractEventEdata;
   public showLoader = true;
   public initFilters = false;
+  public noResultMessage;
   isDesktopApp = false;
   selectedFilters: any;
   totalCount: any = 0;
@@ -123,15 +124,15 @@ export class ObservationListingComponent
 
   async ngOnInit(){
     this.initLayout();
-  
     this.showEditUserDetailsPopup=await this.observationUtil.getProfileInfo();
      if(!this.showEditUserDetailsPopup){
        let metaData=this.observationUtil.getAlertMetaData();
        metaData.type="update profile";
+       metaData.isClosed=true;
        metaData.size="mini";
        metaData.content.title=this.resourceService.frmelmnts.alert.updateProfileTitle;
        metaData.content.body.type="text";
-       metaData.content.body.data=this.resourceService.frmelmnts.alert.updateProfileContent;
+       metaData.content.body.data=this.resourceService.frmelmnts.alert.updateprofilecontent;
        metaData.footer.className="single-btn"
        metaData.footer.buttons.push(
         {
@@ -158,6 +159,7 @@ export class ObservationListingComponent
       this.searchData="";
       this.fetchContentList();
     });
+    this.listenLanguageChange();
   }
 
   async getProfileCheck(){
@@ -165,6 +167,18 @@ export class ObservationListingComponent
     .then((result:any)=>{
       return result;
     });
+  }
+
+  private listenLanguageChange() {
+    this.resourceService.languageSelected$.pipe(takeUntil(this.unsubscribe$)).subscribe((languageData) => {
+        this.setNoResultMessage();
+    });
+}
+
+  private setNoResultMessage() {
+    let {  noContentfoundSubTitle} = _.get(this.resourceService, 'frmelmnts.lbl');
+    const title = _.get(this.resourceService,'messages.stmsg.m0006')
+    this.noResultMessage = { title, noContentfoundSubTitle };
   }
 
   getDataParam(){
@@ -219,9 +233,9 @@ export class ObservationListingComponent
 
     data.forEach((value) => {
       let solution_name:string = value.name;
-      solution_name = solution_name[0].toUpperCase() + solution_name.slice(1);
+      solution_name = (solution_name && solution_name.length) ? solution_name[0].toUpperCase() + solution_name.slice(1): "";
       const subject:any=[];
-      subject.push(value.programName.toString())
+      subject.push(value.programName)
       let obj = {
         name: solution_name,
         contentType: "Observation",
@@ -323,7 +337,8 @@ export class ObservationListingComponent
       programId: data.programId,
       solutionId: data.solutionId,
       observationId: data._id,
-      solutionName: data.name
+      solutionName: data.name,
+      programName:data.subject[0]
     };
     this.router.navigate(["observation/details"], {
       queryParams: this.queryParam,
@@ -348,51 +363,6 @@ export class ObservationListingComponent
       this.telemetryImpression.edata.subtype = "pageexit";
       this.telemetryImpression = Object.assign({}, this.telemetryImpression);
     }
-  }
-
-  hoverActionClicked(event) {
-    event["data"] = event.content;
-    this.contentName = event.content.name;
-    this.contentData = event.data;
-    let telemetryButtonId: any;
-  }
-
-  logTelemetry(content, actionId) {
-    const telemetryInteractObject = {
-      id: content.identifier,
-      type: content.contentType,
-      ver: content.pkgVersion ? content.pkgVersion.toString() : "1.0",
-    };
-
-    const appTelemetryInteractData: any = {
-      context: {
-        env:
-          _.get(
-            this.activatedRoute,
-            "snapshot.root.firstChild.data.telemetry.env"
-          ) ||
-          _.get(this.activatedRoute, "snapshot.data.telemetry.env") ||
-          _.get(
-            this.activatedRoute.snapshot.firstChild,
-            "children[0].data.telemetry.env"
-          ),
-      },
-      edata: {
-        id: actionId,
-        type: "click",
-        pageid: this.router.url.split("/")[1] || "Search-page",
-      },
-    };
-
-    if (telemetryInteractObject) {
-      if (telemetryInteractObject.ver) {
-        telemetryInteractObject.ver = _.isNumber(telemetryInteractObject.ver)
-          ? _.toString(telemetryInteractObject.ver)
-          : telemetryInteractObject.ver;
-      }
-      appTelemetryInteractData.object = telemetryInteractObject;
-    }
-    this.telemetryService.interact(appTelemetryInteractData);
   }
 
 }

@@ -86,9 +86,7 @@ export class SbFormLocationOptionsFactory {
               }
               // school is fetched from userProfile.organisation instead of userProfile.userLocations
               if (config.code === 'school' && initial && !formControl.value) {
-                const option = list.find((o) => {
-                    return (_.get(this.userService, 'userProfile.organisations') || []).find((org) => org.orgName === o.label);
-                });
+                const option = list.find((o) => o.value.id === config.default.id || o.label === config.default.name);
                 formControl.patchValue(option ? option.value : null, { emitModelToViewChange: false });
               } else if (config.default && initial && !formControl.value) {
                 const option = list.find((o) => o.value.id === config.default.id || o.label === config.default.name);

@@ -17,10 +17,12 @@ import {
   of as observableOf,
   throwError as observableThrowError
 } from 'rxjs';
-import { getUserList, updateBatchDetails } from './../update-course-batch/update-course-batch.component.data';
+import { getUserList, updateBatchDetails, MockResponseData} from './../update-course-batch/update-course-batch.component.data';
 import { CreateBatchComponent } from './create-batch.component';
 import { of, throwError } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DiscussionService } from '../../../../../../app/modules/discussion/services/discussion/discussion.service';
+import { FormGroup, FormControl } from '@angular/forms';
 
 class RouterStub {
   navigate = jasmine.createSpy('navigate');
@@ -30,8 +32,9 @@ const resourceServiceMockData = {
   messages: {
     imsg: { m0027: 'Something went wrong' },
     stmsg: { m0009: 'error' },
-    smsg: { m0033: 'success' },
-    fmsg: { m0052: 'error' }
+    smsg: {m0033: 'success', m0034: 'success', m0065: 'enabled', m0066: 'disabled'},
+    fmsg: { m0052: 'error' },
+    emsg: {m0005: 'discussion forum error'}
   },
   frmelmnts: {
     btn: {
@@ -74,7 +77,7 @@ describe('CreateBatchComponent', () => {
       imports: [SharedModule.forRoot(), CoreModule, SuiModule, RouterTestingModule,
         HttpClientTestingModule, LearnModule, ReactiveFormsModule],
       providers: [CourseBatchService, ToasterService, ResourceService, UserService, CourseConsumptionService,
-        CourseProgressService, TelemetryService, { provide: Router, useClass: RouterStub },
+        CourseProgressService, TelemetryService, DiscussionService, { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute }],
     }).compileComponents();
   }));
@@ -259,5 +262,114 @@ describe('CreateBatchComponent', () => {
     component['addParticipantToBatch'](2323212121, ['userId1', 'userId2']);
     expect(component.disableSubmitBtn).toBe(false);
     expect(toasterService.error).toHaveBeenCalled();
+  });
+
+  it('should fetch form config for batch discussion forum', () => {
+    const discussionService = TestBed.get(DiscussionService);
+    spyOn(discussionService, 'fetchForumConfig').and.returnValue(observableOf(MockResponseData.forumConfig));
+    component.fetchForumConfig();
+    expect(component.createForumRequest).toEqual(MockResponseData.forumConfig[0]);
+  });
+
+  it('should show error if form config not there', () => {
+    const discussionService = TestBed.get(DiscussionService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(discussionService, 'fetchForumConfig').and.returnValue(observableThrowError({}));
+    spyOn(toasterService, 'error');
+    component.fetchForumConfig();
+    expect(toasterService.error).toHaveBeenCalledWith('discussion forum error');
+  });
+
+  it('should call enable discussion forum if enabled discussion if true', () => {
+    spyOn(component, 'enableDiscussionForum');
+    component.createBatchForm = new FormGroup({
+      enableDiscussions: new FormControl('true')
+    });
+    const courseBatchService = TestBed.get(CourseBatchService);
+    spyOn(courseBatchService.updateEvent, 'emit');
+    component.checkEnableDiscussions('SOME_BATCH_ID');
+    expect(component.enableDiscussionForum).toHaveBeenCalled();
+  });
+
+  it('should enabled discussion forum and log telemetry if formconfig available', () => {
+    const discussionService = TestBed.get(DiscussionService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(discussionService, 'createForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForumData));
+    spyOn(toasterService, 'success').and.stub();
+    component.createForumRequest = {
+      'category': {
+        'name': 'General Discussion',
+        'pid': '6',
+        'id': '1',
+        'description': '',
+        'context': [
+          {
+            'type': 'batch',
+            'identifier': '_batchId'
+          }
+        ]
+      }
+    };
+    component.enableDiscussionForum('SOME_BATCH_ID');
+    expect(discussionService.createForum).toHaveBeenCalled();
+  });
+
+  it('should show error if create forum failed', () => {
+    const discussionService = TestBed.get(DiscussionService);
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(discussionService, 'createForum').and.returnValue(observableThrowError({}));
+    spyOn(toasterService, 'error').and.stub();
+    component.createForumRequest = {
+      'category': {
+        'name': 'General Discussion',
+        'pid': '6',
+        'id': '1',
+        'description': '',
+        'context': [
+          {
+            'type': 'batch',
+            'identifier': '_batchId'
+          }
+        ]
+      }
+    };
+    component.enableDiscussionForum('SOME_BATCH_ID');
+    expect(toasterService.error).toHaveBeenCalledWith('discussion forum error');
+  });
+
+  it('should show error if formconfig not available', () => {
+    const toasterService = TestBed.get(ToasterService);
+    spyOn(toasterService, 'error').and.stub();
+    component.createForumRequest = undefined;
+    component.enableDiscussionForum('SOME_BATCH_ID');
+    expect(toasterService.error).toHaveBeenCalledWith('discussion forum error');
+  });
+
+  it('should log enable-DF-yes interact telemetry on changing input to yes', () => {
+    const telemetryService = TestBed.get(TelemetryService);
+    spyOn(telemetryService, 'interact');
+    const activatedRoute = TestBed.get(ActivatedRoute);
+    const telemetryData = {
+      context: {
+        env:  activatedRoute.snapshot.data.telemetry.env,
+        cdata: [{
+          id: component['courseId'],
+          type: 'Course'
+        }, {
+          id: 'SOME_BATCH_ID',
+          type: 'Batch'
+        }]
+      },
+      edata: {
+        id: `enable-DF-yes`,
+        type: 'click',
+        pageid: activatedRoute.snapshot.data.telemetry.pageid
+      }
+    };
+    component.handleInputChange('enable-DF-yes', {
+      id: 'SOME_BATCH_ID',
+      type: 'Batch'
+    });
+    expect(telemetryService.interact).toHaveBeenCalledWith(telemetryData);
   });
 });

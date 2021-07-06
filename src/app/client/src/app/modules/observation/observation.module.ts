@@ -17,12 +17,13 @@ import {
   AddEntityComponent, SubmissionsComponent, ObservationListingComponent, ObservationDetailsComponent,
   EntityListComponent, EditSubmissionComponent
 } from './components';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { LocationModule } from '../../plugins/location/location.module';
 import { ObservationUtilService } from './service';
-import { AlertModalComponent } from './components/alert-modal/alert-modal.component';
+
 @NgModule({
   declarations: [ObservationListingComponent, ObservationDetailsComponent, AddEntityComponent, SubmissionsComponent,
-    EntityListComponent,AlertModalComponent, EditSubmissionComponent],
+    EntityListComponent, EditSubmissionComponent],
   imports: [
     CommonModule,
     ObservationRoutingModule,
@@ -47,16 +48,15 @@ import { AlertModalComponent } from './components/alert-modal/alert-modal.compon
     AvatarModule,
     NgInviewModule,
     TelemetryModule,
-    SuiModule,
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
     CoreModule,
     SharedFeatureModule,
-    LocationModule
+    LocationModule,
+    InfiniteScrollModule
   ],
-  providers: [MlGuard,ObservationUtilService],
-  entryComponents: [AlertModalComponent]
+  providers: [MlGuard,ObservationUtilService]
 
 })
 export class ObservationModule { }

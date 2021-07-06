@@ -3,7 +3,87 @@ const env = process.env
 const fs = require('fs')
 const packageObj = JSON.parse(fs.readFileSync('package.json', 'utf8'))
 let envVariables = {
-  PORTAL_SESSION_SECRET_KEY:"123",
+
+  // Environment variables
+  APPID: process.env.sunbird_environment + '.' + process.env.sunbird_instance + '.portal',
+  sunbird_instance_name: env.sunbird_instance || 'Sunbird',
+  DEFAULT_CHANNEL: env.sunbird_default_channel,
+  PORTAL_API_WHITELIST_CHECK: env.sunbird_enable_api_whitelist || 'true',
+  PORTAL_SESSION_SECRET_KEY: (env.sunbird_portal_session_secret && env.sunbird_portal_session_secret !== '') 
+  ? env.sunbird_portal_session_secret.split(',') : '',
+
+  // discussion forum
+  discussions_middleware: env.discussions_middleware || 'http://discussionsmw-service:3002',
+
+  // Application Start-up - Hosts and PORT Configuration
+  PORTAL_PORT: env.sunbird_port || 3000,
+  LEARNER_URL: env.sunbird_learner_player_url || 'https://staging.open-sunbird.org/api/',
+  CONTENT_URL: env.sunbird_content_player_url || 'https://staging.open-sunbird.org/api/',
+  CONTENT_PROXY_URL: env.sunbird_content_proxy_url || 'https://staging.open-sunbird.org',
+  PORTAL_REALM: env.sunbird_portal_realm || 'sunbird',
+  PORTAL_AUTH_SERVER_URL: env.sunbird_portal_auth_server_url || 'https://staging.open-sunbird.org/auth',
+  PORTAL_AUTH_SERVER_CLIENT: env.sunbird_portal_auth_server_client || 'portal',
+  PORTAL_API_AUTH_TOKEN: env.sunbird_api_auth_token,
+  PORTAL_ECHO_API_URL: env.sunbird_echo_api_url || 'https://staging.open-sunbird.org/api/echo/',
+  CONFIG_URL: env.sunbird_config_service_url || 'https://staging.open-sunbird.org/api/config/',
+  EKSTEP_ENV: env.ekstep_env || 'qa',
+  DEVICE_REGISTER_API: process.env.sunbird_device_register_api || 'https://api.open-sunbird.org/v3/device/register/',
+  DEVICE_PROFILE_API: process.env.sunbird_device_profile_api || 'https://staging.open-sunbird.org/api/v3/device/profile/',
+  sunbird_theme: env.sunbird_theme || 'default',
+  BUILD_NUMBER: packageObj.version + '.' + packageObj.buildHash,
+  sunbird_portal_log_level: env.sunbird_portal_log_level || 'debug',
+  sunbird_extcont_whitelisted_domains: env.sunbird_extcont_whitelisted_domains || 'youtube.com,youtu.be',
+  sunbird_explore_button_visibility: env.sunbird_explore_button_visibility || 'true',
+  sunbird_help_link_visibility: env.sunbird_help_link_visibility || 'false',
+  sunbird_portal_user_upload_ref_link: env.sunbird_portal_user_upload_ref_link || 'http://www.sunbird.org/features-documentation/register_user',
+  ENABLE_PERMISSION_CHECK: env.sunbird_enabless_permission_check || 0,
+  CONFIG_SERVICE_ENABLED: env.config_service_enabled || false,
+  CRYPTO_ENCRYPTION_KEY: env.crypto_encryption_key || '030702bc8696b8ee2aa71b9f13e4251e',
+  LOG_FINGERPRINT_DETAILS: env.sunbird_log_fingerprint_details || 'true',
+  REPORT_SERVICE_URL: env.sunbird_report_service_url || 'https://staging.open-sunbird.org/api/data/v1/report-service',
+  SUNBIRD_PORTAL_BASE_URL: env.sunbird_portal_base_url,
+  sunbird_device_api: env.sunbird_device_api || 'https://staging.ntp.net.in/api/',
+  sunbird_portal_slugForProminentFilter: env.sunbird_portal_slugForProminentFilter,
+  sunbird_super_admin_slug: env.sunbird_super_admin_slug || 'sunbird',
+  sunbird_kid_public_key_base_path: env.sunbird_kid_public_key_base_path || '/keys/',
+  reportsListVersion: env.reportsListVersion || 'v1',
+  sunbird_data_product_service: env.sunbird_data_product_service || 'https://staging.ntp.net.in/',
+  ML_SERVICE_BASE_URL: env.ML_SERVICE_BASE_URL || "https://survey.preprod.ntp.net.in/staging",
+  SUNBIRD_PROTO: env.sunbird_base_proto,
+
+  // TTL and Intervals
+  CONFIG_REFRESH_INTERVAL: env.config_refresh_interval || 10,
+  PORTAL_API_CACHE_TTL: env.sunbird_api_response_cache_ttl || '600',
+  CACHE_TTL: env.sunbird_cache_ttl || 1800,
+  RESPONSE_CACHE_TTL: env.sunbird_response_cache_ttl || '180', // used in tenant helper to cache the tenant response info
+  sunbird_portal_updateLoginTimeEnabled: env.sunbird_portal_updateLoginTimeEnabled || false,
+  sunbird_api_request_timeout: env.sunbird_api_request_timeout ? parseInt(env.sunbird_api_request_timeout) : 60 * 1000,
+  sunbird_session_ttl: env.sunbird_session_ttl ? parseInt(env.sunbird_session_ttl) : 24 * 60 * 60 * 1000,
+
+  // Telemetry Configuration
+  PORTAL_TELEMETRY_PACKET_SIZE: env.sunbird_telemetry_packet_size || 1000,
+  TELEMETRY_SERVICE_LOCAL_URL: env.sunbird_telemetry_service_local_url || 'http://telemetry-service:9001/',
+
+
+  // Keycloak Configuration
+  KEY_CLOAK_PUBLIC: env.sunbird_keycloak_public || 'true',
+  KEY_CLOAK_REALM: env.sunbird_keycloak_realm || 'sunbird',
+  KEYCLOAK_GOOGLE_CLIENT: {
+    clientId: env.sunbird_google_keycloak_client_id,
+    secret: env.sunbird_google_keycloak_secret
+  },
+  KEYCLOAK_GOOGLE_ANDROID_CLIENT: {
+    clientId: env.sunbird_google_android_keycloak_client_id,
+    secret: env.sunbird_google_android_keycloak_secret
+  },
+  KEYCLOAK_TRAMPOLINE_ANDROID_CLIENT: {
+    clientId: env.sunbird_trampoline_android_keycloak_client_id,
+    secret: env.sunbird_trampoline_android_keycloak_secret
+  },
+  KEYCLOAK_ANDROID_CLIENT: {
+    clientId: env.sunbird_android_keycloak_client_id || 'android',
+  },
+
   KEYCLOAK_GOOGLE_DESKTOP_CLIENT: {
     clientId: env.sunbird_google_desktop_keycloak_client_id,
     secret: env.sunbird_google_desktop_keycloak_secret
@@ -127,6 +207,13 @@ let envVariables = {
     phrase_project: env.phrase_project || 'DIKSHA Portal,Sunbird Creation',
     phrase_locale: env.phrase_locale || ['en-IN', 'bn-IN', 'hi-IN', 'kn-IN', 'mr-IN', 'ur-IN', 'te-IN', 'ta-IN'],
     phrase_fileformat: env.phrase_fileformat || 'json'
+  },
+  // Temporary Variable
+  sunbird_enable_sso: env.sunbird_enable_sso,
+
+  //ML URLs
+  ML_URL: {
+    OBSERVATION_URL: ''
   }
 }
 envVariables.PORTAL_CASSANDRA_URLS = (env.sunbird_cassandra_urls && env.sunbird_cassandra_urls !== '')

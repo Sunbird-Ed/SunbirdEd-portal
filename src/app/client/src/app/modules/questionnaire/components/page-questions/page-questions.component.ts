@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { FormGroup } from "@angular/forms";
+import { PageQuestion } from "../../Interface/assessmentDetails";
 
 @Component({
   selector: "page-questions",
@@ -8,9 +9,8 @@ import { FormGroup } from "@angular/forms";
 })
 export class PageQuestionsComponent implements OnInit {
   @Input() questionnaireForm: FormGroup;
-  @Input() question: any;
+  @Input() question: PageQuestion;
   constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 }

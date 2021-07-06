@@ -27,15 +27,15 @@
     <div class="ui grid mt-10 pl-5" *ngIf="showDashboard">
       <div class="six wide column" *ngIf="myCoursesList && myCoursesList.length > 0">
         <div class="ui text menu float-ContentLeft pt-10">
-          <span class="dashBoardMenuItem cursor-pointer active" (click)="onAfterFilterChange('7d')" [ngClass]="{'active': timePeriod === '7d' }"
+          <span class="dashBoardMenuItem cursor-pointer active" (click)="onAfterFilterChange('7d')" tabindex="0" [ngClass]="{'active': timePeriod === '7d' }"
             appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'7d',type:'click',pageid:'course-creator-dashboard'}">
             {{resourceService?.frmelmnts?.lbl?.dashboardsevendaysfilter}}
           </span>&nbsp;&nbsp;&nbsp;&nbsp;
-          <span class="dashBoardMenuItem cursor-pointer" (click)="onAfterFilterChange('14d')" [ngClass]="{'active': timePeriod === '14d' }"
+          <span class="dashBoardMenuItem cursor-pointer" (click)="onAfterFilterChange('14d')" tabindex="0" [ngClass]="{'active': timePeriod === '14d' }"
             appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'14d',type:'click',pageid:'course-creator-dashboard'}">
             {{resourceService?.frmelmnts?.lbl?.dashboardfourteendaysfilter}}
           </span>&nbsp;&nbsp;&nbsp;&nbsp;
-          <span class="dashBoardMenuItem cursor-pointer" (click)="onAfterFilterChange('5w')" [ngClass]="{'active': timePeriod === '5w' }"
+          <span class="dashBoardMenuItem cursor-pointer" (click)="onAfterFilterChange('5w')" tabindex="0" [ngClass]="{'active': timePeriod === '5w' }"
             appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'5w',type:'click',pageid:'course-creator-dashboard'}">
             {{resourceService?.frmelmnts?.lbl?.dashboardfiveweeksfilter}}
           </span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -84,11 +84,11 @@
               </div>
             </div>
             <div class="corse-graph-navigation-btn">
-              <button class="ui primary basic compact icon button" (click)="graphNavigation('previous')" [ngClass]="{'disabled': showGraph <= 0 }"
+              <button class="ui primary basic compact icon button" (click)="graphNavigation('previous')" tabindex="0" [ngClass]="{'disabled': showGraph <= 0 }"
                 appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'previous',type:'click',pageid:'course-creator-dashboard'}">
                 <i class="left arrow icon"></i>
               </button>
-              <button class="ui primary basic compact icon button" (click)="graphNavigation('next')" [ngClass]="{'disabled': showGraph >= graphData.length - 1 }"
+              <button class="ui primary basic compact icon button" (click)="graphNavigation('next')" tabindex="0" [ngClass]="{'disabled': showGraph >= graphData.length - 1 }"
                 appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'next',type:'click',pageid:'course-creator-dashboard'}">
                 <i class="right arrow icon"></i>
               </button>

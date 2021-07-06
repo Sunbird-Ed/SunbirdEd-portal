@@ -211,7 +211,7 @@ export class SbFormLocationSelectionDelegate {
       };
 
       const task = this.locationService.updateProfile(payload).toPromise()
-        .then(() => ({ userProfile: 'success' }))
+        .then(() => ({ userProfile: 'success',type: _.get(formValue, 'persona') }))
         .catch(() => ({ userProfile: 'fail' }));
       tasks.push(task);
     }
@@ -222,6 +222,24 @@ export class SbFormLocationSelectionDelegate {
 
       if (_.get(formValue, 'persona')) {
         localStorage.setItem('userType', formValue.persona);
+        const guestUserType = (
+          await this.formService.getFormConfig(
+            SbFormLocationSelectionDelegate.SUPPORTED_PERSONA_LIST_FORM_REQUEST
+          ).toPromise() as {
+            code: string;
+            name: string;
+            visibility: boolean;
+          }[]
+        ).reduce<FieldConfigOption<string>[]>((data, persona) => {
+          if (persona.code === formValue.persona) {
+            data.push({
+              label: persona.name,
+              value: persona.code
+            });
+          }
+          return data;
+        }, []);
+        localStorage.setItem('guestUserType', guestUserType[0].label);
       }
       this.userService.updateGuestUser(user, formValue).subscribe();
     }

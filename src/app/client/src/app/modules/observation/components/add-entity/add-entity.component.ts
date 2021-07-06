@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild, Input, EventEmitter, Output } from '@angular/core';
 import { ObservationService, KendraService } from '@sunbird/core';
 import { ConfigService, ResourceService, ILoaderMessage, INoResultMessage } from '@sunbird/shared';
-import * as _ from 'underscore';
 import { ObservationUtilService } from '../../service';
+import { debounceTime, map } from 'rxjs/operators';
+import { fromEvent } from 'rxjs';
+
 @Component({
     selector: 'add-entity',
     templateUrl: './add-entity.component.html',
@@ -13,19 +15,23 @@ export class AddEntityComponent implements OnInit {
     @Output() closeEvent = new EventEmitter<any>();
     @Input() observationId;
     @Input() solutionId;
+    public throttle = 50;
+    public scrollDistance = 1;
     config;
     targetEntity;
     selectedListCount = 0;
     searchQuery;
-    limit = 10;
+    limit = 25;
     page = 1;
     count = 0;
     entities;
     payload;
     showDownloadModal: boolean = true;
-    showLoader: boolean = true;
+    showLoaderBox: boolean = false;
     public loaderMessage: ILoaderMessage;
     public noResultMessage: INoResultMessage;
+    showDownloadSuccessModal;
+    selectedEntities = [];
     constructor(
         private observationService: ObservationService,
         private kendraService: KendraService,
@@ -33,9 +39,15 @@ export class AddEntityComponent implements OnInit {
         public observationUtilService: ObservationUtilService,
         config: ConfigService) {
         this.config = config;
-        this.search = _.debounce(this.search, 1000)
     }
     ngOnInit() {
+        const searchBox = document.getElementById('entitySearch');
+        const keyup$ = fromEvent(searchBox, 'keyup')
+        keyup$.pipe(
+            map((i: any) => i.currentTarget.value),
+            debounceTime(500)
+        )
+            .subscribe((text: string) => this.searchEntity());
         this.getProfileData();
     }
     getProfileData() {
@@ -50,30 +62,36 @@ export class AddEntityComponent implements OnInit {
         this.closeEvent.emit();
     }
     getTargettedEntityType() {
-        this.showLoader = true;
+        this.showLoaderBox = true;
         const paramOptions = {
             url: this.config.urlConFig.URLS.KENDRA.TARGETTED_ENTITY_TYPES + this.solutionId,
             param: {},
             data: this.payload,
         };
         this.kendraService.post(paramOptions).subscribe(data => {
+            this.showLoaderBox = false;
             this.targetEntity = data.result;
             this.entities = [];
             this.search();
-
         }, error => {
-            this.showLoader = false;
+            this.showLoaderBox = false;
         })
 
     }
     selectEntity(event) {
+        if(this.selectedEntities.includes(event._id)){
+            const i = this.selectedEntities.indexOf(event._id);
+            this.selectedEntities.splice(i, 1);
+        } else {
+            this.selectedEntities.push(event._id);
+        }
         if (!event.isSelected) {
             event.selected = !event.selected;
         }
         event.selected ? this.selectedListCount++ : this.selectedListCount--;
     }
     search() {
-        this.showLoader = true;
+        this.showLoaderBox = true;
         let url = this.config.urlConFig.URLS.OBSERVATION.SEARCH_ENTITY + '?observationId=' + this.observationId + '&search=' + encodeURIComponent(this.searchQuery ? this.searchQuery : '') + '&page=' + this.page + '&limit=' + this.limit;
         const paramOptions = {
             url: url + `&parentEntityId=${encodeURIComponent(
@@ -83,9 +101,7 @@ export class AddEntityComponent implements OnInit {
             data: this.payload,
         };
         this.observationService.post(paramOptions).subscribe(data => {
-            // this.entities = data.result;
-            this.showLoader = false;
-            debugger
+            this.showLoaderBox = false;
             let resp = data.result[0];
             if (resp.data.length) {
                 for (let i = 0; i < resp.data.length; i++) {
@@ -96,27 +112,23 @@ export class AddEntityComponent implements OnInit {
                 this.count = resp.count;
             }
         }, error => {
-            this.showLoader = false;
+            this.showLoaderBox = false;
         })
     }
 
     searchEntity() {
+        this.page = 1;
         this.entities = [];
         this.search();
     }
     loadMore() {
-        this.page = this.page + 1;
-        this.search();
+        if(this.count > this.entities.length){
+            this.page = this.page + 1;
+            this.search();
+        }
     }
     submit() {
-        this.showLoader = true;
-        let selectedSchools = [];
-        this.entities.forEach((element) => {
-            if (element.selected && !element.preSelected) {
-                selectedSchools.push(element._id);
-            }
-        });
-        this.payload.data = selectedSchools;
+        this.payload.data = this.selectedEntities;
         const paramOptions = {
             url: this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_UPDATE_ENTITES + `${this.observationId}`,
             param: {},
@@ -124,9 +136,7 @@ export class AddEntityComponent implements OnInit {
         };
         this.observationService.post(paramOptions).subscribe(data => {
             this.closeModal();
-            this.showLoader = false;
         }, error => {
-            this.showLoader = false;
         })
     }
 }

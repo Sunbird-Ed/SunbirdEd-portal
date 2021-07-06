@@ -5,12 +5,13 @@ import { QuestionnaireRoutingModule } from "./questionnaire-routing.module";
 import { SharedModule } from "@sunbird/shared";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SuiModule } from "ng2-semantic-ui";
-import { QuestionnaireService } from "./questionnaire.service";
 import {
   InputTypeAttachmentComponent, InputTypeCheckboxComponent, InputTypeDatePickerComponent, InputTypeNumberComponent,
   InputTypeRadioComponent, InputTypeRangeComponent, InputTypeTextComponent, PageQuestionsComponent, MatrixQuestionsComponent, QuestionGenericInputsComponent,
   RemarksComponent
 } from './components';
+import { ObservationUtilService } from "../observation/service";
+import {CanDeactivateGuard} from "./guard/can-deactivate.guard"
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import {
     ReactiveFormsModule,
     SuiModule
   ],
-  providers: []
+  providers:[ObservationUtilService,CanDeactivateGuard]
+
 })
 export class QuestionnaireModule { }

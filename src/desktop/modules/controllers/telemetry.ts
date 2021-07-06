@@ -7,11 +7,6 @@ import DatabaseSDK from "../sdk/database/index";
 import { ImportTelemetry } from "../manager/telemetryImportManager/telemetryImport";
 import { TelemetryImportManager } from "../manager/telemetryImportManager/telemetryImportManager";
 import Response from "../utils/response";
-
-/*@ClassLogger({
-  logLevel: "debug",
-  logTime: true,
-})*/
 export default class Telemetry {
   @Inject
   private databaseSdk: DatabaseSDK;

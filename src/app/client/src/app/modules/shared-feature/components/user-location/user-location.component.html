@@ -54,7 +54,7 @@
   <div class="sb-modal-actions">
     <button class="sb-btn sb-btn-normal sb-btn-primary"
             [ngClass]="{'sb-btn-disabled': !enableSubmitBtn}"
-            [disabled]="!enableSubmitBtn"
+            [disabled]="!enableSubmitBtn" tabindex="0"
             (click)="updateUserLocation()">
       {{resourceService?.frmelmnts?.btn?.submit}}
     </button>

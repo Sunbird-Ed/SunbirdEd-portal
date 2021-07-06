@@ -127,7 +127,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     }
 
     fetchCurrentPageData() {
-        this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
+        this.searchService.getContentTypes(true).pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
             this.currentPageData = _.find(formData, (o) => o.title === 'frmelmnts.lbl.desktop.mylibrary');
             const { contentType, title, theme: { imageName = null } = {} } = this.currentPageData;
             this.pageTitle = _.get(this.resourceService, title);
@@ -251,17 +251,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
             }
         }
 
-        if (_.get(this.facets, 'length')) {
-            this.facets.forEach((item) => {
-                if (_.has(filterData, item.name) && _.get(item, 'values.length')) {
-                    item.values.forEach((element: any) => {
-                        if (!filterData[item.name].includes(element.name)) {
-                            filterData[item.name]  = filterData[item.name].filter(value => value === element.name);
-                        }
-                    });
-                }
-            });
-        }
         this.selectedFilters = filterData;
         const defaultFilters = _.reduce(filters, (collector: any, element) => {
             if (element.code === 'board') {

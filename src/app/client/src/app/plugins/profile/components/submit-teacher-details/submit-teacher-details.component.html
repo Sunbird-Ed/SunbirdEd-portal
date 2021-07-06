@@ -24,13 +24,13 @@
         <button *ngIf="formAction === 'submit'" appTelemetryInteract [telemetryInteractEdata]="submitInteractEdata"
           [ngClass]="{'sb-btn-disabled': !isTenantPersonaFormValid || !isDeclarationFormValid}"
           class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="!isTenantPersonaFormValid || !isDeclarationFormValid"
-          (click)="submit()">
+          (click)="submit()" tabindex="0">
           {{resourceService?.frmelmnts?.btn?.submit}}
         </button>
         <button *ngIf="formAction === 'update'" appTelemetryInteract [telemetryInteractEdata]="getUpdateTelemetry()"
           [ngClass]="{'sb-btn-disabled': !isTenantPersonaFormValid || !isDeclarationFormValid}"
           class="sb-btn sb-btn-normal sb-btn-primary" [disabled]="!isTenantPersonaFormValid || !isDeclarationFormValid"
-          (click)="submit()">
+          (click)="submit()" tabindex="0">
           {{resourceService?.frmelmnts?.btn?.update}}
         </button>
       </div>
@@ -48,8 +48,8 @@
     <div class="my-16">{{resourceService?.frmelmnts?.lbl?.editProfileInfo}}</div>
   </div>
   <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-success" appTelemetryInteract
-      [telemetryInteractEdata]="submitDetailsInteractEdata" (click)="closeSuccessModal()">
+    <button class="sb-btn sb-btn-normal sb-btn-success" appTelemetryInteract 
+      [telemetryInteractEdata]="submitDetailsInteractEdata" tabindex="0" (click)="closeSuccessModal()">
       {{resourceService?.frmelmnts?.btn?.ok}}
     </button>
   </div>

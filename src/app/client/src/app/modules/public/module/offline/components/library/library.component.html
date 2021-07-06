@@ -66,11 +66,11 @@
     <p>{{resourceService?.messages?.stmsg?.m0137 }}</p>
   </div>
   <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-primary"
+    <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
       (click)="callDownload(); showModal = !showModal; logTelemetry(contentData, 'confirm-download-content');">
       {{resourceService.frmelmnts?.btn?.yes}}
     </button>
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary"
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0"
       (click)="showModal = !showModal; logTelemetry(contentData, 'cancel-download-content');">
       {{resourceService.frmelmnts?.btn?.cancel}}
     </button>

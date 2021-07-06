@@ -28,7 +28,7 @@ module.exports = (app) => {
       res.redirect('/library')
       return
     }
-    const googleSignInData = _.pick(req.query, REQUIRED_STATE_FIELD)
+    const googleSignInData = _.pick(req.query, REQUIRED_STATE_FIELD);
     googleSignInData.redirect_uri = Buffer.from(googleSignInData.redirect_uri).toString('base64');
     const state = JSON.stringify(googleSignInData);
     logger.info({ reqId: req.get('X-Request-ID'), msg: 'query params state', googleSignInData});
@@ -39,19 +39,15 @@ module.exports = (app) => {
   });
 
   app.post('/google/auth/android', bodyParser.json(), async (req, res) => {
-    let errType, newUserDetails = {}
+    let errType, newUserDetails, payload = {}
     const CLIENT_ID = GOOGLE_OAUTH_CONFIG.clientId;
     const client = new OAuth2Client(CLIENT_ID);
     async function verify() {
       const ticket = await client.verifyIdToken({
         idToken: req.get('X-GOOGLE-ID-TOKEN'),
         audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
-        // Or, if multiple clients access the backend:
-        //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
       });
-      const payload = ticket.getPayload();
-      // If request specified a G Suite domain:
-      // const domain = payload['hd'];
+      payload = ticket.getPayload();
       if (req.body['emailId'] !== payload['email']) {
         res.status(400).send({
           msg: 'emailId donot match'
@@ -63,9 +59,12 @@ module.exports = (app) => {
      verify().then(async (emailId) => {
        let isUserExist = await fetchUserByEmailId(emailId, req).catch(handleGetUserByIdError);
        if (!isUserExist) {
+         let newGoogleUserDetails = {};
+         newGoogleUserDetails['name']= payload.name;
+         newGoogleUserDetails['emailId'] = payload.email;
          logger.info({msg: 'creating new google user'});
          errType = 'USER_CREATE_API';
-         newUserDetails = await createUserWithMailId(emailId, 'google-auth', req).catch(handleCreateUserError);
+         newUserDetails = await createUserWithMailId(newGoogleUserDetails, 'google-auth', req).catch(handleCreateUserError);
          await utils.delay(GOOGLE_SIGN_IN_DELAY);
        }
        const keyCloakToken = await createSession(emailId, {client_id: 'google-auth'}, req, res).catch(handleCreateSessionError);
