@@ -29,6 +29,7 @@
   }
 }
 
+
 .table-bottom {
   border: 0.0625rem solid var(--gray-100);
 }
@@ -70,6 +71,15 @@ select .select-entries{
   text-align: center;
 }
 
+.date-section {
+  width: 180px;
+  text-align: center;
+}
+
 label {
   float: left;
+}
+
+.iconSize{
+  font-size: 18px;
 }
