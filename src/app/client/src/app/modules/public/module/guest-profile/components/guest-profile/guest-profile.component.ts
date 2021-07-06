@@ -87,6 +87,10 @@ export class GuestProfileComponent implements OnInit {
     this.showEdit = !this.showEdit;
     this.guestUser.framework = event;
 
+    if (window['TagManager']) {
+      window['TagManager'].SBTagService.pushTag(this.guestUser, 'USERFRAMEWORK_', true);
+    }
+
     if (this.isDesktop) {
       this.updateGuestUser(this.guestUser);
     } else {
