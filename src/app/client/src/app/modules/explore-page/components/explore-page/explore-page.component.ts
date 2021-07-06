@@ -15,6 +15,7 @@ import { ContentManagerService } from '../../../public/module/offline/services';
 import * as _ from 'lodash-es';
 import { CacheService } from 'ng2-cache-service';
 import { ProfileService } from '@sunbird/profile';
+import { SegmentationTagService } from '../../../core/services/segmentation-tag/segmentation-tag.service';
 
 
 @Component({
@@ -40,6 +41,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public numberOfSections;
     public isLoading = true;
     public cardData: Array<{}> = [];
+    bannerSegment: any;
+    displayBanner: boolean;
+    bannerList?: any[];
     layoutConfiguration: any;
     formData: any;
     FIRST_PANEL_LAYOUT;
@@ -80,6 +84,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
     }
 
+    get bannerSlideConfig() {
+        return cloneDeep(this.configService.appConfig.Banner.slideConfig);
+    }
+
     @HostListener('window:scroll', []) onScroll(): void {
         if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
             && this.pageSections.length < this.apiContentList.length) {
@@ -96,7 +104,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         private formService: FormService, private playerService: PlayerService, private coursesService: CoursesService,
         private utilService: UtilService, private offlineCardService: OfflineCardService,
         public contentManagerService: ContentManagerService, private cacheService: CacheService,
-        private browserCacheTtlService: BrowserCacheTtlService, private profileService: ProfileService) {
+        private browserCacheTtlService: BrowserCacheTtlService, private profileService: ProfileService,
+        private segmentationTagService: SegmentationTagService) {
             this.instance = (<HTMLInputElement>document.getElementById('instance'))
             ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
         }
@@ -171,6 +180,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.userPreference = this.setUserPreferences();
         this.initConfiguration();
 
+        this.segmentationTagService.getSegmentCommand();
         const enrolledSection$ = this.getQueryParams().pipe(
                 tap(() => {
                     const currentPage = this._currentPageData = this.getCurrentPageData();
@@ -340,6 +350,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.apiContentList = [];
                     this.pageSections = [];
                     this.svgToDisplay = get(currentPageData, 'theme.imageName');
+                    this.displayBanner = (_.get(currentPageData, 'contentType') === 'home') ? true : false;
 
                     this.redoLayout();
                     this.facetSections = [];
@@ -355,6 +366,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     if (_.get(currentPageData, 'contentType') === 'home') {
                         _reqFilters = this.contentSearchService.mapCategories({ filters: {..._.get(this.userPreference, 'framework')} });
                         delete _reqFilters['id'];
+                        this.segmentationTagService.getUpdatedCommands().then(() => {
+                            this.showorHideBanners();
+                        });
                     } else {
                         _reqFilters = this.contentSearchService.mapCategories({ filters: { ...this.selectedFilters, ...filters } });
                     }
@@ -912,6 +926,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
             this._addFiltersInTheQueryParams(event);
         }
+        if (window['TagManager']) {
+            window['TagManager'].SBTagService.pushTag(this.userPreference, 'USERFRAMEWORK_', true);
+        }
         // this.setUserPreferences();
         // this.fetchContents$.next(this._currentPageData);
     }
@@ -931,5 +948,43 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 section: facet
             });
         }));
+    }
+
+    showorHideBanners() {
+        this.bannerSegment = [];
+         this.segmentationTagService.exeCommands.find((cmd) => {
+            if (cmd.controlFunction === 'BANNER_CONFIG') {
+                const banners = _.get(cmd, 'controlFunctionPayload.values');
+                forEach(banners, banner => {
+                    this.bannerSegment.push(banner);
+                });
+            }
+        });
+        this.displayBanner = (this.bannerSegment && this.bannerSegment.length > 0) ? true : false;
+        if (this.bannerSegment ) {
+            this.setBannerConfig();
+        }
+    }
+
+    setBannerConfig() {
+        this.bannerList = this.bannerSegment.filter((value) =>
+            Number(value.expiry) > Math.floor(Date.now() / 1000));
+    }
+
+    navigateToSpecificLocation(data) {
+        switch (data.code) {
+            case 'banner_external_url':
+                console.log('banner_external_url', data);
+                break;
+            case 'banner_internal_url':
+                console.log('banner_internal_url', data);
+                break;
+            case 'banner_search':
+                console.log('banner_search', data);
+                break;
+            case 'banner_content':
+                console.log('banner_content', data);
+                break;
+        }
     }
 }

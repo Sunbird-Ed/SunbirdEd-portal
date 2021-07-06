@@ -41,7 +41,8 @@ describe('SearchFilterComponent', () => {
                 'm0077': 'Fetching search result failed',
                 'm0051': 'Fetching other courses failed, please try again later...'
             }
-        }
+        },
+        languageSelected$: of({})
     };
     class FakeActivatedRoute {
         queryParamsMock = new BehaviorSubject<any>({ subject: ['English'] });
