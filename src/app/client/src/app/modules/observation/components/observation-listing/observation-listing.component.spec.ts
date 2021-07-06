@@ -23,7 +23,7 @@ import {
   KendraService,
 } from "@sunbird/core";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
-import { SuiModule } from "ng2-semantic-ui";
+import { SuiModule } from "ng2-semantic-ui-v9";
 import * as _ from "lodash-es";
 import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { Response, EventData } from "./observation-listing.component.spec.data";

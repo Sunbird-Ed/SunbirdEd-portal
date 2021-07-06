@@ -27,7 +27,7 @@ import {CacheService} from 'ng2-cache-service';
 import {takeUntil} from 'rxjs/operators';
 import { CertificateDownloadAsPdfService } from 'sb-svg2pdf';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
-import { FieldConfig, FieldConfigOption } from 'common-form-elements';
+import { FieldConfig, FieldConfigOption } from 'common-form-elements-v9';
 
 @Component({
   templateUrl: './profile-page.component.html',
@@ -39,8 +39,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   { formType: 'config', formAction: 'get', contentType: 'userType', component: 'portal' };
   private static readonly DEFAULT_PERSONA_LOCATION_CONFIG_FORM_REQUEST =
   { formType: 'profileConfig', contentType: 'default', formAction: 'get' };
-  @ViewChild('profileModal', {static: false}) profileModal;
-  @ViewChild('slickModal', {static: false}) slickModal;
+  @ViewChild('profileModal') profileModal;
+  @ViewChild('slickModal') slickModal;
   userProfile: any;
   contributions = [];
   totalContributions: Number;
@@ -215,14 +215,18 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
           orgList.push(org);
         }
       }
-      _.forEach(org.roles, (value, key) => {
-        if (value !== 'PUBLIC') {
-          const roleName = _.find(this.userProfile.roleList, { id: value });
-          if (roleName) {
-            this.roles.push(roleName['name']);
-          }
+    });
+    let userRoles;
+    if (_.get(this.userProfile, 'roles') && !_.isEmpty(this.userProfile.roles)) {
+      userRoles = _.map(this.userProfile.roles, 'role');
+    }
+    _.forEach(userRoles, (value, key) => {
+      if (value !== 'PUBLIC') {
+        const roleName = _.find(this.userProfile.roleList, { id: value });
+        if (roleName) {
+          this.roles.push(roleName['name']);
         }
-      });
+      }
     });
     this.roles = _.uniq(this.roles).sort();
     orgList = _.sortBy(orgList, ['modifiedJoinDate']);

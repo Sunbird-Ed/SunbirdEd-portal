@@ -11,7 +11,7 @@ import { Ibatch, IStatusOption } from './../../interfaces/';
 import { WorkSpaceService } from '../../services';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput } from '@sunbird/telemetry';
-import { SuiModalService } from 'ng2-semantic-ui';
+import { SuiModalService } from 'ng2-semantic-ui-v9';
 @Component({
   selector: 'app-collaborating-on',
   templateUrl: './collaborating-on.component.html'

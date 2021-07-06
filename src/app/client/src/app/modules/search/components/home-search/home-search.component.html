@@ -19,8 +19,8 @@
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT">
       <div [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-16'">
-  <div class="content-grid relative9">
-    <div class="sb-pageSection" *ngIf="!showLoader && contentList.length">
+  <div class="content-grid relative9" >
+    <div class="sb-pageSection" *ngIf="!showLoader && contentList.length && !showBackButton">
         <div  class="sb-pageSection-header mb-10">
                 <h4 class="sb-pageSection-title mb-10 mr-5"> {{resourceService.frmelmnts?.lbl?.showingResults | translate}}
                     <span class="text-lowercase" *ngIf="this.queryParams.key" appHighlightText [config]="{'resourcePath': 'frmelmnts.lbl.forSearch', 'key': '{searchString}', 'value': queryParams?.key}"></span>

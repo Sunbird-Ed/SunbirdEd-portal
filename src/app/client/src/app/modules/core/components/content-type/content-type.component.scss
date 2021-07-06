@@ -22,8 +22,8 @@
 /* new styles */
 
 .sb-linkmenu {
-  overflow: auto;
-  padding: 0 0 calculateRem(8px) 0;
+  // overflow: auto;
+  // padding: 0 0 calculateRem(8px) 0;
   .item {
     background: var(--sb-linkmenu-bg);
     padding: calculateRem(8px) calculateRem(16px);
@@ -214,4 +214,9 @@
     -webkit-mask-image: url(/assets/images/mask-image/explore.svg);
     mask-image: url(/assets/images/mask-image/explore.svg);
   }
+}
+html[layout=joy] .help-page .help-page__header {
+  border-radius: 1.5rem 1.5rem 0 0 !important;
+  width: 100%;
+  background: var(--sbt-page-header-bg) !important;
 }

@@ -13,7 +13,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { AddEntityComponent } from '../add-entity/add-entity.component';
 import { EditSubmissionComponent } from '../edit-submission/edit-submission.component';
 import { Location } from "@angular/common";
@@ -104,6 +104,11 @@ describe('ObservationDetailsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should redo layout on render', () => {
+    component.layoutConfiguration = {};
+    component.layoutConfiguration = null;
   });
 
   it("should fetch profile details on page load", () => {

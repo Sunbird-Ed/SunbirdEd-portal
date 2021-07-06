@@ -11,7 +11,7 @@ import { fromEvent } from 'rxjs';
     styleUrls: ['./add-entity.component.scss']
 })
 export class AddEntityComponent implements OnInit {
-    @ViewChild('modal', { static: false }) modal;
+    @ViewChild('modal') modal;
     @Output() closeEvent = new EventEmitter<any>();
     @Input() observationId;
     @Input() solutionId;

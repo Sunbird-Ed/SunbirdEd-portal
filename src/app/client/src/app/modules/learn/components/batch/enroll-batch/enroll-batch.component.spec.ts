@@ -5,7 +5,7 @@ import { LearnModule } from '@sunbird/learn';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { EnrollBatchComponent } from './enroll-batch.component';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import { CoreModule, CoursesService, GeneraliseLabelService } from '@sunbird/core';
 import { TelemetryModule } from '@sunbird/telemetry';

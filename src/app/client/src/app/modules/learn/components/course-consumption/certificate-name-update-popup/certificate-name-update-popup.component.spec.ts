@@ -6,7 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule, BrowserCacheTtlService, ConfigService, ToasterService, UtilService, ResourceService } from '@sunbird/shared';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { CacheService } from 'ng2-cache-service';
 import { CoreModule, UserService } from '@sunbird/core';
 import { ProfileService } from '@sunbird/profile';

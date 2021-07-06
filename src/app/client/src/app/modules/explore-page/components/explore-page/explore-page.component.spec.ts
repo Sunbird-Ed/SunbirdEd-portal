@@ -5,7 +5,7 @@ import { ResourceService, ToasterService, SharedModule, LayoutService, UtilServi
 import { SearchService, OrgDetailsService, CoreModule, UserService, FormService, CoursesService, PlayerService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PublicPlayerService } from '@sunbird/public';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RESPONSE } from './explore-page.component.spec.data';
@@ -783,7 +783,9 @@ describe('ExplorePageComponent', () => {
         queryParams: {
             se_subjects: 'english',
             selectedTab: 'all',
-            showClose: 'true'
+            showClose: 'true',
+            isInside: 'english',
+            returnTo: ''
         }
       });
     });

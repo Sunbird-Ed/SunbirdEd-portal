@@ -1,7 +1,7 @@
 <app-landing-section [noTitle]="getSelectedTab() === 'home' || getSelectedTab() === 'explore'"
   [textToDisplay]="pageTitleSrc" [svgToDisplay]="svgToDisplay" [layoutConfiguration]="layoutConfiguration">
 </app-landing-section>
-<div [ngClass]="[layoutConfiguration ? 'sbt-fluid-content-bg':'', (getSelectedTab() === 'home' || getSelectedTab() === 'explore') ? 'no-background': '']">
+<div [ngClass]="[layoutConfiguration ? 'sbt-fluid-content-bg':'', (getSelectedTab() === 'home' || getSelectedTab() === 'explore') ? '': '']">
   <div class="sb-g" [ngClass]="layoutConfiguration ? 'sb-g sbt-container sbt-page-content' : 'sb-g'"
     [appTelemetryImpression]="telemetryImpression">
     <!-- Filter for web version -->
@@ -47,7 +47,7 @@
             </div>
           <div class="twelve wide column relative9" *ngIf="enrolledSection?.contents?.length && isUserLoggedIn() && !_currentPageData?.sections">
             <app-page-section [hideProgress]="true" (visits)="prepareVisits($event)" [section]="enrolledSection"
-              (playEvent)="playEnrolledContent($event, 'My courses')" (viewAll)="viewAll($event)"></app-page-section>
+              (playEvent)="playEnrolledContent($event, 'My courses')" (viewAll)="viewAll($event)" [layoutConfiguration]="layoutConfiguration"></app-page-section>
           </div>
 
           <!-- Template for displaying sections based on form configuration -->
@@ -111,10 +111,17 @@
             <div *ngIf="getSelectedTab() === 'home' && enrolledSection?.contents?.length && isUserLoggedIn()" class="sb-library-cards relative9">
               <div class="twelve wide column relative9">
                 <app-page-section [hideProgress]="true" (visits)="prepareVisits($event)" [section]="enrolledSection"
-                  (playEvent)="playEnrolledContent($event, 'My courses')" (viewAll)="viewAll($event)">
+                  (playEvent)="playEnrolledContent($event, 'My courses')" (viewAll)="viewAll($event)" [layoutConfiguration]="layoutConfiguration">
                 </app-page-section>
               </div>
             </div>
+            <ngx-slick *ngIf="displayBanner" class="carousel" #slickModal="slick-modal" [config]="bannerSlideConfig">
+              <div ngxSlickItem *ngFor="let banner of bannerList;" class="mr-16 course-card-width">
+                <div class="sb--card sb--card--theme2" [ngStyle]="{background: 'url(' + banner?.ui?.background+ ')'}" (click)="navigateToSpecificLocation(banner)">
+                    <div class="explore-text">{{banner?.ui?.text}}</div>
+                </div>
+              </div>
+            </ngx-slick>
           </div>
           <!-- Template for displaying page sections -->
 

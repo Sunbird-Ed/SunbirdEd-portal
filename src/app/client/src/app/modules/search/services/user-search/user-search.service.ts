@@ -78,6 +78,13 @@ export class UserSearchService {
     return this.learnerService.get(option);
   }
 
+  getUserByIdV5(requestParam) {
+    const option = {
+      url: this.config.urlConFig.URLS.USER.GET_PROFILE_V5 + requestParam.userId + '?fields=organisations,roles,locations'
+    };
+    return this.learnerService.get(option);
+  }
+
   getUserType() {
     const option = {
       url: this.config.urlConFig.URLS.USER.TYPE

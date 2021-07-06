@@ -2,10 +2,12 @@
   "compileOnSave": false,
   "angularCompilerOptions": {
     "genDir": "aot",
-    "debug": true
+    "debug": true,
+    "enableIvy": false,
   },
   "compilerOptions": {
     "baseUrl": "./",
+    "module": "esnext",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
@@ -21,6 +23,7 @@
     "removeComments": true,
     "lib": [
       "es2017",
+      "es6",
       "dom"
     ]
   },

@@ -16,7 +16,7 @@ import {
   SuiModalService,
   TemplateModalConfig,
   ModalTemplate,
-} from "ng2-semantic-ui";
+} from 'ng2-semantic-ui-v9';
 import { ResourceService } from "@sunbird/shared";
 import { MatrixQuestion, Question } from "../../Interface/assessmentDetails";
 import { ObservationUtilService } from "../../../observation/service";
@@ -41,7 +41,7 @@ export class MatrixQuestionsComponent implements OnInit {
   @Input() questionnaireForm: FormGroup;
   @Input() question: MatrixQuestion;
   matrixForm: FormGroup;
-  @ViewChild("modalTemplate", { static: false })
+  @ViewChild("modalTemplate")
   public modalTemplate: ModalTemplate<IContext, string, string>;
   context: IContext;
   showBadgeAssingModel: boolean;

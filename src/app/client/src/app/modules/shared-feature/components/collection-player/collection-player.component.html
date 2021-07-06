@@ -1,11 +1,12 @@
 <app-landing-section [textToDisplay]="" [layoutConfiguration]="layoutConfiguration" [noTitle]="true">
 </app-landing-section>
-<div [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
+
+<div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''" [appTelemetryStart]="telemetryCourseStart" [appTelemetryEnd]="telemetryCourseEndEvent">
   <div *ngIf="collectionData" class="relative9" [style.display]="!showLoader ? 'block' : 'none'"
     [appTelemetryImpression]="telemetryContentImpression">
     <!--CC-Player Back button -->
 
-    <div class="sb-bg-white relative position cc-player__btn-back ">
+    <div class="sb-bg-white relative position cc-player__btn-back mt-0">
       <div class="ui container py-8 px-0">
         <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn px-0"
           (click)="closeCollectionPlayer()">

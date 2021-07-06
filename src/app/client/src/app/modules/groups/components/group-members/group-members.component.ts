@@ -16,7 +16,7 @@ import { ADD_MEMBER } from '../../interfaces/telemetryConstants';
   styleUrls: ['./group-members.component.scss']
 })
 export class GroupMembersComponent implements OnInit, OnDestroy {
-  @ViewChild('searchInputBox', {static: false}) searchInputBox: ElementRef;
+  @ViewChild('searchInputBox') searchInputBox: ElementRef;
   @Input() config: IGroupMemberConfig = {
     showMemberCount: false,
     showSearchBox: false,
@@ -49,9 +49,9 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.showLoader = true;
-    this.getUpdatedGroupData();
+    this.showLoader = false;
     this.groupId = _.get(this.activatedRoute, 'snapshot.params.groupId');
+    this.memberListToShow = _.cloneDeep(this.members);
     this.hideMemberMenu();
     fromEvent(document, 'click')
       .pipe(takeUntil(this.unsubscribe$))
@@ -61,10 +61,6 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
           this.addTelemetry('member-card-menu-close');
         }
       });
-    this.groupsService.showLoader.subscribe(showLoader => {
-      this.showLoader = showLoader;
-    });
-
     this.groupsService.membersList.subscribe(members => {
       this.memberListToShow = members;
       this.hideMemberMenu();
@@ -221,5 +217,10 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  resetValue() {
+    this.searchInputBox.nativeElement.value = '';
+    this.search('');
   }
 }

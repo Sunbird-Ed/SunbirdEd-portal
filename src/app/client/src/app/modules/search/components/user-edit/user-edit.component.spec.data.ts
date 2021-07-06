@@ -176,9 +176,6 @@ export const Response = {
         'gender': null,
         'regOrgId': null,
         'subject': [],
-        'roles': [
-          'PUBLIC'
-        ],
         'language': [],
         'updatedDate': null,
         'skills': [],
@@ -294,7 +291,33 @@ export const Response = {
         'grade': [],
         'currentLoginTime': null,
         'location': null,
-        'status': 1
+        'status': 1,
+        'roles': [
+          {
+            'role': 'BOOK_CREATOR',
+            'createdDate': '2021-07-02 11:35:53:879+0000',
+            'updatedBy': 'fbe926ac-a395-40e4-a65b-9b4f711d7642',
+            'createdBy': 'fbe926ac-a395-40e4-a65b-9b4f711d7642',
+            'scope': [
+              {
+                'organisationId': '01269878797503692810'
+              }
+            ],
+            'updatedDate': '2021-07-02 11:50:56:897+0000'
+          },
+          {
+            'role': 'REPORT_ADMIN',
+            'createdDate': '2021-07-02 11:50:56:897+0000',
+            'updatedBy': null,
+            'createdBy': 'fbe926ac-a395-40e4-a65b-9b4f711d7642',
+            'scope': [
+              {
+                'organisationId': '01269878797503692810'
+              }
+            ],
+            'updatedDate': null
+          }
+        ]
       }
     }
   },
@@ -378,16 +401,30 @@ export const Response = {
         'maskedPhone': '******5522',
         'rootOrgName': 'Sunbird',
         'roles': [
-          'CONTENT_CREATOR',
-          'COURSE_MENTOR',
-          'CONTENT_REVIEWER',
-          'CONTENT_REVIEW',
-          'FLAG_REVIEWER',
-          'ADMIN',
-          'ORG_MANAGEMENT',
-          'ORG_ADMIN',
-          'SYSTEM_ADMINISTRATION',
-          'PUBLIC'
+          {
+            'role': 'BOOK_CREATOR',
+            'createdDate': '2021-07-02 11:35:53:879+0000',
+            'updatedBy': 'fbe926ac-a395-40e4-a65b-9b4f711d7642',
+            'createdBy': 'fbe926ac-a395-40e4-a65b-9b4f711d7642',
+            'scope': [
+              {
+                'organisationId': '01269878797503692810'
+              }
+            ],
+            'updatedDate': '2021-07-02 11:50:56:897+0000'
+          },
+          {
+            'role': 'REPORT_ADMIN',
+            'createdDate': '2021-07-02 11:50:56:897+0000',
+            'updatedBy': null,
+            'createdBy': 'fbe926ac-a395-40e4-a65b-9b4f711d7642',
+            'scope': [
+              {
+                'organisationId': '01269878797503692810'
+              }
+            ],
+            'updatedDate': null
+          }
         ],
         'channel': null,
         'updatedDate': '2019-04-05 06:10:03:910+0000',

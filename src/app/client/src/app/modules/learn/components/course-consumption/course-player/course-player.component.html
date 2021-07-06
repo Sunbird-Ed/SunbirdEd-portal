@@ -91,12 +91,12 @@
                         <div *ngIf="item?.children?.length">
                           <div *ngFor="let child of item?.children">
                               <!-- toc card for Non Self Assess content -->
-                              <sb-toc-child-item *ngIf="child?.contentType !== 'SelfAssess'" [childData]="child" class="sb-toc-child-item"
+                              <sb-toc-child-item *ngIf="child?.contentType !== 'SelfAssess' && child?.mimeType !== 'application/vnd.sunbird.questionset'" [childData]="child" class="sb-toc-child-item"
                                 (tocCardClick)="navigateToContent($event, item, 'child-item')"
                                 [contentStatus]="contentStatus" [type]="cardType">
                               </sb-toc-child-item>
                               <!-- toc card for Self Assess content with Label for Best Score -->
-                              <sb-toc-child-item *ngIf="child?.contentType === 'SelfAssess'" [childData]="child" class="sb-toc-child-item"
+                              <sb-toc-child-item *ngIf="child?.contentType === 'SelfAssess' || child?.mimeType === 'application/vnd.sunbird.questionset'" [childData]="child" class="sb-toc-child-item"
                                 (tocCardClick)="navigateToContent($event, item, 'child-item')"
                                 [contentStatus]="contentStatus" [type]="cardType" 
                                 [maxAttempts]="child?.maxAttempts" [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">

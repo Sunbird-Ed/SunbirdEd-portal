@@ -59,6 +59,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   @Input() enrolledBatchInfo: any;
   @Input() groupId: string;
   @Input() showAddGroup = false;
+  @Input() layoutConfiguration;
   enrolledCourse = false;
   batchId: any;
   dashboardPermission = ['COURSE_MENTOR', 'CONTENT_CREATOR'];

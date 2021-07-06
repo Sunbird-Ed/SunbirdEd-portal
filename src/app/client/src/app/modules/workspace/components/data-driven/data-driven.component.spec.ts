@@ -6,7 +6,7 @@ import { DataDrivenComponent } from './data-driven.component';
 import { DefaultTemplateComponent } from '../content-creation-default-template/content-creation-default-template.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { EditorService, WorkSpaceService } from './../../services';
 import { ResourceService, SharedModule, NavigationHelperService, ToasterService } from '@sunbird/shared';
 import { FrameworkService, FormService, ContentService, UserService, CoreModule } from '@sunbird/core';

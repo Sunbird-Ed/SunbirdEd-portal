@@ -36,7 +36,8 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   showBatchPopup = false;
   statusOptions = [
     { name: 'Ongoing', value: 1 },
-    { name: 'Upcoming', value: 0 }
+    { name: 'Upcoming', value: 0 },
+    { name: 'Expired', value:2 }
   ];
   todayDate = dayjs(new Date()).format('YYYY-MM-DD');
   progress = 0;
@@ -48,7 +49,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   telemetryCdata: Array<{}> = [];
   @Output() allBatchDetails = new EventEmitter();
   allowBatchCreation: boolean;
-  @ViewChild('batchListModal', {static: false}) batchListModal;
+  @ViewChild('batchListModal') batchListModal;
   isTrackable = false;
   courseCreator = false;
   viewBatch = false;
@@ -60,6 +61,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   tocId = '';
   isConnected = false;
   isDesktopApp = false;
+  isExpiredBatchEditable = true;
 
   constructor(public resourceService: ResourceService, public permissionService: PermissionService,
     public userService: UserService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
@@ -144,12 +146,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
        .subscribe((data) => {
           const batchList = _.union(data[0].result.response.content, data[1].result.response.content);
           this.courseConsumptionService.emitBatchList(batchList);
-          const batches = _.map(batchList, batch => {
-              if (batch.status !== 2) {
-                return batch;
-              }
-          });
-          this.ongoingAndUpcomingBatchList = _.compact(batches);
+          this.ongoingAndUpcomingBatchList = _.compact(batchList);
           this.getSelectedBatches();
            if (this.batchList.length > 0) {
              this.fetchUserDetails();
@@ -188,7 +185,15 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
     this.batchList = _.filter(this.ongoingAndUpcomingBatchList, batch => {
       return (_.isEqual(batch.status, this.batchStatus));
     });
-    this.showCreateBatchBtn = this.ongoingAndUpcomingBatchList.length <= 0;
+    let showCreateBtn = true;
+    _.filter(this.ongoingAndUpcomingBatchList, batch => {
+      if (batch.status === 1 || batch.status === 0) {
+        showCreateBtn = false;
+        this.isExpiredBatchEditable = false;
+        return ;
+      }
+  });
+    this.showCreateBatchBtn = showCreateBtn; //this.ongoingAndUpcomingBatchList.length <= 0;
   }
   getJoinCourseBatchDetails() {
     this.showAllBatchList = false;

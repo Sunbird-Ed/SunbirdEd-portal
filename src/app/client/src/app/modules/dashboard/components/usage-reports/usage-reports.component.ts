@@ -41,7 +41,7 @@ export class UsageReportsComponent implements OnInit, AfterViewInit {
   public courseProgressService: CourseProgressService;
   layoutConfiguration: any;
   private unsubscribe$ = new Subject<void>();
-  @ViewChild(TelemetryInteractDirective, {static: false}) telemetryInteractDirective;
+  @ViewChild(TelemetryInteractDirective) telemetryInteractDirective;
   constructor(private usageService: UsageService, private sanitizer: DomSanitizer,
     public userService: UserService, private toasterService: ToasterService,
     public resourceService: ResourceService, activatedRoute: ActivatedRoute, private router: Router,

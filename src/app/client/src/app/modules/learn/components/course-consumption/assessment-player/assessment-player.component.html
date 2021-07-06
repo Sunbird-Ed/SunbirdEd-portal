@@ -1,6 +1,7 @@
+
 <app-landing-section [textToDisplay]="" 
 [layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
-<div *ngIf="!showLoader" [appTelemetryImpression]="telemetryPlayerPageImpression" class="text-left relative9">
+<div *ngIf="!showLoader" [appTelemetryImpression]="telemetryPlayerPageImpression" [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''" class="text-left relative9">
 
   <!-- Header: Back Button Previous Module & Next Module button -->
   <div class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9">
@@ -83,7 +84,7 @@
           <div class="content-video">
             <section class="content-video__player" id="player-area-height">
               <div class="aspectratio" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio>
-                <app-player class="content-player" [playerOption]="playerOption" [playerConfig]="playerConfig"
+                <app-player *ngIf="showPlayer" class="content-player" [playerOption]="playerOption" [playerConfig]="playerConfig"
                   [contentProgressEvents$]="contentProgressEvents$" (assessmentEvents)="onAssessmentEvents($event)"
                   (questionScoreSubmitEvents)="onQuestionScoreSubmitEvents($event)"
                   (questionScoreReviewEvents)="onQuestionScoreReviewEvents($event)"
@@ -119,9 +120,18 @@
                   </sb-toc-card>
                 </div>
               </div>
+
+              <div *ngIf="item?.mimeType === 'application/vnd.sunbird.questionset'">
+                <div class="child-content-padding">
+                  <sb-toc-card [content]="item" (tocCardClick)="navigateToInitPlayer($event, 'toc-card')" [type]="cardType"
+                    [contentStatus]="contentStatus" [maxAttempts]="item?.maxAttempts" [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
+                  </sb-toc-card>
+                </div>
+              </div>
+
               <div *ngIf="item?.children?.length">
-                <div *ngFor="let child of item?.children">
-                  <div class="toc-child-item">
+                <div *ngFor="let child of item?.children" >
+                  <div class="toc-child-item" *ngIf="child?.mimeType !== 'application/vnd.sunbird.question'">
                     <sb-toc-child-item [activeContent]="activeContent" [childData]="child" (tocCardClick)="navigateToInitPlayer($event, 'child-item')"
                       [contentStatus]="contentStatus" [type]="cardType">
                     </sb-toc-child-item>
@@ -142,9 +152,10 @@
       </section>
     </div>
   </div>
-</div>
-<div class="ui container py-16" *ngIf="showLoader">
-  <app-loader [data]='loaderMessage'></app-loader>
+
+  <div class="ui container py-16" *ngIf="showLoader">
+    <app-loader [data]='loaderMessage'></app-loader>
+  </div>
 </div>
 <app-share-link [shareLink]="shareLink" [telemetryShareData]="telemetryShareData" *ngIf="shareLinkModal"
   (close)="shareLinkModal = false">

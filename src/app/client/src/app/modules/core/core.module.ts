@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import {
   SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule,
   SuiProgressModule, SuiRatingModule, SuiCollapseModule
-} from 'ng2-semantic-ui';
+} from 'ng2-semantic-ui-v9';
 import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
 import { SharedModule } from '@sunbird/shared';
 import { AvatarModule } from 'ngx-avatar';
@@ -22,6 +22,7 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8'
 import { ContentTypeComponent } from './components/content-type/content-type.component';
 import { LocationModule } from '../../plugins/location/location.module';
 import { NotificationModule } from '../notification/notification.module';
+import { TelemetryErrorModalComponent } from '../shared';
 @NgModule({
   imports: [
     CommonModule,
@@ -40,9 +41,9 @@ import { NotificationModule } from '../notification/notification.module';
   ],
   declarations: [MainHeaderComponent, MainFooterComponent, MainMenuComponent, SearchComponent, PermissionDirective,
     BodyScrollDirective, OnlineOnlyDirective,
-    ErrorPageComponent, LanguageDropdownComponent, ContentTypeComponent, DesktopOnlyDirective],
+    ErrorPageComponent, LanguageDropdownComponent, ContentTypeComponent, DesktopOnlyDirective, TelemetryErrorModalComponent],
   exports: [MainHeaderComponent, MainFooterComponent, PermissionDirective, BodyScrollDirective, OnlineOnlyDirective,
-    TelemetryModule, LanguageDropdownComponent, DesktopOnlyDirective],
+    TelemetryModule, LanguageDropdownComponent, DesktopOnlyDirective, TelemetryErrorModalComponent],
   providers: [CacheService, AuthGuard, {
     provide: APP_BASE_HREF,
     useFactory: (s: PlatformLocation) => s.getBaseHrefFromDOM(),

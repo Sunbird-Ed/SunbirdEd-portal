@@ -11,7 +11,10 @@ import { Subject } from 'rxjs';
 import { Location } from '@angular/common';
 import { FaqService } from '../../services/faq/faq.service';
 import { VideoConfig } from './faq-data';
+import { HttpOptions } from '../../../../../shared/interfaces/httpOptions';
+import { FormService } from '../../../../../core/services/form/form.service';
 
+const TEN_MINUTES = 1000 * 60 * 10;
 @Component({
   selector: 'app-faq',
   templateUrl: './faq.component.html',
@@ -34,7 +37,7 @@ export class FaqComponent implements OnInit {
   isMobileView = false;
   showFaqReport: boolean;
   showOnlyFaqCategory = true;
-  @ViewChild('sbFaqCategoryList', { static: false }) sbFaqCategoryList;
+  @ViewChild('sbFaqCategoryList') sbFaqCategoryList;
   @ViewChildren('videoPlayer') videoPlayer;
   showVideoModal = false;
   playerConfig: any;
@@ -52,7 +55,7 @@ export class FaqComponent implements OnInit {
     private router: Router, private telemetryService: TelemetryService,
     private faqService: FaqService, private toasterService: ToasterService,
     private configService: ConfigService, private publicDataService: PublicDataService,
-    public contentUtilsServiceService: ContentUtilsServiceService) {
+    public contentUtilsServiceService: ContentUtilsServiceService, public formService: FormService) {
   }
 
   ngOnInit() {
@@ -278,4 +281,36 @@ export class FaqComponent implements OnInit {
     }
   }
 
+  private async getDebugTimeInterval(): Promise<string> {
+    let timeInterval = String(TEN_MINUTES);
+    try {
+      const params = { formType: 'config', formAction: 'get', contentType: 'debugMode', component: 'portal' };
+      const formFields = await this.formService.getFormConfig(params).toPromise();
+      const field = formFields.filter(item => item.timeInterval);
+
+      if (field.length) {
+        timeInterval = field[0].timeInterval;
+      }
+    } catch (error) {
+      timeInterval = String(TEN_MINUTES);
+    }
+
+    return new Promise((resolve) => resolve(timeInterval));
+  }
+
+  async enableDebugMode(event) {
+    const timeInterval = await this.getDebugTimeInterval();
+    const httpOptions: HttpOptions = {
+      params: {
+        logLevel: 'debug',
+        timeInterval
+      }
+    };
+    this.http.get('/enableDebugMode', httpOptions).subscribe((res) => {
+      this.toasterService.success(_.get(this.resourceService, 'frmelmnts.alert.debugModeEnabledSuccess'));
+    }, error => {
+      console.error('Error while enabling debug mode');
+      this.toasterService.error(_.get(this.resourceService, 'frmelmnts.alert.debugModeEnabledFailed'));
+    });
+  }
 }

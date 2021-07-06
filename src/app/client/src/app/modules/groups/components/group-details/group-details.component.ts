@@ -17,7 +17,7 @@ import { ADD_ACTIVITY, PAGE_LOADED} from '../../interfaces/telemetryConstants';
   styleUrls: ['./group-details.component.scss']
 })
 export class GroupDetailsComponent implements OnInit, OnDestroy {
-  @ViewChild('addActivityModal', {static: false}) addActivityModal;
+  @ViewChild('addActivityModal') addActivityModal;
   groupData: IGroupCard;
   showModal = false;
   private groupId: string;

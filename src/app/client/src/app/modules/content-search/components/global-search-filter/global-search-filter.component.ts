@@ -17,7 +17,7 @@ import { Subject } from 'rxjs';
 import { debounceTime, map, takeUntil, filter } from 'rxjs/operators';
 import { LibraryFiltersLayout } from '@project-sunbird/common-consumption-v8';
 import { UserService } from '@sunbird/core';
-import { IFacetFilterFieldTemplateConfig } from 'common-form-elements';
+import { IFacetFilterFieldTemplateConfig } from 'common-form-elements-v9';
 
 @Component({
   selector: 'app-global-search-filter',
@@ -40,7 +40,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
   @Input() isOpen;
   @Output() filterChange: EventEmitter<{ status: string, filters?: any }> = new EventEmitter();
 
-  @ViewChild('sbSearchFacetFilterComponent', { static: false }) searchFacetFilterComponent: any;
+  @ViewChild('sbSearchFacetFilterComponent') searchFacetFilterComponent: any;
 
   filterFormTemplateConfig?: IFacetFilterFieldTemplateConfig[];
 

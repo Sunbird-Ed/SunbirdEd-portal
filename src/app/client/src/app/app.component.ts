@@ -27,7 +27,7 @@ import { SBTagModule } from 'sb-tag-manager';
   styles: ['.header-block { display: none;}']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  @ViewChild('frameWorkPopUp', { static: false }) frameWorkPopUp;
+  @ViewChild('frameWorkPopUp') frameWorkPopUp;
   /**
    * user profile details.
    */
@@ -115,9 +115,9 @@ export class AppComponent implements OnInit, OnDestroy {
   isGuestUser = true;
   guestUserDetails;
   showYearOfBirthPopup = false;
-  @ViewChild('increaseFontSize', { static: false }) increaseFontSize: ElementRef;
-  @ViewChild('decreaseFontSize', { static: false }) decreaseFontSize: ElementRef;
-  @ViewChild('resetFontSize', { static: false }) resetFontSize: ElementRef;
+  @ViewChild('increaseFontSize') increaseFontSize: ElementRef;
+  @ViewChild('decreaseFontSize') decreaseFontSize: ElementRef;
+  @ViewChild('resetFontSize') resetFontSize: ElementRef;
 
   constructor(private cacheService: CacheService, private browserCacheTtlService: BrowserCacheTtlService,
     public userService: UserService, private navigationHelperService: NavigationHelperService,
@@ -150,6 +150,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.telemetryService.syncEvents(false);
     this.ngOnDestroy();
   }
+
   handleLogin() {
     window.location.replace('/sessionExpired');
     this.cacheService.removeAll();
@@ -295,7 +296,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.botObject['imageUrl'] = image.imageUrl;
     this.botObject['title'] = this.botObject['header'] = this.title;
     this.generaliseLabelService.getGeneraliseResourceBundle();
-    //keyboard accessibility enter key click event
+  //keyboard accessibility enter key click event
     document.onkeydown = function(e) {
       if(e.keyCode === 13) { // The Enter/Return key
         (document.activeElement  as HTMLElement).click();

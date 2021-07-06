@@ -2,7 +2,7 @@
   [layoutConfiguration]="layoutConfiguration" [noTitle]="true">
 </app-landing-section>
 
-<div class="help-page relative9">
+<div class="help-page relative9 sbt-inside-page-container">
   <div class="help-page__header sb-bg-color-white p-16">
     <div class="ui container d-flex flex-ai-center">
       <button (click)="goBack()"
@@ -36,6 +36,11 @@
             (itemClick)="onCategorySelect($event)"
             (btnClick)="enableFaqReport($event)">
           </sb-list>
+          <div class="mt-8">
+          <button class="sb-btn sb-btn-tertiary sb-btn-normal w-100 debug-btn" (click)="enableDebugMode($event)">
+            {{resourceService?.frmelmnts?.lbl?.enableDebugMode}}
+            </button>
+          </div>
         </section>
     
         <section class="sbhelp_container__right" [ngClass]="{'faq-section-mobile':isMobileView, 'faq-section-web':!isMobileView}" *ngIf="(isMobileView && !showOnlyFaqCategory) || !isMobileView">

@@ -1,6 +1,6 @@
 import { of as observableOf, Observable, of } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { CdnprefixPipe } from '../../pipes/cdnprefix.pipe';
 import { BrowserCompatibilityComponent } from './browser-compatibility.component';

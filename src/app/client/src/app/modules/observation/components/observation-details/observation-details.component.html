@@ -1,3 +1,4 @@
+<div [ngClass]="layoutConfiguration ? 'sbt-inside-page-container' : ''">
 <div class="sb-bg-color-white relative position back-btn-container cc-player__btn-back relative9">
   <div class="ui container">
     <div class="py-8 d-flex flex-ai-center">
@@ -132,7 +133,7 @@
     </div>
   </div>
 </div>
-
+</div>
 <div *ngIf="showDownloadModal">
   <add-entity (closeEvent)="modalClose()" [observationId]="observationId" [solutionId]="solutionId"> </add-entity>
 </div>
