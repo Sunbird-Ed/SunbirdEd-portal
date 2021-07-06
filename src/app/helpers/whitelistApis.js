@@ -1679,6 +1679,22 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
+    '/action/collection/v1/import/:id': {
+      description: 'Collection import',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/collection/v1/export/:id': {
+      description: 'Collection export',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    }
   },
   URL_PATTERN: [
     '/learner/user/v1/feed/delete',
@@ -1795,7 +1811,9 @@ const API_LIST = {
     '/assessment/v2/observations/assessment/:id',
     '/assessment/v1/observationSubmissions/list/:id',
     '/assessment/v1/observations/updateEntities/:id',
-    '/assessment/v1/observationSubmissions/update/:id'
+    '/assessment/v1/observationSubmissions/update/:id',
+    '/action/collection/v1/import/:id',
+    '/action/collection/v1/export/:id'
   ]
 };
 module.exports = API_LIST;
