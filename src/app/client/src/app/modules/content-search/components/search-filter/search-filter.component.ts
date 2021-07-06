@@ -3,7 +3,7 @@ import * as _ from 'lodash-es';
 import { LibraryFiltersLayout } from '@project-sunbird/common-consumption-v8';
 import { ResourceService, LayoutService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subject, merge, of, zip, BehaviorSubject } from 'rxjs';
+import { Subject, merge, of, zip, BehaviorSubject, defer } from 'rxjs';
 import { debounceTime, map, tap, switchMap, takeUntil, retry, catchError } from 'rxjs/operators';
 import { ContentSearchService } from '../../services';
 import { FormService } from '@sunbird/core';
@@ -46,39 +46,40 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   private audienceList;
 
   @ViewChild('sbSearchFrameworkFilterComponent') searchFrameworkFilterComponent: any;
-  filterFormTemplateConfig: IFrameworkCategoryFilterFieldTemplateConfig[] = [
+  filterFormTemplateConfig: IFrameworkCategoryFilterFieldTemplateConfig[];
+  private _filterConfig$ = defer(() => of([
     {
       category: 'board',
       type: 'dropdown',
-      labelText: 'Board',
+      labelText: this.resourceService.frmelmnts.lbl.boards,
       placeholderText: 'Select Board',
       multiple: false
     },
     {
       category: 'medium',
-      type: 'pills',
-      labelText: 'Medium',
+      type: 'dropdown',
+      labelText: this.resourceService.frmelmnts.lbl.medium,
       placeholderText: 'Select Board',
       multiple: true
     },
     {
       category: 'gradeLevel',
-      type: 'pills',
-      labelText: 'Class',
+      type: 'dropdown',
+      labelText: this.resourceService.frmelmnts.lbl.class,
       placeholderText: 'Select Class',
       multiple: true
     },
     {
       category: 'subject',
       type: 'dropdown',
-      labelText: 'Subject',
+      labelText: this.resourceService.frmelmnts.lbl.subject,
       placeholderText: 'Select Subject',
       multiple: true
     },
     {
       category: 'publisher',
       type: 'dropdown',
-      labelText: 'Published by',
+      labelText: this.resourceService.frmelmnts.lbl.publishedBy,
       placeholderText: 'Select Published by',
       multiple: true
     },
@@ -89,7 +90,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       placeholderText: 'Select User Type',
       multiple: true
     }
-  ];
+  ]))
 
   constructor(public resourceService: ResourceService, private router: Router,
     private contentSearchService: ContentSearchService,
@@ -147,6 +148,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       );
   }
   ngOnInit() {
+    this.filterConfig$.subscribe();
     this.checkForWindowSize();
     merge(this.boardChangeHandler(), this.fetchSelectedFilterOptions(), this.handleFilterChange(), this.getFacets())
       .pipe(takeUntil(this.unsubscribe$))
@@ -380,5 +382,15 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       this.updateFiltersList({ filters });
       this.hardRefreshFilter();
     }));
+  }
+
+  get filterConfig$() {
+    return this.resourceService.languageSelected$.pipe(
+      switchMap(_ => this._filterConfig$),
+      tap((config: IFrameworkCategoryFilterFieldTemplateConfig[]) => {
+        this.filterFormTemplateConfig = config
+        this.hardRefreshFilter()
+      })
+    )
   }
 }
