@@ -218,4 +218,9 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
+  resetValue() {
+    this.searchInputBox.nativeElement.value = '';
+    this.search('');
+  }
 }
