@@ -10,7 +10,7 @@ const routes: Routes = [
     component: DatasetsComponent,
     canActivate: [AuthGuard],
     data: {
-      roles: 'programManagerRole',
+      roles: 'programDashboardRole',
       telemetry: {
         env: telemetryEnv, pageid: 'program-datasets', type: 'view'
       }

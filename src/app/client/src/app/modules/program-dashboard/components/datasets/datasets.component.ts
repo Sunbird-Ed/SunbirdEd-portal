@@ -8,7 +8,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import * as _ from 'lodash-es';
-
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-datasets',
@@ -44,14 +44,13 @@ export class DatasetsComponent implements OnInit {
     { name: 'Status', isSortable: false, prop: 'status', placeholder: 'Filter status' },
     { name: 'Report link', isSortable: false, prop: 'downloadUrls', placeholder: 'Filter download link' },
     { name: 'Generated date', isSortable: true, prop: 'jobStats.dtJobCompleted', placeholder: 'Filter generated date', type: 'dateTime' },
-    // { name: 'Requested by', isSortable: true, prop: 'requested_by', placeholder: 'Filter request by' },
   ];
 
   public onDemandReportData = [];
 
   downloadCSV = true;
   isColumnsSearchable = false;
-  tag: string = "PROGRAM-REPORT1";
+  tag: string = "PROGRAM-REPORT";
 
   reportForm = new FormGroup({
     programName: new FormControl('', [Validators.required]),
@@ -77,7 +76,8 @@ export class DatasetsComponent implements OnInit {
     config: ConfigService,
     public toasterService: ToasterService,
     public formService: FormService,
-    public router: Router
+    public router: Router,
+    public location: Location
   ) {
     this.config = config;
     this.activatedRoute = activatedRoute;
@@ -93,20 +93,16 @@ export class DatasetsComponent implements OnInit {
   /**
    * all user role
    */
-  private userRoles: Array<string> = [];
+  public userRoles: Array<string> = [];
   public userId: string;
   public selectedReport;
+  public slug:String;
 
   getProgramsList() {
 
-    // const paramOptions = {
-    //   url:
-    //     this.config.urlConFig.URLS.KENDRA.PROGRAMS_BY_PLATFORM_ROLES+"?role="+this.userRoles.toString()
-    // };
-
     const paramOptions = {
       url:
-        this.config.urlConFig.URLS.KENDRA.PROGRAMS_BY_PLATFORM_ROLES
+        this.config.urlConFig.URLS.KENDRA.PROGRAMS_BY_PLATFORM_ROLES+"?role="+this.userRoles.toString()
     };
     this.kendraService.get(paramOptions).subscribe(data => {
       if (data && data.result) {
@@ -141,6 +137,7 @@ export class DatasetsComponent implements OnInit {
       (user: IUserData) => {
         if (user && !user.err) {
           this.userProfile = user.userProfile;
+          this.slug = user.userProfile['rootOrg'].slug;
           this.userRoles = user.userProfile.userRoles;
           this.userId = user.userProfile.id;
         }
@@ -160,6 +157,7 @@ export class DatasetsComponent implements OnInit {
 
   public programSelection($event) {
 
+    
     let program = this.programs.filter(data => {
       if (data._id == $event) {
         return data
@@ -210,7 +208,7 @@ export class DatasetsComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate([`/`]);
+    this.location.back();
   }
 
   public handleConfirmationEvent(event: boolean) {
@@ -244,9 +242,9 @@ export class DatasetsComponent implements OnInit {
     if (isRequestAllowed) {
       this.isProcessed = false;
       let config = {
+        state_slug:this.slug,
         batchId: this.programSelected,
-        reportType: this.reportForm.controls.reportType.value,
-        solution: this.reportForm.controls.solution.value,
+        solutionId: this.reportForm.controls.solution.value,
         title: this.selectedReport.name
       }
       let request = {
@@ -266,7 +264,7 @@ export class DatasetsComponent implements OnInit {
       this.onDemandReportService.submitRequest(request).subscribe((data: any) => {
         if (data && data.result) {
 
-          
+
           if (data.result.status === this.reportStatus.failed) {
             const error = _.get(data, 'result.statusMessage') || _.get(this.resourceService, 'frmelmnts.lbl.requestFailed');
             this.toasterService.error(error);
@@ -274,6 +272,7 @@ export class DatasetsComponent implements OnInit {
           data = this.dataModification(data['result']);
           const updatedReportList = [data, ...this.onDemandReportData];
           this.onDemandReportData = _.slice(updatedReportList, 0, 10);
+          this.reportTypes =[];
         }
       }, error => {
         this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
@@ -304,7 +303,20 @@ export class DatasetsComponent implements OnInit {
 
     this.formService.getFormConfig(formServiceInputParams).subscribe((formData) => {
       if (formData) {
-        this.formData = formData;
+        if (this.userRoles.includes('PROGRAM_DESIGNER')) {
+          let formReportTypes = Object.keys(formData);
+          formReportTypes.map(key => {
+            let filteredReportTypes = formData[key].filter(ele => {
+              if (ele.roles.includes("PROGRAM_DESIGNER")) {
+                return ele
+              }
+            })
+            formData[key] = filteredReportTypes;
+          });
+          this.formData = formData;
+        } else {
+          this.formData = formData;
+        }
       }
     }, error => {
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
@@ -319,7 +331,7 @@ export class DatasetsComponent implements OnInit {
 
   checkStatus() {
     let requestStatus = true;
-     const selectedReportList = [];
+    const selectedReportList = [];
     _.forEach(this.onDemandReportData, (value) => {
       if (value.dataset === this.selectedReport.datasetId) {
         selectedReportList.push(value);

@@ -75,12 +75,9 @@ describe('DatasetsComponent', () => {
   beforeEach(() => {
 
     fixture = TestBed.createComponent(DatasetsComponent);
-    // component.config = ConfigService;
     component = fixture.componentInstance;
     component.layoutConfiguration = {};
     component.formData = mockData.FormData;
-    // component.programs = mockData.programs;
-    // component.solutions = mockData.solutions;
     fixture.detectChanges();
 
   });
@@ -94,7 +91,7 @@ describe('DatasetsComponent', () => {
     const userService = TestBed.get(UserService);
     userService._userData$.next({ err: null, userProfile: mockData.userProfile });
     userService._userProfile = mockData.userProfile;
-    const configService = TestBed.get(ConfigService);
+    component.userRoles= mockData.userProfile.roles;
     const kendraService = TestBed.get(KendraService);
     spyOn(kendraService, 'get').and.returnValue(observableOf(mockData.programs));
     component.getProgramsList();

@@ -6,7 +6,7 @@
         "myActivityRole" : ["CONTENT_CREATOR"],
         "orgSetupRole" : ["SYSTEM_ADMINISTRATION"],
         "orgAdminRole" : ["ORG_ADMIN","SYSTEM_ADMINISTRATION"],
-        "programManagerRole":["PROGRAM_MANAGER"]
+        "programDashboardRole":["PROGRAM_MANAGER","PROGRAM_DESIGNER"]
     },
 
     "workSpaceRole":{
@@ -59,8 +59,8 @@
        "dashboardRole": ["ORG_ADMIN", "REPORT_VIEWER", "REPORT_ADMIN"],
        "reportViewerRole": ["REPORT_VIEWER", "REPORT_ADMIN"],
        "alltextbookRole": ["ORG_ADMIN"],
-       "programManagerRole":["PROGRAM_MANAGER"]
-    }
+       "programDashboardRole":["PROGRAM_MANAGER","PROGRAM_DESIGNER"]
+     }
     ,"WORKSPACEAUTHGARDROLES":[
     {
         "roles":["CONTENT_CREATOR","CONTENT_CREATION","CONTENT_REVIEWER","CONTENT_REVIEW","BOOK_CREATOR"],

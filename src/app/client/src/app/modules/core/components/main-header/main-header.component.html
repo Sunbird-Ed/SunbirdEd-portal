@@ -317,7 +317,7 @@
           </li>
           
           <li class="list-item" *ngIf='!isDesktopApp && permissionService.permissionAvailable' appPermission
-            [permission]='programManagerRole' (click)="toggleSideMenu(false)" routerLink="program">
+            [permission]='programDashboardRole' (click)="toggleSideMenu(false)" routerLink="program">
             <i class="icon-svg icon-svg--sm icon-dashboard mr-8"><svg class="icon icon-svg--primary">
                 <use xlink:href="./assets/images/sprite.svg#dashboard"></use>
               </svg></i>

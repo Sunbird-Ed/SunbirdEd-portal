@@ -127,7 +127,8 @@ export let mockData = {
         'maskedPhone': null,
         'rootOrgName': 'CustROOTOrg10',
         'roles': [
-            'PUBLIC'
+            'PUBLIC',
+            "PROGRAM_MANAGER"
         ],
         'channel': 'custchannel',
         'updatedDate': null,
