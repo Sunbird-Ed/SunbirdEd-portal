@@ -25,6 +25,8 @@ export class DatasetsComponent implements OnInit {
   reportTypes = [];
   programs = [];
   solutions = [];
+  public message = 'There is no data available';
+
   @ViewChild('modal', { static: false }) modal;
   popup: boolean = false;
   awaitPopUp: boolean = false;
@@ -100,6 +102,8 @@ export class DatasetsComponent implements OnInit {
 
   getProgramsList() {
 
+    this.userRoles.push("PROGRAM_MANAGER");
+
     const paramOptions = {
       url:
         this.config.urlConFig.URLS.KENDRA.PROGRAMS_BY_PLATFORM_ROLES+"?role="+this.userRoles.toString()
@@ -157,6 +161,7 @@ export class DatasetsComponent implements OnInit {
 
   public programSelection($event) {
 
+    this.userRoles.push("PROGRAM_MANAGER");
     
     let program = this.programs.filter(data => {
       if (data._id == $event) {

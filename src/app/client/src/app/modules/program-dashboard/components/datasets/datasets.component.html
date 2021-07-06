@@ -99,7 +99,7 @@
 
           <sui-tabset class="ui container">
             <div class="ui pointing secondary menu d-flex flex-ai-center">
-              <a class="item active" (click)="loadOndemandReports(2)" suiTabHeader="1">{{resourceService?.frmelmnts?.lbl?.detailsReports}}</a>
+              <a class="item active" suiTabHeader="1">{{resourceService?.frmelmnts?.lbl?.detailsReports}}</a>
             </div>
             <div class="ui segment mb-0 mt-2" suiTabContent="1">
               <div class='ui stackable grid mt-0'>
@@ -135,7 +135,7 @@
                   <p class="fsmall mt-8 mb-16 administrator-text">{{resourceService?.frmelmnts?.lbl?.repgenAdminNote |
                     interpolate:'{instance_course_terms}': instance}}</p>
 
-                  <sb-datatable [name]="fileName" [message]="message" [data]="onDemandReportData" [columns]="columns"
+                  <sb-datatable [message]="message" [data]="onDemandReportData" [columns]="columns"
                     [downloadCSV]="false"  (downloadLink)="onDownloadLinkFail($event)"></sb-datatable>
 
 
@@ -184,7 +184,7 @@
 
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'"
   class="sb-modal" appBodyScroll (dismissed)="closeConfirmModal()" #modal *ngIf="awaitPopUp">
-  <div class="sb-modal-content">
+  <div class="sb-modal-content mt-15">
     
     {{resourceService?.frmelmnts?.lbl?.datasetRequestSuccess}}
   </div>
