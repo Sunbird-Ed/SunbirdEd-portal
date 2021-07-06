@@ -974,16 +974,24 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     navigateToSpecificLocation(data) {
         switch (data.code) {
             case 'banner_external_url':
-                console.log('banner_external_url', data);
+                window.open(_.get(data.action, 'params.route'), '_blank');
                 break;
             case 'banner_internal_url':
-                console.log('banner_internal_url', data);
+                const url = _.get(data.action, 'params.route');
+                if (url) {
+                    this.router.navigate([url]);
+                } else {
+                    this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+                }
                 break;
             case 'banner_search':
                 console.log('banner_search', data);
                 break;
             case 'banner_content':
-                console.log('banner_content', data);
+                const contentId = _.get(data.action, 'params.identifier');
+                const params = {};
+                params['key'] = contentId;
+                this.router.navigate(['explore', 1], { queryParams: params });
                 break;
         }
     }
