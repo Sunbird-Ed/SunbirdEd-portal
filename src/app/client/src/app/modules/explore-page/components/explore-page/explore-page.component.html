@@ -115,6 +115,13 @@
                 </app-page-section>
               </div>
             </div>
+            <ngx-slick *ngIf="displayBanner" class="carousel" #slickModal="slick-modal" [config]="bannerSlideConfig">
+              <div ngxSlickItem *ngFor="let banner of bannerList;" class="mr-16 course-card-width">
+                <div class="sb--card sb--card--theme2" [ngStyle]="{background: 'url(' + banner?.ui?.background+ ')'}" (click)="navigateToSpecificLocation(banner)">
+                    <div class="explore-text">{{banner?.ui?.text}}</div>
+                </div>
+              </div>
+            </ngx-slick>
           </div>
           <!-- Template for displaying page sections -->
 

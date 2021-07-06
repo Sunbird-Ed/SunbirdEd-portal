@@ -118,6 +118,9 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * used to archive the both theme
+   */
   initLayout() {
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
@@ -126,6 +129,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
       }
     });
   }
+  
   private fetchContentOnParamChange() {
     combineLatest([this.activatedRoute.params, this.activatedRoute.queryParams])
       .pipe(debounceTime(5), // to sync params and queryParams events
