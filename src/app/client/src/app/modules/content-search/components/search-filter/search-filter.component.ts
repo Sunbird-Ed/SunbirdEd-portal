@@ -148,9 +148,8 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       );
   }
   ngOnInit() {
-    this.filterConfig$.subscribe();
     this.checkForWindowSize();
-    merge(this.boardChangeHandler(), this.fetchSelectedFilterOptions(), this.handleFilterChange(), this.getFacets())
+    merge(this.boardChangeHandler(), this.fetchSelectedFilterOptions(), this.handleFilterChange(), this.getFacets(), this.filterConfig$)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(null, error => {
         console.error('Error while fetching filters');
