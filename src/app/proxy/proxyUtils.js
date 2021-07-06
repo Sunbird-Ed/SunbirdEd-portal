@@ -48,6 +48,7 @@ const decorateRequestHeaders = function (upstreamUrl = "") {
     if (srcReq.kauth && srcReq.kauth.grant && srcReq.kauth.grant.access_token &&
       srcReq.kauth.grant.access_token.token) {
       proxyReqOpts.headers['x-authenticated-user-token'] = srcReq.kauth.grant.access_token.token
+      proxyReqOpts.headers['x-auth-token'] = srcReq.kauth.grant.access_token.token
     }
     proxyReqOpts.headers.Authorization = 'Bearer ' + sunbirdApiAuthToken;
     proxyReqOpts.rejectUnauthorized = false

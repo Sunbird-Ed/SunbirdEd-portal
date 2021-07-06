@@ -65,6 +65,7 @@
     "GET_GENERALISED_RESOURCE": "getGeneralisedResourcesBundles",
     "OBSERVATION_PREFIX": "/assessment/",
     "KENDRA_PREFIX": "/kendra/",
+    "DHITI_PREFIX":"/dhiti/",
     "CLOUD_PREFIX":"/cloudUpload/",
     "REPORT": {
       "READ": "/get",
@@ -362,6 +363,11 @@
     "KENDRA": {
       "TARGETTED_ENTITY_TYPES": "v1/users/targetedEntity/",
       "PRESIGNED_URLS": "v1/cloud-services/files/preSignedUrls"
+    },
+    "DHITI":{
+      "GENERIC_REPORTS": "v1/reports/fetch",
+      "ALL_EVIDENCE":"v1/observations/listAllEvidences"
     }
+
   }
 }

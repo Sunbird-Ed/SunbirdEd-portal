@@ -1,25 +1,244 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { ReportViewComponent } from "./report-view.component";
+import { ActivatedRoute } from "@angular/router";
+import { DatePipe, Location } from "@angular/common";
+import { DhitiService, CoreModule } from "@sunbird/core";
+import { LOCALE_ID } from "@angular/core";
+import {
+  ConfigService,
+  LayoutService,
+  INoResultMessage,
+  ResourceService,
+  SharedModule,
+} from "@sunbird/shared";
+import * as _ from "lodash-es";
+import { SuiModule, SuiSelectModule, SuiModalModule } from "ng2-semantic-ui-v9";
+import { DashletModule } from "@project-sunbird/sb-dashlet-v9";
+import { SlReportsLibraryModule } from "sl-reports-library";
+import { of, Observable, Subject } from "rxjs";
+import { TranslateModule } from "@ngx-translate/core";
+import { ChangeDetectorRef, NO_ERRORS_SCHEMA } from "@angular/core";
+import {
+  reportData,
+  reportSectionData,
+  filterData,
+  CriteriaData,
+  downloadData,
+  allEvidenceData
+} from "./report-view.component.spec.data";
 
-import { ReportViewComponent } from './report-view.component';
-
-describe('ReportViewComponent', () => {
+describe("ReportViewComponent", () => {
   let component: ReportViewComponent;
   let fixture: ComponentFixture<ReportViewComponent>;
-
+  let dhitiService, location;
+  const resourceBundle = {
+    frmelmnts: {
+      lbl: {
+        question: "Questions",
+        criteria: "Criteria",
+      },
+      btn: {
+        exportAs: "ExportAs",
+      },
+    },
+  };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ReportViewComponent ]
-    })
-    .compileComponents();
+      imports: [
+        CoreModule,
+        SharedModule.forRoot(),
+        SuiModule,
+        SuiSelectModule,
+        SuiModalModule,
+        DashletModule,
+        SlReportsLibraryModule,
+        TranslateModule,
+      ],
+      providers: [
+        ConfigService,
+        DatePipe,
+        { provide: ResourceService, useValue: resourceBundle },
+        { provide: ChangeDetectorRef, useValue: {} },
+        { provide: LOCALE_ID, useValue: "en-US" },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            queryParams: of({
+              entityId: "5fd098e2e049735a86b748b8",
+              observationId: "60587848129c8857da854d9e",
+              entityType: "district",
+              solutionId: "6054abd9823d601f0af5c3a0",
+              filter: {
+                questionId: [],
+              },
+              criteriaWise: false,
+              scores: "false",
+              observation: "true",
+            }),
+          },
+        },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+      declarations: [ReportViewComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ReportViewComponent);
+    dhitiService = TestBed.get(DhitiService);
+    location = TestBed.get(Location);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should call ngoninit", () => {
+    spyOn(dhitiService, "post").and.returnValue(of(reportData));
+    spyOn(component, "getReport").and.callThrough();
+    component.getReport();
+    spyOn(component, "filterBySegment").and.callThrough();
+    component.filterBySegment();
     expect(component).toBeTruthy();
+    expect(component.getReport).toHaveBeenCalled();
+    expect(component.reportSections.length).toBeGreaterThan(0);
   });
+
+  it("Should navigate to  back to gotoSolutionListPage", () => {
+    component.gotoSolutionListPage();
+  });
+
+  it("should call getData", () => {
+    spyOn(component, "getData").and.callThrough();
+    component.getData(reportSectionData[0].questionArray[3]);
+    expect(component.getData).toHaveBeenCalled();
+  });
+
+  it("should call getconfig", () => {
+    spyOn(component, "getconfig").and.callThrough();
+    component.getconfig(reportSectionData[0].questionArray[3]);
+    expect(component.getconfig).toHaveBeenCalled();
+  });
+
+  it("should call handleParameterChange", () => {
+    let event = {
+      _id: "6059cb813753e011940bee2b",
+      name: "Observation 1",
+    };
+    spyOn(dhitiService, "post").and.returnValue(of(reportData));
+    spyOn(component, "getReport").and.callThrough();
+    component.getReport();
+    spyOn(component, "filterBySegment").and.callThrough();
+    component.filterBySegment();
+    spyOn(component, "handleParameterChange").and.callThrough();
+    component.handleParameterChange(event);
+    expect(component.handleParameterChange).toHaveBeenCalled();
+  });
+
+  it("should call segmentChanged", () => {
+    let segment = "Criteria";
+    spyOn(component, "segmentChanged").and.callThrough();
+    component.segmentChanged(segment);
+    spyOn(dhitiService, "post").and.returnValue(of(CriteriaData));
+    spyOn(component, "getReport").and.callThrough();
+    component.getReport();
+    spyOn(component, "filterBySegment").and.callThrough();
+    component.filterBySegment();
+    expect(component.segmentChanged).toHaveBeenCalled();
+    expect(component.reportSections.length).toBeGreaterThan(0);
+  });
+
+  it("should call segmentChanged", () => {
+    let segment = "Questions";
+    spyOn(component, "segmentChanged").and.callThrough();
+    component.segmentChanged(segment);
+    spyOn(dhitiService, "post").and.returnValue(of(reportData));
+    spyOn(component, "getReport").and.callThrough();
+    component.getReport();
+    spyOn(component, "filterBySegment").and.callThrough();
+    component.filterBySegment();
+    expect(component.segmentChanged).toHaveBeenCalled();
+    expect(component.reportSections.length).toBeGreaterThan(0);
+  });
+
+  it("should call openFile", () => {
+    let file = {
+      url: "https://samikshaprod.blob.core.windows.net/samiksha/6064c4bbb6bd37361305ddd9/0fecc38b-956c-4909-a3e7-be538ef7acd4/tmp_IMG-20210329-WA00042204198365642023404.jpg?sv=2020-06-12&st=2021-07-04T05%3A55%3A29Z&se=2022-07-04T06%3A05%3A29Z&sr=b&sp=rw&sig=j3ncE3aazopRGhk4IbKzECmGvBxZ7%2BLwVx%2FfARjcquc%3D",
+      extension: "jpg",
+    };
+    spyOn(component, "openFile").and.callThrough();
+    component.openFile(file);
+    expect(component.openFile).toHaveBeenCalled();
+  });
+
+  it("should call filterModalPopup", () => {
+    spyOn(component, "filterModalPopup").and.callThrough();
+    component.filterModalPopup(filterData[2].filter.data,filterData[2].filter.keyToSend);
+    component.filteredData=["Q3_1616157220157-1616161753202","Q4_1616157220157-1616161753203"];
+    expect(component.filterModalPopup).toHaveBeenCalled();
+    expect(component.filterModal).toBe(true);
+    expect(component.modalFilterData.length).toBeGreaterThan(0);
+    expect(component.selectedListCount).toBeGreaterThan(0);
+    expect(component.filteredData.length).toBeGreaterThan(0);
+  });
+
+  it("should call closeModal", () => {
+    spyOn(component, "closeModal").and.callThrough();
+    component.modal = {
+      approve:()=>{}
+    }
+    component.closeModal();
+    expect(component.filterModal).toBe(false);
+  });
+
+  it("should call onQuestionClick id included", () => {
+    spyOn(component, "onQuestionClick").and.callThrough();
+    component.filteredData=["Q3_1616157220157-1616161753202","Q4_1616157220157-1616161753203"];
+    component.onQuestionClick("Q5_1616157220157-1616161753205");
+    expect(component.onQuestionClick).toHaveBeenCalled();
+    expect(component.filteredData.length).toBeGreaterThan(0);
+  });
+
+  it("should call onQuestionClick id not included", () => {
+    spyOn(component, "onQuestionClick").and.callThrough();
+    component.filteredData=["Q3_1616157220157-1616161753202","Q4_1616157220157-1616161753203"];
+    component.onQuestionClick("Q3_1616157220157-1616161753202");
+    expect(component.onQuestionClick).toHaveBeenCalled();
+    expect(component.filteredData.length).toBeGreaterThan(0);
+  });
+
+  it("should call applyFilter", () => {
+    spyOn(component, "applyFilter").and.callThrough();
+    spyOn(dhitiService, "post").and.returnValue(of(reportData));
+    spyOn(component, "getReport").and.callThrough();
+    component.getReport();
+    spyOn(component, "filterBySegment").and.callThrough();
+    component.filterBySegment();
+    component.applyFilter();
+    expect(component.applyFilter).toHaveBeenCalled();
+    expect(component.reportSections.length).toBeGreaterThan(0);
+    expect(component.filterModal).toBe(false);
+  });
+
+  it("should call download if there is pdf", () => {
+    spyOn(dhitiService, "post").and.returnValue(of(downloadData));
+    spyOn(component, "download").and.callThrough();
+    component.download();
+    expect(component.download).toHaveBeenCalled();
+  });
+
+  it("should call download if there is no pdf", () => {
+    downloadData.pdfUrl=null;
+    downloadData.status="failed";
+    spyOn(dhitiService, "post").and.returnValue(of(downloadData));
+    spyOn(component, "download").and.callThrough();
+    component.download();
+    expect(component.download).toHaveBeenCalled();
+  });
+
+  it("should call getAllEvidence", () => {
+    spyOn(component, "getAllEvidence").and.callThrough();
+    spyOn(dhitiService, "post").and.returnValue(of(allEvidenceData));
+    component.getAllEvidence(reportSectionData[0].questionArray[2]);
+    expect(component.getAllEvidence).toHaveBeenCalled();
+  });
+
 });
