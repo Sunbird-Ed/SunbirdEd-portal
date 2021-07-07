@@ -475,7 +475,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ADMIN]
     },
-    '/learner/user/v4/read/:userId': {
+    '/learner/user/v5/read/:userId': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC, ROLE.ADMIN]
       // OWNER_CHECK: {
@@ -1711,7 +1711,7 @@ const API_LIST = {
     '/learner/questionset/v1/hierarchy/:do_id',
     '/learner/data/v1/system/settings/get/:slug',
     '/learner/course/v1/hierarchy/:do_id',
-    '/learner/user/v4/read/:userId',
+    '/learner/user/v5/read/:userId',
     '/learner/course/v1/user/enrollment/list/:userId',
     '/learner/user/v1/feed/:userId',
     '/learner/course/v1/batch/read/:batchId',

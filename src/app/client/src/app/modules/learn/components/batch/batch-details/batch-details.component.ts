@@ -284,9 +284,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   }
   enrollBatch(batch) {
     this.showJoinModal = false;
-    const batchStartDate = new Date(batch['startDate']);
-    const currentdate = new Date();
-    if (currentdate < batchStartDate) {
+    if (batch.status === 0) {
       this.showMessageModal = true;
       this.batchMessage = (this.resourceService.messages.emsg.m009).replace('{startDate}', batch.startDate);
     } else {

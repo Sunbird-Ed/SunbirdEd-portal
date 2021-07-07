@@ -97,7 +97,7 @@
       "SIGNUP": "user/v1/create",
       "TNC_ACCEPT": "user/v1/tnc/accept",
       "UPDATE_USER_PROFILE": "user/v2/update",
-      "GET_PROFILE": "user/v4/read/",
+      "GET_PROFILE": "user/v5/read/",
       "GET_PROFILE_V5": "user/v5/read/",
       "TENANT_LOGO": "get/tenant/logo",
       "SKILLS": "data/v1/skills",
