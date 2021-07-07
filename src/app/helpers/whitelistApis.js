@@ -1694,7 +1694,11 @@ const API_LIST = {
         ROLE.CONTENT_CREATOR,
         ROLE.BOOK_CREATOR
       ]
-    }
+    },
+    '/dhiti/v1/reports/fetch': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
   },
   URL_PATTERN: [
     '/learner/user/v1/feed/delete',

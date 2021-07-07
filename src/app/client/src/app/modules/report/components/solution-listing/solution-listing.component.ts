@@ -161,7 +161,7 @@ export class SolutionListingComponent implements OnInit {
       entityId: solution.entities[0]._id,
       entityType: solution.entityType,
       observationId: solution.observationId,
-      // solution:solution,
+      solutionId:solution.solutionId,
       // entity:solution.entities[0]
     };
     if (solution.isRubricDriven) {
@@ -172,7 +172,7 @@ export class SolutionListingComponent implements OnInit {
       state['criteriaWise'] = false;
     }
     this.router.navigate(["reports/report-view"], {
-      state: state,
+      queryParams: state,
     });
   }
 
@@ -187,7 +187,7 @@ export class SolutionListingComponent implements OnInit {
       entityId: entity._id,
       entityType: solutionDetails.entityType,
       observationId:solutionDetails.observationId,
-      // solution:solutionDetails,
+      solutionId:solutionDetails.solutionId,
       // entity:entity
     };
     if (solutionDetails.isRubricDriven) {
@@ -198,7 +198,7 @@ export class SolutionListingComponent implements OnInit {
       state['criteriaWise'] = false;
     }
     this.router.navigate(["reports/report-view"], {
-      state: state,
+      queryParams: state,
     });
   }
   }
