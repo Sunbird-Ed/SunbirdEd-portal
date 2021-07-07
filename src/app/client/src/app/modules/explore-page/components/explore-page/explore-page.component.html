@@ -150,7 +150,7 @@
 </div>
 <ngx-slick *ngIf="displayBanner" class="carousel banner-carousel relative9 mt-24" #slickModal="slick-modal" [config]="bannerSlideConfig">
   <div ngxSlickItem *ngFor="let banner of bannerList;" class="mr-16">
-    <div class="sb--card sb--card--theme2 banner-image" [ngStyle]="{'background-image': 'url(' + banner?.ui?.background+ ')'}" (click)="navigateToSpecificLocation(banner)">
+    <div class="sb--card sb--card--theme2 banner-image" [ngStyle]="{'background-image': 'url(' + banner?.ui?.background+ ')'}" (click)="navigateToSpecificLocation(banner); handleBannerClick(banner)">
         <!-- <div class="explore-text">{{banner?.ui?.text}}</div> -->
     </div>
   </div>

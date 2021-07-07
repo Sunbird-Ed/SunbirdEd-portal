@@ -1003,4 +1003,22 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 break;
         }
     }
+
+    handleBannerClick(data) {
+        const telemetryData = {
+          context: {
+            env:  this.activatedRoute.snapshot.data.telemetry.env,
+            cdata: [{
+              id: data.code,
+              type: 'Banner'
+            }]
+          },
+          edata: {
+            id: data.code,
+            type: 'click',
+            pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+          }
+        };
+        this.telemetryService.interact(telemetryData);
+    }
 }
