@@ -516,10 +516,7 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
     const telemetryData = {
       context: {
         env: _.get(this.activatedRoute, 'snapshot.data.telemetry.env'),
-        cdata: [{
-          type: 'framework',
-          id: this.framework
-        }]
+        cdata: []
       },
       edata: {
         id: 'start-creating-' + this.contentType,
@@ -533,6 +530,12 @@ export class DataDrivenComponent extends WorkSpace implements OnInit, OnDestroy,
         rollup: {},
       }
     };
+    if (this.framework) {
+      telemetryData.context.cdata.push({
+        type: 'framework',
+        id: this.framework
+      });
+    }
     if (this.targetFramework) {
       telemetryData.context.cdata.push({
         type: 'targetFW',

@@ -13,9 +13,13 @@ import { ReportRoutingModule } from './report-routing.module';
 import { SolutionListingComponent,EntityListComponent,ReportViewComponent } from './components';
 import {DataTablesModule} from 'angular-datatables';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import {DashletModule} from '@project-sunbird/sb-dashlet-v9';
+import {SlReportsLibraryModule} from '@shikshalokam/sl-reports-library';
+import { AllEvidenceComponent } from './components/all-evidence/all-evidence.component';
+
 
 @NgModule({
-  declarations: [SolutionListingComponent, EntityListComponent, ReportViewComponent],
+  declarations: [SolutionListingComponent, EntityListComponent, ReportViewComponent, AllEvidenceComponent],
   imports: [
     CommonModule,
     SharedModule,
@@ -35,7 +39,9 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     SharedFeatureModule,
     ReportRoutingModule,
     DataTablesModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    DashletModule,
+    SlReportsLibraryModule
   ],
   providers: []
 

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SolutionListingComponent } from './components';
 import { ReportViewComponent } from './components/report-view/report-view.component';
-const telemetryEnv = 'reports';
+const telemetryEnv = 'observation';
 
 
 const routes: Routes = [

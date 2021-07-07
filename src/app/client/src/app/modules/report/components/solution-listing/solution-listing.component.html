@@ -35,25 +35,25 @@
                   <table datatable [dtOptions]="dtOptions"
                     class="
                       sb-table sb-table-hover sb-table-striped sb-table-sortable
-                      width-100 table-bottom
+                      width-100 table-bottom 
                     "
                   >
-                  <thead>
+                  <thead >
                     <tr>
                       <th class="header-section">{{resourceService?.frmelmnts?.lbl?.serialno}}</th>
                       <th class="header-section"></th>
                       <th>{{resourceService?.frmelmnts?.lbl?.title}}</th>
-                      <th>{{resourceService?.frmelmnts?.lbl?.latestSubmission}}</th>
+                      <th  class="date-section">{{resourceService?.frmelmnts?.lbl?.latestSubmission}}</th>
                     </tr>
                   </thead>
                   <tbody>
                    <tr *ngFor="let solution of solutionList;let i=index" (click)="(solution?.entities?.length >1) ? goToEntityList(solution) : goToReports(solution)">
                          <td class="header-section">{{i+1}}</td>
-                         <td><button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal" aria-label="file-icon">
+                         <td><button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal iconSize" aria-label="file-icon">
                           <i class="icon copy outline alternate large"></i></button></td>
                          <td><div class="sb-media"><div class="sb-media-body"><h6 class="p-0">
                           {{solution.name}}</h6> <p class="media-description sb__ellipsis"> {{solution.programName}}</p></div></div></td>
-                          <td></td>
+                          <td class="date-section">{{solution.completedDate| date: "yyyy/MM/dd"}}</td>
                      </tr>
                   </tbody>
                  

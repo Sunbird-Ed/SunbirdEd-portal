@@ -475,7 +475,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ADMIN]
     },
-    '/learner/user/v4/read/:userId': {
+    '/learner/user/v5/read/:userId': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC, ROLE.ADMIN]
       // OWNER_CHECK: {
@@ -1679,6 +1679,26 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
+    '/action/collection/v1/import/:id': {
+      description: 'Collection import',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/action/collection/v1/export/:id': {
+      description: 'Collection export',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [
+        ROLE.CONTENT_CREATOR,
+        ROLE.BOOK_CREATOR
+      ]
+    },
+    '/dhiti/v1/reports/fetch': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
   },
   URL_PATTERN: [
     '/learner/user/v1/feed/delete',
@@ -1691,7 +1711,7 @@ const API_LIST = {
     '/learner/questionset/v1/hierarchy/:do_id',
     '/learner/data/v1/system/settings/get/:slug',
     '/learner/course/v1/hierarchy/:do_id',
-    '/learner/user/v4/read/:userId',
+    '/learner/user/v5/read/:userId',
     '/learner/course/v1/user/enrollment/list/:userId',
     '/learner/user/v1/feed/:userId',
     '/learner/course/v1/batch/read/:batchId',
@@ -1795,7 +1815,9 @@ const API_LIST = {
     '/assessment/v2/observations/assessment/:id',
     '/assessment/v1/observationSubmissions/list/:id',
     '/assessment/v1/observations/updateEntities/:id',
-    '/assessment/v1/observationSubmissions/update/:id'
+    '/assessment/v1/observationSubmissions/update/:id',
+    '/action/collection/v1/import/:id',
+    '/action/collection/v1/export/:id'
   ]
 };
 module.exports = API_LIST;

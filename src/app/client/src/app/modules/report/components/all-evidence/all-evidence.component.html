@@ -1,0 +1,63 @@
+<sui-modal [mustScroll]="false" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
+    class="sb-modal sb-success evidence-modal" (dismissed)="closeModal()" #modal>
+    <div class="sb-onboard">
+
+        <div class="p-0 w-100">
+            <div class="sb-modal-content content">
+                <div class="ui container">
+                    <div class="twelve wide column">
+                        <div id="report-body" class="my-16">
+                            <sui-tabset>
+                                <div
+                                    class="ui pointing secondary menu d-flex flex-ai-center sbt-report-tabs-panel px-15">
+                                    <a class="item px-0 mx-15 py-20"
+                                        suiTabHeader="1">{{this.resourceService?.frmelmnts?.lbl?.evidences}}</a>
+                                    <a class="item px-0 mx-15 py-20"
+                                        suiTabHeader="2">{{this.resourceService?.frmelmnts?.lbl?.remarks}}</a>
+                                </div>
+                                <div class="report-block ui bottom attached segment p-0 b-0 no-bg" suiTabContent="1">
+                                    <div *ngIf="images?.length">
+                                        <p class="item">Images</p>
+                                        <div *ngFor="let data of images" class="thumbnail-card">
+                                            <sl-attachments [url]="data.url" [extension]="data.extension">
+                                            </sl-attachments>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="videos?.length">
+                                        <p class="item">Videos</p>
+                                        <div *ngFor="let data of videos" class="thumbnail-card">
+                                            <sl-attachments [url]="data.url" [extension]="mp4">
+                                            </sl-attachments>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="documents?.length">
+                                        <p class="item">Documents</p>
+                                        <div *ngFor="let data of documents" class="thumbnail-card">
+                                            <sl-attachments [url]="data.url" [extension]="data.extension">
+                                            </sl-attachments>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="audios && audios?.length">
+                                        <p class="item">Audios</p>
+                                        <div *ngFor="let data of audios" class="thumbnail-card">
+                                            <sl-attachments [url]="data.url" [extension]="data.extension">
+                                            </sl-attachments>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="report-block ui bottom attached segment p-0 b-0 no-bg" suiTabContent="2">
+                                    <div *ngIf="remarks?.length">
+                                        <div *ngFor="let remark of remarks;let i=index">
+                                            <label >{{i+1}}) {{ remark }}</label>
+                                        </div>
+                                      </div>
+                                </div>
+                            </sui-tabset>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div></div>
+    </div>
+</sui-modal>
