@@ -264,7 +264,9 @@ describe('NewCollectionEditorComponent', () => {
     component['routeParams'] = {
       contentId: 'do_12345',
       type: 'course',
-      framework: undefined
+      framework: undefined,
+      state: 'draft',
+      contentStatus: 'draft'
     };
     spyOn(editorService, 'getContent').and.returnValue(observableOf(mockRes.successResult));
     spyOn(editorService, 'getOwnershipType').and.returnValue(observableOf(['CreatedBy', 'CreatedFor']));
