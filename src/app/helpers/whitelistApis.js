@@ -1704,6 +1704,14 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
+    '/assessment/v1/observationSubmissions/solutionList': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
+    '/dhiti/v1/observations/listAllEvidences': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
   },
   URL_PATTERN: [
     '/learner/user/v1/feed/delete',

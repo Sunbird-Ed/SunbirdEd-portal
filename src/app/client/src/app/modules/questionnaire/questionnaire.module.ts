@@ -2,41 +2,32 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { QuestionnaireComponent } from "./questionnaire/questionnaire.component";
 import { QuestionnaireRoutingModule } from "./questionnaire-routing.module";
-import { SharedModule } from "@sunbird/shared";
+import { SharedModule, ResourceService } from "@sunbird/shared";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { SuiModule } from 'ng2-semantic-ui-v9';
-import {
-  InputTypeAttachmentComponent, InputTypeCheckboxComponent, InputTypeDatePickerComponent, InputTypeNumberComponent,
-  InputTypeRadioComponent, InputTypeRangeComponent, InputTypeTextComponent, PageQuestionsComponent, MatrixQuestionsComponent, QuestionGenericInputsComponent,
-  RemarksComponent
-} from './components';
 import { ObservationUtilService } from "../observation/service";
-import {CanDeactivateGuard} from "./guard/can-deactivate.guard"
+import { CanDeactivateGuard } from "./guard/can-deactivate.guard";
+import {
+  SlQuestionnaireModule,
+  SlTranslateService,
+} from "@shikshalokam/sl-questionnaire";
 
 @NgModule({
-  declarations: [
-    QuestionnaireComponent,
-    InputTypeTextComponent,
-    InputTypeRangeComponent,
-    InputTypeNumberComponent,
-    InputTypeDatePickerComponent,
-    InputTypeRadioComponent,
-    InputTypeCheckboxComponent,
-    PageQuestionsComponent,
-    MatrixQuestionsComponent,
-    QuestionGenericInputsComponent,
-    RemarksComponent,
-    InputTypeAttachmentComponent,
-  ],
+  declarations: [QuestionnaireComponent],
   imports: [
     CommonModule,
     SharedModule,
     QuestionnaireRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    SuiModule
+    SlQuestionnaireModule,
   ],
-  providers:[ObservationUtilService,CanDeactivateGuard]
-
+  providers: [
+    ObservationUtilService,
+    CanDeactivateGuard,
+    {
+      provide: SlTranslateService,
+      useClass: ResourceService,
+    },
+  ],
 })
-export class QuestionnaireModule { }
+export class QuestionnaireModule {}
