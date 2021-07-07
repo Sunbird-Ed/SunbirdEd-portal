@@ -1,5 +1,5 @@
 <div [ngClass]="layoutConfiguration ? 'sbt-container relative9':''" class="main-container">
-  <div *ngIf="data">
+  <div *ngIf="this.data">
     <div class="ui report-main-block">
       <div class="twelve wide column px-0">
         <div class="stackable grid m-0 sb-mid-container-min-height dashboard-body-scroll">
@@ -219,9 +219,9 @@
                       </div>
                     </div>
 
-                    <!-- <div *ngIf="!reportSections">
+                    <div *ngIf="!reportSections">
                       <app-no-result [data]="noResultMessage"></app-no-result>
-                    </div> -->
+                    </div>
                   </sui-tabset>
                 </div>
               </div>
@@ -230,7 +230,6 @@
         </div>
       </div>
     </div>
-    <!-- <sl-generic-chart [reportSections]="reportSections"></sl-generic-chart> -->
   </div>
   <div class="twelve wide column" *ngIf="noResult">
     <app-no-result [data]="noResultMessage"></app-no-result>
