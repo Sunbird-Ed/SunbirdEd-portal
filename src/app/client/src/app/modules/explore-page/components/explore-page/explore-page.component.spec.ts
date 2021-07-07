@@ -842,7 +842,7 @@ describe('ExplorePageComponent', () => {
           }]
         },
         edata: {
-          id: `banner_search`,
+          id: 'banner_search',
           type: 'click',
           pageid: activatedRoute.snapshot.data.telemetry.pageid
         }
