@@ -661,7 +661,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     this.discussionCsService.getForumIds(this.fetchForumIdReq).subscribe(forumDetails => {
       this.forumIds = _.map(_.get(forumDetails, 'result'), 'cid');
       this.isEnableDiscussions = (this.forumIds && this.forumIds.length > 0) ? 'true' : 'false';
-      if(this.isEnableDiscussions) {
+      if(this.isEnableDiscussions === 'true') {
         this.callCreateDiscussion = false;
       }
       this.initializeUpdateForm();
