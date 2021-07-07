@@ -150,6 +150,8 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   isDesktopApp = false;
   showLoadContentModal = false;
   guestUser;
+  subscription: any;
+  userType:any;
   
   constructor(public config: ConfigService, public resourceService: ResourceService, public router: Router,
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
@@ -180,6 +182,22 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     ).subscribe((event: NavigationEnd) => {
       this.updateHrefPath(event.url);
     });
+
+    this.subscription = this.utilService.currentRole.subscribe(async (result) => {
+      if (result) {
+        this.userType = result;
+      }
+      else{
+        if (this.userService.loggedIn) {
+          this.userService.userData$.subscribe((profileData: IUserData) => {
+            if(profileData.userProfile["profileUserType"]["type"] !== null){
+            this.userType = profileData.userProfile["profileUserType"]["type"];
+            }
+          });
+        }
+      }
+    });
+    
   }
 
   updateHrefPath(url) {
