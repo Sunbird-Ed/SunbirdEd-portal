@@ -395,6 +395,14 @@
             {{resourceService.frmelmnts?.lbl?.manage}}
           </li>
 
+          <li class="list-item" tabindex="0" (click)="toggleSideMenu(false)" *ngIf='!isDesktopApp && permissionService.permissionAvailable'
+            appPermission [permission]='orgAdminRole' routerLink="uci-admin">
+            <i class="icon-svg icon-svg--sm icon-manage mr-8"><svg class="icon icon-svg--primary">
+                <use xlink:href="./assets/images/sprite.svg#manage"></use>
+              </svg></i>
+            {{resourceService.frmelmnts?.lbl?.UCI}}
+          </li>
+
           <li class="list-item" appOnlineOnly (click)="toggleSideMenu(false)"
             [class.active]="router.isActive(routerLinks?.groups)" tabindex="0" *ngIf="!router.isActive('', true) && !isDesktopApp"
             [routerLink]="[navigateToGroups()]" appTelemetryInteract [telemetryInteractEdata]="myGroupIntractEData">
