@@ -17,12 +17,14 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { ContentManagerService } from '../../../public/module/offline/services';
 import { CacheService } from 'ng2-cache-service';
 import { ProfileService } from '@sunbird/profile';
+import { SegmentationTagService } from '../../../core/services/segmentation-tag/segmentation-tag.service';
+import { find } from 'lodash-es';
 import { result } from 'lodash';
 
 describe('ExplorePageComponent', () => {
   let component: ExplorePageComponent;
   let fixture: ComponentFixture<ExplorePageComponent>;
-  let toasterService, userService, pageApiService, orgDetailsService, cacheService;
+  let toasterService, userService, pageApiService, orgDetailsService, cacheService, segmentationTagService;
   const mockPageSection: any = RESPONSE.searchResult;
   let sendOrgDetails = true;
   let sendPageApi = true;
@@ -107,6 +109,7 @@ describe('ExplorePageComponent', () => {
     pageApiService = TestBed.get(SearchService);
     orgDetailsService = TestBed.get(OrgDetailsService);
     cacheService = TestBed.get(CacheService);
+    segmentationTagService = TestBed.get(SegmentationTagService);
     sendOrgDetails = true;
     sendPageApi = true;
     spyOn(orgDetailsService, 'getOrgDetails').and.callFake((options) => {
@@ -790,5 +793,16 @@ describe('ExplorePageComponent', () => {
       });
     });
 
-  })
+    it('should show banner', () => {
+      segmentationTagService.exeCommands = RESPONSE.bannerData;
+      component.showorHideBanners();
+      expect(component.displayBanner).toEqual(true);
+    });
+
+    it('should hide banner', () => {
+      segmentationTagService.exeCommands = [];
+      component.showorHideBanners();
+      expect(component.displayBanner).toEqual(false);
+    });
+  });
 });
