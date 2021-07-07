@@ -72,6 +72,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     queryParams: { [x: string]: any; };
     _currentPageData: any;
     facetSections: any = [];
+    contentSection;
     instance: string;
     userPreference: any;
     searchResponse: any = [];
@@ -437,10 +438,18 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                             this.facetSections.push({
                                                 name: facet.facetKey,
                                                 data: _.sortBy(_facetArray, ['name']),
-                                                section: facet
+                                                section: facet,
                                             });
                                         }
                                     });
+
+                                    if (facetKeys.indexOf('search') !== -1) {
+                                        const section = currentPageData.sections.find(sec => sec.facetKey === 'search');
+                                        this.contentSection = {
+                                            searchRequest: _.get(section, 'apiConfig.req'),
+                                            title: this.getSectionTitle(section.title)
+                                        };
+                                    }
                                 }
                                 return _map(sections, (section) => {
                                     forEach(section.contents, contents => {
