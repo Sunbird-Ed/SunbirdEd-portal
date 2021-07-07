@@ -68,3 +68,33 @@
   // border-radius:2.5rem;
 }
 
+:host {
+  .banner-image {
+    border-radius: calculateRem(16px);
+    height: 280px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+  }
+}
+::ng-deep {
+  .banner-carousel {
+    padding: 0 5%;
+    .slick-dots {
+      bottom: inherit;
+      left: 0;
+    }
+    &.slick-dotted.slick-slider {
+      margin-bottom: calculateRem(48px);
+    }
+    .slick-dots li button:before {
+      color: var(--gray-200);
+      opacity: 1;
+      font-size: calculateRem(48px);
+    }
+    .slick-dots li.slick-active button:before {
+      color: var(--gray-800);
+    }
+  }
+}
