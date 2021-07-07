@@ -100,7 +100,7 @@ module.exports = (app, keycloak) => {
   '/orgType', '/orgType/*', '/dashBoard', '/dashBoard/*',
   '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources', '/discussion-forum/*',
   '/resources/*', '/myActivity', '/myActivity/*', '/org/*', '/manage', '/contribute','/contribute/*','/groups','/groups/*', '/my-groups','/my-groups/*','/certs/configure/*',
-   '/observation', '/observation/*','/reports','/reports/*','/questionnaire','/questionnaire/*'], 
+   '/observation', '/observation/*','/reports','/reports/*','/questionnaire','/questionnaire/*','/program'], 
   session({
     secret: envHelper.PORTAL_SESSION_SECRET_KEY,
     resave: false,

@@ -363,7 +363,10 @@
     },
     "KENDRA": {
       "TARGETTED_ENTITY_TYPES": "v1/users/targetedEntity/",
-      "PRESIGNED_URLS": "v1/cloud-services/files/preSignedUrls"
+      "PRESIGNED_URLS": "v1/cloud-services/files/preSignedUrls",
+      "PROGRAMS_BY_PLATFORM_ROLES": "v1/user-extension/programsByPlatformRoles",
+      "SOLUTIONS_BY_PROGRAMID": "v1/user-extension/solutions"
+
     },
     "DHITI":{
       "GENERIC_REPORTS": "v1/reports/fetch",

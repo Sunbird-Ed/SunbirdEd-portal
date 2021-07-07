@@ -54,6 +54,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   myActivityRole: Array<string>;
   orgAdminRole: Array<string>;
   orgSetupRole: Array<string>;
+  programDashboardRole: Array<string>;
   avtarMobileStyle = {
     backgroundColor: 'transparent',
     color: '#AAAAAA',
@@ -173,6 +174,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.myActivityRole = this.config.rolesConfig.headerDropdownRoles.myActivityRole;
     this.orgSetupRole = this.config.rolesConfig.headerDropdownRoles.orgSetupRole;
     this.orgAdminRole = this.config.rolesConfig.headerDropdownRoles.orgAdminRole;
+    this.programDashboardRole = this.config.rolesConfig.headerDropdownRoles.programDashboardRole;
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value.toUpperCase() : 'SUNBIRD';
     this.workSpaceRole = this.config.rolesConfig.headerDropdownRoles.workSpaceRole;
