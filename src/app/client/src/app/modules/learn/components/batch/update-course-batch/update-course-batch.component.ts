@@ -136,7 +136,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   telemetryCdata: Array<{}> = [];
   isCertificateIssued: string;
   isEnableDiscussions: string;
-
+  callCreateDiscussion = true;
   /**
    * Constructor to create injected service(s) object
    * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
@@ -661,6 +661,9 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     this.discussionCsService.getForumIds(this.fetchForumIdReq).subscribe(forumDetails => {
       this.forumIds = _.map(_.get(forumDetails, 'result'), 'cid');
       this.isEnableDiscussions = (this.forumIds && this.forumIds.length > 0) ? 'true' : 'false';
+      if(this.isEnableDiscussions) {
+        this.callCreateDiscussion = false;
+      }
       this.initializeUpdateForm();
     }, error => {
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
@@ -697,12 +700,14 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   }
 
   enableDiscussionForum() {
-    this.discussionService.createForum(this.createForumRequest).subscribe(resp => {
-      this.handleInputChange('enable-DF-yes');
-      this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0065'));
-    }, error => {
-      this.toasterService.error(this.resourceService.messages.emsg.m0005);
-    });
+    if(this.createForumRequest && this.callCreateDiscussion){
+      this.discussionService.createForum(this.createForumRequest).subscribe(resp => {
+        this.handleInputChange('enable-DF-yes');
+        this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0065'));
+      }, error => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      });
+    }
   }
 
   disableDiscussionForum(batchId) {
