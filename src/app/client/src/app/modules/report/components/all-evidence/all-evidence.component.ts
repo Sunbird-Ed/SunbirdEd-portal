@@ -47,7 +47,6 @@ export class AllEvidenceComponent implements OnInit {
           this.documents = success.data.documents;
           this.remarks = success.data.remarks;
           this.audios = success.data.audios;
-          console.log( this.remarks);
         }
       },
       (error) => {}
