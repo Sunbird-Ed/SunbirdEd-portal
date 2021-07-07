@@ -21,20 +21,22 @@
               <button class="sb-btn sb-btn-normal"
                 (click)="search()">{{resourceService?.frmelmnts?.lbl?.search}}</button>
             </div>
-            <button class="sb-btn sb-btn-outline-primary sb-btn-normal" (click)="toggleFilter()">
-              <img class="mr-4" alt="filter" src="./assets/images/outline-tune.svg"
-                width="16">{{resourceService?.frmelmnts?.lbl?.filterby}}
-            </button>
+              <button class="sb-btn sb-btn-outline-primary sb-btn-normal" (click)="toggleFilter()">
+                <img class="mr-4" alt="filter" src="./assets/images/outline-tune.svg"
+                  width="16">{{resourceService?.frmelmnts?.lbl?.filterby}}
+              </button>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div *ngIf="showFilters">
-    <app-global-search-filter *ngIf="initFilters && allTabData" [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true' (filterChange)="getFilters($event)">
-    </app-global-search-filter>
-  </div>
-  <div class="ui container">
+
+  <div [ngClass]="layoutConfiguration ? 'd-flex':'ui container'">
+    <div *ngIf="showFilters" class="pr-16 flex-b">
+        <app-global-search-filter *ngIf="initFilters && allTabData" [layoutConfiguration]="layoutConfiguration" [facets]="facets" [isOpen]='true' (filterChange)="getFilters($event)">
+        </app-global-search-filter>
+    </div>
+    <div class="flex-basis-1">
     <div class="mt-24">
       <div class="sb-pageSection">
         <div class="sb-pageSection-header">
@@ -94,5 +96,7 @@
         </div>
       </div>
     </div>
+    </div>
+  
   </div>
 </div>

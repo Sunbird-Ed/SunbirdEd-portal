@@ -28,6 +28,15 @@ module.exports = function (app) {
     handleRequest('/kendra/api/')
   )
 
+  app.all('/dhiti/*',
+    bodyParser.json(),
+    isAPIWhitelisted.isAllowed(),
+    healthService.checkDependantServiceHealth([]),
+    telemetryHelper.generateTelemetryForLearnerService,
+    telemetryHelper.generateTelemetryForProxy,
+    handleRequest('/dhiti/api/')
+  )
+
   app.all('/assessment/*',
     bodyParser.json(),
     isAPIWhitelisted.isAllowed(),
@@ -83,7 +92,7 @@ function handleRequest(serviceUrl) {
         if (proxyRes.statusCode === 404) res.redirect('/')
         else {
           const data = proxyUtils.handleSessionExpiry(proxyRes, parsedData, req, res);
-          data.status === 200 ? data.responseCode = "OK" : null;
+          (data.status === 200 || data.result || data.status) ? data.responseCode = "OK" : null;
           return data
         }
       } catch (err) {
