@@ -471,6 +471,11 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
+    '/learner/user/v3/search': {
+      description: 'API to search for user (Admin user Search) with new roles array structure',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
     '/learner/user/v1/upload': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ADMIN]
