@@ -5,7 +5,7 @@ import { KendraService, UserService, FormService } from '@sunbird/core';
 import { ResourceService, SharedModule, ConfigService,OnDemandReportService } from '@sunbird/shared';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SuiModule } from 'ng2-semantic-ui';
+import { SuiModule } from 'ng2-semantic-ui-v9';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
