@@ -234,4 +234,15 @@ export class NavigationHelperService {
       this.router.navigate(['/resources']);
     }
   }
+
+  /* Used for removing DF routes and duplicate routes from history which will cause looping */
+  removeDfRoutes() {
+    this._history = this._history.filter(h => !(h.url.includes('discussion-forum')))
+    this._history = this._history.filter((item, index) => {
+      const _item = JSON.stringify(item);
+      return index === this._history.findIndex(obj => {
+        return JSON.stringify(obj) === _item;
+      });
+    });
+  }
 }
