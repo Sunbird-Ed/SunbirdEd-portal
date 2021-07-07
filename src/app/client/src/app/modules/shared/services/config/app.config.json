@@ -430,9 +430,7 @@
       "respondTo": "slider",
       "dots": true,
       "arrows": false,
-      "centerMode": false,
-      "infinite": false,
-      "rtl": false
+      "infinite": false
     }
   },
   "CoursePageSection": {
