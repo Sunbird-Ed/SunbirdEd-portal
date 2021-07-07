@@ -32,3 +32,4 @@ export * from './kendra/kendra.service';
 export * from './dhiti/dhiti.service';
 export * from './observation/observation.service';
 export * from './cloud/cloud.service';
+export * from './segmentation-tag/segmentation-tag.service';

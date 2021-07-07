@@ -11,7 +11,8 @@
           <i class="search icon" aria-hidden="true"></i>
           <label for="search-within-group" class="hide">{{resourceService?.frmelmnts?.lbl?.searchWithinGroup}}</label>
           <input class="sb-search-input" id="search-within-group" type="text" #searchInputBox (input)="search(searchInputBox.value)"
-            [placeholder]="resourceService?.frmelmnts?.lbl?.searchWithinGroup" />
+            [placeholder]="resourceService?.frmelmnts?.lbl?.searchWithinGroup"/>
+            <i class="icon close mt-4" (click)="resetValue();"></i>
         </div>
         <button class="sb-btn sb-btn-normal">{{resourceService?.frmelmnts?.lbl?.search}}</button>
       </div>
