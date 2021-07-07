@@ -71,11 +71,14 @@
 :host {
   .banner-image {
     border-radius: calculateRem(16px);
-    height: 280px;
+    height: calculateRem(280px);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
     overflow: hidden;
+    @include respond-below(sm) {
+      height: calculateRem(128px);
+    }
   }
 }
 ::ng-deep {
@@ -89,12 +92,18 @@
       margin-bottom: calculateRem(48px);
     }
     .slick-dots li button:before {
-      color: var(--gray-200);
       opacity: 1;
-      font-size: calculateRem(48px);
+      background: var(--gray-200);
+      content: "";
+      border-radius: 50%;
+      width: calculateRem(12px);
+      height: calculateRem(12px);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
     .slick-dots li.slick-active button:before {
-      color: var(--gray-800);
+      background: var(--gray-800);
     }
   }
 }
