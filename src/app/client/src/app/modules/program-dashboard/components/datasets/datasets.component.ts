@@ -26,6 +26,7 @@ export class DatasetsComponent implements OnInit {
   programs = [];
   solutions = [];
   public message = 'There is no data available';
+  instance: string;
 
   @ViewChild('modal', { static: false }) modal;
   popup: boolean = false;
@@ -102,8 +103,6 @@ export class DatasetsComponent implements OnInit {
 
   getProgramsList() {
 
-    this.userRoles.push("PROGRAM_MANAGER");
-
     const paramOptions = {
       url:
         this.config.urlConFig.URLS.KENDRA.PROGRAMS_BY_PLATFORM_ROLES+"?role="+this.userRoles.toString()
@@ -137,6 +136,7 @@ export class DatasetsComponent implements OnInit {
   ngOnInit() {
 
     this.loadReports();
+    this.instance = _.upperCase(this.resourceService.instance || 'SUNBIRD');
     this.userDataSubscription = this.userService.userData$.subscribe(
       (user: IUserData) => {
         if (user && !user.err) {
