@@ -6,18 +6,19 @@ import {
   ConfigService,
 } from "@sunbird/shared";
 import { FormGroup, FormBuilder } from "@angular/forms";
-import { QuestionnaireService } from "../questionnaire.service";
 import { ActivatedRoute } from "@angular/router";
 import { ObservationService } from "@sunbird/core";
 import { Location } from "@angular/common";
-import {
-  AssessmentInfo,
-  Evidence,
-  IAssessmentDetails,
-  Section,
-} from "../Interface/assessmentDetails";
+// import {
+//   AssessmentInfo,
+//   Evidence,
+//   IAssessmentDetails,
+//   Section,
+// } from "../Interface/assessmentDetails";
 import { ObservationUtilService } from "../../observation/service";
 import { ComponentDeactivate } from "../guard/can-deactivate.guard";
+import { AssessmentInfo, Evidence, IAssessmentDetails, Section, SlQuestionnaireService } from "@shikshalokam/sl-questionnaire";
+import { QuestionnaireService } from "../questionnaire.service";
 
 @Component({
   selector: "app-questionnaire",
@@ -42,13 +43,14 @@ export class QuestionnaireComponent
   constructor(
     public layoutService: LayoutService,
     public fb: FormBuilder,
-    public qService: QuestionnaireService,
     public resourceService: ResourceService,
     private activatedRoute: ActivatedRoute,
     private config: ConfigService,
     private observationService: ObservationService,
     private location: Location,
-    private observationUtilService: ObservationUtilService
+    private observationUtilService: ObservationUtilService,
+    private slQService: SlQuestionnaireService,
+    private questionnaireService:QuestionnaireService
   ) {
     super();
   }
@@ -75,8 +77,6 @@ export class QuestionnaireComponent
       left: 0,
       behavior: "smooth",
     });
-    // this.evidence = this.data.result.assessment.evidences[0];
-    // this.sections = this.evidence.sections;
   }
 
   getQuestionnare() {
@@ -88,11 +88,8 @@ export class QuestionnaireComponent
     this.observationService.post(paramOptions).subscribe(
       (data: IAssessmentDetails) => {
         this.assessmentInfo = data.result;
-        this.assessmentInfo = this.qService.mapSubmissionToAssessment(
+        this.assessmentInfo = this.slQService.mapSubmissionToAssessment(
           this.assessmentInfo
-        );
-        this.qService.setSubmissionId(
-          this.assessmentInfo.assessment.submissionId
         );
         this.evidence = data.result.assessment.evidences[0];
         this.evidence.startTime = Date.now();
@@ -143,7 +140,7 @@ export class QuestionnaireComponent
     if (!userConfirm) {
       return;
     }
-    let evidenceData = this.qService.getEvidenceData(
+    let evidenceData = this.slQService.getEvidenceData(
       this.evidence,
       this.questionnaireForm.value
     );
@@ -206,7 +203,9 @@ export class QuestionnaireComponent
     });
     alertMetaData.footer.className = "double-btn";
 
-    const response = await this.observationUtilService.showPopupAlert(alertMetaData);
+    const response = await this.observationUtilService.showPopupAlert(
+      alertMetaData
+    );
     if (response) {
       this.canLeave = true;
       this.location.back();
@@ -241,13 +240,13 @@ export class QuestionnaireComponent
   }
 
   scrollToContent(id) {
-    const element =  document.getElementById(id);
+    const element = document.getElementById(id);
     const headerOffset = 200;
     const elementPosition = element.getBoundingClientRect().top;
     const offsetPosition = elementPosition - headerOffset;
     window.scrollTo({
-         top: offsetPosition,
-         behavior: "smooth"
+      top: offsetPosition,
+      behavior: "smooth"
     });
   }
 
