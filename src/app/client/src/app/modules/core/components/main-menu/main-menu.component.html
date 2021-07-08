@@ -3,7 +3,7 @@
 <div class="ui text menu m-0 d-flex flex-jc-center flex-ai-center computer only">
 
   <ng-container>
-    <app-content-type [layoutConfiguration]="layoutConfiguration"></app-content-type>
+    <app-content-type [layoutConfiguration]="layoutConfiguration" [showBackButton]="showBackButton"></app-content-type>
   </ng-container>
 
   <!--Logged in user-->
@@ -43,7 +43,7 @@
 	<div class="ui sidebar right vertical menu">
 
     <div class="mobile only">
-      <app-content-type [layoutConfiguration]="layoutConfiguration"></app-content-type>
+      <app-content-type [layoutConfiguration]="layoutConfiguration" [showBackButton]="showBackButton"></app-content-type>
     </div>
 
     <!--Logged in user-->
@@ -114,7 +114,7 @@
 
 <ng-container *ngIf="isLayoutAvailable()">
 
-  <app-content-type [layoutConfiguration]="layoutConfiguration"></app-content-type>
+  <app-content-type [layoutConfiguration]="layoutConfiguration" [showBackButton]="showBackButton"></app-content-type>
 
   <!--Mobile-->
 <div class="mobile only">
