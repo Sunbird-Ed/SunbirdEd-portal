@@ -86,7 +86,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     {
       category: 'audience',
       type: 'dropdown',
-      labelText: 'Published User Type',
+      labelText: _.get(this.resourceService, 'frmelmnts.lbl.publishedUserType'),
       placeholderText: 'Select User Type',
       multiple: true
     }
