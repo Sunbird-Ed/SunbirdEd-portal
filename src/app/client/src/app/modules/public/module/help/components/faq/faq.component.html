@@ -57,7 +57,7 @@
               <div class="sb-developer-option-panel-body__title">{{resourceService?.frmelmnts?.lbl?.enableDebugMode}}
                 <div class="enable-checkbox">
                   <label class="switch">
-                    <input type="checkbox" (change)="enableDebugMode($event);" [ngClass]="{'sb-btn-disabled': isDisabled }" [disabled]="isDisabled">
+                    <input type="checkbox" [checked]="isDisabled" (change)="enableDebugMode($event);" [ngClass]="{'sb-btn-disabled': isDisabled }" [disabled]="isDisabled">
                     <span class="slider round"></span>
                   </label>
                 </div>
