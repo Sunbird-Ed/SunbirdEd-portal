@@ -10,7 +10,7 @@ import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RESPONSE } from './explore-page.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TelemetryModule, IImpressionEventInput } from '@sunbird/telemetry';
+import { TelemetryModule, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { ExplorePageComponent } from './explore-page.component';
 import { ContentSearchService } from '@sunbird/content-search';
 import { configureTestSuite } from '@sunbird/test-util';
@@ -94,7 +94,7 @@ describe('ExplorePageComponent', () => {
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(), SlickModule],
       declarations: [ExplorePageComponent],
       providers: [PublicPlayerService, { provide: ResourceService, useValue: resourceBundle },
-        FormService, ProfileService, ContentManagerService,
+        FormService, ProfileService, ContentManagerService, TelemetryService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
@@ -803,6 +803,52 @@ describe('ExplorePageComponent', () => {
       segmentationTagService.exeCommands = [];
       component.showorHideBanners();
       expect(component.displayBanner).toEqual(false);
+    });
+
+    it('should log the telemetry on banner click', () => {
+      const data = {
+          'code': 'banner_search',
+          'ui': {
+              'background': 'https://cdn.pixabay.com/photo/2015/10/29/14/38/web-1012467_960_720.jpg',
+              'text': 'Sample Search'
+          },
+          'action': {
+              'type': 'navigate',
+              'subType': 'search',
+              'params': {
+                  'query': 'limited attempt course',
+                  'filter': {
+                      'offset': 0,
+                      'filters': {
+                          'audience': [],
+                          'objectType': [
+                              'Content'
+                          ]
+                      }
+                  }
+              }
+          },
+          'expiry': '1653031067'
+      };
+      const telemetryService = TestBed.get(TelemetryService);
+      spyOn(telemetryService, 'interact');
+      const activatedRoute = TestBed.get(ActivatedRoute);
+      const telemetryData = {
+        context: {
+          env:  activatedRoute.snapshot.data.telemetry.env,
+          cdata: [{
+            id: 'banner_search',
+            type: 'Banner'
+          }]
+        },
+        edata: {
+          id: 'banner_search',
+          type: 'click',
+          pageid: activatedRoute.snapshot.data.telemetry.pageid
+        }
+      };
+      component.handleBannerClick(data);
+      expect(telemetryService.interact).toHaveBeenCalledWith(telemetryData);
     });
   });
 });
