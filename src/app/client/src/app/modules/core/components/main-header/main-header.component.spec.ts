@@ -372,4 +372,8 @@ describe('MainHeaderComponent', () => {
     spyOn(Object.getPrototypeOf(localStorage), 'getItem').and.returnValue('{"name":"Guest"}');
     component.getGuestUser();
   });
+  it('should call hide the back button', () => {
+    component.goBack();
+    expect(component.showBackButton).toBeFalsy();
+  });
 });
