@@ -1,12 +1,12 @@
 <ng-container *ngIf="!isLayoutAvailable()">
   <div class="item py-8 pr-8 computer only">
     <ng-container *ngFor="let contentType of contentTypes">
-      <a *ngIf="contentType.isEnabled && contentType?.isOnlineOnly" (click)="showContentType(contentType)" appOnlineOnly
+      <a *ngIf="contentType.isEnabled && contentType?.isOnlineOnly" tabindex="0" (click)="showContentType(contentType)" appOnlineOnly
          [ngClass]="{'active': selectedContentType === contentType.contentType}"
          class="item {{'item--' + getIcon(contentType)}}">
         {{getTitle(contentType)}}
       </a>
-      <a *ngIf="contentType.isEnabled && !contentType?.isOnlineOnly && isDesktopApp" (click)="showContentType(contentType)"
+      <a *ngIf="contentType.isEnabled && !contentType?.isOnlineOnly && isDesktopApp" tabindex="0" (click)="showContentType(contentType)"
          [ngClass]="{'active': selectedContentType === contentType.contentType}"
          class="item {{'item--' + getIcon(contentType)}}">
         {{getTitle(contentType)}}
@@ -17,12 +17,12 @@
     <ng-container *ngFor="let contentType of contentTypes">
       <div class="profile__actions">
         <ul class="profile__actions__list pl-0">
-          <li *ngIf="contentType.isEnabled && contentType?.isOnlineOnly" (click)="showContentType(contentType);closeSideMenu.emit()" appOnlineOnly
+          <li *ngIf="contentType.isEnabled && contentType?.isOnlineOnly" tabindex="0" (click)="showContentType(contentType);closeSideMenu.emit()" appOnlineOnly
               [ngClass]="{'active': selectedContentType === contentType.contentType}"
               class="list-item {{'item--' + getIcon(contentType)}}">
             {{getTitle(contentType)}}
           </li>
-          <li *ngIf="contentType.isEnabled && !contentType?.isOnlineOnly && isDesktopApp" (click)="showContentType(contentType);closeSideMenu.emit()"
+          <li *ngIf="contentType.isEnabled && !contentType?.isOnlineOnly && isDesktopApp" tabindex="0" (click)="showContentType(contentType);closeSideMenu.emit()"
               [ngClass]="{'active': selectedContentType === contentType.contentType}"
               class="list-item {{'item--' + getIcon(contentType)}}">
             {{getTitle(contentType)}}

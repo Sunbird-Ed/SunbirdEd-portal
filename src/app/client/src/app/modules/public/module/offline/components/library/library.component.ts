@@ -127,7 +127,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     }
 
     fetchCurrentPageData() {
-        this.searchService.getContentTypes().pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
+        this.searchService.getContentTypes(true).pipe(takeUntil(this.unsubscribe$)).subscribe(formData => {
             this.currentPageData = _.find(formData, (o) => o.title === 'frmelmnts.lbl.desktop.mylibrary');
             const { contentType, title, theme: { imageName = null } = {} } = this.currentPageData;
             this.pageTitle = _.get(this.resourceService, title);

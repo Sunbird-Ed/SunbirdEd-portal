@@ -21,7 +21,7 @@
                     <div class="sb-checkbox sb-checkbox-secondary pt-24 ui checkbox">
                         <input value="{{entity._id}}" type="checkbox" id="{{entity._id}}"
                             [ngClass]="{'disabled-checkbox' :entity.isSelected}" (change)="selectEntity(entity)"
-                            [disabled]="entity.isSelected" [checked]="entity.selected">
+                            [disabled]="entity.isSelected" [checked]="entity.selected || selectedEntities?.includes(entity._id)">
                         <label for="{{entity._id}}" class="text-left fsmall">{{entity.name}}</label>
                     </div>
                 </div>
