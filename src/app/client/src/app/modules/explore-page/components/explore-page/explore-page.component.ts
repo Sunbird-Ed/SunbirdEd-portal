@@ -449,7 +449,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                         this.contentSection = {
                                             isEnabled: Boolean(_.get(section, 'isEnabled')),
                                             searchRequest: _.get(section, 'apiConfig.req'),
-                                            title: this.getSectionTitle(section.title)
+                                            title: get(this.resourceService, section.title)
                                         };
                                     }
                                 }
