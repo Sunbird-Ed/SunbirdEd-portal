@@ -5,17 +5,14 @@ import { CommonModule } from '@angular/common';
 import { SuiModule, SuiModalModule} from 'ng2-semantic-ui-v9';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { NgInviewModule } from 'angular-inport';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
-import { ContentSearchModule } from '@sunbird/content-search';
 import { TranslateModule } from '@ngx-translate/core';
 import { ReportRoutingModule } from './report-routing.module';
-import { SolutionListingComponent,EntityListComponent,ReportViewComponent } from './components';
+import { SolutionListingComponent,EntityListComponent,ReportViewComponent,AllEvidenceComponent } from './components';
 import {DataTablesModule} from 'angular-datatables';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import {DashletModule} from '@project-sunbird/sb-dashlet-v9';
 import {SlReportsLibraryModule} from '@shikshalokam/sl-reports-library';
-import { AllEvidenceComponent } from './components/all-evidence/all-evidence.component';
 
 
 @NgModule({
@@ -28,9 +25,7 @@ import { AllEvidenceComponent } from './components/all-evidence/all-evidence.com
     SuiModule,
     SuiModalModule,
     TranslateModule,
-    ContentSearchModule,
     SharedFeatureModule,
-    NgInviewModule,
     TelemetryModule,
     FormsModule,
     ReactiveFormsModule,
