@@ -63,9 +63,9 @@
     "PAGE_PREFIX": "data/v1/page/assemble",
     "DIAL_ASSEMBLE_PREFIX": "data/v1/dial/assemble",
     "GET_GENERALISED_RESOURCE": "getGeneralisedResourcesBundles",
-    "OBSERVATION_PREFIX": "/assessment/",
-    "KENDRA_PREFIX": "/kendra/",
-    "DHITI_PREFIX":"/dhiti/",
+    "OBSERVATION_PREFIX": "/assessment/api/",
+    "KENDRA_PREFIX": "/kendra/api/",
+    "DHITI_PREFIX":"/dhiti/api/",
     "CLOUD_PREFIX":"/cloudUpload/",
     "REPORT": {
       "READ": "/get",
