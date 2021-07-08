@@ -38,7 +38,7 @@
 
     <!--Actions-->
     <div class="sb-modal-actions text-center">
-      <button appTelemetryInteract [telemetryInteractObject]="courseInteractObject"
+      <button appTelemetryInteract [telemetryInteractObject]="courseInteractObject" tabindex="0"
       [telemetryInteractEdata]="{id:'viewCertificateNameChangedPopupSubmit' , type: 'click' , pageid:'course-consumption'}" [ngClass]="certificateNameChecked ? '' : 'sb-btn-disabled'" [disabled]="!disableContinueBtn" (click)="updateProfileName()" class="sb-btn sb-btn-normal sb-btn-primary" type="button"> {{resourceService.frmelmnts.lbl.continue}} </button>
     </div>
     <!-- pass "sb-btn-disabled" class for button disabled -->

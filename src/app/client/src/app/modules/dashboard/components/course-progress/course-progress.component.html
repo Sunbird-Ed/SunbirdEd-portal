@@ -17,176 +17,91 @@
 </sui-modal>
 <!-- Updated code as per new design for semantic datatable-->
 <div class="sb-bg-color-white p-16 progress-content">
-<div>
-      <!-- <div class="ui divider"></div> -->
-        <div id="dashoardFiltersHolder" *ngIf="batchlist && batchlist.length > 0">
-          <!-- <div class="d-flex flex-jc-space-between flex-ai-center" [appTelemetryImpression]="telemetryImpression">
-            <div class="d-flex ml-auto">
-              <a class="ui item basic icon circular float-ContentRight mouse-pointer" data-tooltip="Close  Dashboard"
-                appTelemetryInteract [telemetryInteractObject]="interactObject"
-                [telemetryInteractEdata]="{id:'closeDashboard',type:'click',pageid:'course-progress-dashboard'}">
-                <i (click)='redirect()' class="ui remove icon CloseButtonFont"></i>
-              </a>
-            </div>
-          </div> -->
-           <!-- <div class="d-flex flex-jc-space-between flex-ai-center" [appTelemetryImpression]="telemetryImpression">
-            <div class="d-flex ml-auto">
-              <a class="ui item basic icon circular float-ContentRight mouse-pointer" data-tooltip="Close  Dashboard"
-                appTelemetryInteract [telemetryInteractObject]="interactObject"
-                [telemetryInteractEdata]="{id:'closeDashboard',type:'click',pageid:'course-progress-dashboard'}">
-                <i (click)='redirect()' class="ui remove icon CloseButtonFont"></i>
-              </a>
-            </div>
-          </div> -->
-          <div class="d-flex  progress-report-content">
-              <div class="d-flex w-300 flex-dc">
-                <label class="fnormal font-weight-normal pl-4 text-left">{{resourceService?.frmelmnts?.lbl?.selectBatch}}</label>
-                <label class="w-100">
-                  <sui-select class="selection course-dashboard-select" placeholder="Select batch to see dashboard"
-                    [(ngModel)]="selectedOption" [options]="batchlist" labelField="name" valueField="id"
-                    #select>
-                    <sui-select-option *ngFor="let course of select.filteredOptions" [value]="course"
-                      (click)="setBatchId(course);" appTelemetryInteract [telemetryInteractObject]="interactObject"
-                      [telemetryInteractEdata]="{id:'batchSelection',type:'click',pageid:'course-progress-dashboard'}"
-                      [telemetryInteractCdata]="[{ 'type': 'batch', 'id': course.id}]">
-                    </sui-select-option>
-                  </sui-select></label>
-                </div>
-              <!-- below needs to be done score card -->
-
+  <div>
+    <div id="dashoardFiltersHolder" *ngIf="batchlist && batchlist.length > 0">
+      <div class="d-flex  progress-report-content">
+        <div class="d-flex w-300 flex-dc">
+          <label
+            class="fnormal font-weight-normal pl-4 text-left">{{resourceService?.frmelmnts?.lbl?.selectBatch}}</label>
+          <label class="w-100">
+            <sui-select class="selection course-dashboard-select" placeholder="Select batch to see dashboard"
+              [(ngModel)]="selectedOption" [options]="batchlist" labelField="name" valueField="id" #select>
+              <sui-select-option *ngFor="let course of select.filteredOptions" [value]="course"
+                (click)="setBatchId(course);" appTelemetryInteract [telemetryInteractObject]="interactObject"
+                [telemetryInteractEdata]="{id:'batchSelection',type:'click',pageid:'course-progress-dashboard'}"
+                [telemetryInteractCdata]="[{ 'type': 'batch', 'id': course.id}]">
+              </sui-select-option>
+            </sui-select>
+          </label>
+        </div>
+        <!-- below needs to be done score card -->
+        <app-access-discussion *ngIf="fetchForumIdReq" [fetchForumIdReq]="fetchForumIdReq"
+          (routerData)="assignForumData($event)"> </app-access-discussion>
       </div>
       <!-- NOTE: Using currentBatch data instead of dashboardData, as API got deprecated -->
       <div class="d-flex flex-dc current-batch-list">
-        <p *ngIf="currentBatch?.lastUpdatedOn" class="d-flex flex-ai-flex-end mr-24 fsmall mt-8 mb-0 update-text">{{resourceService?.frmelmnts?.lbl?.batchReportUpdateNote | interpolate:'{date}': (currentBatch?.lastUpdatedOn | sbDataTable : 'dateTime')}}</p>
+        <p *ngIf="currentBatch?.lastUpdatedOn" class="d-flex flex-ai-flex-end mr-24 fsmall mt-8 mb-0 update-text">
+          {{resourceService?.frmelmnts?.lbl?.batchReportUpdateNote | interpolate:'{date}': (currentBatch?.lastUpdatedOn
+          | sbDataTable : 'dateTime')}}</p>
 
-        <div class="d-flex flex-dc my-16 sb-course-progress-status"
-            *ngIf="currentBatch">
-            <div class="sb-course-progress-status-label">
-              <span class="course-start-dt course-participants-label">
-                <span *ngIf="currentBatch.startDate">
-                  {{resourceService?.frmelmnts?.lbl?.batchstartdate}}
-                </span>
+        <div class="d-flex flex-dc my-16 sb-course-progress-status" *ngIf="currentBatch">
+          <div class="sb-course-progress-status-label">
+            <span class="course-start-dt course-participants-label">
+              <span *ngIf="currentBatch.startDate">
+                {{resourceService?.frmelmnts?.lbl?.batchstartdate}}
               </span>
+            </span>
 
-              <span class="course-end-dt course-participants-label">
-                <span>{{resourceService?.frmelmnts?.lbl?.batchenddate}}
-                </span>
+            <span class="course-end-dt course-participants-label">
+              <span>{{resourceService?.frmelmnts?.lbl?.batchenddate}}
               </span>
+            </span>
 
-              <span *ngIf="currentBatch.participantCount !== null"
+            <span *ngIf="currentBatch.participantCount !== null"
               class="d-flex flex-dc course-participants course-participants-label">
-                 <span>{{resourceService?.frmelmnts?.lbl?.totalEnrolments}}</span>
-                 <!-- <span class="py-8 fsmall">{{resourceService?.frmelmnts?.lbl?.batchReportUpdateNote}}</span> -->
-              </span>
-
-
-<!--            <span *ngIf="currentBatch.completedCount !== null"
-                  class="course-participants course-participants-label">
-                 <span>{{resourceService?.frmelmnts?.lbl?.totalCompletionsCourse}}
-                </span>
-              </span>-->
-
-           <!-- TODO: Need to revert when changes are done from KP side-->
-<!--            <span *ngIf="currentBatch.certificateCount!==null"
-                  class="course-participants course-participants-label">
-                &lt;!&ndash; <span>{{resourceService?.frmelmnts?.lbl?.certificatesIssued}}
-                </span> &ndash;&gt;
-              </span>-->
+              <span>{{resourceService?.frmelmnts?.lbl?.totalEnrolments}}</span>
+            </span>
           </div>
 
-            <div class="sb-bg-color-white sb-course-progress-status-result">
-              <span class="course-start-dt course-participants-label">
-               <span class="font-weight-bold"> {{currentBatch.startDate | dateFormat :'DD/MM/YYYY' }}</span>
-              </span>
+          <div class="sb-bg-color-white sb-course-progress-status-result">
+            <span class="course-start-dt course-participants-label">
+              <span class="font-weight-bold"> {{currentBatch.startDate | dateFormat :'DD/MM/YYYY' }}</span>
+            </span>
 
-              <span class="course-end-dt course-participants-label">
-                <span *ngIf="currentBatch.endDate" class="font-weight-bold">{{currentBatch.endDate | dateFormat :'DD/MM/YYYY'}}</span>
-                <span *ngIf="!currentBatch.endDate">-</span>
-              </span>
+            <span class="course-end-dt course-participants-label">
+              <span *ngIf="currentBatch.endDate" class="font-weight-bold">{{currentBatch.endDate | dateFormat
+                :'DD/MM/YYYY'}}</span>
+              <span *ngIf="!currentBatch.endDate">-</span>
+            </span>
 
             <span *ngIf="currentBatch.participantCount !== null" class="course-participants course-participants-label">
-                 <span class="font-weight-bold">{{currentBatch.participantCount}}</span>
-              </span>
-
-<!--            <span *ngIf="currentBatch.completedCount !== null"
-                  class="course-participants course-participants-label">
-                 <span class="font-weight-bold">{{currentBatch.completedCount}}</span>
-              </span>-->
-
-              <!-- TODO: Need to revert when changes are done from KP side-->
-               <!--<span *ngIf="currentBatch.certificateCount!==null"
-                class="course-participants course-participants-label">
-                &lt;!&ndash; <span class="font-weight-bold">{{currentBatch.certificateCount}}</span> &ndash;&gt;
-              </span>-->
+              <span class="font-weight-bold">{{currentBatch.participantCount}}</span>
+            </span>
           </div>
 
-           </div>
-          </div>
-          <!-- Select Batch image content start-->
-           <div class="d-flex flex-jc-center" *ngIf="batchlist && batchlist.length > 1 && showWarningDiv && !showLoader">
-            <div class="d-flex flex-dc flex-ai-center pb-24">
-              <div><img src="assets/images/batch.png" width="329px" height="229px" alt="batch"></div>
-              <p class="img-text">Select batch to view details</p>
-            </div>
-          </div>
-          <!-- Select Batch image content end-->
         </div>
-        <div class="sb-toaster sb-toast-info sb-mw-100 sb-toast-sm-padding"
-          *ngIf="currentBatch &&  currentBatch.count>10000">
-          <div class="sb-toast-body">
-            <div class="sb-toast-texts">
-              <div class="sb-toast-message">{{resourceService?.frmelmnts?.instn?.t0085}}</div>
-            </div>
-          </div>
+      </div>
+      <!-- Select Batch image content start-->
+      <div class="d-flex flex-jc-center" *ngIf="batchlist && batchlist.length > 1 && showWarningDiv && !showLoader">
+        <div class="d-flex flex-dc flex-ai-center pb-24">
+          <div><img src="assets/images/batch.png" width="329px" height="229px" alt="batch"></div>
+          <p class="img-text">Select batch to view details</p>
         </div>
-        <!-- <div class="d-flex flex-jc-space-between flex-ai-center download-file-container mt-15 mb-0 mx-0" *ngIf="dashboarData">
-          <div class="d-flex">
-            <div class="four wide column pl-30">
-              <div class="ui category search float-ContentRight">
-                <div class="ui icon input">
-                  <input (keyup)="keyup(searchText)" class="search-course-data" type="text" title="Search" class="" [(ngModel)]="searchText"
-                    placeholder="{{resourceService?.frmelmnts?.lbl?.searchUserName}} " autocomplete="off" />
-                  <i class="search icon"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="d-flex">
-            <a href="javascript:void(0);" class="ui download-file right floated text-decoration-underline pr-30"
-              (click)="downloadReport();" *ngIf="showDownloadLink" appTelemetryInteract [telemetryInteractObject]="interactObject"
-              [telemetryInteractEdata]="{id:'download',type:'click',pageid:'course-progress-dashboard'}">
-              {{resourceService?.frmelmnts?.instn?.t0065}}</a>
-          </div>
-        </div> -->
-        <!-- <div class="d-flex flex-ai-center flex-jc-space-between">
-          <div *ngIf="dashboarData && dashboarData.data.length >0 && !showLoader" >showing  {{pager.startIndex+1}} - {{pager.endIndex+1}} of {{dashboarData.data.count}}  users</div>
-          <div class="pb-10" *ngIf="dashboarData && dashboarData.data.length >0 && totalCount > config.appConfig.DASHBOARD.PAGE_LIMIT && !showLoader ">
-            <div class="ui pagination menu mt-10 right-floated pt-0 mini" *ngIf="pager.pages.length ">
-             <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(pager.currentPage - 1)">Previous</a>
-              <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" (click)="navigateToPage(page)"
-                class="item">{{page}}</a>
-              <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.currentPage + 1)"
-                class="item">Next</a>
-            </div>
-          </div>
-        </div> -->
-        <div class="tweleve wide column" *ngIf="showLoader">
-          <app-loader></app-loader>
+      </div>
+      <!-- Select Batch image content end-->
+    </div>
+    <div class="sb-toaster sb-toast-info sb-mw-100 sb-toast-sm-padding"
+      *ngIf="currentBatch &&  currentBatch.count>10000">
+      <div class="sb-toast-body">
+        <div class="sb-toast-texts">
+          <div class="sb-toast-message">{{resourceService?.frmelmnts?.instn?.t0085}}</div>
         </div>
-        <!-- <div class="ui warning message tweleve wide column"
-          *ngIf="batchlist && batchlist.length > 1 && showWarningDiv && !showLoader">
-          <div class="header">{{resourceService?.frmelmnts?.lbl?.dashboardnobatchselected}}</div>
-          {{resourceService?.frmelmnts?.lbl?.dashboardnobatchselecteddesc}}
-        </div> -->
-        <div class="ui grid" *ngIf="showNoBatch">
-          <!-- <div class="twelve wide column py-0" [appTelemetryImpression]="telemetryImpression">
-            <a (click)='redirect()' class="ui item basic icon circular float-ContentRight"
-              data-tooltip="Close  Dashboard" appTelemetryInteract [telemetryInteractObject]="interactObject"
-              [telemetryInteractEdata]="{id:'closeDashboard',type:'click',pageid:'course-progress-dashboard'}"
-              [telemetryInteractCdata]="telemetryCdata">
-              <i class="ui remove icon CloseButtonFont mt-16"></i>
-            </a>
-          </div> -->
+      </div>
+    </div>
+    <div class="tweleve wide column" *ngIf="showLoader">
+      <app-loader></app-loader>
+    </div>
+    <div class="ui grid" *ngIf="showNoBatch">
       <div class="twelve wide column">
         <div class="ui info message">
           <div class="header">{{resourceService?.frmelmnts?.instn?.t0061}}</div>
@@ -200,22 +115,24 @@
 
   <sui-tabset class="batch-report-tabs" *ngIf="currentBatch">
     <div class="ui pointing secondary menu">
-      <!-- <a class="item" (click)="summaryReport(1)" suiTabHeader="1">{{resourceService?.frmelmnts?.lbl?.stateWiseReport}}</a> -->
-      <a class="item" (click)="loadOndemandReports(2)" suiTabHeader="2">{{resourceService?.frmelmnts?.lbl?.detailedWiseReport}}</a>
+      <a class="item" (click)="loadOndemandReports(2)"
+        suiTabHeader="2">{{resourceService?.frmelmnts?.lbl?.detailedWiseReport}}</a>
     </div>
     <div class="ui segment state-report" suiTabContent="1">
       <div class="ui stackable grid">
         <div class="nine wide column py-0">
-        <p class="fsmall mt-8 mb-0 summary-text" >{{resourceService?.frmelmnts?.lbl?.summaryReportNote}}
-          <span class="font-weight-bold" >{{resourceService?.frmelmnts?.lbl?.summaryReportUpdateNote}}</span>
-        </p>  
+          <p class="fsmall mt-8 mb-0 summary-text">{{resourceService?.frmelmnts?.lbl?.summaryReportNote}}
+            <span class="font-weight-bold">{{resourceService?.frmelmnts?.lbl?.summaryReportUpdateNote}}</span>
+          </p>
+        </div>
       </div>
-      </div>
-      <sb-datatable [name]="fileName" [batch]="currentBatch" [message]="message"  [data]="stateWiseReportData" [columns]="columns" [downloadCSV]="isDownloadReport" ></sb-datatable>
-   
+      <sb-datatable [name]="fileName" [batch]="currentBatch" [message]="message" [data]="stateWiseReportData"
+        [columns]="columns" [downloadCSV]="isDownloadReport"></sb-datatable>
+
     </div>
     <div class="ui segment detailed-report" suiTabContent="2">
-      <app-on-demand-reports [reportTypes]="reportTypes" [userId]="userId" [batch]="currentBatch" [tag]="courseId + '_'+batchId"></app-on-demand-reports>
+      <app-on-demand-reports [reportTypes]="reportTypes" [userId]="userId" [batch]="currentBatch"
+        [tag]="courseId + '_'+batchId"></app-on-demand-reports>
     </div>
   </sui-tabset>
 </div>

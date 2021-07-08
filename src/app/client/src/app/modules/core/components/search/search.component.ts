@@ -173,16 +173,11 @@ export class SearchComponent implements OnInit, OnDestroy {
     }
     
     if (!_.includes(['Users', 'profile'], this.selectedOption)) {
-      if(url === '/observation'){
-        this.queryParam['selectedTab'] = 'observation';
-      }else{
       this.queryParam['selectedTab'] = this.isDesktopApp && !this.isConnected ? 'mydownloads' : 'all';
-      }
+      
     }
     if(this.isDesktopApp && !this.isConnected) {
       this.route.navigate(['mydownloads'], { queryParams: this.queryParam });
-    } else if(url === '/observation'){
-      this.route.navigate(['observation'],{ queryParams: this.queryParam,replaceUrl: true})
     }else {
       this.route.navigate([redirectUrl, 1], { queryParams: this.queryParam });
     }

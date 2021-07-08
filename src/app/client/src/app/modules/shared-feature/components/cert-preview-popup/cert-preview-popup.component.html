@@ -7,10 +7,10 @@
     <div class="cert-preview-img"><img [src]="certTemplateURL(template?.artifactUrl)"></div>
   </div>
   <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="closeModal('select')">
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0" (click)="closeModal('select')">
       {{resourceService?.frmelmnts?.cert?.lbl?.selectTemplate}}
     </button>
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="closeModal()">
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0" (click)="closeModal()">
       {{resourceService?.frmelmnts?.btn?.close}}
     </button>
   </div>
