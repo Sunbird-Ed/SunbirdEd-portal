@@ -44,68 +44,6 @@
             "icon": "build/icons/mac/icon.icns",
             "target": "dmg"
         },
-        "snap": {
-            "confinement": "strict",
-            "plugs": [
-              "default",
-              {
-                "dot-local-share-data-bconf": {
-                  "interface": "personal-files",
-                  "write": [
-                    "$HOME/.local/share/data/bconf"
-                  ]
-                }
-              },
-              {
-                "var-lib-snapd-hostfs-etc-os-release": {
-                  "interface": "system-files",
-                  "read": [
-                    "/var/lib/snapd/hostfs/etc/os-release"
-                  ]
-                }
-              },
-              {
-                "read-os-release": {
-                  "interface": "system-files",
-                  "read": [
-                    "/etc/os-release"
-                  ]
-                }
-              },
-              {
-                "read-sys-devices-virtual-dmi-id-bios-vendor": {
-                  "interface": "system-files",
-                  "read": [
-                    "/sys/devices/virtual/dmi/id/bios_vendor"
-                  ]
-                }
-              },
-              {
-                "read-sys-devices-virtual-dmi-id-product-serial": {
-                  "interface": "system-files",
-                  "read": [
-                    "/sys/devices/virtual/dmi/id/product_serial"
-                  ]
-                }
-              },
-              {
-                "read-sys-devices-virtual-dmi-id-product-name": {
-                  "interface": "system-files",
-                  "read": [
-                    "/sys/devices/virtual/dmi/id/product_name"
-                  ]
-                }
-              },
-              {
-                "read-proc-cpuinfo": {
-                  "interface": "hardware-observe",
-                  "read": [
-                    "/proc/cpuinfo"
-                  ]
-                }
-              }
-            ]
-          },
         "linux": {
             "icon": "build/icons/png",
             "target": [
