@@ -4,6 +4,8 @@ import { IUserData, ConfigService, ResourceService, AlertModal } from "@sunbird/
 import { take } from "rxjs/operators";
 import { SuiModalService } from 'ng2-semantic-ui-v9';
 import { Router } from "@angular/router";
+import { SlUtilsService } from "@shikshalokam/sl-questionnaire";
+
 
 @Injectable({
   providedIn: "root",
@@ -19,9 +21,12 @@ export class ObservationUtilService {
     private kendraService: KendraService,
     public modalService: SuiModalService,
     public resourceService: ResourceService,
-    public router: Router
+    public router: Router,
+    public slUtil: SlUtilsService,
   ) {
     this.config = config;
+    this.slUtil.openAlert = this.showPopupAlert
+    
   }
 
   getProfileData() {
@@ -126,7 +131,7 @@ export class ObservationUtilService {
     });
   }
 
-  showPopupAlert(alertData) {
+   showPopupAlert(alertData) {
     return new Promise((resolve, reject) => {
       this.modalService
         .open(new AlertModal(alertData))

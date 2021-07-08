@@ -107,7 +107,7 @@
                         </button>
                       </div>
                     </div>
-                    <p class="m-0 report-description py-15 pl-10" *ngIf="(report?.description || currentReport?.reportMetaData?.description ) && !noResult"
+                    <p class="report-description py-15 pl-10" *ngIf="(report?.description || currentReport?.reportMetaData?.description ) && !noResult"
                   [innerHTML]="reportService.transformHTML(report?.description || currentReport.reportMetaData.description)">
                   </p>
                   </div>
