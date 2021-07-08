@@ -991,6 +991,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 const queryParams = _.get(data.action, 'params.filter.filters');
                 if (_.get(data.action, 'params.query')) {
                     queryParams['key'] = _.get(data.action, 'params.query');
+                    queryParams['selectedTab']='all';
                 }
                 if (this.isUserLoggedIn()) {
                     this.router.navigate(['search/Library', 1], { queryParams: queryParams });
