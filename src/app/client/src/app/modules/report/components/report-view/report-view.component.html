@@ -30,7 +30,7 @@
                             </div>
                             <div *ngIf="data">
                               <span class="ml-auto sb-last-update-status fnormal sb-color-gray-400 px-10 last-update">
-                                <span>{{resourceService?.frmelmnts?.lbl?.lastUpdatedOn}}&nbsp;: </span> &nbsp;
+                                <span>{{resourceService?.frmelmnts?.lbl?.lastSubmittedOn}}&nbsp;: </span> &nbsp;
                                 {{data.completedDate| date: "yyyy/MM/dd"}}
                               </span>
                             </div>
@@ -234,7 +234,7 @@
   <div class="twelve wide column" *ngIf="noResult">
     <app-no-result [data]="noResultMessage"></app-no-result>
   </div>
-  <div class="twelve wide column" *ngIf="!data">
+  <div class="twelve wide column" *ngIf="showLoader">
     <app-loader [data]='loaderMessage'></app-loader>
 </div>
 </div>
