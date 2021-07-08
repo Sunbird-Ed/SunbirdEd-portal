@@ -8,6 +8,7 @@ import {
   INoResultMessage,
   ResourceService,
   ToasterService,
+  ILoaderMessage
 } from "@sunbird/shared";
 import * as _ from "lodash-es";
 import { ChangeDetectorRef } from "@angular/core";
@@ -49,6 +50,7 @@ export class ReportViewComponent implements OnInit {
   public showEvidence: boolean = false;
   evidenceParam:any;
   public unsubscribe$ = new Subject<void>();
+  loaderMessage: ILoaderMessage;
   constructor(
     private dhitiService: DhitiService,
     config: ConfigService,

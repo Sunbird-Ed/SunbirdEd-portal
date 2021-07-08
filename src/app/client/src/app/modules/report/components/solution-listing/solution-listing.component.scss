@@ -1,6 +1,10 @@
 @import "variables";
 @import "mixins/mixins";
 
+.main-container {
+  padding:0 1%;
+}
+
 .sbgrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(292px, 1fr));
