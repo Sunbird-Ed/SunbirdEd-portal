@@ -977,20 +977,13 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 window.open(_.get(data.action, 'params.route'), '_blank');
                 break;
             case 'banner_internal_url':
-                const url = _.get(data.action, 'params.route');
+                const route = _.get(data.action, 'params.route');
                 const anonymousUrl = _.get(data.action, 'params.anonymousRoute');
-                if (this.isUserLoggedIn()) {
-                    if (url) {
-                        this.router.navigate([url]);
-                    } else {
-                        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-                    }
+                const url = (this.isUserLoggedIn()) ? route : anonymousUrl;
+                if (url) {
+                    this.router.navigate([url]);
                 } else {
-                    if (anonymousUrl) {
-                        this.router.navigate([anonymousUrl]);
-                    } else {
-                        this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-                    }
+                    this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
                 }
                 break;
             case 'banner_search':
