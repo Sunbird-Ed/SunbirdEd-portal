@@ -358,7 +358,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     if (_.get(currentPageData, 'filter')) {
                         this.isFilterEnabled = _.get(currentPageData, 'filter.isEnabled')
                     }
-                    if(_.get(currentPageData, 'contentType') === 'explore') {
+                    if (_.get(currentPageData, 'contentType') === 'explore') {
+                        this.contentSection = undefined;
                         return this.getExplorePageSections();
                     } else {
                         const { search: { fields = [], filters = {}, facets = ['subject'] } = {}, metaData: { groupByKey = 'subject' } = {} } = currentPageData || {};
@@ -443,11 +444,12 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                         }
                                     });
 
-                                    if (facetKeys.indexOf('search') !== -1) {
+                                    if (facetKeys.indexOf('search') > -1) {
                                         const section = currentPageData.sections.find(sec => sec.facetKey === 'search');
                                         this.contentSection = {
+                                            isEnabled: Boolean(_.get(section, 'isEnabled')),
                                             searchRequest: _.get(section, 'apiConfig.req'),
-                                            title: this.getSectionTitle(section.title)
+                                            title: get(this.resourceService, section.title)
                                         };
                                     }
                                 }
