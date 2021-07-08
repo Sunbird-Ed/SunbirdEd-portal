@@ -1,5 +1,5 @@
 import { CourseProgressService } from '../courseProgress/course-progress.service';
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import * as _ from 'lodash-es';
 import * as Md5 from 'md5';
 import dayjs from 'dayjs';
@@ -33,6 +33,7 @@ export class AssessmentScoreService {
    * md5 class to generate hash from courseId , contentId , batchId and userId
    */
   private _userId: string;
+  public makeReadCall = new EventEmitter<any>();
 
   constructor(private courseProgressService: CourseProgressService) {
   }
@@ -107,7 +108,9 @@ export class AssessmentScoreService {
             this._endEvent = undefined;
           })
         )
-        .subscribe();
+        .subscribe( data => {
+          this.makeReadCall.emit(true);
+        });
     }
   }
 
