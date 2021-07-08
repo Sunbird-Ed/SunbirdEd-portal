@@ -27,49 +27,83 @@
       {{resourceService?.frmelmnts?.lbl?.frequentlyAskedQuestions}}</div>
     <div class="help-page__content" *ngIf="faqData && !showLoader">
       <div class="sbhelp_container mt-24" style="min-height:600px;">
-        <section class="sbhelp_container__left" *ngIf="(isMobileView && showOnlyFaqCategory) || !isMobileView" [ngClass]="{'category-list-mobile':isMobileView, 'category-list-web':!isMobileView}">
-          <sb-list #sbFaqCategoryList
-            [title]="faqData?.constants?.selectCategoryTitle"
-            [listData]="faqData?.categories"
-            [btnText]="faqData?.constants?.reportIssueMsg"
-            [btnImg]="'./assets/images/report.svg'"
-            (itemClick)="onCategorySelect($event)"
-            (btnClick)="enableFaqReport($event)">
-          </sb-list>
-          <div class="mt-8">
-          <button class="sb-btn sb-btn-tertiary sb-btn-normal w-100 debug-btn" (click)="enableDebugMode($event)">
-            {{resourceService?.frmelmnts?.lbl?.enableDebugMode}}
-            </button>
-          </div>
-        </section>
-    
-        <section class="sbhelp_container__right" [ngClass]="{'faq-section-mobile':isMobileView, 'faq-section-web':!isMobileView}" *ngIf="(isMobileView && !showOnlyFaqCategory) || !isMobileView">
-          <div *ngIf="!showFaqReport">
-          <div class="d-flex flex-ai-center mb-8" *ngIf="!showOnlyFaqCategory && isMobileView">
-            <h4 class="ml-16"><b>{{selectedFaqCategory?.name}}</b></h4>
-          </div>
-          <div *ngIf="selectedFaqCategory?.videos?.length">
-            <sb-carousel [title]="faqData?.constants?.videoTitle" [listData]="selectedFaqCategory?.videos" (itemClick)="onVideoSelect($event)"></sb-carousel>
-          </div>
-        
-        <div *ngIf="selectedFaqCategory?.faqs?.length">
-          <div class="faq_title mb-16">{{faqData?.constants?.faqTitle}}</div>
-          <div class="sbhelp_container__faq">
-            <sb-faq [extraTemplate]="extraTemplate" [data]="selectedFaqCategory"
-              (toggleGroupEvent)="logInteractEvent($event, 'toggle-clicked');"
-              (yesClickedEvent)="logInteractEvent($event, 'yes-clicked');"
-              (noClickedEvent)="logInteractEvent($event, 'no-clicked');"
-              (submitClickedEvent)="logInteractEvent($event, 'submit-clicked');">
-            </sb-faq>
-          </div>
+        <div class="">
+          <section class="sbhelp_container__left" *ngIf="(isMobileView && showOnlyFaqCategory) || !isMobileView"
+            [ngClass]="{'category-list-mobile':isMobileView, 'category-list-web':!isMobileView}">
+            <sb-list #sbFaqCategoryList [title]="faqData?.constants?.selectCategoryTitle"
+              [listData]="faqData?.categories" [btnText]="faqData?.constants?.reportIssueMsg"
+              [btnImg]="'./assets/images/report.svg'" (itemClick)="onCategorySelect($event)"
+              (btnClick)="enableFaqReport($event)">
+            </sb-list>
+            <div class="mt-8">
+              <button class="sb-btn sb-btn-tertiary sb-btn-normal w-100 debug-btn" (click)="enableDebugMode($event)">
+                {{resourceService?.frmelmnts?.lbl?.enableDebugMode}}
+              </button>
+            </div>
+          </section>
+          <section class="sbhelp_container__left sbhelp_container__debug mt-16" *ngIf="(isMobileView && showOnlyFaqCategory) || !isMobileView"
+            [ngClass]="{'category-list-mobile':isMobileView, 'category-list-web':!isMobileView}">
+            <div class="sb-developer-option-panel">
+              <div class="sb-developer-option-panel-heading">
+                <div class="sb-developer-option-panel-heading__title">Developer options</div>
+                <div class="sb-developer-option-panel-icon">
+                  <span>
+                    <i class="icon-svg icon-svg--xxs ml-4"><svg class="icon icon-svg--primary">
+                          <use xlink:href="assets/common-consumption/images/sprite.svg#arrow-up"></use>
+                        </svg></i>
+                    </span>
+                    <!-- <span>
+                      <i class="icon-svg icon-svg--xxs ml-4"><svg class="icon icon-svg--primary">
+                            <use xlink:href="assets/common-consumption/images/sprite.svg#arrow-down"></use>
+                          </svg></i>
+                      </span> -->
+                </div>
+              </div>
+              <div class="sb-developer-option-panel-body">  
+                <div class="sb-developer-option-panel-body__title">Enable Debug mode
+                  <div class="enable-checkbox">
+                    <label class="switch">
+                      <input type="checkbox">
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+                </div>
+                <div class="sb-developer-option-panel-body__info">Debug mode will automatically turn of after 10 mins</div>
+              </div>
+            </div>
+          </section>
+        </div>
 
-        </div>
-        </div>
+        <section class="sbhelp_container__right"
+          [ngClass]="{'faq-section-mobile':isMobileView, 'faq-section-web':!isMobileView}"
+          *ngIf="(isMobileView && !showOnlyFaqCategory) || !isMobileView">
+          <div *ngIf="!showFaqReport">
+            <div class="d-flex flex-ai-center mb-8" *ngIf="!showOnlyFaqCategory && isMobileView">
+              <h4 class="ml-16"><b>{{selectedFaqCategory?.name}}</b></h4>
+            </div>
+            <div *ngIf="selectedFaqCategory?.videos?.length">
+              <sb-carousel [title]="faqData?.constants?.videoTitle" [listData]="selectedFaqCategory?.videos"
+                (itemClick)="onVideoSelect($event)"></sb-carousel>
+            </div>
+
+            <div *ngIf="selectedFaqCategory?.faqs?.length">
+              <div class="faq_title mb-16">{{faqData?.constants?.faqTitle}}</div>
+              <div class="sbhelp_container__faq">
+                <sb-faq [extraTemplate]="extraTemplate" [data]="selectedFaqCategory"
+                  (toggleGroupEvent)="logInteractEvent($event, 'toggle-clicked');"
+                  (yesClickedEvent)="logInteractEvent($event, 'yes-clicked');"
+                  (noClickedEvent)="logInteractEvent($event, 'no-clicked');"
+                  (submitClickedEvent)="logInteractEvent($event, 'submit-clicked');">
+                </sb-faq>
+              </div>
+
+            </div>
+          </div>
           <div *ngIf="showFaqReport">
             <app-faq-report [faqData]="faqData"></app-faq-report>
           </div>
         </section>
-        
+
       </div>
     </div>
     <div class="help-page__visit-helpcenter mt-24 w-100 p-16 d-flex flex-ai-center relative9"
