@@ -34,6 +34,8 @@ export class SolutionListingComponent implements OnInit {
   public paginationDetails: IPagination;
   public loaderMessage: ILoaderMessage;
   public noResultMessage: INoResultMessage;
+  showLoader=true;
+  noResult=false;
   constructor(
     public resourceService: ResourceService,
     private layoutService: LayoutService,
@@ -90,6 +92,13 @@ export class SolutionListingComponent implements OnInit {
     };
     this.observationService.post(paramOptions).subscribe(
       (data) => {
+        if(data.result){
+          this.showLoader=false;
+        }
+        else{
+          this.showLoader=false;
+          this.noResult=true;
+        }
         this.solutionList =
           data && data.result ? this.solutionList.concat(data.result.data) : [];
         this.filters = data && data.result && !this.filters.length ? data.result.entityType : this.filters;
@@ -102,7 +111,10 @@ export class SolutionListingComponent implements OnInit {
         this.showLoadMore =
           this.solutionList.length < data.result.count ? true : false;
       },
-      (error) => {}
+      (error) => {
+        this.showLoader=false;
+          this.noResult=true;
+      }
     );
   }
 
@@ -171,7 +183,7 @@ export class SolutionListingComponent implements OnInit {
       state['filter'] = { questionId: [] };
       state['criteriaWise'] = false;
     }
-    this.router.navigate(["reports/report-view"], {
+    this.router.navigate(["solution/report-view"], {
       queryParams: state,
     });
   }
@@ -197,7 +209,7 @@ export class SolutionListingComponent implements OnInit {
       state['filter'] = { questionId: [] };
       state['criteriaWise'] = false;
     }
-    this.router.navigate(["reports/report-view"], {
+    this.router.navigate(["solution/report-view"], {
       queryParams: state,
     });
   }
