@@ -17,7 +17,7 @@
       <div class="sb-pageSection-header" *ngIf="!showLoader">
             <h4 class="sb-pageSection-title m-0 mr-5">{{sectionName}}</h4>
             <span  *ngIf="totalCount" class="sb-pageSection-count sb-label sb-label-xs sb-label-error">{{totalCount}}</span>
-            <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" type="button" (click)="handleCloseButton()">{{resourceService?.frmelmnts?.btn?.close}} <i class="close icon"></i></button>
+            <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" type="button" (click)="handleCloseButton()" tabindex="0">{{resourceService?.frmelmnts?.btn?.close}} <i class="close icon"></i></button>
         </div>
     </div>
         <div class="twelve wide column mt-16" *ngIf="!showLoader && !noResult">
@@ -45,13 +45,13 @@
         <div class="twelve wide column right aligned py-0 mt-16" *ngIf="searchList && totalCount > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !noResult">
             <div class="sb-pagination-container flex-jc-flex-end" *ngIf="pager && pager.pages.length">
                 <div class="sb-pagination my-0">
-                <a [ngClass]="{disabled:pager.currentPage===1 }" class="sb-item " (click)="navigateToPage(1) ">&laquo;</a>
-                <a [ngClass]="{disabled:pager.currentPage===1 }" class="sb-item " (click)="navigateToPage(pager.currentPage - 1)">&lt;</a>
-                <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" (click)="navigateToPage(page)"
+                <a [ngClass]="{disabled:pager.currentPage===1 }" class="sb-item " tabindex="0" (click)="navigateToPage(1) ">&laquo;</a>
+                <a [ngClass]="{disabled:pager.currentPage===1 }" class="sb-item " tabindex="0" (click)="navigateToPage(pager.currentPage - 1)">&lt;</a>
+                <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" tabindex="0" (click)="navigateToPage(page)"
                     class="sb-item">{{page}}</a>
-                    <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.currentPage + 1)"
+                    <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.currentPage + 1)"
                     class="sb-item">&gt;</a>
-                <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.totalPages)"
+                <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.totalPages)"
                     class="sb-item ">&raquo;</a>
                 </div>
             </div>
@@ -88,7 +88,7 @@
 
     <!--Actions-->
     <div class="sb-modal-actions">
-        <a href={{baseUrl}} class="sb-btn sb-btn-normal sb-btn-primary">
+        <a href={{baseUrl}} class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0">
             {{resourceService.frmelmnts?.btn?.signin}}
         </a>
     </div>

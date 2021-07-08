@@ -9,6 +9,7 @@ import { ReportService } from '../../services';
 import { configureTestSuite } from '@sunbird/test-util';
 import { of, throwError } from 'rxjs';
 import { geoJSONDataMock } from './map.component.spec.data';
+import { RouterTestingModule } from '@angular/router/testing';
 describe('MapComponent', () => {
   let component: MapComponent;
   let fixture: ComponentFixture<MapComponent>;
@@ -18,7 +19,7 @@ describe('MapComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [],
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, DashboardModule, TelemetryModule.forRoot()],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, DashboardModule, RouterTestingModule, TelemetryModule.forRoot()],
       providers: [ReportService]
     })
       .compileComponents();
