@@ -1634,55 +1634,55 @@ const API_LIST = {
     },
     '/kendra/v1/users/entityTypesByLocationAndRole/:stateId': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/kendra/v1/solutions/targetedSolutions': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/assessment/v1/observations/entities': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/assessment/v1/observationSubmissions/list/:id': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/kendra/v1/users/targetedEntity/:id': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/assessment/v2/observations/searchEntities': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/assessment/v1/observationSubmissions/create/:id': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/assessment/v2/observations/assessment/:id': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/kendra/v1/cloud-services/files/preSignedUrls': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/assessment/v1/observationSubmissions/list/:id': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/assessment/v1/observations/updateEntities/:id': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/assessment/v1/observationSubmissions/update/:id': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/cloudUpload/upload': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/action/collection/v1/import/:id': {
       description: 'Collection import',
@@ -1702,15 +1702,15 @@ const API_LIST = {
     },
     '/dhiti/v1/reports/fetch': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/assessment/v1/observationSubmissions/solutionList': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/dhiti/v1/observations/listAllEvidences': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
   },
   URL_PATTERN: [
