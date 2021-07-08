@@ -15,6 +15,7 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8'
 import { ContentSearchModule } from '@sunbird/content-search';
 import { SlickModule } from 'ngx-slick';
 import { ExplorePageComponent } from './components';
+import { ContentSectionModule } from 'content-section';
 @NgModule({
   declarations: [ExplorePageComponent],
   imports: [
@@ -27,7 +28,7 @@ import { ExplorePageComponent } from './components';
     SharedFeatureModule,
     SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
     SuiRatingModule, SuiCollapseModule, SuiDimmerModule, WebExtensionModule,
-    CommonConsumptionModule, ContentSearchModule, SlickModule
+    CommonConsumptionModule, ContentSearchModule, SlickModule, ContentSectionModule
   ]
 })
 export class ExplorePageModule { }
