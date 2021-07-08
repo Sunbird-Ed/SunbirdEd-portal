@@ -347,7 +347,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       } else {
         this.showExploreComponent = false;
       }
-      this.handleBackButton();
+      this.backButton.showResult();
     });
   }
 
@@ -694,24 +694,28 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     }, 5100);
   }
 
-  goBack() {
-    this.showBackButton = false;
-    const { returnTo } = this.activatedRoute.snapshot.queryParams;
-    if (returnTo) {
-      this.router.navigate(['/explore'], { queryParams: { selectedTab: returnTo } });
+  get backButton() {
+    const { isInside, returnTo } = this.activatedRoute.snapshot.queryParams;
+    return {
+      goBack: () => {
+        if (returnTo) {
+          this.showBackButton = false;
+          this.router.navigate(['/explore'], { queryParams: { selectedTab: returnTo } });
+        }
+      },
+      showResult: () => {
+        if (isInside) {
+          this.showBackButton = true;
+          const filterPipe = new InterpolatePipe();
+          const successMessage = filterPipe.transform(_.get(this.resourceService, 'frmelmnts.lbl.showingResultsFor'),
+            '{searchString}', isInside);
+          this.showingResult = successMessage;
+        } else {
+          this.showBackButton = false;
+        }
+      }
     }
   }
 
-  private handleBackButton() {
-    const { isInside } = this.activatedRoute.snapshot.queryParams;
-    if (isInside) {
-      this.showBackButton = true;
-      const filterPipe = new InterpolatePipe();
-      const successMessage = filterPipe.transform(_.get(this.resourceService, 'frmelmnts.lbl.showingResultsFor'),
-        '{searchString}', isInside);
-      this.showingResult = successMessage;
-    } else {
-      this.showBackButton = false;
-    }
-  }
+
 }

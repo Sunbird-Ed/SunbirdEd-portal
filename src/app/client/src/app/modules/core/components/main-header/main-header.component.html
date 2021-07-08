@@ -305,7 +305,7 @@
           <app-main-menu [layoutConfiguration]="layoutConfiguration" [showBackButton]="showBackButton"></app-main-menu>
         </div>
         <div class="ui container d-flex flex-ai-center" *ngIf="showBackButton">
-          <button (click)="goBack()" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn sb-btn-round"
+          <button (click)="backButton.goBack()" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn sb-btn-round"
             type="button"><i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
                 <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
               </svg></i><span>{{resourceService?.frmelmnts?.btn?.back}}</span> </button>

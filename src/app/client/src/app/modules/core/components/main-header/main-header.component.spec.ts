@@ -373,7 +373,7 @@ describe('MainHeaderComponent', () => {
     component.getGuestUser();
   });
   it('should call hide the back button', () => {
-    component.goBack();
+    component.backButton.goBack();
     expect(component.showBackButton).toBeFalsy();
   });
 });
