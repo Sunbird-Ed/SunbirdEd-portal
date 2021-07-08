@@ -37,7 +37,7 @@
   <!--Actions-->
   <div class="sb-modal-actions">
     <button appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-      [telemetryInteractEdata]="orgUploadInteractEdata" [disabled]="processId"
+      [telemetryInteractEdata]="orgUploadInteractEdata" [disabled]="processId" tabindex="0"
       class="sb-btn sb-btn-normal sb-btn-primary" (click)="openImageBrowser(inputbtn)">
       {{resourceService?.frmelmnts?.btn?.uploadorgscsv}}
     </button>

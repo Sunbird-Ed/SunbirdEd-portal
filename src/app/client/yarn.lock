@@ -1355,10 +1355,10 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@4.0.5":
-  version "4.0.5"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.0.5.tgz#fe55b9828e44b090fe146b66c856e9aea3078f0b"
-  integrity sha512-pJsPiVZc3wj+xc04M0sYxD66EP+AllSb4zKkYV+ozAgxCrKz22vVo30ugqc0/SLdaICtQB2wxcALZeMX5xIBMA==
+"@project-sunbird/client-services@4.0.6":
+  version "4.0.6"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.0.6.tgz#65e94e304e326d6cd1971f28308fcd462cf0a114"
+  integrity sha512-30YJXrQ0/9a3y1EK/y1O/yAoDFtCwGlngbtfYUFevWEoowB3I5Ic8elFsS7Hf37xpM1taItRYKMkPM/k5ZhetA==
   dependencies:
     "@project-sunbird/telemetry-sdk" "0.0.26"
     inversify "^5.0.1"
@@ -1366,10 +1366,21 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v8@4.0.7":
-  version "4.0.7"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v8/-/common-consumption-v8-4.0.7.tgz#e576457e91c9da1535aaf0431abef4b953f4d2ea"
-  integrity sha512-+iS9tHSpHP7uI0ho3vbtAWC6eFeXtw+49aY0+pCV4X+DCwiR+c0EnwzHeSLbJAagVpOKKJ1AKRHI9H2fr+eszQ==
+"@project-sunbird/client-services@^3.8.5":
+  version "3.9.7"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.9.7.tgz#362d88cd53dfb98652754e2cfa8cacc99a8970fe"
+  integrity sha512-bvbPx7p09ZmRqSJxmiu0JinjnV+zlRmlnXylmOYnZ1epYIfc7Pbaz7+Jd4Wswa7r4Z/Q2QeSzgYNKBUuUDms+g==
+  dependencies:
+    "@project-sunbird/telemetry-sdk" "0.0.26"
+    inversify "^5.0.1"
+    qs "^6.9.4"
+    reflect-metadata "^0.1.13"
+    whatwg-fetch "^3.1.0"
+
+"@project-sunbird/common-consumption-v8@4.0.9":
+  version "4.0.9"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v8/-/common-consumption-v8-4.0.9.tgz#99571bb76f93c04e0ee8645191a0457a12d943fc"
+  integrity sha512-p1efkdBKjhohUqM+vOiB2hP/xrglfCLFmPLbrvMkzxwZvUXX23FsOw+Nf0SBUkPVd7XNkBxEddCw84myM6ZNaA==
   dependencies:
     tslib "^1.9.0"
 
@@ -1380,10 +1391,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sb-dashlet-v9@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-dashlet-v9/-/sb-dashlet-v9-1.0.0.tgz#6956d8046a735ac1103a2ece0663951d9994ef09"
-  integrity sha512-c3BymxDQQZnaGUa2foy6AcTq8giCX0EfF//csGgiWaeVv0q67Xi6rc7eU5tMI1H6r/Zk3LToBPzL3WREJKVOnw==
+"@project-sunbird/sb-dashlet-v9@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-dashlet-v9/-/sb-dashlet-v9-1.0.1.tgz#8a65d0d218410c90fcff7d8f2674dfdc3c0b11cc"
+  integrity sha512-cXZpHLxn8BdB6MuUC5ATnnNbnI5wX1SPwvjVkWcF5Ty97iIpSD6lIjKqzZNogEFSreZPpEjrSYrXGPyVTyd4ug==
   dependencies:
     "@types/datatables.net" "1.10.19"
     angular-datatables "9.1.0-rc1"
@@ -1403,15 +1414,15 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.8.tgz#66c11fc6cdcf2761680b8ccd76af929a5a0226a7"
   integrity sha512-CU7lkBEg7J3b9urACPY5jf8GJa6ccyCLETncvssXUO7Kco7uhMvlUXr3HHc5mS+Zw1G3ZtcCN8fp2XszukNA2A==
 
-"@project-sunbird/sb-themes@0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.9.tgz#cb036e64ae1f2ed4a25638c6702e5e5e1c4f5f9d"
-  integrity sha512-VqwmIskeGCp3/qd8JY3RZJGEwPA4ai/ot5gHkxOfCQvcqGUiVFuJxZAHbggvw1nd7gXtB14UrsWkfwR5JaNRRg==
+"@project-sunbird/sb-themes@0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.11.tgz#91d48e9f4d975ff90a82c5d8e82b751ceda6f75b"
+  integrity sha512-+EvPSdTfqmBpfr2MAOYNIY5oOK+vc3ZAhmXCG0/zPQBQ7yL8+G4hNZeStitAPZjcmRO9W6vecBTkdtu5Qu2EdA==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.1.3":
-  version "4.1.3"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.1.3.tgz#61f96ec3b9a66a0f2ac8ee2f10ba352ef1c7633c"
-  integrity sha512-EqH+l89iwfL/clBY2YbEULA/QQKsTIuvusAtKWIDqkE6AWehJmw5vHj0PekjI3P0qrZN/+BXojAKpC+taYuEZg==
+"@project-sunbird/sunbird-collection-editor-v9@4.1.14":
+  version "4.1.14"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.1.14.tgz#77c0e0fde21932f5e2306c41f142fd83c937dace"
+  integrity sha512-hX2bLR81B6RzjrVwn5YGTuV07nyBwn3CSHcjm1/wHeJf6I3yLw0sl1HnipVT56W9JfeHBvgAPQAU0EjGrPolxw==
   dependencies:
     tslib "^1.10.0"
 
@@ -1434,6 +1445,13 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v9/-/sunbird-player-sdk-v9-4.1.0.tgz#14629bb1221937e4e9e892304a827b78716dd988"
   integrity sha512-NCU0VQZab2yDicbj5Trcb85qG5aAbIyEMme96zEoqfu1SgVlvxDKPCLBbNBukXVkWs7BWNj5UBxrsKZbVdtFSA==
 
+"@project-sunbird/sunbird-player-sdk@0.0.16":
+  version "0.0.16"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk/-/sunbird-player-sdk-0.0.16.tgz#72bab646b41e47df38f71ecfd76f1c9e01094f7b"
+  integrity sha512-dO1C8Adhh5dVdv8kczi0NJuoT0sm/XYcWfA64PM15f1q4/LIA1gYcvux3y2jM4+nUQrLkC/+p+eS6/x7YpGDLg==
+  dependencies:
+    tslib "^1.9.0"
+
 "@project-sunbird/sunbird-question-editor@0.0.9":
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-question-editor/-/sunbird-question-editor-0.0.9.tgz#49f0c79397f35b993ab6f5ed6d05499db8fde91c"
@@ -1441,12 +1459,21 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.1.5":
-  version "4.1.5"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.1.5.tgz#50942f444a116774e1c29413f7ccefab48559886"
-  integrity sha512-BMgJrbwDL0XMncV+j5KfFvC5kXS5ghI8b+oMplFriPYkaaSmMhgCTUnm/rs++hfLuypl7nlDjtsUsWlLgnR9dw==
+"@project-sunbird/sunbird-quml-player-v9@4.1.7":
+  version "4.1.7"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.1.7.tgz#28fd0f28483984eb880a13f907cfa761c606f575"
+  integrity sha512-w6vHMF7cqK/yc6yFpXpI4tPah+H0d+cqIBXewLys59kXKwWJ9sDRqvfZHqzfRggdS3McSJwd0v/YyetaTQVEqQ==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "4.1.0"
+
+"@project-sunbird/sunbird-quml-player@3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player/-/sunbird-quml-player-3.8.0.tgz#46c8f871be67e07ab3567814c82646730c4145ae"
+  integrity sha512-UXl9kucoS921qYyIT3TBwgOTYsTM9Aafq1P6dEoPE0B7eAdVudEjppu1LD8UOBQ4BajKsuDQ+AakALl/BTUfaw==
+  dependencies:
+    "@project-sunbird/client-services" "^3.8.5"
+    "@project-sunbird/sunbird-player-sdk" "0.0.16"
+    tslib "^1.9.0"
 
 "@project-sunbird/sunbird-video-player-v9@4.1.1":
   version "4.1.1"
@@ -1527,6 +1554,24 @@
     rxjs "6.5.4"
     semver "7.1.3"
     semver-intersect "1.4.0"
+
+"@shikshalokam/sl-questionnaire@0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-questionnaire/-/sl-questionnaire-0.0.2.tgz#3dd249132210125276417f37e8b0a16c78889527"
+  integrity sha512-qzckRRA5pWF8UsiCO4YTaU39m0ATc7aZJQPeR11qHU6nTEv8LZnMPYpxuuu0+Ra1XhObwK9w5TjN+qg0GsukgA==
+  dependencies:
+    tslib "^1.10.0"
+
+"@shikshalokam/sl-reports-library@^1.0.4":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@shikshalokam/sl-reports-library/-/sl-reports-library-1.0.5.tgz#90cc9d00f43947d27b00c79590b3c5f40160ab40"
+  integrity sha512-TPqtGlFk+yllFb/GibQacJ+2HYMKrV4BOv/pV+f3dzHqHfVBqHt67t+iG4Wue4oJUuJaWbdBLaXLmL1TAFvQgQ==
+  dependencies:
+    chart.js "^2.9.4"
+    chartjs-plugin-datalabels "^0.7.0"
+    chartjs-plugin-stacked100 "^0.7.1"
+    ng2-charts "^2.4.2"
+    tslib "^1.10.0"
 
 "@swimlane/ngx-datatable@16.1.1":
   version "16.1.1"
@@ -3214,7 +3259,7 @@ chart.js@2.7.3:
     chartjs-color "^2.1.0"
     moment "^2.10.2"
 
-chart.js@2.9.4:
+chart.js@2.9.4, chart.js@^2.4.0, chart.js@^2.9.4:
   version "2.9.4"
   resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-2.9.4.tgz#0827f9563faffb2dc5c06562f8eb10337d5b9684"
   integrity sha512-B07aAzxcrikjAPyV+01j7BmOpxtQETxTSlQ26BEYJ+3iUkbNKaOJ/nDbT6JjyqYxseM0ON12COHYdU2cTIjC7A==
@@ -3236,6 +3281,18 @@ chartjs-color@^2.1.0:
   dependencies:
     chartjs-color-string "^0.6.0"
     color-convert "^1.9.3"
+
+chartjs-plugin-datalabels@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/chartjs-plugin-datalabels/-/chartjs-plugin-datalabels-0.7.0.tgz#f72e44edb2db45ef68913e9320bcc50398a205e6"
+  integrity sha512-PKVUX14nYhH0wcdCpgOoC39Gbzvn6cZ7O9n+bwc02yKD9FTnJ7/TSrBcfebmolFZp1Rcicr9xbT0a5HUbigS7g==
+
+chartjs-plugin-stacked100@^0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/chartjs-plugin-stacked100/-/chartjs-plugin-stacked100-0.7.1.tgz#f89579fc15045f4203e4a16a1cac196d874817fc"
+  integrity sha512-3EoEXzKxJcRDrKe1dBYcPMbHpCppBgAsYApyEGiIXHaQS/SZRY+VEQsnyPTnIbewA792g19hTlkhpRLS1PVGzQ==
+  dependencies:
+    chart.js "^2.4.0"
 
 "chokidar@>=2.0.0 <4.0.0", chokidar@^3.0.0, chokidar@^3.4.1:
   version "3.5.2"
@@ -8464,6 +8521,15 @@ ng2-charts@2.4.2:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/ng2-charts/-/ng2-charts-2.4.2.tgz#6b2d0a1a66911247c2e8c3d8602ba9aa7339bf22"
   integrity sha512-mY3C2uKCaApHCQizS2YxEOqQ7sSZZLxdV6N1uM9u/VvUgVtYvlPtdcXbKpN52ak93ZE22I73DiLWVDnDNG4/AQ==
+  dependencies:
+    "@types/chart.js" "^2.9.24"
+    lodash-es "^4.17.15"
+    tslib "^2.0.0"
+
+ng2-charts@^2.4.2:
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/ng2-charts/-/ng2-charts-2.4.3.tgz#e1de6cb55fe04248a5f92d342cf6423507fa532d"
+  integrity sha512-tPrhHSS2DfVyipXQ0gykOPc8zFNnj2b7sAebUVty392vHnEGYCwsP6YbFfpr1iXu4yBSRm4Gt5lffR5w0uyYSw==
   dependencies:
     "@types/chart.js" "^2.9.24"
     lodash-es "^4.17.15"
