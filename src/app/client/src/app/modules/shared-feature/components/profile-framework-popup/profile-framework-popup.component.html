@@ -54,7 +54,7 @@
       appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
       [telemetryInteractEdata]="submitInteractEdata"
       class="sb-btn sb-btn-normal sb-btn-primary" 
-      [disabled]="!showButton" 
+      [disabled]="!showButton" tabindex="0"
       (click)="onSubmitForm()"
     >
       {{buttonLabel}}

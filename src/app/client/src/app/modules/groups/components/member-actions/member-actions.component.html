@@ -10,7 +10,7 @@
   </div>
 
   <div class="sb-modal-actions">
-    <button class="sb-btn sb-btn-normal sb-btn-primary" [ngClass]="{'sb-btn-error': memberActionData?.theme === 'error'}"
+    <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" [ngClass]="{'sb-btn-error': memberActionData?.theme === 'error'}"
       (click)="performAction()">{{memberActionData?.buttonText}}</button>
   </div>
 
