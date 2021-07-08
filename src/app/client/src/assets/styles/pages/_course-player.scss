@@ -5,11 +5,11 @@
 
     &--header,
     &--card {
-      margin-bottom: $base-block-space*3;
+      margin-bottom: calculateRem(24px);
     }
   
     &--content {
-      margin-bottom: $base-block-space*2;
+      margin-bottom: calculateRem(16px);
     }
   }
   
@@ -20,7 +20,7 @@
         'head card'
         'content card';
       grid-template-columns: 1fr 340px;
-      grid-gap: $base-block-space*3;
+      grid-gap: calculateRem(24px);
   
       &--header {
         grid-area: head;

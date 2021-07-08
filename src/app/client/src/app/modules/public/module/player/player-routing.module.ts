@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ContentPlayerComponent, CollectionPlayerComponent } from '@sunbird/shared-feature';
+import { PendingchangesGuard } from './../../services';
 
 const routes: Routes = [
     {
@@ -26,7 +27,8 @@ const routes: Routes = [
         }
     },
     {
-        path: 'questionset/:contentId', component: ContentPlayerComponent, data: {
+        path: 'questionset/:contentId', component: ContentPlayerComponent, canDeactivate: [PendingchangesGuard],
+        data: {
             telemetry: {
                 env: 'public', pageid: 'play-questionset', type: 'view', subtype: 'paginate'
             }

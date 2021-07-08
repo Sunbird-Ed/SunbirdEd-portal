@@ -1,4 +1,3 @@
-import { logger } from "@project-sunbird/logger";
 import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import * as cheerio from "cheerio";
 import * as _ from "lodash";
@@ -14,10 +13,12 @@ const proxy = require('express-http-proxy');
 export default (app, proxyURL) => {
 
     const ticketSDK = containerAPI.getTicketSdkInstance();
+    const standardLog = containerAPI.getStandardLoggerInstance();
     app.post("/api/help/v1/report/issue", async (req, res) => {
         ticketSDK.createTicket(req.body).then((successRes) => {
             res.send(Response.success("api.report.issue", successRes, req));
         }).catch(({status, message, code}) => {
+            standardLog.error({ id: 'DESKTOP_REPORT_ISSUE_FAILED', message: 'Received error while reporting a issue', mid: req.headers["X-msgid"], error: message });
             res.status(status || 500).send(Response.error("api.report.issue", status, message, code));
         });
     });
@@ -41,7 +42,7 @@ export default (app, proxyURL) => {
             systemInfo.contentBasePath = contentBasePath;
             return res.send(Response.success("api.desktop.system-info", systemInfo, req));
         } catch (err) {
-            logger.error(`ReqId = "${req.headers["X-msgid"]}": Received error while processing desktop app systemInfo request where err = ${err}`);
+            standardLog.error({ id: 'DESKTOP_SYSTEMINFO_PROCESS_FAILED', message: 'Received error while processing desktop app systemInfo request', mid: req.headers["X-msgid"], error: err });
             res.status(500);
             return res.send(Response.error("api.desktop.system-info", 500));
         }
@@ -59,7 +60,7 @@ export default (app, proxyURL) => {
                 return res.send(Response.error("api.desktop.change-content-location", 500));
             }
         } catch (err) {
-            logger.error(`ReqId = "${req.headers["X-msgid"]}": Received error while processing desktop app systemInfo request where err = ${err}`);
+            standardLog.error({ id: 'DESKTOP_CHANGE_CONTENT_LOCATION_FAILED', message: 'Received error while changing content location', mid: req.headers["X-msgid"], error: err });
             res.status(500);
             return res.send(Response.error("api.desktop.change-content-location", 500));
         }

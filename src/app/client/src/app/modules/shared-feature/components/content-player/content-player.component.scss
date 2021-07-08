@@ -4,11 +4,17 @@
 .sb-single-resource {
 	width: 100%;
 	height: 100%;
-	max-width: calculateRem(720px);
+	max-width: calculateRem(896px);
 	margin: 0 auto;
-	@include respond-above(lg) {
-		max-width: calculateRem(960px);
-	  }
+  @include respond-above(lg) {
+    max-width: calculateRem(960px);
+  }
+  @include respond-above(xl) {
+    max-width: calculateRem(1024px);
+  }
+  @include respond-above(xxxl) {
+    max-width: calculateRem(1088px);
+  }
   }
 
 .cc-player {
@@ -43,12 +49,12 @@
     }
     
     .dot-divider {
-        width: ($base-block-space / 2);
-        height: ($base-block-space / 2);
+        width: 0.25rem;
+        height: 0.25rem;
         border-radius: 100%;
         background-color: var(--gray-800);
         display: inline-block;
-        margin: 0px $base-block-space;
+        margin: 0px 0.5rem;
     }
   
   @include respond-below(sm) {

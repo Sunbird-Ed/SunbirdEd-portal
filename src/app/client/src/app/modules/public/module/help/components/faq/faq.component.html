@@ -23,20 +23,52 @@
     <div class="help-page__content" *ngIf="showLoader">
       <app-loader></app-loader>
     </div>
-    <div class="ml-8" *appDesktopOnly>
-      <app-offline-help-videos></app-offline-help-videos>
-    </div>
     <div class="m-16 font-weight-bold" *appDesktopOnly>
       {{resourceService?.frmelmnts?.lbl?.frequentlyAskedQuestions}}</div>
-    <div class="help-page__content" *ngIf="faqList && !showLoader">
-      <sb-faq [extraTemplate]="extraTemplate" [data]="faqList"
-        (toggleGroupEvent)="logInteractEvent($event, 'toggle-clicked');"
-        (yesClickedEvent)="logInteractEvent($event, 'yes-clicked');"
-        (noClickedEvent)="logInteractEvent($event, 'no-clicked');"
-        (submitClickedEvent)="logInteractEvent($event, 'submit-clicked');"></sb-faq>
+    <div class="help-page__content" *ngIf="faqData && !showLoader">
+      <div class="sbhelp_container mt-24" style="min-height:600px;">
+        <section class="sbhelp_container__left" *ngIf="(isMobileView && showOnlyFaqCategory) || !isMobileView" [ngClass]="{'category-list-mobile':isMobileView, 'category-list-web':!isMobileView}">
+          <sb-list #sbFaqCategoryList
+            [title]="faqData?.constants?.selectCategoryTitle"
+            [listData]="faqData?.categories"
+            [btnText]="faqData?.constants?.reportIssueMsg"
+            [btnImg]="'./assets/images/report.svg'"
+            (itemClick)="onCategorySelect($event)"
+            (btnClick)="enableFaqReport($event)">
+          </sb-list>
+        </section>
+    
+        <section class="sbhelp_container__right" [ngClass]="{'faq-section-mobile':isMobileView, 'faq-section-web':!isMobileView}" *ngIf="(isMobileView && !showOnlyFaqCategory) || !isMobileView">
+          <div *ngIf="!showFaqReport">
+          <div class="d-flex flex-ai-center mb-8" *ngIf="!showOnlyFaqCategory && isMobileView">
+            <h4 class="ml-16"><b>{{selectedFaqCategory?.name}}</b></h4>
+          </div>
+          <div *ngIf="selectedFaqCategory?.videos?.length">
+            <sb-carousel [title]="faqData?.constants?.videoTitle" [listData]="selectedFaqCategory?.videos" (itemClick)="onVideoSelect($event)"></sb-carousel>
+          </div>
+        
+        <div *ngIf="selectedFaqCategory?.faqs?.length">
+          <div class="faq_title mb-16">{{faqData?.constants?.faqTitle}}</div>
+          <div class="sbhelp_container__faq">
+            <sb-faq [extraTemplate]="extraTemplate" [data]="selectedFaqCategory"
+              (toggleGroupEvent)="logInteractEvent($event, 'toggle-clicked');"
+              (yesClickedEvent)="logInteractEvent($event, 'yes-clicked');"
+              (noClickedEvent)="logInteractEvent($event, 'no-clicked');"
+              (submitClickedEvent)="logInteractEvent($event, 'submit-clicked');">
+            </sb-faq>
+          </div>
+
+        </div>
+        </div>
+          <div *ngIf="showFaqReport">
+            <app-faq-report [faqData]="faqData"></app-faq-report>
+          </div>
+        </section>
+        
+      </div>
     </div>
     <div class="help-page__visit-helpcenter mt-24 w-100 p-16 d-flex flex-ai-center relative9"
-      *ngIf="faqList && !showLoader">
+      *ngIf="faqData && !showLoader">
       <div class="fnormal mr-auto visit-helpcenter__text">{{resourceService?.frmelmnts?.lbl?.stillCouldntFind}}
         <b>{{resourceService.frmelmnts?.lnk?.footerHelpCenter}}</b></div>
       <a class="sb-btn sb-btn-normal sb-btn-outline-primary" appTelemetryInteract
@@ -57,3 +89,13 @@
     {{resourceService?.frmelmnts?.lbl?.goToHelpCenter}}
   </a>
 </ng-template>
+
+<sui-modal class="sb-modal sb-success" (dismissed)="showVideoModal = false" [size]="'large'" [mustScroll]="false"
+  *ngIf="showVideoModal && playerConfig">
+
+  <div class="sb-modal-content height-auto">
+    <sunbird-video-player [playerConfig]="playerConfig" #videoPlayer>
+    </sunbird-video-player>
+  </div>
+
+</sui-modal>

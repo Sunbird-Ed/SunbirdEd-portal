@@ -33,10 +33,10 @@ $colours: "gray-hs" var(--gray-hs), "gray" var(--gray), "gray-0" var(--gray-0),
 }
 //to clean
 .color-3, .sb-text-gray-800 {
-    color: $gray-800; 
+    color: var(--gray-800); 
 }
 .sb-bg-color-black {
-    background-color: $black;
+    background-color: var(--black);
 }
 
 // background

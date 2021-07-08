@@ -12,6 +12,7 @@ import { TelemetryModule, TelemetryService, TELEMETRY_PROVIDER, IInteractEventEd
 import { response } from './content-manager.component.spec.data';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { UserService } from '../../../../../core/services/user/user.service';
 
 
 describe('ContentManagerComponent', () => {
@@ -39,6 +40,10 @@ describe('ContentManagerComponent', () => {
     };
   }
 
+  class FakeUserService {
+    loggedIn: true;
+  }
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SuiModalModule, SharedModule.forRoot(), SuiProgressModule, SuiAccordionModule, HttpClientTestingModule,
@@ -48,7 +53,8 @@ describe('ContentManagerComponent', () => {
         ContentManagerService, TelemetryService, ToasterService, ElectronDialogService,
         { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry },
         { provide: ResourceService, useValue: resourceMockData },
-        { provide: ActivatedRoute, useClass: FakeActivatedRoute }
+        { provide: ActivatedRoute, useClass: FakeActivatedRoute },
+        {provide: UserService, useClass: FakeUserService }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -157,7 +163,12 @@ describe('ContentManagerComponent', () => {
   });
 
   it('should call getContentPercentage', () => {
-    component.openContent('123', 'application/vnd.ekstep.ecml-archive', 'completed');
+    const data = {
+      contentId: '123',
+      mimeType: 'application/vnd.ekstep.ecml-archive',
+      status: 'completed'
+    };
+    component.openContent(data);
     const res = component.getContentPercentage('30270814', '35560658');
     expect(res).toEqual(85.12444848461466);
   });

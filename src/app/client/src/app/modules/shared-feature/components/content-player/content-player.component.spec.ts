@@ -9,6 +9,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ContentPlayerComponent } from './content-player.component';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { configureTestSuite } from '@sunbird/test-util';
+import { TelemetryService } from '@sunbird/telemetry';
+
 const serverRes = {
   id: 'api.content.read',
   ver: '1.0',
@@ -67,7 +69,7 @@ describe('ContentPlayerComponent', () => {
       imports: [CoreModule, SharedModule.forRoot(), RouterTestingModule, HttpClientTestingModule],
       declarations: [ContentPlayerComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [{ provide: ActivatedRoute, useValue: fakeActivatedRoute },
+      providers: [TelemetryService, { provide: ActivatedRoute, useValue: fakeActivatedRoute },
       { provide: Router, useClass: RouterStub }]
     })
       .compileComponents();

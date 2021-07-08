@@ -83,7 +83,7 @@ endPage.controller("endPageController", function($scope, $rootScope, $state,$ele
     $scope.replayContent = function() {
         if(!isbrowserpreview && $rootScope.enableUserSwitcher && ($rootScope.users.length > 1)) {
             EkstepRendererAPI.dispatchEvent("event:openUserSwitchingModal", {'logGEEvent': $scope.pluginInstance._isAvailable});
-        }else if(isbrowserpreview && content.primaryCategory && content.primaryCategory.toLowerCase() === 'course assessment'){
+        }else if(!$scope.isCordova && content.primaryCategory && content.primaryCategory.toLowerCase() === 'course assessment'){
             $scope.replayAssessment();
         }else{
             $scope.replayCallback();

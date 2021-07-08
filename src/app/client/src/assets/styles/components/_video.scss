@@ -13,7 +13,7 @@
     &__title {
       font-weight: bold;
       color: var(--primary-400);
-      font-size: $font-size-md;
+      font-size: var(--h5-font-size);
 
       &__subtitle {
         color: var(--gray-800);
@@ -21,12 +21,12 @@
         align-items: center;
         font-size:  calculateRem(12px);
         .dot-divider {
-          width: ($base-block-space / 2);
-          height: ($base-block-space / 2);
+          width: calculateRem(4px);
+          height: calculateRem(4px);
           border-radius: 100%;
           background-color: var(--gray-800);
           display: inline-block;
-          margin: 0px $base-block-space;
+          margin: 0px calculateRem(8px);
         }
         i {
           color: var(--yellow);
@@ -39,7 +39,7 @@
       .separator {
         border-left: calculateRem(0.5px) solid var(--gray-100);
         height: calculateRem(40px);
-        width: $base-block-space;
+        width: calculateRem(8px);
       }
     }
   }
@@ -82,7 +82,7 @@
   &.player-fullscreen {
     width: 100%;
     height: calc(100vh - 4rem) !important;
-    position:fixed;
+    position:fixed !important;
     top:calculateRem(0px);//50px
     left:0;
     bottom:0; 

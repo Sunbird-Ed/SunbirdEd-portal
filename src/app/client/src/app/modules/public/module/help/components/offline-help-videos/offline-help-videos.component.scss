@@ -11,7 +11,7 @@
   flex-direction: column;
   cursor: pointer;
   position: relative;
-  border-bottom: calculateRem(1px) solid $gray-0;
+  border-bottom: calculateRem(1px) solid var(--gray-0);
   box-shadow: 0 calculateRem(3px) calculateRem(5px) 0 rgba(0, 0, 0, 0.12);
   contain: content;
   &.active {
@@ -20,14 +20,13 @@
   @include respond-above(sm) {
     border-radius: calculateRem(2px);
     box-shadow: 0 calculateRem(2px) calculateRem(7px) 0 rgba(0, 0, 0, 0.16);
-    border-bottom: 0px solid $gray-0;
+    border-bottom: 0px solid var(--gray-0);
   }
   &__main-area {
     display: flex;
     flex-direction: row;
     align-items: center;
-    // padding: $base-block-space;
-    height: $base-block-space * 11;
+    height: 5.5rem;
     // border-bottom: calculateRem(1px) solid var(--gray-0);
   }
   &__img {
@@ -41,9 +40,9 @@
     .img-container {
       display: flex;
       align-items: center;
-      background-color: $gray-100;
-      height: $base-block-space * 9;
-      width: $base-block-space * 9;
+      background-color: var(--gray-100);
+      height: 4.5rem;
+      width: 4.5rem;
 
       img {
         width: 100%;
@@ -52,16 +51,16 @@
     }
   }
   &__title {
-    color: $gray-800;
-    font-size: $font-size-normal;
+    color: var(--gray-800);
+    font-size: var(--font-size-base);
     margin: 0px;
     line-height: normal;
     line-height: calculateRem(20px);
     word-break: break-word;
   }
   &__meta1 {
-    color: $gray-300;
-    font-size: $font-size-sm;
+    color: var(--gray-300);
+    font-size: var(--font-size-sm);
     display: inline-flex;
     align-items: center;
     line-height: calculateRem(20px);
@@ -75,10 +74,10 @@
       .img-container {
         display: flex;
         align-items: center;
-        background-color: $gray-100;
+        background-color: var(--gray-100);
         margin: calculateRem(-8px);
-        height: $base-block-space * 11;
-        width: $base-block-space * 11;
+        height: 5.5rem;
+        width: 5.5rem;
       }
     }
     .sbcard__info {

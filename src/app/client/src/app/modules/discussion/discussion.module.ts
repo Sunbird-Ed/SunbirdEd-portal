@@ -9,6 +9,7 @@ import { DiscussionUiModule, DiscussionEventsService } from '@project-sunbird/di
 import { DiscussionTelemetryService } from '../shared/services/discussion-telemetry/discussion-telemetry.service';
 import * as _ from 'lodash-es';
 import { NavigationHelperService } from '@sunbird/shared';
+import { AccessDiscussionComponent } from './components/access-discussion/access-discussion.component';
 
 @NgModule({
   imports: [
@@ -16,8 +17,8 @@ import { NavigationHelperService } from '@sunbird/shared';
     SuiModalModule,
     DiscussionUiModule
   ],
-  exports: [ DiscussionUiModule ],
-  declarations: [ ForumComponent ],
+  exports: [ DiscussionUiModule , AccessDiscussionComponent],
+  declarations: [ ForumComponent, AccessDiscussionComponent ],
   providers: [ DiscussionService ]
 })
 export class DiscussionModule {

@@ -56,7 +56,7 @@
       overflow-y: auto;
       padding-right: 0.5rem;
       padding-left: 0;
-     
+
 
       html[dir="rtl"] & {
         padding-right: 0;
@@ -106,7 +106,8 @@
           // background-color: rgba(2, 79, 157, 0.1);
           color: var(--primary-400);
           font-weight: bold;
-          .border-right{
+
+          .border-right {
             border-right: calculateRem(4px) solid var(--primary-400);
             height: calculateRem(24px);
           }
@@ -248,4 +249,86 @@
 
 }
 
-.add-new-template-btn{position:absolute;right:0px;top:0px;}
+.add-new-template-btn {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+
+:host{
+  .rules-configuration {
+    border-radius: calculateRem(12px);
+    background-color: var(--white);
+    box-shadow: 0 calculateRem(3px) calculateRem(4px) 0 rgba(2, 79, 157, 0.1);
+    position: relative;
+  
+    @include respond-below(sm) {
+      flex-direction: column;
+  
+      .rules-form-content {
+        flex-direction: column;
+      }
+  
+      .ui.grid>[class*="twelve wide"].column {
+        padding: 0px !important;
+      }
+    }
+  
+    .progress-separator {
+      box-sizing: border-box;
+      width: calculateRem(2px);
+      opacity: 0.3;
+      background-color: var(--rc-d8d8d8);
+    }
+  
+    .completion-text {
+      color: var(--gray-300);
+  
+      .asterik {
+        color: var(--red-400);
+      }
+    }
+  
+    .close-score {
+      position: absolute;
+      right: 1rem;
+      top: 1rem;
+  
+      html[dir="rtl"] & {
+        left: 1rem;
+      }
+  
+      img {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
+  }
+}
+
+
+.progess-add-content {
+  .left-border {
+    width: calculateRem(1px);
+    background-color: var(--rc-bdbdbd);
+    height: 2.0rem;
+    margin-left: calculateRem(20px);
+  }
+
+  .add-score-btn {
+    border-radius: 0.5rem;
+    background-color: var(--white);
+    box-shadow: calculateRem(5px) calculateRem(5px) calculateRem(2px) 0 rgba(0, 0, 0, 0.1);
+    border: none;
+    color: var(--rc-DD680F);
+    text-transform: uppercase;
+  }
+
+  .plus-btn {
+    border-radius: 50%;
+    background-color: var(--white);
+    border: none;
+    width: calculateRem(40px);
+    height: calculateRem(40px);
+  }
+}

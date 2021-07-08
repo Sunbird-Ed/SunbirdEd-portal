@@ -107,6 +107,13 @@ export class UserSDK {
     return this.dbSDK.find(USER_DB, query).then(result => result.docs);
   }
 
+  private async getAllLoggedInUsers() {
+    const query = {
+      selector: { userId: { $exists: true } }
+    };
+    return this.dbSDK.find(USER_DB, query).then(result => result.docs);
+  }
+
   public async updateLoggedInUser(user: ILoggedInUser) {
     if (_.get(user, '_id')) {
       return this.updateDoc(user);
@@ -143,11 +150,11 @@ export class UserSDK {
   }
 
   public async deleteAllLoggedInUsers() {
-    let docs = await this.dbSDK.list(USER_DB);
-    docs = _.map(docs.rows, (row) => {
+    let docs = await this.getAllLoggedInUsers();
+    docs = _.map(docs, (doc) => {
       return {
-        _id: row.id,
-        _rev: row.value.rev,
+        _id: doc._id,
+        _rev: doc._rev,
         _deleted: true
       }
     });

@@ -92,29 +92,4 @@ describe('AboutUsComponent', () => {
     const element = fixture.debugElement.query(By.css('#date')).nativeElement;
     expect(element.innerText).toEqual(datePipe.transform(date, 'dd/MM/yyyy'));
   });
-
-  it('should display terms and conditions loader', () => {
-    component.isConnected = true;
-    component.toggleTocModal();
-    expect(component.showLoader).toBeTruthy();
-    expect(component.showModal).toBeTruthy();
-  });
-
-  it('should change display modal and message to be noConnectionTerms ', () => {
-    spyOn(component['toasterService'], 'error');
-    component.isConnected = false;
-    component.toggleTocModal();
-    expect(component.showLoader).toBeFalsy();
-    expect(component.showModal).toBeFalsy();
-    expect(component['toasterService'].error).toHaveBeenCalledWith(appInfoResponse.resourceBundle.messages.desktop.emsg.noConnectionTerms);
-  });
-
-  it('should change display modal and message to be termsOfUse', () => {
-    component.termsIframe = { nativeElement: { contentWindow: { document: { title: 'Error' } } } };
-    spyOn(component['toasterService'], 'error');
-    component.isIFrameLoaded();
-    expect(component.showLoader).toBeFalsy();
-    expect(component.showModal).toBeFalsy();
-    expect(component['toasterService'].error).toHaveBeenCalledWith(appInfoResponse.resourceBundle.messages.desktop.emsg.termsOfUse);
-  });
 });

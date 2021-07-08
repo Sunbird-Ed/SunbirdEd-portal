@@ -18,6 +18,7 @@ export class OtpComponent implements OnInit {
   @Input() signUpdata: any;
   @Input() isMinor: boolean;
   @Input() tncLatestVersion: any;
+  @Input() yearOfBirth: string;
   @Output() redirectToParent = new EventEmitter();
   otpForm: FormGroup;
   disableSubmitBtn = true;
@@ -154,6 +155,7 @@ resendOtpEnablePostTimer() {
       'request': {
         'firstName': _.trim(this.signUpdata.controls.name.value),
         'password': _.trim(this.signUpdata.controls.password.value),
+        'dob': this.yearOfBirth,
       }
     };
     if (this.mode === 'phone') {

@@ -2,7 +2,6 @@
 @import "./mixins/mixins";
 
 .sb-explore-qr-page-cover {
-  //background: $var(--white);
   padding: calculateRem(32px) 0 0 0;
   min-height: calc(100vh - 230px);
 }
@@ -108,10 +107,10 @@
     flex:50%;
     padding-left: 0;
     h1 {
-      color: var(--gray-800);	font-size: $font-size-md;	
+      color: var(--gray-800);	font-size: var(--h5-font-size);	
     }
     p {
-      color: var(--gray-800);font-size: $font-size-normal;
+      color: var(--gray-800);font-size: var(--font-size-base);
     }
   }
   .dial-scan-column {

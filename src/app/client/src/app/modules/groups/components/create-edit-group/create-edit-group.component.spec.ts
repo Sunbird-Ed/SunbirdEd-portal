@@ -154,8 +154,9 @@ describe('CreateEditGroupComponent', () => {
   it('should call addTelemetry', () => {
     spyOn(component['groupService'], 'addTelemetry');
     component.groupId = '123';
-    component.addTelemetry('ftu-popup');
-    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith({id: 'ftu-popup', extra: undefined},
+    component.addTelemetry('ftu-popup', '', { } );
+    // tslint:disable-next-line:max-line-length
+    expect(component['groupService'].addTelemetry).toHaveBeenCalledWith({id: 'ftu-popup', extra: '', edata: { }  },
     fakeActivatedRouteWithGroupId.snapshot, [], '123');
   });
 
@@ -167,9 +168,9 @@ describe('CreateEditGroupComponent', () => {
             'params': {
               'resmsgid': null,
               'msgid': '50f1d17c-9e5b-4e1e-841e-3fc5ba34c84a',
-              'err': 'EXCEEDED_GROUP_MAX_LIMIT',
-              'status': 'EXCEEDED_GROUP_MAX_LIMIT',
-              'errmsg': 'Exceeded the group max size limit'
+              'err': 'GS_CRT04',
+              'status': 'failed',
+              'errmsg': 'Failed to create group, exceeded number of permissible groups of 50.'
             },
             'result': {},
             'responseCode': 400

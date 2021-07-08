@@ -1,12 +1,13 @@
 import { WORKSPACE, ADD_MEMBER_TO_GROUP, CREATE_GROUP, MY_GROUPS,
   ADD_ACTIVITY_TO_GROUP, ACTIVITY_DETAILS, COURSES, GROUP_DETAILS, ADD_MEMBER,
-  ADD_ACTIVITY_CONTENT_TYPES, EDIT_GROUP} from './interfaces';
+  ADD_ACTIVITY_CONTENT_TYPES, EDIT_GROUP, ACTIVITY_DASHBOARD} from './interfaces';
 import {
   MyGroupsComponent, AddMemberComponent, GroupDetailsComponent,
-  CreateEditGroupComponent, ActivitySearchComponent, ActivityDashboardComponent, AddActivityContentTypesComponent
+  CreateEditGroupComponent, ActivitySearchComponent, AddActivityContentTypesComponent, ActivityDashboardComponent
 } from './components';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { ActivityDetailsComponent } from './components/activity/activity-details/activity-details.component';
 const telemetryEnv = 'groups';
 const type = 'view';
 const subtype = 'paginate';
@@ -47,7 +48,7 @@ const routes: Routes = [
     },
   },
   {
-    path: `${WORKSPACE.GROUP_ID}/${ACTIVITY_DETAILS}/:activityId`, component: ActivityDashboardComponent,
+    path: `${WORKSPACE.GROUP_ID}/${ACTIVITY_DETAILS}/:activityId`, component: ActivityDetailsComponent,
     data: {
       telemetry: { env: telemetryEnv, pageid: ACTIVITY_DETAILS, type: type, subtype: subtype },
     },
@@ -63,6 +64,13 @@ const routes: Routes = [
     component: ActivitySearchComponent,
     data: {
       telemetry: { env: telemetryEnv, pageid: ADD_ACTIVITY_TO_GROUP, type: type, subtype: subtype },
+    },
+  },
+  {
+    path: `${WORKSPACE.GROUP_ID}/${ACTIVITY_DASHBOARD}/:activityId`,
+    component: ActivityDashboardComponent,
+    data: {
+      telemetry: { env: telemetryEnv, pageid: ACTIVITY_DASHBOARD, type: type, subtype: subtype },
     },
   },
 ];

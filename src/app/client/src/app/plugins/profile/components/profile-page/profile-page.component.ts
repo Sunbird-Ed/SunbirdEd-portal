@@ -95,6 +95,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   persona: {};
   subPersona: string;
   isConnected = true;
+  showFullScreenLoader: boolean = false;
 
   constructor(@Inject('CS_COURSE_SERVICE') private courseCService: CsCourseService, private cacheService: CacheService,
   public resourceService: ResourceService, public coursesService: CoursesService,
@@ -113,6 +114,13 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.isDesktopApp = this.utilService.isDesktopApp;
+
+    this.activatedRoute.queryParams.subscribe((params) => {
+      if (params["showEditUserDetailsPopup"]) {
+        this.showEditUserDetailsPopup=true;
+      }
+      });
+
     if(this.isDesktopApp) {
       this.connectionService.monitor()
       .pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
@@ -124,15 +132,16 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getCustodianOrgUser();
     this.userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
       /* istanbul ignore else */
+      this.showFullScreenLoader = false;
       if (user.userProfile) {
         this.userProfile = user.userProfile;
-        const role: string = (!this.userProfile.userType ||
-          (this.userProfile.userType && this.userProfile.userType === 'OTHER')) ? '' : this.userProfile.userType;
+        const role: string = (!this.userProfile.profileUserType.type ||
+          (this.userProfile.profileUserType.type && this.userProfile.profileUserType.type === 'OTHER')) ? '' : this.userProfile.profileUserType.type;
         this.userLocation = this.getUserLocation(this.userProfile);
         this.getPersonaConfig(role).then((val) => {
           this.persona = val;
         });
-        this.getSubPersonaConfig(this.userProfile.userSubType, role.toLowerCase(), this.userLocation).then((val) => {
+        this.getSubPersonaConfig(this.userProfile.profileUserType.subType, role.toLowerCase(), this.userLocation).then((val) => {
           this.subPersona = val;
         });
         this.userFrameWork = this.userProfile.framework ? _.cloneDeep(this.userProfile.framework) : {};
@@ -616,6 +625,17 @@ private async getSubPersonaConfig(subPersonaCode: string, persona: string, userL
   const subPersonaFieldConfigOption = (subPersonaConfig.templateOptions.options as FieldConfigOption<any>[]).
               find(option => option.value === subPersonaCode);
   return subPersonaFieldConfigOption ? subPersonaFieldConfigOption.label : undefined;
+}
+
+public onLocationModalClose() {
+  this.showEditUserDetailsPopup = !this.showEditUserDetailsPopup;
+  this.showFullScreenLoader = true;
+  setTimeout(()=> {
+    if(this.showFullScreenLoader){
+      this.showFullScreenLoader = false;
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
+    }
+  }, 5000)
 }
 
 }

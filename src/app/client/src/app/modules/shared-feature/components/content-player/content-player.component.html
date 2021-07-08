@@ -6,7 +6,7 @@
   <div class="content-header cc-player__content-header d-flex flex-ai-center relative position cc-player__border-fix" [ngClass]="{'header-block': isFullScreenView}">
     <div class="ui container py-16">
       <div class="content-header__content">
-        <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
+        <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0 content-header__content__title">
           <div class="content-header__title font-weight-bold ellipsis text-left">{{contentData.name}}</div>
           <div class="d-flex flex-ai-center content-header__info mt-4">
             <span class="fnormal" *ngIf="contentData?.subject">{{contentData?.subject}}</span>
@@ -21,7 +21,7 @@
                 {{resourceService?.frmelmnts?.lbl?.share}}
             </a>
 
-            <button type="button" *ngIf='permissionService.permissionAvailable' appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']"
+            <button type="button" *ngIf='!isDesktopApp && permissionService?.permissionAvailable ' appPermission [permission]="['CONTENT_CREATOR', 'CONTENT_REVIEWER']"
             (click)="copyContent(contentData)" appTelemetryInteract [telemetryInteractEdata]="copyContentInteractEdata" [telemetryInteractObject]="objectInteract"
            class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
             <i class="blue clone outline icon"></i> {{resourceService?.frmelmnts?.lbl?.copy}}
@@ -44,7 +44,7 @@
     <div class="sb-single-resource">
     <div class="ui container">
         <div class="cc-player sb-g">
-            <section class="sb-g-col-xs-12 sb-g-col-md-12 sb-g-col-lg-12 cc-player__video"
+            <section class="sb-g-col-xs-12 sb-g-col-md-12 sb-g-col-lg-12 sb-g-col-xxxl-16 cc-player__video"
                 [appTelemetryImpression]="telemetryImpression">
                 <app-contentplayer-page [playerConfig]="playerConfig" [tocPage]="true" [contentDetails]="contentData"
                     [isContentPresent]="isContentPresent" [objectRollUp]="objectRollup">

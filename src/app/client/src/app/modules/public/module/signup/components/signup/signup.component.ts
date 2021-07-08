@@ -53,6 +53,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
   isMinor: Boolean = false;
   formInputType: string;
   isP1CaptchaEnabled: any;
+  yearOfBirth: string;
 
   constructor(formBuilder: FormBuilder, public resourceService: ResourceService,
     public signupService: SignupService, public toasterService: ToasterService,
@@ -115,6 +116,7 @@ export class SignupComponent implements OnInit, OnDestroy, AfterViewInit {
     this.signUpForm.enable();
     this.disableForm = false;
     const currentYear = new Date().getFullYear();
+    this.yearOfBirth = `${selectedBirthYear}`;
     const userAge = currentYear - selectedBirthYear;
     this.isMinor = userAge < this.configService.constants.SIGN_UP.MINIMUN_AGE;
   }

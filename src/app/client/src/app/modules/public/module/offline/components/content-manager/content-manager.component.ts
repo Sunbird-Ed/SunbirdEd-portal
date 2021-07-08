@@ -6,6 +6,7 @@ import * as _ from 'lodash-es';
 import { ContentManagerService, ElectronDialogService } from '../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ILogEventInput, TelemetryService } from '@sunbird/telemetry';
+import { UserService } from '../../../../../core/services/user/user.service';
 
 @Component({
   selector: 'app-content-manager',
@@ -41,7 +42,8 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
     public activatedRoute: ActivatedRoute,
     public router: Router,
     private telemetryService: TelemetryService, 
-    public navigationHelperService: NavigationHelperService
+    public navigationHelperService: NavigationHelperService,
+    public userService: UserService
     ) {
     this.getList();
     document.addEventListener('content:import', (event) => {
@@ -281,13 +283,29 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
     return (progressSize / totalSize) * 100;
   }
 
-  openContent(contentId, mimeType, status) {
+  openContent(data) {
+    const { contentId, mimeType, status } = data;
     if (status === 'completed') {
+      let path;
       if (mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
-        this.router.navigate(['play/collection', contentId]);
+        if (typeof _.get(data, 'trackable') === 'string') {
+          try {
+            data.trackable = JSON.parse(data.trackable);
+          } catch (error) {
+            console.error('Error while json parse', error);
+          }
+        }
+
+        if (_.toUpper(_.get(data, 'contentType')) === 'COURSE' || _.toUpper(_.get(data, 'trackable.enabled')) === 'YES') {
+          path = this.userService.loggedIn ? 'learn/course' : 'explore-course/course';
+        } else {
+          path = 'play/collection';
+        }
       } else {
-        this.router.navigate(['play/content', contentId]);
+        path = 'play/content';
       }
+
+      this.router.navigate([path, contentId]);
     }
   }
 

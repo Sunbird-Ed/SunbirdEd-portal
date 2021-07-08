@@ -61,13 +61,13 @@
 
 .ui.light-sea-green.button {
   background: var(--secondary-400);
-  color: $white-color;
+  color: var(--white);
   height: calculateRem(38px) !important;
 }
 
 .ui.grey.button {
   background: var(--gray-200);
-  color: $white-color;
+  color: var(--white);
   pointer-events: none !important;
   cursor: not-allowed !important;
   height: calculateRem(38px) !important;
@@ -78,20 +78,20 @@
 }
 
 .orange.text {
-  color: $danger-color;
+  color: var(--red-100);
 }
 
 .orange-border {
-  border-color: $danger-color !important;
+  border-color: var(--red-100) !important;
 }
 
 .blue.text {
-  color: $primary-color;
+  color: var(--primary-color);
 }
 
 .ui.basic.blue.navigation.label {
-  background: $white-color !important;
-  color: $primary-color !important;
+  background: var(--white) !important;
+  color: var(--primary-color) !important;
   border: 0 !important;
   padding-left: 0;
   font-size: calculateRem(14px);
@@ -101,7 +101,7 @@
 
 .ui.basic.error.label {
   background: none !important;
-  color: $danger-color !important;
+  color: var(--red-100) !important;
   border: 0 !important;
   padding-left: 0;
   font-size: calculateRem(14px);
@@ -150,7 +150,7 @@ input[type=number]::-webkit-inner-spin-button {
   height: calculateRem(16px);
   border: calculateRem(2px) solid var(--gray-300) !important;
   border-radius: 100%;
-  background: $white-color;
+  background: var(--white);
 }
 
 .ui.form.borderd [type="radio"]:checked+label:before {
@@ -206,7 +206,7 @@ input[type=number]::-webkit-inner-spin-button {
   font-size: calculateRem(12px);
 
   span {
-    color: $red;
+    color: var(--red);
   }
 }
 
@@ -227,8 +227,8 @@ input[type=number]::-webkit-inner-spin-button {
 }
 
 .ui.form .field>label.infotext {
-  font-size: $font-size-xs !important;
-  color: $gray-200;
+  font-size: var(--font-size-xs) !important;
+  color: var(--gray-200);
   border: none !important;
   background: none;
 

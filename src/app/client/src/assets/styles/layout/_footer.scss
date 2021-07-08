@@ -14,9 +14,9 @@
     bottom: calculateRem(121px);
   }
   .download-mobile-app-logo {
-    background: $white;
-    color: $black;
-    border-radius: $base-block-space $base-block-space 0 0;
+    background: var(--white);
+    color: var(--black);
+    border-radius: calculateRem(8px) calculateRem(8px) 0 0;
     text-align: center;
     min-height: calculateRem(148px);
     overflow-y: auto;
@@ -35,11 +35,11 @@
 
     p,
     label {
-      font-size: $font-size-sm;
+      font-size: var(--font-size-sm)
     }
 
     p {
-      line-height: $base-block-space * 2;
+      line-height: calculateRem(16px);
     }
   }
 
@@ -56,7 +56,7 @@
 
     .border-round {
       border: none;
-      background: $gray-400;
+      background: var(--gray-400);
 
       &:nth-child(3) {
         html[dir="rtl"] & {
@@ -87,8 +87,8 @@
     }
 
     .small-box {
-      height: $base-block-space;
-      width: $base-block-space;
+      height: calculateRem(8px);
+      width: calculateRem(8px);
     }
   }
 
@@ -96,7 +96,7 @@
 
 .footer {
   background: var(--sb-footer-bg);
-  color: $white-color !important;
+  color: var(--white) !important;
   padding: calculateRem(34px) 0;
   font-size: calculateRem(14px);
   position: relative;
@@ -107,12 +107,12 @@
 
 
   a {
-    color: $white-color !important;
+    color: var(--white) !important;
 
     &:hover,
     &:active,
     &:focus {
-      color: $white-color !important;
+      color: var(--white) !important;
       text-decoration: underline;
       opacity: 1;
     }

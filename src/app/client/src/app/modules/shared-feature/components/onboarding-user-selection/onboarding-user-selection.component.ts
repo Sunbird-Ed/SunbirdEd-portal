@@ -99,7 +99,9 @@ export class OnboardingUserSelectionComponent implements OnInit, OnDestroy {
         switchMap(userType => {
           const payload = {
             userId: _.get(this.userService, 'userid'),
-            userType: userType.toLowerCase()
+            profileUserType: {
+              'type': userType.toLowerCase()
+            }
           };
           return this.profileService.updateProfile(payload)
             .pipe(
@@ -150,6 +152,8 @@ export class OnboardingUserSelectionComponent implements OnInit, OnDestroy {
     if (this.userService.loggedIn) {
       this.updateUserSelection$.next(code);
     } else {
+      const { name } = this.selectedUserType;
+      localStorage.setItem('guestUserType', name);
       this.userSelect.emit(true);
     }
   }

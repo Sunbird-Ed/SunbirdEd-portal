@@ -1,9 +1,11 @@
 import { Framework } from "./../controllers/framework";
 import { logger } from "@project-sunbird/logger";
 import { manifest } from "./../manifest";
+import { containerAPI } from '@project-sunbird/OpenRAP/api';
 const proxy = require('express-http-proxy');
 
 export default (app, proxyURL) => {
+    const standardLog = containerAPI.getStandardLoggerInstance();
     const framework = new Framework(manifest);
     app.get(
         "/api/framework/v1/read/:id",
@@ -21,7 +23,7 @@ export default (app, proxyURL) => {
                         const frameworkResponse = JSON.parse(proxyResData.toString('utf8'));
                         framework.upsert(frameworkResponse);
                     } catch (error) {
-                        logger.error(`Unable to parse or do DB update of framework data after fetching from online`, error)
+                        standardLog.error({ id: 'FRAMEWORK_READ_FAILED', message: `Unable to parse or do DB update of framework data after fetching from online`, error });
                     }
                     resolve(proxyResData);
                 });

@@ -8,7 +8,7 @@ import { ContentUtilsServiceService, ResourceService, SharedModule, ToasterServi
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 import { BehaviorSubject, of } from 'rxjs';
-import { NotificationService } from '../../../../notification/services/notification/notification.service';
+import { NotificationServiceImpl } from '../../../../notification/services/notification/notification-service-impl';
 import { assessmentPlayerMockData } from '../assessment-player/assessment-player.component.data.spec';
 import { CoursesService } from './../../../../core/services/course/course.service';
 import { enrolledBatch } from './../../batch/batch-details/batch-details.component.data';
@@ -163,7 +163,7 @@ describe('CoursePlayerComponent', () => {
         ContentUtilsServiceService, TelemetryService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
-        NotificationService,
+        NotificationServiceImpl,
         { provide: 'CS_USER_SERVICE', useValue: MockCSService },
         { provide: 'CS_COURSE_SERVICE', useValue: MockCSService },
       ],
@@ -198,6 +198,7 @@ describe('CoursePlayerComponent', () => {
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
+    spyOn(component, 'getDataSetting').and.returnValue(true);
     component.ngOnInit();
     expect(component.courseHierarchy).toBeDefined();
     expect(component.certificateDescription['description']).toBe('This course certificate is only for Rajasthan users scoring 80% or above');
@@ -213,6 +214,7 @@ describe('CoursePlayerComponent', () => {
     resourceService.messages = resourceServiceMockData.messages;
     resourceService.frmelmnts = resourceServiceMockData.frmelmnts;
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
+    spyOn(component, 'getDataSetting').and.returnValue(true);
     component.ngOnInit();
     expect(component.courseHierarchy).toBeDefined();
     expect(component.certificateDescription['description']).toBe('');
@@ -229,6 +231,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(of(enrolledBatch.result.response));
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
+    spyOn(component, 'getDataSetting').and.returnValue(true);
     component.ngOnInit();
     expect(component.enrolledCourse).toBeTruthy();
   });
@@ -243,6 +246,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseBatchService, 'getEnrolledBatchDetails').and.returnValue(of(enrolledBatch.result.response));
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
+    spyOn(component, 'getDataSetting').and.returnValue(false);
     component.ngOnInit();
     expect(component.enrolledCourse).toBeTruthy();
     expect(component.contentStatus).toBeDefined();
@@ -260,6 +264,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getCourseHierarchy').
       and.returnValue(of(CourseHierarchyGetMockResponseFlagged.result.content));
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponseFlagged.result));
+    spyOn(component, 'getDataSetting').and.returnValue(false);
     component.ngOnInit();
     expect(component.enrolledCourse).toBeTruthy();
     expect(component.contentId).toBeUndefined();
@@ -279,6 +284,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of(CourseHierarchyGetMockResponse.result));
+    spyOn(component, 'getDataSetting').and.returnValue(false);
     component.ngOnInit();
     expect(component.enrolledCourse).toBeTruthy();
     expect(component.contentId).toBeUndefined();
@@ -298,6 +304,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of(CourseHierarchyGetMockResponse.result));
+    spyOn(component, 'getDataSetting').and.returnValue(false);
     component.ngOnInit();
     expect(component.enrolledCourse).toBeFalsy();
     expect(component.contentId).toBeUndefined();
@@ -316,6 +323,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of(CourseHierarchyGetMockResponse.result));
+    spyOn(component, 'getDataSetting').and.returnValue(false);
     component.ngOnInit();
     expect(component.enrolledCourse).toBeFalsy();
     expect(component.contentId).toBeUndefined();
@@ -336,6 +344,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of(CourseHierarchyGetMockResponse.result));
+    spyOn(component, 'getDataSetting').and.returnValue(true);
     component.ngOnInit();
     expect(component.enrolledCourse).toBeFalsy();
     expect(component.contentId).toBeUndefined();
@@ -355,6 +364,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of(CourseHierarchyGetMockResponse.result));
+    spyOn(component, 'getDataSetting').and.returnValue(true);
     component.ngOnInit();
     expect(component.enrolledCourse).toBeFalsy();
     expect(component.contentId).toBeUndefined();
@@ -375,6 +385,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of(CourseHierarchyGetMockResponse.result));
+    spyOn(component, 'getDataSetting').and.returnValue(true);
     component.ngOnInit();
     expect(component.enrolledCourse).toBeFalsy();
     expect(component.permissionService.checkRolesPermissions)
@@ -397,6 +408,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of(CourseHierarchyGetMockResponse.result));
+    spyOn(component, 'getDataSetting').and.returnValue(true);
     component.ngOnInit();
     expect(component.enrolledCourse).toBeFalsy();
     expect(component.permissionService.checkRolesPermissions)
@@ -416,6 +428,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(windowScrollService, 'smoothScroll');
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponse.result));
+    spyOn(component, 'getDataSetting').and.returnValue(true);
     component.ngOnInit();
     expect(component.enrolledCourse).toBeTruthy();
     expect(component.contentId).toBeUndefined();
@@ -431,6 +444,7 @@ describe('CoursePlayerComponent', () => {
     activatedRouteStub.queryParams = of({});
     activatedRouteStub.changeParams({ courseStatus: 'Unlisted' });
     spyOn(toasterService, 'error').and.callThrough();
+    spyOn(component, 'getDataSetting').and.returnValue(true);
     component.ngOnInit();
     expect(toasterService.error).not.toHaveBeenCalled();
     expect(component.courseStatus).toEqual('Unlisted');
@@ -505,6 +519,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of(CourseHierarchyGetMockResponse.result));
+    spyOn(component, 'getDataSetting').and.returnValue(true);
     component.ngOnInit();
     expect(component.enrolledCourse).toBeFalsy();
     component.navigateToContent({ title: component.contentTitle, id: component.contentIds[1] });
@@ -528,6 +543,7 @@ describe('CoursePlayerComponent', () => {
     spyOn(courseConsumptionService, 'getCourseHierarchy').and.returnValue(of(CourseHierarchyGetMockResponse.result.content));
     spyOn(courseConsumptionService, 'getContentState').and.returnValue(of(CourseHierarchyGetMockResponse.result));
     spyOn(courseConsumptionService, 'getConfigByContent').and.returnValue(of(CourseHierarchyGetMockResponse.result));
+    spyOn(component, 'getDataSetting').and.returnValue(true);
     component.ngOnInit();
     expect(component.enrolledCourse).toBeFalsy();
     component.navigateToContent({ title: component.contentTitle, id: component.contentIds[1] });
@@ -844,6 +860,7 @@ describe('CoursePlayerComponent', () => {
   it('should show consent PII section', () => {
     const userService = TestBed.get(UserService);
     userService._userid = 'testUser1';
+    userService._userProfile = {isMinor: false};
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     component.courseHierarchy['userConsent'] = 'Yes';
     component.enrolledCourse = true;
@@ -855,6 +872,7 @@ describe('CoursePlayerComponent', () => {
   it('should now show consent PII section', () => {
     const userService = TestBed.get(UserService);
     userService._userid = 'testUser1';
+    userService._userProfile = {isMinor: true};
     component.courseHierarchy = assessmentPlayerMockData.courseHierarchy;
     component.courseHierarchy['userConsent'] = 'No';
     spyOn(component['courseConsumptionService'], 'canViewDashboard').and.returnValue(false);

@@ -16,7 +16,7 @@ import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 import { SuiModule } from 'ng2-semantic-ui';
 import { of, throwError } from 'rxjs';
-import { NotificationService } from '../../../../notification/services/notification/notification.service';
+import { NotificationServiceImpl } from '../../../../notification/services/notification/notification-service-impl';
 import { AssessmentScoreService } from '../../../services/assessment/assessment-score.service';
 import { CourseConsumptionService } from '../../../services/course-consumption/course-consumption.service';
 import { CourseProgressService } from '../../../services/courseProgress/course-progress.service';
@@ -70,7 +70,7 @@ describe('AssessmentPlayerComponent', () => {
         { provide: ResourceService, useValue: resourceMockData },
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         ContentUtilsServiceService,
-        NotificationService, CourseProgressService,
+        NotificationServiceImpl, CourseProgressService,
         { provide: 'CS_USER_SERVICE', useValue: MockCSService },
         { provide: 'CS_COURSE_SERVICE', useValue: MockCSService }
       ],

@@ -36,4 +36,6 @@
   .ui.dropdown .menu div .selected.item, .ui.dropdown.selected{
     font-weight: 700 !important;
   }
+
+  @import "components/sb-forms/facet-filters";
 }

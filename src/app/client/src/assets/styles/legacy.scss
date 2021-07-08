@@ -205,7 +205,9 @@ i.large.icon.limitedPublishingLinkIcon {
   border: 0px;
   height: 100%;
 }
-
+#help-video-aspect-ratio,.content-video__player {
+  // transition: all ease .3s;
+}
 /*semantic ui modal form field changes*/
 
 
@@ -491,7 +493,7 @@ li.subStr::after {
   margin: 0.1875rem 0 0.1875rem 0 !important;
 }
 .ui.selection.dropdown{
-  line-height: $sb-input-line-height;
+  line-height: calculateRem(21px);
 }
 .ui.multiple.dropdown > .search{
   padding: 0 !important;
@@ -744,7 +746,7 @@ li.subStr::after {
   }
   html[dir="rtl"] &{
     .dropdown.icon{
-      margin: 0 ($base-block-space) 0 0;
+      margin: 0 0.5rem 0 0;
     }
   }
 }

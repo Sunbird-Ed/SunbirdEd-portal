@@ -11,7 +11,8 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { of, throwError } from 'rxjs';
 import { FaqService } from '../../services/faq/faq.service';
 import { FaqComponent } from './faq.component';
-import { RESPONSE } from './faq.component.spec.data';
+import { FaqData, RESPONSE } from './faq.component.spec.data';
+import { HttpClient } from '@angular/common/http';
 
 
 describe('FaqComponent', () => {
@@ -92,6 +93,8 @@ describe('FaqComponent', () => {
 
   it('should call ngOnInit', () => {
     const faqService = TestBed.get(FaqService);
+    const httpService = TestBed.get(HttpClient);
+    httpService.get.and.returnValue(of(FaqData));
     spyOn(component, 'setTelemetryImpression');
     spyOn(component, 'initLayout');
     spyOn(faqService, 'getFaqJSON').and.returnValues(of(RESPONSE.faqJson));
@@ -102,7 +105,10 @@ describe('FaqComponent', () => {
   });
 
   it('should call ngOnInit and get success for getting faq json file', () => {
+    component.faqData = FaqData;
     const faqService = TestBed.get(FaqService);
+    const httpService = TestBed.get(HttpClient);
+    httpService.get.and.returnValue(of(FaqData));
     spyOn(component, 'setTelemetryImpression');
     spyOn(component, 'initLayout');
     spyOn(faqService, 'getFaqJSON').and.returnValues(of(RESPONSE.faqJson));
@@ -112,6 +118,8 @@ describe('FaqComponent', () => {
 
   it('should call ngOnInit and get 404 for getting faq json file', () => {
     const faqService = TestBed.get(FaqService);
+    const httpService = TestBed.get(HttpClient);
+    httpService.get.and.returnValue(of(FaqData));
     spyOn(component, 'setTelemetryImpression');
     spyOn(component, 'initLayout');
     spyOn(faqService, 'getFaqJSON').and.returnValues(of(RESPONSE.faqJson));
@@ -139,10 +147,10 @@ describe('FaqComponent', () => {
 
   it('should call getDesktopFAQ on success', () => {
     const publicDataService = TestBed.get(PublicDataService);
-    spyOn(publicDataService, 'get').and.returnValue(of({ result: { faqs: {} } }));
+    spyOn(publicDataService, 'get').and.returnValue(of({ result: FaqData }));
     component['getDesktopFAQ']('hi');
     expect(component.showLoader).toBe(false);
-    expect(component.faqList).toEqual({});
+    expect(component.faqData).toEqual(undefined);
     expect(component.defaultToEnglish).toBe(false);
   });
 
@@ -158,6 +166,127 @@ describe('FaqComponent', () => {
     spyOn(location, 'back');
     component.goBack();
     expect(location.back).toHaveBeenCalled();
+  });
+
+  it('should call goBack but will change the view', () => {
+    spyOn(location, 'back');
+    component.showOnlyFaqCategory = false;
+    component.isMobileView = true
+    component.goBack();
+    expect(location.back).not.toHaveBeenCalled();
+  });
+
+  describe('onCategorySelect', () => {
+    it('should terminate flow if the data is empty', () => {
+      // arrange
+      const eventData = {}
+      // act
+      component.onCategorySelect(eventData);
+      // assert
+      expect(component.selectedFaqCategory).toEqual(undefined);
+    });
+
+    it('should select the faqCategory and display the select faq and videos', (done) => {
+      // arrange
+      const eventData = {
+        data: {
+          faqs: [],
+          videos: [],
+        }
+      }
+      component.faqData = FaqData;
+      const outputData = {
+        faqs: [],
+        videos: [],
+        constants: FaqData.constants
+      }
+      // act
+      component.onCategorySelect(eventData);
+      // assert
+      setTimeout(() => {
+        expect(component.selectedFaqCategory).toEqual(outputData);
+        done()
+      }, 0);
+    });
+  });
+
+  describe('checkScreenView', () => {
+    it('should check the screen size and should enable mobile view if the width is less than 767', () => {
+      // arrange
+      const width = 640;
+      // act
+      component.checkScreenView(width);
+      // assert
+      expect(component.isMobileView).toEqual(true);
+      expect(component.showOnlyFaqCategory).toEqual(true);
+    });
+
+    it('should check the screen size and should disable mobile view if the width is greater than 767', () => {
+      // arrange
+      const width = 1200;
+      // act
+      component.checkScreenView(width);
+      // assert
+      expect(component.isMobileView).toEqual(false);
+    });
+  });
+
+  describe('onVideoSelect', () => {
+    it('should terminate the flow if the data is empty', () => {
+      // arrange
+      component.showVideoModal = false;
+      const eventData = {};
+      // act
+      component.onVideoSelect(eventData);
+      // assert
+      expect(component.showVideoModal).toEqual(false);
+    });
+
+    it('should open up the player modal and play the faq video', () => {
+      // arrange
+      component.showVideoModal = false;
+      component.videoPlayer = {
+        changes: of({})
+      }
+      const eventData = {
+        data: {
+          thumbnail: 'some_thumbnail',
+          name: 'some_name',
+          url: 'some_url',
+        }
+      };
+      // act
+      component.onVideoSelect(eventData);
+      // assert
+      expect(component.showVideoModal).toEqual(true);
+    });
+  });
+
+  describe('enableFaqReport', () => {
+    it('should enable the report an issue component', () => {
+      // arrange
+      component.sbFaqCategoryList = {};
+      const eventData = {};
+      // act
+      component.enableFaqReport(eventData);
+      // assert
+      expect(component.showOnlyFaqCategory).toEqual(false);
+      expect(component.showFaqReport).toEqual(true);
+    });
+
+    it('should enable the report an issue component and should deselect the category', () => {
+      // arrange
+      component.sbFaqCategoryList = {
+        selectedIndex: -1
+      };
+      const eventData = {};
+      // act
+      component.enableFaqReport(eventData);
+      // assert
+      expect(component.showOnlyFaqCategory).toEqual(false);
+      expect(component.showFaqReport).toEqual(true);
+      expect(component.sbFaqCategoryList.selectedIndex).toEqual(-1);
+    });
   });
 
 });

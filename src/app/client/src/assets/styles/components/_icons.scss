@@ -58,19 +58,19 @@
   content: "\e907";
 }
 [class*="sb-icon-primary"] {
-  background-color: $primary-color;
+  background-color: var(--primary-color);
 }
 
 [class*="sb-icon-secondary"] {
-  background-color: $secondary-color;
+  background-color: var(--secondary-color);
 }
 
 [class*="sb-icon-warning"] {
-  background-color: $tertiary-color;
+  background-color: var(--tertiary-color);
 }
 
 [class*="sb-icon-error"] {
-  background-color: $red;
+  background-color: var(--red);
 }
 
 [class*="sb-icon-edit-user"] {

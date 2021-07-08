@@ -1,4 +1,3 @@
-import { logger } from "@project-sunbird/logger";
 import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import * as _ from "lodash";
 import { Inject } from "typescript-ioc";
@@ -21,11 +20,16 @@ import Device from './controllers/device';
 import { manifest } from "./manifest";
 import Response from './utils/response';
 import { addPerfLogForAPICall } from './loaders/logger';
+import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
+import groups from "./routes/groups";
 const proxy = require('express-http-proxy');
 
 export class Router {
   @Inject private contentDownloadManager: ContentDownloadManager;
+  @Inject private standardLog: StandardLogger = containerAPI.getStandardLoggerInstance();
+
   public init(app: any) {
+
     const proxyUrl = process.env.APP_BASE_URL;
     this.contentDownloadManager.initialize();
     const telemetryInstance = containerAPI
@@ -38,10 +42,10 @@ export class Router {
         const elapsedTime =
           (elapsedHrTime[0] * 1000 + elapsedHrTime[1] / 1e6) / 1000;
         if (elapsedTime > 1) {
-          logger.warn(
-            `${req.headers["X-msgid"] || ""} path: ${req.path
-            } took ${elapsedTime}s`,
-          );
+          this.standardLog.warn({
+            id: 'ROUTES_REQUEST_COMPLETED',
+            message: `${req.headers["X-msgid"] || ""} path: ${req.path} took ${elapsedTime}s`
+          });
         }
 
         if (res.statusCode >= 200 && res.statusCode <= 300) {
@@ -123,7 +127,7 @@ export class Router {
     staticRoutes(app, 'content', 'ecars');
 
     app.get("/device/profile/:id", async (req, res, next) => {
-      logger.debug(`Received API call to get device profile data from offline`);
+      this.standardLog.debug({ id: 'ROUTES_GET_DEVICE_PROFILE', message: 'Received API call to get device profile data' });
       try {
         const deviceProfile = new Device(manifest);
         const locationData: any = await deviceProfile.getDeviceProfile();
@@ -144,7 +148,7 @@ export class Router {
     }));
     
     app.post(`/device/register/:id`, async(req, res, next) => {
-      logger.debug(`Received API call to update device profile`, req.params.id);
+      this.standardLog.debug({ id: 'ROUTES_REGISTER_DEVICE_PROFILE', message: `Received API call to update device profile`, mid: _.get(req, 'params.id')});
       const locationData = _.get(req, "body.request.userDeclaredLocation");
       if (locationData && _.isObject(locationData.state) || !_.isObject(locationData.city)) {
         const deviceProfile = new Device(manifest);
@@ -152,11 +156,7 @@ export class Router {
         containerAPI.getDeviceSdkInstance().register();
         res.status(200).send(Response.success('analytics.device-register', { status: 'success' }, req));
       } else {
-        logger.error(
-          `ReqId = "${req.headers[
-          "X-msgid"
-          ]}": Received error while saving in location database and err.message: Invalid location Data`,
-      );
+        this.standardLog.debug({ id: 'ROUTES_REGISTER_DEVICE_PROFILE_FAILED', message: `Received error while saving in location database`, mid: req.headers["X-msgid"], error: "Invalid location Data" });
         const status = 500;
         res.status(status);
         return res.send(Response.error('analytics.device-register', status));
@@ -174,7 +174,7 @@ export class Router {
     courseRoutes(app, proxyUrl);
     telemetryRoutes(app)
     playerProxyRoutes(app, proxyUrl);
-
+    groups(app, proxyUrl);
     app.all("*", (req, res) => res.redirect("/"));
   }
 }

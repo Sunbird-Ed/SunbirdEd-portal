@@ -2,10 +2,10 @@ import { environment } from '@sunbird/environment';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { TelemetryService, ITelemetryContext } from '@sunbird/telemetry';
 import {
-  UtilService, ResourceService, ToasterService, IUserData, IUserProfile,
+  UtilService, ResourceService, ToasterService, IUserData, IUserProfile, ConnectionService,
   NavigationHelperService, ConfigService, BrowserCacheTtlService, LayoutService
 } from '@sunbird/shared';
-import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, AfterViewInit, ChangeDetectorRef, ElementRef, Renderer2 } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, ChangeDetectorRef, ElementRef, Renderer2, NgZone } from '@angular/core';
 import {
   UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService,
   SessionExpiryInterceptor, FormService, ProgramsService, GeneraliseLabelService
@@ -13,10 +13,11 @@ import {
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
 import { Observable, of, throwError, combineLatest, BehaviorSubject, forkJoin, zip, Subject } from 'rxjs';
-import { first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil } from 'rxjs/operators';
+import { first, filter, mergeMap, tap, map, skipWhile, startWith, takeUntil, debounceTime } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/common';
 import { image } from '../assets/images/tara-bot-icon';
+import { SBTagModule } from 'sb-tag-manager';
 /**
  * main app component
  */
@@ -111,6 +112,9 @@ export class AppComponent implements OnInit, OnDestroy {
   // Font Increase Decrease Variables
   fontSize: any;
   defaultFontSize = 16;
+  isGuestUser = true;
+  guestUserDetails;
+  showYearOfBirthPopup = false;
   @ViewChild('increaseFontSize', { static: false }) increaseFontSize: ElementRef;
   @ViewChild('decreaseFontSize', { static: false }) decreaseFontSize: ElementRef;
   @ViewChild('resetFontSize', { static: false }) resetFontSize: ElementRef;
@@ -125,7 +129,8 @@ export class AppComponent implements OnInit, OnDestroy {
     public formService: FormService, private programsService: ProgramsService,
     @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
     public changeDetectorRef: ChangeDetectorRef, public layoutService: LayoutService,
-    public generaliseLabelService: GeneraliseLabelService, private renderer: Renderer2) {
+    public generaliseLabelService: GeneraliseLabelService, private renderer: Renderer2, private zone: NgZone,
+    private connectionService: ConnectionService) {
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
     const layoutType = localStorage.getItem('layoutType') || '';
@@ -143,6 +148,7 @@ export class AppComponent implements OnInit, OnDestroy {
   @HostListener('window:beforeunload', ['$event'])
   public beforeunloadHandler($event) {
     this.telemetryService.syncEvents(false);
+    this.ngOnDestroy();
   }
   handleLogin() {
     window.location.replace('/sessionExpired');
@@ -182,6 +188,23 @@ export class AppComponent implements OnInit, OnDestroy {
     this.getLocalFontSize();
     // dark theme
     this.getLocalTheme();
+
+    this.setTagManager();
+  }
+
+  setTagManager() {
+    console.log("Tag Manager");
+    window['TagManager'] = SBTagModule.instance;
+    window['TagManager'].init();
+    if(this.userService.loggedIn) {
+      if (localStorage.getItem('tagManager_' + this.userService.userid)) {
+        window['TagManager'].SBTagService.restoreTags(localStorage.getItem('tagManager_' + this.userService.userid));
+      } 
+    } else {
+      if (localStorage.getItem('tagManager_' + 'guest')) {
+        window['TagManager'].SBTagService.restoreTags(localStorage.getItem('tagManager_' + 'guest'));
+      } 
+    }
   }
 
   setTheme() {
@@ -195,6 +218,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.isDesktopApp = this.utilService.isDesktopApp;
     if (this.isDesktopApp) {
       this._document.body.classList.add('desktop-app');
+      this.notifyNetworkChange();
     }
     this.checkFullScreenView();
     this.layoutService.switchableLayout().pipe(takeUntil(this.unsubscribe$)).subscribe(layoutConfig => {
@@ -225,6 +249,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.userService.initialize(this.userService.loggedIn);
           this.getOrgDetails();
           if (this.userService.loggedIn) {
+            this.isGuestUser = false;
             this.permissionService.initialize();
             this.courseService.initialize();
             this.programsService.initialize();
@@ -232,9 +257,13 @@ export class AppComponent implements OnInit, OnDestroy {
             this.checkForCustodianUser();
             return this.setUserDetails();
           } else {
-            if (this.utilService.isDesktopApp) {
-              this.userService.getAnonymousUserPreference();
-            }
+            this.isGuestUser = true;
+            this.userService.getGuestUser().subscribe((response) => {
+              this.guestUserDetails = response;
+            }, error => {
+              console.error('Error while fetching guest user', error);
+            });
+
             return this.setOrgDetails();
           }
         }))
@@ -266,6 +295,12 @@ export class AppComponent implements OnInit, OnDestroy {
     this.botObject['imageUrl'] = image.imageUrl;
     this.botObject['title'] = this.botObject['header'] = this.title;
     this.generaliseLabelService.getGeneraliseResourceBundle();
+    //keyboard accessibility enter key click event
+    document.onkeydown = function(e) {
+      if(e.keyCode === 13) { // The Enter/Return key
+        (document.activeElement  as HTMLElement).click();
+      }
+    };
   }
 
   onCloseJoyThemePopup() {
@@ -352,15 +387,21 @@ export class AppComponent implements OnInit, OnDestroy {
       zip(this.tenantService.tenantData$, this.getOrgDetails(false)).subscribe((res) => {
         if (_.get(res[0], 'tenantData')) {
           const orgDetailsFromSlug = this.cacheService.get('orgDetailsFromSlug');
-          if (_.get(orgDetailsFromSlug, 'slug') !== this.tenantService.slugForIgot) {
-            const userType = localStorage.getItem('userType');
-            this.showUserTypePopup = _.get(this.userService, 'loggedIn') ? (!_.get(this.userService, 'userProfile.userType') || !userType) : !userType;
-          }
+          // if (_.get(orgDetailsFromSlug, 'slug') !== this.tenantService.slugForIgot) {
+
+            let userType;
+            if (this.isDesktopApp && this.isGuestUser) {
+               userType = _.get(this.guestUserDetails, 'role') ? this.guestUserDetails.role : undefined;
+            } else {
+              userType = localStorage.getItem('userType');
+            }
+            this.showUserTypePopup = _.get(this.userService, 'loggedIn') ? (!_.get(this.userService, 'userProfile.profileUserType.type') || !userType) : !userType;
+          // }
         }
       });
     }, (err) => {
-      this.isLocationConfirmed = true;
-      this.showUserTypePopup = false;
+      this.isLocationConfirmed = false;
+      this.showUserTypePopup = true;
     });
     this.getUserFeedData();
   }
@@ -434,7 +475,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.orgDetailsService.getCustodianOrgDetails().subscribe((custodianOrg) => {
           if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') !== _.get(custodianOrg, 'result.response.value')) {
             // Check for non custodian user and show global consent pop up
-            this.consentConfig = { tncLink: this.resourceService.frmelmnts.lbl.privacyPolicy, tncText: this.resourceService.frmelmnts.lbl.nonCustodianTC };
+            this.consentConfig = { tncLink: _.get(this.resourceService, 'frmelmnts.lbl.privacyPolicy'), tncText: _.get(this.resourceService, 'frmelmnts.lbl.nonCustodianTC') };
             this.showGlobalConsentPopUpSection = true;
           } else {
             this.checkFrameworkSelected();
@@ -470,17 +511,32 @@ export class AppComponent implements OnInit, OnDestroy {
    * checks if user has selected the framework and shows popup if not selected.
    */
   public checkFrameworkSelected() {
-    const frameWorkPopUp: boolean = this.cacheService.get('showFrameWorkPopUp');
-    if (frameWorkPopUp) {
-      this.showFrameWorkPopUp = false;
-      this.checkLocationStatus();
-    } else {
-      if (this.userService.loggedIn && _.isEmpty(_.get(this.userProfile, 'framework'))) {
-        this.showFrameWorkPopUp = true;
-      } else {
-        this.checkLocationStatus();
-      }
+    // should not show framework popup for sign up and recover route
+    if (this.isLocationStatusRequired()) {
+      return;
     }
+    this.zone.run(() => {
+      const frameWorkPopUp: boolean = this.cacheService.get('showFrameWorkPopUp');
+      if (frameWorkPopUp) {
+        this.showFrameWorkPopUp = false;
+        this.checkLocationStatus();
+      } else {
+        if (this.userService.loggedIn && _.isEmpty(_.get(this.userProfile, 'framework'))) {
+          this.showFrameWorkPopUp = true;
+        } else if (this.isGuestUser) {
+          if (!this.guestUserDetails) {
+            this.userService.getGuestUser().subscribe((response) => {
+              this.guestUserDetails = response;
+              this.showFrameWorkPopUp = false;
+            }, error => {
+              this.showFrameWorkPopUp = true;
+            });
+          }
+        } else {
+          this.checkLocationStatus();
+        }
+      }
+    });
   }
 
   /**
@@ -492,7 +548,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.orgDetailsService.getCustodianOrgDetails().subscribe((custodianOrg) => {
         if (_.get(this.userService, 'userProfile.rootOrg.rootOrgId') !== _.get(custodianOrg, 'result.response.value')) {
           // Check for non custodian user and show global consent pop up
-          this.consentConfig = { tncLink: this.resourceService.frmelmnts.lbl.privacyPolicy, tncText: this.resourceService.frmelmnts.lbl.nonCustodianTC };
+          this.consentConfig = { tncLink: _.get(this.resourceService, 'frmelmnts.lbl.privacyPolicy'), tncText: _.get(this.resourceService, 'frmelmnts.lbl.nonCustodianTC') };
           this.showGlobalConsentPopUpSection = true;
         } else {
           this.checkFrameworkSelected();
@@ -594,7 +650,7 @@ export class AppComponent implements OnInit, OnDestroy {
       const anonymousTelemetryContextData = {
         userOrgDetails: {
           userId: 'anonymous',
-          rootOrgId: this.orgDetails.rootOrgId,
+          rootOrgId: this.orgDetails.id,
           organisationIds: [this.orgDetails.hashTagId]
         },
         config: {
@@ -634,26 +690,40 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  closeFrameworkPopup () {
+    this.frameWorkPopUp.modal.deny();
+    this.showFrameWorkPopUp = false;
+  }
   /**
    * updates user framework. After update redirects to library
    */
   public updateFrameWork(event) {
-    const req = {
-      framework: event
-    };
-    this.profileService.updateProfile(req).subscribe(res => {
-      this.frameWorkPopUp.modal.deny();
-      this.userService.setUserFramework(event);
-      this.showFrameWorkPopUp = false;
+    if (this.isGuestUser && !this.guestUserDetails) {
+      const user = { name: 'guest', formatedName: 'Guest', framework: event };
+      this.userService.createGuestUser(user).subscribe(data => {
+        this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0058'));
+      }, error => {
+        this.toasterService.error(_.get(this.resourceService, 'messages.emsg.m0005'));
+      });
+      this.closeFrameworkPopup();
       this.checkLocationStatus();
-      this.utilService.toggleAppPopup();
-      this.showAppPopUp = this.utilService.showAppPopUp;
-    }, err => {
-      this.toasterService.warning(this.resourceService.messages.emsg.m0012);
-      this.frameWorkPopUp.modal.deny();
-      this.checkLocationStatus();
-      this.showFrameWorkPopUp = false;
-    });
+    } else {
+      const req = {
+        framework: event
+      };
+      this.profileService.updateProfile(req).subscribe(res => {
+        this.closeFrameworkPopup();
+        this.userService.setUserFramework(event);
+        this.checkLocationStatus();
+        this.utilService.toggleAppPopup();
+        this.showAppPopUp = this.utilService.showAppPopUp;
+      }, err => {
+        this.toasterService.warning(this.resourceService.messages.emsg.m0012);
+        this.closeFrameworkPopup();
+        this.checkLocationStatus();
+      });
+    }
   }
   viewInBrowser() {
     // no action required
@@ -678,6 +748,13 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.resourceDataSubscription) {
       this.resourceDataSubscription.unsubscribe();
     }
+    if(window['TagManager']) {
+      if(this.userService.loggedIn) {
+        localStorage.setItem('tagManager_' + this.userService.userid, JSON.stringify(window['TagManager'].SBTagService));
+      } else {
+        localStorage.setItem('tagManager_' + 'guest', JSON.stringify(window['TagManager'].SBTagService));
+      }
+    }
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
@@ -686,6 +763,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   /** will be triggered once location popup gets closed */
   onLocationSubmit() {
+    this.showYearOfBirthPopup = true;
     if (this.userFeed) {
       this.showUserVerificationPopup = true;
     }
@@ -838,5 +916,14 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   setLocalTheme(value: string) {
     document.documentElement.setAttribute('data-theme', value);
+  }
+  notifyNetworkChange() {
+    this.connectionService.monitor().pipe(debounceTime(5000)).subscribe((status: boolean) => {
+      const message = status ? _.get(this.resourceService, 'messages.stmsg.desktop.onlineStatus') : _.get(this.resourceService, 'messages.emsg.desktop.offlineStatus');
+      this.toasterService.info(message);
+      if (!status && this.router.url.indexOf('mydownloads') <= 0) {
+        this.router.navigate(['mydownloads'], { queryParams: { selectedTab: 'mydownloads' } });
+      }
+    });
   }
 }

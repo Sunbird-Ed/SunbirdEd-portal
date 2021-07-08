@@ -13,6 +13,7 @@ const isAPIWhitelisted  = require('../helpers/apiWhiteList');
 module.exports = function (app) {
 
     app.post(`${BASE_REPORT_URL}/forum/v2/read`, proxyUtils.verifyToken(), proxyObject());
+    app.post(`${BASE_REPORT_URL}/forum/tags`, proxyUtils.verifyToken(), proxyObject());
     app.post(`${BASE_REPORT_URL}/forum/v2/create`, proxyUtils.verifyToken(), proxyObject());
     app.post(`${BASE_REPORT_URL}/forum/v2/remove`, proxyUtils.verifyToken(), proxyObject());
     app.post(`${BASE_REPORT_URL}/forum/v3/create`, proxyUtils.verifyToken(), proxyObject());

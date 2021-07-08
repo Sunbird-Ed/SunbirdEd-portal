@@ -30,7 +30,6 @@ export class SystemWarningComponent implements OnInit, OnDestroy {
   private getSystemInfo() {
     this.systemInfoService.getSystemInfo().pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       let { availableMemory } = data.result;
-      console.log("data.result", data.result);
       availableMemory = Math.floor(availableMemory / (1024 * 1024));
       const availableCpuLoad = _.get(data.result, 'cpuLoad');
       this.showCpuLoadWarning = availableCpuLoad ? Boolean(availableCpuLoad > this.MAXIMUM_CPU_LOAD) : false;

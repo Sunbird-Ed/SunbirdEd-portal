@@ -39,7 +39,8 @@ export class FilterComponent implements OnInit, OnDestroy {
   showFilters: Boolean = true;
   dateFilters:Array<string>;
   public unsubscribe = new Subject<void>();
- 
+  previousFilters: any;
+
   @Input()
   set selectedFilter(val: any) {
     if (val) {
@@ -51,8 +52,7 @@ export class FilterComponent implements OnInit, OnDestroy {
       if(val.selectedFilters){
         this.selectedFilters = val.selectedFilters;
         this.filtersFormGroup.patchValue(val.selectedFilters);
-      } 
-      
+      }
     }
   }
 
@@ -96,6 +96,7 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   }
 
+
   ngOnInit() {
     if (this.filters) {
       this.buildFiltersForm();
@@ -106,21 +107,45 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
 
-  formGeneration(chartData) {
-    this.filtersFormGroup = this.fb.group({});
+  formUpdate(chartData){
+    let filterKeys = Object.keys(this.selectedFilters);
+    let previousKeys = [];
+    if (this.previousFilters) {
+      previousKeys = Object.keys(this.previousFilters);
+    }
     _.forEach(this.filters, filter => {
-      if (filter.controlType === 'date' || /date/i.test(_.get(filter, 'reference'))) {
-        const dateRange = _.uniq(_.map(chartData, _.get(filter, 'reference')));
-        this.pickerMinDate = moment(dateRange[0], 'DD-MM-YYYY');
-        this.pickerMaxDate = moment(dateRange[dateRange.length - 1], 'DD-MM-YYYY');
-        this.dateFilterReferenceName = filter.reference;
-      }
-      this.filtersFormGroup.addControl(_.get(filter, 'reference'), this.fb.control(''));
-      filter.options = (_.sortBy(_.uniq(
-        _.map(chartData, (data) =>  data[filter.reference] ? data[filter.reference].toLowerCase() : ""
+      let options = (_.sortBy(_.uniq(
+        _.map(chartData, (data) => data[filter.reference] ? data[filter.reference].toLowerCase() : ""
         )))).filter(Boolean);
 
+      if (!filterKeys.includes(filter.reference)) {
+        filter.options = options;
+      } else {
+        if (previousKeys && previousKeys.includes(filter.reference) && this.previousFilters && this.previousFilters[filter.reference].length == this.selectedFilters[filter.reference].length) {
+          filter.options = options
+        }
+      }
     });
+    this.previousFilters = this.selectedFilters;
+  }
+  formGeneration(chartData) {
+
+      this.filtersFormGroup = this.fb.group({});
+      _.forEach(this.filters, filter => {
+
+        if (filter.controlType === 'date' || /date/i.test(_.get(filter, 'reference'))) {
+          const dateRange = _.uniq(_.map(chartData, _.get(filter, 'reference')));
+          this.pickerMinDate = moment(dateRange[0], 'DD-MM-YYYY');
+          this.pickerMaxDate = moment(dateRange[dateRange.length - 1], 'DD-MM-YYYY');
+          this.dateFilterReferenceName = filter.reference;
+        }
+        this.filtersFormGroup.addControl(_.get(filter, 'reference'), this.fb.control(''));
+        filter.options = (_.sortBy(_.uniq(
+          _.map(chartData, (data) => data[filter.reference] ? data[filter.reference].toLowerCase() : ""
+          )))).filter(Boolean);
+
+      });
+   
   }
 
   buildFiltersForm() {
@@ -137,14 +162,13 @@ export class FilterComponent implements OnInit, OnDestroy {
       .subscribe((filters) => {
         this.selectedFilters = filters;
         this.filterData();
-
       }, (err) => {
         console.log(err);
       });
       if(this.chartData.selectedFilters){
           this.filtersFormGroup.patchValue(this.chartData.selectedFilters);
       }
-  
+
   }
 
   setTelemetryInteractEdata(val) {
@@ -188,6 +212,7 @@ export class FilterComponent implements OnInit, OnDestroy {
           }
         });
       });
+      this.formUpdate(res);
 
       let keys = Object.keys(this.selectedFilters);
       this.dateFilters = [];
@@ -201,7 +226,7 @@ export class FilterComponent implements OnInit, OnDestroy {
           }
       });
 
-      
+
       this.filterChanged.emit({
         allFilters:this.filters,
         filters: this.selectedFilters,
@@ -215,7 +240,7 @@ export class FilterComponent implements OnInit, OnDestroy {
         chartData: this.chartData,
       });
     }
-    
+
   }
   checkFilterReferance(element){
     if(this.dateFilters && this.dateFilters.includes(element)){

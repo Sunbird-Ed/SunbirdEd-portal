@@ -86,7 +86,7 @@ describe('DataChartComponent', () => {
             'Class 10'
         ]);
         expect(component.datasets[0].data).toEqual(
-           [
+            [
                 115,
                 1158,
                 3532,
@@ -186,63 +186,61 @@ describe('DataChartComponent', () => {
         expect(result).toEqual([{ slug: 'ap' }, { slug: 'gj' }, { slug: 'rj' }]);
     });
 
-  
+
     it('should change the filter and chart type', fakeAsync(() => {
         component.ngOnInit();
         tick(1000);
         component.filterChanged({
-            chartType:mockChartData.chartConfig.chartType,
-          chartData:mockChartData.chartData,
-          filters:mockChartData.chartConfig.filters
+            chartType: mockChartData.chartConfig.chartType,
+            chartData: mockChartData.chartData,
+            filters: mockChartData.chartConfig.filters
         });
         expect(component.chartType).toEqual(mockChartData.chartConfig.chartType);
-      }));
+    }));
 
-      it('should check show stats', fakeAsync(() => {
+    it('should check show stats', fakeAsync(() => {
         component.ngOnInit();
         tick(1000);
         component.graphStatsChange(false);
         expect(component.showStats).toEqual(false);
-      }));
-      it('should change chart type', fakeAsync(() => {
+    }));
+    it('should change chart type', fakeAsync(() => {
         component.ngOnInit();
         tick(1000);
         component.changeChartType('bar');
         expect(component.chartType).toEqual('bar');
-      }));
+    }));
 
-       it('should close popup', fakeAsync(() => {
+    it('should close popup', fakeAsync(() => {
         component.ngOnInit();
         tick(1000);
         component.filterModalPopup(false);
         expect(component.filterPopup).toEqual(false);
-      }));
+    }));
 
-      it('should open modal popup', fakeAsync(() => {
+    it('should open modal popup', fakeAsync(() => {
         component.ngOnInit();
         tick(1000);
         component.filterModalPopup(true);
         expect(component.filterPopup).toEqual(true);
-      }));
+    }));
 
-      it('should check checkFilterReferance', fakeAsync(() => {
+    it('should check checkFilterReferance', fakeAsync(() => {
         component.ngOnInit();
         tick(1000);
         component.dateFilters = ['date'];
         const response = component.checkFilterReferance("date");
         expect(response).toEqual(true);
-      }));
-     
-      it('should set globalFilter', fakeAsync(() => {
+    }));
+
+    it('should set globalFilter', fakeAsync(() => {
         component.ngOnInit();
         tick(1000);
-        component.globalFilter = { chartData : mockChartData.chartData  };
+        component.globalFilter = { chartData: mockChartData.chartData };
         expect(component.chartData).toEqual(mockChartData.chartData);
-       
-      }));
-     
-      
-      
+
+    }));
+
     it('should sort data in ascending order based on Date key', () => {
         const inputData = [{ slug: 'ap', date: '01-01-2018' }, { slug: 'rj', date: '01-02-2018' }, { slug: 'gj', date: '01-01-2017' }];
         const key = 'date';

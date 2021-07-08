@@ -33,7 +33,7 @@
 .sb-icon-comment:before {
     font-size: calculateRem(72px);
     width: calculateRem(72px);
-    color: $secondary-color;
+    color: var(--secondary-color);
 }
 .icon.sb-icon-reviewer:before {
     font-size: calculateRem(30px);

@@ -26,12 +26,13 @@ const resourceServiceMockData = {
     stmsg: {
       m0009: 'error', activityAddFail: 'Unable to add activity, please try again',
       desktop: {
-        deleteTextbookSuccessMessage: 'Textbook deleted successfully'
+        deleteTextbookSuccessMessage: 'Textbook deleted successfully',
+        deleteCourseSuccessMessage: 'Course deleted successfully'
       }
     },
     etmsg: {
       desktop: {
-        'deleteTextbookErrorMessage': 'Unable to delete textbook. Please try again..',
+        'deleteCourseErrorMessage': 'Unable to delete course. Please try again..',
       }
     },
     emsg: { m0005: 'Something went wrong, try again later', noAdminRole: `You don't have permission to add activity to the group` },
@@ -79,6 +80,7 @@ class RouterStub {
   navigate = jasmine.createSpy('navigate');
 }
 
+
 describe('CourseConsumptionHeaderComponent', () => {
   let component: CourseConsumptionHeaderComponent;
   let fixture: ComponentFixture<CourseConsumptionHeaderComponent>;
@@ -98,11 +100,12 @@ describe('CourseConsumptionHeaderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CourseConsumptionHeaderComponent);
     component = fixture.componentInstance;
+    jasmine.getEnv().allowRespy(true);
     component.profileInfo = {
       firstName: 'Gourav',
       lastName: 'More1',
       id: '1234567890'
-    }
+    };
   });
 
   it(`should enable resume button if course is not flagged, batch status is not "0" and courseProgressData obtained from courseProgressService`, () => {
@@ -361,52 +364,19 @@ describe('CourseConsumptionHeaderComponent', () => {
     expect(component.viewDashboard).toBeFalsy();
   });
 
-  it('it should check for user registration ', () => {
+  it('should generate context data for course/batch', () => {
     /** Arrange */
-    spyOn(component, 'checkUserRegistration').and.stub();
-
-    /** Act */
-    component.openDiscussionForum();
-
-    /** Assert */
-    expect(component.checkUserRegistration).toHaveBeenCalled();
-  });
-
-  it('should fetch all the forumIds attached to a course/batch', () => {
-    /** Arrange */
-    const discussionService = TestBed.get(DiscussionService);
+    component.courseId = 'do_11317805943810457614592';
     const mockRequest = {
       identifier: ['do_11317805943810457614592'],
       type: 'course'
     };
-    spyOn(component, 'prepareRequestBody').and.returnValue(mockRequest);
-    spyOn(discussionService, 'getForumIds').and.returnValue(observableOf(MockResponseData.fetchForumResponse));
 
     /** Act */
-    component.fetchForumIds();
+    component.generateDataForDF();
 
     /** Assert */
-    expect(component.forumIds).toEqual([16, 1, 8]);
-
-  });
-
-  it('should show error toast if fetch forum id api fails', () => {
-    /** Arrange */
-    const discussionService = TestBed.get(DiscussionService);
-    const toasterService = TestBed.get(ToasterService);
-    const mockRequest = {
-      identifier: ['do_11317805943810457614592'],
-      type: 'course'
-    };
-    spyOn(toasterService, 'error');
-    spyOn(component, 'prepareRequestBody').and.returnValue(mockRequest);
-    spyOn(discussionService, 'getForumIds').and.callFake(() => throwError({}));
-
-    /** Act */
-    component.fetchForumIds();
-
-    /** Assert */
-    expect(toasterService.error).toHaveBeenCalledWith('Something went wrong, try again later');
+    expect(component.fetchForumIdReq).toEqual(mockRequest);
 
   });
 
@@ -517,6 +487,20 @@ describe('CourseConsumptionHeaderComponent', () => {
     spyOn(contentService, 'deleteContent').and.returnValue(throwError(MockResponseData.contentHeaderData.deleteCollection.error));
     component.deleteCollection(MockResponseData.contentHeaderData.collectionData);
     expect(component.disableDelete).toBeFalsy();
-    expect(component.toasterService.error(resourceServiceMockData.messages.etmsg.desktop.deleteTextbookErrorMessage));
+    expect(component.toasterService.error(resourceServiceMockData.messages.etmsg.desktop.deleteCourseErrorMessage));
+  });
+  it('should navigate to discussion Forum', () => {
+    const routerData = {
+      forumIds: [6],
+      userName: 'cctn1350'
+    };
+    spyOn(component['router'], 'navigate');
+    component.assignForumData(routerData);
+    expect(component['router'].navigate).toHaveBeenCalledWith(['/discussion-forum'], {
+      queryParams: {
+        categories: JSON.stringify({ result: routerData.forumIds }),
+        userName: routerData.userName
+      }
+    });
   });
 });

@@ -28,7 +28,7 @@
     border-bottom: calculateRem(1px) solid var(--rc-dddddd);
     padding: calculateRem(16px) calculateRem(16px) calculateRem(8px);
     h4 {
-      font-size: $font-size-xs;
+      font-size: var(--font-size-xs);
       line-height: calculateRem(18px);
       color: var(--gray-800);
       margin-bottom: calculateRem(8px);
@@ -46,7 +46,7 @@
       cursor: pointer;
       min-height: calculateRem(56px);
       h4 {
-        font-size: $font-size-sm;
+        font-size: var(--font-size-sm);
         line-height: calculateRem(20px);
         color: var(--primary-400);
         margin: 0px;

@@ -1,69 +1,25 @@
 // Card component
-$sb-card-width: calculateRem(292px);
-$sb-card-body-height: calculateRem(204px);
-$sb-card-progressbar-height: calculateRem(4px);
-$sb-card-hover-movement: calculateRem(3px);
-$sb-card-padding: calculateRem(16px) calculateRem(16px) calculateRem(8px) calculateRem(16px);
-$sb-card-border-radius: calculateRem(4px);
-$sb-card-border: calculateRem(1px) solid var(--rc-dedede);
-$sb-card-box-shadow: 0 calculateRem(2px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.16);
-$sb-card-bg-color: var(--white);
-$sb-card-image-height: calculateRem(92px);
-$sb-card-image-width: calculateRem(70px);
-$sb-card-image-border-radius: calculateRem(2px);
-$sb-card-image-border: calculateRem(1px) solid $gray-100;
-$sb-card-image-bg-color: var(--gray-0);
-$sb-card-label-font-size: calculateRem(11px);
-$sb-card-label-color: var(--primary-color);
-$sb-card-label-border: calculateRem(1px) solid $primary-color;
-$sb-card-label-border-radius: calculateRem(2px);
-$sb-card-label-padding: calculateRem(4px) calculateRem(8px);
-$sb-card-label-height: calculateRem(24px);
-$sb-card-badge-height: calculateRem(30px);
-$sb-card-badge-width: calculateRem(30px);
-$sb-card-meta-width: calculateRem(172px);
-$sb-card-meta-color: var(--gray-400);
-$sb-card-meta-font-size: var(--font-size-sm);
-$sb-card-meta-line-height: calculateRem(17px);
-$sb-card-title-color: var(--primary-color);
-$sb-card-title-font-size: var(--h6-font-size);
-$sb-card-title-line-height: calc(var(--h6-font-size) * 1.25);
-$sb-card-title-height: calc((var(--h6-font-size) * 1.25) * 2);
-$sb-card-title-font-weight: var(--font-weight-bold);
-$sb-card-title-spacing: calculateRem(16px) 0 calculateRem(8px) 0;
-$sb-card-meta-org-font-size: var(--h6-font-size);
-$sb-card-progressbar-border-radius: 0 calculateRem(4px) calculateRem(4px)
-  calculateRem(4px);
-// Tamil
-$sb-card-label-font-size-ta: calculateRem(9px);
-$sb-card-meta-font-size-ta: calculateRem(10px);
-$sb-card-title-font-size-ta: $font-size-sm;
-$sb-card-meta-org-font-size-ta: $font-size-sm;
-// Urdu
-$sb-card-label-font-size-ur: calculateRem(9px);
-$sb-card-meta-font-size-ur: calculateRem(10px);
-$sb-card-title-font-size-ur: $font-size-sm;
-$sb-card-meta-org-font-size-ur: $font-size-sm;
+
 /* sb card styles */
 .sb-card {
-  width: $sb-card-width;
+  width: calculateRem(292px);
   background-color: var(--sb-card-bg);
   border: var(--sb-card-border);
-  border-radius: $sb-card-border-radius;
+  border-radius: calculateRem(4px);
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  margin-top: $sb-card-hover-movement;
+  margin-top: calculateRem(3px);
   transition: box-shadow 0.3s ease-out, transform 0.3s ease-out,
     opacity 0.2s ease-out;
   transition-delay: 0.1s;
   &:hover {
-    transform: translate(0, -$sb-card-hover-movement);
-    box-shadow: $sb-card-box-shadow;
+    transform: translate(0, -calculateRem(3px));
+    box-shadow: 0 calculateRem(2px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.16);
   }
   .sb-card-body {
-    height: $sb-card-body-height;
-    padding: $sb-card-padding;
+    height: calculateRem(204px);
+    padding: calculateRem(16px) calculateRem(16px) calculateRem(8px) calculateRem(16px);
     overflow: hidden;
   }
   .sb-card-metas {
@@ -71,65 +27,65 @@ $sb-card-meta-org-font-size-ur: $font-size-sm;
     align-items: flex-end;
   }
   .sb-card-image {
-    width: $sb-card-image-width;
-    height: $sb-card-image-height;
-    border: $sb-card-image-border;
-    background-color: $sb-card-image-bg-color;
-    border-radius: $sb-card-image-border-radius;
+    width: calculateRem(70px);
+    height: calculateRem(92px);
+    border: calculateRem(1px) solid var(--gray-100);
+    background-color: var(--gray-0);
+    border-radius: calculateRem(2px);
     box-sizing: border-box;
     overflow: hidden;
     margin: 0 calculateRem(16px) 0 0;
     img {
-      width: $sb-card-image-width;
-      height: $sb-card-image-height;
+      width: calculateRem(70px);
+      height: calculateRem(92px);
       object-fit: cover;
     }
   }
   .sb-card-meta {
-    height: $sb-card-image-height;
-    width: $sb-card-meta-width;
+    height: calculateRem(92px);
+    width: calculateRem(172px);
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
     overflow: hidden;
   }
   .sb-card-label {
-    color: $sb-card-label-color;
-    font-size: $sb-card-label-font-size;
-    border: $sb-card-label-border;
-    border-radius: $sb-card-label-border-radius;
-    padding: $sb-card-label-padding;
-    height: $sb-card-label-height;
+    color: var(--primary-color);
+    font-size: calculateRem(11px);
+    border: calculateRem(1px) solid var(--primary-color);
+    border-radius: calculateRem(2px);
+    padding: calculateRem(4px) calculateRem(8px);
+    height: calculateRem(24px);
   }
   .sb-card-badge {
-    height: $sb-card-badge-height;
-    width: $sb-card-badge-width;
+    height: calculateRem(30px);
+    width: calculateRem(30px);
     object-fit: contain;
     margin: 0 0 0 auto;
   }
   .sb-card-meta-item {
-    font-size: $sb-card-meta-font-size;
+    font-size: var(--font-size-sm);
     color: var(--sb-card-text);
-    width: $sb-card-meta-width;
-    line-height: $sb-card-meta-line-height;
+    width: calculateRem(172px);
+    line-height: calculateRem(17px);
   }
   .sb-card-title {
-    color: $sb-card-title-color;
-    font-size: $sb-card-title-font-size;
-    line-height: $sb-card-title-line-height;
-    font-weight: $sb-card-title-font-weight;
-    height: $sb-card-title-height;
-    margin: $sb-card-title-spacing;
+    color: var(--primary-color);
+    font-size: var(--h6-font-size);
+    line-height: calc(var(--h6-font-size) * 1.25);
+    font-weight: var(--font-weight-bold);
+    height: calc((var(--h6-font-size) * 1.25) * 2);
+    margin: calculateRem(16px) 0 calculateRem(8px) 0;
     overflow: hidden;
   }
   .sb-card-org {
-    font-size: $sb-card-meta-org-font-size;
+    font-size: var(--h6-font-size);
     color: var(--sb-card-text);
   }
   .sb-card-progressbar {
-    height: $sb-card-progressbar-height;
+    height: calculateRem(4px);
     .ui.progress .bar {
-      border-radius: $sb-card-progressbar-border-radius;
+      border-radius:  0 calculateRem(4px) calculateRem(4px) calculateRem(4px);
     }
   }
   .sb-card-hover {
@@ -157,38 +113,38 @@ $sb-card-meta-org-font-size-ur: $font-size-sm;
     .sb-card-hover {
       display: block;
     }
-    box-shadow: $sb-card-box-shadow;
+    box-shadow: 0 calculateRem(2px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.16);
   }
 }
 app-card[lang="ta"] {
   .sb-card {
     .sb-card-label {
-      font-size: $sb-card-label-font-size-ta;
+      font-size: calculateRem(9px);
     }
     .sb-card-meta-item {
-      font-size: $sb-card-meta-font-size-ta;
+      font-size: calculateRem(10px);
     }
     .sb-card-title {
-      font-size: $sb-card-title-font-size-ta;
+      font-size: var(--font-size-sm);
     }
     .sb-card-org {
-      font-size: $sb-card-meta-org-font-size-ta;
+      font-size: var(--font-size-sm);
     }
   }
 }
 app-card[lang="ur"] {
   .sb-card {
     .sb-card-label {
-      font-size: $sb-card-label-font-size-ur;
+      font-size: calculateRem(9px);
     }
     .sb-card-meta-item {
-      font-size: $sb-card-meta-font-size-ur;
+      font-size: calculateRem(10px);
     }
     .sb-card-title {
-      font-size: $sb-card-title-font-size-ur;
+      font-size: var(--font-size-sm);
     }
     .sb-card-org {
-      font-size: $sb-card-meta-org-font-size-ur;
+      font-size: var(--font-size-sm);
     }
     .sb-card-badge {
       margin: 0 auto 0 0;
@@ -201,20 +157,20 @@ app-card[lang="ur"] {
 // workspace cards
 .sb-wspace-card {
   height: calculateRem(128px);
-  max-width: $sb-card-width;
-  @include border(border, 0.5px, $gray-0);
-  @include border(border-left, 4px, $white);
+  max-width: calculateRem(292px);
+  @include border(border, 0.5px, var(--gray-0));
+  @include border(border-left, 4px, var(--white));
   border-radius: calculateRem(4px);
-  background: $white;
+  background: var(--white);
   padding: calculateRem(16px) calculateRem(24px);
   margin: 0px calculateRem(24px) calculateRem(24px) 0;
   .sb-wspace-title {
     margin-bottom: calculateRem(8px);
-    font-size: $h5-font-size;
-    font-weight: $font-weight-bold;
+    font-size: var(--h5-font-size);
+    font-weight: var(--font-weight-bold);
   }
   .sb-wspace-description {
-    font-size: $font-size-sm;
+    font-size: var(--font-size-sm);
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 4;
@@ -223,9 +179,9 @@ app-card[lang="ur"] {
   &:hover,
   &.active {
     .sb-wspace-title {
-      color: $blue;
+      color: var(--blue);
     }
-    border-left: calculateRem(4px) solid $secondary-200;
+    border-left: calculateRem(4px) solid var(--secondary-200);
     cursor: pointer;
     box-shadow: calculateRem(2px) calculateRem(5px) calculateRem(7px) 0 rgba(var(--rc-rgba-black), 0.2);
   }
@@ -238,13 +194,13 @@ app-card[lang="ur"] {
   }
   &:hover {
     .sb-btn {
-      background: $secondary-400;
+      background: var(--secondary-400);
     }
   }
 }
 // Batch Card
 .ui.card.sb-batch-card {
-  border: 1px solid $primary-200;
+  border: 1px solid var(--primary-200);
   box-shadow: none;
   .item {
     padding: 10px 0;
@@ -267,8 +223,8 @@ app-card[lang="ur"] {
   }
 }
 .sb-no-batch-found {
-  background-color: $tertiary-0;
-  border: 1px solid $tertiary-100;
+  background-color: var(--tertiary-0);
+  border: calculateRem(1px) solid var(--tertiary-100);
   padding: calculateRem(8px) calculateRem(16px);
   border-radius: calculateRem(4px);
   font-size: calculateRem(12px);

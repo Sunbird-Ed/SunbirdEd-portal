@@ -64,7 +64,7 @@ endPage.controller("endPageController", function($scope, $rootScope, $state,$ele
                     $scope.replayCallback();
                 }
             });
-        }else if (isbrowserpreview && content.primaryCategory && content.primaryCategory.toLowerCase() === 'course assessment'){
+        }else if (!$scope.isCordova && content.primaryCategory && content.primaryCategory.toLowerCase() === 'course assessment'){
             $scope.replayAssessment();
         }else{
             $scope.replayCallback();

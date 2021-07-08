@@ -154,7 +154,7 @@ const createUser = async (req, jwtPayload) => {
   }
   const options = {
     method: 'POST',
-    url: envHelper.LEARNER_URL + 'user/v3/create',
+    url: envHelper.LEARNER_URL + 'user/v1/sso/create',
     headers: getHeaders(req),
     body: {
       params: {
@@ -437,7 +437,7 @@ const getIdentifier = (identifier) => {
 const orgSearch = (id, req) => {
   const options = {
     method: 'POST',
-    url: envHelper.LEARNER_URL + 'org/v1/search',
+    url: envHelper.LEARNER_URL + 'org/v2/search',
     headers: getHeaders(req),
     body: {
       request: {

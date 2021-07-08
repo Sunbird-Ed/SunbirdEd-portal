@@ -1,4 +1,3 @@
-import { logger } from "@project-sunbird/logger";
 import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import { HTTPService } from "@project-sunbird/OpenRAP/services/httpService";
 import * as _ from "lodash";
@@ -8,6 +7,7 @@ import uuid from "uuid/v4";
 const PERMISSIONS_HELPER = {
 
   setUserSessionData(reqObj, body) {
+    const standardLog = containerAPI.getStandardLoggerInstance();
     try {
       if (body.responseCode === "OK") {
         reqObj.session.userId = body.result.response.identifier;
@@ -44,14 +44,15 @@ const PERMISSIONS_HELPER = {
         }
       }
     } catch (e) {
-      logger.error({ msg: "setUserSessionData :: Error while saving user session data", err: e });
+      standardLog.error({ id: 'PERMISSION_HELPER_USER_SESSION_SAVE_FAILED', message: 'Error while saving user session data', error: e });
     }
   },
 
   // Fetch user data from server
   async getUser(userData: { access_token: string, userId: string }, isManagedUser?: boolean): Promise<ILoggedInUser> {
+    const standardLog = containerAPI.getStandardLoggerInstance();
     const apiKey = await containerAPI.getDeviceSdkInstance().getToken().catch((err) => {
-      logger.error(`Received error while fetching api key in getUser with error: ${err}`);
+      standardLog.error({ id: 'PERMISSION_HELPER_TOKEN_FETCH_FAILED', message: 'Received error while fetching api key in getUser', error: err });
     });
     let url = `${process.env.APP_BASE_URL}/api/user/v3/read/${userData.userId}?fields=organisations,roles,locations,declarations`;
     if (isManagedUser) {
@@ -71,15 +72,15 @@ const PERMISSIONS_HELPER = {
       return user;
     } catch (error) {
       const traceId = _.get(error, 'data.params.msgid');
-      logger.error(`Error while getting user with trace id = ${traceId} and error = ${error}`);
-      
+      standardLog.error({ id: 'PERMISSION_HELPER_USER_READ_FAILED', message: `Error while getting user with trace id = ${traceId}`, error });
       throw { message: `User read failed with ${error}`, status: error.code || 500 }
     }
   },
   // Fetch user data from server
   async getManagedUsers(managedByUser: { access_token: string, userId: string }): Promise<ILoggedInUser> {
+    const standardLog = containerAPI.getStandardLoggerInstance();
     const apiKey = await containerAPI.getDeviceSdkInstance().getToken().catch((err) => {
-      logger.error(`Received error while fetching api key in getManagedUser with error: ${err}`);
+      standardLog.error({ id: 'PERMISSION_HELPER_TOKEN_FETCH_FAILED', message: 'Received error while fetching api key in getManagedUser', error: err });
     });
     let url = `${process.env.APP_BASE_URL}/learner/user/v1/managed/${managedByUser.userId}`;
     const options = {
@@ -96,7 +97,7 @@ const PERMISSIONS_HELPER = {
       return user;
     } catch (error) {
       const traceId = _.get(error, 'data.params.msgid');
-      logger.error(`Error while getting managed user with trace Id = ${traceId}  and error = ${error}`);
+      standardLog.error({ id: 'PERMISSION_HELPER_FETCH_MANAGED_USER_FAILED', message: `Error while getting managed user with trace Id = ${traceId}`, error });
       throw { message: `Managed user read failed with ${error}`, status: error.code || 500 }
     }
   },

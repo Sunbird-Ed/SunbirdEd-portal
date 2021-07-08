@@ -18,6 +18,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   @Input() buttonLabel: string;
   @Input() formInput: any = {};
   @Input() isClosable = false;
+  @Input() isGuestUser = false;
   @Output() submit = new EventEmitter<any>();
   @Output() close = new EventEmitter<any>();
   public allowedFields = ['board', 'medium', 'gradeLevel', 'subject'];
@@ -34,6 +35,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   submitInteractEdata: IInteractEventEdata;
   telemetryInteractObject: IInteractEventObject;
   private editMode: boolean;
+  guestUserHashTagId;
   constructor(private router: Router, private userService: UserService, private frameworkService: FrameworkService,
     private formService: FormService, public resourceService: ResourceService, private cacheService: CacheService,
     private toasterService: ToasterService, private channelService: ChannelService, private orgDetailsService: OrgDetailsService,
@@ -42,7 +44,12 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.popupControlService.changePopupStatus(false);
     this.selectedOption = _.pickBy(_.cloneDeep(this.formInput), 'length') || {}; // clone selected field inputs from parent
-
+    if (this.isGuestUser) {
+      this.orgDetailsService.getOrgDetails(this.userService.slug).subscribe((data: any) => {
+        this.guestUserHashTagId = data.hashTagId;
+      });
+      this.allowedFields = ['board', 'medium', 'gradeLevel'];
+    }
     // Replacing CBSE with CBSE/NCERT
     if (_.toLower(_.get(this.selectedOption, 'board')) === 'cbse') {
       this.selectedOption['board'] = ['CBSE/NCERT'];
@@ -51,7 +58,9 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     this.unsubscribe = this.isCustodianOrgUser().pipe(
       mergeMap((custodianOrgUser: boolean) => {
         this.custodianOrg = custodianOrgUser;
-        if (custodianOrgUser) {
+        if(this.isGuestUser){
+          return this.getFormOptionsForCustodianOrgForGuestUser();
+        } else if (custodianOrgUser) {
           return this.getFormOptionsForCustodianOrg();
         } else {
           return this.getFormOptionsForOnboardedUser();
@@ -64,6 +73,41 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       });
 
       this.setInteractEventData();
+  }
+  private getFormOptionsForCustodianOrgForGuestUser() {
+    return this.getCustodianOrgDataForGuest().pipe(mergeMap((data) => {
+      this.custodianOrgBoard = data;
+      const boardObj = _.cloneDeep(this.custodianOrgBoard);
+      boardObj.range = _.sortBy(boardObj.range, 'index');
+      const board = boardObj;
+      if (_.get(this.selectedOption, 'board[0]')) { // update mode, get 1st board framework and update all fields
+        this.selectedOption.board = _.get(this.selectedOption, 'board[0]');
+        this.frameWorkId = _.get(_.find(this.custOrgFrameworks, { 'name': this.selectedOption.board }), 'identifier');
+        return this.getFormatedFilterDetails().pipe(map((formFieldProperties) => {
+          this._formFieldProperties = formFieldProperties;
+          this.mergeBoard(); // will merge board from custodian org and board from selected framework data
+          return this.getUpdatedFilters(board, true);
+        }));
+      } else {
+        const fieldOptions = [ board,
+          { code: 'medium', label: 'Medium', index: 2 },
+          { code: 'gradeLevel', label: 'Class', index: 3 },
+          { code: 'subject', label: 'Subject', index: 4 } ];
+        return of(fieldOptions);
+      }
+    }));
+  }
+  private getCustodianOrgDataForGuest() {
+    return this.channelService.getFrameWork(this.guestUserHashTagId).pipe(map((channelData: any) => {
+      this.custOrgFrameworks =  _.get(channelData, 'result.channel.frameworks') || [];
+      this.custOrgFrameworks = _.sortBy(this.custOrgFrameworks, 'index');
+      return {
+          range: this.custOrgFrameworks,
+          label: 'Board',
+          code: 'board',
+          index: 1
+        };
+    }));
   }
   private getFormOptionsForCustodianOrg() {
     return this.getCustodianOrgData().pipe(mergeMap((data) => {
@@ -98,7 +142,11 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     }));
   }
   private getFormatedFilterDetails() {
-    this.frameworkService.initialize(this.frameWorkId);
+    if (this.isGuestUser) {
+      this.frameworkService.initialize(this.frameWorkId, this.guestUserHashTagId);
+    } else {
+      this.frameworkService.initialize(this.frameWorkId);
+    }
     return this.frameworkService.frameworkData$.pipe(
       filter((frameworkDetails) => { // wait to get the framework name if passed as input
       if (!frameworkDetails.err) {
@@ -128,12 +176,16 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     }), first());
   }
   public handleFieldChange(event, field) {
-    if (!this.custodianOrg || field.index !== 1) { // no need to fetch data, just rearrange fields
+    if ((!this.isGuestUser || field.index !== 1) && (!this.custodianOrg || field.index !== 1)) { // no need to fetch data, just rearrange fields
       this.formFieldOptions = this.getUpdatedFilters(field);
       this.enableSubmitButton();
       return;
     }
-    this.frameWorkId = _.get(_.find(field.range, { name: _.get(this.selectedOption, field.code)}), 'identifier');
+    if(_.get(this.selectedOption, field.code) === 'CBSE/NCERT') {
+      this.frameWorkId = _.get(_.find(field.range, { name: 'CBSE'}), 'identifier');
+    } else {
+      this.frameWorkId = _.get(_.find(field.range, { name: _.get(this.selectedOption, field.code)}), 'identifier');
+    }
     if (this.unsubscribe) { // cancel if any previous api call in progress
       this.unsubscribe.unsubscribe();
     }
@@ -211,7 +263,8 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       contentType: 'framework',
       framework: this.frameWorkId
     };
-    return this.formService.getFormConfig(formServiceInputParams, this.userService.hashTagId);
+    const hashTagId = this.isGuestUser ? this.guestUserHashTagId : _.get(this.userService, 'hashTagId');
+    return this.formService.getFormConfig(formServiceInputParams, hashTagId);
   }
   onSubmitForm() {
     const selectedOption = _.cloneDeep(this.selectedOption);

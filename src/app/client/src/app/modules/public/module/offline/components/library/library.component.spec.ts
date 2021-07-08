@@ -205,8 +205,6 @@ describe('LibraryComponent', () => {
     component.ngOnInit();
     component.hashTagId = '01231711180382208027';
     component.formData = [response.formData[0]];
-    const activatedRoute = TestBed.get(ActivatedRoute);
-    activatedRoute.changeQueryParams({ board: ['State (Andhra Pradesh)'], medium: ['English'], gradeLevel: ['Class 10'] });
     const result = component.constructSearchRequest();
     expect(result).toEqual(response.constructSearchRequestWithFilter);
   });
