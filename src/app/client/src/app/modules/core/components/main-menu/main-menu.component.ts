@@ -70,6 +70,7 @@ export class MainMenuComponent implements OnInit {
   hrefPath = '/resources';
   routerLinks = {explore: `/${EXPLORE_GROUPS}`, groups: `/${MY_GROUPS}`};
   isDesktopApp = false;
+  @Input() showBackButton;
   /*
   * constructor
   */

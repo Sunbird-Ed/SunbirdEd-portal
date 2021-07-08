@@ -51,7 +51,7 @@
             </div>
             <label
               class="d-block text-center font-weight-bold">{{resourceService?.frmelmnts?.lbl?.downloadDikshaForMobile | interpolate:'{instance}': instance}}</label>
-            <a class="d-block app-download" (click)="redirectToMobileApp()">
+            <a class="d-block app-download" (click)="redirectToMobileApp()" tabindex="0">
               <img class="playStore-img cursor-pointer" src="/assets/images/google_playstore.png"
                 alt="{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile | interpolate:'{instance}':  instance}}">
             </a>

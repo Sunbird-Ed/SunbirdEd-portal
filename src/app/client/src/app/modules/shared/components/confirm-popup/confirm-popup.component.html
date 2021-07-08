@@ -7,10 +7,10 @@
     {{input?.body}}
   </div>
   <div class="sb-modal-actions">
-    <button (click)="confirm(true)" class="sb-btn sb-btn-normal sb-btn-primary">
+    <button (click)="confirm(true)" tabindex="0" class="sb-btn sb-btn-normal sb-btn-primary">
       {{resourceService.frmelmnts?.btn?.yes}}
     </button>
-    <button (click)="confirm(false)" class="sb-btn sb-btn-normal sb-btn-outline-primary">
+    <button (click)="confirm(false)" tabindex="0" class="sb-btn sb-btn-normal sb-btn-outline-primary">
       {{resourceService?.frmelmnts?.btn?.no}}
     </button>
   </div>
