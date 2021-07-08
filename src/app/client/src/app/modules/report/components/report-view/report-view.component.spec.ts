@@ -42,6 +42,11 @@ describe("ReportViewComponent", () => {
         exportAs: "ExportAs",
       },
     },
+    messages:{
+      fmsg:{
+        m0088:"Please wait"
+      },
+    },
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
