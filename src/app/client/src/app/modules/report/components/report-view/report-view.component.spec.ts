@@ -216,6 +216,7 @@ describe("ReportViewComponent", () => {
   });
 
   it("should call applyFilter for criteria", () => {
+    component.filteredData=["606c0ad32396373802fb57f3"]
     spyOn(component, "applyFilter").and.callThrough();
     spyOn(dhitiService, "post").and.returnValue(of(reportData));
     spyOn(component, "getReport").and.callThrough();
@@ -228,7 +229,7 @@ describe("ReportViewComponent", () => {
   });
 
   it("should call applyFilter for questions", () => {
-    component.filteredData = [];
+    component.filteredData=["606c0ad32396373802fb57f3"]
     spyOn(component, "applyFilter").and.callThrough();
     spyOn(dhitiService, "post").and.returnValue(of(reportData));
     spyOn(component, "getReport").and.callThrough();
