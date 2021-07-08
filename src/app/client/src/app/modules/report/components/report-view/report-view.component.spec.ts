@@ -28,7 +28,7 @@ import {
 import { AllEvidenceComponent } from "../all-evidence/all-evidence.component";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 
-fdescribe("ReportViewComponent", () => {
+describe("ReportViewComponent", () => {
   let component: ReportViewComponent;
   let fixture: ComponentFixture<ReportViewComponent>;
   let dhitiService, location;
