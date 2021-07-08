@@ -177,7 +177,7 @@ export class UserSearchComponent implements OnInit, AfterViewInit, OnDestroy {
         searchParams.filters['profileUserType.type'] = ['administrator'];
       }
     }
-    if (!_.isEmpty(this.selectedRoles)) { searchParams.filters['organisations.roles'] = this.selectedRoles; }
+    if (!_.isEmpty(this.selectedRoles)) { searchParams.filters['roles.role'] = this.selectedRoles; }
     if (this.queryParams.School) {
       searchParams.filters['organisations.organisationId'] = this.queryParams.School;
     } else {
