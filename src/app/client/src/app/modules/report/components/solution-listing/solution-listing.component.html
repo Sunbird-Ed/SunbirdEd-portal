@@ -4,7 +4,7 @@
 >
 </app-landing-section>
 
-<div [ngClass]="layoutConfiguration ? 'sbt-container relative9' : ''">
+<div [ngClass]="layoutConfiguration ? 'sbt-container relative9' : ''" class="main-container">
   <div class="sb-pageSection my-24 ui container listallreports-section">
     <ng-container>
       <div class="sb-pageSection-content">
@@ -85,13 +85,13 @@
       </div>
     </ng-container>
 
-    <div class="twelve wide column" *ngIf="!solutionList.length">
+    
+    <div class="twelve wide column" *ngIf="noResult">
       <app-no-result [data]="noResultMessage"></app-no-result>
-  </div>
-
-    <ng-template *ngIf="!solutionList">
-      <app-loader></app-loader>
-    </ng-template>
+    </div>
+    <div class="twelve wide column" *ngIf="showLoader">
+      <app-loader [data]='loaderMessage'></app-loader>
+    </div>
   </div>
 </div>
 
