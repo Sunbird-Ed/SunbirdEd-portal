@@ -14,7 +14,7 @@ import { VideoConfig } from './faq-data';
 import { HttpOptions } from '../../../../../shared/interfaces/httpOptions';
 import { FormService } from '../../../../../core/services/form/form.service';
 
-const TEN_MINUTES = 1000 * 60 * 1;
+const TEN_MINUTES = 1000 * 60 * 10;
 @Component({
   selector: 'app-faq',
   templateUrl: './faq.component.html',
