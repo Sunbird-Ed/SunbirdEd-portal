@@ -105,5 +105,8 @@
     .slick-dots li.slick-active button:before {
       background: var(--gray-800);
     }
+    .slick-track {
+      margin: auto;
+    }
   }
 }

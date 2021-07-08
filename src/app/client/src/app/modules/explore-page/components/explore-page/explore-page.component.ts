@@ -985,7 +985,15 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
                 break;
             case 'banner_search':
-                console.log('banner_search', data);
+                const queryParams = _.get(data.action, 'params.filter.filters');
+                if (_.get(data.action, 'params.query')) {
+                    queryParams['key'] = _.get(data.action, 'params.query');
+                }
+                if (this.isUserLoggedIn()) {
+                    this.router.navigate(['search/Library', 1], { queryParams: queryParams });
+                } else {
+                    this.router.navigate(['explore', 1], { queryParams: queryParams });
+                }
                 break;
             case 'banner_content':
                 const contentId = _.get(data.action, 'params.identifier');
@@ -994,5 +1002,23 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.router.navigate(['explore', 1], { queryParams: params });
                 break;
         }
+    }
+
+    handleBannerClick(data) {
+        const telemetryData = {
+          context: {
+            env:  this.activatedRoute.snapshot.data.telemetry.env,
+            cdata: [{
+              id: data.code,
+              type: 'Banner'
+            }]
+          },
+          edata: {
+            id: data.code,
+            type: 'click',
+            pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+          }
+        };
+        this.telemetryService.interact(telemetryData);
     }
 }
