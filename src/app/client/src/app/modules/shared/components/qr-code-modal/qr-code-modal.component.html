@@ -53,7 +53,7 @@
     <button 
       class="sb-btn sb-btn-normal sb-btn-primary" 
       appTelemetryInteract [telemetryInteractEdata]="setsubmitDialCodeInteractEdata(dialCodeVal.value)"
-      (click)="onSubmit(dialCodeVal.value)" 
+      (click)="onSubmit(dialCodeVal.value)" tabindex="0"
       autofocus>
       {{resourceService.frmelmnts?.btn?.submit}}
     </button>

@@ -53,7 +53,7 @@ appBodyScroll (dismissed)="toggleModal()" #modal *ngIf="showModal">
   <p> {{resourceService?.messages?.imsg?.removeActivityWarning}}</p>
 </div>
 <div class="sb-modal-actions">
-  <button class="sb-btn sb-btn-normal sb-btn-error"
+  <button class="sb-btn sb-btn-normal sb-btn-error" tabindex="0"
     (click)="removeActivity()">{{resourceService?.frmelmnts?.btn?.remove}}</button>
 </div>
 

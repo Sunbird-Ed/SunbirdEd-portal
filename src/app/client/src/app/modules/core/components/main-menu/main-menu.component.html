@@ -61,11 +61,11 @@
 			[routerLink]="[navigateToGroups()]"> {{resourceService?.frmelmnts?.tab?.mygroups}}  <span class="group__type mx-8">New</span> </a>	
 
 			<a class="item" [class.active]="router.isActive('/search/profile') || router.isActive('/profile')"
-				(click)="showSideBar()" routerLink="/profile">
+				(click)="showSideBar()" tabindex="0" routerLink="/profile">
 				{{resourceService.frmelmnts?.lnk?.profile}}
 			</a>
 			<a class="item logout-btn" appOnlineOnly appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
-				(click)="logout()">
+				(click)="logout()" tabindex="0">
 				{{resourceService.frmelmnts?.lnk?.logout}}
 			</a>
 		</ng-container>
