@@ -1632,56 +1632,56 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR]
     },
-    '/kendra/v1/users/entityTypesByLocationAndRole/:stateId': {
+    '/kendra/api/v1/users/entityTypesByLocationAndRole/:stateId': {
       checksNeeded: [],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/kendra/v1/solutions/targetedSolutions': {
-      checksNeeded: [],
+    '/kendra/api/v1/solutions/targetedSolutions': {
+      checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/assessment/v1/observations/entities': {
-      checksNeeded: [],
+    '/assessment/api/v1/observations/entities': {
+      checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/assessment/v1/observationSubmissions/list/:id': {
-      checksNeeded: [],
+    '/assessment/api/v1/observationSubmissions/list/:id': {
+      checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/kendra/v1/users/targetedEntity/:id': {
-      checksNeeded: [],
+    '/kendra/api/v1/users/targetedEntity/:id': {
+      checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/assessment/v2/observations/searchEntities': {
-      checksNeeded: [],
+    '/assessment/api/v2/observations/searchEntities': {
+      checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/assessment/v1/observationSubmissions/create/:id': {
-      checksNeeded: [],
+    '/assessment/api/v1/observationSubmissions/create/:id': {
+      checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/assessment/v2/observations/assessment/:id': {
-      checksNeeded: [],
+    '/assessment/api/v2/observations/assessment/:id': {
+      checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/kendra/v1/cloud-services/files/preSignedUrls': {
-      checksNeeded: [],
+    '/kendra/api/v1/cloud-services/files/preSignedUrls': {
+      checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/assessment/v1/observationSubmissions/list/:id': {
-      checksNeeded: [],
+    '/assessment/api/v1/observationSubmissions/list/:id': {
+      checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/assessment/v1/observations/updateEntities/:id': {
-      checksNeeded: [],
+    '/assessment/api/v1/observations/updateEntities/:id': {
+      checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/assessment/v1/observationSubmissions/update/:id': {
-      checksNeeded: [],
+    '/assessment/api/v1/observationSubmissions/update/:id': {
+      checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/cloudUpload/upload': {
-      checksNeeded: [],
+      checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/action/collection/v1/import/:id': {
@@ -1700,16 +1700,16 @@ const API_LIST = {
         ROLE.BOOK_CREATOR
       ]
     },
-    '/dhiti/v1/reports/fetch': {
-      checksNeeded: [],
+    '/dhiti/api/v1/reports/fetch': {
+      checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/assessment/v1/observationSubmissions/solutionList': {
-      checksNeeded: [],
+    '/assessment/api/v1/observationSubmissions/solutionList': {
+      checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
-    '/dhiti/v1/observations/listAllEvidences': {
-      checksNeeded: [],
+    '/dhiti/api/v1/observations/listAllEvidences': {
+      checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
   },
@@ -1821,14 +1821,14 @@ const API_LIST = {
     '/dataset/v1/request/list/:tag',
     '/dataset/v1/request/read/:tag',
     '/report/request/read/:tag',
-    '/kendra/v1/users/entityTypesByLocationAndRole/:stateId',
-    '/assessment/v1/observationSubmissions/list/:id',
-    '/kendra/v1/users/targetedEntity/:id',
-    '/assessment/v1/observationSubmissions/create/:id',
-    '/assessment/v2/observations/assessment/:id',
-    '/assessment/v1/observationSubmissions/list/:id',
-    '/assessment/v1/observations/updateEntities/:id',
-    '/assessment/v1/observationSubmissions/update/:id',
+    '/kendra/api/v1/users/entityTypesByLocationAndRole/:stateId',
+    '/assessment/api/v1/observationSubmissions/list/:id',
+    '/kendra/api/v1/users/targetedEntity/:id',
+    '/assessment/api/v1/observationSubmissions/create/:id',
+    '/assessment/api/v2/observations/assessment/:id',
+    '/assessment/api/v1/observationSubmissions/list/:id',
+    '/assessment/api/v1/observations/updateEntities/:id',
+    '/assessment/api/v1/observationSubmissions/update/:id',
     '/action/collection/v1/import/:id',
     '/action/collection/v1/export/:id'
   ]

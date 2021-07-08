@@ -25,7 +25,7 @@ module.exports = function (app) {
     healthService.checkDependantServiceHealth([]),
     telemetryHelper.generateTelemetryForLearnerService,
     telemetryHelper.generateTelemetryForProxy,
-    handleRequest('/kendra/api/')
+    handleRequest('/kendra/')
   )
 
   app.all('/dhiti/*',
@@ -34,7 +34,7 @@ module.exports = function (app) {
     healthService.checkDependantServiceHealth([]),
     telemetryHelper.generateTelemetryForLearnerService,
     telemetryHelper.generateTelemetryForProxy,
-    handleRequest('/dhiti/api/')
+    handleRequest('/dhiti/')
   )
 
   app.all('/assessment/*',
@@ -43,7 +43,7 @@ module.exports = function (app) {
     healthService.checkDependantServiceHealth([]),
     telemetryHelper.generateTelemetryForLearnerService,
     telemetryHelper.generateTelemetryForProxy,
-    handleRequest('/assessment/api/')
+    handleRequest('/assessment/')
   )
 
   app.put('/cloudUpload/*', async (req, res) => {
