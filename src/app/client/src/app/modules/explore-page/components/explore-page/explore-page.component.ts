@@ -1012,17 +1012,17 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.bannerSegment.push(banner);
                 });
             }
+            this.displayBanner = (this.bannerSegment && this.bannerSegment.length > 0) ? true : false;
+            if (this.bannerSegment ) {
+                this.setBannerConfig();
+            }
         });
-        this.displayBanner = (this.bannerSegment && this.bannerSegment.length > 0) ? true : false;
-        if (this.bannerSegment ) {
-            this.setBannerConfig();
-        }
     }
 
     setBannerConfig() {
-        this.bannerList = this.bannerSegment.filter((value) => {
+        this.bannerList = this.bannerSegment.filter((value) => 
             Number(value.expiry) > Math.floor(Date.now() / 1000)
-        });
+        );
     }
 
     navigateToSpecificLocation(data) {
