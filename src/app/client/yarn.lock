@@ -1532,10 +1532,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.11.tgz#91d48e9f4d975ff90a82c5d8e82b751ceda6f75b"
   integrity sha512-+EvPSdTfqmBpfr2MAOYNIY5oOK+vc3ZAhmXCG0/zPQBQ7yL8+G4hNZeStitAPZjcmRO9W6vecBTkdtu5Qu2EdA==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.1.14":
-  version "4.1.14"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.1.14.tgz#77c0e0fde21932f5e2306c41f142fd83c937dace"
-  integrity sha512-hX2bLR81B6RzjrVwn5YGTuV07nyBwn3CSHcjm1/wHeJf6I3yLw0sl1HnipVT56W9JfeHBvgAPQAU0EjGrPolxw==
+"@project-sunbird/sunbird-collection-editor-v9@4.1.16":
+  version "4.1.16"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.1.16.tgz#325cbf95501a3f78f480c4f89b2139f0da97d910"
+  integrity sha512-sD9J3h6gyWXkwAJsvPaUQxTiS3y3Tke4ayRCa8xcrrN9OHSdB+00PX88o2F9AsJDbhMhWxo5zv/k1y3akyTvow==
   dependencies:
     tslib "^1.10.0"
 
@@ -1572,10 +1572,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.1.7":
-  version "4.1.7"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.1.7.tgz#28fd0f28483984eb880a13f907cfa761c606f575"
-  integrity sha512-w6vHMF7cqK/yc6yFpXpI4tPah+H0d+cqIBXewLys59kXKwWJ9sDRqvfZHqzfRggdS3McSJwd0v/YyetaTQVEqQ==
+"@project-sunbird/sunbird-quml-player-v9@4.1.10":
+  version "4.1.10"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.1.10.tgz#8f134759414af252197e783253670956ace66530"
+  integrity sha512-U6zX/v/gVyK6aaiAwXumQtzwpSOeEMRIGljUq+nPO1wjgmNi535UnMHa7Yt1Mdh16jJeIC1A1jqhTKWEYRlZQw==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "4.1.0"
 
@@ -1675,7 +1675,7 @@
   dependencies:
     tslib "^1.10.0"
 
-"@shikshalokam/sl-reports-library@^1.0.4":
+"@shikshalokam/sl-reports-library@^1.0.5":
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/@shikshalokam/sl-reports-library/-/sl-reports-library-1.0.5.tgz#90cc9d00f43947d27b00c79590b3c5f40160ab40"
   integrity sha512-TPqtGlFk+yllFb/GibQacJ+2HYMKrV4BOv/pV+f3dzHqHfVBqHt67t+iG4Wue4oJUuJaWbdBLaXLmL1TAFvQgQ==
@@ -3341,14 +3341,6 @@ charenc@~0.0.1:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/charenc/-/charenc-0.0.2.tgz#c0a1d2f3a7092e03774bfa83f14c0fc5790a8667"
   integrity sha1-wKHS86cJLgN3S/qD8UwPxXkKhmc=
-
-chart.js@2.7.3:
-  version "2.7.3"
-  resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-2.7.3.tgz#cdb61618830bf216dc887e2f7b1b3c228b73c57e"
-  integrity sha512-3+7k/DbR92m6BsMUYP6M0dMsMVZpMnwkUyNSAbqolHKsbIzH2Q4LWVEHHYq7v0fmEV8whXE0DrjANulw9j2K5g==
-  dependencies:
-    chartjs-color "^2.1.0"
-    moment "^2.10.2"
 
 chart.js@2.9.4, chart.js@^2.4.0, chart.js@^2.9.4:
   version "2.9.4"
