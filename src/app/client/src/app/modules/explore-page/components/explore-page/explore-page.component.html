@@ -88,7 +88,18 @@
                 </g>
               </svg>
             </div>
-            <div *ngFor="let section of facetSections">
+            <div *ngFor="let section of facetSections; let index=index">
+              <div *ngIf="section?.section?.isEnabled && section?.section?.facetKey === 'banner'">
+                <div class="mt-16 font-weight-bold flarge pl-16">{{getBannerTitle(section?.section?.title)}}</div>
+                <ngx-slick *ngIf="displayBanner " class="carousel banner-carousel relative9 mt-24" #slickModal="slick-modal" [config]="bannerSlideConfig">
+                  <div ngxSlickItem *ngFor="let banner of bannerList;" class="mr-16">
+                    <div class="sb--card sb--card--theme2 banner-image" [ngStyle]="{'background-image': 'url(' + banner?.ui?.background+ ')'}" (click)="navigateToSpecificLocation(banner); handleBannerClick(banner)">
+                      <!-- <div class="banner-overlay"></div> -->
+                      <div *ngIf="banner?.ui?.text !== ''" class="explore-text">{{banner?.ui?.text}}</div>
+                    </div>
+                  </div>
+                </ngx-slick>
+              </div>
               <sb-pills-grid *ngIf="section?.section?.isEnabled"
                 [title]="getSectionTitle(section?.section?.title)"
                 [minDisplayCount]="section?.section?.theme?.limit || 4"
@@ -152,14 +163,6 @@
     </div>
   </div>
 </div>
-<ngx-slick *ngIf="displayBanner" class="carousel banner-carousel relative9 mt-24" #slickModal="slick-modal" [config]="bannerSlideConfig">
-  <div ngxSlickItem *ngFor="let banner of bannerList;" class="mr-16">
-    <div class="sb--card sb--card--theme2 banner-image" [ngStyle]="{'background-image': 'url(' + banner?.ui?.background+ ')'}" (click)="navigateToSpecificLocation(banner); handleBannerClick(banner)">
-      <!-- <div class="banner-overlay"></div> -->
-      <div *ngIf="banner?.ui?.text !== ''" class="explore-text">{{banner?.ui?.text}}</div>
-    </div>
-  </div>
-</ngx-slick>
 <app-offline-banner *ngIf="!isUserLoggedIn()" [slug]="userService.slug"></app-offline-banner>
  <!-- Show Modal if content has any YouTube data-->
  <sui-modal *ngIf="showModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
