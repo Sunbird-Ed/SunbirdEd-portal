@@ -37,7 +37,7 @@
     <div class="sb-modal-actions">
         <button 
             class="sb-btn sb-btn-normal sb-btn-primary"
-            *ngIf="createForm"
+            *ngIf="createForm" tabindex="0"
             (click)="disableApproveBtn=true; addOrgType()" 
             [class.disabled]="disabled"
             appTelemetryInteract 

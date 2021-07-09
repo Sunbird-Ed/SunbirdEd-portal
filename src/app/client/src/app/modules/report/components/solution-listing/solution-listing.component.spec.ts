@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
-import { SharedModule } from "@sunbird/shared";
+import { SharedModule,ResourceService } from "@sunbird/shared";
 import { SolutionListingComponent } from "./solution-listing.component";
 import { CoreModule, ObservationService,UserService } from "@sunbird/core";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
@@ -24,6 +24,14 @@ describe("SolutionListingComponent", () => {
   let fixture: ComponentFixture<SolutionListingComponent>;
   let observationUtilService, observationService,userService;
 
+  const resourceBundle = {
+    messages:{
+      fmsg:{
+        m0088:"Please wait"
+      },
+    },
+  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -38,7 +46,8 @@ describe("SolutionListingComponent", () => {
         RouterTestingModule,
         InfiniteScrollModule
       ],
-      declarations: [SolutionListingComponent,EntityListComponent]
+      declarations: [SolutionListingComponent,EntityListComponent],
+      providers:[ { provide: ResourceService, useValue: resourceBundle },]
     }).compileComponents();
   }));
 
