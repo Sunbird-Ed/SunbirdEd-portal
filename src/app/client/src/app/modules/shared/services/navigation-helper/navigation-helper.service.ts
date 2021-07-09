@@ -66,15 +66,15 @@ export class NavigationHelperService {
         const url = urlAfterRedirects.url.split('?')[0];
         let history: UrlHistory;
         if (_.isEmpty(queryParams)) {
-        history = {url};
+          history = {url};
         } else {
-        history = {url, queryParams};
+          history = {url, queryParams};
         }
         const previousUrl = this._history.pop();
         if (previousUrl === undefined || (previousUrl && previousUrl.url === history.url )) {
-            this._history.push(history);
+          this._history.push(history);
         } else {
-            this._history.push(previousUrl, history);
+          this._history.push(previousUrl, history);
         }
       }
     });
