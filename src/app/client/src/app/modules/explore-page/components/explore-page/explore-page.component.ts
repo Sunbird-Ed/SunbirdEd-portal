@@ -1012,11 +1012,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.bannerSegment.push(banner);
                 });
             }
-            this.displayBanner = (this.bannerSegment && this.bannerSegment.length > 0) ? true : false;
-            if (this.bannerSegment ) {
-                this.setBannerConfig();
-            }
         });
+        this.displayBanner = (this.bannerSegment && this.bannerSegment.length > 0) ? true : false;
+        if (this.bannerSegment ) {
+            this.setBannerConfig();
+        }
     }
 
     setBannerConfig() {
