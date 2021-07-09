@@ -427,7 +427,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                     const facetKeys = _.map(currentPageData.sections, (section) => { return section.facetKey });
                                     const facets = this.utilService.processCourseFacetData(_.get(response, 'result'), facetKeys);
                                     forEach(currentPageData.sections, facet => {
-                                        if (_.get(facets, facet.facetKey) && _.get(facets, facet.facetKey).length > 0) {
+                                        if (_.get(facets, facet.facetKey)) {
                                             let _facetArray = [];
                                             forEach(facets[facet.facetKey], _facet => {
                                                 _facetArray.push({
@@ -440,10 +440,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                                 name: facet.facetKey,
                                                 data: _.sortBy(_facetArray, ['name']),
                                                 section: facet,
+                                                index: facet.index
                                             });
                                         }
                                     });
-
+                                    this.facetSections = _.sortBy(this.facetSections, ['index']);
                                     if (facetKeys.indexOf('search') > -1) {
                                         this.contentSections = [];
                                         const searchSections = currentPageData.sections.filter(sec => sec.facetKey === 'search');
@@ -949,6 +950,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     getSectionTitle (title) {
         return get(this.resourceService, 'frmelmnts.lbl.browseBy') + ' ' + get(this.resourceService, title);
+    }
+
+    getBannerTitle (title) {
+        return get(this.resourceService, title);
     }
 
     getSelectedTab () {
