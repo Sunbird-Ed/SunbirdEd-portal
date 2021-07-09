@@ -8,14 +8,14 @@ import FileSDK from "../../sdks/FileSDK";
 import { Readable } from 'stream';
 import SettingSDK from '../../sdks/SettingSDK'
 import SystemSDK from "../../sdks/SystemSDK";
-import { TelemetryHelper } from './telemetry-helper';
+import { TelemetryInstance } from './telemetryInstance';
 
 @Singleton
 export class TelemetryExport {
     @Inject private databaseSdk: DataBaseSDK;
     @Inject private settingSDK: SettingSDK;
     @Inject private systemSDK: SystemSDK;
-    @Inject private telemetryHelper: TelemetryHelper;
+    @Inject private telemetryInstance: TelemetryInstance;
     private telemetryArchive;
     private cb;
     private destFolder: string;
@@ -214,7 +214,7 @@ export class TelemetryExport {
                 items: shareItems,
             },
         };
-        this.telemetryHelper.share(telemetryEvent);
+        this.telemetryInstance.share(telemetryEvent);
     }
 }
 

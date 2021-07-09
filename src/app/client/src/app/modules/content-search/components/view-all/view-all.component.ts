@@ -245,7 +245,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       const channelList = this.getChannelList(_.get(orgList, 'contentData.result.facets'));
       const rootOrgIds = this.processOrgData(channelList);
       return this.orgDetailsService.searchOrgDetails({
-        filters: { isRootOrg: true, rootOrgId: rootOrgIds },
+        filters: { isTenant: true, id: rootOrgIds },
         fields: ['slug', 'identifier', 'orgName']
       });
     } else {
@@ -375,10 +375,16 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       requestParams['facets'] = this.facetsList;
     }
 
-    return combineLatest(
-      this.searchService.contentSearch(requestParams),
-      this.coursesService.enrolledCourseData$,
-      this.getCurrentPageData()).pipe(map(data => ({ contentData: data[0], enrolledCourseData: data[1], currentPageData: data[2] })));
+    if (this.userService.loggedIn) {
+      return combineLatest(
+        this.searchService.contentSearch(requestParams),
+        this.coursesService.enrolledCourseData$,
+        this.getCurrentPageData()).pipe(map(data => ({ contentData: data[0], enrolledCourseData: data[1], currentPageData: data[2] })));
+    } else {
+      return combineLatest(
+        this.searchService.contentSearch(requestParams),
+        this.getCurrentPageData()).pipe(map(data => ({ contentData: data[0], currentPageData: data[1] })));
+    }
   }
 
   private formatSearchresults(sectionData) {
@@ -421,7 +427,6 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
   handleCourseRedirection({ data }) {
     const { metaData } = data;
     const { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch } = this.coursesService.findEnrolledCourses(metaData.identifier);
-
     if (!expiredBatchCount && !onGoingBatchCount) { // go to course preview page, if no enrolled batch present
       return this.playerService.playContent(metaData);
     }
@@ -429,13 +434,15 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     if (onGoingBatchCount === 1) { // play course if only one open batch is present
       metaData.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
       return this.playerService.playContent(metaData);
-    } else if (onGoingBatchCount === 0 && expiredBatchCount === 1) {
-      metaData.batchId = openBatch.expired.length ? openBatch.expired[0].batchId : inviteOnlyBatch.expired[0].batchId;
-      return this.playerService.playContent(metaData);
-    }
+    } 
+    // else if (onGoingBatchCount === 0 && expiredBatchCount === 1) {
+    //   metaData.batchId = openBatch.expired.length ? openBatch.expired[0].batchId : inviteOnlyBatch.expired[0].batchId;
+    //   return this.playerService.playContent(metaData);
+    // }
     this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: metaData.identifier };
     this.showBatchInfo = true;
   }
+
   getChannelId() {
     this.orgDetailsService.getOrgDetails()
       .subscribe(
@@ -495,13 +502,8 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   redoLayout() {
-    if (this.layoutConfiguration) {
-      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
-      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, this.layoutConfiguration, COLUMN_TYPE.threeToNine, true);
-    } else {
-      this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
-      this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
-    }
+    this.FIRST_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(0, null, COLUMN_TYPE.fullLayout);
+    this.SECOND_PANEL_LAYOUT = this.layoutService.redoLayoutCSS(1, null, COLUMN_TYPE.fullLayout);
   }
 
   processOrgData(channels) {

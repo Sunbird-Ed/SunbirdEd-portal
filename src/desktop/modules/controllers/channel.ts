@@ -5,22 +5,18 @@ import * as path from "path";
 import { Inject } from "typescript-ioc";
 import DatabaseSDK from "../sdk/database/index";
 import Response from "../utils/response";
-
-import { ClassLogger } from "@project-sunbird/logger/decorator";
-
-// @ClassLogger({
-//   logLevel: "debug",
-//   logTime: true,
-// })
+import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
 export class Channel {
   @Inject
   private databaseSdk: DatabaseSDK;
 
   private fileSDK;
+  @Inject private standardLog: StandardLogger;
 
   constructor(manifest) {
     this.databaseSdk.initialize(manifest.id);
     this.fileSDK = containerAPI.getFileSDKInstance(manifest.id);
+    this.standardLog = containerAPI.getStandardLoggerInstance();
   }
 
   public async insert() {
@@ -51,9 +47,7 @@ export class Channel {
         await this.databaseSdk.bulk("channel", channelDocs);
       }
     } catch (error) {
-      logger.error(
-        `While inserting channels ${error.message} ${error.stack}`,
-      );
+      this.standardLog.error({id: 'CHANNEL_INSERT_FAILED', message: 'Error While inserting channels', error});
     }
   }
 
@@ -75,9 +69,7 @@ export class Channel {
         return res.send(Response.success("api.channel.read", resObj, req));
       })
       .catch((err) => {
-        logger.error(
-          `ReqId = "${req.headers["X-msgid"]}": Received error while getting the data from channel database with id: ${id} and err.message: ${err.message} ${err}`,
-        );
+        this.standardLog.error({ id: 'CHANNEL_DB_READ_FAILED', message: `Received error while getting the data from channel database with id: ${id}`, error: err });
         if (err.status === 404) {
           res.status(404);
           return res.send(Response.error("api.channel.read", 404));

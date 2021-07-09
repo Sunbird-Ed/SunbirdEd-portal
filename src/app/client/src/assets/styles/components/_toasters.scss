@@ -150,12 +150,12 @@
       .iziToast-title,
       .sb-toast-title {
         font-size: calculateRem(16px) !important;
-        color: $gray;
+        color: var(--gray);
         margin-bottom: calculateRem(8px);
         display: block;
         width: 100%;
         text-transform: inherit;
-        font-weight: $font-weight-bold;
+        font-weight: var(--font-weight-bold);
         line-height: calculateRem(16px);
       }
 
@@ -171,7 +171,7 @@
   }
 
   &.sb-toast-normal {
-    background: $white;
+    background: var(--white);
     border-right-width: calculateRem(1px);
     border-bottom-width: calculateRem(1px);
     border-top-width: calculateRem(1px);

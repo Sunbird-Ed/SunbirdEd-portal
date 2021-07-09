@@ -25,6 +25,7 @@ import { CourseDetailsComponent } from './components/course-consumption/course-d
 import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
 import { NotificationModule } from '../notification/notification.module';
+import { DiscussionModule } from '../discussion/discussion.module';
 
 export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
   if (!CsModule.instance.isInitialised) {
@@ -52,7 +53,8 @@ export const csCourseServiceFactory = (csLibInitializerService: CsLibInitializer
     TelemetryModule,
     PlayerHelperModule,
     CommonConsumptionModule,
-    NotificationModule
+    NotificationModule,
+    DiscussionModule
   ],
   providers: [
     { provide: 'CS_USER_SERVICE', useFactory: csUserServiceFactory, deps: [CsLibInitializerService] },

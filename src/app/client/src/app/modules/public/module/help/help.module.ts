@@ -6,6 +6,10 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
+import { FaqReportComponent } from './components/faq-report/faq-report.component';
+import { CommonFormElementsModule } from 'common-form-elements';
+import { SuiModalModule } from 'ng2-semantic-ui';
+import { SunbirdVideoPlayerModule } from '@project-sunbird/sunbird-video-player-v8';
 
 @NgModule({
   imports: [
@@ -14,9 +18,12 @@ import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8'
     CoreModule,
     SharedModule,
     HelpRoutingModule,
-    CommonConsumptionModule
+    CommonConsumptionModule,
+    CommonFormElementsModule,
+    SuiModalModule,
+    SunbirdVideoPlayerModule
   ],
-  declarations: [FaqComponent, OfflineHelpVideosComponent],
-  exports: [FaqComponent, OfflineHelpVideosComponent]
+  declarations: [FaqComponent, OfflineHelpVideosComponent, FaqReportComponent],
+  exports: [FaqComponent, OfflineHelpVideosComponent, FaqReportComponent]
 })
 export class HelpModule { }

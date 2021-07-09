@@ -64,8 +64,9 @@
               "./node_modules/leaflet/dist/leaflet.css",
               "src/assets/styles/styles.scss",
               "node_modules/video.js/dist/video-js.min.css",
-              "./node_modules/@project-sunbird/discussions-ui-v8/assets/styles/global.scss",
-              "node_modules/katex/dist/katex.min.css"
+              "node_modules/katex/dist/katex.min.css",
+              "./node_modules/@project-sunbird/sb-themes/themes/themes-portal.scss",
+              "./node_modules/@project-sunbird/discussions-ui-v8/assets/styles/global.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -78,6 +79,7 @@
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/slick-carousel/slick/slick.min.js",
               "node_modules/@project-sunbird/telemetry-sdk/index.js",
+              "node_modules/datatables.net/js/jquery.dataTables.js",
               "src/assets/libs/semantic-ui/sidebar.min.js",
               "node_modules/leaflet/dist/leaflet.js",
               "./node_modules/katex/dist/katex.min.js",

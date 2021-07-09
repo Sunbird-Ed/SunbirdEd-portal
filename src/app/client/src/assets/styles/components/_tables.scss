@@ -182,14 +182,14 @@
       &-success,
       &-warning,
       &-danger {
-        font-weight: $font-weight-bold;
+        font-weight: var(--font-weight-bold);
       }
 
       &-active {
         background: var(--primary-0);
 
         .sb-media .media-heading {
-          font-weight: $font-weight-bold;
+          font-weight: var(--font-weight-bold);
         }
       }
 
@@ -224,7 +224,7 @@
 
     .media-heading {
       margin: 0 auto;
-      font-weight: $font-weight-normal;
+      font-weight: var(--font-weight-normal);
       max-width: calculateRem(224px);
       overflow: hidden;
       text-overflow: ellipsis;
@@ -299,7 +299,7 @@ table.dataTable {
 //   .ui.table {
 //     thead tr th {
 //       padding:  calculateRem(8px)  calculateRem(16px)  calculateRem(8px)  calculateRem(32px);
-//       background-color: $white-color;
+//       background-color: var(--white);
 //       border-bottom:  calculateRem(1px) solid rgba(var(--rc-rgba-gray-300), 0.1);
 //       background-repeat: no-repeat;
 //       background-position: center right;

@@ -20,6 +20,7 @@ export { ITaskExecuter, SystemQueueQuery, ISystemQueue, SystemQueueReq, SystemQu
 import { EventManager } from "./../managers/EventManager";
 import { INetworkQueueQuery } from './../services/queue/IQueue';
 import { PerfLogger, IPerfLog } from './../services/perfLogger';
+import { StandardLogger } from '../services/standardLogger/standardLogger';
 export * from './../services/perfLogger/IPerfLog'
 
 /* @ClassLogger({
@@ -35,6 +36,7 @@ class ContainerAPI {
   @Inject downloadSDK: DownloadSDK
   @Inject deviceSDK: DeviceSDK
   @Inject private perfLogger: PerfLogger;
+  @Inject private standardLogger: StandardLogger;
   public async bootstrap() {
     await App.bootstrap();
     EventManager.subscribe("app:initialized", () => {
@@ -63,6 +65,9 @@ class ContainerAPI {
   }
   public getPerfLoggerInstance(): PerfLogger {
     return this.perfLogger;
+  }
+  public getStandardLoggerInstance(): StandardLogger {
+    return this.standardLogger;
   }
   // get the Network SDK
 

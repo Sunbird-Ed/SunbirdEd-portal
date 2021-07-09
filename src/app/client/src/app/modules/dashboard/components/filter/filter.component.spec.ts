@@ -202,4 +202,24 @@ describe('FilterComponent', () => {
     expect(component.filtersFormGroup.get('Grade').value).toEqual(['08-01-2019', '09-01-2019', '10-01-2019']);
   }));
 
+  it('should update form', fakeAsync(() => {
+   
+    const spy = spyOn(component, 'formUpdate').and.callThrough();
+    component.filters = mockChartData.filters;
+    component.chartData = mockChartData.chartData;
+    component.ngOnInit();
+    tick(1000);
+    component.filtersFormGroup.get('state').setValue(['01285019302823526477']);
+    tick(1000);
+    expect(spy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(component.filtersFormGroup.controls).toBeTruthy();
+    expect(component.previousFilters).toEqual({
+      'state': ['01285019302823526477']
+    });
+    mockChartData.filters[1]['options'] = ["10"];
+    expect(component.filters).toEqual(mockChartData.filters);
+    
+  }));
+
 });

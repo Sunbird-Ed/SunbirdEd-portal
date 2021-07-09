@@ -70,12 +70,12 @@
       }
       
       .dot-divider {
-          width: ($base-block-space / 2);
-          height: ($base-block-space / 2);
+          width: 0.25rem;
+          height: 0.25rem;
           border-radius: 100%;
           background-color: var(--gray-800);
           display: inline-block;
-          margin: 0px $base-block-space;
+          margin: 0px 0.5rem;
       }
     
     @include respond-below(sm) {

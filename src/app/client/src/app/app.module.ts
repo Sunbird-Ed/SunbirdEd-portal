@@ -21,7 +21,9 @@ import { CustomRouteReuseStrategy } from './service/CustomRouteReuseStrategy/Cus
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { TranslateStore } from "@ngx-translate/core";
+import { TranslateStore } from '@ngx-translate/core';
+import { SbSearchFilterModule } from 'common-form-elements';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -43,6 +45,7 @@ import { TranslateStore } from "@ngx-translate/core";
       }
     }),
     DeviceDetectorModule.forRoot(),
+    SbSearchFilterModule.forRoot('web'),
     ChatLibModule,
     SharedFeatureModule,
     ...PluginModules,
@@ -58,7 +61,7 @@ import { TranslateStore } from "@ngx-translate/core";
     TranslateStore,
     { provide: CacheStorageAbstract, useClass: CacheSessionStorage },
     { provide: HTTP_INTERCEPTORS, useClass: SessionExpiryInterceptor, multi: true },
-    { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy },
+    { provide: RouteReuseStrategy, useClass: CustomRouteReuseStrategy }
   ]
 })
 export class AppModule {

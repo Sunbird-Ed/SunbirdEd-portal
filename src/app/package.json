@@ -1,7 +1,7 @@
 {
   "name": "player",
   "author": "sunbird",
-  "version": "3.8.1",
+  "version": "4.0.0",
   "buildNumber": "1",
   "private": true,
   "devDependencies": {
@@ -79,6 +79,7 @@
     "express-cassandra": "2.1.0",
     "express-http-proxy": "1.0.6",
     "express-session": "1.15.3",
+    "google-auth-library": "^7.1.0",
     "googleapis": "45.0.0",
     "helmet": "3.21.2",
     "http-graceful-shutdown": "^2.3.2",

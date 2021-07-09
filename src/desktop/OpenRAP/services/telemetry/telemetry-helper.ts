@@ -246,8 +246,8 @@ export class TelemetryHelper {
    * @returns
    * @memberof TelemetryService
    */
-  private getEventData(eventInput: any) {
-    const event: ITelemetryEvent = {
+  private getEventData(eventInput: any): ITelemetryEvent {
+    return {
       edata: eventInput.edata,
       options: {
         context: this.getEventContext(eventInput),
@@ -255,7 +255,6 @@ export class TelemetryHelper {
         tags: _.compact(this.context.userOrgDetails.organisationIds)
       }
     };
-    return event;
   }
 
   /**
@@ -289,8 +288,8 @@ export class TelemetryHelper {
    * @returns
    * @memberof TelemetryService
    */
-  private getEventContext(eventInput: any) {
-    const eventContextData: ITelemetryContextData = {
+  private getEventContext(eventInput: any): ITelemetryContextData {
+    return {
       channel: eventInput.edata.channel || this.context.config.channel,
       pdata: eventInput.edata.pdata || this.context.config.pdata,
       env: eventInput.context.env || this.context.config.env,
@@ -299,7 +298,6 @@ export class TelemetryHelper {
       cdata: eventInput.context.cdata || [],
       rollup: this.getRollUpData(this.context.userOrgDetails.organisationIds)
     };
-    return eventContextData;
   }
 
   /**

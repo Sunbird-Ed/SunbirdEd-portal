@@ -1,0 +1,61 @@
+.submissions {
+    border-radius: 24px;
+    margin: 0.5rem 0;
+
+    h5 {
+        font-weight: 600;
+    }
+
+    .dropdown {
+        .ellipsis {
+            font-size: 1.5rem !important;
+            ;
+        }
+    }
+
+    .evidences-list {
+        margin: 5px 0px;
+        background: var(--sbt-compt-bg) !important;
+        border-radius: var(--sbt-bradius-24);
+        padding: 8px 24px;
+    }
+}
+
+:host ::ng-deep {
+    .ui.styled.accordion .title {
+        background: var(--sb-card-bg) !important;
+    }
+
+    .ui.dropdown .menu>.item {
+        color: var(--sb-linkmenu-text);
+    }
+
+    .ui.dropdown .menu {
+        background: var(--sb-card-bg);
+    }
+}
+
+.content-submission {
+    background: var(--sb-card-bg) !important;
+    padding: 1rem 1.5rem !important;
+    border-radius: var(--sbt-bradius-24);
+
+    .txt-transform {
+        text-transform: capitalize !important;
+    }
+}
+
+.icon {
+    color: var(--primary-400) !important;
+    padding-left: 15px;
+}
+
+.center-align {
+    align-self: center;
+    justify-self: center;
+    padding: 5px 0;
+}
+
+.white-space-wrap {
+    text-overflow: ellipsis;
+}

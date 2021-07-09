@@ -45,6 +45,15 @@ export interface IGroupMember extends GroupMember {
   isCreator?: boolean;
   id?: string;
 }
+export interface IFetchForumId {
+  identifier: Array<string>;
+  type: string;
+}
+
+export interface IFetchForumConfig {
+  identifier: string;
+  type: string;
+}
 
 export enum actions {
   DELETE = 'delete',

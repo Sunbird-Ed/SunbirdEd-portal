@@ -6,21 +6,18 @@ import { Inject } from "typescript-ioc";
 import DatabaseSDK from "../sdk/database/index";
 import Response from "../utils/response";
 const Hashids = require('hashids/cjs')
+import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
 
-
-/*@ClassLogger({
-  logLevel: "debug",
-  logTime: true,
-})*/
 export class Form {
   @Inject
   private databaseSdk: DatabaseSDK;
-
   private fileSDK;
+  @Inject private standardLog: StandardLogger;
 
   constructor(manifest) {
     this.databaseSdk.initialize(manifest.id);
     this.fileSDK = containerAPI.getFileSDKInstance(manifest.id);
+    this.standardLog = containerAPI.getStandardLoggerInstance();
   }
   public async insert() {
 
@@ -56,9 +53,7 @@ export class Form {
         await this.databaseSdk.bulk("form", formDocs);
       }
     } catch (error) {
-      logger.error(
-        `While inserting forms ${error.message} ${error.stack}`,
-      );
+      this.standardLog.error({ id: 'FORM_INSERT_FAILED', message: `While inserting forms`, error });
     }
   }
 
@@ -85,9 +80,7 @@ export class Form {
       .then((data) => {
         data = _.map(data.docs, (doc) => _.omit(doc, ["_id", "_rev"]));
         if (data.length <= 0) {
-          logger.error(
-            `ReqId = "${req.headers["X-msgid"]}": Received empty data while searching with ${searchObj} in form database`,
-          );
+          this.standardLog.error({ id: 'FORM_DB_SEARCH_FAILED', message: `Received empty data while searching with ${searchObj} in form database`, mid: req.headers["X-msgid"] });
           res.status(404);
           return res.send(Response.error("api.form.read", 404));
         }
@@ -100,9 +93,7 @@ export class Form {
         return res.send(Response.success("api.form.read", resObj, req));
       })
       .catch((err) => {
-        logger.error(
-          `ReqId = "${req.headers["X-msgid"]}": Received error while searching in form database and err.message: ${err.message} ${err}`,
-        );
+        this.standardLog.error({ id: 'FORM_DB_SEARCH_FAILED', message: `Received error while searching in form database`, mid: req.headers["X-msgid"], error: err });
         if (err.status === 404) {
           res.status(404);
           return res.send(Response.error("api.form.read", 404));

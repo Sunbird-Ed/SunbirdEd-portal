@@ -1,0 +1,110 @@
+<app-landing-section [textToDisplay]="" 
+[layoutConfiguration]="layoutConfiguration" [noTitle]="true"></app-landing-section>
+<div [ngClass]="layoutConfiguration ? 'sbt-center-container sbt-back-header sbt-mygroups-details relative9' : ''">
+<app-back-button></app-back-button>
+<div class="ui container py-16" *ngIf="showLoader">
+  <app-loader [data]='loaderMessage'></app-loader>
+</div>
+<div *ngIf="!showLoader" [appTelemetryImpression]="telemetryImpression">
+  <div class="content-header">
+    <div class="ui container py-16">
+      <div class="content-header__content">
+        <div class="d-flex flex-basis-1 mr-32 min-w-0 content-header__content__title">
+          <div class="content-header__img mr-8">
+            <img [src]="activity?.appIcon || './assets/images/book.png'" alt="" /></div>
+          <div class="d-flex flex-dc">
+            <div class="content-header__title font-weight-bold ellipsis text-left">{{activity?.name}}</div>
+            <div class="d-flex flex-ai-center content-header__info mt-4">
+              <span>{{activity?.subject?.join(', ')}}</span>
+              <span class="dot-divider" *ngIf="activity?.subject?.length"></span>
+              <span>{{enrolmentCount}}/{{membersCount}}&nbsp;{{resourceService?.frmelmnts?.lbl?.started}}</span>
+            </div>
+          </div>
+        </div>
+           <!--Activity Dashboard-->
+           <button  (click)="navigateToActivityDashboard()"
+           [disabled]="!isContentTrackable(activity, activity?.contentType)"
+           [ngClass]="{'dt-disabled-btn': !isContentTrackable(activity, activity?.contentType)}"
+           class="sb-btn sb-btn-normal sb-btn-link  sb-left-icon-btn ml-8 sb-btn-icon-fix disabled sb-btn-link-primary sb-activity-dashboard-btn" title="Activity Dashboard">
+           <img src="assets/images/Activity_icon.svg" width="20px" class="mr-8"
+             alt="Activity Dashboard">
+           Activity Dashboard
+         </button>
+        <div class="d-flex flex-ai-end flex-w-wrap content-header__buttons hide">
+          <button class="sb-btn sb-btn-outline-secondary sb-btn-normal mr-8"></button>
+          <div class="kabab-menu"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ui container mt-24">
+    <div class="sb-g mt-24 sbt-sb-g">
+      <div class="sb-g-col-xs-12 sb-g-col-md-5 sb-g-col-lg-5 sb-g-col-xxxl-4">
+    <div class="nested-group-container flex-dc d-flex">
+      <div class="nested-group-content">
+      <div class="sb-bg-color-primary nested-course-area" *ngIf="nestedCourses.length > 1">
+        <div class="d-flex flex-ai-center flex-jc-space-between py-16 px-24" (click)="toggleDropdown();addTelemetry('course-dropdown', [])">
+          <div class="fsmall">{{selectedCourse?.name}}</div>
+          <div class="ml-8" [ngClass]="{'open': dropdownContent}">
+            <!-- <img src="assets/images/arrow-dropdown.svg"> -->
+            <button type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary br-24 btn-border">{{resourceService?.frmelmnts?.lbl?.change}}</button>
+          </div>
+        </div>
+      </div>
+      <div class="dropdown-content p-24" [hidden]="dropdownContent">
+        <div class="members-group-list d-flex">
+          <div class="members-group-list-item d-flex flex-dc w-100">
+            <div class="member-name" (click)="handleSelectedCourse(course);addTelemetry('select-course', [{id: course?.identifier, type: 'SelectedDropdown'}], {selectedCourse: {id: course?.identifier }})" *ngFor="let course of nestedCourses">
+              <span class='fnormal' [ngClass]="{'font-weight-bold': course?.identifier === selectedCourse?.identifier }">{{course?.name}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+      <div class="px-16 pt-16">
+        <div *ngIf="!isContentTrackable(activity, activity?.contentType)" class="pb-16"><span class="note-color">{{resourceService?.frmelmnts?.lbl?.note}}</span> {{resourceService?.frmelmnts.lbl.noProgress | interpolate:'{type}': (showActivityType())}}</div>
+        <div class="sb-search-box no-btn">
+          <div class="input-div relative">
+            <i class="search icon" aria-hidden="true"></i>
+            <input class="sb-search-input" type="text" #searchInputBox (input)="search(searchInputBox.value)"
+            [placeholder]="resourceService?.frmelmnts?.lbl?.searchWithinGroup" aria-label="search box" />
+          </div>
+          <button class="sb-btn sb-btn-normal" type="button">{{ resourceService?.frmelmnts?.lbl?.search }}</button>
+        </div>
+      </div>
+      <div class="d-flex flex-ai-center px-16 py-8 flex-jc-space-between" *ngIf="isContentTrackable(activity, activity?.contentType)">
+        <div  *ngIf="parentId !== selectedCourse?.identifier"></div>
+        <span class="fxsmall"> {{ resourceService?.frmelmnts?.lbl?.LastUpdated }}: {{memberListUpdatedOn | date:'MMM d, y, h:mm a'}} </span>
+        <div class="cursor-pointer" *ngIf="parentId === selectedCourse?.identifier" (click)="downloadCSVFile()">
+          <i class="download icon sb-color-primary"></i>
+          <span class="download-text">{{resourceService?.frmelmnts?.lbl?.downloadAsCSV}}</span>
+          </div>
+      </div>
+        <div class="px-24">
+      </div>
+      <div class="d-flex flex-dc p-16">
+        <div *ngFor="let member of memberListToShow" class="relative">
+          <sb-member-card [title]="member?.title" [identifier]="member?.identifier" [config]="memberCardConfig"
+            [progressDisplay]="member?.progress" [indexOfMember]="member?.indexOfMember" [initial]="member?.initial">
+          </sb-member-card>
+        </div>
+      </div>
+      <div class="member-no-result p-24" *ngIf="showSearchResults && !memberListToShow?.length" >
+        <div class="d-flex flex-dc flex-jc-center flex-ai-center text-center">
+          <img width="197" src="./assets/images/add-member@2x.svg" alt="">
+          <div class="mt-16 no-result-text">
+            {{ resourceService?.frmelmnts?.lbl?.NoSerchGroupMemberResults }}
+          </div>
+          <div class="my-8 no-result-desc hide">
+            <div>{{ resourceService?.frmelmnts?.lbl?.checkYourSpelling }}</div>
+            <div>{{ resourceService?.frmelmnts?.lbl?.similarButDiffName }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+</div>
+  </div>
+</div>
+</div>

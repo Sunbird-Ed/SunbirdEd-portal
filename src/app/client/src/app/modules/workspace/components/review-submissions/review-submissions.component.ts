@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkSpace } from '../../classes/workspace';
-import { SearchService, UserService } from '@sunbird/core';
+import { SearchService, UserService, FrameworkService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ToasterService,
   ResourceService, ConfigService, IContents, ILoaderMessage, INoResultMessage,
@@ -127,6 +127,7 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit, Aft
  */
   constructor(public searchService: SearchService,
     public workSpaceService: WorkSpaceService,
+    public frameworkService: FrameworkService,
     paginationService: PaginationService,
     activatedRoute: ActivatedRoute,
     route: Router, userService: UserService,
@@ -159,11 +160,13 @@ export class ReviewSubmissionsComponent extends WorkSpace implements OnInit, Aft
     this.showLoader = true;
     this.pageNumber = pageNumber;
     this.pageLimit = limit;
+    const primaryCategories = _.compact(_.concat(this.frameworkService['_channelData'].contentPrimaryCategories,
+       this.frameworkService['_channelData'].collectionPrimaryCategories));
     const searchParams = {
       filters: {
         status: ['Review', 'FlagReview'],
         createdBy: this.userService.userid,
-        contentType: this.config.appConfig.WORKSPACE.contentType,
+        primaryCategory: (!_.isEmpty(primaryCategories) ? primaryCategories : this.config.appConfig.WORKSPACE.primaryCategory),
         objectType: this.config.appConfig.WORKSPACE.objectType,
       },
       limit: this.pageLimit,

@@ -268,7 +268,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
             let facetsList: any = this.utilService.processData(_.get(data, 'sections'), option['facets']);
             const rootOrgIds = this.processOrgData(facetsList.channel);
             return this.searchOrgDetails({
-              filters: { isRootOrg: true, rootOrgId: rootOrgIds },
+              filters: { isTenant: true, id: rootOrgIds },
               fields: ['slug', 'identifier', 'orgName']
             }).pipe(
               tap(orgDetails => {
@@ -370,7 +370,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
           let facetsList: any = this.utilService.processCourseFacetData(_.get(this._courseSearchResponse, 'result'), option.facets);
           const rootOrgIds = this.processOrgData(facetsList.channel);
           return this.orgDetailsService.searchOrgDetails({
-            filters: { isRootOrg: true, rootOrgId: rootOrgIds },
+            filters: { isTenant: true, id: rootOrgIds },
             fields: ['slug', 'identifier', 'orgName']
           }).pipe(tap((orgDetails) => {
             this.showLoader = false;
@@ -550,7 +550,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       this.publicPlayerService.playContent(event);
     } else {
       if (sectionType) {
-        event.section = this.resourceService.frmelmnts.lbl.mytrainings;
+        event.section = _.get(this.resourceService, 'frmelmnts.lbl.mytrainings');
         event.data.identifier = _.get(event, 'data.metaData.courseId');
       }
       const { section, data } = event;
@@ -569,10 +569,11 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       if (onGoingBatchCount === 1) { // play course if only one open batch is present
         metaData.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
         return this.playerService.playContent(metaData);
-      } else if (onGoingBatchCount === 0 && expiredBatchCount === 1) {
-        metaData.batchId = openBatch.expired.length ? openBatch.expired[0].batchId : inviteOnlyBatch.expired[0].batchId;
-        return this.playerService.playContent(metaData);
-      }
+      } 
+      // else if (onGoingBatchCount === 0 && expiredBatchCount === 1) {
+      //   metaData.batchId = openBatch.expired.length ? openBatch.expired[0].batchId : inviteOnlyBatch.expired[0].batchId;
+      //   return this.playerService.playContent(metaData);
+      // }
       this.selectedCourseBatches = { onGoingBatchCount, expiredBatchCount, openBatch, inviteOnlyBatch, courseId: metaData.identifier };
       this.showBatchInfo = true;
     }

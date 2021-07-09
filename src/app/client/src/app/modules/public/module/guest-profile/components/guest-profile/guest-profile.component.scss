@@ -1,0 +1,45 @@
+@import "variables";
+@import "../../../../../../../assets/styles/mixins/mixins";
+
+.avatar-container {
+  width: calculateRem(98px);
+  height: calculateRem(98px);
+  margin: 0 auto;
+}
+.profile-user-label {
+  font-size: calculateRem(32px);
+}
+.font-w-bold {
+  font-weight: bold !important;
+}
+/* profile page color palate */
+.profile-bg-c-3 {
+  background: var(--sbt-page-header-bg) !important;
+}
+
+.profile-bg-c-4 {
+  background: var(--sb-profile-bg-c-4) !important;
+  color:var(--black)
+}
+
+/* width */
+.max-w-300 {
+  max-width: calculateRem(300px) !important;
+}
+
+.max-w-400 {
+  max-width: calculateRem(400px) !important;
+}
+
+.content-preference {
+  @include respond-below(md) {
+    padding: 0 2%;
+    &__info {
+      background: var(--sb-profile-bg-c-4);
+      padding: calculateRem(16px) 0;
+      border-radius: calculateRem(24px);
+      width: 100%;
+      color: var(--black);
+    }
+  }
+}

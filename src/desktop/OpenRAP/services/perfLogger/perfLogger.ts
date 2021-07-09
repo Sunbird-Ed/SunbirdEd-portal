@@ -3,11 +3,10 @@ import * as _ from "lodash";
 import { Inject } from "typescript-ioc";
 import { DataBaseSDK } from "../../sdks/DataBaseSDK";
 import SettingSDK from '../../sdks/SettingSDK';
-import { logger } from "@project-sunbird/logger";
-import { ClassLogger } from "@project-sunbird/logger/decorator";
 import { IPerfLog } from './IPerfLog';
 import { timer } from 'rxjs';
 import { TelemetryInstance } from './../telemetry/telemetryInstance';
+import { StandardLogger } from '../standardLogger/standardLogger';
 
 const INITIAL_TRIGGER = 15 * 60 * 1000; // trigger first job after 15 min  
 const DAY_IN_MILLISECONDS = 24 * 60 * 60 * 1000; // trigger jobs every 24 hours after first trigger
@@ -25,6 +24,7 @@ export class PerfLogger {
     @Inject private dbSDK: DataBaseSDK;
     @Inject private settingSDK: SettingSDK;
     @Inject private telemetryInstance: TelemetryInstance;
+    @Inject private standardLog: StandardLogger;
 
     public initialize(initial_trigger = INITIAL_TRIGGER, scheduled_trigger =  DAY_IN_MILLISECONDS){
         timer(initial_trigger, scheduled_trigger).subscribe(this.handleTimerEvent.bind(this)); // triggers aggregate job initial after initial_trigger and every 24 hours after initial trigger
@@ -35,7 +35,7 @@ export class PerfLogger {
             await this.aggregateLogs();
             await this.archiveOldLogs();
         } catch (error) {
-            logger.error(`aggregateLogs failed for count - ${triggerCount}`, error);
+            this.standardLog.error({ id: 'PERF_LOGGER_AGGREGATE_LOGS_FAILED', message: `aggregateLogs failed for count - ${triggerCount}`, error });
         }
     }
 
@@ -193,7 +193,7 @@ export class PerfLogger {
             logData.createdOn = Date.now();
         }
         this.dbSDK.insertDoc(DB_NAME, logData).catch(error => {
-            logger.error("perf_log data insertion error", error);
+            this.standardLog.error({ id: 'PERF_LOGGER_INSERTION_FAILED', message: "perf_log data insertion error", error });
         });
     }
 
@@ -209,7 +209,7 @@ export class PerfLogger {
             const toBeDeleted = archiveLogs.map((data: any) => ({ _id: data._id, _rev: data._rev, _deleted: true }));
             await this.dbSDK.bulkDocs(DB_NAME, toBeDeleted);
         } catch (error) {
-            logger.error("perf_log error while archiving old logs", error);
+            this.standardLog.error({ id: 'PERF_LOGGER_ARCHIVE_FAILED', message: "Error while archiving old logs", error });
         }
     }
 

@@ -17,7 +17,7 @@ import { CourseBatchService, CourseConsumptionService, CourseProgressService } f
 import { ContentUtilsServiceService, ConnectionService } from '@sunbird/shared';
 import { MimeTypeMasterData } from '@project-sunbird/common-consumption-v8/lib/pipes-module/mime-type';
 import dayjs from 'dayjs';
-import { NotificationService } from '../../../../notification/services/notification/notification.service';
+import { NotificationServiceImpl } from '../../../../notification/services/notification/notification-service-impl';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
 
 @Component({
@@ -94,6 +94,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   navigateToContentObject: any;
   _routerStateContentStatus: any;
   isConnected = false;
+  dropdownContent = true;
+  showForceSync = true;
   constructor(
     public activatedRoute: ActivatedRoute,
     private configService: ConfigService,
@@ -115,14 +117,14 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     private contentUtilsServiceService: ContentUtilsServiceService,
     public layoutService: LayoutService,
     public generaliseLabelService: GeneraliseLabelService,
-    private notificationService: NotificationService,
     private connectionService: ConnectionService,
-    @Inject('CS_COURSE_SERVICE') private CsCourseService: CsCourseService
+    @Inject('CS_COURSE_SERVICE') private CsCourseService: CsCourseService,
+    @Inject('SB_NOTIFICATION_SERVICE') private notificationService: NotificationServiceImpl
   ) {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
     // this.assessmentMaxAttempts = this.configService.appConfig.CourseConsumption.selfAssessMaxLimit;
-  }
+  } 
   ngOnInit() {
     if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
       this.courseMentor = true;
@@ -136,8 +138,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
     // Set consetnt pop up configuration here
     this.consentConfig = {
-      tncLink: this.resourceService.frmelmnts.lbl.tncLabelLink,
-      tncText: this.resourceService.frmelmnts.lbl.agreeToShareDetails
+      tncLink: _.get(this.resourceService, 'frmelmnts.lbl.tncLabelLink'),
+      tncText: _.get(this.resourceService, 'frmelmnts.lbl.agreeToShareDetails')
     };
     this.initLayout();
     this.courseProgressService.courseProgressData.pipe(
@@ -148,7 +150,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         if (this.activatedRoute.snapshot.queryParams.showCourseCompleteMessage === 'true') {
           this.showCourseCompleteMessage = this.progress >= 100 ? true : false;
           if (this.showCourseCompleteMessage) {
-            this.notificationService.refreshNotification$.next(true);
+            this.notificationService.fetchNotificationList();
           }
           const queryParams = this.tocId ? { textbook: this.tocId } : {};
           this.router.navigate(['.'], { relativeTo: this.activatedRoute, queryParams, replaceUrl: true });
@@ -260,6 +262,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
         }
       }, 1000);
     });
+    const isForceSynced = localStorage.getItem(this.courseId+'_isforce-sync');
+        if(isForceSynced){
+          this.showForceSync = false
+        }
   }
 
   /**
@@ -354,7 +360,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       id: id
     };
     if (_.get(event, 'event.isDisabled')) {
-      return this.toasterService.error(this.resourceService.frmelmnts.lbl.selfAssessMaxAttempt);
+      return this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.selfAssessMaxAttempt'));
     } else if (_.get(event, 'event.isLastAttempt')) {
       this.showLastAttemptsModal = true;
     } else {
@@ -697,10 +703,32 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   getDataSetting() {
-    if (_.get(this.userService, 'userid') && (_.upperCase(_.get(this.courseHierarchy, 'userConsent')) === 'YES')
-      && !this.courseConsumptionService.canViewDashboard(this.courseHierarchy) && this.enrolledCourse) {
-        return true;
+    const userId = _.get(this.userService, 'userid');
+    const isConsentGiven = _.upperCase(_.get(this.courseHierarchy, 'userConsent')) === 'YES';
+    const isMinor = _.get(this.userService, 'userProfile').isMinor;
+    const isManagedUser = _.get(this.userService, 'userProfile').managedBy;
+    const canViewDashboard = this.courseConsumptionService.canViewDashboard(this.courseHierarchy);
+    return (userId && isConsentGiven && (!isMinor || isManagedUser) && !canViewDashboard && this.enrolledCourse);
+  }
+  dropdownMenu() {
+    this.dropdownContent = !this.dropdownContent;
+  }
+  public forceSync() {
+    localStorage.setItem(this.courseId+'_isforce-sync', 'true');
+    this.showForceSync = false;
+    this.closeSharePopup('force-sync');
+    this.dropdownContent = !this.dropdownContent;
+    const req = {
+      'courseId': this.courseId,
+      'batchId': this.batchId,
+      'userId': _.get(this.userService, 'userid')
     }
-    return false;
+    this.CsCourseService.updateContentState(req, { apiPath: '/content/course/v1' })
+    .pipe(takeUntil(this.unsubscribe))
+    .subscribe((res) => {
+      this.toasterService.success(this.resourceService.frmelmnts.lbl.forceSyncsuccess);
+    }, error => {
+      console.log('Content state update CSL API failed ', error);
+    });
   }
 }

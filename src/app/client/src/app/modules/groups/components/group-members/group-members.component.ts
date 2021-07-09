@@ -6,8 +6,9 @@ import { ResourceService, ToasterService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ADD_MEMBER, GROUP_DETAILS, IGroupMember, IGroupMemberConfig, MY_GROUPS, IGroupCard } from '../../interfaces';
+import { GROUP_DETAILS, IGroupMember, IGroupMemberConfig, MY_GROUPS, IGroupCard } from '../../interfaces';
 import { GroupsService } from '../../services';
+import { ADD_MEMBER } from '../../interfaces/telemetryConstants';
 
 @Component({
   selector: 'app-group-members',
@@ -36,6 +37,7 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
   groupId;
   showLoader = false;
   memberCardConfig = { size: 'small', isBold: false, isSelectable: false, view: 'horizontal' };
+  public ADD_MEMBER = ADD_MEMBER;
 
   constructor(
     private router: Router,
@@ -110,7 +112,7 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
   }
 
   addMember() {
-    this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, _.get(this.groupData, 'id') || this.groupId, ADD_MEMBER]);
+    this.router.navigate([`${MY_GROUPS}/${GROUP_DETAILS}`, _.get(this.groupData, 'id') || this.groupId, 'add-member-to-group']);
   }
 
   onModalClose() {
@@ -202,10 +204,13 @@ export class GroupMembersComponent implements OnInit, OnDestroy {
     });
   }
 
-  addTelemetry(id, extra?) {
-    this.groupsService.addTelemetry({id, extra}, this.activatedRoute.snapshot, [], this.groupId);
+   /**
+   * @description - To set the telemetry Intract event data
+   * @param  {} edata? - it's an object to specify the type and subtype of edata
+   */
+  addTelemetry(id, extra?, edata?) {
+    this.groupsService.addTelemetry({id, extra, edata}, this.activatedRoute.snapshot, [], event, this.groupId);
   }
-
   showAddMember () {
     if (!this.groupData.active || !this.config.showAddMemberButton) {
       return false;

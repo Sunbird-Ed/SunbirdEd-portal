@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService, PlayerService, CopyContentService, PermissionService } from '@sunbird/core';
 import * as _ from 'lodash-es';
@@ -7,19 +7,20 @@ import {
   ConfigService, ResourceService, ToasterService, WindowScrollService, NavigationHelperService,
   PlayerConfig, ContentData, ContentUtilsServiceService, ITelemetryShare, LayoutService
 } from '@sunbird/shared';
-import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput } from '@sunbird/telemetry';
+import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { PopupControlService } from '../../../../service/popup-control.service';
 import { takeUntil, mergeMap } from 'rxjs/operators';
 import { Subject, of, throwError } from 'rxjs';
-import { PublicPlayerService } from '@sunbird/public';
+import { PublicPlayerService, ComponentCanDeactivate } from '@sunbird/public';
 import { CsGroupAddableBloc } from '@project-sunbird/client-services/blocs';
+
 @Component({
   selector: 'app-content-player',
   templateUrl: './content-player.component.html',
   styleUrls: ['./content-player.component.scss']
 })
 
-export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy, ComponentCanDeactivate {
   telemetryImpression: IImpressionEventInput;
   objectInteract: IInteractEventObject;
   copyContentInteractEdata: IInteractEventEdata;
@@ -44,7 +45,16 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy 
   public objectRollup = {};
   isGroupAdmin: boolean;
   groupId: string;
-  isQuestionSet:boolean = false;
+  isQuestionSet = false;
+  isDesktopApp = false;
+
+  @HostListener('window:beforeunload')
+    canDeactivate() {
+      // returning true will navigate without confirmation
+      // returning false will show a confirm dialog before navigating away
+      let deviceType = this.telemetryService.getDeviceType();
+      return deviceType === 'Desktop' && this.isQuestionSet ? false: true;
+    }
 
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
     public userService: UserService, public resourceService: ResourceService, public router: Router,
@@ -53,7 +63,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy 
     public copyContentService: CopyContentService, public permissionService: PermissionService,
     public contentUtilsServiceService: ContentUtilsServiceService, public popupControlService: PopupControlService,
     private configService: ConfigService, public navigationhelperService: NavigationHelperService,
-    public layoutService: LayoutService) {
+    public layoutService: LayoutService, public telemetryService: TelemetryService) {
     this.playerOption = {
       showContentRating: true
     };
@@ -61,6 +71,7 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy 
 
   ngOnInit() {
     this.isQuestionSet = _.includes(this.router.url, 'questionset');
+    this.isDesktopApp = this.userService.isDesktopApp;
     this.initLayout();
     this.activatedRoute.params.subscribe((params) => {
       this.showPlayer = false;

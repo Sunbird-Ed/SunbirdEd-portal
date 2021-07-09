@@ -5,7 +5,7 @@
     </div>
   </div>
   <div class="px-16">
-    <button (click)="navigateToCreateUser()" type="submit" appOnlineOnly
+    <button (click)="navigateToCreateUser()" type="submit" appOnlineOnly tabindex="0"
             class="sb-btn sb-btn-sm sb-btn-outline-secondary sb-left-icon-btn w-100 mt-16 mb-24">
       <i class="chevron plus icon"></i> {{resourceService.frmelmnts?.lbl?.addUser}}
     </button>
@@ -18,13 +18,13 @@
     </sb-member-list>
   </div>
   <div class="user-profile-box__actions pb-16 px-16">
-    <button type="submit" class="sb-btn sb-btn-normal" (click)="switchUser()"
+    <button type="submit" class="sb-btn sb-btn-normal" (click)="switchUser()" tabindex="0"
             [disabled]="!selectedUser" appOnlineOnly
             appTelemetryInteract [telemetryInteractEdata]="submitInteractEdata"
             [ngClass]="{'sb-btn-disabled': !selectedUser, 'sb-btn-primary': selectedUser}">
       {{resourceService.frmelmnts?.lbl?.switchUser}}
     </button>
-    <button type="submit" (click)="closeSwitchUser()"
+    <button type="submit" (click)="closeSwitchUser()" tabindex="0"
             class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">{{resourceService.frmelmnts?.btn?.cancel}}</button>
   </div>
 </div>

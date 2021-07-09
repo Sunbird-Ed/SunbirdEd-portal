@@ -1,4 +1,3 @@
-import { logger } from "@project-sunbird/logger";
 import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import * as _ from 'lodash';
 import { Inject } from "typescript-ioc";
@@ -32,18 +31,20 @@ export default class Course {
   }
 
   public async getLocalEnrolledList(req, res) {
+    const standardLog = containerAPI.getStandardLoggerInstance();
     try {
       const userId = await this.getCurrentUserId();
       const results = await this.getCourses(userId);
       const courses = _.get(results, 'docs[0].courses');
       res.status(200).send(Response.success(API_ID, { courses }, req));
     } catch (error) {
-      logger.error(`Error while fetching content status from database with error message = ${error.message}`);
+      standardLog.error({ id: 'COURSE_GET_OFFLINE_ENROLLED_LIST_FAILED', message: `Error while fetching courses from database`, error });
       res.status(500).send(Response.error(API_ID, 500));
     }
   }
 
   public async saveEnrolledList(courses) {
+    const standardLog = containerAPI.getStandardLoggerInstance();
     try {
       const userId = await this.getCurrentUserId();
       const results = await this.getCourses(userId);
@@ -57,7 +58,7 @@ export default class Course {
       }
 
     } catch (error) {
-      logger.error(`Error while inserting content status in database with error message = ${error.message}`);
+      standardLog.error({ id: 'COURSE_GET_INSERT_ENROLLED_LIST_FAILED', message: `Error while inserting courses from database`, error });
     }
   }
 }

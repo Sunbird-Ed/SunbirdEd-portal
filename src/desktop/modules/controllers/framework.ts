@@ -6,22 +6,18 @@ import { containerAPI } from "@project-sunbird/OpenRAP/api";
 import * as path from "path";
 import { Inject } from "typescript-ioc";
 import Response from "../utils/response";
+import { StandardLogger } from '@project-sunbird/OpenRAP/services/standardLogger';
 
-import { ClassLogger } from "@project-sunbird/logger/decorator";
-
-/*@ClassLogger({
-  logLevel: "debug",
-  logTime: true,
-})*/
 export class Framework {
   @Inject
   private databaseSdk: DatabaseSDK;
-
   private fileSDK;
+  @Inject private standardLog: StandardLogger;
 
   constructor(manifest) {
     this.databaseSdk.initialize(manifest.id);
     this.fileSDK = containerAPI.getFileSDKInstance(manifest.id);
+    this.standardLog = containerAPI.getStandardLoggerInstance();
   }
   public async insert() {
 
@@ -52,9 +48,7 @@ export class Framework {
         await this.databaseSdk.bulk("framework", frameworkDocs);
       }
     } catch (error) {
-      logger.error(
-        `While inserting frameworks ${error.message} ${error.stack}`,
-      );
+      this.standardLog.error({ id: 'FRAMEWORK_INSERT_FAILED', message: 'While inserting frameworks', error });
     }
   }
 
@@ -77,9 +71,7 @@ export class Framework {
         return res.send(Response.success("api.framework.read", resObj, req));
       })
       .catch((err) => {
-        logger.error(
-          `ReqId = "${req.headers["X-msgid"]}": Received error while getting the data from framework database with id: ${id} and err.message: ${err.message} ${err}`,
-        );
+        this.standardLog.error({ id: 'FRAMEWORK_DB_READ_FAILED', message: 'Received error while getting the data from framework database', mid: req.headers["X-msgid"], error: err });
         if (err.status === 404) {
           res.status(404);
           return res.send(Response.error("api.framework.read", 404));

@@ -15,24 +15,25 @@ import { SlickModule } from 'ngx-slick';
 import { RouterModule } from '@angular/router';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { TranslateModule } from '@ngx-translate/core';
+import { SbSearchFilterModule } from 'common-form-elements';
 
 @NgModule({
   declarations: [NoResultComponent, SearchFilterComponent, PageSectionComponent, ProminentFilterComponent,
     TopicPickerComponent, DataDrivenFilterComponent, ViewAllComponent, GlobalSearchFilterComponent, GlobalSearchSelectedFilterComponent],
-  imports: [
-    SharedFeatureModule,
-    RouterModule,
-    ReactiveFormsModule,
-    FormsModule,
-    TelemetryModule,
-    CommonModule,
-    SlickModule,
-    CommonConsumptionModule,
-    SharedModule,
-    TranslateModule,
-    SuiModalModule, SuiProgressModule, SuiAccordionModule,
-  SuiTabsModule, SuiSelectModule, SuiDimmerModule, SuiCollapseModule, SuiDropdownModule
-  ],
+    imports: [
+        SharedFeatureModule,
+        RouterModule,
+        ReactiveFormsModule,
+        FormsModule,
+        TelemetryModule,
+        CommonModule,
+        SlickModule,
+        CommonConsumptionModule,
+        SharedModule,
+        TranslateModule,
+        SuiModalModule, SuiProgressModule, SuiAccordionModule,
+        SuiTabsModule, SuiSelectModule, SuiDimmerModule, SuiCollapseModule, SuiDropdownModule, SbSearchFilterModule,
+    ],
   exports: [NoResultComponent, SearchFilterComponent, PageSectionComponent, ProminentFilterComponent,
     TopicPickerComponent, DataDrivenFilterComponent, ViewAllComponent, GlobalSearchFilterComponent, GlobalSearchSelectedFilterComponent]
 })

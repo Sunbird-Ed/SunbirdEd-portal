@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ILoaderMessage, ResourceService, ServerResponse, ToasterService, ConnectionService } from '@sunbird/shared';
+import { ResourceService, ServerResponse, ToasterService, ConnectionService } from '@sunbird/shared';
 import { IImpressionEventInput, IInteractEventEdata } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import { Subject } from 'rxjs';
@@ -20,13 +20,7 @@ export class AboutUsComponent implements OnInit, OnDestroy {
   public telemetryImpression: IImpressionEventInput;
   public telemetryInteractButtonEData: IInteractEventEdata;
   public telemetryInteractEData: IInteractEventEdata;
-  public telemetryTermsOfUseEData: IInteractEventEdata;
-  showModal = false;
-  showLoader = true;
   isConnected;
-  loaderMessage: ILoaderMessage = {};
-  currentYear;
-  @ViewChild('termsIframe', {static: false}) termsIframe: ElementRef;
 
   constructor(
     private appUpdateService: AppUpdateService,
@@ -37,10 +31,6 @@ export class AboutUsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.currentYear = new Date().getFullYear();
-    this.loaderMessage = {
-      'loaderMessage': this.resourceService.messages.stmsg.m0129
-    };
     this.instance = _.upperCase(this.resourceService.instance);
     this.getAppInfo();
     this.checkOnlineStatus();
@@ -68,21 +58,6 @@ export class AboutUsComponent implements OnInit, OnDestroy {
     link.remove();
   }
 
-  toggleTocModal() {
-    this.showLoader = this.showModal = this.isConnected;
-    if (!this.isConnected) {
-      this.toasterService.error(this.resourceService.messages.desktop.emsg.noConnectionTerms);
-    }
-  }
-
-  isIFrameLoaded() {
-    this.showLoader = false;
-    if (this.termsIframe.nativeElement.contentWindow.document.title === 'Error') {
-      this.showModal = false;
-      this.toasterService.error(this.resourceService.messages.desktop.emsg.termsOfUse);
-    }
-  }
-
   setTelemetryData() {
     this.telemetryImpression = {
       context: { env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'about-us' },
@@ -99,11 +74,6 @@ export class AboutUsComponent implements OnInit, OnDestroy {
       extra: {
         newVersion: _.get(this.appInfo, 'updateInfo.version')
       }
-    };
-    this.telemetryTermsOfUseEData = {
-      id: 'terms-of-use',
-      type: 'click',
-      pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'about-us',
     };
   }
   ngOnDestroy() {

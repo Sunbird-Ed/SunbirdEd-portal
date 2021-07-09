@@ -17,7 +17,7 @@
                 <div class="cc-player__content-header relative9 reports-content-header">
                   <div class="ui container py-16">
                     <div class="content-header__content p-10">
-                      <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0">
+                      <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0 content-header__content__title">
                        
                         <div class="content-header__title font-weight-bold text-left">
 
@@ -279,7 +279,7 @@
                             [options]="chart?.chartConfig?.options">
                           </app-map>
                          
-                          <app-data-chart [globalFilter]="globalFilterChange" [globalSelectedFilters]="globalSelectedFilters" *ngIf="chart?.chartConfig?.chartType !== 'map' && showChart"
+                          <app-data-chart [globalFilter]="globalFilterChange" *ngIf="chart?.chartConfig?.chartType !== 'map' && showChart"
                             [telemetryInteractObject]="setTelemetryInteractObject()" [chartInfo]="getChartData(chart)"
                             [hideElements]="hideElements" [isUserReportAdmin]="isUserReportAdmin"
                             (openAddSummaryModal)="openAddSummaryModal($event)" [hash]="hash">

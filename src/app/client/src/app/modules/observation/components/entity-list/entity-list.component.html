@@ -1,0 +1,14 @@
+<div class="d-flex flex-dc flex-w-wrap entity-list" *ngFor="let entity of entities">
+    <div class="d-flex sb-radio-btn-checkbox sb-radio-btn-primary flex-jc-space-between">
+        <div class=" w-100"> <input type="radio" id="{{entity._id}}" name="radio-group"
+                [checked]="entity._id == selectedEntity._id" value="{{entity._id}}" (change)="action(entity,'change')">
+            <label for="{{entity._id}}" class="d-flex w-100 flex-jc-space-between">
+                {{entity?.name}}
+            </label>
+        </div>
+        <div>
+            <i class="trash large icon" *ngIf="entity.submissionsCount == 0" (click)="action(entity,'delete')">
+            </i>
+        </div>
+    </div>
+</div>

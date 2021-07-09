@@ -31,11 +31,14 @@ const routes: Routes = [
     path: 'play', loadChildren: './module/player/player.module#PlayerModule'
   },
   {
-   path: 'download/desktopapp', component: OfflineApplicationDownloadComponent
-   },
-   {
-      path: 'faq', loadChildren: './module/help/help.module#HelpModule'
-    }
+    path: 'download/desktopapp', component: OfflineApplicationDownloadComponent
+  },
+  {
+    path: 'faq', loadChildren: './module/help/help.module#HelpModule'
+  },
+  {
+    path: 'guest-profile', loadChildren: './module/guest-profile/guest-profile.module#GuestProfileModule'
+  }
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

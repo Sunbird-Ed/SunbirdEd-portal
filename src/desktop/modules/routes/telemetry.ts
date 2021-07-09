@@ -1,8 +1,8 @@
 import { manifest }  from "./../manifest";
 import Telemetry from "./../controllers/telemetry";
 import * as _ from "lodash";
-const telemetry = new Telemetry(manifest);
 export default (app) => {
+    const telemetry = new Telemetry(manifest);
     app.post(
         ["/content/data/v1/telemetry", "/action/data/v3/telemetry"],
         (req, res) => {

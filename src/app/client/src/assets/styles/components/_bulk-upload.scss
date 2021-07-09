@@ -1,14 +1,14 @@
 
 .sb-bulk-upload {
     .bulk-upload-title {
-      font-size: $font-size-md;
+      font-size: var(--h5-font-size);
       font-weight: 600;
     }
   
     .bulk-content-upload-info {
       p {
-        font-size: $font-size-sm;
-        color: $gray-400;
+        font-size: var(--font-size-sm);
+        color: var(--gray-400);
       }
     }
     .sb-bulk-upload-details-report-info {
@@ -18,8 +18,8 @@
         flex-basis: 70%;
   
         .sb-bulk-upload-content-title {
-          font-size: $font-size-sm;
-          color: $gray-400;
+          font-size: var(--font-size-sm);
+          color: var(--gray-400);
         }
   
         .sb-upload-file {
@@ -77,21 +77,21 @@
       }
   
       .sb-bulk-upload-content-title {
-        font-size: $font-size-sm;
-        color: $gray-400;
+        font-size: var(--font-size-sm);
+        color: var(--gray-400);
       }
     }
   
     .sb-bulk-upload-error-info {
       .ui.basic.error {
-        background: $white-color;
-        color: $danger-color !important;
-        font-size: $font-size-base;
+        background: var(--white);
+        color: var(--red-100) !important;
+        font-size: var(--font-size-base);
         font-weight: bold;
         border: none !important;
   
         .sb-bulk-upload-extra-label {
-          font-size: $font-size-sm;
+          font-size: var(--font-size-sm);
           font-weight: normal;
         }
       }
@@ -101,8 +101,8 @@
         overflow-y: auto;
   
         .sb-bulk-upload-error-list-item {
-          font-size: $font-size-sm;
-          color: $gray-400;
+          font-size: var(--font-size-sm);
+          color: var(--gray-400);
           line-height: calculateRem(20px);
           margin-bottom: calculateRem(4px);
           padding-bottom: calculateRem(4px);
@@ -114,7 +114,7 @@
       }
     }
     .sb-bulk-upload-options {
-      color: $gray-400;
+      color: var(--gray-400);
     }
   }
   

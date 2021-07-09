@@ -7,14 +7,18 @@ const { logger } = require('@project-sunbird/logger');
 const utils = require('../helpers/utilityService');
 const GOOGLE_SIGN_IN_DELAY = 3000;
 const uuid = require('uuid/v1')
+const bodyParser = require('body-parser');
 const REQUIRED_STATE_FIELD = ['client_id', 'redirect_uri', 'error_callback', 'scope', 'state', 'response_type', 'version', 'merge_account_process'];
 const envHelper = require('../helpers/environmentVariablesHelper.js');
+const { GOOGLE_OAUTH_CONFIG } = require('../helpers/environmentVariablesHelper.js')
+const {OAuth2Client} = require('google-auth-library');
+
 /**
- * keycloack adds this string to track auth redirection and 
+ * keycloack adds this string to track auth redirection and
  * with this it triggers auth code verification to get token and create session
  * google flow this is not required
  */
-const KEYCLOACK_AUTH_CALLBACK_STRING = 'auth_callback=1'; 
+const KEYCLOACK_AUTH_CALLBACK_STRING = 'auth_callback=1';
 
 module.exports = (app) => {
 
@@ -24,7 +28,7 @@ module.exports = (app) => {
       res.redirect('/library')
       return
     }
-    const googleSignInData = _.pick(req.query, REQUIRED_STATE_FIELD)
+    const googleSignInData = _.pick(req.query, REQUIRED_STATE_FIELD);
     googleSignInData.redirect_uri = Buffer.from(googleSignInData.redirect_uri).toString('base64');
     const state = JSON.stringify(googleSignInData);
     logger.info({ reqId: req.get('X-Request-ID'), msg: 'query params state', googleSignInData});
@@ -32,6 +36,45 @@ module.exports = (app) => {
     logger.info({ reqId: req.get('X-Request-ID'), msg: 'redirect google to' + JSON.stringify(googleAuthUrl)});
     res.redirect(googleAuthUrl)
     logImpressionEvent(req);
+  });
+
+  app.post('/google/auth/android', bodyParser.json(), async (req, res) => {
+    let errType, newUserDetails, payload = {}
+    const CLIENT_ID = GOOGLE_OAUTH_CONFIG.clientId;
+    const client = new OAuth2Client(CLIENT_ID);
+    async function verify() {
+      const ticket = await client.verifyIdToken({
+        idToken: req.get('X-GOOGLE-ID-TOKEN'),
+        audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+      });
+      payload = ticket.getPayload();
+      if (req.body['emailId'] !== payload['email']) {
+        res.status(400).send({
+          msg: 'emailId donot match'
+        });
+        throw 'emailId donot match'
+      }
+      return payload['email'];
+    }
+     verify().then(async (emailId) => {
+       let isUserExist = await fetchUserByEmailId(emailId, req).catch(handleGetUserByIdError);
+       if (!isUserExist) {
+         let newGoogleUserDetails = {};
+         newGoogleUserDetails['name']= payload.name;
+         newGoogleUserDetails['emailId'] = payload.email;
+         logger.info({msg: 'creating new google user'});
+         errType = 'USER_CREATE_API';
+         newUserDetails = await createUserWithMailId(newGoogleUserDetails, 'google-auth', req).catch(handleCreateUserError);
+         await utils.delay(GOOGLE_SIGN_IN_DELAY);
+       }
+       const keyCloakToken = await createSession(emailId, {client_id: 'google-auth'}, req, res).catch(handleCreateSessionError);
+       res.send(keyCloakToken);
+     }).catch((err) => {
+       res.status(400).send({
+         msg: 'unable to create session'
+       });
+       throw err;
+     });
   });
   /**
    * steps to be followed in callback url
@@ -94,7 +137,7 @@ module.exports = (app) => {
         const reponseData = `${protocol}://google/signin?access_token=${keyCloakToken.access_token}`;
         logger.info({msg: 'DESKTOP REDIRECT URL ' + reponseData});
         res.render(
-            path.join(__dirname, "googleResponse.ejs"), 
+            path.join(__dirname, "googleResponse.ejs"),
             {data: reponseData}
         );
       } else {

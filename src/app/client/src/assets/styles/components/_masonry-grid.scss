@@ -9,11 +9,11 @@
 }
 
 [dir="ltr"] .masonry-item {
-    margin: 0 (2 * $base-block-space) (4 * $base-block-space) 0;
+    margin: 0 calculateRem(16px) calculateRem(32px) 0;
 }
 
 [dir="rtl"] .masonry-item {
-    margin: 0 0 (4 * $base-block-space) (2 * $base-block-space);
+    margin: 0 0 calculateRem(32px) calculateRem(16px);
 }
 
 @include respond-below(xs) {

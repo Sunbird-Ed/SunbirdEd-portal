@@ -41,12 +41,14 @@ export class LanguageDropdownComponent implements OnInit {
   	}
   	this.selectedLanguage = this._cacheService.get('portalLanguage') || 'en';
   	this.resourceService.getLanguageChange(_.find(this.languageRange, ['value', this.selectedLanguage]));
+    window['TagManager'].SBTagService.pushTag({portalLanguage:this.selectedLanguage},'USERLANG_', true);
   }
 
   onLanguageChange(event) {
     this._cacheService.set('portalLanguage', event);
     localStorage.setItem('portalLanguage', event);
     const language = _.find(this.languageRange, ['value', event]);
+    window['TagManager'].SBTagService.pushTag({portalLanguage:event},'USERLANG_', true);
     this.utilService.emitLanguageChangeEvent(language);
     this.resourceService.getResource(event, language);
   }

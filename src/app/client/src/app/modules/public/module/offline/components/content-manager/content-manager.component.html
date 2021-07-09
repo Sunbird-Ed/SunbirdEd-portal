@@ -1,6 +1,6 @@
 <sui-accordion class="styled fluid sb-single-pannel-accordion sb-content-manager-panel sb-desktop-content-manager"
   [ngClass]="{'sb-single-pannel-accordion-fixed': isOpen === true, 'hide': visibility === false}" *ngIf="contentResponse?.length">
-  <sui-accordion-panel [(isOpen)]="isOpen" (click)="getContentList()">
+  <sui-accordion-panel [isOpen]="isOpen" (click)="getContentList()">
     <div title class="p-0">
       <div class="sb-single-pannel-accordion-heading" appTelemetryInteract
         [telemetryInteractEdata]="getTelemetryInteractData()">
@@ -14,7 +14,7 @@
         *ngFor="let data of contentResponse | orderBy:'createdOn': true">
         <i class="check circle icon success-icon mr-8 fs-1-429" *ngIf="data.status === 'completed'"></i>
         <div class="download-details-container" [ngClass]="{'cursor-pointer': data.status === 'completed'}"
-          (click)="openContent(data.contentId, data.mimeType, data.status)">
+          (click)="openContent(data)">
           <div class="d-flex flex-ai-center flex-w-wrap">
             <div class="download-text mr-auto">{{data.name}}</div>
 

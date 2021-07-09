@@ -1,0 +1,6 @@
+<button *ngIf="forumIds && forumIds.length > 0" (click)="navigateToDiscussionForum()"
+  class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn ml-8 sb-btn-icon-fix" title="Forum">
+  <img src="assets/images/forum.svg" width="20px" class="mr-8"
+    alt="{{resourceService?.frmelmnts?.lbl?.discussionForum}}">
+  {{resourceService?.frmelmnts?.lbl?.discussionForum}}
+</button>

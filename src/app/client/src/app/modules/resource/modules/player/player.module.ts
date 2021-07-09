@@ -10,6 +10,7 @@ import { SuiModule } from 'ng2-semantic-ui';
 import { FormsModule } from '@angular/forms';
 import { CommonConsumptionModule} from '@project-sunbird/common-consumption-v8';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
+import { PendingchangesGuard } from '@sunbird/public';
 
 @NgModule({
     imports: [
@@ -25,7 +26,7 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
         CommonConsumptionModule,
         SharedFeatureModule
     ],
-    providers: [],
+    providers: [ PendingchangesGuard ],
     declarations: []
 })
 export class PlayerModule { }

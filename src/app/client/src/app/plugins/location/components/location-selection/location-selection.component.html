@@ -30,13 +30,13 @@
       <button type="button" class="sb-btn sb-btn-sm sb-btn-white text-uppercase flex-basis-1" type="submit"
               [class.sb-btn-disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading"
               [disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading"
-              (click)="clearUserLocationSelections()">{{resourceService?.frmelmnts?.btn?.clear}}
+              (click)="clearUserLocationSelections()" tabindex="0">{{resourceService?.frmelmnts?.btn?.clear}}
       </button>
       <div class="w-10"></div>
       <button type="button" class="sb-btn sb-btn-sm sb-btn-primary text-uppercase flex-basis-1" type="submit"
               [class.sb-btn-disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading || sbFormLocationSelectionDelegate.formGroup?.invalid"
               [disabled]="sbFormLocationSelectionDelegate.isLocationFormLoading || sbFormLocationSelectionDelegate.formGroup?.invalid"
-              (click)="updateUserLocation()">{{resourceService?.frmelmnts?.btn?.submit}}
+              (click)="updateUserLocation()" tabindex="0">{{resourceService?.frmelmnts?.btn?.submit}}
         <span class='arrow-icon'>
           <em class="icon-svg icon-svg--xxs icon-back">
             <svg class="icon icon-svg--white">

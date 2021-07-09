@@ -471,7 +471,7 @@ export class SearchService {
     };
   }
 
-  getContentTypes() {
+  getContentTypes(isMyDownloadsTab = false) {
     const formServiceInputParams = {
       formType: 'contentcategory',
       formAction: 'menubar',
@@ -481,6 +481,19 @@ export class SearchService {
     return this.formService.getFormConfig(formServiceInputParams, '*').pipe(map((response) => {
       const allTabData = _.find(response, (o) => o.title === 'frmelmnts.tab.all');
       this.mimeTypeList = _.map(_.get(allTabData, 'search.filters.mimeType'), 'name');
+
+      if (this.user.isDesktopApp) {
+        if (isMyDownloadsTab) {
+          const myDownloadsTabData = _.find(response, (o) => o.title === 'frmelmnts.lbl.desktop.mylibrary');
+          this.mimeTypeList = _.map(_.get(myDownloadsTabData, 'search.filters.mimeType'), 'name');
+        }
+        _.forEach(response, (item) => {
+          if (_.get(item, 'search.fields')) {
+            item.search.fields.push('downloadUrl');
+          }
+        });
+      }
+
       return response;
     }));
   }

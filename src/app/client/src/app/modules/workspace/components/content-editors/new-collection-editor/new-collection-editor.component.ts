@@ -47,7 +47,7 @@ export class NewCollectionEditorComponent implements OnInit {
     this.userProfile = this.userService.userProfile;
     this.getCollectionDetails().subscribe(data => {
         this.switchLayout();
-        this.collectionDetails = data.result.content;
+        this.collectionDetails = data.result.content || data.result.questionset;
         this.showQuestionEditor = this.collectionDetails.mimeType === 'application/vnd.sunbird.questionset' ? true : false;
         this.getFrameWorkDetails();
       });
@@ -68,7 +68,11 @@ export class NewCollectionEditorComponent implements OnInit {
   private getCollectionDetails() {
     const options: any = { params: {} };
     options.params.mode = 'edit';
-    return this.editorService.getContent(this.routeParams.contentId, options);
+    if (this.routeParams.type && this.routeParams.type === 'QuestionSet') {
+      return this.workSpaceService.getQuestion(this.routeParams.contentId, options);
+    } else {
+      return this.editorService.getContent(this.routeParams.contentId, options);
+    }
   }
 
   getFrameWorkDetails() {
@@ -182,8 +186,10 @@ export class NewCollectionEditorComponent implements OnInit {
           id: this.userService.userid,
           orgIds: this.userProfile.organisationIds,
           organisations: this.userService.orgIdNameMap,
-          name : !_.isEmpty(this.userProfile.lastName) ? this.userProfile.firstName + ' ' + this.userProfile.lastName :
+          fullName : !_.isEmpty(this.userProfile.lastName) ? this.userProfile.firstName + ' ' + this.userProfile.lastName :
           this.userProfile.firstName,
+          firstName: this.userProfile.firstName,
+          lastName : !_.isEmpty(this.userProfile.lastName) ? this.userProfile.lastName : '',
           isRootOrgAdmin: this.userService.userProfile.rootOrgAdmin
         },
         channelData: this.frameworkService['_channelData'],
