@@ -7388,10 +7388,10 @@ typescript-ioc@^1.2.4:
     reflect-metadata "^0.1.13"
     require-glob "^3.2.0"
 
-ua-parser-js@0.7.13:
-  version "0.7.13"
-  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.13.tgz#cd9dd2f86493b3f44dbeeef3780fda74c5ee14be"
-  integrity sha1-zZ3S+GSTs/RNvu7zeA/adMXuFL4=
+ua-parser-js@0.7.24:
+  version "0.7.24"
+  resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.24.tgz#8d3ecea46ed4f1f1d63ec25f17d8568105dc027c"
+  integrity sha512-yo+miGzQx5gakzVK3QFfN0/L9uVhosXBBO7qmnk7c2iw1IhL212wfA3zbnI54B0obGwC/5NWub/iT9sReMx+Fw==
 
 ua-parser-js@^0.7.18:
   version "0.7.28"
