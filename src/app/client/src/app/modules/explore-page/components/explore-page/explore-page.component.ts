@@ -448,11 +448,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                         this.contentSections = [];
                                         const searchSections = currentPageData.sections.filter(sec => sec.facetKey === 'search');
                                         searchSections.forEach((item) => {
-                                            this.contentSections.push({
-                                                isEnabled: Boolean(_.get(item, 'isEnabled')),
-                                                searchRequest: _.get(item, 'apiConfig.req'),
-                                                title: get(this.resourceService, item.title)
-                                            });
+                                            this.contentSections.push(this.getContentSection(item, option));
                                         });
 
                                     }
@@ -487,6 +483,21 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     }
                 })
             );
+    }
+
+    private getContentSection(section, searchOptions) {
+        const sectionFilters = _.get(section, 'apiConfig.req.request.filters');
+        const requiredProps = ['se_boards', 'se_gradeLevels', 'se_mediums'];
+        if (_.has(sectionFilters, ...requiredProps) && searchOptions.filters) {
+            const preferences = _.pick(searchOptions.filters, requiredProps);
+            section.apiConfig.req.request.filters = { ...section.apiConfig.req.request.filters, ...preferences };
+        }
+
+        return {
+            isEnabled: Boolean(_.get(section, 'isEnabled')),
+            searchRequest: _.get(section, 'apiConfig.req'),
+            title: get(this.resourceService, section.title)
+        };
     }
 
     addHoverData() {
@@ -832,7 +843,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             this.cacheService.set('viewAllQuery', searchQueryParams);
         }
         this.cacheService.set('pageSection', event, { maxAge: this.browserCacheTtlService.browserCacheTtl });
-        const queryParams = contentSection ? searchQueryParams : { ...searchQueryParams, ...this.queryParams };
+        const queryParams = contentSection ? { ...searchQueryParams, ...{ selectedTab: this.queryParams.selectedTab } } :
+        { ...searchQueryParams, ...this.queryParams };
         const sectionUrl = _.get(this.router, 'url.split') && this.router.url.split('?')[0] + '/view-all/' + event.name.replace(/\s/g, '-');
         this.router.navigate([sectionUrl, 1], { queryParams: queryParams, state: { currentPageData: this.getCurrentPageData()} });
     }
