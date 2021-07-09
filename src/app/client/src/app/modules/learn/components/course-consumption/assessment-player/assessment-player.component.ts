@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { TelemetryService, IAuditEventInput, IImpressionEventInput } from '@sunbird/telemetry';
-import { Component, OnInit, OnDestroy, ViewChild, Inject, HostListener, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Inject, HostListener } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { TocCardType } from '@project-sunbird/common-consumption-v8';
 import { UserService, GeneraliseLabelService, PlayerService } from '@sunbird/core';
@@ -74,17 +74,16 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   showLastAttemptsModal: boolean = false;
   navigationObj: { event: any; id: any; };
   showPlayer = false;
-  showExitConfirmation = false;
+  showQSExitConfirmation = false;
 
   @HostListener('window:beforeunload')
   canDeactivate() {
     // returning true will navigate without confirmation
     // returning false will show a confirm dialog before navigating away
-    return _.get(this.activeContent, 'mimeType') === 'application/vnd.sunbird.questionset' && !this.showExitConfirmation ? false: true;
+    return _.get(this.activeContent, 'mimeType') === 'application/vnd.sunbird.questionset' && !this.showQSExitConfirmation ? false: true;
   } 
 
   constructor(
-    private cdr: ChangeDetectorRef,
     public resourceService: ResourceService,
     private activatedRoute: ActivatedRoute,
     private courseConsumptionService: CourseConsumptionService,
@@ -152,9 +151,6 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   }
 
   ngOnInit() {
-    this.assessmentScoreService.makeReadCall.subscribe(data => {
-      this.getCourseCompletionStatus();
-    })
     this.layoutConfiguration = this.layoutService.initlayoutConfig();
     this.initLayout();
     this.subscribeToQueryParam();
@@ -352,7 +348,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   }
 
   private getContentState() {
-    if (this.batchId && (_.get(this.activeContent, 'contentType') === 'SelfAssess' || !this.isRouterExtrasAvailable) || _.get(this.activeContent, 'mimeType') === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
+    if (this.batchId && (_.get(this.activeContent, 'contentType') === 'SelfAssess' || !this.isRouterExtrasAvailable)) {
       const req:any = this.getContentStateRequest(this.courseHierarchy);
       this.CsCourseService
       .getContentState(req, { apiPath: '/content/course/v1' })
@@ -361,7 +357,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
         const res = this.CourseProgressService.getContentProgressState(req, _res);
         const _contentIndex = _.findIndex(this.contentStatus, {contentId: _.get(this.activeContent, 'identifier')});
         const _resIndex =  _.findIndex(res.content, {contentId: _.get(this.activeContent, 'identifier')});
-        if ((_.get(this.activeContent, 'contentType') === 'SelfAssess' || _.get(this.activeContent, 'mimeType') === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) && this.isRouterExtrasAvailable) {
+        if (_.get(this.activeContent, 'contentType') === 'SelfAssess' && this.isRouterExtrasAvailable) {
           this.contentStatus[_contentIndex]['status'] = _.get(res.content[_resIndex], 'status');
         } else {
           this.contentStatus = res.content || [];
@@ -672,9 +668,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   }
 
   onRatingPopupClose() {
-    if (_.get(this.activeContent, 'contentType') !== 'SelfAssess' && _.get(this.activeContent, 'mimeType') !== this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
-      this.getCourseCompletionStatus(true);
-    }
+    this.getCourseCompletionStatus(true);
   }
 
   setTelemetryShareData(param) {
@@ -701,11 +695,12 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
 
   getCourseCompletionStatus(showPopup: boolean = false) {
     /* istanbul ignore else */
+    if (!this.isCourseCompleted) {
       let maxAttemptsExceeded = false;
       this.showMaxAttemptsModal = false;
       let isLastAttempt = false;
       const req:any = this.getContentStateRequest(this.parentCourse);
-      if (_.get(this.activeContent, 'contentType') === 'SelfAssess' || _.get(this.activeContent, 'mimeType') === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset || !this.isRouterExtrasAvailable) {
+      if (_.get(this.activeContent, 'contentType') === 'SelfAssess' || !this.isRouterExtrasAvailable) {
         this.CsCourseService
           .getContentState(req, { apiPath: '/content/course/v1' })
           .pipe(takeUntil(this.unsubscribe))
@@ -718,7 +713,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
                 if (_.get(contentState, 'score.length') >= _.get(this.activeContent, 'maxAttempts')) maxAttemptsExceeded = true;
                 if (_.get(this.activeContent, 'maxAttempts') - _.get(contentState, 'score.length') === 1) isLastAttempt = true;
                 /* istanbul ignore next*/
-                if (_.get(this.activeContent, 'contentType') === 'SelfAssess' || _.get(this.activeContent, 'mimeType') === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
+                if (_.get(this.activeContent, 'contentType') === 'SelfAssess') {
                   /* istanbul ignore next*/
                   const _contentIndex = _.findIndex(this.contentStatus, {contentId: _.get(this.activeContent, 'identifier')});
                   this.contentStatus[_contentIndex]['bestScore'] = _.get(contentState, 'bestScore');
@@ -726,12 +721,11 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
                 }
               }
             });
-            this.cdr.detectChanges();
 
             /* istanbul ignore else */
             if (maxAttemptsExceeded && !showPopup) {
               this.showMaxAttemptsModal = true;
-              this.showExitConfirmation = true;
+              this.showQSExitConfirmation = true;
             } else if (isLastAttempt) {
               this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.selfAssessLastAttempt'));
             } else if (_.get(res, 'content.length')) {
@@ -752,14 +746,15 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
           /* istanbul ignore next*/
           if (_.get(contentState, 'contentId') === _.get(this.activeContent, 'identifier')) {
             /* istanbul ignore next*/
-            if (_.get(contentState, 'score.length') >= _.get(this.activeContent, 'maxAttempts')) maxAttemptsExceeded = true;
+            if (_.get(contentState, 'score.length') >= _.get(this.activeContent, 'maxAttempts'))
+            maxAttemptsExceeded = true;
             if (_.get(this.activeContent, 'maxAttempts') - _.get(contentState, 'score.length') === 1) isLastAttempt = true;
           }
         });
         /* istanbul ignore else */
         if (maxAttemptsExceeded) {
           this.showMaxAttemptsModal = true;
-          this.showExitConfirmation = true;
+          this.showQSExitConfirmation = true;
         } else if (isLastAttempt) {
           this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.selfAssessLastAttempt'));
         } else if (this.contentStatus && this.contentStatus.length) {
@@ -771,6 +766,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
           this.isCourseCompletionPopupShown = this.isCourseCompleted;
         }
       }
+    }
   }
 
   private initPlayer(id: string) {
@@ -778,7 +774,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     this.showMaxAttemptsModal = false;
     let isLastAttempt = false;
     /* istanbul ignore if */
-    if (_.get(this.activeContent, 'contentType') === 'SelfAssess' || _.get(this.activeContent, 'mimeType') === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
+    if (_.get(this.activeContent, 'contentType') === 'SelfAssess') {
       const _contentIndex = _.findIndex(this.contentStatus, {contentId: _.get(this.activeContent, 'identifier')});
       /* istanbul ignore if */
       if (_contentIndex > 0 && _.get(this.contentStatus[_contentIndex], 'score.length') >= _.get(this.activeContent, 'maxAttempts')) maxAttemptsExceeded = true;
@@ -787,7 +783,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     /* istanbul ignore if */
     if (maxAttemptsExceeded) {
       this.showMaxAttemptsModal = true;
-      this.showExitConfirmation = true;
+      this.showQSExitConfirmation = true;
     } else {
       /* istanbul ignore if */
       if (isLastAttempt && !this.showLastAttemptsModal && this._routerStateContentStatus) {
@@ -861,7 +857,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     }
     if (_.get(event, 'data') === 'renderer:maxLimitExceeded' || _.get(event, 'edata.maxLimitExceeded')) {
       this.showMaxAttemptsModal = true;
-      this.showExitConfirmation = true;
+      this.showQSExitConfirmation = true;
     }
   }
 
