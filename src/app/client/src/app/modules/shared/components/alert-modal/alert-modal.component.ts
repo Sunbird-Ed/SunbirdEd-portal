@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { SuiModal, ComponentModalConfig, ModalSize } from 'ng2-semantic-ui-v9';
 import { Location } from '@angular/common';
 import {ResourceService} from '@sunbird/shared';
@@ -34,6 +34,11 @@ export class AlertModalComponent {
     data.footer.buttons[0].returnValue=false;
     this.modal.deny(data.footer.buttons[0].returnValue);
     this.location.back();    
+  }
+
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
+    this.modal.deny();
   }
 
 }

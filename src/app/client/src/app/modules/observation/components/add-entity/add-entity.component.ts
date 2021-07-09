@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, EventEmitter, Output, HostListener } from '@angular/core';
 import { ObservationService, KendraService } from '@sunbird/core';
 import { ConfigService, ResourceService, ILoaderMessage, INoResultMessage } from '@sunbird/shared';
 import { ObservationUtilService } from '../../service';
@@ -138,4 +138,13 @@ export class AddEntityComponent implements OnInit {
         }, error => {
         })
     }
+
+
+
+    @HostListener('window:popstate', ['$event'])
+    onPopState(event) {
+        this.modal.approve();
+        this.showDownloadModal = false;
+    }
+
 }

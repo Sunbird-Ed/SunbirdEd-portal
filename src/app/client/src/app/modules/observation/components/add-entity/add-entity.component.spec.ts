@@ -15,7 +15,6 @@ import {
   INoResultMessage,
 } from "@sunbird/shared";
 import { ObservationUtilService } from "../../service";
-import { debounceTime, map } from "rxjs/operators";
 import { AddEntityComponent } from "./add-entity.component";
 import { configureTestSuite } from "@sunbird/test-util";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
@@ -177,6 +176,18 @@ describe("AddEntityComponent", () => {
     expect(component.submit).toHaveBeenCalled();
     expect(SubmitResult.status).toBe(200);
   });
+
+  it('popstate elements', () => {
+    component.modal = {
+      approve: () => {},
+    };
+    spyOn(component,"onPopState").and.callThrough();
+    const event = new PopStateEvent('popstate');
+    component.onPopState(event);
+    expect(component.onPopState).toHaveBeenCalledWith(event);
+  });
+
+
 });
 
 

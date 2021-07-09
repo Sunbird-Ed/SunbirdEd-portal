@@ -130,9 +130,9 @@ export class ObservationListingComponent
        metaData.type="update profile";
        metaData.isClosed=true;
        metaData.size="mini";
-       metaData.content.title=this.resourceService.frmelmnts.alert.updateProfileTitle;
+       metaData.content.title=this.resourceService.frmelmnts.lbl.updateProfileTitle;
        metaData.content.body.type="text";
-       metaData.content.body.data=this.resourceService.frmelmnts.alert.updateprofilecontent;
+       metaData.content.body.data=this.resourceService.frmelmnts.lbl.updateprofilecontent;
        metaData.footer.className="single-btn"
        metaData.footer.buttons.push(
         {

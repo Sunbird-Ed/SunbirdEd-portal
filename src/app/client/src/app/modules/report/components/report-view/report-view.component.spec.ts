@@ -269,4 +269,12 @@ describe("ReportViewComponent", () => {
     component.modalClose(event);
     expect(component.modalClose).toHaveBeenCalled();
   });
+
+  it('popstate elements', () => {
+    spyOn(component,"onPopState").and.callThrough();
+    const event = new PopStateEvent('popstate');
+    component.onPopState(event);
+    expect(component.onPopState).toHaveBeenCalledWith(event);
+  });
+
 });

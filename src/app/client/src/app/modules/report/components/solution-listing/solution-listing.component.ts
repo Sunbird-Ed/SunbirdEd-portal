@@ -92,13 +92,6 @@ export class SolutionListingComponent implements OnInit {
     };
     this.observationService.post(paramOptions).subscribe(
       (data) => {
-        if(data.result){
-          this.showLoader=false;
-        }
-        else{
-          this.showLoader=false;
-          this.noResult=true;
-        }
         this.solutionList =
           data && data.result ? this.solutionList.concat(data.result.data) : [];
         this.filters = data && data.result && !this.filters.length ? data.result.entityType : this.filters;
@@ -110,6 +103,13 @@ export class SolutionListingComponent implements OnInit {
         );
         this.showLoadMore =
           this.solutionList.length < data.result.count ? true : false;
+          if(this.solutionList.length>0){
+            this.showLoader=false;
+          }
+          else{
+            this.showLoader=false;
+            this.noResult=true;
+          }
       },
       (error) => {
         this.showLoader=false;

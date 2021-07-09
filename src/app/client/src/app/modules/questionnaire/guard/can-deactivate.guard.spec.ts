@@ -27,7 +27,7 @@ describe("CanDeactivateGuard", () => {
   let mockComponent: MockComponent;
   let resourceBundle = {
     frmelmnts: {
-      alert: {
+      lbl: {
         confirmBackClick: "Confirm",
       },
     },

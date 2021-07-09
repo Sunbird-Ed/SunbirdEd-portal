@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ObservationService } from '@sunbird/core';
 import { ConfigService, ResourceService, ILoaderMessage, INoResultMessage, LayoutService, ToasterService } from '@sunbird/shared';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -308,4 +308,11 @@ export class ObservationDetailsComponent implements OnInit {
     }
     this.actionOnSubmission(data);
   }
+
+  // @HostListener('window:popstate', ['$event'])
+  // onPopState(event) {
+  //   console.log(event);
+  //   console.log('Back button pressed');
+  // }
+
 }

@@ -46,9 +46,12 @@
 }
 .sbt-report-btns-panel-new {
   border-radius: 0px !important;
-  background: #e9e8d9 !important;
+ background-color: #fff;
 }
 
+.sbt-report-tabs-panel{
+  background-color: var(--sb-card-bg);
+}
 
 .report-block {
     padding-top: 10px;

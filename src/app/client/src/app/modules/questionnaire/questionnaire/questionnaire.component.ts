@@ -134,8 +134,8 @@ export class QuestionnaireComponent
 
   async onSubmit(save?) {
     let msg = save
-      ? this.resourceService.frmelmnts.alert.saveConfirm
-      : this.resourceService.frmelmnts.alert.submitConfirm;
+      ? this.resourceService.frmelmnts.lbl.saveConfirm
+      : this.resourceService.frmelmnts.lbl.submitConfirm;
     let userConfirm = await this.openAlert(msg, true);
     if (!userConfirm) {
       return;
@@ -169,7 +169,7 @@ export class QuestionnaireComponent
           return;
         }
         this.openAlert(
-          this.resourceService.frmelmnts.alert.successfullySubmitted
+          this.resourceService.frmelmnts.lbl.successfullySubmitted
         );
         this.canLeave = true;
         this.location.back();
@@ -177,8 +177,8 @@ export class QuestionnaireComponent
       (error) => {
         this.openAlert(
           payload.evidence.status == "draft"
-            ? this.resourceService.frmelmnts.alert.failedToSave
-            : this.resourceService.frmelmnts.alert.submissionFailed
+            ? this.resourceService.frmelmnts.lbl.failedToSave
+            : this.resourceService.frmelmnts.lbl.submissionFailed
         );
         console.log(error);
       }
@@ -188,7 +188,7 @@ export class QuestionnaireComponent
   async backOrContinue() {
     let alertMetaData = await this.observationUtilService.getAlertMetaData();
     alertMetaData.content.body.data =
-      this.resourceService.frmelmnts.alert.successfullySaved;
+      this.resourceService.frmelmnts.lbl.successfullySaved;
     alertMetaData.content.body.type = "text";
     alertMetaData.size = "mini";
     alertMetaData.footer.buttons.push({
@@ -236,6 +236,7 @@ export class QuestionnaireComponent
       });
       alertMetaData.footer.className = "double-btn";
     }
+    console.log(alertMetaData);
     return this.observationUtilService.showPopupAlert(alertMetaData);
   }
 
