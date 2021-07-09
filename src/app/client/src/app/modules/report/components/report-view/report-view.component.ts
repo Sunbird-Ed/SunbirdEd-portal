@@ -35,10 +35,9 @@ export class ReportViewComponent implements OnInit {
   @ViewChild("lib", { static: false }) lib: any;
   @ViewChild("modal") modal;
   selectedListCount = 0;
-  filterdata = [];
   name = ["filter"];
   modalFilterData: any;
-  filteredData: any=[];
+  filteredData=[];
   key: any;
   questionId: any;
   public active: boolean[] = [];
@@ -46,6 +45,7 @@ export class ReportViewComponent implements OnInit {
     { header: this.resourceService.frmelmnts.lbl.question },
   ];
   public noResult: boolean = false;
+  showLoader=true;
   public showPdf: boolean = false;
   public showEvidence: boolean = false;
   evidenceParam:any;
@@ -142,6 +142,7 @@ export class ReportViewComponent implements OnInit {
           }
         } else {
           this.noResult=true
+          this.showLoader=false;
         }
         this.filters.forEach((element) => {
           if (element.filter.type == "segment") {
@@ -154,12 +155,14 @@ export class ReportViewComponent implements OnInit {
             this.segmentfilter = true;
           }
         });
+        this.showLoader=false;
       },
       (err) => {
         this.reportSections = [];
         this.error = err;
         if(!this.error.result){
           this.noResult=true
+          this.showLoader=false;
         }
       }
     ); 
@@ -235,7 +238,6 @@ export class ReportViewComponent implements OnInit {
 
   public closeModal() {
     this.modal.approve();
-    this.filterdata = [];
     this.filterModal = false;
   }
 
@@ -249,7 +251,7 @@ export class ReportViewComponent implements OnInit {
   }
 
   applyFilter() {
-    if (!this.filteredData){
+    if (!this.filteredData.length){
       let msgData =
         this.segmentValue == "Questions"
           ? "messages.smsg.selectquestions"
