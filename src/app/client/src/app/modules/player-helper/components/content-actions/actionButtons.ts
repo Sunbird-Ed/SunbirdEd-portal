@@ -1,4 +1,4 @@
-import { IActionButton, ActionButtonType } from '@project-sunbird/common-consumption-v8';
+import { IActionButton, ActionButtonType } from '@project-sunbird/common-consumption-v9';
 
 export const actionButtons: IActionButton[] = [
     {
