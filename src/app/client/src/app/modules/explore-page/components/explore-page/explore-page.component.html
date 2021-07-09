@@ -101,10 +101,12 @@
               </sb-pills-grid>
               <hr *ngIf="section?.section?.isEnabled && section?.data?.length" class="section-hr my-32" />
             </div>
-            <div *ngIf="contentSection && contentSection?.isEnabled" class="pl-16">
-              <sb-content-section (cardClick)="playContent($event)" [searchRequest]="contentSection?.searchRequest" [title]="contentSection?.title" [layoutConfig]="layoutConfiguration"
-                (viewMoreClick)="viewAll($event, true)" [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall"></sb-content-section>
-              <hr class="section-hr my-32" />
+            <div *ngFor="let section of contentSections" class="pl-16">
+              <sb-content-section *ngIf="section?.isEnabled" (cardClick)="playContent($event)"
+                [searchRequest]="section?.searchRequest" [title]="section?.title" [layoutConfig]="layoutConfiguration"
+                (viewMoreClick)="viewAll($event, section)" [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall">
+              </sb-content-section>
+              <hr *ngIf="section?.isEnabled" class="section-hr my-32" />
             </div>
             <div *ngIf="facetSections.length === 0 && !showLoader">
               <app-no-result-found (exploreMoreContent)="navigateToExploreContent()" [filters]="selectedFilters"

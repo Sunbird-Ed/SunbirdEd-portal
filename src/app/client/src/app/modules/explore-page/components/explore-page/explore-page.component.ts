@@ -72,7 +72,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     queryParams: { [x: string]: any; };
     _currentPageData: any;
     facetSections: any = [];
-    contentSection;
+    contentSections = [];
     instance: string;
     userPreference: any;
     searchResponse: any = [];
@@ -359,7 +359,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         this.isFilterEnabled = _.get(currentPageData, 'filter.isEnabled')
                     }
                     if (_.get(currentPageData, 'contentType') === 'explore') {
-                        this.contentSection = undefined;
+                        this.contentSections = [];
                         return this.getExplorePageSections();
                     } else {
                         const { search: { fields = [], filters = {}, facets = ['subject'] } = {}, metaData: { groupByKey = 'subject' } = {} } = currentPageData || {};
@@ -445,12 +445,16 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                     });
 
                                     if (facetKeys.indexOf('search') > -1) {
-                                        const section = currentPageData.sections.find(sec => sec.facetKey === 'search');
-                                        this.contentSection = {
-                                            isEnabled: Boolean(_.get(section, 'isEnabled')),
-                                            searchRequest: _.get(section, 'apiConfig.req'),
-                                            title: get(this.resourceService, section.title)
-                                        };
+                                        this.contentSections = [];
+                                        const searchSections = currentPageData.sections.filter(sec => sec.facetKey === 'search');
+                                        searchSections.forEach((item) => {
+                                            this.contentSections.push({
+                                                isEnabled: Boolean(_.get(item, 'isEnabled')),
+                                                searchRequest: _.get(item, 'apiConfig.req'),
+                                                title: get(this.resourceService, item.title)
+                                            });
+                                        });
+
                                     }
                                 }
                                 return _map(sections, (section) => {
@@ -797,11 +801,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         this.getInteractEdata(telemetryData);
     }
 
-    public viewAll(event, isContentSection = false) {
+    public viewAll(event, contentSection?) {
         let searchQuery;
-        if (isContentSection) {
-            event = { contents: event.data, count: event.data.length, name: this.contentSection.title };
-            searchQuery = this.contentSection.searchRequest;
+        if (contentSection) {
+            event = { contents: event.data, count: event.data.length, name: contentSection.title };
+            searchQuery = contentSection.searchRequest;
         } else {
             if (this.isUserLoggedIn() && !_.get(event, 'searchQuery')) {
                 searchQuery = JSON.parse(this.myCoursesSearchQuery);
@@ -821,14 +825,14 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         });
         searchQueryParams.defaultSortBy = _.get(searchQuery, 'request.sort_by') ? JSON.stringify(searchQuery.request.sort_by) : JSON.stringify({ lastPublishedOn: 'desc' });
         searchQueryParams['exists'] = _.get(searchQuery, 'request.exists');
-        searchQueryParams['isContentSection'] = isContentSection;
+        searchQueryParams['isContentSection'] = Boolean(contentSection);
         if (this.isUserLoggedIn()) {
             this.cacheService.set('viewAllQuery', searchQueryParams, { maxAge: 600 });
         } else {
             this.cacheService.set('viewAllQuery', searchQueryParams);
         }
         this.cacheService.set('pageSection', event, { maxAge: this.browserCacheTtlService.browserCacheTtl });
-        const queryParams = isContentSection ? searchQueryParams : { ...searchQueryParams, ...this.queryParams };
+        const queryParams = contentSection ? searchQueryParams : { ...searchQueryParams, ...this.queryParams };
         const sectionUrl = _.get(this.router, 'url.split') && this.router.url.split('?')[0] + '/view-all/' + event.name.replace(/\s/g, '-');
         this.router.navigate([sectionUrl, 1], { queryParams: queryParams, state: { currentPageData: this.getCurrentPageData()} });
     }
