@@ -19,7 +19,9 @@
     <form class="ui form">
       <div *ngFor="let field of formFieldOptions">
         <div class="required sb-field-form-group" *ngIf="field.code === 'board' && allowedFields.includes(field.code)">
-          <label>{{field.label}}</label>
+          <label>{{field.label}}
+            <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
+          </label>
           <div class="sb-field">
             <label class="w-100">
             <sui-select id={{field.code}} [isSearchable]="false" class="selection sb-form-control" [(ngModel)]="selectedOption[field.code]"
@@ -30,7 +32,9 @@
           </div>
         </div>
         <div class="sb-field-form-group mt-8" *ngIf="field.code !== 'board' && allowedFields.includes(field.code)" [ngClass]="field.code === 'subject' ? '' : 'required'">
-          <label>{{field.label}}</label>
+          <label>{{field.label}}
+            <span class="mr-8 sb-color-red" *ngIf="field.required"> * </span>
+          </label>
           <div class="sb-field">
             <label class="w-100">
             <sui-multi-select id={{field.code}} [isSearchable]="false" class="selection sb-form-control" [(ngModel)]="selectedOption[field.code]"
@@ -55,6 +59,7 @@
       [telemetryInteractEdata]="submitInteractEdata"
       class="sb-btn sb-btn-normal sb-btn-primary" 
       [disabled]="!showButton" tabindex="0"
+      [ngClass]="{'sb-btn-disabled': !showButton}"
       (click)="onSubmitForm()"
     >
       {{buttonLabel}}

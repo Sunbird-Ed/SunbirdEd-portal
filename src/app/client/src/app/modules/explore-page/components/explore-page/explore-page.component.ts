@@ -1020,8 +1020,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     setBannerConfig() {
-        this.bannerList = this.bannerSegment.filter((value) =>
-            Number(value.expiry) > Math.floor(Date.now() / 1000));
+        this.bannerList = this.bannerSegment.filter((value) => 
+            Number(value.expiry) > Math.floor(Date.now() / 1000)
+        );
     }
 
     navigateToSpecificLocation(data) {
