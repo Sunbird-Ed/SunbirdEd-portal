@@ -746,8 +746,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
           /* istanbul ignore next*/
           if (_.get(contentState, 'contentId') === _.get(this.activeContent, 'identifier')) {
             /* istanbul ignore next*/
-            if (_.get(contentState, 'score.length') >= _.get(this.activeContent, 'maxAttempts'))
-            maxAttemptsExceeded = true;
+            if (_.get(contentState, 'score.length') >= _.get(this.activeContent, 'maxAttempts')) maxAttemptsExceeded = true;
             if (_.get(this.activeContent, 'maxAttempts') - _.get(contentState, 'score.length') === 1) isLastAttempt = true;
           }
         });
