@@ -566,7 +566,8 @@ describe('ExplorePageComponent', () => {
     router.url = '/explore-course?selectedTab=course';
     component.viewAll({ searchQuery: searchQuery, name: 'Featured-courses' });
     expect(router.navigate).toHaveBeenCalledWith(['/explore-course/view-all/Featured-courses', 1],
-      { queryParams: { 'status': '1', 'defaultSortBy': '{"createdDate":"desc"}', 'exists': undefined }, state: { currentPageData: {}} });
+      { queryParams: { 'status': '1', 'defaultSortBy': '{"createdDate":"desc"}', 'exists': undefined, isContentSection: false
+     }, state: { currentPageData: {}} });
     expect(cacheService.set).toHaveBeenCalled();
   });
 
