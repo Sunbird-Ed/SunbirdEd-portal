@@ -1490,17 +1490,15 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v8@4.0.9":
-  version "4.0.9"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v8/-/common-consumption-v8-4.0.9.tgz#99571bb76f93c04e0ee8645191a0457a12d943fc"
-  integrity sha512-p1efkdBKjhohUqM+vOiB2hP/xrglfCLFmPLbrvMkzxwZvUXX23FsOw+Nf0SBUkPVd7XNkBxEddCw84myM6ZNaA==
-  dependencies:
-    tslib "^1.9.0"
+"@project-sunbird/common-consumption-v9@4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.1.1.tgz#ec23c5e7f34ebcb2155338702b5442a1924fd0ff"
+  integrity sha512-sVtHki4m/N6AT1xp4JMl4Aepz/mzqgbMfjmjuOGCLujc1WJfkIpPxv+j3Ur/24IwYT4I9l+GfMkc3i4Ff7dngg==
 
-"@project-sunbird/discussions-ui-v8@2.2.0-beta.1":
-  version "2.2.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.2.0-beta.1.tgz#ea3ba7fedda5bc18702513ef7ab50c5070f1d22d"
-  integrity sha512-BvthgQzGwtGmPiHoeW83TQwlF1xPRIX+1EI/Vi5X/G7fOyp0BTSxLviFk/T8JGZgzcCskuN7vT+mchHDhuQn1w==
+"@project-sunbird/discussions-ui-v8@2.2.0-beta.2":
+  version "2.2.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.2.0-beta.2.tgz#f9b5307e5171eb408f751d6cf9714803f188319c"
+  integrity sha512-h5dMvv6pV98/N6dNxTChUFtDWtrMEV0eUSMDFQbrnYDJFuc7+YgSG65RaKjrH2T4dCQuR/SwnlB7lXvmHiUNwg==
   dependencies:
     tslib "^1.9.0"
 
@@ -3805,10 +3803,10 @@ content-disposition@0.5.3:
   dependencies:
     safe-buffer "5.1.2"
 
-content-section@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/content-section/-/content-section-0.0.1.tgz#027fc710280432452f364e6de15a2a8becb59d6d"
-  integrity sha512-F+I0biHITYyLZ3WBsi1I6sFO5azYV0Kc8oALZp6QX1ab9fizOQ5WOPUuEaiqWvFPCxXkyIc2Z0B49C60tNBOyw==
+content-section@0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/content-section/-/content-section-0.0.3.tgz#9206a438a6e21dbd8fecad2b6146e721a715c476"
+  integrity sha512-cy79trpF+RKnba61hal4ZqT8hnV/ky12NDEmS2HnorrHtTp3Vl5lq/bJDp59G41/Cz/uaGinOg3lCaXK5LthYg==
   dependencies:
     tslib "^1.10.0"
 
@@ -6459,9 +6457,9 @@ immediate@~3.0.5:
   integrity sha1-nbHb0Pr43m++D13V5Wu2BigN5ps=
 
 immutable@^4.0.0-rc.12:
-  version "4.0.0-rc.12"
-  resolved "https://registry.yarnpkg.com/immutable/-/immutable-4.0.0-rc.12.tgz#ca59a7e4c19ae8d9bf74a97bdf0f6e2f2a5d0217"
-  integrity sha512-0M2XxkZLx/mi3t8NVwIm1g8nHoEmM9p9UBl/G9k4+hm0kBgOVdMV/B3CY5dQ8qG8qc80NN4gDV4HQv6FTJ5q7A==
+  version "4.0.0-rc.14"
+  resolved "https://registry.yarnpkg.com/immutable/-/immutable-4.0.0-rc.14.tgz#29ba96631ec10867d1348515ac4e6bdba462f071"
+  integrity sha512-pfkvmRKJSoW7JFx0QeYlAmT+kNYvn5j0u7bnpNq4N2RCvHSTlLT208G8jgaquNe+Q8kCPHKOSpxJkyvLDpYq0w==
 
 import-cwd@^2.0.0:
   version "2.1.0"

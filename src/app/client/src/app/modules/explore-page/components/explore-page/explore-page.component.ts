@@ -72,7 +72,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     queryParams: { [x: string]: any; };
     _currentPageData: any;
     facetSections: any = [];
-    contentSection;
+    contentSections = [];
     instance: string;
     userPreference: any;
     searchResponse: any = [];
@@ -359,7 +359,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         this.isFilterEnabled = _.get(currentPageData, 'filter.isEnabled')
                     }
                     if (_.get(currentPageData, 'contentType') === 'explore') {
-                        this.contentSection = undefined;
+                        this.contentSections = [];
                         return this.getExplorePageSections();
                     } else {
                         const { search: { fields = [], filters = {}, facets = ['subject'] } = {}, metaData: { groupByKey = 'subject' } = {} } = currentPageData || {};
@@ -427,7 +427,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                     const facetKeys = _.map(currentPageData.sections, (section) => { return section.facetKey });
                                     const facets = this.utilService.processCourseFacetData(_.get(response, 'result'), facetKeys);
                                     forEach(currentPageData.sections, facet => {
-                                        if (_.get(facets, facet.facetKey) && _.get(facets, facet.facetKey).length > 0) {
+                                        if (_.get(facets, facet.facetKey)) {
                                             let _facetArray = [];
                                             forEach(facets[facet.facetKey], _facet => {
                                                 _facetArray.push({
@@ -440,17 +440,18 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                                 name: facet.facetKey,
                                                 data: _.sortBy(_facetArray, ['name']),
                                                 section: facet,
+                                                index: facet.index
                                             });
                                         }
                                     });
-
+                                    this.facetSections = _.sortBy(this.facetSections, ['index']);
                                     if (facetKeys.indexOf('search') > -1) {
-                                        const section = currentPageData.sections.find(sec => sec.facetKey === 'search');
-                                        this.contentSection = {
-                                            isEnabled: Boolean(_.get(section, 'isEnabled')),
-                                            searchRequest: _.get(section, 'apiConfig.req'),
-                                            title: get(this.resourceService, section.title)
-                                        };
+                                        this.contentSections = [];
+                                        const searchSections = currentPageData.sections.filter(sec => sec.facetKey === 'search');
+                                        searchSections.forEach((item) => {
+                                            this.contentSections.push(this.getContentSection(item, option));
+                                        });
+
                                     }
                                 }
                                 return _map(sections, (section) => {
@@ -483,6 +484,21 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     }
                 })
             );
+    }
+
+    private getContentSection(section, searchOptions) {
+        const sectionFilters = _.get(section, 'apiConfig.req.request.filters');
+        const requiredProps = ['se_boards', 'se_gradeLevels', 'se_mediums'];
+        if (_.has(sectionFilters, ...requiredProps) && searchOptions.filters) {
+            const preferences = _.pick(searchOptions.filters, requiredProps);
+            section.apiConfig.req.request.filters = { ...section.apiConfig.req.request.filters, ...preferences };
+        }
+
+        return {
+            isEnabled: Boolean(_.get(section, 'isEnabled')),
+            searchRequest: _.get(section, 'apiConfig.req'),
+            title: get(this.resourceService, section.title)
+        };
     }
 
     addHoverData() {
@@ -784,13 +800,33 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
 
-    public viewAll(event) {
+    logViewAllTelemetry(event) {
+        const telemetryData = {
+            cdata: [{
+                type: 'section',
+                id: event.name
+            }],
+            edata: {
+                id: 'view-all'
+            }
+        };
+        this.getInteractEdata(telemetryData);
+    }
+
+    public viewAll(event, contentSection?) {
         let searchQuery;
-        if (this.isUserLoggedIn() && !_.get(event, 'searchQuery')) {
-            searchQuery = JSON.parse(this.myCoursesSearchQuery);
+        if (contentSection) {
+            event = { contents: event.data, count: event.data.length, name: contentSection.title };
+            searchQuery = contentSection.searchRequest;
         } else {
-            searchQuery = JSON.parse(event.searchQuery);
+            if (this.isUserLoggedIn() && !_.get(event, 'searchQuery')) {
+                searchQuery = JSON.parse(this.myCoursesSearchQuery);
+            } else {
+                searchQuery = JSON.parse(event.searchQuery);
+            }
         }
+
+        this.logViewAllTelemetry(event);
         const searchQueryParams: any = {};
         _.forIn(searchQuery.request.filters, (value, key) => {
             if (_.isPlainObject(value)) {
@@ -799,15 +835,17 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 searchQueryParams[key] = value;
             }
         });
-        searchQueryParams.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
+        searchQueryParams.defaultSortBy = _.get(searchQuery, 'request.sort_by') ? JSON.stringify(searchQuery.request.sort_by) : JSON.stringify({ lastPublishedOn: 'desc' });
         searchQueryParams['exists'] = _.get(searchQuery, 'request.exists');
+        searchQueryParams['isContentSection'] = Boolean(contentSection);
         if (this.isUserLoggedIn()) {
             this.cacheService.set('viewAllQuery', searchQueryParams, { maxAge: 600 });
         } else {
             this.cacheService.set('viewAllQuery', searchQueryParams);
         }
         this.cacheService.set('pageSection', event, { maxAge: this.browserCacheTtlService.browserCacheTtl });
-        const queryParams = { ...searchQueryParams, ...this.queryParams };
+        const queryParams = contentSection ? { ...searchQueryParams, ...{ selectedTab: this.queryParams.selectedTab } } :
+        { ...searchQueryParams, ...this.queryParams };
         const sectionUrl = _.get(this.router, 'url.split') && this.router.url.split('?')[0] + '/view-all/' + event.name.replace(/\s/g, '-');
         this.router.navigate([sectionUrl, 1], { queryParams: queryParams, state: { currentPageData: this.getCurrentPageData()} });
     }
@@ -912,6 +950,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     getSectionTitle (title) {
         return get(this.resourceService, 'frmelmnts.lbl.browseBy') + ' ' + get(this.resourceService, title);
+    }
+
+    getBannerTitle (title) {
+        return get(this.resourceService, title);
     }
 
     getSelectedTab () {

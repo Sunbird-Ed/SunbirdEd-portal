@@ -365,6 +365,11 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       mode: _.get(manipulatedData, 'mode'),
       params: this.configService.appConfig.ViewAll.contentApiQueryParams,
     };
+
+    if (_.get(this.filters, 'isContentSection')) {
+      requestParams.filters = _.omit(this.filters, ['isContentSection']);
+    }
+
     requestParams['exists'] = request.queryParams.exists,
       requestParams['sort_by'] = request.queryParams.sortType ?
         { [request.queryParams.sort_by]: request.queryParams.sortType } : JSON.parse(request.queryParams.defaultSortBy);
