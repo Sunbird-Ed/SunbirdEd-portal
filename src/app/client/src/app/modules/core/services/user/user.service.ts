@@ -233,10 +233,10 @@ export class UserService {
     }
     profileData.rootOrgAdmin = false;
     let userRoles = ['PUBLIC'];
+    userRoles = _.union(userRoles, _.map(profileData.roles, 'role'));
     if (profileData.organisations) {
       _.forEach(profileData.organisations, (org) => {
         if (org.roles && _.isArray(org.roles)) {
-          userRoles = _.union(userRoles, org.roles);
           if (org.organisationId === profileData.rootOrgId &&
             (_.indexOf(org.roles, 'ORG_ADMIN') > -1 ||
               _.indexOf(org.roles, 'SYSTEM_ADMINISTRATION') > -1)) {

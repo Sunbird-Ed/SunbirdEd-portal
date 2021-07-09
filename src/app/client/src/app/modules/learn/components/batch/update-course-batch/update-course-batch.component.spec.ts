@@ -493,6 +493,8 @@ describe('UpdateCourseBatchComponent', () => {
     const toasterService = TestBed.get(ToasterService);
     spyOn(discussionService, 'createForum').and.returnValue(observableOf(MockResponseData.enableDiscussionForumData));
     spyOn(toasterService, 'success').and.stub();
+    component.createForumRequest = MockResponseData.forumConfig[0];
+    component.callCreateDiscussion = true;
     component.enableDiscussionForum();
     expect(discussionService.createForum).toHaveBeenCalled();
   });
@@ -523,6 +525,8 @@ describe('UpdateCourseBatchComponent', () => {
     const toasterService = TestBed.get(ToasterService);
     spyOn(discussionService, 'createForum').and.returnValue(observableThrowError({}));
     spyOn(toasterService, 'error');
+    component.createForumRequest = MockResponseData.forumConfig[0];
+    component.callCreateDiscussion = true;
     component.enableDiscussionForum();
     expect(toasterService.error).toHaveBeenCalledWith('discussion forum error');
   });

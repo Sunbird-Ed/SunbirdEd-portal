@@ -635,8 +635,10 @@ public onLocationModalClose() {
   this.showEditUserDetailsPopup = !this.showEditUserDetailsPopup;
   this.showFullScreenLoader = true;
   setTimeout(()=> {
-    this.showFullScreenLoader = false;
-    this.toasterService.error(this.resourceService.messages.emsg.m0005);
+    if(this.showFullScreenLoader){
+      this.showFullScreenLoader = false;
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
+    }
   }, 5000)
 }
 

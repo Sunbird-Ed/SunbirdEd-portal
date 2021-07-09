@@ -8,6 +8,7 @@ import {
   INoResultMessage,
   ResourceService,
   ToasterService,
+  ILoaderMessage
 } from "@sunbird/shared";
 import * as _ from "lodash-es";
 import { ChangeDetectorRef } from "@angular/core";
@@ -34,21 +35,22 @@ export class ReportViewComponent implements OnInit {
   @ViewChild("lib", { static: false }) lib: any;
   @ViewChild("modal") modal;
   selectedListCount = 0;
-  filterdata = [];
   name = ["filter"];
   modalFilterData: any;
-  filteredData: any=[];
+  filteredData=[];
   key: any;
   questionId: any;
   public active: boolean[] = [];
   public tabs: { header: string }[] = [
-    { header: this.resourceService?.frmelmnts.lbl.question },
+    { header: this.resourceService.frmelmnts.lbl.question },
   ];
   public noResult: boolean = false;
+  showLoader=true;
   public showPdf: boolean = false;
   public showEvidence: boolean = false;
   evidenceParam:any;
   public unsubscribe$ = new Subject<void>();
+  loaderMessage: ILoaderMessage;
   constructor(
     private dhitiService: DhitiService,
     config: ConfigService,
@@ -84,13 +86,12 @@ export class ReportViewComponent implements OnInit {
     this.cdref.detectChanges();
   }
 
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
 
   ngOnInit() {
     this.initLayout();
+    this.noResultMessage = {
+          messageText: "messages.stmsg.reportNotReady",
+        };
     window.scroll({
       top: 0,
       left: 0,
@@ -141,30 +142,27 @@ export class ReportViewComponent implements OnInit {
           }
         } else {
           this.noResult=true
-          this.noResultMessage = {
-            messageText: "messages.stmsg.reportNotReady",
-          };
+          this.showLoader=false;
         }
         this.filters.forEach((element) => {
           if (element.filter.type == "segment") {
             if (this.tabs.length == 1) {
               this.active.push(true);
               this.tabs.push({
-                header: this.resourceService?.frmelmnts.lbl.criteria,
+                header: this.resourceService.frmelmnts.lbl.criteria,
               });
             }
             this.segmentfilter = true;
           }
         });
+        this.showLoader=false;
       },
-      (error) => {
+      (err) => {
         this.reportSections = [];
-        this.error = error;
+        this.error = err;
         if(!this.error.result){
           this.noResult=true
-          this.noResultMessage = {
-            messageText: "messages.stmsg.reportNotReady",
-          };
+          this.showLoader=false;
         }
       }
     ); 
@@ -240,7 +238,6 @@ export class ReportViewComponent implements OnInit {
 
   public closeModal() {
     this.modal.approve();
-    this.filterdata = [];
     this.filterModal = false;
   }
 
@@ -254,7 +251,7 @@ export class ReportViewComponent implements OnInit {
   }
 
   applyFilter() {
-    if (!this.filteredData){
+    if (!this.filteredData.length){
       let msgData =
         this.segmentValue == "Questions"
           ? "messages.smsg.selectquestions"
@@ -301,35 +298,6 @@ export class ReportViewComponent implements OnInit {
     };
     this.evidenceParam = payload;
     this.showEvidence = true;
-    // const config = {
-    //   url: this.config.urlConFig.URLS.DHITI.ALL_EVIDENCE,
-    //   data: payload,
-    // };
-    // this.dhitiService.post(config).subscribe(
-    //   (success: any) => {
-    //     if (success.result === true && success.data) {
-    //       this.images = success.data.images;
-    //       this.videos = success.data.videos;
-    //       this.documents = success.data.documents;
-    //       this.remarks = success.data.remarks;
-    //       this.audios = success.data.audios;
-    //       if (this.images) {
-    //         this.images.map((d) => this.evidenceData.push(d));
-    //       }
-    //       if (this.videos) {
-    //         this.videos.map((d) => this.evidenceData.push(d));
-    //       }
-    //       if (this.documents) {
-    //         this.documents.map((d) => this.evidenceData.push(d));
-    //       }
-    //       if (this.audios) {
-    //         this.audios.map((d) => this.evidenceData.push(d));
-    //       }
-    //       console.log(this.evidenceData);
-    //     }
-    //   },
-    //   (error) => {}
-    // );
   }
 
   modalClose(event) {

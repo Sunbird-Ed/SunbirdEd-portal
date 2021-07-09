@@ -171,7 +171,7 @@
         </div>
     </div>
     <div class="sb-modal-actions">
-        <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+        <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" tabindex="0"
             [telemetryInteractEdata]="signInInteractEdata" (click)="goBack(); showMaxAttemptsModal = !showMaxAttemptsModal"
             class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn">
             {{resourceService?.frmelmnts?.btn?.close}}
@@ -188,10 +188,10 @@
         </div>
     </div>
     <div class="sb-modal-actions">
-      <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="showLastAttemptsModal = false; onTocCardClick();">
+      <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" (click)="showLastAttemptsModal = false; onTocCardClick();">
         {{resourceService.frmelmnts?.btn?.ok}}
       </button>
-      <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="showLastAttemptsModal = false;">
+      <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0" (click)="showLastAttemptsModal = false;">
         {{resourceService.frmelmnts?.btn?.cancel}}
       </button>
     </div>

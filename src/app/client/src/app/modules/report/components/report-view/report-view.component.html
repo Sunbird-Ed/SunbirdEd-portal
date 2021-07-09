@@ -1,5 +1,5 @@
 <div [ngClass]="layoutConfiguration ? 'sbt-container relative9':''" class="main-container">
-  <div *ngIf="data">
+  <div *ngIf="this.data">
     <div class="ui report-main-block">
       <div class="twelve wide column px-0">
         <div class="stackable grid m-0 sb-mid-container-min-height dashboard-body-scroll">
@@ -30,7 +30,7 @@
                             </div>
                             <div *ngIf="data">
                               <span class="ml-auto sb-last-update-status fnormal sb-color-gray-400 px-10 last-update">
-                                <span>{{resourceService?.frmelmnts?.lbl?.lastUpdatedOn}}&nbsp;: </span> &nbsp;
+                                <span>{{resourceService?.frmelmnts?.lbl?.lastSubmittedOn}}&nbsp;: </span> &nbsp;
                                 {{data.completedDate| date: "yyyy/MM/dd"}}
                               </span>
                             </div>
@@ -219,9 +219,9 @@
                       </div>
                     </div>
 
-                    <!-- <div *ngIf="!reportSections">
+                    <div *ngIf="!reportSections">
                       <app-no-result [data]="noResultMessage"></app-no-result>
-                    </div> -->
+                    </div>
                   </sui-tabset>
                 </div>
               </div>
@@ -230,11 +230,13 @@
         </div>
       </div>
     </div>
-    <!-- <sl-generic-chart [reportSections]="reportSections"></sl-generic-chart> -->
   </div>
   <div class="twelve wide column" *ngIf="noResult">
     <app-no-result [data]="noResultMessage"></app-no-result>
   </div>
+  <div class="twelve wide column" *ngIf="showLoader">
+    <app-loader [data]='loaderMessage'></app-loader>
+</div>
 </div>
 
 
