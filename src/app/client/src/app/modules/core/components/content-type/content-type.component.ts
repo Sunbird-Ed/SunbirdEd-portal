@@ -16,14 +16,13 @@ import { TelemetryService } from '@sunbird/telemetry';
 export class ContentTypeComponent implements OnInit, OnDestroy {
   @Output() closeSideMenu = new EventEmitter<any>();
   @Input() layoutConfiguration;
+  @Input() showBackButton = false;
   contentTypes;
   selectedContentType;
   isDesktopApp = false;
   public unsubscribe$ = new Subject<void>();
   subscription: any;
   userType:any;
-  showBackButton = false;
-  showingResult:string;
   returnTo:string
   constructor(
     public formService: FormService,
@@ -118,16 +117,6 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     } else {
       this.selectedContentType = queryParams.selectedTab ? queryParams.selectedTab : null;
     }
-    if(url.indexOf('isInside') >= 0){
-      this.showBackButton = true;
-      const filterPipe = new InterpolatePipe();
-      const successMessage = filterPipe.transform(_.get(this.resourceService, 'frmelmnts.lbl.showingResultsFor'),
-          '{searchString}', queryParams.isInside);
-      this.showingResult =successMessage;
-      this.returnTo = _.get(queryParams, 'returnTo');
-    } else {
-      this.showBackButton = false;
-    }
   }
   updateSelectedContentType(contentType) {
     const ct = this.contentTypes.find((cty: any) => cty.contentType === contentType.toLowerCase());
@@ -196,13 +185,4 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
   isLayoutAvailable() {
     return this.layoutService.isLayoutAvailable(this.layoutConfiguration);
   }
-
-  goBack(){
-    this.showBackButton = false;
-    // console.log('---->',this.returnTo)
-    if(this.returnTo){
-      this.router.navigate(['/explore'],{ queryParams: { selectedTab: this.returnTo } });
-    }
-  }
-
 }

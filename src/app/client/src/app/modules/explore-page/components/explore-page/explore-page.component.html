@@ -101,6 +101,10 @@
               </sb-pills-grid>
               <hr *ngIf="section?.section?.isEnabled && section?.data?.length" class="section-hr my-32" />
             </div>
+            <div *ngIf="contentSection && contentSection?.isEnabled" class="pl-16">
+              <sb-content-section (cardClick)="playContent($event)" [searchRequest]="contentSection?.searchRequest" [title]="contentSection?.title" [layoutConfig]="layoutConfiguration"></sb-content-section>
+              <hr class="section-hr my-32" />
+            </div>
             <div *ngIf="facetSections.length === 0 && !showLoader">
               <app-no-result-found (exploreMoreContent)="navigateToExploreContent()" [filters]="selectedFilters"
                 [title]="noResultMessage?.title" [subTitle]="noResultMessage?.subTitle"
@@ -115,13 +119,6 @@
                 </app-page-section>
               </div>
             </div>
-            <ngx-slick *ngIf="displayBanner" class="carousel" #slickModal="slick-modal" [config]="bannerSlideConfig">
-              <div ngxSlickItem *ngFor="let banner of bannerList;" class="mr-16 course-card-width">
-                <div class="sb--card sb--card--theme2" [ngStyle]="{background: 'url(' + banner?.ui?.background+ ')'}" (click)="navigateToSpecificLocation(banner)">
-                    <div class="explore-text">{{banner?.ui?.text}}</div>
-                </div>
-              </div>
-            </ngx-slick>
           </div>
           <!-- Template for displaying page sections -->
 
@@ -155,6 +152,14 @@
     </div>
   </div>
 </div>
+<ngx-slick *ngIf="displayBanner" class="carousel banner-carousel relative9 mt-24" #slickModal="slick-modal" [config]="bannerSlideConfig">
+  <div ngxSlickItem *ngFor="let banner of bannerList;" class="mr-16">
+    <div class="sb--card sb--card--theme2 banner-image" [ngStyle]="{'background-image': 'url(' + banner?.ui?.background+ ')'}" (click)="navigateToSpecificLocation(banner); handleBannerClick(banner)">
+      <!-- <div class="banner-overlay"></div> -->
+      <div *ngIf="banner?.ui?.text !== ''" class="explore-text">{{banner?.ui?.text}}</div>
+    </div>
+  </div>
+</ngx-slick>
 <app-offline-banner *ngIf="!isUserLoggedIn()" [slug]="userService.slug"></app-offline-banner>
  <!-- Show Modal if content has any YouTube data-->
  <sui-modal *ngIf="showModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
@@ -166,10 +171,10 @@
    <p>{{resourceService?.messages?.stmsg?.m0137 }}</p>
  </div>
  <div class="sb-modal-actions">
-   <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="callDownload(); showModal = !showModal; logTelemetry(contentData, 'confirm-download-content');">
+   <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" (click)="callDownload(); showModal = !showModal; logTelemetry(contentData, 'confirm-download-content');">
      {{resourceService.frmelmnts?.btn?.yes}}
    </button>
-   <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="showModal = !showModal; logTelemetry(contentData, 'cancel-download-content');">
+   <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0" (click)="showModal = !showModal; logTelemetry(contentData, 'cancel-download-content');">
      {{resourceService.frmelmnts?.btn?.cancel}}
    </button>
  </div>

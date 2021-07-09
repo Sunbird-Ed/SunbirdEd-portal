@@ -15,9 +15,9 @@
   <div class="ui container">
     <div class="sb-g mt-24 sbt-sb-g">
       <div class="sb-g-col-xs-12 sb-g-col-md-9 sb-g-col-lg-9 sb-g-col-xxxl-12 ">
-        <div class="sb-pageSection">
-          <div class="sb-pageSection-header">
-            <h4 class="sb-pageSection-title m-0 mr-5 sb-pagesection-activity">
+        <div class="sb-pageSection sb-bg-color-white p-8">
+          <div class="sb-pageSection-header m-0">
+            <h4 class="sb-pageSection-title my-0 mx-8 sb-pagesection-activity">
               {{resourceService?.frmelmnts?.lbl?.activities}}</h4>
               <button type="button" class="sb-btn sb-btn-primary sb-btn-normal ml-auto" *ngIf="isAdmin && groupData?.active"
               (click)="navigateToAddActivity(); addTelemetry('add-activity', '', {type: ADD_ACTIVTY})">
@@ -44,4 +44,3 @@
 </div>
 
 </div>
-<router-outlet></router-outlet>

@@ -25,7 +25,16 @@ module.exports = function (app) {
     healthService.checkDependantServiceHealth([]),
     telemetryHelper.generateTelemetryForLearnerService,
     telemetryHelper.generateTelemetryForProxy,
-    handleRequest('/kendra/api/')
+    handleRequest('/kendra/')
+  )
+
+  app.all('/dhiti/*',
+    bodyParser.json(),
+    isAPIWhitelisted.isAllowed(),
+    healthService.checkDependantServiceHealth([]),
+    telemetryHelper.generateTelemetryForLearnerService,
+    telemetryHelper.generateTelemetryForProxy,
+    handleRequest('/dhiti/')
   )
 
   app.all('/assessment/*',
@@ -34,7 +43,7 @@ module.exports = function (app) {
     healthService.checkDependantServiceHealth([]),
     telemetryHelper.generateTelemetryForLearnerService,
     telemetryHelper.generateTelemetryForProxy,
-    handleRequest('/assessment/api/')
+    handleRequest('/assessment/')
   )
 
   app.put('/cloudUpload/*', async (req, res) => {
@@ -70,10 +79,10 @@ function handleRequest(serviceUrl) {
       let query = require('url').parse(req.url).query
       logger.info({ msg: '==============================/ML_URL/* ===================================called - ' + mlURL + req.method + ' - ' + req.url });
       if (query) {
-        const url = require('url').parse(mlURL + serviceUrl + urlParam + '?' + query).path;
+        const url = require('url').parse(mlURL + serviceUrl+ 'api/' + urlParam + '?' + query).path;
         return url
       } else {
-        const url = require('url').parse(mlURL + serviceUrl + urlParam).path
+        const url = require('url').parse(mlURL + serviceUrl+ 'api/' + urlParam).path
         return url
       }
     },
@@ -83,7 +92,7 @@ function handleRequest(serviceUrl) {
         if (proxyRes.statusCode === 404) res.redirect('/')
         else {
           const data = proxyUtils.handleSessionExpiry(proxyRes, parsedData, req, res);
-          data.status === 200 ? data.responseCode = "OK" : null;
+          (data.status === 200 || data.result || data.status) ? data.responseCode = "OK" : null;
           return data
         }
       } catch (err) {

@@ -1,0 +1,101 @@
+<app-landing-section
+  [noTitle]="true"
+  [layoutConfiguration]="layoutConfiguration"
+>
+</app-landing-section>
+
+<div [ngClass]="layoutConfiguration ? 'sbt-container relative9' : ''" class="main-container">
+  <div class="sb-pageSection my-24 ui container listallreports-section">
+    <ng-container>
+      <div class="sb-pageSection-content">
+        <ng-container *ngIf="solutionList.length">
+          <div>
+            <sui-tabset>
+              <div class="ui top attached tabular menu report-menu">
+                <a class="item" suiTabHeader="1"
+                  ><i class="icon chart line alternate"></i> {{resourceService.frmelmnts?.lnk?.report}}</a
+                >
+              </div>
+              <div class="ui bottom attached segment" suiTabContent="1">
+                <div class="ui bottom attached small p-0 b-0 no-bg py-24">
+                  <div class="pull-left">
+                    show <select [(ngModel)]="pageSize" class="dataTables_filter search-entries" (change)="changeLimit($event)">
+                      <option value="10" selected>10</option>
+                      <option value="20">20</option>
+                      <option value="25">25</option>
+                    </select> entries
+                  </div>
+                  <div class="pull-right">
+                    <select [(ngModel)]="selectedEntity" class="dataTables_filter search-entity" (change)="getDataByEntity($event)">
+                      <option value="selected" selected disabled hidden>Entity Filter</option>
+                      <option value="{{entity}}" *ngFor="let entity of filters">{{entity}}</option>
+                    </select>
+                  </div>
+                    
+                  <table datatable [dtOptions]="dtOptions"
+                    class="
+                      sb-table sb-table-hover sb-table-striped sb-table-sortable
+                      width-100 table-bottom 
+                    "
+                  >
+                  <thead >
+                    <tr>
+                      <th class="header-section">{{resourceService?.frmelmnts?.lbl?.serialno}}</th>
+                      <th class="header-section"></th>
+                      <th>{{resourceService?.frmelmnts?.lbl?.title}}</th>
+                      <th  class="date-section">{{resourceService?.frmelmnts?.lbl?.latestSubmission}}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                   <tr *ngFor="let solution of solutionList;let i=index" (click)="(solution?.entities?.length >1) ? goToEntityList(solution) : goToReports(solution)">
+                         <td class="header-section">{{i+1}}</td>
+                         <td><button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal iconSize" aria-label="file-icon">
+                          <i class="icon copy outline alternate large"></i></button></td>
+                         <td><div class="sb-media"><div class="sb-media-body"><h6 class="p-0">
+                          {{solution.name}}</h6> <p class="media-description sb__ellipsis"> {{solution.programName}}</p></div></div></td>
+                          <td class="date-section">{{solution.completedDate| date: "yyyy/MM/dd"}}</td>
+                     </tr>
+                  </tbody>
+                 
+                </table>
+                <div class="content-grid relative9">
+                <div class="twelve wide column right aligned"
+                    *ngIf="paginationDetails.totalItems > 5">
+                    <div class="sb-pagination-container flex-jc-flex-end mt-16" *ngIf="paginationDetails.pages.length">
+                      <div class="sb-pagination my-0">
+                        <a [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item "
+                          (click)="navigateToPage(1) ">&laquo;</a>
+                        <a [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item "
+                          (click)="navigateToPage(paginationDetails.currentPage - 1)">&lt;</a>
+                        <a *ngFor="let page of paginationDetails.pages" [ngClass]="{active:paginationDetails.currentPage===page}"
+                          (click)="navigateToPage(page)" class="sb-item">{{page}}</a>
+                        <a [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}"
+                          (click)="navigateToPage(paginationDetails.currentPage + 1)" class="sb-item">&gt;</a>
+                        <a [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}"
+                          (click)="navigateToPage(paginationDetails.totalPages)" class="sb-item ">&raquo;</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+              </div>
+            </sui-tabset>
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+
+    
+    <div class="twelve wide column" *ngIf="noResult">
+      <app-no-result [data]="noResultMessage"></app-no-result>
+    </div>
+    <div class="twelve wide column" *ngIf="showLoader">
+      <app-loader [data]='loaderMessage'></app-loader>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="showModal">
+  <app-entity-list (closeEvent)="modalClose($event)"  [solution]="solution"> </app-entity-list>
+</div>

@@ -100,7 +100,7 @@ module.exports = (app, keycloak) => {
   '/orgType', '/orgType/*', '/dashBoard', '/dashBoard/*',
   '/workspace', '/workspace/*', '/profile', '/profile/*', '/learn', '/learn/*', '/resources', '/discussion-forum/*',
   '/resources/*', '/myActivity', '/myActivity/*', '/org/*', '/manage', '/contribute','/contribute/*','/groups','/groups/*', '/my-groups','/my-groups/*','/certs/configure/*',
-   '/observation', '/observation/*'], 
+   '/observation', '/observation/*','/solution','/solution/*','/questionnaire','/questionnaire/*'], 
   session({
     secret: envHelper.PORTAL_SESSION_SECRET_KEY,
     resave: false,
@@ -115,7 +115,8 @@ module.exports = (app, keycloak) => {
   app.all(['/', '/get', '/:slug/get', '/:slug/get/dial/:dialCode',  '/get/dial/:dialCode', '/explore',
     '/explore/*', '/:slug/explore', '/:slug/explore/*', '/play/*', '/:slug/play/*',  '/explore-course', '/explore-course/*',
     '/:slug/explore-course', '/:slug/explore-course/*', '/:slug/signup', '/signup', '/:slug/sign-in/*',
-    '/sign-in/*', '/download/*', '/accountMerge/*','/:slug/accountMerge/*', '/:slug/download/*', '/certs/*', '/:slug/certs/*', '/recover/*', '/:slug/recover/*', '/explore-groups'], 
+    '/sign-in/*', '/download/*', '/accountMerge/*','/:slug/accountMerge/*', '/:slug/download/*', '/certs/*', '/:slug/certs/*', '/recover/*', '/:slug/recover/*', '/explore-groups',
+    '/guest-profile'], 
     session({
       secret: envHelper.PORTAL_SESSION_SECRET_KEY,
       resave: false,
@@ -275,7 +276,7 @@ const loadTenantFromLocal = (req, res) => {
   }
 }
 const redirectTologgedInPage = (req, res) => {
-	let redirectRoutes = { '/explore': '/resources', '/explore/1': '/search/Library/1', '/explore-course': '/learn', '/explore-course/1': '/search/Courses/1' };
+	let redirectRoutes = { '/explore': '/resources', '/explore/1': '/search/Library/1', '/explore-course': '/learn', '/explore-course/1': '/search/Courses/1', '/guest-profile': '/profile', '/explore-groups': '/my-groups' };
 	if (req.params.slug) {
 		redirectRoutes = {
 			[`/${req.params.slug}/explore`]: '/resources',

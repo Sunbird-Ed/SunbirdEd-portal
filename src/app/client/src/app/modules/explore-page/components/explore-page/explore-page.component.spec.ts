@@ -10,19 +10,21 @@ import * as _ from 'lodash-es';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RESPONSE } from './explore-page.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TelemetryModule, IImpressionEventInput } from '@sunbird/telemetry';
+import { TelemetryModule, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { ExplorePageComponent } from './explore-page.component';
 import { ContentSearchService } from '@sunbird/content-search';
 import { configureTestSuite } from '@sunbird/test-util';
 import { ContentManagerService } from '../../../public/module/offline/services';
 import { CacheService } from 'ng2-cache-service';
 import { ProfileService } from '@sunbird/profile';
+import { SegmentationTagService } from '../../../core/services/segmentation-tag/segmentation-tag.service';
+import { find } from 'lodash-es';
 import { result } from 'lodash';
 
 describe('ExplorePageComponent', () => {
   let component: ExplorePageComponent;
   let fixture: ComponentFixture<ExplorePageComponent>;
-  let toasterService, userService, pageApiService, orgDetailsService, cacheService;
+  let toasterService, userService, pageApiService, orgDetailsService, cacheService, segmentationTagService;
   const mockPageSection: any = RESPONSE.searchResult;
   let sendOrgDetails = true;
   let sendPageApi = true;
@@ -92,7 +94,7 @@ describe('ExplorePageComponent', () => {
       imports: [SharedModule.forRoot(), CoreModule, HttpClientTestingModule, SuiModule, TelemetryModule.forRoot(), SlickModule],
       declarations: [ExplorePageComponent],
       providers: [PublicPlayerService, { provide: ResourceService, useValue: resourceBundle },
-        FormService, ProfileService, ContentManagerService,
+        FormService, ProfileService, ContentManagerService, TelemetryService,
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: FakeActivatedRoute }],
       schemas: [NO_ERRORS_SCHEMA]
@@ -107,6 +109,7 @@ describe('ExplorePageComponent', () => {
     pageApiService = TestBed.get(SearchService);
     orgDetailsService = TestBed.get(OrgDetailsService);
     cacheService = TestBed.get(CacheService);
+    segmentationTagService = TestBed.get(SegmentationTagService);
     sendOrgDetails = true;
     sendPageApi = true;
     spyOn(orgDetailsService, 'getOrgDetails').and.callFake((options) => {
@@ -790,5 +793,108 @@ describe('ExplorePageComponent', () => {
       });
     });
 
-  })
+    it('should show banner', () => {
+      segmentationTagService.exeCommands = RESPONSE.bannerData;
+      component.showorHideBanners();
+      expect(component.displayBanner).toEqual(true);
+    });
+
+    it('should hide banner', () => {
+      segmentationTagService.exeCommands = [];
+      component.showorHideBanners();
+      expect(component.displayBanner).toEqual(false);
+    });
+
+    it('should log the telemetry on banner click', () => {
+      const data = {
+          'code': 'banner_search',
+          'ui': {
+              'background': 'https://cdn.pixabay.com/photo/2015/10/29/14/38/web-1012467_960_720.jpg',
+              'text': 'Sample Search'
+          },
+          'action': {
+              'type': 'navigate',
+              'subType': 'search',
+              'params': {
+                  'query': 'limited attempt course',
+                  'filter': {
+                      'offset': 0,
+                      'filters': {
+                          'audience': [],
+                          'objectType': [
+                              'Content'
+                          ]
+                      }
+                  }
+              }
+          },
+          'expiry': '1653031067'
+      };
+      const telemetryService = TestBed.get(TelemetryService);
+      spyOn(telemetryService, 'interact');
+      const activatedRoute = TestBed.get(ActivatedRoute);
+      const telemetryData = {
+        context: {
+          env:  activatedRoute.snapshot.data.telemetry.env,
+          cdata: [{
+            id: 'banner_search',
+            type: 'Banner'
+          }]
+        },
+        edata: {
+          id: 'banner_search',
+          type: 'click',
+          pageid: activatedRoute.snapshot.data.telemetry.pageid
+        }
+      };
+      component.handleBannerClick(data);
+      expect(telemetryService.interact).toHaveBeenCalledWith(telemetryData);
+    });
+
+    it('Route url should available to the logged in user', () => {
+      spyOn(component, 'isUserLoggedIn').and.returnValue(true);
+      const router = TestBed.get(Router);
+      const data = {
+          'code': 'banner_internal_url',
+          'ui': {
+              'background': 'https://cdn.pixabay.com/photo/2015/10/29/14/38/web-1012467_960_720.jpg',
+              'text': 'Sample Internal Url'
+          },
+          'action': {
+              'type': 'navigate',
+              'subType': 'internalUrl',
+              'params': {
+                  'route': 'profile',
+                  'anonymousRoute': 'guest-profile'
+              }
+          },
+          'expiry': '1653031067'
+      };
+      component.navigateToSpecificLocation(data);
+      expect(router.navigate).toHaveBeenCalledWith(['profile']);
+    });
+
+    it('anonymousRoute url should available to the non logged in user', () => {
+      spyOn(component, 'isUserLoggedIn').and.returnValue(false);
+      const router = TestBed.get(Router);
+      const data = {
+          'code': 'banner_internal_url',
+          'ui': {
+              'background': 'https://cdn.pixabay.com/photo/2015/10/29/14/38/web-1012467_960_720.jpg',
+              'text': 'Sample Internal Url'
+          },
+          'action': {
+              'type': 'navigate',
+              'subType': 'internalUrl',
+              'params': {
+                  'route': 'profile',
+                  'anonymousRoute': 'guest-profile'
+              }
+          },
+          'expiry': '1653031067'
+      };
+      component.navigateToSpecificLocation(data);
+      expect(router.navigate).toHaveBeenCalledWith(['guest-profile']);
+    });
+  });
 });

@@ -471,11 +471,16 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
+    '/learner/user/v3/search': {
+      description: 'API to search for user (Admin user Search) with new roles array structure',
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.PUBLIC]
+    },
     '/learner/user/v1/upload': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ADMIN]
     },
-    '/learner/user/v4/read/:userId': {
+    '/learner/user/v5/read/:userId': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC, ROLE.ADMIN]
       // OWNER_CHECK: {
@@ -1599,7 +1604,7 @@ const API_LIST = {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.PUBLIC]
     },
-    '/learner/user/v1/role/assign': {
+    '/learner/user/v2/role/assign': {
       checksNeeded: ['ROLE_CHECK'],
       ROLE_CHECK: [ROLE.ORG_ADMIN]
     },
@@ -1628,56 +1633,56 @@ const API_LIST = {
       ROLE_CHECK: [ROLE.ORG_ADMIN, ROLE.CONTENT_CREATOR, ROLE.COURSE_MENTOR]
     },
     '/kendra/v1/users/entityTypesByLocationAndRole/:stateId': {
-      checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/kendra/v1/solutions/targetedSolutions': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/assessment/v1/observations/entities': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/assessment/v1/observationSubmissions/list/:id': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/kendra/v1/users/targetedEntity/:id': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/assessment/v2/observations/searchEntities': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/assessment/v1/observationSubmissions/create/:id': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/assessment/v2/observations/assessment/:id': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/kendra/v1/cloud-services/files/preSignedUrls': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/assessment/v1/observationSubmissions/list/:id': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/assessment/v1/observations/updateEntities/:id': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/assessment/v1/observationSubmissions/update/:id': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/cloudUpload/upload': {
       checksNeeded: ['ROLE_CHECK'],
-      ROLE_CHECK: [ROLE.PUBLIC]
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
     '/action/collection/v1/import/:id': {
       description: 'Collection import',
@@ -1694,7 +1699,19 @@ const API_LIST = {
         ROLE.CONTENT_CREATOR,
         ROLE.BOOK_CREATOR
       ]
-    }
+    },
+    '/dhiti/v1/reports/fetch': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/assessment/v1/observationSubmissions/solutionList': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
+    '/dhiti/v1/observations/listAllEvidences': {
+      checksNeeded: ['ROLE_CHECK'],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
   },
   URL_PATTERN: [
     '/learner/user/v1/feed/delete',
@@ -1707,7 +1724,7 @@ const API_LIST = {
     '/learner/questionset/v1/hierarchy/:do_id',
     '/learner/data/v1/system/settings/get/:slug',
     '/learner/course/v1/hierarchy/:do_id',
-    '/learner/user/v4/read/:userId',
+    '/learner/user/v5/read/:userId',
     '/learner/course/v1/user/enrollment/list/:userId',
     '/learner/user/v1/feed/:userId',
     '/learner/course/v1/batch/read/:batchId',

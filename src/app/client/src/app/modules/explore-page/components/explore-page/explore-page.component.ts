@@ -72,6 +72,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     queryParams: { [x: string]: any; };
     _currentPageData: any;
     facetSections: any = [];
+    contentSection;
     instance: string;
     userPreference: any;
     searchResponse: any = [];
@@ -357,7 +358,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     if (_.get(currentPageData, 'filter')) {
                         this.isFilterEnabled = _.get(currentPageData, 'filter.isEnabled')
                     }
-                    if(_.get(currentPageData, 'contentType') === 'explore') {
+                    if (_.get(currentPageData, 'contentType') === 'explore') {
+                        this.contentSection = undefined;
                         return this.getExplorePageSections();
                     } else {
                         const { search: { fields = [], filters = {}, facets = ['subject'] } = {}, metaData: { groupByKey = 'subject' } = {} } = currentPageData || {};
@@ -437,10 +439,19 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                             this.facetSections.push({
                                                 name: facet.facetKey,
                                                 data: _.sortBy(_facetArray, ['name']),
-                                                section: facet
+                                                section: facet,
                                             });
                                         }
                                     });
+
+                                    if (facetKeys.indexOf('search') > -1) {
+                                        const section = currentPageData.sections.find(sec => sec.facetKey === 'search');
+                                        this.contentSection = {
+                                            isEnabled: Boolean(_.get(section, 'isEnabled')),
+                                            searchRequest: _.get(section, 'apiConfig.req'),
+                                            title: get(this.resourceService, section.title)
+                                        };
+                                    }
                                 }
                                 return _map(sections, (section) => {
                                     forEach(section.contents, contents => {
@@ -974,17 +985,55 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     navigateToSpecificLocation(data) {
         switch (data.code) {
             case 'banner_external_url':
-                console.log('banner_external_url', data);
-                break;
-            case 'banner_internal_url':
-                console.log('banner_internal_url', data);
+                window.open(_.get(data.action, 'params.route'), '_blank');
                 break;
             case 'banner_search':
-                console.log('banner_search', data);
+                const queryParams = _.get(data.action, 'params.filter.filters');
+                if (_.get(data.action, 'params.query')) {
+                    queryParams['key'] = _.get(data.action, 'params.query');
+                }
+                queryParams['selectedTab'] = 'all';
+                if (this.isUserLoggedIn()) {
+                    this.router.navigate(['search/Library', 1], { queryParams: queryParams });
+                } else {
+                    this.router.navigate(['explore', 1], { queryParams: queryParams });
+                }
+                break;
+            case 'banner_internal_url':
+                const route = _.get(data.action, 'params.route');
+                const anonymousUrl = _.get(data.action, 'params.anonymousRoute');
+                const url = (this.isUserLoggedIn()) ? route : anonymousUrl;
+                if (url) {
+                    this.router.navigate([url]);
+                } else {
+                    this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+                }
                 break;
             case 'banner_content':
-                console.log('banner_content', data);
+                const contentId = _.get(data.action, 'params.identifier');
+                const params = {};
+                params['key'] = contentId;
+                params['selectedTab'] = 'all';
+                this.router.navigate(['explore', 1], { queryParams: params });
                 break;
         }
+    }
+
+    handleBannerClick(data) {
+        const telemetryData = {
+          context: {
+            env:  this.activatedRoute.snapshot.data.telemetry.env,
+            cdata: [{
+              id: data.code,
+              type: 'Banner'
+            }]
+          },
+          edata: {
+            id: data.code,
+            type: 'click',
+            pageid: this.activatedRoute.snapshot.data.telemetry.pageid
+          }
+        };
+        this.telemetryService.interact(telemetryData);
     }
 }

@@ -69,49 +69,51 @@
             <div *ngFor="let submission of submissions">
               <!-- Observation With Rubric -->
               <submission [submission]="submission" [allowMultipleAssessemts]="entities?.allowMultipleAssessemts"
-                *ngIf="submission?.evidencesStatus?.length > 1  || (submission.criteriaLevelReport && submission.isRubricDriven)"
+                *ngIf="(submission?.evidencesStatus?.length > 1  || (submission.criteriaLevelReport && submission.isRubricDriven));else rubricCard"
                 (selectedSubmission)="redirectToQuestions($event)" (onAction)="actionOnSubmission($event)">
               </submission>
               <!-- Observation Without Rubric -->
-              <div content class="pt-0 pb-8" *ngIf="submission?.evidencesStatus?.length == 1">
-                <div *ngFor="let evidance of submission?.evidencesStatus"
-                  class="evidences-list cc-player__content-header sb-g">
-                  <div class="sb-g-col-xs-12 sb-g-col-sm-12 sb-g-col-md-8 sb-g-col-lg-9">
-                    <div class="content-header__title font-weight-bold ellipsis text-left">
-                      <div class="white-space-wrap">{{submission.title}} </div>
-                      <small *ngIf="evidance.status == 'notstarted'" class="txt-transform">{{resourceService?.frmelmnts.lbl.dashboardsortbystatus}} :
-                        {{resourceService.frmelmnts?.lbl?.notstarted}}</small>
-                      <small *ngIf="evidance.status != 'notstarted'" class="txt-transform">{{resourceService?.frmelmnts.lbl.dashboardsortbystatus}} :
-                        {{evidance.status}}</small>
+              <ng-template #rubricCard>
+                <div content class="pt-0 pb-8">
+                  <div *ngFor="let evidance of submission?.evidencesStatus"
+                    class="evidences-list cc-player__content-header sb-g">
+                    <div class="sb-g-col-xs-12 sb-g-col-sm-12 sb-g-col-md-8 sb-g-col-lg-9">
+                      <div class="content-header__title font-weight-bold ellipsis text-left">
+                        <div class="white-space-wrap">{{submission.title}} </div>
+                        <small *ngIf="evidance.status == 'notstarted'" class="txt-transform">{{resourceService?.frmelmnts.lbl.dashboardsortbystatus}} :
+                          {{resourceService.frmelmnts?.lbl?.notstarted}}</small>
+                        <small *ngIf="evidance.status != 'notstarted'" class="txt-transform">{{resourceService?.frmelmnts.lbl.dashboardsortbystatus}} :
+                          {{evidance.status}}</small>
+                      </div>
                     </div>
-                  </div>
-                  <div class="certified-course__btn ng-star-inserted sb-g-col-xs-12 sb-g-col-sm-12 sb-g-col-md-4 sb-g-col-lg-3 center-align">
-                    <button *ngIf="evidance?.status === 'notstarted'"
-                      (click)="open(submission.submissionNumber,evidance)"
-                      class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.btn?.start}}
-                    </button>
-                    <button *ngIf="evidance?.status === 'draft'" (click)="open(submission.submissionNumber,evidance)"
-                      class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.lbl?.continue }}
-                    </button>
-                    <button *ngIf="evidance?.status === 'completed' || evidence?.status === 'ratingPending'"
-                      (click)="open(submission.submissionNumber,evidance)"
-                      class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.lbl?.view }}
-                    </button>
-                    <div class="ui dropdown" suiDropdown *ngIf="entities?.allowMultipleAssessemts"
-                      (click)="$event.stopPropagation()">
-                      <i class="ellipsis vertical icon large"
-                        *ngIf="submission.status != 'completed' && submission.status !='ratingPending'"></i>
-                      <div class="menu" suiDropdownMenu>
-                        <div class="item" (click)="dropDownAction(submission,action.type)"
-                          *ngFor="let action of actions">
-                          {{action.name}}
-                          <span class="description"><i class="{{action.icon}}"></i></span>
+                    <div class="certified-course__btn ng-star-inserted sb-g-col-xs-12 sb-g-col-sm-12 sb-g-col-md-4 sb-g-col-lg-3 center-align">
+                      <button *ngIf="evidance?.status === 'notstarted'"
+                        (click)="open(submission.submissionNumber,evidance)"
+                        class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.btn?.start}}
+                      </button>
+                      <button *ngIf="evidance?.status === 'draft'" (click)="open(submission.submissionNumber,evidance)"
+                        class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.lbl?.continue }}
+                      </button>
+                      <button *ngIf="evidance?.status === 'completed' || evidence?.status === 'ratingPending'"
+                        (click)="open(submission.submissionNumber,evidance)"
+                        class="sb-btn sb-btn-secondary sb-btn-normal ml-auto textbook__addbtn">{{resourceService.frmelmnts?.lbl?.view }}
+                      </button>
+                      <div class="ui dropdown" suiDropdown *ngIf="entities?.allowMultipleAssessemts"
+                        (click)="$event.stopPropagation()">
+                        <i class="ellipsis vertical icon large"
+                          *ngIf="submission.status != 'completed' && submission.status !='ratingPending'"></i>
+                        <div class="menu" suiDropdownMenu>
+                          <div class="item" (click)="dropDownAction(submission,action.type)"
+                            *ngFor="let action of actions">
+                            {{action.name}}
+                            <span class="description"><i class="{{action.icon}}"></i></span>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+            </ng-template>
             </div>
           </div>
         </div>

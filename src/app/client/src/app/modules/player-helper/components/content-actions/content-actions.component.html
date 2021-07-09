@@ -34,7 +34,7 @@ class="sb-modal" appBodyScroll (dismissed)="showDeleteModal = !showDeleteModal;"
     <p>{{resourceService?.frmelmnts?.lbl?.desktop?.deleteContent | interpolate:'{name}': contentData?.name}}</p>
   </div>
   <div class="sb-modal-actions">
-  <button class="sb-btn sb-btn-normal sb-btn-primary"
+  <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0"
     (click)="deleteContent(contentData); showDeleteModal = !showDeleteModal;">
     {{resourceService?.frmelmnts?.lbl?.delete}}
   </button>
