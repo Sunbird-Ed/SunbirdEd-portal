@@ -178,9 +178,6 @@ getActivity(groupId, activity, mergeGroup, leafNodesCount?) {
     if (this.navigationhelperService['_history'].length <= 1) {
       this.router.navigate([MY_GROUPS]);
     } else {
-      if(this.navigationhelperService['_history'].find(n => n.url.indexOf('discussion-forum') != -1)){
-        this.navigationhelperService.removeDfRoutes();
-      }
       this.navigationhelperService.goBack();
     }
   }

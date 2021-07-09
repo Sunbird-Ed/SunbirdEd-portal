@@ -72,9 +72,9 @@ export class NavigationHelperService {
         }
         const previousUrl = this._history.pop();
         if (previousUrl === undefined || (previousUrl && previousUrl.url === history.url )) {
-          this._history.push(history);
+            this._history.push(history);
         } else {
-          this._history.push(previousUrl, history);
+            this._history.push(previousUrl, history);
         }
       }
     });
@@ -235,14 +235,9 @@ export class NavigationHelperService {
     }
   }
 
-  /* Used for removing DF routes and duplicate routes from history which will cause looping */
-  removeDfRoutes() {
-    this._history = this._history.filter(h => !(h.url.includes('discussion-forum')))
-    this._history = this._history.filter((item, index) => {
-      const _item = JSON.stringify(item);
-      return index === this._history.findIndex(obj => {
-        return JSON.stringify(obj) === _item;
-      });
-    });
+  popHistory(){
+    this.history.pop();
   }
+
+
 }

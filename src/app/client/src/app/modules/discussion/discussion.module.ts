@@ -31,6 +31,9 @@ export class DiscussionModule {
       if (_.get(event, 'action') === 'DF_CLOSE' ) {
         this.navigationHelperService.navigateToLastUrl();
       }
+      if (_.get(event, 'action') === 'DF_BACK' ) {
+        this.navigationHelperService.popHistory();
+      }
     });
   }
 }
