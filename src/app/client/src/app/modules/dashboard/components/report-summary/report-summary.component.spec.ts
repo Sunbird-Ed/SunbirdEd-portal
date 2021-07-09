@@ -7,6 +7,7 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { ReportSummaryComponent } from './report-summary.component';
 import { ReportService } from '../../services';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('ReportSummaryComponent', () => {
   let component: ReportSummaryComponent;
@@ -16,7 +17,7 @@ describe('ReportSummaryComponent', () => {
     TestBed.configureTestingModule({
       declarations: [],
       providers: [ReportService],
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, DashboardModule, TelemetryModule.forRoot()]
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, DashboardModule, TelemetryModule.forRoot(), RouterTestingModule]
     })
       .compileComponents();
   }));

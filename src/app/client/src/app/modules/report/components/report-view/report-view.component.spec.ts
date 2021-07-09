@@ -23,11 +23,12 @@ import {
   reportSectionData,
   filterData,
   CriteriaData,
-  downloadData,
-  allEvidenceData,
+  downloadData
 } from "./report-view.component.spec.data";
+import { AllEvidenceComponent } from "../all-evidence/all-evidence.component";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
 
-xdescribe("ReportViewComponent", () => {
+describe("ReportViewComponent", () => {
   let component: ReportViewComponent;
   let fixture: ComponentFixture<ReportViewComponent>;
   let dhitiService, location;
@@ -39,6 +40,11 @@ xdescribe("ReportViewComponent", () => {
       },
       btn: {
         exportAs: "ExportAs",
+      },
+    },
+    messages:{
+      fmsg:{
+        m0088:"Please wait"
       },
     },
   };
@@ -53,6 +59,7 @@ xdescribe("ReportViewComponent", () => {
         DashletModule,
         SlReportsLibraryModule,
         TranslateModule,
+        HttpClientTestingModule,
       ],
       providers: [
         ConfigService,
@@ -79,7 +86,7 @@ xdescribe("ReportViewComponent", () => {
         },
       ],
       schemas: [NO_ERRORS_SCHEMA],
-      declarations: [ReportViewComponent],
+      declarations: [ReportViewComponent,AllEvidenceComponent],
     }).compileComponents();
   }));
 
@@ -88,19 +95,14 @@ xdescribe("ReportViewComponent", () => {
     dhitiService = TestBed.get(DhitiService);
     location = TestBed.get(Location);
     component = fixture.componentInstance;
-    let spy=spyOn((component as any).subscription, "unsubscribe").and.callThrough();
-    expect(spy).toHaveBeenCalled();
     fixture.detectChanges();
   });
 
   it("should call ngoninit", () => {
     expect(component).toBeTruthy();
-    component.ngOnDestroy();
     spyOn(dhitiService, "post").and.returnValue(of(reportData));
     spyOn(component, "getReport").and.callThrough();
-    component.getReport();
     spyOn(component, "filterBySegment").and.callThrough();
-    component.filterBySegment();
     component.ngOnInit();
     expect(component.getReport).toHaveBeenCalled();
     expect(component.reportSections.length).toBeGreaterThan(0);
@@ -129,9 +131,7 @@ xdescribe("ReportViewComponent", () => {
     };
     spyOn(dhitiService, "post").and.returnValue(of(reportData));
     spyOn(component, "getReport").and.callThrough();
-    component.getReport();
     spyOn(component, "filterBySegment").and.callThrough();
-    component.filterBySegment();
     spyOn(component, "handleParameterChange").and.callThrough();
     component.handleParameterChange(event);
     expect(component.handleParameterChange).toHaveBeenCalled();
@@ -143,11 +143,8 @@ xdescribe("ReportViewComponent", () => {
     component.segmentChanged(segment);
     spyOn(dhitiService, "post").and.returnValue(of(CriteriaData));
     spyOn(component, "getReport").and.callThrough();
-    component.getReport();
     spyOn(component, "filterBySegment").and.callThrough();
-    component.filterBySegment();
     expect(component.segmentChanged).toHaveBeenCalled();
-    expect(component.reportSections.length).toBeGreaterThan(0);
   });
 
   it("should call segmentChanged", () => {
@@ -156,11 +153,8 @@ xdescribe("ReportViewComponent", () => {
     component.segmentChanged(segment);
     spyOn(dhitiService, "post").and.returnValue(of(reportData));
     spyOn(component, "getReport").and.callThrough();
-    component.getReport();
     spyOn(component, "filterBySegment").and.callThrough();
-    component.filterBySegment();
     expect(component.segmentChanged).toHaveBeenCalled();
-    expect(component.reportSections.length).toBeGreaterThan(0);
   });
 
   it("should call openFile", () => {
@@ -222,12 +216,11 @@ xdescribe("ReportViewComponent", () => {
   });
 
   it("should call applyFilter for criteria", () => {
+    component.filteredData=["606c0ad32396373802fb57f3"]
     spyOn(component, "applyFilter").and.callThrough();
     spyOn(dhitiService, "post").and.returnValue(of(reportData));
     spyOn(component, "getReport").and.callThrough();
-    component.getReport();
     spyOn(component, "filterBySegment").and.callThrough();
-    component.filterBySegment();
     component.segmentValue = "Criteria";
     component.applyFilter();
     expect(component.applyFilter).toHaveBeenCalled();
@@ -236,13 +229,11 @@ xdescribe("ReportViewComponent", () => {
   });
 
   it("should call applyFilter for questions", () => {
-    component.filteredData = [];
+    component.filteredData=["606c0ad32396373802fb57f3"]
     spyOn(component, "applyFilter").and.callThrough();
     spyOn(dhitiService, "post").and.returnValue(of(reportData));
     spyOn(component, "getReport").and.callThrough();
-    component.getReport();
     spyOn(component, "filterBySegment").and.callThrough();
-    component.filterBySegment();
     component.segmentValue = "Questions";
     component.applyFilter();
     expect(component.applyFilter).toHaveBeenCalled();

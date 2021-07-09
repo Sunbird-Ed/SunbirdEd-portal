@@ -109,4 +109,19 @@
       margin: auto;
     }
   }
+  /*.banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(233deg, rgba(0,0,0,0) 0%, #191919 100%);
+  }*/
+  .explore-text {
+    color: var(--primary-color);
+    font-size: calculateRem(20px);
+    font-weight: bold;
+    padding: calculateRem(24px) calculateRem(32px);
+    z-index: 1;
+  }
 }

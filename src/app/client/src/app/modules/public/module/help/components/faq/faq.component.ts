@@ -41,6 +41,9 @@ export class FaqComponent implements OnInit {
   @ViewChildren('videoPlayer') videoPlayer;
   showVideoModal = false;
   playerConfig: any;
+  isDisabled = false;
+  time=(TEN_MINUTES)/(1000*60);
+  isExpanded = false;
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
@@ -96,6 +99,10 @@ export class FaqComponent implements OnInit {
       }
     });
     this.checkScreenView(window.innerWidth);
+    if(localStorage.getItem('debugDisabled')) {
+      this.isDisabled = (localStorage.getItem('debugDisabled') === 'true') ? true : false;
+    }
+    this.updateButtonVisibility();
   }
 
   private getFaqJson() {
@@ -297,9 +304,17 @@ export class FaqComponent implements OnInit {
 
     return new Promise((resolve) => resolve(timeInterval));
   }
-
+  updateButtonVisibility(){
+    setTimeout(() => {
+      this.isDisabled = false;
+      localStorage.setItem('debugDisabled', 'false');
+    }, TEN_MINUTES);
+  }
   async enableDebugMode(event) {
     const timeInterval = await this.getDebugTimeInterval();
+    localStorage.setItem('debugDisabled', 'true');
+    this.isDisabled = true;
+    this.updateButtonVisibility();
     const httpOptions: HttpOptions = {
       params: {
         logLevel: 'debug',
