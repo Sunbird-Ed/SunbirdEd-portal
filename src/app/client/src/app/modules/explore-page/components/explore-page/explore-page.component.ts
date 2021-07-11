@@ -926,7 +926,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         params[facetName] = event.data[0].value.value;
         params['selectedTab'] = 'all';
         params['showClose'] = 'true';
-        params['isInside'] = event.data[0].value.value;
+        params['isInside'] = event.data[0].value.name;
         params['returnTo'] = contentType;
         
         const updatedCategoriesMapping = _.mapKeys(params, (_, key) => {
