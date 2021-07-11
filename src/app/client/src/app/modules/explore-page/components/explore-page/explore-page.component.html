@@ -102,7 +102,7 @@
               <hr *ngIf="section?.section?.isEnabled && section?.data?.length" class="section-hr my-32" />
             </div>
             <div *ngFor="let section of contentSections" class="pl-16">
-              <sb-content-section *ngIf="section?.isEnabled" (cardClick)="playContent($event)"
+              <sb-content-section *ngIf="section?.isEnabled" (cardClick)="playContent($event)" [sortBy]="section?.apiConfig?.sortBy"
                 [searchRequest]="section?.searchRequest" [title]="section?.title" [layoutConfig]="layoutConfiguration"
                 (viewMoreClick)="viewAll($event, section)" [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall">
               </sb-content-section>
