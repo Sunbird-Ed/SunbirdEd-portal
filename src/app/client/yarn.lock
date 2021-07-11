@@ -1490,14 +1490,7 @@
     reflect-metadata "^0.1.13"
     whatwg-fetch "^3.1.0"
 
-"@project-sunbird/common-consumption-v8@4.0.9":
-  version "4.0.9"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v8/-/common-consumption-v8-4.0.9.tgz#99571bb76f93c04e0ee8645191a0457a12d943fc"
-  integrity sha512-p1efkdBKjhohUqM+vOiB2hP/xrglfCLFmPLbrvMkzxwZvUXX23FsOw+Nf0SBUkPVd7XNkBxEddCw84myM6ZNaA==
-  dependencies:
-    tslib "^1.9.0"
-
-"@project-sunbird/common-consumption-v9@^4.1.1":
+"@project-sunbird/common-consumption-v9@4.1.1":
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.1.1.tgz#ec23c5e7f34ebcb2155338702b5442a1924fd0ff"
   integrity sha512-sVtHki4m/N6AT1xp4JMl4Aepz/mzqgbMfjmjuOGCLujc1WJfkIpPxv+j3Ur/24IwYT4I9l+GfMkc3i4Ff7dngg==
