@@ -25,7 +25,44 @@ module.exports = function (app) {
     healthService.checkDependantServiceHealth([]),
     telemetryHelper.generateTelemetryForLearnerService,
     telemetryHelper.generateTelemetryForProxy,
-    handleRequest('/kendra/api/')
+    // handleRequest('/kendra/api/'),
+    proxy(mlURL, {
+      limit: reqDataLimitOfContentUpload,
+      proxyReqOptDecorator: proxyUtils.decorateRequestHeaders(mlURL),
+      proxyReqPathResolver: function (req) {
+        let urlParam = req.params['0']
+        let query = require('url').parse(req.url).query
+        logger.info({ msg: '==============================/ML_URL_14_30/* ===================================called - ' + mlURL+req.url });
+        if (query) {
+          const url = require('url').parse(mlURL + '/kendra/api/' + urlParam + '?' + query).path;
+          logger.info({ msg: 'SL:proxyReqPathResolver:83 '+ url });
+          return url
+        } else {
+          const url = require('url').parse(mlURL + '/kendra/api/' + urlParam).path
+          logger.info({ msg: 'SL:proxyReqPathResolver:87 '+ url });
+          return url
+        }
+      },
+      userResDecorator: (proxyRes, proxyResData, req, res) => {
+        // logger.info({ msg: 'SL:userResDecorator:90 '+ JSON.stringify(res) + JSON.stringify(req) });
+        // logger.info({ msg: 'SL:userResDecorator:91 '+ JSON.stringify(req) });
+  
+        try {
+          const parsedData = JSON.parse(proxyResData.toString('utf8'));
+          // logger.info({ msg: 'SL:userResDecorator:97 '+ JSON.stringify(parsedData) });
+          if (proxyRes.statusCode === 404) res.redirect('/')
+          else {
+            const data = proxyUtils.handleSessionExpiry(proxyRes, parsedData, req, res);
+                  logger.info({ msg: 'SL:userResDecorator:100 '+ JSON.stringify(data) });
+            (data.status === 200 || data.result || data.status) ? data.responseCode = "OK" : null;
+            return data
+          }
+        } catch (err) {
+          logger.error({ msg: 'ML route : userResDecorator json parse error:', proxyResData, error: JSON.stringify(err) })
+          return proxyUtils.handleSessionExpiry(proxyRes, proxyResData, req, res);
+        }
+      }
+    })
   )
 
   app.all('/dhiti/*',
