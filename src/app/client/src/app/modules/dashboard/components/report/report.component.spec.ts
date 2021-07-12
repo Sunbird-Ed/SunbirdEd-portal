@@ -381,12 +381,13 @@ describe('ReportComponent', () => {
 
     component.reportData = {
       charts:[{
-        chartData:chartData
+        chartData:chartData,
+        chartConfig : { id:"chartId" }
       }
     ]
     }
     const data = component.getAllChartData();
-    expect(data).toEqual(chartData);
+    expect(data).toEqual([{ data:chartData, id:"chartId"}]);
   }));
 
   it('should get chart data', fakeAsync(() => {
@@ -433,12 +434,13 @@ describe('ReportComponent', () => {
     tick(1000);
     component.reportData = {
       charts:[{
-        chartData:chartData
+        chartData:chartData,
+        chartConfig : { id:"chartId" }
       }
     ]
     }
     component.resetFilter();
-    expect(component.resetFilters).toEqual({ data:chartData,reset:true });
+    expect(component.resetFilters).toEqual({ data:[ { id:"chartId",data:chartData }],reset:true });
 
   }));
 

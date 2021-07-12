@@ -81,7 +81,6 @@ export class DataChartComponent implements OnInit, OnDestroy {
   @ViewChild('chartCanvas') chartCanvas;
   filterType:string = "chart-filter";
   dateFilters:Array<string>;
-  chartAreaWidth:Number;
  
 
   @ViewChild(BaseChartDirective) chartDirective: BaseChartDirective;
@@ -96,10 +95,7 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
     this.chartConfig = _.get(this.chartInfo, 'chartConfig');
     this.chartData = _.get(this.chartInfo, 'chartData');
-    console.log("this.chartData ",this.chartData );
-
     this.chartSummarylabel = "Add " + _.get(this.resourceService, 'frmelmnts.lbl.chartSummary');
-
     if (_.get(this.chartInfo, 'lastUpdatedOn')) {
       this.lastUpdatedOn = moment(_.get(this.chartInfo, 'lastUpdatedOn')).format('DD-MMMM-YYYY');
     }
@@ -232,19 +228,6 @@ export class DataChartComponent implements OnInit, OnDestroy {
     });
 
     this.chartLabels = labels;
-
-    if(this.chartType=="bar"){
-      if(this.chartLabels.length > 5){
-
-        let width =this.chartLabels.length * 40;
-        if(width > window.innerWidth){
-          this.chartAreaWidth = width;
-        }
-        // console.log(window.innerWidth," this.chartAreaWidth", width);
-      }
-  
-    }
-   
   }
 
   private sortData(chartData, labelsExpr) {
@@ -257,7 +240,6 @@ export class DataChartComponent implements OnInit, OnDestroy {
 
   getDataSetValue(chartData = this.chartData) {
 
-    console.log("chartData chartData",chartData);
     let groupedDataBasedOnLabels;
     const labelsExpr = _.get(this.chartConfig, 'labelsExpr');
     if (labelsExpr) {
@@ -417,32 +399,16 @@ export class DataChartComponent implements OnInit, OnDestroy {
   @Input()
   set globalFilter(val: any) {
     if(val){
-      val.chartData['selectedFilters'] = {};
-
-      console.log(" this.chartConfig", this.chartConfig);
-      console.log(" this.chartConfig 2", val);
-      // if(this.chartInfo)
-
-      debugger;
+      // val.chartData['selectedFilters'] = {};
       let updatedChartData = val.chartData.filter(chart=>{
         if(this.chartConfig['id']==chart.id){
           return chart.data;
         }
       });
-      // this.chartInfo
-
-
-      console.log("updated",updatedChartData);
 
       if(updatedChartData){
         delete updatedChartData[0].data['selectedFilters'];
-        // this.chartData = updatedChartData[0].data;
-        // this.chartData['selectedFilters'] = { };
-
         this.chartData = updatedChartData[0].data;
-        
-
-        console.log("------------------------------",this.chartData );
         this.cdr.detectChanges();
         this.getDataSetValue(updatedChartData[0].data);
         this.calculateBigNumber(updatedChartData[0].data);
@@ -454,7 +420,6 @@ export class DataChartComponent implements OnInit, OnDestroy {
   }
 
   public filterChanged(data: any):void {
-    console.log("data---------------------",data);
     this.cdr.detectChanges();
     this.currentFilters = data.filters;
     let keys = Object.keys(this.currentFilters);
@@ -474,7 +439,6 @@ export class DataChartComponent implements OnInit, OnDestroy {
     }else {
       this.chartData['selectedFilters'] = {};
     }
-    console.log("data---------------------",data);
     this.getDataSetValue(data.chartData[0].data);
     this.calculateBigNumber(data.chartData[0].data);
   }
@@ -491,10 +455,8 @@ export class DataChartComponent implements OnInit, OnDestroy {
       this.cdr.detectChanges();
     }else {
       if(this.currentFilters){
-
         this.chartData['selectedFilters'] = this.currentFilters;
         this.resetFilters = { data: this.chartData,reset:true };
-      
       }else {
         this.chartData['selectedFilters'] = {};
       }
@@ -506,7 +468,6 @@ export class DataChartComponent implements OnInit, OnDestroy {
   
   resetForm(){
     this.chartData['selectedFilters'] = {};
-
     this.resetFilters = { data: this.chartData,reset:true };
     this.currentFilters = [];
   }
@@ -518,7 +479,6 @@ export class DataChartComponent implements OnInit, OnDestroy {
     }
   }
   getChartData(){
-    console.log("calling get chartData");
     return [{ id:this.chartConfig.id ,data: this.chartData , selectedFilters:this.currentFilters }];
   }
 }

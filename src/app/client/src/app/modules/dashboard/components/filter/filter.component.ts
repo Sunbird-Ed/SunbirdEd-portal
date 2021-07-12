@@ -40,8 +40,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   dateFilters:Array<string>;
   public unsubscribe = new Subject<void>();
   previousFilters: any;
-  chartInfo:any=[];
-  tempChartData:any =[];
+  formChartData:any =[];
 
   @Input()
   set selectedFilter(val: any) {
@@ -61,10 +60,7 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   @Input()
   set resetFilters(val: any) {
-    if (val) {
-
-      console.log("val",val);
-      
+    if (val) {    
         const currentFilterValue = _.get(this.filtersFormGroup, 'value');
         this.resetFilter();
         this.chartData = val.data;
@@ -103,36 +99,14 @@ export class FilterComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-
-    debugger;
-
-
-    console.log("ng oninit this.chartData",this.chartData);
-
-    if(this.chartData && this.chartData.length >0 ){
-      this.chartInfo = this.chartData.slice(0,this.chartData.length);
-    } else {
-      this.chartInfo = [ this.chartData ];
-    }
-    
-    debugger;
-
-
     let charts =[];
     if(this.chartData && this.chartData.length > 0) {
       this.chartData.map(function(data){
         charts.push(...data.data);
         return data.data;
       })
-
-    } else {
-      charts = this.chartData.data;
     }
-
-    this.tempChartData = charts;
-    console.log("filter--",this.tempChartData);
-
-
+    this.formChartData = charts;
     if (this.filters) {
       this.buildFiltersForm();
     }
@@ -164,9 +138,6 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.previousFilters = this.selectedFilters;
   }
   formGeneration(chartData) {
-  
-    debugger;
-
       this.filtersFormGroup = this.fb.group({});
       _.forEach(this.filters, filter => {
 
@@ -186,10 +157,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   buildFiltersForm() {
-    console.log("{ id:this.chartConfig.id ,data:this.chartData }",this.tempChartData);
-
-
-    this.formGeneration(this.tempChartData);
+    this.formGeneration(this.formChartData);
     this.filtersSubscription = this.filtersFormGroup.valueChanges
       .pipe(
         takeUntil(this.unsubscribe),
@@ -244,24 +212,18 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   filterData() {
-    debugger;
-
     if (this.selectedFilters) {
 
       let filterData = [];
       let filteredChartData =[];
       this.chartData.forEach(chart => {
 
-       let id =chart.id;
-
+        let id = chart.id;
         delete chart.id;
         delete chart.data.selectedFilters;
         delete chart.data.id;
         
-        console.log("chart",chart.id,"this.selectedFilters",this.selectedFilters);
-        console.log("chart dat",chart);
         let result: Array<{}> = _.filter(chart.data, data => {
-          console.log("data------ab 1",data);
             return _.every(this.selectedFilters, (filterValues, key) => {
               if(data[key]){
                 return _.some(filterValues, filterValue => _.trim(_.toLower(filterValue)) === _.trim(_.toLower(_.get(data, key))));
@@ -270,30 +232,12 @@ export class FilterComponent implements OnInit, OnDestroy {
             
         });
 
-        
-        console.log("result-------",result);
-
-        // if(result  && result.length >0 ){
-          filteredChartData.push({ id:id,data: result });
-          result['selectedFilters'] = this.selectedFilters;
-          filterData.push(...result);
-        // }
-        
+        filteredChartData.push({ id:id,data: result });
+        result['selectedFilters'] = this.selectedFilters;
+        filterData.push(...result);
       });
 
       this.formUpdate(filterData);
-      console.log("filteredChartData",filterData);
-
-      // const res: Array<{}> = _.filter(this.tempChartData, data => {
-      //   return _.every(this.selectedFilters, (filterValues, key) => {
-      //     if(data[key]){
-      //       return _.some(filterValues, filterValue => _.trim(_.toLower(filterValue)) === _.trim(_.toLower(_.get(data, key))));
-      //     }
-      //   });
-      // });
-      // this.formUpdate(res);
-
-
       let keys = Object.keys(this.selectedFilters);
       this.dateFilters = [];
       this.filters.map(ele=>{
@@ -306,16 +250,12 @@ export class FilterComponent implements OnInit, OnDestroy {
           }
       });
 
-      console.log("filteredChartData",filteredChartData);
       this.filterChanged.emit({
         allFilters:this.filters,
         filters: this.selectedFilters,
         chartData: filteredChartData,
       });
     } else {
-      debugger;
-      console.log("this.chartData---------------",this.chartData);
-
       this.dateFilters = [];
       this.filterChanged.emit({
         allFilters: this.filters,

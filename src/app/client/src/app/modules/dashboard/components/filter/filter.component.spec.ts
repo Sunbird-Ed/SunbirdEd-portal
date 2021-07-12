@@ -75,7 +75,7 @@ describe('FilterComponent', () => {
     fixture = TestBed.createComponent(FilterComponent);
     component = fixture.componentInstance;
     component.filters = mockChartData.filters;
-    component.chartData = mockChartData.chartData;
+    component.chartData = [{ data:mockChartData.chartData,id:"chartId" }];
     component.selectedFilter = {};
     component.filterType = "chart-filter";
     component.chartLabels = [];
@@ -89,7 +89,7 @@ describe('FilterComponent', () => {
   it('should have filters and chartData as input', () => {
     component.ngOnInit();
     expect(component.filters).toBe(mockChartData.filters);
-    expect(component.chartData).toBe(mockChartData.chartData);
+    expect(component.chartData).toEqual([{ data:mockChartData.chartData,id:"chartId" }]);
   });
 
 
@@ -149,20 +149,20 @@ describe('FilterComponent', () => {
   it('should set resetFilters', fakeAsync(() => {
     component.ngOnInit();
     tick(1000);
-    component.resetFilters = { data:mockChartData.chartData,reset:true,filters:mockChartData.filters };
+    component.resetFilters = { data:[{ data:mockChartData.chartData,id:"chartId" }],reset:true,filters:mockChartData.filters };
     tick(1000);
     component.resetFilter();
     tick(1000);
     component.buildFiltersForm()  
     tick(1000);
-    expect(component.chartData).toEqual(mockChartData.chartData);
+    expect(component.chartData).toEqual([{ data:mockChartData.chartData }]);
   }));
 
   it('should run buildFiltersForm', fakeAsync(() => {
     component.ngOnInit();
     tick(1000);
     component.filters = mockChartData.filters;
-    component.chartData = mockChartData.chartData;
+    component.chartData = [{ data:mockChartData.chartData,id:"chartId" }];
     tick(1000);
     component.buildFiltersForm();
     tick(1000);
@@ -177,7 +177,7 @@ describe('FilterComponent', () => {
     component.ngOnInit();
     tick(1000);
     component.filters = mockChartData.filters;
-    component.chartData = mockChartData.chartData;
+    component.chartData = [{ data:mockChartData.chartData,id:"chartId" }];
     tick(1000);
     component.buildFiltersForm();
     tick(1000);
@@ -206,7 +206,7 @@ describe('FilterComponent', () => {
    
     const spy = spyOn(component, 'formUpdate').and.callThrough();
     component.filters = mockChartData.filters;
-    component.chartData = mockChartData.chartData;
+    component.chartData = [{ data:mockChartData.chartData,id:"chartId" }];
     component.ngOnInit();
     tick(1000);
     component.filtersFormGroup.get('state').setValue(['01285019302823526477']);

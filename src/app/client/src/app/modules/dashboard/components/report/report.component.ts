@@ -556,14 +556,11 @@ export class ReportComponent implements OnInit {
 
   getAllChartData() {
     let chartData = [];
-    // console.log("this.reportData",this.reportData);
-
     if (this.reportData.charts) {
       this.reportData.charts.map(chartInfo => {
         chartData.push({ id:chartInfo.chartConfig.id ,data:chartInfo.chartData});
       });
     }
-    // console.log("this.reportData",chartData);
     return chartData;
   }
 
@@ -576,24 +573,16 @@ export class ReportComponent implements OnInit {
     return chartInfo;
   }
   public filterChanged(data: any): void {
-    debugger;
- 
     if (this.chartsReportData && this.chartsReportData.charts) {
       this.chartsReportData.charts.map(element => {
-
-
         data.chartData.forEach(chart => {
             if(chart['id']===element['chartConfig']['id']){
               element.chartData = chart.data;
             }
         });
-        // if(element['chartConfig']['id']==data.chartData[element['chartConfig']['id']]){
-        //   element.chartData = data.chartData[element['chartConfig']['id']]data;
-        // }
         return element;
       });
     }
-    console.log("------------------------------data.chartData",data.chartData,"----------------");
     this.globalFilterChange = {
       chartData: data.chartData,
       filters: data.filters
