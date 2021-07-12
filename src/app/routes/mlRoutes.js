@@ -25,7 +25,7 @@ module.exports = function (app) {
     healthService.checkDependantServiceHealth([]),
     telemetryHelper.generateTelemetryForLearnerService,
     telemetryHelper.generateTelemetryForProxy,
-    handleRequest('/kendra/')
+    handleRequest('/kendra/api/')
   )
 
   app.all('/dhiti/*',
@@ -34,7 +34,7 @@ module.exports = function (app) {
     healthService.checkDependantServiceHealth([]),
     telemetryHelper.generateTelemetryForLearnerService,
     telemetryHelper.generateTelemetryForProxy,
-    handleRequest('/dhiti/')
+    handleRequest('/dhiti/api/')
   )
 
   app.all('/assessment/*',
@@ -43,7 +43,7 @@ module.exports = function (app) {
     healthService.checkDependantServiceHealth([]),
     telemetryHelper.generateTelemetryForLearnerService,
     telemetryHelper.generateTelemetryForProxy,
-    handleRequest('/assessment/')
+    handleRequest('/assessment/api/')
   )
 
   app.put('/cloudUpload/*', async (req, res) => {
@@ -77,13 +77,13 @@ function handleRequest(serviceUrl) {
     proxyReqPathResolver: function (req) {
       let urlParam = req.params['0']
       let query = require('url').parse(req.url).query
-      logger.info({ msg: '==============================/ML_URL/* ===================================called - ' + mlURL + req.method + ' - ' + req.url });
+      logger.info({ msg: '==============================/ML_URL_13_13/* ===================================called - ' + mlURL+req.url });
       if (query) {
-        const url = require('url').parse(mlURL + serviceUrl+ 'api/' + urlParam + '?' + query).path;
+        const url = require('url').parse(mlURL + serviceUrl + urlParam + '?' + query).path;
         logger.info({ msg: 'SL:proxyReqPathResolver:83 '+ url });
         return url
       } else {
-        const url = require('url').parse(mlURL + serviceUrl+ 'api/' + urlParam).path
+        const url = require('url').parse(mlURL + serviceUrl + urlParam).path
         logger.info({ msg: 'SL:proxyReqPathResolver:87 '+ url });
         return url
       }
@@ -94,7 +94,7 @@ function handleRequest(serviceUrl) {
 
       try {
         const parsedData = JSON.parse(proxyResData.toString('utf8'));
-        logger.info({ msg: 'SL:userResDecorator:97 '+ JSON.stringify(parsedData) });
+        // logger.info({ msg: 'SL:userResDecorator:97 '+ JSON.stringify(parsedData) });
         if (proxyRes.statusCode === 404) res.redirect('/')
         else {
           const data = proxyUtils.handleSessionExpiry(proxyRes, parsedData, req, res);
