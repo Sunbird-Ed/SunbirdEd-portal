@@ -80,18 +80,25 @@ function handleRequest(serviceUrl) {
       logger.info({ msg: '==============================/ML_URL/* ===================================called - ' + mlURL + req.method + ' - ' + req.url });
       if (query) {
         const url = require('url').parse(mlURL + serviceUrl+ 'api/' + urlParam + '?' + query).path;
+        logger.info({ msg: 'SL:proxyReqPathResolver:83 '+ url });
         return url
       } else {
         const url = require('url').parse(mlURL + serviceUrl+ 'api/' + urlParam).path
+        logger.info({ msg: 'SL:proxyReqPathResolver:87 '+ url });
         return url
       }
     },
     userResDecorator: (proxyRes, proxyResData, req, res) => {
+      // logger.info({ msg: 'SL:userResDecorator:90 '+ JSON.stringify(res) + JSON.stringify(req) });
+      // logger.info({ msg: 'SL:userResDecorator:91 '+ JSON.stringify(req) });
+
       try {
         const parsedData = JSON.parse(proxyResData.toString('utf8'));
+        logger.info({ msg: 'SL:userResDecorator:97 '+ JSON.stringify(parsedData) });
         if (proxyRes.statusCode === 404) res.redirect('/')
         else {
           const data = proxyUtils.handleSessionExpiry(proxyRes, parsedData, req, res);
+                logger.info({ msg: 'SL:userResDecorator:100 '+ JSON.stringify(data) });
           (data.status === 200 || data.result || data.status) ? data.responseCode = "OK" : null;
           return data
         }
