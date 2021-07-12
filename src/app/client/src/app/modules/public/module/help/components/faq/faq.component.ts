@@ -14,7 +14,7 @@ import { VideoConfig } from './faq-data';
 import { HttpOptions } from '../../../../../shared/interfaces/httpOptions';
 import { FormService } from '../../../../../core/services/form/form.service';
 
-const TEN_MINUTES = 1000 * 60 * 10;
+const TEN_MINUTES = 1000 * 60 * 2;
 @Component({
   selector: 'app-faq',
   templateUrl: './faq.component.html',
@@ -42,7 +42,8 @@ export class FaqComponent implements OnInit {
   showVideoModal = false;
   playerConfig: any;
   isDisabled = false;
-  time=(TEN_MINUTES)/(1000*60);
+  timeInterval = String(TEN_MINUTES);
+  time=0;
   isExpanded = false;
 
   @HostListener('window:resize', ['$event'])
@@ -101,8 +102,9 @@ export class FaqComponent implements OnInit {
     this.checkScreenView(window.innerWidth);
     if(localStorage.getItem('debugDisabled')) {
       this.isDisabled = (localStorage.getItem('debugDisabled') === 'true') ? true : false;
+      this.updateButtonVisibility();
     }
-    this.updateButtonVisibility();
+    
   }
 
   private getFaqJson() {
@@ -289,30 +291,42 @@ export class FaqComponent implements OnInit {
   }
 
   private async getDebugTimeInterval(): Promise<string> {
-    let timeInterval = String(TEN_MINUTES);
     try {
       const params = { formType: 'config', formAction: 'get', contentType: 'debugMode', component: 'portal' };
       const formFields = await this.formService.getFormConfig(params).toPromise();
       const field = formFields.filter(item => item.timeInterval);
 
       if (field.length) {
-        timeInterval = field[0].timeInterval;
+        this.timeInterval = field[0].timeInterval;
       }
     } catch (error) {
-      timeInterval = String(TEN_MINUTES);
+      this.timeInterval = String(TEN_MINUTES);
     }
-
-    return new Promise((resolve) => resolve(timeInterval));
+    this.time=Number(this.timeInterval)/(1000*60);
+    return new Promise((resolve) => resolve(this.timeInterval));
   }
   updateButtonVisibility(){
-    setTimeout(() => {
+    const currentTime = Math.floor(Date.now());
+    const valueStored = Number(localStorage.getItem('debugDisabledAt'));
+    const disableTime = Number(valueStored + Number(this.timeInterval))
+    if(currentTime > disableTime){
       this.isDisabled = false;
       localStorage.setItem('debugDisabled', 'false');
-    }, TEN_MINUTES);
+      localStorage.setItem('debugDisabledAt','0');
+    }else{
+      let time = disableTime - currentTime 
+      this.time=Number(this.timeInterval)/(1000*60)
+      setTimeout(() => {
+      this.isDisabled = false;
+      localStorage.setItem('debugDisabled', 'false');
+      localStorage.setItem('debugDisabledAt','0');
+    }, time);
+    }
   }
   async enableDebugMode(event) {
     const timeInterval = await this.getDebugTimeInterval();
     localStorage.setItem('debugDisabled', 'true');
+    localStorage.setItem('debugDisabledAt', String(Math.floor(Date.now())));
     this.isDisabled = true;
     this.updateButtonVisibility();
     const httpOptions: HttpOptions = {

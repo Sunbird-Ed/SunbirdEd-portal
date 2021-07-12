@@ -782,7 +782,7 @@ describe('ExplorePageComponent', () => {
       const router = TestBed.get(Router);
       const output = component.handlePillSelect({}, 'subject');
       expect(output).toEqual(undefined);
-      component.handlePillSelect({ data: [{ value: { value: 'english' } }] }, 'subject');
+      component.handlePillSelect({ data: [{ value: { value: 'english', name: 'english' } }] }, 'subject');
       expect(router.navigate).toHaveBeenCalledWith(['explore', 1], {
         queryParams: {
             se_subjects: 'english',
