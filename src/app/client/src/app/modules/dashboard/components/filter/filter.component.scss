@@ -218,3 +218,9 @@ sui-multi-select.selection.sb-select-searchfilter.ui.dropdown.multiple {
 .sb-prominent-filter {
  background: #E9E8D9 !important; 
 }
+
+::ng-deep{
+  .modals.dimmer .ui.scrolling.modal {
+    margin: 3.5rem auto auto !important;
+  }
+}
