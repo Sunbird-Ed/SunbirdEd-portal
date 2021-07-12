@@ -399,7 +399,6 @@ export class DataChartComponent implements OnInit, OnDestroy {
   @Input()
   set globalFilter(val: any) {
     if(val){
-      // val.chartData['selectedFilters'] = {};
       let updatedChartData = val.chartData.filter(chart=>{
         if(this.chartConfig['id']==chart.id){
           return chart.data;
