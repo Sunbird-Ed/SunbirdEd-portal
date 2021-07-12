@@ -155,8 +155,10 @@ export class ReportComponent implements OnInit {
               map((apiResponse) => {
                 const [data, reportSummary] = apiResponse;
                 const result: any = Object.assign({});
-                const chart = (charts && this.reportService.prepareChartData(charts, data, updatedDataSource,
+                let chart = (charts && this.reportService.prepareChartData(charts, data, updatedDataSource,
                   _.get(reportConfig, 'reportLevelDataSourceId'))) || [];
+                chart = chart.filter(function(chartData){ if(chartData ){ return (chartData['chartData'] != null || chartData['chartData'] != undefined) } });
+                
                 result['charts'] =  chart;
                 result['tables'] = (tables && this.reportService.prepareTableData(tables, data, _.get(reportConfig, 'downloadUrl'),
                   this.hash)) || [];

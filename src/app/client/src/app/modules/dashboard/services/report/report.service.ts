@@ -36,10 +36,13 @@ export class ReportService {
     return this.usageService.getData(filePath).pipe(
       map(configData => {
         return {
+          loaded:true,
           result: _.get(configData, 'result'),
           ...(id && { id })
         };
       })
+      ,catchError(error => of({ loaded:false }))
+
     );
   }
 
@@ -53,6 +56,8 @@ export class ReportService {
     });
     return forkJoin(...apiCalls).pipe(
       mergeMap(response => {
+
+        response = response.filter(function(item){ if(item ){ return item.loaded = true } });
         return this.getFileMetaData(dataSources).pipe(
           map(metadata => {
             return _.map(response, res => {
@@ -60,13 +65,10 @@ export class ReportService {
               return res;
             });
           })
+          ,catchError(err => {
+            return throwError(err);
+          })
         );
-      }),
-      catchError(err => {
-        if (err.status === 404) {
-          return throwError({ messageText: 'messages.stmsg.reportNotReady' });
-        }
-        return throwError(err);
       })
     );
   }
