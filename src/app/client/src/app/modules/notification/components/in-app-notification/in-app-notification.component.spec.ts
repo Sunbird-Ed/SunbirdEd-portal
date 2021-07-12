@@ -7,7 +7,7 @@ import { SuiModalModule, SuiModule } from 'ng2-semantic-ui-v9';
 import { SharedModule, ResourceService, ConnectionService } from '@sunbird/shared';
 import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { NotificationServiceImpl } from '../../services/notification/notification-service-impl';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v9';
 import { of as observableOf, of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
