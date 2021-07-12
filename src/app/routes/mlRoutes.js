@@ -32,7 +32,9 @@ module.exports = function (app) {
       proxyReqPathResolver: function (req) {
         let urlParam = req.params['0']
         let query = require('url').parse(req.url).query
-        logger.info({ msg: '==============================/ML_URL_16_00/* ===================================called - ' + mlURL+req.url });
+        logger.info({ msg: '==============================/ML_URL_19_00/* ===================================called - ' + mlURL });
+        logger.info({ msg: '==============================/ML_URL_19_00/* ===================================called - ' +req.url });
+
         if (query) {
           const url = require('url').parse(mlURL + '/kendra/api/' + urlParam + '?' + query).path;
           logger.info({ msg: 'SL:proxyReqPathResolver:83 '+ url });

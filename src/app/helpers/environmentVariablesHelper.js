@@ -49,7 +49,7 @@ let envVariables = {
   sunbird_kid_public_key_base_path: env.sunbird_kid_public_key_base_path || '/keys/',
   reportsListVersion: env.reportsListVersion || 'v1',
   sunbird_data_product_service: env.sunbird_data_product_service || 'https://staging.ntp.net.in/',
-  ML_SERVICE_BASE_URL: env.ML_SERVICE_BASE_URL || "https://survey.preprod.ntp.net.in/staging",
+  ML_SERVICE_BASE_URL: "https://survey.preprod.ntp.net.in/staging",
   SUNBIRD_PROTO: env.sunbird_base_proto,
 
   // TTL and Intervals
@@ -213,6 +213,7 @@ try {
   // Else default config will be used
   if (process.env.sunbird_environment === 'local' && fs.existsSync(devConfig)) {
     const devVariables = require('./devConfig');
+    console.log(devVariables)
     module.exports = devVariables;
   } else {
     module.exports = envVariables;
