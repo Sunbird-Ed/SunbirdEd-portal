@@ -180,7 +180,6 @@ export class QuestionnaireComponent
             ? this.resourceService.frmelmnts.lbl.failedToSave
             : this.resourceService.frmelmnts.lbl.submissionFailed
         );
-        console.log(error);
       }
     );
   }
@@ -236,7 +235,6 @@ export class QuestionnaireComponent
       });
       alertMetaData.footer.className = "double-btn";
     }
-    console.log(alertMetaData);
     return this.observationUtilService.showPopupAlert(alertMetaData);
   }
 
