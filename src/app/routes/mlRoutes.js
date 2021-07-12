@@ -22,9 +22,9 @@ module.exports = function (app) {
   app.all('/kendra/*',
     bodyParser.json(),
     isAPIWhitelisted.isAllowed(),
-    healthService.checkDependantServiceHealth([]),
-    telemetryHelper.generateTelemetryForLearnerService,
-    telemetryHelper.generateTelemetryForProxy,
+    // healthService.checkDependantServiceHealth([]),
+    // telemetryHelper.generateTelemetryForLearnerService,
+    // telemetryHelper.generateTelemetryForProxy,
     // handleRequest('/kendra/api/'),
     proxy(mlURL, {
       limit: reqDataLimitOfContentUpload,
@@ -32,7 +32,7 @@ module.exports = function (app) {
       proxyReqPathResolver: function (req) {
         let urlParam = req.params['0']
         let query = require('url').parse(req.url).query
-        logger.info({ msg: '==============================/ML_URL_14_30/* ===================================called - ' + mlURL+req.url });
+        logger.info({ msg: '==============================/ML_URL_16_00/* ===================================called - ' + mlURL+req.url });
         if (query) {
           const url = require('url').parse(mlURL + '/kendra/api/' + urlParam + '?' + query).path;
           logger.info({ msg: 'SL:proxyReqPathResolver:83 '+ url });
@@ -68,18 +68,18 @@ module.exports = function (app) {
   app.all('/dhiti/*',
     bodyParser.json(),
     isAPIWhitelisted.isAllowed(),
-    healthService.checkDependantServiceHealth([]),
-    telemetryHelper.generateTelemetryForLearnerService,
-    telemetryHelper.generateTelemetryForProxy,
+    // healthService.checkDependantServiceHealth([]),
+    // telemetryHelper.generateTelemetryForLearnerService,
+    // telemetryHelper.generateTelemetryForProxy,
     handleRequest('/dhiti/api/')
   )
 
   app.all('/assessment/*',
     bodyParser.json(),
     isAPIWhitelisted.isAllowed(),
-    healthService.checkDependantServiceHealth([]),
-    telemetryHelper.generateTelemetryForLearnerService,
-    telemetryHelper.generateTelemetryForProxy,
+    // healthService.checkDependantServiceHealth([]),
+    // telemetryHelper.generateTelemetryForLearnerService,
+    // telemetryHelper.generateTelemetryForProxy,
     handleRequest('/assessment/api/')
   )
 
