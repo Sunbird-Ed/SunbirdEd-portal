@@ -5,7 +5,7 @@ import {
   TenantService,
   OrgDetailsService,
   FormService,
-  ManagedUserService, ProgramsService, CoursesService, DeviceRegisterService, ElectronService
+  ManagedUserService, CoursesService, DeviceRegisterService, ElectronService
 } from './../../services';
 import { Component, OnInit, ChangeDetectorRef, Input, OnDestroy } from '@angular/core';
 import {
@@ -121,7 +121,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   contributeMenuEdata: IInteractEventEdata;
   myGroupIntractEData: IInteractEventEdata;
   aboutUsEdata: IInteractEventEdata;
-  showContributeTab: boolean;
   hideHeader = false;
   ShowStudentDropdown = false;
   routerLinks = { explore: `/${EXPLORE_GROUPS}`, groups: `/${MY_GROUPS}` };
@@ -160,7 +159,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     public permissionService: PermissionService, public userService: UserService, public tenantService: TenantService,
     public orgDetailsService: OrgDetailsService, public formService: FormService,
     private managedUserService: ManagedUserService, public toasterService: ToasterService,
-    private telemetryService: TelemetryService, private programsService: ProgramsService,
+    private telemetryService: TelemetryService,
     private courseService: CoursesService, private utilService: UtilService, public layoutService: LayoutService,
     public activatedRoute: ActivatedRoute, private cacheService: CacheService, private cdr: ChangeDetectorRef,
     public navigationHelperService: NavigationHelperService, private deviceRegisterService: DeviceRegisterService,
@@ -548,9 +547,6 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
           this.isCustodianOrgUser();
           document.title = _.get(this.userService, 'rootOrgName');
         }
-      });
-      this.programsService.allowToContribute$.subscribe((showTab: boolean) => {
-        this.showContributeTab = showTab;
       });
     } else {
       this.orgDetailsService.orgDetails$.pipe(first()).subscribe((data) => {
