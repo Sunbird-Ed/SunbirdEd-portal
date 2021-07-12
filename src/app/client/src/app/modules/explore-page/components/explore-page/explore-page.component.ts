@@ -72,6 +72,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     queryParams: { [x: string]: any; };
     _currentPageData: any;
     facetSections: any = [];
+    contentSections = [];
     instance: string;
     userPreference: any;
     searchResponse: any = [];
@@ -357,7 +358,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     if (_.get(currentPageData, 'filter')) {
                         this.isFilterEnabled = _.get(currentPageData, 'filter.isEnabled')
                     }
-                    if(_.get(currentPageData, 'contentType') === 'explore') {
+                    if (_.get(currentPageData, 'contentType') === 'explore') {
+                        this.contentSections = [];
                         return this.getExplorePageSections();
                     } else {
                         const { search: { fields = [], filters = {}, facets = ['subject'] } = {}, metaData: { groupByKey = 'subject' } = {} } = currentPageData || {};
@@ -425,7 +427,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                     const facetKeys = _.map(currentPageData.sections, (section) => { return section.facetKey });
                                     const facets = this.utilService.processCourseFacetData(_.get(response, 'result'), facetKeys);
                                     forEach(currentPageData.sections, facet => {
-                                        if (_.get(facets, facet.facetKey) && _.get(facets, facet.facetKey).length > 0) {
+                                        if (_.get(facets, facet.facetKey)) {
                                             let _facetArray = [];
                                             forEach(facets[facet.facetKey], _facet => {
                                                 _facetArray.push({
@@ -437,10 +439,20 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                             this.facetSections.push({
                                                 name: facet.facetKey,
                                                 data: _.sortBy(_facetArray, ['name']),
-                                                section: facet
+                                                section: facet,
+                                                index: facet.index
                                             });
                                         }
                                     });
+                                    this.facetSections = _.sortBy(this.facetSections, ['index']);
+                                    if (facetKeys.indexOf('search') > -1) {
+                                        this.contentSections = [];
+                                        const searchSections = currentPageData.sections.filter(sec => sec.facetKey === 'search');
+                                        searchSections.forEach((item) => {
+                                            this.contentSections.push(this.getContentSection(item, option));
+                                        });
+
+                                    }
                                 }
                                 return _map(sections, (section) => {
                                     forEach(section.contents, contents => {
@@ -472,6 +484,21 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     }
                 })
             );
+    }
+
+    private getContentSection(section, searchOptions) {
+        const sectionFilters = _.get(section, 'apiConfig.req.request.filters');
+        const requiredProps = ['se_boards', 'se_gradeLevels', 'se_mediums'];
+        if (_.has(sectionFilters, ...requiredProps) && searchOptions.filters) {
+            const preferences = _.pick(searchOptions.filters, requiredProps);
+            section.apiConfig.req.request.filters = { ...section.apiConfig.req.request.filters, ...preferences };
+        }
+
+        return {
+            isEnabled: Boolean(_.get(section, 'isEnabled')),
+            searchRequest: _.get(section, 'apiConfig.req'),
+            title: get(this.resourceService, section.title)
+        };
     }
 
     addHoverData() {
@@ -773,13 +800,33 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
 
-    public viewAll(event) {
+    logViewAllTelemetry(event) {
+        const telemetryData = {
+            cdata: [{
+                type: 'section',
+                id: event.name
+            }],
+            edata: {
+                id: 'view-all'
+            }
+        };
+        this.getInteractEdata(telemetryData);
+    }
+
+    public viewAll(event, contentSection?) {
         let searchQuery;
-        if (this.isUserLoggedIn() && !_.get(event, 'searchQuery')) {
-            searchQuery = JSON.parse(this.myCoursesSearchQuery);
+        if (contentSection) {
+            event = { contents: event.data, count: event.data.length, name: contentSection.title };
+            searchQuery = contentSection.searchRequest;
         } else {
-            searchQuery = JSON.parse(event.searchQuery);
+            if (this.isUserLoggedIn() && !_.get(event, 'searchQuery')) {
+                searchQuery = JSON.parse(this.myCoursesSearchQuery);
+            } else {
+                searchQuery = JSON.parse(event.searchQuery);
+            }
         }
+
+        this.logViewAllTelemetry(event);
         const searchQueryParams: any = {};
         _.forIn(searchQuery.request.filters, (value, key) => {
             if (_.isPlainObject(value)) {
@@ -788,15 +835,17 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 searchQueryParams[key] = value;
             }
         });
-        searchQueryParams.defaultSortBy = JSON.stringify(searchQuery.request.sort_by);
+        searchQueryParams.defaultSortBy = _.get(searchQuery, 'request.sort_by') ? JSON.stringify(searchQuery.request.sort_by) : JSON.stringify({ lastPublishedOn: 'desc' });
         searchQueryParams['exists'] = _.get(searchQuery, 'request.exists');
+        searchQueryParams['isContentSection'] = Boolean(contentSection);
         if (this.isUserLoggedIn()) {
             this.cacheService.set('viewAllQuery', searchQueryParams, { maxAge: 600 });
         } else {
             this.cacheService.set('viewAllQuery', searchQueryParams);
         }
         this.cacheService.set('pageSection', event, { maxAge: this.browserCacheTtlService.browserCacheTtl });
-        const queryParams = { ...searchQueryParams, ...this.queryParams };
+        const queryParams = contentSection ? { ...searchQueryParams, ...{ selectedTab: this.queryParams.selectedTab } } :
+        { ...searchQueryParams, ...this.queryParams };
         const sectionUrl = _.get(this.router, 'url.split') && this.router.url.split('?')[0] + '/view-all/' + event.name.replace(/\s/g, '-');
         this.router.navigate([sectionUrl, 1], { queryParams: queryParams, state: { currentPageData: this.getCurrentPageData()} });
     }
@@ -903,6 +952,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         return get(this.resourceService, 'frmelmnts.lbl.browseBy') + ' ' + get(this.resourceService, title);
     }
 
+    getBannerTitle (title) {
+        return get(this.resourceService, title);
+    }
+
     getSelectedTab () {
         return get(this.activatedRoute, 'snapshot.queryParams.selectedTab');
     }
@@ -967,8 +1020,9 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     setBannerConfig() {
-        this.bannerList = this.bannerSegment.filter((value) =>
-            Number(value.expiry) > Math.floor(Date.now() / 1000));
+        this.bannerList = this.bannerSegment.filter((value) => 
+            Number(value.expiry) > Math.floor(Date.now() / 1000)
+        );
     }
 
     navigateToSpecificLocation(data) {
@@ -976,29 +1030,33 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
             case 'banner_external_url':
                 window.open(_.get(data.action, 'params.route'), '_blank');
                 break;
-            case 'banner_internal_url':
-                const url = _.get(data.action, 'params.route');
-                if (url) {
-                    this.router.navigate([url]);
-                } else {
-                    this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-                }
-                break;
             case 'banner_search':
                 const queryParams = _.get(data.action, 'params.filter.filters');
                 if (_.get(data.action, 'params.query')) {
                     queryParams['key'] = _.get(data.action, 'params.query');
                 }
+                queryParams['selectedTab'] = 'all';
                 if (this.isUserLoggedIn()) {
                     this.router.navigate(['search/Library', 1], { queryParams: queryParams });
                 } else {
                     this.router.navigate(['explore', 1], { queryParams: queryParams });
                 }
                 break;
+            case 'banner_internal_url':
+                const route = _.get(data.action, 'params.route');
+                const anonymousUrl = _.get(data.action, 'params.anonymousRoute');
+                const url = (this.isUserLoggedIn()) ? route : anonymousUrl;
+                if (url) {
+                    this.router.navigate([url]);
+                } else {
+                    this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+                }
+                break;
             case 'banner_content':
                 const contentId = _.get(data.action, 'params.identifier');
                 const params = {};
                 params['key'] = contentId;
+                params['selectedTab'] = 'all';
                 this.router.navigate(['explore', 1], { queryParams: params });
                 break;
         }

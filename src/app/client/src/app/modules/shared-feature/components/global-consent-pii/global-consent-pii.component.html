@@ -17,7 +17,7 @@
 
       <div class="d-flex flex-ai-end flex-jc-flex-end">
         <button class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary font-weight-bold"
-          (click)="toggleEditSetting()">
+          (click)="toggleEditSetting()" tabindex="0">
           {{ editSetting ? resourceService?.frmelmnts?.btn?.close : resourceService?.frmelmnts?.lbl?.editSetting }}
         </button>
       </div>
@@ -95,9 +95,9 @@
   <!--/Content-->
   <!--Actions-->
   <div class="sb-modal-actions">
-    <button type="button" [ngClass]="{'sb-btn-disabled': !isTncAgreed}" [disabled]="!isTncAgreed" class="sb-btn sb-btn-normal sb-btn-primary text-uppercase" (click)="updateUserConsent(true)" *ngIf="type === 'course-consent'">{{resourceService?.frmelmnts?.lbl?.share}}</button>
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary text-uppercase" (click)="updateUserConsent(false)" *ngIf="type === 'course-consent'">{{resourceService?.frmelmnts?.lbl?.dontShare}}</button>
-    <button type="button" [ngClass]="{'sb-btn-disabled': !isTncAgreed}" [disabled]="!isTncAgreed" class="sb-btn sb-btn-normal sb-btn-primary text-uppercase" (click)="updateUserConsent(true)" *ngIf="type === 'global-consent'">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
+    <button type="button" tabindex="0" [ngClass]="{'sb-btn-disabled': !isTncAgreed}" [disabled]="!isTncAgreed" class="sb-btn sb-btn-normal sb-btn-primary text-uppercase" (click)="updateUserConsent(true)" *ngIf="type === 'course-consent'">{{resourceService?.frmelmnts?.lbl?.share}}</button>
+    <button class="sb-btn  sb-btn-normal sb-btn-outline-primary text-uppercase" tabindex="0" (click)="updateUserConsent(false)" *ngIf="type === 'course-consent'">{{resourceService?.frmelmnts?.lbl?.dontShare}}</button>
+    <button type="button" tabindex="0" [ngClass]="{'sb-btn-disabled': !isTncAgreed}" [disabled]="!isTncAgreed" class="sb-btn sb-btn-normal sb-btn-primary text-uppercase" (click)="updateUserConsent(true)" *ngIf="type === 'global-consent'">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
   </div>
   <!--/Actions-->
 </sui-modal>

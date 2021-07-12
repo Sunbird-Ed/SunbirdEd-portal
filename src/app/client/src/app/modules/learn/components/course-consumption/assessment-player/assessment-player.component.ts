@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { TelemetryService, IAuditEventInput, IImpressionEventInput } from '@sunbird/telemetry';
 import { Component, OnInit, OnDestroy, ViewChild, Inject, HostListener } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
-import { TocCardType } from '@project-sunbird/common-consumption-v8';
+import { TocCardType } from '@project-sunbird/common-consumption-v9';
 import { UserService, GeneraliseLabelService, PlayerService } from '@sunbird/core';
 import { AssessmentScoreService, CourseBatchService, CourseConsumptionService, CourseProgressService } from '@sunbird/learn';
 import { PublicPlayerService, ComponentCanDeactivate } from '@sunbird/public';
@@ -74,12 +74,13 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   showLastAttemptsModal: boolean = false;
   navigationObj: { event: any; id: any; };
   showPlayer = false;
+  showQSExitConfirmation = false;
 
   @HostListener('window:beforeunload')
   canDeactivate() {
     // returning true will navigate without confirmation
     // returning false will show a confirm dialog before navigating away
-    return _.get(this.activeContent, 'mimeType') === 'application/vnd.sunbird.questionset' ? false: true;
+    return _.get(this.activeContent, 'mimeType') === 'application/vnd.sunbird.questionset' && !this.showQSExitConfirmation ? false: true;
   } 
 
   constructor(
@@ -724,6 +725,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
             /* istanbul ignore else */
             if (maxAttemptsExceeded && !showPopup) {
               this.showMaxAttemptsModal = true;
+              this.showQSExitConfirmation = true;
             } else if (isLastAttempt) {
               this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.selfAssessLastAttempt'));
             } else if (_.get(res, 'content.length')) {
@@ -751,6 +753,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
         /* istanbul ignore else */
         if (maxAttemptsExceeded) {
           this.showMaxAttemptsModal = true;
+          this.showQSExitConfirmation = true;
         } else if (isLastAttempt) {
           this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.selfAssessLastAttempt'));
         } else if (this.contentStatus && this.contentStatus.length) {
@@ -779,6 +782,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     /* istanbul ignore if */
     if (maxAttemptsExceeded) {
       this.showMaxAttemptsModal = true;
+      this.showQSExitConfirmation = true;
     } else {
       /* istanbul ignore if */
       if (isLastAttempt && !this.showLastAttemptsModal && this._routerStateContentStatus) {
@@ -852,6 +856,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     }
     if (_.get(event, 'data') === 'renderer:maxLimitExceeded' || _.get(event, 'edata.maxLimitExceeded')) {
       this.showMaxAttemptsModal = true;
+      this.showQSExitConfirmation = true;
     }
   }
 

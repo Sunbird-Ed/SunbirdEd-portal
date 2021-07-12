@@ -31,6 +31,7 @@ export class AddEntityComponent implements OnInit {
     public loaderMessage: ILoaderMessage;
     public noResultMessage: INoResultMessage;
     showDownloadSuccessModal;
+    selectedEntities = [];
     constructor(
         private observationService: ObservationService,
         private kendraService: KendraService,
@@ -78,6 +79,12 @@ export class AddEntityComponent implements OnInit {
 
     }
     selectEntity(event) {
+        if(this.selectedEntities.includes(event._id)){
+            const i = this.selectedEntities.indexOf(event._id);
+            this.selectedEntities.splice(i, 1);
+        } else {
+            this.selectedEntities.push(event._id);
+        }
         if (!event.isSelected) {
             event.selected = !event.selected;
         }
@@ -121,13 +128,7 @@ export class AddEntityComponent implements OnInit {
         }
     }
     submit() {
-        let selectedSchools = [];
-        this.entities.forEach((element) => {
-            if (element.selected && !element.preSelected) {
-                selectedSchools.push(element._id);
-            }
-        });
-        this.payload.data = selectedSchools;
+        this.payload.data = this.selectedEntities;
         const paramOptions = {
             url: this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_UPDATE_ENTITES + `${this.observationId}`,
             param: {},

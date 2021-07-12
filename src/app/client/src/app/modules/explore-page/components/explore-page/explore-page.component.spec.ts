@@ -566,7 +566,8 @@ describe('ExplorePageComponent', () => {
     router.url = '/explore-course?selectedTab=course';
     component.viewAll({ searchQuery: searchQuery, name: 'Featured-courses' });
     expect(router.navigate).toHaveBeenCalledWith(['/explore-course/view-all/Featured-courses', 1],
-      { queryParams: { 'status': '1', 'defaultSortBy': '{"createdDate":"desc"}', 'exists': undefined }, state: { currentPageData: {}} });
+      { queryParams: { 'status': '1', 'defaultSortBy': '{"createdDate":"desc"}', 'exists': undefined, isContentSection: false
+     }, state: { currentPageData: {}} });
     expect(cacheService.set).toHaveBeenCalled();
   });
 
@@ -849,6 +850,52 @@ describe('ExplorePageComponent', () => {
       };
       component.handleBannerClick(data);
       expect(telemetryService.interact).toHaveBeenCalledWith(telemetryData);
+    });
+
+    it('Route url should available to the logged in user', () => {
+      spyOn(component, 'isUserLoggedIn').and.returnValue(true);
+      const router = TestBed.get(Router);
+      const data = {
+          'code': 'banner_internal_url',
+          'ui': {
+              'background': 'https://cdn.pixabay.com/photo/2015/10/29/14/38/web-1012467_960_720.jpg',
+              'text': 'Sample Internal Url'
+          },
+          'action': {
+              'type': 'navigate',
+              'subType': 'internalUrl',
+              'params': {
+                  'route': 'profile',
+                  'anonymousRoute': 'guest-profile'
+              }
+          },
+          'expiry': '1653031067'
+      };
+      component.navigateToSpecificLocation(data);
+      expect(router.navigate).toHaveBeenCalledWith(['profile']);
+    });
+
+    it('anonymousRoute url should available to the non logged in user', () => {
+      spyOn(component, 'isUserLoggedIn').and.returnValue(false);
+      const router = TestBed.get(Router);
+      const data = {
+          'code': 'banner_internal_url',
+          'ui': {
+              'background': 'https://cdn.pixabay.com/photo/2015/10/29/14/38/web-1012467_960_720.jpg',
+              'text': 'Sample Internal Url'
+          },
+          'action': {
+              'type': 'navigate',
+              'subType': 'internalUrl',
+              'params': {
+                  'route': 'profile',
+                  'anonymousRoute': 'guest-profile'
+              }
+          },
+          'expiry': '1653031067'
+      };
+      component.navigateToSpecificLocation(data);
+      expect(router.navigate).toHaveBeenCalledWith(['guest-profile']);
     });
   });
 });

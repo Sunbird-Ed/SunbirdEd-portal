@@ -10,6 +10,7 @@ import { CoreModule } from '@sunbird/core';
 import { ReportService, DatasetService } from '../../services';
 import { mockDatasetConfig } from './dataset.component.spec.data';
 import dayjs from 'dayjs';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('DatasetComponent', () => {
   let component: DatasetComponent;
@@ -41,7 +42,7 @@ describe('DatasetComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot(), DashboardModule],
+      imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule, TelemetryModule.forRoot(), DashboardModule, RouterTestingModule],
       providers: [
         ReportService, DatasetService,
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
