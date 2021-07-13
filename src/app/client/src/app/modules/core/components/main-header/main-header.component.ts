@@ -192,7 +192,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
       else {
         if (this.userService.loggedIn) {
           this.userService.userData$.subscribe((profileData: IUserData) => {
-            if (profileData.userProfile["profileUserType"]["type"] !== null) {
+            if (_.get(profileData, 'userProfile.profileUserType.type')) {
               this.userType = profileData.userProfile["profileUserType"]["type"];
             }
           });
@@ -414,7 +414,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
 
   fetchManagedUsers() {
     const requests = [this.managedUserService.managedUserList$];
-    if (this.userService.userProfile.managedBy) {
+    if (_.get(this.userService, 'userProfile.managedBy')) {
       requests.push(this.managedUserService.getParentProfile());
     }
     zip(...requests).subscribe((data) => {
