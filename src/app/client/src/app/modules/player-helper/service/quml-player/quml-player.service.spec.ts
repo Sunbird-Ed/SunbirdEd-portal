@@ -5,13 +5,14 @@ import { configureTestSuite } from '@sunbird/test-util';
 import { of as observableOf, of, throwError as observableThrowError } from 'rxjs';
 import { CoreModule, LearnerService, PublicDataService, UserService } from '@sunbird/core';
 import { ConfigService, SharedModule } from '@sunbird/shared';
+import { PublicPlayerService } from '@sunbird/public';
 import { QumlPlayerService } from './quml-player.service';
 describe('qumlPlayerService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot()],
-      providers: [QumlPlayerService, ConfigService]
+      providers: [QumlPlayerService, ConfigService, PublicPlayerService]
     });
   });
 
