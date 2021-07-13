@@ -1468,21 +1468,10 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@4.0.6":
-  version "4.0.6"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.0.6.tgz#65e94e304e326d6cd1971f28308fcd462cf0a114"
-  integrity sha512-30YJXrQ0/9a3y1EK/y1O/yAoDFtCwGlngbtfYUFevWEoowB3I5Ic8elFsS7Hf37xpM1taItRYKMkPM/k5ZhetA==
-  dependencies:
-    "@project-sunbird/telemetry-sdk" "0.0.26"
-    inversify "^5.0.1"
-    qs "^6.9.4"
-    reflect-metadata "^0.1.13"
-    whatwg-fetch "^3.1.0"
-
-"@project-sunbird/client-services@^3.8.5":
-  version "3.9.7"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-3.9.7.tgz#362d88cd53dfb98652754e2cfa8cacc99a8970fe"
-  integrity sha512-bvbPx7p09ZmRqSJxmiu0JinjnV+zlRmlnXylmOYnZ1epYIfc7Pbaz7+Jd4Wswa7r4Z/Q2QeSzgYNKBUuUDms+g==
+"@project-sunbird/client-services@4.1.2":
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.1.2.tgz#fd387e6abb6bd1b61ea8d33c9678b84aa594ba6b"
+  integrity sha512-i1vZxZCdQbsVjceLaMogecyuvrh1YI4CzkTBfuqm6OOzSN/ZXd0lZwYuP5CUI4wJcehk/XySsMO0qJAtGTaCvQ==
   dependencies:
     "@project-sunbird/telemetry-sdk" "0.0.26"
     inversify "^5.0.1"
@@ -1495,10 +1484,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.1.1.tgz#ec23c5e7f34ebcb2155338702b5442a1924fd0ff"
   integrity sha512-sVtHki4m/N6AT1xp4JMl4Aepz/mzqgbMfjmjuOGCLujc1WJfkIpPxv+j3Ur/24IwYT4I9l+GfMkc3i4Ff7dngg==
 
-"@project-sunbird/discussions-ui-v8@2.2.0-beta.2":
-  version "2.2.0-beta.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.2.0-beta.2.tgz#f9b5307e5171eb408f751d6cf9714803f188319c"
-  integrity sha512-h5dMvv6pV98/N6dNxTChUFtDWtrMEV0eUSMDFQbrnYDJFuc7+YgSG65RaKjrH2T4dCQuR/SwnlB7lXvmHiUNwg==
+"@project-sunbird/discussions-ui-v8@2.2.0-beta-3":
+  version "2.2.0-beta-3"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.2.0-beta-3.tgz#d63be2592c0ed213cb840dd1aed5d477d329a4a9"
+  integrity sha512-2VvOiAbYhscdq7H2ixuvama0RHsP0dOSs3TawOzv3wvxlsy6h5asPNNdR2l9uxKFkRfTRVJgzPBYWxRjrNNdxw==
   dependencies:
     tslib "^1.9.0"
 
@@ -1537,31 +1526,24 @@
   dependencies:
     tslib "^1.10.0"
 
-"@project-sunbird/sunbird-epub-player-v9@4.1.1":
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v9/-/sunbird-epub-player-v9-4.1.1.tgz#a532005a22f5dd4211cd416446a8aa05ac50f1a2"
-  integrity sha512-RztgN9GPB9NJUA5UGezzp7lBHuRkVUGc5JKsXuPIN51i9sKL87aeVzDDUL8Lqhl1EGA/HuEf1ZcWZMX8/gOgjw==
+"@project-sunbird/sunbird-epub-player-v9@4.1.2":
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-epub-player-v9/-/sunbird-epub-player-v9-4.1.2.tgz#12f469f244339be981938b724b00868dc6e4d6d8"
+  integrity sha512-fvseP8CnkMb6OeTMxG2jNeqnevSen2pmqBjxYQvelBJVbuQnD0cP3FbgB1+9oRLIeZIHNCTFcZy8XMzA1q9q+A==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v9" "4.1.0"
+    "@project-sunbird/sunbird-player-sdk-v9" "4.1.2"
 
-"@project-sunbird/sunbird-pdf-player-v9@4.1.1":
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-pdf-player-v9/-/sunbird-pdf-player-v9-4.1.1.tgz#10decb2b1de6007986f347ff083b8c7ba4d11452"
-  integrity sha512-KN/bphOZePttenhQEMxqJY8u1SlX0BigtGrZu2FzXqkhEblfzwU3Gtck/vdkmFdjcx7X7sAAQLQtKIfDjzQd1g==
+"@project-sunbird/sunbird-pdf-player-v9@4.1.2":
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-pdf-player-v9/-/sunbird-pdf-player-v9-4.1.2.tgz#cd825ce5a59372174462c332687c614b1cc6c7d5"
+  integrity sha512-ri7Vz52rCqqNX8OIWoglyvdqODBQHSp3jt2z7R1FB+HMnzfg+av0sEKELk4nm92qPJUJRwQwnn4rD/ivIbhZww==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v9" "4.1.0"
+    "@project-sunbird/sunbird-player-sdk-v9" "4.1.2"
 
-"@project-sunbird/sunbird-player-sdk-v9@4.1.0":
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v9/-/sunbird-player-sdk-v9-4.1.0.tgz#14629bb1221937e4e9e892304a827b78716dd988"
-  integrity sha512-NCU0VQZab2yDicbj5Trcb85qG5aAbIyEMme96zEoqfu1SgVlvxDKPCLBbNBukXVkWs7BWNj5UBxrsKZbVdtFSA==
-
-"@project-sunbird/sunbird-player-sdk@0.0.16":
-  version "0.0.16"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk/-/sunbird-player-sdk-0.0.16.tgz#72bab646b41e47df38f71ecfd76f1c9e01094f7b"
-  integrity sha512-dO1C8Adhh5dVdv8kczi0NJuoT0sm/XYcWfA64PM15f1q4/LIA1gYcvux3y2jM4+nUQrLkC/+p+eS6/x7YpGDLg==
-  dependencies:
-    tslib "^1.9.0"
+"@project-sunbird/sunbird-player-sdk-v9@4.1.2":
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v9/-/sunbird-player-sdk-v9-4.1.2.tgz#d6fe1ca1a7d3b1e46dac79ea8f40b5dc34402858"
+  integrity sha512-kKMjaC6/hhOyPuab1bMJ58Aisuy8oSAoWNGxejdz34zBwXTYJDSFI77FN+/MTJP/MgLRTLty2GEHA7NyKWxkLg==
 
 "@project-sunbird/sunbird-question-editor@0.0.9":
   version "0.0.9"
@@ -1570,28 +1552,19 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.1.10":
-  version "4.1.10"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.1.10.tgz#8f134759414af252197e783253670956ace66530"
-  integrity sha512-U6zX/v/gVyK6aaiAwXumQtzwpSOeEMRIGljUq+nPO1wjgmNi535UnMHa7Yt1Mdh16jJeIC1A1jqhTKWEYRlZQw==
+"@project-sunbird/sunbird-quml-player-v9@4.1.14":
+  version "4.1.14"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.1.14.tgz#9a06613ceaa7fc479d1ce2ef7e257ee08dc665f7"
+  integrity sha512-PebIOkUQNhADY6UXfAMy4mYFw3Qh75n8asDfQVUFV1CDAi/omp0CmdvYhygC38na0WoDoGnkZAzKjmjMUWoKwg==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v9" "4.1.0"
+    "@project-sunbird/sunbird-player-sdk-v9" "4.1.2"
 
-"@project-sunbird/sunbird-quml-player@3.8.0":
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player/-/sunbird-quml-player-3.8.0.tgz#46c8f871be67e07ab3567814c82646730c4145ae"
-  integrity sha512-UXl9kucoS921qYyIT3TBwgOTYsTM9Aafq1P6dEoPE0B7eAdVudEjppu1LD8UOBQ4BajKsuDQ+AakALl/BTUfaw==
+"@project-sunbird/sunbird-video-player-v9@4.1.4":
+  version "4.1.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v9/-/sunbird-video-player-v9-4.1.4.tgz#54515e26f6a38f740d6108ba9f365b5ad8dea0c7"
+  integrity sha512-bOfN/6iesdtnBeTIB9yKRqI7yi6+JmVkahxd8gGIcwbcM+CUqgd+IROdUn0PoA/rK4kSc3/YoZX2C9DtT2Zf2Q==
   dependencies:
-    "@project-sunbird/client-services" "^3.8.5"
-    "@project-sunbird/sunbird-player-sdk" "0.0.16"
-    tslib "^1.9.0"
-
-"@project-sunbird/sunbird-video-player-v9@4.1.1":
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v9/-/sunbird-video-player-v9-4.1.1.tgz#6a2de2e276b44b461d04af67a551d37dd2d579bf"
-  integrity sha512-xVPVQ5jx52fJfZvxp7bvYA+NbaCLnMbh28sbbgvrqWfy4ROrYdY48MkcDJDj7shsKXLbe5uRv4ZYJ0MUd3sifA==
-  dependencies:
-    "@project-sunbird/sunbird-player-sdk-v9" "4.1.0"
+    "@project-sunbird/sunbird-player-sdk-v9" "4.1.2"
 
 "@project-sunbird/telemetry-sdk@0.0.26":
   version "0.0.26"
@@ -3803,10 +3776,10 @@ content-disposition@0.5.3:
   dependencies:
     safe-buffer "5.1.2"
 
-content-section@0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/content-section/-/content-section-0.0.4.tgz#470cb636c22c9a364a25e49377d44afa517b5967"
-  integrity sha512-JaC2pKvgOLT3ZE5LOzob7DrKYyLF9cuuhBCH313Q/gjIWQayDuaQpAtKfU8MurKVz+NFoqzGylLbR35cUzSrCw==
+content-section@0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/content-section/-/content-section-0.0.5.tgz#4b5ff3e3d3cec35a4ddb81161467b1f3e96e5e9a"
+  integrity sha512-6LIPFIcqGajDUChDx7iKDhIlQsnWNpkWZDNjzDCnEiBppu25DgUsXPveLy30JwO9k1OLbInwRdfmyb5U6uUT3Q==
   dependencies:
     tslib "^1.10.0"
 
@@ -5230,7 +5203,7 @@ file-loader@4.2.0:
     loader-utils "^1.2.3"
     schema-utils "^2.0.0"
 
-"file-saver@github:eligrey/FileSaver.js#1.3.8":
+file-saver@eligrey/FileSaver.js#1.3.8:
   version "1.3.8"
   resolved "https://codeload.github.com/eligrey/FileSaver.js/tar.gz/e865e37af9f9947ddcced76b549e27dc45c1cb2e"
 

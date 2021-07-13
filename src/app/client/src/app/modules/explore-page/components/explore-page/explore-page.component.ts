@@ -1048,6 +1048,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                 const url = (this.isUserLoggedIn()) ? route : anonymousUrl;
                 if (url) {
                     this.router.navigate([url]);
+                    window.scroll({
+                        top: 0,
+                        left: 0,
+                        behavior: 'smooth'
+                    });
                 } else {
                     this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
                 }
