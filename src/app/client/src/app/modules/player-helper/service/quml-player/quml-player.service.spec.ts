@@ -78,4 +78,15 @@ describe('qumlPlayerService', () => {
     qumlPlayerService.clearQuestionMap();
   });
 
+
+  it('#getQuestionSet() should return the question set', () => {
+    const qumlPlayerService = TestBed.get(QumlPlayerService);
+    spyOn(qumlPlayerService, 'getQuestionSet').and.callThrough();
+    qumlPlayerService.setQuestionMap('do_1234', { name : 'Question 1' });
+    qumlPlayerService.getQuestion('do_1234').subscribe((data) => {
+      expect(data).toEqual({questions : [{ name : 'Question 1' }]});
+    });
+    expect(qumlPlayerService.getQuestionData).toHaveBeenCalledWith('do_1234');
+  });
+
 });
