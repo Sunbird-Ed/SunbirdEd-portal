@@ -121,7 +121,7 @@
     }
     &__right {
         padding-left: 2rem;
-        width: calc(100% - 19.5rem);
+        width: 100%;
         transition: all ease-in-out .3s;
         @include respond-below(sm) {
             padding-left: 0rem;
@@ -210,7 +210,9 @@
                 -ms-transform: translateX(21px);
                 transform: translateX(21px);
               }
-              
+              input:disabled + .slider {
+                cursor: default;
+              }
               .slider.round {
                 border-radius: calculateRem(34px);
               }

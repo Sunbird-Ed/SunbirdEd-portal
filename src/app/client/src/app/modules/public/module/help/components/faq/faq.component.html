@@ -27,7 +27,7 @@
       {{resourceService?.frmelmnts?.lbl?.frequentlyAskedQuestions}}</div>
     <div class="help-page__content" *ngIf="faqData && !showLoader">
       <div class="sbhelp_container mt-24" style="min-height:600px;">
-        <div class="">
+        <div class="flex-basis-1">
           <section class="sbhelp_container__left" *ngIf="(isMobileView && showOnlyFaqCategory) || !isMobileView"
             [ngClass]="{'category-list-mobile':isMobileView, 'category-list-web':!isMobileView}">
             <sb-list #sbFaqCategoryList [title]="faqData?.constants?.selectCategoryTitle" [listData]="faqData?.categories"
@@ -67,8 +67,6 @@
           </div>
         </section>
       </div>
-        
-    
         <section class="sbhelp_container__right" [ngClass]="{'faq-section-mobile':isMobileView, 'faq-section-web':!isMobileView}" *ngIf="(isMobileView && !showOnlyFaqCategory) || !isMobileView">
           <div *ngIf="!showFaqReport">
           <div class="d-flex flex-ai-center mb-8" *ngIf="!showOnlyFaqCategory && isMobileView">

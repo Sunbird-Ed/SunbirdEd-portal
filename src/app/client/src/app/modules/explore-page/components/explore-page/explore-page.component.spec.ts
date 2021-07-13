@@ -566,7 +566,8 @@ describe('ExplorePageComponent', () => {
     router.url = '/explore-course?selectedTab=course';
     component.viewAll({ searchQuery: searchQuery, name: 'Featured-courses' });
     expect(router.navigate).toHaveBeenCalledWith(['/explore-course/view-all/Featured-courses', 1],
-      { queryParams: { 'status': '1', 'defaultSortBy': '{"createdDate":"desc"}', 'exists': undefined }, state: { currentPageData: {}} });
+      { queryParams: { 'status': '1', 'defaultSortBy': '{"createdDate":"desc"}', 'exists': undefined, isContentSection: false
+     }, state: { currentPageData: {}} });
     expect(cacheService.set).toHaveBeenCalled();
   });
 
@@ -781,7 +782,7 @@ describe('ExplorePageComponent', () => {
       const router = TestBed.get(Router);
       const output = component.handlePillSelect({}, 'subject');
       expect(output).toEqual(undefined);
-      component.handlePillSelect({ data: [{ value: { value: 'english' } }] }, 'subject');
+      component.handlePillSelect({ data: [{ value: { value: 'english', name: 'english' } }] }, 'subject');
       expect(router.navigate).toHaveBeenCalledWith(['explore', 1], {
         queryParams: {
             se_subjects: 'english',
