@@ -124,4 +124,7 @@
     padding: calculateRem(24px) calculateRem(32px);
     z-index: 1;
   }
+  .section-hr {
+    border: calculateRem(0.5px) solid var(--rc-dad9cb);
+  }
 }
