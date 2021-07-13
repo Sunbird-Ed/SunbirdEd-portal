@@ -77,7 +77,7 @@ export class AccessDiscussionComponent implements OnInit {
     this.navigationHelperService.setNavigationUrl({ url: this.router.url });
     this.discussionCsService.createUser(createUserReq).subscribe((response) => {
       const routerData = {
-        userName: _.get(response, 'result.userSlug'),
+        userId: _.get(response, 'result.userId.uid'),
         forumIds: this.forumIds
       };
       this.routerData.emit(routerData);

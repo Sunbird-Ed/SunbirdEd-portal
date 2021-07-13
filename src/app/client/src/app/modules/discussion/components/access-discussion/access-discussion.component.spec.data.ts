@@ -37,7 +37,7 @@ export const MockResponseData = {
       },
       emitData: {
         'forumIds': '[6]',
-        'userName': 'cctn1350'
+        'usrId': 1
       }
 };
 
