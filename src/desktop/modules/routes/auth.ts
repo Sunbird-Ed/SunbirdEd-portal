@@ -21,7 +21,7 @@ export default (app, proxyURL) => {
     
     app.get("/endSession", authController.endSession.bind(authController));
 
-    app.get(["/learner/user/v3/read/:id", "/learner/user/v4/read/:id" ], customProxy(proxyURL, defaultProxyConfig), async (req, res) => {
+    app.get(["/learner/user/v3/read/:id", "/learner/user/v4/read/:id", "/learner/user/v5/read/:id"  ], customProxy(proxyURL, defaultProxyConfig), async (req, res) => {
             const userSDK = containerAPI.getUserSdkInstance();
             let user = _.get(res, 'body.result.response');
             if (user) {
