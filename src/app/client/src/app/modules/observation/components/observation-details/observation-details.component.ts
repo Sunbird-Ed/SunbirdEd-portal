@@ -308,5 +308,4 @@ export class ObservationDetailsComponent implements OnInit {
     }
     this.actionOnSubmission(data);
   }
-
 }

@@ -1,3 +1,6 @@
+@import "mixins/mixins";
+@import 'variables';
+
 .thumbnail-card {
   height: 98px;
   margin-top: 10px;
@@ -46,7 +49,7 @@
 }
 .sbt-report-btns-panel-new {
   border-radius: 0px !important;
- background-color: #fff;
+ background-color: var(--white);
 }
 
 .sbt-report-tabs-panel{
