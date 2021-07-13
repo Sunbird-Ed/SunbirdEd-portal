@@ -33,8 +33,6 @@ describe("QuestionaireComponent", () => {
     frmelmnts: {
       lbl: {
         continue: "Continue",
-      },
-      alert: {
         successfullySaved: "Your Form has been saved successfully!",
         saveConfirm: "Are you sure you want to save this form?",
         submitConfirm: "Are you sure you want to submit the form?",
@@ -169,7 +167,7 @@ describe("QuestionaireComponent", () => {
       observableOf(SubmissionSuccessResp)
     );
     spyOn(component, "openAlert");
-    component.openAlert(resourceBundle.frmelmnts.alert.successfullySubmitted);
+    component.openAlert(resourceBundle.frmelmnts.lbl.successfullySubmitted);
     component.submitEvidence(Payload);
     expect(component.submitEvidence).toHaveBeenCalled();
     expect(observationService.post).toHaveBeenCalled();

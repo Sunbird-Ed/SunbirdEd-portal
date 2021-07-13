@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  HostListener,
   Input,
   OnInit,
   Output,
@@ -50,6 +51,10 @@ export class EntityListComponent implements OnInit {
       selectedEntity:this.selectedEntity
     }
     this.closeEvent.emit({value:data});
+    this.modal.approve();
+  }
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
     this.modal.approve();
   }
 }

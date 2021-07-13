@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, HostListener, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Location } from "@angular/common";
 import { DhitiService } from "@sunbird/core";
@@ -303,4 +303,11 @@ export class ReportViewComponent implements OnInit {
   modalClose(event) {
     this.showEvidence = false;
   }
+
+
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
+      this.filterModal = false;
+  }
+
 }

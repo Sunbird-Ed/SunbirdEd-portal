@@ -11,7 +11,6 @@ import { ResourceService, SharedModule } from "@sunbird/shared";
 import { FormsModule } from "@angular/forms";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import {metaData} from './alert-modal.component.spec.data';
-import { Directive } from "@angular/core";
 
 interface IAlertModalContext {
   data: any;
@@ -74,6 +73,15 @@ describe("AlertModalComponent", () => {
     component.navigatePrevious(metaData);
     expect(component.navigatePrevious).toHaveBeenCalled();
   });
+
+  it('popstate elements', () => {
+    spyOn(component,"onPopState").and.callThrough();
+    const event = new PopStateEvent('popstate');
+    component.onPopState(event);
+    expect(component.onPopState).toHaveBeenCalledWith(event);
+  });
+
+
 });
 
 
