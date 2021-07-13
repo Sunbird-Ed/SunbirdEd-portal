@@ -1468,10 +1468,10 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@4.0.6":
-  version "4.0.6"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.0.6.tgz#65e94e304e326d6cd1971f28308fcd462cf0a114"
-  integrity sha512-30YJXrQ0/9a3y1EK/y1O/yAoDFtCwGlngbtfYUFevWEoowB3I5Ic8elFsS7Hf37xpM1taItRYKMkPM/k5ZhetA==
+"@project-sunbird/client-services@4.1.2":
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.1.2.tgz#fd387e6abb6bd1b61ea8d33c9678b84aa594ba6b"
+  integrity sha512-i1vZxZCdQbsVjceLaMogecyuvrh1YI4CzkTBfuqm6OOzSN/ZXd0lZwYuP5CUI4wJcehk/XySsMO0qJAtGTaCvQ==
   dependencies:
     "@project-sunbird/telemetry-sdk" "0.0.26"
     inversify "^5.0.1"
@@ -1495,10 +1495,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.1.1.tgz#ec23c5e7f34ebcb2155338702b5442a1924fd0ff"
   integrity sha512-sVtHki4m/N6AT1xp4JMl4Aepz/mzqgbMfjmjuOGCLujc1WJfkIpPxv+j3Ur/24IwYT4I9l+GfMkc3i4Ff7dngg==
 
-"@project-sunbird/discussions-ui-v8@2.2.0-beta.2":
-  version "2.2.0-beta.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.2.0-beta.2.tgz#f9b5307e5171eb408f751d6cf9714803f188319c"
-  integrity sha512-h5dMvv6pV98/N6dNxTChUFtDWtrMEV0eUSMDFQbrnYDJFuc7+YgSG65RaKjrH2T4dCQuR/SwnlB7lXvmHiUNwg==
+"@project-sunbird/discussions-ui-v8@2.2.0-beta-3":
+  version "2.2.0-beta-3"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.2.0-beta-3.tgz#d63be2592c0ed213cb840dd1aed5d477d329a4a9"
+  integrity sha512-2VvOiAbYhscdq7H2ixuvama0RHsP0dOSs3TawOzv3wvxlsy6h5asPNNdR2l9uxKFkRfTRVJgzPBYWxRjrNNdxw==
   dependencies:
     tslib "^1.9.0"
 
@@ -5230,7 +5230,7 @@ file-loader@4.2.0:
     loader-utils "^1.2.3"
     schema-utils "^2.0.0"
 
-"file-saver@github:eligrey/FileSaver.js#1.3.8":
+file-saver@eligrey/FileSaver.js#1.3.8:
   version "1.3.8"
   resolved "https://codeload.github.com/eligrey/FileSaver.js/tar.gz/e865e37af9f9947ddcced76b549e27dc45c1cb2e"
 
