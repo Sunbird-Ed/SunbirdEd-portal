@@ -33,13 +33,13 @@ describe('QuestionaireComponent', () => {
   const resourceBundle = {
     frmelmnts: {
       lbl: {
-        continue: "Continue",
-        successfullySaved: "Your Form has been saved successfully!",
-        saveConfirm: "Are you sure you want to save this form?",
-        submitConfirm: "Are you sure you want to submit the form?",
-        successfullySubmitted: "Your form has been submitted successfully!",
-        failedToSave: "Failed to save the form!",
-        submissionFailed: "Failed to submit the form!",
+        continue: 'Continue',
+        successfullySaved: 'Your Form has been saved successfully!',
+        saveConfirm: 'Are you sure you want to save this form?',
+        submitConfirm: 'Are you sure you want to submit the form?',
+        successfullySubmitted: 'Your form has been submitted successfully!',
+        failedToSave: 'Failed to save the form!',
+        submissionFailed: 'Failed to submit the form!',
       },
       btn: {
         back: 'Back',
@@ -167,15 +167,15 @@ describe('QuestionaireComponent', () => {
     spyOn(observationService, 'post').and.returnValue(
       observableOf(SubmissionSuccessResp)
     );
-    spyOn(component, "openAlert");
+    spyOn(component, 'openAlert');
     component.openAlert(resourceBundle.frmelmnts.lbl.successfullySubmitted);
     component.submitEvidence(Payload);
     expect(component.submitEvidence).toHaveBeenCalled();
     expect(observationService.post).toHaveBeenCalled();
   });
 
-  //   it("Should navigate to back", () => {
-  //     spyOn(component, "goBack").and.callThrough();
+  //   it('Should navigate to back', () => {
+  //     spyOn(component, 'goBack').and.callThrough();
   //     component.goBack();
   //     const location = fixture.debugElement.injector.get(Location);
   //     expect(component.goBack).toHaveBeenCalled();
@@ -260,9 +260,9 @@ describe('QuestionaireComponent', () => {
      expect(value).toBe(false)
   });
 
-  // it("Should call scrollToContent", () => {
-  //   let id = "S1";
-  //   spyOn(component, "scrollToContent").and.callThrough();
+  // it('Should call scrollToContent', () => {
+  //   let id = 'S1';
+  //   spyOn(component, 'scrollToContent').and.callThrough();
   //   component.scrollToContent(id);
   //   expect(component.scrollToContent).toHaveBeenCalled();
   // });

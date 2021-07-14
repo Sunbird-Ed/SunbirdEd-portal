@@ -61,25 +61,25 @@ describe('EntityListComponent', () => {
     expect(component.closeModal).toHaveBeenCalled();
   });
 
-  it("should call onEntityChange new entity",()=>{
-    spyOn(component,"onEntityChange").and.callThrough();
+  it('should call onEntityChange new entity',()=>{
+    spyOn(component,'onEntityChange').and.callThrough();
     component.onEntityChange(ObservationData.result.data[0].entities[0]);
     expect(component.onEntityChange).toHaveBeenCalled();
   });
 
-  it("should call onEntityChange same entity",()=>{
+  it('should call onEntityChange same entity',()=>{
     component.solution={
       entities:[
       ObservationData.result.data[1].entities[0]
       ]
     };
-    spyOn(component,"onEntityChange").and.callThrough();
+    spyOn(component,'onEntityChange').and.callThrough();
     component.onEntityChange(ObservationData.result.data[0].entities[0]);
     expect(component.onEntityChange).toHaveBeenCalled();
   });
 
-  it("should call submit",()=>{
-    spyOn(component,"submit").and.callThrough();
+  it('should call submit',()=>{
+    spyOn(component,'submit').and.callThrough();
     component.modal = {
       approve: () => {}
     };
@@ -87,15 +87,15 @@ describe('EntityListComponent', () => {
     expect(component.submit).toHaveBeenCalled();
   });
 
-  // it('popstate elements', () => {
-  //   component.modal = {
-  //     approve: () => {},
-  //   };
-  //   spyOn(component,"onPopState").and.callThrough();
-  //   const event = new PopStateEvent('popstate');
-  //   component.onPopState(event);
-  //   expect(component.onPopState).toHaveBeenCalledWith(event);
-  // });
+  it('popstate elements', () => {
+    component.modal = {
+      approve: () => {},
+    };
+    spyOn(component,'onPopState').and.callThrough();
+    const event = new PopStateEvent('popstate');
+    component.onPopState(event);
+    expect(component.onPopState).toHaveBeenCalledWith(event);
+  });
 
 
 });

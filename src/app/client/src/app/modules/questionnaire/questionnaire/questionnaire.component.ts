@@ -14,7 +14,7 @@ import { Location } from '@angular/common';
 //   Evidence,
 //   IAssessmentDetails,
 //   Section,
-// } from "../Interface/assessmentDetails";
+// } from '../Interface/assessmentDetails';
 import { ObservationUtilService } from '../../observation/service';
 import { ComponentDeactivate } from '../guard/can-deactivate.guard';
 import { AssessmentInfo, Evidence, IAssessmentDetails, Section, SlQuestionnaireService } from '@shikshalokam/sl-questionnaire';
@@ -175,7 +175,7 @@ export class QuestionnaireComponent
       },
       (error) => {
         this.openAlert(
-          payload.evidence.status == "draft"
+          payload.evidence.status == 'draft'
             ? this.resourceService.frmelmnts.lbl.failedToSave
             : this.resourceService.frmelmnts.lbl.submissionFailed
         );
@@ -187,8 +187,8 @@ export class QuestionnaireComponent
     const alertMetaData = await this.observationUtilService.getAlertMetaData();
     alertMetaData.content.body.data =
       this.resourceService.frmelmnts.lbl.successfullySaved;
-    alertMetaData.content.body.type = "text";
-    alertMetaData.size = "mini";
+    alertMetaData.content.body.type = 'text';
+    alertMetaData.size = 'mini';
     alertMetaData.footer.buttons.push({
       type: 'accept',
       returnValue: true,
