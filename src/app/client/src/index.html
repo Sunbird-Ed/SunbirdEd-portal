@@ -26,6 +26,9 @@
   <% if (cloudStorageUrls) { %>
   <input type="hidden" id="cloudStorageUrls" value="<%=cloudStorageUrls%>" />
   <% } %>
+  <% if (publicStorageAccount) { %>
+    <input type="hidden" id="publicStorageAccount" value="<%=publicStorageAccount%>" />
+    <% } %>
   <% if (defaultTenant) { %>
   <input type="hidden" id="defaultTenant" value="<%=defaultTenant%>" />
   <% } %>
