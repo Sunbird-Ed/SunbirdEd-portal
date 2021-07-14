@@ -117,7 +117,7 @@ export class SbFormLocationOptionsFactory {
         map((list: any) => list.content.map(ele => {
           return {
             label: ele.orgName,
-            value: { 
+            value: {
               code: ele.externalId,
               parentId: value.id,
               type: locationType,
@@ -138,7 +138,7 @@ export class SbFormLocationOptionsFactory {
         }
       });
     }
-  };
+  }
 
   private async fetchUserLocation(request: any): Promise<SbLocation[]> {
     const serialized = JSON.stringify(request);

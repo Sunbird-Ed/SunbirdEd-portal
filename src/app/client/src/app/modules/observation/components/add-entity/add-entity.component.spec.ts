@@ -24,18 +24,18 @@ import {
   SearchEvent,
   SubmitResult,
   finalEntityService,
-} from "./add-entity.component.spec.data";
+} from './add-entity.component.spec.data';
 import {
   throwError as observableThrowError,
   of
-} from "rxjs";
+} from 'rxjs';
 
-describe("AddEntityComponent", () => {
+describe('AddEntityComponent', () => {
   let component: AddEntityComponent;
   let fixture: ComponentFixture<AddEntityComponent>;
   let observationUtilService, observationService, kendraService;
   class RouterStub {
-    navigate = jasmine.createSpy("navigate");
+    navigate = jasmine.createSpy('navigate');
   }
 
   const resourceBundle = {};
@@ -66,73 +66,73 @@ describe("AddEntityComponent", () => {
     observationUtilService = TestBed.get(ObservationUtilService);
     observationService = TestBed.get(ObservationService);
     kendraService = TestBed.get(KendraService);
-    component.searchQuery = "";
+    component.searchQuery = '';
     component.payload = {};
   });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it("should call ngonInit()", () => {
-    spyOn(component, "ngOnInit").and.callThrough();
+  it('should call ngonInit()', () => {
+    spyOn(component, 'ngOnInit').and.callThrough();
     component.ngOnInit();
     expect(component.ngOnInit).toHaveBeenCalled();
   });
 
-  it("should call ObservationUtilService - getProfileData", () => {
-    spyOn(observationUtilService, "getProfileDataList").and.callFake(() => {
+  it('should call ObservationUtilService - getProfileData', () => {
+    spyOn(observationUtilService, 'getProfileDataList').and.callFake(() => {
       return Promise.resolve(profileData);
     });
-    component.payload=profileData;
-    spyOn(component, "getProfileData").and.callThrough();
+    component.payload = profileData;
+    spyOn(component, 'getProfileData').and.callThrough();
     component.getProfileData();
     expect(component.getProfileData).toHaveBeenCalled();
     expect(component.payload).toBe(profileData);
   });
 
-  it("should call the getTargettedEntityType() on error", () => {
-    spyOn(kendraService, "post").and.returnValue(observableThrowError("error"));
-    spyOn(component, "getTargettedEntityType").and.callThrough();
+  it('should call the getTargettedEntityType() on error', () => {
+    spyOn(kendraService, 'post').and.returnValue(observableThrowError('error'));
+    spyOn(component, 'getTargettedEntityType').and.callThrough();
     component.getTargettedEntityType();
     expect(component.getTargettedEntityType).toHaveBeenCalled();
   });
 
-  it("should call the getTargettedEntityType() on success", () => {
-    spyOn(kendraService, "post").and.returnValue(of(TargetEntityType));
-    spyOn(observationService, "post").and.returnValue(of(searchData));
-    spyOn(component, "getTargettedEntityType").and.callThrough();
+  it('should call the getTargettedEntityType() on success', () => {
+    spyOn(kendraService, 'post').and.returnValue(of(TargetEntityType));
+    spyOn(observationService, 'post').and.returnValue(of(searchData));
+    spyOn(component, 'getTargettedEntityType').and.callThrough();
     component.getTargettedEntityType();
     expect(component.getTargettedEntityType).toHaveBeenCalled();
     expect(component.targetEntity).toBe(TargetEntityType.result);
     expect(component.entities.length).toBeGreaterThanOrEqual(0);
-    expect(component.count).toBe(searchData.result[0].count)
+    expect(component.count).toBe(searchData.result[0].count);
   });
 
-  it("should call the getTargettedEntityType() on search failed", () => {
-    spyOn(kendraService, "post").and.returnValue(of(TargetEntityType));
-    spyOn(observationService, "post").and.returnValue(
-      observableThrowError("error")
+  it('should call the getTargettedEntityType() on search failed', () => {
+    spyOn(kendraService, 'post').and.returnValue(of(TargetEntityType));
+    spyOn(observationService, 'post').and.returnValue(
+      observableThrowError('error')
     );
-    spyOn(component, "getTargettedEntityType").and.callThrough();
+    spyOn(component, 'getTargettedEntityType').and.callThrough();
     component.getTargettedEntityType();
     expect(component.getTargettedEntityType).toHaveBeenCalled();
     expect(component.targetEntity).toBe(TargetEntityType.result);
     expect(component.entities.length).toBeGreaterThanOrEqual(0);
   });
 
-  it("should call the searchEntity()", () => {
+  it('should call the searchEntity()', () => {
     component.page = 1;
     component.entities = [];
-    spyOn(kendraService, "post").and.returnValue(of(TargetEntityType));
-    spyOn(observationService, "post").and.returnValue(of(searchData));
+    spyOn(kendraService, 'post').and.returnValue(of(TargetEntityType));
+    spyOn(observationService, 'post').and.returnValue(of(searchData));
     component.getTargettedEntityType();
-    spyOn(component, "searchEntity").and.callThrough();
+    spyOn(component, 'searchEntity').and.callThrough();
     component.searchEntity();
     expect(component.searchEntity).toHaveBeenCalled();
     expect(component.targetEntity).toBe(TargetEntityType.result);
     expect(component.entities.length).toBeGreaterThanOrEqual(0);
-    expect(component.count).toBe(searchData.result[0].count)
+    expect(component.count).toBe(searchData.result[0].count);
   });
 
   it("should call the searchEntity()", () => {
@@ -153,7 +153,7 @@ describe("AddEntityComponent", () => {
     spyOn(kendraService, "post").and.returnValue(of(TargetEntityType));
     spyOn(observationService, "post").and.returnValue(of(searchData));
     component.getTargettedEntityType();
-    spyOn(component, "loadMore").and.callThrough();
+    spyOn(component, 'loadMore').and.callThrough();
     component.loadMore();
     expect(component.loadMore).toHaveBeenCalled();
     expect(component.targetEntity).toBe(TargetEntityType.result);
@@ -198,15 +198,15 @@ describe("AddEntityComponent", () => {
    expect(component.selectEntity).toHaveBeenCalled();
   });
 
-  it("should call the submit() on success", () => {
+  it('should call the submit() on success', () => {
     component.entities = finalEntityService;
     component.payload = profileData;
     component.showDownloadModal = false;
     component.modal = {
-      approve:()=>{}
-    }
-    spyOn(observationService, "post").and.returnValue(of(SubmitResult));
-    spyOn(component, "submit").and.callThrough();
+      approve: () => {}
+    };
+    spyOn(observationService, 'post').and.returnValue(of(SubmitResult));
+    spyOn(component, 'submit').and.callThrough();
     component.submit();
     expect(component.submit).toHaveBeenCalled();
     expect(SubmitResult.status).toBe(200);

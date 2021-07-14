@@ -24,21 +24,21 @@ export const mockManageData = {
 
 export const mockRes = {
     successResponse: {
-        "id":"api.bulk.user.upload",
-        "ver":"v2",
-        "ts":"2020-08-17 11:04:03:513+0000",
-        "params":{
-           "resmsgid":null,
-           "msgid":"f0f4031a-a73c-b967-c344-a82b09290c20",
-           "err":null,
-           "status":"success",
-           "errmsg":null
+        'id': 'api.bulk.user.upload',
+        'ver': 'v2',
+        'ts': '2020-08-17 11:04:03:513+0000',
+        'params': {
+           'resmsgid': null,
+           'msgid': 'f0f4031a-a73c-b967-c344-a82b09290c20',
+           'err': null,
+           'status': 'success',
+           'errmsg': null
         },
-        "responseCode":"OK",
-        "result":{
-           "processId":"01308805080585011210",
-           "response":{
-              "isUserExists":true
+        'responseCode': 'OK',
+        'result': {
+           'processId': '01308805080585011210',
+           'response': {
+              'isUserExists': true
            }
         }
      },
@@ -75,22 +75,22 @@ export const mockRes = {
     },
     errorUpload: {
         error: {
-            "id":"api.bulk.user.upload",
-            "ver":"v2",
-            "ts":"2020-08-17 08:57:03:340+0000",
-            "params":{
-               "resmsgid":null,
-               "msgid":"38cda4eb-1947-e4de-68b8-50f4c878aa53",
-               "err":"MANDATORY_PARAMETER_MISSING",
-               "status":"MANDATORY_PARAMETER_MISSING",
-               "errmsg":"Mandatory parameter diksha uuid is missing."
+            'id': 'api.bulk.user.upload',
+            'ver': 'v2',
+            'ts': '2020-08-17 08:57:03:340+0000',
+            'params': {
+               'resmsgid': null,
+               'msgid': '38cda4eb-1947-e4de-68b8-50f4c878aa53',
+               'err': 'MANDATORY_PARAMETER_MISSING',
+               'status': 'MANDATORY_PARAMETER_MISSING',
+               'errmsg': 'Mandatory parameter diksha uuid is missing.'
             },
-            "responseCode":"CLIENT_ERROR",
-            "result":{
-               "response":{
-                  "id":"",
-                  "rootOrgId":"",
-                  "isUserExists":""
+            'responseCode': 'CLIENT_ERROR',
+            'result': {
+               'response': {
+                  'id': '',
+                  'rootOrgId': '',
+                  'isUserExists': ''
                }
             }
          }

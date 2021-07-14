@@ -299,7 +299,7 @@ export class OrganisationComponent implements OnDestroy, AfterViewInit {
    * @param {string} identifier organization identifier
    * @param {string} orgName    organization name
    *
-   * @example onAfterOrgChange(identifier: do_xxxxx, Test Organization) 
+   * @example onAfterOrgChange(identifier: do_xxxxx, Test Organization)
    */
   onAfterOrgChange(identifier: string, orgName: string) {
     if (this.identifier === identifier) {

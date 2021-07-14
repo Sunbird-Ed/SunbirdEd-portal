@@ -12,7 +12,7 @@ export class SbDataTablePipe implements PipeTransform {
 
   transform(value, type) {
     if (!value) {
-      return ''
+      return '';
     }
     if (!type) {
       return value;

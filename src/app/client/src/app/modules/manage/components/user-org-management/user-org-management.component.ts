@@ -88,7 +88,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
   ngOnInit(): void {
     this.initLayout();
     this.instance = _.upperCase(this.resourceService.instance);
-    this.uploadButton = this.resourceService.frmelmnts.btn.selectCsvFile
+    this.uploadButton = this.resourceService.frmelmnts.btn.selectCsvFile;
     this.geoButtonText = this.resourceService.frmelmnts.btn.viewdetails;
     this.teachersButtonText = this.resourceService.frmelmnts.btn.viewdetails;
     this.geoTableHeader = [this.resourceService.frmelmnts.lbl.admindshheader.index,
@@ -108,10 +108,10 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
         this.getAdminPolicyTnC();
         this.fetchDeclaredUserDetails();
         this.slug = await _.get(this.userService, 'userProfile.rootOrg.slug');
-        
+
         this.getGeoJSON();
        this.getGeoDetail();
-        
+
       }
     });
   }
@@ -258,7 +258,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
     );
   }
 
-  
+
 
   public getGeoDetail() {
     this.manageService.getData(this.geoDetail, `${this.slug}.json`).subscribe(
@@ -272,7 +272,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
     );
   }
 
-  
+
 
   public renderGeoDetails() {
     setTimeout(() => {

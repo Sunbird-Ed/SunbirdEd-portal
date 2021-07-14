@@ -72,9 +72,9 @@ export class UserFilterComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParams = params;
       this.inputData = {};
-      if(_.get(params, 'Usertype')){
+      if (_.get(params, 'Usertype')) {
         const index = _.indexOf(params.Usertype, 'administrator');
-        if(index >= 0){
+        if (index >= 0) {
           params.Usertype[index] = 'School head or officials';
         } else if (params.Usertype === 'administrator') {
           params.Usertype = ['School head or officials'];

@@ -44,7 +44,7 @@ describe('DiscussionTelemetryService', () => {
       object: {id: '1', type: 'Category', ver: '1', rollup: {}}},
       edata: {id: 'category-card', type: 'view', pageid: 'discussion'}});
     event.edata['duration'] = 2.0;
-    event.edata.type = 'view'
+    event.edata.type = 'view';
     expect(telemetryService.impression).toHaveBeenCalledWith(event);
     expect(navigationHelperService.getPageLoadTime).toHaveBeenCalled();
   }));

@@ -134,7 +134,7 @@ export const groupData = {
   'createdOn': '2020-07-13 17:23:15:496+0000',
   'status': GroupEntityStatus.ACTIVE,
   active: true,
-  isActive () { return true},
+  isActive () { return true; },
 };
 
 export const modifiedActivities = {
