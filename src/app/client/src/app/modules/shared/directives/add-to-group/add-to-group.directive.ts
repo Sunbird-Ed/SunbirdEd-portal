@@ -16,7 +16,7 @@ import { SELECT_ACTIVITY } from '../../../groups/interfaces/telemetryConstants';
 
 // tslint:disable-next-line:only-arrow-functions
 export function csGroupServiceFactory() {
-  if(CsModule.instance.isInitialised){
+  if (CsModule.instance.isInitialised) {
     return CsModule.instance.groupService;
   }
   return undefined;

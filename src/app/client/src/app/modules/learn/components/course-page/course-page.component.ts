@@ -126,7 +126,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(
         tap(_ => {
           if (this.isUserLoggedIn()) {
-            this.prepareVisits([])
+            this.prepareVisits([]);
           }
         }),
         delay(1),
@@ -261,7 +261,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       if (_.get(this.queryParams, 'sort_by') && this.isUserLoggedIn()) {
         option['sort_by'] = { [this.queryParams.sort_by]: this.queryParams.sortType };
       }
-  
+
       return this.pageApiService.getPageData(option)
         .pipe(
           mergeMap(data => {
@@ -333,7 +333,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
           this._courseSearchResponse = response;
           // For content(s) without subject name(s); map it to 'Others'
           _.forEach(_.get(response, 'result.content'), function (content) {
-            if (!_.get(content, 'subject') || !_.size(_.get(content, 'subject'))) content['subject'] = ['Others'];
+            if (!_.get(content, 'subject') || !_.size(_.get(content, 'subject'))) { content['subject'] = ['Others']; }
           });
           const filteredContents = _.omit(_.groupBy(_.get(response, 'result.content'), 'subject'), ['undefined']);
           for (const [key, value] of Object.entries(filteredContents)) {
@@ -385,7 +385,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
             }
             this.pageSections = this.carouselMasterData.slice(0, 4);
             this.addHoverData();
-          }))
+          }));
         }));
   }
 
@@ -569,7 +569,7 @@ export class CoursePageComponent implements OnInit, OnDestroy, AfterViewInit {
       if (onGoingBatchCount === 1) { // play course if only one open batch is present
         metaData.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
         return this.playerService.playContent(metaData);
-      } 
+      }
       // else if (onGoingBatchCount === 0 && expiredBatchCount === 1) {
       //   metaData.batchId = openBatch.expired.length ? openBatch.expired[0].batchId : inviteOnlyBatch.expired[0].batchId;
       //   return this.playerService.playContent(metaData);

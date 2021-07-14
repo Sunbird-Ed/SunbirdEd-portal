@@ -285,7 +285,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       relativeTo: this.route
     };
     if (id) {
-      if (this.queryParams){
+      if (this.queryParams) {
         this.queryParams['contentId'] = id;
       } else {
         this.queryParams = {};
@@ -473,7 +473,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
         const navigateUrl = this.userService.loggedIn ? '/search/Library' : '/explore';
         this.router.navigate([navigateUrl, 1], { queryParams: { key: textbook } });
       } else {
-        let url = this.userService.loggedIn ? '/resources' : '/explore';
+        const url = this.userService.loggedIn ? '/resources' : '/explore';
         this.navigationHelperService.navigateToPreviousUrl(url);
       }
     }
@@ -512,7 +512,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
 
     if (this.groupId) {
       this.tocTelemetryInteractEdata.id = 'group-library-toc';
-      this.tocTelemetryInteractCdata = [{id: this.groupId, type: 'Group'}]
+      this.tocTelemetryInteractCdata = [{id: this.groupId, type: 'Group'}];
     }
   }
 

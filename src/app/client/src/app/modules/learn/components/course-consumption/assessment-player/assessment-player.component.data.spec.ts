@@ -466,7 +466,7 @@ export const assessmentPlayerMockData = {
       'score': [{
         'maxScore': 10,
         'bestScore': 5
-      },{
+      }, {
         'maxScore': 10,
         'bestScore': 5
       }]
@@ -481,10 +481,10 @@ export const assessmentPlayerMockData = {
       'score': [{
         'maxScore': 10,
         'bestScore': 5
-      },{
+      }, {
         'maxScore': 10,
         'bestScore': 5
-      },{
+      }, {
         'maxScore': 10,
         'bestScore': 5
       }]
@@ -499,7 +499,7 @@ export const assessmentPlayerMockData = {
       'score': [{
         'maxScore': 10,
         'bestScore': 5
-      },{
+      }, {
         'maxScore': 10,
         'bestScore': 5
       }]
@@ -514,10 +514,10 @@ export const assessmentPlayerMockData = {
       'score': [{
         'maxScore': 10,
         'bestScore': 5
-      },{
+      }, {
         'maxScore': 10,
         'bestScore': 5
-      },{
+      }, {
         'maxScore': 10,
         'bestScore': 5
       }]
@@ -1117,7 +1117,7 @@ export const assessmentPlayerMockData = {
         'score': [{
           'maxScore': 10,
           'bestScore': 5
-        },{
+        }, {
           'maxScore': 10,
           'bestScore': 5
         }]
@@ -1132,10 +1132,10 @@ export const assessmentPlayerMockData = {
         'score': [{
           'maxScore': 10,
           'bestScore': 5
-        },{
+        }, {
           'maxScore': 10,
           'bestScore': 5
-        },{
+        }, {
           'maxScore': 10,
           'bestScore': 5
         }]
@@ -1150,7 +1150,7 @@ export const assessmentPlayerMockData = {
         'score': [{
           'maxScore': 10,
           'bestScore': 5
-        },{
+        }, {
           'maxScore': 10,
           'bestScore': 5
         }]
@@ -1165,10 +1165,10 @@ export const assessmentPlayerMockData = {
         'score': [{
           'maxScore': 10,
           'bestScore': 5
-        },{
+        }, {
           'maxScore': 10,
           'bestScore': 5
-        },{
+        }, {
           'maxScore': 10,
           'bestScore': 5
         }]

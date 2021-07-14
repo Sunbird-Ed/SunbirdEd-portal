@@ -36,18 +36,18 @@ describe('SubmissionsComponent', () => {
         expect(component).toBeTruthy();
     });
     it('Should emit submission open event', () => {
-        spyOn(component, "open").and.callThrough();
-        let subNum = 1;
+        spyOn(component, 'open').and.callThrough();
+        const subNum = 1;
         component.open(subNum, Evidence);
         expect(component.open).toHaveBeenCalled();
-    })
-    
-    it("Should define actions on subimission", () => {
-        let type = "edit";
-        let param = { action: type, data: Submission }
-        spyOn(component, "actionEvent").and.callThrough();
+    });
+
+    it('Should define actions on subimission', () => {
+        const type = 'edit';
+        const param = { action: type, data: Submission };
+        spyOn(component, 'actionEvent').and.callThrough();
         component.actionEvent(Submission, type);
         spyOn( component.onAction, 'emit').and.returnValue(param);
         expect(component.actionEvent).toHaveBeenCalled();
-    })
+    });
 });

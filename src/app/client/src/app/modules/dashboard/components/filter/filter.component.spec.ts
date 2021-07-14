@@ -77,9 +77,9 @@ describe('FilterComponent', () => {
     component.filters = mockChartData.filters;
     component.chartData = mockChartData.chartData;
     component.selectedFilter = {};
-    component.filterType = "chart-filter";
+    component.filterType = 'chart-filter';
     component.chartLabels = [];
-    component.dateFilterReferenceName = "";
+    component.dateFilterReferenceName = '';
   });
 
   it('should create', () => {
@@ -126,7 +126,7 @@ describe('FilterComponent', () => {
     component.ngOnInit();
     tick(1000);
     component.selectedFilter = [{
-      data: [{ state: "01285019302823526477", Plays: "10", Date: "2020-04-28" }]
+      data: [{ state: '01285019302823526477', Plays: '10', Date: '2020-04-28' }]
     }];
     tick(1000);
     expect(component.selectedFilters).toEqual({});
@@ -142,18 +142,18 @@ describe('FilterComponent', () => {
     component.ngOnInit();
     tick(1000);
     component.dateFilters = ['date'];
-    const response = component.checkFilterReferance("date");
+    const response = component.checkFilterReferance('date');
     expect(response).toEqual(true);
   }));
 
   it('should set resetFilters', fakeAsync(() => {
     component.ngOnInit();
     tick(1000);
-    component.resetFilters = { data:mockChartData.chartData,reset:true,filters:mockChartData.filters };
+    component.resetFilters = { data: mockChartData.chartData, reset: true, filters: mockChartData.filters };
     tick(1000);
     component.resetFilter();
     tick(1000);
-    component.buildFiltersForm()  
+    component.buildFiltersForm();
     tick(1000);
     expect(component.chartData).toEqual(mockChartData.chartData);
   }));
@@ -190,7 +190,7 @@ describe('FilterComponent', () => {
 
   }));
 
- 
+
   xit('should set the dateRange', fakeAsync(() => {
     component.ngOnInit();
     tick(1000);
@@ -203,7 +203,7 @@ describe('FilterComponent', () => {
   }));
 
   it('should update form', fakeAsync(() => {
-   
+
     const spy = spyOn(component, 'formUpdate').and.callThrough();
     component.filters = mockChartData.filters;
     component.chartData = mockChartData.chartData;
@@ -217,9 +217,9 @@ describe('FilterComponent', () => {
     expect(component.previousFilters).toEqual({
       'state': ['01285019302823526477']
     });
-    mockChartData.filters[1]['options'] = ["10"];
+    mockChartData.filters[1]['options'] = ['10'];
     expect(component.filters).toEqual(mockChartData.filters);
-    
+
   }));
 
 });

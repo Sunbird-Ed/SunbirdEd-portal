@@ -23,7 +23,7 @@ describe('ForumComponent', () => {
         forumId: '12'
       }
     }
-  }
+  };
 
   configureTestSuite();
   beforeEach(async(() => {
@@ -68,7 +68,7 @@ describe('ForumComponent', () => {
 
   it('should navigateBack', () => {
     spyOn(component['location'], 'back');
-    component.navigateToPreviousPage()
+    component.navigateToPreviousPage();
     expect(component['location'].back).toHaveBeenCalled();
   });
 

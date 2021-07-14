@@ -884,7 +884,7 @@ export const requiredProperties = {
   'identifier': 'do_1125110672521134081296',
   'visibility': 'Default',
   'name': 'A5 ext course'
-}
+};
 
 export const colorSet = [
   {

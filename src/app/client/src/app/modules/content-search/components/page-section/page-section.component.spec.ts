@@ -4,7 +4,7 @@ import { PageSectionComponent } from './page-section.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SuiModule } from 'ng2-semantic-ui-v9';
 import { SlickModule } from 'ngx-slick';
-import { SharedModule,ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
+import { SharedModule, ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CacheService } from 'ng2-cache-service';
 import { Response } from './page-section.component.spec.data';

@@ -1,34 +1,34 @@
-import { APP_BASE_HREF } from "@angular/common";
-import { HttpClient } from "@angular/common/http";
-import { HttpClientTestingModule } from "@angular/common/http/testing";
-import { TestBed, async, inject } from "@angular/core/testing";
-import { Router } from "@angular/router";
+import { APP_BASE_HREF } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TestBed, async, inject } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import {
   ConfigService,
   ResourceService,
   ToasterService,
-} from "@sunbird/shared";
-import { UserService } from "@sunbird/core";
-import { CacheService } from "ng2-cache-service";
-import { MlGuard } from "./ml.guard";
+} from '@sunbird/shared';
+import { UserService } from '@sunbird/core';
+import { CacheService } from 'ng2-cache-service';
+import { MlGuard } from './ml.guard';
 import {
   of as observableOf,
   throwError as observableThrowError,
   Observable,
   of,
   throwError,
-} from "rxjs";
+} from 'rxjs';
 
-describe("MlGuard", () => {
+describe('MlGuard', () => {
   let baseHref, guard;
   let toastService, userService;
   class RouterStub {
-    navigate = jasmine.createSpy("navigate");
+    navigate = jasmine.createSpy('navigate');
   }
   const resourceBundle = {
     messages: {
       stmsg: {
-        m0145: "update your role to adminstrator",
+        m0145: 'update your role to adminstrator',
       },
     },
   };
@@ -54,22 +54,22 @@ describe("MlGuard", () => {
     toastService = TestBed.get(ToasterService);
   });
 
-  it("should call the canActivate", inject([MlGuard], (guard: MlGuard) => {
+  it('should call the canActivate', inject([MlGuard], (guard: MlGuard) => {
     const res = guard.canActivate(null, null);
     expect(guard).toBeTruthy();
   }));
 
-  it("should run #getProfileData() for adminstrator", async (done) => {
+  it('should run #getProfileData() for adminstrator', async (done) => {
     userService.userData$ = observableOf({
       userProfile: {
         profileUserType: {
-          subType: "deo",
-          type: "administrator",
+          subType: 'deo',
+          type: 'administrator',
         },
       },
     });
-    spyOn(guard, "canActivate").and.callThrough();
-    let value = await guard.canActivate();
+    spyOn(guard, 'canActivate').and.callThrough();
+    const value = await guard.canActivate();
     setTimeout(() => {
       expect(guard.canActivate).toHaveBeenCalled();
       expect(value).toEqual(true);
@@ -77,17 +77,17 @@ describe("MlGuard", () => {
     });
   });
 
-  it("should run #getProfileData() for leader", async (done) => {
+  it('should run #getProfileData() for leader', async (done) => {
     userService.userData$ = observableOf({
       userProfile: {
         profileUserType: {
-          subType: "deo",
-          type: "leader",
+          subType: 'deo',
+          type: 'leader',
         },
       },
     });
-    spyOn(guard, "canActivate").and.callThrough();
-    let value = await guard.canActivate();
+    spyOn(guard, 'canActivate').and.callThrough();
+    const value = await guard.canActivate();
     setTimeout(() => {
       expect(guard.canActivate).toHaveBeenCalled();
       expect(value).toEqual(true);
@@ -95,17 +95,17 @@ describe("MlGuard", () => {
     });
   });
 
-  it("should run #getProfileData() not any role", async (done) => {
+  it('should run #getProfileData() not any role', async (done) => {
     userService.userData$ = observableOf({
       userProfile: {
         profileUserType: {
           subType: null,
-          type: "teacher",
+          type: 'teacher',
         },
       },
     });
-    spyOn(guard, "canActivate").and.callThrough();
-    let value = await guard.canActivate();
+    spyOn(guard, 'canActivate').and.callThrough();
+    const value = await guard.canActivate();
     setTimeout(() => {
       expect(guard.canActivate).toHaveBeenCalled();
       expect(value).toEqual(false);
@@ -113,10 +113,10 @@ describe("MlGuard", () => {
     });
   });
 
-  it("it should capture any error in canActivate", async (done) => {
+  it('it should capture any error in canActivate', async (done) => {
     userService.userData$ = observableThrowError({});
-    spyOn(guard, "canActivate").and.callThrough();
-    let value = await guard.canActivate();
+    spyOn(guard, 'canActivate').and.callThrough();
+    const value = await guard.canActivate();
     setTimeout(() => {
       expect(guard.canActivate).toHaveBeenCalled();
       expect(value).toEqual(false);

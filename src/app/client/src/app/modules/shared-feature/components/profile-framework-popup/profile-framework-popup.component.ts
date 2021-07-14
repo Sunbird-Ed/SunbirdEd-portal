@@ -58,7 +58,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
     this.unsubscribe = this.isCustodianOrgUser().pipe(
       mergeMap((custodianOrgUser: boolean) => {
         this.custodianOrg = custodianOrgUser;
-        if(this.isGuestUser){
+        if (this.isGuestUser) {
           return this.getFormOptionsForCustodianOrgForGuestUser();
         } else if (custodianOrgUser) {
           return this.getFormOptionsForCustodianOrg();
@@ -181,7 +181,7 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
       this.enableSubmitButton();
       return;
     }
-    if(_.get(this.selectedOption, field.code) === 'CBSE/NCERT') {
+    if (_.get(this.selectedOption, field.code) === 'CBSE/NCERT') {
       this.frameWorkId = _.get(_.find(field.range, { name: 'CBSE'}), 'identifier');
     } else {
       this.frameWorkId = _.get(_.find(field.range, { name: _.get(this.selectedOption, field.code)}), 'identifier');
