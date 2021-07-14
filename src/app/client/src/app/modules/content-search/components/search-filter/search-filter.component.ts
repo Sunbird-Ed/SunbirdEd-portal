@@ -90,7 +90,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       placeholderText: 'Select User Type',
       multiple: true
     }
-  ]))
+  ]));
 
   constructor(public resourceService: ResourceService, private router: Router,
     private contentSearchService: ContentSearchService,
@@ -387,9 +387,9 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     return this.resourceService.languageSelected$.pipe(
       switchMap(_ => this._filterConfig$),
       tap((config: IFrameworkCategoryFilterFieldTemplateConfig[]) => {
-        this.filterFormTemplateConfig = config
-        this.hardRefreshFilter()
+        this.filterFormTemplateConfig = config;
+        this.hardRefreshFilter();
       })
-    )
+    );
   }
 }

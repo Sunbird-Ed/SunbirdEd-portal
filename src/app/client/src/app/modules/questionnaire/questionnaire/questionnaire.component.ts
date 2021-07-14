@@ -1,36 +1,35 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit } from '@angular/core';
 import {
   COLUMN_TYPE,
   LayoutService,
   ResourceService,
   ConfigService,
-} from "@sunbird/shared";
-import { FormGroup, FormBuilder } from "@angular/forms";
-import { ActivatedRoute } from "@angular/router";
-import { ObservationService } from "@sunbird/core";
-import { Location } from "@angular/common";
+} from '@sunbird/shared';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { ObservationService } from '@sunbird/core';
+import { Location } from '@angular/common';
 // import {
 //   AssessmentInfo,
 //   Evidence,
 //   IAssessmentDetails,
 //   Section,
 // } from "../Interface/assessmentDetails";
-import { ObservationUtilService } from "../../observation/service";
-import { ComponentDeactivate } from "../guard/can-deactivate.guard";
-import { AssessmentInfo, Evidence, IAssessmentDetails, Section, SlQuestionnaireService } from "@shikshalokam/sl-questionnaire";
-import { QuestionnaireService } from "../questionnaire.service";
+import { ObservationUtilService } from '../../observation/service';
+import { ComponentDeactivate } from '../guard/can-deactivate.guard';
+import { AssessmentInfo, Evidence, IAssessmentDetails, Section, SlQuestionnaireService } from '@shikshalokam/sl-questionnaire';
+import { QuestionnaireService } from '../questionnaire.service';
 
 @Component({
-  selector: "app-questionnaire",
-  templateUrl: "./questionnaire.component.html",
-  styleUrls: ["./questionnaire.component.scss"],
+  selector: 'app-questionnaire',
+  templateUrl: './questionnaire.component.html',
+  styleUrls: ['./questionnaire.component.scss'],
 })
 export class QuestionnaireComponent
   extends ComponentDeactivate
-  implements OnInit
-{
-  pageTitleSrc: string = "Observation Form";
-  svgToDisplay: string = "textbooks-banner-img.svg";
+  implements OnInit {
+  pageTitleSrc = 'Observation Form';
+  svgToDisplay = 'textbooks-banner-img.svg';
   layoutConfiguration: any;
   FIRST_PANEL_LAYOUT;
   SECOND_PANEL_LAYOUT;
@@ -39,7 +38,7 @@ export class QuestionnaireComponent
   evidence: Evidence;
   queryParams: any;
   assessmentInfo: AssessmentInfo;
-  canLeave: boolean = false;
+  canLeave = false;
   constructor(
     public layoutService: LayoutService,
     public fb: FormBuilder,
@@ -50,7 +49,7 @@ export class QuestionnaireComponent
     private location: Location,
     private observationUtilService: ObservationUtilService,
     private slQService: SlQuestionnaireService,
-    private questionnaireService:QuestionnaireService
+    private questionnaireService: QuestionnaireService
   ) {
     super();
   }
@@ -75,7 +74,7 @@ export class QuestionnaireComponent
     window.scroll({
       top: 0,
       left: 0,
-      behavior: "smooth",
+      behavior: 'smooth',
     });
   }
 
@@ -140,17 +139,17 @@ export class QuestionnaireComponent
     if (!userConfirm) {
       return;
     }
-    let evidenceData = this.slQService.getEvidenceData(
+    const evidenceData = this.slQService.getEvidenceData(
       this.evidence,
       this.questionnaireForm.value
     );
 
-    save ? (evidenceData["status"] = "draft") : null;
-    let profile:Object = await this.observationUtilService.getProfileDataList()
+    save ? (evidenceData['status'] = 'draft') : null;
+    const profile: Object = await this.observationUtilService.getProfileDataList();
     if (!profile) {
-      return
+      return;
     }
-    let payload = {...profile, ...{evidence: evidenceData} };
+    const payload = {...profile, ...{evidence: evidenceData} };
 
     this.submitEvidence(payload);
   }
@@ -164,7 +163,7 @@ export class QuestionnaireComponent
     };
     this.observationService.post(paramOptions).subscribe(
       (data) => {
-        if (payload.evidence.status == "draft") {
+        if (payload.evidence.status == 'draft') {
           this.backOrContinue();
           return;
         }
@@ -185,22 +184,22 @@ export class QuestionnaireComponent
   }
 
   async backOrContinue() {
-    let alertMetaData = await this.observationUtilService.getAlertMetaData();
+    const alertMetaData = await this.observationUtilService.getAlertMetaData();
     alertMetaData.content.body.data =
       this.resourceService.frmelmnts.lbl.successfullySaved;
     alertMetaData.content.body.type = "text";
     alertMetaData.size = "mini";
     alertMetaData.footer.buttons.push({
-      type: "accept",
+      type: 'accept',
       returnValue: true,
       buttonText: this.resourceService.frmelmnts.btn.back,
     });
     alertMetaData.footer.buttons.push({
-      type: "cancel",
+      type: 'cancel',
       returnValue: false,
       buttonText: this.resourceService.frmelmnts.lbl.continue,
     });
-    alertMetaData.footer.className = "double-btn";
+    alertMetaData.footer.className = 'double-btn';
 
     const response = await this.observationUtilService.showPopupAlert(
       alertMetaData
@@ -212,28 +211,28 @@ export class QuestionnaireComponent
   }
 
   async openAlert(msg, showCancel = false) {
-    let alertMetaData = await this.observationUtilService.getAlertMetaData();
+    const alertMetaData = await this.observationUtilService.getAlertMetaData();
     alertMetaData.content.body.data = msg;
-    alertMetaData.content.body.type = "text";
-    alertMetaData.content.title = "";
+    alertMetaData.content.body.type = 'text';
+    alertMetaData.content.title = '';
 
-    alertMetaData.size = "mini";
+    alertMetaData.size = 'mini';
     alertMetaData.footer.buttons.push({
-      type: "accept",
+      type: 'accept',
       returnValue: true,
       buttonText: showCancel
         ? this.resourceService.frmelmnts.btn.yes
         : this.resourceService.frmelmnts.btn.ok,
     });
-    alertMetaData.footer.className = "single-btn";
+    alertMetaData.footer.className = 'single-btn';
 
     if (showCancel) {
       alertMetaData.footer.buttons.push({
-        type: "cancel",
+        type: 'cancel',
         returnValue: false,
         buttonText: this.resourceService.frmelmnts.btn.no,
       });
-      alertMetaData.footer.className = "double-btn";
+      alertMetaData.footer.className = 'double-btn';
     }
     return this.observationUtilService.showPopupAlert(alertMetaData);
   }
@@ -245,7 +244,7 @@ export class QuestionnaireComponent
     const offsetPosition = elementPosition - headerOffset;
     window.scrollTo({
       top: offsetPosition,
-      behavior: "smooth"
+      behavior: 'smooth'
     });
   }
 

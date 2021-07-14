@@ -132,7 +132,7 @@ export const Response = {
             ],
             'name': 'primaryCategory'
           }
-          
+
       ]
     }
   },

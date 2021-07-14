@@ -3,7 +3,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { ConfigService } from '@sunbird/shared';
 import { configureTestSuite } from '@sunbird/test-util';
 // import { KendraService } from './kendra.service';
-import { CloudService} from './cloud.service'
+import { CloudService} from './cloud.service';
 describe('CloudService', () => {
   configureTestSuite();
   beforeEach(() => {

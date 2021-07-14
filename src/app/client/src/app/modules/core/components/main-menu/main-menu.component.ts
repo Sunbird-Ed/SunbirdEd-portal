@@ -214,7 +214,7 @@ export class MainMenuComponent implements OnInit {
     this.layoutService.initiateSwitchLayout();
     this.generateInteractTelemetry();
   }
- 
+
 
   generateInteractTelemetry() {
     const interactData = {

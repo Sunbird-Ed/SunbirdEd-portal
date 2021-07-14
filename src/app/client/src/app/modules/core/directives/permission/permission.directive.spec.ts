@@ -27,7 +27,7 @@ describe('PermissionDirective', () => {
             provide: TranslateLoader,
             useClass: TranslateFakeLoader
          }
-      }),],
+      }), ],
       declarations: [TestWrapperComponent],
       providers: [ToasterService, ResourceService, PermissionService, UserService,
       CacheService, ContentService, ConfigService, LearnerService, HttpClient, BrowserCacheTtlService]

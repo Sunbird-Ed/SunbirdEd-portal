@@ -4,7 +4,7 @@ import { WorkSpace } from '../../classes/workspace';
 import { SearchService, UserService } from '@sunbird/core';
 import {
   ServerResponse, PaginationService, ConfigService, ToasterService, IPagination,
-  ResourceService, ILoaderMessage, INoResultMessage, NavigationHelperService,LayoutService
+  ResourceService, ILoaderMessage, INoResultMessage, NavigationHelperService, LayoutService
 } from '@sunbird/shared';
 import { combineLatest, Subject } from 'rxjs';
 import { takeUntil, map, filter } from 'rxjs/operators';

@@ -68,10 +68,10 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   previousContent = null;
   groupId;
   assessmentMaxAttempts: number;
-  showMaxAttemptsModal: boolean = false;
-  isRouterExtrasAvailable: boolean = false;
+  showMaxAttemptsModal = false;
+  isRouterExtrasAvailable = false;
   _routerStateContentStatus: any;
-  showLastAttemptsModal: boolean = false;
+  showLastAttemptsModal = false;
   navigationObj: { event: any; id: any; };
   showPlayer = false;
   showQSExitConfirmation = false;
@@ -80,8 +80,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
   canDeactivate() {
     // returning true will navigate without confirmation
     // returning false will show a confirm dialog before navigating away
-    return _.get(this.activeContent, 'mimeType') === 'application/vnd.sunbird.questionset' && !this.showQSExitConfirmation ? false: true;
-  } 
+    return _.get(this.activeContent, 'mimeType') === 'application/vnd.sunbird.questionset' && !this.showQSExitConfirmation ? false : true;
+  }
 
   constructor(
     public resourceService: ResourceService,
@@ -113,7 +113,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     if (_.get(_routerExtras, 'extras.state')) {
       this.isRouterExtrasAvailable = true;
       this._routerStateContentStatus = _.get(_routerExtras, 'extras.state.contentStatus');
-      this.contentStatus = _.get(_routerExtras, 'extras.state.contentStatus.content') ? 
+      this.contentStatus = _.get(_routerExtras, 'extras.state.contentStatus.content') ?
         _.get(_routerExtras, 'extras.state.contentStatus.content') : [];
     }
   }
@@ -298,7 +298,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     this.previousContent = _.cloneDeep(this.activeContent);
     if (_.get(this.courseHierarchy, 'children')) {
       let flattenDeepContents = this.courseConsumptionService.flattenDeep(this.courseHierarchy.children);
-      flattenDeepContents = _.filter(flattenDeepContents, (o) => { return o.mimeType !== 'application/vnd.sunbird.question'; });
+      flattenDeepContents = _.filter(flattenDeepContents, (o) => o.mimeType !== 'application/vnd.sunbird.question');
       if (selectedContent) {
         this.activeContent = flattenDeepContents.find(content => content.identifier === selectedContent);
       } else {
@@ -349,7 +349,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
 
   private getContentState() {
     if (this.batchId && (_.get(this.activeContent, 'contentType') === 'SelfAssess' || !this.isRouterExtrasAvailable)) {
-      const req:any = this.getContentStateRequest(this.courseHierarchy);
+      const req: any = this.getContentStateRequest(this.courseHierarchy);
       this.CsCourseService
       .getContentState(req, { apiPath: '/content/course/v1' })
       .pipe(takeUntil(this.unsubscribe))
@@ -418,7 +418,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
         } else {
           const _contentIndex = _.findIndex(this.contentStatus, {contentId: request.contentId});
           const _resIndex =  _.findIndex(updatedRes.content, {contentId: request.contentId});
-          if(_resIndex !== -1) {
+          if (_resIndex !== -1) {
           // Update the available status data object
             this._routerStateContentStatus['progress'] = _.get(updatedRes, 'progress');
             this.contentStatus[_contentIndex]['status'] = _.get(updatedRes.content[_resIndex], 'status');
@@ -699,7 +699,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
       let maxAttemptsExceeded = false;
       this.showMaxAttemptsModal = false;
       let isLastAttempt = false;
-      const req:any = this.getContentStateRequest(this.parentCourse);
+      const req: any = this.getContentStateRequest(this.parentCourse);
       if (_.get(this.activeContent, 'contentType') === 'SelfAssess' || !this.isRouterExtrasAvailable) {
         this.CsCourseService
           .getContentState(req, { apiPath: '/content/course/v1' })
@@ -710,8 +710,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
             _.forEach(_.get(res, 'content'), (contentState) => {
               if (_.get(contentState, 'contentId') === this.activeContent.identifier) {
                 /* istanbul ignore next*/
-                if (_.get(contentState, 'score.length') >= _.get(this.activeContent, 'maxAttempts')) maxAttemptsExceeded = true;
-                if (_.get(this.activeContent, 'maxAttempts') - _.get(contentState, 'score.length') === 1) isLastAttempt = true;
+                if (_.get(contentState, 'score.length') >= _.get(this.activeContent, 'maxAttempts')) { maxAttemptsExceeded = true; }
+                if (_.get(this.activeContent, 'maxAttempts') - _.get(contentState, 'score.length') === 1) { isLastAttempt = true; }
                 /* istanbul ignore next*/
                 if (_.get(this.activeContent, 'contentType') === 'SelfAssess') {
                   /* istanbul ignore next*/
@@ -746,8 +746,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
           /* istanbul ignore next*/
           if (_.get(contentState, 'contentId') === _.get(this.activeContent, 'identifier')) {
             /* istanbul ignore next*/
-            if (_.get(contentState, 'score.length') >= _.get(this.activeContent, 'maxAttempts')) maxAttemptsExceeded = true;
-            if (_.get(this.activeContent, 'maxAttempts') - _.get(contentState, 'score.length') === 1) isLastAttempt = true;
+            if (_.get(contentState, 'score.length') >= _.get(this.activeContent, 'maxAttempts')) { maxAttemptsExceeded = true; }
+            if (_.get(this.activeContent, 'maxAttempts') - _.get(contentState, 'score.length') === 1) { isLastAttempt = true; }
           }
         });
         /* istanbul ignore else */
@@ -776,8 +776,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     if (_.get(this.activeContent, 'contentType') === 'SelfAssess') {
       const _contentIndex = _.findIndex(this.contentStatus, {contentId: _.get(this.activeContent, 'identifier')});
       /* istanbul ignore if */
-      if (_contentIndex > 0 && _.get(this.contentStatus[_contentIndex], 'score.length') >= _.get(this.activeContent, 'maxAttempts')) maxAttemptsExceeded = true;
-      if (_contentIndex > 0 && _.get(this.activeContent, 'maxAttempts') - _.get(this.contentStatus[_contentIndex], 'score.length') === 1) isLastAttempt = true;
+      if (_contentIndex > 0 && _.get(this.contentStatus[_contentIndex], 'score.length') >= _.get(this.activeContent, 'maxAttempts')) { maxAttemptsExceeded = true; }
+      if (_contentIndex > 0 && _.get(this.activeContent, 'maxAttempts') - _.get(this.contentStatus[_contentIndex], 'score.length') === 1) { isLastAttempt = true; }
     }
     /* istanbul ignore if */
     if (maxAttemptsExceeded) {
@@ -798,11 +798,11 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
       if (this.batchId) {
         options.batchId = this.batchId;
       }
-      if(this.activeContent.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset){
+      if (this.activeContent.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
         const serveiceRef = this.userService.loggedIn ? this.playerService : this.publicPlayerService;
         this.publicPlayerService.getQuestionSetHierarchy(id).pipe(
           takeUntil(this.unsubscribe))
-          .subscribe((response) => {          
+          .subscribe((response) => {
             const objectRollup = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, id);
             this.objectRollUp = objectRollup ? this.courseConsumptionService.getRollUp(objectRollup) : {};
             if (response && response.context) {
@@ -818,7 +818,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
             });
             const _contentIndex = _.findIndex(this.contentStatus, { contentId: _.get(this.playerConfig, 'context.contentId') });
             this.playerConfig['metadata']['maxAttempt'] = _.get(this.activeContent, 'maxAttempts');
-            let _currentAttempt = _.get(this.contentStatus[_contentIndex], 'score.length') || 0;
+            const _currentAttempt = _.get(this.contentStatus[_contentIndex], 'score.length') || 0;
             this.playerConfig['metadata']['currentAttempt'] = _currentAttempt == undefined ? 0 : _currentAttempt;
             this.showLoader = false;
           }, (err) => {
@@ -838,7 +838,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
           this.playerConfig = config;
           const _contentIndex = _.findIndex(this.contentStatus, { contentId: _.get(config, 'context.contentId') });
           this.playerConfig['metadata']['maxAttempt'] = _.get(this.activeContent, 'maxAttempts');
-          let _currentAttempt = _contentIndex > 0 ? _.get(this.contentStatus[_contentIndex], 'score.length') : 0;
+          const _currentAttempt = _contentIndex > 0 ? _.get(this.contentStatus[_contentIndex], 'score.length') : 0;
           this.playerConfig['metadata']['currentAttempt'] = _currentAttempt == undefined ? 0 : _currentAttempt;
           this.showLoader = false;
           this.setTelemetryContentImpression();

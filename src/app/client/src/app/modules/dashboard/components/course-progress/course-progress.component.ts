@@ -273,7 +273,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       });
   }
 
-  summaryReport(tabNumber){
+  summaryReport(tabNumber) {
     this.setInteractEventDataForTabs('summary-report');
     this.selectedTab = tabNumber;
     this.getSummaryReports();
@@ -294,11 +294,11 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.batchId = batch.id;
     this.setCounts(this.currentBatch);
     this.populateCourseDashboardData(batch);
-    if(this.selectedTab === 1){
+    if (this.selectedTab === 1) {
       this.summaryReport(1);
     } else {
       this.loadOndemandReports(2);
-    } 
+    }
   }
 
 
@@ -360,7 +360,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
             state: x.state,
             district: x.district,
             noOfEnrollments: this.getFieldValue(x.values, 'enrolment')
-          }
+          };
         });
         this.stateWiseReportData = [...this.stateWiseReportData];
         const metrics = _.get(result, 'metrics');
@@ -402,7 +402,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         }
       ];
       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    })
+    });
   }
 
   /**
@@ -565,8 +565,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
 
 
   getFieldValue(array, field) {
-    if (_.find(array, {"type": field})) {
-      return _.find(array, {"type": field}).count;
+    if (_.find(array, {'type': field})) {
+      return _.find(array, {'type': field}).count;
     } else {
       return;
     }
@@ -617,14 +617,14 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
    */
   loadOndemandReports(tabNumber) {
     this.getSummaryReports();
-    setTimeout(()=> {
-      if(this.onDemandReports) {
+    setTimeout(() => {
+      if (this.onDemandReports) {
       this.setInteractEventDataForTabs('on-demand-reports');
       this.selectedTab = tabNumber;
       if (_.isEmpty(this.reportTypes)) {
         this.getFormData();
       }
-      this.onDemandReports.loadReports(this.currentBatch)
+      this.onDemandReports.loadReports(this.currentBatch);
     }
       }, 500);
   }

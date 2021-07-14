@@ -100,7 +100,7 @@ describe('GroupMembersComponent', () => {
       description: '',
       membershipType: GroupMembershipType.INVITE_ONLY,
       active: true,
-      isActive() { return true ;}
+      isActive() { return true ; }
     };
     spyOn(component['groupsService'], 'addFieldsToMember').and.returnValue(members);
     spyOn(component['groupsService'], 'membersList').and.returnValue(of(members));
@@ -307,7 +307,7 @@ describe('GroupMembersComponent', () => {
       description: '', membershipType: GroupMembershipType.INVITE_ONLY,
       members: [],
       active: true,
-      isActive() { return true ;}
+      isActive() { return true ; }
     };
     spyOn(component['groupsService'], 'getGroupById').and.returnValue(of(response));
     component.getUpdatedGroupData();
