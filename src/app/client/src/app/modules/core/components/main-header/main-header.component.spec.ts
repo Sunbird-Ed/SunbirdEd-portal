@@ -27,7 +27,7 @@ import {AnimationBuilder} from '@angular/animations';
 import {TelemetryModule, TelemetryService} from '@sunbird/telemetry';
 import {CacheService} from 'ng2-cache-service';
 import {mockData} from './main-header.component.spec.data';
-import {CommonConsumptionModule} from '@project-sunbird/common-consumption-v8';
+import {CommonConsumptionModule} from '@project-sunbird/common-consumption-v9';
 import { configureTestSuite } from '@sunbird/test-util';
 
 describe('MainHeaderComponent', () => {

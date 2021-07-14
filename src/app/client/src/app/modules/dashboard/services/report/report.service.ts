@@ -176,7 +176,7 @@ export class ReportService {
       const { chartType, dataSource = null, mapData = {} } = chart;
       const chartObj: any = {};
       chartObj.chartConfig = chart;
-      if(!chartObj.chartConfig['id']){
+      if (!chartObj.chartConfig['id']) {
         chartObj.chartConfig['id']  = UUID.UUID();
       }
       chartObj.downloadUrl = downloadUrl;

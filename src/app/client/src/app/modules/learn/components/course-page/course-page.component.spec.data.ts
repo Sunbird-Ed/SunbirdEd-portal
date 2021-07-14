@@ -1190,10 +1190,10 @@ export const Response = {
       'mimeType',
       'trackable',
       'gradeLevel',
-      "se_boards",
-      "se_subjects",
-      "se_mediums",
-      "se_gradeLevels"
+      'se_boards',
+      'se_subjects',
+      'se_mediums',
+      'se_gradeLevels'
     ]
   },
   buildOptionNonLoggedin: {
@@ -1431,64 +1431,64 @@ export const Response = {
   },
   carouselMasterData: [
     {
-      "name": "General Science",
-      "contents": [
+      'name': 'General Science',
+      'contents': [
         {
-          "trackable": {
-            "enabled": "Yes",
-            "autoBatch": "Yes"
+          'trackable': {
+            'enabled': 'Yes',
+            'autoBatch': 'Yes'
           },
-          "identifier": "do_2131234105062768641485",
-          "appIcon": "https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_2128056370171166721428/artifact/100x100_1560235048004.thumb.jpg",
-          "gradeLevel": [
-            "Class 1"
+          'identifier': 'do_2131234105062768641485',
+          'appIcon': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_2128056370171166721428/artifact/100x100_1560235048004.thumb.jpg',
+          'gradeLevel': [
+            'Class 1'
           ],
-          "subject": [
-            "General Science"
+          'subject': [
+            'General Science'
           ],
-          "name": "Copy of vk-3.3CourseG05102020",
-          "organisation": [
-            "Odisha"
+          'name': 'Copy of vk-3.3CourseG05102020',
+          'organisation': [
+            'Odisha'
           ],
-          "mimeType": "application/vnd.ekstep.content-collection",
-          "medium": [
-            "Hindi"
+          'mimeType': 'application/vnd.ekstep.content-collection',
+          'medium': [
+            'Hindi'
           ],
-          "contentType": "Course",
-          "objectType": "Content",
-          "resourceType": "Course",
-          "cardImg": "https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_2128056370171166721428/artifact/100x100_1560235048004.thumb.jpg"
+          'contentType': 'Course',
+          'objectType': 'Content',
+          'resourceType': 'Course',
+          'cardImg': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_2128056370171166721428/artifact/100x100_1560235048004.thumb.jpg'
         }
       ]
     },
     {
-      "name": "Political Science",
-      "contents": [
+      'name': 'Political Science',
+      'contents': [
         {
-          "trackable": {
-            "enabled": "Yes",
-            "autoBatch": "Yes"
+          'trackable': {
+            'enabled': 'Yes',
+            'autoBatch': 'Yes'
           },
-          "identifier": "do_213133223315382272146",
-          "appIcon": "https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_2128056370171166721428/artifact/100x100_1560235048004.thumb.jpg",
-          "gradeLevel": [
-            "Class 2"
+          'identifier': 'do_213133223315382272146',
+          'appIcon': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_2128056370171166721428/artifact/100x100_1560235048004.thumb.jpg',
+          'gradeLevel': [
+            'Class 2'
           ],
-          "subject": [
-            "Political Science"
+          'subject': [
+            'Political Science'
           ],
-          "name": "vk-3.4CourseG20102020",
-          "organisation": [
-            "Odisha"
+          'name': 'vk-3.4CourseG20102020',
+          'organisation': [
+            'Odisha'
           ],
-          "mimeType": "application/vnd.ekstep.content-collection",
-          "medium": [
-            "Gujarati"
+          'mimeType': 'application/vnd.ekstep.content-collection',
+          'medium': [
+            'Gujarati'
           ],
-          "contentType": "Course",
-          "objectType": "Content",
-          "resourceType": "Course",
-          "cardImg": "https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_2128056370171166721428/artifact/100x100_1560235048004.thumb.jpg"
+          'contentType': 'Course',
+          'objectType': 'Content',
+          'resourceType': 'Course',
+          'cardImg': 'https://ntpstagingall.blob.core.windows.net/ntp-content-staging/content/do_2128056370171166721428/artifact/100x100_1560235048004.thumb.jpg'
         }
       ]
     }

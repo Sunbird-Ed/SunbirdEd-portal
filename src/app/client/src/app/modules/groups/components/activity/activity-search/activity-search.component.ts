@@ -129,7 +129,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
       }
     });
   }
-  
+
   private fetchContentOnParamChange() {
     combineLatest([this.activatedRoute.params, this.activatedRoute.queryParams])
       .pipe(debounceTime(5), // to sync params and queryParams events
@@ -244,7 +244,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
     this.searchService.contentSearch(option, false)
       .pipe(
         mergeMap(data => {
-          const channelFacet = _.find(_.get(data, 'result.facets') || [], facet => _.get(facet, 'name') === 'channel')
+          const channelFacet = _.find(_.get(data, 'result.facets') || [], facet => _.get(facet, 'name') === 'channel');
           if (channelFacet) {
             const rootOrgIds = this.orgDetailsService.processOrgData(_.get(channelFacet, 'values'));
             return this.orgDetailsService.searchOrgDetails({
@@ -255,7 +255,7 @@ export class ActivitySearchComponent implements OnInit, OnDestroy {
                 channelFacet.values = _.get(orgDetails, 'content');
                 return of(data);
               })
-            )
+            );
           }
           return of(data);
         })

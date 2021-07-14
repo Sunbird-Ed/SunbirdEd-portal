@@ -19,12 +19,12 @@ describe('AppLandingSectionComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ HttpClientModule,SharedModule.forRoot(),TranslateModule.forRoot({
+      imports: [ HttpClientModule, SharedModule.forRoot(), TranslateModule.forRoot({
          loader: {
             provide: TranslateLoader,
             useClass: TranslateFakeLoader
          }
-      }),],
+      }), ],
       providers: [HttpClient]
     })
     .compileComponents();

@@ -10,7 +10,7 @@ interface ISchema {
   schema: {
     properties: string[];
     [name: string]: any;
-  }
+  };
 }
 
 @Injectable({
@@ -35,12 +35,12 @@ export class SchemaService {
             return acc;
           }, {});
         })
-      )
+      );
   }
 
   private checkForScriptInjection(value: string | any[]) {
-    const applyXssProtection = (input: string) => input.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    if (typeof value === 'string') return applyXssProtection(value);
+    const applyXssProtection = (input: string) => input.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    if (typeof value === 'string') { return applyXssProtection(value); }
     return value.map(val => applyXssProtection(val));
   }
 

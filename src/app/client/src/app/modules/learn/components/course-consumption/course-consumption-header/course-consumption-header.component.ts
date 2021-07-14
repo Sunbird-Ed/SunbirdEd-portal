@@ -502,7 +502,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
     this.router.navigate(['/discussion-forum'], {
       queryParams: {
         categories: JSON.stringify({ result: routerData.forumIds }),
-        userName: routerData.userName
+        userId: routerData.userId
       }
     });
   }

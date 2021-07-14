@@ -96,23 +96,23 @@ describe('VerifyAccountIdentifierComponent', () => {
   it('should call handleVerifyOtp', () => {
     const recoverAccountService = TestBed.get(RecoverAccountService);
     spyOn(recoverAccountService, 'verifyOTP').and.returnValue(of([{}]));
-    spyOn(component, 'resetPassword').and.callFake(() => {})
+    spyOn(component, 'resetPassword').and.callFake(() => {});
     component.initializeForm();
     component.form.patchValue({otp: 123456});
     component.handleVerifyOtp();
     expect(component.resetPassword).toHaveBeenCalled();
     expect(component.disableFormSubmit).toBeTruthy();
-  })
+  });
     it('should call handleResendOtp', () => {
-      spyOn(component, 'resendOtpEnablePostTimer')
+      spyOn(component, 'resendOtpEnablePostTimer');
       component.resendOtpCounter = 1;
       component.maxResendTry = 1;
      const result = component.handleResendOtp();
-      expect(component.disableResendOtp).toBeFalsy()
+      expect(component.disableResendOtp).toBeFalsy();
       expect(component.resendOtpCounter).toBe(2);
       expect(result).toBeFalsy();
     });
-  
+
     it('should call handleResendOtp error case', () => {
       const recoverAccountService = TestBed.get(RecoverAccountService);
       const toasterService = TestBed.get(ToasterService);
@@ -123,7 +123,7 @@ describe('VerifyAccountIdentifierComponent', () => {
       component.resendOtpCounter = 1;
       component.maxResendTry = 3;
        component.handleResendOtp();
-      expect(component.disableResendOtp).toBeFalsy()
+      expect(component.disableResendOtp).toBeFalsy();
       expect(component.resendOtpCounter).toBe(2);
       expect(toasterService.success).toHaveBeenCalledWith('OTP sent successfully.');
     });
@@ -133,14 +133,14 @@ describe('VerifyAccountIdentifierComponent', () => {
       component.submitResendOTP();
       expect(component.handleResendOtp).toHaveBeenCalled();
     });
-  
+
      it('should call resetPassword error case', () => {
       const recoverAccountService = TestBed.get(RecoverAccountService);
-      spyOn(component, 'handleError').and.callFake(()=> {})
+      spyOn(component, 'handleError').and.callFake(() => {});
       spyOn(recoverAccountService, 'resetPassword').and.returnValue(throwError('error'));
       component.resetPassword();
-      expect(component.handleError).toHaveBeenCalledWith('error')
-  
+      expect(component.handleError).toHaveBeenCalledWith('error');
+
      });
      it('should call resetPassword', () => {
       const recoverAccountService = TestBed.get(RecoverAccountService);
@@ -148,10 +148,10 @@ describe('VerifyAccountIdentifierComponent', () => {
         result : {
           remainingAttempt : 1
         }
-      }
-      spyOn(component, 'handleError').and.callFake(()=> {})
+      };
+      spyOn(component, 'handleError').and.callFake(() => {});
       spyOn(recoverAccountService, 'resetPassword').and.returnValue(of(response));
       component.resetPassword();
-      expect(component.handleError).toHaveBeenCalledWith(response)
+      expect(component.handleError).toHaveBeenCalledWith(response);
      });
 });

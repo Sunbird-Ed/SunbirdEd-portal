@@ -315,7 +315,7 @@ export class PublishedComponent extends WorkSpace implements OnInit, AfterViewIn
   contentClick(param, content) {
     this.contentMimeType = content.metaData.mimeType;
     if (param.data && param.data.originData) {
-      const originData = JSON.parse(param.data.originData)
+      const originData = JSON.parse(param.data.originData);
       if (originData.copyType === 'shallow') {
         const errMsg = (this.resourceService.messages.emsg.m1414).replace('{instance}', originData.organisation[0]);
         this.toasterService.error(errMsg);

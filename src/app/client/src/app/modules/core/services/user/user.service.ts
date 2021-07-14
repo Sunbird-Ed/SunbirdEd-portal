@@ -275,7 +275,7 @@ export class UserService {
     }
 
     if (window['TagManager']) {
-      window['TagManager'].SBTagService.pushTag({ userLoocation: profileData.userLocations }, 'USERLOCATION_', true)
+      window['TagManager'].SBTagService.pushTag({ userLoocation: profileData.userLocations, userTyep: profileData.profileUserType }, 'USERLOCATION_', true);
       window['TagManager'].SBTagService.pushTag(profileData.framework, 'USERFRAMEWORK_', true);
     }
   }

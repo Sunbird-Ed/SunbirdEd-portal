@@ -77,7 +77,7 @@ describe('ContentPlayerComponent', () => {
     component.deleteContent(playerData.contentId);
     expect(component.deletedContent.emit).toHaveBeenCalledWith(playerData.contentId);
   });
-  
+
   it('should emit deleteContent when content is deleted ', () => {
     const utilService = TestBed.get(UtilService);
     utilService._isDesktopApp = true;

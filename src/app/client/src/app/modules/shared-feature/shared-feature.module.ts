@@ -18,11 +18,11 @@ import { GlobalConsentPiiComponent } from './components/global-consent-pii/globa
 import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
 import { PlayerHelperModule } from '@sunbird/player-helper';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v9';
 import { CommonFormElementsModule } from 'common-form-elements-v9';
 import { LocationModule } from '../../plugins/location';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { DashletModule } from  '@project-sunbird/sb-dashlet-v9'
+import { DashletModule } from  '@project-sunbird/sb-dashlet-v9';
 
 export const csUserServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
   if (!CsModule.instance.isInitialised) {

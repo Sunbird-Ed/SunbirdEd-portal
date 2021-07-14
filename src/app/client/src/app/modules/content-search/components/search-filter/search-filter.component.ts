@@ -1,6 +1,6 @@
 import {Component, Output, EventEmitter, Input, OnInit, OnDestroy, ChangeDetectorRef, ViewChild} from '@angular/core';
 import * as _ from 'lodash-es';
-import { LibraryFiltersLayout } from '@project-sunbird/common-consumption-v8';
+import { LibraryFiltersLayout } from '@project-sunbird/common-consumption-v9';
 import { ResourceService, LayoutService } from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject, merge, of, zip, BehaviorSubject, defer } from 'rxjs';
@@ -90,7 +90,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       placeholderText: 'Select User Type',
       multiple: true
     }
-  ]))
+  ]));
 
   constructor(public resourceService: ResourceService, private router: Router,
     private contentSearchService: ContentSearchService,
@@ -387,9 +387,9 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     return this.resourceService.languageSelected$.pipe(
       switchMap(_ => this._filterConfig$),
       tap((config: IFrameworkCategoryFilterFieldTemplateConfig[]) => {
-        this.filterFormTemplateConfig = config
-        this.hardRefreshFilter()
+        this.filterFormTemplateConfig = config;
+        this.hardRefreshFilter();
       })
-    )
+    );
   }
 }

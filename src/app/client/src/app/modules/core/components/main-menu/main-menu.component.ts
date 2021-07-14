@@ -1,7 +1,7 @@
 import { EXPLORE_GROUPS, MY_GROUPS } from '../../../public/module/group/components/routerLinks';
 import { ConfigService, ResourceService, IUserData, IUserProfile, LayoutService, UtilService } from '@sunbird/shared';
 import { Component, OnInit, Input } from '@angular/core';
-import { UserService, PermissionService, ProgramsService } from '../../services';
+import { UserService, PermissionService } from '../../services';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import {IInteractEventObject, IInteractEventEdata, TelemetryService} from '@sunbird/telemetry';
 import { CacheService } from 'ng2-cache-service';
@@ -66,7 +66,6 @@ export class MainMenuComponent implements OnInit {
    */
 
   signInIntractEdata: IInteractEventEdata;
-  showContributeTab: boolean;
   hrefPath = '/resources';
   routerLinks = {explore: `/${EXPLORE_GROUPS}`, groups: `/${MY_GROUPS}`};
   isDesktopApp = false;
@@ -76,7 +75,7 @@ export class MainMenuComponent implements OnInit {
   */
   constructor(resourceService: ResourceService, userService: UserService, router: Router, public activatedRoute: ActivatedRoute,
     permissionService: PermissionService, config: ConfigService, private cacheService: CacheService, private utilService: UtilService,
-    private programsService: ProgramsService, public layoutService: LayoutService, public telemetryService: TelemetryService) {
+    public layoutService: LayoutService, public telemetryService: TelemetryService) {
     this.resourceService = resourceService;
     this.userService = userService;
     this.permissionService = permissionService;
@@ -109,11 +108,7 @@ export class MainMenuComponent implements OnInit {
       this.helpLinkVisibility = 'false';
     }
     this.setInteractData();
-    merge(this.programsService.allowToContribute$.pipe(
-      tap((showTab: boolean) => {
-        this.showContributeTab = showTab;
-      })
-    ), this.userService.userData$.pipe(
+    merge(this.userService.userData$.pipe(
       tap((user: IUserData) => {
         if (user && !user.err) {
           this.userProfile = _.get(user, 'userProfile');
@@ -219,7 +214,7 @@ export class MainMenuComponent implements OnInit {
     this.layoutService.initiateSwitchLayout();
     this.generateInteractTelemetry();
   }
- 
+
 
   generateInteractTelemetry() {
     const interactData = {

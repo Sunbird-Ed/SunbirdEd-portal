@@ -365,6 +365,11 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
       mode: _.get(manipulatedData, 'mode'),
       params: this.configService.appConfig.ViewAll.contentApiQueryParams,
     };
+
+    if (_.get(this.filters, 'isContentSection')) {
+      requestParams.filters = _.omit(this.filters, ['isContentSection']);
+    }
+
     requestParams['exists'] = request.queryParams.exists,
       requestParams['sort_by'] = request.queryParams.sortType ?
         { [request.queryParams.sort_by]: request.queryParams.sortType } : JSON.parse(request.queryParams.defaultSortBy);
@@ -434,7 +439,7 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
     if (onGoingBatchCount === 1) { // play course if only one open batch is present
       metaData.batchId = openBatch.ongoing.length ? openBatch.ongoing[0].batchId : inviteOnlyBatch.ongoing[0].batchId;
       return this.playerService.playContent(metaData);
-    } 
+    }
     // else if (onGoingBatchCount === 0 && expiredBatchCount === 1) {
     //   metaData.batchId = openBatch.expired.length ? openBatch.expired[0].batchId : inviteOnlyBatch.expired[0].batchId;
     //   return this.playerService.playContent(metaData);
@@ -651,10 +656,10 @@ export class ViewAllComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private getCurrentPageData() {
     const { currentPageData = null } = _.get(history, 'state') || {};
-    if (currentPageData) return of(currentPageData);
+    if (currentPageData) { return of(currentPageData); }
     const selectedTab = _.get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || 'textbook';
     return this.getFormConfig().pipe(
       map(this.getPageData(selectedTab))
-    )
+    );
   }
 }

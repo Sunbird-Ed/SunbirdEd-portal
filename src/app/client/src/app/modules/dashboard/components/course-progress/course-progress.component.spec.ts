@@ -47,8 +47,8 @@ describe('CourseProgressComponent', () => {
         'm0132': 'We have received your download request. The file will be sent to your registered email ID shortly.',
         'm0141': 'Data unavailable to generate Score Report'
       },
-      "fmsg": {
-        "m0004": "Could not fetch data, try again later"
+      'fmsg': {
+        'm0004': 'Could not fetch data, try again later'
       }
     },
     'frmelmnts': {
