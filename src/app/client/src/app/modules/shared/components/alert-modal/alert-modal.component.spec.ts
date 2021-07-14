@@ -74,12 +74,12 @@ describe('AlertModalComponent', () => {
     expect(component.navigatePrevious).toHaveBeenCalled();
   });
 
-  it('popstate elements', () => {
-    spyOn(component,"onPopState").and.callThrough();
-    const event = new PopStateEvent('popstate');
-    component.onPopState(event);
-    expect(component.onPopState).toHaveBeenCalledWith(event);
-  });
+  // it('popstate elements', () => {
+  //   spyOn(component,"onPopState").and.callThrough();
+  //   const event = new PopStateEvent('popstate');
+  //   component.onPopState(event);
+  //   expect(component.onPopState).toHaveBeenCalledWith(event);
+  // });
 
 
 });
