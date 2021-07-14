@@ -291,7 +291,7 @@ describe('CollectionPlayerComponent', () => {
     const utilService = TestBed.get(UtilService);
     utilService._isDesktopApp = true;
     const contentManagerService = TestBed.get(ContentManagerService);
-    spyOn(contentManagerService, 'contentDownloadStatus').and.returnValue(of([{}]))
+    spyOn(contentManagerService, 'contentDownloadStatus').and.returnValue(of([{}]));
     spyOn(component, 'checkDownloadStatus');
     component.ngOnInit();
     expect(component.checkDownloadStatus).toHaveBeenCalled();

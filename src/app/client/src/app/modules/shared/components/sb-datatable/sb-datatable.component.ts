@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges,EventEmitter,Output } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, EventEmitter, Output } from '@angular/core';
 import { ExportToCsv } from 'export-to-csv';
 import * as _ from 'lodash-es';
 import dayjs from 'dayjs';
@@ -20,9 +20,9 @@ export const multiFilter = (arr: Object[], filters: Object) => {
           return each.includes(filters[eachKey].toLowerCase().trim());
         } else {
           const keys = eachKey.split('.');
-          if(keys.length > 1){
+          if (keys.length > 1) {
             return filters[eachKey].includes(eachObj[keys[0]][keys[1]]);
-          }else{
+          } else {
             return filters[eachKey].includes(eachObj[keys[0]]);
           }
         }
@@ -79,18 +79,18 @@ export class SbDatatableComponent implements OnInit, OnChanges {
   ngOnChanges() {
     this.tableMessage = {
       'emptyMessage': this.message
-    }
+    };
     this.tableData = _.cloneDeep(this.data);
     _.forEach(this.columns, (x) => {
-      this.filterModel[x.prop] = null
+      this.filterModel[x.prop] = null;
     });
   }
 
-  downloadUrl(prop, row){
+  downloadUrl(prop, row) {
     if (prop === 'downloadUrls') {
       const isLinkExpired = new Date().getTime() > new Date(row.expiresAt).getTime();
       if (isLinkExpired) {
-        this.downloadLink.emit(row)
+        this.downloadLink.emit(row);
       } else {
         window.open(row['downloadUrls'][0], '_blank');
       }
@@ -122,7 +122,7 @@ export class SbDatatableComponent implements OnInit, OnChanges {
 
   downloadCSVFile() {
     this.setInteractEventData();
-    this.name = `${this.name}_${dayjs().format('YYYY-MM-DD_HH_mm')}`; 
+    this.name = `${this.name}_${dayjs().format('YYYY-MM-DD_HH_mm')}`;
     const options = {
       filename: this.name,
       fieldSeparator: ',',
@@ -135,6 +135,6 @@ export class SbDatatableComponent implements OnInit, OnChanges {
       headers: _.map(this.columns, (column) => column.name)
     };
     this.csvExporter = new ExportToCsv(options);
-    this.csvExporter.generateCsv(this.tableData)
+    this.csvExporter.generateCsv(this.tableData);
   }
 }

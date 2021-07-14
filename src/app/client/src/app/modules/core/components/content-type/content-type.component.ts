@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormService, UserService } from './../../services';
 import * as _ from 'lodash-es';
-import { LayoutService, ResourceService, UtilService,IUserData, NavigationHelperService, InterpolatePipe} from '@sunbird/shared';
+import { LayoutService, ResourceService, UtilService, IUserData, NavigationHelperService, InterpolatePipe} from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -22,8 +22,8 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
   isDesktopApp = false;
   public unsubscribe$ = new Subject<void>();
   subscription: any;
-  userType:any;
-  returnTo:string
+  userType: any;
+  returnTo: string;
   constructor(
     public formService: FormService,
     public resourceService: ResourceService,
@@ -123,7 +123,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     if (ct) {
       this.selectedContentType = ct.contentType;
     } else {
-      this.selectedContentType = "all";
+      this.selectedContentType = 'all';
     }
   }
 
@@ -136,9 +136,8 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
           }
           this.makeFormChange();
         });
-      }
-      else {
-        let user = localStorage.getItem("userType");
+      } else {
+        const user = localStorage.getItem('userType');
         if (user) {
           this.userType = user;
           this.makeFormChange();
@@ -146,9 +145,9 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
       }
     }
   }
-  makeFormChange(){
-    let index=this.contentTypes.findIndex(cty=>cty.contentType==="observation");
-    if (this.userType != "administrator") {
+  makeFormChange() {
+    const index = this.contentTypes.findIndex(cty => cty.contentType === 'observation');
+    if (this.userType != 'administrator') {
       this.contentTypes[index].isEnabled = false;
     } else {
       this.contentTypes[index].isEnabled = true;

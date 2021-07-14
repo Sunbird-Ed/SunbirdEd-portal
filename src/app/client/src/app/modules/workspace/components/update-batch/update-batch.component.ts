@@ -24,7 +24,7 @@ export class UpdateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       this.updateBatchModal = element;
     }
     this.initDropDown();
-  };
+  }
   /**
   * batchId
   */

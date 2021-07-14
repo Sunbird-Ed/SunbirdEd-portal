@@ -22,14 +22,14 @@ import { CertificateDirectivesModule } from 'sb-svg2pdf';
 import { CsModule } from '@project-sunbird/client-services';
 import { CsLibInitializerService } from '../../service/CsLibInitializer/cs-lib-initializer.service';
 import { CommonFormElementsModule } from 'common-form-elements-v9';
-import {LocationModule} from "../location";
+import {LocationModule} from '../location';
 
 export const csCourseServiceFactory = (csLibInitializerService: CsLibInitializerService) => {
   if (!CsModule.instance.isInitialised) {
     csLibInitializerService.initializeCs();
   }
   return CsModule.instance.courseService;
-}
+};
 @NgModule({
   imports: [
     CommonModule,

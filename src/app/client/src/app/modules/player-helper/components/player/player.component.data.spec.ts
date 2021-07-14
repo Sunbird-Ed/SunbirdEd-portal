@@ -453,9 +453,9 @@ export const playerData = {
   }
 };
 
-export const printEvent ={
+export const printEvent = {
    edata: {
      type: 'PRINT'
    }
-}
+};
 

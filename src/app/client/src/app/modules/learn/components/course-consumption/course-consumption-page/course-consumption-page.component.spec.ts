@@ -125,7 +125,7 @@ describe('CourseConsumptionPageComponent', () => {
     component.ngOnInit();
     tick(200);
     expect(component.courseHierarchy).toBeDefined();
-  }));    
+  }));
   it('should navigate to course view page if batchId/courseId combination dint match any enrolled course list', () => {
     activatedRouteStub.snapshot.firstChild.params = {courseId: 'do_123',  batchId: '123'};
     spyOn(learnerService, 'get').and.returnValue(of(enrolledCourse.courseSuccessEnroll));

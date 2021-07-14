@@ -25,7 +25,7 @@ describe('ShareLinkComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [SuiModule , HttpClientTestingModule,TranslateModule.forRoot({
+      imports: [SuiModule , HttpClientTestingModule, TranslateModule.forRoot({
          loader: {
             provide: TranslateLoader,
             useClass: TranslateFakeLoader
