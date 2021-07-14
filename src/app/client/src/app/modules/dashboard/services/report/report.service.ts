@@ -65,9 +65,6 @@ export class ReportService {
               return res;
             });
           })
-          // ,catchError(err => {
-          //   return throwError(err);
-          // })
         );
       })
     );
