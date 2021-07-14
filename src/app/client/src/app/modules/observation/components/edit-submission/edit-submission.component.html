@@ -6,7 +6,7 @@
     </div>
     <!--/Header-->
     <!--Content-->
-    <div class="sb-modal-content content">
+    <div class="sb-modal-content content" *ngIf="submission">
 
         <input type="text" [(ngModel)]="submission.title" class="edit-sub-input">
     </div>
@@ -18,7 +18,7 @@
         </button>
         <div class="w-10"></div>
         <button type="button" class="ui sb-btn sb-btn-sm sb-btn-primary text-uppercase flex-basis-1" type="submit"
-            (click)="submit()" [disabled]="!submission.title" [ngClass]="{'sb-btn-disabled' : !submission.title}">
+            (click)="submit()" [disabled]="!submission?.title" [ngClass]="{'sb-btn-disabled' : !submission?.title}">
             {{resourceService.frmelmnts?.btn?.update}}
         </button>
     </div>

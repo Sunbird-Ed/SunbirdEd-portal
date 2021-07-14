@@ -11,7 +11,7 @@ import { ReportService } from '../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { ISummaryObject } from '../../interfaces';
-import { mockLatestReportSummary, mockReportObj,chartData,filters } from './report.component.spec.data';
+import { mockLatestReportSummary, mockReportObj, chartData, filters } from './report.component.spec.data';
 import { mockParameterizedReports } from '../list-all-reports/list-all-reports.component.spec.data';
 describe('ReportComponent', () => {
   let component: ReportComponent;
@@ -385,7 +385,7 @@ describe('ReportComponent', () => {
         chartConfig : { id:"chartId" }
       }
     ]
-    }
+    };
     const data = component.getAllChartData();
     expect(data).toEqual([{ data:chartData, id:"chartId"}]);
   }));
@@ -394,12 +394,12 @@ describe('ReportComponent', () => {
     component.ngOnInit();
     tick(1000);
     component.chartsReportData = {
-      charts:[{
+      charts: [{
           chartConfig : {
             id: 123
           }
       }]
-    }
+    };
     const data = component.getChartData({
         chartConfig : {
           id: 123
@@ -419,12 +419,12 @@ describe('ReportComponent', () => {
     component.ngOnInit();
     tick(1000);
     const data = component.filterChanged({
-      chartData:chartData,
-      filters:filters
+      chartData: chartData,
+      filters: filters
     });
     expect(component.globalFilterChange).toEqual({
-      chartData:chartData,
-      filters:filters
+      chartData: chartData,
+      filters: filters
     });
 
   }));
@@ -438,13 +438,13 @@ describe('ReportComponent', () => {
         chartConfig : { id:"chartId" }
       }
     ]
-    }
+    };
     component.resetFilter();
     expect(component.resetFilters).toEqual({ data:[ { id:"chartId",data:chartData }],reset:true });
 
   }));
 
-  
+
 
   it('should handle markdown update stream', done => {
     const spy = spyOn(reportService, 'updateReport').and.returnValue(of({}));

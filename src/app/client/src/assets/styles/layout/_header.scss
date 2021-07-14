@@ -14,9 +14,9 @@
   background: none;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   flex-wrap: wrap;
-  padding: 0px calculateRem(16px);
+  // padding: 0px calculateRem(16px);
   @include respond-above(sm) {
     flex-wrap: nowrap;
     padding: 0px 0px;
@@ -202,7 +202,8 @@
         color: var(--white);
         border: 0;
         font-weight: 500;
-        padding: calculateRem(8px) 0 calculateRem(8px) calculateRem(8px);
+        padding: calculateRem(8px) 0;
+        top:calculateRem(4px);
       }
       .menu {
         width: 100%;

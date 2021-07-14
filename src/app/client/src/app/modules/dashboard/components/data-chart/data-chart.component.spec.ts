@@ -229,7 +229,7 @@ describe('DataChartComponent', () => {
         component.ngOnInit();
         tick(1000);
         component.dateFilters = ['date'];
-        const response = component.checkFilterReferance("date");
+        const response = component.checkFilterReferance('date');
         expect(response).toEqual(true);
     }));
 

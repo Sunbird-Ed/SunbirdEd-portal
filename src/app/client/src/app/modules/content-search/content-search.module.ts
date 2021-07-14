@@ -10,12 +10,12 @@ import {
 import { TelemetryModule } from '@sunbird/telemetry';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v9';
 import { SlickModule } from 'ngx-slick';
 import { RouterModule } from '@angular/router';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { TranslateModule } from '@ngx-translate/core';
-import { SbSearchFilterModule } from 'common-form-elements';
+import { SbSearchFilterModule } from 'common-form-elements-v9';
 
 @NgModule({
   declarations: [NoResultComponent, SearchFilterComponent, PageSectionComponent, ProminentFilterComponent,

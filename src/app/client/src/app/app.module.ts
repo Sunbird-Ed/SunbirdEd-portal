@@ -22,7 +22,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateStore } from '@ngx-translate/core';
-import { SbSearchFilterModule } from 'common-form-elements';
+import { SbSearchFilterModule } from 'common-form-elements-v9';
 
 @NgModule({
   declarations: [
@@ -71,5 +71,5 @@ export class AppModule {
 }
 // required for AOT compilation
 export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, "/resourcebundles/v1/readLang/"," ");
+  return new TranslateHttpLoader(http, '/resourcebundles/v1/readLang/', ' ');
 }

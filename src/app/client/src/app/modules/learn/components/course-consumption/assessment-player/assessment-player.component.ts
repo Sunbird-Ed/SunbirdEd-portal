@@ -1,11 +1,11 @@
 import { Location } from '@angular/common';
 import { TelemetryService, IAuditEventInput, IImpressionEventInput } from '@sunbird/telemetry';
-import { Component, OnInit, OnDestroy, ViewChild, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Inject, HostListener } from '@angular/core';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
-import { TocCardType } from '@project-sunbird/common-consumption-v8';
-import { UserService, GeneraliseLabelService } from '@sunbird/core';
+import { TocCardType } from '@project-sunbird/common-consumption-v9';
+import { UserService, GeneraliseLabelService, PlayerService } from '@sunbird/core';
 import { AssessmentScoreService, CourseBatchService, CourseConsumptionService, CourseProgressService } from '@sunbird/learn';
-import { PublicPlayerService } from '@sunbird/public';
+import { PublicPlayerService, ComponentCanDeactivate } from '@sunbird/public';
 import { ConfigService, ResourceService, ToasterService, NavigationHelperService,
   ContentUtilsServiceService, ITelemetryShare, LayoutService } from '@sunbird/shared';
 import * as _ from 'lodash-es';
@@ -24,7 +24,7 @@ const ACCESSEVENT = 'renderer:question:submitscore';
   templateUrl: './assessment-player.component.html',
   styleUrls: ['./assessment-player.component.scss']
 })
-export class AssessmentPlayerComponent implements OnInit, OnDestroy {
+export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCanDeactivate {
   @ViewChild('modal') modal;
   private unsubscribe = new Subject<void>();
   contentProgressEvents$ = new Subject();
@@ -68,11 +68,20 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   previousContent = null;
   groupId;
   assessmentMaxAttempts: number;
-  showMaxAttemptsModal: boolean = false;
-  isRouterExtrasAvailable: boolean = false;
+  showMaxAttemptsModal = false;
+  isRouterExtrasAvailable = false;
   _routerStateContentStatus: any;
-  showLastAttemptsModal: boolean = false;
+  showLastAttemptsModal = false;
   navigationObj: { event: any; id: any; };
+  showPlayer = false;
+  showQSExitConfirmation = false;
+
+  @HostListener('window:beforeunload')
+  canDeactivate() {
+    // returning true will navigate without confirmation
+    // returning false will show a confirm dialog before navigating away
+    return _.get(this.activeContent, 'mimeType') === 'application/vnd.sunbird.questionset' && !this.showQSExitConfirmation ? false : true;
+  }
 
   constructor(
     public resourceService: ResourceService,
@@ -82,7 +91,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     private courseBatchService: CourseBatchService,
     private toasterService: ToasterService,
     private location: Location,
-    private playerService: PublicPlayerService,
+    private playerService: PlayerService,
+    private publicPlayerService: PublicPlayerService,
     private userService: UserService,
     private assessmentScoreService: AssessmentScoreService,
     private navigationHelperService: NavigationHelperService,
@@ -103,7 +113,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     if (_.get(_routerExtras, 'extras.state')) {
       this.isRouterExtrasAvailable = true;
       this._routerStateContentStatus = _.get(_routerExtras, 'extras.state.contentStatus');
-      this.contentStatus = _.get(_routerExtras, 'extras.state.contentStatus.content') ? 
+      this.contentStatus = _.get(_routerExtras, 'extras.state.contentStatus.content') ?
         _.get(_routerExtras, 'extras.state.contentStatus.content') : [];
     }
   }
@@ -241,7 +251,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
             id: this.groupId,
             type: 'Group'
           }];
-          this.playerService.getCollectionHierarchy(this.collectionId, {})
+          this.publicPlayerService.getCollectionHierarchy(this.collectionId, {})
             .pipe(takeUntil(this.unsubscribe))
             .subscribe((data) => {
               this.courseHierarchy = data.result.content;
@@ -287,8 +297,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   setActiveContent(selectedContent: string, isSingleContent?: boolean) {
     this.previousContent = _.cloneDeep(this.activeContent);
     if (_.get(this.courseHierarchy, 'children')) {
-      const flattenDeepContents = this.courseConsumptionService.flattenDeep(this.courseHierarchy.children);
-
+      let flattenDeepContents = this.courseConsumptionService.flattenDeep(this.courseHierarchy.children);
+      flattenDeepContents = _.filter(flattenDeepContents, (o) => o.mimeType !== 'application/vnd.sunbird.question');
       if (selectedContent) {
         this.activeContent = flattenDeepContents.find(content => content.identifier === selectedContent);
       } else {
@@ -326,6 +336,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
   }
 
   onTocCardClick() {
+    this.showPlayer = false;
     this.previousContent = _.cloneDeep(this.activeContent);
     /* istanbul ignore else */
     if (_.get(this.navigationObj, 'event.data')) {
@@ -338,7 +349,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
 
   private getContentState() {
     if (this.batchId && (_.get(this.activeContent, 'contentType') === 'SelfAssess' || !this.isRouterExtrasAvailable)) {
-      const req:any = this.getContentStateRequest(this.courseHierarchy);
+      const req: any = this.getContentStateRequest(this.courseHierarchy);
       this.CsCourseService
       .getContentState(req, { apiPath: '/content/course/v1' })
       .pipe(takeUntil(this.unsubscribe))
@@ -407,11 +418,13 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
         } else {
           const _contentIndex = _.findIndex(this.contentStatus, {contentId: request.contentId});
           const _resIndex =  _.findIndex(updatedRes.content, {contentId: request.contentId});
+          if (_resIndex !== -1) {
           // Update the available status data object
-          this._routerStateContentStatus['progress'] = _.get(updatedRes, 'progress');
-          this.contentStatus[_contentIndex]['status'] = _.get(updatedRes.content[_resIndex], 'status');
-          this._routerStateContentStatus['totalCount'] = _.get(updatedRes, 'totalCount');
-          this._routerStateContentStatus['completedCount'] = _.get(updatedRes, 'completedCount');
+            this._routerStateContentStatus['progress'] = _.get(updatedRes, 'progress');
+            this.contentStatus[_contentIndex]['status'] = _.get(updatedRes.content[_resIndex], 'status');
+            this._routerStateContentStatus['totalCount'] = _.get(updatedRes, 'totalCount');
+            this._routerStateContentStatus['completedCount'] = _.get(updatedRes, 'completedCount');
+          }
         }
         /* istanbul ignore else */
         if (!this.isUnitCompleted) {
@@ -686,7 +699,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       let maxAttemptsExceeded = false;
       this.showMaxAttemptsModal = false;
       let isLastAttempt = false;
-      const req:any = this.getContentStateRequest(this.parentCourse);
+      const req: any = this.getContentStateRequest(this.parentCourse);
       if (_.get(this.activeContent, 'contentType') === 'SelfAssess' || !this.isRouterExtrasAvailable) {
         this.CsCourseService
           .getContentState(req, { apiPath: '/content/course/v1' })
@@ -697,8 +710,8 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
             _.forEach(_.get(res, 'content'), (contentState) => {
               if (_.get(contentState, 'contentId') === this.activeContent.identifier) {
                 /* istanbul ignore next*/
-                if (_.get(contentState, 'score.length') >= _.get(this.activeContent, 'maxAttempts')) maxAttemptsExceeded = true;
-                if (_.get(this.activeContent, 'maxAttempts') - _.get(contentState, 'score.length') === 1) isLastAttempt = true;
+                if (_.get(contentState, 'score.length') >= _.get(this.activeContent, 'maxAttempts')) { maxAttemptsExceeded = true; }
+                if (_.get(this.activeContent, 'maxAttempts') - _.get(contentState, 'score.length') === 1) { isLastAttempt = true; }
                 /* istanbul ignore next*/
                 if (_.get(this.activeContent, 'contentType') === 'SelfAssess') {
                   /* istanbul ignore next*/
@@ -712,6 +725,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
             /* istanbul ignore else */
             if (maxAttemptsExceeded && !showPopup) {
               this.showMaxAttemptsModal = true;
+              this.showQSExitConfirmation = true;
             } else if (isLastAttempt) {
               this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.selfAssessLastAttempt'));
             } else if (_.get(res, 'content.length')) {
@@ -732,13 +746,14 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
           /* istanbul ignore next*/
           if (_.get(contentState, 'contentId') === _.get(this.activeContent, 'identifier')) {
             /* istanbul ignore next*/
-            if (_.get(contentState, 'score.length') >= _.get(this.activeContent, 'maxAttempts')) maxAttemptsExceeded = true;
-            if (_.get(this.activeContent, 'maxAttempts') - _.get(contentState, 'score.length') === 1) isLastAttempt = true;
+            if (_.get(contentState, 'score.length') >= _.get(this.activeContent, 'maxAttempts')) { maxAttemptsExceeded = true; }
+            if (_.get(this.activeContent, 'maxAttempts') - _.get(contentState, 'score.length') === 1) { isLastAttempt = true; }
           }
         });
         /* istanbul ignore else */
         if (maxAttemptsExceeded) {
           this.showMaxAttemptsModal = true;
+          this.showQSExitConfirmation = true;
         } else if (isLastAttempt) {
           this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.selfAssessLastAttempt'));
         } else if (this.contentStatus && this.contentStatus.length) {
@@ -761,12 +776,13 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
     if (_.get(this.activeContent, 'contentType') === 'SelfAssess') {
       const _contentIndex = _.findIndex(this.contentStatus, {contentId: _.get(this.activeContent, 'identifier')});
       /* istanbul ignore if */
-      if (_contentIndex > 0 && _.get(this.contentStatus[_contentIndex], 'score.length') >= _.get(this.activeContent, 'maxAttempts')) maxAttemptsExceeded = true;
-      if (_contentIndex > 0 && _.get(this.activeContent, 'maxAttempts') - _.get(this.contentStatus[_contentIndex], 'score.length') === 1) isLastAttempt = true;
+      if (_contentIndex > 0 && _.get(this.contentStatus[_contentIndex], 'score.length') >= _.get(this.activeContent, 'maxAttempts')) { maxAttemptsExceeded = true; }
+      if (_contentIndex > 0 && _.get(this.activeContent, 'maxAttempts') - _.get(this.contentStatus[_contentIndex], 'score.length') === 1) { isLastAttempt = true; }
     }
     /* istanbul ignore if */
     if (maxAttemptsExceeded) {
       this.showMaxAttemptsModal = true;
+      this.showQSExitConfirmation = true;
     } else {
       /* istanbul ignore if */
       if (isLastAttempt && !this.showLastAttemptsModal && this._routerStateContentStatus) {
@@ -782,10 +798,38 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
       if (this.batchId) {
         options.batchId = this.batchId;
       }
-  
+      if (this.activeContent.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
+        const serveiceRef = this.userService.loggedIn ? this.playerService : this.publicPlayerService;
+        this.publicPlayerService.getQuestionSetHierarchy(id).pipe(
+          takeUntil(this.unsubscribe))
+          .subscribe((response) => {
+            const objectRollup = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, id);
+            this.objectRollUp = objectRollup ? this.courseConsumptionService.getRollUp(objectRollup) : {};
+            if (response && response.context) {
+              response.context.objectRollup = this.objectRollUp;
+            }
+            const contentDetails = {contentId: id, contentData: response.questionSet };
+            this.playerConfig = serveiceRef.getConfig(contentDetails);
+            this.publicPlayerService.getQuestionSetRead(id).subscribe((data: any) => {
+              this.playerConfig['metadata']['instructions'] = _.get(data, 'result.questionset.instructions');
+              this.showPlayer = true;
+            }, (error) => {
+              this.showPlayer = true;
+            });
+            const _contentIndex = _.findIndex(this.contentStatus, { contentId: _.get(this.playerConfig, 'context.contentId') });
+            this.playerConfig['metadata']['maxAttempt'] = _.get(this.activeContent, 'maxAttempts');
+            const _currentAttempt = _.get(this.contentStatus[_contentIndex], 'score.length') || 0;
+            this.playerConfig['metadata']['currentAttempt'] = _currentAttempt == undefined ? 0 : _currentAttempt;
+            this.showLoader = false;
+          }, (err) => {
+            this.toasterService.error(this.resourceService.messages.stmsg.m0009);
+            this.showLoader = false;
+          });
+      } else {
       this.courseConsumptionService.getConfigByContent(id, options)
         .pipe(first(), takeUntil(this.unsubscribe))
         .subscribe(config => {
+          this.showPlayer = true;
           const objectRollup = this.courseConsumptionService.getContentRollUp(this.courseHierarchy, id);
           this.objectRollUp = objectRollup ? this.courseConsumptionService.getRollUp(objectRollup) : {};
           if (config && config.context) {
@@ -794,7 +838,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
           this.playerConfig = config;
           const _contentIndex = _.findIndex(this.contentStatus, { contentId: _.get(config, 'context.contentId') });
           this.playerConfig['metadata']['maxAttempt'] = _.get(this.activeContent, 'maxAttempts');
-          let _currentAttempt = _contentIndex > 0 ? _.get(this.contentStatus[_contentIndex], 'score.length') : 0;
+          const _currentAttempt = _contentIndex > 0 ? _.get(this.contentStatus[_contentIndex], 'score.length') : 0;
           this.playerConfig['metadata']['currentAttempt'] = _currentAttempt == undefined ? 0 : _currentAttempt;
           this.showLoader = false;
           this.setTelemetryContentImpression();
@@ -802,15 +846,17 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy {
           this.showLoader = false;
           this.toasterService.error(this.resourceService.messages.stmsg.m0009);
         });
+      }
     }
   }
 
   onSelfAssessLastAttempt(event) {
-    if (_.get(event, 'data') === 'renderer:selfassess:lastattempt') {
+    if (_.get(event, 'data') === 'renderer:selfassess:lastattempt' || _.get(event, 'edata.isLastAttempt')) {
       this.toasterService.error(_.get(this.resourceService, 'frmelmnts.lbl.selfAssessLastAttempt'));
     }
-    if (_.get(event, 'data') === 'renderer:maxLimitExceeded') {
+    if (_.get(event, 'data') === 'renderer:maxLimitExceeded' || _.get(event, 'edata.maxLimitExceeded')) {
       this.showMaxAttemptsModal = true;
+      this.showQSExitConfirmation = true;
     }
   }
 

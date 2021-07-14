@@ -29,7 +29,7 @@ describe('ProfilePageComponent', () => {
           object: { type: '', ver: '1.0' }
         }
       }
-    }
+    };
     getCurrentNavigation = () => {
       return { state: {} };
     }
@@ -43,7 +43,7 @@ describe('ProfilePageComponent', () => {
         telemetry: { env: env }
       }
     };
-    
+
   }
   class MockDomToImage {
     toPng() { }
@@ -142,7 +142,7 @@ describe('ProfilePageComponent', () => {
         { provide: 'JSPDF', useValue: Promise.resolve(MockJsPDF) },
         { provide: 'CS_COURSE_SERVICE', useClass: MockCSService },
         { provide: ResourceService, useValue: resourceBundle },
-        ToasterService, CertRegService, TelemetryService, OrgDetailsService,],
+        ToasterService, CertRegService, TelemetryService, OrgDetailsService, ],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();

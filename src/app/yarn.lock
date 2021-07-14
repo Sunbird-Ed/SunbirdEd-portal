@@ -6496,7 +6496,7 @@ sax@^1.1.4:
     cache-manager "^2.4.0"
 
 "sb_telemetry_util@file:libs/sb_telemetry_util":
-  version "1.0.0"
+  version "1.0.1"
   dependencies:
     "@project-sunbird/telemetry-sdk" "0.0.8"
     lru-cache "4.1.3"

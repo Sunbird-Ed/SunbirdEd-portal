@@ -41,7 +41,7 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
     public configService: ConfigService,
     public activatedRoute: ActivatedRoute,
     public router: Router,
-    private telemetryService: TelemetryService, 
+    private telemetryService: TelemetryService,
     public navigationHelperService: NavigationHelperService,
     public userService: UserService
     ) {

@@ -140,7 +140,7 @@ describe('UserOrgManagementComponent', () => {
     expect(userTableId).toEqual('ValidatedUserDetailsTable');
   });
 
-  
+
   it('should fetch geo json', () => {
     const manageService = TestBed.get(ManageService);
     spyOn(manageService, 'getData').and.returnValue(of({ result: mockManageData.userSummary }));
@@ -150,7 +150,7 @@ describe('UserOrgManagementComponent', () => {
     expect(component.geoData).toBeDefined();
   });
 
-  
+
   it('should fetch geo summary', () => {
     const manageService = TestBed.get(ManageService);
     spyOn(manageService, 'getData').and.returnValue(of({ result: mockManageData.userSummary }));

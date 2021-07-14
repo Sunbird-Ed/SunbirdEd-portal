@@ -46,7 +46,7 @@
   <div class="sb-modal-actions">
     <button *ngIf="!groupId" class="sb-btn sb-btn-primary sb-btn-normal flex-ai-jc-center mb-8" type="button"
     [disabled]="!groupForm.valid || disableBtn" [ngClass]="{'sb-btn-disabled': !groupForm.valid || disableBtn}"
-    (click)="onSubmitForm();">
+    (click)="onSubmitForm();" tabindex="0">
     <i class="icon-svg icon-svg--xs icon-groups mr-4"><svg class="icon icon-svg--white">
       <use xlink:href="./assets/images/sprite.svg#groups"></use>
     </svg></i>
@@ -54,12 +54,12 @@
     </button>
     <button *ngIf="groupId" class="sb-btn sb-btn-primary sb-btn-normal flex-ai-jc-center" type="button"
     [disabled]="!groupForm.valid || disableBtn" [ngClass]="{'sb-btn-disabled': !groupForm.valid}"
-    (click)="updateGroup();addTelemetry('update-group-form')">
-      {{resourceService?.frmelmnts?.btn?.submit}}
+    (click)="updateGroup();addTelemetry('update-group-form')" tabindex="0">
+      {{resourceService?.frmelmnts?.btn?.updateGroup}}
     </button>
-    <button *ngIf="groupId" class="sb-btn sb-btn-outline-primary sb-btn-normal flex-ai-jc-center" type="button"
+    <!-- <button *ngIf="groupId" class="sb-btn sb-btn-outline-primary sb-btn-normal flex-ai-jc-center" type="button"
     (click)="reset();addTelemetry('reset-group-form', '', {type: SELECT_RESET})">
       {{resourceService?.frmelmnts?.btn?.reset}}
-    </button>
+    </button> -->
   </div>
 </sui-modal>

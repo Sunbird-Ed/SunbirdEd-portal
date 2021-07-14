@@ -144,13 +144,15 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
       this.courseId = params.courseId;
       this.initializeFormFields();
       this.setTelemetryInteractData();
-      this.fetchForumConfig();
       this.showCreateModal = true;
       return this.fetchBatchDetails();
     }),
       takeUntil(this.unsubscribe))
       .subscribe((data) => {
         this.showDiscussionForum = _.get(data.courseDetails, 'discussionForum.enabled');
+        if (this.showDiscussionForum === 'Yes') {
+          this.fetchForumConfig();
+        }
         if (data.courseDetails.createdBy === this.userService.userid) {
           this.courseCreator = true;
         }
@@ -485,7 +487,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid
       }
     };
-    if (cdata){
+    if (cdata) {
       telemetryData.context.cdata.push(cdata);
     }
     this.telemetryService.interact(telemetryData);

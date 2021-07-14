@@ -31,7 +31,7 @@ class="sb-modal" appBodyScroll  #modal (dismissed)="closeModal()" *ngIf="showLoa
     </div>
   </div>
   <div class="sb-modal-actions">
-      <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="navigate()" appTelemetryInteract [telemetryInteractEdata]="continueTelemetryInteractEdata">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
-      <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal" (click)="closeModal()" appTelemetryInteract [telemetryInteractEdata]="cancelTelemetryInteractEdata">{{resourceService?.frmelmnts?.btn?.cancel}}</button>
+      <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="navigate()" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="continueTelemetryInteractEdata">{{resourceService?.frmelmnts?.lbl?.continue}}</button>
+      <button type="button" class="sb-btn sb-btn-outline-primary sb-btn-normal" (click)="closeModal()" tabindex="0" appTelemetryInteract [telemetryInteractEdata]="cancelTelemetryInteractEdata">{{resourceService?.frmelmnts?.btn?.cancel}}</button>
     </div>
   </sui-modal>

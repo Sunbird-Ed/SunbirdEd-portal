@@ -25,7 +25,7 @@ export class LayoutService {
   constructor(private configService: ConfigService) { }
 
   layoutConfig: any;
-  acessibleLayoutEnabled:boolean;
+  acessibleLayoutEnabled: boolean;
 
   initlayoutConfig() {
     if (this.layoutConfig != null) {
@@ -56,12 +56,12 @@ export class LayoutService {
     if (layoutConfigExternal) {
         return 'sb-g-col-xs-' + total + ' sb-g-col-md-' + resultLayout + ' sb-g-col-lg-' + resultLayout + ' sb-g-col-xxxl-' + xxxltotal;
     } else {
-      if(columnType[0] != total) {
+      if (columnType[0] != total) {
         return 'sb-g-col-xs-' + total + ' sb-g-col-md-' + resultLayout + ' sb-g-col-lg-' + resultLayout + ' sb-g-col-xxxl-' + xxxltotal;
       } else {
         return 'sb-g-col-xs-' + total + ' sb-g-col-md-' + total + ' sb-g-col-lg-' + total + ' sb-g-col-xxxl-' + sixteenColumn;
       }
-      
+
 
     }
   }
@@ -88,9 +88,9 @@ export class LayoutService {
     if (this.layoutConfig) {
       this.layoutConfig = null;
       document.documentElement.setAttribute('layout', '');
-      this.acessibleLayoutEnabled=false;
+      this.acessibleLayoutEnabled = false;
       localStorage.setItem('layoutType', 'default');
-  
+
     } else {
       this.layoutConfig = this.configService.appConfig.layoutConfiguration;
       document.documentElement.setAttribute('layout', 'joy');

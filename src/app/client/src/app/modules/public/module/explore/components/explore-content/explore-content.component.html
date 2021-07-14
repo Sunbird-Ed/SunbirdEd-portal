@@ -20,7 +20,7 @@
     <div [ngClass]="SECOND_PANEL_LAYOUT" class="w-100">
       <div [ngClass]="layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'">
         <div class="content-grid relative9">
-          <div class="sb-pageSection" *ngIf="!showLoader && totalCount > 0">
+          <div class="sb-pageSection" *ngIf="!showLoader && totalCount > 0 && !showBackButton">
             <div class="sb-pageSection-header mb-10">
               <div class="">
                 <h4 class="sb-pageSection-title m-0 mr-5" [innerHTML]="resourceService.frmelmnts?.lbl?.showingResultsFor |
@@ -104,10 +104,10 @@ class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal;" #modal>
   <p>{{resourceService?.messages?.stmsg?.m0137 }}</p>
 </div>
 <div class="sb-modal-actions">
-  <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="callDownload(); showModal = !showModal; logTelemetry(contentData, 'confirm-download-content');">
+  <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" (click)="callDownload(); showModal = !showModal; logTelemetry(contentData, 'confirm-download-content');">
     {{resourceService.frmelmnts?.btn?.yes}}
   </button>
-  <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="showModal = !showModal; logTelemetry(contentData, 'cancel-download-content');">
+  <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0" (click)="showModal = !showModal; logTelemetry(contentData, 'cancel-download-content');">
     {{resourceService.frmelmnts?.btn?.cancel}}
   </button>
 </div>

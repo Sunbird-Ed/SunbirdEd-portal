@@ -556,7 +556,7 @@ app-workspace {
 
 .sbt-mygroups {
   .sb-bg-color-white {
-    margin-top: 24px;
+    margin-top: 0px;
     border-radius: 24px;
     background: var(--sbt-compt-bg) !important;
     padding: 0px 16px;
@@ -811,7 +811,7 @@ quml-player {
 
 
     .lanscape-mode-right {
-      height: calc(100% - 56px);
+      // height: calc(100% - 56px);
 
       ul::before {
         z-index: 0 !important;
@@ -1189,7 +1189,7 @@ quml-player {
     }
 
     .lanscape-mode-right {
-      height: calc(100% - 56px);
+      // height: calc(100% - 56px);
 
       ul::before {
         z-index: 0 !important;
@@ -1354,7 +1354,7 @@ html[data-theme='Darkmode'][layout='joy'] {}
 }
 
 // tab index css
-*:focus-visible {
+*:focus-visible{
   border: 1px #fe0000 solid !important;
   border-radius: 5px;
   outline: none;
@@ -1428,3 +1428,21 @@ sb-pills-grid{
   }
 }
 // ends
+
+//epup player splash
+sunbird-epub-player .sunbird-epub-container {
+  div:first-child{
+    height: inherit;
+    sb-player-start-page{
+      .sb-player-splash-container{
+        height: 100% !important;
+      }
+    }
+  }
+  .epub-container sb-player-sidebar .navBlock .player-nav-unit{
+    height: auto !important;
+  }
+}
+.contentViewerIframeShadow.player-fullscreen.content-full-video sunbird-epub-player .sb-player-splash-container{
+  height: 100% !important;
+}

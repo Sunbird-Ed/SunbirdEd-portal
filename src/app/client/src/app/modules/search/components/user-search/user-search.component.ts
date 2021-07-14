@@ -160,7 +160,7 @@ export class UserSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     const searchParams = {
       filters: {
         'rootOrgId': this.rootOrgId,
-        'userType': this.queryParams.Usertype,
+        'profileUserType.type': this.queryParams.Usertype,
         'framework.medium': this.queryParams.medium,
         'framework.gradeLevel': this.queryParams.gradeLevel,
         'framework.subject': this.queryParams.subject
@@ -169,7 +169,15 @@ export class UserSearchComponent implements OnInit, AfterViewInit, OnDestroy {
       pageNumber: this.pageNumber,
       query: this.queryParams.key
     };
-    if (!_.isEmpty(this.selectedRoles)) { searchParams.filters['organisations.roles'] = this.selectedRoles; }
+    if (_.get(searchParams, 'filters["profileUserType.type"]')) {
+      const index = _.indexOf(searchParams.filters['profileUserType.type'], 'School head or officials');
+      if (index >= 0) {
+        searchParams.filters['profileUserType.type'][index] = 'administrator';
+      } else if (searchParams.filters['profileUserType.type'] === 'School head or officials') {
+        searchParams.filters['profileUserType.type'] = ['administrator'];
+      }
+    }
+    if (!_.isEmpty(this.selectedRoles)) { searchParams.filters['roles.role'] = this.selectedRoles; }
     if (this.queryParams.School) {
       searchParams.filters['organisations.organisationId'] = this.queryParams.School;
     } else {
@@ -180,7 +188,9 @@ export class UserSearchComponent implements OnInit, AfterViewInit, OnDestroy {
       if (this.queryParams.Block) {
         locationArray.push(typeof this.queryParams.Block === 'string' ? this.queryParams.Block : this.queryParams.Block[0]);
       }
-      if (!_.isEmpty(locationArray)) { searchParams.filters['locationIds'] = locationArray; }
+      if (!_.isEmpty(locationArray)) {
+        searchParams.filters['profileLocation.id'] = locationArray;
+       }
     }
     this.searchService.userSearch(searchParams).subscribe(
       (apiResponse: ServerResponse) => {

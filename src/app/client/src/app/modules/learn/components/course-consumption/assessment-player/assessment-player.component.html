@@ -84,7 +84,7 @@
           <div class="content-video">
             <section class="content-video__player" id="player-area-height">
               <div class="aspectratio" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio>
-                <app-player class="content-player" [playerOption]="playerOption" [playerConfig]="playerConfig"
+                <app-player *ngIf="showPlayer" class="content-player" [playerOption]="playerOption" [playerConfig]="playerConfig"
                   [contentProgressEvents$]="contentProgressEvents$" (assessmentEvents)="onAssessmentEvents($event)"
                   (questionScoreSubmitEvents)="onQuestionScoreSubmitEvents($event)"
                   (questionScoreReviewEvents)="onQuestionScoreReviewEvents($event)"
@@ -120,9 +120,18 @@
                   </sb-toc-card>
                 </div>
               </div>
+
+              <div *ngIf="item?.mimeType === 'application/vnd.sunbird.questionset'">
+                <div class="child-content-padding">
+                  <sb-toc-card [content]="item" (tocCardClick)="navigateToInitPlayer($event, 'toc-card')" [type]="cardType"
+                    [contentStatus]="contentStatus" [maxAttempts]="item?.maxAttempts" [scoreLabel]="'Best Score'" [disabled]="'disabled-toc-card'">
+                  </sb-toc-card>
+                </div>
+              </div>
+
               <div *ngIf="item?.children?.length">
-                <div *ngFor="let child of item?.children">
-                  <div class="toc-child-item">
+                <div *ngFor="let child of item?.children" >
+                  <div class="toc-child-item" *ngIf="child?.mimeType !== 'application/vnd.sunbird.question'">
                     <sb-toc-child-item [activeContent]="activeContent" [childData]="child" (tocCardClick)="navigateToInitPlayer($event, 'child-item')"
                       [contentStatus]="contentStatus" [type]="cardType">
                     </sb-toc-child-item>
@@ -162,7 +171,7 @@
         </div>
     </div>
     <div class="sb-modal-actions">
-        <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
+        <a appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" tabindex="0"
             [telemetryInteractEdata]="signInInteractEdata" (click)="goBack(); showMaxAttemptsModal = !showMaxAttemptsModal"
             class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn">
             {{resourceService?.frmelmnts?.btn?.close}}
@@ -179,10 +188,10 @@
         </div>
     </div>
     <div class="sb-modal-actions">
-      <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="showLastAttemptsModal = false; onTocCardClick();">
+      <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" (click)="showLastAttemptsModal = false; onTocCardClick();">
         {{resourceService.frmelmnts?.btn?.ok}}
       </button>
-      <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="showLastAttemptsModal = false;">
+      <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0" (click)="showLastAttemptsModal = false;">
         {{resourceService.frmelmnts?.btn?.cancel}}
       </button>
     </div>

@@ -185,6 +185,13 @@
       }
     }
   }
+
+  .modals.dimmer .ui.scrolling.modal {
+    position: fixed !important;
+    @include respond-below(sm) {
+      height: auto;
+    }
+  }
 }
 
 [dir="rtl"] .sb-modal {
@@ -322,3 +329,4 @@
     }
   }
 }
+

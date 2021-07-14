@@ -422,6 +422,26 @@
       "rtl": false
     }
   },
+  "Banner": {
+    "slickSize": 10,
+    "slideConfig": {
+      "slidesToShow": 3,
+      "slidesToScroll": 3,
+      "respondTo": "slider",
+      "dots": true,
+      "arrows": false,
+      "infinite": false,
+      "responsive": [
+        {
+          "breakpoint": 768,
+          "settings": {
+            "slidesToShow": 1,
+            "slidesToScroll": 1
+          }
+        }
+      ]
+    }
+  },
   "CoursePageSection": {
     "contentApiQueryParams": {
       "orgdetails": "orgName,email"
@@ -938,6 +958,7 @@
           "mimeType",
           "framework",
           "contentType",
+          "primaryCategory",
           "pkgVersion",
           "status"
         ]
@@ -976,6 +997,7 @@
           "mimeType",
           "framework",
           "contentType",
+          "primaryCategory",
           "pkgVersion",
           "status"
         ]
@@ -1014,6 +1036,7 @@
           "mimeType",
           "framework",
           "contentType",
+          "primaryCategory",
           "pkgVersion",
           "status"
         ]
@@ -1047,6 +1070,7 @@
           "mimeType",
           "framework",
           "contentType",
+          "primaryCategory",
           "pkgVersion",
           "status"
         ]
@@ -1080,6 +1104,7 @@
           "mimeType",
           "framework",
           "contentType",
+          "primaryCategory",
           "pkgVersion",
           "status"
         ]
@@ -1123,6 +1148,7 @@
           "mimeType",
           "framework",
           "contentType",
+          "primaryCategory",
           "pkgVersion",
           "status"
         ]

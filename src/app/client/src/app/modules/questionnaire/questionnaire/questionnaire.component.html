@@ -31,6 +31,16 @@
       </div>
     </div>
     <div [ngClass]="SECOND_PANEL_LAYOUT">
+      <div>
+        <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto"
+        (click)="goBack()">
+        <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+            <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+          </svg></i>
+        {{resourceService.frmelmnts?.btn?.back}}
+      </button>
+      </div>
+
       <div
         *ngFor="let section of sections"
         [id]="section.code"
@@ -49,13 +59,12 @@
             layoutConfiguration ? 'sbt-page-content-area' : 'ui container mt-24'
           "
         >
-          <form [formGroup]="questionnaireForm" class="m-40">
-            <question-generic-inputs
+          <form [formGroup]="questionnaireForm" class="m-40">  
+            <sl-input
               [questions]="section.questions"
               [questionnaireForm]="questionnaireForm"
-            ></question-generic-inputs>
+            ></sl-input>
           </form>
-          <!-- {{questionnaireForm.value |json}} -->
         </div>
       </div>
       <div
@@ -73,7 +82,6 @@
         >
           {{ resourceService?.frmelmnts?.btn?.save | translate }}
         </button>
-        <!-- class="sb-btn sb-btn-normal sb-btn-primary" -->
         <button
           [ngClass]="{
             'sb-btn sb-btn-normal': true,

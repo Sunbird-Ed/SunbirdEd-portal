@@ -9,9 +9,6 @@
         font-weight: 600;
     }
     .evidences-list{
-        min-width: 100%;
-        max-width: 100%;
-        display: inline-flex;
         margin: 5px 0px;
         background:  var(--sb-card-bg) !important;
         border-radius: var(--sbt-bradius-24);
@@ -38,8 +35,15 @@
 }
 .icon{
   color: var(--primary-400) !important;
-  padding-left: 15px;
 }
 .txt-transform {
   text-transform: capitalize !important;
+}
+.center-align {
+  align-self: center;
+  justify-self: center;
+  padding: 5px 0;
+}
+.white-space-wrap {
+  text-overflow: ellipsis;
 }

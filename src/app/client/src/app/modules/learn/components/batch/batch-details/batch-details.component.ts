@@ -37,7 +37,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   statusOptions = [
     { name: 'Ongoing', value: 1 },
     { name: 'Upcoming', value: 0 },
-    { name: 'Expired', value:2 }
+    { name: 'Expired', value: 2 }
   ];
   todayDate = dayjs(new Date()).format('YYYY-MM-DD');
   progress = 0;
@@ -193,7 +193,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
         return ;
       }
   });
-    this.showCreateBatchBtn = showCreateBtn; //this.ongoingAndUpcomingBatchList.length <= 0;
+    this.showCreateBatchBtn = showCreateBtn; // this.ongoingAndUpcomingBatchList.length <= 0;
   }
   getJoinCourseBatchDetails() {
     this.showAllBatchList = false;
@@ -284,9 +284,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
   }
   enrollBatch(batch) {
     this.showJoinModal = false;
-    const batchStartDate = new Date(batch['startDate']);
-    const currentdate = new Date();
-    if (currentdate < batchStartDate) {
+    if (batch.status === 0) {
       this.showMessageModal = true;
       this.batchMessage = (this.resourceService.messages.emsg.m009).replace('{startDate}', batch.startDate);
     } else {

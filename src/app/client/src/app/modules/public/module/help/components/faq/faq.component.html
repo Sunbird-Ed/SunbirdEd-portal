@@ -2,7 +2,7 @@
   [layoutConfiguration]="layoutConfiguration" [noTitle]="true">
 </app-landing-section>
 
-<div class="help-page relative9">
+<div class="help-page relative9 sbt-inside-page-container">
   <div class="help-page__header sb-bg-color-white p-16">
     <div class="ui container d-flex flex-ai-center">
       <button (click)="goBack()"
@@ -27,17 +27,46 @@
       {{resourceService?.frmelmnts?.lbl?.frequentlyAskedQuestions}}</div>
     <div class="help-page__content" *ngIf="faqData && !showLoader">
       <div class="sbhelp_container mt-24" style="min-height:600px;">
-        <section class="sbhelp_container__left" *ngIf="(isMobileView && showOnlyFaqCategory) || !isMobileView" [ngClass]="{'category-list-mobile':isMobileView, 'category-list-web':!isMobileView}">
-          <sb-list #sbFaqCategoryList
-            [title]="faqData?.constants?.selectCategoryTitle"
-            [listData]="faqData?.categories"
-            [btnText]="faqData?.constants?.reportIssueMsg"
-            [btnImg]="'./assets/images/report.svg'"
-            (itemClick)="onCategorySelect($event)"
-            (btnClick)="enableFaqReport($event)">
-          </sb-list>
+        <div class="flex-basis-1">
+          <section class="sbhelp_container__left" *ngIf="(isMobileView && showOnlyFaqCategory) || !isMobileView"
+            [ngClass]="{'category-list-mobile':isMobileView, 'category-list-web':!isMobileView}">
+            <sb-list #sbFaqCategoryList [title]="faqData?.constants?.selectCategoryTitle" [listData]="faqData?.categories"
+              [btnText]="faqData?.constants?.reportIssueMsg" [btnImg]="'./assets/images/report.svg'"
+              (itemClick)="onCategorySelect($event)" (btnClick)="enableFaqReport($event)">
+            </sb-list>
+          </section>
+          <section class="sbhelp_container__left sbhelp_container__debug mt-16" *ngIf="(isMobileView && showOnlyFaqCategory) || !isMobileView"
+          [ngClass]="{'category-list-mobile':isMobileView, 'category-list-web':!isMobileView}">
+          <div class="sb-developer-option-panel">
+            <div class="sb-developer-option-panel-heading">
+              <div class="sb-developer-option-panel-heading__title">{{resourceService?.frmelmnts?.lbl?.debugModeTitle}}</div>
+              <div class="sb-developer-option-panel-icon">
+                <span *ngIf="isExpanded" (click)="isExpanded=false">
+                  <i class="icon-svg icon-svg--xxs ml-4"><svg class="icon icon-svg--primary">
+                        <use xlink:href="assets/common-consumption/images/sprite.svg#arrow-up"></use>
+                      </svg></i>
+                 </span>
+                 <span *ngIf="!isExpanded" (click)="isExpanded=true">
+                  <i class="icon-svg icon-svg--xxs ml-4"><svg class="icon icon-svg--primary">
+                    <use xlink:href="assets/common-consumption/images/sprite.svg#arrow-down"></use>
+                  </svg></i>
+                 </span>
+              </div>
+            </div>
+            <div class="sb-developer-option-panel-body" [hidden]="!isExpanded">  
+              <div class="sb-developer-option-panel-body__title">{{resourceService?.frmelmnts?.lbl?.enableDebugMode}}
+                <div class="enable-checkbox">
+                  <label class="switch">
+                    <input type="checkbox" [checked]="isDisabled" (change)="enableDebugMode($event);" [ngClass]="{'sb-btn-disabled': isDisabled }" [disabled]="isDisabled">
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+              <div class="sb-developer-option-panel-body__info" [hidden]="!isDisabled">{{resourceService?.messages?.smsg?.debugMode | interpolate:'{time}':time}}</div>
+            </div>
+          </div>
         </section>
-    
+      </div>
         <section class="sbhelp_container__right" [ngClass]="{'faq-section-mobile':isMobileView, 'faq-section-web':!isMobileView}" *ngIf="(isMobileView && !showOnlyFaqCategory) || !isMobileView">
           <div *ngIf="!showFaqReport">
           <div class="d-flex flex-ai-center mb-8" *ngIf="!showOnlyFaqCategory && isMobileView">

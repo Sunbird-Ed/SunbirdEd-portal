@@ -1,0 +1,266 @@
+<div [ngClass]="layoutConfiguration ? 'sbt-container relative9':''" class="main-container">
+  <div *ngIf="this.data">
+    <div class="ui report-main-block">
+      <div class="twelve wide column px-0">
+        <div class="stackable grid m-0 sb-mid-container-min-height dashboard-body-scroll">
+
+          <div class="sb-sideview-tab-container pb-48 p-0 w-100" *ngIf="showComponent">
+            <div id="report-header" class="report__header">
+              <div class="cc-player__content-header relative9 reports-content-header">
+                <div class="ui container py-16">
+                  <div class="content-header__content p-10">
+                    <div class="d-flex flex-dc flex-basis-1 mr-32 min-w-0 content-header__content__title">
+                      <div class="content-header__title font-weight-bold text-left">
+                        <div class="d-flex">
+                          <div class="d-flex flex-dc flex-basis-4">
+                            <span class="relative position relative9 reports-back-btn my-0 pl-0 pr-10">
+                              <span class="ui py-8 px-0">
+                                <button type="button"
+                                  class="sb-btn sb-btn-link sb-btn-link-primary sb-left-icon-btn back-btn-new mb-5"
+                                  aria-label="back-button" (click)="gotoSolutionListPage()">
+                                  <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
+                                      <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
+                                    </svg></i>
+                                </button>
+                              </span>
+                            </span>
+                          </div>
+                          <div *ngIf="data">
+                            <div class="report-title"> {{ data?.solutionName | titlecase }}
+                            </div>
+                            <div *ngIf="data">
+                              <span class="ml-auto sb-last-update-status fnormal sb-color-gray-400 px-10 last-update">
+                                <span>{{resourceService?.frmelmnts?.lbl?.lastSubmittedOn}}&nbsp;: </span> &nbsp;
+                                {{data.completedDate| date: "yyyy/MM/dd"}}
+                              </span>
+                            </div>
+                          </div>
+                          <!-- <sl-report-header [title]="data.solutionName" [lastdate]="todayDate"></sl-report-header> -->
+                        </div>
+                      </div>
+                    </div>
+                    <div *ngFor="let filter of filters">
+                      <div *ngIf="filter.filter.type == 'dropdown'" class="d-flex">
+                        <div class="sb-field filter-drop mb-0 mr-8">
+                          <sui-select class="selection mr-8" labelField="name" [isSearchable]="false"
+                            [options]="options" [placeholder]="'Select Submission'"
+                            (selectedOptionChange)="handleParameterChange($event)">
+                            <sui-select-option *ngFor="let option of filter.filter.data" [value]="option"
+                              title="{{option.name}}">
+                            </sui-select-option>
+                          </sui-select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="dropdown">
+                      <button class="sb-btn sb-btn-normal sb-btn-primary filter-btn "
+                        *ngIf="!segmentfilter">
+                        {{this.resourceService?.frmelmnts.btn.exportAs}}
+                      </button>
+                      <div class="dropdown-content">
+                        <button class="sb-btn sb-btn-normal sb-btn-outline-primary filter-btn"
+                          (click)="download()">
+                          Pdf
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="m-0 report-description py-15 pl-10">{{data.entityName}}</p>
+                </div>
+              </div>
+            </div>
+            <div class="ui container" *ngIf="data">
+              <div class="twelve wide column">
+                <div id="report-body" class="my-16">
+                  <sui-tabset>
+                    <div class="ui pointing secondary menu d-flex flex-ai-center sbt-report-tabs-panel px-15">
+                      <a class="item px-0 mx-15 py-20" *ngFor="let tab of tabs; let i = index" [suiTabHeader]="i"
+                        (click)="segmentChanged(tab.header)">{{ tab.header | translate}}</a>
+                    </div>
+                    <div class="report-block ui bottom attached segment p-0 b-0 no-bg my-24"
+                      *ngFor="let tab of tabs; let i = index" [suiTabContent]="i">
+                      <div class="ui bottom p-0 b-0 no-bg graph-section" *ngIf="segmentfilter">
+                        <div class="double-btn">
+                          <div class="column-btn">
+                            <div class="dropdown">
+                              <button class="sb-btn sb-btn-normal sb-btn-primary filter-btn">
+                                {{this.resourceService?.frmelmnts.btn.exportAs}}
+                              </button>
+                              <div class="dropdown-content">
+                                <button
+                                  class="sb-btn sb-btn-normal sb-btn-outline-primary filter-btn"
+                                  (click)="download()">
+                                  Pdf
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="column-btn">
+                            <div *ngFor="let filter of filters">
+                              <button class="sb-btn sb-btn-normal sb-btn-primary filter-btn "
+                                *ngIf="filter.filter.type=='modal'"
+                                (click)="filterModalPopup(filter.filter.data, filter.filter.keyToSend)">
+                                {{ resourceService?.frmelmnts?.lbl?.filters }}
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                      <div class="ui bottom p-0 b-0 no-bg my-24 graph-section">
+                        <div *ngFor="let section of reportSections">
+                          <div [ngClass]="{'sb-graph-section p-24 my-24' : section.criteriaName}">
+                            <strong *ngIf="section?.criteriaName">{{ section.criteriaName }}</strong>
+                            <div *ngFor="let element of section?.questionArray; let i = index; let l = last;">
+                              <div class="sb-graph-section p-24 my-24" [ngSwitch]="element?.responseType">
+                                <sl-reports-text [data]="element" [questionNumber]="i + 1" *ngSwitchCase="'text'">
+                                </sl-reports-text>
+                                <sl-reports-text [data]="element" [questionNumber]="i + 1" *ngSwitchCase="'number'">
+                                </sl-reports-text>
+                                <sl-reports-text [data]="element" [questionNumber]="i + 1" *ngSwitchCase="'date'">
+                                </sl-reports-text>
+                                <sl-reports-text [data]="element" [questionNumber]="i + 1" *ngSwitchDefault>
+                                </sl-reports-text>
+                                <div *ngSwitchCase="'radio'">
+                                  <strong>{{i+1}}) {{ element?.question }}</strong>
+                                  <sb-dashlet [type]="'pie'" [data]="getData(element)" [config]="getconfig(element)"
+                                    class="chart-container" #lib></sb-dashlet>
+                                </div>
+                                <div *ngSwitchCase="'pie'">
+                                  <strong>{{i+1}}) {{ element?.question }}</strong>
+                                  <sb-dashlet [type]="'pie'" [data]="getData(element)" [config]="getconfig(element)"
+                                    class="chart-container" #lib></sb-dashlet>
+                                </div>
+                                <div *ngSwitchCase="'column'">
+                                  <strong>{{i+1}}) {{ element?.question }}</strong>
+                                  <sl-bar-chart [data]="element" class="bar-chart-container"></sl-bar-chart>
+                                </div>
+                                <div *ngSwitchCase="'bar'">
+                                  <strong>{{i+1}}) {{ element?.question }}</strong>
+                                  <sl-bar-chart [data]="element" class="bar-chart-container"></sl-bar-chart>
+                                </div>
+                                <div *ngSwitchCase="'multiselect'">
+                                  <strong>{{i+1}}) {{ element?.question }}</strong>
+                                  <sl-bar-chart [data]="element" class="bar-chart-container"></sl-bar-chart>
+                                </div>
+                                <div *ngSwitchCase="'horizontalBar'">
+                                  <sl-percentage-column-charts [chartData]="element" class="bar-chart-container">
+                                  </sl-percentage-column-charts>
+                                </div>
+
+                                <sl-expansion-table [datas]="element" *ngSwitchCase="'expansion-table'">
+                                </sl-expansion-table>
+
+                                <sl-expansion-panel [datas]="element" *ngSwitchCase="'expansion'">
+                                </sl-expansion-panel>
+
+                                <div *ngSwitchCase="'matrix'">
+                                  <strong>{{i+1}}) {{ element?.question }}</strong>
+                                  <div ui bottom graph-section
+                                    *ngFor="let data of element?.instanceQuestions; let i = index">
+                                    <div class="sb-graph-section p-24 my-24" [ngSwitch]="data?.responseType">
+                                      <sl-reports-text [data]="data" [questionNumber]="i + 1" *ngSwitchCase="'text'">
+                                      </sl-reports-text>
+                                      <sl-reports-text [data]="data" [questionNumber]="i + 1" *ngSwitchCase="'number'">
+                                      </sl-reports-text>
+                                      <sl-reports-text [data]="data" [questionNumber]="i + 1" *ngSwitchCase="'date'">
+                                      </sl-reports-text>
+                                      <sl-reports-text [data]="data" [questionNumber]="i + 1" *ngSwitchDefault>
+                                      </sl-reports-text>
+                                      <div *ngSwitchCase="'radio'">
+                                        <strong>{{i+1}}) {{ data?.question }}</strong>
+                                        <sb-dashlet [type]="'pie'" [data]="getData(data)" [config]="getconfig(data)"
+                                          class="chart-container" #lib></sb-dashlet>
+                                      </div>
+                                      <div *ngSwitchCase="'pie'">
+                                        <strong>{{i+1}}) {{ data?.question }}</strong>
+                                        <sb-dashlet [type]="'pie'" [data]="getData(data)" [config]="getconfig(data)"
+                                          class="chart-container" #lib></sb-dashlet>
+                                      </div>
+                                      <div *ngSwitchCase="'column'">
+                                        <strong>{{i+1}}) {{ data?.question }}</strong>
+                                        <sl-bar-chart [data]="data" class="bar-chart-container"></sl-bar-chart>
+                                      </div>
+                                      <div *ngSwitchCase="'bar'">
+                                        <strong>{{i+1}}) {{ data?.question }}</strong>
+                                        <sl-bar-chart [data]="data" class="bar-chart-container"></sl-bar-chart>
+                                      </div>
+                                      <div *ngSwitchCase="'multiselect'">
+                                        <strong>{{i+1}}) {{ data?.question }}</strong>
+                                        <sl-bar-chart [data]="data" class="bar-chart-container"></sl-bar-chart>
+                                      </div>
+                                      <div  class="card-align">
+                                        <div *ngFor="let e of data.evidences" class="thumbnail-card">
+                                          <sl-attachments [url]="e.url" [extension]="e.extension"></sl-attachments>
+                                        </div>
+                                        <button *ngIf="data.evidence_count > 3"
+                                          class="sb-btn sb-btn-normal sb-btn-outline-primary filter-btn filter-modal-button"
+                                          (click)="getAllEvidence(data)">
+                                          View More
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div  class="card-align">
+                                  <div *ngFor="let e of element.evidences" class="thumbnail-card">
+                                    <sl-attachments [url]="e.url" [extension]="e.extension"></sl-attachments>
+                                  </div>
+                                  <button *ngIf="element.evidence_count > 3"
+                                    class="sb-btn sb-btn-normal sb-btn-outline-primary filter-btn filter-modal-button"
+                                    (click)="getAllEvidence(element)">
+                                    View More
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div *ngIf="!reportSections">
+                      <app-no-result [data]="noResultMessage"></app-no-result>
+                    </div>
+                  </sui-tabset>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="twelve wide column" *ngIf="noResult">
+    <app-no-result [data]="noResultMessage"></app-no-result>
+  </div>
+  <div class="twelve wide column" *ngIf="showLoader">
+    <app-loader [data]='loaderMessage'></app-loader>
+</div>
+</div>
+
+
+<sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'" [isBasic]="true"
+  class="sb-modal sb-success add-entity-modal" (dismissed)="closeModal()" *ngIf="filterModal" #modal>
+  <div class="sb-modal-header">
+    <h4>{{ resourceService?.frmelmnts?.lbl?.selectquestionfilter }}</h4>
+  </div>
+  <div class="sb-modal-content content">
+    <div *ngFor="let question of modalFilterData">
+      <!-- <sui-checkbox  (checkChange)="onChange(question._id, $event, i)"><span class="questions">{{question.name}}</span></sui-checkbox> -->
+      <div class="sb-checkbox sb-checkbox-secondary pt-24 ui checkbox">
+        <input value="{{question._id}}" type="checkbox" id="{{question._id}}" (change)="onQuestionClick(question._id)"
+          [checked]="filteredData?.includes(question?._id)">
+        <label for="{{question._id}}" class="questions">{{question.name}}</label>
+      </div>
+    </div>
+  </div>
+  <div class="actions footer">
+    <button class="sb-btn sb-btn-normal sb-btn-primary text-uppercase" (click)="applyFilter()"
+      [disabled]="selectedListCount == 0" [ngClass]="{ 'sb-btn-disabled': selectedListCount == 0 }">
+      {{resourceService?.frmelmnts?.btn?.apply}} {{resourceService?.frmelmnts?.lbl?.filters }}
+    </button>
+  </div>
+</sui-modal>
+
+<app-all-evidence *ngIf="showEvidence" [data]="evidenceParam" (closeEvent)="modalClose($event)"></app-all-evidence>

@@ -24,6 +24,7 @@ import { TelemetryModule, TelemetryService } from '@sunbird/telemetry';
 import { configureTestSuite } from '@sunbird/test-util';
 import { ReactiveFormsModule } from '@angular/forms';
 
+
 describe('CourseProgressComponent', () => {
   let component: CourseProgressComponent;
   let fixture: ComponentFixture<CourseProgressComponent>;
@@ -46,8 +47,8 @@ describe('CourseProgressComponent', () => {
         'm0132': 'We have received your download request. The file will be sent to your registered email ID shortly.',
         'm0141': 'Data unavailable to generate Score Report'
       },
-      "fmsg": {
-        "m0004": "Could not fetch data, try again later"
+      'fmsg': {
+        'm0004': 'Could not fetch data, try again later'
       }
     },
     'frmelmnts': {
@@ -75,7 +76,7 @@ describe('CourseProgressComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SuiModule, FormsModule, SharedModule.forRoot(), OrderModule,
-        CoreModule, DashboardModule, TelemetryModule.forRoot(), ReactiveFormsModule],
+        CoreModule, DashboardModule, TelemetryModule.forRoot(), ReactiveFormsModule, RouterTestingModule],
       declarations: [],
       providers: [CourseProgressService, UsageService, TelemetryService, FormService,
         { provide: Router, useClass: RouterStub },

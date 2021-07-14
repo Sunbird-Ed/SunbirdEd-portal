@@ -1,7 +1,7 @@
 <div class="sb-modal">
   <div class="popup">
     <div class="popup-header" *ngIf="modal.context.data.content.title">
-      <b>{{ modal.context.data.content.title }}</b>
+      <span>{{ modal.context.data.content.title }}</span>
       <div class="alignRight" *ngIf="modal.context.data.isClosed==true" (click)="navigatePrevious(modal.context.data)"><i class="close medium icon"></i></div>
     </div>
     <div *ngIf="modal.context.data.content.body.type == 'checkbox'" class="popup-body-checkbox">
