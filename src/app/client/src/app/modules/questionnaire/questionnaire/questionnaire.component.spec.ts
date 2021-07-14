@@ -3,7 +3,7 @@ import { BehaviorSubject, throwError, of, of as observableOf } from 'rxjs';
 import { QuestionnaireComponent } from './questionnaire.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SharedModule } from '@sunbird/shared';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SuiModalModule } from 'ng2-semantic-ui-v9';
 import { Location } from '@angular/common';
 import {
@@ -24,7 +24,8 @@ import { APP_BASE_HREF } from '@angular/common';
 import { TranslateService, TranslateStore } from '@ngx-translate/core';
 import { ObservationService } from '@sunbird/core';
 
-describe('QuestionaireComponent', () => {
+
+fdescribe('QuestionaireComponent', () => {
   let component: QuestionnaireComponent;
   let baseHref;
   let fixture: ComponentFixture<QuestionnaireComponent>;
@@ -235,6 +236,28 @@ describe('QuestionaireComponent', () => {
     spyOn(component, 'canDeactivate').and.callThrough();
     component.canDeactivate();
     expect(component.canDeactivate).toHaveBeenCalled();
+  });
+
+  it('Deactivate should return true', () => {
+    component.questionnaireForm = component.fb.group({})
+    component.questionnaireForm.addControl('test',new FormControl())
+    // component.canLeave=false
+    // component.questionnaireForm.markAsDirty()
+    spyOn(component, 'canDeactivate').and.callThrough();
+    let value=component.canDeactivate();
+    expect(component.canDeactivate).toHaveBeenCalled();
+     expect(value).toBe(true)
+  });
+
+  it('Deactivate should return false', () => {
+    component.questionnaireForm = component.fb.group({})
+    component.questionnaireForm.addControl('test',new FormControl())
+    component.canLeave=false
+    component.questionnaireForm.markAsDirty()
+    spyOn(component, 'canDeactivate').and.callThrough();
+    let value=component.canDeactivate();
+    expect(component.canDeactivate).toHaveBeenCalled();
+     expect(value).toBe(false)
   });
 
   // it("Should call scrollToContent", () => {

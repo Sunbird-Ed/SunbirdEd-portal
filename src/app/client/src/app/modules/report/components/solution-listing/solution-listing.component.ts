@@ -1,10 +1,7 @@
 import { ConfigService, ResourceService, LayoutService, PaginationService, IPagination, ILoaderMessage, INoResultMessage} from '@sunbird/shared';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import * as _ from 'lodash-es';
-import { of, Observable, throwError } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
-import * as moment from 'moment';
-import * as $ from 'jquery';
+import {Router } from '@angular/router';
 import 'datatables.net';
 import { ObservationUtilService } from '../../../observation/service';
 import { ObservationService, UserService } from '@sunbird/core';
@@ -15,9 +12,7 @@ import { ObservationService, UserService } from '@sunbird/core';
   styleUrls: ['./solution-listing.component.scss'],
 })
 export class SolutionListingComponent implements OnInit {
-  public reportsList$: Observable<any>;
   public noResultFoundError: string;
-  private _isUserReportAdmin: boolean;
   layoutConfiguration: any;
   config;
   payload;
