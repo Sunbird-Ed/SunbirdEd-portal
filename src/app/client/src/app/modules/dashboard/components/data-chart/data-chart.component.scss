@@ -92,7 +92,7 @@ sui-select.selection.ui.dropdown {
   font-size: 14px;
   padding: 10px;
   font-family: "Noto Sans";
-  color: #49B1F2 !important;
+  color: var(--ui-dropdown-selection-icon) !important;
 }
 
 .filter-btn {
