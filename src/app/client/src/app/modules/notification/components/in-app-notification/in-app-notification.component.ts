@@ -65,7 +65,7 @@ export class InAppNotificationComponent implements OnInit, OnDestroy {
         this.notificationCount = 0;
         this.notificationList = notificationListData;
         this.notificationList.forEach(e => this.notificationCount += (e.status === UserFeedStatus.UNREAD) ? 1 : 0);
-        this.inAppNotificationConfig['subTitle'] = `${this.notificationCount} ${this.resourceService.frmelmnts.lbl.newNotification}`;
+        this.inAppNotificationConfig['subTitle'] = `${this.notificationCount} ${_.get(this.resourceService, 'frmelmnts.lbl.newNotification')}`;
       });
   }
 
