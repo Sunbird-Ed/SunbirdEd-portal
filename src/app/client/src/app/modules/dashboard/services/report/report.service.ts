@@ -192,7 +192,6 @@ export class ReportService {
       if(chartObj && chartObj.chartData && chartObj.chartData.length > 0){
         return chartObj;
       }
-   
     }).filter(function(chartData){
        if(chartData ){
           return (chartData['chartData'] != null || chartData['chartData'] != undefined) 
