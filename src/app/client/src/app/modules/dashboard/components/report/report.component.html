@@ -26,7 +26,7 @@
                           <span *ngIf="!hideElements" class="relative position relative9 reports-back-btn my-0 pl-0 pr-10">
                             <span class="ui py-8 px-0">
                               <button type="button" class="sb-btn sb-btn-link sb-btn-link-primary sb-left-icon-btn back-btn-new mb-5" aria-label="back-button"
-                                (click)="gotoListPage()">
+                                (click)="gotoListPage()" tabindex="0">
                                 <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
                                     <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
                                   </svg></i>
@@ -81,7 +81,7 @@
                         <button *ngIf="type === 0" appTelemetryInteract
                           [telemetryInteractObject]="setTelemetryInteractObject()"
                           [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'report-summary'})"
-                          (click)="openReportSummaryModal()" type="button"
+                          (click)="openReportSummaryModal()" tabindex="0" type="button"
                           class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
                           <i class="blue plus alternate icon"></i>
                           {{ this.currentReportSummary !='' ? 'Update' : 'Add' }} {{ resourceService.frmelmnts.lbl.reportSummary }}
@@ -90,7 +90,7 @@
                           [telemetryInteractCdata]="[getCDataObj({id: '' + currentReport?.charts?.length || '0', type: 'CountCharts'}),
                           getCDataObj({id: reportService.getParameterValues('$slug').value, type: 'State'})]"
                           [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'select-retire'})"
-                          (click)="openConfirmationModal('retire')"
+                          (click)="openConfirmationModal('retire')" tabindex="0"
                           *ngIf="report?.status !== 'retired' && !(type === 1 && !reportService?.isUserSuperAdmin())"
                           type="button" class="sb-btn sb-btn-normal sb-btn-outline-primary mr-8">
                           <i class="white minus alternate icon"></i>
@@ -100,7 +100,7 @@
                           [telemetryInteractCdata]="[getCDataObj({id: '' + currentReport?.charts?.length || '0', type: 'CountCharts'}),
                           getCDataObj({id: reportService.getParameterValues('$slug').value, type: 'State'})]"
                           [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'select-publish'})"
-                          (click)="openConfirmationModal('publish')"
+                          (click)="openConfirmationModal('publish')" tabindex="0"
                           *ngIf="report?.status === 'draft' && !(type === 1 && !reportService?.isUserSuperAdmin())"
                           type="button" class="sb-btn sb-btn-normal sb-btn-primary mr-8">
                           <i class="white check alternate icon"></i> Publish
@@ -128,12 +128,12 @@
                           [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
                           [telemetryInteractEdata]="setTelemetryInteractEdata('report-graph')" class="item px-0 mx-15 py-20"
                           suiTabHeader="graph" (activate)="showExportsOption=true"
-                          (click)="setDownloadUrl(currentReport.reportMetaData.downloadUrl)">{{resourceService?.frmelmnts?.lbl?.graphs}}</a>
+                          (click)="setDownloadUrl(currentReport.reportMetaData.downloadUrl)" tabindex="0">{{resourceService?.frmelmnts?.lbl?.graphs}}</a>
                         <a appTelemetryInteract
                           [telemetryInteractObject]="setTelemetryInteractObject(currentReport.reportMetaData.id)"
                           [telemetryInteractEdata]="setTelemetryInteractEdata('report_table_'+table.name)"
                           (activate)="showExportsOption=false" *ngFor="let table of currentReport.tables"
-                          (click)="setDownloadUrl(table.downloadUrl)" class="item px-0 mx-15 py-20"
+                          (click)="setDownloadUrl(table.downloadUrl)" tabindex="0" class="item px-0 mx-15 py-20"
                           [suiTabHeader]="table.id">{{table?.name}}</a>
                         <a *ngIf="currentReport?.files?.length" appTelemetryInteract
                           [telemetryInteractObject]="setTelemetryInteractObject()"
@@ -153,7 +153,7 @@
                            </div>
                       
                            <div class="d-flex flex-ai-center flex-jc-flex-end pr-10" *ngIf="!hideElements && currentReport?.reportMetaData?.filters">
-                            <button   class="sb-btn sb-btn-normal sb-btn-outline-primary  reset-filter" (click)="resetFilter()">
+                            <button   class="sb-btn sb-btn-normal sb-btn-outline-primary  reset-filter" (click)="resetFilter()" tabindex="0">
                             {{resourceService?.frmelmnts?.btn?.reset}} {{resourceService?.frmelmnts?.lbl?.filters  }}
                           </button>
                           </div>
@@ -161,7 +161,7 @@
                         <button appTelemetryInteract [telemetryInteractObject]="setTelemetryInteractObject()"
                         [telemetryInteractEdata]="getTelemetryInteractEdata({type: 'download'})" type="button"
                         *ngIf="currentReport?.reportMetaData?.downloadUrl && !currentReport?.files?.length"
-                        class="sb-left-icon-btn sb-btn sb-btn-tertiary sb-btn-normal mr-8" (click)="downloadCSV()"><i
+                        class="sb-left-icon-btn sb-btn sb-btn-tertiary sb-btn-normal mr-8" (click)="downloadCSV()" tabindex="0"><i
                           class="download icon"></i>
                         {{resourceService?.frmelmnts?.lbl?.downloadCsv}}</button>
                         <div class="sb-field mb-0 mr-8 d-flex flex-jc-flex-end"    >

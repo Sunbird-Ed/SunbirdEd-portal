@@ -26,7 +26,7 @@
       </div>
       <!-- right container -->
       <div class="ml-auto d-flex flex-dc flex-ai-end flex-as-flex-end mt-16" *ngIf="appInfo?.updateInfo?.updateAvailable">
-        <button class="sb-btn sb-btn-secondary sb-btn-normal" (click)="updateApp(appInfo?.updateInfo?.url)" appTelemetryInteract [telemetryInteractEdata]="telemetryInteractButtonEData">{{resourceService?.frmelmnts?.lbl?.desktop?.update | interpolate:'{instance}': instance}}</button>
+        <button class="sb-btn sb-btn-secondary sb-btn-normal" tabindex="0" (click)="updateApp(appInfo?.updateInfo?.url)" appTelemetryInteract [telemetryInteractEdata]="telemetryInteractButtonEData">{{resourceService?.frmelmnts?.lbl?.desktop?.update | interpolate:'{instance}': instance}}</button>
         <span  class="mt-8 text-right update-link">{{resourceService?.frmelmnts?.lbl?.desktop?.updateAvailable}} {{appInfo?.updateInfo?.version}}</span>
       </div>
     </div>

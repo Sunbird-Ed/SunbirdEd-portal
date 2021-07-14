@@ -12,7 +12,7 @@
   <!-- If valueField is name it will select name as the valuefield in selected checkboxes -->
   <sui-multi-select *ngIf="valueField === 'name' && field.code !== 'gradeLevel'" [(ngModel)]="inputData" [optionTemplate]="optionTemplate" id={{field.code}} name={{field.code}} defaultSelectionText={{field.label}} zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} class="ui selection" [options]="field.range" [hasLabels]="false"
     valueField="name" (ngModelChange)="selectedOption($event)" #multiSelect>
-    <div class="header item" (click)="selectAll(field.code)" [ngClass]="{'active': selectAllCheckBox }">
+    <div class="header item" tabindex="0" (click)="selectAll(field.code)" [ngClass]="{'active': selectAllCheckBox }">
       <div>
         {{resourceService.frmelmnts.lbl.selectAll}}
       </div>
@@ -21,12 +21,12 @@
       </div>
     </div>
     <div class="divider"></div>
-    <sui-select-option *ngFor="let option of multiSelect.filteredOptions | sortBy:'name':'asc'" [value]="option" (click)="checkbox(option.name)" [ngClass]="{'sb-color-primary': checkBox[option.name] }" title="{{option.name}}"></sui-select-option>
+    <sui-select-option *ngFor="let option of multiSelect.filteredOptions | sortBy:'name':'asc'" [value]="option" tabindex="0" (click)="checkbox(option.name)" [ngClass]="{'sb-color-primary': checkBox[option.name] }" title="{{option.name}}"></sui-select-option>
   </sui-multi-select>
 
   <sui-multi-select *ngIf="valueField === 'name' && field.code === 'gradeLevel'" [(ngModel)]="inputData" [optionTemplate]="optionTemplate" id={{field.code}} name={{field.code}} defaultSelectionText={{field.label}} zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} class="ui selection" [options]="field.range" [hasLabels]="false"
     valueField="name" (ngModelChange)="selectedOption($event)" #multiSelect>
-    <div class="header item" (click)="selectAll(field.code)" [ngClass]="{'active': selectAllCheckBox }">
+    <div class="header item" tabindex="0" (click)="selectAll(field.code)" [ngClass]="{'active': selectAllCheckBox }">
       <div>
         {{resourceService.frmelmnts.lbl.selectAll}}
       </div>
@@ -35,13 +35,13 @@
       </div>
     </div>
     <div class="divider"></div>
-    <sui-select-option *ngFor="let option of multiSelect.filteredOptions" [value]="option" (click)="checkbox(option.name)" [ngClass]="{'sb-color-primary': checkBox[option.name] }" title="{{option.name}}"></sui-select-option>
+    <sui-select-option *ngFor="let option of multiSelect.filteredOptions" [value]="option" tabindex="0" (click)="checkbox(option.name)" [ngClass]="{'sb-color-primary': checkBox[option.name] }" title="{{option.name}}"></sui-select-option>
   </sui-multi-select>
   
   <!-- If valueField is code it will select code as the valuefield in selected checkboxes -->
   <sui-multi-select *ngIf="valueField === 'code'" [(ngModel)]="inputData" [optionTemplate]="optionTemplate" id={{field.code}} name={{field.code}} defaultSelectionText={{field.label}} zeroSelectionText={{resourceService.frmelmnts.lbl.Select}} class="ui selection" [options]="field.range" [hasLabels]="false"
     valueField="code" (ngModelChange)="selectedOption($event)" #multiSelect>
-    <div class="header item" (click)="selectAll(field.code)" [ngClass]="{'active': selectAllCheckBox }">
+    <div class="header item" tabindex="0" (click)="selectAll(field.code)" [ngClass]="{'active': selectAllCheckBox }">
       <div>
         {{resourceService.frmelmnts.lbl.selectAll}}
       </div>
@@ -50,7 +50,7 @@
       </div>
     </div>
     <div class="divider"></div>
-    <sui-select-option *ngFor="let option of multiSelect.filteredOptions" [value]="option" (click)="checkbox(option.name)" [ngClass]="{'active': checkBox[option.name] }" title="{{option.name}}"></sui-select-option>
+    <sui-select-option *ngFor="let option of multiSelect.filteredOptions" [value]="option" tabindex="0" (click)="checkbox(option.name)" [ngClass]="{'active': checkBox[option.name] }" title="{{option.name}}"></sui-select-option>
   </sui-multi-select>
 
 </ng-container>

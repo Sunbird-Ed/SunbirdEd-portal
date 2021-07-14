@@ -23,12 +23,12 @@
                 {{ courseHierarchy?.description | slice:0:200 }}&nbsp;
                 <span class="ui cardsKnowMore mouse-pointer"
                   *ngIf="courseHierarchy?.description?.length > 200 && readMore === false"
-                  (click)="readMore = !readMore;">{{resourceService?.frmelmnts?.lbl?.readmore}}</span>
+                  tabindex="0" (click)="readMore = !readMore;">{{resourceService?.frmelmnts?.lbl?.readmore}}</span>
               </p>
               <p *ngIf="readMore" class="traning-relevant__description sb-color-gray-400">
                 {{ courseHierarchy?.description}}&nbsp;
                 <span class="ui cardsKnowMore mouse-pointer"
-                  (click)="readMore = false;">{{resourceService?.frmelmnts?.lbl?.readless}}</span>
+                  tabindex="0" (click)="readMore = false;">{{resourceService?.frmelmnts?.lbl?.readless}}</span>
               </p>
             </div>
           </div>
@@ -40,12 +40,12 @@
               {{generaliseLabelService?.frmelmnts?.lbl?.coursestructure}}</h4>
             <button *ngIf="!isExpandedAll"
               class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto d-flex flex-ai-center" tabindex="0"
-              (click)="isExpandedAll = true; logTelemetry('expand-all', courseHierarchy);"><img
+              tabindex="0" (click)="isExpandedAll = true; logTelemetry('expand-all', courseHierarchy);"><img
                 src="assets/images/plus.png" class="mr-8" alt=""
                 width="12px">{{resourceService?.frmelmnts?.lbl?.expandAll}}</button>
             <button *ngIf="isExpandedAll"
               class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto d-flex flex-ai-center" tabindex="0"
-              (click)="isExpandedAll = false; logTelemetry('collapse-all', courseHierarchy);"><img
+              tabindex="0" (click)="isExpandedAll = false; logTelemetry('collapse-all', courseHierarchy);"><img
                 src="assets/images/collapse.png" class="mr-8" alt=""
                 width="12px">{{resourceService?.frmelmnts?.lbl?.collapseAll}}</button>
           </div>
