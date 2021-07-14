@@ -2,21 +2,21 @@ import {
   async,
   ComponentFixture,
   TestBed
-} from "@angular/core/testing";
-import { ObservationService, KendraService, CoreModule } from "@sunbird/core";
+} from '@angular/core/testing';
+import { ObservationService, KendraService, CoreModule } from '@sunbird/core';
 import {
   ConfigService,
   ResourceService,
   SharedModule,
-} from "@sunbird/shared";
-import { ObservationUtilService } from "../../service";
-import { AddEntityComponent } from "./add-entity.component";
-import { configureTestSuite } from "@sunbird/test-util";
-import { HttpClientTestingModule } from "@angular/common/http/testing";
-import { SuiModule } from "ng2-semantic-ui-v9";
-import { RouterTestingModule } from "@angular/router/testing";
-import { Router } from "@angular/router";
-import { NO_ERRORS_SCHEMA } from "@angular/core";
+} from '@sunbird/shared';
+import { ObservationUtilService } from '../../service';
+import { AddEntityComponent } from './add-entity.component';
+import { configureTestSuite } from '@sunbird/test-util';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { SuiModule } from 'ng2-semantic-ui-v9';
+import { RouterTestingModule } from '@angular/router/testing';
+import { Router } from '@angular/router';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   profileData,
   TargetEntityType,

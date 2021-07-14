@@ -25,7 +25,7 @@ import { TranslateService, TranslateStore } from '@ngx-translate/core';
 import { ObservationService } from '@sunbird/core';
 
 
-fdescribe('QuestionaireComponent', () => {
+describe('QuestionaireComponent', () => {
   let component: QuestionnaireComponent;
   let baseHref;
   let fixture: ComponentFixture<QuestionnaireComponent>;

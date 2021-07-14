@@ -24,10 +24,10 @@ export class CanDeactivateGuard
 export abstract class ComponentDeactivate {
   abstract canDeactivate(): boolean;
 
-  // @HostListener('window:beforeunload', ['$event'])
-  // unloadNotification($event: any) {
-  //   if (!this.canDeactivate()) {
-  //     $event.returnValue = true;
-  //   }
-  // }
+  @HostListener('window:beforeunload', ['$event'])
+  unloadNotification($event: any) {
+    if (!this.canDeactivate()) {
+      $event.returnValue = true;
+    }
+  }
 }

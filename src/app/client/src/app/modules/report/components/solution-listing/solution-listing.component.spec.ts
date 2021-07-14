@@ -21,7 +21,7 @@ import {EntityListComponent} from '../entity-list/entity-list.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { Router } from '@angular/router';
 
-fdescribe('SolutionListingComponent', () => {
+describe('SolutionListingComponent', () => {
   let component: SolutionListingComponent;
   let fixture: ComponentFixture<SolutionListingComponent>;
   let observationUtilService, observationService, userService;

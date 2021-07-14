@@ -123,16 +123,16 @@ export class ObservationListingComponent
 
   async ngOnInit() {
     this.initLayout();
-    this.showEditUserDetailsPopup=await this.observationUtil.getProfileInfo();
-     if(!this.showEditUserDetailsPopup){
-       let metaData=this.observationUtil.getAlertMetaData();
-       metaData.type="update profile";
-       metaData.isClosed=true;
-       metaData.size="mini";
-       metaData.content.title=this.resourceService.frmelmnts.lbl.updateProfileTitle;
-       metaData.content.body.type="text";
-       metaData.content.body.data=this.resourceService.frmelmnts.lbl.updateprofilecontent;
-       metaData.footer.className="single-btn"
+    this.showEditUserDetailsPopup = await this.observationUtil.getProfileInfo();
+     if (!this.showEditUserDetailsPopup) {
+       const metaData = this.observationUtil.getAlertMetaData();
+       metaData.type = 'update profile';
+       metaData.isClosed = true;
+       metaData.size= 'mini';
+       metaData.content.title = this.resourceService.frmelmnts.lbl.updateProfileTitle;
+       metaData.content.body.type = 'text';
+       metaData.content.body.data = this.resourceService.frmelmnts.lbl.updateprofilecontent;
+       metaData.footer.className = 'single-btn'
        metaData.footer.buttons.push(
         {
           type: 'accept',
