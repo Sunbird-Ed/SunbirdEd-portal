@@ -26,12 +26,12 @@ describe('EntityListComponent', () => {
     it('should create', () => {
         expect(component).toBeTruthy();
     });
-    it("Should emit the action on entity", () => {
-        let type = "change";
-        spyOn(component, "action").and.callThrough();
-        spyOn(component.onAction, "emit").and.callThrough();
+    it('Should emit the action on entity', () => {
+        const type = 'change';
+        spyOn(component, 'action').and.callThrough();
+        spyOn(component.onAction, 'emit').and.callThrough();
         component.action(Entity, type);
         component.onAction.emit({ action: type, data: Entity });
         expect(component.action).toHaveBeenCalled();
-    })
+    });
 });

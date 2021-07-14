@@ -1,7 +1,7 @@
 import { DateFilterXtimeAgoPipe } from './date-filter-xtime-ago.pipe';
 import dayjs from 'dayjs';
-import * as relativeTime from "dayjs/plugin/relativeTime";
-dayjs.extend(relativeTime)
+import * as relativeTime from 'dayjs/plugin/relativeTime';
+dayjs.extend(relativeTime);
 
 describe('DateFilterXtimeAgoPipe', () => {
   describe('#transform', () => {

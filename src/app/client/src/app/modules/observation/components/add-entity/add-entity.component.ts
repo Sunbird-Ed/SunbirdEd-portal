@@ -26,8 +26,8 @@ export class AddEntityComponent implements OnInit {
     count = 0;
     entities;
     payload;
-    showDownloadModal: boolean = true;
-    showLoaderBox: boolean = false;
+    showDownloadModal = true;
+    showLoaderBox = false;
     public loaderMessage: ILoaderMessage;
     public noResultMessage: INoResultMessage;
     showDownloadSuccessModal;
@@ -42,7 +42,7 @@ export class AddEntityComponent implements OnInit {
     }
     ngOnInit() {
         const searchBox = document.getElementById('entitySearch');
-        const keyup$ = fromEvent(searchBox, 'keyup')
+        const keyup$ = fromEvent(searchBox, 'keyup');
         keyup$.pipe(
             map((i: any) => i.currentTarget.value),
             debounceTime(500)
@@ -54,7 +54,7 @@ export class AddEntityComponent implements OnInit {
         this.observationUtilService.getProfileDataList().then(data => {
             this.payload = data;
             this.getTargettedEntityType();
-        })
+        });
     }
     public closeModal() {
         this.modal.approve();
@@ -75,11 +75,11 @@ export class AddEntityComponent implements OnInit {
             this.search();
         }, error => {
             this.showLoaderBox = false;
-        })
+        });
 
     }
     selectEntity(event) {
-        if(this.selectedEntities.includes(event._id)){
+        if (this.selectedEntities.includes(event._id)) {
             const i = this.selectedEntities.indexOf(event._id);
             this.selectedEntities.splice(i, 1);
         } else {
@@ -92,7 +92,7 @@ export class AddEntityComponent implements OnInit {
     }
     search() {
         this.showLoaderBox = true;
-        let url = this.config.urlConFig.URLS.OBSERVATION.SEARCH_ENTITY + '?observationId=' + this.observationId + '&search=' + encodeURIComponent(this.searchQuery ? this.searchQuery : '') + '&page=' + this.page + '&limit=' + this.limit;
+        const url = this.config.urlConFig.URLS.OBSERVATION.SEARCH_ENTITY + '?observationId=' + this.observationId + '&search=' + encodeURIComponent(this.searchQuery ? this.searchQuery : '') + '&page=' + this.page + '&limit=' + this.limit;
         const paramOptions = {
             url: url + `&parentEntityId=${encodeURIComponent(
                 this.targetEntity._id
@@ -102,7 +102,7 @@ export class AddEntityComponent implements OnInit {
         };
         this.observationService.post(paramOptions).subscribe(data => {
             this.showLoaderBox = false;
-            let resp = data.result[0];
+            const resp = data.result[0];
             if (resp.data.length) {
                 for (let i = 0; i < resp.data.length; i++) {
                     resp.data[i].isSelected = resp.data[i].selected;
@@ -113,7 +113,7 @@ export class AddEntityComponent implements OnInit {
             }
         }, error => {
             this.showLoaderBox = false;
-        })
+        });
     }
 
     searchEntity() {
@@ -122,7 +122,7 @@ export class AddEntityComponent implements OnInit {
         this.search();
     }
     loadMore() {
-        if(this.count > this.entities.length){
+        if (this.count > this.entities.length) {
             this.page = this.page + 1;
             this.search();
         }
@@ -137,6 +137,6 @@ export class AddEntityComponent implements OnInit {
         this.observationService.post(paramOptions).subscribe(data => {
             this.closeModal();
         }, error => {
-        })
+        });
     }
 }

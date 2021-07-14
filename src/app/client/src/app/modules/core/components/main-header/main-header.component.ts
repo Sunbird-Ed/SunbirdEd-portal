@@ -141,7 +141,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
    */
   workSpaceRole: Array<string>;
   reportsListVersion: reportsListVersionType;
-  showLocationPopup: boolean = false;
+  showLocationPopup = false;
   locationTenantInfo: any = {};
   deviceProfile: any;
   isCustodianUser: boolean;
@@ -151,7 +151,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
   guestUser;
   subscription: any;
   userType: any;
-  showBackButton: boolean
+  showBackButton: boolean;
   showingResult: string;
 
 
@@ -188,12 +188,11 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
     this.subscription = this.utilService.currentRole.subscribe(async (result) => {
       if (result) {
         this.userType = result;
-      }
-      else {
+      } else {
         if (this.userService.loggedIn) {
           this.userService.userData$.subscribe((profileData: IUserData) => {
             if (_.get(profileData, 'userProfile.profileUserType.type')) {
-              this.userType = profileData.userProfile["profileUserType"]["type"];
+              this.userType = profileData.userProfile['profileUserType']['type'];
             }
           });
         }
@@ -710,7 +709,7 @@ export class MainHeaderComponent implements OnInit, OnDestroy {
           this.showBackButton = false;
         }
       }
-    }
+    };
   }
 
 

@@ -1,26 +1,26 @@
 export const metaData = {
-    type: "update profile",
-    size: "mini",
+    type: 'update profile',
+    size: 'mini',
     isClosed: true,
     content: {
-      title: "Update Profile",
+      title: 'Update Profile',
       body: {
-        type: "text", //text,checkbox
-        data: "Please update your profile",
+        type: 'text', // text,checkbox
+        data: 'Please update your profile',
       },
     },
     footer: {
-      className: "single-btn",
+      className: 'single-btn',
       buttons: [
         {
-          type: "cancel",
+          type: 'cancel',
           returnValue: false,
-          buttonText: "cancel",
+          buttonText: 'cancel',
         },
         {
-          type: "accept",
+          type: 'accept',
           returnValue: true,
-          buttonText: "Update",
+          buttonText: 'Update',
         },
       ],
     },

@@ -561,7 +561,7 @@ describe('ExplorePageComponent', () => {
     const router = TestBed.get(Router);
     const searchQuery = '{"request":{"query":"","filters":{"status":"1"},"limit":10,"sort_by":{"createdDate":"desc"}}}';
     spyOn(component, 'viewAll').and.callThrough();
-    spyOn(component, 'getCurrentPageData').and.returnValue({})
+    spyOn(component, 'getCurrentPageData').and.returnValue({});
     spyOn(cacheService, 'set').and.stub();
     router.url = '/explore-course?selectedTab=course';
     component.viewAll({ searchQuery: searchQuery, name: 'Featured-courses' });
@@ -593,7 +593,7 @@ describe('ExplorePageComponent', () => {
       courseService = TestBed.get(CoursesService);
       playerService = TestBed.get(PlayerService);
       spyOn(publicPlayerService, 'playContent').and.callThrough();
-    })
+    });
     const event = {
       data: {
         metaData: {
@@ -612,7 +612,7 @@ describe('ExplorePageComponent', () => {
       beforeEach(() => {
         spyOn(component, 'isUserLoggedIn').and.returnValue(true);
         spyOn(playerService, 'playContent');
-      })
+      });
 
       it('with 0 expired and ongoing batches', () => {
         spyOn(courseService, 'findEnrolledCourses').and.returnValue({
@@ -667,7 +667,7 @@ describe('ExplorePageComponent', () => {
         expect(component.queryParams).toEqual({ subject: ['English'], selectedTab: 'textbook' });
         expect(prepareVisitsSpy).toHaveBeenCalled();
         done();
-      })
+      });
     });
 
     it('should get the section name based on current tab', () => {

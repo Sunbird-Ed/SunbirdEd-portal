@@ -90,7 +90,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   showJoinModal = false;
   tocId;
   groupId;
-  showLastAttemptsModal: boolean = false;
+  showLastAttemptsModal = false;
   navigateToContentObject: any;
   _routerStateContentStatus: any;
   isConnected = false;
@@ -124,7 +124,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.router.onSameUrlNavigation = 'ignore';
     this.collectionTreeOptions = this.configService.appConfig.collectionTreeOptions;
     // this.assessmentMaxAttempts = this.configService.appConfig.CourseConsumption.selfAssessMaxLimit;
-  } 
+  }
   ngOnInit() {
     if (this.permissionService.checkRolesPermissions(['COURSE_MENTOR'])) {
       this.courseMentor = true;
@@ -257,16 +257,16 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       setTimeout(() => {
         if (_.get(event, 'event') === 'issueCert' && _.get(event, 'value') === 'yes') {
           this.createdBatchId = _.get(event, 'batchId');
-          if(!_.get(event, 'isCertInBatch')) {
+          if (!_.get(event, 'isCertInBatch')) {
             this.showConfirmationPopup = true;
             this.popupMode = _.get(event, 'mode');
           }
         }
       }, 1000);
     });
-    const isForceSynced = localStorage.getItem(this.courseId+'_isforce-sync');
-        if(isForceSynced){
-          this.showForceSync = false
+    const isForceSynced = localStorage.getItem(this.courseId + '_isforce-sync');
+        if (isForceSynced) {
+          this.showForceSync = false;
         }
   }
 
@@ -329,8 +329,8 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
   }
 
   private getContentState() {
-    let fieldsArray: Array<string> = ['progress', 'score'];
-    const req:any = {
+    const fieldsArray: Array<string> = ['progress', 'score'];
+    const req: any = {
       userId: this.userService.userid,
       courseId: this.courseId,
       contentIds: this.contentIds,
@@ -546,12 +546,12 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       const batchStartDate = new Date(batch[0].startDate);
       const batchenrollEndDate = batch[0].enrollmentEndDate ? new Date(batch[0].enrollmentEndDate) : null;
       if (batchStartDate > currentDate) {
-        batchMessage = (this.resourceService.messages.emsg.m009).replace('{startDate}', batch[0].startDate)
+        batchMessage = (this.resourceService.messages.emsg.m009).replace('{startDate}', batch[0].startDate);
       } else if (batchenrollEndDate !== null && batchenrollEndDate < currentDate) {
-        batchMessage = (this.resourceService.messages.emsg.m008).replace('{endDate}', batch[0].enrollmentEndDate)
+        batchMessage = (this.resourceService.messages.emsg.m008).replace('{endDate}', batch[0].enrollmentEndDate);
       }
     }
-    return batchMessage
+    return batchMessage;
   }
 
   isEnrollmentAllowed(enrollmentEndDate) {
@@ -716,7 +716,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
     this.dropdownContent = !this.dropdownContent;
   }
   public forceSync() {
-    localStorage.setItem(this.courseId+'_isforce-sync', 'true');
+    localStorage.setItem(this.courseId + '_isforce-sync', 'true');
     this.showForceSync = false;
     this.closeSharePopup('force-sync');
     this.dropdownContent = !this.dropdownContent;
@@ -724,7 +724,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       'courseId': this.courseId,
       'batchId': this.batchId,
       'userId': _.get(this.userService, 'userid')
-    }
+    };
     this.CsCourseService.updateContentState(req, { apiPath: '/content/course/v1' })
     .pipe(takeUntil(this.unsubscribe))
     .subscribe((res) => {

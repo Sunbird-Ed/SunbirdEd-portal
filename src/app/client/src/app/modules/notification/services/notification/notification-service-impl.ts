@@ -29,7 +29,7 @@ export class NotificationServiceImpl implements SbNotificationService {
     private telemetryService: TelemetryService,
     private activatedRoute: ActivatedRoute,
   ) {
-    this.fetchNotificationList()
+    this.fetchNotificationList();
   }
 
   async fetchNotificationList(): Promise<NotificationFeedEntry<Notification>[]> {
@@ -109,7 +109,7 @@ export class NotificationServiceImpl implements SbNotificationService {
       return {
         path: '/profile',
         navigationExtras: { state: { scrollToId: 'learner-passbook' } }
-      }
+      };
     }
 
     const navigationLink = _.get(event, 'data.data.actionData.contentURL') || _.get(event, 'data.data.actionData.deepLink');

@@ -2,9 +2,9 @@ import { Component, OnInit, Input, ViewChild, EventEmitter, Output } from '@angu
 import { ResourceService } from '@sunbird/shared';
 
 @Component({
-    selector: "app-edit-submission",
-    templateUrl: "./edit-submission.component.html",
-    styleUrls: ["./edit-submission.component.scss"],
+    selector: 'app-edit-submission',
+    templateUrl: './edit-submission.component.html',
+    styleUrls: ['./edit-submission.component.scss'],
 })
 
 export class EditSubmissionComponent implements OnInit {

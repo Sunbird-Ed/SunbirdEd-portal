@@ -56,7 +56,7 @@ import { ObservationUtilService } from './service';
     LocationModule,
     InfiniteScrollModule
   ],
-  providers: [MlGuard,ObservationUtilService]
+  providers: [MlGuard, ObservationUtilService]
 
 })
 export class ObservationModule { }
