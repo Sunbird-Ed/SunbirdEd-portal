@@ -53,6 +53,7 @@ export class SolutionListingComponent implements OnInit {
     this.dtOptions = {
       autoWidth: true,
       searching: false,
+      pageLength:this.pageSize,
       info: false,
       dom: '<"pull-right">rt'
     };
@@ -158,6 +159,8 @@ export class SolutionListingComponent implements OnInit {
 
   changeLimit(e) {
     this.pageSize = e.target.value;
+    this.pageNo=1;
+    this.dtOptions.pageLength=this.pageSize;
     this.getSolutions();
   }
 
