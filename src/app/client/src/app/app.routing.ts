@@ -21,6 +21,9 @@ const appRoutes: Routes = [
     path: 'workspace', loadChildren: () => import('app/modules/workspace/workspace.module').then(m => m.WorkspaceModule)
   },
   {
+    path: 'org', loadChildren: () => import('app/modules/org-management/org-management.module').then(m => m.OrgManagementModule)
+  },
+  {
     path: 'dashBoard', loadChildren: () => import('app/modules/dashboard/dashboard.module').then(m => m.DashboardModule)
   },
   {
