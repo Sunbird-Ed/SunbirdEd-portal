@@ -8,7 +8,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { TranslateModule } from '@ngx-translate/core';
 import { ReportRoutingModule } from './report-routing.module';
-import { SolutionListingComponent,EntityListComponent,ReportViewComponent,AllEvidenceComponent } from './components';
+import { SolutionListingComponent, EntityListComponent, ReportViewComponent, AllEvidenceComponent } from './components';
 import {DataTablesModule} from 'angular-datatables';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import {DashletModule} from '@project-sunbird/sb-dashlet-v9';

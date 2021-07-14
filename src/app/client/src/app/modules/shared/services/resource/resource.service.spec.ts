@@ -13,7 +13,7 @@ describe('ResourceService', () => {
   configureTestSuite();
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule,TranslateModule.forRoot({
+      imports: [HttpClientModule, TranslateModule.forRoot({
                   loader: {
                     provide: TranslateLoader,
                     useClass: TranslateFakeLoader

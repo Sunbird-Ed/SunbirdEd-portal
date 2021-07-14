@@ -43,7 +43,7 @@ export class FaqComponent implements OnInit {
   playerConfig: any;
   isDisabled = false;
   timeInterval = String(TEN_MINUTES);
-  time=0;
+  time = 0;
   isExpanded = false;
 
   @HostListener('window:resize', ['$event'])
@@ -100,11 +100,11 @@ export class FaqComponent implements OnInit {
       }
     });
     this.checkScreenView(window.innerWidth);
-    if(localStorage.getItem('debugDisabled')) {
+    if (localStorage.getItem('debugDisabled')) {
       this.isDisabled = (localStorage.getItem('debugDisabled') === 'true') ? true : false;
       this.updateButtonVisibility();
     }
-    
+
   }
 
   private getFaqJson() {
@@ -158,13 +158,13 @@ export class FaqComponent implements OnInit {
       this.selectedFaqCategory['constants'] = _.get(this.faqData, 'constants');
         setTimeout(() => {
           if (this.sbFaqCategoryList && this.sbFaqCategoryList.selectedIndex !== undefined) {
-            this.sbFaqCategoryList.selectedIndex = 0
+            this.sbFaqCategoryList.selectedIndex = 0;
           }
         }, 0);
     }
   }
 
-  private prepareFaqData(data){
+  private prepareFaqData(data) {
     for (let i = 0; i < data.categories.length; i++) {
       if (_.get(data.categories[i], 'faqs.length')) {
         for (let j = 0; j < data.categories[i].faqs.length; j++) {
@@ -272,7 +272,7 @@ export class FaqComponent implements OnInit {
     video.metadata.name = event.data.name;
     video.metadata.artifactUrl = event.data.url;
 
-    this.playerConfig = video
+    this.playerConfig = video;
     this.showVideoModal = true;
 
     this.videoPlayer.changes.subscribe(() => {
@@ -286,7 +286,7 @@ export class FaqComponent implements OnInit {
     this.showOnlyFaqCategory = false;
     this.showFaqReport = true;
     if (this.sbFaqCategoryList && this.sbFaqCategoryList.selectedIndex !== undefined) {
-      this.sbFaqCategoryList.selectedIndex = -1
+      this.sbFaqCategoryList.selectedIndex = -1;
     }
   }
 
@@ -302,24 +302,24 @@ export class FaqComponent implements OnInit {
     } catch (error) {
       this.timeInterval = String(TEN_MINUTES);
     }
-    this.time=Number(this.timeInterval)/(1000*60);
+    this.time = Number(this.timeInterval) / (1000 * 60);
     return new Promise((resolve) => resolve(this.timeInterval));
   }
-  updateButtonVisibility(){
+  updateButtonVisibility() {
     const currentTime = Math.floor(Date.now());
     const valueStored = Number(localStorage.getItem('debugDisabledAt'));
-    const disableTime = Number(valueStored + Number(this.timeInterval))
-    if(currentTime > disableTime){
+    const disableTime = Number(valueStored + Number(this.timeInterval));
+    if (currentTime > disableTime) {
       this.isDisabled = false;
       localStorage.setItem('debugDisabled', 'false');
-      localStorage.setItem('debugDisabledAt','0');
-    }else{
-      let time = disableTime - currentTime 
-      this.time=Number(this.timeInterval)/(1000*60)
+      localStorage.setItem('debugDisabledAt', '0');
+    } else {
+      const time = disableTime - currentTime;
+      this.time = Number(this.timeInterval) / (1000 * 60);
       setTimeout(() => {
       this.isDisabled = false;
       localStorage.setItem('debugDisabled', 'false');
-      localStorage.setItem('debugDisabledAt','0');
+      localStorage.setItem('debugDisabledAt', '0');
     }, time);
     }
   }

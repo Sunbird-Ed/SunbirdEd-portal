@@ -9,7 +9,7 @@ export class FilterPipe implements PipeTransform {
     if (!items) { return []; }
     if (!searchText) { return items; }
     searchText = searchText.toLowerCase();
-    if(searchKeys && searchKeys.length !== 0){
+    if (searchKeys && searchKeys.length !== 0) {
       const filterItem = [];
       _.forEach(items, (item) => {
         _.forEach(item, (subValue, subKey) => {
@@ -19,8 +19,8 @@ export class FilterPipe implements PipeTransform {
         });
       });
       return _.uniq(filterItem);
-    }else{
-      return items.filter(function(item){
+    } else {
+      return items.filter(function(item) {
         return JSON.stringify(item).toLowerCase().includes(searchText);
     });
     }

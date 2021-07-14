@@ -152,7 +152,7 @@ export class GlobalSearchFilterComponent implements OnInit, OnChanges, OnDestroy
             queryFilters[key] = key === 'key' || _.isArray(value) ? value : [value];
           }
         });
-        if (queryParams.selectedTab){
+        if (queryParams.selectedTab) {
           queryFilters['selectedTab'] = queryParams.selectedTab;
         }
         if (queryParams.mediaType) {

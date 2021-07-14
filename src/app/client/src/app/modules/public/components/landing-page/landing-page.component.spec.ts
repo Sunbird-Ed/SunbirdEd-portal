@@ -11,7 +11,7 @@ describe('LandingPageComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule,SharedModule.forRoot()],
+      imports: [HttpClientModule, SharedModule.forRoot()],
       declarations: [LandingPageComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [HttpClient]

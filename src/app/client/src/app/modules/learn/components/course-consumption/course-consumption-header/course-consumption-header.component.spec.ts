@@ -46,7 +46,7 @@ const resourceServiceMockData = {
     },
     lbl: {
       description: 'description',
-      BatchExpiringIn: "Batch expiring in"
+      BatchExpiringIn: 'Batch expiring in'
     }
   }
 };

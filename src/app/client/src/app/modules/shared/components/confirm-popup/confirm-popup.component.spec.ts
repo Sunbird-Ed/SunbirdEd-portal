@@ -15,12 +15,12 @@ describe('ConfirmPopupComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ConfirmPopupComponent],
-      imports: [SuiModule, HttpClientTestingModule,TranslateModule.forRoot({
+      imports: [SuiModule, HttpClientTestingModule, TranslateModule.forRoot({
          loader: {
             provide: TranslateLoader,
             useClass: TranslateFakeLoader
          }
-      }),],
+      }), ],
       providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService]
     })
       .compileComponents();

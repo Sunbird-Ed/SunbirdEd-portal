@@ -19,7 +19,7 @@ export class UtilService {
   public searchKeyword = new EventEmitter<string>();
   private csvExporter: any;
   private _isDesktopApp = false;
-  public formData:any;
+  public formData: any;
   public roleChanged = new BehaviorSubject('');
   public currentRole = this.roleChanged.asObservable();
 
@@ -254,7 +254,7 @@ export class UtilService {
   }
 
   updateRoleChange(type) {
-    if(type){
+    if (type) {
       this.roleChanged.next(type);
     }
 
@@ -430,26 +430,26 @@ export class UtilService {
   }
 
   getAppBaseUrl() {
-    let origin = (<HTMLInputElement>document.getElementById('baseUrl'))
+    const origin = (<HTMLInputElement>document.getElementById('baseUrl'))
       ? (<HTMLInputElement>document.getElementById('baseUrl')).value : document.location.origin;
     return origin;
   }
 
   /**
  * Parse the nested object & convert to flattern object(key, value)
- * @param {JSON object} data 
+ * @param {JSON object} data
  * ex: {user: {id: 1, name: xyz}} it will convert to {user.id: 1, user.name:}
  */
    flattenObject(jsonObj) {
-    let toReturn = {};
+    const toReturn = {};
 
-    for (let i in jsonObj) {
-      if (!jsonObj.hasOwnProperty(i)) continue;
+    for (const i in jsonObj) {
+      if (!jsonObj.hasOwnProperty(i)) { continue; }
 
       if ((typeof jsonObj[i]) == 'object' && jsonObj[i] !== null) {
-        let flatObject = this.flattenObject(jsonObj[i]);
-        for (let x in flatObject) {
-          if (!flatObject.hasOwnProperty(x)) continue;
+        const flatObject = this.flattenObject(jsonObj[i]);
+        for (const x in flatObject) {
+          if (!flatObject.hasOwnProperty(x)) { continue; }
 
           toReturn[i + '.' + x] = flatObject[x];
         }
@@ -466,7 +466,7 @@ export class UtilService {
       return {
         iconBgColor: randomColor.primary,
         pillBgColor: randomColor.secondary
-      }
+      };
     } else {
       return null;
     }

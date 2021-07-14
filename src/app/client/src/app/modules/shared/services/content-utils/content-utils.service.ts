@@ -20,7 +20,7 @@ export class ContentUtilsServiceService {
     const isDesktopApp = environment.isDesktopApp;
     this.baseUrl = document.location.origin + '/';
     if (isDesktopApp) {
-      let origin = (<HTMLInputElement>document.getElementById('baseUrl'))
+      const origin = (<HTMLInputElement>document.getElementById('baseUrl'))
         ? (<HTMLInputElement>document.getElementById('baseUrl')).value : document.location.origin;
       this.baseUrl = origin + '/';
     }
@@ -65,8 +65,7 @@ export class ContentUtilsServiceService {
     }
     if (type === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.collection) {
       playertype = 'collection';
-    } 
-    else if (type === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
+    } else if (type === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.questionset) {
       playertype = 'questionset';
     } else {
       playertype = 'content';
