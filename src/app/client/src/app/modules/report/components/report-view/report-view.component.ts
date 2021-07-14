@@ -1,7 +1,7 @@
-import { Component, HostListener, OnInit, ViewChild } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { Location } from "@angular/common";
-import { DhitiService } from "@sunbird/core";
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+import { DhitiService } from '@sunbird/core';
 import {
   ConfigService,
   LayoutService,

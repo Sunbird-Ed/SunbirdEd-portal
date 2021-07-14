@@ -10,14 +10,14 @@ import {
   INoResultMessage,
   ResourceService,
   SharedModule,
-} from "@sunbird/shared";
-import * as _ from "lodash-es";
-import { SuiModule, SuiSelectModule, SuiModalModule } from "ng2-semantic-ui-v9";
-import { DashletModule } from "@project-sunbird/sb-dashlet-v9";
-import { SlReportsLibraryModule } from "@shikshalokam/sl-reports-library";
-import { of,throwError as observableThrowError } from "rxjs";
-import { TranslateModule } from "@ngx-translate/core";
-import { ChangeDetectorRef, NO_ERRORS_SCHEMA } from "@angular/core";
+} from '@sunbird/shared';
+import * as _ from 'lodash-es';
+import { SuiModule, SuiSelectModule, SuiModalModule } from 'ng2-semantic-ui-v9';
+import { DashletModule } from '@project-sunbird/sb-dashlet-v9';
+import { SlReportsLibraryModule } from '@shikshalokam/sl-reports-library';
+import { of,throwError as observableThrowError } from 'rxjs';
+import { TranslateModule } from '@ngx-translate/core';
+import { ChangeDetectorRef, NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   reportData,
   reportSectionData,
@@ -29,7 +29,7 @@ import { AllEvidenceComponent } from '../all-evidence/all-evidence.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 
-describe("ReportViewComponent", () => {
+describe('ReportViewComponent', () => {
   let component: ReportViewComponent;
   let fixture: ComponentFixture<ReportViewComponent>;
   let dhitiService, location;
@@ -109,15 +109,15 @@ describe("ReportViewComponent", () => {
     expect(component.reportSections.length).toBeGreaterThan(0);
   });
 
-  it("should call ngoninit on error ", () => {
-    spyOn(dhitiService, "post").and.returnValue(observableThrowError("error"));
-    spyOn(component, "getReport").and.callThrough();
-    spyOn(component, "filterBySegment").and.callThrough();
+  it('should call ngoninit on error ', () => {
+    spyOn(dhitiService, 'post').and.returnValue(observableThrowError('error'));
+    spyOn(component, 'getReport').and.callThrough();
+    spyOn(component, 'filterBySegment').and.callThrough();
     component.ngOnInit();
     expect(component.getReport).toHaveBeenCalled();
   });
 
-  it("Should navigate to  back to gotoSolutionListPage", () => {
+  it('Should navigate to  back to gotoSolutionListPage', () => {
     component.gotoSolutionListPage();
   });
 
@@ -280,7 +280,7 @@ describe("ReportViewComponent", () => {
   });
 
   it('popstate elements', () => {
-    spyOn(component,"onPopState").and.callThrough();
+    spyOn(component,'onPopState').and.callThrough();
     const event = new PopStateEvent('popstate');
     component.onPopState(event);
     expect(component.onPopState).toHaveBeenCalledWith(event);

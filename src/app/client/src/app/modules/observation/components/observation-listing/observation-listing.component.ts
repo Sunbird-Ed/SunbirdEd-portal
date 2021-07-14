@@ -128,11 +128,11 @@ export class ObservationListingComponent
        const metaData = this.observationUtil.getAlertMetaData();
        metaData.type = 'update profile';
        metaData.isClosed = true;
-       metaData.size= 'mini';
+       metaData.size = 'mini';
        metaData.content.title = this.resourceService.frmelmnts.lbl.updateProfileTitle;
        metaData.content.body.type = 'text';
        metaData.content.body.data = this.resourceService.frmelmnts.lbl.updateprofilecontent;
-       metaData.footer.className = 'single-btn'
+       metaData.footer.className = 'single-btn';
        metaData.footer.buttons.push(
         {
           type: 'accept',

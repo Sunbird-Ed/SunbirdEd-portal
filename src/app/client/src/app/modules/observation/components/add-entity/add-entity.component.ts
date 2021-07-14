@@ -140,10 +140,10 @@ export class AddEntityComponent implements OnInit {
         });
     }
 
-    // @HostListener('window:popstate', ['$event'])
-    // onPopState(event) {
-    //     this.modal.approve();
-    //     this.showDownloadModal = false;
-    // }
+    @HostListener('window:popstate', ['$event'])
+    onPopState(event) {
+        this.modal.approve();
+        this.showDownloadModal = false;
+    }
 
 }
