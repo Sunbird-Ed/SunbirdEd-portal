@@ -65,9 +65,9 @@ export class ReportService {
               return res;
             });
           })
-          ,catchError(err => {
-            return throwError(err);
-          })
+          // ,catchError(err => {
+          //   return throwError(err);
+          // })
         );
       })
     );
@@ -192,8 +192,15 @@ export class ReportService {
           reportData: chartObj.chartData
         };
       }
-      return chartObj;
-    });
+      if(chartObj && chartObj.chartData && chartObj.chartData.length > 0){
+        return chartObj;
+      }
+   
+    }).filter(function(chartData){
+       if(chartData ){
+          return (chartData['chartData'] != null || chartData['chartData'] != undefined) 
+        }
+      });
   }
 
   public prepareTableData(tablesArray: any, data: any, downloadUrl: string, hash?: string): Array<{}> {
