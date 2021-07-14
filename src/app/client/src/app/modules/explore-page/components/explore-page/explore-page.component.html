@@ -117,7 +117,6 @@
                 [searchRequest]="section?.searchRequest" [title]="section?.title" [layoutConfig]="layoutConfiguration"
                 (viewMoreClick)="viewAll($event, section)" [viewMoreButtonText]="resourceService?.frmelmnts?.lnk?.viewall">
               </sb-content-section>
-              <hr *ngIf="section?.isEnabled" class="section-hr my-32" />
             </div>
             <div *ngIf="facetSections.length === 0 && !showLoader">
               <app-no-result-found (exploreMoreContent)="navigateToExploreContent()" [filters]="selectedFilters"
