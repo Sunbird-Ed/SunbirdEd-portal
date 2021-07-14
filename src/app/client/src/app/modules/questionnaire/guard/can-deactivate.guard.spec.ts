@@ -56,13 +56,13 @@ describe('CanDeactivateGuard', () => {
     expect(service.canDeactivate(mockComponent)).toBeTruthy();
   });
 
-  it('expect to call ComponentDeactivate', () => {
-    spyOn(mockComponent, 'canDeactivate').and.callFake(() => {
-      return false;
-    });
-    spyOn(mockComponent, 'unloadNotification').and.callThrough();
-    const event = {returnValue: false};
-    mockComponent.unloadNotification(event);
-    expect(mockComponent.unloadNotification).toHaveBeenCalled();
-  });
+  // it('expect to call ComponentDeactivate', () => {
+  //   spyOn(mockComponent, 'canDeactivate').and.callFake(() => {
+  //     return false;
+  //   });
+  //   spyOn(mockComponent, 'unloadNotification').and.callThrough();
+  //   const event = {returnValue: false};
+  //   mockComponent.unloadNotification(event);
+  //   expect(mockComponent.unloadNotification).toHaveBeenCalled();
+  // });
 });

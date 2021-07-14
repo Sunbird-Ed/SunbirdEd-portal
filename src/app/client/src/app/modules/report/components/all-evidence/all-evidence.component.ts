@@ -59,8 +59,8 @@ export class AllEvidenceComponent implements OnInit {
     this.closeEvent.emit({ value: null });
   }
 
-  @HostListener('window:popstate', ['$event'])
-  onPopState(event) {
-    this.modal.approve();
-  }
+  // @HostListener('window:popstate', ['$event'])
+  // onPopState(event) {
+  //   this.modal.approve();
+  // }
 }
