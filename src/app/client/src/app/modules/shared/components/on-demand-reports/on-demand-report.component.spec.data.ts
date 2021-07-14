@@ -230,10 +230,10 @@ export const MockData = {
     'expires_at': '2020-08-20'
   },
   selectedReport: {
-    "title": " Course progress exhaust",
-    "dataset": "progress-exhaust",
-    "lang_key": "frmelmnts.lbl.progressExhaustReport",
-    "encrypt": "false"
+    'title': ' Course progress exhaust',
+    'dataset': 'progress-exhaust',
+    'lang_key': 'frmelmnts.lbl.progressExhaustReport',
+    'encrypt': 'false'
   },
   responseData: {
     result: {
@@ -339,22 +339,22 @@ export const MockData = {
   },
   reportTypes: [
     {
-      "title": "Course progress exhaust",
-      "dataset": "progress-exhaust",
-      "lang_key": "frmelmnts.lbl.progressExhaustReport",
-      "encrypt": "false"
+      'title': 'Course progress exhaust',
+      'dataset': 'progress-exhaust',
+      'lang_key': 'frmelmnts.lbl.progressExhaustReport',
+      'encrypt': 'false'
     },
     {
-      "title": "User profile exhaust",
-      "dataset": "userinfo-exhaust",
-      "lang_key": "frmelmnts.lbl.userExhaustReport",
-      "encrypt": "true"
+      'title': 'User profile exhaust',
+      'dataset': 'userinfo-exhaust',
+      'lang_key': 'frmelmnts.lbl.userExhaustReport',
+      'encrypt': 'true'
     },
     {
-      "title": "Question set report",
-      "dataset": "response-exhaust",
-      "lang_key": "frmelmnts.lbl.qsResponseReport",
-      "encrypt": "false"
+      'title': 'Question set report',
+      'dataset': 'response-exhaust',
+      'lang_key': 'frmelmnts.lbl.qsResponseReport',
+      'encrypt': 'false'
     }
   ]
 };

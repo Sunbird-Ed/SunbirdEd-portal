@@ -88,7 +88,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
       this.toasterService.error(this.resourceService.frmelmnts.lbl.fetchingContentFailed);
       this.navigationhelperService.goBack();
     });
-    
+
     this.initLayout();
     this.frameworkService.channelData$.pipe(takeUntil(this.unsubscribe$)).subscribe((channelData) => {
       if (!channelData.err) {
@@ -118,13 +118,13 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     this.checkForBack();
     this.moveToTop();
   }
-  goback(){
+  goback() {
     if (this.navigationhelperService['_history'].length > 1) {
       this.navigationhelperService.goBack();
     }
   }
-  checkForBack(){
-    if(_.get(this.activatedRoute, 'snapshot.queryParams["showClose"]') === 'true'){
+  checkForBack() {
+    if (_.get(this.activatedRoute, 'snapshot.queryParams["showClose"]') === 'true') {
       this.showBackButton = true;
     }
   }
@@ -206,13 +206,13 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     filters.primaryCategory = filters.primaryCategory || ((_.get(filters, 'primaryCategory.length') && filters.primaryCategory) || _.get(this.allTabData, 'search.filters.primaryCategory'));
     filters.mimeType = filters.mimeType || _.get(mimeType, 'values');
     _.forEach(_filters, (el, key) => {
-      if(key !== 'primaryCategory' && key !== 'mimeType' && !_.has(filters, key)){
+      if (key !== 'primaryCategory' && key !== 'mimeType' && !_.has(filters, key)) {
         filters[key] = el;
       }
     });
 
     // Replacing cbse/ncert value with cbse
-    const cbseNcertExists =[_.get(filters, 'board[0]'), _.get(filters, 'board'), _.get(filters, 'se_boards[0]'), _.get(filters, 'se_boards')].some(board => _.toLower(board) === 'cbse/ncert');
+    const cbseNcertExists = [_.get(filters, 'board[0]'), _.get(filters, 'board'), _.get(filters, 'se_boards[0]'), _.get(filters, 'se_boards')].some(board => _.toLower(board) === 'cbse/ncert');
     if (cbseNcertExists) {
       filters.se_boards = ['cbse'];
     }
@@ -251,7 +251,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
     this.searchService.contentSearch(option)
       .pipe(
         mergeMap(data => {
-          const channelFacet = _.find(_.get(data, 'result.facets') || [], facet => _.get(facet, 'name') === 'channel')
+          const channelFacet = _.find(_.get(data, 'result.facets') || [], facet => _.get(facet, 'name') === 'channel');
           if (channelFacet) {
             const rootOrgIds = this.orgDetailsService.processOrgData(_.get(channelFacet, 'values'));
             return this.orgDetailsService.searchOrgDetails({
@@ -262,7 +262,7 @@ export class ExploreContentComponent implements OnInit, OnDestroy, AfterViewInit
                 channelFacet.values = _.get(orgDetails, 'content');
                 return of(data);
               })
-            )
+            );
           }
           return of(data);
         })

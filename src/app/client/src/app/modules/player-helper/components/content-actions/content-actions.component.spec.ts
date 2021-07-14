@@ -42,7 +42,7 @@ describe('ContentActionsComponent', () => {
       providers: [
         { provide: ActivatedRoute, useValue: ActivatedRouteStub },
         { provide: ResourceService, useValue: actionsData.resourceBundle },
-        PublicPlayerService, TelemetryService,{ provide: APP_BASE_HREF, useValue: '/' }
+        PublicPlayerService, TelemetryService, { provide: APP_BASE_HREF, useValue: '/' }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -142,7 +142,7 @@ describe('ContentActionsComponent', () => {
   it('should call downloadContent and successfuly content downloaded', () => {
     component.isDesktopApp = true;
     spyOn(component['contentManagerService'], 'startDownload').and.returnValue(of(actionsData.downloadContent.success));
-    spyOn(component, 'changeContentStatus').and.callThrough();;
+    spyOn(component, 'changeContentStatus').and.callThrough();
     component.contentData = actionsData.contentData;
     component.downloadContent(actionsData.contentData);
     component['contentManagerService'].startDownload({}).subscribe(data => {
@@ -258,7 +258,7 @@ describe('ContentActionsComponent', () => {
     spyOn(component, 'changeContentStatus');
     const utilService = TestBed.get(UtilService);
     utilService._isDesktopApp = true;
-    spyOn(contentManagerService, 'contentDownloadStatus').and.returnValue(of([{}]))
+    spyOn(contentManagerService, 'contentDownloadStatus').and.returnValue(of([{}]));
     component.ngOnInit();
     expect(component.changeContentStatus).toHaveBeenCalled();
   });

@@ -130,4 +130,4 @@ export const TableData = {
         pageid: 'summary-report'
       }
     }
-}
+};

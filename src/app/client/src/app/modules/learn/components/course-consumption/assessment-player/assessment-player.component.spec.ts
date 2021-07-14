@@ -537,9 +537,9 @@ describe('AssessmentPlayerComponent', () => {
     fixture.detectChanges();
     component.setTelemetryShareData(param);
     expect(component.telemetryShareData).toEqual([{
-      id: "do_123232534312",
-      type: "Course",
-      ver: "1"
+      id: 'do_123232534312',
+      type: 'Course',
+      ver: '1'
     }]);
   });
 
@@ -590,7 +590,7 @@ describe('AssessmentPlayerComponent', () => {
   it('should call onSelfAssessLastAttempt last attempt', () => {
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error');
-    const event = { 
+    const event = {
       'data': 'renderer:selfassess:lastattempt'
     };
     component.onSelfAssessLastAttempt(event);
@@ -600,7 +600,7 @@ describe('AssessmentPlayerComponent', () => {
   it('should call onSelfAssessLastAttempt max attempt exceeded', () => {
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error');
-    const event = { 
+    const event = {
       'data': 'renderer:maxLimitExceeded'
     };
     component.onSelfAssessLastAttempt(event);

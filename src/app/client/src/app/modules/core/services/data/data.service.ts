@@ -183,8 +183,8 @@ export class DataService {
       headers: requestParam.header,
       params: requestParam.param,
     };
-    debugger
-    return this.http.put(this.baseUrl + requestParam.url,requestParam.data, httpOptions).pipe(
+    debugger;
+    return this.http.put(this.baseUrl + requestParam.url, requestParam.data, httpOptions).pipe(
       mergeMap((data: ServerResponse) => {
         if (data.responseCode !== 'OK') {
           return observableThrowError(data);

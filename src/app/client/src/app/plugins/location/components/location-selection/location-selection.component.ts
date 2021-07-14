@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { ResourceService, ToasterService, NavigationHelperService,UtilService } from '@sunbird/shared';
+import { ResourceService, ToasterService, NavigationHelperService, UtilService } from '@sunbird/shared';
 import { DeviceRegisterService, FormService, OrgDetailsService, UserService } from '../../../../modules/core/services';
 import { Router } from '@angular/router';
 import { LocationService } from '../../services/location/location.service';
@@ -86,7 +86,7 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
 
   async updateUserLocation() {
     try {
-      const result:any = await this.sbFormLocationSelectionDelegate.updateUserLocation();
+      const result: any = await this.sbFormLocationSelectionDelegate.updateUserLocation();
 
       /* istanbul ignore else */
       if (result.userProfile) {
@@ -97,7 +97,7 @@ export class LocationSelectionComponent implements OnInit, OnDestroy, AfterViewI
       /* istanbul ignore else */
       if (result.deviceProfile) {
         if (!result.type) {
-          this.utilService.updateRoleChange(localStorage.getItem("userType"));
+          this.utilService.updateRoleChange(localStorage.getItem('userType'));
         }
         this.telemetryLogEvents('Device Profile', result.userProfile === 'success');
       }

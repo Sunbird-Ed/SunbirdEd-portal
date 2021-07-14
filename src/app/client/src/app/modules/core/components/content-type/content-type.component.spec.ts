@@ -237,5 +237,5 @@ describe('ContentTypeComponent', () => {
     component.setSelectedContentType('/observation', {}, {});
     expect(component.selectedContentType).toBe('observation');
   });
- 
+
 });

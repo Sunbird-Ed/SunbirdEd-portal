@@ -47,13 +47,13 @@ describe('InAppNotificationComponent', () => {
   };
 
   const MockNotificationServiceImpl = {
-    fetchNotificationList() { return {} as any },
+    fetchNotificationList() { return {} as any; },
     handleNotificationClick() {},
-    deleteNotification() { return false },
-    clearAllNotifications() { return false },
+    deleteNotification() { return false; },
+    clearAllNotifications() { return false; },
     showNotificationModel$: observableOf(true),
     notificationList$: observableOf([]),
-  }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -135,7 +135,7 @@ describe('InAppNotificationComponent', () => {
       notificationService.notificationList$.subscribe(data => {
         expect(component.notificationCount).toEqual(0);
         done();
-      })
+      });
     });
 
     it('should fetch the notification list and the list is empty', (done) => {
@@ -148,8 +148,8 @@ describe('InAppNotificationComponent', () => {
       // assert
       notificationService.notificationList$.subscribe(data => {
         expect(component.notificationCount).toEqual(0);
-        done()
-      })
+        done();
+      });
     });
 
   });
