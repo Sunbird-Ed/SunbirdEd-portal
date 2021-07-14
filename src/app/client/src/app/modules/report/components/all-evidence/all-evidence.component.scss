@@ -26,6 +26,7 @@
   overflow: auto;
   padding-bottom: calculateRem(2px);
   border-radius: var(--sbt-bradius-24) !important;
+  background-color: var(--sb-card-bg);
 }
 
 .ui.secondary.pointing.menu .item {
@@ -52,9 +53,6 @@
  background-color: var(--white);
 }
 
-.sbt-report-tabs-panel{
-  background-color: var(--sb-card-bg);
-}
 
 .report-block {
     padding-top: 10px;
