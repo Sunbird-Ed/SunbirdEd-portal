@@ -1,22 +1,23 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { Location } from "@angular/common";
-import { DhitiService } from "@sunbird/core";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+import { DhitiService } from '@sunbird/core';
 import {
   ConfigService,
   LayoutService,
   INoResultMessage,
   ResourceService,
   ToasterService,
-} from "@sunbird/shared";
-import * as _ from "lodash-es";
-import { ChangeDetectorRef } from "@angular/core";
-import { Subject } from "rxjs";
+  ILoaderMessage
+} from '@sunbird/shared';
+import * as _ from 'lodash-es';
+import { ChangeDetectorRef } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Component({
-  selector: "app-report-view",
-  templateUrl: "./report-view.component.html",
-  styleUrls: ["./report-view.component.scss"],
+  selector: 'app-report-view',
+  templateUrl: './report-view.component.html',
+  styleUrls: ['./report-view.component.scss'],
 })
 export class ReportViewComponent implements OnInit {
   state: any = {};
@@ -31,24 +32,25 @@ export class ReportViewComponent implements OnInit {
   public showComponent = true;
   public segmentfilter = false;
   public filterModal = false;
-  @ViewChild("lib", { static: false }) lib: any;
-  @ViewChild("modal") modal;
+  @ViewChild('lib', { static: false }) lib: any;
+  @ViewChild('modal') modal;
   selectedListCount = 0;
-  filterdata = [];
-  name = ["filter"];
+  name = ['filter'];
   modalFilterData: any;
-  filteredData: any=[];
+  filteredData = [];
   key: any;
   questionId: any;
   public active: boolean[] = [];
   public tabs: { header: string }[] = [
-    { header: this.resourceService?.frmelmnts.lbl.question },
+    { header: this.resourceService.frmelmnts.lbl.question },
   ];
-  public noResult: boolean = false;
-  public showPdf: boolean = false;
-  public showEvidence: boolean = false;
-  evidenceParam:any;
+  public noResult = false;
+  showLoader = true;
+  public showPdf = false;
+  public showEvidence = false;
+  evidenceParam: any;
   public unsubscribe$ = new Subject<void>();
+  loaderMessage: ILoaderMessage;
   constructor(
     private dhitiService: DhitiService,
     config: ConfigService,
@@ -63,41 +65,40 @@ export class ReportViewComponent implements OnInit {
 
     //  this.state = this.router.getCurrentNavigation().extras.state;
     this.routerParam.queryParams.subscribe((data: any) => {
-      this.state["entityId"] = data.entityId;
-      this.state["observationId"] = data.observationId;
-      this.state["entityType"] = data.entityType;
-      this.state["solutionId"] = data.solutionId;
+      this.state['entityId'] = data.entityId;
+      this.state['observationId'] = data.observationId;
+      this.state['entityType'] = data.entityType;
+      this.state['solutionId'] = data.solutionId;
       if (data.filter) {
-        this.state["filter"] = { questionId: [] };
-        this.state["criteriaWise"] = false;
+        this.state['filter'] = { questionId: [] };
+        this.state['criteriaWise'] = false;
       }
-      data.scores == "true"
-        ? (this.state["scores"] = true)
-        : (this.state["scores"] = false);
-      data.observation == "true"
-        ? (this.state["observation"] = true)
-        : (this.state["observation"] = false);
+      data.scores == 'true'
+        ? (this.state['scores'] = true)
+        : (this.state['scores'] = false);
+      data.observation == 'true'
+        ? (this.state['observation'] = true)
+        : (this.state['observation'] = false);
     });
-    
+
   }
   ngAfterViewChecked() {
     this.cdref.detectChanges();
   }
 
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
 
   ngOnInit() {
     this.initLayout();
+    this.noResultMessage = {
+          messageText: 'messages.stmsg.reportNotReady',
+        };
     window.scroll({
       top: 0,
       left: 0,
-      behavior: "smooth",
+      behavior: 'smooth',
     });
-    this.segmentValue = "Questions";
-    this.state["pdf"] = false;
+    this.segmentValue = 'Questions';
+    this.state['pdf'] = false;
     this.getReport();
   }
 
@@ -129,45 +130,42 @@ export class ReportViewComponent implements OnInit {
           }
 
           if (this.data.filters) {
-            let modalFilter = this.data.filters.filter(
-              (filter) => filter.filter.type == "modal"
+            const modalFilter = this.data.filters.filter(
+              (filter) => filter.filter.type == 'modal'
             )[0];
             this.filters = this.filters.map((filter) => {
-              if (filter.filter.type == "modal") {
+              if (filter.filter.type == 'modal') {
                 filter = modalFilter;
               }
               return filter;
             });
           }
         } else {
-          this.noResult=true
-          this.noResultMessage = {
-            messageText: "messages.stmsg.reportNotReady",
-          };
+          this.noResult = true;
+          this.showLoader = false;
         }
         this.filters.forEach((element) => {
-          if (element.filter.type == "segment") {
+          if (element.filter.type == 'segment') {
             if (this.tabs.length == 1) {
               this.active.push(true);
               this.tabs.push({
-                header: this.resourceService?.frmelmnts.lbl.criteria,
+                header: this.resourceService.frmelmnts.lbl.criteria,
               });
             }
             this.segmentfilter = true;
           }
         });
+        this.showLoader = false;
       },
-      (error) => {
+      (err) => {
         this.reportSections = [];
-        this.error = error;
-        if(!this.error.result){
-          this.noResult=true
-          this.noResultMessage = {
-            messageText: "messages.stmsg.reportNotReady",
-          };
+        this.error = err;
+        if (!this.error.result) {
+          this.noResult = true;
+          this.showLoader = false;
         }
       }
-    ); 
+    );
   }
 
   gotoSolutionListPage() {
@@ -175,8 +173,8 @@ export class ReportViewComponent implements OnInit {
   }
 
   filterBySegment() {
-    if (this.segmentValue == "Questions") {
-      let reportSections = [{ questionArray: this.data.reportSections }];
+    if (this.segmentValue == 'Questions') {
+      const reportSections = [{ questionArray: this.data.reportSections }];
       return reportSections;
     }
 
@@ -184,14 +182,14 @@ export class ReportViewComponent implements OnInit {
   }
 
   getData(element) {
-    let data = {
+    const data = {
       values: element.chart.data.datasets[0].data,
     };
     return data;
   }
 
   getconfig(element) {
-    let config = {
+    const config = {
       labels: element.chart.data.labels,
       datasets: [{ data: element.chart.data.datasets[0].data }],
       options: element.chart.options,
@@ -204,12 +202,12 @@ export class ReportViewComponent implements OnInit {
   }
 
   handleParameterChange(event) {
-    this.state["submissionId"] = event._id;
+    this.state['submissionId'] = event._id;
     this.getReport();
   }
 
   segmentChanged(segment) {
-    segment === "Criteria"
+    segment === 'Criteria'
       ? (this.state.criteriaWise = true)
       : (this.state.criteriaWise = false);
     this.state.filter = null;
@@ -219,7 +217,7 @@ export class ReportViewComponent implements OnInit {
   }
 
   openFile(file) {
-    window.open(file.url, "_blank");
+    window.open(file.url, '_blank');
   }
 
   filterModalPopup(data, keyToSend) {
@@ -232,7 +230,7 @@ export class ReportViewComponent implements OnInit {
       filteredData = data.map((d) => d._id);
     }
 
-    this.state.criteriaWise ? "criteria" : "question";
+    this.state.criteriaWise ? 'criteria' : 'question';
     this.filteredData = filteredData;
     this.selectedListCount = this.modalFilterData.length;
     this.filterModal = true;
@@ -240,7 +238,6 @@ export class ReportViewComponent implements OnInit {
 
   public closeModal() {
     this.modal.approve();
-    this.filterdata = [];
     this.filterModal = false;
   }
 
@@ -254,11 +251,11 @@ export class ReportViewComponent implements OnInit {
   }
 
   applyFilter() {
-    if (!this.filteredData){
-      let msgData =
-        this.segmentValue == "Questions"
-          ? "messages.smsg.selectquestions"
-          : "messages.smsg.selectcriteria";
+    if (!this.filteredData.length) {
+      const msgData =
+        this.segmentValue == 'Questions'
+          ? 'messages.smsg.selectquestions'
+          : 'messages.smsg.selectcriteria';
       this.toasterService.error(_.get(this.resourceService, msgData));
     } else {
       this.state.filter = {};
@@ -269,19 +266,19 @@ export class ReportViewComponent implements OnInit {
   }
 
   async download() {
-    let url: any = await this.callApi();
+    const url: any = await this.callApi();
     window.location.href = url;
   }
 
   callApi() {
     return new Promise((resolve, reject) => {
-      let payload = Object.assign({}, this.state, { pdf: true }); // will not change state obj
+      const payload = Object.assign({}, this.state, { pdf: true }); // will not change state obj
       const config = {
         url: this.config.urlConFig.URLS.DHITI.GENERIC_REPORTS,
         data: payload,
       };
       this.dhitiService.post(config).subscribe((res: any) => {
-        if (res.status != "success" && !res.pdfUrl) {
+        if (res.status != 'success' && !res.pdfUrl) {
           reject();
         }
         resolve(res.pdfUrl);
@@ -301,35 +298,6 @@ export class ReportViewComponent implements OnInit {
     };
     this.evidenceParam = payload;
     this.showEvidence = true;
-    // const config = {
-    //   url: this.config.urlConFig.URLS.DHITI.ALL_EVIDENCE,
-    //   data: payload,
-    // };
-    // this.dhitiService.post(config).subscribe(
-    //   (success: any) => {
-    //     if (success.result === true && success.data) {
-    //       this.images = success.data.images;
-    //       this.videos = success.data.videos;
-    //       this.documents = success.data.documents;
-    //       this.remarks = success.data.remarks;
-    //       this.audios = success.data.audios;
-    //       if (this.images) {
-    //         this.images.map((d) => this.evidenceData.push(d));
-    //       }
-    //       if (this.videos) {
-    //         this.videos.map((d) => this.evidenceData.push(d));
-    //       }
-    //       if (this.documents) {
-    //         this.documents.map((d) => this.evidenceData.push(d));
-    //       }
-    //       if (this.audios) {
-    //         this.audios.map((d) => this.evidenceData.push(d));
-    //       }
-    //       console.log(this.evidenceData);
-    //     }
-    //   },
-    //   (error) => {}
-    // );
   }
 
   modalClose(event) {

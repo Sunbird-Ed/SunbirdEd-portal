@@ -42,6 +42,6 @@ describe('SchemaService', () => {
       expect(schema).toBeDefined();
       expect(schema.properties).toEqual(['name']);
       done();
-    })
+    });
   });
 });

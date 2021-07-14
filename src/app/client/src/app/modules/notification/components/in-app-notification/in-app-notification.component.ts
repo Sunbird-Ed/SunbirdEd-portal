@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationServiceImpl } from '../../services/notification/notification-service-impl';
 import * as _ from 'lodash-es';
 import { UserFeedStatus } from '@project-sunbird/client-services/models';
-import { NotificationViewConfig } from '@project-sunbird/common-consumption-v8';
+import { NotificationViewConfig } from '@project-sunbird/common-consumption-v9';
 import { ResourceService } from '@sunbird/shared';
 import { TelemetryService } from '@sunbird/telemetry';
 import { takeUntil, delay } from 'rxjs/operators';
@@ -59,13 +59,13 @@ export class InAppNotificationComponent implements OnInit, OnDestroy {
   async fetchNotificationList() {
     this.notificationService.showNotificationModel$.subscribe(data => {
       this.showNotificationModel = data;
-    })
+    });
     this.notificationService.notificationList$
       .subscribe(notificationListData => {
         this.notificationCount = 0;
         this.notificationList = notificationListData;
         this.notificationList.forEach(e => this.notificationCount += (e.status === UserFeedStatus.UNREAD) ? 1 : 0);
-        this.inAppNotificationConfig['subTitle'] = `${this.notificationCount} ${this.resourceService.frmelmnts.lbl.newNotification}`;
+        this.inAppNotificationConfig['subTitle'] = `${this.notificationCount} ${_.get(this.resourceService, 'frmelmnts.lbl.newNotification')}`;
       });
   }
 

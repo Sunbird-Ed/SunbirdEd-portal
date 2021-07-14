@@ -10,7 +10,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { AvatarModule } from 'ngx-avatar';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
-import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v8';
+import { CommonConsumptionModule } from '@project-sunbird/common-consumption-v9';
 import { ContentSearchModule } from '@sunbird/content-search';
 import { TranslateModule } from '@ngx-translate/core';
 import {
@@ -56,7 +56,7 @@ import { ObservationUtilService } from './service';
     LocationModule,
     InfiniteScrollModule
   ],
-  providers: [MlGuard,ObservationUtilService]
+  providers: [MlGuard, ObservationUtilService]
 
 })
 export class ObservationModule { }

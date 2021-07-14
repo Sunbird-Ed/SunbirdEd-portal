@@ -42,7 +42,7 @@ describe('LayoutService', () => {
   });
   it('should switchLayout to accessibleLayout', () => {
     const service: LayoutService = TestBed.get(LayoutService);
-    service.acessibleLayoutEnabled=true;
+    service.acessibleLayoutEnabled = true;
     const configService = TestBed.get(ConfigService);
     service.layoutConfig = null;
     expect(service).toBeTruthy();

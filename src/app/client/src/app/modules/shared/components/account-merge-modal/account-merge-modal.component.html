@@ -34,10 +34,10 @@
   <!--Actions-->
   <div class="sb-modal-actions">
     <button appTelemetryInteract [telemetryInteractEdata]="mergeIntractEdata"
-            [telemetryInteractCdata]="telemetryCdata" class="sb-btn sb-btn-normal sb-btn-primary" (click)="initiateMerge()">
+            [telemetryInteractCdata]="telemetryCdata" class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" (click)="initiateMerge()">
       {{resourceService.frmelmnts?.btn?.merge}}
     </button>
-    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="closeModal()">
+    <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0" (click)="closeModal()">
       {{resourceService.frmelmnts?.btn?.cancel}}
     </button>
   </div>

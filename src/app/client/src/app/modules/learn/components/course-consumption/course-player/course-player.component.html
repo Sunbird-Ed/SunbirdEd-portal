@@ -47,12 +47,12 @@
             <h4 class="sb-pageSection-title sb-pageSection-title-light">
               {{generaliseLabelService?.frmelmnts?.lbl?.coursestructure}}</h4>
             <button *ngIf="!isExpandedAll"
-              class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto d-flex flex-ai-center"
+              class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto d-flex flex-ai-center" tabindex="0"
               (click)="isExpandedAll = true; logTelemetry('expand-all', courseHierarchy);"><img
                 src="assets/images/plus.png" class="mr-8" alt=""
                 width="12px">{{resourceService?.frmelmnts?.lbl?.expandAll}}</button>
             <button *ngIf="isExpandedAll"
-              class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto d-flex flex-ai-center"
+              class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto d-flex flex-ai-center" tabindex="0"
               (click)="isExpandedAll = false; logTelemetry('collapse-all', courseHierarchy);"><img
                 src="assets/images/collapse.png" class="mr-8" alt=""
                 width="12px">{{resourceService?.frmelmnts?.lbl?.collapseAll}}</button>
@@ -61,7 +61,7 @@
           <div *ngFor="let item of courseHierarchy?.children; let index = index">
             <sb-accordion [multi]="false">
               <sb-accordion-item [expanded]="isExpanded(index)" (collapsedChange)="collapsedChange($event, index)" [collapsed]="item?.collapsed">
-                <sb-accordion-header class="sb-bg-color-gray-0" (click)="isModuleExpanded = true;">
+                <sb-accordion-header class="sb-bg-color-gray-0" (click)="isModuleExpanded = true;" tabindex="0">
                   <i class="icon-svg icon-svg--sm icon-tick mr-8" role="img" aria-label="tick-icon"
                     *ngIf="enrolledCourse && item?.consumedContent === item?.contentCount">
                     <svg class="icon">
@@ -247,10 +247,10 @@
         </div>
     </div>
     <div class="sb-modal-actions">
-      <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="showLastAttemptsModal = false; _navigateToContent();">
+      <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" (click)="showLastAttemptsModal = false; _navigateToContent();">
         {{resourceService.frmelmnts?.btn?.ok}}
       </button>
-      <button class="sb-btn sb-btn-normal sb-btn-outline-primary" (click)="showLastAttemptsModal = false;">
+      <button class="sb-btn sb-btn-normal sb-btn-outline-primary" tabindex="0" (click)="showLastAttemptsModal = false;">
         {{resourceService.frmelmnts?.btn?.cancel}}
       </button>
     </div>

@@ -430,9 +430,16 @@
       "respondTo": "slider",
       "dots": true,
       "arrows": false,
-      "centerMode": false,
       "infinite": false,
-      "rtl": false
+      "responsive": [
+        {
+          "breakpoint": 768,
+          "settings": {
+            "slidesToShow": 1,
+            "slidesToScroll": 1
+          }
+        }
+      ]
     }
   },
   "CoursePageSection": {

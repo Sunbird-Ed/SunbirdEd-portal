@@ -71,11 +71,14 @@
 :host {
   .banner-image {
     border-radius: calculateRem(16px);
-    height: 280px;
+    height: calculateRem(280px);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
     overflow: hidden;
+    @include respond-below(sm) {
+      height: calculateRem(128px);
+    }
   }
 }
 ::ng-deep {
@@ -89,12 +92,39 @@
       margin-bottom: calculateRem(48px);
     }
     .slick-dots li button:before {
-      color: var(--gray-200);
       opacity: 1;
-      font-size: calculateRem(48px);
+      background: var(--gray-200);
+      content: "";
+      border-radius: 50%;
+      width: calculateRem(12px);
+      height: calculateRem(12px);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
     .slick-dots li.slick-active button:before {
-      color: var(--gray-800);
+      background: var(--gray-800);
     }
+    .slick-track {
+      margin: auto;
+    }
+  }
+  /*.banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(233deg, rgba(0,0,0,0) 0%, #191919 100%);
+  }*/
+  .explore-text {
+    color: var(--primary-color);
+    font-size: calculateRem(20px);
+    font-weight: bold;
+    padding: calculateRem(24px) calculateRem(32px);
+    z-index: 1;
+  }
+  .section-hr {
+    border: calculateRem(0.5px) solid var(--rc-dad9cb);
   }
 }

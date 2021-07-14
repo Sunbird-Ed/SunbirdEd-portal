@@ -228,12 +228,6 @@ describe('ContentTypeComponent', () => {
       isInside: 'english'
     }, {});
     expect(component.selectedContentType).toBe('all');
-    expect(component.showBackButton).toBeTruthy();
-    expect(component.showingResult).toBe('');
-  });
-  it('should call goback method', () => {
-    component.goBack();
-    expect(component.showBackButton).toBeFalsy();
   });
   it('should set selected content type for mydownloads page', () => {
     component.setSelectedContentType('/mydownloads', {}, {});
@@ -243,5 +237,5 @@ describe('ContentTypeComponent', () => {
     component.setSelectedContentType('/observation', {}, {});
     expect(component.selectedContentType).toBe('observation');
   });
- 
+
 });

@@ -66,7 +66,7 @@ const appRoutes: Routes = [
     path: 'questionnaire', loadChildren: () => import('app/modules/questionnaire/questionnaire.module').then(m => m.QuestionnaireModule)
   },
   {
-    path: 'reports', loadChildren: () => import('app/modules/report/report.module').then(m => m.ReportModule)
+    path: 'solution', loadChildren: () => import('app/modules/report/report.module').then(m => m.ReportModule)
   },
   {
     path: 'error', component: ErrorPageComponent

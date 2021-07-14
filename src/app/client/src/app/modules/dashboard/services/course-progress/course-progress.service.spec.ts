@@ -101,9 +101,9 @@ describe('CourseProgressService', () => {
   it('should call parseDasboardResponse method', () => {
     const courseProgressService = TestBed.get(CourseProgressService);
     const data = {
-        series:[{}]
+        series: [{}]
       };
-    const tableData = courseProgressService.parseDasboardResponse(data)
+    const tableData = courseProgressService.parseDasboardResponse(data);
     expect(tableData).toEqual([]);
   });
 });

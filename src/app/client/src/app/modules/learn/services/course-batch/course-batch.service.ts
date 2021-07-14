@@ -167,17 +167,17 @@ export class CourseBatchService {
     }
   }
   getcertificateDescription(enrolledBatchInfo) {
-    let certificateDescription = {isCertificate: false,description: ''};
+    let certificateDescription = {isCertificate: false, description: ''};
     const certificateTemplate = _.get(enrolledBatchInfo, 'cert_templates');
-    if(certificateTemplate && Object.keys(certificateTemplate).length !== 0) {
+    if (certificateTemplate && Object.keys(certificateTemplate).length !== 0) {
       const templateKey = Object.keys(certificateTemplate);
-      const description = certificateTemplate[templateKey[0]].description
-      if(description){
+      const description = certificateTemplate[templateKey[0]].description;
+      if (description) {
         certificateDescription = {
           isCertificate: true,
           description: description
         };
-      }else{
+      } else {
         certificateDescription = {
           isCertificate: true,
           description: ''

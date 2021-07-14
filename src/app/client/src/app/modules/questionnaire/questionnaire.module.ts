@@ -1,15 +1,15 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { QuestionnaireComponent } from "./questionnaire/questionnaire.component";
-import { QuestionnaireRoutingModule } from "./questionnaire-routing.module";
-import { SharedModule, ResourceService } from "@sunbird/shared";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { ObservationUtilService } from "../observation/service";
-import { CanDeactivateGuard } from "./guard/can-deactivate.guard";
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { QuestionnaireComponent } from './questionnaire/questionnaire.component';
+import { QuestionnaireRoutingModule } from './questionnaire-routing.module';
+import { SharedModule, ResourceService } from '@sunbird/shared';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ObservationUtilService } from '../observation/service';
+import { CanDeactivateGuard } from './guard/can-deactivate.guard';
 import {
   SlQuestionnaireModule,
   SlTranslateService,
-} from "@shikshalokam/sl-questionnaire";
+} from '@shikshalokam/sl-questionnaire';
 
 @NgModule({
   declarations: [QuestionnaireComponent],

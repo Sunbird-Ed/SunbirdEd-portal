@@ -284,19 +284,19 @@ describe('ViewAllComponent', () => {
       component['getCurrentPageData']().subscribe(res => {
         expect(res).toEqual(currentPageData);
         done();
-      })
+      });
     });
 
     it('from the form config is history state is not available', done => {
       const formService = TestBed.get(FormService);
       spyOn(formService, 'getFormConfig').and.returnValue(of([{
         contentType: 'textbook'
-      }]))
+      }]));
 
       component['getCurrentPageData']().subscribe(res => {
         expect(res).toEqual({ contentType: 'textbook' });
         done();
-      })
-    })
-  })
+      });
+    });
+  });
 });

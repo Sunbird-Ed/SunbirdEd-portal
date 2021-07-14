@@ -30,4 +30,4 @@ export class DhitiService extends DataService {
      this.baseUrl = this.config.urlConFig.URLS.DHITI_PREFIX;
    }
   }
-  
+
