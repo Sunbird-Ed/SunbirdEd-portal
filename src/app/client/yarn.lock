@@ -1559,10 +1559,10 @@
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "4.1.2"
 
-"@project-sunbird/sunbird-video-player-v9@4.1.4":
-  version "4.1.4"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v9/-/sunbird-video-player-v9-4.1.4.tgz#54515e26f6a38f740d6108ba9f365b5ad8dea0c7"
-  integrity sha512-bOfN/6iesdtnBeTIB9yKRqI7yi6+JmVkahxd8gGIcwbcM+CUqgd+IROdUn0PoA/rK4kSc3/YoZX2C9DtT2Zf2Q==
+"@project-sunbird/sunbird-video-player-v9@4.1.5":
+  version "4.1.5"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v9/-/sunbird-video-player-v9-4.1.5.tgz#e0d259d174456abaf2a1f18815f1038e2b648ad0"
+  integrity sha512-fLg1s6DQvZrEJswgq6m337PD6eQNfLQvrz20vH6IjKoCfEFhpv3Pk9izRiRyMDrluk+vtl7lqB0bkviYG8H83g==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "4.1.2"
 
