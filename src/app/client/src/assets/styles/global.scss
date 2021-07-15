@@ -1386,9 +1386,10 @@ html[data-theme='Darkmode'][layout='joy'] {}
   border-radius: 5px;
   outline: none;
 }
-*:focus:not(:focus-visible){
+.profile-avtar:focus-within{
+  border: 1px #fe0000 solid !important;
+  border-radius: 5px;
   outline: none;
-  border-style:none;
 }
 // tab index css end
 

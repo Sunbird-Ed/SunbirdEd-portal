@@ -8,7 +8,7 @@
       <div class="py-8 d-flex flex-ai-center">
         <!-- Back button -->
         <button type="button" class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn mr-auto"
-          (click)="goBack(); logTelemetry('back-track', courseHierarchy)">
+          tabindex="0" (click)="goBack(); logTelemetry('back-track', courseHierarchy)">
           <i class="icon-svg icon-svg--xxs icon-back mr-4"><svg class="icon icon-svg--primary">
               <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use>
             </svg></i>
@@ -17,14 +17,14 @@
         <div class="d-flex flex-ai-center">
           <!-- Previous module button -->
           <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-left-icon-btn" aria-label="previous-module" *ngIf="prevModule"
-            (click)="navigateToPlayerPage(prevModule); logTelemetry('previous-module', prevModule, true);">
+            tabindex="0" (click)="navigateToPlayerPage(prevModule); logTelemetry('previous-module', prevModule, true);">
             <i class="icon-svg icon-svg--xxs icon-back mr-4 rotate-90" role="img" aria-label="arrow-up"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>{{generaliseLabelService?.frmelmnts?.lbl?.prevModule | translate}}
           </button>
           <!-- Previous Module button -->
           <div class="modulebtn-divider" *ngIf="prevModule && nextModule"></div>
           <!-- Next Module button -->
           <button class="sb-btn sb-btn-link sb-btn-link-primary sb-btn-normal sb-right-icon-btn" aria-label="next-module" *ngIf="nextModule"
-            (click)="navigateToPlayerPage(nextModule); logTelemetry('next-module', nextModule, true)">
+            tabindex="0" (click)="navigateToPlayerPage(nextModule); logTelemetry('next-module', nextModule, true)">
             {{generaliseLabelService?.frmelmnts?.lbl?.nextModule | translate}}<i class="icon-svg icon-svg--xxs icon-back ml-4 rotate90" role="img" aria-label="arrow-up"><svg class="icon icon-svg--primary"><use xlink:href="assets/images/sprite.svg#arrow-up"></use></svg></i>
           </button>
           <!-- Next Module button -->
@@ -46,7 +46,7 @@
               </h5>
               <!-- Textbook Rating with share icon -->
               <div class="textbook__rating mt-4">
-                <button (click)="onShareLink();shareLinkModal=true;"
+                <button tabindex="0" (click)="onShareLink();shareLinkModal=true;"
                   class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn">
                   <i class="icon-svg icon-svg--xxs icon-share mr-4"><svg class="icon icon-svg--primary">
                     <use xlink:href="assets/images/sprite.svg#share"></use>

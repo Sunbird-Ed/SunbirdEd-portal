@@ -21,7 +21,7 @@
     <div *ngIf="question?.option && question?.option[optionIndex]?.hint">
       <i
         class="icon large lightbulb"
-        (click)="
+        tabindex="0" (click)="
           isDimmed = !isDimmed; hint = question?.option[optionIndex]?.hint
         "
       ></i>

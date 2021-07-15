@@ -1,7 +1,7 @@
 <!-- Mobile browser player-->
 <div *ngIf="isMobileOrTab && !showNewPlayer" >
     <div data-ratio="16:9" class="player-thumbnail" appTelemetryInteract [telemetryInteractObject]="telemetryObject" [telemetryInteractEdata]="loadPlayerInteractEdata"
-    [ngStyle]="{'background': 'url(' + playerOverlayImage + ') center/cover no-repeat '}" *ngIf="showPlayIcon" id="contentPlayer" (click)="enablePlayer(false)">
+    [ngStyle]="{'background': 'url(' + playerOverlayImage + ') center/cover no-repeat '}" *ngIf="showPlayIcon" id="contentPlayer" tabindex="0" (click)="enablePlayer(false)">
     <img class="play-icon" src="assets/images/play_circle.svg">
   </div>
   <div id="playerFullscreen" *ngIf="!showPlayIcon" > 
@@ -41,7 +41,7 @@
 
 <div *ngIf="isMobileOrTab && showNewPlayer" class="w-100 h-100">
   <div data-ratio="16:9" class="player-thumbnail" appTelemetryInteract [telemetryInteractObject]="telemetryObject" [telemetryInteractEdata]="loadPlayerInteractEdata"
-  [ngStyle]="{'background': 'url(' + playerOverlayImage + ') center/cover no-repeat '}" *ngIf="showPlayIcon" id="contentPlayer" (click)="enablePlayer(false)">
+  [ngStyle]="{'background': 'url(' + playerOverlayImage + ') center/cover no-repeat '}" *ngIf="showPlayIcon" id="contentPlayer" tabindex="0" (click)="enablePlayer(false)">
   <img class="play-icon" src="assets/images/play_circle.svg">
 </div>
 
@@ -63,4 +63,4 @@
     <!--Rating popup -->
 <app-content-rating #modal *ngIf="contentRatingModal && playerConfig"
     [contentData]="playerConfig.metadata" (closeModal)="closeModal()"></app-content-rating>
-<button *ngIf="playerType !== 'quml-player'" class="sb-btn sb-btn-primary sb-btn-normal pull-right view-fullscreen"[ngClass]="{'d-none': !viewFullscreenBtn}" (click)="viewInFullscreen()" appTelemetryInteract [telemetryInteractEdata]="viewFullScreenIntractEdata" [telemetryInteractObject]="viewFullScreenIntractObject"> <i class="expand icon"></i> View Full Screen</button>
+<button *ngIf="playerType !== 'quml-player'" class="sb-btn sb-btn-primary sb-btn-normal pull-right view-fullscreen"[ngClass]="{'d-none': !viewFullscreenBtn}" tabindex="0" (click)="viewInFullscreen()" appTelemetryInteract [telemetryInteractEdata]="viewFullScreenIntractEdata" [telemetryInteractObject]="viewFullScreenIntractObject"> <i class="expand icon"></i> View Full Screen</button>

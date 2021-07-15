@@ -3,11 +3,11 @@
   <button
     class="sb-btn sb-btn-normal sb-btn-primary"
     *ngIf="!remark.length"
-    (click)="showRemarks = true"
+    tabindex="0" (click)="showRemarks = true"
   >
     {{ resourceService.frmelmnts.btn.add }}
   </button>
-  <span *ngIf="remark.length" (click)="deleteRemark()"
+  <span *ngIf="remark.length" tabindex="0" (click)="deleteRemark()"
     ><i class="trash large icon"></i
   ></span>
 </div>

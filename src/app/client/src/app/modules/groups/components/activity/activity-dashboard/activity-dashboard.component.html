@@ -27,7 +27,7 @@
             <label class="last-update-label px-8"> Last update : {{memberListUpdatedOn | date:'MMM d, y, h:mm a'}}
             </label>
           </div>
-          <button class="download-csv" (click)="downloadCSV($event)">
+          <button class="download-csv" tabindex="0" (click)="downloadCSV($event)">
             Download as CSV<img src="assets/images/download-icon.svg" class="download-icon"></button>
         </div>
       </ng-template>

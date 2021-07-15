@@ -22,7 +22,7 @@
           </div>
         </div>
            <!--Activity Dashboard-->
-           <button  (click)="navigateToActivityDashboard()"
+           <button  tabindex="0" (click)="navigateToActivityDashboard()"
            [disabled]="!isContentTrackable(activity, activity?.contentType)"
            [ngClass]="{'dt-disabled-btn': !isContentTrackable(activity, activity?.contentType)}"
            class="sb-btn sb-btn-normal sb-btn-link  sb-left-icon-btn ml-8 sb-btn-icon-fix disabled sb-btn-link-primary sb-activity-dashboard-btn" title="Activity Dashboard">
@@ -44,7 +44,7 @@
     <div class="nested-group-container flex-dc d-flex">
       <div class="nested-group-content">
       <div class="sb-bg-color-primary nested-course-area" *ngIf="nestedCourses.length > 1">
-        <div class="d-flex flex-ai-center flex-jc-space-between py-16 px-24" (click)="toggleDropdown();addTelemetry('course-dropdown', [])">
+        <div class="d-flex flex-ai-center flex-jc-space-between py-16 px-24" tabindex="0" (click)="toggleDropdown();addTelemetry('course-dropdown', [])">
           <div class="fsmall">{{selectedCourse?.name}}</div>
           <div class="ml-8" [ngClass]="{'open': dropdownContent}">
             <!-- <img src="assets/images/arrow-dropdown.svg"> -->
@@ -55,7 +55,7 @@
       <div class="dropdown-content p-24" [hidden]="dropdownContent">
         <div class="members-group-list d-flex">
           <div class="members-group-list-item d-flex flex-dc w-100">
-            <div class="member-name" (click)="handleSelectedCourse(course);addTelemetry('select-course', [{id: course?.identifier, type: 'SelectedDropdown'}], {selectedCourse: {id: course?.identifier }})" *ngFor="let course of nestedCourses">
+            <div class="member-name" tabindex="0" (click)="handleSelectedCourse(course);addTelemetry('select-course', [{id: course?.identifier, type: 'SelectedDropdown'}], {selectedCourse: {id: course?.identifier }})" *ngFor="let course of nestedCourses">
               <span class='fnormal' [ngClass]="{'font-weight-bold': course?.identifier === selectedCourse?.identifier }">{{course?.name}}</span>
             </div>
           </div>
@@ -76,7 +76,7 @@
       <div class="d-flex flex-ai-center px-16 py-8 flex-jc-space-between" *ngIf="isContentTrackable(activity, activity?.contentType)">
         <div  *ngIf="parentId !== selectedCourse?.identifier"></div>
         <span class="fxsmall"> {{ resourceService?.frmelmnts?.lbl?.LastUpdated }}: {{memberListUpdatedOn | date:'MMM d, y, h:mm a'}} </span>
-        <div class="cursor-pointer" *ngIf="parentId === selectedCourse?.identifier" (click)="downloadCSVFile()">
+        <div class="cursor-pointer" *ngIf="parentId === selectedCourse?.identifier" tabindex="0" (click)="downloadCSVFile()">
           <i class="download icon sb-color-primary"></i>
           <span class="download-text">{{resourceService?.frmelmnts?.lbl?.downloadAsCSV}}</span>
           </div>

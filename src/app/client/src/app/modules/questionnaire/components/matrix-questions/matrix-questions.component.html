@@ -1,5 +1,5 @@
 <div class="d-flex flex-jc-flex-end">
-  <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="addInstances()">
+  <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" (click)="addInstances()">
     {{ resourceService.frmelmnts.btn.add | translate }}
     {{ question?.instanceIdentifier }}
   </button>
@@ -9,13 +9,13 @@
   *ngFor="let instance of question?.value; let i = index"
 >
   <div class="content flex-jc-space-between flex-ai-center">
-    <div (click)="viewInstance(i)" style="flex: 1;">
+    <div tabindex="0" (click)="viewInstance(i)" style="flex: 1;">
       <div [ngClass]="{ _validQuestion: question?.completedInstance?.includes(i) }">
         {{ question?.instanceIdentifier }} {{ i + 1 }}</div>
       <!-- <div class="modified">{{resourceService?.frmelmnts.lbl.lastModifiedOn }}: {{question[i]?.updatedAt | date:'short'}}</div> -->
     </div>
     <div>
-      <i class="trash large icon" (click)="deleteInstanceAlert(i)"></i>
+      <i class="trash large icon" tabindex="0" (click)="deleteInstanceAlert(i)"></i>
     </div>
   </div>
 </div>
@@ -50,7 +50,7 @@
     <button
       [disabled]="!matrixForm?.valid"
       type="button"
-      (click)="matrixSubmit(context.index)"
+      tabindex="0" (click)="matrixSubmit(context.index)"
        [ngClass]="{
             'sb-btn sb-btn-normal': true,
             'sb-btn-primary': matrixForm?.valid,
@@ -62,7 +62,7 @@
     <button
       class="sb-btn sb-btn-normal sb-btn-outline-primary"
       type="button"
-      (click)="showBadgeAssingModel = false"
+      tabindex="0" (click)="showBadgeAssingModel = false"
     >
       {{ resourceService.frmelmnts.btn.cancel | translate }}
     </button>

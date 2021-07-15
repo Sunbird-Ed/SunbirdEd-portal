@@ -17,7 +17,7 @@
     />
   </div>
   <div *ngIf="question?.autoCapture && !question?.value" class="d-flex sb-g-col-xs-12  sb-g-col-md-4 margin">
-    <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="autoCapture()">
+    <button class="sb-btn sb-btn-normal sb-btn-primary" tabindex="0" (click)="autoCapture()">
       {{ resourceService?.frmelmnts?.btn?.autoCapture | translate }}
     </button>
   </div>
