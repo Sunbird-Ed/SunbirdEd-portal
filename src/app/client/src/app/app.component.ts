@@ -95,7 +95,7 @@ export class AppComponent implements OnInit, OnDestroy {
   showUserTypePopup = false;
   deviceId: string;
   dataThemeAttribute: string;
-  scrollHeight:number;
+  scrollHeight: number;
   public botObject: any = {};
   isBotEnabled = (<HTMLInputElement>document.getElementById('isBotConfigured'))
     ? (<HTMLInputElement>document.getElementById('isBotConfigured')).value : 'false';
@@ -193,17 +193,17 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   setTagManager() {
-    console.log("Tag Manager");
+    console.log('Tag Manager');
     window['TagManager'] = SBTagModule.instance;
     window['TagManager'].init();
-    if(this.userService.loggedIn) {
+    if (this.userService.loggedIn) {
       if (localStorage.getItem('tagManager_' + this.userService.userid)) {
         window['TagManager'].SBTagService.restoreTags(localStorage.getItem('tagManager_' + this.userService.userid));
-      } 
+      }
     } else {
       if (localStorage.getItem('tagManager_' + 'guest')) {
         window['TagManager'].SBTagService.restoreTags(localStorage.getItem('tagManager_' + 'guest'));
-      } 
+      }
     }
   }
 
@@ -294,9 +294,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this.botObject['imageUrl'] = image.imageUrl;
     this.botObject['title'] = this.botObject['header'] = this.title;
     this.generaliseLabelService.getGeneraliseResourceBundle();
-  //keyboard accessibility enter key click event
+  // keyboard accessibility enter key click event
     document.onkeydown = function(e) {
-      if(e.keyCode === 13) { // The Enter/Return key
+      if (e.keyCode === 13) { // The Enter/Return key
         (document.activeElement  as HTMLElement).click();
       }
     };
@@ -747,8 +747,8 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.resourceDataSubscription) {
       this.resourceDataSubscription.unsubscribe();
     }
-    if(window['TagManager']) {
-      if(this.userService.loggedIn) {
+    if (window['TagManager']) {
+      if (this.userService.loggedIn) {
         localStorage.setItem('tagManager_' + this.userService.userid, JSON.stringify(window['TagManager'].SBTagService));
       } else {
         localStorage.setItem('tagManager_' + 'guest', JSON.stringify(window['TagManager'].SBTagService));
@@ -864,30 +864,30 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
   skipToMainContent() {
-    const getTheme = document.documentElement.attributes["layout"].value;
-    if (getTheme == "joy") {
-      const headerElement=document.getElementsByClassName('sbt-fluid-header-bg');
-      if(headerElement.length>0){
-        const headerHeight = headerElement[headerElement.length-1].clientHeight;
-        if(typeof window.orientation !== 'undefined'){
-          this.scrollHeight =  headerElement[0].clientHeight+150;
-        }else{
-          this.scrollHeight =  headerHeight *2;
+    const getTheme = document.documentElement.attributes['layout'].value;
+    if (getTheme == 'joy') {
+      const headerElement = document.getElementsByClassName('sbt-fluid-header-bg');
+      if (headerElement.length > 0) {
+        const headerHeight = headerElement[headerElement.length - 1].clientHeight;
+        if (typeof window.orientation !== 'undefined') {
+          this.scrollHeight =  headerElement[0].clientHeight + 150;
+        } else {
+          this.scrollHeight =  headerHeight * 2;
         }
         this.scrollTo(this.scrollHeight);
        }
     } else {
-      const header = document.getElementsByTagName("app-header");
+      const header = document.getElementsByTagName('app-header');
       const headerElement = header[0].children[0].children[0].clientHeight;
-      if (document.getElementsByTagName("app-search-filter").length > 0) {
-        const searchFilter = document.getElementsByTagName("app-search-filter")[0]
+      if (document.getElementsByTagName('app-search-filter').length > 0) {
+        const searchFilter = document.getElementsByTagName('app-search-filter')[0]
           .children[0].clientHeight;
         this.scrollTo(searchFilter + headerElement + 48);
       } else if (
-        document.getElementsByTagName("app-global-search-filter").length > 0
+        document.getElementsByTagName('app-global-search-filter').length > 0
       ) {
         const searchFilter = document.getElementsByTagName(
-          "app-global-search-filter"
+          'app-global-search-filter'
         )[0].children[0].clientHeight;
         this.scrollTo(searchFilter + headerElement + 48);
       } else {
@@ -898,7 +898,7 @@ export class AppComponent implements OnInit, OnDestroy {
   scrollTo(height) {
     window.scroll({
       top: height,
-      behavior: "smooth",
+      behavior: 'smooth',
     });
   }
   getLocalTheme() {

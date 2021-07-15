@@ -47,7 +47,7 @@ export class QumlPlayerService implements QuestionCursor, EditorCursor {
   }
 
   getQuestionSet(identifier: string) {
-    return this.playerService.getQuestionSetHierarchy(identifier)
+    return this.playerService.getQuestionSetHierarchy(identifier);
   }
 
 }

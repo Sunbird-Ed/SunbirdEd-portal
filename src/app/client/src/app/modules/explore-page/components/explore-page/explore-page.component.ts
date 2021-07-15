@@ -66,7 +66,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     public enrolledSection: any;
     public selectedCourseBatches: any;
     private myCoursesSearchQuery = JSON.stringify({
-        'request': { "filters": { "contentType": ["Course"], "objectType": ["Content"], "status": ["Live"] }, "sort_by": { "lastPublishedOn": "desc" }, "limit": 10, "organisationId": _.get(this.userService.userProfile, 'organisationIds') }
+        'request': { 'filters': { 'contentType': ['Course'], 'objectType': ['Content'], 'status': ['Live'] }, 'sort_by': { 'lastPublishedOn': 'desc' }, 'limit': 10, 'organisationId': _.get(this.userService.userProfile, 'organisationIds') }
     });
     public facets$ = this._facets$.asObservable().pipe(startWith({}), catchError(err => of({})));
     queryParams: { [x: string]: any; };
@@ -78,8 +78,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     searchResponse: any = [];
     selectedFacet: { facet: any; value: any; };
     showEdit = false;
-    isFilterEnabled: boolean = true;
-    defaultTab = 'Textbook'
+    isFilterEnabled = true;
+    defaultTab = 'Textbook';
 
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
@@ -170,10 +170,10 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         return combineLatest(queryParams, params).pipe(
             tap(([params = {}, queryParams = {}]) => {
                 if (this.isUserLoggedIn()) {
-                    this.prepareVisits([])
+                    this.prepareVisits([]);
                 }
                 this.queryParams = { ...params, ...queryParams };
-            }))
+            }));
     }
 
     ngOnInit() {
@@ -188,7 +188,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.pageTitleSrc = get(this.resourceService, 'RESOURCE_CONSUMPTION_ROOT') + get(currentPage, 'title');
                     this.isFilterEnabled = true;
                     if (_.get(currentPage, 'filter')) {
-                        this.isFilterEnabled = _.get(currentPage, 'filter.isEnabled')
+                        this.isFilterEnabled = _.get(currentPage, 'filter.isEnabled');
                     }
                     if ((_.get(currentPage, 'filter') && !_.get(currentPage, 'filter.isEnabled'))) {
                         this.fetchContents$.next(currentPage);
@@ -225,7 +225,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         contents: []
                     };
                     const { contentType: pageContentType = null, search: { filters: { primaryCategory: pagePrimaryCategories = [] } } } = this.getCurrentPageData();
-                    if (err) return enrolledSection;
+                    if (err) { return enrolledSection; }
                     const enrolledContentPredicate = course => {
                         const { primaryCategory = null, contentType = null } = _.get(course, 'content') || {};
                         return pagePrimaryCategories.some(category => _.toLower(category) === _.toLower(primaryCategory)) || (_.toLower(contentType) === _.toLower(pageContentType));
@@ -305,7 +305,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     public getCurrentPageData() {
-        return this.getPageData(get(this.activatedRoute, 'snapshot.queryParams.selectedTab')|| _.get(this.defaultTab, 'contentType') || 'textbook');
+        return this.getPageData(get(this.activatedRoute, 'snapshot.queryParams.selectedTab') || _.get(this.defaultTab, 'contentType') || 'textbook');
     }
 
     public getFilters({ filters, status }) {
@@ -356,7 +356,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.redoLayout();
                     this.facetSections = [];
                     if (_.get(currentPageData, 'filter')) {
-                        this.isFilterEnabled = _.get(currentPageData, 'filter.isEnabled')
+                        this.isFilterEnabled = _.get(currentPageData, 'filter.isEnabled');
                     }
                     if (_.get(currentPageData, 'contentType') === 'explore') {
                         this.contentSections = [];
@@ -424,11 +424,11 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                 }
                                 // Construct data array for sections
                                 if (_.get(currentPageData, 'sections') && _.get(currentPageData, 'sections').length > 0) {
-                                    const facetKeys = _.map(currentPageData.sections, (section) => { return section.facetKey });
+                                    const facetKeys = _.map(currentPageData.sections, (section) => section.facetKey);
                                     const facets = this.utilService.processCourseFacetData(_.get(response, 'result'), facetKeys);
                                     forEach(currentPageData.sections, facet => {
                                         if (_.get(facets, facet.facetKey)) {
-                                            let _facetArray = [];
+                                            const _facetArray = [];
                                             forEach(facets[facet.facetKey], _facet => {
                                                 _facetArray.push({
                                                     name: _facet['name'],
@@ -866,7 +866,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         break;
       }
       default: {
-        sectionName = _.get(this.resourceService, 'frmelmnts.lbl.myEnrolledCollections')
+        sectionName = _.get(this.resourceService, 'frmelmnts.lbl.myEnrolledCollections');
       }
     }
     return sectionName;
@@ -920,7 +920,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         let params = {};
         const contentType = _.get(this.getCurrentPageData(), 'contentType');
-        if(contentType === 'home') {
+        if (contentType === 'home') {
             params = _.omit(this.queryParams, ['id', 'selectedTab']);
         }
         params[facetName] = event.data[0].value.value;
@@ -928,22 +928,22 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         params['showClose'] = 'true';
         params['isInside'] = event.data[0].value.name;
         params['returnTo'] = contentType;
-        
+
         const updatedCategoriesMapping = _.mapKeys(params, (_, key) => {
             const mappedValue = get(this.contentSearchService.getCategoriesMapping, [key]);
             return mappedValue || key;
         });
 
         const paramValuesInLowerCase = _.mapValues(updatedCategoriesMapping, value => {
-            if (_.toLower(value) === 'cbse') return 'CBSE/NCERT';
+            if (_.toLower(value) === 'cbse') { return 'CBSE/NCERT'; }
             return Array.isArray(value) ? _.map(value, _.toLower) : _.toLower(value);
         });
 
         params = paramValuesInLowerCase;
 
-        if(this.isUserLoggedIn()){
+        if (this.isUserLoggedIn()) {
             this.router.navigate(['search/Library', 1], { queryParams: params });
-        } else{
+        } else {
             this.router.navigate(['explore', 1], { queryParams: params });
         }
     }
@@ -988,7 +988,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     getExplorePageSections () {
         return of(forEach(this.getCurrentPageData().sections, facet => {
-            let _facetArray = [];
+            const _facetArray = [];
             forEach(facet.data, _facet => {
                 _facetArray.push({
                     name: _facet['name'],
@@ -1020,7 +1020,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     setBannerConfig() {
-        this.bannerList = this.bannerSegment.filter((value) => 
+        this.bannerList = this.bannerSegment.filter((value) =>
             Number(value.expiry) > Math.floor(Date.now() / 1000)
         );
     }

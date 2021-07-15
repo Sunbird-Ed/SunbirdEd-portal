@@ -5,27 +5,27 @@ import {
   OnInit,
   Output,
   ViewChild,
-} from "@angular/core";
-import { ResourceService, ConfigService } from "@sunbird/shared";
-import { DhitiService } from "@sunbird/core";
+} from '@angular/core';
+import { ResourceService, ConfigService } from '@sunbird/shared';
+import { DhitiService } from '@sunbird/core';
 
 @Component({
-  selector: "app-all-evidence",
-  templateUrl: "./all-evidence.component.html",
-  styleUrls: ["./all-evidence.component.scss"],
+  selector: 'app-all-evidence',
+  templateUrl: './all-evidence.component.html',
+  styleUrls: ['./all-evidence.component.scss'],
 })
 export class AllEvidenceComponent implements OnInit {
-  @ViewChild("modal") modal;
+  @ViewChild('modal') modal;
   @Output() closeEvent = new EventEmitter<any>();
   @Input() data: any;
   public throttle = 50;
   public scrollDistance = 2;
   config;
-  remarks: any=[];
-  images: any=[];
-  videos: any=[];
-  documents: any=[];
-  audios: any=[];
+  remarks: any = [];
+  images: any = [];
+  videos: any = [];
+  documents: any = [];
+  audios: any = [];
   constructor(
     public resourceService: ResourceService,
     config: ConfigService,

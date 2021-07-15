@@ -487,7 +487,7 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
         pageid: this.activatedRoute.snapshot.data.telemetry.pageid
       }
     };
-    if (cdata){
+    if (cdata) {
       telemetryData.context.cdata.push(cdata);
     }
     this.telemetryService.interact(telemetryData);

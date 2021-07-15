@@ -47,7 +47,7 @@ export class GroupHeaderComponent implements OnInit, OnDestroy {
 
   constructor(private renderer: Renderer2, public resourceService: ResourceService, private router: Router,
     private groupService: GroupsService, private navigationHelperService: NavigationHelperService, private toasterService: ToasterService,
-    private activatedRoute: ActivatedRoute, private userService: UserService, private discussionService: DiscussionService, 
+    private activatedRoute: ActivatedRoute, private userService: UserService, private discussionService: DiscussionService,
     public discussionTelemetryService: DiscussionTelemetryService, public activateRoute: ActivatedRoute) {
     this.renderer.listen('window', 'click', (e: Event) => {
       if (e.target['tabIndex'] === -1 && e.target['id'] !== 'group-actions') {

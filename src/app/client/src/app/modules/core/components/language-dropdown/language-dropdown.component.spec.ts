@@ -27,7 +27,7 @@ describe('LanguageDropdownComponent', () => {
         },
         languageSelected$: observableOf({}),
         getLanguageChange: () => { },
-        initialize:()=>{},
+        initialize: () => {},
         getResource: () => ({})
     };
     const mockQueryParma = {

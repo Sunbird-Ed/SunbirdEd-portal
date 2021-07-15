@@ -120,7 +120,7 @@ export class ActivityListComponent implements OnInit, OnDestroy {
 
   toggleModal(show = false) {
     const activity = {id: _.get(this.selectedActivity, 'identifier'), type: _.get(this.selectedActivity, 'primaryCategory'),
-    ver: _.get(this.selectedActivity, 'pkgVersion') ? `${_.get(this.selectedActivity, 'pkgVersion')}` : '1.0'}
+    ver: _.get(this.selectedActivity, 'pkgVersion') ? `${_.get(this.selectedActivity, 'pkgVersion')}` : '1.0'};
     show ? this.addTelemetry('remove-activity-kebab-menu-btn', [], {}, activity) :
     this.addTelemetry('close-remove-activity-popup', [], {}, activity);
     this.showModal = show;

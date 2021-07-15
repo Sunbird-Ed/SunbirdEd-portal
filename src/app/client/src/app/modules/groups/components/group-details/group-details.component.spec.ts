@@ -79,7 +79,7 @@ describe('GroupDetailsComponent', () => {
     spyOn(groupService, 'groupContentsByActivityType').and.returnValue({showList:  true});
     component.getGroupData();
 
-    groupService.getGroupById('123',true, true, true).subscribe((data: CsGroup) => {
+    groupService.getGroupById('123', true, true, true).subscribe((data: CsGroup) => {
       expect(groupService.groupContentsByActivityType).toHaveBeenCalledWith(false,
         {id: '123', name: 'groupName', members: [], createdBy: '1', isCreator: false, isAdmin: false, initial: 'g',
         description: '', membershipType: GroupMembershipType.INVITE_ONLY});

@@ -175,7 +175,7 @@ describe('FaqComponent', () => {
   it('should call goBack but will change the view', () => {
     spyOn(location, 'back');
     component.showOnlyFaqCategory = false;
-    component.isMobileView = true
+    component.isMobileView = true;
     component.goBack();
     expect(location.back).not.toHaveBeenCalled();
   });
@@ -183,7 +183,7 @@ describe('FaqComponent', () => {
   describe('onCategorySelect', () => {
     it('should terminate flow if the data is empty', () => {
       // arrange
-      const eventData = {}
+      const eventData = {};
       // act
       component.onCategorySelect(eventData);
       // assert
@@ -197,19 +197,19 @@ describe('FaqComponent', () => {
           faqs: [],
           videos: [],
         }
-      }
+      };
       component.faqData = FaqData;
       const outputData = {
         faqs: [],
         videos: [],
         constants: FaqData.constants
-      }
+      };
       // act
       component.onCategorySelect(eventData);
       // assert
       setTimeout(() => {
         expect(component.selectedFaqCategory).toEqual(outputData);
-        done()
+        done();
       }, 0);
     });
   });
@@ -251,7 +251,7 @@ describe('FaqComponent', () => {
       component.showVideoModal = false;
       component.videoPlayer = {
         changes: of({})
-      }
+      };
       const eventData = {
         data: {
           thumbnail: 'some_thumbnail',

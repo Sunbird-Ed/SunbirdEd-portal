@@ -4,7 +4,7 @@ import { TelemetryService } from '@sunbird/telemetry';
 /**
  * This is to show the telemetry events generated
  * Trigger the below command from broser console to enable/show the telemetry button
- * 
+ *
  * document.dispatchEvent(new CustomEvent('TelemetryEvent:show', {detail: {show: true}}));
  */
 @Component({
@@ -15,7 +15,7 @@ import { TelemetryService } from '@sunbird/telemetry';
 export class TelemetryErrorModalComponent implements OnInit {
 
   constructor( private telemetryService: TelemetryService) { }
-  // Array of telemetry errors events 
+  // Array of telemetry errors events
   telemetryEventsArr = [];
   columns = [
     { name: 'eid', isSortable: true, prop: 'eid' },
@@ -26,10 +26,10 @@ export class TelemetryErrorModalComponent implements OnInit {
     { name: 'edata.stacktrace', isSortable: false, prop: 'edata.stacktrace', placeholder: 'Filter by string' }
   ];
 
-  // To show/hide the telemetry events modal 
+  // To show/hide the telemetry events modal
   showTelemetryEventsModal = false;
 
-  ngOnInit() {         
+  ngOnInit() {
     this.telemetryEventsArr = this.telemetryService.telemetryEvents;
   }
 

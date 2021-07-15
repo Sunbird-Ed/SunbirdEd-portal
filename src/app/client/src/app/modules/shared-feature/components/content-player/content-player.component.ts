@@ -52,8 +52,8 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
     canDeactivate() {
       // returning true will navigate without confirmation
       // returning false will show a confirm dialog before navigating away
-      let deviceType = this.telemetryService.getDeviceType();
-      return deviceType === 'Desktop' && this.isQuestionSet ? false: true;
+      const deviceType = this.telemetryService.getDeviceType();
+      return deviceType === 'Desktop' && this.isQuestionSet ? false : true;
     }
 
   constructor(public activatedRoute: ActivatedRoute, public navigationHelperService: NavigationHelperService,
@@ -142,10 +142,9 @@ export class ContentPlayerComponent implements OnInit, AfterViewInit, OnDestroy,
   }
 
   getContent() {
-    if(this.isQuestionSet) {
+    if (this.isQuestionSet) {
       this.getQuestionSetHierarchy();
-    }
-    else if (this.userService.loggedIn) {
+    } else if (this.userService.loggedIn) {
       const option = { params: this.configService.appConfig.ContentPlayer.contentApiQueryParams };
       if (this.contentStatus && this.contentStatus === 'Unlisted') {
         option.params = { mode: 'edit' };

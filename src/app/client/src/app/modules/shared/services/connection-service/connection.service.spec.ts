@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 describe('ConnectionService', () => {
   class RouterStub {
     navigate = jasmine.createSpy('navigate');
-    url = 'explore-course/course/do_213129030425993216112'
+    url = 'explore-course/course/do_213129030425993216112';
   }
   const resourceMockData = {
     messages: {
