@@ -32,7 +32,7 @@ describe('RouterNavigationService', () => {
   }));
 
   it('should call navigateToParentUrl', inject([RouterNavigationService], (service: RouterNavigationService) => {
-    let routeMock: any = { snapshot: {},
+    const routeMock: any = { snapshot: {},
       parent: {
         url: [
           {

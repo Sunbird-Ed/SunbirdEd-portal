@@ -111,7 +111,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         this.showQumlPlayer = true;
       }
     }
-    
+
     // If `sessionStorage` has UTM data; append the UTM data to context.cdata
     if (this.playerConfig && sessionStorage.getItem('UTM')) {
       let utmData;
@@ -357,16 +357,16 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.mobileViewDisplay = 'none';
     }
     if (_.get(event, 'edata.type') === 'PRINT') {
-      let windowFrame = window.document.querySelector('pdf-viewer iframe');
+      const windowFrame = window.document.querySelector('pdf-viewer iframe');
       if (windowFrame) {
-        windowFrame['contentWindow'].print()
+        windowFrame['contentWindow'].print();
       }
       this.mobileViewDisplay = 'none';
     }
   }
 
   generateContentReadEvent(event: any, newPlayerEvent?) {
-    let eventCopy = _.cloneDeep(event)
+    let eventCopy = _.cloneDeep(event);
     if (!eventCopy) {
       return;
     }

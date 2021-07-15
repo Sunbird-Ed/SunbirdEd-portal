@@ -269,7 +269,7 @@ export class UserEditComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getRolesReqBody(newRoles, currentRoles, orgId) {
-    let reqBody = [];
+    const reqBody = [];
     // Get newly added roles array comparing to existing roles
     const newlyAddedRoles = _.difference(newRoles, currentRoles);
     // Get deleted roles from existing roles

@@ -309,7 +309,7 @@ export class UpForReviewComponent extends WorkSpace implements OnInit, AfterView
       if (!_.isEmpty(contentAndCollectionPrimaryCategories)) {
         primaryCategory = _.without(contentAndCollectionPrimaryCategories, 'Digital Textbook');
       } else {
-        primaryCategory = _.without(this.config.appConfig.WORKSPACE.primaryCategory, 'Digital Textbook')
+        primaryCategory = _.without(this.config.appConfig.WORKSPACE.primaryCategory, 'Digital Textbook');
       }
     }
     if (_.indexOf(this.userRoles, 'CONTENT_REVIEWER') !== -1 &&

@@ -14,12 +14,12 @@ describe('AppLoaderComponent', () => {
   configureTestSuite();
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule,TranslateModule.forRoot({
+      imports: [HttpClientTestingModule, TranslateModule.forRoot({
          loader: {
             provide: TranslateLoader,
             useClass: TranslateFakeLoader
          }
-      }),],
+      }), ],
       declarations: [ AppLoaderComponent ],
       providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, LayoutService]
     })

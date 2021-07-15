@@ -95,7 +95,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   persona: {};
   subPersona: string;
   isConnected = true;
-  showFullScreenLoader: boolean = false;
+  showFullScreenLoader = false;
 
   constructor(@Inject('CS_COURSE_SERVICE') private courseCService: CsCourseService, private cacheService: CacheService,
   public resourceService: ResourceService, public coursesService: CoursesService,
@@ -116,12 +116,12 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.isDesktopApp = this.utilService.isDesktopApp;
 
     this.activatedRoute.queryParams.subscribe((params) => {
-      if (params["showEditUserDetailsPopup"]) {
-        this.showEditUserDetailsPopup=true;
+      if (params['showEditUserDetailsPopup']) {
+        this.showEditUserDetailsPopup = true;
       }
       });
 
-    if(this.isDesktopApp) {
+    if (this.isDesktopApp) {
       this.connectionService.monitor()
       .pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
         this.isConnected = isConnected;
@@ -579,12 +579,12 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     setTimeout(() => {
       const element = document.getElementById(this.scrollToId);
       if (!element) { return; }
-      var elementPosition = element.getBoundingClientRect().top;
-      var offsetPosition = elementPosition - 144;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition - 144;
 
       window.scrollTo({
           top: offsetPosition,
-          behavior: "smooth"
+          behavior: 'smooth'
       });
     });
   }
@@ -634,12 +634,12 @@ private async getSubPersonaConfig(subPersonaCode: string, persona: string, userL
 public onLocationModalClose() {
   this.showEditUserDetailsPopup = !this.showEditUserDetailsPopup;
   this.showFullScreenLoader = true;
-  setTimeout(()=> {
-    if(this.showFullScreenLoader){
+  setTimeout(() => {
+    if (this.showFullScreenLoader) {
       this.showFullScreenLoader = false;
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
     }
-  }, 5000)
+  }, 5000);
 }
 
 }

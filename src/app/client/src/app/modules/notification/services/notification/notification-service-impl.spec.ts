@@ -79,7 +79,7 @@ describe('NotificationServiceImpl', () => {
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
       const data = {
         // data: notificationData
-      }
+      };
       // act
       const resp = await service.handleNotificationClick(data);
       // assert
@@ -94,20 +94,20 @@ describe('NotificationServiceImpl', () => {
       spyOn(service, 'fetchNotificationList');
       const data = {
         data: notificationData
-      }
-      data.data.data.actionData.actionType = 'certificateUpdate'
+      };
+      data.data.data.actionData.actionType = 'certificateUpdate';
       // act
       await service.handleNotificationClick(data);
       // assert
       expect(service.fetchNotificationList).toHaveBeenCalled();
     });
-  })
+  });
 
   describe('deleteNotification()', () => {
 
     it('should return false when notification data is empty', async () => {
       // arrange
-      const data = {}
+      const data = {};
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
       // act
       const resp = await service.deleteNotification(data);
@@ -119,7 +119,7 @@ describe('NotificationServiceImpl', () => {
       // arrange
       const data = {
         data: notificationData
-      }
+      };
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
       const csUserService = TestBed.get('CS_USER_SERVICE');
       const telemertyService = TestBed.get(TelemetryService);
@@ -139,7 +139,7 @@ describe('NotificationServiceImpl', () => {
       // arrange
       const data = {
         data: notificationData
-      }
+      };
       const service: NotificationServiceImpl = TestBed.get(NotificationServiceImpl);
       const csUserService = TestBed.get('CS_USER_SERVICE');
       const telemertyService = TestBed.get(TelemetryService);

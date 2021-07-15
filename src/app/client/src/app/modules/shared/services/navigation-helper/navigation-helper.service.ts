@@ -235,7 +235,7 @@ export class NavigationHelperService {
     }
   }
 
-  popHistory(){
+  popHistory() {
     this.history.pop();
   }
 

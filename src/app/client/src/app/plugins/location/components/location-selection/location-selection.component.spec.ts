@@ -45,8 +45,8 @@ describe('LocationSelectionComponent', () => {
     const mockUserService: Partial<UserService> = {};
     const mockOrgDetailsService: Partial<OrgDetailsService> = {};
     const mockUtilsService: Partial<UtilService> = {
-        updateRoleChange: ()=>{}
-    }
+        updateRoleChange: () => {}
+    };
     beforeAll(() => {
         locationSelectionComponent = new LocationSelectionComponent(
             mockResourceService as ResourceService,

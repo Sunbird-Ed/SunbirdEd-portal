@@ -8,7 +8,7 @@ import { ResourceService, NavigationHelperService, ToasterService, LayoutService
 import { Router, ActivatedRoute } from '@angular/router';
 import { combineLatest, of, Subject } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { TelemetryService, IImpressionEventInput } from '@sunbird/telemetry'
+import { TelemetryService, IImpressionEventInput } from '@sunbird/telemetry';
 import { DomSanitizer } from '@angular/platform-browser';
 
 export interface IConfigLabels {
@@ -56,9 +56,9 @@ export class CertificateConfigurationComponent implements OnInit, OnDestroy {
   newTemplateIdentifier: any;
   showAlertModal = false;
   addScoreRule = false;
-  arrayValue={};
+  arrayValue = {};
   scoreRange: any;
-  isSingleAssessment=false;
+  isSingleAssessment = false;
 layoutConfiguration: any;
 FIRST_PANEL_LAYOUT;
 SECOND_PANEL_LAYOUT;
@@ -122,12 +122,12 @@ SECOND_PANEL_LAYOUT;
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
   }
-  checkMultipleAssessment(){
+  checkMultipleAssessment() {
     const contentTypes = JSON.parse(_.get(this.courseDetails, 'contentTypesCount'));
-    const selfAssessCount = _.get(contentTypes, 'SelfAssess')
+    const selfAssessCount = _.get(contentTypes, 'SelfAssess');
     if (selfAssessCount && selfAssessCount > 1) {
       this.isSingleAssessment = false;
-    } else if(selfAssessCount && selfAssessCount == 1){
+    } else if (selfAssessCount && selfAssessCount == 1) {
       this.isSingleAssessment = true;
     } else {
       this.isSingleAssessment = false;
@@ -305,7 +305,7 @@ SECOND_PANEL_LAYOUT;
 
   attachCertificateToBatch() {
     this.sendInteractData({ id: this.configurationMode === 'add' ? 'attach-certificate' : 'confirm-template-change' });
-    if(this.addScoreRule === false) {
+    if (this.addScoreRule === false) {
       this.userPreference.value['scoreRange'] = null;
     }
     const request = {
@@ -353,18 +353,18 @@ SECOND_PANEL_LAYOUT;
   }
 
   processCertificateDetails(certTemplateDetails) {
-    const templateData = _.pick(_.get(certTemplateDetails, Object.keys(certTemplateDetails)), ['criteria', 'previewUrl', 'artifactUrl', 'identifier', 'data', 'issuer', 'signatoryList','name', 'url']);
+    const templateData = _.pick(_.get(certTemplateDetails, Object.keys(certTemplateDetails)), ['criteria', 'previewUrl', 'artifactUrl', 'identifier', 'data', 'issuer', 'signatoryList', 'name', 'url']);
     this.templateIdentifier = _.get(templateData, 'identifier');
-    this.selectedTemplate = { 
-      'name': _.get(templateData, 'name'), 
-      'identifier': _.get(templateData, 'identifier'), 
+    this.selectedTemplate = {
+      'name': _.get(templateData, 'name'),
+      'identifier': _.get(templateData, 'identifier'),
       'previewUrl': _.get(templateData, 'previewUrl'),
       'issuer': JSON.stringify(_.get(templateData, 'issuer')),
       'data': JSON.stringify(_.get(templateData, 'data')),
       'signatoryList': JSON.stringify(_.get(templateData, 'signatoryList')),
-      'artifactUrl':_.get(templateData, 'artifactUrl')
+      'artifactUrl': _.get(templateData, 'artifactUrl')
      };
-     if(!_.get(templateData, 'previewUrl') && _.get(templateData, 'url')) {
+     if (!_.get(templateData, 'previewUrl') && _.get(templateData, 'url')) {
       this.selectedTemplate['previewUrl'] = _.get(templateData, 'url');
       templateData['previewUrl'] = _.get(templateData, 'url');
      }
@@ -557,18 +557,18 @@ SECOND_PANEL_LAYOUT;
     this.unsubscribe$.complete();
     this.uploadCertificateService.certificate.next(null);
   }
-  public addRule(){
+  public addRule() {
     this.addScoreRule = true;
     let range = 100;
     const step = 10;
-    let arr = []
-    while(range > 0){
+    const arr = [];
+    while (range > 0) {
       arr.push(range);
-      range=range-step;
+      range = range - step;
     }
-    this.arrayValue['range']=arr;
+    this.arrayValue['range'] = arr;
   }
-  removeRule(){
+  removeRule() {
     setTimeout(() => {
       this.userPreference.value['scoreRange'] = null;
     }, 500);

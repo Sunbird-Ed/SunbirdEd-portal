@@ -212,7 +212,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
         this.searchService.contentSearch(option)
             .pipe(
                 mergeMap(data => {
-                    const channelFacet = _.find(_.get(data, 'result.facets') || [], facet => _.get(facet, 'name') === 'channel')
+                    const channelFacet = _.find(_.get(data, 'result.facets') || [], facet => _.get(facet, 'name') === 'channel');
                     if (channelFacet) {
                         const rootOrgIds = this.orgDetailsService.processOrgData(_.get(channelFacet, 'values'));
                         return this.orgDetailsService.searchOrgDetails({
@@ -223,7 +223,7 @@ export class ExploreCourseComponent implements OnInit, OnDestroy, AfterViewInit 
                                 channelFacet.values = _.get(orgDetails, 'content');
                                 return of(data);
                             })
-                        )
+                        );
                     }
                     return of(data);
                 })
