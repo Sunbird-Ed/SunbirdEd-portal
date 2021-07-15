@@ -1545,6 +1545,11 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v9/-/sunbird-player-sdk-v9-4.1.2.tgz#d6fe1ca1a7d3b1e46dac79ea8f40b5dc34402858"
   integrity sha512-kKMjaC6/hhOyPuab1bMJ58Aisuy8oSAoWNGxejdz34zBwXTYJDSFI77FN+/MTJP/MgLRTLty2GEHA7NyKWxkLg==
 
+"@project-sunbird/sunbird-player-sdk-v9@4.1.3":
+  version "4.1.3"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-player-sdk-v9/-/sunbird-player-sdk-v9-4.1.3.tgz#0ab6a267afc6c6ee29ed411a7c5ec18edfd7febd"
+  integrity sha512-k+BpsHiBVdACUEIHJsFgPuoR73cQh11VFW8RO6+Sw6v3wUsdXsu0sLnV9dlUP5Y03SvZago/5D+KnWQ7IQ+tLg==
+
 "@project-sunbird/sunbird-question-editor@0.0.9":
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-question-editor/-/sunbird-question-editor-0.0.9.tgz#49f0c79397f35b993ab6f5ed6d05499db8fde91c"
@@ -1559,12 +1564,12 @@
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "4.1.2"
 
-"@project-sunbird/sunbird-video-player-v9@4.1.5":
-  version "4.1.5"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v9/-/sunbird-video-player-v9-4.1.5.tgz#e0d259d174456abaf2a1f18815f1038e2b648ad0"
-  integrity sha512-fLg1s6DQvZrEJswgq6m337PD6eQNfLQvrz20vH6IjKoCfEFhpv3Pk9izRiRyMDrluk+vtl7lqB0bkviYG8H83g==
+"@project-sunbird/sunbird-video-player-v9@4.1.6":
+  version "4.1.6"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-video-player-v9/-/sunbird-video-player-v9-4.1.6.tgz#755a42aced64a00b818ace4924e66f83301ceadb"
+  integrity sha512-cBSTotcNLws5lYUxOgV74C7Wvodsujy3bM9pnYXalf18Z3/DRyIU4Jcc0+2FSuEKDeAZKCuB+zqBzSmkTW41Fg==
   dependencies:
-    "@project-sunbird/sunbird-player-sdk-v9" "4.1.2"
+    "@project-sunbird/sunbird-player-sdk-v9" "4.1.3"
 
 "@project-sunbird/telemetry-sdk@0.0.26":
   version "0.0.26"
