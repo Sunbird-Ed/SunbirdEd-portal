@@ -15,7 +15,7 @@
                         (selectedOptionChange)="changeBirthYear($event)"
                         #select>
               <sui-select-option *ngFor="let option of select.filteredOptions"
-                                 [value]="option">
+                                 [value]="option" tabindex="0">
               </sui-select-option>
             </sui-select></label>
           </div>

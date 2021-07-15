@@ -33,7 +33,7 @@
             [listData]="faqData?.categories"
             [btnText]="faqData?.constants?.reportIssueMsg"
             [btnImg]="'./assets/images/report.svg'"
-            (itemClick)="onCategorySelect($event)"
+            (itemClick)="onCategorySelect($event)" tabindex="0"
             (btnClick)="enableFaqReport($event)">
           </sb-list>
         </section>
@@ -52,7 +52,7 @@
           <div class="sbhelp_container__faq">
             <sb-faq [extraTemplate]="extraTemplate" [data]="selectedFaqCategory"
               (toggleGroupEvent)="logInteractEvent($event, 'toggle-clicked');"
-              (yesClickedEvent)="logInteractEvent($event, 'yes-clicked');"
+              (yesClickedEvent)="logInteractEvent($event, 'yes-clicked');" tabindex="0"
               (noClickedEvent)="logInteractEvent($event, 'no-clicked');"
               (submitClickedEvent)="logInteractEvent($event, 'submit-clicked');">
             </sb-faq>
