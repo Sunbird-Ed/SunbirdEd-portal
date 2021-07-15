@@ -7,7 +7,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { ResourceService } from '../../../shared';
+import { ResourceService } from '@sunbird/shared';
 
 @Component({
   selector: 'app-entity-list',
