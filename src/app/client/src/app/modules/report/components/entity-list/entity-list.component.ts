@@ -1,3 +1,4 @@
+import { LocationStrategy } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -6,7 +7,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { ResourceService } from '@sunbird/shared';
+import { ResourceService } from '../../../shared';
 
 @Component({
   selector: 'app-entity-list',
@@ -23,7 +24,11 @@ export class EntityListComponent implements OnInit {
   selectedListCount = 0;
   showSuccessModal;
   selectedEntity: any;
-  constructor(public resourceService: ResourceService) {}
+  constructor(public resourceService: ResourceService, public location: LocationStrategy) {
+    this.location.onPopState(() => {
+      this.modal.deny();
+   });
+  }
 
   ngOnInit() {}
 

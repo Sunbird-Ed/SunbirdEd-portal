@@ -225,17 +225,6 @@ describe('AddEntityComponent', () => {
     expect(component.submit).toHaveBeenCalled();
   });
 
-  // it('popstate elements', () => {
-  //   component.modal = {
-  //     approve: () => {},
-  //   };
-  //   spyOn(component,'onPopState').and.callThrough();
-  //   const event = new PopStateEvent('popstate');
-  //   component.onPopState(event);
-  //   expect(component.onPopState).toHaveBeenCalledWith(event);
-  // });
-
-
 });
 
 
