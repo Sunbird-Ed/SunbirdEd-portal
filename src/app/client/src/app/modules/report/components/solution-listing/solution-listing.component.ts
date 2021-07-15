@@ -1,7 +1,7 @@
 import { ConfigService, ResourceService, LayoutService, PaginationService, IPagination, ILoaderMessage, INoResultMessage} from '@sunbird/shared';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import * as _ from 'lodash-es';
-import {Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import 'datatables.net';
 import { ObservationUtilService } from '../../../observation/service';
 import { ObservationService, UserService } from '@sunbird/core';
