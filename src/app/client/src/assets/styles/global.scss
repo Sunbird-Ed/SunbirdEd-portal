@@ -1413,8 +1413,10 @@ html[layout="joy"] .contentViewerIframeShadow {
 html[layout="old"] sunbird-pdf-player .sb-player-splash-container .loading-text {
   color:var(--white);
 }
-sunbird-epub-player .sb-player-splash-container {
-  
+html[data-theme=Darkmode][layout='old'] {
+  sunbird-pdf-player .sb-player-splash-container .loading-text{
+    color: var(--black);
+  }
 }
 .contentViewerIframeShadow.player-fullscreen.content-full-video sunbird-pdf-player .player-endpage, .contentViewerIframeShadow.player-fullscreen.content-full-video sunbird-pdf-player .sb-player-splash-container, .contentViewerIframeShadow.player-fullscreen.content-full-video sunbird-epub-player .sb-player-splash-container {
   height: calc(100% - 4rem)!important;
