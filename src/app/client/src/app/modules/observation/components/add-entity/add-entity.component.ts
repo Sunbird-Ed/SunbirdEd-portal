@@ -4,6 +4,7 @@ import { ConfigService, ResourceService, ILoaderMessage, INoResultMessage } from
 import { ObservationUtilService } from '../../service';
 import { debounceTime, map } from 'rxjs/operators';
 import { fromEvent } from 'rxjs';
+import { LocationStrategy } from '@angular/common';
 
 @Component({
     selector: 'add-entity',
@@ -37,8 +38,11 @@ export class AddEntityComponent implements OnInit {
         private kendraService: KendraService,
         public resourceService: ResourceService,
         public observationUtilService: ObservationUtilService,
-        config: ConfigService) {
+        config: ConfigService, public location: LocationStrategy,) {
         this.config = config;
+        this.location.onPopState(() => {
+            this.modal.approve();
+         });
     }
     ngOnInit() {
         const searchBox = document.getElementById('entitySearch');

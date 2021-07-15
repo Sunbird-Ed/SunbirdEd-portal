@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
+import { Location, LocationStrategy } from '@angular/common';
 import { DhitiService } from '@sunbird/core';
 import {
   ConfigService,
@@ -59,9 +59,13 @@ export class ReportViewComponent implements OnInit {
     public resourceService: ResourceService,
     private routerParam: ActivatedRoute,
     private cdref: ChangeDetectorRef,
-    public toasterService: ToasterService
+    public toasterService: ToasterService,
+    public locations: LocationStrategy
   ) {
     this.config = config;
+    this.locations.onPopState(() => {
+      this.modal.deny();
+   });
 
     //  this.state = this.router.getCurrentNavigation().extras.state;
     this.routerParam.queryParams.subscribe((data: any) => {

@@ -1,3 +1,4 @@
+import { LocationStrategy } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -23,7 +24,11 @@ export class EntityListComponent implements OnInit {
   selectedListCount = 0;
   showSuccessModal;
   selectedEntity: any;
-  constructor(public resourceService: ResourceService) {}
+  constructor(public resourceService: ResourceService, public location: LocationStrategy) {
+    this.location.onPopState(() => {
+      this.modal.deny();
+   });
+  }
 
   ngOnInit() {}
 
