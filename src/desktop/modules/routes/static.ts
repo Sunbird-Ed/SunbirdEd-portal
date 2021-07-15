@@ -144,5 +144,6 @@ export default (app, contentFilesPath, ecarsFolderPath ) => {
     locals.p3reCaptchaEnabled = null;
     locals.enableSSO = null;
     locals.reportsListVersion = null;
+    locals.publicStorageAccount = null;
     return locals;
   }
