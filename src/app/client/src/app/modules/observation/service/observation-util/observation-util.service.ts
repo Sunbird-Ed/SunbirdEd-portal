@@ -138,7 +138,7 @@ export class ObservationUtilService {
         .onApprove((val: any) => {
           resolve(val);
         })
-        .onDeny((val: any) => {
+        .onDeny((val?: any) => {
           resolve(val);
         });
     });

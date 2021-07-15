@@ -1,9 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { BehaviorSubject, throwError, of, of as observableOf } from 'rxjs';
+import { BehaviorSubject, throwError, of, of as observableOf,throwError as observableThrowError } from 'rxjs';
 import { QuestionnaireComponent } from './questionnaire.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { SharedModule } from '@sunbird/shared';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SuiModalModule } from 'ng2-semantic-ui-v9';
 import { Location } from '@angular/common';
 import {
@@ -13,7 +13,6 @@ import {
   AlertMetaData,
   ProfileData,
 } from './questionnaire.component.mock';
-import { QuestionnaireService } from '../questionnaire.service';
 import { LayoutService, ResourceService, ConfigService } from '@sunbird/shared';
 import { ObservationUtilService } from '../../observation/service';
 import { ActivatedRoute } from '@angular/router';
@@ -23,6 +22,8 @@ import { CacheService } from 'ng2-cache-service';
 import { APP_BASE_HREF } from '@angular/common';
 import { TranslateService, TranslateStore } from '@ngx-translate/core';
 import { ObservationService } from '@sunbird/core';
+import {SlQuestionnaireService} from '@shikshalokam/sl-questionnaire'
+
 
 describe('QuestionaireComponent', () => {
   let component: QuestionnaireComponent;
@@ -33,8 +34,6 @@ describe('QuestionaireComponent', () => {
     frmelmnts: {
       lbl: {
         continue: 'Continue',
-      },
-      alert: {
         successfullySaved: 'Your Form has been saved successfully!',
         saveConfirm: 'Are you sure you want to save this form?',
         submitConfirm: 'Are you sure you want to submit the form?',
@@ -115,7 +114,7 @@ describe('QuestionaireComponent', () => {
       providers: [
         CacheService,
         LayoutService,
-        QuestionnaireService,
+        SlQuestionnaireService,
         ConfigService,
         Location,
         TranslateService,
@@ -124,8 +123,7 @@ describe('QuestionaireComponent', () => {
         { provide: ActivatedRoute, useClass: FakeActivatedRoute },
         { provide: APP_BASE_HREF, useValue: baseHref },
         { provide: ObservationService, useValue: observationService },
-        { provide: ObservationUtilService, useValue: observationUtilService },
-        { provide: QuestionnaireService, useValue: questionnaireService },
+        { provide: ObservationUtilService, useValue: observationUtilService }
       ],
     }).compileComponents();
   }));
@@ -136,6 +134,7 @@ describe('QuestionaireComponent', () => {
     component.queryParams = '';
     observationService = TestBed.get(ObservationService);
     observationUtilService = TestBed.get(ObservationUtilService);
+    questionnaireService=TestBed.get(SlQuestionnaireService);
     component.queryParams = {
       observationId: '60af3cc30258ca7ed1fab9d1',
       entityId: '5fd098e2e049735a86b748ac',
@@ -169,14 +168,41 @@ describe('QuestionaireComponent', () => {
       observableOf(SubmissionSuccessResp)
     );
     spyOn(component, 'openAlert');
-    component.openAlert(resourceBundle.frmelmnts.alert.successfullySubmitted);
+    component.openAlert(resourceBundle.frmelmnts.lbl.successfullySubmitted);
     component.submitEvidence(Payload);
     expect(component.submitEvidence).toHaveBeenCalled();
     expect(observationService.post).toHaveBeenCalled();
   });
 
-  //   it("Should navigate to back", () => {
-  //     spyOn(component, "goBack").and.callThrough();
+  it('submitEvidence for api error case', () => {
+    component.assessmentInfo = <any>Questionnaire.result;
+    spyOn(component, 'submitEvidence').and.callThrough();
+    spyOn(observationService, 'post').and.returnValue(
+      observableThrowError('error')
+    );
+    spyOn(component, 'openAlert').and.callThrough();
+    component.submitEvidence(Payload);
+    expect(component.submitEvidence).toHaveBeenCalled();
+    expect(component.openAlert).toHaveBeenCalledWith(resourceBundle.frmelmnts.lbl.failedToSave);
+    // expect(observationService.post).toHaveBeenCalled();
+  });
+
+  it('submitEvidence for api error case not draft', () => {
+    component.assessmentInfo = <any>Questionnaire.result;
+    spyOn(component, 'submitEvidence').and.callThrough();
+    spyOn(observationService, 'post').and.returnValue(
+      observableThrowError('error')
+    );
+    spyOn(component, 'openAlert').and.callThrough();
+    Payload.evidence.status="adbc"
+    component.submitEvidence(Payload);
+    expect(component.submitEvidence).toHaveBeenCalled();
+    // expect(observationService.post).toHaveBeenCalled();
+  });
+
+
+  //   it('Should navigate to back', () => {
+  //     spyOn(component, 'goBack').and.callThrough();
   //     component.goBack();
   //     const location = fixture.debugElement.injector.get(Location);
   //     expect(component.goBack).toHaveBeenCalled();
@@ -227,6 +253,12 @@ describe('QuestionaireComponent', () => {
     spyOn(observationUtilService, 'getProfileDataList').and.callFake(() =>
       Promise.resolve(ProfileData)
     );
+    let mockData={
+      status:'draft'
+    }
+    spyOn(questionnaireService,"getEvidenceData").and.callFake(()=>{
+      return mockData;
+    });
     component.onSubmit();
     expect(component.onSubmit).toHaveBeenCalled();
     expect(component.openAlert).toHaveBeenCalled();
@@ -239,9 +271,31 @@ describe('QuestionaireComponent', () => {
     expect(component.canDeactivate).toHaveBeenCalled();
   });
 
-  // it("Should call scrollToContent", () => {
-  //   let id = "S1";
-  //   spyOn(component, "scrollToContent").and.callThrough();
+  it('Deactivate should return true', () => {
+    component.questionnaireForm = component.fb.group({})
+    component.questionnaireForm.addControl('test',new FormControl())
+    // component.canLeave=false
+    // component.questionnaireForm.markAsDirty()
+    spyOn(component, 'canDeactivate').and.callThrough();
+    let value=component.canDeactivate();
+    expect(component.canDeactivate).toHaveBeenCalled();
+     expect(value).toBe(true)
+  });
+
+  it('Deactivate should return false', () => {
+    component.questionnaireForm = component.fb.group({})
+    component.questionnaireForm.addControl('test',new FormControl())
+    component.canLeave=false
+    component.questionnaireForm.markAsDirty()
+    spyOn(component, 'canDeactivate').and.callThrough();
+    let value=component.canDeactivate();
+    expect(component.canDeactivate).toHaveBeenCalled();
+     expect(value).toBe(false)
+  });
+
+  // it('Should call scrollToContent', () => {
+  //   let id = 'S1';
+  //   spyOn(component, 'scrollToContent').and.callThrough();
   //   component.scrollToContent(id);
   //   expect(component.scrollToContent).toHaveBeenCalled();
   // });
