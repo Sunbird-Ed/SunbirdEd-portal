@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedModule, ResourceService } from '@sunbird/shared';
+import { SharedModule, ResourceService,ConfigService } from '@sunbird/shared';
 import { SolutionListingComponent } from './solution-listing.component';
 import { CoreModule, ObservationService, UserService } from '@sunbird/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -13,16 +13,22 @@ import {
   ObservationData,
   profileData,
   EntityClick,
-  ModalEventData
+  ModalEventData,
+  ObservationDataFail
 } from './solution-listing.component.spec.data';
 import { of as observableOf, throwError as observableThrowError, of, observable } from 'rxjs';
 import {EntityListComponent} from '../entity-list/entity-list.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { Router } from '@angular/router';
 
 describe('SolutionListingComponent', () => {
   let component: SolutionListingComponent;
   let fixture: ComponentFixture<SolutionListingComponent>;
   let observationUtilService, observationService, userService;
+
+  class RouterStub {
+    navigate = jasmine.createSpy('navigate');
+  }
 
   const resourceBundle = {
     messages: {
@@ -47,7 +53,7 @@ describe('SolutionListingComponent', () => {
         InfiniteScrollModule
       ],
       declarations: [SolutionListingComponent, EntityListComponent],
-      providers: [ { provide: ResourceService, useValue: resourceBundle }, ]
+      providers: [ConfigService, { provide: ResourceService, useValue: resourceBundle },  { provide: Router, useClass: RouterStub }],
     }).compileComponents();
   }));
 
@@ -84,6 +90,20 @@ describe('SolutionListingComponent', () => {
     expect(component.payload).toBe(profileData);
     expect(component.solutionList.length).toBeGreaterThanOrEqual(0);
     expect(component.filters.length).toBeGreaterThanOrEqual(0);
+  });
+
+  
+  it('ObservationUtilService return data result is false', () => {
+    spyOn(observationUtilService, 'getProfileDataList').and.callFake(() => {
+      return Promise.resolve(profileData);
+    });
+    spyOn(observationService, 'post').and.returnValue(of(ObservationDataFail));
+    component.getSolutions();
+    component.payload = profileData;
+    spyOn(component, 'getProfileData').and.callThrough();
+    component.getProfileData();
+    expect(component.getProfileData).toHaveBeenCalled();
+    expect(component.payload).toBe(profileData);
   });
 
 
