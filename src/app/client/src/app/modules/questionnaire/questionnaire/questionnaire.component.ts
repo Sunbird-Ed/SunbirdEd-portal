@@ -9,16 +9,9 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ObservationService } from '@sunbird/core';
 import { Location } from '@angular/common';
-// import {
-//   AssessmentInfo,
-//   Evidence,
-//   IAssessmentDetails,
-//   Section,
-// } from "../Interface/assessmentDetails";
 import { ObservationUtilService } from '../../observation/service';
 import { ComponentDeactivate } from '../guard/can-deactivate.guard';
 import { AssessmentInfo, Evidence, IAssessmentDetails, Section, SlQuestionnaireService } from '@shikshalokam/sl-questionnaire';
-import { QuestionnaireService } from '../questionnaire.service';
 
 @Component({
   selector: 'app-questionnaire',
@@ -48,8 +41,7 @@ export class QuestionnaireComponent
     private observationService: ObservationService,
     private location: Location,
     private observationUtilService: ObservationUtilService,
-    private slQService: SlQuestionnaireService,
-    private questionnaireService: QuestionnaireService
+    private slQService: SlQuestionnaireService
   ) {
     super();
   }
@@ -132,10 +124,10 @@ export class QuestionnaireComponent
   }
 
   async onSubmit(save?) {
-    const msg = save
-      ? this.resourceService.frmelmnts.alert.saveConfirm
-      : this.resourceService.frmelmnts.alert.submitConfirm;
-    const userConfirm = await this.openAlert(msg, true);
+    let msg = save
+      ? this.resourceService.frmelmnts.lbl.saveConfirm
+      : this.resourceService.frmelmnts.lbl.submitConfirm;
+    let userConfirm = await this.openAlert(msg, true);
     if (!userConfirm) {
       return;
     }
@@ -163,23 +155,22 @@ export class QuestionnaireComponent
     };
     this.observationService.post(paramOptions).subscribe(
       (data) => {
-        if (payload.evidence.status == 'draft') {
+        if (payload.evidence.status === 'draft') {
           this.backOrContinue();
           return;
         }
         this.openAlert(
-          this.resourceService.frmelmnts.alert.successfullySubmitted
+          this.resourceService.frmelmnts.lbl.successfullySubmitted
         );
         this.canLeave = true;
         this.location.back();
       },
       (error) => {
         this.openAlert(
-          payload.evidence.status == 'draft'
-            ? this.resourceService.frmelmnts.alert.failedToSave
-            : this.resourceService.frmelmnts.alert.submissionFailed
+          payload.evidence.status === 'draft'
+            ? this.resourceService.frmelmnts.lbl.failedToSave
+            : this.resourceService.frmelmnts.lbl.submissionFailed
         );
-        console.log(error);
       }
     );
   }
@@ -187,7 +178,7 @@ export class QuestionnaireComponent
   async backOrContinue() {
     const alertMetaData = await this.observationUtilService.getAlertMetaData();
     alertMetaData.content.body.data =
-      this.resourceService.frmelmnts.alert.successfullySaved;
+      this.resourceService.frmelmnts.lbl.successfullySaved;
     alertMetaData.content.body.type = 'text';
     alertMetaData.size = 'mini';
     alertMetaData.footer.buttons.push({

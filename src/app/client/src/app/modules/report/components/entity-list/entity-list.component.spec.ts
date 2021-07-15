@@ -61,18 +61,29 @@ describe('EntityListComponent', () => {
     expect(component.closeModal).toHaveBeenCalled();
   });
 
-  it('should call onEntityChange', () => {
-    spyOn(component, 'onEntityChange').and.callThrough();
+  it('should call onEntityChange new entity',()=>{
+    spyOn(component,'onEntityChange').and.callThrough();
     component.onEntityChange(ObservationData.result.data[0].entities[0]);
     expect(component.onEntityChange).toHaveBeenCalled();
   });
-  it('should call submit', () => {
-    spyOn(component, 'submit').and.callThrough();
+
+  it('should call onEntityChange same entity',()=>{
+    component.solution={
+      entities:[
+      ObservationData.result.data[1].entities[0]
+      ]
+    };
+    spyOn(component,'onEntityChange').and.callThrough();
+    component.onEntityChange(ObservationData.result.data[0].entities[0]);
+    expect(component.onEntityChange).toHaveBeenCalled();
+  });
+
+  it('should call submit',()=>{
+    spyOn(component,'submit').and.callThrough();
     component.modal = {
       approve: () => {}
     };
     component.submit();
     expect(component.submit).toHaveBeenCalled();
   });
-
 });

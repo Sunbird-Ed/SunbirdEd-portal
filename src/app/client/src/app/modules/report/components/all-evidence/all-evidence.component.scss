@@ -1,3 +1,6 @@
+@import "mixins/mixins";
+@import 'variables';
+
 .thumbnail-card {
   height: 98px;
   margin-top: 10px;
@@ -23,6 +26,7 @@
   overflow: auto;
   padding-bottom: calculateRem(2px);
   border-radius: var(--sbt-bradius-24) !important;
+  background-color: var(--sb-card-bg);
 }
 
 .ui.secondary.pointing.menu .item {
@@ -46,7 +50,7 @@
 }
 .sbt-report-btns-panel-new {
   border-radius: 0px !important;
-  background: #e9e8d9 !important;
+ background-color: var(--white);
 }
 
 
