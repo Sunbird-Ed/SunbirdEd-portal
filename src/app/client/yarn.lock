@@ -1519,10 +1519,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.15.tgz#e860204a970905160ad7da35b82883220e1efd88"
   integrity sha512-+0AiFR5vVpnfj6fEoKUovIZ3iRlB329jf5BKb20CFjcW3uJriIKzZOlBa1KSyqhp7f5SX3RTN4+u/NSoBRsAXg==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.1.18":
-  version "4.1.18"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.1.18.tgz#f762acad7173e136a8d13f6b96bb6b8313a0af01"
-  integrity sha512-1S3tPyP+qiYXmZbBnATCtKoKtCAQKDymfDf3bqqND9QwrQzaOplE1pf0QxXi6Yx4x1Ntyx+dXEpJnA65NEApng==
+"@project-sunbird/sunbird-collection-editor-v9@4.1.21":
+  version "4.1.21"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.1.21.tgz#33645295572e4edd5d8061a052938acedef09a52"
+  integrity sha512-/+zOfZJO0Nd8mf6iHcRCuqeNY0TAwRnLoBLN4/1Z2VaHZNGB6rEqGaK6zzQFWevd+FKtIGt+/alQTBFp5npkww==
   dependencies:
     tslib "^1.10.0"
 
@@ -1552,10 +1552,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/sunbird-quml-player-v9@4.1.15":
-  version "4.1.15"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.1.15.tgz#e80eaa864740780642205bd5ae002885dcba3fd9"
-  integrity sha512-FMu9rshPi0vxeQC+5L5XxAvw+py5dCJHuLy8LvIBIy3v3dp58R8UD5/H4n+WToD7vLZluooK/WKll83GcP2mpQ==
+"@project-sunbird/sunbird-quml-player-v9@4.1.18":
+  version "4.1.18"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-quml-player-v9/-/sunbird-quml-player-v9-4.1.18.tgz#9dbd3c5594edc4a506ca6acfb04b00b2fb461e54"
+  integrity sha512-uyxnivfxaVEN0LRNqanO+SZ+V6nVqgJArGVcMtOA39PJJdchtSGZodY5S29ceSygtHAutFiPSzxwB0Gox4NWEQ==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "4.1.2"
 
