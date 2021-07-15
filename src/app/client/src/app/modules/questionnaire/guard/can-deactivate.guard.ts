@@ -9,7 +9,7 @@ export class CanDeactivateGuard
   canDeactivate(component: ComponentDeactivate): boolean {
     if (!component.canDeactivate()) {
       if (
-        confirm(this.resourceService.frmelmnts.alert.confirmBackClick)
+        confirm(this.resourceService.frmelmnts.lbl.confirmBackClick)
       ) {
         return true;
       } else {

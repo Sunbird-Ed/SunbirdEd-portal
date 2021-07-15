@@ -5,6 +5,16 @@ export const profileData = {
   state: '1222633c-bef9-4be8-a42d-edffa5a9c7ab',
 };
 
+export const ObservationDataFail={
+  message: 'Solutions fetched successfully',
+  status: 200,
+  result:{
+    entityType:[],
+    count:0,
+    data:[]
+  }
+}
+
 export const ObservationData = {
   message: 'Solutions fetched successfully',
   status: 200,

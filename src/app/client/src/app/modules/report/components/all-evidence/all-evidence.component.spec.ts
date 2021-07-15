@@ -54,5 +54,4 @@ describe('AllEvidenceComponent', () => {
     component.closeModal();
     expect(component.closeModal).toHaveBeenCalled();
   });
-
 });
