@@ -139,11 +139,4 @@ export class AddEntityComponent implements OnInit {
         }, error => {
         });
     }
-
-    // @HostListener('window:popstate', ['$event'])
-    // onPopState(event) {
-    //     this.modal.approve();
-    //     this.showDownloadModal = false;
-    // }
-
 }
