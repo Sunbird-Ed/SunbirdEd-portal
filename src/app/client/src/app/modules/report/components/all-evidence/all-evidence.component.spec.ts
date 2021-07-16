@@ -1,14 +1,14 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
-import { AllEvidenceComponent } from "./all-evidence.component";
-import { DhitiService, CoreModule } from "@sunbird/core";
-import { SharedModule,ConfigService } from "@sunbird/shared";
-import { SuiModule, SuiModalModule } from "ng2-semantic-ui-v9";
-import { TranslateModule } from "@ngx-translate/core";
-import { of, Observable, Subject } from "rxjs";
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { AllEvidenceComponent } from './all-evidence.component';
+import { DhitiService, CoreModule } from '@sunbird/core';
+import { SharedModule, ConfigService } from '@sunbird/shared';
+import { SuiModule, SuiModalModule } from 'ng2-semantic-ui-v9';
+import { TranslateModule } from '@ngx-translate/core';
+import { of, Observable, Subject } from 'rxjs';
 import {allEvidenceData} from './all-evidence.component.spec.data';
-import { SlReportsLibraryModule } from "@shikshalokam/sl-reports-library";
-import { HttpClientTestingModule } from "@angular/common/http/testing";
-describe("AllEvidenceComponent", () => {
+import { SlReportsLibraryModule } from '@shikshalokam/sl-reports-library';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+describe('AllEvidenceComponent', () => {
   let component: AllEvidenceComponent;
   let fixture: ComponentFixture<AllEvidenceComponent>;
   let dhitiService;
@@ -24,7 +24,7 @@ describe("AllEvidenceComponent", () => {
         HttpClientTestingModule,
       ],
       declarations: [AllEvidenceComponent],
-      providers:[ConfigService]
+      providers: [ConfigService]
     }).compileComponents();
   }));
 
@@ -35,24 +35,23 @@ describe("AllEvidenceComponent", () => {
     fixture.detectChanges();
   });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it("should call ngoninit", () => {
+  it('should call ngoninit', () => {
     expect(component).toBeTruthy();
-    spyOn(dhitiService, "post").and.returnValue(of(allEvidenceData));
+    spyOn(dhitiService, 'post').and.returnValue(of(allEvidenceData));
     component.ngOnInit();
     expect(component.images.length).toBeGreaterThan(0);
   });
 
-  it("should call closeModal", () => {
-    spyOn(component, "closeModal").and.callThrough();
+  it('should call closeModal', () => {
+    spyOn(component, 'closeModal').and.callThrough();
     component.modal = {
       approve: () => {},
     };
     component.closeModal();
     expect(component.closeModal).toHaveBeenCalled();
   });
-
 });

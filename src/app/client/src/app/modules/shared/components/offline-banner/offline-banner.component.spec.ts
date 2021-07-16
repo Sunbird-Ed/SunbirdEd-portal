@@ -34,7 +34,7 @@ describe('OfflineBannerComponent', () => {
             provide: TranslateLoader,
             useClass: TranslateFakeLoader
          }
-      }),TelemetryModule.forRoot()],
+      }), TelemetryModule.forRoot()],
       declarations: [OfflineBannerComponent, InterpolatePipe],
       providers: [ResourceService, ConfigService, CacheService, BrowserCacheTtlService, DeviceDetectorService,
         { provide: Router, useClass: RouterStub },

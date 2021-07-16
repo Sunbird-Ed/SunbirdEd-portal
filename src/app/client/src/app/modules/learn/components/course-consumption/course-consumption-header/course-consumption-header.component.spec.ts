@@ -46,7 +46,7 @@ const resourceServiceMockData = {
     },
     lbl: {
       description: 'description',
-      BatchExpiringIn: "Batch expiring in"
+      BatchExpiringIn: 'Batch expiring in'
     }
   }
 };
@@ -492,14 +492,14 @@ describe('CourseConsumptionHeaderComponent', () => {
   it('should navigate to discussion Forum', () => {
     const routerData = {
       forumIds: [6],
-      userName: 'cctn1350'
+      userId: 1
     };
     spyOn(component['router'], 'navigate');
     component.assignForumData(routerData);
     expect(component['router'].navigate).toHaveBeenCalledWith(['/discussion-forum'], {
       queryParams: {
         categories: JSON.stringify({ result: routerData.forumIds }),
-        userName: routerData.userName
+        userId: routerData.userId
       }
     });
   });

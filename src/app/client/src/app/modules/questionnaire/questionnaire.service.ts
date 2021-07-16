@@ -1,9 +1,9 @@
-import { Injectable } from "@angular/core";
-import { ConfigService, ToasterService } from "@sunbird/shared";
-import { KendraService, CloudService } from "@sunbird/core";
-import { SlUtilsService } from "@shikshalokam/sl-questionnaire";
+import { Injectable } from '@angular/core';
+import { ConfigService, ToasterService } from '@sunbird/shared';
+import { KendraService, CloudService } from '@sunbird/core';
+import { SlUtilsService } from '@shikshalokam/sl-questionnaire';
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class QuestionnaireService {
   constructor(
@@ -28,7 +28,7 @@ export class QuestionnaireService {
 
   cloudStorageUpload(payload) {
     const paramOptions = {
-      url: "upload",
+      url: 'upload',
       data: payload,
     };
     return this.cloudServ.put(paramOptions);

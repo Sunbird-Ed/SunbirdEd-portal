@@ -570,4 +570,4 @@ export const OnDemandReports = {
       ]
     }
   }
-}
+};

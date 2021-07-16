@@ -219,10 +219,10 @@ export class ActivityDetailsComponent implements OnInit, OnDestroy {
         this.navigateBack();
       });
   }
-  
+
   /**
    * @description - get updated activity progress data
-   * @param  {} groupData 
+   * @param  {} groupData
    * @param  {} activityData
    */
   getUpdatedActivityData(groupData, activityData) {

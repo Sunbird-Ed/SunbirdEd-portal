@@ -72,11 +72,11 @@ describe('OfflineHelpVideosComponent', () => {
     fixture = TestBed.createComponent(OfflineHelpVideosComponent);
     component = fixture.componentInstance;
     window.onerror = function(err) {
-      if(err === 'ResizeObserver loop limit exceeded') {
+      if (err === 'ResizeObserver loop limit exceeded') {
         console.warn('Ignored: ResizeObserver loop limit exceeded');
         return false;
       }
-    }
+    };
   });
 
   it('should set slide config', () => {

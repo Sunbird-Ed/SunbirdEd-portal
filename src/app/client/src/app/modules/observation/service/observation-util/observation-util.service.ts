@@ -1,14 +1,14 @@
-import { Injectable } from "@angular/core";
-import { UserService, KendraService } from "@sunbird/core";
-import { IUserData, ConfigService, ResourceService, AlertModal } from "@sunbird/shared";
-import { take } from "rxjs/operators";
+import { Injectable } from '@angular/core';
+import { UserService, KendraService } from '@sunbird/core';
+import { IUserData, ConfigService, ResourceService, AlertModal } from '@sunbird/shared';
+import { take } from 'rxjs/operators';
 import { SuiModalService } from 'ng2-semantic-ui-v9';
-import { Router } from "@angular/router";
-import { SlUtilsService } from "@shikshalokam/sl-questionnaire";
+import { Router } from '@angular/router';
+import { SlUtilsService } from '@shikshalokam/sl-questionnaire';
 
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class ObservationUtilService {
   config;
@@ -25,8 +25,8 @@ export class ObservationUtilService {
     public slUtil: SlUtilsService,
   ) {
     this.config = config;
-    this.slUtil.openAlert = this.showPopupAlert
-    
+    this.slUtil.openAlert = this.showPopupAlert;
+
   }
 
   getProfileData() {
@@ -37,8 +37,8 @@ export class ObservationUtilService {
         if (
           profileData &&
           profileData.userProfile &&
-          profileData.userProfile["profileUserType"] &&
-          profileData.userProfile["profileUserType"]["subType"] === null
+          profileData.userProfile['profileUserType'] &&
+          profileData.userProfile['profileUserType']['subType'] === null
         ) {
           return false;
         } else {
@@ -103,28 +103,28 @@ export class ObservationUtilService {
 
   getProfileDataList() {
     return new Promise((resolve, reject) => {
-      let profileData
+      let profileData;
       try {
         profileData = JSON.parse(
-          sessionStorage.getItem("CacheServiceuserProfile")
+          sessionStorage.getItem('CacheServiceuserProfile')
         );
       } catch {
-        reject()
+        reject();
       }
       const obj = {};
-      for (const location of profileData.value["userLocations"]) {
+      for (const location of profileData.value['userLocations']) {
         obj[location.type] = location.id;
       }
-      for (const org of profileData.value["organisations"]) {
+      for (const org of profileData.value['organisations']) {
         if (org.isSchool) {
-          obj["school"] = org.externalId;
+          obj['school'] = org.externalId;
         }
       }
 
-      obj["role"] =
-        profileData.value["profileUserType"] &&
-          profileData.value["profileUserType"]["subType"]
-          ? profileData.value["profileUserType"]["subType"].toUpperCase()
+      obj['role'] =
+        profileData.value['profileUserType'] &&
+          profileData.value['profileUserType']['subType']
+          ? profileData.value['profileUserType']['subType'].toUpperCase()
           : null;
       this.dataParam = obj;
       resolve(obj);
@@ -138,33 +138,33 @@ export class ObservationUtilService {
         .onApprove((val: any) => {
           resolve(val);
         })
-        .onDeny((val: any) => {
+        .onDeny((val?: any) => {
           resolve(val);
         });
     });
   }
 
   getAlertMetaData() {
-    let obj = {
-      type: "",
-      size: "",
+    const obj = {
+      type: '',
+      size: '',
       isClosed: false,
       content: {
-        title: "",
+        title: '',
         body: {
-          type: "",//text,checkbox
-          data: "",
+          type: '', // text,checkbox
+          data: '',
         },
       },
       footer: {
-        className: "", //single-btn,double-btn,double-btn-circle
+        className: '', // single-btn,double-btn,double-btn-circle
         buttons: [
-          /*  
+          /*
            {
               type:"accept/cancel",
               returnValue:true/false,
               buttonText:"",
-            } 
+            }
           */
         ],
       },

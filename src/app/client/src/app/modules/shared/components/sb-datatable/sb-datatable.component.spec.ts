@@ -8,7 +8,7 @@ import * as _ from 'lodash-es';
 import {FilterPipe} from '../../pipes/filter/filter.pipe';
 import {SbDataTablePipe} from '../../pipes/sb-data-table-pipe/sb-data-table.pipe';
 import {ResourceService} from '../../services/resource/resource.service';
-import {of as observableOf} from "rxjs";
+import {of as observableOf} from 'rxjs';
 import { TelemetryService } from '@sunbird/telemetry';
 
 describe('SbDatatableComponent', () => {
@@ -47,7 +47,7 @@ describe('SbDatatableComponent', () => {
     component.data = TableData.responseData;
     component.columns = TableData.columns;
     component.ngOnChanges();
-    expect(JSON.stringify(component.tableData)).toBe(JSON.stringify(component.data))
+    expect(JSON.stringify(component.tableData)).toBe(JSON.stringify(component.data));
   });
 
   it('should call oninit', () => {
@@ -65,7 +65,7 @@ describe('SbDatatableComponent', () => {
 
 
   it('should call onColumnFilter', () => {
-    component.listFilter = {'state': 'andhra'}
+    component.listFilter = {'state': 'andhra'};
     spyOn(component, 'filterDataTable').and.stub();
     component.onColumnFilter('state', '');
     expect(component.filterDataTable).toHaveBeenCalled();
@@ -73,7 +73,7 @@ describe('SbDatatableComponent', () => {
 
   it('should call filterDataTable', () => {
     component.data = TableData.responseData;
-    component.listFilter = {'state': 'Telengana', 'district': '', 'noofEnrollments': null}
+    component.listFilter = {'state': 'Telengana', 'district': '', 'noofEnrollments': null};
     component.filterDataTable();
     expect(component.tableData).toEqual([{
       state: 'Telengana',
@@ -84,7 +84,7 @@ describe('SbDatatableComponent', () => {
   });
 
   it('should call clearSearch', () => {
-    component.clearSearch()
+    component.clearSearch();
     expect(component.searchData).toBe('');
   });
 
@@ -104,7 +104,7 @@ describe('SbDatatableComponent', () => {
 
   it('should generate telemetry for download summary report', () => {
     const telemetryService = TestBed.get(TelemetryService);
-    component.batch = {courseId: 'do_112470675618004992181', batchId: '01248661388792627227'}
+    component.batch = {courseId: 'do_112470675618004992181', batchId: '01248661388792627227'};
     spyOn(telemetryService, 'interact');
     component.setInteractEventData();
     expect(telemetryService.interact).toHaveBeenCalled();

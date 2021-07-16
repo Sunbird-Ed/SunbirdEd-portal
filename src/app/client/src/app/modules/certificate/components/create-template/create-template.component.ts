@@ -323,7 +323,7 @@ urltoFile(url, filename, mimeType) {
   }
 
 
-  sanitizeHTML(html){
+  sanitizeHTML(html) {
     return this.sanitizer.bypassSecurityTrustHtml(html);
   }
 

@@ -472,12 +472,12 @@ describe('PlayerComponent', () => {
        contentWindow: {
          print: () => {}
        }
-     }
+     };
      spyOn(mockFrameValue.contentWindow, 'print').and.stub();
      spyOn(window.document , 'querySelector').and.returnValue(mockFrameValue);
      component.eventHandler(printEvent);
      expect(mockFrameValue.contentWindow.print).toHaveBeenCalled();
      expect(component.mobileViewDisplay).toBe('none');
-  })
+  });
 });
 

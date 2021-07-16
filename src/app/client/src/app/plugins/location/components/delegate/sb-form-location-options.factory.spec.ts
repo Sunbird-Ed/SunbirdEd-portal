@@ -247,7 +247,7 @@ describe('SbFormLocationOptionsFactory', () => {
       }));
       spyOn(mockOrgDetailsService, 'searchOrgDetails').and.returnValue(of(
         {
-          content: 
+          content:
           [
             {
               externalId: 'SOME_SELECTED_DISTRICT_CODE_1',

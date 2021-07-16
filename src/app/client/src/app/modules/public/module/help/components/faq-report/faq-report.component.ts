@@ -1,11 +1,11 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from '@angular/core';
 import { ResourceService, ToasterService } from '@sunbird/shared';
 import { ProfileService } from '@sunbird/profile';
-import { takeUntil } from "rxjs/operators";
-import { Subject } from "rxjs";
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 import * as _ from 'lodash-es';
 import { TelemetryService } from '@sunbird/telemetry';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-faq-report',
@@ -80,12 +80,12 @@ export class FaqReportComponent implements OnInit {
     const telemetryContextObj = { env: 'portal', cdata: []};
     const edata = { type: 'system', pageid: _.get(this.activatedRoute, 'snapshot.data.telemetry.pageid') };
 
-    const interactEvent = { context: telemetryContextObj, edata: { id: 'submit-clicked', ...edata, type: 'support' } }
+    const interactEvent = { context: telemetryContextObj, edata: { id: 'submit-clicked', ...edata, type: 'support' } };
     const logEvent = {
       context: telemetryContextObj,
       edata: {
-        level: "INFO",
-        message: "faq",
+        level: 'INFO',
+        message: 'faq',
         params,
         ...edata
       }
@@ -99,7 +99,7 @@ export class FaqReportComponent implements OnInit {
       class: 'sb-toaster sb-toast-success sb-toast-normal'
     });
     this.faqReportConfig = undefined;
-    this.fetchFaqReportConfig()
+    this.fetchFaqReportConfig();
   }
 
   ngOnDestroy() {
