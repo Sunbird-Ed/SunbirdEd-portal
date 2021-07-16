@@ -34,7 +34,6 @@ import { ObservationUtilService } from '../../service';
 import { Location } from '@angular/common';
 import { RouterTestingModule } from '@angular/router/testing';
 
-
 describe('ObservationListingComponent', () => {
   let component: ObservationListingComponent;
   let fixture: ComponentFixture<ObservationListingComponent>;
@@ -130,6 +129,9 @@ describe('ObservationListingComponent', () => {
       component.showEditUserDetailsPopup = false;
       showEditUserDetailsPopup = false;
     });
+    spyOn(observationUtilService, 'getAlertMetaData').and.callFake(()=>{
+      return Response.metaData;
+    })
     spyOn(observationUtilService, 'showPopupAlert').and.returnValue(Promise.resolve(true));
     component.ngOnInit();
     expect(observationUtilService).toBeDefined();

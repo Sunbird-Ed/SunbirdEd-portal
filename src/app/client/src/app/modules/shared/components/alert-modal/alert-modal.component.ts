@@ -36,6 +36,11 @@ export class AlertModalComponent {
     this.location.back();
   }
 
+  // @HostListener('window:popstate', ['$event'])
+  // onPopState(event) {
+  //   this.modal.deny();
+  // }
+
 }
 
 export class AlertModal extends ComponentModalConfig<IAlertModalContext, void, void> {
