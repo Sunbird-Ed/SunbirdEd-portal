@@ -1391,6 +1391,11 @@ html[data-theme='Darkmode'][layout='joy'] {}
   border-radius: 5px;
   outline: none;
 }
+input[type=radio]:focus-visible, input[type=checkbox]:focus-visible{
+  outline: 2px solid #fe0000;
+  border-radius: 5px;
+  
+}
 // tab index css end
 
 // player SB-24647 changes
