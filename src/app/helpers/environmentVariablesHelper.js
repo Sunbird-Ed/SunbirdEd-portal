@@ -49,7 +49,7 @@ let envVariables = {
   sunbird_kid_public_key_base_path: env.sunbird_kid_public_key_base_path || '/keys/',
   reportsListVersion: env.reportsListVersion || 'v1',
   sunbird_data_product_service: env.sunbird_data_product_service || 'https://staging.ntp.net.in/',
-  ML_SERVICE_BASE_URL: env.ml_survey_url,
+  ML_SERVICE_BASE_URL: env.ml_survey_url || 'https://staging.ntp.net.in',
   SUNBIRD_PROTO: env.sunbird_base_proto,
 
   // TTL and Intervals
