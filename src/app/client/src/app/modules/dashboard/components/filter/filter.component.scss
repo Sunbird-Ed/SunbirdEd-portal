@@ -194,7 +194,7 @@
 }
 
 .ui.selection.dropdown {
-  color:#49B1F2 !important;  
+  color: var(--ui-dropdown-selection-icon) !important;  
   box-sizing: border-box;
   height: 40px !important;
   border: 1px solid #D7D7D7;
@@ -219,6 +219,8 @@ sui-multi-select.selection.sb-select-searchfilter.ui.dropdown.multiple {
  background: #E9E8D9 !important; 
 }
 
-
-
-  
+::ng-deep{
+  .modals.dimmer .ui.scrolling.modal {
+    margin: 3.5rem auto auto !important;
+  }
+}

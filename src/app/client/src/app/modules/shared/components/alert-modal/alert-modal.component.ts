@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SuiModal, ComponentModalConfig, ModalSize } from 'ng2-semantic-ui-v9';
-import { Location } from '@angular/common';
+import { Location, LocationStrategy } from '@angular/common';
 import {ResourceService} from '@sunbird/shared';
 import * as _ from 'lodash-es';
 
@@ -17,9 +17,12 @@ export class AlertModalComponent {
   isChecked = false;
   public resourceService: ResourceService;
   instance: string;
-  constructor(public modal: SuiModal<IAlertModalContext, void, void>, private location: Location, resourceService: ResourceService) {
+  constructor(public modal: SuiModal<IAlertModalContext, void, void>, private location: Location, resourceService: ResourceService,public locationStrategy: LocationStrategy) {
     this.resourceService = resourceService;
     this.instance = _.upperCase(this.resourceService.instance);
+    this.locationStrategy.onPopState(() => {
+      this.modal.approve();
+   });
   }
 
   getMethod(data) {
@@ -35,12 +38,6 @@ export class AlertModalComponent {
     this.modal.deny(data.footer.buttons[0].returnValue);
     this.location.back();
   }
-
-  // @HostListener('window:popstate', ['$event'])
-  // onPopState(event) {
-  //   this.modal.deny();
-  // }
-
 }
 
 export class AlertModal extends ComponentModalConfig<IAlertModalContext, void, void> {

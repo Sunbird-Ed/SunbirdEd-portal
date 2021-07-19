@@ -558,7 +558,7 @@ export class ReportComponent implements OnInit {
     const chartData = [];
     if (this.reportData.charts) {
       this.reportData.charts.map(chartInfo => {
-        chartData.push(...chartInfo.chartData);
+        chartData.push({ id:chartInfo.chartConfig.id ,data:chartInfo.chartData});
       });
     }
     return chartData;
@@ -575,7 +575,11 @@ export class ReportComponent implements OnInit {
   public filterChanged(data: any): void {
     if (this.chartsReportData && this.chartsReportData.charts) {
       this.chartsReportData.charts.map(element => {
-        element.chartData = data.chartData;
+        data.chartData.forEach(chart => {
+            if(chart['id']===element['chartConfig']['id']){
+              element.chartData = chart.data;
+            }
+        });
         return element;
       });
     }
