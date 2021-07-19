@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { ResourceService, ConfigService } from '@sunbird/shared';
 import { DhitiService } from '@sunbird/core';
+import { LocationStrategy } from '@angular/common';
 
 @Component({
   selector: 'app-all-evidence',
@@ -29,9 +30,13 @@ export class AllEvidenceComponent implements OnInit {
   constructor(
     public resourceService: ResourceService,
     config: ConfigService,
-    private dhitiService: DhitiService
+    private dhitiService: DhitiService,
+    public location: LocationStrategy
   ) {
     this.config = config;
+    this.location.onPopState(() => {
+      this.modal.deny();
+   });
   }
 
   ngOnInit() {

@@ -366,7 +366,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   generateContentReadEvent(event: any, newPlayerEvent?) {
-    let eventCopy = _.cloneDeep(event);
+    let eventCopy = newPlayerEvent ? _.cloneDeep(event) : event;
     if (!eventCopy) {
       return;
     }
