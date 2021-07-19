@@ -54,6 +54,11 @@
                 "glob": "**/*",
                 "input": "./node_modules/@project-sunbird/sunbird-quml-player-v9/lib/assets/",
                 "output": "/assets/"
+              },
+              {
+                "glob": "**/*.*",
+                "input": "./node_modules/@samagra-x/uci-console/assets/",
+                "output": "/assets/uci-console"
               }
             ],
             "styles": [
