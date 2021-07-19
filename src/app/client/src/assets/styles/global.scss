@@ -1396,6 +1396,10 @@ input[type=radio]:focus-visible, input[type=checkbox]:focus-visible{
   border-radius: 5px;
   
 }
+.sb-checkbox.sb-checkbox-primary.sb-checkbox-rightaligned label:focus-within{
+  outline: 2px solid #fe0000;
+  border-radius: 5px;
+}
 // tab index css end
 
 // player SB-24647 changes
