@@ -1,3 +1,4 @@
+import { LocationStrategy } from '@angular/common';
 import { Component, OnInit, Input, ViewChild, EventEmitter, Output } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
 
@@ -14,7 +15,12 @@ export class EditSubmissionComponent implements OnInit {
     showPopup;
     constructor(
         public resourceService: ResourceService,
-    ) { }
+        public location: LocationStrategy,
+    ) { 
+        this.location.onPopState(() => {
+            this.modal.deny();
+         });
+    }
     ngOnInit() { }
 
     closeModal() {

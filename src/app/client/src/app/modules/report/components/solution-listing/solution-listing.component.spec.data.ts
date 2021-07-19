@@ -5,6 +5,19 @@ export const profileData = {
   state: '1222633c-bef9-4be8-a42d-edffa5a9c7ab',
 };
 
+
+export const PaginateData={
+  totalItems: 20,
+  currentPage: 1,
+  pageSize: 10,
+  totalPages: 2,
+  startPage: 1,
+  endPage: 2,
+  startIndex: 0,
+  endIndex: 9,
+  pages: [1,2]
+}
+
 export const ObservationDataFail={
   message: 'Solutions fetched successfully',
   status: 200,
