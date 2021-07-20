@@ -12,6 +12,7 @@ import { Location } from '@angular/common';
 import { ObservationUtilService } from '../../observation/service';
 import { ComponentDeactivate } from '../guard/can-deactivate.guard';
 import { AssessmentInfo, Evidence, IAssessmentDetails, Section, SlQuestionnaireService } from '@shikshalokam/sl-questionnaire';
+import { QuestionnaireService } from '../questionnaire.service';
 
 @Component({
   selector: 'app-questionnaire',
@@ -41,7 +42,8 @@ export class QuestionnaireComponent
     private observationService: ObservationService,
     private location: Location,
     private observationUtilService: ObservationUtilService,
-    private slQService: SlQuestionnaireService
+    private slQService: SlQuestionnaireService,
+    private questionnaireService:QuestionnaireService
   ) {
     super();
   }
