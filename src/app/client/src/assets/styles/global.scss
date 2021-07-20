@@ -1448,3 +1448,9 @@ sunbird-epub-player .sunbird-epub-container {
 .contentViewerIframeShadow.player-fullscreen.content-full-video sunbird-epub-player .sb-player-splash-container{
   height: 100% !important;
 }
+
+.modals.dimmer .ui.scrolling.modal.small {
+  position: fixed !important;
+  margin: 3.5rem auto!important;
+  will-change: auto;
+}
