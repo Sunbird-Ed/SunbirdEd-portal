@@ -22,7 +22,7 @@ export class TelemetryErrorModalComponent implements OnInit {
     { name: 'ets', isSortable: true, prop: 'ets' },
     { name: 'edata.traceid', isSortable: false, prop: 'edata.traceid', placeholder: 'Filter error code' },
     { name: 'edata.err', isSortable: false, prop: 'edata.err', placeholder: 'Filter error code' },
-    { name: 'edata.errType', isSortable: false, prop: 'edata.errType', placeholder: 'Filter by type' },
+    { name: 'edata.errtype', isSortable: false, prop: 'edata.errtype', placeholder: 'Filter by type' },
     { name: 'edata.stacktrace', isSortable: false, prop: 'edata.stacktrace', placeholder: 'Filter by string' }
   ];
 

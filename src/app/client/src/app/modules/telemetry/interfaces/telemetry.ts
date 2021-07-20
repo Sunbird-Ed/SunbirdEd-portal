@@ -49,6 +49,7 @@ export interface IErrorEventData {
   'err': string;
   'errtype': string;
   'stacktrace': string;
+  'traceid': string;
 }
 export interface IEndEventData {
   'pageid'?: string;
