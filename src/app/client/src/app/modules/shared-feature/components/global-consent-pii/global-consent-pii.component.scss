@@ -7,4 +7,13 @@
         position: relative;
         top: calculateRem(2px);
     }
+    .profile-field-value{
+        word-break: break-all;
+    }
+}
+
+@media only screen and (max-width:768px) {
+    .ui.stackable.grid>.wide.column{
+        padding: 0 !important;
+    }
 }

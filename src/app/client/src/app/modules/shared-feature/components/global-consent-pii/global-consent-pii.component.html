@@ -54,9 +54,8 @@
   <div class="sb-modal-content d-flex flex-dc o-y-visible lineHeight-normal">
     <div class="ui stackable grid m-0">
       <div class="three wide column px-0">
-        <div class="d-flex flex-dc">
-          <label
-            class="mb-16 fnormal font-weight-normal sb__ellipsis sb__ellipsis--one">{{resourceService?.frmelmnts?.lbl?.dashboardsortbyusername}}
+        <div class="d-flex flex-dc profile-field-label">
+          <label class="mb-16 fnormal font-weight-normal sb__ellipsis sb__ellipsis--one">{{resourceService?.frmelmnts?.lbl?.dashboardsortbyusername}}
             :</label>
           <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.state}} :</label>
           <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.userId}} :</label>
@@ -69,7 +68,7 @@
         </div>
       </div>
       <div class="nine wide column">
-        <div class="d-flex flex-dc">
+        <div class="d-flex flex-dc profile-field-value">
           <label
             class="mb-16 fnormal font-weight-normal sb__ellipsis sb__ellipsis--one">{{userInformation.name || '-'}}</label>
           <label class="mb-16 fnormal font-weight-normal">{{userInformation.state || '-'}}</label>
