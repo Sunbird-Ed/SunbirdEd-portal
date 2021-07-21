@@ -10,10 +10,12 @@ import { ManageService } from './services/manage/manage.service';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { NgInviewModule } from 'angular-inport';
 import { SharedFeatureModule } from '@sunbird/shared-feature';
+import { UserRoleAssignComponent } from './components/user-role-assign/user-role-assign.component';
 
 @NgModule({
   declarations: [
-      UserOrgManagementComponent
+      UserOrgManagementComponent,
+      UserRoleAssignComponent
   ],
   imports: [
     CommonModule,
