@@ -96,7 +96,7 @@
   <ng-container *ngIf="showChart && !iframeDetails">
     <canvas #chartCanvas baseChart [datasets]="datasets" [labels]="chartLabels" [options]="chartOptions"
       [chartType]="chartType" [legend]="legend" [colors]="chartColors"></canvas>
-  </ng-container>
+   </ng-container>
   <ng-container *ngIf="iframeDetails">
     <iframe frameborder="0" class="dashboard-iframe" [src]="getIframeURL()">
     </iframe>
@@ -112,7 +112,7 @@
   <div class="filter-select-title mb-0 px-20 mt-20 py-0"> {{ resourceService?.frmelmnts?.lbl?.selectFilters }} </div> 
   <div class="sb-filter__container">
     <div class="sb-filter__content">
-      <app-filter [filterType] ="filterType" [resetFilters]="resetFilters"  [hideElements]="hideElements" [selectedFilter]="selectedFilters" [filters]="filters" (filterChanged)="filterChanged($event)" [chartData]="chartData"
+      <app-filter [filterType] ="filterType" [resetFilters]="resetFilters"  [hideElements]="hideElements" [selectedFilter]="selectedFilters" [filters]="filters" (filterChanged)="filterChanged($event)" [chartData]="getChartData()"
       [telemetryInteractObject]="telemetryInteractObject">
      </app-filter>
     </div>

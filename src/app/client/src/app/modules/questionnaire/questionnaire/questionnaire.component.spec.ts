@@ -23,13 +23,15 @@ import { APP_BASE_HREF } from '@angular/common';
 import { TranslateService, TranslateStore } from '@ngx-translate/core';
 import { ObservationService } from '@sunbird/core';
 import {SlQuestionnaireService} from '@shikshalokam/sl-questionnaire'
+import { QuestionnaireService } from '../questionnaire.service';
+import { ToasterService } from '../../shared';
 
 
 describe('QuestionaireComponent', () => {
   let component: QuestionnaireComponent;
   let baseHref;
   let fixture: ComponentFixture<QuestionnaireComponent>;
-  let questionnaireService, observationUtilService;
+  let questionnaireService, observationUtilService,slQService;
   const resourceBundle = {
     frmelmnts: {
       lbl: {
@@ -119,6 +121,8 @@ describe('QuestionaireComponent', () => {
         Location,
         TranslateService,
         TranslateStore,
+        QuestionnaireService,
+        ToasterService,
         { provide: ResourceService, useValue: resourceBundle },
         { provide: ActivatedRoute, useClass: FakeActivatedRoute },
         { provide: APP_BASE_HREF, useValue: baseHref },
@@ -134,7 +138,8 @@ describe('QuestionaireComponent', () => {
     component.queryParams = '';
     observationService = TestBed.get(ObservationService);
     observationUtilService = TestBed.get(ObservationUtilService);
-    questionnaireService=TestBed.get(SlQuestionnaireService);
+    slQService = TestBed.get(SlQuestionnaireService);
+    questionnaireService = TestBed.get(QuestionnaireService);
     component.queryParams = {
       observationId: '60af3cc30258ca7ed1fab9d1',
       entityId: '5fd098e2e049735a86b748ac',
@@ -256,7 +261,7 @@ describe('QuestionaireComponent', () => {
     let mockData={
       status:'draft'
     }
-    spyOn(questionnaireService,"getEvidenceData").and.callFake(()=>{
+    spyOn(slQService,"getEvidenceData").and.callFake(()=>{
       return mockData;
     });
     component.onSubmit();
