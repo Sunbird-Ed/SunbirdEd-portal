@@ -44,6 +44,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   allValues = {};
   selectedNgModels = {};
   private audienceList;
+  public refreshSearchFilterComponent = true;
 
   @ViewChild('sbSearchFrameworkFilterComponent') searchFrameworkFilterComponent: any;
   filterFormTemplateConfig: IFrameworkCategoryFilterFieldTemplateConfig[];
@@ -388,7 +389,9 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
       switchMap(_ => this._filterConfig$),
       tap((config: IFrameworkCategoryFilterFieldTemplateConfig[]) => {
         this.filterFormTemplateConfig = config;
-        this.hardRefreshFilter();
+        this.refreshSearchFilterComponent = false;
+        this.cdr.detectChanges();
+        this.refreshSearchFilterComponent = true;
       })
     );
   }
