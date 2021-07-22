@@ -23,7 +23,6 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateStore } from '@ngx-translate/core';
 import { SbSearchFilterModule } from 'common-form-elements-v9';
-import {UciAdminModule} from './modules/uci-admin/uci-admin.module';
 
 @NgModule({
   declarations: [
@@ -52,8 +51,7 @@ import {UciAdminModule} from './modules/uci-admin/uci-admin.module';
     ...PluginModules,
      // ngx-translate and the loader module
      HttpClientModule,
-    AppRoutingModule, // don't add any module below this because it contains wildcard route
-    UciAdminModule
+    AppRoutingModule // don't add any module below this because it contains wildcard route
   ],
   entryComponents: [AppComponent],
   bootstrap: [AppComponent],
