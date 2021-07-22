@@ -234,4 +234,8 @@ export class NavigationHelperService {
       this.router.navigate(['/resources']);
     }
   }
+
+  popHistory() {
+    this.history.pop();
+  }
 }
