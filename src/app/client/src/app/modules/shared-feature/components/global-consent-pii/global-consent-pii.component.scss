@@ -8,3 +8,14 @@
         top: calculateRem(2px);
     }
 }
+
+.profile-fields{
+word-break: break-all;
+    .profile-field-label{
+        width: calculateRem(150px);
+        @media screen and (max-width:768px) {
+          width: auto;
+        }
+    }
+}
+
