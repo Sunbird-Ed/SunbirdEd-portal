@@ -32,6 +32,7 @@ export class DiscussionModule {
       this.discussionTelemetryService.logTelemetryEvent(event);
     });
 
+    // Remove DFroutes from history
     this.router.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
           setTimeout(() => {
