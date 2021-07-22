@@ -10,6 +10,7 @@ import { DiscussionTelemetryService } from '../shared/services/discussion-teleme
 import * as _ from 'lodash-es';
 import { NavigationHelperService } from '@sunbird/shared';
 import { AccessDiscussionComponent } from './components/access-discussion/access-discussion.component';
+import { NavigationEnd, Router } from '@angular/router';
 
 @NgModule({
   imports: [
@@ -25,12 +26,21 @@ export class DiscussionModule {
   constructor(
     private discussionEvents: DiscussionEventsService,
     private discussionTelemetryService: DiscussionTelemetryService,
-    private navigationHelperService: NavigationHelperService) {
+    private navigationHelperService: NavigationHelperService,
+    private router: Router) {
     this.discussionEvents.telemetryEvent.subscribe(event => {
       this.discussionTelemetryService.logTelemetryEvent(event);
-      if (_.get(event, 'action') === 'DF_CLOSE' ) {
-        this.navigationHelperService.navigateToLastUrl();
-      }
     });
+
+
+    this.router.events.subscribe(e => {
+      if (e instanceof NavigationEnd) {
+          setTimeout(() => {
+            this.navigationHelperService.popHistory()
+          }, 200)
+      }
+    })
+
+
   }
 }
