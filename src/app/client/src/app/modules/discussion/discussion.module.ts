@@ -32,7 +32,6 @@ export class DiscussionModule {
       this.discussionTelemetryService.logTelemetryEvent(event);
     });
 
-
     this.router.events.subscribe(e => {
       if (e instanceof NavigationEnd) {
           setTimeout(() => {
@@ -40,7 +39,6 @@ export class DiscussionModule {
           }, 200)
       }
     })
-
-
   }
+
 }
