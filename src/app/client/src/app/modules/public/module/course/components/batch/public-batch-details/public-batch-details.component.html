@@ -21,7 +21,7 @@
 <sui-accordion class="styled fluid sb-accordion mb-16 sb-new-theme-accordion">
     <sui-accordion-panel [isOpen]="false">
       <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
-        <span>{{resourceService.frmelmnts.lbl.batchdetails}}</span>
+        <span>{{resourceService?.frmelmnts?.lbl?.batchdetails}}</span>
         <i class="chevron down icon" role="img" title="expand"></i>
       </div>
       <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-16">
@@ -37,10 +37,10 @@
           </div>
           <div class="batch-details__created mt-8 fsmall" *ngIf="isValidEnrollmentEndDate(batchDetails?.enrollmentEndDate)">
             <span class="sb-label-12size"
-              *ngIf="!isEnrollmentAllowed(batchDetails?.enrollmentEndDate)">{{resourceService.messages.stmsg.m0136}}
+              *ngIf="!isEnrollmentAllowed(batchDetails?.enrollmentEndDate)">{{resourceService?.messages?.stmsg?.m0136}}
               {{batchDetails?.enrollmentEndDate | dateFormat}}</span>
             <span class="sb-label-status-error"
-              *ngIf="isEnrollmentAllowed(batchDetails?.enrollmentEndDate)">{{resourceService.messages.stmsg.m0134}}</span>
+              *ngIf="isEnrollmentAllowed(batchDetails?.enrollmentEndDate)">{{resourceService?.messages?.stmsg?.m0134}}</span>
           </div>
         </div>
       </div>
