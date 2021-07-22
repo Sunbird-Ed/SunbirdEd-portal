@@ -45,7 +45,7 @@ export class GroupsService {
     private configService: ConfigService,
     private learnerService: LearnerService,
     private tncService: TncService
-  ) {
+    ) {
     if (!CsModule.instance.isInitialised) {
       this.csLibInitializerService.initializeCs();
     }
@@ -372,5 +372,33 @@ getActivity(groupId, activity, mergeGroup, leafNodesCount?) {
 
   getDashletData(courseHeirarchyData, aggData) {
     return this.groupCservice.activityService.getDataForDashlets(courseHeirarchyData, aggData);
+  }
+
+  // Temporary fix to get telemetry contexrt for group exception logs 
+
+  /**
+   * generate the telemetry context data by using router details
+   */
+  getTelemetryContext() {
+    const routerData =  this.router.routerState.snapshot.root.children[0].children[0];
+    const routerTelemetryData =  routerData.data.telemetry;
+    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
+    const version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
+    const telmetryContext =  {
+      context: { env: routerTelemetryData.env},
+      Object: {  
+        id: routerData.params.groupId,
+        type: routerTelemetryData.env,
+        ver: version
+      },
+      cdata: [
+        {id: routerData.params.groupId, type: routerTelemetryData.env},
+      ]
+    }
+    if (routerData.params.activityId) {
+       telmetryContext.cdata.push( 
+          {id: routerData.params.activityId, type: routerData.queryParams.primaryCategory})
+    }
+    return telmetryContext;
   }
 }

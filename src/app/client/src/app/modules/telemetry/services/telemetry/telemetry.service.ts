@@ -184,6 +184,7 @@ export class TelemetryService {
       edata: {
         err: data.errorMessage,
         errtype: data.errorType,
+        traceid: data.traceid,
         stacktrace: data.stackTrace,
         pageid: data.pageid
       }

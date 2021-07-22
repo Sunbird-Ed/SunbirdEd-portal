@@ -279,6 +279,7 @@ export class ContentManagerService {
       edata: {
         err: _.get(error, 'error.params.err'),
         errtype: _.get(error, 'error.responseCode'),
+        traceid: '' , // TODO : add traceid based on the error responce data
         stacktrace: JSON.stringify(error)
       }
     };
