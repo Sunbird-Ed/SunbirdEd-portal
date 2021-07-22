@@ -23,7 +23,7 @@ import { SlickModule } from 'ngx-slick';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { DiscussionModule } from '../discussion/discussion.module';
 import { ActivityDetailsComponent } from './components/activity/activity-details/activity-details.component';
-import { CsEventService } from '@project-sunbird/client-services/event/implementation/event-service-impl';
+import { CsEventServiceImpl } from '@project-sunbird/client-services/event/implementation/event-service-impl';
 import { IErrorEventInput, TelemetryService } from '../telemetry';
 import * as _ from 'lodash-es';
 import { Subscription } from 'rxjs';
@@ -68,7 +68,7 @@ export class GroupsModule {
   subscription: Subscription;
   constructor(private csLibInitializerService: CsLibInitializerService, private telemetryService: TelemetryService, private groupService: GroupsService) {
     this.csLibInitializerService.initializeCs();
-    const instanceOfEService = CsEventService;
+    const instanceOfEService = CsEventServiceImpl;
     this.subscription = instanceOfEService.events('Error').subscribe(error => {
       const routeData = this.groupService.getTelemetryContext();
       const params = error.data.error.response.body.params;
@@ -83,7 +83,7 @@ export class GroupsModule {
         edata: {
           err: _.get(params, 'err') || _.get(errRes, 'code'),
           errtype: JSON.stringify(_.get(errRes, 'response.responseCode')) || JSON.stringify(_.get(errRes, 'code')),
-          traceid: JSON.stringify(_.get(params, 'msgid')) || JSON.stringify(Math.random()),
+          traceid: _.get(params, 'msgid') || JSON.stringify(Math.random()),
           stacktrace: _.get(params, 'errmsg') || _.get(errRes, 'response.errorMesg')
         }
       };
