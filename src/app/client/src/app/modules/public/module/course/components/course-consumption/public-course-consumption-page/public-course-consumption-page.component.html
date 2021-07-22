@@ -10,6 +10,13 @@
                     </svg></i>
                 {{resourceService?.frmelmnts?.btn?.back}}
             </button>
+            <div class="batch-details__created mt-8 fsmall" *ngIf="isValidEnrollmentEndDate(enrollmentEndDate)">
+              <span class="sb-label-12size"
+                *ngIf="!isEnrollmentAllowed(enrollmentEndDate)">{{resourceService.messages.stmsg.m0136}}
+                {{enrollmentEndDate | dateFormat}}</span>
+              <span class="sb-label-status-error"
+                *ngIf="isEnrollmentAllowed(enrollmentEndDate)">{{resourceService.messages.stmsg.m0134}}</span>
+            </div>
         </div>
     </div>
 </div>

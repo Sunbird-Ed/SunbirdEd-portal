@@ -39,6 +39,8 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
   telemetryInteractObject: IInteractEventObject;
   enrollToBatch: any;
   tocId = '';
+  showBatchDetailsBeforeJoin = false;
+  batchDetails: {};
   constructor(private browserCacheTtlService: BrowserCacheTtlService, private cacheService: CacheService,
     public resourceService: ResourceService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
     public router: Router, public userService: UserService, public telemetryService: TelemetryService,
@@ -80,6 +82,7 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
         this.allBatchDetails.emit(_.get(data, 'result.response'));
         if (data.result.response.content && data.result.response.content.length > 0) {
           this.batchList = data.result.response.content;
+          this.showBatchDetails();
         }
         this.showBatchList = true;
       },
@@ -161,5 +164,10 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
     } else {
       window.location.href = this.baseUrl + queryParam;
     }
+  }
+
+  showBatchDetails() {
+    this.showBatchDetailsBeforeJoin = this.batchList[0] ? true : false;
+    this.batchDetails = this.batchList[0];
   }
 }
