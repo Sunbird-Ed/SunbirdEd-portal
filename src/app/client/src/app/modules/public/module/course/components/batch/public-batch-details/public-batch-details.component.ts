@@ -40,7 +40,7 @@ export class PublicBatchDetailsComponent implements OnInit, OnDestroy {
   enrollToBatch: any;
   tocId = '';
   showBatchDetailsBeforeJoin = false;
-  batchDetails: {};
+  batchDetails: any;
   constructor(private browserCacheTtlService: BrowserCacheTtlService, private cacheService: CacheService,
     public resourceService: ResourceService, public courseBatchService: CourseBatchService, public toasterService: ToasterService,
     public router: Router, public userService: UserService, public telemetryService: TelemetryService,
