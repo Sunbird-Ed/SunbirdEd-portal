@@ -24,6 +24,8 @@ import { RecaptchaModule } from 'ng-recaptcha';
 import { DiscussionModule } from '../discussion/discussion.module';
 import { ActivityDetailsComponent } from './components/activity/activity-details/activity-details.component';
 import { CsEventServiceImpl } from '@project-sunbird/client-services/event/implementation/event-service-impl';
+import { CsAppEvents } from '@project-sunbird/client-services/event/interfaces/cs-app-events';
+
 import { IErrorEventInput, TelemetryService } from '../telemetry';
 import * as _ from 'lodash-es';
 import { Subscription } from 'rxjs';
@@ -69,7 +71,7 @@ export class GroupsModule {
   constructor(private csLibInitializerService: CsLibInitializerService, private telemetryService: TelemetryService, private groupService: GroupsService) {
     this.csLibInitializerService.initializeCs();
     const instanceOfEService = CsEventServiceImpl;
-    this.subscription = instanceOfEService.events('Error').subscribe(error => {
+    this.subscription = instanceOfEService.events(CsAppEvents.ERROR).subscribe(error => {
       const routeData = this.groupService.getTelemetryContext();
       const params = error.data.error.response.body.params;
       if (params) {
