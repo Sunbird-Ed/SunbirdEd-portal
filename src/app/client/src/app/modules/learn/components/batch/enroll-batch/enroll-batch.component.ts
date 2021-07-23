@@ -130,6 +130,7 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
           this.showLoader = false;
           this.router.navigate(['/learn/course', this.batchDetails.courseId, 'batch', this.batchDetails.identifier],
           { queryParams: { consent: true , textbook: this.tocId || undefined} }).then(() => {
+            this.telemetryService.syncEvents(false);
             window.location.reload();
           });
         }, (err) => {
