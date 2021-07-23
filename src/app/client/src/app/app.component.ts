@@ -146,7 +146,7 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   @HostListener('window:beforeunload', ['$event'])
   public beforeunloadHandler($event) {
-    this.telemetryService.syncEvents(false);
+    this.telemetryService.syncEvents(true);
     this.ngOnDestroy();
   }
 
