@@ -52,37 +52,50 @@
   <!--/Header-->
   <!--Content-->
   <div class="sb-modal-content d-flex flex-dc o-y-visible lineHeight-normal">
-    <div class="ui stackable grid m-0">
-      <div class="three wide column px-0">
-        <div class="d-flex flex-dc">
-          <label
-            class="mb-16 fnormal font-weight-normal sb__ellipsis sb__ellipsis--one">{{resourceService?.frmelmnts?.lbl?.dashboardsortbyusername}}
-            :</label>
-          <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.state}} :</label>
-          <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.userId}} :</label>
-          <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.district}} :</label>
-          <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.block}} :</label>
-          <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.schoolId}} :</label>
-          <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.schoolName}} :</label>
-          <label class="mb-16 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.mobileNumber}} :</label>
-          <label class="mb-24 fnormal font-weight-normal">{{resourceService?.frmelmnts?.lbl?.emailId}} :</label>
-        </div>
+      <div class="profile-fields">
+       <div class="d-flex mb-16 fnormal">
+        <label class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.dashboardsortbyusername}}<span class="mx-8">:</span></label>
+        <div class="font-weight-normal">{{userInformation.name || '-'}}</div>
+       </div>
+       <div class="d-flex mb-16 fnormal">
+        <label class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.state}}<span class="mx-8">:</span></label>
+        <div  class="font-weight-normal">{{userInformation.state || '-'}}</div>
+       </div>
+       <div class="d-flex mb-16 fnormal">
+        <label class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.userId}}<span class="mx-8">:</span></label> 
+        <div class="font-weight-normal">{{userInformation.userid || '-'}}</div>
+       </div>
+
+       <div class="d-flex mb-16 fnormal">
+        <label class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.district}}<span class="mx-8">:</span></label>
+        <div class="font-weight-normal">{{userInformation.district || '-'}}</div>
+       </div>
+
+       <div class="d-flex mb-16 fnormal">
+        <label class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.block}}<span class="mx-8">:</span></label>
+        <div class="font-weight-normal">{{userInformation.block || '-'}}</div>
+       </div>
+
+       <div class="d-flex mb-16 fnormal">
+        <label class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.schoolId}}<span class="mx-8">:</span></label>
+        <div class="font-weight-normal">{{userInformation.schoolId || '-'}}</div>
+       </div>
+
+       <div class="d-flex mb-16 fnormal">
+        <label class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.schoolName}}<span class="mx-8">:</span></label>
+        <div class="font-weight-normal">{{userInformation.schoolName || '-'}}</div>
+       </div>
+
+       <div class="d-flex mb-16 fnormal">
+        <label class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.mobileNumber}}<span class="mx-8">:</span></label>
+        <div class="font-weight-normal">{{userInformation.phone || '-'}}</div>
+       </div>
+
+       <div class="d-flex mb-16 fnormal">
+        <label class="font-weight-bold profile-field-label">{{resourceService?.frmelmnts?.lbl?.emailId}}<span class="mx-8">:</span></label>
+        <div class="font-weight-normal">{{userInformation.emailId || '-'}}</div>
+       </div>
       </div>
-      <div class="nine wide column">
-        <div class="d-flex flex-dc">
-          <label
-            class="mb-16 fnormal font-weight-normal sb__ellipsis sb__ellipsis--one">{{userInformation.name || '-'}}</label>
-          <label class="mb-16 fnormal font-weight-normal">{{userInformation.state || '-'}}</label>
-          <label class="mb-16 fnormal font-weight-normal">{{userInformation.userid || '-'}}</label>
-          <label class="mb-16 fnormal font-weight-normal">{{userInformation.district || '-'}}</label>
-          <label class="mb-16 fnormal font-weight-normal">{{userInformation.block || '-'}}</label>
-          <label class="mb-16 fnormal font-weight-normal">{{userInformation.schoolId || '-'}}</label>
-          <label class="mb-16 fnormal font-weight-normal">{{userInformation.schoolName || '-'}}</label>
-          <label class="mb-16 fnormal font-weight-normal">{{userInformation.phone || '-'}}</label>
-          <label class="mb-24 fnormal font-weight-normal">{{userInformation.emailId || '-'}}</label>
-        </div>
-      </div>
-    </div>
     <div class="mb-16 fnormal font-weight-normal" *ngIf="type === 'course-consent'">
       <img src="../../../../../../assets/images/info-icon.svg" width="14px" height="14px" class="mr-8" alt="info">{{resourceService?.frmelmnts?.lbl?.canEditProfileDetails}}
     </div>

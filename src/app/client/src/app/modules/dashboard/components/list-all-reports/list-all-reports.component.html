@@ -2,7 +2,7 @@
 
 </app-landing-section>
 
-<div [ngClass]="layoutConfiguration ? 'sbt-container relative9':''">
+<div [ngClass]="layoutConfiguration ? 'sbt-container relative9 sbt-fluid-content-bg pt-16':''">
   <div class="sb-pageSection my-24 ui container listallreports-section">
 
     <ng-container *ngIf="(reportsList$ | async ) as reportsList else loading">
