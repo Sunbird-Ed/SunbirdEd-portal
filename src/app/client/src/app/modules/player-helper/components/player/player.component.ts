@@ -111,7 +111,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         this.showQumlPlayer = true;
       }
     }
-    
+
     // If `sessionStorage` has UTM data; append the UTM data to context.cdata
     if (this.playerConfig && sessionStorage.getItem('UTM')) {
       let utmData;
@@ -357,16 +357,16 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.mobileViewDisplay = 'none';
     }
     if (_.get(event, 'edata.type') === 'PRINT') {
-      let windowFrame = window.document.querySelector('pdf-viewer iframe');
+      const windowFrame = window.document.querySelector('pdf-viewer iframe');
       if (windowFrame) {
-        windowFrame['contentWindow'].print()
+        windowFrame['contentWindow'].print();
       }
       this.mobileViewDisplay = 'none';
     }
   }
 
   generateContentReadEvent(event: any, newPlayerEvent?) {
-    let eventCopy = _.cloneDeep(event)
+    let eventCopy = newPlayerEvent ? _.cloneDeep(event) : event;
     if (!eventCopy) {
       return;
     }
@@ -374,7 +374,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       eventCopy = { detail: {telemetryData: eventCopy}};
     }
     const eid = _.get(eventCopy, 'detail.telemetryData.eid');
-    if (eid && (eid === 'START' || eid === 'END')) {
+    const contentId = _.get(eventCopy, 'detail.telemetryData.object.id');
+    if (eid && (eid === 'START' || eid === 'END') && contentId === _.get(this.playerConfig, 'metadata.identifier')) {
       this.showRatingPopup(eventCopy);
       if (this.contentProgressEvents$) {
         this.contentProgressEvents$.next(eventCopy);

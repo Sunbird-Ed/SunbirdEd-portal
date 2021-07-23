@@ -26,7 +26,6 @@
         </div>
       </div>
     </div>
-  
     <div class="textbook-container cc-player__content-header relative9">
       <div class="ui container">
         <div class="textbook py-16 sb-g cc-player">
@@ -55,7 +54,7 @@
       </div>
     </div>
     <!-- / Header-->
-  
+
     <!-- first screen -->
     <div class="certificate-container py-16 cc-player__content-header relative9"
       *ngIf="currentState === screenStates.default">
@@ -84,7 +83,6 @@
               </div>
             </div>
           </div>
-  
           <div class="eight wide column">
             <div *ngIf="!selectedTemplate" class="select-template-content p-24">
               <div class="d-flex flex-dc flex-ai-center text-center mt-32">
@@ -92,7 +90,7 @@
                 <p class="no-template-text pt-16 pb-24 mb-0">{{resourceService?.frmelmnts?.cert?.lbl?.noCertificate}}
                   <b>{{resourceService?.frmelmnts?.cert?.lbl?.addCert }}</b>
                   {{ resourceService?.frmelmnts?.cert?.lbl?.button}}</p>
-                <button type="button" id="addNewCert"  tabindex="0" (click)="certificateCreation()"
+                <button type="button" id="addNewCert" tabindex="0" (click)="certificateCreation()"
                   class="sb-btn sb-btn-normal sb-btn-outline-primary px-24">
                   {{resourceService?.frmelmnts?.cert?.lbl?.addCert }}
                   <img src="assets/images/plus-icon.svg" alt=" Add certificate " width="8px"
@@ -129,7 +127,7 @@
         </div>
       </div>
     </div>
-  
+
     <!-- second screen -->
     <div class="certificate-container py-16 cc-player__content-header relative9"
       *ngIf="currentState === screenStates.certRules">
@@ -158,7 +156,7 @@
                     </div> -->
                   </div>
                 </div>
-  
+
                 <div class='ui stackable grid mt-0'>
                   <div class="five wide column">
                     <div class="pt-8 pb-16 font-weight-bold fnormal text-left">
@@ -177,18 +175,20 @@
                     </div>
                   </div>
                 </div>
-  
+
                 <hr class="mt-16 mb-24">
-  
+
                 <div class="ui stackable grid mt-0">
                   <div class="twelve wide column pt-0">
                     <div class="d-flex rules-configuration px-16">
-                      <label class="d-flex flex-ai-center fnormal font-weight-normal mb-0 py-8">{{resourceService?.frmelmnts?.lbl?.addCertificateprogressrule}}</label>
+                      <label
+                        class="d-flex flex-ai-center fnormal font-weight-normal mb-0 py-8">{{resourceService?.frmelmnts?.lbl?.addCertificateprogressrule}}</label>
                       <div class="mx-24 progress-separator"></div>
                       <div class="py-16 d-flex flex-wrap rules-form-content">
                         <div class="mr-16 sb-field-group">
                           <div class="sb-field">
-                            <input class="sb-form-control fnormal font-weight-bold" type="text" placeholder="100%" value="100%" readonly=true>
+                            <input class="sb-form-control fnormal font-weight-bold" type="text" placeholder="100%"
+                              value="100%" readonly=true>
                           </div>
                           <p class="font-weight-normal fsmall mb-0 completion-text">
                             <span class="asterik">*</span>
@@ -199,32 +199,37 @@
                     </div>
                   </div>
                 </div>
-  
+
                 <div class="progess-add-content" *ngIf="isSingleAssessment">
                   <div class="left-border"></div>
-                  <button type="button" class="add-score-btn py-8 px-16 fsmall font-weight-bold" *ngIf="addScoreRule" >And</button>
-                  <button type="button" class="d-flex flex-ai-center flex-jc-center plus-btn" *ngIf="!addScoreRule" tabindex="0" (click)="addRule()"><img src="assets/images/plus-icon.svg"></button>
+                  <button type="button" class="add-score-btn py-8 px-16 fsmall font-weight-bold"
+                    *ngIf="addScoreRule">And</button>
+                  <button type="button" class="d-flex flex-ai-center flex-jc-center plus-btn" *ngIf="!addScoreRule"
+                    tabindex="0" (click)="addRule()"><img src="assets/images/plus-icon.svg"></button>
                   <div class="left-border" *ngIf="addScoreRule"></div>
                 </div>
-  
+
                 <div class="ui stackable grid mt-0" *ngIf="addScoreRule && isSingleAssessment">
                   <div class="twelve wide column pt-0">
                     <div class="d-flex rules-configuration px-16">
-                      <label class="d-flex flex-ai-center fnormal font-weight-normal mb-0 py-8">{{resourceService?.frmelmnts?.lbl?.addCertificatescorerule}}</label>
+                      <label
+                        class="d-flex flex-ai-center fnormal font-weight-normal mb-0 py-8">{{resourceService?.frmelmnts?.lbl?.addCertificatescorerule}}</label>
                       <div class="mx-24 progress-separator"></div>
                       <div class="py-16 d-flex flex-dc rules-form-content my-16">
                         <div class="ui stackable grid mt-0 sb-field-group">
                           <div class="five wide column sb-field mb-0">
                             <input class="sb-form-control fnormal font-weight-bold" type="text"
-                              placeholder="Best attempt score" value="{{resourceService?.frmelmnts?.lbl?.bestScoreattempt}}" readonly="true">
+                              placeholder="Best attempt score"
+                              value="{{resourceService?.frmelmnts?.lbl?.bestScoreattempt}}" readonly="true">
                           </div>
-                          <div class="three wide fnormal column mt-5">{{resourceService?.frmelmnts?.lbl?.addCertificategreaterThan}}</div>
+                          <div class="three wide fnormal column mt-5">
+                            {{resourceService?.frmelmnts?.lbl?.addCertificategreaterThan}}</div>
                           <div class="four wide column sb-field mb-0">
-                            <sui-select class="selection form-control" 
-                          [placeholder]="'Select'" formControlName="scoreRange" [options]="scoreRange" #selectScoreRange>
+                            <sui-select class="selection form-control" [placeholder]="'Select'"
+                              formControlName="scoreRange" [options]="scoreRange" #selectScoreRange>
                               <sui-select-option *ngFor="let option of arrayValue['range']" [value]="option + '%'">
                               </sui-select-option>
-                            </sui-select> 
+                            </sui-select>
                           </div>
                           <p class="font-weight-normal fsmall mb-0 completion-text">
                             <span class="asterik">*</span>
@@ -232,11 +237,12 @@
                           </p>
                         </div>
                       </div>
-                      <div class="close-score" tabindex="0" (click)="removeRule()"><img src="assets/images/close.svg"></div>
+                      <div class="close-score" tabindex="0" (click)="removeRule()"><img src="assets/images/close.svg">
+                      </div>
                     </div>
                   </div>
                 </div>
-  
+
                 <div class='ui stackable grid mt-0'>
                   <div class="twelve wide column">
                     <div class="sb-checkbox sb-checkbox-secondary pt-24">
@@ -246,19 +252,19 @@
                   </div>
                 </div>
               </form>
-              <div *ngIf="selectedTemplate">
-                <div class="certificate-edit-area">
-                  <div class="certificate-edit-sbcard">
-                    <div class="d-flex flex-dc p-16 certificate-edit-sbcard-content">
-                      <div class="certificate-frame">
-                        <div><img src="{{selectedTemplate?.artifactUrl || selectedTemplate?.previewUrl}}"
-                            alt="certificate edit"></div>
-                      </div>
-                      <div class="d-flex flex-ai-center flex-jc-space-between w-100 pt-16">
-                        <div class="d-flex flex-ai-center ml-auto d-flex">
-                          <button type="button" (click)="removeSelectedCertificate()"
-                            class="sb-btn sb-btn-primary sb-btn-normal">{{resourceService?.frmelmnts?.btn?.remove}}</button>
-                        </div>
+            </div>
+            <div *ngIf="selectedTemplate">
+              <div class="certificate-edit-area">
+                <div class="certificate-edit-sbcard">
+                  <div class="d-flex flex-dc p-16 certificate-edit-sbcard-content">
+                    <div class="certificate-frame">
+                      <div><img src="{{selectedTemplate?.artifactUrl || selectedTemplate?.previewUrl}}"
+                          alt="certificate edit"></div>
+                    </div>
+                    <div class="d-flex flex-ai-center flex-jc-space-between w-100 pt-16">
+                      <div class="d-flex flex-ai-center ml-auto d-flex">
+                        <button type="button" (click)="removeSelectedCertificate()" tabindex="0"
+                          class="sb-btn sb-btn-primary sb-btn-normal">{{resourceService?.frmelmnts?.btn?.remove}}</button>
                       </div>
                     </div>
                   </div>
@@ -266,7 +272,6 @@
               </div>
             </div>
           </div>
-  
           <!-- Side panel of cert-templates -->
           <div class="sb-g-col-xs-12 sb-g-col-md-4 sb-g-col-lg-4 sb-g-col-xxxl-3">
             <div class="select-template-content sb-bg-color-white p-24 certificate-bg">
@@ -275,13 +280,14 @@
                   <label class="certificates-label">{{resourceService?.frmelmnts?.cert?.lbl?.templates}}</label>
                   <button
                     class="add-new-template-btn sb-btn sb-btn-normal sb-btn-outline-primary sb-left-icon-btn font-weight-bold"
-                    type="button" (click)="navigateToCreateTemplate()">
+                    type="button" (click)="navigateToCreateTemplate()" tabindex="0">
                     <i
                       class="plus alternate outline icon"></i>{{resourceService?.frmelmnts?.cert?.btn?.createtemp}}</button>
                 </div>
                 <div class="d-flex flex-ai-center text-left flex-jc-space-between">
                   <label class="font-weight-normal fsmall">{{resourceService?.frmelmnts?.cert?.lbl?.certNote}}</label>
-                  <button (click)="refreshData()" class="sb-btn sb-btn-normal sb-btn-outline-primary my-16">
+                  <button (click)="refreshData()" class="sb-btn sb-btn-normal sb-btn-outline-primary my-16"
+                    tabindex="0">
                     {{resourceService?.frmelmnts?.cert?.btn?.refresh}}
                   </button>
                 </div>
@@ -298,7 +304,7 @@
           </div>
         </div>
       </div>
-  
+
       <div *ngIf="currentState === screenStates.certRules">
         <div class="ui stackable grid m-0">
           <div class="twelve wide column px-0">
@@ -317,7 +323,7 @@
         </div>
       </div>
     </div>
-    
+
   </div>
 
 </div>
@@ -351,7 +357,6 @@
     </button>
   </div>
 </sui-modal>
-
 
 <sui-modal [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'small'" class="sb-modal"
   appBodyScroll (dismissed)="showAlertModal = false" #modal *ngIf="showAlertModal">

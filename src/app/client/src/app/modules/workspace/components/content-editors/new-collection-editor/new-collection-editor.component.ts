@@ -27,6 +27,7 @@ export class NewCollectionEditorComponent implements OnInit {
   public hierarchyConfig: any;
   public layoutType: string;
   public baseUrl: string;
+  public publicStorageAccount: any;
   constructor(private userService: UserService, public layoutService: LayoutService,
     private telemetryService: TelemetryService, private publicDataService: PublicDataService,
     private config: ConfigService, private contentService: ContentService, private router: Router,
@@ -42,6 +43,8 @@ export class NewCollectionEditorComponent implements OnInit {
     this.layoutType = localStorage.getItem('layoutType') || 'joy';
     this.baseUrl = (<HTMLInputElement>document.getElementById('baseUrl'))
       ? (<HTMLInputElement>document.getElementById('baseUrl')).value : document.location.origin;
+      this.publicStorageAccount = (<HTMLInputElement>document.getElementById('publicStorageAccount'))
+      ? (<HTMLInputElement>document.getElementById('publicStorageAccount')).value : undefined;
   }
 
   ngOnInit() {
@@ -111,7 +114,9 @@ export class NewCollectionEditorComponent implements OnInit {
 
   public getDetails() {
     const lockInfo = _.pick(this.queryParams, 'lockKey', 'expiresAt', 'expiresIn');
-    if (_.isEmpty(lockInfo)) {
+    const allowedEditState = ['draft', 'allcontent', 'collaborating-on', 'uploaded', 'alltextbooks'].includes(this.routeParams.state);
+    const allowedEditStatus = this.routeParams.contentStatus ? ['draft'].includes(this.routeParams.contentStatus.toLowerCase()) : false;
+    if (_.isEmpty(lockInfo) && allowedEditState && ( allowedEditStatus || this.userService.userProfile.rootOrgAdmin )) {
       return combineLatest(
         this.getCollectionDetails(),
         this.editorService.getOwnershipType(),
@@ -308,7 +313,10 @@ export class NewCollectionEditorComponent implements OnInit {
         mode: this.getEditorMode()
       }
     };
+    this.editorConfig.config.showAddCollaborator = true;
+    this.editorConfig.config.publicStorageAccount = this.publicStorageAccount;
     if (this.showQuestionEditor) {
+      this.editorConfig.config.showAddCollaborator = false;
       this.editorConfig.context.framework = this.collectionDetails.framework || this.frameworkService['_channelData'].defaultFramework;
     }
     this.editorConfig.config = _.assign(this.editorConfig.config, this.hierarchyConfig);

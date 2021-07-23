@@ -60,7 +60,7 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
     if (_.toLower(_.get(this.contentData, 'board')) === 'cbse') {
       this.contentData.board = 'CBSE/NCERT';
     }
-    const isVideoMimetype = _.includes(["video/mp4","video/webm"], _.get(this.contentData, 'mimeType'));
+    const isVideoMimetype = _.includes(['video/mp4', 'video/webm'], _.get(this.contentData, 'mimeType'));
     this.activatedRoute.params.subscribe((params) => {
       this.collectionId = params.collectionId;
     });
@@ -78,7 +78,7 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
         this.shareContent(this.contentData);
       }
     });
-    if(this.isDesktopApp) {
+    if (this.isDesktopApp) {
       this.contentManagerService.contentDownloadStatus$.pipe(takeUntil(this.unsubscribe$)).subscribe( contentDownloadStatus => {
         this.contentDownloadStatus = contentDownloadStatus;
         this.changeContentStatus();
@@ -109,7 +109,7 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
           this.logTelemetry('rate-content', content);
           break;
         case 'SHARE':
-          if(this.isDesktopApp) {
+          if (this.isDesktopApp) {
             this.exportContent(content);
           } else {
             this.shareContent(content);
@@ -319,7 +319,7 @@ export class ContentActionsComponent implements OnInit, OnChanges, OnDestroy {
         }
       });
   }
-  
+
   deleteContent(content) {
     const button = _.find(this.actionButtons, {label: 'Delete'});
     button.disabled = true;

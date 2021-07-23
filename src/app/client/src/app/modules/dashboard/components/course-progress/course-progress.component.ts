@@ -10,7 +10,7 @@ import {
   NavigationHelperService, IPagination, OnDemandReportsComponent
 } from '@sunbird/shared';
 import { CourseProgressService, UsageService } from './../../services';
-import { ICourseProgressData, IBatchListData } from './../../interfaces';
+import { ICourseProgressData, IBatchListData, IForumContext } from './../../interfaces';
 import { IInteractEventInput, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 import { OnDemandReportService } from './../../../shared/services/on-demand-report/on-demand-report.service';
 import dayjs from 'dayjs';
@@ -131,6 +131,11 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
   * which is needed to show the pagination on inbox view
     */
   pager: IPagination;
+  /**
+   * input data for fetchforum Ids
+   */
+   fetchForumIdReq: IForumContext;
+
   /**
    * To send activatedRoute.snapshot to router navigation
    * service for redirection to parent component
@@ -254,6 +259,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
           this.queryParams.batchIdentifier = this.batchlist[0].id;
           this.selectedOption = this.batchlist[0].id;
           this.currentBatch = this.batchlist[0];
+          this.generateDataForDF(this.currentBatch);
           this.setBatchId(this.currentBatch);
           this.populateCourseDashboardData(this.batchlist[0]);
         } else {
@@ -267,7 +273,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       });
   }
 
-  summaryReport(tabNumber){
+  summaryReport(tabNumber) {
     this.setInteractEventDataForTabs('summary-report');
     this.selectedTab = tabNumber;
     this.getSummaryReports();
@@ -288,11 +294,11 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
     this.batchId = batch.id;
     this.setCounts(this.currentBatch);
     this.populateCourseDashboardData(batch);
-    if(this.selectedTab === 1){
+    if (this.selectedTab === 1) {
       this.summaryReport(1);
     } else {
       this.loadOndemandReports(2);
-    } 
+    }
   }
 
 
@@ -354,7 +360,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
             state: x.state,
             district: x.district,
             noOfEnrollments: this.getFieldValue(x.values, 'enrolment')
-          }
+          };
         });
         this.stateWiseReportData = [...this.stateWiseReportData];
         const metrics = _.get(result, 'metrics');
@@ -396,7 +402,7 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
         }
       ];
       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
-    })
+    });
   }
 
   /**
@@ -559,8 +565,8 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
 
 
   getFieldValue(array, field) {
-    if (_.find(array, {"type": field})) {
-      return _.find(array, {"type": field}).count;
+    if (_.find(array, {'type': field})) {
+      return _.find(array, {'type': field}).count;
     } else {
       return;
     }
@@ -611,14 +617,14 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
    */
   loadOndemandReports(tabNumber) {
     this.getSummaryReports();
-    setTimeout(()=> {
-      if(this.onDemandReports) {
+    setTimeout(() => {
+      if (this.onDemandReports) {
       this.setInteractEventDataForTabs('on-demand-reports');
       this.selectedTab = tabNumber;
       if (_.isEmpty(this.reportTypes)) {
         this.getFormData();
       }
-      this.onDemandReports.loadReports(this.currentBatch)
+      this.onDemandReports.loadReports(this.currentBatch);
     }
       }, 500);
   }
@@ -689,6 +695,26 @@ export class CourseProgressComponent implements OnInit, OnDestroy, AfterViewInit
       }
     }, error => {
       this.toasterService.error(_.get(this.resourceService, 'messages.fmsg.m0004'));
+    });
+  }
+  generateDataForDF(batchId) {
+    if (batchId) {
+      this.fetchForumIdReq = {
+        type: 'batch',
+        identifier: [batchId.id]
+      };
+    }
+  }
+  /**
+     * @description - navigate to the DF Page when the event is emited from the access-discussion component
+     * @param  {} routerData
+     */
+   assignForumData(routerData) {
+    this.route.navigate(['/discussion-forum'], {
+      queryParams: {
+        categories: JSON.stringify({ result: routerData.forumIds }),
+        userName: routerData.userName
+      }
     });
   }
 }

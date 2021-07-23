@@ -229,14 +229,14 @@ describe('DataChartComponent', () => {
         component.ngOnInit();
         tick(1000);
         component.dateFilters = ['date'];
-        const response = component.checkFilterReferance("date");
+        const response = component.checkFilterReferance('date');
         expect(response).toEqual(true);
     }));
 
     it('should set globalFilter', fakeAsync(() => {
         component.ngOnInit();
         tick(1000);
-        component.globalFilter = { chartData: mockChartData.chartData };
+        component.globalFilter = { chartData: [{ 'id': 'aggregated_live_textbook_qr_content_status', data : mockChartData.chartData }]};
         expect(component.chartData).toEqual(mockChartData.chartData);
 
     }));

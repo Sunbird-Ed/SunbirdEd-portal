@@ -681,11 +681,6 @@ export const mockUserData = {
                     'Gujarati',
                     'Kannada'
                 ],
-                'roles': [
-                    'public',
-                    'ORG_ADMIN',
-                    'SYSTEM_ADMINISTRATION'
-                ],
                 'language': [
                     'Bengali'
                 ],
@@ -1149,7 +1144,33 @@ export const mockUserData = {
                 ],
                 'currentLoginTime': null,
                 'location': '',
-                'status': 1
+                'status': 1,
+                'roles': [
+                    {
+                        'role': 'CONTENT_CREATOR',
+                        'createdDate': null,
+                        'updatedBy': '1405f334-ee59-42fc-befb-51986221881e',
+                        'createdBy': 'fbe926ac-a395-40e4-a65b-9b4f711d7642',
+                        'scope': [
+                            {
+                                'organisationId': '01269878797503692810'
+                            }
+                        ],
+                        'updatedDate': null
+                    },
+                    {
+                        'role': 'ORG_ADMIN',
+                        'createdDate': null,
+                        'updatedBy': '1405f334-ee59-42fc-befb-51986221881e',
+                        'createdBy': 'fbe926ac-a395-40e4-a65b-9b4f711d7642',
+                        'scope': [
+                            {
+                                'organisationId': '01269878797503692810'
+                            }
+                        ],
+                        'updatedDate': null
+                    }
+                ]
             }
         }
     },

@@ -211,7 +211,7 @@ export class SbFormLocationSelectionDelegate {
       };
 
       const task = this.locationService.updateProfile(payload).toPromise()
-        .then(() => ({ userProfile: 'success',type: _.get(formValue, 'persona') }))
+        .then(() => ({ userProfile: 'success', type: _.get(formValue, 'persona') }))
         .catch(() => ({ userProfile: 'fail' }));
       tasks.push(task);
     }

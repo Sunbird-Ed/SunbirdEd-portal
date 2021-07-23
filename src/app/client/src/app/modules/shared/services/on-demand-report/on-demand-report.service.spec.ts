@@ -94,25 +94,25 @@ const  reportStatus = {
   }));
 
   it('should call isInProgress with report status as SUBMITTED', inject([OnDemandReportService], (service: OnDemandReportService) => {
-    const reportListData = {status: 'SUBMITTED'}
+    const reportListData = {status: 'SUBMITTED'};
     const result = service.isInProgress(reportListData, reportStatus);
     expect(result).toBeTruthy();
   }));
 
   it('should call isInProgress with report status as PROCESSING', inject([OnDemandReportService], (service: OnDemandReportService) => {
-    const reportListData = {status: 'PROCESSING'}
+    const reportListData = {status: 'PROCESSING'};
     const result = service.isInProgress(reportListData, reportStatus);
     expect(result).toBeTruthy();
   }));
 
   it('should call isInProgress with report status as SUCCESS', inject([OnDemandReportService], (service: OnDemandReportService) => {
-    const reportListData = {status: 'SUCCESS'}
+    const reportListData = {status: 'SUCCESS'};
     const result = service.isInProgress(reportListData, reportStatus);
     expect(result).toBeFalsy();
   }));
 
   it('should call isInProgress with report status as FAILED', inject([OnDemandReportService], (service: OnDemandReportService) => {
-    const reportListData = {status: 'FAILED'}
+    const reportListData = {status: 'FAILED'};
     const result = service.isInProgress(reportListData, reportStatus);
     expect(result).toBeFalsy();
   }));

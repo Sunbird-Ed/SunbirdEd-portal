@@ -212,7 +212,7 @@ describe('ActivityListComponent', () => {
     spyOn(component, 'addTelemetry');
     component.toggleModal();
     expect(component.showModal).toEqual(false);
-    expect(component.addTelemetry).toHaveBeenCalledWith('close-remove-activity-popup',[], {},
+    expect(component.addTelemetry).toHaveBeenCalledWith('close-remove-activity-popup', [], {},
     {id: 'do_1235232121343', type: 'Course', ver: '1.0'});
   });
 

@@ -30,7 +30,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
       this.updateBatchModal = element;
     }
     this.initDropDown();
-  };
+  }
   /**
   * batchId
   */
@@ -136,7 +136,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   telemetryCdata: Array<{}> = [];
   isCertificateIssued: string;
   isEnableDiscussions: string;
-
+  callCreateDiscussion = true;
   /**
    * Constructor to create injected service(s) object
    * @param {RouterNavigationService} routerNavigationService Reference of routerNavigationService
@@ -437,7 +437,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
         onAdd: () => {
         }
       });
-      $("#mentors input.search").attr("aria-label", "select batch mentor");//fix accessibility on screen reader
+      $('#mentors input.search').attr('aria-label', 'select batch mentor'); // fix accessibility on screen reader
       $('#participant input.search').on('keyup', (e) => {
         this.getUserListWithQuery($('#participant input.search').val(), 'participant');
       });
@@ -570,9 +570,9 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
    * @param {Object} batchDetails
    * @description - It will emit an event;
    */
-  checkIssueCertificate(batchId, batchDetails? : any) {
-    let isCertInBatch = true
-    if(batchDetails && _.get(batchDetails, 'cert_templates')){
+  checkIssueCertificate(batchId, batchDetails?: any) {
+    let isCertInBatch = true;
+    if (batchDetails && _.get(batchDetails, 'cert_templates')) {
       isCertInBatch = _.isEmpty(_.get(batchDetails, 'cert_templates')) ? false : true;
     }
     this.courseBatchService.updateEvent.emit({ event: 'issueCert', value: this.batchUpdateForm.value.issueCertificate,
@@ -666,6 +666,9 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     this.discussionCsService.getForumIds(this.fetchForumIdReq).subscribe(forumDetails => {
       this.forumIds = _.map(_.get(forumDetails, 'result'), 'cid');
       this.isEnableDiscussions = (this.forumIds && this.forumIds.length > 0) ? 'true' : 'false';
+      if (this.isEnableDiscussions === 'true') {
+        this.callCreateDiscussion = false;
+      }
       this.initializeUpdateForm();
     }, error => {
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
@@ -702,12 +705,14 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
   }
 
   enableDiscussionForum() {
-    this.discussionService.createForum(this.createForumRequest).subscribe(resp => {
-      this.handleInputChange('enable-DF-yes');
-      this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0065'));
-    }, error => {
-      this.toasterService.error(this.resourceService.messages.emsg.m0005);
-    });
+    if (this.createForumRequest && this.callCreateDiscussion) {
+      this.discussionService.createForum(this.createForumRequest).subscribe(resp => {
+        this.handleInputChange('enable-DF-yes');
+        this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0065'));
+      }, error => {
+        this.toasterService.error(this.resourceService.messages.emsg.m0005);
+      });
+    }
   }
 
   disableDiscussionForum(batchId) {

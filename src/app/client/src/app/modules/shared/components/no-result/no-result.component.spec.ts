@@ -38,6 +38,6 @@ describe('NoResultComponent', () => {
      component.ngOnInit();
      flush();
      expect(component.message).toBe(resourceBundle.messages.stmsg.m0007);
-     expect(component.messageText).toBe(resourceBundle.messages.stmsg.m0006)
+     expect(component.messageText).toBe(resourceBundle.messages.stmsg.m0006);
   }));
 });

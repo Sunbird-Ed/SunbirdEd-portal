@@ -71,5 +71,5 @@ export class AppModule {
 }
 // required for AOT compilation
 export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, "/resourcebundles/v1/readLang/"," ");
+  return new TranslateHttpLoader(http, '/resourcebundles/v1/readLang/', ' ');
 }
