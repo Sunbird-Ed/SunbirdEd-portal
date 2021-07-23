@@ -55,10 +55,10 @@
     color: var(--gray-400);
 }
 .orange.text {
-    color: var(--red-100);
+    color: #A30010;
 }
 .orange-border {
-    border-color: var(--red-100) !important;
+    border-color: #A30010 !important;
 }
 .blue.text {
     color: var(--primary-color);
@@ -74,7 +74,7 @@
 }
 .ui.basic.error.label {
     background: none !important;
-    color: var(--red-100) !important;
+    color: #A30010 !important;
     border: 0 !important;
     padding-left: 0;
     font-size: 1rem;

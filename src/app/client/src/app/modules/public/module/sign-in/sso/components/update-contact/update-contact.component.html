@@ -10,11 +10,11 @@
           <p class="text-center mb-24">{{resourceService?.frmelmnts?.lbl?.mobileEmailInfoText |  interpolate:'{instance}': resourceService.instance}}</p>
           <form class="sb-form borderd" #contactDetailsForm="ngForm">
             <div class="inline fields d-flex flex-w-wrap mb-8" id="Mandatory">
-                <div class="ui radio checkbox mr-16" (click)="resetForm('phone')">
+                <div class="ui radio checkbox mr-16" tabindex="0" (click)="resetForm('phone')">
                   <input type="radio" value="phone" [(ngModel)]="contactForm.type" name='type'>
                   <label for="phoneNumber">{{resourceService?.frmelmnts?.lbl?.phoneNumber}}</label>
                 </div>
-                <div class="ui radio checkbox" (click)="resetForm('email')">
+                <div class="ui radio checkbox" tabindex="0" (click)="resetForm('email')">
                   <input type="radio" value="email" [(ngModel)]="contactForm.type" name='type'>
                   <label for="email">{{resourceService?.frmelmnts?.lbl?.email}}</label>
                 </div>
@@ -45,13 +45,13 @@
                      [(ngModel)]="contactForm.tncAccepted"  (change)="toggleTncCheckBox($event)" name="tncAccepted"
                      class="mr-10 cursor-pointer" required  #tncAccepted="ngModel" >
               <label for="tncAccepted" class="fsmall mr-0">{{resourceService?.frmelmnts?.lbl?.tncLabel}}
-                <a class="text-underline fsmall" href="javascript:void(0)" (click)="showAndHidePopup(true)">
+                <a class="text-underline fsmall" href="javascript:void(0)" tabindex="0" (click)="showAndHidePopup(true)">
                   {{resourceService?.frmelmnts?.lbl?.tncLabelLink | interpolate:'{instance}': instance}}
                 </a>
             </label>
             </div>
             <re-captcha *ngIf="isP1CaptchaEnabled === 'true'" #captchaRef="reCaptcha" (resolved)="$event && resolved($event) && captchaRef.reset()" siteKey="{{googleCaptchaSiteKey}}" size="invisible"></re-captcha>
-            <a (click)="captchaRef.reset()" id="resetGoogleCaptcha"></a>
+            <a tabindex="0" (click)="captchaRef.reset()" id="resetGoogleCaptcha"></a>
             <div class="text-center">
               <button [disabled]="disableSubmitBtn" [ngClass]="{'sb-btn-disabled':disableSubmitBtn, 'sb-btn-primary':!disableSubmitBtn}"
                       class="sb-btn sb-btn-normal mt-24 w-100" tabindex="0" (click)="submitForm()">{{resourceService.frmelmnts?.btn?.submitbtn}}</button>
