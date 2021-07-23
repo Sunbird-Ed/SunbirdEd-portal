@@ -57,7 +57,7 @@
     font-size: var(--font-size-sm);
 }
 .grey-text{
-    color: var(--gray-300) !important;
+    color: var(--gray-800) !important;
     font-size: calculateRem(12px) !important;
 }
 .grey.text {
@@ -67,10 +67,10 @@
     font-size: calculateRem(14px);
 }
 .orange.text {
-    color: var(--red-100);
+    color: #A30010;
 }
 .orange-border {
-    border-color: var(--red-100) !important;
+    border-color: #A30010 !important;
 }
 .blue.text {
     color: var(--primary-color);
@@ -86,7 +86,7 @@
 }
 .ui.basic.error.label {
     background: none !important;
-    color: var(--red-100) !important;
+    color: #A30010 !important;
     border: 0 !important;
     padding-left: 0;
     font-size: 1rem;

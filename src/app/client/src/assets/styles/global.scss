@@ -1330,9 +1330,19 @@ html[data-theme='Darkmode'][layout='joy'] {}
   border-radius: 0.25rem;
   outline: none;
 }
-*:focus:not(:focus-visible){
+.profile-avtar:focus-within{
+  border: 1px #fe0000 solid !important;
+  border-radius: 5px;
   outline: none;
-  border-style:none;
+}
+input[type=radio]:focus-visible, input[type=checkbox]:focus-visible{
+  outline: 2px solid #fe0000;
+  border-radius: 5px;
+  
+}
+.sb-checkbox.sb-checkbox-primary.sb-checkbox-rightaligned label:focus-within{
+  outline: 2px solid #fe0000;
+  border-radius: 5px;
 }
 // tab index css end
 
