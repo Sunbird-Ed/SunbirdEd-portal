@@ -92,7 +92,7 @@
       margin-top: 16px;
       background: var(--sbt-compt-bg);
     }
-    .sb-manage-section .sb-multi-rows:nth-child(odd) {
+    .sb-manage-section .sb-multi-rows:nth-child(even) {
         background: var(--sbt-compt-bg);
     }
   }
