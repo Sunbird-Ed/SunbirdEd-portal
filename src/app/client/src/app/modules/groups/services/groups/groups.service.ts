@@ -374,16 +374,16 @@ getActivity(groupId, activity, mergeGroup, leafNodesCount?) {
     return this.groupCservice.activityService.getDataForDashlets(courseHeirarchyData, aggData);
   }
 
-  // Temporary fix to get telemetry contexrt for group exception logs 
-
   /**
    * generate the telemetry context data by using router details
    */
-  getTelemetryContext() {
+   getTelemetryContext() {
+    // Temporary fix to get telemetry context for group exception logs 
     const routerData =  this.router.routerState.snapshot.root.children[0].children[0];
     const routerTelemetryData =  routerData.data.telemetry;
-    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
+    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber')); // get version no by using html element
     const version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
+
     const telmetryContext =  {
       context: { env: routerTelemetryData.env},
       Object: {  
@@ -395,10 +395,12 @@ getActivity(groupId, activity, mergeGroup, leafNodesCount?) {
         {id: routerData.params.groupId, type: routerTelemetryData.env},
       ]
     }
+
     if (routerData.params.activityId) {
        telmetryContext.cdata.push( 
           {id: routerData.params.activityId, type: routerData.queryParams.primaryCategory})
     }
+    
     return telmetryContext;
   }
 }

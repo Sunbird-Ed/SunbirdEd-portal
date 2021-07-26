@@ -66,32 +66,32 @@ import { Subscription } from 'rxjs';
     ActivityDetailsComponent,
   ]
 })
+
 export class GroupsModule {
   subscription: Subscription;
-  constructor(private csLibInitializerService: CsLibInitializerService, private telemetryService: TelemetryService, private groupService: GroupsService) {
+
+  constructor(private csLibInitializerService: CsLibInitializerService,
+    private telemetryService: TelemetryService,
+    private groupService: GroupsService) {
+
     this.csLibInitializerService.initializeCs();
-    const instanceOfEService = CsEventServiceImpl;
-    this.subscription = instanceOfEService.events(CsAppEvents.ERROR).subscribe(error => {
+
+    // calling the CsEventServiceImpl from csl to get an data from error events, whenever the error gets triggred by the httpServiceImpl
+    this.subscription = CsEventServiceImpl.events(CsAppEvents.ERROR).subscribe(errorEvent => {
+      // getting the telemetry context object (object, context, cdata) by calling the getTelemetryContext()
       const routeData = this.groupService.getTelemetryContext();
-      const params = error.data.error.response.body.params;
-      if (params) {
-        params.errmsg = params.errmsg.length > 50 ? (params.errmsg.substring(0, 50) + '...') : params.errmsg;
-      }
-      const errRes = error.data.error;
       const telemetryErrorData: IErrorEventInput = {
         context: routeData.context,
         object: routeData.Object,
         // cdata: routerData.cdata, // Info: currently cdata is not present in the IErrorEventInput interface
-        edata: {
-          err: _.get(params, 'err') || _.get(errRes, 'code'),
-          errtype: JSON.stringify(_.get(errRes, 'response.responseCode')) || JSON.stringify(_.get(errRes, 'code')),
-          traceid: _.get(params, 'msgid') || JSON.stringify(Math.random()),
-          stacktrace: _.get(params, 'errmsg') || _.get(errRes, 'response.errorMesg')
-        }
+        edata: errorEvent.data.edata,
       };
+      //passing the data to telemetryService error method to log the error events
       this.telemetryService.error(telemetryErrorData);
+      console.log('err', errorEvent);
     });
   }
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
