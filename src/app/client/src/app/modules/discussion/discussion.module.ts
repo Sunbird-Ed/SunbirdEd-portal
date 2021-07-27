@@ -30,15 +30,15 @@ export class DiscussionModule {
     });
 
     // Remove DF routes from history
-    this.router.events.subscribe((e) => {
-      if (e instanceof NavigationEnd) {
-        // waiting for the DF routes to be added in the history by navigationService.
-        // Do not remove the setTimeout(), because after the routerEvent subscribe in navigationService,
-        // popHistory() should be called.
-        setTimeout(() => {
-          this.navigationHelperService.popHistory();
-        }, 200);
-      }
-    });
+    // this.router.events.subscribe((e) => {
+    //   if (e instanceof NavigationEnd) {
+    //     // waiting for the DF routes to be added in the history by navigationService.
+    //     // Do not remove the setTimeout(), because after the routerEvent subscribe in navigationService,
+    //     // popHistory() should be called.
+    //     setTimeout(() => {
+    //       this.navigationHelperService.popHistory();
+    //     }, 200);
+    //   }
+    // });
   }
 }
