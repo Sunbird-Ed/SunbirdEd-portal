@@ -379,9 +379,11 @@ getActivity(groupId, activity, mergeGroup, leafNodesCount?) {
    */
    getTelemetryContext() {
     // Temporary fix to get telemetry context for group exception logs 
+    try {
     const routerData =  this.router.routerState.snapshot.root.children[0].children[0];
     const routerTelemetryData =  routerData.data.telemetry;
-    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber')); // get version no by using html element
+    // get version number by using html element
+    const buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'));
     const version = buildNumber && buildNumber.value ? buildNumber.value.slice(0, buildNumber.value.lastIndexOf('.')) : '1.0';
 
     const telmetryContext =  {
@@ -402,5 +404,6 @@ getActivity(groupId, activity, mergeGroup, leafNodesCount?) {
     }
     
     return telmetryContext;
-  }
+  } catch(error) { console.log(error); };
+}
 }
