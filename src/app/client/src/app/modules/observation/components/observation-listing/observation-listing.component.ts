@@ -249,6 +249,11 @@ export class ObservationListingComponent
         _id: value._id,
         subject: subject
       };
+      if(value.creator){
+        const creator:any=[];
+        creator.push(value.creator);
+        obj['gradeLevel']=creator
+      }
       result.push(obj);
       this.contentList = result;
     });
