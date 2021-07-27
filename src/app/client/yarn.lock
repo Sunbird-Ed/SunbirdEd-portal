@@ -1246,10 +1246,10 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@4.1.2":
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.1.2.tgz#fd387e6abb6bd1b61ea8d33c9678b84aa594ba6b"
-  integrity sha512-i1vZxZCdQbsVjceLaMogecyuvrh1YI4CzkTBfuqm6OOzSN/ZXd0lZwYuP5CUI4wJcehk/XySsMO0qJAtGTaCvQ==
+"@project-sunbird/client-services@4.1.4":
+  version "4.1.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.1.4.tgz#7aa869b47085ee79ea94c1ca4ed9da1870dc83cb"
+  integrity sha512-QpFqNjL/pn2+Gs1u/ncSbZ7l2RojL8pHGQFXPMgCzd49Z/lf+hVfQEBG+ytsanaHcofHEs4XwDmE68kM7qpeEg==
   dependencies:
     "@project-sunbird/telemetry-sdk" "0.0.26"
     inversify "^5.0.1"
@@ -1275,10 +1275,10 @@
   dependencies:
     tslib "^1.9.0"
 
-"@project-sunbird/discussions-ui-v8@2.1.5":
-  version "2.1.5"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.1.5.tgz#bf0fefb189fac9245085dddb9a497d3b96aeae53"
-  integrity sha512-nClboDDyRyZPSrWzHDPHScrzvmew4D4ED05jJVA/niGF09Y+P/4PMdFuixOkq3YFIuQqJuy3Xi95F//OjYZDaA==
+"@project-sunbird/discussions-ui-v8@2.1.6":
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.1.6.tgz#ea92729deae161f070ec7ba8c7ac74ae94a890e5"
+  integrity sha512-gbTX6cTfLVggv3f140d9M1A9vWb0jtGFi8dscHh4MbziQ/kofAHcw46Ybxlnr1aMrAJJwOlMcX8ojqfgHKzk3Q==
   dependencies:
     tslib "^1.9.0"
 
@@ -1305,10 +1305,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-styles/-/sb-styles-0.0.8.tgz#66c11fc6cdcf2761680b8ccd76af929a5a0226a7"
   integrity sha512-CU7lkBEg7J3b9urACPY5jf8GJa6ccyCLETncvssXUO7Kco7uhMvlUXr3HHc5mS+Zw1G3ZtcCN8fp2XszukNA2A==
 
-"@project-sunbird/sb-themes@0.0.16":
-  version "0.0.16"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.16.tgz#17880e95c8e680f7dbfc7800417cb2fe5098f8a6"
-  integrity sha512-DvYWqFWUE0Zqs0aWBGNrP4JefqZNWbxhhautINPknCZs2O+z+XBmGpg6gsSpC8gb/vvTp9dCzDwMLkQeNy5uqA==
+"@project-sunbird/sb-themes@0.0.5-beta":
+  version "0.0.5-beta"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.5-beta.tgz#2e9565673a9f8f5ae0897c78e89c78bb0a2ad227"
+  integrity sha512-F0bwZBQn0stZQJsteEOOXk1Ia1bOyEuKrzoTO+D9DPjgH1rrXMJW6X1PvwLvAj5xxzSNwrgnXMll2YUoXkdRBQ==
 
 "@project-sunbird/sunbird-collection-editor@4.0.25":
   version "4.0.25"
