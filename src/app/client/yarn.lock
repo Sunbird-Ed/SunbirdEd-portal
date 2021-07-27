@@ -1468,8 +1468,16 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@file:../../../../sunbird-client-services/tmp":
-  version "0.0.0"
+"@project-sunbird/client-services@4.1.2":
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.1.2.tgz#fd387e6abb6bd1b61ea8d33c9678b84aa594ba6b"
+  integrity sha512-i1vZxZCdQbsVjceLaMogecyuvrh1YI4CzkTBfuqm6OOzSN/ZXd0lZwYuP5CUI4wJcehk/XySsMO0qJAtGTaCvQ==
+  dependencies:
+    "@project-sunbird/telemetry-sdk" "0.0.26"
+    inversify "^5.0.1"
+    qs "^6.9.4"
+    reflect-metadata "^0.1.13"
+    whatwg-fetch "^3.1.0"
 
 "@project-sunbird/common-consumption-v9@4.1.2":
   version "4.1.2"
@@ -1562,6 +1570,14 @@
   integrity sha512-cBSTotcNLws5lYUxOgV74C7Wvodsujy3bM9pnYXalf18Z3/DRyIU4Jcc0+2FSuEKDeAZKCuB+zqBzSmkTW41Fg==
   dependencies:
     "@project-sunbird/sunbird-player-sdk-v9" "4.1.3"
+
+"@project-sunbird/telemetry-sdk@0.0.26":
+  version "0.0.26"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/telemetry-sdk/-/telemetry-sdk-0.0.26.tgz#15a7776e0d94da3c844161b1400612303756a830"
+  integrity sha512-8r8tf+YN+z8A4KHBmL8/wxDIKGkASDHMMxyhlI9/iWv83sueoN5qHB6QnqgtIRyEdFjt4Tum5u18/oB71Bb0PQ==
+  dependencies:
+    grunt-karma "^0.12.2"
+    karma "^3.0.0"
 
 "@project-sunbird/telemetry-sdk@0.0.29":
   version "0.0.29"
