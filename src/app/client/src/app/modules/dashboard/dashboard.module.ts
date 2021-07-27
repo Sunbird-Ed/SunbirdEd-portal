@@ -27,6 +27,8 @@ import { SharedModule } from '@sunbird/shared';
 import { OrderModule } from 'ngx-order-pipe';
 import { AceEditorModule } from 'ng2-ace-editor';
 import { DiscussionModule } from '../discussion/discussion.module';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 
 @NgModule({
   imports: [
@@ -42,7 +44,8 @@ import { DiscussionModule } from '../discussion/discussion.module';
     TelemetryModule,
     NgxDaterangepickerMd.forRoot(),
     AceEditorModule,
-    DiscussionModule
+    DiscussionModule,
+    MatCheckboxModule
   ],
   declarations: [CourseConsumptionComponent, OrganisationComponent, CourseProgressComponent, UsageReportsComponent,
     DataTableComponent, DataChartComponent, ListAllReportsComponent, ReportSummaryComponent, ReportComponent, AddSummaryModalComponent,

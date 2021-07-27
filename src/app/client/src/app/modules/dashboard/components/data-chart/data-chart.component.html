@@ -12,9 +12,10 @@
 
       <div class="d-flex flex-w-wrap reset-filter-section">
         <div *ngIf="showGraphStats" class="d-flex flex-ai-center">{{resourceService?.frmelmnts?.lbl?.graphStat }}:
-          <sui-checkbox class="toggle ml-8" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject"
-            [telemetryInteractEdata]="setTelemetryInteractEdata('graph-statistics')"
-            [telemetryInteractCdata]="telemetryCdata" (checkChange)="graphStatsChange($event)"></sui-checkbox>
+          <mat-checkbox class="toggle ml-8" (change)="graphStatsChange($event.checked)" appTelemetryInteract
+            [telemetryInteractObject]="telemetryInteractObject"
+            [telemetryInteractEdata]="setTelemetryInteractEdata('graph-statistics')" [telemetryInteractCdata]="telemetryCdata">
+          </mat-checkbox>
         </div>
       </div>
 
