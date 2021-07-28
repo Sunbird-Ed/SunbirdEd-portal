@@ -1334,6 +1334,10 @@ const API_LIST = {
       checksNeeded: [],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
     },
+    '/discussion/user/:userslug/posts': {
+      checksNeeded: [],
+      ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
+    },
     '/discussion/unread': {
       checksNeeded: [],
       ROLE_CHECK: [ROLE.ALL, ROLE.PUBLIC]
@@ -1834,6 +1838,7 @@ const API_LIST = {
     '/discussion/user/:userslug/downvoted',
     '/discussion/user/:userslug/bookmarks',
     '/discussion/user/:userslug/best',
+    '/discussion/user/:userslug/posts',
     '/discussion/topic/:topic_id/:slug',
     '/discussion/topic/teaser/:topic_id',
     '/discussion/topic/pagination/:topic_id',
