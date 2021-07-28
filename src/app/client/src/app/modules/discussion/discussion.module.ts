@@ -10,27 +10,35 @@ import { DiscussionTelemetryService } from '../shared/services/discussion-teleme
 import * as _ from 'lodash-es';
 import { NavigationHelperService } from '@sunbird/shared';
 import { AccessDiscussionComponent } from './components/access-discussion/access-discussion.component';
+import { NavigationEnd, Router } from '@angular/router';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SuiModalModule,
-    DiscussionUiModule
-  ],
-  exports: [ DiscussionUiModule , AccessDiscussionComponent],
-  declarations: [ ForumComponent, AccessDiscussionComponent ],
-  providers: [ DiscussionService ]
+  imports: [CommonModule, SuiModalModule, DiscussionUiModule],
+  exports: [DiscussionUiModule, AccessDiscussionComponent],
+  declarations: [ForumComponent, AccessDiscussionComponent],
+  providers: [DiscussionService],
 })
 export class DiscussionModule {
   constructor(
     private discussionEvents: DiscussionEventsService,
     private discussionTelemetryService: DiscussionTelemetryService,
-    private navigationHelperService: NavigationHelperService) {
-    this.discussionEvents.telemetryEvent.subscribe(event => {
+    private navigationHelperService: NavigationHelperService,
+    private router: Router
+  ) {
+    this.discussionEvents.telemetryEvent.subscribe((event) => {
       this.discussionTelemetryService.logTelemetryEvent(event);
-      if (_.get(event, 'action') === 'DF_CLOSE' ) {
-        this.navigationHelperService.navigateToLastUrl();
-      }
     });
+
+    // Remove DF routes from history
+    // this.router.events.subscribe((e) => {
+    //   if (e instanceof NavigationEnd) {
+    //     // waiting for the DF routes to be added in the history by navigationService.
+    //     // Do not remove the setTimeout(), because after the routerEvent subscribe in navigationService,
+    //     // popHistory() should be called.
+    //     setTimeout(() => {
+    //       this.navigationHelperService.popHistory();
+    //     }, 200);
+    //   }
+    // });
   }
 }
