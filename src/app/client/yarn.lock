@@ -1478,10 +1478,10 @@
     "@ckeditor/ckeditor5-font" "^11.1.0"
     "@wiris/mathtype-ckeditor5" "^7.13.0"
 
-"@project-sunbird/client-services@4.1.2":
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.1.2.tgz#fd387e6abb6bd1b61ea8d33c9678b84aa594ba6b"
-  integrity sha512-i1vZxZCdQbsVjceLaMogecyuvrh1YI4CzkTBfuqm6OOzSN/ZXd0lZwYuP5CUI4wJcehk/XySsMO0qJAtGTaCvQ==
+"@project-sunbird/client-services@4.1.4":
+  version "4.1.4"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/client-services/-/client-services-4.1.4.tgz#7aa869b47085ee79ea94c1ca4ed9da1870dc83cb"
+  integrity sha512-QpFqNjL/pn2+Gs1u/ncSbZ7l2RojL8pHGQFXPMgCzd49Z/lf+hVfQEBG+ytsanaHcofHEs4XwDmE68kM7qpeEg==
   dependencies:
     "@project-sunbird/telemetry-sdk" "0.0.26"
     inversify "^5.0.1"
@@ -1494,10 +1494,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/common-consumption-v9/-/common-consumption-v9-4.1.2.tgz#f67da3d7f6e80381161f071eb4115255ea364ffb"
   integrity sha512-NhlaI2PhWVgHsm/7e9R/M/WapJZ4mmSKux73CZ8dXh8c+YgwjDmuxbq42RE5OG05rdDPLmxIEfNYTST9/tpGug==
 
-"@project-sunbird/discussions-ui-v8@2.2.0-beta-3":
-  version "2.2.0-beta-3"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.2.0-beta-3.tgz#d63be2592c0ed213cb840dd1aed5d477d329a4a9"
-  integrity sha512-2VvOiAbYhscdq7H2ixuvama0RHsP0dOSs3TawOzv3wvxlsy6h5asPNNdR2l9uxKFkRfTRVJgzPBYWxRjrNNdxw==
+"@project-sunbird/discussions-ui-v8@2.1.6":
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/discussions-ui-v8/-/discussions-ui-v8-2.1.6.tgz#ea92729deae161f070ec7ba8c7ac74ae94a890e5"
+  integrity sha512-gbTX6cTfLVggv3f140d9M1A9vWb0jtGFi8dscHh4MbziQ/kofAHcw46Ybxlnr1aMrAJJwOlMcX8ojqfgHKzk3Q==
   dependencies:
     tslib "^1.9.0"
 
@@ -1529,10 +1529,10 @@
   resolved "https://registry.yarnpkg.com/@project-sunbird/sb-themes/-/sb-themes-0.0.15.tgz#e860204a970905160ad7da35b82883220e1efd88"
   integrity sha512-+0AiFR5vVpnfj6fEoKUovIZ3iRlB329jf5BKb20CFjcW3uJriIKzZOlBa1KSyqhp7f5SX3RTN4+u/NSoBRsAXg==
 
-"@project-sunbird/sunbird-collection-editor-v9@4.1.57":
-  version "4.1.57"
-  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.1.57.tgz#8af884764effa7a0a9ceaa3fe9d4f7d060e6469d"
-  integrity sha512-K4Mlid5dMcJWi1MoNyQiQ7mkQfV132HcuzWubzpNWdxXq6W3Yr+KPxGRuRYGEjdInX+ryOpdy1H/wkung8sbeQ==
+"@project-sunbird/sunbird-collection-editor-v9@4.1.59":
+  version "4.1.59"
+  resolved "https://registry.yarnpkg.com/@project-sunbird/sunbird-collection-editor-v9/-/sunbird-collection-editor-v9-4.1.59.tgz#e44da71a5fbdfc4eb5cb14ca8387a1930e89abb7"
+  integrity sha512-8Ys0AwlKk42+a/8PisShFv7qylr7MBF7FdErde7RxMN0V3x9J0paGWjdO7wzYSx2WexPEc51UKMRj/EgePyd3A==
   dependencies:
     tslib "^1.10.0"
 
@@ -3688,10 +3688,10 @@ commander@^2.11.0, commander@^2.12.1, commander@^2.19.0, commander@^2.20.0, comm
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
 
-common-form-elements-v9@4.1.3:
-  version "4.1.3"
-  resolved "https://registry.yarnpkg.com/common-form-elements-v9/-/common-form-elements-v9-4.1.3.tgz#3c14bde0c10387749e9b120cc56253cc12eb1255"
-  integrity sha512-517QzCUSqRim/SsW1G08gC6+ylgmnVwvV5mDkez9d5GxZOoADbEA+Ny4jjPy2M9l9REbAMvkd4cPDTd79iJINA==
+common-form-elements-v9@4.1.4:
+  version "4.1.4"
+  resolved "https://registry.yarnpkg.com/common-form-elements-v9/-/common-form-elements-v9-4.1.4.tgz#784e5d9226a775a15842b8805b0cee32386c2cb6"
+  integrity sha512-0Dc1OGdl7dOvibvi8QXmkCJ7K7RecQb2TchTTNDnpZq1gEalLCHPJf6PIB0xJyFQJuHGBLSb1H0PYjoe7TSLTw==
   dependencies:
     immutable "^4.0.0-rc.12"
     moment "^2.29.1"
@@ -5231,7 +5231,7 @@ file-loader@4.2.0:
     loader-utils "^1.2.3"
     schema-utils "^2.0.0"
 
-"file-saver@github:eligrey/FileSaver.js#1.3.8":
+file-saver@eligrey/FileSaver.js#1.3.8:
   version "1.3.8"
   resolved "https://codeload.github.com/eligrey/FileSaver.js/tar.gz/e865e37af9f9947ddcced76b549e27dc45c1cb2e"
 

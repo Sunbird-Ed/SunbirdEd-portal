@@ -28,12 +28,21 @@ export class DiscussionModule {
     private navigationHelperService: NavigationHelperService) {
     this.discussionEvents.telemetryEvent.subscribe(event => {
       this.discussionTelemetryService.logTelemetryEvent(event);
-      if (_.get(event, 'action') === 'DF_CLOSE' ) {
-        this.navigationHelperService.navigateToLastUrl();
-      }
-      if (_.get(event, 'action') === 'DF_BACK' ) {
-        this.navigationHelperService.popHistory();
-      }
     });
+
+    // Remove DF routes from history
+    // this.router.events.subscribe((e) => {
+    //   if (e instanceof NavigationEnd) {
+    //     // waiting for the DF routes to be added in the history by navigationService.
+    //     // Do not remove the setTimeout(), because after the routerEvent subscribe in navigationService,
+    //     // popHistory() should be called.
+    //     setTimeout(() => {
+    //       this.navigationHelperService.popHistory();
+    //     }, 200);
+    //   }
+    //   if (_.get(event, 'action') === 'DF_BACK' ) {
+    //     this.navigationHelperService.popHistory();
+    //   }
+    // });
   }
 }
