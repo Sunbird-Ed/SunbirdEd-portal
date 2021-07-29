@@ -15,7 +15,7 @@
           </svg></i>
         {{resourceService?.frmelmnts?.btn?.back}}
       </button>
-      <div class="batch-details__created mt-8 fsmall" *ngIf="!showBatchCounter && isValidEnrollmentEndDate(enrollmentEndDate)">
+      <div class="batch-details__created mt-8 fsmall" *ngIf="!enrolledBatchInfo && isValidEnrollmentEndDate(enrollmentEndDate)">
         <span class="sb-label-12size"
           *ngIf="!isEnrollmentAllowed(enrollmentEndDate)">{{resourceService?.messages?.stmsg?.m0136}}
           {{enrollmentEndDate | dateFormat}}</span>
