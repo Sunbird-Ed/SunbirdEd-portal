@@ -80,6 +80,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
     showEdit = false;
     isFilterEnabled = true;
     defaultTab = 'Textbook';
+    userProfile: any;
 
     get slideConfig() {
         return cloneDeep(this.configService.appConfig.LibraryCourses.slideConfig);
@@ -146,10 +147,12 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.formData = formConfig;
                     if (this.isUserLoggedIn()) {
                         this.defaultFilters = this.userService.defaultFrameworkFilters;
+                        this.userProfile = this.userService.userProfile;
                     } else if (!this.isDesktopApp) {
                         let guestUserDetails: any = localStorage.getItem('guestUserDetails');
                         if (guestUserDetails) {
                             guestUserDetails = JSON.parse(guestUserDetails);
+                            this.userProfile = guestUserDetails;
                             this.defaultFilters = guestUserDetails.framework ? guestUserDetails.framework : this.defaultFilters;
                         }
                     }
