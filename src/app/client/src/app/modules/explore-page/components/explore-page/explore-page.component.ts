@@ -233,7 +233,8 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         const { primaryCategory = null, contentType = null } = _.get(course, 'content') || {};
                         return pagePrimaryCategories.some(category => _.toLower(category) === _.toLower(primaryCategory)) || (_.toLower(contentType) === _.toLower(pageContentType));
                     };
-                    const filteredCourses = _.filter(enrolledCourses || [], enrolledContentPredicate);
+                    let filteredCourses = _.filter(enrolledCourses || [], enrolledContentPredicate);
+                    filteredCourses = _.orderBy(filteredCourses, ['enrolledDate'], ['desc']);
                     this.enrolledCourses = _.orderBy(filteredCourses, ['enrolledDate'], ['desc']);
                     const { constantData, metaData, dynamicFields } = _.get(this.configService, 'appConfig.CoursePageSection.enrolledCourses');
                     enrolledSection.contents = _.map(filteredCourses, content => {
