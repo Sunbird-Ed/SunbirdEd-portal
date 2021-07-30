@@ -8,7 +8,7 @@ import { CoursesService, PermissionService, CopyContentService,
   OrgDetailsService, UserService, GeneraliseLabelService,  } from '@sunbird/core';
 import {
   ResourceService, ToasterService, ContentData, ContentUtilsServiceService, ITelemetryShare,
-  ExternalUrlPreviewService, UtilService, ConnectionService, OfflineCardService
+  ExternalUrlPreviewService, UtilService, ConnectionService, OfflineCardService, ServerResponse
 } from '@sunbird/shared';
 import { IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
 import dayjs from 'dayjs';
@@ -96,6 +96,10 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
   disableDelete = false;
   isAvailableLocally = false;
   showDeleteModal = false;
+  batchList = [];
+  enrollmentEndDate: string;
+  todayDate = dayjs(new Date()).format('YYYY-MM-DD');
+  showError = false;
 
   constructor(private activatedRoute: ActivatedRoute, public courseConsumptionService: CourseConsumptionService,
     public resourceService: ResourceService, private router: Router, public permissionService: PermissionService,
@@ -139,6 +143,7 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
       }).subscribe((params) => {
         this.courseId = params.courseId;
         this.batchId = params.batchId;
+        this.getAllBatchDetails();
         this.courseStatus = params.courseStatus;
         this.contentId = params.contentId;
         this.tocId = params.textbook;
@@ -505,5 +510,38 @@ export class CourseConsumptionHeaderComponent implements OnInit, AfterViewInit, 
         userId: routerData.userId
       }
     });
+  }
+
+  isEnrollmentAllowed(enrollmentEndDate) {
+    return dayjs(enrollmentEndDate).isBefore(this.todayDate);
+  }
+
+  isValidEnrollmentEndDate(enrollmentEndDate) {
+    return !!enrollmentEndDate;
+  }
+
+  getAllBatchDetails() {
+    this.batchList = [];
+    const searchParams: any = {
+      filters: {
+        status: '1',
+        courseId: this.courseId
+      },
+      offset: 0,
+      sort_by: { createdDate: 'desc' }
+    };
+    searchParams.filters.enrollmentType = 'open';
+    this.courseBatchService.getAllBatchDetails(searchParams).pipe(
+      takeUntil(this.unsubscribe))
+      .subscribe((data: ServerResponse) => {
+        if (data.result.response.content && data.result.response.content.length > 0) {
+          this.batchList = data.result.response.content;
+          this.enrollmentEndDate = _.get(this.batchList[0], 'enrollmentEndDate');
+        }
+      },
+      (err: ServerResponse) => {
+        this.showError = true;
+        this.toasterService.error(this.resourceService.messages.fmsg.m0004);
+      });
   }
 }
