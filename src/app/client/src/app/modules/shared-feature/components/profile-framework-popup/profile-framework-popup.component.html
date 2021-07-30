@@ -9,9 +9,11 @@
   *ngIf="formFieldOptions.length">
 
   <!--Header-->
-  <div class="sb-modal-header">
-    {{resourceService?.frmelmnts?.lbl?.profilePopup}}&lrm;
+  <div class="sb-modal-header" *ngIf="isPreference">
+    {{resourceService?.frmelmnts?.lbl?.yourPreferences}}
+    <p>{{resourceService?.frmelmnts?.lbl?.preferencesheader | interpolate:'{instance}': instance}}</p>
   </div>
+  <div class="sb-modal-header">{{resourceService?.frmelmnts?.lbl?.profilePopup}}&lrm;</div>
   <!--/Header-->
 
   <!--Content-->
