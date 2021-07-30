@@ -51,22 +51,27 @@
           </div>
 
           <!-- Template for displaying sections based on form configuration -->
-          <div *ngIf="_currentPageData?.sections && _currentPageData?.isEnabled">
+          <div *ngIf="_currentPageData?.sections && _currentPageData?.isEnabled" (click)="showEdit = !showEdit">
             <div *ngIf="getSelectedTab() === 'home'" class="sb-section-preference" tabindex="0">
               <div class="preference">
-                <p class="header title">{{resourceService?.frmelmnts?.lbl?.yourPreferences}}</p>
-                <p>{{resourceService?.frmelmnts?.lbl?.preferencesheader | interpolate:'{instance}': instance}}</p>
+                <p class="header title">{{resourceService?.frmelmnts?.lbl?.hi}} {{userProfile?.firstName | titlecase}} {{userProfile?.lastName |
+                  titlecase}}</p>
+                <p>{{resourceService?.frmelmnts?.lbl?.yourPreferences}}</p>
+                <!-- <p>{{resourceService?.frmelmnts?.lbl?.preferencesheader | interpolate:'{instance}': instance}}</p> -->
                 <p>
-                  <span *ngIf="userPreference?.framework?.board?.length" class="title mr-4">{{resourceService?.frmelmnts?.lbl?.boards}}</span>
-                  <span *ngIf="userPreference?.framework?.board?.length">{{convertToString(userPreference?.framework?.board)}}</span>
-                </p>
-                <p>
-                  <span *ngIf="userPreference?.framework?.medium?.length" class="title mr-4">{{resourceService?.frmelmnts?.lbl?.medium}}</span>
-                  <span *ngIf="userPreference?.framework?.medium?.length">{{convertToString(userPreference?.framework?.medium)}}</span>
-                </p>
-                <p>
-                  <span *ngIf="userPreference?.framework?.gradeLevel?.length" class="title mr-4">{{resourceService?.frmelmnts?.lbl?.classes}}</span>
-                  <span *ngIf="userPreference?.framework?.gradeLevel?.length">{{convertToString(userPreference?.framework?.gradeLevel)}}</span>
+                  <span *ngIf="userPreference?.framework?.board?.length">{{resourceService?.frmelmnts?.lbl?.boards}}: </span>
+                  <span *ngIf="userPreference?.framework?.board?.length" class="title mr-4">{{convertToString(userPreference?.framework?.board)}}</span>
+                
+                  <span *ngIf="userPreference?.framework?.medium?.length">{{resourceService?.frmelmnts?.lbl?.medium}}: </span>
+                  <span class="title mr-4">{{userPreference?.framework?.medium[0]}}</span>
+                  <span class="title mr-4" *ngIf="userPreference?.framework?.medium?.length > 1">
+                    ... + {{userPreference?.framework?.medium?.length-1}}
+                  </span>
+                  <span *ngIf="userPreference?.framework?.gradeLevel?.length">{{resourceService?.frmelmnts?.lbl?.classes}}: </span>
+                  <span class="title mr-4">{{userPreference?.framework?.gradeLevel[0]}}</span>
+                  <span class="title mr-4" *ngIf="userPreference?.framework?.gradeLevel?.length > 1">
+                    ... + {{userPreference?.framework?.gradeLevel?.length-1}}
+                  </span>
                 </p>
               </div>
               <div class="change-preference" tabindex="0">
@@ -190,6 +195,6 @@
 </app-batch-info>
 
 <app-popup *ngIf="showEdit" #frameworkModal [formInput]="userPreference?.framework" [showCloseIcon]="true"
-  [isClosable]="true" [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" [isGuestUser]="true"
+  [isClosable]="true" [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" [isPreference]="true" [isGuestUser]="true"
   (submit)="updateProfile($event)" (close)="showEdit = !showEdit">
 </app-popup>

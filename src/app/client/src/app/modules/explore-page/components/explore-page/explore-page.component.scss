@@ -5,6 +5,7 @@
   width: calculateRem(280px) !important;
 }
 .sb-section-preference {
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
