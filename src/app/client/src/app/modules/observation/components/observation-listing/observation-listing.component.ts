@@ -249,7 +249,7 @@ export class ObservationListingComponent
         _id: value._id,
         subject: subject
       };
-      if(value.creator){
+      if(value.creator && value.creator.length){
         const creator:any=[];
         creator.push(value.creator);
         obj['gradeLevel']=creator
