@@ -4,7 +4,7 @@ import { ManageService } from '../../services/manage/manage.service';
 import { ResourceService } from '../../../shared/services/resource/resource.service';
 import {ToasterService, NavigationHelperService, LayoutService} from '@sunbird/shared';
 import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject, TelemetryService } from '@sunbird/telemetry';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import {first, takeUntil} from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import * as $ from 'jquery';
@@ -72,7 +72,7 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
   public showTncPopup = false;
 
   constructor(activatedRoute: ActivatedRoute, public navigationhelperService: NavigationHelperService,
-    userService: UserService, manageService: ManageService, private toasterService: ToasterService, resourceService: ResourceService,
+    userService: UserService, manageService: ManageService, private router: Router, private toasterService: ToasterService, resourceService: ResourceService,
               public layoutService: LayoutService, public telemetryService: TelemetryService, public tncService: TncService) {
     this.userService = userService;
     this.manageService = manageService;
@@ -402,6 +402,10 @@ export class UserOrgManagementComponent implements OnInit, AfterViewInit, OnDest
     } else {
       this.showTncPopup = true;
     }
+  }
+
+  assignUserRole(){
+    this.router.navigate(['/manage/userRoleAssign']);
   }
 
   ngOnDestroy() {

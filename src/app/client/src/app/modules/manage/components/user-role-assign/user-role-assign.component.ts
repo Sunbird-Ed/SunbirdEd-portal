@@ -10,6 +10,7 @@ export class UserRoleAssignComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    console.log('testing the component');
   }
 
 }
