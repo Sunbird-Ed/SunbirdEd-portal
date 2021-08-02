@@ -120,16 +120,7 @@
       </div>
     </div>
     <div class="sb-course-details__info sb-g-col-xs-12 sb-g-col-md-3 sb-g-col-lg-3 sb-g-col-xxxl-4">
-      <!-- <sui-accordion class="styled fluid sb-accordion sb-new-theme-accordion">
-        <sui-accordion-panel [isOpen]="false">
-          <div title class="sb-accordion-title fsmall d-flex flex-ai-center flex-jc-space-between">
-            <span>{{resourceService.frmelmnts?.lbl?.desktop?.creditsAndLicenceInfo}}</span>
-            <i class="chevron down icon" role="img" title="expand"></i>
-          </div>
-          <div content class="sb-accordion-content sb-bg-color-white pt-0 pb-8">
-          </div>
-        </sui-accordion-panel>
-      </sui-accordion> -->
+      <app-course-info [courseHierarchy]="courseHierarchy"></app-course-info>
     </div>
   </div>
 </div>
