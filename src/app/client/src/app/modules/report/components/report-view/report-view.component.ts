@@ -307,4 +307,10 @@ export class ReportViewComponent implements OnInit {
   modalClose(event) {
     this.showEvidence = false;
   }
+
+  selectedTabChange(event) {
+    const { tabHeader } = _.get(event, 'tab.textLabel');
+    tabHeader && this.segmentChanged(tabHeader);
+  }
+
 }
