@@ -54,27 +54,28 @@
           <div *ngIf="_currentPageData?.sections && _currentPageData?.isEnabled" (click)="showEdit = !showEdit">
             <div *ngIf="getSelectedTab() === 'home'" class="sb-section-preference" tabindex="0">
               <div class="preference">
-                <p class="header title">{{resourceService?.frmelmnts?.lbl?.hi}} {{userProfile?.firstName | titlecase}} {{userProfile?.lastName |
+                <p class="header font-weight-bold mb-8">{{resourceService?.frmelmnts?.lbl?.hi}} {{userProfile?.firstName | titlecase}} {{userProfile?.lastName |
                   titlecase}}</p>
-                <p>{{resourceService?.frmelmnts?.lbl?.yourPreferences}}</p>
+                <p>{{resourceService?.frmelmnts?.lbl?.yourPreferences}}
+                  <span class="preference-icon ml-4"><img src="assets/images/icon-info.svg"></span>
+                </p>
                 <!-- <p>{{resourceService?.frmelmnts?.lbl?.preferencesheader | interpolate:'{instance}': instance}}</p> -->
                 <p>
                   <span *ngIf="userPreference?.framework?.board?.length">{{resourceService?.frmelmnts?.lbl?.boards}}: </span>
-                  <span *ngIf="userPreference?.framework?.board?.length" class="title mr-4">{{convertToString(userPreference?.framework?.board)}}</span>
+                  <span *ngIf="userPreference?.framework?.board?.length" class="title">{{convertToString(userPreference?.framework?.board)}}</span>
                 
                   <span *ngIf="userPreference?.framework?.medium?.length">{{resourceService?.frmelmnts?.lbl?.medium}}: </span>
-                  <span class="title mr-4">{{userPreference?.framework?.medium[0]}}</span>
-                  <span class="title mr-4" *ngIf="userPreference?.framework?.medium?.length > 1">
+                  <span class="title">{{userPreference?.framework?.medium[0]}}</span>
+                  <span class="font-weight-bold" *ngIf="userPreference?.framework?.medium?.length > 1">
                     ... + {{userPreference?.framework?.medium?.length-1}}
                   </span>
                   <span *ngIf="userPreference?.framework?.gradeLevel?.length">{{resourceService?.frmelmnts?.lbl?.classes}}: </span>
-                  <span class="title mr-4">{{userPreference?.framework?.gradeLevel[0]}}</span>
-                  <span class="title mr-4" *ngIf="userPreference?.framework?.gradeLevel?.length > 1">
+                  <span class="font-weight-bold">{{userPreference?.framework?.gradeLevel[0]}}</span>
+                  <span class="title" *ngIf="userPreference?.framework?.gradeLevel?.length > 1">
                     ... + {{userPreference?.framework?.gradeLevel?.length-1}}
                   </span>
                 </p>
               </div>
-              <div class="change-preference" tabindex="0">
                 <button class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border"
                   (click)="showEdit = !showEdit">{{resourceService?.frmelmnts?.lbl?.changePreferences}}</button>
               </div>
@@ -168,8 +169,8 @@
         </div>
       </div>
     </div>
-  </div>
 </div>
+
 <app-offline-banner *ngIf="!isUserLoggedIn()" [slug]="userService.slug"></app-offline-banner>
  <!-- Show Modal if content has any YouTube data-->
  <sui-modal *ngIf="showModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
