@@ -14,7 +14,7 @@ const routes: Routes = [
   }
 },
   {
-    path: '/manage/userRoleAssign', component: UserRoleAssignComponent,
+    path: 'userRoleAssign', component: UserRoleAssignComponent,
     data: {
       telemetry: {
         env: 'user-role-assign', pageid: 'userRoleAssign', type: 'view'

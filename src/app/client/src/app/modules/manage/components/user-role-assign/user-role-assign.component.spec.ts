@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { UserRoleAssignComponent } from './user-role-assign.component';
-
+import { configureTestSuite } from '@sunbird/test-util';
 describe('UserRoleAssignComponent', () => {
+  configureTestSuite();
   let component: UserRoleAssignComponent;
   let fixture: ComponentFixture<UserRoleAssignComponent>;
 
