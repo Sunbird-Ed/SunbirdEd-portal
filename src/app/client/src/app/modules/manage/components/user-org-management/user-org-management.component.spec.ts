@@ -294,4 +294,8 @@ describe('UserOrgManagementComponent', () => {
     component.getAdminPolicyTnC();
     expect(component.showAdminTnC ).toBeFalsy();
   });
+
+  it('should call the assignUserRole method so to redirect', () => {
+    component.assignUserRole();
+  });
 });
