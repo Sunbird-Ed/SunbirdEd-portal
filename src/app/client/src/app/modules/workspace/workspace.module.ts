@@ -27,7 +27,10 @@ import { OrderModule } from 'ngx-order-pipe';
 import { PlayerHelperModule } from '@sunbird/player-helper';
 import { ContentSearchModule } from '@sunbird/content-search';
 import { CollectionEditorLibraryModule } from '@project-sunbird/sunbird-collection-editor';
-
+import { EventsComponent } from './components/events/events.component';
+import { EventLibraryModule } from '@tekdi/ngtek-event-library';
+import  * as configData from './interfaces/urlConfig';
+import { AllMyEventsComponent } from './components/all-my-events/all-my-events.component';
 
 @NgModule({
   imports: [
@@ -44,6 +47,7 @@ import { CollectionEditorLibraryModule } from '@project-sunbird/sunbird-collecti
     OrderModule,
     PlayerHelperModule,
     ContentSearchModule,
+    EventLibraryModule.forChild(configData),
     CollectionEditorLibraryModule
   ],
   declarations: [WorkspaceComponent, WorkspacesidebarComponent, DateFilterXtimeAgoPipe,
@@ -66,7 +70,9 @@ import { CollectionEditorLibraryModule } from '@project-sunbird/sunbird-collecti
     ReviewCommentsComponent,
     CollaborationContentFilterComponent,
     WorkspaceContentFilterComponent,
-    NewCollectionEditorComponent
+    NewCollectionEditorComponent,
+    EventsComponent,
+    AllMyEventsComponent
   ],
   providers: [WorkSpaceService, EditorService, BatchService, ReviewCommentsService, DateFilterXtimeAgoPipe]
 })

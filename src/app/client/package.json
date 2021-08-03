@@ -120,7 +120,8 @@
     "slick-carousel": "^1.8.1",
     "tree-model": "^1.0.7",
     "video.js": "7.5.5",
-    "zone.js": "^0.10.3"
+    "zone.js": "^0.10.3",
+    "@tekdi/ngtek-event-library": "file:tekdi-ngtek-event-library-0.0.1.tgz"
   },
   "devDependencies": {
     "@angular/language-service": "^8.0.0",

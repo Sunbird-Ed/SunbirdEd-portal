@@ -1,0 +1,13 @@
+
+<div class="ui container">
+    <div class="ui stackable grid mt-30">
+      <div class="three wide column pt-0">
+        <app-workspacesidebar ></app-workspacesidebar>
+      </div>
+      <div class="nine wide column workspacesegment" >
+        <sb-event-filter *ngIf="filterConfig" [filterConfig]="filterConfig"></sb-event-filter>
+        <sb-event-list [list]="eventList"[myEvents]="myEvents" (eventDetailData)="navToEventDetail($event)"></sb-event-list>
+      </div>
+    </div>
+    <app-browser-compatibility [showModal]="true"></app-browser-compatibility>
+  </div>
