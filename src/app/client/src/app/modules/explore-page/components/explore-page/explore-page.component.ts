@@ -153,6 +153,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         if (guestUserDetails) {
                             guestUserDetails = JSON.parse(guestUserDetails);
                             this.userProfile = guestUserDetails;
+                            this.userProfile['firstName'] = guestUserDetails.formatedName;
                             this.defaultFilters = guestUserDetails.framework ? guestUserDetails.framework : this.defaultFilters;
                         }
                     }
