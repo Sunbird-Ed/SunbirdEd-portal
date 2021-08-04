@@ -1,3 +1,4 @@
+import { Channel } from './../../../../../../../../desktop/modules/controllers/channel';
 import { Component, Inject, Input, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Consent, ConsentStatus } from '@project-sunbird/client-services/models';
 import { CsUserService } from '@project-sunbird/client-services/services/user/interface';
@@ -185,6 +186,11 @@ export class GlobalConsentPiiComponent implements OnInit {
     } else if ( this.type === 'global-consent') {
       request.consumerId = this.userService.channel;
       request.objectId = this.userService.channel;
+      const declReq = []
+      if(this.getDeclarationReqObject(this.usersProfile)){
+        declReq.push(this.getDeclarationReqObject(this.usersProfile));
+        this.updateUserDeclaration(declReq);
+      }
     }
     this.csUserService.getConsent(request, { apiPath: '/learner/user/v1' })
       .pipe(takeUntil(this.unsubscribe))
@@ -245,6 +251,43 @@ export class GlobalConsentPiiComponent implements OnInit {
       queryParamsHandling: 'merge',
       replaceUrl: true
     });
+  }
+
+  updateUserDeclaration(request) {
+    this.csUserService.updateUserDeclarations(request, { apiPath: '/learner/user/v1' })
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(() => {
+        this.toasterService.success(_.get(this.resourceService, 'messages.smsg.m0037'));
+    }, err => {
+      this.toasterService.error(this.resourceService.messages.emsg.m0052);
+    });
+  }
+  getDeclarationReqObject(usersProfile) {
+    let userExternalId = null;
+    if(usersProfile && usersProfile.externalIds) {
+      _.forEach(usersProfile.externalIds, (externaleId) => {
+        if (externaleId.provider === usersProfile.channel) {
+          userExternalId = externaleId.id; 
+        }
+      });      
+    }
+    const info:any = {
+      'declared-ext-id': userExternalId,
+      'declared-phone': '',
+      'declared-email':''
+    }
+    const declarationObj = {
+      operation:'add',
+      userId : usersProfile.userId,
+      orgId: usersProfile.rootOrgId,
+      info: info
+    }
+    if(userExternalId) {
+      return declarationObj;
+    } else {
+      return null;
+    }
+    
   }
 
   ngOnDestroy() {
