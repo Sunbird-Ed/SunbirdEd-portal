@@ -1,4 +1,3 @@
-import { Channel } from './../../../../../../../../desktop/modules/controllers/channel';
 import { Component, Inject, Input, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Consent, ConsentStatus } from '@project-sunbird/client-services/models';
 import { CsUserService } from '@project-sunbird/client-services/services/user/interface';
