@@ -82,6 +82,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     // returning false will show a confirm dialog before navigating away
     return _.get(this.activeContent, 'mimeType') === 'application/vnd.sunbird.questionset' && !this.showQSExitConfirmation ? false : true;
   }
+  lastActiveContentBeforeModuleChange;
 
   constructor(
     public resourceService: ResourceService,
@@ -120,6 +121,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
 
   navigateToPlayerPage(collectionUnit: {}, event?) {
     this.previousContent = null;
+    this.lastActiveContentBeforeModuleChange = this.activeContent;
       const navigationExtras: NavigationExtras = {
         queryParams: { batchId: this.batchId, courseId: this.courseId, courseName: this.parentCourse.name },
         state: { contentStatus: this._routerStateContentStatus }
@@ -174,6 +176,7 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
 
   goBack() {
     this.previousContent = null;
+    this.lastActiveContentBeforeModuleChange = this.activeContent;
     const paramas = {};
     if (!this.isCourseCompletionPopupShown) {
       paramas['showCourseCompleteMessage'] = true;
@@ -383,8 +386,10 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
     }
     const telObject = _.get(event, 'detail.telemetryData');
     const eid = _.get(telObject, 'eid');
+    const isMimeTypeH5P = _.get(this.lastActiveContentBeforeModuleChange, 'mimeType') === "application/vnd.ekstep.h5p-archive";
+
     /* istanbul ignore else */
-    if (eid === 'END' && !this.validEndEvent(event)) {
+    if (eid === 'END' && !isMimeTypeH5P && !this.validEndEvent(event)) {
       return;
     }
     const request: any = {
@@ -395,6 +400,11 @@ export class AssessmentPlayerComponent implements OnInit, OnDestroy, ComponentCa
       status: (eid === 'END' && (_.get(this.getCurrentContent, 'contentType') !== 'SelfAssess') && this.courseProgress === 100) ? 2 : 1,
       progress: this.courseProgress
     };
+
+    // Set status to 2 if mime type is application/vnd.ekstep.h5p-archive and EID is END
+    if (eid === 'END' && isMimeTypeH5P && request.contentId == _.get(this.lastActiveContentBeforeModuleChange, 'identifier')) {
+      request['status'] = 2;
+    }
 
     /* istanbul ignore else */
     if (!eid) {
