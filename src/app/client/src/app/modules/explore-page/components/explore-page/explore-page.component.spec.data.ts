@@ -3156,5 +3156,33 @@ export const RESPONSE = {
             ]
         }
     }
-  ]
+  ],
+  persistFilters: {
+    'gradeLevel': [
+      'Class 1',
+      'Class 2',
+      'Class 3',
+      'Class 4',
+      'Class 5',
+      'Class 6',
+      'Class 7',
+      'Class 8'
+    ],
+    'subject': [
+      'home science',
+      'english'
+    ],
+    'medium': [
+      'Tamil',
+      'English'
+    ],
+    'publisher': [],
+    'audience': [],
+    'channel': [],
+    'audienceSearchFilterValue': [],
+    'board': [
+      'State (Tamil Nadu)'
+    ],
+    'selectedTab': 'textbook'
+  }
 };

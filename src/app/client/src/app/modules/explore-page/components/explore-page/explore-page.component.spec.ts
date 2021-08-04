@@ -897,5 +897,15 @@ describe('ExplorePageComponent', () => {
       component.navigateToSpecificLocation(data);
       expect(router.navigate).toHaveBeenCalledWith(['guest-profile']);
     });
+
+    it('should return persistence filters from cache service', () => {
+      spyOn(cacheService, 'get').and.returnValue(RESPONSE.persistFilters);
+      spyOn(cacheService, 'exists').and.returnValue(true);
+      spyOn(component, 'isUserLoggedIn').and.returnValue(false);
+      const res = component.getPersistFilters(true);
+      expect(Object.keys(res)).toContain('board');
+      expect(Object.keys(res)).toContain('gradeLevel');
+      expect(Object.keys(res)).toContain('medium');
+    });
   });
 });

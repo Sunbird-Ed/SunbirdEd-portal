@@ -145,12 +145,14 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.custodianOrg = custodianOrg;
                     this.formData = formConfig;
                     if (this.isUserLoggedIn()) {
-                        this.defaultFilters = this.userService.defaultFrameworkFilters;
+                        this.defaultFilters = this.cacheService.exists('searchFilters') ? this.getPersistFilters(true) : this.userService.defaultFrameworkFilters;
                     } else if (!this.isDesktopApp) {
                         let guestUserDetails: any = localStorage.getItem('guestUserDetails');
-                        if (guestUserDetails) {
+                        if (guestUserDetails && !this.cacheService.exists('searchFilters')) {
                             guestUserDetails = JSON.parse(guestUserDetails);
                             this.defaultFilters = guestUserDetails.framework ? guestUserDetails.framework : this.defaultFilters;
+                        } else {
+                            this.defaultFilters = this.getPersistFilters(true);
                         }
                     }
                     this._addFiltersInTheQueryParams();
@@ -310,6 +312,23 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     public getFilters({ filters, status }) {
         if (!filters || status === 'FETCHING') { return; }
+        // If filter are available in cache; merge with incoming filters
+        if (this.cacheService.exists('searchFilters')) {
+            const _searchFilters = this.cacheService.get('searchFilters');
+            let _cacheFilters = {
+                gradeLevel: _.union(_searchFilters['gradeLevel'], filters['gradeLevel']),
+                subject: _.union(_searchFilters['subject'], filters['subject']),
+                medium: _.union(_searchFilters['medium'], filters['medium']),
+                publisher: _.union(_searchFilters['publisher'], filters['publisher']),
+                audience: _.union(_searchFilters['audience'], filters['audience']),
+                channel: _.union(_searchFilters['channel'], filters['channel']),
+                audienceSearchFilterValue: _.union(_searchFilters['audienceSearchFilterValue'], filters['audienceSearchFilterValue']),
+                board: [_.union(_searchFilters['board'], filters['board'])[0]],
+                selectedTab: this.getSelectedTab()
+            }
+            filters = _cacheFilters;
+        }
+        this.cacheService.set('searchFilters', filters, { expires: Date.now() + 1000 * 60 * 60 });
         this.showLoader = true;
         const currentPageData = this.getCurrentPageData();
         this.selectedFilters = pick(filters, ['board', 'medium', 'gradeLevel', 'channel', 'subject', 'audience']);
@@ -1083,5 +1102,18 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
           }
         };
         this.telemetryService.interact(telemetryData);
+    }
+
+    getPersistFilters(defaultFilters?) {
+        if (this.cacheService.exists('searchFilters')) {
+            const _filter = this.cacheService.get('searchFilters');
+            if (defaultFilters && !this.isUserLoggedIn()) {
+                return {
+                    board: this.isUserLoggedIn() ? _.get(this.userService.defaultFrameworkFilters, 'board') : _.get(_filter, 'board'),
+                    gradeLevel: _.get(_filter, 'gradeLevel'),
+                    medium: _.get(_filter, 'medium')
+                }
+            }
+        }
     }
 }
