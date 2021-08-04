@@ -10,23 +10,22 @@ import { DiscussionTelemetryService } from '../shared/services/discussion-teleme
 import * as _ from 'lodash-es';
 import { NavigationHelperService } from '@sunbird/shared';
 import { AccessDiscussionComponent } from './components/access-discussion/access-discussion.component';
+import { NavigationEnd, Router } from '@angular/router';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SuiModalModule,
-    DiscussionUiModule
-  ],
-  exports: [ DiscussionUiModule , AccessDiscussionComponent],
-  declarations: [ ForumComponent, AccessDiscussionComponent ],
-  providers: [ DiscussionService ]
+  imports: [CommonModule, SuiModalModule, DiscussionUiModule],
+  exports: [DiscussionUiModule, AccessDiscussionComponent],
+  declarations: [ForumComponent, AccessDiscussionComponent],
+  providers: [DiscussionService],
 })
 export class DiscussionModule {
   constructor(
     private discussionEvents: DiscussionEventsService,
     private discussionTelemetryService: DiscussionTelemetryService,
-    private navigationHelperService: NavigationHelperService) {
-    this.discussionEvents.telemetryEvent.subscribe(event => {
+    private navigationHelperService: NavigationHelperService,
+    private router: Router
+  ) {
+    this.discussionEvents.telemetryEvent.subscribe((event) => {
       this.discussionTelemetryService.logTelemetryEvent(event);
     });
 
