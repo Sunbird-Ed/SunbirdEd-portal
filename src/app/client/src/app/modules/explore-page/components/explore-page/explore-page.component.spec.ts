@@ -756,7 +756,9 @@ describe('ExplorePageComponent', () => {
 
     it('should fetch contents with section', done => {
       sendPageApi = false;
+      const utilService = TestBed.get(UtilService);
       spyOn(component, 'redoLayout');
+      spyOn(utilService, 'processCourseFacetData').and.returnValue({primaryCategory: [{name: 'etextbook', count: 3}]});
       component['fetchContents']().subscribe(res => {
         expect(component.showLoader).toBeFalsy();
         expect(component.apiContentList).toBeDefined();

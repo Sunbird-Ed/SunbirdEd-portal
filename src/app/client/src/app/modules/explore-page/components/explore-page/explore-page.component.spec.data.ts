@@ -2060,6 +2060,7 @@ export const RESPONSE = {
         'desc': 'Section for category',
         'facetKey': 'primaryCategory',
         'isEnabled': true,
+        merge: {destination: 'additionalCategories'},
         'apiConfig': {
           'url': '',
           'method': '',
@@ -2292,6 +2293,7 @@ export const RESPONSE = {
         'desc': 'Section for category',
         'facetKey': 'primaryCategory',
         'isEnabled': true,
+        merge: {destination: 'additionalCategories'},
         'apiConfig': {
           'url': '',
           'method': '',

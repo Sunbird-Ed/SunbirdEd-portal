@@ -51,27 +51,32 @@
           </div>
 
           <!-- Template for displaying sections based on form configuration -->
-          <div *ngIf="_currentPageData?.sections && _currentPageData?.isEnabled">
+          <div *ngIf="_currentPageData?.sections && _currentPageData?.isEnabled" (click)="showEdit = !showEdit">
             <div *ngIf="getSelectedTab() === 'home'" class="sb-section-preference" tabindex="0">
               <div class="preference">
-                <p class="header title">{{resourceService?.frmelmnts?.lbl?.yourPreferences}}</p>
-                <p>{{resourceService?.frmelmnts?.lbl?.preferencesheader | interpolate:'{instance}': instance}}</p>
-                <p>
-                  <span *ngIf="userPreference?.framework?.board?.length" class="title mr-4">{{resourceService?.frmelmnts?.lbl?.boards}}</span>
-                  <span *ngIf="userPreference?.framework?.board?.length">{{convertToString(userPreference?.framework?.board)}}</span>
+                <p class="header font-weight-bold mb-8">{{resourceService?.frmelmnts?.lbl?.hi}} {{userProfile?.firstName | titlecase}} {{userProfile?.lastName |
+                  titlecase}}</p>
+                <p>{{resourceService?.frmelmnts?.lbl?.yourPreferences}}
+                  <span class="preference-icon ml-4"><img src="assets/images/icon-info.svg"></span>
                 </p>
+                <!-- <p>{{resourceService?.frmelmnts?.lbl?.preferencesheader | interpolate:'{instance}': instance}}</p> -->
                 <p>
-                  <span *ngIf="userPreference?.framework?.medium?.length" class="title mr-4">{{resourceService?.frmelmnts?.lbl?.medium}}</span>
-                  <span *ngIf="userPreference?.framework?.medium?.length">{{convertToString(userPreference?.framework?.medium)}}</span>
-                </p>
-                <p>
-                  <span *ngIf="userPreference?.framework?.gradeLevel?.length" class="title mr-4">{{resourceService?.frmelmnts?.lbl?.classes}}</span>
-                  <span *ngIf="userPreference?.framework?.gradeLevel?.length">{{convertToString(userPreference?.framework?.gradeLevel)}}</span>
+                  <span *ngIf="userPreference?.framework?.board?.length">{{resourceService?.frmelmnts?.lbl?.boards}}: </span>
+                  <span *ngIf="userPreference?.framework?.board?.length" class="title">{{convertToString(userPreference?.framework?.board)}}</span>
+                
+                  <span *ngIf="userPreference?.framework?.medium?.length">{{resourceService?.frmelmnts?.lbl?.medium}}: </span>
+                  <span class="font-weight-bold">{{userPreference?.framework?.medium[0]}}</span>
+                  <span class="title" *ngIf="userPreference?.framework?.medium?.length > 1">
+                    ... + {{userPreference?.framework?.medium?.length-1}}
+                  </span>
+                  <span *ngIf="userPreference?.framework?.gradeLevel?.length">{{resourceService?.frmelmnts?.lbl?.classes}}: </span>
+                  <span class="font-weight-bold">{{userPreference?.framework?.gradeLevel[0]}}</span>
+                  <span class="title" *ngIf="userPreference?.framework?.gradeLevel?.length > 1">
+                    ... + {{userPreference?.framework?.gradeLevel?.length-1}}
+                  </span>
                 </p>
               </div>
-              <div class="change-preference" tabindex="0">
-                <button class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border"
-                  (click)="showEdit = !showEdit">{{resourceService?.frmelmnts?.lbl?.changePreferences}}</button>
+                <button class="sb-btn sb-btn-primary sb-btn-normal sb-btn-border">{{resourceService?.frmelmnts?.lbl?.changePreferences}}</button>
               </div>
               <svg _ngcontent-hnb-c0="" xmlns:xlink="http://www.w3.org/1999/xlink"
                 class="sbt-theme-bg-img computer only" height="358px" version="1.1" viewBox="0 0 332 358" width="332px"
@@ -163,8 +168,8 @@
         </div>
       </div>
     </div>
-  </div>
 </div>
+
 <app-offline-banner *ngIf="!isUserLoggedIn()" [slug]="userService.slug"></app-offline-banner>
  <!-- Show Modal if content has any YouTube data-->
  <sui-modal *ngIf="showModal" [mustScroll]="true" [isClosable]="true" [transitionDuration]="0" [size]="'normal'"
@@ -190,6 +195,6 @@
 </app-batch-info>
 
 <app-popup *ngIf="showEdit" #frameworkModal [formInput]="userPreference?.framework" [showCloseIcon]="true"
-  [isClosable]="true" [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" [isGuestUser]="true"
+  [isClosable]="true" [buttonLabel]="resourceService?.frmelmnts?.btn?.submit" [isPreference]="true" [isGuestUser]="true"
   (submit)="updateProfile($event)" (close)="showEdit = !showEdit">
 </app-popup>
