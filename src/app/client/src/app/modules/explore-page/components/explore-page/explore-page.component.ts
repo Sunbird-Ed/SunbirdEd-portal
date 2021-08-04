@@ -153,6 +153,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                         if (guestUserDetails) {
                             guestUserDetails = JSON.parse(guestUserDetails);
                             this.userProfile = guestUserDetails;
+                            this.userProfile['firstName'] = guestUserDetails.formatedName;
                             this.defaultFilters = guestUserDetails.framework ? guestUserDetails.framework : this.defaultFilters;
                         }
                     }
@@ -429,16 +430,31 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                                 // Construct data array for sections
                                 if (_.get(currentPageData, 'sections') && _.get(currentPageData, 'sections').length > 0) {
                                     const facetKeys = _.map(currentPageData.sections, (section) => section.facetKey);
+                                    facetKeys.push(currentPageData.sections.find(section => section.merge).merge.destination);
                                     const facets = this.utilService.processCourseFacetData(_.get(response, 'result'), facetKeys);
                                     forEach(currentPageData.sections, facet => {
                                         if (_.get(facets, facet.facetKey)) {
                                             const _facetArray = [];
                                             forEach(facets[facet.facetKey], _facet => {
-                                                _facetArray.push({
-                                                    name: _facet['name'],
-                                                    value: _facet['name'],
-                                                    theme: this.utilService.getRandomColor(facet.theme.colorMapping)
-                                                });
+                                                if (facet.filter) {
+                                                    for (let key in facet.filter) {
+                                                       if (facet.filter[key].includes(_facet['name'])) {
+                                                        _facetArray.push({
+                                                            name: _facet['name'] === 'tv lesson' ? 'tv classes' : _facet['name'],
+                                                            value: _facet['name'],
+                                                            theme: this.utilService.getRandomColor(facet.theme.colorMapping),
+                                                            type: _facet.type ? _facet.type : ''
+                                                        });
+                                                       }
+                                                    }
+                                                } else {
+                                                    _facetArray.push({
+                                                        name: _facet['name'],
+                                                        value: _facet['name'],
+                                                        theme: this.utilService.getRandomColor(facet.theme.colorMapping),
+                                                        type: _facet.type ? _facet.type : ''
+                                                    });
+                                                }
                                             });
                                             this.facetSections.push({
                                                 name: facet.facetKey,
@@ -927,7 +943,7 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
         if (contentType === 'home') {
             params = _.omit(this.queryParams, ['id', 'selectedTab']);
         }
-        params[facetName] = event.data[0].value.value;
+        params[event.data[0].value.type ? event.data[0].value.type : facetName] = event.data[0].value.value;
         params['selectedTab'] = 'all';
         params['showClose'] = 'true';
         params['isInside'] = event.data[0].value.name;
