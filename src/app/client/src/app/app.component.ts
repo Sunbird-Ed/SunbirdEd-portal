@@ -57,7 +57,7 @@ export class AppComponent implements OnInit, OnDestroy {
   /**
    * Used to config telemetry service and device register api. Possible values
    * 1. org hashtag for Anonymous user
-   * 2. user profile rootOrg hashtag for logged in
+   * 2. User profile rootOrg hashtag for logged in
    */
   public channel: string;
   private _routeData$ = new BehaviorSubject(undefined);
