@@ -16,8 +16,8 @@ export class UciComponent implements OnInit {
               private config: ConfigService) { }
 
   ngOnInit(): void {
-    // this.url = this.config.urlConFig.URLS.PUBLIC_PREFIX;
-    this.url = 'https://uci-server2.ngrok.samagra.io';
+    this.url = this.config.urlConFig.URLS.UCI;
+    // this.url = 'https://uci-server2.ngrok.samagra.io';
     this.userService.userData$.pipe(first()).subscribe(async (user) => {
       if (user && user.userProfile) {
         this.userProfile = user.userProfile;
