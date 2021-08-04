@@ -68,7 +68,19 @@ export const getUserList = {
           'gender': null,
           'subject': [],
           'roles': [
-            'PUBLIC'
+            {
+              "role": "COURSE_MENTOR",
+              "createdDate": null,
+              "updatedBy": null,
+              "createdBy": "58a11351-2333-463f-bee1-19d820ce8c30",
+              "scope": [
+                {
+                  "organisationId": "0124065033550888960"
+                }
+              ],
+              "updatedDate": null,
+              "userId": "58a11351-2333-463f-bee1-19d820ce8c30"
+            }
           ],
           'channel': null,
           'language': [],
@@ -393,7 +405,19 @@ export const getUserDetails = {
             'Economics'
           ],
           'roles': [
-            'public'
+            {
+              "role": "COURSE_MENTOR",
+              "createdDate": null,
+              "updatedBy": null,
+              "createdBy": "58a11351-2333-463f-bee1-19d820ce8c30",
+              "scope": [
+                {
+                  "organisationId": "0124065033550888960"
+                }
+              ],
+              "updatedDate": null,
+              "userId": "58a11351-2333-463f-bee1-19d820ce8c30"
+            }
           ],
           'channel': null,
           'language': [
