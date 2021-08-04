@@ -27,7 +27,7 @@
                 interpolate:'{searchString}':this.queryParams.key !=null?this.queryParams.key:searchAll "></h4> 
                 <span class="badge">{{totalCount}}</span>
               </div>
-              <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" *ngIf="showBackButton" class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" type="button"  (click)= "goback()">
+              <button appTelemetryInteract [telemetryInteractEdata]="closeIntractEdata" *ngIf="showBackButton" class="sb-btn sb-btn-normal sb-btn-error ml-auto sb-cls-btn" type="button" tabindex="0"  (click)= "goback()">
                 {{resourceService?.frmelmnts?.btn?.close | translate}} <i class="close icon"></i></button>
             </div>
           </div>
@@ -77,15 +77,15 @@
             <div class="sb-pagination-container flex-jc-flex-end mt-16" *ngIf="paginationDetails.pages.length">
               <div class="sb-pagination my-0">
                 <a [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item "
-                  (click)="navigateToPage(1) ">&laquo;</a>
+                  tabindex="0" (click)="navigateToPage(1) ">&laquo;</a>
                 <a [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item "
-                  (click)="navigateToPage(paginationDetails.currentPage - 1)">&lt;</a>
+                  tabindex="0" (click)="navigateToPage(paginationDetails.currentPage - 1)">&lt;</a>
                 <a *ngFor="let page of paginationDetails.pages" [ngClass]="{active:paginationDetails.currentPage===page}"
-                  (click)="navigateToPage(page)" class="sb-item">{{page}}</a>
+                  tabindex="0" (click)="navigateToPage(page)" class="sb-item">{{page}}</a>
                 <a [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}"
-                  (click)="navigateToPage(paginationDetails.currentPage + 1)" class="sb-item">&gt;</a>
+                  tabindex="0" (click)="navigateToPage(paginationDetails.currentPage + 1)" class="sb-item">&gt;</a>
                 <a [ngClass]="{disabled:paginationDetails.currentPage=== paginationDetails.totalPages}"
-                  (click)="navigateToPage(paginationDetails.totalPages)" class="sb-item ">&raquo;</a>
+                  tabindex="0" (click)="navigateToPage(paginationDetails.totalPages)" class="sb-item ">&raquo;</a>
               </div>
             </div>
           </div>

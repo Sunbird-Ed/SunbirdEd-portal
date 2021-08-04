@@ -16,7 +16,7 @@
         <div *ngIf="userNames[batch.createdBy]">{{userNames[batch.createdBy].firstName}}
           {{userNames[batch.createdBy].lastName}}</div>
         <button class="sb-btn sb-btn-outline-secondary sb-btn-normal"
-          (click)="enrollBatch(batch); logTelemetry('enroll-batch', courseHierarchy, batch?.identifier)"
+          tabindex="0" (click)="enrollBatch(batch); logTelemetry('enroll-batch', courseHierarchy, batch?.identifier)"
          >{{resourceService?.frmelmnts?.lbl?.join}}</button>
       </div>
     </div>
@@ -40,7 +40,7 @@
             <label>
             <sui-select (selectedOptionChange)="getSelectedBatches()" class="selection mb-16" [(ngModel)]="batchStatus"
               [options]="statusOptions" valueField="value" labelField="name" #batchStatusSelect>
-              <sui-select-option *ngFor="let option of batchStatusSelect?.filteredOptions" [value]="option">
+              <sui-select-option *ngFor="let option of batchStatusSelect?.filteredOptions" [value]="option" tabindex="0">
               </sui-select-option>
             </sui-select></label>
             <div *ngFor="let batch of batchList">
@@ -51,17 +51,15 @@
               <div class="batch-details__edit d-flex flex-ai-center py-8">
                 <div *ngIf="allowBatchCreation && allowCertCreation">
                   <div *ngIf="!isCertAdded(batch)" class="sb-color-primary fnormal font-weight-bold">
-                    <a href="javascript:void(0)" (click)="navigateToConfigureCertificate('add', batch?.identifier); logTelemetry('add-certificate')">{{resourceService?.frmelmnts?.cert?.lbl?.addCert}}</a>
+                    <a href="javascript:void(0)" tabindex="0" (click)="navigateToConfigureCertificate('add', batch?.identifier); logTelemetry('add-certificate')">{{resourceService?.frmelmnts?.cert?.lbl?.addCert}}</a>
                   </div>
                   <div *ngIf="isCertAdded(batch)" class="sb-color-primary fnormal font-weight-bold"> 
-                    <a href="javascript:void(0)" (click)="navigateToConfigureCertificate('edit', batch?.identifier); logTelemetry('edit-certificate')">{{resourceService?.frmelmnts?.cert?.lbl?.editCert}}</a>
+                    <a href="javascript:void(0)" tabindex="0" (click)="navigateToConfigureCertificate('edit', batch?.identifier); logTelemetry('edit-certificate')">{{resourceService?.frmelmnts?.cert?.lbl?.editCert}}</a>
                   </div>
                 </div>
                 <button class="sb-btn sb-btn-normal sb-btn-outline-primary ml-auto"
-                  (click)="batchUpdate(batch); logTelemetry('update-batch', courseHierarchy, batch?.identifier);"
-                  [ngClass]="{'sb-btn-disabled': (!isExpiredBatchEditable && batch.status === 2)}"
-                  [disabled]="(!isExpiredBatchEditable && batch.status === 2)"
-                   >
+                  tabindex="0" 
+                  (click)="batchUpdate(batch); logTelemetry('update-batch', courseHierarchy, batch?.identifier);">
                   {{resourceService?.frmelmnts?.lbl?.edit}}
                 </button>
               </div>
@@ -89,7 +87,7 @@
         </div>
         <div class="batch-deatils__button text-right" *ngIf="isTrackable && showCreateBatchBtn">
           <button class="sb-btn sb-btn-primary sb-btn-normal width-100"
-            (click)="createBatch(); logTelemetry('create-batch', courseHierarchy);"
+            tabindex="0" (click)="createBatch(); logTelemetry('create-batch', courseHierarchy);"
             *ngIf="allowBatchCreation">{{resourceService.frmelmnts.lbl.createbatch}}</button>
         </div>
       </div>
@@ -149,7 +147,7 @@
           <button
             [ngClass]="{'sb-btn-disabled': isUnenrollbtnDisabled,'sb-btn-outline-primary': !isUnenrollbtnDisabled}"
             class="sb-btn sb-btn-outline-primary sb-btn-normal"
-            (click)="unenrollBatch(enrolledBatchInfo); logTelemetry('unenroll-batch', courseHierarchy);"
+            tabindex="0" (click)="unenrollBatch(enrolledBatchInfo); logTelemetry('unenroll-batch', courseHierarchy);"
             [disabled]="isUnenrollbtnDisabled">{{generaliseLabelService?.frmelmnts?.btn?.unenroll}}</button>
         </div>
         <div class="batch-details__created mt-8 fsmall">

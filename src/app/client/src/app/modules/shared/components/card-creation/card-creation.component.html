@@ -1,4 +1,4 @@
-<div class="ui link cards mb-0" *ngIf="data" (click)="onAction(data,data.action.onImage)" 
+<div class="ui link cards mb-0" *ngIf="data" tabindex="0" (click)="onAction(data,data.action.onImage)" 
  appTelemetryInteract [telemetryInteractObject]="{id:data.metaData.identifier,type:data.telemetryObjectType,ver:data.metaData.pkgVersion ? data.metaData.pkgVersion.toString():'1.0'}" [telemetryInteractEdata]="data.telemetryInteractEdata" >
   <div class="ui fluid card mt-10" [ngClass]="customClass">
     <div class="top attached indicating active " *ngIf="data.maxCount && data.progress > 0">
@@ -11,7 +11,7 @@
       </a>
       <a class="{{data.ribbon.right.class}}" *ngIf="data.ribbon && data.ribbon.right && data.ribbon.right.name">{{(data?.ribbon?.right?.name).toLowerCase() === 'selfassess' ?  resourceService?.frmelmnts?.lbl?.courseassessment : data?.ribbon?.right?.name }}</a>
       <img *ngIf="data.showImage? false : true" src="{{ data.image || 'assets/images/default.png' | cdnprefixurl}}">
-      <div class="cardImageText center aligned " suiPopup popupText="{{data.name}}" [popupPlacement]="'top left'" >
+      <div class="cardImageText center aligned " matTooltip="{{data.name}}" [matTooltipPosition]="'left'" >
         <span class="sliderCardHeading text-cencapitalize"  >{{data.name | slice:0:20}}
            <i class="ellipsis horizontal icon" *ngIf="data.name && data.name.length >= 20" ></i>
         </span>
@@ -21,7 +21,7 @@
       <div class="card-component-description">
         <div *ngIf="data.description && data.description.length > 0">
           {{data.description | slice:0:40}}
-          <i class="ellipsis horizontal icon" *ngIf="data.description && data.description.length >= 40" suiPopup popupText="{{data.description}}" [popupPlacement]="'top left'"></i>
+          <i class="ellipsis horizontal icon" *ngIf="data.description && data.description.length >= 40" matTooltip="{{data.description}}" [matTooltipPosition]="'left'"></i>
         </div>
       </div>
     </div>
@@ -29,13 +29,13 @@
       <div *ngIf=" data.action.right" class="right floated">
         <a [ngSwitch]="data.action.right.displayType">
           <span *ngSwitchCase="'button'">
-            <button class="{{data.action.right.class}}" (click)="onAction(data,data.action.right); $event.stopPropagation()">
+            <button class="{{data.action.right.class}}" tabindex="0" (click)="onAction(data,data.action.right); $event.stopPropagation()">
               <span *ngIf="data.action.right.text">{{data.action.right.text}}</span>
             </button>
           </span>
           <span *ngSwitchCase="'icon'">
             <span [ngClass]="{disable:data.metaData.pkgVersion && data.metaData.pkgVersion > 0 &&  data.metaData.status === 'Draft'}">
-                <i class="{{data.action.right.class}}" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="telemetryInteractEdata" (click)="onAction(data,data.action.right); $event.stopPropagation()">
+                <i class="{{data.action.right.class}}" appTelemetryInteract [telemetryInteractObject]="telemetryInteractObject" [telemetryInteractEdata]="telemetryInteractEdata" tabindex="0" (click)="onAction(data,data.action.right); $event.stopPropagation()">
                 </i>
             </span>
             <span *ngIf="data.action.right.text">{{data.action.right.text}}</span>
@@ -45,18 +45,18 @@
       <div *ngIf=" data.action.left" class="left floated">
         <a [ngSwitch]="data.action.right.displayType">
           <span *ngSwitchCase="'button'">
-            <button class="{{data.action.left.class}}" (click)="onAction(data,data.action.left); $event.stopPropagation()">
+            <button class="{{data.action.left.class}}" tabindex="0" (click)="onAction(data,data.action.left); $event.stopPropagation()">
               <span *ngIf="data.action.left.text">{{data.action.left.text}}</span>
             </button>
           </span>
           <span *ngSwitchCase="'icon'">
-            <i class="{{data.action.left.class}}" (click)="onAction(data,data.action.left); $event.stopPropagation()">
+            <i class="{{data.action.left.class}}" tabindex="0" (click)="onAction(data,data.action.left); $event.stopPropagation()">
             </i>
             <span *ngIf="data.action.left.text">{{data.action.left.text}}</span>
           </span>
         </a>
       </div>
-      <span *ngIf="data.lockInfo" suiPopup popupText="{{resourceService?.frmelmnts?.lbl?.lockPopupTitle | interpolate:'{collaborator}':data?.lockInfo?.creatorInfo?.name | interpolate:'{contentName}':data?.name}}" [popupPlacement]="'top left'">
+      <span *ngIf="data.lockInfo" matTooltip="{{resourceService?.frmelmnts?.lbl?.lockPopupTitle | interpolate:'{collaborator}':data?.lockInfo?.creatorInfo?.name | interpolate:'{contentName}':data?.name}}" [matTooltipPosition]="'left'">
         <i class="lock icon large"  ></i>
       </span>
       <span *ngIf="data.rating">

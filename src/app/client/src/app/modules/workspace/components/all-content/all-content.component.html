@@ -25,7 +25,7 @@
       <tr in-view-item class="UpForReviewListHover cursor-pointer" *ngFor="let content of allContent let i = index;" [id]="i" [data]="content"
         appTelemetryInteract [telemetryInteractObject]="{id:content.identifier,type:content.contentType,ver:content.pkgVersion ? content.pkgVersion.toString(): '1.0' }"
         [telemetryInteractEdata]="{id:'allcontent',type:'click',pageid:'AllContent'}">
-        <td (click)="contentClick(content)">
+        <td tabindex="0" (click)="contentClick(content)">
           <h5 class="ui image header">
             <img src="{{content.appIcon || 'assets/images/default.png' | cdnprefixurl}}" class="ui tiny image UpReviewTinyImage">
             <div class="content ">
@@ -48,11 +48,11 @@
         <td class="UpForReviewStatusOrange">{{content.status}}</td>
         <td>
           <i *ngIf="!(content.pkgVersion && content.pkgVersion > 0 && (content.status === 'Review' || content.status === 'Draft'))" appTelemetryInteract [telemetryInteractObject]="{id:content.identifier,type:content.contentType,ver:content.pkgVersion ? content.pkgVersion.toString(): '1.0' }"
-          [telemetryInteractEdata]="{id:'deleteContent',type:'click',pageid:'AllContent'}"  class="trash large icon" (click)="deleteConfirmModal(content.identifier, content.mimeType); $event.stopPropagation()">
+          [telemetryInteractEdata]="{id:'deleteContent',type:'click',pageid:'AllContent'}"  class="trash large icon" tabindex="0" (click)="deleteConfirmModal(content.identifier, content.mimeType); $event.stopPropagation()">
           </i>
         </td>
         <td>
-          <span *ngIf="content.lockInfo" suiPopup popupText="{{resourceService?.frmelmnts?.lbl?.lockPopupTitle | interpolate:'{collaborator}':content?.lockInfo?.creatorInfo?.name | interpolate:'{contentName}':content?.name}}" [popupPlacement]="'top left'">
+          <span *ngIf="content.lockInfo" matTooltip="{{resourceService?.frmelmnts?.lbl?.lockPopupTitle | interpolate:'{collaborator}':content?.lockInfo?.creatorInfo?.name | interpolate:'{contentName}':content?.name}}" [matTooltipPosition]="'left'">
             <i class="lock icon large"  ></i>
           </span>
         </td>
@@ -64,11 +64,11 @@
     <div class="ten wide column">
       <div class="pb-10" *ngIf="allContent && totalCount > config.appConfig.WORKSPACE.PAGE_LIMIT && !showLoader && !showError && !noResult">
         <div class="ui pagination menu mt-10 right-floated p-0 " *ngIf="pager.pages.length ">
-          <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(1) ">First</a>
-          <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " (click)="navigateToPage(pager.currentPage - 1)">Previous</a>
-          <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" (click)="navigateToPage(page)" class="item">{{page}}</a>
-          <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.currentPage + 1)" class="item">Next</a>
-          <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" (click)="navigateToPage(pager.totalPages)" class="item ">Last</a>
+          <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " tabindex="0" (click)="navigateToPage(1) ">First</a>
+          <a [ngClass]="{disabled:pager.currentPage===1 }" class="item " tabindex="0" (click)="navigateToPage(pager.currentPage - 1)">Previous</a>
+          <a *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage===page}" tabindex="0" (click)="navigateToPage(page)" class="item">{{page}}</a>
+          <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.currentPage + 1)" class="item">Next</a>
+          <a [ngClass]="{disabled:pager.currentPage=== pager.totalPages}" tabindex="0" (click)="navigateToPage(pager.totalPages)" class="item ">Last</a>
         </div>
       </div>
     </div>
@@ -99,7 +99,7 @@
             <button
             class="sb-btn sb-btn-normal sb-btn-outline-error mr-10"
             [class.fadInButton]="showCollectionLoader"
-            (click)="modal.deny('denied')"
+            tabindex="0" (click)="modal.deny('denied')"
             [disabled]="showCollectionLoader"
           >
             {{resourceService?.frmelmnts?.btn?.no}}
@@ -107,7 +107,7 @@
               <button
                 class="sb-btn sb-btn-normal sb-btn-error ui disabled"
                 [class.fadInButton]="showCollectionLoader"
-                (click)="checkLinkedCollections(modal)"
+                tabindex="0" (click)="checkLinkedCollections(modal)"
                 autofocus
                 [disabled]="showCollectionLoader"
               >

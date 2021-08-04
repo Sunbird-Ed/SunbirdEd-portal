@@ -32,7 +32,7 @@
             <label class="w-100">
             <sui-select id={{field.code}} [isSearchable]="false" class="selection sb-form-control" [(ngModel)]="selectedOption[field.code]"
               [options]="options" (ngModelChange)="handleFieldChange($event, field)" name={{field.code}}>
-              <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'"
+              <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" tabindex="0"
                                  [value]="option.name | interpolate: 'CBSE': 'CBSE/NCERT'"></sui-select-option>
             </sui-select></label>
           </div>
@@ -45,11 +45,11 @@
             <label class="w-100">
             <sui-multi-select id={{field.code}} [isSearchable]="false" class="selection sb-form-control" [(ngModel)]="selectedOption[field.code]"
               [options]="options" (ngModelChange)="handleFieldChange($event, field)" name={{field.code}} #multiSelect *ngIf="field.code === 'gradeLevel'">
-              <sui-select-option *ngFor="let option of field.range" [value]="option.name"></sui-select-option>
+              <sui-select-option *ngFor="let option of field.range" tabindex="0" [value]="option.name"></sui-select-option>
             </sui-multi-select>
             <sui-multi-select id={{field.code}} [isSearchable]="false" class="selection sb-form-control" [(ngModel)]="selectedOption[field.code]"
               [options]="options" (ngModelChange)="handleFieldChange($event, field)" name={{field.code}} #multiSelect *ngIf="field.code !== 'gradeLevel'">
-              <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" [value]="option.name"></sui-select-option>
+              <sui-select-option *ngFor="let option of field.range | sortBy:'name':'asc'" tabindex="0" [value]="option.name"></sui-select-option>
             </sui-multi-select></label>
           </div>
         </div>
