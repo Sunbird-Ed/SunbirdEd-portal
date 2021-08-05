@@ -146,15 +146,17 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.custodianOrg = custodianOrg;
                     this.formData = formConfig;
                     if (this.isUserLoggedIn()) {
-                        this.defaultFilters = this.userService.defaultFrameworkFilters;
+                        this.defaultFilters = this.cacheService.exists('searchFilters') ? this.getPersistFilters(true) : this.userService.defaultFrameworkFilters;
                         this.userProfile = this.userService.userProfile;
                     } else if (!this.isDesktopApp) {
                         let guestUserDetails: any = localStorage.getItem('guestUserDetails');
-                        if (guestUserDetails) {
+                        if (guestUserDetails && !this.cacheService.exists('searchFilters')) {
                             guestUserDetails = JSON.parse(guestUserDetails);
                             this.userProfile = guestUserDetails;
                             this.userProfile['firstName'] = guestUserDetails.formatedName;
                             this.defaultFilters = guestUserDetails.framework ? guestUserDetails.framework : this.defaultFilters;
+                        } else {
+                            this.defaultFilters = this.getPersistFilters(true);
                         }
                     }
                     this._addFiltersInTheQueryParams();
@@ -315,6 +317,25 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     public getFilters({ filters, status }) {
         if (!filters || status === 'FETCHING') { return; }
+        // If filter are available in cache; merge with incoming filters
+        if (this.cacheService.exists('searchFilters')) {
+            const _searchFilters = this.cacheService.get('searchFilters');
+            let _cacheFilters = {
+                gradeLevel: [..._.intersection(filters['gradeLevel'], _searchFilters['gradeLevel']), ..._.difference(filters['gradeLevel'], _searchFilters['gradeLevel'])],
+                subject: [..._.intersection(filters['subject'], _searchFilters['subject']),
+                    ..._.difference(filters['subject'], _searchFilters['subject'])].map((e) => { return _.startCase(e) }),
+                medium: [..._.intersection(filters['medium'], _searchFilters['medium']), ..._.difference(filters['medium'], _searchFilters['medium'])],
+                publisher: [..._.intersection(filters['publisher'], _searchFilters['publisher']), ..._.difference(filters['publisher'], _searchFilters['publisher'])],
+                audience: [..._.intersection(filters['audience'], _searchFilters['audience']), ..._.difference(filters['audience'], _searchFilters['audience'])],
+                channel: [..._.intersection(filters['channel'], _searchFilters['channel']), ..._.difference(filters['channel'], _searchFilters['channel'])],
+                audienceSearchFilterValue: [..._.intersection(filters['audienceSearchFilterValue'], _searchFilters['audienceSearchFilterValue']),
+                    ..._.difference(filters['audienceSearchFilterValue'], _searchFilters['audienceSearchFilterValue'])],
+                board: [_.union(_searchFilters['board'], filters['board'])[0]],
+                selectedTab: this.getSelectedTab()
+            }
+            filters = _cacheFilters;
+        }
+        this.cacheService.set('searchFilters', filters, { expires: Date.now() + 1000 * 60 * 60 });
         this.showLoader = true;
         const currentPageData = this.getCurrentPageData();
         this.selectedFilters = pick(filters, ['board', 'medium', 'gradeLevel', 'channel', 'subject', 'audience']);
@@ -1103,5 +1124,19 @@ export class ExplorePageComponent implements OnInit, OnDestroy, AfterViewInit {
           }
         };
         this.telemetryService.interact(telemetryData);
+    }
+
+    getPersistFilters(defaultFilters?) {
+        if (this.cacheService.exists('searchFilters')) {
+            const _filter = this.cacheService.get('searchFilters');
+            if (defaultFilters) {
+                return {
+                    board: this.isUserLoggedIn() ? _.get(this.userService.defaultFrameworkFilters, 'board') : _.get(_filter, 'board'),
+                    gradeLevel: _.get(_filter, 'gradeLevel'),
+                    medium: _.get(_filter, 'medium'),
+                    subject: _.get(_filter, 'subject').map((e) => { return _.startCase(e) })
+                }
+            }
+        }
     }
 }
