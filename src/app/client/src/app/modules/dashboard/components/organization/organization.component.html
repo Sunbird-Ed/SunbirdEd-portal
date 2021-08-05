@@ -18,7 +18,7 @@
             </span>
           </div>  
           <div class="menu" suiDropdownMenu>
-            <div class="item" [ngClass]="{'active': organization.id === identifier }" *ngFor="let organization of myOrganizations" (click)="onAfterOrgChange(organization.id, organization.orgName); SelectedOrg = organization.orgName;" appTelemetryInteract [telemetryInteractObject]="{ id: organization.id, type: 'organization', ver: '1.0' }"  [telemetryInteractEdata]="{id:'orgDropdown',type:'click',pageid:'org-admin-dashboard'}">
+            <div class="item" [ngClass]="{'active': organization.id === identifier }" *ngFor="let organization of myOrganizations" tabindex="0" (click)="onAfterOrgChange(organization.id, organization.orgName); SelectedOrg = organization.orgName;" appTelemetryInteract [telemetryInteractObject]="{ id: organization.id, type: 'organization', ver: '1.0' }"  [telemetryInteractEdata]="{id:'orgDropdown',type:'click',pageid:'org-admin-dashboard'}">
                 {{organization.orgName}}
             </div>
           </div>
@@ -52,15 +52,15 @@
     <!-- Filters -->
     <div class="ui grid" *ngIf="identifier">
       <div class="twelve wide column" *ngIf="myOrganizations && myOrganizations.length > 0" [appTelemetryImpression]="telemetryImpression">
-        <span class="dashBoardMenuItem cursor-pointer active" (click)="onAfterFilterChange('7d')" [ngClass]="{'active': timePeriod === '7d' }"
+        <span class="dashBoardMenuItem cursor-pointer active" tabindex="0" (click)="onAfterFilterChange('7d')" [ngClass]="{'active': timePeriod === '7d' }"
         appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'7d',type:'click',pageid:'org-admin-dashboard'}">
           {{resourceService?.frmelmnts?.lbl?.dashboardsevendaysfilter}}
         </span>&nbsp;&nbsp;&nbsp;&nbsp;
-        <span class="dashBoardMenuItem cursor-pointer" (click)="onAfterFilterChange('14d')" [ngClass]="{'active': timePeriod === '14d' }"
+        <span class="dashBoardMenuItem cursor-pointer" tabindex="0" (click)="onAfterFilterChange('14d')" [ngClass]="{'active': timePeriod === '14d' }"
         appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'14d',type:'click',pageid:'org-admin-dashboard'}">
           {{resourceService?.frmelmnts?.lbl?.dashboardfourteendaysfilter}}
         </span>&nbsp;&nbsp;&nbsp;&nbsp;
-        <span class="dashBoardMenuItem cursor-pointer" (click)="onAfterFilterChange('5w')" [ngClass]="{'active': timePeriod === '5w' }"
+        <span class="dashBoardMenuItem cursor-pointer" tabindex="0" (click)="onAfterFilterChange('5w')" [ngClass]="{'active': timePeriod === '5w' }"
         appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'5w',type:'click',pageid:'org-admin-dashboard'}">
           {{resourceService?.frmelmnts?.lbl?.dashboardfiveweeksfilter}}
         </span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -103,11 +103,11 @@
               </div>
             </div>
             <div class="corse-graph-navigation-btn" *ngIf="graphData && graphData.length-1 > 0">
-              <button class="ui primary basic compact icon button" (click)="graphNavigation('previous')" [ngClass]="{'disabled': showGraph <= 0 }"
+              <button class="ui primary basic compact icon button" tabindex="0" (click)="graphNavigation('previous')" [ngClass]="{'disabled': showGraph <= 0 }"
               appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'previous',type:'click',pageid:'org-admin-dashboard'}">
                 <i class="left arrow icon"></i>
               </button>
-              <button class="ui primary basic compact icon button" (click)="graphNavigation('next')" [ngClass]="{'disabled': showGraph >= graphData.length - 1 }"
+              <button class="ui primary basic compact icon button" tabindex="0" (click)="graphNavigation('next')" [ngClass]="{'disabled': showGraph >= graphData.length - 1 }"
                 appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'next',type:'click',pageid:'org-admin-dashboard'}">
                 <i class="right arrow icon"></i>
               </button>
@@ -120,7 +120,7 @@
         <p class="text-align-right dashBoardCardText">
           {{resourceService?.frmelmnts?.instn?.t0058}}
           <a href="javascript:void(0);" [ngClass]="{'disabledDownloadButton': disabledClass }" class="item text-decoration-underline pl-10"
-            (click)="downloadReport();"
+            (click)="downloadReport();" tabindex="0"
             appTelemetryInteract [telemetryInteractObject]="interactObject" [telemetryInteractEdata]="{id:'download',type:'click',pageid:'org-admin-dashboard'}">
             {{resourceService?.frmelmnts?.instn?.t0059}}</a>
         </p>
