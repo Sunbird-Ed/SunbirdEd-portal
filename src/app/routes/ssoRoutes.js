@@ -19,7 +19,7 @@ const errorUrl = '/sso/sign-in/error';
 const { logger } = require('@project-sunbird/logger');
 const url = require('url');
 const {acceptTncAndGenerateToken} = require('../helpers/userService');
-const VDNURL = envHelper.vdnURL || 'https://dockstaging.sunbirded.org/';
+const VDNURL = envHelper.vdnURL || 'https://dockstaging.sunbirded.org';
 
 module.exports = (app) => {
 
